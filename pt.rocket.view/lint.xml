@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <issue id="ExtraTranslation" severity="warning" />
+    <issue id="MissingTranslation" severity="warning">
+        <ignore path="res/values/configs.xml" />
+        <ignore path="res/values/countries.xml" />
+        <ignore path="res/values/tracking.xml" />
+    </issue>
+    <issue id="TypographyDashes">
+        <ignore path="res/values/tracking.xml" />
+    </issue>
+    <issue id="UnusedResources">
+        <ignore path="res/values/configs.xml" />
+        <ignore path="res/values/tracking.xml" />
+    </issue>
+</lint>
