@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Build" default="build" basedir=".">
+
+    <taskdef resource="checkstyletask.properties" classpath="checkstyle-5.6-all.jar"/>
+
+    <target name="build" depends="checkstyle">
+        <echo>Starting build</echo>
+        <echo>Build finished</echo>
+    </target>
+    <target name="checkstyle">
+        <echo>Starting checkstyle</echo>
+        <checkstyle config="android_checks.xml" failOnViolation="false">
+            <fileset dir="../pt.rocket.view/src" includes="**/*.java"/>
+            <formatter type="plain"/>
+            <formatter type="xml" toFile="../checkstyle_errors.xml"/>
+        </checkstyle>
+        <echo>Checkstyle finished</echo>
+    </target>
+</project>

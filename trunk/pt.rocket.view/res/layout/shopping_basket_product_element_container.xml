@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/shopping_basket_product_element_container"
+    style="@style/list_row_style"
+    android:descendantFocusability="blocksDescendants"
+    android:orientation="vertical" >
+
+    <include layout="@layout/shopping_basket_product_element" />
+
+    <View style="@style/divider_horizontal" />
+
+</LinearLayout>
