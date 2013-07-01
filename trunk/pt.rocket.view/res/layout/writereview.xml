@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:id="@+id/product_basicinfo_container"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_mid"
+            android:layout_marginLeft="@dimen/margin_huge"
+            android:layout_marginRight="@dimen/margin_huge"
+            android:layout_marginTop="@dimen/margin_large" >
+
+            <TextView
+                android:id="@+id/product_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="2"
+                android:text="Samsung Galaxy S2"
+                android:textColor="@color/grey_middle"
+                android:textSize="@dimen/text_mid"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/product_price_result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/product_name"
+                android:layout_marginTop="@dimen/margin_small"
+                android:text="100 €"
+                android:textSize="14dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/product_price_normal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/product_price_result"
+                android:layout_marginLeft="@dimen/margin_mid"
+                android:layout_toRightOf="@+id/product_price_result"
+                android:textColor="@color/grey_light"
+                android:textSize="14dp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <View
+            style="@style/divider_horizontal"
+            android:layout_marginTop="@dimen/margin_mid" />
+
+        <LinearLayout
+            android:id="@+id/product_rating_container"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_mid"
+            android:layout_marginLeft="@dimen/margin_huge"
+            android:layout_marginRight="@dimen/margin_huge"
+            android:layout_marginTop="@dimen/margin_large"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/rating_question"
+                android:textColor="@color/grey_middle"
+                android:textSize="@dimen/text_small" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_large"
+                android:layout_marginTop="@dimen/margin_huge"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/user_rating_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/writereview_your_rating"
+                    android:textColor="@color/grey_middle"
+                    android:textSize="@dimen/text_mid" />
+
+                <RatingBar
+                    android:id="@+id/user_rating"
+                    style="@style/starRatingBarVeryBig"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/margin_huge" />
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/name_box"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_mid"
+                android:background="@drawable/selector_edittext_bottomline"
+                android:hint="@string/name"
+                android:inputType="text"
+                android:textColor="@color/form_text"
+                android:textColorHint="@color/form_text_hint"
+                android:textSize="@dimen/text_mid" />
+
+            <EditText
+                android:id="@+id/email_box"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_mid"
+                android:background="@drawable/selector_edittext_bottomline"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress"
+                android:textColor="@color/form_text"
+                android:textColorHint="@color/form_text_hint"
+                android:textSize="@dimen/text_mid" />
+
+            <EditText
+                android:id="@+id/title_box"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_mid"
+                android:background="@drawable/selector_edittext_bottomline"
+                android:hint="@string/writereview_title_hint"
+                android:inputType="text"
+                android:textColor="@color/form_text"
+                android:textColorHint="@color/form_text_hint"
+                android:textSize="@dimen/text_mid" />
+
+            <EditText
+                android:id="@+id/review_box"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_mid"
+                android:background="@drawable/selector_edittext_bottomline"
+                android:hint="@string/writereview_review_hint"
+                android:inputType="text"
+                android:textColor="@color/form_text"
+                android:textColorHint="@color/form_text_hint"
+                android:textSize="@dimen/text_mid" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/send_review"
+            style="@style/button_orange_style"
+            android:layout_marginLeft="@dimen/margin_huge"
+            android:layout_marginRight="@dimen/margin_huge"
+            android:text="@string/writereview_send" />
+    </LinearLayout>
+
+</ScrollView>

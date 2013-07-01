@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/middle_wishlist_layout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/whishlist_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone" >
+
+        <LinearLayout
+            android:id="@+id/middle_noitems"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="vertical"
+            android:visibility="gone" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/wishlist_noitems" />
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:text="@string/wishlist_notiems"
+                android:textSize="14dp" />
+            <!-- android:textColor="@color/element_product_name_text" -->
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="100dp" />
+        </LinearLayout>
+
+        <pt.rocket.framework.components.ScrollViewEx
+            android:id="@+id/middle_wishlist_gridlayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <pt.rocket.framework.components.ExpandableGridViewComponent
+                    android:id="@+id/middle_wishlist_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginRight="3dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:isScrollContainer="false"
+                    android:numColumns="1" />
+
+                <LinearLayout
+                    android:id="@+id/wishlistbuttons_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:addStatesFromChildren="true"
+                    android:orientation="horizontal" >
+
+                    <Button
+                        android:id="@+id/wishlist_button_addall"
+                        style="@style/button_orange_style"
+                        android:layout_width="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="20dp"
+                        android:background="@drawable/btn_orange"
+                        android:gravity="center"
+                        android:text="@string/wishlist_addalltocart"
+                        android:textColor="#777777"
+                        android:visibility="gone" />
+
+                    <Button
+                        android:id="@+id/wishlist_button_login"
+                        style="@style/button_orange_style"
+                        android:layout_width="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="20dp"
+                        android:background="@drawable/btn_orange"
+                        android:gravity="center"
+                        android:text="@string/login_label"
+                        android:textColor="#777777"
+                        android:visibility="visible" />
+                </LinearLayout>
+            </LinearLayout>
+        </pt.rocket.framework.components.ScrollViewEx>
+    </RelativeLayout>
+
+</RelativeLayout>

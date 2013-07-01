@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android" 
+    xmlns:tools="http://schemas.android.com/tools">
+
+   	<!-- Begin of GA Tracking Parameters -->
+    <bool name="ga_autoActivityTracking">false</bool>
+    <bool name="ga_reportUncaughtExceptions">false</bool>
+
+    <bool name="ga_testmode">false</bool>
+    <bool name="ga_enable">false</bool>
+    <string name="ga_trackingId"></string>
+    
+    <!--  PageView Names -->
+    <string name="gnavigation">LeftMenu</string>
+    <string name="ghomepage">ShopMain</string>
+    <string name="gcategories">ShopCategories</string>
+    <string name="gbrands">ShopBrands</string>
+    <string name="gproductlist">ShopProductList</string>
+    <string name="gshoppingcart">ShoppingCart</string>
+    <string name="gcartwithitems">CartWithItem</string>
+    <string name="gcartempty">CartEmpty</string>
+    <string name="gproductreviews">ShopProductReviews</string>
+    <string name="gproductreviewscreate">ShopProductReviewsCreate</string>
+    <string name="gcheckoutbegin">CheckoutViaWebview</string>
+    <string name="gcheckoutfinal">CheckoutResult</string>
+    <string name="gcustomeraccount">CustomerAccount</string>
+    <string name="gaccount">Account</string>
+    <string name="glogin">Login</string>
+    <string name="gregister">Register</string>
+    <string name="gproductdetail">ShopProductDetail</string>
+    
+    <!-- prefixes for page string encoding -->
+    <string name="gbrand_prefix">brand</string>
+    <string name="gcategory_prefix">cat</string>
+    <string name="gteaser_prefix">teaser</string>
+    <string name="gteaserprod_prefix">teaser_prd</string>
+    <string name="gsearch_prefix">search</string>
+    <string name="gpush_prefix">push</string>
+    <string name="gcart_prefix">cart</string>
+    
+    <!-- Event Categories -->
+    <string name="gcatalog">Catalog</string>
+    <string name="gcheckout">Checkout</string>
+
+    <!-- Action -->
+    <string name="gpdv">pdv</string>    
+    <string name="gsearch">Search</string>
+    <string name="gaddtocart">AddToCart</string>
+    <string name="gloginsuccess">LoginSuccess</string>
+    <string name="gloginfailed">LoginFailed</string>
+    <string name="glogoutsuccess">LogoutSuccess</string>
+    <string name="glogoutfailed">LogoutFailed</string>
+    <string name="gautologinsuccess">AutoLoginSuccess</string>
+    <string name="gautologinfailed">AutoLoginFailed</string>
+    <string name="gcreatesuccess">CreateSuccess</string>
+    <string name="gcreatefailed">CreateFailed</string>
+    <string name="glogout">Logout</string>
+    <string name="gstarted">Started</string>
+    <string name="gfinished">Finished</string>
+    <string name="gcontinueshopping">ContinueShopping</string>
+    
+    <!--  Label -->
+    <string name="gcustomerid">CustomerId</string>
+    <string name="gsimplesku">Simple-SKU</string>
+    <string name="gorderid">OrderID</string>
+    
+    <!--  For load timing only -->
+    <string name="gsearchsuggestions">SearchSuggestions</string>
+    <string name="gload">PageLoad</string>
+    <!-- End of GA Tracking Parameters -->
+    
+    
+    <!-- Begin of AdX Tracking Parameters -->
+    <bool name="adx_enable">false</bool>
+
+    <string name="xlaunch">Launch</string>
+    <string name="xlogin">Login</string>
+    <string name="xsignup">Signup</string>
+    <string name="xsale">Sale</string>
+    <string name="xsaledata">SaleData</string>
+    <string name="xcustomer">Customer</string>
+    <!-- End of AdX Tracking Parameters -->
+    
+    <!-- Begin of Flurry Tracking Parameters -->    
+    <bool name="flurry_enable">false</bool>
+    <bool name="f_testmode">false</bool>
+        
+    <string name="fsignup">Signup</string>
+    <string name="fsignin">Signin</string>
+    <string name="fsigninjust">First Signin</string>
+    <string name="fsigninauto">Auto Signin</string>
+    <string name="fpurchase">Purchase</string>
+    <string name="forderid">Order ID</string>
+    <string name="fcustomerid">Customer ID</string>
+    <string name="fvalue">Value</string>
+    <string name="fuserid">User ID</string>
+    <string name="fcurrency">Currency</string>
+    <!-- End of Flurry Tracking Parameters -->
+    
+</resources>

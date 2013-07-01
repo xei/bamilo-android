@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item type="id" name="request_login"/>
+    <item type="id" name="request_register"/>
+    <item type="id" name="target_url"/>
+    <item type="id" name="target_type"/>
+    <item type="id" name="target_title"/>
+    <item type="id" name="item_id"/>
+    <item name="loginout_view" type="id"/>
+    <item name="nav_action" type="id"/>
+    <string name="pref_vibrate">pref_vibrate</string>
+    <string name="pref_notification">pref_notification</string>
+    <string name="pref_led">pref_led</string>
+    <string name="pref_sound">pref_sound</string>
+    
+</resources>
