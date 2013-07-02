@@ -14,7 +14,7 @@ import pt.rocket.framework.rest.RestContract;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.DialogGeneric;
 import pt.rocket.utils.HockeyStartup;
-import pt.rocket.utils.LazadaApplication;
+import pt.rocket.utils.JumiaApplication;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
@@ -75,14 +75,14 @@ public class SplashScreen extends Activity implements ResponseListener {
         setContentView(R.layout.splash_screen);
         initBugSense();
         Log.d(TAG, "Waiting for the registration process to finish");
-        LazadaApplication.INSTANCE.waitForInitResult(this, false);
+        JumiaApplication.INSTANCE.waitForInitResult(this, false);
         showDevInfo();
     }
     
     @Override
     protected void onStop() {
         super.onStop();
-        LazadaApplication.INSTANCE.clearInitListener();
+        JumiaApplication.INSTANCE.clearInitListener();
     }
 
     /**
@@ -112,7 +112,7 @@ public class SplashScreen extends Activity implements ResponseListener {
         }
         
         BugSenseHandler.setLogging(true);
-        BugSenseHandler.setExceptionCallback(LazadaApplication.INSTANCE);
+        BugSenseHandler.setExceptionCallback(JumiaApplication.INSTANCE);
         PackageInfo pInfo = null;
         try {
             pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
@@ -181,7 +181,7 @@ public class SplashScreen extends Activity implements ResponseListener {
 
                         @Override
                         public void onClick(View v) {
-                            LazadaApplication.INSTANCE.waitForInitResult(SplashScreen.this, true);
+                            JumiaApplication.INSTANCE.waitForInitResult(SplashScreen.this, true);
                             dialog.dismiss();
                         }
                     }, true);
@@ -199,7 +199,7 @@ public class SplashScreen extends Activity implements ResponseListener {
 
                         @Override
                         public void onClick(View v) {
-                            LazadaApplication.INSTANCE.waitForInitResult(SplashScreen.this, true);
+                            JumiaApplication.INSTANCE.waitForInitResult(SplashScreen.this, true);
                             dialog.dismiss();
                         }
                     }, true);
@@ -211,7 +211,7 @@ public class SplashScreen extends Activity implements ResponseListener {
 
                         @Override
                         public void onClick(View v) {
-                            LazadaApplication.INSTANCE.waitForInitResult(SplashScreen.this, true);
+                            JumiaApplication.INSTANCE.waitForInitResult(SplashScreen.this, true);
                             dialog.dismiss();
                         }
                     }, true);

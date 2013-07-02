@@ -12,7 +12,7 @@ import pt.rocket.framework.service.services.CustomerAccountService;
 import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.DialogGeneric;
-import pt.rocket.utils.LazadaApplication;
+import pt.rocket.utils.JumiaApplication;
 import pt.rocket.utils.MyActivity;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
@@ -140,7 +140,7 @@ public class MyAccountActivity extends MyActivity implements OnPreferenceAttache
     @Override
     public void onPause() {
         super.onPause();
-        LazadaApplication.COMPONENTS.get(UrbanAirshipComponent.class).setUserPushSettings();
+        JumiaApplication.COMPONENTS.get(UrbanAirshipComponent.class).setUserPushSettings();
     }
 
     @Override

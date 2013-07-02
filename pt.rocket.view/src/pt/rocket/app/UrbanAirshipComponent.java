@@ -41,7 +41,7 @@ public class UrbanAirshipComponent extends ApplicationComponent {
         bnb.iconDrawableId = R.drawable.ic_push_status_bar;
         // Set the builder
         PushManager.shared().setNotificationBuilder(bnb);
-        // Log.i("Lazada Application", "My Application onCreate - App APID: " + apid);
+        // Log.i("Jumia Application", "My Application onCreate - App APID: " + apid);
         PushManager.shared().setIntentReceiver(PushNotificationIntentReceiver.class);
         setUserPushSettings();
         return ErrorCode.NO_ERROR;

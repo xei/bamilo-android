@@ -7,9 +7,9 @@ import android.content.SharedPreferences;
 
 import oak.ObscuredSharedPreferences;
 
-public class LazadaPrefs extends ObscuredSharedPreferences {
+public class JumiaPrefs extends ObscuredSharedPreferences {
 
-	public LazadaPrefs(Context context, SharedPreferences delegate) {
+	public JumiaPrefs(Context context, SharedPreferences delegate) {
 		super(context, delegate);
 	}
 

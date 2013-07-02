@@ -5,7 +5,7 @@ import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.controllers.CountryAdapter;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.DialogGeneric;
-import pt.rocket.utils.LazadaApplication;
+import pt.rocket.utils.JumiaApplication;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;

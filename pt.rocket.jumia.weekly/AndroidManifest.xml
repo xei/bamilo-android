@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="pt.rocket.lazada.weekly" android:versionCode="10022" android:versionName="1.0.2" android:installLocation="auto">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="pt.rocket.jumia.weekly" android:versionCode="10022" android:versionName="1.0.2" android:installLocation="auto">
 
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -18,12 +18,12 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" /> 
-    <permission android:name="pt.rocket.lazada.weekly.permission.C2D_MESSAGE" android:protectionLevel="signature" />
-    <uses-permission android:name="pt.rocket.lazada.weekly.permission.C2D_MESSAGE" />
+    <permission android:name="pt.rocket.jumia.weekly.permission.C2D_MESSAGE" android:protectionLevel="signature" />
+    <uses-permission android:name="pt.rocket.jumia.weekly.permission.C2D_MESSAGE" />
 
     <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="15" />
 
-    <application android:icon="@drawable/launcher" android:label="@string/app_name" android:theme="@style/Theme.Lazada" android:largeHeap="true" android:name="pt.rocket.utils.LazadaApplication" android:logo="@drawable/actionbar_logo">
+    <application android:icon="@drawable/launcher" android:label="@string/app_name" android:theme="@style/Theme.Jumia" android:largeHeap="true" android:name="pt.rocket.utils.JumiaApplication" android:logo="@drawable/actionbar_logo">
         <activity android:name="pt.rocket.view.SplashScreen" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -65,7 +65,7 @@
 				<action android:name="com.android.vending.INSTALL_REFERRER" />
 			</intent-filter>	
 		</receiver>
-		<meta-data android:name="APP_NAME" android:value="pt.rocket.lazada" />
+		<meta-data android:name="APP_NAME" android:value="pt.rocket.jumia" />
 		<meta-data android:name="ADX_CLIENT_ID" android:value="@string/xid" />
 		
         
@@ -76,7 +76,7 @@
           <intent-filter>
               <action android:name="com.google.android.c2dm.intent.RECEIVE" />
               <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-              <category android:name="pt.rocket.lazada.weekly" />
+              <category android:name="pt.rocket.jumia.weekly" />
           </intent-filter>
           <intent-filter>
               <action android:name="android.intent.action.PACKAGE_REPLACED" />
@@ -88,7 +88,7 @@
         <service android:name="com.urbanairship.push.PushWorkerService" android:label="Push Notification Worker Service" />
         <service android:name="com.urbanairship.analytics.EventService" android:label="Event Service" />
         
-        <provider android:name="com.urbanairship.UrbanAirshipProvider" android:authorities="pt.rocket.lazada.weekly.urbanairship.provider" android:exported="false" android:multiprocess="true" />
+        <provider android:name="com.urbanairship.UrbanAirshipProvider" android:authorities="pt.rocket.jumia.weekly.urbanairship.provider" android:exported="false" android:multiprocess="true" />
         <!-- END OF REQUIRED ITEMS -->
 		
 		

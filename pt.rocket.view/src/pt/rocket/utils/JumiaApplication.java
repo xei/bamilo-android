@@ -24,11 +24,11 @@ import pt.rocket.framework.utils.SingletonMap;
 import android.app.Application;
 import de.akquinet.android.androlog.Log;
 
-public class LazadaApplication extends Application implements ResponseListener, ExceptionCallback {
+public class JumiaApplication extends Application implements ResponseListener, ExceptionCallback {
 
-    private static final String TAG = LazadaApplication.class.getSimpleName();
+    private static final String TAG = JumiaApplication.class.getSimpleName();
 
-    public static LazadaApplication INSTANCE;
+    public static JumiaApplication INSTANCE;
 
     public static final SingletonMap<ApplicationComponent> COMPONENTS =
             new SingletonMap<ApplicationComponent>(new UrbanAirshipComponent(),

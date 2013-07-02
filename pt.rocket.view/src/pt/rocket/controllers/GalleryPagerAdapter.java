@@ -8,7 +8,7 @@ import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 import pt.rocket.app.ImageLoaderComponent;
 import pt.rocket.controllers.NormalizingViewPagerWrapper.IPagerAdapter;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.utils.LazadaApplication;
+import pt.rocket.utils.JumiaApplication;
 import pt.rocket.view.R;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -86,7 +86,7 @@ public class GalleryPagerAdapter extends PagerAdapter implements IPagerAdapter {
                     .displayImage(
                             imageUrl,
                             imageView,
-                            LazadaApplication.COMPONENTS.
+                            JumiaApplication.COMPONENTS.
                                 get(ImageLoaderComponent.class).largeLoaderOptions,
                             new SimpleImageLoadingListener() {
 

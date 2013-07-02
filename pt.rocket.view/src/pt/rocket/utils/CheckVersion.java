@@ -228,8 +228,8 @@ public class CheckVersion {
         String packageName = sContext.getPackageName();
 
         String url;
-        if (packageName.startsWith("pt.rocket.lazada.dev")
-                || packageName.startsWith("pt.rocket.lazada.weekly"))
+        if (packageName.startsWith("pt.rocket.jumia.dev")
+                || packageName.startsWith("pt.rocket.jumia.weekly"))
             packageName = "abc.vietcontent.news.zalora";
 
         url = PLAY_MARKET_QUERY + packageName;

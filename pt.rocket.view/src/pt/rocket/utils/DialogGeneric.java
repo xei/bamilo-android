@@ -44,7 +44,7 @@ public class DialogGeneric extends Dialog {
     public DialogGeneric(final Activity activity, Boolean has_header, Boolean main_text,
             Boolean secondary_text, String title, String content, String button1_title,
             String button2_title, android.view.View.OnClickListener click) {
-        super(activity, R.style.Theme_Lazada_Dialog_Blue_NoTitle);
+        super(activity, R.style.Theme_Jumia_Dialog_Blue_NoTitle);
         
         setContentView(R.layout.dialog_generic);
 
@@ -130,7 +130,7 @@ public class DialogGeneric extends Dialog {
             Boolean secondary_text, String title, String content, String button1_title,
             String button2_title, String button3_title, 
             android.view.View.OnClickListener click) {
-        super(activity, R.style.Theme_Lazada_Dialog_Blue_NoTitle);
+        super(activity, R.style.Theme_Jumia_Dialog_Blue_NoTitle);
         
         setContentView(R.layout.dialog_generic_3buttons);
 

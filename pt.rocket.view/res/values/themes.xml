@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="Theme.Lazada.Dialog" parent="@android:style/Theme.Dialog">
+    <style name="Theme.Jumia.Dialog" parent="@android:style/Theme.Dialog">
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowActionBar" tools:targetApi="honeycomb">false</item>
         <item name="android:windowActionModeOverlay" tools:targetApi="honeycomb">true</item>
@@ -21,21 +21,21 @@
         <item name="android:windowBackground">@color/transparent</item>
     </style>
 
-    <style name="Theme.Lazada.Dialog.Blue.NoTitle" parent="@android:style/Theme.Dialog">
+    <style name="Theme.Jumia.Dialog.Blue.NoTitle" parent="@android:style/Theme.Dialog">
         <item name="android:windowBackground">@drawable/dialog_shadow</item>
         <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowFrame">@null</item>
     </style>
 
-    <style name="Theme.Lazada.Dialog.Blue.NoTitle.DatePicker">
+    <style name="Theme.Jumia.Dialog.Blue.NoTitle.DatePicker">
         <item name="calendarViewStyle">@style/Widget.Holo.Light.CalendarView</item>
         <item name="datePickerStyle">@style/Widget.Holo.Light.DatePicker</item>
         <item name="numberPickerStyle">@style/NPWidget.Holo.Light.NumberPicker</item>
         <item name="android:windowFrame">@null</item>
     </style>
 
-    <style name="Theme.Lazada.Dialog.Progress">
+    <style name="Theme.Jumia.Dialog.Progress">
         <item name="android:windowBackground">@drawable/dialog_shadow</item>
         <item name="windowMinWidthMajor">@null</item>
         <item name="windowMinWidthMinor">@null</item>
@@ -45,9 +45,9 @@
         <item name="android:windowNoTitle">true</item>
     </style>
 
-    <style name="Theme.Lazada" parent="@style/Theme.Sherlock.Light">
-        <item name="actionBarStyle">@style/Widget.Lazada.ActionBar</item>
-        <item name="android:actionBarStyle" tools:targetApi="11">@style/Widget.Lazada.ActionBar</item>
+    <style name="Theme.Jumia" parent="@style/Theme.Sherlock.Light">
+        <item name="actionBarStyle">@style/Widget.Jumia.ActionBar</item>
+        <item name="android:actionBarStyle" tools:targetApi="11">@style/Widget.Jumia.ActionBar</item>
         <!-- <item name="android:homeAsUpIndicator">@drawable/ic_sidemenu</item> -->
         <!-- <item name="homeAsUpIndicator">@drawable/ic_sidemenu</item> -->
         <!-- <item name="android:popupMenuStyle">@style/MyPopupMenu</item> -->
@@ -59,22 +59,22 @@
         <item name="actionBarItemBackground">@null</item>
         <!-- For ViewPager IconPageIndicator -->
         <item name="vpiIconPageIndicatorStyle">@style/Widget.TeaserIconPageIndicator</item>
-        <item name="android:checkboxStyle">@style/Widget.Lazada.CheckBox</item>
-        <item name="android:listViewStyle">@style/Widget.Lazada.ListView</item>
+        <item name="android:checkboxStyle">@style/Widget.Jumia.CheckBox</item>
+        <item name="android:listViewStyle">@style/Widget.Jumia.ListView</item>
     </style>
 
-    <style name="Widget.Lazada.ActionBar" parent="Widget.Sherlock.ActionBar">
+    <style name="Widget.Jumia.ActionBar" parent="Widget.Sherlock.ActionBar">
         <item name="android:background">@drawable/actionbar_drawable</item>
         <item name="background">@drawable/actionbar_drawable</item>
         <item name="android:displayOptions" tools:targetApi="11">useLogo|homeAsUp|showHome</item>
         <item name="displayOptions">useLogo|homeAsUp|showHome</item>
     </style>
     
-    <style name="Widget.Lazada.CheckBox" parent="android:Widget.CompoundButton.CheckBox">
+    <style name="Widget.Jumia.CheckBox" parent="android:Widget.CompoundButton.CheckBox">
         <item name="android:button">@drawable/btn_check_holo_light</item>
     </style>
     
-    <style name="Widget.Lazada.ListView" parent="android:Widget.ListView.White">
+    <style name="Widget.Jumia.ListView" parent="android:Widget.ListView.White">
         <item name="android:listSelector">@drawable/selector_listitem_highlight</item>
         <item name="android:divider">@color/grey_light</item>
     </style>

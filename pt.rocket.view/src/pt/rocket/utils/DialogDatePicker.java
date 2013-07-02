@@ -68,7 +68,7 @@ public class DialogDatePicker implements OnClickListener {
 	}
 
 	public void show() {
-		mDialog = new Dialog(mActivity, R.style.Theme_Lazada_Dialog_Blue_NoTitle_DatePicker);
+		mDialog = new Dialog(mActivity, R.style.Theme_Jumia_Dialog_Blue_NoTitle_DatePicker);
 		mDialog.setContentView(R.layout.dialog_datepicker_content);
 
 		TextView titleView = (TextView) mDialog.findViewById(R.id.title);

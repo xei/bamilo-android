@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources>
     <!-- App -->
-    <string name="app_name">Lazada Weekly</string>
+    <string name="app_name">Jumia Weekly</string>
     <string name="hockeyapp_token">aabb472d3f05c29325c11b3f286993d6</string>
     <string name="bugsense_apikey">c7ad642e</string>
     

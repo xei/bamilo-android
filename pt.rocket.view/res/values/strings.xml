@@ -82,7 +82,7 @@
     <string name="product_details_title">Product Details</string>
     <string name="share_checkout_this_product">Check out this product I found:</string>
     <string name="product_could_not_retrieved">The product information could not be retrieved!</string>
-    <string name="share_subject">Lazada Sharing</string>
+    <string name="share_subject">Jumia Sharing</string>
     <string name="product_variance_choose">Please choose</string>
     <string name="product_variance_choose_error">Please choose one of several</string>
     <string name="product_outof_stock">Item is out of stock</string>
@@ -206,7 +206,7 @@
     <string name="client_error">The app discovered an internal or unknown error. Please restart the app</string>
     <string name="password_new_mincharacters">The new password has to have at least 6 characters</string>
     <!-- CAB text -->
-    <string name="lazada_international_title">LAZADA INTERNATIONAL</string>
+    <string name="lazada_international_title">JUMIA INTERNATIONAL</string>
     <string name="reviews">Reviews</string>
     <string name="review">Review</string>
     <string name="rating_question">You have used this Product? Rate it now!</string>

@@ -35,7 +35,7 @@ import pt.rocket.utils.DialogGeneric;
 import pt.rocket.utils.DialogList;
 import pt.rocket.utils.DialogList.OnDialogListListener;
 import pt.rocket.utils.HorizontalListView;
-import pt.rocket.utils.LazadaApplication;
+import pt.rocket.utils.JumiaApplication;
 import pt.rocket.utils.MyActivity;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
@@ -446,7 +446,7 @@ public class ProductDetailsActivityNew extends MyActivity implements
         loadingImage.setVisibility(View.VISIBLE);
         String imageURL = mCompleteProduct.getImageList().get(indexInImageList);
         ImageLoader.getInstance().displayImage(imageURL, image,
-                LazadaApplication.COMPONENTS.get(ImageLoaderComponent.class).largeLoaderOptions,
+                JumiaApplication.COMPONENTS.get(ImageLoaderComponent.class).largeLoaderOptions,
                 new SimpleImageLoadingListener() {
 
                     /*

@@ -11,7 +11,7 @@ public class DialogProgress extends Dialog {
     private LoadingBarView loadingBarView;
 
     public DialogProgress(final Activity activity) {
-        super(activity, R.style.Theme_Lazada_Dialog_Progress);
+        super(activity, R.style.Theme_Jumia_Dialog_Progress);
         setContentView(R.layout.dialog_progress);
         loadingBarView = (LoadingBarView) findViewById(R.id.loading_bar_view);
         findViewById(R.id.loading_bar).setVisibility(View.VISIBLE);

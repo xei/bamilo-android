@@ -2,7 +2,7 @@
 <resources tools:ignore="MissingTranslation" xmlns:tools="http://schemas.android.com/tools">
 
     <!-- App -->
-    <string name="app_name">Lazada Dev</string>
+    <string name="app_name">Jumia Dev</string>
     <string name="hockeyapp_token">b4e73056d2e3c2f2b13add60dffd3a81</string>
 	<string name="bugsense_apikey">c7ad642e</string>
     
