@@ -30,8 +30,8 @@
     <!--  -->
     <bool name="adx_enable">true</bool>
 
-    <string name="xid">rocketlaz456789jo</string>
-
+   <!--  <string name="xid">rocketlaz456789jo</string> -->
+	<string name="xid">rocket--</string>
     <!--  -->
     <!-- Flurry tracking -->
     <!--  -->

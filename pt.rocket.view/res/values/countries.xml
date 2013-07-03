@@ -5,6 +5,7 @@
     <!-- Lazada Indonesia Configuration -->
     <string name="lazada_id_shopname">Lazada</string>
     <string name="lazada_id_server">alice-staging.lazada.co.id</string>
+    <!-- <string name="lazada_id_server">mobile.jumia.com</string> -->
     <string name="lazada_id_user">rocket</string>
     <string name="lazada_id_password">rock4me</string>
     <string name="lazada_id_restbase_path">mobapi</string>
@@ -13,6 +14,7 @@
     <!-- Lazada Thailand Configuration -->
     <string name="lazada_th_shopname">Lazada</string>
     <string name="lazada_th_server">alice-staging.lazada.co.th</string>
+    <!-- <string name="lazada_th_server">mobile.jumia.com</string> -->
     <string name="lazada_th_user">rocket</string>
     <string name="lazada_th_password">rock4me</string>
     <string name="lazada_th_restbase_path">mobapi</string>
@@ -21,6 +23,7 @@
     <!-- Lazada Vietnam Configuration -->
     <string name="lazada_vn_shopname">Lazada</string>
     <string name="lazada_vn_server">alice-staging.lazada.vn</string>
+        <!-- <string name="lazada_vn_server">mobile.jumia.com</string> -->
     <string name="lazada_vn_user">rocket</string>
     <string name="lazada_vn_password">rock4me</string>
     <string name="lazada_vn_restbase_path">mobapi</string>
@@ -29,6 +32,7 @@
 	<!-- Lazada Philippines Configuration -->
     <string name="lazada_ph_shopname">Lazada</string>
     <string name="lazada_ph_server">alice-staging.lazada.com.ph</string>
+        <!-- <string name="lazada_ph_server">mobile.jumia.com</string> -->
     <string name="lazada_ph_user">rocket</string>
     <string name="lazada_ph_password">rock4me</string>
     <string name="lazada_ph_restbase_path">mobapi</string>
@@ -36,7 +40,8 @@
     
     <!-- Lazada Malaysia Configuration -->
     <string name="lazada_my_shopname">Lazada</string>
-    <string name="lazada_my_server">alice-staging.lazada.com.my</string>
+  <!--   <string name="lazada_my_server">alice-staging.lazada.com.my</string> -->
+	<string name="lazada_my_server">mobile.jumia.com</string>
     <string name="lazada_my_user">rocket</string>
     <string name="lazada_my_password">rock4me</string>
     <string name="lazada_my_restbase_path">mobapi</string>

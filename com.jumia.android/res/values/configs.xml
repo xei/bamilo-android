@@ -4,8 +4,11 @@
     <string name="adx_app_name">com.jumia.android</string>
     <string name="urban_airship_category">com.jumia.android</string>
     
-    <string name="hockeyapp_token">b2276b8f8b0611fa5a9452fde2d45cf4</string>
-    <string name="bugsense_apikey">ab8f1e86</string>
+<!--     <string name="hockeyapp_token">b2276b8f8b0611fa5a9452fde2d45cf4</string>
+    <string name="bugsense_apikey">ab8f1e86</string> -->
+    
+        <string name="hockeyapp_token">aaaaaaa</string>
+    <string name="bugsense_apikey">aaaaaa</string>
     
     <bool name="rest_host_auth_use_it">true</bool>
     
