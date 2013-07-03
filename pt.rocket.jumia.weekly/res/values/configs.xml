@@ -2,8 +2,11 @@
 <resources>
     <!-- App -->
     <string name="app_name">Jumia Weekly</string>
-    <string name="hockeyapp_token">aabb472d3f05c29325c11b3f286993d6</string>
-    <string name="bugsense_apikey">c7ad642e</string>
+<!--     <string name="hockeyapp_token">aabb472d3f05c29325c11b3f286993d6</string>
+    <string name="bugsense_apikey">c7ad642e</string> -->
+    
+        <string name="hockeyapp_token">aaaaaaaaaa</string>
+    <string name="bugsense_apikey">aaaaaaaaaaaaa</string>
     
     <bool name="rest_host_auth_use_it">true</bool>
 </resources>
