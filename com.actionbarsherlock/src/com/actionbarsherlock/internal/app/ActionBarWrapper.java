@@ -1,16 +1,17 @@
 package com.actionbarsherlock.internal.app;
 
-import com.actionbarsherlock.app.ActionBar;
+import java.util.HashSet;
+import java.util.Set;
 
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.SpinnerAdapter;
 
-import java.util.HashSet;
-import java.util.Set;
+import com.actionbarsherlock.app.ActionBar;
 
 public class ActionBarWrapper extends ActionBar implements android.app.ActionBar.OnNavigationListener, android.app.ActionBar.OnMenuVisibilityListener {
     private final Activity mActivity;
@@ -25,6 +26,10 @@ public class ActionBarWrapper extends ActionBar implements android.app.ActionBar
         mActionBar = activity.getActionBar();
         if (mActionBar != null) {
             mActionBar.addOnMenuVisibilityListener(this);
+
+            // Fixes issue #746
+            int displayOptions = mActionBar.getDisplayOptions();
+            mActionBar.setHomeButtonEnabled((displayOptions & DISPLAY_HOME_AS_UP) != 0);
         }
     }
 
@@ -131,11 +136,19 @@ public class ActionBarWrapper extends ActionBar implements android.app.ActionBar
     @Override
     public void setDisplayOptions(int options) {
         mActionBar.setDisplayOptions(options);
+
+        // Fixes issue #746
+        mActionBar.setHomeButtonEnabled((options & DISPLAY_HOME_AS_UP) != 0);
     }
 
     @Override
     public void setDisplayOptions(int options, int mask) {
         mActionBar.setDisplayOptions(options, mask);
+
+        // Fixes issue #746
+        if ((mask & DISPLAY_HOME_AS_UP) != 0) {
+            mActionBar.setHomeButtonEnabled((options & DISPLAY_HOME_AS_UP) != 0);
+        }
     }
 
     @Override
@@ -316,53 +329,53 @@ public class ActionBarWrapper extends ActionBar implements android.app.ActionBar
 
         @Override
         public void onTabReselected(android.app.ActionBar.Tab tab, android.app.FragmentTransaction ft) {
-//            if (mListener != null) {
-//                FragmentTransaction trans = null;
-//                if (mActivity instanceof SherlockFragmentActivity) {
-//                    trans = ((SherlockFragmentActivity)mActivity).getSupportFragmentManager().beginTransaction()
-//                            .disallowAddToBackStack();
-//                }
-//
-//                mListener.onTabReselected(this, trans);
-//
-//                if (trans != null && !trans.isEmpty()) {
-//                    trans.commit();
-//                }
-//            }
+            if (mListener != null) {
+                FragmentTransaction trans = null;
+                if (mActivity instanceof FragmentActivity) {
+                    trans = ((FragmentActivity)mActivity).getSupportFragmentManager().beginTransaction()
+                            .disallowAddToBackStack();
+                }
+
+                mListener.onTabReselected(this, trans);
+
+                if (trans != null && !trans.isEmpty()) {
+                    trans.commit();
+                }
+            }
         }
 
         @Override
         public void onTabSelected(android.app.ActionBar.Tab tab, android.app.FragmentTransaction ft) {
-//            if (mListener != null) {
-//
-//                if (mFragmentTransaction == null && mActivity instanceof SherlockFragmentActivity) {
-//                    mFragmentTransaction = ((SherlockFragmentActivity)mActivity).getSupportFragmentManager().beginTransaction()
-//                            .disallowAddToBackStack();
-//                }
-//
-//                mListener.onTabSelected(this, mFragmentTransaction);
-//
-//                if (mFragmentTransaction != null) {
-//                    if (!mFragmentTransaction.isEmpty()) {
-//                        mFragmentTransaction.commit();
-//                    }
-//                    mFragmentTransaction = null;
-//                }
-//            }
+            if (mListener != null) {
+
+                if (mFragmentTransaction == null && mActivity instanceof FragmentActivity) {
+                    mFragmentTransaction = ((FragmentActivity)mActivity).getSupportFragmentManager().beginTransaction()
+                            .disallowAddToBackStack();
+                }
+
+                mListener.onTabSelected(this, mFragmentTransaction);
+
+                if (mFragmentTransaction != null) {
+                    if (!mFragmentTransaction.isEmpty()) {
+                        mFragmentTransaction.commit();
+                    }
+                    mFragmentTransaction = null;
+                }
+            }
         }
 
         @Override
         public void onTabUnselected(android.app.ActionBar.Tab tab, android.app.FragmentTransaction ft) {
-//            if (mListener != null) {
-//                FragmentTransaction trans = null;
-//                if (mActivity instanceof SherlockFragmentActivity) {
-//                    trans = ((SherlockFragmentActivity)mActivity).getSupportFragmentManager().beginTransaction()
-//                            .disallowAddToBackStack();
-//                    mFragmentTransaction = trans;
-//                }
-//
-//                mListener.onTabUnselected(this, trans);
-//            }
+            if (mListener != null) {
+                FragmentTransaction trans = null;
+                if (mActivity instanceof FragmentActivity) {
+                    trans = ((FragmentActivity)mActivity).getSupportFragmentManager().beginTransaction()
+                            .disallowAddToBackStack();
+                    mFragmentTransaction = trans;
+                }
+
+                mListener.onTabUnselected(this, trans);
+            }
         }
     }
 

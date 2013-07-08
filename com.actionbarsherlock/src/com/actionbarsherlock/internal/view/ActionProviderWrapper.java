@@ -2,7 +2,6 @@ package com.actionbarsherlock.internal.view;
 
 import com.actionbarsherlock.internal.view.menu.SubMenuWrapper;
 import com.actionbarsherlock.view.ActionProvider;
-
 import android.view.View;
 
 public class ActionProviderWrapper extends android.view.ActionProvider {

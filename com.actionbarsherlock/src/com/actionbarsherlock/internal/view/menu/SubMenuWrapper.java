@@ -1,10 +1,9 @@
 package com.actionbarsherlock.internal.view.menu;
 
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.view.SubMenu;
-
 import android.graphics.drawable.Drawable;
 import android.view.View;
+import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.SubMenu;
 
 public class SubMenuWrapper extends MenuWrapper implements SubMenu {
     private final android.view.SubMenu mNativeSubMenu;

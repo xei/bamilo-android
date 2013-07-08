@@ -15,7 +15,14 @@
  */
 package com.actionbarsherlock.internal.widget;
 
-import static com.actionbarsherlock.internal.ResourcesCompat.getResources_getBoolean;
+import android.content.Context;
+import android.content.res.Configuration;
+import android.content.res.TypedArray;
+import android.os.Build;
+import android.util.AttributeSet;
+import android.view.View;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.Interpolator;
 
 import com.actionbarsherlock.R;
 import com.actionbarsherlock.internal.nineoldandroids.animation.Animator;
@@ -25,14 +32,7 @@ import com.actionbarsherlock.internal.nineoldandroids.view.NineViewGroup;
 import com.actionbarsherlock.internal.view.menu.ActionMenuPresenter;
 import com.actionbarsherlock.internal.view.menu.ActionMenuView;
 
-import android.content.Context;
-import android.content.res.Configuration;
-import android.content.res.TypedArray;
-import android.os.Build;
-import android.util.AttributeSet;
-import android.view.View;
-import android.view.animation.DecelerateInterpolator;
-import android.view.animation.Interpolator;
+import static com.actionbarsherlock.internal.ResourcesCompat.getResources_getBoolean;
 
 public abstract class AbsActionBarView extends NineViewGroup {
     protected ActionMenuView mMenuView;

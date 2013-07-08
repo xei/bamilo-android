@@ -16,8 +16,6 @@
 
 package com.actionbarsherlock.internal.nineoldandroids.animation;
 
-import android.animation.ArgbEvaluator;
-import android.animation.TimeInterpolator;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -584,6 +582,7 @@ public class ValueAnimator extends Animator {
          * active animations to process.
          */
         @Override
+        @SuppressWarnings("fallthrough")
         public void handleMessage(Message msg) {
             boolean callAgain = true;
             ArrayList<ValueAnimator> animations = sAnimations.get();

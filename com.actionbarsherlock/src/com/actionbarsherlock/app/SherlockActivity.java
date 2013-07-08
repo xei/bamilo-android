@@ -1,5 +1,12 @@
 package com.actionbarsherlock.app;
 
+import android.app.Activity;
+import android.content.res.Configuration;
+import android.os.Bundle;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.Window;
+import android.view.ViewGroup.LayoutParams;
 import com.actionbarsherlock.ActionBarSherlock;
 import com.actionbarsherlock.ActionBarSherlock.OnActionModeFinishedListener;
 import com.actionbarsherlock.ActionBarSherlock.OnActionModeStartedListener;
@@ -10,14 +17,6 @@ import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-
-import android.app.Activity;
-import android.content.res.Configuration;
-import android.os.Bundle;
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.ViewGroup.LayoutParams;
-import android.view.Window;
 
 public abstract class SherlockActivity extends Activity implements OnCreatePanelMenuListener, OnPreparePanelListener, OnMenuItemSelectedListener, OnActionModeStartedListener, OnActionModeFinishedListener {
     private ActionBarSherlock mSherlock;
@@ -84,7 +83,7 @@ public abstract class SherlockActivity extends Activity implements OnCreatePanel
     }
 
     @Override
-	public void onPostCreate(Bundle savedInstanceState) {
+    protected void onPostCreate(Bundle savedInstanceState) {
         getSherlock().dispatchPostCreate(savedInstanceState);
         super.onPostCreate(savedInstanceState);
     }
@@ -117,6 +116,17 @@ public abstract class SherlockActivity extends Activity implements OnCreatePanel
         return super.dispatchKeyEvent(event);
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        getSherlock().dispatchSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        getSherlock().dispatchRestoreInstanceState(savedInstanceState);
+    }
 
     ///////////////////////////////////////////////////////////////////////////
     // Native menu handling
@@ -231,6 +241,12 @@ public abstract class SherlockActivity extends Activity implements OnCreatePanel
 
     public void requestWindowFeature(long featureId) {
         getSherlock().requestFeature((int)featureId);
+    }
+
+    @Override
+    public View findViewById(int id) {
+        getSherlock().ensureActionBar();
+        return super.findViewById(id);
     }
 
 

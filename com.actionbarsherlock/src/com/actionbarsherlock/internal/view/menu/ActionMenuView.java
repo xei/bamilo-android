@@ -15,8 +15,6 @@
  */
 package com.actionbarsherlock.internal.view.menu;
 
-import com.actionbarsherlock.internal.widget.IcsLinearLayout;
-
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Canvas;
@@ -27,6 +25,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
 import android.widget.LinearLayout;
+import com.actionbarsherlock.internal.widget.IcsLinearLayout;
 
 /**
  * @hide
@@ -521,6 +520,9 @@ public class ActionMenuView extends IcsLinearLayout implements MenuBuilder.ItemI
 
     //@Override
     protected boolean hasDividerBeforeChildAt(int childIndex) {
+        if (childIndex == 0) {
+            return false;
+        }
         final View childBefore = getChildAt(childIndex - 1);
         final View child = getChildAt(childIndex);
         boolean result = false;

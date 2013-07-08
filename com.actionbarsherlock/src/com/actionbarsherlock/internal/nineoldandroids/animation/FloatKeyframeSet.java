@@ -16,11 +16,10 @@
 
 package com.actionbarsherlock.internal.nineoldandroids.animation;
 
-import com.actionbarsherlock.internal.nineoldandroids.animation.Keyframe.FloatKeyframe;
-
+import java.util.ArrayList;
 import android.view.animation.Interpolator;
 
-import java.util.ArrayList;
+import com.actionbarsherlock.internal.nineoldandroids.animation.Keyframe.FloatKeyframe;
 
 /**
  * This class holds a collection of FloatKeyframe objects and is called by ValueAnimator to calculate

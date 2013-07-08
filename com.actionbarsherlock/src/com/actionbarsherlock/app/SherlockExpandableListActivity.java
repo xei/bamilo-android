@@ -1,5 +1,12 @@
 package com.actionbarsherlock.app;
 
+import android.app.ExpandableListActivity;
+import android.content.res.Configuration;
+import android.os.Bundle;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.ViewGroup.LayoutParams;
+import android.view.Window;
 import com.actionbarsherlock.ActionBarSherlock;
 import com.actionbarsherlock.ActionBarSherlock.OnActionModeFinishedListener;
 import com.actionbarsherlock.ActionBarSherlock.OnActionModeStartedListener;
@@ -10,14 +17,6 @@ import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-
-import android.app.ExpandableListActivity;
-import android.content.res.Configuration;
-import android.os.Bundle;
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.ViewGroup.LayoutParams;
-import android.view.Window;
 
 public abstract class SherlockExpandableListActivity extends ExpandableListActivity implements OnCreatePanelMenuListener, OnPreparePanelListener, OnMenuItemSelectedListener, OnActionModeStartedListener, OnActionModeFinishedListener {
     private ActionBarSherlock mSherlock;
@@ -231,6 +230,12 @@ public abstract class SherlockExpandableListActivity extends ExpandableListActiv
 
     public void requestWindowFeature(long featureId) {
         getSherlock().requestFeature((int)featureId);
+    }
+
+    @Override
+    public View findViewById(int id) {
+        getSherlock().ensureActionBar();
+        return super.findViewById(id);
     }
 
 

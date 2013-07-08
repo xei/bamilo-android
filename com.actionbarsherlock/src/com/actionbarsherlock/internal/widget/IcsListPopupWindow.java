@@ -1,7 +1,5 @@
 package com.actionbarsherlock.internal.widget;
 
-
-
 import com.actionbarsherlock.R;
 
 import android.content.Context;
@@ -258,6 +256,23 @@ public class IcsListPopupWindow {
 
     public void setInputMethodMode(int mode) {
         mPopup.setInputMethodMode(mode);
+    }
+
+    /**
+     * Set the selected position of the list.
+     * Only valid when {@link #isShowing()} == {@code true}.
+     *
+     * @param position List position to set as selected.
+     */
+    public void setSelection(int position) {
+        DropDownListView list = mDropDownList;
+        if (isShowing() && list != null) {
+            list.mListSelectionHidden = false;
+            list.setSelection(position);
+            if (list.getChoiceMode() != ListView.CHOICE_MODE_NONE) {
+                list.setItemChecked(position, true);
+            }
+        }
     }
 
     public void clearListSelection() {

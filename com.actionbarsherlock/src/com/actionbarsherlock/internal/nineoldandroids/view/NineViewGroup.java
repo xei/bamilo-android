@@ -1,10 +1,10 @@
 package com.actionbarsherlock.internal.nineoldandroids.view;
 
-import com.actionbarsherlock.internal.nineoldandroids.view.animation.AnimatorProxy;
-
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
+
+import com.actionbarsherlock.internal.nineoldandroids.view.animation.AnimatorProxy;
 
 public abstract class NineViewGroup extends ViewGroup {
     private final AnimatorProxy mProxy;
