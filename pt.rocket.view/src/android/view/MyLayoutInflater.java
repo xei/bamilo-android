@@ -10,6 +10,8 @@
 package android.view;
 
 import org.holoeverywhere.FontLoader;
+import org.holoeverywhere.FontLoader.Font;
+import org.holoeverywhere.FontLoader.FontCollector;
 import org.xmlpull.v1.XmlPullParser;
 import pt.rocket.view.R;
 
@@ -74,7 +76,7 @@ public class MyLayoutInflater extends LayoutInflater {
 	@Override
 	public View inflate(int resource, ViewGroup root, boolean attachToRoot) {
 		View v = mLayoutInflater.inflate( resource,  root, attachToRoot );
-		FontLoader.apply( v );
+		FontLoader.apply( v, FontLoader.ROBOTO_REGULAR);
 		return v;
 	}
 
@@ -87,7 +89,7 @@ public class MyLayoutInflater extends LayoutInflater {
 	@Override
 	public View inflate(int resource, ViewGroup root) {
 		View v = mLayoutInflater.inflate(resource,  root );
-		FontLoader.apply( v );
+		FontLoader.apply( v, FontLoader.ROBOTO_REGULAR);
 		return v;
 	}
 
@@ -100,7 +102,7 @@ public class MyLayoutInflater extends LayoutInflater {
 	public View inflate(XmlPullParser parser, ViewGroup root,
 			boolean attachToRoot) {
 		View v = mLayoutInflater.inflate( parser, root, attachToRoot );
-		FontLoader.apply( v );
+		FontLoader.apply( v, FontLoader.ROBOTO_REGULAR);
 		return v;
 	}
 
@@ -112,7 +114,7 @@ public class MyLayoutInflater extends LayoutInflater {
 	@Override
 	public View inflate(XmlPullParser parser, ViewGroup root) {
 		View v = mLayoutInflater.inflate( parser, root );
-		FontLoader.apply( v );
+		FontLoader.apply( v, FontLoader.ROBOTO_REGULAR);
 		return v;
 	}
 

@@ -4,13 +4,14 @@
     android:layout_height="@dimen/item_height_normal"
     android:background="@drawable/selector_listitem_highlight" >
 
-    <TextView
+    <org.holoeverywhere.widget.TextView
         android:id="@+id/text"
         style="@style/category_inner_current_text"
         android:layout_centerVertical="true"
         android:drawableRight="@drawable/selector_next"
         android:gravity="center_vertical"
-        android:text="Inner category" />
+        android:text="Inner category"
+        android:fontFamily="roboto-bold" />
 
 
     <View

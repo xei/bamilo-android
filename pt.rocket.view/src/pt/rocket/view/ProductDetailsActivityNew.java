@@ -7,11 +7,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
-
 import pt.rocket.app.ImageLoaderComponent;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.ActivitiesWorkFlow;
@@ -59,6 +54,10 @@ import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
+
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -218,14 +217,11 @@ public class ProductDetailsActivityNew extends MyActivity implements
         mProductImageShowOffContainer = (ViewGroup) findViewById(R.id.product_showoff_container);
         mProductImageShowOffContainer.setOnClickListener(this);
         mProductImage = (ImageView) mProductImageShowOffContainer.findViewById(R.id.product_image);
-        mProductImageLoading = (ProgressBar) mProductImageShowOffContainer
-                .findViewById(R.id.progressBar2);
+        mProductImageLoading = (ProgressBar) mProductImageShowOffContainer.findViewById(R.id.progressBar2);
 
-        mProductDiscountContainer = (ViewGroup) mProductImageShowOffContainer
-                .findViewById(R.id.product_discount_container);
+        mProductDiscountContainer = (ViewGroup) mProductImageShowOffContainer.findViewById(R.id.product_discount_container);
 
-        mProductDiscountPercentage = (TextView) mProductDiscountContainer
-                .findViewById(R.id.product_discount_percentage);
+        mProductDiscountPercentage = (TextView) mProductDiscountContainer.findViewById(R.id.product_discount_percentage);
 
         mProductBasicInfoContainer = (ViewGroup) findViewById(R.id.product_basicinfo_container);
         mProductBasicInfoContainer.setOnClickListener(this);

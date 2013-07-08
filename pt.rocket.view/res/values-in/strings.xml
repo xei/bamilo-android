@@ -25,8 +25,7 @@
 	<string name="nav_country_warning">Anda akan mengubah pilihan negara. Troli akan dikosongkan dan Anda akan logout. Apakah anda yakin?</string>
 	<string name="navigation_cart_empty">Keranjang anda kosong</string>
 	<string name="login_title">Login</string>
-	<string name="login_sectiontitle">surat pengenal
-</string>
+	<string name="login_sectiontitle">surat pengenal</string>
 	<string name="register_required_text">Masukkan atribut yang wajib diisi(*)</string>
 	<string name="fgt_pass">Lupa Kata Sandi?</string>
 	<string name="log_val">Validasi Login</string>
@@ -74,15 +73,13 @@
 	<string name="product_variance_choose">Pilih</string>
 	<string name="product_variance_choose_error">Silakan pilih satu</string>
 	<string name="product_outof_stock">Produk habis</string>
-	<string name="error_add_to_cart_failed">Menambah keranjang gagal
-</string>
+	<string name="error_add_to_cart_failed">Menambah keranjang gagal</string>
 	<string name="wishlist_header">Wishlist</string>
 	<string name="wishlist_remove_title">Hapus Barang</string>
 	<string name="wishlist_remove_message">Apakah anda ingin menghapus barang terpilih dari Wishlist?</string>
 	<string name="wishlist_btn_addcart">Tambah ke Troli</string>
 	<string name="wishlist_login_title">Anda belum login</string>
-	<string name="wishlist_login_text">Untuk melengkapi pembelian, Anda harus login. Apakah anda ingin login sekarang?
-</string>
+	<string name="wishlist_login_text">Untuk melengkapi pembelian, Anda harus login. Apakah anda ingin login sekarang?</string>
 	<string name="wishlist_addalltocart">Tambah barang ke troli</string>
 	<string name="search_no_items">Produk Anda tidak ditemukan!</string>
 	<string name="searchsuggestions_empty">Keyword tidak ditemukan!</string>

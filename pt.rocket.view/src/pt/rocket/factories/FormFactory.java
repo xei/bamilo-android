@@ -107,7 +107,7 @@ public class FormFactory {
 
         }
         
-        FontLoader.apply( parent.getContainer());
+        FontLoader.applyDefaultFont( parent.getContainer());
         
         return parent;
     }

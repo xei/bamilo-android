@@ -10,9 +10,10 @@ import pt.rocket.framework.event.EventType;
 import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.utils.MyActivity;
+import pt.rocket.utils.BaseActivity;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.view.fragments.FragmentType;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -47,7 +48,7 @@ import de.akquinet.android.androlog.Log;
  * @description
  * 
  */
-public class CheckoutStep5Activity extends MyActivity {
+public class CheckoutStep5Activity extends BaseActivity {
 	private final static String TAG = LogTagHelper.create(CheckoutStep5Activity.class);
 
 	/**
@@ -89,6 +90,12 @@ public class CheckoutStep5Activity extends MyActivity {
     @Override
     protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
         return false;
+    }
+
+    @Override
+    public void onSwitchFragment(FragmentType type, Boolean addToBackStack) {
+        // TODO Auto-generated method stub
+        
     }
 
 }

@@ -19,7 +19,7 @@
         android:layout_marginBottom="10dp"
         android:layout_marginLeft="@dimen/margin_huge" />
 
-    <TextView
+    <org.holoeverywhere.widget.TextView
         android:id="@+id/title_review"
         style="@style/product_name_list_text"
         android:layout_width="match_parent"
@@ -33,7 +33,7 @@
         android:textSize="14dp"
         android:textStyle="bold" />
 
-    <TextView
+    <org.holoeverywhere.widget.TextView
         android:id="@+id/textreview"
         style="@style/body_text_feature_add"
         android:layout_width="match_parent"
@@ -47,7 +47,7 @@
         android:textColor="@color/grey_middle"
         android:textSize="14dp" />
 
-    <TextView
+    <org.holoeverywhere.widget.TextView
         android:id="@+id/posted_by"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -57,7 +57,7 @@
         android:textColor="@color/grey_middle"
         android:textSize="12dp" />
 
-    <TextView
+    <org.holoeverywhere.widget.TextView
         android:id="@+id/user_review"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -68,7 +68,7 @@
         android:textColor="@color/grey_middle"
         android:textSize="12dp" />
 
-    <TextView
+    <org.holoeverywhere.widget.TextView
         android:id="@+id/date_review"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

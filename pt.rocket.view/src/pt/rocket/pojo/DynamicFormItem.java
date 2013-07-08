@@ -14,13 +14,18 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.holoeverywhere.FontLoader;
+import org.holoeverywhere.widget.EditText;
+import org.holoeverywhere.widget.Button;
+import org.holoeverywhere.widget.CheckBox;
+import org.holoeverywhere.widget.Spinner;
+import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.framework.forms.FormField;
 import pt.rocket.framework.forms.IFormField;
 import pt.rocket.framework.forms.InputType;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.utils.DialogDatePicker;
-import pt.rocket.utils.DialogDatePicker.OnDatePickerDialogListener;
+import pt.rocket.utils.dialogfragments.DialogDatePickerFragment;
+import pt.rocket.utils.dialogfragments.DialogDatePickerFragment.OnDatePickerDialogListener;
 import pt.rocket.utils.RadioGroupLayout;
 import pt.rocket.view.R;
 import android.annotation.SuppressLint;
@@ -28,6 +33,7 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
@@ -36,15 +42,11 @@ import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.RelativeLayout;
-import android.widget.Spinner;
-import android.widget.TextView;
+
 
 import com.actionbarsherlock.internal.widget.IcsAdapterView;
 import com.actionbarsherlock.internal.widget.IcsSpinner;
@@ -88,7 +90,7 @@ public class DynamicFormItem {
     private IcsAdapterView.OnItemSelectedListener spinnerSelectedListener;
     private TextWatcher textWatcher;
     
-    private DialogDatePicker dialogDate;
+    private DialogDatePickerFragment dialogDate;
 
 	private int errorColor;
 
@@ -761,12 +763,12 @@ public class DynamicFormItem {
 					}
 				};
                 
-                this.dialogDate = new DialogDatePicker((Activity)context, pickerListener, String.valueOf( dataControl.getId()), dialogTitle, 0, 0, 0);
+                this.dialogDate = DialogDatePickerFragment.newInstance((Activity)context, pickerListener, String.valueOf( dataControl.getId()), dialogTitle, 0, 0, 0);
                 this.dataControl.setOnClickListener( new OnClickListener() {
 					
 					@Override
 					public void onClick(View v) {
-						DynamicFormItem.this.dialogDate.show();						
+						DynamicFormItem.this.dialogDate.show(((FragmentActivity)context).getSupportFragmentManager(), null);						
 					}
 				});
         
@@ -899,7 +901,7 @@ public class DynamicFormItem {
 
 		((ViewGroup) this.control).addView(dataContainer);       
 		
-		FontLoader.apply( dataContainer );
+		FontLoader.applyDefaultFont( dataContainer );
 		// Listeners
 		((IcsSpinner)this.dataControl).setOnItemSelectedListener(new IcsAdapterView.OnItemSelectedListener() {
 
@@ -1086,6 +1088,8 @@ public class DynamicFormItem {
             textDataControl.setInputType( inputType );
             textDataControl.setTextAppearance(context, R.style.form_edittext_style);
         }
+        
+        FontLoader.apply( textDataControl, FontLoader.ROBOTO_REGULAR );
         
         return textDataControl;
     }

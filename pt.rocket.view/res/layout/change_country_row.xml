@@ -21,15 +21,14 @@
             android:src="@drawable/ic_launcher" >
         </ImageView>
 
-        <TextView
+        <org.holoeverywhere.widget.TextView
             android:id="@+id/country_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Country"
             android:textColor="@color/grey_dark"
             android:textSize="@dimen/text_mid"
-            android:textStyle="bold" >
-        </TextView>
+            android:textStyle="bold" />
     </LinearLayout>
 
 </pt.rocket.utils.CheckableRelativeLayout>

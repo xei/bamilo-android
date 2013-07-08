@@ -4,7 +4,7 @@
     android:layout_height="@dimen/item_height_normal"
     android:background="@drawable/selector_listitem_highlight" >
 
-    <TextView
+    <org.holoeverywhere.widget.TextView
         android:id="@+id/text"
         style="@style/category_inner_child_text"
         android:drawableRight="@drawable/selector_next"

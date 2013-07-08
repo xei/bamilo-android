@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content" >
 
-    <TextView
+    <org.holoeverywhere.widget.TextView
         android:id="@+id/product_info_name_p"
         style="@style/product_name_list_text"
         android:layout_width="wrap_content"
@@ -15,7 +15,7 @@
         android:text="Product name"
         android:textSize="16dp" />
 
-    <TextView
+    <org.holoeverywhere.widget.TextView
         android:id="@+id/price_normal_p"
         style="@style/product_price_current_single_item"
         android:layout_width="wrap_content"
@@ -24,7 +24,7 @@
         android:layout_marginLeft="16dp"
         android:text="Regular price" />
 
-    <TextView
+    <org.holoeverywhere.widget.TextView
         android:id="@+id/price_w_discount_p"
         style="@style/product_price_current_single_item"
         android:layout_width="wrap_content"
@@ -57,7 +57,7 @@
             android:layout_marginTop="12dp"
             android:isIndicator="true" />
 
-        <TextView
+        <org.holoeverywhere.widget.TextView
             android:id="@+id/reviews"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -86,7 +86,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <TextView
+            <org.holoeverywhere.widget.TextView
                 android:id="@+id/textView1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -96,7 +96,7 @@
                 android:textColor="@color/grey_middle"
                 android:textSize="14dp" />
 
-            <Button
+            <org.holoeverywhere.widget.Button
                 android:id="@+id/write_btn"
                 style="@style/button_grey_style"
                 android:layout_marginBottom="4dp"

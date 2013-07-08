@@ -14,7 +14,7 @@
         android:paddingRight="@dimen/dialog_list_margin_horizontal"
         android:paddingTop="@dimen/margin_large" >
 
-        <TextView
+        <org.holoeverywhere.widget.TextView
             android:id="@+id/title"
             style="@style/dialog_title"
             android:gravity="left"

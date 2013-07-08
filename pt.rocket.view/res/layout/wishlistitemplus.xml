@@ -35,7 +35,7 @@
         style="@style/button_orange_style"
         android:visibility="gone"
         >
-        <TextView
+        <org.holoeverywhere.widget.TextView
             android:id="@+id/text_one"
             android:text="@string/wishlist_addcart"
             android:duplicateParentState="true"

@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/bg_actionbar_buttom" >
 
-    <EditText
+    <org.holoeverywhere.widget.EditText
         android:id="@+id/search_component"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

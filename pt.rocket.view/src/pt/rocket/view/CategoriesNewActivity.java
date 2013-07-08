@@ -12,17 +12,17 @@ import pt.rocket.framework.event.events.GetCategoriesEvent;
 import pt.rocket.framework.objects.Category;
 import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.utils.DialogGeneric;
-import pt.rocket.utils.MyActivity;
+import pt.rocket.utils.BaseActivity;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
-import android.app.Activity;
+import pt.rocket.view.fragments.FragmentType;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.Toast;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -46,7 +46,7 @@ import de.akquinet.android.androlog.Log;
  * @description This Class shows all categories.
  * 
  */
-public class CategoriesNewActivity extends MyActivity implements OnItemClickListener {
+public class CategoriesNewActivity extends BaseActivity implements OnItemClickListener {
 
 	private final String TAG = LogTagHelper.create( CategoriesNewActivity.class );
 
@@ -62,8 +62,10 @@ public class CategoriesNewActivity extends MyActivity implements OnItemClickList
 	 * 
 	 */
     public CategoriesNewActivity() {
-        super(NavigationAction.Categories, EnumSet.of(MyMenuItem.SEARCH), EnumSet
-                .of(EventType.GET_CATEGORIES_EVENT), EnumSet.noneOf(EventType.class),
+        super(NavigationAction.Categories, 
+                EnumSet.of(MyMenuItem.SEARCH), 
+                EnumSet.of(EventType.GET_CATEGORIES_EVENT), 
+                EnumSet.noneOf(EventType.class),
                 R.string.categories_title, R.layout.categories);
     }
 		
@@ -129,6 +131,12 @@ public class CategoriesNewActivity extends MyActivity implements OnItemClickList
         Log.d(TAG, "handleEvent: categories size = " + categories.size());
         createList();
         return true;
+    }
+
+    @Override
+    public void onSwitchFragment(FragmentType type, Boolean addToBackStack) {
+        // TODO Auto-generated method stub
+        
     }
 
 }

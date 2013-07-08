@@ -21,7 +21,7 @@
                 style="@style/activity_sectionheader_container"
                 android:orientation="vertical" >
 
-                <TextView
+                <org.holoeverywhere.widget.TextView
                     style="@style/activity_sectionheader_text"
                     android:text="@string/personal_data_label" />
 
@@ -43,7 +43,7 @@
                     android:layout_marginBottom="10dp"
                     android:orientation="horizontal" >
 
-                    <EditText
+                    <org.holoeverywhere.widget.EditText
                         android:id="@+id/clientLastName"
                         style="@style/form_edittext_style"
                         android:layout_width="match_parent"
@@ -51,7 +51,7 @@
                         android:layout_weight=".5"
                         android:focusable="false" />
 
-                    <EditText
+                    <org.holoeverywhere.widget.EditText
                         android:id="@+id/clientFirstName"
                         style="@style/form_edittext_style"
                         android:layout_width="match_parent"
@@ -60,7 +60,7 @@
                         android:focusable="false" />
                 </LinearLayout>
 
-                <EditText
+                <org.holoeverywhere.widget.EditText
                     android:id="@+id/clientEmail"
                     style="@style/form_edittext_style"
                     android:layout_width="match_parent"
@@ -82,7 +82,7 @@
                 style="@style/activity_sectionheader_container"
                 android:orientation="vertical" >
 
-                <TextView
+                <org.holoeverywhere.widget.TextView
                     style="@style/activity_sectionheader_text"
                     android:text="@string/new_password_label" />
 
@@ -99,7 +99,7 @@
                 android:layout_marginTop="10dp"
                 android:orientation="vertical" >
 
-                <TextView
+                <org.holoeverywhere.widget.TextView
                     android:id="@+id/passwordErrorHint"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -109,7 +109,7 @@
                     android:textSize="@dimen/text_smid"
                     android:visibility="gone" />
 
-                <EditText
+                <org.holoeverywhere.widget.EditText
                     android:id="@+id/typeNewPassword"
                     style="@style/form_edittext_style"
                     android:layout_width="match_parent"
@@ -118,7 +118,7 @@
                     android:hint="@string/new_password_hint"
                     android:inputType="textPassword" />
 
-                <EditText
+                <org.holoeverywhere.widget.EditText
                     android:id="@+id/retypeNewPassword"
                     style="@style/form_edittext_style"
                     android:layout_width="match_parent"
@@ -136,7 +136,7 @@
             android:layout_marginLeft="@dimen/margin_huge"
             android:layout_marginRight="@dimen/margin_huge">
 
-            <Button
+            <org.holoeverywhere.widget.Button
                 android:id="@+id/button_save"
                 style="@style/button_orange_style"
                 android:layout_width="0dp"
@@ -145,7 +145,7 @@
                 android:layout_weight="1"
                 android:text="@string/save_label" />
 
-            <Button
+            <org.holoeverywhere.widget.Button
                 android:id="@+id/button_cancel"
                 style="@style/button_grey_style"
                 android:layout_width="0dp"

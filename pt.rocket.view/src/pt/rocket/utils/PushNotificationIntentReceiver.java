@@ -3,9 +3,7 @@ package pt.rocket.utils;
 
 
 import pt.rocket.constants.ConstantsIntentExtra;
-import pt.rocket.view.ProductDetailsActivityNew;
 import pt.rocket.view.SplashScreen;
-import pt.rocket.view.TeaserActivity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;

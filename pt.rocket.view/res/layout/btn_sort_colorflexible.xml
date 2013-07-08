@@ -19,7 +19,7 @@
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="@dimen/button_sort_line_distance_horizontal" />
 
-        <TextView style="@style/product_sort_button_text" />
+        <org.holoeverywhere.widget.TextView style="@style/product_sort_button_text" />
 
         <View
             android:id="@+id/line_right"

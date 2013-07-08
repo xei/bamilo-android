@@ -17,9 +17,10 @@ import pt.rocket.framework.event.events.ModifyWishListEvent;
 import pt.rocket.framework.objects.Product;
 import pt.rocket.framework.objects.ShoppingCart;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.utils.MyActivity;
+import pt.rocket.utils.BaseActivity;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.view.fragments.FragmentType;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -61,7 +62,7 @@ import de.akquinet.android.androlog.Log;
  * @description 
  * 
  */
-public class WishListActivity extends MyActivity {
+public class WishListActivity extends BaseActivity {
 
     protected final String TAG = LogTagHelper.create( WishListActivity.class );
     public Context context;
@@ -501,6 +502,12 @@ public class WishListActivity extends MyActivity {
             break;
         }
         return true;
+    }
+
+    @Override
+    public void onSwitchFragment(FragmentType type, Boolean addToBackStack) {
+        // TODO Auto-generated method stub
+        
     }
 
 }

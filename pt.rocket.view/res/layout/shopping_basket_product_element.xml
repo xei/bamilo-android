@@ -25,7 +25,7 @@
         android:layout_alignTop="@id/image_loadable"
         android:src="@drawable/ic_reduced" />
 
-    <TextView
+    <org.holoeverywhere.widget.TextView
         android:id="@+id/discount_percentage"
         android:layout_width="45dp"
         android:layout_height="wrap_content"
@@ -37,7 +37,7 @@
         android:textColor="@android:color/white"
         android:textSize="14dp" />
 
-    <TextView
+    <org.holoeverywhere.widget.TextView
         android:id="@+id/item_name"
         style="@style/product_name_list_text"
         android:layout_width="match_parent"
@@ -56,13 +56,13 @@
         android:layout_alignLeft="@+id/item_name"
         android:layout_below="@+id/item_name" >
 
-        <TextView
+        <org.holoeverywhere.widget.TextView
             android:id="@+id/item_discount"
             style="@style/product_price_current_list_text"
             android:layout_marginRight="@dimen/margin_mid"
             android:visibility="visible" />
 
-        <TextView
+        <org.holoeverywhere.widget.TextView
             android:id="@+id/item_regprice"
             style="@style/product_price_current_list_text" />
     </LinearLayout>
@@ -75,14 +75,14 @@
         android:layout_below="@+id/price_container"
         android:orientation="vertical" />
 
-    <TextView
+    <org.holoeverywhere.widget.TextView
         android:id="@+id/item_stock"
         style="@style/product_price_current_list_text"
         android:layout_alignLeft="@+id/item_name"
         android:layout_below="@+id/variances_container" />
 
     
-    <Button
+    <org.holoeverywhere.widget.Button
         android:id="@+id/changequantity_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -97,7 +97,7 @@
         android:text="Press"
         android:textSize="@dimen/text_small" />
     
-    <Button
+    <org.holoeverywhere.widget.Button
         android:id="@+id/delete_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

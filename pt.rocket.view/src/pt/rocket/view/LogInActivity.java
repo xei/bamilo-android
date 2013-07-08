@@ -23,14 +23,17 @@ import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.pojo.DynamicForm;
 import pt.rocket.pojo.DynamicFormItem;
 import pt.rocket.utils.DialogGeneric;
-import pt.rocket.utils.MyActivity;
+import pt.rocket.utils.BaseActivity;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.TrackerDelegator;
+import pt.rocket.utils.dialogfragments.DialogDatePickerFragment;
+import pt.rocket.view.fragments.FragmentType;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -70,7 +73,7 @@ import de.akquinet.android.androlog.Log;
  * 
  */
 
-public class LogInActivity extends MyActivity {
+public class LogInActivity extends BaseActivity {
 
     protected final String TAG = LogTagHelper.create(LogInActivity.class);
 
@@ -315,6 +318,12 @@ public class LogInActivity extends MyActivity {
             }
         }
         return false;
+    }
+
+    @Override
+    public void onSwitchFragment(FragmentType type, Boolean addToBackStack) {
+        // TODO Auto-generated method stub
+        
     }
 
 }

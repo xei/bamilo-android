@@ -13,7 +13,7 @@
             style="@style/activity_sectionheader_container"
             android:orientation="vertical" >
 
-            <TextView
+            <org.holoeverywhere.widget.TextView
                 android:id="@+id/middle_login_text"
                 style="@style/activity_sectionheader_text"
                 android:text="@string/register_sectiontitle" />
@@ -32,7 +32,7 @@
             android:layout_marginTop="@dimen/margin_huge"
             android:orientation="vertical" >
 
-            <TextView
+            <org.holoeverywhere.widget.TextView
                 android:id="@+id/register_required_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -62,7 +62,7 @@
                 android:layout_marginTop="14dp"
                 android:orientation="horizontal" >
 
-                <CheckBox
+                <org.holoeverywhere.widget.CheckBox
                     android:id="@+id/checkTerms"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -78,7 +78,7 @@
                     android:layout_marginTop="7.5dp"
                     android:paddingLeft="2dp" >
 
-                    <TextView
+                    <org.holoeverywhere.widget.TextView
                         android:id="@+id/termsLink"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -89,7 +89,7 @@
                         android:textSize="@dimen/text_small" />
                 </LinearLayout>
 
-                <TextView
+                <org.holoeverywhere.widget.TextView
                     android:id="@+id/termsRequired"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -106,10 +106,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" >
 
-                <Button
+                <org.holoeverywhere.widget.Button
                     android:id="@+id/register_button_submit"
                     style="@style/button_orange_style"
-                    android:text="@string/registration_text" />
+                    android:text="@string/registration_text"
+                    android:fontFamily="roboto-bold" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -120,7 +121,7 @@
                 android:layout_marginBottom="@dimen/distance_item_small"
                 android:layout_marginTop="10dp" >
 
-                <TextView
+                <org.holoeverywhere.widget.TextView
                     android:id="@+id/loginText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

@@ -288,9 +288,10 @@ public abstract class MyActivity extends RobotoActivity implements OnOpenedListe
         }
 	}
 	  
+	// FIXME - Commented on merge from fragments
     private void attachSlidingMenu() {
-        navigationContainer = navigationGenerator.getNavigation(this);
-        getSlidingMenu().setMenu(navigationContainer);
+//        navigationContainer = navigationGenerator.getNavigation(this);
+//        getSlidingMenu().setMenu(navigationContainer);
     }
 	
 	/**

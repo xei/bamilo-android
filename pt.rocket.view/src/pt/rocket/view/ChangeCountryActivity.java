@@ -147,9 +147,7 @@ public class ChangeCountryActivity extends SherlockActivity {
 
     protected void setCountry(int position) {
         Log.i(TAG, "New Country array position: " + position);
-        SharedPreferences sharedPrefs = getSharedPreferences(
-                ConstantsSharedPrefs.SHARED_PREFERENCES,
-                Context.MODE_PRIVATE);
+        SharedPreferences sharedPrefs = getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES,Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putInt(KEY_COUNTRY, position);
         editor.commit();
@@ -165,7 +163,7 @@ public class ChangeCountryActivity extends SherlockActivity {
      * 
      * @return the inflater
      * 
-     *         (non-Javadoc)
+     * (non-Javadoc)
      * @see android.app.Activity#getLayoutInflater()
      */
     @Override
@@ -178,7 +176,7 @@ public class ChangeCountryActivity extends SherlockActivity {
      * 
      * @return the inflater if requested by name, otherwise the system service
      * 
-     *         (non-Javadoc)
+     * (non-Javadoc)
      * @see android.app.Activity#getSystemService(java.lang.String)
      */
     @Override

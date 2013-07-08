@@ -34,7 +34,7 @@
 
             <include layout="@layout/shopping_basket_subtotal_element" />
 
-            <Button
+            <org.holoeverywhere.widget.Button
                 android:id="@+id/checkout_button"
                 style="@style/button_orange_style"
                 android:layout_marginLeft="@dimen/margin_huge"
@@ -59,7 +59,7 @@
                 android:layout_marginTop="55dp"
                 android:src="@drawable/empty_shoppingcart" />
 
-            <TextView
+            <org.holoeverywhere.widget.TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -69,7 +69,7 @@
                 android:textColor="@color/grey_middlelight"
                 android:textSize="17dp" />
 
-            <Button
+            <org.holoeverywhere.widget.Button
                 android:id="@+id/continue_shopping_button"
                 style="@style/button_orange_style"
                 android:text="@string/continue_shopping" />

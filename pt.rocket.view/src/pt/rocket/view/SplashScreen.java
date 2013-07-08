@@ -97,7 +97,7 @@ public class SplashScreen extends Activity implements ResponseListener {
                     R.string.gpush_prefix, "");
         } else {
             // Default Start
-            Intent intent = new Intent(this, TeaserActivity.class);
+            Intent intent = new Intent(this, TeaserFragmentActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             // intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);

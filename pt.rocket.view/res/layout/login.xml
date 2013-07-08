@@ -13,7 +13,7 @@
             style="@style/activity_sectionheader_container"
             android:orientation="vertical" >
 
-            <TextView
+            <org.holoeverywhere.widget.TextView
                 android:id="@+id/middle_login_text"
                 style="@style/activity_sectionheader_text"
                 android:text="@string/login_sectiontitle" />
@@ -45,7 +45,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_huge" >
 
-                <Button
+                <org.holoeverywhere.widget.Button
                     android:id="@+id/middle_login_button_signin"
                     style="@style/button_orange_style"
                     android:text="@string/login_label" />
@@ -58,7 +58,7 @@
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp" >
 
-                <TextView
+                <org.holoeverywhere.widget.TextView
                     android:id="@+id/middle_login_link_fgtpassword"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -70,7 +70,7 @@
                     android:textSize="@dimen/text_small" />
             </RelativeLayout>
 
-            <Button
+            <org.holoeverywhere.widget.Button
                 android:id="@+id/middle_login_link_register"
                 style="@style/button_grey_style"
                 android:layout_marginTop="@dimen/distance_item_mid"

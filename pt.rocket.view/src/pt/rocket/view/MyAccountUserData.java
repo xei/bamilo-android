@@ -15,9 +15,10 @@ import pt.rocket.framework.objects.Errors;
 import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.DialogGeneric;
-import pt.rocket.utils.MyActivity;
+import pt.rocket.utils.BaseActivity;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.view.fragments.FragmentType;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
@@ -56,7 +57,7 @@ import de.akquinet.android.androlog.Log;
  * 
  */
 
-public class MyAccountUserData extends MyActivity implements OnClickListener {
+public class MyAccountUserData extends BaseActivity implements OnClickListener {
 
     private final static String TAG = LogTagHelper
             .create(MyAccountUserData.class);
@@ -235,6 +236,12 @@ public class MyAccountUserData extends MyActivity implements OnClickListener {
         default:
             return false;
         }
+    }
+
+    @Override
+    public void onSwitchFragment(FragmentType type, Boolean addToBackStack) {
+        // TODO Auto-generated method stub
+        
     }
     
 }

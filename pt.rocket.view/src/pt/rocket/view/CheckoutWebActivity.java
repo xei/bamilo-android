@@ -23,10 +23,11 @@ import pt.rocket.framework.rest.RestContract;
 import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.FlurryTracker;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.utils.MyActivity;
+import pt.rocket.utils.BaseActivity;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.TrackerDelegator;
+import pt.rocket.view.fragments.FragmentType;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -55,7 +56,7 @@ import de.akquinet.android.androlog.Log;
  * @author Ralph Holland-Moritz
  * 
  */
-public class CheckoutWebActivity extends MyActivity {
+public class CheckoutWebActivity extends BaseActivity {
 
     private static final String TAG = LogTagHelper.create(CheckoutWebActivity.class);
 
@@ -390,6 +391,12 @@ public class CheckoutWebActivity extends MyActivity {
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public void onSwitchFragment(FragmentType type, Boolean addToBackStack) {
+        // TODO Auto-generated method stub
+        
     }
 
 }

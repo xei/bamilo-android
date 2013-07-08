@@ -218,6 +218,13 @@ public class ProductsListAdapter extends BaseAdapter {
         ImageLoader.getInstance().displayImage(imageURL, prodItem.image,
                 new ImageLoadingListener() {
 
+                    /*
+                     * (non-Javadoc)
+                     * 
+                     * @see com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener
+                     * #onLoadingComplete(java.lang.String, android.view.View,
+                     * android.graphics.Bitmap)
+                     */
                     @Override
                     public void onLoadingCancelled(String arg0, View arg1) {
                         prodItem.progress.setVisibility(View.GONE);

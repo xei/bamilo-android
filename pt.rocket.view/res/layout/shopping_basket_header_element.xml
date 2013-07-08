@@ -3,12 +3,12 @@
     android:id="@+id/sectionheader_container"
     style="@style/activity_sectionheader_container" >
 
-    <TextView
+    <org.holoeverywhere.widget.TextView
         android:id="@+id/title"
         style="@style/activity_sectionheader_text"
         android:text="@string/shoppingcart_items" />
 
-    <TextView
+    <org.holoeverywhere.widget.TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/title"

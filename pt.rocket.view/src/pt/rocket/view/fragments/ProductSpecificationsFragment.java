@@ -1,0 +1,240 @@
+/**
+ * 
+ */
+package pt.rocket.view.fragments;
+
+import java.util.EnumSet;
+import pt.rocket.framework.event.EventType;
+import pt.rocket.framework.event.ResponseEvent;
+import pt.rocket.framework.event.ResponseResultEvent;
+import pt.rocket.framework.objects.CompleteProduct;
+import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.view.ProductDetailsActivityFragment;
+import pt.rocket.view.R;
+import android.app.Activity;
+import android.graphics.Bitmap;
+import android.os.Bundle;
+import android.text.Html;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
+import de.akquinet.android.androlog.Log;
+
+/**
+ * @author manuelsilva
+ * 
+ */
+public class ProductSpecificationsFragment extends BaseFragment implements OnClickListener {
+
+    private static final String TAG = LogTagHelper.create(ProductVariationsFragment.class);
+
+    private ProductDetailsActivityFragment parentActivity;
+
+    private TextView mProductSpecText;
+
+    private View mProductSpecContainer;
+
+    private TextView mProductSpecSku;
+    
+    private RelativeLayout mLoading;
+
+    private CompleteProduct mCompleteProduct;
+    
+    private int CURRENT_IMAGE_INDEX = 0;
+    private View mainView;
+    
+    private OnFragmentActivityInteraction mCallback;
+    /**
+     * 
+     * @param dynamicForm
+     * @return
+     */
+    public static ProductSpecificationsFragment getInstance() {
+        ProductSpecificationsFragment productImageShowOffFragment = new ProductSpecificationsFragment();
+        return productImageShowOffFragment;
+    }
+
+    /**
+     * Empty constructor
+     * 
+     * @param arrayList
+     */
+    public ProductSpecificationsFragment() {
+        super(EnumSet.noneOf(EventType.class), EnumSet.noneOf(EventType.class));
+    }
+
+    @Override
+    public void sendValuesToFragment(int identifier, Object values) {
+        this.mCompleteProduct= (CompleteProduct) values;
+        if(identifier==1){
+            displaySpecification();
+        }
+    }
+
+    @Override
+    public void sendPositionToFragment(int position){
+
+        /**
+         * if still loading the product info, show image loading.
+         */
+        if(position < 0){
+            showContentLoading();
+        }
+    }
+    
+    @Override
+    public void sendListener(int identifier, OnClickListener onTeaserClickListener) {
+
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see android.support.v4.app.Fragment#onAttach(android.app.Activity)
+     */
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        Log.i(TAG, "ON ATTACH");
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception
+        try {
+            mCallback = (OnFragmentActivityInteraction) getActivity();
+        } catch (ClassCastException e) {
+            throw new ClassCastException(getActivity().toString()
+                    + " must implement OnActivityFragmentInteraction");
+        }
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see android.support.v4.app.Fragment#onCreate(android.os.Bundle)
+     */
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.i(TAG, "ON CREATE");
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
+     * android.view.ViewGroup, android.os.Bundle)
+     */
+    @Override
+    public View onCreateView(LayoutInflater mInflater, ViewGroup viewGroup,
+            Bundle savedInstanceState) {
+        super.onCreateView(mInflater, viewGroup, savedInstanceState);
+        Log.i(TAG, "ON CREATE VIEW");
+
+        mainView = mInflater.inflate(R.layout.productdetails_specification_fragment, viewGroup, false);
+        mProductSpecContainer = mainView.findViewById(R.id.product_specifications_frame);
+        mProductSpecContainer.setOnClickListener(this);
+        mProductSpecText = (TextView) mainView.findViewById(R.id.product_specifications_text);
+        mProductSpecSku = (TextView) mainView.findViewById(R.id.product_sku_text);
+        mLoading = (RelativeLayout) mProductSpecContainer
+                .findViewById(R.id.loading_specifications);
+        displaySpecification();
+        return mainView;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see android.support.v4.app.Fragment#onStart()
+     */
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.i(TAG, "ON START");
+        // FlurryTracker.get().begin();
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see android.support.v4.app.Fragment#onResume()
+     */
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.i(TAG, "ON RESUME");
+        //
+        // AnalyticsGoogle.get().trackPage(R.string.gteaser_prefix);
+        //
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see android.support.v4.app.Fragment#onPause()
+     */
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.i(TAG, "ON PAUSE");
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see android.support.v4.app.Fragment#onStop()
+     */
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.i(TAG, "ON STOP");
+        // FlurryTracker.get().end();
+    }
+
+    @Override
+    protected boolean onSuccessEvent(final ResponseResultEvent<?> event) {
+        return true;
+    }
+
+    @Override
+    protected boolean onErrorEvent(ResponseEvent event) {
+        return false;
+    }
+ 
+    @Override
+    public void onClick(View v) {
+        // TODO Auto-generated method stub
+        mCallback.onFragmentSelected(FragmentType.PRODUCT_SPECIFICATION);
+    }
+    
+    private void showContentLoading(){
+        mLoading.setVisibility(View.VISIBLE);
+        mProductSpecSku.setVisibility(View.GONE);
+        mProductSpecText.setVisibility(View.GONE);
+    }
+    
+    private void hideContentLoading(){
+        mLoading.setVisibility(View.GONE);
+        mProductSpecSku.setVisibility(View.VISIBLE);
+        mProductSpecText.setVisibility(View.VISIBLE);
+    }
+    
+    private void displaySpecification() {
+        String shortDescription = mCompleteProduct.getShortDescription();
+        mProductSpecSku.setText(mCompleteProduct.getSku());
+        if (TextUtils.isEmpty(shortDescription)) {
+            mProductSpecText.setVisibility(View.GONE);
+        } else {
+            mProductSpecText.setVisibility(View.VISIBLE);
+            String translatedDescription = shortDescription.replace("\r", "<br>");
+            mProductSpecText.setText(Html.fromHtml(translatedDescription));
+        }
+        hideContentLoading();
+    }
+}

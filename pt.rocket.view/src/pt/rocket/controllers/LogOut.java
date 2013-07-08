@@ -7,10 +7,9 @@ import pt.rocket.framework.event.EventType;
 import pt.rocket.framework.event.RequestEvent;
 import pt.rocket.framework.event.ResponseEvent;
 import pt.rocket.framework.event.ResponseListener;
-import pt.rocket.framework.utils.AnalyticsGoogle;
-import pt.rocket.utils.DialogProgress;
-import pt.rocket.view.R;
+import pt.rocket.utils.dialogfragments.DialogProgressFragment;
 import android.app.Activity;
+import android.support.v4.app.FragmentActivity;
 
 /**
  * This Class is responsible to show the log out dialog.
@@ -40,8 +39,8 @@ public class LogOut {
      *            The activity where the logout is called from
      */
     public static void performLogOut(final WeakReference<Activity> activityRef) {
-        final DialogProgress dialog = new DialogProgress(activityRef.get());
-        dialog.show();
+        final DialogProgressFragment dialog = DialogProgressFragment.newInstance();
+        dialog.show(((FragmentActivity)activityRef.get()).getSupportFragmentManager(), null);
         EventManager.getSingleton().triggerRequestEvent(new RequestEvent(EventType.LOGOUT_EVENT),
                 new ResponseListener() {
 

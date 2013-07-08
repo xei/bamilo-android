@@ -3,8 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    
-    <TextView
+
+    <org.holoeverywhere.widget.TextView
         style="@style/headline"
         android:text="@string/nav_country" />
 

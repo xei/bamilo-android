@@ -8,6 +8,7 @@ import pt.rocket.framework.Darwin;
 import pt.rocket.framework.DarwinMode;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.view.ChangeCountryActivity;
+import pt.rocket.view.ChangeCountryFragmentActivity;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
@@ -34,11 +35,10 @@ public class DarwinComponent extends ApplicationComponent {
      */
     @Override
     protected ErrorCode initInternal(Application app) {
-        SharedPreferences sharedPrefs = app.getSharedPreferences(
-                ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        int shopId = sharedPrefs.getInt(ChangeCountryActivity.KEY_COUNTRY, -1);
+        SharedPreferences sharedPrefs = app.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        int shopId = sharedPrefs.getInt(ChangeCountryFragmentActivity.KEY_COUNTRY, -1);
         if (shopId == -1) {
-            Intent intent = new Intent(app, ChangeCountryActivity.class);
+            Intent intent = new Intent(app, ChangeCountryFragmentActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             app.startActivity(intent);
             return ErrorCode.REQUIRES_USER_INTERACTION;

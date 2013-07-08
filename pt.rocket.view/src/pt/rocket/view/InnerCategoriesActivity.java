@@ -7,15 +7,17 @@ import java.util.List;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.controllers.SubCategoriesAdapter;
+import pt.rocket.framework.components.ExpandableGridViewComponent;
 import pt.rocket.framework.event.EventType;
 import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.event.events.GetCategoriesEvent;
 import pt.rocket.framework.objects.Category;
 import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.utils.MyActivity;
+import pt.rocket.utils.BaseActivity;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.view.fragments.FragmentType;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -29,6 +31,7 @@ import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.Toast;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -47,7 +50,7 @@ import de.akquinet.android.androlog.Log;
  * 
  */
 
-public class InnerCategoriesActivity extends MyActivity implements OnItemClickListener {
+public class InnerCategoriesActivity extends BaseActivity implements OnItemClickListener {
 	private final static String TAG = LogTagHelper.create( InnerCategoriesActivity.class );
 	
 	private int categoryIndex = 0;
@@ -317,6 +320,12 @@ public class InnerCategoriesActivity extends MyActivity implements OnItemClickLi
         categories = (List<Category>) event.result;
         setSubCategoryList();
         return true;
+    }
+
+    @Override
+    public void onSwitchFragment(FragmentType type, Boolean addToBackStack) {
+        // TODO Auto-generated method stub
+        
     }
 
 }

@@ -7,34 +7,36 @@ import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.framework.service.ServiceManager;
 import pt.rocket.framework.service.services.CustomerAccountService;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.utils.DialogGeneric;
-import pt.rocket.utils.MyActivity;
-import pt.rocket.view.CategoriesNewActivity;
-import pt.rocket.view.ChangeCountryActivity;
-import pt.rocket.view.CheckoutStep5Activity;
-import pt.rocket.view.CheckoutWebActivity;
+import pt.rocket.utils.BaseActivity;
+import pt.rocket.utils.dialogfragments.DialogGenericFragment;
+import pt.rocket.view.CategoriesFragmentActivity;
+import pt.rocket.view.ChangeCountryFragmentActivity;
+import pt.rocket.view.CheckoutStep5FragmentActivity;
+import pt.rocket.view.CheckoutWebActivityFragment;
 import pt.rocket.view.ForgotPasswordActivity;
 import pt.rocket.view.InnerCategoriesActivity;
-import pt.rocket.view.LogInActivity;
-import pt.rocket.view.MyAccountActivity;
-import pt.rocket.view.MyAccountUserData;
-import pt.rocket.view.PopularityActivity;
-import pt.rocket.view.ProductDetailsActivityNew;
-import pt.rocket.view.ProductDetailsDescriptionActivity;
-import pt.rocket.view.ProductsActivity;
-import pt.rocket.view.ProductsGalleryActivityNew;
+import pt.rocket.view.MyAccountActivityFragment;
+import pt.rocket.view.MyAccountUserDataActivityFragment;
+import pt.rocket.view.PopularityFragmentActivity;
+import pt.rocket.view.ProductDetailsActivityFragment;
+import pt.rocket.view.ProductDetailsDescriptionActivityFragment;
+import pt.rocket.view.ProductsActivityFragment;
+import pt.rocket.view.ProductsGalleryActivityFragment;
 import pt.rocket.view.R;
 import pt.rocket.view.RegisterActivity;
-import pt.rocket.view.ReviewActivity;
-import pt.rocket.view.SearchActivity;
-import pt.rocket.view.ShoppingCartActivity;
+import pt.rocket.view.ReviewFragmentActivity;
+import pt.rocket.view.SearchFragmentActivity;
+import pt.rocket.view.SessionFragmentActivity;
+import pt.rocket.view.ShoppingCartFragmentActivity;
 import pt.rocket.view.SplashScreen;
-import pt.rocket.view.TeaserActivity;
-import pt.rocket.view.TermsActivity;
-import pt.rocket.view.WriteReviewActivity;
+import pt.rocket.view.TeaserFragmentActivity;
+import pt.rocket.view.TermsActivityFragment;
+import pt.rocket.view.WriteReviewFragmentActivity;
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Intent;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.TaskStackBuilder;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -59,15 +61,15 @@ import android.view.View.OnClickListener;
  * 
  */
 public class ActivitiesWorkFlow {
-	private final static String TAG = LogTagHelper.create(ActivitiesWorkFlow.class);
-    private static Dialog dialog;
+	protected final static String TAG = LogTagHelper.create(ActivitiesWorkFlow.class);
+    private static DialogFragment dialog;
 	
 	public static void searchActivity(Activity activity) {
 
 		// Create Intent
-		Intent intent = new Intent(activity.getApplicationContext(),
-				SearchActivity.class);
-		intent.addFlags( Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);		
+		// Intent intent = new Intent(activity.getApplicationContext(),SearchActivity.class);
+		Intent intent = new Intent(activity.getApplicationContext(),SearchFragmentActivity.class);
+		intent.addFlags( Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 		activity.startActivity(intent);
 		addStandardTransition(activity);
 	}
@@ -91,7 +93,7 @@ public class ActivitiesWorkFlow {
     public static void registerActivity(Activity activity) {
         Intent registerIntent = new Intent(
                 activity.getApplicationContext(), RegisterActivity.class);
-        activity.startActivityForResult(registerIntent, MyActivity.maskRequestCodeId(R.id.request_register));
+        activity.startActivityForResult(registerIntent, BaseActivity.maskRequestCodeId(R.id.request_register));
         addStandardTransition(activity);
     }
 
@@ -99,22 +101,25 @@ public class ActivitiesWorkFlow {
 	 * Start Login Activity validating Customer
 	 * 
 	 * @param activity
-	 * @param requestResult TODO
+	 * @param requestResult
 	 */
     public static void loginActivity(Activity activity, boolean requestResult) {
-        Intent loginIntent = new Intent(activity.getApplicationContext(),
-                LogInActivity.class);
+        
+        Intent loginIntent = new Intent(activity.getApplicationContext(), SessionFragmentActivity.class);
+        //Intent loginIntent = new Intent(activity.getApplicationContext(), LogInActivity.class);
+        
         if (requestResult) {
-            activity.startActivityForResult(loginIntent, MyActivity.maskRequestCodeId(R.id.request_login));
+            activity.startActivityForResult(loginIntent, BaseActivity.maskRequestCodeId(R.id.request_login));
         } else {
             activity.startActivity(loginIntent );
         }
         addStandardTransition(activity);
     }
     
-    public static void loginOut(final Activity activity) {
+    public static void loginOut(final FragmentActivity activity) {
         if(ServiceManager.SERVICES.get(CustomerAccountService.class).hasCredentials()) {
-            dialog = new DialogGeneric(activity, false, true, false,
+            FragmentManager fm = activity.getSupportFragmentManager();
+            dialog = DialogGenericFragment.newInstance(false, true, false,
                     activity.getString(R.string.logout_title),
                     activity.getString(R.string.logout_text_question),
                     activity.getString(R.string.no_label), activity.getString(R.string.yes_label),
@@ -131,7 +136,7 @@ public class ActivitiesWorkFlow {
 
                     });
 
-            dialog.show();
+            dialog.show(fm, null);
         } else {
             loginActivity(activity, false);
         }
@@ -142,7 +147,7 @@ public class ActivitiesWorkFlow {
 	 * @param activity
 	 */
 	public static void changeCountryActivity(Activity activity) {
-			Intent intent = new Intent(activity.getApplicationContext(),ChangeCountryActivity.class);
+			Intent intent = new Intent(activity.getApplicationContext(),ChangeCountryFragmentActivity.class);
 			intent.addFlags( Intent.FLAG_ACTIVITY_REORDER_TO_FRONT );
 			activity.startActivity(intent);
 			addStandardTransition(activity);
@@ -155,10 +160,8 @@ public class ActivitiesWorkFlow {
 	 * @param categoryIndex
 	 *            Indication of what is the parent category index
 	 */
-	public static void categorySubLisActivity(Activity activity,
-			int categoryIndex) {
-		Intent categoriesIntent = new Intent(activity.getApplicationContext(),
-				InnerCategoriesActivity.class);
+	public static void categorySubLisActivity(Activity activity,int categoryIndex) {
+		Intent categoriesIntent = new Intent(activity.getApplicationContext(), InnerCategoriesActivity.class);
 		categoriesIntent.putExtra(ConstantsIntentExtra.CATEGORY_INDEX, categoryIndex);
 		categoriesIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 		activity.startActivity(categoriesIntent);
@@ -179,7 +182,7 @@ public class ActivitiesWorkFlow {
 	
 	public static void descriptionActivity(Activity activity, String productUrl) {
 		Intent descrIntent = new Intent(activity.getApplicationContext(),
-				ProductDetailsDescriptionActivity.class);
+				ProductDetailsDescriptionActivityFragment.class);
 		descrIntent.addFlags( Intent.FLAG_ACTIVITY_REORDER_TO_FRONT );
 		descrIntent.putExtra( ConstantsIntentExtra.CONTENT_URL, productUrl );
 		activity.startActivity(descrIntent);
@@ -195,7 +198,7 @@ public class ActivitiesWorkFlow {
 	 */
 	public static void termsActivity(Activity activity, String terms) {
 		Intent descrIntent = new Intent(activity.getApplicationContext(),
-				TermsActivity.class);
+				TermsActivityFragment.class);
 		descrIntent.putExtra("terms_conditions", terms);
 		activity.startActivity(descrIntent);
 		addStandardTransition(activity);
@@ -204,19 +207,20 @@ public class ActivitiesWorkFlow {
 	/**
 	 */
 	public static void categoriesActivityNew(Activity activity, String categoryUrl) {
-		Intent intent = new Intent(activity.getApplicationContext(),
-				CategoriesNewActivity.class);
+	    
+		//Intent intent = new Intent(activity.getApplicationContext(),CategoriesNewActivity.class);
+		Intent intent = new Intent(activity.getApplicationContext(), CategoriesFragmentActivity.class);
+		
+		intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 		intent.putExtra(ConstantsIntentExtra.CONTENT_URL, categoryUrl);
-	    intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 		activity.startActivity( intent );
 		addStandardTransition(activity);
 		
 	}
 
-	public static void reviewActivity(Activity activity, String title,
-			String comment, String name, double rating, String date) {
-		Intent intent = new Intent(activity.getApplicationContext(),
-				ReviewActivity.class);
+	public static void reviewActivity(Activity activity, String title, String comment, String name, double rating, String date) {
+		//Intent intent = new Intent(activity.getApplicationContext(),ReviewActivity.class);
+		Intent intent = new Intent(activity.getApplicationContext(),ReviewFragmentActivity.class);
 		intent.putExtra( ConstantsIntentExtra.REVIEW_TITLE, title);
 		intent.putExtra( ConstantsIntentExtra.REVIEW_COMMENT, comment);
 		intent.putExtra( ConstantsIntentExtra.REVIEW_NAME, name);
@@ -232,12 +236,11 @@ public class ActivitiesWorkFlow {
 	 * @param activity
 	 * @param productsURL
 	 *            The URL where to ger the product list
-	 * @param navigationPath TODO
+	 * @param navigationPath 
 	 */
 	public static void productsActivity(Activity activity, String productsURL, String title, String searchQuery, int navigationSource, String navigationPath ) {
-		Intent intent = new Intent(activity.getApplicationContext(),
-				ProductsActivity.class);
-		intent.addFlags( Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+		Intent intent = new Intent(activity.getApplicationContext(), ProductsActivityFragment.class);
+		//intent.addFlags( Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 		intent.putExtra(ConstantsIntentExtra.CONTENT_URL, productsURL);
 		intent.putExtra(ConstantsIntentExtra.CONTENT_TITLE, title);
 		intent.putExtra(ConstantsIntentExtra.SEARCH_QUERY, searchQuery);
@@ -255,7 +258,7 @@ public class ActivitiesWorkFlow {
 	public static void SalesActivity(Activity activity) {
 
 		Intent intent = new Intent(activity.getApplicationContext(),
-				ProductsActivity.class);
+				ProductsActivityFragment.class);
 		activity.startActivity(intent);
 		addStandardTransition(activity);
 	}
@@ -278,8 +281,8 @@ public class ActivitiesWorkFlow {
 	 * @param activity
 	 */
 	public static void shoppingCartActivity(Activity activity) {
-		Intent intent = new Intent(activity.getApplicationContext(),
-				ShoppingCartActivity.class);
+		//Intent intent = new Intent(activity.getApplicationContext(), ShoppingCartActivity.class);
+		Intent intent = new Intent(activity.getApplicationContext(), ShoppingCartFragmentActivity.class);
 		activity.startActivity(intent);
 		addStandardTransition(activity);
 	}
@@ -292,10 +295,8 @@ public class ActivitiesWorkFlow {
 	 *            The URL of the product to display
 	 */
 	
-	public static void productsDetailsActivity(Activity activity,
-			String productUrl, int navigationSource, String navigationPath) {
-		Intent intent = new Intent(activity.getApplicationContext(),
-				ProductDetailsActivityNew.class);
+	public static void productsDetailsActivity(Activity activity, String productUrl, int navigationSource, String navigationPath) {
+		Intent intent = new Intent(activity.getApplicationContext(), ProductDetailsActivityFragment.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 		intent.putExtra(ConstantsIntentExtra.CONTENT_URL, productUrl);
 		intent.putExtra(ConstantsIntentExtra.NAVIGATION_SOURCE, navigationSource);
@@ -311,11 +312,11 @@ public class ActivitiesWorkFlow {
 	 */
 	public static void productsGalleryActivity(Activity activity, String productUrl, int listPosition) {
 		Intent intent = new Intent(activity.getApplicationContext(),
-				ProductsGalleryActivityNew.class);
+				ProductsGalleryActivityFragment.class);
 		intent.addFlags( Intent.FLAG_ACTIVITY_REORDER_TO_FRONT );
 		intent.putExtra(ConstantsIntentExtra.CONTENT_URL, productUrl);
-		intent.putExtra(ProductsGalleryActivityNew.EXTRA_CURRENT_LISTPOSITION, listPosition);
-		activity.startActivityForResult(intent, ProductsGalleryActivityNew.REQUEST_CODE_GALLERY);
+		intent.putExtra(ProductsGalleryActivityFragment.EXTRA_CURRENT_LISTPOSITION, listPosition);
+		activity.startActivityForResult(intent, ProductsGalleryActivityFragment.REQUEST_CODE_GALLERY);
 		addStandardTransition(activity);
 	}
 
@@ -326,7 +327,7 @@ public class ActivitiesWorkFlow {
 	 */
 	public static void homePageActivity(Activity activity) {
 		Intent intent = new Intent(activity.getApplicationContext(),
-				TeaserActivity.class);
+				TeaserFragmentActivity.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		activity.startActivity(intent);
 		addStandardTransition(activity);
@@ -339,7 +340,7 @@ public class ActivitiesWorkFlow {
 	 */
 	public static void myAccountActivity(Activity activity) {
 	    Intent myAccountIntent = new Intent(
-					activity.getApplicationContext(), MyAccountActivity.class);
+					activity.getApplicationContext(), MyAccountActivityFragment.class);
 		myAccountIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 		activity.startActivity(myAccountIntent);
 		addStandardTransition(activity);
@@ -351,8 +352,7 @@ public class ActivitiesWorkFlow {
 	 * @param activity
 	 */
     public static void myAccountUserDataActivity(Activity activity) {
-        Intent intent = new Intent(
-                activity.getApplicationContext(), MyAccountUserData.class);
+        Intent intent = new Intent(activity.getApplicationContext(), MyAccountUserDataActivityFragment.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         activity.startActivity(intent);
         addStandardTransition(activity);
@@ -365,8 +365,8 @@ public class ActivitiesWorkFlow {
 	 */
 	public static void popularityActivity(Activity activity) {
 
-		Intent popularityIntent = new Intent(activity.getApplicationContext(),
-				PopularityActivity.class);
+	    Intent popularityIntent = new Intent(activity.getApplicationContext(),PopularityFragmentActivity.class);
+		//Intent popularityIntent = new Intent(activity.getApplicationContext(),PopularityActivity.class);
 		activity.startActivity(popularityIntent);
 		addStandardTransition(activity);
 	}
@@ -378,8 +378,8 @@ public class ActivitiesWorkFlow {
 	 */
 	public static void writeReviewActivity(Activity activity) {
 
-		Intent popularityIntent = new Intent(activity.getApplicationContext(),
-				WriteReviewActivity.class);
+		// Intent popularityIntent = new Intent(activity.getApplicationContext(),WriteReviewActivity.class);
+		Intent popularityIntent = new Intent(activity.getApplicationContext(),WriteReviewFragmentActivity.class);
 		activity.startActivity(popularityIntent);
 		addStandardTransition(activity);
 	}
@@ -402,11 +402,11 @@ public class ActivitiesWorkFlow {
 			// params[1]);
 			// intent.putExtra(ConstantsIntentExtra.CHECKOUT_ADDRESS, -1);
 			intent = new Intent(activity.getApplicationContext(),
-					CheckoutWebActivity.class);
+					CheckoutWebActivityFragment.class);
 			break;
 		case ConstantsCheckout.CHECKOUT_THANKS: // checkout step 5 ( thank you )
-			intent = new Intent(activity.getApplicationContext(),
-					CheckoutStep5Activity.class);
+			// intent = new Intent(activity.getApplicationContext(), CheckoutStep5Activity.class);
+			intent = new Intent(activity.getApplicationContext(), CheckoutStep5FragmentActivity.class);
 			break;
 		}
 		activity.startActivity(intent);

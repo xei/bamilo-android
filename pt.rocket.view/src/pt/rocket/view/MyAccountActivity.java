@@ -13,10 +13,11 @@ import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.DialogGeneric;
 import pt.rocket.utils.JumiaApplication;
-import pt.rocket.utils.MyActivity;
+import pt.rocket.utils.BaseActivity;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.PreferenceListFragment.OnPreferenceAttachedListener;
+import pt.rocket.view.fragments.FragmentType;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -58,7 +59,7 @@ import android.widget.ListView;
  * 
  */
 
-public class MyAccountActivity extends MyActivity implements OnPreferenceAttachedListener{
+public class MyAccountActivity extends BaseActivity implements OnPreferenceAttachedListener{
 
     protected final String TAG = LogTagHelper.create(MyAccountActivity.class);
     private final static int POSITION_USER_DATA = 0;
@@ -158,4 +159,11 @@ public class MyAccountActivity extends MyActivity implements OnPreferenceAttache
             ActivitiesWorkFlow.myAccountUserDataActivity(this);
         }
     }
+
+    @Override
+    public void onSwitchFragment(FragmentType type, Boolean addToBackStack) {
+        // TODO Auto-generated method stub
+        
+    }
+
 }

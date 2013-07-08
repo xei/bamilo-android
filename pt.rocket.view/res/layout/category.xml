@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/item_height_normal"
-    android:paddingTop="6dp"
-    android:background="@drawable/selector_listitem_highlight" >
+    android:background="@drawable/selector_listitem_highlight"
+    android:paddingTop="6dp" >
 
     <ImageView
         android:id="@+id/category_logo_right"
@@ -12,9 +13,10 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/margin_huge"
-        android:src="@drawable/selector_next" />
+        android:src="@drawable/selector_next"
+        tools:ignore="ContentDescription" />
 
-    <TextView
+    <org.holoeverywhere.widget.TextView
         android:id="@+id/category_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,7 +25,7 @@
         android:layout_toLeftOf="@id/category_logo_right"
         android:textColor="@color/grey_dark"
         android:textSize="@dimen/text_mid"
-        android:textStyle="bold" />
+        android:fontFamily="roboto-bold" />
 
     <View
         android:id="@+id/divider"

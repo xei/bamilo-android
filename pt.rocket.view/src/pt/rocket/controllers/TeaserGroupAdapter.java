@@ -215,6 +215,14 @@ public class TeaserGroupAdapter extends ArrayAdapter<TeaserSpecification<?>> {
             ImageLoader.getInstance().displayImage(imageUrl, imageView,
                     new ImageLoadingListener() {
 
+                        /*
+                         * (non-Javadoc)
+                         * 
+                         * @see
+                         * com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener
+                         * #onLoadingComplete(java.lang.String, android.view.View,
+                         * android.graphics.Bitmap)
+                         */
                         @Override
                         public void onLoadingCancelled(String arg0, View arg1) {
                             progressBar.setVisibility(View.GONE);

@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:paddingBottom="0dp" >
 
-    <TextView
+    <org.holoeverywhere.widget.TextView
         android:id="@+id/search_products_not_found"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,8 +17,7 @@
         android:text="@string/search_no_items"
         android:textColor="@color/blue_basic"
         android:textSize="12dp"
-        android:visibility="gone" >
-    </TextView>
+        android:visibility="gone" />
 
     <RelativeLayout
         android:id="@+id/products_content"

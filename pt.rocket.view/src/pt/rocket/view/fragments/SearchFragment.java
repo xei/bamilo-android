@@ -1,0 +1,368 @@
+/**
+ * 
+ */
+package pt.rocket.view.fragments;
+
+import java.util.EnumSet;
+import java.util.List;
+
+import pt.rocket.controllers.ActivitiesWorkFlow;
+import pt.rocket.controllers.SearchSuggestionsAdapter;
+import pt.rocket.framework.ErrorCode;
+import pt.rocket.framework.event.EventManager;
+import pt.rocket.framework.event.EventType;
+import pt.rocket.framework.event.ResponseEvent;
+import pt.rocket.framework.event.ResponseResultEvent;
+import pt.rocket.framework.event.events.GetSearchSuggestionsEvent;
+import pt.rocket.framework.objects.SearchSuggestion;
+import pt.rocket.framework.utils.AnalyticsGoogle;
+import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.utils.BaseActivity;
+import pt.rocket.utils.RightDrawableOnTouchListener;
+import pt.rocket.view.R;
+import pt.rocket.view.SearchFragmentActivity;
+import android.app.Activity;
+import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnKeyListener;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
+import de.akquinet.android.androlog.Log;
+
+/**
+ * @author sergiopereira
+ * 
+ */
+public class SearchFragment extends BaseFragment implements OnItemClickListener {
+
+    private static final String TAG = LogTagHelper.create(SearchFragment.class);
+    
+    private final static String KEY_STATE_VIEW = "search_state_view";
+
+    private static SearchFragment searchFragment;
+    
+    private SearchSuggestionsAdapter searchSuggestionsAdapter;
+    
+    private Bundle savedState;
+
+    private EditText searchTermView;
+
+    private ListView listView;
+
+    private TextView suggestionsEmptyText;
+
+    private View suggestionsLayout;
+
+    private String searchSuggestionText;
+    
+    private long beginInMillis;
+    
+
+    /**
+     * Get instance
+     * 
+     * @return
+     */
+    public static SearchFragment getInstance() {
+        if (searchFragment == null)
+            searchFragment = new SearchFragment();
+        return searchFragment;
+    }
+
+    /**
+     * Empty constructor
+     */
+    public SearchFragment() {
+        super(EnumSet.of(EventType.GET_SEARCH_SUGGESTIONS_EVENT), EnumSet.noneOf(EventType.class));
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see android.support.v4.app.Fragment#onAttach(android.app.Activity)
+     */
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        Log.i(TAG, "ON ATTACH");
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see android.support.v4.app.Fragment#onCreate(android.os.Bundle)
+     */
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.i(TAG, "ON CREATE");
+        
+        ((SearchFragmentActivity) getActivity()).getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_actionbar_top));
+        
+        savedState = savedInstanceState;
+        if (null != savedState && savedState.containsKey(KEY_STATE_VIEW)) {
+            savedState.remove(KEY_STATE_VIEW);
+        }
+        
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
+     * android.view.ViewGroup, android.os.Bundle)
+     */
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+        Log.i(TAG, "ON CREATE VIEW");
+        View view = inflater.inflate(R.layout.search_suggestions, container, false);
+        return view;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see android.support.v4.app.Fragment#onStart()
+     */
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.i(TAG, "ON START");
+        
+        setAppContentLayout();
+        
+        if(searchSuggestionsAdapter == null)
+            initSearchView();
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see android.support.v4.app.Fragment#onResume()
+     */
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.i(TAG, "ON RESUME");
+        AnalyticsGoogle.get().trackPage(R.string.gsearch);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see pt.rocket.view.fragments.MyFragment#onPause()
+     */
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.i(TAG, "ON PAUSE");
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see pt.rocket.view.fragments.MyFragment#onStop()
+     */
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.i(TAG, "ON STOP");
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see android.support.v4.app.Fragment#onDestroyView()
+     */
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.i(TAG, "ON DESTROY");
+    }
+    
+    
+    private void setAppContentLayout() {
+        searchTermView = (EditText) getActivity().findViewById(R.id.search_component);
+        searchTermView.setFocusable(true);
+        listView = (ListView) getView().findViewById(R.id.search_suggestions_list_content);
+        listView.setOnItemClickListener(this);
+        suggestionsEmptyText = (TextView) getView().findViewById( R.id.searchsuggestions_notfound );
+        suggestionsLayout = getView().findViewById( R.id.searchsuggestions_empty );
+    }
+    
+    public void initSearchView() {
+        searchSuggestionText = "";
+        searchTermView.requestFocus();
+        searchTermView.setText("");
+        setEmptySuggestions( R.string.searchsuggestions_pleaseenter );
+        setSearchBar();
+        showKeyboardAndFocus();
+    }
+    
+    // Setting the searchbar icon Clickable
+    protected void setSearchBar() {
+        searchTermView.setOnTouchListener(new RightDrawableOnTouchListener(searchTermView) {
+            @Override
+            public boolean onDrawableTouch(final MotionEvent event) {
+                String searchTerm = searchTermView.getText().toString();
+                if ( TextUtils.isEmpty( searchTerm ))
+                    return false;
+                
+                executeSearch(searchTerm);
+                hideKeyboardAndFocus();
+                return true;
+            }
+
+        });
+        searchTermView.addTextChangedListener(searchInputWatcher);
+        searchTermView.setOnKeyListener(searchKeyListener);
+        searchTermView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i(TAG, " [onClick] -> autoCompleteView.setOnClickListener ");
+            }
+        });
+    }
+    
+
+    
+    protected void executeSearch(String searchText) {
+        ActivitiesWorkFlow.productsActivity(getActivity(), null, searchText, searchText, R.string.gsearch, "");
+    }
+    
+
+    
+    
+    private TextWatcher searchInputWatcher = new TextWatcher() {
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            // get the suggestions
+            searchSuggestionText = s.toString();
+            searchTermView.removeCallbacks(getSuggestionsRunnable);
+            if (searchTermView.hasFocus())
+                searchTermView.postDelayed(getSuggestionsRunnable,100);
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+        }
+    };
+    
+    private Runnable getSuggestionsRunnable = new Runnable() {
+
+        @Override
+        public void run() {
+            if ( searchSuggestionText == null || searchSuggestionText.length() <= 2) {
+                setEmptySuggestions( R.string.searchsuggestions_pleaseenter );
+                return;
+            }
+            requestSuggestions();
+        }
+    };
+    
+    private void requestSuggestions() {
+        beginInMillis = System.currentTimeMillis();
+        EventManager.getSingleton().triggerRequestEvent(
+                new GetSearchSuggestionsEvent(searchSuggestionText));
+    }
+    
+    /**
+     * The listener for the key down on the search box, so that when the user presses enter the
+     * search is executed
+     */
+    OnKeyListener searchKeyListener = new OnKeyListener() {
+
+        @Override
+        public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+            switch (keyCode) {
+            case KeyEvent.KEYCODE_ENTER:
+
+                // Check for ACTION_DOWN only...
+                if (KeyEvent.ACTION_DOWN == event.getAction()) {
+                    // asearchSuggestionText = "";
+                    searchTermView.removeCallbacks(getSuggestionsRunnable);
+                    ((BaseActivity) getActivity()).hideKeyboard();
+                    return true;
+                }
+            }
+            return false;
+        }
+    };
+
+    
+    
+    
+    private void setEmptySuggestions(int resId) {
+        suggestionsEmptyText.setText(resId);
+        SearchSuggestionsAdapter adapter = (SearchSuggestionsAdapter) listView.getAdapter();
+        if ( adapter != null)
+            adapter.clear();        
+        suggestionsLayout.setVisibility(View.VISIBLE);
+    }
+    
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        getActivity().findViewById(R.id.dummy_search_layout).requestFocus();
+        executeSearch( ((SearchSuggestion)parent.getAdapter().getItem(position)).getResult());
+        // autoCompleteView.setText( "" );
+        hideKeyboardAndFocus();
+    }
+    
+    protected void showKeyboardAndFocus() {
+        // autoCompleteView.clearFocus();
+        searchTermView.requestFocus();
+        ((BaseActivity) getActivity()).showKeyboard();
+    }
+
+    protected void hideKeyboardAndFocus() {
+        ((BaseActivity) getActivity()).hideKeyboard();
+        getActivity().findViewById(R.id.dummy_search_layout).requestFocus();
+    }
+    
+
+    @Override
+    protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
+        Log.d(TAG, "handleEvent: event type = " + event.getType().name());
+        AnalyticsGoogle.get().trackLoadTiming(R.string.gsearchsuggestions, beginInMillis);
+        setSearchSuggestions((List<SearchSuggestion>) event.result);
+        return true;
+    }
+    
+    // SEARCH SUGGESTIONS
+    private void setSearchSuggestions(final List<SearchSuggestion> arrayList) {
+        Log.d( TAG, "setSearchSuggestions" );
+        //SearchSuggestionsAdapter searchSuggestionsAdapter = new SearchSuggestionsAdapter(getActivity(), arrayList);
+        searchSuggestionsAdapter = new SearchSuggestionsAdapter(getActivity(), arrayList);
+        listView.setAdapter(searchSuggestionsAdapter);
+        suggestionsLayout.setVisibility( View.GONE );
+    }
+    
+    @Override
+    protected boolean onErrorEvent(ResponseEvent event) {
+        if(event.errorCode == ErrorCode.REQUEST_ERROR) {
+            setEmptySuggestions( R.string.searchsuggestions_empty);
+            ((BaseActivity) getActivity()).showContentContainer();
+            return true;
+        }
+        return super.onErrorEvent(event);
+    }
+
+}

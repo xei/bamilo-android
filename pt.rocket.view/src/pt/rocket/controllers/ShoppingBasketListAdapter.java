@@ -253,7 +253,7 @@ public class ShoppingBasketListAdapter extends BaseAdapter {
 		Log.d(TAG, "productDeliveryTime is VISIBLE = " + (productDeliveryTime.getVisibility()==View.VISIBLE));
 		*/
 		
-		FontLoader.apply(item);
+		FontLoader.applyDefaultFont(item);
 		return item;
 	}
 	

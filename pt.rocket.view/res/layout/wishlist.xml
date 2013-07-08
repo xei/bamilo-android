@@ -27,7 +27,7 @@
                 android:layout_gravity="center"
                 android:src="@drawable/wishlist_noitems" />
 
-            <TextView
+            <org.holoeverywhere.widget.TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -37,7 +37,7 @@
                 android:textSize="14dp" />
             <!-- android:textColor="@color/element_product_name_text" -->
 
-            <TextView
+            <org.holoeverywhere.widget.TextView
                 android:layout_width="fill_parent"
                 android:layout_height="100dp" />
         </LinearLayout>
@@ -71,7 +71,7 @@
                     android:addStatesFromChildren="true"
                     android:orientation="horizontal" >
 
-                    <Button
+                    <org.holoeverywhere.widget.Button
                         android:id="@+id/wishlist_button_addall"
                         style="@style/button_orange_style"
                         android:layout_width="match_parent"
@@ -83,7 +83,7 @@
                         android:textColor="#777777"
                         android:visibility="gone" />
 
-                    <Button
+                    <org.holoeverywhere.widget.Button
                         android:id="@+id/wishlist_button_login"
                         style="@style/button_orange_style"
                         android:layout_width="match_parent"

@@ -10,7 +10,7 @@
         android:layout_height="0dp"
         android:layout_centerInParent="true" />
 
-    <TextView
+    <org.holoeverywhere.widget.TextView
         android:id="@+id/alert_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -21,7 +21,7 @@
         android:textSize="@dimen/text_mid"
         android:layout_marginBottom="12dp" />
 
-    <Button
+    <org.holoeverywhere.widget.Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/center"

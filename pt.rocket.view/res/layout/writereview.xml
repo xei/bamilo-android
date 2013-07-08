@@ -18,7 +18,7 @@
             android:layout_marginRight="@dimen/margin_huge"
             android:layout_marginTop="@dimen/margin_large" >
 
-            <TextView
+            <org.holoeverywhere.widget.TextView
                 android:id="@+id/product_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -28,7 +28,7 @@
                 android:textSize="@dimen/text_mid"
                 android:textStyle="bold" />
 
-            <TextView
+            <org.holoeverywhere.widget.TextView
                 android:id="@+id/product_price_result"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
                 android:textSize="14dp"
                 android:textStyle="bold" />
 
-            <TextView
+            <org.holoeverywhere.widget.TextView
                 android:id="@+id/product_price_normal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -64,7 +64,7 @@
             android:layout_marginTop="@dimen/margin_large"
             android:orientation="vertical" >
 
-            <TextView
+            <org.holoeverywhere.widget.TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="@string/rating_question"
@@ -78,7 +78,7 @@
                 android:layout_marginTop="@dimen/margin_huge"
                 android:orientation="horizontal" >
 
-                <TextView
+                <org.holoeverywhere.widget.TextView
                     android:id="@+id/user_rating_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -96,7 +96,7 @@
                     android:layout_marginLeft="@dimen/margin_huge" />
             </LinearLayout>
 
-            <EditText
+            <org.holoeverywhere.widget.EditText
                 android:id="@+id/name_box"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -108,7 +108,7 @@
                 android:textColorHint="@color/form_text_hint"
                 android:textSize="@dimen/text_mid" />
 
-            <EditText
+            <org.holoeverywhere.widget.EditText
                 android:id="@+id/email_box"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -120,7 +120,7 @@
                 android:textColorHint="@color/form_text_hint"
                 android:textSize="@dimen/text_mid" />
 
-            <EditText
+            <org.holoeverywhere.widget.EditText
                 android:id="@+id/title_box"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -132,7 +132,7 @@
                 android:textColorHint="@color/form_text_hint"
                 android:textSize="@dimen/text_mid" />
 
-            <EditText
+            <org.holoeverywhere.widget.EditText
                 android:id="@+id/review_box"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -145,7 +145,7 @@
                 android:textSize="@dimen/text_mid" />
         </LinearLayout>
 
-        <Button
+        <org.holoeverywhere.widget.Button
             android:id="@+id/send_review"
             style="@style/button_orange_style"
             android:layout_marginLeft="@dimen/margin_huge"

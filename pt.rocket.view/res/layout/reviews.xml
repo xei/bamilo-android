@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:isIndicator="true" />
 
-            <TextView
+            <org.holoeverywhere.widget.TextView
                 android:id="@+id/review_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_mid" >
 
-                <TextView
+                <org.holoeverywhere.widget.TextView
                     android:id="@+id/posted_by"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -46,7 +46,7 @@
                     android:textColor="@color/grey_middle"
                     android:textSize="@dimen/text_small" />
 
-                <TextView
+                <org.holoeverywhere.widget.TextView
                     android:id="@+id/review_username"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -55,7 +55,7 @@
                     android:textColor="@color/grey_middle"
                     android:textSize="@dimen/text_small" />
 
-                <TextView
+                <org.holoeverywhere.widget.TextView
                     android:id="@+id/review_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -78,7 +78,7 @@
             android:layout_marginTop="@dimen/margin_huge"
             android:orientation="vertical" >
 
-            <TextView
+            <org.holoeverywhere.widget.TextView
                 android:id="@+id/review_comment"
                 style="@style/body_text_feature_add"
                 android:text="This is a really interesting comment."

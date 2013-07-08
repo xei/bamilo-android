@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/no_items_icon_2" />
 
-        <TextView
+        <org.holoeverywhere.widget.TextView
             android:id="@+id/searchsuggestions_notfound"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -11,7 +11,7 @@
         android:scaleType="center"
         android:src="@drawable/checkout_state04" />
 
-    <TextView
+    <org.holoeverywhere.widget.TextView
         style="@style/activity_sectionheader_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -19,7 +19,7 @@
 
     <View style="@style/line_grey_style" />
 
-    <TextView
+    <org.holoeverywhere.widget.TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin_huge"
@@ -27,7 +27,7 @@
         android:textColor="@android:color/black"
         android:textSize="14dp" />
 
-    <Button
+    <org.holoeverywhere.widget.Button
         android:id="@+id/btn_checkout_continue"
         style="@style/button_orange_style"
         android:layout_marginLeft="@dimen/margin_huge"

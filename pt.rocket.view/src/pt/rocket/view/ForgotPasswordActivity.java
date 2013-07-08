@@ -18,9 +18,10 @@ import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.pojo.DynamicForm;
 import pt.rocket.pojo.DynamicFormItem;
 import pt.rocket.utils.DialogGeneric;
-import pt.rocket.utils.MyActivity;
+import pt.rocket.utils.BaseActivity;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.view.fragments.FragmentType;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.ContentValues;
@@ -56,7 +57,7 @@ import de.akquinet.android.androlog.Log;
  * 
  */
 
-public class ForgotPasswordActivity extends MyActivity {
+public class ForgotPasswordActivity extends BaseActivity {
 
     private final String TAG = LogTagHelper.create( ForgotPasswordActivity.class );
 
@@ -196,6 +197,12 @@ public class ForgotPasswordActivity extends MyActivity {
             }
         }
         return false;
+    }
+
+    @Override
+    public void onSwitchFragment(FragmentType type, Boolean addToBackStack) {
+        // TODO Auto-generated method stub
+        
     }
 
 }

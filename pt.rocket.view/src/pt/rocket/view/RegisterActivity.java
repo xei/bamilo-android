@@ -197,7 +197,7 @@ public class RegisterActivity extends MyActivity {
         registerRequiredText = (TextView) findViewById( R.id.register_required_text );
         
         registerButton.setTextAppearance(context, R.style.text_normal);
-        FontLoader.apply( registerButton );
+        FontLoader.apply(registerButton, FontLoader.ROBOTO_BOLD);
 
         OnClickListener click = new OnClickListener() {
 
@@ -208,11 +208,11 @@ public class RegisterActivity extends MyActivity {
 					if (serverForm.checkRequired() && checkTerms.isChecked()) {
 						termsRequiredText.setVisibility(View.GONE );
 						registerButton.setTextAppearance(context, R.style.text_bold);
-                        FontLoader.apply( registerButton );
+						FontLoader.apply(registerButton, FontLoader.ROBOTO_BOLD);
                         
                     } else {
                         registerButton.setTextAppearance(context, R.style.text_normal);
-                        FontLoader.apply( registerButton );
+                        FontLoader.apply(registerButton, FontLoader.ROBOTO_REGULAR);
                     }
 				}
             }
@@ -422,11 +422,11 @@ public class RegisterActivity extends MyActivity {
         	// Log.d( TAG, "checkInputFieds: check passed" );
         	registerRequiredText.setVisibility( View.GONE );
             registerButton.setTextAppearance(context, R.style.text_bold);
-            FontLoader.apply( registerButton, FontLoader.HoloFont.ROBOTO_BOLD );
+            FontLoader.apply( registerButton, FontLoader.ROBOTO_BOLD );
         } else {
         	// Log.d( TAG, "checkInputFieds: check not passed" );
             registerButton.setTextAppearance(context, R.style.text_normal);
-            FontLoader.apply( registerButton );
+            FontLoader.apply( registerButton, FontLoader.ROBOTO_REGULAR );
         }
         
     }

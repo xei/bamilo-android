@@ -17,9 +17,10 @@ import pt.rocket.framework.service.ServiceManager;
 import pt.rocket.framework.service.services.ProductService;
 import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.utils.MyActivity;
+import pt.rocket.utils.BaseActivity;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.view.fragments.FragmentType;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -58,7 +59,7 @@ import de.akquinet.android.androlog.Log;
  * 
  */
 
-public class PopularityActivity extends MyActivity {
+public class PopularityActivity extends BaseActivity {
 
     /**
      * 
@@ -276,6 +277,12 @@ public class PopularityActivity extends MyActivity {
         // Log.i("GOT PRODUCT REVIEW", " " + reviewEvent.getSuccess());
         displayReviews((ProductRatingPage) event.result);
         return true;
+    }
+
+    @Override
+    public void onSwitchFragment(FragmentType type, Boolean addToBackStack) {
+        // TODO Auto-generated method stub
+        
     }
 
 }

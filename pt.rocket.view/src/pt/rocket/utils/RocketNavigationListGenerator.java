@@ -48,7 +48,7 @@ public class RocketNavigationListGenerator implements ResponseListener {
 
     private ViewGroup navigationContainer;
 
-    private MyActivity activity;
+    private BaseActivity activity;
 
     private OnClickListener navActionListener = new NavigationActionListener();
 
@@ -75,7 +75,7 @@ public class RocketNavigationListGenerator implements ResponseListener {
      * 
      * @return The layout with all the graphic elements for the navigation list
      */
-    public ViewGroup getNavigation(MyActivity activity) {
+    public ViewGroup getNavigation(BaseActivity activity) {
         this.activity = activity;
         if(navigationContainer.getParent() != null) {
             ((ViewGroup)navigationContainer.getParent()).removeView(navigationContainer);

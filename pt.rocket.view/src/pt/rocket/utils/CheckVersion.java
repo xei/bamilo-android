@@ -9,6 +9,7 @@ import pt.rocket.framework.objects.Version;
 import pt.rocket.framework.objects.VersionInfo;
 import pt.rocket.framework.service.ServiceManager;
 import pt.rocket.framework.service.services.ApiService;
+import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.app.Dialog;
@@ -19,6 +20,9 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Handler;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.view.View;
 import de.akquinet.android.androlog.Log;
 
@@ -49,11 +53,13 @@ public class CheckVersion {
 
     private static int unwantedVersion = NO_VERSION_UNWANTED;
 
-    private static Dialog sDialog;
+    private static DialogFragment sDialog;
 
     private static SharedPreferences sSharedPrefs;
     
     private static boolean sNeedsToShowDialog;
+
+    private static FragmentManager fm;
     
     public static void init(Context context) {
         sLastUpdate = 0;
@@ -93,18 +99,21 @@ public class CheckVersion {
         return sNeedsToShowDialog;
     }
 
-    public static void showDialog(Activity activity) { 
+    public static void showDialog(FragmentActivity activity) { 
         
         if (checkResult == UpdateStatus.FORCED_AVAILABLE) {
             sDialog = createForcedUpdateDialog(activity);
         } else {
             sDialog = createOptionalUpdateDialog(activity);
         }
+        
+        fm = activity.getSupportFragmentManager();
+        
         new Handler().postDelayed(new Runnable() {
 
             @Override
             public void run() {
-                sDialog.show();
+                sDialog.show(fm, null);
             }
         }, 1000l);
     }
@@ -122,8 +131,8 @@ public class CheckVersion {
         return false;
     }
 
-    private static Dialog createOptionalUpdateDialog(Activity activity) {
-        return new DialogGeneric(activity, true, true, false,
+    private static DialogFragment createOptionalUpdateDialog(Activity activity) {
+        return DialogGenericFragment.newInstance(true, true, false,
                 sContext.getString(R.string.upgrade_optional_title),
                 sContext.getString(R.string.upgrade_optional_text),
                 sContext.getString(R.string.no_label),
@@ -132,8 +141,8 @@ public class CheckVersion {
                 new OptionalUpdateClickListener(activity));
     }
 
-    private static Dialog createForcedUpdateDialog(Activity activity) {
-        Dialog dialog = new DialogGeneric(activity, true, true, false,
+    private static DialogFragment createForcedUpdateDialog(Activity activity) {
+        DialogFragment dialog = DialogGenericFragment.newInstance(true, true, false,
                 sContext.getString(R.string.upgrade_forced_title),
                 sContext.getString(R.string.upgrade_forced_text),
                 sContext.getString(R.string.close_app),
