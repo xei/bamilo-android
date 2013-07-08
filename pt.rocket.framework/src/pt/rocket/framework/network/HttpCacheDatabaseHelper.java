@@ -23,6 +23,9 @@ public class HttpCacheDatabaseHelper extends SQLiteOpenHelper {
 
 	private static HttpCacheDatabaseHelper sInstance = null;
 
+	/**
+	 * The database version. Increment on modification!
+	 */
 	public static final String COLUMN_ID = "_id";
 //	public static final String COLUMN_URI = "uri";
 	public static final String COLUMN_PAYLOAD = "payload";

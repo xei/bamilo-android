@@ -491,6 +491,12 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 	}
 	
 	public void removeEntryFromCache( String url ) {
+		
+		if(url == null) {
+			Log.w(TAG, "REMOVE ENTRY FROM CACHE: URL IS NULL !");
+			return;
+		}	
+		
 		Uri uri = RestService.completeUri(Uri.parse(url));
 		SchemeRegistry sr = darwinHttpClient.getConnectionManager().getSchemeRegistry();
 		Scheme s = sr.getScheme(uri.getScheme());
