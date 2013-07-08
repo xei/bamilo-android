@@ -52,7 +52,19 @@
         <activity android:name="pt.rocket.view.PopularityActivity" android:screenOrientation="portrait" />
         <activity android:name="pt.rocket.view.WriteReviewActivity" android:screenOrientation="portrait" />
         <activity android:name="pt.rocket.view.CheckoutWebActivity" android:screenOrientation="portrait" />
+
         <activity android:name="pt.rocket.view.TeaserActivity" android:screenOrientation="portrait" />
+
+        <!-- Fragment Activities -->
+        <activity android:name="pt.rocket.view.SessionFragmentActivity" android:screenOrientation="portrait" />
+        <activity android:name="pt.rocket.view.TeaserFragmentActivity" android:screenOrientation="portrait" />
+        <activity android:name="pt.rocket.view.ChangeCountryFragmentActivity" android:screenOrientation="portrait" />
+        <activity android:name="pt.rocket.view.PopularityFragmentActivity" android:screenOrientation="portrait" />
+        <activity android:name="pt.rocket.view.ReviewFragmentActivity" android:screenOrientation="portrait" />
+        <activity android:name="pt.rocket.view.WriteReviewFragmentActivity" android:screenOrientation="portrait" />
+        <activity android:name="pt.rocket.view.SearchFragmentActivity" android:launchMode="singleTask" android:screenOrientation="portrait" />
+        <activity android:name="pt.rocket.view.CategoriesFragmentActivity" android:screenOrientation="portrait" android:hardwareAccelerated="true" />
+
 
         <service android:name="pt.rocket.framework.rest.RestService" android:exported="false" />
 
