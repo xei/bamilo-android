@@ -21,7 +21,7 @@
 
     <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="15" />
 
-    <application android:name="pt.rocket.utils.JumiaApplication" android:icon="@drawable/launcher" android:label="@string/app_name" android:largeHeap="true" android:theme="@style/Theme.Jumia" android:logo="@drawable/actionbar_logo">
+    <application android:name="pt.rocket.utils.JumiaApplication" android:icon="@drawable/ic_launcher" android:label="@string/app_name" android:largeHeap="true" android:theme="@style/Theme.Jumia" android:logo="@drawable/actionbar_logo">
         <activity android:name="pt.rocket.view.SplashScreen" android:screenOrientation="portrait" android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -55,6 +55,17 @@
         <activity android:name="pt.rocket.view.TeaserActivity" android:screenOrientation="portrait" />
 
         <service android:name="pt.rocket.framework.rest.RestService" android:exported="false" />
+        
+         <!-- Fragment Activities -->
+        <activity android:name="pt.rocket.view.SessionFragmentActivity" android:screenOrientation="portrait" />
+        <activity android:name="pt.rocket.view.TeaserFragmentActivity" android:screenOrientation="portrait" />
+        <activity android:name="pt.rocket.view.ChangeCountryFragmentActivity" android:screenOrientation="portrait" />
+        <activity android:name="pt.rocket.view.PopularityFragmentActivity" android:screenOrientation="portrait" />
+        <activity android:name="pt.rocket.view.ReviewFragmentActivity" android:screenOrientation="portrait" />
+        <activity android:name="pt.rocket.view.WriteReviewFragmentActivity" android:screenOrientation="portrait" />
+        <activity android:name="pt.rocket.view.SearchFragmentActivity" android:launchMode="singleTask" android:screenOrientation="portrait" />
+        <activity android:name="pt.rocket.view.CategoriesFragmentActivity" android:screenOrientation="portrait" android:hardwareAccelerated="true" />
+        
 
         <!-- hockey -->
         <activity android:name="net.hockeyapp.android.UpdateActivity" />
