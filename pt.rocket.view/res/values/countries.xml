@@ -1,50 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:android="http://schemas.android.com/apk/res/android" 
-    xmlns:tools="http://schemas.android.com/tools">
+<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Lazada Indonesia Configuration -->
-    <string name="lazada_id_shopname">Lazada</string>
-    <string name="lazada_id_server">alice-staging.lazada.co.id</string>
-    <!-- <string name="lazada_id_server">mobile.jumia.com</string> -->
-    <string name="lazada_id_user">rocket</string>
-    <string name="lazada_id_password">rock4me</string>
-    <string name="lazada_id_restbase_path">mobapi</string>
-    <string name="lazada_id_country_name">@string/country_name_indonesia</string>
+    <!-- Jumia Nigeria Configuration -->
+    <string name="jumia_ng_shopname">Jumia</string>
+    <!-- <string name="jumia_ng_server">alice-staging.jumia.com.ng</string> -->
+    <string name="jumia_ng_server">mobile.jumia.com</string>
+    <string name="jumia_ng_user">rocket</string>
+    <string name="jumia_ng_password">rock4me</string>
+    <string name="jumia_ng_restbase_path">mobapi</string>
+    <string name="jumia_ng_country_name">@string/country_name_nigeria</string>
 
-    <!-- Lazada Thailand Configuration -->
-    <string name="lazada_th_shopname">Lazada</string>
-    <string name="lazada_th_server">alice-staging.lazada.co.th</string>
-    <!-- <string name="lazada_th_server">mobile.jumia.com</string> -->
-    <string name="lazada_th_user">rocket</string>
-    <string name="lazada_th_password">rock4me</string>
-    <string name="lazada_th_restbase_path">mobapi</string>
-    <string name="lazada_th_country_name">@string/country_name_thailand</string>
-    
-    <!-- Lazada Vietnam Configuration -->
-    <string name="lazada_vn_shopname">Lazada</string>
-    <string name="lazada_vn_server">alice-staging.lazada.vn</string>
-        <!-- <string name="lazada_vn_server">mobile.jumia.com</string> -->
-    <string name="lazada_vn_user">rocket</string>
-    <string name="lazada_vn_password">rock4me</string>
-    <string name="lazada_vn_restbase_path">mobapi</string>
-    <string name="lazada_vn_country_name">@string/country_name_vietnam</string>
+    <!-- Jumia Kenya Configuration -->
+    <string name="jumia_ke_shopname">Jumia</string>
+    <!-- <string name="jumia_ke_server">alice-staging.jumia.co.ke</string> -->
+    <string name="jumia_ke_server">mobile.jumia.com</string>
+    <string name="jumia_ke_user">rocket</string>
+    <string name="jumia_ke_password">rock4me</string>
+    <string name="jumia_ke_restbase_path">mobapi</string>
+    <string name="jumia_ke_country_name">@string/country_name_kenya</string>
 
-	<!-- Lazada Philippines Configuration -->
-    <string name="lazada_ph_shopname">Lazada</string>
-    <string name="lazada_ph_server">alice-staging.lazada.com.ph</string>
-        <!-- <string name="lazada_ph_server">mobile.jumia.com</string> -->
-    <string name="lazada_ph_user">rocket</string>
-    <string name="lazada_ph_password">rock4me</string>
-    <string name="lazada_ph_restbase_path">mobapi</string>
-    <string name="lazada_ph_country_name">@string/country_name_philippines</string>
-    
-    <!-- Lazada Malaysia Configuration -->
-    <string name="lazada_my_shopname">Lazada</string>
-  <!--   <string name="lazada_my_server">alice-staging.lazada.com.my</string> -->
-	<string name="lazada_my_server">mobile.jumia.com</string>
-    <string name="lazada_my_user">rocket</string>
-    <string name="lazada_my_password">rock4me</string>
-    <string name="lazada_my_restbase_path">mobapi</string>
-    <string name="lazada_my_country_name">@string/country_name_malaysia</string>
-    
+    <!-- Jumia Morocco	 Configuration -->
+    <string name="jumia_ma_shopname">Jumia</string>
+    <!-- <string name="jumia_ma_server">alice-staging.jumia.ma</string> -->
+    <string name="jumia_ma_server">mobile.jumia.com</string>
+    <string name="jumia_ma_user">rocket</string>
+    <string name="jumia_ma_password">rock4me</string>
+    <string name="jumia_ma_restbase_path">mobapi</string>
+    <string name="jumia_ma_country_name">@string/country_name_morocco</string>
+
+    <!-- Jumia Egypt Configuration -->
+    <string name="jumia_eg_shopname">Jumia</string>
+    <!-- <string name="jumia_eg_server">alice-staging.jumia.com.eg</string> -->
+    <string name="jumia_eg_server">mobile.jumia.com</string>
+    <string name="jumia_eg_user">rocket</string>
+    <string name="jumia_eg_password">rock4me</string>
+    <string name="jumia_eg_restbase_path">mobapi</string>
+    <string name="jumia_eg_country_name">@string/country_name_egypt</string>
+
+    <!-- Jumia Ivory Coast Configuration -->
+    <string name="jumia_ci_shopname">Jumia</string>
+    <!-- <string name="jumia_ci_server">alice-staging.jumia.ci</string> -->
+    <string name="jumia_ci_server">mobile.jumia.com</string>
+    <string name="jumia_ci_user">rocket</string>
+    <string name="jumia_ci_password">rock4me</string>
+    <string name="jumia_ci_restbase_path">mobapi</string>
+    <string name="jumia_ci_country_name">@string/country_name_ivory</string>
+
 </resources>

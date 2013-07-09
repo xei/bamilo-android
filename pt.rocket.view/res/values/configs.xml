@@ -1,70 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:android="http://schemas.android.com/apk/res/android" 
-    xmlns:tools="http://schemas.android.com/tools">
-    
+<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
+
     <string name="enable_multi_selection">false</string>
     <string name="hockeyapp_token"></string>
     <string name="bugsense_apikey"></string>
-    
+
     <string-array name="servers">
-        <item>@string/lazada_th_server</item>
-        <item>@string/lazada_id_server</item>
-        <item>@string/lazada_vn_server</item>
-        <item>@string/lazada_ph_server</item>
-        <item>@string/lazada_my_server</item>
+        <item>@string/jumia_ng_server</item>
+        <item>@string/jumia_ke_server</item>
+        <item>@string/jumia_ma_server</item>
+        <item>@string/jumia_eg_server</item>
+        <item>@string/jumia_ci_server</item>
     </string-array>
     <string-array name="users">
-        <item>@string/lazada_th_user</item>
-        <item>@string/lazada_id_user</item>
-        <item>@string/lazada_vn_user</item>
-        <item>@string/lazada_ph_user</item>
-        <item>@string/lazada_my_user</item>
+        <item>@string/jumia_ng_user</item>
+        <item>@string/jumia_ke_user</item>
+        <item>@string/jumia_ma_user</item>
+        <item>@string/jumia_eg_user</item>
+        <item>@string/jumia_ci_user</item>
     </string-array>
     <string-array name="passwords">
-        <item>@string/lazada_th_password</item>
-        <item>@string/lazada_id_password</item>
-        <item>@string/lazada_vn_password</item>
-        <item>@string/lazada_ph_password</item>
-        <item>@string/lazada_my_password</item>
+        <item>@string/jumia_ng_password</item>
+        <item>@string/jumia_ke_password</item>
+        <item>@string/jumia_ma_password</item>
+        <item>@string/jumia_eg_password</item>
+        <item>@string/jumia_ci_password</item>
     </string-array>
     <string-array name="restbase_paths">
-        <item>@string/lazada_th_restbase_path</item>
-        <item>@string/lazada_id_restbase_path</item>
-        <item>@string/lazada_vn_restbase_path</item>
-        <item>@string/lazada_ph_restbase_path</item>
-        <item>@string/lazada_my_restbase_path</item>
+        <item>@string/jumia_ng_restbase_path</item>
+        <item>@string/jumia_ke_restbase_path</item>
+        <item>@string/jumia_ma_restbase_path</item>
+        <item>@string/jumia_eg_restbase_path</item>
+        <item>@string/jumia_ci_restbase_path</item>
     </string-array>
     <string-array name="shop_names">
-        <item>@string/lazada_th_shopname</item>
-        <item>@string/lazada_id_shopname</item>
-        <item>@string/lazada_vn_shopname</item>
-        <item>@string/lazada_ph_shopname</item>
-        <item>@string/lazada_my_shopname</item>
+        <item>@string/jumia_ng_shopname</item>
+        <item>@string/jumia_ke_shopname</item>
+        <item>@string/jumia_ma_shopname</item>
+        <item>@string/jumia_eg_shopname</item>
+        <item>@string/jumia_ci_shopname</item>
     </string-array>
     <string-array name="country_names">
-        <item>@string/lazada_th_country_name</item>
-        <item>@string/lazada_id_country_name</item>
-        <item>@string/lazada_vn_country_name</item>
-        <item>@string/lazada_ph_country_name</item>
-        <item>@string/lazada_my_country_name</item>
+        <item>@string/jumia_ng_country_name</item>
+        <item>@string/jumia_ke_country_name</item>
+        <item>@string/jumia_ma_country_name</item>
+        <item>@string/jumia_eg_country_name</item>
+        <item>@string/jumia_ci_country_name</item>
     </string-array>
 
     <array name="country_icons">
-        <item>@drawable/lazada_th_icon</item>
-        <item>@drawable/lazada_id_icon</item>
-        <item>@drawable/lazada_vn_icon</item>
-        <item>@drawable/lazada_ph_icon</item>
-        <item>@drawable/lazada_my_icon</item>
+        <item>@drawable/jumia_ng_icon</item>
+        <item>@drawable/jumia_ke_icon</item>
+        <item>@drawable/jumia_ma_icon</item>
+        <item>@drawable/jumia_eg_icon</item>
+        <item>@drawable/jumia_ci_icon</item>
     </array>
-    
-    <string-array name="currency_codes">
-        <item>@string/currency_code_thb</item>
-        <item>@string/currency_code_idr</item>
-        <item>@string/currency_code_vnd</item>
-        <item>@string/currency_code_php</item>
-        <item>@string/currency_code_myr</item>
-    </string-array>
 
+    <string-array name="currency_codes">
+        <item>@string/currency_code_ngn</item>
+        <item>@string/currency_code_ksh</item>
+        <item>@string/currency_code_mad</item>
+        <item>@string/currency_code_egp</item>
+        <item>@string/currency_code_cfa</item>
+    </string-array>
     <string-array name="ga_testkeys">
         <item>@string/gaid_th_test</item>
         <item>@string/gaid_id_test</item>
@@ -100,9 +98,10 @@
         <item>tl_PH</item>
         <item>ms_MY</item>
     </string-array>
+
     <item name="default_vibrate" type="bool">false</item>
     <item name="default_notification" type="bool">true</item>
     <item name="default_led" type="bool">true</item>
     <item name="default_sound" type="bool">true</item>
-    
+
 </resources>
