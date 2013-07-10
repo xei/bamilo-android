@@ -38,6 +38,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -145,6 +146,8 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
     private OnActivityFragmentInteraction mCallbackProductBasicInfoFragment;
     
     private int mVariationsListPosition = -1;
+    
+    private String mPhone2Call = "1234567";
     
     
     private final int LOADING_PRODUCT = -1;
@@ -667,12 +670,20 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
         } else if (id == R.id.shop) {
             executeAddProductToCart();
         } else if (id == R.id.call_to_order) {
-            Toast.makeText(this, "Hello! I want to order. Can you hear me?", Toast.LENGTH_LONG)
-                    .show();
+//            Toast.makeText(this, "Hello! I want to order. Can you hear me?", Toast.LENGTH_LONG)
+//                    .show();
+            makeCall();
+            
         }
 
     }
-
+    
+    private void makeCall() {
+        Intent callIntent = new Intent(Intent.ACTION_CALL);
+        callIntent.setData(Uri.parse("tel:"+mPhone2Call));
+        startActivity(callIntent);        
+    }
+    
     private void showGallery() {
         ActivitiesWorkFlow.productsGalleryActivity(ProductDetailsActivityFragment.this,
                 mCompleteProduct.getUrl(), mVariationsListPosition);

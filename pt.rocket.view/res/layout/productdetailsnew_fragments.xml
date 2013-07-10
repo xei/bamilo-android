@@ -136,7 +136,7 @@
                 android:layout_marginRight="0dp"
                 android:layout_weight="1"
                 android:text="@string/call_to_order"
-                android:visibility="gone" />
+                android:visibility="visible" />
 
             <org.holoeverywhere.widget.Button
                 android:id="@+id/buy_now"
