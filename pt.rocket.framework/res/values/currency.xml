@@ -7,7 +7,7 @@
    	    <item>@string/currency_code_ksh</item>
    	    <item>@string/currency_code_mad</item>
    	    <item>@string/currency_code_egp</item>
-   	    <item>@string/currency_code_cfa</item>
+   	    <item>@string/currency_code_xof</item>
    	</string-array>
    	
    	<string-array name="formatter_currency_unit_pattern">
@@ -46,7 +46,7 @@
     <string name="currency_code_ksh">KSH</string>
     <string name="currency_code_mad">MAD</string>
     <string name="currency_code_egp">EGP</string>
-    <string name="currency_code_cfa">CFA</string>
+    <string name="currency_code_xof">XOF</string>
     <string name="currency_unit_pattern_ngn">₦ %s</string>
     <string name="currency_unit_pattern_ksh">KSh %s</string>
     <string name="currency_unit_pattern_mad">%s Dhs</string>
