@@ -39,16 +39,16 @@
 
     <string name="ga_trackingId">aaaaaaaaa</string> <!-- TestKonto SMF -->
 
-    <string name="gaid_id_test">aaaaaaaaa</string>
-    <string name="gaid_id_live">aaaaaaaaa</string>
-    <string name="gaid_my_test">aaaaaaaaa</string>
-    <string name="gaid_my_live">aaaaaaaaa</string>
-    <string name="gaid_ph_test">aaaaaaaaa</string>
-    <string name="gaid_ph_live">aaaaaaaaa</string>
-    <string name="gaid_th_test">aaaaaaaaa</string>
-    <string name="gaid_th_live">aaaaaaaaa</string>
-    <string name="gaid_vn_test">aaaaaaaaa</string>
-    <string name="gaid_vn_live">aaaaaaaaa</string>
+    <string name="gaid_ng_test">aaaaaaaaa</string>
+    <string name="gaid_ng_live">aaaaaaaaa</string>
+    <string name="gaid_ke_test">aaaaaaaaa</string>
+    <string name="gaid_ke_live">aaaaaaaaa</string>
+    <string name="gaid_ma_test">aaaaaaaaa</string>
+    <string name="gaid_ma_live">aaaaaaaaa</string>
+    <string name="gaid_eg_test">aaaaaaaaa</string>
+    <string name="gaid_eg_live">aaaaaaaaa</string>
+    <string name="gaid_ci_test">aaaaaaaaa</string>
+    <string name="gaid_ci_live">aaaaaaaaa</string>
 
 
 
@@ -73,16 +73,16 @@
     <string name="fkey_malaysia_testing">SHR53SDHN4NVFR59MY4N</string>
 
     <!-- Flurry Keys -->
-    <string name="fkey">TWMJJV6DZ7YHKWSKQK69</string> <!-- TestKonto SMF -->
-    <string name="fkey_id_test">RBDVPYGQHYRF2W3ZH3RC</string>
-    <string name="fkey_id_live">X95XJ2SHXSNBZH2YFCXC</string>
-    <string name="fkey_my_test">SHR53SDHN4NVFR59MY4N</string>
-    <string name="fkey_my_live">4XBMNKX7NC62MX7NCGYF</string>
-    <string name="fkey_ph_test">TTXPDJRRX8QBZNPXKC3G</string>
-    <string name="fkey_ph_live">D4FYR6G2CRPHWD3KTKDP</string>
-    <string name="fkey_th_test">MFZG3F7X5DN4VX6TBP3N</string>
-    <string name="fkey_th_live">S2DSQWYKTJCQSMVKKDHN</string>
-    <string name="fkey_vn_test">ZMNFSF6JFF8XJTGHWXWV</string>
-    <string name="fkey_vn_live">V93XSCBG7TTQXW44J72B</string>
+    <string name="fkey">toupdate</string> <!-- TestKonto SMF -->
+    <string name="fkey_ng_test">toupdate</string>
+    <string name="fkey_ng_live">toupdate</string>
+    <string name="fkey_ke_test">toupdate</string>
+    <string name="fkey_ke_live">toupdate</string>
+    <string name="fkey_ma_test">toupdate</string>
+    <string name="fkey_ma_live">toupdate</string>
+    <string name="fkey_eg_test">toupdate</string>
+    <string name="fkey_eg_live">toupdate</string>
+    <string name="fkey_ci_test">toupdate</string>
+    <string name="fkey_ci_live">toupdate</string>
 
 </resources>

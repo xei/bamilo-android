@@ -8,7 +8,7 @@
     <string name="jumia_ng_user">rocket</string>
     <string name="jumia_ng_password">rock4me</string>
     <string name="jumia_ng_restbase_path">mobapi</string>
-    <string name="jumia_ng_country_name">@string/country_name_nigeria</string>
+    <string name="jumia_ng_country_name">@string/country_name_nigera</string>
 
     <!-- Jumia Kenya Configuration -->
     <string name="jumia_ke_shopname">Jumia</string>
@@ -44,6 +44,6 @@
     <string name="jumia_ci_user">rocket</string>
     <string name="jumia_ci_password">rock4me</string>
     <string name="jumia_ci_restbase_path">mobapi</string>
-    <string name="jumia_ci_country_name">@string/country_name_ivory</string>
+    <string name="jumia_ci_country_name">@string/country_name_ivorycoast</string>
 
 </resources>

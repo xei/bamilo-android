@@ -64,39 +64,39 @@
         <item>@string/currency_code_xof</item>
     </string-array>
     <string-array name="ga_testkeys">
-        <item>@string/gaid_th_test</item>
-        <item>@string/gaid_id_test</item>
-        <item>@string/gaid_vn_test</item>
-        <item>@string/gaid_ph_test</item>
-        <item>@string/gaid_my_test</item>
+        <item>@string/gaid_ng_test</item>
+        <item>@string/gaid_ke_test</item>
+        <item>@string/gaid_ma_test</item>
+        <item>@string/gaid_eg_test</item>
+        <item>@string/gaid_ci_test</item>
     </string-array>
     <string-array name="ga_livekeys">
-        <item>@string/gaid_th_live</item>
-        <item>@string/gaid_id_live</item>
-        <item>@string/gaid_vn_live</item>
-        <item>@string/gaid_ph_live</item>
-        <item>@string/gaid_my_live</item>
+        <item>@string/gaid_ng_live</item>
+        <item>@string/gaid_ke_live</item>
+        <item>@string/gaid_ma_live</item>
+        <item>@string/gaid_eg_live</item>
+        <item>@string/gaid_ci_live</item>
     </string-array>
     <string-array name="fkey_testkeys">
-        <item>@string/fkey_th_test</item>
-        <item>@string/fkey_id_test</item>
-        <item>@string/fkey_vn_test</item>
-        <item>@string/fkey_ph_test</item>
-        <item>@string/fkey_my_test</item>
+        <item>@string/fkey_ng_test</item>
+        <item>@string/fkey_ke_test</item>
+        <item>@string/fkey_ma_test</item>
+        <item>@string/fkey_eg_test</item>
+        <item>@string/fkey_ci_test</item>
     </string-array>
     <string-array name="fkey_livekeys">
-        <item>@string/fkey_th_live</item>
-        <item>@string/fkey_id_live</item>
-        <item>@string/fkey_vn_live</item>
-        <item>@string/fkey_ph_live</item>
-        <item>@string/fkey_my_live</item>
+        <item>@string/fkey_ng_live</item>
+        <item>@string/fkey_ke_live</item>
+        <item>@string/fkey_ma_live</item>
+        <item>@string/fkey_eg_live</item>
+        <item>@string/fkey_ci_live</item>
     </string-array>
     <string-array name="language_codes">
-        <item>en_EN</item>
-        <item>en_EN</item>
-        <item>en_EN</item>
-        <item>en_EN</item>
-        <item>en_EN</item>
+        <item>ng_NG</item>
+        <item>ke_KE</item>
+        <item>ma_MA</item>
+        <item>eg_EG</item>
+        <item>ci_CI</item>
     </string-array>
 
     <item name="default_vibrate" type="bool">false</item>
