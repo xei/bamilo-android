@@ -9,6 +9,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="@dimen/margin_large"
-        android:src="@drawable/lazada_logo_ic" />
+        android:src="@drawable/logo_ic" />
 
 </LinearLayout>

@@ -11,7 +11,7 @@
         android:background="@drawable/gradient_splash"
         android:paddingBottom="32dp"
         android:scaleType="centerInside"
-        android:src="@drawable/logo_lazada_splash" />
+        android:src="@drawable/logo_splash" />
 
     <org.holoeverywhere.widget.TextView
         android:id="@+id/dev_text"

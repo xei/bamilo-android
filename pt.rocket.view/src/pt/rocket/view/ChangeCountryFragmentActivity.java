@@ -13,7 +13,7 @@ import de.akquinet.android.androlog.Log;
 
 /**
  * 
- * @author sergiopereira
+ * @author sergiopereira 
  * 
  */
 public class ChangeCountryFragmentActivity extends SherlockFragmentActivity {
@@ -50,7 +50,7 @@ public class ChangeCountryFragmentActivity extends SherlockFragmentActivity {
      */
     private void setupActionBar() {
         ActionBarSherlock.unregisterImplementation(ActionBarSherlockNative.class);
-        getSupportActionBar().setLogo(R.drawable.lazada_logo_ic);
+        getSupportActionBar().setLogo(R.drawable.logo_ic);
     }
 
     /*

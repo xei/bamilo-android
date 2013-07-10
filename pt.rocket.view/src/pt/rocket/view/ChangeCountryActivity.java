@@ -89,7 +89,7 @@ public class ChangeCountryActivity extends SherlockActivity {
 
     private void setupActionBar() {
         ActionBarSherlock.unregisterImplementation(ActionBarSherlockNative.class);
-        getSupportActionBar().setLogo(R.drawable.lazada_logo_ic);
+        getSupportActionBar().setLogo(R.drawable.logo_ic);
     }
 
     private void setList() {
