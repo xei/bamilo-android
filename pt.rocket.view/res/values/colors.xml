@@ -13,6 +13,7 @@
     <color name="grey_dividerlight">#f0f0f0</color>
     <color name="green_stock">#458B00</color>
     <color name="grey_light">@color/grey_middlelight</color>
+    <color name="black_shadow">#6f251c</color>
     
     <color name="loadingbackground_dimmed">#FFFFFFFF</color>
 

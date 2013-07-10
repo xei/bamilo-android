@@ -9,23 +9,23 @@
         android:visibility="gone" />
 
     <!-- Main Content Layout -->
-
     <ViewStub
         android:id="@+id/stub_app_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
         android:layout_alignWithParentIfMissing="true"
-        android:layout_below="@id/title"
+        android:layout_below="@+id/warning"
         android:inflatedId="@+id/rocket_app_content" />
 
     <include
-        android:id="@+id/warning"
+        android:id="@id/warning"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/rocket_app_content"
+        android:layout_height="34dp"
         layout="@layout/warning"
         android:visibility="gone" />
+    
+    
 
     <include
         android:layout_width="match_parent"
