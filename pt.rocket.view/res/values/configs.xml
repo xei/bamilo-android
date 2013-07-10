@@ -61,7 +61,7 @@
         <item>@string/currency_code_ksh</item>
         <item>@string/currency_code_mad</item>
         <item>@string/currency_code_egp</item>
-        <item>@string/currency_code_cfa</item>
+        <item>@string/currency_code_xof</item>
     </string-array>
     <string-array name="ga_testkeys">
         <item>@string/gaid_th_test</item>
@@ -92,11 +92,11 @@
         <item>@string/fkey_my_live</item>
     </string-array>
     <string-array name="language_codes">
-        <item>th_TH</item>
-        <item>in_ID</item>
-        <item>vi_VN</item>
-        <item>tl_PH</item>
-        <item>ms_MY</item>
+        <item>en_EN</item>
+        <item>en_EN</item>
+        <item>en_EN</item>
+        <item>en_EN</item>
+        <item>en_EN</item>
     </string-array>
 
     <item name="default_vibrate" type="bool">false</item>
