@@ -11,7 +11,7 @@ package pt.rocket.framework.objects;
 public interface ITargeting {
 	
 	public enum TargetType {
-		PRODUCT_LIST(0), PRODUCT(1), CATEGORY(2), UNKNOWN(-1);
+		PRODUCT_LIST(0), PRODUCT(1), CATEGORY(2), BRAND(3), UNKNOWN(-1);
 
 		private final int value;
 

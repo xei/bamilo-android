@@ -22,6 +22,7 @@ import pt.rocket.utils.CheckVersion;
 import pt.rocket.utils.HockeyStartup;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.utils.OnActivityFragmentInteraction;
 import pt.rocket.view.fragments.CategoryTeaserFragment;
 import pt.rocket.view.fragments.FragmentType;
 import pt.rocket.view.fragments.MainOneSlideFragment;
@@ -51,6 +52,7 @@ public class TeaserFragmentActivity extends BaseActivity {
     private Fragment fragmentStaticBanner;
     private Fragment fragmentCategoryTeaser;
     private Fragment fragmentProductListTeaser;
+    private Fragment fragmentBrandsListTeaser;
     private OnActivityFragmentInteraction mCallback;
 
     private OnClickListener teaserClickListener = new OnClickListener() {
@@ -238,6 +240,28 @@ public class TeaserFragmentActivity extends BaseActivity {
                 View viewProductList = mInflater.inflate(R.layout.product_list_frame, null, false);
                 container.addView(viewProductList);
                 fragmentManagerTransition(R.id.products_list_frame, fragmentProductListTeaser, false, false);
+                break;
+            case BRANDS_LIST:
+                if (fragmentBrandsListTeaser == null) {
+                    fragmentBrandsListTeaser = ProducTeaserListFragment.getInstance();
+
+                    // This makes sure that the container activity has implemented
+                    // the callback interface. If not, it throws an exception
+                    try {
+                        mCallback = (OnActivityFragmentInteraction) fragmentBrandsListTeaser;
+                    } catch (ClassCastException e) {
+                        throw new ClassCastException(fragmentBrandsListTeaser.toString()
+                                + " must implement OnActivityFragmentInteraction");
+                    }
+
+                    mCallback.sendListener(0, teaserClickListener);
+                    mCallback.sendValuesToFragment(0, (ProductTeaserGroup) teaserSpecification);
+                }
+                View viewBrandList = mInflater.inflate(R.layout.brands_list_frame, null, false);
+                container.addView(viewBrandList);
+                fragmentManagerTransition(R.id.brands_list_frame, fragmentBrandsListTeaser, false, false);
+                
+                
                 break;
             }
         }

@@ -25,6 +25,7 @@ import pt.rocket.framework.rest.RestClientSingleton;
 import pt.rocket.framework.rest.RestContract;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.BaseActivity;
+import pt.rocket.utils.OnFragmentActivityInteraction;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.view.R;
 import android.annotation.SuppressLint;

@@ -93,6 +93,8 @@ public class CurrencyFormatter {
      * @return the formatted string
      */
     public static String formatCurrency(double value) {
+    	
+    	Log.i("code1", "currency is: "+currencyUnitPattern);
     	return String.format( currencyUnitPattern, formatter.format(value));
     }
     

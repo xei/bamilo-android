@@ -29,7 +29,6 @@ import pt.rocket.framework.utils.ShopSelector;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.utils.dialogfragments.DialogProgressFragment;
 import pt.rocket.view.R;
-import pt.rocket.view.fragments.BaseFragment.OnFragmentActivityInteraction;
 import pt.rocket.view.fragments.FragmentType;
 import pt.rocket.view.fragments.SlideMenuFragment;
 import android.content.Context;
@@ -944,20 +943,6 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
             finish();
         else
             getSupportFragmentManager().popBackStack();
-    }
-    
-    /**
-     * Constructor used to initialize the navigation list component and the autocomplete handler
-     * 
-     * @param userEvents
-     * @author manuelsilva
-     * 
-     */
-    public interface OnActivityFragmentInteraction {
-        public void sendValuesToFragment(int identifier, Object values);
-        public void sendPositionToFragment(int position);
-        public void sendListener(int identifier, OnClickListener clickListener);
-        public boolean allowBackPressed();
     }
     
     public void onFragmentSelected(FragmentType fragmentIdentifier){}

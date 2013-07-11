@@ -12,7 +12,7 @@ import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.event.events.ChangePasswordEvent;
 import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.utils.BaseActivity.OnActivityFragmentInteraction;
+import pt.rocket.utils.OnFragmentActivityInteraction;
 import pt.rocket.view.MyAccountUserDataActivityFragment;
 import pt.rocket.view.R;
 import android.app.Activity;

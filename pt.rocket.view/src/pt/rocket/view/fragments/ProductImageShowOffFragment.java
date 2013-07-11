@@ -10,6 +10,7 @@ import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.JumiaApplication;
+import pt.rocket.utils.OnFragmentActivityInteraction;
 //import pt.rocket.view.ImageLoaderComponent;
 import pt.rocket.app.ImageLoaderComponent;
 import pt.rocket.view.ProductDetailsActivityFragment;

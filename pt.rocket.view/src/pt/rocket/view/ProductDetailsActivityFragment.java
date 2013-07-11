@@ -26,6 +26,7 @@ import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.BaseActivity;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.utils.OnActivityFragmentInteraction;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.utils.dialogfragments.DialogListFragment;
 import pt.rocket.utils.dialogfragments.DialogListFragment.OnDialogListListener;

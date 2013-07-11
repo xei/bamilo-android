@@ -21,7 +21,7 @@ public abstract class TeaserSpecification<T extends ITargeting> implements
 			.create(TeaserSpecification.class);
 
 	public enum TeaserGroupType {
-		MAIN_ONE_SLIDE(0), STATIC_BANNER(1), PRODUCT_LIST(2), CATEGORIES(3), UNKNOWN(
+		MAIN_ONE_SLIDE(0), STATIC_BANNER(1), PRODUCT_LIST(2), CATEGORIES(3), BRANDS_LIST(4), UNKNOWN(
 				-1);
 
 		public final int value;
@@ -55,6 +55,9 @@ public abstract class TeaserSpecification<T extends ITargeting> implements
 			teaserSpecification = new ProductTeaserGroup();
 			break;
 		case CATEGORIES:
+			teaserSpecification = new CategoryTeaserGroup();
+			break;
+		case BRANDS_LIST:
 			teaserSpecification = new CategoryTeaserGroup();
 			break;
 		}

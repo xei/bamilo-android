@@ -7,6 +7,7 @@ import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.utils.BaseActivity;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.utils.OnActivityFragmentInteraction;
 import pt.rocket.view.fragments.FragmentType;
 import pt.rocket.view.fragments.TermsFragment;
 import android.os.Bundle;

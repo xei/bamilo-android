@@ -15,6 +15,7 @@ import pt.rocket.utils.BaseActivity;
 import pt.rocket.utils.HorizontalListView;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.utils.OnActivityFragmentInteraction;
 import pt.rocket.view.fragments.FragmentType;
 import pt.rocket.view.fragments.ProductImageGalleryFragment;
 import pt.rocket.view.fragments.ProductVariationsFragment;

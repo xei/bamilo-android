@@ -15,6 +15,7 @@ import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.HorizontalListView;
+import pt.rocket.utils.OnFragmentActivityInteraction;
 import pt.rocket.view.ProductDetailsActivityFragment;
 import pt.rocket.view.R;
 import android.app.Activity;

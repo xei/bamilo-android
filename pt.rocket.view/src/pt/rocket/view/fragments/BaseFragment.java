@@ -18,8 +18,8 @@ import pt.rocket.framework.objects.Errors;
 import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.BaseActivity;
-import pt.rocket.utils.BaseActivity.OnActivityFragmentInteraction;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.utils.OnActivityFragmentInteraction;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.view.R;
 import android.os.Bundle;
@@ -61,21 +61,7 @@ public abstract class BaseFragment extends Fragment implements ResponseListener,
 
     private final Set<EventType> allHandledEvents = EnumSet.copyOf(HANDLED_EVENTS);
 
-    private Set<EventType> userEvents;
-        
-    /**
-     * Interface to communicate with the activity
-     * If another type of fragment is created, add the identifier to {@link FragmentType}
-     * @author manuelsilva
-     *
-     */
-    public interface OnFragmentActivityInteraction {
-        public void onFragmentSelected(FragmentType fragmentIdentifier);
-        public void onFragmentElementSelected(int position);
-        public void sendClickListenerToActivity(OnClickListener clickListener);
-        public void sendValuesToActivity(int identifier, Object values);
-    }
-    
+    private Set<EventType> userEvents;  
     
     public void sendValuesToFragment(int identifier, Object values){}
     
