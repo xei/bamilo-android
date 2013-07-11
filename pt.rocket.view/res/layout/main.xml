@@ -22,6 +22,7 @@
         android:id="@id/warning"
         android:layout_width="match_parent"
         android:layout_height="34dp"
+        android:layout_below="@id/title"
         layout="@layout/warning"
         android:visibility="gone" />
     
