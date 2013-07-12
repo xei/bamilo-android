@@ -210,7 +210,8 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
         String shortDescription = mCompleteProduct.getShortDescription();
     
         if (TextUtils.isEmpty(shortDescription)) {
-            mProductFeaturesContainer.setVisibility(View.GONE);
+            if(mProductFeaturesContainer!=null)
+                mProductFeaturesContainer.setVisibility(View.GONE);
             return;
         } else {
             mProductFeaturesText.setVisibility(View.VISIBLE);
