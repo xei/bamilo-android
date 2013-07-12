@@ -483,7 +483,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginLeft">0dp</item>
-        <item name="android:background">@drawable/headline_blue</item>
+        <item name="android:background">@drawable/titlebar</item>
         <item name="android:ellipsize">end</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:maxLines">1</item>
