@@ -33,7 +33,7 @@ import de.akquinet.android.androlog.Log;
  * 
  * @author Ralph Holland-Moritz
  * 
- *         Interface used by any component when the rest client when the request if finished
+ *         Interface used by any component when the rest client when the request if finished execute 443
  */
 public abstract class ResponseReceiver<T> extends ResultReceiver {
 
@@ -70,6 +70,14 @@ public abstract class ResponseReceiver<T> extends ResultReceiver {
 			break;
 		case NO_ERROR:
 			String response = resultData.getString(RESPONSE);
+			try{
+			for (String key : resultData.keySet()) {
+						Log.i("RESPONSE"," key = "+key+" value =  "+resultData.get(key).toString()+" ");
+			}
+			}
+			catch(NullPointerException e){
+				
+			}
 			try {
 				parseResponse(response, resultData.getString(WARNING), resultData);
 			} catch (JSONException e) {

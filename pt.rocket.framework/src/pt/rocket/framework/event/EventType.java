@@ -20,7 +20,7 @@ import pt.rocket.framework.rest.RestContract;
  * 
  * @author guilherme Type of the available events in the EventManager. For each
  *         type there is an associated class, example: 
- *         Type:GET_CATEGORIES_EVENT        Class: GetCategoriesEvent
+ *         Type:GET_CATEGORIES_EVENT        Class: GetCategoriesEvent fetch
  * 
  * 
  */
@@ -53,25 +53,25 @@ public enum EventType {
 	
 	GET_SEARCH_SUGGESTIONS_EVENT("http:/search/suggest/", RestContract.DEFAULT_CACHE_TIME),
 	
-	ADD_ITEM_TO_SHOPPING_CART_EVENT("https:/order/add/", null),
+	ADD_ITEM_TO_SHOPPING_CART_EVENT("https:/order/add?setDevice=mobileApi", null),
 	
-	REMOVE_ITEM_FROM_SHOPPING_CART_EVENT("https:/order/remove/", null),
+	REMOVE_ITEM_FROM_SHOPPING_CART_EVENT("https:/order/remove?setDevice=mobileApi", null),
 	
-	GET_SHOPPING_CART_ITEMS_EVENT("https:/order/cartdata/", RestContract.MIN_CACHE_TIME),
+	GET_SHOPPING_CART_ITEMS_EVENT("https:/order/cartdata?setDevice=mobileApi", RestContract.MIN_CACHE_TIME),
 	
 	GET_REGISTRATION_FORM_EVENT("register", RestContract.MAX_CACHE_TIME),
 	
 	GET_REGISTRATION_EDIT_FORM_EVENT("edit", RestContract.MAX_CACHE_TIME),
 	
-    CHANGE_PASSWORD_EVENT("https:/customer/changepass/", null),
+    CHANGE_PASSWORD_EVENT("https:/customer/changepass?setDevice=mobileApi", null),
 	
 	GET_CHANGE_PASSWORD_FORM_EVENT("changepassword", RestContract.MAX_CACHE_TIME),
 	
 	GET_FORGET_PASSWORD_FORM_EVENT("forgotpassword", RestContract.MAX_CACHE_TIME),
 
-    FORGET_PASSWORD_EVENT("https:/customer/forgotpassword/", null),
+    FORGET_PASSWORD_EVENT("https:/customer/forgotpassword?setDevice=mobileApi", null),
 	
-    REGISTER_ACCOUNT_EVENT("https:/customer/create/", null), 
+    REGISTER_ACCOUNT_EVENT("https:/customer/create?setDevice=mobileApi", null), 
     
     EDIT_ACCOUNT_EVENT("https:/customer/edit/", null),
     
@@ -89,9 +89,9 @@ public enum EventType {
     
     GET_FORMS_DATASET_LIST_EVENT,
     
-    GET_API_INFO("http:/main/md5/", RestContract.MIN_CACHE_TIME),
+    GET_API_INFO("http:/main/md5?setDevice=mobileApi", RestContract.MIN_CACHE_TIME),
         
-	GET_CUSTOMER("https:/customer/getdetails/", RestContract.MIN_CACHE_TIME),
+	GET_CUSTOMER("https:/customer/getdetails?setDevice=mobileApi", RestContract.MIN_CACHE_TIME),
 	
 	STORE_LOGIN,
 	
