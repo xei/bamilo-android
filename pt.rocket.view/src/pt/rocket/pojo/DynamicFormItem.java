@@ -629,6 +629,8 @@ public class DynamicFormItem {
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         boolean datePart = false;
         int controlWidth = RelativeLayout.LayoutParams.MATCH_PARENT;
+        
+        Log.i("CONTROL", " => "+this.entry.getLabel()+" "+this.entry.getInputType());
        
         if (null != this.entry) {
             
@@ -720,10 +722,11 @@ public class DynamicFormItem {
                 this.dataControl.setId( parent.getNextId() );
                 this.dataControl.setLayoutParams(params);
                 
+                
                 params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
                 params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
                 params.addRule(RelativeLayout.CENTER_VERTICAL);
-                params.rightMargin = 10;
+                params.rightMargin = 10; 
                 this.mandatoryControl = new TextView(this.context);
         		this.mandatoryControl.setLayoutParams(params);
         		this.mandatoryControl.setText("*");
@@ -731,18 +734,27 @@ public class DynamicFormItem {
         		this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
 
         		this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE : View.GONE);                
-        		dataContainer.addView( this.dataControl );  
+        		dataContainer.addView( this.dataControl );   
         		dataContainer.addView( this.mandatoryControl );
                 
                                 
                 String text ="";
                 if (null != this.entry.getLabel() && this.entry.getLabel().trim().length() > 0) {
                 	text = this.entry.getLabel();
-                } else if ( this.entry.getKey().equals( "birthday" ))
+                	((Button) this.dataControl).setText(text);
+                    ((Button) this.dataControl).setTextColor(context.getResources().getColor(R.color.form_text));
+                } else if ( this.entry.getKey().equals( "birthday" )){
+                    Log.i("ENTERED BIRTHDAY"," HERE ");
                 	text = context.getString( R.string.register_birthday );
+                	((Button) this.dataControl).setHint(text);
+                	((Button) this.dataControl).setHintTextColor(context.getResources().getColor(R.color.form_text_hint));
+                	this.dataControl.setPadding(19, 0, 0, 10);
+//                    ((Button) this.dataControl).setTextColor(context.getResources().getColor(R.color.form_text));
+                	
+                	
+                }
                 
-                ((Button) this.dataControl).setText(text);
-                ((Button) this.dataControl).setTextColor(context.getResources().getColor(R.color.form_text));
+                
 
                                 
                 String dialogTitle;
