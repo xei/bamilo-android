@@ -748,6 +748,7 @@ public class DynamicFormItem {
                 	text = context.getString( R.string.register_birthday );
                 	((Button) this.dataControl).setHint(text);
                 	((Button) this.dataControl).setHintTextColor(context.getResources().getColor(R.color.form_text_hint));
+                	((Button) this.dataControl).setTextColor(context.getResources().getColor(R.color.form_text));
                 	this.dataControl.setPadding(19, 0, 0, 10);
 //                    ((Button) this.dataControl).setTextColor(context.getResources().getColor(R.color.form_text));
                 	
