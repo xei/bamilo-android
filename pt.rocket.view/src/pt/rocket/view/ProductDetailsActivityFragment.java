@@ -771,8 +771,7 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
                     } else if (errorMessages.contains(Errors.CODE_PRODUCT_ADD_OVERQUANTITY)) {
                         msgRes = R.string.error_add_to_shopping_cart_quantity;
                     } else if (errorMessages.contains(Errors.CODE_ORDER_PRODUCT_ERROR_ADDING)) {
-                        List<String> validateMessages = event.errorMessages
-                                .get(Errors.JSON_VALIDATE_TAG);
+                        List<String> validateMessages = event.errorMessages.get(Errors.JSON_VALIDATE_TAG);
                         if (validateMessages != null && validateMessages.size() > 0) {
                             message = validateMessages.get(0);
                         } else {
