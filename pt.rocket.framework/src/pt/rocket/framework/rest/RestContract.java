@@ -38,6 +38,11 @@ public class RestContract {
 	public static String AUTHENTICATION_USER = null;
 	public static String AUTHENTICATION_PASS = null;
 	
+    // AUTH CONSTANTS										//false
+    public static final boolean USE_AUTHENTICATION_TEST = true;
+    public static final String AUTHENTICATION_USER_TEST = "rocket";
+    public static final String AUTHENTICATION_PASS_TEST = "rock4me";
+	
 	// REST Method types
 	public static final int METHOD_GET = 0;
 	public static final int METHOD_POST = 1;

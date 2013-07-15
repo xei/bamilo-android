@@ -59,6 +59,7 @@ public class EventManager {
 			Set<EventType> eventTypes) {
 		for (EventType type : eventTypes) {
 			addResponseListener(type, eventListener);
+			
 		}
 	}
 
@@ -85,9 +86,12 @@ public class EventManager {
 			if (listeners == null) {
 				listeners = new CopyOnWriteArraySet<EL>();
 				map.put(eventType, listeners);
+			}else{
 			}
 		}
+
 		listeners.add(eventListener);
+
 	}
 
 	public void removeRequestListener(EventType eventType,
@@ -178,6 +182,7 @@ public class EventManager {
 					"Triggering events without listeners don't make sense.\nThere is no registered listener for event type "
 							+ event.getType());
 			return;
+		}else{
 		}
 		for (EventListener<T> listener : eventListeners) {
 			if (logTriggerVerbose)
