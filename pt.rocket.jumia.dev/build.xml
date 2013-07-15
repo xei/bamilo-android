@@ -45,9 +45,23 @@
         <isset property="env.BUILD_VERSION_NUMBER" />
     </condition>
     
+    <condition property="version.code.set" else="false">
+      <isset property="version.code"/>
+    </condition>
+    
     <echo>${version.code}</echo>
     <echo>1.0.${version.code}</echo>
     <echo>${version.name}</echo>
+    
+    <if condition="${version.code.set}">		
+	<then>
+	    	<replaceregexp match='android:versionCode="10108"' 
+        			replace="android:versionCode = ${version.code}" flags="g"> 
+        	<fileset dir="${basedir}">
+        		<include name="AndroidManifest.xml"/>
+    		</fileset>
+    		</replaceregexp>
+	</then>
 
     <!-- The project.properties file is created and updated by the 'android'
          tool, as well as ADT.
