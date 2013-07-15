@@ -1,7 +1,7 @@
 /**
  * 
  */
-package pt.rocket.view;
+package pt.rocket.view.fragments;
 
 import java.util.Collection;
 import java.util.EnumSet;
@@ -17,36 +17,35 @@ import pt.rocket.framework.objects.ImageTeaserGroup;
 import pt.rocket.framework.objects.ProductTeaserGroup;
 import pt.rocket.framework.objects.TeaserSpecification;
 import pt.rocket.framework.utils.AnalyticsGoogle;
-import pt.rocket.utils.BaseActivity;
-import pt.rocket.utils.CheckVersion;
-import pt.rocket.utils.HockeyStartup;
-import pt.rocket.utils.MyMenuItem;
-import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.OnActivityFragmentInteraction;
+import pt.rocket.view.R;
+import pt.rocket.view.fragments.BaseFragment;
+import pt.rocket.view.fragments.CategoriesFragment;
 import pt.rocket.view.fragments.CategoryTeaserFragment;
 import pt.rocket.view.fragments.FragmentType;
 import pt.rocket.view.fragments.MainOneSlideFragment;
 import pt.rocket.view.fragments.ProducTeaserListFragment;
 import pt.rocket.view.fragments.StaticBannerFragment;
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 import de.akquinet.android.androlog.Log;
 
 /**
- * @author nutzer2
- * @modified manuelsilva
+ * 
+ * @author manuelsilva
  */
-public class TeaserFragmentActivity extends BaseActivity {
-    private final static String TAG = TeaserFragmentActivity.class.getSimpleName();
+public class HomeTeaserFragment extends BaseFragment {
+    private final static String TAG = HomeTeaserFragment.class.getSimpleName();
 
-    private LinearLayout container;
     private LayoutInflater mInflater;
     private Fragment fragmentMainOneSlide;
     private Fragment fragmentStaticBanner;
@@ -54,7 +53,8 @@ public class TeaserFragmentActivity extends BaseActivity {
     private Fragment fragmentProductListTeaser;
     private Fragment fragmentBrandsListTeaser;
     private OnActivityFragmentInteraction mCallback;
-
+    private LinearLayout mainView;
+    
     private OnClickListener teaserClickListener = new OnClickListener() {
         
         @Override
@@ -67,11 +67,11 @@ public class TeaserFragmentActivity extends BaseActivity {
                 switch (targetType) {
                 case CATEGORY:
                     ActivitiesWorkFlow
-                            .categoriesActivityNew(TeaserFragmentActivity.this, targetUrl);
+                            .categoriesActivityNew(getActivity(), targetUrl);
                     break;
                 case PRODUCT_LIST:
                     if (targetUrl != null) {
-                        ActivitiesWorkFlow.productsActivity(TeaserFragmentActivity.this,
+                        ActivitiesWorkFlow.productsActivity(getActivity(),
                                 targetUrl, targetTitle, null, R.string.gteaser_prefix,
                                 AnalyticsGoogle.prepareNavigationPath(targetUrl));
                     }
@@ -79,12 +79,17 @@ public class TeaserFragmentActivity extends BaseActivity {
                 case PRODUCT:
                     if (targetUrl != null) {
                         ActivitiesWorkFlow.productsDetailsActivity(
-                                TeaserFragmentActivity.this, targetUrl,
+                                getActivity(), targetUrl,
                                 R.string.gteaserprod_prefix, "");
                     }
                     break;
+                case BRAND:
+                    if (targetUrl != null) {
+                        Toast.makeText(getActivity(), "CLICKED ON brand"+targetUrl , Toast.LENGTH_LONG);
+                    }
+                    break;
                 default:
-                    Toast.makeText(TeaserFragmentActivity.this,
+                    Toast.makeText(getActivity(),
                             "The target for this teaser is not defined!",
                             Toast.LENGTH_LONG).show();
                     break;
@@ -94,16 +99,35 @@ public class TeaserFragmentActivity extends BaseActivity {
     };
 
     /**
+     * Get instance
+     * 
+     * @return
+     */
+    public static HomeTeaserFragment newInstance(String categoryUrl) {
+        // return new CategoriesFragment();
+        HomeTeaserFragment teasersFragment = new HomeTeaserFragment();
+        return teasersFragment;
+        
+    } 
+    
+    /**
 	 */
-    public TeaserFragmentActivity() {
-        super(R.layout.search,
-                NavigationAction.Home,
-                EnumSet.noneOf(MyMenuItem.class),
-                EnumSet.of(EventType.GET_TEASERS_EVENT),
-                EnumSet.noneOf(EventType.class),
-                0, R.layout.teasers_fragments);
+    public HomeTeaserFragment() {
+        super(EnumSet.of(EventType.GET_TEASERS_EVENT),
+                EnumSet.noneOf(EventType.class));
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see android.support.v4.app.Fragment#onAttach(android.app.Activity)
+     */
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        Log.i(TAG, "ON ATTACH");
+    }
+    
     /*
      * (non-Javadoc)
      * 
@@ -113,44 +137,32 @@ public class TeaserFragmentActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        mInflater = (LayoutInflater) this
+        mInflater = (LayoutInflater) getActivity()
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        container = (LinearLayout) findViewById(R.id.teasers_container);
         
-        changeSearchBarBehavior();
         triggerContentEvent(new RequestEvent(EventType.GET_TEASERS_EVENT));
-        HockeyStartup.register(this);
 
+    }
+    
+    /*
+     * (non-Javadoc)
+     * 
+     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
+     * android.view.ViewGroup, android.os.Bundle)
+     */
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+        Log.i(TAG, "ON CREATE VIEW");
+        View view;
+        view = inflater.inflate(R.layout.teasers_fragments_element, container, false);
+        mainView = (LinearLayout) view.findViewById(R.id.teasers_container);
+        return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (CheckVersion.needsToShowDialog()) {
-            CheckVersion.showDialog(this);
-        }
-
-        AnalyticsGoogle.get().trackPage(R.string.ghomepage);
-    }
-
-    private void changeSearchBarBehavior() {
-        final EditText autoComplete = (EditText) findViewById(R.id.search_component);
-        autoComplete.setEnabled(false);
-        autoComplete.setFocusable(false);
-        autoComplete.setFocusableInTouchMode(false);
-        findViewById(R.id.search_overlay).setOnClickListener(
-                new OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        ActivitiesWorkFlow.searchActivity(TeaserFragmentActivity.this);
-                    }
-                });
-    }
-
-    @Override
-    public void onBackPressed() {
-        finish();
     }
 
     private void processResult(Collection<? extends TeaserSpecification<?>> result) {
@@ -175,7 +187,7 @@ public class TeaserFragmentActivity extends BaseActivity {
                             .getTeasers());
                 }
                 View view = mInflater.inflate(R.layout.main_one_fragment_frame, null, false);
-                container.addView(view);
+                mainView.addView(view);
                 fragmentManagerTransition(R.id.main_one_frame, fragmentMainOneSlide, false, false);
                 break;
             case STATIC_BANNER:
@@ -197,7 +209,7 @@ public class TeaserFragmentActivity extends BaseActivity {
 
                 }
                 View viewTeaser = mInflater.inflate(R.layout.static_teaser_frame, null, false);
-                container.addView(viewTeaser);
+                mainView.addView(viewTeaser);
                 fragmentManagerTransition(R.id.static_teaser_frame, fragmentStaticBanner, false, false);
                 break;
             case CATEGORIES:
@@ -218,7 +230,7 @@ public class TeaserFragmentActivity extends BaseActivity {
 
                 }
                 View viewGeneric = mInflater.inflate(R.layout.generic_frame, null, false);
-                container.addView(viewGeneric);
+                mainView.addView(viewGeneric);
                 fragmentManagerTransition(R.id.content_frame, fragmentCategoryTeaser, false, false);
                 break;
             case PRODUCT_LIST:
@@ -238,7 +250,7 @@ public class TeaserFragmentActivity extends BaseActivity {
                     mCallback.sendValuesToFragment(0, (ProductTeaserGroup) teaserSpecification);
                 }
                 View viewProductList = mInflater.inflate(R.layout.product_list_frame, null, false);
-                container.addView(viewProductList);
+                mainView.addView(viewProductList);
                 fragmentManagerTransition(R.id.products_list_frame, fragmentProductListTeaser, false, false);
                 break;
             case BRANDS_LIST:
@@ -258,13 +270,28 @@ public class TeaserFragmentActivity extends BaseActivity {
                     mCallback.sendValuesToFragment(0, (ProductTeaserGroup) teaserSpecification);
                 }
                 View viewBrandList = mInflater.inflate(R.layout.brands_list_frame, null, false);
-                container.addView(viewBrandList);
+                mainView.addView(viewBrandList);
                 fragmentManagerTransition(R.id.brands_list_frame, fragmentBrandsListTeaser, false, false);
                 break;
             }
         }
     }
 
+    
+    protected void fragmentManagerTransition(int container, Fragment fragment, Boolean addToBackStack, Boolean animated) {
+        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+        // Animations
+        if(animated)
+            fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
+        // Replace
+        fragmentTransaction.replace(container, fragment);
+        // BackStack
+        if (addToBackStack)
+            fragmentTransaction.addToBackStack(null);
+        // Commit
+        fragmentTransaction.commit();
+    }
+    
     /*
      * (non-Javadoc)
      * 
@@ -276,11 +303,6 @@ public class TeaserFragmentActivity extends BaseActivity {
         // Get Teasers
         processResult((Collection<? extends TeaserSpecification<?>>) event.result);
         return true;
-    }
-    @Override
-    public void onSwitchFragment(FragmentType type, Boolean addToBackStack) {
-        // TODO Auto-generated method stub
-        
     }
 
 }

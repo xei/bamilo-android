@@ -45,8 +45,8 @@
     <string name="gaid_ke_live">aaaaaaaaa</string>
     <string name="gaid_ma_test">aaaaaaaaa</string>
     <string name="gaid_ma_live">aaaaaaaaa</string>
-    <string name="gaid_eg_test">aaaaaaaaa</string>
-    <string name="gaid_eg_live">aaaaaaaaa</string>
+<!--     <string name="gaid_eg_test">aaaaaaaaa</string> -->
+<!--     <string name="gaid_eg_live">aaaaaaaaa</string> -->
     <string name="gaid_ci_test">aaaaaaaaa</string>
     <string name="gaid_ci_live">aaaaaaaaa</string>
 
@@ -80,8 +80,8 @@
     <string name="fkey_ke_live">toupdate</string>
     <string name="fkey_ma_test">toupdate</string>
     <string name="fkey_ma_live">toupdate</string>
-    <string name="fkey_eg_test">toupdate</string>
-    <string name="fkey_eg_live">toupdate</string>
+<!--     <string name="fkey_eg_test">toupdate</string> -->
+<!--     <string name="fkey_eg_live">toupdate</string> -->
     <string name="fkey_ci_test">toupdate</string>
     <string name="fkey_ci_live">toupdate</string>
 

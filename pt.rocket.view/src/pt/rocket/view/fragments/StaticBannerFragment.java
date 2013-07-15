@@ -12,8 +12,8 @@ import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.objects.ITargeting;
 import pt.rocket.framework.objects.ImageTeaserGroup.TeaserImage;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.view.HomeFragmentActivity;
 import pt.rocket.view.R;
-import pt.rocket.view.TeaserFragmentActivity;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -39,7 +39,7 @@ public class StaticBannerFragment extends BaseFragment {
 
     private static final int MAX_IMAGES_ON_SCREEN = 2;
     
-    private TeaserFragmentActivity parentActivity;
+    private HomeFragmentActivity parentActivity;
     
     private ArrayList<TeaserImage> teaserImageArrayList;
     
@@ -82,7 +82,7 @@ public class StaticBannerFragment extends BaseFragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         Log.i(TAG, "ON ATTACH");
-        parentActivity = (TeaserFragmentActivity) activity;
+        parentActivity = (HomeFragmentActivity) activity;
        
     }
 

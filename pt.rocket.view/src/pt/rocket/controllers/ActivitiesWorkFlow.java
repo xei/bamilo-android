@@ -14,6 +14,7 @@ import pt.rocket.view.ChangeCountryFragmentActivity;
 import pt.rocket.view.CheckoutStep5FragmentActivity;
 import pt.rocket.view.CheckoutWebActivityFragment;
 import pt.rocket.view.ForgotPasswordActivity;
+import pt.rocket.view.HomeFragmentActivity;
 import pt.rocket.view.InnerCategoriesActivity;
 import pt.rocket.view.MyAccountActivityFragment;
 import pt.rocket.view.MyAccountUserDataActivityFragment;
@@ -327,7 +328,7 @@ public class ActivitiesWorkFlow {
 	 */
 	public static void homePageActivity(Activity activity) {
 		Intent intent = new Intent(activity.getApplicationContext(),
-				TeaserFragmentActivity.class);
+				HomeFragmentActivity.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		activity.startActivity(intent);
 		addStandardTransition(activity);

@@ -12,8 +12,8 @@ import pt.rocket.framework.objects.ITargeting;
 import pt.rocket.framework.objects.ProductTeaserGroup;
 import pt.rocket.framework.objects.ProductTeaserGroup.TeaserProduct;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.view.HomeFragmentActivity;
 import pt.rocket.view.R;
-import pt.rocket.view.TeaserFragmentActivity;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -38,7 +38,7 @@ public class ProducTeaserListFragment extends BaseFragment {
 
     private static final String TAG = LogTagHelper.create(ProducTeaserListFragment.class);
 
-    private TeaserFragmentActivity parentActivity;
+    private HomeFragmentActivity parentActivity;
 
     private ProductTeaserGroup productTeaserGroup;
 
@@ -84,7 +84,7 @@ public class ProducTeaserListFragment extends BaseFragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         Log.i(TAG, "ON ATTACH");
-        parentActivity = (TeaserFragmentActivity) activity;
+        parentActivity = (HomeFragmentActivity) activity;
     }
 
     /*
