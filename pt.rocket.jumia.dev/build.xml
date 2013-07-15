@@ -51,11 +51,12 @@
     
     <echo>${version.code}</echo>
     <echo>1.0.${version.code}</echo>
-    <echo>${version.name}</echo>
+    <echo>${version.name}&quot;&quot;</echo>
+    
     
 <!--     <if condition="${version.code.set}">		 -->
 <!-- 	<then> -->
-	    	<replaceregexp match='android:versionCode="10108"' 
+	    	<replaceregexp match='android:versionCode=&quot;10108&quot;' 
         			replace="android:versionCode = ${version.code}" flags="g"> 
         	<fileset dir="${basedir}">
         		<include name="AndroidManifest.xml"/>
