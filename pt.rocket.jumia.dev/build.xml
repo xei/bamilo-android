@@ -49,21 +49,27 @@
       <isset property="version.code"/>
     </condition>
     
+	<!--     To remove -->
     <echo>${version.code}</echo>
     <echo>1.0.${version.code}</echo>
     <echo>${version.name}&quot;&quot;</echo>
     
     
-<!--     <if condition="${version.code.set}">		 -->
-<!-- 	<then> -->
-	    	<replaceregexp match="android:versionCode=&quot;10108&quot;" 
-        			replace="android:versionCode = &quot;${version.code}&quot;" flags="g"> 
-        	<fileset dir="${basedir}">
-        		<include name="AndroidManifest.xml"/>
-    		</fileset>
-    		</replaceregexp>
-<!-- 	</then> -->
-<!-- 	</if> -->
+	<!-- Manual increment of version code and version name -->
+	    <replaceregexp match="android:versionCode=&quot;10108&quot;" 
+        		replace="android:versionCode = &quot;${version.code}&quot;" flags="g"> 
+        <fileset dir="${basedir}">
+        	<include name="AndroidManifest.xml"/>
+    	</fileset>
+    	</replaceregexp>
+    	
+	    <replaceregexp match="android:versionName=&quot;1.0.2&quot;" 
+        		replace="android:versionCode = &quot;${version.name}&quot;" flags="g"> 
+        <fileset dir="${basedir}">
+        	<include name="AndroidManifest.xml"/>
+    	</fileset>
+    	</replaceregexp>
+
 
     <!-- The project.properties file is created and updated by the 'android'
          tool, as well as ADT.
