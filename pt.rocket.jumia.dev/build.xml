@@ -64,7 +64,7 @@
     	</replaceregexp>
     	
 	    <replaceregexp match="android:versionName=&quot;1.0.2&quot;" 
-        		replace="android:versionCode = &quot;${version.name}&quot;" flags="g"> 
+        		replace="android:versionName = &quot;${version.name}&quot;" flags="g"> 
         <fileset dir="${basedir}">
         	<include name="AndroidManifest.xml"/>
     	</fileset>
