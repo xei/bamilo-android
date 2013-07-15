@@ -56,8 +56,8 @@
     
 <!--     <if condition="${version.code.set}">		 -->
 <!-- 	<then> -->
-	    	<replaceregexp match='android:versionCode=&quot;10108&quot;' 
-        			replace="android:versionCode = ${version.code}" flags="g"> 
+	    	<replaceregexp match="android:versionCode=&quot;10108&quot;" 
+        			replace="android:versionCode = &quot;${version.code}&quot;" flags="g"> 
         	<fileset dir="${basedir}">
         		<include name="AndroidManifest.xml"/>
     		</fileset>
