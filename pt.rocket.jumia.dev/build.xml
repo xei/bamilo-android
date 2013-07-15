@@ -62,6 +62,7 @@
     		</fileset>
     		</replaceregexp>
 	</then>
+	</if>
 
     <!-- The project.properties file is created and updated by the 'android'
          tool, as well as ADT.
