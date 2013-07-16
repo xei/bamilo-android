@@ -27,6 +27,7 @@ import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.dialogfragments.DialogDatePickerFragment;
 import pt.rocket.utils.dialogfragments.DialogDatePickerFragment.OnDatePickerDialogListener;
 import pt.rocket.utils.RadioGroupLayout;
+import pt.rocket.utils.UIUtils;
 import pt.rocket.view.R;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -37,6 +38,7 @@ import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
@@ -93,6 +95,8 @@ public class DynamicFormItem {
     private DialogDatePickerFragment dialogDate;
 
 	private int errorColor;
+	
+	private float screenDensity ;
 
     /**
      * The constructor for the DynamicFormItem
@@ -110,7 +114,7 @@ public class DynamicFormItem {
     public DynamicFormItem(DynamicForm parent, Context context, IFormField entry) {
         this.context = context;
         this.parent = parent;
-
+        this.screenDensity = context.getResources().getDisplayMetrics().density;
         this.entry = entry;
         this.control = null;
         this.errorControl = null;
@@ -739,6 +743,7 @@ public class DynamicFormItem {
                 
                                 
                 String text ="";
+                
                 if (null != this.entry.getLabel() && this.entry.getLabel().trim().length() > 0) {
                 	text = this.entry.getLabel();
                 	((Button) this.dataControl).setText(text);
@@ -749,7 +754,7 @@ public class DynamicFormItem {
                 	((Button) this.dataControl).setHint(text);
                 	((Button) this.dataControl).setHintTextColor(context.getResources().getColor(R.color.form_text_hint));
                 	((Button) this.dataControl).setTextColor(context.getResources().getColor(R.color.form_text));
-                	this.dataControl.setPadding(19, 0, 0, 10);
+                	this.dataControl.setPadding(UIUtils.dpToPx(13, screenDensity), 0, 0, 10);
 //                    ((Button) this.dataControl).setTextColor(context.getResources().getColor(R.color.form_text));
                 	
                 	
@@ -800,7 +805,7 @@ public class DynamicFormItem {
                 ((ViewGroup) this.control).addView(dataContainer);
                 ((ViewGroup) this.control).addView(this.errorControl);
                 
-                final CharSequence editText = ((EditText) this.dataControl).getHint();
+                final CharSequence editText = ((EditText) this.dataControl).getHint();             
                 
                 // Listeners
                 this.dataControl.setOnFocusChangeListener(new OnFocusChangeListener() {

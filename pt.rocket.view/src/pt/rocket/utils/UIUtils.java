@@ -37,4 +37,14 @@ public class UIUtils {
             ((TextView) view).setTypeface(robotoTypeFace);
         }
     }
+    
+    public static int dpToPx(int dp, float density)
+    {
+        return Math.round((float)dp * density);
+    } 
+
+    public static int spToPx(float dp, Context context)
+    {
+        return Math.round(dp * context.getResources().getDisplayMetrics().scaledDensity );
+    } 
 }

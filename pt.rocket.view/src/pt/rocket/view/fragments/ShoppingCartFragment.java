@@ -138,7 +138,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
      * Empty constructor
      */
     public ShoppingCartFragment() {
-        super(EnumSet.of(EventType.GET_SHOPPING_CART_ITEMS_EVENT, EventType.GET_MIN_ORDER_AMOUNT),
+        super(EnumSet.of(EventType.GET_SHOPPING_CART_ITEMS_EVENT),
                 EnumSet.of(EventType.REMOVE_ITEM_FROM_SHOPPING_CART_EVENT,
                         EventType.CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT));
     }
@@ -191,11 +191,11 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         setAppContentLayout();
 
         EventManager.getSingleton().addResponseListener(this,    
-                EnumSet.of(EventType.GET_SHOPPING_CART_ITEMS_EVENT, EventType.GET_MIN_ORDER_AMOUNT,
+                EnumSet.of(EventType.GET_SHOPPING_CART_ITEMS_EVENT,
                 EventType.REMOVE_ITEM_FROM_SHOPPING_CART_EVENT,
                 EventType.CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT));
 
-        EventManager.getSingleton().triggerRequestEvent(new RequestEvent( EventType.GET_MIN_ORDER_AMOUNT));
+//        EventManager.getSingleton().triggerRequestEvent(new RequestEvent( EventType.GET_MIN_ORDER_AMOUNT));
         
     }
 
@@ -235,7 +235,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         super.onStop();
         Log.i(TAG, "ON STOP");
         EventManager.getSingleton().removeResponseListener(this,    
-                EnumSet.of(EventType.GET_SHOPPING_CART_ITEMS_EVENT, EventType.GET_MIN_ORDER_AMOUNT,
+                EnumSet.of(EventType.GET_SHOPPING_CART_ITEMS_EVENT,
                 EventType.REMOVE_ITEM_FROM_SHOPPING_CART_EVENT,
                 EventType.CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT));
     }
@@ -294,10 +294,10 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
     protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
         Log.d(TAG, "onSuccessEvent: eventType = " + event.getType());
       switch(event.type) {
-      case GET_MIN_ORDER_AMOUNT:
-          minAmount = ((MinOrderAmount) event.result);
-          Log.d( TAG, "onSuccessEvent: minOrderAmount = " + minAmount.getValue() );
-          return false;
+//      case GET_MIN_ORDER_AMOUNT:
+//          minAmount = ((MinOrderAmount) event.result);
+//          Log.d( TAG, "onSuccessEvent: minOrderAmount = " + minAmount.getValue() );
+//          return false;
 //      case GET_SESSION_STATE:
 //          if ((Boolean) event.result) {
 //              goToCheckout();
@@ -434,26 +434,27 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
     }
     
     private void checkMinOrderAmount() {        
-        if (minAmount == null) {
-            Toast.makeText(getActivity(),
-                    getString(R.string.shoppingcart_minamount_waiting), Toast.LENGTH_LONG).show();
-        } else if (reduced_cart_price < minAmount.getValue()) {
-            String formattedMinAmount = CurrencyFormatter.formatCurrency(minAmount.getValue());
-            String message = String.format(getString(R.string.shoppingcart_minamount,
-                    formattedMinAmount));
-            dialog = DialogGenericFragment.newInstance(true, true, false,
-                    getString(R.string.shoppingcart_dialog_title),
-                    message, getString(R.string.continue_shopping), null, new OnClickListener() {
-
-                        @Override
-                        public void onClick(View v) {
-                            dialog.dismiss();
-                        }
-                    });
-            dialog.show( getActivity().getSupportFragmentManager(), null);
-        } else {
+//        if (minAmount == null) {
+//            Toast.makeText(getActivity(),
+//                    getString(R.string.shoppingcart_minamount_waiting), Toast.LENGTH_LONG).show();
+//        } else 
+//            if (reduced_cart_price < minAmount.getValue()) {
+//            String formattedMinAmount = CurrencyFormatter.formatCurrency(minAmount.getValue());
+//            String message = String.format(getString(R.string.shoppingcart_minamount,
+//                    formattedMinAmount));
+//            dialog = DialogGenericFragment.newInstance(true, true, false,
+//                    getString(R.string.shoppingcart_dialog_title),
+//                    message, getString(R.string.continue_shopping), null, new OnClickListener() {
+//
+//                        @Override
+//                        public void onClick(View v) {
+//                            dialog.dismiss();
+//                        }
+//                    });
+//            dialog.show( getActivity().getSupportFragmentManager(), null);
+//        } else {
             ActivitiesWorkFlow.loginActivity(getActivity(), true);
-        }
+//        }
     }    
     
     public void goToCheckout() {
