@@ -83,7 +83,7 @@ public class Homepage implements IJSONSerializable{
 		// TODO Auto-generated method stub
 		homepageId = jsonObject.getInt(JSON_HOMEPAGE_ID_TAG);
 		homepageTitle=jsonObject.getString(JSON_HOMEPAGE_TITLE_TAG);
-		defaultHomepage=jsonObject.getBoolean(JSON_HOMEPAGE_DEFAULT_TAG);
+		defaultHomepage=jsonObject.getInt(JSON_HOMEPAGE_DEFAULT_TAG)==1?true:false;
 		homepageLayout = jsonObject.getString(JSON_HOMEPAGE_LAYOUT_TAG);
 		JSONArray dataArray = jsonObject.getJSONArray(JSON_DATA_TAG);
 		int dataArrayLenght = dataArray.length();
