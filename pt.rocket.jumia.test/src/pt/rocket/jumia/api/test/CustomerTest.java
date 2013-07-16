@@ -1,29 +1,19 @@
 package pt.rocket.jumia.api.test;
 
-import android.content.ContentValues;
-import android.util.Log;
-
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-
 import junit.framework.Assert;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
-import pt.rocket.framework.objects.Address;
-import pt.rocket.framework.objects.Customer;
 import pt.rocket.jumia.api.constants.JsonConstants;
+import pt.rocket.jumia.api.constants.Services;
+import android.content.ContentValues;
+import android.util.Log;
 
-public class UserTest extends ApiBaseTest {
+public class CustomerTest extends ApiBaseTest {
 
-  private final String customerEmail = "rica@pt.pt";
-  private final String customerPassword = "123456";
+  private static final String CUSTOMER_USER= "rica@pt.pt";
+  private static String CUSTOMER_PASS= "123456";
 //    private final String customerEmail = "android_test_user@rocket-internet.pt";
 //    private final String customerPassword = "foodpanda";
 
@@ -36,11 +26,11 @@ public class UserTest extends ApiBaseTest {
       print("Starting user Login test - successs");
 
       ContentValues values = new ContentValues();
-      values.put("email", customerEmail);
+      values.put("email", CUSTOMER_USER);
 //      values.put("password", encryptMD5(customerPassword));
-      values.put("password", customerPassword);
+      values.put("password", CUSTOMER_PASS);
 
-      String result = executeRequest(JsonConstants.LOGIN_URL, values);
+      String result = executePostRequest(Services.LOGIN_URL, values);
       Log.e("LOGIN", ":"+result);
       try {
           JSONObject jsonObject = new JSONObject(result);
@@ -64,34 +54,31 @@ public class UserTest extends ApiBaseTest {
         print("Starting user register test - successs");
 
         ContentValues values = new ContentValues();
-        values.put("firstname", "Guilherme");
-        values.put("lastname", "Silva");
-        values.put("mobile", "123456789");
-        values.put("email", customerEmail);
-        values.put("password", encryptMD5(customerPassword));
-        values.put("refcode", "12345");
-        values.put("language_id", "1");
-        values.put("address_line1", "St. Austin Street");
-        values.put("address_line2", "St. Austin Street");
-        values.put("address_other", "San Francisco");
-        values.put("postcode", "12345");
-        values.put("city", "Porto");
-        values.put("position", "1");
-        values.put("mobile_country_code", "+351");
-        values.put("newsletter", "1");
-        values.put("area_id", "1");
-        values.put("city_id", "1");
+        values.put("first_name", "Paulo");
+        values.put("last_name", "Silva");
+        values.put("day", "16");
+        values.put("month", "12");
+        values.put("year", "1985");
+        values.put("gender", "male");
+//      values.put("newsletter", "1");
+        values.put("email", "jumia.test@test.tt");     
+        values.put("password", "123456");
+        values.put("password2", "123456");
+//        values.put("newsletter_categories_subscribed", "");
+//        values.put("password", encryptMD5(customerPassword));
 
-        String result = executeRequest(JsonConstants.REGISTER_URL, values);
 
+        String result = executePostRequest(Services.REGISTER_URL, values);
+
+        Log.e("REGISTER",":"+result);
         try {
             JSONObject jsonObject = new JSONObject(result);
             // Check if the status is true
-            Assert.assertTrue("Status is false \r\n" + result, jsonObject.getBoolean(JsonConstants.JSON_STATUS_TAG));
+            Assert.assertTrue("Status is false \r\n" + result, jsonObject.getBoolean(JsonConstants.JSON_SUCCESS_TAG));
 
-            // check if the data content is valid
-            JSONObject jsonCustomerObject = jsonObject.optJSONObject(JsonConstants.JSON_DATA_TAG);
-            Assert.assertNotNull("The json does not contain the customer object", jsonCustomerObject);
+//            // check if the data content is valid
+//            JSONObject jsonCustomerObject = jsonObject.optJSONObject(JsonConstants.JSON_DATA_TAG);
+//            Assert.assertNotNull("The json does not contain the customer object", jsonCustomerObject);
         } catch (JSONException e) {
             Assert.fail(e.getMessage());
         }
@@ -103,33 +90,7 @@ public class UserTest extends ApiBaseTest {
      * @param password
      * @return passwordEncrypted
      */
-    private static final String encryptMD5(final String password) {
-        try {
-
-            MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
-            digest.update(password.getBytes());
-            byte messageDigest[] = digest.digest();
-
-            StringBuffer hexString = new StringBuffer();
-            for (int i = 0; i < messageDigest.length; i++) {
-                String h = Integer.toHexString(0xFF & messageDigest[i]);
-                while (h.length() < 2)
-                    h = "0" + h;
-                hexString.append(h);
-            }
-            return hexString.toString();
-
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        return "";
-    }
-    
-
-    private void print(String message) {
-        System.out.println(message);
-    }
-    
+   
     
     
 //    private Customer getCustomer() {

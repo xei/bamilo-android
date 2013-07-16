@@ -1,5 +1,9 @@
 package pt.rocket.jumia.api.test;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Random;
+
 import junit.framework.Assert;
 
 import org.json.JSONException;
@@ -40,7 +44,7 @@ public class ApiBaseTest extends ServiceTestCase<RestService>{
 //        values.put("username", "rocket");
 //        values.put("password", "rock4me");
 //        
-//        String result = executeRequest(JsonConstants.API_MD5, values);
+//        String result = executePostRequest(JsonConstants.API_MD5, values);
 //        
 //        try {
 ////        	 Log.e("RESULT", ":"+result);
@@ -61,11 +65,54 @@ public class ApiBaseTest extends ServiceTestCase<RestService>{
 //        }
 //    }
     
-    protected String executeRequest(String serviceURL, ContentValues values) {
+    protected String executePostRequest(String serviceURL, ContentValues values) {
         
-    	Log.e("SERIVCE", ":"+serviceURL);
-        return RestClientSingletonTest.getSingleton().executePostRestUrlString(getContext(), JsonConstants.API_URL.concat(serviceURL),
+    	Log.e("POST SERIVCE", ":"+serviceURL);
+        return RestClientSingletonTest.getSingleton().executePostRestUrlString(getContext(), JsonConstants.API_URL.concat(serviceURL)+JsonConstants.JSON_DEVICE_TAG,
                 values);
         
+    }
+    
+    protected String executeGetRequest(String serviceURL) {
+        
+    	Log.e("GET SERIVCE", ":"+serviceURL);
+        return RestClientSingletonTest.getSingleton().executeGetRestUrlString(getContext(), JsonConstants.API_URL.concat(serviceURL));
+        
+    }
+    
+    protected static final String encryptMD5(final String password) {
+        try {
+
+            MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
+            digest.update(password.getBytes());
+            byte messageDigest[] = digest.digest();
+
+            StringBuffer hexString = new StringBuffer();
+            for (int i = 0; i < messageDigest.length; i++) {
+                String h = Integer.toHexString(0xFF & messageDigest[i]);
+                while (h.length() < 2)
+                    h = "0" + h;
+                hexString.append(h);
+            }
+            return hexString.toString();
+
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+    
+
+    protected void print(String message) {
+        System.out.println(message);
+    }
+    
+    
+    protected int randomNum(int min,int max){
+    	Random r= new Random();
+    	int Low = min;
+    	int High = max;
+    	int random = r.nextInt(High-Low) + Low;
+    	return random;
     }
 }

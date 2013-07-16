@@ -1,18 +1,24 @@
 package pt.rocket.jumia.api.constants;
 
 public class JsonConstants {
-	public static String API_URL = "https://mobile.jumia.com/mobapi/";
-	public static String API_MD5 = "main/md5/";
+	
+	public static String API_URL = "https://mobile.jumia.com/mobapi";
+	public static String API_MD5 = "/main/md5";
+	
 	public static final String JSON_SUCCESS_TAG = "success";
-	public static final String JSON_STATUS_TAG = "status";
-	public static final String JSON_TOTAL_TAG = "total";
 	public static final String JSON_ERROR_TAG = "error";
 	public static final String JSON_DATA_TAG = "data";
-	public static final String JSON_SESSION_TOKEN_TAG = "session_token";
+	public static final String JSON_METADATA_TAG = "metadata";
+	public static final String JSON_CATEGORY_URL_KEY_TAG = "url_key";
+	public static final String JSON_BRAND_URL_KEY_TAG = "url";
+	public static final String JSON_BRAND_BRAND_TAG = "brand";
+	public static final String JSON_RESULTS_TAG = "results";
 	
 	/**
-	 * Services
+	 * https set type
 	 */
-  public final static String REGISTER_URL = "customer/create";
-  public final static String LOGIN_URL = "customer/login/";
+	
+	public static final String JSON_DEVICE_TAG ="?setDevice=mobileApi";
+	
+
 }
