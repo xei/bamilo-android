@@ -6,6 +6,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.util.Log;
+
 /**
  * Object that deals with the parsing of a homepage
  * @author josedourado
@@ -87,11 +89,12 @@ public class Homepage implements IJSONSerializable{
 		homepageLayout = jsonObject.getString(JSON_HOMEPAGE_LAYOUT_TAG);
 		JSONArray dataArray = jsonObject.getJSONArray(JSON_DATA_TAG);
 		int dataArrayLenght = dataArray.length();
-		ArrayList<TeaserSpecification<?>> teaserSpecifications = new ArrayList<TeaserSpecification<?>>();
+//		ArrayList<TeaserSpecification<?>> teaserSpecifications = new ArrayList<TeaserSpecification<?>>();
 		for (int i = 0; i < dataArrayLenght; ++i) {
 			teaserSpecifications.add(TeaserSpecification.parse(dataArray
 					.getJSONObject(i)));
 		}
+		Log.i("code1", "code1 teaserSpec size : "+teaserSpecifications.size());
 		return true;
 	}
 

@@ -4,15 +4,18 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     >
-
-    <com.viewpagerindicator.TitlePageIndicator
-    	android:id="@+id/home_titles"
-    	android:layout_height="wrap_content"
-    	android:layout_width="fill_parent" />
-    
-    <org.holoeverywhere.widget.ViewPager
+    <android.support.v4.view.ViewPager
         android:id="@+id/home_viewpager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent" >
 
+        <android.support.v4.view.PagerTitleStrip
+            android:id="@+id/home_titles"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:background="#000"
+            android:textColor="#fff"
+            android:textSize="16.00sp" />
+    </android.support.v4.view.ViewPager>
 </LinearLayout>

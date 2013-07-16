@@ -4,10 +4,9 @@
     android:layout_height="wrap_content"
     >
     <LinearLayout 
-        android:id="@+id/teasers_container"
+        android:id="@+id/teasers_container2"
         android:layout_width="match_parent"
     	android:layout_height="wrap_content"
-    	android:minHeight="200dp"
     	android:orientation="vertical"
         >
     </LinearLayout>

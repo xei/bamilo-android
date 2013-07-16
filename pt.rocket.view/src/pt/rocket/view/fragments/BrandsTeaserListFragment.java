@@ -115,8 +115,8 @@ public class BrandsTeaserListFragment extends BaseFragment {
         ViewGroup container = (ViewGroup) view
                 .findViewById(R.id.teaser_group_container);
 
-        ((TextView) view.findViewById(R.id.teaser_group_title))
-                .setText(brandsTeaserGroup.getTitle());
+//        ((TextView) view.findViewById(R.id.teaser_group_title))
+//                .setText(brandsTeaserGroup.getTitle());
         for (TeaserBrand brand : brandsTeaserGroup.getTeasers()) {
             container.addView(createBrandTeaserView(brand, container, mInflater));
         }

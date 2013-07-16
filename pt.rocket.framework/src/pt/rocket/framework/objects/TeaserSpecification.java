@@ -46,6 +46,7 @@ public abstract class TeaserSpecification<T extends ITargeting> implements
 		TeaserGroupType type = TeaserGroupType.byValue(jsonObject.optInt(
 				JSON_GROUP_TYPE_TAG, -1));
 		TeaserSpecification<?> teaserSpecification = UnknownTeaserGroup.INSTANCE;
+		Log.i(TAG, "code1 inside types : "+type);
 		switch (type) {
 		case MAIN_ONE_SLIDE:
 		case STATIC_BANNER:
@@ -58,7 +59,7 @@ public abstract class TeaserSpecification<T extends ITargeting> implements
 			teaserSpecification = new CategoryTeaserGroup();
 			break;
 		case BRANDS_LIST:
-			teaserSpecification = new CategoryTeaserGroup();
+			teaserSpecification = new BrandsTeaserGroup();
 			break;
 		}
 		teaserSpecification.initialize(jsonObject);
@@ -104,7 +105,7 @@ public abstract class TeaserSpecification<T extends ITargeting> implements
 			for (int i = 0; i < teasersData.length(); i++) {
 				JSONObject teaserData = teasersData.optJSONObject(i);
 				if (teaserData != null) {
-				teasers.add(parseData(teaserData));
+					teasers.add(parseData(teaserData));
 				}
 			}
 

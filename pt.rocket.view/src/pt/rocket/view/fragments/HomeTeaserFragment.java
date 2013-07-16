@@ -9,8 +9,8 @@ import java.util.Iterator;
 
 import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.event.RequestEvent;
 import pt.rocket.framework.event.ResponseResultEvent;
+import pt.rocket.framework.objects.BrandsTeaserGroup;
 import pt.rocket.framework.objects.CategoryTeaserGroup;
 import pt.rocket.framework.objects.ITargeting.TargetType;
 import pt.rocket.framework.objects.ImageTeaserGroup;
@@ -19,13 +19,6 @@ import pt.rocket.framework.objects.TeaserSpecification;
 import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.utils.OnActivityFragmentInteraction;
 import pt.rocket.view.R;
-import pt.rocket.view.fragments.BaseFragment;
-import pt.rocket.view.fragments.CategoriesFragment;
-import pt.rocket.view.fragments.CategoryTeaserFragment;
-import pt.rocket.view.fragments.FragmentType;
-import pt.rocket.view.fragments.MainOneSlideFragment;
-import pt.rocket.view.fragments.ProducTeaserListFragment;
-import pt.rocket.view.fragments.StaticBannerFragment;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -33,8 +26,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 import de.akquinet.android.androlog.Log;
@@ -54,7 +47,7 @@ public class HomeTeaserFragment extends BaseFragment {
     private Fragment fragmentBrandsListTeaser;
     private OnActivityFragmentInteraction mCallback;
     private LinearLayout mainView;
-    
+    Collection<? extends TeaserSpecification<?>> fragmentContent;
     private OnClickListener teaserClickListener = new OnClickListener() {
         
         @Override
@@ -103,8 +96,7 @@ public class HomeTeaserFragment extends BaseFragment {
      * 
      * @return
      */
-    public static HomeTeaserFragment newInstance(String categoryUrl) {
-        // return new CategoriesFragment();
+    public static HomeTeaserFragment newInstance() {
         HomeTeaserFragment teasersFragment = new HomeTeaserFragment();
         return teasersFragment;
         
@@ -113,10 +105,15 @@ public class HomeTeaserFragment extends BaseFragment {
     /**
 	 */
     public HomeTeaserFragment() {
-        super(EnumSet.of(EventType.GET_TEASERS_EVENT),
+        super(EnumSet.noneOf(EventType.class),
                 EnumSet.noneOf(EventType.class));
     }
 
+    @Override
+    public void sendValuesToFragment(int identifier, Object values){
+        this.fragmentContent = (Collection<TeaserSpecification<?>>) values;
+    }
+    
     /*
      * (non-Javadoc)
      * 
@@ -139,9 +136,7 @@ public class HomeTeaserFragment extends BaseFragment {
         
         mInflater = (LayoutInflater) getActivity()
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        
-        triggerContentEvent(new RequestEvent(EventType.GET_TEASERS_EVENT));
-
+       
     }
     
     /*
@@ -157,38 +152,44 @@ public class HomeTeaserFragment extends BaseFragment {
         View view;
         view = inflater.inflate(R.layout.teasers_fragments_element, container, false);
         mainView = (LinearLayout) view.findViewById(R.id.teasers_container);
+        processResult(this.fragmentContent);
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        Log.i(TAG, "code1 : onResume");
     }
 
     private void processResult(Collection<? extends TeaserSpecification<?>> result) {
 
+        Log.i(TAG, "teaserType processResult "+result.size());
         for (Iterator iterator = result.iterator(); iterator.hasNext();) {
             TeaserSpecification<?> teaserSpecification = (TeaserSpecification<?>) iterator.next();
+            Log.i(TAG, "teaserType : "+teaserSpecification.getType());
             switch (teaserSpecification.getType()) {
             case MAIN_ONE_SLIDE:
-                if (fragmentMainOneSlide == null) {
-                    fragmentMainOneSlide = MainOneSlideFragment.getInstance();
-                    // This makes sure that the container activity has implemented
-                    // the callback interface. If not, it throws an exception
-                    try {
-                        mCallback = (OnActivityFragmentInteraction) fragmentMainOneSlide;
-                    } catch (ClassCastException e) {
-                        throw new ClassCastException(fragmentMainOneSlide.toString()
-                                + " must implement OnActivityFragmentInteraction");
+                if(((ImageTeaserGroup) teaserSpecification).getTeasers().size()>0){
+                    if (fragmentMainOneSlide == null) {
+                        fragmentMainOneSlide = MainOneSlideFragment.getInstance();
+                        // This makes sure that the container activity has implemented
+                        // the callback interface. If not, it throws an exception
+                        try {
+                            mCallback = (OnActivityFragmentInteraction) fragmentMainOneSlide;
+                        } catch (ClassCastException e) {
+                            throw new ClassCastException(fragmentMainOneSlide.toString()
+                                    + " must implement OnActivityFragmentInteraction");
+                        }
+    
+                        mCallback.sendListener(0, teaserClickListener);
+                        mCallback.sendValuesToFragment(0, ((ImageTeaserGroup) teaserSpecification)
+                                .getTeasers());
                     }
-
-                    mCallback.sendListener(0, teaserClickListener);
-                    mCallback.sendValuesToFragment(0, ((ImageTeaserGroup) teaserSpecification)
-                            .getTeasers());
+                    View view = mInflater.inflate(R.layout.main_one_fragment_frame, null, false);
+                    mainView.addView(view);
+                    fragmentManagerTransition(R.id.main_one_frame, fragmentMainOneSlide, false, false);
                 }
-                View view = mInflater.inflate(R.layout.main_one_fragment_frame, null, false);
-                mainView.addView(view);
-                fragmentManagerTransition(R.id.main_one_frame, fragmentMainOneSlide, false, false);
                 break;
             case STATIC_BANNER:
                 if (fragmentStaticBanner == null) {
@@ -255,7 +256,7 @@ public class HomeTeaserFragment extends BaseFragment {
                 break;
             case BRANDS_LIST:
                 if (fragmentBrandsListTeaser == null) {
-                    fragmentBrandsListTeaser = ProducTeaserListFragment.getInstance();
+                    fragmentBrandsListTeaser = BrandsTeaserListFragment.getInstance();
 
                     // This makes sure that the container activity has implemented
                     // the callback interface. If not, it throws an exception
@@ -267,7 +268,7 @@ public class HomeTeaserFragment extends BaseFragment {
                     }
 
                     mCallback.sendListener(0, teaserClickListener);
-                    mCallback.sendValuesToFragment(0, (ProductTeaserGroup) teaserSpecification);
+                    mCallback.sendValuesToFragment(0, (BrandsTeaserGroup) teaserSpecification);
                 }
                 View viewBrandList = mInflater.inflate(R.layout.brands_list_frame, null, false);
                 mainView.addView(viewBrandList);
@@ -299,9 +300,7 @@ public class HomeTeaserFragment extends BaseFragment {
      */
     @Override
     protected boolean onSuccessEvent(final ResponseResultEvent<?> event) {
-        Log.d(TAG, "Got teasers event: " + event);
-        // Get Teasers
-        processResult((Collection<? extends TeaserSpecification<?>>) event.result);
+       
         return true;
     }
 
