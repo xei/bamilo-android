@@ -18,9 +18,11 @@ public class Homepage implements IJSONSerializable{
 	private String homepageTitle;
 	private boolean defaultHomepage;
 	private ArrayList<TeaserSpecification<?>> teaserSpecifications;
+	private String homepageLayout;
 	protected static final String JSON_HOMEPAGE_ID_TAG = "homepage_id";
 	protected static final String JSON_HOMEPAGE_TITLE_TAG = "homepage_title";
 	protected static final String JSON_HOMEPAGE_DEFAULT_TAG = "homepage_default";
+	protected static final String JSON_HOMEPAGE_LAYOUT_TAG= "homepage_layout";
 	
 	/**
 	 * Constructor
@@ -48,14 +50,30 @@ public class Homepage implements IJSONSerializable{
 		return homepageTitle;
 	}
 	
+	/**
+	 * 
+	 * @return true if default, false otherwise
+	 */
 	public boolean isDefaultHomepage(){
 		return defaultHomepage;
 	}
 	
+	/**
+	 * 
+	 * @return teaser specification
+	 */
 	public ArrayList<TeaserSpecification<?>> getTeaserSpecification(){
 		return teaserSpecifications;
 	}
 	
+	
+	/**
+	 * 
+	 * @return homepage layout
+	 */
+	public String getHomepageLayout(){
+	    return homepageLayout;
+	}
 	
 	
 	
@@ -66,6 +84,7 @@ public class Homepage implements IJSONSerializable{
 		homepageId = jsonObject.getInt(JSON_HOMEPAGE_ID_TAG);
 		homepageTitle=jsonObject.getString(JSON_HOMEPAGE_TITLE_TAG);
 		defaultHomepage=jsonObject.getBoolean(JSON_HOMEPAGE_DEFAULT_TAG);
+		homepageLayout = jsonObject.getString(JSON_HOMEPAGE_LAYOUT_TAG);
 		JSONArray dataArray = jsonObject.getJSONArray(JSON_DATA_TAG);
 		int dataArrayLenght = dataArray.length();
 		ArrayList<TeaserSpecification<?>> teaserSpecifications = new ArrayList<TeaserSpecification<?>>();

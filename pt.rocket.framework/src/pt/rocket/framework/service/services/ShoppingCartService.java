@@ -80,8 +80,7 @@ public class ShoppingCartService extends DarwinService {
 				EventType.GET_SHOPPING_CART_ITEMS_EVENT,
 				EventType.REMOVE_ITEM_FROM_SHOPPING_CART_EVENT,
 				EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT,
-				EventType.CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT,
-				EventType.GET_MIN_ORDER_AMOUNT));
+				EventType.CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT));
 		EventManager.getSingleton().addResponseListener(
 				loginLogoutListener,
 				EnumSet.of(EventType.LOGOUT_EVENT, EventType.LOGIN_EVENT,
@@ -222,9 +221,9 @@ public class ShoppingCartService extends DarwinService {
 		case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
 			handleShoppingCartEvent((ChangeItemQuantityInShoppingCartEvent) event);
 			break;
-		case GET_MIN_ORDER_AMOUNT:
-			handleMinOrderAmountEvent(event);
-			break;
+//		case GET_MIN_ORDER_AMOUNT:
+//			handleMinOrderAmountEvent(event);
+//			break;
 		}
 	}
 }
