@@ -40,4 +40,16 @@ public class Services {
  	public final static String SEARCH_SPECIAL_PRODUCTS_URL = "/search/find/special-price/";
  	public final static String SEARCH_COUNT_URL = "/count/";
 	
+ 	public final static String SEARCH_CATEGORIES_URL ="/categories";
+ 	
+ 	public final static String SEARCH_BRAND_URL = "/brand";
+ 	
+ 	
+ 	public final static String FETCH_CATALOG_URL = "/main/fetchdata/?key=catalog";
+ 	public final static String FETCH_SEARCH_URL = "/main/fetchdata/?key=search";
+ 	public final static String FETCH_MAIN_URL = "/main/fetchdata/?key=main";
+ 	public final static String FETCH_CUSTOMER_URL = "/main/fetchdata/?key=customer";
+ 	public final static String FETCH_NEWSLETTER_URL = "/main/fetchdata/?key=newsletter";
+ 	public final static String FETCH_RATING_URL = "/main/fetchdata/?key=rating";
+ 	public final static String FETCH_ORDER_URL = "/main/fetchdata/?key=order";
 }

@@ -35,7 +35,7 @@ public class CustomerTest extends ApiBaseTest {
       try {
           JSONObject jsonObject = new JSONObject(result);
 //          // Check if the status is true
-          Assert.assertFalse("Status is false \r\n" + result, jsonObject.getBoolean(JsonConstants.JSON_SUCCESS_TAG));
+          Assert.assertTrue("Status is false \r\n" + result, jsonObject.getBoolean(JsonConstants.JSON_SUCCESS_TAG));
 //
 //          // check if the data content is valid
 //          JSONObject jsonCustomerObject = jsonObject.optJSONObject(JsonConstants.JSON_DATA_TAG);
@@ -46,43 +46,43 @@ public class CustomerTest extends ApiBaseTest {
   }
   
   
-    /**
-     * 
-     * @throws Throwable
-     */
-    public void test_09_userRegister_success() throws Throwable {
-        print("Starting user register test - successs");
-
-        ContentValues values = new ContentValues();
-        values.put("first_name", "Paulo");
-        values.put("last_name", "Silva");
-        values.put("day", "16");
-        values.put("month", "12");
-        values.put("year", "1985");
-        values.put("gender", "male");
-//      values.put("newsletter", "1");
-        values.put("email", "jumia.test@test.tt");     
-        values.put("password", "123456");
-        values.put("password2", "123456");
-//        values.put("newsletter_categories_subscribed", "");
-//        values.put("password", encryptMD5(customerPassword));
-
-
-        String result = executePostRequest(Services.REGISTER_URL, values);
-
-        Log.e("REGISTER",":"+result);
-        try {
-            JSONObject jsonObject = new JSONObject(result);
-            // Check if the status is true
-            Assert.assertTrue("Status is false \r\n" + result, jsonObject.getBoolean(JsonConstants.JSON_SUCCESS_TAG));
-
-//            // check if the data content is valid
-//            JSONObject jsonCustomerObject = jsonObject.optJSONObject(JsonConstants.JSON_DATA_TAG);
-//            Assert.assertNotNull("The json does not contain the customer object", jsonCustomerObject);
-        } catch (JSONException e) {
-            Assert.fail(e.getMessage());
-        }
-    }
+//    /**
+//     * 
+//     * @throws Throwable
+//     */
+//    public void test_09_userRegister_success() throws Throwable {
+//        print("Starting user register test - successs");
+//
+//        ContentValues values = new ContentValues();
+//        values.put("first_name", "Paulo");
+//        values.put("last_name", "Silva");
+//        values.put("day", "16");
+//        values.put("month", "12");
+//        values.put("year", "1985");
+//        values.put("gender", "male");
+////      values.put("newsletter", "1");
+//        values.put("email", "jumia.test@test.tt");     
+//        values.put("password", "123456");
+//        values.put("password2", "123456");
+////        values.put("newsletter_categories_subscribed", "");
+////        values.put("password", encryptMD5(customerPassword));
+//
+//
+//        String result = executePostRequest(Services.REGISTER_URL, values);
+//
+//        Log.e("REGISTER",":"+result);
+//        try {
+//            JSONObject jsonObject = new JSONObject(result);
+//            // Check if the status is true
+//            Assert.assertTrue("Status is false \r\n" + result, jsonObject.getBoolean(JsonConstants.JSON_SUCCESS_TAG));
+//
+////            // check if the data content is valid
+////            JSONObject jsonCustomerObject = jsonObject.optJSONObject(JsonConstants.JSON_DATA_TAG);
+////            Assert.assertNotNull("The json does not contain the customer object", jsonCustomerObject);
+//        } catch (JSONException e) {
+//            Assert.fail(e.getMessage());
+//        }
+//    }
 
     /**
      * function md5 encryption for passwords

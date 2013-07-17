@@ -13,6 +13,9 @@ public class JsonConstants {
 	public static final String JSON_BRAND_URL_KEY_TAG = "url";
 	public static final String JSON_BRAND_BRAND_TAG = "brand";
 	public static final String JSON_RESULTS_TAG = "results";
+	public static final String JSON_PRICE_TAG = "price";
+	public static final String JSON_SUGGESTION_TAG = "suggestions";
+	public static final String JSON_PRODUCT_COUNT_TAG ="product_count";
 	
 	/**
 	 * https set type
