@@ -11,10 +11,12 @@ import pt.rocket.framework.components.ScrollViewEx;
 import pt.rocket.framework.components.ScrollViewEx.OnScrollBottomReachedListener;
 import pt.rocket.framework.event.EventManager;
 import pt.rocket.framework.event.EventType;
+import pt.rocket.framework.event.RequestEvent;
 import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.event.events.GetProductReviewsEvent;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.ProductRatingPage;
+import pt.rocket.framework.objects.RatingOption;
 import pt.rocket.framework.objects.ProductReviewComment;
 import pt.rocket.framework.service.ServiceManager;
 import pt.rocket.framework.service.services.ProductService;
@@ -101,6 +103,7 @@ public class PopularityFragment extends BaseFragment {
         selectedProduct = ServiceManager.SERVICES.get(ProductService.class).getCurrentProduct();
         inflater = LayoutInflater.from(getActivity());
         triggerContentEvent(new GetProductReviewsEvent(selectedProduct.getUrl(), pageNumber));
+        
     }
 
     /*
@@ -301,13 +304,22 @@ public class PopularityFragment extends BaseFragment {
             final TextView textReview = (TextView) theInflatedView.findViewById(R.id.textreview);
             final RatingBar userRating = (RatingBar) theInflatedView.findViewById(R.id.user_rating);
             final TextView titleReview = (TextView) theInflatedView.findViewById(R.id.title_review);
+            final TextView optionTitle = (TextView) theInflatedView.findViewById(R.id.quality_title_option);
+            
+            ArrayList<RatingOption> ratingOptionArray= new ArrayList<RatingOption>();
+            ratingOptionArray = review.getRatingOptions();
 
             final String[] stringCor = review.getDate().split(" ");
             userName.setText(review.getName() + ",");
             userDate.setText(stringCor[0]);
             textReview.setText(review.getComments());
-            userRating.setRating((float) review.getRating());
+            
+            userRating.setRating((float) ratingOptionArray.get(0).getRating());
+            
             titleReview.setText(review.getTitle());
+            
+            optionTitle.setText(ratingOptionArray.get(0).getTitle());
+            
             theInflatedView.setOnClickListener(new OnClickListener() {
 
                 @Override

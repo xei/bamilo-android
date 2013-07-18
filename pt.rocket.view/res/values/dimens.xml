@@ -21,6 +21,7 @@
     <dimen name="margin_mid">8dp</dimen>
     <dimen name="margin_large">12dp</dimen>
     <dimen name="margin_huge">16dp</dimen>
+    <dimen name="margin_midhuge">24dp</dimen>
     <dimen name="margin_veryhuge">32dp</dimen>
     <dimen name="divider_height">1dp</dimen>
     <dimen name="distance_item_small">24dp</dimen>

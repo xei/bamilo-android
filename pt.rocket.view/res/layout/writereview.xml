@@ -71,36 +71,92 @@
                 android:textColor="@color/grey_middle"
                 android:textSize="@dimen/text_small" />
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin_large"
-                android:layout_marginTop="@dimen/margin_huge"
-                android:orientation="horizontal" >
+                android:orientation="vertical" >
 
-                <org.holoeverywhere.widget.TextView
-                    android:id="@+id/user_rating_text"
+                <LinearLayout
+                    android:id="@+id/label_container"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:text="@string/writereview_your_rating"
-                    android:textColor="@color/grey_middle"
-                    android:textSize="@dimen/text_mid" />
+                    android:layout_marginTop="@dimen/margin_huge"
+                    android:orientation="vertical" >
 
-                <RatingBar
-                    android:id="@+id/user_rating"
-                    style="@style/starRatingBarVeryBig"
+                    <org.holoeverywhere.widget.TextView
+                        android:id="@+id/quality_rating_text"
+                        android:layout_marginTop="@dimen/margin_midhuge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/rating_quality"
+                        android:textColor="@color/grey_middle"
+                        android:textSize="@dimen/text_mid" />
+
+                    <org.holoeverywhere.widget.TextView
+                        android:id="@+id/appearence_rating_text"
+                        android:layout_marginTop="@dimen/margin_midhuge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/rating_appearance"
+                        android:textColor="@color/grey_middle"
+                        android:textSize="@dimen/text_mid" />
+
+                    <org.holoeverywhere.widget.TextView
+                        android:id="@+id/price_rating_text"
+                        android:layout_width="wrap_content"
+                        android:layout_marginTop="@dimen/margin_midhuge"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/rating_price"
+                        android:textColor="@color/grey_middle"
+                        android:textSize="@dimen/text_mid" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/margin_huge" />
-            </LinearLayout>
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="@dimen/margin_huge"
+                    android:layout_toRightOf="@id/label_container"
+                    android:orientation="vertical" >
+
+                    <RatingBar
+                        android:id="@+id/quality_rating"
+                        style="@style/starRatingBarVeryBig"
+                        android:layout_marginTop="@dimen/margin_midhuge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                         />
+
+                    <RatingBar
+                        android:id="@+id/appearence_rating"
+                        android:layout_marginTop="@dimen/margin_midhuge"
+                        style="@style/starRatingBarVeryBig"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                         />
+
+                    <RatingBar
+                        android:id="@+id/price_rating"
+                        android:layout_marginTop="@dimen/margin_midhuge"
+                        style="@style/starRatingBarVeryBig"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                         />
+                </LinearLayout>
+            </RelativeLayout>
 
             <org.holoeverywhere.widget.EditText
                 android:id="@+id/name_box"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_mid"
+                android:layout_marginTop="@dimen/margin_midhuge"
                 android:background="@drawable/selector_edittext_bottomline"
                 android:hint="@string/name"
                 android:inputType="text"
