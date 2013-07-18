@@ -40,7 +40,7 @@ public class RatingOption implements IJSONSerializable{
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         // TODO Auto-generated method stub
-        rating = jsonObject.getInt(JSON_SIZE_STARS_FORE_TAG);
+        rating = jsonObject.getInt(JSON_SIZE_STARS_FORE_TAG)/20;
         optionTitle = jsonObject.getString(JSON_TYPE_TITLE_TAG);
         
         return true;
