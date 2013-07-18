@@ -34,23 +34,26 @@ import de.akquinet.android.androlog.Log;
 /**
  * 
  * @author sergiopereira
- *
+ * 
  */
-public abstract class BaseFragment extends Fragment implements ResponseListener, OnActivityFragmentInteraction {
+public abstract class BaseFragment extends Fragment implements ResponseListener,
+        OnActivityFragmentInteraction {
 
-//    private static final Set<EventType> HANDLED_EVENTS = EnumSet.of(
-//            EventType.CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT,
-//            EventType.REMOVE_ITEM_FROM_SHOPPING_CART_EVENT,
-//            EventType.GET_SHOPPING_CART_ITEMS_EVENT,
-//            EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT,
-//            EventType.INITIALIZE,
-//            EventType.LOGOUT_EVENT
-//            );
-    private static final Set<EventType> HANDLED_EVENTS = EnumSet.of(EventType.INITIALIZE, EventType.LOGOUT_EVENT);
-    
+    // private static final Set<EventType> HANDLED_EVENTS = EnumSet.of(
+    // EventType.CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT,
+    // EventType.REMOVE_ITEM_FROM_SHOPPING_CART_EVENT,
+    // EventType.GET_SHOPPING_CART_ITEMS_EVENT,
+    // EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT,
+    // EventType.INITIALIZE,
+    // EventType.LOGOUT_EVENT
+    // );
+    private static final Set<EventType> HANDLED_EVENTS = EnumSet.of(EventType.INITIALIZE,
+            EventType.LOGOUT_EVENT);
+
+    private static String writeReviewFragment = "pt.rocket.view.WriteReviewFragmentActivity";
 
     protected static final String TAG = LogTagHelper.create(BaseFragment.class);
-    
+
     protected View contentContainer;
 
     private NavigationAction action;
@@ -61,16 +64,21 @@ public abstract class BaseFragment extends Fragment implements ResponseListener,
 
     private final Set<EventType> allHandledEvents = EnumSet.copyOf(HANDLED_EVENTS);
 
-    private Set<EventType> userEvents;  
-    
-    public void sendValuesToFragment(int identifier, Object values){}
-    
-    public void sendPositionToFragment(int position){}
-    
-    public void sendListener(int identifier, OnClickListener clickListener){}
-    
-    public boolean allowBackPressed(){return true;}
-    
+    private Set<EventType> userEvents;
+
+    public void sendValuesToFragment(int identifier, Object values) {
+    }
+
+    public void sendPositionToFragment(int position) {
+    }
+
+    public void sendListener(int identifier, OnClickListener clickListener) {
+    }
+
+    public boolean allowBackPressed() {
+        return true;
+    }
+
     /**
      * Constructor
      */
@@ -96,10 +104,12 @@ public abstract class BaseFragment extends Fragment implements ResponseListener,
         super.onCreate(savedInstanceState);
         EventManager.getSingleton().addResponseListener(this, allHandledEvents);
     }
-    
+
     /*
      * (non-Javadoc)
-     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle)
+     * 
+     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
+     * android.view.ViewGroup, android.os.Bundle)
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -148,8 +158,7 @@ public abstract class BaseFragment extends Fragment implements ResponseListener,
         super.onStop();
         // UAirship.shared().getAnalytics().activityStopped(this);
     }
-    
-    
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -176,7 +185,7 @@ public abstract class BaseFragment extends Fragment implements ResponseListener,
     protected final void triggerContentEventProgress(RequestEvent event) {
         ((BaseActivity) getActivity()).showProgress();
         EventManager.getSingleton().triggerRequestEvent(event);
-    } 
+    }
 
     /**
      * 
@@ -228,12 +237,13 @@ public abstract class BaseFragment extends Fragment implements ResponseListener,
     @SuppressWarnings("unchecked")
     private void handleSuccessEvent(ResponseEvent event) {
         switch (event.getType()) {
-//        case GET_SHOPPING_CART_ITEMS_EVENT:
-//        case ADD_ITEM_TO_SHOPPING_CART_EVENT:
-//        case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
-//        case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
-//            ((BaseActivity) getActivity()).updateCartInfo(((ResponseResultEvent<ShoppingCart>) event).result);
-//            break;
+        // case GET_SHOPPING_CART_ITEMS_EVENT:
+        // case ADD_ITEM_TO_SHOPPING_CART_EVENT:
+        // case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
+        // case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
+        // ((BaseActivity) getActivity()).updateCartInfo(((ResponseResultEvent<ShoppingCart>)
+        // event).result);
+        // break;
         case LOGOUT_EVENT:
             getActivity().finish();
             ActivitiesWorkFlow.homePageActivity(getActivity());
@@ -258,88 +268,103 @@ public abstract class BaseFragment extends Fragment implements ResponseListener,
      */
     private void handleErrorEvent(final ResponseEvent event) {
         Log.i(TAG, "ON HANDLE ERROR EVENT");
-        if (event.errorCode.isNetworkError()) {
-            if (event.type == EventType.GET_SHOPPING_CART_ITEMS_EVENT) {
-                // updateCartInfo(null);
-            }
-            if (contentEvents.contains(event.type)) {
-                ((BaseActivity) getActivity()).showError(event.request);
-            } else if (userEvents.contains(event.type)) {
+        Log.i("ERROR ", " event manager " + event.toString() + " " + event.request.eventType
+                + " ACTIVITY " + ((BaseActivity) getActivity()).getLocalClassName());
+        if (!(event.request.eventType.equals(EventType.GET_CUSTOMER) && ((BaseActivity) getActivity())
+                .getLocalClassName().equals(writeReviewFragment))) {
+            if (event.errorCode.isNetworkError()) {
+                if (event.type == EventType.GET_SHOPPING_CART_ITEMS_EVENT) {
+                    // updateCartInfo(null);
+                }
+                if (contentEvents.contains(event.type)) {
+                    ((BaseActivity) getActivity()).showError(event.request);
+                } else if (userEvents.contains(event.type)) {
+                    ((BaseActivity) getActivity()).showContentContainer();
+
+                    // Remove dialog if exist
+                    if (dialog != null)
+                        dialog.dismiss();
+
+                    dialog = DialogGenericFragment.createNoNetworkDialog(getActivity(),
+                            new OnClickListener() {
+
+                                @Override
+                                public void onClick(View v) {
+                                    ((BaseActivity) getActivity()).showLoadingInfo();
+                                    EventManager.getSingleton().triggerRequestEvent(event.request);
+                                    dialog.dismiss();
+                                }
+                            }, false);
+                    dialog.show(((BaseActivity) getActivity()).getSupportFragmentManager(), null);
+                }
+                return;
+            } else if (event.errorCode == ErrorCode.REQUEST_ERROR) {
+                Map<String, ? extends List<String>> messages = event.errorMessages;
+                List<String> validateMessages = messages.get(Errors.JSON_VALIDATE_TAG);
+                String dialogMsg = "";
+                if (validateMessages == null || validateMessages.isEmpty()) {
+                    validateMessages = messages.get(Errors.JSON_ERROR_TAG);
+                }
+                if (validateMessages != null) {
+                    for (String message : validateMessages) {
+                        dialogMsg += message + "\n";
+                    }
+                } else {
+                    for (Entry<String, ? extends List<String>> entry : messages.entrySet()) {
+                        dialogMsg += entry.getKey() + ": " + entry.getValue().get(0) + "\n";
+                    }
+                }
+                if (dialogMsg.equals("")) {
+                    dialogMsg = getString(R.string.validation_errortext);
+                }
                 ((BaseActivity) getActivity()).showContentContainer();
-                
+
                 // Remove dialog if exist
-                if(dialog != null) dialog.dismiss();
-                
-                dialog = DialogGenericFragment.createNoNetworkDialog(getActivity(),
+                if (dialog != null)
+                    dialog.dismiss();
+
+                dialog = DialogGenericFragment.newInstance(
+                        true, true, false, getString(R.string.validation_title),
+                        dialogMsg, getResources().getString(R.string.ok_label), "",
                         new OnClickListener() {
 
                             @Override
                             public void onClick(View v) {
-                                ((BaseActivity)getActivity()).showLoadingInfo();
+                                int id = v.getId();
+                                if (id == R.id.button1) {
+                                    dialog.dismiss();
+                                }
+
+                            }
+
+                        });
+
+                dialog.show(((BaseActivity) getActivity()).getSupportFragmentManager(), null);
+                return;
+            } else if (!event.getSuccess()) {
+
+                // Remove dialog if exist
+                if (dialog != null)
+                    dialog.dismiss();
+
+                dialog = DialogGenericFragment.createServerErrorDialog(getActivity(),
+                        new OnClickListener() {
+
+                            @Override
+                            public void onClick(View v) {
+                                ((BaseActivity) getActivity()).showLoadingInfo();
+
                                 EventManager.getSingleton().triggerRequestEvent(event.request);
                                 dialog.dismiss();
                             }
                         }, false);
                 dialog.show(((BaseActivity) getActivity()).getSupportFragmentManager(), null);
+                return;
             }
-            return;
-        } else if (event.errorCode == ErrorCode.REQUEST_ERROR) {
-            Map<String, ? extends List<String>> messages = event.errorMessages;
-            List<String> validateMessages = messages.get(Errors.JSON_VALIDATE_TAG);
-            String dialogMsg = "";
-            if (validateMessages == null || validateMessages.isEmpty()) {
-                validateMessages = messages.get(Errors.JSON_ERROR_TAG);
-            }
-            if (validateMessages != null) {
-                for (String message : validateMessages) {
-                    dialogMsg += message + "\n";
-                }
-            } else {
-                for (Entry<String, ? extends List<String>> entry : messages.entrySet()) {
-                    dialogMsg += entry.getKey() + ": " + entry.getValue().get(0) + "\n";
-                }
-            }
-            if (dialogMsg.equals("")) {
-                dialogMsg = getString(R.string.validation_errortext);
-            }
+        }
+        else{
+            Log.i("TAG","ENTERED HERE");
             ((BaseActivity) getActivity()).showContentContainer();
-            
-            // Remove dialog if exist
-            if(dialog != null) dialog.dismiss();
-            
-            dialog = DialogGenericFragment.newInstance(
-                    true, true, false, getString(R.string.validation_title),
-                    dialogMsg, getResources().getString(R.string.ok_label), "",
-                    new OnClickListener() {
-
-                        @Override
-                        public void onClick(View v) {
-                            int id = v.getId();
-                            if (id == R.id.button1) {
-                                dialog.dismiss();
-                            }
-
-                        }
-
-                    });
-
-            dialog.show(((BaseActivity) getActivity()).getSupportFragmentManager(), null);
-            return;
-        } else if (!event.getSuccess()) {
-            
-            // Remove dialog if exist
-            if(dialog != null) dialog.dismiss();
-            
-            dialog = DialogGenericFragment.createServerErrorDialog(getActivity(), new OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    ((BaseActivity)getActivity()).showLoadingInfo();
-                    EventManager.getSingleton().triggerRequestEvent(event.request);
-                    dialog.dismiss();
-                }
-            }, false);
-            dialog.show(((BaseActivity) getActivity()).getSupportFragmentManager(), null);
             return;
         }
     }

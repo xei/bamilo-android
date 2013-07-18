@@ -377,11 +377,8 @@ public class WriteReviewFragment extends BaseFragment {
 
         case GET_CUSTOMER:
             customerCred = null;
-            if (event.errorMessages.get(Errors.JSON_ERROR_TAG).contains(
-                    Errors.CODE_CUSTOMER_NOT_LOGGED_ID)) {
-                return false;
-            }
-            return true;
+            Log.i("DIDNT GET CUSTOMER"," HERE ");
+            return false;
 
         default:
         }
