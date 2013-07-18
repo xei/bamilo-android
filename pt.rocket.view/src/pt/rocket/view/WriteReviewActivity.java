@@ -46,10 +46,11 @@ public class WriteReviewActivity extends MyActivity {
     private CompleteProduct completeProduct;
     private EditText titleText;
     private EditText reviewText;
-    private RatingBar userRating;
+    
     private Dialog dialog_review_submitted;
 
     private TextView userRatingText;
+    private RatingBar userRating;
 
     private ProductReviewCommentCreated productReviewCreated;
 
@@ -95,7 +96,7 @@ public class WriteReviewActivity extends MyActivity {
 
         userNameText = (TextView) findViewById(R.id.name_box);
         userEmailText = (TextView) findViewById(R.id.email_box);
-        userRatingText = (TextView) findViewById(R.id.user_rating_text);
+        userRatingText = (TextView) findViewById(R.id.quality_rating_text);
         userRating = (RatingBar) findViewById(R.id.user_rating);
         titleText = (EditText) findViewById(R.id.title_box);
         reviewText = (EditText) findViewById(R.id.review_box);
