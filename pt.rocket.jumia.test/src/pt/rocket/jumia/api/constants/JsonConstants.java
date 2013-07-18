@@ -33,7 +33,11 @@ public class JsonConstants {
 	
 	public static final String JSON_RATING_NAME_TAG ="RatingForm[name]";
 	public static final String JSON_RATING_TITLE_TAG ="RatingForm[title]";
+	public static final String JSON_RATING_SKU_TAG ="rating-catalog-sku";
 	public static final String JSON_RATING_COMMENT_TAG ="RatingForm[comment]";
+	public static final String JSON_RATING_QUALITY_TAG ="rating-option--quality";
+	public static final String JSON_RATING_APPEARANCE_TAG ="rating-option--appearance";
+	public static final String JSON_RATING_PRICE_TAG ="rating-option--price";
 	
 	
 	public static final String JSON_REG_DAY_TAG ="Alice_Module_Customer_Model_RegistrationForm[day]";

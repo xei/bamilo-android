@@ -71,5 +71,7 @@ public class Services {
  	public final static String ORDER_ADD_URL = "/order/add";
  	public final static String ORDER_REMOVE_URL = "/order/remove";
  	public final static String ORDER_INFO_URL = "/order/cartdata";
+ 	
+ 	public final static String RATING_URL = "/rating/add";
 
 }
