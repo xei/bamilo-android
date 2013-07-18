@@ -23,6 +23,8 @@ public class JsonConstants {
 	public static final String JSON_USER_ID_TAG ="id_customer";
 	public static final String JSON_ID_TAG ="id";
 	public static final String JSON_EMAIL_TAG ="email";
+	public static final String JSON_CARTITEM_TAG ="cartItems";
+	public static final String JSON_CONFIGSKU_TAG ="configSku";
 	
 	
 	public static final String JSON_LOGIN_EMAIL_TAG ="Alice_Module_Customer_Model_LoginForm[email]";
@@ -92,7 +94,10 @@ public class JsonConstants {
 	public static final String JSON_PAYMENT_CC_NUMBER_TAG  ="PaymentMethodForm[parameter][cc_number]";
 	public static final String JSON_PAYMENT_CC_HOLDER_TAG  ="PaymentMethodForm[parameter][cc_holder]";
 	public static final String JSON_PAYMENT_CC_SAVE_TAG  ="PaymentMethodForm[parameter][cc_save]";
-																	 
+															
+	public static final String JSON_ORDER_SKU_TAG  ="sku";
+	public static final String JSON_ORDER_QUANTITY_TAG  ="quantity";
+	public static final String JSON_ORDER_SKU_PRODUCT_TAG  ="p";
 	
 	/**
 	 * https set type

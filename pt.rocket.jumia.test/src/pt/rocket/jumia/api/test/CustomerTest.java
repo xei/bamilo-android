@@ -13,6 +13,9 @@ import android.util.Log;
 
 public class CustomerTest extends ApiBaseTest {
 
+	public void CustomerTest(){
+		
+	}
   private static final String CUSTOMER_USER= "jumiatest@test.tt";
   private static String CUSTOMER_PASS= "123456";
 

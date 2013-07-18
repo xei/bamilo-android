@@ -66,5 +66,10 @@ public class Services {
  	public final static String USER_ADDRESSCREATE_URL = "/customer/addresscreate";
  	public final static String USER_ADDRESSEDIT_URL = "/customer/addressedit";
  	public final static String USER_PAYMENT_URL = "/customer/paymentmethods";
+ 	
+ 	
+ 	public final static String ORDER_ADD_URL = "/order/add";
+ 	public final static String ORDER_REMOVE_URL = "/order/remove";
+ 	public final static String ORDER_INFO_URL = "/order/cartdata";
 
 }
