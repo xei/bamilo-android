@@ -134,7 +134,7 @@ public class ProductReviewCommentCreated {
     /**
      * @return the rating
      */
-    public double getPriceeRating() {
+    public double getPriceRating() {
         return ratingPrice;
     }
     

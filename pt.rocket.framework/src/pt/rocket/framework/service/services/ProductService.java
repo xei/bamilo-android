@@ -71,7 +71,7 @@ public class ProductService extends DarwinService {
     private static final String REVIEW_OPTION_FIELD = "rating-option--";
     private static final String REVIEW_PRODUCT_SKU_FIELD = "rating-catalog-sku";
     private static final String REVIEW_RATING_FIELD = "ratings";
-    private static final String REVIEW_CUSTOMER_ID="rating-customer";
+    private static final String REVIEW_CUSTOMER_ID = "rating-customer";
 
     private HashMap<String, HashMap<String, String>> ratingOptions = null;
     private CompleteProduct currentProduct = null;
@@ -231,7 +231,7 @@ public class ProductService extends DarwinService {
                         JSONArray optionsArray = ratingOption.getJSONArray(JSON_OPTIONS_TAG);
                         option = new HashMap<String, String>();
                         optionsSize = optionsArray.length();
-                        Log.i(TAG," OPTIONS SIZE "+optionsSize);
+                        Log.i(TAG, " OPTIONS SIZE " + optionsSize);
                         for (int k = 0; k < optionsSize; k++) {
                             optionObject = optionsArray.getJSONObject(k);
                             option.put(optionObject.getString(JSON_VALUE_TAG), optionObject.getString(JSON_ID_RATING_OPTION_TAG));
@@ -290,12 +290,19 @@ public class ProductService extends DarwinService {
         ContentValues values = new ContentValues();
         event.productReviewCreated.addParameters(values);
         values.put(REVIEW_PRODUCT_SKU_FIELD, event.productSKU);
-        if(event.customerId!=-1){
+        if (event.customerId != -1) {
             values.put(REVIEW_CUSTOMER_ID, event.customerId);
         }
 
         for (Entry<String, HashMap<String, String>> option : ratingOptions.entrySet()) {
-            values.put(REVIEW_OPTION_FIELD + option.getKey(), option.getValue().get(String.valueOf((int) event.productReviewCreated.getRating())));
+
+            if (option.getKey().toString().equals("quality")) {
+                values.put(REVIEW_OPTION_FIELD + option.getKey(), option.getValue().get(String.valueOf((int) event.productReviewCreated.getRating())));
+            } else if (option.getKey().toString().equals("appearance")) {
+                values.put(REVIEW_OPTION_FIELD + option.getKey(), option.getValue().get(String.valueOf((int) event.productReviewCreated.getAppearenceRating())));
+            } else if (option.getKey().toString().equals("price")) {
+                values.put(REVIEW_OPTION_FIELD + option.getKey(), option.getValue().get(String.valueOf((int) event.productReviewCreated.getPriceRating())));
+            }
         }
 
         RestServiceHelper.requestPost(event.eventType.action, values, new ResponseReceiver<Void>(event) {
