@@ -62,7 +62,6 @@ public class ProductRatingPage implements IJSONSerializable {
 		for (int i = 0; i < size; i++) {
 			reviewComment = new ProductReviewComment();
 			reviewComment.initialize(comments.getJSONObject(i));
-
 			reviewComments.add(reviewComment);
 		}
 		return true;

@@ -24,6 +24,7 @@ public class ReviewProductEvent extends RequestEvent {
 
     public final String productSKU;
     public final ProductReviewCommentCreated productReviewCreated;
+    public final int customerId;
     
     /**
      * 
@@ -32,5 +33,13 @@ public class ReviewProductEvent extends RequestEvent {
     	super(type);
         this.productReviewCreated = productReview;
         this.productSKU = productSKU;
+        this.customerId=-1;
     }    
+    
+    public ReviewProductEvent(String productSKU,int customerId, ProductReviewCommentCreated productReview ) {
+        super(type);
+        this.productReviewCreated = productReview;
+        this.productSKU = productSKU;
+        this.customerId=customerId;
+    }  
 }

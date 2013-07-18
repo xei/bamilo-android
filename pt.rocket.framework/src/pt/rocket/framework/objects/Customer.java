@@ -20,7 +20,8 @@ import android.annotation.SuppressLint;
 import de.akquinet.android.androlog.Log;
 
 /**
- * Class that represents a Customer.
+ * Class that represents a Customer. Alice_Model_RatingForm[title]=Teste
+
  * @author GuilhermeSilva
  *
  */
@@ -249,6 +250,7 @@ public class Customer implements IJSONSerializable {
     public boolean initialize(JSONObject jsonObject) {
         try {
             id = jsonObject.getString(JSON_ID_TAG);
+            Log.i("CUSTOMER ID"," => "+id);
             firstName = jsonObject.getString(JSON_FIRST_NAME_TAG);
             lastName = jsonObject.getString(JSON_LAST_NAME_TAG);
             email = jsonObject.getString(JSON_EMAIL_TAG);

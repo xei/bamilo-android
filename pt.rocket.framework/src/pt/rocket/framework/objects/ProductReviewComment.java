@@ -1,8 +1,12 @@
 package pt.rocket.framework.objects;
 
+import java.util.ArrayList;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import de.akquinet.android.androlog.Log;
 
 import android.content.ContentValues;
 import android.net.Uri.Builder;
@@ -27,6 +31,7 @@ public class ProductReviewComment implements IJSONSerializable {
     // private static final String JSON_OPTION_CODE_TAG = "option_code";
     // private static final String JSON_SIZE_STARS_BACK_TAG = "size-stars-back";
     private static final String JSON_SIZE_STARS_FORE_TAG = "size-stars-fore";
+    private static final String JSON_TYPE_TITLE_TAG = "type_title";
 
 
     private String title = "";
@@ -34,6 +39,9 @@ public class ProductReviewComment implements IJSONSerializable {
     private String name = "";
     private String date = "";
     private double rating = 0.0;
+    private String optionTitle="";
+    
+    private ArrayList<RatingOption> ratingOptions;
 
     /*
      * (non-Javadoc)
@@ -45,6 +53,7 @@ public class ProductReviewComment implements IJSONSerializable {
     @Override
     public boolean initialize(JSONObject jsonObject) {
 
+        ratingOptions = new ArrayList<RatingOption>();
         try {
             title = jsonObject.getString(JSON_TITLE_TAG);
             comments = jsonObject.getString(JSON_DETAILS_TAG);
@@ -56,10 +65,13 @@ public class ProductReviewComment implements IJSONSerializable {
             JSONArray options = jsonObject.getJSONArray(JSON_OPTIONS_TAG);
             JSONObject ratingObject = null;
             int size = options.length();
-
+            Log.i("OPTIONS"," "+size);
             for (int i = 0; i < size; i++) {
-                ratingObject = options.getJSONObject(i);
-                rating += ratingObject.getInt(JSON_SIZE_STARS_FORE_TAG);
+                RatingOption option= new RatingOption();
+                option.initialize(options.getJSONObject(i));
+                ratingOptions.add(option);
+//                rating += ratingObject.getInt(JSON_SIZE_STARS_FORE_TAG);
+//                optionTitle = ratingObject.getString(JSON_TYPE_TITLE_TAG);
             }
             rating /= size;
             rating = rating * 5 / 100;
@@ -114,5 +126,9 @@ public class ProductReviewComment implements IJSONSerializable {
      */
     public double getRating() {
         return rating;
+    }
+    
+    public ArrayList<RatingOption> getRatingOptions(){
+        return ratingOptions;
     }
 }

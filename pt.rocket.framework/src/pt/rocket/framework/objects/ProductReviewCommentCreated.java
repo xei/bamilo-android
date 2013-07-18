@@ -1,14 +1,16 @@
 package pt.rocket.framework.objects;
 
+import java.util.Map.Entry;
+
 import android.content.ContentValues;
 import android.net.Uri.Builder;
 
 public class ProductReviewCommentCreated {
 
-    private static final String FORM_NAME_FIELD = "Alice_Model_RatingForm[name]";
-    private static final String FORM_TITLE_FIELD = "Alice_Model_RatingForm[title]";
-    private static final String FORM_COMMENT_FIELD = "Alice_Model_RatingForm[comment]";
-    private static final String FORM_EMAIL_FIELD = "Alice_Model_RatingForm[email]";
+    private static final String FORM_NAME_FIELD = "RatingForm[name]";
+    private static final String FORM_TITLE_FIELD = "RatingForm[title]";
+    private static final String FORM_COMMENT_FIELD = "RatingForm[comment]";
+    private static final String FORM_COSTUMER_ID_FIELD = "rating-customer";
 	
 	private String title;
     private String comments;
@@ -16,6 +18,9 @@ public class ProductReviewCommentCreated {
     private String email;
     
     private double rating;
+    private double ratingAppearence;
+    private double ratingPrice;
+//    private MyObs
     
     public ContentValues getObjectModel() {
     	ContentValues values = new ContentValues();
@@ -23,7 +28,14 @@ public class ProductReviewCommentCreated {
         values.put(FORM_NAME_FIELD, name);
         values.put(FORM_TITLE_FIELD, title);
         values.put(FORM_COMMENT_FIELD, comments);
-        values.put(FORM_EMAIL_FIELD, email );
+        
+        
+        
+        
+        if(false){
+            values.put(FORM_COSTUMER_ID_FIELD, email );
+        }
+        
 
         return values;
     }
@@ -32,7 +44,9 @@ public class ProductReviewCommentCreated {
     	values.put(FORM_NAME_FIELD, name);
     	values.put(FORM_TITLE_FIELD, title);
     	values.put(FORM_COMMENT_FIELD, comments);
-    	values.put(FORM_EMAIL_FIELD,  email);
+    	if(false){
+            values.put(FORM_COSTUMER_ID_FIELD, email );
+        }
     }
     
     /**
@@ -94,7 +108,7 @@ public class ProductReviewCommentCreated {
     public double getRating() {
         return rating;
     }
-
+    
     /**
      * @param rating
      *            the rating to set
@@ -102,5 +116,36 @@ public class ProductReviewCommentCreated {
     public void setRating(double rating) {
         this.rating = rating;
     }
+
+    /**
+     * @param rating
+     *            the rating to set
+     */
+    public void setAppearenceRating(double rating) {
+        this.ratingAppearence = rating;
+    }
+    
+    /**
+     * @return the rating
+     */
+    public double getAppearenceRating() {
+        return ratingAppearence;
+    }
+
+    /**
+     * @param rating
+     *            the rating to set
+     */
+    public void setPriceRating(double rating) {
+        this.ratingPrice = rating;
+    }
+    
+    /**
+     * @return the rating
+     */
+    public double getPriceeRating() {
+        return ratingPrice;
+    }
+    
     
 }
