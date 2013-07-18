@@ -18,7 +18,12 @@ import android.test.ServiceTestCase;
 import android.util.Log;
 
 public class ApiBaseTest extends ServiceTestCase<RestService>{
-    public ApiBaseTest() {
+    
+	  protected String user_id= "";
+	  protected String session_id= "";
+	
+	
+	public ApiBaseTest() {
         super(RestService.class);
     }
     

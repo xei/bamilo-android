@@ -6,9 +6,6 @@ public class Services {
 	/**
 	 * Services
 	 */
-	public final static String REGISTER_URL = "/customer/create";
-  
-	public final static String LOGIN_URL = "/customer/login";
   
 	public final static String BRAND_URL = "/catalog/brands/";
   
@@ -52,4 +49,22 @@ public class Services {
  	public final static String FETCH_NEWSLETTER_URL = "/main/fetchdata/?key=newsletter";
  	public final static String FETCH_RATING_URL = "/main/fetchdata/?key=rating";
  	public final static String FETCH_ORDER_URL = "/main/fetchdata/?key=order";
+ 	
+ 	
+ 	public final static String NEWSLETTER_VALIDATE_URL = "/newsletter/validate/?email=";
+ 	public final static String NEWSLETTER_UNSIGN_URL = "/newsletter/unsign/?email=";
+ 	
+ 	public final static String USER_LOGOUT_URL = "/customer/logout";
+ 	public final static String USER_LOGIN_URL = "/customer/login";
+	public final static String USER_REGISTER_URL = "/customer/create";
+	public final static String USER_DETAILS_URL = "/customer/getdetails";
+	public final static String USER_RATING_URL = "/customer/rating";
+ 	public final static String USER_EDIT_URL = "/customer/edit";
+ 	public final static String USER_CONFIRMREG_URL = "/customer/confirmregister";
+	public final static String USER_FORGOTPASS_URL = "/customer/forgotpassword";
+ 	public final static String USER_CHANGEPASS_URL = "/customer/changepassword";
+ 	public final static String USER_ADDRESSCREATE_URL = "/customer/addresscreate";
+ 	public final static String USER_ADDRESSEDIT_URL = "/customer/addressedit";
+ 	public final static String USER_PAYMENT_URL = "/customer/paymentmethods";
+
 }
