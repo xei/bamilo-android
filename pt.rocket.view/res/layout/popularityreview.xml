@@ -12,9 +12,10 @@
 
     <LinearLayout
         android:id="@+id/ratings_container"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:layout_marginLeft="@dimen/margin_huge" >
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -22,13 +23,11 @@
             android:orientation="vertical" >
 
             <org.holoeverywhere.widget.TextView
-                android:id="@+id/quality_title_option"
+                android:id="@+id/price_title_option"
                 style="@style/product_name_list_text"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/top_review_line"
-                android:layout_marginLeft="@dimen/margin_huge"
-                android:layout_marginRight="32dp"
                 android:layout_marginTop="10dp"
                 android:ellipsize="end"
                 android:lines="1"
@@ -37,29 +36,27 @@
                 android:textStyle="bold" />
 
             <RatingBar
-                android:id="@+id/user_rating"
+                android:id="@+id/price_rating"
                 style="@style/starRatingBarSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/quality_title_option"
+                android:layout_below="@id/price_title_option"
                 android:layout_marginBottom="10dp"
-                android:layout_marginLeft="@dimen/margin_huge"
                 android:layout_marginTop="10dp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:layout_marginLeft="@dimen/margin_veryhuge" >
 
             <org.holoeverywhere.widget.TextView
                 android:id="@+id/appearence_title_option"
                 style="@style/product_name_list_text"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/top_review_line"
-                android:layout_marginLeft="@dimen/margin_huge"
-                android:layout_marginRight="32dp"
                 android:gravity="center"
                 android:layout_marginTop="10dp"
                 android:ellipsize="end"
@@ -73,41 +70,38 @@
                 style="@style/starRatingBarSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/quality_title_option"
+                android:layout_below="@id/appearence_title_option"
                 android:layout_marginBottom="10dp"
-                android:layout_marginLeft="@dimen/margin_huge"
                 android:layout_marginTop="10dp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:layout_marginLeft="@dimen/margin_veryhuge" >
 
             <org.holoeverywhere.widget.TextView
-                android:id="@+id/price_title_option"
+                android:id="@+id/quality_title_option"
                 style="@style/product_name_list_text"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/top_review_line"
-                android:layout_marginLeft="@dimen/margin_huge"
-                android:layout_marginRight="32dp"
                 android:layout_marginTop="10dp"
                 android:ellipsize="end"
                 android:lines="1"
-                android:text="Title"
                 android:gravity="center"
                 android:textSize="14dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:text="quality" />
 
             <RatingBar
-                android:id="@+id/price_rating"
+                android:id="@+id/quality_rating"
                 style="@style/starRatingBarSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/quality_title_option"
                 android:layout_marginBottom="10dp"
-                android:layout_marginLeft="@dimen/margin_huge"
                 android:layout_marginTop="10dp" />
         </LinearLayout>
     </LinearLayout>
@@ -178,7 +172,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/posted_by"
         android:layout_alignParentRight="true"
-        android:layout_alignTop="@id/user_rating"
+        android:layout_alignTop="@id/quality_rating"
         android:layout_centerVertical="true"
         android:src="@drawable/ic_next" />
 

@@ -289,6 +289,7 @@ public class WriteReviewFragment extends BaseFragment {
         productReviewCreated.setComments(reviewText.getText().toString());
         productReviewCreated.setRating(qualityRating.getRating());
         productReviewCreated.setAppearenceRating(appearenceRating.getRating());
+        Log.i("RATING TO SEND"," = Q "+qualityRating.getRating()+" A "+appearenceRating.getRating()+" P "+priceRating.getRating());
         productReviewCreated.setPriceRating(priceRating.getRating());
         if (customerCred != null) {
             Log.i("SENDING CUSTOMER ID", " HERE " + customerCred.getId());

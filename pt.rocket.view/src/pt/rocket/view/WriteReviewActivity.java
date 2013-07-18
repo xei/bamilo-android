@@ -92,7 +92,7 @@ public class WriteReviewActivity extends MyActivity {
         productNormalPrice = (TextView) findViewById(R.id.product_price_normal);
 
         userRatingText = (TextView) findViewById(R.id.quality_rating_text);
-        userRating = (RatingBar) findViewById(R.id.user_rating);
+        userRating = (RatingBar) findViewById(R.id.quality_rating);
         titleText = (EditText) findViewById(R.id.title_box);
         reviewText = (EditText) findViewById(R.id.review_box);
 

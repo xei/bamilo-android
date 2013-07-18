@@ -302,9 +302,16 @@ public class PopularityFragment extends BaseFragment {
             final TextView userName = (TextView) theInflatedView.findViewById(R.id.user_review);
             final TextView userDate = (TextView) theInflatedView.findViewById(R.id.date_review);
             final TextView textReview = (TextView) theInflatedView.findViewById(R.id.textreview);
-            final RatingBar userRating = (RatingBar) theInflatedView.findViewById(R.id.user_rating);
+            final RatingBar userRating = (RatingBar) theInflatedView.findViewById(R.id.quality_rating);
             final TextView titleReview = (TextView) theInflatedView.findViewById(R.id.title_review);
+            
             final TextView optionTitle = (TextView) theInflatedView.findViewById(R.id.quality_title_option);
+            final TextView appearenceTitle = (TextView) theInflatedView.findViewById(R.id.appearence_title_option);
+            final TextView priceTitle = (TextView) theInflatedView.findViewById(R.id.price_title_option);
+            
+            final RatingBar appearenceRating = (RatingBar) theInflatedView.findViewById(R.id.appearence_rating);
+            final RatingBar priceRating = (RatingBar) theInflatedView.findViewById(R.id.price_rating);
+            
             
             ArrayList<RatingOption> ratingOptionArray= new ArrayList<RatingOption>();
             ratingOptionArray = review.getRatingOptions();
@@ -314,11 +321,17 @@ public class PopularityFragment extends BaseFragment {
             userDate.setText(stringCor[0]);
             textReview.setText(review.getComments());
             
-            userRating.setRating((float) ratingOptionArray.get(0).getRating());
+            priceRating.setRating((float) ratingOptionArray.get(0).getRating());
+            appearenceRating.setRating((float) ratingOptionArray.get(1).getRating());
+            userRating.setRating((float) ratingOptionArray.get(2).getRating());
             
             titleReview.setText(review.getTitle());
             
-            optionTitle.setText(ratingOptionArray.get(0).getTitle());
+            priceTitle.setText(ratingOptionArray.get(0).getTitle());
+            
+            appearenceTitle.setText(ratingOptionArray.get(1).getTitle());
+            
+            optionTitle.setText(ratingOptionArray.get(2).getTitle());
             
             theInflatedView.setOnClickListener(new OnClickListener() {
 

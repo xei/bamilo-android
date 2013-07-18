@@ -236,7 +236,7 @@ public class PopularityActivity extends BaseActivity {
             final TextView userName = (TextView) theInflatedView.findViewById(R.id.user_review);
             final TextView userDate = (TextView) theInflatedView.findViewById(R.id.date_review);
             final TextView textReview = (TextView) theInflatedView.findViewById(R.id.textreview);
-            final RatingBar userRating = (RatingBar) theInflatedView.findViewById(R.id.user_rating);
+            final RatingBar userRating = (RatingBar) theInflatedView.findViewById(R.id.quality_rating);
             final TextView titleReview = (TextView) theInflatedView.findViewById(R.id.title_review);
 
             final String[] stringCor = review.getDate().split(" ");
