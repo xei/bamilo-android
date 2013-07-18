@@ -29,13 +29,6 @@ public class ProductReviewCommentCreated {
         values.put(FORM_TITLE_FIELD, title);
         values.put(FORM_COMMENT_FIELD, comments);
         
-        
-        
-        
-        if(false){
-            values.put(FORM_COSTUMER_ID_FIELD, email );
-        }
-        
 
         return values;
     }
@@ -44,9 +37,7 @@ public class ProductReviewCommentCreated {
     	values.put(FORM_NAME_FIELD, name);
     	values.put(FORM_TITLE_FIELD, title);
     	values.put(FORM_COMMENT_FIELD, comments);
-    	if(false){
-            values.put(FORM_COSTUMER_ID_FIELD, email );
-        }
+
     }
     
     /**
