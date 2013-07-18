@@ -103,6 +103,9 @@ public class JsonConstants {
 	public static final String JSON_ORDER_QUANTITY_TAG  ="quantity";
 	public static final String JSON_ORDER_SKU_PRODUCT_TAG  ="p";
 	
+	public static final String JSON_HOMEPAGE_TAG  ="homepage_layout";
+	
+	
 	/**
 	 * https set type
 	 */

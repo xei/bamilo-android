@@ -19,8 +19,7 @@ import android.util.Log;
 
 public class ApiBaseTest extends ServiceTestCase<RestService>{
     
-	  protected String user_id= "";
-	  protected String session_id= "";
+	  
 		public static final String SKU  ="SA948EL97LGKNGAMZ-7846";
 		public static final String QUANTITY  ="1";
 		public static final String PRODUCT  ="SA948EL97LGKNGAMZ";

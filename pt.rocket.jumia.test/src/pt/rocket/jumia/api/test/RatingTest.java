@@ -21,7 +21,7 @@ public class RatingTest extends ApiBaseTest {
 	public static final String RATING_NAME ="Teste";
 	
 	
-	CustomerTest customer = new CustomerTest();
+	AACustomerTest customer = new AACustomerTest();
 	  /**
 	   * 
 	   * @throws Throwable

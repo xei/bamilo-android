@@ -15,7 +15,7 @@ public class OrderTest extends ApiBaseTest {
 
 
 	
-	CustomerTest customer= new CustomerTest();  
+	AACustomerTest customer= new AACustomerTest();  
 	
 	  /**
 	   * 

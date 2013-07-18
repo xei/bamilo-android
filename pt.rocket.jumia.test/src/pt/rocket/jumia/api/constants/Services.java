@@ -73,5 +73,8 @@ public class Services {
  	public final static String ORDER_INFO_URL = "/order/cartdata";
  	
  	public final static String RATING_URL = "/rating/add";
+ 	
+ 	public final static String SESSION_URL = "/main/session?id=";
 
+ 	public final static String GETTEASERS_URL = "/main/getteasers/"; 
 }
