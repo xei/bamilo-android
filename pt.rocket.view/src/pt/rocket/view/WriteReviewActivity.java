@@ -54,9 +54,6 @@ public class WriteReviewActivity extends MyActivity {
 
     private ProductReviewCommentCreated productReviewCreated;
 
-    private TextView userNameText;
-
-    private TextView userEmailText;
 
     public WriteReviewActivity() {
         super(NavigationAction.Products,
@@ -94,8 +91,6 @@ public class WriteReviewActivity extends MyActivity {
         productResultPrice = (TextView) findViewById(R.id.product_price_result);
         productNormalPrice = (TextView) findViewById(R.id.product_price_normal);
 
-        userNameText = (TextView) findViewById(R.id.name_box);
-        userEmailText = (TextView) findViewById(R.id.email_box);
         userRatingText = (TextView) findViewById(R.id.quality_rating_text);
         userRating = (RatingBar) findViewById(R.id.user_rating);
         titleText = (EditText) findViewById(R.id.title_box);
@@ -142,8 +137,7 @@ public class WriteReviewActivity extends MyActivity {
     }
 
     private boolean checkReview() {
-        boolean result = checkEmpty(getResources().getColor(R.color.red_basic), userNameText,
-                userEmailText, titleText, reviewText);
+        boolean result = checkEmpty(getResources().getColor(R.color.red_basic), titleText, reviewText);
 
         if (userRating.getRating() == 0) {
             userRatingText.setTextColor(getResources().getColor(R.color.red_basic));
@@ -169,8 +163,6 @@ public class WriteReviewActivity extends MyActivity {
     private void executeSendReview() {
 
         productReviewCreated = new ProductReviewCommentCreated();
-        productReviewCreated.setName(userNameText.getText().toString());
-        productReviewCreated.setEmail(userEmailText.getText().toString());
         productReviewCreated.setTitle(titleText.getText().toString());
         productReviewCreated.setComments(reviewText.getText().toString());
         productReviewCreated.setRating(userRating.getRating());
@@ -227,8 +219,6 @@ public class WriteReviewActivity extends MyActivity {
         case LOGIN_EVENT:
             Customer customer = (Customer) event.result;
             TrackerDelegator.trackLoginSuccessful(getApplicationContext(), customer, true);
-            userNameText.setText(customer.getFirstName());
-            userEmailText.setText(customer.getEmail());
             return false;
         default:
             return false;

@@ -153,34 +153,10 @@
             </RelativeLayout>
 
             <org.holoeverywhere.widget.EditText
-                android:id="@+id/name_box"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_midhuge"
-                android:background="@drawable/selector_edittext_bottomline"
-                android:hint="@string/name"
-                android:inputType="text"
-                android:textColor="@color/form_text"
-                android:textColorHint="@color/form_text_hint"
-                android:textSize="@dimen/text_mid" />
-
-            <org.holoeverywhere.widget.EditText
-                android:id="@+id/email_box"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_mid"
-                android:background="@drawable/selector_edittext_bottomline"
-                android:hint="@string/email"
-                android:inputType="textEmailAddress"
-                android:textColor="@color/form_text"
-                android:textColorHint="@color/form_text_hint"
-                android:textSize="@dimen/text_mid" />
-
-            <org.holoeverywhere.widget.EditText
                 android:id="@+id/title_box"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_mid"
+                android:layout_marginTop="@dimen/margin_midhuge"
                 android:background="@drawable/selector_edittext_bottomline"
                 android:hint="@string/writereview_title_hint"
                 android:inputType="text"

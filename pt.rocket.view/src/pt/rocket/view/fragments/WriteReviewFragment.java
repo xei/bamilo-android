@@ -51,10 +51,6 @@ public class WriteReviewFragment extends BaseFragment {
 
     private TextView productNormalPrice;
 
-    private TextView userNameText;
-
-    private TextView userEmailText;
-
     private TextView userRatingText;
 
     private TextView appearenceRatingText;
@@ -77,6 +73,7 @@ public class WriteReviewFragment extends BaseFragment {
 
     private Customer customerCred;
 
+    private String userName="user";
     /**
      * Get instance
      * 
@@ -200,9 +197,6 @@ public class WriteReviewFragment extends BaseFragment {
         productResultPrice = (TextView) getView().findViewById(R.id.product_price_result);
         productNormalPrice = (TextView) getView().findViewById(R.id.product_price_normal);
 
-        userNameText = (TextView) getView().findViewById(R.id.name_box);
-        userEmailText = (TextView) getView().findViewById(R.id.email_box);
-
         userRatingText = (TextView) getView().findViewById(R.id.quality_rating_text);
         qualityRating = (RatingBar) getView().findViewById(R.id.quality_rating);
 
@@ -255,8 +249,7 @@ public class WriteReviewFragment extends BaseFragment {
     }
 
     private boolean checkReview() {
-        boolean result = checkEmpty(getResources().getColor(R.color.red_basic), userNameText,
-                userEmailText, titleText, reviewText);
+        boolean result = checkEmpty(getResources().getColor(R.color.red_basic), titleText, reviewText);
         if (qualityRating.getRating() == 0) {
             userRatingText.setTextColor(getResources().getColor(R.color.red_basic));
             result = false;
@@ -291,8 +284,7 @@ public class WriteReviewFragment extends BaseFragment {
 
     private void executeSendReview() {
         productReviewCreated = new ProductReviewCommentCreated();
-        productReviewCreated.setName(userNameText.getText().toString());
-        productReviewCreated.setEmail(userEmailText.getText().toString());
+        productReviewCreated.setName(userName);
         productReviewCreated.setTitle(titleText.getText().toString());
         productReviewCreated.setComments(reviewText.getText().toString());
         productReviewCreated.setRating(qualityRating.getRating());
@@ -348,8 +340,7 @@ public class WriteReviewFragment extends BaseFragment {
         case LOGIN_EVENT:
             Customer customer = (Customer) event.result;
             TrackerDelegator.trackLoginSuccessful(getActivity(), customer, true);
-            userNameText.setText(customer.getFirstName());
-            userEmailText.setText(customer.getEmail());
+            userName=customer.getFirstName();
             return false;
         case GET_CUSTOMER:
             Log.i("GOT CUSTOMER", "HERE ");
