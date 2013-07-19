@@ -25,10 +25,10 @@
     <color name="sidemenu_item_background_normal">@android:color/transparent</color>
     <color name="sidemenu_item_background_highlight">@color/grey_highlight</color>
     <color name="sidemenu_list_divider_normal">@color/grey_dark_line</color>
-    <color name="sidemenu_list_divider_highlight">@color/blue_basic</color>
+    <color name="sidemenu_list_divider_highlight">@color/grey_highlight</color>
     <color name="item_highlight">#ecedee</color>
     <color name="dialog_button_highlight">@color/item_highlight</color>
-    <color name="dialog_title_background">@color/blue_basic</color>
+    <color name="dialog_title_background">@color/grey_highlight</color>
     <color name="form_text">@color/grey_middle</color>
     <color name="form_text_hint">@color/grey_highlight</color>
 

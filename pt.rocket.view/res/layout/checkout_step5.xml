@@ -7,7 +7,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/headline_blue"
+        android:background="@drawable/titlebar"
         android:scaleType="center"
         android:src="@drawable/checkout_state04" />
 

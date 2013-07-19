@@ -58,6 +58,8 @@ public class WriteReviewFragment extends BaseFragment {
     private TextView priceText;
 
     private EditText titleText;
+    
+    private EditText nameText;
 
     private RatingBar qualityRating;
 
@@ -207,6 +209,7 @@ public class WriteReviewFragment extends BaseFragment {
         priceRating = (RatingBar) getView().findViewById(R.id.price_rating);
 
         titleText = (EditText) getView().findViewById(R.id.title_box);
+        nameText = (EditText) getView().findViewById(R.id.name_box);
         reviewText = (EditText) getView().findViewById(R.id.review_box);
 
         ((Button) getView().findViewById(R.id.send_review))
@@ -249,7 +252,7 @@ public class WriteReviewFragment extends BaseFragment {
     }
 
     private boolean checkReview() {
-        boolean result = checkEmpty(getResources().getColor(R.color.red_basic), titleText, reviewText);
+        boolean result = checkEmpty(getResources().getColor(R.color.red_basic), titleText,nameText, reviewText);
         if (qualityRating.getRating() == 0) {
             userRatingText.setTextColor(getResources().getColor(R.color.red_basic));
             result = false;
@@ -284,7 +287,7 @@ public class WriteReviewFragment extends BaseFragment {
 
     private void executeSendReview() {
         productReviewCreated = new ProductReviewCommentCreated();
-        productReviewCreated.setName(userName);
+        productReviewCreated.setName(nameText.getText().toString());
         productReviewCreated.setTitle(titleText.getText().toString());
         productReviewCreated.setComments(reviewText.getText().toString());
         productReviewCreated.setRating(qualityRating.getRating());
@@ -341,7 +344,7 @@ public class WriteReviewFragment extends BaseFragment {
         case LOGIN_EVENT:
             Customer customer = (Customer) event.result;
             TrackerDelegator.trackLoginSuccessful(getActivity(), customer, true);
-            userName=customer.getFirstName();
+            nameText.setText(customer.getFirstName());
             return false;
         case GET_CUSTOMER:
             Log.i("GOT CUSTOMER", "HERE ");
