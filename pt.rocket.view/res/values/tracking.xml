@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:android="http://schemas.android.com/apk/res/android" 
-    xmlns:tools="http://schemas.android.com/tools">
+<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
 
-<!--     
+    <!--
     Google tracking
     y
     <bool name="ga_enable">true</bool>
@@ -23,47 +22,53 @@
     <string name="gaid_th_test">UA-30236174-5</string>
     <string name="gaid_th_live">UA-30236174-6</string>
     <string name="gaid_vn_test">UA-30172376-2</string>
-    <string name="gaid_vn_live">UA-30172376-3</string> -->
-
+    <string name="gaid_vn_live">UA-30172376-3</string>
+    -->
 
 
     <!--  -->
     <!-- Google tracking -->
     <!-- y -->
-    <bool name="ga_enable">false</bool>
-    <bool name="ga_autoActivityTracking">false</bool>
-    <bool name="ga_reportUncaughtExceptions">false</bool>
+    <bool name="ga_enable">true</bool>
+    <bool name="ga_autoActivityTracking">true</bool>
+    <bool name="ga_reportUncaughtExceptions">true</bool>
 
     <!-- tracking keys -->
-    <bool name="ga_testmode">false</bool>
+    <bool name="ga_testmode">true</bool>
 
     <string name="ga_trackingId">aaaaaaaaa</string> <!-- TestKonto SMF -->
 
-    <string name="gaid_ng_test">aaaaaaaaa</string>
-    <string name="gaid_ng_live">aaaaaaaaa</string>
-    <string name="gaid_ke_test">aaaaaaaaa</string>
-    <string name="gaid_ke_live">aaaaaaaaa</string>
-    <string name="gaid_ma_test">aaaaaaaaa</string>
-    <string name="gaid_ma_live">aaaaaaaaa</string>
-<!--     <string name="gaid_eg_test">aaaaaaaaa</string> -->
-<!--     <string name="gaid_eg_live">aaaaaaaaa</string> -->
-    <string name="gaid_ci_test">aaaaaaaaa</string>
-    <string name="gaid_ci_live">aaaaaaaaa</string>
+
+    <!-- Jumia NG. live: UA-31880622-4; dev: UA-31880622-3 -->
+    <string name="gaid_ng_test">UA-31880622-3</string>
+    <string name="gaid_ng_live">UA-31880622-4</string>
+
+    <!-- Jumia KE. live: UA-38440634-3; dev: UA-38440634-2 -->
+    <string name="gaid_ke_test">UA-38440634-2</string>
+    <string name="gaid_ke_live">UA-38440634-3</string>
+
+    <!-- Jumia MA. live: UA-32132208-3; dev: UA-32132208-2 -->
+    <string name="gaid_ma_test">UA-32132208-2</string>
+    <string name="gaid_ma_live">UA-32132208-3</string>
+    <!-- <string name="gaid_eg_test">aaaaaaaaa</string> -->
+    <!-- <string name="gaid_eg_live">aaaaaaaaa</string> -->
 
 
-
-
-
+    <!-- Dev : UA-41452964-2 -->
+    <!-- Live: UA-41452964-3 -->
+    <string name="gaid_ci_test">UA-41452964-2</string>
+    <string name="gaid_ci_live">UA-41452964-3</string>
 
     <!--  -->
     <!-- AD-X tracking -->
     <!--  -->
-    
-    <bool name="adx_enable">false</bool>
-<!--     <bool name="adx_enable">true</bool> -->
 
-   <!--  <string name="xid">rocketlaz456789jo</string> -->
-	<string name="xid">rocket--</string>
+    <bool name="adx_enable">false</bool>
+    <!-- <bool name="adx_enable">true</bool> -->
+
+
+    <!-- <string name="xid">rocketlaz456789jo</string> -->
+    <string name="xid">rocket--</string>
     <!--  -->
     <!-- Flurry tracking -->
     <!--  -->
@@ -80,8 +85,8 @@
     <string name="fkey_ke_live">toupdate</string>
     <string name="fkey_ma_test">toupdate</string>
     <string name="fkey_ma_live">toupdate</string>
-<!--     <string name="fkey_eg_test">toupdate</string> -->
-<!--     <string name="fkey_eg_live">toupdate</string> -->
+    <!-- <string name="fkey_eg_test">toupdate</string> -->
+    <!-- <string name="fkey_eg_live">toupdate</string> -->
     <string name="fkey_ci_test">toupdate</string>
     <string name="fkey_ci_live">toupdate</string>
 

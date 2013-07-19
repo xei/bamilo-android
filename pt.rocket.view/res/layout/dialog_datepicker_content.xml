@@ -9,7 +9,7 @@
         android:id="@+id/title_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/dialog_title_background"
+        android:background="@drawable/modal_dialog_header"
         android:paddingBottom="@dimen/margin_large"
         android:paddingLeft="@dimen/margin_small"
         android:paddingRight="@dimen/margin_small"
