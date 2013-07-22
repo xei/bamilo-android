@@ -63,12 +63,11 @@
     <!-- AD-X tracking -->
     <!--  -->
 
-    <bool name="adx_enable">false</bool>
-    <!-- <bool name="adx_enable">true</bool> -->
-
-
-    <!-- <string name="xid">rocketlaz456789jo</string> -->
-    <string name="xid">rocket--</string>
+<!--     <bool name="adx_enable">false</bool> -->
+    <bool name="adx_enable">true</bool> 
+    <string name="xid">rJma390Sq104mxe741ksJ0</string>
+    
+    
     <!--  -->
     <!-- Flurry tracking -->
     <!--  -->
