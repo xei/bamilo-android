@@ -51,7 +51,9 @@ public class MainOneSlideFragment extends BaseFragment {
     private ArrayList<TeaserImage> teaserImageArrayList;
     
     private OnClickListener onTeaserClickListener;
-
+    private View rootView;
+    
+    private LayoutInflater mInflater;
 
     /**
      * 
@@ -114,23 +116,16 @@ public class MainOneSlideFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState) {
         super.onCreateView(inflater, viewGroup, savedInstanceState);
         Log.i(TAG, "ON CREATE VIEW");
-        View view = inflater.inflate(R.layout.teaser_swipe_banners_group, viewGroup, false);
-             
-        
-        ViewPager pager = (ViewPager) view.findViewById(R.id.viewpager );
-        if (pager.getAdapter() == null) {
-            ImagePagerAdapter adapter = new ImagePagerAdapter(teaserImageArrayList, inflater);
-            pager.setAdapter(adapter);
-            PageIndicator indicator = (PageIndicator) view
-                    .findViewById(R.id.indicator);
-            NormalizingViewPagerWrapper pagerWrapper = new NormalizingViewPagerWrapper(
-                    getActivity(), pager, adapter, indicator);
-            indicator.setViewPager(pagerWrapper);
+        if(this.teaserImageArrayList.size()>1){
+            rootView = inflater.inflate(R.layout.teaser_swipe_banners_group, viewGroup, false);
+        } else {
+            rootView = inflater.inflate(R.layout.teaser_big_banner, viewGroup, false);
         }
         
+        mInflater = inflater;
         Log.i(TAG, "code1 yesees");
         
-        return view;
+        return rootView;
     }
 
     /*
@@ -154,7 +149,18 @@ public class MainOneSlideFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        //
+        ViewPager pager = (ViewPager) rootView.findViewById(R.id.viewpager );
+        if (pager.getAdapter() == null) {
+            ImagePagerAdapter adapter = new ImagePagerAdapter(teaserImageArrayList, mInflater);
+            pager.setAdapter(adapter);
+            if(teaserImageArrayList.size()>1){
+                PageIndicator indicator = (PageIndicator) rootView
+                        .findViewById(R.id.indicator);
+                NormalizingViewPagerWrapper pagerWrapper = new NormalizingViewPagerWrapper(
+                        getActivity(), pager, adapter, indicator);    
+                indicator.setViewPager(pagerWrapper);
+            }
+        }
 //        AnalyticsGoogle.get().trackPage(R.string.glogin);
         //
     }
@@ -238,7 +244,7 @@ public class MainOneSlideFragment extends BaseFragment {
     
     private class ImagePagerAdapter extends PagerAdapter implements IPagerAdapter, IconPagerAdapter {
 
-        private final List<TeaserImage> teaserImages;
+        private List<TeaserImage> teaserImages;
         private LayoutInflater mInflater;
         /**
          * @param inflater 

@@ -32,18 +32,7 @@ public class BrandsTeaserGroup extends TeaserSpecification<TeaserBrand> {
 		return teaserBrand;
 	}
 
-	public class TeaserBrand extends Brand implements ITargeting {
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see pt.rocket.framework.objects.ITargetting#getTargetUrl()
-		 */
-		@Override
-		public String getTargetUrl() {
-			return getUrl();
-		}
-
+	public class TeaserBrand extends TeaserBrandElement implements ITargeting {
 		/*
 		 * (non-Javadoc)
 		 * 
@@ -53,12 +42,26 @@ public class BrandsTeaserGroup extends TeaserSpecification<TeaserBrand> {
 		public TargetType getTargetType() {
 			return TargetType.BRAND;
 		}
+		
+		public String getImage() {
+			return getImageUrl();
+		}
 
-		/* (non-Javadoc)
-		 * @see pt.rocket.framework.objects.ITargeting#getTargetTitle()
-		 */
+		@Override
+		public String getBrandUrl() {
+			// TODO Auto-generated method stub
+			return getBrand();
+		}
+
+		@Override
+		public String getTargetUrl() {
+			// TODO Auto-generated method stub
+			return getBrand();
+		}
+
 		@Override
 		public String getTargetTitle() {
+			// TODO Auto-generated method stub
 			return getName();
 		}
 

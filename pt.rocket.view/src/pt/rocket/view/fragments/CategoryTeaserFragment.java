@@ -33,7 +33,7 @@ public class CategoryTeaserFragment extends BaseFragment {
     
     private HomeFragmentActivity parentActivity;
     
-    private CategoryTeaserGroup teaserCategoryGroup;
+    private static CategoryTeaserGroup teaserCategoryGroup;
     
     private OnClickListener onTeaserClickListener;
 

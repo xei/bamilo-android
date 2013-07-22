@@ -40,7 +40,7 @@ public class ProducTeaserListFragment extends BaseFragment {
 
     private HomeFragmentActivity parentActivity;
 
-    private ProductTeaserGroup productTeaserGroup;
+    private static ProductTeaserGroup productTeaserGroup;
 
     private OnClickListener onTeaserClickListener;
 

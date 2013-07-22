@@ -41,7 +41,7 @@ public class StaticBannerFragment extends BaseFragment {
     
     private HomeFragmentActivity parentActivity;
     
-    private ArrayList<TeaserImage> teaserImageArrayList;
+    private static ArrayList<TeaserImage> teaserImageArrayList;
     
     private OnClickListener onTeaserClickListener;
 

@@ -114,10 +114,8 @@ public class BrandsTeaserListFragment extends BaseFragment {
 
         ViewGroup container = (ViewGroup) view
                 .findViewById(R.id.teaser_group_container);
-
-//        ((TextView) view.findViewById(R.id.teaser_group_title))
-//                .setText(brandsTeaserGroup.getTitle());
         for (TeaserBrand brand : brandsTeaserGroup.getTeasers()) {
+            Log.i(TAG, "codebrand  : "+brand.getName() + " url: "+brand.getImageUrl()+ " target url: "+brand.getTargetUrl());
             container.addView(createBrandTeaserView(brand, container, mInflater));
         }
         return view;
@@ -185,8 +183,8 @@ public class BrandsTeaserListFragment extends BaseFragment {
     private View createBrandTeaserView(TeaserBrand brand, ViewGroup vg, LayoutInflater mInflater) {
         View brandTeaserView = mInflater.inflate(R.layout.brand_item_small,
                 vg, false);
-        if (brand.getImage() != null) {
-            setImageToLoad(brand.getImage().getUrl(),
+        if (brand.getImageUrl() != null) {
+            setImageToLoad(brand.getImageUrl(),
                     brandTeaserView);
         }
         attachTeaserListener(brand, brandTeaserView);

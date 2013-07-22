@@ -49,6 +49,7 @@ class RestMethodWorkerThread implements Runnable {
 			break;
 		case RestContract.METHOD_POST:
 			// Constants.LogDebug("Going to perform a post");
+			Log.i("METHOD_POST", "METHOD_POST : " + uri  );
 			client.executePostRestUrlString(uri, formData, resultReceiver, metaData);
 			break;
 		case RestContract.METHOD_PUT:
