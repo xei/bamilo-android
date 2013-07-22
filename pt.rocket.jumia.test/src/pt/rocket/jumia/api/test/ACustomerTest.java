@@ -1,8 +1,4 @@
-package pt.rocket.jumia.api.aa;
-
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Random;
+package pt.rocket.jumia.api.test;
 
 import junit.framework.Assert;
 
@@ -10,60 +6,60 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import pt.rocket.framework.rest.RestService;
-import pt.rocket.framework.test.RestClientSingletonTest;
 import pt.rocket.jumia.api.constants.JsonConstants;
 import pt.rocket.jumia.api.constants.Services;
-import pt.rocket.jumia.api.test.ApiBaseTest;
 import android.content.ContentValues;
-import android.test.ServiceTestCase;
 import android.util.Log;
 
-public class AACustomerTest extends ServiceTestCase<RestService> {
+public class ACustomerTest extends ApiBaseTest {
 
-	public AACustomerTest() {
-		super(RestService.class);
-		// TODO Auto-generated constructor stub
+	public void CustomerTest(){
+		
 	}
-
-  private static final String CUSTOMER_USER= "jumiatest@test.tt";
+  private static final String CUSTOMER_USER= "jumiatest1@mailinator.com";
   private static String CUSTOMER_PASS= "123456";
 
   protected String user_id= "";
   protected String session_id= "";
 
     
-	public static final String SKU  ="SA948EL97LGKNGAMZ-7846";
-	public static final String QUANTITY  ="1";
-	public static final String PRODUCT  ="SA948EL97LGKNGAMZ";
-
-
-
+//	@Override
+//	public void testAndroidTestCaseSetupProperly (){
+////		super.testAndroidTestCaseSetupProperly();
+//		Log.e("#############", "testAndroidTestCaseSetupProperly");
+//	}
+//	
+//	@Override
+//	public void testServiceTestCaseSetUpProperly() throws Exception{
+////		super.testServiceTestCaseSetUpProperly();
+//		Log.e("#############", "testServiceTestCaseSetUpProperly");
+//	}
   
   
   
-  /**
-   * 
-   * @throws Throwable
-   */
-  public void test_00_test_success() throws Throwable {
-	     print("Starting user Logout - success");
-	      boolean hasSuccess= false;
-
-
-	      String result = executeGetRequest(Services.USER_LOGOUT_URL);
-	      Log.e("LOGOUT", ":"+result);
-	      try {
-	          JSONObject jsonObject = new JSONObject(result);
-//	          // Check if the status is true
-	          Assert.assertTrue("Success is false \r\n" + result, jsonObject.getBoolean(JsonConstants.JSON_SUCCESS_TAG));
-	//
-
-
-	      } catch (JSONException e) {
-	          Assert.fail(e.getMessage());
-	      }
-  }
+//  /**
+//   * 
+//   * @throws Throwable
+//   */
+//  public void test_00_test_success() throws Throwable {
+//	     print("Starting user Logout - success");
+//	      boolean hasSuccess= false;
+//
+//	      ContentValues values = new ContentValues();
+//	      
+//	      String result = executePostRequest(Services.USER_LOGOUT_URL,values);
+//	      Log.e("LOGOUT", ":"+result);
+//	      try {
+//	          JSONObject jsonObject = new JSONObject(result);
+////	          // Check if the status is true
+//	          Assert.assertTrue("Success is false \r\n" + result, jsonObject.getBoolean(JsonConstants.JSON_SUCCESS_TAG));
+//	//
+//
+//
+//	      } catch (JSONException e) {
+//	          Assert.fail(e.getMessage());
+//	      }
+//  }
   
   
   /**
@@ -72,7 +68,9 @@ public class AACustomerTest extends ServiceTestCase<RestService> {
    */
   public void test_01_userLogin_success() throws Throwable {
       print("Starting user Login test - successs");
-
+//      testAndroidTestCaseSetupProperly();
+//      testServiceTestCaseSetUpProperly();
+      setUp();
       ContentValues values = new ContentValues();
       values.put(JsonConstants.JSON_LOGIN_EMAIL_TAG, CUSTOMER_USER);
 //      values.put("password", encryptMD5(customerPassword));
@@ -102,46 +100,55 @@ public class AACustomerTest extends ServiceTestCase<RestService> {
       
       
       } catch (JSONException e) {
-         // Assert.fail(e.getMessage());
+          Assert.fail(e.getMessage());
        //   createDefaultUser();
       }
   }
   
-  public void test_01_userSession_success() throws Throwable {
-      print("Starting user Login test - successs");
-
-      boolean sameSession=false;
-      
-      String result = executeGetRequest(Services.USER_LOGIN_URL+user_id);
-      Log.e("LOGIN", ":"+result);
-      try {
-          JSONObject jsonObject = new JSONObject(result);
-//          // Check if the status is true
-          Assert.assertTrue("Status is false \r\n" + result, jsonObject.getBoolean(JsonConstants.JSON_SUCCESS_TAG));
+  
+//  public void login(){
+//      ContentValues values = new ContentValues();
+//      values.put(JsonConstants.JSON_LOGIN_EMAIL_TAG, CUSTOMER_USER);
+////      values.put("password", encryptMD5(customerPassword));
+//      values.put(JsonConstants.JSON_LOGIN_PASSWORD_TAG, CUSTOMER_PASS);
 //
-//          // check if the data content is valid
-          JSONObject jsonSessionObject = jsonObject.optJSONObject(JsonConstants.JSON_SESSION_TAG);
-          Assert.assertNotNull("The json does not contain the session object", jsonSessionObject);
-          String session= jsonSessionObject.getString(JsonConstants.JSON_ID_TAG);
-          Log.e("SESSION ID1", ":"+session_id);
-          Log.e("SESSION1", ":"+session);
-//          if(session.equals(session_id)){
-//        	  sameSession=true;
-//          }
+//      String result = executePostRequest(Services.USER_LOGIN_URL, values);
+//  }
+//  public void test_01_userSession_success() throws Throwable {
+//      print("Starting user Login test - successs");
 //
-//          Assert.assertTrue("The json does not contain the same session", sameSession);
-      
-      
-      } catch (JSONException e) {
-         // Assert.fail(e.getMessage());
-       //   createDefaultUser();
-      }
-  }
+//      boolean sameSession=false;
+//      
+//      String result = executeGetRequest(Services.USER_LOGIN_URL+user_id);
+//      Log.e("LOGIN", ":"+result);
+//      try {
+//          JSONObject jsonObject = new JSONObject(result);
+////          // Check if the status is true
+//          Assert.assertTrue("Status is false \r\n" + result, jsonObject.getBoolean(JsonConstants.JSON_SUCCESS_TAG));
+////
+////          // check if the data content is valid
+//          JSONObject jsonSessionObject = jsonObject.optJSONObject(JsonConstants.JSON_SESSION_TAG);
+//          Assert.assertNotNull("The json does not contain the session object", jsonSessionObject);
+//          String session= jsonSessionObject.getString(JsonConstants.JSON_ID_TAG);
+//          Log.e("SESSION ID1", ":"+session_id);
+//          Log.e("SESSION1", ":"+session);
+////          if(session.equals(session_id)){
+////        	  sameSession=true;
+////          }
+////
+////          Assert.assertTrue("The json does not contain the same session", sameSession);
+//      
+//      
+//      } catch (JSONException e) {
+//         // Assert.fail(e.getMessage());
+//       //   createDefaultUser();
+//      }
+//  }
   
  
   public void test_02_userDetails_success() throws Throwable {
       print("Starting user edit test - successs");
-
+      
 
       boolean sameEmail=false;
       String result = executeGetRequest(Services.USER_DETAILS_URL);
@@ -434,74 +441,5 @@ public class AACustomerTest extends ServiceTestCase<RestService> {
     }    
 
 
-    
-    /**
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
-     */
-    
-    
-    
-   protected String executePostRequest(String serviceURL, ContentValues values) {
-        
-    	Log.e("POST SERIVCE", ":"+serviceURL);
-        return RestClientSingletonTest.getSingleton().executePostRestUrlString(getContext(), JsonConstants.API_URL.concat(serviceURL)+JsonConstants.JSON_DEVICE_TAG,
-                values);
-        
-    }
-    
-    protected String executeGetRequest(String serviceURL) {
-        
-    	Log.e("GET SERIVCE", ":"+serviceURL);
-        return RestClientSingletonTest.getSingleton().executeGetRestUrlString(getContext(), JsonConstants.API_URL.concat(serviceURL));
-        
-    }
-    
-    protected static final String encryptMD5(final String password) {
-        try {
-
-            MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
-            digest.update(password.getBytes());
-            byte messageDigest[] = digest.digest();
-
-            StringBuffer hexString = new StringBuffer();
-            for (int i = 0; i < messageDigest.length; i++) {
-                String h = Integer.toHexString(0xFF & messageDigest[i]);
-                while (h.length() < 2)
-                    h = "0" + h;
-                hexString.append(h);
-            }
-            return hexString.toString();
-
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        return "";
-    }
-    
-
-    protected void print(String message) {
-        System.out.println(message);
-    }
-    
-    
-    protected int randomNum(int min,int max){
-    	Random r= new Random();
-    	int Low = min;
-    	int High = max;
-    	int random = r.nextInt(High-Low) + Low;
-    	return random;
-    }
-    
-    
-    
-    
-    
     
 }

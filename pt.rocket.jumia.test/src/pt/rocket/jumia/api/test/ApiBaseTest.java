@@ -14,6 +14,7 @@ import pt.rocket.framework.rest.RestService;
 import pt.rocket.jumia.api.constants.JsonConstants;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.test.ServiceTestCase;
 import android.util.Log;
 
@@ -24,23 +25,31 @@ public class ApiBaseTest extends ServiceTestCase<RestService>{
 		public static final String QUANTITY  ="1";
 		public static final String PRODUCT  ="SA948EL97LGKNGAMZ";
 	
-	
+		Context mCtx = null;
+		
 	public ApiBaseTest() {
         super(RestService.class);
     }
     
+//	@Override
+//	public void testAndroidTestCaseSetupProperly (){
+//		Log.e("#############", "testAndroidTestCaseSetupProperly");
+//	}
+//	
+//	@Override
+//	public void testServiceTestCaseSetUpProperly() throws Exception{
+//		Log.e("#############", "testServiceTestCaseSetUpProperly");
+//	}
+	
+	  @Override
+	  protected void setUp() throws Exception {
+	    super.setUp();
+	    mCtx = getSystemContext();
+	  }
+	
+	
     protected static String sessionToken = "";
-//    private static final String TEST_SERVER_URL = "https://back-st.foodpanda.sg/api/";
-//    private static final String TEST_SERVER_URL = "https://rocket:rock4me@mobile.jumia.com/mobapi/main/md5/";
-//      private static final String TEST_SERVER_URL = "https://mobile.jumia.com/mobapi/main/md5/";
-//    public final static String API_URL = "auth/webservice/";
-//    public final static String API_URL = "/customer/login/";
-//    public static final String JSON_SUCCESS_TAG = "success";
-//    public static final String JSON_STATUS_TAG = "status";
-//    public static final String JSON_TOTAL_TAG = "total";
-//    public static final String JSON_ERROR_TAG = "error";
-//    public static final String JSON_DATA_TAG = "data";
-//    public static final String JSON_SESSION_TOKEN_TAG = "session_token";
+
     /**
      * 
      * @throws Throwable
