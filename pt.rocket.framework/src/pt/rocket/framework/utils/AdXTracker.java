@@ -56,18 +56,31 @@ public class AdXTracker {
 		Log.d( TAG, "trackSale: cartValue = " + cartValue + " currency = " + currency );
 		AdXConnect.getAdXConnectEventInstance(context, context.getString( R.string.xsale), cartValue, currency);
 	}
-
-	public static void trackSaleData(Context context, String userId, String transactionId, boolean isFirstCustomer) {
+	
+	public static void trackSale(Context context, String cartValue, String userId, String transactionId,  boolean isFirstCustomer ) {
 		if (!isEnabled)
 			return;
-
-		Log.d(TAG, "trackSaleData: userId = " + userId + " transactionId = " + transactionId);
-		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xsaledata), userId, transactionId);
+		String currency = CurrencyFormatter.getCurrencyCode();
+		Log.d( TAG, "trackSale: cartValue = " + cartValue + " currency = " + currency );
+		AdXConnect.getAdXConnectEventInstance(context, context.getString( R.string.xsale), cartValue, currency,transactionId+"-"+userId);
 		if (isFirstCustomer) {
 			Log.d(TAG, "trackSaleData: is first customer");
 			AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xcustomer), userId, "");
 		}
 	}
+	
+
+//	public static void trackSaleData(Context context, String userId, String transactionId, boolean isFirstCustomer) {
+//		if (!isEnabled)
+//			return;
+//
+//		Log.d(TAG, "trackSaleData: userId = " + userId + " transactionId = " + transactionId);
+//		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xsaledata), userId, transactionId);
+//		if (isFirstCustomer) {
+//			Log.d(TAG, "trackSaleData: is first customer");
+//			AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xcustomer), userId, "");
+//		}
+//	}
 
 	public static void launch(Context context) {
 		if (!isEnabled)

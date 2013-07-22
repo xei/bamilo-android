@@ -110,20 +110,56 @@ public class TrackerDelegator {
         }
         List<PurchaseItem> items = PurchaseItem.parseItems(itemsJson);
         AnalyticsGoogle.get().trackSales(orderNr, value, items);
-        AdXTracker.trackSale(context, value);
-
+        
         if (customer == null) {
             Log.w(TAG, "no customer - cannot track further without customerId");
-            return;
+            AdXTracker.trackSale(context, value);
+        }else{
+            String customerId = customer.getIdAsString();
+            
+            boolean isFirstCustomer = checkCheckoutAfterSignup(context, customer);
+            Log.d( TAG, "trackPurchaseInt: isFirstCustomer = " + isFirstCustomer );
+            AdXTracker.trackSale(context,value, customerId, orderNr, isFirstCustomer);
         }
-
-        String customerId = customer.getIdAsString();
-        FlurryTracker.get().purchase(orderNr, customerId, value);
         
-        boolean isFirstCustomer = checkCheckoutAfterSignup(context, customer);
-        Log.d( TAG, "trackPurchaseInt: isFirstCustomer = " + isFirstCustomer );
-        AdXTracker.trackSaleData(context, customerId, orderNr, isFirstCustomer);
-    }
+    }    
+    
+//    private static void trackPurchaseInt(Context context, JSONObject result, Customer customer) {
+//        Log.d(TAG, "trackPurchase: started");
+//        if ( result == null) {
+//            return;
+//        }
+//        
+//        Log.d( TAG, "tracking for " + ShopSelector.getShopName() + " in country " + ShopSelector.getCountryName());
+//                
+//        String orderNr;
+//        String value;
+//        JSONObject itemsJson;
+//        try {
+//            orderNr = result.getString(JSON_TAG_ORDER_NR);
+//            value = result.getString(JSON_TAG_GRAND_TOTAL);
+//            itemsJson = result.getJSONObject(JSON_TAG_ITEMS_JSON);
+//            Log.d( TAG, result.toString(2));
+//        } catch (JSONException e) {
+//            Log.e(TAG, "json parsing error: ", e);
+//            return;
+//        }
+//        List<PurchaseItem> items = PurchaseItem.parseItems(itemsJson);
+//        AnalyticsGoogle.get().trackSales(orderNr, value, items);
+//        AdXTracker.trackSale(context, value);
+//
+//        if (customer == null) {
+//            Log.w(TAG, "no customer - cannot track further without customerId");
+//            return;
+//        }
+//
+//        String customerId = customer.getIdAsString();
+//        FlurryTracker.get().purchase(orderNr, customerId, value);
+//        
+//        boolean isFirstCustomer = checkCheckoutAfterSignup(context, customer);
+//        Log.d( TAG, "trackPurchaseInt: isFirstCustomer = " + isFirstCustomer );
+//        AdXTracker.trackSaleData(context, customerId, orderNr, isFirstCustomer);
+//    }
 
     public static void storeSignupProcess(Context context, Customer customer) {
         Log.d( TAG, "storing signup tags" );
