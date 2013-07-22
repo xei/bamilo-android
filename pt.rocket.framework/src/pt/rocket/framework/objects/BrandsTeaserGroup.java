@@ -50,13 +50,13 @@ public class BrandsTeaserGroup extends TeaserSpecification<TeaserBrand> {
 		@Override
 		public String getBrandUrl() {
 			// TODO Auto-generated method stub
-			return getBrand();
+			return getBrandUrl();
 		}
 
 		@Override
 		public String getTargetUrl() {
 			// TODO Auto-generated method stub
-			return getBrand();
+			return getName();
 		}
 
 		@Override

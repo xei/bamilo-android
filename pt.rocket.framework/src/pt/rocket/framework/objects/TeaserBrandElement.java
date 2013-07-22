@@ -15,6 +15,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pt.rocket.framework.objects.ITargeting.TargetType;
 import pt.rocket.framework.utils.CurrencyFormatter;
 import pt.rocket.framework.utils.LogTagHelper;
 import de.akquinet.android.androlog.Log;
@@ -106,20 +107,20 @@ public class TeaserBrandElement implements IJSONSerializable {
      * 
      */
     public class BrandAttributes implements IJSONSerializable {
-        private static final String JSON_NAME_TAG = "name";
+        private static final String JSON_NAME_TAG = "description";
         private static final String JSON_ID_TAG = "id";
         private static final String JSON_IMAGE_LIST_TAG = "image_list";
         private static final String JSON_IMAGE_URL_TAG = "image_url";
         private static final String JSON_BRAND_URL_TAG = "brand_url";
         private static final String JSON_DESCRIPTION_TAG = "description";
-        private static final String JSON_BRAND_TAG = "brand";
+        private static final String JSON_TARGET_TYPE_TAG = "target_type";
 
         private String name;
         private int id;
         private String image_url;
         private String brand_url;
         private String description;
-        private String brand;
+        private String target_type;
         /**
          * ProductAttributes empty constructor
          */
@@ -129,7 +130,7 @@ public class TeaserBrandElement implements IJSONSerializable {
             image_url = "";
             brand_url = "";
             description = "";
-            brand = "";
+            target_type = "";
         }
 
         /**
@@ -170,10 +171,8 @@ public class TeaserBrandElement implements IJSONSerializable {
         /**
          * @return the brand
          */
-        public String getBrand() {
-        	String[] brandSplit = brand_url.split("/");
-        	
-            return brandSplit[brandSplit.length-1];
+        public TargetType getTargetType() {
+            return TargetType.BRAND;
         }
 
         /* (non-Javadoc)
@@ -183,13 +182,10 @@ public class TeaserBrandElement implements IJSONSerializable {
         public boolean initialize(JSONObject jsonObject) {
                         
             try {
-//            	if(!jsonObject.has(JSON_NAME_TAG)) {
-//            		name = jsonObject.getString(JSON_NAME_TAG);
-//            		brand = jsonObject.getString(JSON_NAME_TAG);
-//                } else {
-//                    name = "no name";
-//                    brand = "no name";
-//                }
+            	
+        		name = jsonObject.getString(JSON_NAME_TAG);
+        		target_type = jsonObject.optString(JSON_TARGET_TYPE_TAG, "");
+                
                               
                 description = jsonObject.optString(JSON_DESCRIPTION_TAG, "");
                 
@@ -264,7 +260,7 @@ public class TeaserBrandElement implements IJSONSerializable {
     /**
      * @return the brand
      */
-    public String getBrand() {
-        return attributes.getBrand();
+    public TargetType getTargetType() {
+        return attributes.getTargetType();
     }
 }

@@ -15,11 +15,15 @@ import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.view.HomeFragmentActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -216,6 +220,23 @@ public class ProducTeaserListFragment extends BaseFragment {
                 .findViewById(R.id.image_view);
         final View progressBar = imageTeaserView
                 .findViewById(R.id.image_loading_progress);
+        
+        WindowManager wm = (WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        Point size = new Point();
+        int width;
+        int height;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
+            display.getSize(size);
+            width = size.x;
+            height = size.y;
+       } else {
+           width = display.getWidth();
+           height = display.getHeight();
+       }
+        
+        imageTeaserView.getLayoutParams().width = width/productTeaserGroup.getTeasers().size();
+        
         if (!TextUtils.isEmpty(imageUrl)) {
             ImageLoader.getInstance().displayImage(imageUrl, imageView,
                     new SimpleImageLoadingListener() {

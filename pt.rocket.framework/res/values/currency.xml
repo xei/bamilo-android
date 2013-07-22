@@ -47,6 +47,7 @@
     <string name="currency_code_mad">MAD</string>
 <!--     <string name="currency_code_egp">EGP</string> -->
     <string name="currency_code_xof">XOF</string>
+    
     <string name="currency_unit_pattern_ngn">₦ %s</string>
     <string name="currency_unit_pattern_ksh">KSh %s</string>
     <string name="currency_unit_pattern_mad">%s Dhs</string>

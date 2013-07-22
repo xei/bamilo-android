@@ -382,7 +382,7 @@
     <style name="product_sort_line">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">3dp</item>
-        <item name="android:background">@color/blue_basic</item>
+        <item name="android:background">@color/orange_basic</item>
     </style>
 
     <style name="search_suggestion_list_itemtext">

@@ -116,11 +116,11 @@ public class MainOneSlideFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState) {
         super.onCreateView(inflater, viewGroup, savedInstanceState);
         Log.i(TAG, "ON CREATE VIEW");
-        if(this.teaserImageArrayList.size()>1){
-            rootView = inflater.inflate(R.layout.teaser_swipe_banners_group, viewGroup, false);
-        } else {
+//        if(this.teaserImageArrayList.size()>1){
+//            rootView = inflater.inflate(R.layout.teaser_swipe_banners_group, viewGroup, false);
+//        } else {
             rootView = inflater.inflate(R.layout.teaser_big_banner, viewGroup, false);
-        }
+//        }
         
         mInflater = inflater;
         Log.i(TAG, "code1 yesees");
@@ -153,13 +153,13 @@ public class MainOneSlideFragment extends BaseFragment {
         if (pager.getAdapter() == null) {
             ImagePagerAdapter adapter = new ImagePagerAdapter(teaserImageArrayList, mInflater);
             pager.setAdapter(adapter);
-            if(teaserImageArrayList.size()>1){
-                PageIndicator indicator = (PageIndicator) rootView
-                        .findViewById(R.id.indicator);
-                NormalizingViewPagerWrapper pagerWrapper = new NormalizingViewPagerWrapper(
-                        getActivity(), pager, adapter, indicator);    
-                indicator.setViewPager(pagerWrapper);
-            }
+//            if(teaserImageArrayList.size()>1){
+//                PageIndicator indicator = (PageIndicator) rootView
+//                        .findViewById(R.id.indicator);
+//                NormalizingViewPagerWrapper pagerWrapper = new NormalizingViewPagerWrapper(
+//                        getActivity(), pager, adapter, indicator);    
+//                indicator.setViewPager(pagerWrapper);
+//            }
         }
 //        AnalyticsGoogle.get().trackPage(R.string.glogin);
         //

@@ -24,6 +24,8 @@ import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.utils.BaseActivity;
 import pt.rocket.utils.CheckVersion;
 import pt.rocket.utils.HockeyStartup;
+import pt.rocket.utils.JumiaFlingDetector;
+import pt.rocket.utils.JumiaViewPager;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.OnActivityFragmentInteraction;
@@ -44,7 +46,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerTabStrip;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -63,7 +64,7 @@ public class HomeFragmentActivity extends BaseActivity {
     private final static String TAG = HomeFragmentActivity.class.getSimpleName();
 
     private LayoutInflater mInflater;
-    private ViewPager mPager;
+    private JumiaViewPager mPager;
     private PagerTabStrip pagerTabStrip;
     
     private final int TAB_PREV_ID = 0;
@@ -113,10 +114,10 @@ public class HomeFragmentActivity extends BaseActivity {
         mInflater = (LayoutInflater) this
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         changeSearchBarBehavior();
-        mPager = (ViewPager) findViewById(R.id.home_viewpager);
+        mPager = (JumiaViewPager) findViewById(R.id.home_viewpager);
         
-        pagerTabStrip = (PagerTabStrip)findViewById(R.id.home_titles);
-
+        pagerTabStrip = (PagerTabStrip) findViewById(R.id.home_titles);
+        pagerTabStrip.setOnTouchListener(new JumiaFlingDetector(activity));
         triggerContentEvent(new RequestEvent(EventType.GET_TEASERS_EVENT));
         HockeyStartup.register(this);
         try {
@@ -130,6 +131,15 @@ public class HomeFragmentActivity extends BaseActivity {
         } catch (IllegalAccessException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+        }
+    }
+    
+    public void moveToRight(){
+        mPager.setCurrentItem(mPager.getCurrentItem()+1, true);
+    }
+    public void moveToLeft(){
+        if(mPager.getCurrentItem() > 0) {
+            mPager.setCurrentItem(mPager.getCurrentItem()-1, true);
         }
     }
     
@@ -147,7 +157,9 @@ public class HomeFragmentActivity extends BaseActivity {
         // Set Color
         currTextView.setTextColor(activity.getResources().getColor(TAB_COLOR_TEXT_SELECTED));
         nextTextView.setTextColor(activity.getResources().getColor(TAB_COLOR_TEXT_UNSELECTED));
+//        nextTextView.setAlpha(0.7f);
         prevTextView.setTextColor(activity.getResources().getColor(TAB_COLOR_TEXT_UNSELECTED));
+//        prevTextView.setAlpha(0.7f);
         // Set font
 //        Typeface tf = TypefaceFactory.getInstance().getFont(activity, FONT_TEXT_SELECTED);
 //        currTextView.setTypeface(tf);
