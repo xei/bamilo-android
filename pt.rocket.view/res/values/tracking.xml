@@ -65,8 +65,7 @@
 
 <!--     <bool name="adx_enable">false</bool> -->
     <bool name="adx_enable">true</bool> 
-    <string name="xid">rJma390Sq104mxe741ksJ0</string>
-    
+    <string name="xid">Jma390Sq104mxe741ksJ0</string>
     
     <!--  -->
     <!-- Flurry tracking -->
