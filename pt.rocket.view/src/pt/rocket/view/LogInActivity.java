@@ -18,22 +18,19 @@ import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.objects.Errors;
 import pt.rocket.framework.service.services.CustomerAccountService;
 import pt.rocket.framework.utils.AnalyticsGoogle;
-import pt.rocket.framework.utils.FlurryTracker;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.pojo.DynamicForm;
 import pt.rocket.pojo.DynamicFormItem;
-import pt.rocket.utils.DialogGeneric;
 import pt.rocket.utils.BaseActivity;
+import pt.rocket.utils.DialogGeneric;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.TrackerDelegator;
-import pt.rocket.utils.dialogfragments.DialogDatePickerFragment;
 import pt.rocket.view.fragments.FragmentType;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -116,12 +113,12 @@ public class LogInActivity extends BaseActivity {
 
     public void onStart() {
         super.onStart();
-        FlurryTracker.get().begin(this);
+        
     }
 
     public void onStop() {
         super.onStop();
-        FlurryTracker.get().end(this);
+        
     }
 
     public void onResume() {

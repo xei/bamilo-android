@@ -9,7 +9,6 @@ import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.objects.PurchaseItem;
 import pt.rocket.framework.utils.AdXTracker;
 import pt.rocket.framework.utils.AnalyticsGoogle;
-import pt.rocket.framework.utils.FlurryTracker;
 import pt.rocket.framework.utils.ShopSelector;
 import pt.rocket.view.R;
 import android.content.Context;
@@ -45,7 +44,7 @@ public class TrackerDelegator {
                 
         boolean loginAfterRegister = checkLoginAfterSignup(context, customer);
         Log.d( TAG, "trackLoginSuccessul: loginAfterRegister = " + loginAfterRegister + " wasAutologin = " + wasAutologin );
-        FlurryTracker.get().signIn( customer, loginAfterRegister, wasAutologin );
+
         PushManager.shared().setAlias(customer.getIdAsString());
         AdXTracker.login(context, customer.getIdAsString());
     }
@@ -68,7 +67,7 @@ public class TrackerDelegator {
         }
         
         AdXTracker.signup(context, customer.getIdAsString());
-        FlurryTracker.get().signUp(customer );
+
         PushManager.shared().setAlias(customer.getIdAsString());
         storeSignupProcess(context, customer);
     }

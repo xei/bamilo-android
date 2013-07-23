@@ -52,7 +52,7 @@ public final class ShopSelector {
 				R.array.currency_codes)[shopId];
 		CurrencyFormatter.initialize(context, currencyCode);
 		AnalyticsGoogle.startup(context, shopId);
-		FlurryTracker.startup(context, shopId);
+
 		AdXTracker.startup(context);
 		AdXTracker.launch(context);
 		sShopId = shopId;

@@ -5,7 +5,6 @@ import java.util.EnumSet;
 import pt.rocket.framework.event.EventType;
 import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.utils.AnalyticsGoogle;
-import pt.rocket.framework.utils.FlurryTracker;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.BaseActivity;
 import pt.rocket.utils.MyMenuItem;
@@ -56,7 +55,7 @@ public class CheckoutWebActivityFragment extends BaseActivity {
     @Override
     public void onStart() {
         super.onStart();
-        FlurryTracker.get().begin(this);
+        
     }
 
     @Override
@@ -68,7 +67,7 @@ public class CheckoutWebActivityFragment extends BaseActivity {
     @Override
     public void onStop() {
         super.onStop();
-        FlurryTracker.get().end(this);
+        
     }
 
     private void startFragmentCallbacks() {

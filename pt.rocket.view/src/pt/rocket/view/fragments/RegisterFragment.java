@@ -25,7 +25,6 @@ import pt.rocket.framework.forms.InputType;
 import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.objects.Errors;
 import pt.rocket.framework.service.services.CustomerAccountService;
-import pt.rocket.framework.utils.FlurryTracker;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.pojo.DynamicForm;
 import pt.rocket.pojo.DynamicFormItem;
@@ -193,7 +192,7 @@ public class RegisterFragment extends BaseFragment {
     public void onStop() {
         super.onStop();
         Log.i(TAG, "ON STOP");
-        FlurryTracker.get().end(getActivity());
+        
         if(container != null) container.removeAllViews();
     }
     

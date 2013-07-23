@@ -21,7 +21,6 @@ import pt.rocket.framework.objects.ShoppingCart;
 import pt.rocket.framework.rest.RestClientSingleton;
 import pt.rocket.framework.rest.RestContract;
 import pt.rocket.framework.utils.AnalyticsGoogle;
-import pt.rocket.framework.utils.FlurryTracker;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.BaseActivity;
 import pt.rocket.utils.MyMenuItem;
@@ -113,7 +112,7 @@ public class CheckoutWebActivity extends BaseActivity {
     @Override
     public void onStart() {
         super.onStart();
-        FlurryTracker.get().begin(this);
+        
     }
 
     @Override
@@ -127,7 +126,7 @@ public class CheckoutWebActivity extends BaseActivity {
     @Override
     public void onStop() {
         super.onStop();
-        FlurryTracker.get().end(this);
+        
     }
     
     @SuppressWarnings("deprecation")

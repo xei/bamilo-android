@@ -22,7 +22,6 @@ import pt.rocket.framework.forms.InputType;
 import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.objects.Errors;
 import pt.rocket.framework.utils.AnalyticsGoogle;
-import pt.rocket.framework.utils.FlurryTracker;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.pojo.DynamicForm;
 import pt.rocket.pojo.DynamicFormItem;
@@ -153,13 +152,13 @@ public class RegisterActivity extends MyActivity {
     @Override
     public void onStart() {
         super.onStart();
-        FlurryTracker.get().begin(this);
+        
     }
     
     @Override
     public void onStop() {
         super.onStop();
-        FlurryTracker.get().end(this);
+        
     }
 
     /*

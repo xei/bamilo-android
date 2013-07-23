@@ -9,7 +9,6 @@ import pt.rocket.framework.event.EventType;
 import pt.rocket.framework.event.ResponseEvent;
 import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.utils.AnalyticsGoogle;
-import pt.rocket.framework.utils.FlurryTracker;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.BaseActivity;
 import pt.rocket.utils.MyMenuItem;
@@ -67,7 +66,7 @@ public class SessionFragmentActivity extends BaseActivity {
     public void onStart() {
         super.onStart();
         Log.i(TAG, "ON START");
-        FlurryTracker.get().begin(this);
+        
     }
 
     /*
@@ -101,7 +100,7 @@ public class SessionFragmentActivity extends BaseActivity {
     public void onStop() {
         super.onStop();
         Log.i(TAG, "ON STOP");
-        FlurryTracker.get().end(this);
+        
     }
     
     @Override
