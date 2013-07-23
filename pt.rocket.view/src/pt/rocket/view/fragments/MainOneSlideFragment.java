@@ -29,6 +29,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
@@ -148,8 +149,11 @@ public class MainOneSlideFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        ViewPager pager = (ViewPager) rootView.findViewById(R.id.viewpager );
-        if (pager.getAdapter() == null) {
+        final ViewPager pager = (ViewPager) rootView.findViewById(R.id.viewpager );
+        final View imageContainer = rootView.findViewById(R.id.banner_view);
+        if (pager.getAdapter() == null && teaserImageArrayList.size()>1) {
+            pager.setVisibility(View.VISIBLE);
+            imageContainer.setVisibility(View.GONE);
             ImagePagerAdapter adapter = new ImagePagerAdapter(teaserImageArrayList, mInflater);
             pager.setAdapter(adapter);
 //            if(teaserImageArrayList.size()>1){
@@ -159,6 +163,11 @@ public class MainOneSlideFragment extends BaseFragment {
 //                        getActivity(), pager, adapter, indicator);    
 //                indicator.setViewPager(pagerWrapper);
 //            }
+        } else if(teaserImageArrayList.size() == 1) {
+            pager.setVisibility(View.GONE);
+            imageContainer.setVisibility(View.VISIBLE);
+            setImageToLoad(teaserImageArrayList.get(0).getImageUrl(),imageContainer);
+            attachTeaserListener(teaserImageArrayList.get(0), imageContainer);
         }
 //        AnalyticsGoogle.get().trackPage(R.string.glogin);
         //

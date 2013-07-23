@@ -25,7 +25,7 @@
                         android:width="30dp" >
                     </size>
 
-                    <solid android:color="@color/blue_basic" />
+                    <solid android:color="@color/orange_basic" />
                 </shape>
             </item>
             <item>
