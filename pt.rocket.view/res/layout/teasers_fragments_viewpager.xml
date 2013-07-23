@@ -3,11 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:descendantFocusability="afterDescendants"
     >
     <pt.rocket.utils.JumiaViewPager
         android:id="@+id/home_viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" 
+        android:duplicateParentState="true"
         >
 
         <android.support.v4.view.PagerTabStrip
@@ -17,6 +19,7 @@
             android:layout_gravity="top"
             android:background="@color/strip_title_background"
             android:textColor="@color/strip_title"
-            android:textSize="12.54sp" />
+            android:textSize="12.54sp"
+             />
     </pt.rocket.utils.JumiaViewPager>
 </LinearLayout>

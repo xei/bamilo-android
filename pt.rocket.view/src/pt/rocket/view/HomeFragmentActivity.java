@@ -52,7 +52,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 import de.akquinet.android.androlog.Log;
 
@@ -83,7 +82,7 @@ public class HomeFragmentActivity extends BaseActivity {
     
     private final String FONT_TEXT_SELECTED = "fonts/Roboto-Bold.ttf";
     
-    private DemoCollectionPagerAdapter mPagerAdapter;
+    private HomeCollectionPagerAdapter mPagerAdapter;
     private static ArrayList<String> pagesTitles;
     private static ArrayList<Collection<? extends TeaserSpecification<?>>> requestResponse;
 
@@ -117,7 +116,7 @@ public class HomeFragmentActivity extends BaseActivity {
         mPager = (JumiaViewPager) findViewById(R.id.home_viewpager);
         
         pagerTabStrip = (PagerTabStrip) findViewById(R.id.home_titles);
-        pagerTabStrip.setOnTouchListener(new JumiaFlingDetector(activity));
+//        pagerTabStrip.setOnTouchListener(new JumiaFlingDetector(activity));
         triggerContentEvent(new RequestEvent(EventType.GET_TEASERS_EVENT));
         HockeyStartup.register(this);
         try {
@@ -135,12 +134,12 @@ public class HomeFragmentActivity extends BaseActivity {
     }
     
     public void moveToRight(){
-        mPager.setCurrentItem(mPager.getCurrentItem()+1, true);
+//        Toast.makeText(activity, "weeee", Toast.LENGTH_LONG).show;
     }
     public void moveToLeft(){
-        if(mPager.getCurrentItem() > 0) {
-            mPager.setCurrentItem(mPager.getCurrentItem()-1, true);
-        }
+//        if(mPager.getCurrentItem() > 0) {
+//            mPager.setCurrentItem(mPager.getCurrentItem()-1, true);
+//        }
     }
     
     /**
@@ -151,14 +150,14 @@ public class HomeFragmentActivity extends BaseActivity {
      */
     private void setLayoutSpec() throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException {        
         // Get text
-        TextView currTextView = (TextView) pagerTabStrip.getChildAt(TAB_CURR_ID);
-        TextView nextTextView = (TextView) pagerTabStrip.getChildAt(TAB_NEXT_ID);
-        TextView prevTextView = (TextView) pagerTabStrip.getChildAt(TAB_PREV_ID);
+//        TextView currTextView = (TextView) pagerTabStrip.getChildAt(TAB_CURR_ID);
+//        TextView nextTextView = (TextView) pagerTabStrip.getChildAt(TAB_NEXT_ID);
+//        TextView prevTextView = (TextView) pagerTabStrip.getChildAt(TAB_PREV_ID);
         // Set Color
-        currTextView.setTextColor(activity.getResources().getColor(TAB_COLOR_TEXT_SELECTED));
-        nextTextView.setTextColor(activity.getResources().getColor(TAB_COLOR_TEXT_UNSELECTED));
+//        currTextView.setTextColor(activity.getResources().getColor(TAB_COLOR_TEXT_SELECTED));
+//        nextTextView.setTextColor(activity.getResources().getColor(TAB_COLOR_TEXT_UNSELECTED));
 //        nextTextView.setAlpha(0.7f);
-        prevTextView.setTextColor(activity.getResources().getColor(TAB_COLOR_TEXT_UNSELECTED));
+//        prevTextView.setTextColor(activity.getResources().getColor(TAB_COLOR_TEXT_UNSELECTED));
 //        prevTextView.setAlpha(0.7f);
         // Set font
 //        Typeface tf = TypefaceFactory.getInstance().getFont(activity, FONT_TEXT_SELECTED);
@@ -199,7 +198,7 @@ public class HomeFragmentActivity extends BaseActivity {
             Log.i(TAG, "code1 teaser size is: " + homepage.getTeaserSpecification().size());
         }
         if(mPagerAdapter== null){
-            mPagerAdapter = new DemoCollectionPagerAdapter(getSupportFragmentManager());
+            mPagerAdapter = new HomeCollectionPagerAdapter(getSupportFragmentManager());
 
             mPager.setAdapter(mPagerAdapter);
         }
@@ -252,18 +251,18 @@ public class HomeFragmentActivity extends BaseActivity {
 
     // Since this is an object collection, use a FragmentStatePagerAdapter,
     // and NOT a FragmentPagerAdapter.
-    public class DemoCollectionPagerAdapter extends FragmentStatePagerAdapter {
+    public class HomeCollectionPagerAdapter extends FragmentStatePagerAdapter {
 //        ArrayList<Fragment> fragments = new ArrayList<Fragment>();
-        public DemoCollectionPagerAdapter(FragmentManager fm) {
+        public HomeCollectionPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
         @Override
         public Fragment getItem(int position) {
            
-            Fragment fragment = new DemoObjectFragment();
+            Fragment fragment = new HomeObjectFragment();
             Bundle args = new Bundle();
-            args.putInt(DemoObjectFragment.ARG_OBJECT, position);
+            args.putInt(HomeObjectFragment.ARG_OBJECT, position);
             fragment.setArguments(args);
             
             return fragment;
@@ -276,7 +275,7 @@ public class HomeFragmentActivity extends BaseActivity {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return pagesTitles.get(position);
+            return pagesTitles.get(position).toUpperCase();
         }
         
         @Override
@@ -288,7 +287,7 @@ public class HomeFragmentActivity extends BaseActivity {
 
     // Instances of this class are fragments representing a single
     // object in our collection.
-    public static class DemoObjectFragment extends Fragment {
+    public static class HomeObjectFragment extends Fragment {
 
         private OnActivityFragmentInteraction mCallback;
 
@@ -394,6 +393,7 @@ public class HomeFragmentActivity extends BaseActivity {
                         View view = mInflater
                                 .inflate(R.layout.main_one_fragment_frame, null, false);
                         mainView.addView(view);
+                        view.setOnTouchListener(new JumiaFlingDetector(getActivity()));
                         fragmentManagerTransition(R.id.main_one_frame, fragmentMainOneSlide, false,
                                 false);
                     }
@@ -496,7 +496,7 @@ public class HomeFragmentActivity extends BaseActivity {
                 fragmentTransaction.setCustomAnimations(R.anim.slide_in_right,
                         R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
             // Replace
-            fragmentTransaction.add(container, fragment);
+            fragmentTransaction.replace(container, fragment);
             // BackStack
             if (addToBackStack)
                 fragmentTransaction.addToBackStack(null);

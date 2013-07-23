@@ -33,7 +33,6 @@ import android.widget.ImageView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 import com.viewpagerindicator.IconPagerAdapter;
-import com.viewpagerindicator.PageIndicator;
 
 import de.akquinet.android.androlog.Log;
 

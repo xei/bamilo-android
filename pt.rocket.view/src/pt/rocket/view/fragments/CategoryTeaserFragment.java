@@ -12,6 +12,7 @@ import pt.rocket.framework.objects.CategoryTeaserGroup;
 import pt.rocket.framework.objects.CategoryTeaserGroup.TeaserCategory;
 import pt.rocket.framework.objects.ITargeting;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.utils.JumiaFlingDetector;
 import pt.rocket.view.R;
 import pt.rocket.view.HomeFragmentActivity;
 import android.app.Activity;
@@ -102,7 +103,6 @@ public class CategoryTeaserFragment extends BaseFragment {
         Log.i(TAG, "ON CREATE VIEW");
         
         View view = mInflater.inflate(R.layout.teaser_categories_group, viewGroup, false);
-        
         ViewGroup container = (ViewGroup) view
                 .findViewById(R.id.teaser_group_container);
      
@@ -113,6 +113,7 @@ public class CategoryTeaserFragment extends BaseFragment {
             container
                     .addView(createCategoryTeaserView(category, container, mInflater));
         }
+//        view.findViewById(R.id.fragment_content).setOnTouchListener(new JumiaFlingDetector(getActivity()));
         return view;
     }
 

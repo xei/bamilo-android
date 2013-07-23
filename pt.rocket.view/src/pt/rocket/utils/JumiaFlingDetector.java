@@ -87,7 +87,7 @@ public class JumiaFlingDetector implements View.OnTouchListener {
                 return false; // We don't consume the event
             }
 
-            return true;
+            return false;
         }
         }
         return false;
