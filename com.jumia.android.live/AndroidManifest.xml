@@ -30,42 +30,52 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="pt.rocket.view.MainActivity" android:label="@string/app_name">
-        </activity>
-        <activity android:name="pt.rocket.view.CategoriesNewActivity" android:screenOrientation="portrait" />
-        <activity android:name="pt.rocket.view.ProductsActivity" android:screenOrientation="portrait" />
-        <activity android:name="pt.rocket.view.LogInActivity" android:screenOrientation="portrait" />
-        <activity android:name="pt.rocket.view.SearchActivity" android:launchMode="singleTask" android:screenOrientation="portrait" />
-        <activity android:name="pt.rocket.view.WishListActivity" android:screenOrientation="portrait" />
-        <activity android:name="pt.rocket.view.InnerCategoriesActivity" android:screenOrientation="portrait" />
-        <activity android:name="pt.rocket.view.ProductsGalleryActivityNew" android:screenOrientation="portrait" />
-        <activity android:name="pt.rocket.view.ProductDetailsActivityNew" android:screenOrientation="portrait" />
-        <activity android:name="pt.rocket.view.ProductDetailsDescriptionActivity" android:screenOrientation="portrait" />
-        <activity android:name="pt.rocket.view.RegisterActivity" android:screenOrientation="portrait" />
-        <activity android:name="pt.rocket.view.ShoppingCartActivity" android:launchMode="singleTask" android:screenOrientation="portrait" android:windowSoftInputMode="adjustPan" />
-        <activity android:name="pt.rocket.view.MyAccountActivity" android:screenOrientation="portrait" />
-        <activity android:name="pt.rocket.view.ReviewActivity" android:screenOrientation="portrait" />
-        <activity android:name="pt.rocket.view.MyAccountUserData" android:screenOrientation="portrait" android:windowSoftInputMode="stateHidden" />
-        <activity android:name="pt.rocket.view.TermsActivity" android:noHistory="true" android:screenOrientation="portrait" />
-        <activity android:name="pt.rocket.view.ForgotPasswordActivity" android:screenOrientation="portrait" />
-        <activity android:name="pt.rocket.view.ChangeCountryActivity" android:screenOrientation="portrait" android:noHistory="true" />
-        <activity android:name="pt.rocket.view.CheckoutStep5Activity" android:screenOrientation="portrait" />
-        <activity android:name="pt.rocket.view.PopularityActivity" android:screenOrientation="portrait" />
-        <activity android:name="pt.rocket.view.WriteReviewActivity" android:screenOrientation="portrait" />
-        <activity android:name="pt.rocket.view.CheckoutWebActivity" android:screenOrientation="portrait" />
-        <activity android:name="pt.rocket.view.TeaserActivity" android:screenOrientation="portrait" />
+<!--         <activity android:name="pt.rocket.view.MainActivity" android:label="@string/app_name"> -->
+<!--         </activity> -->
+<!--         <activity android:name="pt.rocket.view.CategoriesNewActivity" android:screenOrientation="portrait" /> -->
+<!--         <activity android:name="pt.rocket.view.ProductsActivity" android:screenOrientation="portrait" /> -->
+<!--         <activity android:name="pt.rocket.view.LogInActivity" android:screenOrientation="portrait" /> -->
+<!--         <activity android:name="pt.rocket.view.SearchActivity" android:launchMode="singleTask" android:screenOrientation="portrait" /> -->
+<!--         <activity android:name="pt.rocket.view.WishListActivity" android:screenOrientation="portrait" /> -->
+<!--         <activity android:name="pt.rocket.view.InnerCategoriesActivity" android:screenOrientation="portrait" /> -->
+<!--         <activity android:name="pt.rocket.view.ProductsGalleryActivityNew" android:screenOrientation="portrait" /> -->
+<!--         <activity android:name="pt.rocket.view.ProductDetailsActivityNew" android:screenOrientation="portrait" /> -->
+<!--         <activity android:name="pt.rocket.view.ProductDetailsDescriptionActivity" android:screenOrientation="portrait" /> -->
+<!--         <activity android:name="pt.rocket.view.RegisterActivity" android:screenOrientation="portrait" /> -->
+<!--         <activity android:name="pt.rocket.view.ShoppingCartActivity" android:launchMode="singleTask" android:screenOrientation="portrait" android:windowSoftInputMode="adjustPan" /> -->
+<!--         <activity android:name="pt.rocket.view.MyAccountActivity" android:screenOrientation="portrait" /> -->
+<!--         <activity android:name="pt.rocket.view.ReviewActivity" android:screenOrientation="portrait" /> -->
+<!--         <activity android:name="pt.rocket.view.MyAccountUserData" android:screenOrientation="portrait" android:windowSoftInputMode="stateHidden" /> -->
+<!--         <activity android:name="pt.rocket.view.TermsActivity" android:noHistory="true" android:screenOrientation="portrait" /> -->
+<!--         <activity android:name="pt.rocket.view.ForgotPasswordActivity" android:screenOrientation="portrait" /> -->
+<!--         <activity android:name="pt.rocket.view.ChangeCountryActivity" android:screenOrientation="portrait" android:noHistory="true" /> -->
+<!--         <activity android:name="pt.rocket.view.CheckoutStep5Activity" android:screenOrientation="portrait" /> -->
+<!--         <activity android:name="pt.rocket.view.PopularityActivity" android:screenOrientation="portrait" /> -->
+<!--         <activity android:name="pt.rocket.view.WriteReviewActivity" android:screenOrientation="portrait" /> -->
+<!--         <activity android:name="pt.rocket.view.CheckoutWebActivity" android:screenOrientation="portrait" /> -->
+<!--         <activity android:name="pt.rocket.view.TeaserActivity" android:screenOrientation="portrait" /> -->
 
         <service android:name="pt.rocket.framework.rest.RestService" android:exported="false" />
         
-         <!-- Fragment Activities -->
-        <activity android:name="pt.rocket.view.SessionFragmentActivity" android:screenOrientation="portrait" />
-        <activity android:name="pt.rocket.view.TeaserFragmentActivity" android:screenOrientation="portrait" />
-        <activity android:name="pt.rocket.view.ChangeCountryFragmentActivity" android:screenOrientation="portrait" />
+        <!-- Fragment Activities -->
+		<activity android:name="pt.rocket.view.ProductsActivityFragment" android:screenOrientation="portrait" />
+        <activity android:name="pt.rocket.view.ProductsGalleryActivityFragment" android:screenOrientation="portrait" />
+        <activity android:name="pt.rocket.view.ProductDetailsActivityFragment" android:screenOrientation="portrait" />
+        <activity android:name="pt.rocket.view.ProductDetailsDescriptionActivityFragment" android:screenOrientation="portrait" />
+        <activity android:name="pt.rocket.view.MyAccountActivityFragment" android:screenOrientation="portrait" />
+        <activity android:name="pt.rocket.view.CheckoutWebActivityFragment" android:screenOrientation="portrait" />
+		<activity android:name="pt.rocket.view.TermsActivityFragment" android:noHistory="true" android:screenOrientation="portrait" />
+        <activity android:name="pt.rocket.view.MyAccountUserDataActivityFragment" android:screenOrientation="portrait" android:windowSoftInputMode="stateHidden" />
+        <activity android:name="pt.rocket.view.SessionFragmentActivity" android:screenOrientation="portrait" android:hardwareAccelerated="true" />
+        <activity android:name="pt.rocket.view.HomeFragmentActivity" android:screenOrientation="portrait" />
+        <activity android:name="pt.rocket.view.ChangeCountryFragmentActivity" android:screenOrientation="portrait" android:noHistory="true" />
         <activity android:name="pt.rocket.view.PopularityFragmentActivity" android:screenOrientation="portrait" />
         <activity android:name="pt.rocket.view.ReviewFragmentActivity" android:screenOrientation="portrait" />
         <activity android:name="pt.rocket.view.WriteReviewFragmentActivity" android:screenOrientation="portrait" />
         <activity android:name="pt.rocket.view.SearchFragmentActivity" android:launchMode="singleTask" android:screenOrientation="portrait" />
         <activity android:name="pt.rocket.view.CategoriesFragmentActivity" android:screenOrientation="portrait" android:hardwareAccelerated="true" />
+        <activity android:name="pt.rocket.view.ShoppingCartFragmentActivity" android:launchMode="singleTask" android:screenOrientation="portrait" android:windowSoftInputMode="adjustPan" />
+        <activity android:name="pt.rocket.view.CheckoutStep5FragmentActivity" android:screenOrientation="portrait" />
         
 
         <!-- hockey -->
