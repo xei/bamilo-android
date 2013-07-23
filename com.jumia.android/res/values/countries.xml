@@ -1,19 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- Lazada Indonesia Configuration -->
-    <string name="lazada_id_server">www.lazada.co.id</string>
+    <!-- Jumia Nigeria Configuration -->
+<!--     <string name="jumia_ng_server">www.jumia.com.ng</string> -->
+    <string name="jumia_ng_server">mobile.jumia.com</string>
 
-    <!-- Lazada Thailand Configuration -->
-    <string name="lazada_th_server">www.lazada.co.th</string>
+    <!-- Jumia Kenya Configuration -->
+<!--     <string name="jumia_ke_server">www.jumia.co.ke</string> -->
+    <string name="jumia_ke_server">mobile.jumia.com</string>
 
-    <!-- Lazada Vietnam Configuration -->
-    <string name="lazada_vn_server">www.lazada.vn</string>
+    <!-- Jumia Morocco	 Configuration -->
+<!--     <string name="jumia_ma_server">www.jumia.ma</string> -->
+    <string name="jumia_ma_server">mobile.jumia.com</string>
 
-    <!-- Lazada Philippines Configuration -->
-    <string name="lazada_ph_server">www.lazada.com.ph</string>
+    <!-- Jumia Egypt Configuration -->
+<!--     <string name="jumia_eg_server">www.jumia.com.eg</string> -->
+    <string name="jumia_eg_server">mobile.jumia.com</string>
 
-    <!-- Lazada Malaysia Configuration -->
-    <string name="lazada_my_server">www.lazada.com.my</string>
+    <!-- Jumia Ivory Coast Configuration -->
+<!--     <string name="jumia_ci_server">www.jumia.ci</string> -->
+    <string name="jumia_ci_server">mobile.jumia.com</string>
+	
 
 </resources>

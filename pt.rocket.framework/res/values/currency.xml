@@ -43,7 +43,7 @@
    	</string-array>
    	
    	<string name="currency_code_ngn">NGN</string>
-    <string name="currency_code_ksh">KSH</string>
+    <string name="currency_code_ksh">KES</string>
     <string name="currency_code_mad">MAD</string>
 <!--     <string name="currency_code_egp">EGP</string> -->
     <string name="currency_code_xof">XOF</string>

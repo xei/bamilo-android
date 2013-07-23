@@ -143,6 +143,7 @@ public class SplashScreen extends Activity implements ResponseListener {
         }
         devText.append("\nServer: " + RestContract.REQUEST_HOST);
         devText.append("\nUrban AirShip Device APID: \n" + PushManager.shared().getAPID());
+        Log.i(TAG, "UrbanAirShip appid : "+PushManager.shared().getAPID());
 
     }
     
