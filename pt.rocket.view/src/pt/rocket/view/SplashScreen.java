@@ -158,7 +158,11 @@ public class SplashScreen extends Activity implements ResponseListener {
         } catch (Exception e) {
         }
         
-        BugSenseHandler.initAndStartSession(getApplicationContext(), getString( R.string.bugsense_apikey));
+        //==================================================================================================
+        //TODO: Comment out the BugSenseHandler initialization once we have the correct key.
+        //---------------------------------------------------------------------------------------------------
+        //BugSenseHandler.initAndStartSession(getApplicationContext(), getString( R.string.bugsense_apikey));
+        //==================================================================================================
     }
 
     /*
