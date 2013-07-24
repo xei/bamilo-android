@@ -7,6 +7,7 @@ import java.util.TimeZone;
 import pt.rocket.framework.rest.RestClientSingleton;
 import pt.rocket.framework.rest.RestServiceHelper;
 import pt.rocket.framework.service.ServiceManager;
+import pt.rocket.framework.utils.PreInstallController;
 import pt.rocket.framework.utils.ShopSelector;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -73,6 +74,7 @@ public class Darwin {
 			Log.d(TAG, "Allready initialized for id " + shopId);
 			return true;
 		}
+		PreInstallController.init(context);
 		retrieveVersionCode();
 		ShopSelector.init(context, shopId);
 		RestServiceHelper.init(context);
