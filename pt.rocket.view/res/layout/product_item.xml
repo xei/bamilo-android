@@ -43,20 +43,20 @@
         android:text="Name" />
 
     <org.holoeverywhere.widget.TextView
-        android:id="@+id/item_regprice"
+        android:id="@+id/item_discount"
         style="@style/product_price_current_list_text"
         android:layout_alignLeft="@id/item_name"
         android:layout_below="@id/item_name"
         android:layout_marginRight="4dp"
         android:layout_marginTop="4dp"
-        android:text="Price" />
+        android:text="Discount" />
 
     <org.holoeverywhere.widget.TextView
-        android:id="@+id/item_discount"
+        android:id="@+id/item_regprice"
         style="@style/product_price_current_list_text"
-        android:layout_alignTop="@id/item_regprice"
-        android:layout_toRightOf="@id/item_regprice"
-        android:text="Discount" />
+        android:layout_alignTop="@id/item_discount"
+        android:layout_toRightOf="@id/item_discount"
+        android:text="Price" />
 
     <RatingBar
         android:id="@+id/item_rating"

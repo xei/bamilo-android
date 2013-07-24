@@ -571,11 +571,14 @@ public class DynamicFormItem {
             } else {
             	result = valid;
             }
+            Log.i(TAG, "code1validate radioGroup"+valid);
             break;
             
         case metadate:
         case date:
+            
         	valid = dialogDate.isSetOnce();
+        	Log.i(TAG, "code1validate date"+valid);
         	if ( !valid )
         		result = !this.entry.getValidation().isRequired();
         	else

@@ -212,6 +212,10 @@ public class HomeFragmentActivity extends BaseActivity {
             CheckVersion.showDialog(this);
         }
         
+        if(requestResponse == null){
+            triggerContentEvent(new RequestEvent(EventType.GET_TEASERS_EVENT));
+        }
+        
         AnalyticsGoogle.get().trackPage(R.string.ghomepage);
     }
 

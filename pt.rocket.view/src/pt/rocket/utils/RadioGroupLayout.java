@@ -93,7 +93,8 @@ public class RadioGroupLayout extends LinearLayout {
     public String getItemByIndex(int idx) {
         if (mItems == null)
             return null;
-
+        if( idx < 0 )
+            return null;
         return mItems.get(idx);
     }
 

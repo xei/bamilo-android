@@ -16,23 +16,25 @@
         android:textSize="16dp" />
 
     <org.holoeverywhere.widget.TextView
-        android:id="@+id/price_normal_p"
+        android:id="@+id/price_w_discount_p"
         style="@style/product_price_current_single_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/product_info_name_p"
         android:layout_marginLeft="16dp"
-        android:text="Regular price" />
-
+        android:text="New price" />
+    
     <org.holoeverywhere.widget.TextView
-        android:id="@+id/price_w_discount_p"
+        android:id="@+id/price_normal_p"
         style="@style/product_price_current_single_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@id/price_normal_p"
+        android:layout_alignTop="@id/price_w_discount_p"
         android:layout_marginLeft="6dp"
-        android:layout_toRightOf="@id/price_normal_p"
-        android:text="New price" />
+        android:layout_toRightOf="@id/price_w_discount_p"
+        android:text="Regular price" />
+
+    
 
     <View
         android:id="@+id/top_line"
