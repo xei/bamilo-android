@@ -8,15 +8,12 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 
-import org.holoeverywhere.widget.Toast;
-
 import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.controllers.ShoppingBasketFragListAdapter;
 import pt.rocket.framework.components.ExpandableGridViewComponent;
 import pt.rocket.framework.event.EventManager;
 import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.event.RequestEvent;
 import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.event.events.ChangeItemQuantityInShoppingCartEvent;
 import pt.rocket.framework.event.events.GetShoppingCartItemsEvent;
@@ -27,11 +24,11 @@ import pt.rocket.framework.objects.ShoppingCartItem;
 import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.CurrencyFormatter;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.utils.dialogfragments.DialogListFragment;
 import pt.rocket.utils.dialogfragments.DialogListFragment.OnDialogListListener;
 import pt.rocket.view.R;
-import pt.rocket.view.ShoppingCartActivity;
 import android.app.Activity;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -309,6 +306,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
       default:
           AnalyticsGoogle.get().trackLoadTiming(R.string.gshoppingcart, beginRequestMillis);
           displayShoppingCart((ShoppingCart) event.result);
+          TrackerDelegator.trackViewCart(getActivity().getApplicationContext(), items.size());          
           return true;
       }
     }
@@ -453,13 +451,14 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
 //                    });
 //            dialog.show( getActivity().getSupportFragmentManager(), null);
 //        } else {
-            ActivitiesWorkFlow.loginActivity(getActivity(), true);
+            ActivitiesWorkFlow.loginActivity(getActivity(), getString(R.string.mixprop_loginlocationcheckout), true);
 //        }
     }    
     
     public void goToCheckout() {
         ActivitiesWorkFlow.checkoutActivity(getActivity(), ConstantsCheckout.CHECKOUT_BASKET);
         AnalyticsGoogle.get().trackCheckout(items);
+        TrackerDelegator.trackCheckout(getActivity().getApplicationContext(), items);
     }
     
     

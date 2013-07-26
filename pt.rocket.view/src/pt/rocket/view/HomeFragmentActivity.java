@@ -21,6 +21,7 @@ import pt.rocket.framework.objects.ImageTeaserGroup;
 import pt.rocket.framework.objects.ProductTeaserGroup;
 import pt.rocket.framework.objects.TeaserSpecification;
 import pt.rocket.framework.utils.AnalyticsGoogle;
+import pt.rocket.framework.utils.MixpanelTracker;
 import pt.rocket.utils.BaseActivity;
 import pt.rocket.utils.CheckVersion;
 import pt.rocket.utils.HockeyStartup;
@@ -223,6 +224,12 @@ public class HomeFragmentActivity extends BaseActivity {
         
         AnalyticsGoogle.get().trackPage(R.string.ghomepage);
     }
+    
+    @Override
+    protected void onDestroy() {
+        MixpanelTracker.flush();
+        super.onDestroy();
+    }    
 
     private void changeSearchBarBehavior() {
         final EditText autoComplete = (EditText) findViewById(R.id.search_component);

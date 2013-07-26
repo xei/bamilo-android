@@ -7,6 +7,7 @@ import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.controllers.CountryAdapter;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.view.ChangeCountryFragmentActivity;
 import pt.rocket.view.R;
@@ -219,6 +220,8 @@ public class ChangeCountryFragment extends Fragment {
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putInt(ChangeCountryFragmentActivity.KEY_COUNTRY, position);
         editor.commit();
+
+        TrackerDelegator.trackShopchanged(getActivity().getApplicationContext());        
         // Darwin.initialize(DarwinMode.DEBUG, getApplicationContext(), R.drawable.no_image,
         // position);
         // LogOut.cleanAndRestart(activity);

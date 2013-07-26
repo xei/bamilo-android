@@ -7,7 +7,6 @@ import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.framework.Darwin;
 import pt.rocket.framework.DarwinMode;
 import pt.rocket.framework.ErrorCode;
-import pt.rocket.view.ChangeCountryActivity;
 import pt.rocket.view.ChangeCountryFragmentActivity;
 import android.app.Application;
 import android.content.Context;

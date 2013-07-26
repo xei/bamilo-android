@@ -70,6 +70,8 @@ public class HockeyStartup {
         Log.d(TAG, "resultCheckSignature = " + resultCheckSignature);
 
         String hockeyTocken = activity.getString(HOCKEY_APP_TOKEN_RES);
+        
+        Log.d(TAG, "HOCKEY_TOKEN = " + hockeyTocken);
         if (resultCheckSignature == RESULT_KEY_OTHER || resultCheckSignature == RESULT_KEY_HOCKEY) {
             Log.d(TAG, "start: starting CrashManager" );
             CrashManager.register(activity, hockeyTocken, sCml);

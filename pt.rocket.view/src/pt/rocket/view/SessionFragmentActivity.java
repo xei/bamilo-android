@@ -30,6 +30,7 @@ public class SessionFragmentActivity extends BaseActivity {
     private static final String TAG = LogTagHelper.create(SessionFragmentActivity.class);
 
     private Fragment fragment;
+    private String originLocation;
 
     /**
      * 
@@ -40,7 +41,7 @@ public class SessionFragmentActivity extends BaseActivity {
                 EnumSet.noneOf(EventType.class),
                 EnumSet.noneOf(EventType.class),
                 R.string.login_title, R.layout.session_fragments);
-
+        originLocation = "";
     }
 
     /*
@@ -55,6 +56,8 @@ public class SessionFragmentActivity extends BaseActivity {
         // setContentView(R.layout.main_menu_frame);
         // Add the first fragment
         onSwitchFragment(FragmentType.LOGIN, true);
+        originLocation = getIntent().getExtras().getString(getString(R.string.mixprop_loginlocation), getString(R.string.mixprop_loginlocationsidemenu));
+        
     }
 
     /*
@@ -118,11 +121,11 @@ public class SessionFragmentActivity extends BaseActivity {
         Log.i(TAG, "ON SWITCH FRAGMENT");
         switch (type) {
         case LOGIN:
-            fragment = LoginFragment.getInstance();
+            fragment = LoginFragment.getInstance(originLocation);
             AnalyticsGoogle.get().trackPage(R.string.glogin);
             break;
         case REGISTER:
-            fragment = RegisterFragment.getInstance();
+            fragment = RegisterFragment.getInstance(originLocation);
             AnalyticsGoogle.get().trackPage( R.string.gregister);
             break;
         case FORGOT_PASSWORD:

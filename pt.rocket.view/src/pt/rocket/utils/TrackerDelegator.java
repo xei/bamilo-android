@@ -5,13 +5,19 @@ import java.util.List;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.Customer;
+import pt.rocket.framework.objects.ProductReviewCommentCreated;
+import pt.rocket.framework.objects.ProductSimple;
 import pt.rocket.framework.objects.PurchaseItem;
+import pt.rocket.framework.objects.ShoppingCartItem;
 import pt.rocket.framework.utils.AdXTracker;
 import pt.rocket.framework.utils.AnalyticsGoogle;
+import pt.rocket.framework.utils.MixpanelTracker;
 import pt.rocket.framework.utils.ShopSelector;
 import pt.rocket.view.R;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 
 import com.urbanairship.push.PushManager;
@@ -29,12 +35,15 @@ public class TrackerDelegator {
     private static final String JSON_TAG_GRAND_TOTAL = "grandTotal";
     private static final String JSON_TAG_ITEMS_JSON = "itemsJson";
     
-    public final static void trackLoginSuccessful(Context context, Customer customer, boolean wasAutologin) {
+    public final static void trackLoginSuccessful(Context context, Customer customer, boolean wasAutologin, String origin) {
+        String mOrigin;
         int resLogin;
         if ( wasAutologin ) {
             resLogin = R.string.gautologinsuccess;
+            mOrigin = context.getString(R.string.mixprop_loginlocationautologin);            
         } else {
             resLogin = R.string.gloginsuccess;
+            mOrigin = origin;
         }
         AnalyticsGoogle.get().trackAccount(resLogin, customer);
 
@@ -47,6 +56,8 @@ public class TrackerDelegator {
 
         PushManager.shared().setAlias(customer.getIdAsString());
         AdXTracker.login(context, customer.getIdAsString());
+        
+        MixpanelTracker.login(context, customer.getIdAsString(), mOrigin);
     }
 
     public final static void trackLoginFailed(boolean wasAutologin) {
@@ -59,15 +70,64 @@ public class TrackerDelegator {
         
         AnalyticsGoogle.get().trackAccount(resLogin, null);
     }
+    
+    public final static void trackLogoutSuccessful(Context context) {
+        MixpanelTracker.logout(context);
+    }
 
-    public final static void trackSignupSuccessful(Context context, Customer customer) {
+    public final static void trackSearchMade(Context context, String criteria, long results) {
+        MixpanelTracker.search(context, criteria, results);
+    }
+    
+    public final static void trackShopchanged(Context context) {
+        MixpanelTracker.changeShop(context, ShopSelector.getShopId());
+    }
+
+    public final static void trackPushNotificationsEnabled(Context context, boolean enabled) {
+        MixpanelTracker.setPushNotification(context, enabled);
+    }
+
+    public final static void trackProduct(Context context, CompleteProduct product) {
+        MixpanelTracker.product(context, product);
+    }
+
+    public final static void trackProductAddedToCart(Context context, CompleteProduct product, ProductSimple simple, Double price, String location) {
+        MixpanelTracker.productAddedToCart(context, product, simple, price, location);
+    }
+
+    public final static void trackCheckout(Context context, List<ShoppingCartItem> items) {
+        MixpanelTracker.checkout(context, items);
+    }
+
+    public final static void trackViewCart(Context context, int numberItems) {
+        MixpanelTracker.viewCart(context, numberItems);
+    }
+
+    public final static void trackItemShared(Context context, Intent intent) {
+        MixpanelTracker.share(context, intent);
+    }
+
+    public final static void trackCategoryView(Context context, String category, int page) {
+        MixpanelTracker.listCategory(context, category, page);
+    }
+
+    public final static void trackItemReview(Context context, CompleteProduct product, ProductReviewCommentCreated review, float ratePrice, float rateApperance, float rateQuality) {
+        MixpanelTracker.rate(context, product, review, ratePrice, rateApperance, rateQuality);
+    }
+
+    public final static void trackViewReview(Context context, CompleteProduct product, float rate) {
+        MixpanelTracker.viewRate(context, product, rate);
+    }
+    
+    
+    public final static void trackSignupSuccessful(Context context, Customer customer, String location) {
         AnalyticsGoogle.get().trackAccount(R.string.gcreatesuccess, customer);
         if ( customer == null) {
             return ;
         }
         
         AdXTracker.signup(context, customer.getIdAsString());
-
+        MixpanelTracker.signup(context, customer, location); 
         PushManager.shared().setAlias(customer.getIdAsString());
         storeSignupProcess(context, customer);
     }
@@ -120,6 +180,8 @@ public class TrackerDelegator {
             Log.d( TAG, "trackPurchaseInt: isFirstCustomer = " + isFirstCustomer );
             AdXTracker.trackSale(context,value, customerId, orderNr, isFirstCustomer);
         }
+        
+        MixpanelTracker.trackSale(context, value, items);
         
     }    
     

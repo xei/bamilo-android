@@ -52,7 +52,8 @@ public final class ShopSelector {
 				R.array.currency_codes)[shopId];
 		CurrencyFormatter.initialize(context, currencyCode);
 		AnalyticsGoogle.startup(context, shopId);
-
+		MixpanelTracker.startup(context, shopId);
+		MixpanelTracker.launch(context);
 		AdXTracker.startup(context);
 		AdXTracker.launch(context);
 		sShopId = shopId;

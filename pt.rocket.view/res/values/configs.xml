@@ -3,7 +3,8 @@
 
     <string name="enable_multi_selection">false</string>
     <string name="hockeyapp_token"></string>
-    <string name="bugsense_apikey"></string>
+    <string name="bugsense_apikey"></string>    
+    
 
     <string-array name="servers">
         <item>@string/jumia_ng_server</item>

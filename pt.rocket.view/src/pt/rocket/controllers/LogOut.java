@@ -7,6 +7,7 @@ import pt.rocket.framework.event.EventType;
 import pt.rocket.framework.event.RequestEvent;
 import pt.rocket.framework.event.ResponseEvent;
 import pt.rocket.framework.event.ResponseListener;
+import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogProgressFragment;
 import android.app.Activity;
 import android.support.v4.app.FragmentActivity;
@@ -46,7 +47,7 @@ public class LogOut {
 
                     @Override
                     public void handleEvent(ResponseEvent event) {
-                        dialog.dismiss();
+                        dialog.dismiss();                        
                     }
 
                     @Override

@@ -90,24 +90,27 @@ public class RegisterFragment extends BaseFragment {
     private Form formResponse;
 
     private LinearLayout container;
+    
+    private String registerLocation;
 
     
     /**
      * 
      * @return
      */
-    public static RegisterFragment getInstance() {
+    public static RegisterFragment getInstance(String origin) {
         if(registerFragment == null)
-            registerFragment = new RegisterFragment();
+            registerFragment = new RegisterFragment(origin);
         return registerFragment;
     }
     
     /**
      * 
      */
-    public RegisterFragment() {
+    public RegisterFragment(String origin) {
         super( EnumSet.of(EventType.GET_REGISTRATION_FORM_EVENT, EventType.GET_TERMS_EVENT),
                 EnumSet.of(EventType.REGISTER_ACCOUNT_EVENT) );
+        registerLocation = origin;
     }
 
     /*
@@ -513,7 +516,7 @@ public class RegisterFragment extends BaseFragment {
         case REGISTER_ACCOUNT_EVENT:
             // Get Register Completed Event
             Customer customer = (Customer) event.result;
-            TrackerDelegator.trackSignupSuccessful(getActivity(), customer);
+            TrackerDelegator.trackSignupSuccessful(getActivity(), customer, registerLocation);
             // Finish this activity
             //Intent resultData = new Intent();
             //resultData.putExtras(saveFormToBundle());

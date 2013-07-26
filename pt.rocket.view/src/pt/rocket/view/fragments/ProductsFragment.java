@@ -27,6 +27,7 @@ import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.framework.utils.ProductSort;
 import pt.rocket.utils.BaseActivity;
 import pt.rocket.utils.DialogList;
+import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogListFragment;
 import pt.rocket.utils.dialogfragments.DialogListFragment.OnDialogListListener;
 import pt.rocket.view.R;
@@ -377,6 +378,7 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
             EventManager.getSingleton().triggerRequestEvent(
                         new GetProductsEvent(productsURL, searchQuery, pageNumber, MAX_PAGE_ITEMS,
                                         sort, dir));
+            TrackerDelegator.trackCategoryView(getActivity().getApplicationContext(), title, pageNumber);
         } else {
             hideProductsLoading();
         }
@@ -523,6 +525,8 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
             isLoadingMore = true;
         }
         AnalyticsGoogle.get().trackSearch(searchQuery, productsPage.getTotalProducts());
+        TrackerDelegator.trackSearchMade(getActivity().getApplicationContext(), searchQuery, productsPage.getTotalProducts());
+        
         Debug.MemoryInfo memoryInfo = new Debug.MemoryInfo();
         Debug.getMemoryInfo(memoryInfo);
         

@@ -10,7 +10,6 @@ import pt.rocket.controllers.MyAccountAdapter;
 import pt.rocket.framework.event.EventType;
 import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.view.MyAccountActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.os.Bundle;
@@ -18,9 +17,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListView;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -164,7 +162,7 @@ public class MyAccountFragment extends BaseFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // Validate item
                 if (position == POSITION_USER_DATA) {
-                    ActivitiesWorkFlow.loginActivity(getActivity(), true);
+                    ActivitiesWorkFlow.loginActivity(getActivity(), getString(R.string.mixprop_loginlocationmyaccount), true);
                 }
 
             }

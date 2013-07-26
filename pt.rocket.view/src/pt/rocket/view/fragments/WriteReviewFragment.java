@@ -303,6 +303,8 @@ public class WriteReviewFragment extends BaseFragment {
             triggerContentEvent(new ReviewProductEvent(completeProduct.getSku(),
                     productReviewCreated));
         }
+        
+        TrackerDelegator.trackItemReview(getActivity().getApplicationContext(), completeProduct, productReviewCreated, priceRating.getRating(), appearenceRating.getRating(), qualityRating.getRating());
 
     }
 
@@ -343,7 +345,7 @@ public class WriteReviewFragment extends BaseFragment {
             // case GET_CUSTOMER:
         case LOGIN_EVENT:
             Customer customer = (Customer) event.result;
-            TrackerDelegator.trackLoginSuccessful(getActivity(), customer, true);
+            TrackerDelegator.trackLoginSuccessful(getActivity(), customer, true, getActivity().getString(R.string.mixprop_loginlocationreview));
             nameText.setText(customer.getFirstName());
             return false;
         case GET_CUSTOMER:

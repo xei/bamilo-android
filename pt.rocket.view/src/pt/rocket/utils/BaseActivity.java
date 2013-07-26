@@ -33,6 +33,10 @@ import pt.rocket.view.fragments.FragmentType;
 import pt.rocket.view.fragments.SlideMenuFragment;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -372,10 +376,12 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
                             public boolean onShareTargetSelected(
                                     ShareActionProvider source, Intent intent) {
                                 getApplicationContext().startActivity(intent);
+                                
                                 return true;
                             }
                         });
                 setShareIntent(createShareIntent());
+                
                 break;
             case BUY_ALL:
             default:
@@ -462,7 +468,15 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         sharingIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_subject));
 
         CompleteProduct prod = ServiceManager.SERVICES.get(ProductService.class).getCurrentProduct();
+        
         if (null != prod) {
+            //For tracking when sharing
+            sharingIntent.putExtra(getString(R.string.mixprop_sharelocation), getString(R.string.mixprop_sharelocationproduct));
+            sharingIntent.putExtra(getString(R.string.mixprop_sharecategory), prod.getCategories().size() > 0 ? prod.getCategories().get(0) : "");
+            sharingIntent.putExtra(getString(R.string.mixprop_sharename), prod.getName());
+            sharingIntent.putExtra(getString(R.string.mixprop_sharebrand), prod.getBrand());
+            sharingIntent.putExtra(getString(R.string.mixprop_shareprice), prod.getPrice());
+            
             String msg = getString(R.string.share_checkout_this_product) + "\n" + prod.getUrl().replace("/mobapi", "");
             sharingIntent.putExtra(Intent.EXTRA_TEXT, msg);
         }

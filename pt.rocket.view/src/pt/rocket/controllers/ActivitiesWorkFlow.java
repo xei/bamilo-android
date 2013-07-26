@@ -8,6 +8,7 @@ import pt.rocket.framework.service.ServiceManager;
 import pt.rocket.framework.service.services.CustomerAccountService;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.BaseActivity;
+import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.view.CategoriesFragmentActivity;
 import pt.rocket.view.ChangeCountryFragmentActivity;
@@ -24,13 +25,11 @@ import pt.rocket.view.ProductDetailsDescriptionActivityFragment;
 import pt.rocket.view.ProductsActivityFragment;
 import pt.rocket.view.ProductsGalleryActivityFragment;
 import pt.rocket.view.R;
-import pt.rocket.view.RegisterActivity;
 import pt.rocket.view.ReviewFragmentActivity;
 import pt.rocket.view.SearchFragmentActivity;
 import pt.rocket.view.SessionFragmentActivity;
 import pt.rocket.view.ShoppingCartFragmentActivity;
 import pt.rocket.view.SplashScreen;
-import pt.rocket.view.TeaserFragmentActivity;
 import pt.rocket.view.TermsActivityFragment;
 import pt.rocket.view.WriteReviewFragmentActivity;
 import android.app.Activity;
@@ -85,18 +84,18 @@ public class ActivitiesWorkFlow {
         addStandardTransition(activity);
 	}
 
-	/**
-	 * Start Register Activity
-	 * 
-	 * @param activity
-	 * 
-	 */
-    public static void registerActivity(Activity activity) {
-        Intent registerIntent = new Intent(
-                activity.getApplicationContext(), RegisterActivity.class);
-        activity.startActivityForResult(registerIntent, BaseActivity.maskRequestCodeId(R.id.request_register));
-        addStandardTransition(activity);
-    }
+//	/**
+//	 * Start Register Activity
+//	 * 
+//	 * @param activity
+//	 * 
+//	 */
+//    public static void registerActivity(Activity activity) {
+//        Intent registerIntent = new Intent(
+//                activity.getApplicationContext(), RegisterActivity.class);
+//        activity.startActivityForResult(registerIntent, BaseActivity.maskRequestCodeId(R.id.request_register));
+//        addStandardTransition(activity);
+//    }
 
 	/**
 	 * Start Login Activity validating Customer
@@ -104,9 +103,10 @@ public class ActivitiesWorkFlow {
 	 * @param activity
 	 * @param requestResult
 	 */
-    public static void loginActivity(Activity activity, boolean requestResult) {
+    public static void loginActivity(Activity activity, String origin, boolean requestResult) {
         
         Intent loginIntent = new Intent(activity.getApplicationContext(), SessionFragmentActivity.class);
+        loginIntent.putExtra(activity.getString(R.string.mixprop_loginlocation), origin);
         //Intent loginIntent = new Intent(activity.getApplicationContext(), LogInActivity.class);
         
         if (requestResult) {
@@ -131,15 +131,17 @@ public class ActivitiesWorkFlow {
                             if (v.getId() == R.id.button2) {
                                 LogOut.performLogOut(new WeakReference<Activity>(
                                         activity));
+                                TrackerDelegator.trackLogoutSuccessful(activity.getApplicationContext());
                             }
                             dialog.dismiss();
+                            
                         }
 
                     });
 
             dialog.show(fm, null);
         } else {
-            loginActivity(activity, false);
+            loginActivity(activity, activity.getString(R.string.mixprop_loginlocationsidemenu), false);
         }
     }
 	/**

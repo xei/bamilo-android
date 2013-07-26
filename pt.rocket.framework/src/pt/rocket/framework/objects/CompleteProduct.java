@@ -71,6 +71,9 @@ public class CompleteProduct implements IJSONSerializable {
     private String price;
     private String maxPrice;
     private String brand;
+    
+    private double priceDouble;
+    private double maxPriceDouble;
 
     private String specialPrice;
     private String maxSpecialPrice;
@@ -132,9 +135,9 @@ public class CompleteProduct implements IJSONSerializable {
             description = dataObject.optString(JSON_DESCRIPTION_TAG, "");
             url = dataObject.optString(JSON_URL_TAG, "");
 
-            double priceDouble = Double.parseDouble(dataObject.getString(JSON_PRICE_TAG));
+            priceDouble = Double.parseDouble(dataObject.getString(JSON_PRICE_TAG));
             price = CurrencyFormatter.formatCurrency(priceDouble);
-            double maxPriceDouble = Double.parseDouble(dataObject.getString(JSON_MAX_PRICE_TAG));
+            maxPriceDouble = Double.parseDouble(dataObject.getString(JSON_MAX_PRICE_TAG));
             maxPrice = CurrencyFormatter.formatCurrency(maxPriceDouble);
             brand = dataObject.getString(JSON_BRAND_TAG);
 
@@ -277,12 +280,26 @@ public class CompleteProduct implements IJSONSerializable {
     }
 
     /**
+     * @return the price as a Double
+     */
+    public Double getPriceAsDouble() {
+        return priceDouble;
+    }
+    
+    /**
      * @return the maxPrice
      */
     public String getMaxPrice() {
         return maxPrice;
     }
 
+    /**
+     * @return the maxPrice as a Double
+     */
+    public Double getMaxPriceAsDouble() {
+        return maxPriceDouble;
+    }
+    
     /**
      * @return the brand
      */

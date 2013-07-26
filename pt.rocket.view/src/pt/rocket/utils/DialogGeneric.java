@@ -1,16 +1,11 @@
 package pt.rocket.utils;
 
 import pt.rocket.view.R;
-import pt.rocket.view.ShoppingCartActivity;
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.DialogInterface;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 

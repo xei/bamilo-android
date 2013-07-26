@@ -24,6 +24,7 @@ import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.BaseActivity;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.Context;
@@ -208,6 +209,8 @@ public class PopularityFragment extends BaseFragment {
             pricePop.setText("" + selectedProduct.getPrice());
             discountPop.setVisibility(View.GONE);
         }
+        
+        TrackerDelegator.trackViewReview(getActivity().getApplicationContext(), selectedProduct, selectedProduct.getRatingsAverage().floatValue());
     }
 
     /**

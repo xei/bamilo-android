@@ -27,6 +27,7 @@ import pt.rocket.utils.BaseActivity;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.OnActivityFragmentInteraction;
+import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.utils.dialogfragments.DialogListFragment;
 import pt.rocket.utils.dialogfragments.DialogListFragment.OnDialogListListener;
@@ -573,6 +574,8 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
         EventManager.getSingleton().triggerRequestEvent(new AddItemToShoppingCartEvent(item));
 
         AnalyticsGoogle.get().trackAddToCart(sku, price);
+        TrackerDelegator.trackProductAddedToCart(getApplicationContext(), mCompleteProduct, simple, (double) price, getString(R.string.mixprop_itemlocationdetails) );
+        
     }
 
     private void showChooseReminder() {
@@ -610,6 +613,7 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
 
         AnalyticsGoogle.get().trackProduct(mNavigationSource, mNavigationPath,
                 mCompleteProduct.getName(), mCompleteProduct.getSku(), mCompleteProduct.getUrl());
+        TrackerDelegator.trackProduct(getApplicationContext(), mCompleteProduct);
     }
 
     private void executeAddToShoppingCartCompleted() {

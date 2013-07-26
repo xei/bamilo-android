@@ -75,22 +75,25 @@ public class LoginFragment extends BaseFragment {
     private Bundle savedInstanceState;
 
     private static LoginFragment loginFragment = null;
+    
+    private String loginOrigin = "";
 
     /**
      * 
      * @return
      */
-    public static LoginFragment getInstance() {
+    public static LoginFragment getInstance(String origin) {
         //if (loginFragment == null)
-            loginFragment = new LoginFragment();
+            loginFragment = new LoginFragment(origin);
         return loginFragment;
     }
 
     /**
-     * Empty constructor
+     * constructor
      */
-    public LoginFragment() {
+    public LoginFragment(String origin) {
         super(EnumSet.of(EventType.GET_LOGIN_FORM_EVENT), EnumSet.of(EventType.LOGIN_EVENT));
+        loginOrigin = origin;
         Log.d(TAG, "CONSTRUCTOR");
     }
 
@@ -303,7 +306,7 @@ public class LoginFragment extends BaseFragment {
             getActivity().setResult(Activity.RESULT_OK);
             getActivity().finish();
             getActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-            TrackerDelegator.trackLoginSuccessful(getActivity(), (Customer) event.result, wasAutologin);
+            TrackerDelegator.trackLoginSuccessful(getActivity(), (Customer) event.result, wasAutologin, loginOrigin);
             wasAutologin = false;
             return false;
 

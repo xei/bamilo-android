@@ -121,4 +121,5 @@ public class JumiaApplication extends Application implements ResponseListener, E
         // TODO: find something useful to send for crash extras
         // BugSenseHandler.addCrashExtraMap(  );
     }
+
 }

@@ -296,7 +296,7 @@ public class WishListActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 // Displays the login screen
-                ActivitiesWorkFlow.loginActivity(WishListActivity.this, true);                
+                ActivitiesWorkFlow.loginActivity(WishListActivity.this, getString(R.string.mixprop_loginlocationwishlist), true);                
             }
         });
         
