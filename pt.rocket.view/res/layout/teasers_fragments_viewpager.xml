@@ -2,24 +2,34 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:descendantFocusability="afterDescendants"
-    >
-    <pt.rocket.utils.JumiaViewPager
-        android:id="@+id/home_viewpager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" 
-        android:duplicateParentState="true"
-        >
+    android:orientation="vertical" >
 
-        <android.support.v4.view.PagerTabStrip
-            android:id="@+id/home_titles"
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:duplicateParentState="true" >
+
+        <pt.rocket.utils.JumiaViewPager
+            android:id="@+id/home_viewpager"
             android:layout_width="match_parent"
-            android:layout_height="27.72dp"
-            android:layout_gravity="top"
-            android:background="@color/strip_title_background"
-            android:textColor="@color/strip_title"
-            android:textSize="12.54sp"
-             />
-    </pt.rocket.utils.JumiaViewPager>
+            android:layout_height="match_parent"
+            android:duplicateParentState="true" >
+
+            <android.support.v4.view.PagerTabStrip
+                android:id="@+id/home_titles"
+                android:layout_width="match_parent"
+                android:layout_height="37.72dp"
+                android:layout_gravity="top"
+                android:background="@color/strip_title_background"
+                android:textColor="@color/strip_title"
+                android:textSize="12.54sp" />
+        </pt.rocket.utils.JumiaViewPager>
+        <View 
+            android:layout_width="match_parent"
+            android:layout_height="37.72dp"
+            android:background="@drawable/filter_header"/>
+        
+    </RelativeLayout>
+
 </LinearLayout>

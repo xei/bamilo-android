@@ -13,7 +13,7 @@
         style="?android:attr/progressBarStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:gifResource="@drawable/loading_bar" />
+        app:gifResource="@drawable/loading_bar_big" />
 
     <org.holoeverywhere.widget.TextView
         android:id="@+id/loading_bar_text"

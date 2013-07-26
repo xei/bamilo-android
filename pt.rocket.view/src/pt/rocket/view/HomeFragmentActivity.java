@@ -37,21 +37,25 @@ import pt.rocket.view.fragments.ProducTeaserListFragment;
 import pt.rocket.view.fragments.StaticBannerFragment;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Shader;
+import android.graphics.Shader.TileMode;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerTabStrip;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import de.akquinet.android.androlog.Log;
 
@@ -70,12 +74,14 @@ public class HomeFragmentActivity extends BaseActivity {
     private final int TAB_CURR_ID = 1;
     private final int TAB_NEXT_ID = 2;
     
-    private final int TAB_INDICATOR_HEIGHT = 28;
+    private final int TAB_INDICATOR_HEIGHT = 35;
     private final int TAB_UNDERLINE_HEIGHT = 1;
     private final int TAB_STRIP_COLOR = android.R.color.transparent;
     private final int TAB_COLOR_TEXT_UNSELECTED = R.color.strip_title;
-    private final int TAB_COLOR_TEXT_SELECTED = R.color.strip_title;
+    private final int TAB_COLOR_BACKGROUND = R.color.strip_title_background;
 
+    private final float TAB_SHADOW_COMPLETE = 0.4f; 
+    
     // Gradient
 //    private final int TAB_COLOR_INDICATOR_UP = R.color.pager_title_up;
 //    private final int TAB_COLOR_INDICATOR_DOWN = R.color.pager_title_down;
@@ -116,7 +122,6 @@ public class HomeFragmentActivity extends BaseActivity {
         mPager = (JumiaViewPager) findViewById(R.id.home_viewpager);
         
         pagerTabStrip = (PagerTabStrip) findViewById(R.id.home_titles);
-//        pagerTabStrip.setOnTouchListener(new JumiaFlingDetector(activity));
         triggerContentEvent(new RequestEvent(EventType.GET_TEASERS_EVENT));
         HockeyStartup.register(this);
         try {
@@ -142,6 +147,9 @@ public class HomeFragmentActivity extends BaseActivity {
 //        }
     }
     
+    
+    
+    
     /**
      * Set some layout parameters that aren't possible by xml 
      * @throws NoSuchFieldException
@@ -150,20 +158,10 @@ public class HomeFragmentActivity extends BaseActivity {
      */
     private void setLayoutSpec() throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException {        
         // Get text
-//        TextView currTextView = (TextView) pagerTabStrip.getChildAt(TAB_CURR_ID);
-//        TextView nextTextView = (TextView) pagerTabStrip.getChildAt(TAB_NEXT_ID);
-//        TextView prevTextView = (TextView) pagerTabStrip.getChildAt(TAB_PREV_ID);
+        final TextView currTextView = (TextView) pagerTabStrip.getChildAt(TAB_CURR_ID);
+       
         // Set Color
-//        currTextView.setTextColor(activity.getResources().getColor(TAB_COLOR_TEXT_SELECTED));
-//        nextTextView.setTextColor(activity.getResources().getColor(TAB_COLOR_TEXT_UNSELECTED));
-//        nextTextView.setAlpha(0.7f);
-//        prevTextView.setTextColor(activity.getResources().getColor(TAB_COLOR_TEXT_UNSELECTED));
-//        prevTextView.setAlpha(0.7f);
-        // Set font
-//        Typeface tf = TypefaceFactory.getInstance().getFont(activity, FONT_TEXT_SELECTED);
-//        currTextView.setTypeface(tf);
-//        nextTextView.setTypeface(tf);
-//        prevTextView.setTypeface(tf);
+        currTextView.setPadding(0, 5, 0, 5);
 
         // Calculate the measures
         final float density = activity.getResources().getDisplayMetrics().density;
@@ -191,16 +189,23 @@ public class HomeFragmentActivity extends BaseActivity {
     private void proccessResult(Collection<? extends Homepage> result) {
         requestResponse = new ArrayList<Collection<? extends TeaserSpecification<?>>>();
         pagesTitles = new ArrayList<String>();
-
+        int defaultPosition = Math.abs(result.size()/2);
+        
+        int count = 0;
         for (Homepage homepage : result) {
             pagesTitles.add(homepage.getHomepageTitle());
             requestResponse.add(homepage.getTeaserSpecification());
-            Log.i(TAG, "code1 teaser size is: " + homepage.getTeaserSpecification().size());
+//            if(homepage.isDefaultHomepage()){
+//                defaultPosition = count;
+//            }
+            count++;
+            Log.i(TAG, "defaultPosition is : "+defaultPosition);
         }
         if(mPagerAdapter== null){
             mPagerAdapter = new HomeCollectionPagerAdapter(getSupportFragmentManager());
 
             mPager.setAdapter(mPagerAdapter);
+            mPager.setCurrentItem(defaultPosition);
         }
 
     }
