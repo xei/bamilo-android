@@ -295,7 +295,7 @@ public abstract class BaseFragment extends Fragment implements ResponseListener,
                                     dialog.dismiss();
                                 }
                             }, false);
-                    dialog.show(((BaseActivity) getActivity()).getSupportFragmentManager(), null);
+                    dialog.show(getActivity().getSupportFragmentManager(), null);
                 }
                 return;
             } else if (event.errorCode == ErrorCode.REQUEST_ERROR) {
@@ -339,7 +339,7 @@ public abstract class BaseFragment extends Fragment implements ResponseListener,
 
                         });
 
-                dialog.show(((BaseActivity) getActivity()).getSupportFragmentManager(), null);
+                dialog.show(getActivity().getSupportFragmentManager(), null);
                 return;
             } else if (!event.getSuccess()) {
 
@@ -358,7 +358,7 @@ public abstract class BaseFragment extends Fragment implements ResponseListener,
                                 dialog.dismiss();
                             }
                         }, false);
-                dialog.show(((BaseActivity) getActivity()).getSupportFragmentManager(), null);
+                dialog.show(getActivity().getSupportFragmentManager(), null);
                 return;
             }
         }
