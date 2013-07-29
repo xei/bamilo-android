@@ -56,7 +56,17 @@ public class SessionFragmentActivity extends BaseActivity {
         // setContentView(R.layout.main_menu_frame);
         // Add the first fragment
         onSwitchFragment(FragmentType.LOGIN, true);
-        originLocation = getIntent().getExtras().getString(getString(R.string.mixprop_loginlocation), getString(R.string.mixprop_loginlocationsidemenu));
+        try {
+            originLocation = getIntent().getExtras().getString(getString(R.string.mixprop_loginlocation));
+        } catch (Exception e) {
+            e.printStackTrace();
+            originLocation = null;            
+        }
+        
+        if ( null == originLocation ) {
+            originLocation = getString(R.string.mixprop_loginlocationsidemenu);
+        }
+        
         
     }
 
