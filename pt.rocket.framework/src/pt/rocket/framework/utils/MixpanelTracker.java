@@ -4,6 +4,7 @@
 package pt.rocket.framework.utils;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -151,13 +152,18 @@ public class MixpanelTracker {
 			return;
 
 		props = null;
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-ddTHH:mm:ss");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 		String currentDateandTime = sdf.format(new Date());
 		PreInstallController ctrl = new PreInstallController();
+		
 		setProperty(context.getString(R.string.mixprop_createdate), currentDateandTime); 
 		setProperty(context.getString(R.string.mixprop_preinstall), "" + ctrl.isPreInstalled(context));
 		setProperty(context.getString(R.string.mixprop_signupplatform), context.getString(R.string.mixprop_platformmobile));
-		setProperty(context.getString(R.string.mixprop_age), "" + customer.getBirthday().getYear());
+		Calendar calendar = Calendar.getInstance();
+		if(customer.getBirthday() != null){
+			calendar.setTime(customer.getBirthday());
+			setProperty(context.getString(R.string.mixprop_age), "" + calendar.get(Calendar.YEAR));
+		}
 		setProperty(context.getString(R.string.mixprop_gender), "" + customer.getGender());
 		setProperty(context.getString(R.string.mixprop_email), "" + customer.getEmail());
 		setProperty(context.getString(R.string.mixprop_country), "" + mShopId);
@@ -170,7 +176,9 @@ public class MixpanelTracker {
 			people.set(context.getString(R.string.mixproppeople_source), location);
 			people.set(context.getString(R.string.mixproppeople_firstname), customer.getFirstName());
 			people.set(context.getString(R.string.mixproppeople_lastname), customer.getLastName());
-			people.set(context.getString(R.string.mixproppeople_age), customer.getBirthday().getYear());
+		    calendar.setTime(customer.getBirthday());
+		    Log.i(TAG, "code1date "+calendar.get(Calendar.YEAR));
+			people.set(context.getString(R.string.mixproppeople_age), calendar.get(Calendar.YEAR));
 			people.set(context.getString(R.string.mixproppeople_gender), customer.getGender());
 			people.set(context.getString(R.string.mixproppeople_email), customer.getEmail());
 			people.set(context.getString(R.string.mixproppeople_country), "" + mShopId);

@@ -9,6 +9,7 @@
  */
 package pt.rocket.framework.objects;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -254,7 +255,14 @@ public class Customer implements IJSONSerializable {
             firstName = jsonObject.getString(JSON_FIRST_NAME_TAG);
             lastName = jsonObject.getString(JSON_LAST_NAME_TAG);
             email = jsonObject.getString(JSON_EMAIL_TAG);
-            
+            SimpleDateFormat  format = new SimpleDateFormat("yyyy-MM-dd");  
+            try {  
+            	birthday = format.parse(jsonObject.getString(JSON_BIRTHDAY_TAG));  
+            } catch (ParseException e) {  
+                // TODO Auto-generated catch block  
+                e.printStackTrace();  
+            }
+
             String genderString = jsonObject.optString(JSON_GENDER_TAG);
             if(genderString == null) {
             	gender = CustomerGender.UNKNOWN;
