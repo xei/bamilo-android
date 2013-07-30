@@ -12,6 +12,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 
 import android.app.Application;
+import android.graphics.Bitmap.CompressFormat;
 import android.graphics.Bitmap.Config;
 
 /**
@@ -34,7 +35,7 @@ public class ImageLoaderComponent extends ApplicationComponent {
                 .showImageForEmptyUri(R.drawable.no_image_small)
                 .cacheOnDisc()
                 .cacheInMemory()
-                .imageScaleType(ImageScaleType.IN_SAMPLE_INT)
+                .imageScaleType(ImageScaleType.EXACTLY)
                 .bitmapConfig(Config.RGB_565)
                 .build();
 
@@ -45,6 +46,7 @@ public class ImageLoaderComponent extends ApplicationComponent {
 
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
                 app)
+                .discCacheExtraOptions(800, 400, CompressFormat.PNG, 50)
                 .discCacheSize(16 * 1024 * 1024)
                 .memoryCacheSize(4 * 1024 * 1024)
                 .defaultDisplayImageOptions(smallOption)
