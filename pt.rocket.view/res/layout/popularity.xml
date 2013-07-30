@@ -32,6 +32,7 @@
         android:layout_alignTop="@id/price_w_discount_p"
         android:layout_marginLeft="6dp"
         android:layout_toRightOf="@id/price_w_discount_p"
+        android:layout_below="@id/product_info_name_p"
         android:text="Regular price" />
 
     
