@@ -101,7 +101,12 @@ public abstract class ResponseReceiver<T> extends ResultReceiver {
 		JSONObject jsonObject = new JSONObject(result);
 
 		if ( Darwin.logDebugEnabled ) {
-			Log.d(TAG, "Got JSON result (length = " + result.length() + ")\n" + jsonObject.toString(2));
+			try {
+				Log.d(TAG, "Got JSON result (length = " + result.length() + ")\n" + jsonObject.toString(2));	
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
 		}
 		if (jsonObject.getBoolean(JSON_SUCCESS_TAG)) {
 			JSONObject metadataObject = jsonObject
