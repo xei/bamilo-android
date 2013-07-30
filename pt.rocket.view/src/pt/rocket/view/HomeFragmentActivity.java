@@ -206,13 +206,18 @@ public class HomeFragmentActivity extends BaseActivity {
             count++;
             Log.i(TAG, "defaultPosition is : "+defaultPosition);
         }
-        if(mPagerAdapter== null){
-            mPagerAdapter = new HomeCollectionPagerAdapter(getSupportFragmentManager());
+        
+        if(requestResponse != null){
+            if(mPagerAdapter== null){
+                mPagerAdapter = new HomeCollectionPagerAdapter(getSupportFragmentManager());
 
-            mPager.setAdapter(mPagerAdapter);
-            mPager.setCurrentItem(defaultPosition);
+                mPager.setAdapter(mPagerAdapter);
+                mPager.setCurrentItem(defaultPosition);
+            }    
+        } else {
+            triggerContentEvent(new RequestEvent(EventType.GET_TEASERS_EVENT));
         }
-
+        
     }
 
     @Override
