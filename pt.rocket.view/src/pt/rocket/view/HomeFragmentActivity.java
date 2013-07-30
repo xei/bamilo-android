@@ -160,7 +160,11 @@ public class HomeFragmentActivity extends BaseActivity {
     private void setLayoutSpec() throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException {        
         // Get text
         final TextView currTextView = (TextView) pagerTabStrip.getChildAt(TAB_CURR_ID);
+        final TextView nextTextView = (TextView) pagerTabStrip.getChildAt(TAB_NEXT_ID);
+        final TextView prevTextView = (TextView) pagerTabStrip.getChildAt(TAB_PREV_ID);
        
+        
+        
         // Set Color
         currTextView.setPadding(0, 5, 0, 5);
 

@@ -3,7 +3,7 @@
 
     <!-- New Colors for redesign -->
     <color name="strip_title">#e0e0e0</color>
-    <color name="strip_title_background">#333</color>
+    <color name="strip_title_background">#333333</color>
     <color name="red_basic">#c11800</color>
     <color name="blue_basic">#004789</color>
     <color name="orange_basic">#faa41a</color>

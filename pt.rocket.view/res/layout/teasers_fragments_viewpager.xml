@@ -25,11 +25,11 @@
                 android:textColor="@color/strip_title"
                 android:textSize="12.54sp" />
         </pt.rocket.utils.JumiaViewPager>
-        <View 
+
+        <View
             android:layout_width="match_parent"
             android:layout_height="37.72dp"
-            android:background="@drawable/filter_header"/>
-        
+            android:background="@drawable/filter_header" />
     </RelativeLayout>
 
 </LinearLayout>

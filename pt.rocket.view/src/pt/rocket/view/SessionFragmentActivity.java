@@ -67,7 +67,6 @@ public class SessionFragmentActivity extends BaseActivity {
             originLocation = getString(R.string.mixprop_loginlocationsidemenu);
         }
         
-        
     }
 
     /*

@@ -38,6 +38,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.TaskStackBuilder;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 
@@ -107,6 +108,7 @@ public class ActivitiesWorkFlow {
         
         Intent loginIntent = new Intent(activity.getApplicationContext(), SessionFragmentActivity.class);
         loginIntent.putExtra(activity.getString(R.string.mixprop_loginlocation), origin);
+        Log.i(TAG, "codeLogin : "+activity.getString(R.string.mixprop_loginlocation)+" origin is: "+origin);
         //Intent loginIntent = new Intent(activity.getApplicationContext(), LogInActivity.class);
         
         if (requestResult) {
