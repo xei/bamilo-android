@@ -3,12 +3,21 @@
  */
 package pt.rocket.view.fragments;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.Proxy.Type;
 import java.net.URI;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.EnumSet;
 import java.util.List;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
 import org.apache.http.ParseException;
+import org.apache.http.client.methods.HttpGet;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -153,7 +162,7 @@ public class CheckoutWebFragment extends BaseFragment {
         Log.i(TAG, "ON CREATE VIEW");
         View view = inflater.inflate(R.layout.checkoutweb_frame, container, false);
         webview = (WebView) view.findViewById(R.id.webview);
-        return view;
+        return view;    
     }
 
     /*
@@ -178,6 +187,7 @@ public class CheckoutWebFragment extends BaseFragment {
         Log.i(TAG, "ON RESUME");
         // Needed for 2.3 problem with not showing keyboard by tapping in webview
         webview.requestFocus();
+//        webview.setHttpAuthUsernamePassword("https://" + RestContract.REQUEST_HOST, "", "rocket", "rock4me");
         prepareCookieStore();
         setupWebView();
         // XXX
@@ -247,7 +257,7 @@ public class CheckoutWebFragment extends BaseFragment {
     private void startCheckout() {
         ((BaseActivity) getActivity()).showLoading();
         webview.clearView();
-        checkoutUrl = "https://" + RestContract.REQUEST_HOST + CHECKOUT_URL_WITH_PARAM;
+        checkoutUrl = "http://" + RestContract.REQUEST_HOST + CHECKOUT_URL_WITH_PARAM;
         setProxy( checkoutUrl );
         Log.d(TAG, "Loading Url: " + checkoutUrl);
         webview.loadUrl(checkoutUrl);
@@ -313,8 +323,6 @@ public class CheckoutWebFragment extends BaseFragment {
         private static final String JAVASCRIPT_PROCESS = "javascript:window.INTERFACE.processContent" + 
                                                 "(document.getElementById('jsonAppObject').innerHTML);";
         private boolean wasLoadingErrorPage;
-
-        
         
         @Override
         public void onReceivedError(WebView view, int errorCode,

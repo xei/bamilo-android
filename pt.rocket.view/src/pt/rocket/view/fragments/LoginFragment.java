@@ -180,7 +180,6 @@ public class LoginFragment extends BaseFragment {
      */
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
         if (null != dynamicForm) {
             Iterator<DynamicFormItem> iterator = dynamicForm.iterator();
             while (iterator.hasNext()) {
@@ -189,6 +188,7 @@ public class LoginFragment extends BaseFragment {
             }
             savedInstanceState = outState;
         }
+        super.onSaveInstanceState(outState);
     }
     
     /*

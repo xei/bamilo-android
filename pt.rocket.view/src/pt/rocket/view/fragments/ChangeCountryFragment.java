@@ -10,6 +10,7 @@ import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.view.ChangeCountryFragmentActivity;
+import pt.rocket.view.HomeFragmentActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.Context;
@@ -216,6 +217,7 @@ public class ChangeCountryFragment extends Fragment {
 
     protected void setCountry(int position) {
         Log.i(TAG, "New Country array position: " + position);
+        HomeFragmentActivity.requestResponse = null;
         SharedPreferences sharedPrefs = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putInt(ChangeCountryFragmentActivity.KEY_COUNTRY, position);

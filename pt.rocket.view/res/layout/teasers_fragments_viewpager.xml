@@ -19,16 +19,18 @@
             <android.support.v4.view.PagerTabStrip
                 android:id="@+id/home_titles"
                 android:layout_width="match_parent"
-                android:layout_height="37.72dp"
+                android:layout_height="31.72dp"
                 android:layout_gravity="top"
                 android:background="@color/strip_title_background"
                 android:textColor="@color/strip_title"
-                android:textSize="12.54sp" />
+                android:textSize="12.54sp"
+                android:textAlignment="center"
+                />
         </pt.rocket.utils.JumiaViewPager>
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="37.72dp"
+            android:layout_height="31.72dp"
             android:background="@drawable/filter_header" />
     </RelativeLayout>
 

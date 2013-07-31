@@ -38,18 +38,15 @@ import pt.rocket.view.fragments.ProducTeaserListFragment;
 import pt.rocket.view.fragments.StaticBannerFragment;
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Shader;
-import android.graphics.Shader.TileMode;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerTabStrip;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -75,7 +72,7 @@ public class HomeFragmentActivity extends BaseActivity {
     private final int TAB_CURR_ID = 1;
     private final int TAB_NEXT_ID = 2;
     
-    private final int TAB_INDICATOR_HEIGHT = 35;
+    private final int TAB_INDICATOR_HEIGHT = 0;
     private final int TAB_UNDERLINE_HEIGHT = 1;
     private final int TAB_STRIP_COLOR = android.R.color.transparent;
     private final int TAB_COLOR_TEXT_UNSELECTED = R.color.strip_title;
@@ -91,7 +88,7 @@ public class HomeFragmentActivity extends BaseActivity {
     
     private HomeCollectionPagerAdapter mPagerAdapter;
     private static ArrayList<String> pagesTitles;
-    private static ArrayList<Collection<? extends TeaserSpecification<?>>> requestResponse;
+    public static ArrayList<Collection<? extends TeaserSpecification<?>>> requestResponse;
 
     private OnActivityFragmentInteraction mCallback;
 
@@ -177,7 +174,7 @@ public class HomeFragmentActivity extends BaseActivity {
         
         
         // Set Color
-        currTextView.setPadding(0, 5, 0, 5);
+        currTextView.setPadding(0, 0, 0, 1);
 
         // Calculate the measures
         final float density = activity.getResources().getDisplayMetrics().density;

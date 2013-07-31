@@ -14,9 +14,9 @@
 <!--         android:layout_marginLeft="@dimen/margin_mid" -->
 <!--         android:text="Brands list" /> -->
 
-    <HorizontalScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+<!--     <HorizontalScrollView -->
+<!--         android:layout_width="match_parent" -->
+<!--         android:layout_height="match_parent" > -->
 
         <LinearLayout
             android:id="@+id/teaser_group_container"
@@ -25,6 +25,6 @@
             android:paddingBottom="@dimen/margin_large"
             android:orientation="horizontal" >
         </LinearLayout>
-    </HorizontalScrollView>
+<!--     </HorizontalScrollView> -->
 
 </LinearLayout>

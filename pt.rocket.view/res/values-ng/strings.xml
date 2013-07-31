@@ -191,7 +191,7 @@
 	<string name="error_register_alreadyexists">This email already exists. Please choose another one.</string>
 	<string name="error_forgotpassword_title">Password recovery failed</string>
 	<string name="error_forgotpassword_text">Your email is either invalid or unknown to the server. We can\'t send you a new password.</string>
-	<string name="stale_warning">Lost connection</string>
+	<string name="stale_warning">Lost connection - Could not Update</string>
 	<string name="upgrade_optional_title">Upgrade available</string>
 	<string name="upgrade_optional_text">There is a new update available that we prepared to make shopping on Jumia even better! Be sure to upgrade today!</string>
 	<string name="upgrade_forced_title">Upgrade necessary</string>

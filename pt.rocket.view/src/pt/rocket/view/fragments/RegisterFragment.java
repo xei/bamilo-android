@@ -516,6 +516,8 @@ public class RegisterFragment extends BaseFragment {
         case REGISTER_ACCOUNT_EVENT:
             // Get Register Completed Event
             Customer customer = (Customer) event.result;
+            Log.i(TAG, "code1date name: "+customer.getFirstName());
+            Log.i(TAG, "code1date date: "+customer.getBirthday());
             TrackerDelegator.trackSignupSuccessful(getActivity(), customer, registerLocation);
             // Finish this activity
             //Intent resultData = new Intent();
