@@ -120,10 +120,21 @@ public class HomeFragmentActivity extends BaseActivity {
         mInflater = (LayoutInflater) this
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         changeSearchBarBehavior();
-        mPager = (JumiaViewPager) findViewById(R.id.home_viewpager);
         
-        pagerTabStrip = (PagerTabStrip) findViewById(R.id.home_titles);
-        triggerContentEvent(new RequestEvent(EventType.GET_TEASERS_EVENT));
+        if(mPager == null){
+            mPager = (JumiaViewPager) findViewById(R.id.home_viewpager);
+        }
+        
+        if(pagerTabStrip == null){
+            pagerTabStrip = (PagerTabStrip) findViewById(R.id.home_titles);
+        }
+        
+        if(requestResponse == null){
+            triggerContentEvent(new RequestEvent(EventType.GET_TEASERS_EVENT));          
+        } else {
+            restoreLayout();
+        }
+  
         HockeyStartup.register(this);
         try {
             setLayoutSpec();
@@ -137,7 +148,7 @@ public class HomeFragmentActivity extends BaseActivity {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-    }
+}
     
     public void moveToRight(){
 //        Toast.makeText(activity, "weeee", Toast.LENGTH_LONG).show;
@@ -190,6 +201,23 @@ public class HomeFragmentActivity extends BaseActivity {
         field.setAccessible(true);
         field.set(pagerTabStrip, paint);
     }
+    
+    private void restoreLayout(){
+        int defaultPosition = Math.abs(requestResponse.size()/2);
+        if(requestResponse != null){
+            if(mPagerAdapter== null){
+                mPagerAdapter = new HomeCollectionPagerAdapter(getSupportFragmentManager());
+                
+                mPager.setAdapter(mPagerAdapter);
+                mPager.setCurrentItem(defaultPosition);
+            } else {
+                mPager.setAdapter(mPagerAdapter);
+                mPager.setCurrentItem(defaultPosition);
+            }   
+        } else {
+            triggerContentEvent(new RequestEvent(EventType.GET_TEASERS_EVENT));
+        }
+    }
 
     private void proccessResult(Collection<? extends Homepage> result) {
         requestResponse = new ArrayList<Collection<? extends TeaserSpecification<?>>>();
@@ -197,14 +225,13 @@ public class HomeFragmentActivity extends BaseActivity {
         int defaultPosition = Math.abs(result.size()/2);
         
         int count = 0;
-        for (Homepage homepage : result) {
+        for (Homepage homepage : result) {  
             pagesTitles.add(homepage.getHomepageTitle());
             requestResponse.add(homepage.getTeaserSpecification());
 //            if(homepage.isDefaultHomepage()){
 //                defaultPosition = count;
 //            }
             count++;
-            Log.i(TAG, "defaultPosition is : "+defaultPosition);
         }
         
         if(requestResponse != null){
