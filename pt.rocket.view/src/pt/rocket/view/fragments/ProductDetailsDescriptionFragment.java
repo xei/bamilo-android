@@ -20,6 +20,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import de.akquinet.android.androlog.Log;
 
@@ -37,7 +38,7 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
     private TextView mProductFeaturesText;
     private TextView mProductDescriptionText;
     private TextView mProductDetailsText;
-    private View mProductFeaturesContainer;
+    private LinearLayout mProductFeaturesContainer;
     private CompleteProduct mCompleteProduct;
     private View mainView;
     private static ProductDetailsDescriptionFragment productDetailsDescriptionFragment;
@@ -99,12 +100,11 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
         mProductResultPrice = (TextView) mainView.findViewById( R.id.product_price_result );
         mProductNormalPrice = (TextView) mainView.findViewById( R.id.product_price_normal );
         
-        mProductFeaturesContainer = mainView.findViewById(R.id.product_features_container);
+        mProductFeaturesContainer = (LinearLayout) mainView.findViewById(R.id.product_features_container);
         mProductFeaturesText = (TextView) mainView.findViewById( R.id.product_features_text );
         mProductDescriptionText = (TextView) mainView.findViewById( R.id.product_description_text );
         mProductDetailsText = (TextView) mainView.findViewById( R.id.product_details_text );
         
-        displayProductInformation(mainView);
         return mainView;
     }
 
@@ -128,7 +128,7 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        this.mCompleteProduct = ServiceManager.SERVICES.get(ProductService.class).getCurrentProduct();
+        this.mCompleteProduct = ServiceManager.SERVICES.get(ProductService.class).getCurrentProduct();   
         displayProductInformation(mainView);
     }
 
@@ -208,13 +208,14 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
     
     private void displaySpecification() {
         String shortDescription = mCompleteProduct.getShortDescription();
-    
         if (TextUtils.isEmpty(shortDescription)) {
-            if(mProductFeaturesContainer!=null)
+            Log.i(TAG, "shortDescription : empty");
+            if(mProductFeaturesContainer!=null){
                 mProductFeaturesContainer.setVisibility(View.GONE);
+            }
             return;
         } else {
-            mProductFeaturesText.setVisibility(View.VISIBLE);
+            mProductFeaturesContainer.setVisibility(View.VISIBLE);
         }        
         
         String translatedDescription = shortDescription.replace("\r", "<br>");
