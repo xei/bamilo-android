@@ -216,7 +216,7 @@ public class ChangeCountryFragment extends Fragment {
     }
 
     protected void setCountry(int position) {
-        Log.i(TAG, "New Country array position: " + position);
+        Log.i(TAG, "code1is New Country array position: " + position);
         HomeFragmentActivity.requestResponse = null;
         SharedPreferences sharedPrefs = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPrefs.edit();
@@ -227,7 +227,7 @@ public class ChangeCountryFragment extends Fragment {
         // Darwin.initialize(DarwinMode.DEBUG, getApplicationContext(), R.drawable.no_image,
         // position);
         // LogOut.cleanAndRestart(activity);
-        getActivity().finish();
+//        getActivity().finish();
         ActivitiesWorkFlow.splashActivityNewTask(getActivity());
     }
 

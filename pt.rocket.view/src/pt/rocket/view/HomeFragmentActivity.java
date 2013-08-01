@@ -198,10 +198,11 @@ public class HomeFragmentActivity extends BaseActivity {
         field.setAccessible(true);
         field.set(pagerTabStrip, paint);
     }
-    
+     
     private void restoreLayout(){
-        int defaultPosition = Math.abs(requestResponse.size()/2);
+        
         if(requestResponse != null){
+            int defaultPosition = Math.abs(requestResponse.size()/2);
             if(mPagerAdapter== null){
                 mPagerAdapter = new HomeCollectionPagerAdapter(getSupportFragmentManager());
                 
