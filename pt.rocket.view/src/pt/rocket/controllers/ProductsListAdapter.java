@@ -64,7 +64,7 @@ public class ProductsListAdapter extends BaseAdapter {
     /**
      * A representation of each item on the list
      */
-    public static class Item {
+    private static class Item {
 
         public ImageView image;
         public ImageView promotion;
@@ -185,10 +185,12 @@ public class ProductsListAdapter extends BaseAdapter {
         if (convertView != null) {
             // if the view already exists there is no need to inflate it again
             itemView = convertView;
-            prodItem = (Item) itemView.getTag();
         } else {
             itemView = inflater.inflate(R.layout.product_item, parent, false);
-
+        }
+        
+        
+        if((Item) itemView.getTag() == null){
             prodItem = new Item();
             prodItem.image = (ImageView) itemView.findViewById(R.id.image_view);
             prodItem.promotion = (ImageView) itemView.findViewById(R.id.item_promotion);
@@ -205,6 +207,8 @@ public class ProductsListAdapter extends BaseAdapter {
             // stores the item representation on the tag of the view for later
             // retrieval
             itemView.setTag(prodItem);
+        } else {
+            prodItem = (Item) itemView.getTag();
         }
 
         String imageURL = "";
@@ -384,6 +388,16 @@ public class ProductsListAdapter extends BaseAdapter {
      */
     public void setOnSelectedItemsChanged(OnSelectedItemsChange value) {
         onSelectedItemsChange = value;
+    }
+    
+    static class ViewHolder {
+        public ImageView imageView;
+        public TextView brand;
+        public TextView name;
+        public TextView priceStroke;
+        public TextView priceNormal;
+        public TextView pricePackage;
+
     }
 
 }

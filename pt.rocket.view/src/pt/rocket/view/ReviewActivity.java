@@ -9,6 +9,7 @@ import pt.rocket.utils.MyActivity;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -63,6 +64,7 @@ public class ReviewActivity extends MyActivity {
      * Sets view layout
      */
     public void setAppContentLayout() {
+        Log.i("review", "code1review");
         if (getIntent().getExtras() == null)
             finish();
 
