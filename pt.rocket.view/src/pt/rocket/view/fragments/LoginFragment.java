@@ -389,7 +389,12 @@ public class LoginFragment extends BaseFragment {
                                     }
 
                                 });
-                        dialog.show(getActivity().getSupportFragmentManager(), null);
+                        try {
+                            dialog.show(getActivity().getSupportFragmentManager(), null);    
+                        } catch (IllegalStateException e) {
+                            // TODO: handle exception
+                        }
+                        
                     }
                 }
                 return true;
