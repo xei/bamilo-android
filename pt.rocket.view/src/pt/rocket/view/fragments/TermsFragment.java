@@ -148,7 +148,7 @@ public class TermsFragment extends BaseFragment {
     }
     
     private void setupView() {
-            textView.setText(termsText);     
+        textView.setText(termsText);     
     }
 
     @Override

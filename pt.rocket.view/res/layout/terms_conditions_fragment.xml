@@ -7,30 +7,29 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
-        <LinearLayout android:id="@+id/title_container"
-                style="@style/activity_sectionheader_container"
-                android:orientation="vertical" >
-            
-            	<org.holoeverywhere.widget.TextView
-                	android:id="@+id/middle_login_text"
-                	style="@style/activity_sectionheader_text"
-                	android:text="@string/terms_and_conditions" />
+        <LinearLayout
+            android:id="@+id/title_container"
+            style="@style/activity_sectionheader_container"
+            android:orientation="vertical" >
 
-            	<View
-            	    style="@style/activity_sectionheader_divider"
-                 />
-		</LinearLayout>
-        
+            <org.holoeverywhere.widget.TextView
+                android:id="@+id/middle_login_text"
+                style="@style/activity_sectionheader_text"
+                android:text="@string/terms_and_conditions" />
+
+            <View style="@style/activity_sectionheader_divider" />
+        </LinearLayout>
+
         <org.holoeverywhere.widget.TextView
             android:id="@+id/terms_text"
             style="@style/body_text_feature_add"
             android:layout_below="@id/title_container"
+            android:autoLink="all"
             android:gravity="left"
             android:paddingBottom="8dp"
             android:paddingLeft="18dp"
             android:paddingRight="18dp"
-            android:paddingTop="8dp"
-             />
+            android:paddingTop="8dp" />
     </RelativeLayout>
 
 </ScrollView>

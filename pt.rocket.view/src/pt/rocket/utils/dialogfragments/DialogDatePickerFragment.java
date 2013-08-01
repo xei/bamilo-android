@@ -176,6 +176,9 @@ public class DialogDatePickerFragment extends DialogFragment implements OnClickL
 
         Date date;
         try {
+            if(dateString==null){
+                dateString = "2013-01-01";
+            }
             date = sdf.parse(dateString);
         } catch (ParseException e) {
             // if the date has the wrong format

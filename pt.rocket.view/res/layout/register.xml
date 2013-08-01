@@ -75,7 +75,7 @@
                     android:id="@+id/termsContainerClick"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="7.5dp"
+                    android:layout_marginTop="11dp"
                     android:paddingLeft="2dp" >
 
                     <org.holoeverywhere.widget.TextView

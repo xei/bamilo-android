@@ -295,7 +295,12 @@ public abstract class BaseFragment extends Fragment implements ResponseListener,
                                     dialog.dismiss();
                                 }
                             }, false);
-                    dialog.show(getActivity().getSupportFragmentManager(), null);
+                    try {
+                        dialog.show(getActivity().getSupportFragmentManager(), null);
+                    } catch (Exception e) {
+                        // TODO: handle exception
+                    }
+                    
                 }
                 return;
             } else if (event.errorCode == ErrorCode.REQUEST_ERROR) {
