@@ -33,6 +33,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
@@ -226,6 +227,22 @@ public class SearchFragment extends BaseFragment implements OnItemClickListener 
             }
 
         });
+        
+        searchTermView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    String searchTerm = searchTermView.getText().toString();
+                    if ( TextUtils.isEmpty( searchTerm ))
+                        return false;
+                    
+                    executeSearch(searchTerm);
+                    hideKeyboardAndFocus();
+                    return true;
+                }
+                return false;
+            }
+        });
         searchTermView.addTextChangedListener(searchInputWatcher);
         searchTermView.setOnKeyListener(searchKeyListener);
         searchTermView.setOnClickListener(new OnClickListener() {
@@ -320,10 +337,11 @@ public class SearchFragment extends BaseFragment implements OnItemClickListener 
     
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        hideKeyboardAndFocus();
         getActivity().findViewById(R.id.dummy_search_layout).requestFocus();
         executeSearch( ((SearchSuggestion)parent.getAdapter().getItem(position)).getResult());
         // autoCompleteView.setText( "" );
-        hideKeyboardAndFocus();
+        
     }
     
     protected void showKeyboardAndFocus() {

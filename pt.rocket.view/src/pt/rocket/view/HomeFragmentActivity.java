@@ -120,14 +120,6 @@ public class HomeFragmentActivity extends BaseActivity {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         changeSearchBarBehavior();
         
-        if(mPager == null){
-            mPager = (JumiaViewPager) findViewById(R.id.home_viewpager);
-        }
-        
-        if(pagerTabStrip == null){
-            pagerTabStrip = (PagerTabStrip) findViewById(R.id.home_titles);
-        }
-        
         if(requestResponse == null){
             triggerContentEvent(new RequestEvent(EventType.GET_TEASERS_EVENT));          
         } else {
@@ -135,18 +127,6 @@ public class HomeFragmentActivity extends BaseActivity {
         }
   
         HockeyStartup.register(this);
-        try {
-            setLayoutSpec();
-        } catch (IllegalArgumentException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (NoSuchFieldException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
 }
     
     public void moveToRight(){
@@ -201,6 +181,29 @@ public class HomeFragmentActivity extends BaseActivity {
         field.set(pagerTabStrip, paint);
     }
      
+    private void setLayout(){
+        if(mPager == null){
+            mPager = (JumiaViewPager) findViewById(R.id.home_viewpager);
+        }
+        
+        if(pagerTabStrip == null){
+            pagerTabStrip = (PagerTabStrip) findViewById(R.id.home_titles);
+        }
+        
+        try {
+            setLayoutSpec();
+        } catch (IllegalArgumentException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (NoSuchFieldException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+    
     private void restoreLayout(){
         
         if(requestResponse != null){
@@ -220,6 +223,7 @@ public class HomeFragmentActivity extends BaseActivity {
     }
 
     private void proccessResult(Collection<? extends Homepage> result) {
+        setLayout();
         requestResponse = new ArrayList<Collection<? extends TeaserSpecification<?>>>();
         pagesTitles = new ArrayList<String>();
         int defaultPosition = Math.abs(result.size()/2);
