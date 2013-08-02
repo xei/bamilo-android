@@ -26,6 +26,7 @@ import pt.rocket.framework.forms.InputType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.dialogfragments.DialogDatePickerFragment;
 import pt.rocket.utils.dialogfragments.DialogDatePickerFragment.OnDatePickerDialogListener;
+import pt.rocket.utils.BaseActivity;
 import pt.rocket.utils.RadioGroupLayout;
 import pt.rocket.utils.UIUtils;
 import pt.rocket.view.R;
@@ -96,7 +97,7 @@ public class DynamicFormItem {
 
 	private int errorColor;
 	
-	private float screenDensity ;
+	private float screenDensity;
 
     /**
      * The constructor for the DynamicFormItem
@@ -784,12 +785,12 @@ public class DynamicFormItem {
 					}
 				};
                 
-                this.dialogDate = DialogDatePickerFragment.newInstance((Activity)context, pickerListener, String.valueOf( dataControl.getId()), dialogTitle, 0, 0, 0);
+                this.dialogDate = DialogDatePickerFragment.newInstance((BaseActivity) context, pickerListener, String.valueOf( dataControl.getId()), dialogTitle, 0, 0, 0);
                 this.dataControl.setOnClickListener( new OnClickListener() {
 					
 					@Override
 					public void onClick(View v) {
-						DynamicFormItem.this.dialogDate.show(((FragmentActivity)context).getSupportFragmentManager(), null);						
+						dialogDate.show(((BaseActivity)context).getSupportFragmentManager(), null);						
 					}
 				});
         

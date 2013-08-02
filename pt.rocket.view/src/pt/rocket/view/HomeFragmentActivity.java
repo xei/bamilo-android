@@ -93,6 +93,8 @@ public class HomeFragmentActivity extends BaseActivity {
     private OnActivityFragmentInteraction mCallback;
 
     Activity activity;
+    
+    private boolean isFirstBoot = true;
 
     /**
 	 */
@@ -203,8 +205,9 @@ public class HomeFragmentActivity extends BaseActivity {
     }
     
     private void restoreLayout(){
-        setLayout();
+
         if(requestResponse != null){
+            setLayout();
             int defaultPosition = Math.abs(requestResponse.size()/2);
             if(mPagerAdapter== null){
                 mPagerAdapter = new HomeCollectionPagerAdapter(getSupportFragmentManager());
@@ -221,7 +224,6 @@ public class HomeFragmentActivity extends BaseActivity {
     }
 
     private void proccessResult(Collection<? extends Homepage> result) {
-        setLayout();
         requestResponse = new ArrayList<Collection<? extends TeaserSpecification<?>>>();
         pagesTitles = new ArrayList<String>();
         int defaultPosition = Math.abs(result.size()/2);
@@ -235,11 +237,12 @@ public class HomeFragmentActivity extends BaseActivity {
 //            }
             count++;
         }
-        
+
         if(requestResponse != null){
+            
             if(mPagerAdapter== null){
                 mPagerAdapter = new HomeCollectionPagerAdapter(getSupportFragmentManager());
-
+                setLayout();
                 mPager.setAdapter(mPagerAdapter);
                 mPager.setCurrentItem(defaultPosition);
             }    
@@ -256,7 +259,8 @@ public class HomeFragmentActivity extends BaseActivity {
             CheckVersion.showDialog(this);
         }
         
-        if(requestResponse == null){
+        if(requestResponse == null && !isFirstBoot){
+            Log.i(TAG, "code1restoring onResume triggering...");
             triggerContentEvent(new RequestEvent(EventType.GET_TEASERS_EVENT));
         }
         
@@ -298,7 +302,7 @@ public class HomeFragmentActivity extends BaseActivity {
     @Override
     protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
         Log.d(TAG, "Got teasers event: " + event);
-
+        isFirstBoot = false;
         proccessResult((Collection<? extends Homepage>) event.result);
         return true;
     }

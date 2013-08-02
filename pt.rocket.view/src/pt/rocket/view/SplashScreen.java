@@ -174,6 +174,13 @@ public class SplashScreen extends Activity implements ResponseListener {
     @Override
     public void handleEvent(final ResponseEvent event) {
         Log.d(TAG, "Got initialization result: " + event);
+        if(dialog!=null && dialog.isShowing()){
+            try {
+                dialog.hide();    
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         if (event.getSuccess()) {
             selectActivity();
             finish();
@@ -191,7 +198,11 @@ public class SplashScreen extends Activity implements ResponseListener {
                         }
                     }, true);
             dialog.setCancelable(false);
-            dialog.show();
+            try {
+                dialog.show();    
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } else if (event.errorCode == ErrorCode.REQUEST_ERROR && event.errorMessages != null) {
             String message = "";
             List<String> errors = event.errorMessages.get(Errors.JSON_ERROR_TAG);
@@ -209,7 +220,12 @@ public class SplashScreen extends Activity implements ResponseListener {
                         }
                     }, true);
             dialog.setCancelable(false);
-            dialog.show();
+            try {
+                dialog.show();    
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            
         } else {
             dialog = DialogGeneric.createServerErrorDialog(SplashScreen.this,
                     new OnClickListener() {
@@ -221,7 +237,11 @@ public class SplashScreen extends Activity implements ResponseListener {
                         }
                     }, true);
             dialog.setCancelable(false);
-            dialog.show();
+            try {
+                dialog.show();    
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

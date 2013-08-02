@@ -137,8 +137,8 @@ public class DialogDatePickerFragment extends DialogFragment implements OnClickL
         view.findViewById(R.id.button1).setOnClickListener(this);
         view.findViewById(R.id.button2).setOnClickListener(this);
 
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1)
-            resizeDialog(this);
+//        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1)
+//            resizeDialog(this);
         
         return view;
     }

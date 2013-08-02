@@ -280,10 +280,15 @@ public abstract class BaseFragment extends Fragment implements ResponseListener,
                     ((BaseActivity) getActivity()).showError(event.request);
                 } else if (userEvents.contains(event.type)) {
                     ((BaseActivity) getActivity()).showContentContainer();
-
+                    
                     // Remove dialog if exist
-                    if (dialog != null)
-                        dialog.dismiss();
+                    if (dialog != null){
+                        try {
+                            dialog.dismiss();    
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
 
                     dialog = DialogGenericFragment.createNoNetworkDialog(getActivity(),
                             new OnClickListener() {
@@ -298,7 +303,7 @@ public abstract class BaseFragment extends Fragment implements ResponseListener,
                     try {
                         dialog.show(getActivity().getSupportFragmentManager(), null);
                     } catch (Exception e) {
-                        // TODO: handle exception
+                        e.printStackTrace();
                     }
                     
                 }
@@ -325,8 +330,13 @@ public abstract class BaseFragment extends Fragment implements ResponseListener,
                 ((BaseActivity) getActivity()).showContentContainer();
 
                 // Remove dialog if exist
-                if (dialog != null)
-                    dialog.dismiss();
+                if (dialog != null){
+                    try {
+                        dialog.dismiss();    
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
 
                 dialog = DialogGenericFragment.newInstance(
                         true, true, false, getString(R.string.validation_title),
@@ -344,13 +354,24 @@ public abstract class BaseFragment extends Fragment implements ResponseListener,
 
                         });
 
-                dialog.show(getActivity().getSupportFragmentManager(), null);
+                
+                try {
+                    dialog.show(getActivity().getSupportFragmentManager(), null);
+                } catch (Exception e) {
+                   e.printStackTrace();
+                }
                 return;
             } else if (!event.getSuccess()) {
 
                 // Remove dialog if exist
-                if (dialog != null)
-                    dialog.dismiss();
+                if (dialog != null){
+                    try {
+                        dialog.dismiss();    
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                    
 
                 dialog = DialogGenericFragment.createServerErrorDialog(getActivity(),
                         new OnClickListener() {
@@ -363,7 +384,12 @@ public abstract class BaseFragment extends Fragment implements ResponseListener,
                                 dialog.dismiss();
                             }
                         }, false);
-                dialog.show(getActivity().getSupportFragmentManager(), null);
+                
+                try {
+                    dialog.show(getActivity().getSupportFragmentManager(), null);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 return;
             }
         }
