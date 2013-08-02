@@ -10,11 +10,9 @@ import java.util.EnumSet;
 import java.util.Iterator;
 
 import pt.rocket.controllers.ActivitiesWorkFlow;
-import pt.rocket.framework.event.EventManager;
 import pt.rocket.framework.event.EventType;
 import pt.rocket.framework.event.RequestEvent;
 import pt.rocket.framework.event.ResponseResultEvent;
-import pt.rocket.framework.event.events.GetCallToOrderPhoneEvent;
 import pt.rocket.framework.objects.BrandsTeaserGroup;
 import pt.rocket.framework.objects.CategoryTeaserGroup;
 import pt.rocket.framework.objects.Homepage;
@@ -102,8 +100,8 @@ public class HomeFragmentActivity extends BaseActivity {
         super(R.layout.search,
                 NavigationAction.Home,
                 EnumSet.noneOf(MyMenuItem.class),
-                EnumSet.of(EventType.GET_TEASERS_EVENT, EventType.GET_CALL_TO_ORDER_PHONE),
-                EnumSet.noneOf(EventType.class),      
+                EnumSet.of(EventType.GET_TEASERS_EVENT),
+                EnumSet.noneOf(EventType.class),
                 0, R.layout.teasers_fragments_viewpager);
     }
 
@@ -205,7 +203,7 @@ public class HomeFragmentActivity extends BaseActivity {
     }
     
     private void restoreLayout(){
-        
+        setLayout();
         if(requestResponse != null){
             int defaultPosition = Math.abs(requestResponse.size()/2);
             if(mPagerAdapter== null){
@@ -261,7 +259,7 @@ public class HomeFragmentActivity extends BaseActivity {
         if(requestResponse == null){
             triggerContentEvent(new RequestEvent(EventType.GET_TEASERS_EVENT));
         }
-        triggerContentEvent(new RequestEvent(EventType.GET_CALL_TO_ORDER_PHONE));        
+        
         AnalyticsGoogle.get().trackPage(R.string.ghomepage);
     }
     
@@ -299,17 +297,9 @@ public class HomeFragmentActivity extends BaseActivity {
 
     @Override
     protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
-        switch ( event.getType() ) {
-        case GET_TEASERS_EVENT:
-            Log.d(TAG, "Got teasers event: " + event);
+        Log.d(TAG, "Got teasers event: " + event);
 
-            proccessResult((Collection<? extends Homepage>) event.result);            
-            break;
-        case GET_CALL_TO_ORDER_PHONE:
-            Log.d(TAG, "Got CALL TO ORDER PHONE event: " + event);
-            
-            break;
-        }
+        proccessResult((Collection<? extends Homepage>) event.result);
         return true;
     }
 
