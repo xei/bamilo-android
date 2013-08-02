@@ -99,10 +99,13 @@ public class MixpanelTracker {
 		}		
 		setProperty(context.getString(R.string.mixprop_shopcountry), "" + mShopId);
 		mixpanel.registerSuperProperties(props);
+		Log.d(TAG, "launch Props: " + props.toString() );
+		
 		
 		props = null;
 		setProperty(context.getString(R.string.mixprop_platform), context.getString(R.string.mixprop_platformmobile));
 		mixpanel.registerSuperPropertiesOnce(props);
+		Log.d(TAG, "launch Props: " + props.toString() );
 		
 		Log.d(TAG, "launch tracked: event = " + context.getString(R.string.mixlaunch));		
 		
@@ -128,6 +131,7 @@ public class MixpanelTracker {
 		Log.d(TAG, "login tracked: event = " + context.getString(R.string.mixlogin) + " customerId = " + customerId);
 		
 		mixpanel.track(context.getString(R.string.mixlogin), props);
+		Log.d(TAG, "login props: " + props.toString() );
 	}
 	
 	public static void logout(Context context ) {
@@ -145,6 +149,7 @@ public class MixpanelTracker {
 		
 		Log.d(TAG, "logout tracked: event = " + context.getString(R.string.mixlogout) );
 		mixpanel.track(context.getString(R.string.mixlogout), props);
+		Log.d(TAG, "logot props: " + props.toString() );
 	}	
 	
 	public static void signup(Context context, Customer customer, String location) {
@@ -168,6 +173,7 @@ public class MixpanelTracker {
 		setProperty(context.getString(R.string.mixprop_email), "" + customer.getEmail());
 		setProperty(context.getString(R.string.mixprop_country), "" + mShopId);
 		mixpanel.registerSuperProperties(props);
+		Log.d(TAG, "signup super props: " + props.toString() );
 		
 		if ( null != people ) {			
 			people.set(context.getString(R.string.mixproppeople_created), currentDateandTime);
@@ -437,6 +443,9 @@ public class MixpanelTracker {
 	}
 	
 	public static void flush (){
+		if (!isEnabled)
+			return;		
+		
 		mixpanel.flush();
 	}
 	

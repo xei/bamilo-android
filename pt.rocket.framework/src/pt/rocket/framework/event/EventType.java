@@ -95,7 +95,9 @@ public enum EventType {
 	
 	STORE_LOGIN,
 	
-	GET_MIN_ORDER_AMOUNT("http:/main/getstatic?key=api_cartminorderamount", RestContract.MAX_CACHE_TIME)
+	GET_MIN_ORDER_AMOUNT("http:/main/getstatic?key=api_cartminorderamount", RestContract.MAX_CACHE_TIME),
+	
+	GET_CALL_TO_ORDER_PHONE("http:/main/getconfig/module/configurationml/key/phone_number/", RestContract.DEFAULT_CACHE_TIME)
 	
 //	GET_SESSION_STATE("http:/main/session/")
 	;

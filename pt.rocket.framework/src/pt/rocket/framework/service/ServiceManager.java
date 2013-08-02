@@ -22,10 +22,12 @@ import pt.rocket.framework.event.RequestListener;
 import pt.rocket.framework.event.ResponseErrorEvent;
 import pt.rocket.framework.event.ResponseEvent;
 import pt.rocket.framework.event.ResponseListener;
+import pt.rocket.framework.event.events.GetCallToOrderPhoneEvent;
 import pt.rocket.framework.event.events.InitShopEvent;
 import pt.rocket.framework.event.events.InitializeEvent;
 import pt.rocket.framework.service.services.ApiService;
 import pt.rocket.framework.service.services.CategoryService;
+import pt.rocket.framework.service.services.ConfigurationService;
 import pt.rocket.framework.service.services.CustomerAccountService;
 import pt.rocket.framework.service.services.FormsService;
 import pt.rocket.framework.service.services.NavigationService;
@@ -46,7 +48,7 @@ public class ServiceManager extends RequestListener {
 	public static final SingletonMap<DarwinService> SERVICES = new SingletonMap<DarwinService>(
 			new ApiService(), new NavigationService(), new FormsService(),
 			new TeasersService(), new CategoryService(), new ProductService(),
-			new CustomerAccountService(), new ShoppingCartService());
+			new CustomerAccountService(), new ShoppingCartService(), new ConfigurationService() );
 	private static final EnumSet<EventType> INIT_EVENTS = EnumSet
 			.noneOf(EventType.class);
 	static {
