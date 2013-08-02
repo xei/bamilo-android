@@ -66,15 +66,18 @@ public class ProductReviewComment implements IJSONSerializable {
             JSONObject ratingObject = null;
             int size = options.length();
             Log.i("OPTIONS"," "+size);
+            rating = 0 ;
             for (int i = 0; i < size; i++) {
                 RatingOption option= new RatingOption();
                 option.initialize(options.getJSONObject(i));
                 ratingOptions.add(option);
-//                rating += ratingObject.getInt(JSON_SIZE_STARS_FORE_TAG);
+                rating += option.getRating();
 //                optionTitle = ratingObject.getString(JSON_TYPE_TITLE_TAG);
             }
             rating /= size;
-            rating = rating * 5 / 100;
+            //rating = rating * 5 / 100;
+            
+            Log.i("RATING"," " + rating);
 
         } catch (JSONException e) {
             e.printStackTrace();
