@@ -206,7 +206,13 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 		if ( Darwin.logDebugEnabled) {
 			Log.d(TAG, "get: " + uri.toString());
 		}
-		HttpGet httpRequest = new HttpGet(uri.toString());
+		HttpGet httpRequest = null;
+		try {
+			httpRequest = new HttpGet(uri.toString());	
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
 		return executeHttpRequest(httpRequest, resultReceiver, metaData);
 	}
 

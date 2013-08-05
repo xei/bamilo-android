@@ -29,6 +29,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import android.widget.RelativeLayout;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -123,7 +124,6 @@ public class MainOneSlideFragment extends BaseFragment {
 //        }
         
         mInflater = inflater;
-        Log.i(TAG, "code1 yesees");
         
         return rootView;
     }
@@ -208,7 +208,7 @@ public class MainOneSlideFragment extends BaseFragment {
     
     
     private View createImageTeaserView(TeaserImage teaserImage, ViewGroup vg, LayoutInflater mInflater) {
-        View imageTeaserView = mInflater.inflate(R.layout.image_loadable, vg,
+        View imageTeaserView = mInflater.inflate(R.layout.image_loadable_teaser, vg,
                 false);
         setImageToLoad(teaserImage.getImageUrl(), imageTeaserView);
         attachTeaserListener(teaserImage, imageTeaserView);
@@ -242,6 +242,7 @@ public class MainOneSlideFragment extends BaseFragment {
                         @Override
                         public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
                             progressBar.setVisibility(View.GONE);
+                            imageView.setScaleType(ScaleType.FIT_XY);
                             imageView.setVisibility(View.VISIBLE);
                         }
                     });
