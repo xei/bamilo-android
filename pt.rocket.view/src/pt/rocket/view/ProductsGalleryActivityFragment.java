@@ -106,8 +106,13 @@ public class ProductsGalleryActivityFragment extends BaseActivity {
         /**
          * Send LOADING_PRODUCT to show loading views.
          */
-
-        String url = mCompleteProduct.getVariations().get(position).getLink();
+        String url = "";
+        if(mCompleteProduct.getVariations().size()>position){
+            url = mCompleteProduct.getVariations().get(position).getLink();
+        } else {
+            return;
+        }
+            
         if (TextUtils.isEmpty(url))
             return;
 
