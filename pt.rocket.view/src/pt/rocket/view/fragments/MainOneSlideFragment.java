@@ -208,7 +208,7 @@ public class MainOneSlideFragment extends BaseFragment {
     
     
     private View createImageTeaserView(TeaserImage teaserImage, ViewGroup vg, LayoutInflater mInflater) {
-        View imageTeaserView = mInflater.inflate(R.layout.image_loadable_teaser, vg,
+        View imageTeaserView = mInflater.inflate(R.layout.image_loadable, vg,
                 false);
         setImageToLoad(teaserImage.getImageUrl(), imageTeaserView);
         attachTeaserListener(teaserImage, imageTeaserView);
