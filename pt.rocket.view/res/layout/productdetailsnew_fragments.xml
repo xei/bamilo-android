@@ -136,6 +136,9 @@
                 android:layout_marginLeft="@dimen/margin_small"
                 android:layout_marginRight="0dp"
                 android:layout_weight="1"
+                android:singleLine="true"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit="marquee_forever"
                 android:text="@string/call_to_order"
                 android:visibility="visible" />
 

@@ -289,6 +289,8 @@ public class ProductsListAdapter extends BaseAdapter {
             prodItem.discountPercentage.setVisibility(View.GONE);
             prodItem.price.setPaintFlags(prodItem.price.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
             prodItem.price.setTextAppearance(context.getApplicationContext(), R.style.text_bold);
+            prodItem.price.setTextColor(context.getResources().getColor(
+                    R.color.red_basic));
         }
 
         return itemView;

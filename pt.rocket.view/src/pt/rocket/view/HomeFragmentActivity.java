@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.EnumSet;
 import java.util.Iterator;
 
+import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.framework.event.EventType;
 import pt.rocket.framework.event.RequestEvent;
@@ -38,6 +39,7 @@ import pt.rocket.view.fragments.ProducTeaserListFragment;
 import pt.rocket.view.fragments.StaticBannerFragment;
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Shader;
@@ -102,7 +104,7 @@ public class HomeFragmentActivity extends BaseActivity {
         super(R.layout.search,
                 NavigationAction.Home,
                 EnumSet.noneOf(MyMenuItem.class),
-                EnumSet.of(EventType.GET_TEASERS_EVENT),
+                EnumSet.of(EventType.GET_TEASERS_EVENT, EventType.GET_CALL_TO_ORDER_PHONE),
                 EnumSet.noneOf(EventType.class),
                 0, R.layout.teasers_fragments_viewpager);
     }
@@ -262,6 +264,7 @@ public class HomeFragmentActivity extends BaseActivity {
         if(requestResponse == null && !isFirstBoot){
             Log.i(TAG, "code1restoring onResume triggering...");
             triggerContentEvent(new RequestEvent(EventType.GET_TEASERS_EVENT));
+            triggerContentEvent(new RequestEvent(EventType.GET_CALL_TO_ORDER_PHONE));
         }
         
         AnalyticsGoogle.get().trackPage(R.string.ghomepage);
@@ -301,9 +304,24 @@ public class HomeFragmentActivity extends BaseActivity {
 
     @Override
     protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
-        Log.d(TAG, "Got teasers event: " + event);
-        isFirstBoot = false;
-        proccessResult((Collection<? extends Homepage>) event.result);
+        switch ( event.getType() ) {
+        case GET_TEASERS_EVENT:
+            Log.d(TAG, "Got teasers event: " + event);
+            isFirstBoot = false;
+            proccessResult((Collection<? extends Homepage>) event.result);          
+            break;
+        case GET_CALL_TO_ORDER_PHONE:
+            Log.d(TAG, "Got CALL TO ORDER PHONE event: " + event);
+            
+            SharedPreferences sharedPrefs = this.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPrefs.edit();
+            editor.putString(ProductDetailsActivityFragment.KEY_CALL_TO_ORDER, (String) event.result);
+            editor.commit();
+            
+            break;
+        }
+        
+        
         return true;
     }
 

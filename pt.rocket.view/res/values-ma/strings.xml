@@ -214,4 +214,7 @@
 	<string name="error_no_connection">Pas de connexion</string>
 	<string name="section_title_account">Paramètres du compte</string>
 	<string name="section_title_notification">Paramètres de notification</string>
+    <string name="rating_quality">Qualité</string>
+    <string name="rating_appearance">Apparence</string>
+    <string name="rating_price">Prix</string>
 </resources>

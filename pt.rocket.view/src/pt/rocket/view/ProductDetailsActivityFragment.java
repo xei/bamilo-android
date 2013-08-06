@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import pt.rocket.constants.ConstantsIntentExtra;
+import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.event.EventManager;
@@ -20,6 +21,7 @@ import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.Errors;
 import pt.rocket.framework.objects.ProductSimple;
 import pt.rocket.framework.objects.ShoppingCartItem;
+import pt.rocket.framework.service.services.ConfigurationService;
 import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.CurrencyFormatter;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -39,6 +41,7 @@ import pt.rocket.view.fragments.ProductVariationsFragment;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
@@ -150,7 +153,7 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
     private int mVariationsListPosition = -1;
     
     private String mPhone2Call = "1234567";
-    
+    public static String KEY_CALL_TO_ORDER = "call_to_order";
     
     private final int LOADING_PRODUCT = -1;
     public ProductDetailsActivityFragment() {
@@ -202,6 +205,8 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
         super.onCreate(savedInstanceState);
         setAppContentLayout();
         init(getIntent());
+        SharedPreferences sharedPrefs = this.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        mPhone2Call = sharedPrefs.getString(ProductDetailsActivityFragment.KEY_CALL_TO_ORDER, "12345");;
     }
     
     @Override
@@ -263,6 +268,7 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
         mAddToCartButton = (Button) findViewById(R.id.shop);
         mAddToCartButton.setOnClickListener(this);
         mCallToOrderButton = (Button) findViewById(R.id.call_to_order);
+        mCallToOrderButton.setSelected(true);
         mCallToOrderButton.setOnClickListener(this);
     }
 

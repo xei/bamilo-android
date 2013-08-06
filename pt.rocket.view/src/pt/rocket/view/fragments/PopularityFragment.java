@@ -325,17 +325,22 @@ public class PopularityFragment extends BaseFragment {
             userDate.setText(stringCor[0]);
             textReview.setText(review.getComments());
             
-            priceRating.setRating((float) ratingOptionArray.get(0).getRating());
-            appearenceRating.setRating((float) ratingOptionArray.get(1).getRating());
-            userRating.setRating((float) ratingOptionArray.get(2).getRating());
+            if(ratingOptionArray.size()>0){
+                priceRating.setRating((float) ratingOptionArray.get(0).getRating());
+                priceTitle.setText(ratingOptionArray.get(0).getTitle());
+            }
             
+            if(ratingOptionArray.size()>1){
+                appearenceRating.setRating((float) ratingOptionArray.get(1).getRating());
+                appearenceTitle.setText(ratingOptionArray.get(1).getTitle());
+            }
+            
+            if(ratingOptionArray.size()>2){
+                userRating.setRating((float) ratingOptionArray.get(2).getRating());
+                optionTitle.setText(ratingOptionArray.get(2).getTitle());
+            }
+        
             titleReview.setText(review.getTitle());
-            
-            priceTitle.setText(ratingOptionArray.get(0).getTitle());
-            
-            appearenceTitle.setText(ratingOptionArray.get(1).getTitle());
-            
-            optionTitle.setText(ratingOptionArray.get(2).getTitle());
             
             theInflatedView.setOnClickListener(new OnClickListener() {
 
