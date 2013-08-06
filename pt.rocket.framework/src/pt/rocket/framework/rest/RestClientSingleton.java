@@ -339,6 +339,12 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 		//			httpRequest.addHeader(headerEntry.getKey(), headerEntry.getValue());
 		//		}
 		
+		
+		if(httpRequest == null || httpRequest.getURI() == null || httpRequest.getURI().toString() == null){
+			metaData.putString( IMetaData.URI, "MISSING PARAMETERS FROM API");
+			ResponseReceiver.sendError(resultReceiver, ErrorCode.UNKNOWN_ERROR, metaData);
+			return result;
+		}
 		metaData.putString( IMetaData.URI, httpRequest.getURI().toString());
 		if ( metaData.getBoolean( IMetaData.MD_IGNORE_CACHE)) {
 			Log.d( TAG, "executeHttpRequest: receveid ignore cache flag - bypassing cache" );
