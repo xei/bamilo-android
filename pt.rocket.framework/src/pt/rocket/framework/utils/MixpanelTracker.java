@@ -175,6 +175,9 @@ public class MixpanelTracker {
 		mixpanel.registerSuperProperties(props);
 		Log.d(TAG, "signup super props: " + props.toString() );
 		
+		people = mixpanel.getPeople();
+		people.identify(customer.getIdAsString());
+		
 		if ( null != people ) {			
 			people.set(context.getString(R.string.mixproppeople_created), currentDateandTime);
 			people.set(context.getString(R.string.mixproppeople_preinstall), "" + ctrl.isPreInstalled(context));
