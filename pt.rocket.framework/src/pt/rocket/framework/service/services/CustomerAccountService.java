@@ -41,6 +41,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 
 /**
  * Service that manages the customer account. Responds to REGISTER_ACCOUNT_EVENT
@@ -310,7 +311,13 @@ public class CustomerAccountService extends DarwinService {
 	private void storeCredentials(ContentValues values) {
 		Editor editor = obscuredPreferences.edit();
 		for (Entry<String, ?> entry : values.valueSet()) {
-			editor.putString(entry.getKey(), entry.getValue().toString());
+			if(entry.getKey()!=null && entry.getValue().toString() != null){
+				editor.putString(entry.getKey(), entry.getValue().toString());
+			} else {
+				Log.e(TAG, "MISSING PARAMETERS FROM API!");
+			}
+
+			
 		}
 		editor.commit();
 	}
