@@ -183,7 +183,7 @@ public class HomeFragmentActivity extends BaseActivity {
         field.set(pagerTabStrip, paint);
     }
      
-    private void setLayout(){
+    private void setLayout(int defaultPosition){
         if(mPager == null){
             mPager = (JumiaViewPager) findViewById(R.id.home_viewpager);
         }
@@ -191,7 +191,8 @@ public class HomeFragmentActivity extends BaseActivity {
         if(pagerTabStrip == null){
             pagerTabStrip = (PagerTabStrip) findViewById(R.id.home_titles);
         }
-        
+        mPager.setAdapter(mPagerAdapter);
+        mPager.setCurrentItem(defaultPosition);
         try {
             setLayoutSpec();
         } catch (IllegalArgumentException e) {
@@ -209,17 +210,14 @@ public class HomeFragmentActivity extends BaseActivity {
     private void restoreLayout(){
 
         if(requestResponse != null){
-            setLayout();
             int defaultPosition = Math.abs(requestResponse.size()/2);
+            
+            
             if(mPagerAdapter== null){
                 mPagerAdapter = new HomeCollectionPagerAdapter(getSupportFragmentManager());
-                
-                mPager.setAdapter(mPagerAdapter);
-                mPager.setCurrentItem(defaultPosition);
-            } else {
-                mPager.setAdapter(mPagerAdapter);
-                mPager.setCurrentItem(defaultPosition);
             }   
+            
+            setLayout(defaultPosition);
         } else {
             triggerContentEvent(new RequestEvent(EventType.GET_TEASERS_EVENT));
         }
@@ -242,12 +240,10 @@ public class HomeFragmentActivity extends BaseActivity {
 
         if(requestResponse != null){
             
-            if(mPagerAdapter== null){
+            if(mPagerAdapter == null){
                 mPagerAdapter = new HomeCollectionPagerAdapter(getSupportFragmentManager());
-                setLayout();
-                mPager.setAdapter(mPagerAdapter);
-                mPager.setCurrentItem(defaultPosition);
             }    
+            setLayout(defaultPosition);
         } else {
             triggerContentEvent(new RequestEvent(EventType.GET_TEASERS_EVENT));
         }
@@ -434,8 +430,11 @@ public class HomeFragmentActivity extends BaseActivity {
             LinearLayout view = (LinearLayout) rootView.findViewById(R.id.view_pager_element_frame);
             
             Log.i(TAG, "teaserType : position is : "+args.getInt(ARG_OBJECT));
-            
-            processResult(requestResponse.get(args.getInt(ARG_OBJECT)), view);
+            if(requestResponse != null){
+                processResult(requestResponse.get(args.getInt(ARG_OBJECT)), view);
+            } else {
+                ActivitiesWorkFlow.splashActivityNewTask(getActivity());
+            }
             // ((TextView)
             // rootView.findViewById(R.id.view_pager_element_frame)).setText(pagesTitles.get(0));
             return rootView;
