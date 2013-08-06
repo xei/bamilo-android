@@ -206,11 +206,13 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 		if ( Darwin.logDebugEnabled) {
 			Log.d(TAG, "get: " + uri.toString());
 		}
+		
+		
 		HttpGet httpRequest = null;
 		try {
-			httpRequest = new HttpGet(uri.toString());	
+			httpRequest = new HttpGet(uri.toString().replaceAll(" ", "%20"));	
 		} catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
 		
 		return executeHttpRequest(httpRequest, resultReceiver, metaData);
@@ -345,8 +347,9 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 			ResponseReceiver.sendError(resultReceiver, ErrorCode.UNKNOWN_ERROR, metaData);
 			return result;
 		}
-		metaData.putString( IMetaData.URI, httpRequest.getURI().toString());
-		if ( metaData.getBoolean( IMetaData.MD_IGNORE_CACHE)) {
+		
+		metaData.putString( IMetaData.URI, httpRequest.getURI().toString() );
+		if ( metaData.getBoolean( IMetaData.MD_IGNORE_CACHE) ) {
 			Log.d( TAG, "executeHttpRequest: receveid ignore cache flag - bypassing cache" );
 			String value = HeaderConstants.CACHE_CONTROL_MAX_AGE + "=0; " + HeaderConstants.CACHE_CONTROL_MUST_REVALIDATE;
 			httpRequest.addHeader(HeaderConstants.CACHE_CONTROL, value);
