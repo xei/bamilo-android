@@ -17,6 +17,7 @@
         android:hint="@string/action_label_search_hint"
         android:inputType="text"
         android:paddingLeft="8dp"
+        android:contentDescription="@string/search_input_description"
         android:singleLine="true"
         android:imeOptions="actionSearch"
         android:textColor="@color/grey_middle"
@@ -35,6 +36,7 @@
         android:id="@+id/search_overlay"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:contentDescription="@string/search_field_description"
         android:layout_alignBottom="@id/search_component"
         android:layout_alignTop="@id/search_component"
         android:layout_gravity="fill_vertical" >

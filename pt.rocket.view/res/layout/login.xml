@@ -47,6 +47,7 @@
 
                 <org.holoeverywhere.widget.Button
                     android:id="@+id/middle_login_button_signin"
+                    android:contentDescription="@string/login_button_description"
                     style="@style/button_orange_style"
                     android:text="@string/login_label" />
             </RelativeLayout>
@@ -73,6 +74,7 @@
             <org.holoeverywhere.widget.Button
                 android:id="@+id/middle_login_link_register"
                 style="@style/button_grey_style"
+                 android:contentDescription="@string/register_button_description"
                 android:layout_marginTop="@dimen/distance_item_mid"
                 android:text="@string/register_button" />
         </LinearLayout>

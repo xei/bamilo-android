@@ -62,6 +62,7 @@
             <org.holoeverywhere.widget.Button
                 android:id="@+id/button1"
                 style="@style/dialog_button_style"
+                android:contentDescription="@string/productdetail_gotocart_description"
                 android:text="@string/cancel_label" />
 
             <View

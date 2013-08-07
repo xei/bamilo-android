@@ -142,6 +142,7 @@
                 android:layout_width="0dp"
                 android:layout_marginLeft="0dp"
                 android:layout_marginRight="@dimen/margin_small"
+                android:contentDescription="@string/myaccount_save_description"
                 android:layout_weight="1"
                 android:text="@string/save_label" />
 

@@ -111,6 +111,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_mid"
                 android:hint="@string/new_password_hint"
+                android:contentDescription="@string/myaccount_newpass_description"
                 android:inputType="textPassword" />
 
             <org.holoeverywhere.widget.EditText
@@ -118,6 +119,7 @@
                 style="@style/form_edittext_style"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:contentDescription="@string/myaccount_repeatpass_description"
                 android:layout_marginBottom="@dimen/margin_mid"
                 android:hint="@string/retype_new_password_hint"
                 android:inputType="textPassword" />

@@ -260,6 +260,8 @@ public class DynamicFormItem {
             String text = null == value ? "" : (String) value;
             ((EditText) this.dataControl).setText(text);
             this.errorControl.setVisibility(View.GONE);
+            android.util.Log.e("###########Name",":"+this.entry.getId());
+            ((View) this.dataControl).setContentDescription(this.entry.getId());
 
             if (text.length() == 0) {
                 this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE : View.GONE);
@@ -667,7 +669,8 @@ public class DynamicFormItem {
                 params.addRule(RelativeLayout.CENTER_VERTICAL);
                 params.setMargins((int)(3 * this.scale), 0, 0, 0);
                 this.dataControl.setLayoutParams(params);
-                
+                android.util.Log.e("###########KEY",":"+this.entry.getKey());
+                ((View) this.dataControl).setContentDescription(this.entry.getKey());
                 ((CheckBox) this.dataControl).setButtonDrawable(R.drawable.selector_checkbox);
                 ((CheckBox) this.dataControl).setFocusable(false);
                 ((CheckBox) this.dataControl).setFocusableInTouchMode(false);
@@ -701,7 +704,6 @@ public class DynamicFormItem {
                 break;
             case radioGroup:
                 this.control.setLayoutParams(params);
-                
                 // data controls
                 params = new RelativeLayout.LayoutParams( controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
                 dataContainer = new RelativeLayout(this.context);
@@ -724,12 +726,14 @@ public class DynamicFormItem {
                 dataContainer = new RelativeLayout(this.context);
                 dataContainer.setId(parent.getNextId());
                 dataContainer.setLayoutParams(params);
-            	
+
                 params = new RelativeLayout.LayoutParams( controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
                 this.dataControl = View.inflate(this.context, R.layout.form_button, null);
                 this.dataControl.setId( parent.getNextId() );
                 this.dataControl.setLayoutParams(params);
                 
+                android.util.Log.e("###########KEY",":"+this.entry.getKey());
+                ((View) this.dataControl).setContentDescription(this.entry.getKey());
                 
                 params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
                 params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
@@ -810,7 +814,8 @@ public class DynamicFormItem {
                 ((ViewGroup) this.control).addView(this.errorControl);
                 
                 final CharSequence editText = ((EditText) this.dataControl).getHint();             
-                
+                android.util.Log.e("###########Name",":"+this.entry.getKey());
+                ((View) this.dataControl).setContentDescription(this.entry.getKey());
                 // Listeners
                 this.dataControl.setOnFocusChangeListener(new OnFocusChangeListener() {
  

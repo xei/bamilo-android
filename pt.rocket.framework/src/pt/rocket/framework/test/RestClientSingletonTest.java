@@ -224,41 +224,34 @@ public class RestClientSingletonTest {
         // httpClient = new DefaultHttpClient(getHttpParams());
         // setAuthentication(httpClient);
 
-  	  HttpParams httpParams = null;
-  	  String paramString="?";
-      List<NameValuePair> params = new ArrayList<NameValuePair>();
-      int count=0;
-      for (Entry<String, Object> entry : contentValues.valueSet()) {
-      	Log.e("PARAMS", "KEY:"+entry.getKey()+" VALUE:"+ (String) entry.getValue());
-//      	httpParams.setParameter(entry.getKey(), (String) entry.getValue());
-          count++;
-      	paramString= paramString +entry.getKey()+"="+(String) entry.getValue();
-      	if(count<contentValues.size()){
-      		paramString=paramString+"&";
-      	}
-          params.add(new BasicNameValuePair(entry.getKey(), (String) entry.getValue()));
-          
-
-      }
         
-        HttpPost httpRequest = new HttpPost(urlString.concat(paramString));
+        HttpPost httpRequest = new HttpPost(urlString);
 
         Log.e("URL STIRNG", ":"+urlString);
+//
+//    	  HttpParams httpParams = null;
+//    	  String paramString="?";
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        int count=0;
+        for (Entry<String, Object> entry : contentValues.valueSet()) {
+        	Log.e("PARAMS", "KEY:"+entry.getKey()+" VALUE:"+ (String) entry.getValue());
+//        	httpParams.setParameter(entry.getKey(), (String) entry.getValue());
+//            count++;
+//        	paramString= paramString +entry.getKey()+"="+(String) entry.getValue();
+//        	if(count<contentValues.size()){
+//        		paramString=paramString+"&";
+//        	}
+        	
+            params.add(new BasicNameValuePair(entry.getKey(), (String) entry.getValue()));
+            
 
-        
-        
-        
-        
-        
-        
-        
+        }
 
         try {
         	 Log.e("EXE", "TRY");
             httpRequest.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8 ));
       
 
-//        	 httpRequest.setParams();
         } catch (UnsupportedEncodingException e) {
         	Log.e("EXE", "CATCH");
         	e.printStackTrace();
