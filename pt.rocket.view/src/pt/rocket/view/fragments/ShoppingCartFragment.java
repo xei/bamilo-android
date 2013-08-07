@@ -344,7 +344,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
                 values.quantity = item.getQuantity();
                 values.image = item.getImageUrl();
                 values.price_disc = item.getSpecialPrice();
-                values.discount_value = item.getSavingPercentage();
+                values.discount_value = (double) Math.round(item.getSavingPercentage());
                 values.stock = item.getStock();
                 values.min_delivery_time = 0;
                 values.max_delivery_time = 99;
