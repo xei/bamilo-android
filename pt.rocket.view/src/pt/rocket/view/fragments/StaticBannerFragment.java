@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
@@ -35,14 +36,14 @@ import de.akquinet.android.androlog.Log;
  */
 public class StaticBannerFragment extends BaseFragment {
 
-    private static final String TAG = LogTagHelper.create( StaticBannerFragment.class );
+    private static final String TAG = LogTagHelper.create(StaticBannerFragment.class);
 
     private static final int MAX_IMAGES_ON_SCREEN = 2;
-    
+
     private HomeFragmentActivity parentActivity;
-    
+
     private static ArrayList<TeaserImage> teaserImageArrayList;
-    
+
     private OnClickListener onTeaserClickListener;
 
     /**
@@ -50,29 +51,30 @@ public class StaticBannerFragment extends BaseFragment {
      * @param dynamicForm
      * @return
      */
-	public static StaticBannerFragment getInstance() {
+    public static StaticBannerFragment getInstance() {
         StaticBannerFragment staticBannerFragment = new StaticBannerFragment();
         return staticBannerFragment;
     }
-    
+
     /**
      * Empty constructor
-     * @param arrayList 
+     * 
+     * @param arrayList
      */
     public StaticBannerFragment() {
         super(EnumSet.noneOf(EventType.class), EnumSet.noneOf(EventType.class));
     }
-    
+
     @Override
-    public void sendValuesToFragment(int identifier, Object values){
+    public void sendValuesToFragment(int identifier, Object values) {
         this.teaserImageArrayList = (ArrayList<TeaserImage>) values;
     }
-    
+
     @Override
-    public void sendListener(int identifier, OnClickListener onTeaserClickListener){
+    public void sendListener(int identifier, OnClickListener onTeaserClickListener) {
         this.onTeaserClickListener = onTeaserClickListener;
     }
-    
+
     /*
      * (non-Javadoc)
      * 
@@ -83,7 +85,7 @@ public class StaticBannerFragment extends BaseFragment {
         super.onAttach(activity);
         Log.i(TAG, "ON ATTACH");
         parentActivity = (HomeFragmentActivity) activity;
-       
+
     }
 
     /*
@@ -104,27 +106,28 @@ public class StaticBannerFragment extends BaseFragment {
      * android.view.ViewGroup, android.os.Bundle)
      */
     @Override
-    public View onCreateView(LayoutInflater mInflater, ViewGroup viewGroup, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater mInflater, ViewGroup viewGroup,
+            Bundle savedInstanceState) {
         super.onCreateView(mInflater, viewGroup, savedInstanceState);
         Log.i(TAG, "ON CREATE VIEW");
-        
+
         View view = mInflater.inflate(R.layout.teaser_banners_group, viewGroup, false);
-        
+
         ViewGroup container = (ViewGroup) view
                 .findViewById(R.id.teaser_group_container);
-     
+
         int maxItems = MAX_IMAGES_ON_SCREEN;
-        if ( teaserImageArrayList.size() < MAX_IMAGES_ON_SCREEN) {
+        if (teaserImageArrayList.size() < MAX_IMAGES_ON_SCREEN) {
             maxItems = teaserImageArrayList.size();
         }
-        
+
         int i;
-        for( i = 0; i < maxItems; i++ ) {
+        for (i = 0; i < maxItems; i++) {
             TeaserImage image = teaserImageArrayList.get(i);
             if (i > 0)
                 mInflater.inflate(R.layout.vertical_divider, container);
             container.addView(createImageTeaserView(image, container, mInflater));
-        }        
+        }
         return view;
     }
 
@@ -137,7 +140,7 @@ public class StaticBannerFragment extends BaseFragment {
     public void onStart() {
         super.onStart();
         Log.i(TAG, "ON START");
-//        FlurryTracker.get().begin();
+        // FlurryTracker.get().begin();
     }
 
     /*
@@ -150,7 +153,7 @@ public class StaticBannerFragment extends BaseFragment {
         super.onResume();
         Log.i(TAG, "ON RESUME");
         //
-//        AnalyticsGoogle.get().trackPage(R.string.gteaser_prefix);
+        // AnalyticsGoogle.get().trackPage(R.string.gteaser_prefix);
         //
     }
 
@@ -174,35 +177,35 @@ public class StaticBannerFragment extends BaseFragment {
     public void onStop() {
         super.onStop();
         Log.i(TAG, "ON STOP");
-//        FlurryTracker.get().end();
+        // FlurryTracker.get().end();
     }
 
     @Override
     protected boolean onSuccessEvent(final ResponseResultEvent<?> event) {
         return true;
     }
-        
+
     @Override
     protected boolean onErrorEvent(ResponseEvent event) {
         return false;
     }
-    
-    
-    private View createImageTeaserView(TeaserImage teaserImage, ViewGroup vg, LayoutInflater mInflater) {
+
+    private View createImageTeaserView(TeaserImage teaserImage, ViewGroup vg,
+            LayoutInflater mInflater) {
         View imageTeaserView = mInflater.inflate(R.layout.image_loadable, vg,
                 false);
         setImageToLoad(teaserImage.getImageUrl(), imageTeaserView);
         attachTeaserListener(teaserImage, imageTeaserView);
         return imageTeaserView;
     }
-    
+
     private void attachTeaserListener(ITargeting targeting, View view) {
         view.setTag(R.id.target_url, targeting.getTargetUrl());
         view.setTag(R.id.target_type, targeting.getTargetType());
         view.setTag(R.id.target_title, targeting.getTargetTitle());
         view.setOnClickListener(onTeaserClickListener);
     }
-    
+
     private void setImageToLoad(String imageUrl, View imageTeaserView) {
         final ImageView imageView = (ImageView) imageTeaserView
                 .findViewById(R.id.image_view);
@@ -223,8 +226,17 @@ public class StaticBannerFragment extends BaseFragment {
                         @Override
                         public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
                             progressBar.setVisibility(View.GONE);
+                            imageView.setScaleType(ScaleType.FIT_XY);
                             imageView.setVisibility(View.VISIBLE);
                         }
+
+                        @Override
+                        public void onLoadingStarted(String imageUri, View view) {
+                            // TODO Auto-generated method stub
+                            super.onLoadingStarted(imageUri, view);
+                            imageView.setScaleType(ScaleType.FIT_CENTER);
+                        }
+
                     });
         }
 

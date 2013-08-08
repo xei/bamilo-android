@@ -245,6 +245,13 @@ public class MainOneSlideFragment extends BaseFragment {
                             imageView.setScaleType(ScaleType.FIT_XY);
                             imageView.setVisibility(View.VISIBLE);
                         }
+                        
+                        @Override
+                        public void onLoadingStarted(String imageUri, View view) {
+                            // TODO Auto-generated method stub
+                            super.onLoadingStarted(imageUri, view);
+                            imageView.setScaleType(ScaleType.FIT_CENTER);
+                        }
                     });
         }
 
