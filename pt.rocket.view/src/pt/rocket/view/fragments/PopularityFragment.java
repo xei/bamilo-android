@@ -333,11 +333,17 @@ public class PopularityFragment extends BaseFragment {
             if(ratingOptionArray.size()>1){
                 appearenceRating.setRating((float) ratingOptionArray.get(1).getRating());
                 appearenceTitle.setText(ratingOptionArray.get(1).getTitle());
+            } else {
+            	appearenceRating.setVisibility(View.GONE);
+            	appearenceTitle.setVisibility(View.GONE);
             }
             
             if(ratingOptionArray.size()>2){
                 userRating.setRating((float) ratingOptionArray.get(2).getRating());
                 optionTitle.setText(ratingOptionArray.get(2).getTitle());
+            } else {
+            	userRating.setVisibility(View.GONE);
+            	optionTitle.setVisibility(View.GONE);
             }
         
             titleReview.setText(review.getTitle());

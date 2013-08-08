@@ -306,6 +306,9 @@ public class RocketNavigationListGenerator implements ResponseListener {
                         R.id.component_text);
         if (loginout != null) {
             loginout.setText(loggedIn ? R.string.sign_out : R.string.sign_in);
+//            if(loggedIn){
+//                EventManager.getSingleton().triggerRequestEvent( new RequestEvent(EventType.GET_SHOPPING_CART_ITEMS_EVENT));
+//            }
         }
     }
 

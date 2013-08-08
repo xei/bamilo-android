@@ -5,6 +5,7 @@ package pt.rocket.view.fragments;
 
 import java.util.EnumSet;
 
+import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.framework.event.EventType;
 import pt.rocket.framework.event.ResponseEvent;
 import pt.rocket.framework.event.ResponseResultEvent;
@@ -118,10 +119,13 @@ public class BrandsTeaserListFragment extends BaseFragment {
 
         ViewGroup container = (ViewGroup) view
                 .findViewById(R.id.teaser_group_container);
-        for (TeaserBrand brand : brandsTeaserGroup.getTeasers()) {
-            Log.i(TAG, "codebrand  : "+brand.getName() + " url: "+brand.getImageUrl()+ " target url: "+brand.getTargetUrl());
-            container.addView(createBrandTeaserView(brand, container, mInflater));
+        if(brandsTeaserGroup!=null){
+            for (TeaserBrand brand : brandsTeaserGroup.getTeasers()) {
+                Log.i(TAG, "codebrand  : "+brand.getName() + " url: "+brand.getImageUrl()+ " target url: "+brand.getTargetUrl());
+                container.addView(createBrandTeaserView(brand, container, mInflater));
+            }    
         }
+        
         return view;
     }
 
@@ -134,7 +138,6 @@ public class BrandsTeaserListFragment extends BaseFragment {
     public void onStart() {
         super.onStart();
         Log.i(TAG, "ON START");
-//        FlurryTracker.get().begin();
     }
 
     /*

@@ -1,17 +1,18 @@
 package pt.rocket.view.fragments;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Map.Entry;
 
 import pt.rocket.framework.event.EventManager;
 import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.event.RequestEvent;
 import pt.rocket.framework.event.ResponseEvent;
 import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.event.events.LogInEvent;
 import pt.rocket.framework.event.events.ReviewProductEvent;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.Customer;
-import pt.rocket.framework.objects.Errors;
 import pt.rocket.framework.objects.ProductReviewCommentCreated;
 import pt.rocket.framework.service.ServiceManager;
 import pt.rocket.framework.service.services.ProductService;
@@ -20,6 +21,7 @@ import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.view.R;
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -29,6 +31,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import de.akquinet.android.androlog.Log;
@@ -51,22 +54,16 @@ public class WriteReviewFragment extends BaseFragment {
 
     private TextView productNormalPrice;
 
-    private TextView userRatingText;
-
-    private TextView appearenceRatingText;
-
-    private TextView priceText;
+    private LinearLayout labelsContainer;
+    
+    private LinearLayout ratingBarContainer;
 
     private EditText titleText;
     
     private EditText nameText;
 
-    private RatingBar qualityRating;
-
-    private RatingBar appearenceRating;
-
-    private RatingBar priceRating;
-
+    private HashMap<String, Double> ratings;
+    
     private EditText reviewText;
 
     private ProductReviewCommentCreated productReviewCreated;
@@ -76,6 +73,8 @@ public class WriteReviewFragment extends BaseFragment {
     private Customer customerCred;
 
     private String userName="user";
+    
+    private HashMap<String, HashMap<String, String>> ratingOptions;
     /**
      * Get instance
      * 
@@ -117,7 +116,6 @@ public class WriteReviewFragment extends BaseFragment {
         Log.i(TAG, "ON CREATE");
         completeProduct = ServiceManager.SERVICES.get(ProductService.class).getCurrentProduct();
         EventManager.getSingleton().triggerRequestEvent(LogInEvent.TRY_AUTO_LOGIN);
-        triggerContentEvent(EventType.GET_RATING_OPTIONS_EVENT);
         triggerContentEvent(EventType.GET_CUSTOMER);
     }
 
@@ -132,6 +130,11 @@ public class WriteReviewFragment extends BaseFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         Log.i(TAG, "ON CREATE VIEW");
         View view = inflater.inflate(R.layout.writereview, container, false);
+        
+        
+        labelsContainer = (LinearLayout) view.findViewById(R.id.label_container);
+        
+        ratingBarContainer = (LinearLayout) view.findViewById(R.id.ratingbar_container);
         return view;
     }
 
@@ -144,7 +147,7 @@ public class WriteReviewFragment extends BaseFragment {
     public void onStart() {
         super.onStart();
         Log.i(TAG, "ON START");
-        setAppContentLayout();
+        triggerContentEvent(EventType.GET_RATING_OPTIONS_EVENT);
     }
 
     /*
@@ -194,19 +197,23 @@ public class WriteReviewFragment extends BaseFragment {
     /**
      * Set the Products layout using inflate
      */
-    private void setAppContentLayout() {
+    private void setLayout() {
+
+        LayoutInflater mInflater = (LayoutInflater) getActivity()
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        
+        for (Entry<String, HashMap<String, String>> option : ratingOptions.entrySet()) {
+            View viewRating = mInflater.inflate(R.layout.rating_bar_component, null, false);
+            View viewLabel = mInflater.inflate(R.layout.label_rating_component, null, false);
+            viewRating.setTag(option.getKey());
+            viewLabel.setTag(option.getKey());
+            ((TextView) viewLabel).setText(option.getKey());
+            ratingBarContainer.addView(viewRating);
+            labelsContainer.addView(viewLabel);
+        }
         productName = (TextView) getView().findViewById(R.id.product_name);
         productResultPrice = (TextView) getView().findViewById(R.id.product_price_result);
         productNormalPrice = (TextView) getView().findViewById(R.id.product_price_normal);
-
-        userRatingText = (TextView) getView().findViewById(R.id.quality_rating_text);
-        qualityRating = (RatingBar) getView().findViewById(R.id.quality_rating);
-
-        appearenceRatingText = (TextView) getView().findViewById(R.id.appearence_rating_text);
-        appearenceRating = (RatingBar) getView().findViewById(R.id.appearence_rating);
-
-        priceText = (TextView) getView().findViewById(R.id.price_rating_text);
-        priceRating = (RatingBar) getView().findViewById(R.id.price_rating);
 
         titleText = (EditText) getView().findViewById(R.id.title_box);
         nameText = (EditText) getView().findViewById(R.id.name_box);
@@ -252,25 +259,18 @@ public class WriteReviewFragment extends BaseFragment {
     }
 
     private boolean checkReview() {
+        ratings = new HashMap<String, Double>();
         boolean result = checkEmpty(getResources().getColor(R.color.red_basic), titleText,nameText, reviewText);
-        if (qualityRating.getRating() == 0) {
-            userRatingText.setTextColor(getResources().getColor(R.color.red_basic));
-            result = false;
-        } else {
-            userRatingText.setTextColor(getResources().getColor(R.color.grey_middle));
+        for (int i = 0; i < labelsContainer.getChildCount(); i++) {
+            if( ((RatingBar) ratingBarContainer.getChildAt(i)).getRating() == 0){
+                ((TextView) labelsContainer.getChildAt(i)).setTextColor(getResources().getColor(R.color.red_basic));
+                result = false;
+            } else {
+                ratings.put((String) ratingBarContainer.getChildAt(i).getTag(), (double) ((RatingBar) ratingBarContainer.getChildAt(i)).getRating());
+                ((TextView) labelsContainer.getChildAt(i)).setTextColor(getResources().getColor(R.color.grey_middle));
+            }
         }
-        if (appearenceRating.getRating() == 0) {
-            appearenceRatingText.setTextColor(getResources().getColor(R.color.red_basic));
-            result = false;
-        } else {
-            appearenceRatingText.setTextColor(getResources().getColor(R.color.grey_middle));
-        }
-        if (priceRating.getRating() == 0) {
-            priceText.setTextColor(getResources().getColor(R.color.red_basic));
-            result = false;
-        } else {
-            priceText.setTextColor(getResources().getColor(R.color.grey_middle));
-        }
+
         return result;
     }
 
@@ -290,10 +290,7 @@ public class WriteReviewFragment extends BaseFragment {
         productReviewCreated.setName(nameText.getText().toString());
         productReviewCreated.setTitle(titleText.getText().toString());
         productReviewCreated.setComments(reviewText.getText().toString());
-        productReviewCreated.setRating(qualityRating.getRating());
-        productReviewCreated.setAppearenceRating(appearenceRating.getRating());
-        Log.i("RATING TO SEND"," = Q "+qualityRating.getRating()+" A "+appearenceRating.getRating()+" P "+priceRating.getRating());
-        productReviewCreated.setPriceRating(priceRating.getRating());
+        productReviewCreated.setRating(ratings);
         if (customerCred != null) {
             Log.i("SENDING CUSTOMER ID", " HERE " + customerCred.getId());
             triggerContentEvent(new ReviewProductEvent(completeProduct.getSku(),
@@ -304,7 +301,7 @@ public class WriteReviewFragment extends BaseFragment {
                     productReviewCreated));
         }
         
-        TrackerDelegator.trackItemReview(getActivity().getApplicationContext(), completeProduct, productReviewCreated, priceRating.getRating(), appearenceRating.getRating(), qualityRating.getRating());
+        TrackerDelegator.trackItemReview(getActivity().getApplicationContext(), completeProduct, productReviewCreated, ratings);
 
     }
 
@@ -340,7 +337,8 @@ public class WriteReviewFragment extends BaseFragment {
             dialog_review_submitted.show(getActivity().getSupportFragmentManager(), null);
             return false;
         case GET_RATING_OPTIONS_EVENT:
-            // TODO show rating options dependent on server answer
+            ratingOptions = (HashMap<String, HashMap<String, String>>) event.result;
+            setLayout();
             return true;
             // case GET_CUSTOMER:
         case LOGIN_EVENT:

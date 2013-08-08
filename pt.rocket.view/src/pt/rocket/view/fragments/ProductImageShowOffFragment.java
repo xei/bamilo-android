@@ -222,6 +222,9 @@ public class ProductImageShowOffFragment extends BaseFragment implements OnClick
     }
     
     private void setContentInformation() {
+        if(mCompleteProduct == null){
+            getActivity().finish();
+        }
         // displayVariations();
         loadProductImage(CURRENT_IMAGE_INDEX);
         setPercentageValue();

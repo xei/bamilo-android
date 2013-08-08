@@ -83,78 +83,19 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_huge"
                     android:orientation="vertical" >
-
-                    <org.holoeverywhere.widget.TextView
-                        android:id="@+id/quality_rating_text"
-                        android:layout_marginTop="@dimen/margin_midhuge"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="@string/rating_quality"
-                        android:textColor="@color/grey_middle"
-                        android:textSize="@dimen/text_mid" />
-
-                    <org.holoeverywhere.widget.TextView
-                        android:id="@+id/appearence_rating_text"
-                        android:layout_marginTop="@dimen/margin_midhuge"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="@string/rating_appearance"
-                        android:textColor="@color/grey_middle"
-                        android:textSize="@dimen/text_mid" />
-
-                    <org.holoeverywhere.widget.TextView
-                        android:id="@+id/price_rating_text"
-                        android:layout_width="wrap_content"
-                        android:layout_marginTop="@dimen/margin_midhuge"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="@string/rating_price"
-                        android:textColor="@color/grey_middle"
-                        android:textSize="@dimen/text_mid" />
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/ratingbar_container"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="30dp"
                     android:layout_marginTop="@dimen/margin_huge"
                     android:layout_toRightOf="@id/label_container"
                     android:orientation="vertical" >
-
-                    <RatingBar
-                        android:id="@+id/quality_rating"
-                        style="@style/starRatingBarVeryBig"
-                        android:layout_marginTop="@dimen/margin_midhuge"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:stepSize="1.0"
-                         />
-
-                    <RatingBar
-                        android:id="@+id/appearence_rating"
-                        android:layout_marginTop="@dimen/margin_midhuge"
-                        style="@style/starRatingBarVeryBig"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:stepSize="1.0"
-                         />
-
-                    <RatingBar
-                        android:id="@+id/price_rating"
-                        android:layout_marginTop="@dimen/margin_midhuge"
-                        style="@style/starRatingBarVeryBig"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:stepSize="1.0"
-                         />
                 </LinearLayout>
             </RelativeLayout>
-            
+
             <org.holoeverywhere.widget.EditText
                 android:id="@+id/name_box"
                 android:layout_width="match_parent"

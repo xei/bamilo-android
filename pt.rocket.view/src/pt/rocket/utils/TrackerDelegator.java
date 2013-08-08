@@ -1,5 +1,6 @@
 package pt.rocket.utils;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.json.JSONException;
@@ -111,8 +112,8 @@ public class TrackerDelegator {
         MixpanelTracker.listCategory(context, category, page);
     }
 
-    public final static void trackItemReview(Context context, CompleteProduct product, ProductReviewCommentCreated review, float ratePrice, float rateApperance, float rateQuality) {
-        MixpanelTracker.rate(context, product, review, ratePrice, rateApperance, rateQuality);
+    public final static void trackItemReview(Context context, CompleteProduct product, ProductReviewCommentCreated review, HashMap<String, Double> ratings) {
+        MixpanelTracker.rate(context, product, review, ratings);
     }
 
     public final static void trackViewReview(Context context, CompleteProduct product, float rate) {
