@@ -152,16 +152,28 @@ public class HomeTeaserFragment extends BaseFragment {
         View view;
         view = inflater.inflate(R.layout.teasers_fragments_element, container, false);
         mainView = (LinearLayout) view.findViewById(R.id.teasers_container);
-        processResult(this.fragmentContent);
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(TAG, "code1 : onResume");
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        
+        new Thread(new Runnable() {
+            
+            @Override
+            public void run() {
+                processResult(fragmentContent);
+            }
+        }).run();
+        
+    }
+    
     private void processResult(Collection<? extends TeaserSpecification<?>> result) {
 
         Log.i(TAG, "teaserType processResult "+result.size());

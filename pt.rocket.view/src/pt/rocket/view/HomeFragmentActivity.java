@@ -26,11 +26,11 @@ import pt.rocket.framework.utils.MixpanelTracker;
 import pt.rocket.utils.BaseActivity;
 import pt.rocket.utils.CheckVersion;
 import pt.rocket.utils.HockeyStartup;
-import pt.rocket.utils.JumiaFlingDetector;
 import pt.rocket.utils.JumiaViewPager;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.OnActivityFragmentInteraction;
+import pt.rocket.utils.ViewPagerHomeActivityInteraction;
 import pt.rocket.view.fragments.BrandsTeaserListFragment;
 import pt.rocket.view.fragments.CategoryTeaserFragment;
 import pt.rocket.view.fragments.FragmentType;
@@ -49,6 +49,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerTabStrip;
+import android.text.method.MovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -57,13 +59,12 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import de.akquinet.android.androlog.Log;
 
 /**
  * @author manuelsilva
  * 
  */
-public class HomeFragmentActivity extends BaseActivity {
+public class HomeFragmentActivity extends BaseActivity implements ViewPagerHomeActivityInteraction {
     private final static String TAG = HomeFragmentActivity.class.getSimpleName();
 
     private LayoutInflater mInflater;
@@ -97,6 +98,8 @@ public class HomeFragmentActivity extends BaseActivity {
     Activity activity;
     
     private boolean isFirstBoot = true;
+    
+    private int defaultPosition;
 
     /**
 	 */
@@ -186,10 +189,12 @@ public class HomeFragmentActivity extends BaseActivity {
     private void setLayout(int defaultPosition){
         if(mPager == null){
             mPager = (JumiaViewPager) findViewById(R.id.home_viewpager);
+            mPager.setVisibility(View.INVISIBLE);
         }
         
         if(pagerTabStrip == null){
             pagerTabStrip = (PagerTabStrip) findViewById(R.id.home_titles);
+            pagerTabStrip.setVisibility(View.INVISIBLE);
         }
         mPager.setAdapter(mPagerAdapter);
         mPager.setCurrentItem(defaultPosition);
@@ -210,7 +215,7 @@ public class HomeFragmentActivity extends BaseActivity {
     private void restoreLayout(){
 
         if(requestResponse != null){
-            int defaultPosition = Math.abs(requestResponse.size()/2);
+            defaultPosition = Math.abs(requestResponse.size()/2);
             
             
             if(mPagerAdapter== null){
@@ -226,7 +231,7 @@ public class HomeFragmentActivity extends BaseActivity {
     private void proccessResult(Collection<? extends Homepage> result) {
         requestResponse = new ArrayList<Collection<? extends TeaserSpecification<?>>>();
         pagesTitles = new ArrayList<String>();
-        int defaultPosition = Math.abs(result.size()/2);
+        defaultPosition = Math.abs(result.size()/2);
         
         int count = 0;
         for (Homepage homepage : result) {  
@@ -239,7 +244,6 @@ public class HomeFragmentActivity extends BaseActivity {
         }
 
         if(requestResponse != null){
-            
             if(mPagerAdapter == null){
                 mPagerAdapter = new HomeCollectionPagerAdapter(getSupportFragmentManager());
             }    
@@ -258,7 +262,6 @@ public class HomeFragmentActivity extends BaseActivity {
         }
         
         if(requestResponse == null && !isFirstBoot){
-            Log.i(TAG, "code1restoring onResume triggering...");
             triggerContentEvent(new RequestEvent(EventType.GET_TEASERS_EVENT));
             triggerContentEvent(new RequestEvent(EventType.GET_CALL_TO_ORDER_PHONE));
         }
@@ -302,12 +305,11 @@ public class HomeFragmentActivity extends BaseActivity {
     protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
         switch ( event.getType() ) {
         case GET_TEASERS_EVENT:
-            Log.d(TAG, "Got teasers event: " + event);
+
             isFirstBoot = false;
             proccessResult((Collection<? extends Homepage>) event.result);          
             break;
         case GET_CALL_TO_ORDER_PHONE:
-            Log.d(TAG, "Got CALL TO ORDER PHONE event: " + event);
             
             SharedPreferences sharedPrefs = this.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPrefs.edit();
@@ -336,7 +338,6 @@ public class HomeFragmentActivity extends BaseActivity {
             Bundle args = new Bundle();
             args.putInt(HomeObjectFragment.ARG_OBJECT, position);
             fragment.setArguments(args);
-            
             return fragment;
         } 
 
@@ -364,7 +365,9 @@ public class HomeFragmentActivity extends BaseActivity {
         private OnActivityFragmentInteraction mCallback;
 
         private LayoutInflater mInflater;
-
+        
+        private ViewPagerHomeActivityInteraction mCallbackShowViewPager;
+        
         private OnClickListener teaserClickListener = new OnClickListener() {
 
             @Override
@@ -425,21 +428,25 @@ public class HomeFragmentActivity extends BaseActivity {
             // properly.
             View rootView = inflater.inflate(
                     R.layout.fragment_collection_object, container, false);
-
-            Bundle args = getArguments();
-            LinearLayout view = (LinearLayout) rootView.findViewById(R.id.view_pager_element_frame);
-            
-            Log.i(TAG, "teaserType : position is : "+args.getInt(ARG_OBJECT));
-            if(requestResponse != null){
-                processResult(requestResponse.get(args.getInt(ARG_OBJECT)), view);
-            } else {
-                ActivitiesWorkFlow.splashActivityNewTask(getActivity());
-            }
             // ((TextView)
             // rootView.findViewById(R.id.view_pager_element_frame)).setText(pagesTitles.get(0));
             return rootView;
         }
 
+        @Override
+        public void onStart() {
+            super.onStart();
+            
+            Bundle args = getArguments();
+            LinearLayout view = (LinearLayout) getView().findViewById(R.id.view_pager_element_frame);
+            
+            if(requestResponse != null){
+                processResult(requestResponse.get(args.getInt(ARG_OBJECT)), view);
+            } else {
+                ActivitiesWorkFlow.splashActivityNewTask(getActivity());
+            }
+        }
+        
         private void processResult(Collection<? extends TeaserSpecification<?>> result,
                 LinearLayout mainView) {
 
@@ -468,7 +475,6 @@ public class HomeFragmentActivity extends BaseActivity {
                         View view = mInflater
                                 .inflate(R.layout.main_one_fragment_frame, null, false);
                         mainView.addView(view);
-                        view.setOnTouchListener(new JumiaFlingDetector(getActivity()));
                         fragmentManagerTransition(R.id.main_one_frame, fragmentMainOneSlide, false,
                                 false);
                     }
@@ -561,6 +567,13 @@ public class HomeFragmentActivity extends BaseActivity {
                     break;
                 }
             }
+            
+            try {
+                mCallbackShowViewPager = (ViewPagerHomeActivityInteraction) getActivity();
+            } catch (ClassCastException e) {
+                throw new ClassCastException("must implement ViewPagerHomeActivityInteraction");
+            }
+            mCallbackShowViewPager.showViewPager();
         }
 
         protected void fragmentManagerTransition(int container, Fragment fragment,
@@ -579,5 +592,12 @@ public class HomeFragmentActivity extends BaseActivity {
             fragmentTransaction.commit();
         }
 
+    }
+
+    @Override
+    public void showViewPager() {
+        mPager.setVisibility(View.VISIBLE);
+        pagerTabStrip.setVisibility(View.VISIBLE);
+        
     }
 }

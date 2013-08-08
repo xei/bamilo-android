@@ -90,7 +90,6 @@ import de.akquinet.android.androlog.Log;
  *          2012/06/19
  * 
  */
-//public abstract class BaseActivity extends RobotoActivity implements OnOpenedListener, OnClosedListener, ResponseListener, OnFragmentActivityInteraction {
 public abstract class BaseActivity extends SlidingFragmentActivity implements OnOpenedListener, OnClosedListener, ResponseListener, OnFragmentActivityInteraction {
 
     private ShareActionProvider mShareActionProvider;
