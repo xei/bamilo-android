@@ -1,8 +1,11 @@
 
-Then /^I verify app for CI venture$/ do 
+Then /^I verify app for NG venture$/ do 
   initvars
-  initvars_CI
+  initvars_NG
 end
+
+
+####################################################
 
 Then /^I touch a valid restaurant in the CI venture$/ do
   

@@ -1,26 +1,24 @@
-@CI @search_CI
+@KE @search_KE
 Feature: Search feature
 
+    
   Background:
-    When I verify app for CI venture
+    When I verify app for KE venture  
+    Then I choose the Kenya venture
+    And I wait for 10 seconds
     
-  @search_wrong_CI
-  Scenario: I search with wrong location
-    Then I press "Search Button"
-    When I enter "fssdfs" into "Search Box"
-    Then I wait for the view with id "noResultsTextView" to appear
-   #Then I should see "No Results Found"
-    And I wait for 3 seconds
-
-    
-    
-    
-  @search_success_CI
-  Scenario: I search with valid location
-    Then I press "Search Button"
-    Then I touch a valid search in the CI venture
-    Then I press the enter button
-    Then I wait for the view with id "restaurant_list_container" to appear
-    And I wait for 3 seconds
-    
+  @search_test_KE
+  Scenario: I search a product
+   Then I press "Search Field"
+   Then I should see "Please enter a term for suggestions!"
+   And I wait for 3 seconds
+   Then I enter a invalid search
+   Then I should see "No suggestions for your search term!"
    
+   Then I enter a valid search
+   Then I press "Search Field"
+   And I press list item number 1
+   And I wait for 10 seconds 
+   And I press list item number 1
+   Then I should see "Call to order"
+   Then I should see "Add to Cart"

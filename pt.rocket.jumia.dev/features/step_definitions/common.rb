@@ -143,23 +143,65 @@ Then /^I proceed to checkout$/ do
   performAction('press',@proceedcheckout.to_s)
 end
 
-Then /^I proceed to the next step of the checkout$/ do 
-#  touch("webview css:'//a[text=Next]'")
+Then /^I scroll to next button$/ do 
+#  performAction('execute_javascript',"(document.getElementById('<billingbtn>')).scrollIntoView(true)")
+  performAction('scroll_down')
+#  performAction('scroll_to','css','button[id=billingbtn]')
+#    performAction('scroll_to','webView','button[id=billingbtn]')
+#    performAction('scroll_to','webView','button[id=billingbtn]')
+end
+
+
+
+
+
+Then /^I proceed to the next step of the checkout staging$/ do 
+#  touch("webview css:'//button[id=billingbtn]'")
  # touch("webview css:'//a[name=submit]'")
-  touch("webview css:'a[name=submit]'")
+#  touch("webview css:'a[name=submit]'")
  # touch("webview css:'a[name=submit]'")
   #touch("webview css:'a:contains(“^Next$”)")
  # performAction("touch", 'css', 'a[text=Next]')
 #  performAction('touch',@checkoutNext.to_s)
+#  touch("webview css:'a[id=billingbtn]'")
+#  touch("webview css:'a[id=shippingbtn]'")
+#  touch("webview css:'a[id=paymentbtn]'")
+#  touch("webview css:'a[id=paymentmethodbtn]'")
+  
+# performAction('touch','webView','button[id=billingbtn]')
+#  performAction('touch','webView','button[id=billingbtn]')
+  
+# query("webView css:'button[id=billingbtn]'").first
+
+  touch("webView css:'#billingbtn'")
+
+#  touch %Q{webView css:'button[id="billingbtn"]'}
+#  touch %Q{webView css:'#container button[id="card_link"]'}
+#  query("webView css:'*'") 
+#  performAction("dump_html")
 end
 
 
 Then /^I choose the test payment method$/ do 
-  performAction('click_on_text',@checkout1.to_s)
+ 
+  performAction('touch','webView','input[id=testpayment]')
+  performAction('touch','webView','input[value=TestPayment]')
+#  performAction('click_on_text',@checkout1.to_s)
+  performAction('touch','webView','input[id=cashondelivery]')
+  performAction('touch','webView','input[value=CashOnDelivery]')
+#  performAction("dump_html")
+end
+
+Then /^I choose payment method$/ do 
+  performAction("dump_html")
+  performAction('touch','webView','button[id=paymentbtn]')
+#  performAction('click_on_text',@checkout1.to_s)
 end
 
 Then /^I confirm the order$/ do 
-  performAction('click_on_text',@checkout3.to_s)
+  performAction("dump_html")
+  performAction('touch','webView','button[id=confirmbtn]')
+#  performAction('click_on_text',@checkout3.to_s)
 end
 
 

@@ -23,6 +23,12 @@ def initvars
   @addtocart="Add to Cart"
   @gotocart="Go to Cart"
   @proceedcheckout="Proceed to checkout"
+  
+  @shippingbtn="shippingbtn"
+  @billingbtn="billingbtn"
+  @finish="finishbtn"
+  @payment="paymentbtn"
+  @payment="paymentmethodbtn"
 end
 
 
@@ -48,41 +54,66 @@ end
 
 
 def initvars_IC
-  @venture_name="Ivory Coast"
-  @hint_IC="ron"
-  @search_IC= "Rondônia"
+
+  @venture_name="Kenya"
+  @sign_in="Sign In"
+  @wrong_username="faketester@tester.tt"
+  @invalidsearch= "add" 
+  @search= "nikon" 
+  @myaccount="My Account"
+  @myinfo="User Data"
+  @categories="Categories"
+  @categoryfashion="Books"
+  @categoryfashionall="All for Books"
   
-  @restaurant_IC="Restaurante TESTE HelloFood"
-  @category_IC="Pizzas Salgadas"
-  @product_IC="Pizza: Atum"
-  @variation_IC=""
-  @choicetopping_IC=""
+  @checkoutNext="Next"
+  @checkout1="TestPayment"
+  @checkout3="Confirm Order"
+  
+
 end
 
 
 
 def initvars_MA
-  @venture_name="Morocco"
-  @hint_MA="Santiago"
-  @search_MA= "Santiago, Chile"
+
+
+  @venture_name="Kenya"
+  @sign_in="Sign In"
+  @wrong_username="faketester@tester.tt"
+  @invalidsearch= "add" 
+  @search= "nikon" 
+  @myaccount="My Account"
+  @myinfo="User Data"
+  @categories="Categories"
+  @categoryfashion="Books"
+  @categoryfashionall="All for Books"
   
-  @restaurant_MA="Alcohol Center"
-  @category_MA="Vodkas"
-  @product_MA="Absolute Blue"
-  @variation_MA="Solo"
-  @choicetopping_MA=""
+  @checkoutNext="Next"
+  @checkout1="TestPayment"
+  @checkout3="Confirm Order"
+  
+  
 end
 
 def initvars_NG
-  @venture_name="Nigeria"
-  @hint_NG="bo"
-  @search_NG= "Bogotá, Colombia"
+
   
-  @restaurant_NG="Mister Lee - Carrefour de la 30"
-  @category_NG="Entradas"
-  @product_NG="Alitas Colombia"
-  @variation_NG=""
-  @choicetopping_NG=""
+  @venture_name="Kenya"
+  @sign_in="Sign In"
+  @wrong_username="faketester@tester.tt"
+  @invalidsearch= "add" 
+  @search= "nikon" 
+  @myaccount="My Account"
+  @myinfo="User Data"
+  @categories="Categories"
+  @categoryfashion="Books"
+  @categoryfashionall="All for Books"
+  
+  @checkoutNext="Next"
+  @checkout1="TestPayment"
+  @checkout3="Confirm Order"
+  
 end
 
 
