@@ -86,7 +86,7 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
     private int currentOrientation = Configuration.ORIENTATION_PORTRAIT;
     private View loadingLayout;
 
-    private int MAX_PAGE_ITEMS = 20;
+    private int MAX_PAGE_ITEMS = 15;
     private int NO_MORE_PAGES = -1;
 
     boolean isLoadingMore = false;
@@ -207,8 +207,6 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
         if (null != savedState && savedState.containsKey(KEY_STATE_VIEW)) {
             savedState.remove(KEY_STATE_VIEW);
         }
-        
-        MAX_PAGE_ITEMS = 20;
 
         initSorter();
         executeRequest();
@@ -550,7 +548,6 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
         Log.d(TAG, "detected redirect - setting properties according");
         searchQuery = null;
         productsURL = location;
-        MAX_PAGE_ITEMS = 10;
 
         return;
     }
