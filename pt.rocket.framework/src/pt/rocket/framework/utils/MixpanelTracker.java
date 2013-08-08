@@ -118,6 +118,7 @@ public class MixpanelTracker {
 			return;
 		}
 		
+		mixpanel.identify(customerId);
 		people = mixpanel.getPeople();
 		people.identify(customerId);
 		
@@ -175,7 +176,8 @@ public class MixpanelTracker {
 		mixpanel.registerSuperProperties(props);
 		Log.d(TAG, "signup super props: " + props.toString() );
 		
-		people = mixpanel.getPeople();
+		mixpanel.identify(customer.getIdAsString());
+		people = mixpanel.getPeople();		
 		people.identify(customer.getIdAsString());
 		
 		if ( null != people ) {			
