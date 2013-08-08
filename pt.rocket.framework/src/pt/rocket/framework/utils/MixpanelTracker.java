@@ -6,7 +6,9 @@ package pt.rocket.framework.utils;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -403,7 +405,7 @@ public class MixpanelTracker {
 		mixpanel.track(context.getString(R.string.mixviewcart), props);
 	}
 	
-	public static void rate(Context context, CompleteProduct product, ProductReviewCommentCreated review, float ratePrice, float rateApperance, float rateQuality) {
+	public static void rate(Context context, CompleteProduct product, ProductReviewCommentCreated review, HashMap<String, Double> ratings) {
 		if (!isEnabled)
 			return;
 		
@@ -418,9 +420,10 @@ public class MixpanelTracker {
 		setProperty(context.getString(R.string.mixprop_ratecategory), product.getCategories().size() > 0 ? product.getCategories().get(0) : "" );
 		setProperty(context.getString(R.string.mixprop_ratesubcategory), "");
 		setProperty(context.getString(R.string.mixprop_rateprice), getPriceRange(product.getPriceAsDouble()));
-		setProperty(context.getString(R.string.mixprop_ratingprice), "" + ratePrice );
-		setProperty(context.getString(R.string.mixprop_ratingappearance), "" + rateApperance );
-		setProperty(context.getString(R.string.mixprop_ratingquality), "" + rateQuality );
+		
+		for (Entry<String, Double> rate : ratings.entrySet()) {
+			setProperty(rate.getKey(), "" + rate.getValue().toString());
+		}
 		
 		Log.d( TAG, "rate tracking: productSKU = " + product.getSku() );
 		mixpanel.track(context.getString(R.string.mixrate), props);

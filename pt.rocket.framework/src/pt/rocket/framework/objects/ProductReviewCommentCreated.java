@@ -1,5 +1,7 @@
 package pt.rocket.framework.objects;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map.Entry;
 
 import android.content.ContentValues;
@@ -17,10 +19,8 @@ public class ProductReviewCommentCreated {
     private String name;
     private String email;
     
-    private double rating;
-    private double ratingAppearence;
-    private double ratingPrice;
-//    private MyObs
+    private HashMap<String, Double> rating;
+
     
     public ContentValues getObjectModel() {
     	ContentValues values = new ContentValues();
@@ -96,7 +96,7 @@ public class ProductReviewCommentCreated {
     /**
      * @return the rating
      */
-    public double getRating() {
+    public HashMap<String, Double> getRating() {
         return rating;
     }
     
@@ -104,39 +104,11 @@ public class ProductReviewCommentCreated {
      * @param rating
      *            the rating to set
      */
-    public void setRating(double rating) {
+    public void setRating(HashMap<String, Double> rating) {
         this.rating = rating;
     }
 
-    /**
-     * @param rating
-     *            the rating to set
-     */
-    public void setAppearenceRating(double rating) {
-        this.ratingAppearence = rating;
-    }
-    
-    /**
-     * @return the rating
-     */
-    public double getAppearenceRating() {
-        return ratingAppearence;
-    }
 
-    /**
-     * @param rating
-     *            the rating to set
-     */
-    public void setPriceRating(double rating) {
-        this.ratingPrice = rating;
-    }
-    
-    /**
-     * @return the rating
-     */
-    public double getPriceRating() {
-        return ratingPrice;
-    }
     
     
 }

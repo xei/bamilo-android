@@ -290,19 +290,16 @@ public class ProductService extends DarwinService {
         ContentValues values = new ContentValues();
         event.productReviewCreated.addParameters(values);
         values.put(REVIEW_PRODUCT_SKU_FIELD, event.productSKU);
+        Log.i(TAG, "code1review productSKU: "+REVIEW_PRODUCT_SKU_FIELD+" = " + event.productSKU);
         if (event.customerId != -1) {
             values.put(REVIEW_CUSTOMER_ID, event.customerId);
         }
-
+        
         for (Entry<String, HashMap<String, String>> option : ratingOptions.entrySet()) {
+        	
+            Log.i(TAG, "code1review quality: "+REVIEW_OPTION_FIELD + option.getKey() + " rating "+String.valueOf(event.productReviewCreated.getRating().get(option.getKey()).intValue()));
+            values.put(REVIEW_OPTION_FIELD + option.getKey(), option.getValue().get(String.valueOf(event.productReviewCreated.getRating().get(option.getKey()).intValue())));
 
-            if (option.getKey().toString().equals("quality")) {
-                values.put(REVIEW_OPTION_FIELD + option.getKey(), option.getValue().get(String.valueOf((int) event.productReviewCreated.getRating())));
-            } else if (option.getKey().toString().equals("appearance")) {
-                values.put(REVIEW_OPTION_FIELD + option.getKey(), option.getValue().get(String.valueOf((int) event.productReviewCreated.getAppearenceRating())));
-            } else if (option.getKey().toString().equals("price")) {
-                values.put(REVIEW_OPTION_FIELD + option.getKey(), option.getValue().get(String.valueOf((int) event.productReviewCreated.getPriceRating())));
-            }
         }
 
         RestServiceHelper.requestPost(event.eventType.action, values, new ResponseReceiver<Void>(event) {
