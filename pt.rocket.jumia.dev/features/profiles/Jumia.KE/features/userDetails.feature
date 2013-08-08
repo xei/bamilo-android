@@ -17,7 +17,7 @@ Feature: Update User feature
   	Then I press "Login Button"
   	And I wait for 10 seconds
     Then I open the navigation menu
-	And I should see "Sign Out"
+	And I should see sign out button
 	Then I enter My Account
 	Then I enter My User Data
 	And I wait for 5 seconds
@@ -28,5 +28,5 @@ Feature: Update User feature
 	Then I press "Save"
 	And I wait for 10 seconds
   	Then I open the navigation menu
-  	And I should see "Sign Out"
+	And I should see sign out button
   	

@@ -1,15 +1,15 @@
-@KE @checkout_KE
+@NG @checkout_NG
 Feature: checkout feature
 
   Background:
- 	When I verify app for KE venture
-    Then I choose the Kenya venture
+ 	When I verify app for NG venture
+    Then I choose the Nigeria venture
     And I wait for 10 seconds
     Then I open the navigation menu
     And I choose the Sign In option
     
     
-    @checkout_test_KE
+    @checkout_test_NG
    Scenario: add prodcut to cart
     And I wait for 5 seconds
     Then I enter a valid username
@@ -17,7 +17,7 @@ Feature: checkout feature
   	Then I press "Login Button"
   	And I wait for 10 seconds
     Then I open the navigation menu
-	And I should see "Sign Out"
+	And I should see sign out button
 	And I enter Categories
 	Then I enter a valid Category
 	And I press list item number 1

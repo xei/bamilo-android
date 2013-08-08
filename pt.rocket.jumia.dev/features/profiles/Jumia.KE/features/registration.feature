@@ -14,7 +14,7 @@ Feature: Registration feature
   	Then I press "Register Button"
     And I wait for 5 seconds
     Then I press "Submit Register Form"
-    And I should see "Please fill in the required(*) fields" 
+    And I should see the mandatory fields error message
     
     Then I enter a valid username
     And I enter the password
@@ -28,7 +28,7 @@ Feature: Registration feature
     Then I press "Terms and Conditions"
     Then I press "Submit Register Form"
 	And I wait for 10 seconds
-	Then I should see "This email already exists."
+	Then I should see the email exists error message
 	Then I press "Ok"
     
   
@@ -36,5 +36,5 @@ Feature: Registration feature
     Then I press "Submit Register Form"
 	And I wait for 10 seconds
 	Then I open the navigation menu
-	And I should see "Sign Out"
+		And I should see sign out button
    

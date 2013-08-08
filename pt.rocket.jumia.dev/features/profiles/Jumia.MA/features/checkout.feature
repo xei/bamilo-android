@@ -1,15 +1,15 @@
-@KE @checkout_KE
+@MA @checkout_MA
 Feature: checkout feature
 
   Background:
- 	When I verify app for KE venture
-    Then I choose the Kenya venture
+ 	When I verify app for MA venture
+    Then I choose the Morocco venture
     And I wait for 10 seconds
     Then I open the navigation menu
     And I choose the Sign In option
     
     
-    @checkout_test_KE
+    @checkout_test_MA
    Scenario: add prodcut to cart
     And I wait for 5 seconds
     Then I enter a valid username
@@ -22,7 +22,7 @@ Feature: checkout feature
 	Then I enter a valid Category
 	And I press list item number 1
  	And I wait for 5 seconds
-	And I press list item number 1
+	And I press list item number 3
 	And I wait for 5 seconds
 	Then I add product to cart
  	And I wait for 5 seconds

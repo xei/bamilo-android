@@ -34,10 +34,6 @@ Then /^I open the navigation menu$/ do
   performAction('click_on_view_by_id',@navigation.to_s)
 end
 
-Then /^I choose the Kenya venture$/ do
-  
-  performAction('click_on_text',@venture_name.to_s)
-end
 
 Then /^I choose the Sign In option$/ do
   
@@ -139,6 +135,79 @@ Then /^I go to cart$/ do
   performAction('press',@gotocart.to_s)
 end
 
+Then /^I enter the new password$/ do 
+  
+  performAction('enter_text_into_named_field',"", @newpassword.to_s)
+  performAction('enter_text_into_named_field',@password.to_s, @newpassword.to_s)
+
+end
+
+Then /^I enter the new repeated password$/ do 
+  
+  performAction('enter_text_into_named_field',"", @newrepeatedpassword.to_s)
+  performAction('enter_text_into_named_field',@password.to_s, @newrepeatedpassword.to_s)
+
+end
+
+Then /^I should see my first name$/ do 
+  performAction('assert_text', @firstname.to_s, true) 
+end
+
+Then /^I should see my email$/ do 
+  performAction('assert_text', @username.to_s, true) 
+end
+
+
+
+
+
+Then /^I should see the email error message$/ do 
+
+  performAction('assert_text', @emailerrormessage.to_s, true) 
+end
+
+Then /^I should see the password error message$/ do 
+
+  performAction('assert_text', @passerrormessage.to_s, true) 
+end
+
+Then /^I should see the login error message$/ do 
+
+  performAction('assert_text', @loginerror.to_s, true) 
+end
+
+Then /^I should see sign out button$/ do 
+
+  performAction('assert_text', @signout.to_s, true) 
+end
+
+Then /^I should see the mandatory fields error message$/ do 
+
+  performAction('assert_text', @mandatory.to_s, true) 
+end
+
+Then /^I should see the email exists error message$/ do 
+
+  performAction('assert_text', @sameemail.to_s, true) 
+end
+
+Then /^I should see the search message$/ do 
+
+  performAction('assert_text', @searchdefault.to_s, true) 
+end
+
+Then /^I should see the no suggestion message$/ do 
+
+  performAction('assert_text', @nosuggest.to_s, true) 
+end
+
+Then /^I should see the add to cart button$/ do 
+
+  performAction('assert_text', @addtocart.to_s, true) 
+end
+
+
+
 Then /^I proceed to checkout$/ do 
   performAction('press',@proceedcheckout.to_s)
 end
@@ -205,27 +274,6 @@ Then /^I confirm the order$/ do
 end
 
 
-Then /^I enter the new password$/ do 
-  
-  performAction('enter_text_into_named_field',"", @newpassword.to_s)
-  performAction('enter_text_into_named_field',@password.to_s, @newpassword.to_s)
-
-end
-
-Then /^I enter the new repeated password$/ do 
-  
-  performAction('enter_text_into_named_field',"", @newrepeatedpassword.to_s)
-  performAction('enter_text_into_named_field',@password.to_s, @newrepeatedpassword.to_s)
-
-end
-
-Then /^I should see my first name$/ do 
-  performAction('assert_text', @firstname.to_s, true) 
-end
-
-Then /^I should see my email$/ do 
-  performAction('assert_text', @username.to_s, true) 
-end
 
 
 #####################################################

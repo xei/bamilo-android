@@ -149,7 +149,6 @@ public class CheckoutWebActivity extends BaseActivity {
         checkoutUrl = "https://" + RestContract.REQUEST_HOST + CHECKOUT_URL_WITH_PARAM;
         setProxy( checkoutUrl );
         Log.d(TAG, "Loading Url: " + checkoutUrl);
-        android.util.Log.e("#################", ":"+checkoutUrl);
         webview.loadUrl(checkoutUrl);
         isRequestedPage = true;
     }

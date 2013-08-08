@@ -1,13 +1,13 @@
-@KE @search_KE
+@MA @search_MA
 Feature: Search feature
 
     
   Background:
-    When I verify app for KE venture  
-    Then I choose the Kenya venture
+    When I verify app for MA venture  
+    Then I choose the Morocco venture
     And I wait for 10 seconds
     
-  @search_test_KE
+  @search_test_MA
   Scenario: I search a product
    Then I press "Search Field"
    Then I should see the search message

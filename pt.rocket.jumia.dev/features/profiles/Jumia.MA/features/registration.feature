@@ -1,15 +1,15 @@
-@IC @register_IC
+@MA @register_MA
 Feature: Registration feature
 
   Background:
-    When I verify app for IC venture
-    Then I choose the Ivory Coast venture
+    When I verify app for MA venture
+    Then I choose the Morocco venture
     And I wait for 10 seconds
     Then I open the navigation menu
     And I choose the Sign In option
       
     
-  @register_test_IC
+  @register_test_MA
   Scenario: I register with correct form
   	Then I press "Register Button"
     And I wait for 5 seconds

@@ -1,15 +1,15 @@
-@IC @userdetails_IC
+@MA @userdetails_MA
 Feature: Update User feature
 
   Background:
- 	When I verify app for IC venture
-    Then I choose the Ivory Coast venture
+ 	When I verify app for MA venture
+    Then I choose the Morocco venture
     And I wait for 10 seconds
     Then I open the navigation menu
     And I choose the Sign In option
     
     
- @userdetails_update_IC
+ @userdetails_update_MA
    Scenario: update user info
    And I wait for 5 seconds
     Then I enter a valid username
@@ -28,5 +28,5 @@ Feature: Update User feature
 	Then I press "Save"
 	And I wait for 10 seconds
   	Then I open the navigation menu
-  	And I should see sign out button
+	And I should see sign out button
   	

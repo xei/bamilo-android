@@ -139,6 +139,7 @@
                 android:layout_weight="1"
                 android:singleLine="true"
                 android:ellipsize="marquee"
+                android:contentDescription="@string/productdetail_order_button_description"
                 android:marqueeRepeatLimit="marquee_forever"
                 android:text="@string/call_to_order"
                 android:visibility="visible" />

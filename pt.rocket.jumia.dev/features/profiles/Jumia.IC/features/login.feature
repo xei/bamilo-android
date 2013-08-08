@@ -1,28 +1,28 @@
-@KE @login_KE
+@IC @login_IC
 Feature: Login feature
 
 
   Background:
-    When I verify app for KE venture
-    Then I choose the Kenya venture
+    When I verify app for IC venture
+    Then I choose the Ivory Coast venture
     And I wait for 10 seconds
     Then I open the navigation menu
     And I choose the Sign In option
     
     
-    @login_test_KE
+    @login_test_IC
   Scenario: I login with user
   
   	When I press "Login Button"
-  	Then I should see "Please fill in the E-mail address"
-  	Then I should see "Please fill in the Password"
+  	Then I should see the email error message
+  	Then I should see the password error message
   
   	And I wait for 5 seconds
     Then I enter a wrong username
   	And I enter the password
   	Then I press "Login Button"
   	And I wait for 5 seconds
-  	Then I should see "Login failed"
+  	Then I should see the login error message
   	And I press "Ok"
   
   	And I wait for 5 seconds
@@ -31,5 +31,5 @@ Feature: Login feature
   	Then I press "Login Button"
   	And I wait for 10 seconds
     Then I open the navigation menu
-	And I should see "Sign Out"
+	And I should see sign out button
   	

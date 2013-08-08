@@ -1,16 +1,16 @@
-@NG @login_NG
+@MA @login_MA
 Feature: Login feature
 
 
   Background:
-    When I verify app for NG venture
-    Then I choose the Nigeria venture
+    When I verify app for MA venture
+    Then I choose the Morocco venture
     And I wait for 10 seconds
     Then I open the navigation menu
     And I choose the Sign In option
     
     
-    @login_test_NG
+    @login_test_MA
   Scenario: I login with user
   
   	When I press "Login Button"
