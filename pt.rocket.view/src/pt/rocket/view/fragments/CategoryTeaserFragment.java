@@ -38,6 +38,8 @@ public class CategoryTeaserFragment extends BaseFragment {
     
     private OnClickListener onTeaserClickListener;
 
+    private LayoutInflater inflater;
+    
     /**
      * 
      * @param dynamicForm
@@ -103,17 +105,8 @@ public class CategoryTeaserFragment extends BaseFragment {
         Log.i(TAG, "ON CREATE VIEW");
         
         View view = mInflater.inflate(R.layout.teaser_categories_group, viewGroup, false);
-        ViewGroup container = (ViewGroup) view
-                .findViewById(R.id.teaser_group_container);
-     
-        ((TextView) view.findViewById(R.id.teaser_group_title))
-                .setText(teaserCategoryGroup.getTitle());
-        container.addView(createCategoryAllTeaserView(container, mInflater));
-        for (TeaserCategory category : teaserCategoryGroup.getTeasers()) {
-            container
-                    .addView(createCategoryTeaserView(category, container, mInflater));
-        }
-//        view.findViewById(R.id.fragment_content).setOnTouchListener(new JumiaFlingDetector(getActivity()));
+
+        inflater = mInflater;
         return view;
     }
 
@@ -126,7 +119,16 @@ public class CategoryTeaserFragment extends BaseFragment {
     public void onStart() {
         super.onStart();
         Log.i(TAG, "ON START");
-//        FlurryTracker.get().begin();
+        ViewGroup container = (ViewGroup) getView()
+                .findViewById(R.id.teaser_group_container);
+     
+        ((TextView) getView().findViewById(R.id.teaser_group_title))
+                .setText(teaserCategoryGroup.getTitle());
+        container.addView(createCategoryAllTeaserView(container, inflater));
+        for (TeaserCategory category : teaserCategoryGroup.getTeasers()) {
+            container
+                    .addView(createCategoryTeaserView(category, container, inflater));
+        }
     }
 
     /*

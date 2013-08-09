@@ -2,9 +2,7 @@
  * 
  */
 package pt.rocket.view.fragments;
-
 import java.util.EnumSet;
-
 import pt.rocket.framework.event.EventType;
 import pt.rocket.framework.event.ResponseEvent;
 import pt.rocket.framework.event.ResponseResultEvent;
@@ -28,10 +26,8 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
-
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -117,6 +113,7 @@ public class ProducTeaserListFragment extends BaseFragment {
         Log.i(TAG, "ON CREATE VIEW");
         inflater = mInflater;
         View view = mInflater.inflate(R.layout.teaser_products_group, viewGroup, false);
+                
         return view;
     }
 
@@ -129,6 +126,9 @@ public class ProducTeaserListFragment extends BaseFragment {
     public void onStart() {
         super.onStart();
         Log.i(TAG, "ON START");
+    }
+
+    private void setLayout(){
         ViewGroup container = (ViewGroup) getView()
                 .findViewById(R.id.teaser_group_container);
 
@@ -138,7 +138,7 @@ public class ProducTeaserListFragment extends BaseFragment {
             container.addView(createProductTeaserView(product, container, inflater));
         }
     }
-
+    
     /*
      * (non-Javadoc)
      * 
@@ -147,8 +147,9 @@ public class ProducTeaserListFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(TAG, "ON RESUME");
-        //
+        Log.i(TAG, "ON RESUME");       
+        setLayout();
+
 //        AnalyticsGoogle.get().trackPage(R.string.gteaserprod_prefix);
         //
     }

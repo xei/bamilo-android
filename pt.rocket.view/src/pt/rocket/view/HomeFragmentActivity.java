@@ -303,7 +303,7 @@ public class HomeFragmentActivity extends BaseActivity {
         case GET_TEASERS_EVENT:
 
             isFirstBoot = false;
-            proccessResult((Collection<? extends Homepage>) event.result);          
+            proccessResult((Collection<? extends Homepage>) event.result);    
             break;
         case GET_CALL_TO_ORDER_PHONE:
             
@@ -435,9 +435,10 @@ public class HomeFragmentActivity extends BaseActivity {
             LinearLayout view = (LinearLayout) getView().findViewById(R.id.view_pager_element_frame);
             
             if(requestResponse != null){
+                Log.i(TAG, "code1onstart ");
                 processResult(requestResponse.get(args.getInt(ARG_OBJECT)), view);
             } else {
-                ActivitiesWorkFlow.splashActivityNewTask(getActivity());
+                ((HomeFragmentActivity) getActivity()).triggerContentEvent(new RequestEvent(EventType.GET_TEASERS_EVENT));  
             }
         }
         
@@ -474,7 +475,7 @@ public class HomeFragmentActivity extends BaseActivity {
                     }
                     break;
                 case STATIC_BANNER:
-
+                    Log.i(TAG, "code1static STATIC_BANNER");
                     Fragment fragmentStaticBanner = StaticBannerFragment.getInstance();
 
                     // This makes sure that the container activity has implemented
@@ -485,8 +486,9 @@ public class HomeFragmentActivity extends BaseActivity {
                         throw new ClassCastException(fragmentStaticBanner.toString()
                                 + " must implement OnActivityFragmentInteraction");
                     }
-
+                    
                     mCallback.sendListener(0, teaserClickListener);
+                    
                     mCallback.sendValuesToFragment(0, ((ImageTeaserGroup) teaserSpecification)
                             .getTeasers());
 

@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+
 import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.event.EventManager;
@@ -194,6 +196,7 @@ public abstract class BaseFragment extends Fragment implements ResponseListener,
     public void onLowMemory() {
         super.onLowMemory();
         Log.e("??LowMemPhotoDetails", "LOW MEM");
+        ImageLoader.getInstance().clearMemoryCache();
         System.gc();
     }
 
