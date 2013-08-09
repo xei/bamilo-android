@@ -23,6 +23,8 @@ def initvars
   @addtocart="Add to Cart"
   @gotocart="Go to Cart"
   @proceedcheckout="Proceed to checkout"
+  @continueshopping="Continue Shopping"
+  
   
   @shippingbtn="shippingbtn"
   @billingbtn="billingbtn"

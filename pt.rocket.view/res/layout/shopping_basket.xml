@@ -39,6 +39,7 @@
                 style="@style/button_orange_style"
                 android:layout_marginLeft="@dimen/margin_huge"
                 android:layout_marginRight="@dimen/margin_huge"
+                android:contentDescription="@string/shopping_cart_button_description"
                 android:text="@string/checkout_button_text" />
         </LinearLayout>
 

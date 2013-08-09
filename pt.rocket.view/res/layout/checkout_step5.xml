@@ -30,6 +30,7 @@
     <org.holoeverywhere.widget.Button
         android:id="@+id/btn_checkout_continue"
         style="@style/button_orange_style"
+        android:contentDescription="@string/checkout_continue_button_description"
         android:layout_marginLeft="@dimen/margin_huge"
         android:layout_marginRight="@dimen/margin_huge"
         android:layout_marginTop="@dimen/margin_veryhuge"

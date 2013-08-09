@@ -214,13 +214,13 @@ end
 
 Then /^I scroll to next button$/ do 
 #  performAction('execute_javascript',"(document.getElementById('<billingbtn>')).scrollIntoView(true)")
-  performAction('scroll_down')
-#  performAction('scroll_to','css','button[id=billingbtn]')
+#  performAction('scroll_down')
+#  performAction('scroll_down')
+  performAction('scroll_to','css','button[id=billingbtn]')
+#  performAction('query','webView','button[id=billingbtn]')
 #    performAction('scroll_to','webView','button[id=billingbtn]')
 #    performAction('scroll_to','webView','button[id=billingbtn]')
 end
-
-
 
 
 
@@ -237,38 +237,44 @@ Then /^I proceed to the next step of the checkout staging$/ do
 #  touch("webview css:'a[id=paymentbtn]'")
 #  touch("webview css:'a[id=paymentmethodbtn]'")
   
-# performAction('touch','webView','button[id=billingbtn]')
-#  performAction('touch','webView','button[id=billingbtn]')
+  performAction('touch','webView','button[id=billingbtn]')
+  performAction('touch','webView','button[id=billingbtn]')
   
 # query("webView css:'button[id=billingbtn]'").first
 
-  touch("webView css:'#billingbtn'")
+#  touch("webView css:'#billingbtn'")
 
 #  touch %Q{webView css:'button[id="billingbtn"]'}
+#  touch %Q{webView css:'button[id="billingbtn"]'}
+  
 #  touch %Q{webView css:'#container button[id="card_link"]'}
 #  query("webView css:'*'") 
 #  performAction("dump_html")
 end
 
 
-Then /^I choose the test payment method$/ do 
+Then /^I choose the COD payment method$/ do 
  
-  performAction('touch','webView','input[id=testpayment]')
-  performAction('touch','webView','input[value=TestPayment]')
-#  performAction('click_on_text',@checkout1.to_s)
-  performAction('touch','webView','input[id=cashondelivery]')
-  performAction('touch','webView','input[value=CashOnDelivery]')
-#  performAction("dump_html")
+  performAction("dump_html")
+   
+#  performAction('touch','webView','label[id=labelcashondelivery]')
+#  performAction('touch','webView','input[id=cashondelivery]')
+#  performAction('touch','webView','label[for=ipay]')
+  performAction('touch','webView','label[for=cashondelivery]')
+
+    performAction('scroll_to','css','button[id=paymentbtn]')
 end
 
 Then /^I choose payment method$/ do 
-  performAction("dump_html")
+#  performAction("dump_html")
+  performAction('touch','webView','button[id=paymentbtn]')
   performAction('touch','webView','button[id=paymentbtn]')
 #  performAction('click_on_text',@checkout1.to_s)
 end
 
 Then /^I confirm the order$/ do 
-  performAction("dump_html")
+  performAction('scroll_to','css','button[id=confirmbtn]')
+  performAction('touch','webView','button[id=confirmbtn]')
   performAction('touch','webView','button[id=confirmbtn]')
 #  performAction('click_on_text',@checkout3.to_s)
 end
@@ -276,106 +282,10 @@ end
 
 
 
+Then /^I press the button to continue shopping$/ do 
+  performAction('press',@continueshopping.to_s)
+end
+
 #####################################################
 
 
-
-
-Then /^I enter a valid username into "([^\"]*)"$/ do |name|
-  
-  performAction('enter_text_into_named_field',@username.to_s, name)
-
-end
-
-Then /^I enter a valid password into "([^\"]*)"$/ do |name|
-  
-  performAction('enter_text_into_named_field',@password.to_s, name)
-
-end
-
-Then /^I enter a valid first name into "([^\"]*)"$/ do |name|
-  
-  performAction('enter_text_into_named_field',@firstname.to_s, name)
-
-end
-
-Then /^I enter a valid last name into "([^\"]*)"$/ do |name|
-  
-  performAction('enter_text_into_named_field',@lastname.to_s, name)
-
-end
-
-Then /^I enter a valid mobile number into "([^\"]*)"$/ do |name|
-  
-  performAction('enter_text_into_named_field',@mobilenumber.to_s, name)
-
-end
-
-Then /^I enter a valid comment into "([^\"]*)"$/ do |name|
-  
-  performAction('enter_text_into_named_field',@comment.to_s, name)
-
-end
-
-
-Then /^I enter a valid street into "([^\"]*)"$/ do |name|
-  
-  performAction('enter_text_into_named_field',@street.to_s, name)
-
-end
-
-###################################################
-
-Then /^I touch the first choice$/ do
-  
-  performAction('click_on_view_by_id',@firstchoice.to_s)
-end
-
-Then /^I touch the second choice$/ do
-  
-  performAction('click_on_view_by_id',@secondchoice.to_s)
-end
-
-Then /^I touch the third choice$/ do
-  
-  performAction('click_on_view_by_id',@thirdchoice.to_s)
-end
-
-Then /^I touch the fourth choice$/ do
-  
-  performAction('click_on_view_by_id',@forthchoice.to_s)
-end
-
-Then /^I touch the fifth choice$/ do
-  
-  performAction('click_on_view_by_id',@fifthchoice.to_s)
-end
-
-
-
-
-
-Then /^I touch the first topping$/ do
-  
-  performAction('click_on_view_by_id',@firsttopping.to_s)
-end
-
-Then /^I touch the second topping$/ do
-  
-  performAction('click_on_view_by_id',@secondtopping.to_s)
-end
-
-Then /^I touch the third topping$/ do
-  
-  performAction('click_on_view_by_id',@thirdtopping.to_s)
-end
-
-Then /^I touch the fourth topping$/ do
-  
-  performAction('click_on_view_by_id',@forthtopping.to_s)
-end
-
-Then /^I touch the fifth topping$/ do
-  
-  performAction('click_on_view_by_id',@fifthtopping.to_s)
-end

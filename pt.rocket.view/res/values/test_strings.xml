@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     
-    <!--Login description-->
     
     	<string name="login_button_description">Login Button</string>
 	
@@ -22,125 +21,8 @@
 		<string name="productdetail_gotocart_description">Go to Cart</string>
 		<string name="productdetail_order_button_description">Call to order</string>
 		<string name="shopping_cart_button_description">Proceed to checkout</string>    
+		<string name="checkout_continue_button_description">Continue Shopping</string>   
 		    
-		    
-    
-	<string name="shopping_cart_button_description">Shopping Cart Button</string>
-	<string name="costumer_button_description">Costumer Button</string>
-	<string name="logout_button_description">Logout Button</string>
-	<string name="information_button_description">Information Button</string>
-	<string name="search_button_description">Search Button</string>
-	<string name="home_button_description">Home Button</string>
-	<string name="menu_button_description">Menu Button</string>
-	<string name="ok_button_description">Ok Button</string>
-	<string name="cancel_button_description">Cancel Button</string>
-	<string name="search_box_description">Search Box</string>
-	<string name="login_user_box_description">Username</string>
-	<string name="login_pass_box_description">Password</string>
-	<string name="error_dialog_description">Error Message</string>
-	<string name="error_ok_description">Ok</string>
-	<string name="choice_ok_description">Ok Choice</string>
-	<string name="topping_ok_description">Ok Topping</string>
 	
-	
-	
-	<!--Register description-->
-
-		
-	<string name="register_firstname_description">First Name Box</string>
-	<string name="register_lastname_description">Last Name Box</string>
-    <string name="register_mobile_description">Mobile Box</string>
-    <string name="register_email_description">Email Box</string>
-    <string name="register_password_description">Password Box</string>
-    <string name="register_retypepassword_description">Retype Password Box</string>	   
-    <string name="register_refcode_description">Reference Code Box</string>
-    <string name="register_1staddressline2_description">AddressLine2 Box</string> 
-    <string name="register_1staddressline1_description">AddressLine1 Box</string>
-    <string name="register_1stcompany_description">Company Box</string>
-    <string name="register_1stother_description">Other Box</string>
-    <string name="register_1stpostalcode_description">Postal Box</string>
-    <string name="register_1starea_description">Area Box</string>
-    <string name="register_1stcity_description">City Box</string>       
-    <string name="register_2ndaddressline2_description">Second AddressLine2 Box</string> 
-    <string name="register_2ndaddressline1_description">Second AddressLine1 Box</string>
-    <string name="register_2ndcompany_description">Second Company Box</string>
-    <string name="register_2ndother_description">Second Other Box</string>
-    <string name="register_2ndpostalcode_description">Second Postal Box</string>
-    <string name="register_2ndarea_description">Second Area Box</string>
-    <string name="register_2ndcity_description">Second City Box</string>        
-    <string name="register_second_submit_description">Submit Second Register Form</string>
-    <string name="register_acceptterms_description">Accept Terms and Conditions Button</string>
-    <string name="register_verifymobile_description">Verify Mobile Button</string>   
-    <string name="register_verifylater_description">Verify Later Button</string>   
-    <string name="register_citysave_description">Save City</string>
-    <string name="register_areasave_description">Save Area</string>
-    
-    <!--Search List-->
-    
-    <string name="search_noresults_description">No Results Found</string>   
-    <string name="register_restlist_description">Restaurant List</string> 
-     <string name="ok_spinner_description">Ok Spinner</string>   
-    
-    <!--Search big areas-->
-    <string name="search_bigarea_text_description">Search Big Area</string>
-    <string name="search_bigarea_city_text_description">Search Big Area City</string>
-    <string name="search_bigarea_district_text_description">Search Big Area District</string>
-    <!--Search polygons-->
-    <string name="search_polygons_text_description">Search Address</string>
-    <!--Search areas-->
-    <string name="search_area_text_description">Search Area</string>
-	<string name="search_area_city_text_description">Search Area City</string>
-    <!--Search postcode-->
-    <string name="search_postcode_text_description">Search Postcode</string>
-        	
-    <!--Address List-->
-	  
-	<string name="address_address_description">My Addresses Option</string>
-	<string name="address_info_description">My Info Option</string>
-	<string name="address_orders_description">My Orders Option</string>
-	<string name="address_add_description">Add Address Button</string>	
-	<string name="address_1stnewaddressline1_description">New Addressline1 Box</string>
-	<string name="address_1stnewaddressline2_description">New Addressline2 Box</string>
-	<string name="address_1stnewcompany_description">New Company Box</string>
-	<string name="address_1stnewother_description">New Other Box</string>
-	<string name="address_1stnewpostalcode_description">New Postal Code Box</string>
-    <string name="address_1stnewarea_description">New Area Box</string>
-	<string name="address_1stnewcity_description">New City Box</string>	
-    <string name="address_2ndnewaddressline1_description">New Second Addressline1 Box</string>
-    <string name="address_2ndnewaddressline2_description">New Second Addressline2 Box</string>
-    <string name="address_2ndnewcompany_description">New Second Company Box</string>
-    <string name="address_2ndnewother_description">New Second Other Box</string>
-    <string name="address_2ndnewpostalcode_description">New Second Postal Code Box</string>
-    <string name="address_2ndnewarea_description">New Second Area Box</string>
-    <string name="address_2ndnewcity_description">New Second City Box</string>   
-    <string name="address_removeaddress_description">Remove Address Button</string>    
-    <string name="address_homepage_description">Homepage Button</string>
-    <string name="address_homepageadd_description">Homepage Add Address Button</string>	
-     
-    <!--User List-->
-          
-    <string name="user_firstname_description">User First Name Box</string>
-    <string name="user_lastname_description">User Last Name Box</string>
-    <string name="user_mobile_description">User Mobile Box</string>
-    <string name="user_email_description">User Email Box</string> 
-    <string name="user_save_description">Save User Form</string>
-    <string name="user_reorder_description">Re Order</string>     
-    
-    
-    <!--Checkout List-->
-    <string name="checkout_add_description">Add to Cart</string>
-    <string name="checkout_placeorder_description">Place Order</string>
-    <string name="checkout_finalize_description">Finalize Order</string>
-    <string name="checkout_thankyou_description">Finish Button</string>
-    <string name="checkout_verify_description">Verify Later Button</string>
-    <string name="checkout_comment_description">Comment Box</string>
-    <string name="checkout_info_description">Info Button</string>
-    
-    <string name="info_open_description">Open Restaurant</string>   
-    
-    <!-- Filter -->
-    
-    <string name="search_restaurant_by_filter_description">Place Order</string>
-  
     
 </resources>
