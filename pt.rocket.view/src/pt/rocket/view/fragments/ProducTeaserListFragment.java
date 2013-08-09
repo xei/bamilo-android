@@ -47,6 +47,8 @@ public class ProducTeaserListFragment extends BaseFragment {
     private static ProductTeaserGroup productTeaserGroup;
 
     private OnClickListener onTeaserClickListener;
+    
+    private LayoutInflater inflater;
 
     /**
      * 
@@ -113,17 +115,8 @@ public class ProducTeaserListFragment extends BaseFragment {
             Bundle savedInstanceState) {
         super.onCreateView(mInflater, viewGroup, savedInstanceState);
         Log.i(TAG, "ON CREATE VIEW");
-
+        inflater = mInflater;
         View view = mInflater.inflate(R.layout.teaser_products_group, viewGroup, false);
-
-        ViewGroup container = (ViewGroup) view
-                .findViewById(R.id.teaser_group_container);
-
-        ((TextView) view.findViewById(R.id.teaser_group_title))
-                .setText(productTeaserGroup.getTitle());
-        for (TeaserProduct product : productTeaserGroup.getTeasers()) {
-            container.addView(createProductTeaserView(product, container, mInflater));
-        }
         return view;
     }
 
@@ -136,7 +129,14 @@ public class ProducTeaserListFragment extends BaseFragment {
     public void onStart() {
         super.onStart();
         Log.i(TAG, "ON START");
-//        FlurryTracker.get().begin();
+        ViewGroup container = (ViewGroup) getView()
+                .findViewById(R.id.teaser_group_container);
+
+        ((TextView) getView().findViewById(R.id.teaser_group_title))
+                .setText(productTeaserGroup.getTitle());
+        for (TeaserProduct product : productTeaserGroup.getTeasers()) {
+            container.addView(createProductTeaserView(product, container, inflater));
+        }
     }
 
     /*

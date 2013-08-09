@@ -30,7 +30,6 @@ import pt.rocket.utils.JumiaViewPager;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.OnActivityFragmentInteraction;
-import pt.rocket.utils.ViewPagerHomeActivityInteraction;
 import pt.rocket.view.fragments.BrandsTeaserListFragment;
 import pt.rocket.view.fragments.CategoryTeaserFragment;
 import pt.rocket.view.fragments.FragmentType;
@@ -49,7 +48,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerTabStrip;
-import android.text.method.MovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -64,7 +62,7 @@ import android.widget.Toast;
  * @author manuelsilva
  * 
  */
-public class HomeFragmentActivity extends BaseActivity implements ViewPagerHomeActivityInteraction {
+public class HomeFragmentActivity extends BaseActivity {
     private final static String TAG = HomeFragmentActivity.class.getSimpleName();
 
     private LayoutInflater mInflater;
@@ -189,12 +187,10 @@ public class HomeFragmentActivity extends BaseActivity implements ViewPagerHomeA
     private void setLayout(int defaultPosition){
         if(mPager == null){
             mPager = (JumiaViewPager) findViewById(R.id.home_viewpager);
-            mPager.setVisibility(View.INVISIBLE);
         }
         
         if(pagerTabStrip == null){
             pagerTabStrip = (PagerTabStrip) findViewById(R.id.home_titles);
-            pagerTabStrip.setVisibility(View.INVISIBLE);
         }
         mPager.setAdapter(mPagerAdapter);
         mPager.setCurrentItem(defaultPosition);
@@ -365,8 +361,6 @@ public class HomeFragmentActivity extends BaseActivity implements ViewPagerHomeA
         private OnActivityFragmentInteraction mCallback;
 
         private LayoutInflater mInflater;
-        
-        private ViewPagerHomeActivityInteraction mCallbackShowViewPager;
         
         private OnClickListener teaserClickListener = new OnClickListener() {
 
@@ -567,13 +561,6 @@ public class HomeFragmentActivity extends BaseActivity implements ViewPagerHomeA
                     break;
                 }
             }
-            
-            try {
-                mCallbackShowViewPager = (ViewPagerHomeActivityInteraction) getActivity();
-            } catch (ClassCastException e) {
-                throw new ClassCastException("must implement ViewPagerHomeActivityInteraction");
-            }
-            mCallbackShowViewPager.showViewPager();
         }
 
         protected void fragmentManagerTransition(int container, Fragment fragment,
@@ -592,12 +579,5 @@ public class HomeFragmentActivity extends BaseActivity implements ViewPagerHomeA
             fragmentTransaction.commit();
         }
 
-    }
-
-    @Override
-    public void showViewPager() {
-        mPager.setVisibility(View.VISIBLE);
-        pagerTabStrip.setVisibility(View.VISIBLE);
-        
     }
 }

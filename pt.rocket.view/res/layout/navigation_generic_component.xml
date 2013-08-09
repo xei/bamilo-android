@@ -7,7 +7,7 @@
     android:descendantFocusability="beforeDescendants"
     android:orientation="vertical" >
 
-    <org.holoeverywhere.widget.TextView
+    <TextView
         android:id="@+id/component_text"
         style="@style/navigation_generic_component_text"
         android:layout_marginBottom="@dimen/margin_mid"

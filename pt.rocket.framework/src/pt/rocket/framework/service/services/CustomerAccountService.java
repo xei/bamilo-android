@@ -96,7 +96,7 @@ public class CustomerAccountService extends DarwinService {
 
 	private static void forgetPassword(
 			final ForgetPasswordEvent event) {
-
+		
 		RestServiceHelper.requestPost(event.eventType.action,
 				event.value, new ResponseReceiver<Void>(
 						event) {

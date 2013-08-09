@@ -102,7 +102,7 @@ public abstract class ResponseReceiver<T> extends ResultReceiver {
 
 		if ( Darwin.logDebugEnabled ) {
 			try {
-				Log.d(TAG, "Got JSON result (length = " + result.length() + ")\n" + jsonObject.toString(2));	
+				Log.d(TAG, "Got JSON result (length = " + result.length() + ")\n");	
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
