@@ -11,11 +11,13 @@ Feature: Registration feature
     
   @register_test_IC
   Scenario: I register with correct form
+#  	@wrong_empty_register
   	Then I press "Register Button"
     And I wait for 5 seconds
     Then I press "Submit Register Form"
     And I should see the mandatory fields error message
     
+#    @wrong_repeated_register
     Then I enter a valid username
     And I enter the password
     And I enter the repeated password
@@ -31,7 +33,7 @@ Feature: Registration feature
 	Then I should see the email exists error message
 	Then I press "Ok"
     
-  
+#  	@valid_register
     Then I enter a random email
     Then I press "Submit Register Form"
 	And I wait for 10 seconds

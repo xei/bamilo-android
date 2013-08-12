@@ -9,12 +9,14 @@ Feature: Search feature
     
   @search_test_IC
   Scenario: I search a product
+#  	@invalid_search
    Then I press "Search Field"
    Then I should see the search message
    And I wait for 3 seconds
    Then I enter a invalid search
    Then I should see the no suggestion message
    
+#   @valid_search
    Then I enter a valid search
    Then I press "Search Field"
    And I press list item number 1

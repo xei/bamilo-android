@@ -30,15 +30,16 @@ end
 
 #####################################################
 
+#
+#
+# FORMS
+#
+#
+
 Then /^I open the navigation menu$/ do 
   performAction('click_on_view_by_id',@navigation.to_s)
 end
 
-
-Then /^I choose the Sign In option$/ do
-  
-  performAction('click_on_text',@sign_in.to_s)
-end
 
 Then /^I enter a wrong username$/ do 
   
@@ -106,6 +107,33 @@ Then /^I enter a invalid search$/ do
 
 end
 
+Then /^I enter the new password$/ do 
+  
+  performAction('enter_text_into_named_field',"", @newpassword.to_s)
+  performAction('enter_text_into_named_field',@password.to_s, @newpassword.to_s)
+
+end
+
+Then /^I enter the new repeated password$/ do 
+  
+  performAction('enter_text_into_named_field',"", @newrepeatedpassword.to_s)
+  performAction('enter_text_into_named_field',@password.to_s, @newrepeatedpassword.to_s)
+
+end
+
+
+#
+#
+# CLICKS AND PRESS
+#
+#
+  
+
+Then /^I choose the Sign In option$/ do
+  
+  performAction('click_on_text',@sign_in.to_s)
+end
+
 Then /^I enter My Account$/ do 
   
   performAction('click_on_text',@myaccount.to_s)
@@ -135,20 +163,17 @@ Then /^I go to cart$/ do
   performAction('press',@gotocart.to_s)
 end
 
-Then /^I enter the new password$/ do 
-  
-  performAction('enter_text_into_named_field',"", @newpassword.to_s)
-  performAction('enter_text_into_named_field',@password.to_s, @newpassword.to_s)
 
+Then /^I proceed to checkout$/ do 
+  performAction('press',@proceedcheckout.to_s)
 end
 
-Then /^I enter the new repeated password$/ do 
+#
+#
+# ASSERTS
+#
+#
   
-  performAction('enter_text_into_named_field',"", @newrepeatedpassword.to_s)
-  performAction('enter_text_into_named_field',@password.to_s, @newrepeatedpassword.to_s)
-
-end
-
 Then /^I should see my first name$/ do 
   performAction('assert_text', @firstname.to_s, true) 
 end
@@ -156,9 +181,6 @@ end
 Then /^I should see my email$/ do 
   performAction('assert_text', @username.to_s, true) 
 end
-
-
-
 
 
 Then /^I should see the email error message$/ do 
@@ -207,69 +229,50 @@ Then /^I should see the add to cart button$/ do
 end
 
 
+#
+#
+# WEBVIEWS (NEEDS CALABASH-ANDROID-0.3.8)
+#
+#
 
-Then /^I proceed to checkout$/ do 
-  performAction('press',@proceedcheckout.to_s)
-end
 
 Then /^I scroll to next button$/ do 
-#  performAction('execute_javascript',"(document.getElementById('<billingbtn>')).scrollIntoView(true)")
-#  performAction('scroll_down')
-#  performAction('scroll_down')
+
   performAction('scroll_to','css','button[id=billingbtn]')
-#  performAction('query','webView','button[id=billingbtn]')
-#    performAction('scroll_to','webView','button[id=billingbtn]')
-#    performAction('scroll_to','webView','button[id=billingbtn]')
+  #  performAction('execute_javascript',"(document.getElementById('<billingbtn>')).scrollIntoView(true)")
+  #  performAction('scroll_down')
+
 end
 
 
 
 Then /^I proceed to the next step of the checkout staging$/ do 
-#  touch("webview css:'//button[id=billingbtn]'")
- # touch("webview css:'//a[name=submit]'")
-#  touch("webview css:'a[name=submit]'")
- # touch("webview css:'a[name=submit]'")
+
+
+  
+  performAction('touch','webView','button[id=billingbtn]')
+  performAction('touch','webView','button[id=billingbtn]')
   #touch("webview css:'a:contains(“^Next$”)")
  # performAction("touch", 'css', 'a[text=Next]')
-#  performAction('touch',@checkoutNext.to_s)
-#  touch("webview css:'a[id=billingbtn]'")
-#  touch("webview css:'a[id=shippingbtn]'")
-#  touch("webview css:'a[id=paymentbtn]'")
 #  touch("webview css:'a[id=paymentmethodbtn]'")
-  
-  performAction('touch','webView','button[id=billingbtn]')
-  performAction('touch','webView','button[id=billingbtn]')
-  
-# query("webView css:'button[id=billingbtn]'").first
-
-#  touch("webView css:'#billingbtn'")
-
 #  touch %Q{webView css:'button[id="billingbtn"]'}
-#  touch %Q{webView css:'button[id="billingbtn"]'}
-  
-#  touch %Q{webView css:'#container button[id="card_link"]'}
-#  query("webView css:'*'") 
 #  performAction("dump_html")
 end
 
 
 Then /^I choose the COD payment method$/ do 
- 
-  performAction("dump_html")
    
-#  performAction('touch','webView','label[id=labelcashondelivery]')
-#  performAction('touch','webView','input[id=cashondelivery]')
-#  performAction('touch','webView','label[for=ipay]')
   performAction('touch','webView','label[for=cashondelivery]')
 
-    performAction('scroll_to','css','button[id=paymentbtn]')
+  performAction('scroll_to','css','button[id=paymentbtn]')
+  #  performAction("dump_html")
 end
 
 Then /^I choose payment method$/ do 
-#  performAction("dump_html")
+
   performAction('touch','webView','button[id=paymentbtn]')
   performAction('touch','webView','button[id=paymentbtn]')
-#  performAction('click_on_text',@checkout1.to_s)
+  #  performAction("dump_html")
 end
 
 Then /^I confirm the order$/ do 

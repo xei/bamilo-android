@@ -12,11 +12,12 @@ Feature: Login feature
     
     @login_test_IC
   Scenario: I login with user
-  
+#  	@wrong_empty_login
   	When I press "Login Button"
   	Then I should see the email error message
   	Then I should see the password error message
   
+#  	@wrong_username_login
   	And I wait for 5 seconds
     Then I enter a wrong username
   	And I enter the password
@@ -25,6 +26,7 @@ Feature: Login feature
   	Then I should see the login error message
   	And I press "Ok"
   
+ # 	@valid_login
   	And I wait for 5 seconds
     Then I enter a valid username
   	And I enter the password
