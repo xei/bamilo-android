@@ -26,6 +26,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import de.akquinet.android.androlog.Log;
 
@@ -351,8 +352,9 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener{
     private View createGenericComponent(ViewGroup parent, NavigationListComponent component, int iconRes, String text, OnClickListener listener) {
         View navComponent = inflater.inflate(R.layout.navigation_generic_component, parent, false);
         TextView tVSearch = (TextView) navComponent.findViewById(R.id.component_text);
+        ImageView imgView = (ImageView) navComponent.findViewById(R.id.component_img);
         tVSearch.setText(text);
-        tVSearch.setCompoundDrawablesWithIntrinsicBounds(iconRes, 0, 0, 0);
+        imgView.setImageResource(iconRes);
         navComponent.setOnClickListener(listener);
         return navComponent;
     }

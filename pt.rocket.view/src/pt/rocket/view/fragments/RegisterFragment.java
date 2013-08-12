@@ -307,7 +307,7 @@ public class RegisterFragment extends BaseFragment {
                 } else {
                     registerRequiredText.setVisibility( View.GONE );
                 }
-                Log.i(TAG, "code1 checkPasswords : "+checkPasswords()+" serverForm.validate "+serverForm.validate()+" checkTermsIfRequired "+checkTermsIfRequired());    
+                    
                 if ( checkPasswords() && serverForm.validate() && checkTermsIfRequired()) {
                     registerRequiredText.setVisibility( View.GONE );
                     termsRequiredText.setVisibility( View.GONE );
