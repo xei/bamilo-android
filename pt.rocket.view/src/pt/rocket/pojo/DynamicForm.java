@@ -325,9 +325,10 @@ public class DynamicForm implements Iterable<DynamicFormItem>{
         while (it.hasNext()) {
 
             control = it.next();
-
+            
             if (control != null && control.getType() == InputType.metadate) {
                 control.addSubFormFieldValues(model);
+                model.put(control.getName().toString(), control.getValue().toString());
             } else if (null != control && null != control.getValue()) {
                 model.put(control.getName().toString(), control.getValue().toString());
             } else {
