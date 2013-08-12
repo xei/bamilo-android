@@ -70,7 +70,7 @@
 	<string name="share_checkout_this_product">Découvre vite le produit que j\'ai trouvé!</string>
 	<string name="product_could_not_retrieved">Les informations sur ce produit n\'ont pas pu être trouvées</string>
 	<string name="share_subject">Partage Jumia</string>
-	<string name="product_variance_choose">Choisissez </string>
+	<string name="product_variance_choose">Choisissez taille</string>
 	<string name="product_variance_choose_error">Choisissez parmi</string>
 	<string name="product_outof_stock">Le produit n\'est plus disponible</string>
 	<string name="error_add_to_cart_failed">L\'ajout au panier n\'a pas fonctionné</string>
