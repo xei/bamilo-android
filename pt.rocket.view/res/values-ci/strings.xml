@@ -142,7 +142,7 @@
     <string name="validation_errortext">Il y a des erreurs dans les données communiquées, vérifiez les différents champs renseignés</string>
     <string name="terms_and_conditions">Termes et conditions</string>
     <string name="product_sort">Filtrer par:</string>
-    <string name="product_sort_button">Filtrer</string>
+    <string name="product_sort_button">Sortir</string>
     <string name="products_sort_popularity">Popularité</string>
     <string name="products_sort_priceup">Prix croissant</string>
     <string name="products_sort_pricedown">Prix décroissant</string>
