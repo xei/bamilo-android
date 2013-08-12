@@ -218,5 +218,5 @@
     <string name="rating_quality">Qualité</string>
     <string name="rating_appearance">Apparence</string>
     <string name="rating_price">Prix</string>
-
+	<string name="call_to_order_number">20006161</string>
 </resources>

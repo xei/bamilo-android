@@ -124,7 +124,8 @@ public class HomeFragmentActivity extends BaseActivity {
         changeSearchBarBehavior();
         
         if(requestResponse == null){
-            triggerContentEvent(new RequestEvent(EventType.GET_TEASERS_EVENT));          
+            triggerContentEvent(new RequestEvent(EventType.GET_TEASERS_EVENT));      
+            triggerContentEvent(new RequestEvent(EventType.GET_CALL_TO_ORDER_PHONE));
         } else {
             restoreLayout();
         }
@@ -259,7 +260,6 @@ public class HomeFragmentActivity extends BaseActivity {
         
         if(requestResponse == null && !isFirstBoot){
             triggerContentEvent(new RequestEvent(EventType.GET_TEASERS_EVENT));
-            triggerContentEvent(new RequestEvent(EventType.GET_CALL_TO_ORDER_PHONE));
         }
         
         AnalyticsGoogle.get().trackPage(R.string.ghomepage);
@@ -268,6 +268,8 @@ public class HomeFragmentActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         MixpanelTracker.flush();
+        mPagerAdapter = null;
+        
         super.onDestroy();
     }    
 
@@ -306,7 +308,6 @@ public class HomeFragmentActivity extends BaseActivity {
             proccessResult((Collection<? extends Homepage>) event.result);    
             break;
         case GET_CALL_TO_ORDER_PHONE:
-            
             SharedPreferences sharedPrefs = this.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPrefs.edit();
             editor.putString(ProductDetailsActivityFragment.KEY_CALL_TO_ORDER, (String) event.result);
@@ -322,7 +323,6 @@ public class HomeFragmentActivity extends BaseActivity {
     // Since this is an object collection, use a FragmentStatePagerAdapter,
     // and NOT a FragmentPagerAdapter.
     public class HomeCollectionPagerAdapter extends FragmentStatePagerAdapter {
-//        ArrayList<Fragment> fragments = new ArrayList<Fragment>();
         public HomeCollectionPagerAdapter(FragmentManager fm) {
             super(fm);
         }

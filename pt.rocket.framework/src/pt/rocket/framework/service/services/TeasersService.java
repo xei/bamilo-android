@@ -40,101 +40,109 @@ import de.akquinet.android.androlog.Log;
  */
 public class TeasersService extends DarwinService {
 
-    private static final String TAG = TeasersService.class.getSimpleName();
+	private static final String TAG = TeasersService.class.getSimpleName();
 
-    // private ArrayList<TeaserSpecification<?>> teaserSpecifications;
+	// private ArrayList<TeaserSpecification<?>> teaserSpecifications;
 
-    public TeasersService() {
-        super(EnumSet.noneOf(EventType.class), EnumSet.of(EventType.GET_TEASERS_EVENT));
-    }
+	public TeasersService() {
+		super(EnumSet.noneOf(EventType.class), EnumSet
+				.of(EventType.GET_TEASERS_EVENT));
+	}
 
-    /**
-     * Gets the teasers form the api.
-     * 
-     * @param event
-     */
-    // PREVIOUS IMPLEMENTATION
-//    public void getTeasers(final RequestEvent event) {
-//        // if (teaserSpecifications == null) {
-//        Log.d(TAG, "getTeasers");
-//        RestServiceHelper.requestGet(event.eventType.action, new ResponseReceiver<List<TeaserSpecification<?>>>(event) {
-//
-//            @Override
-//            public List<TeaserSpecification<?>> parseResponse(JSONObject response) throws JSONException {
-//                return updateTeaserSpecification(response);
-//            }
-//        }, event.metaData);
-//        // } else {
-//        // triggerTeasersResult(event);
-//        // }
-//    }
+	/**
+	 * Gets the teasers form the api.
+	 * 
+	 * @param event
+	 */
+	// PREVIOUS IMPLEMENTATION
+	// public void getTeasers(final RequestEvent event) {
+	// // if (teaserSpecifications == null) {
+	// Log.d(TAG, "getTeasers");
+	// RestServiceHelper.requestGet(event.eventType.action, new
+	// ResponseReceiver<List<TeaserSpecification<?>>>(event) {
+	//
+	// @Override
+	// public List<TeaserSpecification<?>> parseResponse(JSONObject response)
+	// throws JSONException {
+	// return updateTeaserSpecification(response);
+	// }
+	// }, event.metaData);
+	// // } else {
+	// // triggerTeasersResult(event);
+	// // }
+	// }
 
-    // NEW IMPLEMENTATION
-     public void getTeasers(final RequestEvent event) {
-     // if (teaserSpecifications == null) {
-     Log.d(TAG, "getTeasers");
-     RestServiceHelper.requestGet(event.eventType.action, new
-     ResponseReceiver<List<Homepage>>(event) {
-    
-     @Override
-     public List<Homepage> parseResponse(JSONObject response) throws
-     JSONException {
-     return updateTeaserSpecification(response);
-     }
-     }, event.metaData);
-     // } else {
-     // triggerTeasersResult(event);
-     // }
-     }
+	// NEW IMPLEMENTATION
+	public void getTeasers(final RequestEvent event) {
+		// if (teaserSpecifications == null) {
+		Log.d(TAG, "getTeasers");
+		RestServiceHelper.requestGet(event.eventType.action,
+				new ResponseReceiver<List<Homepage>>(event) {
 
-    // PREVIOUS IMPLEMENTATION
-//    private ArrayList<TeaserSpecification<?>> updateTeaserSpecification(JSONObject metadataObject) throws JSONException {
-//        JSONArray dataArray = metadataObject.getJSONArray(JSON_DATA_TAG);
-//        int dataArrayLenght = dataArray.length();
-//        ArrayList<TeaserSpecification<?>> teaserSpecifications = new ArrayList<TeaserSpecification<?>>();
-//        for (int i = 0; i < dataArrayLenght; ++i) {
-//            teaserSpecifications.add(TeaserSpecification.parse(dataArray.getJSONObject(i)));
-//        }
-//        return teaserSpecifications;
-//    }
+					@Override
+					public List<Homepage> parseResponse(JSONObject response)
+							throws JSONException {
+						return updateTeaserSpecification(response);
+					}
+				}, event.metaData);
+		// } else {
+		// triggerTeasersResult(event);
+		// }
+	}
 
-    // NEW IMPLEMENTATION
-     private ArrayList<Homepage> updateTeaserSpecification(JSONObject
-     metadataObject) throws JSONException {
-     JSONArray dataArray = metadataObject.getJSONArray(JSON_DATA_TAG);
-     int dataArrayLenght = dataArray.length();
-     ArrayList<Homepage> homepageSpecifications = new ArrayList<Homepage>();
-     for (int i = 0; i < dataArrayLenght; ++i) {
-     Homepage homepage = new Homepage();
-     homepage.initialize(dataArray.getJSONObject(i));
-     homepageSpecifications.add(homepage);
-     }
-     return homepageSpecifications;
-     }
+	// PREVIOUS IMPLEMENTATION
+	// private ArrayList<TeaserSpecification<?>>
+	// updateTeaserSpecification(JSONObject metadataObject) throws JSONException
+	// {
+	// JSONArray dataArray = metadataObject.getJSONArray(JSON_DATA_TAG);
+	// int dataArrayLenght = dataArray.length();
+	// ArrayList<TeaserSpecification<?>> teaserSpecifications = new
+	// ArrayList<TeaserSpecification<?>>();
+	// for (int i = 0; i < dataArrayLenght; ++i) {
+	// teaserSpecifications.add(TeaserSpecification.parse(dataArray.getJSONObject(i)));
+	// }
+	// return teaserSpecifications;
+	// }
 
-    // PREVIOUS IMPLEMENTATION
-//    private void triggerTeasersResult(RequestEvent event, ArrayList<TeaserSpecification<?>> teaserSpecifications, String warning) {
-//        EventManager.getSingleton().triggerResponseEvent(
-//                new ResponseResultEvent<List<TeaserSpecification<?>>>(event, teaserSpecifications, warning, new Bundle()));
-//    }
+	// NEW IMPLEMENTATION
+	private ArrayList<Homepage> updateTeaserSpecification(
+			JSONObject metadataObject) throws JSONException {
+		JSONArray dataArray = metadataObject.getJSONArray(JSON_DATA_TAG);
+		int dataArrayLenght = dataArray.length();
+		ArrayList<Homepage> homepageSpecifications = new ArrayList<Homepage>();
+		for (int i = 0; i < dataArrayLenght; ++i) {
+			Homepage homepage = new Homepage();
+			homepage.initialize(dataArray.getJSONObject(i));
+			homepageSpecifications.add(homepage);
+		}
+		return homepageSpecifications;
+	}
 
-    // NEW IMPLEMENTATION
-     private void triggerTeasersResult(RequestEvent event, ArrayList<Homepage>
-     homepageSpecifications, String warning) {
-     EventManager.getSingleton().triggerResponseEvent(
-     new ResponseResultEvent<List<Homepage>>(event, homepageSpecifications,
-     warning, new Bundle()));
-     }
+	// PREVIOUS IMPLEMENTATION
+	// private void triggerTeasersResult(RequestEvent event,
+	// ArrayList<TeaserSpecification<?>> teaserSpecifications, String warning) {
+	// EventManager.getSingleton().triggerResponseEvent(
+	// new ResponseResultEvent<List<TeaserSpecification<?>>>(event,
+	// teaserSpecifications, warning, new Bundle()));
+	// }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * pt.rocket.framework.event.EventListener#handleEvent(pt.rocket.framework
-     * .event.IEvent)
-     */
-    @Override
-    public void handleEvent(RequestEvent event) {
-        getTeasers(event);
-    }
+	// NEW IMPLEMENTATION
+	private void triggerTeasersResult(RequestEvent event,
+			ArrayList<Homepage> homepageSpecifications, String warning) {
+		EventManager.getSingleton().triggerResponseEvent(
+				new ResponseResultEvent<List<Homepage>>(event,
+						homepageSpecifications, warning, new Bundle()));
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * pt.rocket.framework.event.EventListener#handleEvent(pt.rocket.framework
+	 * .event.IEvent)
+	 */
+	@Override
+	public void handleEvent(RequestEvent event) {
+		getTeasers(event);
+	}
 }

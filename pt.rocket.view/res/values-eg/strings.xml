@@ -216,4 +216,5 @@
     <string name="error_no_connection">No connection</string>
     <string name="section_title_account">Account Settings</string>
     <string name="section_title_notification">Notification Settings</string>
+    <string name="call_to_order_number">01156226220</string>
 </resources>

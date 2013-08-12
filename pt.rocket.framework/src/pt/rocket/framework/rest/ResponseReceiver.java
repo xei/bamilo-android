@@ -111,6 +111,9 @@ public abstract class ResponseReceiver<T> extends ResultReceiver {
 		if (jsonObject.getBoolean(JSON_SUCCESS_TAG)) {
 			JSONObject metadataObject = jsonObject
 					.optJSONObject(JSON_METADATA_TAG);
+			if(metadataObject == null){
+				metadataObject = jsonObject;
+			}
 			T responseData = parseResponse(metadataObject);
 			Log.d( TAG, "resultData location = " + resultData.getString(IMetaData.LOCATION));
 			EventManager.getSingleton().triggerResponseEvent(

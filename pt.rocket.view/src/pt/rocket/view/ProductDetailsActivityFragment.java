@@ -206,7 +206,10 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
         setAppContentLayout();
         init(getIntent());
         SharedPreferences sharedPrefs = this.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        mPhone2Call = sharedPrefs.getString(ProductDetailsActivityFragment.KEY_CALL_TO_ORDER, "12345");;
+        mPhone2Call = sharedPrefs.getString(ProductDetailsActivityFragment.KEY_CALL_TO_ORDER, "");
+        if(mPhone2Call.equalsIgnoreCase("")){
+        	mPhone2Call = getString(R.string.call_to_order_number);
+        }
     }
     
     @Override

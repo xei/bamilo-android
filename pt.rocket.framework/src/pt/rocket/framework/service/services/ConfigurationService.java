@@ -10,8 +10,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.net.Uri;
+import android.util.Log;
 
-import com.google.analytics.tracking.android.Log;
 
 import pt.rocket.framework.event.EventType;
 import pt.rocket.framework.event.RequestEvent;
@@ -44,7 +44,7 @@ public class ConfigurationService extends DarwinService {
 			break;
 			
 		default:
-			Log.d("ConfigurationService: NOT HANDLED EVENT -> " + event.getType());
+			Log.i("","ConfigurationService: NOT HANDLED EVENT -> " + event.getType());
 			break;
 		}
 		
@@ -61,7 +61,7 @@ public class ConfigurationService extends DarwinService {
 					public String parseResponse(JSONObject metadataObject) throws JSONException {						
 						String phone = "";
 						if ( null != metadataObject ) {
-							Log.d("getCallToOrderNumberFromApi : PHONE -> " + metadataObject.toString() );
+							phone = metadataObject.optString("metadata").split(" ")[0];
 						}
 						
 						return phone;
