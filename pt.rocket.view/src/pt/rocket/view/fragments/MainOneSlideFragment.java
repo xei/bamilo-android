@@ -151,7 +151,7 @@ public class MainOneSlideFragment extends BaseFragment {
         Log.i(TAG, "ON RESUME");
         final ViewPager pager = (ViewPager) rootView.findViewById(R.id.viewpager );
         final View imageContainer = rootView.findViewById(R.id.banner_view);
-        if (pager.getAdapter() == null && teaserImageArrayList.size()>1) {
+        if (pager.getAdapter() == null && teaserImageArrayList!=null && teaserImageArrayList.size()>1) {
             pager.setVisibility(View.VISIBLE);
             imageContainer.setVisibility(View.GONE);
             ImagePagerAdapter adapter = new ImagePagerAdapter(teaserImageArrayList, mInflater);
@@ -163,7 +163,7 @@ public class MainOneSlideFragment extends BaseFragment {
 //                        getActivity(), pager, adapter, indicator);    
 //                indicator.setViewPager(pagerWrapper);
 //            }
-        } else if(teaserImageArrayList.size() == 1) {
+        } else if(teaserImageArrayList!= null && teaserImageArrayList.size() == 1) {
             pager.setVisibility(View.GONE);
             imageContainer.setVisibility(View.VISIBLE);
             setImageToLoad(teaserImageArrayList.get(0).getImageUrl(),imageContainer);

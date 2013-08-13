@@ -111,9 +111,9 @@ public class CheckoutWebFragment extends BaseFragment {
         Log.d( TAG, "onBackPressed: webview.canGoBackup = " + webview.canGoBack() + " webview.hasFocus() = " + webview.hasFocus());
         if (webview.canGoBack() && webview.hasFocus()) {
             webview.goBack();
-            return false;
-        } else {
             return true;
+        } else {
+            return false;
         }
     }
     

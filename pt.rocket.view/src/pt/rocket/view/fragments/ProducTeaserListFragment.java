@@ -2,6 +2,7 @@
  * 
  */
 package pt.rocket.view.fragments;
+
 import java.util.EnumSet;
 import pt.rocket.framework.event.EventType;
 import pt.rocket.framework.event.ResponseEvent;
@@ -43,7 +44,7 @@ public class ProducTeaserListFragment extends BaseFragment {
     private static ProductTeaserGroup productTeaserGroup;
 
     private OnClickListener onTeaserClickListener;
-    
+
     private LayoutInflater inflater;
 
     /**
@@ -63,20 +64,19 @@ public class ProducTeaserListFragment extends BaseFragment {
      */
     public ProducTeaserListFragment() {
         super(EnumSet.noneOf(EventType.class), EnumSet.noneOf(EventType.class));
-        
+
     }
 
-    
     @Override
-    public void sendValuesToFragment(int identifier, Object values){
+    public void sendValuesToFragment(int identifier, Object values) {
         this.productTeaserGroup = (ProductTeaserGroup) values;
     }
-    
+
     @Override
-    public void sendListener(int identifier, OnClickListener onTeaserClickListener){
+    public void sendListener(int identifier, OnClickListener onTeaserClickListener) {
         this.onTeaserClickListener = onTeaserClickListener;
     }
-    
+
     /*
      * (non-Javadoc)
      * 
@@ -113,7 +113,7 @@ public class ProducTeaserListFragment extends BaseFragment {
         Log.i(TAG, "ON CREATE VIEW");
         inflater = mInflater;
         View view = mInflater.inflate(R.layout.teaser_products_group, viewGroup, false);
-                
+
         return view;
     }
 
@@ -128,17 +128,20 @@ public class ProducTeaserListFragment extends BaseFragment {
         Log.i(TAG, "ON START");
     }
 
-    private void setLayout(){
+    private void setLayout() {
         ViewGroup container = (ViewGroup) getView()
                 .findViewById(R.id.teaser_group_container);
 
-        ((TextView) getView().findViewById(R.id.teaser_group_title))
-                .setText(productTeaserGroup.getTitle());
-        for (TeaserProduct product : productTeaserGroup.getTeasers()) {
-            container.addView(createProductTeaserView(product, container, inflater));
+        if (productTeaserGroup != null) {
+            ((TextView) getView().findViewById(R.id.teaser_group_title))
+                    .setText(productTeaserGroup.getTitle());
+            for (TeaserProduct product : productTeaserGroup.getTeasers()) {
+                container.addView(createProductTeaserView(product, container, inflater));
+            }
         }
+
     }
-    
+
     /*
      * (non-Javadoc)
      * 
@@ -147,11 +150,8 @@ public class ProducTeaserListFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(TAG, "ON RESUME");       
+        Log.i(TAG, "ON RESUME");
         setLayout();
-
-//        AnalyticsGoogle.get().trackPage(R.string.gteaserprod_prefix);
-        //
     }
 
     /*
@@ -174,7 +174,7 @@ public class ProducTeaserListFragment extends BaseFragment {
     public void onStop() {
         super.onStop();
         Log.i(TAG, "ON STOP");
-//        FlurryTracker.get().end();
+        // FlurryTracker.get().end();
     }
 
     @Override
@@ -187,7 +187,8 @@ public class ProducTeaserListFragment extends BaseFragment {
         return false;
     }
 
-    private View createProductTeaserView(TeaserProduct product, ViewGroup vg, LayoutInflater mInflater) {
+    private View createProductTeaserView(TeaserProduct product, ViewGroup vg,
+            LayoutInflater mInflater) {
         View productTeaserView = mInflater.inflate(R.layout.product_item_small,
                 vg, false);
         if (product.getImages().size() > 0) {
@@ -207,21 +208,20 @@ public class ProducTeaserListFragment extends BaseFragment {
         attachTeaserListener(product, productTeaserView);
         return productTeaserView;
     }
-    
+
     private void attachTeaserListener(ITargeting targeting, View view) {
         view.setTag(R.id.target_url, targeting.getTargetUrl());
         view.setTag(R.id.target_type, targeting.getTargetType());
         view.setTag(R.id.target_title, targeting.getTargetTitle());
         view.setOnClickListener(onTeaserClickListener);
     }
-    
-    
+
     private void setImageToLoad(String imageUrl, View imageTeaserView) {
         final ImageView imageView = (ImageView) imageTeaserView
                 .findViewById(R.id.image_view);
         final View progressBar = imageTeaserView
                 .findViewById(R.id.image_loading_progress);
-        
+
         WindowManager wm = (WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
         Point size = new Point();
@@ -231,13 +231,13 @@ public class ProducTeaserListFragment extends BaseFragment {
             display.getSize(size);
             width = size.x;
             height = size.y;
-       } else {
-           width = display.getWidth();
-           height = display.getHeight();
-       }
-        
-        imageTeaserView.getLayoutParams().width = width/productTeaserGroup.getTeasers().size();
-        
+        } else {
+            width = display.getWidth();
+            height = display.getHeight();
+        }
+
+        imageTeaserView.getLayoutParams().width = width / productTeaserGroup.getTeasers().size();
+
         if (!TextUtils.isEmpty(imageUrl)) {
             ImageLoader.getInstance().displayImage(imageUrl, imageView,
                     new SimpleImageLoadingListener() {
@@ -259,4 +259,4 @@ public class ProducTeaserListFragment extends BaseFragment {
         }
 
     }
- }
+}

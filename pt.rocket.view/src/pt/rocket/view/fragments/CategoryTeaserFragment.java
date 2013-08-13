@@ -30,29 +30,30 @@ import de.akquinet.android.androlog.Log;
  */
 public class CategoryTeaserFragment extends BaseFragment {
 
-    private static final String TAG = LogTagHelper.create( CategoryTeaserFragment.class );
-    
+    private static final String TAG = LogTagHelper.create(CategoryTeaserFragment.class);
+
     private HomeFragmentActivity parentActivity;
-    
+
     private static CategoryTeaserGroup teaserCategoryGroup;
-    
+
     private OnClickListener onTeaserClickListener;
 
     private LayoutInflater inflater;
-    
+
     /**
      * 
      * @param dynamicForm
      * @return
      */
-	public static CategoryTeaserFragment getInstance() {
+    public static CategoryTeaserFragment getInstance() {
         CategoryTeaserFragment categoryTeaserFragment = new CategoryTeaserFragment();
         return categoryTeaserFragment;
     }
-    
+
     /**
      * Empty constructor
-     * @param arrayList 
+     * 
+     * @param arrayList
      */
     public CategoryTeaserFragment() {
         super(EnumSet.noneOf(EventType.class), EnumSet.noneOf(EventType.class));
@@ -60,16 +61,15 @@ public class CategoryTeaserFragment extends BaseFragment {
     }
 
     @Override
-    public void sendValuesToFragment(int identifier, Object values){
+    public void sendValuesToFragment(int identifier, Object values) {
         this.teaserCategoryGroup = (CategoryTeaserGroup) values;
     }
-    
+
     @Override
-    public void sendListener(int identifier, OnClickListener onTeaserClickListener){
+    public void sendListener(int identifier, OnClickListener onTeaserClickListener) {
         this.onTeaserClickListener = onTeaserClickListener;
     }
-    
-    
+
     /*
      * (non-Javadoc)
      * 
@@ -100,10 +100,11 @@ public class CategoryTeaserFragment extends BaseFragment {
      * android.view.ViewGroup, android.os.Bundle)
      */
     @Override
-    public View onCreateView(LayoutInflater mInflater, ViewGroup viewGroup, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater mInflater, ViewGroup viewGroup,
+            Bundle savedInstanceState) {
         super.onCreateView(mInflater, viewGroup, savedInstanceState);
         Log.i(TAG, "ON CREATE VIEW");
-        
+
         View view = mInflater.inflate(R.layout.teaser_categories_group, viewGroup, false);
 
         inflater = mInflater;
@@ -121,14 +122,16 @@ public class CategoryTeaserFragment extends BaseFragment {
         Log.i(TAG, "ON START");
         ViewGroup container = (ViewGroup) getView()
                 .findViewById(R.id.teaser_group_container);
-     
-        ((TextView) getView().findViewById(R.id.teaser_group_title))
-                .setText(teaserCategoryGroup.getTitle());
-        container.addView(createCategoryAllTeaserView(container, inflater));
-        for (TeaserCategory category : teaserCategoryGroup.getTeasers()) {
-            container
-                    .addView(createCategoryTeaserView(category, container, inflater));
+        if (teaserCategoryGroup != null) {
+            ((TextView) getView().findViewById(R.id.teaser_group_title))
+                    .setText(teaserCategoryGroup.getTitle());
+            container.addView(createCategoryAllTeaserView(container, inflater));
+            for (TeaserCategory category : teaserCategoryGroup.getTeasers()) {
+                container
+                        .addView(createCategoryTeaserView(category, container, inflater));
+            }
         }
+
     }
 
     /*
@@ -141,7 +144,7 @@ public class CategoryTeaserFragment extends BaseFragment {
         super.onResume();
         Log.i(TAG, "ON RESUME");
         //
-//        AnalyticsGoogle.get().trackPage(R.string.gcategory_prefix);
+        // AnalyticsGoogle.get().trackPage(R.string.gcategory_prefix);
         //
     }
 
@@ -165,20 +168,19 @@ public class CategoryTeaserFragment extends BaseFragment {
     public void onStop() {
         super.onStop();
         Log.i(TAG, "ON STOP");
-//        FlurryTracker.get().end();
+        // FlurryTracker.get().end();
     }
 
     @Override
     protected boolean onSuccessEvent(final ResponseResultEvent<?> event) {
         return true;
     }
-        
+
     @Override
     protected boolean onErrorEvent(ResponseEvent event) {
         return false;
     }
-    
-    
+
     private View createCategoryAllTeaserView(ViewGroup container, LayoutInflater mInflater) {
         View view = mInflater.inflate(
                 R.layout.category_inner_currentcat, container, false);
@@ -189,7 +191,7 @@ public class CategoryTeaserFragment extends BaseFragment {
         view.setTag(R.id.target_type, ITargeting.TargetType.CATEGORY);
         return view;
     }
-    
+
     private View createCategoryTeaserView(TeaserCategory cat, ViewGroup vg, LayoutInflater mInflater) {
         View categoryTeaserView;
         categoryTeaserView = mInflater.inflate(R.layout.category_inner_childcat, vg, false);
@@ -199,8 +201,7 @@ public class CategoryTeaserFragment extends BaseFragment {
         attachTeaserListener(cat, categoryTeaserView);
         return categoryTeaserView;
     }
-    
-    
+
     private void attachTeaserListener(ITargeting targeting, View view) {
         view.setTag(R.id.target_url, targeting.getTargetUrl());
         view.setTag(R.id.target_type, targeting.getTargetType());

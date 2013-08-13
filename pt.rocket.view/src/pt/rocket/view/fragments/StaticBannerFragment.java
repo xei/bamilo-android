@@ -46,6 +46,8 @@ public class StaticBannerFragment extends BaseFragment {
 
     private OnClickListener onTeaserClickListener;
 
+    private LayoutInflater inflater;
+
     /**
      * 
      * @param dynamicForm
@@ -112,22 +114,7 @@ public class StaticBannerFragment extends BaseFragment {
         Log.i(TAG, "ON CREATE VIEW");
 
         View view = mInflater.inflate(R.layout.teaser_banners_group, viewGroup, false);
-
-        ViewGroup container = (ViewGroup) view
-                .findViewById(R.id.teaser_group_container);
-
-        int maxItems = MAX_IMAGES_ON_SCREEN;
-        if (teaserImageArrayList.size() < MAX_IMAGES_ON_SCREEN) {
-            maxItems = teaserImageArrayList.size();
-        }
-
-        int i;
-        for (i = 0; i < maxItems; i++) {
-            TeaserImage image = teaserImageArrayList.get(i);
-            if (i > 0)
-                mInflater.inflate(R.layout.vertical_divider, container);
-            container.addView(createImageTeaserView(image, container, mInflater));
-        }
+        inflater = mInflater;
         return view;
     }
 
@@ -140,7 +127,25 @@ public class StaticBannerFragment extends BaseFragment {
     public void onStart() {
         super.onStart();
         Log.i(TAG, "ON START");
-        // FlurryTracker.get().begin();
+        ViewGroup container = (ViewGroup) getView()
+                .findViewById(R.id.teaser_group_container);
+
+        if (teaserImageArrayList != null) {
+            int maxItems = MAX_IMAGES_ON_SCREEN;
+            if (teaserImageArrayList.size() < MAX_IMAGES_ON_SCREEN) {
+                maxItems = teaserImageArrayList.size();
+            }
+
+            int i;
+            for (i = 0; i < maxItems; i++) {
+                TeaserImage image = teaserImageArrayList.get(i);
+                if (i > 0)
+                    inflater.inflate(R.layout.vertical_divider, container);
+                container.addView(createImageTeaserView(image, container, inflater));
+            }
+
+        }
+
     }
 
     /*

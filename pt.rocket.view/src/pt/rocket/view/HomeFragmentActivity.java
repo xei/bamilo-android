@@ -350,7 +350,7 @@ public class HomeFragmentActivity extends BaseActivity {
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
             // TODO Auto-generated method stub
-//           super.destroyItem(container, position, object);
+           super.destroyItem(container, position, object);
         }
     }
 
@@ -409,7 +409,6 @@ public class HomeFragmentActivity extends BaseActivity {
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
-            // TODO Auto-generated method stub
             super.onCreate(savedInstanceState);
             mInflater = (LayoutInflater) getActivity()
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);

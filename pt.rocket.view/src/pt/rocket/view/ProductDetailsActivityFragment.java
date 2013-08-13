@@ -35,6 +35,7 @@ import pt.rocket.utils.dialogfragments.DialogListFragment;
 import pt.rocket.utils.dialogfragments.DialogListFragment.OnDialogListListener;
 import pt.rocket.view.fragments.FragmentType;
 import pt.rocket.view.fragments.ProductBasicInfoFragment;
+import pt.rocket.view.fragments.ProductImageGalleryFragment;
 import pt.rocket.view.fragments.ProductImageShowOffFragment;
 import pt.rocket.view.fragments.ProductSpecificationsFragment;
 import pt.rocket.view.fragments.ProductVariationsFragment;
@@ -141,18 +142,18 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
     private RelativeLayout loadingRating;
     
     private Fragment productVariationsFragment;
-    private Fragment productImageShowOffFragment;
+    private Fragment productImagesViewPagerFragment;
     private Fragment productSpecificationFragment;
     private Fragment productBasicInfoFragment;
     
     private OnActivityFragmentInteraction mCallbackProductVariationsFragment;
-    private OnActivityFragmentInteraction mCallbackProductImageShowOffFragment;
+    private OnActivityFragmentInteraction mCallbackProductImagesViewPagerFragment;
     private OnActivityFragmentInteraction mCallbackProductSpecificationFragment;
     private OnActivityFragmentInteraction mCallbackProductBasicInfoFragment;
     
     private int mVariationsListPosition = -1;
     
-    private String mPhone2Call = "1234567";
+    private String mPhone2Call = "";
     public static String KEY_CALL_TO_ORDER = "call_to_order";
     
     private final int LOADING_PRODUCT = -1;
@@ -170,7 +171,7 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
         /**
          * Send LOADING_PRODUCT to show loading views.
          */
-        mCallbackProductImageShowOffFragment.sendPositionToFragment(LOADING_PRODUCT);
+        mCallbackProductImagesViewPagerFragment.sendPositionToFragment(LOADING_PRODUCT);
         mCallbackProductSpecificationFragment.sendPositionToFragment(LOADING_PRODUCT);
         mCallbackProductBasicInfoFragment.sendPositionToFragment(LOADING_PRODUCT);
         loadingRating.setVisibility(View.VISIBLE);
@@ -184,8 +185,10 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
 
         Log.d(TAG, "onItemClick: loading url = " + url);
         mCompleteProductUrl = url;
-        
+        mCallbackProductImagesViewPagerFragment.sendPositionToFragment(-1);
         loadProductPartial();
+        
+
     }
 
     @Override
@@ -195,8 +198,6 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
         } else if(type == FragmentType.PRODUCT_SPECIFICATION){
             ActivitiesWorkFlow.descriptionActivity(this, mCompleteProduct.getUrl());    
         }
-        
-        
     }
 
     
@@ -235,6 +236,7 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        unbindDrawables(findViewById( R.id.gallery_container));
         unbindDrawables(mDetailsContainer);
         System.gc();
     }
@@ -280,7 +282,7 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
         // the callback interface. If not, it throws an exception
         try {
             mCallbackProductVariationsFragment = (OnActivityFragmentInteraction) productVariationsFragment;
-            mCallbackProductImageShowOffFragment = (OnActivityFragmentInteraction) productImageShowOffFragment;
+            mCallbackProductImagesViewPagerFragment = (OnActivityFragmentInteraction) productImagesViewPagerFragment;
             mCallbackProductSpecificationFragment = (OnActivityFragmentInteraction) productSpecificationFragment;
             mCallbackProductBasicInfoFragment = (OnActivityFragmentInteraction) productBasicInfoFragment;
         } catch (ClassCastException e) {
@@ -598,22 +600,22 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
         
         if(productVariationsFragment == null){
             productVariationsFragment = ProductVariationsFragment.getInstance();
-            productImageShowOffFragment = ProductImageShowOffFragment.getInstance();
+            productImagesViewPagerFragment = ProductImageGalleryFragment.getInstance();
             productSpecificationFragment = ProductSpecificationsFragment.getInstance();
             productBasicInfoFragment = ProductBasicInfoFragment.getInstance();
             startFragmentCallbacks();
             mCallbackProductVariationsFragment.sendValuesToFragment(0, mCompleteProduct);
             mCallbackProductVariationsFragment.sendPositionToFragment(-1);
-            mCallbackProductImageShowOffFragment.sendValuesToFragment(0, mCompleteProduct);
+            mCallbackProductImagesViewPagerFragment.sendValuesToFragment(2, mCompleteProduct);
             mCallbackProductSpecificationFragment.sendValuesToFragment(0, mCompleteProduct);
             mCallbackProductBasicInfoFragment.sendValuesToFragment(0, mCompleteProduct);
             fragmentManagerTransition(R.id.variations_container, productVariationsFragment, false, false);
-            fragmentManagerTransition(R.id.product_showoff_container, productImageShowOffFragment, false, false);
+            fragmentManagerTransition(R.id.image_gallery_container, productImagesViewPagerFragment, false, true);
             fragmentManagerTransition(R.id.product_specifications_container, productSpecificationFragment, false, false);
             fragmentManagerTransition(R.id.product_basicinfo_container, productBasicInfoFragment, false, false);
         } else {
             mCallbackProductVariationsFragment.sendValuesToFragment(1, mCompleteProduct);
-            mCallbackProductImageShowOffFragment.sendValuesToFragment(1, mCompleteProduct);
+            mCallbackProductImagesViewPagerFragment.sendValuesToFragment(1, mCompleteProduct);
             mCallbackProductSpecificationFragment.sendValuesToFragment(1, mCompleteProduct);
             mCallbackProductBasicInfoFragment.sendValuesToFragment(1, mCompleteProduct);
         }
@@ -625,6 +627,37 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
         TrackerDelegator.trackProduct(getApplicationContext(), mCompleteProduct);
     }
 
+    private void displayGallery(CompleteProduct product) {
+        mCompleteProduct = product;
+        setShareIntent(createShareIntent());
+        setTitle(mCompleteProduct.getName());
+//        displayVariations();
+//        displayImages();
+    }
+    
+    private void displayImages() {
+        if(productImagesViewPagerFragment == null){
+            productImagesViewPagerFragment = ProductImageGalleryFragment.getInstance();
+            startFragmentGalleryCallbacks();
+            mCallbackProductImagesViewPagerFragment.sendValuesToFragment(2, mCompleteProduct);
+            fragmentManagerTransition(R.id.image_gallery_container, productImagesViewPagerFragment, false, true);
+        } else {
+            mCallbackProductImagesViewPagerFragment.sendValuesToFragment(1, mCompleteProduct);
+        }
+    }
+    
+    private void startFragmentGalleryCallbacks() {
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception
+        try {
+            mCallbackProductImagesViewPagerFragment = (OnActivityFragmentInteraction) productImagesViewPagerFragment;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(productImagesViewPagerFragment.toString()
+                    + " must implement OnActivityFragmentInteraction");
+        }
+
+    }
+    
     private void executeAddToShoppingCartCompleted() {
         String msgText = "1 " + getResources().getString(R.string.added_to_shop_cart_dialog_text);
         
@@ -756,6 +789,7 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
         case GET_PRODUCT_EVENT:
             AnalyticsGoogle.get().trackLoadTiming(R.string.gproductdetail, mBeginRequestMillis);
             displayProduct((CompleteProduct) event.result);
+            displayGallery((CompleteProduct) event.result);
             break;
         }
         return true;

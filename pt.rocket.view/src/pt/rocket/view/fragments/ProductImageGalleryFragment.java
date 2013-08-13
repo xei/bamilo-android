@@ -6,6 +6,7 @@ package pt.rocket.view.fragments;
 import java.util.ArrayList;
 import java.util.EnumSet;
 
+import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.controllers.GalleryPagerAdapter;
 import pt.rocket.controllers.NormalizingViewPagerWrapper;
 import pt.rocket.controllers.ProductImagesAdapter;
@@ -15,6 +16,7 @@ import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.HorizontalListView;
+import pt.rocket.utils.JumiaViewPager;
 import pt.rocket.utils.OnFragmentActivityInteraction;
 import pt.rocket.view.ProductDetailsActivityFragment;
 import pt.rocket.view.R;
@@ -22,9 +24,12 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -60,6 +65,8 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
 
     private OnFragmentActivityInteraction mCallback;
 
+    private boolean showHorizontalListView = true;
+
     /**
      * 
      * @param dynamicForm
@@ -84,6 +91,8 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
         this.mCompleteProduct = (CompleteProduct) values;
         if (identifier == 1) {
             updateAdapter();
+        } else if (identifier == 2) {
+            showHorizontalListView = false;
         }
     }
 
@@ -151,6 +160,11 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
         mImageListAdapter = new ProductImagesAdapter(getActivity(), mCompleteProduct.getImageList());
         mImagesList.setAdapter(mImageListAdapter);
         mImagesList.setOnItemClickListener(this);
+        if (!showHorizontalListView) {
+            mImagesList.setVisibility(View.GONE);
+        }
+        
+        
         mViewPager = (ViewPager) mainView.findViewById(R.id.viewpager);
         createViewPager();
         updateImage(0);
@@ -223,6 +237,14 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
         mViewPager.setAdapter(galleryAdapter);
         mPagerWrapper = new NormalizingViewPagerWrapper(getActivity(), mViewPager, galleryAdapter,
                 this);
+        
+        final GestureDetector tapGestureDetector = new GestureDetector(getActivity(), new TapGestureListener());
+        mViewPager.setOnTouchListener(new OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) {
+                tapGestureDetector.onTouchEvent(event);
+                return false;
+            }
+    });
 
     }
 
@@ -233,14 +255,12 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
     }
 
     private void showImageLoading() {
-        Log.d(TAG, "code1 showImageLoading");
         mProductImageLoading.setVisibility(View.VISIBLE);
         mImagesList.setVisibility(View.GONE);
         mViewPager.setVisibility(View.GONE);
     }
 
     private void hideImageLoading() {
-        Log.d(TAG, "code1 hideImageLoading");
         mProductImageLoading.setVisibility(View.GONE);
         mImagesList.setVisibility(View.VISIBLE);
         mViewPager.setVisibility(View.VISIBLE);
@@ -254,11 +274,48 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
                 "updateImage: index = " + index + " currentItem = " + mViewPager.getCurrentItem());
     }
 
+    OnClickListener clickToGallery = new OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+            Log.i(TAG, "code1onclick : click");
+            ActivitiesWorkFlow.productsGalleryActivity(getActivity(), mCompleteProduct.getUrl(),
+                    mViewPager.getCurrentItem());
+
+        }
+    };
+
+    OnClickListener clickToFinish = new OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+            Log.i(TAG, "code1onclick : click");
+            getActivity().finish();
+
+        }
+    };
+
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long arg3) {
-            Log.d(TAG, "code1 onItemClick: showing image with index " + position);
-            mPagerWrapper.setCurrentItem(position, true);
+        Log.d(TAG, "code1 onItemClick: showing image with index " + position);
+        mPagerWrapper.setCurrentItem(position, true);
 
+    }
+
+    class TapGestureListener extends GestureDetector.SimpleOnGestureListener {
+
+        @Override
+        public boolean onSingleTapConfirmed(MotionEvent e) {
+            
+            if(showHorizontalListView){
+                getActivity().finish();
+            } else {
+                ActivitiesWorkFlow.productsGalleryActivity(getActivity(), mCompleteProduct.getUrl(),
+                        mPagerWrapper.getCurrentItem());
+            }
+            
+            return showHorizontalListView;
+        }
     }
 
     @Override
