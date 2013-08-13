@@ -124,6 +124,7 @@ public class HomeFragmentActivity extends BaseActivity {
         changeSearchBarBehavior();
         
         if(requestResponse == null){
+            setProcessShow(false);
             triggerContentEvent(new RequestEvent(EventType.GET_TEASERS_EVENT));      
             triggerContentEvent(new RequestEvent(EventType.GET_CALL_TO_ORDER_PHONE));
         } else {
@@ -207,6 +208,8 @@ public class HomeFragmentActivity extends BaseActivity {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        setProcessShow(true);
+        showContentContainer();
     }
     
     private void restoreLayout(){
@@ -221,6 +224,7 @@ public class HomeFragmentActivity extends BaseActivity {
             
             setLayout(defaultPosition);
         } else {
+            setProcessShow(false);
             triggerContentEvent(new RequestEvent(EventType.GET_TEASERS_EVENT));
         }
     }
@@ -246,9 +250,9 @@ public class HomeFragmentActivity extends BaseActivity {
             }    
             setLayout(defaultPosition);
         } else {
+            setProcessShow(false);
             triggerContentEvent(new RequestEvent(EventType.GET_TEASERS_EVENT));
         }
-        
     }
 
     @Override
@@ -259,6 +263,7 @@ public class HomeFragmentActivity extends BaseActivity {
         }
         
         if(requestResponse == null && !isFirstBoot){
+            setProcessShow(false);
             triggerContentEvent(new RequestEvent(EventType.GET_TEASERS_EVENT));
         }
         
@@ -303,7 +308,6 @@ public class HomeFragmentActivity extends BaseActivity {
     protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
         switch ( event.getType() ) {
         case GET_TEASERS_EVENT:
-
             isFirstBoot = false;
             proccessResult((Collection<? extends Homepage>) event.result);    
             break;

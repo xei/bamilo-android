@@ -115,6 +115,11 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
 
     private DialogProgressFragment progressDialog;
 
+    /**
+     * Use this variable to have a more precise control on when to show the content container.
+     */
+    private boolean processShow = true;
+    
     private static final Set<EventType> HANDLED_EVENTS = EnumSet.of(
             EventType.GET_SHOPPING_CART_ITEMS_EVENT,
             EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT,
@@ -596,11 +601,13 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     }
 
     public final void showContentContainer() {
-        Log.d(getTag(), "Showing the content container");
-        hideLoadingInfo();
-        dismissProgress();
-        setVisibility(errorView, false);
-        setVisibility(contentContainer, true);
+        if(processShow){
+            Log.d(getTag(), "Showing the content container");
+            hideLoadingInfo();
+            dismissProgress();
+            setVisibility(errorView, false);
+            setVisibility(contentContainer, true);    
+        }
     }
 		
 
@@ -711,6 +718,17 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         // use the above as the method below does not always work
         // imm.showSoftInput(getSlidingMenu().getCurrentFocus(), InputMethodManager.SHOW_IMPLICIT);
     }
+    
+    /**
+     * Use this variable to have a more precise control on when to show the content container.
+     * The content will show by default after finishing the event request.
+     * 
+     * @param b
+     */
+    public void setProcessShow(boolean b){
+        processShow = b;
+    }
+    
 
     @Override
     public final void handleEvent(final ResponseEvent event) {
