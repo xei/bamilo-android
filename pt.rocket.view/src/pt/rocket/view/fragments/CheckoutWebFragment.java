@@ -396,7 +396,12 @@ public class CheckoutWebFragment extends BaseFragment {
         @Override
         public void onLoadResource(WebView view, String url) {
             super.onLoadResource(view, url);
-            Log.d(TAG, "onLoadResource: url = " + url);
+            try {
+                Log.d(TAG, "onLoadResource: url = " + url);
+            } catch (OutOfMemoryError e) {
+                e.printStackTrace();
+            }
+           
         }
         
         /* (non-Javadoc)
@@ -490,9 +495,6 @@ public class CheckoutWebFragment extends BaseFragment {
             break;
         case GET_SHOPPING_CART_ITEMS_EVENT:
             if (((ShoppingCart) event.result).getCartCount() == 0) {
-                Toast.makeText(getActivity(), getString(R.string.shoppingcart_alert_message_no_items),
-                        Toast.LENGTH_LONG)
-                        .show();
                 getActivity().finish();
             }
             break;

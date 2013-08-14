@@ -198,7 +198,8 @@ public class WriteReviewFragment extends BaseFragment {
      * Set the Products layout using inflate
      */
     private void setLayout() {
-
+        if(ratingBarContainer.getChildCount()>0)
+            return;
         LayoutInflater mInflater = (LayoutInflater) getActivity()
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         
