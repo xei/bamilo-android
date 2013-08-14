@@ -367,6 +367,13 @@ public class Product implements IJSONSerializable {
     public String getName() {
         return attributes.getName();
     }
+    
+    /**
+     * @return the product brand
+     */
+    public String getBrand() {
+        return attributes.getBrand();
+    }
 
     /**
      * @return the description
