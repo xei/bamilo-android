@@ -88,7 +88,6 @@ public class ProductsListAdapter extends BaseAdapter {
             promotion = null;
             progress = null;
             name = null;
-
             rating = null;
             discount = null;
             price = null;
@@ -254,7 +253,7 @@ public class ProductsListAdapter extends BaseAdapter {
             
         });
 
-        prodItem.name.setText(product.getName());
+        prodItem.name.setText(product.getBrand() + " " + product.getName());
         prodItem.price.setText(product.getSuggestedPrice());
         if(product.getRating() != null && product.getRating() > 0) {
         	prodItem.rating.setRating(product.getRating().floatValue());
@@ -394,7 +393,6 @@ public class ProductsListAdapter extends BaseAdapter {
     
     static class ViewHolder {
         public ImageView imageView;
-        public TextView brand;
         public TextView name;
         public TextView priceStroke;
         public TextView priceNormal;
