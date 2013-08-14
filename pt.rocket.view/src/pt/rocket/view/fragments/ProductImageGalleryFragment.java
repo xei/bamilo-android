@@ -308,7 +308,9 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
         public boolean onSingleTapConfirmed(MotionEvent e) {
             
             if(showHorizontalListView){
-                getActivity().finish();
+                if(getActivity()!=null){
+                    getActivity().finish();
+                }
             } else {
                 ActivitiesWorkFlow.productsGalleryActivity(getActivity(), mCompleteProduct.getUrl(),
                         mPagerWrapper.getCurrentItem());
