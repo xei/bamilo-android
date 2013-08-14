@@ -394,7 +394,7 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
 
     private void setSort(int position) {
         mSortPosition = position;
-
+        isLoadingMore = false;
         switch (position) {
         case 0: // <item >Popularity</item>
             sort = ProductSort.POPULARITY;
@@ -402,7 +402,8 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
             break;
         case 1: // <item >Price up</item>
             sort = ProductSort.PRICE;
-            dir = Direction.ASCENDENT;          break;
+            dir = Direction.ASCENDENT;          
+            break;
         case 2: // <item >Price down</item>
             sort = ProductSort.PRICE;
             dir = Direction.DESCENDENT;
@@ -517,11 +518,13 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
         showProductsContent();
 
         Log.i(TAG, " " + productsPage.getProducts().size());
-        pageNumber = productsPage.getProducts().size() < MAX_PAGE_ITEMS ? NO_MORE_PAGES
+        pageNumber = productsPage.getProducts().size() >= productsPage.getTotalProducts() ? NO_MORE_PAGES
                 : pageNumber + 1;
-        if (productsPage.getProducts().size() < MAX_PAGE_ITEMS) {
+        
+        if (productsPage.getProducts().size() >= productsPage.getTotalProducts()) {
             isLoadingMore = true;
         }
+        
         AnalyticsGoogle.get().trackSearch(searchQuery, productsPage.getTotalProducts());
         TrackerDelegator.trackSearchMade(getActivity().getApplicationContext(), searchQuery, productsPage.getTotalProducts());
         
