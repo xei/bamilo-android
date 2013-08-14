@@ -231,7 +231,6 @@ public class ProductService extends DarwinService {
                         JSONArray optionsArray = ratingOption.getJSONArray(JSON_OPTIONS_TAG);
                         option = new HashMap<String, String>();
                         optionsSize = optionsArray.length();
-                        Log.i(TAG, " OPTIONS SIZE " + optionsSize);
                         for (int k = 0; k < optionsSize; k++) {
                             optionObject = optionsArray.getJSONObject(k);
                             option.put(optionObject.getString(JSON_VALUE_TAG), optionObject.getString(JSON_ID_RATING_OPTION_TAG));
@@ -290,14 +289,12 @@ public class ProductService extends DarwinService {
         ContentValues values = new ContentValues();
         event.productReviewCreated.addParameters(values);
         values.put(REVIEW_PRODUCT_SKU_FIELD, event.productSKU);
-        Log.i(TAG, "code1review productSKU: "+REVIEW_PRODUCT_SKU_FIELD+" = " + event.productSKU);
         if (event.customerId != -1) {
             values.put(REVIEW_CUSTOMER_ID, event.customerId);
         }
         
         for (Entry<String, HashMap<String, String>> option : ratingOptions.entrySet()) {
         	
-            Log.i(TAG, "code1review quality: "+REVIEW_OPTION_FIELD + option.getKey() + " rating "+String.valueOf(event.productReviewCreated.getRating().get(option.getKey()).intValue()));
             values.put(REVIEW_OPTION_FIELD + option.getKey(), option.getValue().get(String.valueOf(event.productReviewCreated.getRating().get(option.getKey()).intValue())));
 
         }

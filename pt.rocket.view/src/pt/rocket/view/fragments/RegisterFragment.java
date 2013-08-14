@@ -396,22 +396,24 @@ public class RegisterFragment extends BaseFragment {
      * Sets the listener to handle the expand and colapse of the terms and conditions
      */
     private void detailsListener() {
-        View termsContainer = getView().findViewById(R.id.termsContainerClick);
-        if(termsContainer == null)
-            return;
-        
-        termsContainer.setOnClickListener(new OnClickListener() {
+        if(getView()!=null){
+            View termsContainer = getView().findViewById(R.id.termsContainerClick);
+            if(termsContainer == null)
+                return;
             
-            @Override
-            public void onClick(View v) {
-                int id = v.getId();
-                if (id == R.id.termsContainerClick) {
-                    Log.d(TAG, "terms click");
-                    ActivitiesWorkFlow.termsActivity(getActivity(), terms);
-                }
+            termsContainer.setOnClickListener(new OnClickListener() {
                 
-            }
-        });
+                @Override
+                public void onClick(View v) {
+                    int id = v.getId();
+                    if (id == R.id.termsContainerClick) {
+                        Log.d(TAG, "terms click");
+                        ActivitiesWorkFlow.termsActivity(getActivity(), terms);
+                    }
+                    
+                }
+            });
+        }
 
    
     }
