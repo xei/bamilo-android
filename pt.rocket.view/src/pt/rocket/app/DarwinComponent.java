@@ -3,6 +3,8 @@
  */
 package pt.rocket.app;
 
+import java.util.ArrayList;
+
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.framework.Darwin;
 import pt.rocket.framework.DarwinMode;
@@ -12,6 +14,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 /**
  * @author nutzer2
@@ -34,12 +37,14 @@ public class DarwinComponent extends ApplicationComponent {
      */
     @Override
     protected ErrorCode initInternal(Application app) {
+        Log.i("DARWIN", "code1error  weeee");
+        
         SharedPreferences sharedPrefs = app.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         int shopId = sharedPrefs.getInt(ChangeCountryFragmentActivity.KEY_COUNTRY, -1);
         if (shopId == -1) {
-            Intent intent = new Intent(app, ChangeCountryFragmentActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            app.startActivity(intent);
+//            Intent intent = new Intent(app, ChangeCountryFragmentActivity.class);
+//            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            app.startActivity(intent);
             return ErrorCode.REQUIRES_USER_INTERACTION;
         }
         if (Darwin.initialize(DarwinMode.DEBUG, app.getApplicationContext(), shopId)) {

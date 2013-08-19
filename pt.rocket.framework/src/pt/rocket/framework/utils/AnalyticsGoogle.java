@@ -354,4 +354,17 @@ public class AnalyticsGoogle {
 		return calcPathSegment(uri.getPathSegments(), 1);
 	}
 
+	/**
+	 * Google Analytics "General Campaign Measurement"
+	 * 
+	 * @param UTM Campaign
+	 * 
+	 */
+	public void setCampaign(String campaignString) {
+		if (campaignString != null) {
+            Log.d(TAG, "Google Analytics, Campaign: " + campaignString);
+			mTracker.setCampaign(campaignString);
+		} 
+	}
+	
 }

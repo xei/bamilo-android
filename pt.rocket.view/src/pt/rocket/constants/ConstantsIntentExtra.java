@@ -32,7 +32,9 @@ public class ConstantsIntentExtra {
     // ########### Products ########### 
     //    
     public static final String CONTENT_URL			= mPackage + "ContentUrl";	
- 
+    
+    public static final String PRODUCT_URL         = mPackage + "ProductUrl";  
+    
     // ########### Checkout ########### 
     //
 	public static final String CONTENT_TITLE = mPackage + "ContentTitle";
@@ -47,5 +49,9 @@ public class ConstantsIntentExtra {
 	
     public static final String NAVIGATION_PATH             = mPackage + "NavigationPath";
     public static final String NAVIGATION_SOURCE           = mPackage + "NavigationPrefix";
+    
+    // ########### Google Analytics: Campaign ##############
+    public static final String UTM_STRING         = "UTM";
+
 	
 }

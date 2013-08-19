@@ -36,6 +36,7 @@ import pt.rocket.framework.service.services.ShoppingCartService;
 import pt.rocket.framework.service.services.TeasersService;
 import pt.rocket.framework.utils.SingletonMap;
 import android.content.Context;
+import android.util.Log;
 
 /**
  * Service Manager class. Manages all the services from the framework.
@@ -103,6 +104,7 @@ public class ServiceManager extends RequestListener {
 
 	private void initServices(Context context) {
 		for (DarwinService service : SERVICES.values()) {
+		    Log.i("DarwinService", "code1service : "+service.toString());
 			service.init(context);
 		}
 	}

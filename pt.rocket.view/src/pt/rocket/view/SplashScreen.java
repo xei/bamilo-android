@@ -5,12 +5,14 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.event.ResponseEvent;
 import pt.rocket.framework.event.ResponseListener;
 import pt.rocket.framework.objects.Errors;
 import pt.rocket.framework.rest.RestContract;
+import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.DialogGeneric;
 import pt.rocket.utils.HockeyStartup;
@@ -84,14 +86,22 @@ public class SplashScreen extends Activity implements ResponseListener {
         super.onStop();
         JumiaApplication.INSTANCE.clearInitListener();
     }
+    
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        JumiaApplication.INSTANCE.clearInitListener();
+    }
 
     /**
      * Starts the Activity depending whether the app is started by the user, or by the push
      * notification.
      */
     public void selectActivity() {
+        // ## Google Analytics "General Campaign Measurement" ##
+        AnalyticsGoogle.get().setCampaign(getIntent().getStringExtra(ConstantsIntentExtra.UTM_STRING));
         // Push Notification Start
-        String productUrl = getIntent().getStringExtra("pt.rocket.view.ProductUrl");
+        String productUrl = getIntent().getStringExtra(ConstantsIntentExtra.PRODUCT_URL);
         if (productUrl != null && !productUrl.equals("")) {
             ActivitiesWorkFlow.productsDetailsActivity(SplashScreen.this, productUrl,
                     R.string.gpush_prefix, "");
@@ -104,7 +114,7 @@ public class SplashScreen extends Activity implements ResponseListener {
         }
         overridePendingTransition(R.animator.activityfadein, R.animator.splashfadeout);
     }
-
+    
     @SuppressLint("NewApi")
     private void showDevInfo() {
         if ( !HockeyStartup.isSplashRequired(getApplicationContext())) {
@@ -173,7 +183,7 @@ public class SplashScreen extends Activity implements ResponseListener {
      */
     @Override
     public void handleEvent(final ResponseEvent event) {
-        Log.d(TAG, "Got initialization result: " + event);
+        Log.i(TAG, "Got initialization result: " + event);
         if(dialog!=null && dialog.isShowing()){
             try {
                 dialog.hide();    
@@ -185,7 +195,7 @@ public class SplashScreen extends Activity implements ResponseListener {
             selectActivity();
             finish();
         } else if (event.errorCode == ErrorCode.REQUIRES_USER_INTERACTION) {
-//            ActivitiesWorkFlow.changeCountryActivity(SplashScreen.this);
+            ActivitiesWorkFlow.changeCountryActivity(SplashScreen.this);
             finish();
         } else if (event.errorCode.isNetworkError()) {
             dialog = DialogGeneric.createNoNetworkDialog(SplashScreen.this,

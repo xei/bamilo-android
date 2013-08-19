@@ -101,21 +101,21 @@ public class CheckVersion {
 
     public static void showDialog(FragmentActivity activity) { 
         
-//        if (checkResult == UpdateStatus.FORCED_AVAILABLE) {
-//            sDialog = createForcedUpdateDialog(activity);
-//        } else {
-//            sDialog = createOptionalUpdateDialog(activity);
-//        }
-//        
-//        fm = activity.getSupportFragmentManager();
-//        
-//        new Handler().postDelayed(new Runnable() {
-//
-//            @Override
-//            public void run() {
-//                sDialog.show(fm, null);
-//            }
-//        }, 1000l);
+        if (checkResult == UpdateStatus.FORCED_AVAILABLE) {
+            sDialog = createForcedUpdateDialog(activity);
+        } else {
+            sDialog = createOptionalUpdateDialog(activity);
+        }
+        
+        fm = activity.getSupportFragmentManager();
+        
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                sDialog.show(fm, null);
+            }
+        }, 1000l);
     }
 
     public static boolean runEvents(Context context) {
