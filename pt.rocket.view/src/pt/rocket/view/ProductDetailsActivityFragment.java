@@ -308,6 +308,7 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
     private void loadProduct() {
         mBeginRequestMillis = System.currentTimeMillis();
         triggerContentEvent(new GetProductEvent(mCompleteProductUrl));
+        setProcessShow(false);
     }
 
     private void loadProductPartial() {
@@ -597,7 +598,6 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
     private void displayProduct(CompleteProduct product) {
         mCompleteProduct = product;
         mCompleteProductUrl = product.getUrl();
-        
         if(productVariationsFragment == null){
             productVariationsFragment = ProductVariationsFragment.getInstance();
             productImagesViewPagerFragment = ProductImageGalleryFragment.getInstance();
@@ -787,9 +787,18 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
             executeAddToShoppingCartCompleted();
             break;
         case GET_PRODUCT_EVENT:
-            AnalyticsGoogle.get().trackLoadTiming(R.string.gproductdetail, mBeginRequestMillis);
-            displayProduct((CompleteProduct) event.result);
-            displayGallery((CompleteProduct) event.result);
+            if (((CompleteProduct) event.result).getName() == null) {
+                Toast.makeText(this, getString(R.string.product_could_not_retrieved),
+                        Toast.LENGTH_LONG).show();
+                finish();
+                return true;
+            } else {
+                setProcessShow(true);
+                AnalyticsGoogle.get().trackLoadTiming(R.string.gproductdetail, mBeginRequestMillis);
+                displayProduct((CompleteProduct) event.result);
+                displayGallery((CompleteProduct) event.result);    
+            }
+            
             break;
         }
         return true;

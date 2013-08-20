@@ -126,6 +126,18 @@ public class StaticBannerFragment extends BaseFragment {
     @Override
     public void onStart() {
         super.onStart();
+       
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see android.support.v4.app.Fragment#onResume()
+     */
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.i(TAG, "ON RESUME");
         Log.i(TAG, "ON START");
         ViewGroup container = (ViewGroup) getView()
                 .findViewById(R.id.teaser_group_container);
@@ -146,20 +158,6 @@ public class StaticBannerFragment extends BaseFragment {
 
         }
 
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onResume()
-     */
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.i(TAG, "ON RESUME");
-        //
-        // AnalyticsGoogle.get().trackPage(R.string.gteaser_prefix);
-        //
     }
 
     /*

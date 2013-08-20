@@ -68,25 +68,25 @@ public class HomeFragmentActivity extends BaseActivity {
     private LayoutInflater mInflater;
     private JumiaViewPager mPager;
     private PagerTabStrip pagerTabStrip;
-    
+
     private final int TAB_PREV_ID = 0;
     private final int TAB_CURR_ID = 1;
     private final int TAB_NEXT_ID = 2;
-    
+
     private final int TAB_INDICATOR_HEIGHT = 0;
     private final int TAB_UNDERLINE_HEIGHT = 1;
     private final int TAB_STRIP_COLOR = android.R.color.transparent;
     private final int TAB_COLOR_TEXT_UNSELECTED = R.color.strip_title;
     private final int TAB_COLOR_BACKGROUND = R.color.strip_title_background;
 
-    private final float TAB_SHADOW_COMPLETE = 0.4f; 
-    
+    private final float TAB_SHADOW_COMPLETE = 0.4f;
+
     // Gradient
-//    private final int TAB_COLOR_INDICATOR_UP = R.color.pager_title_up;
-//    private final int TAB_COLOR_INDICATOR_DOWN = R.color.pager_title_down;
-    
+    // private final int TAB_COLOR_INDICATOR_UP = R.color.pager_title_up;
+    // private final int TAB_COLOR_INDICATOR_DOWN = R.color.pager_title_down;
+
     private final String FONT_TEXT_SELECTED = "fonts/Roboto-Bold.ttf";
-    
+
     private HomeCollectionPagerAdapter mPagerAdapter;
     private static ArrayList<String> pagesTitles;
     public static ArrayList<Collection<? extends TeaserSpecification<?>>> requestResponse;
@@ -94,9 +94,9 @@ public class HomeFragmentActivity extends BaseActivity {
     private OnActivityFragmentInteraction mCallback;
 
     Activity activity;
-    
+
     private boolean isFirstBoot = true;
-    
+
     private int defaultPosition;
 
     /**
@@ -122,44 +122,38 @@ public class HomeFragmentActivity extends BaseActivity {
         mInflater = (LayoutInflater) this
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         changeSearchBarBehavior();
-        
-        if(requestResponse == null){
+
+        if (requestResponse == null) {
             setProcessShow(false);
-            triggerContentEvent(new RequestEvent(EventType.GET_TEASERS_EVENT));      
+            triggerContentEvent(new RequestEvent(EventType.GET_TEASERS_EVENT));
             triggerContentEvent(new RequestEvent(EventType.GET_CALL_TO_ORDER_PHONE));
         } else {
             restoreLayout();
         }
-  
+
         HockeyStartup.register(this);
-}
-    
-    public void moveToRight(){
-//        Toast.makeText(activity, "weeee", Toast.LENGTH_LONG).show;
     }
-    public void moveToLeft(){
-//        if(mPager.getCurrentItem() > 0) {
-//            mPager.setCurrentItem(mPager.getCurrentItem()-1, true);
-//        }
+
+    public void moveToRight() {
     }
-    
-    
-    
-    
+
+    public void moveToLeft() {
+    }
+
     /**
-     * Set some layout parameters that aren't possible by xml 
+     * Set some layout parameters that aren't possible by xml
+     * 
      * @throws NoSuchFieldException
      * @throws IllegalArgumentException
      * @throws IllegalAccessException
      */
-    private void setLayoutSpec() throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException {        
+    private void setLayoutSpec() throws NoSuchFieldException, IllegalArgumentException,
+            IllegalAccessException {
         // Get text
         final TextView currTextView = (TextView) pagerTabStrip.getChildAt(TAB_CURR_ID);
         final TextView nextTextView = (TextView) pagerTabStrip.getChildAt(TAB_NEXT_ID);
         final TextView prevTextView = (TextView) pagerTabStrip.getChildAt(TAB_PREV_ID);
-       
-        
-        
+
         // Set Color
         currTextView.setPadding(0, 0, 0, 1);
 
@@ -167,7 +161,7 @@ public class HomeFragmentActivity extends BaseActivity {
         final float density = activity.getResources().getDisplayMetrics().density;
         int mIndicatorHeight = (int) (TAB_INDICATOR_HEIGHT * density + 0.5f);
         int mFullUnderlineHeight = (int) (TAB_UNDERLINE_HEIGHT * density + 0.5f);
-        
+
         // Set the indicator height
         Field field;
         field = pagerTabStrip.getClass().getDeclaredField("mIndicatorHeight");
@@ -179,19 +173,20 @@ public class HomeFragmentActivity extends BaseActivity {
         field.set(pagerTabStrip, mFullUnderlineHeight);
         // Set the color of indicator
         Paint paint = new Paint();
-        paint.setShader(new LinearGradient(0, 0, 0, mIndicatorHeight, getResources().getColor(TAB_STRIP_COLOR), getResources().getColor(
+        paint.setShader(new LinearGradient(0, 0, 0, mIndicatorHeight, getResources().getColor(
+                TAB_STRIP_COLOR), getResources().getColor(
                 TAB_STRIP_COLOR), Shader.TileMode.CLAMP));
         field = pagerTabStrip.getClass().getDeclaredField("mTabPaint");
         field.setAccessible(true);
         field.set(pagerTabStrip, paint);
     }
-     
-    private void setLayout(int defaultPosition){
-        if(mPager == null){
+
+    private void setLayout(int defaultPosition) {
+        if (mPager == null) {
             mPager = (JumiaViewPager) findViewById(R.id.home_viewpager);
         }
-        
-        if(pagerTabStrip == null){
+
+        if (pagerTabStrip == null) {
             pagerTabStrip = (PagerTabStrip) findViewById(R.id.home_titles);
         }
         mPager.setAdapter(mPagerAdapter);
@@ -211,17 +206,16 @@ public class HomeFragmentActivity extends BaseActivity {
         setProcessShow(true);
         showContentContainer();
     }
-    
-    private void restoreLayout(){
 
-        if(requestResponse != null){
-            defaultPosition = Math.abs(requestResponse.size()/2);
-            
-            
-            if(mPagerAdapter== null){
+    private void restoreLayout() {
+
+        if (requestResponse != null) {
+            defaultPosition = Math.abs(requestResponse.size() / 2);
+
+            if (mPagerAdapter == null) {
                 mPagerAdapter = new HomeCollectionPagerAdapter(getSupportFragmentManager());
-            }   
-            
+            }
+
             setLayout(defaultPosition);
         } else {
             setProcessShow(false);
@@ -232,22 +226,22 @@ public class HomeFragmentActivity extends BaseActivity {
     private void proccessResult(Collection<? extends Homepage> result) {
         requestResponse = new ArrayList<Collection<? extends TeaserSpecification<?>>>();
         pagesTitles = new ArrayList<String>();
-        defaultPosition = Math.abs(result.size()/2);
-        
+        defaultPosition = Math.abs(result.size() / 2);
+
         int count = 0;
-        for (Homepage homepage : result) {  
+        for (Homepage homepage : result) {
             pagesTitles.add(homepage.getHomepageTitle());
             requestResponse.add(homepage.getTeaserSpecification());
-//            if(homepage.isDefaultHomepage()){
-//                defaultPosition = count;
-//            }
+            // if(homepage.isDefaultHomepage()){
+            // defaultPosition = count;
+            // }
             count++;
         }
 
-        if(requestResponse != null){
-            if(mPagerAdapter == null){
+        if (requestResponse != null) {
+            if (mPagerAdapter == null) {
                 mPagerAdapter = new HomeCollectionPagerAdapter(getSupportFragmentManager());
-            }    
+            }
             setLayout(defaultPosition);
         } else {
             setProcessShow(false);
@@ -261,22 +255,24 @@ public class HomeFragmentActivity extends BaseActivity {
         if (CheckVersion.needsToShowDialog()) {
             CheckVersion.showDialog(this);
         }
-        
-        if(requestResponse == null && !isFirstBoot){
+
+        if (requestResponse == null && !isFirstBoot) {
             setProcessShow(false);
             triggerContentEvent(new RequestEvent(EventType.GET_TEASERS_EVENT));
+        } else {
+            restoreLayout();
         }
-        
+
         AnalyticsGoogle.get().trackPage(R.string.ghomepage);
     }
-    
+
     @Override
     protected void onDestroy() {
         MixpanelTracker.flush();
         mPagerAdapter = null;
-        
+
         super.onDestroy();
-    }    
+    }
 
     private void changeSearchBarBehavior() {
         final EditText autoComplete = (EditText) findViewById(R.id.search_component);
@@ -306,21 +302,22 @@ public class HomeFragmentActivity extends BaseActivity {
 
     @Override
     protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
-        switch ( event.getType() ) {
+        switch (event.getType()) {
         case GET_TEASERS_EVENT:
             isFirstBoot = false;
-            proccessResult((Collection<? extends Homepage>) event.result);    
+            proccessResult((Collection<? extends Homepage>) event.result);
             break;
         case GET_CALL_TO_ORDER_PHONE:
-            SharedPreferences sharedPrefs = this.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+            SharedPreferences sharedPrefs = this.getSharedPreferences(
+                    ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPrefs.edit();
-            editor.putString(ProductDetailsActivityFragment.KEY_CALL_TO_ORDER, (String) event.result);
+            editor.putString(ProductDetailsActivityFragment.KEY_CALL_TO_ORDER,
+                    (String) event.result);
             editor.commit();
-            
+
             break;
         }
-        
-        
+
         return true;
     }
 
@@ -333,13 +330,8 @@ public class HomeFragmentActivity extends BaseActivity {
 
         @Override
         public Fragment getItem(int position) {
-           
-            Fragment fragment = new HomeObjectFragment();
-            Bundle args = new Bundle();
-            args.putInt(HomeObjectFragment.ARG_OBJECT, position);
-            fragment.setArguments(args);
-            return fragment;
-        } 
+            return new HomeObjectFragment(position);
+        }
 
         @Override
         public int getCount() {
@@ -350,11 +342,10 @@ public class HomeFragmentActivity extends BaseActivity {
         public CharSequence getPageTitle(int position) {
             return pagesTitles.get(position).toUpperCase();
         }
-        
+
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            // TODO Auto-generated method stub
-           super.destroyItem(container, position, object);
+            super.destroyItem(container, position, object);
         }
     }
 
@@ -365,6 +356,12 @@ public class HomeFragmentActivity extends BaseActivity {
         private OnActivityFragmentInteraction mCallback;
 
         private LayoutInflater mInflater;
+        
+        private int position;
+
+        public HomeObjectFragment(int position) {
+            this.position = position;
+        }
         
         private OnClickListener teaserClickListener = new OnClickListener() {
 
@@ -396,7 +393,8 @@ public class HomeFragmentActivity extends BaseActivity {
                         break;
                     case BRAND:
                         if (targetUrl != null) {
-                            ActivitiesWorkFlow.productsActivity(getActivity(), null, targetUrl, targetUrl, R.string.gsearch, "");
+                            ActivitiesWorkFlow.productsActivity(getActivity(), null, targetUrl,
+                                    targetUrl, R.string.gsearch, "");
                         }
                         break;
                     default:
@@ -433,18 +431,19 @@ public class HomeFragmentActivity extends BaseActivity {
         @Override
         public void onStart() {
             super.onStart();
-            
-            Bundle args = getArguments();
-            LinearLayout view = (LinearLayout) getView().findViewById(R.id.view_pager_element_frame);
-            
-            if(requestResponse != null){
-                Log.i(TAG, "code1onstart ");
-                processResult(requestResponse.get(args.getInt(ARG_OBJECT)), view);
+
+            LinearLayout view = (LinearLayout) getView()
+                    .findViewById(R.id.view_pager_element_frame);
+
+            if (requestResponse != null) {
+                Log.i(TAG, "code1onstart "+position);
+                processResult(requestResponse.get(position), view);
             } else {
-                ((HomeFragmentActivity) getActivity()).triggerContentEvent(new RequestEvent(EventType.GET_TEASERS_EVENT));  
+                ((HomeFragmentActivity) getActivity()).triggerContentEvent(new RequestEvent(
+                        EventType.GET_TEASERS_EVENT));
             }
         }
-        
+
         private void processResult(Collection<? extends TeaserSpecification<?>> result,
                 LinearLayout mainView) {
 
@@ -489,9 +488,9 @@ public class HomeFragmentActivity extends BaseActivity {
                         throw new ClassCastException(fragmentStaticBanner.toString()
                                 + " must implement OnActivityFragmentInteraction");
                     }
-                    
+
                     mCallback.sendListener(0, teaserClickListener);
-                    
+
                     mCallback.sendValuesToFragment(0, ((ImageTeaserGroup) teaserSpecification)
                             .getTeasers());
 
@@ -501,7 +500,7 @@ public class HomeFragmentActivity extends BaseActivity {
                             false, false);
                     break;
                 case CATEGORIES:
-                    
+
                     Fragment fragmentCategoryTeaser = CategoryTeaserFragment.getInstance();
 
                     // This makes sure that the container activity has implemented
@@ -523,7 +522,7 @@ public class HomeFragmentActivity extends BaseActivity {
                             false);
                     break;
                 case PRODUCT_LIST:
-                   
+
                     Fragment fragmentProductListTeaser = ProducTeaserListFragment.getInstance();
 
                     // This makes sure that the container activity has implemented
