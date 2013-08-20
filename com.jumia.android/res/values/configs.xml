@@ -8,7 +8,7 @@
     <string name="bugsense_apikey">ab8f1e86</string> -->
     
     <string name="hockeyapp_token">53cd6b0fa3c881475e0b31e9a9102bbc</string>
-    <string name="bugsense_apikey">aaaaaa</string>
+    <string name="bugsense_apikey">753c3181</string>
     <string name="mixpanel_token">8e9eac00a1c3a6ac871137ff3beca085</string>
     
     <bool name="rest_host_auth_use_it">true</bool>
