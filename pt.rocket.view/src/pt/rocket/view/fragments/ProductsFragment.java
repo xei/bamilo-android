@@ -239,7 +239,7 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
         
         productsContent = mainView.findViewById(R.id.products_content );
         sortButton = mainView.findViewById(R.id.sorter_button);
-        sortButton.setOnClickListener(this);
+        
         productsList = (GridView) mainView.findViewById(R.id.middle_productslist_list);
         productsList.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
@@ -478,9 +478,11 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
         
         int id = v.getId();
         if (id == R.id.sorter_button) {
-            mSortDialog = DialogListFragment.newInstance(getActivity(), (OnDialogListListener) this, ID_SORT_DIALOG, getString( R.string.product_sort),
-                    mSortOptions, mSortPosition);
-            mSortDialog.show(getActivity().getSupportFragmentManager(), null);
+            if(mSortDialog == null || !mSortDialog.isVisible() ){
+                mSortDialog = DialogListFragment.newInstance(getActivity(), (OnDialogListListener) this, ID_SORT_DIALOG, getString( R.string.product_sort),
+                        mSortOptions, mSortPosition);
+                mSortDialog.show(getActivity().getSupportFragmentManager(), null);    
+            }
         }
 
     }
@@ -498,7 +500,7 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
     @Override
     protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
         Log.d(TAG, "ON SUCCESS EVENT");
-        
+        sortButton.setOnClickListener(this);
         // Get Products Event
         ProductsPage productsPage = (ProductsPage) event.result;
         Log.d( TAG, "onSuccessEvent: products on page = " + productsPage.getProducts().size() + 
