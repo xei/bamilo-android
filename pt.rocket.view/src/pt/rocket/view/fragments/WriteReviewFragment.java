@@ -345,7 +345,9 @@ public class WriteReviewFragment extends BaseFragment {
         case LOGIN_EVENT:
             Customer customer = (Customer) event.result;
             TrackerDelegator.trackLoginSuccessful(getActivity(), customer, true, getActivity().getString(R.string.mixprop_loginlocationreview));
-            nameText.setText(customer.getFirstName());
+            if(nameText != null && customer != null && customer.getFirstName() != null){
+                nameText.setText(customer.getFirstName());
+            }
             return false;
         case GET_CUSTOMER:
             Log.i("GOT CUSTOMER", "HERE ");
