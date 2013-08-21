@@ -190,6 +190,7 @@ public class HomeFragmentActivity extends BaseActivity {
             pagerTabStrip = (PagerTabStrip) findViewById(R.id.home_titles);
         }
         mPager.setAdapter(mPagerAdapter);
+        mPager.setSaveEnabled(false);
         mPager.setCurrentItem(defaultPosition);
         try {
             setLayoutSpec();

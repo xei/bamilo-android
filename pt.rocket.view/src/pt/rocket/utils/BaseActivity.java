@@ -273,6 +273,14 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         loadingBarContainer = findViewById(R.id.loading_bar);
         loadingBarView = (LoadingBarView) findViewById(R.id.loading_bar_view);
         warningView = findViewById(R.id.warning);
+        warningView.setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+                showWarning(false);
+                
+            }
+        });
         errorView = findViewById(R.id.alert_view);
     }
 
@@ -587,6 +595,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
 
             @Override
             public void onClick(View v) {
+                showWarning(false);
                 triggerContentEvent(event);
             }
         });

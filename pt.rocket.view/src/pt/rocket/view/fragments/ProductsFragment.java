@@ -559,8 +559,12 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
     
     @Override
     protected boolean onErrorEvent(ResponseEvent event) {
-        
-        if (!event.errorCode.isNetworkError() && pageNumber == 1 && productsAdapter.getCount() == 0) {
+        Log.i(TAG, "code1net error");
+        if(event.errorCode.isNetworkError() && pageNumber == 1 ){
+            ((BaseActivity) getActivity()).showWarning(true);
+            ((BaseActivity) getActivity()).showError(new GetProductsEvent(productsURL, searchQuery, pageNumber, MAX_PAGE_ITEMS,
+                    sort, dir));
+        } else if (!event.errorCode.isNetworkError() && pageNumber == 1 && productsAdapter.getCount() == 0) {
             Log.d(TAG, "onErrorEvent: No products to show");
             showProductsNotfound();
             ((BaseActivity) getActivity()).showContentContainer();
@@ -589,7 +593,7 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
         loadingLayout.setVisibility(View.GONE);
         loadingLayout.refreshDrawableState();
         notfound.setVisibility(View.GONE);
-        isLoadingMore = false;
+//        isLoadingMore = false;
     }
     
     @Override
@@ -618,6 +622,8 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
                 showProductsLoading();
                 getMoreProducts();
             }            
+        } else {
+            isLoadingMore = false;
         }
     }
     

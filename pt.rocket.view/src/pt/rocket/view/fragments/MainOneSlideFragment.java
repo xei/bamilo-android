@@ -150,6 +150,7 @@ public class MainOneSlideFragment extends BaseFragment {
         super.onResume();
         Log.i(TAG, "ON RESUME");
         final ViewPager pager = (ViewPager) rootView.findViewById(R.id.viewpager );
+        pager.setSaveEnabled(false);
         final View imageContainer = rootView.findViewById(R.id.banner_view);
         if (pager.getAdapter() == null && teaserImageArrayList!=null && teaserImageArrayList.size()>1) {
             pager.setVisibility(View.VISIBLE);
