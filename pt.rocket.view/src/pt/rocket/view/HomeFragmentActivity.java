@@ -330,7 +330,12 @@ public class HomeFragmentActivity extends BaseActivity {
 
         @Override
         public Fragment getItem(int position) {
-            return new HomeObjectFragment(position);
+            
+            Fragment fragment = new HomeObjectFragment();
+            Bundle args = new Bundle();
+            args.putInt(HomeObjectFragment.ARG_OBJECT, position);
+            fragment.setArguments(args);
+            return fragment;
         }
 
         @Override
@@ -359,8 +364,7 @@ public class HomeFragmentActivity extends BaseActivity {
         
         private int position;
 
-        public HomeObjectFragment(int position) {
-            this.position = position;
+        public HomeObjectFragment() {
         }
         
         private OnClickListener teaserClickListener = new OnClickListener() {
@@ -432,12 +436,13 @@ public class HomeFragmentActivity extends BaseActivity {
         public void onStart() {
             super.onStart();
 
+            Bundle args = getArguments();
             LinearLayout view = (LinearLayout) getView()
                     .findViewById(R.id.view_pager_element_frame);
 
             if (requestResponse != null) {
                 Log.i(TAG, "code1onstart "+position);
-                processResult(requestResponse.get(position), view);
+                processResult(requestResponse.get(args.getInt(ARG_OBJECT)), view);
             } else {
                 ((HomeFragmentActivity) getActivity()).triggerContentEvent(new RequestEvent(
                         EventType.GET_TEASERS_EVENT));
