@@ -138,7 +138,7 @@ public class ProductsGalleryActivityNew extends MyActivity implements
     private void displayGallery(CompleteProduct product) {
         mCompleteProduct = product;
         setShareIntent(createShareIntent());
-        setTitle(mCompleteProduct.getName());
+        setTitle(mCompleteProduct.getBrand() + " " + mCompleteProduct.getName());
         displayVariations();
         displayImages();
     }

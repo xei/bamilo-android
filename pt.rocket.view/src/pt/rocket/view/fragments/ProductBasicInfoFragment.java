@@ -268,7 +268,7 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
     }
     
     private void setBasicInfo(){
-        mProductName.setText(mCompleteProduct.getName());
+        mProductName.setText(mCompleteProduct.getBrand() + " " + mCompleteProduct.getName());
         updateStockInfo();
         displayPriceInfo();
     }

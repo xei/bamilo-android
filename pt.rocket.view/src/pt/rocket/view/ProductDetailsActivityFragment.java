@@ -293,7 +293,7 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
     }
 
     private void setContentInformation() {
-        setTitle(mCompleteProduct.getName());
+        setTitle(mCompleteProduct.getBrand() + " " + mCompleteProduct.getName());
         preselectASimpleItem();
 
         // displayVariations();
@@ -579,7 +579,7 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
 
         ShoppingCartItem item = new ShoppingCartItem(createVariantAttributesHashMap(simple));
         item.initialize(mCompleteProduct.getSku(), sku, mCompleteProduct.getImageList().get(0),
-                mCompleteProduct.getUrl(), mCompleteProduct.getName(), quantity,
+                mCompleteProduct.getUrl(), mCompleteProduct.getBrand() + " " + mCompleteProduct.getName(), quantity,
                 mCompleteProduct.getSpecialPrice(), mCompleteProduct.getPrice(), 1);
 
         showProgress();
@@ -623,14 +623,14 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
         setContentInformation();
 
         AnalyticsGoogle.get().trackProduct(mNavigationSource, mNavigationPath,
-                mCompleteProduct.getName(), mCompleteProduct.getSku(), mCompleteProduct.getUrl());
+                mCompleteProduct.getBrand() + " " + mCompleteProduct.getName(), mCompleteProduct.getSku(), mCompleteProduct.getUrl());
         TrackerDelegator.trackProduct(getApplicationContext(), mCompleteProduct);
     }
 
     private void displayGallery(CompleteProduct product) {
         mCompleteProduct = product;
         setShareIntent(createShareIntent());
-        setTitle(mCompleteProduct.getName());
+        setTitle(mCompleteProduct.getBrand() + " " + mCompleteProduct.getName());
 //        displayVariations();
 //        displayImages();
     }

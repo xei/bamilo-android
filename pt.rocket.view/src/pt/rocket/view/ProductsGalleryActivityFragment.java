@@ -150,7 +150,7 @@ public class ProductsGalleryActivityFragment extends BaseActivity {
     private void displayGallery(CompleteProduct product) {
         mCompleteProduct = product;
         setShareIntent(createShareIntent());
-        setTitle(mCompleteProduct.getName());
+        setTitle(mCompleteProduct.getBrand() + " " + mCompleteProduct.getName());
         displayVariations();
         displayImages();
     }

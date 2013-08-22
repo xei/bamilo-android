@@ -38,6 +38,7 @@ import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Debug;
+import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -478,11 +479,20 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
         
         int id = v.getId();
         if (id == R.id.sorter_button) {
-            if(mSortDialog == null || !mSortDialog.isVisible() ){
-                mSortDialog = DialogListFragment.newInstance(getActivity(), (OnDialogListListener) this, ID_SORT_DIALOG, getString( R.string.product_sort),
-                        mSortOptions, mSortPosition);
-                mSortDialog.show(getActivity().getSupportFragmentManager(), null);    
+            if(mSortDialog == null){
+                
             }
+            FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+            
+            if (mSortDialog != null) {
+                ft.remove(mSortDialog);
+            }
+            
+            mSortDialog = DialogListFragment.newInstance(getActivity(), (OnDialogListListener) this, ID_SORT_DIALOG, getString( R.string.product_sort),
+                    mSortOptions, mSortPosition);
+            
+            mSortDialog.show(ft, null);
+                   
         }
 
     }
@@ -559,7 +569,6 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
     
     @Override
     protected boolean onErrorEvent(ResponseEvent event) {
-        Log.i(TAG, "code1net error");
         if(event.errorCode.isNetworkError() && pageNumber == 1 ){
             ((BaseActivity) getActivity()).showWarning(true);
             ((BaseActivity) getActivity()).showError(new GetProductsEvent(productsURL, searchQuery, pageNumber, MAX_PAGE_ITEMS,

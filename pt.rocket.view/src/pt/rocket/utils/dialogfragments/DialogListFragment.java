@@ -129,20 +129,26 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
         View view;
         view = inflater.inflate(R.layout.dialog_list_content, container);
         
-        TextView titleView = (TextView) view.findViewById(R.id.title);
-        titleView.setText(mTitle);
-
-        list = (ListView) view.findViewById(R.id.list);
-        mAdapter = new DialogListAdapter();
-        mAdapter.setCheckedPosition(mInitialPosition);
-        list.setAdapter(mAdapter);
-        list.setOnItemClickListener(this);
-        this.mActivity.getWindow().getAttributes().width = LayoutParams.MATCH_PARENT;
+        
         
 //      if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1)
 //          resizeDialog(mDialog);
 
 	    return view;
+	}
+	
+	@Override
+	public void onResume() {
+	    super.onResume();
+	    TextView titleView = (TextView) getView().findViewById(R.id.title);
+        titleView.setText(mTitle);
+
+        list = (ListView) getView().findViewById(R.id.list);
+        mAdapter = new DialogListAdapter();
+        mAdapter.setCheckedPosition(mInitialPosition);
+        list.setAdapter(mAdapter);
+        list.setOnItemClickListener(this);
+        this.mActivity.getWindow().getAttributes().width = LayoutParams.MATCH_PARENT;
 	}
 
 	private class DialogListAdapter extends BaseAdapter {

@@ -155,19 +155,7 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
         Log.i(TAG, "ON CREATE VIEW");
 
         mainView = mInflater.inflate(R.layout.product_showoff_viewpager_frame, viewGroup, false);
-        mProductImageLoading = (RelativeLayout) mainView.findViewById(R.id.loading_gallery);
-        mImagesList = (HorizontalListView) mainView.findViewById(R.id.images_list);
-        mImageListAdapter = new ProductImagesAdapter(getActivity(), mCompleteProduct.getImageList());
-        mImagesList.setAdapter(mImageListAdapter);
-        mImagesList.setOnItemClickListener(this);
-        if (!showHorizontalListView) {
-            mImagesList.setVisibility(View.GONE);
-        }
         
-        
-        mViewPager = (ViewPager) mainView.findViewById(R.id.viewpager);
-        createViewPager();
-        updateImage(0);
         return mainView;
     }
 
@@ -192,9 +180,19 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        //
-        // AnalyticsGoogle.get().trackPage(R.string.gteaser_prefix);
-        //
+        mProductImageLoading = (RelativeLayout) mainView.findViewById(R.id.loading_gallery);
+        mImagesList = (HorizontalListView) mainView.findViewById(R.id.images_list);
+        mImageListAdapter = new ProductImagesAdapter(getActivity(), mCompleteProduct.getImageList());
+        mImagesList.setAdapter(mImageListAdapter);
+        mImagesList.setOnItemClickListener(this);
+        if (!showHorizontalListView) {
+            mImagesList.setVisibility(View.GONE);
+        }
+        
+        
+        mViewPager = (ViewPager) mainView.findViewById(R.id.viewpager);
+        createViewPager();
+        updateImage(0);
     }
 
     /*

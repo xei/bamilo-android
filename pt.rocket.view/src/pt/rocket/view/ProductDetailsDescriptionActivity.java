@@ -75,7 +75,7 @@ public class ProductDetailsDescriptionActivity extends MyActivity {
     }
 
     private void displayProductInformation() {
-        mProductName.setText(mCompleteProduct.getName());
+        mProductName.setText(mCompleteProduct.getBrand() + " " + mCompleteProduct.getName());
         displayPriceInformation();
         displaySpecification();
         displayDescription();
