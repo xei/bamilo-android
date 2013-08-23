@@ -240,8 +240,11 @@ public class LoginFragment extends BaseFragment {
             int id = view.getId();
             if (id == R.id.middle_login_button_signin) {
                 Log.d(TAG, "CLICKED ON SIGNIN");
-                if ( dynamicForm != null && dynamicForm.validate())
+                ((BaseActivity) getActivity()).hideKeyboard();
+                if ( dynamicForm != null && dynamicForm.validate()){
                     requestLogin();
+                }
+                    
             }
             else if (id == R.id.middle_login_link_fgtpassword) {
                 parentActivity.onSwitchFragment(FragmentType.FORGOT_PASSWORD, true);

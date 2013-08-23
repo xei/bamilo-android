@@ -67,12 +67,10 @@ public class ProductsGalleryActivityFragment extends BaseActivity {
     private String mCompleteProductUrl;
     
     private CompleteProduct mCompleteProduct;
-//    private View mVariationsContainer;
-    
 
     private HorizontalListView mList;
 
-    
+    private int LOADING_PRODUCT = -1;
 
     
     
@@ -103,12 +101,13 @@ public class ProductsGalleryActivityFragment extends BaseActivity {
     
     @Override
     public void onFragmentElementSelected(int position){
+        LOADING_PRODUCT = position;
         /**
          * Send LOADING_PRODUCT to show loading views.
          */
         String url = "";
-        if(mCompleteProduct.getVariations().size()>position){
-            url = mCompleteProduct.getVariations().get(position).getLink();
+        if(mCompleteProduct.getVariations().size()>LOADING_PRODUCT){
+            url = mCompleteProduct.getVariations().get(LOADING_PRODUCT).getLink();
         } else {
             return;
         }
@@ -164,8 +163,10 @@ public class ProductsGalleryActivityFragment extends BaseActivity {
             productVariationsFragment = ProductVariationsFragment.getInstance();
             startFragmentVariationCallbacks();
             mCallbackProductVariationsFragment.sendValuesToFragment(0, mCompleteProduct);
-            mCallbackProductVariationsFragment.sendPositionToFragment(-1);
+            mCallbackProductVariationsFragment.sendPositionToFragment(LOADING_PRODUCT);
             fragmentManagerTransition(R.id.variations_container, productVariationsFragment, false, true);
+        } else {
+            mCallbackProductVariationsFragment.sendValuesToFragment(1, mCompleteProduct);
         }
     }
 

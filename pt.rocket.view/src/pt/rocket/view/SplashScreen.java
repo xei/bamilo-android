@@ -127,6 +127,7 @@ public class SplashScreen extends Activity implements ResponseListener {
         try {
             pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
         } catch (NameNotFoundException e) {
+            e.printStackTrace();
             return;
         }
         TextView devText = (TextView) findViewById(R.id.dev_text);
@@ -150,6 +151,7 @@ public class SplashScreen extends Activity implements ResponseListener {
             devText.append("\nBuild: "
                     + SimpleDateFormat.getInstance().format(new java.util.Date(ze.getTime())));
         } catch (Exception e) {
+            e.printStackTrace();
         }
         devText.append("\nServer: " + RestContract.REQUEST_HOST);
         devText.append("\nUrban AirShip Device APID: \n" + PushManager.shared().getAPID());
@@ -167,6 +169,7 @@ public class SplashScreen extends Activity implements ResponseListener {
                 BugSenseHandler.useProxy(true);
             }
         } catch (Exception e) {
+            e.printStackTrace();
         }
         
         //==================================================================================================

@@ -102,6 +102,12 @@ public class RestService extends Service {
 		return Service.START_NOT_STICKY;
 	}
 	
+	@Override
+	public void onLowMemory() {
+		super.onLowMemory();
+		Log.i(TAG,"code1service low memory");
+	}
+	
 	public static Uri completeUri( Uri uri ) {
 		if ( Darwin.logDebugEnabled) {
 			Log.d( TAG, "completeUri: uri = " + uri);

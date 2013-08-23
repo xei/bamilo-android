@@ -76,6 +76,9 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
     @Override
     public void sendPositionToFragment(int position){
         this.mVariationsListPosition = position;
+        if(mList!=null){
+            mList.setSelectedItem(mVariationsListPosition, HorizontalListView.MOVE_TO_DIRECTLY);
+        }
     }
     
     @Override
@@ -222,9 +225,11 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-        mVariationsListPosition = position;
-        mCallback.onFragmentElementSelected(position);
-        mList.setSelectedItem(position, HorizontalListView.MOVE_TO_DIRECTLY);
+        if(mVariationsListPosition!=position){
+            mVariationsListPosition = position;
+            mCallback.onFragmentElementSelected(position);
+            mList.setSelectedItem(position, HorizontalListView.MOVE_TO_DIRECTLY);
+        }
     }
     
     private boolean isNotValidVariation(ArrayList<Variation> variations) {

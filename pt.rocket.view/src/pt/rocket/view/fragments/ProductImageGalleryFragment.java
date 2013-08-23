@@ -260,7 +260,9 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
 
     private void hideImageLoading() {
         mProductImageLoading.setVisibility(View.GONE);
-        mImagesList.setVisibility(View.VISIBLE);
+        if(showHorizontalListView){
+            mImagesList.setVisibility(View.VISIBLE);
+        }
         mViewPager.setVisibility(View.VISIBLE);
     }
 
@@ -295,7 +297,6 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long arg3) {
-        Log.d(TAG, "code1 onItemClick: showing image with index " + position);
         mPagerWrapper.setCurrentItem(position, true);
 
     }
