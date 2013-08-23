@@ -93,11 +93,11 @@
         <item>@string/fkey_ci_live</item>
     </string-array>
     <string-array name="language_codes">
-        <item>ng_NG</item>
-        <item>ke_KE</item>
-        <item>ma_MA</item>
+        <item>ng</item>
+        <item>ke</item>
+        <item>ma</item>
 <!--         <item>eg_EG</item> -->
-        <item>ci_CI</item>
+        <item>ci</item>
     </string-array>
 
     <item name="default_vibrate" type="bool">false</item>
