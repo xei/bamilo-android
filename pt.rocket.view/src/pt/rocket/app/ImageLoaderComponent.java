@@ -36,19 +36,17 @@ public class ImageLoaderComponent extends ApplicationComponent {
                 .cacheOnDisc()
                 .cacheInMemory()
                 .imageScaleType(ImageScaleType.EXACTLY)
-                .bitmapConfig(Config.ARGB_8888)
+                .bitmapConfig(Config.RGB_565)
                 .build();
 
         DisplayImageOptions smallOption = new DisplayImageOptions.Builder()
                 .cloneFrom(largeLoaderOptions)
                 .showStubImage(R.drawable.no_image_large)
-                .showImageForEmptyUri(R.drawable.no_image_small)
-                .imageScaleType(ImageScaleType.IN_SAMPLE_INT)
-                .bitmapConfig(Config.RGB_565)
-                .build();
+                .showImageForEmptyUri(R.drawable.no_image_small).build();
+
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
                 app)
-                .discCacheExtraOptions(400, 200, CompressFormat.JPEG, 100)
+                .discCacheExtraOptions(400, 200, CompressFormat.PNG, 50)
                 .discCacheSize(16 * 1024 * 1024)
                 .memoryCacheSize(4 * 1024 * 1024)
                 .defaultDisplayImageOptions(smallOption)
