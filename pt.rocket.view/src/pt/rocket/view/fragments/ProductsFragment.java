@@ -191,7 +191,6 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
         Log.d(TAG, "onCreate: productsURL = " + productsURL);
         searchQuery = getActivity().getIntent().getExtras().getString(ConstantsIntentExtra.SEARCH_QUERY);
         Log.d(TAG, "onCreate: searchQuery = " + searchQuery);
-        
         navigationSource = getActivity().getIntent().getIntExtra(ConstantsIntentExtra.NAVIGATION_SOURCE, -1);
         navigationPath = getActivity().getIntent().getStringExtra(ConstantsIntentExtra.NAVIGATION_PATH);
         AnalyticsGoogle.get().trackSourceResWithPath(navigationSource, navigationPath);     
@@ -516,6 +515,8 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
         Log.d( TAG, "onSuccessEvent: products on page = " + productsPage.getProducts().size() + 
                 " total products = " + productsPage.getTotalProducts());
                 
+        TrackerDelegator.trackSearchMade(getActivity().getApplicationContext(), searchQuery, productsPage.getTotalProducts());
+        
         String location = event.metaData.getString( IMetaData.LOCATION );
         Log.d( TAG, "Location = " + location );
         checkRedirectFromSearch(location);
@@ -526,6 +527,7 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
         if (!TextUtils.isEmpty(searchQuery)) {
             getActivity().setTitle(title + " (" + productsPage.getTotalProducts() + ")");
         }
+
         productsAdapter.appendProducts(productsPage.getProducts());
         showProductsContent();
 
@@ -538,7 +540,7 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
         }
         
         AnalyticsGoogle.get().trackSearch(searchQuery, productsPage.getTotalProducts());
-        TrackerDelegator.trackSearchMade(getActivity().getApplicationContext(), searchQuery, productsPage.getTotalProducts());
+
         
         Debug.MemoryInfo memoryInfo = new Debug.MemoryInfo();
         Debug.getMemoryInfo(memoryInfo);

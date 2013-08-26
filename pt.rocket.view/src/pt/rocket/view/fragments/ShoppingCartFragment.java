@@ -338,7 +338,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
                 CartItemValues values = new CartItemValues();
                 values.is_in_wishlist = false;
                 values.is_checked = false;
-                values.product_name = item.getName();
+                values.product_name =item.getName();
                 values.price = item.getPrice();
                 values.product_id = 0;
                 values.quantity = item.getQuantity();

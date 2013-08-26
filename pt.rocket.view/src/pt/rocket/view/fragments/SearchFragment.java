@@ -256,6 +256,7 @@ public class SearchFragment extends BaseFragment implements OnItemClickListener 
 
     
     protected void executeSearch(String searchText) {
+
         ActivitiesWorkFlow.productsActivity(getActivity(), null, searchText, searchText, R.string.gsearch, "");
     }
     

@@ -23,7 +23,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxLines="2"
-                android:text="Samsung Galaxy S2"
+                android:text=""
                 android:textColor="@color/grey_middle"
                 android:textSize="@dimen/text_mid"
                 android:textStyle="bold" />
@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/product_name"
                 android:layout_marginTop="@dimen/margin_small"
-                android:text="100 €"
+                android:text=""
                 android:textSize="14dp"
                 android:textStyle="bold" />
 

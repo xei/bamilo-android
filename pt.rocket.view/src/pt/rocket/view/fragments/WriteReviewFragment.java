@@ -230,7 +230,7 @@ public class WriteReviewFragment extends BaseFragment {
                     }
                 });
 
-        productName.setText(completeProduct.getName());
+        productName.setText(completeProduct.getBrand()+" "+completeProduct.getName());
         displayPriceInformation();
     }
 
@@ -318,6 +318,7 @@ public class WriteReviewFragment extends BaseFragment {
         switch (event.getType()) {
         case REVIEW_PRODUCT_EVENT:
             Log.d(TAG, "review product completed: success = " + event.getSuccess());
+
             dialog_review_submitted = DialogGenericFragment.newInstance(false, true, false,
                     getString(R.string.submit_title), getResources().getString(
                             R.string.submit_text), getResources().getString(

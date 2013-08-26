@@ -3,6 +3,8 @@ package pt.rocket.framework.objects;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.util.Log;
+
 import pt.rocket.framework.Darwin;
 import pt.rocket.framework.utils.CurrencyFormatter;
 
@@ -78,6 +80,7 @@ public class ShoppingCartItem implements IJSONSerializable {
         specialPriceVal = 0;
         
         try {
+        	Log.e("OBJECT", ":"+jsonObject.toString());
             imageUrl = jsonObject.getString(JSON_IMAGE_TAG);
             productUrl = jsonObject.optString(JSON_PRODUCT_URL_TAG);
             configSKU = jsonObject.getString(JSON_CONFIG_SKU_TAG);

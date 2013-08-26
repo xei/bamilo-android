@@ -187,7 +187,7 @@ public class PopularityFragment extends BaseFragment {
         setPopularity();
         setCommentListener();
     }
-
+    
     /**
      * This method initializes the views with the product details such as name price and discount
      * price, in case the product has one.
@@ -197,7 +197,7 @@ public class PopularityFragment extends BaseFragment {
         TextView namePop = (TextView) getView().findViewById(R.id.product_info_name_p);
         TextView pricePop = (TextView) getView().findViewById(R.id.price_normal_p);
         TextView discountPop = (TextView) getView().findViewById(R.id.price_w_discount_p);
-        namePop.setText(selectedProduct.getName());
+        namePop.setText(selectedProduct.getBrand()+" "+selectedProduct.getName());
         if (!selectedProduct.getSpecialPrice().equals(selectedProduct.getPrice())) {
             pricePop.setText("" + selectedProduct.getPrice());
             pricePop.setPaintFlags(pricePop.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
