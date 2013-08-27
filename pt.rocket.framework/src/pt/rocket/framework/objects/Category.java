@@ -216,6 +216,8 @@ public class Category implements IJSONSerializable {
         children.clear();
         try {
 
+          	Log.e("CATEGORY", ":"+jsonObject.toString());
+        	
             id = jsonObject.optString(JSON_ID_TAG);
             name = jsonObject.optString(JSON_NAME_TAG);
             lft = jsonObject.optString(JSON_LEFT_TAG);
@@ -229,6 +231,8 @@ public class Category implements IJSONSerializable {
 
             infoUrl = jsonObject.getString(JSON_INFO_URL_TAG);
             apiUrl = jsonObject.getString(JSON_API_URL_TAG);
+            
+            Log.e("APIURL", ":"+apiUrl);
             
             JSONArray childrenArray = jsonObject.optJSONArray(JSON_CHILDREN_TAG);
 
@@ -258,6 +262,7 @@ public class Category implements IJSONSerializable {
     		return "/" + urlKey;
     	else
     		return parent.calcCategoryPath() + "/" + urlKey;
+//    		return urlKey;
     }
     
     public static Category findCategoryFromTopLevel( String id, ArrayList<Category> categories ) {
@@ -298,6 +303,9 @@ public class Category implements IJSONSerializable {
 
         JSONObject jsonObject = new JSONObject();
         try {
+        	
+  
+        	
             jsonObject.put(JSON_ID_TAG, id);
             jsonObject.put(JSON_NAME_TAG, name);
             jsonObject.put(JSON_LEFT_TAG, lft);

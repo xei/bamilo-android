@@ -54,7 +54,7 @@ public class TeaserFragmentActivity extends BaseActivity {
     private Fragment fragmentProductListTeaser;
     private Fragment fragmentBrandsListTeaser;
     private OnActivityFragmentInteraction mCallback;
-
+    
     private OnClickListener teaserClickListener = new OnClickListener() {
         
         @Override

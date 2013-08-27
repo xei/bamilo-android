@@ -70,7 +70,7 @@
 	<string name="share_checkout_this_product">Check out this product I found:</string>
 	<string name="product_could_not_retrieved">The product information could not be retrieved!</string>
 	<string name="share_subject">Jumia Sharing</string>
-	<string name="product_variance_choose">Please choose size</string>
+	<string name="product_variance_choose">Please choose</string>
 	<string name="product_variance_choose_error">Please choose one of several</string>
 	<string name="product_outof_stock">Item is out of stock</string>
 	<string name="error_add_to_cart_failed">Adding to cart failed</string>
@@ -192,7 +192,7 @@
 	<string name="error_register_alreadyexists">This email already exists. Please choose another one.</string>
 	<string name="error_forgotpassword_title">Password recovery failed</string>
 	<string name="error_forgotpassword_text">Your email is either invalid or unknown to the server. We can\'t send you a new password.</string>
-	<string name="stale_warning">Lost connection - Could not Update</string>
+	<string name="stale_warning">Lost connection</string>
 	<string name="upgrade_optional_title">Upgrade available</string>
 	<string name="upgrade_optional_text">There is a new update available that we prepared to make shopping on Jumia even better! Be sure to upgrade today!</string>
 	<string name="upgrade_forced_title">Upgrade necessary</string>
@@ -200,21 +200,20 @@
 	<string name="upgrade_proceed">Upgrade</string>
 	<string name="upgrade_remindmelater">Remind me later</string>
 	<string name="incomplete_alert">Oh oh, could not complete!</string>
-	
-	<!-- Missing Strings -->
 	<string name="products_could_notloaded">Loading more products failed. Please try again.</string>
 	<string name="client_error_title">App error!</string>
 	<string name="shoppingcart_items">Items</string>
 	<string name="shoppingcart_minamount">Unfortunately we can not deliver any orders that do not exceed our minimum order amount of %s.</string>
-    <string name="shoppingcart_minamount_waiting">Waiting for information about minimal order amount from server</string>
-    <string name="notifications">Notifications</string>
-    <string name="notifications_summary">Receive exclusive offers and personal updates</string>
-    <string name="vibrate">Vibrate</string>
-    <string name="vibrate_summary">Vibrate on incoming notifications</string>
-    <string name="sound">Sound</string>
-    <string name="sound_summary">Play sound on incoming notifications</string>
-    <string name="error_no_connection">No connection</string>
-    <string name="section_title_account">Account Settings</string>
-    <string name="section_title_notification">Notification Settings</string>
-    <string name="call_to_order_number">01156226220</string>
+	<string name="shoppingcart_minamount_waiting">Waiting for information about minimal order amount from server</string>
+	<string name="notifications">Notifications</string>
+	<string name="notifications_summary">Receive exclusive offers and personal updates</string>
+	<string name="vibrate">Vibrate</string>
+	<string name="vibrate_summary">Vibrate on incoming notifications</string>
+	<string name="sound">Sound</string>
+	<string name="sound_summary">Play sound on incoming notifications</string>
+	<string name="error_no_connection">No connection</string>
+	<string name="section_title_account">Account Settings</string>
+	<string name="section_title_notification">Notification Settings</string>
+	<string name="rating_quality">Quality</string>
+	<string name="call_to_order_number">01156226220</string>
 </resources>

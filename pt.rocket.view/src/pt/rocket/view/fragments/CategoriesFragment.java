@@ -339,6 +339,12 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
      * @param category
      */
     private void showProducts( Category category ) {
+        android.util.Log.e("CATEGORY ", "URL:"+category.getApiUrl());
+        android.util.Log.e("CATEGORY ", "PATH:"+category.getCategoryPath());
+        android.util.Log.e("CATEGORY ", "NAME:"+category.getName());
+
+//        ActivitiesWorkFlow.productsActivity(getActivity(), category.getCategoryPath(), category.getName(), null, R.string.gcategory_prefix, category.getCategoryPath());
+
         ActivitiesWorkFlow.productsActivity(getActivity(), category.getApiUrl(), category.getName(), null, R.string.gcategory_prefix, category.getCategoryPath());
     }
     

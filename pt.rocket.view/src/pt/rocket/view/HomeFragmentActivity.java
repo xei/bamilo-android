@@ -48,6 +48,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerTabStrip;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -97,7 +98,9 @@ public class HomeFragmentActivity extends BaseActivity {
 
     private boolean isFirstBoot = true;
 
-    private int defaultPosition;
+ //   private int defaultPosition=Math.abs(requestResponse.size() / 2);
+    
+    private int currentPosition=-1;
 
     /**
 	 */
@@ -179,11 +182,34 @@ public class HomeFragmentActivity extends BaseActivity {
         field = pagerTabStrip.getClass().getDeclaredField("mTabPaint");
         field.setAccessible(true);
         field.set(pagerTabStrip, paint);
+
+        
+        
     }
 
-    private void setLayout(int defaultPosition) {
+    private void setLayout(int currentPositionPager) {
         if (mPager == null) {
             mPager = (JumiaViewPager) findViewById(R.id.home_viewpager);
+            mPager.setOnPageChangeListener(new OnPageChangeListener() {
+                
+                @Override
+                public void onPageSelected(int arg0) {
+                    // TODO Auto-generated method stub
+                    currentPosition=arg0;
+                }
+                
+                @Override
+                public void onPageScrolled(int arg0, float arg1, int arg2) {
+                    // TODO Auto-generated method stub
+                    
+                }
+                
+                @Override
+                public void onPageScrollStateChanged(int arg0) {
+                    // TODO Auto-generated method stub
+                    
+                }
+            });
         }
 
         if (pagerTabStrip == null) {
@@ -191,7 +217,7 @@ public class HomeFragmentActivity extends BaseActivity {
         }
         mPager.setAdapter(mPagerAdapter);
         mPager.setSaveEnabled(false);
-        mPager.setCurrentItem(defaultPosition);
+        mPager.setCurrentItem(currentPositionPager);
         try {
             setLayoutSpec();
         } catch (IllegalArgumentException e) {
@@ -211,13 +237,15 @@ public class HomeFragmentActivity extends BaseActivity {
     private void restoreLayout() {
 
         if (requestResponse != null) {
-            defaultPosition = Math.abs(requestResponse.size() / 2);
+            if(currentPosition==-1){
+                currentPosition = Math.abs(requestResponse.size() / 2);    
+            }
+            
 
             if (mPagerAdapter == null) {
                 mPagerAdapter = new HomeCollectionPagerAdapter(getSupportFragmentManager());
             }
-
-            setLayout(defaultPosition);
+            setLayout(currentPosition);
         } else {
             setProcessShow(false);
             triggerContentEvent(new RequestEvent(EventType.GET_TEASERS_EVENT));
@@ -227,8 +255,11 @@ public class HomeFragmentActivity extends BaseActivity {
     private void proccessResult(Collection<? extends Homepage> result) {
         requestResponse = new ArrayList<Collection<? extends TeaserSpecification<?>>>();
         pagesTitles = new ArrayList<String>();
-        defaultPosition = Math.abs(result.size() / 2);
 
+        if(currentPosition==-1){
+            currentPosition = Math.abs(result.size() / 2);    
+        }
+        
         int count = 0;
         for (Homepage homepage : result) {
             pagesTitles.add(homepage.getHomepageTitle());
@@ -243,7 +274,7 @@ public class HomeFragmentActivity extends BaseActivity {
             if (mPagerAdapter == null) {
                 mPagerAdapter = new HomeCollectionPagerAdapter(getSupportFragmentManager());
             }
-            setLayout(defaultPosition);
+            setLayout(currentPosition);
         } else {
             setProcessShow(false);
             triggerContentEvent(new RequestEvent(EventType.GET_TEASERS_EVENT));
@@ -331,7 +362,6 @@ public class HomeFragmentActivity extends BaseActivity {
 
         @Override
         public Fragment getItem(int position) {
-            
             Fragment fragment = new HomeObjectFragment();
             Bundle args = new Bundle();
             args.putInt(HomeObjectFragment.ARG_OBJECT, position);

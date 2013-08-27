@@ -43,7 +43,7 @@
 	<string name="wishlist_notiems">Vous n\'avez pas d\'articles dans le panier</string>
 	<string name="categories_name">Les catégories</string>
 	<string name="categories_title">Recherchez les Catégories</string>
-	<string name="categories_name_all">Pour tous</string>
+	<string name="categories_name_all">Tout pour</string>
 	<string name="categories_toplevel_title">Toutes les catégories</string>
 	<string name="account_title">Mon compte </string>
 	<string name="account_name">Mon compte </string>
@@ -70,7 +70,7 @@
 	<string name="share_checkout_this_product">Découvre vite le produit que j\'ai trouvé!</string>
 	<string name="product_could_not_retrieved">Les informations sur ce produit n\'ont pas pu être trouvées</string>
 	<string name="share_subject">Partage Jumia</string>
-	<string name="product_variance_choose">Choisissez taille</string>
+	<string name="product_variance_choose">Choisissez </string>
 	<string name="product_variance_choose_error">Choisissez parmi</string>
 	<string name="product_outof_stock">Le produit n\'est plus disponible</string>
 	<string name="error_add_to_cart_failed">L\'ajout au panier n\'a pas fonctionné</string>
@@ -140,8 +140,8 @@
 	<string name="validation_title">Information erronée</string>
 	<string name="validation_errortext">Il y a des erreurs dans les données communiquées, vérifiez les différents champs renseignés</string>
 	<string name="terms_and_conditions">Termes et conditions</string>
-	<string name="product_sort">Sortir par:</string>
-	<string name="product_sort_button">Sortir</string>
+	<string name="product_sort">Filtrer par :</string>
+	<string name="product_sort_button">Filtrer</string>
 	<string name="products_sort_popularity">Popularité</string>
 	<string name="products_sort_priceup">Prix croissant</string>
 	<string name="products_sort_pricedown">Prix décroissant</string>
@@ -214,8 +214,6 @@
 	<string name="error_no_connection">Pas de connexion</string>
 	<string name="section_title_account">Paramètres du compte</string>
 	<string name="section_title_notification">Paramètres de notification</string>
-    <string name="rating_quality">Qualité</string>
-    <string name="rating_appearance">Apparence</string>
-    <string name="rating_price">Prix</string>
-    <string name="call_to_order_number">0648722407</string>
+	<string name="rating_quality">Qualité</string>
+	<string name="call_to_order_number">0648722407</string>
 </resources>
