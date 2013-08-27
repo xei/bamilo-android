@@ -572,7 +572,7 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
     @Override
     protected boolean onErrorEvent(ResponseEvent event) {
         if(event.errorCode.isNetworkError() && pageNumber == 1 ){
-            ((BaseActivity) getActivity()).showWarning(true);
+            ((BaseActivity) getActivity()).showWarning(false);
             ((BaseActivity) getActivity()).showError(new GetProductsEvent(productsURL, searchQuery, pageNumber, MAX_PAGE_ITEMS,
                     sort, dir));
         } else if (!event.errorCode.isNetworkError() && pageNumber == 1 && productsAdapter.getCount() == 0) {
