@@ -260,7 +260,6 @@ public class CheckoutWebFragment extends BaseFragment {
         checkoutUrl = "http://" + RestContract.REQUEST_HOST + CHECKOUT_URL_WITH_PARAM;
         setProxy( checkoutUrl );
         Log.d(TAG, "Loading Url: " + checkoutUrl);
-        android.util.Log.e("#################", ":"+checkoutUrl);
         webview.loadUrl(checkoutUrl);
         isRequestedPage = true;
     }
@@ -369,7 +368,6 @@ public class CheckoutWebFragment extends BaseFragment {
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-            android.util.Log.e("%%%%%%%%%%%%%", ":"+view.toString());
             Log.d(TAG, "onPageFinished: url = " + url );
             if ( wasLoadingErrorPage ) {
                 Log.d( TAG, "onPageFinished: resetting error page inforamtion");

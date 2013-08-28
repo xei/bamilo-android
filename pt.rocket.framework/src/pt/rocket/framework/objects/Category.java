@@ -216,7 +216,6 @@ public class Category implements IJSONSerializable {
         children.clear();
         try {
 
-          	Log.e("CATEGORY", ":"+jsonObject.toString());
         	
             id = jsonObject.optString(JSON_ID_TAG);
             name = jsonObject.optString(JSON_NAME_TAG);
@@ -232,7 +231,6 @@ public class Category implements IJSONSerializable {
             infoUrl = jsonObject.getString(JSON_INFO_URL_TAG);
             apiUrl = jsonObject.getString(JSON_API_URL_TAG);
             
-            Log.e("APIURL", ":"+apiUrl);
             
             JSONArray childrenArray = jsonObject.optJSONArray(JSON_CHILDREN_TAG);
 

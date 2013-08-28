@@ -52,6 +52,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import com.nostra13.universalimageloader.cache.disc.impl.TotalSizeLimitedDiscCache;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.PauseOnScrollListener;
 
@@ -122,6 +123,7 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
     
     private static ProductsFragment productsFragment;
    
+    private int totalProducts=-1;
     /**
      * Get instance
      * 
@@ -363,8 +365,9 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
      */
     private void getMoreProducts() {
         Log.d(TAG, "GET MORE PRODUCTS");
-        
-        if (pageNumber != NO_MORE_PAGES) {
+
+      
+        if (pageNumber != NO_MORE_PAGES ) {
 
             // Test to see if we already have all the products available
 
@@ -377,7 +380,7 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
                         new GetProductsEvent(productsURL, searchQuery, pageNumber, MAX_PAGE_ITEMS,
                                         sort, dir));
             TrackerDelegator.trackCategoryView(getActivity().getApplicationContext(), title, pageNumber);
-        } else {
+        } else{
             hideProductsLoading();
         }
     }
@@ -514,7 +517,15 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
         ProductsPage productsPage = (ProductsPage) event.result;
         Log.d( TAG, "onSuccessEvent: products on page = " + productsPage.getProducts().size() + 
                 " total products = " + productsPage.getTotalProducts());
-                
+       try{
+           if(productsPage.getTotalProducts()>0){
+               totalProducts=  productsPage.getTotalProducts();    
+           }
+       }catch(Exception e){
+           e.printStackTrace();
+       }
+
+        
         TrackerDelegator.trackSearchMade(getActivity().getApplicationContext(), searchQuery, productsPage.getTotalProducts());
         
         String location = event.metaData.getString( IMetaData.LOCATION );
@@ -534,6 +545,16 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
         Log.i(TAG, " " + productsPage.getProducts().size());
         pageNumber = productsPage.getProducts().size() >= productsPage.getTotalProducts() ? NO_MORE_PAGES
                 : pageNumber + 1;
+        
+        
+//        android.util.Log.e("totalProducts", ":"+totalProducts);
+//        android.util.Log.e("MAX MAX", ":"+((pageNumber-1)*MAX_PAGE_ITEMS));
+//        android.util.Log.e("PAGE NUMBER", ":"+(pageNumber-1));
+//        android.util.Log.e("MAX_PAGE_ITEMS", ":"+MAX_PAGE_ITEMS);
+        if(totalProducts<((pageNumber-1)*MAX_PAGE_ITEMS)){
+            pageNumber= NO_MORE_PAGES;
+            android.util.Log.e("NEW PAGE NUMBER", ":"+pageNumber);
+        }
         
         if (productsPage.getProducts().size() >= productsPage.getTotalProducts()) {
             isLoadingMore = true;
@@ -582,7 +603,10 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
         } else {
             Log.d( TAG, "onErrorEvent: loading more products failed");
             hideProductsLoading();
-            Toast.makeText(getActivity(), R.string.products_could_notloaded, Toast.LENGTH_LONG).show();
+           
+            if(totalProducts!=-1 && totalProducts>((pageNumber-1)*MAX_PAGE_ITEMS)){           
+              Toast.makeText(getActivity(), R.string.products_could_notloaded, Toast.LENGTH_SHORT).show();
+            }      
         }
         return true;
     }

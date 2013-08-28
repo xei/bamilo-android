@@ -260,7 +260,6 @@ public class DynamicFormItem {
             String text = null == value ? "" : (String) value;
             ((EditText) this.dataControl).setText(text);
             this.errorControl.setVisibility(View.GONE);
-            android.util.Log.e("###########Name",":"+this.entry.getId());
             ((View) this.dataControl).setContentDescription(this.entry.getId());
 
             if (text.length() == 0) {
@@ -669,7 +668,6 @@ public class DynamicFormItem {
                 params.addRule(RelativeLayout.CENTER_VERTICAL);
                 params.setMargins((int)(3 * this.scale), 0, 0, 0);
                 this.dataControl.setLayoutParams(params);
-                android.util.Log.e("###########KEY",":"+this.entry.getKey());
                 ((View) this.dataControl).setContentDescription(this.entry.getKey());
                 ((CheckBox) this.dataControl).setButtonDrawable(R.drawable.selector_checkbox);
                 ((CheckBox) this.dataControl).setFocusable(false);
@@ -732,7 +730,6 @@ public class DynamicFormItem {
                 this.dataControl.setId( parent.getNextId() );
                 this.dataControl.setLayoutParams(params);
                 
-                android.util.Log.e("###########KEY",":"+this.entry.getKey());
                 ((View) this.dataControl).setContentDescription(this.entry.getKey());
                 
                 params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
@@ -814,7 +811,6 @@ public class DynamicFormItem {
                 ((ViewGroup) this.control).addView(this.errorControl);
                 
                 final CharSequence editText = ((EditText) this.dataControl).getHint();             
-                android.util.Log.e("###########Name",":"+this.entry.getKey());
                 ((View) this.dataControl).setContentDescription(this.entry.getKey());
                 // Listeners
                 this.dataControl.setOnFocusChangeListener(new OnFocusChangeListener() {
