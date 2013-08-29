@@ -102,6 +102,8 @@ public class HomeFragmentActivity extends BaseActivity {
     
     private int currentPosition=-1;
 
+    private boolean inBackground;
+
     /**
 	 */
     public HomeFragmentActivity() {
@@ -284,9 +286,18 @@ public class HomeFragmentActivity extends BaseActivity {
     @Override
     public void onResume() {
         super.onResume();
-        if (CheckVersion.needsToShowDialog()) {
-            CheckVersion.showDialog(this);
+        
+        if (inBackground) {
+            // You just came from the background
+            inBackground = false;
         }
+        else {
+            // You just returned from another activity within your own app
+        }
+//FIXME commented to ignore version check
+//        if (CheckVersion.needsToShowDialog()) {
+//            CheckVersion.showDialog(this);
+//        }
 
         if (requestResponse == null && !isFirstBoot) {
             setProcessShow(false);
@@ -296,6 +307,11 @@ public class HomeFragmentActivity extends BaseActivity {
         }
 
         AnalyticsGoogle.get().trackPage(R.string.ghomepage);
+    }
+    
+    @Override
+    public void onUserLeaveHint() {
+        inBackground = true;
     }
 
     @Override

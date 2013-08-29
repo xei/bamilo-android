@@ -56,7 +56,7 @@ public class ShoppingCartFragmentActivity extends BaseActivity {
             ((ShoppingCartFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_shopping_cart)).goToCheckout();
         }
     }
-
+//Version
     /* (non-Javadoc)
      * @see pt.rocket.utils.MyActivity#handleedEvent(pt.rocket.framework.event.ResponseEvent)
      */

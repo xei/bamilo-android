@@ -32,6 +32,8 @@ public class CategoriesFragmentActivity extends BaseActivity {
     private Fragment fragment;
 
     private String categoryUrl;
+
+    private boolean inBackground;
     
     // Used by CategoriesFragment and InnerCategoriesFragment
     public static List<Category> currentCategories;
@@ -88,6 +90,19 @@ public class CategoriesFragmentActivity extends BaseActivity {
     @Override
     public void onResume() {
         super.onResume();
+        if (inBackground) {
+            // You just came from the background
+            inBackground = false;
+        }
+        else {
+            // You just returned from another activity within your own app
+        }
+
+    }
+    
+    @Override
+    public void onUserLeaveHint() {
+        inBackground = true;
     }
     
     @Override
