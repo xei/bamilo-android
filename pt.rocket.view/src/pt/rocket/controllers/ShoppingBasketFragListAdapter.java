@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.holoeverywhere.FontLoader;
 
@@ -27,6 +28,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.actionbarsherlock.view.ActionMode;
+import com.google.analytics.tracking.android.Log;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 
@@ -179,17 +181,39 @@ public class ShoppingBasketFragListAdapter extends BaseAdapter {
 
 		LinearLayout variancesContainer = (LinearLayout) item.findViewById(R.id.variances_container);
 		variancesContainer.removeAllViews();
+	
 		if ( itemValues.simpleData != null) {
 			variancesContainer.setVisibility(View.VISIBLE);
 			Map<String, String> simpleData = itemValues.simpleData;
+		    
+			//FIXME COMMENT UNTIL DEPLY OF API TO LIVE
+		     try {
+		            
 
-			for (Entry<String, String> entry : simpleData.entrySet()) {
-				TextView variances = (TextView) inflater.inflate(R.layout.shopping_basket_variance_text, variancesContainer, false );
-				// Log.d( TAG, "getView: entryKey = " + entry.getKey() +
-				// " entryValue = " + entry.getValue());
-				variances.setText(entry.getValue());
-				variancesContainer.addView(variances);
-			}
+		         if(itemValues.variation!=null && itemValues.variation.length()>0){
+		               TextView variances = (TextView) inflater.inflate(R.layout.shopping_basket_variance_text, variancesContainer, false );
+		                 
+		                 variances.setText(itemValues.variation);
+		               variancesContainer.addView(variances);
+		         }
+		         } catch (Exception e) {
+		             // TODO: handle exception
+		         }
+			
+//			TextView variances = (TextView) inflater.inflate(R.layout.shopping_basket_variance_text, variancesContainer, false );
+//			
+//			variances.setText(itemValues.variation);
+//          variancesContainer.addView(variances);
+//			for (Entry<String, String> entry : simpleData.entrySet()) {
+//				TextView variances = (TextView) inflater.inflate(R.layout.shopping_basket_variance_text, variancesContainer, false );
+//				// Log.d( TAG, "getView: entryKey = " + entry.getKey() +
+//				// " entryValue = " + entry.getValue());
+//				android.util.Log.e("VARIANCE", ":"+entry.getValue());
+//				variances.setText(entry.getValue());
+//				variancesContainer.addView(variances);
+//			}
+			
+			
 		}
 		
 		TextView stockInfo = (TextView) item.findViewById( R.id.item_stock );

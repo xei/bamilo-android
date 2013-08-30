@@ -188,7 +188,6 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
         mCallbackProductImagesViewPagerFragment.sendPositionToFragment(-1);
         loadProductPartial();
         
-
     }
 
     @Override
@@ -325,6 +324,7 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
         Set<String> knownVariations = scanSimpleAttributesForKnownVariants(ps);
 
         if (ps.size() == 1) {
+            //XXX
             if (knownVariations.size() <= 1) {
                 mSelectedSimple = 0;
                 mHideVariationSelection = true;

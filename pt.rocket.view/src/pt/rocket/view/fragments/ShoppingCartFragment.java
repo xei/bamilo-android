@@ -117,6 +117,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         public Integer min_delivery_time;
         public Integer max_delivery_time;
         public Map<String, String> simpleData;
+        public String variation;
     }
     
 
@@ -349,6 +350,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
                 values.min_delivery_time = 0;
                 values.max_delivery_time = 99;
                 values.simpleData = item.getSimpleData();
+                values.variation = item.getVariation();
                 itemsValues.add(values);
                 
                 if ( !item.getPrice().equals( item.getSpecialPrice())) {

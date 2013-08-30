@@ -29,12 +29,14 @@ public class ShoppingCartItem implements IJSONSerializable {
     private static final String JSON_PRICE_TAG = "unit_price";
     private static final String JSON_TAX_AMOUNT_TAG = "tax_amount";
     private static final String JSON_MAX_QUANTITY = "max_quantity";
+    private static final String JSON_VARIATION = "variation";
 
     // TODO: implement these tags
     private static final String JSON_CART_RULE_DISPLAY_NAMES = "cart_rule_display_names";
     private static final String JSON_SALES_ORDER_ITEM = "salesOrderItem";
     private static final String JSON_CART_RULE_DISCOUNT = "cart_rule_discount";
 
+    
     private String imageUrl;
     private String productUrl;
     private String configSKU;
@@ -50,6 +52,7 @@ public class ShoppingCartItem implements IJSONSerializable {
     private double taxAmount;
     private Map<String, String> simpleData;
     private double cartRuleDiscount;
+    private String variation;
 
     private double priceVal = 0;
     private double specialPriceVal = 0;    
@@ -80,7 +83,7 @@ public class ShoppingCartItem implements IJSONSerializable {
         specialPriceVal = 0;
         
         try {
-//        	Log.e("OBJECT", ":"+jsonObject.toString());
+        	Log.e("OBJECT", ":"+jsonObject.toString());
             imageUrl = jsonObject.getString(JSON_IMAGE_TAG);
             productUrl = jsonObject.optString(JSON_PRODUCT_URL_TAG);
             configSKU = jsonObject.getString(JSON_CONFIG_SKU_TAG);
@@ -89,6 +92,7 @@ public class ShoppingCartItem implements IJSONSerializable {
             configId = jsonObject.getString(JSON_CONFIG_ID);
             name = jsonObject.getString(JSON_NAME_TAG);            
             stock = Integer.parseInt(jsonObject.getString(JSON_STOCK_TAG));
+
             
             if (!jsonObject.isNull(JSON_PRICE_TAG)) {
                 priceVal = jsonObject.getDouble(JSON_PRICE_TAG);                
@@ -111,7 +115,7 @@ public class ShoppingCartItem implements IJSONSerializable {
             // jsonObject.getJSONArray(JSON_CART_RULE_DISPLAY_NAMES);            
             // jsonObject.getJSONObject(JSON_SALES_ORDER_ITEM);
             cartRuleDiscount = jsonObject.getDouble(JSON_CART_RULE_DISCOUNT );
-
+            variation =  jsonObject.getString(JSON_VARIATION);
         } catch (JSONException e) {
             e.printStackTrace();
             return false;
@@ -295,4 +299,16 @@ public class ShoppingCartItem implements IJSONSerializable {
     public void setSimpleData(Map<String, String> simpleData) {
         this.simpleData = simpleData;
     }
+
+	public String getVariation() {
+		return variation;
+	}
+
+	public void setVariation(String variation) {
+		this.variation = variation;
+	}
+
+
+    
+    
 }
