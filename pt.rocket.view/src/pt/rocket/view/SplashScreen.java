@@ -32,6 +32,7 @@ import android.widget.TextView;
 import com.bugsense.trace.BugSenseHandler;
 import com.shouldit.proxy.lib.ProxyConfiguration;
 import com.shouldit.proxy.lib.ProxySettings;
+import com.urbanairship.UAirship;
 import com.urbanairship.push.PushManager;
 
 /**
@@ -78,13 +79,20 @@ public class SplashScreen extends Activity implements ResponseListener {
         initBugSense();
         Log.d(TAG, "Waiting for the registration process to finish");
         JumiaApplication.INSTANCE.waitForInitResult(this, false);
-//        showDevInfo();
+        showDevInfo();
+    }
+    
+    @Override
+    protected void onStart() {
+        super.onStart();
+        UAirship.shared().getAnalytics().activityStarted(this);
     }
     
     @Override
     protected void onStop() {
         super.onStop();
         JumiaApplication.INSTANCE.clearInitListener();
+        UAirship.shared().getAnalytics().activityStopped(this);
     }
     
     @Override
