@@ -18,6 +18,7 @@ import pt.rocket.framework.event.events.LogInEvent;
 import pt.rocket.framework.forms.Form;
 import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.objects.Errors;
+import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.service.services.CustomerAccountService;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.pojo.DynamicForm;
@@ -373,7 +374,7 @@ public class LoginFragment extends BaseFragment {
                     autoLogin = false;
                     triggerContentEvent(EventType.GET_LOGIN_FORM_EVENT);
                 } else {
-                    List<String> errorMessages = event.errorMessages.get(Errors.JSON_ERROR_TAG);
+                    List<String> errorMessages = event.errorMessages.get(RestConstants.JSON_ERROR_TAG);
                     if (errorMessages != null && (errorMessages.contains(Errors.CODE_LOGIN_FAILED)
                             || errorMessages.contains(Errors.CODE_LOGIN_CHECK_PASSWORD))) {
                         ((BaseActivity) getActivity()).showContentContainer();

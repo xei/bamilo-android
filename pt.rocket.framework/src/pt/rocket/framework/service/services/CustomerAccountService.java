@@ -32,6 +32,7 @@ import pt.rocket.framework.event.events.LogInEvent;
 import pt.rocket.framework.event.events.StoreEvent;
 import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.rest.ResponseReceiver;
+import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.rest.RestServiceHelper;
 import pt.rocket.framework.service.DarwinService;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -59,7 +60,7 @@ public class CustomerAccountService extends DarwinService {
 	private static final String TAG = LogTagHelper
 			.create(CustomerAccountService.class);
 
-	private static final String JSON_USER_TAG = "user";
+	//private static final String JSON_USER_TAG = "user";
 
 	private boolean loggedIn = false;
 	
@@ -195,7 +196,7 @@ public class CustomerAccountService extends DarwinService {
 							throws JSONException {
 						String text = "";
 						JSONArray dataArray = metadataObject
-								.getJSONArray(JSON_DATA_TAG);
+								.getJSONArray(RestConstants.JSON_DATA_TAG);
 						if (dataArray.length() > 0) {
 							text = dataArray.getString(0);
 						}
@@ -284,10 +285,10 @@ public class CustomerAccountService extends DarwinService {
 			if (saveCredentials) {
 				storeCredentials(contentValues);
 			}
-			if (userData.has(JSON_USER_TAG)) {
-				userData = userData.getJSONObject(JSON_USER_TAG);
-			} else if (userData.has(JSON_DATA_TAG)) {
-				userData = userData.getJSONObject(JSON_DATA_TAG);
+			if (userData.has(RestConstants.JSON_USER_TAG)) {
+				userData = userData.getJSONObject(RestConstants.JSON_USER_TAG);
+			} else if (userData.has(RestConstants.JSON_DATA_TAG)) {
+				userData = userData.getJSONObject(RestConstants.JSON_DATA_TAG);
 			}
 
 			return new Customer(userData);

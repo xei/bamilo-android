@@ -20,9 +20,9 @@ public interface IJSONSerializable {
 	 * List of string the represent the class properties in the Address Object
 	 * Model.
 	 */
-	public static final String JSON_DATA_TAG = "data";
-	
-	public static final String JSON_ID_TAG = "id";
+//	public static final String JSON_DATA_TAG = "data";
+//	
+//	public static final String JSON_ID_TAG = "id";
 
 	/**
 	 * @param jsonObject

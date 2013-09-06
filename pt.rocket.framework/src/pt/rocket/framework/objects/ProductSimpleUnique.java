@@ -3,10 +3,12 @@ package pt.rocket.framework.objects;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pt.rocket.framework.rest.RestConstants;
+
 public class ProductSimpleUnique implements IJSONSerializable {
-    private final String JSON_SKU_TAG = "sku";
-    private final String JSON_QUANTITY_TAG = "quantity";
-    private final String JSON_VARIATION_TAG = "variation";
+//    private final String JSON_SKU_TAG = "sku";
+//    private final String JSON_QUANTITY_TAG = "quantity";
+//    private final String JSON_VARIATION_TAG = "variation";
 
     private String sku;
     private int quantity;
@@ -22,9 +24,9 @@ public class ProductSimpleUnique implements IJSONSerializable {
     @Override
     public boolean initialize(JSONObject jsonObject) {
         try {
-            sku = jsonObject.getString(JSON_SKU_TAG);
-            quantity = jsonObject.getInt(JSON_QUANTITY_TAG);
-            variation = jsonObject.optString(JSON_VARIATION_TAG);
+            sku = jsonObject.getString(RestConstants.JSON_SKU_TAG);
+            quantity = jsonObject.getInt(RestConstants.JSON_QUANTITY_TAG);
+            variation = jsonObject.optString(RestConstants.JSON_VARIATION_TAG);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -42,9 +44,9 @@ public class ProductSimpleUnique implements IJSONSerializable {
     public JSONObject toJSON() {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put(JSON_SKU_TAG, sku);
-            jsonObject.put(JSON_QUANTITY_TAG, quantity);
-            jsonObject.put(JSON_VARIATION_TAG, variation);
+            jsonObject.put(RestConstants.JSON_SKU_TAG, sku);
+            jsonObject.put(RestConstants.JSON_QUANTITY_TAG, quantity);
+            jsonObject.put(RestConstants.JSON_VARIATION_TAG, variation);
         } catch (JSONException e) {
             e.printStackTrace();
         }

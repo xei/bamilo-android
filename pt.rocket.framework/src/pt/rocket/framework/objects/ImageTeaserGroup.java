@@ -7,6 +7,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import pt.rocket.framework.objects.ImageTeaserGroup.TeaserImage;
+import pt.rocket.framework.rest.RestConstants;
 
 /**
  * @author nutzer2
@@ -40,10 +41,10 @@ public class ImageTeaserGroup extends TeaserSpecification<TeaserImage> {
 	 * 
 	 */
 	public class TeaserImage implements IJSONSerializable, ITargeting {
-		private static final String JSON_NAVIGATION_URL_TAG = "product_url";
-		private static final String JSON_WIDTH_TAG = "width";
-		private static final String JSON_HEIGHT_TAG = "height";
-		private static final String JSON_FORMAT_TAG = "format";
+//		private static final String JSON_NAVIGATION_URL_TAG = "product_url";
+//		private static final String JSON_WIDTH_TAG = "width";
+//		private static final String JSON_HEIGHT_TAG = "height";
+//		private static final String JSON_FORMAT_TAG = "format";
 
 		private int id = -1;
 		private String width;
@@ -70,25 +71,25 @@ public class ImageTeaserGroup extends TeaserSpecification<TeaserImage> {
 		 */
 		@Override
 		public boolean initialize(JSONObject jsonObject) {
-			id = jsonObject.optInt(JSON_ID_TAG, -1);
+			id = jsonObject.optInt(RestConstants.JSON_ID_TAG, -1);
 			JSONObject attributes = jsonObject
-					.optJSONObject(JSON_ATTRIBUTES_TAG);
+					.optJSONObject(RestConstants.JSON_TEASER_ATTRIBUTES_TAG);
 			if (attributes == null)
 				return false;
-			setDescription(attributes.optString(JSON_DESCRIPTION_TAG));
+			setDescription(attributes.optString(RestConstants.JSON_TEASER_DESCRIPTION_TAG));
 			targetType = TargetType.byValue(attributes.optInt(
-					TeaserSpecification.JSON_TARGET_TAG, -1));
-			JSONArray imageList = attributes.optJSONArray(JSON_IMAGES_TAG);
+					RestConstants.JSON_TARGET_TAG, -1));
+			JSONArray imageList = attributes.optJSONArray(RestConstants.JSON_TEASER_IMAGES_TAG);
 			if (imageList == null)
 				return false;
 			JSONObject image = imageList.optJSONObject(0);
 			if (image == null)
 				return false;
-			imageUrl = image.optString(JSON_IMAGE_URL_TAG);
-			navigationUrl = image.optString(JSON_NAVIGATION_URL_TAG);
-			format = image.optString(JSON_FORMAT_TAG);
-			width = image.optString(JSON_WIDTH_TAG);
-			height = image.optString(JSON_HEIGHT_TAG);
+			imageUrl = image.optString(RestConstants.JSON_TEASER_IMAGE_URL_TAG);
+			navigationUrl = image.optString(RestConstants.JSON_TEASER_URL_TAG);
+			format = image.optString(RestConstants.JSON_FORMAT_TAG);
+			width = image.optString(RestConstants.JSON_WIDTH_TAG);
+			height = image.optString(RestConstants.JSON_HEIGHT_TAG);
 			return true;
 		}
 

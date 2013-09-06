@@ -5,13 +5,14 @@ import org.json.JSONObject;
 
 import de.akquinet.android.androlog.Log;
 
+import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.LogTagHelper;
 
 public class Variation implements IJSONSerializable {
 	private static final String TAG = LogTagHelper.create(Variation.class);
 
-	private static final String JSON_LINK_TAG = "link";
-	private static final String JSON_IMAGE_TAG = "image";
+//	private static final String JSON_LINK_TAG = "link";
+//	private static final String JSON_IMAGE_TAG = "image";
 
 	private String sku;
 	private String link;
@@ -20,8 +21,8 @@ public class Variation implements IJSONSerializable {
 	public boolean initialize(String sku, JSONObject jsonObject) {
 		this.sku = sku;
 		try {
-			link = jsonObject.getString(JSON_LINK_TAG);
-			image = jsonObject.getString(JSON_IMAGE_TAG);
+			link = jsonObject.getString(RestConstants.JSON_LINK_TAG);
+			image = jsonObject.getString(RestConstants.JSON_VARIATION_IMAGE_TAG);
 		} catch (JSONException e) {
 			Log.e(TAG, "Error initializing the variation ", e);
 			return false;
@@ -40,8 +41,8 @@ public class Variation implements IJSONSerializable {
 	@Override
 	public boolean initialize(JSONObject jsonObject) {
 		try {
-			link = jsonObject.getString(JSON_LINK_TAG);
-			image = jsonObject.getString(JSON_IMAGE_TAG);
+			link = jsonObject.getString(RestConstants.JSON_LINK_TAG);
+			image = jsonObject.getString(RestConstants.JSON_VARIATION_IMAGE_TAG);
 		} catch (JSONException e) {
 			Log.e(TAG, "Error initializing the variation ", e);
 		}

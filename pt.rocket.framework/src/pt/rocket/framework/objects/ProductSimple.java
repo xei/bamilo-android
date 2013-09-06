@@ -4,6 +4,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pt.rocket.framework.rest.RestConstants;
+
 import java.util.HashMap;
 import java.util.Map.Entry;
 
@@ -13,7 +15,7 @@ import java.util.Map.Entry;
  *
  */
 public class ProductSimple implements IJSONSerializable {
-    private static final String JSON_ATTRIBUTES_TAG = "meta";
+//    private static final String JSON_ATTRIBUTES_TAG = "meta";
 
     public static final String SKU_TAG = "sku";
     public static final String PRICE_TAG = "price";
@@ -41,7 +43,7 @@ public class ProductSimple implements IJSONSerializable {
         attributes.clear();
         try {
 
-            JSONObject attributesObject = jsonObject.getJSONObject(JSON_ATTRIBUTES_TAG);
+            JSONObject attributesObject = jsonObject.getJSONObject(RestConstants.JSON_META_TAG);
             JSONArray attibutesObjectNames = attributesObject.names();
 
             for (int i = 0; i < attibutesObjectNames.length(); ++i) {
@@ -73,7 +75,7 @@ public class ProductSimple implements IJSONSerializable {
                 attributesObject.put(entry.getKey(), entry.getValue());
             }
             
-            jsonObject.put(JSON_ATTRIBUTES_TAG, attributesObject);
+            jsonObject.put(RestConstants.JSON_META_TAG, attributesObject);
         } catch(JSONException e) {
             e.printStackTrace();
         }

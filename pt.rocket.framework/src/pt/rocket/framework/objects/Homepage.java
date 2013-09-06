@@ -6,6 +6,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pt.rocket.framework.rest.RestConstants;
+
 import android.util.Log;
 
 /**
@@ -21,10 +23,10 @@ public class Homepage implements IJSONSerializable{
 	private boolean defaultHomepage;
 	private ArrayList<TeaserSpecification<?>> teaserSpecifications;
 	private String homepageLayout;
-	protected static final String JSON_HOMEPAGE_ID_TAG = "homepage_id";
-	protected static final String JSON_HOMEPAGE_TITLE_TAG = "homepage_title";
-	protected static final String JSON_HOMEPAGE_DEFAULT_TAG = "homepage_default";
-	protected static final String JSON_HOMEPAGE_LAYOUT_TAG= "homepage_layout";
+//	protected static final String JSON_HOMEPAGE_ID_TAG = "homepage_id";
+//	protected static final String JSON_HOMEPAGE_TITLE_TAG = "homepage_title";
+//	protected static final String JSON_HOMEPAGE_DEFAULT_TAG = "homepage_default";
+//	protected static final String JSON_HOMEPAGE_LAYOUT_TAG= "homepage_layout";
 	
 	/**
 	 * Constructor
@@ -83,11 +85,11 @@ public class Homepage implements IJSONSerializable{
 	@Override
 	public boolean initialize(JSONObject jsonObject) throws JSONException {
 		// TODO Auto-generated method stub
-		homepageId = jsonObject.getInt(JSON_HOMEPAGE_ID_TAG);
-		homepageTitle=jsonObject.getString(JSON_HOMEPAGE_TITLE_TAG);
-		defaultHomepage=jsonObject.getInt(JSON_HOMEPAGE_DEFAULT_TAG)==1?true:false;
-		homepageLayout = jsonObject.getString(JSON_HOMEPAGE_LAYOUT_TAG);
-		JSONArray dataArray = jsonObject.getJSONArray(JSON_DATA_TAG);
+		homepageId = jsonObject.getInt(RestConstants.JSON_HOMEPAGE_ID_TAG);
+		homepageTitle=jsonObject.getString(RestConstants.JSON_HOMEPAGE_TITLE_TAG);
+		defaultHomepage=jsonObject.getInt(RestConstants.JSON_HOMEPAGE_DEFAULT_TAG)==1?true:false;
+		homepageLayout = jsonObject.getString(RestConstants.JSON_HOMEPAGE_LAYOUT_TAG);
+		JSONArray dataArray = jsonObject.getJSONArray(RestConstants.JSON_DATA_TAG);
 		int dataArrayLenght = dataArray.length();
 //		ArrayList<TeaserSpecification<?>> teaserSpecifications = new ArrayList<TeaserSpecification<?>>();
 		for (int i = 0; i < dataArrayLenght; ++i) {

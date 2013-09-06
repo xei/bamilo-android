@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import android.util.Log;
 
 import pt.rocket.framework.Darwin;
+import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.CurrencyFormatter;
 
 import java.util.HashMap;
@@ -18,23 +19,23 @@ import java.util.Map;
  * 
  */
 public class ShoppingCartItem implements IJSONSerializable {
-    private static final String JSON_IMAGE_TAG = "image";
-    private static final String JSON_PRODUCT_URL_TAG = "url";
-    private static final String JSON_CONFIG_SKU_TAG = "configSku";    
-    private static final String JSON_QUANTITY_TAG = "quantity";
-    private static final String JSON_CONFIG_ID = "configId";
-    private static final String JSON_NAME_TAG = "name";
-    private static final String JSON_STOCK_TAG = "stock";
-    private static final String JSON_SPECIAL_PRICE_TAG = "specialPrice";
-    private static final String JSON_PRICE_TAG = "unit_price";
-    private static final String JSON_TAX_AMOUNT_TAG = "tax_amount";
-    private static final String JSON_MAX_QUANTITY = "max_quantity";
-    private static final String JSON_VARIATION = "variation";
-
+//    private static final String JSON_IMAGE_TAG = "image";
+//    private static final String JSON_PRODUCT_URL_TAG = "url";
+//    private static final String JSON_CONFIG_SKU_TAG = "configSku";    
+//    private static final String JSON_QUANTITY_TAG = "quantity";
+//    private static final String JSON_CONFIG_ID = "configId";
+//    private static final String JSON_NAME_TAG = "name";
+//    private static final String JSON_STOCK_TAG = "stock";
+//    private static final String JSON_SPECIAL_PRICE_TAG = "specialPrice";
+//    private static final String JSON_PRICE_TAG = "unit_price";
+//    private static final String JSON_TAX_AMOUNT_TAG = "tax_amount";
+//    private static final String JSON_MAX_QUANTITY = "max_quantity";
+//    private static final String JSON_VARIATION = "variation";
+//
     // TODO: implement these tags
-    private static final String JSON_CART_RULE_DISPLAY_NAMES = "cart_rule_display_names";
-    private static final String JSON_SALES_ORDER_ITEM = "salesOrderItem";
-    private static final String JSON_CART_RULE_DISCOUNT = "cart_rule_discount";
+//    private static final String JSON_CART_RULE_DISPLAY_NAMES = "cart_rule_display_names";
+//    private static final String JSON_SALES_ORDER_ITEM = "salesOrderItem";
+//    private static final String JSON_CART_RULE_DISCOUNT = "cart_rule_discount";
 
     
     private String imageUrl;
@@ -84,23 +85,23 @@ public class ShoppingCartItem implements IJSONSerializable {
         
         try {
         	Log.e("OBJECT", ":"+jsonObject.toString());
-            imageUrl = jsonObject.getString(JSON_IMAGE_TAG);
-            productUrl = jsonObject.optString(JSON_PRODUCT_URL_TAG);
-            configSKU = jsonObject.getString(JSON_CONFIG_SKU_TAG);
-            quantity = jsonObject.getInt(JSON_QUANTITY_TAG);
-            maxQuantity = jsonObject.getInt(JSON_MAX_QUANTITY );
-            configId = jsonObject.getString(JSON_CONFIG_ID);
-            name = jsonObject.getString(JSON_NAME_TAG);            
-            stock = Integer.parseInt(jsonObject.getString(JSON_STOCK_TAG));
+            imageUrl = jsonObject.getString(RestConstants.JSON_ITEM_IMAGE_TAG);
+            productUrl = jsonObject.optString(RestConstants.JSON_PRODUCT_URL_TAG);
+            configSKU = jsonObject.getString(RestConstants.JSON_CONFIG_SKU_TAG);
+            quantity = jsonObject.getInt(RestConstants.JSON_QUANTITY_TAG);
+            maxQuantity = jsonObject.getInt(RestConstants.JSON_MAX_QUANTITY );
+            configId = jsonObject.getString(RestConstants.JSON_CONFIG_ID);
+            name = jsonObject.getString(RestConstants.JSON_ITEM_NAME_TAG);            
+            stock = Integer.parseInt(jsonObject.getString(RestConstants.JSON_STOCK_TAG));
 
             
-            if (!jsonObject.isNull(JSON_PRICE_TAG)) {
-                priceVal = jsonObject.getDouble(JSON_PRICE_TAG);                
+            if (!jsonObject.isNull(RestConstants.JSON_ITEM_PRICE_TAG)) {
+                priceVal = jsonObject.getDouble(RestConstants.JSON_ITEM_PRICE_TAG);                
             }
             price = CurrencyFormatter.formatCurrency(priceVal);
             
-            if (!jsonObject.isNull(JSON_SPECIAL_PRICE_TAG) && jsonObject.getDouble(JSON_SPECIAL_PRICE_TAG) > 0 ) {
-                specialPriceVal = jsonObject.getDouble(JSON_SPECIAL_PRICE_TAG);                
+            if (!jsonObject.isNull(RestConstants.JSON_ITEM_SPECIAL_PRICE_TAG) && jsonObject.getDouble(RestConstants.JSON_ITEM_SPECIAL_PRICE_TAG) > 0 ) {
+                specialPriceVal = jsonObject.getDouble(RestConstants.JSON_ITEM_SPECIAL_PRICE_TAG);                
             }
             else {
                 specialPriceVal = priceVal;
@@ -108,14 +109,14 @@ public class ShoppingCartItem implements IJSONSerializable {
             }
             specialPrice = CurrencyFormatter.formatCurrency(specialPriceVal);
             
-            taxAmount = jsonObject.optDouble(JSON_TAX_AMOUNT_TAG, 0);
+            taxAmount = jsonObject.optDouble(RestConstants.JSON_TAX_AMOUNT_TAG, 0);
             savingPercentage = 100 - specialPriceVal / priceVal * 100;
             
             // TODO: find out what these fields are for
             // jsonObject.getJSONArray(JSON_CART_RULE_DISPLAY_NAMES);            
             // jsonObject.getJSONObject(JSON_SALES_ORDER_ITEM);
-            cartRuleDiscount = jsonObject.getDouble(JSON_CART_RULE_DISCOUNT );
-            variation =  jsonObject.getString(JSON_VARIATION);
+            cartRuleDiscount = jsonObject.getDouble(RestConstants.JSON_CART_RULE_DISCOUNT );
+            variation =  jsonObject.getString(RestConstants.JSON_VARIATION);
         } catch (JSONException e) {
             e.printStackTrace();
             return false;

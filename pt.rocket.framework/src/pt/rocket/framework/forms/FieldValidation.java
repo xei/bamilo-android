@@ -16,6 +16,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import pt.rocket.framework.objects.IJSONSerializable;
+import pt.rocket.framework.rest.RestConstants;
 
 /**
  * Class that represents the form fiel validation parameters.
@@ -23,10 +24,10 @@ import pt.rocket.framework.objects.IJSONSerializable;
  *
  */
 public class FieldValidation implements IJSONSerializable {
-	private static final String JSON_REQUIRED_TAG = "required";
-	private static final String JSON_MIN_TAG = "min";
-	private static final String JSON_MAX_TAG = "max";
-    private static final String JSON_REGEX_TAG = "regex";
+//	private static final String JSON_REQUIRED_TAG = "required";
+//	private static final String JSON_MIN_TAG = "min";
+//	private static final String JSON_MAX_TAG = "max";
+//    private static final String JSON_REGEX_TAG = "regex";
 
 	private static int MIN_CHARACTERS = 0;
 	private static int MAX_CHARACTERS = 40;
@@ -54,10 +55,10 @@ public class FieldValidation implements IJSONSerializable {
 	@Override
 	public boolean initialize(JSONObject jsonObject) {
 
-		required = jsonObject.optBoolean(JSON_REQUIRED_TAG, false);
-		min = jsonObject.optInt(JSON_MIN_TAG, MIN_CHARACTERS);
-		max = jsonObject.optInt(JSON_MAX_TAG, MAX_CHARACTERS);
-        regex = jsonObject.optString(JSON_REGEX_TAG, DEFAULT_REGEX);
+		required = jsonObject.optBoolean(RestConstants.JSON_REQUIRED_TAG, false);
+		min = jsonObject.optInt(RestConstants.JSON_MIN_TAG, MIN_CHARACTERS);
+		max = jsonObject.optInt(RestConstants.JSON_MAX_TAG, MAX_CHARACTERS);
+        regex = jsonObject.optString(RestConstants.JSON_REGEX_TAG, DEFAULT_REGEX);
         
         if ( regex.substring(0, 2).equals("a/") ) {
             regex = regex.substring(2);
@@ -91,10 +92,10 @@ public class FieldValidation implements IJSONSerializable {
 		JSONObject jsonObject = new JSONObject();
 
 		try {
-			jsonObject.put(JSON_REQUIRED_TAG, required);
-			jsonObject.put(JSON_MIN_TAG, min);
-			jsonObject.put(JSON_MAX_TAG, max);
-			jsonObject.put(JSON_REGEX_TAG, regex);
+			jsonObject.put(RestConstants.JSON_REQUIRED_TAG, required);
+			jsonObject.put(RestConstants.JSON_MIN_TAG, min);
+			jsonObject.put(RestConstants.JSON_MAX_TAG, max);
+			jsonObject.put(RestConstants.JSON_REGEX_TAG, regex);
 
 		} catch (JSONException e) {
 			e.printStackTrace();

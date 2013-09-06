@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.LogTagHelper;
 import de.akquinet.android.androlog.Log;
 
@@ -44,7 +45,7 @@ public abstract class TeaserSpecification<T extends ITargeting> implements
 
 	public static TeaserSpecification<?> parse(JSONObject jsonObject) {
 		TeaserGroupType type = TeaserGroupType.byValue(jsonObject.optInt(
-				JSON_GROUP_TYPE_TAG, -1));
+				RestConstants.JSON_GROUP_TYPE_TAG, -1));
 		TeaserSpecification<?> teaserSpecification = UnknownTeaserGroup.INSTANCE;
 		Log.i(TAG, "code1 inside types : "+type);
 		switch (type) {
@@ -66,13 +67,13 @@ public abstract class TeaserSpecification<T extends ITargeting> implements
 		return teaserSpecification;
 	}
 
-	protected static final String JSON_ATTRIBUTES_TAG = "attributes";
-	protected static final String JSON_DESCRIPTION_TAG = "description";
-	protected static final String JSON_IMAGE_URL_TAG = "image_url";
-	protected static final String JSON_IMAGES_TAG = "image_list";
-	protected static final String JSON_GROUP_TYPE_TAG = "group_type";
-	protected static final String JSON_GROUP_TITLE_TAG = "group_title";
-	protected static final String JSON_TARGET_TAG = "target_type";
+//	protected static final String JSON_ATTRIBUTES_TAG = "attributes";
+//	protected static final String JSON_DESCRIPTION_TAG = "description";
+//	protected static final String JSON_IMAGE_URL_TAG = "image_url";
+//	protected static final String JSON_IMAGES_TAG = "image_list";
+//	protected static final String JSON_GROUP_TYPE_TAG = "group_type";
+//	protected static final String JSON_GROUP_TITLE_TAG = "group_title";
+//	protected static final String JSON_TARGET_TAG = "target_type";
 
 	protected String title;
 	private final TeaserGroupType type;
@@ -96,8 +97,8 @@ public abstract class TeaserSpecification<T extends ITargeting> implements
 	@Override
 	public boolean initialize(JSONObject jsonObject) {
 
-			title = jsonObject.optString(JSON_GROUP_TITLE_TAG);
-			JSONArray teasersData = jsonObject.optJSONArray(JSON_DATA_TAG);
+			title = jsonObject.optString(RestConstants.JSON_GROUP_TITLE_TAG);
+			JSONArray teasersData = jsonObject.optJSONArray(RestConstants.JSON_DATA_TAG);
 			if (teasersData == null) {
 				Log.w(TAG, "No data tag found in " + jsonObject);
 				return false;

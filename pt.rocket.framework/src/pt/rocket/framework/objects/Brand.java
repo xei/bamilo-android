@@ -12,6 +12,8 @@ package pt.rocket.framework.objects;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pt.rocket.framework.rest.RestConstants;
+
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -22,10 +24,10 @@ import de.akquinet.android.androlog.Log;
  * 
  */
 public class Brand implements IJSONSerializable {
-    private static final String JSON_INNER_OBJECT_TAG = "brand";
-    private static final String JSON_URL_TAG = "url";
-    private static final String JSON_NAME_TAG = "name";
-    private static final String JSON_IMAGE_TAG = "image";
+//    private static final String JSON_INNER_OBJECT_TAG = "brand";
+//    private static final String JSON_URL_TAG = "url";
+//    private static final String JSON_NAME_TAG = "name";
+//    private static final String JSON_IMAGE_TAG = "image";
 
     private String id;
     private String url;
@@ -73,18 +75,18 @@ public class Brand implements IJSONSerializable {
     @Override
     public boolean initialize(JSONObject jsonObject) {
         try {
-            id = jsonObject.getString(JSON_ID_TAG);
+            id = jsonObject.getString(RestConstants.JSON_ID_TAG);
 
-            JSONObject innerObject = jsonObject.getJSONObject(JSON_INNER_OBJECT_TAG);
-            url = innerObject.getString(JSON_URL_TAG);
-            name = innerObject.getString(JSON_NAME_TAG);
+            JSONObject innerObject = jsonObject.getJSONObject(RestConstants.JSON_INNER_OBJECT_TAG);
+            url = innerObject.getString(RestConstants.JSON_URL_TAG);
+            name = innerObject.getString(RestConstants.JSON_NAME_TAG);
             if(name.trim().equals("") || url.trim().equals("")){
                 Log.d("brands","Brand name = " + name + "\r\nbrand url = " + url);
                 return false;
             }
             
 
-            JSONObject imageObject = innerObject.optJSONObject(JSON_IMAGE_TAG);
+            JSONObject imageObject = innerObject.optJSONObject(RestConstants.JSON_IMAGE_TAG);
 
             if (imageObject != null) {
                 image = new BrandImage();
@@ -106,9 +108,9 @@ public class Brand implements IJSONSerializable {
         JSONObject jsonObject = new JSONObject();
 
         try {
-            jsonObject.put(JSON_URL_TAG, url);
-            jsonObject.put(JSON_NAME_TAG, name);
-            jsonObject.put(JSON_IMAGE_TAG, image.toJSON());
+            jsonObject.put(RestConstants.JSON_URL_TAG, url);
+            jsonObject.put(RestConstants.JSON_NAME_TAG, name);
+            jsonObject.put(RestConstants.JSON_IMAGE_TAG, image.toJSON());
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -124,10 +126,10 @@ public class Brand implements IJSONSerializable {
      *
      */
     public class BrandImage implements IJSONSerializable {
-        private static final String JSON_URL_TAG = "url";
-        private static final String JSON_WIDTH_TAG = "width";
-        private static final String JSON_HEIGHT_TAG = "height";
-        private static final String JSON_FORMAT_TAG = "format";
+//        private static final String JSON_URL_TAG = "url";
+//        private static final String JSON_WIDTH_TAG = "width";
+//        private static final String JSON_HEIGHT_TAG = "height";
+//        private static final String JSON_FORMAT_TAG = "format";
 
         private String url;
         private String width;
@@ -167,10 +169,10 @@ public class Brand implements IJSONSerializable {
          */
         @Override
         public boolean initialize(JSONObject jsonObject) {
-            this.url = jsonObject.optString(JSON_URL_TAG);
-            this.width = jsonObject.optString(JSON_WIDTH_TAG);
-            this.height = jsonObject.optString(JSON_HEIGHT_TAG);
-            this.format = jsonObject.optString(JSON_FORMAT_TAG);
+            this.url = jsonObject.optString(RestConstants.JSON_URL_TAG);
+            this.width = jsonObject.optString(RestConstants.JSON_WIDTH_TAG);
+            this.height = jsonObject.optString(RestConstants.JSON_HEIGHT_TAG);
+            this.format = jsonObject.optString(RestConstants.JSON_FORMAT_TAG);
            
             return true;
         }
@@ -182,10 +184,10 @@ public class Brand implements IJSONSerializable {
         public JSONObject toJSON() {
             JSONObject jsonObject = new JSONObject();
             try {
-                jsonObject.put(JSON_URL_TAG, url);
-                jsonObject.put(JSON_WIDTH_TAG, width);
-                jsonObject.put(JSON_HEIGHT_TAG, height);
-                jsonObject.put(JSON_FORMAT_TAG, format);
+                jsonObject.put(RestConstants.JSON_URL_TAG, url);
+                jsonObject.put(RestConstants.JSON_WIDTH_TAG, width);
+                jsonObject.put(RestConstants.JSON_HEIGHT_TAG, height);
+                jsonObject.put(RestConstants.JSON_FORMAT_TAG, format);
 
             } catch (JSONException e) {
                 // TODO Auto-generated catch block

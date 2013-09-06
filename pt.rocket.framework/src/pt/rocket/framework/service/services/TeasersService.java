@@ -26,6 +26,7 @@ import pt.rocket.framework.objects.Homepage;
 import pt.rocket.framework.objects.TeaserSpecification;
 import pt.rocket.framework.rest.ResponseReceiver;
 import pt.rocket.framework.rest.RestClientSingleton;
+import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.rest.RestServiceHelper;
 import pt.rocket.framework.service.DarwinService;
 import android.content.Context;
@@ -107,7 +108,7 @@ public class TeasersService extends DarwinService {
 	// NEW IMPLEMENTATION
 	private ArrayList<Homepage> updateTeaserSpecification(
 			JSONObject metadataObject) throws JSONException {
-		JSONArray dataArray = metadataObject.getJSONArray(JSON_DATA_TAG);
+		JSONArray dataArray = metadataObject.getJSONArray(RestConstants.JSON_DATA_TAG);
 		int dataArrayLenght = dataArray.length();
 		ArrayList<Homepage> homepageSpecifications = new ArrayList<Homepage>();
 		for (int i = 0; i < dataArrayLenght; ++i) {

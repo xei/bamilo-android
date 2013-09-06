@@ -16,6 +16,7 @@ import java.util.Date;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.LogTagHelper;
 import android.annotation.SuppressLint;
 import de.akquinet.android.androlog.Log;
@@ -32,12 +33,12 @@ public class Customer implements IJSONSerializable {
 	@SuppressLint("SimpleDateFormat")
 	private static SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd"); 
 	
-    private final String JSON_ID_TAG = "id_customer";
-    private final String JSON_FIRST_NAME_TAG = "first_name";
-    private final String JSON_LAST_NAME_TAG = "last_name";
-    private final String JSON_EMAIL_TAG = "email";
-    private final String JSON_BIRTHDAY_TAG = "birthday";
-    private final String JSON_GENDER_TAG = "gender";
+//    private final String JSON_ID_TAG = "id_customer";
+//    private final String JSON_FIRST_NAME_TAG = "first_name";
+//    private final String JSON_LAST_NAME_TAG = "last_name";
+//    private final String JSON_EMAIL_TAG = "email";
+//    private final String JSON_BIRTHDAY_TAG = "birthday";
+//    private final String JSON_GENDER_TAG = "gender";
     
     private String id;
     private CustomerPrefix prefix;
@@ -250,20 +251,20 @@ public class Customer implements IJSONSerializable {
     @Override
     public boolean initialize(JSONObject jsonObject) {
         try {
-            id = jsonObject.getString(JSON_ID_TAG);
+            id = jsonObject.getString(RestConstants.JSON_ID_CUSTOMER_TAG);
             Log.i("CUSTOMER ID"," => "+id);
-            firstName = jsonObject.getString(JSON_FIRST_NAME_TAG);
-            lastName = jsonObject.getString(JSON_LAST_NAME_TAG);
-            email = jsonObject.getString(JSON_EMAIL_TAG);
+            firstName = jsonObject.getString(RestConstants.JSON_FIRST_NAME_TAG);
+            lastName = jsonObject.getString(RestConstants.JSON_LAST_NAME_TAG);
+            email = jsonObject.getString(RestConstants.JSON_EMAIL_TAG);
             SimpleDateFormat  format = new SimpleDateFormat("yyyy-MM-dd");  
             try {  
-            	birthday = format.parse(jsonObject.getString(JSON_BIRTHDAY_TAG));  
+            	birthday = format.parse(jsonObject.getString(RestConstants.JSON_BIRTHDAY_TAG));  
             } catch (ParseException e) {  
                 // TODO Auto-generated catch block  
                 e.printStackTrace();  
             }
 
-            String genderString = jsonObject.optString(JSON_GENDER_TAG);
+            String genderString = jsonObject.optString(RestConstants.JSON_GENDER_TAG);
             if(genderString == null) {
             	gender = CustomerGender.UNKNOWN;
             } else if (genderString.equals("male")) {
@@ -289,13 +290,13 @@ public class Customer implements IJSONSerializable {
         JSONObject jsonObject = new JSONObject();
         
         try {
-            jsonObject.put(JSON_ID_TAG, id);
-            jsonObject.put(JSON_FIRST_NAME_TAG, firstName);
-            jsonObject.put(JSON_LAST_NAME_TAG, lastName);
-            jsonObject.put(JSON_EMAIL_TAG, email);
+            jsonObject.put(RestConstants.JSON_ID_CUSTOMER_TAG, id);
+            jsonObject.put(RestConstants.JSON_FIRST_NAME_TAG, firstName);
+            jsonObject.put(RestConstants.JSON_LAST_NAME_TAG, lastName);
+            jsonObject.put(RestConstants.JSON_EMAIL_TAG, email);
             
-            jsonObject.put(JSON_GENDER_TAG, gender==CustomerGender.Male?"male":"female");
-            jsonObject.put(JSON_BIRTHDAY_TAG, birthday.toString());
+            jsonObject.put(RestConstants.JSON_GENDER_TAG, gender==CustomerGender.Male?"male":"female");
+            jsonObject.put(RestConstants.JSON_BIRTHDAY_TAG, birthday.toString());
             
         } catch (JSONException e) {
             e.printStackTrace();

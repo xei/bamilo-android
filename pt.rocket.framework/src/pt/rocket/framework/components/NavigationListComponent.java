@@ -4,6 +4,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import pt.rocket.framework.objects.IJSONSerializable;
+import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.LogTagHelper;
 
 /**
@@ -18,11 +19,11 @@ import pt.rocket.framework.utils.LogTagHelper;
 public class NavigationListComponent implements IJSONSerializable {
 	private final static String TAG = LogTagHelper.create( NavigationListComponent.class );
 
-	private static final String JSON_ATTRIBUTES_TAG = "attributes";
-	private static final String JSON_NAME_TAG = "name";
-	private static final String JSON_NAVIGATION_URL_TAG = "navigation_url";
-	private static final String JSON_IMAGE_TAG = "image";
-	private static final String JSON_IMAGE_URL_TAG = "image_url";
+//	private static final String JSON_ATTRIBUTES_TAG = "attributes";
+//	private static final String JSON_NAME_TAG = "name";
+//	private static final String JSON_NAVIGATION_URL_TAG = "navigation_url";
+//	private static final String JSON_IMAGE_TAG = "image";
+//	private static final String JSON_IMAGE_URL_TAG = "image_url";
     
     private int element_id;
 	private String element_text;
@@ -102,14 +103,14 @@ public class NavigationListComponent implements IJSONSerializable {
     @Override
     public boolean initialize(JSONObject jsonObject) {
         try {
-            element_id = Integer.parseInt(jsonObject.getString(JSON_ID_TAG));
+            element_id = Integer.parseInt(jsonObject.getString(RestConstants.JSON_ID_TAG));
             
-            JSONObject attributesObject = jsonObject.getJSONObject(JSON_ATTRIBUTES_TAG);
-            element_text = attributesObject.getString(JSON_NAME_TAG);
+            JSONObject attributesObject = jsonObject.getJSONObject(RestConstants.JSON_ATTRIBUTES_TAG);
+            element_text = attributesObject.getString(RestConstants.JSON_NAVLIST_NAME_TAG);
             
-            element_url = attributesObject.getString(JSON_NAVIGATION_URL_TAG);
-            JSONObject imageObject = attributesObject.getJSONObject(JSON_IMAGE_TAG);
-            element_image_url = imageObject.getString(JSON_IMAGE_URL_TAG);
+            element_url = attributesObject.getString(RestConstants.JSON_NAVIGATION_URL_TAG);
+            JSONObject imageObject = attributesObject.getJSONObject(RestConstants.JSON_IMAGE_TAG);
+            element_image_url = imageObject.getString(RestConstants.JSON_IMAGE_URL_TAG);
         } catch (JSONException e) {
             e.printStackTrace();
             return false;
@@ -125,17 +126,17 @@ public class NavigationListComponent implements IJSONSerializable {
     public JSONObject toJSON() {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put(JSON_ID_TAG, element_id);
+            jsonObject.put(RestConstants.JSON_ID_TAG, element_id);
 
             JSONObject attributesObject = new JSONObject();
-            attributesObject.put(JSON_NAME_TAG, element_text);
-            attributesObject.put(JSON_NAVIGATION_URL_TAG, element_url);
+            attributesObject.put(RestConstants.JSON_NAVLIST_NAME_TAG, element_text);
+            attributesObject.put(RestConstants.JSON_NAVIGATION_URL_TAG, element_url);
             
             JSONObject imageObject = new JSONObject();
-            imageObject.put(JSON_IMAGE_URL_TAG, element_image_url);
-            attributesObject.put(JSON_IMAGE_TAG, imageObject);
+            imageObject.put(RestConstants.JSON_IMAGE_URL_TAG, element_image_url);
+            attributesObject.put(RestConstants.JSON_IMAGE_TAG, imageObject);
             
-            jsonObject.put(JSON_ATTRIBUTES_TAG, attributesObject);
+            jsonObject.put(RestConstants.JSON_ATTRIBUTES_TAG, attributesObject);
         } catch (JSONException e) {
             e.printStackTrace();
         }    

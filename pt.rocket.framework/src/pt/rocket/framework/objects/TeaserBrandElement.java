@@ -16,6 +16,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import pt.rocket.framework.objects.ITargeting.TargetType;
+import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.CurrencyFormatter;
 import pt.rocket.framework.utils.LogTagHelper;
 import de.akquinet.android.androlog.Log;
@@ -31,8 +32,8 @@ import de.akquinet.android.androlog.Log;
 public class TeaserBrandElement implements IJSONSerializable {
 	private final static String TAG = LogTagHelper.create( TeaserBrandElement.class );
 
-    private static final String JSON_ATTRIBUTES_TAG = "data";
-    private static final String JSON_ATTRIBUTES_TWO_TAG = "attributes";
+//    private static final String JSON_ATTRIBUTES_TAG = "data";
+//    private static final String JSON_ATTRIBUTES_TWO_TAG = "attributes";
 
     private String id;
     private BrandAttributes attributes;
@@ -65,14 +66,14 @@ public class TeaserBrandElement implements IJSONSerializable {
     @Override
     public boolean initialize(JSONObject jsonObject) {
         try {
-            id = jsonObject.getString(JSON_ID_TAG);
+            id = jsonObject.getString(RestConstants.JSON_ID_TAG);
             
-            JSONObject attributesObject = jsonObject.optJSONObject(JSON_ATTRIBUTES_TAG);
+            JSONObject attributesObject = jsonObject.optJSONObject(RestConstants.JSON_DATA_TAG);
             if(attributesObject != null){
                 attributes.initialize(attributesObject);
             }
             
-            JSONObject attributes2Object = jsonObject.optJSONObject(JSON_ATTRIBUTES_TWO_TAG);
+            JSONObject attributes2Object = jsonObject.optJSONObject(RestConstants.JSON_PROD_ATTRIBUTES_TAG);
             if(attributes2Object != null) {
                 attributes.initialize(attributes2Object);
             }
@@ -91,8 +92,8 @@ public class TeaserBrandElement implements IJSONSerializable {
     public JSONObject toJSON() {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put(JSON_ID_TAG, id);
-            jsonObject.put(JSON_ATTRIBUTES_TAG, attributes.toJSON());
+            jsonObject.put(RestConstants.JSON_ID_TAG, id);
+            jsonObject.put(RestConstants.JSON_DATA_TAG, attributes.toJSON());
         } catch (JSONException e) {
             e.printStackTrace();
             return null;
@@ -107,13 +108,13 @@ public class TeaserBrandElement implements IJSONSerializable {
      * 
      */
     public class BrandAttributes implements IJSONSerializable {
-        private static final String JSON_NAME_TAG = "description";
-        private static final String JSON_ID_TAG = "id";
-        private static final String JSON_IMAGE_LIST_TAG = "image_list";
-        private static final String JSON_IMAGE_URL_TAG = "image_url";
-        private static final String JSON_BRAND_URL_TAG = "brand_url";
-        private static final String JSON_DESCRIPTION_TAG = "description";
-        private static final String JSON_TARGET_TYPE_TAG = "target_type";
+//        private static final String JSON_NAME_TAG = "description";
+//        private static final String JSON_ID_TAG = "id";
+//        private static final String JSON_IMAGE_LIST_TAG = "image_list";
+//        private static final String JSON_IMAGE_URL_TAG = "image_url";
+//        private static final String JSON_BRAND_URL_TAG = "brand_url";
+//        private static final String JSON_DESCRIPTION_TAG = "description";
+//        private static final String JSON_TARGET_TYPE_TAG = "target_type";
 
         private String name;
         private int id;
@@ -183,15 +184,15 @@ public class TeaserBrandElement implements IJSONSerializable {
                         
             try {
             	
-        		name = jsonObject.getString(JSON_NAME_TAG);
-        		target_type = jsonObject.optString(JSON_TARGET_TYPE_TAG, "");
+        		name = jsonObject.getString(RestConstants.JSON_BRAND_DESCRIPTION_TAG);
+        		target_type = jsonObject.optString(RestConstants.JSON_TARGET_TYPE_TAG, "");
                 
                               
-                description = jsonObject.optString(JSON_DESCRIPTION_TAG, "");
+                description = jsonObject.optString(RestConstants.JSON_DESCRIPTION_TAG, "");
                 
-                brand_url = jsonObject.getJSONObject(JSON_IMAGE_LIST_TAG).getString(JSON_BRAND_URL_TAG);
+                brand_url = jsonObject.getJSONObject(RestConstants.JSON_IMAGE_LIST_TAG).getString(RestConstants.JSON_BRAND_URL_TAG);
                 
-                image_url = jsonObject.getJSONObject(JSON_IMAGE_LIST_TAG).getString(JSON_IMAGE_URL_TAG);
+                image_url = jsonObject.getJSONObject(RestConstants.JSON_IMAGE_LIST_TAG).getString(RestConstants.JSON_IMAGE_URL_TAG);
             } catch (JSONException e) {
             	Log.e(TAG, "Error Parsing the product json", e);
                 return false;
@@ -208,11 +209,11 @@ public class TeaserBrandElement implements IJSONSerializable {
             JSONObject jsonObject = new JSONObject();
 
             try {
-                jsonObject.put(JSON_ID_TAG, id);
-                jsonObject.put(JSON_NAME_TAG, name);
-                jsonObject.put(JSON_IMAGE_URL_TAG, image_url);
-                jsonObject.put(JSON_BRAND_URL_TAG, brand_url);
-                jsonObject.put(JSON_DESCRIPTION_TAG, description);
+                jsonObject.put(RestConstants.JSON_ID_TAG, id);
+                jsonObject.put(RestConstants.JSON_BRAND_DESCRIPTION_TAG, name);
+                jsonObject.put(RestConstants.JSON_IMAGE_URL_TAG, image_url);
+                jsonObject.put(RestConstants.JSON_BRAND_URL_TAG, brand_url);
+                jsonObject.put(RestConstants.JSON_DESCRIPTION_TAG, description);
 
             } catch (JSONException e) {
                 e.printStackTrace();

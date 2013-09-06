@@ -21,7 +21,7 @@ import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.Errors;
 import pt.rocket.framework.objects.ProductSimple;
 import pt.rocket.framework.objects.ShoppingCartItem;
-import pt.rocket.framework.service.services.ConfigurationService;
+import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.CurrencyFormatter;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -36,7 +36,6 @@ import pt.rocket.utils.dialogfragments.DialogListFragment.OnDialogListListener;
 import pt.rocket.view.fragments.FragmentType;
 import pt.rocket.view.fragments.ProductBasicInfoFragment;
 import pt.rocket.view.fragments.ProductImageGalleryFragment;
-import pt.rocket.view.fragments.ProductImageShowOffFragment;
 import pt.rocket.view.fragments.ProductSpecificationsFragment;
 import pt.rocket.view.fragments.ProductVariationsFragment;
 import android.app.Activity;
@@ -816,7 +815,7 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
         case ADD_ITEM_TO_SHOPPING_CART_EVENT:
             dismissProgress();
             if (event.errorCode == ErrorCode.REQUEST_ERROR) {
-                List<String> errorMessages = event.errorMessages.get(Errors.JSON_ERROR_TAG);
+                List<String> errorMessages = event.errorMessages.get(RestConstants.JSON_ERROR_TAG);
                 if (errorMessages != null) {
                     int titleRes = R.string.error_add_to_cart_failed;
                     int msgRes = -1;
@@ -827,7 +826,7 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
                     } else if (errorMessages.contains(Errors.CODE_PRODUCT_ADD_OVERQUANTITY)) {
                         msgRes = R.string.error_add_to_shopping_cart_quantity;
                     } else if (errorMessages.contains(Errors.CODE_ORDER_PRODUCT_ERROR_ADDING)) {
-                        List<String> validateMessages = event.errorMessages.get(Errors.JSON_VALIDATE_TAG);
+                        List<String> validateMessages = event.errorMessages.get(RestConstants.JSON_VALIDATE_TAG);
                         if (validateMessages != null && validateMessages.size() > 0) {
                             message = validateMessages.get(0);
                         } else {

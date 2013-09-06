@@ -12,6 +12,8 @@ package pt.rocket.framework.objects;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pt.rocket.framework.rest.RestConstants;
+
 import java.util.HashMap;
 
 /**
@@ -26,19 +28,19 @@ public class Address implements IJSONSerializable {
      * List of string the represent the class properties in the Address Object
      * Model
      */
-    public static final String JSON_ID_TAG = "id_customer_address";
-    public static final String JSON_FIRST_NAME_TAG = "first_name";
-    public static final String JSON_MIDDLE_NAME_TAG = "middle_name";
-    public static final String JSON_LAST_NAME_TAG = "last_name";
-    public static final String JSON_PHONE_TAG = "phone";
-    public static final String JSON_ADDRESS1_TAG = "address1";
-    public static final String JSON_ADDRESS2_TAG = "address2";
-    public static final String JSON_CITY_TAG = "city";
-    public static final String JSON_REGION_TAG = "region";
-    public static final String JSON_POSTCODE_TAG = "postcode";
-    public static final String JSON_COMPANY_TAG = "company";
-    public static final String JSON_IS_DEFAULT_BILLING_TAG = "is_default_billing";
-    public static final String JSON_IS_DEFAULT_SHIPPING_TAG = "is_default_shipping";
+//    public static final String JSON_ID_TAG = "id_customer_address";
+//    public static final String JSON_FIRST_NAME_TAG = "first_name";
+//    public static final String JSON_MIDDLE_NAME_TAG = "middle_name";
+//    public static final String JSON_LAST_NAME_TAG = "last_name";
+//    public static final String JSON_PHONE_TAG = "phone";
+//    public static final String JSON_ADDRESS1_TAG = "address1";
+//    public static final String JSON_ADDRESS2_TAG = "address2";
+//    public static final String JSON_CITY_TAG = "city";
+//    public static final String JSON_REGION_TAG = "region";
+//    public static final String JSON_POSTCODE_TAG = "postcode";
+//    public static final String JSON_COMPANY_TAG = "company";
+//    public static final String JSON_IS_DEFAULT_BILLING_TAG = "is_default_billing";
+//    public static final String JSON_IS_DEFAULT_SHIPPING_TAG = "is_default_shipping";
 
     public static final String OBJECT_MODEL_ID = "address_id";
     public static final String OBJECT_MODEL_FIRST_NAME = "AddressForm[first_name]";
@@ -290,7 +292,7 @@ public class Address implements IJSONSerializable {
         HashMap<String, String> map = new HashMap<String, String>();
 
         map.put(OBJECT_MODEL_ID, addressId + "");
-        map.put(JSON_ID_TAG, addressId + "");
+        map.put(RestConstants.JSON_ADDRESS_ID_TAG, addressId + "");
 
         map.put(OBJECT_MODEL_COMPANY, company);
 
@@ -355,27 +357,27 @@ public class Address implements IJSONSerializable {
     public boolean initialize(JSONObject jsonObject) {
         try {
             JSONObject dataObject = jsonObject;
-            if (jsonObject.has(JSON_DATA_TAG)) {
-                dataObject = jsonObject.getJSONObject(JSON_DATA_TAG);
+            if (jsonObject.has(RestConstants.JSON_DATA_TAG)) {
+                dataObject = jsonObject.getJSONObject(RestConstants.JSON_DATA_TAG);
             }
 
-            company = dataObject.optString(JSON_COMPANY_TAG);
+            company = dataObject.optString(RestConstants.JSON_COMPANY_TAG);
 
-            id = dataObject.getString(JSON_ID_TAG);
+            id = dataObject.getString(RestConstants.JSON_ADDRESS_ID_TAG);
             addressId = Integer.parseInt(id);
-            firstName = dataObject.getString(JSON_FIRST_NAME_TAG);
-            middleName = dataObject.optString(JSON_MIDDLE_NAME_TAG);
-            lastName = dataObject.getString(JSON_LAST_NAME_TAG);
-            city = dataObject.getString(JSON_CITY_TAG);
+            firstName = dataObject.getString(RestConstants.JSON_FIRST_NAME_TAG);
+            middleName = dataObject.optString(RestConstants.JSON_MIDDLE_NAME_TAG);
+            lastName = dataObject.getString(RestConstants.JSON_LAST_NAME_TAG);
+            city = dataObject.getString(RestConstants.JSON_CITY_TAG);
 
-            phone = dataObject.getString(JSON_PHONE_TAG);
-            streetAddress1 = dataObject.getString(JSON_ADDRESS1_TAG);
-            streetAddress2 = dataObject.optString(JSON_ADDRESS2_TAG);
-            postalCode = dataObject.getString(JSON_POSTCODE_TAG);
-            region = dataObject.optString(JSON_REGION_TAG);
+            phone = dataObject.getString(RestConstants.JSON_PHONE_TAG);
+            streetAddress1 = dataObject.getString(RestConstants.JSON_ADDRESS1_TAG);
+            streetAddress2 = dataObject.optString(RestConstants.JSON_ADDRESS2_TAG);
+            postalCode = dataObject.getString(RestConstants.JSON_POSTCODE_TAG);
+            region = dataObject.optString(RestConstants.JSON_REGION_TAG);
 
-            isDefaultBilling = dataObject.getString(JSON_IS_DEFAULT_BILLING_TAG).equals("1");
-            isDefaultShipping = dataObject.getString(JSON_IS_DEFAULT_SHIPPING_TAG).equals("1");
+            isDefaultBilling = dataObject.getString(RestConstants.JSON_IS_DEFAULT_BILLING_TAG).equals("1");
+            isDefaultShipping = dataObject.getString(RestConstants.JSON_IS_DEFAULT_SHIPPING_TAG).equals("1");
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -391,19 +393,19 @@ public class Address implements IJSONSerializable {
     public JSONObject toJSON() {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put(JSON_COMPANY_TAG, company);
-            jsonObject.put(JSON_ID_TAG, id);
-            jsonObject.put(JSON_FIRST_NAME_TAG, firstName);
-            jsonObject.put(JSON_LAST_NAME_TAG, lastName);
-            jsonObject.put(JSON_MIDDLE_NAME_TAG, middleName);
-            jsonObject.put(JSON_CITY_TAG, city);
-            jsonObject.put(JSON_PHONE_TAG, phone);
-            jsonObject.put(JSON_ADDRESS1_TAG, streetAddress1);
-            jsonObject.put(JSON_ADDRESS2_TAG, streetAddress2);
-            jsonObject.put(JSON_POSTCODE_TAG, postalCode);
-            jsonObject.put(JSON_REGION_TAG, region);
-            jsonObject.put(JSON_IS_DEFAULT_BILLING_TAG, isDefaultBilling?1:0);
-            jsonObject.put(JSON_IS_DEFAULT_SHIPPING_TAG, isDefaultShipping?1:0);
+            jsonObject.put(RestConstants.JSON_COMPANY_TAG, company);
+            jsonObject.put(RestConstants.JSON_ADDRESS_ID_TAG, id);
+            jsonObject.put(RestConstants.JSON_FIRST_NAME_TAG, firstName);
+            jsonObject.put(RestConstants.JSON_LAST_NAME_TAG, lastName);
+            jsonObject.put(RestConstants.JSON_MIDDLE_NAME_TAG, middleName);
+            jsonObject.put(RestConstants.JSON_CITY_TAG, city);
+            jsonObject.put(RestConstants.JSON_PHONE_TAG, phone);
+            jsonObject.put(RestConstants.JSON_ADDRESS1_TAG, streetAddress1);
+            jsonObject.put(RestConstants.JSON_ADDRESS2_TAG, streetAddress2);
+            jsonObject.put(RestConstants.JSON_POSTCODE_TAG, postalCode);
+            jsonObject.put(RestConstants.JSON_REGION_TAG, region);
+            jsonObject.put(RestConstants.JSON_IS_DEFAULT_BILLING_TAG, isDefaultBilling?1:0);
+            jsonObject.put(RestConstants.JSON_IS_DEFAULT_SHIPPING_TAG, isDefaultShipping?1:0);
             
         } catch(JSONException e) {
             e.printStackTrace();

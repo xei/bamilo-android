@@ -13,14 +13,15 @@ import org.json.JSONObject;
 
 import pt.rocket.framework.event.EventType;
 import pt.rocket.framework.objects.IJSONSerializable;
+import pt.rocket.framework.rest.RestConstants;
 
 import de.akquinet.android.androlog.Log;
 
 public class Errors {
 	private final static String TAG = Errors.class.getSimpleName();
 	
-	public static final String JSON_VALIDATE_TAG = "validate";
-	public static final String JSON_ERROR_TAG = "error";
+//	public static final String JSON_VALIDATE_TAG = "validate";
+//	public static final String JSON_ERROR_TAG = "error";
 
 	public final static String CODE_LOGIN_FAILED = "CUSTOMER_LOGIN_FAILED";
 	public final static String CODE_LOGIN_CHECK_PASSWORD = "CUSTOMER_LOGIN_CHECK_EMAIL_PASSWORD";
@@ -36,8 +37,8 @@ public class Errors {
 	public final static String CODE_PRODUCT_ADD_OVERQUANTITY = "SR_ORDER_PRODUCT_ERROR_ADDING_STOCK_ABOVE_ALLOWED_QUANTITY";
 	public final static String CODE_ORDER_PRODUCT_ERROR_ADDING = "ORDER_PRODUCT_ERROR_ADDING";
 
-	private final static String JSON_SUCCESS_TAG = "success";
-	private final static String JSON_MESSAGE_IN_MESSAGES_TAG = "message";
+//	private final static String JSON_SUCCESS_TAG = "success";
+//	private final static String JSON_MESSAGE_IN_MESSAGES_TAG = "message";
 
 	private static List<String> errorMessages;
 	private static List<String> validateMessages;
@@ -52,13 +53,13 @@ public class Errors {
 			return map;
 		} else if (parseErrorArrayWithObject(messagesObject) || parseErrorArray(messagesObject)
 				|| parseSuccessArray(messagesObject)) {
-			map.put(Errors.JSON_ERROR_TAG, errorMessages);
+			map.put(RestConstants.JSON_ERROR_TAG, errorMessages);
 		}
 
 		// Parsing Validate Messages
 		validateMessages = null;
 		if (parseValidateObjectWithObject(messagesObject) || parseValidateObjectWithObjectWithArray(messagesObject) || parseValidateArray(messagesObject)) {
-			map.put(Errors.JSON_VALIDATE_TAG, validateMessages);
+			map.put(RestConstants.JSON_VALIDATE_TAG, validateMessages);
 		}
 
 		dumpMessages();
@@ -93,11 +94,11 @@ public class Errors {
 	}
 
 	private static boolean parseErrorArray(JSONObject messagesObject) {
-		return parseTagArray(messagesObject, Errors.JSON_ERROR_TAG);
+		return parseTagArray(messagesObject, RestConstants.JSON_ERROR_TAG);
 	}
 
 	private static boolean parseValidateArray(JSONObject messagesObject) {
-		JSONArray validateObject = messagesObject.optJSONArray( Errors.JSON_VALIDATE_TAG);
+		JSONArray validateObject = messagesObject.optJSONArray( RestConstants.JSON_VALIDATE_TAG);
 		if (validateObject == null) {
 			// Log.d(TAG, "tried to parse messages validate array - not successful - ignoring");
 			return false;
@@ -108,11 +109,11 @@ public class Errors {
 	}
 
 	private static boolean parseSuccessArray(JSONObject messagesObject) {
-		return parseTagArray(messagesObject, JSON_SUCCESS_TAG);
+		return parseTagArray(messagesObject, RestConstants.JSON_SUCCESS_TAG);
 	}
 
 	private static boolean parseErrorArrayWithObject(JSONObject messagesObject) {
-		JSONArray errorArray = messagesObject.optJSONArray(Errors.JSON_ERROR_TAG);
+		JSONArray errorArray = messagesObject.optJSONArray(RestConstants.JSON_ERROR_TAG);
 		if (errorArray == null) {
 			Log.d(TAG, "tried to parse messages error array with object - not successful - ignoring");
 			return false;
@@ -134,14 +135,14 @@ public class Errors {
 		ArrayList<String> messagesOnly = new ArrayList<String>();
 
 		for (HashMap<String, String> messageMap : errorMessages) {
-			messagesOnly.add(messageMap.get(JSON_MESSAGE_IN_MESSAGES_TAG));
+			messagesOnly.add(messageMap.get(RestConstants.JSON_MESSAGE_IN_MESSAGES_TAG));
 		}
 
 		return messagesOnly;
 	}
 
 	private static boolean parseValidateObjectWithObject(JSONObject messagesObject) {
-		JSONObject validateObject = messagesObject.optJSONObject(Errors.JSON_VALIDATE_TAG);
+		JSONObject validateObject = messagesObject.optJSONObject(RestConstants.JSON_VALIDATE_TAG);
 		if (validateObject == null) {
 			Log.d( TAG, "tried to parse messages validate object with object - not successful - ignoring" );
 			return false;
@@ -157,7 +158,7 @@ public class Errors {
 	}
 	
 	private static boolean parseValidateObjectWithObjectWithArray(JSONObject messagesObject) {
-		JSONObject validateObject = messagesObject.optJSONObject(Errors.JSON_VALIDATE_TAG);
+		JSONObject validateObject = messagesObject.optJSONObject(RestConstants.JSON_VALIDATE_TAG);
 		if (validateObject == null)
 			return false;
 		

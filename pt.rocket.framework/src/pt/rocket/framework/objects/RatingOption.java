@@ -3,6 +3,8 @@ package pt.rocket.framework.objects;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pt.rocket.framework.rest.RestConstants;
+
 /**
  * Rating object to allow the individual display of each rating
  * @author josedourado
@@ -10,8 +12,8 @@ import org.json.JSONObject;
  */
 public class RatingOption implements IJSONSerializable{
     
-    private static final String JSON_SIZE_STARS_FORE_TAG = "size-stars-fore";
-    private static final String JSON_TYPE_TITLE_TAG = "type_title";
+//    private static final String JSON_SIZE_STARS_FORE_TAG = "size-stars-fore";
+//    private static final String JSON_TYPE_TITLE_TAG = "type_title";
     
     private double rating = 0.0;
     private String optionTitle="";
@@ -40,8 +42,8 @@ public class RatingOption implements IJSONSerializable{
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         // TODO Auto-generated method stub
-        rating = jsonObject.getInt(JSON_SIZE_STARS_FORE_TAG)/20;
-        optionTitle = jsonObject.getString(JSON_TYPE_TITLE_TAG);
+        rating = jsonObject.getInt(RestConstants.JSON_SIZE_STARS_FORE_TAG)/20;
+        optionTitle = jsonObject.getString(RestConstants.JSON_TYPE_TITLE_TAG);
         
         return true;
     }

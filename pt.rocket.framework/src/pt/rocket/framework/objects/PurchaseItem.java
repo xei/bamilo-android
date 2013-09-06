@@ -6,6 +6,7 @@ import java.util.List;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.LogTagHelper;
 import android.text.TextUtils;
 import de.akquinet.android.androlog.Log;
@@ -13,11 +14,11 @@ import de.akquinet.android.androlog.Log;
 public class PurchaseItem {
 	private static String TAG = LogTagHelper.create(PurchaseItem.class);
 	private static int INDEX_OFFSET = 5;
-	private static String JSON_TAG_SKU = "sku";
-	private static String JSON_TAG_NAME = "name";
-	private static String JSON_TAG_CATEGORY = "category";
-	private static String JSON_TAG_PAIDPRICE = "paidprice";
-	private static String JSON_TAG_QUANTITY = "quantity";
+//	private static String JSON_TAG_SKU = "sku";
+//	private static String JSON_TAG_NAME = "name";
+//	private static String JSON_TAG_CATEGORY = "category";
+//	private static String JSON_TAG_PAIDPRICE = "paidprice";
+//	private static String JSON_TAG_QUANTITY = "quantity";
 
 	public String sku;
 	public String name;
@@ -29,11 +30,11 @@ public class PurchaseItem {
 	
 	private boolean parseItem( JSONObject itemsJson, int indexBegin ) {
 		try {
-			sku = itemsJson.getJSONObject(String.valueOf(indexBegin)).getString( JSON_TAG_SKU );
-			name = itemsJson.getJSONObject(String.valueOf(indexBegin + 1)).getString( JSON_TAG_NAME );
-			category = itemsJson.getJSONObject(String.valueOf(indexBegin + 2)).getString( JSON_TAG_CATEGORY );
-			paidprice = itemsJson.getJSONObject(String.valueOf(indexBegin + 3)).getString( JSON_TAG_PAIDPRICE );
-			quantity = itemsJson.getJSONObject(String.valueOf(indexBegin + 4)).getString( JSON_TAG_QUANTITY );
+			sku = itemsJson.getJSONObject(String.valueOf(indexBegin)).getString(RestConstants.JSON_SKU_TAG );
+			name = itemsJson.getJSONObject(String.valueOf(indexBegin + 1)).getString( RestConstants.JSON_PURCHASE_NAME_TAG );
+			category = itemsJson.getJSONObject(String.valueOf(indexBegin + 2)).getString( RestConstants.JSON_CATEGORY_TAG );
+			paidprice = itemsJson.getJSONObject(String.valueOf(indexBegin + 3)).getString( RestConstants.JSON_PAIDPRICE_TAG );
+			quantity = itemsJson.getJSONObject(String.valueOf(indexBegin + 4)).getString( RestConstants.JSON_QUANTITY_TAG );
 		} catch (JSONException e) {
 			Log.e(TAG, "parsing purchase item failed" + e);
 			return false;

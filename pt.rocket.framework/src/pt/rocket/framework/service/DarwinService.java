@@ -24,7 +24,7 @@ import android.content.Context;
  */
 public abstract class DarwinService extends RequestListener {
 
-	protected static final String JSON_DATA_TAG = "data";
+	//protected static final String JSON_DATA_TAG = "data";
 	private Set<EventType> initializationEvents;
 	private Set<EventType> handledEvents;
 

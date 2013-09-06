@@ -9,17 +9,19 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pt.rocket.framework.rest.RestConstants;
+
 /**
  * @author nutzer2
  * 
  */
 public class ProductRatingPage implements IJSONSerializable {
 
-	private static final String JSON_AGGREGATEDATA_TAG = "aggregatedData";
-	private static final String JSON_STARS_TAG = "stars";
-	private static final String JSON_SIZE_STARS_FORE_TAG = "size-stars-fore";
-	private static final String JSON_COMMENTS_COUNT_TAG = "commentsCount";
-	private static final String JSON_COMMENTS_TAG = "comments";
+//	private static final String JSON_AGGREGATEDATA_TAG = "aggregatedData";
+//	private static final String JSON_STARS_TAG = "stars";
+//	private static final String JSON_SIZE_STARS_FORE_TAG = "size-stars-fore";
+//	private static final String JSON_COMMENTS_COUNT_TAG = "commentsCount";
+//	private static final String JSON_COMMENTS_TAG = "comments";
 
 	private double productRating;
 	private int commentsCount;
@@ -38,25 +40,25 @@ public class ProductRatingPage implements IJSONSerializable {
 		productRating = 0;
 
 		JSONObject aggregatedataObject = dataObject
-				.optJSONObject(JSON_AGGREGATEDATA_TAG);
+				.optJSONObject(RestConstants.JSON_AGGREGATEDATA_TAG);
 		if (aggregatedataObject != null) {
-			JSONArray stars = aggregatedataObject.getJSONArray(JSON_STARS_TAG);
+			JSONArray stars = aggregatedataObject.getJSONArray(RestConstants.JSON_STARS_TAG);
 
 			JSONObject rating = null;
 			int size = stars.length();
 
 			for (int i = 0; i < size; i++) {
 				rating = stars.getJSONObject(i);
-				productRating += rating.getInt(JSON_SIZE_STARS_FORE_TAG);
+				productRating += rating.getInt(RestConstants.JSON_SIZE_STARS_FORE_TAG);
 			}
 			productRating /= size;
 			productRating /= 100;
 		}
 
-		commentsCount = dataObject.optInt(JSON_COMMENTS_COUNT_TAG, 0);
+		commentsCount = dataObject.optInt(RestConstants.JSON_COMMENTS_COUNT_TAG, 0);
 
 		// comments.
-		JSONArray comments = dataObject.getJSONArray(JSON_COMMENTS_TAG);
+		JSONArray comments = dataObject.getJSONArray(RestConstants.JSON_COMMENTS_TAG);
 		int size = comments.length();
 		ProductReviewComment reviewComment = null;
 		for (int i = 0; i < size; i++) {

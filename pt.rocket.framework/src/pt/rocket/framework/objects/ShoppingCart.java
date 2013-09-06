@@ -10,6 +10,8 @@ import java.util.Map;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pt.rocket.framework.rest.RestConstants;
+
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -20,9 +22,9 @@ public class ShoppingCart implements IJSONSerializable {
 
 	private static final String TAG = ShoppingCart.class.getSimpleName();
 
-	private static final String JSON_CART_VALUE_TAG = "cartValue";
-	private static final String JSON_CART_COUNT_TAG = "cartCount";
-	private static final String JSON_CART_ITEMS_TAG = "cartItems";
+//	private static final String JSON_CART_VALUE_TAG = "cartValue";
+//	private static final String JSON_CART_COUNT_TAG = "cartCount";
+//	private static final String JSON_CART_ITEMS_TAG = "cartItems";
 
 	private Map<String, ShoppingCartItem> cartItems = new HashMap<String, ShoppingCartItem>();
 	private String cartValue;
@@ -86,10 +88,10 @@ public class ShoppingCart implements IJSONSerializable {
 	@Override
 	public boolean initialize(JSONObject jsonObject) throws JSONException{
 
-		cartValue = jsonObject.getString(JSON_CART_VALUE_TAG);
-		cartCount = jsonObject.getInt(JSON_CART_COUNT_TAG);
-		if (cartCount > 0 && jsonObject.has(JSON_CART_ITEMS_TAG)) {
-			fillCartHashMap(jsonObject.getJSONObject(JSON_CART_ITEMS_TAG));
+		cartValue = jsonObject.getString(RestConstants.JSON_CART_VALUE_TAG);
+		cartCount = jsonObject.getInt(RestConstants.JSON_CART_COUNT_TAG);
+		if (cartCount > 0 && jsonObject.has(RestConstants.JSON_CART_ITEMS_TAG)) {
+			fillCartHashMap(jsonObject.getJSONObject(RestConstants.JSON_CART_ITEMS_TAG));
 		}
 		return true;
 	}

@@ -3,6 +3,7 @@ package pt.rocket.framework.objects;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.LogTagHelper;
 import de.akquinet.android.androlog.Log;
 
@@ -18,10 +19,10 @@ import de.akquinet.android.androlog.Log;
 public class Image implements IJSONSerializable {
 	private final static String TAG = LogTagHelper.create( Image.class );
 	
-    private String JSON_URL_TAG = "path";
-    private String JSON_FORMAT_TAG = "format";
-    private String JSON_WIDTH_TAG = "width";
-    private String JSON_HEIGHT_TAG = "height";
+//    private String JSON_URL_TAG = "path";
+//    private String JSON_FORMAT_TAG = "format";
+//    private String JSON_WIDTH_TAG = "width";
+//    private String JSON_HEIGHT_TAG = "height";
 
     private String url;
     private String format;
@@ -95,10 +96,10 @@ public class Image implements IJSONSerializable {
     @Override
     public boolean initialize(JSONObject jsonObject) {
         try {
-            url = jsonObject.getString(JSON_URL_TAG);
-            format = jsonObject.optString(JSON_FORMAT_TAG);
-            width = jsonObject.optString(JSON_WIDTH_TAG);
-            height = jsonObject.optString(JSON_HEIGHT_TAG);
+            url = jsonObject.getString(RestConstants.JSON_PATH_TAG);
+            format = jsonObject.optString(RestConstants.JSON_FORMAT_TAG);
+            width = jsonObject.optString(RestConstants.JSON_WIDTH_TAG);
+            height = jsonObject.optString(RestConstants.JSON_HEIGHT_TAG);
         } catch (JSONException e) {
 
             try {
@@ -125,10 +126,10 @@ public class Image implements IJSONSerializable {
     public JSONObject toJSON() {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put(JSON_URL_TAG, url);
-            jsonObject.put(JSON_FORMAT_TAG, format);
-            jsonObject.put(JSON_WIDTH_TAG, width);
-            jsonObject.put(JSON_HEIGHT_TAG, height);
+            jsonObject.put(RestConstants.JSON_PATH_TAG, url);
+            jsonObject.put(RestConstants.JSON_FORMAT_TAG, format);
+            jsonObject.put(RestConstants.JSON_WIDTH_TAG, width);
+            jsonObject.put(RestConstants.JSON_HEIGHT_TAG, height);
         } catch (JSONException e) {
             e.printStackTrace();
             return null;

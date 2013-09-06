@@ -24,6 +24,7 @@ import pt.rocket.framework.forms.Form;
 import pt.rocket.framework.forms.InputType;
 import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.objects.Errors;
+import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.service.services.CustomerAccountService;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.pojo.DynamicForm;
@@ -593,7 +594,7 @@ public class RegisterFragment extends BaseFragment {
         if (event.getType() == EventType.REGISTER_ACCOUNT_EVENT) {
             TrackerDelegator.trackSignupFailed();
             if (event.errorCode == ErrorCode.REQUEST_ERROR) {
-                List<String> errorMessages = event.errorMessages.get(Errors.JSON_ERROR_TAG);
+                List<String> errorMessages = event.errorMessages.get(RestConstants.JSON_ERROR_TAG);
                 if (errorMessages != null
                         && errorMessages.contains(Errors.CODE_REGISTER_CUSTOMEREXISTS)) {
                     ((BaseActivity) getActivity()).showContentContainer();

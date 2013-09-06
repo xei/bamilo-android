@@ -25,6 +25,7 @@ import pt.rocket.framework.event.ResponseListener;
 import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.event.events.GetFormsDatasetListEvent;
 import pt.rocket.framework.objects.IJSONSerializable;
+import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.LogTagHelper;
 import de.akquinet.android.androlog.Log;
 
@@ -41,14 +42,14 @@ public class FormField implements IJSONSerializable, IFormField, ResponseListene
         public void DataSetReceived(Map<String, String> dataSet);
     }
 
-    private static final String JSON_TYPE_TAG = "type";
-    private static final String JSON_KEY_TAG = "key";
-    private static final String JSON_NAME_TAG = "name";
-    private static final String JSON_LABEL_TAG = "label";
-    private static final String JSON_VALIDATION_TAG = "rules";
-    private static final String JSON_DATASET_TAG = "dataset";
-    private static final String JSON_VALUE_TAG = "value";
-    private static final String JSON_DATASET_SOURCE_TAG = "dataset_source";
+//    private static final String JSON_TYPE_TAG = "type";
+//    private static final String JSON_KEY_TAG = "key";
+//    private static final String JSON_NAME_TAG = "name";
+//    private static final String JSON_LABEL_TAG = "label";
+//    private static final String JSON_VALIDATION_TAG = "rules";
+//    private static final String JSON_DATASET_TAG = "dataset";
+//    private static final String JSON_VALUE_TAG = "value";
+//    private static final String JSON_DATASET_SOURCE_TAG = "dataset_source";
 
     private Form parent;
 
@@ -156,7 +157,7 @@ public class FormField implements IJSONSerializable, IFormField, ResponseListene
 
         try {
             // get the form field
-            String formFieldString = jsonObject.optString(JSON_TYPE_TAG);
+            String formFieldString = jsonObject.optString(RestConstants.JSON_TYPE_TAG);
 
             if (formFieldString.equals("string")) {
                 inputType = InputType.text;
@@ -180,13 +181,13 @@ public class FormField implements IJSONSerializable, IFormField, ResponseListene
 
             // if the field is one of the supported types
             if (result) {
-                id = jsonObject.optString(JSON_ID_TAG);
-                key = jsonObject.optString(JSON_KEY_TAG);
-                name = jsonObject.getString(JSON_NAME_TAG);
-                label = jsonObject.optString(JSON_LABEL_TAG);
-                value = !jsonObject.isNull(JSON_VALUE_TAG) ? jsonObject.optString(JSON_VALUE_TAG) : "";
+                id = jsonObject.optString(RestConstants.JSON_ID_TAG);
+                key = jsonObject.optString(RestConstants.JSON_KEY_TAG);
+                name = jsonObject.getString(RestConstants.JSON_FIELD_NAME_TAG);
+                label = jsonObject.optString(RestConstants.JSON_LABEL_TAG);
+                value = !jsonObject.isNull(RestConstants.JSON_VALUE_TAG) ? jsonObject.optString(RestConstants.JSON_VALUE_TAG) : "";
 
-                JSONObject validationObject = jsonObject.optJSONObject(JSON_VALIDATION_TAG);
+                JSONObject validationObject = jsonObject.optJSONObject(RestConstants.JSON_VALIDATION_TAG);
 
                 if (validationObject != null) {
 
@@ -198,8 +199,8 @@ public class FormField implements IJSONSerializable, IFormField, ResponseListene
 
                 dataSet.clear();
                 JSONArray dataSetArray = null;
-                if (!jsonObject.isNull(JSON_DATASET_TAG)) {
-                    dataSetArray = jsonObject.optJSONArray(JSON_DATASET_TAG);
+                if (!jsonObject.isNull(RestConstants.JSON_DATASET_TAG)) {
+                    dataSetArray = jsonObject.optJSONArray(RestConstants.JSON_DATASET_TAG);
                 }
 
                 if (dataSetArray != null && dataSetArray.length() > 0) {
@@ -207,8 +208,8 @@ public class FormField implements IJSONSerializable, IFormField, ResponseListene
                         dataSet.put(dataSetArray.getString(i), dataSetArray.getString(i));
                     }
                 } else {
-                    if (!jsonObject.isNull(JSON_DATASET_SOURCE_TAG)) {
-                        datasetSource = jsonObject.optString(JSON_DATASET_SOURCE_TAG);
+                    if (!jsonObject.isNull(RestConstants.JSON_DATASET_SOURCE_TAG)) {
+                        datasetSource = jsonObject.optString(RestConstants.JSON_DATASET_SOURCE_TAG);
                         if (!datasetSource.equals("")) {
                             EventManager.getSingleton().triggerRequestEvent(new GetFormsDatasetListEvent(key, datasetSource), this);
                         }
@@ -236,40 +237,40 @@ public class FormField implements IJSONSerializable, IFormField, ResponseListene
         try {
             switch (inputType) {
             case checkBox:
-                jsonObject.put(JSON_TYPE_TAG, "boolean");
+                jsonObject.put(RestConstants.JSON_TYPE_TAG, "boolean");
                 break;
             case date:
-                jsonObject.put(JSON_TYPE_TAG, "date");
+                jsonObject.put(RestConstants.JSON_TYPE_TAG, "date");
                 break;
             case email:
-                jsonObject.put(JSON_TYPE_TAG, "email");
+                jsonObject.put(RestConstants.JSON_TYPE_TAG, "email");
                 break;
             case number:
-                jsonObject.put(JSON_TYPE_TAG, "integer");
+                jsonObject.put(RestConstants.JSON_TYPE_TAG, "integer");
                 break;
             case password:
-                jsonObject.put(JSON_TYPE_TAG, "password");
+                jsonObject.put(RestConstants.JSON_TYPE_TAG, "password");
                 break;
             case radioGroup:
-                jsonObject.put(JSON_TYPE_TAG, "radio");
+                jsonObject.put(RestConstants.JSON_TYPE_TAG, "radio");
                 break;
             case text:
-                jsonObject.put(JSON_TYPE_TAG, "string");
+                jsonObject.put(RestConstants.JSON_TYPE_TAG, "string");
                 break;
             default:
-                jsonObject.put(JSON_TYPE_TAG, "string");
+                jsonObject.put(RestConstants.JSON_TYPE_TAG, "string");
                 break;
             }
 
             // fields
-            jsonObject.put(JSON_ID_TAG, id);
-            jsonObject.put(JSON_KEY_TAG, key);
-            jsonObject.put(JSON_NAME_TAG, name);
-            jsonObject.put(JSON_LABEL_TAG, label);
-            jsonObject.put(JSON_VALUE_TAG, value);
+            jsonObject.put(RestConstants.JSON_ID_TAG, id);
+            jsonObject.put(RestConstants.JSON_KEY_TAG, key);
+            jsonObject.put(RestConstants.JSON_FIELD_NAME_TAG, name);
+            jsonObject.put(RestConstants.JSON_LABEL_TAG, label);
+            jsonObject.put(RestConstants.JSON_VALUE_TAG, value);
 
             // validation
-            jsonObject.put(JSON_VALIDATION_TAG, validation.toJSON());
+            jsonObject.put(RestConstants.JSON_VALIDATION_TAG, validation.toJSON());
 
             // dataset
 
@@ -278,10 +279,10 @@ public class FormField implements IJSONSerializable, IFormField, ResponseListene
                 dataSetArray.put(dataSetItem);
             }
 
-            jsonObject.put(JSON_DATASET_TAG, dataSetArray);
+            jsonObject.put(RestConstants.JSON_DATASET_TAG, dataSetArray);
 
             // datasetsource
-            jsonObject.put(JSON_DATASET_SOURCE_TAG, datasetSource);
+            jsonObject.put(RestConstants.JSON_DATASET_SOURCE_TAG, datasetSource);
 
         } catch (JSONException e) {
             e.printStackTrace();

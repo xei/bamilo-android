@@ -3,13 +3,15 @@ package pt.rocket.framework.objects;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pt.rocket.framework.rest.RestConstants;
+
 /**
  * Class that defines the carousel (slider) item
  * @author GuilhermeSilva
  */
 public class CarouselItem  implements IJSONSerializable{
-    private static final String JSON_DESCRIPTION_TAG = "description";
-    private static final String JSON_URL_TAG = "url";
+	// private static final String JSON_DESCRIPTION_TAG = "description";
+	// private static final String JSON_URL_TAG = "url";
     private String id;
     private String description;
     private String url;
@@ -39,12 +41,12 @@ public class CarouselItem  implements IJSONSerializable{
     @Override
     public boolean initialize(JSONObject jsonObject) {
         try {
-            id = jsonObject.getString(JSON_ID_TAG);
+            id = jsonObject.getString(RestConstants.JSON_ID_TAG);
             
-            JSONObject dataObject = jsonObject.getJSONObject(JSON_DATA_TAG);
+            JSONObject dataObject = jsonObject.getJSONObject(RestConstants.JSON_DATA_TAG);
             
-            description = dataObject.getString(JSON_DESCRIPTION_TAG);
-            url = dataObject.getString(JSON_URL_TAG);
+            description = dataObject.getString(RestConstants.JSON_DESCRIPTION_TAG);
+            url = dataObject.getString(RestConstants.JSON_URL_TAG);
         } catch (JSONException e) {
             e.printStackTrace();
             return false;
@@ -60,13 +62,13 @@ public class CarouselItem  implements IJSONSerializable{
         JSONObject jsonObject = new JSONObject();
         try {
 
-            jsonObject.put(JSON_ID_TAG, id);
+            jsonObject.put(RestConstants.JSON_ID_TAG, id);
             
             JSONObject dataObject = new JSONObject();
-            dataObject.put(JSON_DESCRIPTION_TAG, description);
-            dataObject.put(JSON_URL_TAG, url);
+            dataObject.put(RestConstants.JSON_DESCRIPTION_TAG, description);
+            dataObject.put(RestConstants.JSON_URL_TAG, url);
             
-            jsonObject.put(JSON_DATA_TAG, dataObject);
+            jsonObject.put(RestConstants.JSON_DATA_TAG, dataObject);
         } catch(JSONException e) {
             e.printStackTrace();
         }        

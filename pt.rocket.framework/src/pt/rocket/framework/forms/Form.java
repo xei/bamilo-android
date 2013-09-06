@@ -21,6 +21,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import pt.rocket.framework.objects.IJSONSerializable;
+import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.LogTagHelper;
 import de.akquinet.android.androlog.Log;
 
@@ -33,11 +34,11 @@ import de.akquinet.android.androlog.Log;
 public class Form implements IJSONSerializable {
 	private final static String TAG = LogTagHelper.create( Form.class );
 	
-    private static final String JSON_NAME_TAG = "form";
-    private static final String JSON_METHOD_TAG = "method";
-    private static final String JSON_ACTION_TAG = "action";
-    private static final String JSON_SUBMIT_TAG = "submit";
-    private static final String JSON_FIELDS_TAG = "fields";
+//    private static final String JSON_NAME_TAG = "form";
+//    private static final String JSON_METHOD_TAG = "method";
+//    private static final String JSON_ACTION_TAG = "action";
+//    private static final String JSON_SUBMIT_TAG = "submit";
+//    private static final String JSON_FIELDS_TAG = "fields";
 
     public String id;
     public String name;
@@ -93,11 +94,11 @@ public class Form implements IJSONSerializable {
     @Override
     public boolean initialize(JSONObject jsonObject) {
         try {
-            id = jsonObject.optString(JSON_ID_TAG);
-            name = jsonObject.optString(JSON_NAME_TAG);
-            method = jsonObject.optString(JSON_METHOD_TAG);
-            action = jsonObject.optString(JSON_ACTION_TAG);
-            submit = jsonObject.optString(JSON_SUBMIT_TAG);
+            id = jsonObject.optString(RestConstants.JSON_ID_TAG);
+            name = jsonObject.optString(RestConstants.JSON_FORM_TAG);
+            method = jsonObject.optString(RestConstants.JSON_METHOD_TAG);
+            action = jsonObject.optString(RestConstants.JSON_ACTION_TAG);
+            submit = jsonObject.optString(RestConstants.JSON_SUBMIT_TAG);
 
             fields.clear();
 
@@ -105,7 +106,7 @@ public class Form implements IJSONSerializable {
                 fieldMapping = FormsMapping.genericMapping.get(id);
             }
 
-            JSONArray fieldsArray = jsonObject.getJSONArray(JSON_FIELDS_TAG);
+            JSONArray fieldsArray = jsonObject.getJSONArray(RestConstants.JSON_FIELDS_TAG);
 
             for (int i = 0; i < fieldsArray.length(); ++i) {
                 FormField field = new FormField(this);
@@ -140,18 +141,18 @@ public class Form implements IJSONSerializable {
     public JSONObject toJSON() {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put(JSON_ID_TAG, id);
-            jsonObject.put(JSON_NAME_TAG, name);
-            jsonObject.put(JSON_METHOD_TAG, method);
-            jsonObject.put(JSON_ACTION_TAG, action);
-            jsonObject.put(JSON_SUBMIT_TAG, submit);
+            jsonObject.put(RestConstants.JSON_ID_TAG, id);
+            jsonObject.put(RestConstants.JSON_FORM_TAG, name);
+            jsonObject.put(RestConstants.JSON_METHOD_TAG, method);
+            jsonObject.put(RestConstants.JSON_ACTION_TAG, action);
+            jsonObject.put(RestConstants.JSON_SUBMIT_TAG, submit);
 
             JSONArray fieldArray = new JSONArray();
             for (FormField field : fields) {
                 fieldArray.put(field.toJSON());
             }
 
-            jsonObject.put(JSON_FIELDS_TAG, fieldArray);
+            jsonObject.put(RestConstants.JSON_FIELDS_TAG, fieldArray);
 
         } catch (JSONException e) {
         	Log.e(TAG, "trying to create json objects failed", e );

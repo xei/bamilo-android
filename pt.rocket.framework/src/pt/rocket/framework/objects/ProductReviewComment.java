@@ -6,6 +6,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pt.rocket.framework.rest.RestConstants;
+
 import de.akquinet.android.androlog.Log;
 
 import android.content.ContentValues;
@@ -19,19 +21,19 @@ import android.net.Uri.Builder;
  */
 public class ProductReviewComment implements IJSONSerializable {
 
-    private static final String JSON_TITLE_TAG = "title";
-    private static final String JSON_DETAILS_TAG = "detail";
-    private static final String JSON_NICKNAME_TAG = "nickname";
-    private static final String JSON_DATE_TAG = "created_at";
-    private static final String JSON_OPTIONS_TAG = "options";
-
-    // private static final String JSON_TYPE_ID_TAG = "type_id";
-    // private static final String JSON_TYPE_CODE_TAG = "type_code";
-    // private static final String JSON_TYPE_TITLE_TAG = "type_title";
-    // private static final String JSON_OPTION_CODE_TAG = "option_code";
-    // private static final String JSON_SIZE_STARS_BACK_TAG = "size-stars-back";
-    private static final String JSON_SIZE_STARS_FORE_TAG = "size-stars-fore";
-    private static final String JSON_TYPE_TITLE_TAG = "type_title";
+//    private static final String JSON_TITLE_TAG = "title";
+//    private static final String JSON_DETAILS_TAG = "detail";
+//    private static final String JSON_NICKNAME_TAG = "nickname";
+//    private static final String JSON_DATE_TAG = "created_at";
+//    private static final String JSON_OPTIONS_TAG = "options";
+//
+//    // private static final String JSON_TYPE_ID_TAG = "type_id";
+//    // private static final String JSON_TYPE_CODE_TAG = "type_code";
+//    // private static final String JSON_TYPE_TITLE_TAG = "type_title";
+//    // private static final String JSON_OPTION_CODE_TAG = "option_code";
+//    // private static final String JSON_SIZE_STARS_BACK_TAG = "size-stars-back";
+//    private static final String JSON_SIZE_STARS_FORE_TAG = "size-stars-fore";
+//    private static final String JSON_TYPE_TITLE_TAG = "type_title";
 
 
     private String title = "";
@@ -55,14 +57,14 @@ public class ProductReviewComment implements IJSONSerializable {
 
         ratingOptions = new ArrayList<RatingOption>();
         try {
-            title = jsonObject.getString(JSON_TITLE_TAG);
-            comments = jsonObject.getString(JSON_DETAILS_TAG);
-            name = jsonObject.getString(JSON_NICKNAME_TAG);
+            title = jsonObject.getString(RestConstants.JSON_TITLE_TAG);
+            comments = jsonObject.getString(RestConstants.JSON_DETAILS_TAG);
+            name = jsonObject.getString(RestConstants.JSON_NICKNAME_TAG);
             // DateFormat dateFormat = DateFormat.getDateTimeInstance();
             // date = dateFormat.parse(jsonObject.getString(JSON_DATE_TAG));
-            date = jsonObject.getString(JSON_DATE_TAG);
+            date = jsonObject.getString(RestConstants.JSON_DATE_TAG);
 
-            JSONArray options = jsonObject.getJSONArray(JSON_OPTIONS_TAG);
+            JSONArray options = jsonObject.getJSONArray(RestConstants.JSON_OPTIONS_TAG);
             JSONObject ratingObject = null;
             int size = options.length();
             Log.i("OPTIONS"," "+size);

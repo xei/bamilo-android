@@ -9,6 +9,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pt.rocket.framework.rest.RestConstants;
+
 import android.util.Log;
 
 /**
@@ -19,9 +21,9 @@ public class ProductsPage implements IJSONSerializable{
 	
 	private static final String TAG = ProductsPage.class.getSimpleName();
 	
-	private static final String JSON_RESULTS_TAG = "results";
-	private static final String JSON_PRODUCT_COUNT_TAG = "product_count";
-	private static final String JSON_CATEGORIES_TAG = "categories";
+//	private static final String JSON_RESULTS_TAG = "results";
+//	private static final String JSON_PRODUCT_COUNT_TAG = "product_count";
+//	private static final String JSON_CATEGORIES_TAG = "categories";
 	
 	private int totalProducts;
 	private ArrayList<Product> products;
@@ -36,9 +38,9 @@ public class ProductsPage implements IJSONSerializable{
 	public boolean initialize(JSONObject metadataObject) throws JSONException {
 		products = new ArrayList<Product>();
 		categories = new ArrayList<Category>();
-		totalProducts = metadataObject.optInt(JSON_PRODUCT_COUNT_TAG, 0);
+		totalProducts = metadataObject.optInt(RestConstants.JSON_PRODUCT_COUNT_TAG, 0);
 
-		JSONArray productObjectArray = metadataObject.getJSONArray(JSON_RESULTS_TAG);
+		JSONArray productObjectArray = metadataObject.getJSONArray(RestConstants.JSON_RESULTS_TAG);
 
 		for (int i = 0; i < productObjectArray.length(); ++i) {
 			JSONObject productObject = productObjectArray.getJSONObject(i);
@@ -47,8 +49,8 @@ public class ProductsPage implements IJSONSerializable{
 			products.add(product);
 		}
 
-		if (!metadataObject.isNull(JSON_CATEGORIES_TAG)) {
-			JSONArray categoriesArray = metadataObject.getJSONArray(JSON_CATEGORIES_TAG);
+		if (!metadataObject.isNull(RestConstants.JSON_CATEGORIES_TAG)) {
+			JSONArray categoriesArray = metadataObject.getJSONArray(RestConstants.JSON_CATEGORIES_TAG);
 			Log.d(TAG, " # of categories " + categoriesArray.length());
 			for (int i = 0; i < categoriesArray.length(); ++i) {
 				JSONObject categoryObject = categoriesArray.getJSONObject(i);

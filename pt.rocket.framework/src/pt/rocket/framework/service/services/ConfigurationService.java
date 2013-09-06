@@ -17,6 +17,7 @@ import pt.rocket.framework.event.EventType;
 import pt.rocket.framework.event.RequestEvent;
 import pt.rocket.framework.objects.VersionInfo;
 import pt.rocket.framework.rest.ResponseReceiver;
+import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.rest.RestServiceHelper;
 import pt.rocket.framework.service.DarwinService;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -30,7 +31,7 @@ public class ConfigurationService extends DarwinService {
 	private static final String TAG = LogTagHelper.create(ApiService.class);
 	private static String phoneNumber = "";
 	
-	private static final String JSON_PHONE_TAG = "metadata";
+	//private static final String JSON_PHONE_TAG = "metadata";
 	
 	public ConfigurationService() {		
 		super(EnumSet.noneOf(EventType.class), EnumSet.of(EventType.GET_CALL_TO_ORDER_PHONE));
@@ -61,7 +62,7 @@ public class ConfigurationService extends DarwinService {
 					public String parseResponse(JSONObject metadataObject) throws JSONException {						
 						String phone = "";
 						if ( null != metadataObject ) {
-							phone = metadataObject.optString("metadata").split(" ")[0];
+							phone = metadataObject.optString(RestConstants.JSON_CALL_PHONE_TAG).split(" ")[0];
 						}
 						
 						return phone;

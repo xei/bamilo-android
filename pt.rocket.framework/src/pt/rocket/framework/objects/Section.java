@@ -3,6 +3,8 @@ package pt.rocket.framework.objects;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pt.rocket.framework.rest.RestConstants;
+
 /**
  * Represents a section of the api.
  * For each section, there is a service.
@@ -12,14 +14,14 @@ import org.json.JSONObject;
  */
 public class Section implements IJSONSerializable {
 	
-    /**
-     * Tag of the name value.
-     */
-    private static String JSON_NAME_TAG = "section_name";
-    /**
-     * Tag of the url tag.
-     */
-    private static String JSON_URL_TAG = "url";
+//    /**
+//     * Tag of the name value.
+//     */
+//    private static String JSON_NAME_TAG = "section_name";
+//    /**
+//     * Tag of the url tag.
+//     */
+//    private static String JSON_URL_TAG = "url";
     
     /**
      * Name of the section.
@@ -51,8 +53,8 @@ public class Section implements IJSONSerializable {
     @Override
     public boolean initialize(JSONObject jsonObject) {
         try {
-            name = jsonObject.getString(JSON_NAME_TAG);
-            url = jsonObject.getString(JSON_URL_TAG);            
+            name = jsonObject.getString(RestConstants.JSON_NAME_TAG);
+            url = jsonObject.getString(RestConstants.JSON_URL_TAG);            
         } catch (JSONException e) {
             e.printStackTrace();
             return false;
@@ -67,8 +69,8 @@ public class Section implements IJSONSerializable {
     public JSONObject toJSON() {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put(JSON_NAME_TAG, name);
-            jsonObject.put(JSON_URL_TAG, url);
+            jsonObject.put(RestConstants.JSON_NAME_TAG, name);
+            jsonObject.put(RestConstants.JSON_URL_TAG, url);
         } catch (JSONException e) {
             e.printStackTrace();
         }

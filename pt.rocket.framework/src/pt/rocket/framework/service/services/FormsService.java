@@ -18,6 +18,7 @@ import pt.rocket.framework.forms.Form;
 import pt.rocket.framework.forms.FormData;
 import pt.rocket.framework.rest.ResponseReceiver;
 import pt.rocket.framework.rest.RestClientSingleton;
+import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.rest.RestServiceHelper;
 import pt.rocket.framework.service.DarwinService;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -41,7 +42,7 @@ public class FormsService extends DarwinService {
 
 	private static final String TAG = LogTagHelper.create(FormsService.class);
 
-	private static final String JSON_NAME_TAG = "name";
+	//private static final String JSON_NAME_TAG = "name";
 
 	/**
 	 * Dictionary that keeps the action key and form data
@@ -81,7 +82,7 @@ public class FormsService extends DarwinService {
 						formDataRegistry = new HashMap<String, FormData>();
 
 						JSONArray dataArray = metadataObject
-								.getJSONArray(JSON_DATA_TAG);
+								.getJSONArray(RestConstants.JSON_DATA_TAG);
 						int dataArrayLength = dataArray.length();
 						for (int i = 0; i < dataArrayLength; ++i) {
 							JSONObject formDataObject = dataArray
@@ -121,7 +122,7 @@ public class FormsService extends DarwinService {
 							throws JSONException {
 						final ArrayList<Form> forms = new ArrayList<Form>();
 						JSONArray dataObject = formMetadata
-								.getJSONArray(JSON_DATA_TAG);
+								.getJSONArray(RestConstants.JSON_DATA_TAG);
 
 						for (int i = 0; i < dataObject.length(); ++i) {
 							Form form = new Form();
@@ -164,7 +165,7 @@ public class FormsService extends DarwinService {
 						}
 
 						JSONArray dataObject = metadataObject
-								.getJSONArray(JSON_DATA_TAG);
+								.getJSONArray(RestConstants.JSON_DATA_TAG);
 
 						String key = "";
 						String value = "";
@@ -175,7 +176,7 @@ public class FormsService extends DarwinService {
 
 							key = String.valueOf(datasetObject.optInt(
 									JSON_ID_TAG, 0));
-							value = datasetObject.optString(JSON_NAME_TAG);
+							value = datasetObject.optString(RestConstants.JSON_NAME_TAG);
 
 							values.put(key, value);
 						}

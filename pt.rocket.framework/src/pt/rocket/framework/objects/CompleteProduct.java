@@ -21,6 +21,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.CurrencyFormatter;
 import pt.rocket.framework.utils.LogTagHelper;
 import de.akquinet.android.androlog.Log;
@@ -34,30 +35,30 @@ public class CompleteProduct implements IJSONSerializable {
 	
 	private static final String TAG = LogTagHelper.create( CompleteProduct.class);
 	
-    private static final String JSON_SKU_TAG = "sku";
-    private static final String JSON_NAME_TAG = "name";
-    private static final String JSON_ID_CATALOG_CONFIG_TAG = "id_catalog_config";
-    private static final String JSON_ATTRIBUTE_SET_ID_TAG = "attribute_set_id";
-    private static final String JSON_ACTIVATED_AT_TAG = "activated_at";
-    private static final String JSON_MAX_PRICE_TAG = "max_price";
-    private static final String JSON_PRICE_TAG = "price";
-    private static final String JSON_BRAND_TAG = "brand";
-    private static final String JSON_CATEGORIES_TAG = "categories";
-    private static final String JSON_ATTRIBUTES_TAG = "attributes";
-    private static final String JSON_SIMPLES_TAG = "simples";
-    private static final String JSON_IMAGE_LIST_TAG = "image_list";
-    private static final String JSON_URL_TAG = "url";
-    private static final String JSON_DESCRIPTION_TAG = "description";
-    private static final String JSON_SHORT_DESC_TAG = "short_description";
-    private static final String JSON_MAX_SAVING_PERCENTAGE_TAG = "max_saving_percentage";
-    private static final String JSON_MAX_SPECIAL_PRICE_TAG = "max_special_price";
-    private static final String JSON_SPECIAL_PRICE_TAG = "special_price";
-
-    private static final String JSON_RATINGS_TOTAL_TAG = "ratings_total";
-    private static final String JSON_RATINGS_TOTAL_SUM_TAG = "sum";
-    private static final String JSON_RATINGS_TOTAL_AVG_TAG = "avr";
-    
-    private static final String JSON_VARIATIONS_TAG = "variations";
+//    private static final String JSON_SKU_TAG = "sku";
+//    private static final String JSON_NAME_TAG = "name";
+//    private static final String JSON_ID_CATALOG_CONFIG_TAG = "id_catalog_config";
+//    private static final String JSON_ATTRIBUTE_SET_ID_TAG = "attribute_set_id";
+//    private static final String JSON_ACTIVATED_AT_TAG = "activated_at";
+//    private static final String JSON_MAX_PRICE_TAG = "max_price";
+//    private static final String JSON_PRICE_TAG = "price";
+//    private static final String JSON_BRAND_TAG = "brand";
+//    private static final String JSON_CATEGORIES_TAG = "categories";
+//    private static final String JSON_ATTRIBUTES_TAG = "attributes";
+//    private static final String JSON_SIMPLES_TAG = "simples";
+//    private static final String JSON_IMAGE_LIST_TAG = "image_list";
+//    private static final String JSON_URL_TAG = "url";
+//    private static final String JSON_DESCRIPTION_TAG = "description";
+//    private static final String JSON_SHORT_DESC_TAG = "short_description";
+//    private static final String JSON_MAX_SAVING_PERCENTAGE_TAG = "max_saving_percentage";
+//    private static final String JSON_MAX_SPECIAL_PRICE_TAG = "max_special_price";
+//    private static final String JSON_SPECIAL_PRICE_TAG = "special_price";
+//
+//    private static final String JSON_RATINGS_TOTAL_TAG = "ratings_total";
+//    private static final String JSON_RATINGS_TOTAL_SUM_TAG = "sum";
+//    private static final String JSON_RATINGS_TOTAL_AVG_TAG = "avr";
+//    
+//    private static final String JSON_VARIATIONS_TAG = "variations";
     
     private String sku;
     private String name;
@@ -124,33 +125,33 @@ public class CompleteProduct implements IJSONSerializable {
     @Override
     public boolean initialize(JSONObject jsonObject) {
         try {
-            JSONObject dataObject = jsonObject.getJSONObject(JSON_DATA_TAG);
+            JSONObject dataObject = jsonObject.getJSONObject(RestConstants.JSON_DATA_TAG);
 
-            sku = dataObject.getString(JSON_SKU_TAG);
-            name = dataObject.getString(JSON_NAME_TAG);
-            idCatalogConfig = dataObject.getString(JSON_ID_CATALOG_CONFIG_TAG);
-            attributeSetId = dataObject.getString(JSON_ATTRIBUTE_SET_ID_TAG);
-            activatedAt = dataObject.getString(JSON_ACTIVATED_AT_TAG);
+            sku = dataObject.getString(RestConstants.JSON_SKU_TAG);
+            name = dataObject.getString(RestConstants.JSON_PROD_NAME_TAG);
+            idCatalogConfig = dataObject.getString(RestConstants.JSON_ID_CATALOG_CONFIG_TAG);
+            attributeSetId = dataObject.getString(RestConstants.JSON_ATTRIBUTE_SET_ID_TAG);
+            activatedAt = dataObject.getString(RestConstants.JSON_ACTIVATED_AT_TAG);
 
-            description = dataObject.optString(JSON_DESCRIPTION_TAG, "");
-            url = dataObject.optString(JSON_URL_TAG, "");
+            description = dataObject.optString(RestConstants.JSON_DESCRIPTION_TAG, "");
+            url = dataObject.optString(RestConstants.JSON_PROD_URL_TAG, "");
 
-            priceDouble = Double.parseDouble(dataObject.getString(JSON_PRICE_TAG));
+            priceDouble = Double.parseDouble(dataObject.getString(RestConstants.JSON_PRICE_TAG));
             price = CurrencyFormatter.formatCurrency(priceDouble);
-            maxPriceDouble = Double.parseDouble(dataObject.getString(JSON_MAX_PRICE_TAG));
+            maxPriceDouble = Double.parseDouble(dataObject.getString(RestConstants.JSON_MAX_PRICE_TAG));
             maxPrice = CurrencyFormatter.formatCurrency(maxPriceDouble);
-            brand = dataObject.getString(JSON_BRAND_TAG);
+            brand = dataObject.getString(RestConstants.JSON_BRAND_TAG);
 
-            double specialPriceDouble = Double.parseDouble(dataObject.optString(JSON_SPECIAL_PRICE_TAG, "" + priceDouble));
+            double specialPriceDouble = Double.parseDouble(dataObject.optString(RestConstants.JSON_SPECIAL_PRICE_TAG, "" + priceDouble));
             specialPrice = CurrencyFormatter.formatCurrency(specialPriceDouble);
-            maxSpecialPrice = CurrencyFormatter.formatCurrency(Double.parseDouble(dataObject.optString(JSON_MAX_SPECIAL_PRICE_TAG, "" + maxPriceDouble)));
-            maxSavingPercentage = Double.parseDouble(dataObject.optString(JSON_MAX_SAVING_PERCENTAGE_TAG, "0"));
+            maxSpecialPrice = CurrencyFormatter.formatCurrency(Double.parseDouble(dataObject.optString(RestConstants.JSON_MAX_SPECIAL_PRICE_TAG, "" + maxPriceDouble)));
+            maxSavingPercentage = Double.parseDouble(dataObject.optString(RestConstants.JSON_MAX_SAVING_PERCENTAGE_TAG, "0"));
 
             // TODO: ratings need to be completed
-            JSONObject ratingsTotalObject = dataObject.optJSONObject(JSON_RATINGS_TOTAL_TAG);
+            JSONObject ratingsTotalObject = dataObject.optJSONObject(RestConstants.JSON_RATINGS_TOTAL_TAG);
             if(ratingsTotalObject != null) {            	
-            	ratingsAverage = ratingsTotalObject.optDouble(JSON_RATINGS_TOTAL_AVG_TAG, .0);
-            	ratingsCount = ratingsTotalObject.optInt( JSON_RATINGS_TOTAL_SUM_TAG, 0 );
+            	ratingsAverage = ratingsTotalObject.optDouble(RestConstants.JSON_RATINGS_TOTAL_AVG_TAG, .0);
+            	ratingsCount = ratingsTotalObject.optInt( RestConstants.JSON_RATINGS_TOTAL_SUM_TAG, 0 );
             }
 
             if (maxSavingPercentage.equals(0) && !price.equals(specialPrice)) {
@@ -158,7 +159,7 @@ public class CompleteProduct implements IJSONSerializable {
             }
 
             categories.clear();
-            JSONArray categoriesArray = dataObject.getJSONArray(JSON_CATEGORIES_TAG);
+            JSONArray categoriesArray = dataObject.getJSONArray(RestConstants.JSON_CATEGORIES_TAG);
             for (int i = 0; i < categoriesArray.length(); ++i) {
                 categories.add(categoriesArray.getString(i));
             }
@@ -168,7 +169,7 @@ public class CompleteProduct implements IJSONSerializable {
             attributes.clear();
             
             
-            JSONObject attributesObject = dataObject.optJSONObject(JSON_ATTRIBUTES_TAG);
+            JSONObject attributesObject = dataObject.optJSONObject(RestConstants.JSON_PROD_ATTRIBUTES_TAG);
 
             if(attributesObject != null) {
                 JSONArray attributesNames = attributesObject.names();
@@ -182,26 +183,26 @@ public class CompleteProduct implements IJSONSerializable {
             
             // simples
             simples.clear();
-            JSONArray simpleArray = dataObject.getJSONArray(JSON_SIMPLES_TAG);
+            JSONArray simpleArray = dataObject.getJSONArray(RestConstants.JSON_SIMPLES_TAG);
 
             for (int i = 0; i < simpleArray.length(); ++i) {
                 ProductSimple simple = new ProductSimple();
                 JSONObject simpleObject = simpleArray.getJSONObject(i);
                 simple.initialize(simpleObject);
                 
-                String simpleSKU = simple.getAttributes().get(JSON_SKU_TAG);
+                String simpleSKU = simple.getAttributes().get(RestConstants.JSON_SKU_TAG);
                 simples.add(simple);
             }
 
             // image_list
             imageList.clear();
-            JSONArray imageArray = dataObject.getJSONArray(JSON_IMAGE_LIST_TAG);
+            JSONArray imageArray = dataObject.getJSONArray(RestConstants.JSON_IMAGE_LIST_TAG);
             for (int i = 0; i < imageArray.length(); ++i) {
                 JSONObject imageJsonObject = imageArray.getJSONObject(i);
                 imageList.add(imageJsonObject.getString("url"));
             }
             
-            JSONObject variationsObject = dataObject.optJSONObject( JSON_VARIATIONS_TAG );
+            JSONObject variationsObject = dataObject.optJSONObject( RestConstants.JSON_VARIATIONS_TAG );
             if ( variationsObject == null)
             	return true;
             
@@ -514,7 +515,7 @@ public class CompleteProduct implements IJSONSerializable {
     }
     
     public String getShortDescription() {
-    	return attributes.get(JSON_SHORT_DESC_TAG);
+    	return attributes.get(RestConstants.JSON_SHORT_DESC_TAG);
     }
     
 	public boolean hasDiscount() {

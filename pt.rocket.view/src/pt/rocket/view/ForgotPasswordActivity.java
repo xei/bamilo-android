@@ -14,6 +14,7 @@ import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.event.events.ForgetPasswordEvent;
 import pt.rocket.framework.forms.Form;
 import pt.rocket.framework.objects.Errors;
+import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.pojo.DynamicForm;
 import pt.rocket.pojo.DynamicFormItem;
@@ -173,7 +174,7 @@ public class ForgotPasswordActivity extends BaseActivity {
     @Override
     protected boolean onErrorEvent(ResponseEvent event) {
         if (event.getType() == EventType.FORGET_PASSWORD_EVENT) {
-            List<String> errorMessages = event.errorMessages.get(Errors.JSON_ERROR_TAG);
+            List<String> errorMessages = event.errorMessages.get(RestConstants.JSON_ERROR_TAG);
             if (errorMessages != null
                     && errorMessages.contains(Errors.CODE_FORGOTPW_NOSUCH_CUSTOMER)) {
                 showContentContainer();

@@ -20,6 +20,7 @@ import pt.rocket.framework.event.events.GetShoppingCartItemsEvent;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.Errors;
 import pt.rocket.framework.objects.ShoppingCart;
+import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.service.ServiceManager;
 import pt.rocket.framework.service.services.ProductService;
 import pt.rocket.framework.utils.AnalyticsGoogle;
@@ -824,10 +825,10 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
             return;
         } else if (event.errorCode == ErrorCode.REQUEST_ERROR) {
             Map<String, ? extends List<String>> messages = event.errorMessages;
-            List<String> validateMessages = messages.get(Errors.JSON_VALIDATE_TAG);
+            List<String> validateMessages = messages.get(RestConstants.JSON_VALIDATE_TAG);
             String dialogMsg = "";
             if (validateMessages == null || validateMessages.isEmpty()) {
-                validateMessages = messages.get(Errors.JSON_ERROR_TAG);
+                validateMessages = messages.get(RestConstants.JSON_ERROR_TAG);
             }
             if (validateMessages != null) {
                 for (String message : validateMessages) {

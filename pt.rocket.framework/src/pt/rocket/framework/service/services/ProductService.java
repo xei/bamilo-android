@@ -38,6 +38,7 @@ import pt.rocket.framework.objects.ProductRatingPage;
 import pt.rocket.framework.objects.ProductsPage;
 import pt.rocket.framework.objects.SearchSuggestion;
 import pt.rocket.framework.rest.ResponseReceiver;
+import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.rest.RestContract;
 import pt.rocket.framework.rest.RestServiceHelper;
 import pt.rocket.framework.service.DarwinService;
@@ -60,18 +61,18 @@ public class ProductService extends DarwinService {
 
     private static final String TAG = ProductService.class.getSimpleName();
 
-    private static final String JSON_SUGGESTIONS_TAG = "suggestions";
-
-    private static final String JSON_OPTIONS_TAG = "options";
-    private static final String JSON_VALUE_TAG = "value";
-    private static final String JSON_ID_RATING_OPTION_TAG = "id_rating_option";
-    private static final String JSON_CODE_TAG = "code";
-
-    private static final String REVIEW_KEY_FIELD = "key";
-    private static final String REVIEW_OPTION_FIELD = "rating-option--";
-    private static final String REVIEW_PRODUCT_SKU_FIELD = "rating-catalog-sku";
-    private static final String REVIEW_RATING_FIELD = "ratings";
-    private static final String REVIEW_CUSTOMER_ID = "rating-customer";
+//    private static final String JSON_SUGGESTIONS_TAG = "suggestions";
+//
+//    private static final String JSON_OPTIONS_TAG = "options";
+//    private static final String JSON_VALUE_TAG = "value";
+//    private static final String JSON_ID_RATING_OPTION_TAG = "id_rating_option";
+//    private static final String JSON_CODE_TAG = "code";
+//
+//    private static final String REVIEW_KEY_FIELD = "key";
+//    private static final String REVIEW_OPTION_FIELD = "rating-option--";
+//    private static final String REVIEW_PRODUCT_SKU_FIELD = "rating-catalog-sku";
+//    private static final String REVIEW_RATING_FIELD = "ratings";
+//    private static final String REVIEW_CUSTOMER_ID = "rating-customer";
 
     private HashMap<String, HashMap<String, String>> ratingOptions = null;
     private CompleteProduct currentProduct = null;
@@ -124,7 +125,7 @@ public class ProductService extends DarwinService {
             public List<SearchSuggestion> parseResponse(JSONObject metadataObject) throws JSONException {
                 ArrayList<SearchSuggestion> suggestions = new ArrayList<SearchSuggestion>();
 
-                JSONArray suggestionsArray = metadataObject.getJSONArray(JSON_SUGGESTIONS_TAG);
+                JSONArray suggestionsArray = metadataObject.getJSONArray(RestConstants.JSON_SUGGESTIONS_TAG);
                 for (int i = 0; i < suggestionsArray.length(); ++i) {
                     SearchSuggestion suggestion = new SearchSuggestion();
                     suggestion.initialize(suggestionsArray.getJSONObject(i));
@@ -220,7 +221,7 @@ public class ProductService extends DarwinService {
                 @Override
                 public HashMap<String, HashMap<String, String>> parseResponse(JSONObject metadataObject) throws JSONException {
                     ratingOptions = new HashMap<String, HashMap<String, String>>();
-                    JSONArray dataArray = metadataObject.getJSONArray(JSON_DATA_TAG);
+                    JSONArray dataArray = metadataObject.getJSONArray(RestConstants.JSON_DATA_TAG);
                     JSONObject ratingOption = null;
                     JSONObject optionObject = null;
                     HashMap<String, String> option;
@@ -228,14 +229,14 @@ public class ProductService extends DarwinService {
                     int optionsSize = 0;
                     for (int i = 0; i < size; i++) {
                         ratingOption = dataArray.getJSONObject(i);
-                        JSONArray optionsArray = ratingOption.getJSONArray(JSON_OPTIONS_TAG);
+                        JSONArray optionsArray = ratingOption.getJSONArray(RestConstants.JSON_OPTIONS_TAG);
                         option = new HashMap<String, String>();
                         optionsSize = optionsArray.length();
                         for (int k = 0; k < optionsSize; k++) {
                             optionObject = optionsArray.getJSONObject(k);
-                            option.put(optionObject.getString(JSON_VALUE_TAG), optionObject.getString(JSON_ID_RATING_OPTION_TAG));
+                            option.put(optionObject.getString(RestConstants.JSON_PROD_VALUE_TAG), optionObject.getString(RestConstants.JSON_ID_RATING_OPTION_TAG));
                         }
-                        ratingOptions.put(ratingOption.getString(JSON_CODE_TAG), option);
+                        ratingOptions.put(ratingOption.getString(RestConstants.JSON_CODE_TAG), option);
                     }
                     return ratingOptions;
                 }
@@ -267,7 +268,7 @@ public class ProductService extends DarwinService {
 
             @Override
             public ProductRatingPage parseResponse(JSONObject metadataObject) throws JSONException {
-                JSONObject dataObject = metadataObject.getJSONObject(JSON_DATA_TAG);
+                JSONObject dataObject = metadataObject.getJSONObject(RestConstants.JSON_DATA_TAG);
                 ProductRatingPage rating = new ProductRatingPage();
                 rating.initialize(dataObject);
                 return rating;
@@ -288,14 +289,14 @@ public class ProductService extends DarwinService {
 
         ContentValues values = new ContentValues();
         event.productReviewCreated.addParameters(values);
-        values.put(REVIEW_PRODUCT_SKU_FIELD, event.productSKU);
+        values.put(RestConstants.REVIEW_PRODUCT_SKU_FIELD, event.productSKU);
         if (event.customerId != -1) {
-            values.put(REVIEW_CUSTOMER_ID, event.customerId);
+            values.put(RestConstants.REVIEW_CUSTOMER_ID, event.customerId);
         }
         
         for (Entry<String, HashMap<String, String>> option : ratingOptions.entrySet()) {
         	
-            values.put(REVIEW_OPTION_FIELD + option.getKey(), option.getValue().get(String.valueOf(event.productReviewCreated.getRating().get(option.getKey()).intValue())));
+            values.put(RestConstants.REVIEW_OPTION_FIELD + option.getKey(), option.getValue().get(String.valueOf(event.productReviewCreated.getRating().get(option.getKey()).intValue())));
 
         }
 

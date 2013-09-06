@@ -25,6 +25,7 @@ import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.event.events.GetCategoriesEvent;
 import pt.rocket.framework.objects.Category;
 import pt.rocket.framework.rest.ResponseReceiver;
+import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.rest.RestContract;
 import pt.rocket.framework.rest.RestServiceHelper;
 import pt.rocket.framework.service.DarwinService;
@@ -32,19 +33,21 @@ import pt.rocket.framework.utils.LogTagHelper;
 import android.net.Uri;
 
 /**
- * Service responsible for the category service. Responds to the GET_CATEGORIES_EVENT and
- * GET_SUB_CATEGORIES_EVENT
+ * Service responsible for the category service. Responds to the
+ * GET_CATEGORIES_EVENT and GET_SUB_CATEGORIES_EVENT
  * 
  * @author GuilhermeSilva
  */
 public class CategoryService extends DarwinService {
 
-	private static final String TAG = LogTagHelper.create(CategoryService.class);
+	private static final String TAG = LogTagHelper
+			.create(CategoryService.class);
 
-//	private ArrayList<Category> categories;
+	// private ArrayList<Category> categories;
 
 	public CategoryService() {
-		super(EnumSet.noneOf(EventType.class), EnumSet.of(EventType.GET_CATEGORIES_EVENT));
+		super(EnumSet.noneOf(EventType.class), EnumSet
+				.of(EventType.GET_CATEGORIES_EVENT));
 	}
 
 	/**
@@ -56,15 +59,14 @@ public class CategoryService extends DarwinService {
 	 * @param onGetCategoriesListener
 	 */
 	public static void getCategories(final GetCategoriesEvent event) {
-		String action = event.value != null ? event.value : event.eventType.action;
+		String action = event.value != null ? event.value
+				: event.eventType.action;
 		RestServiceHelper.requestGet(Uri.parse(action),
 				new ResponseReceiver<ArrayList<Category>>(event) {
 
 					@Override
-					public ArrayList<Category> parseResponse(
-							JSONObject metadataObject) throws JSONException {
-						JSONArray categoriesArray = metadataObject
-								.getJSONArray(JSON_DATA_TAG);
+					public ArrayList<Category> parseResponse(JSONObject metadataObject) throws JSONException {
+						JSONArray categoriesArray = metadataObject.getJSONArray(RestConstants.JSON_DATA_TAG);
 						int categoriesArrayLenght = categoriesArray.length();
 						ArrayList<Category> categories = new ArrayList<Category>();
 						for (int i = 0; i < categoriesArrayLenght; ++i) {
@@ -93,15 +95,17 @@ public class CategoryService extends DarwinService {
 		public void onGetCategories(ArrayList<Category> categories);
 	}
 
-//	private void sendCategoryResult(RequestEvent event) {
-//		EventManager.getSingleton().triggerResponseEvent(
-//				new ResponseResultEvent<List<Category>>(event, categories, null));
-//	}
+	// private void sendCategoryResult(RequestEvent event) {
+	// EventManager.getSingleton().triggerResponseEvent(
+	// new ResponseResultEvent<List<Category>>(event, categories, null));
+	// }
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see pt.rocket.framework.event.EventListener#handleEvent(pt.rocket.framework.event.IEvent)
+	 * @see
+	 * pt.rocket.framework.event.EventListener#handleEvent(pt.rocket.framework
+	 * .event.IEvent)
 	 */
 	@Override
 	public void handleEvent(RequestEvent event) {

@@ -17,6 +17,7 @@ import android.text.TextUtils;
 
 import de.akquinet.android.androlog.Log;
 
+import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.LogTagHelper;
 
 import java.util.ArrayList;
@@ -31,16 +32,16 @@ import java.util.ArrayList;
 public class Category implements IJSONSerializable {
 	private final static String TAG = LogTagHelper.create( Category.class );
 	
-    private final String JSON_ID_TAG = "id_catalog_category";
-    private final String JSON_NAME_TAG = "name";
-    private final String JSON_LEFT_TAG = "lft";
-    private final String JSON_RIGHT_TAG = "rgt";
-    private final String JSON_URL_KEY_TAG = "url_key";
-    private final String JSON_SEGMENTS_TAG = "segments";
-    private final String JSON_CHILDREN_TAG = "children";
-    private final String JSON_API_URL_TAG = "api_url";
-    private final String JSON_INFO_URL_TAG = "info_url";
-    private final String JSON_URL_TAG = "url";
+//    private final String JSON_ID_TAG = "id_catalog_category";
+//    private final String JSON_NAME_TAG = "name";
+//    private final String JSON_LEFT_TAG = "lft";
+//    private final String JSON_RIGHT_TAG = "rgt";
+//    private final String JSON_URL_KEY_TAG = "url_key";
+//    private final String JSON_SEGMENTS_TAG = "segments";
+//    private final String JSON_CHILDREN_TAG = "children";
+//    private final String JSON_API_URL_TAG = "api_url";
+//    private final String JSON_INFO_URL_TAG = "info_url";
+//    private final String JSON_URL_TAG = "url";
 
     private String id;
     private String name;
@@ -217,22 +218,22 @@ public class Category implements IJSONSerializable {
         try {
 
         	
-            id = jsonObject.optString(JSON_ID_TAG);
-            name = jsonObject.optString(JSON_NAME_TAG);
-            lft = jsonObject.optString(JSON_LEFT_TAG);
-            rgt = jsonObject.optString(JSON_RIGHT_TAG);
-            urlKey = jsonObject.optString(JSON_URL_KEY_TAG);
-            segments = jsonObject.optString(JSON_SEGMENTS_TAG);
+            id = jsonObject.optString(RestConstants.JSON_CATEGORY_ID_TAG);
+            name = jsonObject.optString(RestConstants.JSON_CATEGORY_NAME_TAG);
+            lft = jsonObject.optString(RestConstants.JSON_LEFT_TAG);
+            rgt = jsonObject.optString(RestConstants.JSON_RIGHT_TAG);
+            urlKey = jsonObject.optString(RestConstants.JSON_URL_KEY_TAG);
+            segments = jsonObject.optString(RestConstants.JSON_SEGMENTS_TAG);
 
-            path = jsonObject.optString(JSON_URL_TAG);
+            path = jsonObject.optString(RestConstants.JSON_CATEGORY_URL_TAG);
             if ( TextUtils.isEmpty( path ))
                 path = calcCategoryPath();
 
-            infoUrl = jsonObject.getString(JSON_INFO_URL_TAG);
-            apiUrl = jsonObject.getString(JSON_API_URL_TAG);
+            infoUrl = jsonObject.getString(RestConstants.JSON_INFO_URL_TAG);
+            apiUrl = jsonObject.getString(RestConstants.JSON_API_URL_TAG);
             
             
-            JSONArray childrenArray = jsonObject.optJSONArray(JSON_CHILDREN_TAG);
+            JSONArray childrenArray = jsonObject.optJSONArray(RestConstants.JSON_CHILDREN_TAG);
 
             if (childrenArray != null) {
                 children = new ArrayList<Category>();
@@ -304,12 +305,12 @@ public class Category implements IJSONSerializable {
         	
   
         	
-            jsonObject.put(JSON_ID_TAG, id);
-            jsonObject.put(JSON_NAME_TAG, name);
-            jsonObject.put(JSON_LEFT_TAG, lft);
-            jsonObject.put(JSON_RIGHT_TAG, rgt);
-            jsonObject.put(JSON_URL_KEY_TAG, urlKey);
-            jsonObject.put(JSON_SEGMENTS_TAG, segments);
+            jsonObject.put(RestConstants.JSON_CATEGORY_ID_TAG, id);
+            jsonObject.put(RestConstants.JSON_CATEGORY_NAME_TAG, name);
+            jsonObject.put(RestConstants.JSON_LEFT_TAG, lft);
+            jsonObject.put(RestConstants.JSON_RIGHT_TAG, rgt);
+            jsonObject.put(RestConstants.JSON_URL_KEY_TAG, urlKey);
+            jsonObject.put(RestConstants.JSON_SEGMENTS_TAG, segments);
 
             JSONArray childrenArray = new JSONArray();
 
@@ -317,7 +318,7 @@ public class Category implements IJSONSerializable {
                 childrenArray.put(child.toJSON());
             }
 
-            jsonObject.put(JSON_CHILDREN_TAG, childrenArray);
+            jsonObject.put(RestConstants.JSON_CHILDREN_TAG, childrenArray);
 
         } catch (JSONException e) {
             e.printStackTrace();

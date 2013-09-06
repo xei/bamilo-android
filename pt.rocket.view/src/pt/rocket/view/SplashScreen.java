@@ -10,7 +10,7 @@ import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.event.ResponseEvent;
 import pt.rocket.framework.event.ResponseListener;
-import pt.rocket.framework.objects.Errors;
+import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.rest.RestContract;
 import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -226,7 +226,7 @@ public class SplashScreen extends Activity implements ResponseListener {
             }
         } else if (event.errorCode == ErrorCode.REQUEST_ERROR && event.errorMessages != null) {
             String message = "";
-            List<String> errors = event.errorMessages.get(Errors.JSON_ERROR_TAG);
+            List<String> errors = event.errorMessages.get(RestConstants.JSON_ERROR_TAG);
             for (String error : errors) {
                 message += "\n" + error;
             }

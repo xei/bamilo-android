@@ -13,6 +13,7 @@ import pt.rocket.framework.event.EventType;
 import pt.rocket.framework.event.RequestEvent;
 import pt.rocket.framework.rest.ResponseReceiver;
 import pt.rocket.framework.rest.RestClientSingleton;
+import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.rest.RestServiceHelper;
 import pt.rocket.framework.service.DarwinService;
 import android.content.Context;
@@ -62,7 +63,7 @@ public class NavigationService extends DarwinService {
 							throws JSONException {
 						ArrayList<NavigationListComponent> components = new ArrayList<NavigationListComponent>();
 						JSONArray dataArray = metadataObject
-								.getJSONArray(JSON_DATA_TAG);
+								.getJSONArray(RestConstants.JSON_DATA_TAG);
 						NavigationListComponent component;
 						int dataArrayLenght = dataArray.length();
 						for (int i = 0; i < dataArrayLenght; ++i) {

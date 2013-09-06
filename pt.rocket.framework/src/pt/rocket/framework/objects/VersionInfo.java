@@ -6,13 +6,15 @@ import java.util.Iterator;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pt.rocket.framework.rest.RestConstants;
+
 import de.akquinet.android.androlog.Log;
 
 public class VersionInfo implements IJSONSerializable {
 	
 	private final static String TAG = VersionInfo.class.getSimpleName();
 	
-	private final static String JSON_VERSION_TAG = "version";
+	//private final static String JSON_VERSION_TAG = "version";
 	
 	private final HashMap<String, Version> mVersions;
 	
@@ -24,7 +26,7 @@ public class VersionInfo implements IJSONSerializable {
 	public boolean initialize(JSONObject jsonObject) throws JSONException {
 		try {
 
-			JSONObject versionInfo = jsonObject.getJSONObject(JSON_VERSION_TAG);
+			JSONObject versionInfo = jsonObject.getJSONObject(RestConstants.JSON_VERSION_TAG);
 			
 			@SuppressWarnings("unchecked")
 			Iterator<String> iter = versionInfo.keys();

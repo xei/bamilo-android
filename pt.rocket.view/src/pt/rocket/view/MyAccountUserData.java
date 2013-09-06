@@ -3,7 +3,6 @@ package pt.rocket.view;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.event.EventType;
@@ -11,10 +10,9 @@ import pt.rocket.framework.event.ResponseEvent;
 import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.event.events.ChangePasswordEvent;
 import pt.rocket.framework.objects.Customer;
-import pt.rocket.framework.objects.Errors;
+import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.utils.DialogGeneric;
 import pt.rocket.utils.BaseActivity;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
@@ -210,15 +208,15 @@ public class MyAccountUserData extends BaseActivity implements OnClickListener {
             Log.d(TAG,
                     "changePasswordEvent: Password changed was not successful");
             if (event.errorCode == ErrorCode.REQUEST_ERROR) {
-                List<String> errorMessages = event.errorMessages.get(Errors.JSON_ERROR_TAG);
+                List<String> errorMessages = event.errorMessages.get(RestConstants.JSON_ERROR_TAG);
                 if ( errorMessages == null) {
                     return false;
                 }
                 showContentContainer();
                 Map<String, ? extends List<String>> messages = event.errorMessages;
-                List<String> validateMessages = messages.get(Errors.JSON_VALIDATE_TAG);
+                List<String> validateMessages = messages.get(RestConstants.JSON_VALIDATE_TAG);
                 if (validateMessages == null || validateMessages.isEmpty()) {
-                    validateMessages = messages.get(Errors.JSON_ERROR_TAG);
+                    validateMessages = messages.get(RestConstants.JSON_ERROR_TAG);
                 }
                 
                 String errorMessage = null;
