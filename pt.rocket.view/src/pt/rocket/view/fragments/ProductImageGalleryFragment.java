@@ -278,7 +278,6 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
 
         @Override
         public void onClick(View v) {
-            Log.i(TAG, "code1onclick : click");
             ActivitiesWorkFlow.productsGalleryActivity(getActivity(), mCompleteProduct.getUrl(),
                     mViewPager.getCurrentItem());
 
@@ -289,7 +288,6 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
 
         @Override
         public void onClick(View v) {
-            Log.i(TAG, "code1onclick : click");
             getActivity().finish();
 
         }

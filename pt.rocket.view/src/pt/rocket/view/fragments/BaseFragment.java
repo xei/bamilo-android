@@ -196,11 +196,15 @@ public abstract class BaseFragment extends Fragment implements ResponseListener,
     @Override
     public void onLowMemory() {
         super.onLowMemory();
-        Log.e("??LowMemPhotoDetails", "LOW MEM");
+        Log.e(getFragmentTag(), "LOW MEM");
         ImageLoader.getInstance().clearMemoryCache();
         System.gc();
     }
 
+    private String getFragmentTag() {
+        return this.getClass().getSimpleName();
+    }
+    
     /**
      * #### HANDLE EVENT ####
      */

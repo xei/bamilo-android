@@ -37,8 +37,8 @@ public class ShoppingCartFragmentActivity extends BaseActivity {
 	}
 
 	public void onDestroy() {
-		super.onDestroy();
-		unbindDrawables(findViewById(R.id.main_basket_container));
+	    unbindDrawables(findViewById(R.id.main_basket_container));
+	    super.onDestroy();
 		System.gc();
 	}
 

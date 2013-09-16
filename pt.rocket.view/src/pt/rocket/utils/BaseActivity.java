@@ -706,7 +706,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     @Override
     public void onLowMemory() {
         super.onLowMemory();
-        Log.e("??LowMemPhotoDetails", "LOW MEM");
+        Log.e(getTag(), "LOW MEM");
         ImageLoader.getInstance().clearMemoryCache();
         System.gc();
     }

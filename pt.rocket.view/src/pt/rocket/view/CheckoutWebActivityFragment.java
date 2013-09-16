@@ -69,7 +69,23 @@ public class CheckoutWebActivityFragment extends BaseActivity {
         super.onStop();
         
     }
-
+    
+    @Override
+    protected void onDestroy() {
+        unbindDrawables(findViewById(R.id.webcheckout_main));
+        checkoutWebFragment = null;
+        System.gc();
+        super.onDestroy();
+        
+    }
+    
+    @Override
+    public void finish() {
+        unbindDrawables(findViewById(R.id.webcheckout_main));
+        checkoutWebFragment = null;
+        System.gc();
+        super.finish();
+    }
     private void startFragmentCallbacks() {
         // This makes sure that the container activity has implemented
         // the callback interface. If not, it throws an exception

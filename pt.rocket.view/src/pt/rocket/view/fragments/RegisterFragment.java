@@ -264,7 +264,7 @@ public class RegisterFragment extends BaseFragment {
             public void onClick(View v) {
                 int id = v.getId();
                 if (id == R.id.checkTerms) {
-                    if (serverForm.checkRequired() && checkTerms.isChecked()) {
+                    if (serverForm != null && serverForm.checkRequired() && checkTerms.isChecked()) {
                         termsRequiredText.setVisibility(View.GONE );
                         registerButton.setTextAppearance(getActivity(), R.style.text_bold);
                         FontLoader.apply(registerButton, FontLoader.ROBOTO_BOLD);
@@ -519,8 +519,6 @@ public class RegisterFragment extends BaseFragment {
         case REGISTER_ACCOUNT_EVENT:
             // Get Register Completed Event
             Customer customer = (Customer) event.result;
-            Log.i(TAG, "code1date name: "+customer.getFirstName());
-            Log.i(TAG, "code1date date: "+customer.getBirthday());
             TrackerDelegator.trackSignupSuccessful(getActivity(), customer, registerLocation);
             // Finish this activity
             //Intent resultData = new Intent();

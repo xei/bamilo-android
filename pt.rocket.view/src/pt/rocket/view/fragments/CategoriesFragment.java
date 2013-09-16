@@ -142,12 +142,6 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
     public void onStart() {
         super.onStart();
         Log.i(TAG, "ON START");
-        ((BaseActivity) getActivity()).updateActivityHeader(NavigationAction.Categories, R.string.categories_title);
-        
-        if(categories != null)
-            createList();
-        else
-            triggerContentEvent(new GetCategoriesEvent(categoryUrl));
     }
 
     /*
@@ -159,6 +153,12 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
+        ((BaseActivity) getActivity()).updateActivityHeader(NavigationAction.Categories, R.string.categories_title);
+        
+        if(categories != null)
+            createList();
+        else
+            triggerContentEvent(new GetCategoriesEvent(categoryUrl));
     }
 
     /*

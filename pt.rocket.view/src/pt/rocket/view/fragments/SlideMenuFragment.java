@@ -168,7 +168,7 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener{
         super.onDestroyView();
         Log.i(TAG, "ON DESTROY");
 
-        unbindDrawables(navigationContainer);
+//        unbindDrawables(navigationContainer);
     }
 
     private void unbindDrawables(View view) {

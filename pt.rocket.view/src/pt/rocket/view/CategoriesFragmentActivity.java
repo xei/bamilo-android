@@ -118,13 +118,24 @@ public class CategoriesFragmentActivity extends BaseActivity {
     }
     
     @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        fragment = null;
+        System.gc();
+    }
+    
+    @Override
     protected void onDestroy() {
+        unbindDrawables(findViewById(R.id.categories_fragments_main));
         super.onDestroy();
         Log.i(TAG, "ON DESTROY");
         currentCategories = null;
         currentFragment = FragmentType.CATEGORIES_LEVEL_1;
         selectedCategoryPosition = 0;
         selectedSubCategoryPosition = -1;
+        fragment = null;
+        
+        System.gc();
     }
 
     /*

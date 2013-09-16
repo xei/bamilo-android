@@ -3,21 +3,12 @@
  */
 package pt.rocket.view.fragments;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.Proxy.Type;
 import java.net.URI;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.EnumSet;
 import java.util.List;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
 import org.apache.http.ParseException;
-import org.apache.http.client.methods.HttpGet;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -53,9 +44,11 @@ import android.webkit.HttpAuthHandler;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 import ch.boye.httpclientandroidlib.cookie.Cookie;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.shouldit.proxy.lib.ProxyConfiguration;
 import com.shouldit.proxy.lib.ProxySettings;
 import com.shouldit.proxy.lib.ProxyUtils;
@@ -72,8 +65,9 @@ public class CheckoutWebFragment extends BaseFragment {
 
     private static final String CHECKOUT_URL_WITH_PARAM = "/checkout/multistep/?setDevice=mobileApi&iosApp=1";
 
+    private FrameLayout mWebContainer;
     private WebView webview;
-    
+    private CustomWebViewClient customWebViewClient;
     private String checkoutUrl;
 
     private String failedPageRequest;
@@ -148,6 +142,7 @@ public class CheckoutWebFragment extends BaseFragment {
         Log.i(TAG, "ON CREATE");
         EventManager.getSingleton().triggerRequestEvent(new RequestEvent(EventType.GET_CUSTOMER));
         EventManager.getSingleton().triggerRequestEvent(GetShoppingCartItemsEvent.FORCE_API_CALL);
+        
     }
 
     /*
@@ -161,7 +156,11 @@ public class CheckoutWebFragment extends BaseFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         Log.i(TAG, "ON CREATE VIEW");
         View view = inflater.inflate(R.layout.checkoutweb_frame, container, false);
-        webview = (WebView) view.findViewById(R.id.webview);
+        
+        mWebContainer = (FrameLayout) view.findViewById(R.id.rocket_app_checkoutweb);
+        webview = new WebView(getActivity());
+        mWebContainer.addView(webview);
+        
         return view;    
     }
 
@@ -223,8 +222,44 @@ public class CheckoutWebFragment extends BaseFragment {
      */
     @Override
     public void onDestroyView() {
+        if(webview != null){
+            mWebContainer.removeAllViews();
+            webview.clearHistory();
+            webview.clearCache(true);
+            webview.clearView();
+            webview.freeMemory();  //new code    
+            webview.pauseTimers(); //new code
+            webview.destroy();
+            webview = null; 
+            customWebViewClient = null;
+          }
         super.onDestroyView();
+        
         Log.i(TAG, "ON DESTROY");
+    }
+    
+    @Override
+    public void onDestroy() {
+        if(webview != null){
+            mWebContainer.removeAllViews();
+            webview.clearHistory();
+            webview.clearCache(true);
+            webview.clearView();
+            webview.freeMemory();  //new code    
+            webview.pauseTimers(); //new code
+            webview.destroy();
+            webview = null;
+            customWebViewClient = null;
+          }
+        super.onDestroy();
+    }
+    
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        Log.e(getTag(), "LOW MEM");
+        ImageLoader.getInstance().clearMemoryCache();
+        System.gc();
     }
     
 //    @SuppressLint("SetJavaScriptEnabled")
@@ -246,7 +281,7 @@ public class CheckoutWebFragment extends BaseFragment {
     @SuppressLint("SetJavaScriptEnabled")
     private void setupWebView() {
         //webview = (WebView) findViewById(R.id.webview);
-        CustomWebViewClient customWebViewClient = new CustomWebViewClient();
+        customWebViewClient = new CustomWebViewClient();
         webview.setWebViewClient(customWebViewClient);
         webview.getSettings().setJavaScriptEnabled(true);
         webview.getSettings().setSaveFormData(false);
@@ -300,15 +335,15 @@ public class CheckoutWebFragment extends BaseFragment {
     
     private String prepareCookie(Cookie cookie) {
         String transDomain = cookie.getDomain();
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
-            if (cookie.getDomain().startsWith(".")) {
-                transDomain = transDomain.substring(1);
-                Log.d(TAG, "prepareCookie: transform domain = " + cookie.getDomain() + " result = "
-                        + transDomain);
-            } else {
-                Log.d(TAG, "prepareCookie: cookie is fine: result = " + transDomain);
-            }
-        }
+//        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
+//            if (cookie.getDomain().startsWith(".")) {
+//                transDomain = transDomain.substring(1);
+//                Log.d(TAG, "prepareCookie: transform domain = " + cookie.getDomain() + " result = "
+//                        + transDomain);
+//            } else {
+//                Log.d(TAG, "prepareCookie: cookie is fine: result = " + transDomain);
+//            }
+//        }
         return transDomain;
     }
     
@@ -346,6 +381,11 @@ public class CheckoutWebFragment extends BaseFragment {
            
         }
 
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            return false;
+        }
+        
         /*
          * (non-Javadoc)
          * 
@@ -377,9 +417,14 @@ public class CheckoutWebFragment extends BaseFragment {
                 Log.d( TAG ,"onPageFinished: page was saved failed page" );
                 wasLoadingErrorPage = true;
             } else if ( isRequestedPage ) {
-                ((BaseActivity) getActivity()).showContentContainer();
+                try {
+                    ((BaseActivity) getActivity()).showContentContainer();    
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                
                 isRequestedPage = false;
-            } else if (getActivity() != null) {
+            } else if (((BaseActivity) getActivity()) != null) {
                 ((BaseActivity) getActivity()).showContentContainer();
             }
             

@@ -404,7 +404,10 @@ public class HomeFragmentActivity extends BaseActivity {
     // Instances of this class are fragments representing a single
     // object in our collection.
     public static class HomeObjectFragment extends Fragment {
-
+        Fragment fragmentMainOneSlide;
+        Fragment fragmentStaticBanner;
+        Fragment fragmentCategoryTeaser;
+        Fragment fragmentProductListTeaser;
         private OnActivityFragmentInteraction mCallback;
 
         private LayoutInflater mInflater;
@@ -488,14 +491,26 @@ public class HomeFragmentActivity extends BaseActivity {
                     .findViewById(R.id.view_pager_element_frame);
 
             if (requestResponse != null) {
-                Log.i(TAG, "code1onstart "+position);
                 processResult(requestResponse.get(args.getInt(ARG_OBJECT)), view);
             } else {
                 ((HomeFragmentActivity) getActivity()).triggerContentEvent(new RequestEvent(
                         EventType.GET_TEASERS_EVENT));
             }
         }
-
+        
+        @Override
+        public void onLowMemory() {
+            super.onLowMemory();
+            releaseFragments();
+        }
+        
+        private void releaseFragments(){
+            fragmentMainOneSlide = null;
+            fragmentStaticBanner = null;
+            fragmentCategoryTeaser = null;
+            fragmentProductListTeaser = null;
+        }
+        
         private void processResult(Collection<? extends TeaserSpecification<?>> result,
                 LinearLayout mainView) {
 
@@ -507,7 +522,7 @@ public class HomeFragmentActivity extends BaseActivity {
 
                     if (((ImageTeaserGroup) teaserSpecification).getTeasers().size() > 0) {
 
-                        Fragment fragmentMainOneSlide = MainOneSlideFragment.getInstance();
+                        fragmentMainOneSlide = MainOneSlideFragment.getInstance();
                         // This makes sure that the container activity has implemented
                         // the callback interface. If not, it throws an exception
                         try {
@@ -529,8 +544,7 @@ public class HomeFragmentActivity extends BaseActivity {
                     }
                     break;
                 case STATIC_BANNER:
-                    Log.i(TAG, "code1static STATIC_BANNER");
-                    Fragment fragmentStaticBanner = StaticBannerFragment.getInstance();
+                    fragmentStaticBanner = StaticBannerFragment.getInstance();
 
                     // This makes sure that the container activity has implemented
                     // the callback interface. If not, it throws an exception
@@ -553,7 +567,7 @@ public class HomeFragmentActivity extends BaseActivity {
                     break;
                 case CATEGORIES:
 
-                    Fragment fragmentCategoryTeaser = CategoryTeaserFragment.getInstance();
+                    fragmentCategoryTeaser = CategoryTeaserFragment.getInstance();
 
                     // This makes sure that the container activity has implemented
                     // the callback interface. If not, it throws an exception
@@ -575,7 +589,7 @@ public class HomeFragmentActivity extends BaseActivity {
                     break;
                 case PRODUCT_LIST:
 
-                    Fragment fragmentProductListTeaser = ProducTeaserListFragment.getInstance();
+                    fragmentProductListTeaser = ProducTeaserListFragment.getInstance();
 
                     // This makes sure that the container activity has implemented
                     // the callback interface. If not, it throws an exception

@@ -236,9 +236,17 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
         super.onDestroy();
         unbindDrawables(findViewById( R.id.gallery_container));
         unbindDrawables(mDetailsContainer);
+        releaseFragments();
         System.gc();
     }
 
+    private void releaseFragments(){
+        productVariationsFragment = null;
+        productImagesViewPagerFragment = null;
+        productSpecificationFragment = null;
+        productBasicInfoFragment = null;
+    }
+    
     /**
      * Set the Products layout using inflate
      */
@@ -746,7 +754,6 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
     public void onDialogListItemSelect(String id, int position, String value) {
         mSelectedSimple = position;
         updateVariants();
-        Log.i(TAG, "code1 passou aqui primeiro!");
         updateStockInfo();
         displayPriceInfoOverallOrForSimple();
 

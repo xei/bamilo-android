@@ -219,7 +219,7 @@ public class PopularityFragment extends BaseFragment {
     private void setPopularity() {
 
         RatingBar ratingBar = (RatingBar) getView().findViewById(R.id.rating);
-        Log.i(TAG, "code1rating : "+ selectedProduct.getRatingsAverage().floatValue());
+        
         ratingBar.setRating(selectedProduct.getRatingsAverage().floatValue());
 
         ScrollViewEx reviewsScroll = (ScrollViewEx) getView().findViewById(R.id.reviews_scroller);

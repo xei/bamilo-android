@@ -227,8 +227,11 @@ public class ProductSpecificationsFragment extends BaseFragment implements OnCli
     }
     
     private void displaySpecification() {
-        String shortDescription = mCompleteProduct.getShortDescription();
-        mProductSpecSku.setText(mCompleteProduct.getSku());
+        String shortDescription = mCompleteProduct != null && mCompleteProduct.getShortDescription() != null ? mCompleteProduct.getShortDescription() : "" ;
+        if(mProductSpecSku!=null && mCompleteProduct != null){
+            mProductSpecSku.setText(mCompleteProduct.getSku() != null ? mCompleteProduct.getSku() : "");
+        }
+            
         if (TextUtils.isEmpty(shortDescription)) {
             mProductSpecText.setVisibility(View.GONE);
         } else {
