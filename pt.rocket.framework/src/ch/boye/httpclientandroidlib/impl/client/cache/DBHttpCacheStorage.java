@@ -60,6 +60,9 @@ public class DBHttpCacheStorage implements HttpCacheStorage {
 			if (serializedEntry != null) {
 				entry = serializer.readFrom(new ByteArrayInputStream(serializedEntry));
 				if (entry != null) {
+					if (Darwin.logDebugEnabled) {
+						Log.d(TAG, "Adding entry for key " + url);
+					}
 					entries.put(url, entry);
 				}
 			}
@@ -77,13 +80,14 @@ public class DBHttpCacheStorage implements HttpCacheStorage {
 	 */
 	@Override
 	public void putEntry(String url, HttpCacheEntry entry) throws IOException {
-		if (Darwin.logDebugEnabled) {
-			Log.d(TAG, "Putting entry for key " + url + "\n" + entry);
-		}
-		if (entries.put(url, entry) == null) {
+		if (entries.put(url, entry) == null ) {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			serializer.writeTo(entry, baos);
 			dbHelper.insert(url, baos.toByteArray());
+		}
+		
+		if (Darwin.logDebugEnabled) {
+			Log.d(TAG, "Putting entry for key |" + entries.size() + "| " + url +  "\n" + entry);
 		}
 	}
 
@@ -115,13 +119,13 @@ public class DBHttpCacheStorage implements HttpCacheStorage {
 	@Override
 	public void updateEntry(String url, HttpCacheUpdateCallback callback) throws IOException {
 		if (Darwin.logDebugEnabled) {
-			Log.d(TAG, "Updating entry for key " + url);
+			Log.d(TAG, "code1Updating 1 entry for key " + url);
 		}
-		HttpCacheEntry exitingEntry = getEntry(url);
-		HttpCacheEntry updatedEntry = callback.update(exitingEntry);
-		if (exitingEntry != updatedEntry) {
+		HttpCacheEntry existingEntry = getEntry(url);
+		HttpCacheEntry updatedEntry = callback.update(existingEntry);
+		if (existingEntry != updatedEntry) {
 			if (Darwin.logDebugEnabled) {
-				Log.d(TAG, "Updating entry for key " + url + "\nexiting: " + exitingEntry + "\nupdated: "
+				Log.d(TAG, "code1Updating 2 entry for key " + url + " existing: " + existingEntry + " updated: "
 						+ updatedEntry);
 			}
 			putEntry(url, updatedEntry);

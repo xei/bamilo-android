@@ -96,7 +96,6 @@ public class Homepage implements IJSONSerializable{
 			teaserSpecifications.add(TeaserSpecification.parse(dataArray
 					.getJSONObject(i)));
 		}
-		Log.i("code1", "code1 teaserSpec size : "+teaserSpecifications.size());
 		return true;
 	}
 

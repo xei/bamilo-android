@@ -190,7 +190,6 @@ public class MixpanelTracker {
 			people.set(context.getString(R.string.mixproppeople_firstname), customer.getFirstName());
 			people.set(context.getString(R.string.mixproppeople_lastname), customer.getLastName());
 		    calendar.setTime(customer.getBirthday());
-		    Log.i(TAG, "code1date "+calendar.get(Calendar.YEAR));
 			people.set(context.getString(R.string.mixproppeople_age), calendar.get(Calendar.YEAR));
 			people.set(context.getString(R.string.mixproppeople_gender), customer.getGender());
 			people.set(context.getString(R.string.mixproppeople_email), customer.getEmail());

@@ -427,7 +427,7 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 								+ " -> " + statusCode);
 				return null;
 			}
-			result = EntityUtils.toString(entity);
+			result = org.apache.commons.io.IOUtils.toString(entity.getContent());// EntityUtils.toString(entity);
 			EntityUtils.consume(entity);
 
 			long elapsed = System.currentTimeMillis() - now;

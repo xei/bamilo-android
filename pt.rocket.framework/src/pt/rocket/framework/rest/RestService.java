@@ -105,7 +105,7 @@ public class RestService extends Service {
 	@Override
 	public void onLowMemory() {
 		super.onLowMemory();
-		Log.i(TAG,"code1service low memory");
+		System.gc();
 	}
 	
 	public static Uri completeUri( Uri uri ) {

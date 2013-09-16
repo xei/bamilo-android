@@ -47,7 +47,6 @@ public abstract class TeaserSpecification<T extends ITargeting> implements
 		TeaserGroupType type = TeaserGroupType.byValue(jsonObject.optInt(
 				RestConstants.JSON_GROUP_TYPE_TAG, -1));
 		TeaserSpecification<?> teaserSpecification = UnknownTeaserGroup.INSTANCE;
-		Log.i(TAG, "code1 inside types : "+type);
 		switch (type) {
 		case MAIN_ONE_SLIDE:
 		case STATIC_BANNER:

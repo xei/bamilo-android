@@ -70,16 +70,17 @@ public abstract class ResponseReceiver<T> extends ResultReceiver {
 			break;
 		case NO_ERROR:
 			String response = resultData.getString(RESPONSE);
-			try{
-				for (String key : resultData.keySet()) {
-							Log.i("RESPONSE"," key = "+key+" value =  "+resultData.get(key).toString()+" ");
-				}
-			}
-			catch(NullPointerException e){				
-			}			
-			catch(Exception e){
-				e.printStackTrace();
-			}
+//			try{
+//				for (String key : resultData.keySet()) {
+//					Log.i("RESPONSE"," key = "+key+" value =  "+resultData.get(key).toString()+" ");
+//				}
+//			}
+//			catch(NullPointerException e){	
+//				e.printStackTrace();
+//			}			
+//			catch(Exception e){
+//				e.printStackTrace();
+//			}
 			try {
 				parseResponse(response, resultData.getString(WARNING), resultData);
 			} catch (JSONException e) {

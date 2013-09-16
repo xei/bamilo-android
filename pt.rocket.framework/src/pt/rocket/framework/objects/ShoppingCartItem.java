@@ -84,7 +84,6 @@ public class ShoppingCartItem implements IJSONSerializable {
         specialPriceVal = 0;
         
         try {
-        	Log.e("OBJECT", ":"+jsonObject.toString());
             imageUrl = jsonObject.getString(RestConstants.JSON_ITEM_IMAGE_TAG);
             productUrl = jsonObject.optString(RestConstants.JSON_PRODUCT_URL_TAG);
             configSKU = jsonObject.getString(RestConstants.JSON_CONFIG_SKU_TAG);

@@ -15,8 +15,6 @@ import org.apache.http.conn.util.InetAddressUtils;
 
 import pt.rocket.framework.Darwin;
 import pt.rocket.framework.ErrorCode;
-import pt.rocket.framework.service.ServiceManager;
-import pt.rocket.framework.service.services.CustomerAccountService;
 import android.text.TextUtils;
 
 import com.bugsense.trace.BugSenseHandler;

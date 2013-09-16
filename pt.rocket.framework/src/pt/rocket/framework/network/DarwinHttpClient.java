@@ -127,8 +127,8 @@ public class DarwinHttpClient extends DefaultHttpClient {
 					boolean headerWasRewritten = false;
 					for (idx = 0; idx < elements.length; idx++) {
 						HeaderElement element = elements[idx];
-						// Log.d(TAG, "element: " + element + " value = " +
-						// element.getValue());
+						 Log.d(TAG, "element: " + element + " value = " +
+						 element.getValue());
 						if (element == null) {
 							continue;
 						}
