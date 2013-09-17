@@ -5,7 +5,7 @@ Feature: Login feature
   Background:
     When I verify app for KE venture
     Then I choose the Kenya venture
-    And I wait for 10 seconds
+#    And I wait for 10 seconds
     Then I open the navigation menu
     And I choose the Sign In option
     
