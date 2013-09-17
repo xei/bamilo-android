@@ -1,4 +1,4 @@
-# econding: utf-8
+# encoding: utf-8
 require 'calabash-android/cucumber'
 
 def initvars
