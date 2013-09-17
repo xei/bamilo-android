@@ -40,7 +40,7 @@ def initvars_KE
   @venture_name="Kenya"
   @sign_in="Sign In"
   @wrong_username="faketester@tester.tt"
-  @invalidsearch= "add" 
+  @invalidsearch= "addddd" 
   @search= "nikon" 
   @myaccount="My Account"
   @myinfo="User Data"

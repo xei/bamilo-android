@@ -17,6 +17,7 @@ Feature: Search feature
    
    Then I enter a valid search
    Then I press "Search Field"
+   And I wait for 3 seconds
    And I press list item number 1
    And I wait for 10 seconds 
    And I press list item number 1
