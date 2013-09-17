@@ -147,7 +147,7 @@ def initvars_NG
   @checkout1="TestPayment"
   @checkout3="Confirm Order"
   
-  @emailerrormessage="Please fill in the E-mail Address";
+  @emailerrormessage="Please fill in the E-Mail";
   @passerrormessage="Please fill in the Password";
   
   @loginerror="Login failed"
