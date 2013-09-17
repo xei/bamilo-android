@@ -51,7 +51,7 @@ def initvars_KE
   @checkout1="TestPayment"
   @checkout3="Confirm Order"
   
-  @emailerrormessage="Please fill in the E-mail";
+  @emailerrormessage="Please fill in";
   @passerrormessage="Please fill in the Password";
   
   @loginerror="Login failed"

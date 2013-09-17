@@ -5,14 +5,15 @@ Feature: Login feature
   Background:
     When I verify app for KE venture
     Then I choose the Kenya venture
-#    And I wait for 10 seconds
+    And I wait for 5 seconds
     Then I open the navigation menu
+        And I wait for 5 seconds
     And I choose the Sign In option
     
     
     @login_test_KE
   Scenario: I login with user
-  
+      And I wait for 5 seconds
   	When I press "Login Button"
   	Then I should see the email error message
   	Then I should see the password error message
