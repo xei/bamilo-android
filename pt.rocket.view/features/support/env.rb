@@ -116,7 +116,7 @@ def initvars_MA
   @checkout1="TestPayment"
   @checkout3="Confirm Order"
   
-  @emailerrormessage="dans le Adresse mail";
+  @emailerrormessage="dans le Email";
   @passerrormessage="dans le Mot de passe";
   
   @loginerror="L'authentification a échoué"
