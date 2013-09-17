@@ -1,3 +1,5 @@
+#!/bin/env ruby
+# econding: utf-8
 require 'calabash-android/cucumber'
 
 def initvars
