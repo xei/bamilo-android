@@ -104,7 +104,6 @@ public class ServiceManager extends RequestListener {
 
 	private void initServices(Context context) {
 		for (DarwinService service : SERVICES.values()) {
-		    Log.i("DarwinService", "code1service : "+service.toString());
 			service.init(context);
 		}
 	}

@@ -127,12 +127,14 @@ public class DarwinHttpClient extends DefaultHttpClient {
 					boolean headerWasRewritten = false;
 					for (idx = 0; idx < elements.length; idx++) {
 						HeaderElement element = elements[idx];
-						 Log.d(TAG, "element: " + element + " value = " +
-						 element.getValue());
+						 
 						if (element == null) {
 							continue;
 						}
-
+						
+						Log.d(TAG, "element: " + element + " value = " +
+		                         element.getValue());
+						
 						if (!element.getName().equalsIgnoreCase(HeaderConstants.CACHE_CONTROL_MAX_AGE)) {
 							appendToBuffer(buffer, element.getName(), element.getValue(), delim);
 							delim = ", ";
@@ -171,6 +173,7 @@ public class DarwinHttpClient extends DefaultHttpClient {
 						response.setHeader(rewrittenHeader);
 						Log.d( TAG, "process: cache-control header was rewritten" );
 						Log.d( TAG, "new content: " + rewrittenHeader.toString());
+						rewrittenHeader = null;
 					}
 				}
 			}

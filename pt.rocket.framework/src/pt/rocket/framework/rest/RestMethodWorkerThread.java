@@ -1,5 +1,6 @@
 package pt.rocket.framework.rest;
 
+import pt.rocket.framework.Darwin;
 import android.content.ContentValues;
 import android.net.Uri;
 import android.os.Bundle;
@@ -40,28 +41,65 @@ class RestMethodWorkerThread implements Runnable {
 	 */
 	@Override
 	public void run() {
-		RestClientSingleton client = RestClientSingleton.getSingleton();
-		Log.d(TAG, "Start executing uri: " + uri);
+		if(Darwin.logDebugEnabled) {
+			Log.d(TAG, "Start executing uri: " + uri);
+		}
+			
+		
 		switch (type) {
 		case RestContract.METHOD_GET:
 			// Constants.LogDebug("Going to perform a get");
-			client.executeGetRestUrlString(uri, resultReceiver, metaData);
+			new Thread(new Runnable() {
+				
+				@Override
+				public void run() {
+					RestClientSingleton.getSingleton().executeGetRestUrlString(uri, resultReceiver, metaData);
+					
+				}
+			}).run();
+			
 			break;
 		case RestContract.METHOD_POST:
-			// Constants.LogDebug("Going to perform a post");
-			Log.i("METHOD_POST", "METHOD_POST : " + uri  );
-			client.executePostRestUrlString(uri, formData, resultReceiver, metaData);
+			new Thread(new Runnable() {
+				
+				@Override
+				public void run() {
+					if(Darwin.logDebugEnabled) {
+						Log.i("METHOD_POST", "METHOD_POST : " + uri  );
+					}
+					
+					RestClientSingleton.getSingleton().executePostRestUrlString(uri, formData, resultReceiver, metaData);
+					
+				}
+			}).run();
+			
 			break;
 		case RestContract.METHOD_PUT:
-			// Constants.LogDebug("Going to perform a put");
-			client.executePutRestUrlString(uri, formData, resultReceiver, metaData);
+			new Thread(new Runnable() {
+				
+				@Override
+				public void run() {
+					RestClientSingleton.getSingleton().executePutRestUrlString(uri, formData, resultReceiver, metaData);
+					
+				}
+			}).run();
+			
 			break;
 		case RestContract.METHOD_DELETE:
-			// Constants.LogDebug("Going to perform a delete");
-			client.executeDeleteRestUrlString(uri, resultReceiver, metaData);
+			new Thread(new Runnable() {
+				
+				@Override
+				public void run() {
+					RestClientSingleton.getSingleton().executeDeleteRestUrlString(uri, resultReceiver, metaData);
+				}
+			}).run();
+			
 			break;
 		}
-		Log.d(TAG, "Finished executing uri: " + uri);
+		if(Darwin.logDebugEnabled) {
+			Log.d(TAG, "Finished executing uri: " + uri);
+		}
+		
 	}
 
 	/*

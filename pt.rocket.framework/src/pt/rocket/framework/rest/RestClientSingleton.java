@@ -240,8 +240,9 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 		HttpPost httpRequest = new HttpPost(uri.toString());
 
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		Object value;
 		for (Entry<String, Object> entry : formData.valueSet()) {
-			Object value = entry.getValue();
+			value = entry.getValue();
 			if ( value == null) {
 				Log.w( TAG, "entry for key " + entry.getKey() + " is null - ignoring - form request will fail" );
 				continue;
@@ -258,7 +259,8 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
-
+		value = null;
+		params = null;
 		return executeHttpRequest(httpRequest, resultReceiver, metaData);
 	}
 
@@ -279,8 +281,9 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 			ResultReceiver resultReceiver, Bundle metaData) {
 		httpClient.getParams().setParameter(
 				ClientPNames.ALLOW_CIRCULAR_REDIRECTS, true);
-
-		Log.d(TAG, "put: uri = " + uri.toString());
+		if (Darwin.logDebugEnabled) {
+			Log.d(TAG, "put: uri = " + uri.toString());
+		}
 		HttpPut httpRequest = new HttpPut(uri.toString());
 
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -298,7 +301,7 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
-
+		params = null;
 		return executeHttpRequest(httpRequest, resultReceiver, metaData);
 	}
 

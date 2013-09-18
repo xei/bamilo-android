@@ -119,13 +119,13 @@ public class DBHttpCacheStorage implements HttpCacheStorage {
 	@Override
 	public void updateEntry(String url, HttpCacheUpdateCallback callback) throws IOException {
 		if (Darwin.logDebugEnabled) {
-			Log.d(TAG, "code1Updating 1 entry for key " + url);
+			Log.d(TAG, "Updating entry for key " + url);
 		}
 		HttpCacheEntry existingEntry = getEntry(url);
 		HttpCacheEntry updatedEntry = callback.update(existingEntry);
 		if (existingEntry != updatedEntry) {
 			if (Darwin.logDebugEnabled) {
-				Log.d(TAG, "code1Updating 2 entry for key " + url + " existing: " + existingEntry + " updated: "
+				Log.d(TAG, "Updating entry for key " + url + " existing: " + existingEntry + " updated: "
 						+ updatedEntry);
 			}
 			putEntry(url, updatedEntry);
