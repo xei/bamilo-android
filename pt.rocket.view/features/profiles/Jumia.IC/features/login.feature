@@ -14,6 +14,7 @@ Feature: Login feature
   Scenario: I login with user
 #  	@wrong_empty_login
   	When I press "Login Button"
+  	And I wait for 5 seconds
   	Then I should see the email error message
   	Then I should see the password error message
   
@@ -33,5 +34,6 @@ Feature: Login feature
   	Then I press "Login Button"
   	And I wait for 10 seconds
     Then I open the navigation menu
+    And I wait for 5 seconds
 	And I should see sign out button
   	

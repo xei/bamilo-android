@@ -17,16 +17,19 @@ Feature: Update User feature
   	Then I press "Login Button"
   	And I wait for 10 seconds
     Then I open the navigation menu
+    And I wait for 5 seconds
 	And I should see sign out button
 	Then I enter My Account
 	Then I enter My User Data
 	And I wait for 5 seconds
 	And I should see my email
+	And I wait for 5 seconds
 	And I should see my first name
 	Then I enter the new password
 	And I enter the new repeated password
 	Then I press "Save"
 	And I wait for 10 seconds
   	Then I open the navigation menu
+  	And I wait for 5 seconds
 	And I should see sign out button
   	

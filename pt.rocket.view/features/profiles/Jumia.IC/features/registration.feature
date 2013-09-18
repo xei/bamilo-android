@@ -15,6 +15,7 @@ Feature: Registration feature
   	Then I press "Register Button"
     And I wait for 5 seconds
     Then I press "Submit Register Form"
+    And I wait for 5 seconds
     And I should see the mandatory fields error message
     
 #    @wrong_repeated_register
@@ -38,5 +39,6 @@ Feature: Registration feature
     Then I press "Submit Register Form"
 	And I wait for 10 seconds
 	Then I open the navigation menu
+	And I wait for 5 seconds
 	And I should see sign out button
    

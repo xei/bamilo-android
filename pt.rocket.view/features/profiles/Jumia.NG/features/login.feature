@@ -14,6 +14,7 @@ Feature: Login feature
   Scenario: I login with user
   
   	When I press "Login Button"
+  	And I wait for 5 seconds
   	Then I should see the email error message
   	Then I should see the password error message
   
