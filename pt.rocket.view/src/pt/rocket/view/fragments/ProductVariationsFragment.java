@@ -63,6 +63,7 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
      */
     public ProductVariationsFragment() {
         super(EnumSet.noneOf(EventType.class), EnumSet.noneOf(EventType.class));
+        this.setRetainInstance(true);
     }
 
     @Override
@@ -144,7 +145,6 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
     public void onStart() {
         super.onStart();
         Log.i(TAG, "ON START");
-        // FlurryTracker.get().begin();
     }
 
     /*
@@ -181,7 +181,6 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
     public void onStop() {
         super.onStop();
         Log.i(TAG, "ON STOP");
-        // FlurryTracker.get().end();
     }
 
     @Override
@@ -199,15 +198,16 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
             Log.i(TAG, "mCompleteProduct is null -- XXX verify and fix!!!");
             return;
         }
-            
+        
         if (isNotValidVariation(mCompleteProduct.getVariations())) {
             mVariationsContainer.setVisibility(View.GONE);
             return;
         }
+        mVariationsContainer.setVisibility(View.VISIBLE);
         if(mList == null)
             mList = (HorizontalListView) mainView.findViewById(R.id.variations_list);
         if (mAdapter == null) {
-            mAdapter = new ProductImagesAdapter(getActivity(),
+            mAdapter = new ProductImagesAdapter(this.getActivity(),
                     ProductImagesAdapter.createImageList(mCompleteProduct.getVariations()));
             mList.setAdapter(mAdapter);
         } else {

@@ -130,10 +130,19 @@ public class HockeyStartup {
         // Log.d( TAG, "certificate fingerPrint(" +MESSAGEDIGEST+ ") = " + fingerPrint );
       
         if ( fingerPrint != null && KEY_FINGERPRINT_HOCKEY.equals( fingerPrint.toUpperCase(Locale.US))) {
+            cf = null;
+            cert = null;
+            fingerPrint = null;
             return RESULT_KEY_HOCKEY;
         } else if ( cert.getSubjectX500Principal().equals(KEY_PRINCIPAL_DEBUG)) {
+            cf = null;
+            cert = null;
+            fingerPrint = null;
             return RESULT_KEY_DEBUG;
         } else {
+            cf = null;
+            cert = null;
+            fingerPrint = null;
             return RESULT_KEY_OTHER;
         }
     }

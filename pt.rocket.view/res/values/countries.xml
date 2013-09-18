@@ -34,7 +34,7 @@
     <!-- Jumia Egypt Configuration -->
     <string name="jumia_eg_shopname">Jumia</string>
 <!--     <string name="jumia_eg_server">www.jumia.com.eg</string> -->
-    <string name="jumia_eg_server">alice-staging.jumia.com.eg</string>
+<!--     <string name="jumia_eg_server">alice-staging.jumia.com.eg</string> -->
 <!--     <string name="jumia_eg_server">mobile.jumia.com</string> -->
     <string name="jumia_eg_user">rocket</string>
     <string name="jumia_eg_password">rock4me</string>

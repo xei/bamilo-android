@@ -98,6 +98,7 @@ public class CheckoutWebFragment extends BaseFragment {
     public CheckoutWebFragment() {
         super(EnumSet.of(EventType.GET_SHOPPING_CART_ITEMS_EVENT, EventType.GET_CUSTOMER),
         EnumSet.noneOf(EventType.class));
+        this.setRetainInstance(true);
     }
     
     @Override
@@ -383,6 +384,7 @@ public class CheckoutWebFragment extends BaseFragment {
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            
             return false;
         }
         
@@ -442,6 +444,7 @@ public class CheckoutWebFragment extends BaseFragment {
             try {
                 Log.d(TAG, "onLoadResource: url = " + url);
             } catch (OutOfMemoryError e) {
+                Log.d(TAG, "onLoadResource: url = OOF");
                 e.printStackTrace();
             }
            
@@ -514,6 +517,7 @@ public class CheckoutWebFragment extends BaseFragment {
                     });
                     // XXX
                     ActivitiesWorkFlow.checkoutActivity(getActivity(), ConstantsCheckout.CHECKOUT_THANKS);
+                    getActivity().finish();
                 }
             } catch (ParseException e) {
                 Log.e(TAG, "parse exception:", e);

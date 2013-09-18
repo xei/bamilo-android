@@ -66,7 +66,7 @@ public class BrandsTeaserListFragment extends BaseFragment {
      */
     public BrandsTeaserListFragment() {
         super(EnumSet.noneOf(EventType.class), EnumSet.noneOf(EventType.class));
-        
+        this.setRetainInstance(true);
     }
 
     

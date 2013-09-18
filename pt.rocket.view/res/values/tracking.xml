@@ -50,8 +50,8 @@
     <!-- Jumia MA. live: UA-32132208-3; dev: UA-32132208-2 -->
     <string name="gaid_ma_test">UA-32132208-2</string>
     <string name="gaid_ma_live">UA-32132208-3</string>
-    <!-- <string name="gaid_eg_test">aaaaaaaaa</string> -->
-    <!-- <string name="gaid_eg_live">aaaaaaaaa</string> -->
+<!--     <string name="gaid_eg_test">aaaaaaaaa</string> -->
+<!--     <string name="gaid_eg_live">aaaaaaaaa</string> -->
 
 
     <!-- Dev : UA-41452964-2 -->
@@ -66,26 +66,4 @@
 <!--     <bool name="adx_enable">false</bool> -->
     <bool name="adx_enable">true</bool> 
     <string name="xid">Jma390Sq104mxe741ksJ0</string>
-    
-    <!--  -->
-    <!-- Flurry tracking -->
-    <!--  -->
-    <bool name="flurry_enable">true</bool>
-    <bool name="f_testmode">true</bool>
-
-    <string name="fkey_malaysia_testing">SHR53SDHN4NVFR59MY4N</string>
-
-    <!-- Flurry Keys -->
-    <string name="fkey">toupdate</string> <!-- TestKonto SMF -->
-    <string name="fkey_ng_test">toupdate</string>
-    <string name="fkey_ng_live">toupdate</string>
-    <string name="fkey_ke_test">toupdate</string>
-    <string name="fkey_ke_live">toupdate</string>
-    <string name="fkey_ma_test">toupdate</string>
-    <string name="fkey_ma_live">toupdate</string>
-    <!-- <string name="fkey_eg_test">toupdate</string> -->
-    <!-- <string name="fkey_eg_live">toupdate</string> -->
-    <string name="fkey_ci_test">toupdate</string>
-    <string name="fkey_ci_live">toupdate</string>
-
-</resources>
+ </resources>

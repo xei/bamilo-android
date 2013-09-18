@@ -245,6 +245,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         super.onPause();
         EventManager.getSingleton().removeResponseListener(this, allHandledEvents);
         isRegistered = false;
+        System.gc();
     }
 
 
@@ -265,6 +266,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     }
     
     private void setupContentViews() {
+        System.gc();
         setContentView(activityLayoutId);
         
         // Slide Menu Fragment
@@ -361,6 +363,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
 
 	@Override
 	public boolean onCreateOptionsMenu(final Menu menu) {
+	    System.gc();   
 		getSupportMenuInflater().inflate(R.menu.main_menu, menu);
 		
         tvActionCartCount = (TextView) menu.findItem(R.id.menu_basket).getActionView()
@@ -962,6 +965,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
      * @author sergiopereira
      */
     protected void fragmentManagerTransition(int container, Fragment fragment, Boolean addToBackStack, Boolean animated) {
+        fragment.setRetainInstance(true);
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         // Animations
         if(animated)
@@ -974,7 +978,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         // Commit
         fragmentTransaction.commit();
     }
-    
+   
     /**
      * Method used to perform a back stack using fragments
      * @author sergiopereira

@@ -107,6 +107,7 @@ public class HomeTeaserFragment extends BaseFragment {
     public HomeTeaserFragment() {
         super(EnumSet.noneOf(EventType.class),
                 EnumSet.noneOf(EventType.class));
+        this.setRetainInstance(true);
     }
 
     @Override

@@ -70,11 +70,12 @@ public class ProductSpecificationsFragment extends BaseFragment implements OnCli
      */
     public ProductSpecificationsFragment() {
         super(EnumSet.noneOf(EventType.class), EnumSet.noneOf(EventType.class));
+        this.setRetainInstance(true);
     }
 
     @Override
     public void sendValuesToFragment(int identifier, Object values) {
-        this.mCompleteProduct= (CompleteProduct) values;
+        this.mCompleteProduct = (CompleteProduct) values;
         if(identifier==1){
             displaySpecification();
         }
@@ -227,12 +228,14 @@ public class ProductSpecificationsFragment extends BaseFragment implements OnCli
     }
     
     private void displaySpecification() {
-        String shortDescription = mCompleteProduct != null && mCompleteProduct.getShortDescription() != null ? mCompleteProduct.getShortDescription() : "" ;
-        if(mProductSpecSku!=null && mCompleteProduct != null){
-            mProductSpecSku.setText(mCompleteProduct.getSku() != null ? mCompleteProduct.getSku() : "");
+        String shortDescription = (this.mCompleteProduct != null && this.mCompleteProduct.getShortDescription() != null) ? this.mCompleteProduct.getShortDescription() : "" ;
+        
+        if(mProductSpecSku!=null && this.mCompleteProduct != null){
+            mProductSpecSku.setText(this.mCompleteProduct.getSku() != null ? this.mCompleteProduct.getSku() : "");
         }
-            
+                
         if (TextUtils.isEmpty(shortDescription)) {
+            mProductSpecText.setText("");
             mProductSpecText.setVisibility(View.GONE);
         } else {
             mProductSpecText.setVisibility(View.VISIBLE);

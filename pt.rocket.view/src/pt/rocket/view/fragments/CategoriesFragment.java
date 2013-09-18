@@ -79,6 +79,7 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
      */
     public CategoriesFragment() {
         super(EnumSet.of(EventType.GET_CATEGORIES_EVENT), EnumSet.noneOf(EventType.class));
+        this.setRetainInstance(true);
     }
 
     /*
@@ -321,16 +322,18 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
      */
     private void requestSubcategory(int pos) {
         // This condition verifies if we are in the root of the category chosen
-        Category selectedCategory = currentCategory.getChildren().get(pos);
-        Log.d(TAG, "SELECTED CATEGORY: " + selectedCategory.getName());
-        
-        if (CategoriesFragmentActivity.currentFragment == FragmentType.CATEGORIES_LEVEL_2 && selectedCategory.getHasChildren()) {
-            Log.d(TAG, "SELECTED CATEGORY HAS CHILDS: " + selectedCategory.getChildren().size());
-            CategoriesFragmentActivity.selectedSubCategoryPosition = pos;
-            ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.CATEGORIES_LEVEL_3, true);
-        } else {
-            Log.v(TAG, "SELECTED CATEGORY IS EMPTY: SHOW PRODUCTS");
-            showProducts(selectedCategory);
+        if(currentCategory != null && currentCategory.getChildren() !=null){
+            Category selectedCategory = currentCategory.getChildren().get(pos);
+            Log.d(TAG, "SELECTED CATEGORY: " + selectedCategory.getName());
+            
+            if (CategoriesFragmentActivity.currentFragment == FragmentType.CATEGORIES_LEVEL_2 && selectedCategory.getHasChildren()) {
+                Log.d(TAG, "SELECTED CATEGORY HAS CHILDS: " + selectedCategory.getChildren().size());
+                CategoriesFragmentActivity.selectedSubCategoryPosition = pos;
+                ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.CATEGORIES_LEVEL_3, true);
+            } else {
+                Log.v(TAG, "SELECTED CATEGORY IS EMPTY: SHOW PRODUCTS");
+                showProducts(selectedCategory);
+            }
         }
     } 
     

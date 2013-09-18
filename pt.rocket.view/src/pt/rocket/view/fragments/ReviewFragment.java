@@ -46,6 +46,7 @@ public class ReviewFragment extends BaseFragment {
      */
     public ReviewFragment() {
         super(EnumSet.noneOf(EventType.class), EnumSet.noneOf(EventType.class));
+        this.setRetainInstance(true);
     }
 
     /*

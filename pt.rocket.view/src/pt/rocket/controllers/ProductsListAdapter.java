@@ -127,7 +127,7 @@ public class ProductsListAdapter extends BaseAdapter {
         this.selectedItems = null;
         context = null;
         this.onSelectedItemsChange = null;
-
+        System.gc();
         super.finalize();
     }
 

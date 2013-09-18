@@ -69,6 +69,7 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
      */
     public MyAccountUserDataFragment() {
         super(EnumSet.noneOf(EventType.class), EnumSet.noneOf(EventType.class));
+        this.setRetainInstance(true);
     }
     
     @Override

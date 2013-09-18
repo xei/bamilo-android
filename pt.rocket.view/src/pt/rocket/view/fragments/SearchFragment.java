@@ -86,6 +86,7 @@ public class SearchFragment extends BaseFragment implements OnItemClickListener 
      */
     public SearchFragment() {
         super(EnumSet.of(EventType.GET_SEARCH_SUGGESTIONS_EVENT), EnumSet.noneOf(EventType.class));
+        this.setRetainInstance(true);
     }
 
     /*

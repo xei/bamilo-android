@@ -151,11 +151,11 @@ public class DialogGenericFragment extends DialogFragment {
      * @param view
      */
     private void dialogWith2Buttons(View view) {
-        if (!mainText) {
+        if (this.mainText != null && !this.mainText) {
             ((TextView) view.findViewById(R.id.dialog_text)).setVisibility(View.GONE);
             ((TextView) view.findViewById(R.id.items_count)).setText(content);
         }
-        if (!secondaryText) {
+        if (this.secondaryText != null && !this.secondaryText) {
             ((TextView) view.findViewById(R.id.items_count)).setVisibility(View.GONE);
         }
         ((TextView) view.findViewById(R.id.dialog_title)).setText(title);

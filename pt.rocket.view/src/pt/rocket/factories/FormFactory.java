@@ -77,9 +77,9 @@ public class FormFactory {
      */
     public DynamicForm CreateForm(int formType, Context context, Form form) {
         DynamicForm parent = null;
+        if(context != null && context.getResources() != null && context.getResources().getDisplayMetrics() != null)
+            scale = context.getResources().getDisplayMetrics().density;
         
-        scale = context.getResources().getDisplayMetrics().density;
-
         switch (formType) {
         case FormConstants.ADDRESS_FORM:
             parent = createAddressForm(context, form);

@@ -92,6 +92,7 @@ public class WriteReviewFragment extends BaseFragment {
     public WriteReviewFragment() {
         super(EnumSet.of(EventType.LOGIN_EVENT, EventType.GET_RATING_OPTIONS_EVENT,
                 EventType.GET_CUSTOMER), EnumSet.of(EventType.REVIEW_PRODUCT_EVENT));
+        this.setRetainInstance(true);
     }
 
     /*

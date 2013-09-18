@@ -140,6 +140,7 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
      */
     public ProductsFragment() {
         super(EnumSet.of(EventType.GET_PRODUCTS_EVENT), EnumSet.noneOf(EventType.class));
+        this.setRetainInstance(true);
     }
 
     @Override

@@ -65,6 +65,7 @@ public class StaticBannerFragment extends BaseFragment {
      */
     public StaticBannerFragment() {
         super(EnumSet.noneOf(EventType.class), EnumSet.noneOf(EventType.class));
+        this.setRetainInstance(true);
     }
 
     @Override

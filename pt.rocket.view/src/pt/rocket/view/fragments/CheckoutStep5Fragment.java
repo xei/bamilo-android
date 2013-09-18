@@ -45,6 +45,7 @@ public class CheckoutStep5Fragment extends BaseFragment implements OnClickListen
      */
     public CheckoutStep5Fragment() {
         super(EnumSet.noneOf(EventType.class), EnumSet.noneOf(EventType.class));
+        this.setRetainInstance(true);
     }
 
     /*

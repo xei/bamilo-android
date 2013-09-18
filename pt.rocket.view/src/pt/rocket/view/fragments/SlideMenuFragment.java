@@ -56,6 +56,7 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener{
     public static SlideMenuFragment getInstance() {
         if (slideMenuFragment == null)
             slideMenuFragment = new SlideMenuFragment();
+        slideMenuFragment.setRetainInstance(true);
         return slideMenuFragment;
     }
 
@@ -167,8 +168,8 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener{
     public void onDestroyView() {
         super.onDestroyView();
         Log.i(TAG, "ON DESTROY");
-
 //        unbindDrawables(navigationContainer);
+        
     }
 
     private void unbindDrawables(View view) {

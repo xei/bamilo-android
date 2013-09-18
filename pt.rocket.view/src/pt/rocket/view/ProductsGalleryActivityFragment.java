@@ -135,6 +135,17 @@ public class ProductsGalleryActivityFragment extends BaseActivity {
     @Override
     protected void onDestroy() {
         unbindDrawables(findViewById( R.id.gallery_container));
+        
+        mCompleteProductUrl = null;
+        
+        mCompleteProduct = null;
+
+        mList = null;
+
+        mCallbackProductVariationsFragment = null;
+        mCallbackProductImagesViewPagerFragment = null;
+        productVariationsFragment = null;
+        productImagesViewPagerFragment = null;
         super.onDestroy();
     }
 

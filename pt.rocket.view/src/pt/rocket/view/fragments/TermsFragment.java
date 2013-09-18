@@ -47,6 +47,7 @@ public class TermsFragment extends BaseFragment {
     public TermsFragment() {
         super(EnumSet.noneOf(EventType.class),
         EnumSet.noneOf(EventType.class));
+        this.setRetainInstance(true);
     }
 
     @Override

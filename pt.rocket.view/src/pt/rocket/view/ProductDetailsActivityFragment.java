@@ -49,7 +49,6 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -96,8 +95,6 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
     private final static int NO_SIMPLE_SELECTED = -1;
     private final static String VARIATION_PICKER_ID = "variation_picker";
 
-    private LayoutInflater mInflater;
-
     private Context mContext;
     private DialogFragment mDialogAddedToCart;
 
@@ -139,23 +136,24 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
     private int mNavigationSource;
 
     private RelativeLayout loadingRating;
-    
+
     private Fragment productVariationsFragment;
     private Fragment productImagesViewPagerFragment;
     private Fragment productSpecificationFragment;
     private Fragment productBasicInfoFragment;
-    
+
     private OnActivityFragmentInteraction mCallbackProductVariationsFragment;
     private OnActivityFragmentInteraction mCallbackProductImagesViewPagerFragment;
     private OnActivityFragmentInteraction mCallbackProductSpecificationFragment;
     private OnActivityFragmentInteraction mCallbackProductBasicInfoFragment;
-    
+
     private int mVariationsListPosition = -1;
-    
+
     private String mPhone2Call = "";
     public static String KEY_CALL_TO_ORDER = "call_to_order";
-    
+
     private final int LOADING_PRODUCT = -1;
+
     public ProductDetailsActivityFragment() {
         super(NavigationAction.Products,
                 EnumSet.of(MyMenuItem.SHARE),
@@ -163,9 +161,9 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
                 EnumSet.of(EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT),
                 0, R.layout.productdetailsnew_fragments);
     }
-    
+
     @Override
-    public void onFragmentElementSelected(int position){
+    public void onFragmentElementSelected(int position) {
         mVariationsListPosition = position;
         /**
          * Send LOADING_PRODUCT to show loading views.
@@ -174,7 +172,7 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
         mCallbackProductSpecificationFragment.sendPositionToFragment(LOADING_PRODUCT);
         mCallbackProductBasicInfoFragment.sendPositionToFragment(LOADING_PRODUCT);
         loadingRating.setVisibility(View.VISIBLE);
-        
+
         String url = mCompleteProduct.getVariations().get(position).getLink();
         if (TextUtils.isEmpty(url))
             return;
@@ -186,40 +184,44 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
         mCompleteProductUrl = url;
         mCallbackProductImagesViewPagerFragment.sendPositionToFragment(-1);
         loadProductPartial();
-        
+
     }
 
     @Override
-    public void onFragmentSelected(FragmentType type){
-        if(type == FragmentType.PRODUCT_SHOWOFF){
+    public void onFragmentSelected(FragmentType type) {
+        if (type == FragmentType.PRODUCT_SHOWOFF) {
             showGallery();
-        } else if(type == FragmentType.PRODUCT_SPECIFICATION){
-            ActivitiesWorkFlow.descriptionActivity(this, mCompleteProduct.getUrl());    
+        } else if (type == FragmentType.PRODUCT_SPECIFICATION) {
+            ActivitiesWorkFlow.descriptionActivity(this, mCompleteProduct.getUrl());
         }
     }
 
-    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setAppContentLayout();
         init(getIntent());
-        SharedPreferences sharedPrefs = this.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences sharedPrefs = this.getSharedPreferences(
+                ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         mPhone2Call = sharedPrefs.getString(ProductDetailsActivityFragment.KEY_CALL_TO_ORDER, "");
-        if(mPhone2Call.equalsIgnoreCase("")){
-        	mPhone2Call = getString(R.string.call_to_order_number);
+        if (mPhone2Call.equalsIgnoreCase("")) {
+            mPhone2Call = getString(R.string.call_to_order_number);
         }
     }
-    
+
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         init(intent);
     }
-    
+
     private void init(Intent intent) {
         mContext = getApplicationContext();
         mCompleteProductUrl = intent.getStringExtra(ConstantsIntentExtra.CONTENT_URL);
+        if(mCompleteProductUrl == null){
+            finish();
+            return;
+        }
         mNavigationSource = intent.getIntExtra(ConstantsIntentExtra.NAVIGATION_SOURCE, -1);
         mNavigationPath = intent.getStringExtra(ConstantsIntentExtra.NAVIGATION_PATH);
         loadProduct();
@@ -233,20 +235,70 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
-        unbindDrawables(findViewById( R.id.gallery_container));
+        unbindDrawables(findViewById(R.id.gallery_container));
         unbindDrawables(mDetailsContainer);
         releaseFragments();
+        releaseVars();
+        super.onDestroy();
         System.gc();
     }
 
-    private void releaseFragments(){
+    private void releaseVars() {
+        mContext = null;
+        mDialogAddedToCart = null;
+
+        mCompleteProduct = null;
+
+        mAddToCartButton = null;
+
+        mDetailsContainer = null;
+
+        mVarianceContainer = null;
+
+        mCompleteProductUrl = null;
+
+        mProductRatingContainer = null;
+
+        mProductRating = null;
+
+        mProductRatingCount = null;
+
+        mCallToOrderButton = null;
+
+        mVarianceButton = null;
+
+        mVariantNormPrice = null;
+
+        mVariantSpecPrice = null;
+        
+        mVarianceText = null;
+        mProductBasicInfoContainer = null;
+
+
+        mSimpleVariants = null;
+        mVariantChooseError = null;
+
+        mVariantPriceContainer = null;
+        mNavigationPath = null;
+
+
+        loadingRating = null;
+
+    }
+
+    private void releaseFragments() {
         productVariationsFragment = null;
         productImagesViewPagerFragment = null;
         productSpecificationFragment = null;
         productBasicInfoFragment = null;
+        
+        mCallbackProductVariationsFragment = null;
+        mCallbackProductImagesViewPagerFragment = null;
+        mCallbackProductSpecificationFragment = null;
+        mCallbackProductBasicInfoFragment = null;
+
     }
-    
+
     /**
      * Set the Products layout using inflate
      */
@@ -257,15 +309,13 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
         mProductBasicInfoContainer = (ViewGroup) findViewById(R.id.product_basicinfo_container);
         mProductBasicInfoContainer.setOnClickListener(this);
 
-
-
         mProductRatingContainer = (ViewGroup) findViewById(R.id.product_rating_container);
         mProductRatingContainer.setOnClickListener(this);
         mProductRating = (RatingBar) mProductRatingContainer.findViewById(R.id.product_rating);
         mProductRating.setEnabled(false);
-        mProductRatingCount = (TextView) mProductRatingContainer.findViewById(R.id.product_rating_count);
+        mProductRatingCount = (TextView) mProductRatingContainer
+                .findViewById(R.id.product_rating_count);
         loadingRating = (RelativeLayout) mProductRatingContainer.findViewById(R.id.loading_rating);
-
 
         mVarianceContainer = (ViewGroup) findViewById(R.id.product_variant_container);
         mVarianceText = (TextView) findViewById(R.id.product_variant_text);
@@ -300,15 +350,17 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
 
     private void setContentInformation() {
         setTitle(mCompleteProduct.getBrand() + " " + mCompleteProduct.getName());
+        updateStockInfo();
+        updateVariants();
         preselectASimpleItem();
 
         // displayVariations();
-//        mProductName.setText(mCompleteProduct.getName());
+        // mProductName.setText(mCompleteProduct.getName());
         displayPriceInfoOverallOrForSimple();
-        updateStockInfo();
+        
         displayRatingInfo();
         displayVariantsContainer();
-        updateVariants();
+        
     }
 
     private void loadProduct() {
@@ -322,23 +374,24 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
         triggerContentEventWithNoLoading(new GetProductEvent(mCompleteProductUrl));
     }
 
-    
     private void preselectASimpleItem() {
         if (mSelectedSimple != NO_SIMPLE_SELECTED)
             return;
-
         ArrayList<ProductSimple> ps = mCompleteProduct.getSimples();
         Set<String> knownVariations = scanSimpleAttributesForKnownVariants(ps);
 
         if (ps.size() == 1) {
-            //XXX
+            // XXX
             if (knownVariations.size() <= 1) {
                 mSelectedSimple = 0;
                 mHideVariationSelection = true;
-            } else
+            } else{
                 mSelectedSimple = NO_SIMPLE_SELECTED;
-        } else
+            }
+        } else{
+            mHideVariationSelection = false;
             mSelectedSimple = NO_SIMPLE_SELECTED;
+        }
 
     }
 
@@ -426,21 +479,23 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
         return mCompleteProduct.getSimples().get(mSelectedSimple);
     }
 
-
     private void displayPriceInfoOverallOrForSimple() {
         ProductSimple simple = getSelectedSimple();
 
         if (mSelectedSimple == NO_SIMPLE_SELECTED || simple == null) {
             String unitPrice = mCompleteProduct.getPrice();
-            String specialPrice = mCompleteProduct.getMaxSpecialPrice();
+            String specialPrice = mCompleteProduct.getSpecialPrice();
             if (specialPrice == null)
-                specialPrice = mCompleteProduct.getSpecialPrice();
+                specialPrice = mCompleteProduct.getMaxSpecialPrice();
 
             int discountPercentage = mCompleteProduct.getMaxSavingPercentage().intValue();
-            mCallbackProductBasicInfoFragment.sendValuesToFragment(ProductBasicInfoFragment.DEFINE_UNIT_PRICE, unitPrice);
-            mCallbackProductBasicInfoFragment.sendValuesToFragment(ProductBasicInfoFragment.DEFINE_SPECIAL_PRICE, specialPrice);
-            mCallbackProductBasicInfoFragment.sendValuesToFragment(ProductBasicInfoFragment.DEFINE_DISCOUNT_PERCENTAGE, discountPercentage);
-//            displayPriceInfo(unitPrice, specialPrice, discountPercentage);
+            mCallbackProductBasicInfoFragment.sendValuesToFragment(
+                    ProductBasicInfoFragment.DEFINE_UNIT_PRICE, unitPrice);
+            mCallbackProductBasicInfoFragment.sendValuesToFragment(
+                    ProductBasicInfoFragment.DEFINE_SPECIAL_PRICE, specialPrice);
+            mCallbackProductBasicInfoFragment.sendValuesToFragment(
+                    ProductBasicInfoFragment.DEFINE_DISCOUNT_PERCENTAGE, discountPercentage);
+            // displayPriceInfo(unitPrice, specialPrice, discountPercentage);
         } else {
             // Simple Products prices dont come with currency preformatted
             String unitPrice = simple.getAttributeByKey(ProductSimple.PRICE_TAG);
@@ -449,10 +504,13 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
             if (specialPrice != null)
                 specialPrice = currencyFormatHelper(specialPrice);
             int discountPercentage = mCompleteProduct.getMaxSavingPercentage().intValue();
-            mCallbackProductBasicInfoFragment.sendValuesToFragment(ProductBasicInfoFragment.DEFINE_UNIT_PRICE, unitPrice);
-            mCallbackProductBasicInfoFragment.sendValuesToFragment(ProductBasicInfoFragment.DEFINE_SPECIAL_PRICE, specialPrice);
-            mCallbackProductBasicInfoFragment.sendValuesToFragment(ProductBasicInfoFragment.DEFINE_DISCOUNT_PERCENTAGE, discountPercentage);
-//            displayPriceInfo(unitPrice, specialPrice, discountPercentage);
+            mCallbackProductBasicInfoFragment.sendValuesToFragment(
+                    ProductBasicInfoFragment.DEFINE_UNIT_PRICE, unitPrice);
+            mCallbackProductBasicInfoFragment.sendValuesToFragment(
+                    ProductBasicInfoFragment.DEFINE_SPECIAL_PRICE, specialPrice);
+            mCallbackProductBasicInfoFragment.sendValuesToFragment(
+                    ProductBasicInfoFragment.DEFINE_DISCOUNT_PERCENTAGE, discountPercentage);
+            // displayPriceInfo(unitPrice, specialPrice, discountPercentage);
 
         }
     }
@@ -475,9 +533,10 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
     }
 
     private void updateStockInfo() {
-//        TextView stockInfo = (TextView) findViewById(R.id.product_instock);
+        // TextView stockInfo = (TextView) findViewById(R.id.product_instock);
         if (getSelectedSimple() == null) {
-            mCallbackProductBasicInfoFragment.sendValuesToFragment(ProductBasicInfoFragment.DEFINE_STOCK, -1);
+            mCallbackProductBasicInfoFragment.sendValuesToFragment(
+                    ProductBasicInfoFragment.DEFINE_STOCK, -1);
             return;
         }
         int stockQuantity = 0;
@@ -488,17 +547,18 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
             Log.w(TAG, "updateStockInfo: quantity in simple is not a number:", e);
         }
 
-        if (stockQuantity > 0) {        
+        if (stockQuantity > 0) {
             mAddToCartButton.setBackgroundResource(R.drawable.btn_orange);
         } else {
             mAddToCartButton.setBackgroundResource(R.drawable.btn_grey);
         }
-        
-        mCallbackProductBasicInfoFragment.sendValuesToFragment(ProductBasicInfoFragment.DEFINE_STOCK, stockQuantity);
+
+        mCallbackProductBasicInfoFragment.sendValuesToFragment(
+                ProductBasicInfoFragment.DEFINE_STOCK, stockQuantity);
     }
 
     private void displayRatingInfo() {
-        
+
         float ratingAverage = mCompleteProduct.getRatingsAverage().floatValue();
         Integer ratingCount = mCompleteProduct.getRatingsCount();
 
@@ -586,15 +646,17 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
 
         ShoppingCartItem item = new ShoppingCartItem(createVariantAttributesHashMap(simple));
         item.initialize(mCompleteProduct.getSku(), sku, mCompleteProduct.getImageList().get(0),
-                mCompleteProduct.getUrl(), mCompleteProduct.getBrand() + " " + mCompleteProduct.getName(), quantity,
+                mCompleteProduct.getUrl(),
+                mCompleteProduct.getBrand() + " " + mCompleteProduct.getName(), quantity,
                 mCompleteProduct.getSpecialPrice(), mCompleteProduct.getPrice(), 1);
 
         showProgress();
         EventManager.getSingleton().triggerRequestEvent(new AddItemToShoppingCartEvent(item));
 
         AnalyticsGoogle.get().trackAddToCart(sku, price);
-        TrackerDelegator.trackProductAddedToCart(getApplicationContext(), mCompleteProduct, simple, (double) price, getString(R.string.mixprop_itemlocationdetails) );
-        
+        TrackerDelegator.trackProductAddedToCart(getApplicationContext(), mCompleteProduct, simple,
+                (double) price, getString(R.string.mixprop_itemlocationdetails));
+
     }
 
     private void showChooseReminder() {
@@ -605,7 +667,7 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
     private void displayProduct(CompleteProduct product) {
         mCompleteProduct = product;
         mCompleteProductUrl = product.getUrl();
-        if(productVariationsFragment == null){
+        if (productVariationsFragment == null) {
             productVariationsFragment = ProductVariationsFragment.getInstance();
             productImagesViewPagerFragment = ProductImageGalleryFragment.getInstance();
             productSpecificationFragment = ProductSpecificationsFragment.getInstance();
@@ -616,11 +678,16 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
             mCallbackProductImagesViewPagerFragment.sendValuesToFragment(2, mCompleteProduct);
             mCallbackProductSpecificationFragment.sendValuesToFragment(0, mCompleteProduct);
             mCallbackProductBasicInfoFragment.sendValuesToFragment(0, mCompleteProduct);
-            fragmentManagerTransition(R.id.variations_container, productVariationsFragment, false, false);
-            fragmentManagerTransition(R.id.image_gallery_container, productImagesViewPagerFragment, false, true);
-            fragmentManagerTransition(R.id.product_specifications_container, productSpecificationFragment, false, false);
-            fragmentManagerTransition(R.id.product_basicinfo_container, productBasicInfoFragment, false, false);
+            fragmentManagerTransition(R.id.variations_container, productVariationsFragment, false,
+                    false);
+            fragmentManagerTransition(R.id.image_gallery_container, productImagesViewPagerFragment,
+                    false, true);
+            fragmentManagerTransition(R.id.product_specifications_container,
+                    productSpecificationFragment, false, false);
+            fragmentManagerTransition(R.id.product_basicinfo_container, productBasicInfoFragment,
+                    false, false);
         } else {
+            mSelectedSimple = NO_SIMPLE_SELECTED;
             mCallbackProductVariationsFragment.sendValuesToFragment(1, mCompleteProduct);
             mCallbackProductImagesViewPagerFragment.sendValuesToFragment(1, mCompleteProduct);
             mCallbackProductSpecificationFragment.sendValuesToFragment(1, mCompleteProduct);
@@ -630,7 +697,8 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
         setContentInformation();
 
         AnalyticsGoogle.get().trackProduct(mNavigationSource, mNavigationPath,
-                mCompleteProduct.getBrand() + " " + mCompleteProduct.getName(), mCompleteProduct.getSku(), mCompleteProduct.getUrl());
+                mCompleteProduct.getBrand() + " " + mCompleteProduct.getName(),
+                mCompleteProduct.getSku(), mCompleteProduct.getUrl());
         TrackerDelegator.trackProduct(getApplicationContext(), mCompleteProduct);
     }
 
@@ -638,21 +706,22 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
         mCompleteProduct = product;
         setShareIntent(createShareIntent());
         setTitle(mCompleteProduct.getBrand() + " " + mCompleteProduct.getName());
-//        displayVariations();
-//        displayImages();
+        // displayVariations();
+        // displayImages();
     }
-    
+
     private void displayImages() {
-        if(productImagesViewPagerFragment == null){
+        if (productImagesViewPagerFragment == null) {
             productImagesViewPagerFragment = ProductImageGalleryFragment.getInstance();
             startFragmentGalleryCallbacks();
             mCallbackProductImagesViewPagerFragment.sendValuesToFragment(2, mCompleteProduct);
-            fragmentManagerTransition(R.id.image_gallery_container, productImagesViewPagerFragment, false, true);
+            fragmentManagerTransition(R.id.image_gallery_container, productImagesViewPagerFragment,
+                    false, true);
         } else {
             mCallbackProductImagesViewPagerFragment.sendValuesToFragment(1, mCompleteProduct);
         }
     }
-    
+
     private void startFragmentGalleryCallbacks() {
         // This makes sure that the container activity has implemented
         // the callback interface. If not, it throws an exception
@@ -664,10 +733,10 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
         }
 
     }
-    
+
     private void executeAddToShoppingCartCompleted() {
         String msgText = "1 " + getResources().getString(R.string.added_to_shop_cart_dialog_text);
-        
+
         mDialogAddedToCart = DialogGenericFragment.newInstance(
                 false,
                 false,
@@ -681,7 +750,8 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
                     public void onClick(View v) {
                         int id = v.getId();
                         if (id == R.id.button1) {
-                            ActivitiesWorkFlow.shoppingCartActivity(ProductDetailsActivityFragment.this);
+                            ActivitiesWorkFlow
+                                    .shoppingCartActivity(ProductDetailsActivityFragment.this);
                             mDialogAddedToCart.dismiss();
                         } else if (id == R.id.button2) {
                             mDialogAddedToCart.dismiss();
@@ -724,28 +794,29 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
         } else if (id == R.id.shop) {
             executeAddProductToCart();
         } else if (id == R.id.call_to_order) {
-//            Toast.makeText(this, "Hello! I want to order. Can you hear me?", Toast.LENGTH_LONG)
-//                    .show();
+            // Toast.makeText(this, "Hello! I want to order. Can you hear me?", Toast.LENGTH_LONG)
+            // .show();
             makeCall();
-            
+
         }
 
     }
-    
+
     private void makeCall() {
         Intent callIntent = new Intent(Intent.ACTION_CALL);
-        callIntent.setData(Uri.parse("tel:"+mPhone2Call));
-        startActivity(callIntent);        
+        callIntent.setData(Uri.parse("tel:" + mPhone2Call));
+        startActivity(callIntent);
     }
-    
+
     private void showGallery() {
         ActivitiesWorkFlow.productsGalleryActivity(ProductDetailsActivityFragment.this,
                 mCompleteProduct.getUrl(), mVariationsListPosition);
     }
-    
+
     private void showVariantsDialog() {
         String title = getString(R.string.product_variance_choose);
-        DialogListFragment dialog = DialogListFragment.newInstance(this, VARIATION_PICKER_ID, title, mSimpleVariants,
+        DialogListFragment dialog = DialogListFragment.newInstance(this, VARIATION_PICKER_ID,
+                title, mSimpleVariants,
                 mSelectedSimple);
         dialog.show(getSupportFragmentManager(), null);
     }
@@ -802,9 +873,9 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
                 setProcessShow(true);
                 AnalyticsGoogle.get().trackLoadTiming(R.string.gproductdetail, mBeginRequestMillis);
                 displayProduct((CompleteProduct) event.result);
-                displayGallery((CompleteProduct) event.result);    
+                displayGallery((CompleteProduct) event.result);
             }
-            
+
             break;
         }
         return true;
@@ -833,7 +904,8 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
                     } else if (errorMessages.contains(Errors.CODE_PRODUCT_ADD_OVERQUANTITY)) {
                         msgRes = R.string.error_add_to_shopping_cart_quantity;
                     } else if (errorMessages.contains(Errors.CODE_ORDER_PRODUCT_ERROR_ADDING)) {
-                        List<String> validateMessages = event.errorMessages.get(RestConstants.JSON_VALIDATE_TAG);
+                        List<String> validateMessages = event.errorMessages
+                                .get(RestConstants.JSON_VALIDATE_TAG);
                         if (validateMessages != null && validateMessages.size() > 0) {
                             message = validateMessages.get(0);
                         } else {
@@ -846,7 +918,7 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
                     } else if (message == null) {
                         return false;
                     }
-                    
+
                     FragmentManager fm = getSupportFragmentManager();
                     dialog = DialogGenericFragment.newInstance(true, true, false,
                             getString(titleRes),

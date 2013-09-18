@@ -95,6 +95,7 @@ public class LoginFragment extends BaseFragment {
     public LoginFragment(String origin) {
         super(EnumSet.of(EventType.GET_LOGIN_FORM_EVENT), EnumSet.of(EventType.LOGIN_EVENT));
         loginOrigin = origin;
+        this.setRetainInstance(true);
         Log.d(TAG, "CONSTRUCTOR");
     }
 

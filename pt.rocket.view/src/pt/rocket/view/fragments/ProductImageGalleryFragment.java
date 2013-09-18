@@ -6,6 +6,8 @@ package pt.rocket.view.fragments;
 import java.util.ArrayList;
 import java.util.EnumSet;
 
+import org.holoeverywhere.util.FinitePool;
+
 import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.controllers.GalleryPagerAdapter;
 import pt.rocket.controllers.NormalizingViewPagerWrapper;
@@ -84,6 +86,7 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
      */
     public ProductImageGalleryFragment() {
         super(EnumSet.noneOf(EventType.class), EnumSet.noneOf(EventType.class));
+        this.setRetainInstance(true);
     }
 
     @Override
@@ -179,6 +182,11 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
     @Override
     public void onResume() {
         super.onResume();
+        
+        if(mCompleteProduct == null){
+            getActivity().finish();
+            return;
+        }
         Log.i(TAG, "ON RESUME");
         mProductImageLoading = (RelativeLayout) mainView.findViewById(R.id.loading_gallery);
         mImagesList = (HorizontalListView) mainView.findViewById(R.id.images_list);

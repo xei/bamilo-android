@@ -47,6 +47,7 @@ public class ImageLoaderComponent extends ApplicationComponent {
 
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
                 app)
+                .threadPoolSize(2)
                 .discCacheExtraOptions(400, 200, CompressFormat.PNG, 50)
                 .discCacheSize(16 * 1024 * 1024)
                 .memoryCacheSize(4 * 1024 * 1024)

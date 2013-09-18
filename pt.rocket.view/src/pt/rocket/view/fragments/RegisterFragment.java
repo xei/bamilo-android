@@ -112,6 +112,7 @@ public class RegisterFragment extends BaseFragment {
         super( EnumSet.of(EventType.GET_REGISTRATION_FORM_EVENT, EventType.GET_TERMS_EVENT),
                 EnumSet.of(EventType.REGISTER_ACCOUNT_EVENT) );
         registerLocation = origin;
+        this.setRetainInstance(true);
     }
 
     /*

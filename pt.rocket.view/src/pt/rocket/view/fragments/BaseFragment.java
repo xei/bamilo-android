@@ -149,6 +149,7 @@ public abstract class BaseFragment extends Fragment implements ResponseListener,
     @Override
     public void onPause() {
         super.onPause();
+        System.gc();
     }
 
     /*

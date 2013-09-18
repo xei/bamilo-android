@@ -115,12 +115,13 @@ public class SplashScreen extends Activity implements ResponseListener {
                     R.string.gpush_prefix, "");
         } else {
             // Default Start
-            Intent intent = new Intent(this, HomeFragmentActivity.class);
+            Intent intent = new Intent(SplashScreen.this, HomeFragmentActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             // intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         }
         overridePendingTransition(R.animator.activityfadein, R.animator.splashfadeout);
+        finish();
     }
     
     @SuppressLint("NewApi")
@@ -156,8 +157,11 @@ public class SplashScreen extends Activity implements ResponseListener {
         try {
             ZipFile zf = new ZipFile(getApplicationInfo().sourceDir);
             ZipEntry ze = zf.getEntry("classes.dex");
+            zf.close();
             devText.append("\nBuild: "
                     + SimpleDateFormat.getInstance().format(new java.util.Date(ze.getTime())));
+            ze = null;
+            zf = null;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -197,7 +201,7 @@ public class SplashScreen extends Activity implements ResponseListener {
         Log.i(TAG, "Got initialization result: " + event);
         if(dialog!=null && dialog.isShowing()){
             try {
-                dialog.hide();    
+                dialog.dismiss();
             } catch (Exception e) {
                 e.printStackTrace();
             }

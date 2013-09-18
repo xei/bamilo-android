@@ -51,6 +51,7 @@ public class MyAccountFragment extends BaseFragment {
     public MyAccountFragment() {
         super(EnumSet.noneOf(EventType.class),
         EnumSet.noneOf(EventType.class));
+        this.setRetainInstance(true);
     }
     
     /*

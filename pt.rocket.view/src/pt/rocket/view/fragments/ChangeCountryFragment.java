@@ -81,6 +81,7 @@ public class ChangeCountryFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.setRetainInstance(true);
         Log.i(TAG, "ON CREATE");
         context = getActivity().getApplicationContext();
     }
@@ -228,6 +229,7 @@ public class ChangeCountryFragment extends Fragment {
         // LogOut.cleanAndRestart(activity);
 //        getActivity().finish();
         ActivitiesWorkFlow.splashActivityNewTask(getActivity());
+        getActivity().finish();
     }
 
 }

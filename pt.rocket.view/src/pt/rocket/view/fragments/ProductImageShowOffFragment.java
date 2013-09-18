@@ -71,6 +71,7 @@ public class ProductImageShowOffFragment extends BaseFragment implements OnClick
      */
     public ProductImageShowOffFragment() {
         super(EnumSet.noneOf(EventType.class), EnumSet.noneOf(EventType.class));
+        this.setRetainInstance(true);
     }
 
     @Override
@@ -233,7 +234,9 @@ public class ProductImageShowOffFragment extends BaseFragment implements OnClick
     private void setPercentageValue(){
         int discountPercentage = mCompleteProduct.getMaxSavingPercentage().intValue();
         String unitPrice = mCompleteProduct.getPrice();
-        String specialPrice = mCompleteProduct.getMaxSpecialPrice();
+        String specialPrice = mCompleteProduct.getSpecialPrice();
+        if (specialPrice == null)
+            specialPrice = mCompleteProduct.getMaxSpecialPrice();
         if (specialPrice == null || specialPrice.equals(unitPrice)) {
             // display only the normal price
             mProductDiscountContainer.setVisibility(View.GONE);

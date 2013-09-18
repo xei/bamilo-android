@@ -140,7 +140,7 @@ public class ForgotPasswordActivity extends BaseActivity {
             Form form = (Form) event.result;
             if (null != form) {
                 serverForm = FormFactory.getSingleton().CreateForm(
-                        FormConstants.FORGET_PASSWORD_FORM, context, form);
+                        FormConstants.FORGET_PASSWORD_FORM, this, form);
                 displayForm();
             }
             break;

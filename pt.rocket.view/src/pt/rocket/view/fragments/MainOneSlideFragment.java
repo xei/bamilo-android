@@ -72,6 +72,7 @@ public class MainOneSlideFragment extends BaseFragment {
      */
     public MainOneSlideFragment() {
         super(EnumSet.noneOf(EventType.class), EnumSet.noneOf(EventType.class));
+        this.setRetainInstance(true);
     }
 
     @Override

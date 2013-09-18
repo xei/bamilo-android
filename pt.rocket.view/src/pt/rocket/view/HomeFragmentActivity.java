@@ -43,6 +43,7 @@ import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Shader;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -66,7 +67,6 @@ import android.widget.Toast;
 public class HomeFragmentActivity extends BaseActivity {
     private final static String TAG = HomeFragmentActivity.class.getSimpleName();
 
-    private LayoutInflater mInflater;
     private JumiaViewPager mPager;
     private PagerTabStrip pagerTabStrip;
 
@@ -77,22 +77,19 @@ public class HomeFragmentActivity extends BaseActivity {
     private final int TAB_INDICATOR_HEIGHT = 0;
     private final int TAB_UNDERLINE_HEIGHT = 1;
     private final int TAB_STRIP_COLOR = android.R.color.transparent;
-    private final int TAB_COLOR_TEXT_UNSELECTED = R.color.strip_title;
-    private final int TAB_COLOR_BACKGROUND = R.color.strip_title_background;
-
-    private final float TAB_SHADOW_COMPLETE = 0.4f;
+//    private final int TAB_COLOR_TEXT_UNSELECTED = R.color.strip_title;
+//    private final int TAB_COLOR_BACKGROUND = R.color.strip_title_background;
+//
+//    private final float TAB_SHADOW_COMPLETE = 0.4f;
 
     // Gradient
     // private final int TAB_COLOR_INDICATOR_UP = R.color.pager_title_up;
     // private final int TAB_COLOR_INDICATOR_DOWN = R.color.pager_title_down;
 
-    private final String FONT_TEXT_SELECTED = "fonts/Roboto-Bold.ttf";
 
     private HomeCollectionPagerAdapter mPagerAdapter;
     private static ArrayList<String> pagesTitles;
     public static ArrayList<Collection<? extends TeaserSpecification<?>>> requestResponse;
-
-    private OnActivityFragmentInteraction mCallback;
 
     Activity activity;
 
@@ -124,8 +121,6 @@ public class HomeFragmentActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = this;
-        mInflater = (LayoutInflater) this
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         changeSearchBarBehavior();
 
         if (requestResponse == null) {
@@ -318,8 +313,17 @@ public class HomeFragmentActivity extends BaseActivity {
     protected void onDestroy() {
         MixpanelTracker.flush();
         mPagerAdapter = null;
+        mPager = null;
+        pagerTabStrip = null;
+
+
+        mPagerAdapter = null;
+        pagesTitles = null;
+        requestResponse = null;
+        activity = null;
 
         super.onDestroy();
+        System.gc();
     }
 
     private void changeSearchBarBehavior() {
@@ -399,15 +403,19 @@ public class HomeFragmentActivity extends BaseActivity {
         public void destroyItem(ViewGroup container, int position, Object object) {
             super.destroyItem(container, position, object);
         }
+        
+        @Override 
+        public Parcelable saveState() { return null; }
     }
 
     // Instances of this class are fragments representing a single
     // object in our collection.
     public static class HomeObjectFragment extends Fragment {
-        Fragment fragmentMainOneSlide;
-        Fragment fragmentStaticBanner;
-        Fragment fragmentCategoryTeaser;
-        Fragment fragmentProductListTeaser;
+        private Fragment fragmentMainOneSlide;
+        private Fragment fragmentStaticBanner;
+        private Fragment fragmentCategoryTeaser;
+        private Fragment fragmentProductListTeaser;
+        private Fragment fragmentBrandsListTeaser;
         private OnActivityFragmentInteraction mCallback;
 
         private LayoutInflater mInflater;
@@ -500,8 +508,14 @@ public class HomeFragmentActivity extends BaseActivity {
         
         @Override
         public void onLowMemory() {
-            super.onLowMemory();
             releaseFragments();
+            super.onLowMemory();
+        }
+        
+        @Override
+        public void onDestroy() {
+            releaseFragments();
+            super.onDestroy();
         }
         
         private void releaseFragments(){
@@ -509,6 +523,7 @@ public class HomeFragmentActivity extends BaseActivity {
             fragmentStaticBanner = null;
             fragmentCategoryTeaser = null;
             fragmentProductListTeaser = null;
+            fragmentBrandsListTeaser = null;
         }
         
         private void processResult(Collection<? extends TeaserSpecification<?>> result,
@@ -523,6 +538,7 @@ public class HomeFragmentActivity extends BaseActivity {
                     if (((ImageTeaserGroup) teaserSpecification).getTeasers().size() > 0) {
 
                         fragmentMainOneSlide = MainOneSlideFragment.getInstance();
+                        fragmentMainOneSlide.setRetainInstance(true);
                         // This makes sure that the container activity has implemented
                         // the callback interface. If not, it throws an exception
                         try {
@@ -545,7 +561,7 @@ public class HomeFragmentActivity extends BaseActivity {
                     break;
                 case STATIC_BANNER:
                     fragmentStaticBanner = StaticBannerFragment.getInstance();
-
+                    fragmentStaticBanner.setRetainInstance(true);
                     // This makes sure that the container activity has implemented
                     // the callback interface. If not, it throws an exception
                     try {
@@ -568,7 +584,7 @@ public class HomeFragmentActivity extends BaseActivity {
                 case CATEGORIES:
 
                     fragmentCategoryTeaser = CategoryTeaserFragment.getInstance();
-
+                    fragmentCategoryTeaser.setRetainInstance(true);
                     // This makes sure that the container activity has implemented
                     // the callback interface. If not, it throws an exception
                     try {
@@ -590,7 +606,7 @@ public class HomeFragmentActivity extends BaseActivity {
                 case PRODUCT_LIST:
 
                     fragmentProductListTeaser = ProducTeaserListFragment.getInstance();
-
+                    fragmentProductListTeaser.setRetainInstance(true);
                     // This makes sure that the container activity has implemented
                     // the callback interface. If not, it throws an exception
                     try {
@@ -610,8 +626,8 @@ public class HomeFragmentActivity extends BaseActivity {
                     break;
                 case BRANDS_LIST:
 
-                    Fragment fragmentBrandsListTeaser = BrandsTeaserListFragment.getInstance();
-
+                    fragmentBrandsListTeaser = BrandsTeaserListFragment.getInstance();
+                    fragmentBrandsListTeaser.setRetainInstance(true);
                     // This makes sure that the container activity has implemented
                     // the callback interface. If not, it throws an exception
                     try {

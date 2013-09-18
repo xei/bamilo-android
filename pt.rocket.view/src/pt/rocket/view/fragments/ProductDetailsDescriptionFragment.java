@@ -60,6 +60,7 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
     public ProductDetailsDescriptionFragment() {
         super(EnumSet.noneOf(EventType.class), EnumSet.noneOf(EventType.class));
         this.mCompleteProduct = ServiceManager.SERVICES.get(ProductService.class).getCurrentProduct();
+        this.setRetainInstance(true);
     }
     
     /*

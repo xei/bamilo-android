@@ -57,6 +57,7 @@ public class CategoryTeaserFragment extends BaseFragment {
      */
     public CategoryTeaserFragment() {
         super(EnumSet.noneOf(EventType.class), EnumSet.noneOf(EventType.class));
+        this.setRetainInstance(true);
 
     }
 

@@ -79,6 +79,7 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
      */
     public ProductBasicInfoFragment() {
         super(EnumSet.noneOf(EventType.class), EnumSet.noneOf(EventType.class));
+        this.setRetainInstance(true);
     }
 
     @Override
@@ -268,9 +269,11 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
     }
     
     private void setBasicInfo(){
-        mProductName.setText(mCompleteProduct.getBrand() + " " + mCompleteProduct.getName());
-        updateStockInfo();
-        displayPriceInfo();
+        if(mCompleteProduct!=null){
+            mProductName.setText(mCompleteProduct.getBrand() + " " + mCompleteProduct.getName());
+            updateStockInfo();
+            displayPriceInfo();    
+        }
     }
     
     private void displayPriceInfo() {

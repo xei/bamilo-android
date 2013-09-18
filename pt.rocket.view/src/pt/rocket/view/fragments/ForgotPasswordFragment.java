@@ -71,6 +71,7 @@ public class ForgotPasswordFragment extends BaseFragment {
      */
     public ForgotPasswordFragment() {
         super(EnumSet.of(EventType.GET_FORGET_PASSWORD_FORM_EVENT), EnumSet.of(EventType.FORGET_PASSWORD_EVENT));
+        this.setRetainInstance(true);
     }
 
     /*
