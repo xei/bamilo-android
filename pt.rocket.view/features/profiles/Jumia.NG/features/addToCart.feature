@@ -17,6 +17,7 @@ Feature: Add To Cart feature
   	Then I press "Login Button"
   	And I wait for 10 seconds
     Then I open the navigation menu
+    And I wait for 5 seconds
 	And I should see sign out button
 	And I enter Categories
 	Then I enter a valid Category
