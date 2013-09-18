@@ -62,7 +62,7 @@ public class ConfigurationService extends DarwinService {
 					public String parseResponse(JSONObject metadataObject) throws JSONException {						
 						String phone = "";
 						if ( null != metadataObject ) {
-							phone = metadataObject.optString(RestConstants.JSON_CALL_PHONE_TAG).split(" ")[0];
+							phone = metadataObject.optString(RestConstants.JSON_CALL_PHONE_TAG).split("-")[0];
 						}
 						
 						return phone;
