@@ -108,14 +108,12 @@
         </receiver>
  
         <service android:name="com.urbanairship.push.PushService" android:label="Push Notification Service" />
-        <service android:name="com.urbanairship.push.PushWorkerService" android:label="Push Notification Worker Service" />
+<!--         <service android:name="com.urbanairship.push.PushWorkerService" android:label="Push Notification Worker Service" /> -->
         <service android:name="com.urbanairship.analytics.EventService" android:label="Event Service" />
         
         <provider android:name="com.urbanairship.UrbanAirshipProvider" android:authorities="pt.rocket.jumia.dev.urbanairship.provider" android:exported="false" android:multiprocess="true" />
         <!-- END OF REQUIRED ITEMS -->
-		
-		
-		
+
     </application>
 
 </manifest>
