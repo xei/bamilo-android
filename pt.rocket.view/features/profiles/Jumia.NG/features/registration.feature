@@ -9,13 +9,13 @@ Feature: Registration feature
     And I choose the Sign In option
       
     
-  @register_test_MA
+  @register_test_NG
   Scenario: I register with correct form
   	Then I press "Register Button"
     And I wait for 5 seconds
     Then I press "Submit Register Form"
     And I wait for 5 seconds
-    And I should see the mandatory fields error message
+    #And I should see the mandatory fields error message
     
     Then I enter a valid username
     And I enter the password
