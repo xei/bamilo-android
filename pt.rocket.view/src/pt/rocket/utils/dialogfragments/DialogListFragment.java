@@ -219,7 +219,12 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
 		}, DELAY_DISMISS);
 
 	}
-
+	
+	@Override
+	public void onPause() {
+	    super.onPause();
+	    this.dismiss();
+	}
 //	@SuppressWarnings("deprecation")
 //	public void resizeDialog(Dialog dialog) {
 //		WindowManager.LayoutParams lp = new WindowManager.LayoutParams();

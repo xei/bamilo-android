@@ -72,4 +72,11 @@ public class DialogProgressFragment extends DialogFragment {
         super.dismiss();
         loadingBarView.stopRendering();
     }
+    
+    
+    @Override
+    public void onPause() {
+        super.onPause();
+        this.dismiss();
+    }
 }

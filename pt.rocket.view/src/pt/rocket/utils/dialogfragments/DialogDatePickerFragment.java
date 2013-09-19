@@ -224,4 +224,11 @@ public class DialogDatePickerFragment extends DialogFragment implements OnClickL
         dialog.getActivity().getWindow().setBackgroundDrawable(new ColorDrawable(0));
 
     }
+    
+    
+    @Override
+    public void onPause() {
+        super.onPause();
+        this.dismiss();
+    }
 }

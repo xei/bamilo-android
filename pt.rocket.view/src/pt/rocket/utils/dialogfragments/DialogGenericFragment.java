@@ -339,4 +339,10 @@ public class DialogGenericFragment extends DialogFragment {
                 R.string.client_error_title), message, activity, retryClickListener, finishActivity);
     }
     
+    
+    @Override
+    public void onPause() {
+        super.onPause();
+        this.dismiss();
+    }
 }
