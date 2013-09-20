@@ -9,6 +9,10 @@ import android.text.TextUtils;
 
 import de.akquinet.android.androlog.Log;
 
+/**
+ * 
+ * Class that represents the minimum order amount
+ */
 public class MinOrderAmount implements IJSONSerializable {
 
 	private final static String TAG = MinOrderAmount.class.getSimpleName();

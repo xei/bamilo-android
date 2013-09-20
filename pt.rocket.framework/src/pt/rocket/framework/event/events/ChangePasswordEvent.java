@@ -24,6 +24,7 @@ public class ChangePasswordEvent extends MetaRequestEvent<ContentValues> {
 	private static final EventType type = EventType.CHANGE_PASSWORD_EVENT;
 
 	/**
+	 * Base Constructor
 	 * @param type
 	 * @param value
 	 */

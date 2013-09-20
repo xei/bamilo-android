@@ -5,6 +5,7 @@ package pt.rocket.framework.objects;
 
 
 /**
+ * Interface that specifies the target of the teaser.
  * @author Ralph Holland-Moritz
  *
  */

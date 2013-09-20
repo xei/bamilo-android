@@ -9,6 +9,12 @@
  */
 package pt.rocket.framework.objects;
 
+/**
+ * Class that represents the Payment result for the old api
+ * @author Guilherme Silva
+ *
+ * TODO:Please check if class is deprecated and if so delete it
+ */
 public class PaymentResult {
 	String authCode;
 	String dccAmount;

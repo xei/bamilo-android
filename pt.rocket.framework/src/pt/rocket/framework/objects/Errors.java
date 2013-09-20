@@ -17,6 +17,11 @@ import pt.rocket.framework.rest.RestConstants;
 
 import de.akquinet.android.androlog.Log;
 
+
+/**
+ * Helpers class responsible for parsing the error messages from the api. Use the method createErrorMessageMap to parse the json object into an string -> string array map.
+ *
+ */
 public class Errors {
 	private final static String TAG = Errors.class.getSimpleName();
 	

@@ -27,6 +27,11 @@ import pt.rocket.framework.event.MetaRequestEvent;
  */
 public class ModifyWishListEvent extends MetaRequestEvent<Collection<String>> {
 
+	/**
+	 * Base constructor
+	 * @param type the type of the event
+	 * @param productSkus sku of the stored products
+	 */
 	public ModifyWishListEvent(EventType type, Collection<String> productSkus) {
 		super(type, productSkus);
 	}

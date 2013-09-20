@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import pt.rocket.framework.rest.RestConstants;
 
 /**
+ * Class that represents the response from the get products rating
  * @author nutzer2
  * 
  */

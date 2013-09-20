@@ -29,8 +29,8 @@ public class LogInEvent extends MetaRequestEvent<ContentValues> {
 	
 
 	/**
-	 * @param type
-	 * @param value
+	 * Base constructor
+	 * @param value. The content values used to login the user in the web call
 	 */
 	public LogInEvent(ContentValues value) {
 		super(EventType.LOGIN_EVENT, value);

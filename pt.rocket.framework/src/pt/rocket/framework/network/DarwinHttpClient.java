@@ -94,7 +94,13 @@ public class DarwinHttpClient extends DefaultHttpClient {
 			}
 		});
 
-		addResponseInterceptor(new HttpResponseInterceptor() {
+		addResponseInterceptor(
+		/**
+		 * Intercepter of the http response.
+		 * The function of the intercepter is to override the cache settings in the 
+		 *
+		 */
+		new HttpResponseInterceptor() {
 
 			private void appendToBuffer(CharArrayBuffer buffer, String name, String value, String delim) {
 				buffer.append(delim);
@@ -177,7 +183,12 @@ public class DarwinHttpClient extends DefaultHttpClient {
 					}
 				}
 			}
-
+			
+			/**
+			 * Calculates the max age of the request
+			 * @param context
+			 * @return
+			 */
 			private String calcMaxAge(HttpContext context) {
 				HttpRequest request = (HttpRequest) context.getAttribute("http.request");
 				if (request == null) {

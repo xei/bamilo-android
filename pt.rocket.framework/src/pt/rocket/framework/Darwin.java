@@ -24,6 +24,27 @@ import de.akquinet.android.androlog.Log;
  * application that uses the framework should call the initialize method before
  * using anything from the framework.
  * 
+ * Darwin is an event driven Framework. 
+ * Activity <-> EventManager <-> Service
+ * The activities communicate to the underlying services using events
+ * 
+ * Two types of events
+ *	- Request event -> Events sent from the activity to the service
+ *	- Response Event -> Events sent from the service to the activity
+ *
+ * How to implement a new service:
+ * 
+ * - create the event (see pt.rocket.framewrok.event.events for example events)
+ * - add it to eventTypes
+ * - create the service (see pt.rocket.framework.service.services)
+ * - make the service listen to the event (add the event type to the arra in the constructor)
+ * - handle to that event (create function HandleEvent)
+ * 
+ * - in the activity, make it implement the response listener interface and handle event method
+ * When you receive the response event it will be handled bythat function
+ * - implement the methods that use that event
+ *
+ * 
  * @author GuilhermeSilva
  * @version 1.00
  * 

@@ -22,9 +22,10 @@ import pt.rocket.framework.objects.ShoppingCartItem;
 public class RemoveItemFromShoppingCartEvent extends MetaRequestEvent<ShoppingCartItem> {
 	private static final EventType type = EventType.REMOVE_ITEM_FROM_SHOPPING_CART_EVENT;
 
-    /**
-	 * @param type
-	 * @param value
+   
+	/**
+	 * Base constructor
+	 * @param value shopping cart item to remove
 	 */
 	public RemoveItemFromShoppingCartEvent(
 			ShoppingCartItem value) {

@@ -20,8 +20,8 @@ import pt.rocket.framework.rest.RestContract;
  * 
  * @author guilherme Type of the available events in the EventManager. For each
  *         type there is an associated class, example: 
- *         Type:GET_CATEGORIES_EVENT        Class: GetCategoriesEvent fetch
- * 
+ *         Type:GET_CATEGORIES_EVENT        Class: GetCategoriesEvent
+ * 		Each event specifies its action and the timeti should remain in the cache by the httpclient
  * 
  */
 public enum EventType {

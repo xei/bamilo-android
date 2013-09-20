@@ -65,6 +65,10 @@ public class ResponseEvent implements IEvent{
     	return type;
     }
     
+    /**
+     * Returns if the event was successful
+     * @return true if the vent was successful.
+     */
     public boolean getSuccess() {
     	return errorCode == ErrorCode.NO_ERROR;
     }

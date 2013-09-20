@@ -7,6 +7,7 @@ import pt.rocket.framework.event.EventType;
 import pt.rocket.framework.event.MetaRequestEvent;
 
 /**
+ * Event used to get the categories from the api
  * @author nutzer2
  *
  */

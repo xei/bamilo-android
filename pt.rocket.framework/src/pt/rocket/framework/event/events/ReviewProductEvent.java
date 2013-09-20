@@ -27,7 +27,9 @@ public class ReviewProductEvent extends RequestEvent {
     public final int customerId;
     
     /**
-     * 
+     * Base constructor
+     * @param productSKU sku of the product
+     * @param productReview object with the product review data.
      */
     public ReviewProductEvent(String productSKU, ProductReviewCommentCreated productReview ) {
     	super(type);

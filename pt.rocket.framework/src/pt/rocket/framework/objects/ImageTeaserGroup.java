@@ -10,6 +10,7 @@ import pt.rocket.framework.objects.ImageTeaserGroup.TeaserImage;
 import pt.rocket.framework.rest.RestConstants;
 
 /**
+ * Class that represents a group of image teasers
  * @author nutzer2
  * 
  */

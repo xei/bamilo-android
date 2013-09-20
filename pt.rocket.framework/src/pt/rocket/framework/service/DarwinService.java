@@ -17,7 +17,8 @@ import pt.rocket.framework.event.RequestListener;
 import android.content.Context;
 
 /**
- * Interface that defines the Service behavior.
+ * Abstract class that defines the Service behavior.
+ * Services listen to request events, get the data from the server and trigger the response events.
  * 
  * @author GuilhermeSilva
  * 
@@ -49,9 +50,11 @@ public abstract class DarwinService extends RequestListener {
 		onInit(context.getApplicationContext());
 	}
 	
-	protected void onInit(Context context) {
-		
-	}
+	/**
+	 * Initializes the darwin service witht he applicaotion context of the app
+	 * @param context
+	 */
+	protected void onInit(Context context) {}
 
 	/**
 	 * Returns the events that are needed/used for initialization of the

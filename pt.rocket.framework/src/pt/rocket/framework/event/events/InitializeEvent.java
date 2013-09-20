@@ -9,6 +9,7 @@ import pt.rocket.framework.event.EventType;
 import pt.rocket.framework.event.MetaRequestEvent;
 
 /**
+ * Event used to initiate the services
  * @author nutzer2
  *
  */

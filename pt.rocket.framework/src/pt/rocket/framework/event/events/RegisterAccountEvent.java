@@ -24,13 +24,16 @@ import android.content.ContentValues;
  */
 public class RegisterAccountEvent extends MetaRequestEvent<ContentValues> {
 	/**
-	 * @param type
-	 * @param value
+	 * Base constructor.
+	 * @param value values passed to the 
 	 */
 	public RegisterAccountEvent(ContentValues value) {
 		super(type, value);
 	}
 
+	/**
+	 * The event type
+	 */
 	private static final EventType type = EventType.REGISTER_ACCOUNT_EVENT;
 
 }

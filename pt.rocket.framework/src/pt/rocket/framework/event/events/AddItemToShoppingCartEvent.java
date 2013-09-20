@@ -13,6 +13,11 @@ import pt.rocket.framework.event.EventType;
 import pt.rocket.framework.event.MetaRequestEvent;
 import pt.rocket.framework.objects.ShoppingCartItem;
 
+/**
+ * Event used to add an item to the shopping cart
+ * @author Guilherme Silva
+ *
+ */
 public class AddItemToShoppingCartEvent extends MetaRequestEvent<ShoppingCartItem> {
 	private static final EventType type = EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT;
 

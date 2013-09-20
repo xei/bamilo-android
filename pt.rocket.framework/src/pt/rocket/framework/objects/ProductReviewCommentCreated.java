@@ -7,6 +7,9 @@ import java.util.Map.Entry;
 import android.content.ContentValues;
 import android.net.Uri.Builder;
 
+/**
+ * Class used to inser a new review in the api.
+ */
 public class ProductReviewCommentCreated {
 
     private static final String FORM_NAME_FIELD = "RatingForm[name]";

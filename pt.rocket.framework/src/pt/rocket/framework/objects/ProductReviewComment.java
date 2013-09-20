@@ -14,7 +14,7 @@ import android.content.ContentValues;
 import android.net.Uri.Builder;
 
 /**
- * Class that represents the product review comment rating-option
+ * Class that represents the product review comment
  * 
  * @author nunocastro
  * @modified GuilhermeSilva

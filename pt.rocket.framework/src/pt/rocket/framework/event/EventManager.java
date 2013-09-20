@@ -23,7 +23,8 @@ import de.akquinet.android.androlog.Log;
 
 /**
  * Event Manager class.
- * 
+ * This class was original based on the EventManager implementation from teh book Game coding complete 3rd edition.
+ * This class 
  * @author GuilhermeSilva
  */
 public class EventManager {
@@ -33,7 +34,10 @@ public class EventManager {
 	private Map<EventType, Set<ResponseListener>> responseListenerMap;
 	private Map<EventType, Set<RequestListener>> requestListenerMap;
 
-	public EventManager() {
+	/**
+	 * Private constructor
+	 */
+	private EventManager() {
 		responseListenerMap = new HashMap<EventType, Set<ResponseListener>>();
 		requestListenerMap = new HashMap<EventType, Set<RequestListener>>();
 	}
@@ -55,6 +59,11 @@ public class EventManager {
 
 	}
 
+	/**
+	 * Adds an event listener to the response registry
+	 * @param eventListener listener of the event (normally an activity in the app)
+	 * @param eventTypes types of events that listener is listening (see EventTypes.java)
+	 */
 	public void addResponseListener(ResponseListener eventListener,
 			Set<EventType> eventTypes) {
 		for (EventType type : eventTypes) {
@@ -62,7 +71,12 @@ public class EventManager {
 			
 		}
 	}
-
+	
+	/**
+	 * Adds an event listener to the request registry
+	 * @param eventType type of the event that the listener is awaiting (see EventTypes.java)
+	 * @param eventListener listener of the event (normally an service in the Darwin framework)
+	 */
 	public void addRequestListener(EventType eventType,
 			RequestListener eventListener) {
 		addListener(eventType, eventListener, requestListenerMap);
@@ -134,6 +148,12 @@ public class EventManager {
 		removeResponseListener(listener, responseListenerMap.keySet());
 	}
 
+	/**
+	 * Removes an event listener from a event registry
+	 * @param eventType type fot he event (see EventTypes.java)
+	 * @param eventListener lister of the event
+	 * @param map registry that the event listener is going to be removed from.
+	 */
 	private static <EL extends EventListener<?>> void removeListener(
 			EventType eventType, Object eventListener,
 			Map<EventType, ? extends Set<EL>> map) {
@@ -149,8 +169,8 @@ public class EventManager {
 	}
 
 	/**
-	 * Triggers an event.
-	 * 
+	 * Triggers an response event.
+	 * This function is called (usually from an Darwin service) as a response for and event request
 	 * @param event
 	 *            that is going to be triggered
 	 * @return true if any listener processed the vent and false if otherwise
@@ -160,17 +180,32 @@ public class EventManager {
 		triggerEvent(event, responseListenerMap);
 	}
 
+	/**
+	 * Triggers a request event
+	 * This function should be called from an activity in the app.n
+	 * @param event
+	 */
 	public void triggerRequestEvent(RequestEvent event) {
 		Log.d(TAG, "trigger request for " + event.getType());
 		triggerEvent(event, requestListenerMap);
 	}
 
+	/**
+	 * Trigger the request event and adds the listener to the registry
+	 * @param event event to be triggers
+	 * @param ressultListener list
+	 */
 	public void triggerRequestEvent(RequestEvent event,
 			ResponseListener resultListener) {
 		addResponseListener(event.getType(), resultListener);
 		triggerRequestEvent(event);
 	}
 
+	/**
+	 * Triggers an event
+	 * @param event event to be triggered
+	 * @param map registry of the event listeners
+	 */
 	private static <T extends IEvent, EL extends EventListener<T>> void triggerEvent(
 			final T event, final Map<EventType, ? extends Set<EL>> map) {
 		Set<? extends EventListener<T>> eventListeners;

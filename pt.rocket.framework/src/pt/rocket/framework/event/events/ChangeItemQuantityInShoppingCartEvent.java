@@ -16,7 +16,7 @@ import pt.rocket.framework.event.MetaRequestEvent;
 import pt.rocket.framework.objects.ShoppingCartItem;
 
 /**
- * Event used to remove an item from the shopping cart.
+ * Event used to change the quantity an item from the shopping cart.
  * 
  * @author GuilhermeSilva
  * 

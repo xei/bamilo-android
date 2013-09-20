@@ -33,7 +33,7 @@ import de.akquinet.android.androlog.Log;
  * 
  * @author Ralph Holland-Moritz
  * 
- *         Interface used by any component when the rest client when the request if finished execute 443
+ *         Interface used by any component when the rest client when the request if finished
  */
 public abstract class ResponseReceiver<T> extends ResultReceiver {
 
