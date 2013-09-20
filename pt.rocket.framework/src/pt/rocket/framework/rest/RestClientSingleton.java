@@ -438,6 +438,10 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 			ResponseReceiver.sendResult(resultReceiver, result, cacheWarning, metaData);
 			return result;
 
+		} catch (OutOfMemoryError e) {
+			Log.e(TAG, "HTTP response to big " + httpRequest.getURI(), e);
+			ResponseReceiver.sendError(resultReceiver, ErrorCode.HTTP_PROTOCOL, metaData);			
+			return null;
 		} catch (ClientProtocolException e) {
 			Log.e(TAG, "There was a protocol error calling " + httpRequest.getURI(), e);
 			ResponseReceiver.sendError(resultReceiver, ErrorCode.HTTP_PROTOCOL, metaData);
