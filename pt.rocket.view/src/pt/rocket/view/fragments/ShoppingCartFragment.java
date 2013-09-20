@@ -233,10 +233,12 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
     public void onStop() {
         super.onStop();
         Log.i(TAG, "ON STOP");
+        releaseVars();
         EventManager.getSingleton().removeResponseListener(this,    
                 EnumSet.of(EventType.GET_SHOPPING_CART_ITEMS_EVENT,
                 EventType.REMOVE_ITEM_FROM_SHOPPING_CART_EVENT,
                 EventType.CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT));
+        System.gc();
     }
 
     /*
@@ -246,10 +248,33 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
      */
     @Override
     public void onDestroyView() {
+        releaseVars();
         super.onDestroyView();
         Log.i(TAG, "ON DESTROY");
     }
 
+    private void releaseVars(){
+        reviewFragment = null;
+
+        noItems = null;
+
+        container = null;
+        
+        minAmount = null;    
+        
+        items = null;
+
+        itemsValues = null;
+
+        mAdapter = null;
+
+        lView = null;
+
+        checkoutButton = null;
+        
+        dialogList = null;
+    }
+    
     /**
      * Set the ShoppingCart layout using inflate
      */

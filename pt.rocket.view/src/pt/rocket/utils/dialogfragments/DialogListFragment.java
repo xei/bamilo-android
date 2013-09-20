@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.view.R;
 import android.app.Activity;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import de.akquinet.android.androlog.Log;
 
@@ -35,6 +37,7 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
 	private String mTitle;
 	
 	private ArrayList<String> mItems;
+	private ArrayList<String> mItemsAvailable;
 	
 	private String mId;
 	
@@ -74,7 +77,7 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
 	 * @param initialPosition
 	 * @return
 	 */
-	public static DialogListFragment newInstance(Activity activity, String id, String title, ArrayList<String> items, int initialPosition) {
+	public static DialogListFragment newInstance(Activity activity, String id, String title, ArrayList<String> items, ArrayList<String> itemsAvailable, int initialPosition) {
 	    Log.d(TAG, "NEW INSTANCE");
 	    DialogListFragment dialogListFragment = new DialogListFragment();
 	    dialogListFragment.mActivity = activity;
@@ -84,6 +87,7 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
         dialogListFragment.mId = id;
         dialogListFragment.mTitle = title;
         dialogListFragment.mItems = items;
+        dialogListFragment.mItemsAvailable = itemsAvailable;
         dialogListFragment.mInitialPosition = initialPosition;
 	    return dialogListFragment;
 	}
@@ -153,7 +157,11 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
 
 	private class DialogListAdapter extends BaseAdapter {
 		private int mCheckedPosition = NO_INITIAL_POSITION;
-
+		private LayoutInflater mInflater;
+		public DialogListAdapter() {
+		    mInflater = LayoutInflater.from(mActivity);
+        }
+		
 		@Override
 		public boolean hasStableIds() {
 			return true;
@@ -161,6 +169,8 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
 
 		@Override
 		public int getCount() {
+		    if(mItems == null)
+		        return 0;
 			return mItems.size();
 		}
 
@@ -178,15 +188,23 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
 		public View getView(int position, View convertView, ViewGroup parent) {
 			View view;
 			if (convertView == null) {
-				LayoutInflater inflater = LayoutInflater.from(mActivity);
-				view = inflater.inflate(R.layout.dialog_list_item, parent,
+				view = mInflater.inflate(R.layout.dialog_list_item, parent,
 						false);
 			} else {
 				view = convertView;
 			}
-
 			TextView textView = (TextView) view.findViewById(R.id.item_text);
-			textView.setText(mItems.get(position));
+			TextView textViewUnAvailable = (TextView) view.findViewById(R.id.item_text_unavailable);
+			if(mItemsAvailable != null && !mItemsAvailable.contains(mItems.get(position))){
+			    textView.setVisibility(View.GONE);
+			    
+			    textViewUnAvailable.setVisibility(View.VISIBLE);
+			    textViewUnAvailable.setText(mItems.get(position));
+			} else {
+			    textViewUnAvailable.setVisibility(View.GONE);
+			    textView.setVisibility(View.VISIBLE);
+	            textView.setText(mItems.get(position));
+			}
 			CheckBox checkBox = (CheckBox) view.findViewById(R.id.item_checkbox);
 			checkBox.setChecked(position == mCheckedPosition);
 
@@ -203,20 +221,24 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
 	@Override
 	public void onItemClick(AdapterView<?> adapterView, View view,
 			final int position, long id) {
-		mAdapter.setCheckedPosition(position);
-		mAdapter.notifyDataSetChanged();
+	    if(mItemsAvailable == null || mItemsAvailable.contains(mItems.get(position))){
+	        mAdapter.setCheckedPosition(position);
+	        mAdapter.notifyDataSetChanged();
 
-		view.postDelayed(new Runnable() {
+	        view.postDelayed(new Runnable() {
 
-			@Override
-			public void run() {
-				dismiss();
-				if (mListener != null) {
-					mListener.onDialogListItemSelect(mId, position, mItems.get(position));
-				}
+	            @Override
+	            public void run() {
+	                dismiss();
+	                if (mListener != null) {
+	                    mListener.onDialogListItemSelect(mId, position, mItems.get(position));
+	                }
 
-			}
-		}, DELAY_DISMISS);
+	            }
+	        }, DELAY_DISMISS);
+	    }
+	    
+		
 
 	}
 	

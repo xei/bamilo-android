@@ -97,7 +97,8 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
 
     private Context mContext;
     private DialogFragment mDialogAddedToCart;
-
+    private DialogListFragment dialogListFragment;
+    
     private CompleteProduct mCompleteProduct;
 
     private Button mAddToCartButton;
@@ -129,6 +130,7 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
 
     private long mBeginRequestMillis;
     private ArrayList<String> mSimpleVariants;
+    private ArrayList<String> mSimpleVariantsAvailable;
     private TextView mVariantChooseError;
 
     private View mVariantPriceContainer;
@@ -199,6 +201,7 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mSelectedSimple = NO_SIMPLE_SELECTED;
         setAppContentLayout();
         init(getIntent());
         SharedPreferences sharedPrefs = this.getSharedPreferences(
@@ -232,9 +235,16 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
         super.onResume();
         AnalyticsGoogle.get().trackPage(R.string.gproductdetail);
     }
+    
+    @Override
+    public void onPause() {
+        super.onPause();
+        dialogListFragment = null;
+    }
 
     @Override
     protected void onDestroy() {
+        mSelectedSimple = NO_SIMPLE_SELECTED;
         unbindDrawables(findViewById(R.id.gallery_container));
         unbindDrawables(mDetailsContainer);
         releaseFragments();
@@ -246,7 +256,7 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
     private void releaseVars() {
         mContext = null;
         mDialogAddedToCart = null;
-
+        dialogListFragment = null;
         mCompleteProduct = null;
 
         mAddToCartButton = null;
@@ -276,6 +286,7 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
 
 
         mSimpleVariants = null;
+        mSimpleVariantsAvailable = null;
         mVariantChooseError = null;
 
         mVariantPriceContainer = null;
@@ -417,14 +428,16 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
         ArrayList<ProductSimple> simples = (ArrayList<ProductSimple>) mCompleteProduct.getSimples().clone();
         Set<String> foundKeys = scanSimpleAttributesForKnownVariants(simples);
 
+        mSimpleVariantsAvailable = new ArrayList<String>();
         ArrayList<String> variationValues = new ArrayList<String>();
         for (ProductSimple simple : simples) {
             String value = calcVariationStringForSimple(simple, foundKeys);
             String quantity = simple.getAttributeByKey(ProductSimple.QUANTITY_TAG);
             if( quantity != null && Integer.parseInt(quantity) > 0 ){
                 variationValues.add(value);
+                mSimpleVariantsAvailable.add(value);
             } else {
-                mCompleteProduct.getSimples().remove(simple);
+                variationValues.add(value);
             }
                 
         }
@@ -578,6 +591,11 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
     }
 
     public void updateVariants() {
+        
+        if(mSelectedSimple == NO_SIMPLE_SELECTED){
+            mVarianceButton.setText("...");
+        }
+        
         mSimpleVariants = createSimpleVariants();
 
         ProductSimple simple = getSelectedSimple();
@@ -818,10 +836,10 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
 
     private void showVariantsDialog() {
         String title = getString(R.string.product_variance_choose);
-        DialogListFragment dialog = DialogListFragment.newInstance(this, VARIATION_PICKER_ID,
-                title, mSimpleVariants,
+        dialogListFragment = DialogListFragment.newInstance(this, VARIATION_PICKER_ID,
+                title, mSimpleVariants, mSimpleVariantsAvailable,
                 mSelectedSimple);
-        dialog.show(getSupportFragmentManager(), null);
+        dialogListFragment.show(getSupportFragmentManager(), null);
     }
 
     @Override
