@@ -104,6 +104,10 @@ public class PopularityFragment extends BaseFragment {
         context = getActivity().getApplicationContext();
         selectedProduct = ServiceManager.SERVICES.get(ProductService.class).getCurrentProduct();
         inflater = LayoutInflater.from(getActivity());
+        if(selectedProduct == null){
+            getActivity().finish();
+            return;
+        }
         triggerContentEvent(new GetProductReviewsEvent(selectedProduct.getUrl(), pageNumber));
         
     }

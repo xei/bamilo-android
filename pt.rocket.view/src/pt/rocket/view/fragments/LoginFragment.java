@@ -85,7 +85,7 @@ public class LoginFragment extends BaseFragment {
      */
     public static LoginFragment getInstance(String origin) {
         //if (loginFragment == null)
-            loginFragment = new LoginFragment(origin);
+        loginFragment = new LoginFragment(origin);
         return loginFragment;
     }
 

@@ -420,7 +420,7 @@ public class ActivitiesWorkFlow {
 	}
 	
 	public static void addStandardTransition(Activity activity) {
-		activity.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+		activity.overridePendingTransition(R.anim.pop_in, R.anim.pop_out);
 	}
 
 }

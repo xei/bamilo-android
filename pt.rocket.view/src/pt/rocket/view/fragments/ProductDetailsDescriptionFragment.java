@@ -14,9 +14,12 @@ import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.graphics.Paint;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.Spannable;
 import android.text.TextUtils;
+import android.text.style.MetricAffectingSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -221,13 +224,36 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
         
         String translatedDescription = shortDescription.replace("\r", "<br>");
         Log.d(TAG, "displaySpecification: *" + translatedDescription + "*");
-        mProductFeaturesText.setText(Html.fromHtml(translatedDescription));
+        
+        Spannable htmlText = (Spannable) Html.fromHtml(translatedDescription);
+        // Issue with ICS (4.1) TextViews giving IndexOutOfBoundsException when passing HTML with bold tags
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+            Log.d(TAG, "REMOVE STYLE TAGS: " + translatedDescription);                
+            MetricAffectingSpan spans[] = htmlText.getSpans(0, htmlText.length(), MetricAffectingSpan.class);
+            for (MetricAffectingSpan span: spans) {
+                htmlText.removeSpan(span);                
+            }
+        }
+        mProductFeaturesText.setText(htmlText);
+        
+//        mProductFeaturesText.setText(Html.fromHtml(translatedDescription));
     }
     
     private void displayDescription() {
         String longDescription = mCompleteProduct.getDescription();
         String translatedDescription = longDescription.replace("\r", "<br>");
-        mProductDescriptionText.setText( Html.fromHtml(translatedDescription));
+        Spannable htmlText = (Spannable) Html.fromHtml(translatedDescription);
+        // Issue with ICS (4.1) TextViews giving IndexOutOfBoundsException when passing HTML with bold tags
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+            Log.d(TAG, "REMOVE STYLE TAGS: " + translatedDescription);                
+            MetricAffectingSpan spans[] = htmlText.getSpans(0, htmlText.length(), MetricAffectingSpan.class);
+            for (MetricAffectingSpan span: spans) {
+                htmlText.removeSpan(span);                
+            }
+        }
+        mProductDescriptionText.setText(htmlText);
+        
+//        mProductDescriptionText.setText( Html.fromHtml(translatedDescription));
     }
     
     private void displayDetails(View view) {

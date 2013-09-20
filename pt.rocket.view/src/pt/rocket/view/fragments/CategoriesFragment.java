@@ -125,11 +125,11 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
         Log.i(TAG, "ON CREATE VIEW");
         
         View view;
-        if(CategoriesFragmentActivity.currentFragment == FragmentType.CATEGORIES_LEVEL_1) {
-            view = inflater.inflate(R.layout.categories, container, false);
-        }else{
+//        if(CategoriesFragmentActivity.currentFragment == FragmentType.CATEGORIES_LEVEL_1) {
+//            view = inflater.inflate(R.layout.categories, container, false);
+//        }else{
             view = inflater.inflate(R.layout.categories_inner_container, container, false);
-        }
+//        }
         
         return view;
     }
@@ -264,7 +264,7 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
      * Category level 1
      */
     private void categoryLevel1() {
-        categoriesList = (ListView) getView().findViewById(R.id.categories_grid);
+        categoriesList = (ListView) getView().findViewById(R.id.sub_categories_grid);
         //categoriesList.setExpanded(true);
         mainCatAdapter = new CategoriesAdapter(getActivity(), categories);
         categoriesList.setAdapter(mainCatAdapter);

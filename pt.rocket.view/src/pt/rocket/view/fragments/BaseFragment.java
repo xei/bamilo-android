@@ -82,6 +82,9 @@ public abstract class BaseFragment extends Fragment implements ResponseListener,
         return true;
     }
 
+    public BaseFragment() {
+    }
+    
     /**
      * Constructor
      */

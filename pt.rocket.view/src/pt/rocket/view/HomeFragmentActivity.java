@@ -289,10 +289,10 @@ public class HomeFragmentActivity extends BaseActivity {
         else {
             // You just returned from another activity within your own app
         }
-//FIXME commented to ignore version check
-//        if (CheckVersion.needsToShowDialog()) {
-//            CheckVersion.showDialog(this);
-//        }
+
+        if (CheckVersion.needsToShowDialog()) {
+            CheckVersion.showDialog(this);
+        }
 
         if (requestResponse == null && !isFirstBoot) {
             setProcessShow(false);
@@ -654,8 +654,9 @@ public class HomeFragmentActivity extends BaseActivity {
             FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
             // Animations
             if (animated)
-                fragmentTransaction.setCustomAnimations(R.anim.slide_in_right,
-                        R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
+                fragmentTransaction.setCustomAnimations(R.anim.pop_in, R.anim.pop_out, R.anim.pop_in, R.anim.pop_out);
+//                fragmentTransaction.setCustomAnimations(R.anim.slide_in_right,
+//                        R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
             // Replace
             fragmentTransaction.replace(container, fragment);
             // BackStack

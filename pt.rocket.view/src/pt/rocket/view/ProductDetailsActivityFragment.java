@@ -350,14 +350,10 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
 
     private void setContentInformation() {
         setTitle(mCompleteProduct.getBrand() + " " + mCompleteProduct.getName());
-        updateStockInfo();
         updateVariants();
+        updateStockInfo();       
         preselectASimpleItem();
-
-        // displayVariations();
-        // mProductName.setText(mCompleteProduct.getName());
         displayPriceInfoOverallOrForSimple();
-        
         displayRatingInfo();
         displayVariantsContainer();
         
@@ -418,13 +414,19 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
     }
 
     private ArrayList<String> createSimpleVariants() {
-        ArrayList<ProductSimple> simples = mCompleteProduct.getSimples();
+        ArrayList<ProductSimple> simples = (ArrayList<ProductSimple>) mCompleteProduct.getSimples().clone();
         Set<String> foundKeys = scanSimpleAttributesForKnownVariants(simples);
 
         ArrayList<String> variationValues = new ArrayList<String>();
         for (ProductSimple simple : simples) {
             String value = calcVariationStringForSimple(simple, foundKeys);
-            variationValues.add(value);
+            String quantity = simple.getAttributeByKey(ProductSimple.QUANTITY_TAG);
+            if( quantity != null && Integer.parseInt(quantity) > 0 ){
+                variationValues.add(value);
+            } else {
+                mCompleteProduct.getSimples().remove(simple);
+            }
+                
         }
 
         return variationValues;
@@ -691,6 +693,7 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
             mCallbackProductVariationsFragment.sendValuesToFragment(1, mCompleteProduct);
             mCallbackProductImagesViewPagerFragment.sendValuesToFragment(1, mCompleteProduct);
             mCallbackProductSpecificationFragment.sendValuesToFragment(1, mCompleteProduct);
+            displayPriceInfoOverallOrForSimple();
             mCallbackProductBasicInfoFragment.sendValuesToFragment(1, mCompleteProduct);
         }
         setShareIntent(createShareIntent());

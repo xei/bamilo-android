@@ -14,9 +14,12 @@ import pt.rocket.view.ProductDetailsActivityFragment;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.Spannable;
 import android.text.TextUtils;
+import android.text.style.MetricAffectingSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -240,7 +243,17 @@ public class ProductSpecificationsFragment extends BaseFragment implements OnCli
         } else {
             mProductSpecText.setVisibility(View.VISIBLE);
             String translatedDescription = shortDescription.replace("\r", "<br>");
-            mProductSpecText.setText(Html.fromHtml(translatedDescription));
+            Spannable htmlText = (Spannable) Html.fromHtml(translatedDescription);
+            // Issue with ICS (4.1) TextViews giving IndexOutOfBoundsException when passing HTML with bold tags
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+                Log.d(TAG, "REMOVE STYLE TAGS: " + translatedDescription);                
+                MetricAffectingSpan spans[] = htmlText.getSpans(0, htmlText.length(), MetricAffectingSpan.class);
+                for (MetricAffectingSpan span: spans) {
+                    htmlText.removeSpan(span);                
+                }
+            }
+            mProductSpecText.setText(htmlText);
+//            mProductSpecText.setText(Html.fromHtml(translatedDescription));
         }
         hideContentLoading();
     }
