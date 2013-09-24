@@ -3,8 +3,8 @@
 
     <!-- Jumia Nigeria Configuration -->
     <string name="jumia_ng_shopname">Jumia</string>
-     <string name="jumia_ng_server">www.jumia.com.ng</string>
-<!-- <string name="jumia_ng_server">alice-staging.jumia.com.ng</string> -->
+<!--      <string name="jumia_ng_server">www.jumia.com.ng</string> -->
+	<string name="jumia_ng_server">alice-staging.jumia.com.ng</string>
 <!-- <string name="jumia_ng_server">mobile.jumia.com</string> -->
     <string name="jumia_ng_user">rocket</string>
     <string name="jumia_ng_password">rock4me</string>
