@@ -261,8 +261,6 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         container = null;
         
         minAmount = null;    
-        
-        items = null;
 
         itemsValues = null;
 

@@ -112,12 +112,14 @@ public class SessionFragmentActivity extends BaseActivity {
     public void onStop() {
         super.onStop();
         Log.i(TAG, "ON STOP");
+        finish();
         
     }
     
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        finish();
         Log.i(TAG, "ON DESTROY");
         //System.gc();
     }

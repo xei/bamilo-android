@@ -297,6 +297,10 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
         super.onResume();
         Log.i(TAG, "ON RESUME");        
         restoreActivityState(savedState);
+        
+        if(mSortDialog!=null && mSortDialog.isVisible()){
+            mSortDialog.dismiss();
+        }
     }
 
     /*
@@ -326,6 +330,11 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
             mSortPosition = 4;
             saveActivityState();
         }
+        
+        if(mSortDialog!=null && mSortDialog.isVisible()){
+            mSortDialog.dismiss();
+            Log.i(TAG, "code1 onpause");
+        }
     }
 
     /*
@@ -337,6 +346,10 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
     public void onStop() {
         super.onStop();
         Log.i(TAG, "ON STOP");
+        if(mSortDialog!=null && mSortDialog.isVisible()){
+            mSortDialog.dismiss();
+            Log.i(TAG, "code1 onstop");
+        }
     }
 
     /*
@@ -349,8 +362,22 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
         super.onDestroyView();
         Log.i(TAG, "ON DESTROY");
         productsAdapter = null;
+        if(mSortDialog!=null && mSortDialog.isVisible()){
+            mSortDialog.dismiss();
+            Log.i(TAG, "code1 destroy view");
+        }
     }   
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(mSortDialog!=null && mSortDialog.isVisible()){
+            Log.i(TAG, "code1 destroy");
+            mSortDialog.dismiss();
+        }
+        
+    }
+    
     /**
      * gets the activity current orientation
      * 
@@ -482,19 +509,16 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
         
         int id = v.getId();
         if (id == R.id.sorter_button) {
-            if(mSortDialog == null){
-                
-            }
-            FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-            
+//            FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+//            
             if (mSortDialog != null) {
-                ft.remove(mSortDialog);
+                mSortDialog.dismiss();
             }
             
             mSortDialog = DialogListFragment.newInstance(getActivity(), (OnDialogListListener) this, ID_SORT_DIALOG, getString( R.string.product_sort),
                     mSortOptions, mSortPosition);
             
-            mSortDialog.show(ft, null);
+            mSortDialog.show(getActivity().getSupportFragmentManager(), null);
                    
         }
 
@@ -564,8 +588,8 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
         AnalyticsGoogle.get().trackSearch(searchQuery, productsPage.getTotalProducts());
 
         
-        Debug.MemoryInfo memoryInfo = new Debug.MemoryInfo();
-        Debug.getMemoryInfo(memoryInfo);
+//        Debug.MemoryInfo memoryInfo = new Debug.MemoryInfo();
+//        Debug.getMemoryInfo(memoryInfo);
         
         return true;
     }

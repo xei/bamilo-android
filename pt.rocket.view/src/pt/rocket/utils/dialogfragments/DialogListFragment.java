@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.view.R;
 import android.app.Activity;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -17,7 +16,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import de.akquinet.android.androlog.Log;
 
@@ -144,11 +142,18 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
 	@Override
 	public void onResume() {
 	    super.onResume();
+	    if(this.mActivity == null){
+	        dismiss();
+	        return;
+	    }
+	    
 	    TextView titleView = (TextView) getView().findViewById(R.id.title);
         titleView.setText(mTitle);
 
         list = (ListView) getView().findViewById(R.id.list);
-        mAdapter = new DialogListAdapter();
+        if(mAdapter == null){
+            mAdapter = new DialogListAdapter();
+        }
         mAdapter.setCheckedPosition(mInitialPosition);
         list.setAdapter(mAdapter);
         list.setOnItemClickListener(this);
@@ -245,8 +250,14 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
 	@Override
 	public void onPause() {
 	    super.onPause();
-	    this.dismiss();
+	    dismiss();
+	    if (mListener != null) {
+	        Log.i(TAG, "code1 onpause listener");
+            mListener.onDialogListItemSelect(mId, 0, mItems.get(0));
+        }
 	}
+	
+
 //	@SuppressWarnings("deprecation")
 //	public void resizeDialog(Dialog dialog) {
 //		WindowManager.LayoutParams lp = new WindowManager.LayoutParams();

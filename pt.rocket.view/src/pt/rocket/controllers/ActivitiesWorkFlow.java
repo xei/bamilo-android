@@ -247,13 +247,17 @@ public class ActivitiesWorkFlow {
 	public static void productsActivity(Activity activity, String productsURL, String title, String searchQuery, int navigationSource, String navigationPath ) {
 		Intent intent = new Intent(activity.getApplicationContext(), ProductsActivityFragment.class);
 		//intent.addFlags( Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-		intent.putExtra(ConstantsIntentExtra.CONTENT_URL, productsURL);
-		intent.putExtra(ConstantsIntentExtra.CONTENT_TITLE, title);
-		intent.putExtra(ConstantsIntentExtra.SEARCH_QUERY, searchQuery);
-		intent.putExtra(ConstantsIntentExtra.NAVIGATION_SOURCE, navigationSource);
-		intent.putExtra(ConstantsIntentExtra.NAVIGATION_PATH, navigationPath);
-		activity.startActivity(intent);
-		addStandardTransition(activity);
+		if(productsURL!=null || title !=null){
+    		intent.putExtra(ConstantsIntentExtra.CONTENT_URL, productsURL);
+    		intent.putExtra(ConstantsIntentExtra.CONTENT_TITLE, title);
+    		intent.putExtra(ConstantsIntentExtra.SEARCH_QUERY, searchQuery);
+    		intent.putExtra(ConstantsIntentExtra.NAVIGATION_SOURCE, navigationSource);
+    		intent.putExtra(ConstantsIntentExtra.NAVIGATION_PATH, navigationPath);
+    		activity.startActivity(intent);
+    		addStandardTransition(activity);
+		} else {
+		    splashActivityNewTask(activity);
+		}
 	}
 	
 	/**
