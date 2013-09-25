@@ -336,7 +336,11 @@ public class MixpanelTracker {
 		Double cart_price = 0.0; 
 		
 		for ( ShoppingCartItem item : items ) {
-	        if ( item.getPrice().equals( item.getSpecialPrice())) {
+			if(item.getSpecialPrice() == null){
+				actItemPrice = item.getPriceVal();
+			} else if(item.getPrice() == null){
+				actItemPrice = item.getSpecialPriceVal();
+			} else if ( item.getPrice().equals( item.getSpecialPrice())) {
 	            actItemPrice = item.getPriceVal();
 	        } else {
 	            actItemPrice = item.getSpecialPriceVal();

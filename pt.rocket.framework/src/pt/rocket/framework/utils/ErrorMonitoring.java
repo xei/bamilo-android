@@ -4,6 +4,7 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
+import java.util.ConcurrentModificationException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -31,7 +32,7 @@ public class ErrorMonitoring {
 		map.clear();
 		map.put( "Country", ShopSelector.getCountryName());
 		map.put( "Uri", uri);
-		if (errorCode != null) {
+		if (errorCode != null && errorCode.name() != null) {
 			map.put( "ErrorCode", errorCode.name());
 		}
 		map.put( "IPv4-Address",  getIPAddress(true));
@@ -60,7 +61,12 @@ public class ErrorMonitoring {
 		if ( !TextUtils.isEmpty( msgTwo )) {
 			hMap.put( "Content", msgTwo);
 		}
-		BugSenseHandler.sendExceptionMap(hMap, e);
+		try {
+			BugSenseHandler.sendExceptionMap(hMap, e);	
+		} catch (ConcurrentModificationException e2) {
+			e2.printStackTrace();
+		}
+		
 	}
 	
 	public static String getIPAddress(boolean useIPv4) {
