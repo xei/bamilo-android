@@ -1,6 +1,15 @@
 package pt.rocket.view;
 
+import java.util.EnumSet;
+import java.util.Set;
+
+import pt.rocket.framework.event.EventType;
+import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.utils.BaseActivity;
+import pt.rocket.utils.MyMenuItem;
+import pt.rocket.utils.NavigationAction;
+import pt.rocket.view.fragments.FragmentType;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MyLayoutInflater;
@@ -16,7 +25,16 @@ import de.akquinet.android.androlog.Log;
  * @author sergiopereira 
  * 
  */
-public class ChangeCountryFragmentActivity extends SherlockFragmentActivity {
+public class ChangeCountryFragmentActivity extends BaseActivity {
+
+    public ChangeCountryFragmentActivity() {
+        super(NavigationAction.Country,  
+                EnumSet.noneOf(MyMenuItem.class), 
+                EnumSet.noneOf(EventType.class),
+                EnumSet.noneOf(EventType.class),
+                0,
+                R.layout.change_country_fragments);
+    }
 
     private final String TAG = LogTagHelper.create(ChangeCountryFragmentActivity.class);
     
@@ -32,7 +50,6 @@ public class ChangeCountryFragmentActivity extends SherlockFragmentActivity {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE"); 
         setupActionBar();
-        setContentView(R.layout.change_country_fragments);
     }
     
     /*
@@ -45,13 +62,13 @@ public class ChangeCountryFragmentActivity extends SherlockFragmentActivity {
         Log.i(TAG, "ON RESUME");
     }
     
-    /**
-     * 
-     */
-    private void setupActionBar() {
-        ActionBarSherlock.unregisterImplementation(ActionBarSherlockNative.class);
-        getSupportActionBar().setLogo(R.drawable.logo_ic);
-    }
+//    /**
+//     * 
+//     */
+//    private void setupActionBar() {
+//        ActionBarSherlock.unregisterImplementation(ActionBarSherlockNative.class);
+//        getSupportActionBar().setLogo(R.drawable.logo_ic);
+//    }
 
     /*
      * (non-Javadoc)
@@ -118,6 +135,18 @@ public class ChangeCountryFragmentActivity extends SherlockFragmentActivity {
     public void onBackPressed() {
         super.onBackPressed();
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+
+    @Override
+    protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public void onSwitchFragment(FragmentType type, Boolean addToBackStack) {
+        // TODO Auto-generated method stub
+        
     }
 
 }

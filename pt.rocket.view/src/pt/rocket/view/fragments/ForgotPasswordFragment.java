@@ -229,7 +229,10 @@ public class ForgotPasswordFragment extends BaseFragment {
         if(item.getEditControl()!=null){
             ((EditText) item.getEditControl()).setHint(getString(R.string.forgotten_password_examplemail));
         }
-        
+        if(getView() == null){
+            getActivity().finish();
+            return;
+        }
         container = (LinearLayout) getView().findViewById(R.id.form_container);
         container.addView(dynamicForm.getContainer());
         
