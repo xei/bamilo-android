@@ -7,6 +7,7 @@ import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.controllers.CountryAdapter;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.utils.BaseActivity;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.view.ChangeCountryFragmentActivity;
@@ -111,6 +112,9 @@ public class ChangeCountryFragment extends Fragment {
         Log.i(TAG, "ON START");
         SharedPreferences sharedPrefs = context.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         selected = sharedPrefs.getInt(ChangeCountryFragmentActivity.KEY_COUNTRY, SHOP_NOT_SELECTED);
+        if(selected == SHOP_NOT_SELECTED){
+            ((BaseActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(false);
+        }
         setList();
     }
 
@@ -123,6 +127,7 @@ public class ChangeCountryFragment extends Fragment {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
+        ((BaseActivity) getActivity()).showContentContainer();
     }
 
     /*
