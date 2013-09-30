@@ -251,10 +251,10 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
 	public void onPause() {
 	    super.onPause();
 	    dismiss();
-	    if (mListener != null) {
-	        Log.i(TAG, "code1 onpause listener");
-            mListener.onDialogListItemSelect(mId, 0, mItems.get(0));
-        }
+//	    if (mListener != null) {
+//	        Log.i(TAG, "code1 onpause listener");
+//            mListener.onDialogListItemSelect(mId, 0, mItems.get(0));
+//        }
 	}
 	
 
