@@ -10,42 +10,42 @@
         <item>@string/jumia_ng_server</item>
         <item>@string/jumia_ke_server</item>
         <item>@string/jumia_ma_server</item>
-<!--         <item>@string/jumia_eg_server</item> -->
+        <item>@string/jumia_eg_server</item>
         <item>@string/jumia_ci_server</item>
     </string-array>
     <string-array name="users">
         <item>@string/jumia_ng_user</item>
         <item>@string/jumia_ke_user</item>
         <item>@string/jumia_ma_user</item>
-<!--         <item>@string/jumia_eg_user</item> -->
+        <item>@string/jumia_eg_user</item>
         <item>@string/jumia_ci_user</item>
     </string-array>
     <string-array name="passwords">
         <item>@string/jumia_ng_password</item>
         <item>@string/jumia_ke_password</item>
         <item>@string/jumia_ma_password</item>
-<!--         <item>@string/jumia_eg_password</item> -->
+        <item>@string/jumia_eg_password</item>
         <item>@string/jumia_ci_password</item>
     </string-array>
     <string-array name="restbase_paths">
         <item>@string/jumia_ng_restbase_path</item>
         <item>@string/jumia_ke_restbase_path</item>
         <item>@string/jumia_ma_restbase_path</item>
-<!--         <item>@string/jumia_eg_restbase_path</item> -->
+        <item>@string/jumia_eg_restbase_path</item>
         <item>@string/jumia_ci_restbase_path</item>
     </string-array>
     <string-array name="shop_names">
         <item>@string/jumia_ng_shopname</item>
         <item>@string/jumia_ke_shopname</item>
         <item>@string/jumia_ma_shopname</item>
-<!--         <item>@string/jumia_eg_shopname</item> -->
+        <item>@string/jumia_eg_shopname</item>
         <item>@string/jumia_ci_shopname</item>
     </string-array>
     <string-array name="country_names">
         <item>@string/jumia_ng_country_name</item>
         <item>@string/jumia_ke_country_name</item>
         <item>@string/jumia_ma_country_name</item>
-<!--         <item>@string/jumia_eg_country_name</item> -->
+        <item>@string/jumia_eg_country_name</item>
         <item>@string/jumia_ci_country_name</item>
     </string-array>
 
@@ -53,7 +53,7 @@
         <item>@drawable/jumia_ng_icon</item>
         <item>@drawable/jumia_ke_icon</item>
         <item>@drawable/jumia_ma_icon</item>
-<!--         <item>@drawable/jumia_eg_icon</item> -->
+        <item>@drawable/jumia_eg_icon</item>
         <item>@drawable/jumia_ci_icon</item>
     </array>
 
@@ -61,28 +61,28 @@
         <item>@string/currency_code_ngn</item>
         <item>@string/currency_code_ksh</item>
         <item>@string/currency_code_mad</item>
-<!--         <item>@string/currency_code_egp</item> -->
+        <item>@string/currency_code_egp</item>
         <item>@string/currency_code_xof</item>
     </string-array>
     <string-array name="ga_testkeys">
         <item>@string/gaid_ng_test</item>
         <item>@string/gaid_ke_test</item>
         <item>@string/gaid_ma_test</item>
-<!--         <item>@string/gaid_eg_test</item> -->
+        <item>@string/gaid_eg_test</item>
         <item>@string/gaid_ci_test</item>
     </string-array>
     <string-array name="ga_livekeys">
         <item>@string/gaid_ng_live</item>
         <item>@string/gaid_ke_live</item>
         <item>@string/gaid_ma_live</item>
-<!--         <item>@string/gaid_eg_live</item> -->
+        <item>@string/gaid_eg_live</item>
         <item>@string/gaid_ci_live</item>
     </string-array>
     <string-array name="language_codes">
         <item>ng</item>
         <item>ke</item>
         <item>ma</item>
-<!--         <item>eg</item> -->
+        <item>eg</item>
         <item>ci</item>
     </string-array>
 

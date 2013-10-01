@@ -318,7 +318,6 @@ public class HomeFragmentActivity extends BaseActivity {
 
 
         mPagerAdapter = null;
-        pagesTitles = null;
         requestResponse = null;
         activity = null;
 
@@ -391,7 +390,11 @@ public class HomeFragmentActivity extends BaseActivity {
 
         @Override
         public int getCount() {
-            return pagesTitles.size();
+            if(pagesTitles!=null){
+                return pagesTitles.size();
+            }
+                
+            return 0;
         }
 
         @Override

@@ -19,6 +19,7 @@ import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.HorizontalListView;
 import pt.rocket.utils.JumiaViewPager;
+import pt.rocket.utils.JumiaViewPagerWithZoom;
 import pt.rocket.utils.OnFragmentActivityInteraction;
 import pt.rocket.view.ProductDetailsActivityFragment;
 import pt.rocket.view.R;
@@ -55,7 +56,7 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
 
     private NormalizingViewPagerWrapper mPagerWrapper;
 
-    private ViewPager mViewPager;
+    private JumiaViewPagerWithZoom mViewPager;
 
     private GalleryPagerAdapter galleryAdapter;
 
@@ -68,6 +69,8 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
     private OnFragmentActivityInteraction mCallback;
 
     private boolean showHorizontalListView = true;
+    
+    private boolean isZoomAvailable = false;
 
     /**
      * 
@@ -91,12 +94,19 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
 
     @Override
     public void sendValuesToFragment(int identifier, Object values) {
-        this.mCompleteProduct = (CompleteProduct) values;
+        // inform the adapter to allow zooming on the image.
+        if(identifier == 3){
+            isZoomAvailable = true;
+            Log.i(TAG, "code1 isZoomAvailable"+isZoomAvailable);
+        } else {
+            this.mCompleteProduct = (CompleteProduct) values;    
+        }
+        
         if (identifier == 1) {
             updateAdapter();
         } else if (identifier == 2) {
             showHorizontalListView = false;
-        }
+        } 
     }
 
     @Override
@@ -198,7 +208,7 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
         }
         
         
-        mViewPager = (ViewPager) mainView.findViewById(R.id.viewpager);
+        mViewPager = (JumiaViewPagerWithZoom) mainView.findViewById(R.id.viewpager);
         createViewPager();
         updateImage(0);
     }
@@ -238,8 +248,12 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
 
     private void createViewPager() {
         ArrayList<String> imagesList = mCompleteProduct.getImageList();
-        galleryAdapter = new GalleryPagerAdapter(getActivity(), imagesList);
-        mViewPager.setPageMargin((int) getResources().getDimension(R.dimen.margin_large));
+        galleryAdapter = new GalleryPagerAdapter(getActivity(), imagesList, isZoomAvailable);
+        Log.i(TAG, "code1 isZoomAvailable on createViewPager"+isZoomAvailable);
+        if(mViewPager == null){
+            mViewPager = (JumiaViewPagerWithZoom) mainView.findViewById(R.id.viewpager);
+        }
+        mViewPager.setPageMargin((int) getActivity().getResources().getDimension(R.dimen.margin_large));
         mViewPager.setAdapter(galleryAdapter);
         mPagerWrapper = new NormalizingViewPagerWrapper(getActivity(), mViewPager, galleryAdapter,
                 this);

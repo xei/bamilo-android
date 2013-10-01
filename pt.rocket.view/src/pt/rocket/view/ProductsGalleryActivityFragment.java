@@ -74,10 +74,10 @@ public class ProductsGalleryActivityFragment extends BaseActivity {
 
     
     
-    private Fragment productVariationsFragment;
+//    private Fragment productVariationsFragment;
     private Fragment productImagesViewPagerFragment;
     
-    private OnActivityFragmentInteraction mCallbackProductVariationsFragment;
+//    private OnActivityFragmentInteraction mCallbackProductVariationsFragment;
     private OnActivityFragmentInteraction mCallbackProductImagesViewPagerFragment;
     public ProductsGalleryActivityFragment() {
         super(NavigationAction.Products, 
@@ -142,9 +142,9 @@ public class ProductsGalleryActivityFragment extends BaseActivity {
 
         mList = null;
 
-        mCallbackProductVariationsFragment = null;
+//        mCallbackProductVariationsFragment = null;
         mCallbackProductImagesViewPagerFragment = null;
-        productVariationsFragment = null;
+//        productVariationsFragment = null;
         productImagesViewPagerFragment = null;
         super.onDestroy();
     }
@@ -161,7 +161,7 @@ public class ProductsGalleryActivityFragment extends BaseActivity {
         mCompleteProduct = product;
         setShareIntent(createShareIntent());
         setTitle(mCompleteProduct.getBrand() + " " + mCompleteProduct.getName());
-        displayVariations();
+//        displayVariations();
         displayImages();
     }
 
@@ -170,15 +170,15 @@ public class ProductsGalleryActivityFragment extends BaseActivity {
             return;
         }
         
-        if(productVariationsFragment == null){
-            productVariationsFragment = ProductVariationsFragment.getInstance();
-            startFragmentVariationCallbacks();
-            mCallbackProductVariationsFragment.sendValuesToFragment(0, mCompleteProduct);
-            mCallbackProductVariationsFragment.sendPositionToFragment(LOADING_PRODUCT);
-            fragmentManagerTransition(R.id.variations_container, productVariationsFragment, false, true);
-        } else {
-            mCallbackProductVariationsFragment.sendValuesToFragment(1, mCompleteProduct);
-        }
+//        if(productVariationsFragment == null){
+//            productVariationsFragment = ProductVariationsFragment.getInstance();
+//            startFragmentVariationCallbacks();
+//            mCallbackProductVariationsFragment.sendValuesToFragment(0, mCompleteProduct);
+//            mCallbackProductVariationsFragment.sendPositionToFragment(LOADING_PRODUCT);
+//            fragmentManagerTransition(R.id.variations_container, productVariationsFragment, false, true);
+//        } else {
+//            mCallbackProductVariationsFragment.sendValuesToFragment(1, mCompleteProduct);
+//        }
     }
 
     private boolean isNotValidVariation(ArrayList<Variation> variations) {
@@ -195,24 +195,29 @@ public class ProductsGalleryActivityFragment extends BaseActivity {
         if(productImagesViewPagerFragment == null){
             productImagesViewPagerFragment = ProductImageGalleryFragment.getInstance();
             startFragmentGalleryCallbacks();
+            mCallbackProductImagesViewPagerFragment.sendValuesToFragment(3, true);
             mCallbackProductImagesViewPagerFragment.sendValuesToFragment(0, mCompleteProduct);
+            mCallbackProductImagesViewPagerFragment.sendValuesToFragment(2, mCompleteProduct);
             fragmentManagerTransition(R.id.image_gallery_container, productImagesViewPagerFragment, false, true);
         } else {
+            mCallbackProductImagesViewPagerFragment.sendValuesToFragment(3, true);
             mCallbackProductImagesViewPagerFragment.sendValuesToFragment(1, mCompleteProduct);
+            mCallbackProductImagesViewPagerFragment.sendValuesToFragment(2, mCompleteProduct);
+            
         }
     }
      
-    private void startFragmentVariationCallbacks() {
-        // This makes sure that the container activity has implemented
-        // the callback interface. If not, it throws an exception
-        try {
-            mCallbackProductVariationsFragment = (OnActivityFragmentInteraction) productVariationsFragment;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(productVariationsFragment.toString()
-                    + " must implement OnActivityFragmentInteraction");
-        }
-
-    }
+//    private void startFragmentVariationCallbacks() {
+//        // This makes sure that the container activity has implemented
+//        // the callback interface. If not, it throws an exception
+//        try {
+//            mCallbackProductVariationsFragment = (OnActivityFragmentInteraction) productVariationsFragment;
+//        } catch (ClassCastException e) {
+//            throw new ClassCastException(productVariationsFragment.toString()
+//                    + " must implement OnActivityFragmentInteraction");
+//        }
+//
+//    }
 
     private void startFragmentGalleryCallbacks() {
         // This makes sure that the container activity has implemented

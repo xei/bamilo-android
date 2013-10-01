@@ -1,21 +1,27 @@
 package pt.rocket.controllers;
 
 import java.util.List;
-
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
+
+import de.akquinet.android.androlog.Log;
 
 import pt.rocket.app.ImageLoaderComponent;
 import pt.rocket.controllers.NormalizingViewPagerWrapper.IPagerAdapter;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.utils.BaseActivity;
 import pt.rocket.utils.JumiaApplication;
+import pt.rocket.utils.PhotoViewAttacher;
 import pt.rocket.view.R;
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v4.view.PagerAdapter;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
@@ -24,10 +30,12 @@ public class GalleryPagerAdapter extends PagerAdapter implements IPagerAdapter {
 	private static final String TAG = LogTagHelper.create( GalleryPagerAdapter.class );
     private final List<String> mImageUrls;
 	private LayoutInflater mInflater;
-
-	public GalleryPagerAdapter(Context context, List<String> imageUrls) {
+	private boolean isZoomAvailable = false;
+	
+	public GalleryPagerAdapter(Context context, List<String> imageUrls, boolean isZoomAvailable) {
 		mImageUrls = imageUrls;
 		mInflater = LayoutInflater.from(context);
+		this.isZoomAvailable = isZoomAvailable;
 	}
 
 	/*
@@ -79,6 +87,12 @@ public class GalleryPagerAdapter extends PagerAdapter implements IPagerAdapter {
 	private void setImageToLoad(String imageUrl, View imageTeaserView) {
 		final ImageView imageView = (ImageView) imageTeaserView.findViewById(R.id.image_view);
 		imageView.setImageResource(R.drawable.no_image_small);
+		Log.i(TAG, "code1 isZoomAvailable on setImageToLoad"+this.isZoomAvailable);
+		if(this.isZoomAvailable){
+		    new PhotoViewAttacher(imageView);
+		    
+		}
+		
 		final View progressBar = imageTeaserView.findViewById(R.id.image_loading_progress);
         if (!TextUtils.isEmpty(imageUrl)) {
             ImageLoader

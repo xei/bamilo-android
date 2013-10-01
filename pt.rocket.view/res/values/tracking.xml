@@ -50,8 +50,8 @@
     <!-- Jumia MA. live: UA-32132208-3; dev: UA-32132208-2 -->
     <string name="gaid_ma_test">UA-32132208-2</string>
     <string name="gaid_ma_live">UA-32132208-3</string>
-<!--     <string name="gaid_eg_test">aaaaaaaaa</string> -->
-<!--     <string name="gaid_eg_live">aaaaaaaaa</string> -->
+    <string name="gaid_eg_test">aaaaaaaaa</string>
+    <string name="gaid_eg_live">aaaaaaaaa</string>
 
 
     <!-- Dev : UA-41452964-2 -->

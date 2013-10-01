@@ -80,7 +80,12 @@ public class NormalizingViewPagerWrapper extends ViewPager implements IconPagerA
         int currentItem = mViewPager.getCurrentItem();
         // Log.d(TAG, "currentItem = " + currentItem);
 
-        int delta = item - (currentItem % mNormPagerAdapter.getCount());
+        int aux = 0;
+        if( mNormPagerAdapter != null &&  mNormPagerAdapter.getCount() > 0 ){
+            aux = currentItem % mNormPagerAdapter.getCount();
+        }
+            
+        int delta = item - aux;
         int nextItem = currentItem + delta;
 
         // Log.d(TAG, "calcNextItem: nextItem = " + nextItem);

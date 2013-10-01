@@ -742,6 +742,9 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         processShow = b;
     }
     
+    public void finishFromAdapter(){
+        finish();
+    }
 
     @Override
     public final void handleEvent(final ResponseEvent event) {
