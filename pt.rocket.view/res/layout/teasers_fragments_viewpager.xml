@@ -23,8 +23,7 @@
                 android:layout_gravity="top"
                 android:background="@color/strip_title_background"
                 android:textColor="@color/strip_title"
-                android:textSize="12.54sp"
-                />
+                android:textSize="12.54sp" />
         </pt.rocket.utils.JumiaViewPager>
 
         <View
