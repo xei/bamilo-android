@@ -23,8 +23,8 @@
 
     <!-- Jumia Morocco	 Configuration -->
     <string name="jumia_ma_shopname">Jumia</string>
-<!--     <string name="jumia_ma_server">www.jumia.ma</string> -->
-    <string name="jumia_ma_server">alice-staging.jumia.ma</string>
+    <string name="jumia_ma_server">www.jumia.ma</string>
+<!--     <string name="jumia_ma_server">alice-staging.jumia.ma</string> -->
 <!--     <string name="jumia_ma_server">mobile.jumia.com</string> -->
     <string name="jumia_ma_user">rocket</string>
     <string name="jumia_ma_password">rock4me</string>
@@ -43,8 +43,8 @@
 
     <!-- Jumia Ivory Coast Configuration -->
     <string name="jumia_ci_shopname">Jumia</string>
-<!--     <string name="jumia_ci_server">www.jumia.ci</string> -->
-    <string name="jumia_ci_server">alice-staging.jumia.ci</string>
+    <string name="jumia_ci_server">www.jumia.ci</string>
+<!--     <string name="jumia_ci_server">alice-staging.jumia.ci</string> -->
 <!--     <string name="jumia_ci_server">mobile.jumia.com</string> -->
     <string name="jumia_ci_user">rocket</string>
     <string name="jumia_ci_password">rock4me</string>
