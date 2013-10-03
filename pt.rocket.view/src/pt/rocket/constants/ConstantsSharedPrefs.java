@@ -21,5 +21,7 @@ public class ConstantsSharedPrefs {
 	 * Shared Preferences name
 	 */
 	public static String SHARED_PREFERENCES = "whitelabel_prefs";
+	
+	public static String KEY_SHOW_TIPS = "show_tips";
 
 }
