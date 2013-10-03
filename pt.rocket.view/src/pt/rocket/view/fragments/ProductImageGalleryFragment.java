@@ -69,7 +69,7 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
     private OnFragmentActivityInteraction mCallback;
 
     private boolean showHorizontalListView = true;
-    
+
     private boolean isZoomAvailable = false;
 
     /**
@@ -95,18 +95,18 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
     @Override
     public void sendValuesToFragment(int identifier, Object values) {
         // inform the adapter to allow zooming on the image.
-        if(identifier == 3){
+        if (identifier == 3) {
             isZoomAvailable = true;
-            Log.i(TAG, "code1 isZoomAvailable"+isZoomAvailable);
+            Log.i(TAG, "code1 isZoomAvailable" + isZoomAvailable);
         } else {
-            this.mCompleteProduct = (CompleteProduct) values;    
+            this.mCompleteProduct = (CompleteProduct) values;
         }
-        
+
         if (identifier == 1) {
             updateAdapter();
         } else if (identifier == 2) {
             showHorizontalListView = false;
-        } 
+        }
     }
 
     @Override
@@ -168,7 +168,7 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
         Log.i(TAG, "ON CREATE VIEW");
 
         mainView = mInflater.inflate(R.layout.product_showoff_viewpager_frame, viewGroup, false);
-        
+
         return mainView;
     }
 
@@ -192,8 +192,8 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
     @Override
     public void onResume() {
         super.onResume();
-        
-        if(mCompleteProduct == null){
+
+        if (mCompleteProduct == null) {
             getActivity().finish();
             return;
         }
@@ -206,8 +206,7 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
         if (!showHorizontalListView) {
             mImagesList.setVisibility(View.GONE);
         }
-        
-        
+
         mViewPager = (JumiaViewPagerWithZoom) mainView.findViewById(R.id.viewpager);
         createViewPager();
         updateImage(0);
@@ -249,22 +248,26 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
     private void createViewPager() {
         ArrayList<String> imagesList = mCompleteProduct.getImageList();
         galleryAdapter = new GalleryPagerAdapter(getActivity(), imagesList, isZoomAvailable);
-        Log.i(TAG, "code1 isZoomAvailable on createViewPager"+isZoomAvailable);
-        if(mViewPager == null){
+        Log.i(TAG, "code1 isZoomAvailable on createViewPager" + isZoomAvailable);
+        if (mViewPager == null) {
             mViewPager = (JumiaViewPagerWithZoom) mainView.findViewById(R.id.viewpager);
         }
-        mViewPager.setPageMargin((int) getActivity().getResources().getDimension(R.dimen.margin_large));
+        mViewPager.setPageMargin((int) getActivity().getResources().getDimension(
+                R.dimen.margin_large));
         mViewPager.setAdapter(galleryAdapter);
         mPagerWrapper = new NormalizingViewPagerWrapper(getActivity(), mViewPager, galleryAdapter,
                 this);
-        
-        final GestureDetector tapGestureDetector = new GestureDetector(getActivity(), new TapGestureListener());
-        mViewPager.setOnTouchListener(new OnTouchListener() {
-            public boolean onTouch(View v, MotionEvent event) {
-                tapGestureDetector.onTouchEvent(event);
-                return false;
-            }
-    });
+
+        if (!showHorizontalListView) {
+            final GestureDetector tapGestureDetector = new GestureDetector(getActivity(),
+                    new TapGestureListener());
+            mViewPager.setOnTouchListener(new OnTouchListener() {
+                public boolean onTouch(View v, MotionEvent event) {
+                    tapGestureDetector.onTouchEvent(event);
+                    return false;
+                }
+            });
+        }
 
     }
 
@@ -282,7 +285,7 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
 
     private void hideImageLoading() {
         mProductImageLoading.setVisibility(View.GONE);
-        if(showHorizontalListView){
+        if (showHorizontalListView) {
             mImagesList.setVisibility(View.VISIBLE);
         }
         mViewPager.setVisibility(View.VISIBLE);
@@ -325,16 +328,17 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
 
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
-            
-            if(showHorizontalListView){
-                if(getActivity()!=null){
+
+            if (showHorizontalListView) {
+                if (getActivity() != null) {
                     getActivity().finish();
                 }
             } else {
-                ActivitiesWorkFlow.productsGalleryActivity(getActivity(), mCompleteProduct.getUrl(),
+                ActivitiesWorkFlow.productsGalleryActivity(getActivity(),
+                        mCompleteProduct.getUrl(),
                         mPagerWrapper.getCurrentItem());
             }
-            
+
             return showHorizontalListView;
         }
     }
