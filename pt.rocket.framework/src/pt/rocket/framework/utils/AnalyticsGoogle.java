@@ -240,12 +240,18 @@ public class AnalyticsGoogle {
 		mTracker.sendEvent(category, action, sku, price);
 	}
 
-	public void trackLoadTiming(int categoryId, long beginMillis) {
-		if (!isEnabled) {
+	public void trackLoadTiming(int categoryId, long beginMillis) {				
+		if ( !isEnabled ) {
 			return;
 		}
-
-		long milliseconds = System.currentTimeMillis() - beginMillis;
+		
+		long milliseconds = System.currentTimeMillis();
+		if ( milliseconds < beginMillis || beginMillis <= 0 ) {
+			Log.d( TAG, "trackTiming ERROR : start -> " + beginMillis );
+			return;
+		}
+		
+		milliseconds = milliseconds - beginMillis;
 		int nameId = R.string.gload;
 
 		trackTiming(categoryId, nameId, milliseconds, "duration for event");
