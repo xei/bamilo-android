@@ -18,6 +18,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v4.view.PagerAdapter;
 import android.text.TextUtils;
+import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -71,15 +72,25 @@ public class GalleryPagerAdapter extends PagerAdapter implements IPagerAdapter {
 	 */
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        int virtualPosition = position % getRealCount();
+        int virtualPosition = position;
+        if( getRealCount() > 0){
+            virtualPosition = position % getRealCount();
+        }
+            
         return instantiateVirtualItem(container, virtualPosition);
     }
     
 	public Object instantiateVirtualItem(ViewGroup container, int position) {
-		View view = mInflater.inflate(R.layout.image_loadable, container, false);
-		String imageUrl = mImageUrls.get(position);
-		setImageToLoad(imageUrl, view);
-		container.addView( view );
+	    View view = null;
+		try {
+		    view = mInflater.inflate(R.layout.image_loadable, container, false);
+	        String imageUrl = mImageUrls.get(position);
+	        setImageToLoad(imageUrl, view);
+	        container.addView( view );
+        } catch (InflateException e) {
+           e.printStackTrace();
+        }
+	    
  
 		return view;
 	}
