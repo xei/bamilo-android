@@ -6,6 +6,7 @@ package pt.rocket.view.fragments;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.controllers.CountryAdapter;
+import pt.rocket.framework.rest.RestClientSingleton;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.BaseActivity;
 import pt.rocket.utils.TrackerDelegator;
@@ -223,6 +224,12 @@ public class ChangeCountryFragment extends Fragment {
 
     protected void setCountry(int position) {
         HomeFragmentActivity.requestResponse = null;
+        try {
+            RestClientSingleton.getSingleton().getCookieStore().clear();
+        } catch (RuntimeException e) {
+            // Nothing to handle, if RestClientSingleton is not initialized, then there is no need to clear cookies.
+        }
+           
         SharedPreferences sharedPrefs = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putInt(ChangeCountryFragmentActivity.KEY_COUNTRY, position);

@@ -52,11 +52,14 @@ import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -420,11 +423,11 @@ public class HomeFragmentActivity extends BaseActivity {
         private Fragment fragmentProductListTeaser;
         private Fragment fragmentBrandsListTeaser;
         private OnActivityFragmentInteraction mCallback;
-
+        
         private LayoutInflater mInflater;
         
         private int position;
-
+        
         public HomeObjectFragment() {
         }
         
@@ -472,13 +475,18 @@ public class HomeFragmentActivity extends BaseActivity {
             }
         };
 
+        
+        
         public static final String ARG_OBJECT = "object";
+        private SharedPreferences sharedPrefs;
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             mInflater = (LayoutInflater) getActivity()
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            
+            
         }
 
         @Override
@@ -488,6 +496,8 @@ public class HomeFragmentActivity extends BaseActivity {
             // properly.
             View rootView = inflater.inflate(
                     R.layout.fragment_collection_object, container, false);
+            
+            
             // ((TextView)
             // rootView.findViewById(R.id.view_pager_element_frame)).setText(pagesTitles.get(0));
             return rootView;
@@ -500,7 +510,27 @@ public class HomeFragmentActivity extends BaseActivity {
             Bundle args = getArguments();
             LinearLayout view = (LinearLayout) getView()
                     .findViewById(R.id.view_pager_element_frame);
-
+            sharedPrefs = getActivity().getSharedPreferences(
+                    ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+            
+            if(sharedPrefs.getBoolean(ConstantsSharedPrefs.KEY_SHOW_TIPS, true) && args.getInt(ARG_OBJECT) == 2){
+                RelativeLayout homeTip = (RelativeLayout) getView()
+                        .findViewById(R.id.home_tip);
+                homeTip.setVisibility(View.VISIBLE);
+                homeTip.setOnTouchListener(new OnTouchListener() {
+                    
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        v.setVisibility(View.GONE);
+                        
+                        SharedPreferences.Editor editor = sharedPrefs.edit();
+                        editor.putBoolean(ConstantsSharedPrefs.KEY_SHOW_TIPS,
+                                false);
+                        editor.commit();
+                        return false;
+                    }
+                });
+            }
             if (requestResponse != null) {
                 processResult(requestResponse.get(args.getInt(ARG_OBJECT)), view);
             } else {
@@ -531,7 +561,7 @@ public class HomeFragmentActivity extends BaseActivity {
         
         private void processResult(Collection<? extends TeaserSpecification<?>> result,
                 LinearLayout mainView) {
-
+            
             for (Iterator iterator = result.iterator(); iterator.hasNext();) {
                 TeaserSpecification<?> teaserSpecification = (TeaserSpecification<?>) iterator
                         .next();
