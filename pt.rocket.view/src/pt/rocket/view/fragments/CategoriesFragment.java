@@ -156,10 +156,12 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
         Log.i(TAG, "ON RESUME");
         ((BaseActivity) getActivity()).updateActivityHeader(NavigationAction.Categories, R.string.categories_title);
         
-        if(categories != null)
+        if(categories != null && getView() != null){
             createList();
-        else
+        } else {
             triggerContentEvent(new GetCategoriesEvent(categoryUrl));
+        }
+            
     }
 
     /*

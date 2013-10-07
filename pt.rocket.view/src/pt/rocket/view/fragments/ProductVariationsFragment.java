@@ -79,6 +79,7 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
         this.mVariationsListPosition = position;
         if(mList!=null){
             mList.setSelectedItem(mVariationsListPosition, HorizontalListView.MOVE_TO_DIRECTLY);
+            mList.setPosition(mVariationsListPosition);
         }
     }
     
