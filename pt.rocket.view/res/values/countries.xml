@@ -3,8 +3,8 @@
 
     <!-- Jumia Nigeria Configuration -->
     <string name="jumia_ng_shopname">Jumia</string>
-     <string name="jumia_ng_server">www.jumia.com.ng</string>
-<!-- 	<string name="jumia_ng_server">alice-staging.jumia.com.ng</string> -->
+<!--      <string name="jumia_ng_server">www.jumia.com.ng</string> -->
+	<string name="jumia_ng_server">alice-staging.jumia.com.ng</string>
 <!-- <string name="jumia_ng_server">mobile.jumia.com</string> -->
     <string name="jumia_ng_user">rocket</string>
     <string name="jumia_ng_password">rock4me</string>
@@ -13,8 +13,8 @@
 
     <!-- Jumia Kenya Configuration -->
     <string name="jumia_ke_shopname">Jumia</string>
-<!--    <string name="jumia_ke_server">alice-staging.jumia.co.ke</string>  -->
-     <string name="jumia_ke_server">www.jumia.co.ke</string>
+   <string name="jumia_ke_server">alice-staging.jumia.co.ke</string> 
+<!--      <string name="jumia_ke_server">www.jumia.co.ke</string> -->
 <!--     <string name="jumia_ke_server">mobile.jumia.com</string> -->
     <string name="jumia_ke_user">rocket</string>
     <string name="jumia_ke_password">rock4me</string>
@@ -23,8 +23,8 @@
 
     <!-- Jumia Morocco	 Configuration -->
     <string name="jumia_ma_shopname">Jumia</string>
-    <string name="jumia_ma_server">www.jumia.ma</string>
-<!--     <string name="jumia_ma_server">alice-staging.jumia.ma</string> -->
+<!--     <string name="jumia_ma_server">www.jumia.ma</string> -->
+    <string name="jumia_ma_server">alice-staging.jumia.ma</string>
 <!--     <string name="jumia_ma_server">mobile.jumia.com</string> -->
     <string name="jumia_ma_user">rocket</string>
     <string name="jumia_ma_password">rock4me</string>
@@ -43,8 +43,8 @@
 
     <!-- Jumia Ivory Coast Configuration -->
     <string name="jumia_ci_shopname">Jumia</string>
-    <string name="jumia_ci_server">www.jumia.ci</string>
-<!--     <string name="jumia_ci_server">alice-staging.jumia.ci</string> -->
+<!--     <string name="jumia_ci_server">www.jumia.ci</string> -->
+    <string name="jumia_ci_server">alice-staging.jumia.ci</string>
 <!--     <string name="jumia_ci_server">mobile.jumia.com</string> -->
     <string name="jumia_ci_user">rocket</string>
     <string name="jumia_ci_password">rock4me</string>

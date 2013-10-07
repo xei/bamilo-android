@@ -30,7 +30,7 @@
     <View style="@style/activity_sectionheader_divider" />
 
     <fragment
-        android:id="@+id/fragment1"
+        android:id="@+id/fragment2"
         android:name="pt.rocket.view.PushPreferences"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

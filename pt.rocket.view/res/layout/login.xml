@@ -31,7 +31,15 @@
             android:layout_marginRight="@dimen/margin_huge"
             android:layout_marginTop="@dimen/margin_huge"
             android:orientation="vertical" >
-
+            <com.facebook.widget.LoginButton
+                android:id="@+id/authButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/facebook_login_button_text"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="20dp" />
             <LinearLayout
                 android:id="@+id/form_container"
                 android:layout_width="fill_parent"
@@ -47,8 +55,8 @@
 
                 <org.holoeverywhere.widget.Button
                     android:id="@+id/middle_login_button_signin"
-                    android:contentDescription="@string/login_button_description"
                     style="@style/button_orange_style"
+                    android:contentDescription="@string/login_button_description"
                     android:text="@string/login_label" />
             </RelativeLayout>
 
@@ -74,9 +82,10 @@
             <org.holoeverywhere.widget.Button
                 android:id="@+id/middle_login_link_register"
                 style="@style/button_grey_style"
-                 android:contentDescription="@string/register_button_description"
                 android:layout_marginTop="@dimen/distance_item_mid"
+                android:contentDescription="@string/register_button_description"
                 android:text="@string/register_button" />
+
         </LinearLayout>
     </RelativeLayout>
 

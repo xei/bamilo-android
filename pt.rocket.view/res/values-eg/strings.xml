@@ -216,4 +216,6 @@
 	<string name="section_title_notification">Notification Settings</string>
 	<string name="rating_quality">Quality</string>
 	<string name="call_to_order_number">01156226220</string>
+	<!-- Facebook App Id DO NOT TRANSLATE -->
+	<string name="app_id">390085037744566</string>
 </resources>

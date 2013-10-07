@@ -216,4 +216,8 @@
 	<string name="section_title_notification">Paramètres de notification</string>
 	<string name="rating_quality">Qualité</string>
 	<string name="call_to_order_number">0648722407</string>
+	<string name="home_tip_text">Faites défiler vers la gauche \nou la droite \npour changer de catégorie</string>
+	<!-- Facebook App Id DO NOT TRANSLATE -->
+	<string name="app_id">518468904830623</string>
+	<string name="facebook_login_button_text">Connectez-vous via Facebook</string>
 </resources>

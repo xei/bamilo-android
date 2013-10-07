@@ -215,7 +215,8 @@
 	<string name="section_title_account">Account Settings</string>
 	<string name="section_title_notification">Notification Settings</string>
 	<string name="rating_quality">Quality</string>
-	<string name="home_tip_text">Swipe left or right to \nchange the category</string>
+	<string name="home_tip_text">Swipe left or right to \nchange the category</string>	
+	<string name="facebook_login_button_text">Login with Facebook</string>
 	<!-- Facebook App Id DO NOT TRANSLATE -->
-	<string name="app_id">319581271497227</string>
+	<string name="app_id">321703697936806</string>
 </resources>
