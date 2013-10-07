@@ -12,10 +12,10 @@
     
     <!--  PageView Names -->
     <string name="gnavigation">LeftMenu</string>
-    <string name="ghomepage">ShopMain</string>
+    <string name="ghomepage">ShopHome</string>
     <string name="gcategories">ShopCategories</string>
     <string name="gbrands">ShopBrands</string>
-    <string name="gproductlist">ShopProductList</string>
+    <string name="gproductlist">ShopCatalogList</string>
     <string name="gshoppingcart">ShoppingCart</string>
     <string name="gcartwithitems">CartWithItem</string>
     <string name="gcartempty">CartEmpty</string>
