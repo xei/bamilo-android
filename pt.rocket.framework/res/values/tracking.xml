@@ -47,6 +47,7 @@
     <string name="gsearch">Search</string>
     <string name="gaddtocart">AddToCart</string>
     <string name="gloginsuccess">LoginSuccess</string>
+    <string name="gfacebookloginsuccess">FacebookLoginSuccess</string>
     <string name="gloginfailed">LoginFailed</string>
     <string name="glogoutsuccess">LogoutSuccess</string>
     <string name="glogoutfailed">LogoutFailed</string>
@@ -75,6 +76,7 @@
 
     <string name="xlaunch">Launch</string>
     <string name="xlogin">Login</string>
+    <string name="xFBlogin">FBConnect</string>
     <string name="xsignup">Signup</string>
     <string name="xsale">Sale</string>
     <string name="xsaledata">SaleData</string>
