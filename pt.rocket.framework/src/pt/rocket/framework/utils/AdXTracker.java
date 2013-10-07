@@ -98,6 +98,16 @@ public class AdXTracker {
 		Log.d(TAG, "login tracked: event = " + context.getString(R.string.xlogin) + " customerId = " + customerId);
 		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xlogin), customerId, "");
 	}
+	
+	public static void facebookLogin(Context context, String customerId) {
+		if (!isEnabled) {
+			Log.d(TAG, "adx seems to be disabled - ignoring");
+			return;
+		}
+
+		Log.d(TAG, "facebook login tracked: event = " + context.getString(R.string.xFBlogin) + " customerId = " + customerId);
+		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xFBlogin), customerId, "");
+	}
 
 	public static void signup(Context context, String customerId) {
 		if (!isEnabled)

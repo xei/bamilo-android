@@ -26,6 +26,7 @@ import pt.rocket.framework.event.MetaRequestEvent;
 import pt.rocket.framework.event.RequestEvent;
 import pt.rocket.framework.event.ResponseErrorEvent;
 import pt.rocket.framework.event.events.ChangePasswordEvent;
+import pt.rocket.framework.event.events.FacebookLogInEvent;
 import pt.rocket.framework.event.events.ForgetPasswordEvent;
 import pt.rocket.framework.event.events.InitShopEvent;
 import pt.rocket.framework.event.events.LogInEvent;
@@ -75,7 +76,7 @@ public class CustomerAccountService extends DarwinService {
 	 */
 	public CustomerAccountService() {
 		super(EnumSet.noneOf(EventType.class), EnumSet.of(EventType.INIT_SHOP,
-				EventType.LOGIN_EVENT, EventType.LOGOUT_EVENT,
+				EventType.LOGIN_EVENT, EventType.FACEBOOK_LOGIN_EVENT, EventType.LOGOUT_EVENT,
 				EventType.REGISTER_ACCOUNT_EVENT,
 				EventType.CHANGE_PASSWORD_EVENT, EventType.GET_CUSTOMER,
 				EventType.FORGET_PASSWORD_EVENT, EventType.GET_TERMS_EVENT,
@@ -117,6 +118,28 @@ public class CustomerAccountService extends DarwinService {
 				|| ((MetaRequestEvent<ContentValues>) request).value == null
 				|| ((MetaRequestEvent<ContentValues>) request).value.size() == 0) {
 			event = new LogInEvent(getCredentials());
+		} else {
+			event = (MetaRequestEvent<ContentValues>) request;
+		}
+		if (event.value.size() > 0) {
+			actionReturningCustomerEvent(event);
+			Boolean saveCredentials = event.value
+					.getAsBoolean(INTERNAL_AUTOLOGIN_FLAG);
+			if (saveCredentials == null || !saveCredentials) {
+				clearCredentials();
+			}
+		} else {
+			EventManager.getSingleton().triggerResponseEvent(
+					new ResponseErrorEvent(request, ErrorCode.REQUEST_ERROR));
+		}
+	}
+	
+	private void facebookLoginEvent(RequestEvent request) {
+		MetaRequestEvent<ContentValues> event;
+		if (!(request instanceof MetaRequestEvent)
+				|| ((MetaRequestEvent<ContentValues>) request).value == null
+				|| ((MetaRequestEvent<ContentValues>) request).value.size() == 0) {
+			event = new FacebookLogInEvent(getCredentials());
 		} else {
 			event = (MetaRequestEvent<ContentValues>) request;
 		}
@@ -235,6 +258,9 @@ public class CustomerAccountService extends DarwinService {
 		case LOGIN_EVENT:
 			loginEvent(event);
 			break;
+		case FACEBOOK_LOGIN_EVENT:
+			facebookLoginEvent(event);
+			break;
 		case REGISTER_ACCOUNT_EVENT:
 		case EDIT_ACCOUNT_EVENT:
 			actionReturningCustomerEvent((MetaRequestEvent<ContentValues>) event);
@@ -312,7 +338,7 @@ public class CustomerAccountService extends DarwinService {
 	private void storeCredentials(ContentValues values) {
 		Editor editor = obscuredPreferences.edit();
 		for (Entry<String, ?> entry : values.valueSet()) {
-			if(entry.getKey()!=null && entry.getValue().toString() != null){
+			if(entry.getKey()!=null && entry.getValue() != null && entry.getValue().toString() != null){
 				editor.putString(entry.getKey(), entry.getValue().toString());
 			} else {
 				Log.e(TAG, "MISSING PARAMETERS FROM API!");
