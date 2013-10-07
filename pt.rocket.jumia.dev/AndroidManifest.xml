@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="pt.rocket.jumia.dev" android:versionCode="10108" android:versionName="1.0.2" android:installLocation="auto">
-
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="pt.rocket.jumia.dev"
+    android:installLocation="auto"
+    android:versionCode="10108"
+    android:versionName="1.0.2" >
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
@@ -14,25 +17,42 @@
     <uses-permission android:name="android.permission.READ_LOGS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
-     <!-- Urban Airship. -->
+    <!-- Urban Airship. -->
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" /> 
-    <permission android:name="pt.rocket.jumia.dev.permission.C2D_MESSAGE" android:protectionLevel="signature" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+
+    <permission
+        android:name="pt.rocket.jumia.dev.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
     <uses-permission android:name="pt.rocket.jumia.dev.permission.C2D_MESSAGE" />
 
-    <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="15" />
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="15" />
 
-    <application android:icon="@drawable/ic_launcher" android:label="@string/app_name" android:theme="@style/Theme.Jumia" android:largeHeap="true" android:name="pt.rocket.utils.JumiaApplication" android:logo="@drawable/actionbar_logo">
-        <activity android:name="pt.rocket.view.SplashScreen" android:screenOrientation="portrait" android:noHistory="true">
+    <application
+        android:name="pt.rocket.utils.JumiaApplication"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:largeHeap="true"
+        android:logo="@drawable/actionbar_logo"
+        android:theme="@style/Theme.Jumia" >
+
+        <activity
+            android:name="pt.rocket.view.SplashScreen"
+            android:noHistory="true"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-<!--         <activity android:name="pt.rocket.view.CategoriesNewActivity" android:screenOrientation="portrait" />
+        <!--
+             <activity android:name="pt.rocket.view.CategoriesNewActivity" android:screenOrientation="portrait" />
         <activity android:name="pt.rocket.view.ProductsActivity" android:screenOrientation="portrait" />
         <activity android:name="pt.rocket.view.LogInActivity" android:screenOrientation="portrait" />
         <activity android:name="pt.rocket.view.SearchActivity" android:launchMode="singleTask" android:screenOrientation="portrait" />
@@ -53,67 +73,137 @@
         <activity android:name="pt.rocket.view.PopularityActivity" android:screenOrientation="portrait" />
         <activity android:name="pt.rocket.view.WriteReviewActivity" android:screenOrientation="portrait" />
         <activity android:name="pt.rocket.view.CheckoutWebActivity" android:screenOrientation="portrait" />
-        <activity android:name="pt.rocket.view.TeaserActivity" android:screenOrientation="portrait" /> -->
+        <activity android:name="pt.rocket.view.TeaserActivity" android:screenOrientation="portrait" />
+        -->
 
         <activity android:name="net.hockeyapp.android.UpdateActivity" />
+        <activity
+            android:name="com.facebook.LoginActivity"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
-
-        
         <!-- Fragment Activities -->
-		<activity android:name="pt.rocket.view.ProductsActivityFragment" android:screenOrientation="portrait" />
-        <activity android:name="pt.rocket.view.ProductsGalleryActivityFragment" android:screenOrientation="portrait" />
-        <activity android:name="pt.rocket.view.ProductDetailsActivityFragment" android:screenOrientation="portrait" />
-        <activity android:name="pt.rocket.view.ProductDetailsDescriptionActivityFragment" android:screenOrientation="portrait" />
-        <activity android:name="pt.rocket.view.MyAccountActivityFragment" android:screenOrientation="portrait" />
-        <activity android:name="pt.rocket.view.CheckoutWebActivityFragment" android:screenOrientation="portrait" />
-		<activity android:name="pt.rocket.view.TermsActivityFragment" android:noHistory="true" android:screenOrientation="portrait" />
-        <activity android:name="pt.rocket.view.MyAccountUserDataActivityFragment" android:screenOrientation="portrait" android:windowSoftInputMode="stateHidden" />
-        <activity android:name="pt.rocket.view.SessionFragmentActivity" android:screenOrientation="portrait" android:hardwareAccelerated="true" />
-        <activity android:name="pt.rocket.view.HomeFragmentActivity" android:screenOrientation="portrait" />
-        <activity android:name="pt.rocket.view.ChangeCountryFragmentActivity" android:screenOrientation="portrait" android:noHistory="true" />
-        <activity android:name="pt.rocket.view.PopularityFragmentActivity" android:screenOrientation="portrait" />
-        <activity android:name="pt.rocket.view.ReviewFragmentActivity" android:screenOrientation="portrait" />
-        <activity android:name="pt.rocket.view.WriteReviewFragmentActivity" android:screenOrientation="portrait" />
-        <activity android:name="pt.rocket.view.SearchFragmentActivity" android:launchMode="singleTask" android:screenOrientation="portrait" />
-        <activity android:name="pt.rocket.view.CategoriesFragmentActivity" android:screenOrientation="portrait" android:hardwareAccelerated="true" />
-        <activity android:name="pt.rocket.view.ShoppingCartFragmentActivity" android:launchMode="singleTask" android:screenOrientation="portrait" android:windowSoftInputMode="adjustPan" />
-        <activity android:name="pt.rocket.view.CheckoutStep5FragmentActivity" android:screenOrientation="portrait" />
-        
-        
-        
-        <service android:name="pt.rocket.framework.rest.RestService" android:exported="false" />
-        
+        <activity
+            android:name="pt.rocket.view.ProductsActivityFragment"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="pt.rocket.view.ProductsGalleryActivityFragment"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="pt.rocket.view.ProductDetailsActivityFragment"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="pt.rocket.view.ProductDetailsDescriptionActivityFragment"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="pt.rocket.view.MyAccountActivityFragment"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="pt.rocket.view.CheckoutWebActivityFragment"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="pt.rocket.view.TermsActivityFragment"
+            android:noHistory="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="pt.rocket.view.MyAccountUserDataActivityFragment"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="pt.rocket.view.SessionFragmentActivity"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="pt.rocket.view.HomeFragmentActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="pt.rocket.view.ChangeCountryFragmentActivity"
+            android:noHistory="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="pt.rocket.view.PopularityFragmentActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="pt.rocket.view.ReviewFragmentActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="pt.rocket.view.WriteReviewFragmentActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="pt.rocket.view.SearchFragmentActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="pt.rocket.view.CategoriesFragmentActivity"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="pt.rocket.view.ShoppingCartFragmentActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="pt.rocket.view.CheckoutStep5FragmentActivity"
+            android:screenOrientation="portrait" />
+
+        <service
+            android:name="pt.rocket.framework.rest.RestService"
+            android:exported="false" />
+
         <!-- Ad X Tracker -->
-        <receiver android:name="com.AdX.tag.AdXAppTracker" android:exported="true">
-			<intent-filter>
-				<action android:name="com.android.vending.INSTALL_REFERRER" />
-			</intent-filter>	
-		</receiver>
-		<meta-data android:name="APP_NAME" android:value="pt.rocket.jumia" />
-		<meta-data android:name="ADX_CLIENT_ID" android:value="@string/xid" />
-        
-        <!-- Urban Airship GCM-->
+        <receiver
+            android:name="com.AdX.tag.AdXAppTracker"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="com.android.vending.INSTALL_REFERRER" />
+            </intent-filter>
+        </receiver>
+
+        <meta-data
+            android:name="APP_NAME"
+            android:value="pt.rocket.jumia" />
+        <meta-data
+            android:name="ADX_CLIENT_ID"
+            android:value="@string/xid" />
+
+        <!-- Urban Airship GCM -->
         <receiver android:name="pt.rocket.utils.PushNotificationIntentReceiver" />
         <receiver android:name="com.urbanairship.CoreReceiver" />
-        <receiver android:name="com.urbanairship.push.GCMPushReceiver" android:permission="com.google.android.c2dm.permission.SEND">        
-          <intent-filter>
-              <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-              <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-              <category android:name="pt.rocket.jumia.dev" />
-          </intent-filter>
-          <intent-filter>
-              <action android:name="android.intent.action.PACKAGE_REPLACED" />
-              <data android:scheme="package" />
-          </intent-filter>
-        </receiver>
- 
-        <service android:name="com.urbanairship.push.PushService" android:label="Push Notification Service" />
-<!--         <service android:name="com.urbanairship.push.PushWorkerService" android:label="Push Notification Worker Service" /> -->
-        <service android:name="com.urbanairship.analytics.EventService" android:label="Event Service" />
-        
-        <provider android:name="com.urbanairship.UrbanAirshipProvider" android:authorities="pt.rocket.jumia.dev.urbanairship.provider" android:exported="false" android:multiprocess="true" />
-        <!-- END OF REQUIRED ITEMS -->
+        <receiver
+            android:name="com.urbanairship.push.GCMPushReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
 
+                <category android:name="pt.rocket.jumia.dev" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_REPLACED" />
+
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name="com.urbanairship.push.PushService"
+            android:label="Push Notification Service" />
+        <!-- <service android:name="com.urbanairship.push.PushWorkerService" android:label="Push Notification Worker Service" /> -->
+        <service
+            android:name="com.urbanairship.analytics.EventService"
+            android:label="Event Service" />
+
+        <provider
+            android:name="com.urbanairship.UrbanAirshipProvider"
+            android:authorities="pt.rocket.jumia.dev.urbanairship.provider"
+            android:exported="false"
+            android:multiprocess="true" />
+        <!-- END OF REQUIRED ITEMS -->
+ 		<meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/app_id" />
     </application>
 
 </manifest>
