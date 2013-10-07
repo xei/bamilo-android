@@ -36,10 +36,13 @@ public class TrackerDelegator {
     private static final String JSON_TAG_GRAND_TOTAL = "grandTotal";
     private static final String JSON_TAG_ITEMS_JSON = "itemsJson";
     
-    public final static void trackLoginSuccessful(Context context, Customer customer, boolean wasAutologin, String origin) {
+    public final static void trackLoginSuccessful(Context context, Customer customer, boolean wasAutologin, String origin, boolean wasFacebookLogin) {
         String mOrigin;
         int resLogin;
-        if ( wasAutologin ) {
+        if( wasFacebookLogin ){
+            resLogin = R.string.gfacebookloginsuccess;
+            mOrigin = origin;
+        } else if ( wasAutologin ) {
             resLogin = R.string.gautologinsuccess;
             mOrigin = context.getString(R.string.mixprop_loginlocationautologin);            
         } else {
@@ -56,7 +59,12 @@ public class TrackerDelegator {
         Log.d( TAG, "trackLoginSuccessul: loginAfterRegister = " + loginAfterRegister + " wasAutologin = " + wasAutologin );
 
         PushManager.shared().setAlias(customer.getIdAsString());
-        AdXTracker.login(context, customer.getIdAsString());
+        if(wasFacebookLogin){
+            AdXTracker.facebookLogin(context, customer.getIdAsString());
+        } else {
+            AdXTracker.login(context, customer.getIdAsString());    
+        }
+        
         
         MixpanelTracker.login(context, customer.getIdAsString(), mOrigin);
     }

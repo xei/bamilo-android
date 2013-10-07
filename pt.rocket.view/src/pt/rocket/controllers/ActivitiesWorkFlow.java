@@ -2,6 +2,8 @@ package pt.rocket.controllers;
 
 import java.lang.ref.WeakReference;
 
+import com.facebook.Session;
+
 import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.framework.service.ServiceManager;
@@ -134,6 +136,7 @@ public class ActivitiesWorkFlow {
                             if (v.getId() == R.id.button2) {
                                 LogOut.performLogOut(new WeakReference<Activity>(
                                         activity));
+                                Session.getActiveSession().closeAndClearTokenInformation();
                                 TrackerDelegator.trackLogoutSuccessful(activity.getApplicationContext());
                             }
                             dialog.dismiss();
