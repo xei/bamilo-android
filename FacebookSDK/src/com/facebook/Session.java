@@ -135,7 +135,7 @@ public class Session implements Serializable {
         add("rsvp_event");
     }};
 
-    private String applicationId;
+    private static String applicationId;
     private SessionState state;
     private AccessToken tokenInfo;
     private Date lastAttemptedTokenExtendDate = new Date(0);
@@ -260,6 +260,10 @@ public class Session implements Serializable {
         }
     }
 
+    public void setAppId(String appId){
+    	this.applicationId = appId;
+    }
+    
     /**
      * Returns a Bundle containing data that was returned from Facebook during
      * authorization.

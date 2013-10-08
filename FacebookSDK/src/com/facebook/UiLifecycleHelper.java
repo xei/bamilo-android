@@ -54,6 +54,7 @@ public class UiLifecycleHelper {
     // Members related to handling FacebookDialog calls
     private FacebookDialog.PendingCall pendingFacebookDialogCall;
     private AppEventsLogger appEventsLogger;
+    private static String jumiaAppId = "";
 
     /**
      * Creates a new UiLifecycleHelper.
@@ -62,12 +63,13 @@ public class UiLifecycleHelper {
      *                 use {@link android.support.v4.app.Fragment#getActivity()}
      * @param callback the callback for Session status changes, can be null
      */
-    public UiLifecycleHelper(Activity activity, Session.StatusCallback callback) {
+    public UiLifecycleHelper(Activity activity, Session.StatusCallback callback, String appId) {
         if (activity == null) {
             throw new IllegalArgumentException(ACTIVITY_NULL_MESSAGE);
         }
         this.activity = activity;
         this.callback = callback;
+        this.jumiaAppId = appId;
         this.receiver = new ActiveSessionBroadcastReceiver();
         this.broadcastManager = LocalBroadcastManager.getInstance(activity);
     }
@@ -82,13 +84,16 @@ public class UiLifecycleHelper {
         if (session == null) {
             if (savedInstanceState != null) {
                 session = Session.restoreSession(activity, null, callback, savedInstanceState);
+                session.setAppId(this.jumiaAppId);
             }
             if (session == null) {
                 session = new Session(activity);
+                session.setAppId(this.jumiaAppId);
             }
             Session.setActiveSession(session);
         }
         if (savedInstanceState != null) {
+        	session.setAppId(this.jumiaAppId);
             pendingFacebookDialogCall = savedInstanceState.getParcelable(DIALOG_CALL_BUNDLE_SAVE_KEY);
         }
     }
@@ -99,6 +104,8 @@ public class UiLifecycleHelper {
     public void onResume() {
         Session session = Session.getActiveSession();
         if (session != null) {
+        	Log.i("UILIFE", "code1 session is not null  appId : "+this.jumiaAppId);
+        	session.setAppId(this.jumiaAppId);
             if (callback != null) {
                 session.addCallback(callback);
             }
@@ -106,7 +113,7 @@ public class UiLifecycleHelper {
                 session.openForRead(null);
             }
         }
-
+        Log.i("UILIFE", "code1 session is null  appId : "+this.jumiaAppId);
         // add the broadcast receiver
         IntentFilter filter = new IntentFilter();
         filter.addAction(Session.ACTION_ACTIVE_SESSION_SET);
@@ -115,6 +122,10 @@ public class UiLifecycleHelper {
         // Add a broadcast receiver to listen to when the active Session
         // is set or unset, and add/remove our callback as appropriate
         broadcastManager.registerReceiver(receiver, filter);
+    }
+    
+    public void setJumiaAppId(String appId){
+    	this.jumiaAppId = appId;
     }
 
     /**
@@ -141,6 +152,7 @@ public class UiLifecycleHelper {
                 FacebookDialog.Callback facebookDialogCallback) {
         Session session = Session.getActiveSession();
         if (session != null) {
+        	session.setAppId(this.jumiaAppId);
             session.onActivityResult(activity, requestCode, resultCode, data);
         }
 
@@ -217,7 +229,7 @@ public class UiLifecycleHelper {
         if (session == null) {
             return null;
         }
-
+        session.setAppId(this.jumiaAppId);
         if (appEventsLogger == null || !appEventsLogger.isValidForSession(session)) {
             if (appEventsLogger != null) {
                 // Pretend we got stopped so the old logger will persist its results now, in case we get stopped
@@ -240,6 +252,7 @@ public class UiLifecycleHelper {
             if (Session.ACTION_ACTIVE_SESSION_SET.equals(intent.getAction())) {
                 Session session = Session.getActiveSession();
                 if (session != null && callback != null) {
+                	session.setAppId(UiLifecycleHelper.jumiaAppId);
                     session.addCallback(callback);
                 }
             } else if (Session.ACTION_ACTIVE_SESSION_UNSET.equals(intent.getAction())) {
