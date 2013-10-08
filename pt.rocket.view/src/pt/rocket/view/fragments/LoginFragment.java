@@ -10,6 +10,7 @@ import java.util.List;
 
 import com.facebook.Request;
 import com.facebook.Session;
+import com.facebook.SessionLoginBehavior;
 import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
 import com.facebook.model.GraphUser;
@@ -134,8 +135,9 @@ public class LoginFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
         wasAutologin = true;
-
-        uiHelper = new UiLifecycleHelper(getActivity(), callback);
+        String appId = getActivity().getResources().getString(R.string.app_id);
+        Log.i(TAG, "code1 app id is : "+appId);
+        uiHelper = new UiLifecycleHelper(getActivity(), callback, appId);
         uiHelper.onCreate(savedInstanceState);
     }
 
@@ -156,6 +158,7 @@ public class LoginFragment extends BaseFragment {
         container = (ViewGroup) view.findViewById(R.id.form_container);
         LoginButton authButton = (LoginButton) view.findViewById(R.id.authButton);
         authButton.setFragment(this);
+        authButton.setLoginBehavior(SessionLoginBehavior.SUPPRESS_SSO);
         authButton.setReadPermissions(Arrays.asList("email"));
         return view;
     }
@@ -180,6 +183,8 @@ public class LoginFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        String appId = getActivity().getResources().getString(R.string.app_id);
+        uiHelper.setJumiaAppId(appId);
         uiHelper.onResume();
         Log.i(TAG, "ON RESUME");
 
@@ -236,6 +241,7 @@ public class LoginFragment extends BaseFragment {
         if (state.isOpened()) {
             Log.i(TAG, "code1 Logged in..." + session.getApplicationId());
             Log.i(TAG, "code1 Logged in..." + session.getAccessToken());
+            ((BaseActivity) getActivity()).showLoading();
             // make request to the /me API
             Request request = Request.newMeRequest(
                     session,
@@ -254,14 +260,14 @@ public class LoginFragment extends BaseFragment {
 //                                Log.i(TAG, "code1 user lname" + user.getLastName());
 //                                Log.i(TAG, "code1 user username" + user.getUsername());
 //                                Log.i(TAG, "code1 user email" + (String) user.getProperty("email"));
-                                ((BaseActivity) getActivity()).showLoading();
+                                
                                 requestFacebookLogin(user);
                             }
                         }
                     }
                     );
 
-            Request.executeBatchAndWait(request);
+            Request.executeBatchAsync(request);
         } else if (state.isClosed()) {
             Log.i(TAG, "code1 Logged out...");
         }

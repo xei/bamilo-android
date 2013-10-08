@@ -119,9 +119,11 @@ public class SessionFragmentActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        fragment = null;
+        System.gc();
         finish();
         Log.i(TAG, "ON DESTROY");
-        //System.gc();
+        
     }
 
     /*
