@@ -280,6 +280,15 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
     
     private void showProductsContent() {
         Log.d( TAG, "showProductsContent");
+        if(pageNumber == 1){
+            productsList.post(new Runnable() {
+                @Override
+                public void run() {
+                    productsList.setSelection(0);
+                }
+            });
+           
+        }
         productsContent.setVisibility( View.VISIBLE );
         notfound.setVisibility( View.GONE );
         loadingLayout.setVisibility(View.GONE);
@@ -565,6 +574,7 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
         }
 
         productsAdapter.appendProducts(productsPage.getProducts());
+
         showProductsContent();
 
         Log.i(TAG, " " + productsPage.getProducts().size());

@@ -266,6 +266,10 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
      * Category level 1
      */
     private void categoryLevel1() {
+        if(getView() == null){
+            getActivity().finish();
+            return;
+        }
         categoriesList = (ListView) getView().findViewById(R.id.sub_categories_grid);
         //categoriesList.setExpanded(true);
         mainCatAdapter = new CategoriesAdapter(getActivity(), categories);

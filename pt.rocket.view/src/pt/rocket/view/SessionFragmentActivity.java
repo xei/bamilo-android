@@ -112,7 +112,6 @@ public class SessionFragmentActivity extends BaseActivity {
     public void onStop() {
         super.onStop();
         Log.i(TAG, "ON STOP");
-        finish();
         
     }
     
