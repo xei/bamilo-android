@@ -55,6 +55,12 @@ public class LogOut {
                         return true;
                     }
 
+                    @Override
+                    public String getMD5Hash() {
+                        // TODO Auto-generated method stub
+                        return null;
+                    }
+
                 });
     }
 

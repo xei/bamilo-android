@@ -1,5 +1,8 @@
 package pt.rocket.view.fragments;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Calendar;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
@@ -53,6 +56,8 @@ public abstract class BaseFragment extends Fragment implements ResponseListener,
     private static final Set<EventType> HANDLED_EVENTS = EnumSet.of(EventType.INITIALIZE,
             EventType.LOGOUT_EVENT);
 
+    protected String md5Hash = null;
+    
     private static String writeReviewFragment = "pt.rocket.view.WriteReviewFragmentActivity";
 
     protected static final String TAG = LogTagHelper.create(BaseFragment.class);
@@ -444,5 +449,44 @@ public abstract class BaseFragment extends Fragment implements ResponseListener,
      */
     public NavigationAction getAction() {
         return action;
+    }
+    
+    
+
+    /**
+     * This method generates a unique and always diferent MD5 hash based on a given key 
+     * @param key 
+     * @return the unique MD5 
+     */
+    protected static String uniqueMD5(String key) { 
+        String md5String = "";
+        try {
+            Calendar calendar = Calendar.getInstance();
+            key = key + calendar.getTimeInMillis() ;
+        
+            // Create MD5 Hash
+            MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
+            digest.update(key.getBytes());
+            byte messageDigest[] = digest.digest();
+     
+            // Create Hex String
+            StringBuffer hexString = new StringBuffer();
+            for (int i=0; i<messageDigest.length; i++) {
+                hexString.append(Integer.toHexString(0xFF & messageDigest[i]));
+            }
+            md5String = hexString.toString();
+     
+         } catch (NoSuchAlgorithmException e) {
+             e.printStackTrace();
+         }
+        
+        return md5String;
+ 
+    }         
+    
+    @Override
+    public String getMD5Hash() {
+        // TODO Auto-generated method stub
+        return md5Hash;
     }
 }

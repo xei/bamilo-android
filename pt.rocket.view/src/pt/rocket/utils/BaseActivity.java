@@ -1005,5 +1005,10 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     public void sendValuesToActivity(int identifier, Object values){}
 
 
+    @Override
+    public String getMD5Hash() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
 }

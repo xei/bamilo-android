@@ -502,7 +502,6 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
             String specialPrice = mCompleteProduct.getSpecialPrice();
             if (specialPrice == null)
                 specialPrice = mCompleteProduct.getMaxSpecialPrice();
-
             int discountPercentage = mCompleteProduct.getMaxSavingPercentage().intValue();
             mCallbackProductBasicInfoFragment.sendValuesToFragment(
                     ProductBasicInfoFragment.DEFINE_UNIT_PRICE, unitPrice);
@@ -515,9 +514,12 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
             // Simple Products prices dont come with currency preformatted
             String unitPrice = simple.getAttributeByKey(ProductSimple.PRICE_TAG);
             String specialPrice = simple.getAttributeByKey(ProductSimple.SPECIAL_PRICE_TAG);
+
             unitPrice = currencyFormatHelper(unitPrice);
             if (specialPrice != null)
                 specialPrice = currencyFormatHelper(specialPrice);
+            
+
             int discountPercentage = mCompleteProduct.getMaxSavingPercentage().intValue();
             mCallbackProductBasicInfoFragment.sendValuesToFragment(
                     ProductBasicInfoFragment.DEFINE_UNIT_PRICE, unitPrice);
@@ -607,6 +609,7 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
             mVariantPriceContainer.setVisibility(View.VISIBLE);
             String normPrice = simple.getAttributeByKey(ProductSimple.PRICE_TAG);
             String specPrice = simple.getAttributeByKey(ProductSimple.SPECIAL_PRICE_TAG);
+            
             if (TextUtils.isEmpty(specPrice)) {
                 normPrice = currencyFormatHelper(normPrice);
                 mVariantSpecPrice.setVisibility(View.GONE);

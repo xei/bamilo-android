@@ -185,6 +185,11 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
         
         savedState = savedInstanceState;
 
+        md5Hash = uniqueMD5(TAG);
+        
+        Log.i(TAG, " MD5Hash -> " + md5Hash);
+        
+        
         // Inflate Products Layout
         setAppContentLayout();
         
@@ -415,7 +420,7 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
             beginRequestMillis = System.currentTimeMillis();            
             EventManager.getSingleton().triggerRequestEvent(
                         new GetProductsEvent(productsURL, searchQuery, pageNumber, MAX_PAGE_ITEMS,
-                                        sort, dir));
+                                        sort, dir, md5Hash));
             TrackerDelegator.trackCategoryView(getActivity().getApplicationContext(), title, pageNumber);
         } else{
             hideProductsLoading();
@@ -438,7 +443,7 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
         switch (position) {
         case 0: // <item >Popularity</item>
             sort = ProductSort.POPULARITY;
-            dir = Direction.ASCENDENT;
+            dir = Direction.DESCENDENT;
             break;
         case 1: // <item >Price up</item>
             sort = ProductSort.PRICE;
@@ -630,7 +635,7 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
         if(event.errorCode.isNetworkError() && pageNumber == 1 ){
             ((BaseActivity) getActivity()).showWarning(false);
             ((BaseActivity) getActivity()).showError(new GetProductsEvent(productsURL, searchQuery, pageNumber, MAX_PAGE_ITEMS,
-                    sort, dir));
+                    sort, dir, md5Hash));
         } else if (!event.errorCode.isNetworkError() && pageNumber == 1 && productsAdapter.getCount() == 0) {
             Log.d(TAG, "onErrorEvent: No products to show");
             showProductsNotfound();

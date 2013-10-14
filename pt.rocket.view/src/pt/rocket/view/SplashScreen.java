@@ -279,4 +279,10 @@ public class SplashScreen extends Activity implements ResponseListener {
     public boolean removeAfterHandlingEvent() {
         return true;
     }
+
+    @Override
+    public String getMD5Hash() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }

@@ -16,7 +16,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.ListView;
-import android.widget.TextView;
+import org.holoeverywhere.widget.TextView;
 import de.akquinet.android.androlog.Log;
 
 /**

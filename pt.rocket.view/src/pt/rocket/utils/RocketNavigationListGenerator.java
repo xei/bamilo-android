@@ -22,7 +22,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import org.holoeverywhere.widget.TextView;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -310,6 +310,12 @@ public class RocketNavigationListGenerator implements ResponseListener {
 //                EventManager.getSingleton().triggerRequestEvent( new RequestEvent(EventType.GET_SHOPPING_CART_ITEMS_EVENT));
 //            }
         }
+    }
+
+    @Override
+    public String getMD5Hash() {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

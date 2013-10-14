@@ -22,7 +22,7 @@
             android:src="@drawable/home_logo"
              />
 
-        <TextView
+        <org.holoeverywhere.widget.TextView
             android:id="@+id/component_text"
             style="@style/navigation_generic_component_text"
             />
