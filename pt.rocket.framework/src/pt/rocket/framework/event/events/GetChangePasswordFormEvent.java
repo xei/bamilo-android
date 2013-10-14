@@ -37,4 +37,9 @@ public class GetChangePasswordFormEvent implements IEvent {
     public EventType getType() {
         return type;
     }
+
+	@Override
+	public String getMD5Hash() {
+		return null;
+	}
 }

@@ -49,51 +49,21 @@ class RestMethodWorkerThread implements Runnable {
 		switch (type) {
 		case RestContract.METHOD_GET:
 			// Constants.LogDebug("Going to perform a get");
-			new Thread(new Runnable() {
-				
-				@Override
-				public void run() {
-					RestClientSingleton.getSingleton().executeGetRestUrlString(uri, resultReceiver, metaData);
+			RestClientSingleton.getSingleton().executeGetRestUrlString(uri, resultReceiver, metaData);
 					
-				}
-			}).run();
-			
 			break;
 		case RestContract.METHOD_POST:
-			new Thread(new Runnable() {
-				
-				@Override
-				public void run() {
-					if(Darwin.logDebugEnabled) {
-						Log.i("METHOD_POST", "METHOD_POST : " + uri  );
-					}
+			if(Darwin.logDebugEnabled) {
+				Log.i("METHOD_POST", "METHOD_POST : " + uri  );
+			}
 					
-					RestClientSingleton.getSingleton().executePostRestUrlString(uri, formData, resultReceiver, metaData);
-					
-				}
-			}).run();
-			
+			RestClientSingleton.getSingleton().executePostRestUrlString(uri, formData, resultReceiver, metaData);
 			break;
 		case RestContract.METHOD_PUT:
-			new Thread(new Runnable() {
-				
-				@Override
-				public void run() {
-					RestClientSingleton.getSingleton().executePutRestUrlString(uri, formData, resultReceiver, metaData);
-					
-				}
-			}).run();
-			
+			RestClientSingleton.getSingleton().executePutRestUrlString(uri, formData, resultReceiver, metaData);
 			break;
 		case RestContract.METHOD_DELETE:
-			new Thread(new Runnable() {
-				
-				@Override
-				public void run() {
-					RestClientSingleton.getSingleton().executeDeleteRestUrlString(uri, resultReceiver, metaData);
-				}
-			}).run();
-			
+			RestClientSingleton.getSingleton().executeDeleteRestUrlString(uri, resultReceiver, metaData);
 			break;
 		}
 		if(Darwin.logDebugEnabled) {

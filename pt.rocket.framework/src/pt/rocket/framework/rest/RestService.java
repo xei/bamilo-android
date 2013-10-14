@@ -40,11 +40,14 @@ public class RestService extends Service {
 	private ConnectivityManager connManager;
 
 	private ThreadPoolExecutor tpe;
+	
+	private final int INIT_NUMBER_OF_THREADS = 1;
+	private final int MAX_NUMBER_OF_THREADS = 5;
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		tpe = new TestThreadPoolExecutor(5, 5, 10, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
+		tpe = new TestThreadPoolExecutor(INIT_NUMBER_OF_THREADS, MAX_NUMBER_OF_THREADS, 10, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
 		connManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
  	}
 	

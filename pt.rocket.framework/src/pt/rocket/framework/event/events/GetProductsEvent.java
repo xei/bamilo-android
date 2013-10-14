@@ -37,8 +37,8 @@ public class GetProductsEvent extends RequestEvent {
     /**
      * @param searchQuery
      */
-    public GetProductsEvent(String productUrl, String searchQuery) {
-    	this(productUrl, searchQuery, 1, 10);
+    public GetProductsEvent(String productUrl, String searchQuery, String md5) {
+    	this(productUrl, searchQuery, 1, 10, md5);
     }
     
     /**
@@ -46,12 +46,12 @@ public class GetProductsEvent extends RequestEvent {
      * @param pageNumber
      * @param numOfProducts
      */
-    public GetProductsEvent(String productUrl, String searchQuery , int pageNumber, int numOfProducts) {
-    	this(productUrl, searchQuery, pageNumber, numOfProducts, ProductSort.NONE, Direction.ASCENDENT);
+    public GetProductsEvent(String productUrl, String searchQuery , int pageNumber, int numOfProducts, String md5) {
+    	this(productUrl, searchQuery, pageNumber, numOfProducts, ProductSort.NONE, Direction.ASCENDENT, md5);
     }
     
-    public GetProductsEvent(String productUrl, String searchQuery, int pageNumber, int numOfProducts, ProductSort sort, Direction direction) {
-    	super(type);
+    public GetProductsEvent(String productUrl, String searchQuery, int pageNumber, int numOfProducts, ProductSort sort, Direction direction, String md5) {
+    	super(type, md5);
 		this.productUrl = productUrl;
         this.searchQuery = searchQuery;
         this.pageNumber = pageNumber;

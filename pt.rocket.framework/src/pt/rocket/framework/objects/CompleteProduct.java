@@ -146,7 +146,7 @@ public class CompleteProduct implements IJSONSerializable {
             specialPrice = CurrencyFormatter.formatCurrency(specialPriceDouble);
             maxSpecialPrice = CurrencyFormatter.formatCurrency(Double.parseDouble(dataObject.optString(RestConstants.JSON_MAX_SPECIAL_PRICE_TAG, "" + maxPriceDouble)));
             maxSavingPercentage = Double.parseDouble(dataObject.optString(RestConstants.JSON_MAX_SAVING_PERCENTAGE_TAG, "0"));
-
+            
             // TODO: ratings need to be completed
             JSONObject ratingsTotalObject = dataObject.optJSONObject(RestConstants.JSON_RATINGS_TOTAL_TAG);
             if(ratingsTotalObject != null) {            	

@@ -26,4 +26,11 @@ public interface IEvent {
 	 * @return Type of the event.
 	 */
 	public EventType getType();
+	
+	/**
+	 * Returns the md5 hash that uniquely identifies the request and the listener
+	 * 
+	 * @return the md5 hash string
+	 */
+	public String getMD5Hash();
 }

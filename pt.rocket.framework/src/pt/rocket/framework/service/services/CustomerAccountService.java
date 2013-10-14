@@ -360,10 +360,15 @@ public class CustomerAccountService extends DarwinService {
 	
 	private ContentValues getCredentials() {
 		ContentValues cv = new ContentValues();
-		for(Entry<String,?> entry : obscuredPreferences.getAll().entrySet()) {
-			if(entry.getValue() instanceof CharSequence) {
-				cv.put(entry.getKey(), entry.getValue().toString());
-			}
+		try {
+			for(Entry<String,?> entry : obscuredPreferences.getAll().entrySet()) {
+				if(entry.getValue() instanceof CharSequence) {
+					cv.put(entry.getKey(), entry.getValue().toString());
+				}
+			}			
+		} catch (RuntimeException e) {
+			Log.e(TAG, "CUST.ACCOUNT : ERROR in ObscuredPrefs.");
+			e.printStackTrace();
 		}
 		return cv;
 	}

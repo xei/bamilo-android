@@ -70,6 +70,11 @@ public class ShoppingCartService extends DarwinService {
 				handleShoppingCartEvent(GetShoppingCartItemsEvent.FORCE_API_CALL);
 			}
 		}
+		
+		@Override
+		public String getMD5Hash() {
+			return null;
+		}
 	};
 
 	/**

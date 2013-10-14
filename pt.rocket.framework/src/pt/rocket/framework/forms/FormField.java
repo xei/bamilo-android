@@ -474,4 +474,13 @@ public class FormField implements IJSONSerializable, IFormField, ResponseListene
 	public boolean removeAfterHandlingEvent() {
 		return false;
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see pt.rocket.framework.event.ResponseListener#getMD5Hash()
+	 */
+	@Override
+	public String getMD5Hash() {
+		return null;
+	}
 }

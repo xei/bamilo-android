@@ -82,4 +82,9 @@ public class ResponseEvent implements IEvent{
 				+ ", errorMessages=" + errorMessages
 				+ "]";
 	}
+	
+	@Override
+	public String getMD5Hash() {
+		return request.getMD5Hash();
+	}
 }

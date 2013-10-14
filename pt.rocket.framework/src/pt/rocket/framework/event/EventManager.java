@@ -56,6 +56,7 @@ public class EventManager {
 	public void addResponseListener(EventType eventType,
 			ResponseListener eventListener) {
 		addListener(eventType, eventListener, responseListenerMap);
+		Log.i(TAG, " MD5 HASH ----------> " + eventListener.getMD5Hash() );
 
 	}
 
@@ -100,12 +101,9 @@ public class EventManager {
 			if (listeners == null) {
 				listeners = new CopyOnWriteArraySet<EL>();
 				map.put(eventType, listeners);
-			}else{
 			}
 		}
-
 		listeners.add(eventListener);
-
 	}
 
 	public void removeRequestListener(EventType eventType,
@@ -217,12 +215,15 @@ public class EventManager {
 					"Triggering events without listeners don't make sense.\nThere is no registered listener for event type "
 							+ event.getType());
 			return;
-		}else{
 		}
 		for (EventListener<T> listener : eventListeners) {
 			if (logTriggerVerbose)
 				Log.d(TAG, "informing " + listener.getClass().getSimpleName());
-			if (listener != null)
+			
+			Log.i(TAG, " EVENT MD5 =-> " + event.getMD5Hash() );
+			Log.i(TAG, " LISTENER MD5 =-> " + listener.getMD5Hash() );
+			
+			if (listener != null && (listener.getMD5Hash() == null || listener.getMD5Hash().equals(event.getMD5Hash())) )
 				listener.handleEvent(event);
 			if (listener.removeAfterHandlingEvent()) {
 				removeListener(event.getType(), listener, map);

@@ -10,5 +10,5 @@ package pt.rocket.framework.event;
  *
  */
 public interface ResponseListener extends EventListener<ResponseEvent> {
-	
+
 }

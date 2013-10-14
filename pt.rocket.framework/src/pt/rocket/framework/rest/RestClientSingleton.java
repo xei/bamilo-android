@@ -152,7 +152,7 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 		connManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
 		CacheConfig cacheConfig = new CacheConfig();  
-		cacheConfig.setMaxCacheEntries(50);
+		cacheConfig.setMaxCacheEntries(100);
 		cacheConfig.setMaxObjectSize(MAX_CACHE_OBJECT_SIZE);
 		cacheConfig.setSharedCache(false);
 		cache = new DBHttpCacheStorage(context, cacheConfig);

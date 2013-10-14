@@ -23,5 +23,11 @@ public interface EventListener<T extends IEvent> {
 	 * @return true if the class should be removed or false if otherwise.
 	 */
 	public boolean removeAfterHandlingEvent();
-
+	
+	
+	/**
+	 * Retrieves the MD5 hash the uniquely identifies an event handler. 
+	 */
+	public String getMD5Hash();
+		
 }

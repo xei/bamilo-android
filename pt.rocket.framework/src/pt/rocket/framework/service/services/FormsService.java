@@ -9,9 +9,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.event.EventManager;
 import pt.rocket.framework.event.EventType;
 import pt.rocket.framework.event.RequestEvent;
+import pt.rocket.framework.event.ResponseErrorEvent;
 import pt.rocket.framework.event.ResponseEvent;
 import pt.rocket.framework.event.events.GetFormsDatasetListEvent;
 import pt.rocket.framework.forms.Form;
@@ -112,6 +114,15 @@ public class FormsService extends DarwinService {
 //							action).get(0), null));
 //			return;
 //		}
+		
+
+		// Send error
+		if ( null == formDataRegistry ) {
+			Log.w(TAG, "FORM DATA REGISTRY IS NULL " + event.getType().toString());
+			EventManager.getSingleton().triggerResponseEvent(new ResponseErrorEvent(event, ErrorCode.UNKNOWN_ERROR));
+			return;
+		}
+		
 		FormData formData = formDataRegistry.get(event.eventType.action);
 		String url = formData.getUrl();
 		RestServiceHelper.requestGet(Uri.parse(url),

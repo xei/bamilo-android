@@ -167,6 +167,11 @@ public class ServiceManager extends RequestListener {
 			}
 		}
 
+		@Override
+		public String getMD5Hash() {		
+			return null;
+		}
+
 	}
 
 }

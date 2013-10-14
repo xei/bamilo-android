@@ -11,7 +11,8 @@ package pt.rocket.framework.event;
  */
 public abstract class RequestListener implements EventListener<RequestEvent> {
 	
-	private final boolean removeAfterHandlingEvent;
+	private final boolean removeAfterHandlingEvent;	
+	public String md5Hash = null;
 	
 	/**
 	 * Base constructor
@@ -28,4 +29,9 @@ public abstract class RequestListener implements EventListener<RequestEvent> {
 		return removeAfterHandlingEvent;
 	}
 
+	@Override
+	public String getMD5Hash() {
+		return null;
+	}
+	
 }
