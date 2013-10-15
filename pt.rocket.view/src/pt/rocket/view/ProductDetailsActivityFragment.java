@@ -220,6 +220,7 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
         boolean showProductDetailsTips = sharedPrefs.getBoolean(ConstantsSharedPrefs.KEY_SHOW_PRODUCT_DETAILS_TIPS, true);
         if(showProductDetailsTips){
            ViewPager viewPagerTips = (ViewPager) findViewById(R.id.viewpager_tips); 
+           viewPagerTips.setVisibility(View.VISIBLE);
            viewPagerTips.setAdapter(new TipsPagerAdapter(getLayoutInflater()));
            viewPagerTips.setOnPageChangeListener(tipsPageChangeListener);
            ((LinearLayout) findViewById(R.id.viewpager_tips_btn_indicator)).setVisibility(View.VISIBLE);

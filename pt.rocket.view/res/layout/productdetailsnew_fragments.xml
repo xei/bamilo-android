@@ -283,6 +283,6 @@
         android:layout_height="match_parent"
         android:layout_above="@id/viewpager_tips_btn_indicator"
         android:background="#90000000"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
 </RelativeLayout>
