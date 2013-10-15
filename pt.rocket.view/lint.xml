@@ -68,6 +68,7 @@
     <issue id="MissingPrefix" severity="ignore" />
     <issue id="MissingQuantity" severity="ignore" />
     <issue id="MissingRegistered" severity="ignore" />
+    <issue id="MissingSuperCall" severity="ignore" />
     <issue id="MissingTranslation" severity="ignore">
         <ignore path="res/values/configs.xml" />
         <ignore path="res/values/countries.xml" />

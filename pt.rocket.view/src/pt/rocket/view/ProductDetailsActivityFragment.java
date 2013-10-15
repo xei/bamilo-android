@@ -42,17 +42,24 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -209,6 +216,14 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
         mPhone2Call = sharedPrefs.getString(ProductDetailsActivityFragment.KEY_CALL_TO_ORDER, "");
         if (mPhone2Call.equalsIgnoreCase("")) {
             mPhone2Call = getString(R.string.call_to_order_number);
+        }
+        boolean showProductDetailsTips = sharedPrefs.getBoolean(ConstantsSharedPrefs.KEY_SHOW_PRODUCT_DETAILS_TIPS, true);
+        if(showProductDetailsTips){
+           ViewPager viewPagerTips = (ViewPager) findViewById(R.id.viewpager_tips); 
+           viewPagerTips.setAdapter(new TipsPagerAdapter(getLayoutInflater()));
+           viewPagerTips.setOnPageChangeListener(tipsPageChangeListener);
+           ((LinearLayout) findViewById(R.id.viewpager_tips_btn_indicator)).setVisibility(View.VISIBLE);
+           ((LinearLayout) findViewById(R.id.viewpager_tips_btn_indicator)).setOnClickListener(this);
         }
     }
 
@@ -822,6 +837,14 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
             // .show();
             makeCall();
 
+        } else if (id == R.id.viewpager_tips_btn_indicator) {
+            SharedPreferences sharedPrefs = this.getSharedPreferences(
+                    ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+            Editor eD = sharedPrefs.edit();
+            eD.putBoolean(ConstantsSharedPrefs.KEY_SHOW_PRODUCT_DETAILS_TIPS, false);
+            eD.commit();
+            findViewById(R.id.viewpager_tips).setVisibility(View.GONE);
+            ((LinearLayout) findViewById(R.id.viewpager_tips_btn_indicator)).setVisibility(View.GONE);
         }
 
     }
@@ -844,6 +867,42 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
                 mSelectedSimple);
         dialogListFragment.show(getSupportFragmentManager(), null);
     }
+    
+    
+    OnPageChangeListener tipsPageChangeListener = new OnPageChangeListener() {
+        
+        @Override
+        public void onPageSelected(int position) {
+            ImageView indicator1 = (ImageView) findViewById(R.id.indicator1);
+            ImageView indicator2 = (ImageView) findViewById(R.id.indicator2);
+            
+            switch (position) {
+            case 0:
+                indicator1.setImageResource(R.drawable.bullit_showing);
+                indicator2.setImageResource(R.drawable.bullit);
+                break;
+            case 1:
+                indicator1.setImageResource(R.drawable.bullit);
+                indicator2.setImageResource(R.drawable.bullit_showing);
+                break;
+            
+            default:
+                break;
+            }
+        }
+        
+        @Override
+        public void onPageScrolled(int arg0, float arg1, int arg2) {
+            // TODO Auto-generated method stub
+            
+        }
+        
+        @Override
+        public void onPageScrollStateChanged(int arg0) {
+            // TODO Auto-generated method stub
+            
+        }
+    };
 
     @Override
     public void onDialogListItemSelect(String id, int position, String value) {
@@ -979,5 +1038,43 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
     @Override
     public void onSwitchFragment(FragmentType type, Boolean addToBackStack) {
     }
+    
+    private class TipsPagerAdapter extends PagerAdapter {
+        
+        private int[] tips_pages = {R.layout.tip_swipe_layout, R.layout.tip_tap_layout};
+
+        private LayoutInflater mLayoutInflater;
+        
+        public TipsPagerAdapter(LayoutInflater layoutInflater) {
+            mLayoutInflater = layoutInflater;
+        }
+        
+        @Override
+        public int getCount() {
+            return tips_pages.length;
+        }
+
+        @Override
+        public boolean isViewFromObject(View view, Object arg1) {
+            // TODO Auto-generated method stub
+            return view == ((View) arg1);
+        }
+        
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            View view = mLayoutInflater.inflate(tips_pages[position], null);
+            
+            ((ViewPager) container).addView(view, position);
+            
+            return view;
+        }
+        
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            ((ViewPager) container).removeView(findViewById(tips_pages[position]));
+        }
+        
+    }
+    
 
 }

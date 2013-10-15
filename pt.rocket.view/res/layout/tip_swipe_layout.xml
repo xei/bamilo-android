@@ -2,28 +2,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
-
-    <pt.rocket.utils.ScrollViewWithHorizontal
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
-        <LinearLayout
-            android:id="@+id/view_pager_element_frame"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
-        </LinearLayout>
-    </pt.rocket.utils.ScrollViewWithHorizontal>
-
     <RelativeLayout
-        android:id="@+id/home_tip"
+        android:id="@+id/tip_tap"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#90000000"
-        android:visibility="gone" >
+        >
 
         <ImageView
-            android:id="@+id/home_tip_img"
+            android:id="@+id/tip_tap_img"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
@@ -31,14 +17,14 @@
             android:src="@drawable/img_instructions_swipe" />
 
         <org.holoeverywhere.widget.TextView 
-            android:id="@+id/home_tip_text"
+            android:id="@+id/tip_tap_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_below="@id/home_tip_img"
+            android:layout_below="@id/tip_tap_img"
             android:layout_marginTop="33dp"
             android:textSize="19.8sp"
-            android:text="@string/home_tip_text" 
+            android:text="@string/tip_swipe_text" 
             android:textColor="#c3c3c3"
             android:shadowColor="#000000"
             />

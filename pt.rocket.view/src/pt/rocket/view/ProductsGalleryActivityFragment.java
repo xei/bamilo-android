@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 
 import pt.rocket.constants.ConstantsIntentExtra;
+import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.framework.event.EventType;
 import pt.rocket.framework.event.ResponseEvent;
 import pt.rocket.framework.event.ResponseResultEvent;
@@ -20,10 +21,17 @@ import pt.rocket.view.fragments.FragmentType;
 import pt.rocket.view.fragments.ProductImageGalleryFragment;
 import pt.rocket.view.fragments.ProductVariationsFragment;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 import de.akquinet.android.androlog.Log;
 /**
@@ -129,6 +137,24 @@ public class ProductsGalleryActivityFragment extends BaseActivity {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate");
 
+        final SharedPreferences sharedPrefs = this.getSharedPreferences(
+                ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        
+        boolean showGalleryTips = sharedPrefs.getBoolean(ConstantsSharedPrefs.KEY_SHOW_GALLERY_TIPS, true);
+        if(showGalleryTips){
+           findViewById(R.id.tip_gallery).setVisibility(View.VISIBLE);
+           findViewById(R.id.tip_gallery).setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+                findViewById(R.id.tip_gallery).setVisibility(View.GONE);
+                Editor eD = sharedPrefs.edit();
+                eD.putBoolean(ConstantsSharedPrefs.KEY_SHOW_GALLERY_TIPS, false);
+                eD.commit();
+            }
+        });
+        }
+        
         init(getIntent());
     }
     

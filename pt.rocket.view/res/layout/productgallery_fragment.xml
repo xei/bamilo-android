@@ -14,5 +14,34 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/variations_container" />
-   
+   <RelativeLayout
+        android:id="@+id/tip_gallery"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#90000000"
+        android:visibility="gone"
+        >
+
+        <ImageView
+            android:id="@+id/tip_pinch_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="52.8dp"
+            android:src="@drawable/img_instructions_pinch" />
+
+        <org.holoeverywhere.widget.TextView 
+            android:id="@+id/tip_tap_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/tip_pinch_img"
+            android:layout_marginTop="33dp"
+            android:textSize="19.8sp"
+            android:text="@string/tip_pinch_text" 
+            android:textColor="#c3c3c3"
+            android:shadowColor="#000000"
+            />
+    </RelativeLayout>
+	
 </RelativeLayout>
