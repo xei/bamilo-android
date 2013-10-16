@@ -287,7 +287,16 @@ public class Product implements IJSONSerializable {
                 brand = jsonObject.optString(RestConstants.JSON_BRAND_TAG);
                 
                 String priceString = jsonObject.optString(RestConstants.JSON_PRICE_TAG);
-                double priceDouble = Double.parseDouble(priceString);
+                
+                double priceDouble;
+                try {
+                	priceDouble = Double.parseDouble(priceString);	
+				} catch (NumberFormatException e) {
+					e.printStackTrace();
+					String normalIzedPrice = priceString.trim().split(" ")[0]+priceString.trim().split(" ")[1];
+					priceDouble = Double.parseDouble(normalIzedPrice);
+				}
+                
                 price = CurrencyFormatter.formatCurrency(priceDouble);
                 
                 String maxPriceString = jsonObject.optString(RestConstants.JSON_MAX_PRICE_TAG, price);
