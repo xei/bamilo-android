@@ -24,7 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
+import org.holoeverywhere.widget.TextView;
 
 /**
  * This Class is used to create an adapter for the wishlist of products. It is called by WishList Activity. <p/><br> 

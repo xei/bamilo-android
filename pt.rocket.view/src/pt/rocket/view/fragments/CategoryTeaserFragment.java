@@ -5,6 +5,8 @@ package pt.rocket.view.fragments;
 
 import java.util.EnumSet;
 
+import org.holoeverywhere.widget.TextView;
+
 import pt.rocket.framework.event.EventType;
 import pt.rocket.framework.event.ResponseEvent;
 import pt.rocket.framework.event.ResponseResultEvent;
@@ -12,16 +14,14 @@ import pt.rocket.framework.objects.CategoryTeaserGroup;
 import pt.rocket.framework.objects.CategoryTeaserGroup.TeaserCategory;
 import pt.rocket.framework.objects.ITargeting;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.utils.JumiaFlingDetector;
-import pt.rocket.view.R;
 import pt.rocket.view.HomeFragmentActivity;
+import pt.rocket.view.R;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import de.akquinet.android.androlog.Log;
 
 /**

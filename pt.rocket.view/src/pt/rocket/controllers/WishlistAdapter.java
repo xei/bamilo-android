@@ -28,7 +28,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
+import org.holoeverywhere.widget.TextView;
 
 /**
  * The adapter that implements the visualization of each item on the WishList list <p/><br> 

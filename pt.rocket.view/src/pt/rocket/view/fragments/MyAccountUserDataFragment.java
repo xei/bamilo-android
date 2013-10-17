@@ -5,8 +5,8 @@ package pt.rocket.view.fragments;
 
 import java.util.EnumSet;
 
-import pt.rocket.controllers.ActivitiesWorkFlow;
-import pt.rocket.controllers.MyAccountAdapter;
+import org.holoeverywhere.widget.TextView;
+
 import pt.rocket.framework.event.EventType;
 import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.event.events.ChangePasswordEvent;
@@ -22,11 +22,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
 import de.akquinet.android.androlog.Log;
 
 /**

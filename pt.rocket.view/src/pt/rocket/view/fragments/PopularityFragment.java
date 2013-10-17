@@ -6,23 +6,23 @@ package pt.rocket.view.fragments;
 import java.util.ArrayList;
 import java.util.EnumSet;
 
+import org.holoeverywhere.widget.TextView;
+
 import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.framework.components.ScrollViewEx;
 import pt.rocket.framework.components.ScrollViewEx.OnScrollBottomReachedListener;
 import pt.rocket.framework.event.EventManager;
 import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.event.RequestEvent;
 import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.event.events.GetProductReviewsEvent;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.ProductRatingPage;
-import pt.rocket.framework.objects.RatingOption;
 import pt.rocket.framework.objects.ProductReviewComment;
+import pt.rocket.framework.objects.RatingOption;
 import pt.rocket.framework.service.ServiceManager;
 import pt.rocket.framework.service.services.ProductService;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.BaseActivity;
-import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.view.R;
@@ -37,7 +37,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
-import android.widget.TextView;
 import de.akquinet.android.androlog.Log;
 
 /**

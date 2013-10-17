@@ -18,36 +18,44 @@
         android:textColor="@color/blue_basic"
         android:textSize="12dp"
         android:visibility="gone" />
-
+	
     <RelativeLayout
         android:id="@+id/products_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
-
+		<include
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            layout="@layout/loading_more"
+             />
         <GridView
             android:id="@+id/middle_productslist_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/container_btn_sort"
+            android:layout_above="@id/loadmore"
             android:listSelector="@android:color/transparent"
             android:numColumns="1"
             android:layout_alignParentTop="true" />
 
-        <include
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/container_btn_sort"
-            layout="@layout/loading_more" />
+        
 
-        <include
-            android:id="@+id/container_btn_sort"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="-10dp"
-            layout="@layout/btn_sort_colorflexible" />
+<!--         <include -->
+<!--             android:id="@+id/container_btn_sort" -->
+<!--             android:layout_width="match_parent" -->
+<!--             android:layout_height="wrap_content" -->
+<!--             android:layout_alignParentBottom="true" -->
+<!--             android:layout_alignParentLeft="true" -->
+<!--             android:layout_alignParentRight="true" -->
+<!--             android:layout_marginTop="-10dp" -->
+<!--             layout="@layout/btn_sort_colorflexible" /> -->
     </RelativeLayout>
+    <include
+        android:id="@+id/loading_view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" 
+        android:visibility="gone"
+        layout="@layout/loading_bar"
+        />
 
 </RelativeLayout>

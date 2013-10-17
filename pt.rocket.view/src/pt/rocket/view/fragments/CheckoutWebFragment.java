@@ -159,8 +159,8 @@ public class CheckoutWebFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.checkoutweb_frame, container, false);
         
         mWebContainer = (FrameLayout) view.findViewById(R.id.rocket_app_checkoutweb);
-        webview = new WebView(getActivity());
-        mWebContainer.addView(webview);
+//        webview = new WebView(getActivity());
+//        mWebContainer.addView(webview);
         
         return view;    
     }
@@ -185,6 +185,8 @@ public class CheckoutWebFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
+        webview = new WebView(getActivity());
+        mWebContainer.addView(webview);
         // Needed for 2.3 problem with not showing keyboard by tapping in webview
         webview.requestFocus();
 //        webview.setHttpAuthUsernamePassword("https://" + RestContract.REQUEST_HOST, "", "rocket", "rock4me");
@@ -278,7 +280,6 @@ public class CheckoutWebFragment extends BaseFragment {
 //        webview.loadUrl(checkoutUrl);
 //    }
     
-    @SuppressWarnings("deprecation")
     @SuppressLint("SetJavaScriptEnabled")
     private void setupWebView() {
         //webview = (WebView) findViewById(R.id.webview);
@@ -336,15 +337,15 @@ public class CheckoutWebFragment extends BaseFragment {
     
     private String prepareCookie(Cookie cookie) {
         String transDomain = cookie.getDomain();
-//        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
-//            if (cookie.getDomain().startsWith(".")) {
-//                transDomain = transDomain.substring(1);
-//                Log.d(TAG, "prepareCookie: transform domain = " + cookie.getDomain() + " result = "
-//                        + transDomain);
-//            } else {
-//                Log.d(TAG, "prepareCookie: cookie is fine: result = " + transDomain);
-//            }
-//        }
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
+            if (cookie.getDomain().startsWith(".")) {
+                transDomain = transDomain.substring(1);
+                Log.d(TAG, "prepareCookie: transform domain = " + cookie.getDomain() + " result = "
+                        + transDomain);
+            } else {
+                Log.d(TAG, "prepareCookie: cookie is fine: result = " + transDomain);
+            }
+        }
         return transDomain;
     }
     

@@ -4,10 +4,9 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 
 import org.holoeverywhere.FontLoader;
+import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.view.R;
@@ -25,10 +24,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.actionbarsherlock.view.ActionMode;
-import com.google.analytics.tracking.android.Log;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 

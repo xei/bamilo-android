@@ -3,6 +3,8 @@ package pt.rocket.controllers;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.holoeverywhere.widget.TextView;
+
 import pt.rocket.framework.objects.Product;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.view.R;
@@ -15,12 +17,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.RatingBar;
-import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
-import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 
 import de.akquinet.android.androlog.Log;
 

@@ -12,10 +12,35 @@
         </FrameLayout>
     -->
 
-    <fragment
-        android:id="@+id/fragment_product_list"
-        android:name="pt.rocket.view.fragments.ProductsFragment"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:duplicateParentState="true" >
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager_products_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <android.support.v4.view.PagerTabStrip
+                android:id="@+id/products_list_titles"
+                android:layout_width="match_parent"
+                android:layout_height="31.72dp"
+                android:layout_gravity="top"
+                android:background="@color/strip_title_background"
+                android:textColor="@color/strip_title"
+                android:textSize="12.54sp" />
+        </android.support.v4.view.ViewPager>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="31.72dp"
+            android:background="@drawable/filter_header" />
+    </RelativeLayout>
+    <!-- <fragment -->
+    <!-- android:id="@+id/fragment_product_list" -->
+    <!-- android:name="pt.rocket.view.fragments.ProductsFragment" -->
+    <!-- android:layout_width="match_parent" -->
+    <!-- android:layout_height="match_parent" /> -->
 
 </RelativeLayout>

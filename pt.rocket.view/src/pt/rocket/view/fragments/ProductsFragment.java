@@ -37,8 +37,6 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Debug;
-import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,7 +50,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.Toast;
 
-import com.nostra13.universalimageloader.cache.disc.impl.TotalSizeLimitedDiscCache;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.PauseOnScrollListener;
 
@@ -62,18 +59,19 @@ import de.akquinet.android.androlog.Log;
  * @author sergiopereira
  * 
  */
-public class ProductsFragment extends BaseFragment implements OnClickListener, OnDialogListListener, OnScrollListener, RecyclerListener {
+public class ProductsFragment extends BaseFragment implements OnClickListener,
+        OnDialogListListener, OnScrollListener, RecyclerListener {
 
     private static final String TAG = LogTagHelper.create(ProductsFragment.class);
 
     private final static int MAX_RECYCLED_PROCESSED_COUNT = 200;
-    
+
     private View mainView;
-    
+
     boolean isFirstBootBrands = true;
     boolean isFirstBootProducts = true;
-    
-    private View sortButton;
+
+    // private View sortButton;
     private final static String ID_SORT_DIALOG = "sort";
     private final static String KEY_STATE_SORTER = "products_state_sorter";
     private final static String KEY_STATE_VIEW = "products_state_view";
@@ -91,8 +89,7 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
     private int MAX_PAGE_ITEMS = 15;
     private int NO_MORE_PAGES = -1;
 
-    boolean isLoadingMore = false;
-
+    private static boolean isLoadingMore = false;
 
     private int pageNumber;
     private ProductSort sort = ProductSort.NONE;
@@ -102,7 +99,7 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
 
     private String productsURL = null;
     private String searchQuery = null;
-    
+
     View notfound;
 
     private ArrayList<String> mSortOptions;
@@ -119,11 +116,13 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
     private View productsContent;
 
     private int listItemRecycleCount;
-    
-    
+
     private static ProductsFragment productsFragment;
-   
-    private int totalProducts=-1;
+
+    private int totalProducts = -1;
+
+    public static final String INTENT_POSITION_EXTRA = "extra_position";
+
     /**
      * Get instance
      * 
@@ -147,7 +146,7 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
     public void sendValuesToFragment(int identifier, Object values) {
 
     }
-    
+
     /*
      * (non-Javadoc)
      * 
@@ -182,32 +181,40 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
         super.onCreateView(inflater, container, savedInstanceState);
         Log.i(TAG, "ON CREATE VIEW");
         mainView = inflater.inflate(R.layout.products, container, false);
-        
+
         savedState = savedInstanceState;
 
         md5Hash = uniqueMD5(TAG);
-        
+
         Log.i(TAG, " MD5Hash -> " + md5Hash);
-        
-        
+
         // Inflate Products Layout
         setAppContentLayout();
-        
+
         title = getActivity().getIntent().getStringExtra(ConstantsIntentExtra.CONTENT_TITLE);
         getActivity().setTitle(title);
-        productsURL = getActivity().getIntent().getExtras().getString(ConstantsIntentExtra.CONTENT_URL);
+        productsURL = getActivity().getIntent().getExtras()
+                .getString(ConstantsIntentExtra.CONTENT_URL);
         Log.d(TAG, "onCreate: productsURL = " + productsURL);
-        searchQuery = getActivity().getIntent().getExtras().getString(ConstantsIntentExtra.SEARCH_QUERY);
+        searchQuery = getActivity().getIntent().getExtras()
+                .getString(ConstantsIntentExtra.SEARCH_QUERY);
+        Bundle args = getArguments();
+        int pos = args.getInt(INTENT_POSITION_EXTRA);
+        setSort(pos);
+        Log.i(TAG, "code1 creating ProductsFragment " + pos);
+
         Log.d(TAG, "onCreate: searchQuery = " + searchQuery);
-        navigationSource = getActivity().getIntent().getIntExtra(ConstantsIntentExtra.NAVIGATION_SOURCE, -1);
-        navigationPath = getActivity().getIntent().getStringExtra(ConstantsIntentExtra.NAVIGATION_PATH);
-        AnalyticsGoogle.get().trackSourceResWithPath(navigationSource, navigationPath);     
+        navigationSource = getActivity().getIntent().getIntExtra(
+                ConstantsIntentExtra.NAVIGATION_SOURCE, -1);
+        navigationPath = getActivity().getIntent().getStringExtra(
+                ConstantsIntentExtra.NAVIGATION_PATH);
+        AnalyticsGoogle.get().trackSourceResWithPath(navigationSource, navigationPath);
 
         productsAdapter = new ProductsListAdapter(getActivity());
         productsList.setAdapter(productsAdapter);
         productsList.setRecyclerListener(this);
         listItemRecycleCount = 0;
-        
+
         if (isFirstBootProducts) {
             isFirstBootProducts = false;
         }
@@ -218,7 +225,7 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
 
         initSorter();
         executeRequest();
-        
+
         return mainView;
     }
 
@@ -232,48 +239,49 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
         super.onStart();
         Log.i(TAG, "ON START");
     }
-    
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        
+
         saveActivityState(outState);
     }
-    
+
     /**
      * Set the Products layout using inflate
      */
     private void setAppContentLayout() {
-        
-        productsContent = mainView.findViewById(R.id.products_content );
-        sortButton = mainView.findViewById(R.id.sorter_button);
-        
+
+        productsContent = mainView.findViewById(R.id.products_content);
+        // sortButton = mainView.findViewById(R.id.sorter_button);
+
         productsList = (GridView) mainView.findViewById(R.id.middle_productslist_list);
         productsList.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                     int position, long id) {
 
                 int activePosition = position; // -
-                                                // productsAdapter.getJumpConstant();
+                                               // productsAdapter.getJumpConstant();
 
                 if (activePosition > -1) {
                     // // Call Product Details
 
                     Log.i("TAG", "DIR=======>" + dir + " sort =====> " + sort);
 
-                    saveActivityState();                    
-                    ActivitiesWorkFlow.productsDetailsActivity(getActivity(), ((Product)productsAdapter.getItem(activePosition)).getUrl(), navigationSource, navigationPath);
+                    saveActivityState();
+                    ActivitiesWorkFlow.productsDetailsActivity(getActivity(),
+                            ((Product) productsAdapter.getItem(activePosition)).getUrl(),
+                            navigationSource, navigationPath);
                 }
 
             }
         });
-        productsList.setOnScrollListener(new PauseOnScrollListener(ImageLoader.getInstance(), true, true, this));
+        productsList.setOnScrollListener(new PauseOnScrollListener(ImageLoader.getInstance(), true,
+                true, this));
 
         notfound = mainView.findViewById(R.id.search_products_not_found);
         loadingLayout = mainView.findViewById(R.id.loadmore);
     }
-
-    
 
     private void executeRequest() {
         pageNumber = 1;
@@ -281,24 +289,25 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
         showProductsContent();
         getMoreProducts();
     }
-    
-    
+
     private void showProductsContent() {
-        Log.d( TAG, "showProductsContent");
-        if(pageNumber == 1){
+        Log.d(TAG, "showProductsContent");
+        if (pageNumber == 1) {
             productsList.post(new Runnable() {
                 @Override
                 public void run() {
                     productsList.setSelection(0);
                 }
             });
-           
+
         }
-        productsContent.setVisibility( View.VISIBLE );
-        notfound.setVisibility( View.GONE );
+        productsContent.setVisibility(View.VISIBLE);
+        notfound.setVisibility(View.GONE);
         loadingLayout.setVisibility(View.GONE);
         loadingLayout.refreshDrawableState();
-        isLoadingMore = false;
+        if (mainView != null) {
+            mainView.findViewById(R.id.loading_view_pager).setVisibility(View.GONE);
+        }
     }
 
     /*
@@ -309,12 +318,15 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(TAG, "ON RESUME");        
+        Log.i(TAG, "ON RESUME");
         restoreActivityState(savedState);
-        
-        if(mSortDialog!=null && mSortDialog.isVisible()){
-            mSortDialog.dismiss();
+        if (productsAdapter != null && productsAdapter.getCount() == 0) {
+            executeRequest();
         }
+        // Uncomment if need to allow sort button again.
+        // if(mSortDialog!=null && mSortDialog.isVisible()){
+        // mSortDialog.dismiss();
+        // }
     }
 
     /*
@@ -325,9 +337,9 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
     @Override
     public void onPause() {
         super.onPause();
-        
+
         Log.i(TAG, "ON PAUSE");
-        
+
         if (sort.equals(ProductSort.POPULARITY)) {
             mSortPosition = 0;
             saveActivityState();
@@ -344,8 +356,8 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
             mSortPosition = 4;
             saveActivityState();
         }
-        
-        if(mSortDialog!=null && mSortDialog.isVisible()){
+
+        if (mSortDialog != null && mSortDialog.isVisible()) {
             mSortDialog.dismiss();
             Log.i(TAG, "code1 onpause");
         }
@@ -360,7 +372,7 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
     public void onStop() {
         super.onStop();
         Log.i(TAG, "ON STOP");
-        if(mSortDialog!=null && mSortDialog.isVisible()){
+        if (mSortDialog != null && mSortDialog.isVisible()) {
             mSortDialog.dismiss();
             Log.i(TAG, "code1 onstop");
         }
@@ -376,27 +388,26 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
         super.onDestroyView();
         Log.i(TAG, "ON DESTROY");
         productsAdapter = null;
-        if(mSortDialog!=null && mSortDialog.isVisible()){
+        if (mSortDialog != null && mSortDialog.isVisible()) {
             mSortDialog.dismiss();
             Log.i(TAG, "code1 destroy view");
         }
-    }   
+    }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(mSortDialog!=null && mSortDialog.isVisible()){
+        if (mSortDialog != null && mSortDialog.isVisible()) {
             Log.i(TAG, "code1 destroy");
             mSortDialog.dismiss();
         }
-        
+
     }
-    
+
     /**
      * gets the activity current orientation
      * 
-     * @return The flag indicating what is the current orientation for the
-     *         activity
+     * @return The flag indicating what is the current orientation for the activity
      */
     public int getCurrentOrientation() {
         return currentOrientation;
@@ -408,27 +419,31 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
     private void getMoreProducts() {
         Log.d(TAG, "GET MORE PRODUCTS");
 
-      
-        if (pageNumber != NO_MORE_PAGES ) {
-
+        if (pageNumber != NO_MORE_PAGES) {
             // Test to see if we already have all the products available
 
             if (pageNumber == 1) {
-                ((BaseActivity) getActivity()).showLoading();
+                if (mainView != null) {
+                    mainView.findViewById(R.id.loading_view_pager).setVisibility(View.VISIBLE);
+                }
+
+                // ((BaseActivity) getActivity()).showLoading();
             }
 
-            beginRequestMillis = System.currentTimeMillis();            
+            beginRequestMillis = System.currentTimeMillis();
             EventManager.getSingleton().triggerRequestEvent(
-                        new GetProductsEvent(productsURL, searchQuery, pageNumber, MAX_PAGE_ITEMS,
-                                        sort, dir, md5Hash));
-            TrackerDelegator.trackCategoryView(getActivity().getApplicationContext(), title, pageNumber);
-        } else{
+                    new GetProductsEvent(productsURL, searchQuery, pageNumber, MAX_PAGE_ITEMS,
+                            sort, dir, md5Hash));
+            TrackerDelegator.trackCategoryView(getActivity().getApplicationContext(), title,
+                    pageNumber);
+        } else {
             hideProductsLoading();
         }
     }
 
     private void initSorter() {
-        mSortOptions = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.products_picker)));
+        mSortOptions = new ArrayList<String>(Arrays.asList(getResources().getStringArray(
+                R.array.products_picker)));
         mSortPosition = 0;
         if (null != savedState && savedState.containsKey(KEY_STATE_SORTER)) {
             Log.d(TAG, " SORTER SAVED STATE KEY=SORTER : " + savedState.getInt(KEY_STATE_SORTER));
@@ -439,7 +454,6 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
 
     private void setSort(int position) {
         mSortPosition = position;
-        isLoadingMore = false;
         switch (position) {
         case 0: // <item >Popularity</item>
             sort = ProductSort.POPULARITY;
@@ -447,7 +461,7 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
             break;
         case 1: // <item >Price up</item>
             sort = ProductSort.PRICE;
-            dir = Direction.ASCENDENT;          
+            dir = Direction.ASCENDENT;
             break;
         case 2: // <item >Price down</item>
             sort = ProductSort.PRICE;
@@ -467,23 +481,6 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
             break;
         }
     }
-
-    OnScrollBottomReachedListener scroller_Listener = new OnScrollBottomReachedListener() {
-
-        @Override
-        public void OnScrollBottomReached() {
-            if (!isLoadingMore) {
-                isLoadingMore = true;
-                loadingLayout = mainView.findViewById(R.id.loadmore);
-                loadingLayout.setVisibility(View.VISIBLE);
-                loadingLayout.refreshDrawableState();
-                getMoreProducts();
-            }
-
-        }
-    };
-
-
 
     private void saveActivityState(Bundle currentState) {
         currentState.putInt(KEY_STATE_SORTER, mSortPosition);
@@ -516,24 +513,25 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
         currentState.putInt(KEY_STATE_VIEW, prefs.getInt(KEY_STATE_VIEW, -1));
     }
 
-
     @Override
     public void onClick(View v) {
-        Log.d( TAG, "sorter position = " + mSortPosition );
-        
+        Log.d(TAG, "sorter position = " + mSortPosition);
+
         int id = v.getId();
         if (id == R.id.sorter_button) {
-//            FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-//            
+            // FragmentTransaction ft =
+            // getActivity().getSupportFragmentManager().beginTransaction();
+            //
             if (mSortDialog != null) {
                 mSortDialog.dismiss();
             }
-            
-            mSortDialog = DialogListFragment.newInstance(getActivity(), (OnDialogListListener) this, ID_SORT_DIALOG, getString( R.string.product_sort),
+
+            mSortDialog = DialogListFragment.newInstance(getActivity(),
+                    (OnDialogListListener) this, ID_SORT_DIALOG, getString(R.string.product_sort),
                     mSortOptions, mSortPosition);
-            
+
             mSortDialog.show(getActivity().getSupportFragmentManager(), null);
-                   
+
         }
 
     }
@@ -546,32 +544,26 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
             executeRequest();
         }
     }
-    
-    
+
     @Override
     protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
         Log.d(TAG, "ON SUCCESS EVENT");
-        sortButton.setOnClickListener(this);
+        // sortButton.setOnClickListener(this);
         // Get Products Event
         ProductsPage productsPage = (ProductsPage) event.result;
-        Log.d( TAG, "onSuccessEvent: products on page = " + productsPage.getProducts().size() + 
+        Log.d(TAG, "onSuccessEvent: products on page = " + productsPage.getProducts().size() +
                 " total products = " + productsPage.getTotalProducts());
-       try{
-           if(productsPage.getTotalProducts()>0){
-               totalProducts=  productsPage.getTotalProducts();    
-           }
-       }catch(Exception e){
-           e.printStackTrace();
-       }
+        if (productsPage != null && productsPage.getTotalProducts() > 0) {
+            totalProducts = productsPage.getTotalProducts();
+        }
 
-        
-        TrackerDelegator.trackSearchMade(getActivity().getApplicationContext(), searchQuery, productsPage.getTotalProducts());
-        
-        String location = event.metaData.getString( IMetaData.LOCATION );
-        Log.d( TAG, "Location = " + location );
+        TrackerDelegator.trackSearchMade(getActivity().getApplicationContext(), searchQuery,
+                productsPage.getTotalProducts());
+
+        String location = event.metaData.getString(IMetaData.LOCATION);
+        Log.d(TAG, "Location = " + location);
         checkRedirectFromSearch(location);
-        
-        
+
         AnalyticsGoogle.get().trackLoadTiming(R.string.gproductlist, beginRequestMillis);
         System.gc();
         if (!TextUtils.isEmpty(searchQuery)) {
@@ -582,33 +574,26 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
 
         showProductsContent();
 
-        Log.i(TAG, " " + productsPage.getProducts().size());
+        Log.i(TAG, "code1 " + productsPage.getProducts().size() + " pageNumber is : "+pageNumber);
         pageNumber = productsPage.getProducts().size() >= productsPage.getTotalProducts() ? NO_MORE_PAGES
                 : pageNumber + 1;
-        
-        
-//        android.util.Log.e("totalProducts", ":"+totalProducts);
-//        android.util.Log.e("MAX MAX", ":"+((pageNumber-1)*MAX_PAGE_ITEMS));
-//        android.util.Log.e("PAGE NUMBER", ":"+(pageNumber-1));
-//        android.util.Log.e("MAX_PAGE_ITEMS", ":"+MAX_PAGE_ITEMS);
-        if(totalProducts<((pageNumber-1)*MAX_PAGE_ITEMS)){
-            pageNumber= NO_MORE_PAGES;
-            android.util.Log.e("NEW PAGE NUMBER", ":"+pageNumber);
+
+        if (totalProducts < ((pageNumber - 1) * MAX_PAGE_ITEMS)) {
+            pageNumber = NO_MORE_PAGES;
         }
-        
+        isLoadingMore = false;
         if (productsPage.getProducts().size() >= productsPage.getTotalProducts()) {
             isLoadingMore = true;
         }
         
         AnalyticsGoogle.get().trackSearch(searchQuery, productsPage.getTotalProducts());
 
-        
-//        Debug.MemoryInfo memoryInfo = new Debug.MemoryInfo();
-//        Debug.getMemoryInfo(memoryInfo);
-        
+        // Debug.MemoryInfo memoryInfo = new Debug.MemoryInfo();
+        // Debug.getMemoryInfo(memoryInfo);
+
         return true;
     }
-    
+
     private void checkRedirectFromSearch(String location) {
         Log.d(TAG, "url = " + productsURL);
         Log.d(TAG, "search = " + searchQuery);
@@ -629,48 +614,54 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
 
         return;
     }
-    
+
     @Override
     protected boolean onErrorEvent(ResponseEvent event) {
-        if(event.errorCode.isNetworkError() && pageNumber == 1 ){
+        if (event.errorCode.isNetworkError() && pageNumber == 1) {
             ((BaseActivity) getActivity()).showWarning(false);
-            ((BaseActivity) getActivity()).showError(new GetProductsEvent(productsURL, searchQuery, pageNumber, MAX_PAGE_ITEMS,
+            ((BaseActivity) getActivity()).showError(new GetProductsEvent(productsURL, searchQuery,
+                    pageNumber, MAX_PAGE_ITEMS,
                     sort, dir, md5Hash));
-        } else if (!event.errorCode.isNetworkError() && pageNumber == 1 && productsAdapter.getCount() == 0) {
+        } else if (!event.errorCode.isNetworkError() && pageNumber == 1
+                && productsAdapter.getCount() == 0) {
             Log.d(TAG, "onErrorEvent: No products to show");
             showProductsNotfound();
             ((BaseActivity) getActivity()).showContentContainer();
         } else {
-            Log.d( TAG, "onErrorEvent: loading more products failed");
+            Log.d(TAG, "onErrorEvent: loading more products failed");
             hideProductsLoading();
-           
-            if(totalProducts!=-1 && totalProducts>((pageNumber-1)*MAX_PAGE_ITEMS)){           
-              Toast.makeText(getActivity(), R.string.products_could_notloaded, Toast.LENGTH_SHORT).show();
-            }      
+
+            if (totalProducts != -1 && totalProducts > ((pageNumber - 1) * MAX_PAGE_ITEMS)) {
+                Toast.makeText(getActivity(), R.string.products_could_notloaded, Toast.LENGTH_SHORT)
+                        .show();
+            }
         }
+        
+        isLoadingMore = false;
         return true;
     }
-    
+
     private void showProductsNotfound() {
-        Log.d( TAG, "showProductsLoading");
-        productsContent.setVisibility( View.GONE );
-        notfound.setVisibility(View.VISIBLE );
+        Log.d(TAG, "showProductsLoading");
+        productsContent.setVisibility(View.GONE);
+        notfound.setVisibility(View.VISIBLE);
         loadingLayout.setVisibility(View.GONE);
         loadingLayout.refreshDrawableState();
-        isLoadingMore = false;
+        if (mainView != null) {
+            mainView.findViewById(R.id.loading_view_pager).setVisibility(View.GONE);
+        }
     }
 
     /**
      * Set all Products using Products Adapter
      */
     private void hideProductsLoading() {
-        Log.d( TAG, "hideProductsLoading" );
+        Log.d(TAG, "hideProductsLoading");
         loadingLayout.setVisibility(View.GONE);
         loadingLayout.refreshDrawableState();
         notfound.setVisibility(View.GONE);
-//        isLoadingMore = false;
     }
-    
+
     @Override
     public void onMovedToScrapHeap(View view) {
         // Log.d( TAG, "onMovedToScrapHead: listItemRecycleCount = " + listItemRecycleCount);
@@ -684,7 +675,8 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
     }
 
     @Override
-    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
+            int totalItemCount) {
         // Make your calculation stuff here. You have all your
         // needed info from the parameters of this function.
 
@@ -692,26 +684,24 @@ public class ProductsFragment extends BaseFragment implements OnClickListener, O
         // item is fully visible.
         final int lastItem = firstVisibleItem + visibleItemCount;
         if (totalItemCount != 0 && lastItem == totalItemCount) {
-            // Log.d( TAG, "onScroll: last item visible ");
+            Log.i( TAG, "onScroll: last item visible ");
             if (!isLoadingMore) {
+                isLoadingMore = true;
                 showProductsLoading();
                 getMoreProducts();
-            }            
-        } else {
-            isLoadingMore = false;
+            }
         }
     }
-    
+
     private void showProductsLoading() {
-        Log.d( TAG, "showProductsLoading" );
+        Log.d(TAG, "showProductsLoading");
         loadingLayout = getView().findViewById(R.id.loadmore);
         loadingLayout.setVisibility(View.VISIBLE);
         loadingLayout.refreshDrawableState();
-        isLoadingMore = true;
     }
 
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
-     // noop
+        // noop
     }
 }

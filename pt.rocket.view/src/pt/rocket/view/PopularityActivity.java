@@ -30,7 +30,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
-import android.widget.TextView;
+import org.holoeverywhere.widget.TextView;
 import de.akquinet.android.androlog.Log;
 
 /**

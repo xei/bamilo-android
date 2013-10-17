@@ -11,7 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.TextView;
+import org.holoeverywhere.widget.TextView;
 
 /**
  * This Class is used to create an adapter for the list of categories. It is
