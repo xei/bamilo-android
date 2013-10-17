@@ -1,7 +1,5 @@
 package pt.rocket.constants;
 
-import pt.rocket.view.R;
-
 /**
  * This Class defines the Shared Preferences Variables <p/><br> 
  *

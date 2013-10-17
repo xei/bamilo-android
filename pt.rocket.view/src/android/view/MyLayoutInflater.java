@@ -10,11 +10,7 @@
 package android.view;
 
 import org.holoeverywhere.FontLoader;
-import org.holoeverywhere.FontLoader.Font;
-import org.holoeverywhere.FontLoader.FontCollector;
 import org.xmlpull.v1.XmlPullParser;
-import pt.rocket.view.R;
-
 import android.content.Context;
 import android.util.AttributeSet;
 

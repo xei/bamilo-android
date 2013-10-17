@@ -29,7 +29,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.HorizontalScrollView;
-import pt.rocket.view.R;
 
 /**
  * A HorizontalScrollView (HSV) implementation that disallows touch events (so no scrolling can be done by the user).

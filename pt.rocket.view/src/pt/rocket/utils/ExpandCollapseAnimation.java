@@ -5,7 +5,6 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 import android.widget.ScrollView;
-import pt.rocket.view.R;
 
 /**
  * This Class implements and manage the Expandable and Collapse Animation <p/><br> 

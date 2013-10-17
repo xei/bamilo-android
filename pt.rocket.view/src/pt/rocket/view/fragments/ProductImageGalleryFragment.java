@@ -6,8 +6,6 @@ package pt.rocket.view.fragments;
 import java.util.ArrayList;
 import java.util.EnumSet;
 
-import org.holoeverywhere.util.FinitePool;
-
 import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.controllers.GalleryPagerAdapter;
 import pt.rocket.controllers.NormalizingViewPagerWrapper;
@@ -18,14 +16,12 @@ import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.HorizontalListView;
-import pt.rocket.utils.JumiaViewPager;
 import pt.rocket.utils.JumiaViewPagerWithZoom;
 import pt.rocket.utils.OnFragmentActivityInteraction;
 import pt.rocket.view.ProductDetailsActivityFragment;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;

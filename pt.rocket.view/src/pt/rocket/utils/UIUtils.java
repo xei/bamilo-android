@@ -5,7 +5,6 @@ import android.graphics.Typeface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import pt.rocket.view.R;
 
 /**
  * A general Class with UI utils such as set the font <p/><br> 

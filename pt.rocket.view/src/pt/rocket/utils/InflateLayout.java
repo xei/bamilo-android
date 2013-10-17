@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import pt.rocket.view.R;
 
 /**
 * This Class is responsible to inflate the new layout.

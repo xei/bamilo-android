@@ -11,7 +11,6 @@ import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.controllers.ProductsListAdapter;
-import pt.rocket.framework.components.ScrollViewEx.OnScrollBottomReachedListener;
 import pt.rocket.framework.event.EventManager;
 import pt.rocket.framework.event.EventType;
 import pt.rocket.framework.event.IMetaData;

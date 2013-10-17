@@ -1,8 +1,6 @@
 package pt.rocket.view;
 
 import java.util.EnumSet;
-import java.util.Set;
-
 import pt.rocket.framework.event.EventType;
 import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.utils.LogTagHelper;

@@ -1,8 +1,6 @@
 package pt.rocket.utils;
 
 import java.util.List;
-import pt.rocket.view.R;
-
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.view.View;

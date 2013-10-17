@@ -1,7 +1,5 @@
 package pt.rocket.constants;
 
-import pt.rocket.view.R;
-
 /**
  * This Class has constants for the checkout activity, indicating which step is to be activated <p/><br> 
  *

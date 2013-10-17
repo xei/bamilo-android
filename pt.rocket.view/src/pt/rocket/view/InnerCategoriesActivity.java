@@ -7,7 +7,6 @@ import java.util.List;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.controllers.SubCategoriesAdapter;
-import pt.rocket.framework.components.ExpandableGridViewComponent;
 import pt.rocket.framework.event.EventType;
 import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.event.events.GetCategoriesEvent;

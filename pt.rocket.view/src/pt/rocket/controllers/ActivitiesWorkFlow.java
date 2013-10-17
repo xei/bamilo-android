@@ -15,7 +15,6 @@ import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.view.CategoriesFragmentActivity;
 import pt.rocket.view.ChangeCountryFragmentActivity;
 import pt.rocket.view.CheckoutStep5FragmentActivity;
-import pt.rocket.view.CheckoutWebActivity;
 import pt.rocket.view.CheckoutWebActivityFragment;
 import pt.rocket.view.ForgotPasswordActivity;
 import pt.rocket.view.HomeFragmentActivity;

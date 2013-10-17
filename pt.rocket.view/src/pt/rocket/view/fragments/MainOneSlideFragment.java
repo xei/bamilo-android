@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
-import pt.rocket.controllers.NormalizingViewPagerWrapper;
 import pt.rocket.controllers.NormalizingViewPagerWrapper.IPagerAdapter;
 import pt.rocket.framework.event.EventType;
 import pt.rocket.framework.event.ResponseEvent;
@@ -17,7 +16,6 @@ import pt.rocket.framework.objects.ImageTeaserGroup.TeaserImage;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.view.HomeFragmentActivity;
 import pt.rocket.view.R;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Bundle;

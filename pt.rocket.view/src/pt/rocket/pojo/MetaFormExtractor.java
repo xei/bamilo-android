@@ -13,7 +13,6 @@ import pt.rocket.framework.forms.FormFieldMeta;
 import pt.rocket.framework.forms.IFormField;
 import pt.rocket.framework.forms.InputType;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.view.R;
 
 public class MetaFormExtractor {
 	private final static String TAG = LogTagHelper.create( MetaFormExtractor.class );

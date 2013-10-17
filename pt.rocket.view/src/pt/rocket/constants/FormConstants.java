@@ -1,7 +1,5 @@
 package pt.rocket.constants;
 
-import pt.rocket.view.R;
-
 /**
  * Constants to use for the dynamic form generation; Here we declare a constant for each form we need to implement <p/><br> 
  *

@@ -2,7 +2,6 @@ package pt.rocket.utils;
 
 import android.text.Editable;
 import android.text.TextWatcher;
-import pt.rocket.view.R;
 
 /**
 * A textwatcher to determine if the text of an edit text is a valid number <p/><br> 
