@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
 
+import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.framework.event.EventType;
 import pt.rocket.framework.event.ResponseEvent;
 import pt.rocket.framework.event.ResponseResultEvent;
@@ -16,6 +17,8 @@ import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.view.fragments.FragmentType;
 import pt.rocket.view.fragments.ProductsFragment;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Shader;
@@ -26,7 +29,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnTouchListener;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import de.akquinet.android.androlog.Log;
 

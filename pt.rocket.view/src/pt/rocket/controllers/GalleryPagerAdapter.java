@@ -1,19 +1,13 @@
 package pt.rocket.controllers;
 
 import java.util.List;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
-
-import de.akquinet.android.androlog.Log;
 
 import pt.rocket.app.ImageLoaderComponent;
 import pt.rocket.controllers.NormalizingViewPagerWrapper.IPagerAdapter;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.utils.BaseActivity;
 import pt.rocket.utils.JumiaApplication;
 import pt.rocket.utils.PhotoViewAttacher;
 import pt.rocket.view.R;
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v4.view.PagerAdapter;
@@ -23,6 +17,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
+
+import de.akquinet.android.androlog.Log;
 
 public class GalleryPagerAdapter extends PagerAdapter implements IPagerAdapter {
     
@@ -87,6 +86,8 @@ public class GalleryPagerAdapter extends PagerAdapter implements IPagerAdapter {
 	        container.addView( view );
         } catch (InflateException e) {
            e.printStackTrace();
+        } catch (IndexOutOfBoundsException e) {
+            e.printStackTrace();
         }
 	    
  

@@ -513,24 +513,10 @@ public class HomeFragmentActivity extends BaseActivity {
             sharedPrefs = getActivity().getSharedPreferences(
                     ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
             
-            if(sharedPrefs.getBoolean(ConstantsSharedPrefs.KEY_SHOW_TIPS, true) && args.getInt(ARG_OBJECT) == 2){
-                RelativeLayout homeTip = (RelativeLayout) getView()
-                        .findViewById(R.id.home_tip);
-                homeTip.setVisibility(View.VISIBLE);
-                homeTip.setOnTouchListener(new OnTouchListener() {
-                    
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.setVisibility(View.GONE);
-                        
-                        SharedPreferences.Editor editor = sharedPrefs.edit();
-                        editor.putBoolean(ConstantsSharedPrefs.KEY_SHOW_TIPS,
-                                false);
-                        editor.commit();
-                        return false;
-                    }
-                });
+            if(args.getInt(ARG_OBJECT) == 2){
+                showTips();
             }
+            
             if (requestResponse != null) {
                 processResult(requestResponse.get(args.getInt(ARG_OBJECT)), view);
             } else {
@@ -557,6 +543,31 @@ public class HomeFragmentActivity extends BaseActivity {
             fragmentCategoryTeaser = null;
             fragmentProductListTeaser = null;
             fragmentBrandsListTeaser = null;
+        }
+        
+        /**
+         * Show tips if is the first time the user uses the app.
+         */
+        private void showTips(){
+            
+            if(sharedPrefs.getBoolean(ConstantsSharedPrefs.KEY_SHOW_TIPS, true)){
+                RelativeLayout homeTip = (RelativeLayout) getView()
+                        .findViewById(R.id.home_tip);
+                homeTip.setVisibility(View.VISIBLE);
+                homeTip.setOnTouchListener(new OnTouchListener() {
+                    
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        v.setVisibility(View.GONE);
+                        
+                        SharedPreferences.Editor editor = sharedPrefs.edit();
+                        editor.putBoolean(ConstantsSharedPrefs.KEY_SHOW_TIPS,
+                                false);
+                        editor.commit();
+                        return false;
+                    }
+                });
+            }
         }
         
         private void processResult(Collection<? extends TeaserSpecification<?>> result,

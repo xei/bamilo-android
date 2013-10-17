@@ -39,8 +39,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
@@ -48,6 +50,7 @@ import android.widget.AbsListView.RecyclerListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -200,7 +203,14 @@ public class ProductsFragment extends BaseFragment implements OnClickListener,
                 .getString(ConstantsIntentExtra.SEARCH_QUERY);
         Bundle args = getArguments();
         int pos = args.getInt(INTENT_POSITION_EXTRA);
+        
+        if (pos == 0) {
+            showTips();
+        }
+        
         setSort(pos);
+        
+        
         Log.i(TAG, "code1 creating ProductsFragment " + pos);
 
         Log.d(TAG, "onCreate: searchQuery = " + searchQuery);
@@ -224,7 +234,6 @@ public class ProductsFragment extends BaseFragment implements OnClickListener,
         }
 
         initSorter();
-//        executeRequest();
 
         return mainView;
     }
@@ -281,6 +290,33 @@ public class ProductsFragment extends BaseFragment implements OnClickListener,
 
         notfound = mainView.findViewById(R.id.search_products_not_found);
         loadingLayout = mainView.findViewById(R.id.loadmore);
+    }
+    
+    /**
+     * Show tips if is the first time the user uses the app.
+     */
+    private void showTips(){
+        final SharedPreferences sharedPrefs =
+                getActivity().getSharedPreferences(
+                        ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+
+        if (sharedPrefs.getBoolean(ConstantsSharedPrefs.KEY_SHOW_PRODUCTS_TIPS, true)) {
+            RelativeLayout productsTip = (RelativeLayout) mainView.findViewById(R.id.products_tip);
+            productsTip.setVisibility(View.VISIBLE);
+            productsTip.setOnTouchListener(new OnTouchListener() {
+
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    v.setVisibility(View.GONE);
+
+                    SharedPreferences.Editor editor = sharedPrefs.edit();
+                    editor.putBoolean(ConstantsSharedPrefs.KEY_SHOW_PRODUCTS_TIPS,
+                            false);
+                    editor.commit();
+                    return false;
+                }
+            });
+        }
     }
 
     private void executeRequest() {

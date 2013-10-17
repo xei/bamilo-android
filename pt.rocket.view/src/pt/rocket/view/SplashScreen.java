@@ -79,7 +79,7 @@ public class SplashScreen extends Activity implements ResponseListener {
         initBugSense();
         Log.d(TAG, "Waiting for the registration process to finish");
         JumiaApplication.INSTANCE.waitForInitResult(this, false);
-//        showDevInfo();
+        showDevInfo();
     }
     
     @Override

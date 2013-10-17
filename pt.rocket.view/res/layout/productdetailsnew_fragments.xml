@@ -237,7 +237,8 @@
                 android:id="@+id/indicator1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/bullit_showing" />
+                android:src="@drawable/bullit_showing"
+                android:layout_marginRight="13.2dp" />
 
             <ImageView
                 android:id="@+id/indicator2"
