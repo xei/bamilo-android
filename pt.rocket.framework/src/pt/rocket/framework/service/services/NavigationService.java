@@ -17,7 +17,6 @@ import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.rest.RestServiceHelper;
 import pt.rocket.framework.service.DarwinService;
 import android.content.Context;
-import de.akquinet.android.androlog.Log;
 
 /**
  * Service that manages the navigation list components.

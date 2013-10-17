@@ -11,8 +11,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.objects.IJSONSerializable;
 import pt.rocket.framework.rest.RestConstants;
 
 import de.akquinet.android.androlog.Log;

@@ -7,8 +7,6 @@ import pt.rocket.framework.rest.RestConstants;
 
 import android.text.TextUtils;
 
-import de.akquinet.android.androlog.Log;
-
 /**
  * 
  * Class that represents the minimum order amount

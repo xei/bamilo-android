@@ -15,7 +15,6 @@ import android.util.Log;
 
 import pt.rocket.framework.event.EventType;
 import pt.rocket.framework.event.RequestEvent;
-import pt.rocket.framework.objects.VersionInfo;
 import pt.rocket.framework.rest.ResponseReceiver;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.rest.RestServiceHelper;

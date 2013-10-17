@@ -23,7 +23,6 @@ import pt.rocket.framework.event.EventType;
 import pt.rocket.framework.event.RequestEvent;
 import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.objects.Homepage;
-import pt.rocket.framework.objects.TeaserSpecification;
 import pt.rocket.framework.rest.ResponseReceiver;
 import pt.rocket.framework.rest.RestClientSingleton;
 import pt.rocket.framework.rest.RestConstants;

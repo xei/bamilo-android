@@ -9,15 +9,11 @@
  */
 package pt.rocket.framework.objects;
 
-import java.util.ArrayList;
-
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import pt.rocket.framework.objects.ITargeting.TargetType;
 import pt.rocket.framework.rest.RestConstants;
-import pt.rocket.framework.utils.CurrencyFormatter;
 import pt.rocket.framework.utils.LogTagHelper;
 import de.akquinet.android.androlog.Log;
 

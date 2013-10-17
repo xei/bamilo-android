@@ -23,7 +23,6 @@ import pt.rocket.framework.service.DarwinService;
 import pt.rocket.framework.utils.LogTagHelper;
 import android.content.Context;
 import android.net.Uri;
-import de.akquinet.android.androlog.Log;
 
 /**
  * Service responsible for requesting the server api version.

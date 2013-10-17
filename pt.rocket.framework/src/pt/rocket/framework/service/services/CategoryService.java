@@ -11,17 +11,13 @@ package pt.rocket.framework.service.services;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.List;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import pt.rocket.framework.event.EventManager;
 import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.event.IMetaData;
 import pt.rocket.framework.event.RequestEvent;
-import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.event.events.GetCategoriesEvent;
 import pt.rocket.framework.objects.Category;
 import pt.rocket.framework.rest.ResponseReceiver;

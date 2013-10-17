@@ -15,8 +15,6 @@ import org.json.JSONObject;
 
 import android.text.TextUtils;
 
-import de.akquinet.android.androlog.Log;
-
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.LogTagHelper;
 

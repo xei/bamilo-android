@@ -11,7 +11,6 @@ import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.util.AttributeSet;
-import android.view.View;
 import android.widget.ImageView;
 
 /**

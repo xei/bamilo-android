@@ -4,13 +4,11 @@
 package pt.rocket.framework.utils;
 
 
-import pt.rocket.framework.R;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Movie;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.ImageView;
 
 /**
  * @author nutzer2

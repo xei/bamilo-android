@@ -3,8 +3,6 @@
  */
 package pt.rocket.framework.event;
 
-import java.util.HashMap;
-
 import android.os.Bundle;
 
 /**
