@@ -20,9 +20,7 @@ import android.support.v4.view.PagerAdapter;
 import android.text.TextUtils;
 import android.view.InflateException;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 

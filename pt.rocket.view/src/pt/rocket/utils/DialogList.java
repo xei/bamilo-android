@@ -2,8 +2,6 @@ package pt.rocket.utils;
 
 import java.util.ArrayList;
 
-import de.akquinet.android.androlog.Log;
-
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.view.R;
 
@@ -15,7 +13,6 @@ import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;

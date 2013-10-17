@@ -10,7 +10,6 @@ import pt.rocket.framework.event.ResponseEvent;
 import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.event.events.ChangePasswordEvent;
 import pt.rocket.framework.objects.Customer;
-import pt.rocket.framework.objects.Errors;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.LogTagHelper;

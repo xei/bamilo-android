@@ -14,10 +14,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MyLayoutInflater;
 
-import com.actionbarsherlock.ActionBarSherlock;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.internal.ActionBarSherlockNative;
-
 import de.akquinet.android.androlog.Log;
 
 /**

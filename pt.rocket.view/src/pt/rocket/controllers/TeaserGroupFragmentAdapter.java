@@ -3,23 +3,17 @@
  */
 package pt.rocket.controllers;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
-import pt.rocket.framework.objects.CategoryTeaserGroup;
+import org.holoeverywhere.widget.TextView;
+
 import pt.rocket.framework.objects.CategoryTeaserGroup.TeaserCategory;
 import pt.rocket.framework.objects.ITargeting;
-import pt.rocket.framework.objects.ImageTeaserGroup;
 import pt.rocket.framework.objects.ImageTeaserGroup.TeaserImage;
-import pt.rocket.framework.objects.ProductTeaserGroup;
 import pt.rocket.framework.objects.ProductTeaserGroup.TeaserProduct;
 import pt.rocket.framework.objects.TeaserSpecification;
 import pt.rocket.framework.objects.TeaserSpecification.TeaserGroupType;
 import pt.rocket.view.R;
-import pt.rocket.view.fragments.CategoryTeaserFragment;
-import pt.rocket.view.fragments.MainOneSlideFragment;
-import pt.rocket.view.fragments.ProducTeaserListFragment;
-import pt.rocket.view.fragments.StaticBannerFragment;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -34,7 +28,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import org.holoeverywhere.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;

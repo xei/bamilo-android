@@ -31,7 +31,6 @@ import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 import de.akquinet.android.androlog.Log;
 /**

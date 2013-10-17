@@ -1,6 +1,5 @@
 package pt.rocket.utils;
 
-import android.view.View.OnClickListener;
 import pt.rocket.view.fragments.FragmentType;
 
 /**
