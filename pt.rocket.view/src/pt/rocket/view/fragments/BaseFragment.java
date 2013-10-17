@@ -19,7 +19,6 @@ import pt.rocket.framework.event.RequestEvent;
 import pt.rocket.framework.event.ResponseEvent;
 import pt.rocket.framework.event.ResponseListener;
 import pt.rocket.framework.event.ResponseResultEvent;
-import pt.rocket.framework.objects.Errors;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.LogTagHelper;

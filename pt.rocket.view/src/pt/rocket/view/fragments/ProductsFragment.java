@@ -224,7 +224,7 @@ public class ProductsFragment extends BaseFragment implements OnClickListener,
         }
 
         initSorter();
-        executeRequest();
+//        executeRequest();
 
         return mainView;
     }
@@ -323,7 +323,7 @@ public class ProductsFragment extends BaseFragment implements OnClickListener,
         if (productsAdapter != null && productsAdapter.getCount() == 0) {
             executeRequest();
         }
-        // Uncomment if need to allow sort button again.
+        // Uncomment if u need to allow sort button again.
         // if(mSortDialog!=null && mSortDialog.isVisible()){
         // mSortDialog.dismiss();
         // }
@@ -686,6 +686,7 @@ public class ProductsFragment extends BaseFragment implements OnClickListener,
         if (totalItemCount != 0 && lastItem == totalItemCount) {
             Log.i( TAG, "onScroll: last item visible ");
             if (!isLoadingMore) {
+                Log.i( TAG, "onScroll: last item visible and start loading"+pageNumber);
                 isLoadingMore = true;
                 showProductsLoading();
                 getMoreProducts();
