@@ -10,9 +10,6 @@ import pt.rocket.framework.rest.RestConstants;
 
 import de.akquinet.android.androlog.Log;
 
-import android.content.ContentValues;
-import android.net.Uri.Builder;
-
 /**
  * Class that represents the product review comment
  * 

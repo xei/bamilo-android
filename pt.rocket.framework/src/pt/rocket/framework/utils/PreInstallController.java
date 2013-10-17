@@ -1,9 +1,7 @@
 package pt.rocket.framework.utils;
 
-import pt.rocket.framework.Darwin;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
-import android.os.Build;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 

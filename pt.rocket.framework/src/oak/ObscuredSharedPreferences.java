@@ -7,7 +7,6 @@ package oak;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.hardware.Camera.Size;
 import android.provider.Settings;
 
 import javax.crypto.Cipher;

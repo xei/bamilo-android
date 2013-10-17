@@ -17,7 +17,6 @@ import pt.rocket.framework.event.EventType;
 import pt.rocket.framework.event.RequestEvent;
 import pt.rocket.framework.objects.VersionInfo;
 import pt.rocket.framework.rest.ResponseReceiver;
-import pt.rocket.framework.rest.RestClientSingleton;
 import pt.rocket.framework.rest.RestServiceHelper;
 import pt.rocket.framework.service.DarwinService;
 import pt.rocket.framework.utils.LogTagHelper;

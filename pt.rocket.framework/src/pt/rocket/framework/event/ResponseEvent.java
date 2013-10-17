@@ -15,8 +15,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import android.os.Bundle;
-
 import pt.rocket.framework.ErrorCode;
 
 /**

@@ -13,7 +13,6 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 
-import pt.rocket.framework.Darwin;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.event.EventManager;
 import pt.rocket.framework.event.EventType;
@@ -22,7 +21,6 @@ import pt.rocket.framework.event.RequestListener;
 import pt.rocket.framework.event.ResponseErrorEvent;
 import pt.rocket.framework.event.ResponseEvent;
 import pt.rocket.framework.event.ResponseListener;
-import pt.rocket.framework.event.events.GetCallToOrderPhoneEvent;
 import pt.rocket.framework.event.events.InitShopEvent;
 import pt.rocket.framework.event.events.InitializeEvent;
 import pt.rocket.framework.service.services.ApiService;

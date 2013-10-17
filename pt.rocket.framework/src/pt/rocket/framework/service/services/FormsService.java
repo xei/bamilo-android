@@ -19,12 +19,10 @@ import pt.rocket.framework.event.events.GetFormsDatasetListEvent;
 import pt.rocket.framework.forms.Form;
 import pt.rocket.framework.forms.FormData;
 import pt.rocket.framework.rest.ResponseReceiver;
-import pt.rocket.framework.rest.RestClientSingleton;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.rest.RestServiceHelper;
 import pt.rocket.framework.service.DarwinService;
 import pt.rocket.framework.utils.LogTagHelper;
-import android.content.Context;
 import android.net.Uri;
 import de.akquinet.android.androlog.Log;
 

@@ -3,9 +3,6 @@ package pt.rocket.framework.objects;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.util.Log;
-
-import pt.rocket.framework.Darwin;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.CurrencyFormatter;
 

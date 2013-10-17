@@ -24,11 +24,9 @@ import pt.rocket.framework.event.RequestEvent;
 import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.objects.Homepage;
 import pt.rocket.framework.rest.ResponseReceiver;
-import pt.rocket.framework.rest.RestClientSingleton;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.rest.RestServiceHelper;
 import pt.rocket.framework.service.DarwinService;
-import android.content.Context;
 import android.os.Bundle;
 import de.akquinet.android.androlog.Log;
 

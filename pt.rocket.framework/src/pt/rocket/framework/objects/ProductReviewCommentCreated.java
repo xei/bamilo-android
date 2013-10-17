@@ -1,10 +1,7 @@
 package pt.rocket.framework.objects;
 
 import java.util.HashMap;
-import java.util.Map.Entry;
-
 import android.content.ContentValues;
-import android.net.Uri.Builder;
 
 /**
  * Class used to inser a new review in the api.
