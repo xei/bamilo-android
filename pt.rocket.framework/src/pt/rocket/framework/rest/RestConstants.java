@@ -279,5 +279,11 @@ public class RestConstants {
 	public static final String JSON_MIN_VERSION_TAG = "min_version";
 	public static final String JSON_CUR_VERSION_TAG = "cur_version";
 	
+	/**
+	 * Promotion TAGS
+	 */
+	public static final String JSON_COUPON_CODE_TAG = "coupon_code";
+	public static final String JSON_END_DATE_TAG = "end_date";
+	public static final String JSON_TERMS_CONDITIONS_TAG = "terms_conditions";
 	
 }
