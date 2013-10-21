@@ -60,13 +60,12 @@ public class TrackerDelegator {
 
         PushManager.shared().setAlias(customer.getIdAsString());
         if(wasFacebookLogin){
+            MixpanelTracker.loginWithFacebook(context, customer.getIdAsString(), mOrigin);
             AdXTracker.facebookLogin(context, customer.getIdAsString());
         } else {
+            MixpanelTracker.login(context, customer.getIdAsString(), mOrigin);
             AdXTracker.login(context, customer.getIdAsString());    
         }
-        
-        
-        MixpanelTracker.login(context, customer.getIdAsString(), mOrigin);
     }
 
     public final static void trackLoginFailed(boolean wasAutologin) {
