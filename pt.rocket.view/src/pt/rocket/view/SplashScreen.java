@@ -6,6 +6,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import pt.rocket.constants.ConstantsIntentExtra;
+import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.event.ResponseEvent;
@@ -19,7 +20,9 @@ import pt.rocket.utils.HockeyStartup;
 import pt.rocket.utils.JumiaApplication;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Build;
@@ -66,6 +69,8 @@ import com.urbanairship.push.PushManager;
 public class SplashScreen extends Activity implements ResponseListener {
     private final static String TAG = LogTagHelper.create(SplashScreen.class);
     private DialogGeneric dialog;
+    
+    private static boolean shouldHandleEvent = true;
 
     /*
      * (non-Javadoc)
@@ -83,6 +88,13 @@ public class SplashScreen extends Activity implements ResponseListener {
     }
     
     @Override
+    protected void onResume() {
+        super.onResume();
+        shouldHandleEvent = true;
+    }
+    
+    
+    @Override
     protected void onStart() {
         super.onStart();
         UAirship.shared().getAnalytics().activityStarted(this);
@@ -93,6 +105,11 @@ public class SplashScreen extends Activity implements ResponseListener {
         super.onStop();
         JumiaApplication.INSTANCE.clearInitListener();
         UAirship.shared().getAnalytics().activityStopped(this);
+        SharedPreferences sP = this.getSharedPreferences(
+                ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor eD = sP.edit();
+        eD.putBoolean(ConstantsSharedPrefs.KEY_SHOW_PROMOTIONS, true);
+        eD.commit();
     }
     
     @Override
@@ -191,6 +208,11 @@ public class SplashScreen extends Activity implements ResponseListener {
         //==================================================================================================
     }
 
+    @Override
+    public void onUserLeaveHint() {
+        shouldHandleEvent = false;
+    }
+    
     /*
      * (non-Javadoc)
      * 
@@ -198,6 +220,9 @@ public class SplashScreen extends Activity implements ResponseListener {
      */
     @Override
     public void handleEvent(final ResponseEvent event) {
+        if(!shouldHandleEvent){
+            return;
+        }
         Log.i(TAG, "Got initialization result: " + event);
         if(dialog!=null && dialog.isShowing()){
             try {

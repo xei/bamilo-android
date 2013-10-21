@@ -219,7 +219,10 @@
 	<string name="products_tip_text">Swipe left or right to \nchange the Sort type</string>
 	<string name="tip_tap_text">Tap to open the\nproduct gallery</string>	
 	<string name="tip_swipe_text">Swipe left or right to\nview different colours </string>
+	<string name="go_shop_text">Shop Now</string>
+	<string name="promotion_tip_tap_text">Tap the box above to copy the code to the clipboard and keep it handy for checkout</string>
 	<string name="tip_pinch_text">Pinch to zoom</string>
+	<string name="copied_to_clipboard">Copied to clipboard</string>
 	<string name="facebook_login_button_text">Login with Facebook</string>
 	<!-- Facebook App Id DO NOT TRANSLATE -->
 	<string name="app_id">321703697936806</string>

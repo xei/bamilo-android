@@ -217,7 +217,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
 		    EventManager.getSingleton().addResponseListener(this, allHandledEvents);
 	        isRegistered = true;
 		}
-        CheckVersion.run(getApplicationContext());
+//        CheckVersion.run(getApplicationContext());
         
         // Slide Menu Fragment
         //attachSlidingMenu();
@@ -824,6 +824,11 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
                 dialog.show(getSupportFragmentManager(), null);
             }
             return;
+        } else if (event.type == EventType.GET_PROMOTIONS) {
+            /**
+             * No promotions available!
+             * Ignore error
+             */
         } else if (event.errorCode == ErrorCode.REQUEST_ERROR) {
             Map<String, ? extends List<String>> messages = event.errorMessages;
             List<String> validateMessages = messages.get(RestConstants.JSON_VALIDATE_TAG);

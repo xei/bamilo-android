@@ -233,13 +233,14 @@ public class ChangeCountryFragment extends Fragment {
         SharedPreferences sharedPrefs = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putInt(ChangeCountryFragmentActivity.KEY_COUNTRY, position);
+        editor.putBoolean(ConstantsSharedPrefs.KEY_SHOW_PROMOTIONS, true);
         editor.commit();
-
         TrackerDelegator.trackShopchanged(getActivity().getApplicationContext());        
         // Darwin.initialize(DarwinMode.DEBUG, getApplicationContext(), R.drawable.no_image,
         // position);
         // LogOut.cleanAndRestart(activity);
 //        getActivity().finish();
+        
         ActivitiesWorkFlow.splashActivityNewTask(getActivity());
         getActivity().finish();
     }

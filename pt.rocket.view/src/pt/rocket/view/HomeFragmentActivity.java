@@ -9,6 +9,8 @@ import java.util.Collection;
 import java.util.EnumSet;
 import java.util.Iterator;
 
+import org.holoeverywhere.widget.TextView;
+
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.framework.event.EventType;
@@ -17,6 +19,7 @@ import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.objects.BrandsTeaserGroup;
 import pt.rocket.framework.objects.CategoryTeaserGroup;
 import pt.rocket.framework.objects.Homepage;
+import pt.rocket.framework.objects.Promotion;
 import pt.rocket.framework.objects.ITargeting.TargetType;
 import pt.rocket.framework.objects.ImageTeaserGroup;
 import pt.rocket.framework.objects.ProductTeaserGroup;
@@ -30,6 +33,7 @@ import pt.rocket.utils.JumiaViewPager;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.OnActivityFragmentInteraction;
+import pt.rocket.utils.dialogfragments.DialogPromotionFragment;
 import pt.rocket.view.fragments.BrandsTeaserListFragment;
 import pt.rocket.view.fragments.CategoryTeaserFragment;
 import pt.rocket.view.fragments.FragmentType;
@@ -37,6 +41,8 @@ import pt.rocket.view.fragments.MainOneSlideFragment;
 import pt.rocket.view.fragments.ProducTeaserListFragment;
 import pt.rocket.view.fragments.StaticBannerFragment;
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.LinearGradient;
@@ -60,7 +66,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -110,7 +115,7 @@ public class HomeFragmentActivity extends BaseActivity {
         super(R.layout.search,
                 NavigationAction.Home,
                 EnumSet.noneOf(MyMenuItem.class),
-                EnumSet.of(EventType.GET_TEASERS_EVENT, EventType.GET_CALL_TO_ORDER_PHONE),
+                EnumSet.of(EventType.GET_TEASERS_EVENT, EventType.GET_CALL_TO_ORDER_PHONE, EventType.GET_PROMOTIONS),
                 EnumSet.noneOf(EventType.class),
                 0, R.layout.teasers_fragments_viewpager);
     }
@@ -126,8 +131,7 @@ public class HomeFragmentActivity extends BaseActivity {
         activity = this;
         changeSearchBarBehavior();
 
-        if (requestResponse == null) {
-            setProcessShow(false);
+        if (requestResponse == null) {            
             triggerContentEvent(new RequestEvent(EventType.GET_TEASERS_EVENT));
             triggerContentEvent(new RequestEvent(EventType.GET_CALL_TO_ORDER_PHONE));
         } else {
@@ -153,9 +157,9 @@ public class HomeFragmentActivity extends BaseActivity {
     private void setLayoutSpec() throws NoSuchFieldException, IllegalArgumentException,
             IllegalAccessException {
         // Get text
-        final TextView currTextView = (TextView) pagerTabStrip.getChildAt(TAB_CURR_ID);
-        final TextView nextTextView = (TextView) pagerTabStrip.getChildAt(TAB_NEXT_ID);
-        final TextView prevTextView = (TextView) pagerTabStrip.getChildAt(TAB_PREV_ID);
+        final android.widget.TextView currTextView = (android.widget.TextView) pagerTabStrip.getChildAt(TAB_CURR_ID);
+        final android.widget.TextView nextTextView = (android.widget.TextView) pagerTabStrip.getChildAt(TAB_NEXT_ID);
+        final android.widget.TextView prevTextView = (android.widget.TextView) pagerTabStrip.getChildAt(TAB_PREV_ID);
 
         // Set Color
         currTextView.setPadding(0, 0, 0, 1);
@@ -297,6 +301,12 @@ public class HomeFragmentActivity extends BaseActivity {
             CheckVersion.showDialog(this);
         }
 
+        SharedPreferences sP = this.getSharedPreferences(
+                ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        if(sP.getBoolean(ConstantsSharedPrefs.KEY_SHOW_PROMOTIONS, true)){
+            triggerContentEvent(new RequestEvent(EventType.GET_PROMOTIONS));    
+        }
+        
         if (requestResponse == null && !isFirstBoot) {
             setProcessShow(false);
             triggerContentEvent(new RequestEvent(EventType.GET_TEASERS_EVENT));
@@ -369,6 +379,14 @@ public class HomeFragmentActivity extends BaseActivity {
                     (String) event.result);
             editor.commit();
 
+            break;
+        case GET_PROMOTIONS:
+            if(((Promotion) event.result).getIsStillValid()){
+                DialogPromotionFragment.newInstance((Promotion) event.result).show(getSupportFragmentManager(), null);    
+            } else {
+                Log.i(TAG, "promotion expired!"+((Promotion) event.result).getEndDate());
+            }
+            
             break;
         }
 

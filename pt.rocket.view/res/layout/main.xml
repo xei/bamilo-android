@@ -37,5 +37,9 @@
     <include
         layout="@layout/alert_view"
         android:visibility="gone" />
+    
+    <include
+        layout="@layout/promotion_layout"
+        android:visibility="gone" />
 
 </RelativeLayout>

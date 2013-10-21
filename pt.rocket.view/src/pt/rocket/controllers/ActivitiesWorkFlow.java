@@ -136,7 +136,7 @@ public class ActivitiesWorkFlow {
                                 LogOut.performLogOut(new WeakReference<Activity>(
                                         activity));
                                 Session.getActiveSession().closeAndClearTokenInformation();
-                                TrackerDelegator.trackLogoutSuccessful(activity.getApplicationContext());
+                                TrackerDelegator.trackLogoutSuccessful(activity);
                             }
                             dialog.dismiss();
                             
