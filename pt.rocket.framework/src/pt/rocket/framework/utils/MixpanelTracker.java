@@ -137,6 +137,29 @@ public class MixpanelTracker {
 		Log.d(TAG, "login props: " + props.toString() );
 	}
 	
+	public static void loginWithFacebook(Context context, String customerId, String location) {
+		if (!isEnabled) {
+			Log.d(TAG, "mixpanel seems to be disabled - ignoring");
+			return;
+		}
+		
+		mixpanel.identify(customerId);
+		people = mixpanel.getPeople();
+		people.identify(customerId);
+		
+		people.increment(context.getString(R.string.mixproppeople_numberlogins), 1);
+		people.set(context.getString(R.string.mixproppeople_loginsused), context.getString(R.string.mixprop_loginmethodfacebook));
+
+		props = null;
+		setProperty(context.getString(R.string.mixprop_loginmethod), context.getString(R.string.mixprop_loginmethodfacebook));
+		setProperty(context.getString(R.string.mixprop_loginlocation), location);
+		
+		Log.d(TAG, "login tracked: event = " + context.getString(R.string.mixloginWithFB) + " customerId = " + customerId);
+		
+		mixpanel.track(context.getString(R.string.mixloginWithFB), props);
+		Log.d(TAG, "login props: " + props.toString() );
+	}
+	
 	public static void logout(Context context ) {
 		if (!isEnabled) {
 			Log.d(TAG, "mixpanel seems to be disabled - ignoring");

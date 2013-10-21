@@ -104,6 +104,7 @@
 
     <string name="mixlaunch">Open App</string>
     <string name="mixlogin">Login</string>
+    <string name="mixloginWithFB">LoginWithFB</string>
     <string name="mixlogout">Logout</string>
     <string name="mixsignup">Registration</string>
     <string name="mixsale">Purchase Made</string>

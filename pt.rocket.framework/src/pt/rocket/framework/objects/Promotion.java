@@ -124,6 +124,11 @@ public class Promotion implements IJSONSerializable {
         return true;
     }
     
+    /**
+     * Verify if the promotion has expired, using the end date.
+     * @param endDate
+     * @return
+     */
     private boolean compareDates(String endDate){
     	
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
