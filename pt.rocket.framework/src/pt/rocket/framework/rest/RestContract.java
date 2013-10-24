@@ -32,6 +32,7 @@ public class RestContract {
 	
 	public static String REST_BASE_PATH = null;
 	public static String REQUEST_HOST = null;
+	public static Boolean USE_ONLY_HTTPS = false;
 
 	// Authentication
 	public static Boolean USE_AUTHENTICATION = null;
@@ -57,6 +58,11 @@ public class RestContract {
 	public static void init(Context context, int selectedId) {
 		RestContract.context = context;
 		REQUEST_HOST = context.getResources().getStringArray(R.array.servers)[selectedId];
+		
+		if(context.getResources().getStringArray(R.array.country_protocol)[selectedId].equalsIgnoreCase("true"))		
+			USE_ONLY_HTTPS = true;
+		else
+			USE_ONLY_HTTPS = false;
 		if (TextUtils.isEmpty(REQUEST_HOST)) {
 			throw new RuntimeException("The rest host has to be set and not beeing empty!");
 		}

@@ -29,11 +29,11 @@ public enum EventType {
 	
 	INIT_SHOP,
 	
-	INIT_FORMS("https:/forms/index/", RestContract.MAX_CACHE_TIME),
+	INIT_FORMS("http:/forms/index/", RestContract.MAX_CACHE_TIME),
 		
-	GET_CATEGORIES_EVENT("https:/catalog/categories/", RestContract.MAX_CACHE_TIME), 
+	GET_CATEGORIES_EVENT("http:/catalog/categories/", RestContract.MAX_CACHE_TIME), 
 
-	GET_PRODUCTS_EVENT("https:/search?setDevice=mobileApi", RestContract.DEFAULT_CACHE_TIME), 
+	GET_PRODUCTS_EVENT("http:/search?setDevice=mobileApi", RestContract.DEFAULT_CACHE_TIME), 
 	
 	LOGIN_EVENT("https:/customer/login?setDevice=mobileApi", null),
 	
@@ -49,11 +49,11 @@ public enum EventType {
 
 	REMOVE_ITEM_FROM_WISHLIST_EVENT, 
 
-	GET_TEASERS_EVENT("https:/main/getteasers/", RestContract.MAX_CACHE_TIME),
+	GET_TEASERS_EVENT("http:/main/getteasers/", RestContract.MAX_CACHE_TIME),
 	
 	GET_PRODUCT_EVENT,
 	
-	GET_SEARCH_SUGGESTIONS_EVENT("https:/search/suggest/", RestContract.DEFAULT_CACHE_TIME),
+	GET_SEARCH_SUGGESTIONS_EVENT("http:/search/suggest/", RestContract.DEFAULT_CACHE_TIME),
 	
 	ADD_ITEM_TO_SHOPPING_CART_EVENT("https:/order/add?setDevice=mobileApi", null),
 	
@@ -77,31 +77,33 @@ public enum EventType {
     
     EDIT_ACCOUNT_EVENT("https:/customer/edit/", null),
     
-    GET_NAVIGATION_LIST_COMPONENTS_EVENT("https:/main/getstatic?key=mobile_navigation", RestContract.MAX_CACHE_TIME),
+    GET_NAVIGATION_LIST_COMPONENTS_EVENT("http:/main/getstatic?key=mobile_navigation", RestContract.MAX_CACHE_TIME),
     
-    GET_TERMS_EVENT("https:/main/getstatic?key=terms_mobile", RestContract.MAX_CACHE_TIME ),
+    GET_TERMS_EVENT("http:/main/getstatic?key=terms_mobile", RestContract.MAX_CACHE_TIME ),
 
-    GET_RATING_OPTIONS_EVENT("https:/rating/options/", RestContract.MAX_CACHE_TIME),
+    GET_RATING_OPTIONS_EVENT("http:/rating/options/", RestContract.MAX_CACHE_TIME),
     
     GET_PRODUCT_REVIEWS_EVENT,
     
-    REVIEW_PRODUCT_EVENT("https:/rating/add/", null),
+    REVIEW_PRODUCT_EVENT("http:/rating/add/", null),
             
     CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT("https:/order/cartchange/", null),
     
     GET_FORMS_DATASET_LIST_EVENT,
     
-    GET_API_INFO("https:/main/md5?setDevice=mobileApi", RestContract.MIN_CACHE_TIME),
+    GET_API_INFO("http:/main/md5?setDevice=mobileApi", RestContract.MIN_CACHE_TIME),
         
 	GET_CUSTOMER("https:/customer/getdetails?setDevice=mobileApi", RestContract.MIN_CACHE_TIME),
 	
 	STORE_LOGIN,
 	
-	GET_MIN_ORDER_AMOUNT("https:/main/getstatic?key=api_cartminorderamount", RestContract.MAX_CACHE_TIME),
+	GET_MIN_ORDER_AMOUNT("http:/main/getstatic?key=api_cartminorderamount", RestContract.MAX_CACHE_TIME),
 	
-	GET_CALL_TO_ORDER_PHONE("https:/main/getconfig/module/configurationml/key/phone_number/", RestContract.DEFAULT_CACHE_TIME),
+	GET_CALL_TO_ORDER_PHONE("http:/main/getconfig/module/configurationml/key/phone_number/", RestContract.DEFAULT_CACHE_TIME),
 	
-	GET_PROMOTIONS("https:/main/getstatic?key=mobile_promotions", null)
+	GET_PROMOTIONS("http:/main/getstatic?key=mobile_promotions", null),
+	
+	TRACK_ORDER_EVENT("http:/order/trackingorder/?setDevice=mobileApi", null)
 	
 //	GET_SESSION_STATE("http:/main/session/")
 	;

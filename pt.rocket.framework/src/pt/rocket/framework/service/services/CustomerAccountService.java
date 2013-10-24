@@ -31,7 +31,9 @@ import pt.rocket.framework.event.events.ForgetPasswordEvent;
 import pt.rocket.framework.event.events.InitShopEvent;
 import pt.rocket.framework.event.events.LogInEvent;
 import pt.rocket.framework.event.events.StoreEvent;
+import pt.rocket.framework.event.events.TrackOrderEvent;
 import pt.rocket.framework.objects.Customer;
+import pt.rocket.framework.objects.OrderTracker;
 import pt.rocket.framework.rest.ResponseReceiver;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.rest.RestServiceHelper;
@@ -80,7 +82,7 @@ public class CustomerAccountService extends DarwinService {
 				EventType.REGISTER_ACCOUNT_EVENT,
 				EventType.CHANGE_PASSWORD_EVENT, EventType.GET_CUSTOMER,
 				EventType.FORGET_PASSWORD_EVENT, EventType.GET_TERMS_EVENT,
-				EventType.STORE_LOGIN));
+				EventType.STORE_LOGIN, EventType.TRACK_ORDER_EVENT));
 	}
 
 	/*
@@ -156,6 +158,28 @@ public class CustomerAccountService extends DarwinService {
 		}
 	}
 
+	private void trackOrder(final TrackOrderEvent event){
+		Uri uri = Uri.parse(event.eventType.action).buildUpon().appendQueryParameter("ordernr", event.value).build();
+		
+		RestServiceHelper.requestGet(uri,
+				new ResponseReceiver<OrderTracker>(event) {
+
+					@Override
+					public OrderTracker parseResponse(JSONObject metadataObject)
+							throws JSONException {
+						OrderTracker mOrderTracker = new OrderTracker();
+						if(metadataObject != null ){
+							mOrderTracker.initialize(metadataObject);
+							return mOrderTracker;
+						}
+						
+						return null;
+					}
+				}, event.metaData);
+		
+		
+	}
+	
 	private void actionReturningCustomerEvent(
 			MetaRequestEvent<ContentValues> event) {
 		RestServiceHelper.requestPost(event.eventType.action, event.value,
@@ -277,9 +301,9 @@ public class CustomerAccountService extends DarwinService {
 		case STORE_LOGIN:
 			storeLogin((StoreEvent) event);
 			break;
-//		case GET_SESSION_STATE:
-//			getSessionState(event);
-//			break;
+		case TRACK_ORDER_EVENT:
+			trackOrder((TrackOrderEvent) event);
+			break;
 		}
 	}
 

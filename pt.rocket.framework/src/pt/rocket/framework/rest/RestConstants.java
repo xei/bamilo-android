@@ -286,4 +286,14 @@ public class RestConstants {
 	public static final String JSON_END_DATE_TAG = "end_date";
 	public static final String JSON_TERMS_CONDITIONS_TAG = "terms_conditions";
 	
+	/**
+	 * Order Tracking TAGS
+	 */
+	public static final String JSON_ORDER_ID_TAG = "order_id";
+	public static final String JSON_ORDER_CREATION_DATE_TAG = "creation_date";
+	public static final String JSON_ORDER_ITEM_COLLECTION_TAG = "item_collection";
+	public static final String JSON_ORDER_LAST_UPDATE_TAG = "last_order_update";
+	public static final String JSON_ORDER_PAYMENT_METHOD_TAG = "payment_method";
+	public static final String JSON_ORDER_ITEM_STATUS_TAG = "status";
+	
 }

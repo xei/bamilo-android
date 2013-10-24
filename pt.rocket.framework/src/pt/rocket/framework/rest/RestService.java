@@ -121,6 +121,15 @@ public class RestService extends Service {
 			builder.authority(RestContract.REQUEST_HOST).path(RestContract.REST_BASE_PATH + uri.getPath());
 			Log.w(TAG, "Url " + uri + " should include authority, authority and base path added");
 		}
+		
+		if(RestContract.USE_ONLY_HTTPS){
+			if ( Darwin.logDebugEnabled) {
+				Log.d(TAG, "Request type changed to https.");
+			}
+			builder.scheme("https");
+		}
+		
+		
 		uri = builder.build();
 		if ( Darwin.logDebugEnabled) {
 			Log.d(TAG, "Rebuilded uri: " + uri);
