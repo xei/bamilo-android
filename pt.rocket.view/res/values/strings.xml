@@ -127,7 +127,7 @@
 	<string name="shoppingcart_item_btn_delete">Delete</string>
 	<string name="shoppingcart_instock">In Stock.</string>
 	<string name="shoppingcart_notinstock">Not In Stock.</string>
-	<string name="thank_you_order_title">Thank you for your order!</string>
+	<string name="thank_you_order_title">Thank You!</string>
 	<string name="order_sent_soon">Your order will be sent out soon.</string>
 	<string name="thank_you_title">Thank You</string>
 	<string name="register_button">Create Account</string>
@@ -221,11 +221,22 @@
 	<string name="tip_tap_text">Tap to open the\nproduct gallery</string>	
 	<string name="tip_swipe_text">Swipe left or right to\nview different colours </string>
 	<string name="go_shop_text">Shop Now</string>
-	<string name="track_order">Track Your Order</string>
+	<string name="track_your_order">Track Your Order</string>
+	<string name="track_order">Track Order</string>
+	<string name="track_order_hint">Order id</string>
 	<string name="promotion_tip_tap_text">Tap the box above to copy the code to the clipboard and keep it handy for checkout</string>
 	<string name="tip_pinch_text">Pinch to zoom</string>
 	<string name="copied_to_clipboard">Copied to clipboard</string>
 	<string name="facebook_login_button_text">Login with Facebook</string>
+	<string name="order_success">Your order has been successfully registered\n with the number:</string>
+	<string name="order_track_success">You can track your order status visiting \nthe order status area in this app</string>
+	<string name="track_order_status">Current Status:</string>
+	<string name="order_status">Order Status</string>
+	<string name="creation_date">Creation Date:</string>
+	<string name="payment_method">Payment Method:</string>
+	<string name="order_track_products">Products:</string>
+	<string name="track_other_order">Check Another Order</string>
+	<string name="error_tracking_order_text">No results found for the searched order id. Please recheck the order id and try again.</string>
 	<!-- Facebook App Id DO NOT TRANSLATE -->
 	<string name="app_id">321703697936806</string>
 </resources>

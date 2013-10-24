@@ -5,6 +5,9 @@ package pt.rocket.view.fragments;
 
 import java.util.EnumSet;
 
+import org.holoeverywhere.widget.TextView;
+
+import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.framework.event.EventType;
 import pt.rocket.framework.event.ResponseResultEvent;
@@ -12,11 +15,15 @@ import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.view.R;
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Toast;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -105,7 +112,7 @@ public class CheckoutStep5Fragment extends BaseFragment implements OnClickListen
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        getView().findViewById(R.id.btn_checkout_continue).setOnClickListener(this);
+        prepareLayout();
     }
 
     /*
@@ -139,6 +146,31 @@ public class CheckoutStep5Fragment extends BaseFragment implements OnClickListen
     public void onDestroyView() {
         super.onDestroyView();
         Log.i(TAG, "ON DESTROY");
+    }
+    
+    private void prepareLayout(){
+        Bundle args = getActivity().getIntent().getExtras();
+        String order_number = args.getString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR);
+        TextView tV = (TextView) getView().findViewById(R.id.order_number_id);
+        tV.setText(order_number);
+        tV.setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+                
+                if(android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.GINGERBREAD_MR1){
+                    android.text.ClipboardManager ClipMan = (android.text.ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                    ClipMan.setText(((TextView) v).getText());
+                } else {
+                    ClipboardManager ClipMan = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                    ClipMan.setPrimaryClip(ClipData.newPlainText("simple text",((TextView) v).getText()));
+                    
+                }
+                    
+                Toast.makeText(getActivity(), getString(R.string.copied_to_clipboard), Toast.LENGTH_SHORT).show();
+            }
+        });
+        getView().findViewById(R.id.btn_checkout_continue).setOnClickListener(this);
     }
     
     /*

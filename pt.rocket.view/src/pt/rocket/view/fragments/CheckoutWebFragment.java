@@ -516,8 +516,11 @@ public class CheckoutWebFragment extends BaseFragment {
                             trackPurchase(result);                            
                         }
                     });
+                    
+                    String order_number = result.optString("orderNr");
+                    
                     // XXX
-                    ActivitiesWorkFlow.checkoutActivity(getActivity(), ConstantsCheckout.CHECKOUT_THANKS);
+                    ActivitiesWorkFlow.checkoutStep5Activity(getActivity(), order_number);
                     getActivity().finish();
                 }
             } catch (ParseException e) {

@@ -5,6 +5,7 @@ package pt.rocket.view.fragments;
 
 import java.util.EnumSet;
 
+import org.holoeverywhere.widget.EditText;
 import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.framework.event.EventType;
@@ -36,12 +37,12 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
     private View mainView;
     
     private final static int PASSWORD_MINLENGTH = 6;
-    private TextView firstNameText;
-    private TextView lastNameText;
-    private TextView emailText;
+    private EditText firstNameText;
+    private EditText lastNameText;
+    private EditText emailText;
     
-    private TextView newPasswordText;
-    private TextView newPassword2Text;
+    private EditText newPasswordText;
+    private EditText newPassword2Text;
     private TextView passwordErrorHint;
     
     private OnFragmentActivityInteraction mCallbackMyAccountUserDataFragment;
@@ -196,13 +197,13 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
         Button cancelButton = (Button) mainView.findViewById(R.id.button_cancel);
         cancelButton.setOnClickListener(this);
 
-        firstNameText = (TextView) mainView.findViewById(R.id.clientFirstName);
-        lastNameText = (TextView) mainView.findViewById(R.id.clientLastName);
+        firstNameText = (EditText) mainView.findViewById(R.id.clientFirstName);
+        lastNameText = (EditText) mainView.findViewById(R.id.clientLastName);
         lastNameText.setVisibility(View.GONE);
-        emailText = (TextView) mainView.findViewById(R.id.clientEmail);
+        emailText = (EditText) mainView.findViewById(R.id.clientEmail);
         
-        newPasswordText = (TextView) mainView.findViewById(R.id.typeNewPassword);
-        newPassword2Text = (TextView) mainView.findViewById(R.id.retypeNewPassword);
+        newPasswordText = (EditText) mainView.findViewById(R.id.typeNewPassword);
+        newPassword2Text = (EditText) mainView.findViewById(R.id.retypeNewPassword);
         passwordErrorHint = (TextView) mainView.findViewById(R.id.passwordErrorHint);
         passwordErrorHint.setVisibility(View.GONE);
     }

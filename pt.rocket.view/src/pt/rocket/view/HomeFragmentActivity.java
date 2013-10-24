@@ -115,7 +115,7 @@ public class HomeFragmentActivity extends BaseActivity {
         super(R.layout.search,
                 NavigationAction.Home,
                 EnumSet.noneOf(MyMenuItem.class),
-                EnumSet.of(EventType.GET_TEASERS_EVENT, EventType.GET_CALL_TO_ORDER_PHONE, EventType.GET_PROMOTIONS),
+                EnumSet.of(EventType.GET_TEASERS_EVENT, EventType.GET_CALL_TO_ORDER_PHONE, EventType.GET_PROMOTIONS, EventType.GET_NAVIGATION_LIST_COMPONENTS_EVENT),
                 EnumSet.noneOf(EventType.class),
                 0, R.layout.teasers_fragments_viewpager);
     }
@@ -132,6 +132,7 @@ public class HomeFragmentActivity extends BaseActivity {
         changeSearchBarBehavior();
 
         if (requestResponse == null) {            
+            triggerContentEvent(new RequestEvent(EventType.GET_NAVIGATION_LIST_COMPONENTS_EVENT));
             triggerContentEvent(new RequestEvent(EventType.GET_TEASERS_EVENT));
             triggerContentEvent(new RequestEvent(EventType.GET_CALL_TO_ORDER_PHONE));
         } else {

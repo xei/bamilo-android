@@ -126,7 +126,7 @@
 	<string name="shoppingcart_item_btn_delete">Delete</string>
 	<string name="shoppingcart_instock">In Stock.</string>
 	<string name="shoppingcart_notinstock">Not In Stock.</string>
-	<string name="thank_you_order_title">Thank you for your order!</string>
+	<string name="thank_you_order_title">Thank you!</string>
 	<string name="order_sent_soon">Your order will be sent out soon.</string>
 	<string name="thank_you_title">Thank You</string>
 	<string name="register_button">Create Account</string>

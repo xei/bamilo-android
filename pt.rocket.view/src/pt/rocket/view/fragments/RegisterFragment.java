@@ -567,21 +567,25 @@ public class RegisterFragment extends BaseFragment {
      * @param form
      */
     private void loadForm(Form form) {
-        serverForm = FormFactory.getSingleton().CreateForm(FormConstants.REGISTRATION_FORM, getActivity(), form);
+    
+        serverForm = FormFactory.getSingleton().CreateForm(FormConstants.REGISTRATION_FORM,
+                getActivity(), form);
         serverForm.setOnFocusChangeListener(focus_listener);
         serverForm.setOnItemSelectedListener(selected_listener);
         serverForm.setTextWatcher(text_watcher);
         container = (LinearLayout) getView().findViewById(R.id.registerform_container);
+        container.removeAllViews();
         container.addView(serverForm.getContainer());
         if (null != this.savedInstanceState && null != serverForm) {
             Iterator<DynamicFormItem> iter = serverForm.getIterator();
-            while( iter.hasNext()) {
+            while (iter.hasNext()) {
                 DynamicFormItem item = iter.next();
                 item.loadState(savedInstanceState);
             }
             CheckBox check = (CheckBox) getView().findViewById(R.id.checkTerms);
             check.setChecked(this.savedInstanceState.getBoolean("" + R.id.checkTerms));
         }
+
     }
 
     /*

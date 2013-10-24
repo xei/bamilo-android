@@ -279,7 +279,11 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener{
                     R.drawable.selector_navigation_countrychange,
                     R.string.nav_country, this);
             break;
-
+        case TrackOrder:
+            layout = createGenericComponent(parent, component,
+                    R.drawable.selector_navigation_trackorder,
+                    R.string.nav_track_order, this);
+            break;
         default:
             layout = inflater.inflate(R.layout.navigation_generic_component, parent, false);
             TextView tVd = (TextView) layout.findViewById(R.id.component_text);
@@ -391,6 +395,9 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener{
                 break;
             case Country:
                 ActivitiesWorkFlow.changeCountryActivity(getActivity());
+                break;
+            case TrackOrder:
+                ActivitiesWorkFlow.trackOrderActivity(getActivity());
                 break;
             }
         } else {

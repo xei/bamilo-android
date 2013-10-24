@@ -469,21 +469,22 @@ public class LoginFragment extends BaseFragment {
      * @param form
      */
     private void loadForm(Form form) {
-        if(null == dynamicForm){
-            dynamicForm = FormFactory.getSingleton().CreateForm(FormConstants.LOGIN_FORM,
-                    getActivity(), form);
-            container.addView(dynamicForm.getContainer());
-            setFormClickDetails();
     
-            // Show save state
-            if (null != this.savedInstanceState && null != dynamicForm) {
-                Iterator<DynamicFormItem> iter = dynamicForm.getIterator();
-                while (iter.hasNext()) {
-                    DynamicFormItem item = iter.next();
-                    item.loadState(savedInstanceState);
-                }
+        dynamicForm = FormFactory.getSingleton().CreateForm(FormConstants.LOGIN_FORM,
+                getActivity(), form);
+        container.removeAllViews();
+        container.addView(dynamicForm.getContainer());
+        setFormClickDetails();
+
+        // Show save state
+        if (null != this.savedInstanceState && null != dynamicForm) {
+            Iterator<DynamicFormItem> iter = dynamicForm.getIterator();
+            while (iter.hasNext()) {
+                DynamicFormItem item = iter.next();
+                item.loadState(savedInstanceState);
             }
         }
+    
     }
 
     /*

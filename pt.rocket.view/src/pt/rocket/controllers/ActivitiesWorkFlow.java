@@ -33,6 +33,7 @@ import pt.rocket.view.SessionFragmentActivity;
 import pt.rocket.view.ShoppingCartFragmentActivity;
 import pt.rocket.view.SplashScreen;
 import pt.rocket.view.TermsActivityFragment;
+import pt.rocket.view.TrackOrderActivityFragment;
 import pt.rocket.view.WriteReviewFragmentActivity;
 import android.app.Activity;
 import android.content.Intent;
@@ -135,7 +136,10 @@ public class ActivitiesWorkFlow {
                             if (v.getId() == R.id.button2) {
                                 LogOut.performLogOut(new WeakReference<Activity>(
                                         activity));
-                                Session.getActiveSession().closeAndClearTokenInformation();
+                                if( Session.getActiveSession() != null){
+                                    Session.getActiveSession().closeAndClearTokenInformation();
+                                }
+                                    
                                 TrackerDelegator.trackLogoutSuccessful(activity);
                             }
                             dialog.dismiss();
@@ -403,8 +407,7 @@ public class ActivitiesWorkFlow {
 	 */
 	public static void checkoutActivity(Activity activity, int... params) {
 		Intent intent = null;
-		switch (params[0]) {
-		case ConstantsCheckout.CHECKOUT_BASKET: // checkout step 1 (shopping
+		// checkout step 1 (shopping
 												// basket)
 			// intent = new Intent(activity.getApplicationContext(),
 			// CheckoutStep1Activity.class);
@@ -415,15 +418,34 @@ public class ActivitiesWorkFlow {
 			// intent.putExtra(ConstantsIntentExtra.CHECKOUT_ADDRESS, -1);
 			intent = new Intent(activity.getApplicationContext(),
 					CheckoutWebActivityFragment.class);
-			break;
-		case ConstantsCheckout.CHECKOUT_THANKS: // checkout step 5 ( thank you )
-			// intent = new Intent(activity.getApplicationContext(), CheckoutStep5Activity.class);
-			intent = new Intent(activity.getApplicationContext(), CheckoutStep5FragmentActivity.class);
-			break;
-		}
+		
 		activity.startActivity(intent);
 		addStandardTransition(activity);
 	}
+	
+	   /**
+     * Start Checkout Activity
+     * 
+     * @param activity
+     */
+    public static void checkoutStep5Activity(Activity activity, String... params) {
+        Intent intent = new Intent(activity.getApplicationContext(), CheckoutStep5FragmentActivity.class);
+        intent.putExtra(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR, params[0]);
+        activity.startActivity(intent);
+        addStandardTransition(activity);
+    }
+    
+	
+   /**
+     * Start Track Order Activity
+     * 
+     * @param activity
+     */
+    public static void trackOrderActivity(Activity activity) {
+            Intent intent = new Intent(activity.getApplicationContext(),TrackOrderActivityFragment.class);
+            activity.startActivity(intent);
+            addStandardTransition(activity);
+    }
 	
 	public static void addStandardTransition(Activity activity) {
 		activity.overridePendingTransition(R.anim.pop_in, R.anim.pop_out);
