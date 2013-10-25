@@ -29,10 +29,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
+import org.holoeverywhere.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
-import android.widget.TextView;
+import org.holoeverywhere.widget.TextView;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -280,9 +280,9 @@ public class WriteReviewFragment extends BaseFragment {
         return result;
     }
 
-    private static boolean checkEmpty(int errorColorId, TextView... views) {
+    private static boolean checkEmpty(int errorColorId, EditText... views) {
         boolean result = true;
-        for (TextView view : views) {
+        for (EditText view : views) {
             if (TextUtils.isEmpty(view.getText())) {
                 view.setHintTextColor(errorColorId);
                 result = false;
