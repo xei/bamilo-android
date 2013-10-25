@@ -85,6 +85,14 @@
         <item>eg</item>
         <item>ci</item>
     </string-array>
+    
+    <string-array name="country_protocol">
+        <item>false</item>
+        <item>false</item>
+        <item>false</item>
+        <item>true</item>
+        <item>false</item>
+    </string-array>
 
     <item name="default_vibrate" type="bool">false</item>
     <item name="default_notification" type="bool">true</item>

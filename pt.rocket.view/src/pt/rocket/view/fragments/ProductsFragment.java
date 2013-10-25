@@ -11,6 +11,7 @@ import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.controllers.ProductsListAdapter;
+import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.event.EventManager;
 import pt.rocket.framework.event.EventType;
 import pt.rocket.framework.event.IMetaData;
@@ -102,7 +103,8 @@ public class ProductsFragment extends BaseFragment implements OnClickListener,
     private String productsURL = null;
     private String searchQuery = null;
 
-    View notfound;
+    private View notfound;
+    private View refreshAlertView;
 
     private ArrayList<String> mSortOptions;
     private int mSortPosition = DialogList.NO_INITIAL_POSITION;
@@ -288,6 +290,7 @@ public class ProductsFragment extends BaseFragment implements OnClickListener,
                 true, this));
 
         notfound = mainView.findViewById(R.id.search_products_not_found);
+        refreshAlertView = mainView.findViewById(R.id.retry_alert_view_button);
         loadingLayout = mainView.findViewById(R.id.loadmore);
     }
     
@@ -652,14 +655,7 @@ public class ProductsFragment extends BaseFragment implements OnClickListener,
 
     @Override
     protected boolean onErrorEvent(ResponseEvent event) {
-        if (event.errorCode.isNetworkError() && pageNumber == 1) {
-            ((BaseActivity) getActivity()).showWarning(false);
-            ((BaseActivity) getActivity()).showError(new GetProductsEvent(productsURL, searchQuery,
-                    pageNumber, MAX_PAGE_ITEMS,
-                    sort, dir, md5Hash));
-        } else if (!event.errorCode.isNetworkError() && pageNumber == 1
-                && productsAdapter.getCount() == 0) {
-            Log.d(TAG, "onErrorEvent: No products to show");
+        if (event.errorCode != null && pageNumber == 1) {
             showProductsNotfound();
             ((BaseActivity) getActivity()).showContentContainer();
         } else {
@@ -682,9 +678,24 @@ public class ProductsFragment extends BaseFragment implements OnClickListener,
         notfound.setVisibility(View.VISIBLE);
         loadingLayout.setVisibility(View.GONE);
         loadingLayout.refreshDrawableState();
+        refreshAlertView.setVisibility(View.VISIBLE);
+        refreshAlertView.setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+                hideProductsNotFound();
+                getMoreProducts();
+                
+            }
+        });
         if (mainView != null) {
             mainView.findViewById(R.id.loading_view_pager).setVisibility(View.GONE);
         }
+    }
+    
+    private void hideProductsNotFound(){
+        notfound.setVisibility(View.GONE);
+        refreshAlertView.setVisibility(View.GONE);
     }
 
     /**
