@@ -462,6 +462,7 @@ public class ProductsFragment extends BaseFragment implements OnClickListener,
 
             if (pageNumber == 1) {
                 if (mainView != null) {
+                    hideProductsNotFound();
                     mainView.findViewById(R.id.loading_view_pager).setVisibility(View.VISIBLE);
                 }
 

@@ -30,9 +30,11 @@ import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.framework.utils.ShopSelector;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.utils.dialogfragments.DialogProgressFragment;
+import pt.rocket.view.HomeFragmentActivity;
 import pt.rocket.view.R;
 import pt.rocket.view.fragments.FragmentType;
 import pt.rocket.view.fragments.SlideMenuFragment;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -110,6 +112,8 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     protected DialogFragment dialog;
 
     private DialogProgressFragment progressDialog;
+    
+    private Activity activity;
 
     /**
      * Use this variable to have a more precise control on when to show the content container.
@@ -173,6 +177,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		activity = this;
 		Log.d(getTag(), "onCreate");
 		ShopSelector.resetConfiguration(getBaseContext());
 		EventManager.getSingleton().addResponseListener(this, allHandledEvents);
@@ -212,6 +217,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
 	@Override
 	public void onResume() {
 		super.onResume();
+		activity = this;
 		Log.d(getTag(), "onResume");
 		if (!isRegistered) {
 		    EventManager.getSingleton().addResponseListener(this, allHandledEvents);
@@ -258,6 +264,16 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     public void setupActionBar() {
         ActionBarSherlock.unregisterImplementation(ActionBarSherlockNative.class);
         getSupportActionBar().setHomeButtonEnabled(true);
+        // Set logo
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
+        getSupportActionBar().setLogo(R.drawable.actionbar_logo);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        // Set custom view
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        getSupportActionBar().setCustomView(R.layout.action_bar_logo_layout);        
+        getSupportActionBar().getCustomView().findViewById(R.id.ic_logo).setOnClickListener(onActionBarClickListener);
+
     }
     
     private void setupContentViews() {
@@ -709,6 +725,16 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         System.gc();
     }
 
+    OnClickListener onActionBarClickListener = new OnClickListener() {
+        
+        @Override
+        public void onClick(View v) {
+            if(!(activity instanceof HomeFragmentActivity))
+                ActivitiesWorkFlow.homePageActivity(activity); 
+        }
+    };
+    
+    
     public void hideKeyboard() {
         // Log.d( getTag() , "hideKeyboard" );
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
