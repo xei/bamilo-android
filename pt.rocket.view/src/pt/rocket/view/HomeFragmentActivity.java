@@ -15,6 +15,7 @@ import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.framework.event.EventType;
 import pt.rocket.framework.event.RequestEvent;
+import pt.rocket.framework.event.ResponseEvent;
 import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.objects.BrandsTeaserGroup;
 import pt.rocket.framework.objects.CategoryTeaserGroup;
@@ -48,6 +49,7 @@ import android.content.SharedPreferences;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Shader;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
@@ -64,6 +66,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -239,6 +242,36 @@ public class HomeFragmentActivity extends BaseActivity {
         showContentContainer();
     }
 
+    private void setLayoutFallback(){
+        findViewById(R.id.home_view_pager_content).setVisibility(View.GONE);
+        findViewById(R.id.home_fallback_content).setVisibility(View.VISIBLE);
+        ImageView mapBg = (ImageView) findViewById(R.id.home_fallback_country_map);
+        SharedPreferences sharedPrefs = this.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        int position = sharedPrefs.getInt(ChangeCountryFragmentActivity.KEY_COUNTRY, 0);
+       
+        mapBg.setImageDrawable(this.getResources().obtainTypedArray(R.array.country_fallback_map).getDrawable(position));
+        
+        String country = this.getResources().obtainTypedArray(R.array.country_names).getString(position);
+        if(country.split(" ").length == 1){
+            TextView tView = (TextView) findViewById(R.id.fallback_country);
+            tView.setVisibility(View.VISIBLE);
+            findViewById(R.id.fallback_country_double).setVisibility(View.GONE);
+            tView.setText(country.toUpperCase());
+        } else {
+            TextView tView = (TextView) findViewById(R.id.fallback_country_top);
+            tView.setText(country.split(" ")[0].toUpperCase());
+            TextView tViewBottom = (TextView) findViewById(R.id.fallback_country_bottom);
+            tViewBottom.setText(country.split(" ")[1].toUpperCase());
+            ((TextView) findViewById(R.id.fallback_best)).setTextSize(11.88f);
+            findViewById(R.id.fallback_country_double).setVisibility(View.VISIBLE);
+            findViewById(R.id.fallback_country).setVisibility(View.GONE);
+            
+        }
+        findViewById(R.id.fallback_best).setSelected(true);
+        setProcessShow(true);
+        showContentContainer();
+    }
+    
     private void restoreLayout() {
 
         if (requestResponse != null) {
@@ -391,6 +424,16 @@ public class HomeFragmentActivity extends BaseActivity {
             break;
         }
 
+        return true;
+    }
+    
+    @Override
+    protected boolean onErrorEvent(ResponseEvent event) {
+        switch (event.getType()) {
+            case GET_TEASERS_EVENT:
+                setLayoutFallback();
+                break;
+        }
         return true;
     }
 

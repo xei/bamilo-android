@@ -94,6 +94,14 @@
         <item>false</item>
     </string-array>
 
+    <array name="country_fallback_map">
+        <item>@drawable/map_ng</item>
+        <item>@drawable/map_ke</item>
+        <item>@drawable/map_ma</item>
+        <item>@drawable/map_eg</item>
+        <item>@drawable/map_ci</item>
+    </array>
+    
     <item name="default_vibrate" type="bool">false</item>
     <item name="default_notification" type="bool">true</item>
     <item name="default_led" type="bool">true</item>

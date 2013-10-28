@@ -51,7 +51,7 @@ public class JumiaApplication extends Application implements ResponseListener, E
         isInitializing = true;
         Log.d(TAG, "Starting initialisation phase");
         AnalyticsGoogle.clearCheckoutStarted();
-        AdXTracker.launch(this);
+//        AdXTracker.launch(this);
         for (ApplicationComponent component : COMPONENTS.values()) {
             ErrorCode result = component.init(this);
             if (result != ErrorCode.NO_ERROR) {
