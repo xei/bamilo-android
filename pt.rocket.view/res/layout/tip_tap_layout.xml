@@ -24,6 +24,7 @@
             android:layout_below="@id/tip_tap_img"
             android:layout_marginTop="33dp"
             android:textSize="19.8sp"
+            android:gravity="center"
             android:text="@string/tip_tap_text" 
             android:textColor="#c3c3c3"
             android:shadowColor="#000000"

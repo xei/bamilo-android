@@ -37,6 +37,7 @@
             android:layout_centerHorizontal="true"
             android:layout_below="@id/tip_pinch_img"
             android:layout_marginTop="33dp"
+            android:gravity="center"
             android:textSize="19.8sp"
             android:text="@string/tip_pinch_text" 
             android:textColor="#c3c3c3"

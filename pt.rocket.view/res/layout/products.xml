@@ -94,6 +94,7 @@
             android:layout_below="@id/products_tip_img"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="33dp"
+            android:gravity="center"
             android:shadowColor="#000000"
             android:text="@string/products_tip_text"
             android:textColor="#c3c3c3"

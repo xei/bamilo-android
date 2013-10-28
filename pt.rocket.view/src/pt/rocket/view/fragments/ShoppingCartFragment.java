@@ -38,6 +38,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
+import android.webkit.WebView.FindListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -408,6 +409,17 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
             } else {
                 priceUnreduced.setVisibility( View.INVISIBLE );
             }
+            if(cart.getVatValue() != null){
+                TextView vatValue = (TextView) getView().findViewById( R.id.vat_value);
+                vatValue.setText(getString(R.string.vat_string)+": "+cart.getVatValue());
+                vatValue.setVisibility(View.VISIBLE);
+            }
+            if(cart.getShippingValue() != null){
+                TextView shippingValue = (TextView) getView().findViewById( R.id.shipping_value);
+                shippingValue.setText(getString(R.string.shipping)+": "+cart.getShippingValue());
+                shippingValue.setVisibility(View.VISIBLE);
+            }
+            
             
             hideNoItems();
             AnalyticsGoogle.get().trackPage( R.string.gcartwithitems );

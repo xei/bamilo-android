@@ -217,12 +217,12 @@
     <string name="section_title_notification">Paramètres de notification</string>
     <string name="rating_quality">Qualité</string>
     <string name="call_to_order_number">20006161</string>
-    <string name="home_tip_text">Faites défiler vers la gauche \nou la droite \npour changer de catégorie</string>
+    <string name="home_tip_text">Faites défiler vers la gauche ou la droite pour changer de catégorie</string>
     <string name="facebook_login_button_text">Connectez-vous via Facebook</string>
     <string name="tip_tap_text">Cliquez pour voir l\'ensemble \ndes images produit</string>
     <string name="tip_swipe_text">Balayez vers la gauche ou la droite pour \nobserver les différentes couleurs </string>
     <string name="tip_pinch_text">Ecartez les doigts pour zoomer</string>
-    <string name="products_tip_text">Balayez vers la gauche ou la droite \npour changer de filtre</string>
+    <string name="products_tip_text">Balayez vers la gauche ou la droite pour changer de filtre</string>
     <string name="go_shop_text">J\'achète</string>
     <string name="promotion_tip_tap_text">Cliquez sur la case ci-dessus pour copier le code dans le presse-papier et gardez le ainsi à portée de main pour le paiement final</string>
     <string name="copied_to_clipboard">Copié dans le presse-papier</string>
@@ -251,6 +251,7 @@
     <string name="fallback_best">Première boutique de vente en ligne en Côte d\'Ivoire</string>
     <string name="fallback_choice">LE PLUS GRAND CHOIX</string>
     <string name="fallback_doorstep">À VOTRE PORTE</string>
+    <string name="shipping">Livraison</string>
     <!-- Facebook App Id DO NOT TRANSLATE -->
     <string name="app_id">472507709498904</string>
 
