@@ -146,6 +146,8 @@ public class RestConstants {
     public static final String JSON_CART_VALUE_TAG = "cartValue";
     public static final String JSON_CART_COUNT_TAG = "cartCount";
     public static final String JSON_CART_ITEMS_TAG = "cartItems";
+    public static final String JSON_CART_VAT_VALUE_TAG = "vat_value";
+    public static final String JSON_CART_SHIPPING_VALUE_TAG = "shipping_value";
 
     //ShoppingCartItem Tags
     public static final String JSON_ITEM_IMAGE_TAG = JSON_IMAGE_TAG;

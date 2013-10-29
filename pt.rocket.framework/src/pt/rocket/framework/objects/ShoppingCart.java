@@ -29,6 +29,8 @@ public class ShoppingCart implements IJSONSerializable {
 	private Map<String, ShoppingCartItem> cartItems = new HashMap<String, ShoppingCartItem>();
 	private String cartValue;
 	private int cartCount;
+	private String vat_value;
+	private String shipping_value;
 	private Map<String, Map<String, String>> itemSimpleDataRegistry;
 
 	/**
@@ -79,6 +81,14 @@ public class ShoppingCart implements IJSONSerializable {
 	public void setCartCount(int cartCount) {
 		this.cartCount = cartCount;
 	}
+	
+	public String getVatValue(){
+		return this.vat_value;
+	}
+	
+	public String getShippingValue(){
+		return this.shipping_value;
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -90,6 +100,8 @@ public class ShoppingCart implements IJSONSerializable {
 
 		cartValue = jsonObject.getString(RestConstants.JSON_CART_VALUE_TAG);
 		cartCount = jsonObject.getInt(RestConstants.JSON_CART_COUNT_TAG);
+		vat_value = jsonObject.optString(RestConstants.JSON_CART_VAT_VALUE_TAG);
+		shipping_value = jsonObject.optString(RestConstants.JSON_CART_SHIPPING_VALUE_TAG);
 		if (cartCount > 0 && jsonObject.has(RestConstants.JSON_CART_ITEMS_TAG)) {
 			fillCartHashMap(jsonObject.getJSONObject(RestConstants.JSON_CART_ITEMS_TAG));
 		}
