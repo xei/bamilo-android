@@ -147,6 +147,9 @@
         <activity
             android:name="pt.rocket.view.CheckoutStep5FragmentActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name="pt.rocket.view.TrackOrderActivityFragment"
+            android:screenOrientation="portrait" />
 
         <service
             android:name="pt.rocket.framework.rest.RestService"
