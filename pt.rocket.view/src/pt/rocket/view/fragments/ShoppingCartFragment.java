@@ -409,12 +409,12 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
             } else {
                 priceUnreduced.setVisibility( View.INVISIBLE );
             }
-            if(cart.getVatValue() != null){
+            if(cart.getVatValue() != null && !cart.getVatValue().equalsIgnoreCase("null")){
                 TextView vatValue = (TextView) getView().findViewById( R.id.vat_value);
                 vatValue.setText(getString(R.string.vat_string)+": "+cart.getVatValue());
                 vatValue.setVisibility(View.VISIBLE);
             }
-            if(cart.getShippingValue() != null){
+            if(cart.getShippingValue() != null && !cart.getShippingValue().equalsIgnoreCase("null")){
                 TextView shippingValue = (TextView) getView().findViewById( R.id.shipping_value);
                 shippingValue.setText(getString(R.string.shipping)+": "+cart.getShippingValue());
                 shippingValue.setVisibility(View.VISIBLE);
