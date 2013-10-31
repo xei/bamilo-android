@@ -112,56 +112,12 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="13.2dp"
             android:layout_marginRight="13.2dp"
-            android:layout_marginTop="26.4dp"
             android:visibility="gone" >
-
-            <LinearLayout
-                android:id="@+id/order_status_title_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal" >
-
-                <org.holoeverywhere.widget.TextView
-                    android:id="@+id/order_status_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="roboto-bold"
-                    android:gravity="center"
-                    android:text="@string/track_your_order"
-                    android:textColor="@color/grey_middle"
-                    android:textSize="13.2sp" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical" >
-
-                    <org.holoeverywhere.widget.TextView
-                        android:id="@+id/order_status_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="15.84dp"
-                        android:fontFamily="roboto-bold"
-                        android:text="@string/track_your_order"
-                        android:textColor="@color/orange_basic"
-                        android:textSize="13.2sp" />
-
-                    <org.holoeverywhere.widget.TextView
-                        android:id="@+id/order_last_update"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="15.84dp"
-                        android:text="@string/creation_date"
-                        android:textColor="@color/grey_middle"
-                        android:textSize="11.22sp" />
-                </LinearLayout>
-            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/order_creation_date_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/order_status_title_container"
                 android:layout_marginTop="32.24dp"
                 android:orientation="horizontal" >
 
