@@ -111,6 +111,9 @@ public class SessionFragmentActivity extends BaseActivity {
     @Override
     public void onStop() {
         super.onStop();
+        fragment = null;
+        System.gc();
+        finish();
         Log.i(TAG, "ON STOP");
         
     }
@@ -130,13 +133,14 @@ public class SessionFragmentActivity extends BaseActivity {
      * @see pt.rocket.utils.MyActivity#onSwitchFragment(pt.rocket.view.fragments.FragmentType, java.lang.Boolean)
      */
     public void onSwitchFragment(FragmentType type, Boolean addToBackStack) {
-        Log.i(TAG, "ON SWITCH FRAGMENT");
+        Log.i(TAG, "code1 ON SWITCH FRAGMENT"+type);
         switch (type) {
         case LOGIN:
             fragment = LoginFragment.getInstance(originLocation);
             AnalyticsGoogle.get().trackPage(R.string.glogin);
             break;
         case REGISTER:
+            Log.i(TAG, "code1 getting "+type);
             fragment = RegisterFragment.getInstance(originLocation);
             AnalyticsGoogle.get().trackPage( R.string.gregister);
             break;
