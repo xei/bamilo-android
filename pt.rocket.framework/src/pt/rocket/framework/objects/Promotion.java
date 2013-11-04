@@ -142,7 +142,7 @@ public class Promotion implements IJSONSerializable {
 		
 		Calendar c = Calendar.getInstance();
 		
-		if (strDate != null && strDate.getTime() < c.getTimeInMillis()) {
+		if (strDate != null && strDate.getTime() <= c.getTimeInMillis()) {
 			return false;
 		} else {
 			return true;
