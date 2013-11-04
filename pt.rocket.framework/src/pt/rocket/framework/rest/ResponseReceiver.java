@@ -87,11 +87,16 @@ public abstract class ResponseReceiver<T> extends ResultReceiver {
 				if (Darwin.logDebugEnabled) {
 					Log.d(TAG, "Could not parse JSON:\n" + response);
 				}
-				Log.w(TAG, e);
 				RestClientSingleton.getSingleton().removeEntryFromCache(resultData.getString(IMetaData.URI));
 				onError(ErrorCode.ERROR_PARSING_SERVER_DATA, null, resultData);
 				ErrorMonitoring.sendException(e, resultData.getString(IMetaData.URI),
 						ErrorCode.ERROR_PARSING_SERVER_DATA, "Could not parse JSON", response, false);
+			} catch (OutOfMemoryError e) {
+				if (Darwin.logDebugEnabled) {
+					Log.d(TAG, "Could not parse JSON:\n" + response);
+				}
+				RestClientSingleton.getSingleton().removeEntryFromCache(resultData.getString(IMetaData.URI));
+				onError(ErrorCode.ERROR_PARSING_SERVER_DATA, null, resultData);
 			}
 			break;
 		default:

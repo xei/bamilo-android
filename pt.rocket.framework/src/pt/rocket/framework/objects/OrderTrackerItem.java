@@ -36,6 +36,7 @@ public class OrderTrackerItem implements IJSONSerializable {
     private String name;
     private String quantity;
     private String status;
+    private String status_update;
     
     /**
      * OrderTrackerItem empty constructor.
@@ -45,6 +46,7 @@ public class OrderTrackerItem implements IJSONSerializable {
     	name = "";
     	quantity = "";
     	status = "";
+    	status_update = "";
     }
 
     /**
@@ -58,12 +60,15 @@ public class OrderTrackerItem implements IJSONSerializable {
      * 			  	of the OrderTrackerItem
      * @param st status
      * 				of the OrderTrackerItem
+     * @param std status update date
+     * 				of the OrderTrackerItem
      */
-    public OrderTrackerItem(String s, String n, String q, String st) {
+    public OrderTrackerItem(String s, String n, String q, String st, String std) {
     	this.sku = s;
     	this.name = n;
     	this.quantity = q;
     	this.status = st;
+    	this.status_update = std;
     }
 
     
@@ -82,6 +87,10 @@ public class OrderTrackerItem implements IJSONSerializable {
     public String getStatus(){
     	return this.status;
     }
+    
+    public String getUpdateDate(){
+    	return this.status_update;
+    }
 
     /*
      * (non-Javadoc)
@@ -94,7 +103,14 @@ public class OrderTrackerItem implements IJSONSerializable {
         sku = jsonObject.optString(RestConstants.JSON_SKU_TAG);
         name = jsonObject.optString(RestConstants.JSON_NAME_TAG);
 		quantity = jsonObject.optString(RestConstants.JSON_QUANTITY_TAG);
-		status = jsonObject.optString(RestConstants.JSON_ORDER_ITEM_STATUS_TAG);
+		Log.i(TAG, "code1 name : "+name);
+		try {
+			status = jsonObject.getJSONArray(RestConstants.JSON_ORDER_STATUS_TAG).getJSONObject(0).optString(RestConstants.JSON_ORDER_ITEM_STATUS_TAG);
+			status_update = jsonObject.getJSONArray(RestConstants.JSON_ORDER_STATUS_TAG).getJSONObject(0).optString(RestConstants.JSON_ORDER_ITEM_STATUS_UPDATE_TAG);
+			Log.i(TAG, "code1 status : "+status);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 		
         return true;
     }
@@ -113,7 +129,7 @@ public class OrderTrackerItem implements IJSONSerializable {
             jsonObject.put(RestConstants.JSON_SKU_TAG, sku);
             jsonObject.put(RestConstants.JSON_NAME_TAG, name);
             jsonObject.put(RestConstants.JSON_QUANTITY_TAG, quantity);
-            jsonObject.put(RestConstants.JSON_ORDER_ITEM_STATUS_TAG, status);
+            jsonObject.put(RestConstants.JSON_ORDER_STATUS_TAG, status);
 
         } catch (JSONException e) {
             e.printStackTrace();

@@ -72,7 +72,7 @@
     
     
     <!-- Begin of AdX Tracking Parameters -->
-    <bool name="adx_enable">false</bool>
+    <bool name="adx_enable">true</bool>
 
     <string name="xlaunch">Launch</string>
     <string name="xlogin">Login</string>
