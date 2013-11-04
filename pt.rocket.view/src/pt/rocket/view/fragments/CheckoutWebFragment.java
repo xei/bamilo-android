@@ -302,7 +302,7 @@ public class CheckoutWebFragment extends BaseFragment {
         checkoutUrl = "http://" + RestContract.REQUEST_HOST + CHECKOUT_URL_WITH_PARAM;
         setProxy( checkoutUrl );
         Log.d(TAG, "Loading Url: " + checkoutUrl);
-//        webview.loadUrl(checkoutUrl, );
+        webview.loadUrl(checkoutUrl);
         isRequestedPage = true;
     }
     
