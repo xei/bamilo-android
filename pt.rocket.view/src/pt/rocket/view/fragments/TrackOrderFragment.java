@@ -206,16 +206,17 @@ public class TrackOrderFragment extends BaseFragment {
             ((TextView) view.findViewById(R.id.order_item_name)).setText(orderTrackerItem.getName());
             ((TextView) view.findViewById(R.id.order_item_name)).setSelected(true);
             ((TextView) view.findViewById(R.id.order_item_quantity)).setText("Qty. "+orderTrackerItem.getQuantity());
+            ((TextView) view.findViewById(R.id.order_status_text)).setText(orderTrackerItem.getStatus());
+            ((TextView) view.findViewById(R.id.order_last_update)).setText(orderTrackerItem.getUpdateDate());
             mLinearLayout.addView(view);
         }
     }
     
     private void proccessSuccess(OrderTracker mOrderTracker){
         ((TextView) getView().findViewById(R.id.title_status_text)).setText("# "+mOrderTracker.getId());
-        ((TextView) getView().findViewById(R.id.order_status_text)).setText(mOrderTracker.getOrderTrackerItems().get(0).getStatus());
         ((TextView) getView().findViewById(R.id.order_creation_date_text)).setText(mOrderTracker.getDate());
         ((TextView) getView().findViewById(R.id.order_payment_method_text)).setText(mOrderTracker.getPaymentMethod());
-        ((TextView) getView().findViewById(R.id.order_last_update)).setText(mOrderTracker.getLastUpdateDate());
+        
         inflateItemsList(mOrderTracker.getOrderTrackerItems());
         if(loadingTrackBarView != null){
             loadingTrackBarView.stopRendering();

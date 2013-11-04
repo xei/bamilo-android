@@ -201,7 +201,10 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
         }
         
         if (isNotValidVariation(mCompleteProduct.getVariations())) {
-            mVariationsContainer.setVisibility(View.GONE);
+            if(mVariationsContainer != null){
+                mVariationsContainer.setVisibility(View.GONE);
+            }
+                
             return;
         }
         mVariationsContainer.setVisibility(View.VISIBLE);

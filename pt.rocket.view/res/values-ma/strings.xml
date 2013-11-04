@@ -252,6 +252,7 @@
     <string name="fallback_choice">LE PLUS GRAND CHOIX</string>
     <string name="fallback_doorstep">À VOTRE PORTE</string>
     <string name="shipping">Livraison</string>
+    <string name="got_it">J\'ai Compris</string>
     <!-- Facebook App Id DO NOT TRANSLATE -->
     <string name="app_id">518468904830623</string>
 

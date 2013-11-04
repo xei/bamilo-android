@@ -204,6 +204,7 @@ public class CheckoutWebFragment extends BaseFragment {
     @Override
     public void onPause() {
         super.onPause();
+        webview.loadUrl("about:blank");
         Log.i(TAG, "ON PAUSE");
     }
 
@@ -215,6 +216,7 @@ public class CheckoutWebFragment extends BaseFragment {
     @Override
     public void onStop() {
         super.onStop();
+        webview.loadUrl("about:blank");
         Log.i(TAG, "ON STOP");
     }
 
@@ -230,6 +232,7 @@ public class CheckoutWebFragment extends BaseFragment {
             webview.clearHistory();
             webview.clearCache(true);
             webview.clearView();
+            webview.loadUrl("about:blank");
             webview.freeMemory();  //new code    
             webview.pauseTimers(); //new code
             webview.destroy();
@@ -248,6 +251,7 @@ public class CheckoutWebFragment extends BaseFragment {
             webview.clearHistory();
             webview.clearCache(true);
             webview.clearView();
+            webview.loadUrl("about:blank");
             webview.freeMemory();  //new code    
             webview.pauseTimers(); //new code
             webview.destroy();
@@ -294,10 +298,11 @@ public class CheckoutWebFragment extends BaseFragment {
     private void startCheckout() {
         ((BaseActivity) getActivity()).showLoading();
         webview.clearView();
+        webview.loadUrl("about:blank"); 
         checkoutUrl = "http://" + RestContract.REQUEST_HOST + CHECKOUT_URL_WITH_PARAM;
         setProxy( checkoutUrl );
         Log.d(TAG, "Loading Url: " + checkoutUrl);
-        webview.loadUrl(checkoutUrl);
+//        webview.loadUrl(checkoutUrl, );
         isRequestedPage = true;
     }
     

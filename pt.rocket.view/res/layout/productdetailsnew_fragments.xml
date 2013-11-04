@@ -270,7 +270,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="Got it"
+                    android:text="@string/got_it"
                     android:textColor="#fff"
                     android:textSize="@dimen/text_large"
                     android:textStyle="bold" />

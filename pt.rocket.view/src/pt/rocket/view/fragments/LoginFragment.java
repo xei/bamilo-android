@@ -346,6 +346,7 @@ public class LoginFragment extends BaseFragment {
                 parentActivity.onSwitchFragment(FragmentType.FORGOT_PASSWORD, true);
             }
             else if (id == R.id.middle_login_link_register) {
+                Log.i(TAG, "code1 CLICKED ON REGISTER");
                 parentActivity.onSwitchFragment(FragmentType.REGISTER, true);
             }
         }
