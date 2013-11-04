@@ -37,21 +37,29 @@ public class CountryAdapter extends ArrayAdapter<String> {
 	private final Context context;
 	private final String[] values;
 	private final TypedArray flags;
-
+	private LayoutInflater mInflater;
 	public CountryAdapter(Context context, String[] values, TypedArray flags) {
 		super(context, R.layout.change_country_row, values);
 		this.context = context;
 		this.values = values;
 		this.flags = flags;
+		mInflater = (LayoutInflater) context
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 	
 
 	@Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Log.i("Country List", "Position: " + position);
-        LayoutInflater inflater = (LayoutInflater) context
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rowView = inflater.inflate(R.layout.change_country_row, parent, false);
+        if(mInflater == null){
+            mInflater = (LayoutInflater) context
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        }
+        View rowView = convertView;
+        if(rowView == null){
+            rowView = mInflater.inflate(R.layout.change_country_row, parent, false);    
+        }
+        
         TextView textView = (TextView) rowView.findViewById(R.id.country_name);
         ImageView imageView = (ImageView) rowView.findViewById(R.id.flag);
         textView.setText(values[position]);

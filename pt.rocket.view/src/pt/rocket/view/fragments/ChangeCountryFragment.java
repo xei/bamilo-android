@@ -47,6 +47,8 @@ public class ChangeCountryFragment extends Fragment {
     private DialogGenericFragment dialog;
     
     private int selected = SHOP_NOT_SELECTED;
+    
+    private CountryAdapter countryAdapter;
 
     /**
      * Get instance
@@ -175,7 +177,10 @@ public class ChangeCountryFragment extends Fragment {
 
         // Inflate
         final ListView countryList = (ListView) getView().findViewById(R.id.change_country_list);
-        CountryAdapter countryAdapter = new CountryAdapter(getActivity(), countries, flags);
+        if(countryAdapter == null){
+            countryAdapter = new CountryAdapter(getActivity(), countries, flags);
+        }
+        
         countryList.setAdapter(countryAdapter);
         countryList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         
