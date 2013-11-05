@@ -29,6 +29,7 @@ import pt.rocket.utils.BaseActivity;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.OnActivityFragmentInteraction;
+import pt.rocket.utils.ScrollViewWithHorizontal;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.utils.dialogfragments.DialogListFragment;
@@ -699,8 +700,9 @@ public class ProductDetailsActivityFragment extends BaseActivity implements
     }
 
     private void showChooseReminder() {
-        // mVarianceText.setTextColor(getResources().getColor(R.color.red_basic));
-        mVariantChooseError.setVisibility(View.VISIBLE);
+        showWarningVariation(true);
+        ScrollViewWithHorizontal scrollView = (ScrollViewWithHorizontal) findViewById(R.id.scrollview);
+        scrollView.scrollTo(0, (findViewById(R.id.product_variant_choose).getBottom()+10));
     }
 
     private void displayProduct(CompleteProduct product) {

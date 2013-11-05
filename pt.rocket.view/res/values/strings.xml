@@ -23,7 +23,7 @@
     <string name="sales">Sales</string>
     <string name="nav_products">Products</string>
     <string name="nav_country">Choose Country</string>
-    <string name="nav_track_order">Track Order</string>
+    <string name="nav_track_order">Order Status</string>
     <string name="nav_country_warning">You are about to change the country. This clears the cart and you will be logged out. Are you sure?</string>
     <string name="navigation_cart_empty">Your cart is empty</string>
     <string name="login_title">Log In</string>

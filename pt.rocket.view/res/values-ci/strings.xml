@@ -23,7 +23,7 @@
     <string name="sales">PROMO</string>
     <string name="nav_products">Produits</string>
     <string name="nav_country">Choisir le pays </string>
-    <string name="nav_track_order">Suivre la commande</string>
+    <string name="nav_track_order">Suivi de commande</string>
     <string name="nav_country_warning">Vous êtes sur le point de changer le pays. Ceci efface le panier et vous serez déconnecté. Etes-vous sûr?</string>
     <string name="navigation_cart_empty">Votre panier est vide</string>
     <string name="login_title">Connectez-vous </string>

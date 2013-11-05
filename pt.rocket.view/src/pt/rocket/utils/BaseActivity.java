@@ -136,6 +136,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     private boolean isRegistered = false;
 
     private View warningView;
+    private View warningVariationView;
 
     private View errorView;
 
@@ -287,11 +288,20 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         loadingBarContainer = findViewById(R.id.loading_bar);
         loadingBarView = (LoadingBarView) findViewById(R.id.loading_bar_view);
         warningView = findViewById(R.id.warning);
+        warningVariationView  = findViewById(R.id.warning_variations);
         warningView.setOnClickListener(new OnClickListener() {
             
             @Override
             public void onClick(View v) {
                 showWarning(false);
+                
+            }
+        });
+        warningVariationView.setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+                showWarningVariation(false);
                 
             }
         });
@@ -642,6 +652,14 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         }
     }
 
+    public void showWarningVariation(boolean show) {
+        if (warningVariationView != null) {
+
+            warningVariationView.setVisibility(show ? View.VISIBLE : View.GONE);
+          
+        }
+    }
+    
     private void setAppContentLayout() {
         if (contentLayoutId == 0) {
             return;

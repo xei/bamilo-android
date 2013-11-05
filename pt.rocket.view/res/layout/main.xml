@@ -2,31 +2,43 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
-    
+
     <org.holoeverywhere.widget.TextView
         android:id="@+id/title"
         style="@style/headline"
         android:visibility="gone" />
 
     <!-- Main Content Layout -->
+
+    <RelativeLayout
+        android:id="@+id/warning_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title" >
+
+        <include
+            android:id="@+id/warning"
+            android:layout_width="match_parent"
+            android:layout_height="34dp"
+            layout="@layout/warning"
+            android:visibility="gone" />
+
+        <include
+            android:id="@+id/warning_variations"
+            android:layout_width="match_parent"
+            android:layout_height="34dp"
+            layout="@layout/warning_variations"
+            android:visibility="gone" />
+    </RelativeLayout>
+
     <ViewStub
         android:id="@+id/stub_app_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
         android:layout_alignWithParentIfMissing="true"
-        android:layout_below="@+id/warning"
+        android:layout_below="@id/warning_container"
         android:inflatedId="@+id/rocket_app_content" />
-
-    <include
-        android:id="@id/warning"
-        android:layout_width="match_parent"
-        android:layout_height="34dp"
-        android:layout_below="@id/title"
-        layout="@layout/warning"
-        android:visibility="gone" />
-    
-    
 
     <include
         android:layout_width="match_parent"
@@ -37,7 +49,7 @@
     <include
         layout="@layout/alert_view"
         android:visibility="gone" />
-    
+
     <include
         layout="@layout/promotion_layout"
         android:visibility="gone" />
