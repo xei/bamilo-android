@@ -57,18 +57,18 @@
     
 	<!-- Manual increment of version code and version name -->
 	    <replaceregexp match="android:versionCode=&quot;10108&quot;" 
-        		replace="android:versionCode = &quot;${version.code}&quot;" flags="g"> 
+        		replace="android:versionCode = &quot;10${version.code}&quot;" flags="g"> 
         <fileset dir="${basedir}">
         	<include name="AndroidManifest.xml"/>
     	</fileset>
     	</replaceregexp>
     	
-	    <replaceregexp match="android:versionName=&quot;1.0.2&quot;" 
-        		replace="android:versionName = &quot;${version.name}&quot;" flags="g"> 
-        <fileset dir="${basedir}">
-        	<include name="AndroidManifest.xml"/>
-    	</fileset>
-    	</replaceregexp>
+<!-- 	    <replaceregexp match="android:versionName=&quot;1.0.2&quot;"  -->
+<!--         		replace="android:versionName = &quot;${version.name}&quot;" flags="g">  -->
+<!--         <fileset dir="${basedir}"> -->
+<!--         	<include name="AndroidManifest.xml"/> -->
+<!--     	</fileset> -->
+<!--     	</replaceregexp> -->
 
 
     <!-- The project.properties file is created and updated by the 'android'
