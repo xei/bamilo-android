@@ -142,7 +142,11 @@ public class Promotion implements IJSONSerializable {
 		
 		Calendar c = Calendar.getInstance();
 		
-		if (strDate != null && strDate.getTime() <= c.getTimeInMillis()) {
+		/**
+		 * (strDate.getTime()+(1000*60*60*24) )
+		 * 1000*60*60*24 is one day in milliseconds and needs to be added in order to include the end day.
+		 */
+		if (strDate != null && (strDate.getTime()+(1000*60*60*24))< c.getTimeInMillis()) {
 			return false;
 		} else {
 			return true;
