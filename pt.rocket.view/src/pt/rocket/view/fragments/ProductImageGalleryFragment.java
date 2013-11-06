@@ -93,7 +93,6 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
         // inform the adapter to allow zooming on the image.
         if (identifier == 3) {
             isZoomAvailable = true;
-            Log.i(TAG, "code1 isZoomAvailable" + isZoomAvailable);
         } else {
             this.mCompleteProduct = (CompleteProduct) values;
         }
@@ -177,7 +176,6 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
     public void onStart() {
         super.onStart();
         Log.i(TAG, "ON START");
-        // FlurryTracker.get().begin();
     }
 
     /*
@@ -228,7 +226,6 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
     public void onStop() {
         super.onStop();
         Log.i(TAG, "ON STOP");
-        // FlurryTracker.get().end();
     }
 
     @Override
@@ -244,7 +241,7 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
     private void createViewPager() {
         ArrayList<String> imagesList = mCompleteProduct.getImageList();
         galleryAdapter = new GalleryPagerAdapter(getActivity(), imagesList, isZoomAvailable);
-        Log.i(TAG, "code1 isZoomAvailable on createViewPager" + isZoomAvailable);
+        
         if (mViewPager == null) {
             mViewPager = (JumiaViewPagerWithZoom) mainView.findViewById(R.id.viewpager);
         }
@@ -288,31 +285,9 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
     }
 
     private void updateImage(int index) {
-        Log.d(TAG, "updateImage index = " + index);
         mImagesList.setSelectedItem(index, HorizontalListView.MOVE_TO_SCROLLED);
         mPagerWrapper.setCurrentItem(index, true);
-        Log.d(TAG,
-                "updateImage: index = " + index + " currentItem = " + mViewPager.getCurrentItem());
     }
-
-    OnClickListener clickToGallery = new OnClickListener() {
-
-        @Override
-        public void onClick(View v) {
-            ActivitiesWorkFlow.productsGalleryActivity(getActivity(), mCompleteProduct.getUrl(),
-                    mViewPager.getCurrentItem());
-
-        }
-    };
-
-    OnClickListener clickToFinish = new OnClickListener() {
-
-        @Override
-        public void onClick(View v) {
-            getActivity().finish();
-
-        }
-    };
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long arg3) {
@@ -325,14 +300,14 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
 
-            if (showHorizontalListView) {
-                if (getActivity() != null) {
-                    getActivity().finish();
-                }
-            } else {
+            if(!isZoomAvailable){
                 ActivitiesWorkFlow.productsGalleryActivity(getActivity(),
                         mCompleteProduct.getUrl(),
                         mPagerWrapper.getCurrentItem());
+            } else {
+                if (getActivity() != null) {
+                    getActivity().finish();
+                }
             }
 
             return showHorizontalListView;
@@ -351,7 +326,6 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
 
     @Override
     public void onPageSelected(int position) {
-        Log.d(TAG, "onPageSelected position = " + position);
         mImagesList.setSelectedItem(position, HorizontalListView.MOVE_TO_SCROLLED);
     }
 
