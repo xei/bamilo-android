@@ -303,7 +303,7 @@ public class RegisterFragment extends BaseFragment {
             public void onClick(View arg0) {
                 Log.d( TAG, "registerButton onClick" );
                 
-                if ( !serverForm.checkRequired()) {
+                if ( serverForm != null && !serverForm.checkRequired()) {
                     registerRequiredText.setVisibility( View.VISIBLE );
                     return;
                 } else {
