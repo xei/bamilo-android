@@ -4,10 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import org.holoeverywhere.FontLoader;
 import org.holoeverywhere.widget.TextView;
-
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.view.R;
 import pt.rocket.view.fragments.ShoppingCartFragment;
@@ -29,7 +26,6 @@ import com.actionbarsherlock.view.ActionMode;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 
-
 /**
  * This Class implements the Basket Adapter
  * <p/>
@@ -49,93 +45,109 @@ import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
  */
 public class ShoppingBasketFragListAdapter extends BaseAdapter {
 
-	protected final String TAG = LogTagHelper.create(ShoppingBasketFragListAdapter.class);
+    protected final String TAG = LogTagHelper.create(ShoppingBasketFragListAdapter.class);
 
-	public int currentOrientation;
+    public int currentOrientation;
 
-	ActionMode contextMenu;
-	List<CartItemValues> itemValuesList;
+    ActionMode contextMenu;
+    List<CartItemValues> itemValuesList;
 
-	ProgressBar pBar;
-	ImageView productView;
+    int shop_cart_size = 0;
+    public boolean isScrolling;
 
-	int shop_cart_size = 0;
-	public boolean isScrolling;
+    public boolean multiSelect = false;
 
-	public boolean multiSelect = false;
+    public boolean firstTime = true;
 
-	public boolean firstTime = true;
-
-	private LayoutInflater inflater;
+    private LayoutInflater inflater;
 
     private ShoppingCartFragment activity;
 
-	public ShoppingBasketFragListAdapter(ShoppingCartFragment activity, List<CartItemValues> itemValuesList ) {
+    public ShoppingBasketFragListAdapter(ShoppingCartFragment activity,
+            List<CartItemValues> itemValuesList) {
 
-		this.activity = activity;
-		// initialize the image loader service
-		this.itemValuesList = itemValuesList;
-		this.inflater = (LayoutInflater) activity.getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.activity = activity;
+        // initialize the image loader service
+        this.itemValuesList = itemValuesList;
+        this.inflater = (LayoutInflater) activity.getActivity().getSystemService(
+                Context.LAYOUT_INFLATER_SERVICE);
 
-	}
+    }
 
-	@Override
-	public int getCount() {
-		return itemValuesList.size();
-	}
+    @Override
+    public int getCount() {
+        return itemValuesList.size();
+    }
 
-	@Override
-	public Object getItem(int position) {
-		return itemValuesList.get(position);
-	}
+    @Override
+    public Object getItem(int position) {
+        return itemValuesList.get(position);
+    }
 
-	@Override
-	public long getItemId(int position) {
-		return position;
-	}
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
 
-	public void deleteSelectedProductsFromList() {
-		notifyDataSetChanged();
-	}
+    public void deleteSelectedProductsFromList() {
+        notifyDataSetChanged();
+    }
 
-	/**
-	 * Update Adapter Arrays
-	 * 
-	 * @param is_in_wish
-	 * @param is_chek
-	 * @param product_n
-	 * @param price
-	 * @param product_id
-	 * @param unities
-	 * @param images
-	 */
-	public void updateAllArrays( ArrayList<CartItemValues> itemValuesList ) {
-		this.itemValuesList = itemValuesList;
-		notifyDataSetChanged();
-	}
+    /**
+     * Update Adapter Arrays
+     * 
+     * @param is_in_wish
+     * @param is_chek
+     * @param product_n
+     * @param price
+     * @param product_id
+     * @param unities
+     * @param images
+     */
+    public void updateAllArrays(ArrayList<CartItemValues> itemValuesList) {
+        this.itemValuesList = itemValuesList;
+        notifyDataSetChanged();
+    }
 
-	@Override
-	public View getView(final int position, View convertView, ViewGroup parent) {
-		View item = convertView;
-		if (item == null) {
-			item = inflater.inflate(R.layout.shopping_basket_product_element_container, parent, false);
-		}
-		
-		final CartItemValues itemValues = itemValuesList.get(position);
-		// Log.d( TAG, "getView: productName = " + itemValues.product_name);
-		
-		TextView tV = (TextView) item.findViewById(R.id.item_name);
-		TextView priceView = (TextView) item.findViewById(R.id.item_regprice);
+    @Override
+    public View getView(final int position, View convertView, ViewGroup parent) {
+        View view = convertView;
+        final Item prodItem;
+        if (view == null) {
+            view = inflater.inflate(R.layout.shopping_basket_product_element_container, parent,
+                    false);
+        }
+        if((Item) view.getTag() == null){
+            prodItem = new Item();
+            prodItem.itemValues = itemValuesList.get(position);
+            // Log.d( TAG, "getView: productName = " + itemValues.product_name);
 
-		tV.setText( itemValues.product_name );
-		tV.setSelected(true);
-		
-		final ImageView productView = (ImageView) item.findViewById(R.id.image_view);
+            prodItem.itemName = (TextView) view.findViewById(R.id.item_name);
+            prodItem.priceView = (TextView) view.findViewById(R.id.item_regprice);
+            prodItem.quantityBtn = (Button) view.findViewById(R.id.changequantity_button);
+            
+            prodItem.productView = (ImageView) view.findViewById(R.id.image_view);
 
-		final View pBar = item.findViewById(R.id.image_loading_progress);
-		String url = itemValues.image;
+            prodItem.pBar = view.findViewById(R.id.image_loading_progress);
+            prodItem.discountPercentage = (TextView) view.findViewById(R.id.discount_percentage);
+            prodItem.priceDisc = (TextView) view.findViewById(R.id.item_discount);
+            prodItem.promoImg = (ImageView) view.findViewById(R.id.item_promotion);
+            prodItem.variancesContainer = (LinearLayout) view
+                    .findViewById(R.id.variances_container);
+            prodItem.stockInfo = (TextView) view.findViewById(R.id.item_stock);
+            prodItem.deleteBtn = (Button) view.findViewById(R.id.delete_button);
+            view.setTag(prodItem);
+        } else {
+            prodItem = (Item) view.getTag();
+        }
+        
+        prodItem.itemName.setText(prodItem.itemValues.product_name);
+        prodItem.itemName.setSelected(true);
 
-        ImageLoader.getInstance().displayImage(url, productView, new SimpleImageLoadingListener() {
+        
+        String url = prodItem.itemValues.image;
+
+        ImageLoader.getInstance().displayImage(url, prodItem.productView, new SimpleImageLoadingListener() {
 
             /*
              * (non-Javadoc)
@@ -145,153 +157,148 @@ public class ShoppingBasketFragListAdapter extends BaseAdapter {
              */
             @Override
             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                productView.setVisibility(View.VISIBLE);
-                pBar.setVisibility(View.GONE);
+                prodItem.productView.setVisibility(View.VISIBLE);
+                prodItem.pBar.setVisibility(View.GONE);
             }
 
         });
 
-		
+        
 
-		TextView discountPercentage = (TextView) item.findViewById(R.id.discount_percentage);
-		TextView priceDisc = (TextView) item.findViewById(R.id.item_discount);
-		final ImageView promoImg = (ImageView) item.findViewById(R.id.item_promotion);
+        if (!prodItem.itemValues.price.equals(prodItem.itemValues.price_disc)) {
+            prodItem.priceDisc.setText(prodItem.itemValues.price_disc);
+            prodItem.priceDisc.setVisibility(View.VISIBLE);
 
-		if (!itemValues.price.equals(itemValues.price_disc)) {
-			priceDisc.setText(itemValues.price_disc);
-			priceDisc.setVisibility(View.VISIBLE);
-			
-	        priceView.setText(itemValues.price);
-	        priceView.setVisibility(View.VISIBLE);
-			priceView.setPaintFlags(priceView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-			priceView.setTextColor(activity.getResources().getColor(R.color.grey_middlelight));
-			
-			discountPercentage.setText("-" + itemValues.discount_value.intValue()+ "%");
-            discountPercentage.setVisibility(View.VISIBLE);
-	        promoImg.setVisibility(View.VISIBLE);
-		} else {
-		    priceDisc.setText(itemValues.price);
-		    priceView.setVisibility(View.INVISIBLE);
-			promoImg.setVisibility(View.GONE);
-			discountPercentage.setVisibility(View.GONE);
-		}
+            prodItem.priceView.setText(prodItem.itemValues.price);
+            prodItem.priceView.setVisibility(View.VISIBLE);
+            prodItem.priceView.setPaintFlags(prodItem.priceView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            prodItem.priceView.setTextColor(activity.getResources().getColor(R.color.grey_middlelight));
 
-		LinearLayout variancesContainer = (LinearLayout) item.findViewById(R.id.variances_container);
-		variancesContainer.removeAllViews();
-	
-		if ( itemValues.simpleData != null) {
-			variancesContainer.setVisibility(View.VISIBLE);
-			Map<String, String> simpleData = itemValues.simpleData;
-		    
-			//FIXME COMMENT UNTIL DEPLY OF API TO LIVE
-		     try {
-		            
+            prodItem.discountPercentage.setText("-" + prodItem.itemValues.discount_value.intValue() + "%");
+            prodItem.discountPercentage.setVisibility(View.VISIBLE);
+            prodItem.promoImg.setVisibility(View.VISIBLE);
+        } else {
+            prodItem.priceDisc.setText(prodItem.itemValues.price);
+            prodItem.priceView.setVisibility(View.INVISIBLE);
+            prodItem.promoImg.setVisibility(View.GONE);
+            prodItem.discountPercentage.setVisibility(View.GONE);
+        }
 
-		         if(itemValues.variation!=null && itemValues.variation.length()>0){
-		               TextView variances = (TextView) inflater.inflate(R.layout.shopping_basket_variance_text, variancesContainer, false );
-		                 
-		                 variances.setText(itemValues.variation);
-		               variancesContainer.addView(variances);
-		         }
-		         } catch (Exception e) {
-		             // TODO: handle exception
-		         }
-			
-//			TextView variances = (TextView) inflater.inflate(R.layout.shopping_basket_variance_text, variancesContainer, false );
-//			
-//			variances.setText(itemValues.variation);
-//          variancesContainer.addView(variances);
-//			for (Entry<String, String> entry : simpleData.entrySet()) {
-//				TextView variances = (TextView) inflater.inflate(R.layout.shopping_basket_variance_text, variancesContainer, false );
-//				// Log.d( TAG, "getView: entryKey = " + entry.getKey() +
-//				// " entryValue = " + entry.getValue());
-//				android.util.Log.e("VARIANCE", ":"+entry.getValue());
-//				variances.setText(entry.getValue());
-//				variancesContainer.addView(variances);
-//			}
-			
-			
-		}
-		
-		TextView stockInfo = (TextView) item.findViewById( R.id.item_stock );
-		if ( itemValues.stock > 0 ) {
-			stockInfo.setText( activity.getString( R.string.shoppingcart_instock ));
-			stockInfo.setTextColor( activity.getResources().getColor( R.color.green_stock ));
-		} else {
-			stockInfo.setText( activity.getString( R.string.shoppingcart_notinstock ));
-			stockInfo.setTextColor( activity.getResources().getColor( R.color.red_basic ));
-		}
-		
 
-		Button deleteBtn = (Button) item.findViewById(R.id.delete_button);
-		deleteBtn.setOnClickListener(new OnClickListener() {
+        prodItem.variancesContainer.removeAllViews();
 
-			@Override
-			public void onClick(View v) {
-				itemValues.is_checked = true;
-				activity.deleteSelectedElements();
-			}
-		});
-		
-		
-		Button quantityBtn = (Button) item.findViewById( R.id.changequantity_button );
-        quantityBtn.setText( "  " + String.valueOf( itemValues.quantity ) + "  ");        
-        quantityBtn.setOnClickListener( new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				itemValues.is_checked = true;
-				activity.changeQuantityOfItem( position );				
-			}
-		});
+        if (prodItem.itemValues.simpleData != null) {
+            prodItem.variancesContainer.setVisibility(View.VISIBLE);
+            Map<String, String> simpleData = prodItem.itemValues.simpleData;
+
+            // FIXME COMMENT UNTIL DEPLY OF API TO LIVE
+            try {
+
+                if (prodItem.itemValues.variation != null && prodItem.itemValues.variation.length() > 0) {
+                    TextView variances = (TextView) inflater.inflate(
+                            R.layout.shopping_basket_variance_text, prodItem.variancesContainer, false);
+
+                    variances.setText(prodItem.itemValues.variation);
+                    prodItem.variancesContainer.addView(variances);
+                }
+            } catch (Exception e) {
+                // TODO: handle exception
+            }
+
+        }
+
+        
+        if (prodItem.itemValues.stock > 0) {
+            prodItem.stockInfo.setText(activity.getString(R.string.shoppingcart_instock));
+            prodItem.stockInfo.setTextColor(activity.getResources().getColor(R.color.green_stock));
+        } else {
+            prodItem.stockInfo.setText(activity.getString(R.string.shoppingcart_notinstock));
+            prodItem.stockInfo.setTextColor(activity.getResources().getColor(R.color.red_basic));
+        }
+
+        
+        prodItem.deleteBtn.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                prodItem.itemValues.is_checked = true;
+                activity.deleteSelectedElements();
+            }
+        });
+
+       
+        prodItem.quantityBtn.setText("  " + String.valueOf(prodItem.itemValues.quantity) + "  ");
+        prodItem.quantityBtn.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                prodItem.itemValues.is_checked = true;
+                activity.changeQuantityOfItem(position);
+            }
+        });
+
+        return view;
+    }
+
+    /**
+     * This function round a number to a specific precision using a predefine rounding mode
+     * 
+     * @param unrounded
+     *            The value to round
+     * @param precision
+     *            The number of decimal places we want
+     * @param roundingMode
+     *            The type of rounding we want done. Please refer to the java.math.BigDecimal class
+     *            for more info
+     * @return The number rounded according to the specifications we established
+     */
+    public double roundValue(double unrounded, int precision, int roundingMode) {
+        BigDecimal bd = new BigDecimal(unrounded);
+        BigDecimal rounded = bd.setScale(precision, roundingMode);
+
+        return rounded.doubleValue();
+    }
+
+    /**
+     * A representation of each item on the list
+     */
+    private static class Item {
+
+        public TextView itemName;
+        public TextView priceView;
+        public Button quantityBtn;
+        public ImageView productView;
+        public View pBar;
+        public TextView discountPercentage;
+        public TextView priceDisc;
+        public ImageView promoImg;
+        public LinearLayout variancesContainer;
+        public TextView stockInfo;
+        public Button deleteBtn;
+        public CartItemValues itemValues;
 
         /*
+         * (non-Javadoc)
          * 
-		// DELIVERY
-//		TextView productDeliveryTime = (TextView) item.findViewById(R.id.cart_delivery_time);
-//		TextView productDeliveryHint = (TextView) item.findViewById(R.id.cart_delivery_hint);
-		if (stock.get(position) > 0) {
-			productDeliveryHint.setText(R.string.in_stock);
-			productDeliveryHint.setTextColor(activity.getResources().getColor(R.color.green_stock));
-			productDeliveryTime.setVisibility(View.VISIBLE);
-			String minDeliveryTime = itemValues.min_delivery_time.toString();
-			String maxDeliveryTime = itemValues.max_delivery_time.toString();
-			String deliveryText = String.format(item.getResources().getString(R.string.delivery_time) + " %s - %s "
-					+ item.getResources().getString(R.string.business_days), minDeliveryTime, maxDeliveryTime);
-			productDeliveryTime.setText(deliveryText);
-		} else {
-			productDeliveryHint.setText(R.string.out_of_stock);
-			productDeliveryHint.setTextColor(activity.getResources().getColor(R.color.red_basic));
-			productDeliveryTime.setVisibility(View.GONE);
-		}
+         * @see java.lang.Object#finalize()
+         */
+        @Override
+        protected void finalize() throws Throwable {
+            itemValues = null;
+            itemName = null;
+            priceView = null;
+            quantityBtn = null;
+            productView = null;
+            pBar = null;
+            discountPercentage = null;
+            priceDisc = null;
+            promoImg = null;
+            variancesContainer = null;
+            stockInfo = null;
+            deleteBtn = null;
 
-		Log.d(TAG, "productDeliveryTime = " + productDeliveryTime.getText());
-		Log.d(TAG, "productDeliveryTime is VISIBLE = " + (productDeliveryTime.getVisibility()==View.VISIBLE));
-		*/
-		
-		FontLoader.applyDefaultFont(item);
-		return item;
-	}
-	
-
-	/**
-	 * This function round a number to a specific precision using a predefine
-	 * rounding mode
-	 * 
-	 * @param unrounded
-	 *            The value to round
-	 * @param precision
-	 *            The number of decimal places we want
-	 * @param roundingMode
-	 *            The type of rounding we want done. Please refer to the
-	 *            java.math.BigDecimal class for more info
-	 * @return The number rounded according to the specifications we established
-	 */
-	public double roundValue(double unrounded, int precision, int roundingMode) {
-		BigDecimal bd = new BigDecimal(unrounded);
-		BigDecimal rounded = bd.setScale(precision, roundingMode);
-
-		return rounded.doubleValue();
-	}
+            super.finalize();
+        }
+    }
 
 }
