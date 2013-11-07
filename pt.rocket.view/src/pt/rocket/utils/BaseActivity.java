@@ -30,6 +30,7 @@ import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.framework.utils.ShopSelector;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.utils.dialogfragments.DialogProgressFragment;
+import pt.rocket.view.ChangeCountryFragmentActivity;
 import pt.rocket.view.HomeFragmentActivity;
 import pt.rocket.view.R;
 import pt.rocket.view.fragments.FragmentType;
@@ -747,7 +748,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         
         @Override
         public void onClick(View v) {
-            if(!(activity instanceof HomeFragmentActivity))
+            if(!(activity instanceof HomeFragmentActivity) && !(activity instanceof ChangeCountryFragmentActivity))
                 ActivitiesWorkFlow.homePageActivity(activity); 
         }
     };
