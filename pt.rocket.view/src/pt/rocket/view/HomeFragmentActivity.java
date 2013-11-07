@@ -20,10 +20,10 @@ import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.objects.BrandsTeaserGroup;
 import pt.rocket.framework.objects.CategoryTeaserGroup;
 import pt.rocket.framework.objects.Homepage;
-import pt.rocket.framework.objects.Promotion;
 import pt.rocket.framework.objects.ITargeting.TargetType;
 import pt.rocket.framework.objects.ImageTeaserGroup;
 import pt.rocket.framework.objects.ProductTeaserGroup;
+import pt.rocket.framework.objects.Promotion;
 import pt.rocket.framework.objects.TeaserSpecification;
 import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.MixpanelTracker;
@@ -42,14 +42,11 @@ import pt.rocket.view.fragments.MainOneSlideFragment;
 import pt.rocket.view.fragments.ProducTeaserListFragment;
 import pt.rocket.view.fragments.StaticBannerFragment;
 import android.app.Activity;
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Shader;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
@@ -433,6 +430,8 @@ public class HomeFragmentActivity extends BaseActivity {
             case GET_TEASERS_EVENT:
                 setLayoutFallback();
                 break;
+            case GET_PROMOTIONS:
+                break;
         }
         return true;
     }
@@ -589,14 +588,57 @@ public class HomeFragmentActivity extends BaseActivity {
         
         @Override
         public void onLowMemory() {
-            releaseFragments();
+            Log.i(TAG, "code1 onLowMemory");
+            releaseFragmentsAndRemove();
             super.onLowMemory();
         }
         
         @Override
         public void onDestroy() {
+            Log.i(TAG, "code1 onDestroy");
             releaseFragments();
             super.onDestroy();
+        }
+        
+        private void releaseFragmentsAndRemove(){
+            
+            
+            FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+            boolean commit = false;
+            if(fragmentMainOneSlide != null){
+                ft.remove(fragmentMainOneSlide);
+                commit = true;
+            }
+                
+            if(fragmentStaticBanner != null){
+                ft.remove(fragmentStaticBanner);
+                commit = true;
+            }
+            
+            if(fragmentCategoryTeaser != null){
+                ft.remove(fragmentCategoryTeaser);
+                commit = true;
+            }
+            
+            if(fragmentProductListTeaser != null){
+                ft.remove(fragmentProductListTeaser);
+                commit = true;
+            }
+            
+            if(fragmentBrandsListTeaser != null){
+                ft.remove(fragmentBrandsListTeaser);
+                commit = true;
+            }
+            
+            if(commit){
+                ft.commit();
+            }
+            
+            fragmentMainOneSlide = null;
+            fragmentStaticBanner = null;
+            fragmentCategoryTeaser = null;
+            fragmentProductListTeaser = null;
+            fragmentBrandsListTeaser = null;
         }
         
         private void releaseFragments(){
