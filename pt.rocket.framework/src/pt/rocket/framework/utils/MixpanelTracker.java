@@ -352,7 +352,7 @@ public class MixpanelTracker {
 
     
 	public static void checkout(Context context, List<ShoppingCartItem> items) {
-		if (!isEnabled)
+		if (!isEnabled || items == null)
 			return;
 		
 		Double actItemPrice = 0.0;
