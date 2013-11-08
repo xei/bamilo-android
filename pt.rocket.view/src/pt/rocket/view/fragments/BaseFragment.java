@@ -229,7 +229,14 @@ public abstract class BaseFragment extends Fragment implements ResponseListener,
                 if (showContent) {
                     ((BaseActivity) getActivity()).showContentContainer();
                 }
-                ((BaseActivity) getActivity()).showWarning(event.warning != null);
+                
+                if(getActivity() != null){
+                    ((BaseActivity) getActivity()).showWarning(event.warning != null);                    
+                } else {
+                   return;
+                }
+                
+
             }
             handleSuccessEvent(event);
 
