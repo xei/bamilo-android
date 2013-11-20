@@ -22,6 +22,7 @@ import pt.rocket.framework.service.DarwinService;
 import pt.rocket.framework.utils.LogTagHelper;
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 
 /**
  * Service responsible for requesting the server api version.
@@ -66,10 +67,11 @@ public class ApiService extends DarwinService {
 					@Override
 					public VersionInfo parseResponse(JSONObject metadataObject)
 							throws JSONException {
-
+						Log.i(TAG, "code1 VersionInfo");
 						VersionInfo info = new VersionInfo();
 						info.initialize(metadataObject);
 						mVersionInfo = info;
+						Log.i(TAG, "code1 VersionInfo is: "+mVersionInfo.toString());
 						return mVersionInfo;
 					}
 				}, event.metaData);

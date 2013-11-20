@@ -2,8 +2,10 @@ package pt.rocket.framework;
 
 import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 import java.util.TimeZone;
 
+import pt.rocket.framework.database.DarwinDatabaseHelper;
 import pt.rocket.framework.rest.RestClientSingleton;
 import pt.rocket.framework.rest.RestServiceHelper;
 import pt.rocket.framework.service.ServiceManager;
@@ -57,7 +59,7 @@ public class Darwin {
 	private static DarwinMode mode = DarwinMode.DEBUG;
 	private static int SHOP_ID = -1;
 
-	private static Context context = null;
+	public static Context context = null;
 	
 	public final static boolean logDebugEnabled = true;
 	private static int sVersionCode;
@@ -94,7 +96,12 @@ public class Darwin {
 			Log.d(TAG, "Allready initialized for id " + shopId);
 			return true;
 		}
-		PreInstallController.init(context);
+		
+		// Set pre install tracking
+		boolean isPreInstallApp = PreInstallController.init(context);
+		// Init darwin database
+		DarwinDatabaseHelper.init(context);
+		
 		retrieveVersionCode();
 		ShopSelector.init(context, shopId);
 		RestServiceHelper.init(context);
@@ -103,7 +110,9 @@ public class Darwin {
 		ServiceManager.init(context, shopId);
 		Log.d(TAG, "Darwin is initialized with id " + shopId);
 		SHOP_ID = shopId;
-		setPushTags(context);
+		
+		setUAPushTags(context, isPreInstallApp);
+		
 		return true;
 	}
 
@@ -130,16 +139,36 @@ public class Darwin {
 		return context;
 	}
 
-	private static void setPushTags(Context context) {
-		HashSet<String> tags = new HashSet<String>();
+	private static void setUAPushTags(Context context, boolean isPreInstallApp) {
+		Set<String> tags = new HashSet<String>();
 		tags.add(TimeZone.getDefault().getID());
 		tags.add(Locale.getDefault().getLanguage());
 		tags.add(Locale.getDefault().getCountry());
 		tags.add(Build.MANUFACTURER);
 		tags.add(Build.MODEL);
 		tags.add(Build.VERSION.RELEASE);
+		// Check pre-install flag
+		if(isPreInstallApp) {
+			preInstallTag(context, tags, Build.MANUFACTURER);
+		}
+		// Set tags
 		PushManager.shared().setTags(tags);
 	}
+
+	
+    /**
+     * Method that adds the pre install tag for UA
+     * @param value
+     * @author sergiopereira
+     */
+    public static void preInstallTag(Context context, Set<String> tags, String value) {
+        String tag = context.getString(R.string.ua_preisntall) + value;
+        Log.i(TAG, "PRE INSTALL UA TRACKING: " + tag);
+        //Set<String> tags = new HashSet<String>();
+        tags.add(tag);
+        //PushManager.shared().setTags(tags);
+    }
+	
 	
     private static void retrieveVersionCode() {
         PackageInfo pinfo;

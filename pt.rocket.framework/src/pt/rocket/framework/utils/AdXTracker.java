@@ -3,6 +3,7 @@ package pt.rocket.framework.utils;
 import pt.rocket.framework.R;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Build;
@@ -116,5 +117,36 @@ public class AdXTracker {
 		Log.d(TAG, "signup tracked: event = " + context.getString(R.string.xsignup) + " customerId = " + customerId);
 		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xsignup), customerId, "");
 	}
-
+	
+	
+	/**
+	 * Method that adds the pre install event
+	 * 
+	 * @param context
+	 * @param value
+	 * <!-- AD-X: Hardcode Network and Referrer -->
+	 * <meta-data android:name="NETWORK" android:value="@string/adx_network_def_value" />
+	 * <meta-data android:name="REFERENCE" android:value="PREINSTALL" />
+	 * @author sergiopereira
+	 */
+	public static void preInstall(Context context, String value) {
+		Log.i(TAG, "PRE INSTALL ADX TRACKING: NETWORK " + value);
+		Log.i(TAG, "PRE INSTALL ADX TRACKING: REFERENCE " + context.getString(R.string.xpreinstall));		
+		// Get constants
+		final String REFERRAL_URL = context.getString(R.string.xreferral); 			// InstallReferral
+		final String RECEIVER_DONE = context.getString(R.string.xreceiver); 		// ReceiverDone
+		final String ADX_PREFERENCES = context.getString(R.string.xpreferences); 	// AdXPrefrences
+		// Set variables
+		String network = value;
+		String reference = context.getString(R.string.xpreinstall);
+		// Get AdX shared preferences 
+		SharedPreferences settings = context.getSharedPreferences(ADX_PREFERENCES, 0);
+		SharedPreferences.Editor editor = settings.edit();
+		// Set configuration
+		String uri = "referrer=utm_source%3D"+network+"%26utm_medium%3Dcpc%26utm_campaign%3D"+reference;
+		editor.putString(REFERRAL_URL, uri);
+		editor.putString(RECEIVER_DONE, "done");
+		editor.commit();
+	}
+	
 }

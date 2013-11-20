@@ -28,6 +28,7 @@ import pt.rocket.framework.service.services.CategoryService;
 import pt.rocket.framework.service.services.ConfigurationService;
 import pt.rocket.framework.service.services.CustomerAccountService;
 import pt.rocket.framework.service.services.FormsService;
+import pt.rocket.framework.service.services.ImageResolutionsService;
 import pt.rocket.framework.service.services.NavigationService;
 import pt.rocket.framework.service.services.ProductService;
 import pt.rocket.framework.service.services.ShoppingCartService;
@@ -46,7 +47,7 @@ public class ServiceManager extends RequestListener {
 	public static final SingletonMap<DarwinService> SERVICES = new SingletonMap<DarwinService>(
 			new ApiService(), new NavigationService(), new FormsService(),
 			new TeasersService(), new CategoryService(), new ProductService(),
-			new CustomerAccountService(), new ShoppingCartService(), new ConfigurationService() );
+			new CustomerAccountService(), new ShoppingCartService(), new ConfigurationService() ,new ImageResolutionsService());
 	private static final EnumSet<EventType> INIT_EVENTS = EnumSet
 			.noneOf(EventType.class);
 	static {

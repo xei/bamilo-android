@@ -81,6 +81,13 @@
     <string name="xsale">Sale</string>
     <string name="xsaledata">SaleData</string>
     <string name="xcustomer">Customer</string>
+    <string name="xnetwork">NETWORK</string>
+    <string name="xreference">REFERENCE</string>
+    <string name="xpreinstall">PREINSTALL</string>
+    <string name="xreferral">InstallReferral</string>
+    <string name="xreceiver">ReceiverDone</string>
+    <string name="xpreferences">AdXPrefrences</string>
+    
     <!-- End of AdX Tracking Parameters -->
     
     <!-- Begin of Flurry Tracking Parameters -->    
@@ -135,6 +142,7 @@
     <string name="mixprop_loginlocationsidemenu">Side menu</string>
     <string name="mixprop_loginlocationautologin">Auto Login</string>
     <string name="mixprop_loginlocationreview">Review</string>
+    <string name="mixprop_loginlocationcart">Shopping Cart</string>
     <string name="mixprop_logoutlocation">Logout location</string>
     <string name="mixprop_registrationmethod">Registration method</string>
     <string name="mixprop_registrationlocation">Registration location</string>
@@ -148,6 +156,9 @@
     <string name="mixprop_createdate">Postal Code</string>
     <string name="mixprop_country">Country</string>
     
+    <!-- Begin of Urban AirShip Tracking Parameters -->
+    <string name="ua_preisntall">preinstall-</string>
+    <!-- End of Urban AirShip Tracking Parameters -->
     <string name="mixprop_searchtearm">Search term</string>
     <string name="mixprop_numberresults">Number results provided</string>
     

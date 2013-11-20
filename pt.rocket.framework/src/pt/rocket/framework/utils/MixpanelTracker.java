@@ -188,7 +188,7 @@ public class MixpanelTracker {
 		PreInstallController ctrl = new PreInstallController();
 		
 		setProperty(context.getString(R.string.mixprop_createdate), currentDateandTime); 
-		setProperty(context.getString(R.string.mixprop_preinstall), "" + ctrl.isPreInstalled(context));
+		setProperty(context.getString(R.string.mixprop_preinstall), "" + ctrl.init(context));
 		setProperty(context.getString(R.string.mixprop_signupplatform), context.getString(R.string.mixprop_platformmobile));
 		Calendar calendar = Calendar.getInstance();
 		if(customer.getBirthday() != null){
@@ -207,7 +207,7 @@ public class MixpanelTracker {
 		
 		if ( null != people ) {			
 			people.set(context.getString(R.string.mixproppeople_created), currentDateandTime);
-			people.set(context.getString(R.string.mixproppeople_preinstall), "" + ctrl.isPreInstalled(context));
+			people.set(context.getString(R.string.mixproppeople_preinstall), "" + ctrl.init(context));
 			people.set(context.getString(R.string.mixproppeople_signupplatform), currentDateandTime);
 			people.set(context.getString(R.string.mixproppeople_source), location);
 			people.set(context.getString(R.string.mixproppeople_firstname), customer.getFirstName());
