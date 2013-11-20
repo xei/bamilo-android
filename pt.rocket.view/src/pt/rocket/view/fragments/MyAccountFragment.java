@@ -5,11 +5,15 @@ package pt.rocket.view.fragments;
 
 import java.util.EnumSet;
 
-import pt.rocket.controllers.ActivitiesWorkFlow;
+import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.MyAccountAdapter;
+import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.event.EventType;
 import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.utils.MyMenuItem;
+import pt.rocket.utils.NavigationAction;
+import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.os.Bundle;
@@ -34,13 +38,14 @@ public class MyAccountFragment extends BaseFragment {
     private static MyAccountFragment myAccountFragment;
     
     private String[] myAccountOptions = null;
+    
     /**
      * Get instance
      * 
      * @return
      */
     public static MyAccountFragment getInstance() {
-        if (myAccountFragment == null)
+       // if (myAccountFragment == null)
             myAccountFragment = new MyAccountFragment();
         return myAccountFragment;
     }
@@ -49,9 +54,11 @@ public class MyAccountFragment extends BaseFragment {
      * Empty constructor
      */
     public MyAccountFragment() {
-        super(EnumSet.noneOf(EventType.class),
-        EnumSet.noneOf(EventType.class));
-        this.setRetainInstance(true);
+        super(EnumSet.noneOf(EventType.class), 
+                EnumSet.noneOf(EventType.class),
+                EnumSet.noneOf(MyMenuItem.class), 
+                NavigationAction.MyAccount, 
+                R.string.account_name);
     }
     
     /*
@@ -74,6 +81,9 @@ public class MyAccountFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
+        
+        // Retain this fragment across configuration changes.
+        setRetainInstance(true);
     }
 
     /*
@@ -144,6 +154,15 @@ public class MyAccountFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         Log.i(TAG, "ON DESTROY");
+        
+        // FIXME : The next lines try fix this bug 
+        // java.lang.IllegalStateException: The specified child already has a parent. You must call removeView() on the child's parent first.
+        View view = getView();
+        if (view != null) {
+            unbindDrawables(view);
+        }
+        
+        System.gc();
     }
     
     /**
@@ -163,15 +182,18 @@ public class MyAccountFragment extends BaseFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // Validate item
                 if (position == POSITION_USER_DATA) {
-                    ActivitiesWorkFlow.loginActivity(getActivity(), getString(R.string.mixprop_loginlocationmyaccount), true);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.MY_USER_DATA);
+                    bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationmyaccount));
+                    ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.LOGIN, bundle, true);
                 }
 
             }
         });
+        
     }
     @Override
     protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
-        // TODO Auto-generated method stub
         return false;
     }
 }

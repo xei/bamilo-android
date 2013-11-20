@@ -13,7 +13,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import pt.rocket.constants.ConstantsCheckout;
+import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.ActivitiesWorkFlow;
+import pt.rocket.controllers.fragments.FragmentController;
+import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.event.EventManager;
 import pt.rocket.framework.event.EventType;
 import pt.rocket.framework.event.RequestEvent;
@@ -24,9 +27,11 @@ import pt.rocket.framework.objects.ShoppingCart;
 import pt.rocket.framework.rest.RestClientSingleton;
 import pt.rocket.framework.rest.RestContract;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.utils.BaseActivity;
+import pt.rocket.utils.MyMenuItem;
+import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.OnFragmentActivityInteraction;
 import pt.rocket.utils.TrackerDelegator;
+import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -79,8 +84,6 @@ public class CheckoutWebFragment extends BaseFragment {
     
     private static CheckoutWebFragment checkoutWebFragment;
 
-    private OnFragmentActivityInteraction mCallbackCheckoutWebFragment;
-    
     /**
      * Get instance
      * 
@@ -97,7 +100,7 @@ public class CheckoutWebFragment extends BaseFragment {
      */
     public CheckoutWebFragment() {
         super(EnumSet.of(EventType.GET_SHOPPING_CART_ITEMS_EVENT, EventType.GET_CUSTOMER),
-        EnumSet.noneOf(EventType.class));
+        EnumSet.noneOf(EventType.class),EnumSet.noneOf(MyMenuItem.class),NavigationAction.Basket,0);
         this.setRetainInstance(true);
     }
     
@@ -122,14 +125,7 @@ public class CheckoutWebFragment extends BaseFragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         Log.i(TAG, "ON ATTACH");
-     // This makes sure that the container activity has implemented
-        // the callback interface. If not, it throws an exception
-        try {
-            mCallbackCheckoutWebFragment = (OnFragmentActivityInteraction) getActivity();
-        } catch (ClassCastException e) {
-            throw new ClassCastException(getActivity().toString()
-                    + " must implement OnActivityFragmentInteraction");
-        }
+
     }
 
     /*
@@ -185,7 +181,8 @@ public class CheckoutWebFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        webview = new WebView(getActivity());
+        if(webview == null)
+            webview = new WebView(getActivity());
         mWebContainer.addView(webview);
         // Needed for 2.3 problem with not showing keyboard by tapping in webview
         webview.requestFocus();
@@ -375,16 +372,16 @@ public class CheckoutWebFragment extends BaseFragment {
             failedPageRequest = failingUrl;
             webview.stopLoading();
             webview.clearView();
-            mCallbackCheckoutWebFragment.sendClickListenerToActivity(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.d( TAG, "showError: onClick:");
-                    ((BaseActivity) getActivity()).showLoading();
-                    isRequestedPage = true;
-                    webview.requestFocus();
-                    webview.loadUrl( failingUrl );
-                }
-            });
+//            mCallbackCheckoutWebFragment.sendClickListenerToActivity(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Log.d( TAG, "showError: onClick:");
+//                    ((BaseActivity) getActivity()).showLoading();
+//                    isRequestedPage = true;
+//                    webview.requestFocus();
+//                    webview.loadUrl( failingUrl );
+//                }
+//            });
            
         }
 
@@ -425,19 +422,21 @@ public class CheckoutWebFragment extends BaseFragment {
                 Log.d( TAG ,"onPageFinished: page was saved failed page" );
                 wasLoadingErrorPage = true;
             } else if ( isRequestedPage ) {
-                try {
-                    ((BaseActivity) getActivity()).showContentContainer();    
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                
+                if(getActivity() != null)
+                    ((BaseActivity) getActivity()).showContentContainer();
                 isRequestedPage = false;
-            } else if (((BaseActivity) getActivity()) != null) {
+            } else if (getActivity() != null) {
                 ((BaseActivity) getActivity()).showContentContainer();
             }
             
             if (url.contains(SUCCESS_URL_TAG)) {
-                view.loadUrl(JAVASCRIPT_PROCESS);
+            	/**
+            	 * This line causes a JNI exception only in the emulators 2.3.X.
+            	 * @see http://code.google.com/p/android/issues/detail?id=12987
+            	 */
+            	Log.d(TAG, "LOAD URL: JAVASCRIPT PROCESS");
+                view.loadUrl(JAVASCRIPT_PROCESS);  
+                //view.loadUrl(JAVASCRIPT_PRINT);
             }            
         }
         
@@ -505,6 +504,7 @@ public class CheckoutWebFragment extends BaseFragment {
     }
     
     private class JavaScriptInterface extends Object {
+
         @SuppressWarnings("unused")
         public void processContent(String content) {
             try {
@@ -512,8 +512,8 @@ public class CheckoutWebFragment extends BaseFragment {
                 final JSONObject result = new JSONObject(content);
                 if (result.optBoolean("success")) {
                     // Measure to escape the webview thread
-                     EventManager.getSingleton().triggerRequestEvent(
-                             GetShoppingCartItemsEvent.FORCE_API_CALL);
+                    triggerContentEventWithNoLoading(GetShoppingCartItemsEvent.FORCE_API_CALL);
+                    
                     handler.post( new Runnable() {
                         
                         @Override
@@ -521,19 +521,19 @@ public class CheckoutWebFragment extends BaseFragment {
                             trackPurchase(result);                            
                         }
                     });
+                    Bundle bundle = new Bundle();
+                    bundle.putString(ConstantsIntentExtra.SUCESS_INFORMATION, content);
+                    bundle.putString(ConstantsIntentExtra.CUSTOMER_EMAIL, (customer != null ) ? customer.getEmail() : ""); 
+					String order_number = result.optString("orderNr");
                     
-                    String order_number = result.optString("orderNr");
-                    
-                    // XXX
-                    ActivitiesWorkFlow.checkoutStep5Activity(getActivity(), order_number);
-                    getActivity().finish();
+					bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR, order_number);                   
+					((BaseActivity) getActivity()).onSwitchFragment(FragmentType.CHECKOUT_THANKS, bundle, FragmentController.ADD_TO_BACK_STACK);
                 }
             } catch (ParseException e) {
                 Log.e(TAG, "parse exception:", e);
             } catch (JSONException e) {
                 Log.e(TAG, "json parse exception:", e);
             }
-            getActivity().finish();
         }
     }
 
@@ -550,9 +550,6 @@ public class CheckoutWebFragment extends BaseFragment {
             customer = (Customer) event.result;
             break;
         case GET_SHOPPING_CART_ITEMS_EVENT:
-            if (((ShoppingCart) event.result).getCartCount() == 0) {
-                getActivity().finish();
-            }
             break;
         }
         return false;

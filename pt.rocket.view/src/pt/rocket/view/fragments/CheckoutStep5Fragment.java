@@ -13,6 +13,8 @@ import pt.rocket.framework.event.EventType;
 import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.utils.MyMenuItem;
+import pt.rocket.utils.NavigationAction;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ClipData;
@@ -51,7 +53,7 @@ public class CheckoutStep5Fragment extends BaseFragment implements OnClickListen
      * Empty constructor
      */
     public CheckoutStep5Fragment() {
-        super(EnumSet.noneOf(EventType.class), EnumSet.noneOf(EventType.class));
+        super(EnumSet.noneOf(EventType.class), EnumSet.noneOf(EventType.class), EnumSet.noneOf(MyMenuItem.class), NavigationAction.Basket,0);
         this.setRetainInstance(true);
     }
 
@@ -149,7 +151,7 @@ public class CheckoutStep5Fragment extends BaseFragment implements OnClickListen
     }
     
     private void prepareLayout(){
-        Bundle args = getActivity().getIntent().getExtras();
+        Bundle args = this.getArguments();
         String order_number = args.getString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR);
         TextView tV = (TextView) getView().findViewById(R.id.order_number_id);
         tV.setText(order_number);

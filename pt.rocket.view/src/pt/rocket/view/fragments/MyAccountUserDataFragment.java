@@ -4,17 +4,24 @@
 package pt.rocket.view.fragments;
 
 import java.util.EnumSet;
+import java.util.List;
+import java.util.Map;
 
 import org.holoeverywhere.widget.EditText;
 import org.holoeverywhere.widget.TextView;
 
+import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.event.EventType;
+import pt.rocket.framework.event.ResponseEvent;
 import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.event.events.ChangePasswordEvent;
 import pt.rocket.framework.objects.Customer;
+import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.utils.MyMenuItem;
+import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.OnFragmentActivityInteraction;
-import pt.rocket.view.MyAccountUserDataActivityFragment;
+import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
@@ -24,6 +31,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -56,8 +64,8 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
      * @return
      */
     public static MyAccountUserDataFragment getInstance() {
-        if (myAccountFragment == null)
-            myAccountFragment = new MyAccountUserDataFragment();
+        // if (myAccountFragment == null)
+        myAccountFragment = new MyAccountUserDataFragment();
         return myAccountFragment;
     }
 
@@ -65,35 +73,12 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
      * Empty constructor
      */
     public MyAccountUserDataFragment() {
-        super(EnumSet.noneOf(EventType.class), EnumSet.noneOf(EventType.class));
-        this.setRetainInstance(true);
-    }
-    
-    @Override
-    public void sendValuesToFragment(int identifier, Object values) {
-        if(identifier == MyAccountUserDataActivityFragment.SEND_ERROR) {
-            displayErrorHint((String) values);
-        } else {
-            Customer customer = (Customer) values;
-            lastNameText.setText(customer.getLastName());
-            firstNameText.setText(customer.getFirstName());
-            emailText.setText(customer.getEmail());
-        }
-    }
-    
-    private void startFragmentCallbacks() {
-        // This makes sure that the container activity has implemented
-        // the callback interface. If not, it throws an exception
-        try {
-            mCallbackMyAccountUserDataFragment = (OnFragmentActivityInteraction) getActivity();
-
-        } catch (ClassCastException e) {
-            throw new ClassCastException(getActivity().toString()
-                    + " must implement OnActivityFragmentInteraction");
-        }
-
-    }
-    
+        super(EnumSet.of(EventType.GET_CUSTOMER), 
+                EnumSet.of(EventType.CHANGE_PASSWORD_EVENT), 
+                EnumSet.noneOf(MyMenuItem.class),
+                NavigationAction.MyAccount, 
+                R.string.personal_data_title);
+    }    
     /*
      * (non-Javadoc)
      * 
@@ -103,7 +88,6 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         Log.i(TAG, "ON ATTACH");
-        startFragmentCallbacks();
     }
 
     /*
@@ -115,6 +99,8 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
+        // Retain this fragment across configuration changes.
+        setRetainInstance(true);
     }
 
     /*
@@ -130,7 +116,12 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
         
         mainView = inflater.inflate(R.layout.my_account_user_data_fragment, container, false);
         setAppContentLayout();
+        init();
         return mainView;
+    }
+
+    private void init() {
+        triggerContentEvent(EventType.GET_CUSTOMER);
     }
 
     /*
@@ -251,20 +242,80 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
     
     @Override
     protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
-        // TODO Auto-generated method stub
-        return false;
+        Log.i(TAG, "ON SUCCESS EVENT");
+        switch (event.type) {
+        case CHANGE_PASSWORD_EVENT:
+            Log.d(TAG, "changePasswordEvent: Password changed with success");
+            if (null != getActivity() ) {
+                Toast.makeText(getActivity(), getString(R.string.password_changed), Toast.LENGTH_SHORT).show();
+            }
+            finish();
+            
+            return true;
+        case GET_CUSTOMER:
+            Customer customer = (Customer) event.result;
+            Log.d(TAG, "CUSTOMER: " + customer.getLastName() + " " + customer.getFirstName() + " " + customer.getEmail());
+            if ( null != lastNameText ) {
+                lastNameText.setText(customer.getLastName());
+                firstNameText.setText(customer.getFirstName());
+                emailText.setText(customer.getEmail());
+            } else {
+                restartAllFragments();
+                finish();
+            }
+            return true;
+        default:
+            return false;
+        }
+    }
+
+    @Override
+    protected boolean onErrorEvent(ResponseEvent event) {
+        Log.i(TAG, "ON ERROR EVENT");
+        switch (event.type) {
+        case CHANGE_PASSWORD_EVENT:
+            Log.d(TAG, "changePasswordEvent: Password changed was not successful");
+            if (event.errorCode == ErrorCode.REQUEST_ERROR) {
+                List<String> errorMessages = event.errorMessages.get(RestConstants.JSON_ERROR_TAG);
+                if (errorMessages == null) {
+                    return false;
+                }
+                ((BaseActivity) getActivity()).showContentContainer();
+                Map<String, ? extends List<String>> messages = event.errorMessages;
+                List<String> validateMessages = messages.get(RestConstants.JSON_VALIDATE_TAG);
+                if (validateMessages == null || validateMessages.isEmpty()) {
+                    validateMessages = messages.get(RestConstants.JSON_ERROR_TAG);
+                }
+
+                String errorMessage = null;
+                if (validateMessages.size() == 0) {
+                    return false;
+                }
+
+                errorMessage = validateMessages.get(0);
+                displayErrorHint(errorMessage);
+                ((BaseActivity) getActivity()).showContentContainer();
+                return true;
+
+            }
+            return false;
+        default:
+            return false;
+        }
     }
 
     @Override
     public void onClick(View v) {
-        // TODO Auto-generated method stub
         int id = v.getId();
-
+        hideKeyboard();
         if (id == R.id.button_cancel) {
-            getActivity().finish();
+            finish();
         } else if (id == R.id.button_save) {
             changePassword();
         }
-
+    }
+    
+    private void finish(){
+        getActivity().onBackPressed();
     }
 }

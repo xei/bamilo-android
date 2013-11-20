@@ -1,6 +1,5 @@
 package pt.rocket.utils;
 
-import pt.rocket.view.fragments.FragmentType;
 
 /**
  * Interface to communicate with the activity

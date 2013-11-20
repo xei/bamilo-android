@@ -11,10 +11,13 @@ import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.framework.event.EventType;
 import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.utils.MyMenuItem;
+import pt.rocket.utils.NavigationAction;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RatingBar;
@@ -45,7 +48,7 @@ public class ReviewFragment extends BaseFragment {
      * Empty constructor
      */
     public ReviewFragment() {
-        super(EnumSet.noneOf(EventType.class), EnumSet.noneOf(EventType.class));
+        super(EnumSet.noneOf(EventType.class), EnumSet.noneOf(EventType.class), EnumSet.noneOf(MyMenuItem.class), NavigationAction.Products,  R.string.review);
         this.setRetainInstance(true);
     }
 
@@ -146,10 +149,8 @@ public class ReviewFragment extends BaseFragment {
      * Sets view layout
      */
     public void setAppContentLayout() {
-        if (getActivity().getIntent().getExtras() == null)
-            getActivity().finish();
 
-        Bundle b = getActivity().getIntent().getExtras();
+        Bundle b = getArguments();
         TextView title = (TextView) getView().findViewById(R.id.review_title);
         title.setText(b.getString(ConstantsIntentExtra.REVIEW_TITLE));
 

@@ -5,12 +5,18 @@ package pt.rocket.view.fragments;
 
 import java.util.EnumSet;
 
+import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.event.EventType;
 import pt.rocket.framework.event.ResponseEvent;
 import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.objects.CompleteProduct;
+import pt.rocket.framework.service.ServiceManager;
+import pt.rocket.framework.service.services.ProductService;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.utils.MyMenuItem;
+import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.OnFragmentActivityInteraction;
+import pt.rocket.utils.ProductDetailsFragmentCommunicator;
 import pt.rocket.view.ProductDetailsActivityFragment;
 import pt.rocket.view.R;
 import android.app.Activity;
@@ -31,8 +37,6 @@ import de.akquinet.android.androlog.Log;
 public class ProductBasicInfoFragment extends BaseFragment implements OnClickListener {
 
     private static final String TAG = LogTagHelper.create(ProductBasicInfoFragment.class);
-
-    private ProductDetailsActivityFragment parentActivity;
 
     private TextView mProductName;
 
@@ -56,10 +60,10 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
     private int discountPercentage;
     private int stockQuantity;
     
-    public static final int DEFINE_UNIT_PRICE = 2;
-    public static final int DEFINE_SPECIAL_PRICE = 3;
-    public static final int DEFINE_DISCOUNT_PERCENTAGE = 4;
-    public static final int DEFINE_STOCK = 5;
+    public static final String DEFINE_UNIT_PRICE = "unit_price";
+    public static final String DEFINE_SPECIAL_PRICE = "special_price";
+    public static final String DEFINE_DISCOUNT_PERCENTAGE = "discount_percentage";
+    public static final String DEFINE_STOCK = "stock";
     
     
     /**
@@ -68,8 +72,8 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
      * @return
      */
     public static ProductBasicInfoFragment getInstance() {
-        ProductBasicInfoFragment productImageShowOffFragment = new ProductBasicInfoFragment();
-        return productImageShowOffFragment;
+        ProductBasicInfoFragment mProductBasicInfoFragment = new ProductBasicInfoFragment();
+        return mProductBasicInfoFragment;
     }
 
     /**
@@ -78,27 +82,28 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
      * @param arrayList
      */
     public ProductBasicInfoFragment() {
-        super(EnumSet.noneOf(EventType.class), EnumSet.noneOf(EventType.class));
-        this.setRetainInstance(true);
+        super(EnumSet.of(EventType.GET_PRODUCT_EVENT), EnumSet.noneOf(EventType.class), EnumSet.of(MyMenuItem.SHARE), 
+                NavigationAction.Products, 
+                R.string.product_details_title);
     }
 
     @Override
     public void sendValuesToFragment(int identifier, Object values) {
-        if(identifier == 0){
-            this.mCompleteProduct = (CompleteProduct) values;   
-        } else if(identifier==1){
-            this.mCompleteProduct = (CompleteProduct) values;
-            setBasicInfo();
-        } else if(identifier == DEFINE_UNIT_PRICE){
-            unitPrice = (String) values;
-        } else if(identifier == DEFINE_SPECIAL_PRICE){
-            specialPrice = (String) values;
-        } else if(identifier == DEFINE_DISCOUNT_PERCENTAGE){
-            discountPercentage = (Integer) values;
-        } else if(identifier == DEFINE_STOCK){
-            stockQuantity = (Integer) values;
-            updateStockInfo();
-        }
+//        if(identifier == 0){
+//            this.mCompleteProduct = (CompleteProduct) values;   
+//        } else if(identifier==1){
+//            this.mCompleteProduct = (CompleteProduct) values;
+//            setBasicInfo();
+//        } else if(identifier == DEFINE_UNIT_PRICE){
+//            unitPrice = (String) values;
+//        } else if(identifier == DEFINE_SPECIAL_PRICE){
+//            specialPrice = (String) values;
+//        } else if(identifier == DEFINE_DISCOUNT_PERCENTAGE){
+//            discountPercentage = (Integer) values;
+//        } else if(identifier == DEFINE_STOCK){
+//            stockQuantity = (Integer) values;
+//            updateStockInfo();
+//        }
     }
 
     @Override
@@ -126,14 +131,6 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         Log.i(TAG, "ON ATTACH");
-        // This makes sure that the container activity has implemented
-        // the callback interface. If not, it throws an exception
-        try {
-            mCallback = (OnFragmentActivityInteraction) getActivity();
-        } catch (ClassCastException e) {
-            throw new ClassCastException(getActivity().toString()
-                    + " must implement OnActivityFragmentInteraction");
-        }
     }
 
     /*
@@ -168,7 +165,7 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
         mStockInfo = (TextView) mainView.findViewById(R.id.product_instock);
         mLoading = (RelativeLayout) mainView
                 .findViewById(R.id.loading_specifications);
-        setBasicInfo();
+        
         return mainView;
     }
 
@@ -221,10 +218,16 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
         // FlurryTracker.get().end();
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see pt.rocket.utils.MyActivity#handleTriggeredEvent(pt.rocket.framework.event.ResponseEvent)
+     */
     @Override
-    protected boolean onSuccessEvent(final ResponseResultEvent<?> event) {
-        return true;
+    protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
+        return false;
     }
+
 
     @Override
     protected boolean onErrorEvent(ResponseEvent event) {
@@ -270,7 +273,10 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
     
     private void setBasicInfo(){
         if(mCompleteProduct!=null){
-            mProductName.setText(mCompleteProduct.getBrand() + " " + mCompleteProduct.getName());
+            Log.i(TAG, "code1 is diferent from null!!!");
+            Log.i(TAG, "code1 name is : " + mCompleteProduct.getName());
+            if(mProductName!= null)
+                mProductName.setText(mCompleteProduct.getBrand()!= null ? mCompleteProduct.getBrand() : "" + " " + mCompleteProduct.getName());
             updateStockInfo();
             displayPriceInfo();    
         }
@@ -291,5 +297,41 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
             mProductNormalPrice.setVisibility(View.VISIBLE);
         }
         hideContentLoading();
+    }
+
+    @Override
+    public void notifyFragment(Bundle bundle) {
+        Log.i(TAG, "code1 notifyFragment basic info");
+        if(bundle == null){
+            return;
+        }
+        
+        if(!bundle.containsKey("start")){
+            return;
+        }
+        
+        if(bundle.containsKey(ProductDetailsActivityFragment.PRODUCT_COMPLETE)){
+            mCompleteProduct = ProductDetailsFragmentCommunicator.getInstance().getCurrentProduct();
+            setBasicInfo();
+        }
+        
+       if(bundle.containsKey(ProductDetailsActivityFragment.LOADING_PRODUCT_KEY)){
+           /**
+            * if still loading the product info, show image loading.
+            */
+           if(bundle.getInt(ProductDetailsActivityFragment.LOADING_PRODUCT_KEY) < 0){
+               showContentLoading();
+           }
+       }
+       
+       if(bundle.containsKey(ProductBasicInfoFragment.DEFINE_STOCK)){
+           stockQuantity = bundle.getInt(ProductBasicInfoFragment.DEFINE_STOCK);
+           updateStockInfo();  
+       } else{
+           unitPrice = bundle.getString(ProductBasicInfoFragment.DEFINE_UNIT_PRICE);
+           specialPrice = bundle.getString(ProductBasicInfoFragment.DEFINE_SPECIAL_PRICE);
+           discountPercentage = bundle.getInt(ProductBasicInfoFragment.DEFINE_DISCOUNT_PERCENTAGE);
+       }
+        
     }
 }

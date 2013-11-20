@@ -6,20 +6,19 @@ package pt.rocket.view.fragments;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.controllers.CountryAdapter;
+import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.rest.RestClientSingleton;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.utils.BaseActivity;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
+import pt.rocket.view.BaseActivity;
 import pt.rocket.view.ChangeCountryFragmentActivity;
-import pt.rocket.view.HomeFragmentActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,7 +33,7 @@ import de.akquinet.android.androlog.Log;
  * @author sergiopereira
  * 
  */
-public class ChangeCountryFragment extends Fragment {
+public class ChangeCountryFragment extends BaseFragment {
 
     private static final String TAG = LogTagHelper.create(ChangeCountryFragment.class);
 
@@ -57,6 +56,7 @@ public class ChangeCountryFragment extends Fragment {
     public static ChangeCountryFragment getInstance() {
         if (changeCountryFragment == null)
             changeCountryFragment = new ChangeCountryFragment();
+        
         return changeCountryFragment;
     }
 
@@ -64,6 +64,7 @@ public class ChangeCountryFragment extends Fragment {
      * Empty constructor
      */
     public ChangeCountryFragment() {
+        super(IS_NESTED_FRAGMENT);
     }
 
     /*
@@ -228,7 +229,7 @@ public class ChangeCountryFragment extends Fragment {
     }
 
     protected void setCountry(int position) {
-        HomeFragmentActivity.requestResponse = null;
+        HomeFragment.requestResponse = null;
         try {
             RestClientSingleton.getSingleton().getCookieStore().clear();
         } catch (RuntimeException e) {
@@ -240,14 +241,16 @@ public class ChangeCountryFragment extends Fragment {
         editor.putInt(ChangeCountryFragmentActivity.KEY_COUNTRY, position);
         editor.putBoolean(ConstantsSharedPrefs.KEY_SHOW_PROMOTIONS, true);
         editor.commit();
-        TrackerDelegator.trackShopchanged(getActivity().getApplicationContext());        
-        // Darwin.initialize(DarwinMode.DEBUG, getApplicationContext(), R.drawable.no_image,
-        // position);
-        // LogOut.cleanAndRestart(activity);
-//        getActivity().finish();
+        TrackerDelegator.trackShopchanged(getActivity().getApplicationContext());
         
         ActivitiesWorkFlow.splashActivityNewTask(getActivity());
         getActivity().finish();
+    }
+
+    @Override
+    protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
+        // TODO Auto-generated method stub
+        return false;
     }
 
 }

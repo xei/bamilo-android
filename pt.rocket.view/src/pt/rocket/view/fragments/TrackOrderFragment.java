@@ -19,7 +19,9 @@ import pt.rocket.framework.objects.OrderTracker;
 import pt.rocket.framework.objects.OrderTrackerItem;
 import pt.rocket.framework.utils.LoadingBarView;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.utils.BaseActivity;
+import pt.rocket.utils.MyMenuItem;
+import pt.rocket.utils.NavigationAction;
+import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.Context;
@@ -61,7 +63,9 @@ public class TrackOrderFragment extends BaseFragment {
      */
     public TrackOrderFragment() {
         super(EnumSet.of(EventType.TRACK_ORDER_EVENT),
-        EnumSet.noneOf(EventType.class));
+        EnumSet.noneOf(EventType.class), EnumSet.noneOf(MyMenuItem.class), 
+        NavigationAction.TrackOrder, 
+        R.string.track_order);
         this.setRetainInstance(true);
     }
 
@@ -248,5 +252,11 @@ public class TrackOrderFragment extends BaseFragment {
     protected boolean onErrorEvent(ResponseEvent event) {
         proccessError();
         return true;
+    }
+
+    @Override
+    public void notifyFragment(Bundle bundle) {
+        // TODO Auto-generated method stub
+        
     }
 }

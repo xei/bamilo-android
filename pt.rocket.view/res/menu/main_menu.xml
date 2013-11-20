@@ -18,19 +18,28 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
+        android:id="@+id/menu_search_view"
+        android:actionLayout="@layout/action_bar_search_component_tablet"
+        android:showAsAction="always"
+        android:visible="false"/>
+        
+    <item
         android:id="@+id/menu_share"
         android:actionProviderClass="com.actionbarsherlock.widget.ShareActionProvider"
-        android:icon="@drawable/ic_action_share"
+        android:icon="@drawable/ic_share_highlight"
         android:showAsAction="always"
         android:title="@string/action_label_share"
         android:visible="false"/>
+
+    <!-- android:icon="@drawable/ic_action_share" -->
+
     <item
         android:id="@+id/menu_search"
-        android:icon="@drawable/lazada_selector_header_search"
+        android:icon="@drawable/jumia_selector_header_search"
         android:showAsAction="ifRoom"
         android:title="@string/action_label_search"
         android:visible="false"/>
-     <item
+    <item
         android:id="@+id/menu_basket"
         android:actionLayout="@layout/menu_basket_button"
         android:showAsAction="always"
@@ -49,6 +58,5 @@
         android:showAsAction="never"
         android:title="@string/action_label_wishlist"
         android:visible="false"/>
-
 
 </menu>

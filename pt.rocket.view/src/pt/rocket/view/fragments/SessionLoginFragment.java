@@ -16,7 +16,10 @@ import com.facebook.UiLifecycleHelper;
 import com.facebook.model.GraphUser;
 import com.facebook.widget.LoginButton;
 
+import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.FormConstants;
+import pt.rocket.controllers.fragments.FragmentController;
+import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.factories.FormFactory;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.event.EventManager;
@@ -29,16 +32,18 @@ import pt.rocket.framework.forms.Form;
 import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.objects.Errors;
 import pt.rocket.framework.rest.RestConstants;
+import pt.rocket.framework.service.ServiceManager;
 import pt.rocket.framework.service.services.CustomerAccountService;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.pojo.DynamicForm;
 import pt.rocket.pojo.DynamicFormItem;
-import pt.rocket.utils.BaseActivity;
+import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
+import pt.rocket.view.BaseActivity;
+import pt.rocket.view.MainFragmentActivity;
 import pt.rocket.view.R;
-import pt.rocket.view.SessionFragmentActivity;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -54,15 +59,15 @@ import de.akquinet.android.androlog.Log;
  * @author sergiopereira
  * 
  */
-public class LoginFragment extends BaseFragment {
+public class SessionLoginFragment extends BaseFragment {
 
-    private static final String TAG = LogTagHelper.create(LoginFragment.class);
+    private static final String TAG = LogTagHelper.create(SessionLoginFragment.class);
 
     private final static String FORM_ITEM_EMAIL = "email";
 
     private final static String FORM_ITEM_PASSWORD = "password";
 
-    private SessionFragmentActivity parentActivity;
+    private MainFragmentActivity parentActivity;
 
     private View signinButton;
 
@@ -86,30 +91,38 @@ public class LoginFragment extends BaseFragment {
 
     private Bundle savedInstanceState;
 
-    private static LoginFragment loginFragment = null;
+    private static SessionLoginFragment loginFragment = null;
 
-    private String loginOrigin = "";
-
+    private FragmentType nextFragmentType;
+    
     private UiLifecycleHelper uiHelper;
-
+    
+    private String loginOrigin = "";
+    
     /**
      * 
      * @return
      */
-    public static LoginFragment getInstance(String origin) {
-        // if (loginFragment == null)
-        loginFragment = new LoginFragment(origin);
+    public static SessionLoginFragment getInstance(Bundle bundle) {
+        //if (loginFragment == null)
+            loginFragment = new SessionLoginFragment();
+            
+            if(bundle != null){
+                loginFragment.nextFragmentType  = (FragmentType) bundle.getSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE);
+                loginFragment.loginOrigin = bundle.getString(ConstantsIntentExtra.LOGIN_ORIGIN);
+            }
         return loginFragment;
     }
 
     /**
-     * constructor
+     * Empty constructor
      */
-    public LoginFragment(String origin) {
-        super(EnumSet.of(EventType.GET_LOGIN_FORM_EVENT), EnumSet.of(EventType.LOGIN_EVENT, EventType.FACEBOOK_LOGIN_EVENT));
-        loginOrigin = origin;
-        this.setRetainInstance(true);
-        Log.d(TAG, "CONSTRUCTOR");
+    public SessionLoginFragment() {
+        super(EnumSet.of(EventType.GET_LOGIN_FORM_EVENT), 
+                EnumSet.of(EventType.LOGIN_EVENT),
+                EnumSet.noneOf(MyMenuItem.class), 
+                NavigationAction.LoginOut, 
+                R.string.login_title);
     }
 
     /*
@@ -121,7 +134,10 @@ public class LoginFragment extends BaseFragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         Log.i(TAG, "ON ATTACH");
-        parentActivity = (SessionFragmentActivity) activity;
+        // Auto login
+        wasAutologin = false;   
+        // Auto login
+        autoLogin = true;
     }
 
     /*
@@ -133,7 +149,7 @@ public class LoginFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-        wasAutologin = true;
+        setRetainInstance(true);
         String appId = getActivity().getResources().getString(R.string.app_id);
         Log.i(TAG, "code1 app id is : "+appId);
         uiHelper = new UiLifecycleHelper(getActivity(), callback, appId);
@@ -171,7 +187,7 @@ public class LoginFragment extends BaseFragment {
     public void onStart() {
         super.onStart();
         Log.i(TAG, "ON START");
-        parentActivity.updateActivityHeader(NavigationAction.LoginOut, R.string.login_title);
+//        parentActivity.updateActivityHeader(NavigationAction.LoginOut, R.string.login_title);
     }
 
     /*
@@ -186,13 +202,18 @@ public class LoginFragment extends BaseFragment {
         uiHelper.setJumiaAppId(appId);
         uiHelper.onResume();
         Log.i(TAG, "ON RESUME");
-
-        if (formResponse != null) {
+        
+        // Valdiate form
+        if(ServiceManager.SERVICES.get(CustomerAccountService.class).hasCredentials()) {
+            Log.d(TAG, "FORM: TRY AUTO LOGIN");
+            triggerContentEvent(LogInEvent.TRY_AUTO_LOGIN);
+        } else if (formResponse != null) {
             Log.d(TAG, "FORM ISN'T NULL");
             loadForm(formResponse);
         } else {
             Log.d(TAG, "FORM IS NULL");
-            triggerContentEvent(LogInEvent.TRY_AUTO_LOGIN);
+            // triggerContentEvent(LogInEvent.TRY_AUTO_LOGIN);
+            triggerContentEvent(EventType.GET_LOGIN_FORM_EVENT);
         }
 
         setLoginBottomLayout();
@@ -291,6 +312,7 @@ public class LoginFragment extends BaseFragment {
     public void onPause() {
         super.onPause();
         Log.i(TAG, "ON PAUSE");
+        hideKeyboard();
         uiHelper.onPause();
     }
 
@@ -308,12 +330,19 @@ public class LoginFragment extends BaseFragment {
 
         uiHelper.onStop();
     }
-
+    
+    @Override
+    public void onDestroyView() {
+        Log.i(TAG, "ON DESTROY VIEW");
+        super.onDestroyView();
+    }
+    
     @Override
     public void onDestroy() {
         super.onDestroy();
         Log.i(TAG, "ON DESTROY");
         formResponse = null;
+        onCommonClickListener = null;
 
         uiHelper.onDestroy();
     }
@@ -335,19 +364,21 @@ public class LoginFragment extends BaseFragment {
         public void onClick(View view) {
             int id = view.getId();
             if (id == R.id.middle_login_button_signin) {
-                Log.d(TAG, "CLICKED ON SIGNIN");
-                ((BaseActivity) getActivity()).hideKeyboard();
-                if (dynamicForm != null && dynamicForm.validate()) {
-                    requestLogin();
+//                Log.d(TAG, "CLICKED ON SIGNIN");
+                if ( null != dynamicForm ) {
+                    if (dynamicForm.validate())
+                        requestLogin();
+                } else {
+                    triggerContentEvent(EventType.GET_LOGIN_FORM_EVENT);                    
                 }
 
             }
             else if (id == R.id.middle_login_link_fgtpassword) {
-                parentActivity.onSwitchFragment(FragmentType.FORGOT_PASSWORD, true);
+                ((MainFragmentActivity) getActivity()).onSwitchFragment(FragmentType.FORGOT_PASSWORD, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
             }
             else if (id == R.id.middle_login_link_register) {
-                Log.i(TAG, "code1 CLICKED ON REGISTER");
-                parentActivity.onSwitchFragment(FragmentType.REGISTER, true);
+                ((MainFragmentActivity) getActivity()).onSwitchFragment(FragmentType.REGISTER, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                
             }
         }
     };
@@ -357,6 +388,9 @@ public class LoginFragment extends BaseFragment {
      */
     private void requestLogin() {
         Log.d(TAG, "requestLogin: triggerEvent LogInEvent");
+        //
+        hideKeyboard();
+        //
         ContentValues values = dynamicForm.save();
         // if ( autologinCheckBox.isChecked()) {
         values.put(CustomerAccountService.INTERNAL_AUTOLOGIN_FLAG, true);
@@ -364,6 +398,7 @@ public class LoginFragment extends BaseFragment {
 
         triggerContentEvent(new LogInEvent(values));
         wasAutologin = false;
+		autoLogin = false;
     }
     
     private void requestFacebookLogin(GraphUser user) {
@@ -413,13 +448,19 @@ public class LoginFragment extends BaseFragment {
     @Override
     protected boolean onSuccessEvent(final ResponseResultEvent<?> event) {
         Log.d(TAG, "ON SUCCESS EVENT");
+        // Validate fragment visibility
+        if(!isVisible()){
+            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            EventManager.getSingleton().removeResponseListener(this, EnumSet.of(EventType.GET_LOGIN_FORM_EVENT, EventType.LOGIN_EVENT));
+            return true;
+        }
 
         switch (event.type) {
 
         case FACEBOOK_LOGIN_EVENT:
             Log.d(TAG, "facebookloginCompletedEvent :" + event.getSuccess());
             // Get Customer
-            ((SessionFragmentActivity) getActivity()).hideKeyboard();
+            ((BaseActivity) getActivity()).hideKeyboard();
             getActivity().setResult(Activity.RESULT_OK);
             getActivity().finish();
             getActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
@@ -431,14 +472,20 @@ public class LoginFragment extends BaseFragment {
         case LOGIN_EVENT:
             Log.d(TAG, "loginCompletedEvent :" + event.getSuccess());
             // Get Customer
-            ((SessionFragmentActivity) getActivity()).hideKeyboard();
-            getActivity().setResult(Activity.RESULT_OK);
-            getActivity().finish();
-            getActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-            TrackerDelegator.trackLoginSuccessful(getActivity(), (Customer) event.result,
-                    wasAutologin, loginOrigin, false);
+            ((BaseActivity) getActivity()).hideKeyboard();
+            
+            // Switch to next fragment
+            getActivity().onBackPressed();
+            if(nextFragmentType != null && getActivity() != null){
+                ((BaseActivity) getActivity()).onSwitchFragment(nextFragmentType, null, true);
+            }
+            // NullPointerException on orientation change
+            if(getActivity() != null)
+                TrackerDelegator.trackLoginSuccessful(getActivity(), (Customer) event.result, wasAutologin, loginOrigin, false);
+            
             wasAutologin = false;
-            return false;
+            
+            return true;
 
         case GET_LOGIN_FORM_EVENT:
             Form form = (Form) event.result;
@@ -485,7 +532,7 @@ public class LoginFragment extends BaseFragment {
                 item.loadState(savedInstanceState);
             }
         }
-    
+        container.refreshDrawableState();
     }
 
     /*
@@ -496,19 +543,42 @@ public class LoginFragment extends BaseFragment {
      */
     @Override
     protected boolean onErrorEvent(ResponseEvent event) {
-        if (event.getType() == EventType.LOGIN_EVENT) {
+        
+        Log.d(TAG, "ON ERROR EVENT: " + event.getType().toString() + " " + event.errorCode);
+        
+        if (event.getType() == EventType.GET_LOGIN_FORM_EVENT) {
+            if (event.errorCode == ErrorCode.UNKNOWN_ERROR && null == dynamicForm) {
+                restartAllFragments();
+                return true;
+            }
+        } else if (event.getType() == EventType.LOGIN_EVENT) {
+            // Validate fragment visibility
+            if(!isVisible()){
+                Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+                return true;
+            }
+            
             if (event.errorCode == ErrorCode.REQUEST_ERROR) {
                 TrackerDelegator.trackLoginFailed(wasAutologin);
                 wasAutologin = false;
                 if (autoLogin) {
                     autoLogin = false;
-                    triggerContentEvent(EventType.GET_LOGIN_FORM_EVENT);
-                } else {
-                    List<String> errorMessages = event.errorMessages
-                            .get(RestConstants.JSON_ERROR_TAG);
-                    if (errorMessages != null && (errorMessages.contains(Errors.CODE_LOGIN_FAILED)
-                            || errorMessages.contains(Errors.CODE_LOGIN_CHECK_PASSWORD))) {
-                        ((BaseActivity) getActivity()).showContentContainer();
+                    if (formResponse == null) {
+                        // Sometimes formDataRegistry is null, so init forms
+                        triggerContentEvent(EventType.INIT_FORMS);
+                        triggerContentEvent(EventType.GET_LOGIN_FORM_EVENT);
+                    }
+                } 
+                else {
+                    
+                    Log.d(TAG, "SHOW DIALOG");
+                    
+                    List<String> errorMessages = event.errorMessages.get(RestConstants.JSON_ERROR_TAG);
+                    if (errorMessages != null && (errorMessages.contains(Errors.CODE_LOGIN_FAILED) || errorMessages.contains(Errors.CODE_LOGIN_CHECK_PASSWORD))) {
+                        
+                        if(getActivity() != null)
+                            ((BaseActivity) getActivity()).showContentContainer();
+                        
                         dialog = DialogGenericFragment.newInstance(true, true, false,
                                 getString(R.string.error_login_title),
                                 getString(R.string.error_login_check_text),
@@ -524,12 +594,7 @@ public class LoginFragment extends BaseFragment {
                                     }
 
                                 });
-                        try {
-                            dialog.show(getActivity().getSupportFragmentManager(), null);
-                        } catch (IllegalStateException e) {
-                            // TODO: handle exception
-                        }
-
+                        dialog.show(getActivity().getSupportFragmentManager(), null);
                     }
                 }
                 return true;

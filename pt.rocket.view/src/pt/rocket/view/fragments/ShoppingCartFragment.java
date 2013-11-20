@@ -9,8 +9,11 @@ import java.util.List;
 import java.util.Map;
 
 import pt.rocket.constants.ConstantsCheckout;
+import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.controllers.ShoppingBasketFragListAdapter;
+import pt.rocket.controllers.fragments.FragmentController;
+import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.components.ExpandableGridViewComponent;
 import pt.rocket.framework.event.EventManager;
 import pt.rocket.framework.event.EventType;
@@ -24,10 +27,13 @@ import pt.rocket.framework.objects.ShoppingCartItem;
 import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.CurrencyFormatter;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.utils.MyMenuItem;
+import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.utils.dialogfragments.DialogListFragment;
 import pt.rocket.utils.dialogfragments.DialogListFragment.OnDialogListListener;
+import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.graphics.Paint;
@@ -43,6 +49,8 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
+
 import org.holoeverywhere.widget.TextView;
 import de.akquinet.android.androlog.Log;
 
@@ -139,7 +147,9 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
     public ShoppingCartFragment() {
         super(EnumSet.of(EventType.GET_SHOPPING_CART_ITEMS_EVENT),
                 EnumSet.of(EventType.REMOVE_ITEM_FROM_SHOPPING_CART_EVENT,
-                        EventType.CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT));
+                        EventType.CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT), EnumSet.of(MyMenuItem.SEARCH), 
+                        NavigationAction.Basket, 
+                        R.string.shoppingcart_title);
         this.setRetainInstance(true);
     }
 
@@ -466,15 +476,18 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         if ( items.get(position).getProductUrl().equals( "" ))
             return;
         
-        ActivitiesWorkFlow.productsDetailsActivity(getActivity(), items.get(position).getProductUrl(), R.string.gcart_prefix, "");
+        Bundle bundle = new Bundle();
+        bundle.putString(ConstantsIntentExtra.CONTENT_URL, items.get(position).getProductUrl());
+        bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcart_prefix);
+        bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
+        ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
     
     private void checkMinOrderAmount() {        
 //        if (minAmount == null) {
 //            Toast.makeText(getActivity(),
 //                    getString(R.string.shoppingcart_minamount_waiting), Toast.LENGTH_LONG).show();
-//        } else 
-//            if (reduced_cart_price < minAmount.getValue()) {
+//        } else if (reduced_cart_price < minAmount.getValue()) {
 //            String formattedMinAmount = CurrencyFormatter.formatCurrency(minAmount.getValue());
 //            String message = String.format(getString(R.string.shoppingcart_minamount,
 //                    formattedMinAmount));
@@ -489,12 +502,15 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
 //                    });
 //            dialog.show( getActivity().getSupportFragmentManager(), null);
 //        } else {
-            ActivitiesWorkFlow.loginActivity(getActivity(), getString(R.string.mixprop_loginlocationcheckout), true);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.CHECKOUT_BASKET);
+            bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationcart));
+            ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
 //        }
     }    
     
     public void goToCheckout() {
-        ActivitiesWorkFlow.checkoutActivity(getActivity(), ConstantsCheckout.CHECKOUT_BASKET);
+        ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.CHECKOUT_BASKET, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         AnalyticsGoogle.get().trackCheckout(items);
         TrackerDelegator.trackCheckout(getActivity().getApplicationContext(), items);
     }

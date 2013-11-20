@@ -3,8 +3,8 @@
 
     <!-- Jumia Nigeria Configuration -->
     <string name="jumia_ng_shopname">Jumia</string>
-<!--     <string name="jumia_ng_server">www.jumia.com.ng</string> -->
-    <string name="jumia_ng_server">alice-staging.jumia.com.ng</string>
+    <string name="jumia_ng_server">www.jumia.com.ng</string>
+<!--     <string name="jumia_ng_server">alice-staging.jumia.com.ng</string> -->
 <!--     <string name="jumia_ng_server">alice-staging.dev0.jumia.com</string> -->
     <string name="jumia_ng_user">rocket</string>
     <string name="jumia_ng_password">rock4me</string>
@@ -23,8 +23,8 @@
 
     <!-- Jumia Morocco	 Configuration -->
     <string name="jumia_ma_shopname">Jumia</string>
-    <string name="jumia_ma_server">www.jumia.ma</string>
-    <!-- <string name="jumia_ma_server">alice-staging.jumia.ma</string> -->
+<!--     <string name="jumia_ma_server">www.jumia.ma</string> -->
+    <string name="jumia_ma_server">alice-staging.jumia.ma</string>
     <!-- <string name="jumia_ma_server">mobile.jumia.com</string> -->
     <string name="jumia_ma_user">rocket</string>
     <string name="jumia_ma_password">rock4me</string>
@@ -33,8 +33,8 @@
 
     <!-- Jumia Egypt Configuration -->
     <string name="jumia_eg_shopname">Jumia</string>
-    <string name="jumia_eg_server">www.jumia.com.eg</string>
-<!--     <string name="jumia_eg_server">alice-staging.jumia.com.eg</string> -->
+<!--     <string name="jumia_eg_server">www.jumia.com.eg</string> -->
+    <string name="jumia_eg_server">alice-staging.jumia.com.eg</string>
 <!--     <string name="jumia_eg_server">mobile.jumia.com</string> -->
     <string name="jumia_eg_user">rocket</string>
     <string name="jumia_eg_password">rock4me</string>
@@ -45,7 +45,7 @@
     <string name="jumia_ci_shopname">Jumia</string>
 <!--     <string name="jumia_ci_server">www.jumia.ci</string> -->
     <string name="jumia_ci_server">alice-staging.jumia.ci</string>
-    <!-- <string name="jumia_ci_server">mobile.jumia.com</string> -->
+<!--     <string name="jumia_ci_server">mobile.jumia.com</string> -->
     <string name="jumia_ci_user">rocket</string>
     <string name="jumia_ci_password">rock4me</string>
     <string name="jumia_ci_restbase_path">mobapi</string>

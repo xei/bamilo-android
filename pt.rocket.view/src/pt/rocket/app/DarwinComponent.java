@@ -37,9 +37,6 @@ public class DarwinComponent extends ApplicationComponent {
         SharedPreferences sharedPrefs = app.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         int shopId = sharedPrefs.getInt(ChangeCountryFragmentActivity.KEY_COUNTRY, -1);
         if (shopId == -1) {
-//            Intent intent = new Intent(app, ChangeCountryFragmentActivity.class);
-//            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            app.startActivity(intent);
             return ErrorCode.REQUIRES_USER_INTERACTION;
         }
         if (Darwin.initialize(DarwinMode.DEBUG, app.getApplicationContext(), shopId)) {

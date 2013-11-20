@@ -66,7 +66,6 @@ public class JumiaApplication extends Application implements ResponseListener, E
             event.metaData.putBoolean( IMetaData.MD_IGNORE_CACHE, true);
         }
         EventManager.getSingleton().triggerRequestEvent( event );
-        // TODO handle the result of the version check
         CheckVersion.init(getApplicationContext());
     }
 

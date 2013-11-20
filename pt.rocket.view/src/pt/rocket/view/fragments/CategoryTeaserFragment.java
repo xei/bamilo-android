@@ -14,7 +14,8 @@ import pt.rocket.framework.objects.CategoryTeaserGroup;
 import pt.rocket.framework.objects.CategoryTeaserGroup.TeaserCategory;
 import pt.rocket.framework.objects.ITargeting;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.view.HomeFragmentActivity;
+import pt.rocket.utils.MyMenuItem;
+import pt.rocket.utils.NavigationAction;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.os.Bundle;
@@ -31,8 +32,6 @@ import de.akquinet.android.androlog.Log;
 public class CategoryTeaserFragment extends BaseFragment {
 
     private static final String TAG = LogTagHelper.create(CategoryTeaserFragment.class);
-
-    private HomeFragmentActivity parentActivity;
 
     private static CategoryTeaserGroup teaserCategoryGroup;
 
@@ -56,7 +55,7 @@ public class CategoryTeaserFragment extends BaseFragment {
      * @param arrayList
      */
     public CategoryTeaserFragment() {
-        super(EnumSet.noneOf(EventType.class), EnumSet.noneOf(EventType.class));
+        super(IS_NESTED_FRAGMENT);
         this.setRetainInstance(true);
 
     }
@@ -80,7 +79,6 @@ public class CategoryTeaserFragment extends BaseFragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         Log.i(TAG, "ON ATTACH");
-        parentActivity = (HomeFragmentActivity) activity;
     }
 
     /*
@@ -106,7 +104,7 @@ public class CategoryTeaserFragment extends BaseFragment {
         super.onCreateView(mInflater, viewGroup, savedInstanceState);
         Log.i(TAG, "ON CREATE VIEW");
 
-        View view = mInflater.inflate(R.layout.teaser_categories_group, viewGroup, false);
+        View view = mInflater.inflate(R.layout.teaser_categories_group, null, false);
 
         inflater = mInflater;
         return view;
@@ -184,7 +182,7 @@ public class CategoryTeaserFragment extends BaseFragment {
 
     private View createCategoryAllTeaserView(ViewGroup container, LayoutInflater mInflater) {
         View view = mInflater.inflate(
-                R.layout.category_inner_currentcat, container, false);
+                R.layout.category_inner_currentcat, null, false);
         TextView textView = (TextView) view.findViewById(R.id.text);
         textView.setText(getActivity().getString(R.string.categories_toplevel_title));
         view.setOnClickListener(onTeaserClickListener);
@@ -195,7 +193,7 @@ public class CategoryTeaserFragment extends BaseFragment {
 
     private View createCategoryTeaserView(TeaserCategory cat, ViewGroup vg, LayoutInflater mInflater) {
         View categoryTeaserView;
-        categoryTeaserView = mInflater.inflate(R.layout.category_inner_childcat, vg, false);
+        categoryTeaserView = mInflater.inflate(R.layout.category_inner_childcat, null, false);
         TextView textView = (TextView) categoryTeaserView.findViewById(R.id.text);
         textView.setText(cat
                 .getName());

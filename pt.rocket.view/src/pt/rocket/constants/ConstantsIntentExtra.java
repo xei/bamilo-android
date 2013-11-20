@@ -1,57 +1,79 @@
 package pt.rocket.constants;
 
-
-
 /**
- * The purpose of this class is to provide a central point to identify the intent extras used within the activities
- * This constants are user mainly in the ActivitiesWorkflow activity <p/><br> 
- *
- * Copyright (C) 2012 Rocket Internet - All Rights Reserved <p/>
+ * The purpose of this class is to provide a central point to identify the intent extras used within
+ * the activities This constants are user mainly in the ActivitiesWorkflow activity
+ * <p/>
+ * <br>
+ * 
+ * Copyright (C) 2012 Rocket Internet - All Rights Reserved
+ * <p/>
  * 
  * Unauthorized copying of this file, via any medium is strictly prohibited <br>
  * Proprietary and confidential.
  * 
  * @author sergiopereira
- *
+ * 
  * @version 1.00
  * 
  */
 public class ConstantsIntentExtra {
-	//
-	private final static String mPackage = "pt.rocket.view." ;
-	
-	//
-	public static final String CATEGORY_INDEX = mPackage + "CategoryIndex";
-	
-    
-    // ########### Search ########### 
-    //    
-    public static final String SEARCH_QUERY			= mPackage + "SearchStr";
-	
-
-    // ########### Products ########### 
-    //    
-    public static final String CONTENT_URL			= mPackage + "ContentUrl";	
-    
-    public static final String PRODUCT_URL         = mPackage + "ProductUrl";  
-    
-    // ########### Checkout ########### 
     //
-	public static final String CONTENT_TITLE = mPackage + "ContentTitle";
-	
-	// ########### REVIEW ##############
-	public static final String REVIEW_TITLE             = mPackage + "ReviewTitle";
-	public static final String REVIEW_COMMENT           = mPackage + "ReviewComment";
-	public static final String REVIEW_RATING            = mPackage + "ReviewRating";
-	public static final String REVIEW_NAME              = mPackage + "ReviewName";
-	public static final String REVIEW_DATE              = mPackage + "ReviewDate";
-	
-	
-    public static final String NAVIGATION_PATH             = mPackage + "NavigationPath";
-    public static final String NAVIGATION_SOURCE           = mPackage + "NavigationPrefix";
-    
-    // ########### Google Analytics: Campaign ##############
-    public static final String UTM_STRING         = "UTM";
+    private final static String mPackage                    = "pt.rocket.view.";
 
-	
+    //
+    public static final String CATEGORY_INDEX               = mPackage + "CategoryIndex";
+
+    // ########### Search ###########
+    //
+    public static final String SEARCH_QUERY                 = mPackage + "SearchStr";
+
+    // ########### Products ###########
+    //
+    public static final String CONTENT_URL                  = mPackage + "ContentUrl";
+
+    public static final String PRODUCT_URL                  = mPackage + "ProductUrl";
+    public static final String CURRENT_LISTPOSITION         = mPackage + "CurrentListPosition";
+    public static final String IS_ZOOM_AVAILABLE            = mPackage + "ZoomAvailable";
+    public static final String SHOW_HORIZONTAL_LIST_VIEW    = mPackage + "ShowHorizontalListView";
+    
+    // ########### Checkout ###########
+    //
+    public static final String CONTENT_TITLE                = mPackage + "ContentTitle";
+    public static final String SUCESS_INFORMATION           = mPackage + "SucessInformation";
+    public static final String CUSTOMER_EMAIL               = mPackage + "CustomerEmail";
+
+    // ########### REVIEW ##############
+    public static final String REVIEW_TITLE                 = mPackage + "ReviewTitle";
+    public static final String REVIEW_COMMENT               = mPackage + "ReviewComment";
+    public static final String REVIEW_RATING                = mPackage + "ReviewRating";
+    public static final String REVIEW_NAME                  = mPackage + "ReviewName";
+    public static final String REVIEW_DATE                  = mPackage + "ReviewDate";
+
+    public static final String NAVIGATION_PATH              = mPackage + "NavigationPath";
+    public static final String NAVIGATION_SOURCE            = mPackage + "NavigationPrefix";
+
+    // ########### Google Analytics: Campaign ##############
+    public static final String UTM_STRING                   = "UTM";
+
+    // ########### Categories ##############
+    public static final String CATEGORY_LEVEL               = mPackage + "CategoryLevel";
+    public static final String CATEGORY_URL                 = mPackage + "CategoryUrl";
+    public static final String SELECTED_CATEGORY_INDEX      = mPackage + "CategoryIdx";
+    public static final String SELECTED_SUB_CATEGORY_INDEX  = mPackage + "SubCategoryIdx";
+
+    // ########### Home ##############
+    public static final String FRAGMENT_TYPE                = mPackage + "FragmentType";
+    public static final String FRAGMENT_BUNDLE              = mPackage + "FragmentBundle";
+
+    // ########### Login ##############
+    public static final String NEXT_FRAGMENT_TYPE           = mPackage + "NextFragmentType";
+    public static final String LOGIN_ORIGIN                 = mPackage + "LoginOrigin";
+
+    // ########### Terms ##############
+    public static final String TERMS_CONDITIONS             = mPackage + "TermsConditions";
+    
+    // ########### Change Country ##############
+    public static final String CHANGED_COUNTRY              = mPackage + "ChangedCountry";
+
 }

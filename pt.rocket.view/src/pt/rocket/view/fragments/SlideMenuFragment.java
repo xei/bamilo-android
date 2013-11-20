@@ -3,11 +3,15 @@
  */
 package pt.rocket.view.fragments;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumSet;
-
+import pt.rocket.controllers.fragments.FragmentType;
+import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.ActivitiesWorkFlow;
+import pt.rocket.controllers.LogOut;
+import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.framework.components.NavigationListComponent;
 import pt.rocket.framework.event.EventManager;
 import pt.rocket.framework.event.EventType;
@@ -17,17 +21,23 @@ import pt.rocket.framework.objects.ShoppingCart;
 import pt.rocket.framework.service.ServiceManager;
 import pt.rocket.framework.service.services.CustomerAccountService;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.utils.BaseActivity;
+import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.utils.dialogfragments.DialogGenericFragment;
+import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import org.holoeverywhere.widget.TextView;
+
+import com.slidingmenu.lib.SlidingMenu;
+
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -47,6 +57,8 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener{
     private static ShoppingCart shoppingCart;
 
     public static ArrayList<NavigationListComponent> navigationListComponents;
+
+    private static DialogGenericFragment dialogLogout;
     
     /**
      * Get instance
@@ -64,7 +76,11 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener{
      * Empty constructor
      */
     public SlideMenuFragment() {
-        super(EnumSet.of(EventType.GET_NAVIGATION_LIST_COMPONENTS_EVENT),  EnumSet.noneOf(EventType.class));
+        super(EnumSet.of(EventType.GET_NAVIGATION_LIST_COMPONENTS_EVENT), 
+                EnumSet.noneOf(EventType.class), 
+                EnumSet.noneOf(MyMenuItem.class), 
+                NavigationAction.Unknown, 
+                0);
     }
 
     /*
@@ -89,7 +105,9 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener{
         Log.i(TAG, "ON CREATE");
         inflater = LayoutInflater.from(getActivity());
         
-        //triggerContentEvent(new RequestEvent(EventType.GET_NAVIGATION_LIST_COMPONENTS_EVENT));
+        // Retain this fragment across configuration changes.
+        setRetainInstance(true);
+
     }
 
     /*
@@ -167,29 +185,27 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener{
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.i(TAG, "ON DESTROY");
-//        unbindDrawables(navigationContainer);
-        
-    }
-
-    private void unbindDrawables(View view) {
-        if (view.getBackground() != null) {
-        view.getBackground().setCallback(null);
-        }
-        if (view instanceof ViewGroup) {
-            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
-            unbindDrawables(((ViewGroup) view).getChildAt(i));
-            }
-        ((ViewGroup) view).removeAllViews();
-        }
+        Log.i(TAG, "ON DESTROY VIEW");
     }
     
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.i(TAG, "ON DESTROY");
+        //System.gc();
+        EventManager.getSingleton().removeResponseListener(this, EnumSet.of(EventType.GET_NAVIGATION_LIST_COMPONENTS_EVENT));
+    }
+
     /*
      * (non-Javadoc)
      * @see pt.rocket.view.fragments.BaseFragment#onSuccessEvent(pt.rocket.framework.event.ResponseResultEvent)
      */
     @Override
     protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
+        
+        if(!isVisible())
+            return true;
+        
         Log.i(TAG, "ON SUCCESS EVENT");
         if (event.getSuccess()) {
             switch (event.type) {
@@ -205,6 +221,18 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener{
         return true;
     }
     
+    
+    public void onUpdate(){
+        if(navigationListComponents != null) {
+            Log.i(TAG, "ON UPDATE: LIST IS NOT NULL");
+            fillNavigationContainer(navigationListComponents);
+            updateCart();
+        } else {
+            // Log.i(TAG, "LIST IS NULL");
+            //triggerContentEvent(new RequestEvent(EventType.GET_NAVIGATION_LIST_COMPONENTS_EVENT));
+        }
+    }
+    
     /**
      * 
      * @param components
@@ -212,12 +240,27 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener{
     private void fillNavigationContainer(ArrayList<NavigationListComponent> components) {
         Log.d(TAG, "FILL NAVIGATION CONTAINER");
         navigationContainer.removeAllViews();
+        
+        // Header component
         inflater.inflate(R.layout.navigation_header_component, navigationContainer, true);
+
+        // Static container
+        inflater.inflate(R.layout.navigation_static_container, navigationContainer, true);
+        ViewGroup staticContainer = (ViewGroup) navigationContainer.findViewById(R.id.slide_menu_static_container);
+        
+        // Scrollable container
+        inflater.inflate(R.layout.navigation_scrollable_container, navigationContainer, true);
+        ViewGroup scrollableContainer = (ViewGroup) navigationContainer.findViewById(R.id.slide_menu_scrollable_container);
+
         for (NavigationListComponent component : components) {
-            View actionElementLayout = getActionElementLayout(component, navigationContainer);
-            if (actionElementLayout != null) {
-                navigationContainer.addView(actionElementLayout);
-            }
+            // Basket
+            ViewGroup viewGroup = scrollableContainer;
+            if (component.getElementId() == 7 && component.getElementText().equals("Basket"))
+                viewGroup = staticContainer;
+            // Others
+            View actionElementLayout = getActionElementLayout(component, viewGroup);
+            if (actionElementLayout != null) 
+                viewGroup.addView(actionElementLayout);
         }
     }
 
@@ -357,9 +400,8 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener{
     private View createGenericComponent(ViewGroup parent, NavigationListComponent component, int iconRes, String text, OnClickListener listener) {
         View navComponent = inflater.inflate(R.layout.navigation_generic_component, parent, false);
         TextView tVSearch = (TextView) navComponent.findViewById(R.id.component_text);
-        ImageView imgView = (ImageView) navComponent.findViewById(R.id.component_img);
         tVSearch.setText(text);
-        imgView.setImageResource(iconRes);
+        tVSearch.setCompoundDrawablesWithIntrinsicBounds(iconRes, 0, 0, 0);
         navComponent.setOnClickListener(listener);
         return navComponent;
     }
@@ -373,33 +415,49 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener{
     public void onClick(View v) {
         NavigationAction navAction = (NavigationAction) v.getTag(R.id.nav_action);
         Log.d(TAG, "Clicked on " + navAction + " while in " + ((BaseActivity) getActivity()).getAction());
+        
+        SlidingMenu slidingMenu = ((BaseActivity) getActivity()).getSlidingMenu();
+        
         if (navAction != null && ((BaseActivity) getActivity()).getAction() != navAction) {
             switch (navAction) {
             case Basket:
-                ActivitiesWorkFlow.shoppingCartActivity(getActivity());
+                ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.SHOPPING_CART, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                if(slidingMenu.isSlidingEnabled()) slidingMenu.toggle(true);
                 break;
             case Home:
-                ActivitiesWorkFlow.homePageActivity(getActivity());
+                ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                if(slidingMenu.isSlidingEnabled()) slidingMenu.toggle(true);
                 break;
             case Search:
-                ActivitiesWorkFlow.searchActivity(getActivity());
+                ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.SEARCH, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                if(slidingMenu.isSlidingEnabled()) slidingMenu.toggle(true);
                 break;
             case Categories:
-                ActivitiesWorkFlow.categoriesActivityNew(getActivity(), null);
+                Bundle bundle = new Bundle();
+                bundle.putString(ConstantsIntentExtra.CATEGORY_URL, null);
+                bundle.putSerializable(ConstantsIntentExtra.CATEGORY_LEVEL, FragmentType.CATEGORIES_LEVEL_1);
+                ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.CATEGORIES_LEVEL_1, bundle, FragmentController.ADD_TO_BACK_STACK);
+                if(slidingMenu.isSlidingEnabled()) slidingMenu.toggle(true);
                 break;
             case MyAccount:
-                ActivitiesWorkFlow.myAccountActivity(getActivity());
+                ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.MY_ACCOUNT, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                if(slidingMenu.isSlidingEnabled()) slidingMenu.toggle(true);
                 break;
             case LoginOut:
-                ActivitiesWorkFlow.loginOut(getActivity());
+                // ActivitiesWorkFlow.loginOut(getActivity());
+                loginOut((BaseActivity) getActivity());
+                if(slidingMenu.isSlidingEnabled()) slidingMenu.toggle(true);
                 break;
             case Country:
-                ActivitiesWorkFlow.changeCountryActivity(getActivity());
+                ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.CHANGE_COUNTRY, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                if(slidingMenu.isSlidingEnabled()) slidingMenu.toggle(true);
                 break;
             case TrackOrder:
-                ActivitiesWorkFlow.trackOrderActivity(getActivity());
+                ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.TRACK_ORDER, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                if(slidingMenu.isSlidingEnabled()) slidingMenu.toggle(true);
                 break;
             }
+            
         } else {
             Log.d(TAG, "Did not handle: " + navAction);
         }
@@ -416,8 +474,11 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener{
     
     private void updateCart() {
         
-        if(shoppingCart == null)
+        if(shoppingCart == null || getView() == null)
             return;
+        
+        // Update ActionBar
+        ((BaseActivity) getActivity()).updateCartInfoInActionBar(shoppingCart);
         
         View container = getView().findViewById(R.id.nav_basket);
         if (container == null) {
@@ -455,5 +516,31 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener{
             }
         });
     }
+    
+    
+    public static void loginOut(final BaseActivity activity) {
+        if(ServiceManager.SERVICES.get(CustomerAccountService.class).hasCredentials()) {
+            FragmentManager fm = activity.getSupportFragmentManager();
+            dialogLogout = DialogGenericFragment.newInstance(false, true, false,
+                    activity.getString(R.string.logout_title),
+                    activity.getString(R.string.logout_text_question),
+                    activity.getString(R.string.no_label), activity.getString(R.string.yes_label),
+                    new OnClickListener() {
+
+                        @Override
+                        public void onClick(View v) {
+                            if (v.getId() == R.id.button2) {
+                                LogOut.performLogOut(new WeakReference<Activity>(activity));
+                            }
+                            dialogLogout.dismiss();
+                        }
+
+                    });
+            dialogLogout.show(fm, null);
+        } else {
+            activity.onSwitchFragment(FragmentType.LOGIN, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        }
+    }
+    
 
 }

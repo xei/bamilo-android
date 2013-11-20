@@ -1,21 +1,17 @@
-package pt.rocket.view;
+package pt.rocket.view.fragments;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
-
 import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.event.ResponseEvent;
 import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.framework.utils.ProductSort;
-import pt.rocket.utils.BaseActivity;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
-import pt.rocket.view.fragments.FragmentType;
-import pt.rocket.view.fragments.ProductsFragment;
+import pt.rocket.view.R;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Shader;
@@ -26,6 +22,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import de.akquinet.android.androlog.Log;
@@ -40,8 +38,8 @@ import de.akquinet.android.androlog.Log;
  * </p>
  * <p/>
  * <p>
- * Unauthorized copying of this file, via any medium is strictly prohibited
- * Proprietary and confidential. Written by sergiopereira, 19/06/2012.
+ * Unauthorized copying of this file, via any medium is strictly prohibited Proprietary and
+ * confidential. Written by sergiopereira, 19/06/2012.
  * </p>
  * 
  * 
@@ -58,76 +56,89 @@ import de.akquinet.android.androlog.Log;
  * @description
  * 
  */
-public class ProductsActivityFragment extends BaseActivity  {
-    
-	private final static String TAG = LogTagHelper.create(ProductsActivityFragment.class);
-	
-	private PagerTabStrip pagerTabStrip;
-	
-	private final int TAB_PREV_ID = 0;
+public class ProductsViewFragment extends BaseFragment {
+
+    private final static String TAG = LogTagHelper.create(ProductsViewFragment.class);
+
+    private PagerTabStrip pagerTabStrip;
+
+    private final int TAB_PREV_ID = 0;
     private final int TAB_CURR_ID = 1;
     private final int TAB_NEXT_ID = 2;
 
     private final int TAB_INDICATOR_HEIGHT = 0;
     private final int TAB_UNDERLINE_HEIGHT = 1;
     private final int TAB_STRIP_COLOR = android.R.color.transparent;
-	
-	public ProductsActivityFragment() {
-		super(NavigationAction.Products,
-		        EnumSet.of(MyMenuItem.SEARCH),
-		        EnumSet.noneOf(EventType.class),
-		        EnumSet.noneOf(EventType.class),
-		        0, R.layout.products_frame);
-	}
 
-	// boolean showSpinner = true;
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		Log.i(TAG, "ON CREATE");
-		ProductsListPagerAdapter mProductsListPagerAdapter = new ProductsListPagerAdapter(getSupportFragmentManager());
-		
-		ViewPager mViewPager = (ViewPager) findViewById(R.id.viewpager_products_list);
-        if (pagerTabStrip == null) {
-            pagerTabStrip = (PagerTabStrip) findViewById(R.id.products_list_titles);
+    private static ProductsViewFragment mProductsViewFragment;
+
+    public ProductsViewFragment() {
+        // super(NavigationAction.Products,
+        // EnumSet.of(MyMenuItem.SEARCH),
+        // EnumSet.noneOf(EventType.class),
+        // EnumSet.noneOf(EventType.class),
+        // 0, R.layout.products_frame);
+        super(EnumSet.noneOf(EventType.class), EnumSet.noneOf(EventType.class), EnumSet
+                .of(MyMenuItem.SEARCH), NavigationAction.Products, 0);
+    }
+
+    public static ProductsViewFragment getInstance() {
+        if (mProductsViewFragment == null) {
+            mProductsViewFragment = new ProductsViewFragment();
         }
-		mViewPager.setAdapter(mProductsListPagerAdapter);
-		try {
+        return mProductsViewFragment;
+    }
+    
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        
+        return inflater.inflate(R.layout.products_frame, null, false);
+    }
+
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.i(TAG, "ON CREATE");
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.i(TAG, "ON RESUME");
+        AnalyticsGoogle.get().trackPage(R.string.gproductlist);
+        ProductsListPagerAdapter mProductsListPagerAdapter = new ProductsListPagerAdapter(
+                getActivity().getSupportFragmentManager());
+
+        ViewPager mViewPager = (ViewPager) getView().findViewById(R.id.viewpager_products_list);
+        pagerTabStrip = (PagerTabStrip) getView().findViewById(R.id.products_list_titles);
+        mViewPager.setAdapter(mProductsListPagerAdapter);
+        try {
             setLayoutSpec();
         } catch (IllegalArgumentException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (NoSuchFieldException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IllegalAccessException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
-	}
-	
-	@Override
-	public void onResume() {
-		super.onResume();
-		Log.i(TAG, "ON RESUME");		
-		AnalyticsGoogle.get().trackPage( R.string.gproductlist );
-	}
+    }
 
-	/**
-	 * Clean all event listeners
-	 */
-	@Override
-	public void onPause() {
-		super.onPause();
-		
-		getIntent().getExtras().clear();
-	}
+    /**
+     * Clean all event listeners
+     */
+    @Override
+    public void onPause() {
+        super.onPause();
 
+    }
 
-	// Since this is an object collection, use a FragmentStatePagerAdapter,
+    // Since this is an object collection, use a FragmentStatePagerAdapter,
     // and NOT a FragmentPagerAdapter.
     public class ProductsListPagerAdapter extends FragmentStatePagerAdapter {
-        ArrayList<String> mSortOptions = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.products_picker)));
+        ArrayList<String> mSortOptions = new ArrayList<String>(Arrays.asList(getResources()
+                .getStringArray(R.array.products_picker)));
         public static final String ARG_OBJECT = "object";
+
         public ProductsListPagerAdapter(FragmentManager fm) {
             super(fm);
         }
@@ -135,7 +146,7 @@ public class ProductsActivityFragment extends BaseActivity  {
         @Override
         public Fragment getItem(int position) {
             Fragment fragment = new ProductsFragment();
-            Bundle args = new Bundle();
+            Bundle args = getArguments();
             args.putInt(ProductsFragment.INTENT_POSITION_EXTRA, position);
             fragment.setArguments(args);
             return fragment;
@@ -153,13 +164,15 @@ public class ProductsActivityFragment extends BaseActivity  {
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-//            super.destroyItem(container, position, object);
+            super.destroyItem(container, position, object);
         }
-        
-        @Override 
-        public Parcelable saveState() { return null; }
+
+        @Override
+        public Parcelable saveState() {
+            return null;
+        }
     }
-	
+
     /**
      * Set some layout parameters that aren't possible by xml
      * 
@@ -200,28 +213,11 @@ public class ProductsActivityFragment extends BaseActivity  {
         field.setAccessible(true);
         field.set(pagerTabStrip, paint);
 
-        
-        
-    }
-    
-    
-    /* (non-Javadoc)
-     * @see pt.rocket.utils.MyActivity#handleTriggeredEvent(pt.rocket.framework.event.ResponseEvent)
-     */
-    @Override
-    protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
-        return false;
-    }
-    
-    /* (non-Javadoc)
-     * @see pt.rocket.utils.MyActivity#onErrorEvent(pt.rocket.framework.event.ResponseEvent)
-     */
-    @Override
-    protected boolean onErrorEvent(ResponseEvent event) {
-        return super.onErrorEvent(event);
     }
 
     @Override
-    public void onSwitchFragment(FragmentType type, Boolean addToBackStack) {
+    protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
+        // TODO Auto-generated method stub
+        return false;
     }
 }

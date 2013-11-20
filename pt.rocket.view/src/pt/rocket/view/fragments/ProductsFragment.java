@@ -11,6 +11,8 @@ import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.controllers.ProductsListAdapter;
+import pt.rocket.controllers.fragments.FragmentController;
+import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.event.EventManager;
 import pt.rocket.framework.event.EventType;
@@ -25,11 +27,13 @@ import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.Direction;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.framework.utils.ProductSort;
-import pt.rocket.utils.BaseActivity;
 import pt.rocket.utils.DialogList;
+import pt.rocket.utils.MyMenuItem;
+import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogListFragment;
 import pt.rocket.utils.dialogfragments.DialogListFragment.OnDialogListListener;
+import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.Context;
@@ -142,15 +146,12 @@ public class ProductsFragment extends BaseFragment implements OnClickListener,
      * Empty constructor
      */
     public ProductsFragment() {
-        super(EnumSet.of(EventType.GET_PRODUCTS_EVENT), EnumSet.noneOf(EventType.class));
+        super(EnumSet.of(EventType.GET_PRODUCTS_EVENT), EnumSet.noneOf(EventType.class), EnumSet.of(MyMenuItem.SEARCH), 
+                NavigationAction.Products, 
+                0);
         this.setRetainInstance(true);
     }
-
-    @Override
-    public void sendValuesToFragment(int identifier, Object values) {
-
-    }
-
+    
     /*
      * (non-Javadoc)
      * 
@@ -197,13 +198,13 @@ public class ProductsFragment extends BaseFragment implements OnClickListener,
 
         title = getActivity().getIntent().getStringExtra(ConstantsIntentExtra.CONTENT_TITLE);
         getActivity().setTitle(title);
-        productsURL = getActivity().getIntent().getExtras()
+        productsURL = getArguments()
                 .getString(ConstantsIntentExtra.CONTENT_URL);
         Log.d(TAG, "onCreate: productsURL = " + productsURL);
-        searchQuery = getActivity().getIntent().getExtras()
+        searchQuery = getArguments()
                 .getString(ConstantsIntentExtra.SEARCH_QUERY);
-        Bundle args = getArguments();
-        int pos = args.getInt(INTENT_POSITION_EXTRA);
+
+        int pos = getArguments().getInt(INTENT_POSITION_EXTRA);
         
         if (pos == 0) {
             showTips();
@@ -215,9 +216,9 @@ public class ProductsFragment extends BaseFragment implements OnClickListener,
         Log.i(TAG, "code1 creating ProductsFragment " + pos);
 
         Log.d(TAG, "onCreate: searchQuery = " + searchQuery);
-        navigationSource = getActivity().getIntent().getIntExtra(
+        navigationSource = getArguments().getInt(
                 ConstantsIntentExtra.NAVIGATION_SOURCE, -1);
-        navigationPath = getActivity().getIntent().getStringExtra(
+        navigationPath = getArguments().getString(
                 ConstantsIntentExtra.NAVIGATION_PATH);
         AnalyticsGoogle.get().trackSourceResWithPath(navigationSource, navigationPath);
 
@@ -279,9 +280,13 @@ public class ProductsFragment extends BaseFragment implements OnClickListener,
                     Log.i("TAG", "DIR=======>" + dir + " sort =====> " + sort);
 
                     saveActivityState();
-                    ActivitiesWorkFlow.productsDetailsActivity(getActivity(),
-                            ((Product) productsAdapter.getItem(activePosition)).getUrl(),
-                            navigationSource, navigationPath);
+                    saveActivityState();
+
+                    Bundle bundle = new Bundle();
+                    bundle.putString(ConstantsIntentExtra.CONTENT_URL, ((Product)productsAdapter.getItem(activePosition)).getUrl());
+                    bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, navigationSource);
+                    bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, navigationPath);
+                    ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
                 }
 
             }

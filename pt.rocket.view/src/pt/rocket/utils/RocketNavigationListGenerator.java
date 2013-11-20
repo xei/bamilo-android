@@ -16,6 +16,7 @@ import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.service.ServiceManager;
 import pt.rocket.framework.service.services.CustomerAccountService;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -221,22 +222,22 @@ public class RocketNavigationListGenerator implements ResponseListener {
             if (navAction != null && activity.getAction() != navAction) {
                 switch (navAction) {
                 case Basket:
-                    ActivitiesWorkFlow.shoppingCartActivity(activity);
+                    // ActivitiesWorkFlow.shoppingCartActivity(activity);
                     break;
                 case Home:
-                    ActivitiesWorkFlow.homePageActivity(activity);
+                    // ActivitiesWorkFlow.homePageActivity(activity);
                     break;
                 case Search:
-                    ActivitiesWorkFlow.searchActivity(activity);
+                    // ActivitiesWorkFlow.searchActivity(activity);
                     break;
                 case Categories:
-                    ActivitiesWorkFlow.categoriesActivityNew(activity, null);
+                    // ActivitiesWorkFlow.categoriesActivityNew(activity, null);
                     break;
                 case MyAccount:
-                    ActivitiesWorkFlow.myAccountActivity(activity);
+                    // ActivitiesWorkFlow.myAccountActivity(activity);
                     break;
                 case LoginOut:
-                    ActivitiesWorkFlow.loginOut(activity);
+                    // ActivitiesWorkFlow.loginOut(activity);
                     break;
                 case Country:
                     ActivitiesWorkFlow.changeCountryActivity(activity);

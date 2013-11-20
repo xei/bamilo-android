@@ -8,6 +8,7 @@ import java.util.zip.ZipFile;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.ActivitiesWorkFlow;
+import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.event.ResponseEvent;
 import pt.rocket.framework.event.ResponseListener;
@@ -66,12 +67,14 @@ import com.urbanairship.push.PushManager;
  * 
  */
 
-public class SplashScreen extends Activity implements ResponseListener {
-    private final static String TAG = LogTagHelper.create(SplashScreen.class);
+public class SplashScreenActivity extends Activity implements ResponseListener {
+    private final static String TAG = LogTagHelper.create(SplashScreenActivity.class);
     private DialogGeneric dialog;
     
     private static boolean shouldHandleEvent = true;
 
+    private String productUrl;
+    private String utm;
     /*
      * (non-Javadoc)
      * 
@@ -113,10 +116,40 @@ public class SplashScreen extends Activity implements ResponseListener {
     }
     
     @Override
+    protected void onPause() {     
+        super.onPause();
+        if(dialog!=null){
+            dialog.dismiss();
+        }
+    }
+    
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         JumiaApplication.INSTANCE.clearInitListener();
+		cleanIntent(getIntent());
     }
+    
+    private void cleanIntent(Intent intent){
+        Log.d(TAG, "CLEAN NOTIFICATION");
+        utm = null;
+        productUrl = null;
+        // setIntent(null);
+        intent.putExtra(ConstantsIntentExtra.UTM_STRING,"");
+        intent.putExtra(ConstantsIntentExtra.CONTENT_URL, "");
+    }
+    
+    /**
+     * Get values from intent, sent by push notification
+     */
+    private void getPushNotifications(){
+        // ## Google Analytics "General Campaign Measurement" ##
+        utm  = getIntent().getStringExtra(ConstantsIntentExtra.UTM_STRING);
+        // ## Product URL ## 
+        productUrl = getIntent().getStringExtra(ConstantsIntentExtra.CONTENT_URL);
+        Log.d(TAG, " PRODUCT DETAILS " + productUrl);
+    }
+    
 
     /**
      * Starts the Activity depending whether the app is started by the user, or by the push
@@ -128,11 +161,24 @@ public class SplashScreen extends Activity implements ResponseListener {
         // Push Notification Start
         String productUrl = getIntent().getStringExtra(ConstantsIntentExtra.PRODUCT_URL);
         if (productUrl != null && !productUrl.equals("")) {
-            ActivitiesWorkFlow.productsDetailsActivity(SplashScreen.this, productUrl,
-                    R.string.gpush_prefix, "");
+            // Start home with notification 
+            Log.d(TAG, "SHOW NOTIFICATION: PRODUCT DETAILS " + productUrl);
+            // ActivitiesWorkFlow.homePageActivity(SplashScreen.this, productUrl, R.string.gpush_prefix, "");
+            // Create bundle for fragment
+            Bundle bundle = new Bundle();
+            bundle.putString(ConstantsIntentExtra.CONTENT_URL, productUrl);
+            bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gpush_prefix);
+            bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
+            // Create intent with fragment type and bundle
+            Intent intent = new Intent(this, MainFragmentActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); 
+            intent.putExtra(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.PRODUCT_DETAILS);
+            intent.putExtra(ConstantsIntentExtra.FRAGMENT_BUNDLE, bundle);
+            // Start activity
+            startActivity(intent);
         } else {
             // Default Start
-            Intent intent = new Intent(SplashScreen.this, HomeFragmentActivity.class);
+            Intent intent = new Intent(this, MainFragmentActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             // intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
@@ -235,15 +281,19 @@ public class SplashScreen extends Activity implements ResponseListener {
             selectActivity();
             finish();
         } else if (event.errorCode == ErrorCode.REQUIRES_USER_INTERACTION) {
-            ActivitiesWorkFlow.changeCountryActivity(SplashScreen.this);
+            Intent intent = new Intent(this, MainFragmentActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); 
+            intent.putExtra(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.CHANGE_COUNTRY);
+            // Start activity
+            startActivity(intent);
             finish();
         } else if (event.errorCode.isNetworkError()) {
-            dialog = DialogGeneric.createNoNetworkDialog(SplashScreen.this,
+            dialog = DialogGeneric.createNoNetworkDialog(SplashScreenActivity.this,
                     new OnClickListener() {
 
                         @Override
                         public void onClick(View v) {
-                            JumiaApplication.INSTANCE.waitForInitResult(SplashScreen.this, true);
+                            JumiaApplication.INSTANCE.waitForInitResult(SplashScreenActivity.this, true);
                             dialog.dismiss();
                         }
                     }, true);
@@ -260,12 +310,12 @@ public class SplashScreen extends Activity implements ResponseListener {
                 message += "\n" + error;
             }
             message = message.replaceFirst("\n", "");
-            dialog = DialogGeneric.createServerErrorDialog(message, SplashScreen.this,
+            dialog = DialogGeneric.createServerErrorDialog(message, SplashScreenActivity.this,
                     new OnClickListener() {
 
                         @Override
                         public void onClick(View v) {
-                            JumiaApplication.INSTANCE.waitForInitResult(SplashScreen.this, true);
+                            JumiaApplication.INSTANCE.waitForInitResult(SplashScreenActivity.this, true);
                             dialog.dismiss();
                         }
                     }, true);
@@ -277,12 +327,12 @@ public class SplashScreen extends Activity implements ResponseListener {
             }
             
         } else {
-            dialog = DialogGeneric.createServerErrorDialog(SplashScreen.this,
+            dialog = DialogGeneric.createServerErrorDialog(SplashScreenActivity.this,
                     new OnClickListener() {
 
                         @Override
                         public void onClick(View v) {
-                            JumiaApplication.INSTANCE.waitForInitResult(SplashScreen.this, true);
+                            JumiaApplication.INSTANCE.waitForInitResult(SplashScreenActivity.this, true);
                             dialog.dismiss();
                         }
                     }, true);
@@ -295,6 +345,7 @@ public class SplashScreen extends Activity implements ResponseListener {
         }
     }
 
+    
     /*
      * (non-Javadoc)
      * 

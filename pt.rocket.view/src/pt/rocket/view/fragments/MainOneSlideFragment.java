@@ -14,7 +14,9 @@ import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.objects.ITargeting;
 import pt.rocket.framework.objects.ImageTeaserGroup.TeaserImage;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.view.HomeFragmentActivity;
+import pt.rocket.utils.MyMenuItem;
+import pt.rocket.utils.NavigationAction;
+import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -42,8 +44,6 @@ import de.akquinet.android.androlog.Log;
 public class MainOneSlideFragment extends BaseFragment {
 
     private static final String TAG = LogTagHelper.create( MainOneSlideFragment.class );
-
-    private HomeFragmentActivity parentActivity;
     
     private ArrayList<TeaserImage> teaserImageArrayList;
     
@@ -51,15 +51,18 @@ public class MainOneSlideFragment extends BaseFragment {
     private View rootView;
     
     private LayoutInflater mInflater;
-
+    
+    private static MainOneSlideFragment mMainOneSlideFragment;
     /**
      * 
      * @param dynamicForm
      * @return
      */
 	public static MainOneSlideFragment getInstance() {
-        MainOneSlideFragment mainOneSlideFragment = new MainOneSlideFragment();
-        return mainOneSlideFragment;
+//	    if(mMainOneSlideFragment == null){
+	        mMainOneSlideFragment = new MainOneSlideFragment();
+//	    }
+        return mMainOneSlideFragment;
     }
     
     /**
@@ -67,8 +70,7 @@ public class MainOneSlideFragment extends BaseFragment {
      * @param arrayList 
      */
     public MainOneSlideFragment() {
-        super(EnumSet.noneOf(EventType.class), EnumSet.noneOf(EventType.class));
-        this.setRetainInstance(true);
+        super(IS_NESTED_FRAGMENT);
     }
 
     @Override
@@ -90,7 +92,6 @@ public class MainOneSlideFragment extends BaseFragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         Log.i(TAG, "ON ATTACH");
-        parentActivity = (HomeFragmentActivity) activity;
     }
 
     /*
@@ -117,7 +118,7 @@ public class MainOneSlideFragment extends BaseFragment {
 //        if(this.teaserImageArrayList.size()>1){
 //            rootView = inflater.inflate(R.layout.teaser_swipe_banners_group, viewGroup, false);
 //        } else {
-            rootView = inflater.inflate(R.layout.teaser_big_banner, viewGroup, false);
+            rootView = inflater.inflate(R.layout.teaser_big_banner, null, false);
 //        }
         
         mInflater = inflater;
@@ -206,7 +207,7 @@ public class MainOneSlideFragment extends BaseFragment {
     
     
     private View createImageTeaserView(TeaserImage teaserImage, ViewGroup vg, LayoutInflater mInflater) {
-        View imageTeaserView = mInflater.inflate(R.layout.image_loadable, vg,
+        View imageTeaserView = mInflater.inflate(R.layout.image_loadable, null,
                 false);
         setImageToLoad(teaserImage.getImageUrl(), imageTeaserView);
         attachTeaserListener(teaserImage, imageTeaserView);

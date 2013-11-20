@@ -11,6 +11,8 @@ import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.service.ServiceManager;
 import pt.rocket.framework.service.services.ProductService;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.utils.MyMenuItem;
+import pt.rocket.utils.NavigationAction;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.graphics.Paint;
@@ -24,6 +26,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
+
 import org.holoeverywhere.widget.TextView;
 import de.akquinet.android.androlog.Log;
 
@@ -61,9 +65,12 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
      * Empty constructor
      */
     public ProductDetailsDescriptionFragment() {
-        super(EnumSet.noneOf(EventType.class), EnumSet.noneOf(EventType.class));
+        super(EnumSet.noneOf(EventType.class), 
+                EnumSet.noneOf(EventType.class),
+                EnumSet.of(MyMenuItem.SHARE), 
+                NavigationAction.Products, 
+                R.string.product_details_title);
         this.mCompleteProduct = ServiceManager.SERVICES.get(ProductService.class).getCurrentProduct();
-        this.setRetainInstance(true);
     }
     
     /*
@@ -86,6 +93,8 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
+        // Retain this fragment across configuration changes.
+        setRetainInstance(true);
     }
 
     /*
@@ -132,8 +141,18 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        this.mCompleteProduct = ServiceManager.SERVICES.get(ProductService.class).getCurrentProduct();   
-        displayProductInformation(mainView);
+        mCompleteProduct = ServiceManager.SERVICES.get(ProductService.class).getCurrentProduct();
+        /**
+         * Validate product
+         * If null is assumed that the system clean some data
+         */
+        if(mCompleteProduct != null && mainView != null) {
+            getViews();
+            displayProductInformation(mainView);
+        }else{
+            if(getActivity() != null) Toast.makeText(getActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_SHORT).show();
+            restartAllFragments();
+        }
     }
 
     /*
@@ -166,9 +185,31 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.i(TAG, "ON DESTROY");
+        Log.i(TAG, "ON DESTROY VIEW");
     }
     
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.view.fragments.BaseFragment#onDestroy()
+     */
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.i(TAG, "ON DESTROY");
+        mainView = null;
+        mCompleteProduct = null;
+        System.gc();
+    }
+    
+    private void getViews(){
+        mProductName = (TextView) mainView.findViewById( R.id.product_name );
+        mProductResultPrice = (TextView) mainView.findViewById( R.id.product_price_result );
+        mProductNormalPrice = (TextView) mainView.findViewById( R.id.product_price_normal );
+//        mProductFeaturesContainer = mainView.findViewById(R.id.product_features_container);
+        mProductFeaturesText = (TextView) mainView.findViewById( R.id.product_features_text );
+        mProductDescriptionText = (TextView) mainView.findViewById( R.id.product_description_text );
+        mProductDetailsText = (TextView) mainView.findViewById( R.id.product_details_text );
+    }
     
     private void displayProductInformation(View view ) {
         mProductName.setText( mCompleteProduct.getBrand() + " " + mCompleteProduct.getName());
@@ -265,7 +306,6 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
 
     @Override
     protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
-        // TODO Auto-generated method stub
         return false;
     }
 

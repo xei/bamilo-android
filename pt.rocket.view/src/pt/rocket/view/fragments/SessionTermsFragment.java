@@ -5,9 +5,12 @@ package pt.rocket.view.fragments;
 
 import java.util.EnumSet;
 
+import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.framework.event.EventType;
 import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.utils.MyMenuItem;
+import pt.rocket.utils.NavigationAction;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.os.Bundle;
@@ -21,13 +24,13 @@ import de.akquinet.android.androlog.Log;
  * @author Manuel Silva
  * 
  */
-public class TermsFragment extends BaseFragment {
+public class SessionTermsFragment extends BaseFragment {
 
-    private static final String TAG = LogTagHelper.create(TermsFragment.class);
+    private static final String TAG = LogTagHelper.create(SessionTermsFragment.class);
 
     private TextView textView;
     
-    private static TermsFragment termsFragment;
+    private static SessionTermsFragment termsFragment;
     
     private String termsText;
     /**
@@ -35,19 +38,29 @@ public class TermsFragment extends BaseFragment {
      * 
      * @return
      */
-    public static TermsFragment getInstance() {
+    public static SessionTermsFragment getInstance() {
         if (termsFragment == null)
-            termsFragment = new TermsFragment();
+            termsFragment = new SessionTermsFragment();
+        return termsFragment;
+    }
+    
+    
+    public static SessionTermsFragment getInstance(Bundle bundle) {
+        if (termsFragment == null)
+            termsFragment = new SessionTermsFragment();
+        termsFragment.termsText = bundle.getString(ConstantsIntentExtra.TERMS_CONDITIONS);
         return termsFragment;
     }
 
     /**
      * Empty constructor
      */
-    public TermsFragment() {
+    public SessionTermsFragment() {
         super(EnumSet.noneOf(EventType.class),
-        EnumSet.noneOf(EventType.class));
-        this.setRetainInstance(true);
+        EnumSet.noneOf(EventType.class),
+        EnumSet.noneOf(MyMenuItem.class), 
+        NavigationAction.Unknown, 
+        0);
     }
 
     @Override
@@ -75,6 +88,9 @@ public class TermsFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
+        
+        // Retain this fragment across configuration changes.
+        setRetainInstance(true);
     }
 
     /*
@@ -149,12 +165,11 @@ public class TermsFragment extends BaseFragment {
     }
     
     private void setupView() {
-        textView.setText(termsText);     
+            textView.setText(termsText);     
     }
 
     @Override
     protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
-        // TODO Auto-generated method stub
         return false;
     }
 }

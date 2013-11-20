@@ -1,13 +1,13 @@
 package pt.rocket.view;
 
 import java.util.EnumSet;
+
+import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.event.EventType;
 import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.utils.BaseActivity;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
-import pt.rocket.view.fragments.FragmentType;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MyLayoutInflater;
@@ -138,7 +138,7 @@ public class ChangeCountryFragmentActivity extends BaseActivity {
     }
 
     @Override
-    public void onSwitchFragment(FragmentType type, Boolean addToBackStack) {
+    public void onSwitchFragment(FragmentType search, Bundle bundle, Boolean addToBackStack) {
         // TODO Auto-generated method stub
         
     }

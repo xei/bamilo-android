@@ -19,11 +19,11 @@ import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.pojo.DynamicForm;
 import pt.rocket.pojo.DynamicFormItem;
-import pt.rocket.utils.BaseActivity;
+import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
+import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
-import pt.rocket.view.SessionFragmentActivity;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.os.Bundle;
@@ -40,11 +40,11 @@ import de.akquinet.android.androlog.Log;
  * @author sergiopereira
  * 
  */
-public class ForgotPasswordFragment extends BaseFragment {
+public class SessionForgotPasswordFragment extends BaseFragment {
 
-    private static final String TAG = LogTagHelper.create(ForgotPasswordFragment.class);
+    private static final String TAG = LogTagHelper.create(SessionForgotPasswordFragment.class);
 
-    private static ForgotPasswordFragment forgotPasswordFragment;
+    private static SessionForgotPasswordFragment forgotPasswordFragment;
 
     protected DynamicForm dynamicForm;
     
@@ -52,7 +52,6 @@ public class ForgotPasswordFragment extends BaseFragment {
 
     private Form formResponse;
 
-    private SessionFragmentActivity parentActivity;
 
     private Bundle savedInstanceState;
 
@@ -60,17 +59,17 @@ public class ForgotPasswordFragment extends BaseFragment {
      * 
      * @return
      */
-    public static ForgotPasswordFragment getInstance() {
+    public static SessionForgotPasswordFragment getInstance() {
         if(forgotPasswordFragment == null)
-            forgotPasswordFragment = new ForgotPasswordFragment();
+            forgotPasswordFragment = new SessionForgotPasswordFragment();
         return forgotPasswordFragment;
     }
 
     /**
      * Empty constructor
      */
-    public ForgotPasswordFragment() {
-        super(EnumSet.of(EventType.GET_FORGET_PASSWORD_FORM_EVENT), EnumSet.of(EventType.FORGET_PASSWORD_EVENT));
+    public SessionForgotPasswordFragment() {
+        super(EnumSet.of(EventType.GET_FORGET_PASSWORD_FORM_EVENT), EnumSet.of(EventType.FORGET_PASSWORD_EVENT),EnumSet.noneOf(MyMenuItem.class),NavigationAction.MyAccount,R.string.forgotpass_header);
         this.setRetainInstance(true);
     }
 
@@ -83,7 +82,6 @@ public class ForgotPasswordFragment extends BaseFragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         Log.i(TAG, "ON ATTACH");
-        parentActivity = (SessionFragmentActivity) activity;
     }
 
     /*
@@ -121,7 +119,7 @@ public class ForgotPasswordFragment extends BaseFragment {
     public void onStart() {
         super.onStart();
         Log.i(TAG, "ON START");
-        parentActivity.updateActivityHeader(NavigationAction.MyAccount, R.string.forgotpass_header);
+        
     }
 
     /*

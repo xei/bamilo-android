@@ -3,7 +3,7 @@ package pt.rocket.utils;
 
 
 import pt.rocket.constants.ConstantsIntentExtra;
-import pt.rocket.view.SplashScreen;
+import pt.rocket.view.SplashScreenActivity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -25,7 +25,7 @@ public class PushNotificationIntentReceiver extends BroadcastReceiver {
 			// for example, you can start an activity and send the msg as an extra.
             Intent launch = new Intent(intent);
             launch.setAction(Intent.ACTION_MAIN);
-            launch.setClass(UAirship.shared().getApplicationContext(), SplashScreen.class);
+            launch.setClass(UAirship.shared().getApplicationContext(), SplashScreenActivity.class);
             launch.putExtra(ConstantsIntentExtra.CONTENT_URL, productUrl);
 			launch.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP); 
 			

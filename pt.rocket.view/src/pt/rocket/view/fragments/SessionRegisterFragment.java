@@ -9,8 +9,11 @@ import java.util.List;
 
 import org.holoeverywhere.FontLoader;
 
+import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.FormConstants;
 import pt.rocket.controllers.ActivitiesWorkFlow;
+import pt.rocket.controllers.fragments.FragmentController;
+import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.factories.FormFactory;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.event.EventManager;
@@ -29,12 +32,12 @@ import pt.rocket.framework.service.services.CustomerAccountService;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.pojo.DynamicForm;
 import pt.rocket.pojo.DynamicFormItem;
-import pt.rocket.utils.BaseActivity;
+import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
+import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
-import pt.rocket.view.SessionFragmentActivity;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.os.Bundle;
@@ -58,13 +61,11 @@ import de.akquinet.android.androlog.Log;
  * @author sergiopereira
  * 
  */
-public class RegisterFragment extends BaseFragment {
+public class SessionRegisterFragment extends BaseFragment {
 
-    private static final String TAG = LogTagHelper.create( RegisterFragment.class );
+    private static final String TAG = LogTagHelper.create( SessionRegisterFragment.class );
 
-    private static RegisterFragment registerFragment;
-
-    private SessionFragmentActivity parentActivity;
+    private static SessionRegisterFragment registerFragment;
 
     private Bundle savedInstanceState;
 
@@ -99,19 +100,21 @@ public class RegisterFragment extends BaseFragment {
      * 
      * @return
      */
-    public static RegisterFragment getInstance(String origin) {
+    public static SessionRegisterFragment getInstance() {
         if(registerFragment == null)
-            registerFragment = new RegisterFragment(origin);
+            registerFragment = new SessionRegisterFragment();
         return registerFragment;
     }
     
     /**
      * 
      */
-    public RegisterFragment(String origin) {
+    public SessionRegisterFragment() {
         super( EnumSet.of(EventType.GET_REGISTRATION_FORM_EVENT, EventType.GET_TERMS_EVENT),
-                EnumSet.of(EventType.REGISTER_ACCOUNT_EVENT) );
-        registerLocation = origin;
+                EnumSet.of(EventType.REGISTER_ACCOUNT_EVENT), EnumSet.noneOf(MyMenuItem.class), 
+                NavigationAction.MyAccount, 
+                R.string.register_title);
+        registerLocation = getString(R.string.mixprop_loginlocation);
         this.setRetainInstance(true);
     }
 
@@ -123,7 +126,6 @@ public class RegisterFragment extends BaseFragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         Log.i(TAG, "ON ATTACH");
-        parentActivity = (SessionFragmentActivity) activity;
     }
 
     /*
@@ -157,7 +159,6 @@ public class RegisterFragment extends BaseFragment {
     public void onStart() {
         super.onStart();
         Log.i(TAG, "ON START");
-        parentActivity.updateActivityHeader(NavigationAction.MyAccount, R.string.register_title);
     }
 
     /*
@@ -317,7 +318,7 @@ public class RegisterFragment extends BaseFragment {
                 } else if ( !checkTermsIfRequired()) {
                     termsRequiredText.setVisibility( View.VISIBLE );
                 }  else {
-                    ((SessionFragmentActivity) getActivity()).hideKeyboard();
+                    ((BaseActivity) getActivity()).hideKeyboard();
                 }
             }
         });
@@ -334,7 +335,7 @@ public class RegisterFragment extends BaseFragment {
             public void onClick(View v) {
                 int id = v.getId();
                 if (id == R.id.orLoginContainer) {
-                    parentActivity.onBackPressed();
+                    getActivity().onBackPressed();
                     //getActivity().setResult( Activity.RESULT_CANCELED);
                     //getActivity().finish();
                     //getActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
@@ -410,7 +411,9 @@ public class RegisterFragment extends BaseFragment {
                     int id = v.getId();
                     if (id == R.id.termsContainerClick) {
                         Log.d(TAG, "terms click");
-                        ActivitiesWorkFlow.termsActivity(getActivity(), terms);
+                        Bundle bundle = new Bundle();
+                        bundle.putString(ConstantsIntentExtra.TERMS_CONDITIONS, terms);
+                        ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.TERMS, bundle, FragmentController.ADD_TO_BACK_STACK);
                     }
                     
                 }

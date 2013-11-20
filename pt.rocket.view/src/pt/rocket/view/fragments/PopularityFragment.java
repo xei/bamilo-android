@@ -8,7 +8,10 @@ import java.util.EnumSet;
 
 import org.holoeverywhere.widget.TextView;
 
+import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.ActivitiesWorkFlow;
+import pt.rocket.controllers.fragments.FragmentController;
+import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.components.ScrollViewEx;
 import pt.rocket.framework.components.ScrollViewEx.OnScrollBottomReachedListener;
 import pt.rocket.framework.event.EventManager;
@@ -22,9 +25,10 @@ import pt.rocket.framework.objects.RatingOption;
 import pt.rocket.framework.service.ServiceManager;
 import pt.rocket.framework.service.services.ProductService;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.utils.BaseActivity;
+import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.TrackerDelegator;
+import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.Context;
@@ -76,7 +80,9 @@ public class PopularityFragment extends BaseFragment {
      * Empty constructor
      */
     public PopularityFragment() {
-        super(EnumSet.of(EventType.GET_PRODUCT_REVIEWS_EVENT), EnumSet.noneOf(EventType.class));
+        super(EnumSet.of(EventType.GET_PRODUCT_REVIEWS_EVENT), EnumSet.noneOf(EventType.class),EnumSet.noneOf(MyMenuItem.class),
+                NavigationAction.Products, 
+                R.string.reviews);
         this.setRetainInstance(true);
     }
 
@@ -134,7 +140,7 @@ public class PopularityFragment extends BaseFragment {
     public void onStart() {
         super.onStart();
         Log.i(TAG, "ON START");
-        ((BaseActivity) getActivity()).updateActivityHeader(NavigationAction.Products, R.string.reviews);
+//        ((BaseActivity) getActivity()).updateActivityHeader(NavigationAction.Products, R.string.reviews);
         setAppContentLayout();
     }
 
@@ -275,14 +281,13 @@ public class PopularityFragment extends BaseFragment {
             }
         });
     }
-    
+
     /**
      * This method is invoked when the user wants to create a review.
      */
     private void writeReview() {
-        ActivitiesWorkFlow.writeReviewActivity(getActivity());
+        ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.WRITE_REVIEW, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
     }
-
     
     /*
      * (non-Javadoc)
@@ -357,9 +362,17 @@ public class PopularityFragment extends BaseFragment {
                 @Override
                 public void onClick(View v) {
                     Log.d(TAG, "review clicked: username = " + userName.getText().toString());
-                    ActivitiesWorkFlow.reviewActivity(getActivity(), review.getTitle(),
-                            review.getComments(), review.getName(), review.getRating(),
-                            stringCor[0]);
+                    
+                    Bundle bundle = new Bundle();
+                    bundle.putString(ConstantsIntentExtra.REVIEW_TITLE, review.getTitle());
+                    bundle.putString(ConstantsIntentExtra.REVIEW_NAME, review.getName());
+                    bundle.putString(ConstantsIntentExtra.REVIEW_COMMENT, review.getComments());
+                    bundle.putDouble(ConstantsIntentExtra.REVIEW_RATING, review.getRating());
+                    bundle.putString(ConstantsIntentExtra.REVIEW_DATE, stringCor[0]);
+                    ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.REVIEW, bundle, true);
+//                    ActivitiesWorkFlow.reviewActivity(getActivity(), review.getTitle(),
+//                            review.getComments(), review.getName(), review.getRating(),
+//                            stringCor[0]);
                 }
             });
 

@@ -12,7 +12,9 @@ import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.objects.ITargeting;
 import pt.rocket.framework.objects.ImageTeaserGroup.TeaserImage;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.view.HomeFragmentActivity;
+import pt.rocket.framework.utils.WindowHelper;
+import pt.rocket.utils.MyMenuItem;
+import pt.rocket.utils.NavigationAction;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -40,8 +42,6 @@ public class StaticBannerFragment extends BaseFragment {
 
     private static final int MAX_IMAGES_ON_SCREEN = 2;
 
-    private HomeFragmentActivity parentActivity;
-
     private static ArrayList<TeaserImage> teaserImageArrayList;
 
     private OnClickListener onTeaserClickListener;
@@ -64,7 +64,7 @@ public class StaticBannerFragment extends BaseFragment {
      * @param arrayList
      */
     public StaticBannerFragment() {
-        super(EnumSet.noneOf(EventType.class), EnumSet.noneOf(EventType.class));
+        super(IS_NESTED_FRAGMENT);
         this.setRetainInstance(true);
     }
 
@@ -87,8 +87,6 @@ public class StaticBannerFragment extends BaseFragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         Log.i(TAG, "ON ATTACH");
-        parentActivity = (HomeFragmentActivity) activity;
-
     }
 
     /*
@@ -114,7 +112,7 @@ public class StaticBannerFragment extends BaseFragment {
         super.onCreateView(mInflater, viewGroup, savedInstanceState);
         Log.i(TAG, "ON CREATE VIEW");
 
-        View view = mInflater.inflate(R.layout.teaser_banners_group, viewGroup, false);
+        View view = mInflater.inflate(R.layout.teaser_banners_group, null, false);
         inflater = mInflater;
         return view;
     }
@@ -215,6 +213,9 @@ public class StaticBannerFragment extends BaseFragment {
                 .findViewById(R.id.image_view);
         final View progressBar = imageTeaserView
                 .findViewById(R.id.image_loading_progress);
+        
+        int mainContentWidth = (int) (WindowHelper.getWidth(getActivity()) * getResources().getFraction(R.dimen.navigation_menu_offset,1,1));
+        imageTeaserView.getLayoutParams().width = mainContentWidth / teaserImageArrayList.size();
         if (!TextUtils.isEmpty(imageUrl)) {
             ImageLoader.getInstance().displayImage(imageUrl, imageView,
                     new SimpleImageLoadingListener() {
@@ -244,5 +245,11 @@ public class StaticBannerFragment extends BaseFragment {
                     });
         }
 
+    }
+
+    @Override
+    public void notifyFragment(Bundle bundle) {
+        // TODO Auto-generated method stub
+        
     }
 }

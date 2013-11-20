@@ -7,12 +7,14 @@ import java.util.EnumSet;
 
 import org.holoeverywhere.widget.TextView;
 
+import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.event.EventType;
 import pt.rocket.framework.event.ResponseEvent;
 import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.utils.OnFragmentActivityInteraction;
+import pt.rocket.utils.MyMenuItem;
+import pt.rocket.utils.NavigationAction;
 import pt.rocket.view.ProductDetailsActivityFragment;
 import pt.rocket.view.R;
 import android.app.Activity;
@@ -36,8 +38,6 @@ import de.akquinet.android.androlog.Log;
 public class ProductSpecificationsFragment extends BaseFragment implements OnClickListener {
 
     private static final String TAG = LogTagHelper.create(ProductVariationsFragment.class);
-
-    private ProductDetailsActivityFragment parentActivity;
 
     private TextView mProductSpecText;
 
@@ -69,7 +69,9 @@ public class ProductSpecificationsFragment extends BaseFragment implements OnCli
      * @param arrayList
      */
     public ProductSpecificationsFragment() {
-        super(EnumSet.noneOf(EventType.class), EnumSet.noneOf(EventType.class));
+        super(EnumSet.noneOf(EventType.class), EnumSet.noneOf(EventType.class), EnumSet.of(MyMenuItem.SHARE), 
+                NavigationAction.Products, 
+                R.string.product_details_title);
         this.setRetainInstance(true);
     }
 
@@ -108,12 +110,12 @@ public class ProductSpecificationsFragment extends BaseFragment implements OnCli
         Log.i(TAG, "ON ATTACH");
         // This makes sure that the container activity has implemented
         // the callback interface. If not, it throws an exception
-        try {
-            mCallback = (OnFragmentActivityInteraction) getActivity();
-        } catch (ClassCastException e) {
-            throw new ClassCastException(getActivity().toString()
-                    + " must implement OnActivityFragmentInteraction");
-        }
+//        try {
+//            mCallback = (OnFragmentActivityInteraction) getActivity();
+//        } catch (ClassCastException e) {
+//            throw new ClassCastException(getActivity().toString()
+//                    + " must implement OnActivityFragmentInteraction");
+//        }
     }
 
     /*
@@ -146,7 +148,7 @@ public class ProductSpecificationsFragment extends BaseFragment implements OnCli
         mProductSpecSku = (TextView) mainView.findViewById(R.id.product_sku_text);
         mLoading = (RelativeLayout) mProductSpecContainer
                 .findViewById(R.id.loading_specifications);
-        displaySpecification();
+//        displaySpecification();
         return mainView;
     }
 
@@ -171,9 +173,9 @@ public class ProductSpecificationsFragment extends BaseFragment implements OnCli
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        //
-        // AnalyticsGoogle.get().trackPage(R.string.gteaser_prefix);
-        //
+        Bundle bundle = getArguments();
+        if(bundle != null && bundle.containsKey(ProductDetailsActivityFragment.PRODUCT_COMPLETE))
+            mCompleteProduct = (CompleteProduct) bundle.get(ProductDetailsActivityFragment.PRODUCT_COMPLETE);
     }
 
     /*
@@ -196,11 +198,11 @@ public class ProductSpecificationsFragment extends BaseFragment implements OnCli
     public void onStop() {
         super.onStop();
         Log.i(TAG, "ON STOP");
-        // FlurryTracker.get().end();
     }
 
     @Override
     protected boolean onSuccessEvent(final ResponseResultEvent<?> event) {
+               
         return true;
     }
 
@@ -211,7 +213,6 @@ public class ProductSpecificationsFragment extends BaseFragment implements OnCli
  
     @Override
     public void onClick(View v) {
-        // TODO Auto-generated method stub
         mCallback.onFragmentSelected(FragmentType.PRODUCT_SPECIFICATION);
     }
     
@@ -253,5 +254,19 @@ public class ProductSpecificationsFragment extends BaseFragment implements OnCli
 //            mProductSpecText.setText(Html.fromHtml(translatedDescription));
         }
         hideContentLoading();
+    }
+
+    @Override
+    public void notifyFragment(Bundle bundle) {
+        Log.i(TAG, "code1 notifyFragment Specification");
+        // Validate if fragment is on the screen
+        if(!isVisible()){
+            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return;
+        }
+        
+        mCompleteProduct = (CompleteProduct) bundle.get(ProductDetailsActivityFragment.PRODUCT_COMPLETE);
+        
+        displaySpecification();
     }
 }

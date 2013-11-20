@@ -16,6 +16,8 @@ import pt.rocket.framework.objects.ProductReviewCommentCreated;
 import pt.rocket.framework.service.ServiceManager;
 import pt.rocket.framework.service.services.ProductService;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.utils.MyMenuItem;
+import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.view.R;
@@ -90,7 +92,7 @@ public class WriteReviewFragment extends BaseFragment {
      */
     public WriteReviewFragment() {
         super(EnumSet.of(EventType.LOGIN_EVENT, EventType.GET_RATING_OPTIONS_EVENT,
-                EventType.GET_CUSTOMER), EnumSet.of(EventType.REVIEW_PRODUCT_EVENT));
+                EventType.GET_CUSTOMER), EnumSet.of(EventType.REVIEW_PRODUCT_EVENT), EnumSet.noneOf(MyMenuItem.class), NavigationAction.Products,  R.string.writereview_page_title);
         this.setRetainInstance(true);
     }
 
@@ -388,6 +390,12 @@ public class WriteReviewFragment extends BaseFragment {
         }
 
         return false;
+    }
+
+    @Override
+    public void notifyFragment(Bundle bundle) {
+        // TODO Auto-generated method stub
+        
     }
 
 }

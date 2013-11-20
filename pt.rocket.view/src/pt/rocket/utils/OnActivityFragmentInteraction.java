@@ -1,5 +1,6 @@
 package pt.rocket.utils;
 
+import android.os.Bundle;
 import android.view.View.OnClickListener;
 
 /**
@@ -14,4 +15,5 @@ public interface OnActivityFragmentInteraction {
     public void sendPositionToFragment(int position);
     public void sendListener(int identifier, OnClickListener clickListener);
     public boolean allowBackPressed();
+    public void notifyFragment(Bundle bundle);
 }

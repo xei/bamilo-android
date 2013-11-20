@@ -10,9 +10,11 @@ import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.JumiaApplication;
+import pt.rocket.utils.MyMenuItem;
+import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.OnFragmentActivityInteraction;
 import pt.rocket.app.ImageLoaderComponent;
-import pt.rocket.view.ProductDetailsActivityFragment;
+import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -35,8 +37,6 @@ import de.akquinet.android.androlog.Log;
 public class ProductImageShowOffFragment extends BaseFragment implements OnClickListener {
 
     private static final String TAG = LogTagHelper.create(ProductImageShowOffFragment.class);
-
-    private ProductDetailsActivityFragment parentActivity;
 
     private ViewGroup mProductImageShowOffContainer;
 
@@ -69,7 +69,9 @@ public class ProductImageShowOffFragment extends BaseFragment implements OnClick
      * @param arrayList
      */
     public ProductImageShowOffFragment() {
-        super(EnumSet.noneOf(EventType.class), EnumSet.noneOf(EventType.class));
+        super(EnumSet.noneOf(EventType.class), EnumSet.noneOf(EventType.class), EnumSet.of(MyMenuItem.SHARE), 
+                NavigationAction.Products, 
+                R.string.product_details_title);
         this.setRetainInstance(true);
     }
 
@@ -108,12 +110,12 @@ public class ProductImageShowOffFragment extends BaseFragment implements OnClick
         Log.i(TAG, "ON ATTACH");
         // This makes sure that the container activity has implemented
         // the callback interface. If not, it throws an exception
-        try {
-            mCallback = (OnFragmentActivityInteraction) getActivity();
-        } catch (ClassCastException e) {
-            throw new ClassCastException(getActivity().toString()
-                    + " must implement OnActivityFragmentInteraction");
-        }
+//        try {
+//            mCallback = (OnFragmentActivityInteraction) getActivity();
+//        } catch (ClassCastException e) {
+//            throw new ClassCastException(getActivity().toString()
+//                    + " must implement OnActivityFragmentInteraction");
+//        }
     }
 
     /*

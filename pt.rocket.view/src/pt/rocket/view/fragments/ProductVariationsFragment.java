@@ -12,9 +12,14 @@ import pt.rocket.framework.event.ResponseEvent;
 import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.Variation;
+import pt.rocket.framework.service.ServiceManager;
+import pt.rocket.framework.service.services.ProductService;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.HorizontalListView;
+import pt.rocket.utils.MyMenuItem;
+import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.OnFragmentActivityInteraction;
+import pt.rocket.utils.ProductDetailsFragmentCommunicator;
 import pt.rocket.view.ProductDetailsActivityFragment;
 import pt.rocket.view.R;
 import android.app.Activity;
@@ -35,15 +40,13 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
 
     private static final String TAG = LogTagHelper.create(ProductVariationsFragment.class);
 
-    private ProductDetailsActivityFragment parentActivity;
-
     private View mVariationsContainer;
 
     private CompleteProduct mCompleteProduct;
     private HorizontalListView mList;
     private ProductImagesAdapter mAdapter;
     private int mVariationsListPosition = -1;
-    private OnFragmentActivityInteraction mCallback;
+//    private OnFragmentActivityInteraction mCallback;
     private View mainView;
     
     /**
@@ -62,49 +65,32 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
      * @param arrayList
      */
     public ProductVariationsFragment() {
-        super(EnumSet.noneOf(EventType.class), EnumSet.noneOf(EventType.class));
+        super(EnumSet.of(EventType.GET_PRODUCT_EVENT), EnumSet.noneOf(EventType.class), EnumSet.of(MyMenuItem.SHARE), 
+                NavigationAction.Products, 
+                R.string.product_details_title);
         this.setRetainInstance(true);
     }
 
-    @Override
-    public void sendValuesToFragment(int identifier, Object values) {
-        this.mCompleteProduct= (CompleteProduct) values;
-        if(identifier == 1){
-            displayVariations();
-        }
-    }
-
-    @Override
-    public void sendPositionToFragment(int position){
-        this.mVariationsListPosition = position;
-        if(mList!=null){
-            mList.setSelectedItem(mVariationsListPosition, HorizontalListView.MOVE_TO_DIRECTLY);
-            mList.setPosition(mVariationsListPosition);
-        }
-    }
-    
+//    @Override
+//    public void sendValuesToFragment(int identifier, Object values) {
+//        this.mCompleteProduct= (CompleteProduct) values;
+//        if(identifier == 1){
+//            displayVariations();
+//        }
+//    }
+//
+//    @Override
+//    public void sendPositionToFragment(int position){
+//        this.mVariationsListPosition = position;
+//        if(mList!=null){
+//            mList.setSelectedItem(mVariationsListPosition, HorizontalListView.MOVE_TO_DIRECTLY);
+//            mList.setPosition(mVariationsListPosition);
+//        }
+//    }
+//    
     @Override
     public void sendListener(int identifier, OnClickListener onTeaserClickListener) {
 
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onAttach(android.app.Activity)
-     */
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        Log.i(TAG, "ON ATTACH");
-        // This makes sure that the container activity has implemented
-        // the callback interface. If not, it throws an exception
-        try {
-            mCallback = (OnFragmentActivityInteraction) getActivity();
-        } catch (ClassCastException e) {
-            throw new ClassCastException(getActivity().toString()
-                    + " must implement OnActivityFragmentInteraction");
-        }
     }
 
     /*
@@ -133,7 +119,7 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
         mainView = mInflater.inflate(R.layout.variations_fragment, viewGroup, false);
 
         mVariationsContainer = mainView.findViewById(R.id.variations_container);
-        displayVariations();
+        
         return mainView;
     }
 
@@ -157,6 +143,14 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception
+//        try {
+//            mCallback = (OnFragmentActivityInteraction) getActivity();
+//        } catch (ClassCastException e) {
+//            throw new ClassCastException(getActivity().toString()
+//                    + " must implement OnActivityFragmentInteraction");
+//        }
         //
         // AnalyticsGoogle.get().trackPage(R.string.gteaser_prefix);
         //
@@ -184,8 +178,25 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
         Log.i(TAG, "ON STOP");
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see pt.rocket.utils.MyActivity#handleTriggeredEvent(pt.rocket.framework.event.ResponseEvent)
+     */
     @Override
-    protected boolean onSuccessEvent(final ResponseResultEvent<?> event) {
+    protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
+        Log.d(TAG, "ON SUCCESS EVENT:" + event.getType().toString());
+        
+        // Validate if fragment is on the screen
+        if(!isVisible()){
+            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return true;
+        }
+        
+        mCompleteProduct = (CompleteProduct) event.result;
+        this.mVariationsListPosition = -1;
+        displayVariations();
+            
         return true;
     }
 
@@ -231,7 +242,11 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
         if(mVariationsListPosition!=position){
             mVariationsListPosition = position;
-            mCallback.onFragmentElementSelected(position);
+            Bundle bundle = new Bundle();
+            bundle.putInt(ProductDetailsActivityFragment.LOADING_PRODUCT_KEY, position);
+            ProductDetailsFragmentCommunicator.getInstance().notifyOthers(this, bundle);
+            
+//            mCallback.onFragmentElementSelected(position);
             mList.setSelectedItem(position, HorizontalListView.MOVE_TO_DIRECTLY);
         }
     }
@@ -255,6 +270,14 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
         }
 
         return -1;
+    }
+
+    @Override
+    public void notifyFragment(Bundle bundle) {
+            this.mCompleteProduct = ServiceManager.SERVICES.get(ProductService.class).getCurrentProduct();
+            displayVariations();
+       
+        
     }
 
 }

@@ -12,7 +12,9 @@ import pt.rocket.framework.objects.BrandsTeaserGroup;
 import pt.rocket.framework.objects.BrandsTeaserGroup.TeaserBrand;
 import pt.rocket.framework.objects.ITargeting;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.view.HomeFragmentActivity;
+import pt.rocket.framework.utils.WindowHelper;
+import pt.rocket.utils.MyMenuItem;
+import pt.rocket.utils.NavigationAction;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.Context;
@@ -22,6 +24,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Display;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -40,8 +43,6 @@ import de.akquinet.android.androlog.Log;
 public class BrandsTeaserListFragment extends BaseFragment {
 
     private static final String TAG = LogTagHelper.create(BrandsTeaserListFragment.class);
-
-    private HomeFragmentActivity parentActivity;
 
     private BrandsTeaserGroup brandsTeaserGroup;
 
@@ -63,7 +64,7 @@ public class BrandsTeaserListFragment extends BaseFragment {
      * @param arrayList
      */
     public BrandsTeaserListFragment() {
-        super(EnumSet.noneOf(EventType.class), EnumSet.noneOf(EventType.class));
+        super(IS_NESTED_FRAGMENT);
         this.setRetainInstance(true);
     }
 
@@ -87,7 +88,6 @@ public class BrandsTeaserListFragment extends BaseFragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         Log.i(TAG, "ON ATTACH");
-        parentActivity = (HomeFragmentActivity) activity;
     }
 
     /*
@@ -207,21 +207,21 @@ public class BrandsTeaserListFragment extends BaseFragment {
     private void setImageToLoad(String imageUrl, View imageTeaserView) {
         final ImageView imageView = (ImageView) imageTeaserView
                 .findViewById(R.id.image_view);
-        WindowManager wm = (WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE);
-        Display display = wm.getDefaultDisplay();
-        Point size = new Point();
-        int width;
-        int height;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
-            display.getSize(size);
-            width = size.x;
-            height = size.y;
-       } else {
-           width = display.getWidth();
-           height = display.getHeight();
-       }
-        
-        imageTeaserView.getLayoutParams().width = width/brandsTeaserGroup.getTeasers().size();
+//        WindowManager wm = (WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE);
+//        Display display = wm.getDefaultDisplay();
+//        Point size = new Point();
+//        int width;
+//        int height;
+//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
+//            display.getSize(size);
+//            width = size.x;
+//            height = size.y;
+//       } else {
+//           width = display.getWidth();
+//           height = display.getHeight();
+//       }
+        int mainContentWidth = (int) (WindowHelper.getWidth(getActivity()) * getResources().getFraction(R.dimen.navigation_menu_offset,1,1));
+        imageTeaserView.getLayoutParams().width = mainContentWidth/brandsTeaserGroup.getTeasers().size();
         
         final View progressBar = imageTeaserView
                 .findViewById(R.id.image_loading_progress);
@@ -245,5 +245,11 @@ public class BrandsTeaserListFragment extends BaseFragment {
                     });
         }
 
+    }
+
+    @Override
+    public void notifyFragment(Bundle bundle) {
+        // TODO Auto-generated method stub
+        
     }
  }

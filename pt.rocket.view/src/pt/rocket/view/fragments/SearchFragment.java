@@ -6,8 +6,10 @@ package pt.rocket.view.fragments;
 import java.util.EnumSet;
 import java.util.List;
 
-import pt.rocket.controllers.ActivitiesWorkFlow;
+import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.SearchSuggestionsAdapter;
+import pt.rocket.controllers.fragments.FragmentController;
+import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.event.EventManager;
 import pt.rocket.framework.event.EventType;
@@ -17,10 +19,12 @@ import pt.rocket.framework.event.events.GetSearchSuggestionsEvent;
 import pt.rocket.framework.objects.SearchSuggestion;
 import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.utils.BaseActivity;
+import pt.rocket.utils.MyMenuItem;
+import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.RightDrawableOnTouchListener;
+import pt.rocket.view.BaseActivity;
+import pt.rocket.view.MainFragmentActivity;
 import pt.rocket.view.R;
-import pt.rocket.view.SearchFragmentActivity;
 import android.app.Activity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -85,8 +89,10 @@ public class SearchFragment extends BaseFragment implements OnItemClickListener 
      * Empty constructor
      */
     public SearchFragment() {
-        super(EnumSet.of(EventType.GET_SEARCH_SUGGESTIONS_EVENT), EnumSet.noneOf(EventType.class));
-        this.setRetainInstance(true);
+        super(EnumSet.of(EventType.GET_SEARCH_SUGGESTIONS_EVENT), 
+                EnumSet.noneOf(EventType.class), 
+                EnumSet.of(MyMenuItem.SEARCH_BAR), 
+                NavigationAction.Search, 0);
     }
 
     /*
@@ -109,14 +115,13 @@ public class SearchFragment extends BaseFragment implements OnItemClickListener 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-        
-        ((SearchFragmentActivity) getActivity()).getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_actionbar_top));
-        
+        // Retain this fragment across configuration changes.
+        setRetainInstance(true);
+        // Saved content
         savedState = savedInstanceState;
         if (null != savedState && savedState.containsKey(KEY_STATE_VIEW)) {
             savedState.remove(KEY_STATE_VIEW);
-        }
-        
+        }        
     }
 
     /*
@@ -145,8 +150,12 @@ public class SearchFragment extends BaseFragment implements OnItemClickListener 
         
         setAppContentLayout();
         
-        if(searchSuggestionsAdapter == null)
+        if(searchSuggestionText == null || searchSuggestions == null) {
             initSearchView();
+        }else {
+            restoreSearchView();
+        }
+            
     }
 
     /*
@@ -191,12 +200,22 @@ public class SearchFragment extends BaseFragment implements OnItemClickListener 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        Log.i(TAG, "ON DESTROY VIEW");
+    }
+    
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
         Log.i(TAG, "ON DESTROY");
+        searchSuggestionText = "";
+        searchSuggestions = null;
+        ((BaseActivity) getActivity()).cleanSearchConponent();
     }
     
     
     private void setAppContentLayout() {
-        searchTermView = (EditText) getActivity().findViewById(R.id.search_component);
+        ((BaseActivity) getActivity()).setSearchNormalBehaviour();
+        searchTermView = ((BaseActivity) getActivity()).getSearchComponent();
         searchTermView.setFocusable(true);
         listView = (ListView) getView().findViewById(R.id.search_suggestions_list_content);
         listView.setOnItemClickListener(this);
@@ -211,6 +230,18 @@ public class SearchFragment extends BaseFragment implements OnItemClickListener 
         setEmptySuggestions( R.string.searchsuggestions_pleaseenter );
         setSearchBar();
         showKeyboardAndFocus();
+    }
+    
+    public void restoreSearchView() {
+        Log.i(TAG, "ON RESTORE SEARCH VIEW");
+        searchTermView.setText(searchSuggestionText);
+        searchTermView.requestFocus();
+        setSearchBar();
+        showKeyboardAndFocus();
+        if(searchSuggestions != null && searchSuggestions.size() > 0)
+            setSearchSuggestions(searchSuggestions);
+        else 
+            setEmptySuggestions(R.string.searchsuggestions_pleaseenter);
     }
     
     // Setting the searchbar icon Clickable
@@ -257,8 +288,13 @@ public class SearchFragment extends BaseFragment implements OnItemClickListener 
 
     
     protected void executeSearch(String searchText) {
-
-        ActivitiesWorkFlow.productsActivity(getActivity(), null, searchText, searchText, R.string.gsearch, "");
+        Bundle bundle = new Bundle();
+        bundle.putString(ConstantsIntentExtra.CONTENT_URL, null);
+        bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, searchText);
+        bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, searchText);
+        bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gsearch);
+        bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
+        ((MainFragmentActivity) getActivity()).onSwitchFragment(FragmentType.PRODUCT_LIST, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
     
 
@@ -326,6 +362,8 @@ public class SearchFragment extends BaseFragment implements OnItemClickListener 
         }
     };
 
+    private List<SearchSuggestion> searchSuggestions;
+
     
     
     
@@ -343,7 +381,6 @@ public class SearchFragment extends BaseFragment implements OnItemClickListener 
         getActivity().findViewById(R.id.dummy_search_layout).requestFocus();
         executeSearch( ((SearchSuggestion)parent.getAdapter().getItem(position)).getResult());
         // autoCompleteView.setText( "" );
-        
     }
     
     protected void showKeyboardAndFocus() {
@@ -360,9 +397,17 @@ public class SearchFragment extends BaseFragment implements OnItemClickListener 
 
     @Override
     protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
-        Log.d(TAG, "handleEvent: event type = " + event.getType().name());
+        Log.d(TAG, "ON SUCCESS EVENT: " + event.getType().name());
+        
+        // Validate fragment visibility
+        if(!isVisible()){
+            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return true;
+        }
+            
         AnalyticsGoogle.get().trackLoadTiming(R.string.gsearchsuggestions, beginInMillis);
         setSearchSuggestions((List<SearchSuggestion>) event.result);
+        searchSuggestions = (List<SearchSuggestion>) event.result;
         return true;
     }
     
@@ -377,6 +422,12 @@ public class SearchFragment extends BaseFragment implements OnItemClickListener 
     
     @Override
     protected boolean onErrorEvent(ResponseEvent event) {
+        // Validate fragment visibility
+        if(!isVisible()){
+            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return true;
+        }
+        
         if(event.errorCode == ErrorCode.REQUEST_ERROR) {
             setEmptySuggestions( R.string.searchsuggestions_empty);
             ((BaseActivity) getActivity()).showContentContainer();
