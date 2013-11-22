@@ -64,19 +64,18 @@ import de.akquinet.android.androlog.Log;
 
 /**
  * @author sergiopereira
- * 
+ * @modified manuelsilva
  */
 public class ProductsFragment extends BaseFragment implements OnClickListener,
         OnDialogListListener, OnScrollListener, RecyclerListener {
 
     private static final String TAG = LogTagHelper.create(ProductsFragment.class);
 
-    private final static int MAX_RECYCLED_PROCESSED_COUNT = 200;
+    private final static int MAX_RECYCLED_PROCESSED_COUNT = 50;
 
     private View mainView;
 
     boolean isFirstBootBrands = true;
-    boolean isFirstBootProducts = true;
 
     // private View sortButton;
     private final static String ID_SORT_DIALOG = "sort";
@@ -137,8 +136,7 @@ public class ProductsFragment extends BaseFragment implements OnClickListener,
      * @return
      */
     public static ProductsFragment getInstance() {
-        if (productsFragment == null)
-            productsFragment = new ProductsFragment();
+        productsFragment = new ProductsFragment();
         return productsFragment;
     }
 
@@ -149,7 +147,6 @@ public class ProductsFragment extends BaseFragment implements OnClickListener,
         super(EnumSet.of(EventType.GET_PRODUCTS_EVENT), EnumSet.noneOf(EventType.class), EnumSet.of(MyMenuItem.SEARCH), 
                 NavigationAction.Products, 
                 0);
-        this.setRetainInstance(true);
     }
     
     /*
@@ -196,8 +193,8 @@ public class ProductsFragment extends BaseFragment implements OnClickListener,
         // Inflate Products Layout
         setAppContentLayout();
 
-        title = getActivity().getIntent().getStringExtra(ConstantsIntentExtra.CONTENT_TITLE);
-        getActivity().setTitle(title);
+//        title = getActivity().getIntent().getStringExtra(ConstantsIntentExtra.CONTENT_TITLE);
+//        getActivity().setTitle(title);
         productsURL = getArguments()
                 .getString(ConstantsIntentExtra.CONTENT_URL);
         Log.d(TAG, "onCreate: productsURL = " + productsURL);
@@ -226,10 +223,6 @@ public class ProductsFragment extends BaseFragment implements OnClickListener,
         productsList.setAdapter(productsAdapter);
         productsList.setRecyclerListener(this);
         listItemRecycleCount = 0;
-
-        if (isFirstBootProducts) {
-            isFirstBootProducts = false;
-        }
 
         if (null != savedState && savedState.containsKey(KEY_STATE_VIEW)) {
             savedState.remove(KEY_STATE_VIEW);
@@ -279,11 +272,11 @@ public class ProductsFragment extends BaseFragment implements OnClickListener,
 
                     Log.i("TAG", "DIR=======>" + dir + " sort =====> " + sort);
 
-                    saveActivityState();
+                    
                     saveActivityState();
 
                     Bundle bundle = new Bundle();
-                    bundle.putString(ConstantsIntentExtra.CONTENT_URL, ((Product)productsAdapter.getItem(activePosition)).getUrl());
+                    bundle.putString(ConstantsIntentExtra.CONTENT_URL, ((Product) productsAdapter.getItem(activePosition)).getUrl());
                     bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, navigationSource);
                     bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, navigationPath);
                     ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
@@ -445,6 +438,13 @@ public class ProductsFragment extends BaseFragment implements OnClickListener,
             mSortDialog.dismiss();
         }
 
+    }
+    
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        ImageLoader.getInstance().clearMemoryCache();
+        System.gc();
     }
 
     /**
@@ -716,7 +716,6 @@ public class ProductsFragment extends BaseFragment implements OnClickListener,
 
     @Override
     public void onMovedToScrapHeap(View view) {
-        // Log.d( TAG, "onMovedToScrapHead: listItemRecycleCount = " + listItemRecycleCount);
         if (listItemRecycleCount > MAX_RECYCLED_PROCESSED_COUNT) {
             listItemRecycleCount = 0;
             Log.d(TAG, "onMovedToScrapHead: gc requested");

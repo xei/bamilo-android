@@ -15,6 +15,7 @@ import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.utils.ProductDetailsFragmentCommunicator;
 import pt.rocket.view.ProductDetailsActivityFragment;
 import pt.rocket.view.R;
 import android.app.Activity;
@@ -265,7 +266,7 @@ public class ProductSpecificationsFragment extends BaseFragment implements OnCli
             return;
         }
         
-        mCompleteProduct = (CompleteProduct) bundle.get(ProductDetailsActivityFragment.PRODUCT_COMPLETE);
+        mCompleteProduct = ProductDetailsFragmentCommunicator.getInstance().getCurrentProduct();
         
         displaySpecification();
     }

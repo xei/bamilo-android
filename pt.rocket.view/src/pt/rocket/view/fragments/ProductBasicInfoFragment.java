@@ -43,29 +43,28 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
     private TextView mProductResultPrice;
 
     private TextView mProductNormalPrice;
-    
-    private TextView mStockInfo; 
-    
+
+    private TextView mStockInfo;
+
     private RelativeLayout mLoading;
 
     private CompleteProduct mCompleteProduct;
-    
+
     private int CURRENT_IMAGE_INDEX = 0;
     private View mainView;
-    
+
     private OnFragmentActivityInteraction mCallback;
-    
+
     private String unitPrice;
     private String specialPrice;
     private int discountPercentage;
     private int stockQuantity;
-    
+
     public static final String DEFINE_UNIT_PRICE = "unit_price";
     public static final String DEFINE_SPECIAL_PRICE = "special_price";
     public static final String DEFINE_DISCOUNT_PERCENTAGE = "discount_percentage";
     public static final String DEFINE_STOCK = "stock";
-    
-    
+
     /**
      * 
      * @param dynamicForm
@@ -82,41 +81,42 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
      * @param arrayList
      */
     public ProductBasicInfoFragment() {
-        super(EnumSet.of(EventType.GET_PRODUCT_EVENT), EnumSet.noneOf(EventType.class), EnumSet.of(MyMenuItem.SHARE), 
-                NavigationAction.Products, 
+        super(EnumSet.of(EventType.GET_PRODUCT_EVENT), EnumSet.noneOf(EventType.class), EnumSet
+                .of(MyMenuItem.SHARE),
+                NavigationAction.Products,
                 R.string.product_details_title);
     }
 
     @Override
     public void sendValuesToFragment(int identifier, Object values) {
-//        if(identifier == 0){
-//            this.mCompleteProduct = (CompleteProduct) values;   
-//        } else if(identifier==1){
-//            this.mCompleteProduct = (CompleteProduct) values;
-//            setBasicInfo();
-//        } else if(identifier == DEFINE_UNIT_PRICE){
-//            unitPrice = (String) values;
-//        } else if(identifier == DEFINE_SPECIAL_PRICE){
-//            specialPrice = (String) values;
-//        } else if(identifier == DEFINE_DISCOUNT_PERCENTAGE){
-//            discountPercentage = (Integer) values;
-//        } else if(identifier == DEFINE_STOCK){
-//            stockQuantity = (Integer) values;
-//            updateStockInfo();
-//        }
+        // if(identifier == 0){
+        // this.mCompleteProduct = (CompleteProduct) values;
+        // } else if(identifier==1){
+        // this.mCompleteProduct = (CompleteProduct) values;
+        // setBasicInfo();
+        // } else if(identifier == DEFINE_UNIT_PRICE){
+        // unitPrice = (String) values;
+        // } else if(identifier == DEFINE_SPECIAL_PRICE){
+        // specialPrice = (String) values;
+        // } else if(identifier == DEFINE_DISCOUNT_PERCENTAGE){
+        // discountPercentage = (Integer) values;
+        // } else if(identifier == DEFINE_STOCK){
+        // stockQuantity = (Integer) values;
+        // updateStockInfo();
+        // }
     }
 
     @Override
-    public void sendPositionToFragment(int position){
+    public void sendPositionToFragment(int position) {
 
         /**
          * if still loading the product info, show image loading.
          */
-        if(position < 0){
+        if (position < 0) {
             showContentLoading();
         }
     }
-    
+
     @Override
     public void sendListener(int identifier, OnClickListener onTeaserClickListener) {
 
@@ -165,7 +165,7 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
         mStockInfo = (TextView) mainView.findViewById(R.id.product_instock);
         mLoading = (RelativeLayout) mainView
                 .findViewById(R.id.loading_specifications);
-        
+
         return mainView;
     }
 
@@ -190,6 +190,7 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
+        setBasicInfo();
         //
         // AnalyticsGoogle.get().trackPage(R.string.gteaser_prefix);
         //
@@ -228,60 +229,59 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
         return false;
     }
 
-
     @Override
     protected boolean onErrorEvent(ResponseEvent event) {
         return false;
     }
- 
+
     @Override
     public void onClick(View v) {
         // TODO Auto-generated method stub
         mCallback.onFragmentSelected(FragmentType.PRODUCT_BASIC_INFO);
     }
-    
-    private void showContentLoading(){
+
+    private void showContentLoading() {
         mLoading.setVisibility(View.VISIBLE);
     }
-    
+
     private void updateStockInfo() {
 
-       if(mStockInfo == null){
-           return;
-       }
-        
-      if (stockQuantity < 0) {
-          mStockInfo.setVisibility(View.GONE);
-          return;
-      } else
-          mStockInfo.setVisibility(View.VISIBLE);
+        if (mStockInfo == null) {
+            return;
+        }
 
+        if (stockQuantity < 0) {
+            mStockInfo.setVisibility(View.GONE);
+            return;
+        } else
+            mStockInfo.setVisibility(View.VISIBLE);
 
-      if (stockQuantity > 0) {
-          mStockInfo.setText(getActivity().getString(R.string.shoppingcart_instock));
-          mStockInfo.setTextColor(getActivity().getResources().getColor(R.color.green_stock));
-      } else {
-          mStockInfo.setText(getActivity().getString(R.string.shoppingcart_notinstock));
-          mStockInfo.setTextColor(getActivity().getResources().getColor(R.color.red_basic));
-      }
-  }
-    
-    
-    private void hideContentLoading(){
-        mLoading.setVisibility(View.GONE);
-    }
-    
-    private void setBasicInfo(){
-        if(mCompleteProduct!=null){
-            Log.i(TAG, "code1 is diferent from null!!!");
-            Log.i(TAG, "code1 name is : " + mCompleteProduct.getName());
-            if(mProductName!= null)
-                mProductName.setText(mCompleteProduct.getBrand()!= null ? mCompleteProduct.getBrand() : "" + " " + mCompleteProduct.getName());
-            updateStockInfo();
-            displayPriceInfo();    
+        if (stockQuantity > 0) {
+            mStockInfo.setText(getActivity().getString(R.string.shoppingcart_instock));
+            mStockInfo.setTextColor(getActivity().getResources().getColor(R.color.green_stock));
+        } else {
+            mStockInfo.setText(getActivity().getString(R.string.shoppingcart_notinstock));
+            mStockInfo.setTextColor(getActivity().getResources().getColor(R.color.red_basic));
         }
     }
-    
+
+    private void hideContentLoading() {
+        mLoading.setVisibility(View.GONE);
+    }
+
+    private void setBasicInfo() {
+        mCompleteProduct = ProductDetailsFragmentCommunicator.getInstance().getCurrentProduct();
+        if (mCompleteProduct != null) {
+            Log.i(TAG, "code1 is diferent from null!!!");
+            Log.i(TAG, "code1 name is : " + mCompleteProduct.getName());
+            if (mProductName != null)
+                mProductName.setText(mCompleteProduct.getBrand() != null ? mCompleteProduct
+                        .getBrand() + " " + mCompleteProduct.getName() : "");
+            updateStockInfo();
+            displayPriceInfo();
+        }
+    }
+
     private void displayPriceInfo() {
         Log.d(TAG, "displayPriceInfo: unitPrice = " + unitPrice + " specialPrice = " + specialPrice);
         if (specialPrice == null || specialPrice.equals(unitPrice)) {
@@ -302,36 +302,40 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
     @Override
     public void notifyFragment(Bundle bundle) {
         Log.i(TAG, "code1 notifyFragment basic info");
-        if(bundle == null){
+        if (bundle == null) {
             return;
         }
-        
-        if(!bundle.containsKey("start")){
-            return;
-        }
-        
-        if(bundle.containsKey(ProductDetailsActivityFragment.PRODUCT_COMPLETE)){
+
+        if (bundle.containsKey(ProductDetailsActivityFragment.PRODUCT_COMPLETE)) {
             mCompleteProduct = ProductDetailsFragmentCommunicator.getInstance().getCurrentProduct();
-            setBasicInfo();
+        }
+
+        if (bundle.containsKey(ProductDetailsActivityFragment.LOADING_PRODUCT_KEY)) {
+            /**
+             * if still loading the product info, show image loading.
+             */
+            if (bundle.getInt(ProductDetailsActivityFragment.LOADING_PRODUCT_KEY) < 0) {
+                showContentLoading();
+            }
+        }
+
+        if (bundle.containsKey(ProductBasicInfoFragment.DEFINE_STOCK)) {
+            stockQuantity = bundle.getInt(ProductBasicInfoFragment.DEFINE_STOCK);
+            updateStockInfo();
+        }
+        if (bundle.containsKey(ProductBasicInfoFragment.DEFINE_UNIT_PRICE)) {
+            unitPrice = bundle.getString(ProductBasicInfoFragment.DEFINE_UNIT_PRICE);
+            specialPrice = bundle.getString(ProductBasicInfoFragment.DEFINE_SPECIAL_PRICE);
+            discountPercentage = bundle.getInt(ProductBasicInfoFragment.DEFINE_DISCOUNT_PERCENTAGE);
+        }
+
+        // Validate if fragment is on the screen
+        if (!isVisible()) {
+            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return;
         }
         
-       if(bundle.containsKey(ProductDetailsActivityFragment.LOADING_PRODUCT_KEY)){
-           /**
-            * if still loading the product info, show image loading.
-            */
-           if(bundle.getInt(ProductDetailsActivityFragment.LOADING_PRODUCT_KEY) < 0){
-               showContentLoading();
-           }
-       }
-       
-       if(bundle.containsKey(ProductBasicInfoFragment.DEFINE_STOCK)){
-           stockQuantity = bundle.getInt(ProductBasicInfoFragment.DEFINE_STOCK);
-           updateStockInfo();  
-       } else{
-           unitPrice = bundle.getString(ProductBasicInfoFragment.DEFINE_UNIT_PRICE);
-           specialPrice = bundle.getString(ProductBasicInfoFragment.DEFINE_SPECIAL_PRICE);
-           discountPercentage = bundle.getInt(ProductBasicInfoFragment.DEFINE_DISCOUNT_PERCENTAGE);
-       }
-        
+        setBasicInfo();
+
     }
 }

@@ -10,8 +10,11 @@ import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.ErrorCode;
+import pt.rocket.framework.event.EventManager;
+import pt.rocket.framework.event.EventType;
 import pt.rocket.framework.event.ResponseEvent;
 import pt.rocket.framework.event.ResponseListener;
+import pt.rocket.framework.event.events.GetResolutionsEvent;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.rest.RestContract;
 import pt.rocket.framework.utils.AnalyticsGoogle;
@@ -253,6 +256,14 @@ public class SplashScreenActivity extends Activity implements ResponseListener {
         BugSenseHandler.initAndStartSession(getApplicationContext(), getString( R.string.bugsense_apikey));
         //==================================================================================================
     }
+    
+    /**
+     * TODO: Add this call to initialize
+     */
+    private void getSupportedImageResolutions(){
+        EventManager.getSingleton().addResponseListener(EventType.GET_RESOLUTIONS, this);
+        EventManager.getSingleton().triggerRequestEvent( new GetResolutionsEvent() );
+    }
 
     @Override
     public void onUserLeaveHint() {
@@ -277,9 +288,21 @@ public class SplashScreenActivity extends Activity implements ResponseListener {
                 e.printStackTrace();
             }
         }
-        if (event.getSuccess()) {
+        if (event.getSuccess() && event.getType() == EventType.INITIALIZE) {
+            Log.d(TAG, "HANDLE EVENT: " + event.getType().toString());
+            
+            /*
+             * Get image resolutions supported by server
+             */
+            getSupportedImageResolutions();
+
+            
+        } else if (event.getSuccess() && event.getType() == EventType.GET_RESOLUTIONS) {
+            Log.d(TAG, "HANDLE EVENT: " + event.getType().toString());
+            // Show activity
             selectActivity();
             finish();
+            
         } else if (event.errorCode == ErrorCode.REQUIRES_USER_INTERACTION) {
             Intent intent = new Intent(this, MainFragmentActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); 

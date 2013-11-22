@@ -7,6 +7,7 @@ import pt.rocket.view.R;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,10 +76,10 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
 	 * @param initialPosition
 	 * @return
 	 */
-	public static DialogListFragment newInstance(Activity activity, String id, String title, ArrayList<String> items, ArrayList<String> itemsAvailable, int initialPosition) {
+	public static DialogListFragment newInstance(Fragment activity, String id, String title, ArrayList<String> items, ArrayList<String> itemsAvailable, int initialPosition) {
 	    Log.d(TAG, "NEW INSTANCE");
 	    DialogListFragment dialogListFragment = new DialogListFragment();
-	    dialogListFragment.mActivity = activity;
+	    dialogListFragment.mActivity = activity.getActivity();
         if (activity instanceof OnDialogListListener) {
             dialogListFragment.mListener = (OnDialogListListener) activity;
         }
@@ -89,6 +90,30 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
         dialogListFragment.mInitialPosition = initialPosition;
 	    return dialogListFragment;
 	}
+	
+	/**
+     * 
+     * @param activity
+     * @param id
+     * @param title
+     * @param items
+     * @param initialPosition
+     * @return
+     */
+    public static DialogListFragment newInstance(Activity activity, String id, String title, ArrayList<String> items, ArrayList<String> itemsAvailable, int initialPosition) {
+        Log.d(TAG, "NEW INSTANCE");
+        DialogListFragment dialogListFragment = new DialogListFragment();
+        dialogListFragment.mActivity = activity;
+        if (activity instanceof OnDialogListListener) {
+            dialogListFragment.mListener = (OnDialogListListener) activity;
+        }
+        dialogListFragment.mId = id;
+        dialogListFragment.mTitle = title;
+        dialogListFragment.mItems = items;
+        dialogListFragment.mItemsAvailable = itemsAvailable;
+        dialogListFragment.mInitialPosition = initialPosition;
+        return dialogListFragment;
+    }
 	
 	/**
 	 * 

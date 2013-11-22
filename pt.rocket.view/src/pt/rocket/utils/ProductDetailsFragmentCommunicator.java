@@ -7,6 +7,7 @@ import pt.rocket.view.fragments.BaseFragment.OnFragmentActivityInteraction;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 
 /**
  * Interface to communicate between fragments using activity has initializer.
@@ -14,6 +15,8 @@ import android.support.v4.app.Fragment;
  *
  */
 public class ProductDetailsFragmentCommunicator {
+    private static final String TAG = "ProductDetailsFragmentCommunicator";
+
     private static ProductDetailsFragmentCommunicator mProductDetailsFragmentCommunicator;
     
     private static OnFragmentActivityInteraction mActivityCallback = null;
@@ -43,6 +46,7 @@ public class ProductDetailsFragmentCommunicator {
             try {
                 this.mFragmentsCallback.add((OnActivityFragmentInteraction) fragment);
                 this.mFragmentsCallbackNames.add(fragment.toString());
+                Log.i(TAG, "register fragment : "+fragment.toString());
             } catch (ClassCastException e) {
                 throw new ClassCastException(fragment.toString()
                         + " must implement OnActivityFragmentInteraction");
@@ -77,11 +81,9 @@ public class ProductDetailsFragmentCommunicator {
         }
     }
     
-    public void notifyTarget(Fragment fragment, Bundle bundle){
-        for (int i = 0; i < this.mFragmentsCallback.size(); i++) {
-            if(this.mFragmentsCallbackNames.get(i).equalsIgnoreCase(fragment.toString())){
-                this.mFragmentsCallback.get(i).notifyFragment(bundle);
-            }
-        }
+    public void notifyTarget(Fragment fragment, Bundle bundle, int position){
+        Log.i(TAG, "notify fragment : "+fragment.toString());
+        this.mFragmentsCallback.get(position).notifyFragment(bundle);
+        
     }
 }

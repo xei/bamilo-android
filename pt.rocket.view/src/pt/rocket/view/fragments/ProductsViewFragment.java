@@ -83,9 +83,9 @@ public class ProductsViewFragment extends BaseFragment {
     }
 
     public static ProductsViewFragment getInstance() {
-        if (mProductsViewFragment == null) {
+//        if (mProductsViewFragment == null) {
             mProductsViewFragment = new ProductsViewFragment();
-        }
+//        }
         return mProductsViewFragment;
     }
     
@@ -106,12 +106,12 @@ public class ProductsViewFragment extends BaseFragment {
         super.onResume();
         Log.i(TAG, "ON RESUME");
         AnalyticsGoogle.get().trackPage(R.string.gproductlist);
-        ProductsListPagerAdapter mProductsListPagerAdapter = new ProductsListPagerAdapter(
-                getActivity().getSupportFragmentManager());
+        ProductsListPagerAdapter mProductsListPagerAdapter = new ProductsListPagerAdapter(getChildFragmentManager());
 
         ViewPager mViewPager = (ViewPager) getView().findViewById(R.id.viewpager_products_list);
         pagerTabStrip = (PagerTabStrip) getView().findViewById(R.id.products_list_titles);
         mViewPager.setAdapter(mProductsListPagerAdapter);
+        mViewPager.setCurrentItem(0, true);
         try {
             setLayoutSpec();
         } catch (IllegalArgumentException e) {
@@ -165,11 +165,6 @@ public class ProductsViewFragment extends BaseFragment {
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
             super.destroyItem(container, position, object);
-        }
-
-        @Override
-        public Parcelable saveState() {
-            return null;
         }
     }
 

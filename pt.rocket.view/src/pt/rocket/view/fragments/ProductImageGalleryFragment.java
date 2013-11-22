@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 
 import pt.rocket.constants.ConstantsIntentExtra;
-import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.controllers.GalleryPagerAdapter;
 import pt.rocket.controllers.NormalizingViewPagerWrapper;
 import pt.rocket.controllers.ProductImagesAdapter;
@@ -22,7 +21,7 @@ import pt.rocket.utils.HorizontalListView;
 import pt.rocket.utils.JumiaViewPagerWithZoom;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
-import pt.rocket.utils.OnFragmentActivityInteraction;
+import pt.rocket.utils.ProductDetailsFragmentCommunicator;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
@@ -32,13 +31,11 @@ import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -63,18 +60,19 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
     private RelativeLayout mProductImageLoading;
 
     private CompleteProduct mCompleteProduct;
-    
+
     private String mCompleteProductUrl;
-    
+
     private View mainView;
 
-    private boolean showHorizontalListView = true;
+    private boolean showHorizontalListView = false;
 
     private boolean isZoomAvailable = false;
 
     private int mVariationsListPosition;
-    
+
     private HorizontalListView mImagesList;
+
     /**
      * 
      * @param dynamicForm
@@ -85,33 +83,37 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
         return productImageGalleryFragment;
     }
 
-    
     /**
      * 
      * @param dynamicForm
      * @return
      */
     public static ProductImageGalleryFragment getInstance(Bundle bundle) {
-        // Save
-        if(productImageGalleryFragment == null) {
-            productImageGalleryFragment = new ProductImageGalleryFragment();
-        }
-        // Save
-        productImageGalleryFragment.mCompleteProductUrl = bundle.getString(ConstantsIntentExtra.CONTENT_URL);
-        productImageGalleryFragment.mVariationsListPosition = bundle.getInt(ConstantsIntentExtra.CURRENT_LISTPOSITION, 0);
-        productImageGalleryFragment.isZoomAvailable = bundle.getBoolean(ConstantsIntentExtra.IS_ZOOM_AVAILABLE, false);
+
+        productImageGalleryFragment = new ProductImageGalleryFragment();
+
+
+        productImageGalleryFragment.mCompleteProductUrl = bundle
+                .getString(ConstantsIntentExtra.CONTENT_URL);
+        productImageGalleryFragment.mVariationsListPosition = bundle.getInt(
+                ConstantsIntentExtra.CURRENT_LISTPOSITION, 0);
+        productImageGalleryFragment.isZoomAvailable = bundle.getBoolean(
+                ConstantsIntentExtra.IS_ZOOM_AVAILABLE, false);
+        
+        if(!productImageGalleryFragment.isZoomAvailable)
+            productImageGalleryFragment.showHorizontalListView = false;
         return productImageGalleryFragment;
     }
-    
+
     /**
      * Empty constructor
      * 
      * @param arrayList
      */
     public ProductImageGalleryFragment() {
-        super(EnumSet.of(EventType.GET_PRODUCT_EVENT), 
+        super(EnumSet.noneOf(EventType.class),
                 EnumSet.noneOf(EventType.class),
-                EnumSet.of(MyMenuItem.SHARE), 
+                EnumSet.of(MyMenuItem.SHARE),
                 NavigationAction.Products, 0);
     }
 
@@ -136,7 +138,7 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
         // Retain this fragment across configuration changes.
-        setRetainInstance(true);
+        // setRetainInstance(true);
     }
 
     /*
@@ -175,8 +177,24 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
     @Override
     public void onResume() {
         super.onResume();
+        mCompleteProduct = ProductDetailsFragmentCommunicator.getInstance().getCurrentProduct();
+        if (mCompleteProduct == null) {
+            getActivity().finish();
+            return;
+        }
+        Log.i(TAG, "ON RESUME");
+        mProductImageLoading = (RelativeLayout) mainView.findViewById(R.id.loading_gallery);
+        mImagesList = (HorizontalListView) mainView.findViewById(R.id.images_list);
+        mImageListAdapter = new ProductImagesAdapter(getActivity(), mCompleteProduct.getImageList());
+        mImagesList.setAdapter(mImageListAdapter);
+        mImagesList.setOnItemClickListener(this);
+        if (!showHorizontalListView) {
+            mImagesList.setVisibility(View.GONE);
+        }
 
-        
+        mViewPager = (JumiaViewPagerWithZoom) mainView.findViewById(R.id.viewpager);
+        createViewPager();
+        updateImage(0);
     }
 
     /*
@@ -204,7 +222,7 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
     private void createViewPager() {
         ArrayList<String> imagesList = mCompleteProduct.getImageList();
         galleryAdapter = new GalleryPagerAdapter(getActivity(), imagesList, isZoomAvailable);
-        
+
         if (mViewPager == null) {
             mViewPager = (JumiaViewPagerWithZoom) mainView.findViewById(R.id.viewpager);
         }
@@ -257,15 +275,17 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
 
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
+            Log.i(TAG, "code1tap weeeeee");
+            if (!isZoomAvailable) {
 
-            if(!isZoomAvailable){
-                
                 Bundle bundle = new Bundle();
                 bundle.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProduct.getUrl());
-                bundle.putInt(ConstantsIntentExtra.CURRENT_LISTPOSITION, mPagerWrapper.getCurrentItem());
+                bundle.putInt(ConstantsIntentExtra.CURRENT_LISTPOSITION,
+                        mPagerWrapper.getCurrentItem());
                 bundle.putBoolean(ConstantsIntentExtra.IS_ZOOM_AVAILABLE, true);
                 bundle.putBoolean(ConstantsIntentExtra.SHOW_HORIZONTAL_LIST_VIEW, false);
-                ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.PRODUCT_GALLERY, bundle, FragmentController.ADD_TO_BACK_STACK);
+                ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.PRODUCT_GALLERY,
+                        bundle, FragmentController.ADD_TO_BACK_STACK);
             } else {
                 if (getActivity() != null) {
                     getActivity().onBackPressed();
@@ -280,16 +300,17 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
     public boolean allowBackPressed() {
         Log.d(TAG, "ALLOW BACK PRESSED");
         if (mCompleteProduct != null) {
-            
+
             int listPosition;
             if (mImagesList != null)
                 listPosition = mImagesList.getPosition();
             else
                 listPosition = 0;
-            
-            ProductDetailsFragment.updateVariantionListPosition(mCompleteProduct.getUrl(), listPosition);
+
+            ProductDetailsFragment.updateVariantionListPosition(mCompleteProduct.getUrl(),
+                    listPosition);
         }
-        
+
         return super.allowBackPressed();
     }
 
@@ -306,7 +327,7 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
     @Override
     public void onPageSelected(int position) {
         Log.d(TAG, "onPageSelected position = " + position);
-//        mImagesList.setSelectedItem(position, HorizontalListView.MOVE_TO_SCROLLED);
+        // mImagesList.setSelectedItem(position, HorizontalListView.MOVE_TO_SCROLLED);
     }
 
     /*
@@ -316,19 +337,42 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
      */
     @Override
     protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
-        Log.d(TAG, "ON SUCCESS EVENT:" + event.getType().toString());
-        
+
+        return false;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see pt.rocket.utils.MyActivity#onErrorEvent(pt.rocket.framework.event.ResponseEvent)
+     */
+    @Override
+    protected boolean onErrorEvent(ResponseEvent event) {
+        return false;
+    }
+
+    @Override
+    public void notifyFragment(Bundle bundle) {
+
         // Validate if fragment is on the screen
-        if(!isVisible()){
+        if (!isVisible()) {
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return true;
+            return;
         }
         
-        mCompleteProduct = (CompleteProduct) event.result;
-//        displayGallery(mCompleteProduct);
+        productImageGalleryFragment.mCompleteProductUrl = bundle
+                .getString(ConstantsIntentExtra.CONTENT_URL);
+        productImageGalleryFragment.mVariationsListPosition = bundle.getInt(
+                ConstantsIntentExtra.CURRENT_LISTPOSITION, 0);
+        productImageGalleryFragment.isZoomAvailable = bundle.getBoolean(
+                ConstantsIntentExtra.IS_ZOOM_AVAILABLE, false);
+        
+        mCompleteProduct = (CompleteProduct) ProductDetailsFragmentCommunicator.getInstance()   
+                .getCurrentProduct();
+        // displayGallery(mCompleteProduct);
         if (mCompleteProduct == null) {
             getActivity().finish();
-            return true;
+            return;
         }
         Log.i(TAG, "ON RESUME");
         mProductImageLoading = (RelativeLayout) mainView.findViewById(R.id.loading_gallery);
@@ -343,28 +387,5 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
         mViewPager = (JumiaViewPagerWithZoom) mainView.findViewById(R.id.viewpager);
         createViewPager();
         updateImage(0);
-        return true;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see pt.rocket.utils.MyActivity#onErrorEvent(pt.rocket.framework.event.ResponseEvent)
-     */
-    @Override
-    protected boolean onErrorEvent(ResponseEvent event) {
-        if (!event.errorCode.isNetworkError()) {
-            Toast.makeText(getActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
-            getActivity().onBackPressed();
-            return true;
-        }
-        return super.onErrorEvent(event);
-    }
-
-
-    @Override
-    public void notifyFragment(Bundle bundle) {
-        Log.i(TAG, "code1 notifyFragment Gallery");
-        
     }
 }

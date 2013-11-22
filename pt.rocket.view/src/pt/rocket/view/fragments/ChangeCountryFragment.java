@@ -3,6 +3,8 @@
  */
 package pt.rocket.view.fragments;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.controllers.CountryAdapter;
@@ -132,6 +134,7 @@ public class ChangeCountryFragment extends BaseFragment {
         super.onResume();
         Log.i(TAG, "ON RESUME");
         ((BaseActivity) getActivity()).showContentContainer();
+        ((BaseActivity) getActivity()).hideTitle();
     }
 
     /*
@@ -242,7 +245,11 @@ public class ChangeCountryFragment extends BaseFragment {
         editor.putBoolean(ConstantsSharedPrefs.KEY_SHOW_PROMOTIONS, true);
         editor.commit();
         TrackerDelegator.trackShopchanged(getActivity().getApplicationContext());
-        
+        if(ImageLoader.getInstance() != null){
+            ImageLoader.getInstance().clearMemoryCache();
+            ImageLoader.getInstance().clearDiscCache();
+            System.gc();
+        }
         ActivitiesWorkFlow.splashActivityNewTask(getActivity());
         getActivity().finish();
     }
