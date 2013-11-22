@@ -114,7 +114,6 @@ public class SessionRegisterFragment extends BaseFragment {
                 EnumSet.of(EventType.REGISTER_ACCOUNT_EVENT), EnumSet.noneOf(MyMenuItem.class), 
                 NavigationAction.MyAccount, 
                 R.string.register_title);
-        registerLocation = getString(R.string.mixprop_loginlocation);
         this.setRetainInstance(true);
     }
 
@@ -169,7 +168,7 @@ public class SessionRegisterFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        
+        registerLocation = getString(R.string.mixprop_loginlocation);
         if (formResponse != null)
             loadForm(formResponse);
         else
