@@ -528,9 +528,8 @@ public class SessionRegisterFragment extends BaseFragment {
             //resultData.putExtras(saveFormToBundle());
             //getActivity().setResult(Activity.RESULT_OK, resultData);
             requestStore(saveFormToBundle());
-            getActivity().setResult(Activity.RESULT_OK);
-            getActivity().finish();
-            getActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+            // Finish
+            getActivity().onBackPressed();
             Log.d(TAG, "event done - REGISTER_ACCOUNT_EVENT");
             return false;
         case GET_REGISTRATION_FORM_EVENT:
