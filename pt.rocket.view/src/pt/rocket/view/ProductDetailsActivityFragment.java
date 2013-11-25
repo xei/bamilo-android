@@ -39,6 +39,7 @@ import pt.rocket.utils.dialogfragments.DialogListFragment;
 import pt.rocket.utils.dialogfragments.DialogListFragment.OnDialogListListener;
 import pt.rocket.view.fragments.BaseFragment;
 import pt.rocket.view.fragments.ProductBasicInfoFragment;
+import pt.rocket.view.fragments.ProductDetailsDescriptionFragment;
 import pt.rocket.view.fragments.ProductImageGalleryFragment;
 import pt.rocket.view.fragments.ProductSpecificationsFragment;
 import pt.rocket.view.fragments.ProductVariationsFragment;
@@ -160,8 +161,8 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
     private String mPhone2Call = "";
     public static String KEY_CALL_TO_ORDER = "call_to_order";
 
-    private final int LOADING_PRODUCT = -1;
-    public final static String LOADING_PRODUCT_KEY = "loading_product";
+    public final static String LOADING_PRODUCT_KEY = "loading_product_key";
+    public final static String LOADING_PRODUCT = "loading_product";
     public final static String PRODUCT_COMPLETE = "complete_product";
     public final static String BASIC_INFO_UPDATE = "update";
     public final static String VARIATIONS_UPDATE = "update";
@@ -183,8 +184,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
         return new ProductDetailsActivityFragment();
     }
 
-    @Override
-    public void onFragmentElementSelected(int position) {
+    public void onVariationElementSelected(int position) {
         mVariationsListPosition = position;
         /**
          * Send LOADING_PRODUCT to show loading views.
@@ -216,15 +216,15 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
             showGallery();
         } else if (type == FragmentType.PRODUCT_SPECIFICATION) {
 
-            Bundle bundle = new Bundle();
-            bundle.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProduct.getUrl());
-            bundle.putParcelable(PRODUCT_COMPLETE,(Parcelable) mCompleteProduct);
-            BaseActivity activity = ((BaseActivity) getActivity());
-            if (null == activity) {
-                activity = mainActivity;
-            }
-            activity.onSwitchFragment(FragmentType.PRODUCT_SPECIFICATION, bundle,
-                    FragmentController.ADD_TO_BACK_STACK);
+//            Bundle bundle = new Bundle();
+//            bundle.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProduct.getUrl());
+//            bundle.putParcelable(PRODUCT_COMPLETE,(Parcelable) mCompleteProduct);
+//            BaseActivity activity = ((BaseActivity) getActivity());
+//            if (null == activity) {
+//                activity = mainActivity;
+//            }
+//            activity.onSwitchFragment(FragmentType.PRODUCT_SPECIFICATION, bundle,
+//                    FragmentController.ADD_TO_BACK_STACK);
 
             // ActivitiesWorkFlow.descriptionActivity(this, mCompleteProduct.getUrl());
         }
@@ -391,9 +391,11 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
 
     private void startFragmentCallbacks() {
         Log.i(TAG, "code1 starting callbacks!!!");
+        ProductDetailsFragmentCommunicator.getInstance().destroyInstance();
         ProductDetailsFragmentCommunicator.getInstance().startFragmentsCallBacks(this,
                 productVariationsFragment, productImagesViewPagerFragment,
                 productSpecificationFragment, productBasicInfoFragment);
+        ProductDetailsFragmentCommunicator.getInstance().updateCurrentProduct(mCompleteProduct);
 //        ProductDetailsFragmentCommunicator.getInstance().defineActivityCallBack(getActivity());
         // // This makes sure that the container activity has implemented
         // // the callback interface. If not, it throws an exception
@@ -718,7 +720,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
 
     private void executeAddProductToCart() {
         ProductSimple simple = getSelectedSimple();
-        if (simple == null) {
+        if (simple == null && !((BaseActivity) getActivity()).isTabletInLandscape()) {
             showChooseReminder();
             return;
         }
@@ -774,9 +776,14 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
             args.putInt(ConstantsIntentExtra.CURRENT_LISTPOSITION, 0);
             args.putBoolean(ConstantsIntentExtra.IS_ZOOM_AVAILABLE, false);
             productImagesViewPagerFragment = ProductImageGalleryFragment.getInstance(args);
-            productSpecificationFragment = ProductSpecificationsFragment.getInstance();
+            if(((BaseActivity) getActivity()).isTabletInLandscape()){
+                productSpecificationFragment = ProductDetailsDescriptionFragment.getInstance();
+            } else {
+                productSpecificationFragment = ProductSpecificationsFragment.getInstance();
+            }
             productBasicInfoFragment = ProductBasicInfoFragment.getInstance();
             startFragmentCallbacks();
+            
 //            mCallbackProductVariationsFragment.sendValuesToFragment(0, mCompleteProduct);
 //            mCallbackProductVariationsFragment.sendPositionToFragment(-1);
 //            mCallbackProductImagesViewPagerFragment.sendValuesToFragment(2, mCompleteProduct);
@@ -805,14 +812,15 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
             bundle.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProductUrl);
             bundle.putInt(ConstantsIntentExtra.CURRENT_LISTPOSITION, 0);
             bundle.putBoolean(ConstantsIntentExtra.IS_ZOOM_AVAILABLE, false);
-            ProductDetailsFragmentCommunicator.getInstance().notifyOthers(this, bundle);
+            ProductDetailsFragmentCommunicator.getInstance().notifyOthers(0, bundle);
         } else {
             mSelectedSimple = NO_SIMPLE_SELECTED;
             ProductDetailsFragmentCommunicator.getInstance().updateCurrentProduct(mCompleteProduct);
             Bundle bundle = new Bundle();
             bundle.putBoolean(PRODUCT_COMPLETE, true);
-            
-            ProductDetailsFragmentCommunicator.getInstance().notifyOthers(this, bundle);
+            bundle.putInt(ConstantsIntentExtra.CURRENT_LISTPOSITION, 0);
+            bundle.putBoolean(ConstantsIntentExtra.IS_ZOOM_AVAILABLE, false);
+            ProductDetailsFragmentCommunicator.getInstance().notifyOthers(0, bundle);
 //            mCallbackProductVariationsFragment.sendValuesToFragment(1, mCompleteProduct);
 //            mCallbackProductImagesViewPagerFragment.sendValuesToFragment(1, mCompleteProduct);
 //            mCallbackProductSpecificationFragment.sendValuesToFragment(1, mCompleteProduct);
@@ -1187,7 +1195,10 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
 
     @Override
     public void notifyFragment(Bundle bundle) {
-
+        Log.i(TAG, "code1 loading product on position : "+bundle.getInt(ProductDetailsActivityFragment.LOADING_PRODUCT_KEY));
+        onVariationElementSelected(bundle.getInt(ProductDetailsActivityFragment.LOADING_PRODUCT_KEY));
+        bundle.putBoolean(LOADING_PRODUCT, true);
+        ProductDetailsFragmentCommunicator.getInstance().notifyOthers(0, bundle);
     }
     
     protected void fragmentManagerTransition(int container, Fragment fragment,

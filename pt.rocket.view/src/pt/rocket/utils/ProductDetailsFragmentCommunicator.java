@@ -34,6 +34,13 @@ public class ProductDetailsFragmentCommunicator {
         return mProductDetailsFragmentCommunicator;
     }
     
+    public void destroyInstance(){
+        mProductDetailsFragmentCommunicator = null;
+        mFragmentsCallback = null;
+        mFragmentsCallbackNames = null;
+        currentProduct = null;
+    }
+    
     private ProductDetailsFragmentCommunicator(){
         this.mFragmentsCallback = new ArrayList<OnActivityFragmentInteraction>();
         this.mFragmentsCallbackNames = new ArrayList<String>();
@@ -66,6 +73,7 @@ public class ProductDetailsFragmentCommunicator {
     }
     
     public void updateCurrentProduct(CompleteProduct product){
+        Log.i(TAG, " --- updateCurrentProduct --- "+product.getName());
         this.currentProduct = product;
     }
     
@@ -73,9 +81,9 @@ public class ProductDetailsFragmentCommunicator {
         return this.currentProduct;
     }
     
-    public void notifyOthers(Fragment fragment, Bundle bundle){
+    public void notifyOthers(int position, Bundle bundle){
         for (int i = 0; i < this.mFragmentsCallback.size(); i++) {
-            if(!this.mFragmentsCallbackNames.get(i).equalsIgnoreCase(fragment.toString())){
+            if(i!=position){
                 this.mFragmentsCallback.get(i).notifyFragment(bundle);
             }
         }

@@ -23,6 +23,7 @@ import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.ProductDetailsFragmentCommunicator;
 import pt.rocket.view.BaseActivity;
+import pt.rocket.view.ProductDetailsActivityFragment;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.os.Bundle;
@@ -115,6 +116,7 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
                 EnumSet.noneOf(EventType.class),
                 EnumSet.of(MyMenuItem.SHARE),
                 NavigationAction.Products, 0);
+        this.setRetainInstance(true);
     }
 
     /*
@@ -221,13 +223,21 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
 
     private void createViewPager() {
         ArrayList<String> imagesList = mCompleteProduct.getImageList();
-        galleryAdapter = new GalleryPagerAdapter(getActivity(), imagesList, isZoomAvailable);
+        if(galleryAdapter != null){
+            galleryAdapter.replaceAll(imagesList);
+        } else {
+            galleryAdapter = new GalleryPagerAdapter(getActivity(), imagesList, isZoomAvailable);    
+        }
+        
 
         if (mViewPager == null) {
             mViewPager = (JumiaViewPagerWithZoom) mainView.findViewById(R.id.viewpager);
+            mViewPager.setPageMargin((int) getActivity().getResources().getDimension(
+                    R.dimen.margin_large));
+           
         }
-        mViewPager.setPageMargin((int) getActivity().getResources().getDimension(
-                R.dimen.margin_large));
+        
+        
         mViewPager.setAdapter(galleryAdapter);
         mPagerWrapper = new NormalizingViewPagerWrapper(getActivity(), mViewPager, galleryAdapter,
                 this);
@@ -242,14 +252,15 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
                 }
             });
         }
-
-    }
-
-    private void updateAdapter() {
-        mImageListAdapter.replaceAll(mCompleteProduct.getImageList());
-        createViewPager();
         hideImageLoading();
+
     }
+//
+//    private void updateAdapter() {
+//        mImageListAdapter.replaceAll(mCompleteProduct.getImageList());
+//        createViewPager();
+//        hideImageLoading();
+//    }
 
     private void showImageLoading() {
         mProductImageLoading.setVisibility(View.VISIBLE);
@@ -360,6 +371,11 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
             return;
         }
         
+        if(bundle.containsKey(ProductDetailsActivityFragment.LOADING_PRODUCT)){
+            showImageLoading();
+            return;
+        }
+        
         productImageGalleryFragment.mCompleteProductUrl = bundle
                 .getString(ConstantsIntentExtra.CONTENT_URL);
         productImageGalleryFragment.mVariationsListPosition = bundle.getInt(
@@ -374,17 +390,22 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
             getActivity().finish();
             return;
         }
-        Log.i(TAG, "ON RESUME");
-        mProductImageLoading = (RelativeLayout) mainView.findViewById(R.id.loading_gallery);
+        
+        Log.i(TAG, "code1 notifyFragment");
         mImagesList = (HorizontalListView) mainView.findViewById(R.id.images_list);
-        mImageListAdapter = new ProductImagesAdapter(getActivity(), mCompleteProduct.getImageList());
-        mImagesList.setAdapter(mImageListAdapter);
-        mImagesList.setOnItemClickListener(this);
+        if(mImageListAdapter != null){
+            mImageListAdapter.replaceAll(mCompleteProduct.getImageList());
+        } else {
+            mImageListAdapter = new ProductImagesAdapter(getActivity(), mCompleteProduct.getImageList());    
+            mImagesList.setAdapter(mImageListAdapter);
+            mImagesList.setOnItemClickListener(this);
+        }
+        
+
         if (!showHorizontalListView) {
             mImagesList.setVisibility(View.GONE);
         }
 
-        mViewPager = (JumiaViewPagerWithZoom) mainView.findViewById(R.id.viewpager);
         createViewPager();
         updateImage(0);
     }

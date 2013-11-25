@@ -40,7 +40,7 @@ public class ProductImagesAdapter extends BaseAdapter {
 
 	public void replaceAll(ArrayList<String> images) {
 		this.images = images;
-		notifyDataSetChanged();
+		this.notifyDataSetChanged();
 		Log.d(TAG, "replaceAll: done - notfied");
 	}
 

@@ -94,7 +94,6 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
         // Retain this fragment across configuration changes.
-        setRetainInstance(true);
     }
 
     /*

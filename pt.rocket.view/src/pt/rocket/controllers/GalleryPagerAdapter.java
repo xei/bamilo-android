@@ -1,5 +1,6 @@
 package pt.rocket.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import pt.rocket.app.ImageLoaderComponent;
@@ -26,11 +27,11 @@ import de.akquinet.android.androlog.Log;
 public class GalleryPagerAdapter extends PagerAdapter implements IPagerAdapter {
     
 	private static final String TAG = LogTagHelper.create( GalleryPagerAdapter.class );
-    private final List<String> mImageUrls;
+    private ArrayList<String> mImageUrls;
 	private LayoutInflater mInflater;
 	private boolean isZoomAvailable = false;
 	
-	public GalleryPagerAdapter(Context context, List<String> imageUrls, boolean isZoomAvailable) {
+	public GalleryPagerAdapter(Context context, ArrayList<String> imageUrls, boolean isZoomAvailable) {
 		mImageUrls = imageUrls;
 		mInflater = LayoutInflater.from(context);
 		this.isZoomAvailable = isZoomAvailable;
@@ -60,6 +61,13 @@ public class GalleryPagerAdapter extends PagerAdapter implements IPagerAdapter {
 	public boolean isViewFromObject(View arg0, Object arg1) {
 		return arg0 == arg1;
 	}
+	
+
+    public void replaceAll(ArrayList<String> images) {
+        this.mImageUrls = images;
+        notifyDataSetChanged();
+        Log.d(TAG, "replaceAll: done - notfied");
+    }
 
 	/*
 	 * (non-Javadoc)

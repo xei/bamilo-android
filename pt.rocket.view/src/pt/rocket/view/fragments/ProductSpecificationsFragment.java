@@ -7,6 +7,8 @@ import java.util.EnumSet;
 
 import org.holoeverywhere.widget.TextView;
 
+import pt.rocket.constants.ConstantsIntentExtra;
+import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.event.EventType;
 import pt.rocket.framework.event.ResponseEvent;
@@ -16,11 +18,13 @@ import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.ProductDetailsFragmentCommunicator;
+import pt.rocket.view.BaseActivity;
 import pt.rocket.view.ProductDetailsActivityFragment;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.Html;
 import android.text.Spannable;
 import android.text.TextUtils;
@@ -38,7 +42,7 @@ import de.akquinet.android.androlog.Log;
  */
 public class ProductSpecificationsFragment extends BaseFragment implements OnClickListener {
 
-    private static final String TAG = LogTagHelper.create(ProductVariationsFragment.class);
+    private static final String TAG = LogTagHelper.create(ProductSpecificationsFragment.class);
 
     private TextView mProductSpecText;
 
@@ -149,7 +153,7 @@ public class ProductSpecificationsFragment extends BaseFragment implements OnCli
         mProductSpecSku = (TextView) mainView.findViewById(R.id.product_sku_text);
         mLoading = (RelativeLayout) mProductSpecContainer
                 .findViewById(R.id.loading_specifications);
-//        displaySpecification();
+        displaySpecification();
         return mainView;
     }
 
@@ -214,7 +218,14 @@ public class ProductSpecificationsFragment extends BaseFragment implements OnCli
  
     @Override
     public void onClick(View v) {
-        mCallback.onFragmentSelected(FragmentType.PRODUCT_SPECIFICATION);
+        Bundle bundle = new Bundle();
+        bundle.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProduct.getUrl());
+        BaseActivity activity = ((BaseActivity) getActivity());
+        if (null == activity) {
+            activity = mainActivity;
+        }
+        activity.onSwitchFragment(FragmentType.PRODUCT_DESCRIPTION, bundle,
+                FragmentController.ADD_TO_BACK_STACK);
     }
     
     private void showContentLoading(){
@@ -230,6 +241,7 @@ public class ProductSpecificationsFragment extends BaseFragment implements OnCli
     }
     
     private void displaySpecification() {
+        this.mCompleteProduct = ProductDetailsFragmentCommunicator.getInstance().getCurrentProduct();
         String shortDescription = (this.mCompleteProduct != null && this.mCompleteProduct.getShortDescription() != null) ? this.mCompleteProduct.getShortDescription() : "" ;
         
         if(mProductSpecSku!=null && this.mCompleteProduct != null){
@@ -264,6 +276,10 @@ public class ProductSpecificationsFragment extends BaseFragment implements OnCli
         if(!isVisible()){
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
+        }
+        
+        if(bundle.containsKey(ProductDetailsActivityFragment.LOADING_PRODUCT)){
+            showContentLoading();
         }
         
         mCompleteProduct = ProductDetailsFragmentCommunicator.getInstance().getCurrentProduct();

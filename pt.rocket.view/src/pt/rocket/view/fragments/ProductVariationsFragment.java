@@ -12,17 +12,13 @@ import pt.rocket.framework.event.ResponseEvent;
 import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.Variation;
-import pt.rocket.framework.service.ServiceManager;
-import pt.rocket.framework.service.services.ProductService;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.HorizontalListView;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
-import pt.rocket.utils.OnFragmentActivityInteraction;
 import pt.rocket.utils.ProductDetailsFragmentCommunicator;
 import pt.rocket.view.ProductDetailsActivityFragment;
 import pt.rocket.view.R;
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,7 +42,6 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
     private HorizontalListView mList;
     private ProductImagesAdapter mAdapter;
     private int mVariationsListPosition = -1;
-    // private OnFragmentActivityInteraction mCallback;
     private View mainView;
 
     /**
@@ -195,6 +190,7 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
         }
 
         if (isNotValidVariation(mCompleteProduct.getVariations())) {
+            Log.i(TAG, "isNotValidVariation is false!!!");
             if (mVariationsContainer != null) {
                 mVariationsContainer.setVisibility(View.GONE);
             }
@@ -203,17 +199,19 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
         }
         
         mVariationsContainer.setVisibility(View.VISIBLE);
-        if (mList == null)
-            mList = (HorizontalListView) mainView.findViewById(R.id.variations_list);
+//        if (mList == null)
+        mList = (HorizontalListView) mainView.findViewById(R.id.variations_list);
         if (mAdapter == null) {
             mAdapter = new ProductImagesAdapter(this.getActivity(),
                     ProductImagesAdapter.createImageList(mCompleteProduct.getVariations()));
-            mList.setAdapter(mAdapter);
+            
         } else {
+            Log.i(TAG, "replacing adapter");
             mAdapter.replaceAll(ProductImagesAdapter.createImageList(mCompleteProduct
                     .getVariations()));
         }
-
+        
+        mList.setAdapter(mAdapter);
         int indexOfSelectionVariation = findIndexOfSelectedVariation();
 
         mList.setOnItemClickListener(this);
@@ -228,7 +226,7 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
             mVariationsListPosition = position;
             Bundle bundle = new Bundle();
             bundle.putInt(ProductDetailsActivityFragment.LOADING_PRODUCT_KEY, position);
-            ProductDetailsFragmentCommunicator.getInstance().notifyOthers(this, bundle);
+            ProductDetailsFragmentCommunicator.getInstance().notifyTarget(this, bundle, 0);
 
             // mCallback.onFragmentElementSelected(position);
             mList.setSelectedItem(position, HorizontalListView.MOVE_TO_DIRECTLY);
@@ -259,15 +257,14 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
     @Override
     public void notifyFragment(Bundle bundle) {
 
-        this.mCompleteProduct = ServiceManager.SERVICES.get(ProductService.class)
-                .getCurrentProduct();
+        this.mCompleteProduct = ProductDetailsFragmentCommunicator.getInstance().getCurrentProduct();
 
         // Validate if fragment is on the screen
         if (!isVisible()) {
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
-        
+        Log.i(TAG, "on notifyFragment : " + mCompleteProduct != null ? "not null" : "null");
         displayVariations();
     }
 

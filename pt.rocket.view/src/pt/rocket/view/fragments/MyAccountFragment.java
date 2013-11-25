@@ -45,7 +45,7 @@ public class MyAccountFragment extends BaseFragment {
      * @return
      */
     public static MyAccountFragment getInstance() {
-       // if (myAccountFragment == null)
+        if (myAccountFragment == null)
             myAccountFragment = new MyAccountFragment();
         return myAccountFragment;
     }
