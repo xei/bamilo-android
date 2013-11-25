@@ -87,6 +87,7 @@ public class SplashScreenActivity extends Activity implements ResponseListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_screen);
+        getPushNotifications();
         initBugSense();
         Log.d(TAG, "Waiting for the registration process to finish");
         JumiaApplication.INSTANCE.waitForInitResult(this, false);

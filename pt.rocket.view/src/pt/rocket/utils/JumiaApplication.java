@@ -17,7 +17,6 @@ import pt.rocket.framework.event.ResponseErrorEvent;
 import pt.rocket.framework.event.ResponseEvent;
 import pt.rocket.framework.event.ResponseListener;
 import pt.rocket.framework.event.events.InitializeEvent;
-import pt.rocket.framework.utils.AdXTracker;
 import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.SingletonMap;
 import android.app.Application;
