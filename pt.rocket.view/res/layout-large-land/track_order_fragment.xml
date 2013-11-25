@@ -23,9 +23,9 @@
 
         <org.holoeverywhere.widget.EditText
             android:id="@+id/order_nr_edittext"
+            android:layout_width="495dp"
             style="@style/form_edittext_style"
-            android:layout_marginLeft="13.2dp"
-            android:layout_marginRight="13.2dp"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="13.2dp"
             android:cursorVisible="true"
             android:focusable="true"
@@ -37,9 +37,9 @@
 
         <org.holoeverywhere.widget.Button
             android:id="@+id/btn_track_order"
+            android:layout_width="495dp"
             style="@style/button_orange_style"
-            android:layout_marginLeft="13.2dp"
-            android:layout_marginRight="13.2dp"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="26.4dp"
             android:contentDescription="@string/track_order"
             android:text="@string/track_order" />

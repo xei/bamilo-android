@@ -723,6 +723,9 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
         if (simple == null && !((BaseActivity) getActivity()).isTabletInLandscape()) {
             showChooseReminder();
             return;
+        } else if(simple == null) {
+            ((BaseActivity) getActivity()).showWarningVariation(true);
+            return;
         }
 
         int quantity = 0;

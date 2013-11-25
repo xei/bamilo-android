@@ -19,7 +19,7 @@
             android:singleLine="true"
             android:text="@string/creation_date"
             android:textColor="@color/grey_middle"
-            android:textSize="11.22sp" />
+            android:textSize="@dimen/text_xs" />
 
         <org.holoeverywhere.widget.TextView
             android:id="@+id/order_item_quantity"
@@ -31,7 +31,7 @@
             android:singleLine="true"
             android:text="@string/creation_date"
             android:textColor="@color/grey_middle"
-            android:textSize="11.22sp" />
+            android:textSize="@dimen/text_xs" />
     </LinearLayout>
 
     <LinearLayout
@@ -47,7 +47,7 @@
             android:gravity="center"
             android:text="@string/track_your_order"
             android:textColor="@color/grey_middle"
-            android:textSize="11.22sp" />
+            android:textSize="@dimen/text_xs" />
 
         <org.holoeverywhere.widget.TextView
             android:id="@+id/order_status_text"
@@ -57,7 +57,7 @@
             android:fontFamily="roboto-bold"
             android:text="@string/track_your_order"
             android:textColor="@color/grey_middle"
-            android:textSize="11.22sp" />
+            android:textSize="@dimen/text_xs" />
     </LinearLayout>
 
 </LinearLayout>
