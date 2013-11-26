@@ -79,6 +79,7 @@
     <dimen name="match_parent">-1dp</dimen>
     <dimen name="wrap_content">-2dp</dimen>
 	
+    
 	<!-- HOME -->
 	<dimen name="teaser_swipe_banner_height">196dp</dimen>
     <dimen name="teaser_product_item_width">120dp</dimen>

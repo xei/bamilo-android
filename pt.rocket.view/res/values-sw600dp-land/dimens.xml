@@ -39,6 +39,10 @@
 	<!-- MAIN LAYOUT -->
     <dimen name="main_layout_width">@dimen/navigation_menu_offset</dimen>
     
+        
+    <!-- Button -->
+    <dimen name="button_xlarge">495dp</dimen>
+    
 	<!-- WRITE REVIEW -->
     <dimen name="text_stars_max_width">500dp</dimen>
     
