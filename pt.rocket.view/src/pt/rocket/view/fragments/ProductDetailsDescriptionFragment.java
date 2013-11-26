@@ -56,8 +56,8 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
      * @return
      */
     public static ProductDetailsDescriptionFragment getInstance() {
-        if (productDetailsDescriptionFragment == null)
-            productDetailsDescriptionFragment = new ProductDetailsDescriptionFragment();
+//        if (productDetailsDescriptionFragment == null)
+        productDetailsDescriptionFragment = new ProductDetailsDescriptionFragment();
         return productDetailsDescriptionFragment;
     }
 

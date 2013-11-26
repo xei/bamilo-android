@@ -355,7 +355,8 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener{
     private void setActionSelected(View view) {
         if (view.getTag(R.id.nav_action) == ((BaseActivity) getActivity()).getAction()) {
             Log.i(TAG, "SELECTED ACTION: " + ((BaseActivity) getActivity()).getAction() );
-            view.setSelected(true);
+            if(!view.isSelected()) 
+                view.setSelected(true); 
         } else {
             view.setSelected(false);
         }        

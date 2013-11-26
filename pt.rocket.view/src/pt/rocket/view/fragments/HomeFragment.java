@@ -113,7 +113,7 @@ public class HomeFragment extends BaseFragment {
                 EnumSet.noneOf(EventType.class), EnumSet.noneOf(MyMenuItem.class), NavigationAction.Home, 0);
 //        this.setRetainInstance(true);
     }
-
+ 
     /*
      * (non-Javadoc)
      * 
@@ -231,7 +231,8 @@ public class HomeFragment extends BaseFragment {
         
 //        if(mPager.getAdapter() == null){
             pagerTabStrip = (PagerTabStrip) getView().findViewById(R.id.home_titles);
-            mPager.setAdapter(mPagerAdapter);
+            if(mPager.getAdapter() == null)
+                mPager.setAdapter(mPagerAdapter);
             mPager.setSaveEnabled(false);
             mPager.setCurrentItem(currentPositionPager);
             try {
@@ -446,13 +447,6 @@ public class HomeFragment extends BaseFragment {
             super.destroyItem(container, position, object);
         }
         
-        @Override
-        public void unregisterDataSetObserver(DataSetObserver observer) {
-            if (observer != null) {
-                super.unregisterDataSetObserver(observer);
-            }
-        }
-        
     }
 
     public void triggerContentEventFromHomeObjectFragment(){
@@ -631,19 +625,19 @@ public class HomeFragment extends BaseFragment {
 //                ft.commit();
 //            }
             
-            fragmentMainOneSlide = null;
-            fragmentStaticBanner = null;
-            fragmentCategoryTeaser = null;
-            fragmentProductListTeaser = null;
-            fragmentBrandsListTeaser = null;
+//            fragmentMainOneSlide = null;
+//            fragmentStaticBanner = null;
+//            fragmentCategoryTeaser = null;
+//            fragmentProductListTeaser = null;
+//            fragmentBrandsListTeaser = null;
         }
         
         private void releaseFragments(){
-            fragmentMainOneSlide = null;
-            fragmentStaticBanner = null;
-            fragmentCategoryTeaser = null;
-            fragmentProductListTeaser = null;
-            fragmentBrandsListTeaser = null;
+//            fragmentMainOneSlide = null;
+//            fragmentStaticBanner = null;
+//            fragmentCategoryTeaser = null;
+//            fragmentProductListTeaser = null;
+//            fragmentBrandsListTeaser = null;
         }
         
         /**
