@@ -69,9 +69,10 @@
 
         <org.holoeverywhere.widget.Button
             android:id="@+id/btn_checkout_continue"
-            android:layout_width="@dimen/button_xlarge"
             style="@style/button_orange_style"
-			android:layout_gravity="center_horizontal"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="66dp"
+            android:layout_marginRight="66dp"
             android:layout_marginTop="@dimen/margin_veryhuge"
             android:contentDescription="@string/checkout_continue_button_description"
             android:text="@string/continue_shopping" />
