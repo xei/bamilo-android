@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rocket_app_register"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent" >
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -46,9 +46,10 @@
 
             <LinearLayout
                 android:id="@+id/registerform_container"
-                android:layout_width="@dimen/button_xlarge"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
+                android:layout_marginRight="66dp"
+                android:layout_marginLeft="66dp"
                 android:orientation="vertical" >
             </LinearLayout>
 
@@ -56,20 +57,19 @@
 
             <LinearLayout
                 android:id="@+id/termsContainer"
-                android:layout_width="@dimen/button_xlarge"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_mid"
-                android:layout_marginRight="@dimen/margin_mid"
+                android:layout_marginRight="66dp"
+                android:layout_marginLeft="66dp"
                 android:layout_marginTop="14dp"
-                android:layout_gravity="center_horizontal"
                 android:orientation="horizontal" >
 
                 <org.holoeverywhere.widget.CheckBox
                     android:id="@+id/checkTerms"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:contentDescription="@string/terms_and_conditions_description"
                     android:button="@drawable/btn_check_holo_light"
+                    android:contentDescription="@string/terms_and_conditions_description"
                     android:text="@string/register_text_terms_a"
                     android:textColor="@color/grey_middle"
                     android:textSize="@dimen/text_small" />
@@ -108,16 +108,15 @@
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal" >
+                android:layout_marginLeft="66dp"
+                android:layout_marginRight="66dp" >
 
                 <org.holoeverywhere.widget.Button
                     android:id="@+id/register_button_submit"
-                    android:layout_width="@dimen/button_xlarge"
                     style="@style/button_orange_style"
-                    android:layout_centerHorizontal="true"
                     android:contentDescription="@string/register_submit_description"
-                    android:text="@string/registration_text"
-                    android:fontFamily="roboto-bold" />
+                    android:fontFamily="roboto-bold"
+                    android:text="@string/registration_text" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -125,6 +124,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
+                android:layout_marginRight="66dp"
+                android:layout_marginLeft="66dp"
                 android:layout_marginBottom="@dimen/distance_item_small"
                 android:layout_marginTop="10dp" >
 

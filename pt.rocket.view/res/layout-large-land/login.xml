@@ -33,26 +33,30 @@
             android:orientation="vertical" >
             <com.facebook.widget.LoginButton
                 android:id="@+id/authButton"
-                android:layout_width="@dimen/button_xlarge"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center_horizontal"
+                android:layout_marginRight="66dp"
+                android:layout_marginLeft="66dp"
                 android:text="@string/facebook_login_button_text"
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="20dp" />
             <LinearLayout
                 android:id="@+id/form_container"
-                android:layout_width="@dimen/button_xlarge"
-                android:layout_gravity="center_horizontal"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="66dp"
+                android:layout_marginLeft="66dp"
                 android:orientation="vertical" >
             </LinearLayout>
 
             <RelativeLayout
                 android:id="@+id/middleLoginContainer"
-                android:layout_width="@dimen/button_xlarge"
-                android:layout_gravity="center_horizontal"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="66dp"
+                android:layout_marginLeft="66dp"
                 android:layout_marginTop="@dimen/margin_huge" >
 
                 <org.holoeverywhere.widget.Button
@@ -83,10 +87,10 @@
 
             <org.holoeverywhere.widget.Button
                 android:id="@+id/middle_login_link_register"
-                android:layout_width="@dimen/button_xlarge"
-                android:layout_gravity="center_horizontal"
                 style="@style/button_grey_style"
                 android:layout_marginTop="@dimen/distance_item_mid"
+                android:layout_marginRight="66dp"
+                android:layout_marginLeft="66dp"
                 android:contentDescription="@string/register_button_description"
                 android:text="@string/register_button" />
 
