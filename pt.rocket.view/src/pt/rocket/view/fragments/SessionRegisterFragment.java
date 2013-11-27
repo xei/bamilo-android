@@ -213,9 +213,10 @@ public class SessionRegisterFragment extends BaseFragment {
                 DynamicFormItem item = iterator.next();
                 item.saveState(outState);
             }
-
-            CheckBox check = (CheckBox) getView().findViewById(R.id.checkTerms);
-            outState.putBoolean("" + R.id.checkTerms, check.isChecked());
+            if(getView() != null){
+                CheckBox check = (CheckBox) getView().findViewById(R.id.checkTerms);
+                outState.putBoolean("" + R.id.checkTerms, check.isChecked());
+            }
             
             savedInstanceState = outState;
         }
