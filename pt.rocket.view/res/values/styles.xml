@@ -115,7 +115,7 @@
         <item name="android:gravity">left</item>
         <item name="android:lines">2</item>
         <item name="android:textColor">@color/grey_middle</item>
-        <item name="android:textSize">12dp</item>
+        <item name="android:textSize">@dimen/text_xs</item>
         <item name="android:textStyle">bold</item>
     </style>
 
@@ -134,7 +134,7 @@
     <style name="product_price_current_list_text">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">12dp</item>
+        <item name="android:textSize">@dimen/text_xs</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/red_basic</item>
         <item name="android:textStyle">bold</item>

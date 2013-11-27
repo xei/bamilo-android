@@ -369,7 +369,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
 	@Override
 	public void onBackPressed() {
 		Log.i(getTag(), "onBackPressed");
-		if (getSlidingMenu().isMenuShowing() && getSlidingMenu().isSlidingEnabled()) {
+		if (getSlidingMenu().isMenuShowing() && getSlidingMenu().isSlidingEnabled() && !isTabletInLandscape()) {
             showContent();
         } else {
             super.onBackPressed();
