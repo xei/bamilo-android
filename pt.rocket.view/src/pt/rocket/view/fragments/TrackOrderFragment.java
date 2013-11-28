@@ -70,7 +70,7 @@ public class TrackOrderFragment extends BaseFragment {
         super(EnumSet.of(EventType.TRACK_ORDER_EVENT),
         EnumSet.noneOf(EventType.class), EnumSet.noneOf(MyMenuItem.class), 
         NavigationAction.TrackOrder, 
-        R.string.track_order);
+        R.string.nav_track_order);
         this.setRetainInstance(true);
     }
 
