@@ -130,6 +130,7 @@ public class ProductsFragment extends BaseFragment implements OnClickListener,
 
     public static final String INTENT_POSITION_EXTRA = "extra_position";
 
+    private static int pos = -1;
     /**
      * Get instance
      * 
@@ -146,7 +147,7 @@ public class ProductsFragment extends BaseFragment implements OnClickListener,
     public ProductsFragment() {
         super(EnumSet.of(EventType.GET_PRODUCTS_EVENT), EnumSet.noneOf(EventType.class), EnumSet.of(MyMenuItem.SEARCH), 
                 NavigationAction.Products, 
-                0);
+                R.string.products);
     }
     
     /*
@@ -182,7 +183,7 @@ public class ProductsFragment extends BaseFragment implements OnClickListener,
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         Log.i(TAG, "ON CREATE VIEW");
-        mainView = inflater.inflate(R.layout.products, container, false);
+        mainView = inflater.inflate(R.layout.products, null, false);
 
         savedState = savedInstanceState;
 
@@ -192,17 +193,14 @@ public class ProductsFragment extends BaseFragment implements OnClickListener,
 
         // Inflate Products Layout
         setAppContentLayout();
-
-//        title = getActivity().getIntent().getStringExtra(ConstantsIntentExtra.CONTENT_TITLE);
-//        getActivity().setTitle(title);
-        productsURL = getArguments()
-                .getString(ConstantsIntentExtra.CONTENT_URL);
+        productsURL = ProductsViewFragment.productsURL;
+//                getArguments()
+//                .getString(ConstantsIntentExtra.CONTENT_URL);
         Log.d(TAG, "onCreate: productsURL = " + productsURL);
-        searchQuery = getArguments()
-                .getString(ConstantsIntentExtra.SEARCH_QUERY);
-
+        searchQuery = ProductsViewFragment.searchQuery;
+//                getArguments()
+//                .getString(ConstantsIntentExtra.SEARCH_QUERY);
         int pos = getArguments().getInt(INTENT_POSITION_EXTRA);
-        
         if (pos == 0) {
             showTips();
         }
@@ -213,10 +211,13 @@ public class ProductsFragment extends BaseFragment implements OnClickListener,
         Log.i(TAG, "code1 creating ProductsFragment " + pos);
 
         Log.d(TAG, "onCreate: searchQuery = " + searchQuery);
-        navigationSource = getArguments().getInt(
-                ConstantsIntentExtra.NAVIGATION_SOURCE, -1);
-        navigationPath = getArguments().getString(
-                ConstantsIntentExtra.NAVIGATION_PATH);
+        
+        navigationSource =  ProductsViewFragment.navigationSource;
+//                getArguments().getInt(
+//                ConstantsIntentExtra.NAVIGATION_SOURCE, -1);
+        navigationPath = ProductsViewFragment.navigationPath;
+//                getArguments().getString(
+//                ConstantsIntentExtra.NAVIGATION_PATH);
         AnalyticsGoogle.get().trackSourceResWithPath(navigationSource, navigationPath);
 
         productsAdapter = new ProductsListAdapter(getActivity());
@@ -355,6 +356,7 @@ public class ProductsFragment extends BaseFragment implements OnClickListener,
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
+        ((BaseActivity) getActivity()).setTitle(ProductsViewFragment.title);
         restoreActivityState(savedState);
         if (productsAdapter != null && productsAdapter.getCount() == 0) {
             executeRequest();
@@ -611,7 +613,7 @@ public class ProductsFragment extends BaseFragment implements OnClickListener,
         AnalyticsGoogle.get().trackLoadTiming(R.string.gproductlist, beginRequestMillis);
         System.gc();
         if (!TextUtils.isEmpty(searchQuery)) {
-            getActivity().setTitle(title + " (" + productsPage.getTotalProducts() + ")");
+            ((BaseActivity) getActivity()).setTitle(title + " (" + productsPage.getTotalProducts() + ")");
         }
 
         productsAdapter.appendProducts(productsPage.getProducts());

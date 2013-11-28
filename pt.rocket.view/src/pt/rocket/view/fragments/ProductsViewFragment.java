@@ -4,6 +4,8 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
+
+import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.framework.event.EventType;
 import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.utils.AnalyticsGoogle;
@@ -11,6 +13,7 @@ import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.framework.utils.ProductSort;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
@@ -72,14 +75,14 @@ public class ProductsViewFragment extends BaseFragment {
 
     private static ProductsViewFragment mProductsViewFragment;
 
+    public static String productsURL;
+    public static String searchQuery;
+    public static String navigationPath;
+    public static String title;
+    public static int navigationSource;
     public ProductsViewFragment() {
-        // super(NavigationAction.Products,
-        // EnumSet.of(MyMenuItem.SEARCH),
-        // EnumSet.noneOf(EventType.class),
-        // EnumSet.noneOf(EventType.class),
-        // 0, R.layout.products_frame);
         super(EnumSet.noneOf(EventType.class), EnumSet.noneOf(EventType.class), EnumSet
-                .of(MyMenuItem.SEARCH), NavigationAction.Products, 0);
+                .of(MyMenuItem.SEARCH), NavigationAction.Products, R.string.products);
     }
 
     public static ProductsViewFragment getInstance() {
@@ -92,18 +95,29 @@ public class ProductsViewFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         
-        return inflater.inflate(R.layout.products_frame, null, false);
+        return inflater.inflate(R.layout.products_frame, container, false);
     }
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        title = getArguments().getString(ConstantsIntentExtra.CONTENT_TITLE);
+        ((BaseActivity) getActivity()).setTitle(title);
+        
+        productsURL = getArguments()
+                .getString(ConstantsIntentExtra.CONTENT_URL);
+        searchQuery = getArguments()
+                .getString(ConstantsIntentExtra.SEARCH_QUERY);
+        navigationSource = getArguments().getInt(
+                ConstantsIntentExtra.NAVIGATION_SOURCE, -1);
+        navigationPath = getArguments().getString(
+                ConstantsIntentExtra.NAVIGATION_PATH);
+        Log.i(TAG, "code1 title is : "+title);
         Log.i(TAG, "ON RESUME");
         AnalyticsGoogle.get().trackPage(R.string.gproductlist);
         ProductsListPagerAdapter mProductsListPagerAdapter = new ProductsListPagerAdapter(getChildFragmentManager());
@@ -111,7 +125,7 @@ public class ProductsViewFragment extends BaseFragment {
         ViewPager mViewPager = (ViewPager) getView().findViewById(R.id.viewpager_products_list);
         pagerTabStrip = (PagerTabStrip) getView().findViewById(R.id.products_list_titles);
         mViewPager.setAdapter(mProductsListPagerAdapter);
-        mViewPager.setCurrentItem(0, true);
+        mViewPager.setCurrentItem(0);
         try {
             setLayoutSpec();
         } catch (IllegalArgumentException e) {
@@ -146,7 +160,7 @@ public class ProductsViewFragment extends BaseFragment {
         @Override
         public Fragment getItem(int position) {
             Fragment fragment = new ProductsFragment();
-            Bundle args = getArguments();
+            Bundle args = new Bundle();
             args.putInt(ProductsFragment.INTENT_POSITION_EXTRA, position);
             fragment.setArguments(args);
             return fragment;

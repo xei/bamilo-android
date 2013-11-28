@@ -813,6 +813,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
      */
     @Override
     public void setTitle(CharSequence title) {
+        Log.i(TAG, "code1 title here is : "+title);
         TextView titleView = (TextView) findViewById(R.id.title);
         if (titleView == null)
             return;

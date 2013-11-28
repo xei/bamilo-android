@@ -4,13 +4,6 @@
     android:layout_height="match_parent"
     android:paddingBottom="0dp" >
 
-    <!--
-         <FrameLayout
-        android:id="@+id/products_frame_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-        </FrameLayout>
-    -->
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -37,10 +30,5 @@
             android:layout_height="31.72dp"
             android:background="@drawable/filter_header" />
     </RelativeLayout>
-    <!-- <fragment -->
-    <!-- android:id="@+id/fragment_product_list" -->
-    <!-- android:name="pt.rocket.view.fragments.ProductsFragment" -->
-    <!-- android:layout_width="match_parent" -->
-    <!-- android:layout_height="match_parent" /> -->
 
 </RelativeLayout>

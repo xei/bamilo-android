@@ -31,7 +31,7 @@
         android:gravity="center_horizontal"
         android:text="99%"
         android:textColor="@android:color/white"
-        android:textSize="@dimen/text_s" />
+        android:textSize="14sp" />
 
     <org.holoeverywhere.widget.TextView
         android:id="@+id/item_name"
@@ -83,11 +83,12 @@
         android:includeFontPadding="false"
         android:text="Reviews"
         android:textColor="@color/grey_light"
-        android:textSize="@dimen/text_xs" />
+        android:textSize="12sp" />
 
     <View
         android:id="@+id/divider"
         style="@style/divider_horizontal"
+        android:layout_marginTop="5dp"
         android:layout_below="@+id/image_loadable" />
 
 </RelativeLayout>

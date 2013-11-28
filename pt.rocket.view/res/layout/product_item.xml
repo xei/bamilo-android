@@ -30,8 +30,9 @@
         android:layout_marginTop="4dp"
         android:gravity="center_horizontal"
         android:text="99%"
+        android:paddingBottom="5dp"
         android:textColor="@android:color/white"
-        android:textSize="14dp" />
+        android:textSize="14sp" />
 
     <org.holoeverywhere.widget.TextView
         android:id="@+id/item_name"
@@ -68,6 +69,7 @@
         android:layout_alignLeft="@id/item_name"
         android:layout_below="@id/item_regprice"
         android:layout_marginTop="6dp"
+        android:paddingBottom="5dp"
         android:numStars="5"
         android:rating="3.5" />
 
@@ -83,7 +85,7 @@
         android:includeFontPadding="false"
         android:text="Reviews"
         android:textColor="@color/grey_light"
-        android:textSize="12dp" />
+        android:textSize="@dimen/text_xs" />
 
     <View
         android:id="@+id/divider"
