@@ -274,6 +274,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
             getActivity().onBackPressed();
             return;
         }
+        
         mNavigationSource = bundle.getInt(ConstantsIntentExtra.NAVIGATION_SOURCE, -1);
         mNavigationPath = bundle.getString(ConstantsIntentExtra.NAVIGATION_PATH);
         loadProduct();
@@ -282,6 +283,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
     @Override
     public void onResume() {
         super.onResume();
+        
         AnalyticsGoogle.get().trackPage(R.string.gproductdetail);
     }
 
@@ -396,22 +398,6 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
                 productVariationsFragment, productImagesViewPagerFragment,
                 productSpecificationFragment, productBasicInfoFragment);
         ProductDetailsFragmentCommunicator.getInstance().updateCurrentProduct(mCompleteProduct);
-//        ProductDetailsFragmentCommunicator.getInstance().defineActivityCallBack(getActivity());
-        // // This makes sure that the container activity has implemented
-        // // the callback interface. If not, it throws an exception
-        // try {
-        // mCallbackProductVariationsFragment = (OnActivityFragmentInteraction)
-        // productVariationsFragment;
-        // mCallbackProductImagesViewPagerFragment = (OnActivityFragmentInteraction)
-        // productImagesViewPagerFragment;
-        // mCallbackProductSpecificationFragment = (OnActivityFragmentInteraction)
-        // productSpecificationFragment;
-        // mCallbackProductBasicInfoFragment = (OnActivityFragmentInteraction)
-        // productBasicInfoFragment;
-        // } catch (ClassCastException e) {
-        // throw new ClassCastException(productVariationsFragment.toString()
-        // + " must implement OnActivityFragmentInteraction");
-        // }
 
     }
 
@@ -772,6 +758,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
     private void displayProduct(CompleteProduct product) {
         mCompleteProduct = product;
         mCompleteProductUrl = product.getUrl();
+        ((BaseActivity) getActivity()).setTitle(mCompleteProduct.getBrand() + " " + mCompleteProduct.getName());
         if (productVariationsFragment == null) {
             productVariationsFragment = ProductVariationsFragment.getInstance();
             Bundle args = new Bundle();

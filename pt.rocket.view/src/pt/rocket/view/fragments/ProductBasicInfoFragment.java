@@ -17,6 +17,7 @@ import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.OnFragmentActivityInteraction;
 import pt.rocket.utils.ProductDetailsFragmentCommunicator;
+import pt.rocket.view.BaseActivity;
 import pt.rocket.view.ProductDetailsActivityFragment;
 import pt.rocket.view.R;
 import android.app.Activity;
@@ -271,9 +272,9 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
 
     private void setBasicInfo() {
         mCompleteProduct = ProductDetailsFragmentCommunicator.getInstance().getCurrentProduct();
+        
         if (mCompleteProduct != null) {
-            Log.i(TAG, "code1 is diferent from null!!!");
-            Log.i(TAG, "code1 name is : " + mCompleteProduct.getName());
+            ((BaseActivity) getActivity()).setTitle(mCompleteProduct.getBrand() + " " + mCompleteProduct.getName());
             if (mProductName != null)
                 mProductName.setText(mCompleteProduct.getBrand() != null ? mCompleteProduct
                         .getBrand() + " " + mCompleteProduct.getName() : "");

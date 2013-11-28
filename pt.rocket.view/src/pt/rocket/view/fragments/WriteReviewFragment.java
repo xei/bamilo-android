@@ -338,7 +338,7 @@ public class WriteReviewFragment extends BaseFragment {
                         @Override
                         public void onClick(View v) {
                             dialog_review_submitted.dismiss();
-                            getActivity().finish();
+                            getActivity().onBackPressed();
                             getActivity().overridePendingTransition(R.anim.slide_in_left,
                                     R.anim.slide_out_right);
                         }
