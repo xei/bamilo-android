@@ -1182,7 +1182,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            View view = mLayoutInflater.inflate(tips_pages[position], null);
+            View view = mLayoutInflater.inflate(tips_pages[position], container, false);
 
             ((ViewPager) container).addView(view, position);
 

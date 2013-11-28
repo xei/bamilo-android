@@ -93,7 +93,7 @@ public class WriteReviewFragment extends BaseFragment {
     public WriteReviewFragment() {
         super(EnumSet.of(EventType.LOGIN_EVENT, EventType.GET_RATING_OPTIONS_EVENT,
                 EventType.GET_CUSTOMER), EnumSet.of(EventType.REVIEW_PRODUCT_EVENT), EnumSet.noneOf(MyMenuItem.class), NavigationAction.Products,  R.string.writereview_page_title);
-        this.setRetainInstance(true);
+//        this.setRetainInstance(true);
     }
 
     /*
@@ -160,6 +160,10 @@ public class WriteReviewFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        
+        if(getArguments() != null && getArguments().containsKey(PopularityFragment.CAME_FROM_POPULARITY)){
+            getView().findViewById(R.id.product_basicinfo_container).setVisibility(View.GONE);
+        }
         Log.i(TAG, "ON RESUME");
     }
 
@@ -382,9 +386,10 @@ public class WriteReviewFragment extends BaseFragment {
             return true;
 
         case GET_CUSTOMER:
-            customerCred = null;
-            Log.i("DIDNT GET CUSTOMER"," HERE ");
-            return false;
+            // don't care
+//            customerCred = null;
+//            Log.i("DIDNT GET CUSTOMER"," HERE ");
+            return true;
 
         default:
         }

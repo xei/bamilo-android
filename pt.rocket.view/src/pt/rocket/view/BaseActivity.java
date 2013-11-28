@@ -98,7 +98,7 @@ import de.akquinet.android.androlog.Log;
  *          2012/06/19
  * 
  */
-public abstract class BaseActivity extends SlidingFragmentActivity implements OnOpenedListener, OnClosedListener, ResponseListener, OnFragmentActivityInteraction {
+public abstract class BaseActivity extends SlidingFragmentActivity implements OnOpenedListener, OnClosedListener, ResponseListener{
 
     private ShareActionProvider mShareActionProvider;
     
@@ -509,6 +509,10 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         }
     }
     
+    /**
+     * Verifies if the current screen orientation is Landscape
+     * @return true if yes, false otherwise
+     */
     public boolean isTabletInLandscape(){
         if (getResources().getBoolean(R.bool.isTablet) && getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
             return true;

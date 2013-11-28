@@ -34,6 +34,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -64,6 +67,12 @@ public class PopularityFragment extends BaseFragment {
     private int pageNumber = 1;
     
     private Boolean isLoadingMore = false;
+    
+    private static ProductRatingPage mProductRatingPage;
+    
+    public static final String CAME_FROM_POPULARITY = "came_from_popularity";
+    
+    private Fragment mWriteReviewFragment;
 
     /**
      * Get instance
@@ -71,7 +80,6 @@ public class PopularityFragment extends BaseFragment {
      * @return
      */
     public static PopularityFragment getInstance() {
-        if (popularityFragment == null)
             popularityFragment = new PopularityFragment();
         return popularityFragment;
     }
@@ -113,6 +121,7 @@ public class PopularityFragment extends BaseFragment {
             getActivity().finish();
             return;
         }
+        
         triggerContentEvent(new GetProductReviewsEvent(selectedProduct.getUrl(), pageNumber));
         
     }
@@ -127,7 +136,7 @@ public class PopularityFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         Log.i(TAG, "ON CREATE VIEW");
-        View view = inflater.inflate(R.layout.popularity, container, false);
+        View view = inflater.inflate(R.layout.popularity, null, false);
         return view;
     }
 
@@ -142,6 +151,10 @@ public class PopularityFragment extends BaseFragment {
         Log.i(TAG, "ON START");
 //        ((BaseActivity) getActivity()).updateActivityHeader(NavigationAction.Products, R.string.reviews);
         setAppContentLayout();
+        if(((BaseActivity) getActivity()).isTabletInLandscape()){
+            Log.i(TAG, "startWriteReviewFragment : ");
+            startWriteReviewFragment();
+        }
     }
 
     /*
@@ -163,6 +176,7 @@ public class PopularityFragment extends BaseFragment {
     @Override
     public void onPause() {
         super.onPause();
+        removeWriteReviewFragment();
         Log.i(TAG, "ON PAUSE");
     }
 
@@ -195,7 +209,33 @@ public class PopularityFragment extends BaseFragment {
     private void setAppContentLayout() {
         setViewContent();
         setPopularity();
-        setCommentListener();
+        if(mProductRatingPage != null)
+            displayReviews();
+        if(!((BaseActivity) getActivity()).isTabletInLandscape()){
+            setCommentListener();    
+        }
+        
+    }
+    
+    private void startWriteReviewFragment(){
+        mWriteReviewFragment = new WriteReviewFragment();
+        Bundle args = new Bundle();
+        args.putBoolean(CAME_FROM_POPULARITY, true);
+        mWriteReviewFragment.setArguments(args);
+        FragmentManager     fm = getChildFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.replace(R.id.fragment_writereview, mWriteReviewFragment);
+        ft.commit();
+    }
+    
+    private void removeWriteReviewFragment(){
+        if(mWriteReviewFragment != null){
+            FragmentManager     fm = getChildFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.remove(mWriteReviewFragment);
+            ft.commit();
+        }
+
     }
     
     /**
@@ -295,18 +335,20 @@ public class PopularityFragment extends BaseFragment {
      */
     @Override
     protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
-        displayReviews((ProductRatingPage) event.result);
+        mProductRatingPage = (ProductRatingPage) event.result;
+        displayReviews();
         return true;
     }
     
     
-    private void displayReviews(ProductRatingPage productRatingPage) {
-        ArrayList<ProductReviewComment> reviews = productRatingPage.getReviewComments();
+    private void displayReviews() {
+        ArrayList<ProductReviewComment> reviews = mProductRatingPage.getReviewComments();
         LinearLayout reviewsLin = (LinearLayout) getView().findViewById(R.id.linear_reviews);
+        reviewsLin.removeAllViews();
         // Log.i("REVIEW COUNT", " IS " + review.size());
-        if (productRatingPage.getCommentsCount() > 0) {
+        if (mProductRatingPage.getCommentsCount() > 0) {
             TextView reviewsPop = (TextView) getView().findViewById(R.id.reviews);
-            reviewsPop.setText("" + productRatingPage.getCommentsCount());
+            reviewsPop.setText("" + mProductRatingPage.getCommentsCount());
         }
         for (final ProductReviewComment review : reviews) {
             final View theInflatedView = inflater.inflate(R.layout.popularityreview, reviewsLin,

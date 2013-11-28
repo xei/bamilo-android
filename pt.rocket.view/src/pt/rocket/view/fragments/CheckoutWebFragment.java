@@ -46,6 +46,7 @@ import android.view.ViewGroup;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.HttpAuthHandler;
+import android.webkit.JavascriptInterface;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -92,6 +93,11 @@ public class CheckoutWebFragment extends BaseFragment {
     public static CheckoutWebFragment getInstance() {
         if (checkoutWebFragment == null)
             checkoutWebFragment = new CheckoutWebFragment();
+        
+        checkoutWebFragment.webview = null;
+        checkoutWebFragment.checkoutUrl = null;
+        checkoutWebFragment.failedPageRequest = null;
+        checkoutWebFragment.customer = null;
         return checkoutWebFragment;
     }
 
@@ -183,6 +189,7 @@ public class CheckoutWebFragment extends BaseFragment {
         Log.i(TAG, "ON RESUME");
         if(webview == null)
             webview = new WebView(getActivity());
+        webview.loadUrl("about:blank");
         mWebContainer.addView(webview);
         // Needed for 2.3 problem with not showing keyboard by tapping in webview
         webview.requestFocus();
@@ -506,6 +513,7 @@ public class CheckoutWebFragment extends BaseFragment {
     private class JavaScriptInterface extends Object {
 
         @SuppressWarnings("unused")
+        @JavascriptInterface
         public void processContent(String content) {
             try {
                 Log.d(TAG, "Got checkout response: " + content);
