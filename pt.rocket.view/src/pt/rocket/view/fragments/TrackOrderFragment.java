@@ -26,10 +26,12 @@ import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.view.FocusFinder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.webkit.WebView.FindListener;
 import android.widget.LinearLayout;
 import de.akquinet.android.androlog.Log;
 
@@ -46,6 +48,9 @@ public class TrackOrderFragment extends BaseFragment {
     private LoadingBarView loadingTrackBarView;
     
     private EditText mEditText;
+    
+    private static OrderTracker mOrderTracker;
+    private static boolean mOrderTrackerError = false;
     
     /**
      * Get instance
@@ -169,6 +174,12 @@ public class TrackOrderFragment extends BaseFragment {
         mEditText = (EditText) getView().findViewById(R.id.order_nr_edittext);
         Button mButton = (Button) getView().findViewById(R.id.btn_track_order);
         mButton.setOnClickListener(trackOrderClickListener);
+        
+        if(mEditText.getText() != null && mEditText.getText().length() > 0 && mOrderTracker != null){
+            proccessSuccess();
+        } else if(mEditText.getText() != null && mEditText.getText().length() > 0 && mOrderTrackerError){
+            proccessError();
+        }
     }
     
     OnClickListener trackOrderClickListener = new OnClickListener() {
@@ -216,7 +227,7 @@ public class TrackOrderFragment extends BaseFragment {
         }
     }
     
-    private void proccessSuccess(OrderTracker mOrderTracker){
+    private void proccessSuccess(){
         ((TextView) getView().findViewById(R.id.title_status_text)).setText("# "+mOrderTracker.getId());
         ((TextView) getView().findViewById(R.id.order_creation_date_text)).setText(mOrderTracker.getDate());
         ((TextView) getView().findViewById(R.id.order_payment_method_text)).setText(mOrderTracker.getPaymentMethod());
@@ -244,12 +255,14 @@ public class TrackOrderFragment extends BaseFragment {
     
     @Override
     protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
-        proccessSuccess((OrderTracker) event.result);
+        mOrderTracker = (OrderTracker) event.result;
+        proccessSuccess();
         return true;
     }
     
     @Override
     protected boolean onErrorEvent(ResponseEvent event) {
+        mOrderTrackerError = true;
         proccessError();
         return true;
     }
