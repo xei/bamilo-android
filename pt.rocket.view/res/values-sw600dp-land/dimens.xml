@@ -9,6 +9,8 @@
     <dimen name="text_xl">24sp</dimen>
     <dimen name="text_xxl">26sp</dimen>
     
+    <!-- General -->
+    <dimen name="margin_buttons">66dp</dimen>
     <!-- HOME -->
 	<dimen name="teaser_swipe_banner_height">240dp</dimen>
 	<dimen name="teaser_product_item_width">208dp</dimen>
