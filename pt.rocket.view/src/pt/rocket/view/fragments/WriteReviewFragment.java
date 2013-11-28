@@ -20,6 +20,7 @@ import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
+import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.Context;
@@ -338,9 +339,11 @@ public class WriteReviewFragment extends BaseFragment {
                         @Override
                         public void onClick(View v) {
                             dialog_review_submitted.dismiss();
-                            getActivity().onBackPressed();
-                            getActivity().overridePendingTransition(R.anim.slide_in_left,
-                                    R.anim.slide_out_right);
+                            
+                            if(((BaseActivity) getActivity()) != null){
+                                ((BaseActivity) getActivity()).onBackPressed();
+                            }
+                            
                         }
                     });
 
