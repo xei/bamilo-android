@@ -344,7 +344,6 @@ public class PopularityFragment extends BaseFragment {
     private void displayReviews() {
         ArrayList<ProductReviewComment> reviews = mProductRatingPage.getReviewComments();
         LinearLayout reviewsLin = (LinearLayout) getView().findViewById(R.id.linear_reviews);
-        reviewsLin.removeAllViews();
         // Log.i("REVIEW COUNT", " IS " + review.size());
         if (mProductRatingPage.getCommentsCount() > 0) {
             TextView reviewsPop = (TextView) getView().findViewById(R.id.reviews);
