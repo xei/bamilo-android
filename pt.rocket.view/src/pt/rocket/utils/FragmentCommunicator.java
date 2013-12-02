@@ -14,10 +14,10 @@ import android.util.Log;
  * @author manuelsilva
  *
  */
-public class ProductDetailsFragmentCommunicator {
+public class FragmentCommunicator {
     private static final String TAG = "ProductDetailsFragmentCommunicator";
 
-    private static ProductDetailsFragmentCommunicator mProductDetailsFragmentCommunicator;
+    private static FragmentCommunicator mProductDetailsFragmentCommunicator;
     
     private static OnFragmentActivityInteraction mActivityCallback = null;
     private static ArrayList<OnActivityFragmentInteraction> mFragmentsCallback = null;
@@ -27,9 +27,9 @@ public class ProductDetailsFragmentCommunicator {
     private CompleteProduct currentProduct;
     
     
-    public static ProductDetailsFragmentCommunicator getInstance() {
+    public static FragmentCommunicator getInstance() {
         if(mProductDetailsFragmentCommunicator == null){
-            mProductDetailsFragmentCommunicator = new ProductDetailsFragmentCommunicator();
+            mProductDetailsFragmentCommunicator = new FragmentCommunicator();
         }
         return mProductDetailsFragmentCommunicator;
     }
@@ -41,7 +41,7 @@ public class ProductDetailsFragmentCommunicator {
         currentProduct = null;
     }
     
-    private ProductDetailsFragmentCommunicator(){
+    private FragmentCommunicator(){
         this.mFragmentsCallback = new ArrayList<OnActivityFragmentInteraction>();
         this.mFragmentsCallbackNames = new ArrayList<String>();
     }
