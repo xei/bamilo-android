@@ -18,6 +18,7 @@ import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.PreferenceListFragment.OnPreferenceAttachedListener;
 import pt.rocket.view.fragments.BaseFragment;
+import pt.rocket.view.fragments.CategoriesContainerFragment;
 import pt.rocket.view.fragments.CategoriesFragment;
 import pt.rocket.view.fragments.ChangeCountryFragment;
 import pt.rocket.view.fragments.CheckoutStep5Fragment;
@@ -212,13 +213,13 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             fragment = HomeFragment.newInstance();
             break;
         case CATEGORIES_LEVEL_1:
-            fragment = CategoriesFragment.getInstance(bundle);
+            fragment = CategoriesContainerFragment.getInstance(bundle);
             break;
         case CATEGORIES_LEVEL_2:
-            fragment = CategoriesFragment.getInstance(bundle);
+            fragment = CategoriesContainerFragment.getInstance(bundle);
             break;
         case CATEGORIES_LEVEL_3:
-            fragment = CategoriesFragment.getInstance(bundle);
+            fragment = CategoriesContainerFragment.getInstance(bundle);
             break;
         case SEARCH:
             fragment = SearchFragment.getInstance();
@@ -304,12 +305,23 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
     @Override
     public void onBackPressed() {
         Log.i(TAG, "ON BACK PRESSED");
+        Log.i(TAG, "code1 : "+fragment.getTag());
+        fragment = getActiveFragment();
+        Log.i(TAG, "code1 : "+fragment.getTag());
         if(fragment == null || !fragment.allowBackPressed()) {
             Log.i(TAG, "NOT ALLOW BACK PRESSED: FRAGMENT");
             fragmentManagerBackPressed();
         }else{
             Log.i(TAG, "ALLOW BACK PRESSED: FRAGMENT");
         }
+    }
+    
+    public BaseFragment getActiveFragment() {
+        if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+            return null;
+        }
+        String tag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
+        return (BaseFragment) getSupportFragmentManager().findFragmentByTag(tag);
     }
 
     /**
