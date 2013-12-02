@@ -16,7 +16,7 @@ import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.OnFragmentActivityInteraction;
-import pt.rocket.utils.ProductDetailsFragmentCommunicator;
+import pt.rocket.utils.FragmentCommunicator;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.ProductDetailsActivityFragment;
 import pt.rocket.view.R;
@@ -271,7 +271,7 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
     }
 
     private void setBasicInfo() {
-        mCompleteProduct = ProductDetailsFragmentCommunicator.getInstance().getCurrentProduct();
+        mCompleteProduct = FragmentCommunicator.getInstance().getCurrentProduct();
         
         if (mCompleteProduct != null) {
             ((BaseActivity) getActivity()).setTitle(mCompleteProduct.getBrand() + " " + mCompleteProduct.getName());
@@ -308,7 +308,7 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
         }
 
         if (bundle.containsKey(ProductDetailsActivityFragment.PRODUCT_COMPLETE)) {
-            mCompleteProduct = ProductDetailsFragmentCommunicator.getInstance().getCurrentProduct();
+            mCompleteProduct = FragmentCommunicator.getInstance().getCurrentProduct();
         }
 
         if (bundle.containsKey(ProductDetailsActivityFragment.LOADING_PRODUCT_KEY)) {

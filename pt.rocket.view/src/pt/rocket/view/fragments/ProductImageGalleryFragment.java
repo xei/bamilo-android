@@ -21,7 +21,7 @@ import pt.rocket.utils.HorizontalListView;
 import pt.rocket.utils.JumiaViewPagerWithZoom;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
-import pt.rocket.utils.ProductDetailsFragmentCommunicator;
+import pt.rocket.utils.FragmentCommunicator;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.ProductDetailsActivityFragment;
 import pt.rocket.view.R;
@@ -179,7 +179,7 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
     @Override
     public void onResume() {
         super.onResume();
-        mCompleteProduct = ProductDetailsFragmentCommunicator.getInstance().getCurrentProduct();
+        mCompleteProduct = FragmentCommunicator.getInstance().getCurrentProduct();
         if (mCompleteProduct == null) {
             getActivity().finish();
             return;
@@ -383,7 +383,7 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
         productImageGalleryFragment.isZoomAvailable = bundle.getBoolean(
                 ConstantsIntentExtra.IS_ZOOM_AVAILABLE, false);
         
-        mCompleteProduct = (CompleteProduct) ProductDetailsFragmentCommunicator.getInstance()   
+        mCompleteProduct = (CompleteProduct) FragmentCommunicator.getInstance()   
                 .getCurrentProduct();
         // displayGallery(mCompleteProduct);
         if (mCompleteProduct == null) {

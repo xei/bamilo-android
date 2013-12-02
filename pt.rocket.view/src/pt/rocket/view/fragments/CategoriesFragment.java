@@ -4,25 +4,19 @@
 package pt.rocket.view.fragments;
 
 import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.List;
 
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.CategoriesAdapter;
 import pt.rocket.controllers.SubCategoriesAdapter;
 import pt.rocket.controllers.fragments.FragmentType;
-import pt.rocket.framework.event.EventManager;
-import pt.rocket.framework.event.EventType;
 import pt.rocket.framework.event.ResponseResultEvent;
-import pt.rocket.framework.event.events.GetCategoriesEvent;
 import pt.rocket.framework.objects.Category;
-import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.utils.MyMenuItem;
-import pt.rocket.utils.NavigationAction;
+import pt.rocket.utils.FragmentCommunicator;
 import pt.rocket.view.BaseActivity;
-import pt.rocket.view.R;
 import pt.rocket.view.MainFragmentActivity;
+import pt.rocket.view.R;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -64,6 +58,8 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
     private SubCategoriesAdapter subCatAdapter;
     
     public FragmentType currentFragment = FragmentType.CATEGORIES_LEVEL_1;
+    
+    private boolean isParent = false;
 
     /**
      * Get instance
@@ -90,6 +86,7 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
             if(categoriesFragment.currentFragment == null)
                 categoriesFragment.currentFragment = FragmentType.CATEGORIES_LEVEL_1;
             categoriesFragment.categoryUrl = bundle.getString(ConstantsIntentExtra.CATEGORY_URL);
+            categoriesFragment.isParent = bundle.getBoolean(CategoriesContainerFragment.CATEGORY_PARENT);
             categoriesFragment.categoryIndex = bundle.getInt(ConstantsIntentExtra.SELECTED_CATEGORY_INDEX);
             categoriesFragment.subCategoryIndex = bundle.getInt(ConstantsIntentExtra.SELECTED_SUB_CATEGORY_INDEX);
         }
@@ -100,11 +97,7 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
      * Empty constructor
      */
     public CategoriesFragment() {
-        super(EnumSet.of(EventType.GET_CATEGORIES_EVENT), 
-                EnumSet.noneOf(EventType.class),
-                EnumSet.of(MyMenuItem.SEARCH), 
-                NavigationAction.Categories, 
-                R.string.categories_title);
+        super(IS_NESTED_FRAGMENT);
     }
 
     /*
@@ -127,11 +120,8 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-        beginRequestMillis = System.currentTimeMillis();
-        // Retain this fragment across configuration changes.
-        setRetainInstance(true);
-        // TODO - Get categories from other place
-        categories = MainFragmentActivity.currentCategories;
+       
+        
     }
 
     /*
@@ -170,13 +160,11 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
+        
+        createList();
 //        ((BaseActivity) getActivity()).updateActivityHeader(NavigationAction.Categories, R.string.categories_title);
         
-        if(categories != null && getView() != null){
-            createList();
-        } else {
-            triggerContentEvent(new GetCategoriesEvent(categoryUrl));
-        }
+        
             
     }
 
@@ -211,7 +199,7 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
     public void onDestroyView() {
         super.onDestroyView();
         Log.i(TAG, "ON DESTROY");
-        EventManager.getSingleton().removeResponseListener(this, EnumSet.of(EventType.GET_CATEGORIES_EVENT));
+       
     }
 
     /*
@@ -228,11 +216,14 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
             if (!category.getHasChildren()) {
                 showProducts(category);
             } else {
-                // Switch to category level 2
                 Bundle bundle = new Bundle();
+                bundle.putBoolean(CategoriesContainerFragment.UPDATE_CHILD, true);
                 bundle.putInt(ConstantsIntentExtra.SELECTED_CATEGORY_INDEX, position);
+                bundle.putInt(ConstantsIntentExtra.SELECTED_SUB_CATEGORY_INDEX, 0);
                 bundle.putSerializable(ConstantsIntentExtra.CATEGORY_LEVEL, FragmentType.CATEGORIES_LEVEL_2);
-                ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.CATEGORIES_LEVEL_2, bundle, true);
+                
+                FragmentCommunicator.getInstance().notifyTarget(this, bundle, 0);
+                //((BaseActivity) getActivity()).onSwitchFragment(FragmentType.CATEGORIES_LEVEL_2, bundle, true);
             }
         } // LEVEL 2 or 3
         else {
@@ -244,31 +235,18 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see pt.rocket.view.fragments.BaseFragment#onSuccessEvent(pt.rocket.framework.event.
-     * ResponseResultEvent)
-     */
-    @SuppressWarnings("unchecked")
-    @Override
-    protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
-        // Validate if fragment is on the screen
-        if(isVisible()) {
-            AnalyticsGoogle.get().trackLoadTiming(R.string.gcategories, beginRequestMillis);
-            categories = (List<Category>) event.result;
-            MainFragmentActivity.currentCategories = categories;
-            // Update accordion
-            Log.d(TAG, "handleEvent: categories size = " + categories.size());
-            createList();
-        }
-        return true;
-    }
+    
 
     /**
      * Creates the list with all the categories
      */
     private void createList() {
+        if(categories == null){
+            categories = MainFragmentActivity.currentCategories;
+        }
+        
+        if(categories == null)
+            return;
         // Validate the current level
         switch (currentFragment) {
         case CATEGORIES_LEVEL_1:
@@ -296,6 +274,7 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
         }
         categoriesList = (ListView) getView().findViewById(R.id.sub_categories_grid);
         //categoriesList.setExpanded(true);
+        
         mainCatAdapter = new CategoriesAdapter(getActivity(), categories);
         categoriesList.setAdapter(mainCatAdapter);
         categoriesList.setOnItemClickListener(this);
@@ -315,7 +294,7 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
         
         String categoryTitle = currentCategory.getName();
         Log.d( TAG, "setSubCategoryList: currentCategory name = " + categoryTitle );
-        getActivity().setTitle(categoryTitle);
+        getActivity().setTitle(categories.get(categoryIndex).getName()+" / "+categoryTitle);
         
         subCatAdapter = new SubCategoriesAdapter(getActivity(), child, categoryTitle);
         categoriesList.setAdapter(subCatAdapter);
@@ -336,7 +315,7 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
         
         String categoryTitle = currentCategory.getName();
         Log.d( TAG, "setSubCategoryList: currentCategory name = " + categoryTitle );
-        getActivity().setTitle(categoryTitle);
+        getActivity().setTitle(categories.get(categoryIndex).getName() + " / "+categories.get(categoryIndex).getChildren().get(subCategoryIndex)+" / "+categoryTitle);
         
         subCatAdapter = new SubCategoriesAdapter(getActivity(), child, categoryTitle);
         categoriesList.setAdapter(subCatAdapter);
@@ -358,10 +337,19 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
             Log.d(TAG, "SELECTED CATEGORY HAS CHILDS: " + selectedCategory.getChildren().size());
             // Switch to level 3 
             Bundle bundle = new Bundle();
-            bundle.putInt(ConstantsIntentExtra.SELECTED_CATEGORY_INDEX, categoryIndex);
-            bundle.putInt(ConstantsIntentExtra.SELECTED_SUB_CATEGORY_INDEX, pos);
-            bundle.putSerializable(ConstantsIntentExtra.CATEGORY_LEVEL, FragmentType.CATEGORIES_LEVEL_3);
-            ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.CATEGORIES_LEVEL_3, bundle, true);
+            if(isParent){
+                bundle.putInt(ConstantsIntentExtra.SELECTED_CATEGORY_INDEX, categoryIndex);
+                bundle.putInt(ConstantsIntentExtra.SELECTED_SUB_CATEGORY_INDEX, pos);
+                bundle.putSerializable(ConstantsIntentExtra.CATEGORY_LEVEL, FragmentType.CATEGORIES_LEVEL_3);
+                bundle.putBoolean(CategoriesContainerFragment.UPDATE_CHILD, true);
+            } else {
+                bundle.putInt(ConstantsIntentExtra.SELECTED_CATEGORY_INDEX, categoryIndex);
+                bundle.putInt(ConstantsIntentExtra.SELECTED_SUB_CATEGORY_INDEX, pos);
+                bundle.putSerializable(CategoriesContainerFragment.PARENT_LEVEL, FragmentType.CATEGORIES_LEVEL_2);
+                bundle.putSerializable(CategoriesContainerFragment.CHILD_LEVEL, FragmentType.CATEGORIES_LEVEL_3);
+                bundle.putBoolean(CategoriesContainerFragment.UPDATE_BOTH, true);
+            }
+            FragmentCommunicator.getInstance().notifyTarget(this, bundle, 0);
         } else {
             Log.v(TAG, "SELECTED CATEGORY IS EMPTY: SHOW PRODUCTS");
             showProducts(selectedCategory);
@@ -373,6 +361,32 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
      * @param category
      */
     private void showProducts( Category category ) {
+        
+//        // Save the selected categories to recover when backpressed
+//        SharedPreferences sharedPrefs = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+//        SharedPreferences.Editor editor = sharedPrefs.edit();
+//        editor.putInt(ConstantsIntentExtra.SELECTED_CATEGORY_INDEX, categoryIndex);
+//        editor.putInt(ConstantsIntentExtra.SELECTED_SUB_CATEGORY_INDEX, subCategoryIndex);
+//        if(isParent){
+//            if(currentFragment == FragmentType.CATEGORIES_LEVEL_1){
+//                editor.putInt(CategoriesContainerFragment.PARENT_LEVEL, 1);
+//                editor.putInt(CategoriesContainerFragment.CHILD_LEVEL, 2);
+//            } else {
+//                editor.putInt(CategoriesContainerFragment.PARENT_LEVEL, 2);
+//                editor.putInt(CategoriesContainerFragment.CHILD_LEVEL, 3);
+//            }
+//        } else {
+//            if(currentFragment == FragmentType.CATEGORIES_LEVEL_2){
+//                editor.putInt(CategoriesContainerFragment.PARENT_LEVEL, 1);
+//                editor.putInt(CategoriesContainerFragment.CHILD_LEVEL, 2);
+//            } else {
+//                editor.putInt(CategoriesContainerFragment.PARENT_LEVEL, 2);
+//                editor.putInt(CategoriesContainerFragment.CHILD_LEVEL, 3);
+//            }
+//        }
+//        
+//        editor.commit();
+        
         Bundle bundle2 = new Bundle();
         bundle2.putString(ConstantsIntentExtra.CONTENT_URL, category.getApiUrl());
         bundle2.putString(ConstantsIntentExtra.CONTENT_TITLE, category.getName());
@@ -388,8 +402,36 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
 
     @Override
     public void notifyFragment(Bundle bundle) {
-        // TODO Auto-generated method stub
         
+        if(bundle.containsKey(ConstantsIntentExtra.SELECTED_SUB_CATEGORY_INDEX))
+            subCategoryIndex = bundle.getInt(ConstantsIntentExtra.SELECTED_SUB_CATEGORY_INDEX);
+        else
+            subCategoryIndex = 0;
+        
+        if(bundle.containsKey(ConstantsIntentExtra.SELECTED_CATEGORY_INDEX))
+            categoryIndex = bundle.getInt(ConstantsIntentExtra.SELECTED_CATEGORY_INDEX);
+        
+        if(bundle.containsKey(ConstantsIntentExtra.CATEGORY_LEVEL))
+            currentFragment = (FragmentType) bundle.getSerializable(ConstantsIntentExtra.CATEGORY_LEVEL);
+        
+        Log.i(TAG, "subCategoryIndex : "+subCategoryIndex + " categoryIndex : "+categoryIndex);
+        
+        categories = MainFragmentActivity.currentCategories;
+        
+        if(categories != null && getView() != null){
+            createList();
+        } else {
+           Bundle args = new Bundle();
+           args.putBoolean(CategoriesContainerFragment.GET_CATEGORIES, true);
+           FragmentCommunicator.getInstance().notifyTarget(this, args, 0);
+        }
+        
+        
+    }
+
+    @Override
+    protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
+        return false;
     }
     
 }

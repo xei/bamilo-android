@@ -467,6 +467,10 @@ public class SessionRegisterFragment extends BaseFragment {
      * This method validates if all necessary input fields are filled
      */
     private void checkInputFields() {
+        if(getView() == null){
+            Log.w(TAG, "CHECK INPUT FIELDS VIEW IS NULL!");
+            return;
+        }
         registerButton = (Button) getView().findViewById(R.id.register_button_submit);
 
         if (serverForm.checkRequired() && checkTermsIfRequired()) {

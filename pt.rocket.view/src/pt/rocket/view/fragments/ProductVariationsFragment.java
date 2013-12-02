@@ -16,7 +16,7 @@ import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.HorizontalListView;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
-import pt.rocket.utils.ProductDetailsFragmentCommunicator;
+import pt.rocket.utils.FragmentCommunicator;
 import pt.rocket.view.ProductDetailsActivityFragment;
 import pt.rocket.view.R;
 import android.os.Bundle;
@@ -183,7 +183,7 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
     }
 
     private void displayVariations() {
-        mCompleteProduct = ProductDetailsFragmentCommunicator.getInstance().getCurrentProduct();
+        mCompleteProduct = FragmentCommunicator.getInstance().getCurrentProduct();
         if (mCompleteProduct == null) {
             Log.i(TAG, "mCompleteProduct is null -- XXX verify and fix!!!");
             return;
@@ -226,7 +226,7 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
             mVariationsListPosition = position;
             Bundle bundle = new Bundle();
             bundle.putInt(ProductDetailsActivityFragment.LOADING_PRODUCT_KEY, position);
-            ProductDetailsFragmentCommunicator.getInstance().notifyTarget(this, bundle, 0);
+            FragmentCommunicator.getInstance().notifyTarget(this, bundle, 0);
 
             // mCallback.onFragmentElementSelected(position);
             mList.setSelectedItem(position, HorizontalListView.MOVE_TO_DIRECTLY);
@@ -257,7 +257,7 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
     @Override
     public void notifyFragment(Bundle bundle) {
 
-        this.mCompleteProduct = ProductDetailsFragmentCommunicator.getInstance().getCurrentProduct();
+        this.mCompleteProduct = FragmentCommunicator.getInstance().getCurrentProduct();
 
         // Validate if fragment is on the screen
         if (!isVisible()) {
