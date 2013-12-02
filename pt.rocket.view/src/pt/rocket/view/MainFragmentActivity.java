@@ -305,7 +305,6 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
     @Override
     public void onBackPressed() {
         Log.i(TAG, "ON BACK PRESSED");
-        Log.i(TAG, "code1 : "+fragment.getTag());
         fragment = getActiveFragment();
         Log.i(TAG, "code1 : "+fragment.getTag());
         if(fragment == null || !fragment.allowBackPressed()) {

@@ -3,14 +3,13 @@
  */
 package pt.rocket.view.fragments;
 
-import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
+import org.holoeverywhere.widget.TextView;
+
 import pt.rocket.constants.ConstantsIntentExtra;
-import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.CategoriesAdapter;
-import pt.rocket.controllers.SubCategoriesAdapter;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.event.EventManager;
 import pt.rocket.framework.event.EventType;
@@ -23,17 +22,16 @@ import pt.rocket.utils.FragmentCommunicator;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.view.BaseActivity;
-import pt.rocket.view.R;
 import pt.rocket.view.MainFragmentActivity;
+import pt.rocket.view.R;
 import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import de.akquinet.android.androlog.Log;
@@ -66,10 +64,14 @@ public class CategoriesContainerFragment extends BaseFragment {
     public static String CHILD_LEVEL ="child_level";
     public static String PARENT_LEVEL ="parent_level";
     public static String GET_CATEGORIES ="get_categories";
+    public static String PORTRAIT_MODE ="portrait_mode";
+    public static String REMOVE_FRAGMENTS ="remove_fragments";
     
     private static Fragment mCategoriesFragment;
 
     private static Fragment mChildCategoriesFragment;
+    
+    TextView backLevelButton;
     /**
      * Get instance
      * 
@@ -181,7 +183,7 @@ public class CategoriesContainerFragment extends BaseFragment {
                 createFragment();
             }
         } else if(getView() != null) {
-            triggerContentEventWithNoLoading(new GetCategoriesEvent(categoryUrl));
+            triggerContentEvent(new GetCategoriesEvent(categoryUrl));
         } else {
             ((BaseActivity) getActivity()).onBackPressed();
         }
@@ -195,10 +197,13 @@ public class CategoriesContainerFragment extends BaseFragment {
      */
     @Override
     public void onPause() {
-        super.onPause();
         Log.i(TAG, "ON PAUSE");
-        removeOldFragments();
+        // if any fragment is active, remove it.
+        if(mCategoriesFragment != null || mChildCategoriesFragment != null)
+            removeOldFragments();
         FragmentCommunicator.getInstance().destroyInstance();
+        super.onPause();
+       
     }
 
     /*
@@ -221,14 +226,42 @@ public class CategoriesContainerFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         Log.i(TAG, "ON DESTROY");
-        EventManager.getSingleton().removeResponseListener(this, EnumSet.of(EventType.GET_CATEGORIES_EVENT));
+//        EventManager.getSingleton().removeResponseListener(this, EnumSet.of(EventType.GET_CATEGORIES_EVENT));
     }
     
     
     @Override
     public boolean allowBackPressed() {
+        if(!((BaseActivity) getActivity()).isTabletInLandscape()){
+            if(currentFragment == FragmentType.CATEGORIES_LEVEL_3){
+                currentFragment = FragmentType.CATEGORIES_LEVEL_2;
+                Bundle bundleParent = new Bundle(); 
+                bundleParent.putSerializable(ConstantsIntentExtra.CATEGORY_LEVEL, FragmentType.CATEGORIES_LEVEL_2);
+                FragmentCommunicator.getInstance().notifyTarget(CategoriesContainerFragment.this, bundleParent, 1);
+                return true;
+            } else if(currentFragment == FragmentType.CATEGORIES_LEVEL_2){
+                currentFragment = FragmentType.CATEGORIES_LEVEL_1;
+                Bundle bundleParent = new Bundle(); 
+                bundleParent.putSerializable(ConstantsIntentExtra.CATEGORY_LEVEL, FragmentType.CATEGORIES_LEVEL_1);
+                FragmentCommunicator.getInstance().notifyTarget(CategoriesContainerFragment.this, bundleParent, 1);
+                return true;
+            }
+            return false;
+        }
         
-        return true;
+        if(backLevelButton != null && backLevelButton.getVisibility() == View.VISIBLE){
+            Bundle bundleParent = new Bundle(); 
+            bundleParent.putSerializable(ConstantsIntentExtra.CATEGORY_LEVEL, FragmentType.CATEGORIES_LEVEL_1);
+            FragmentCommunicator.getInstance().notifyTarget(CategoriesContainerFragment.this, bundleParent, 1);
+            
+            Bundle bundleChild = new Bundle();
+            bundleChild.putSerializable(ConstantsIntentExtra.CATEGORY_LEVEL, FragmentType.CATEGORIES_LEVEL_2);
+            FragmentCommunicator.getInstance().notifyTarget(CategoriesContainerFragment.this, bundleChild, 2);
+            
+            updateBackLevelButtonVisibility(false);
+            return true;
+        } 
+        return false;
     }
 
     /*
@@ -272,13 +305,15 @@ public class CategoriesContainerFragment extends BaseFragment {
         FragmentTransaction ft = fm.beginTransaction();
         ft.replace(R.id.categories_fragments_container, mCategoriesFragment);
         ft.commit();
+        FragmentCommunicator.getInstance().startFragmentsCallBacks(this, mCategoriesFragment);
     }
     
     /**
      * Creates the list with all the categories
      */
     private void createFragmentsForLandscape() {
-       
+        startButtonListener();
+        
         Bundle args = new Bundle();
         args.putString(ConstantsIntentExtra.CATEGORY_URL, categoryUrl);
         args.putInt(ConstantsIntentExtra.SELECTED_CATEGORY_INDEX, categoryIndex);
@@ -303,6 +338,37 @@ public class CategoriesContainerFragment extends BaseFragment {
         
     }
     
+    private void startButtonListener(){
+        if(getView() != null){
+            backLevelButton = (TextView) getView().findViewById(R.id.back_level_button);    
+        }
+        
+        backLevelButton.setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+                Bundle bundleParent = new Bundle(); 
+                bundleParent.putSerializable(ConstantsIntentExtra.CATEGORY_LEVEL, FragmentType.CATEGORIES_LEVEL_1);
+                FragmentCommunicator.getInstance().notifyTarget(CategoriesContainerFragment.this, bundleParent, 1);
+                
+                Bundle bundleChild = new Bundle();
+                bundleChild.putSerializable(ConstantsIntentExtra.CATEGORY_LEVEL, FragmentType.CATEGORIES_LEVEL_2);
+                FragmentCommunicator.getInstance().notifyTarget(CategoriesContainerFragment.this, bundleChild, 2);
+                
+                updateBackLevelButtonVisibility(false);
+            }
+        });
+        
+    }
+    
+    private void updateBackLevelButtonVisibility(boolean show){
+        if(show){
+            backLevelButton.setVisibility(View.VISIBLE);
+        } else {
+            backLevelButton.setVisibility(View.GONE);
+        }
+    }
+    
     private void removeOldFragments(){
         FragmentManager     fm = getChildFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();    
@@ -319,6 +385,37 @@ public class CategoriesContainerFragment extends BaseFragment {
         fm = null;
         ft = null;
         
+    }
+    
+    private void removeFragmentsAndOpenProducts(Bundle bundle){
+        FragmentManager     fm = getChildFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();    
+        if(mCategoriesFragment != null){
+            ft.remove(mCategoriesFragment);
+        }
+        
+        if(mChildCategoriesFragment != null){
+            ft.remove(mChildCategoriesFragment);
+        }
+        ft.commit();
+        mCategoriesFragment = null;
+        mChildCategoriesFragment = null;
+        fm = null;
+        ft = null;
+        
+        BaseActivity activity = (BaseActivity) getActivity();
+        if ( null == activity ) {
+            activity = mainActivity;
+        }
+        
+        activity.onSwitchFragment(FragmentType.PRODUCT_LIST, bundle, true);
+    }
+    
+    
+    private void updateFragment(Bundle bundle){
+        bundle.putBoolean(PORTRAIT_MODE, true);
+        currentFragment = (FragmentType) bundle.getSerializable(ConstantsIntentExtra.CATEGORY_LEVEL);
+        FragmentCommunicator.getInstance().notifyTarget(this, bundle, 1);
     }
     
     private void updateChild(Bundle bundle){
@@ -338,20 +435,31 @@ public class CategoriesContainerFragment extends BaseFragment {
         bChild.putInt(ConstantsIntentExtra.SELECTED_CATEGORY_INDEX, bundle.getInt(ConstantsIntentExtra.SELECTED_CATEGORY_INDEX));
         bChild.putInt(ConstantsIntentExtra.SELECTED_SUB_CATEGORY_INDEX, bundle.getInt(ConstantsIntentExtra.SELECTED_SUB_CATEGORY_INDEX));
         FragmentCommunicator.getInstance().notifyTarget(this, bChild, 2);
+        
+        if((FragmentType) bundle.getSerializable(CHILD_LEVEL) == FragmentType.CATEGORIES_LEVEL_3){
+            updateBackLevelButtonVisibility(true);
+        }
     }
     
     @Override
     public void notifyFragment(Bundle bundle) {
         
+        if(bundle.containsKey(REMOVE_FRAGMENTS)){
+            removeFragmentsAndOpenProducts(bundle);
+            
+            return;
+        }
+        
         if(bundle.containsKey(GET_CATEGORIES)){
-            triggerContentEventWithNoLoading(new GetCategoriesEvent(categoryUrl));
+            triggerContentEvent(new GetCategoriesEvent(categoryUrl));
             return;
         }
         
         Log.i(TAG, "CATEGORY_LEVEL : "+(FragmentType) bundle.getSerializable(ConstantsIntentExtra.CATEGORY_LEVEL));
         Log.i(TAG, "SELECTED_SUB_CATEGORY_INDEX : "+bundle.getInt(ConstantsIntentExtra.SELECTED_SUB_CATEGORY_INDEX));
-        
-        if(bundle.containsKey(UPDATE_CHILD)){
+        if(!((BaseActivity) getActivity()).isTabletInLandscape()){
+            updateFragment(bundle);
+        } else if(bundle.containsKey(UPDATE_CHILD)){
             updateChild(bundle);
         } else if(bundle.containsKey(UPDATE_BOTH)){
             updateBoth(bundle);

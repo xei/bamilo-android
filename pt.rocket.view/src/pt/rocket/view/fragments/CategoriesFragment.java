@@ -294,7 +294,7 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
         
         String categoryTitle = currentCategory.getName();
         Log.d( TAG, "setSubCategoryList: currentCategory name = " + categoryTitle );
-        getActivity().setTitle(categories.get(categoryIndex).getName()+" / "+categoryTitle);
+        getActivity().setTitle(categoryTitle);
         
         subCatAdapter = new SubCategoriesAdapter(getActivity(), child, categoryTitle);
         categoriesList.setAdapter(subCatAdapter);
@@ -315,7 +315,7 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
         
         String categoryTitle = currentCategory.getName();
         Log.d( TAG, "setSubCategoryList: currentCategory name = " + categoryTitle );
-        getActivity().setTitle(categories.get(categoryIndex).getName() + " / "+categories.get(categoryIndex).getChildren().get(subCategoryIndex)+" / "+categoryTitle);
+        getActivity().setTitle(categories.get(categoryIndex).getName() + " / "+categoryTitle);
         
         subCatAdapter = new SubCategoriesAdapter(getActivity(), child, categoryTitle);
         categoriesList.setAdapter(subCatAdapter);
@@ -385,19 +385,19 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
 //            }
 //        }
 //        
-//        editor.commit();
+//        editor.commit(); 
+        
+        
         
         Bundle bundle2 = new Bundle();
+        bundle2.putBoolean(CategoriesContainerFragment.REMOVE_FRAGMENTS, true);
         bundle2.putString(ConstantsIntentExtra.CONTENT_URL, category.getApiUrl());
         bundle2.putString(ConstantsIntentExtra.CONTENT_TITLE, category.getName());
         bundle2.putString(ConstantsIntentExtra.SEARCH_QUERY, null);
         bundle2.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcategory_prefix);
         bundle2.putString(ConstantsIntentExtra.NAVIGATION_PATH, category.getCategoryPath());
-        BaseActivity activity = (BaseActivity) getActivity();
-        if ( null == activity ) {
-            activity = mainActivity;
-        }
-        activity.onSwitchFragment(FragmentType.PRODUCT_LIST, bundle2, true);
+        
+        FragmentCommunicator.getInstance().notifyTarget(this, bundle2, 0);
     }
 
     @Override
