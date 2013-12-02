@@ -53,7 +53,7 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
     private EditText newPassword2Text;
     private TextView passwordErrorHint;
     
-    private OnFragmentActivityInteraction mCallbackMyAccountUserDataFragment;
+//    private OnFragmentActivityInteraction mCallbackMyAccountUserDataFragment;
     
     private static MyAccountUserDataFragment myAccountFragment;
     
@@ -226,7 +226,7 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
         triggerContentEvent(new ChangePasswordEvent(values));
         displayErrorHint(null);
         
-        mCallbackMyAccountUserDataFragment.sendValuesToActivity(0, values);
+//        mCallbackMyAccountUserDataFragment.sendValuesToActivity(0, values);
     }
     
     private void displayErrorHint( String hint ) {
