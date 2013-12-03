@@ -14,24 +14,35 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1" 
-        android:orientation="vertical">
+        android:layout_weight="1"
+        android:orientation="vertical" >
 
-        <org.holoeverywhere.widget.TextView
+        <RelativeLayout
             android:id="@+id/back_level_button"
             android:layout_width="match_parent"
             android:layout_height="42.67dp"
-            android:drawableLeft="@drawable/ic_next"
             android:gravity="center_vertical"
-            android:text="back level"
-            android:textColor="#cccccc" 
-            android:visibility="gone"/>
+            android:visibility="gone" >
+
+            <ImageView 
+                android:id="@+id/img_back_level"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/back_arrow_category"/>
+            
+            <org.holoeverywhere.widget.TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="6dp"
+                android:text="back level"
+                android:textColor="#cccccc" 
+                android:layout_toRightOf="@id/img_back_level"/>
+        </RelativeLayout>
 
         <FrameLayout
             android:id="@+id/categories_child_fragments_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-             />
+            android:layout_height="match_parent" />
     </LinearLayout>
 
 </LinearLayout>

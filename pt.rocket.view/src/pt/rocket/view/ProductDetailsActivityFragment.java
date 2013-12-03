@@ -193,7 +193,9 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
 //        mCallbackProductSpecificationFragment.sendPositionToFragment(LOADING_PRODUCT);
 //        mCallbackProductBasicInfoFragment.sendPositionToFragment(LOADING_PRODUCT);
         loadingRating.setVisibility(View.VISIBLE);
-
+        if(mCompleteProduct.getVariations() == null || (mCompleteProduct.getVariations().size()<=position))
+            return;
+        
         String url = mCompleteProduct.getVariations().get(position).getLink();
         if (TextUtils.isEmpty(url))
             return;

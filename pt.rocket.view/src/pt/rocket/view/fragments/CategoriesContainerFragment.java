@@ -35,6 +35,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -72,7 +73,7 @@ public class CategoriesContainerFragment extends BaseFragment {
 
     private static Fragment mChildCategoriesFragment;
     
-    TextView backLevelButton;
+    RelativeLayout backLevelButton;
     /**
      * Get instance
      * 
@@ -347,7 +348,7 @@ public class CategoriesContainerFragment extends BaseFragment {
     
     private void startButtonListener(){
         if(getView() != null){
-            backLevelButton = (TextView) getView().findViewById(R.id.back_level_button);    
+            backLevelButton = (RelativeLayout) getView().findViewById(R.id.back_level_button);    
         }
         
         backLevelButton.setOnClickListener(new OnClickListener() {
