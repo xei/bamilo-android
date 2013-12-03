@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/selector_navigation_generic_component"
     android:clickable="true"
@@ -24,6 +24,7 @@
 
         <org.holoeverywhere.widget.TextView
             android:id="@+id/component_text"
+            android:gravity="center_vertical"
             style="@style/navigation_generic_component_text"
             />
     </LinearLayout>
