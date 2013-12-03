@@ -9,11 +9,9 @@ import java.util.EnumSet;
 
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.ConstantsSharedPrefs;
-import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.controllers.ProductsListAdapter;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
-import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.event.EventManager;
 import pt.rocket.framework.event.EventType;
 import pt.rocket.framework.event.IMetaData;
@@ -114,7 +112,7 @@ public class ProductsFragment extends BaseFragment implements OnClickListener,
 
     boolean flag = false;
 
-    private long beginRequestMillis;
+    private long mBeginRequestMillis;
 
     private String navigationPath;
 
@@ -476,7 +474,7 @@ public class ProductsFragment extends BaseFragment implements OnClickListener,
                 // ((BaseActivity) getActivity()).showLoading();
             }
 
-            beginRequestMillis = System.currentTimeMillis();
+            mBeginRequestMillis = System.currentTimeMillis();
             EventManager.getSingleton().triggerRequestEvent(
                     new GetProductsEvent(productsURL, searchQuery, pageNumber, MAX_PAGE_ITEMS,
                             sort, dir, md5Hash));
@@ -610,7 +608,7 @@ public class ProductsFragment extends BaseFragment implements OnClickListener,
         Log.d(TAG, "Location = " + location);
         checkRedirectFromSearch(location);
 
-        AnalyticsGoogle.get().trackLoadTiming(R.string.gproductlist, beginRequestMillis);
+        AnalyticsGoogle.get().trackLoadTiming(R.string.gproductlist, mBeginRequestMillis);
         System.gc();
         if (!TextUtils.isEmpty(searchQuery)) {
             ((BaseActivity) getActivity()).setTitle(title + " (" + productsPage.getTotalProducts() + ")");
@@ -675,7 +673,7 @@ public class ProductsFragment extends BaseFragment implements OnClickListener,
                         .show();
             }
         }
-        
+        mBeginRequestMillis = System.currentTimeMillis();
         isLoadingMore = false;
         return true;
     }

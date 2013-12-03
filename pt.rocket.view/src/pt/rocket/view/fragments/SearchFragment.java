@@ -71,7 +71,7 @@ public class SearchFragment extends BaseFragment implements OnItemClickListener 
 
     private String searchSuggestionText;
     
-    private long beginInMillis;
+    private long mBeginRequestMillis;
     
 
     /**
@@ -333,7 +333,7 @@ public class SearchFragment extends BaseFragment implements OnItemClickListener 
     };
     
     private void requestSuggestions() {
-        beginInMillis = System.currentTimeMillis();
+        mBeginRequestMillis = System.currentTimeMillis();
         EventManager.getSingleton().triggerRequestEvent(
                 new GetSearchSuggestionsEvent(searchSuggestionText));
     }
@@ -405,7 +405,7 @@ public class SearchFragment extends BaseFragment implements OnItemClickListener 
             return true;
         }
             
-        AnalyticsGoogle.get().trackLoadTiming(R.string.gsearchsuggestions, beginInMillis);
+        AnalyticsGoogle.get().trackLoadTiming(R.string.gsearchsuggestions, mBeginRequestMillis);
         setSearchSuggestions((List<SearchSuggestion>) event.result);
         searchSuggestions = (List<SearchSuggestion>) event.result;
         return true;
@@ -422,6 +422,7 @@ public class SearchFragment extends BaseFragment implements OnItemClickListener 
     
     @Override
     protected boolean onErrorEvent(ResponseEvent event) {
+        mBeginRequestMillis = System.currentTimeMillis();
         // Validate fragment visibility
         if(!isVisible()){
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");

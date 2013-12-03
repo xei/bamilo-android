@@ -17,6 +17,7 @@ import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.components.ExpandableGridViewComponent;
 import pt.rocket.framework.event.EventManager;
 import pt.rocket.framework.event.EventType;
+import pt.rocket.framework.event.ResponseEvent;
 import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.event.events.ChangeItemQuantityInShoppingCartEvent;
 import pt.rocket.framework.event.events.GetShoppingCartItemsEvent;
@@ -66,7 +67,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
 
     private static ShoppingCartFragment reviewFragment;
     
-    private long beginRequestMillis;
+    private long mBeginRequestMillis;
 
     private LinearLayout noItems;
 
@@ -218,7 +219,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        beginRequestMillis = System.currentTimeMillis();
+        mBeginRequestMillis = System.currentTimeMillis();
         triggerContentEvent(GetShoppingCartItemsEvent.FORCE_API_CALL);
         setListeners();
         AnalyticsGoogle.get().trackPage(R.string.gshoppingcart);
@@ -340,13 +341,18 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
 //          }
 //          return false;
       default:
-          AnalyticsGoogle.get().trackLoadTiming(R.string.gshoppingcart, beginRequestMillis);
+          AnalyticsGoogle.get().trackLoadTiming(R.string.gshoppingcart, mBeginRequestMillis);
           displayShoppingCart((ShoppingCart) event.result);
           TrackerDelegator.trackViewCart(getActivity().getApplicationContext(), items.size());          
           return true;
       }
     }
     
+    @Override
+    protected boolean onErrorEvent(ResponseEvent event) {
+        mBeginRequestMillis = System.currentTimeMillis();
+        return super.onErrorEvent(event);
+    }
     
     private void displayShoppingCart(ShoppingCart cart) {
         Log.d( TAG, "displayShoppingCart" );
@@ -523,7 +529,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         for (int position = items.size() - 1; position >= 0; position--) {
             if ( itemsValues.get(position).is_checked) {
                 itemsValues.remove(position);
-                beginRequestMillis = System.currentTimeMillis();
+                mBeginRequestMillis = System.currentTimeMillis();
                 EventManager.getSingleton().triggerRequestEvent(
                         new RemoveItemFromShoppingCartEvent(items.get(position)));
                 items.remove(position);
@@ -575,7 +581,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
     
     public void changeQuantityOfItem(int position, int quantity) {
         items.get(position).setQuantity(quantity);
-        beginRequestMillis = System.currentTimeMillis();
+        mBeginRequestMillis = System.currentTimeMillis();
         triggerContentEventProgress(new ChangeItemQuantityInShoppingCartEvent(items));
     }
 

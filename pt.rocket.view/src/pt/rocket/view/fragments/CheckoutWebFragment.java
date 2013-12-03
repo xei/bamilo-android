@@ -190,7 +190,8 @@ public class CheckoutWebFragment extends BaseFragment {
         if(webview == null)
             webview = new WebView(getActivity());
         webview.loadUrl("about:blank");
-        mWebContainer.addView(webview);
+        if(webview.getParent() != null)
+            mWebContainer.addView(webview);
         // Needed for 2.3 problem with not showing keyboard by tapping in webview
         webview.requestFocus();
 //        webview.setHttpAuthUsernamePassword("https://" + RestContract.REQUEST_HOST, "", "rocket", "rock4me");

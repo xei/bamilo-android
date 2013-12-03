@@ -1034,7 +1034,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
     @Override
     protected boolean onErrorEvent(ResponseEvent event) {
         Log.d(TAG, "onErrorEvent: type = " + event.getType());
-        
+        mBeginRequestMillis = System.currentTimeMillis();
         // Validate dialog
         if(dialog != null && dialog.isVisible()){
             return true;

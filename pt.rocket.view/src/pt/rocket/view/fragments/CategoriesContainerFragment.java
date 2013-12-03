@@ -13,6 +13,7 @@ import pt.rocket.controllers.CategoriesAdapter;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.event.EventManager;
 import pt.rocket.framework.event.EventType;
+import pt.rocket.framework.event.ResponseEvent;
 import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.event.events.GetCategoriesEvent;
 import pt.rocket.framework.objects.Category;
@@ -48,7 +49,7 @@ public class CategoriesContainerFragment extends BaseFragment {
 
     private ListView categoriesList;
 
-    private long beginRequestMillis;
+    private long mBeginRequestMillis;
 
     private String categoryUrl;
 
@@ -134,7 +135,6 @@ public class CategoriesContainerFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-        beginRequestMillis = System.currentTimeMillis();
         // Retain this fragment across configuration changes.
         setRetainInstance(true);
     }
@@ -183,6 +183,7 @@ public class CategoriesContainerFragment extends BaseFragment {
                 createFragment();
             }
         } else if(getView() != null) {
+            mBeginRequestMillis = System.currentTimeMillis();
             triggerContentEvent(new GetCategoriesEvent(categoryUrl));
         } else {
             ((BaseActivity) getActivity()).onBackPressed();
@@ -275,7 +276,7 @@ public class CategoriesContainerFragment extends BaseFragment {
     protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
         // Validate if fragment is on the screen
         if(isVisible()) {
-            AnalyticsGoogle.get().trackLoadTiming(R.string.gcategories, beginRequestMillis);
+            AnalyticsGoogle.get().trackLoadTiming(R.string.gcategories, mBeginRequestMillis);
             MainFragmentActivity.currentCategories = (List<Category>) event.result;
             
             if(MainFragmentActivity.currentCategories != null && getView() != null){
@@ -288,6 +289,12 @@ public class CategoriesContainerFragment extends BaseFragment {
             }
         }
         return true;
+    }
+    
+    @Override
+    protected boolean onErrorEvent(ResponseEvent event) {
+        mBeginRequestMillis = System.currentTimeMillis();
+        return super.onErrorEvent(event);
     }
 
     /**
@@ -451,6 +458,7 @@ public class CategoriesContainerFragment extends BaseFragment {
         }
         
         if(bundle.containsKey(GET_CATEGORIES)){
+            mBeginRequestMillis = System.currentTimeMillis();
             triggerContentEvent(new GetCategoriesEvent(categoryUrl));
             return;
         }
