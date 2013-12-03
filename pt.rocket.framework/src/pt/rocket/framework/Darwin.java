@@ -144,9 +144,9 @@ public class Darwin {
 		tags.add(TimeZone.getDefault().getID());
 		tags.add(Locale.getDefault().getLanguage());
 		tags.add(Locale.getDefault().getCountry());
-		tags.add(Build.MANUFACTURER.replaceAll(" ", "%20"));
-		tags.add(Build.MODEL.replaceAll(" ", "%20"));
-		tags.add(Build.VERSION.RELEASE.replaceAll(" ", "%20"));
+		tags.add(Build.MANUFACTURER.replaceAll(" ", "-"));
+		tags.add(Build.MODEL.replaceAll(" ", "-"));
+		tags.add(Build.VERSION.RELEASE.replaceAll(" ", "-"));
 		// Check pre-install flag
 		if(isPreInstallApp) {
 			preInstallTag(context, tags, Build.MANUFACTURER);
