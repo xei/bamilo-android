@@ -44,7 +44,7 @@ import de.akquinet.android.androlog.Log;
  * @author sergiopereira
  * 
  */
-public class SlideMenuFragment extends BaseFragment implements OnClickListener{ 
+public class SlideMenuFragment extends BaseFragment implements OnClickListener {
 
     private static final String TAG = LogTagHelper.create(SlideMenuFragment.class);
 
@@ -59,7 +59,7 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener{
     public static ArrayList<NavigationListComponent> navigationListComponents;
 
     private static DialogGenericFragment dialogLogout;
-    
+
     /**
      * Get instance
      * 
@@ -76,10 +76,10 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener{
      * Empty constructor
      */
     public SlideMenuFragment() {
-        super(EnumSet.of(EventType.GET_NAVIGATION_LIST_COMPONENTS_EVENT), 
-                EnumSet.noneOf(EventType.class), 
-                EnumSet.noneOf(MyMenuItem.class), 
-                NavigationAction.Unknown, 
+        super(EnumSet.of(EventType.GET_NAVIGATION_LIST_COMPONENTS_EVENT),
+                EnumSet.noneOf(EventType.class),
+                EnumSet.noneOf(MyMenuItem.class),
+                NavigationAction.Unknown,
                 0);
     }
 
@@ -104,7 +104,7 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener{
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
         inflater = LayoutInflater.from(getActivity());
-        
+
         // Retain this fragment across configuration changes.
         setRetainInstance(true);
 
@@ -146,7 +146,7 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener{
         super.onResume();
         Log.i(TAG, "ON RESUME");
         // Update
-        if(navigationListComponents != null) {
+        if (navigationListComponents != null) {
             fillNavigationContainer(navigationListComponents);
             updateCart();
         } else {
@@ -174,7 +174,8 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener{
     public void onStop() {
         super.onStop();
         Log.i(TAG, "ON STOP");
-        EventManager.getSingleton().removeResponseListener(this, EnumSet.of(EventType.GET_NAVIGATION_LIST_COMPONENTS_EVENT));
+        EventManager.getSingleton().removeResponseListener(this,
+                EnumSet.of(EventType.GET_NAVIGATION_LIST_COMPONENTS_EVENT));
     }
 
     /*
@@ -187,25 +188,28 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener{
         super.onDestroyView();
         Log.i(TAG, "ON DESTROY VIEW");
     }
-    
+
     @Override
     public void onDestroy() {
         super.onDestroy();
         Log.i(TAG, "ON DESTROY");
-        //System.gc();
-        EventManager.getSingleton().removeResponseListener(this, EnumSet.of(EventType.GET_NAVIGATION_LIST_COMPONENTS_EVENT));
+        // System.gc();
+        EventManager.getSingleton().removeResponseListener(this,
+                EnumSet.of(EventType.GET_NAVIGATION_LIST_COMPONENTS_EVENT));
     }
 
     /*
      * (non-Javadoc)
-     * @see pt.rocket.view.fragments.BaseFragment#onSuccessEvent(pt.rocket.framework.event.ResponseResultEvent)
+     * 
+     * @see pt.rocket.view.fragments.BaseFragment#onSuccessEvent(pt.rocket.framework.event.
+     * ResponseResultEvent)
      */
     @Override
     protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
-        
-        if(!isVisible())
+
+        if (!isVisible())
             return true;
-        
+
         Log.i(TAG, "ON SUCCESS EVENT");
         if (event.getSuccess()) {
             switch (event.type) {
@@ -215,24 +219,37 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener{
                 navigationListComponents = (ArrayList<NavigationListComponent>) getNavEvent.result;
                 fillNavigationContainer(navigationListComponents);
                 updateCart();
-                break;                
+                break;
             }
         }
         return true;
     }
-    
-    
-    public void onUpdate(){
-        if(navigationListComponents != null) {
+
+    public void onUpdate() {
+        if (navigationListComponents != null) {
+            Log.i(TAG, "ON UPDATE: LIST IS NOT NULL");
+            // fillNavigationContainer(navigationListComponents);
+            refreshPosition();
+            updateCart();
+        } else {
+            // Log.i(TAG, "LIST IS NULL");
+            // triggerContentEvent(new
+            // RequestEvent(EventType.GET_NAVIGATION_LIST_COMPONENTS_EVENT));
+        }
+    }
+
+    public void onUpdateCompletly() {
+        if (navigationListComponents != null) {
             Log.i(TAG, "ON UPDATE: LIST IS NOT NULL");
             fillNavigationContainer(navigationListComponents);
             updateCart();
         } else {
             // Log.i(TAG, "LIST IS NULL");
-            //triggerContentEvent(new RequestEvent(EventType.GET_NAVIGATION_LIST_COMPONENTS_EVENT));
+            // triggerContentEvent(new
+            // RequestEvent(EventType.GET_NAVIGATION_LIST_COMPONENTS_EVENT));
         }
     }
-    
+
     /**
      * 
      * @param components
@@ -240,17 +257,19 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener{
     private void fillNavigationContainer(ArrayList<NavigationListComponent> components) {
         Log.d(TAG, "FILL NAVIGATION CONTAINER");
         navigationContainer.removeAllViews();
-        
+
         // Header component
         inflater.inflate(R.layout.navigation_header_component, navigationContainer, true);
 
         // Static container
         inflater.inflate(R.layout.navigation_static_container, navigationContainer, true);
-        ViewGroup staticContainer = (ViewGroup) navigationContainer.findViewById(R.id.slide_menu_static_container);
-        
+        ViewGroup staticContainer = (ViewGroup) navigationContainer
+                .findViewById(R.id.slide_menu_static_container);
+
         // Scrollable container
         inflater.inflate(R.layout.navigation_scrollable_container, navigationContainer, true);
-        ViewGroup scrollableContainer = (ViewGroup) navigationContainer.findViewById(R.id.slide_menu_scrollable_container);
+        ViewGroup scrollableContainer = (ViewGroup) navigationContainer
+                .findViewById(R.id.slide_menu_scrollable_container);
 
         for (NavigationListComponent component : components) {
             // Basket
@@ -259,12 +278,29 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener{
                 viewGroup = staticContainer;
             // Others
             View actionElementLayout = getActionElementLayout(component, viewGroup);
-            if (actionElementLayout != null) 
+            if (actionElementLayout != null)
                 viewGroup.addView(actionElementLayout);
         }
     }
 
-    
+    public void refreshPosition() {
+        if (navigationContainer != null && (ViewGroup) getView() != null) {
+            if (((ViewGroup) getView().findViewById(R.id.slide_menu_scrollable_container)) != null) {
+                int count = ((ViewGroup) getView().findViewById(
+                        R.id.slide_menu_scrollable_container)).getChildCount();
+                ViewGroup vGroup = ((ViewGroup) getView().findViewById(
+                        R.id.slide_menu_scrollable_container));
+                Log.i(TAG, "code1 size is : " + count);
+                for (int i = 0; i < count; i++) {
+                    View view = vGroup.getChildAt(i);
+                    Log.i(TAG, "code1 tag is  : " + count);
+                    setActionSelected(view);
+                }
+            }
+
+        }
+    }
+
     /**
      * Retrieves the layout element associated with a given action of the navigation list
      * 
@@ -347,21 +383,21 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener{
         }
         return layout;
     }
-    
+
     /**
      * 
      * @param view
      */
     private void setActionSelected(View view) {
         if (view.getTag(R.id.nav_action) == ((BaseActivity) getActivity()).getAction()) {
-            Log.i(TAG, "SELECTED ACTION: " + ((BaseActivity) getActivity()).getAction() );
-            if(!view.isSelected()) 
-                view.setSelected(true); 
+            Log.i(TAG, "SELECTED ACTION: " + ((BaseActivity) getActivity()).getAction());
+            if (!view.isSelected())
+                view.setSelected(true);
         } else {
             view.setSelected(false);
-        }        
+        }
     }
-    
+
     /**
      * 
      * @param parent
@@ -369,7 +405,8 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener{
      * @param listener
      * @return
      */
-    private View createBasket(ViewGroup parent, NavigationListComponent component, OnClickListener listener) {
+    private View createBasket(ViewGroup parent, NavigationListComponent component,
+            OnClickListener listener) {
         View layout = inflater.inflate(R.layout.navigation_basket_component, parent, false);
         View basket = layout.findViewById(R.id.nav_basket);
         basket.setOnClickListener(listener);
@@ -385,7 +422,8 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener{
      * @param listener
      * @return
      */
-    private View createGenericComponent(ViewGroup parent, NavigationListComponent component, int iconRes, int textRes, OnClickListener listener) {
+    private View createGenericComponent(ViewGroup parent, NavigationListComponent component,
+            int iconRes, int textRes, OnClickListener listener) {
         return createGenericComponent(parent, component, iconRes, getString(textRes), listener);
     }
 
@@ -398,7 +436,8 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener{
      * @param listener
      * @return
      */
-    private View createGenericComponent(ViewGroup parent, NavigationListComponent component, int iconRes, String text, OnClickListener listener) {
+    private View createGenericComponent(ViewGroup parent, NavigationListComponent component,
+            int iconRes, String text, OnClickListener listener) {
         View navComponent = inflater.inflate(R.layout.navigation_generic_component, parent, false);
         TextView tVSearch = (TextView) navComponent.findViewById(R.id.component_text);
         tVSearch.setText(text);
@@ -406,95 +445,115 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener{
         navComponent.setOnClickListener(listener);
         return navComponent;
     }
-    
 
     /*
      * (non-Javadoc)
+     * 
      * @see android.view.View.OnClickListener#onClick(android.view.View)
      */
     @Override
     public void onClick(View v) {
         NavigationAction navAction = (NavigationAction) v.getTag(R.id.nav_action);
-        Log.d(TAG, "Clicked on " + navAction + " while in " + ((BaseActivity) getActivity()).getAction());
-        
+        Log.d(TAG,
+                "Clicked on " + navAction + " while in "
+                        + ((BaseActivity) getActivity()).getAction());
+
         SlidingMenu slidingMenu = ((BaseActivity) getActivity()).getSlidingMenu();
-        
+
         if (navAction != null && ((BaseActivity) getActivity()).getAction() != navAction) {
             switch (navAction) {
             case Basket:
-                ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.SHOPPING_CART, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-                if(slidingMenu.isSlidingEnabled()) slidingMenu.toggle(true);
+                ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.SHOPPING_CART,
+                        FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                if (slidingMenu.isSlidingEnabled())
+                    slidingMenu.toggle(true);
                 break;
             case Home:
-                ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-                if(slidingMenu.isSlidingEnabled()) slidingMenu.toggle(true);
+                ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.HOME,
+                        FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                if (slidingMenu.isSlidingEnabled())
+                    slidingMenu.toggle(true);
                 break;
             case Search:
-                ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.SEARCH, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-                if(slidingMenu.isSlidingEnabled()) slidingMenu.toggle(true);
+                ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.SEARCH,
+                        FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                if (slidingMenu.isSlidingEnabled())
+                    slidingMenu.toggle(true);
                 break;
             case Categories:
                 Bundle bundle = new Bundle();
                 bundle.putString(ConstantsIntentExtra.CATEGORY_URL, null);
-                bundle.putSerializable(ConstantsIntentExtra.CATEGORY_LEVEL, FragmentType.CATEGORIES_LEVEL_1);
-                ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.CATEGORIES_LEVEL_1, bundle, FragmentController.ADD_TO_BACK_STACK);
-                if(slidingMenu.isSlidingEnabled()) slidingMenu.toggle(true);
+                bundle.putSerializable(ConstantsIntentExtra.CATEGORY_LEVEL,
+                        FragmentType.CATEGORIES_LEVEL_1);
+                ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.CATEGORIES_LEVEL_1,
+                        bundle, FragmentController.ADD_TO_BACK_STACK);
+                if (slidingMenu.isSlidingEnabled())
+                    slidingMenu.toggle(true);
                 break;
             case MyAccount:
-                ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.MY_ACCOUNT, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-                if(slidingMenu.isSlidingEnabled()) slidingMenu.toggle(true);
+                ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.MY_ACCOUNT,
+                        FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                if (slidingMenu.isSlidingEnabled())
+                    slidingMenu.toggle(true);
                 break;
             case LoginOut:
                 // ActivitiesWorkFlow.loginOut(getActivity());
                 loginOut((BaseActivity) getActivity());
-                if(slidingMenu.isSlidingEnabled()) slidingMenu.toggle(true);
+                if (slidingMenu.isSlidingEnabled())
+                    slidingMenu.toggle(true);
                 break;
             case Country:
-                ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.CHANGE_COUNTRY, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-                if(slidingMenu.isSlidingEnabled()) slidingMenu.toggle(true);
+                ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.CHANGE_COUNTRY,
+                        FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                if (slidingMenu.isSlidingEnabled())
+                    slidingMenu.toggle(true);
                 break;
             case TrackOrder:
-                ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.TRACK_ORDER, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-                if(slidingMenu.isSlidingEnabled()) slidingMenu.toggle(true);
+                ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.TRACK_ORDER,
+                        FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                if (slidingMenu.isSlidingEnabled())
+                    slidingMenu.toggle(true);
                 break;
             }
-            
+
         } else {
             Log.d(TAG, "Did not handle: " + navAction);
         }
     }
-    
+
     /**
      * Method used to update the information about the cart
+     * 
      * @param cart
      */
-    public void updateCartInfo(ShoppingCart cart){
+    public void updateCartInfo(ShoppingCart cart) {
         shoppingCart = cart;
         updateCart();
     }
-    
+
     private void updateCart() {
-        
-        if(shoppingCart == null || getView() == null)
+
+        if (shoppingCart == null || getView() == null)
             return;
-        
+
         // Update ActionBar
         ((BaseActivity) getActivity()).updateCartInfoInActionBar(shoppingCart);
-        
+
         View container = getView().findViewById(R.id.nav_basket);
         if (container == null) {
             Log.w(getTag(), "updateCartInfo: cant find basket container - doing nothing");
             return;
         }
-        
+
         final TextView vCartCount = (TextView) container.findViewById(R.id.nav_cart_count);
         final TextView navIm = (TextView) container.findViewById(R.id.nav_basket_elements);
         final TextView navVat = (TextView) container.findViewById(R.id.nav_basket_vat);
         final View navCartEmptyText = container.findViewById(R.id.nav_basket_empty);
 
         final String value = shoppingCart != null ? shoppingCart.getCartValue() : "";
-        final String quantity = shoppingCart == null ? "?" : shoppingCart.getCartCount() == 0 ? "" : String
-                .valueOf(shoppingCart.getCartCount());
+        final String quantity = shoppingCart == null ? "?" : shoppingCart.getCartCount() == 0 ? ""
+                : String
+                        .valueOf(shoppingCart.getCartCount());
 
         vCartCount.post(new Runnable() {
             @Override
@@ -517,10 +576,9 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener{
             }
         });
     }
-    
-    
+
     public static void loginOut(final BaseActivity activity) {
-        if(ServiceManager.SERVICES.get(CustomerAccountService.class).hasCredentials()) {
+        if (ServiceManager.SERVICES.get(CustomerAccountService.class).hasCredentials()) {
             FragmentManager fm = activity.getSupportFragmentManager();
             dialogLogout = DialogGenericFragment.newInstance(false, true, false,
                     activity.getString(R.string.logout_title),
@@ -539,9 +597,9 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener{
                     });
             dialogLogout.show(fm, null);
         } else {
-            activity.onSwitchFragment(FragmentType.LOGIN, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            activity.onSwitchFragment(FragmentType.LOGIN, FragmentController.NO_BUNDLE,
+                    FragmentController.ADD_TO_BACK_STACK);
         }
     }
-    
 
 }

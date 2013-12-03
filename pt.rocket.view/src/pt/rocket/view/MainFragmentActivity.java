@@ -95,6 +95,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         } else {
             currentFragmentType = (FragmentType) savedInstanceState.getSerializable(ConstantsIntentExtra.FRAGMENT_TYPE);
+            
             Log.d(TAG, "################### SAVED INSTANCE ISN'T NULL: " + currentFragmentType.toString());
             fragment = (BaseFragment) getSupportFragmentManager().findFragmentByTag(currentFragmentType.toString());
             if ( null != fragment ) {

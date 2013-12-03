@@ -11,6 +11,7 @@ import pt.rocket.controllers.CountryAdapter;
 import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.rest.RestClientSingleton;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.view.BaseActivity;
@@ -66,7 +67,7 @@ public class ChangeCountryFragment extends BaseFragment {
      * Empty constructor
      */
     public ChangeCountryFragment() {
-        super(IS_NESTED_FRAGMENT);
+        super(IS_NESTED_FRAGMENT, NavigationAction.Country);
     }
 
     /*

@@ -10,6 +10,7 @@ import java.util.Set;
 import org.holoeverywhere.widget.EditText;
 import org.holoeverywhere.widget.TextView;
 
+import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
@@ -204,9 +205,12 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
 		EventManager.getSingleton().addResponseListener(this, allHandledEvents);
 		setupActionBar();
 		setupContentViews();
-		
+		boolean initialCountry = false;
+		if(getIntent().getExtras() != null){
+		    initialCountry = getIntent().getExtras().getBoolean(ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, false);
+		}
 		// Set sliding menu
-		setupNavigationMenu();
+		setupNavigationMenu(initialCountry);
 		
 		isRegistered = true;
 		setAppContentLayout();
@@ -309,7 +313,11 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         if(titleResId == 0) hideTitle();
         else setTitle(titleResId);
     }
-
+	
+	public void updateActionForCountry(NavigationAction action){
+	    this.action = action != null ? action : NavigationAction.Unknown;
+	    updateSlidingMenu();
+	}
     
     public void setupActionBar() {
         ActionBarSherlock.unregisterImplementation(ActionBarSherlockNative.class);
@@ -384,7 +392,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
 	 * Method used to set the sliding menu with support for tablet
 	 * @author sergiopereira
 	 */
-    private void setupNavigationMenu() {
+    private void setupNavigationMenu(boolean onChangeCountry) {
         // Set Behind Content View
         setBehindContentView(R.layout.navigation_container_fragments);
         // Customize sliding menu
@@ -396,8 +404,9 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         sm.setFadeDegree(0.35f);
         sm.setBackgroundColor(getResources().getColor(R.color.sidemenu_background));
         sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
+        Log.i(TAG, "codeW : "+onChangeCountry);
         // Validate current orientation and device
-        if(isTabletInLandscape()) {
+        if(isTabletInLandscape() && !onChangeCountry) {
             // Landscape mode
             slideMenuInLandscapeMode(sm);
         }else {

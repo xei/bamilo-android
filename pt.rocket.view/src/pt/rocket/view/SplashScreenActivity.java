@@ -308,6 +308,7 @@ public class SplashScreenActivity extends Activity implements ResponseListener {
             Intent intent = new Intent(this, MainFragmentActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); 
             intent.putExtra(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.CHANGE_COUNTRY);
+            intent.putExtra(ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, true);
             // Start activity
             startActivity(intent);
             finish();

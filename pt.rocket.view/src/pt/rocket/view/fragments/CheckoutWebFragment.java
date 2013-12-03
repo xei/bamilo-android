@@ -71,9 +71,9 @@ public class CheckoutWebFragment extends BaseFragment {
 
     private static final String CHECKOUT_URL_WITH_PARAM = "/checkout/multistep/?setDevice=mobileApi&iosApp=1";
 
-    private FrameLayout mWebContainer;
+//    private FrameLayout mWebContainer;
     private WebView webview;
-    private CustomWebViewClient customWebViewClient;
+    
     private String checkoutUrl;
 
     private String failedPageRequest;
@@ -106,14 +106,14 @@ public class CheckoutWebFragment extends BaseFragment {
      */
     public CheckoutWebFragment() {
         super(EnumSet.of(EventType.GET_SHOPPING_CART_ITEMS_EVENT, EventType.GET_CUSTOMER),
-        EnumSet.noneOf(EventType.class),EnumSet.noneOf(MyMenuItem.class),NavigationAction.Basket,0);
+        EnumSet.noneOf(EventType.class),EnumSet.noneOf(MyMenuItem.class),NavigationAction.Unknown,0);
         this.setRetainInstance(true);
     }
     
     @Override
     public boolean allowBackPressed() {
         Log.d( TAG, "onBackPressed: webview.canGoBackup = " + webview.canGoBack() + " webview.hasFocus() = " + webview.hasFocus());
-        if (webview.canGoBack() && webview.hasFocus()) {
+        if ( webview != null && webview.canGoBack() && webview.hasFocus()) {
             webview.goBack();
             return true;
         } else {
@@ -158,9 +158,9 @@ public class CheckoutWebFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         Log.i(TAG, "ON CREATE VIEW");
-        View view = inflater.inflate(R.layout.checkoutweb_frame, container, false);
+        View view = inflater.inflate(R.layout.checkoutweb, container, false);
         
-        mWebContainer = (FrameLayout) view.findViewById(R.id.rocket_app_checkoutweb);
+        webview = (WebView) view.findViewById(R.id.webview);
 //        webview = new WebView(getActivity());
 //        mWebContainer.addView(webview);
         
@@ -187,11 +187,8 @@ public class CheckoutWebFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        if(webview == null)
-            webview = new WebView(getActivity());
         webview.loadUrl("about:blank");
-        if(webview.getParent() == null)
-            mWebContainer.addView(webview);
+
         // Needed for 2.3 problem with not showing keyboard by tapping in webview
         webview.requestFocus();
 //        webview.setHttpAuthUsernamePassword("https://" + RestContract.REQUEST_HOST, "", "rocket", "rock4me");
@@ -232,18 +229,6 @@ public class CheckoutWebFragment extends BaseFragment {
      */
     @Override
     public void onDestroyView() {
-        if(webview != null){
-            mWebContainer.removeAllViews();
-            webview.clearHistory();
-            webview.clearCache(true);
-            webview.clearView();
-            webview.loadUrl("about:blank");
-            webview.freeMemory();  //new code    
-            webview.pauseTimers(); //new code
-            webview.destroy();
-            webview = null; 
-            customWebViewClient = null;
-          }
         super.onDestroyView();
         
         Log.i(TAG, "ON DESTROY");
@@ -251,19 +236,15 @@ public class CheckoutWebFragment extends BaseFragment {
     
     @Override
     public void onDestroy() {
-        if(webview != null){
-            mWebContainer.removeAllViews();
-            webview.clearHistory();
-            webview.clearCache(true);
-            webview.clearView();
-            webview.loadUrl("about:blank");
-            webview.freeMemory();  //new code    
-            webview.pauseTimers(); //new code
+        super.onDestroy();
+        if(webview != null) {
+            webview.setWebViewClient(null);
+            webview.removeAllViews();
             webview.destroy();
             webview = null;
-            customWebViewClient = null;
-          }
-        super.onDestroy();
+        }
+        System.gc();
+        
     }
     
     @Override
@@ -292,7 +273,7 @@ public class CheckoutWebFragment extends BaseFragment {
     @SuppressLint("SetJavaScriptEnabled")
     private void setupWebView() {
         //webview = (WebView) findViewById(R.id.webview);
-        customWebViewClient = new CustomWebViewClient();
+        CustomWebViewClient customWebViewClient = new CustomWebViewClient();
         webview.setWebViewClient(customWebViewClient);
         webview.getSettings().setJavaScriptEnabled(true);
         webview.getSettings().setSaveFormData(false);
@@ -304,7 +285,7 @@ public class CheckoutWebFragment extends BaseFragment {
         ((BaseActivity) getActivity()).showLoading();
         webview.clearView();
         webview.loadUrl("about:blank"); 
-        checkoutUrl = "http://" + RestContract.REQUEST_HOST + CHECKOUT_URL_WITH_PARAM;
+        checkoutUrl = "https://" + RestContract.REQUEST_HOST + CHECKOUT_URL_WITH_PARAM;
         setProxy( checkoutUrl );
         Log.d(TAG, "Loading Url: " + checkoutUrl);
         webview.loadUrl(checkoutUrl);

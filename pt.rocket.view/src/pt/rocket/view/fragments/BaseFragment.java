@@ -109,6 +109,17 @@ public abstract class BaseFragment extends Fragment implements ResponseListener,
     public BaseFragment(Boolean isNestedFragment) {
         this.isNestedFragment = isNestedFragment;
     }
+    
+    /**
+     * Constructor used only by nested fragments
+     * 
+     * @param isNestedFragment
+     */
+    public BaseFragment(Boolean isNestedFragment, NavigationAction action) {
+        this.isNestedFragment = isNestedFragment;
+        this.action = action;
+    }
+
 
     /**
      * #### LIFE CICLE ####
@@ -162,6 +173,11 @@ public abstract class BaseFragment extends Fragment implements ResponseListener,
         super.onStart();
         // Save the current state
         setVisiblility(VISIBLE);
+        
+        if(this.action == NavigationAction.Country){
+            ((BaseActivity) getActivity()).updateActionForCountry(this.action);
+        }
+        
         // Update base components, like items on action bar
         if (!isNestedFragment && enabledMenuItems != null) {
             Log.i(TAG,
