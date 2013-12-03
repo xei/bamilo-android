@@ -114,15 +114,14 @@ public class JumiaApplication extends Application implements ResponseListener, E
     }
 
     @Override
-    public void lastBreath() {
-        // TODO: find something useful to send for crash extras
-        // BugSenseHandler.addCrashExtraMap(  );
-    }
-
-    @Override
     public String getMD5Hash() {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    @Override
+    public void lastBreath(Exception arg0) {
+              
     }
 
 }
