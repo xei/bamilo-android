@@ -218,6 +218,7 @@
 	<string name="call_to_order_number">01156226220</string>
 	<string name="fallback_best">Egypt\'s best online shopping experience</string>
 	<string name="got_it">Got it</string>
+	<string name="back_level">back level</string>
 	<!-- Facebook App Id DO NOT TRANSLATE -->
 	<string name="app_id">390085037744566</string>
 </resources>

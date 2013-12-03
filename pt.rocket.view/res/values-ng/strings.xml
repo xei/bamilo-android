@@ -217,6 +217,7 @@
 	<string name="rating_quality">Quality</string>
 	<string name="call_to_order_number">014604400</string>
 	<string name="fallback_best">Nigeria\'s No.1 Online Retailer</string>
+	<string name="back_level">back level</string>
 	<!-- Facebook App Id DO NOT TRANSLATE -->
 	<string name="app_id">321703697936806</string>
 </resources>

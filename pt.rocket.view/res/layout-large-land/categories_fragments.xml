@@ -34,7 +34,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="6dp"
-                android:text="back level"
+                android:text="@string/back_level"
                 android:textColor="#cccccc" 
                 android:layout_toRightOf="@id/img_back_level"/>
         </RelativeLayout>

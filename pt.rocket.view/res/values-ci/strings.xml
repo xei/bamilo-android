@@ -254,6 +254,7 @@
     <string name="fallback_doorstep">À VOTRE PORTE</string>
     <string name="shipping">Livraison</string>
     <string name="got_it">J\'ai Compris</string>
+    <string name="back_level">retour au niveau précédent</string>
     <!-- Facebook App Id DO NOT TRANSLATE -->
     <string name="app_id">472507709498904</string>
 

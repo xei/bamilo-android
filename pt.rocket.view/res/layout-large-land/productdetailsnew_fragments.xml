@@ -213,6 +213,8 @@
                 android:layout_marginLeft="0dp"
                 android:layout_marginRight="0dp"
                 android:layout_weight="1"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:singleLine="true"
                 android:contentDescription="@string/productdetail_addcart_description"
                 android:text="@string/add_to_shopping_cart" />
 

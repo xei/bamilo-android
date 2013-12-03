@@ -252,6 +252,7 @@
     <string name="fallback_doorstep">AT YOUR DOORSTEP</string>
     <string name="shipping">Shipping</string>
     <string name="got_it">Got it</string>
+    <string name="back_level">back level</string>
     <!-- Facebook App Id DO NOT TRANSLATE -->
     <string name="app_id">321703697936806</string>
 

@@ -385,6 +385,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
         mVariantChooseError = (TextView) mainView.findViewById(R.id.product_variant_choose_error);
 
         mAddToCartButton = (Button) mainView.findViewById(R.id.shop);
+        mAddToCartButton.setSelected(true);
         mAddToCartButton.setOnClickListener(this);
         mCallToOrderButton = (Button) mainView.findViewById(R.id.call_to_order);
         mCallToOrderButton.setSelected(true);
