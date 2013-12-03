@@ -199,6 +199,11 @@ public abstract class BaseFragment extends Fragment implements ResponseListener,
     public void onResume() {
         super.onResume();
         Log.d(getTag(), "onResume");
+        
+        // XXX - Force Slide Menu to stay open when pressing the back button 
+        // TODO: detect issue and solve (back press closes SlideMenu when in landscape mode)
+        if(getActivity() != null && ((BaseActivity) getActivity()).isTabletInLandscape())
+            ((BaseActivity) getActivity()).showMenu();
     }
 
     /*

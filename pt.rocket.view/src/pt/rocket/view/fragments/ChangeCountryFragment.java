@@ -230,7 +230,7 @@ public class ChangeCountryFragment extends BaseFragment {
                         dialog.dismiss();
                         int id = v.getId();
                         if (id == R.id.button1) {
-                            getActivity().finish();
+                            ((BaseActivity) getActivity()).onBackPressed();
                         } else if (id == R.id.button2) {
                             setCountry(position);
                         }

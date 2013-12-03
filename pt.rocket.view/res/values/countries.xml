@@ -55,53 +55,53 @@
 	<!-- Dev versions -->
 	
 	<!-- Jumia Nigeria Configuration -->
-    <string name="jumia_ng_shopname_dev">Jumia</string>
+<!--     <string name="jumia_ng_shopname_dev">Jumia</string> -->
 <!--     <string name="jumia_ng_server">www.jumia.com.ng</string> -->
-    <string name="jumia_ng_server_dev">alice-staging.jumia.com.ng</string>
+<!--     <string name="jumia_ng_server_dev">alice-staging.jumia.com.ng</string> -->
 <!--     <string name="jumia_ng_server">alice-staging.dev0.jumia.com</string> -->
-    <string name="jumia_ng_user_dev">rocket</string>
-    <string name="jumia_ng_password_dev">rock4me</string>
-    <string name="jumia_ng_restbase_path_dev">mobapi</string>
-    <string name="jumia_ng_country_name_dev">Nigeria Dev</string>
+<!--     <string name="jumia_ng_user_dev">rocket</string> -->
+<!--     <string name="jumia_ng_password_dev">rock4me</string> -->
+<!--     <string name="jumia_ng_restbase_path_dev">mobapi</string> -->
+<!--     <string name="jumia_ng_country_name_dev">Nigeria Dev</string> -->
 
-    <!-- Jumia Kenya Configuration -->
-    <string name="jumia_ke_shopname_dev">Jumia</string>
+<!--     Jumia Kenya Configuration -->
+<!--     <string name="jumia_ke_shopname_dev">Jumia</string> -->
 <!--     <string name="jumia_ke_server">www.jumia.co.ke</string> -->
-    <string name="jumia_ke_server_dev">alice-staging.jumia.co.ke</string>
-    <!-- <string name="jumia_ke_server">mobile.jumia.com</string> -->
-    <string name="jumia_ke_user_dev">rocket</string>
-    <string name="jumia_ke_password_dev">rock4me</string>
-    <string name="jumia_ke_restbase_path_dev">mobapi</string>
-    <string name="jumia_ke_country_name_dev">Kenya Dev</string>
+<!--     <string name="jumia_ke_server_dev">alice-staging.jumia.co.ke</string> -->
+<!--     <string name="jumia_ke_server">mobile.jumia.com</string> -->
+<!--     <string name="jumia_ke_user_dev">rocket</string> -->
+<!--     <string name="jumia_ke_password_dev">rock4me</string> -->
+<!--     <string name="jumia_ke_restbase_path_dev">mobapi</string> -->
+<!--     <string name="jumia_ke_country_name_dev">Kenya Dev</string> -->
 
-    <!-- Jumia Morocco	 Configuration -->
-    <string name="jumia_ma_shopname_dev">Jumia</string>
+<!--     Jumia Morocco	 Configuration -->
+<!--     <string name="jumia_ma_shopname_dev">Jumia</string> -->
 <!--     <string name="jumia_ma_server_dev">www.jumia.ma</string> -->
-    <string name="jumia_ma_server_dev">alice-staging.jumia.ma</string>
-    <!-- <string name="jumia_ma_server">mobile.jumia.com</string> -->
-    <string name="jumia_ma_user_dev">rocket</string>
-    <string name="jumia_ma_password_dev">rock4me</string>
-    <string name="jumia_ma_restbase_path_dev">mobapi</string>
-    <string name="jumia_ma_country_name_dev">Morocco Dev</string>
+<!--     <string name="jumia_ma_server_dev">alice-staging.jumia.ma</string> -->
+<!--     <string name="jumia_ma_server">mobile.jumia.com</string> -->
+<!--     <string name="jumia_ma_user_dev">rocket</string> -->
+<!--     <string name="jumia_ma_password_dev">rock4me</string> -->
+<!--     <string name="jumia_ma_restbase_path_dev">mobapi</string> -->
+<!--     <string name="jumia_ma_country_name_dev">Morocco Dev</string> -->
 
-    <!-- Jumia Egypt Configuration -->
-    <string name="jumia_eg_shopname_dev">Jumia</string>
+<!--     Jumia Egypt Configuration -->
+<!--     <string name="jumia_eg_shopname_dev">Jumia</string> -->
 <!--     <string name="jumia_eg_server">www.jumia.com.eg</string> -->
-    <string name="jumia_eg_server_dev">alice-staging.jumia.com.eg</string>
+<!--     <string name="jumia_eg_server_dev">alice-staging.jumia.com.eg</string> -->
 <!--     <string name="jumia_eg_server">mobile.jumia.com</string> -->
-    <string name="jumia_eg_user_dev">rocket</string>
-    <string name="jumia_eg_password_dev">rock4me</string>
-    <string name="jumia_eg_restbase_path_dev">mobapi</string>
-    <string name="jumia_eg_country_name_dev">Egypt Dev</string>
+<!--     <string name="jumia_eg_user_dev">rocket</string> -->
+<!--     <string name="jumia_eg_password_dev">rock4me</string> -->
+<!--     <string name="jumia_eg_restbase_path_dev">mobapi</string> -->
+<!--     <string name="jumia_eg_country_name_dev">Egypt Dev</string> -->
 
-    <!-- Jumia Ivory Coast Configuration -->
-    <string name="jumia_ci_shopname_dev">Jumia</string>
+<!--     Jumia Ivory Coast Configuration -->
+<!--     <string name="jumia_ci_shopname_dev">Jumia</string> -->
 <!--     <string name="jumia_ci_server">www.jumia.ci</string> -->
-    <string name="jumia_ci_server_dev">alice-staging.jumia.ci</string>
+<!--     <string name="jumia_ci_server_dev">alice-staging.jumia.ci</string> -->
 <!--     <string name="jumia_ci_server">mobile.jumia.com</string> -->
-    <string name="jumia_ci_user_dev">rocket</string>
-    <string name="jumia_ci_password_dev">rock4me</string>
-    <string name="jumia_ci_restbase_path_dev">mobapi</string>
-    <string name="jumia_ci_country_name_dev">Ivory Coast Dev</string>    
+<!--     <string name="jumia_ci_user_dev">rocket</string> -->
+<!--     <string name="jumia_ci_password_dev">rock4me</string> -->
+<!--     <string name="jumia_ci_restbase_path_dev">mobapi</string> -->
+<!--     <string name="jumia_ci_country_name_dev">Ivory Coast Dev</string>     -->
 
 </resources>
