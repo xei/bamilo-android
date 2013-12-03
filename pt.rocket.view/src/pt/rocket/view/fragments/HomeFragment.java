@@ -153,7 +153,7 @@ public class HomeFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(TAG, "code1 onResume");
+        Log.i(TAG, "onResume");
         if (CheckVersion.needsToShowDialog()) {
             CheckVersion.showDialog(getActivity());
         }
@@ -165,7 +165,6 @@ public class HomeFragment extends BaseFragment {
         }
         
         if (requestResponse == null) {
-            Log.i(TAG, "code1 requestResponse is null");
             ((BaseActivity) getActivity()).setProcessShow(false);
             triggerContentEvent(new RequestEvent(EventType.GET_NAVIGATION_LIST_COMPONENTS_EVENT));
             triggerContentEvent(new RequestEvent(EventType.GET_TEASERS_EVENT));
@@ -236,7 +235,6 @@ public class HomeFragment extends BaseFragment {
             mPager.setSaveEnabled(false);
             mPager.setCurrentItem(currentPositionPager);
             try {
-                Log.i(TAG, "code1 setting layout specs!");
                 setLayoutSpec();
             } catch (IllegalArgumentException e) {
                 e.printStackTrace();
@@ -251,7 +249,7 @@ public class HomeFragment extends BaseFragment {
     }
     
     private void restoreLayout() {
-        Log.i(TAG, "code1 restoreLayout");
+        Log.i(TAG, "restoreLayout");
         if (requestResponse != null) {
             if(currentPosition==-1){
                 currentPosition = Math.abs(requestResponse.size() / 2);    
