@@ -994,7 +994,8 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     @Override
     public void onOpened() {
         Log.d(getTag(), "onOpened");
-        hideKeyboard();
+        if(!isTabletInLandscape())
+            hideKeyboard();
         AnalyticsGoogle.get().trackPage(R.string.gnavigation);
     }
 
