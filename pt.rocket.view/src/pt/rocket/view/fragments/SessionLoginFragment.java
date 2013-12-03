@@ -396,6 +396,7 @@ public class SessionLoginFragment extends BaseFragment {
         values.put("first_name", user.getFirstName());
         values.put("last_name", user.getLastName());
         values.put("birthday", user.getBirthday());
+        Log.i(TAG, "code3 : "+user.getBirthday());
         values.put("gender", (String) user.getProperty("gender"));
         values.put(CustomerAccountService.INTERNAL_AUTOLOGIN_FLAG, true);
         // }
@@ -449,6 +450,7 @@ public class SessionLoginFragment extends BaseFragment {
             // Get Customer
             ((BaseActivity) getActivity()).hideKeyboard();
             ((BaseActivity) getActivity()).updateSlidingMenuCompletly();
+            
             ((BaseActivity) getActivity()).onBackPressed();
             if(nextFragmentType != null && getActivity() != null){
                 ((BaseActivity) getActivity()).onSwitchFragment(nextFragmentType, null, true);
@@ -457,8 +459,9 @@ public class SessionLoginFragment extends BaseFragment {
             if(getActivity() != null)
                 TrackerDelegator.trackLoginSuccessful(getActivity(), (Customer) event.result,
                     wasAutologin, loginOrigin, true);
+            
             wasAutologin = false;
-            return false;
+            return true;
         
         case LOGIN_EVENT:
             Log.d(TAG, "loginCompletedEvent :" + event.getSuccess());

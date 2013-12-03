@@ -375,7 +375,7 @@ public abstract class BaseFragment extends Fragment implements ResponseListener,
     public final void handleEvent(final ResponseEvent event) {
 
         // Validate fragment visibility
-        if (!isOnTheScreen()) {
+        if (!isOnTheScreen() && event.getType() != EventType.FACEBOOK_LOGIN_EVENT) {
             Log.w(TAG, "RECEIVED EVENT IN BACKGROUND WAS DISCARDED: " + event.getType().name());
             return;
         }
