@@ -119,7 +119,7 @@ public class SessionLoginFragment extends BaseFragment {
      */
     public SessionLoginFragment() {
         super(EnumSet.of(EventType.GET_LOGIN_FORM_EVENT), 
-                EnumSet.of(EventType.LOGIN_EVENT),
+                EnumSet.of(EventType.LOGIN_EVENT, EventType.FACEBOOK_LOGIN_EVENT),
                 EnumSet.noneOf(MyMenuItem.class), 
                 NavigationAction.LoginOut, 
                 R.string.login_title);
@@ -448,10 +448,14 @@ public class SessionLoginFragment extends BaseFragment {
             Log.d(TAG, "facebookloginCompletedEvent :" + event.getSuccess());
             // Get Customer
             ((BaseActivity) getActivity()).hideKeyboard();
-            getActivity().setResult(Activity.RESULT_OK);
-            getActivity().finish();
-            getActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-            TrackerDelegator.trackLoginSuccessful(getActivity(), (Customer) event.result,
+            ((BaseActivity) getActivity()).updateSlidingMenuCompletly();
+            ((BaseActivity) getActivity()).onBackPressed();
+            if(nextFragmentType != null && getActivity() != null){
+                ((BaseActivity) getActivity()).onSwitchFragment(nextFragmentType, null, true);
+            }
+            // NullPointerException on orientation change
+            if(getActivity() != null)
+                TrackerDelegator.trackLoginSuccessful(getActivity(), (Customer) event.result,
                     wasAutologin, loginOrigin, true);
             wasAutologin = false;
             return false;
@@ -460,7 +464,7 @@ public class SessionLoginFragment extends BaseFragment {
             Log.d(TAG, "loginCompletedEvent :" + event.getSuccess());
             // Get Customer
             ((BaseActivity) getActivity()).hideKeyboard();
-            
+            ((BaseActivity) getActivity()).updateSlidingMenuCompletly();
             // Switch to next fragment
             getActivity().onBackPressed();
             if(nextFragmentType != null && getActivity() != null){

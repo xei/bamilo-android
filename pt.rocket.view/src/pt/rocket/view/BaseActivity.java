@@ -476,6 +476,14 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
             slideMenuFragment.onUpdate();
     }
     
+    /**
+     * Update the sliding menu
+     */
+    public void updateSlidingMenuCompletly(){
+        SlideMenuFragment slideMenuFragment = (SlideMenuFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_slide_menu);
+        if(slideMenuFragment != null)
+            slideMenuFragment.onUpdateCompletly();
+    }
     
     /**
      * Set the action bar for portrait orientation

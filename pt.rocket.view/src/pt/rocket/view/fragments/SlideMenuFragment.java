@@ -592,6 +592,7 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
                                 LogOut.performLogOut(new WeakReference<Activity>(activity));
                             }
                             dialogLogout.dismiss();
+                            
                         }
 
                     });
