@@ -151,7 +151,6 @@ public class SessionLoginFragment extends BaseFragment {
         Log.i(TAG, "ON CREATE");
         setRetainInstance(true);
         String appId = getActivity().getResources().getString(R.string.app_id);
-        Log.i(TAG, "code1 app id is : "+appId);
         uiHelper = new UiLifecycleHelper(getActivity(), callback, appId);
         uiHelper.onCreate(savedInstanceState);
     }
@@ -187,7 +186,6 @@ public class SessionLoginFragment extends BaseFragment {
     public void onStart() {
         super.onStart();
         Log.i(TAG, "ON START");
-//        parentActivity.updateActivityHeader(NavigationAction.LoginOut, R.string.login_title);
     }
 
     /*
@@ -257,10 +255,7 @@ public class SessionLoginFragment extends BaseFragment {
      * @param exception
      */
     private void onSessionStateChange(Session session, SessionState state, Exception exception) {
-        Log.i(TAG, "code1 ...");
         if (state.isOpened()) {
-            Log.i(TAG, "code1 Logged in..." + session.getApplicationId());
-            Log.i(TAG, "code1 Logged in..." + session.getAccessToken());
             ((BaseActivity) getActivity()).showLoading();
             // make request to the /me API
             Request request = Request.newMeRequest(
@@ -273,14 +268,6 @@ public class SessionLoginFragment extends BaseFragment {
                         {
                             if (user != null)
                             {   
-//                                ServiceManager.SERVICES.get(CustomerAccountService.class).
-                                // TextView welcome = (TextView) findViewById(R.id.welcome);
-                                // welcome.setText("Hello " + user.getName() + "!");
-//                                Log.i(TAG, "code1 user fname" + user.getFirstName());
-//                                Log.i(TAG, "code1 user lname" + user.getLastName());
-//                                Log.i(TAG, "code1 user username" + user.getUsername());
-//                                Log.i(TAG, "code1 user email" + (String) user.getProperty("email"));
-                                
                                 requestFacebookLogin(user);
                             }
                         }
@@ -289,7 +276,7 @@ public class SessionLoginFragment extends BaseFragment {
 
             Request.executeBatchAsync(request);
         } else if (state.isClosed()) {
-            Log.i(TAG, "code1 Logged out...");
+            Log.w(TAG, "USER Logged out!");
         }
     }
 
@@ -312,7 +299,7 @@ public class SessionLoginFragment extends BaseFragment {
     public void onPause() {
         super.onPause();
         Log.i(TAG, "ON PAUSE");
-        hideKeyboard();
+        ((BaseActivity) getActivity()).hideKeyboard();
         uiHelper.onPause();
     }
 
@@ -389,7 +376,7 @@ public class SessionLoginFragment extends BaseFragment {
     private void requestLogin() {
         Log.d(TAG, "requestLogin: triggerEvent LogInEvent");
         //
-        hideKeyboard();
+        ((BaseActivity) getActivity()).hideKeyboard();
         //
         ContentValues values = dynamicForm.save();
         // if ( autologinCheckBox.isChecked()) {

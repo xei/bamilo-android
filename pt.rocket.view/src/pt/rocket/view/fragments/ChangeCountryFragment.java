@@ -169,6 +169,14 @@ public class ChangeCountryFragment extends BaseFragment {
         super.onDestroyView();
     }
     
+    
+    @Override
+    public boolean allowBackPressed() {
+        if( selected == SHOP_NOT_SELECTED ){
+            ((BaseActivity) getActivity()).finish();
+        }
+        return super.allowBackPressed();
+    }
     /**
      * #### METHODS ####
      */
