@@ -220,7 +220,15 @@ public class HomeFragment extends BaseFragment {
                 
                 @Override
                 public void onPageScrollStateChanged(int arg0) {
-                    
+                    if (arg0 == mPager.SCROLL_STATE_IDLE) {
+                        int pageCount = pagesTitles.size();
+
+                        if (currentPosition == 0) {
+                            mPager.setCurrentItem(pageCount - 2, false);
+                        } else if (currentPosition == pageCount - 1) {
+                            mPager.setCurrentItem(1, false);
+                        }
+                    }
                 }
             });
         }
@@ -346,12 +354,23 @@ public class HomeFragment extends BaseFragment {
         }
         
         int count = 0;
+        Homepage firstHomePage = (Homepage) result.toArray()[0];
+        Homepage lastHomePage = (Homepage) result.toArray()[result.size() - 1];
+
         for (Homepage homepage : result) {
+            if (count == 0) {
+                pagesTitles.add(lastHomePage.getHomepageTitle());
+                requestResponse.add(lastHomePage.getTeaserSpecification());
+            }
             pagesTitles.add(homepage.getHomepageTitle());
             requestResponse.add(homepage.getTeaserSpecification());
-            // if(homepage.isDefaultHomepage()){
-            // defaultPosition = count;
-            // }
+
+            if (count == result.size() - 1) {
+                pagesTitles.add(firstHomePage.getHomepageTitle());
+                requestResponse.add(firstHomePage.getTeaserSpecification());
+
+            }
+
             count++;
         }
 
@@ -652,7 +671,6 @@ public class HomeFragment extends BaseFragment {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
                         v.setVisibility(View.GONE);
-                        
                         SharedPreferences.Editor editor = sharedPrefs.edit();
                         editor.putBoolean(ConstantsSharedPrefs.KEY_SHOW_TIPS,
                                 false);

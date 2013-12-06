@@ -31,7 +31,7 @@ public class JumiaApplication extends Application implements ResponseListener, E
     public static final SingletonMap<ApplicationComponent> COMPONENTS =
             new SingletonMap<ApplicationComponent>(new UrbanAirshipComponent(),
                     new ImageLoaderComponent(), new DarwinComponent());
-
+            
     private ResponseListener initListener;
 
     private ResponseEvent lastInitEvent;
@@ -42,6 +42,7 @@ public class JumiaApplication extends Application implements ResponseListener, E
     public void onCreate() {
         Log.init(getApplicationContext());
         INSTANCE = this;
+        
         EventManager.getSingleton().addResponseListener(EventType.INITIALIZE, this);
         init(false);
     }
