@@ -103,11 +103,11 @@ public class OrderTrackerItem implements IJSONSerializable {
         sku = jsonObject.optString(RestConstants.JSON_SKU_TAG);
         name = jsonObject.optString(RestConstants.JSON_NAME_TAG);
 		quantity = jsonObject.optString(RestConstants.JSON_QUANTITY_TAG);
-		Log.i(TAG, "code1 name : "+name);
+//		Log.i(TAG, "code1 name : "+name);
 		try {
 			status = jsonObject.getJSONArray(RestConstants.JSON_ORDER_STATUS_TAG).getJSONObject(0).optString(RestConstants.JSON_ORDER_ITEM_STATUS_TAG);
 			status_update = jsonObject.getJSONArray(RestConstants.JSON_ORDER_STATUS_TAG).getJSONObject(0).optString(RestConstants.JSON_ORDER_ITEM_STATUS_UPDATE_TAG);
-			Log.i(TAG, "code1 status : "+status);
+//			Log.i(TAG, "code1 status : "+status);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}

@@ -153,7 +153,7 @@
     <string name="mixprop_age">Age</string>
     <string name="mixprop_gender">Gender</string>
     <string name="mixprop_email">Email</string>
-    <string name="mixprop_createdate">Postal Code</string>
+    <string name="mixprop_createdate">Account Created Date</string>
     <string name="mixprop_country">Country</string>
     
     <!-- Begin of Urban AirShip Tracking Parameters -->

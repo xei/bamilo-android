@@ -23,6 +23,7 @@ import org.json.JSONObject;
 
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.CurrencyFormatter;
+import pt.rocket.framework.utils.ImageResolutionHelper;
 import pt.rocket.framework.utils.LogTagHelper;
 import de.akquinet.android.androlog.Log;
 
@@ -199,7 +200,7 @@ public class CompleteProduct implements IJSONSerializable {
             JSONArray imageArray = dataObject.getJSONArray(RestConstants.JSON_IMAGE_LIST_TAG);
             for (int i = 0; i < imageArray.length(); ++i) {
                 JSONObject imageJsonObject = imageArray.getJSONObject(i);
-                imageList.add(imageJsonObject.getString("url"));
+                imageList.add(getImageUrl(imageJsonObject.getString("url")));
             }
             
             JSONObject variationsObject = dataObject.optJSONObject( RestConstants.JSON_VARIATIONS_TAG );
@@ -351,6 +352,18 @@ public class CompleteProduct implements IJSONSerializable {
         return url;
     }
 
+    /**
+     * Get Better quality image.
+     * @param url
+     * @return
+     */
+	private String getImageUrl(String url) {
+		String modUrl = ImageResolutionHelper.replaceResolution(url);
+		if(modUrl != null)
+			return modUrl;
+		return url;
+	}
+    
     /**
      * @return the description
      */

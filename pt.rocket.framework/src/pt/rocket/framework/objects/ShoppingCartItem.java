@@ -5,6 +5,7 @@ import org.json.JSONObject;
 
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.CurrencyFormatter;
+import pt.rocket.framework.utils.ImageResolutionHelper;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -81,7 +82,7 @@ public class ShoppingCartItem implements IJSONSerializable {
         specialPriceVal = 0;
         
         try {
-            imageUrl = jsonObject.getString(RestConstants.JSON_ITEM_IMAGE_TAG);
+            imageUrl = getImageUrl(jsonObject.getString(RestConstants.JSON_ITEM_IMAGE_TAG));
             productUrl = jsonObject.optString(RestConstants.JSON_PRODUCT_URL_TAG);
             configSKU = jsonObject.getString(RestConstants.JSON_CONFIG_SKU_TAG);
             quantity = jsonObject.getInt(RestConstants.JSON_QUANTITY_TAG);
@@ -305,7 +306,12 @@ public class ShoppingCartItem implements IJSONSerializable {
 		this.variation = variation;
 	}
 
-
+	private String getImageUrl(String url) {
+		String modUrl = ImageResolutionHelper.replaceResolution(url);
+		if(modUrl != null)
+			return modUrl;
+		return url;
+	}
     
     
 }

@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import de.akquinet.android.androlog.Log;
 
 import pt.rocket.framework.rest.RestConstants;
+import pt.rocket.framework.utils.ImageResolutionHelper;
 import pt.rocket.framework.utils.LogTagHelper;
 
 public class Variation implements IJSONSerializable {
@@ -22,7 +23,7 @@ public class Variation implements IJSONSerializable {
 		this.sku = sku;
 		try {
 			link = jsonObject.getString(RestConstants.JSON_LINK_TAG);
-			image = jsonObject.getString(RestConstants.JSON_VARIATION_IMAGE_TAG);
+			image = getImageUrl(jsonObject.getString(RestConstants.JSON_VARIATION_IMAGE_TAG));
 		} catch (JSONException e) {
 			Log.e(TAG, "Error initializing the variation ", e);
 			return false;
@@ -42,7 +43,7 @@ public class Variation implements IJSONSerializable {
 	public boolean initialize(JSONObject jsonObject) {
 		try {
 			link = jsonObject.getString(RestConstants.JSON_LINK_TAG);
-			image = jsonObject.getString(RestConstants.JSON_VARIATION_IMAGE_TAG);
+			image = getImageUrl(jsonObject.getString(RestConstants.JSON_VARIATION_IMAGE_TAG));
 		} catch (JSONException e) {
 			Log.e(TAG, "Error initializing the variation ", e);
 		}
@@ -73,4 +74,11 @@ public class Variation implements IJSONSerializable {
 		return image;
 	}
 
+	private String getImageUrl(String url) {
+		String modUrl = ImageResolutionHelper.replaceResolution(url);
+		if(modUrl != null)
+			return modUrl;
+		return url;
+	}
+	
 }

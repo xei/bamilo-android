@@ -67,11 +67,11 @@ public class ApiService extends DarwinService {
 					@Override
 					public VersionInfo parseResponse(JSONObject metadataObject)
 							throws JSONException {
-						Log.i(TAG, "code1 VersionInfo");
+//						Log.i(TAG, "code1 VersionInfo");
 						VersionInfo info = new VersionInfo();
 						info.initialize(metadataObject);
 						mVersionInfo = info;
-						Log.i(TAG, "code1 VersionInfo is: "+mVersionInfo.toString());
+//						Log.i(TAG, "code1 VersionInfo is: "+mVersionInfo.toString());
 						return mVersionInfo;
 					}
 				}, event.metaData);

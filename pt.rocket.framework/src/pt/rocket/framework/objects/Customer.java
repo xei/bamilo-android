@@ -49,6 +49,7 @@ public class Customer implements IJSONSerializable {
     private Date birthday;
     private CustomerGender gender;
     private String password;
+    private String created_at;
 
     /**
      * Customer empty constructor
@@ -62,6 +63,7 @@ public class Customer implements IJSONSerializable {
         birthday = new Date();
         gender = CustomerGender.Gender;
         password = "";
+        setCreatedAt("");
     }
     
     public Customer(JSONObject jsonObject) {
@@ -80,7 +82,7 @@ public class Customer implements IJSONSerializable {
      * @param customerPrefix of the customer.
      */
     public Customer(String id, String firstName, String middleName, String lastName, String email, String password, CustomerGender gender, Date birthDay,
-            CustomerPrefix customerPrefix) {
+            CustomerPrefix customerPrefix, String createdAt) {
         this.id = id;
         this.firstName = firstName;
         this.middleName = middleName;
@@ -90,6 +92,7 @@ public class Customer implements IJSONSerializable {
         this.gender = gender;
         this.password = password;
         this.prefix = customerPrefix;
+        this.created_at = createdAt;
     }
 
     /**
@@ -245,6 +248,22 @@ public class Customer implements IJSONSerializable {
         this.prefix = prefix;
     }
 
+    /**
+     * 
+     * @return The User Account creation date.
+     */
+	public String getCreatedAt() {
+		return created_at;
+	}
+	
+	/**
+	 * 
+	 * @param created_at - The User Account creation date.
+	 */
+	public void setCreatedAt(String created_at) {
+		this.created_at = created_at;
+	}
+    
     /* (non-Javadoc)
      * @see pt.rocket.framework.objects.IJSONSerializable#initialize(org.json.JSONObject)
      */
@@ -256,6 +275,7 @@ public class Customer implements IJSONSerializable {
             firstName = jsonObject.getString(RestConstants.JSON_FIRST_NAME_TAG);
             lastName = jsonObject.getString(RestConstants.JSON_LAST_NAME_TAG);
             email = jsonObject.getString(RestConstants.JSON_EMAIL_TAG);
+            created_at = jsonObject.getString(RestConstants.JSON_CREATED_AT_TAG);
             SimpleDateFormat  format = new SimpleDateFormat("yyyy-MM-dd");  
             try {  
             	birthday = format.parse(jsonObject.getString(RestConstants.JSON_BIRTHDAY_TAG));  
@@ -304,4 +324,5 @@ public class Customer implements IJSONSerializable {
         }
         return jsonObject;
     }
+
 }

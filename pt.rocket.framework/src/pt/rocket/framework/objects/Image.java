@@ -4,6 +4,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import pt.rocket.framework.rest.RestConstants;
+import pt.rocket.framework.utils.ImageResolutionHelper;
 import pt.rocket.framework.utils.LogTagHelper;
 import de.akquinet.android.androlog.Log;
 
@@ -96,7 +97,7 @@ public class Image implements IJSONSerializable {
     @Override
     public boolean initialize(JSONObject jsonObject) {
         try {
-            url = jsonObject.getString(RestConstants.JSON_PATH_TAG);
+            url = getImageUrl(jsonObject.getString(RestConstants.JSON_PATH_TAG));
             format = jsonObject.optString(RestConstants.JSON_FORMAT_TAG);
             width = jsonObject.optString(RestConstants.JSON_WIDTH_TAG);
             height = jsonObject.optString(RestConstants.JSON_HEIGHT_TAG);
@@ -136,4 +137,11 @@ public class Image implements IJSONSerializable {
         }
         return jsonObject;
     }
+    
+    private String getImageUrl(String url) {
+		String modUrl = ImageResolutionHelper.replaceResolution(url);
+		if(modUrl != null)
+			return modUrl;
+		return url;
+	}
 }
