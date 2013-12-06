@@ -49,6 +49,11 @@ public class TrackerDelegator {
             resLogin = R.string.gloginsuccess;
             mOrigin = origin;
         }
+        
+        if(mOrigin == null || mOrigin.isEmpty()){
+            mOrigin = context.getString(R.string.mixprop_loginlocationsidemenu);
+        }
+        
         AnalyticsGoogle.get().trackAccount(resLogin, customer);
 
         if ( customer == null) {
@@ -60,10 +65,10 @@ public class TrackerDelegator {
 
         PushManager.shared().setAlias(customer.getIdAsString());
         if(wasFacebookLogin){
-            MixpanelTracker.loginWithFacebook(context, customer.getIdAsString(), mOrigin);
+            MixpanelTracker.loginWithFacebook(context, customer.getIdAsString(), mOrigin, customer.getCreatedAt());
             AdXTracker.facebookLogin(context, customer.getIdAsString());
         } else {
-            MixpanelTracker.login(context, customer.getIdAsString(), mOrigin);
+            MixpanelTracker.login(context, customer.getIdAsString(), mOrigin, customer.getCreatedAt());
             AdXTracker.login(context, customer.getIdAsString());    
         }
     }

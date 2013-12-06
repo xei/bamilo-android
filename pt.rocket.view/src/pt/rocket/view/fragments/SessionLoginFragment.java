@@ -396,10 +396,8 @@ public class SessionLoginFragment extends BaseFragment {
         values.put("first_name", user.getFirstName());
         values.put("last_name", user.getLastName());
         values.put("birthday", user.getBirthday());
-        Log.i(TAG, "code3 : "+user.getBirthday());
         values.put("gender", (String) user.getProperty("gender"));
         values.put(CustomerAccountService.INTERNAL_AUTOLOGIN_FLAG, true);
-        // }
 
         triggerContentEvent(new FacebookLogInEvent(values));
         wasAutologin = false;

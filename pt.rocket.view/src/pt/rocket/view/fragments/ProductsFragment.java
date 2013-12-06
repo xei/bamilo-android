@@ -478,8 +478,6 @@ public class ProductsFragment extends BaseFragment implements OnClickListener,
             EventManager.getSingleton().triggerRequestEvent(
                     new GetProductsEvent(productsURL, searchQuery, pageNumber, MAX_PAGE_ITEMS,
                             sort, dir, md5Hash));
-            TrackerDelegator.trackCategoryView(getActivity().getApplicationContext(), title,
-                    pageNumber);
         } else {
             hideProductsLoading();
         }
@@ -601,8 +599,7 @@ public class ProductsFragment extends BaseFragment implements OnClickListener,
             totalProducts = productsPage.getTotalProducts();
         }
 
-        TrackerDelegator.trackSearchMade(getActivity().getApplicationContext(), searchQuery,
-                productsPage.getTotalProducts());
+        
 
         String location = event.metaData.getString(IMetaData.LOCATION);
         Log.d(TAG, "Location = " + location);
@@ -610,8 +607,13 @@ public class ProductsFragment extends BaseFragment implements OnClickListener,
 
         AnalyticsGoogle.get().trackLoadTiming(R.string.gproductlist, mBeginRequestMillis);
         System.gc();
-        if (!TextUtils.isEmpty(searchQuery)) {
-            ((BaseActivity) getActivity()).setTitle(title + " (" + productsPage.getTotalProducts() + ")");
+        if (searchQuery != null && !TextUtils.isEmpty(searchQuery)) {
+            ((BaseActivity) getActivity()).setTitle(searchQuery + " (" + productsPage.getTotalProducts() + ")");
+            TrackerDelegator.trackSearchMade(getActivity().getApplicationContext(), searchQuery,
+                    productsPage.getTotalProducts());
+        } else {
+            TrackerDelegator.trackCategoryView(getActivity().getApplicationContext(), title,
+                    pageNumber);
         }
 
         productsAdapter.appendProducts(productsPage.getProducts());
