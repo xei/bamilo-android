@@ -46,7 +46,7 @@ public class ImageResolutionHelper {
     	Log.i(TAG, "INITIALIZE: HEAP:" + Integer.toString(memoryHeapSize) + " SCREEN:" + wm.arg1 + "x" + wm.arg2);
     	
     	// Validate heap size
-    	if(memoryHeapSize <= 16) {
+    	if(memoryHeapSize <= 32) {
     		Log.d(TAG, "DEVICE WITH WEAK RESOURCES");
     		disableHelper(context);
     		return DEVICE_WEAK_RESOURCES;
