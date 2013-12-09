@@ -8,11 +8,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.Iterator;
+
 import org.holoeverywhere.widget.TextView;
+
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
+import pt.rocket.factories.TeasersFactory;
 import pt.rocket.framework.event.EventType;
 import pt.rocket.framework.event.RequestEvent;
 import pt.rocket.framework.event.ResponseEvent;
@@ -40,12 +43,10 @@ import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.database.DataSetObserver;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Shader;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -461,7 +462,8 @@ public class HomeFragment extends BaseFragment {
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            super.destroyItem(container, position, object);
+            // Since we only use more or less 7 Elements, keep them in memory will consume less.
+            //super.destroyItem(container, position, object);
         }
         
     }
@@ -473,12 +475,6 @@ public class HomeFragment extends BaseFragment {
     // Instances of this class are fragments representing a single
     // object in our collection.
     public static class HomeObjectFragment extends Fragment {
-        private Fragment fragmentMainOneSlide;
-        private Fragment fragmentStaticBanner;
-        private Fragment fragmentCategoryTeaser;
-        private Fragment fragmentProductListTeaser;
-        private Fragment fragmentBrandsListTeaser;
-        private OnActivityFragmentInteraction mCallback;
         
         private LayoutInflater mInflater;
         
@@ -557,14 +553,12 @@ public class HomeFragment extends BaseFragment {
         @Override
         public View onCreateView(LayoutInflater inflater,
                 ViewGroup container, Bundle savedInstanceState) {
-            // The last two arguments ensure LayoutParams are inflated
-            // properly.
+            
             View rootView = inflater.inflate(
                     R.layout.fragment_collection_object, container, false);
+            
             mInflater = inflater;
             
-            // ((TextView)
-            // rootView.findViewById(R.id.view_pager_element_frame)).setText(pagesTitles.get(0));
             return rootView;
         }
 
@@ -583,78 +577,26 @@ public class HomeFragment extends BaseFragment {
             }
             
             if (requestResponse != null) {
-                processResult(requestResponse.get(args.getInt(ARG_OBJECT)), view);
+                processTeasersResult(requestResponse.get(args.getInt(ARG_OBJECT)), view);
             }
         }
         
         @Override
         public void onLowMemory() {
-            Log.i(TAG, "code1 onLowMemory");
-            releaseFragmentsAndRemove();
+            Log.i(TAG, "onLowMemory");
             super.onLowMemory();
         }
         
         @Override
         public void onPause() {
-            Log.i(TAG, "code1 onLowMemory");
-            super.onPause();
-            releaseFragmentsAndRemove();
+            Log.i(TAG, "onLowMemory");
+            super.onPause();            
         }
         
         @Override
         public void onDestroy() {
-            Log.i(TAG, "code1 onDestroy");
-            releaseFragments();
+            Log.i(TAG, "onDestroy");
             super.onDestroy();
-        }
-        
-        private void releaseFragmentsAndRemove(){
-            
-            
-//            FragmentTransaction ft = getChildFragmentManager().beginTransaction();
-//            boolean commit = false;
-//            if(fragmentMainOneSlide != null){
-//                ft.remove(fragmentMainOneSlide);
-//                commit = true;
-//            }
-//                
-//            if(fragmentStaticBanner != null){
-//                ft.remove(fragmentStaticBanner);
-//                commit = true;
-//            }
-//            
-//            if(fragmentCategoryTeaser != null){
-//                ft.remove(fragmentCategoryTeaser);
-//                commit = true;
-//            }
-//            
-//            if(fragmentProductListTeaser != null){
-//                ft.remove(fragmentProductListTeaser);
-//                commit = true;
-//            }
-//            
-//            if(fragmentBrandsListTeaser != null){
-//                ft.remove(fragmentBrandsListTeaser);
-//                commit = true;
-//            }
-//            
-//            if(commit){
-//                ft.commit();
-//            }
-            
-//            fragmentMainOneSlide = null;
-//            fragmentStaticBanner = null;
-//            fragmentCategoryTeaser = null;
-//            fragmentProductListTeaser = null;
-//            fragmentBrandsListTeaser = null;
-        }
-        
-        private void releaseFragments(){
-//            fragmentMainOneSlide = null;
-//            fragmentStaticBanner = null;
-//            fragmentCategoryTeaser = null;
-//            fragmentProductListTeaser = null;
-//            fragmentBrandsListTeaser = null;
         }
         
         /**
@@ -681,142 +623,15 @@ public class HomeFragment extends BaseFragment {
             }
         }
         
-        private void processResult(Collection<? extends TeaserSpecification<?>> result,
+        private void processTeasersResult(Collection<? extends TeaserSpecification<?>> result,
                 LinearLayout mainView) {
-            
+            TeasersFactory mTeasersFactory = new TeasersFactory();
             for (Iterator iterator = result.iterator(); iterator.hasNext();) {
                 TeaserSpecification<?> teaserSpecification = (TeaserSpecification<?>) iterator
                         .next();
-                switch (teaserSpecification.getType()) {
-                case MAIN_ONE_SLIDE:
-
-                    if (((ImageTeaserGroup) teaserSpecification).getTeasers().size() > 0) {
-
-                        fragmentMainOneSlide = MainOneSlideFragment.getInstance();
-                        // This makes sure that the container activity has implemented
-                        // the callback interface. If not, it throws an exception
-                        try {
-                            mCallback = (OnActivityFragmentInteraction) fragmentMainOneSlide;
-                        } catch (ClassCastException e) {
-                            throw new ClassCastException(fragmentMainOneSlide.toString()
-                                    + " must implement OnActivityFragmentInteraction");
-                        }
-
-                        mCallback.sendListener(0, teaserClickListener);
-                        mCallback.sendValuesToFragment(0,
-                                ((ImageTeaserGroup) teaserSpecification)
-                                        .getTeasers());
-                        View view = mInflater
-                                .inflate(R.layout.main_one_fragment_frame, null, false);
-                        mainView.addView(view);
-                        fragmentManagerChildTransition(R.id.main_one_frame, fragmentMainOneSlide, false,
-                                false);
-                    }
-                    break;
-                case STATIC_BANNER:
-                    fragmentStaticBanner = StaticBannerFragment.getInstance();
-                    
-                    // This makes sure that the container activity has implemented
-                    // the callback interface. If not, it throws an exception
-                    try {
-                        mCallback = (OnActivityFragmentInteraction) fragmentStaticBanner;
-                    } catch (ClassCastException e) {
-                        throw new ClassCastException(fragmentStaticBanner.toString()
-                                + " must implement OnActivityFragmentInteraction");
-                    }
-
-                    mCallback.sendListener(0, teaserClickListener);
-
-                    mCallback.sendValuesToFragment(0, ((ImageTeaserGroup) teaserSpecification)
-                            .getTeasers());
-
-                    View viewTeaser = mInflater.inflate(R.layout.static_teaser_frame, null, false);
-                    mainView.addView(viewTeaser);
-                    fragmentManagerChildTransition(R.id.static_teaser_frame, fragmentStaticBanner,
-                            false, false);
-                    break;
-                case CATEGORIES:
-
-                    fragmentCategoryTeaser = CategoryTeaserFragment.getInstance();
-                    
-                    // This makes sure that the container activity has implemented
-                    // the callback interface. If not, it throws an exception
-                    try {
-                        mCallback = (OnActivityFragmentInteraction) fragmentCategoryTeaser;
-                    } catch (ClassCastException e) {
-                        throw new ClassCastException(fragmentCategoryTeaser.toString()
-                                + " must implement OnActivityFragmentInteraction");
-                    }
-
-                    mCallback.sendListener(0, teaserClickListener);
-                    mCallback
-                            .sendValuesToFragment(0, (CategoryTeaserGroup) teaserSpecification);
-
-                    View viewGeneric = mInflater.inflate(R.layout.generic_frame, null, false);
-                    mainView.addView(viewGeneric);
-                    fragmentManagerChildTransition(R.id.content_frame, fragmentCategoryTeaser, false,
-                            false);
-                    break;
-                case PRODUCT_LIST:
-
-                    fragmentProductListTeaser = ProducTeaserListFragment.getInstance();
-                    
-                    // This makes sure that the container activity has implemented
-                    // the callback interface. If not, it throws an exception
-                    try {
-                        mCallback = (OnActivityFragmentInteraction) fragmentProductListTeaser;
-                    } catch (ClassCastException e) {
-                        throw new ClassCastException(fragmentProductListTeaser.toString()
-                                + " must implement OnActivityFragmentInteraction");
-                    }
-
-                    mCallback.sendListener(0, teaserClickListener);
-                    mCallback.sendValuesToFragment(0, (ProductTeaserGroup) teaserSpecification);
-                    View viewProductList = mInflater.inflate(R.layout.product_list_frame, null,
-                            false);
-                    mainView.addView(viewProductList);
-                    fragmentManagerChildTransition(R.id.products_list_frame, fragmentProductListTeaser,
-                            false, false);
-                    break;
-                case BRANDS_LIST:
-
-                    fragmentBrandsListTeaser = BrandsTeaserListFragment.getInstance();
-                    
-                    // This makes sure that the container activity has implemented
-                    // the callback interface. If not, it throws an exception
-                    try {
-                        mCallback = (OnActivityFragmentInteraction) fragmentBrandsListTeaser;
-                    } catch (ClassCastException e) {
-                        throw new ClassCastException(fragmentBrandsListTeaser.toString()
-                                + " must implement OnActivityFragmentInteraction");
-                    }
-
-                    mCallback.sendListener(0, teaserClickListener);
-                    mCallback.sendValuesToFragment(0, (BrandsTeaserGroup) teaserSpecification);
-
-                    View viewBrandList = mInflater.inflate(R.layout.brands_list_frame, null, false);
-                    mainView.addView(viewBrandList);
-                    fragmentManagerChildTransition(R.id.brands_list_frame, fragmentBrandsListTeaser,
-                            false, false);
-                    break;
-                }
+                mainView.addView(mTeasersFactory.getSpecificTeaser(getActivity(), mainView, teaserSpecification, mInflater, teaserClickListener));
             }
         }
-
-        protected void fragmentManagerChildTransition(int container, Fragment fragment,
-                Boolean addToBackStack, Boolean animated) {
-            FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
-            // Animations
-            if (animated)
-                fragmentTransaction.setCustomAnimations(R.anim.pop_in, R.anim.pop_out, R.anim.pop_in, R.anim.pop_out);
-//                fragmentTransaction.setCustomAnimations(R.anim.slide_in_right,
-//                        R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
-            // Replace
-            fragmentTransaction.replace(container, fragment);
-            // Commit
-            fragmentTransaction.commit();
-        }
-
 
     }
 }
