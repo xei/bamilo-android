@@ -104,7 +104,7 @@ public class UiLifecycleHelper {
     public void onResume() {
         Session session = Session.getActiveSession();
         if (session != null) {
-        	Log.i("UILIFE", "code1 session is not null  appId : "+this.jumiaAppId);
+//        	Log.i("UILIFE", "code1 session is not null  appId : "+this.jumiaAppId);
         	session.setAppId(this.jumiaAppId);
             if (callback != null) {
                 session.addCallback(callback);
@@ -113,7 +113,7 @@ public class UiLifecycleHelper {
                 session.openForRead(null);
             }
         }
-        Log.i("UILIFE", "code1 session is null  appId : "+this.jumiaAppId);
+//        Log.i("UILIFE", "code1 session is null  appId : "+this.jumiaAppId);
         // add the broadcast receiver
         IntentFilter filter = new IntentFilter();
         filter.addAction(Session.ACTION_ACTIVE_SESSION_SET);
