@@ -11,8 +11,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import org.holoeverywhere.widget.TextView;
-
 import android.content.Context;
 import android.graphics.Typeface;
 import android.view.View;
