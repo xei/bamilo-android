@@ -80,21 +80,22 @@ public class ProductsViewFragment extends BaseFragment {
     public static String navigationPath;
     public static String title;
     public static int navigationSource;
+
     public ProductsViewFragment() {
         super(EnumSet.noneOf(EventType.class), EnumSet.noneOf(EventType.class), EnumSet
                 .of(MyMenuItem.SEARCH), NavigationAction.Products, R.string.products);
     }
 
     public static ProductsViewFragment getInstance() {
-//        if (mProductsViewFragment == null) {
-            mProductsViewFragment = new ProductsViewFragment();
-//        }
+        // if (mProductsViewFragment == null) {
+        mProductsViewFragment = new ProductsViewFragment();
+        // }
         return mProductsViewFragment;
     }
-    
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        
+
         return inflater.inflate(R.layout.products_frame, container, false);
     }
 
@@ -108,7 +109,7 @@ public class ProductsViewFragment extends BaseFragment {
         super.onResume();
         title = getArguments().getString(ConstantsIntentExtra.CONTENT_TITLE);
         ((BaseActivity) getActivity()).setTitle(title);
-        
+
         productsURL = getArguments()
                 .getString(ConstantsIntentExtra.CONTENT_URL);
         searchQuery = getArguments()
@@ -117,10 +118,11 @@ public class ProductsViewFragment extends BaseFragment {
                 ConstantsIntentExtra.NAVIGATION_SOURCE, -1);
         navigationPath = getArguments().getString(
                 ConstantsIntentExtra.NAVIGATION_PATH);
-        Log.i(TAG, "code1 title is : "+title);
+        Log.i(TAG, "code1 title is : " + title);
         Log.i(TAG, "ON RESUME");
         AnalyticsGoogle.get().trackPage(R.string.gproductlist);
-        ProductsListPagerAdapter mProductsListPagerAdapter = new ProductsListPagerAdapter(getChildFragmentManager());
+        ProductsListPagerAdapter mProductsListPagerAdapter = new ProductsListPagerAdapter(
+                getChildFragmentManager());
 
         ViewPager mViewPager = (ViewPager) getView().findViewById(R.id.viewpager_products_list);
         pagerTabStrip = (PagerTabStrip) getView().findViewById(R.id.products_list_titles);
@@ -151,6 +153,7 @@ public class ProductsViewFragment extends BaseFragment {
     public class ProductsListPagerAdapter extends FragmentStatePagerAdapter {
         ArrayList<String> mSortOptions = new ArrayList<String>(Arrays.asList(getResources()
                 .getStringArray(R.array.products_picker)));
+        
         public static final String ARG_OBJECT = "object";
 
         public ProductsListPagerAdapter(FragmentManager fm) {
@@ -159,11 +162,13 @@ public class ProductsViewFragment extends BaseFragment {
 
         @Override
         public Fragment getItem(int position) {
+
             Fragment fragment = new ProductsFragment();
             Bundle args = new Bundle();
             args.putInt(ProductsFragment.INTENT_POSITION_EXTRA, position);
             fragment.setArguments(args);
             return fragment;
+
         }
 
         @Override
@@ -178,7 +183,7 @@ public class ProductsViewFragment extends BaseFragment {
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            super.destroyItem(container, position, object);
+            // super.destroyItem(container, position, object);
         }
     }
 

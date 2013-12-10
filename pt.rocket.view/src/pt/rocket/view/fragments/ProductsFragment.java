@@ -52,6 +52,7 @@ import android.widget.AbsListView.RecyclerListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -86,7 +87,8 @@ public class ProductsFragment extends BaseFragment implements OnClickListener,
     //
     private ProductsListAdapter productsAdapter;
     //
-    private GridView productsList;
+    private GridView productsListGridView;
+    private ListView productsListView;
     private int currentOrientation = Configuration.ORIENTATION_PORTRAIT;
     private View loadingLayout;
 
@@ -168,6 +170,7 @@ public class ProductsFragment extends BaseFragment implements OnClickListener,
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
+        savedState = savedInstanceState;
 
     }
 
@@ -181,9 +184,19 @@ public class ProductsFragment extends BaseFragment implements OnClickListener,
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         Log.i(TAG, "ON CREATE VIEW");
-        mainView = inflater.inflate(R.layout.products, null, false);
+        mainView = inflater.inflate(R.layout.products, container, false);
 
-        savedState = savedInstanceState;
+        return mainView;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see android.support.v4.app.Fragment#onStart()
+     */
+    @Override
+    public void onStart() {
+        super.onStart();
 
         md5Hash = uniqueMD5(TAG);
 
@@ -192,12 +205,8 @@ public class ProductsFragment extends BaseFragment implements OnClickListener,
         // Inflate Products Layout
         setAppContentLayout();
         productsURL = ProductsViewFragment.productsURL;
-//                getArguments()
-//                .getString(ConstantsIntentExtra.CONTENT_URL);
         Log.d(TAG, "onCreate: productsURL = " + productsURL);
         searchQuery = ProductsViewFragment.searchQuery;
-//                getArguments()
-//                .getString(ConstantsIntentExtra.SEARCH_QUERY);
         int pos = getArguments().getInt(INTENT_POSITION_EXTRA);
         if (pos == 0) {
             showTips();
@@ -211,16 +220,20 @@ public class ProductsFragment extends BaseFragment implements OnClickListener,
         Log.d(TAG, "onCreate: searchQuery = " + searchQuery);
         
         navigationSource =  ProductsViewFragment.navigationSource;
-//                getArguments().getInt(
-//                ConstantsIntentExtra.NAVIGATION_SOURCE, -1);
+
         navigationPath = ProductsViewFragment.navigationPath;
-//                getArguments().getString(
-//                ConstantsIntentExtra.NAVIGATION_PATH);
+
         AnalyticsGoogle.get().trackSourceResWithPath(navigationSource, navigationPath);
 
         productsAdapter = new ProductsListAdapter(getActivity());
-        productsList.setAdapter(productsAdapter);
-        productsList.setRecyclerListener(this);
+        
+        if(((BaseActivity) getActivity()).isTabletInLandscape()){
+            productsListGridView.setAdapter(productsAdapter);
+            productsListGridView.setRecyclerListener(this);
+        } else {
+            productsListView.setAdapter(productsAdapter);
+            productsListView.setRecyclerListener(this);
+        }
         listItemRecycleCount = 0;
 
         if (null != savedState && savedState.containsKey(KEY_STATE_VIEW)) {
@@ -228,19 +241,13 @@ public class ProductsFragment extends BaseFragment implements OnClickListener,
         }
 
         initSorter();
-
-        return mainView;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onStart()
-     */
-    @Override
-    public void onStart() {
-        super.onStart();
+        
         Log.i(TAG, "ON START");
+        ((BaseActivity) getActivity()).setTitle(ProductsViewFragment.title);
+        restoreActivityState(savedState);
+        if (productsAdapter != null && productsAdapter.getCount() == 0) {
+            executeRequest();
+        }
     }
 
     @Override
@@ -256,35 +263,64 @@ public class ProductsFragment extends BaseFragment implements OnClickListener,
     private void setAppContentLayout() {
 
         productsContent = mainView.findViewById(R.id.products_content);
-        // sortButton = mainView.findViewById(R.id.sorter_button);
+        if(((BaseActivity) getActivity()).isTabletInLandscape()){
+            productsListGridView = (GridView) mainView.findViewById(R.id.middle_productslist_list);
+            productsListGridView.setOnItemClickListener(new OnItemClickListener() {
+                public void onItemClick(AdapterView<?> parent, View view,
+                        int position, long id) {
 
-        productsList = (GridView) mainView.findViewById(R.id.middle_productslist_list);
-        productsList.setOnItemClickListener(new OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view,
-                    int position, long id) {
+                    int activePosition = position; // -
+                                                   // productsAdapter.getJumpConstant();
 
-                int activePosition = position; // -
-                                               // productsAdapter.getJumpConstant();
+                    if (activePosition > -1) {
+                        // // Call Product Details
 
-                if (activePosition > -1) {
-                    // // Call Product Details
+                        Log.i("TAG", "DIR=======>" + dir + " sort =====> " + sort);
 
-                    Log.i("TAG", "DIR=======>" + dir + " sort =====> " + sort);
+                        
+                        saveActivityState();
 
-                    
-                    saveActivityState();
+                        Bundle bundle = new Bundle();
+                        bundle.putString(ConstantsIntentExtra.CONTENT_URL, ((Product) productsAdapter.getItem(activePosition)).getUrl());
+                        bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, navigationSource);
+                        bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, navigationPath);
+                        ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
+                    }
 
-                    Bundle bundle = new Bundle();
-                    bundle.putString(ConstantsIntentExtra.CONTENT_URL, ((Product) productsAdapter.getItem(activePosition)).getUrl());
-                    bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, navigationSource);
-                    bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, navigationPath);
-                    ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
                 }
+            });
+            productsListGridView.setOnScrollListener(new PauseOnScrollListener(ImageLoader.getInstance(), true,
+                    true, this));
+        } else {
+            productsListView = (ListView) mainView.findViewById(R.id.middle_productslist_list);
+            productsListView.setOnItemClickListener(new OnItemClickListener() {
+                public void onItemClick(AdapterView<?> parent, View view,
+                        int position, long id) {
 
-            }
-        });
-        productsList.setOnScrollListener(new PauseOnScrollListener(ImageLoader.getInstance(), true,
-                true, this));
+                    int activePosition = position; // -
+                                                   // productsAdapter.getJumpConstant();
+
+                    if (activePosition > -1) {
+                        // // Call Product Details
+
+                        Log.i("TAG", "DIR=======>" + dir + " sort =====> " + sort);
+
+                        
+                        saveActivityState();
+
+                        Bundle bundle = new Bundle();
+                        bundle.putString(ConstantsIntentExtra.CONTENT_URL, ((Product) productsAdapter.getItem(activePosition)).getUrl());
+                        bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, navigationSource);
+                        bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, navigationPath);
+                        ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
+                    }
+
+                }
+            });
+            productsListView.setOnScrollListener(new PauseOnScrollListener(ImageLoader.getInstance(), true,
+                    true, this));
+        }
+        
 
         notfound = mainView.findViewById(R.id.search_products_not_found);
         refreshAlertView = mainView.findViewById(R.id.retry_alert_view_button);
@@ -328,12 +364,22 @@ public class ProductsFragment extends BaseFragment implements OnClickListener,
     private void showProductsContent() {
         Log.d(TAG, "showProductsContent");
         if (pageNumber == 1) {
-            productsList.post(new Runnable() {
-                @Override
-                public void run() {
-                    productsList.setSelection(0);
-                }
-            });
+            if(((BaseActivity) getActivity()).isTabletInLandscape()){
+                productsListGridView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        productsListGridView.setSelection(0);
+                    }
+                });    
+            } else {
+                productsListView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        productsListView.setSelection(0);
+                    }
+                });
+            }
+            
 
         }
         productsContent.setVisibility(View.VISIBLE);
@@ -354,15 +400,7 @@ public class ProductsFragment extends BaseFragment implements OnClickListener,
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        ((BaseActivity) getActivity()).setTitle(ProductsViewFragment.title);
-        restoreActivityState(savedState);
-        if (productsAdapter != null && productsAdapter.getCount() == 0) {
-            executeRequest();
-        }
-        // Uncomment if u need to allow sort button again.
-        // if(mSortDialog!=null && mSortDialog.isVisible()){
-        // mSortDialog.dismiss();
-        // }
+        
     }
 
     /*
@@ -561,9 +599,6 @@ public class ProductsFragment extends BaseFragment implements OnClickListener,
 
         int id = v.getId();
         if (id == R.id.sorter_button) {
-            // FragmentTransaction ft =
-            // getActivity().getSupportFragmentManager().beginTransaction();
-            //
             if (mSortDialog != null) {
                 mSortDialog.dismiss();
             }
@@ -681,7 +716,7 @@ public class ProductsFragment extends BaseFragment implements OnClickListener,
     }
 
     private void showProductsNotfound() {
-        Log.d(TAG, "showProductsLoading");
+        Log.d(TAG, "showProductsNotfound");
         productsContent.setVisibility(View.GONE);
         notfound.setVisibility(View.VISIBLE);
         loadingLayout.setVisibility(View.GONE);

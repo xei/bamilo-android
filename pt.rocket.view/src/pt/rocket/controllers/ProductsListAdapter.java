@@ -76,26 +76,26 @@ public class ProductsListAdapter extends BaseAdapter {
         public TextView discountPercentage;
         public TextView reviews;
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see java.lang.Object#finalize()
-         */
-        @Override
-        protected void finalize() throws Throwable {
-
-            image = null;
-            promotion = null;
-            progress = null;
-            name = null;
-            rating = null;
-            discount = null;
-            price = null;
-            discountPercentage = null;
-            reviews = null;
-
-            super.finalize();
-        }
+//        /*
+//         * (non-Javadoc)
+//         * 
+//         * @see java.lang.Object#finalize()
+//         */
+//        @Override
+//        protected void finalize() throws Throwable {
+//
+//            image = null;
+//            promotion = null;
+//            progress = null;
+//            name = null;
+//            rating = null;
+//            discount = null;
+//            price = null;
+//            discountPercentage = null;
+//            reviews = null;
+//
+//            super.finalize();
+//        }
     }
 
     /**
@@ -116,20 +116,20 @@ public class ProductsListAdapter extends BaseAdapter {
         reviewLabel = context.getString(R.string.reviews);
     }
     
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#finalize()
-     */
-    @Override
-    protected void finalize() throws Throwable {
-        this.products = null;
-        this.selectedItems = null;
-        context = null;
-        this.onSelectedItemsChange = null;
-        System.gc();
-        super.finalize();
-    }
+//    /*
+//     * (non-Javadoc)
+//     * 
+//     * @see java.lang.Object#finalize()
+//     */
+//    @Override
+//    protected void finalize() throws Throwable {
+//        this.products = null;
+//        this.selectedItems = null;
+//        context = null;
+//        this.onSelectedItemsChange = null;
+//        System.gc();
+//        super.finalize();
+//    }
 
     /*
      * (non-Javadoc)

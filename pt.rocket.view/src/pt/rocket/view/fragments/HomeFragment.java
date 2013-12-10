@@ -92,6 +92,7 @@ public class HomeFragment extends BaseFragment {
  //   private int defaultPosition=Math.abs(requestResponse.size() / 2);
     
     private int currentPosition=-1;
+    public static int initialPosition = 2;
 
     private static HomeFragment mHomeFragment;
 
@@ -261,7 +262,8 @@ public class HomeFragment extends BaseFragment {
         Log.i(TAG, "restoreLayout");
         if (requestResponse != null) {
             if(currentPosition==-1){
-                currentPosition = Math.abs(requestResponse.size() / 2);    
+                currentPosition = Math.abs(requestResponse.size() / 2) + 1;
+                initialPosition = currentPosition;
             }
             
 
@@ -432,13 +434,14 @@ public class HomeFragment extends BaseFragment {
     
     // Since this is an object collection, use a FragmentStatePagerAdapter,
     // and NOT a FragmentPagerAdapter.
-    public class HomeCollectionPagerAdapter extends FragmentStatePagerAdapter {
+    public static class HomeCollectionPagerAdapter extends FragmentStatePagerAdapter {
         public HomeCollectionPagerAdapter(FragmentManager fm) {
             super(fm);
         }
-
+        
         @Override
         public Fragment getItem(int position) {
+            
             Fragment fragment = new HomeObjectFragment();
             Bundle args = new Bundle();
             args.putInt(HomeObjectFragment.ARG_OBJECT, position);
@@ -572,7 +575,7 @@ public class HomeFragment extends BaseFragment {
             sharedPrefs = getActivity().getSharedPreferences(
                     ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
             
-            if(args.getInt(ARG_OBJECT) == 2){
+            if(args.getInt(ARG_OBJECT) == HomeFragment.initialPosition){
                 showTips();
             }
             

@@ -45,7 +45,7 @@
             android:layout_alignParentBottom="true"
             layout="@layout/loading_more" />
 
-        <GridView
+        <ListView
             android:id="@+id/middle_productslist_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -54,15 +54,6 @@
             android:listSelector="@android:color/transparent"
             android:numColumns="1" />
 
-        <!-- <include -->
-        <!-- android:id="@+id/container_btn_sort" -->
-        <!-- android:layout_width="match_parent" -->
-        <!-- android:layout_height="wrap_content" -->
-        <!-- android:layout_alignParentBottom="true" -->
-        <!-- android:layout_alignParentLeft="true" -->
-        <!-- android:layout_alignParentRight="true" -->
-        <!-- android:layout_marginTop="-10dp" -->
-        <!-- layout="@layout/btn_sort_colorflexible" /> -->
     </RelativeLayout>
 
     <include
