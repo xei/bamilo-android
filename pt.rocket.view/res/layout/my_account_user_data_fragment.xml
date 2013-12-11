@@ -4,7 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:visibility="visible" >
-
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+<RelativeLayout
+     android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <RelativeLayout
         android:id="@+id/myDataContainer"
         android:layout_width="match_parent"
@@ -152,5 +157,6 @@
             android:layout_weight="1"
             android:text="@string/cancel_label" />
     </LinearLayout>
-
+</RelativeLayout>
+</ScrollView>
 </RelativeLayout>
