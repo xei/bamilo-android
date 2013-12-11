@@ -91,8 +91,8 @@ public class HomeFragment extends BaseFragment {
 
  //   private int defaultPosition=Math.abs(requestResponse.size() / 2);
     
-    private int currentPosition=-1;
-    public static int initialPosition = 2;
+    private int currentPosition=3;
+    public static int initialPosition = 3;
 
     private static HomeFragment mHomeFragment;
 
@@ -221,23 +221,36 @@ public class HomeFragment extends BaseFragment {
                 }
                 
                 @Override
-                public void onPageScrollStateChanged(int arg0) {
-                    if (arg0 == mPager.SCROLL_STATE_IDLE) {
-                        int pageCount = pagesTitles.size();
-
-                        if (currentPosition == 0) {
-                            mPager.setCurrentItem(pageCount - 2, false);
+                public  void onPageScrollStateChanged(int arg0) {
+                    int pageCount = pagesTitles.size();
+                    
+                    if(arg0 == mPager.SCROLL_STATE_SETTLING){
+                        if(mPager != null)
+                            mPager.setPagingEnabled(false);
+                    }
+                    
+                    if (arg0 == mPager.SCROLL_STATE_IDLE ) {
+                        mPager.setPagingEnabled(true);
+                        mPager.toggleJumiaScroller(true);
+                        
+                        //change event of first(last) fragment to jump for original fragment
+                        if (currentPosition == 0 ) {
+                            mPager.toggleJumiaScroller(false);
+                            mPager.setCurrentItem(pageCount - 2);
+                            
+                        // change event of last(first) fragment to jump for original fragment
                         } else if (currentPosition == pageCount - 1) {
-                            mPager.setCurrentItem(1, false);
+                            mPager.toggleJumiaScroller(false);
+                            mPager.setCurrentItem(1);
+
                         }
                     }
+                   
                 }
+                
             });
         }
 
-        
-        
-        
 //        if(mPager.getAdapter() == null){
             pagerTabStrip = (PagerTabStrip) getView().findViewById(R.id.home_titles);
             if(mPager.getAdapter() == null)
@@ -262,7 +275,8 @@ public class HomeFragment extends BaseFragment {
         Log.i(TAG, "restoreLayout");
         if (requestResponse != null) {
             if(currentPosition==-1){
-                currentPosition = Math.abs(requestResponse.size() / 2) + 1;
+                currentPosition = Math.abs(requestResponse.size() / 2) ;
+         
                 initialPosition = currentPosition;
             }
             
@@ -349,6 +363,7 @@ public class HomeFragment extends BaseFragment {
     }
     
     private void proccessResult(Collection<? extends Homepage> result) {
+    
         requestResponse = new ArrayList<Collection<? extends TeaserSpecification<?>>>();
         pagesTitles = new ArrayList<String>();
 
@@ -367,7 +382,7 @@ public class HomeFragment extends BaseFragment {
             }
             pagesTitles.add(homepage.getHomepageTitle());
             requestResponse.add(homepage.getTeaserSpecification());
-
+            
             if (count == result.size() - 1) {
                 pagesTitles.add(firstHomePage.getHomepageTitle());
                 requestResponse.add(firstHomePage.getTeaserSpecification());

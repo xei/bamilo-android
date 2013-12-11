@@ -11,6 +11,7 @@ import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.framework.utils.ProductSort;
+import pt.rocket.utils.JumiaViewPager;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.view.BaseActivity;
@@ -25,6 +26,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,7 +66,7 @@ public class ProductsViewFragment extends BaseFragment {
     private final static String TAG = LogTagHelper.create(ProductsViewFragment.class);
 
     private PagerTabStrip pagerTabStrip;
-
+    private JumiaViewPager mViewPager;
     private final int TAB_PREV_ID = 0;
     private final int TAB_CURR_ID = 1;
     private final int TAB_NEXT_ID = 2;
@@ -80,7 +82,7 @@ public class ProductsViewFragment extends BaseFragment {
     public static String navigationPath;
     public static String title;
     public static int navigationSource;
-
+    private int currentPosition=1;
     public ProductsViewFragment() {
         super(EnumSet.noneOf(EventType.class), EnumSet.noneOf(EventType.class), EnumSet
                 .of(MyMenuItem.SEARCH), NavigationAction.Products, R.string.products);
@@ -124,10 +126,56 @@ public class ProductsViewFragment extends BaseFragment {
         ProductsListPagerAdapter mProductsListPagerAdapter = new ProductsListPagerAdapter(
                 getChildFragmentManager());
 
-        ViewPager mViewPager = (ViewPager) getView().findViewById(R.id.viewpager_products_list);
+        mViewPager = (JumiaViewPager) getView().findViewById(R.id.viewpager_products_list);
+        mViewPager.setOnPageChangeListener(new OnPageChangeListener() {
+            
+            @Override
+            public void onPageSelected(int arg0) {
+                currentPosition = arg0;
+                
+            }
+            
+            @Override
+            public void onPageScrolled(int arg0, float arg1, int arg2) {
+                // TODO Auto-generated method stub
+                
+            }
+            
+            @Override
+            public void onPageScrollStateChanged(int arg0) {
+                
+                
+                int pageCount = getResources().getStringArray(R.array.products_picker).length;
+                      
+                
+                if(arg0 == mViewPager.SCROLL_STATE_SETTLING){
+                    if(mViewPager != null)
+                        mViewPager.setPagingEnabled(false);
+                }
+                
+                if (arg0 == mViewPager.SCROLL_STATE_IDLE ) {
+                    mViewPager.setPagingEnabled(true);
+                    mViewPager.toggleJumiaScroller(true);
+                    
+                    //change event of first(copy of last fragment) to jump for original fragment
+                    if (currentPosition == 0 ) {
+                        mViewPager.toggleJumiaScroller(false);
+                        mViewPager.setCurrentItem(pageCount - 2);
+                        
+                    // change event of last(copy of last first) to jump for original fragment
+                    } else if (currentPosition == pageCount - 1) {
+                        mViewPager.toggleJumiaScroller(false);
+                        mViewPager.setCurrentItem(1);
+
+                    }
+                }
+               
+            }
+        });
         pagerTabStrip = (PagerTabStrip) getView().findViewById(R.id.products_list_titles);
+        
         mViewPager.setAdapter(mProductsListPagerAdapter);
-        mViewPager.setCurrentItem(0);
+        mViewPager.setCurrentItem(1);
         try {
             setLayoutSpec();
         } catch (IllegalArgumentException e) {
@@ -173,7 +221,7 @@ public class ProductsViewFragment extends BaseFragment {
 
         @Override
         public int getCount() {
-            return ProductSort.values().length;
+            return getResources().getStringArray(R.array.products_picker).length;
         }
 
         @Override
