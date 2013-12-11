@@ -42,8 +42,8 @@ public class FragmentCommunicator {
     }
     
     private FragmentCommunicator(){
-        this.mFragmentsCallback = new ArrayList<OnActivityFragmentInteraction>();
-        this.mFragmentsCallbackNames = new ArrayList<String>();
+        mFragmentsCallback = new ArrayList<OnActivityFragmentInteraction>();
+        mFragmentsCallbackNames = new ArrayList<String>();
     }
     
     public void startFragmentsCallBacks(Fragment... mFragments){
