@@ -14,7 +14,6 @@ import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.objects.Category;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.FragmentCommunicator;
-import pt.rocket.view.BaseActivity;
 import pt.rocket.view.MainFragmentActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
@@ -41,10 +40,6 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
 
     private ListView categoriesList;
 
-    private long beginRequestMillis;
-
-    private String categoryUrl;
-
     private int categoryIndex;
 
     private int subCategoryIndex;
@@ -57,7 +52,7 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
 
     private SubCategoriesAdapter subCatAdapter;
     
-    public FragmentType currentFragment = FragmentType.CATEGORIES_LEVEL_1;
+    private FragmentType currentFragment = FragmentType.CATEGORIES_LEVEL_1;
     
     private boolean isParent = false;
 
@@ -68,7 +63,6 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
      */
     public static CategoriesFragment newInstance(String categoryUrl) {
         CategoriesFragment categoriesFragment = new CategoriesFragment();
-        categoriesFragment.categoryUrl = categoryUrl;
         return categoriesFragment;
     }
     
@@ -78,14 +72,14 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
      * @return
      */
     public static CategoriesFragment getInstance(Bundle bundle) {
-        // return new CategoriesFragment();
         CategoriesFragment categoriesFragment = new CategoriesFragment();
         // Get data
         if(bundle != null) {
             categoriesFragment.currentFragment = (FragmentType) bundle.getSerializable(ConstantsIntentExtra.CATEGORY_LEVEL);
-            if(categoriesFragment.currentFragment == null)
+            if(categoriesFragment.currentFragment == null){
                 categoriesFragment.currentFragment = FragmentType.CATEGORIES_LEVEL_1;
-            categoriesFragment.categoryUrl = bundle.getString(ConstantsIntentExtra.CATEGORY_URL);
+            }
+                
             categoriesFragment.isParent = bundle.getBoolean(CategoriesContainerFragment.CATEGORY_PARENT);
             categoriesFragment.categoryIndex = bundle.getInt(ConstantsIntentExtra.SELECTED_CATEGORY_INDEX);
             categoriesFragment.subCategoryIndex = bundle.getInt(ConstantsIntentExtra.SELECTED_SUB_CATEGORY_INDEX);
@@ -212,6 +206,7 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         // LEVEL 1
         if(currentFragment == FragmentType.CATEGORIES_LEVEL_1) {
+            Log.i(TAG, "code1 requested level 1");
             Category category = categories.get(position);
             if (!category.getHasChildren()) {
                 showProducts(category);
@@ -361,34 +356,7 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
      * @param category
      */
     private void showProducts( Category category ) {
-        
-//        // Save the selected categories to recover when backpressed
-//        SharedPreferences sharedPrefs = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-//        SharedPreferences.Editor editor = sharedPrefs.edit();
-//        editor.putInt(ConstantsIntentExtra.SELECTED_CATEGORY_INDEX, categoryIndex);
-//        editor.putInt(ConstantsIntentExtra.SELECTED_SUB_CATEGORY_INDEX, subCategoryIndex);
-//        if(isParent){
-//            if(currentFragment == FragmentType.CATEGORIES_LEVEL_1){
-//                editor.putInt(CategoriesContainerFragment.PARENT_LEVEL, 1);
-//                editor.putInt(CategoriesContainerFragment.CHILD_LEVEL, 2);
-//            } else {
-//                editor.putInt(CategoriesContainerFragment.PARENT_LEVEL, 2);
-//                editor.putInt(CategoriesContainerFragment.CHILD_LEVEL, 3);
-//            }
-//        } else {
-//            if(currentFragment == FragmentType.CATEGORIES_LEVEL_2){
-//                editor.putInt(CategoriesContainerFragment.PARENT_LEVEL, 1);
-//                editor.putInt(CategoriesContainerFragment.CHILD_LEVEL, 2);
-//            } else {
-//                editor.putInt(CategoriesContainerFragment.PARENT_LEVEL, 2);
-//                editor.putInt(CategoriesContainerFragment.CHILD_LEVEL, 3);
-//            }
-//        }
-//        
-//        editor.commit(); 
-        
-        
-        
+       
         Bundle bundle2 = new Bundle();
         bundle2.putBoolean(CategoriesContainerFragment.REMOVE_FRAGMENTS, true);
         bundle2.putString(ConstantsIntentExtra.CONTENT_URL, category.getApiUrl());

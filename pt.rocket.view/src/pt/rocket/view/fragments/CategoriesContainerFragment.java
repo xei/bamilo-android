@@ -6,12 +6,9 @@ package pt.rocket.view.fragments;
 import java.util.EnumSet;
 import java.util.List;
 
-import org.holoeverywhere.widget.TextView;
-
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.CategoriesAdapter;
 import pt.rocket.controllers.fragments.FragmentType;
-import pt.rocket.framework.event.EventManager;
 import pt.rocket.framework.event.EventType;
 import pt.rocket.framework.event.ResponseEvent;
 import pt.rocket.framework.event.ResponseResultEvent;
@@ -58,7 +55,7 @@ public class CategoriesContainerFragment extends BaseFragment {
 
     private int subCategoryIndex;
     
-    public FragmentType currentFragment = FragmentType.CATEGORIES_LEVEL_1;
+    private FragmentType currentFragment = FragmentType.CATEGORIES_LEVEL_1;
     
     public static String CATEGORY_PARENT ="category_parent";
     public static String UPDATE_CHILD ="update_child";
@@ -74,13 +71,15 @@ public class CategoriesContainerFragment extends BaseFragment {
     private static Fragment mChildCategoriesFragment;
     
     RelativeLayout backLevelButton;
+    private static CategoriesContainerFragment categoriesFragment;
     /**
      * Get instance
      * 
      * @return
      */
     public static CategoriesContainerFragment newInstance(String categoryUrl) {
-        CategoriesContainerFragment categoriesFragment = new CategoriesContainerFragment();
+        if(categoriesFragment == null)
+            categoriesFragment = new CategoriesContainerFragment();
         categoriesFragment.categoryUrl = categoryUrl;
         return categoriesFragment;
     }
@@ -91,16 +90,32 @@ public class CategoriesContainerFragment extends BaseFragment {
      * @return
      */
     public static CategoriesContainerFragment getInstance(Bundle bundle) {
-        // return new CategoriesFragment();
-        CategoriesContainerFragment categoriesFragment = new CategoriesContainerFragment();
+        
+        if(categoriesFragment == null)
+            categoriesFragment = new CategoriesContainerFragment();
         // Get data
         if(bundle != null) {
-            categoriesFragment.currentFragment = (FragmentType) bundle.getSerializable(ConstantsIntentExtra.CATEGORY_LEVEL);
-            if(categoriesFragment.currentFragment == null)
-                categoriesFragment.currentFragment = FragmentType.CATEGORIES_LEVEL_1;
-            categoriesFragment.categoryUrl = bundle.getString(ConstantsIntentExtra.CATEGORY_URL);
-            categoriesFragment.categoryIndex = bundle.getInt(ConstantsIntentExtra.SELECTED_CATEGORY_INDEX);
-            categoriesFragment.subCategoryIndex = bundle.getInt(ConstantsIntentExtra.SELECTED_SUB_CATEGORY_INDEX);
+            if(bundle.containsKey(ConstantsIntentExtra.CATEGORY_LEVEL)){
+                categoriesFragment.currentFragment = (FragmentType) bundle.getSerializable(ConstantsIntentExtra.CATEGORY_LEVEL);
+                
+                if(categoriesFragment.currentFragment == null){
+                    categoriesFragment.currentFragment = FragmentType.CATEGORIES_LEVEL_1;
+                }
+                
+            }
+            
+            if(bundle.containsKey(ConstantsIntentExtra.CATEGORY_URL)){
+                categoriesFragment.categoryUrl = bundle.getString(ConstantsIntentExtra.CATEGORY_URL);
+            }
+                
+            if(bundle.containsKey(ConstantsIntentExtra.SELECTED_CATEGORY_INDEX)){
+                categoriesFragment.categoryIndex = bundle.getInt(ConstantsIntentExtra.SELECTED_CATEGORY_INDEX);
+            }
+                
+            if(bundle.containsKey(ConstantsIntentExtra.SELECTED_SUB_CATEGORY_INDEX)){
+                categoriesFragment.subCategoryIndex = bundle.getInt(ConstantsIntentExtra.SELECTED_SUB_CATEGORY_INDEX);
+            }
+                
         }
         return categoriesFragment;
     }
@@ -176,11 +191,10 @@ public class CategoriesContainerFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        
         if(MainFragmentActivity.currentCategories != null && getView() != null){
             if(((BaseActivity) getActivity()).isTabletInLandscape()){
                 createFragmentsForLandscape();
-            } else {
+            } else { 
                 createFragment();
             }
         } else if(getView() != null) {
@@ -320,12 +334,14 @@ public class CategoriesContainerFragment extends BaseFragment {
      * Creates the list with all the categories
      */
     private void createFragmentsForLandscape() {
+        FragmentCommunicator.getInstance().destroyInstance();
         startButtonListener();
-        
+        currentFragment = FragmentType.CATEGORIES_LEVEL_1;
         Bundle args = new Bundle();
         args.putString(ConstantsIntentExtra.CATEGORY_URL, categoryUrl);
-        args.putInt(ConstantsIntentExtra.SELECTED_CATEGORY_INDEX, categoryIndex);
-        args.putSerializable(ConstantsIntentExtra.CATEGORY_LEVEL, FragmentType.CATEGORIES_LEVEL_1);
+        args.putInt(ConstantsIntentExtra.SELECTED_CATEGORY_INDEX, 0);
+        args.putInt(ConstantsIntentExtra.SELECTED_SUB_CATEGORY_INDEX, 0);
+        args.putSerializable(ConstantsIntentExtra.CATEGORY_LEVEL, currentFragment);
         args.putBoolean(CATEGORY_PARENT, true);
         mCategoriesFragment = CategoriesFragment.getInstance(args);
         FragmentManager     fm = getChildFragmentManager();
@@ -334,8 +350,7 @@ public class CategoriesContainerFragment extends BaseFragment {
         
         Bundle bundle = new Bundle();
         bundle.putInt(ConstantsIntentExtra.SELECTED_CATEGORY_INDEX, 0);
-        args.getInt(ConstantsIntentExtra.SELECTED_SUB_CATEGORY_INDEX, subCategoryIndex);
-        bundle.putSerializable(ConstantsIntentExtra.CATEGORY_LEVEL, FragmentType.CATEGORIES_LEVEL_2);
+        bundle.putInt(ConstantsIntentExtra.SELECTED_SUB_CATEGORY_INDEX, 0);
         bundle.putSerializable(ConstantsIntentExtra.CATEGORY_LEVEL, FragmentType.CATEGORIES_LEVEL_2);
         bundle.putBoolean(CATEGORY_PARENT, false);
         mChildCategoriesFragment = CategoriesFragment.getInstance(bundle);
@@ -390,6 +405,7 @@ public class CategoriesContainerFragment extends BaseFragment {
         ft.commit();
         mCategoriesFragment = null;
         mChildCategoriesFragment = null;
+        FragmentCommunicator.getInstance().destroyInstance();
         fm = null;
         ft = null;
         
