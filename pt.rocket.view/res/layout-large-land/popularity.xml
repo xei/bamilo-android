@@ -121,5 +121,10 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1" />
-
+    <include
+        android:id="@+id/contextual_loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/loading_bar"
+        android:visibility="gone" />
 </LinearLayout>
