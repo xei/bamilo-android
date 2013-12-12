@@ -478,12 +478,15 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
         for (ProductSimple simple : simples) {
             String value = calcVariationStringForSimple(simple, foundKeys);
             String quantity = simple.getAttributeByKey(ProductSimple.QUANTITY_TAG);
-            if (quantity != null && Integer.parseInt(quantity) > 0) {
+            
+            if (quantity != null && Long.parseLong(quantity) > 0) {
                 variationValues.add(value);
                 mSimpleVariantsAvailable.add(value);
             } else {
                 variationValues.add(value);
             }
+           
+            
 
         }
 
