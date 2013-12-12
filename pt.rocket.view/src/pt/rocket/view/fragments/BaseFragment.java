@@ -1,5 +1,6 @@
 package pt.rocket.view.fragments;
 
+import java.lang.reflect.Field;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Calendar;
@@ -52,6 +53,7 @@ public abstract class BaseFragment extends Fragment implements ResponseListener,
     protected String md5Hash = null;
     
     private static String writeReviewFragment = "pt.rocket.view.WriteReviewFragmentActivity";
+    private static Field sChildFragmentManagerField;
 
 	public static final Boolean IS_NESTED_FRAGMENT = true;
     public static final Boolean ISNT_NESTED_FRAGMENT = false;
@@ -757,5 +759,37 @@ public abstract class BaseFragment extends Fragment implements ResponseListener,
     public void onFragmentElementSelected(int position) {
         
     }
+    
+    /**
+     * FIXES 
+     * FATAL EXCEPTION: main
+     * java.lang.IllegalStateException: No activity
+     * see (http://stackoverflow.com/questions/14929907/causing-a-java-illegalstateexception-error-no-activity-only-when-navigating-to)
+     */
+    
+    static {
+        Field f = null;
+        try {
+            f = Fragment.class.getDeclaredField("mChildFragmentManager");
+            f.setAccessible(true);
+        } catch (NoSuchFieldException e) {
+            Log.e(TAG, "Error getting mChildFragmentManager field", e);
+        }
+        sChildFragmentManagerField = f;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
+        if (sChildFragmentManagerField != null) {
+            try {
+                sChildFragmentManagerField.set(this, null);
+            } catch (Exception e) {
+                Log.e(TAG, "Error setting mChildFragmentManager field", e);
+            }
+        }
+    }
+
     
 }
