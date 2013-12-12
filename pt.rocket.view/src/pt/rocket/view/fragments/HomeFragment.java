@@ -91,7 +91,7 @@ public class HomeFragment extends BaseFragment {
 
  //   private int defaultPosition=Math.abs(requestResponse.size() / 2);
     
-    private int currentPosition=3;
+    private int currentPosition=-1;
     public static int initialPosition = 3;
 
     private static HomeFragment mHomeFragment;
@@ -273,7 +273,7 @@ public class HomeFragment extends BaseFragment {
         Log.i(TAG, "restoreLayout");
         if (requestResponse != null) {
             if(currentPosition==-1){
-                currentPosition = Math.abs(requestResponse.size() / 2) ;
+                currentPosition = Math.abs((requestResponse.size() + 2) / 2);
          
                 initialPosition = currentPosition;
             }
@@ -366,7 +366,8 @@ public class HomeFragment extends BaseFragment {
         pagesTitles = new ArrayList<String>();
 
         if(currentPosition==-1){
-            currentPosition = Math.abs(result.size() / 2);    
+            currentPosition = Math.abs((result.size() + 2 )/ 2); 
+            initialPosition = currentPosition;
         }
         
         int count = 0;
@@ -642,9 +643,11 @@ public class HomeFragment extends BaseFragment {
         private void processTeasersResult(Collection<? extends TeaserSpecification<?>> result,
                 LinearLayout mainView) {
             TeasersFactory mTeasersFactory = new TeasersFactory();
+            mainView.removeAllViews();
             for (Iterator iterator = result.iterator(); iterator.hasNext();) {
                 TeaserSpecification<?> teaserSpecification = (TeaserSpecification<?>) iterator
                         .next();
+                
                 mainView.addView(mTeasersFactory.getSpecificTeaser(getActivity(), mainView, teaserSpecification, mInflater, teaserClickListener));
             }
         }
