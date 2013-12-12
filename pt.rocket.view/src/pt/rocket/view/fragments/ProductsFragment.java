@@ -641,7 +641,7 @@ public class ProductsFragment extends BaseFragment implements OnClickListener,
         checkRedirectFromSearch(location);
 
         AnalyticsGoogle.get().trackLoadTiming(R.string.gproductlist, mBeginRequestMillis);
-        System.gc();
+
         if (searchQuery != null && !TextUtils.isEmpty(searchQuery)) {
             ((BaseActivity) getActivity()).setTitle(searchQuery + " (" + productsPage.getTotalProducts() + ")");
             TrackerDelegator.trackSearchMade(getActivity().getApplicationContext(), searchQuery,

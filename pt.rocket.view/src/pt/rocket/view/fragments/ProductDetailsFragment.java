@@ -1137,7 +1137,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         BaseActivity act = (BaseActivity) getActivity();
         if(act != null){
             act.onBackPressed();
-            act.showContentContainer();
         }
     }
     
