@@ -358,9 +358,9 @@ public class CompleteProduct implements IJSONSerializable {
      * @return
      */
 	private String getImageUrl(String url) {
-		String modUrl = ImageResolutionHelper.replaceResolution(url);
-		if(modUrl != null)
-			return modUrl;
+//		String modUrl = ImageResolutionHelper.replaceResolution(url);
+//		if(modUrl != null)
+//			return modUrl;
 		return url;
 	}
     
