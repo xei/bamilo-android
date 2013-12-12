@@ -7,7 +7,7 @@
     </plurals>
 
     <string-array name="products_picker">
-         <item>@string/products_sort_brand</item>
+        <item>@string/products_sort_brand</item>
         <item>@string/products_sort_popularity</item>
         <item>@string/products_sort_priceup</item>
         <item>@string/products_sort_pricedown</item>

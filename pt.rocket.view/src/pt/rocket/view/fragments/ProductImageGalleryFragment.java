@@ -8,7 +8,6 @@ import java.util.EnumSet;
 
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.GalleryPagerAdapter;
-import pt.rocket.controllers.NormalizingViewPagerWrapper;
 import pt.rocket.controllers.ProductImagesAdapter;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
@@ -17,11 +16,11 @@ import pt.rocket.framework.event.ResponseEvent;
 import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.utils.FragmentCommunicator;
 import pt.rocket.utils.HorizontalListView;
 import pt.rocket.utils.JumiaViewPagerWithZoom;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
-import pt.rocket.utils.FragmentCommunicator;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.ProductDetailsActivityFragment;
 import pt.rocket.view.R;
@@ -70,7 +69,7 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
 
     private boolean isZoomAvailable = false;
 
-    private int mVariationsListPosition;
+    private int mVariationsListPosition = 0;
 
     private HorizontalListView mImagesList;
 
@@ -115,7 +114,7 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
     public ProductImageGalleryFragment() {
         super(EnumSet.noneOf(EventType.class),
                 EnumSet.noneOf(EventType.class),
-                EnumSet.of(MyMenuItem.SHARE),
+                EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.Products, 0);
         this.setRetainInstance(true);
     }
@@ -199,7 +198,7 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
         mViewPager = (JumiaViewPagerWithZoom) mainView.findViewById(R.id.viewpager);
         mViewPager.setCurrentItem(currentPosition);
         createViewPager();
-        updateImage(0);
+        updateImage(productImageGalleryFragment.mVariationsListPosition);
     }
 
     /*
@@ -333,8 +332,8 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
 
                 Bundle bundle = new Bundle();
                 bundle.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProduct.getUrl());
-                //bundle.putInt(ConstantsIntentExtra.CURRENT_LISTPOSITION,
-                 //       mPagerWrapper.getCurrentItem());
+                bundle.putInt(ConstantsIntentExtra.CURRENT_LISTPOSITION,
+                        mViewPager.getCurrentItem());
                 bundle.putBoolean(ConstantsIntentExtra.IS_ZOOM_AVAILABLE, true);
                 bundle.putBoolean(ConstantsIntentExtra.SHOW_HORIZONTAL_LIST_VIEW, false);
                 ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.PRODUCT_GALLERY,
@@ -345,7 +344,7 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
                 }
             }
 
-            return showHorizontalListView;
+            return true;
         }
     }
 
@@ -452,6 +451,6 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
         }
 
         createViewPager();
-        updateImage(0);
+        updateImage(productImageGalleryFragment.mVariationsListPosition);
     }
 }

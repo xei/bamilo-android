@@ -26,6 +26,8 @@ public class FragmentCommunicator {
     public static String ACTION_IDENTIFIER = "action_identifier";
     private CompleteProduct currentProduct;
     
+    // used to stay on the same image on product gallery
+    private int currentImagePosition = 0;
     
     public static FragmentCommunicator getInstance() {
         if(mProductDetailsFragmentCommunicator == null){
@@ -93,5 +95,13 @@ public class FragmentCommunicator {
         Log.i(TAG, "notify fragment : "+fragment.toString());
         this.mFragmentsCallback.get(position).notifyFragment(bundle);
         
+    }
+
+    public int getCurrentImagePosition() {
+        return currentImagePosition;
+    }
+
+    public void setCurrentImagePosition(int currentImagePosition) {
+        this.currentImagePosition = currentImagePosition;
     }
 }

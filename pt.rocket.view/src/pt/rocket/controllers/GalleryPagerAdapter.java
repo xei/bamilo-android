@@ -1,14 +1,13 @@
 package pt.rocket.controllers;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import pt.rocket.app.ImageLoaderComponent;
 import pt.rocket.controllers.NormalizingViewPagerWrapper.IPagerAdapter;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.JumiaApplication;
-import pt.rocket.utils.PhotoViewAttacher;
 import pt.rocket.view.R;
+import uk.co.senab.photoview.PhotoView;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v4.view.PagerAdapter;
@@ -88,7 +87,13 @@ public class GalleryPagerAdapter extends PagerAdapter implements IPagerAdapter {
 	public Object instantiateVirtualItem(ViewGroup container, int position) {
 	    View view = null;
 		try {
-		    view = mInflater.inflate(R.layout.image_loadable, container, false);
+		    if(this.isZoomAvailable){
+		        Log.i(TAG, " full_screen_gallery ");
+		        view = mInflater.inflate(R.layout.full_screen_gallery, container, false);    
+		    } else {
+		        view = mInflater.inflate(R.layout.image_loadable, container, false);
+		    }
+		    
 	        String imageUrl = mImageUrls.get(position);
 	        setImageToLoad(imageUrl, view);
 	        container.addView( view );
@@ -97,47 +102,78 @@ public class GalleryPagerAdapter extends PagerAdapter implements IPagerAdapter {
         } catch (IndexOutOfBoundsException e) {
             e.printStackTrace();
         }
-	    
  
 		return view;
 	}
 
 	private void setImageToLoad(String imageUrl, View imageTeaserView) {
-		final ImageView imageView = (ImageView) imageTeaserView.findViewById(R.id.image_view);
-		imageView.setImageResource(R.drawable.no_image_small);
-		Log.i(TAG, "code1 isZoomAvailable on setImageToLoad"+this.isZoomAvailable);
-		if(this.isZoomAvailable){
-		    new PhotoViewAttacher(imageView);
-		    
-		}
-		
-		final View progressBar = imageTeaserView.findViewById(R.id.image_loading_progress);
-        if (!TextUtils.isEmpty(imageUrl)) {
-            ImageLoader
-                    .getInstance()
-                    .displayImage(
-                            imageUrl,
-                            imageView,
-                            JumiaApplication.COMPONENTS.
-                                get(ImageLoaderComponent.class).largeLoaderOptions,
-                            new SimpleImageLoadingListener() {
+	    if(this.isZoomAvailable){
+	        final PhotoView imageView = (PhotoView) imageTeaserView.findViewById(R.id.image_view);
+	        imageView.setImageResource(R.drawable.no_image_small);
+	        final View progressBar = imageTeaserView.findViewById(R.id.image_loading_progress);
+	        if (!TextUtils.isEmpty(imageUrl)) {
+	            ImageLoader
+	                    .getInstance()
+	                    .displayImage(
+	                            imageUrl,
+	                            imageView,
+	                            JumiaApplication.COMPONENTS.
+	                                get(ImageLoaderComponent.class).largeLoaderOptions,
+	                            new SimpleImageLoadingListener() {
 
-                                /*
-                                 * (non-Javadoc)
-                                 * 
-                                 * @see com.nostra13.universalimageloader.core.assist.
-                                 * SimpleImageLoadingListener#onLoadingComplete(java.lang.String,
-                                 * android.view.View, android.graphics.Bitmap)
-                                 */
-                                @Override
-                                public void onLoadingComplete(String imageUri, View view,
-                                        Bitmap loadedImage) {
-                                    progressBar.setVisibility(View.GONE);
-                                    imageView.setVisibility(View.VISIBLE);
-                                }
+	                                /*
+	                                 * (non-Javadoc)
+	                                 * 
+	                                 * @see com.nostra13.universalimageloader.core.assist.
+	                                 * SimpleImageLoadingListener#onLoadingComplete(java.lang.String,
+	                                 * android.view.View, android.graphics.Bitmap)
+	                                 */
+	                                @Override
+	                                public void onLoadingComplete(String imageUri, View view,
+	                                        Bitmap loadedImage) {
+	                                    progressBar.setVisibility(View.GONE);
+	                                    imageView.setVisibility(View.VISIBLE);
+	                                }
 
-                            });
+	                            });
+	        }
+        } else {
+            final ImageView imageView = (ImageView) imageTeaserView.findViewById(R.id.image_view);
+            imageView.setImageResource(R.drawable.no_image_small);
+            final View progressBar = imageTeaserView.findViewById(R.id.image_loading_progress);
+            if (!TextUtils.isEmpty(imageUrl)) {
+                ImageLoader
+                        .getInstance()
+                        .displayImage(
+                                imageUrl,
+                                imageView,
+                                JumiaApplication.COMPONENTS.
+                                    get(ImageLoaderComponent.class).largeLoaderOptions,
+                                new SimpleImageLoadingListener() {
+
+                                    /*
+                                     * (non-Javadoc)
+                                     * 
+                                     * @see com.nostra13.universalimageloader.core.assist.
+                                     * SimpleImageLoadingListener#onLoadingComplete(java.lang.String,
+                                     * android.view.View, android.graphics.Bitmap)
+                                     */
+                                    @Override
+                                    public void onLoadingComplete(String imageUri, View view,
+                                            Bitmap loadedImage) {
+                                        progressBar.setVisibility(View.GONE);
+                                        imageView.setVisibility(View.VISIBLE);
+                                    }
+
+                                });
+            }
         }
+	    
+		
+
+		
+		
+		
 	}
 
 	/*
