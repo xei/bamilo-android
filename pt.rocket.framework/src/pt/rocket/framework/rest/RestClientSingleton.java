@@ -442,6 +442,8 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 			Log.e(TAG, "HTTP response to big " + httpRequest.getURI(), e);
 			ResponseReceiver.sendError(resultReceiver, ErrorCode.HTTP_PROTOCOL, metaData);
 			EntityUtils.consumeQuietly(entity);
+			entity = null;
+			System.gc();
 			return null;
 		} catch (ClientProtocolException e) {
 			Log.e(TAG, "There was a protocol error calling " + httpRequest.getURI(), e);
