@@ -242,12 +242,10 @@ public class HomeFragment extends BaseFragment {
                         } else if (currentPosition == pageCount - 1) {
                             mPager.toggleJumiaScroller(false);
                             mPager.setCurrentItem(1);
-
                         }
                     }
                    
                 }
-                
             });
         }
 

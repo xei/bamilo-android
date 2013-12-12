@@ -52,7 +52,7 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
 
     private ProductImagesAdapter mImageListAdapter;
 
-    private NormalizingViewPagerWrapper mPagerWrapper;
+    //private NormalizingViewPagerWrapper mPagerWrapper;
 
     private JumiaViewPagerWithZoom mViewPager;
 
@@ -74,6 +74,7 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
 
     private HorizontalListView mImagesList;
 
+    private int currentPosition = 1;
     /**
      * 
      * @param dynamicForm
@@ -154,7 +155,7 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
             Bundle savedInstanceState) {
         super.onCreateView(mInflater, viewGroup, savedInstanceState);
         Log.i(TAG, "ON CREATE VIEW");
-
+       
         mainView = mInflater.inflate(R.layout.product_showoff_viewpager_frame, viewGroup, false);
 
         return mainView;
@@ -169,6 +170,7 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
     public void onStart() {
         super.onStart();
         Log.i(TAG, "ON START");
+        
     }
 
     /*
@@ -195,6 +197,7 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
         }
 
         mViewPager = (JumiaViewPagerWithZoom) mainView.findViewById(R.id.viewpager);
+        mViewPager.setCurrentItem(currentPosition);
         createViewPager();
         updateImage(0);
     }
@@ -237,11 +240,50 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
            
         }
         
-        
+        // set page listener to handler infinite scrool event.
+        mViewPager.setOnPageChangeListener(new OnPageChangeListener() {
+            
+            @Override
+            public void onPageSelected(int arg0) {
+                currentPosition=arg0;
+            }
+            
+            @Override
+            public void onPageScrolled(int arg0, float arg1, int arg2) {
+                
+            }
+            
+            @Override
+            public  void onPageScrollStateChanged(int arg0) {
+                int pageCount = galleryAdapter.getCount();
+                
+                if(arg0 == mViewPager.SCROLL_STATE_SETTLING){
+                    if(mViewPager != null)
+                        mViewPager.setPagingEnabled(false);
+                }
+                
+                if (arg0 == mViewPager.SCROLL_STATE_IDLE ) {
+                    mViewPager.setPagingEnabled(true);
+                    mViewPager.toggleJumiaScroller(true);
+                    
+                    //
+                    if (currentPosition == 0 ) {
+                        mViewPager.toggleJumiaScroller(false);
+                        mViewPager.setCurrentItem(pageCount - 2);
+                        
+                    // 
+                    } else if (currentPosition == pageCount - 1) {
+                        mViewPager.toggleJumiaScroller(false);
+                        mViewPager.setCurrentItem(1);
+                    }
+                }
+               
+            }
+        });
         mViewPager.setAdapter(galleryAdapter);
-        mPagerWrapper = new NormalizingViewPagerWrapper(getActivity(), mViewPager, galleryAdapter,
-                this);
-
+        
+        mViewPager.setCurrentItem(currentPosition);
+       
         if (!showHorizontalListView) {
             final GestureDetector tapGestureDetector = new GestureDetector(getActivity(),
                     new TapGestureListener());
@@ -273,26 +315,26 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
     }
 
     private void updateImage(int index) {
-        mPagerWrapper.setCurrentItem(index, true);
+        mViewPager.setCurrentItem(index, true);
     }
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long arg3) {
-        mPagerWrapper.setCurrentItem(position, true);
-
+        //mPagerWrapper.setCurrentItem(position, true);
+        mViewPager.setCurrentItem(position, true);
     }
 
     class TapGestureListener extends GestureDetector.SimpleOnGestureListener {
 
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
-            Log.i(TAG, "code1tap weeeeee");
+           
             if (!isZoomAvailable) {
 
                 Bundle bundle = new Bundle();
                 bundle.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProduct.getUrl());
-                bundle.putInt(ConstantsIntentExtra.CURRENT_LISTPOSITION,
-                        mPagerWrapper.getCurrentItem());
+                //bundle.putInt(ConstantsIntentExtra.CURRENT_LISTPOSITION,
+                 //       mPagerWrapper.getCurrentItem());
                 bundle.putBoolean(ConstantsIntentExtra.IS_ZOOM_AVAILABLE, true);
                 bundle.putBoolean(ConstantsIntentExtra.SHOW_HORIZONTAL_LIST_VIEW, false);
                 ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.PRODUCT_GALLERY,
@@ -339,6 +381,9 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
     public void onPageSelected(int position) {
         Log.d(TAG, "onPageSelected position = " + position);
         // mImagesList.setSelectedItem(position, HorizontalListView.MOVE_TO_SCROLLED);
+        
+        //update current selected viewpager position
+        currentPosition=position;
     }
 
     /*
