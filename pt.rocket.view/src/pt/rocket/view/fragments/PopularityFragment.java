@@ -9,7 +9,6 @@ import java.util.EnumSet;
 import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.constants.ConstantsIntentExtra;
-import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.components.ScrollViewEx;
@@ -24,6 +23,7 @@ import pt.rocket.framework.objects.ProductReviewComment;
 import pt.rocket.framework.objects.RatingOption;
 import pt.rocket.framework.service.ServiceManager;
 import pt.rocket.framework.service.services.ProductService;
+import pt.rocket.framework.utils.LoadingBarView;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
@@ -44,11 +44,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import de.akquinet.android.androlog.Log;
 
 /**
  * @author sergiopereira
- * 
+ * @modified manuelsilva
  */
 public class PopularityFragment extends BaseFragment {
 
@@ -74,13 +75,20 @@ public class PopularityFragment extends BaseFragment {
     
     private Fragment mWriteReviewFragment;
 
+    private LoadingBarView contextualLoadingBarView;
+
+    private LinearLayout contextualLoadingBar;
+
+    private RelativeLayout popularityContainer;
+
     /**
      * Get instance
      * 
      * @return
      */
     public static PopularityFragment getInstance() {
-            popularityFragment = new PopularityFragment();
+        popularityFragment = new PopularityFragment();
+        popularityFragment.pageNumber = 1;
         return popularityFragment;
     }
 
@@ -115,14 +123,7 @@ public class PopularityFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
         context = getActivity().getApplicationContext();
-        selectedProduct = ServiceManager.SERVICES.get(ProductService.class).getCurrentProduct();
-        inflater = LayoutInflater.from(getActivity());
-        if(selectedProduct == null){
-            getActivity().finish();
-            return;
-        }
         
-        triggerContentEvent(new GetProductReviewsEvent(selectedProduct.getUrl(), pageNumber));
         
     }
 
@@ -150,7 +151,19 @@ public class PopularityFragment extends BaseFragment {
         super.onStart();
         Log.i(TAG, "ON START");
 //        ((BaseActivity) getActivity()).updateActivityHeader(NavigationAction.Products, R.string.reviews);
+        selectedProduct = ServiceManager.SERVICES.get(ProductService.class).getCurrentProduct();
+        inflater = LayoutInflater.from(getActivity());
+        if(selectedProduct == null){
+            getActivity().finish();
+            return;
+        }
+        
+        triggerContentEvent(new GetProductReviewsEvent(selectedProduct.getUrl(), pageNumber));
+        
         setAppContentLayout();
+        setContextualLoading();
+        showContextualLoading();
+        
         if(((BaseActivity) getActivity()).isTabletInLandscape()){
             Log.i(TAG, "startWriteReviewFragment : ");
             startWriteReviewFragment();
@@ -166,6 +179,7 @@ public class PopularityFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
+        
     }
 
     /*
@@ -202,11 +216,46 @@ public class PopularityFragment extends BaseFragment {
         Log.i(TAG, "ON DESTROY");
     }
     
+    private void setContextualLoading(){
+        if(getView() != null){
+            contextualLoadingBar = (LinearLayout) getView().findViewById(R.id.contextual_loading);
+            
+            contextualLoadingBarView = (LoadingBarView) contextualLoadingBar.findViewById(R.id.loading_bar_view);
+            
+            popularityContainer = (RelativeLayout) getView().findViewById(R.id.product_info);
+        }
+    }
+    
+    private void showContextualLoading(){
+        Log.i(TAG,"showing loader");
+        if(contextualLoadingBar != null){
+            Log.i(TAG,"showing loader : true");
+            contextualLoadingBar.setVisibility(View.VISIBLE);        
+        }
+        
+        if( popularityContainer != null){
+            popularityContainer.setVisibility(View.GONE);
+        }
+        if(contextualLoadingBarView != null){
+            contextualLoadingBarView.startRendering();    
+        }
+        
+    }
+    
+    private void hideContextualLoading(){
+        contextualLoadingBar.setVisibility(View.GONE);
+        if(contextualLoadingBarView != null){
+            contextualLoadingBarView.stopRendering();
+        }
+        popularityContainer.setVisibility(View.VISIBLE);
+    }
     
     /**
      * This method inflates the current activity layout into the main template.
      */
     private void setAppContentLayout() {
+        setContextualLoading();
+        showContextualLoading();
         setViewContent();
         setPopularity();
         if(mProductRatingPage != null)
@@ -344,8 +393,11 @@ public class PopularityFragment extends BaseFragment {
     private void displayReviews() {
         ArrayList<ProductReviewComment> reviews = mProductRatingPage.getReviewComments();
         LinearLayout reviewsLin = (LinearLayout) getView().findViewById(R.id.linear_reviews);
+        if(pageNumber == 1){
+            reviewsLin.removeAllViews();
+        }
         // Log.i("REVIEW COUNT", " IS " + review.size());
-        if (mProductRatingPage.getCommentsCount() > 0) {
+        if (mProductRatingPage.getCommentsCount() >= 0) {
             TextView reviewsPop = (TextView) getView().findViewById(R.id.reviews);
             reviewsPop.setText("" + mProductRatingPage.getCommentsCount());
         }
@@ -421,12 +473,15 @@ public class PopularityFragment extends BaseFragment {
             isLoadingMore = false;
 
         }
-
+        View loadingLayout = getView().findViewById(R.id.loadmore);
+        loadingLayout.setVisibility(View.GONE);
+        loadingLayout.refreshDrawableState();
         if (reviews.size() < MAX_REVIEW_COUNT) {
-            View loadingLayout = getView().findViewById(R.id.loadmore);
-            loadingLayout.setVisibility(View.GONE);
-            loadingLayout.refreshDrawableState();
             isLoadingMore = true;
+        }
+        
+        if(contextualLoadingBar != null && contextualLoadingBar.getVisibility() == View.VISIBLE){
+            hideContextualLoading();
         }
     }
 
