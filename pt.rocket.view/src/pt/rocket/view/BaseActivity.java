@@ -488,7 +488,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     public void updateSlidingMenuCompletly(){
         SlideMenuFragment slideMenuFragment = (SlideMenuFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_slide_menu);
         if(slideMenuFragment != null)
-            slideMenuFragment.onUpdateCompletly();
+            slideMenuFragment.onUpdate();
     }
     
     /**
@@ -513,7 +513,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     OnClickListener onActionBarClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            if(!(activity instanceof ChangeCountryFragmentActivity)){
+            if(!initialCountry){
                 onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
             }
                 

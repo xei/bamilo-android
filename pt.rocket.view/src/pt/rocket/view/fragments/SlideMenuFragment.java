@@ -225,31 +225,94 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
         return true;
     }
 
-    public void onUpdate() {
-        if (navigationListComponents != null) {
-            Log.i(TAG, "ON UPDATE: LIST IS NOT NULL");
-            // fillNavigationContainer(navigationListComponents);
-            refreshPosition();
+    /**
+     * Update the sliding menu
+     * Called from BaseFragment
+     * @author sergiopereira
+     */
+    public void onUpdate(){
+        if(navigationListComponents != null) {
+            Log.i(TAG, "ON UPDATE: NAV LIST IS NOT NULL");
+            // Update generic items or force reload for LogInOut
+            updateNavigationItems();
+            // Update cart
             updateCart();
-        } else {
-            // Log.i(TAG, "LIST IS NULL");
-            // triggerContentEvent(new
-            // RequestEvent(EventType.GET_NAVIGATION_LIST_COMPONENTS_EVENT));
+        }
+    }
+//
+//    /**
+//     * Set the wish list counter
+//     * @param layout
+//     * @author sergiopereira
+//     */
+//    private void setWishlistCount(View layout) {
+//        if(wishlistCounter > 0) 
+//            ((TextView) layout.findViewById(R.id.component_text)).setText(getString(R.string.nav_wishlist) + " (" + wishlistCounter + ")");
+//        else
+//            ((TextView) layout.findViewById(R.id.component_text)).setText(getString(R.string.nav_wishlist));
+//    }
+//    
+    /**
+     * 
+     * @param view
+     */
+    private void setLogInOutText(View view){
+        int text = ServiceManager.SERVICES.get(CustomerAccountService.class).hasCredentials() ? R.string.sign_out : R.string.sign_in;
+        ((TextView) view.findViewById(R.id.component_text)).setText(text);
+        view.setId(R.id.loginout_view);
+    }
+    
+    /**
+     * Updated generic items
+     * @author sergiopereira
+     */
+    private void updateNavigationItems(){
+        try {
+            // For each child validate the selected item
+            ViewGroup vGroup = ((ViewGroup) getView().findViewById(R.id.slide_menu_scrollable_container));
+            int count = vGroup.getChildCount();
+            for (int i = 0; i < count; i++)
+                updateItem(vGroup.getChildAt(i));
+            
+        } catch (NullPointerException e) {
+            Log.w(TAG, "ON UPDATE NAVIGATION: NULL POINTER EXCEPTION");
+            e.printStackTrace();
+        } catch (IndexOutOfBoundsException e) {
+            Log.w(TAG, "ON UPDATE NAVIGATION: INDEX OUT OF BOUNDS EXCEPTION");
+            e.printStackTrace();
         }
     }
 
-    public void onUpdateCompletly() {
-        if (navigationListComponents != null) {
-            Log.i(TAG, "ON UPDATE: LIST IS NOT NULL");
-            fillNavigationContainer(navigationListComponents);
-            updateCart();
-        } else {
-            // Log.i(TAG, "LIST IS NULL");
-            // triggerContentEvent(new
-            // RequestEvent(EventType.GET_NAVIGATION_LIST_COMPONENTS_EVENT));
+    
+    /**
+     * Update item
+     * @param view
+     */
+    private void updateItem(View view) {
+        NavigationAction navAction = (NavigationAction) view.getTag(R.id.nav_action);
+        Log.d(TAG, "UPDATE NAV: " + navAction.toString());
+        switch (navAction) {
+        // Update logInOut
+        case LoginOut:
+            setLogInOutText(view);
+            break;
+//        // Update wish list counter
+//        case Wishlist:
+//            setWishlistCount(view);
+//            break;
+        case Home:
+        case Search:
+        case Categories:
+        case MyAccount:
+        case Country:
+        default:
+            break;
         }
+        // Set selected
+        setActionSelected(view);
     }
-
+    
+    
     /**
      * 
      * @param components
