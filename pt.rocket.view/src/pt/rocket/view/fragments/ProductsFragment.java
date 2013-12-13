@@ -208,7 +208,7 @@ public class ProductsFragment extends BaseFragment implements OnClickListener,
         Log.d(TAG, "onCreate: productsURL = " + productsURL);
         searchQuery = ProductsViewFragment.searchQuery;
         int pos = getArguments().getInt(INTENT_POSITION_EXTRA);
-        if (pos == 0) {
+        if (pos == 1) {
             showTips();
         }
         

@@ -54,7 +54,7 @@ import de.akquinet.android.androlog.Log;
  * @version 1.01
  * 
  * @author sergiopereira
- * @modified Manuel Silva
+ * @modified Manuel Silva , Andre Ribeiro
  * 
  * @date 19/06/2012
  * 
