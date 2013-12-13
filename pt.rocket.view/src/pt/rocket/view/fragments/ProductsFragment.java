@@ -436,7 +436,7 @@ public class ProductsFragment extends BaseFragment implements OnClickListener,
             Log.i(TAG, "code1 onpause");
         }
     }
-
+ 
     /*
      * (non-Javadoc)
      * 
@@ -535,30 +535,42 @@ public class ProductsFragment extends BaseFragment implements OnClickListener,
     private void setSort(int position) {
         mSortPosition = position;
         switch (position) {
-        case 0: // <item >Popularity</item>
-            sort = ProductSort.POPULARITY;
-            dir = Direction.DESCENDENT;
-            break;
-        case 1: // <item >Price up</item>
-            sort = ProductSort.PRICE;
-            dir = Direction.ASCENDENT;
-            break;
-        case 2: // <item >Price down</item>
-            sort = ProductSort.PRICE;
-            dir = Direction.DESCENDENT;
-            break;
-        case 3: // <item >Name</item>
-            // TODO when available change this to Top
-            // Offer option
-            sort = ProductSort.NAME;
-            dir = Direction.ASCENDENT;
-            break;
-        case 4: // <item >Brand</item>
+        case 0: // <item > Copy of Brand for infinite scroll</item>
             // TODO when available change this to Sales
             // option
             sort = ProductSort.BRAND;
             dir = Direction.ASCENDENT;
             break;
+        case 1: // <item >Popularity</item>
+            sort = ProductSort.POPULARITY;
+            dir = Direction.DESCENDENT;
+            break;
+        case 2: // <item >Price up</item>
+            sort = ProductSort.PRICE;
+            dir = Direction.ASCENDENT;
+            break;
+        case 3: // <item >Price down</item>
+            sort = ProductSort.PRICE;
+            dir = Direction.DESCENDENT;
+            break;
+        case 4: // <item >Name</item>
+            // TODO when available change this to Top
+            // Offer option
+            sort = ProductSort.NAME;
+            dir = Direction.ASCENDENT;
+            break;
+        case 5: // <item >Brand</item>
+            // TODO when available change this to Sales
+            // option
+            sort = ProductSort.BRAND;
+            dir = Direction.ASCENDENT;
+            break;
+            
+        case 6: // <item >Copy of Popularity for infinite scroll</item>
+            sort = ProductSort.POPULARITY;
+            dir = Direction.DESCENDENT;
+            break;
+            
         }
     }
 
