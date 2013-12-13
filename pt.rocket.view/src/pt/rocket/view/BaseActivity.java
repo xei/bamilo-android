@@ -163,6 +163,8 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     private View searchOverlay;
 
 	private FragmentController	fragmentController;
+	
+	private boolean initialCountry = false;
     
 	/**
 	 * Constructor used to initialize the navigation list component and the
@@ -205,7 +207,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
 		EventManager.getSingleton().addResponseListener(this, allHandledEvents);
 		setupActionBar();
 		setupContentViews();
-		boolean initialCountry = false;
+		
 		if(getIntent().getExtras() != null){
 		    initialCountry = getIntent().getExtras().getBoolean(ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, false);
 		}
@@ -247,9 +249,13 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
 		}
 		
 		CheckVersion.run(getApplicationContext());
-        
+		
+		if(getIntent().getExtras() != null){
+            initialCountry = getIntent().getExtras().getBoolean(ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, false);
+        }
+		
         // Validate if is in landscape and tablet and forcing menu
-        if(isTabletInLandscape())
+        if(isTabletInLandscape() && !initialCountry)
              showMenu();
         else
             showContent();
