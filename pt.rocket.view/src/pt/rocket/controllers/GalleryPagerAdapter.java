@@ -43,8 +43,9 @@ public class GalleryPagerAdapter extends PagerAdapter implements IPagerAdapter {
 	 */
 	@Override
     public int getCount() {
-        return MAX_REAL_ITEMS;
-    }
+        //return MAX_REAL_ITEMS;
+	    return mImageUrls.size();
+	}
     
     public int getRealCount() {
         return mImageUrls.size();
@@ -190,7 +191,7 @@ public class GalleryPagerAdapter extends PagerAdapter implements IPagerAdapter {
 
     @Override
     public int getStartVirtualPosition() {
-        return 0;
+        return 1;
     }
 
 }

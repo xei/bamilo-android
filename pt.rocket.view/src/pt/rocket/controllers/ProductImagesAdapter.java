@@ -24,6 +24,11 @@ public class ProductImagesAdapter extends BaseAdapter {
 	Context context;
 	ArrayList<String> images;
 
+	   public ProductImagesAdapter(Context context) {
+	        this.context = context;
+
+	    }
+	
 	public ProductImagesAdapter(Context context, ArrayList<String> images) {
 		this.context = context;
 		this.images = images;
@@ -46,11 +51,13 @@ public class ProductImagesAdapter extends BaseAdapter {
 
 	@Override
 	public int getCount() {
+	    Log.i(TAG, "ANDRE - TOTAL IMAGE SIZE "+images.size());
 		return images.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
+	    Log.d(TAG, "codeImage position is : "+position);
 		return images.get(position);
 	}
 

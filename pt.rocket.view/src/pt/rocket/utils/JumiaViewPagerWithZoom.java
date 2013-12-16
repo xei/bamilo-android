@@ -3,11 +3,10 @@ package pt.rocket.utils;
 
 import java.lang.reflect.Field;
 
-import pt.rocket.utils.JumiaViewPager.JumiaScroller;
-import pt.rocket.utils.JumiaViewPager.JumiaScrollerAnimated;
 import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Scroller;
@@ -15,14 +14,13 @@ import android.widget.Scroller;
 
 public class JumiaViewPagerWithZoom extends ViewPager {
     private boolean isPagingEnabled = true;
+    private String TAG;
     public JumiaViewPagerWithZoom(Context context) {
         super(context);
-        // TODO Auto-generated constructor stub
     }
     
     public JumiaViewPagerWithZoom(Context context, AttributeSet attrs) {
         super(context, attrs);
-        // TODO Auto-generated constructor stub
         setJumiaScroller(true);
         this.isPagingEnabled = true;
     }
@@ -30,7 +28,12 @@ public class JumiaViewPagerWithZoom extends ViewPager {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (this.isPagingEnabled) {
-            return super.onTouchEvent(event);
+            try {
+                return super.onTouchEvent(event);    
+            } catch (IllegalArgumentException e) {
+                Log.e(TAG, "catched IllegalArgumentException JumiaViewPagerWithZoom line 34.");
+            }
+            
         }
 
         return false;
