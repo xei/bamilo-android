@@ -335,14 +335,13 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         // .loginActivity(ShoppingCartActivity.this, true);
         // }
         // return false;
-        default:
-            AnalyticsGoogle.get().trackLoadTiming(R.string.gshoppingcart, mBeginRequestMillis);
-            displayShoppingCart((ShoppingCart) event.result);
         case GET_SHOPPING_CART_ITEMS_EVENT:
             if(((ShoppingCart) event.result).getCartItems() != null && ((ShoppingCart) event.result).getCartItems().values() != null){
                 TrackerDelegator.trackViewCart(getActivity().getApplicationContext(), ((ShoppingCart) event.result).getCartItems().values().size());
             }
-
+        default:
+            AnalyticsGoogle.get().trackLoadTiming(R.string.gshoppingcart, mBeginRequestMillis);
+            displayShoppingCart((ShoppingCart) event.result);
         }
         return true;
     }
