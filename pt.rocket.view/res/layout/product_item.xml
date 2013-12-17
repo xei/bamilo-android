@@ -20,7 +20,7 @@
                 android:layout_marginLeft="13.2dp"
                 android:layout_marginRight="13.2dp"
                 android:layout_marginTop="13.2dp"
-                layout="@layout/image_loadable" />
+                layout="@layout/catalog_image_item" />
 
             <ImageView
                 android:id="@+id/item_promotion"

@@ -10,7 +10,7 @@
         android:layout_height="match_parent"
         android:duplicateParentState="true" >
 
-   <pt.rocket.utils.JumiaViewPager
+   <pt.rocket.utils.JumiaCatalogViewPager
             android:id="@+id/viewpager_products_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -24,7 +24,7 @@
                 android:background="@color/strip_title_background"
                 android:textColor="@color/strip_title"
                 android:textSize="12.54sp" />
-        </pt.rocket.utils.JumiaViewPager>
+        </pt.rocket.utils.JumiaCatalogViewPager>
 
         <View
             android:layout_width="match_parent"

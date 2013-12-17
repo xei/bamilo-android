@@ -14,7 +14,7 @@ import pt.rocket.controllers.CatalogPageModel;
 import pt.rocket.framework.event.EventType;
 import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.utils.AnalyticsGoogle;
-import pt.rocket.utils.JumiaViewPager;
+import pt.rocket.utils.JumiaCatalogViewPager;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.view.BaseActivity;
@@ -29,6 +29,7 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -39,7 +40,7 @@ public class Catalog extends BaseFragment {
 
     private static Catalog mCatalogFragment;
     private CatalogPagerAdaper mCatalogPagerAdapter;
-    private JumiaViewPager mViewPager;
+    private JumiaCatalogViewPager mViewPager;
     private PagerTabStrip pagerTabStrip;
 
     private final int TAB_PREV_ID = 0;
@@ -50,12 +51,9 @@ public class Catalog extends BaseFragment {
     private final int TAB_UNDERLINE_HEIGHT = 1;
     private final int TAB_STRIP_COLOR = android.R.color.transparent;
 
-    // we name the left, middle and right page
-    private static final int PAGE_LEFT = 4;
+    
     private static final int PAGE_MIDDLE = 1;
-    private static final int PAGE_RIGHT = 2;
-//    private static final int PAGE_PRICE_DOWN = 3;
-//    private static final int PAGE_NAME = 4;
+    
 
     private LayoutInflater mInflater;
     private int mSelectedPageIndex = 1;
@@ -97,7 +95,7 @@ public class Catalog extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mInflater = inflater;
         View view = inflater.inflate(R.layout.products_frame, container, false);
-        mViewPager = (JumiaViewPager) view.findViewById(R.id.viewpager_products_list);
+        mViewPager = (JumiaCatalogViewPager) view.findViewById(R.id.viewpager_products_list);
         pagerTabStrip = (PagerTabStrip) view.findViewById(R.id.products_list_titles);
         return view;
     }
@@ -303,8 +301,8 @@ public class Catalog extends BaseFragment {
         
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            CatalogPageModel currentPage = getCurrentCatalogPageModel(position);
-            if(currentPage.getRelativeLayout() == null){
+            final CatalogPageModel currentPage = getCurrentCatalogPageModel(position);
+            if(currentPage.getRelativeLayout() == null || ((BaseActivity) getActivity()).isTabletInLandscape() != currentPage.isLandScape() ){
                 RelativeLayout mRelativeLayout = (RelativeLayout) mInflater.inflate(R.layout.products,
                     null);
                 currentPage.setRelativeLayout(mRelativeLayout);
@@ -312,7 +310,12 @@ public class Catalog extends BaseFragment {
                 currentPage.setButtonRavb((Button) currentPage.getRelativeLayout().findViewById(R.id.retry_alert_view_button));
                 currentPage.setRelativeLayoutPc((RelativeLayout) currentPage.getRelativeLayout().findViewById(R.id.products_content));
                 currentPage.setLinearLayoutLm((LinearLayout) currentPage.getRelativeLayout().findViewById(R.id.loadmore));
-                currentPage.setListView((ListView) currentPage.getRelativeLayout().findViewById(R.id.middle_productslist_list));
+                if(((BaseActivity) getActivity()).isTabletInLandscape()){
+                    currentPage.setGridView((GridView) currentPage.getRelativeLayout().findViewById(R.id.middle_productslist_list));    
+                } else {
+                    currentPage.setListView((ListView) currentPage.getRelativeLayout().findViewById(R.id.middle_productslist_list));    
+                }
+                
                 currentPage.setLinearLayoutLb((LinearLayout) currentPage.getRelativeLayout().findViewById(R.id.loading_view_pager));
                 currentPage.setRelativeLayoutPt((RelativeLayout) currentPage.getRelativeLayout().findViewById(R.id.products_tip));
                 currentPage.setVariables(productsURL, searchQuery, navigationPath, title, navigationSource);

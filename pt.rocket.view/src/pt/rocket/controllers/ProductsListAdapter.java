@@ -19,16 +19,22 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.androidquery.AQuery;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
+import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 
 import de.akquinet.android.androlog.Log;
 
 /**
- * This Class is used to create an adapter for the list of products. It is called by ProductsList Activity. <p/><br> 
- *
- * Copyright (C) 2012 Rocket Internet - All Rights Reserved <p/>
+ * This Class is used to create an adapter for the list of products. It is called by ProductsList
+ * Activity.
+ * <p/>
+ * <br>
+ * 
+ * Copyright (C) 2012 Rocket Internet - All Rights Reserved
+ * <p/>
  * 
  * Unauthorized copying of this file, via any medium is strictly prohibited <br>
  * Proprietary and confidential.
@@ -38,30 +44,26 @@ import de.akquinet.android.androlog.Log;
  * @version 1.00
  * 
  *          2012/06/22
- *
+ * 
  */
 public class ProductsListAdapter extends BaseAdapter {
-	private final static String TAG = LogTagHelper.create(ProductsListAdapter.class);
-	
+    private final static String TAG = LogTagHelper.create(ProductsListAdapter.class);
+
     public interface OnSelectedItemsChange {
         public void SelectedItemsChange(int numSelectedItems);
     }
 
-    private OnSelectedItemsChange onSelectedItemsChange;
-
     ArrayList<Product> products;
-    private ArrayList<Integer> selectedItems;
 
-    private int jumpConstant = 0;
     int counter = 1;
-    
+
     private final String reviewLabel;
 
-	private LayoutInflater inflater;
-	
-	private Context context;
+    private LayoutInflater inflater;
 
-	private boolean canIScroll = true;
+    private Context context;
+
+    private boolean canIScroll = true;
 
     /**
      * A representation of each item on the list
@@ -78,26 +80,26 @@ public class ProductsListAdapter extends BaseAdapter {
         public TextView discountPercentage;
         public TextView reviews;
 
-//        /*
-//         * (non-Javadoc)
-//         * 
-//         * @see java.lang.Object#finalize()
-//         */
-//        @Override
-//        protected void finalize() throws Throwable {
-//
-//            image = null;
-//            promotion = null;
-//            progress = null;
-//            name = null;
-//            rating = null;
-//            discount = null;
-//            price = null;
-//            discountPercentage = null;
-//            reviews = null;
-//
-//            super.finalize();
-//        }
+        // /*
+        // * (non-Javadoc)
+        // *
+        // * @see java.lang.Object#finalize()
+        // */
+        // @Override
+        // protected void finalize() throws Throwable {
+        //
+        // image = null;
+        // promotion = null;
+        // progress = null;
+        // name = null;
+        // rating = null;
+        // discount = null;
+        // price = null;
+        // discountPercentage = null;
+        // reviews = null;
+        //
+        // super.finalize();
+        // }
     }
 
     /**
@@ -109,29 +111,25 @@ public class ProductsListAdapter extends BaseAdapter {
 
         this.context = context.getApplicationContext();
         this.products = new ArrayList<Product>();
-        this.selectedItems = new ArrayList<Integer>();
 
         this.inflater = LayoutInflater.from(context);
-
-        // Portrait mode
-        jumpConstant = 0;
         reviewLabel = context.getString(R.string.reviews);
     }
-    
-//    /*
-//     * (non-Javadoc)
-//     * 
-//     * @see java.lang.Object#finalize()
-//     */
-//    @Override
-//    protected void finalize() throws Throwable {
-//        this.products = null;
-//        this.selectedItems = null;
-//        context = null;
-//        this.onSelectedItemsChange = null;
-//        System.gc();
-//        super.finalize();
-//    }
+
+    // /*
+    // * (non-Javadoc)
+    // *
+    // * @see java.lang.Object#finalize()
+    // */
+    // @Override
+    // protected void finalize() throws Throwable {
+    // this.products = null;
+    // this.selectedItems = null;
+    // context = null;
+    // this.onSelectedItemsChange = null;
+    // System.gc();
+    // super.finalize();
+    // }
 
     /*
      * (non-Javadoc)
@@ -150,22 +148,21 @@ public class ProductsListAdapter extends BaseAdapter {
      */
     @Override
     public Object getItem(int position) {
-//        int activePosition = position - jumpConstant;
+        // int activePosition = position - jumpConstant;
         Product prod = null;
 
-//        if (activePosition > -1 && activePosition < this.products.size()) {
-            prod = this.products.get(position);
-//        }
-        return prod; 
+        // if (activePosition > -1 && activePosition < this.products.size()) {
+        prod = this.products.get(position);
+        // }
+        return prod;
     }
-    
-    
+
     /*
      * (non-Javadoc)
      * 
      * @see android.widget.Adapter#getItemId(int)
      */
-    
+
     @Override
     public long getItemId(int position) {
         return position;
@@ -189,9 +186,8 @@ public class ProductsListAdapter extends BaseAdapter {
         } else {
             itemView = inflater.inflate(R.layout.product_item, parent, false);
         }
-        
-        
-        if((Item) itemView.getTag() == null){
+
+        if ((Item) itemView.getTag() == null) {
             prodItem = new Item();
             prodItem.image = (ImageView) itemView.findViewById(R.id.image_view);
             prodItem.promotion = (ImageView) itemView.findViewById(R.id.item_promotion);
@@ -200,9 +196,10 @@ public class ProductsListAdapter extends BaseAdapter {
             prodItem.rating = (RatingBar) itemView.findViewById(R.id.item_rating);
             prodItem.price = (TextView) itemView.findViewById(R.id.item_regprice);
             prodItem.discount = (TextView) itemView.findViewById(R.id.item_discount);
-            prodItem.discountPercentage = (TextView) itemView.findViewById(R.id.discount_percentage);
-//            prodItem.vertSeperator = itemView.findViewById(R.id.prod_right_seperator);
-//            prodItem.multiselect = itemView.findViewById(R.id.products_multiselect);
+            prodItem.discountPercentage = (TextView) itemView
+                    .findViewById(R.id.discount_percentage);
+            // prodItem.vertSeperator = itemView.findViewById(R.id.prod_right_seperator);
+            // prodItem.multiselect = itemView.findViewById(R.id.products_multiselect);
             prodItem.reviews = (TextView) itemView.findViewById(R.id.item_reviews);
 
             // stores the item representation on the tag of the view for later
@@ -211,99 +208,84 @@ public class ProductsListAdapter extends BaseAdapter {
         } else {
             prodItem = (Item) itemView.getTag();
         }
-        
-        if(canIScroll){
-        
-            String imageURL = "";
-            Product product = products.get(position);
-            if (product.getImages().size() > 0) {
-                imageURL = product.getImages().get(0).getUrl();
-            }
-            
-            prodItem.progress.setVisibility(View.GONE);
-            
-            ImageLoader.getInstance().displayImage(imageURL, prodItem.image,
-                    new ImageLoadingListener() {
-    
-                        /*
-                         * (non-Javadoc)
-                         * 
-                         * @see com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener
-                         * #onLoadingComplete(java.lang.String, android.view.View,
-                         * android.graphics.Bitmap)
-                         */
-                        @Override
-                        public void onLoadingCancelled(String arg0, View arg1) {
-                            prodItem.progress.setVisibility(View.GONE);
-                            prodItem.image.setVisibility(View.VISIBLE);                        
-                        }
-    
-                        @Override
-                        public void onLoadingComplete(String arg0, View arg1, Bitmap arg2) {
-                            prodItem.progress.setVisibility(View.GONE);
-                            prodItem.image.setVisibility(View.VISIBLE);
-                        }
-    
-                        @Override
-                        public void onLoadingFailed(String arg0, View arg1, FailReason arg2) {
-                            prodItem.progress.setVisibility(View.GONE);
-                            prodItem.image.setVisibility(View.VISIBLE);
-                        }
-    
-                        @Override
-                        public void onLoadingStarted(String arg0, View arg1) {
-                            prodItem.progress.setVisibility(View.VISIBLE);
-                        }
-                
-            });
-    
-            prodItem.name.setText(product.getBrand() + " " + product.getName());
-            prodItem.price.setText(product.getSuggestedPrice());
-            if(product.getRating() != null && product.getRating() > 0) {
-            	prodItem.rating.setRating(product.getRating().floatValue());
-            	prodItem.rating.setVisibility(View.VISIBLE);
-            	if(product.getReviews() != null) {
-            		prodItem.reviews.setText(product.getReviews() + " " + reviewLabel);
-            		prodItem.reviews.setVisibility(View.VISIBLE);
-            	} else {
-            		prodItem.reviews.setVisibility(View.GONE);
-            	}
+
+        AQuery aq = new AQuery(itemView);
+
+        String imageURL = "";
+        Product product = products.get(position);
+        if (product.getImages().size() > 0) {
+            imageURL = product.getImages().get(0).getUrl();
+        }
+
+        prodItem.progress.setVisibility(View.GONE);
+        aq.id(prodItem.image).image(imageURL, true, true, 0, 0, null, AQuery.FADE_IN_NETWORK);
+        // ImageLoader.getInstance().displayImage(imageURL, prodItem.image,
+        // new SimpleImageLoadingListener() {
+        //
+        // /*
+        // * (non-Javadoc)
+        // *
+        // * @see com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener
+        // * #onLoadingComplete(java.lang.String, android.view.View,
+        // * android.graphics.Bitmap)
+        // */
+        //
+        // @Override
+        // public void onLoadingComplete(String arg0, View arg1, Bitmap arg2) {
+        // prodItem.progress.setVisibility(View.GONE);
+        // prodItem.image.setVisibility(View.VISIBLE);
+        // }
+        //
+        // @Override
+        // public void onLoadingStarted(String arg0, View arg1) {
+        // prodItem.progress.setVisibility(View.VISIBLE);
+        // }
+        //
+        // });
+
+        aq.id(prodItem.name).text(product.getBrand() + " " + product.getName());
+        aq.id(prodItem.price).text(product.getSuggestedPrice());
+        if (product.getRating() != null && product.getRating() > 0) {
+            aq.id(prodItem.rating).rating(product.getRating().floatValue());
+            aq.id(prodItem.rating).visibility(View.VISIBLE);
+            if (product.getReviews() != null) {
+                aq.id(prodItem.reviews).text(product.getReviews() + " " + reviewLabel);
+                aq.id(prodItem.reviews).visibility(View.VISIBLE);
             } else {
-            	prodItem.rating.setVisibility(View.GONE);
-            	prodItem.reviews.setVisibility(View.GONE);
+                aq.id(prodItem.reviews).visibility(View.GONE);
             }
-    
-            if (null != product.getSpecialPrice()
-                    && !product.getSpecialPrice().equals(product.getPrice())) {
-    			prodItem.discount.setText(product.getSpecialPrice());
-    			prodItem.discountPercentage.setText("-"
-    					+ product.getMaxSavingPercentage().intValue() + "%");
-    			prodItem.discount.setVisibility(View.VISIBLE);
-    			prodItem.promotion.setVisibility(View.VISIBLE);
-    			prodItem.discountPercentage.setVisibility(View.VISIBLE);
-    			prodItem.price.setPaintFlags(prodItem.price.getPaintFlags()
-    					| Paint.STRIKE_THRU_TEXT_FLAG);
-    			prodItem.price.setSelected(true);
-    			prodItem.price.setTextColor(context.getResources().getColor(
-    					R.color.grey_light));
-    			prodItem.price.setTextAppearance(context.getApplicationContext(), R.style.text_normal);
-            } else {
-                prodItem.discount.setVisibility(View.GONE);
-                prodItem.promotion.setVisibility(View.GONE);
-                prodItem.discountPercentage.setVisibility(View.GONE);
-                prodItem.price.setPaintFlags(prodItem.price.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-                prodItem.price.setTextAppearance(context.getApplicationContext(), R.style.text_bold);
-                prodItem.price.setTextColor(context.getResources().getColor(
-                        R.color.red_basic));
-            }
+        } else {
+            aq.id(prodItem.rating).visibility(View.GONE);
+            aq.id(prodItem.reviews).visibility(View.GONE);
+        }
+
+        if (null != product.getSpecialPrice()
+                && !product.getSpecialPrice().equals(product.getPrice())) {
+            aq.id(prodItem.discount).text(product.getSpecialPrice());
+            aq.id(prodItem.discountPercentage).text("-"
+                    + product.getMaxSavingPercentage().intValue() + "%");
+            aq.id(prodItem.discount).visibility(View.VISIBLE);
+            aq.id(prodItem.promotion).visibility(View.VISIBLE);
+            aq.id(prodItem.discountPercentage).visibility(View.VISIBLE);
+            prodItem.price.setPaintFlags(prodItem.price.getPaintFlags()
+                    | Paint.STRIKE_THRU_TEXT_FLAG);
+            prodItem.price.setSelected(true);
+            aq.id(prodItem.price).textColor(context.getResources().getColor(
+                    R.color.grey_light));
+            prodItem.price.setTextAppearance(context.getApplicationContext(), R.style.text_normal);
+        } else {
+            aq.id(prodItem.discount).visibility(View.GONE);
+            aq.id(prodItem.promotion).visibility(View.GONE);
+            aq.id(prodItem.discountPercentage).visibility(View.GONE);
+            prodItem.price.setPaintFlags(prodItem.price.getPaintFlags()
+                    & (~Paint.STRIKE_THRU_TEXT_FLAG));
+            prodItem.price.setTextAppearance(context.getApplicationContext(), R.style.text_bold);
+            aq.id(prodItem.price).textColor(context.getResources().getColor(
+                    R.color.red_basic));
         }
         return itemView;
     }
 
-    public void setCanIScroll(boolean b){
-        this.canIScroll = b;
-    }
-    
     /**
      * Updates the Products array list
      * 
@@ -311,16 +293,16 @@ public class ProductsListAdapter extends BaseAdapter {
      *            The array list containing the products
      */
     public void updateProducts(ArrayList<Product> products) {
-    	Log.d( TAG, "updateProducts: size = " + products.size());
+        Log.d(TAG, "updateProducts: size = " + products.size());
         this.products = products;
         this.notifyDataSetChanged();
     }
-    
+
     public void clearProducts() {
         products.clear();
         notifyDataSetChanged();
     }
-    
+
     public void appendProducts(Collection<? extends Product> newProducts) {
         products.addAll(newProducts);
         notifyDataSetChanged();

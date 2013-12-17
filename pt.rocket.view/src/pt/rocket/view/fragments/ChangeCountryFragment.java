@@ -242,11 +242,6 @@ public class ChangeCountryFragment extends BaseFragment {
 
     protected void setCountry(int position) {
         HomeFragment.requestResponse = null;
-        try {
-            RestClientSingleton.getSingleton().getCookieStore().clear();
-        } catch (RuntimeException e) {
-            // Nothing to handle, if RestClientSingleton is not initialized, then there is no need to clear cookies.
-        }
            
         SharedPreferences sharedPrefs = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPrefs.edit();
