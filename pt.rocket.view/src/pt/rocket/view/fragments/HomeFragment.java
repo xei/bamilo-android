@@ -142,6 +142,7 @@ public class HomeFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         HockeyStartup.register(getActivity());
+        Log.i(TAG, "onCreate");
     }
 
     /*
@@ -155,6 +156,8 @@ public class HomeFragment extends BaseFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.teasers_fragments_viewpager, null, false);
 
+        Log.i(TAG, "onCreateView");
+        
         return view;
     }
 
@@ -182,44 +185,60 @@ public class HomeFragment extends BaseFragment {
         }
 
         AnalyticsGoogle.get().trackPage(R.string.ghomepage);
+       
+        
     }
 
     @Override
     public void onStart() {
         super.onStart();
+        Log.i(TAG, "onStart");
 
     }
 
     @Override
     public void onPause() {
+        Log.i(TAG, "onPause");
         mPagerAdapter = null;
         mPager = null;
         pagerTabStrip = null;
+    
         super.onPause();
+
+    }
+    @Override
+    public void onStop() {
+        Log.i(TAG, "onStop");
+        requestResponse = null;
+        // TODO Auto-generated method stub
+        //getActivity().finish();
+        super.onStop();
 
     }
 
     @Override
     public void onDestroy() {
+        Log.i(TAG, "onDestroy");
         MixpanelTracker.flush();
         mPagerAdapter = null;
         mPager = null;
         pagerTabStrip = null;
-
+    
         super.onDestroy();
         System.gc();
     }
 
     private void setLayout(int currentPositionPager) {
+        Log.i(TAG, "setLayout");
         if (mPager == null) {
+            Log.i(TAG, "setLayout -> mPager NULL");
             mPager = (JumiaViewPager) getView().findViewById(R.id.home_viewpager);
             mPager.setOnPageChangeListener(new OnPageChangeListener() {
 
                 @Override
                 public void onPageSelected(int arg0) {
                     currentPosition = arg0;
-                    Log.i(TAG, "ANDRE - onPageSelected POSITION : " + currentPosition);
-                    Log.i(TAG, "ANDRE - onPageSelected mpager item : " + mPager.getCurrentItem());
+                   
                 }
 
                 @Override
@@ -230,8 +249,7 @@ public class HomeFragment extends BaseFragment {
                 @Override
                 public void onPageScrollStateChanged(int arg0) {
                     int pageCount = pagesTitles.size();
-                    Log.i(TAG, "ANDRE - SIZE : " + pagesTitles.size());
-                    Log.i(TAG, "ANDRE - PAGER SIZE : " + mPager.getChildCount());
+                   
 
                     if (arg0 == mPager.SCROLL_STATE_SETTLING) {
                         if (mPager != null)
@@ -265,7 +283,7 @@ public class HomeFragment extends BaseFragment {
 
                 }
             });
-        }
+        } 
 
         // if(mPager.getAdapter() == null){
         pagerTabStrip = (PagerTabStrip) getView().findViewById(R.id.home_titles);
@@ -294,12 +312,10 @@ public class HomeFragment extends BaseFragment {
 //            int arg0 = params[0];
 //            
 //            if (arg0 == mPager.SCROLL_STATE_IDLE) {
+            if (null != mPager ) {
                 mPager.setPagingEnabled(true);
                 mPager.toggleJumiaScroller(true);
-                Log.i(TAG, "ANDRE - SCROLL_STATE_IDLE POSITION : " + currentPosition);
-                Log.i(TAG,
-                        "ANDRE - SCROLL_STATE_IDLE mpager item : "
-                                + mPager.getCurrentItem());
+              
                 
                 getActivity().runOnUiThread(new Runnable() {
                     public void run() {
@@ -318,10 +334,8 @@ public class HomeFragment extends BaseFragment {
                         }
                     }
                 });                
+            }
                 
-
-                Log.i(TAG, "ANDRE - SCROLL_STATE_IDLE: FINISHED");
-//            }            
             return true;
 
         }
@@ -338,6 +352,7 @@ public class HomeFragment extends BaseFragment {
     private void restoreLayout() {
         Log.i(TAG, "restoreLayout");
         if (requestResponse != null) {
+            Log.i(TAG, "restoreLayout -> NOT NULL");
             if (currentPosition == -1) {
                 currentPosition = Math.abs((requestResponse.size() + 2) / 2);
 
@@ -349,6 +364,7 @@ public class HomeFragment extends BaseFragment {
             // }
             setLayout(currentPosition);
         } else {
+            Log.i(TAG, "restoreLayout -> NULL");
             ((BaseActivity) getActivity()).setProcessShow(false);
             triggerContentEvent(new RequestEvent(EventType.GET_TEASERS_EVENT));
         }
@@ -363,6 +379,7 @@ public class HomeFragment extends BaseFragment {
      */
     private void setLayoutSpec() throws NoSuchFieldException, IllegalArgumentException,
             IllegalAccessException {
+        Log.i(TAG, "setLayoutSpec");
         // Get text
         final android.widget.TextView currTextView = (android.widget.TextView) pagerTabStrip
                 .getChildAt(TAB_CURR_ID);
@@ -432,7 +449,7 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void proccessResult(Collection<? extends Homepage> result) {
-
+        Log.i(TAG,"ON proccessResult");
         requestResponse = new ArrayList<Collection<? extends TeaserSpecification<?>>>();
         pagesTitles = new ArrayList<String>();
 
@@ -466,10 +483,23 @@ public class HomeFragment extends BaseFragment {
             ((BaseActivity) getActivity()).setProcessShow(false);
             triggerContentEvent(new RequestEvent(EventType.GET_TEASERS_EVENT));
         }
+        try {
+            setLayoutSpec();
+        } catch (IllegalArgumentException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (NoSuchFieldException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     @Override
     protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
+        Log.i(TAG,"ON onSuccessEvent");
         switch (event.getType()) {
         case GET_API_INFO:
             break;
@@ -561,7 +591,7 @@ public class HomeFragment extends BaseFragment {
     // Instances of this class are fragments representing a single
     // object in our collection.
     public static class HomeObjectFragment extends Fragment {
-
+       
         private LayoutInflater mInflater;
 
         private int position;
