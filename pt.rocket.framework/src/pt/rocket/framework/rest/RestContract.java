@@ -33,6 +33,8 @@ public class RestContract {
 	public static String REST_BASE_PATH = null;
 	public static String REQUEST_HOST = null;
 	public static Boolean USE_ONLY_HTTPS = false;
+	
+	public final static String HTTPS_PROTOCOL = "https";
 
 	// Authentication
 	public static Boolean USE_AUTHENTICATION = null;

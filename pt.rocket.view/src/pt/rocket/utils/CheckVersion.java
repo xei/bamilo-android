@@ -122,7 +122,6 @@ public class CheckVersion {
         Log.d( TAG, "runEvents: lastUpdate = " + sLastUpdate + " passed = " + (now - sLastUpdate) + " intervall = " + UPDATE_INTERVALL_MILLIS);
         if (sLastUpdate == 0 || (now - sLastUpdate) > UPDATE_INTERVALL_MILLIS) {
             Log.d( TAG, "runEvents: init or intervall passed - triggering" );
-            EventManager.getSingleton().triggerRequestEvent( new RequestEvent( EventType.GET_API_INFO));
             sLastUpdate = now;
             return true;
         }

@@ -501,8 +501,6 @@ public class HomeFragment extends BaseFragment {
     protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
         Log.i(TAG,"ON onSuccessEvent");
         switch (event.getType()) {
-        case GET_API_INFO:
-            break;
         case GET_TEASERS_EVENT:
             isFirstBoot = false;
             proccessResult((Collection<? extends Homepage>) event.result);
