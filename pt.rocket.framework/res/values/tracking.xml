@@ -117,6 +117,7 @@
     <string name="mixsale">Purchase Made</string>
     <string name="mixcustomer">Customer</string>
     <string name="mixsearch">Search Made</string>
+    <string name="mixsearchviewsorted">Search Made</string>
     <string name="mixshop">Shop changed</string>
 	<string name="mixpushnotification">Push notification choice</string>
 	<string name="mixproduct">Item viewed</string>
@@ -160,6 +161,7 @@
     <string name="ua_preisntall">preinstall-</string>
     <!-- End of Urban AirShip Tracking Parameters -->
     <string name="mixprop_searchtearm">Search term</string>
+     <string name="mixprop_searchsort">Search Sort</string>
     <string name="mixprop_numberresults">Number results provided</string>
     
     <string name="mixprop_paymentmethod">Payment method</string>

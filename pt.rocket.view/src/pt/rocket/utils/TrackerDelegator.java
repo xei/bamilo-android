@@ -92,6 +92,10 @@ public class TrackerDelegator {
         MixpanelTracker.search(context, criteria, results);
     }
     
+    public final static void trackSearchViewSortMade(Context context, String criteria, long results, String sort) {
+        MixpanelTracker.searchViewSorted(context, criteria, results, sort);
+    }    
+    
     public final static void trackShopchanged(Context context) {
         MixpanelTracker.changeShop(context, ShopSelector.getShopId());
     }

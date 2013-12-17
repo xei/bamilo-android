@@ -314,7 +314,7 @@ public class WriteReviewFragment extends BaseFragment {
                     productReviewCreated));
         }
         
-        TrackerDelegator.trackItemReview(getActivity().getApplicationContext(), completeProduct, productReviewCreated, ratings);
+        
 
     }
 
@@ -330,7 +330,7 @@ public class WriteReviewFragment extends BaseFragment {
         switch (event.getType()) {
         case REVIEW_PRODUCT_EVENT:
             Log.d(TAG, "review product completed: success = " + event.getSuccess());
-
+            TrackerDelegator.trackItemReview(getActivity().getApplicationContext(), completeProduct, productReviewCreated, ratings);
             dialog_review_submitted = DialogGenericFragment.newInstance(false, true, false,
                     getString(R.string.submit_title), getResources().getString(
                             R.string.submit_text), getResources().getString(
@@ -359,7 +359,7 @@ public class WriteReviewFragment extends BaseFragment {
             // case GET_CUSTOMER:
         case LOGIN_EVENT:
             Customer customer = (Customer) event.result;
-            TrackerDelegator.trackLoginSuccessful(getActivity(), customer, true, getActivity().getString(R.string.mixprop_loginlocationreview), false);
+//            TrackerDelegator.trackLoginSuccessful(getActivity(), customer, true, getActivity().getString(R.string.mixprop_loginlocationreview), false);
             if(nameText != null && customer != null && customer.getFirstName() != null){
                 nameText.setText(customer.getFirstName());
             }

@@ -37,6 +37,7 @@ import pt.rocket.utils.CheckVersion;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.OnFragmentActivityInteraction;
+import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.utils.dialogfragments.DialogProgressFragment;
 import pt.rocket.view.R;
@@ -601,6 +602,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
                             @Override
                             public boolean onShareTargetSelected(ShareActionProvider source, Intent intent) {
                                 getApplicationContext().startActivity(intent);
+                                TrackerDelegator.trackItemShared(getApplicationContext(), intent);
                                 return true;
                             }
                         });

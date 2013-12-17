@@ -253,6 +253,23 @@ public class MixpanelTracker {
 		mixpanel.track(context.getString(R.string.mixsearch), props);
 	}
 	
+	public static void searchViewSorted(Context context, String criteria, long results, String sort) {
+		if (!isEnabled)
+			return;
+
+		if ( null != people ) {
+			people.increment(context.getString(R.string.mixproppeople_numbersearches), 1);
+		}
+		
+		props = null;
+		setProperty(context.getString(R.string.mixprop_searchtearm), criteria);
+		setProperty(context.getString(R.string.mixprop_numberresults), "" + results);
+		setProperty(context.getString(R.string.mixprop_searchsort), sort);
+		
+		Log.d(TAG, "search tracked: event = " + context.getString(R.string.mixsearch) + " criteria = " + criteria + " #results = " + results);
+		mixpanel.track(context.getString(R.string.mixsearchviewsorted), props);
+	}
+	
 	public static void trackSale(Context context, String cartValue, List<PurchaseItem> listItems ) {
 		if (!isEnabled)
 			return;

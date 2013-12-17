@@ -14,6 +14,7 @@ import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.objects.Category;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.FragmentCommunicator;
+import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.view.MainFragmentActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
@@ -290,7 +291,10 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
         String categoryTitle = currentCategory.getName();
         Log.d( TAG, "setSubCategoryList: currentCategory name = " + categoryTitle );
         getActivity().setTitle(categoryTitle);
-        
+        if(isParent){
+            TrackerDelegator.trackCategoryView(getActivity(), categoryTitle, 1);
+        }
+            
         subCatAdapter = new SubCategoriesAdapter(getActivity(), child, categoryTitle);
         categoriesList.setAdapter(subCatAdapter);
         categoriesList.setOnItemClickListener(this);
@@ -311,7 +315,9 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
         String categoryTitle = currentCategory.getName();
         Log.d( TAG, "setSubCategoryList: currentCategory name = " + categoryTitle );
         getActivity().setTitle(categories.get(categoryIndex).getName() + " / "+categoryTitle);
-        
+        if(isParent){
+            TrackerDelegator.trackCategoryView(getActivity(), categoryTitle, 1);
+        }
         subCatAdapter = new SubCategoriesAdapter(getActivity(), child, categoryTitle);
         categoriesList.setAdapter(subCatAdapter);
         categoriesList.setOnItemClickListener(this);

@@ -616,7 +616,7 @@ public class CatalogPageModel implements ResponseListener {
         if (event.getSuccess()) {
             processSuccess((ResponseResultEvent<?>) event);
         } else {
-            processError((ResponseResultEvent<?>) event);
+            processError(event);
         }
 
     }
@@ -663,7 +663,7 @@ public class CatalogPageModel implements ResponseListener {
         }
     }
 
-    private void processError(ResponseResultEvent<?> event) {
+    private void processError(ResponseEvent event) {
         if (event.errorCode != null && pageNumber == 1) {
             showProductsNotfound();
             ((BaseActivity) mActivity).showContentContainer();
@@ -700,11 +700,20 @@ public class CatalogPageModel implements ResponseListener {
         if (searchQuery != null && !TextUtils.isEmpty(searchQuery)) {
             ((BaseActivity) mActivity).setTitle(searchQuery + " ("
                     + productsPage.getTotalProducts() + ")");
-            TrackerDelegator.trackSearchMade(mActivity.getApplicationContext(), searchQuery,
-                    productsPage.getTotalProducts());
+            
+            if(pageNumber == 1){
+                TrackerDelegator.trackSearchViewSortMade(mActivity.getApplicationContext(), searchQuery,
+                        productsPage.getTotalProducts(), sort.name());
+                
+                TrackerDelegator.trackSearchMade(mActivity.getApplicationContext(), searchQuery,
+                        productsPage.getTotalProducts());
+            }
+            
         } else {
-            TrackerDelegator.trackCategoryView(mActivity.getApplicationContext(), title,
+            if(pageNumber == 1){
+                TrackerDelegator.trackCategoryView(mActivity.getApplicationContext(), title,
                     pageNumber);
+            }
         }
 
         productsAdapter.appendProducts(productsPage.getProducts());
