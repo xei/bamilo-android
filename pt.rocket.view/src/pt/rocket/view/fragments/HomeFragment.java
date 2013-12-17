@@ -291,15 +291,7 @@ public class HomeFragment extends BaseFragment {
             mPager.setAdapter(mPagerAdapter);
         mPager.setSaveEnabled(false);
         mPager.setCurrentItem(currentPositionPager);
-        try {
-            setLayoutSpec();
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
+        configureLayout();
         // }
         ((BaseActivity) getActivity()).setProcessShow(true);
         ((BaseActivity) getActivity()).showContentContainer();
@@ -320,7 +312,7 @@ public class HomeFragment extends BaseFragment {
                 getActivity().runOnUiThread(new Runnable() {
                     public void run() {
                         int pageCount = pagesTitles.size();
-                        
+                        if (null != mPager ) {
                         // change event of first(last) fragment to jump for original fragment
                         if (mPager.getCurrentItem() == 0) {
                             mPager.toggleJumiaScroller(false);                    
@@ -331,6 +323,7 @@ public class HomeFragment extends BaseFragment {
                             mPager.toggleJumiaScroller(false);
                             mPager.setCurrentItem(1);
 
+                        }
                         }
                     }
                 });                
@@ -483,6 +476,9 @@ public class HomeFragment extends BaseFragment {
             ((BaseActivity) getActivity()).setProcessShow(false);
             triggerContentEvent(new RequestEvent(EventType.GET_TEASERS_EVENT));
         }
+        configureLayout();
+    }
+    private void configureLayout(){
         try {
             setLayoutSpec();
         } catch (IllegalArgumentException e) {
@@ -496,7 +492,6 @@ public class HomeFragment extends BaseFragment {
             e.printStackTrace();
         }
     }
-
     @Override
     protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
         Log.i(TAG,"ON onSuccessEvent");
@@ -505,6 +500,7 @@ public class HomeFragment extends BaseFragment {
             isFirstBoot = false;
             proccessResult((Collection<? extends Homepage>) event.result);
             Log.i(TAG, "code1 checkversion called");
+            configureLayout();
             break;
         case GET_CALL_TO_ORDER_PHONE:
             SharedPreferences sharedPrefs = getActivity().getSharedPreferences(
