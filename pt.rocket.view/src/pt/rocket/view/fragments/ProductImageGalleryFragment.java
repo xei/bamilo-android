@@ -26,6 +26,7 @@ import pt.rocket.view.BaseActivity;
 import pt.rocket.view.ProductDetailsActivityFragment;
 import pt.rocket.view.R;
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.GestureDetector;
@@ -196,7 +197,8 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
                 }
 
                 if (arg0 == mViewPager.SCROLL_STATE_IDLE) {
-                    mViewPager.setPagingEnabled(true);
+                    new ChangePageTask().execute(arg0);
+                   /* mViewPager.setPagingEnabled(true);
                     mViewPager.toggleJumiaScroller(true);
 
                     //
@@ -208,13 +210,62 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
                     } else if (currentPosition == pageCount - 1) {
                         mViewPager.toggleJumiaScroller(false);
                         mViewPager.setCurrentItem(1);
-                    }
+                    }*/
                 }
 
             }
         });
         return mainView;
     }
+    
+    
+    
+    private class ChangePageTask extends AsyncTask<Integer, String, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(Integer... params) {
+
+               
+                Log.i(TAG, "ANDRE - SCROLL_STATE_IDLE POSITION : " + currentPosition);
+                Log.i(TAG,
+                        "ANDRE - SCROLL_STATE_IDLE mpager item : "
+                                + mViewPager.getCurrentItem());
+                
+                getActivity().runOnUiThread(new Runnable() {
+                    public void run() {
+                        int pageCount = galleryAdapter.getCount();
+                        
+                        mViewPager.setPagingEnabled(true);
+                        mViewPager.toggleJumiaScroller(true);
+
+                        //
+                        if (currentPosition == 0) {
+                            mViewPager.toggleJumiaScroller(false);
+                            mViewPager.setCurrentItem(pageCount - 2);
+
+                            //
+                        } else if (currentPosition == pageCount - 1) {
+                            mViewPager.toggleJumiaScroller(false);
+                            mViewPager.setCurrentItem(1);
+                        }
+                    }
+                });                
+                
+
+                Log.i(TAG, "ANDRE - SCROLL_STATE_IDLE: FINISHED");
+         
+            return true;
+
+        }
+
+        /**
+         * The system calls this to perform work in the UI thread and delivers the result from
+         * doInBackground()
+         */
+        protected void onPostExecute(Boolean result) {            
+        }
+
+    } 
 
     /*
      * (non-Javadoc)
