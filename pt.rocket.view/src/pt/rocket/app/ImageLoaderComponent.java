@@ -95,7 +95,7 @@ public class ImageLoaderComponent extends ApplicationComponent {
                 .defaultDisplayImageOptions(largeLoaderOptions)
                 .build();
         ImageLoader.getInstance().init(config);
-        L.disableLogging();
+//        L.disableLogging();
     }
 
     /**

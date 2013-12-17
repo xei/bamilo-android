@@ -6,6 +6,7 @@ package pt.rocket.view.fragments;
 import java.util.ArrayList;
 import java.util.EnumSet;
 
+import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.ProductImagesAdapter;
 import pt.rocket.framework.event.EventType;
 import pt.rocket.framework.event.ResponseEvent;
@@ -226,6 +227,7 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
             mVariationsListPosition = position;
             Bundle bundle = new Bundle();
             bundle.putInt(ProductDetailsActivityFragment.LOADING_PRODUCT_KEY, position);
+            bundle.putInt(ConstantsIntentExtra.CURRENT_LISTPOSITION, mVariationsListPosition);
             FragmentCommunicator.getInstance().notifyTarget(this, bundle, 0);
 
             // mCallback.onFragmentElementSelected(position);
@@ -263,6 +265,9 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
         if (!isVisible()) {
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
+        }
+        if(bundle.containsKey(ConstantsIntentExtra.CURRENT_LISTPOSITION)){
+            mVariationsListPosition = bundle.getInt(ConstantsIntentExtra.CURRENT_LISTPOSITION);
         }
         Log.i(TAG, "on notifyFragment : " + mCompleteProduct != null ? "not null" : "null");
         displayVariations();

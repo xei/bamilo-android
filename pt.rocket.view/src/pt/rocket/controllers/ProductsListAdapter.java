@@ -3,7 +3,7 @@ package pt.rocket.controllers;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.holoeverywhere.widget.TextView;
+//import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.framework.objects.Product;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
@@ -60,11 +61,12 @@ public class ProductsListAdapter extends BaseAdapter {
 	
 	private Context context;
 
+	private boolean canIScroll = true;
 
     /**
      * A representation of each item on the list
      */
-    private static class Item {
+    static class Item {
 
         public ImageView image;
         public ImageView promotion;
@@ -138,7 +140,7 @@ public class ProductsListAdapter extends BaseAdapter {
      */
     @Override
     public int getCount() {
-        return this.products.size() + jumpConstant;
+        return this.products.size();
     }
 
     /*
@@ -148,12 +150,12 @@ public class ProductsListAdapter extends BaseAdapter {
      */
     @Override
     public Object getItem(int position) {
-        int activePosition = position - jumpConstant;
+//        int activePosition = position - jumpConstant;
         Product prod = null;
 
-        if (activePosition > -1 && activePosition < this.products.size()) {
-            prod = this.products.get(activePosition);
-        }
+//        if (activePosition > -1 && activePosition < this.products.size()) {
+            prod = this.products.get(position);
+//        }
         return prod; 
     }
     
@@ -209,93 +211,99 @@ public class ProductsListAdapter extends BaseAdapter {
         } else {
             prodItem = (Item) itemView.getTag();
         }
-
-        String imageURL = "";
-        Product product = products.get(position);
-        if (product.getImages().size() > 0) {
-            imageURL = product.getImages().get(0).getUrl();
-        }
         
-        prodItem.progress.setVisibility(View.GONE);
+        if(canIScroll){
         
-        ImageLoader.getInstance().displayImage(imageURL, prodItem.image,
-                new ImageLoadingListener() {
-
-                    /*
-                     * (non-Javadoc)
-                     * 
-                     * @see com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener
-                     * #onLoadingComplete(java.lang.String, android.view.View,
-                     * android.graphics.Bitmap)
-                     */
-                    @Override
-                    public void onLoadingCancelled(String arg0, View arg1) {
-                        prodItem.progress.setVisibility(View.GONE);
-                        prodItem.image.setVisibility(View.VISIBLE);                        
-                    }
-
-                    @Override
-                    public void onLoadingComplete(String arg0, View arg1, Bitmap arg2) {
-                        prodItem.progress.setVisibility(View.GONE);
-                        prodItem.image.setVisibility(View.VISIBLE);
-                    }
-
-                    @Override
-                    public void onLoadingFailed(String arg0, View arg1, FailReason arg2) {
-                        prodItem.progress.setVisibility(View.GONE);
-                        prodItem.image.setVisibility(View.VISIBLE);
-                    }
-
-                    @Override
-                    public void onLoadingStarted(String arg0, View arg1) {
-                        prodItem.progress.setVisibility(View.VISIBLE);
-                    }
+            String imageURL = "";
+            Product product = products.get(position);
+            if (product.getImages().size() > 0) {
+                imageURL = product.getImages().get(0).getUrl();
+            }
             
-        });
-
-        prodItem.name.setText(product.getBrand() + " " + product.getName());
-        prodItem.price.setText(product.getSuggestedPrice());
-        if(product.getRating() != null && product.getRating() > 0) {
-        	prodItem.rating.setRating(product.getRating().floatValue());
-        	prodItem.rating.setVisibility(View.VISIBLE);
-        	if(product.getReviews() != null) {
-        		prodItem.reviews.setText(product.getReviews() + " " + reviewLabel);
-        		prodItem.reviews.setVisibility(View.VISIBLE);
-        	} else {
-        		prodItem.reviews.setVisibility(View.GONE);
-        	}
-        } else {
-        	prodItem.rating.setVisibility(View.GONE);
-        	prodItem.reviews.setVisibility(View.GONE);
+            prodItem.progress.setVisibility(View.GONE);
+            
+            ImageLoader.getInstance().displayImage(imageURL, prodItem.image,
+                    new ImageLoadingListener() {
+    
+                        /*
+                         * (non-Javadoc)
+                         * 
+                         * @see com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener
+                         * #onLoadingComplete(java.lang.String, android.view.View,
+                         * android.graphics.Bitmap)
+                         */
+                        @Override
+                        public void onLoadingCancelled(String arg0, View arg1) {
+                            prodItem.progress.setVisibility(View.GONE);
+                            prodItem.image.setVisibility(View.VISIBLE);                        
+                        }
+    
+                        @Override
+                        public void onLoadingComplete(String arg0, View arg1, Bitmap arg2) {
+                            prodItem.progress.setVisibility(View.GONE);
+                            prodItem.image.setVisibility(View.VISIBLE);
+                        }
+    
+                        @Override
+                        public void onLoadingFailed(String arg0, View arg1, FailReason arg2) {
+                            prodItem.progress.setVisibility(View.GONE);
+                            prodItem.image.setVisibility(View.VISIBLE);
+                        }
+    
+                        @Override
+                        public void onLoadingStarted(String arg0, View arg1) {
+                            prodItem.progress.setVisibility(View.VISIBLE);
+                        }
+                
+            });
+    
+            prodItem.name.setText(product.getBrand() + " " + product.getName());
+            prodItem.price.setText(product.getSuggestedPrice());
+            if(product.getRating() != null && product.getRating() > 0) {
+            	prodItem.rating.setRating(product.getRating().floatValue());
+            	prodItem.rating.setVisibility(View.VISIBLE);
+            	if(product.getReviews() != null) {
+            		prodItem.reviews.setText(product.getReviews() + " " + reviewLabel);
+            		prodItem.reviews.setVisibility(View.VISIBLE);
+            	} else {
+            		prodItem.reviews.setVisibility(View.GONE);
+            	}
+            } else {
+            	prodItem.rating.setVisibility(View.GONE);
+            	prodItem.reviews.setVisibility(View.GONE);
+            }
+    
+            if (null != product.getSpecialPrice()
+                    && !product.getSpecialPrice().equals(product.getPrice())) {
+    			prodItem.discount.setText(product.getSpecialPrice());
+    			prodItem.discountPercentage.setText("-"
+    					+ product.getMaxSavingPercentage().intValue() + "%");
+    			prodItem.discount.setVisibility(View.VISIBLE);
+    			prodItem.promotion.setVisibility(View.VISIBLE);
+    			prodItem.discountPercentage.setVisibility(View.VISIBLE);
+    			prodItem.price.setPaintFlags(prodItem.price.getPaintFlags()
+    					| Paint.STRIKE_THRU_TEXT_FLAG);
+    			prodItem.price.setSelected(true);
+    			prodItem.price.setTextColor(context.getResources().getColor(
+    					R.color.grey_light));
+    			prodItem.price.setTextAppearance(context.getApplicationContext(), R.style.text_normal);
+            } else {
+                prodItem.discount.setVisibility(View.GONE);
+                prodItem.promotion.setVisibility(View.GONE);
+                prodItem.discountPercentage.setVisibility(View.GONE);
+                prodItem.price.setPaintFlags(prodItem.price.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+                prodItem.price.setTextAppearance(context.getApplicationContext(), R.style.text_bold);
+                prodItem.price.setTextColor(context.getResources().getColor(
+                        R.color.red_basic));
+            }
         }
-
-        if (null != product.getSpecialPrice()
-                && !product.getSpecialPrice().equals(product.getPrice())) {
-			prodItem.discount.setText(product.getSpecialPrice());
-			prodItem.discountPercentage.setText("-"
-					+ product.getMaxSavingPercentage().intValue() + "%");
-			prodItem.discount.setVisibility(View.VISIBLE);
-			prodItem.promotion.setVisibility(View.VISIBLE);
-			prodItem.discountPercentage.setVisibility(View.VISIBLE);
-			prodItem.price.setPaintFlags(prodItem.price.getPaintFlags()
-					| Paint.STRIKE_THRU_TEXT_FLAG);
-			prodItem.price.setSelected(true);
-			prodItem.price.setTextColor(context.getResources().getColor(
-					R.color.grey_light));
-			prodItem.price.setTextAppearance(context.getApplicationContext(), R.style.text_normal);
-        } else {
-            prodItem.discount.setVisibility(View.GONE);
-            prodItem.promotion.setVisibility(View.GONE);
-            prodItem.discountPercentage.setVisibility(View.GONE);
-            prodItem.price.setPaintFlags(prodItem.price.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-            prodItem.price.setTextAppearance(context.getApplicationContext(), R.style.text_bold);
-            prodItem.price.setTextColor(context.getResources().getColor(
-                    R.color.red_basic));
-        }
-
         return itemView;
     }
 
+    public void setCanIScroll(boolean b){
+        this.canIScroll = b;
+    }
+    
     /**
      * Updates the Products array list
      * 
@@ -316,89 +324,6 @@ public class ProductsListAdapter extends BaseAdapter {
     public void appendProducts(Collection<? extends Product> newProducts) {
         products.addAll(newProducts);
         notifyDataSetChanged();
-    }
-
-    /**
-     * Updated the information to portrait mode
-     */
-    public void updateJumpConstant() {
-        jumpConstant = 0;
-    }
-
-    /**
-     * Retrieves the current orientation of the adapter
-     * 
-     * @return The orientation constant
-     */
-    public int getJumpConstant() {
-        return jumpConstant;
-    }
-
-    /**
-     * adds the selected item if in multi selection mode
-     * 
-     * @param value
-     *            the position of the item to be marked
-     */
-    public void addSelectedItem(int value) {
-        if (!selectedItems.contains(value)) {
-            selectedItems.add(value);
-            this.notifyDataSetChanged();
-        }
-    }
-
-    /**
-     * removes the selected item if in multi selection mode
-     * 
-     * @param value
-     *            the position of the item to be marked
-     */
-    public void removeSelectedItem(int value) {
-        if (selectedItems.contains(value)) {
-            selectedItems.remove((Integer) value);
-            this.notifyDataSetChanged();
-        }
-    }
-
-    /**
-     * Clears all the selected items
-     */
-    public void clearSelectedItems() {
-        selectedItems.clear();
-        // ((ProductsActivity) activity).unselectItem(selectedItems.size());
-        if (null != onSelectedItemsChange) {
-            onSelectedItemsChange.SelectedItemsChange(selectedItems.size());
-        }
-
-        this.notifyDataSetChanged();
-    }
-
-    /**
-     * gets the arraylist with all the selected items
-     * 
-     * @return the arraylist containing all the selected items
-     */
-    public ArrayList<Integer> getSelectedItems() {
-        return selectedItems;
-    }
-
-    /**
-     * sets the listener to be called when the number of selected items changes
-     * 
-     * @param value
-     *            the listener
-     */
-    public void setOnSelectedItemsChanged(OnSelectedItemsChange value) {
-        onSelectedItemsChange = value;
-    }
-    
-    static class ViewHolder {
-        public ImageView imageView;
-        public TextView name;
-        public TextView priceStroke;
-        public TextView priceNormal;
-        public TextView pricePackage;
-
     }
 
 }

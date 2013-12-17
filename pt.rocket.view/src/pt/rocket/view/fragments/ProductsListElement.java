@@ -3,8 +3,9 @@
 // */
 //package pt.rocket.view.fragments;
 //
-//import java.util.ArrayList;
-//import java.util.Arrays;
+//import java.security.MessageDigest;
+//import java.security.NoSuchAlgorithmException;
+//import java.util.Calendar;
 //import java.util.EnumSet;
 //
 //import pt.rocket.constants.ConstantsIntentExtra;
@@ -16,6 +17,7 @@
 //import pt.rocket.framework.event.EventType;
 //import pt.rocket.framework.event.IMetaData;
 //import pt.rocket.framework.event.ResponseEvent;
+//import pt.rocket.framework.event.ResponseListener;
 //import pt.rocket.framework.event.ResponseResultEvent;
 //import pt.rocket.framework.event.events.GetProductsEvent;
 //import pt.rocket.framework.objects.Product;
@@ -26,14 +28,9 @@
 //import pt.rocket.framework.utils.LogTagHelper;
 //import pt.rocket.framework.utils.ProductSort;
 //import pt.rocket.utils.DialogList;
-//import pt.rocket.utils.MyMenuItem;
-//import pt.rocket.utils.NavigationAction;
 //import pt.rocket.utils.TrackerDelegator;
-//import pt.rocket.utils.dialogfragments.DialogListFragment;
-//import pt.rocket.utils.dialogfragments.DialogListFragment.OnDialogListListener;
 //import pt.rocket.view.BaseActivity;
 //import pt.rocket.view.R;
-//import android.app.Activity;
 //import android.content.Context;
 //import android.content.SharedPreferences;
 //import android.content.res.Configuration;
@@ -45,7 +42,6 @@
 //import android.view.View;
 //import android.view.View.OnClickListener;
 //import android.view.View.OnTouchListener;
-//import android.view.ViewGroup;
 //import android.widget.AbsListView;
 //import android.widget.AbsListView.OnScrollListener;
 //import android.widget.AdapterView;
@@ -56,6 +52,7 @@
 //import android.widget.Toast;
 //
 //import com.nostra13.universalimageloader.core.ImageLoader;
+//import com.nostra13.universalimageloader.core.assist.PauseOnScrollListener;
 //
 //import de.akquinet.android.androlog.Log;
 //
@@ -63,22 +60,19 @@
 // * @author sergiopereira
 // * @modified manuelsilva
 // */
-//public class ProductsFragment extends BaseFragment implements
-//        OnDialogListListener, OnScrollListener{
+//public class ProductsListElement implements 
+//       OnScrollListener, ResponseListener {
 //
-//    private static final String TAG = LogTagHelper.create(ProductsFragment.class);
-//
+//    private static final String TAG = LogTagHelper.create(ProductsListElement.class);
 //
 //    private View mainView;
 //
 //    boolean isFirstBootBrands = true;
 //
 //    // private View sortButton;
-//    private final static String ID_SORT_DIALOG = "sort";
 //    private final static String KEY_STATE_SORTER = "products_state_sorter";
 //    private final static String KEY_STATE_VIEW = "products_state_view";
 //
-//    private DialogListFragment mSortDialog;
 //    private String title;
 //
 //    //
@@ -106,7 +100,6 @@
 //    private View notfound;
 //    private View refreshAlertView;
 //
-//    private ArrayList<String> mSortOptions;
 //    private int mSortPosition = DialogList.NO_INITIAL_POSITION;
 //
 //    boolean flag = false;
@@ -119,83 +112,38 @@
 //
 //    private View productsContent;
 //
-//    private int listItemRecycleCount;
-//
-//    private static ProductsFragment productsFragment;
-//
 //    private int totalProducts = -1;
 //
 //    public static final String INTENT_POSITION_EXTRA = "extra_position";
 //
-//    private static int pos = -1;
-//    /**
-//     * Get instance
-//     * 
-//     * @return
-//     */
-//    public static ProductsFragment getInstance() {
-//        productsFragment = new ProductsFragment();
-//        return productsFragment;
-//    }
-//
+//    private Context mContext;
+//    
+//    private String md5Hash;
+//    
+//    private int pagePosition;
+//    
 //    /**
 //     * Empty constructor
 //     */
-//    public ProductsFragment() {
-//        super(EnumSet.of(EventType.GET_PRODUCTS_EVENT), EnumSet.noneOf(EventType.class), EnumSet.of(MyMenuItem.SEARCH), 
-//                NavigationAction.Products, 
-//                R.string.products);
+//    public ProductsListElement(Context ctx, int pos) {
+//        this.mContext = ctx;
+//        this.pagePosition = pos;
+//        EventManager.getSingleton().addResponseListener(this, EnumSet.of(EventType.GET_PRODUCTS_EVENT));
+//    }
+//
+//    public View createView(LayoutInflater inflater) {
+//        Log.i(TAG, "ON CREATE VIEW");
+//        mainView = inflater.inflate(R.layout.products, null, false);
+//        return mainView;
 //    }
 //    
-//    /*
-//     * (non-Javadoc)
-//     * 
-//     * @see android.support.v4.app.Fragment#onAttach(android.app.Activity)
-//     */
-//    @Override
-//    public void onAttach(Activity activity) {
-//        super.onAttach(activity);
-//        Log.i(TAG, "ON ATTACH");
-//    }
-//
-//    /*
-//     * (non-Javadoc)
-//     * 
-//     * @see android.support.v4.app.Fragment#onCreate(android.os.Bundle)
-//     */
-//    @Override
-//    public void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        Log.i(TAG, "ON CREATE");
-//        savedState = savedInstanceState;
-//
-//    }
-//
-//    /*
-//     * (non-Javadoc)
-//     * 
-//     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-//     * android.view.ViewGroup, android.os.Bundle)
-//     */
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//        super.onCreateView(inflater, container, savedInstanceState);
-//        Log.i(TAG, "ON CREATE VIEW");
-//        mainView = inflater.inflate(R.layout.products, container, false);
-//
+//    public View getElement(){
 //        return mainView;
 //    }
 //
-//    /*
-//     * (non-Javadoc)
-//     * 
-//     * @see android.support.v4.app.Fragment#onStart()
-//     */
-//    @Override
 //    public void onStart() {
-//        super.onStart();
 //
-//        md5Hash = uniqueMD5(TAG);
+//        md5Hash = uniqueMD5(TAG, pagePosition);
 //
 //        Log.i(TAG, " MD5Hash -> " + md5Hash);
 //
@@ -204,15 +152,12 @@
 //        productsURL = ProductsViewFragment.productsURL;
 //        Log.d(TAG, "onCreate: productsURL = " + productsURL);
 //        searchQuery = ProductsViewFragment.searchQuery;
-//        int pos = getArguments().getInt(INTENT_POSITION_EXTRA);
-//        if (pos == 1) {
+//        
+//        if (pagePosition == 0) {
 //            showTips();
 //        }
 //        
-//        setSort(pos);
-//        
-//        
-//        Log.i(TAG, "code1 creating ProductsFragment " + pos);
+//        setSort(pagePosition);
 //
 //        Log.d(TAG, "onCreate: searchQuery = " + searchQuery);
 //        
@@ -222,21 +167,23 @@
 //
 //        AnalyticsGoogle.get().trackSourceResWithPath(navigationSource, navigationPath);
 //
-//        productsAdapter = new ProductsListAdapter(getActivity());
+//        productsAdapter = new ProductsListAdapter(mContext);
 //        
-//        if(((BaseActivity) getActivity()).isTabletInLandscape()){
+//        if(((BaseActivity) mContext).isTabletInLandscape()){
 //            productsListGridView.setAdapter(productsAdapter);
+//
 //        } else {
 //            productsListView.setAdapter(productsAdapter);
+//
 //        }
-//        listItemRecycleCount = 0;
 //
 //        if (null != savedState && savedState.containsKey(KEY_STATE_VIEW)) {
 //            savedState.remove(KEY_STATE_VIEW);
 //        }
 //        
 //        Log.i(TAG, "ON START");
-//        ((BaseActivity) getActivity()).setTitle(ProductsViewFragment.title);
+//        ((BaseActivity) mContext).setTitle(ProductsViewFragment.title);
+//
 //        if (productsAdapter != null && productsAdapter.getCount() == 0) {
 //            executeRequest();
 //        }
@@ -248,14 +195,13 @@
 //    private void setAppContentLayout() {
 //
 //        productsContent = mainView.findViewById(R.id.products_content);
-//        if(((BaseActivity) getActivity()).isTabletInLandscape()){
+//        if(((BaseActivity) mContext).isTabletInLandscape()){
 //            productsListGridView = (GridView) mainView.findViewById(R.id.middle_productslist_list);
 //            productsListGridView.setOnItemClickListener(new OnItemClickListener() {
 //                public void onItemClick(AdapterView<?> parent, View view,
 //                        int position, long id) {
 //
-//                    int activePosition = position; // -
-//                                                   // productsAdapter.getJumpConstant();
+//                    int activePosition = position;
 //
 //                    if (activePosition > -1) {
 //                        // // Call Product Details
@@ -266,38 +212,36 @@
 //                        bundle.putString(ConstantsIntentExtra.CONTENT_URL, ((Product) productsAdapter.getItem(activePosition)).getUrl());
 //                        bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, navigationSource);
 //                        bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, navigationPath);
-//                        ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
+//                        ((BaseActivity) mContext).onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
 //                    }
 //
 //                }
 //            });
-////            productsListGridView.setOnScrollListener(new PauseOnScrollListener(ImageLoader.getInstance(), true,
-////                    true, this));
+//            productsListGridView.setOnScrollListener(new PauseOnScrollListener(ImageLoader.getInstance(), true,
+//                    true, this));
 //        } else {
 //            productsListView = (ListView) mainView.findViewById(R.id.middle_productslist_list);
 //            productsListView.setOnItemClickListener(new OnItemClickListener() {
 //                public void onItemClick(AdapterView<?> parent, View view,
 //                        int position, long id) {
 //
-//                    int activePosition = position; // -
-//                                                   // productsAdapter.getJumpConstant();
+//                    int activePosition = position;
 //
 //                    if (activePosition > -1) {
 //                        // // Call Product Details
 //
 //                        Log.i("TAG", "DIR=======>" + dir + " sort =====> " + sort);
-//                        
 //                        Bundle bundle = new Bundle();
 //                        bundle.putString(ConstantsIntentExtra.CONTENT_URL, ((Product) productsAdapter.getItem(activePosition)).getUrl());
 //                        bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, navigationSource);
 //                        bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, navigationPath);
-//                        ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
+//                        ((BaseActivity) mContext).onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
 //                    }
 //
 //                }
 //            });
-////            productsListView.setOnScrollListener(new PauseOnScrollListener(ImageLoader.getInstance(), true,
-////                    true, this));
+//            productsListView.setOnScrollListener(new PauseOnScrollListener(ImageLoader.getInstance(), true,
+//                    true, this));
 //        }
 //        
 //
@@ -306,61 +250,61 @@
 //        loadingLayout = mainView.findViewById(R.id.loadmore);
 //    }
 //    
-////    /**
-////     * Show tips if is the first time the user uses the app.
-////     */
-////    private void showTips(){
-////        final SharedPreferences sharedPrefs =
-////                getActivity().getSharedPreferences(
-////                        ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-////
-////        if (sharedPrefs.getBoolean(ConstantsSharedPrefs.KEY_SHOW_PRODUCTS_TIPS, true)) {
-////            RelativeLayout productsTip = (RelativeLayout) mainView.findViewById(R.id.products_tip);
-////            productsTip.setVisibility(View.VISIBLE);
-////            productsTip.setOnTouchListener(new OnTouchListener() {
-////
-////                @Override
-////                public boolean onTouch(View v, MotionEvent event) {
-////                    v.setVisibility(View.GONE);
-////
-////                    SharedPreferences.Editor editor = sharedPrefs.edit();
-////                    editor.putBoolean(ConstantsSharedPrefs.KEY_SHOW_PRODUCTS_TIPS,
-////                            false);
-////                    editor.commit();
-////                    return false;
-////                }
-////            });
-////        }
-////    }
+//    /**
+//     * Show tips if is the first time the user uses the app.
+//     */
+//    private void showTips(){
+//        final SharedPreferences sharedPrefs =
+//                mContext.getSharedPreferences(
+//                        ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
 //
-////    private void executeRequest() {
-////        pageNumber = 1;
-////        productsAdapter.clearProducts();
-////        showProductsContent();
-////        getMoreProducts();
-////    }
+//        if (sharedPrefs.getBoolean(ConstantsSharedPrefs.KEY_SHOW_PRODUCTS_TIPS, true)) {
+//            RelativeLayout productsTip = (RelativeLayout) mainView.findViewById(R.id.products_tip);
+//            productsTip.setVisibility(View.VISIBLE);
+//            productsTip.setOnTouchListener(new OnTouchListener() {
+//
+//                @Override
+//                public boolean onTouch(View v, MotionEvent event) {
+//                    v.setVisibility(View.GONE);
+//
+//                    SharedPreferences.Editor editor = sharedPrefs.edit();
+//                    editor.putBoolean(ConstantsSharedPrefs.KEY_SHOW_PRODUCTS_TIPS,
+//                            false);
+//                    editor.commit();
+//                    return false;
+//                }
+//            });
+//        }
+//    }
+//
+//    private void executeRequest() {
+//        pageNumber = 1;
+//        productsAdapter.clearProducts();
+//        showProductsContent();
+//        getMoreProducts();
+//    }
 //
 //    private void showProductsContent() {
 //        Log.d(TAG, "showProductsContent");
-//        if (pageNumber == 1) {
-//            if(((BaseActivity) getActivity()).isTabletInLandscape()){
-//                productsListGridView.post(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        productsListGridView.setSelection(0);
-//                    }
-//                });    
-//            } else {
-//                productsListView.post(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        productsListView.setSelection(0);
-//                    }
-//                });
-//            }
-//            
-//
-//        }
+////        if (pageNumber == 1) {
+////            if(((BaseActivity) mContext).isTabletInLandscape()){
+////                productsListGridView.post(new Runnable() {
+////                    @Override
+////                    public void run() {
+////                        productsListGridView.setSelection(0);
+////                    }
+////                });    
+////            } else {
+////                productsListView.post(new Runnable() {
+////                    @Override
+////                    public void run() {
+////                        productsListView.setSelection(0);
+////                    }
+////                });
+////            }
+////            
+////
+////        }
 //        productsContent.setVisibility(View.VISIBLE);
 //        notfound.setVisibility(View.GONE);
 //        loadingLayout.setVisibility(View.GONE);
@@ -368,64 +312,6 @@
 //        if (mainView != null) {
 //            mainView.findViewById(R.id.loading_view_pager).setVisibility(View.GONE);
 //        }
-//    }
-//
-//    /*
-//     * (non-Javadoc)
-//     * 
-//     * @see android.support.v4.app.Fragment#onResume()
-//     */
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        Log.i(TAG, "ON RESUME");
-//        
-//    }
-//
-//    /*
-//     * (non-Javadoc)
-//     * 
-//     * @see pt.rocket.view.fragments.MyFragment#onPause()
-//     */
-//    @Override
-//    public void onPause() {
-//        super.onPause();
-//        Log.i(TAG, "ON PAUSE");
-//    }
-// 
-//    /*
-//     * (non-Javadoc)
-//     * 
-//     * @see pt.rocket.view.fragments.MyFragment#onStop()
-//     */
-//    @Override
-//    public void onStop() {
-//        super.onStop();
-//        Log.i(TAG, "ON STOP");
-//    }
-//
-//    /*
-//     * (non-Javadoc)
-//     * 
-//     * @see android.support.v4.app.Fragment#onDestroyView()
-//     */
-//    @Override
-//    public void onDestroyView() {
-//        super.onDestroyView();
-//        Log.i(TAG, "ON DESTROY");
-//        productsAdapter = null;
-//    }
-//
-//    @Override
-//    public void onDestroy() {
-//        super.onDestroy();
-//    }
-//    
-//    @Override
-//    public void onLowMemory() {
-//        super.onLowMemory();
-//        ImageLoader.getInstance().clearMemoryCache();
-//        System.gc();
 //    }
 //
 //    /**
@@ -437,87 +323,90 @@
 //        return currentOrientation;
 //    }
 //
-////    /**
-////     * gets the next page of products from the API
-////     */
-////    private void getMoreProducts() {
-////        Log.d(TAG, "GET MORE PRODUCTS");
-////
-////        if (pageNumber != NO_MORE_PAGES) {
-////            // Test to see if we already have all the products available
-////
-////            if (pageNumber == 1) {
-////                if (mainView != null) {
-////                    hideProductsNotFound();
-////                    mainView.findViewById(R.id.loading_view_pager).setVisibility(View.VISIBLE);
-////                }
-////
-////                // ((BaseActivity) getActivity()).showLoading();
-////            }
-////
-////            mBeginRequestMillis = System.currentTimeMillis();
-////            EventManager.getSingleton().triggerRequestEvent(
-////                    new GetProductsEvent(productsURL, searchQuery, pageNumber, MAX_PAGE_ITEMS,
-////                            sort, dir, md5Hash));
-////        } else {
-////            hideProductsLoading();
-////        }
-////    }
+//    /**
+//     * gets the next page of products from the API
+//     */
+//    private void getMoreProducts() {
+//        Log.d(TAG, "GET MORE PRODUCTS");
+//
+//        if (pageNumber != NO_MORE_PAGES) {
+//            // Test to see if we already have all the products available
+//
+//            if (pageNumber == 1) {
+//                if (mainView != null) {
+//                    hideProductsNotFound();
+//                    mainView.findViewById(R.id.loading_view_pager).setVisibility(View.VISIBLE);
+//                }
+//
+//                // ((BaseActivity) getActivity()).showLoading();
+//            }
+//
+//            mBeginRequestMillis = System.currentTimeMillis();
+//            EventManager.getSingleton().triggerRequestEvent(
+//                    new GetProductsEvent(productsURL, searchQuery, pageNumber, MAX_PAGE_ITEMS,
+//                            sort, dir, md5Hash));
+//        } else {
+//            hideProductsLoading();
+//        }
+//    }
 //
 //    private void setSort(int position) {
 //        mSortPosition = position;
 //        switch (position) {
-//        case 0: // <item > Copy of Brand for infinite scroll</item>
-//            // TODO when available change this to Sales
-//            // option
-//            sort = ProductSort.BRAND;
-//            dir = Direction.ASCENDENT;
-//            break;
-//        case 1: // <item >Popularity</item>
+//        case 0: // <item >Popularity</item>
 //            sort = ProductSort.POPULARITY;
 //            dir = Direction.DESCENDENT;
 //            break;
-//        case 2: // <item >Price up</item>
+//        case 1: // <item >Price up</item>
 //            sort = ProductSort.PRICE;
 //            dir = Direction.ASCENDENT;
 //            break;
-//        case 3: // <item >Price down</item>
+//        case 2: // <item >Price down</item>
 //            sort = ProductSort.PRICE;
 //            dir = Direction.DESCENDENT;
 //            break;
-//        case 4: // <item >Name</item>
+//        case 3: // <item >Name</item>
 //            // TODO when available change this to Top
 //            // Offer option
 //            sort = ProductSort.NAME;
 //            dir = Direction.ASCENDENT;
 //            break;
-//        case 5: // <item >Brand</item>
+//        case 4: // <item >Brand</item>
 //            // TODO when available change this to Sales
 //            // option
 //            sort = ProductSort.BRAND;
 //            dir = Direction.ASCENDENT;
 //            break;
-//            
-//        case 6: // <item >Copy of Popularity for infinite scroll</item>
-//            sort = ProductSort.POPULARITY;
-//            dir = Direction.DESCENDENT;
-//            break;
-//            
 //        }
 //    }
 //
-//    @Override
-//    public void onDialogListItemSelect(String id, int position, String value) {
-//        Log.i(TAG, "onDialogListItemSelect ");
-//        if (id.equals(ID_SORT_DIALOG)) {
-//            setSort(position);
-//            executeRequest();
-//        }
-//    }
-//
-//    @Override
+////    protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
+////        ProductsPage productsPage = (ProductsPage) event.result;
+////        
+////        if (productsPage != null && productsPage.getTotalProducts() > 0) {
+////            totalProducts = productsPage.getTotalProducts();
+////        }
+////        
+////        String location = event.metaData.getString(IMetaData.LOCATION);
+////        Log.d(TAG, "Location = " + location);
+////        checkRedirectFromSearch(location);
+////
+////        AnalyticsGoogle.get().trackLoadTiming(R.string.gproductlist, mBeginRequestMillis);
+////        
+////        if (searchQuery != null && !TextUtils.isEmpty(searchQuery)) {
+////            ((BaseActivity) mContext).setTitle(searchQuery + " (" + productsPage.getTotalProducts() + ")");
+////            TrackerDelegator.trackSearchMade(mContext.getApplicationContext(), searchQuery,
+////                    productsPage.getTotalProducts());
+////        } else {
+////            TrackerDelegator.trackCategoryView(mContext.getApplicationContext(), title,
+////                    pageNumber);
+////        }
+////        
+////        productsAdapter.appendProducts(productsPage.getProducts());
+////    }
+////    
 //    protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
-//        Log.d(TAG, "ON SUCCESS EVENT");
+//        Log.d(TAG, "ON SUCCESS EVENT "+pagePosition);
 //        // sortButton.setOnClickListener(this);
 //        // Get Products Event
 //        ProductsPage productsPage = (ProductsPage) event.result;
@@ -534,19 +423,19 @@
 //        checkRedirectFromSearch(location);
 //
 //        AnalyticsGoogle.get().trackLoadTiming(R.string.gproductlist, mBeginRequestMillis);
-//
+//        
 //        if (searchQuery != null && !TextUtils.isEmpty(searchQuery)) {
-//            ((BaseActivity) getActivity()).setTitle(searchQuery + " (" + productsPage.getTotalProducts() + ")");
-//            TrackerDelegator.trackSearchMade(getActivity().getApplicationContext(), searchQuery,
+//            ((BaseActivity) mContext).setTitle(searchQuery + " (" + productsPage.getTotalProducts() + ")");
+//            TrackerDelegator.trackSearchMade(mContext.getApplicationContext(), searchQuery,
 //                    productsPage.getTotalProducts());
 //        } else {
-//            TrackerDelegator.trackCategoryView(getActivity().getApplicationContext(), title,
+//            TrackerDelegator.trackCategoryView(mContext.getApplicationContext(), title,
 //                    pageNumber);
 //        }
 //
 //        productsAdapter.appendProducts(productsPage.getProducts());
 //
-//        showProductsContent();
+////        showProductsContent();
 //
 //        Log.i(TAG, "code1 " + productsPage.getProducts().size() + " pageNumber is : "+pageNumber);
 //        pageNumber = productsPage.getProducts().size() >= productsPage.getTotalProducts() ? NO_MORE_PAGES
@@ -589,17 +478,16 @@
 //        return;
 //    }
 //
-//    @Override
 //    protected boolean onErrorEvent(ResponseEvent event) {
 //        if (event.errorCode != null && pageNumber == 1) {
 //            showProductsNotfound();
-//            ((BaseActivity) getActivity()).showContentContainer();
+//            ((BaseActivity) mContext).showContentContainer();
 //        } else {
 //            Log.d(TAG, "onErrorEvent: loading more products failed");
 //            hideProductsLoading();
 //
 //            if (totalProducts != -1 && totalProducts > ((pageNumber - 1) * MAX_PAGE_ITEMS)) {
-//                Toast.makeText(getActivity(), R.string.products_could_notloaded, Toast.LENGTH_SHORT)
+//                Toast.makeText(mContext, R.string.products_could_notloaded, Toast.LENGTH_SHORT)
 //                        .show();
 //            }
 //        }
@@ -629,19 +517,30 @@
 //        }
 //    }
 //    
-////    private void hideProductsNotFound(){
-////        notfound.setVisibility(View.GONE);
-////        refreshAlertView.setVisibility(View.GONE);
-////    }
+//    private void hideProductsNotFound(){
+//        notfound.setVisibility(View.GONE);
+//        refreshAlertView.setVisibility(View.GONE);
+//    }
 //
-////    /**
-////     * Set all Products using Products Adapter
-////     */
-////    private void hideProductsLoading() {
-////        Log.d(TAG, "hideProductsLoading");
-////        loadingLayout.setVisibility(View.GONE);
-////        loadingLayout.refreshDrawableState();
-////        notfound.setVisibility(View.GONE);
+//    /**
+//     * Set all Products using Products Adapter
+//     */
+//    private void hideProductsLoading() {
+//        Log.d(TAG, "hideProductsLoading");
+//        loadingLayout.setVisibility(View.GONE);
+//        loadingLayout.refreshDrawableState();
+//        notfound.setVisibility(View.GONE);
+//    }
+////
+////    @Override
+////    public void onMovedToScrapHeap(View view) {
+////        if (listItemRecycleCount > MAX_RECYCLED_PROCESSED_COUNT) {
+////            listItemRecycleCount = 0;
+////            Log.d(TAG, "onMovedToScrapHead: gc requested");
+////            System.gc();
+////        } else {
+////            listItemRecycleCount++;
+////        }
 ////    }
 //
 //    @Override
@@ -666,7 +565,7 @@
 //
 //    private void showProductsLoading() {
 //        Log.d(TAG, "showProductsLoading");
-//        loadingLayout = getView().findViewById(R.id.loadmore);
+//        loadingLayout = mainView.findViewById(R.id.loadmore);
 //        loadingLayout.setVisibility(View.VISIBLE);
 //        loadingLayout.refreshDrawableState();
 //    }
@@ -675,4 +574,55 @@
 //    public void onScrollStateChanged(AbsListView view, int scrollState) {
 //        // noop
 //    }
-// }
+//
+//    @Override
+//    public void handleEvent(ResponseEvent event) {
+//        if(event.getSuccess()){
+//            onSuccessEvent((ResponseResultEvent<?>) event);
+//        } else {
+//            onErrorEvent(event);
+//        }
+//        
+//    }
+//
+//    @Override
+//    public boolean removeAfterHandlingEvent() {
+//        return true;
+//    }
+//
+//    @Override
+//    public String getMD5Hash() {
+//        return md5Hash;
+//    }
+//    
+//    /**
+//     * This method generates a unique and always diferent MD5 hash based on a given key 
+//     * @param key 
+//     * @return the unique MD5 
+//     */
+//    protected static String uniqueMD5(String key, int pos) { 
+//        String md5String = "";
+//        try {
+//            Calendar calendar = Calendar.getInstance();
+//            key = key + pos + calendar.getTimeInMillis() ;
+//        
+//            // Create MD5 Hash
+//            MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
+//            digest.update(key.getBytes());
+//            byte messageDigest[] = digest.digest();
+//     
+//            // Create Hex String
+//            StringBuffer hexString = new StringBuffer();
+//            for (int i=0; i<messageDigest.length; i++) {
+//                hexString.append(Integer.toHexString(0xFF & messageDigest[i]));
+//            }
+//            md5String = hexString.toString();
+//     
+//         } catch (NoSuchAlgorithmException e) {
+//             e.printStackTrace();
+//         }
+//        
+//        return md5String;
+// 
+//    }         
+//}

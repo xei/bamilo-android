@@ -18,6 +18,7 @@ import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.PreferenceListFragment.OnPreferenceAttachedListener;
 import pt.rocket.view.fragments.BaseFragment;
+import pt.rocket.view.fragments.Catalog;
 import pt.rocket.view.fragments.CategoriesContainerFragment;
 import pt.rocket.view.fragments.ChangeCountryFragment;
 import pt.rocket.view.fragments.CheckoutStep5Fragment;
@@ -28,7 +29,6 @@ import pt.rocket.view.fragments.MyAccountUserDataFragment;
 import pt.rocket.view.fragments.PopularityFragment;
 import pt.rocket.view.fragments.ProductDetailsDescriptionFragment;
 import pt.rocket.view.fragments.ProductImageGalleryFragment;
-import pt.rocket.view.fragments.ProductsViewFragment;
 import pt.rocket.view.fragments.ReviewFragment;
 import pt.rocket.view.fragments.SearchFragment;
 import pt.rocket.view.fragments.SessionForgotPasswordFragment;
@@ -223,7 +223,8 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             fragment = SearchFragment.getInstance();
             break;
         case PRODUCT_LIST:
-            fragment = ProductsViewFragment.getInstance();
+//            fragment = ProductsViewFragment.getInstance();
+            fragment = Catalog.getInstance();
             break;
         case PRODUCT_DETAILS:
             fragment = ProductDetailsActivityFragment.getInstance();
