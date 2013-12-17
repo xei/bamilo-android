@@ -339,7 +339,9 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
             AnalyticsGoogle.get().trackLoadTiming(R.string.gshoppingcart, mBeginRequestMillis);
             displayShoppingCart((ShoppingCart) event.result);
         case GET_SHOPPING_CART_ITEMS_EVENT:
-            TrackerDelegator.trackViewCart(getActivity().getApplicationContext(), items.size());
+            if(((ShoppingCart) event.result).getCartItems() != null && ((ShoppingCart) event.result).getCartItems().values() != null){
+                TrackerDelegator.trackViewCart(getActivity().getApplicationContext(), ((ShoppingCart) event.result).getCartItems().values().size());
+            }
 
         }
         return true;
