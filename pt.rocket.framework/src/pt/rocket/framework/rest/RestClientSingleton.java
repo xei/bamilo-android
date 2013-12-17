@@ -443,6 +443,7 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 			ResponseReceiver.sendError(resultReceiver, ErrorCode.HTTP_PROTOCOL, metaData);
 			EntityUtils.consumeQuietly(entity);
 			entity = null;
+			result = null;
 			System.gc();
 			return null;
 		} catch (ClientProtocolException e) {
