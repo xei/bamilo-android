@@ -278,7 +278,7 @@ public class CheckoutWebFragment extends BaseFragment {
     }
     
     private void startCheckout() {
-        ((BaseActivity) getActivity()).showLoading();
+        ((BaseActivity) getActivity()).showLoading(true);
         webview.clearView();
         webview.loadUrl("about:blank"); 
         checkoutUrl = "https://" + RestContract.REQUEST_HOST + CHECKOUT_URL_WITH_PARAM;
@@ -408,10 +408,10 @@ public class CheckoutWebFragment extends BaseFragment {
                 wasLoadingErrorPage = true;
             } else if ( isRequestedPage ) {
                 if(getActivity() != null)
-                    ((BaseActivity) getActivity()).showContentContainer();
+                    ((BaseActivity) getActivity()).showContentContainer(true);
                 isRequestedPage = false;
             } else if (getActivity() != null) {
-                ((BaseActivity) getActivity()).showContentContainer();
+                ((BaseActivity) getActivity()).showContentContainer(true);
             }
             
             if (url.contains(SUCCESS_URL_TAG)) {
@@ -452,7 +452,7 @@ public class CheckoutWebFragment extends BaseFragment {
             }
             
             if (getActivity() != null)
-                ((BaseActivity) getActivity()).showLoading();
+                ((BaseActivity) getActivity()).showLoading(true);
             
             if (url.contains("checkout/success")) {
                 view.getSettings().setBlockNetworkImage(true);

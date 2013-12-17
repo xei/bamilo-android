@@ -593,7 +593,7 @@ public class ProductsFragment extends BaseFragment implements
     protected boolean onErrorEvent(ResponseEvent event) {
         if (event.errorCode != null && pageNumber == 1) {
             showProductsNotfound();
-            ((BaseActivity) getActivity()).showContentContainer();
+            ((BaseActivity) getActivity()).showContentContainer(false);
         } else {
             Log.d(TAG, "onErrorEvent: loading more products failed");
             hideProductsLoading();

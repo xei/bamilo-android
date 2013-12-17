@@ -606,7 +606,7 @@ public class SessionRegisterFragment extends BaseFragment {
                 List<String> errorMessages = event.errorMessages.get(RestConstants.JSON_ERROR_TAG);
                 if (errorMessages != null
                         && errorMessages.contains(Errors.CODE_REGISTER_CUSTOMEREXISTS)) {
-                    ((BaseActivity) getActivity()).showContentContainer();
+                    ((BaseActivity) getActivity()).showContentContainer(false);
                     dialog = DialogGenericFragment.newInstance(true, true, false,
                             getString(R.string.error_register_title),
                             getString(R.string.error_register_alreadyexists),

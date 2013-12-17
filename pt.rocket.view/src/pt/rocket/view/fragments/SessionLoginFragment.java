@@ -256,7 +256,7 @@ public class SessionLoginFragment extends BaseFragment {
      */
     private void onSessionStateChange(Session session, SessionState state, Exception exception) {
         if (state.isOpened()) {
-            ((BaseActivity) getActivity()).showLoading();
+            ((BaseActivity) getActivity()).showLoading(false);
             // make request to the /me API
             Request request = Request.newMeRequest(
                     session,
@@ -487,7 +487,7 @@ public class SessionLoginFragment extends BaseFragment {
 
                             @Override
                             public void onClick(View v) {
-                                ((BaseActivity) getActivity()).showLoading();
+                                ((BaseActivity) getActivity()).showLoading(false);
                                 EventManager.getSingleton().triggerRequestEvent(event.request);
                                 dialog.dismiss();
                             }
@@ -569,7 +569,7 @@ public class SessionLoginFragment extends BaseFragment {
                     if (errorMessages != null && (errorMessages.contains(Errors.CODE_LOGIN_FAILED) || errorMessages.contains(Errors.CODE_LOGIN_CHECK_PASSWORD))) {
                         
                         if(getActivity() != null)
-                            ((BaseActivity) getActivity()).showContentContainer();
+                            ((BaseActivity) getActivity()).showContentContainer(false);
                         
                         dialog = DialogGenericFragment.newInstance(true, true, false,
                                 getString(R.string.error_login_title),

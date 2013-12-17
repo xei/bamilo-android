@@ -666,7 +666,7 @@ public class CatalogPageModel implements ResponseListener {
     private void processError(ResponseEvent event) {
         if (event.errorCode != null && pageNumber == 1) {
             showProductsNotfound();
-            ((BaseActivity) mActivity).showContentContainer();
+            ((BaseActivity) mActivity).showContentContainer(false);
         } else {
             Log.d(TAG, "onErrorEvent: loading more products failed");
             hideProductsLoading();

@@ -280,7 +280,7 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
                 if (errorMessages == null) {
                     return false;
                 }
-                ((BaseActivity) getActivity()).showContentContainer();
+                ((BaseActivity) getActivity()).showContentContainer(false);
                 Map<String, ? extends List<String>> messages = event.errorMessages;
                 List<String> validateMessages = messages.get(RestConstants.JSON_VALIDATE_TAG);
                 if (validateMessages == null || validateMessages.isEmpty()) {
@@ -294,7 +294,7 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
 
                 errorMessage = validateMessages.get(0);
                 displayErrorHint(errorMessage);
-                ((BaseActivity) getActivity()).showContentContainer();
+                ((BaseActivity) getActivity()).showContentContainer(false);
                 return true;
 
             }

@@ -431,7 +431,7 @@ public class SearchFragment extends BaseFragment implements OnItemClickListener 
         
         if(event.errorCode == ErrorCode.REQUEST_ERROR) {
             setEmptySuggestions( R.string.searchsuggestions_empty);
-            ((BaseActivity) getActivity()).showContentContainer();
+            ((BaseActivity) getActivity()).showContentContainer(false);
             return true;
         }
         return super.onErrorEvent(event);

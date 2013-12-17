@@ -266,7 +266,7 @@ public abstract class BaseFragment extends Fragment implements ResponseListener,
         //    activity = mainActivity;
         
         if ( null != activity) {
-            activity.showLoading();
+            activity.showLoading(false);
             activity.onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         } else {
             Log.w(TAG, "RESTART ALL FRAGMENTS - ERROR : Activity is NULL");
@@ -352,7 +352,7 @@ public abstract class BaseFragment extends Fragment implements ResponseListener,
     }
 
     protected final void triggerContentEvent(RequestEvent event) {
-        ((BaseActivity) getActivity()).showLoading();
+        ((BaseActivity) getActivity()).showLoading(false);
         EventManager.getSingleton().triggerRequestEvent(event);
     }
 
@@ -388,7 +388,7 @@ public abstract class BaseFragment extends Fragment implements ResponseListener,
                 boolean showContent = onSuccessEvent((ResponseResultEvent<?>) event);
                 try {
                     if (showContent) {
-                        ((BaseActivity) getActivity()).showContentContainer();
+                        ((BaseActivity) getActivity()).showContentContainer(false);
                     }
                     ((BaseActivity) getActivity()).showWarning(event.warning != null);
                 } catch (Exception e) {
@@ -452,7 +452,7 @@ public abstract class BaseFragment extends Fragment implements ResponseListener,
                 if (contentEvents.contains(event.type)) {
                     ((BaseActivity) getActivity()).showError(event.request);
                 } else if (userEvents.contains(event.type)) {
-                    ((BaseActivity) getActivity()).showContentContainer();
+                    ((BaseActivity) getActivity()).showContentContainer(false);
                     
                     // Remove dialog if exist
                     if (dialog != null){
@@ -504,7 +504,7 @@ public abstract class BaseFragment extends Fragment implements ResponseListener,
                 if (dialogMsg.equals("")) {
                     dialogMsg = getString(R.string.validation_errortext);
                 }
-                ((BaseActivity) getActivity()).showContentContainer();
+                ((BaseActivity) getActivity()).showContentContainer(false);
 
                 // Remove dialog if exist
                 if (dialog != null){
@@ -589,7 +589,7 @@ public abstract class BaseFragment extends Fragment implements ResponseListener,
         }
         else{
             Log.i("TAG","ENTERED HERE");
-            ((BaseActivity) getActivity()).showContentContainer();
+            ((BaseActivity) getActivity()).showContentContainer(false);
             return;
         }
 

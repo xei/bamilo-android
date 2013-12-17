@@ -877,7 +877,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     }
 	
 	protected final void triggerContentEvent(RequestEvent event) {
-	    showLoading();
+	    showLoading(false);
 	    EventManager.getSingleton().triggerRequestEvent(event);
 	}
 		
@@ -922,12 +922,6 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
 	    }
 	}
 	
-	public void showLoading() {
-        setVisibility(errorView, false);
-        setVisibility(contentContainer, false);
-        showLoadingInfo();
-    }
-
     public void showError(final RequestEvent event) {
         showError(new OnClickListener() {
 
@@ -936,24 +930,37 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
                 showWarning(false);
                 triggerContentEvent(event);
             }
-        });
+        }, false);
     }
 
-    protected void showError(OnClickListener clickListener) {
+    public void showLoading(boolean fromCheckout) {
+        setVisibility(errorView, false);
+        if(!fromCheckout){
+            setVisibility(contentContainer, false);
+        }
+            
+        showLoadingInfo();
+    }
+    
+    protected void showError(OnClickListener clickListener, boolean fromCheckout) {
         Log.d(getTag(), "Showing error view");
         hideLoadingInfo();
-        setVisibility(contentContainer, false);
+        if(!fromCheckout){
+            setVisibility(contentContainer, false);
+        }
         setVisibility(errorView, true);
         errorView.setOnClickListener(clickListener);
     }
 
-    public final void showContentContainer() {
+    public final void showContentContainer(boolean fromCheckout) {
         if(processShow){
             Log.d(getTag(), "Showing the content container");
             hideLoadingInfo();
             dismissProgress();
             setVisibility(errorView, false);
-            setVisibility(contentContainer, true);    
+            if(!fromCheckout){
+                setVisibility(contentContainer, true);
+            }
         }
     }
 		
@@ -1095,7 +1102,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
             if (contentEvents.contains(event.type) || userEvents.contains(event.type)) {
                 boolean showContent = onSuccessEvent((ResponseResultEvent<?>) event);
                 if (showContent) {
-                    showContentContainer();
+                    showContentContainer(false);
                 }
                 showWarning(event.warning != null);
             }
@@ -1157,7 +1164,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
             if (contentEvents.contains(event.type)) {
                 showError(event.request);
             } else if (userEvents.contains(event.type)) {
-                showContentContainer();
+                showContentContainer(false);
                 dialog = DialogGenericFragment.createNoNetworkDialog(BaseActivity.this,
                         new OnClickListener() {
 
@@ -1195,7 +1202,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
             if (dialogMsg.equals("")) {
                 dialogMsg = getString(R.string.validation_errortext);
             }
-            showContentContainer();
+            showContentContainer(false);
             dialog = DialogGenericFragment.newInstance(
                     true, true, false, getString(R.string.validation_title),
                     dialogMsg, getResources().getString(R.string.ok_label), "",
@@ -1215,7 +1222,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
             dialog.show(getSupportFragmentManager(), null);
             return;
         } else if (!event.getSuccess()) {
-            showContentContainer();
+            showContentContainer(false);
             dialog = DialogGenericFragment.createServerErrorDialog(BaseActivity.this, new OnClickListener() {
 
                 @Override
@@ -1323,7 +1330,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
      * @author sergiopereira
      */
     public void fragmentManagerTransition(int container, Fragment fragment, String tag, Boolean addToBackStack) {
-        showContentContainer();
+        showContentContainer(false);
         fragmentController.startTransition(this, container, fragment, tag, addToBackStack);
     }
     
@@ -1332,7 +1339,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
      * @author sergiopereira
      */
     public void fragmentManagerBackPressed(){
-        showContentContainer();
+        showContentContainer(false);
         fragmentController.fragmentBackPressed(this);
     }
     

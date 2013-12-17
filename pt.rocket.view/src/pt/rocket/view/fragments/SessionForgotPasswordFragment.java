@@ -293,7 +293,7 @@ public class SessionForgotPasswordFragment extends BaseFragment {
             List<String> errorMessages = event.errorMessages.get(RestConstants.JSON_ERROR_TAG);
             if (errorMessages != null
                     && errorMessages.contains(Errors.CODE_FORGOTPW_NOSUCH_CUSTOMER)) {
-                ((BaseActivity) getActivity()).showContentContainer();
+                ((BaseActivity) getActivity()).showContentContainer(false);
                 dialog = DialogGenericFragment.newInstance(true, true, false,
                         getString(R.string.error_forgotpassword_title),
                         getString(R.string.error_forgotpassword_text),

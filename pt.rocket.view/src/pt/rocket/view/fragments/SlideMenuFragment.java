@@ -7,11 +7,13 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumSet;
-import pt.rocket.controllers.fragments.FragmentType;
+
+import org.holoeverywhere.widget.TextView;
+
 import pt.rocket.constants.ConstantsIntentExtra;
-import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.controllers.LogOut;
 import pt.rocket.controllers.fragments.FragmentController;
+import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.components.NavigationListComponent;
 import pt.rocket.framework.event.EventManager;
 import pt.rocket.framework.event.EventType;
@@ -33,8 +35,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import org.holoeverywhere.widget.TextView;
 
 import com.slidingmenu.lib.SlidingMenu;
 
@@ -103,11 +103,11 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-        inflater = LayoutInflater.from(getActivity());
-
+        
         // Retain this fragment across configuration changes.
         setRetainInstance(true);
-
+        
+        inflater = LayoutInflater.from(getActivity());
     }
 
     /*
@@ -324,10 +324,10 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
         // Header component
         inflater.inflate(R.layout.navigation_header_component, navigationContainer, true);
 
-        // Static container
-        inflater.inflate(R.layout.navigation_static_container, navigationContainer, true);
-        ViewGroup staticContainer = (ViewGroup) navigationContainer
-                .findViewById(R.id.slide_menu_static_container);
+//        // Static container
+//        inflater.inflate(R.layout.navigation_static_container, navigationContainer, true);
+//        ViewGroup staticContainer = (ViewGroup) navigationContainer
+//                .findViewById(R.id.slide_menu_static_container);
 
         // Scrollable container
         inflater.inflate(R.layout.navigation_scrollable_container, navigationContainer, true);
@@ -337,8 +337,8 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
         for (NavigationListComponent component : components) {
             // Basket
             ViewGroup viewGroup = scrollableContainer;
-            if (component.getElementId() == 7 && component.getElementText().equals("Basket"))
-                viewGroup = staticContainer;
+            //if (component.getElementId() == 7 && component.getElementText().equals("Basket"))
+                //viewGroup = staticContainer;
             // Others
             View actionElementLayout = getActionElementLayout(component, viewGroup);
             if (actionElementLayout != null)

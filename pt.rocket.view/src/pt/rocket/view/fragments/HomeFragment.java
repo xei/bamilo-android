@@ -294,7 +294,7 @@ public class HomeFragment extends BaseFragment {
         configureLayout();
         // }
         ((BaseActivity) getActivity()).setProcessShow(true);
-        ((BaseActivity) getActivity()).showContentContainer();
+        ((BaseActivity) getActivity()).showContentContainer(false);
     }
 
     private class ChangePageTask extends AsyncTask<Integer, String, Boolean> {
@@ -438,7 +438,7 @@ public class HomeFragment extends BaseFragment {
         }
         getView().findViewById(R.id.fallback_best).setSelected(true);
         ((BaseActivity) getActivity()).setProcessShow(true);
-        ((BaseActivity) getActivity()).showContentContainer();
+        ((BaseActivity) getActivity()).showContentContainer(false);
     }
 
     private void proccessResult(Collection<? extends Homepage> result) {
