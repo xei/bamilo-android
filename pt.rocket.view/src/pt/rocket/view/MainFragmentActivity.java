@@ -223,12 +223,10 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             fragment = SearchFragment.getInstance();
             break;
         case PRODUCT_LIST:
-//            fragment = ProductsViewFragment.getInstance();
             fragment = Catalog.getInstance();
             break;
         case PRODUCT_DETAILS:
-            fragment = ProductDetailsActivityFragment.getInstance();
-//            fragment = ProductDetailsFragment.getInstance();
+            fragment = ProductDetailsActivityFragment.getInstance(bundle);
             break;
         case PRODUCT_DESCRIPTION:
             fragment = ProductDetailsDescriptionFragment.getInstance();

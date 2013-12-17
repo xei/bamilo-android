@@ -43,7 +43,7 @@ public final class ShopSelector {
 	 * @param context
 	 * @param shopId
 	 */
-	public static void init(Context context, int shopId) {
+	public static void init(Context context, int shopId, boolean isChangeShop) {
 		setLocale(
 				context,
 				context.getResources().getStringArray(R.array.language_codes)[shopId]);
@@ -55,7 +55,10 @@ public final class ShopSelector {
 		MixpanelTracker.startup(context, shopId);
 		MixpanelTracker.launch(context);
 		AdXTracker.startup(context);
-		AdXTracker.launch(context);
+		if(!isChangeShop){
+			AdXTracker.launch(context);	
+		}
+		
 		sShopId = shopId;
 		sShopName = context.getResources().getStringArray( R.array.shop_names)[sShopId];
 		sCountryName = context.getResources().getStringArray( R.array.country_names)[sShopId];

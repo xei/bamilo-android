@@ -248,6 +248,9 @@ public class CategoriesContainerFragment extends BaseFragment {
     
     @Override
     public boolean allowBackPressed() {
+        if(getActivity() == null){
+            return false;
+        }
         if(!((BaseActivity) getActivity()).isTabletInLandscape()){
             if(currentFragment == FragmentType.CATEGORIES_LEVEL_3){
                 currentFragment = FragmentType.CATEGORIES_LEVEL_2;

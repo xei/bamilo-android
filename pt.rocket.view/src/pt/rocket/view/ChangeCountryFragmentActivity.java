@@ -33,6 +33,7 @@ public class ChangeCountryFragmentActivity extends BaseActivity {
     private final String TAG = LogTagHelper.create(ChangeCountryFragmentActivity.class);
     
     public static String KEY_COUNTRY = "country";
+    public static String KEY_COUNTRY_CHANGED= "country_changed";
 
     /*
      * (non-Javadoc)

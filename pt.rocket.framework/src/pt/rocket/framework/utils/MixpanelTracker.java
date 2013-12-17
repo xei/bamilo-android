@@ -323,7 +323,7 @@ public class MixpanelTracker {
 	}
 	
 
-	public static void product(Context context, CompleteProduct product) {
+	public static void product(Context context, CompleteProduct product, String category) {
 		if (!isEnabled)
 			return;
 		
@@ -335,7 +335,7 @@ public class MixpanelTracker {
 		setProperty(context.getString(R.string.mixprop_itemid), product.getSku());
 		setProperty(context.getString(R.string.mixprop_itemname), product.getName());
 		setProperty(context.getString(R.string.mixprop_itembrand), product.getBrand());
-		setProperty(context.getString(R.string.mixprop_itemcategory), product.getCategories().size() > 0 ? product.getCategories().get(0) : "" );
+		setProperty(context.getString(R.string.mixprop_itemcategory), category != null ? category : "" );
 		setProperty(context.getString(R.string.mixprop_itemsubcategory), "");
 		setProperty(context.getString(R.string.mixprop_itemprice), getPriceRange(product.getPriceAsDouble()) );
 		

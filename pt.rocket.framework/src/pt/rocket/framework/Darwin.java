@@ -89,7 +89,7 @@ public class Darwin {
 	 * @return return true is Darwin is initializes and false if it is already
 	 *         intialized
 	 */
-	public static boolean initialize(DarwinMode mode, Context ctx, int shopId) {
+	public static boolean initialize(DarwinMode mode, Context ctx, int shopId, boolean isChangeShop) {
 		Log.d(TAG, "Initializing Darwin with id " + shopId);
 		context = ctx.getApplicationContext();
 		if (SHOP_ID == shopId) {
@@ -103,7 +103,7 @@ public class Darwin {
 		DarwinDatabaseHelper.init(context);
 		
 		retrieveVersionCode();
-		ShopSelector.init(context, shopId);
+		ShopSelector.init(context, shopId, isChangeShop);
 		RestServiceHelper.init(context);
 		RestClientSingleton.init(context);
 		// Clear Login Data

@@ -36,10 +36,11 @@ public class DarwinComponent extends ApplicationComponent {
         
         SharedPreferences sharedPrefs = app.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         int shopId = sharedPrefs.getInt(ChangeCountryFragmentActivity.KEY_COUNTRY, -1);
+        boolean isChangeShop = sharedPrefs.getBoolean(ChangeCountryFragmentActivity.KEY_COUNTRY_CHANGED, false);
         if (shopId == -1) {
             return ErrorCode.REQUIRES_USER_INTERACTION;
         }
-        if (Darwin.initialize(DarwinMode.DEBUG, app.getApplicationContext(), shopId)) {
+        if (Darwin.initialize(DarwinMode.DEBUG, app.getApplicationContext(), shopId, isChangeShop)) {
             return ErrorCode.NO_ERROR;
         }
         return ErrorCode.UNKNOWN_ERROR;

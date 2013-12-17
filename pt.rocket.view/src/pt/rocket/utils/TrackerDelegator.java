@@ -100,8 +100,8 @@ public class TrackerDelegator {
         MixpanelTracker.setPushNotification(context, enabled);
     }
 
-    public final static void trackProduct(Context context, CompleteProduct product) {
-        MixpanelTracker.product(context, product);
+    public final static void trackProduct(Context context, CompleteProduct product, String category) {
+        MixpanelTracker.product(context, product, category);
     }
 
     public final static void trackProductAddedToCart(Context context, CompleteProduct product, ProductSimple simple, Double price, String location) {

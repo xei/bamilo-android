@@ -51,6 +51,8 @@ public class ChangeCountryFragment extends BaseFragment {
     private int selected = SHOP_NOT_SELECTED;
     
     private CountryAdapter countryAdapter;
+    
+    private boolean isChangeCountry;
 
     /**
      * Get instance
@@ -119,7 +121,9 @@ public class ChangeCountryFragment extends BaseFragment {
         Log.i(TAG, "ON START");
         SharedPreferences sharedPrefs = context.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         selected = sharedPrefs.getInt(ChangeCountryFragmentActivity.KEY_COUNTRY, SHOP_NOT_SELECTED);
+        isChangeCountry = true;
         if(selected == SHOP_NOT_SELECTED){
+            isChangeCountry = false;
             ((BaseActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(false);
         }
         setList();
@@ -246,6 +250,7 @@ public class ChangeCountryFragment extends BaseFragment {
         SharedPreferences sharedPrefs = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putInt(ChangeCountryFragmentActivity.KEY_COUNTRY, position);
+        editor.putBoolean(ChangeCountryFragmentActivity.KEY_COUNTRY_CHANGED, isChangeCountry);
         editor.putBoolean(ConstantsSharedPrefs.KEY_SHOW_PROMOTIONS, true);
         editor.commit();
         TrackerDelegator.trackShopchanged(getActivity().getApplicationContext());

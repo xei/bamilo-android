@@ -32,6 +32,7 @@ import pt.rocket.framework.utils.LoadingBarView;
 import pt.rocket.framework.utils.ProductSort;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.view.BaseActivity;
+import pt.rocket.view.ProductDetailsActivityFragment;
 import pt.rocket.view.R;
 
 import android.app.Activity;
@@ -298,6 +299,8 @@ public class CatalogPageModel implements ResponseListener {
                             ((Product) productsAdapter.getItem(activePosition)).getUrl());
                     bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, navigationSource);
                     bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, navigationPath);
+                    if(title != null)
+                        bundle.putString(ProductDetailsActivityFragment.PRODUCT_CATEGORY, title);
                     ((BaseActivity) mActivity).onSwitchFragment(FragmentType.PRODUCT_DETAILS,
                             bundle, FragmentController.ADD_TO_BACK_STACK);
                 }
@@ -307,7 +310,8 @@ public class CatalogPageModel implements ResponseListener {
 
     }
 
-    public void setListView(ListView listView) {        this.listView = listView;
+    public void setListView(ListView listView) {        
+        this.listView = listView;
         this.setLandScape(false);
         this.listView.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
@@ -326,10 +330,11 @@ public class CatalogPageModel implements ResponseListener {
                             ((Product) productsAdapter.getItem(activePosition)).getUrl());
                     bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, navigationSource);
                     bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, navigationPath);
+                    if(title != null)
+                        bundle.putString(ProductDetailsActivityFragment.PRODUCT_CATEGORY, title);
                     ((BaseActivity) mActivity).onSwitchFragment(FragmentType.PRODUCT_DETAILS,
                             bundle, FragmentController.ADD_TO_BACK_STACK);
                 }
-
             }
         });
     }

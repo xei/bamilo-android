@@ -217,7 +217,7 @@ public class ProductsListAdapter extends BaseAdapter {
             imageURL = product.getImages().get(0).getUrl();
         }
 
-        prodItem.progress.setVisibility(View.GONE);
+        aq.id(prodItem.progress).visibility(View.GONE);
         aq.id(prodItem.image).image(imageURL, true, true, 0, 0, null, AQuery.FADE_IN_NETWORK);
         // ImageLoader.getInstance().displayImage(imageURL, prodItem.image,
         // new SimpleImageLoadingListener() {

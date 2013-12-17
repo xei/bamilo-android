@@ -22,6 +22,7 @@ import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.DialogGeneric;
 import pt.rocket.utils.HockeyStartup;
 import pt.rocket.utils.JumiaApplication;
+import pt.rocket.utils.TrackerDelegator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -173,6 +174,7 @@ public class SplashScreenActivity extends Activity implements ResponseListener {
             bundle.putString(ConstantsIntentExtra.CONTENT_URL, productUrl);
             bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gpush_prefix);
             bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
+            
             // Create intent with fragment type and bundle
             Intent intent = new Intent(this, MainFragmentActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); 
@@ -180,6 +182,7 @@ public class SplashScreenActivity extends Activity implements ResponseListener {
             intent.putExtra(ConstantsIntentExtra.FRAGMENT_BUNDLE, bundle);
             // Start activity
             startActivity(intent);
+            TrackerDelegator.trackPushNotificationsEnabled(getApplicationContext(), true);
         } else {
             // Default Start
             Intent intent = new Intent(this, MainFragmentActivity.class);

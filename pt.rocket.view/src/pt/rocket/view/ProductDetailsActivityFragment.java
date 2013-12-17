@@ -164,16 +164,21 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
     public final static String PRODUCT_COMPLETE = "complete_product";
     public final static String BASIC_INFO_UPDATE = "update";
     public final static String VARIATIONS_UPDATE = "update";
+    public final static String PRODUCT_CATEGORY = "product_category";
     
     private static View mainView;
-
+    
+    private static String category = "";
     public ProductDetailsActivityFragment() {
         super(EnumSet.of(EventType.GET_PRODUCT_EVENT), EnumSet
                 .of(EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT), EnumSet.of(MyMenuItem.SHARE),
                 NavigationAction.Products, 0);
     }
 
-    public static ProductDetailsActivityFragment getInstance() {
+    public static ProductDetailsActivityFragment getInstance(Bundle bundle) {
+        if(bundle.containsKey(PRODUCT_CATEGORY)){
+            category = bundle.getString(PRODUCT_CATEGORY, "");
+        }
         return new ProductDetailsActivityFragment();
     }
 
@@ -771,7 +776,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
         AnalyticsGoogle.get().trackProduct(mNavigationSource, mNavigationPath,
                 mCompleteProduct.getBrand() + " " + mCompleteProduct.getName(),
                 mCompleteProduct.getSku(), mCompleteProduct.getUrl());
-        TrackerDelegator.trackProduct(getActivity(), mCompleteProduct);
+        TrackerDelegator.trackProduct(getActivity(), mCompleteProduct, category);
     }
 
     private void displayGallery(CompleteProduct product) {
