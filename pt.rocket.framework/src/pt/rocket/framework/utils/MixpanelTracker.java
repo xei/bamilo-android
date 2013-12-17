@@ -293,6 +293,7 @@ public class MixpanelTracker {
 			
 			people.set(context.getString(R.string.mixproppeople_itemscategory), category);
 			people.set(context.getString(R.string.mixproppeople_transations), cartValue);
+			people.trackCharge(Double.parseDouble(cartValue), null);
 		}
         
 		props = null;

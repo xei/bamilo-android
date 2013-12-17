@@ -511,7 +511,7 @@ public class CheckoutWebFragment extends BaseFragment {
                     bundle.putString(ConstantsIntentExtra.SUCESS_INFORMATION, content);
                     bundle.putString(ConstantsIntentExtra.CUSTOMER_EMAIL, (customer != null ) ? customer.getEmail() : ""); 
 					String order_number = result.optString("orderNr");
-                    
+                    String grandTotal = result.optString("grandTotal");
 					bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR, order_number);                   
 					((BaseActivity) getActivity()).onSwitchFragment(FragmentType.CHECKOUT_THANKS, bundle, FragmentController.ADD_TO_BACK_STACK);
                 }
