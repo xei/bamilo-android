@@ -50,7 +50,7 @@ public class TrackerDelegator {
             mOrigin = origin;
         }
         
-        if(mOrigin == null || mOrigin.isEmpty()){
+        if(mOrigin == null || mOrigin.length() == 0){
             mOrigin = context.getString(R.string.mixprop_loginlocationsidemenu);
         }
         

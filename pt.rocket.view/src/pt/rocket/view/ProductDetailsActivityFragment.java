@@ -177,7 +177,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
 
     public static ProductDetailsActivityFragment getInstance(Bundle bundle) {
         if(bundle.containsKey(PRODUCT_CATEGORY)){
-            category = bundle.getString(PRODUCT_CATEGORY, "");
+            category = bundle.getString(PRODUCT_CATEGORY);
         }
         return new ProductDetailsActivityFragment();
     }
