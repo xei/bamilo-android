@@ -75,32 +75,6 @@ public class Category implements IJSONSerializable {
     }
 
     /**
-     * Category constructor with parameters.
-     * @param id
-     * @param name
-     * @param lft
-     * @param rgt
-     * @param urlKey
-     * @param segments
-     * @param infoUrl
-     * @param apiUrl
-     * @param children
-     * @param parent
-     */
-    public Category(String id, String name, String lft, String rgt, String urlKey, String segments, String infoUrl, String apiUrl, ArrayList<Category> children, Category parent) {
-        this.id = id;
-        this.name = name;
-        this.lft = lft;
-        this.rgt = rgt;
-        this.urlKey = urlKey;
-        this.segments = segments;
-        this.infoUrl = infoUrl;
-        this.apiUrl = apiUrl;
-        this.children = children;
-        this.parent = parent;
-    }
-    
-    /**
      * Category constructor
      * 
      * @param id
@@ -231,12 +205,6 @@ public class Category implements IJSONSerializable {
         return parent;
     }
 
-
-
-    public void setChildren(ArrayList<Category> children ) {
-        this.children = children;
-    }
-    
     /*
      * (non-Javadoc)
      * 

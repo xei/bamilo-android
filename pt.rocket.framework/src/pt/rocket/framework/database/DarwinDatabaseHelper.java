@@ -18,8 +18,6 @@ public class DarwinDatabaseHelper extends SQLiteOpenHelper {
     private static final String SQL_CREATE_MAIN = ImageResolutionTableHelper.CREATE;
     
     private static final String SQL_DROP_MAIN = "DROP TABLE IF EXISTS " + ImageResolutionTableHelper._NAME;
-    
-    private static final String SQL_DROP_TABLE = "DROP TABLE IF EXISTS ";
 
 	private static DarwinDatabaseHelper db;
 
@@ -55,8 +53,6 @@ public class DarwinDatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_MAIN);
-        db.execSQL(SectionsTablesHelper.CREATE);
-        db.execSQL(CategoriesTableHelper.CREATE);
     }
 
     /* (non-Javadoc)
@@ -66,8 +62,6 @@ public class DarwinDatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     	// Drop older table if existed
         db.execSQL(SQL_DROP_MAIN);
-        db.execSQL(SQL_DROP_TABLE + CategoriesTableHelper.TABLE);
-        db.execSQL(SQL_DROP_TABLE + SectionsTablesHelper.TABLE);
         // Create tables again
         onCreate(db);
     }

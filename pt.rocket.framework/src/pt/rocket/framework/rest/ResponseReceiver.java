@@ -94,7 +94,6 @@ public abstract class ResponseReceiver<T> extends ResultReceiver {
 		}
 	}
 
-	protected boolean ignoreTrigger = false;
 	private void parseResponse(String result, String warning, Bundle resultData) throws JSONException {
 		JSONObject jsonObject = new JSONObject(result);
 
@@ -114,12 +113,9 @@ public abstract class ResponseReceiver<T> extends ResultReceiver {
 			}
 			T responseData = parseResponse(metadataObject);
 			Log.d( TAG, "resultData location = " + resultData.getString(IMetaData.LOCATION));
-			
-			if(!ignoreTrigger){
 			EventManager.getSingleton().triggerResponseEvent(
 					new ResponseResultEvent<T>(requestEvent, responseData,
 							warning, resultData));
-			}
 		} else {
 			onRequestError(jsonObject, resultData);
 		}
