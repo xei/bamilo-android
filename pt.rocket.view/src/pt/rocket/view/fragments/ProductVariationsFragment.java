@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 
 import pt.rocket.constants.ConstantsIntentExtra;
+import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.ProductImagesAdapter;
 import pt.rocket.framework.event.EventType;
 import pt.rocket.framework.event.ResponseEvent;
@@ -20,6 +21,9 @@ import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.FragmentCommunicator;
 import pt.rocket.view.ProductDetailsActivityFragment;
 import pt.rocket.view.R;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,6 +48,8 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
     private ProductImagesAdapter mAdapter;
     private int mVariationsListPosition = -1;
     private View mainView;
+
+    private SharedPreferences sharedPreferences;
 
     /**
      * 
@@ -99,6 +105,8 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
+        sharedPreferences = getActivity().getSharedPreferences(
+                ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
     }
 
     /*
@@ -225,9 +233,12 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
         if (mVariationsListPosition != position) {
             mVariationsListPosition = position;
+            Editor eD = sharedPreferences.edit();
+            eD.putInt(ProductDetailsActivityFragment.VARIATION_LIST_POSITION, mVariationsListPosition);
+            eD.commit();
             Bundle bundle = new Bundle();
             bundle.putInt(ProductDetailsActivityFragment.LOADING_PRODUCT_KEY, position);
-            bundle.putInt(ConstantsIntentExtra.CURRENT_LISTPOSITION, mVariationsListPosition);
+            bundle.putInt(ConstantsIntentExtra.VARIATION_LISTPOSITION, mVariationsListPosition);
             FragmentCommunicator.getInstance().notifyTarget(this, bundle, 0);
 
             // mCallback.onFragmentElementSelected(position);
@@ -266,8 +277,8 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
-        if(bundle.containsKey(ConstantsIntentExtra.CURRENT_LISTPOSITION)){
-            mVariationsListPosition = bundle.getInt(ConstantsIntentExtra.CURRENT_LISTPOSITION);
+        if(bundle.containsKey(ConstantsIntentExtra.VARIATION_LISTPOSITION)){
+            mVariationsListPosition = bundle.getInt(ConstantsIntentExtra.VARIATION_LISTPOSITION);
         }
         Log.i(TAG, "on notifyFragment : " + mCompleteProduct != null ? "not null" : "null");
         displayVariations();

@@ -34,6 +34,7 @@ public class ConstantsIntentExtra {
 
     public static final String PRODUCT_URL                  = mPackage + "ProductUrl";
     public static final String CURRENT_LISTPOSITION         = mPackage + "CurrentListPosition";
+    public static final String VARIATION_LISTPOSITION       = mPackage + "VariationListPosition";
     public static final String IS_ZOOM_AVAILABLE            = mPackage + "ZoomAvailable";
     public static final String SHOW_HORIZONTAL_LIST_VIEW    = mPackage + "ShowHorizontalListView";
     
@@ -65,6 +66,7 @@ public class ConstantsIntentExtra {
     // ########### Home ##############
     public static final String FRAGMENT_TYPE                = mPackage + "FragmentType";
     public static final String FRAGMENT_INITIAL_COUNTRY     = mPackage + "FragmentInitialCountry";
+    public static final String FRAGMENT_FROM_WEBCHECKOU     = mPackage + "FragmentFromWebCheckout";
     public static final String FRAGMENT_BUNDLE              = mPackage + "FragmentBundle";
 
     // ########### Login ##############

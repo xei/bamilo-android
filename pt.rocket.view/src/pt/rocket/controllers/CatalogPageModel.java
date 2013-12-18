@@ -68,7 +68,7 @@ public class CatalogPageModel implements ResponseListener {
     private ProductSort sort = ProductSort.NONE;
     private Direction dir = Direction.ASCENDENT;
 
-    private int MAX_PAGE_ITEMS = 15;
+    private int MAX_PAGE_ITEMS = 14;
     private int NO_MORE_PAGES = -1;
 
     private int index;

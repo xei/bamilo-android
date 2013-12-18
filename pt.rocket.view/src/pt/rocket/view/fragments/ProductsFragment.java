@@ -89,7 +89,7 @@ public class ProductsFragment extends BaseFragment implements
     private int currentOrientation = Configuration.ORIENTATION_PORTRAIT;
     private View loadingLayout;
 
-    private int MAX_PAGE_ITEMS = 15;
+    private int MAX_PAGE_ITEMS = 14;
     private int NO_MORE_PAGES = -1;
 
     private static boolean isLoadingMore = false;

@@ -187,7 +187,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         this.allHandledEvents.addAll(contentEvents);
         this.allHandledEvents.addAll(userEvents);
         this.action = action != null ? action : NavigationAction.Unknown;
-        menuItems = enabledMenuItems;
+        this.menuItems = enabledMenuItems;
         this.titleResId = titleResId;
         this.contentLayoutId = contentLayoutId;
         

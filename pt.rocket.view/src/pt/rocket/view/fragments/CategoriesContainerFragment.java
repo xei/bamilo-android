@@ -128,7 +128,7 @@ public class CategoriesContainerFragment extends BaseFragment {
                 EnumSet.noneOf(EventType.class),
                 EnumSet.of(MyMenuItem.SEARCH), 
                 NavigationAction.Categories, 
-                R.string.categories_title);
+                0);
     }
 
     /*

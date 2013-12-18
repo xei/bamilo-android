@@ -218,7 +218,7 @@ public class ProductsListAdapter extends BaseAdapter {
         if (product.getImages().size() > 0) {
             imageURL = product.getImages().get(0).getUrl();
         }
-
+        prodItem.progress.setVisibility(View.VISIBLE);
         
         aq.id(prodItem.image).image(imageURL, true, true, 0, 0, new BitmapAjaxCallback() {
 

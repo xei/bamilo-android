@@ -28,9 +28,4 @@ public class JumiaCatalogViewPager extends ViewPager {
         ImageLoader.getInstance().pause();
         return super.onTouchEvent(event);
     }
-    
-    @Override
-    public void setOffscreenPageLimit(int limit) {
-        super.setOffscreenPageLimit(1);
-    }
 }

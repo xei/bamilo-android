@@ -101,7 +101,7 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
         productImageGalleryFragment.mCompleteProductUrl = bundle
                 .getString(ConstantsIntentExtra.CONTENT_URL);
         productImageGalleryFragment.mVariationsListPosition = bundle.getInt(
-                ConstantsIntentExtra.CURRENT_LISTPOSITION, 1);
+                ConstantsIntentExtra.VARIATION_LISTPOSITION, 1);
         productImageGalleryFragment.currentPosition = bundle.getInt(
                 ConstantsIntentExtra.CURRENT_LISTPOSITION, 1);
         
@@ -407,6 +407,8 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
                 bundle.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProduct.getUrl());
                 bundle.putInt(ConstantsIntentExtra.CURRENT_LISTPOSITION,
                         currentPosition);
+                bundle.putInt(ConstantsIntentExtra.VARIATION_LISTPOSITION,
+                        mVariationsListPosition);
                 bundle.putBoolean(ConstantsIntentExtra.IS_ZOOM_AVAILABLE, true);
                 bundle.putBoolean(ConstantsIntentExtra.SHOW_HORIZONTAL_LIST_VIEW, false);
                 ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.PRODUCT_GALLERY,
@@ -496,7 +498,7 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
         productImageGalleryFragment.mCompleteProductUrl = bundle
                 .getString(ConstantsIntentExtra.CONTENT_URL);
         productImageGalleryFragment.mVariationsListPosition = bundle.getInt(
-                ConstantsIntentExtra.CURRENT_LISTPOSITION, 1);
+                ConstantsIntentExtra.VARIATION_LISTPOSITION, 1);
         
         productImageGalleryFragment.currentPosition = bundle.getInt(
                 ConstantsIntentExtra.CURRENT_LISTPOSITION, 1);

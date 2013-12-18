@@ -115,8 +115,7 @@ public class HomeFragment extends BaseFragment {
 	 */
     public HomeFragment() {
         super(EnumSet.of(EventType.GET_API_INFO, EventType.GET_TEASERS_EVENT,
-                EventType.GET_CALL_TO_ORDER_PHONE, EventType.GET_PROMOTIONS,
-                EventType.GET_NAVIGATION_LIST_COMPONENTS_EVENT),
+                EventType.GET_CALL_TO_ORDER_PHONE, EventType.GET_PROMOTIONS),
                 EnumSet.noneOf(EventType.class), EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.Home, 0);
         // this.setRetainInstance(true);
@@ -177,7 +176,7 @@ public class HomeFragment extends BaseFragment {
 
         if (requestResponse == null) {
             ((BaseActivity) getActivity()).setProcessShow(false);
-            triggerContentEvent(new RequestEvent(EventType.GET_NAVIGATION_LIST_COMPONENTS_EVENT));
+//            triggerContentEvent(new RequestEvent(EventType.GET_NAVIGATION_LIST_COMPONENTS_EVENT));
             triggerContentEvent(new RequestEvent(EventType.GET_TEASERS_EVENT));
             triggerContentEvent(new RequestEvent(EventType.GET_CALL_TO_ORDER_PHONE));
         } else {

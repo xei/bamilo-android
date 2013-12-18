@@ -119,6 +119,8 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
 
     private String mCompleteProductUrl;
 
+    public static String SELECTED_SIMPLE_POSITION = "selected_simple_position";
+    public static String LOAD_FROM_SCRATCH = "load_from_scratch";
     private int mSelectedSimple = NO_SIMPLE_SELECTED;
 
     private ViewGroup mProductRatingContainer;
@@ -154,9 +156,12 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
     private Fragment productSpecificationFragment;
     private Fragment productBasicInfoFragment;
 
+    
+    public static String VARIATION_LIST_POSITION = "variation_list_position";
     private int mVariationsListPosition = -1;
 
     private String mPhone2Call = "";
+    private SharedPreferences sharedPreferences;
     public static String KEY_CALL_TO_ORDER = "call_to_order";
 
     public final static String LOADING_PRODUCT_KEY = "loading_product_key";
@@ -169,6 +174,8 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
     private static View mainView;
     
     private static String category = "";
+    
+    private static ProductDetailsActivityFragment mProductDetailsActivityFragment;
     public ProductDetailsActivityFragment() {
         super(EnumSet.of(EventType.GET_PRODUCT_EVENT), EnumSet
                 .of(EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT), EnumSet.of(MyMenuItem.SHARE),
@@ -176,14 +183,19 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
     }
 
     public static ProductDetailsActivityFragment getInstance(Bundle bundle) {
+        ProductDetailsActivityFragment.mProductDetailsActivityFragment = new ProductDetailsActivityFragment();
         if(bundle.containsKey(PRODUCT_CATEGORY)){
             category = bundle.getString(PRODUCT_CATEGORY);
         }
-        return new ProductDetailsActivityFragment();
+        return ProductDetailsActivityFragment.mProductDetailsActivityFragment;
     }
 
     public void onVariationElementSelected(int position) {
         mVariationsListPosition = position;
+        Editor eD = sharedPreferences.edit();
+        eD.putInt(VARIATION_LIST_POSITION, mVariationsListPosition);
+        eD.putBoolean(LOAD_FROM_SCRATCH, false);
+        eD.commit();
         /**
          * Send LOADING_PRODUCT to show loading views.
          */
@@ -217,16 +229,21 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        sharedPreferences = getActivity().getSharedPreferences(
+                ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        mVariationsListPosition = sharedPreferences.getInt(VARIATION_LIST_POSITION, -1);
+        mSelectedSimple = sharedPreferences.getInt(SELECTED_SIMPLE_POSITION, NO_SIMPLE_SELECTED);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
+        Log.i(TAG, "onCreateView");
         mainView = inflater.inflate(R.layout.productdetailsnew_fragments, container, false);
 
-        mSelectedSimple = NO_SIMPLE_SELECTED;
-        mVariationsListPosition = -1;
+        
+        
+//        mSelectedSimple = NO_SIMPLE_SELECTED;
+//        mVariationsListPosition = -1;
         setAppContentLayout();
         init();
         SharedPreferences sharedPrefs = getActivity().getSharedPreferences(
@@ -262,7 +279,10 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
         
         mNavigationSource = bundle.getInt(ConstantsIntentExtra.NAVIGATION_SOURCE, -1);
         mNavigationPath = bundle.getString(ConstantsIntentExtra.NAVIGATION_PATH);
-        loadProduct();
+        if(sharedPreferences.getBoolean(LOAD_FROM_SCRATCH, true)){
+            loadProduct();
+        }
+        
     }
 
     @Override
@@ -280,7 +300,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
 
     @Override
     public void onDestroy() {
-        mSelectedSimple = NO_SIMPLE_SELECTED;
+//        mSelectedSimple = NO_SIMPLE_SELECTED;
         // unbindDrawables(getView().findViewById(R.id.gallery_container));
         // unbindDrawables(mDetailsContainer);
         // releaseFragments();
@@ -379,11 +399,19 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
 
     private void startFragmentCallbacks() {
         Log.i(TAG, "code1 starting callbacks!!!");
+        CompleteProduct cProduct = null;
+        if(!sharedPreferences.getBoolean(LOAD_FROM_SCRATCH, true)){
+            cProduct = FragmentCommunicator.getInstance().getCurrentProduct();
+        }
         FragmentCommunicator.getInstance().destroyInstance();
         FragmentCommunicator.getInstance().startFragmentsCallBacks(this,
                 productVariationsFragment, productImagesViewPagerFragment,
                 productSpecificationFragment, productBasicInfoFragment);
-        FragmentCommunicator.getInstance().updateCurrentProduct(mCompleteProduct);
+        if(cProduct == null) {
+            FragmentCommunicator.getInstance().updateCurrentProduct(mCompleteProduct);
+        } else {
+            FragmentCommunicator.getInstance().updateCurrentProduct(cProduct);
+        }
 
     }
 
@@ -413,6 +441,9 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
     private void preselectASimpleItem() {
         if (mSelectedSimple != NO_SIMPLE_SELECTED)
             return;
+//        Editor eD = sharedPreferences.edit();
+//        eD.putInt(VARIATION_LIST_POSITION, mVariationsListPosition);
+//        eD.commit();
         ArrayList<ProductSimple> ps = mCompleteProduct.getSimples();
         Set<String> knownVariations = scanSimpleAttributesForKnownVariants(ps);
 
@@ -735,7 +766,8 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
             productVariationsFragment = ProductVariationsFragment.getInstance();
             Bundle args = new Bundle();
             args.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProductUrl);
-            args.putInt(ConstantsIntentExtra.CURRENT_LISTPOSITION, mVariationsListPosition);
+            args.putInt(ConstantsIntentExtra.CURRENT_LISTPOSITION, mSelectedSimple);
+            args.putInt(ConstantsIntentExtra.VARIATION_LISTPOSITION, mVariationsListPosition);
             args.putBoolean(ConstantsIntentExtra.IS_ZOOM_AVAILABLE, false);
             productImagesViewPagerFragment = ProductImageGalleryFragment.getInstance(args);
             if(((BaseActivity) getActivity()).isTabletInLandscape()){
@@ -755,15 +787,17 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
             Bundle bundle = new Bundle();
             bundle.putBoolean(PRODUCT_COMPLETE, true);
             bundle.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProductUrl);
-            bundle.putInt(ConstantsIntentExtra.CURRENT_LISTPOSITION, mVariationsListPosition);
+            bundle.putInt(ConstantsIntentExtra.VARIATION_LISTPOSITION, mVariationsListPosition);
+            bundle.putInt(ConstantsIntentExtra.CURRENT_LISTPOSITION, mSelectedSimple);
             bundle.putBoolean(ConstantsIntentExtra.IS_ZOOM_AVAILABLE, false);
             FragmentCommunicator.getInstance().notifyOthers(0, bundle);
         } else {
-            mSelectedSimple = NO_SIMPLE_SELECTED;
+//            mSelectedSimple = NO_SIMPLE_SELECTED;
             FragmentCommunicator.getInstance().updateCurrentProduct(mCompleteProduct);
             Bundle bundle = new Bundle();
             bundle.putBoolean(PRODUCT_COMPLETE, true);
-            bundle.putInt(ConstantsIntentExtra.CURRENT_LISTPOSITION, mVariationsListPosition);
+            bundle.putInt(ConstantsIntentExtra.VARIATION_LISTPOSITION, mVariationsListPosition);
+            bundle.putInt(ConstantsIntentExtra.CURRENT_LISTPOSITION, mSelectedSimple);
             bundle.putBoolean(ConstantsIntentExtra.IS_ZOOM_AVAILABLE, false);
             FragmentCommunicator.getInstance().notifyOthers(0, bundle);
 
@@ -885,7 +919,8 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
     private void showGallery() {
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProduct.getUrl());
-        bundle.putInt(ConstantsIntentExtra.CURRENT_LISTPOSITION, mVariationsListPosition);
+        bundle.putInt(ConstantsIntentExtra.VARIATION_LISTPOSITION, mVariationsListPosition);
+        bundle.putInt(ConstantsIntentExtra.CURRENT_LISTPOSITION, mSelectedSimple);
         bundle.putBoolean(ConstantsIntentExtra.IS_ZOOM_AVAILABLE, false);
         bundle.putBoolean(ConstantsIntentExtra.SHOW_HORIZONTAL_LIST_VIEW, true);
         ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.PRODUCT_GALLERY, bundle,

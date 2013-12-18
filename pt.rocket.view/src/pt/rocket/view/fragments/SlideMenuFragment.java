@@ -35,6 +35,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.slidingmenu.lib.SlidingMenu;
 
@@ -331,7 +332,7 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
 
         // Scrollable container
         inflater.inflate(R.layout.navigation_scrollable_container, navigationContainer, true);
-        ViewGroup scrollableContainer = (ViewGroup) navigationContainer
+        LinearLayout scrollableContainer = (LinearLayout) navigationContainer
                 .findViewById(R.id.slide_menu_scrollable_container);
 
         for (NavigationListComponent component : components) {
@@ -348,10 +349,10 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
 
     public void refreshPosition() {
         if (navigationContainer != null && (ViewGroup) getView() != null) {
-            if (((ViewGroup) getView().findViewById(R.id.slide_menu_scrollable_container)) != null) {
-                int count = ((ViewGroup) getView().findViewById(
+            if (((LinearLayout) getView().findViewById(R.id.slide_menu_scrollable_container)) != null) {
+                int count = ((LinearLayout) getView().findViewById(
                         R.id.slide_menu_scrollable_container)).getChildCount();
-                ViewGroup vGroup = ((ViewGroup) getView().findViewById(
+                LinearLayout vGroup = ((LinearLayout) getView().findViewById(
                         R.id.slide_menu_scrollable_container));
                 Log.i(TAG, "code1 size is : " + count);
                 for (int i = 0; i < count; i++) {

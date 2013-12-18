@@ -8,6 +8,7 @@ import java.util.List;
 
 import pt.rocket.app.UrbanAirshipComponent;
 import pt.rocket.constants.ConstantsIntentExtra;
+import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.event.EventType;
@@ -38,7 +39,10 @@ import pt.rocket.view.fragments.SessionTermsFragment;
 import pt.rocket.view.fragments.ShoppingCartFragment;
 import pt.rocket.view.fragments.TrackOrderFragment;
 import pt.rocket.view.fragments.WriteReviewFragment;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.preference.PreferenceScreen;
 import de.akquinet.android.androlog.Log;
@@ -226,6 +230,11 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             fragment = Catalog.getInstance();
             break;
         case PRODUCT_DETAILS:
+            SharedPreferences sP = getSharedPreferences(
+                    ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+            Editor eD = sP.edit();
+            eD.putBoolean(ProductDetailsActivityFragment.LOAD_FROM_SCRATCH, true);
+            eD.commit();
             fragment = ProductDetailsActivityFragment.getInstance(bundle);
             break;
         case PRODUCT_DESCRIPTION:
