@@ -29,6 +29,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 
+import com.androidquery.AQuery;
+import com.androidquery.callback.AjaxStatus;
+import com.androidquery.callback.BitmapAjaxCallback;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 import com.viewpagerindicator.IconPagerAdapter;
@@ -301,31 +304,43 @@ public class TeasersFactory {
         }
         
         if (!TextUtils.isEmpty(imageUrl)) {
-            ImageLoader.getInstance().displayImage(imageUrl, imageView,
-                    new SimpleImageLoadingListener() {
+            AQuery aq = new AQuery(mContext);
+            aq.id(imageView).image(imageUrl, true, true, 0, 0, new BitmapAjaxCallback() {
 
-                        /*
-                         * (non-Javadoc)
-                         * 
-                         * @see
-                         * com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener
-                         * #onLoadingComplete(java.lang.String, android.view.View,
-                         * android.graphics.Bitmap)
-                         */
                         @Override
-                        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                        public void callback(String url, ImageView iv, Bitmap bm,
+                                AjaxStatus status) {
+
+                            iv.setImageBitmap(bm);
                             progressBar.setVisibility(View.GONE);
-                            imageView.setScaleType(ScaleType.FIT_XY);
-                            imageView.setVisibility(View.VISIBLE);
-                        }
-                        
-                        @Override
-                        public void onLoadingStarted(String imageUri, View view) {
-                            // TODO Auto-generated method stub
-                            super.onLoadingStarted(imageUri, view);
-                            imageView.setScaleType(ScaleType.FIT_CENTER);
+
                         }
                     });
+//            ImageLoader.getInstance().displayImage(imageUrl, imageView,
+//                    new SimpleImageLoadingListener() {
+//
+//                        /*
+//                         * (non-Javadoc)
+//                         * 
+//                         * @see
+//                         * com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener
+//                         * #onLoadingComplete(java.lang.String, android.view.View,
+//                         * android.graphics.Bitmap)
+//                         */
+//                        @Override
+//                        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+//                            progressBar.setVisibility(View.GONE);
+//                            imageView.setScaleType(ScaleType.FIT_XY);
+//                            imageView.setVisibility(View.VISIBLE);
+//                        }
+//                        
+//                        @Override
+//                        public void onLoadingStarted(String imageUri, View view) {
+//                            // TODO Auto-generated method stub
+//                            super.onLoadingStarted(imageUri, view);
+//                            imageView.setScaleType(ScaleType.FIT_CENTER);
+//                        }
+//                    });
         }
 
     }

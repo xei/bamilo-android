@@ -21,7 +21,8 @@
             <RelativeLayout
                 android:id="@+id/content_container"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content" 
+                android:paddingBottom="10dp">
 
                 <pt.rocket.framework.components.ExpandableGridViewComponent
                     android:id="@+id/shoppingcart_list"

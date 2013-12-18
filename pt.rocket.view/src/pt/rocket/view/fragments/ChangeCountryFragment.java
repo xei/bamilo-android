@@ -16,6 +16,7 @@ import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.ChangeCountryFragmentActivity;
+import pt.rocket.view.MainFragmentActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.Context;
@@ -246,7 +247,8 @@ public class ChangeCountryFragment extends BaseFragment {
 
     protected void setCountry(int position) {
         HomeFragment.requestResponse = null;
-           
+        MainFragmentActivity.currentCategories = null;
+        System.gc();
         SharedPreferences sharedPrefs = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putInt(ChangeCountryFragmentActivity.KEY_COUNTRY, position);

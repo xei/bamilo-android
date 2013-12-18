@@ -353,7 +353,7 @@ public class HomeFragment extends BaseFragment {
             }
 
             // if (mPagerAdapter == null) {
-            mPagerAdapter = new HomeCollectionPagerAdapter(getFragmentManager());
+            mPagerAdapter = new HomeCollectionPagerAdapter(getChildFragmentManager());
             // }
             setLayout(currentPosition);
         } else {
@@ -469,7 +469,7 @@ public class HomeFragment extends BaseFragment {
 
         if (requestResponse != null) {
             // if (mPagerAdapter == null) {
-            mPagerAdapter = new HomeCollectionPagerAdapter(getFragmentManager());
+            mPagerAdapter = new HomeCollectionPagerAdapter(getChildFragmentManager());
             // }
             setLayout(currentPosition);
         } else {

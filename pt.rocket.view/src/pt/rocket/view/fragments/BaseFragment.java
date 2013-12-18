@@ -200,6 +200,10 @@ public abstract class BaseFragment extends Fragment implements ResponseListener,
     @Override
     public void onResume() {
         super.onResume();
+        if(((BaseActivity) getActivity()) != null){
+            ((BaseActivity) getActivity()).showWarning(false);
+            ((BaseActivity) getActivity()).showWarningVariation(false);
+        }
         Log.d(getTag(), "onResume");
     }
 

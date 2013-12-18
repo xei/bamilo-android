@@ -20,6 +20,8 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.androidquery.AQuery;
+import com.androidquery.callback.AjaxStatus;
+import com.androidquery.callback.BitmapAjaxCallback;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
@@ -217,31 +219,18 @@ public class ProductsListAdapter extends BaseAdapter {
             imageURL = product.getImages().get(0).getUrl();
         }
 
-        aq.id(prodItem.progress).visibility(View.GONE);
-        aq.id(prodItem.image).image(imageURL, true, true, 0, 0, null, AQuery.FADE_IN_NETWORK);
-        // ImageLoader.getInstance().displayImage(imageURL, prodItem.image,
-        // new SimpleImageLoadingListener() {
-        //
-        // /*
-        // * (non-Javadoc)
-        // *
-        // * @see com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener
-        // * #onLoadingComplete(java.lang.String, android.view.View,
-        // * android.graphics.Bitmap)
-        // */
-        //
-        // @Override
-        // public void onLoadingComplete(String arg0, View arg1, Bitmap arg2) {
-        // prodItem.progress.setVisibility(View.GONE);
-        // prodItem.image.setVisibility(View.VISIBLE);
-        // }
-        //
-        // @Override
-        // public void onLoadingStarted(String arg0, View arg1) {
-        // prodItem.progress.setVisibility(View.VISIBLE);
-        // }
-        //
-        // });
+        
+        aq.id(prodItem.image).image(imageURL, true, true, 0, 0, new BitmapAjaxCallback() {
+
+            @Override
+            public void callback(String url, ImageView iv, Bitmap bm,
+                    AjaxStatus status) {
+
+                iv.setImageBitmap(bm);
+                prodItem.progress.setVisibility(View.GONE);
+
+            }
+        });
 
         aq.id(prodItem.name).text(product.getBrand() + " " + product.getName());
         aq.id(prodItem.price).text(product.getSuggestedPrice());

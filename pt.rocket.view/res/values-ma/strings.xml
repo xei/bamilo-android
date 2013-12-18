@@ -221,7 +221,7 @@
     <string name="home_tip_text">Faites défiler vers la gauche ou la droite pour changer de catégorie</string>
     <string name="facebook_login_button_text">Connectez-vous via Facebook</string>
     <string name="tip_tap_text">Cliquez pour voir l\'ensemble \ndes images produit</string>
-    <string name="tip_swipe_text">Balayez vers la gauche ou la droite pour \nobserver les différentes couleurs </string>
+    <string name="tip_swipe_text">Balayez vers la gauche ou la droite pour \nobserver les différentes images </string>
     <string name="tip_pinch_text">Ecartez les doigts pour zoomer</string>
     <string name="products_tip_text">Balayez vers la gauche ou la droite \npour changer de filtre</string>
     <string name="go_shop_text">J\'achète</string>
