@@ -183,5 +183,16 @@ public class ImageResolutionTableHelper {
 		// Return
 		return imageResolution;
 	}
+	
+	
+
+	 /**
+	  * Clears the image resolutions table
+	  * 
+	  * @param db
+	  */
+	 public static void clearImageResolutions(SQLiteDatabase db) {
+		 db.delete(_NAME, null, null);
+	 }
     
 }
