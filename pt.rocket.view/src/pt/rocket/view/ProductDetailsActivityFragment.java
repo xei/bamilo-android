@@ -46,6 +46,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.pm.PackageManager;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
@@ -56,6 +57,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -392,9 +394,16 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
         mAddToCartButton = (Button) mainView.findViewById(R.id.shop);
         mAddToCartButton.setSelected(true);
         mAddToCartButton.setOnClickListener(this);
+        
         mCallToOrderButton = (Button) mainView.findViewById(R.id.call_to_order);
-        mCallToOrderButton.setSelected(true);
-        mCallToOrderButton.setOnClickListener(this);
+        PackageManager pm = getActivity().getPackageManager();
+        if(pm.hasSystemFeature(PackageManager.FEATURE_TELEPHONY)){
+            mCallToOrderButton.setSelected(true);
+            mCallToOrderButton.setOnClickListener(this);    
+        } else {
+            mCallToOrderButton.setVisibility(View.GONE);
+        }
+        
     }
 
     private void startFragmentCallbacks() {
