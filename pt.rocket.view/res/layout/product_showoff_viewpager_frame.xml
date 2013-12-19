@@ -8,11 +8,10 @@
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/images_list"
+        android:layout_alignParentBottom="true"
         android:layout_alignWithParentIfMissing="true"
         android:layout_gravity="center_vertical"
-        android:layout_marginBottom="@dimen/margin_large"
-        android:layout_marginTop="@dimen/margin_large" />
+         />
 
     <pt.rocket.utils.HorizontalListView
         android:id="@+id/images_list"

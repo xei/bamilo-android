@@ -19,6 +19,7 @@
             android:id="@+id/title"
             style="@style/dialog_title"
             android:gravity="center_horizontal" />
+        
     </LinearLayout>
 
     

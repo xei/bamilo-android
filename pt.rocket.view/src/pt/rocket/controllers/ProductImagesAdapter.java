@@ -51,7 +51,7 @@ public class ProductImagesAdapter extends BaseAdapter {
 
 	@Override
 	public int getCount() {
-	    Log.i(TAG, "ANDRE - TOTAL IMAGE SIZE "+images.size());
+	    
 		return images.size();
 	}
 

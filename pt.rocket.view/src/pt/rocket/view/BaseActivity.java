@@ -50,6 +50,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -60,6 +61,7 @@ import android.view.ViewStub;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsoluteLayout.LayoutParams;
 import android.widget.AdapterView;
+import android.widget.RelativeLayout;
 
 import com.actionbarsherlock.ActionBarSherlock;
 import com.actionbarsherlock.internal.ActionBarSherlockNative;
@@ -126,6 +128,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     
     private Activity activity;
 
+
     /**
      * Use this variable to have a more precise control on when to show the content container.
      */
@@ -166,6 +169,8 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
 	private FragmentController	fragmentController;
 	
 	private boolean initialCountry = false;
+	
+
     
 	/**
 	 * Constructor used to initialize the navigation list component and the
@@ -264,6 +269,8 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         if (!contentEvents.contains(EventType.GET_SHOPPING_CART_ITEMS_EVENT)) {
             EventManager.getSingleton().triggerRequestEvent(GetShoppingCartItemsEvent.GET_FROM_CACHE);
         }
+    
+            
 	}
 	
     /*
@@ -317,7 +324,11 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         this.action = action != null ? action : NavigationAction.Unknown;
         updateSlidingMenu();
         // Update the title of fragment
-        if(titleResId == 0) hideTitle();
+        if(titleResId == 0){
+            hideTitle();
+         
+            findViewById(R.id.totalProducts).setVisibility(View.GONE);
+            }
         else setTitle(titleResId);
     }
 	
@@ -387,7 +398,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
 		if (getSlidingMenu().isMenuShowing() && getSlidingMenu().isSlidingEnabled() && !isTabletInLandscape()) {
             showContent();
         } else {
-            super.onBackPressed();
+          super.onBackPressed();
         }
 	}
 
@@ -839,21 +850,39 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     @Override
     public void setTitle(CharSequence title) {
         TextView titleView = (TextView) findViewById(R.id.title);
-        if (titleView == null)
+        TextView subtitleView = (TextView) findViewById(R.id.totalProducts);
+        RelativeLayout header_title = (RelativeLayout) findViewById(R.id.header_title);
+        subtitleView.setVisibility(View.GONE);
+        if (header_title == null)
             return;
         if (!TextUtils.isEmpty(title)) {
             titleView.setText(title);
-            titleView.setVisibility(View.VISIBLE);
-        } else if (TextUtils.isEmpty(title))
-            titleView.setVisibility(View.GONE);
-        else if (TextUtils.isEmpty(titleView.getText()))
-            titleView.setVisibility(View.GONE);
-        else
-            titleView.setVisibility(View.VISIBLE);
+            header_title.setVisibility(View.VISIBLE);
+        } else if (TextUtils.isEmpty(title)){
+            header_title.setVisibility(View.GONE);
+        }
+    }
+    
+    public void setTitleAndSubTitle(CharSequence title,CharSequence subtitle) {
+        TextView titleView = (TextView) findViewById(R.id.title);
+        TextView subtitleView = (TextView) findViewById(R.id.totalProducts);
+        RelativeLayout header_title = (RelativeLayout) findViewById(R.id.header_title);
+        
+        if (titleView == null)
+            return;
+        if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(subtitle)) {
+            titleView.setText(title);
+            subtitleView.setText(subtitle);
+            
+            header_title.setVisibility(View.VISIBLE);
+            subtitleView.setVisibility(View.VISIBLE);
+        } else if (TextUtils.isEmpty(title)){
+            header_title.setVisibility(View.GONE);
+        }
     }
     
     public void hideTitle() {
-        findViewById(R.id.title).setVisibility(View.GONE);
+        findViewById(R.id.header_title).setVisibility(View.GONE);
     }
 
     /*
@@ -1389,6 +1418,35 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     public String getMD5Hash() {
         // TODO Auto-generated method stub
         return null;
+    }
+    
+    /**
+     * Confirm backPress to exit application
+     *
+     */
+    public Boolean exitApplication(final FragmentController fragC){
+        
+     
+        dialog = DialogGenericFragment.newInstance(false, false, true,
+                null, // no title
+                getString(R.string.logout_text_question), getString(R.string.no_label),
+                getString(R.string.yes_label), new OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                        int id = v.getId();
+                        if (id == R.id.button1) {
+                            //fragC.popLastEntry(); 
+                        } else if (id == R.id.button2) {
+                            finish();
+                          
+                        }
+
+                    }
+                });
+        dialog.show(getSupportFragmentManager(), null);
+        return false;
     }
 
 }

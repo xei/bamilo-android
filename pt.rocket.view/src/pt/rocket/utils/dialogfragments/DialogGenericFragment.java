@@ -169,6 +169,9 @@ public class DialogGenericFragment extends DialogFragment {
         ((Button) view.findViewById(R.id.button2)).setText(buttonTitle2);
         ((Button) view.findViewById(R.id.button2)).setOnClickListener(clickListener);
         getActivity().getWindow().getAttributes().width = LayoutParams.MATCH_PARENT;
+        
+        if(title == null) view.findViewById(R.id.title_container).setVisibility(View.GONE);
+        else ((TextView) view.findViewById(R.id.dialog_title)).setText(title);
     }
 
     /**

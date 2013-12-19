@@ -3,19 +3,35 @@
     android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
-
+<RelativeLayout 
+    android:id="@+id/header_title"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/titlebar"
+    android:visibility="gone"
+    android:gravity="center_vertical"
+   	>
     <org.holoeverywhere.widget.TextView
         android:id="@+id/title"
-        style="@style/headline"
-        android:visibility="gone" />
-
+        style="@style/headline_title"       
+        android:layout_width="wrap_content"
+        
+        />
+    <org.holoeverywhere.widget.TextView
+       	android:id="@+id/totalProducts"
+        style="@style/headline_totalItems"
+		android:layout_toRightOf="@+id/title"
+        android:layout_width="match_parent"
+        
+        />
+</RelativeLayout>
     <!-- Main Content Layout -->
 
     <RelativeLayout
         android:id="@+id/warning_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/title" >
+        android:layout_below="@id/header_title" >
 
         <include
             android:id="@+id/warning"
@@ -29,7 +45,8 @@
             android:layout_width="match_parent"
             android:layout_height="34dp"
             layout="@layout/warning_variations"
-            android:visibility="gone" />
+            android:visibility="gone" 
+           />
     </RelativeLayout>
 
     <ViewStub

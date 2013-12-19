@@ -103,7 +103,7 @@ public class Catalog extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-
+        
         title = getArguments().getString(ConstantsIntentExtra.CONTENT_TITLE);
         
         ((BaseActivity) getActivity()).setTitle(title);
@@ -130,6 +130,7 @@ public class Catalog extends BaseFragment {
             @Override
             public void onPageSelected(int position) {
                 mSelectedPageIndex = position;
+                
             }
 
             @Override
@@ -155,6 +156,8 @@ public class Catalog extends BaseFragment {
                     ImageLoader.getInstance().pause();
                 }
             }
+            
+            
         });
 
         if (mCatalogPagerAdapter == null) {
@@ -162,7 +165,9 @@ public class Catalog extends BaseFragment {
 
         } else {
             mCatalogPagerAdapter.notifyDataSetChanged();
+           mCatalogPageModel[0].setTotalItemLable();
         }
+        
         mViewPager.setAdapter(mCatalogPagerAdapter);
         mViewPager.setCurrentItem(1);
         try {
@@ -175,7 +180,7 @@ public class Catalog extends BaseFragment {
             e.printStackTrace();
         }
         AnalyticsGoogle.get().trackPage(R.string.gproductlist);
-
+        
     }
 
 
@@ -231,6 +236,7 @@ public class Catalog extends BaseFragment {
         for (int i = 0; i < mCatalogPageModel.length; i++) {
             mCatalogPageModel[i] = new CatalogPageModel(i, getActivity());
             mCatalogPageModel[i].setTitle(mSortOptions.get(i));
+            
         }
     }
     
@@ -239,6 +245,7 @@ public class Catalog extends BaseFragment {
             if(mCatalogPageModel[i].getIndex() == position){
                 return mCatalogPageModel[i];
             }
+           
         }
         
         return mCatalogPageModel[position];
@@ -287,7 +294,7 @@ public class Catalog extends BaseFragment {
         public CharSequence getPageTitle(int position) {
             return getCurrentCatalogPageModel(position).getTitle().toUpperCase();
         }
-        
+     
         
         private CatalogPageModel getCurrentCatalogPageModel(int position){
             for(int i = 0; i<mCatalogPageModel.length; i++){

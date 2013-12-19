@@ -121,7 +121,9 @@ public class CatalogPageModel implements ResponseListener {
     private static boolean isLoadingMore = false;
 
     private int totalProducts = -1;
-
+    
+    private CharSequence totalItemsLable = "";
+    
     public CatalogPageModel(int index, Activity activity) {
         this.index = index;
         this.mActivity = activity;
@@ -166,7 +168,17 @@ public class CatalogPageModel implements ResponseListener {
 
         }
     }
-
+    /*
+     * Get total number of products
+     * 
+     * 
+     * */
+    public int getTotalProducts(){
+        
+        return totalProducts;
+    }
+    
+    
     public void setVariables(String p, String s, String n, String t, int navSource) {
         CatalogPageModel.productsURL = p;
         CatalogPageModel.searchQuery = s;
@@ -679,7 +691,13 @@ public class CatalogPageModel implements ResponseListener {
         mBeginRequestMillis = System.currentTimeMillis();
         isLoadingMore = false;
     }
-
+   public void setTotalItemLable(){
+    
+        TextView totalItems = (TextView) ((BaseActivity) mActivity).findViewById(R.id.totalProducts);
+        totalItems.setText(" ("+String.valueOf(getTotalProducts())+" "+((BaseActivity) mActivity).getString(R.string.shoppingcart_items)+")");
+        totalItems.setVisibility(View.VISIBLE);
+        //totalItemsLable = " ("+String.valueOf(getTotalProducts())+" "+((BaseActivity) mActivity).getString(R.string.shoppingcart_items)+")";
+    }
     private void processSuccess(ResponseResultEvent<?> event) {
         Log.d(TAG, "ON SUCCESS EVENT");
 
@@ -689,6 +707,10 @@ public class CatalogPageModel implements ResponseListener {
                 " total products = " + productsPage.getTotalProducts());
         if (productsPage != null && productsPage.getTotalProducts() > 0) {
             totalProducts = productsPage.getTotalProducts();
+            //set total items lable
+            
+            ((BaseActivity) mActivity).setTitleAndSubTitle(title," ("+String.valueOf(getTotalProducts())+" "+((BaseActivity) mActivity).getString(R.string.shoppingcart_items)+")");
+            //setTotalItemLable();
         }
 
         String location = event.metaData.getString(IMetaData.LOCATION);

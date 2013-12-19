@@ -259,10 +259,8 @@ public class HomeFragment extends BaseFragment {
                         new ChangePageTask().execute(arg0);
 //                        mPager.setPagingEnabled(true);
 //                        mPager.toggleJumiaScroller(true);
-//                        Log.i(TAG, "ANDRE - SCROLL_STATE_IDLE POSITION : " + currentPosition);
-//                        Log.i(TAG,
-//                                "ANDRE - SCROLL_STATE_IDLE mpager item : "
-//                                        + mPager.getCurrentItem());
+//                        
+//              
 //                        // change event of first(last) fragment to jump for original fragment
 //                        if (mPager.getCurrentItem() == 0) {
 //                            mPager.toggleJumiaScroller(false);
@@ -277,7 +275,7 @@ public class HomeFragment extends BaseFragment {
 //
 //                        }
 //
-//                        Log.i(TAG, "ANDRE - SCROLL_STATE_IDLE: FINISHED");
+//                        
                     }
 
                 }
@@ -294,6 +292,7 @@ public class HomeFragment extends BaseFragment {
         // }
         ((BaseActivity) getActivity()).setProcessShow(true);
         ((BaseActivity) getActivity()).showContentContainer(false);
+        
     }
 
     private class ChangePageTask extends AsyncTask<Integer, String, Boolean> {
@@ -478,6 +477,7 @@ public class HomeFragment extends BaseFragment {
         configureLayout();
     }
     private void configureLayout(){
+      Log.i(TAG,"configureLayout");
         try {
             setLayoutSpec();
         } catch (IllegalArgumentException e) {
@@ -665,6 +665,7 @@ public class HomeFragment extends BaseFragment {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
+            
         }
 
         @Override
@@ -752,6 +753,8 @@ public class HomeFragment extends BaseFragment {
                         teaserSpecification, mInflater, teaserClickListener));
             }
         }
+        
+  
 
     }
 }

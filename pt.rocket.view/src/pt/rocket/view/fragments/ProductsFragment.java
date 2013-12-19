@@ -236,6 +236,7 @@ public class ProductsFragment extends BaseFragment implements
         }
         
         Log.i(TAG, "ON START");
+        
         ((BaseActivity) getActivity()).setTitle(ProductsViewFragment.title);
         if (productsAdapter != null && productsAdapter.getCount() == 0) {
             executeRequest();

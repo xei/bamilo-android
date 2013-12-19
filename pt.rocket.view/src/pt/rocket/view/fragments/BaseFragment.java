@@ -337,7 +337,8 @@ public abstract class BaseFragment extends Fragment implements ResponseListener,
     public boolean allowBackPressed() {
         return false;
     }
-
+    
+  
     /**
      * #### TRIGGER EVENT ####
      */
@@ -794,6 +795,7 @@ public abstract class BaseFragment extends Fragment implements ResponseListener,
             }
         }
     }
-
+    
+ 
     
 }
