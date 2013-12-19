@@ -199,7 +199,8 @@
     <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="0.95" >
+        android:layout_weight="0.95" 
+        android:layout_marginRight="@dimen/margin_small">
 
         <LinearLayout
             android:id="@+id/shop_buttons"
