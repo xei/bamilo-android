@@ -15,6 +15,7 @@ import pt.rocket.framework.objects.Category;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.FragmentCommunicator;
 import pt.rocket.utils.TrackerDelegator;
+import pt.rocket.view.BaseActivity;
 import pt.rocket.view.MainFragmentActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
@@ -270,7 +271,6 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
         }
         categoriesList = (ListView) getView().findViewById(R.id.sub_categories_grid);
         //categoriesList.setExpanded(true);
-        
         mainCatAdapter = new CategoriesAdapter(getActivity(), categories);
         categoriesList.setAdapter(mainCatAdapter);
         categoriesList.setOnItemClickListener(this);
@@ -290,7 +290,7 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
         
         String categoryTitle = currentCategory.getName();
         Log.d( TAG, "setSubCategoryList: currentCategory name = " + categoryTitle );
-        getActivity().setTitle(categoryTitle);
+        ((BaseActivity) getActivity()).setTitle(categoryTitle);
         if(isParent){
             TrackerDelegator.trackCategoryView(getActivity(), categoryTitle, 1);
         }

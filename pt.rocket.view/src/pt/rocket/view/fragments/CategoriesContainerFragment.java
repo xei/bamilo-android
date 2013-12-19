@@ -319,6 +319,7 @@ public class CategoriesContainerFragment extends BaseFragment {
      * Creates the list with all the categories
      */
     private void createFragment() {
+        ((BaseActivity) getActivity()).setTitle(R.string.categories_title);
         Bundle args = new Bundle();
         currentFragment = FragmentType.CATEGORIES_LEVEL_1;
         args.putString(ConstantsIntentExtra.CATEGORY_URL, categoryUrl);
