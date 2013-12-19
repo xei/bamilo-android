@@ -2,22 +2,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.jumia.android"
     android:installLocation="auto"
-    android:versionCode="28"
+    android:versionCode="29"
     android:versionName="1.4" >
-
-    <supports-screens
-        android:anyDensity="true"
-        android:largeScreens="true"
-        android:normalScreens="true"
-        android:resizeable="true"
-        android:smallScreens="true"
-        android:xlargeScreens="true" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-feature android:name="android.hardware.telephony" android:required="false"></uses-feature>
 
     <!-- Urban Airship. -->
     <uses-permission android:name="android.permission.VIBRATE" />
