@@ -81,7 +81,6 @@
 	
     
 	<!-- HOME -->
-	<dimen name="teaser_swipe_banner_height">196dp</dimen>
     <dimen name="teaser_product_item_width">120dp</dimen>
     <dimen name="teaser_product_item_height">@dimen/wrap_content</dimen>
     <dimen name="teaser_product_item_image_width">@dimen/match_parent</dimen>
