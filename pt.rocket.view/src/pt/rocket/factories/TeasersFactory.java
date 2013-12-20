@@ -310,7 +310,7 @@ public class TeasersFactory {
                         @Override
                         public void callback(String url, ImageView iv, Bitmap bm,
                                 AjaxStatus status) {
-
+                            iv.setScaleType(ScaleType.FIT_XY);
                             iv.setImageBitmap(bm);
                             progressBar.setVisibility(View.GONE);
 
