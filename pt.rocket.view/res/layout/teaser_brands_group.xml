@@ -22,7 +22,6 @@
             android:id="@+id/teaser_group_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingBottom="@dimen/margin_large"
             android:orientation="horizontal" >
         </LinearLayout>
 <!--     </HorizontalScrollView> -->

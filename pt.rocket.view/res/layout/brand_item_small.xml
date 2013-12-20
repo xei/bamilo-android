@@ -3,8 +3,7 @@
     android:layout_width="@dimen/teaser_product_item_width"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingLeft="@dimen/margin_mid"
-    android:paddingRight="@dimen/margin_mid"> 
+    > 
 
     <include
         android:layout_width="match_parent"

@@ -7,12 +7,12 @@ import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.controllers.NormalizingViewPagerWrapper.IPagerAdapter;
 import pt.rocket.framework.objects.BrandsTeaserGroup;
-import pt.rocket.framework.objects.CategoryTeaserGroup;
-import pt.rocket.framework.objects.ITargeting;
-import pt.rocket.framework.objects.ProductTeaserGroup;
 import pt.rocket.framework.objects.BrandsTeaserGroup.TeaserBrand;
+import pt.rocket.framework.objects.CategoryTeaserGroup;
 import pt.rocket.framework.objects.CategoryTeaserGroup.TeaserCategory;
+import pt.rocket.framework.objects.ITargeting;
 import pt.rocket.framework.objects.ImageTeaserGroup.TeaserImage;
+import pt.rocket.framework.objects.ProductTeaserGroup;
 import pt.rocket.framework.objects.ProductTeaserGroup.TeaserProduct;
 import pt.rocket.framework.objects.TeaserSpecification;
 import pt.rocket.framework.utils.WindowHelper;
@@ -32,8 +32,6 @@ import android.widget.ImageView.ScaleType;
 import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxStatus;
 import com.androidquery.callback.BitmapAjaxCallback;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 import com.viewpagerindicator.IconPagerAdapter;
 
 import de.akquinet.android.androlog.Log;
@@ -52,6 +50,7 @@ public class TeasersFactory {
     private static final int MAX_IMAGES_ON_SCREEN = 2;
     private static final String TAG = TeasersFactory.class.getName();
     private ViewGroup mainView;
+    private boolean isToResize = false;
     /**
      * Empty Constructor
      */
@@ -65,9 +64,8 @@ public class TeasersFactory {
      * @param context
      * @param teaserSpecification
      */
-    public TeasersFactory(Context context, TeaserSpecification<?> teaserSpecification) {
+    public TeasersFactory(Context context) {
         this.mContext = context;
-        this.mTeaserSpecification = teaserSpecification;
     }
 
     public View getSpecificTeaser(Context context, ViewGroup main, TeaserSpecification<?> teaserSpecification, LayoutInflater mLayoutInflater, OnClickListener mOnClickListener) {
@@ -76,11 +74,14 @@ public class TeasersFactory {
         onTeaserClickListener = mOnClickListener;
         View mView = null;
         Log.i(TAG, "generating teaser : "+teaserSpecification.getType());
+        isToResize = false;
         switch (teaserSpecification.getType()) {
         case MAIN_ONE_SLIDE:
+            isToResize = true;
             mView = getMainOneSlide(mLayoutInflater, (ArrayList<TeaserImage>) teaserSpecification.getTeasers());
             break;
         case STATIC_BANNER:
+            isToResize = true;
             mView = getStaticBanner(mLayoutInflater, (ArrayList<TeaserImage>) teaserSpecification.getTeasers());
             break;
         case CATEGORIES:
@@ -90,6 +91,7 @@ public class TeasersFactory {
             mView = getProductsListTeaser(mLayoutInflater, (ProductTeaserGroup) teaserSpecification);
             break;
         case BRANDS_LIST:
+            isToResize = true;
             mView = getBrandsListTeaser(mLayoutInflater, (BrandsTeaserGroup) teaserSpecification);
             break;
         default:
@@ -295,22 +297,24 @@ public class TeasersFactory {
                 .findViewById(R.id.image_view);
         final View progressBar = imageTeaserView
                 .findViewById(R.id.image_loading_progress);
-        Log.i(TAG, "Going to resize...");
         // Adapts the Image size if needed
         if(size > 0 && imageTeaserView.getLayoutParams() != null){
             int mainContentWidth = (int) (WindowHelper.getWidth(mContext) * mContext.getResources().getFraction(R.dimen.navigation_menu_offset,1,1));
             imageTeaserView.getLayoutParams().width = mainContentWidth / size;
-            Log.i(TAG, "Resize finished!");
         }
         
         if (!TextUtils.isEmpty(imageUrl)) {
             AQuery aq = new AQuery(mContext);
+            final boolean resize = isToResize;
             aq.id(imageView).image(imageUrl, true, true, 0, 0, new BitmapAjaxCallback() {
 
                         @Override
                         public void callback(String url, ImageView iv, Bitmap bm,
                                 AjaxStatus status) {
-                            iv.setScaleType(ScaleType.FIT_XY);
+                            if(resize){
+                                iv.setScaleType(ScaleType.FIT_XY);    
+                            }
+                            
                             iv.setImageBitmap(bm);
                             progressBar.setVisibility(View.GONE);
 
