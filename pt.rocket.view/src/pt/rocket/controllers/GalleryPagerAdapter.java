@@ -3,9 +3,9 @@ package pt.rocket.controllers;
 import java.util.ArrayList;
 
 import pt.rocket.app.ImageLoaderComponent;
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.controllers.NormalizingViewPagerWrapper.IPagerAdapter;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.utils.JumiaApplication;
 import pt.rocket.view.R;
 import uk.co.senab.photoview.PhotoView;
 import android.content.Context;

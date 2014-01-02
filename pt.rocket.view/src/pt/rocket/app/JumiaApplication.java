@@ -1,13 +1,9 @@
-package pt.rocket.utils;
+package pt.rocket.app;
 
 import java.util.EnumSet;
 
 import com.bugsense.trace.ExceptionCallback;
 
-import pt.rocket.app.ApplicationComponent;
-import pt.rocket.app.DarwinComponent;
-import pt.rocket.app.ImageLoaderComponent;
-import pt.rocket.app.UrbanAirshipComponent;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.event.EventManager;
 import pt.rocket.framework.event.EventType;
@@ -19,6 +15,8 @@ import pt.rocket.framework.event.ResponseListener;
 import pt.rocket.framework.event.events.InitializeEvent;
 import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.SingletonMap;
+import pt.rocket.preferences.ShopPreferences;
+import pt.rocket.utils.CheckVersion;
 import android.app.Application;
 import de.akquinet.android.androlog.Log;
 
@@ -27,6 +25,8 @@ public class JumiaApplication extends Application implements ResponseListener, E
     private static final String TAG = JumiaApplication.class.getSimpleName();
 
     public static JumiaApplication INSTANCE;
+    
+    public static int SHOP_ID = -1;
 
     public static final SingletonMap<ApplicationComponent> COMPONENTS =
             new SingletonMap<ApplicationComponent>(new UrbanAirshipComponent(),
@@ -38,6 +38,7 @@ public class JumiaApplication extends Application implements ResponseListener, E
 
     private boolean isInitializing = false;
 
+    
     @Override
     public void onCreate() {
         Log.init(getApplicationContext());
@@ -45,6 +46,9 @@ public class JumiaApplication extends Application implements ResponseListener, E
         
         EventManager.getSingleton().addResponseListener(EventType.INITIALIZE, this);
         init(false);
+        
+        // Get the current shop id
+        SHOP_ID = ShopPreferences.getShopId(getApplicationContext());
     }
 
     public synchronized void init(boolean isReInit) {

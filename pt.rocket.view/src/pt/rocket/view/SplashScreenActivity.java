@@ -5,9 +5,11 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import org.holoeverywhere.widget.TextView;
+
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.ConstantsSharedPrefs;
-import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.event.EventManager;
@@ -18,11 +20,12 @@ import pt.rocket.framework.event.ResponseListener;
 import pt.rocket.framework.event.events.GetResolutionsEvent;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.rest.RestContract;
+import pt.rocket.framework.utils.AdXTracker;
 import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.preferences.ShopPreferences;
 import pt.rocket.utils.DialogGeneric;
 import pt.rocket.utils.HockeyStartup;
-import pt.rocket.utils.JumiaApplication;
 import pt.rocket.utils.TrackerDelegator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -36,7 +39,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import org.holoeverywhere.widget.TextView;
 
 import com.bugsense.trace.BugSenseHandler;
 import com.shouldit.proxy.lib.ProxyConfiguration;
@@ -77,9 +79,13 @@ public class SplashScreenActivity extends Activity implements ResponseListener {
     private DialogGeneric dialog;
     
     private static boolean shouldHandleEvent = true;
+    
+    private boolean sendAdxLaunchEvent = false;
 
     private String productUrl;
+    
     private String utm;
+    
     /*
      * (non-Javadoc)
      * 
@@ -95,18 +101,31 @@ public class SplashScreenActivity extends Activity implements ResponseListener {
         JumiaApplication.INSTANCE.waitForInitResult(this, false);
         showDevInfo();
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        UAirship.shared().getAnalytics().activityStarted(this);
+    }
     
     @Override
     protected void onResume() {
         super.onResume();
         shouldHandleEvent = true;
+        
+        // Adx launch event
+        launchEvent();
     }
-    
-    
+
     @Override
-    protected void onStart() {
-        super.onStart();
-        UAirship.shared().getAnalytics().activityStarted(this);
+    protected void onPause() {     
+        super.onPause();
+        if(dialog!=null){
+            dialog.dismiss();
+        }
+        
+        // Adx launch event
+        sendAdxLaunchEvent = false;
     }
     
     @Override
@@ -121,13 +140,7 @@ public class SplashScreenActivity extends Activity implements ResponseListener {
         eD.commit();
     }
     
-    @Override
-    protected void onPause() {     
-        super.onPause();
-        if(dialog!=null){
-            dialog.dismiss();
-        }
-    }
+
     
     @Override
     protected void onDestroy() {
@@ -388,5 +401,30 @@ public class SplashScreenActivity extends Activity implements ResponseListener {
     public String getMD5Hash() {
         // TODO Auto-generated method stub
         return null;
+    }
+    
+    /**
+     * Method used to send the adx launch event
+     * @author sergiopereira
+     */
+    private void launchEvent(){
+        // Get the current shop id
+        int shopId = ShopPreferences.getShopId(getApplicationContext());
+        // Validate shop id and launch the Adx event if is the same country on start app
+        // First time
+        if(JumiaApplication.SHOP_ID == -1 && shopId > JumiaApplication.SHOP_ID) {
+            sendAdxLaunchEvent = true;
+        }
+        // Current shop is the same
+        if(JumiaApplication.SHOP_ID == shopId) {
+            sendAdxLaunchEvent = true;
+        }
+        // Save current shop id
+        JumiaApplication.SHOP_ID = shopId;
+        // Send launch
+        if(sendAdxLaunchEvent ) {
+            AdXTracker.launch(this);
+            sendAdxLaunchEvent = false;
+        }
     }
 }

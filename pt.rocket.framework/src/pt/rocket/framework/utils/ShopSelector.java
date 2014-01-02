@@ -54,10 +54,12 @@ public final class ShopSelector {
 		AnalyticsGoogle.startup(context, shopId);
 		MixpanelTracker.startup(context, shopId);
 		MixpanelTracker.launch(context);
+		
+		/**
+		 * Startup the Adx tracker, the launch event is performed on the splash screen
+		 * @author sergiopereira
+		 */
 		AdXTracker.startup(context);
-		if(!isChangeShop){
-			AdXTracker.launch(context);	
-		}
 		
 		sShopId = shopId;
 		sShopName = context.getResources().getStringArray( R.array.shop_names)[sShopId];

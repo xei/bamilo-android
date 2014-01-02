@@ -22,7 +22,7 @@
 
     <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="15" />
 
-    <application android:name="pt.rocket.utils.JumiaApplication" android:icon="@drawable/ic_launcher" android:label="@string/app_name" android:largeHeap="true" android:theme="@style/Theme.Jumia" android:logo="@drawable/actionbar_logo">
+    <application android:name="pt.rocket.app.JumiaApplication" android:icon="@drawable/ic_launcher" android:label="@string/app_name" android:largeHeap="true" android:theme="@style/Theme.Jumia" android:logo="@drawable/actionbar_logo">
         <activity android:name="pt.rocket.view.SplashScreen" android:screenOrientation="portrait" android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
