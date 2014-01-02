@@ -4,7 +4,6 @@
 package pt.rocket.view.fragments;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.EnumSet;
 
 import pt.rocket.constants.ConstantsIntentExtra;

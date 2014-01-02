@@ -36,11 +36,9 @@ import pt.rocket.framework.utils.WindowHelper;
 import pt.rocket.utils.CheckVersion;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
-import pt.rocket.utils.OnFragmentActivityInteraction;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.utils.dialogfragments.DialogProgressFragment;
-import pt.rocket.view.R;
 import pt.rocket.view.fragments.SlideMenuFragment;
 import android.app.Activity;
 import android.content.Context;
@@ -50,7 +48,6 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -59,7 +56,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AbsoluteLayout.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.RelativeLayout;
 
@@ -863,6 +859,11 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         }
     }
     
+    /**
+     * Method used to set the number of products
+     * @param title
+     * @param subtitle
+     */
     public void setTitleAndSubTitle(CharSequence title,CharSequence subtitle) {
         TextView titleView = (TextView) findViewById(R.id.title);
         TextView subtitleView = (TextView) findViewById(R.id.totalProducts);

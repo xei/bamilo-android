@@ -3,28 +3,29 @@
     android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
-<RelativeLayout 
-    android:id="@+id/header_title"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/titlebar"
-    android:visibility="gone"
-    android:gravity="center_vertical"
-   	>
-    <org.holoeverywhere.widget.TextView
-        android:id="@+id/title"
-        style="@style/headline_title"       
-        android:layout_width="wrap_content"
-        
-        />
-    <org.holoeverywhere.widget.TextView
-       	android:id="@+id/totalProducts"
-        style="@style/headline_totalItems"
-		android:layout_toRightOf="@+id/title"
+
+    <RelativeLayout
+        android:id="@+id/header_title"
         android:layout_width="match_parent"
-        
-        />
-</RelativeLayout>
+        android:layout_height="wrap_content"
+        android:background="@drawable/titlebar"
+        android:gravity="center_vertical"
+        android:visibility="gone" >
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/title"
+            style="@style/headline_title"
+            android:layout_width="wrap_content"
+            android:fontFamily="roboto_bold" />
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/totalProducts"
+            style="@style/headline_totalItems"
+            android:layout_width="match_parent"
+            android:layout_toRightOf="@+id/title"
+            android:fontFamily="roboto_regular"
+            android:textColor="@color/orange_basic" />
+    </RelativeLayout>
     <!-- Main Content Layout -->
 
     <RelativeLayout
@@ -45,8 +46,7 @@
             android:layout_width="match_parent"
             android:layout_height="34dp"
             layout="@layout/warning_variations"
-            android:visibility="gone" 
-           />
+            android:visibility="gone" />
     </RelativeLayout>
 
     <ViewStub

@@ -8,10 +8,6 @@ import java.util.EnumSet;
 import org.holoeverywhere.widget.Button;
 import org.holoeverywhere.widget.TextView;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
-
-import de.akquinet.android.androlog.Log;
-
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.fragments.FragmentController;
@@ -34,7 +30,6 @@ import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.ProductDetailsActivityFragment;
 import pt.rocket.view.R;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -48,14 +43,15 @@ import android.view.View.OnTouchListener;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
+import de.akquinet.android.androlog.Log;
 
 public class CatalogPageModel implements ResponseListener {
 
