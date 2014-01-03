@@ -255,5 +255,6 @@
     <string name="back_level">back level</string>
     <!-- Facebook App Id DO NOT TRANSLATE -->
     <string name="app_id">321703697936806</string>
-
+    <string name="exit_press_back_again">Please press back again if you wish to leave the app</string>
+    
 </resources>

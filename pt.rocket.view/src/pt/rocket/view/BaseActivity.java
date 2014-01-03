@@ -9,6 +9,7 @@ import java.util.Set;
 
 import org.holoeverywhere.widget.EditText;
 import org.holoeverywhere.widget.TextView;
+import org.holoeverywhere.widget.Toast;
 
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.ActivitiesWorkFlow;
@@ -37,6 +38,7 @@ import pt.rocket.utils.CheckVersion;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.TrackerDelegator;
+import pt.rocket.utils.dialogfragments.CustomToastView;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.utils.dialogfragments.DialogProgressFragment;
 import pt.rocket.view.fragments.SlideMenuFragment;
@@ -46,6 +48,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
@@ -123,6 +126,10 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     private DialogProgressFragment progressDialog;
     
     private Activity activity;
+    
+    private static final int TOAST_LENGTH_SHORT = 2000; // 2 seconds
+    
+    private boolean backPressedOnce = false;
 
 
     /**
@@ -1450,4 +1457,32 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         return false;
     }
 
+    
+
+    
+    /**
+     * Method used to control the double back pressed
+     * @author sergiopereira
+     * @see <a href="http://stackoverflow.com/questions/7965135/what-is-the-duration-of-a-toast-length-long-and-length-short">Toast duration</a>
+     * <br>Toast.LENGTH_LONG is 3500 seconds.
+     * <br>Toast.LENGTH_SHORT is 2000 seconds.
+     */
+    public void doubleBackPressToExit(){
+        Log.d(TAG, "DOUBLE BACK PRESSED TO EXIT: " + backPressedOnce);
+        // If was pressed once
+        if (backPressedOnce) {
+            finish();
+            return;
+        }
+        // First time show toast
+        this.backPressedOnce = true;
+        CustomToastView.makeText(this, getString(R.string.exit_press_back_again), Toast.LENGTH_SHORT).show();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                backPressedOnce = false;
+            }
+        }, TOAST_LENGTH_SHORT);
+    }
+    
 }
