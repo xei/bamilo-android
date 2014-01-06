@@ -3,7 +3,6 @@
  */
 package pt.rocket.view.fragments;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.EnumSet;
 
@@ -17,9 +16,8 @@ import pt.rocket.framework.event.ResponseEvent;
 import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.utils.FragmentCommunicator;
+import pt.rocket.utils.FragmentCommunicatorForProduct;
 import pt.rocket.utils.HorizontalListView;
-import pt.rocket.utils.JumiaCatalogViewPager;
 import pt.rocket.utils.JumiaViewPagerWithZoom;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
@@ -29,7 +27,7 @@ import pt.rocket.view.R;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.view.PagerTabStrip;
+import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -38,7 +36,6 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.RelativeLayout;
 import de.akquinet.android.androlog.Log;
@@ -194,12 +191,12 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
 
                 int pageCount = galleryAdapter.getCount();
 
-                if (arg0 == mViewPager.SCROLL_STATE_SETTLING) {
+                if (arg0 == ViewPager.SCROLL_STATE_SETTLING) {
                     if (mViewPager != null)
                         mViewPager.setPagingEnabled(false);
                 }
 
-                if (arg0 == mViewPager.SCROLL_STATE_IDLE) {
+                if (arg0 == ViewPager.SCROLL_STATE_IDLE) {
                     new ChangePageTask().execute(arg0);
                     /*
                      * mViewPager.setPagingEnabled(true); mViewPager.toggleJumiaScroller(true);
@@ -275,16 +272,15 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
     @Override
     public void onResume() {
         super.onResume();
-        mCompleteProduct = FragmentCommunicator.getInstance().getCurrentProduct();
+        Log.i(TAG, "ON RESUME");
+        mCompleteProduct = FragmentCommunicatorForProduct.getInstance().getCurrentProduct();
         if (mCompleteProduct == null) {
-            getActivity().finish();
-            
+        	getBaseActivity().onBackPressed();
             return;
         }
-        Log.i(TAG, "ON RESUME");
 
         createViewPager();
-      ((BaseActivity) getActivity()).findViewById(R.id.totalProducts).setVisibility(View.VISIBLE);
+        ((BaseActivity) getActivity()).findViewById(R.id.totalProducts).setVisibility(View.VISIBLE);
         // updateImage(productImageGalleryFragment.mVariationsListPosition);
     }
 
@@ -492,7 +488,7 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
         productImageGalleryFragment.isZoomAvailable = bundle.getBoolean(
                 ConstantsIntentExtra.IS_ZOOM_AVAILABLE, false);
 
-        mCompleteProduct = (CompleteProduct) FragmentCommunicator.getInstance()
+        mCompleteProduct = (CompleteProduct) FragmentCommunicatorForProduct.getInstance()
                 .getCurrentProduct();
         // displayGallery(mCompleteProduct);
         if (mCompleteProduct == null) {

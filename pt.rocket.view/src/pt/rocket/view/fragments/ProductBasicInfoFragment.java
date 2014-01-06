@@ -5,18 +5,17 @@ package pt.rocket.view.fragments;
 
 import java.util.EnumSet;
 
+import org.holoeverywhere.widget.TextView;
+
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.event.EventType;
 import pt.rocket.framework.event.ResponseEvent;
 import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.objects.CompleteProduct;
-import pt.rocket.framework.service.ServiceManager;
-import pt.rocket.framework.service.services.ProductService;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.utils.FragmentCommunicatorForProduct;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
-import pt.rocket.utils.OnFragmentActivityInteraction;
-import pt.rocket.utils.FragmentCommunicator;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.ProductDetailsActivityFragment;
 import pt.rocket.view.R;
@@ -28,7 +27,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-import org.holoeverywhere.widget.TextView;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -271,7 +269,7 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
     }
 
     private void setBasicInfo() {
-        mCompleteProduct = FragmentCommunicator.getInstance().getCurrentProduct();
+        mCompleteProduct = FragmentCommunicatorForProduct.getInstance().getCurrentProduct();
         
         if (mCompleteProduct != null) {
             ((BaseActivity) getActivity()).setTitle(mCompleteProduct.getBrand() + " " + mCompleteProduct.getName());
@@ -308,7 +306,7 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
         }
 
         if (bundle.containsKey(ProductDetailsActivityFragment.PRODUCT_COMPLETE)) {
-            mCompleteProduct = FragmentCommunicator.getInstance().getCurrentProduct();
+            mCompleteProduct = FragmentCommunicatorForProduct.getInstance().getCurrentProduct();
         }
 
         if (bundle.containsKey(ProductDetailsActivityFragment.LOADING_PRODUCT_KEY)) {
