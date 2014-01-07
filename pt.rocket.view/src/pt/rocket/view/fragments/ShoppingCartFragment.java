@@ -8,7 +8,8 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 
-import pt.rocket.constants.ConstantsCheckout;
+import org.holoeverywhere.widget.TextView;
+
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.controllers.ShoppingBasketFragListAdapter;
@@ -45,14 +46,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
-import android.webkit.WebView.FindListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.Toast;
-
-import org.holoeverywhere.widget.TextView;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -121,7 +118,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         public String simple_product_sku;
         public String product_sku;
         public Double discount_value;
-        public Integer stock;
+        public long stock;
         public Integer min_delivery_time;
         public Integer max_delivery_time;
         public Map<String, String> simpleData;
@@ -559,10 +556,10 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
     public void changeQuantityOfItem(final int position) {
         ArrayList<String> quantities = new ArrayList<String>();
 
-        int stock = items.get(position).getStock();
+        long stock = items.get(position).getStock();
         int maxQuantity = items.get(position).getMaxQuantity();
 
-        int actualMaxQuantity = stock < maxQuantity ? stock : maxQuantity;
+        long actualMaxQuantity = stock < maxQuantity ? stock : maxQuantity;
 
         for (int i = 0; i <= actualMaxQuantity; i++) {
             quantities.add(String.valueOf(i));

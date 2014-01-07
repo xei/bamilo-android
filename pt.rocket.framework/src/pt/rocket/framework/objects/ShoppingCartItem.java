@@ -44,7 +44,7 @@ public class ShoppingCartItem implements IJSONSerializable {
     private int maxQuantity;
     private String configId;
     private String name;
-    private int stock;
+    private long stock;
     private String specialPrice;
     private Double savingPercentage;
     private String price;
@@ -89,7 +89,7 @@ public class ShoppingCartItem implements IJSONSerializable {
             maxQuantity = jsonObject.getInt(RestConstants.JSON_MAX_QUANTITY );
             configId = jsonObject.getString(RestConstants.JSON_CONFIG_ID);
             name = jsonObject.getString(RestConstants.JSON_ITEM_NAME_TAG);            
-            stock = Integer.parseInt(jsonObject.getString(RestConstants.JSON_STOCK_TAG));
+            stock = jsonObject.getLong(RestConstants.JSON_STOCK_TAG);
 
             
             if (!jsonObject.isNull(RestConstants.JSON_ITEM_PRICE_TAG)) {
@@ -134,7 +134,7 @@ public class ShoppingCartItem implements IJSONSerializable {
      * @param price
      * @param quantity
      */
-    public void initialize(String productSKU, String simpleProductSKU, String imageURL, String productURL, String productName, int stock, String specialPrice,
+    public void initialize(String productSKU, String simpleProductSKU, String imageURL, String productURL, String productName, long stock, String specialPrice,
             String price, int quantity) {
 
         this.imageUrl = imageURL;
@@ -230,7 +230,7 @@ public class ShoppingCartItem implements IJSONSerializable {
     /**
      * @return the stock
      */
-    public int getStock() {
+    public long getStock() {
         return stock;
     }
 

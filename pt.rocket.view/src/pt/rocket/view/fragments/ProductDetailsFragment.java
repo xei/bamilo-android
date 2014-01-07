@@ -814,7 +814,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
 
         ShoppingCartItem item = new ShoppingCartItem(createVariantAttributesHashMap(simple));
         item.initialize(mCompleteProduct.getSku(), sku, mCompleteProduct.getImageList().get(0),
-                mCompleteProduct.getUrl(), mCompleteProduct.getName(), quantity,
+                mCompleteProduct.getUrl(), mCompleteProduct.getName(), (long) quantity,
                 mCompleteProduct.getSpecialPrice(), mCompleteProduct.getPrice(), 1);
 
         ((BaseActivity) getActivity()).showProgress();
