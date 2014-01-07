@@ -7,8 +7,6 @@ import org.holoeverywhere.FontLoader;
 import de.akquinet.android.androlog.Log;
 
 import pt.rocket.constants.FormConstants;
-import pt.rocket.framework.forms.Form;
-import pt.rocket.framework.forms.IFormField;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.pojo.DynamicForm;
 import pt.rocket.pojo.DynamicFormItem;
