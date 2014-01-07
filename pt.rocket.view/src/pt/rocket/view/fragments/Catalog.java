@@ -309,7 +309,7 @@ public class Catalog extends BaseFragment {
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             final CatalogPageModel currentPage = getCurrentCatalogPageModel(position);
-            if(currentPage.getRelativeLayout() == null || ((BaseActivity) getActivity()).isTabletInLandscape() != currentPage.isLandScape() ){
+            if(currentPage.getRelativeLayout() == null || BaseActivity.isTabletInLandscape(getBaseActivity()) != currentPage.isLandScape() ){
                 RelativeLayout mRelativeLayout = (RelativeLayout) mInflater.inflate(R.layout.products,
                     null);
                 currentPage.setRelativeLayout(mRelativeLayout);
@@ -317,7 +317,7 @@ public class Catalog extends BaseFragment {
                 currentPage.setButtonRavb((Button) currentPage.getRelativeLayout().findViewById(R.id.retry_alert_view_button));
                 currentPage.setRelativeLayoutPc((RelativeLayout) currentPage.getRelativeLayout().findViewById(R.id.products_content));
                 currentPage.setLinearLayoutLm((LinearLayout) currentPage.getRelativeLayout().findViewById(R.id.loadmore));
-                if(((BaseActivity) getActivity()).isTabletInLandscape()){
+                if(BaseActivity.isTabletInLandscape(getBaseActivity())){
                     currentPage.setGridView((GridView) currentPage.getRelativeLayout().findViewById(R.id.middle_productslist_list));    
                 } else {
                     currentPage.setListView((ListView) currentPage.getRelativeLayout().findViewById(R.id.middle_productslist_list));    

@@ -2,8 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/teaser_product_item_width"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    > 
+    android:orientation="vertical" >
 
     <include
         android:layout_width="match_parent"

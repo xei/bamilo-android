@@ -715,7 +715,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
 
     private void executeAddProductToCart() {
         ProductSimple simple = getSelectedSimple();
-        if (simple == null && !((BaseActivity) getActivity()).isTabletInLandscape()) {
+        if (simple == null && ! BaseActivity.isTabletInLandscape(getBaseActivity())) {
             showChooseReminder();
             return;
         } else if(simple == null) {
@@ -776,7 +776,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
             args.putInt(ConstantsIntentExtra.VARIATION_LISTPOSITION, mVariationsListPosition);
             args.putBoolean(ConstantsIntentExtra.IS_ZOOM_AVAILABLE, false);
             productImagesViewPagerFragment = ProductImageGalleryFragment.getInstance(args);
-            if(((BaseActivity) getActivity()).isTabletInLandscape()){
+            if(BaseActivity.isTabletInLandscape(getBaseActivity())){
                 productSpecificationFragment = ProductDetailsDescriptionFragment.getInstance();
             } else {
                 productSpecificationFragment = ProductSpecificationsFragment.getInstance();

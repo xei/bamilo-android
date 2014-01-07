@@ -9,6 +9,7 @@
  */
 package pt.rocket.framework.objects;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -118,6 +119,7 @@ public class TeaserBrandElement implements IJSONSerializable {
         private String brand_url;
         private String description;
         private String target_type;
+		private String imageTableUrl;
         /**
          * ProductAttributes empty constructor
          */
@@ -152,6 +154,20 @@ public class TeaserBrandElement implements IJSONSerializable {
         }
 
         /**
+		 * @return the imageTableUrl
+		 */
+		public String getImageTableUrl() {
+			return imageTableUrl;
+		}
+
+		/**
+		 * @param imageTableUrl the imageTableUrl to set
+		 */
+		public void setImageTableUrl(String imageTableUrl) {
+			this.imageTableUrl = imageTableUrl;
+		}
+
+		/**
          * @return the name
          */
         public String getName() {
@@ -182,13 +198,37 @@ public class TeaserBrandElement implements IJSONSerializable {
             	
         		name = jsonObject.getString(RestConstants.JSON_BRAND_DESCRIPTION_TAG);
         		target_type = jsonObject.optString(RestConstants.JSON_TARGET_TYPE_TAG, "");
-                
-                              
                 description = jsonObject.optString(RestConstants.JSON_DESCRIPTION_TAG, "");
                 
-                brand_url = jsonObject.getJSONObject(RestConstants.JSON_IMAGE_LIST_TAG).getString(RestConstants.JSON_BRAND_URL_TAG);
+                try {
+                	/**
+                	 * The new method, returns an array
+                	 */
+                	// Get image list
+        			JSONArray imageList = jsonObject.optJSONArray(RestConstants.JSON_IMAGE_LIST_TAG);
+        			// Validate image structure
+        			int size = imageList.length();
+        			for (int i = 0; i < size; i++) {
+        				// Validate device type
+        				JSONObject jsonImage = imageList.optJSONObject(i);
+        				String device = jsonImage.optString(RestConstants.JSON_IMAGE_DEVICE_TYPE_TAG);
+        				Log.d("IMAGE TEASER", "BRAND DEVICE: " + device);
+        				if(device.equalsIgnoreCase(RestConstants.JSON_PHONE_TAG))
+        					image_url = jsonImage.optString(RestConstants.JSON_TEASER_IMAGE_URL_TAG);
+        				else if(device.equalsIgnoreCase(RestConstants.JSON_TABLET_TAG))
+        					imageTableUrl = jsonImage.optString(RestConstants.JSON_TEASER_IMAGE_URL_TAG);
+        				// Save brand
+        				brand_url = jsonImage.getString(RestConstants.JSON_BRAND_URL_TAG);
+        			}
+				} catch (Exception e) {
+					/**
+					 * The old method, the tag is a json object.
+					 */
+	                image_url = jsonObject.getJSONObject(RestConstants.JSON_IMAGE_LIST_TAG).getString(RestConstants.JSON_IMAGE_URL_TAG);
+	                brand_url = jsonObject.getJSONObject(RestConstants.JSON_IMAGE_LIST_TAG).getString(RestConstants.JSON_BRAND_URL_TAG);
+	                Log.w(TAG, "PARSE EXCEPTION: The JSON structure for brand teaser is the old method.");
+				}
                 
-                image_url = jsonObject.getJSONObject(RestConstants.JSON_IMAGE_LIST_TAG).getString(RestConstants.JSON_IMAGE_URL_TAG);
             } catch (JSONException e) {
             	Log.e(TAG, "Error Parsing the product json", e);
                 return false;
@@ -260,4 +300,11 @@ public class TeaserBrandElement implements IJSONSerializable {
     public TargetType getTargetType() {
         return attributes.getTargetType();
     }
+    
+    /**
+	 * @return the imageTableUrl
+	 */
+	public String getImageTableUrl() {
+		return attributes.getImageTableUrl();
+	}
 }

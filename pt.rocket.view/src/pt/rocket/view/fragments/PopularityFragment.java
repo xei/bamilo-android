@@ -164,7 +164,7 @@ public class PopularityFragment extends BaseFragment {
         setContextualLoading();
         showContextualLoading();
         
-        if(((BaseActivity) getActivity()).isTabletInLandscape()){
+        if(BaseActivity.isTabletInLandscape(getBaseActivity())){
             Log.i(TAG, "startWriteReviewFragment : ");
             startWriteReviewFragment();
         }
@@ -260,7 +260,7 @@ public class PopularityFragment extends BaseFragment {
         setPopularity();
         if(mProductRatingPage != null)
             displayReviews();
-        if(!((BaseActivity) getActivity()).isTabletInLandscape()){
+        if(!BaseActivity.isTabletInLandscape(getBaseActivity())){
             setCommentListener();    
         }
         

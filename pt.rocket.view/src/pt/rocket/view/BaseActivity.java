@@ -264,7 +264,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         }
 		
         // Validate if is in landscape and tablet and forcing menu
-        if(isTabletInLandscape() && !initialCountry)
+        if(isTabletInLandscape(this) && !initialCountry)
              showMenu();
         else
             showContent();
@@ -398,7 +398,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
 	@Override
 	public void onBackPressed() {
 		Log.i(getTag(), "onBackPressed");
-		if (getSlidingMenu().isMenuShowing() && getSlidingMenu().isSlidingEnabled() && !isTabletInLandscape()) {
+		if (getSlidingMenu().isMenuShowing() && getSlidingMenu().isSlidingEnabled() && !isTabletInLandscape(this)) {
             showContent();
         } else {
           super.onBackPressed();
@@ -427,7 +427,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
         Log.i(TAG, "codeW : "+onChangeCountry);
         // Validate current orientation and device
-        if(isTabletInLandscape() && !onChangeCountry) {
+        if(isTabletInLandscape(this) && !onChangeCountry) {
             // Landscape mode
             slideMenuInLandscapeMode(sm);
         }else {
@@ -551,8 +551,8 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
      * Verifies if the current screen orientation is Landscape
      * @return true if yes, false otherwise
      */
-    public boolean isTabletInLandscape(){
-        if (getResources().getBoolean(R.bool.isTablet) && getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+    public static boolean isTabletInLandscape(Context context){
+        if (context.getResources().getBoolean(R.bool.isTablet) && context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
             return true;
         return false;
     }
@@ -651,7 +651,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
 	 */
 	private void setSearchBar(Menu menu) {
 	    // Validate the Sliding
-        if(!isTabletInLandscape()) {
+        if(!isTabletInLandscape(this)) {
             // Show search below the action bar
             findViewById(R.id.rocket_app_header_search).setVisibility(View.VISIBLE);
             // Show the normal search
@@ -1062,7 +1062,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     @Override
     public void onOpened() {
         Log.d(getTag(), "onOpened");
-        if(!isTabletInLandscape())
+        if(!isTabletInLandscape(this))
             hideKeyboard();
         AnalyticsGoogle.get().trackPage(R.string.gnavigation);
     }
