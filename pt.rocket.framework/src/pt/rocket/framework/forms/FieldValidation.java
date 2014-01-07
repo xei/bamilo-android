@@ -10,7 +10,7 @@
  * 
  * Copyright (c) Rocket Internet All Rights Reserved
  */
-package pt.rocket.forms;
+package pt.rocket.framework.forms;
 
 import org.json.JSONException;
 import org.json.JSONObject;

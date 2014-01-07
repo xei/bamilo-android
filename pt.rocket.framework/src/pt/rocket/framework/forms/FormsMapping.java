@@ -1,7 +1,7 @@
 /**
  * 
  */
-package pt.rocket.forms;
+package pt.rocket.framework.forms;
 
 import java.util.ArrayList;
 import java.util.Collections;

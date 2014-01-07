@@ -10,7 +10,7 @@
  * 
  * Copyright (c) Rocket Internet All Rights Reserved
  */
-package pt.rocket.forms;
+package pt.rocket.framework.forms;
 
 import java.util.HashMap;
 import java.util.Map;
