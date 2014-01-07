@@ -20,10 +20,9 @@ import org.holoeverywhere.widget.CheckBox;
 import org.holoeverywhere.widget.Spinner;
 import org.holoeverywhere.widget.TextView;
 
-
-import pt.rocket.forms.FormField;
-import pt.rocket.forms.IFormField;
-import pt.rocket.forms.InputType;
+import pt.rocket.framework.forms.FormField;
+import pt.rocket.framework.forms.IFormField;
+import pt.rocket.framework.forms.InputType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.dialogfragments.DialogDatePickerFragment;
 import pt.rocket.utils.dialogfragments.DialogDatePickerFragment.OnDatePickerDialogListener;

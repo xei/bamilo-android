@@ -2,7 +2,6 @@ package pt.rocket.view;
 
 import java.math.BigDecimal;
 import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -10,28 +9,34 @@ import java.util.Set;
 
 import org.holoeverywhere.widget.EditText;
 import org.holoeverywhere.widget.TextView;
+import org.holoeverywhere.widget.Toast;
+
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
+import pt.rocket.framework.ErrorCode;
+import pt.rocket.framework.event.EventManager;
+import pt.rocket.framework.event.EventType;
+import pt.rocket.framework.event.IMetaData;
+import pt.rocket.framework.event.RequestEvent;
+import pt.rocket.framework.event.ResponseEvent;
+import pt.rocket.framework.event.ResponseListener;
+import pt.rocket.framework.event.ResponseResultEvent;
+import pt.rocket.framework.event.events.GetShoppingCartItemsEvent;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.ShoppingCart;
 import pt.rocket.framework.rest.RestConstants;
-import pt.rocket.framework.service.IRemoteService;
-import pt.rocket.framework.service.IRemoteServiceCallback;
-import pt.rocket.framework.utils.Constants;
+import pt.rocket.framework.service.ServiceManager;
+import pt.rocket.framework.service.services.ProductService;
+import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.LoadingBarView;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.framework.utils.ShopSelector;
-import pt.rocket.framework.utils.Utils;
 import pt.rocket.framework.utils.WindowHelper;
-import pt.rocket.helpers.BaseHelper;
-import pt.rocket.interfaces.IResponseCallback;
-import pt.rocket.pojo.EventType;
 import pt.rocket.utils.CheckVersion;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
-import pt.rocket.utils.ServiceSingleton;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.CustomToastView;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
@@ -43,11 +48,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
-<<<<<<< .mine
-import android.os.RemoteException;
-=======
 import android.os.Handler;
->>>>>>> .r448799
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
@@ -100,7 +101,7 @@ import de.akquinet.android.androlog.Log;
  *          2012/06/19
  * 
  */
-public abstract class BaseActivity extends SlidingFragmentActivity implements OnOpenedListener, OnClosedListener {
+public abstract class BaseActivity extends SlidingFragmentActivity implements OnOpenedListener, OnClosedListener, ResponseListener{
 
     private ShareActionProvider mShareActionProvider;
     
@@ -130,11 +131,6 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     
     private boolean backPressedOnce = false;
 
-    private IRemoteService mService;
-    /**
-     * The md5 registry
-     */
-    public HashMap<String, IResponseCallback> responseCallbacks;
 
     /**
      * Use this variable to have a more precise control on when to show the content container.
@@ -208,8 +204,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		responseCallbacks = new HashMap<String, IResponseCallback>();
-		Log.d(TAG, "ON CREATE");
+        Log.d(TAG, "ON CREATE");
 		
         // Validate if is phone and force orientaion
         setOrientationForHandsetDevices();
@@ -218,8 +213,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         fragmentController = FragmentController.getInstance();
 
 		ShopSelector.resetConfiguration(getBaseContext());
-		//OLD FRAMEWORK
-//		EventManager.getSingleton().addResponseListener(this, allHandledEvents);
+		EventManager.getSingleton().addResponseListener(this, allHandledEvents);
 		setupActionBar();
 		setupContentViews();
 		
@@ -258,21 +252,8 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
 		super.onResume();
 		Log.d(TAG, "ON RESUME");
 		
-		/**
-		 * Register service callback
-		 */
-        mService = ServiceSingleton.getInstance().getService();
-        
-        try {
-            mService.registerCallback(mCallback);
-        } catch (RemoteException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        
 		if (!isRegistered) {
-		    // OLD FRAMEWORK
-//		    EventManager.getSingleton().addResponseListener(this, allHandledEvents);
+		    EventManager.getSingleton().addResponseListener(this, allHandledEvents);
 	        isRegistered = true;
 		}
 		
@@ -303,8 +284,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     @Override
     public void onPause() {
         super.onPause();
-        // OLD FRAMEWORK
-//        EventManager.getSingleton().removeResponseListener(this, allHandledEvents);
+        EventManager.getSingleton().removeResponseListener(this, allHandledEvents);
         isRegistered = false;
     }
 
@@ -848,7 +828,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         sharingIntent.setType("text/plain");
         sharingIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_subject));
 
-        CompleteProduct prod = ServiceManager.SERVICES.get(ProductHelper.class).getCurrentProduct();
+        CompleteProduct prod = ServiceManager.SERVICES.get(ProductService.class).getCurrentProduct();
         
         if (null != prod) {
             //For tracking when sharing
@@ -1152,282 +1132,203 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     public void finishFromAdapter(){
         finish();
     }
-    
-    /**
-     * Requests and Callbacks methods
-     */
-    
-    /**
-     * Callback which deals with the IRemoteServiceCallback
-     */
-    private IRemoteServiceCallback mCallback = new IRemoteServiceCallback.Stub() {
 
-        @Override
-        public void getError(Bundle response) throws RemoteException {
-            Log.i(TAG, "Set target to handle error");
-            handleError(response);
+    @Override
+    public final void handleEvent(final ResponseEvent event) {
+        if (event.getSuccess()) {
+            if (contentEvents.contains(event.type) || userEvents.contains(event.type)) {
+                boolean showContent = onSuccessEvent((ResponseResultEvent<?>) event);
+                if (showContent) {
+                    showContentContainer(false);
+                }
+                showWarning(event.warning != null);
+            }
+            handleSuccessEvent(event);
+
+        } else {
+            boolean needsErrorHandling = true;
+            if (contentEvents.contains(event.type) || userEvents.contains(event.type)) {
+                needsErrorHandling = !onErrorEvent(event);
+            }
+            if (needsErrorHandling) {
+                handleErrorEvent(event);
+            }
         }
-
-        @Override
-        public void getResponse(Bundle response) throws RemoteException {
-            handleResponse(response);
-        }
-    };
-
-
-    /**
-     * Method called then the activity is connected to the service
-     */
-    protected void onServiceActivation() {
-
     }
-    
+
     /**
-     * Triggers the request for a new api call
+     * Handles a successful event and reflects necessary changes on the UI.
      * 
-     * @param helper
-     *            of the api call
-     * @param responseCallback
-     * @return the md5 of the reponse
+     * @param event
+     *            The successful event with {@link ResponseEvent#getSuccess()} == <code>true</code>
      */
-    public String sendRequest(final BaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
-        Bundle bundle = helper.generateRequestBundle(args);
-        String md5 = Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY);
-        bundle.putString(Constants.BUNDLE_MD5_KEY, md5);
-        Log.d("TRACK", "sendRequest");
-        responseCallbacks.put(md5, new IResponseCallback() {
-
-            @Override
-            public void onRequestComplete(Bundle bundle) {
-                Log.d("TRACK", "onRequestComplete BaseActivity");
-                // We have to parse this bundle to the final one
-                Bundle formatedBundle = (Bundle) helper.checkResponseForStatus(bundle);
-                if (responseCallback != null) {
-                    responseCallback.onRequestComplete(formatedBundle);
-                }
+    @SuppressWarnings("unchecked")
+    private void handleSuccessEvent(ResponseEvent event) {
+        switch (event.getType()) {
+        case GET_SHOPPING_CART_ITEMS_EVENT:
+        case ADD_ITEM_TO_SHOPPING_CART_EVENT:
+        case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
+        case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
+            updateCartInfo(((ResponseResultEvent<ShoppingCart>) event).result);
+            break;
+        case LOGOUT_EVENT:
+            Log.i(TAG, "LOGOUT EVENT");
+            onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            updateSlidingMenu();
+            int trackRes;
+            if (event.getSuccess()) {
+                trackRes = R.string.glogoutsuccess;
             }
-
-            @Override
-            public void onRequestError(Bundle bundle) {
-                Log.d("TRACK", "onRequestError  BaseActivity");
-                // We have to parse this bundle to the final one
-                Bundle formatedBundle = (Bundle) helper.parseErrorBundle(bundle);
-                if (responseCallback != null) {
-                    responseCallback.onRequestError(formatedBundle);
-                }
+            else {
+                trackRes = R.string.glogoutfailed;
             }
-        });
-
-        try {
-            mService.sendRequest(bundle);
-        } catch (RemoteException e) {
-            e.printStackTrace();
+            AnalyticsGoogle.get().trackAccount(trackRes, null);
+            break;
         }
-
-        return md5;
     }
+
     /**
-     * ADAPTNEWFRAMEWORK
+     * Handles a failed event and shows dialogs to the user.
+     * 
+     * @param event
+     *            The failed event with {@link ResponseEvent#getSuccess()} == <code>false</code>
      */
-//    public final void handleEvent(final ResponseEvent event) {
-//        if (event.getSuccess()) {
-//            if (contentEvents.contains(event.type) || userEvents.contains(event.type)) {
-//                boolean showContent = onSuccessEvent((ResponseResultEvent<?>) event);
-//                if (showContent) {
-//                    showContentContainer(false);
-//                }
-//                showWarning(event.warning != null);
-//            }
-//            handleSuccessEvent(event);
-//
-//        } else {
-//            boolean needsErrorHandling = true;
-//            if (contentEvents.contains(event.type) || userEvents.contains(event.type)) {
-//                needsErrorHandling = !onErrorEvent(event);
-//            }
-//            if (needsErrorHandling) {
-//                handleErrorEvent(event);
-//            }
-//        }
-//    }
+    public void handleErrorEvent(final ResponseEvent event) {
+        if (event.errorCode.isNetworkError()) {
+            if (event.type == EventType.GET_SHOPPING_CART_ITEMS_EVENT) {
+                updateCartInfo(null);
+            }
+            if (contentEvents.contains(event.type)) {
+                showError(event.request);
+            } else if (userEvents.contains(event.type)) {
+                showContentContainer(false);
+                dialog = DialogGenericFragment.createNoNetworkDialog(BaseActivity.this,
+                        new OnClickListener() {
+
+                            @Override
+                            public void onClick(View v) {
+                                showLoadingInfo();
+                                EventManager.getSingleton().triggerRequestEvent(event.request);
+                                dialog.dismiss();
+                            }
+                        }, false);
+                dialog.show(getSupportFragmentManager(), null);
+            }
+            return;
+        } else if (event.type == EventType.GET_PROMOTIONS) {
+            /**
+             * No promotions available!
+             * Ignore error
+             */
+        } else if (event.errorCode == ErrorCode.REQUEST_ERROR) {
+            Map<String, ? extends List<String>> messages = event.errorMessages;
+            List<String> validateMessages = messages.get(RestConstants.JSON_VALIDATE_TAG);
+            String dialogMsg = "";
+            if (validateMessages == null || validateMessages.isEmpty()) {
+                validateMessages = messages.get(RestConstants.JSON_ERROR_TAG);
+            }
+            if (validateMessages != null) {
+                for (String message : validateMessages) {
+                    dialogMsg += message + "\n";
+                }
+            } else {
+                for (Entry<String, ? extends List<String>> entry : messages.entrySet()) {
+                    dialogMsg += entry.getKey() + ": " + entry.getValue().get(0) + "\n";
+                }
+            }
+            if (dialogMsg.equals("")) {
+                dialogMsg = getString(R.string.validation_errortext);
+            }
+            showContentContainer(false);
+            dialog = DialogGenericFragment.newInstance(
+                    true, true, false, getString(R.string.validation_title),
+                    dialogMsg, getResources().getString(R.string.ok_label), "",
+                    new OnClickListener() {
+
+                        @Override
+                        public void onClick(View v) {
+                            int id = v.getId();
+                            if (id == R.id.button1) {
+                                dialog.dismiss();
+                            }
+
+                        }
+
+                    });
+
+            dialog.show(getSupportFragmentManager(), null);
+            return;
+        } else if (!event.getSuccess()) {
+            showContentContainer(false);
+            dialog = DialogGenericFragment.createServerErrorDialog(BaseActivity.this, new OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    showLoadingInfo();
+                    event.request.metaData.putBoolean( IMetaData.MD_IGNORE_CACHE, IMetaData.TRUE);
+                    EventManager.getSingleton().triggerRequestEvent(event.request);
+                    dialog.dismiss();
+                }
+            }, false);
+            dialog.show(getSupportFragmentManager(), null);
+            return;
+        }
+        
+        /* TODO: finish to distinguish between errors
+         * else if (event.errorCode.isServerError()) {
+            dialog = DialogGeneric.createServerErrorDialog(MyActivity.this, new OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    showLoadingInfo();
+                    EventManager.getSingleton().triggerRequestEvent(event.request);
+                    dialog.dismiss();
+                }
+            }, false);
+            dialog.show();
+            return;
+        } else if (event.errorCode.isClientError()) {
+            dialog = DialogGeneric.createClientErrorDialog( MyActivity.this, new OnClickListener() {
+                
+                @Override
+                public void onClick(View v) {
+                    showLoadingInfo();
+                    EventManager.getSingleton().triggerRequestEvent(event.request);
+                    dialog.dismiss();
+                }
+            }, false);
+            dialog.show();
+            return;
+        }
+        */
+    }
+	
+    @Override
+    public final boolean removeAfterHandlingEvent() {
+        return false;
+    }
+    
     /**
-     * ADAPTNEWFRAMEWORK
+     * Handles a successful event in the concrete activity.
+     * 
+     * @param event
+     *            The successful event with {@link ResponseEvent#getSuccess()} == <code>true</code>
+     * @return Returns whether the content container should be shown.
      */
-//    /**
-//     * Handles a successful event and reflects necessary changes on the UI.
-//     * 
-//     * @param event
-//     *            The successful event with {@link ResponseEvent#getSuccess()} == <code>true</code>
-//     */
-//    @SuppressWarnings("unchecked")
-//    private void handleSuccessEvent(ResponseEvent event) {
-//        switch (event.getType()) {
-//        case GET_SHOPPING_CART_ITEMS_EVENT:
-//        case ADD_ITEM_TO_SHOPPING_CART_EVENT:
-//        case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
-//        case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
-//            updateCartInfo(((ResponseResultEvent<ShoppingCart>) event).result);
-//            break;
-//        case LOGOUT_EVENT:
-//            Log.i(TAG, "LOGOUT EVENT");
-//            onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-//            updateSlidingMenu();
-//            int trackRes;
-//            if (event.getSuccess()) {
-//                trackRes = R.string.glogoutsuccess;
-//            }
-//            else {
-//                trackRes = R.string.glogoutfailed;
-//            }
-//            AnalyticsGoogle.get().trackAccount(trackRes, null);
-//            break;
-//        }
-//    }
+    protected abstract boolean onSuccessEvent(ResponseResultEvent<?> event);
+
     /**
-     * ADAPTNEWFRAMEWORK
+     * Handles a failed event in the concrete activity. Override this if the concrete activity wants
+     * to handle a special error case.
+     * 
+     * @param event
+     *            The failed event with {@link ResponseEvent#getSuccess()} == <code>false</code>
+     * @return Whether the concrete activity handled the failed event and no further actions have to
+     *         be made.
      */
-//    /**
-//     * Handles a failed event and shows dialogs to the user.
-//     * 
-//     * @param event
-//     *            The failed event with {@link ResponseEvent#getSuccess()} == <code>false</code>
-//     */
-//    public void handleErrorEvent(final ResponseEvent event) {
-//        if (event.errorCode.isNetworkError()) {
-//            if (event.type == EventType.GET_SHOPPING_CART_ITEMS_EVENT) {
-//                updateCartInfo(null);
-//            }
-//            if (contentEvents.contains(event.type)) {
-//                showError(event.request);
-//            } else if (userEvents.contains(event.type)) {
-//                showContentContainer(false);
-//                dialog = DialogGenericFragment.createNoNetworkDialog(BaseActivity.this,
-//                        new OnClickListener() {
-//
-//                            @Override
-//                            public void onClick(View v) {
-//                                showLoadingInfo();
-//                                EventManager.getSingleton().triggerRequestEvent(event.request);
-//                                dialog.dismiss();
-//                            }
-//                        }, false);
-//                dialog.show(getSupportFragmentManager(), null);
-//            }
-//            return;
-//        } else if (event.type == EventType.GET_PROMOTIONS) {
-//            /**
-//             * No promotions available!
-//             * Ignore error
-//             */
-//        } else if (event.errorCode == ErrorCode.REQUEST_ERROR) {
-//            Map<String, ? extends List<String>> messages = event.errorMessages;
-//            List<String> validateMessages = messages.get(RestConstants.JSON_VALIDATE_TAG);
-//            String dialogMsg = "";
-//            if (validateMessages == null || validateMessages.isEmpty()) {
-//                validateMessages = messages.get(RestConstants.JSON_ERROR_TAG);
-//            }
-//            if (validateMessages != null) {
-//                for (String message : validateMessages) {
-//                    dialogMsg += message + "\n";
-//                }
-//            } else {
-//                for (Entry<String, ? extends List<String>> entry : messages.entrySet()) {
-//                    dialogMsg += entry.getKey() + ": " + entry.getValue().get(0) + "\n";
-//                }
-//            }
-//            if (dialogMsg.equals("")) {
-//                dialogMsg = getString(R.string.validation_errortext);
-//            }
-//            showContentContainer(false);
-//            dialog = DialogGenericFragment.newInstance(
-//                    true, true, false, getString(R.string.validation_title),
-//                    dialogMsg, getResources().getString(R.string.ok_label), "",
-//                    new OnClickListener() {
-//
-//                        @Override
-//                        public void onClick(View v) {
-//                            int id = v.getId();
-//                            if (id == R.id.button1) {
-//                                dialog.dismiss();
-//                            }
-//
-//                        }
-//
-//                    });
-//
-//            dialog.show(getSupportFragmentManager(), null);
-//            return;
-//        } else if (!event.getSuccess()) {
-//            showContentContainer(false);
-//            dialog = DialogGenericFragment.createServerErrorDialog(BaseActivity.this, new OnClickListener() {
-//
-//                @Override
-//                public void onClick(View v) {
-//                    showLoadingInfo();
-//                    event.request.metaData.putBoolean( IMetaData.MD_IGNORE_CACHE, IMetaData.TRUE);
-//                    EventManager.getSingleton().triggerRequestEvent(event.request);
-//                    dialog.dismiss();
-//                }
-//            }, false);
-//            dialog.show(getSupportFragmentManager(), null);
-//            return;
-//        }
-//        
-//        /* TODO: finish to distinguish between errors
-//         * else if (event.errorCode.isServerError()) {
-//            dialog = DialogGeneric.createServerErrorDialog(MyActivity.this, new OnClickListener() {
-//
-//                @Override
-//                public void onClick(View v) {
-//                    showLoadingInfo();
-//                    EventManager.getSingleton().triggerRequestEvent(event.request);
-//                    dialog.dismiss();
-//                }
-//            }, false);
-//            dialog.show();
-//            return;
-//        } else if (event.errorCode.isClientError()) {
-//            dialog = DialogGeneric.createClientErrorDialog( MyActivity.this, new OnClickListener() {
-//                
-//                @Override
-//                public void onClick(View v) {
-//                    showLoadingInfo();
-//                    EventManager.getSingleton().triggerRequestEvent(event.request);
-//                    dialog.dismiss();
-//                }
-//            }, false);
-//            dialog.show();
-//            return;
-//        }
-//        */
-//    }
-//	
-//    @Override
-//    public final boolean removeAfterHandlingEvent() {
-//        return false;
-//    }
-//    
-//    /**
-//     * Handles a successful event in the concrete activity.
-//     * 
-//     * @param event
-//     *            The successful event with {@link ResponseEvent#getSuccess()} == <code>true</code>
-//     * @return Returns whether the content container should be shown.
-//     */
-//    protected abstract boolean onSuccessEvent(ResponseResultEvent<?> event);
-//
-//    /**
-//     * Handles a failed event in the concrete activity. Override this if the concrete activity wants
-//     * to handle a special error case.
-//     * 
-//     * @param event
-//     *            The failed event with {@link ResponseEvent#getSuccess()} == <code>false</code>
-//     * @return Whether the concrete activity handled the failed event and no further actions have to
-//     *         be made.
-//     */
-//    protected boolean onErrorEvent(ResponseEvent event) {
-//        return false;
-//    }
+    protected boolean onErrorEvent(ResponseEvent event) {
+        return false;
+    }
 
     /**
      * @return the action
@@ -1520,12 +1421,12 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     
     public void sendValuesToActivity(int identifier, Object values){}
 
-// OLD FRAMEWORK
-//    @Override
-//    public String getMD5Hash() {
-//        // TODO Auto-generated method stub
-//        return null;
-//    }
+
+    @Override
+    public String getMD5Hash() {
+        // TODO Auto-generated method stub
+        return null;
+    }
     
     /**
      * Confirm backPress to exit application

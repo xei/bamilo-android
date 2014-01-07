@@ -117,7 +117,7 @@ public class WriteReviewFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-        completeProduct = ServiceManager.SERVICES.get(ProductHelper.class).getCurrentProduct();
+        completeProduct = ServiceManager.SERVICES.get(ProductService.class).getCurrentProduct();
         EventManager.getSingleton().triggerRequestEvent(LogInEvent.TRY_AUTO_LOGIN);
         triggerContentEvent(EventType.GET_CUSTOMER);
     }

@@ -26,7 +26,6 @@ import android.support.v4.app.FragmentActivity;
  * 
  * @author Sergio Pereira
  * @modifyed: Nuno Castro
- * @modified: Manuel Silva
  * 
  * @version 1.5
  * 
