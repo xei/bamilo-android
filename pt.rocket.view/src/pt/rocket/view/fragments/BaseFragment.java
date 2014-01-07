@@ -14,14 +14,9 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.framework.ErrorCode;
-import pt.rocket.framework.event.EventManager;
-import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.event.RequestEvent;
-import pt.rocket.framework.event.ResponseEvent;
-import pt.rocket.framework.event.ResponseListener;
-import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.pojo.EventType;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.OnActivityFragmentInteraction;
@@ -46,7 +41,7 @@ import de.akquinet.android.androlog.Log;
  * @author sergiopereira
  * 
  */
-public abstract class BaseFragment extends Fragment implements ResponseListener,
+public abstract class BaseFragment extends Fragment implements
         OnActivityFragmentInteraction {
 
     private static final Set<EventType> HANDLED_EVENTS = EnumSet.noneOf(EventType.class);
@@ -142,7 +137,6 @@ public abstract class BaseFragment extends Fragment implements ResponseListener,
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);       
         md5Hash = null;
-        EventManager.getSingleton().addResponseListener(this, allHandledEvents);
     }
     
     /*
@@ -248,7 +242,7 @@ public abstract class BaseFragment extends Fragment implements ResponseListener,
     public void onDestroy() {
         super.onDestroy();
         // Remove listeners
-        EventManager.getSingleton().removeResponseListener(this, allHandledEvents);
+//        EventManager.getSingleton().removeResponseListener(this, allHandledEvents);
         // Recycle bitmaps
         if (getView() != null)
             unbindDrawables(getView());
@@ -612,33 +606,33 @@ public abstract class BaseFragment extends Fragment implements ResponseListener,
          * false); dialog.show(); return; }
          */
     }
-
-    @Override
-    public final boolean removeAfterHandlingEvent() {
-        return false;
-    }
-
-    /**
-     * Handles a successful event in the concrete activity.
-     * 
-     * @param event
-     *            The successful event with {@link ResponseEvent#getSuccess()} == <code>true</code>
-     * @return Returns whether the content container should be shown.
-     */
-    protected abstract boolean onSuccessEvent(ResponseResultEvent<?> event);
-
-    /**
-     * Handles a failed event in the concrete activity. Override this if the concrete activity wants
-     * to handle a special error case.
-     * 
-     * @param event
-     *            The failed event with {@link ResponseEvent#getSuccess()} == <code>false</code>
-     * @return Whether the concrete activity handled the failed event and no further actions have to
-     *         be made.
-     */
-    protected boolean onErrorEvent(ResponseEvent event) {
-        return false;
-    }
+//      OLD FRAMEWORK
+//    @Override
+//    public final boolean removeAfterHandlingEvent() {
+//        return false;
+//    }
+//  OLD FRAMEWORK
+//    /**
+//     * Handles a successful event in the concrete activity.
+//     * 
+//     * @param event
+//     *            The successful event with {@link ResponseEvent#getSuccess()} == <code>true</code>
+//     * @return Returns whether the content container should be shown.
+//     */
+//    protected abstract boolean onSuccessEvent(ResponseResultEvent<?> event);
+//
+//    /**
+//     * Handles a failed event in the concrete activity. Override this if the concrete activity wants
+//     * to handle a special error case.
+//     * 
+//     * @param event
+//     *            The failed event with {@link ResponseEvent#getSuccess()} == <code>false</code>
+//     * @return Whether the concrete activity handled the failed event and no further actions have to
+//     *         be made.
+//     */
+//    protected boolean onErrorEvent(ResponseEvent event) {
+//        return false;
+//    }
 
     /**
      * @return the action
@@ -741,11 +735,11 @@ public abstract class BaseFragment extends Fragment implements ResponseListener,
     public void setActivity(BaseActivity activity) {
         this.mainActivity = activity;
     }
-
-    @Override
-    public String getMD5Hash() {         
-        return md5Hash;
-    }    
+//      OLD FRAMEWORK
+//    @Override
+//    public String getMD5Hash() {         
+//        return md5Hash;
+//    }    
     
     /**
      * The variable mainActivity is setted onStart

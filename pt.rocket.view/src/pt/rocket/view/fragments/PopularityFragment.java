@@ -151,7 +151,7 @@ public class PopularityFragment extends BaseFragment {
         super.onStart();
         Log.i(TAG, "ON START");
 //        ((BaseActivity) getActivity()).updateActivityHeader(NavigationAction.Products, R.string.reviews);
-        selectedProduct = ServiceManager.SERVICES.get(ProductService.class).getCurrentProduct();
+        selectedProduct = ServiceManager.SERVICES.get(ProductHelper.class).getCurrentProduct();
         inflater = LayoutInflater.from(getActivity());
         if(selectedProduct == null){
             getActivity().finish();

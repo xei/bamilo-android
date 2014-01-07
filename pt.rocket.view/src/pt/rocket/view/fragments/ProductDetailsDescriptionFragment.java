@@ -70,7 +70,7 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
                 EnumSet.of(MyMenuItem.SHARE), 
                 NavigationAction.Products, 
                 R.string.product_details_title);
-        this.mCompleteProduct = ServiceManager.SERVICES.get(ProductService.class).getCurrentProduct();
+        this.mCompleteProduct = ServiceManager.SERVICES.get(ProductHelper.class).getCurrentProduct();
     }
     
     /*
@@ -140,7 +140,7 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        mCompleteProduct = ServiceManager.SERVICES.get(ProductService.class).getCurrentProduct();
+        mCompleteProduct = ServiceManager.SERVICES.get(ProductHelper.class).getCurrentProduct();
         /**
          * Validate product
          * If null is assumed that the system clean some data

@@ -48,7 +48,7 @@ import android.webkit.SslErrorHandler;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
-import ch.boye.httpclientandroidlib.cookie.Cookie;
+
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.shouldit.proxy.lib.ProxyConfiguration;

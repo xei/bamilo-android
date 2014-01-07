@@ -11,12 +11,6 @@ import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.ProductsListAdapter;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
-import pt.rocket.framework.event.EventManager;
-import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.event.IMetaData;
-import pt.rocket.framework.event.ResponseEvent;
-import pt.rocket.framework.event.ResponseResultEvent;
-import pt.rocket.framework.event.events.GetProductsEvent;
 import pt.rocket.framework.objects.Product;
 import pt.rocket.framework.objects.ProductsPage;
 import pt.rocket.framework.rest.RestContract;
@@ -504,6 +498,40 @@ public class ProductsFragment extends BaseFragment implements
             break;
             
         }
+    }
+    
+    private int getDirection(Direction direction) {
+        int value = -1;
+        switch (direction) {
+        case ASCENDENT:
+            value = 0;
+            break;
+        case DESCENDENT:
+            value = 1;
+            break;
+        }
+        
+        return value;
+    }
+    
+    
+    private int getSort(ProductSort position) {
+        int value = -1;
+        switch (position) {
+        case POPULARITY:
+            value = 0;
+            break;
+        case NAME:
+            value = 1;
+            break;
+        case PRICE:
+            value = 2;
+            break;
+        case BRAND:
+            value = 3;
+            break;
+        }
+        return value;
     }
 
     @Override
