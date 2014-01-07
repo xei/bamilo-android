@@ -8,10 +8,10 @@ import java.util.Set;
 
 import de.akquinet.android.androlog.Log;
 
-import pt.rocket.framework.forms.FormField;
-import pt.rocket.framework.forms.FormFieldMeta;
-import pt.rocket.framework.forms.IFormField;
-import pt.rocket.framework.forms.InputType;
+import pt.rocket.forms.FormField;
+import pt.rocket.forms.FormFieldMeta;
+import pt.rocket.forms.IFormField;
+import pt.rocket.forms.InputType;
 import pt.rocket.framework.utils.LogTagHelper;
 
 public class MetaFormExtractor {
