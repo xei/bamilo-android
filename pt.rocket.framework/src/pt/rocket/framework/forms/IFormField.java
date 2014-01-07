@@ -1,8 +1,8 @@
-package pt.rocket.framework.forms;
+package pt.rocket.forms;
 
 import java.util.Map;
 
-import pt.rocket.framework.forms.FormField.OnDataSetReceived;
+import pt.rocket.forms.FormField.OnDataSetReceived;
 
 public interface IFormField {
 

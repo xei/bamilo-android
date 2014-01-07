@@ -1,4 +1,4 @@
-package pt.rocket.framework.forms;
+package pt.rocket.forms;
 
 import org.json.JSONException;
 import org.json.JSONObject;
