@@ -59,36 +59,36 @@ public class ProductHelper {
 	 * 
 	 */
     public ProductHelper() {
-        super(EnumSet.noneOf(EventType.class), EnumSet
-                .of(EventType.INIT_SHOP, EventType.GET_PRODUCTS_EVENT, EventType.GET_PRODUCT_EVENT, EventType.GET_SEARCH_SUGGESTIONS_EVENT,
-                        EventType.GET_PRODUCT_REVIEWS_EVENT, EventType.REVIEW_PRODUCT_EVENT, EventType.GET_RATING_OPTIONS_EVENT));
+//        super(EnumSet.noneOf(EventType.class), EnumSet
+//                .of(EventType.INIT_SHOP, EventType.GET_PRODUCTS_EVENT, EventType.GET_PRODUCT_EVENT, EventType.GET_SEARCH_SUGGESTIONS_EVENT,
+//                        EventType.GET_PRODUCT_REVIEWS_EVENT, EventType.REVIEW_PRODUCT_EVENT, EventType.GET_RATING_OPTIONS_EVENT));
     }
 
     
     
-//    /**
-//     * Gets the complete product for a certain url. This function tries to get
-//     * the product from the product cache. If it succeds, than it triggers the
-//     * GetProductcompletedEvent. If not, if gets the product from the api, then
-//     * it registers the product and then it triggers the
-//     * GetProductCompleteEvent.
-//     * 
-//     * @param event
-//     *            url of the product.
-//     */
-//    public void getProduct(final GetProductEvent event) {
-//        Log.d(TAG, "going to get product from " + event.value);
-//        RestServiceHelper.requestGet(event.value, new ResponseReceiver<CompleteProduct>(event) {
-//
-//            @Override
-//            public CompleteProduct parseResponse(JSONObject metadataObject) throws JSONException {
-//                currentProduct = new CompleteProduct();
-//                currentProduct.initialize(metadataObject);
-//                return currentProduct;
-//            }
-//        }, event.metaData);
-//        // }
-//    }
+    /**
+     * Gets the complete product for a certain url. This function tries to get
+     * the product from the product cache. If it succeds, than it triggers the
+     * GetProductcompletedEvent. If not, if gets the product from the api, then
+     * it registers the product and then it triggers the
+     * GetProductCompleteEvent.
+     * 
+     * @param event
+     *            url of the product.
+     */
+    public Bundle getProduct(Bundle bundle) {
+        Log.d(TAG, "going to get product from " + event.value);
+        RestServiceHelper.requestGet(event.value, new ResponseReceiver<CompleteProduct>(event) {
+
+            @Override
+            public CompleteProduct parseResponse(JSONObject metadataObject) throws JSONException {
+                currentProduct = new CompleteProduct();
+                currentProduct.initialize(metadataObject);
+                return currentProduct;
+            }
+        }, event.metaData);
+        // }
+    }
 
 //    /**
 //     * Function that fetches the all the fields suggestions for a certain query.
@@ -267,26 +267,26 @@ public class ProductHelper {
      */
     public void reviewProduct(final ReviewProductEvent event) {
 
-        ContentValues values = new ContentValues();
-        event.productReviewCreated.addParameters(values);
-        values.put(RestConstants.REVIEW_PRODUCT_SKU_FIELD, event.productSKU);
-        if (event.customerId != -1) {
-            values.put(RestConstants.REVIEW_CUSTOMER_ID, event.customerId);
-        }
-        
-        for (Entry<String, HashMap<String, String>> option : ratingOptions.entrySet()) {
-        	
-            values.put(RestConstants.REVIEW_OPTION_FIELD + option.getKey(), option.getValue().get(String.valueOf(event.productReviewCreated.getRating().get(option.getKey()).intValue())));
-
-        }
-
-        RestServiceHelper.requestPost(event.eventType.action, values, new ResponseReceiver<Void>(event) {
-
-            @Override
-            public Void parseResponse(JSONObject response) {
-                return null;
-            }
-        }, event.metaData);
+//        ContentValues values = new ContentValues();
+//        event.productReviewCreated.addParameters(values);
+//        values.put(RestConstants.REVIEW_PRODUCT_SKU_FIELD, event.productSKU);
+//        if (event.customerId != -1) {
+//            values.put(RestConstants.REVIEW_CUSTOMER_ID, event.customerId);
+//        }
+//        
+//        for (Entry<String, HashMap<String, String>> option : ratingOptions.entrySet()) {
+//        	
+//            values.put(RestConstants.REVIEW_OPTION_FIELD + option.getKey(), option.getValue().get(String.valueOf(event.productReviewCreated.getRating().get(option.getKey()).intValue())));
+//
+//        }
+//
+//        RestServiceHelper.requestPost(event.eventType.action, values, new ResponseReceiver<Void>(event) {
+//
+//            @Override
+//            public Void parseResponse(JSONObject response) {
+//                return null;
+//            }
+//        }, event.metaData);
     }
 
     /*
@@ -297,28 +297,29 @@ public class ProductHelper {
      * .event.IEvent)
      */
     
-    public void handleEvent(EventType eventType) {
+    public Bundle handleEvent(EventType eventType, Bundle bundle) {
+        Bundle responseBundle;
         switch (eventType) {
         case INIT_SHOP:
             ratingOptions = null;
             break;
         case GET_PRODUCTS_EVENT:
-            getProducts((GetProductsEvent) event);
+            responseBundle = getProducts(bundle);
             break;
         case GET_PRODUCT_EVENT:
-            getProduct((GetProductEvent) event);
+            responseBundle = getProduct(bundle);
             break;
         case GET_SEARCH_SUGGESTIONS_EVENT:
-            getSearchAutoComplete((GetSearchSuggestionsEvent) event);
+            responseBundle = getSearchAutoComplete(bundle);
             break;
         case GET_PRODUCT_REVIEWS_EVENT:
-            getProductReviews((GetProductReviewsEvent) event);
+            responseBundle = getProductReviews(bundle);
             break;
         case REVIEW_PRODUCT_EVENT:
-            reviewProduct((ReviewProductEvent) event);
+            responseBundle = reviewProduct(bundle);
             break;
         case GET_RATING_OPTIONS_EVENT:
-            getRatingOptions(event);
+            responseBundle = getRatingOptions(bundle);
             break;
         }
     }
