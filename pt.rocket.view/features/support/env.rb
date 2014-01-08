@@ -31,7 +31,7 @@ def initvars
   @billingbtn="billingbtn"
   @finish="finishbtn"
   @payment="paymentbtn"
-  @payment="paymentmethodbtn"
+  @paymentmethod="paymentmethodbtn"
 end
 
 
