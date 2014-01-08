@@ -72,7 +72,7 @@ public class RatingOption implements IJSONSerializable, Parcelable {
 		optionTitle = in.readString();
 	}
 
-	private static final Parcelable.Creator<RatingOption> CREATOR = new Parcelable.Creator<RatingOption>() {
+	public static final Parcelable.Creator<RatingOption> CREATOR = new Parcelable.Creator<RatingOption>() {
 		public RatingOption createFromParcel(Parcel in) {
 			return new RatingOption(in);
 		}

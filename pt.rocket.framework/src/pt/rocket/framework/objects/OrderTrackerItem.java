@@ -9,16 +9,11 @@
  */
 package pt.rocket.framework.objects;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.util.Log;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -29,8 +24,9 @@ import pt.rocket.framework.utils.LogTagHelper;
  * @author manuelsilva
  * 
  */
-public class OrderTrackerItem implements IJSONSerializable {
-	private final static String TAG = LogTagHelper.create( OrderTrackerItem.class );
+public class OrderTrackerItem implements IJSONSerializable, Parcelable{
+	
+	public final static String TAG = LogTagHelper.create( OrderTrackerItem.class );
 
     private String sku;
     private String name;
@@ -136,4 +132,56 @@ public class OrderTrackerItem implements IJSONSerializable {
         }
         return jsonObject;
     }
+    
+    /**
+     * ########### Parcelable ###########
+     * @author sergiopereira
+     */
+    
+    /*
+     * (non-Javadoc)
+     * @see android.os.Parcelable#describeContents()
+     */
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see android.os.Parcelable#writeToParcel(android.os.Parcel, int)
+	 */
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+	    dest.writeString(sku);
+	    dest.writeString(name);
+	    dest.writeString(quantity);
+	    dest.writeString(status);
+	    dest.writeString(status_update);
+	}
+	
+	/**
+	 * Parcel constructor
+	 * @param in
+	 */
+	private OrderTrackerItem(Parcel in) {
+    	this.sku = in.readString();
+    	this.name = in.readString();
+    	this.quantity = in.readString();
+    	this.status = in.readString();
+    	this.status_update = in.readString();
+    }
+		
+	/**
+	 * Create parcelable 
+	 */
+	public static final Parcelable.Creator<OrderTrackerItem> CREATOR = new Parcelable.Creator<OrderTrackerItem>() {
+        public OrderTrackerItem createFromParcel(Parcel in) {
+            return new OrderTrackerItem(in);
+        }
+
+        public OrderTrackerItem[] newArray(int size) {
+            return new OrderTrackerItem[size];
+        }
+    };
 }

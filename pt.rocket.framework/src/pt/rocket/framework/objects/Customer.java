@@ -12,13 +12,15 @@ package pt.rocket.framework.objects;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.LogTagHelper;
-import android.annotation.SuppressLint;
+import android.os.Parcel;
+import android.os.Parcelable;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -27,18 +29,12 @@ import de.akquinet.android.androlog.Log;
  * @author GuilhermeSilva
  *
  */
-public class Customer implements IJSONSerializable {
+public class Customer implements IJSONSerializable, Parcelable{
+	
 	private final static String TAG = LogTagHelper.create( Customer.class );
 	
-	@SuppressLint("SimpleDateFormat")
-	private static SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd"); 
-	
-//    private final String JSON_ID_TAG = "id_customer";
-//    private final String JSON_FIRST_NAME_TAG = "first_name";
-//    private final String JSON_LAST_NAME_TAG = "last_name";
-//    private final String JSON_EMAIL_TAG = "email";
-//    private final String JSON_BIRTHDAY_TAG = "birthday";
-//    private final String JSON_GENDER_TAG = "gender";
+	//@SuppressLint("SimpleDateFormat")
+	//private static SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd"); 
     
     private String id;
     private CustomerPrefix prefix;
@@ -54,7 +50,7 @@ public class Customer implements IJSONSerializable {
     /**
      * Customer empty constructor
      */
-    private Customer() {
+    public Customer() {
         id = "-1";
         firstName = "";
         middleName = "";
@@ -276,11 +272,10 @@ public class Customer implements IJSONSerializable {
             lastName = jsonObject.getString(RestConstants.JSON_LAST_NAME_TAG);
             email = jsonObject.getString(RestConstants.JSON_EMAIL_TAG);
             created_at = jsonObject.getString(RestConstants.JSON_CREATED_AT_TAG);
-            SimpleDateFormat  format = new SimpleDateFormat("yyyy-MM-dd");  
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());  
             try {  
             	birthday = format.parse(jsonObject.getString(RestConstants.JSON_BIRTHDAY_TAG));  
             } catch (ParseException e) {  
-                // TODO Auto-generated catch block  
                 e.printStackTrace();  
             }
 
@@ -324,5 +319,68 @@ public class Customer implements IJSONSerializable {
         }
         return jsonObject;
     }
+    
+    
+    /**
+     * ########### Parcelable ###########
+     * @author sergiopereira
+     */
+    
+    /*
+     * (non-Javadoc)
+     * @see android.os.Parcelable#describeContents()
+     */
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see android.os.Parcelable#writeToParcel(android.os.Parcel, int)
+	 */
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+	    dest.writeString(id);
+	    dest.writeString(firstName);
+	    dest.writeString(middleName);
+	    dest.writeString(lastName);
+	    dest.writeString(email);
+	    dest.writeLong(birthday.getTime());
+	    dest.writeValue(gender);
+	    dest.writeString(password);
+	    dest.writeValue(prefix);
+	    dest.writeString(created_at);
+	}
+	
+	/**
+	 * Parcel constructor
+	 * @param in
+	 */
+	private Customer(Parcel in) {
+        this.id = in.readString();
+        this.firstName = in.readString();
+        this.middleName = in.readString();
+        this.lastName = in.readString();
+        this.email = in.readString();
+        this.birthday = new Date(in.readLong());
+        this.gender = (CustomerGender) in.readValue(CustomerGender.class.getClassLoader());
+        this.password = in.readString();
+        this.prefix = (CustomerPrefix) in.readValue(CustomerPrefix.class.getClassLoader());
+        this.created_at = in.readString();
+    }
+		
+	/**
+	 * Create parcelable 
+	 */
+	public static final Parcelable.Creator<Customer> CREATOR = new Parcelable.Creator<Customer>() {
+        public Customer createFromParcel(Parcel in) {
+            return new Customer(in);
+        }
+
+        public Customer[] newArray(int size) {
+            return new Customer[size];
+        }
+    };
 
 }

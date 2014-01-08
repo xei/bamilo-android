@@ -7,6 +7,8 @@ import org.json.JSONObject;
 
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.LogTagHelper;
+import android.os.Parcel;
+import android.os.Parcelable;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -15,36 +17,18 @@ import de.akquinet.android.androlog.Log;
  * @author GuilhermeSilva
  * 
  */
-public abstract class TeaserSpecification<T extends ITargeting> implements
-		IJSONSerializable {
-	private final static String TAG = LogTagHelper
-			.create(TeaserSpecification.class);
+public abstract class TeaserSpecification<T extends ITargeting> implements IJSONSerializable, Parcelable {
+    
+	private final static String TAG = LogTagHelper.create(TeaserSpecification.class);
 
-	public enum TeaserGroupType {
-		MAIN_ONE_SLIDE(0), STATIC_BANNER(1), PRODUCT_LIST(2), CATEGORIES(3), BRANDS_LIST(4), UNKNOWN(
-				-1);
-
-		public final int value;
-
-		/**
-		 * 
-		 */
-		private TeaserGroupType(int value) {
-			this.value = value;
-		}
-
-		public static TeaserGroupType byValue(int value) {
-			for (TeaserGroupType type : TeaserGroupType.values()) {
-				if (type.value == value)
-					return type;
-			}
-			return UNKNOWN;
-		}
-	}
-
+    protected String title;
+    
+    private final TeaserGroupType type;
+    
+    private final ArrayList<T> teasers;
+    
 	public static TeaserSpecification<?> parse(JSONObject jsonObject) {
-		TeaserGroupType type = TeaserGroupType.byValue(jsonObject.optInt(
-				RestConstants.JSON_GROUP_TYPE_TAG, -1));
+		TeaserGroupType type = TeaserGroupType.byValue(jsonObject.optInt(RestConstants.JSON_GROUP_TYPE_TAG, -1));
 		TeaserSpecification<?> teaserSpecification = UnknownTeaserGroup.INSTANCE;
 		switch (type) {
 		case MAIN_ONE_SLIDE:
@@ -65,24 +49,12 @@ public abstract class TeaserSpecification<T extends ITargeting> implements
 		return teaserSpecification;
 	}
 
-//	protected static final String JSON_ATTRIBUTES_TAG = "attributes";
-//	protected static final String JSON_DESCRIPTION_TAG = "description";
-//	protected static final String JSON_IMAGE_URL_TAG = "image_url";
-//	protected static final String JSON_IMAGES_TAG = "image_list";
-//	protected static final String JSON_GROUP_TYPE_TAG = "group_type";
-//	protected static final String JSON_GROUP_TITLE_TAG = "group_title";
-//	protected static final String JSON_TARGET_TAG = "target_type";
-
-	protected String title;
-	private final TeaserGroupType type;
-	private final ArrayList<T> teasers;
-
 	/**
 	 * TeaserSpecification empty constructor.
 	 */
 	public TeaserSpecification(TeaserGroupType type) {
 		this.type = type;
-		teasers = new ArrayList<T>();
+		this.teasers = new ArrayList<T>();
 	}
 
 	/*
@@ -144,4 +116,36 @@ public abstract class TeaserSpecification<T extends ITargeting> implements
 	public String getTitle() {
 		return title;
 	}
+	
+	
+    /**
+     * ########### Parcelable ###########
+     * @author sergiopereira
+     */
+	
+	/*
+	 * (non-Javadoc)
+	 * @see android.os.Parcelable#writeToParcel(android.os.Parcel, int)
+	 */
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+	    dest.writeString(title);
+	    dest.writeValue(type);
+	    dest.writeList(teasers);
+		
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see android.os.Parcelable#describeContents()
+	 */
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+	
+	/**
+	 * TODO: CREATOR
+	 */
+	
 }

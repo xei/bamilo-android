@@ -12,10 +12,12 @@ package pt.rocket.framework.objects;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import pt.rocket.framework.objects.ITargeting.TargetType;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.LogTagHelper;
-import de.akquinet.android.androlog.Log;
 
 /**
  * Class that represents the server side product. Contains id, name,
@@ -25,11 +27,9 @@ import de.akquinet.android.androlog.Log;
  * @author GuilhermeSilva
  * 
  */
-public class TeaserBrandElement implements IJSONSerializable {
-	private final static String TAG = LogTagHelper.create( TeaserBrandElement.class );
-
-//    private static final String JSON_ATTRIBUTES_TAG = "data";
-//    private static final String JSON_ATTRIBUTES_TWO_TAG = "attributes";
+public class TeaserBrandElement implements IJSONSerializable, Parcelable{
+	
+	protected final static String TAG = LogTagHelper.create( TeaserBrandElement.class );
 
     private String id;
     private BrandAttributes attributes;
@@ -98,128 +98,6 @@ public class TeaserBrandElement implements IJSONSerializable {
     }
 
     /**
-     * Class that holds the attributes of the product
-     * 
-     * @author GuilhermeSilva
-     * 
-     */
-    public class BrandAttributes implements IJSONSerializable {
-//        private static final String JSON_NAME_TAG = "description";
-//        private static final String JSON_ID_TAG = "id";
-//        private static final String JSON_IMAGE_LIST_TAG = "image_list";
-//        private static final String JSON_IMAGE_URL_TAG = "image_url";
-//        private static final String JSON_BRAND_URL_TAG = "brand_url";
-//        private static final String JSON_DESCRIPTION_TAG = "description";
-//        private static final String JSON_TARGET_TYPE_TAG = "target_type";
-
-        private String name;
-        private int id;
-        private String image_url;
-        private String brand_url;
-        private String description;
-        private String target_type;
-        /**
-         * ProductAttributes empty constructor
-         */
-        public BrandAttributes() {
-        	name = "";
-            id = -1;
-            image_url = "";
-            brand_url = "";
-            description = "";
-            target_type = "";
-        }
-
-        /**
-		 * @return the reviews
-		 */
-		public Integer getId() {
-			return id;
-		}
-
-		/**
-		 * @return the rating
-		 */
-		public String getBrandUrl() {
-			return brand_url;
-		}
-
-		/**
-         * @return the sku
-         */
-        public String getImageUrl() {
-            return image_url;
-        }
-
-        /**
-         * @return the name
-         */
-        public String getName() {
-            return name;
-        }
-
-        /**
-         * @return the description
-         */
-        public String getDescription() {
-            return description;
-        }
-
-        /**
-         * @return the brand
-         */
-        public TargetType getTargetType() {
-            return TargetType.BRAND;
-        }
-
-        /* (non-Javadoc)
-         * @see pt.rocket.framework.objects.IJSONSerializable#initialize(org.json.JSONObject)
-         */
-        @Override
-        public boolean initialize(JSONObject jsonObject) {
-                        
-            try {
-            	
-        		name = jsonObject.getString(RestConstants.JSON_BRAND_DESCRIPTION_TAG);
-        		target_type = jsonObject.optString(RestConstants.JSON_TARGET_TYPE_TAG, "");
-                
-                              
-                description = jsonObject.optString(RestConstants.JSON_DESCRIPTION_TAG, "");
-                
-                brand_url = jsonObject.getJSONObject(RestConstants.JSON_IMAGE_LIST_TAG).getString(RestConstants.JSON_BRAND_URL_TAG);
-                
-                image_url = jsonObject.getJSONObject(RestConstants.JSON_IMAGE_LIST_TAG).getString(RestConstants.JSON_IMAGE_URL_TAG);
-            } catch (JSONException e) {
-            	Log.e(TAG, "Error Parsing the product json", e);
-                return false;
-            }
-            
-            return true;
-        }
-
-        /* (non-Javadoc)
-         * @see pt.rocket.framework.objects.IJSONSerializable#toJSON()
-         */
-        @Override
-        public JSONObject toJSON() {
-            JSONObject jsonObject = new JSONObject();
-
-            try {
-                jsonObject.put(RestConstants.JSON_ID_TAG, id);
-                jsonObject.put(RestConstants.JSON_BRAND_DESCRIPTION_TAG, name);
-                jsonObject.put(RestConstants.JSON_IMAGE_URL_TAG, image_url);
-                jsonObject.put(RestConstants.JSON_BRAND_URL_TAG, brand_url);
-                jsonObject.put(RestConstants.JSON_DESCRIPTION_TAG, description);
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-                return null;
-            }
-            return jsonObject;
-        }
-    }
-    
-    /**
      * @return the brand id
      */
     public int getID() {
@@ -260,4 +138,50 @@ public class TeaserBrandElement implements IJSONSerializable {
     public TargetType getTargetType() {
         return attributes.getTargetType();
     }
+    
+    /**
+     * ########### Parcelable ###########
+     * @author sergiopereira
+     */
+    
+    /*
+     * (non-Javadoc)
+     * @see android.os.Parcelable#describeContents()
+     */
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see android.os.Parcelable#writeToParcel(android.os.Parcel, int)
+	 */
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+	    dest.writeString(id);
+	    dest.writeValue(attributes);
+	}
+	
+	/**
+	 * Parcel constructor
+	 * @param in
+	 */
+	private TeaserBrandElement(Parcel in) {
+        id = in.readString();
+        attributes = (BrandAttributes) in.readValue(BrandAttributes.class.getClassLoader());
+    }
+	
+	/**
+	 * Create parcelable 
+	 */
+	public static final Parcelable.Creator<TeaserBrandElement> CREATOR = new Parcelable.Creator<TeaserBrandElement>() {
+        public TeaserBrandElement createFromParcel(Parcel in) {
+            return new TeaserBrandElement(in);
+        }
+
+        public TeaserBrandElement[] newArray(int size) {
+            return new TeaserBrandElement[size];
+        }
+    };
 }

@@ -12,6 +12,9 @@ package pt.rocket.framework.objects;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import pt.rocket.framework.rest.RestConstants;
 
 import java.util.HashMap;
@@ -23,25 +26,11 @@ import java.util.HashMap;
  * @author GuilhermeSilva
  * 
  */
-public class Address implements IJSONSerializable {
+public class Address implements IJSONSerializable, Parcelable {
     /**
      * List of string the represent the class properties in the Address Object
      * Model
      */
-//    public static final String JSON_ID_TAG = "id_customer_address";
-//    public static final String JSON_FIRST_NAME_TAG = "first_name";
-//    public static final String JSON_MIDDLE_NAME_TAG = "middle_name";
-//    public static final String JSON_LAST_NAME_TAG = "last_name";
-//    public static final String JSON_PHONE_TAG = "phone";
-//    public static final String JSON_ADDRESS1_TAG = "address1";
-//    public static final String JSON_ADDRESS2_TAG = "address2";
-//    public static final String JSON_CITY_TAG = "city";
-//    public static final String JSON_REGION_TAG = "region";
-//    public static final String JSON_POSTCODE_TAG = "postcode";
-//    public static final String JSON_COMPANY_TAG = "company";
-//    public static final String JSON_IS_DEFAULT_BILLING_TAG = "is_default_billing";
-//    public static final String JSON_IS_DEFAULT_SHIPPING_TAG = "is_default_shipping";
-
     public static final String OBJECT_MODEL_ID = "address_id";
     public static final String OBJECT_MODEL_FIRST_NAME = "AddressForm[first_name]";
     public static final String OBJECT_MODEL_MIDDLE_NAME = "AddressForm[middle_name]";
@@ -412,4 +401,74 @@ public class Address implements IJSONSerializable {
         }
         return jsonObject;
     }
+
+    /**
+     * ########### Parcelable ###########
+     * @author sergiopereira
+     */
+    
+    /*
+     * (non-Javadoc)
+     * @see android.os.Parcelable#describeContents()
+     */
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see android.os.Parcelable#writeToParcel(android.os.Parcel, int)
+	 */
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+	    dest.writeInt(addressId);
+	    dest.writeString(company);
+	    dest.writeString(id);
+	    dest.writeString(firstName);
+	    dest.writeString(middleName);
+	    dest.writeString(lastName);
+	    dest.writeString(phone);
+	    dest.writeString(streetAddress1);
+	    dest.writeString(streetAddress2);
+	    dest.writeString(postalCode);
+	    dest.writeString(city);
+	    dest.writeString(region);
+	    dest.writeBooleanArray(new boolean[] {isDefaultBilling, isDefaultShipping});
+	}
+	
+	/**
+	 * Parcel constructor
+	 * @param in
+	 */
+	private Address(Parcel in) {
+	    addressId = in.readInt();
+	    company = in.readString();
+	    id = in.readString();
+	    firstName = in.readString();
+	    middleName = in.readString();
+	    lastName = in.readString();
+	    phone = in.readString();
+	    streetAddress1 = in.readString();
+	    streetAddress2 = in.readString();
+	    postalCode = in.readString();
+	    city = in.readString();
+	    region = in.readString();
+	    in.readBooleanArray(new boolean[] {isDefaultBilling, isDefaultShipping});
+    }
+		
+	/**
+	 * Create parcelable 
+	 */
+	public static final Parcelable.Creator<Address> CREATOR = new Parcelable.Creator<Address>() {
+        public Address createFromParcel(Parcel in) {
+            return new Address(in);
+        }
+
+        public Address[] newArray(int size) {
+            return new Address[size];
+        }
+    };
+
+	
 }

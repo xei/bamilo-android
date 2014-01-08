@@ -21,21 +21,6 @@ import de.akquinet.android.androlog.Log;
  */
 public class ProductReviewComment implements IJSONSerializable, Parcelable {
 
-//    private static final String JSON_TITLE_TAG = "title";
-//    private static final String JSON_DETAILS_TAG = "detail";
-//    private static final String JSON_NICKNAME_TAG = "nickname";
-//    private static final String JSON_DATE_TAG = "created_at";
-//    private static final String JSON_OPTIONS_TAG = "options";
-//
-//    // private static final String JSON_TYPE_ID_TAG = "type_id";
-//    // private static final String JSON_TYPE_CODE_TAG = "type_code";
-//    // private static final String JSON_TYPE_TITLE_TAG = "type_title";
-//    // private static final String JSON_OPTION_CODE_TAG = "option_code";
-//    // private static final String JSON_SIZE_STARS_BACK_TAG = "size-stars-back";
-//    private static final String JSON_SIZE_STARS_FORE_TAG = "size-stars-fore";
-//    private static final String JSON_TYPE_TITLE_TAG = "type_title";
-
-
     private String title = "";
     private String comments = "";
     private String name = "";
@@ -170,7 +155,7 @@ public class ProductReviewComment implements IJSONSerializable, Parcelable {
 		 in.readList(ratingOptions, RatingOption.class.getClassLoader());
 	}
 	
-    private static final Parcelable.Creator<ProductReviewComment> CREATOR = new Parcelable.Creator<ProductReviewComment>() {
+    public static final Parcelable.Creator<ProductReviewComment> CREATOR = new Parcelable.Creator<ProductReviewComment>() {
         public ProductReviewComment createFromParcel(Parcel in) {
             return new ProductReviewComment(in);
         }

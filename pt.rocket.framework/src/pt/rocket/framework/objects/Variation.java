@@ -104,7 +104,7 @@ public class Variation implements IJSONSerializable, Parcelable {
 		image = in.readString();
 	}
 	
-    private static final Parcelable.Creator<Variation> CREATOR = new Parcelable.Creator<Variation>() {
+    public static final Parcelable.Creator<Variation> CREATOR = new Parcelable.Creator<Variation>() {
         public Variation createFromParcel(Parcel in) {
             return new Variation(in);
         }

@@ -31,7 +31,8 @@ import pt.rocket.framework.rest.RestConstants;
  * 
  */
 public class Product implements IJSONSerializable, Parcelable {
-	private final static String TAG = Product.class.getName();
+	
+	public final static String TAG = Product.class.getName();
 
     private String id;
     private ProductAttributes attributes;
@@ -218,7 +219,7 @@ public class Product implements IJSONSerializable, Parcelable {
         in.readList(images, Image.class.getClassLoader());
     }
     
-    private static final Parcelable.Creator<Product> CREATOR = new Parcelable.Creator<Product>() {
+    public static final Parcelable.Creator<Product> CREATOR = new Parcelable.Creator<Product>() {
         public Product createFromParcel(Parcel in) {
             return new Product(in);
         }

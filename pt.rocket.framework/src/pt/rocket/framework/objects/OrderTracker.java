@@ -9,19 +9,14 @@
  */
 package pt.rocket.framework.objects;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Iterator;
-import java.util.Locale;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.util.Log;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -32,8 +27,9 @@ import pt.rocket.framework.utils.LogTagHelper;
  * @author manuelsilva
  * 
  */
-public class OrderTracker implements IJSONSerializable {
-	private final static String TAG = LogTagHelper.create( OrderTracker.class );
+public class OrderTracker implements IJSONSerializable, Parcelable {
+	
+	public final static String TAG = LogTagHelper.create( OrderTracker.class );
 
     private String order_id;
     private String creation_date;
@@ -146,4 +142,59 @@ public class OrderTracker implements IJSONSerializable {
 //        }
         return jsonObject;
     }
+    
+    
+    
+    /**
+     * ########### Parcelable ###########
+     * @author sergiopereira
+     */
+    
+    /*
+     * (non-Javadoc)
+     * @see android.os.Parcelable#describeContents()
+     */
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see android.os.Parcelable#writeToParcel(android.os.Parcel, int)
+	 */
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+	    dest.writeString(order_id);
+	    dest.writeString(creation_date);
+	    dest.writeString(payment_method);
+	    dest.writeString(last_order_update);
+	    dest.writeList(orderTracketItems);
+	}
+	
+	/**
+	 * Parcel constructor
+	 * @param in
+	 */
+	private OrderTracker(Parcel in) {
+    	order_id = in.readString();
+    	creation_date = in.readString();
+    	payment_method = in.readString();
+    	last_order_update = in.readString();
+    	in.readList(orderTracketItems, OrderTrackerItem.class.getClassLoader());
+    }
+		
+	/**
+	 * Create parcelable 
+	 */
+	public static final Parcelable.Creator<OrderTracker> CREATOR = new Parcelable.Creator<OrderTracker>() {
+        public OrderTracker createFromParcel(Parcel in) {
+            return new OrderTracker(in);
+        }
+
+        public OrderTracker[] newArray(int size) {
+            return new OrderTracker[size];
+        }
+    };
+    
 }

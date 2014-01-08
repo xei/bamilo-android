@@ -12,6 +12,9 @@ package pt.rocket.framework.objects;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import pt.rocket.framework.rest.RestConstants;
 
 import de.akquinet.android.androlog.Log;
@@ -23,11 +26,7 @@ import de.akquinet.android.androlog.Log;
  * @author Guilherme Silva
  * 
  */
-public class Brand implements IJSONSerializable {
-//    private static final String JSON_INNER_OBJECT_TAG = "brand";
-//    private static final String JSON_URL_TAG = "url";
-//    private static final String JSON_NAME_TAG = "name";
-//    private static final String JSON_IMAGE_TAG = "image";
+public class Brand implements IJSONSerializable, Parcelable {
 
     private String id;
     private String url;
@@ -121,81 +120,52 @@ public class Brand implements IJSONSerializable {
     }
 
     /**
-     * Defines the image of the brand.
-     * @author GuilhermeSilva
-     *
+     * ########### Parcelable ###########
+     * @author sergiopereira
      */
-    public class BrandImage implements IJSONSerializable {
-//        private static final String JSON_URL_TAG = "url";
-//        private static final String JSON_WIDTH_TAG = "width";
-//        private static final String JSON_HEIGHT_TAG = "height";
-//        private static final String JSON_FORMAT_TAG = "format";
 
-        private String url;
-        private String width;
-        private String height;
-        private String format;
+    /*
+     * (non-Javadoc)
+     * @see android.os.Parcelable#describeContents()
+     */
+	@Override
+	public int describeContents() {
+		return 0;
+	}
 
-        /**
-         * @return the url
-         */
-        public String getUrl() {
-            return url;
-        }
-
-        /**
-         * @return the width
-         */
-        public String getWidth() {
-            return width;
-        }
-
-        /**
-         * @return the height
-         */
-        public String getHeight() {
-            return height;
-        }
-
-        /**
-         * @return the format
-         */
-        public String getFormat() {
-            return format;
-        }
-
-        /* (non-Javadoc)
-         * @see pt.rocket.framework.objects.IJSONSerializable#initialize(org.json.JSONObject)
-         */
-        @Override
-        public boolean initialize(JSONObject jsonObject) {
-            this.url = jsonObject.optString(RestConstants.JSON_URL_TAG);
-            this.width = jsonObject.optString(RestConstants.JSON_WIDTH_TAG);
-            this.height = jsonObject.optString(RestConstants.JSON_HEIGHT_TAG);
-            this.format = jsonObject.optString(RestConstants.JSON_FORMAT_TAG);
-           
-            return true;
-        }
-
-        /* (non-Javadoc)
-         * @see pt.rocket.framework.objects.IJSONSerializable#toJSON()
-         */
-        @Override
-        public JSONObject toJSON() {
-            JSONObject jsonObject = new JSONObject();
-            try {
-                jsonObject.put(RestConstants.JSON_URL_TAG, url);
-                jsonObject.put(RestConstants.JSON_WIDTH_TAG, width);
-                jsonObject.put(RestConstants.JSON_HEIGHT_TAG, height);
-                jsonObject.put(RestConstants.JSON_FORMAT_TAG, format);
-
-            } catch (JSONException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-                return null;
-            }
-
-            return jsonObject;
-        }
+	/*
+	 * (non-Javadoc)
+	 * @see android.os.Parcelable#writeToParcel(android.os.Parcel, int)
+	 */
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+	    dest.writeString(id);
+	    dest.writeString(url);
+	    dest.writeString(name);
+	    dest.writeValue(image);
+	}
+	
+	/**
+	 * Parcel constructor
+	 * @param in
+	 */
+    private Brand(Parcel in) {
+        id = in.readString();
+        url = in.readString();
+        name = in.readString();
+        image = (BrandImage) in.readValue(BrandImage.class.getClassLoader());
     }
+    
+	/**
+	 * Create parcelable 
+	 */
+    public static final Parcelable.Creator<Brand> CREATOR = new Parcelable.Creator<Brand>() {
+        public Brand createFromParcel(Parcel in) {
+            return new Brand(in);
+        }
+
+        public Brand[] newArray(int size) {
+            return new Brand[size];
+        }
+    };
 }

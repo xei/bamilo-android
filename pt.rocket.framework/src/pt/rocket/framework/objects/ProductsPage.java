@@ -113,7 +113,7 @@ public class ProductsPage implements IJSONSerializable, Parcelable {
 		in.readList(categories, Category.class.getClassLoader());
 	}
 	
-    private static final Parcelable.Creator<ProductsPage> CREATOR = new Parcelable.Creator<ProductsPage>() {
+    public static final Parcelable.Creator<ProductsPage> CREATOR = new Parcelable.Creator<ProductsPage>() {
         public ProductsPage createFromParcel(Parcel in) {
             return new ProductsPage(in);
         }

@@ -3,15 +3,17 @@ package pt.rocket.framework.objects;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import pt.rocket.framework.rest.RestConstants;
 
 /**
  * Class that defines the carousel (slider) item
  * @author GuilhermeSilva
  */
-public class CarouselItem  implements IJSONSerializable{
-	// private static final String JSON_DESCRIPTION_TAG = "description";
-	// private static final String JSON_URL_TAG = "url";
+public class CarouselItem  implements IJSONSerializable, Parcelable{
+	
     private String id;
     private String description;
     private String url;
@@ -95,4 +97,52 @@ public class CarouselItem  implements IJSONSerializable{
     public String getId() {
         return id;
     }
+    
+    /**
+     * ########### Parcelable ###########
+     * @author sergiopereira
+     */
+    
+    /*
+     * (non-Javadoc)
+     * @see android.os.Parcelable#describeContents()
+     */
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see android.os.Parcelable#writeToParcel(android.os.Parcel, int)
+	 */
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+	    dest.writeString(id);
+	    dest.writeString(description);
+	    dest.writeString(url);
+	}
+	
+	/**
+	 * Parcel constructor
+	 * @param in
+	 */
+	private CarouselItem(Parcel in) {
+        id = in.readString();
+        description = in.readString();
+        url = in.readString();
+    }
+		
+	/**
+	 * Create parcelable 
+	 */
+	public static final Parcelable.Creator<CarouselItem> CREATOR = new Parcelable.Creator<CarouselItem>() {
+        public CarouselItem createFromParcel(Parcel in) {
+            return new CarouselItem(in);
+        }
+
+        public CarouselItem[] newArray(int size) {
+            return new CarouselItem[size];
+        }
+    };
 }

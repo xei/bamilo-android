@@ -133,7 +133,7 @@ public class ProductReviewCommentCreated implements Parcelable {
 		email = in.readString();
 	}
 	
-	private static final Parcelable.Creator<ProductReviewCommentCreated> CREATOR = new Parcelable.Creator<ProductReviewCommentCreated>() {
+	public static final Parcelable.Creator<ProductReviewCommentCreated> CREATOR = new Parcelable.Creator<ProductReviewCommentCreated>() {
 		public ProductReviewCommentCreated createFromParcel(Parcel in) {
 			return new ProductReviewCommentCreated(in);
 		}

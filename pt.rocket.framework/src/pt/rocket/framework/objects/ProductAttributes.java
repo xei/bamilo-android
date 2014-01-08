@@ -280,7 +280,7 @@ public class ProductAttributes implements IJSONSerializable, Parcelable {
         rating = in.readDouble();
     }
 
-    private static final Parcelable.Creator<ProductAttributes> CREATOR = new Parcelable.Creator<ProductAttributes>() {
+    public static final Parcelable.Creator<ProductAttributes> CREATOR = new Parcelable.Creator<ProductAttributes>() {
         public ProductAttributes createFromParcel(Parcel in) {
             return new ProductAttributes(in);
         }

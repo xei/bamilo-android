@@ -6,6 +6,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import pt.rocket.framework.rest.RestConstants;
 
 /**
@@ -14,17 +17,13 @@ import pt.rocket.framework.rest.RestConstants;
  *
  */
 
-public class Homepage implements IJSONSerializable{
+public class Homepage implements IJSONSerializable, Parcelable{
 	
 	private int homepageId;
 	private String homepageTitle;
 	private boolean defaultHomepage;
 	private ArrayList<TeaserSpecification<?>> teaserSpecifications;
 	private String homepageLayout;
-//	protected static final String JSON_HOMEPAGE_ID_TAG = "homepage_id";
-//	protected static final String JSON_HOMEPAGE_TITLE_TAG = "homepage_title";
-//	protected static final String JSON_HOMEPAGE_DEFAULT_TAG = "homepage_default";
-//	protected static final String JSON_HOMEPAGE_LAYOUT_TAG= "homepage_layout";
 	
 	/**
 	 * Constructor
@@ -82,7 +81,6 @@ public class Homepage implements IJSONSerializable{
 
 	@Override
 	public boolean initialize(JSONObject jsonObject) throws JSONException {
-		// TODO Auto-generated method stub
 		homepageId = jsonObject.getInt(RestConstants.JSON_HOMEPAGE_ID_TAG);
 		homepageTitle=jsonObject.getString(RestConstants.JSON_HOMEPAGE_TITLE_TAG);
 		defaultHomepage=jsonObject.getInt(RestConstants.JSON_HOMEPAGE_DEFAULT_TAG)==1?true:false;
@@ -99,9 +97,57 @@ public class Homepage implements IJSONSerializable{
 
 	@Override
 	public JSONObject toJSON() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	
+    /**
+     * ########### Parcelable ###########
+     * @author sergiopereira
+     */
+    
+    /*
+     * (non-Javadoc)
+     * @see android.os.Parcelable#describeContents()
+     */
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see android.os.Parcelable#writeToParcel(android.os.Parcel, int)
+	 */
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+	    dest.writeInt(homepageId);
+	    dest.writeString(homepageTitle);
+	    dest.writeBooleanArray(new boolean[] {defaultHomepage});
+	    dest.writeList(teaserSpecifications);
+	}
+	
+	/**
+	 * Parcel constructor
+	 * @param in
+	 */
+	private Homepage(Parcel in) {
+		homepageId = in.readInt();
+		homepageTitle = in.readString();
+		in.readBooleanArray(new boolean[] {defaultHomepage});
+		in.readList(teaserSpecifications, TeaserSpecification.class.getClassLoader());
+    }
+		
+	/**
+	 * Create parcelable 
+	 */
+	public static final Parcelable.Creator<Homepage> CREATOR = new Parcelable.Creator<Homepage>() {
+        public Homepage createFromParcel(Parcel in) {
+            return new Homepage(in);
+        }
+
+        public Homepage[] newArray(int size) {
+            return new Homepage[size];
+        }
+    };
 
 }

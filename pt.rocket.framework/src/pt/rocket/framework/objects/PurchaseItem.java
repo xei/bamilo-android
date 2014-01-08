@@ -8,17 +8,16 @@ import org.json.JSONObject;
 
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.LogTagHelper;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.text.TextUtils;
 import de.akquinet.android.androlog.Log;
 
-public class PurchaseItem {
+public class PurchaseItem implements Parcelable {
+	
 	private static String TAG = LogTagHelper.create(PurchaseItem.class);
+	
 	private static int INDEX_OFFSET = 5;
-//	private static String JSON_TAG_SKU = "sku";
-//	private static String JSON_TAG_NAME = "name";
-//	private static String JSON_TAG_CATEGORY = "category";
-//	private static String JSON_TAG_PAIDPRICE = "paidprice";
-//	private static String JSON_TAG_QUANTITY = "quantity";
 
 	public String sku;
 	public String name;
@@ -27,6 +26,14 @@ public class PurchaseItem {
 	public Double paidpriceAsDouble = 0d;
 	public String quantity= "";
 	public Integer quantityAsInt = 0;
+	
+	
+	
+	/**
+	 * Empty constructor
+	 */
+	public PurchaseItem() { }
+
 	
 	private boolean parseItem( JSONObject itemsJson, int indexBegin ) {
 		try {
@@ -69,4 +76,63 @@ public class PurchaseItem {
 
 		return items;
 	}
+	
+	
+    /**
+     * ########### Parcelable ###########
+     * @author sergiopereira
+     */
+    
+    /*
+     * (non-Javadoc)
+     * @see android.os.Parcelable#describeContents()
+     */
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see android.os.Parcelable#writeToParcel(android.os.Parcel, int)
+	 */
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+	    dest.writeString(sku);
+	    dest.writeString(name);
+	    dest.writeString(category);
+	    dest.writeString(paidprice);
+	    dest.writeDouble(paidpriceAsDouble);
+	    dest.writeString(quantity);
+	    dest.writeInt(quantityAsInt);
+	}
+	
+	/**
+	 * Parcel constructor
+	 * @param in
+	 */
+	private PurchaseItem(Parcel in) {
+		sku = in.readString();
+		name = in.readString();
+		category = in.readString();
+		paidprice = in.readString();
+		paidpriceAsDouble  = in.readDouble();
+		quantity = in.readString();
+		quantityAsInt = in.readInt();
+    }
+
+	/**
+	 * Create parcelable 
+	 */
+	public static final Parcelable.Creator<PurchaseItem> CREATOR = new Parcelable.Creator<PurchaseItem>() {
+        public PurchaseItem createFromParcel(Parcel in) {
+            return new PurchaseItem(in);
+        }
+
+        public PurchaseItem[] newArray(int size) {
+            return new PurchaseItem[size];
+        }
+    };
+	
+	
 }

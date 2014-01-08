@@ -21,13 +21,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.CurrencyFormatter;
-import pt.rocket.framework.utils.ImageResolutionHelper;
 import pt.rocket.framework.utils.LogTagHelper;
+import android.os.Parcel;
+import android.os.Parcelable;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -570,7 +568,7 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
         ratingsCount = in.readInt();
     }
 	
-    private static final Parcelable.Creator<CompleteProduct> CREATOR = new Parcelable.Creator<CompleteProduct>() {
+    public static final Parcelable.Creator<CompleteProduct> CREATOR = new Parcelable.Creator<CompleteProduct>() {
         public CompleteProduct createFromParcel(Parcel in) {
             return new CompleteProduct(in);
         }

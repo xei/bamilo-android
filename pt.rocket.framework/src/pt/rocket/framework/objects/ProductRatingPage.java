@@ -123,7 +123,7 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
 		in.readList(reviewComments, ProductReviewComment.class.getClassLoader());
 	}
 	
-    private static final Parcelable.Creator<ProductRatingPage> CREATOR = new Parcelable.Creator<ProductRatingPage>() {
+    public static final Parcelable.Creator<ProductRatingPage> CREATOR = new Parcelable.Creator<ProductRatingPage>() {
         public ProductRatingPage createFromParcel(Parcel in) {
             return new ProductRatingPage(in);
         }

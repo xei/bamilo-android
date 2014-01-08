@@ -10,6 +10,9 @@ import java.util.Map;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import pt.rocket.framework.rest.RestConstants;
 
 import de.akquinet.android.androlog.Log;
@@ -18,13 +21,9 @@ import de.akquinet.android.androlog.Log;
  * @author nutzer2
  * 
  */
-public class ShoppingCart implements IJSONSerializable {
+public class ShoppingCart implements IJSONSerializable, Parcelable {
 
 	private static final String TAG = ShoppingCart.class.getSimpleName();
-
-//	private static final String JSON_CART_VALUE_TAG = "cartValue";
-//	private static final String JSON_CART_COUNT_TAG = "cartCount";
-//	private static final String JSON_CART_ITEMS_TAG = "cartItems";
 
 	private Map<String, ShoppingCartItem> cartItems = new HashMap<String, ShoppingCartItem>();
 	private String cartValue;
@@ -144,8 +143,61 @@ public class ShoppingCart implements IJSONSerializable {
 	 */
 	@Override
 	public JSONObject toJSON() {
-		// TODO Auto-generated method stub
 		return null;
 	}
+	
+    /**
+     * ########### Parcelable ###########
+     * @author sergiopereira
+     */
+    
+    /*
+     * (non-Javadoc)
+     * @see android.os.Parcelable#describeContents()
+     */
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see android.os.Parcelable#writeToParcel(android.os.Parcel, int)
+	 */
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+	    dest.writeMap(cartItems);
+	    dest.writeString(cartValue);
+	    dest.writeInt(cartCount);
+	    dest.writeString(vat_value);
+	    dest.writeString(shipping_value);
+	    dest.writeMap(itemSimpleDataRegistry);
+	}
+	
+	/**
+	 * Parcel constructor
+	 * @param in
+	 */
+	private ShoppingCart(Parcel in) {
+		in.readMap(cartItems, null);
+		cartValue = in.readString();
+		cartCount = in.readInt();
+		vat_value = in.readString();
+		shipping_value = in.readString();
+		in.readMap(itemSimpleDataRegistry, null);
+    }
+		
+	/**
+	 * Create parcelable 
+	 */
+	public static final Parcelable.Creator<ShoppingCart> CREATOR = new Parcelable.Creator<ShoppingCart>() {
+        public ShoppingCart createFromParcel(Parcel in) {
+            return new ShoppingCart(in);
+        }
+
+        public ShoppingCart[] newArray(int size) {
+            return new ShoppingCart[size];
+        }
+    };
 
 }

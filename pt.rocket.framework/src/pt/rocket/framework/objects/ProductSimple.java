@@ -116,7 +116,7 @@ public class ProductSimple implements IJSONSerializable, Parcelable {
 		attributes = (HashMap<String, String>) in.readHashMap(null);
 	}
 	
-    private static final Parcelable.Creator<ProductSimple> CREATOR = new Parcelable.Creator<ProductSimple>() {
+    public static final Parcelable.Creator<ProductSimple> CREATOR = new Parcelable.Creator<ProductSimple>() {
         public ProductSimple createFromParcel(Parcel in) {
             return new ProductSimple(in);
         }

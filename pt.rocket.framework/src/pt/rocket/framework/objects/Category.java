@@ -13,6 +13,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.text.TextUtils;
 
 import pt.rocket.framework.rest.RestConstants;
@@ -27,19 +29,9 @@ import java.util.ArrayList;
  * @author GuilhermeSilva
  * 
  */
-public class Category implements IJSONSerializable {
-	private final static String TAG = LogTagHelper.create( Category.class );
+public class Category implements IJSONSerializable, Parcelable {
 	
-//    private final String JSON_ID_TAG = "id_catalog_category";
-//    private final String JSON_NAME_TAG = "name";
-//    private final String JSON_LEFT_TAG = "lft";
-//    private final String JSON_RIGHT_TAG = "rgt";
-//    private final String JSON_URL_KEY_TAG = "url_key";
-//    private final String JSON_SEGMENTS_TAG = "segments";
-//    private final String JSON_CHILDREN_TAG = "children";
-//    private final String JSON_API_URL_TAG = "api_url";
-//    private final String JSON_INFO_URL_TAG = "info_url";
-//    private final String JSON_URL_TAG = "url";
+	protected final static String TAG = LogTagHelper.create( Category.class );
 
     private String id;
     private String name;
@@ -355,4 +347,69 @@ public class Category implements IJSONSerializable {
         }
         return jsonObject;
     }
+    
+    
+    /**
+     * ########### Parcelable ###########
+     * @author sergiopereira
+     */
+    
+    /*
+     * (non-Javadoc)
+     * @see android.os.Parcelable#describeContents()
+     */
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see android.os.Parcelable#writeToParcel(android.os.Parcel, int)
+	 */
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {        
+	    dest.writeString(id);
+	    dest.writeString(name);
+	    dest.writeString(lft);
+	    dest.writeString(rgt);
+	    dest.writeString(urlKey);
+	    dest.writeString(segments);
+	    dest.writeString(infoUrl);
+	    dest.writeString(apiUrl);
+	    dest.writeList(children);
+	    dest.writeValue(parent);
+	}
+	
+	/**
+	 * Parcel constructor
+	 * @param in
+	 */
+	private Category(Parcel in) {
+        id = in.readString();
+        name = in.readString();
+        lft = in.readString();
+        rgt = in.readString();
+        urlKey = in.readString();
+        segments = in.readString();
+        infoUrl = in.readString();
+        apiUrl = in.readString();
+        in.readList(children, Category.class.getClassLoader());
+        parent = (Category) in.readValue(Category.class.getClassLoader());
+    }
+		
+	/**
+	 * Create parcelable 
+	 */
+	public static final Parcelable.Creator<Category> CREATOR = new Parcelable.Creator<Category>() {
+        public Category createFromParcel(Parcel in) {
+            return new Category(in);
+        }
+
+        public Category[] newArray(int size) {
+            return new Category[size];
+        }
+    };
+    
+    
 }
