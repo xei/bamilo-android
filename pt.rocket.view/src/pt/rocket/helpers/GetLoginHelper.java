@@ -22,7 +22,7 @@ public class GetLoginHelper extends BaseHelper {
     private static String TAG=GetLoginHelper.class.getSimpleName();
 
     @Override
-    public Bundle generateRequestBundle() {
+    public Bundle generateRequestBundle(Bundle args) {
         Bundle bundle = new Bundle();
 //        bundle.putString(Constants.BUNDLE_URL_KEY, "http:/customer/login/");
         bundle.putString(Constants.BUNDLE_URL_KEY, "http://www.linio.com.ve/mobileapi/customer/login/");

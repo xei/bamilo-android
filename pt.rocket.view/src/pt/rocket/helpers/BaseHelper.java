@@ -1,8 +1,12 @@
 package pt.rocket.helpers;
 
+import java.util.HashMap;
+import java.util.List;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pt.rocket.framework.objects.Errors;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.utils.JSONConstants;
 
@@ -49,6 +53,10 @@ public abstract class BaseHelper {
                 Log.d(TAG, "checkResponseForStatus");
                 return parseResponseBundle(bundle, metaData);
             } else {
+            	JSONObject messagesObject = jsonObject.optJSONObject(JSONConstants.JSON_MESSAGES_TAG);
+                HashMap<String, List<String>> errors = Errors
+                        .createErrorMessageMap(messagesObject);
+                bundle.putSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY, errors);
                 return parseResponseErrorBundle(bundle);
             }
         } catch (JSONException e) {

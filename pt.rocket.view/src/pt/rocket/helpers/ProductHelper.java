@@ -33,7 +33,6 @@ import pt.rocket.framework.rest.RestContract;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.Direction;
 import pt.rocket.framework.utils.Utils;
-import pt.rocket.pojo.EventType;
 import android.content.ContentValues;
 import android.net.Uri;
 import android.net.Uri.Builder;

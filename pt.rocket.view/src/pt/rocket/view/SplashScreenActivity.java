@@ -10,16 +10,17 @@ import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.ErrorCode;
-import pt.rocket.framework.event.EventManager;
-import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.event.RequestEvent;
-import pt.rocket.framework.event.ResponseEvent;
-import pt.rocket.framework.event.ResponseListener;
-import pt.rocket.framework.event.events.GetResolutionsEvent;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.rest.RestContract;
+import pt.rocket.framework.service.IRemoteServiceCallback;
 import pt.rocket.framework.utils.AnalyticsGoogle;
+import pt.rocket.framework.utils.Constants;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.framework.utils.Utils;
+import pt.rocket.helpers.BaseHelper;
+import pt.rocket.helpers.GetImageResolutionsHelper;
+import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.DialogGeneric;
 import pt.rocket.utils.HockeyStartup;
 import pt.rocket.utils.JumiaApplication;
@@ -33,6 +34,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.RemoteException;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -72,14 +74,15 @@ import com.urbanairship.push.PushManager;
  * 
  */
 
-public class SplashScreenActivity extends Activity implements ResponseListener {
+public class SplashScreenActivity extends Activity {
     private final static String TAG = LogTagHelper.create(SplashScreenActivity.class);
     private DialogGeneric dialog;
-    
+
     private static boolean shouldHandleEvent = true;
 
     private String productUrl;
     private String utm;
+
     /*
      * (non-Javadoc)
      * 
@@ -92,23 +95,26 @@ public class SplashScreenActivity extends Activity implements ResponseListener {
         getPushNotifications();
         initBugSense();
         Log.d(TAG, "Waiting for the registration process to finish");
-        JumiaApplication.INSTANCE.waitForInitResult(this, false);
+        JumiaApplication.INSTANCE.waitForInitResult(mCallback, false);
         showDevInfo();
     }
-    
+
     @Override
     protected void onResume() {
         super.onResume();
         shouldHandleEvent = true;
+        /**
+         * Register service callback
+         */
+        JumiaApplication.INSTANCE.registerFragmentCallback(mCallback);
     }
-    
-    
+
     @Override
     protected void onStart() {
         super.onStart();
         UAirship.shared().getAnalytics().activityStarted(this);
     }
-    
+
     @Override
     protected void onStop() {
         super.onStop();
@@ -120,42 +126,41 @@ public class SplashScreenActivity extends Activity implements ResponseListener {
         eD.putBoolean(ConstantsSharedPrefs.KEY_SHOW_PROMOTIONS, true);
         eD.commit();
     }
-    
+
     @Override
-    protected void onPause() {     
+    protected void onPause() {
         super.onPause();
-        if(dialog!=null){
+        if (dialog != null) {
             dialog.dismiss();
         }
     }
-    
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         JumiaApplication.INSTANCE.clearInitListener();
-		cleanIntent(getIntent());
+        cleanIntent(getIntent());
     }
-    
-    private void cleanIntent(Intent intent){
+
+    private void cleanIntent(Intent intent) {
         Log.d(TAG, "CLEAN NOTIFICATION");
         utm = null;
         productUrl = null;
         // setIntent(null);
-        intent.putExtra(ConstantsIntentExtra.UTM_STRING,"");
+        intent.putExtra(ConstantsIntentExtra.UTM_STRING, "");
         intent.putExtra(ConstantsIntentExtra.CONTENT_URL, "");
     }
-    
+
     /**
      * Get values from intent, sent by push notification
      */
-    private void getPushNotifications(){
+    private void getPushNotifications() {
         // ## Google Analytics "General Campaign Measurement" ##
-        utm  = getIntent().getStringExtra(ConstantsIntentExtra.UTM_STRING);
-        // ## Product URL ## 
+        utm = getIntent().getStringExtra(ConstantsIntentExtra.UTM_STRING);
+        // ## Product URL ##
         productUrl = getIntent().getStringExtra(ConstantsIntentExtra.CONTENT_URL);
         Log.d(TAG, " PRODUCT DETAILS " + productUrl);
     }
-    
 
     /**
      * Starts the Activity depending whether the app is started by the user, or by the push
@@ -163,22 +168,24 @@ public class SplashScreenActivity extends Activity implements ResponseListener {
      */
     public void selectActivity() {
         // ## Google Analytics "General Campaign Measurement" ##
-        AnalyticsGoogle.get().setCampaign(getIntent().getStringExtra(ConstantsIntentExtra.UTM_STRING));
+        AnalyticsGoogle.get().setCampaign(
+                getIntent().getStringExtra(ConstantsIntentExtra.UTM_STRING));
         // Push Notification Start
         String productUrl = getIntent().getStringExtra(ConstantsIntentExtra.PRODUCT_URL);
         if (productUrl != null && !productUrl.equals("")) {
-            // Start home with notification 
+            // Start home with notification
             Log.d(TAG, "SHOW NOTIFICATION: PRODUCT DETAILS " + productUrl);
-            // ActivitiesWorkFlow.homePageActivity(SplashScreen.this, productUrl, R.string.gpush_prefix, "");
+            // ActivitiesWorkFlow.homePageActivity(SplashScreen.this, productUrl,
+            // R.string.gpush_prefix, "");
             // Create bundle for fragment
             Bundle bundle = new Bundle();
             bundle.putString(ConstantsIntentExtra.CONTENT_URL, productUrl);
             bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gpush_prefix);
             bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
-            
+
             // Create intent with fragment type and bundle
             Intent intent = new Intent(this, MainFragmentActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); 
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.putExtra(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.PRODUCT_DETAILS);
             intent.putExtra(ConstantsIntentExtra.FRAGMENT_BUNDLE, bundle);
             // Start activity
@@ -194,13 +201,13 @@ public class SplashScreenActivity extends Activity implements ResponseListener {
         overridePendingTransition(R.animator.activityfadein, R.animator.splashfadeout);
         finish();
     }
-    
+
     @SuppressLint("NewApi")
     private void showDevInfo() {
-        if ( !HockeyStartup.isSplashRequired(getApplicationContext())) {
+        if (!HockeyStartup.isSplashRequired(getApplicationContext())) {
             return;
         }
-        
+
         BugSenseHandler.setLogging(true);
         BugSenseHandler.setExceptionCallback(JumiaApplication.INSTANCE);
         PackageInfo pInfo = null;
@@ -238,102 +245,184 @@ public class SplashScreenActivity extends Activity implements ResponseListener {
         }
         devText.append("\nServer: " + RestContract.REQUEST_HOST);
         devText.append("\nUrban AirShip Device APID: \n" + PushManager.shared().getAPID());
-        Log.i(TAG, "UrbanAirShip appid : "+PushManager.shared().getAPID());
+        Log.i(TAG, "UrbanAirShip appid : " + PushManager.shared().getAPID());
 
     }
-    
+
     private void initBugSense() {
-        if ( HockeyStartup.isDevEnvironment(getApplicationContext()))
+        if (HockeyStartup.isDevEnvironment(getApplicationContext()))
             return;
-        
+
         try {
             ProxyConfiguration confHttp = ProxySettings.getCurrentHttpProxyConfiguration(this);
-            if ( confHttp.isValidConfiguration()) {
+            if (confHttp.isValidConfiguration()) {
                 BugSenseHandler.useProxy(true);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
-        //==================================================================================================
-        //TODO: Comment out the BugSenseHandler initialization once we have the correct key.
-        //---------------------------------------------------------------------------------------------------
-        BugSenseHandler.initAndStartSession(getApplicationContext(), getString( R.string.bugsense_apikey));
-        //==================================================================================================
+
+        // ==================================================================================================
+        // TODO: Comment out the BugSenseHandler initialization once we have the correct key.
+        // ---------------------------------------------------------------------------------------------------
+        BugSenseHandler.initAndStartSession(getApplicationContext(),
+                getString(R.string.bugsense_apikey));
+        // ==================================================================================================
     }
-    
+
     /**
      * TODO: Add this call to initialize
      */
-    private void getSupportedImageResolutions(){
-        EventManager.getSingleton().addResponseListener(EventType.GET_RESOLUTIONS, this);
-        EventManager.getSingleton().triggerRequestEvent( new GetResolutionsEvent() );
+    private void getSupportedImageResolutions() {
+        // EventManager.getSingleton().addResponseListener(EventType.GET_RESOLUTIONS, this);
+        // EventManager.getSingleton().triggerRequestEvent( new GetResolutionsEvent() );
+
+        JumiaApplication.INSTANCE.sendRequest(new GetImageResolutionsHelper(), null, new IResponseCallback() {
+
+            @Override
+            public void onRequestError(Bundle bundle) {
+                handleErrorResponse(bundle);
+            }
+
+            @Override
+            public void onRequestComplete(Bundle bundle) {
+                handleSuccessResponse(bundle);
+            }
+        });
     }
 
     @Override
     public void onUserLeaveHint() {
         shouldHandleEvent = false;
     }
-    
-    /*
-     * (non-Javadoc)
-     * 
-     * @see pt.rocket.framework.event.EventListener#handleEvent(pt.rocket.framework.event.IEvent)
+
+    /**
+     * Requests and Callbacks methods
      */
-    @Override
-    public void handleEvent(final ResponseEvent event) {
-        if(!shouldHandleEvent){
+
+    /**
+     * Callback which deals with the IRemoteServiceCallback
+     */
+    private IRemoteServiceCallback mCallback = new IRemoteServiceCallback.Stub() {
+
+        @Override
+        public void getError(Bundle response) throws RemoteException {
+            Log.i(TAG, "Set target to handle error");
+            handleError(response);
+        }
+
+        @Override
+        public void getResponse(Bundle response) throws RemoteException {
+            handleResponse(response);
+        }
+    };
+
+    /**
+     * Sends the correct responses to be handled by the target callback
+     * 
+     * @param bundle
+     */
+    private void handleResponse(Bundle bundle) {
+        String id = bundle.getString(Constants.BUNDLE_MD5_KEY);
+        if (JumiaApplication.INSTANCE.responseCallbacks.containsKey(id)) {
+            JumiaApplication.INSTANCE.responseCallbacks.get(id).onRequestComplete(bundle);
+        }
+        JumiaApplication.INSTANCE.responseCallbacks.remove(id);
+
+    }
+
+    /**
+     * Handles correct response
+     * 
+     * @param bundle
+     */
+    private void handleSuccessResponse(Bundle bundle) {
+        if (!shouldHandleEvent) {
             return;
         }
-        Log.i(TAG, "Got initialization result: " + event);
-        if(dialog!=null && dialog.isShowing()){
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+
+        Log.i(TAG, "Got initialization result: " + eventType);
+        if (dialog != null && dialog.isShowing()) {
             try {
                 dialog.dismiss();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        if (event.getSuccess() && event.getType() == EventType.INITIALIZE) {
-            Log.d(TAG, "HANDLE EVENT: " + event.getType().toString());
-//            /*
-//             * Get image resolutions supported by server
-//             */
-//            getSupportedImageResolutions();
+        if (eventType == EventType.INITIALIZE) {
+            Log.d(TAG, "HANDLE EVENT: " + eventType.toString());
+            // /*
+            // * Get image resolutions supported by server
+            // */
+            // getSupportedImageResolutions();
             EventManager.getSingleton().addResponseListener(EventType.GET_API_INFO, this);
-            EventManager.getSingleton().triggerRequestEvent( new RequestEvent( EventType.GET_API_INFO));
-            
-        } else if (event.getType() == EventType.GET_API_INFO){
-            Log.d(TAG, "HANDLE EVENT: " + event.getType().toString());
+            EventManager.getSingleton().triggerRequestEvent(
+                    new RequestEvent(EventType.GET_API_INFO));
+
+        } else if (eventType == EventType.GET_API_INFO) {
+            Log.d(TAG, "HANDLE EVENT: " + eventType.toString());
             // Show activity
-            selectActivity();
+            selectActivity(); 
             finish();
-        } else if (event.errorCode == ErrorCode.REQUIRES_USER_INTERACTION) {
+        }
+    }
+
+    /**
+     * Sends error responses to the target callback
+     * 
+     * @param bundle
+     */
+    private void handleError(Bundle bundle) {
+        String id = bundle.getString(Constants.BUNDLE_MD5_KEY);
+        if (JumiaApplication.INSTANCE.responseCallbacks.containsKey(id)) {
+            JumiaApplication.INSTANCE.responseCallbacks.get(id).onRequestError(bundle);
+        }
+        JumiaApplication.INSTANCE.responseCallbacks.remove(id);
+
+    }
+
+    /**
+     * Handles error responses
+     * 
+     * @param bundle
+     */
+    private void handleErrorResponse(Bundle bundle) {
+        if (!shouldHandleEvent) {
+            return;
+        }
+
+        ErrorCode errorCode = bundle.getParcelable(Constants.BUNDLE_ERROR_KEY);
+        List<String> errors = (List<String>) bundle
+                .getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+        if (errorCode == ErrorCode.REQUIRES_USER_INTERACTION) {
             Intent intent = new Intent(this, MainFragmentActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); 
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.putExtra(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.CHANGE_COUNTRY);
             intent.putExtra(ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, true);
             // Start activity
             startActivity(intent);
             finish();
-        } else if (event.errorCode.isNetworkError()) {
+        } else if (errorCode.isNetworkError()) {
             dialog = DialogGeneric.createNoNetworkDialog(SplashScreenActivity.this,
                     new OnClickListener() {
 
                         @Override
                         public void onClick(View v) {
-                            JumiaApplication.INSTANCE.waitForInitResult(SplashScreenActivity.this, true);
+                            JumiaApplication.INSTANCE.waitForInitResult(SplashScreenActivity.this,
+                                    true);
                             dialog.dismiss();
                         }
                     }, true);
             dialog.setCancelable(false);
             try {
-                dialog.show();    
+                dialog.show();
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        } else if (event.errorCode == ErrorCode.REQUEST_ERROR && event.errorMessages != null) {
+        } else if (errorCode == ErrorCode.REQUEST_ERROR && errors != null) {
             String message = "";
-            List<String> errors = event.errorMessages.get(RestConstants.JSON_ERROR_TAG);
+
             for (String error : errors) {
                 message += "\n" + error;
             }
@@ -343,50 +432,36 @@ public class SplashScreenActivity extends Activity implements ResponseListener {
 
                         @Override
                         public void onClick(View v) {
-                            JumiaApplication.INSTANCE.waitForInitResult(SplashScreenActivity.this, true);
+                            JumiaApplication.INSTANCE.waitForInitResult(SplashScreenActivity.this,
+                                    true);
                             dialog.dismiss();
                         }
                     }, true);
             dialog.setCancelable(false);
             try {
-                dialog.show();    
+                dialog.show();
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            
+
         } else {
             dialog = DialogGeneric.createServerErrorDialog(SplashScreenActivity.this,
                     new OnClickListener() {
 
                         @Override
                         public void onClick(View v) {
-                            JumiaApplication.INSTANCE.waitForInitResult(SplashScreenActivity.this, true);
+                            JumiaApplication.INSTANCE.waitForInitResult(SplashScreenActivity.this,
+                                    true);
                             dialog.dismiss();
                         }
                     }, true);
             dialog.setCancelable(false);
             try {
-                dialog.show();    
+                dialog.show();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
 
-    
-    /*
-     * (non-Javadoc)
-     * 
-     * @see pt.rocket.framework.event.EventListener#removeAfterHandlingEvent()
-     */
-    @Override
-    public boolean removeAfterHandlingEvent() {
-        return true;
-    }
-
-    @Override
-    public String getMD5Hash() {
-        // TODO Auto-generated method stub
-        return null;
-    }
 }

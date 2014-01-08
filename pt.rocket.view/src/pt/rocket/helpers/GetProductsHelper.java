@@ -9,8 +9,8 @@ import org.json.JSONObject;
 import pt.rocket.framework.enums.RequestType;
 import pt.rocket.framework.objects.ProductsPage;
 import pt.rocket.framework.utils.Constants;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
-import pt.rocket.pojo.EventType;
 import android.net.Uri;
 import android.net.Uri.Builder;
 import android.os.Bundle;
@@ -39,7 +39,7 @@ public class GetProductsHelper extends BaseHelper {
     public Bundle generateRequestBundle(Bundle args) {
         Bundle bundle = new Bundle();
         bundle.putString(Constants.BUNDLE_URL_KEY, getRequestURI(args.getString(PRODUCT_URL), args.getString(SEARCH_QUERY), args.getInt(PAGE_NUMBER), args.getInt(TOTAL_COUNT), args.getInt(SORT), args.getInt(DIRECTION)));
-        bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.CATEGORIES_PRIORITY);
+        bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
         bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
         return bundle;

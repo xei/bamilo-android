@@ -30,7 +30,7 @@ public class GetProductHelper extends BaseHelper {
     public Bundle generateRequestBundle(Bundle args) {
         Bundle bundle = new Bundle();
         bundle.putString(Constants.BUNDLE_URL_KEY, args.getString(PRODUCT_URL));
-        bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.CATEGORIES_PRIORITY);
+        bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
         bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
         return bundle;

@@ -15,17 +15,25 @@ import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.rest.RestConstants;
+import pt.rocket.framework.service.IRemoteServiceCallback;
+import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.framework.utils.Utils;
+import pt.rocket.helpers.BaseHelper;
+import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.pojo.EventType;
+import pt.rocket.utils.JumiaApplication;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.OnActivityFragmentInteraction;
+import pt.rocket.utils.ServiceSingleton;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.RemoteException;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -194,6 +202,12 @@ public abstract class BaseFragment extends Fragment implements
     @Override
     public void onResume() {
         super.onResume();
+        
+        /**
+         * Register service callback
+         */
+        JumiaApplication.INSTANCE.registerFragmentCallback(mCallback);
+        
         if(((BaseActivity) getActivity()) != null){
             ((BaseActivity) getActivity()).showWarning(false);
             ((BaseActivity) getActivity()).showWarningVariation(false);
@@ -342,28 +356,72 @@ public abstract class BaseFragment extends Fragment implements
      * @param type
      */
 
-    protected final void triggerContentEventWithNoLoading(RequestEvent event) {
-        EventManager.getSingleton().triggerRequestEvent(event);
+    protected final void triggerContentEventWithNoLoading(final BaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
+        sendRequest(helper, args, responseCallback);
     }
 
-    protected final void triggerContentEvent(EventType type) {
-        triggerContentEvent(new RequestEvent(type));
-    }
-
-    protected final void triggerContentEvent(RequestEvent event) {
+    protected final void triggerContentEvent(final BaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
         ((BaseActivity) getActivity()).showLoading(false);
-        EventManager.getSingleton().triggerRequestEvent(event);
+        sendRequest(helper, args, responseCallback);
     }
 
-    protected final void triggerContentEventProgress(RequestEvent event) {
+//    protected final void triggerContentEvent(RequestEvent event) {
+//        ((BaseActivity) getActivity()).showLoading(false);
+//        EventManager.getSingleton().triggerRequestEvent(event);
+//    }
+
+    protected final void triggerContentEventProgress(final BaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
         ((BaseActivity) getActivity()).showProgress();
-        EventManager.getSingleton().triggerRequestEvent(event);
+        sendRequest(helper, args, responseCallback);
     }
 
     private String getFragmentTag() {
         return this.getClass().getSimpleName();
     }
     
+    
+    /**
+     * Triggers the request for a new api call
+     * 
+     * @param helper
+     *            of the api call
+     * @param responseCallback
+     * @return the md5 of the reponse
+     */
+    public String sendRequest(final BaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
+        Bundle bundle = helper.generateRequestBundle(args);
+        String md5 = Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY);
+        bundle.putString(Constants.BUNDLE_MD5_KEY, md5);
+        Log.d("TRACK", "sendRequest");
+        JumiaApplication.INSTANCE.responseCallbacks.put(md5, new IResponseCallback() {
+
+            @Override
+            public void onRequestComplete(Bundle bundle) {
+                Log.d("TRACK", "onRequestComplete BaseActivity");
+                // We have to parse this bundle to the final one
+                Bundle formatedBundle = (Bundle) helper.checkResponseForStatus(bundle);
+                if (responseCallback != null) {
+                    responseCallback.onRequestComplete(formatedBundle);
+                }
+            }
+
+            @Override
+            public void onRequestError(Bundle bundle) {
+                Log.d("TRACK", "onRequestError  BaseActivity");
+                // We have to parse this bundle to the final one
+                Bundle formatedBundle = (Bundle) helper.parseErrorBundle(bundle);
+                if (responseCallback != null) {
+                    responseCallback.onRequestError(formatedBundle);
+                }
+            }
+        });
+
+        
+        JumiaApplication.INSTANCE.sendRequest(bundle);
+        
+
+        return md5;
+    }
     /**
      * #### HANDLE EVENT ####
      */
@@ -790,6 +848,51 @@ public abstract class BaseFragment extends Fragment implements
         }
     }
     
- 
+    /**
+     * Requests and Callbacks methods
+     */
+    
+    /**
+     * Callback which deals with the IRemoteServiceCallback
+     */
+    private IRemoteServiceCallback mCallback = new IRemoteServiceCallback.Stub() {
+
+        @Override
+        public void getError(Bundle response) throws RemoteException {
+            Log.i(TAG, "Set target to handle error");
+            handleError(response);
+        }
+
+        @Override
+        public void getResponse(Bundle response) throws RemoteException {
+            handleResponse(response);
+        }
+    };
+    
+    /**
+     * Handles correct responses
+     * 
+     * @param bundle
+     */
+    private void handleResponse(Bundle bundle) {
+        String id = bundle.getString(Constants.BUNDLE_MD5_KEY);
+        if (JumiaApplication.INSTANCE.responseCallbacks.containsKey(id)) {
+            JumiaApplication.INSTANCE.responseCallbacks.get(id).onRequestComplete(bundle);
+        }
+        JumiaApplication.INSTANCE.responseCallbacks.remove(id);
+    }
+
+    /**
+     * Handles error responses
+     * 
+     * @param bundle
+     */
+    private void handleError(Bundle bundle) {
+        String id = bundle.getString(Constants.BUNDLE_MD5_KEY);
+        if (JumiaApplication.INSTANCE.responseCallbacks.containsKey(id)) {
+            JumiaApplication.INSTANCE.responseCallbacks.get(id).onRequestError(bundle);
+        }
+        JumiaApplication.INSTANCE.responseCallbacks.remove(id);
+    }
     
 }

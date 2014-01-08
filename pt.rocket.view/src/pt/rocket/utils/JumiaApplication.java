@@ -1,6 +1,7 @@
 package pt.rocket.utils;
 
 import java.util.EnumSet;
+import java.util.HashMap;
 
 import com.bugsense.trace.ExceptionCallback;
 
@@ -9,20 +10,21 @@ import pt.rocket.app.DarwinComponent;
 import pt.rocket.app.ImageLoaderComponent;
 import pt.rocket.app.UrbanAirshipComponent;
 import pt.rocket.framework.ErrorCode;
-import pt.rocket.framework.event.EventManager;
-import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.event.IMetaData;
-import pt.rocket.framework.event.RequestEvent;
-import pt.rocket.framework.event.ResponseErrorEvent;
-import pt.rocket.framework.event.ResponseEvent;
-import pt.rocket.framework.event.ResponseListener;
-import pt.rocket.framework.event.events.InitializeEvent;
+import pt.rocket.framework.interfaces.IMetaData;
+import pt.rocket.framework.service.IRemoteService;
+import pt.rocket.framework.service.IRemoteServiceCallback;
 import pt.rocket.framework.utils.AnalyticsGoogle;
+import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.SingletonMap;
+import pt.rocket.framework.utils.Utils;
+import pt.rocket.helpers.BaseHelper;
+import pt.rocket.interfaces.IResponseCallback;
 import android.app.Application;
+import android.os.Bundle;
+import android.os.RemoteException;
 import de.akquinet.android.androlog.Log;
 
-public class JumiaApplication extends Application implements ResponseListener, ExceptionCallback {
+public class JumiaApplication extends Application implements ExceptionCallback {
 
     private static final String TAG = JumiaApplication.class.getSimpleName();
 
@@ -31,10 +33,12 @@ public class JumiaApplication extends Application implements ResponseListener, E
     public static final SingletonMap<ApplicationComponent> COMPONENTS =
             new SingletonMap<ApplicationComponent>(new UrbanAirshipComponent(),
                     new ImageLoaderComponent(), new DarwinComponent());
-            
-    private ResponseListener initListener;
-
-    private ResponseEvent lastInitEvent;
+    
+    private IRemoteService mService;
+    /**
+     * The md5 registry
+     */
+    public HashMap<String, IResponseCallback> responseCallbacks;
 
     private boolean isInitializing = false;
 
@@ -42,7 +46,7 @@ public class JumiaApplication extends Application implements ResponseListener, E
     public void onCreate() {
         Log.init(getApplicationContext());
         INSTANCE = this;
-        
+        responseCallbacks = new HashMap<String, IResponseCallback>();
         EventManager.getSingleton().addResponseListener(EventType.INITIALIZE, this);
         init(false);
     }
@@ -68,7 +72,7 @@ public class JumiaApplication extends Application implements ResponseListener, E
         CheckVersion.init(getApplicationContext());
     }
 
-    public synchronized void waitForInitResult(ResponseListener listener, boolean isReInit) {
+    public synchronized void waitForInitResult(IRemoteServiceCallback listener, boolean isReInit) {
         if (lastInitEvent != null) {
             Log.d(TAG, "Informing listener about last init event " + lastInitEvent);
             listener.handleEvent(lastInitEvent);
@@ -103,22 +107,76 @@ public class JumiaApplication extends Application implements ResponseListener, E
         }
     }
 
-    /*
-     * (non-Javadoc)
+    public void registerFragmentCallback(IRemoteServiceCallback mCallback){
+        mService = ServiceSingleton.getInstance().getService();
+        
+        try {
+            mService.registerCallback(mCallback);
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * Triggers the request for a new api call
      * 
-     * @see pt.rocket.framework.event.EventListener#removeAfterHandlingEvent()
+     * @param helper
+     *            of the api call
+     * @param responseCallback
+     * @return the md5 of the reponse
      */
-    @Override
-    public boolean removeAfterHandlingEvent() {
-        return false;
+    public String sendRequest(final BaseHelper helper, Bundle args,
+            final IResponseCallback responseCallback) {
+        Bundle bundle = helper.generateRequestBundle(args);
+        String md5 = Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY);
+        bundle.putString(Constants.BUNDLE_MD5_KEY, md5);
+        Log.d("TRACK", "sendRequest");
+        JumiaApplication.INSTANCE.responseCallbacks.put(md5, new IResponseCallback() {
+
+            @Override
+            public void onRequestComplete(Bundle bundle) {
+                Log.d("TRACK", "onRequestComplete BaseActivity");
+                // We have to parse this bundle to the final one
+                Bundle formatedBundle = (Bundle) helper.checkResponseForStatus(bundle);
+                if (responseCallback != null) {
+                    responseCallback.onRequestComplete(formatedBundle);
+                }
+            }
+
+            @Override
+            public void onRequestError(Bundle bundle) {
+                Log.d("TRACK", "onRequestError  BaseActivity");
+                // We have to parse this bundle to the final one
+                Bundle formatedBundle = (Bundle) helper.parseErrorBundle(bundle);
+                if (responseCallback != null) {
+                    responseCallback.onRequestError(formatedBundle);
+                }
+            }
+        });
+
+        sendRequest(bundle);
+
+        return md5;
     }
 
-    @Override
-    public String getMD5Hash() {
-        // TODO Auto-generated method stub
-        return null;
+    
+    
+    public void sendRequest(Bundle bundle){
+        try {
+            mService.sendRequest(bundle);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
+    
+    /**
+     * Method called then the activity is connected to the service
+     */
+    protected void onServiceActivation() {
 
+    }
+    
     @Override
     public void lastBreath(Exception arg0) {
               

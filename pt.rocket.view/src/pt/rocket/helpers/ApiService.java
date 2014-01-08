@@ -1,12 +1,12 @@
 /**
- * @author Michael Kroez
+ * @author Manuel Silva
  * 
  * 
- * 2013/05/14
+ * 2014/01/08
  * 
  * Copyright (c) Rocket Internet All Rights Reserved
  */
-package pt.rocket.framework.service.services;
+package pt.rocket.helpers;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -22,33 +22,23 @@ import pt.rocket.framework.database.CategoriesTableHelper;
 import pt.rocket.framework.database.DarwinDatabaseHelper;
 import pt.rocket.framework.database.ImageResolutionTableHelper;
 import pt.rocket.framework.database.SectionsTablesHelper;
-import pt.rocket.framework.event.EventManager;
-import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.event.RequestEvent;
-import pt.rocket.framework.event.ResponseErrorEvent;
-import pt.rocket.framework.event.ResponseEvent;
-import pt.rocket.framework.event.ResponseListener;
-import pt.rocket.framework.event.ResponseResultEvent;
-import pt.rocket.framework.event.events.GetCategoriesEvent;
-import pt.rocket.framework.event.events.GetResolutionsEvent;
 import pt.rocket.framework.objects.Section;
 import pt.rocket.framework.objects.VersionInfo;
-import pt.rocket.framework.rest.ResponseReceiver;
 import pt.rocket.framework.rest.RestConstants;
-import pt.rocket.framework.rest.RestServiceHelper;
-import pt.rocket.framework.service.DarwinService;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.os.Bundle;
 import android.util.Log;
 
 /**
- * Service responsible for requesting the server api version.
+ * Helper responsible for requesting the server api version.
  * 
- * @author Michael Kroez
+ * @author Manuel Silva
  */
-public class ApiService extends DarwinService {
+public class ApiService {
 
 	private static final String TAG = LogTagHelper.create(ApiService.class);
 
@@ -73,7 +63,7 @@ public class ApiService extends DarwinService {
 	 * @param url
 	 * @param onGetCategoriesListener
 	 */
-	private void getVersionFromApi(final RequestEvent event) {
+	private void getVersionFromApi(Bundle bundle) {
 		/*
 		 * Version mVersion = new Version(10068, 10070); mVersionInfo.addEntry(
 		 * Darwin.getContext().getPackageName(), mVersion );
@@ -121,53 +111,7 @@ public class ApiService extends DarwinService {
 				}, event.metaData);
 	}
 
-	/**
-	 * Parses the json array containing the
-	 * 
-	 * @param sessionJSONArray
-	 * @return
-	 */
-	private ArrayList<Section> parseSections(JSONArray sessionJSONArray) {
-		int arrayLength = sessionJSONArray.length();
-		ArrayList<Section> sections = new ArrayList<Section>();
 
-		for (int i = 0; i < arrayLength; ++i) {
-			JSONObject sessionObject = sessionJSONArray.optJSONObject(i);
-
-			Section section = new Section();
-			section.initialize(sessionObject);
-			sections.add(section);
-		}
-		return sections;
-	}
-
-	/**
-	 * Checks the sections and returns a list of sections that need to be
-	 * updated
-	 * 
-	 * @param oldSections
-	 * @param newSections
-	 * @return
-	 */
-	public List<Section> checkSections(List<Section> oldSections,
-			List<Section> newSections) {
-		List<Section> outdatedSections = new ArrayList<Section>();
-
-		if (!oldSections.isEmpty()) {
-			for (Section oldSection : oldSections) {
-				Section newSection = getSection(oldSection.getName(),
-						newSections);
-				if (newSection != null
-						&& !oldSection.getMd5().equals(newSection.getMd5())) {
-					outdatedSections.add(newSection);
-				}
-			}
-		} else {
-			outdatedSections.addAll(newSections);
-		}
-
-		return outdatedSections;
-	}
 
 	/**
 	 * Clears the database of outdated sections
@@ -262,21 +206,7 @@ public class ApiService extends DarwinService {
 		}
 	}
 	
-	/**
-	 * Returns the section of a given name or null if no section is found
-	 * 
-	 * @param sectionName
-	 * @param sections
-	 * @return
-	 */
-	private Section getSection(String sectionName, List<Section> sections) {
-		for (Section section : sections) {
-			if (sectionName.equals(section.getName())) {
-				return section;
-			}
-		}
-		return null;
-	}
+
 
 	/*
 	 * (non-Javadoc)
@@ -285,11 +215,11 @@ public class ApiService extends DarwinService {
 	 * pt.rocket.framework.event.EventListener#handleEvent(pt.rocket.framework
 	 * .event.IEvent)
 	 */
-	@Override
-	public void handleEvent(RequestEvent event) {
-		if (event.getType() == EventType.GET_API_INFO) {
+	
+	public void handleEvent(EventType event) {
+		if (event == EventType.GET_API_INFO) {
 			getVersionFromApi(event);
-		} else if (event.getType() == EventType.INIT_SHOP) {
+		} else if (event == EventType.INIT_SHOP) {
 			mVersionInfo = new VersionInfo();
 		}
 	}

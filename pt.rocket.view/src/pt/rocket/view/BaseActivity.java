@@ -29,6 +29,7 @@ import pt.rocket.helpers.BaseHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.pojo.EventType;
 import pt.rocket.utils.CheckVersion;
+import pt.rocket.utils.JumiaApplication;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.OnFragmentActivityInteraction;
@@ -125,11 +126,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     
     private Activity activity;
 
-    private IRemoteService mService;
-    /**
-     * The md5 registry
-     */
-    public HashMap<String, IResponseCallback> responseCallbacks;
+    
 
     /**
      * Use this variable to have a more precise control on when to show the content container.
@@ -203,7 +200,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		responseCallbacks = new HashMap<String, IResponseCallback>();
+		
 		Log.d(TAG, "ON CREATE");
 		
         // Validate if is phone and force orientaion
@@ -253,21 +250,14 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
 		super.onResume();
 		Log.d(TAG, "ON RESUME");
 		
-		/**
-		 * Register service callback
-		 */
-        mService = ServiceSingleton.getInstance().getService();
-        
-        try {
-            mService.registerCallback(mCallback);
-        } catch (RemoteException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+		
         
 		if (!isRegistered) {
 		    // OLD FRAMEWORK
-//		    EventManager.getSingleton().addResponseListener(this, allHandledEvents);
+		    /**
+	         * Register service callback
+	         */
+	        JumiaApplication.INSTANCE.registerFragmentCallback(mCallback);
 	        isRegistered = true;
 		}
 		
@@ -919,23 +909,24 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
 	 * Don't show loading if we are using fragments, no need to redraw all the layout...
 	 * @param event
 	 */
-	public final void triggerContentEventWithNoLoading(RequestEvent event) {
-        EventManager.getSingleton().triggerRequestEvent(event);
+	
+    protected final void triggerContentEventWithNoLoading(final BaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
+        sendRequest(helper, args, responseCallback);
     }
-	
-	protected final void triggerContentEvent(RequestEvent event) {
-	    showLoading(false);
-	    EventManager.getSingleton().triggerRequestEvent(event);
-	}
-		
-	protected final void triggerContentEvent(EventType type) {
-	    triggerContentEvent(new RequestEvent(type));
-	}
-	
-	protected final void triggerContentEventProgress(RequestEvent event) {
-	    showProgress();
-	    EventManager.getSingleton().triggerRequestEvent(event);
-	}
+
+    protected final void triggerContentEvent(final BaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
+        showLoading(false);
+        sendRequest(helper, args, responseCallback);
+    }
+
+    protected final void triggerContentEventProgress(final BaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
+        showProgress();
+        sendRequest(helper, args, responseCallback);
+    }
+
+    private String getFragmentTag() {
+        return this.getClass().getSimpleName();
+    }
 	
 	public final void showLoadingInfo() {
 	    Log.d(getTag(), "Showing loading info");
@@ -1143,26 +1134,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         finish();
     }
     
-    /**
-     * Requests and Callbacks methods
-     */
-    
-    /**
-     * Callback which deals with the IRemoteServiceCallback
-     */
-    private IRemoteServiceCallback mCallback = new IRemoteServiceCallback.Stub() {
-
-        @Override
-        public void getError(Bundle response) throws RemoteException {
-            Log.i(TAG, "Set target to handle error");
-            handleError(response);
-        }
-
-        @Override
-        public void getResponse(Bundle response) throws RemoteException {
-            handleResponse(response);
-        }
-    };
+ 
 
 
     /**
@@ -1172,50 +1144,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
 
     }
     
-    /**
-     * Triggers the request for a new api call
-     * 
-     * @param helper
-     *            of the api call
-     * @param responseCallback
-     * @return the md5 of the reponse
-     */
-    public String sendRequest(final BaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
-        Bundle bundle = helper.generateRequestBundle(args);
-        String md5 = Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY);
-        bundle.putString(Constants.BUNDLE_MD5_KEY, md5);
-        Log.d("TRACK", "sendRequest");
-        responseCallbacks.put(md5, new IResponseCallback() {
 
-            @Override
-            public void onRequestComplete(Bundle bundle) {
-                Log.d("TRACK", "onRequestComplete BaseActivity");
-                // We have to parse this bundle to the final one
-                Bundle formatedBundle = (Bundle) helper.checkResponseForStatus(bundle);
-                if (responseCallback != null) {
-                    responseCallback.onRequestComplete(formatedBundle);
-                }
-            }
-
-            @Override
-            public void onRequestError(Bundle bundle) {
-                Log.d("TRACK", "onRequestError  BaseActivity");
-                // We have to parse this bundle to the final one
-                Bundle formatedBundle = (Bundle) helper.parseErrorBundle(bundle);
-                if (responseCallback != null) {
-                    responseCallback.onRequestError(formatedBundle);
-                }
-            }
-        });
-
-        try {
-            mService.sendRequest(bundle);
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-
-        return md5;
-    }
     /**
      * ADAPTNEWFRAMEWORK
      */
@@ -1509,13 +1438,6 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     public void sendClickListenerToActivity(OnClickListener clickListener){}
     
     public void sendValuesToActivity(int identifier, Object values){}
-
-// OLD FRAMEWORK
-//    @Override
-//    public String getMD5Hash() {
-//        // TODO Auto-generated method stub
-//        return null;
-//    }
     
     /**
      * Confirm backPress to exit application
@@ -1546,4 +1468,93 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         return false;
     }
 
+    /**
+     * Triggers the request for a new api call
+     * 
+     * @param helper
+     *            of the api call
+     * @param responseCallback
+     * @return the md5 of the reponse
+     */
+    public String sendRequest(final BaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
+        Bundle bundle = helper.generateRequestBundle(args);
+        String md5 = Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY);
+        bundle.putString(Constants.BUNDLE_MD5_KEY, md5);
+        Log.d("TRACK", "sendRequest");
+        JumiaApplication.INSTANCE.responseCallbacks.put(md5, new IResponseCallback() {
+
+            @Override
+            public void onRequestComplete(Bundle bundle) {
+                Log.d("TRACK", "onRequestComplete BaseActivity");
+                // We have to parse this bundle to the final one
+                Bundle formatedBundle = (Bundle) helper.checkResponseForStatus(bundle);
+                if (responseCallback != null) {
+                    responseCallback.onRequestComplete(formatedBundle);
+                }
+            }
+
+            @Override
+            public void onRequestError(Bundle bundle) {
+                Log.d("TRACK", "onRequestError  BaseActivity");
+                // We have to parse this bundle to the final one
+                Bundle formatedBundle = (Bundle) helper.parseErrorBundle(bundle);
+                if (responseCallback != null) {
+                    responseCallback.onRequestError(formatedBundle);
+                }
+            }
+        });
+
+        
+        JumiaApplication.INSTANCE.sendRequest(bundle);
+        
+
+        return md5;
+    }
+    
+    /**
+     * Requests and Callbacks methods
+     */
+    
+    /**
+     * Callback which deals with the IRemoteServiceCallback
+     */
+    private IRemoteServiceCallback mCallback = new IRemoteServiceCallback.Stub() {
+
+        @Override
+        public void getError(Bundle response) throws RemoteException {
+            Log.i(TAG, "Set target to handle error");
+            handleError(response);
+        }
+
+        @Override
+        public void getResponse(Bundle response) throws RemoteException {
+            handleResponse(response);
+        }
+    };
+    
+    /**
+     * Handles correct responses
+     * 
+     * @param bundle
+     */
+    private void handleResponse(Bundle bundle) {
+        String id = bundle.getString(Constants.BUNDLE_MD5_KEY);
+        if (JumiaApplication.INSTANCE.responseCallbacks.containsKey(id)) {
+            JumiaApplication.INSTANCE.responseCallbacks.get(id).onRequestComplete(bundle);
+        }
+        JumiaApplication.INSTANCE.responseCallbacks.remove(id);
+    }
+
+    /**
+     * Handles error responses
+     * 
+     * @param bundle
+     */
+    private void handleError(Bundle bundle) {
+        String id = bundle.getString(Constants.BUNDLE_MD5_KEY);
+        if (JumiaApplication.INSTANCE.responseCallbacks.containsKey(id)) {
+            JumiaApplication.INSTANCE.responseCallbacks.get(id).onRequestError(bundle);
+        }
+        JumiaApplication.INSTANCE.responseCallbacks.remove(id);
+    }
 }

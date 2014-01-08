@@ -12,6 +12,7 @@ public class JSONConstants {
      */
     public static final String JSON_NAME_TAG = "name";
     public static final String JSON_SUCCESS_TAG = "success";
+    public static final String JSON_MESSAGES_TAG = "messages";
     public static final String JSON_METADATA_TAG = "metadata";
     public static final String JSON_DATA_TAG = "data";
 
