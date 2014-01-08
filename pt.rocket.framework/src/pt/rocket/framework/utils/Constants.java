@@ -12,16 +12,18 @@ public class Constants {
 	 * Bundle Info Constants - keys used in identifying the bundle parameters
 	 * used to pass information around
 	 */
-	public static String BUNDLE_URL_KEY = "url";
-	public static String BUNDLE_REQUEST_TYPE_KEY = "request_type";
-	public static String BUNDLE_OBJECT_TYPE_KEY = "object_type";
-	public static String BUNDLE_PRIORITY_KEY = "priority";
-	public static String BUNDLE_MD5_KEY = "md5";
-	public static String BUNDLE_TYPE_KEY = "type";
-	public static String BUNDLE_FORM_DATA_KEY = "form_data";
-	public static String BUNDLE_METADATA_KEY = "metadata";
-	public static String BUNDLE_ERROR_KEY = "error";
+	public static final String BUNDLE_URL_KEY = "url";
+	public static final String BUNDLE_REQUEST_TYPE_KEY = "request_type";
+	public static final String BUNDLE_OBJECT_TYPE_KEY = "object_type";
+	public static final String BUNDLE_PRIORITY_KEY = "priority";
+	public static final String BUNDLE_MD5_KEY = "md5";
+	public static final String BUNDLE_TYPE_KEY = "type";
+	public static final String BUNDLE_FORM_DATA_KEY = "form_data";
+	public static final String BUNDLE_METADATA_KEY = "metadata";
+	public static final String BUNDLE_ERROR_KEY = "error";
+	public static final String BUNDLE_EVENT_TYPE_KEY = "eventtype";
 	public static final String BUNDLE_RESPONSE_KEY = "response";
+	public static final String BUNDLE_RESPONSE_ERROR_MESSAGE_KEY = "responseerrormessage";
 	public static final String BUNDLE_ELAPSED_REQUEST_TIME = "elapsedtime";
 	public static final String BUNDLE_JSON_VALIDATION_KEY = "jsonvalidation";
 	public static final String BUNDLE_WRONG_PARAMETER_MESSAGE_KEY = "parametererrormessage";

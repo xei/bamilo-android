@@ -24,6 +24,7 @@ import pt.rocket.framework.service.RemoteService;
 //import pt.rocket.framework.tracking.TrackerManager;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.ErrorMonitoring;
+import pt.rocket.framework.utils.EventType;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.IntentSender.SendIntentException;
@@ -319,6 +320,7 @@ public final class RestClientSingleton implements HttpRoutePlanner {
     	android.util.Log.d("TRACK", "executeHttpRequest count:"+count);
         String result = "";
         String md5 = metaData.getString(Constants.BUNDLE_MD5_KEY);
+        EventType eventType = (EventType) metaData.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         Boolean priority = metaData.getBoolean(Constants.BUNDLE_PRIORITY_KEY, false);
 //        Log.i(TAG, " PRIORITY REQUEST => " + priority);
 
@@ -343,7 +345,7 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 //            Log.i(TAG, "HEADER => " + response.toString() + ".");
             int statusCode = response.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_OK) {
-                mHandler.sendMessage(buildResponseMessage(Constants.FAILURE, ErrorCode.HTTP_STATUS, result, md5, priority));
+                mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.HTTP_STATUS, result, md5, priority));
                 ClientProtocolException e = new ClientProtocolException();
 //                TrackerManager.sendTrackingError(e);
                 trackError(context, e, httpRequest.getURI(), ErrorCode.HTTP_STATUS, result, false);
@@ -392,7 +394,7 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 
             entity = response.getEntity();
             if (entity == null || entity.getContentLength() == 0) {
-                mHandler.sendMessage(buildResponseMessage(Constants.FAILURE, ErrorCode.EMPTY_ENTITY, result, md5, priority));
+                mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.EMPTY_ENTITY, result, md5, priority));
                 Exception e = new Exception();
                 trackError(context, e, httpRequest.getURI(), ErrorCode.EMPTY_ENTITY, null, false );
                 Log.w(TAG, "Got empty entity for request: " + httpRequest.getURI() + " -> " + statusCode);
@@ -408,43 +410,43 @@ public final class RestClientSingleton implements HttpRoutePlanner {
             long elapsed = System.currentTimeMillis() - now;
             Log.i(TAG, httpRequest.getURI()+"--------- executeHttpRequest------------: request took " + elapsed + "ms");
             android.util.Log.d("TRACK", httpRequest.getURI()+"--------- executeHttpRequest------------: request took " + elapsed + "ms");
-            mHandler.sendMessage(buildResponseMessage(Constants.SUCCESS, ErrorCode.NO_ERROR, result, md5, priority,elapsed));
+            mHandler.sendMessage(buildResponseMessage(eventType, Constants.SUCCESS, ErrorCode.NO_ERROR, result, md5, priority,elapsed));
             return result;
         } catch (ClientProtocolException e) {
         	android.util.Log.d("TRACK", "ClientProtocolException");
             Log.e(TAG, "There was a protocol error calling " + httpRequest.getURI(), e);
-            mHandler.sendMessage(buildResponseMessage(Constants.FAILURE, ErrorCode.HTTP_PROTOCOL, result, md5, priority));
+            mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.HTTP_PROTOCOL, result, md5, priority));
             trackError(context, e, httpRequest.getURI(), ErrorCode.HTTP_PROTOCOL, null, false );
         } catch (HttpHostConnectException e) {
         	android.util.Log.d("TRACK", "HttpHostConnectException");
             Log.w(TAG, "Http host connect error calling " + httpRequest.getURI(), e);
-            mHandler.sendMessage(buildResponseMessage(Constants.FAILURE, ErrorCode.CONNECT_ERROR, result, md5, priority));
+            mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.CONNECT_ERROR, result, md5, priority));
             trackError(context, e, httpRequest.getURI(), ErrorCode.CONNECT_ERROR, null, false );
         } catch (ConnectTimeoutException e) {
         	android.util.Log.d("TRACK", "ConnectTimeoutException");
             Log.w(TAG, "Connection timeout calling " + httpRequest.getURI(), e);
-            mHandler.sendMessage(buildResponseMessage(Constants.FAILURE, ErrorCode.TIME_OUT, result, md5, priority));
+            mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.TIME_OUT, result, md5, priority));
             trackError(context, e, httpRequest.getURI(), ErrorCode.TIME_OUT, null, false );
         } catch (SocketTimeoutException e) {
         	android.util.Log.d("TRACK", "SocketTimeoutException");
             Log.w(TAG, "Socket timeout calling " + httpRequest.getURI(), e);
-            mHandler.sendMessage(buildResponseMessage(Constants.FAILURE, ErrorCode.TIME_OUT, result, md5, priority));
+            mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.TIME_OUT, result, md5, priority));
             trackError(context, e, httpRequest.getURI(), ErrorCode.TIME_OUT, null, false );
         } catch (UnknownHostException e) {
         	android.util.Log.d("TRACK", "UnknownHostException");
             Log.w(TAG, "Unknown host error calling " + httpRequest.getURI(), e);
-            mHandler.sendMessage(buildResponseMessage(Constants.FAILURE, ErrorCode.CONNECT_ERROR, result, md5, priority));
+            mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.CONNECT_ERROR, result, md5, priority));
             trackError(context, e, httpRequest.getURI(), ErrorCode.CONNECT_ERROR, null, false );
         } catch (IOException e) {
         	android.util.Log.d("TRACK", "IOException");
             Log.e(TAG, "IO error calling " + httpRequest.getURI(), e);
-            mHandler.sendMessage(buildResponseMessage(Constants.FAILURE, ErrorCode.IO, result, md5, priority));
+            mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.IO, result, md5, priority));
             trackError(context, e, httpRequest.getURI(), ErrorCode.IO, null, false );
         } catch (Exception e) {
         	android.util.Log.d("TRACK", "Exception");
             e.printStackTrace();
             Log.e(TAG, "Anormal exception " + e.getMessage(), e);
-            mHandler.sendMessage(buildResponseMessage(Constants.FAILURE, ErrorCode.UNKNOWN_ERROR, result, md5, priority));
+            mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.UNKNOWN_ERROR, result, md5, priority));
             trackError(context, e, httpRequest.getURI(), ErrorCode.UNKNOWN_ERROR, null, false);
         }
 
@@ -552,7 +554,7 @@ public final class RestClientSingleton implements HttpRoutePlanner {
      * @param status
      * @return
      */
-    public Message buildResponseMessage(int status, ErrorCode error, String response, String md5, Boolean priority,long... elapsed) {
+    public Message buildResponseMessage(EventType eventType, int status, ErrorCode error, String response, String md5, Boolean priority,long... elapsed) {
         Message msg = new Message();
         Bundle bundle = new Bundle();
 
@@ -561,6 +563,7 @@ public final class RestClientSingleton implements HttpRoutePlanner {
         bundle.putString(Constants.BUNDLE_MD5_KEY, md5);
         bundle.putString(Constants.BUNDLE_RESPONSE_KEY, response);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, priority);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, eventType);
         if(elapsed!=null){
             bundle.putLong(Constants.BUNDLE_ELAPSED_REQUEST_TIME, elapsed[0]);
         }

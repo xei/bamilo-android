@@ -1,7 +1,12 @@
 package pt.rocket.framework.objects;
 
+import java.util.HashMap;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import pt.rocket.framework.rest.RestConstants;
 
@@ -12,7 +17,7 @@ import pt.rocket.framework.rest.RestConstants;
  * @author GuilhermeSilva
  *
  */
-public class Section implements IJSONSerializable {
+public class Section implements IJSONSerializable, Parcelable {
 	
 	public static final String SECTION_NAME_TEASERS = "teasers";
 	public static final String SECTION_NAME_BRANDS = "brands";
@@ -114,4 +119,33 @@ public class Section implements IJSONSerializable {
         }
         return jsonObject;
     }
+
+	@Override
+	public int describeContents() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeString(name);
+		dest.writeString(md5);
+		dest.writeString(url);
+	}
+	
+	private Section(Parcel in){
+    	name = in.readString();
+    	md5 = in.readString();
+    	url = in.readString();
+	}
+	
+    private static final Parcelable.Creator<Section> CREATOR = new Parcelable.Creator<Section>() {
+        public Section createFromParcel(Parcel in) {
+            return new Section(in);
+        }
+
+        public Section[] newArray(int size) {
+            return new Section[size];
+        }
+    };
 }

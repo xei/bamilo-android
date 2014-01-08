@@ -6,11 +6,14 @@ import java.util.Iterator;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import pt.rocket.framework.rest.RestConstants;
 
 import de.akquinet.android.androlog.Log;
 
-public class VersionInfo implements IJSONSerializable {
+public class VersionInfo implements IJSONSerializable, Parcelable {
 	
 	private final static String TAG = VersionInfo.class.getSimpleName();
 	
@@ -60,5 +63,30 @@ public class VersionInfo implements IJSONSerializable {
 	public Version getEntryByKey(String key) {
 		return mVersions.get(key);
 	}
+
+	@Override
+	public int describeContents() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeMap(mVersions);
+	}
 	
+	private VersionInfo(Parcel in) {
+		mVersions = new HashMap<String, Version>();
+		in.readMap(mVersions, Version.class.getClassLoader());
+	}
+
+	private static final Parcelable.Creator<VersionInfo> CREATOR = new Parcelable.Creator<VersionInfo>() {
+		public VersionInfo createFromParcel(Parcel in) {
+			return new VersionInfo(in);
+		}
+
+		public VersionInfo[] newArray(int size) {
+			return new VersionInfo[size];
+		}
+	};
 }
