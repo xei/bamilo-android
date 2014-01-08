@@ -1,4 +1,4 @@
-@IC @login_IC
+@IC @login_IC @login
 Feature: Login feature
 
 
@@ -36,4 +36,9 @@ Feature: Login feature
     Then I open the navigation menu
     And I wait for 5 seconds
 	And I should see sign out button
-  	
+	
+	
+#	@logout
+	Given I press Logout Button
+  	Then I open the navigation menu
+  	And I should see the login button 

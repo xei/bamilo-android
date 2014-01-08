@@ -95,6 +95,8 @@ def initvars_IC
   
   @addtocart="Ajouter au panier"
   
+  @yes="Oui"
+  
 end
 
 

@@ -134,6 +134,12 @@ Then /^I choose the Sign In option$/ do
   performAction('click_on_text',@sign_in.to_s)
 end
 
+Then /^I press Logout Button$/ do
+  
+  performAction('click_on_text',@signout.to_s)
+  performAction('click_on_text',@yes.to_s)
+end
+
 Then /^I enter My Account$/ do 
   
   performAction('click_on_text',@myaccount.to_s)
@@ -227,6 +233,12 @@ Then /^I should see the add to cart button$/ do
 
   performAction('assert_text', @addtocart.to_s, true) 
 end
+
+Then /^I should see the login button$/ do
+  
+  performAction('assert_text', @sign_in.to_s, true)
+end
+
 
 
 #
