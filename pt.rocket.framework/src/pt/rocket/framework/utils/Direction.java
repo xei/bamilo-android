@@ -8,5 +8,11 @@ package pt.rocket.framework.utils;
  * 
  */
 public enum Direction {
-    ASCENDENT, DESCENDENT
+    ASCENDENT(0), DESCENDENT(1);
+    
+    public final int id;
+    
+    Direction(int id){
+    	this.id = id;
+    }
 }

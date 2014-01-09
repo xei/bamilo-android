@@ -143,6 +143,13 @@ public class Product implements IJSONSerializable, Parcelable {
     }
 
     /**
+     * @return the product brand
+     */
+    public String getBrand() {
+        return attributes.getBrand();
+    }
+    
+    /**
      * @return the description
      */
     public String getDescription() {

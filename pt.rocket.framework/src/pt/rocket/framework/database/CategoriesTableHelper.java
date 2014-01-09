@@ -84,7 +84,7 @@ public class CategoriesTableHelper {
      * 
      * @param categories
      */
-    public static void saveCategories(List<Category> categories) {
+    public static void saveCategories(ArrayList<Category> categories) {
     	SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
 
     	try {
@@ -104,7 +104,7 @@ public class CategoriesTableHelper {
 		}
     }
     
-    private static void saveCategories(SQLiteDatabase db, List<Category> categories, long parentId) {
+    private static void saveCategories(SQLiteDatabase db, ArrayList<Category> categories, long parentId) {
     	for (Category category : categories) {
     		saveCategory(db, category, parentId);
     	}
@@ -112,7 +112,7 @@ public class CategoriesTableHelper {
     
     private static void saveCategory(SQLiteDatabase db, Category category, long parentId) {
     	long rowId = db.insertWithOnConflict(TABLE, null, getContentValues(category, parentId), SQLiteDatabase.CONFLICT_IGNORE);
-    	List<Category> children = category.getChildren();
+    	ArrayList<Category> children = category.getChildren();
     	if (children != null) {
     		saveCategories(db, children, rowId);
     	}
