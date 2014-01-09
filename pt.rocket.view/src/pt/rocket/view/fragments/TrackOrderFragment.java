@@ -9,16 +9,14 @@ import java.util.EnumSet;
 import org.holoeverywhere.widget.Button;
 import org.holoeverywhere.widget.EditText;
 import org.holoeverywhere.widget.TextView;
-
-import pt.rocket.framework.event.EventManager;
-import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.event.ResponseEvent;
-import pt.rocket.framework.event.ResponseResultEvent;
-import pt.rocket.framework.event.events.TrackOrderEvent;
 import pt.rocket.framework.objects.OrderTracker;
 import pt.rocket.framework.objects.OrderTrackerItem;
+import pt.rocket.framework.utils.Constants;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LoadingBarView;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.helpers.GetTrackOrderHelper;
+import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.view.BaseActivity;
@@ -190,7 +188,22 @@ public class TrackOrderFragment extends BaseFragment {
             String orderNumber = mEditText.getText().toString();
             if(orderNumber != null && orderNumber.length()>0){
                 showLoading();
-                EventManager.getSingleton().triggerRequestEvent(new TrackOrderEvent(orderNumber));
+                Bundle args = new Bundle();
+                args.putString(GetTrackOrderHelper.ORDER_NR, orderNumber);
+                sendRequest(new GetTrackOrderHelper(), args, new IResponseCallback() {
+                    
+                    @Override
+                    public void onRequestError(Bundle bundle) {
+                        onErrorEvent(bundle);
+                        
+                    }
+                    
+                    @Override
+                    public void onRequestComplete(Bundle bundle) {
+                        onSuccessEvent(bundle);
+                        
+                    }
+                });
             }    
 
         }
@@ -253,15 +266,13 @@ public class TrackOrderFragment extends BaseFragment {
         getView().findViewById(R.id.error_trakcing_order).setVisibility(View.VISIBLE);
     }
     
-    @Override
-    protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
-        mOrderTracker = (OrderTracker) event.result;
+    protected boolean onSuccessEvent(Bundle bundle) {
+        mOrderTracker = (OrderTracker) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
         proccessSuccess();
         return true;
     }
     
-    @Override
-    protected boolean onErrorEvent(ResponseEvent event) {
+    protected boolean onErrorEvent(Bundle bundle) {
         mOrderTrackerError = true;
         proccessError();
         return true;

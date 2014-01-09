@@ -16,23 +16,15 @@ import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.factories.TeasersFactory;
-import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.event.RequestEvent;
-import pt.rocket.framework.event.ResponseEvent;
-import pt.rocket.framework.event.ResponseResultEvent;
-import pt.rocket.framework.objects.BrandsTeaserGroup;
-import pt.rocket.framework.objects.CategoryTeaserGroup;
 import pt.rocket.framework.objects.Homepage;
 import pt.rocket.framework.objects.ITargeting.TargetType;
-import pt.rocket.framework.objects.ImageTeaserGroup;
-import pt.rocket.framework.objects.ProductTeaserGroup;
 import pt.rocket.framework.objects.Promotion;
 import pt.rocket.framework.objects.TeaserSpecification;
 import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.Constants;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.MixpanelTracker;
 import pt.rocket.helpers.GetCallToOrderHelper;
-import pt.rocket.helpers.GetCategoriesHelper;
 import pt.rocket.helpers.GetPromotionsHelper;
 import pt.rocket.helpers.GetTeasersHelper;
 import pt.rocket.interfaces.IResponseCallback;
@@ -41,13 +33,10 @@ import pt.rocket.utils.HockeyStartup;
 import pt.rocket.utils.JumiaViewPager;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
-import pt.rocket.utils.OnActivityFragmentInteraction;
 import pt.rocket.utils.dialogfragments.DialogPromotionFragment;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.ChangeCountryFragmentActivity;
-import pt.rocket.view.MainFragmentActivity;
 import pt.rocket.view.R;
-import uk.co.senab.photoview.PhotoViewAttacher.OnMatrixChangedListener;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -56,11 +45,9 @@ import android.graphics.Paint;
 import android.graphics.Shader;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.renderscript.Type.CubemapFace;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.LayoutInflater;
@@ -526,13 +513,16 @@ public class HomeFragment extends BaseFragment {
             e.printStackTrace();
         }
     }
-    @Override
-    protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
+    
+    
+    
+    protected boolean onSuccessEvent(Bundle bundle) {
         Log.i(TAG,"ON onSuccessEvent");
-        switch (event.getType()) {
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        switch (eventType) {
         case GET_TEASERS_EVENT:
             isFirstBoot = false;
-            proccessResult((Collection<? extends Homepage>) event.result);
+            proccessResult((Collection<? extends Homepage>) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY));
             Log.i(TAG, "code1 checkversion called");
             configureLayout();
             break;
@@ -541,16 +531,16 @@ public class HomeFragment extends BaseFragment {
                     ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPrefs.edit();
             editor.putString(KEY_CALL_TO_ORDER,
-                    (String) event.result);
+                    (String) bundle.getString(Constants.BUNDLE_RESPONSE_KEY));
             editor.commit();
 
             break;
         case GET_PROMOTIONS:
-            if (((Promotion) event.result).getIsStillValid()) {
-                DialogPromotionFragment.newInstance((Promotion) event.result).show(
+            if (((Promotion) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getIsStillValid()) {
+                DialogPromotionFragment.newInstance((Promotion) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).show(
                         getChildFragmentManager(), null);
             } else {
-                Log.i(TAG, "promotion expired!" + ((Promotion) event.result).getEndDate());
+                Log.i(TAG, "promotion expired!" + ((Promotion) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getEndDate());
             }
 
             break;
@@ -559,9 +549,10 @@ public class HomeFragment extends BaseFragment {
         return false;
     }
 
-    @Override
-    protected boolean onErrorEvent(ResponseEvent event) {
-        switch (event.getType()) {
+    
+    protected boolean onErrorEvent(Bundle bundle) {
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        switch (eventType) {
         case GET_TEASERS_EVENT:
             setLayoutFallback();
             break;
@@ -813,8 +804,7 @@ public class HomeFragment extends BaseFragment {
     }
     
     private void triggerTeasers(){
-        Bundle bundle = new Bundle();
-        triggerContentEvent(new GetTeasersHelper(), bundle, mCallBack);
+        triggerContentEvent(new GetTeasersHelper(), null, mCallBack);
     }
     
     private void triggerCallToOrder(){
@@ -830,12 +820,12 @@ public class HomeFragment extends BaseFragment {
         
         @Override
         public void onRequestError(Bundle bundle) {
-            // TODO
+            onErrorEvent(bundle);
         }
         
         @Override
         public void onRequestComplete(Bundle bundle) {
-            // TODO
+            onSuccessEvent(bundle);
         }
     };
 }

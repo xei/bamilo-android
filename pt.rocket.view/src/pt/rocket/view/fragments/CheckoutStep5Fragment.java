@@ -9,9 +9,8 @@ import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.controllers.ActivitiesWorkFlow;
-import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.utils.AnalyticsGoogle;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
@@ -183,16 +182,6 @@ public class CheckoutStep5Fragment extends BaseFragment implements OnClickListen
     public void onClick(View v) {
         ActivitiesWorkFlow.homePageActivity(getActivity());
     }
-
-    /*
-     * (non-Javadoc)
-     * @see pt.rocket.view.fragments.BaseFragment#onSuccessEvent(pt.rocket.framework.event.ResponseResultEvent)
-     */
-    @Override
-    protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
-        return false;
-    }
-
 
 
 }

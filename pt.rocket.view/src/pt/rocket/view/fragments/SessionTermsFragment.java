@@ -6,8 +6,7 @@ package pt.rocket.view.fragments;
 import java.util.EnumSet;
 
 import pt.rocket.constants.ConstantsIntentExtra;
-import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.event.ResponseResultEvent;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
@@ -166,10 +165,5 @@ public class SessionTermsFragment extends BaseFragment {
     
     private void setupView() {
             textView.setText(termsText);     
-    }
-
-    @Override
-    protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
-        return false;
     }
 }

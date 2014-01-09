@@ -8,16 +8,16 @@ import org.json.JSONObject;
 
 import pt.rocket.framework.enums.RequestType;
 import pt.rocket.framework.objects.Customer;
+import pt.rocket.framework.objects.OrderTracker;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CustomerUtils;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
 import pt.rocket.utils.JumiaApplication;
-
 import android.content.ContentValues;
+import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 
 /**
  * Example helper
@@ -25,22 +25,19 @@ import android.util.Log;
  * @author Guilherme Silva
  * 
  */
-public class GetLoginHelper extends BaseHelper {
-    private static String TAG = GetLoginFormHelper.class.getSimpleName();
+public class GetTrackOrderHelper extends BaseHelper {
+    private static String TAG = GetTrackOrderHelper.class.getSimpleName();
 
-    public static final String LOGIN_CONTENT_VALUES = "contentValues";
-    boolean saveCredentials = false;
-    ContentValues contentValues;
+    public static final String ORDER_NR = "ordernr";
 
     @Override
     public Bundle generateRequestBundle(Bundle args) {
-        saveCredentials = args.getBoolean(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG);
-        contentValues = args.getParcelable(LOGIN_CONTENT_VALUES);
+        Uri uri = Uri.parse(EventType.TRACK_ORDER_EVENT.action).buildUpon()
+                .appendQueryParameter("ordernr", args.getString(ORDER_NR)).build();
         Bundle bundle = new Bundle();
-        bundle.putString(Constants.BUNDLE_URL_KEY, EventType.LOGIN_EVENT.action);
+        bundle.putString(Constants.BUNDLE_URL_KEY, uri.toString());
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
-        bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.POST);
-        bundle.putParcelable(Constants.BUNDLE_FORM_DATA_KEY, contentValues);
+        bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
         bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
         return bundle;
     }
@@ -56,20 +53,13 @@ public class GetLoginHelper extends BaseHelper {
 
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
-        if (saveCredentials) {
-            JumiaApplication.INSTANCE.getCustomerUtils().storeCredentials(contentValues);
+
+        OrderTracker mOrderTracker = new OrderTracker();
+        if (jsonObject != null) {
+            mOrderTracker.initialize(jsonObject);
         }
-        try {
-            if (jsonObject.has(RestConstants.JSON_USER_TAG)) {
-                jsonObject = jsonObject.getJSONObject(RestConstants.JSON_USER_TAG);
-            } else if (jsonObject.has(RestConstants.JSON_DATA_TAG)) {
-                jsonObject = jsonObject.getJSONObject(RestConstants.JSON_DATA_TAG);
-            }
-        } catch (JSONException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, new Customer(jsonObject));
+
+        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, mOrderTracker);
         return bundle;
     }
 }

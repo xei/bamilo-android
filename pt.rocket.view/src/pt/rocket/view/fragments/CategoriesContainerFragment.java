@@ -9,14 +9,11 @@ import java.util.List;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.CategoriesAdapter;
 import pt.rocket.controllers.fragments.FragmentType;
-import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.event.ResponseEvent;
-import pt.rocket.framework.event.ResponseResultEvent;
-import pt.rocket.framework.event.events.GetCategoriesEvent;
 import pt.rocket.framework.objects.Category;
 import pt.rocket.framework.objects.ProductRatingPage;
 import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.Constants;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.GetCategoriesHelper;
 import pt.rocket.helpers.GetProductReviewsHelper;
@@ -298,19 +295,11 @@ public class CategoriesContainerFragment extends BaseFragment {
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see pt.rocket.view.fragments.BaseFragment#onSuccessEvent(pt.rocket.framework.event.
-     * ResponseResultEvent)
-     */
-    @SuppressWarnings("unchecked")
-    @Override
-    protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
+    protected boolean onSuccessEvent(Bundle bundle) {
         // Validate if fragment is on the screen
         if(isVisible()) {
             AnalyticsGoogle.get().trackLoadTiming(R.string.gcategories, mBeginRequestMillis);
-            MainFragmentActivity.currentCategories = (List<Category>) event.result;
+            MainFragmentActivity.currentCategories = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
             
             if(MainFragmentActivity.currentCategories != null && getView() != null){
                 Log.d(TAG, "handleEvent: categories size = " + MainFragmentActivity.currentCategories.size());
@@ -323,11 +312,10 @@ public class CategoriesContainerFragment extends BaseFragment {
         }
         return true;
     }
-    
-    @Override
-    protected boolean onErrorEvent(ResponseEvent event) {
+
+    protected boolean onErrorEvent(Bundle bundle) {
         mBeginRequestMillis = System.currentTimeMillis();
-        return super.onErrorEvent(event);
+        return true;
     }
 
     /**
@@ -537,25 +525,12 @@ public class CategoriesContainerFragment extends BaseFragment {
         
         @Override
         public void onRequestError(Bundle bundle) {
-            // TODO
+            onErrorEvent(bundle);
         }
         
         @Override
         public void onRequestComplete(Bundle bundle) {
-         // Validate if fragment is on the screen
-            if(isVisible()) {
-                AnalyticsGoogle.get().trackLoadTiming(R.string.gcategories, mBeginRequestMillis);
-                MainFragmentActivity.currentCategories = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
-                
-                if(MainFragmentActivity.currentCategories != null && getView() != null){
-                    Log.d(TAG, "handleEvent: categories size = " + MainFragmentActivity.currentCategories.size());
-                    if(((BaseActivity) getActivity()).isTabletInLandscape()){
-                        createFragmentsForLandscape();
-                    } else {
-                        createFragment();
-                    }
-                }
-            }
+            onSuccessEvent(bundle);
             
         }
     };

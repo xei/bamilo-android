@@ -4,9 +4,6 @@
 package pt.rocket.view.fragments;
 
 import java.util.EnumSet;
-import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.event.ResponseEvent;
-import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.objects.ITargeting;
 import pt.rocket.framework.objects.ProductTeaserGroup;
 import pt.rocket.framework.objects.ProductTeaserGroup.TeaserProduct;
@@ -174,16 +171,6 @@ public class ProducTeaserListFragment extends BaseFragment {
         super.onStop();
         Log.i(TAG, "ON STOP");
         // FlurryTracker.get().end();
-    }
-
-    @Override
-    protected boolean onSuccessEvent(final ResponseResultEvent<?> event) {
-        return true;
-    }
-
-    @Override
-    protected boolean onErrorEvent(ResponseEvent event) {
-        return false;
     }
 
     private View createProductTeaserView(TeaserProduct product, ViewGroup vg,

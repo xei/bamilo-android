@@ -10,7 +10,6 @@ import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.CategoriesAdapter;
 import pt.rocket.controllers.SubCategoriesAdapter;
 import pt.rocket.controllers.fragments.FragmentType;
-import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.objects.Category;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.FragmentCommunicator;
@@ -401,11 +400,6 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
         }
         
         
-    }
-
-    @Override
-    protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
-        return false;
     }
     
 }

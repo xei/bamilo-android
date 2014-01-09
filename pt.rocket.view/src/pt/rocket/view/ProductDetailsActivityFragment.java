@@ -754,6 +754,8 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
                 mCompleteProduct.getSpecialPrice(), mCompleteProduct.getPrice(), 1);
 
         ((BaseActivity) getActivity()).showProgress();
+        
+        
         EventManager.getSingleton().triggerRequestEvent(new AddItemToShoppingCartEvent(item));
 
         AnalyticsGoogle.get().trackAddToCart(sku, price);
@@ -1016,13 +1018,13 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
             executeAddToShoppingCartCompleted();
             break;
         case GET_PRODUCT_EVENT:
-            if (((CompleteProduct) event.result).getName() == null) {
+            if (((CompleteProduct) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getName() == null) {
                 Toast.makeText(getActivity(), getString(R.string.product_could_not_retrieved),
                         Toast.LENGTH_LONG).show();
                 getActivity().onBackPressed();
                 return true;
             } else {
-                mCompleteProduct = (CompleteProduct) event.result;
+                mCompleteProduct = (CompleteProduct) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
                 
                 FragmentCommunicator.getInstance().updateCurrentProduct(mCompleteProduct);
                 ((BaseActivity) getActivity()).setProcessShow(true);
@@ -1036,13 +1038,17 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
         return true;
     }
 
-    protected boolean onErrorEvent(ResponseEvent event) {
-        Log.d(TAG, "onErrorEvent: type = " + event.getType());
-        switch (event.getType()) {
+    protected boolean onErrorEvent(Bundle bundle) {
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        Log.d(TAG, "onErrorEvent: type = " + eventType);
+        switch (eventType) {
         case ADD_ITEM_TO_SHOPPING_CART_EVENT:
             ((BaseActivity) getActivity()).dismissProgress();
-            if (event.errorCode == ErrorCode.REQUEST_ERROR) {
-                List<String> errorMessages = event.errorMessages.get(RestConstants.JSON_ERROR_TAG);
+            if (errorCode == ErrorCode.REQUEST_ERROR) {
+                List<String> errorMessages = (List<String>) bundle
+                        .getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+                
                 if (errorMessages != null) {
                     int titleRes = R.string.error_add_to_cart_failed;
                     int msgRes = -1;
@@ -1086,19 +1092,18 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
                     return true;
                 }
             }
-            if (!event.errorCode.isNetworkError()) {
+            if (!errorCode.isNetworkError()) {
                 addToShoppingCartFailed();
                 return true;
             }
         case GET_PRODUCT_EVENT:
-            if (!event.errorCode.isNetworkError()) {
+            if (!errorCode.isNetworkError()) {
                 Toast.makeText(getActivity(), getString(R.string.product_could_not_retrieved),
                         Toast.LENGTH_LONG).show();
                 getActivity().onBackPressed();
                 return true;
             }
         }
-        return super.onErrorEvent(event);
     }
 
     private class TipsPagerAdapter extends PagerAdapter {

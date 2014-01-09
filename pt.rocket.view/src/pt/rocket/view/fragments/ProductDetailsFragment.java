@@ -18,12 +18,6 @@ import pt.rocket.controllers.ProductImagesAdapter;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.ErrorCode;
-import pt.rocket.framework.event.EventManager;
-import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.event.ResponseEvent;
-import pt.rocket.framework.event.ResponseResultEvent;
-import pt.rocket.framework.event.events.AddItemToShoppingCartEvent;
-import pt.rocket.framework.event.events.GetProductEvent;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.Errors;
 import pt.rocket.framework.objects.ProductRatingPage;
@@ -34,6 +28,7 @@ import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CurrencyFormatter;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.GetCategoriesHelper;
 import pt.rocket.helpers.GetProductHelper;
@@ -1011,42 +1006,33 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
             mCompleteProduct = null;
         }
     }
-    
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see pt.rocket.utils.MyActivity#handleTriggeredEvent(pt.rocket.framework.event.ResponseEvent)
-     */
-    @Override
-    protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
+    protected boolean onSuccessEvent(Bundle bundle) {
         // Validate if fragment is on the screen
         if (!isVisible()) {
             return true;
         }
         
-        Log.d(TAG, "ON SUCCESS EVENT: " + event.getType());
-        switch (event.getType()) {
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        
+        Log.d(TAG, "ON SUCCESS EVENT: " + eventType);
+        switch (eventType) {
         case ADD_ITEM_TO_SHOPPING_CART_EVENT:
             mAddToCartButton.setEnabled(true);
             executeAddToShoppingCartCompleted();
             break;
         case GET_PRODUCT_EVENT:
             AnalyticsGoogle.get().trackLoadTiming(R.string.gproductdetail, mBeginRequestMillis);
-            displayProduct((CompleteProduct) event.result);
+            displayProduct((CompleteProduct) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY));
             break;
         }
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see pt.rocket.utils.MyActivity#onErrorEvent(pt.rocket.framework.event.ResponseEvent)
-     */
-    @Override
-    protected boolean onErrorEvent(ResponseEvent event) {
-        Log.d(TAG, "onErrorEvent: type = " + event.getType());
+    protected boolean onErrorEvent(Bundle bundle) {
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        Log.d(TAG, "onErrorEvent: type = " + eventType);
         mBeginRequestMillis = System.currentTimeMillis();
         // Validate dialog
         if(dialog != null && dialog.isVisible()){
@@ -1056,13 +1042,14 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         // Get activity
         BaseActivity act = (BaseActivity) getActivity(); 
         
-        switch (event.getType()) {
+        switch (eventType) {
         case ADD_ITEM_TO_SHOPPING_CART_EVENT:
             if ( null != act ) {
                 act.dismissProgress();
             }
-            if (event.errorCode == ErrorCode.REQUEST_ERROR) {
-                List<String> errorMessages = event.errorMessages.get(RestConstants.JSON_ERROR_TAG);
+            if (errorCode == ErrorCode.REQUEST_ERROR) {
+                List<String> errorMessages = (List<String>) bundle
+                        .getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
                 if (errorMessages != null) {
                     int titleRes = R.string.error_add_to_cart_failed;
                     int msgRes = -1;
@@ -1105,12 +1092,12 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
                     return true;
                 }
             }
-            if (!event.errorCode.isNetworkError()) {
+            if (!errorCode.isNetworkError()) {
                 addToShoppingCartFailed();
                 return true;
             }
         case GET_PRODUCT_EVENT:
-            if (!event.errorCode.isNetworkError()) {
+            if (!errorCode.isNetworkError()) {
                 try {
 
                     //Hide content
@@ -1140,7 +1127,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
                 return true;
             }
         }
-        return super.onErrorEvent(event);
+        return true;
     }
     
     /**
@@ -1188,18 +1175,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         
         @Override
         public void onRequestComplete(Bundle bundle) {
-//            Log.d(TAG, "ON SUCCESS EVENT: " + event.getType());
-//            switch (event.getType()) {
-//            case ADD_ITEM_TO_SHOPPING_CART_EVENT:
-//                mAddToCartButton.setEnabled(true);
-//                executeAddToShoppingCartCompleted();
-//                break;
-//            case GET_PRODUCT_EVENT:
-                AnalyticsGoogle.get().trackLoadTiming(R.string.gproductdetail, mBeginRequestMillis);
-                displayProduct((CompleteProduct) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY));
-//                break;
-//            }
-            
+            onSuccessEvent(bundle);
         }
     };
 

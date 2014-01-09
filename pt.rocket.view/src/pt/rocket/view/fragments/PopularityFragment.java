@@ -5,7 +5,6 @@ package pt.rocket.view.fragments;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.List;
 
 import org.holoeverywhere.widget.TextView;
 
@@ -14,24 +13,15 @@ import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.components.ScrollViewEx;
 import pt.rocket.framework.components.ScrollViewEx.OnScrollBottomReachedListener;
-import pt.rocket.framework.event.EventManager;
-import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.event.ResponseResultEvent;
-import pt.rocket.framework.event.events.GetProductReviewsEvent;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.ProductRatingPage;
 import pt.rocket.framework.objects.ProductReviewComment;
 import pt.rocket.framework.objects.RatingOption;
-import pt.rocket.framework.objects.SearchSuggestion;
-import pt.rocket.framework.service.ServiceManager;
-import pt.rocket.framework.service.services.ProductService;
-import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.Constants;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LoadingBarView;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.helpers.GetCategoriesHelper;
 import pt.rocket.helpers.GetProductReviewsHelper;
-import pt.rocket.helpers.GetSearchSuggestionHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.JumiaApplication;
 import pt.rocket.utils.MyMenuItem;
@@ -160,7 +150,7 @@ public class PopularityFragment extends BaseFragment {
         super.onStart();
         Log.i(TAG, "ON START");
 //        ((BaseActivity) getActivity()).updateActivityHeader(NavigationAction.Products, R.string.reviews);
-        selectedProduct = ServiceManager.SERVICES.get(ProductHelper.class).getCurrentProduct();
+        selectedProduct = JumiaApplication.INSTANCE.getCurrentProduct();
         inflater = LayoutInflater.from(getActivity());
         if(selectedProduct == null){
             getActivity().finish();
@@ -399,13 +389,9 @@ public class PopularityFragment extends BaseFragment {
         ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.WRITE_REVIEW, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
     }
     
-    /*
-     * (non-Javadoc)
-     * @see pt.rocket.view.fragments.MyFragment#onSuccessEvent(pt.rocket.framework.event.ResponseResultEvent)
-     */
-    @Override
-    protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
-        mProductRatingPage = (ProductRatingPage) event.result;
+
+    protected boolean onSuccessEvent(Bundle bundle) {
+        mProductRatingPage =  bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);;
         displayReviews();
         return true;
     }
@@ -530,8 +516,7 @@ public class PopularityFragment extends BaseFragment {
         
         @Override
         public void onRequestComplete(Bundle bundle) {                
-            mProductRatingPage = (ProductRatingPage) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-            displayReviews();
+            onSuccessEvent(bundle);
         }
     };
 

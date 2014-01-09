@@ -19,6 +19,7 @@ import pt.rocket.framework.objects.ShoppingCart;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.service.IRemoteService;
 import pt.rocket.framework.service.IRemoteServiceCallback;
+import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LoadingBarView;
@@ -835,7 +836,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         sharingIntent.setType("text/plain");
         sharingIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_subject));
 
-        CompleteProduct prod = ServiceManager.SERVICES.get(ProductHelper.class).getCurrentProduct();
+        CompleteProduct prod = JumiaApplication.INSTANCE.getCurrentProduct();
         
         if (null != prod) {
             //For tracking when sharing
@@ -962,13 +963,13 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
 	    }
 	}
 	
-    public void showError(final RequestEvent event) {
+    public void showError(final BaseHelper helper, final Bundle bundle, final IResponseCallback responseCallback) {
         showError(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 showWarning(false);
-                triggerContentEvent(event);
+                triggerContentEvent(helper, bundle, responseCallback);
             }
         }, false);
     }

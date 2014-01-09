@@ -31,6 +31,9 @@ public class FormData implements IJSONSerializable, Parcelable {
     private String action;
     private String url;
       
+    public FormData() {
+    }
+    
     /**
      * @return the id
      */

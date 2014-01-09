@@ -14,7 +14,6 @@ import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
 import pt.rocket.pojo.ITargeting;
-import pt.rocket.pojo.TeaserSpecification;
 import pt.rocket.utils.JSONConstants;
 import android.os.Bundle;
 import de.akquinet.android.androlog.Log;
@@ -28,8 +27,6 @@ import de.akquinet.android.androlog.Log;
 public class GetFormsDatasetListHelper extends BaseHelper {
     
     private static String TAG = GetFormsDatasetListHelper.class.getSimpleName();
-    
-    private ArrayList<TeaserSpecification<ITargeting>> teasers = new ArrayList<TeaserSpecification<ITargeting>>();
     
     @Override
     public Bundle generateRequestBundle(Bundle args) {
@@ -46,17 +43,7 @@ public class GetFormsDatasetListHelper extends BaseHelper {
     	Log.d(TAG, "parseResponseBundle GetTeasersHelper");
     	
     	
-        try {// TODO add further object parsing possibilities : for example data
-            // not being an array but a dictionary
-           JSONArray data = jsonObject.getJSONArray(JSONConstants.JSON_DATA_TAG);
-           int dataSize = data.length();
-           
-           for (int i = 0; i < dataSize; i++) {
-               TeaserSpecification<ITargeting> teaser = (TeaserSpecification<ITargeting>) TeaserSpecification.parse(data.getJSONObject(i));
-                
-               teasers.add(teaser);
-
-           }
+        try {
            
            bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, teasers);
            

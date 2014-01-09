@@ -3,9 +3,6 @@
  */
 package pt.rocket.helpers;
 
-import java.util.ArrayList;
-
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -15,9 +12,6 @@ import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
-import pt.rocket.pojo.ITargeting;
-import pt.rocket.pojo.TeaserSpecification;
-import pt.rocket.utils.JSONConstants;
 import android.os.Bundle;
 import de.akquinet.android.androlog.Log;
 

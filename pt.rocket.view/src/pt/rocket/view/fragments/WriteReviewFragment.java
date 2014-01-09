@@ -4,26 +4,22 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-import pt.rocket.framework.event.EventManager;
-import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.event.ResponseEvent;
-import pt.rocket.framework.event.ResponseResultEvent;
-import pt.rocket.framework.event.events.LogInEvent;
-import pt.rocket.framework.event.events.ReviewProductEvent;
+import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.objects.ProductReviewCommentCreated;
-import pt.rocket.framework.service.ServiceManager;
-import pt.rocket.framework.service.services.ProductService;
 import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.Constants;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.helpers.GetAutoLoginHelper;
 import pt.rocket.helpers.GetCategoriesHelper;
 import pt.rocket.helpers.GetCustomerHelper;
+import pt.rocket.helpers.GetLoginFormHelper;
+import pt.rocket.helpers.GetLoginHelper;
 import pt.rocket.helpers.GetRatingsHelper;
 import pt.rocket.helpers.GetWriteReviewHelper;
 import pt.rocket.interfaces.IResponseCallback;
+import pt.rocket.utils.JumiaApplication;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.TrackerDelegator;
@@ -126,7 +122,7 @@ public class WriteReviewFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-        completeProduct = ServiceManager.SERVICES.get(ProductHelper.class).getCurrentProduct();
+        completeProduct = JumiaApplication.INSTANCE.getCurrentProduct();
         
         /**
          * TRIGGERS
@@ -352,18 +348,12 @@ public class WriteReviewFragment extends BaseFragment {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * pt.rocket.view.fragments.MyFragment#onSuccessEvent(pt.rocket.framework.event.ResponseResultEvent
-     * )
-     */
-    @Override
-    protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
-        switch (event.getType()) {
+    protected boolean onSuccessEvent(Bundle bundle) {
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        switch (eventType) {
         case REVIEW_PRODUCT_EVENT:
-            Log.d(TAG, "review product completed: success = " + event.getSuccess());
+            Log.d(TAG, "review product completed: success");
             TrackerDelegator.trackItemReview(getActivity().getApplicationContext(), completeProduct, productReviewCreated, ratings);
             dialog_review_submitted = DialogGenericFragment.newInstance(false, true, false,
                     getString(R.string.submit_title), getResources().getString(
@@ -392,7 +382,7 @@ public class WriteReviewFragment extends BaseFragment {
             return true;
             // case GET_CUSTOMER:
         case LOGIN_EVENT:
-            Customer customer = (Customer) event.result;
+            Customer customer = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
 //            TrackerDelegator.trackLoginSuccessful(getActivity(), customer, true, getActivity().getString(R.string.mixprop_loginlocationreview), false);
             if(nameText != null && customer != null && customer.getFirstName() != null){
                 nameText.setText(customer.getFirstName());
@@ -400,7 +390,7 @@ public class WriteReviewFragment extends BaseFragment {
             return false;
         case GET_CUSTOMER:
             Log.i("GOT CUSTOMER", "HERE ");
-            customerCred = (Customer) event.result;
+            customerCred = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
 
             return true;
 
@@ -409,9 +399,10 @@ public class WriteReviewFragment extends BaseFragment {
         }
     }
 
-    @Override
-    protected boolean onErrorEvent(ResponseEvent event) {
-        switch (event.getType()) {
+    
+    protected boolean onErrorEvent(Bundle bundle) {
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        switch (eventType) {
         // case GET_CUSTOMER:
         // List<String> errors = event.errorMessages.get( Errors.JSON_ERROR_TAG);
         // if ( errors.contains( Errors.CODE_CUSTOMER_NOT_LOGGED_ID )) {
@@ -447,17 +438,16 @@ public class WriteReviewFragment extends BaseFragment {
      */
     private void triggerAutoLogin() {
         Bundle bundle = new Bundle();
-        triggerContentEvent(new GetAutoLoginHelper(), bundle, mCallBack);
+        bundle.putParcelable(GetLoginFormHelper.LOGIN_CONTENT_VALUES, JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
+        triggerContentEvent(new GetLoginHelper(), bundle, mCallBack);
     }
     
     private void triggerCustomer(){
-        Bundle bundle = new Bundle();
-        triggerContentEvent(new GetCustomerHelper(), bundle, mCallBack);
+        triggerContentEvent(new GetCustomerHelper(), null, mCallBack);
     }
     
     private void triggerRatingOptions(){
-        Bundle bundle = new Bundle();
-        triggerContentEvent(new GetRatingsHelper(), bundle, mCallBack);
+        triggerContentEvent(new GetRatingsHelper(), null, mCallBack);
     }
     
     private void triggerWriteReview(String string, int i, ProductReviewCommentCreated productReviewCreated2){
@@ -478,12 +468,12 @@ public class WriteReviewFragment extends BaseFragment {
         
         @Override
         public void onRequestError(Bundle bundle) {
-            // TODO
+            onErrorEvent(bundle);
         }
         
         @Override
         public void onRequestComplete(Bundle bundle) {
-         // TODO
+            onSuccessEvent(bundle);
         }
     };
 }

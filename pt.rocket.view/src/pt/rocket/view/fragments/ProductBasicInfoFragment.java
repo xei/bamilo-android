@@ -6,16 +6,11 @@ package pt.rocket.view.fragments;
 import java.util.EnumSet;
 
 import pt.rocket.controllers.fragments.FragmentType;
-import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.event.ResponseEvent;
-import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.objects.CompleteProduct;
-import pt.rocket.framework.service.ServiceManager;
-import pt.rocket.framework.service.services.ProductService;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
-import pt.rocket.utils.OnFragmentActivityInteraction;
 import pt.rocket.utils.FragmentCommunicator;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.ProductDetailsActivityFragment;
@@ -218,21 +213,6 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
         super.onStop();
         Log.i(TAG, "ON STOP");
         // FlurryTracker.get().end();
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see pt.rocket.utils.MyActivity#handleTriggeredEvent(pt.rocket.framework.event.ResponseEvent)
-     */
-    @Override
-    protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
-        return false;
-    }
-
-    @Override
-    protected boolean onErrorEvent(ResponseEvent event) {
-        return false;
     }
 
     @Override

@@ -59,30 +59,6 @@ public class LogOut {
                 dialog.dismiss();
             }
         });
-        
-//        EventManager.getSingleton().triggerRequestEvent(new RequestEvent(EventType.LOGOUT_EVENT),
-//                new ResponseListener() {
-//
-//                    @Override
-//                    public void handleEvent(ResponseEvent event) {
-//                        TrackerDelegator.trackLogoutSuccessful(((BaseActivity) activityRef.get()));
-//                        if(((BaseActivity) activityRef.get()) != null)
-//                                ((BaseActivity) activityRef.get()).updateSlidingMenuCompletly();
-//                        dialog.dismiss();                        
-//                    }
-//
-//                    @Override
-//                    public boolean removeAfterHandlingEvent() {
-//                        return true;
-//                    }
-//
-//                    @Override
-//                    public String getMD5Hash() {
-//                        // TODO Auto-generated method stub
-//                        return null;
-//                    }
-//
-//                });
     }
 
 }

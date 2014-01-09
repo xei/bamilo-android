@@ -12,6 +12,8 @@ import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.ProductsListAdapter;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
+import pt.rocket.framework.ErrorCode;
+import pt.rocket.framework.interfaces.IMetaData;
 import pt.rocket.framework.objects.Product;
 import pt.rocket.framework.objects.ProductRatingPage;
 import pt.rocket.framework.objects.ProductsPage;
@@ -19,6 +21,7 @@ import pt.rocket.framework.rest.RestContract;
 import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.Direction;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.framework.utils.ProductSort;
 import pt.rocket.helpers.GetProductReviewsHelper;
@@ -563,12 +566,12 @@ public class ProductsFragment extends BaseFragment implements
         }
     }
 
-    @Override
-    protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
+    protected boolean onSuccessEvent(Bundle bundle) {
+        
         Log.d(TAG, "ON SUCCESS EVENT");
         // sortButton.setOnClickListener(this);
         // Get Products Event
-        ProductsPage productsPage = (ProductsPage) event.result;
+        ProductsPage productsPage = (ProductsPage)  bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
         Log.d(TAG, "onSuccessEvent: products on page = " + productsPage.getProducts().size() +
                 " total products = " + productsPage.getTotalProducts());
         if (productsPage != null && productsPage.getTotalProducts() > 0) {
@@ -577,7 +580,7 @@ public class ProductsFragment extends BaseFragment implements
 
         
 
-        String location = event.metaData.getString(IMetaData.LOCATION);
+        String location = bundle.getString(IMetaData.LOCATION);
         Log.d(TAG, "Location = " + location);
         checkRedirectFromSearch(location);
 
@@ -637,9 +640,9 @@ public class ProductsFragment extends BaseFragment implements
         return;
     }
 
-    @Override
-    protected boolean onErrorEvent(ResponseEvent event) {
-        if (event.errorCode != null && pageNumber == 1) {
+    protected boolean onErrorEvent(Bundle bundle) {
+        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        if (errorCode != null && pageNumber == 1) {
             showProductsNotfound();
             ((BaseActivity) getActivity()).showContentContainer(false);
         } else {
@@ -735,54 +738,12 @@ public class ProductsFragment extends BaseFragment implements
         
         @Override
         public void onRequestError(Bundle bundle) {
-            // TODO
+            onErrorEvent(bundle);
         }
         
         @Override
         public void onRequestComplete(Bundle bundle) {
-            Log.d(TAG, "ON SUCCESS EVENT");
-            // sortButton.setOnClickListener(this);
-            // Get Products Event
-            ProductsPage productsPage = (ProductsPage) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-            Log.d(TAG, "onSuccessEvent: products on page = " + productsPage.getProducts().size() + " total products = " + productsPage.getTotalProducts());
-            if (productsPage != null && productsPage.getTotalProducts() > 0) {
-                totalProducts = productsPage.getTotalProducts();
-            }
-
-//            String location = event.metaData.getString(IMetaData.LOCATION);
-//            Log.d(TAG, "Location = " + location);
-//            checkRedirectFromSearch(location);
-
-            AnalyticsGoogle.get().trackLoadTiming(R.string.gproductlist, mBeginRequestMillis);
-
-            if (searchQuery != null && !TextUtils.isEmpty(searchQuery)) {
-                ((BaseActivity) getActivity()).setTitle(searchQuery + " (" + productsPage.getTotalProducts() + ")");
-                TrackerDelegator.trackSearchMade(getActivity().getApplicationContext(), searchQuery,
-                        productsPage.getTotalProducts());
-            } else {
-                TrackerDelegator.trackCategoryView(getActivity().getApplicationContext(), title,
-                        pageNumber);
-            }
-
-            productsAdapter.appendProducts(productsPage.getProducts());
-
-            showProductsContent();
-
-            Log.i(TAG, "code1 " + productsPage.getProducts().size() + " pageNumber is : "+pageNumber);
-            pageNumber = productsPage.getProducts().size() >= productsPage.getTotalProducts() ? NO_MORE_PAGES : pageNumber + 1;
-
-            if (totalProducts < ((pageNumber - 1) * MAX_PAGE_ITEMS)) {
-                pageNumber = NO_MORE_PAGES;
-            }
-            isLoadingMore = false;
-            if (productsPage.getProducts().size() >= productsPage.getTotalProducts()) {
-                isLoadingMore = true;
-            }
-            
-            AnalyticsGoogle.get().trackSearch(searchQuery, productsPage.getTotalProducts());
-
-            // Debug.MemoryInfo memoryInfo = new Debug.MemoryInfo();
-            // Debug.getMemoryInfo(memoryInfo);
+            onSuccessEvent(bundle);
 
         }
     };

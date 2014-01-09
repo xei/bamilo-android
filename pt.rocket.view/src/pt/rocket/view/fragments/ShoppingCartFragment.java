@@ -15,18 +15,12 @@ import pt.rocket.controllers.ShoppingBasketFragListAdapter;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.components.ExpandableGridViewComponent;
-import pt.rocket.framework.event.EventManager;
-import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.event.ResponseEvent;
-import pt.rocket.framework.event.ResponseResultEvent;
-import pt.rocket.framework.event.events.ChangeItemQuantityInShoppingCartEvent;
-import pt.rocket.framework.event.events.GetShoppingCartItemsEvent;
-import pt.rocket.framework.event.events.RemoveItemFromShoppingCartEvent;
 import pt.rocket.framework.objects.MinOrderAmount;
 import pt.rocket.framework.objects.ShoppingCart;
 import pt.rocket.framework.objects.ShoppingCartItem;
 import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.CurrencyFormatter;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
@@ -199,10 +193,6 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         Log.i(TAG, "ON START");
         setAppContentLayout();
 
-        EventManager.getSingleton().addResponseListener(this,
-                EnumSet.of(EventType.GET_SHOPPING_CART_ITEMS_EVENT,
-                        EventType.REMOVE_ITEM_FROM_SHOPPING_CART_EVENT,
-                        EventType.CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT));
 
         // EventManager.getSingleton().triggerRequestEvent(new RequestEvent(
         // EventType.GET_MIN_ORDER_AMOUNT));

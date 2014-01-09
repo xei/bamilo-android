@@ -12,7 +12,6 @@ import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
 import pt.rocket.pojo.NavigationListComponent;
-import pt.rocket.utils.JSONConstants;
 
 import android.os.Bundle;
 

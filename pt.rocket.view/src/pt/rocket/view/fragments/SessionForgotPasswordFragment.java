@@ -9,15 +9,11 @@ import java.util.List;
 
 import pt.rocket.constants.FormConstants;
 import pt.rocket.factories.FormFactory;
-import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.event.ResponseEvent;
-import pt.rocket.framework.event.ResponseResultEvent;
-import pt.rocket.framework.event.events.ForgetPasswordEvent;
-import pt.rocket.framework.forms.Form;
+import pt.rocket.forms.Form;
+import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.Errors;
-import pt.rocket.framework.rest.RestConstants;
-import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.Constants;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.GetCategoriesHelper;
 import pt.rocket.helpers.GetForgotPasswordFormHelper;
@@ -28,7 +24,6 @@ import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.view.BaseActivity;
-import pt.rocket.view.MainFragmentActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
@@ -261,16 +256,12 @@ public class SessionForgotPasswordFragment extends BaseFragment {
         }
     }
     
-
-    /*
-     * (non-Javadoc)
-     * @see pt.rocket.view.fragments.MyFragment#onSuccessEvent(pt.rocket.framework.event.ResponseResultEvent)
-     */
-    @Override
-    protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
-        switch (event.getType()) {
+    protected boolean onSuccessEvent(Bundle bundle) {
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        switch (eventType) {
         case GET_FORGET_PASSWORD_FORM_EVENT:
-            Form form = (Form) event.result;
+            Form form = (Form) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             if (null != form) {
                 this.formResponse = form;
                 displayForm(form);
@@ -300,14 +291,12 @@ public class SessionForgotPasswordFragment extends BaseFragment {
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see pt.rocket.view.fragments.MyFragment#onErrorEvent(pt.rocket.framework.event.ResponseEvent)
-     */
-    @Override
-    protected boolean onErrorEvent(ResponseEvent event) {
-        if (event.getType() == EventType.FORGET_PASSWORD_EVENT) {
-            List<String> errorMessages = event.errorMessages.get(RestConstants.JSON_ERROR_TAG);
+    protected boolean onErrorEvent(Bundle bundle) {
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        if (eventType == EventType.FORGET_PASSWORD_EVENT) {
+            List<String> errorMessages = (List<String>) bundle
+                    .getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
             if (errorMessages != null
                     && errorMessages.contains(Errors.CODE_FORGOTPW_NOSUCH_CUSTOMER)) {
                 ((BaseActivity) getActivity()).showContentContainer(false);

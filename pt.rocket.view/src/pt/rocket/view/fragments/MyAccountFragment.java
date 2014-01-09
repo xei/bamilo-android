@@ -8,8 +8,7 @@ import java.util.EnumSet;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.MyAccountAdapter;
 import pt.rocket.controllers.fragments.FragmentType;
-import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.event.ResponseResultEvent;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
@@ -192,8 +191,5 @@ public class MyAccountFragment extends BaseFragment {
         });
         
     }
-    @Override
-    protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
-        return false;
-    }
+
 }

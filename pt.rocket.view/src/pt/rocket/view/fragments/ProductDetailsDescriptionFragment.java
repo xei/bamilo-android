@@ -5,12 +5,10 @@ package pt.rocket.view.fragments;
 
 import java.util.EnumSet;
 
-import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.objects.CompleteProduct;
-import pt.rocket.framework.service.ServiceManager;
-import pt.rocket.framework.service.services.ProductService;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.utils.JumiaApplication;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.view.R;
@@ -70,7 +68,7 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
                 EnumSet.of(MyMenuItem.SHARE), 
                 NavigationAction.Products, 
                 R.string.product_details_title);
-        this.mCompleteProduct = ServiceManager.SERVICES.get(ProductHelper.class).getCurrentProduct();
+        this.mCompleteProduct = JumiaApplication.INSTANCE.getCurrentProduct();
     }
     
     /*
@@ -140,7 +138,7 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        mCompleteProduct = ServiceManager.SERVICES.get(ProductHelper.class).getCurrentProduct();
+        mCompleteProduct = JumiaApplication.INSTANCE.getCurrentProduct();
         /**
          * Validate product
          * If null is assumed that the system clean some data
@@ -302,11 +300,5 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
         // It looks strange to show them both as "long description" and as details
         view.findViewById( R.id.product_details_container).setVisibility( View.GONE );
     }
-
-    @Override
-    protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
-        return false;
-    }
-
 
 }

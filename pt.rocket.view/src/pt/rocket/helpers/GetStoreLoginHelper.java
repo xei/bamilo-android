@@ -7,6 +7,7 @@ import org.json.JSONObject;
 
 import pt.rocket.framework.enums.RequestType;
 import pt.rocket.framework.utils.Constants;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
 
 import android.os.Bundle;
@@ -24,9 +25,8 @@ public class GetStoreLoginHelper extends BaseHelper {
     @Override
     public Bundle generateRequestBundle(Bundle args) {
         Bundle bundle = new Bundle();
-//        bundle.putString(Constants.BUNDLE_URL_KEY, "http:/customer/login/");
-        bundle.putString(Constants.BUNDLE_URL_KEY, "http://www.linio.com.ve/mobileapi/customer/login/");
-        bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
+        bundle.putString(Constants.BUNDLE_URL_KEY, EventType.STORE_LOGIN.action);
+        bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.POST);
         bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
         return bundle;
     }

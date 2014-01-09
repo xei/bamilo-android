@@ -7,13 +7,13 @@ import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.controllers.NormalizingViewPagerWrapper.IPagerAdapter;
 import pt.rocket.framework.objects.BrandsTeaserGroup;
-import pt.rocket.framework.objects.BrandsTeaserGroup.TeaserBrand;
 import pt.rocket.framework.objects.CategoryTeaserGroup;
 import pt.rocket.framework.objects.CategoryTeaserGroup.TeaserCategory;
 import pt.rocket.framework.objects.ITargeting;
-import pt.rocket.framework.objects.ImageTeaserGroup.TeaserImage;
 import pt.rocket.framework.objects.ProductTeaserGroup;
 import pt.rocket.framework.objects.ProductTeaserGroup.TeaserProduct;
+import pt.rocket.framework.objects.TeaserBrand;
+import pt.rocket.framework.objects.TeaserImage;
 import pt.rocket.framework.objects.TeaserSpecification;
 import pt.rocket.framework.utils.WindowHelper;
 import pt.rocket.view.R;

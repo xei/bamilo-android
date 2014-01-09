@@ -2,6 +2,10 @@ package pt.rocket.utils;
 
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.Set;
+import java.util.Map.Entry;
+
+import oak.ObscuredSharedPreferences;
 
 import com.bugsense.trace.ExceptionCallback;
 
@@ -18,6 +22,7 @@ import pt.rocket.framework.service.IRemoteServiceCallback;
 import pt.rocket.framework.service.RemoteService;
 import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.Constants;
+import pt.rocket.framework.utils.CustomerUtils;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.SingletonMap;
 import pt.rocket.framework.utils.Utils;
@@ -26,9 +31,12 @@ import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.preferences.ShopPreferences;
 import android.app.Application;
 import android.content.ComponentName;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -41,6 +49,12 @@ public class JumiaApplication extends Application implements ExceptionCallback {
 
     public static JumiaApplication INSTANCE;
     
+    /**
+     * Account Variables
+     */
+    private CustomerUtils mCustomerUtils; 
+    private boolean loggedIn = false;
+    private Integer shopId = null;
     
     /**
      * General Persistent Variables
@@ -78,6 +92,7 @@ public class JumiaApplication extends Application implements ExceptionCallback {
         
         // Get the current shop id
         SHOP_ID = ShopPreferences.getShopId(getApplicationContext());
+        
     }
 
     public synchronized void init(boolean isReInit) {
@@ -252,6 +267,24 @@ public class JumiaApplication extends Application implements ExceptionCallback {
 
 
     /**
+     * @return the mCustomerUtils
+     */
+    public CustomerUtils getCustomerUtils() {
+        if(mCustomerUtils == null){
+            mCustomerUtils = new CustomerUtils(getApplicationContext());
+        }
+        return mCustomerUtils;
+    }
+
+    /**
+     * @param mCustomerUtils the mCustomerUtils to set
+     */
+    public void setCustomerUtils(CustomerUtils mCustomerUtils) {
+        this.mCustomerUtils = mCustomerUtils;
+    }
+
+
+    /**
      * Service Stuff
      */
     
@@ -274,4 +307,7 @@ public class JumiaApplication extends Application implements ExceptionCallback {
             
         }
     };
+    
+
+
 }

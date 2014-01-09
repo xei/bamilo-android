@@ -14,20 +14,17 @@ import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.LogOut;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
+import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.components.NavigationListComponent;
-import pt.rocket.framework.event.EventManager;
-import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.event.RequestEvent;
-import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.objects.ProductRatingPage;
 import pt.rocket.framework.objects.ShoppingCart;
-import pt.rocket.framework.service.ServiceManager;
-import pt.rocket.framework.service.services.CustomerAccountService;
 import pt.rocket.framework.utils.Constants;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.GetCategoriesHelper;
 import pt.rocket.helpers.NavigationListHelper;
 import pt.rocket.interfaces.IResponseCallback;
+import pt.rocket.utils.JumiaApplication;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
@@ -109,10 +106,10 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-        
+
         // Retain this fragment across configuration changes.
         setRetainInstance(true);
-        
+
         inflater = LayoutInflater.from(getActivity());
     }
 
@@ -156,14 +153,16 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
             fillNavigationContainer(navigationListComponents);
             updateCart();
         } else {
-            
+
             /**
              * TRIGGERS
+             * 
              * @author sergiopereira
              */
             trigger();
-            //triggerContentEvent(new RequestEvent(EventType.GET_NAVIGATION_LIST_COMPONENTS_EVENT));
-            
+            // triggerContentEvent(new
+            // RequestEvent(EventType.GET_NAVIGATION_LIST_COMPONENTS_EVENT));
+
         }
     }
 
@@ -187,8 +186,6 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
     public void onStop() {
         super.onStop();
         Log.i(TAG, "ON STOP");
-        EventManager.getSingleton().removeResponseListener(this,
-                EnumSet.of(EventType.GET_NAVIGATION_LIST_COMPONENTS_EVENT));
     }
 
     /*
@@ -206,45 +203,34 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
     public void onDestroy() {
         super.onDestroy();
         Log.i(TAG, "ON DESTROY");
-        // System.gc();
-        EventManager.getSingleton().removeResponseListener(this,
-                EnumSet.of(EventType.GET_NAVIGATION_LIST_COMPONENTS_EVENT));
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see pt.rocket.view.fragments.BaseFragment#onSuccessEvent(pt.rocket.framework.event.
-     * ResponseResultEvent)
-     */
-    @Override
-    protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
+    protected boolean onSuccessEvent(Bundle bundle) {
 
         if (!isVisible())
             return true;
-
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         Log.i(TAG, "ON SUCCESS EVENT");
-        if (event.getSuccess()) {
-            switch (event.type) {
-            case GET_NAVIGATION_LIST_COMPONENTS_EVENT:
-                Log.d(TAG, "GET NAVIGATION LIST COMPONENTS EVENT");
-                ResponseResultEvent<Collection<NavigationListComponent>> getNavEvent = (ResponseResultEvent<Collection<NavigationListComponent>>) event;
-                navigationListComponents = (ArrayList<NavigationListComponent>) getNavEvent.result;
-                fillNavigationContainer(navigationListComponents);
-                updateCart();
-                break;
-            }
+
+        switch (eventType) {
+        case GET_NAVIGATION_LIST_COMPONENTS_EVENT:
+            Log.d(TAG, "GET NAVIGATION LIST COMPONENTS EVENT");
+            navigationListComponents = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
+            fillNavigationContainer(navigationListComponents);
+            updateCart();
+            break;
         }
+
         return true;
     }
 
     /**
-     * Update the sliding menu
-     * Called from BaseFragment
+     * Update the sliding menu Called from BaseFragment
+     * 
      * @author sergiopereira
      */
-    public void onUpdate(){
-        if(navigationListComponents != null) {
+    public void onUpdate() {
+        if (navigationListComponents != null) {
             Log.i(TAG, "ON UPDATE: NAV LIST IS NOT NULL");
             // Update generic items or force reload for LogInOut
             updateNavigationItems();
@@ -252,41 +238,48 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
             updateCart();
         }
     }
-//
-//    /**
-//     * Set the wish list counter
-//     * @param layout
-//     * @author sergiopereira
-//     */
-//    private void setWishlistCount(View layout) {
-//        if(wishlistCounter > 0) 
-//            ((TextView) layout.findViewById(R.id.component_text)).setText(getString(R.string.nav_wishlist) + " (" + wishlistCounter + ")");
-//        else
-//            ((TextView) layout.findViewById(R.id.component_text)).setText(getString(R.string.nav_wishlist));
-//    }
-//    
+
+    //
+    // /**
+    // * Set the wish list counter
+    // * @param layout
+    // * @author sergiopereira
+    // */
+    // private void setWishlistCount(View layout) {
+    // if(wishlistCounter > 0)
+    // ((TextView)
+    // layout.findViewById(R.id.component_text)).setText(getString(R.string.nav_wishlist) + " (" +
+    // wishlistCounter + ")");
+    // else
+    // ((TextView)
+    // layout.findViewById(R.id.component_text)).setText(getString(R.string.nav_wishlist));
+    // }
+    //
     /**
      * 
      * @param view
      */
-    private void setLogInOutText(View view){
-        int text = ServiceManager.SERVICES.get(CustomerAccountService.class).hasCredentials() ? R.string.sign_out : R.string.sign_in;
+    private void setLogInOutText(View view) {
+        int text = JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials() ? R.string.sign_out
+                : R.string.sign_in;
         ((TextView) view.findViewById(R.id.component_text)).setText(text);
         view.setId(R.id.loginout_view);
     }
-    
+
     /**
      * Updated generic items
+     * 
      * @author sergiopereira
      */
-    private void updateNavigationItems(){
+    private void updateNavigationItems() {
         try {
             // For each child validate the selected item
-            ViewGroup vGroup = ((ViewGroup) getView().findViewById(R.id.slide_menu_scrollable_container));
+            ViewGroup vGroup = ((ViewGroup) getView().findViewById(
+                    R.id.slide_menu_scrollable_container));
             int count = vGroup.getChildCount();
             for (int i = 0; i < count; i++)
                 updateItem(vGroup.getChildAt(i));
-            
+
         } catch (NullPointerException e) {
             Log.w(TAG, "ON UPDATE NAVIGATION: NULL POINTER EXCEPTION");
             e.printStackTrace();
@@ -296,9 +289,9 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
         }
     }
 
-    
     /**
      * Update item
+     * 
      * @param view
      */
     private void updateItem(View view) {
@@ -309,10 +302,10 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
         case LoginOut:
             setLogInOutText(view);
             break;
-//        // Update wish list counter
-//        case Wishlist:
-//            setWishlistCount(view);
-//            break;
+        // // Update wish list counter
+        // case Wishlist:
+        // setWishlistCount(view);
+        // break;
         case Home:
         case Search:
         case Categories:
@@ -324,8 +317,7 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
         // Set selected
         setActionSelected(view);
     }
-    
-    
+
     /**
      * 
      * @param components
@@ -337,10 +329,10 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
         // Header component
         inflater.inflate(R.layout.navigation_header_component, navigationContainer, true);
 
-//        // Static container
-//        inflater.inflate(R.layout.navigation_static_container, navigationContainer, true);
-//        ViewGroup staticContainer = (ViewGroup) navigationContainer
-//                .findViewById(R.id.slide_menu_static_container);
+        // // Static container
+        // inflater.inflate(R.layout.navigation_static_container, navigationContainer, true);
+        // ViewGroup staticContainer = (ViewGroup) navigationContainer
+        // .findViewById(R.id.slide_menu_static_container);
 
         // Scrollable container
         inflater.inflate(R.layout.navigation_scrollable_container, navigationContainer, true);
@@ -350,8 +342,8 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
         for (NavigationListComponent component : components) {
             // Basket
             ViewGroup viewGroup = scrollableContainer;
-            //if (component.getElementId() == 7 && component.getElementText().equals("Basket"))
-                //viewGroup = staticContainer;
+            // if (component.getElementId() == 7 && component.getElementText().equals("Basket"))
+            // viewGroup = staticContainer;
             // Others
             View actionElementLayout = getActionElementLayout(component, viewGroup);
             if (actionElementLayout != null)
@@ -422,7 +414,7 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
                     R.string.my_account, this);
             break;
         case LoginOut:
-            int text = ServiceManager.SERVICES.get(CustomerAccountService.class).hasCredentials() ?
+            int text = JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials() ?
                     R.string.sign_out : R.string.sign_in;
             layout = createGenericComponent(parent, component,
                     R.drawable.selector_navigation_loginout,
@@ -654,7 +646,7 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
     }
 
     public static void loginOut(final BaseActivity activity) {
-        if (ServiceManager.SERVICES.get(CustomerAccountService.class).hasCredentials()) {
+        if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials()) {
             FragmentManager fm = activity.getSupportFragmentManager();
             dialogLogout = DialogGenericFragment.newInstance(false, true, false,
                     activity.getString(R.string.logout_title),
@@ -668,7 +660,7 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
                                 LogOut.performLogOut(new WeakReference<Activity>(activity));
                             }
                             dialogLogout.dismiss();
-                            
+
                         }
 
                     });
@@ -681,29 +673,29 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
 
     /**
      * TRIGGERS
+     * 
      * @author sergiopereira
      */
-    private void trigger(){
-        Bundle bundle = new Bundle();
-        triggerContentEvent(new NavigationListHelper(), bundle, mCallBack);
-        //JumiaApplication.INSTANCE.sendRequest(new GetCategoriesHelper(), bundle, mCallBack);
+    private void trigger() {
+        triggerContentEvent(new NavigationListHelper(), null, mCallBack);
+        // JumiaApplication.INSTANCE.sendRequest(new GetCategoriesHelper(), bundle, mCallBack);
     }
-    
+
     /**
      * CALLBACK
+     * 
      * @author sergiopereira
      */
     IResponseCallback mCallBack = new IResponseCallback() {
-        
+
         @Override
         public void onRequestError(Bundle bundle) {
             // TODO
         }
-        
+
         @Override
-        public void onRequestComplete(Bundle bundle) {                
-            mProductRatingPage = (ProductRatingPage) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-            displayReviews();
+        public void onRequestComplete(Bundle bundle) {
+
         }
     };
 }

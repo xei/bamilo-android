@@ -3,10 +3,6 @@
  */
 package pt.rocket.helpers;
 
-import java.util.ArrayList;
-
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import pt.rocket.framework.enums.RequestType;
@@ -14,9 +10,6 @@ import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
-import pt.rocket.pojo.ITargeting;
-import pt.rocket.pojo.TeaserSpecification;
-import pt.rocket.utils.JSONConstants;
 import android.os.Bundle;
 import de.akquinet.android.androlog.Log;
 
@@ -29,8 +22,6 @@ import de.akquinet.android.androlog.Log;
 public class GetCallToOrderHelper extends BaseHelper {
 
     private static String TAG = GetCallToOrderHelper.class.getSimpleName();
-
-    private ArrayList<TeaserSpecification<ITargeting>> teasers = new ArrayList<TeaserSpecification<ITargeting>>();
 
     @Override
     public Bundle generateRequestBundle(Bundle args) {

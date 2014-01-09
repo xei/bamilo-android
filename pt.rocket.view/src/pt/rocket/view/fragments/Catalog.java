@@ -11,9 +11,8 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.CatalogPageModel;
-import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.utils.AnalyticsGoogle;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.utils.JumiaCatalogViewPager;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
@@ -336,14 +335,6 @@ public class Catalog extends BaseFragment {
             return view == (View) obj;
         }
     }
-
-    @Override
-    protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-    
-    
 
 
 }

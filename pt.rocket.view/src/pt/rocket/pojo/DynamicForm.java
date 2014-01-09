@@ -1,11 +1,11 @@
 package pt.rocket.pojo;
 
-import java.text.Normalizer.Form;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import pt.rocket.forms.Form;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.InputType;
 import android.content.ContentValues;

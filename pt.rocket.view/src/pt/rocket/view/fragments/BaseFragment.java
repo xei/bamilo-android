@@ -425,245 +425,245 @@ public abstract class BaseFragment extends Fragment implements
     /**
      * #### HANDLE EVENT ####
      */
-    /*
-     * (non-Javadoc)
-     * 
-     * @see pt.rocket.framework.event.EventListener#handleEvent(pt.rocket.framework.event.IEvent)
-     */
-    @Override
-    public final void handleEvent(final ResponseEvent event) {
+//    /*
+//     * (non-Javadoc)
+//     * 
+//     * @see pt.rocket.framework.event.EventListener#handleEvent(pt.rocket.framework.event.IEvent)
+//     */
+//    @Override
+//    public final void handleEvent(final ResponseEvent event) {
+//
+//        // Validate fragment visibility
+//        if (!isOnTheScreen() && event.getType() != EventType.FACEBOOK_LOGIN_EVENT) {
+//            Log.w(TAG, "RECEIVED EVENT IN BACKGROUND WAS DISCARDED: " + event.getType().name());
+//            return;
+//        }
+//
+//        if (event.getSuccess()) {
+//            Log.i(TAG, "HANDLE EVENT: SUCCESS");
+//            if (contentEvents.contains(event.type) || userEvents.contains(event.type)) {
+//                boolean showContent = onSuccessEvent((ResponseResultEvent<?>) event);
+//                try {
+//                    if (showContent) {
+//                        ((BaseActivity) getActivity()).showContentContainer(false);
+//                    }
+//                    ((BaseActivity) getActivity()).showWarning(event.warning != null);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//                
+//                if(getActivity() != null){
+//                    ((BaseActivity) getActivity()).showWarning(event.warning != null);                    
+//                } else {
+//                   return;
+//                }
+//                
+//
+//            }
+//            handleSuccessEvent(event);
+//
+//        } else {
+//            boolean needsErrorHandling = true;
+//            if (contentEvents.contains(event.type) || userEvents.contains(event.type)) {
+//                needsErrorHandling = !onErrorEvent(event);
+//            }
+//            if (needsErrorHandling) {
+//                handleErrorEvent(event);
+//            }
+//        }
+//    }
 
-        // Validate fragment visibility
-        if (!isOnTheScreen() && event.getType() != EventType.FACEBOOK_LOGIN_EVENT) {
-            Log.w(TAG, "RECEIVED EVENT IN BACKGROUND WAS DISCARDED: " + event.getType().name());
-            return;
-        }
+//    /**
+//     * Handles a successful event and reflects necessary changes on the UI.
+//     * 
+//     * @param event
+//     *            The successful event with {@link ResponseEvent#getSuccess()} == <code>true</code>
+//     */
+//    private void handleSuccessEvent(ResponseEvent event) {
+//        Log.i(TAG, "ON HANDLE SUCCESS EVENT: " + event.getType().toString());
+//        switch (event.getType()) {
+//        case GET_SHOPPING_CART_ITEMS_EVENT:
+//        case ADD_ITEM_TO_SHOPPING_CART_EVENT:
+//        case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
+//        case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
+//            break;
+//        case LOGOUT_EVENT:
+//            break;
+//        }
+//    }
 
-        if (event.getSuccess()) {
-            Log.i(TAG, "HANDLE EVENT: SUCCESS");
-            if (contentEvents.contains(event.type) || userEvents.contains(event.type)) {
-                boolean showContent = onSuccessEvent((ResponseResultEvent<?>) event);
-                try {
-                    if (showContent) {
-                        ((BaseActivity) getActivity()).showContentContainer(false);
-                    }
-                    ((BaseActivity) getActivity()).showWarning(event.warning != null);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                
-                if(getActivity() != null){
-                    ((BaseActivity) getActivity()).showWarning(event.warning != null);                    
-                } else {
-                   return;
-                }
-                
-
-            }
-            handleSuccessEvent(event);
-
-        } else {
-            boolean needsErrorHandling = true;
-            if (contentEvents.contains(event.type) || userEvents.contains(event.type)) {
-                needsErrorHandling = !onErrorEvent(event);
-            }
-            if (needsErrorHandling) {
-                handleErrorEvent(event);
-            }
-        }
-    }
-
-    /**
-     * Handles a successful event and reflects necessary changes on the UI.
-     * 
-     * @param event
-     *            The successful event with {@link ResponseEvent#getSuccess()} == <code>true</code>
-     */
-    private void handleSuccessEvent(ResponseEvent event) {
-        Log.i(TAG, "ON HANDLE SUCCESS EVENT: " + event.getType().toString());
-        switch (event.getType()) {
-        case GET_SHOPPING_CART_ITEMS_EVENT:
-        case ADD_ITEM_TO_SHOPPING_CART_EVENT:
-        case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
-        case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
-            break;
-        case LOGOUT_EVENT:
-            break;
-        }
-    }
-
-    /**
-     * Handles a failed event and shows dialogs to the user.
-     * 
-     * @param event
-     *            The failed event with {@link ResponseEvent#getSuccess()} == <code>false</code>
-     */
-    public void handleErrorEvent(final ResponseEvent event) {
-        Log.i(TAG, "ON HANDLE ERROR EVENT: " + event.getType());
-        if (!(event.request.eventType.equals(EventType.GET_CUSTOMER) && ((BaseActivity) getActivity())
-                .getLocalClassName().equals(writeReviewFragment))) {
-            if (event.errorCode.isNetworkError()) {
-                if (event.type == EventType.GET_SHOPPING_CART_ITEMS_EVENT && null != ((BaseActivity) getActivity())) {
-                    ((BaseActivity) getActivity()).updateCartInfo(null);
-                }
-                if (contentEvents.contains(event.type)) {
-                    ((BaseActivity) getActivity()).showError(event.request);
-                } else if (userEvents.contains(event.type)) {
-                    ((BaseActivity) getActivity()).showContentContainer(false);
-                    
-                    // Remove dialog if exist
-                    if (dialog != null){
-                        try {
-                            dialog.dismiss();    
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    dialog = DialogGenericFragment.createNoNetworkDialog(getActivity(),
-                            new OnClickListener() {
-
-                                @Override
-                                public void onClick(View v) {
-                                    if (null != getActivity()) {
-                                    ((BaseActivity) getActivity()).showLoadingInfo();
-                                    EventManager.getSingleton().triggerRequestEvent(event.request);
-                                    dialog.dismiss();
-                                } else {
-                                    restartAllFragments();
-                                }
-                                }
-                            }, false);
-                    try {
-                        dialog.show(getActivity().getSupportFragmentManager(), null);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    
-                }
-                return;
-            } else if (event.errorCode == ErrorCode.REQUEST_ERROR) {
-                Map<String, ? extends List<String>> messages = event.errorMessages;
-                List<String> validateMessages = messages.get(RestConstants.JSON_VALIDATE_TAG);
-                String dialogMsg = "";
-                if (validateMessages == null || validateMessages.isEmpty()) {
-                    validateMessages = messages.get(RestConstants.JSON_ERROR_TAG);
-                }
-                if (validateMessages != null) {
-                    for (String message : validateMessages) {
-                        dialogMsg += message + "\n";
-                    }
-                } else {
-                    for (Entry<String, ? extends List<String>> entry : messages.entrySet()) {
-                        dialogMsg += entry.getKey() + ": " + entry.getValue().get(0) + "\n";
-                    }
-                }
-                if (dialogMsg.equals("")) {
-                    dialogMsg = getString(R.string.validation_errortext);
-                }
-                ((BaseActivity) getActivity()).showContentContainer(false);
-
-                // Remove dialog if exist
-                if (dialog != null){
-                    try {
-                        dialog.dismiss();    
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                dialog = DialogGenericFragment.newInstance(
-                        true, true, false, getString(R.string.validation_title),
-                        dialogMsg, getResources().getString(R.string.ok_label), "",
-                        new OnClickListener() {
-
-                            @Override
-                            public void onClick(View v) {
-                                int id = v.getId();
-                                if (id == R.id.button1) {
-                                    dialog.dismiss();
-                                }
-
-                            }
-
-                        });
-
-                
-                try {
-                    dialog.show(getActivity().getSupportFragmentManager(), null);
-                } catch (Exception e) {
-                   e.printStackTrace();
-                }
-                return;
-            } else if (event.errorCode == ErrorCode.UNKNOWN_ERROR) {
-            dialog = DialogGenericFragment.createServerErrorDialog(getActivity(),
-                    new OnClickListener() {
-
-                        @Override
-                        public void onClick(View v) {
-                            restartAllFragments();
-                            dialog.dismiss();
-                        }
-                    }, false);
-
-            try {
-                dialog.show(((BaseActivity) getActivity()).getSupportFragmentManager(), null);
-            } catch (Exception e) {
-                Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            }
-
-        } else if (!event.getSuccess()) {
-
-                // Remove dialog if exist
-                if (dialog != null){
-                    try {
-                        dialog.dismiss();    
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                    
-
-                dialog = DialogGenericFragment.createServerErrorDialog(getActivity(),
-                        new OnClickListener() {
-
-                            @Override
-                            public void onClick(View v) {
-                                ((BaseActivity) getActivity()).showLoadingInfo();
-
-                                EventManager.getSingleton().triggerRequestEvent(event.request);
-                                dialog.dismiss();
-                            }
-                        }, false);
-                
-                try {
-                    dialog.show(getActivity().getSupportFragmentManager(), null);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                return;
-            }
-        }
-        else{
-            Log.i("TAG","ENTERED HERE");
-            ((BaseActivity) getActivity()).showContentContainer(false);
-            return;
-        }
-
-        /*
-         * TODO: finish to distinguish between errors else if (event.errorCode.isServerError()) {
-         * dialog = DialogGeneric.createServerErrorDialog(MyActivity.this, new OnClickListener() {
-         * 
-         * @Override public void onClick(View v) { showLoadingInfo();
-         * EventManager.getSingleton().triggerRequestEvent(event.request); dialog.dismiss(); } },
-         * false); dialog.show(); return; } else if (event.errorCode.isClientError()) { dialog =
-         * DialogGeneric.createClientErrorDialog( MyActivity.this, new OnClickListener() {
-         * 
-         * @Override public void onClick(View v) { showLoadingInfo();
-         * EventManager.getSingleton().triggerRequestEvent(event.request); dialog.dismiss(); } },
-         * false); dialog.show(); return; }
-         */
-    }
+//    /**
+//     * Handles a failed event and shows dialogs to the user.
+//     * 
+//     * @param event
+//     *            The failed event with {@link ResponseEvent#getSuccess()} == <code>false</code>
+//     */
+//    public void handleErrorEvent(final ResponseEvent event) {
+//        Log.i(TAG, "ON HANDLE ERROR EVENT: " + event.getType());
+//        if (!(event.request.eventType.equals(EventType.GET_CUSTOMER) && ((BaseActivity) getActivity())
+//                .getLocalClassName().equals(writeReviewFragment))) {
+//            if (event.errorCode.isNetworkError()) {
+//                if (event.type == EventType.GET_SHOPPING_CART_ITEMS_EVENT && null != ((BaseActivity) getActivity())) {
+//                    ((BaseActivity) getActivity()).updateCartInfo(null);
+//                }
+//                if (contentEvents.contains(event.type)) {
+//                    ((BaseActivity) getActivity()).showError(event.request);
+//                } else if (userEvents.contains(event.type)) {
+//                    ((BaseActivity) getActivity()).showContentContainer(false);
+//                    
+//                    // Remove dialog if exist
+//                    if (dialog != null){
+//                        try {
+//                            dialog.dismiss();    
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//
+//                    dialog = DialogGenericFragment.createNoNetworkDialog(getActivity(),
+//                            new OnClickListener() {
+//
+//                                @Override
+//                                public void onClick(View v) {
+//                                    if (null != getActivity()) {
+//                                    ((BaseActivity) getActivity()).showLoadingInfo();
+//                                    EventManager.getSingleton().triggerRequestEvent(event.request);
+//                                    dialog.dismiss();
+//                                } else {
+//                                    restartAllFragments();
+//                                }
+//                                }
+//                            }, false);
+//                    try {
+//                        dialog.show(getActivity().getSupportFragmentManager(), null);
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                    
+//                }
+//                return;
+//            } else if (event.errorCode == ErrorCode.REQUEST_ERROR) {
+//                Map<String, ? extends List<String>> messages = event.errorMessages;
+//                List<String> validateMessages = messages.get(RestConstants.JSON_VALIDATE_TAG);
+//                String dialogMsg = "";
+//                if (validateMessages == null || validateMessages.isEmpty()) {
+//                    validateMessages = messages.get(RestConstants.JSON_ERROR_TAG);
+//                }
+//                if (validateMessages != null) {
+//                    for (String message : validateMessages) {
+//                        dialogMsg += message + "\n";
+//                    }
+//                } else {
+//                    for (Entry<String, ? extends List<String>> entry : messages.entrySet()) {
+//                        dialogMsg += entry.getKey() + ": " + entry.getValue().get(0) + "\n";
+//                    }
+//                }
+//                if (dialogMsg.equals("")) {
+//                    dialogMsg = getString(R.string.validation_errortext);
+//                }
+//                ((BaseActivity) getActivity()).showContentContainer(false);
+//
+//                // Remove dialog if exist
+//                if (dialog != null){
+//                    try {
+//                        dialog.dismiss();    
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//
+//                dialog = DialogGenericFragment.newInstance(
+//                        true, true, false, getString(R.string.validation_title),
+//                        dialogMsg, getResources().getString(R.string.ok_label), "",
+//                        new OnClickListener() {
+//
+//                            @Override
+//                            public void onClick(View v) {
+//                                int id = v.getId();
+//                                if (id == R.id.button1) {
+//                                    dialog.dismiss();
+//                                }
+//
+//                            }
+//
+//                        });
+//
+//                
+//                try {
+//                    dialog.show(getActivity().getSupportFragmentManager(), null);
+//                } catch (Exception e) {
+//                   e.printStackTrace();
+//                }
+//                return;
+//            } else if (event.errorCode == ErrorCode.UNKNOWN_ERROR) {
+//            dialog = DialogGenericFragment.createServerErrorDialog(getActivity(),
+//                    new OnClickListener() {
+//
+//                        @Override
+//                        public void onClick(View v) {
+//                            restartAllFragments();
+//                            dialog.dismiss();
+//                        }
+//                    }, false);
+//
+//            try {
+//                dialog.show(((BaseActivity) getActivity()).getSupportFragmentManager(), null);
+//            } catch (Exception e) {
+//                Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+//            }
+//
+//        } else if (!event.getSuccess()) {
+//
+//                // Remove dialog if exist
+//                if (dialog != null){
+//                    try {
+//                        dialog.dismiss();    
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//                    
+//
+//                dialog = DialogGenericFragment.createServerErrorDialog(getActivity(),
+//                        new OnClickListener() {
+//
+//                            @Override
+//                            public void onClick(View v) {
+//                                ((BaseActivity) getActivity()).showLoadingInfo();
+//
+//                                EventManager.getSingleton().triggerRequestEvent(event.request);
+//                                dialog.dismiss();
+//                            }
+//                        }, false);
+//                
+//                try {
+//                    dialog.show(getActivity().getSupportFragmentManager(), null);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//                return;
+//            }
+//        }
+//        else{
+//            Log.i("TAG","ENTERED HERE");
+//            ((BaseActivity) getActivity()).showContentContainer(false);
+//            return;
+//        }
+//
+//        /*
+//         * TODO: finish to distinguish between errors else if (event.errorCode.isServerError()) {
+//         * dialog = DialogGeneric.createServerErrorDialog(MyActivity.this, new OnClickListener() {
+//         * 
+//         * @Override public void onClick(View v) { showLoadingInfo();
+//         * EventManager.getSingleton().triggerRequestEvent(event.request); dialog.dismiss(); } },
+//         * false); dialog.show(); return; } else if (event.errorCode.isClientError()) { dialog =
+//         * DialogGeneric.createClientErrorDialog( MyActivity.this, new OnClickListener() {
+//         * 
+//         * @Override public void onClick(View v) { showLoadingInfo();
+//         * EventManager.getSingleton().triggerRequestEvent(event.request); dialog.dismiss(); } },
+//         * false); dialog.show(); return; }
+//         */
+//    }
 //      OLD FRAMEWORK
 //    @Override
 //    public final boolean removeAfterHandlingEvent() {
