@@ -10,10 +10,8 @@ import org.holoeverywhere.widget.TextView;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
-import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.event.ResponseEvent;
-import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.objects.CompleteProduct;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
@@ -203,17 +201,6 @@ public class ProductSpecificationsFragment extends BaseFragment implements OnCli
     public void onStop() {
         super.onStop();
         Log.i(TAG, "ON STOP");
-    }
-
-    @Override
-    protected boolean onSuccessEvent(final ResponseResultEvent<?> event) {
-               
-        return true;
-    }
-
-    @Override
-    protected boolean onErrorEvent(ResponseEvent event) {
-        return false;
     }
  
     @Override

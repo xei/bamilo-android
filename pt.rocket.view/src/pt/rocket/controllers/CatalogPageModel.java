@@ -16,13 +16,6 @@ import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
-import pt.rocket.framework.event.EventManager;
-import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.event.IMetaData;
-import pt.rocket.framework.event.ResponseEvent;
-import pt.rocket.framework.event.ResponseListener;
-import pt.rocket.framework.event.ResponseResultEvent;
-import pt.rocket.framework.event.events.GetProductsEvent;
 import pt.rocket.framework.objects.Product;
 import pt.rocket.framework.objects.ProductsPage;
 import pt.rocket.framework.rest.RestContract;
@@ -30,6 +23,9 @@ import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.Direction;
 import pt.rocket.framework.utils.LoadingBarView;
 import pt.rocket.framework.utils.ProductSort;
+import pt.rocket.helpers.GetProductsHelper;
+import pt.rocket.interfaces.IResponseCallback;
+import pt.rocket.utils.JumiaApplication;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.ProductDetailsActivityFragment;
@@ -57,7 +53,7 @@ import android.widget.RelativeLayout;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
 
-public class CatalogPageModel implements ResponseListener {
+public class CatalogPageModel {
 
     private static final String TAG = CatalogPageModel.class.getName();
 
@@ -190,8 +186,6 @@ public class CatalogPageModel implements ResponseListener {
             showTips();
         }
 
-        EventManager.getSingleton().addResponseListener(this,
-                EnumSet.of(EventType.GET_PRODUCTS_EVENT));
         executeRequest();
     }
 
@@ -437,10 +431,22 @@ public class CatalogPageModel implements ResponseListener {
                     linearLayoutLb.setVisibility(View.VISIBLE);
                 }
             }
-            EventManager.getSingleton().addResponseListener(this,
-                    EnumSet.of(EventType.GET_PRODUCTS_EVENT));
 
             mBeginRequestMillis = System.currentTimeMillis();
+            public static final String PRODUCT_URL = "productUrl";
+            public static final String SEARCH_QUERY = "searchQuery";
+            public static final String PAGE_NUMBER = "pageNumber";
+            public static final String TOTAL_COUNT = "totalCount";
+            public static final String SORT = "sort";
+            public static final String DIRECTION = "direction";
+            Bundle bundle = new Bundle();
+            bundle.putString(GetProductsHelper.PRODUCT_URL, productsURL);
+            bundle.putString(GetProductsHelper.SEARCH_QUERY, searchQuery);
+            bundle.putInt(GetProductsHelper.PAGE_NUMBER, pageNumber);
+            bundle.putInt(GetProductsHelper.TOTAL_COUNT, MAX_PAGE_ITEMS);
+            bundle.putInt(GetProductsHelper.SORT, sort);
+            JumiaApplication.INSTANCE.sendRequest(new GetProductsHelper(), bundle, responseCallback);
+            
             EventManager.getSingleton().triggerRequestEvent(
                     new GetProductsEvent(productsURL, searchQuery, pageNumber, MAX_PAGE_ITEMS,
                             sort, dir, md5Hash));
@@ -623,6 +629,21 @@ public class CatalogPageModel implements ResponseListener {
 
     }
 
+    IResponseCallback responseCallback = new IResponseCallback() {
+        
+        @Override
+        public void onRequestError(Bundle bundle) {
+            processSuccess(bundle);
+            
+        }
+        
+        @Override
+        public void onRequestComplete(Bundle bundle) {
+            processError(bundle);
+            
+        }
+    };
+    
     @Override
     public void handleEvent(ResponseEvent event) {
         if (event.getSuccess()) {
@@ -698,11 +719,11 @@ public class CatalogPageModel implements ResponseListener {
         totalItems.setVisibility(View.VISIBLE);
         //totalItemsLable = " ("+String.valueOf(getTotalProducts())+" "+((BaseActivity) mActivity).getString(R.string.shoppingcart_items)+")";
     }
-    private void processSuccess(ResponseResultEvent<?> event) {
+    private void processSuccess(Bundle bundle) {
         Log.d(TAG, "ON SUCCESS EVENT");
 
         // Get Products Event
-        ProductsPage productsPage = (ProductsPage) event.result;
+        ProductsPage productsPage = (ProductsPage) bundle.getParcelable(key)
         Log.d(TAG, "onSuccessEvent: products on page = " + productsPage.getProducts().size() +
                 " total products = " + productsPage.getTotalProducts());
         if (productsPage != null && productsPage.getTotalProducts() > 0) {

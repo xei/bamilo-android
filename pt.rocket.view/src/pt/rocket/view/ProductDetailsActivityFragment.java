@@ -14,12 +14,6 @@ import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.ErrorCode;
-import pt.rocket.framework.event.EventManager;
-import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.event.ResponseEvent;
-import pt.rocket.framework.event.ResponseResultEvent;
-import pt.rocket.framework.event.events.AddItemToShoppingCartEvent;
-import pt.rocket.framework.event.events.GetProductEvent;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.Errors;
 import pt.rocket.framework.objects.ProductSimple;
@@ -27,7 +21,9 @@ import pt.rocket.framework.objects.ShoppingCartItem;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.CurrencyFormatter;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.helpers.GetProductHelper;
 import pt.rocket.utils.FragmentCommunicator;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
@@ -438,6 +434,10 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
 
     private void loadProduct() {
         mBeginRequestMillis = System.currentTimeMillis();
+        
+        Bundle bundle = new Bundle();
+        bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
+        sendRequest(new GetProductHelper(), PRODUCT_URL, responseCallback)
         triggerContentEvent(new GetProductEvent(mCompleteProductUrl));
         ((BaseActivity) getActivity()).setProcessShow(false);
     }

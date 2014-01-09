@@ -6,11 +6,8 @@ package pt.rocket.view.fragments;
 import java.util.ArrayList;
 import java.util.EnumSet;
 
-import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.event.ResponseEvent;
-import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.objects.ITargeting;
-import pt.rocket.framework.objects.ImageTeaserGroup.TeaserImage;
+import pt.rocket.framework.objects.TeaserImage;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.framework.utils.WindowHelper;
 import pt.rocket.utils.MyMenuItem;

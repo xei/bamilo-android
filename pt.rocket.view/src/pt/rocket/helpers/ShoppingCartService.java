@@ -1,13 +1,13 @@
 /**
  * @author Guilherme Silva
- * 
+ * @modified Manuel Silva
  * @version 1.01
  * 
  * 2012/06/18
  * 
  * Copyright (c) Rocket Internet All Rights Reserved
  */
-package pt.rocket.framework.service.services;
+package pt.rocket.helpers;
 
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -15,23 +15,9 @@ import java.util.Map;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import pt.rocket.framework.event.EventManager;
-import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.event.RequestEvent;
-import pt.rocket.framework.event.ResponseEvent;
-import pt.rocket.framework.event.ResponseListener;
-import pt.rocket.framework.event.ResponseResultEvent;
-import pt.rocket.framework.event.events.AddItemToShoppingCartEvent;
-import pt.rocket.framework.event.events.ChangeItemQuantityInShoppingCartEvent;
-import pt.rocket.framework.event.events.GetShoppingCartItemsEvent;
-import pt.rocket.framework.event.events.RemoveItemFromShoppingCartEvent;
 import pt.rocket.framework.objects.MinOrderAmount;
 import pt.rocket.framework.objects.ShoppingCart;
 import pt.rocket.framework.objects.ShoppingCartItem;
-import pt.rocket.framework.rest.ResponseReceiver;
-import pt.rocket.framework.rest.RestServiceHelper;
-import pt.rocket.framework.service.DarwinService;
 import pt.rocket.framework.utils.LogTagHelper;
 import android.content.ContentValues;
 import android.net.Uri;
@@ -44,7 +30,7 @@ import de.akquinet.android.androlog.Log;
  * @author GuilhermeSilva
  * 
  */
-public class ShoppingCartService extends DarwinService {
+public class ShoppingCartService {
 
 	private static final String TAG = LogTagHelper.create(ShoppingCartService.class);
 

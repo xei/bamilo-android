@@ -8,7 +8,6 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.controllers.CountryAdapter;
-import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.rest.RestClientSingleton;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.NavigationAction;
@@ -263,12 +262,6 @@ public class ChangeCountryFragment extends BaseFragment {
         }
         ActivitiesWorkFlow.splashActivityNewTask(getActivity());
         getActivity().finish();
-    }
-
-    @Override
-    protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
-        // TODO Auto-generated method stub
-        return false;
     }
 
 }

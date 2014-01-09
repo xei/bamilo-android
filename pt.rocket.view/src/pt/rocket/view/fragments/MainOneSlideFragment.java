@@ -8,11 +8,8 @@ import java.util.EnumSet;
 import java.util.List;
 
 import pt.rocket.controllers.NormalizingViewPagerWrapper.IPagerAdapter;
-import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.event.ResponseEvent;
-import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.objects.ITargeting;
-import pt.rocket.framework.objects.ImageTeaserGroup.TeaserImage;
+import pt.rocket.framework.objects.TeaserImage;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
@@ -192,19 +189,7 @@ public class MainOneSlideFragment extends BaseFragment {
     public void onStop() {
         super.onStop();
         Log.i(TAG, "ON STOP");
-//        FlurryTracker.get().end();
-    }
-
-    @Override
-    protected boolean onSuccessEvent(final ResponseResultEvent<?> event) {
-        return true;
-    }
-        
-    @Override
-    protected boolean onErrorEvent(ResponseEvent event) {
-        return false;
-    }
-    
+    }    
     
     private View createImageTeaserView(TeaserImage teaserImage, ViewGroup vg, LayoutInflater mInflater) {
         View imageTeaserView = mInflater.inflate(R.layout.image_loadable, null,

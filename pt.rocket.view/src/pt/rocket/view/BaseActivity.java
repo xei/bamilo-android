@@ -20,6 +20,7 @@ import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.service.IRemoteService;
 import pt.rocket.framework.service.IRemoteServiceCallback;
 import pt.rocket.framework.utils.Constants;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LoadingBarView;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.framework.utils.ShopSelector;
@@ -27,7 +28,6 @@ import pt.rocket.framework.utils.Utils;
 import pt.rocket.framework.utils.WindowHelper;
 import pt.rocket.helpers.BaseHelper;
 import pt.rocket.interfaces.IResponseCallback;
-import pt.rocket.pojo.EventType;
 import pt.rocket.utils.CheckVersion;
 import pt.rocket.utils.JumiaApplication;
 import pt.rocket.utils.MyMenuItem;
@@ -274,6 +274,8 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
             showContent();
         
         if (!contentEvents.contains(EventType.GET_SHOPPING_CART_ITEMS_EVENT)) {
+            
+            JumiaApplication.INSTANCE.sendRequest(new GetShopp, args, responseCallback)
             EventManager.getSingleton().triggerRequestEvent(GetShoppingCartItemsEvent.GET_FROM_CACHE);
         }
     

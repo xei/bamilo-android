@@ -6,9 +6,8 @@ import java.util.Arrays;
 import java.util.EnumSet;
 
 import pt.rocket.constants.ConstantsIntentExtra;
-import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.utils.AnalyticsGoogle;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.framework.utils.ProductSort;
 import pt.rocket.utils.JumiaViewPager;
@@ -284,9 +283,4 @@ public class ProductsViewFragment extends BaseFragment {
 
     }
 
-    @Override
-    protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
-        // TODO Auto-generated method stub
-        return false;
-    }
 }

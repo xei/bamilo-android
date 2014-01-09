@@ -2,13 +2,8 @@ package pt.rocket.utils;
 
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.ActivitiesWorkFlow;
-import pt.rocket.framework.event.EventManager;
-import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.event.RequestEvent;
 import pt.rocket.framework.objects.Version;
 import pt.rocket.framework.objects.VersionInfo;
-import pt.rocket.framework.service.ServiceManager;
-import pt.rocket.framework.service.services.ApiService;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.view.R;
 import android.app.Activity;

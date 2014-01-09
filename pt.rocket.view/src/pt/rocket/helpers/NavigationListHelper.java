@@ -18,7 +18,7 @@ public class NavigationListHelper extends BaseHelper {
 
     private ArrayList<NavigationListComponent> navComponentList;
     @Override
-    public Bundle generateRequestBundle() {
+    public Bundle generateRequestBundle(Bundle args) {
         // TODO Auto-generated method stub
         Bundle bundle = new Bundle();
         bundle.putString(Constants.BUNDLE_URL_KEY, "http://www.linio.com.ve/mobileapi/main/getstatic?key=mobile_navigation");

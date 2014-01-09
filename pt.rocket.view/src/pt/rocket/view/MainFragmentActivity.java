@@ -11,9 +11,8 @@ import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
-import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.objects.Category;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.utils.JumiaApplication;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
@@ -341,24 +340,10 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         fragment = (BaseFragment) getSupportFragmentManager().findFragmentByTag(tag);
     }
     
-    /*
-     * (non-Javadoc)
-     * 
-     * @see pt.rocket.utils.MyActivity#handleTriggeredEvent(pt.rocket.framework.event.ResponseEvent)
-     */
-    @Override
-    protected boolean onSuccessEvent(final ResponseResultEvent<?> event) {
-        return false;
-    }
 
     // ####################### MY ACCOUNT FRAGMENT #######################
     @Override
     public void onPreferenceAttached(PreferenceScreen root, int xmlId) {
-    }
-
-    @Override
-    public String getMD5Hash() {
-        return null;
     }
 
 }

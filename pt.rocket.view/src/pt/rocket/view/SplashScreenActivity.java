@@ -19,6 +19,7 @@ import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.framework.utils.Utils;
 import pt.rocket.helpers.BaseHelper;
+import pt.rocket.helpers.GetApiInfoHelper;
 import pt.rocket.helpers.GetImageResolutionsHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.DialogGeneric;
@@ -95,7 +96,7 @@ public class SplashScreenActivity extends Activity {
         getPushNotifications();
         initBugSense();
         Log.d(TAG, "Waiting for the registration process to finish");
-        JumiaApplication.INSTANCE.waitForInitResult(mCallback, false);
+        JumiaApplication.INSTANCE.waitForInitResult(responseCallback, false);
         showDevInfo();
     }
 
@@ -262,33 +263,8 @@ public class SplashScreenActivity extends Activity {
             e.printStackTrace();
         }
 
-        // ==================================================================================================
-        // TODO: Comment out the BugSenseHandler initialization once we have the correct key.
-        // ---------------------------------------------------------------------------------------------------
         BugSenseHandler.initAndStartSession(getApplicationContext(),
                 getString(R.string.bugsense_apikey));
-        // ==================================================================================================
-    }
-
-    /**
-     * TODO: Add this call to initialize
-     */
-    private void getSupportedImageResolutions() {
-        // EventManager.getSingleton().addResponseListener(EventType.GET_RESOLUTIONS, this);
-        // EventManager.getSingleton().triggerRequestEvent( new GetResolutionsEvent() );
-
-        JumiaApplication.INSTANCE.sendRequest(new GetImageResolutionsHelper(), null, new IResponseCallback() {
-
-            @Override
-            public void onRequestError(Bundle bundle) {
-                handleErrorResponse(bundle);
-            }
-
-            @Override
-            public void onRequestComplete(Bundle bundle) {
-                handleSuccessResponse(bundle);
-            }
-        });
     }
 
     @Override
@@ -341,7 +317,9 @@ public class SplashScreenActivity extends Activity {
             return;
         }
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-
+        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        List<String> errors = (List<String>) bundle
+                .getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
         Log.i(TAG, "Got initialization result: " + eventType);
         if (dialog != null && dialog.isShowing()) {
             try {
@@ -356,18 +334,96 @@ public class SplashScreenActivity extends Activity {
             // * Get image resolutions supported by server
             // */
             // getSupportedImageResolutions();
-            EventManager.getSingleton().addResponseListener(EventType.GET_API_INFO, this);
-            EventManager.getSingleton().triggerRequestEvent(
-                    new RequestEvent(EventType.GET_API_INFO));
+            
+            JumiaApplication.INSTANCE.sendRequest(new GetApiInfoHelper(), null, responseCallback);
 
         } else if (eventType == EventType.GET_API_INFO) {
             Log.d(TAG, "HANDLE EVENT: " + eventType.toString());
             // Show activity
             selectActivity(); 
             finish();
+        } else if (errorCode == ErrorCode.REQUIRES_USER_INTERACTION) {
+            Intent intent = new Intent(this, MainFragmentActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.CHANGE_COUNTRY);
+            intent.putExtra(ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, true);
+            // Start activity
+            startActivity(intent);
+            finish();
+        } else if (errorCode.isNetworkError()) {
+            dialog = DialogGeneric.createNoNetworkDialog(SplashScreenActivity.this,
+                    new OnClickListener() {
+
+                        @Override
+                        public void onClick(View v) {
+                            JumiaApplication.INSTANCE.waitForInitResult(responseCallback,
+                                    true);
+                            dialog.dismiss();
+                        }
+                    }, true);
+            dialog.setCancelable(false);
+            try {
+                dialog.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else if (errorCode == ErrorCode.REQUEST_ERROR && errors != null) {
+            String message = "";
+
+            for (String error : errors) {
+                message += "\n" + error;
+            }
+            message = message.replaceFirst("\n", "");
+            dialog = DialogGeneric.createServerErrorDialog(message, SplashScreenActivity.this,
+                    new OnClickListener() {
+
+                        @Override
+                        public void onClick(View v) {
+                            JumiaApplication.INSTANCE.waitForInitResult(responseCallback,
+                                    true);
+                            dialog.dismiss();
+                        }
+                    }, true);
+            dialog.setCancelable(false);
+            try {
+                dialog.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        } else {
+            dialog = DialogGeneric.createServerErrorDialog(SplashScreenActivity.this,
+                    new OnClickListener() {
+
+                        @Override
+                        public void onClick(View v) {
+                            JumiaApplication.INSTANCE.waitForInitResult(responseCallback,
+                                    true);
+                            dialog.dismiss();
+                        }
+                    }, true);
+            dialog.setCancelable(false);
+            try {
+                dialog.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
+    
+    IResponseCallback responseCallback = new IResponseCallback() {
+
+        @Override
+        public void onRequestError(Bundle bundle) {
+            handleErrorResponse(bundle);
+        }
+
+        @Override
+        public void onRequestComplete(Bundle bundle) {
+            handleSuccessResponse(bundle);
+        }
+    };
     /**
      * Sends error responses to the target callback
      * 
@@ -392,76 +448,8 @@ public class SplashScreenActivity extends Activity {
             return;
         }
 
-        ErrorCode errorCode = bundle.getParcelable(Constants.BUNDLE_ERROR_KEY);
-        List<String> errors = (List<String>) bundle
-                .getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
-        if (errorCode == ErrorCode.REQUIRES_USER_INTERACTION) {
-            Intent intent = new Intent(this, MainFragmentActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.putExtra(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.CHANGE_COUNTRY);
-            intent.putExtra(ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, true);
-            // Start activity
-            startActivity(intent);
-            finish();
-        } else if (errorCode.isNetworkError()) {
-            dialog = DialogGeneric.createNoNetworkDialog(SplashScreenActivity.this,
-                    new OnClickListener() {
-
-                        @Override
-                        public void onClick(View v) {
-                            JumiaApplication.INSTANCE.waitForInitResult(SplashScreenActivity.this,
-                                    true);
-                            dialog.dismiss();
-                        }
-                    }, true);
-            dialog.setCancelable(false);
-            try {
-                dialog.show();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else if (errorCode == ErrorCode.REQUEST_ERROR && errors != null) {
-            String message = "";
-
-            for (String error : errors) {
-                message += "\n" + error;
-            }
-            message = message.replaceFirst("\n", "");
-            dialog = DialogGeneric.createServerErrorDialog(message, SplashScreenActivity.this,
-                    new OnClickListener() {
-
-                        @Override
-                        public void onClick(View v) {
-                            JumiaApplication.INSTANCE.waitForInitResult(SplashScreenActivity.this,
-                                    true);
-                            dialog.dismiss();
-                        }
-                    }, true);
-            dialog.setCancelable(false);
-            try {
-                dialog.show();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-        } else {
-            dialog = DialogGeneric.createServerErrorDialog(SplashScreenActivity.this,
-                    new OnClickListener() {
-
-                        @Override
-                        public void onClick(View v) {
-                            JumiaApplication.INSTANCE.waitForInitResult(SplashScreenActivity.this,
-                                    true);
-                            dialog.dismiss();
-                        }
-                    }, true);
-            dialog.setCancelable(false);
-            try {
-                dialog.show();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+       
+        
     }
 
 }

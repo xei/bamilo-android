@@ -13,14 +13,23 @@ import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.interfaces.IMetaData;
 import pt.rocket.framework.service.IRemoteService;
 import pt.rocket.framework.service.IRemoteServiceCallback;
+import pt.rocket.framework.service.RemoteService;
 import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.Constants;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.SingletonMap;
 import pt.rocket.framework.utils.Utils;
 import pt.rocket.helpers.BaseHelper;
 import pt.rocket.interfaces.IResponseCallback;
+import pt.rocket.preferences.ShopPreferences;
 import android.app.Application;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
 import android.os.RemoteException;
 import de.akquinet.android.androlog.Log;
 
@@ -40,15 +49,25 @@ public class JumiaApplication extends Application implements ExceptionCallback {
      */
     public HashMap<String, IResponseCallback> responseCallbacks;
 
+    public static int SHOP_ID = -1;
+    
     private boolean isInitializing = false;
+
+    private IResponseCallback initListener;
+
+    private Bundle lastInitEvent;
 
     @Override
     public void onCreate() {
         Log.init(getApplicationContext());
+        bindService(new Intent(this, RemoteService.class), mConnection, Context.BIND_AUTO_CREATE);
         INSTANCE = this;
         responseCallbacks = new HashMap<String, IResponseCallback>();
-        EventManager.getSingleton().addResponseListener(EventType.INITIALIZE, this);
+//        EventManager.getSingleton().addResponseListener(EventType.INITIALIZE, this);
         init(false);
+        
+        // Get the current shop id
+        SHOP_ID = ShopPreferences.getShopId(getApplicationContext());
     }
 
     public synchronized void init(boolean isReInit) {
@@ -58,24 +77,23 @@ public class JumiaApplication extends Application implements ExceptionCallback {
         for (ApplicationComponent component : COMPONENTS.values()) {
             ErrorCode result = component.init(this);
             if (result != ErrorCode.NO_ERROR) {
-                handleEvent(new ResponseErrorEvent(new RequestEvent(EventType.INITIALIZE),
-                        ErrorCode.REQUIRES_USER_INTERACTION));
+                handleEvent(ErrorCode.REQUIRES_USER_INTERACTION);
                 return;
             }
         }
         CheckVersion.clearDialogSeenInLaunch(getApplicationContext());
-        InitializeEvent event = new InitializeEvent(EnumSet.noneOf(EventType.class));
-        if ( isReInit ) {
-            event.metaData.putBoolean( IMetaData.MD_IGNORE_CACHE, true);
-        }
-        EventManager.getSingleton().triggerRequestEvent( event );
+//        InitializeEvent event = new InitializeEvent(EnumSet.noneOf(EventType.class));
+//        if ( isReInit ) {
+//            event.metaData.putBoolean( IMetaData.MD_IGNORE_CACHE, true);
+//        }
+//        EventManager.getSingleton().triggerRequestEvent( event );
         CheckVersion.init(getApplicationContext());
     }
 
-    public synchronized void waitForInitResult(IRemoteServiceCallback listener, boolean isReInit) {
+    public synchronized void waitForInitResult(IResponseCallback listener, boolean isReInit) {
         if (lastInitEvent != null) {
             Log.d(TAG, "Informing listener about last init event " + lastInitEvent);
-            listener.handleEvent(lastInitEvent);
+            listener.onRequestComplete(lastInitEvent);
             lastInitEvent = null;
             return;
         } else {
@@ -90,20 +108,16 @@ public class JumiaApplication extends Application implements ExceptionCallback {
         initListener = null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see pt.rocket.framework.event.EventListener#handleEvent(pt.rocket.framework.event.IEvent)
-     */
-    @Override
-    public synchronized void handleEvent(ResponseEvent event) {
+    public synchronized void handleEvent(ErrorCode errorType) {
         isInitializing = false;
-        Log.d(TAG, "Handle initialization result: " + event);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, errorType);
+        Log.d(TAG, "Handle initialization result: " + errorType);
         if (initListener != null) {
             Log.d(TAG, "Informing initialisation listener: " + initListener);
-            initListener.handleEvent(event);
+            initListener.onRequestComplete(bundle);
         } else {
-            this.lastInitEvent = event;
+            this.lastInitEvent = bundle;
         }
     }
 
@@ -113,7 +127,6 @@ public class JumiaApplication extends Application implements ExceptionCallback {
         try {
             mService.registerCallback(mCallback);
         } catch (RemoteException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
@@ -181,5 +194,29 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     public void lastBreath(Exception arg0) {
               
     }
+    
+    
+    /**
+     * Service Stuff
+     */
+    
+    public ServiceConnection mConnection = new ServiceConnection() {
 
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            Log.i(TAG, "onServiceDisconnected");
+        }
+
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            // This is called when the connection with the service has been
+            // established, giving us the service object we can use to
+            // interact with the service. We are communicating with our
+            // service through an IDL interface, so get a client-side
+            // representation of that from the raw service object.
+            Log.i(TAG, "onServiceConnected");
+            mService = IRemoteService.Stub.asInterface(service);
+            
+        }
+    };
 }

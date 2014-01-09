@@ -6,15 +6,7 @@ import java.util.EnumSet;
 
 import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.framework.ErrorCode;
-import pt.rocket.framework.components.NavigationListComponent;
-import pt.rocket.framework.event.EventManager;
-import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.event.RequestEvent;
-import pt.rocket.framework.event.ResponseEvent;
-import pt.rocket.framework.event.ResponseListener;
-import pt.rocket.framework.event.ResponseResultEvent;
-import pt.rocket.framework.service.ServiceManager;
-import pt.rocket.framework.service.services.CustomerAccountService;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
@@ -41,7 +33,7 @@ import de.akquinet.android.androlog.Log;
  * @author Michael Kroez (refactoring, cleanups)
  * 
  */
-public class RocketNavigationListGenerator implements ResponseListener {
+public class RocketNavigationListGenerator {
     protected static final String TAG = LogTagHelper.create(RocketNavigationListGenerator.class);
 
     private Context context;
