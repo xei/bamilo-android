@@ -23,9 +23,9 @@ public abstract class TeaserSpecification<T extends ITargeting> implements IJSON
 
     protected String title;
     
-    private final TeaserGroupType type;
+    private TeaserGroupType type;
     
-    private final ArrayList<T> teasers;
+    private ArrayList<T> teasers;
     
 	public static TeaserSpecification<?> parse(JSONObject jsonObject) {
 		TeaserGroupType type = TeaserGroupType.byValue(jsonObject.optInt(RestConstants.JSON_GROUP_TYPE_TAG, -1));
@@ -132,7 +132,6 @@ public abstract class TeaserSpecification<T extends ITargeting> implements IJSON
 	    dest.writeString(title);
 	    dest.writeValue(type);
 	    dest.writeList(teasers);
-		
 	}
 	
 	/*
@@ -145,7 +144,14 @@ public abstract class TeaserSpecification<T extends ITargeting> implements IJSON
 	}
 	
 	/**
-	 * TODO: CREATOR
+	 * Parcel constructor
+	 * @param in
 	 */
+	public TeaserSpecification(Parcel in) {
+		this(TeaserGroupType.UNKNOWN);
+		title = in.readString();
+		type = (TeaserGroupType) in.readValue(TeaserGroupType.class.getClassLoader());
+		in.readList(teasers, ITargeting.class.getClassLoader());
+	}
 	
 }

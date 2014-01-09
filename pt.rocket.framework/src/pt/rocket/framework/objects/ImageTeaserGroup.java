@@ -57,12 +57,17 @@ public class ImageTeaserGroup extends TeaserSpecification<TeaserImage> {
 		super.writeToParcel(dest, flags);
 	}
 	
+    /**
+     * ########### Parcelable ###########
+     * @author sergiopereira
+     */
+	
 	/**
 	 * Parcel constructor
 	 * @param in
 	 */
 	public ImageTeaserGroup(Parcel in) {
-		super(TeaserGroupType.CATEGORIES);
+		super(in);
 	}
 		
 	/**

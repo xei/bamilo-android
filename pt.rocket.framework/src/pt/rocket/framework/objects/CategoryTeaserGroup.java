@@ -92,12 +92,18 @@ public class CategoryTeaserGroup extends TeaserSpecification<TeaserCategory> {
 		super.writeToParcel(dest, flags);
 	}
 	
+	
+    /**
+     * ########### Parcelable ###########
+     * @author sergiopereira
+     */
+	
 	/**
 	 * Parcel constructor
 	 * @param in
 	 */
 	public CategoryTeaserGroup(Parcel in) {
-		super(TeaserGroupType.CATEGORIES);
+		super(in);
 	}
 		
 	/**
