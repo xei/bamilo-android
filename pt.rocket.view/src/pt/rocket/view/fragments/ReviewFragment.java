@@ -8,8 +8,7 @@ import java.util.EnumSet;
 import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.constants.ConstantsIntentExtra;
-import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.event.ResponseResultEvent;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
@@ -168,11 +167,4 @@ public class ReviewFragment extends BaseFragment {
         date.setText(b.getString(ConstantsIntentExtra.REVIEW_DATE));
 
     }
-
-    @Override
-    protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
 }

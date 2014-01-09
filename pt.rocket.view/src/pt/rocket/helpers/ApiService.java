@@ -17,6 +17,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.shouldit.proxy.lib.APLConstants;
+
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.database.CategoriesTableHelper;
 import pt.rocket.framework.database.DarwinDatabaseHelper;
@@ -25,12 +27,16 @@ import pt.rocket.framework.database.SectionsTablesHelper;
 import pt.rocket.framework.objects.Section;
 import pt.rocket.framework.objects.VersionInfo;
 import pt.rocket.framework.rest.RestConstants;
+import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.interfaces.IResponseCallback;
+import pt.rocket.utils.JumiaApplication;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 
 /**
@@ -63,52 +69,73 @@ public class ApiService {
 	 * @param url
 	 * @param onGetCategoriesListener
 	 */
-	private void getVersionFromApi(Bundle bundle) {
+	private void getVersionFromApi(final EventType event) {
 		/*
 		 * Version mVersion = new Version(10068, 10070); mVersionInfo.addEntry(
 		 * Darwin.getContext().getPackageName(), mVersion );
 		 * EventManager.getSingleton().triggerResponseEvent(new
 		 * ResponseResultEvent<VersionInfo>(event, mVersionInfo, ""));
 		 */
-		RestServiceHelper.requestGet(Uri.parse(event.eventType.action),
-				new ResponseReceiver<VersionInfo>(event) {
-					List<Section> outDatedSections;
-
-					@Override
-					public VersionInfo parseResponse(JSONObject metadataObject)
-							throws JSONException {
-						// Log.i(TAG, "code1 VersionInfo");
-						// VersionInfo info = new VersionInfo();
-						// info.initialize(metadataObject);
-						// mVersionInfo = info;
-						// Log.i(TAG,
-						// "code1 VersionInfo is: "+mVersionInfo.toString());
-						// return mVersionInfo;
-
-						JSONArray sessionJSONArray = metadataObject
-								.optJSONArray(RestConstants.JSON_DATA_TAG);
-						if (sessionJSONArray != null) {
-							List<Section> oldSections = SectionsTablesHelper
-									.getSections();
-							List<Section> sections = parseSections(sessionJSONArray);
-
-							outDatedSections = checkSections(oldSections,
-									sections);
-
-							SectionsTablesHelper.saveSections(sections);
-						}
-						VersionInfo info = new VersionInfo();
-						info.initialize(metadataObject);
-						mVersionInfo = info;
-
-						if (outDatedSections != null
-								&& outDatedSections.size() != 0) {
-							ignoreTrigger = true;
-							clearOutDatedMainSections(outDatedSections, event);
-						}
-						return mVersionInfo;
-					}
-				}, event.metaData);
+	    JumiaApplication.INSTANCE.sendRequest(new GetApiInfoHelper(), null, new IResponseCallback() {
+            
+            @Override
+            public void onRequestError(Bundle bundle) {
+                // TODO Auto-generated method stub
+                
+            }
+            
+            @Override
+            public void onRequestComplete(Bundle bundle) {
+                mVersionInfo = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                ArrayList<Section> outDatedSections = bundle.getParcelableArrayList(GetApiInfoHelper.API_INFO_OUTDATEDSECTIONS);
+                if (outDatedSections != null
+                        && outDatedSections.size() != 0) {
+                    clearOutDatedMainSections(outDatedSections, event);
+                }
+                
+            }
+        });
+	    
+	    
+//		RestServiceHelper.requestGet(Uri.parse(event.eventType.action),
+//				new ResponseReceiver<VersionInfo>(event) {
+//					List<Section> outDatedSections;
+//
+//					@Override
+//					public VersionInfo parseResponse(JSONObject metadataObject)
+//							throws JSONException {
+//						// Log.i(TAG, "code1 VersionInfo");
+//						// VersionInfo info = new VersionInfo();
+//						// info.initialize(metadataObject);
+//						// mVersionInfo = info;
+//						// Log.i(TAG,
+//						// "code1 VersionInfo is: "+mVersionInfo.toString());
+//						// return mVersionInfo;
+//
+//						JSONArray sessionJSONArray = metadataObject
+//								.optJSONArray(RestConstants.JSON_DATA_TAG);
+//						if (sessionJSONArray != null) {
+//							List<Section> oldSections = SectionsTablesHelper
+//									.getSections();
+//							List<Section> sections = parseSections(sessionJSONArray);
+//
+//							outDatedSections = checkSections(oldSections,
+//									sections);
+//
+//							SectionsTablesHelper.saveSections(sections);
+//						}
+//						VersionInfo info = new VersionInfo();
+//						info.initialize(metadataObject);
+//						mVersionInfo = info;
+//
+//						if (outDatedSections != null
+//								&& outDatedSections.size() != 0) {
+//							ignoreTrigger = true;
+//							clearOutDatedMainSections(outDatedSections, event);
+//						}
+//						return mVersionInfo;
+//					}
+//				}, event.metaData);
 	}
 
 
@@ -117,7 +144,7 @@ public class ApiService {
 	 * Clears the database of outdated sections
 	 */
 	private void clearOutDatedMainSections(List<Section> sections,
-			final RequestEvent event) {
+			final EventType event) {
 
 		SQLiteDatabase db = DarwinDatabaseHelper.getInstance()
 				.getReadableDatabase();

@@ -1,4 +1,5 @@
 /**
+ * @author Manuel Silva
  * 
  */
 package pt.rocket.helpers;
@@ -7,12 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import pt.rocket.framework.database.SectionsTablesHelper;
 import pt.rocket.framework.enums.RequestType;
-import pt.rocket.framework.objects.CompleteProduct;
-import pt.rocket.framework.objects.ProductsPage;
 import pt.rocket.framework.objects.Section;
 import pt.rocket.framework.objects.VersionInfo;
 import pt.rocket.framework.rest.RestConstants;
@@ -30,7 +30,8 @@ import android.os.Bundle;
 public class GetApiInfoHelper extends BaseHelper {
     
     private static String TAG = GetApiInfoHelper.class.getSimpleName();
-    ProductsPage mProductsPage= new ProductsPage();
+    
+    public static final String API_INFO_OUTDATEDSECTIONS = "outDatedSections";
 
     @Override
     public Bundle generateRequestBundle(Bundle args) {
@@ -48,30 +49,28 @@ public class GetApiInfoHelper extends BaseHelper {
         
         JSONArray sessionJSONArray = jsonObject
                 .optJSONArray(RestConstants.JSON_DATA_TAG);
+        ArrayList<Section> outDatedSections = null;
         if (sessionJSONArray != null) {
             List<Section> oldSections = SectionsTablesHelper
                     .getSections();
             List<Section> sections = parseSections(sessionJSONArray);
 
-            List<Section> outDatedSections = checkSections(oldSections,
+            outDatedSections = checkSections(oldSections,
                     sections);
 
             SectionsTablesHelper.saveSections(sections);
         }
+        
         VersionInfo info = new VersionInfo();
-        info.initialize(jsonObject);
-        mVersionInfo = info;
-
-        if (outDatedSections != null
-                && outDatedSections.size() != 0) {
-            ignoreTrigger = true;
-            clearOutDatedMainSections(outDatedSections, event);
+        try {
+            info.initialize(jsonObject);
+        } catch (JSONException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
         
-        
-        CompleteProduct product = new CompleteProduct();
-        product.initialize(jsonObject);
-        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, product);
+        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, info);
+        bundle.putParcelableArrayList(API_INFO_OUTDATEDSECTIONS, outDatedSections);
 
         return bundle;
     }
@@ -105,9 +104,9 @@ public class GetApiInfoHelper extends BaseHelper {
      * @param newSections
      * @return
      */
-    public List<Section> checkSections(List<Section> oldSections,
+    public ArrayList<Section> checkSections(List<Section> oldSections,
             List<Section> newSections) {
-        List<Section> outdatedSections = new ArrayList<Section>();
+        ArrayList<Section> outdatedSections = new ArrayList<Section>();
 
         if (!oldSections.isEmpty()) {
             for (Section oldSection : oldSections) {
@@ -143,7 +142,7 @@ public class GetApiInfoHelper extends BaseHelper {
     
     @Override   
     public Bundle parseErrorBundle(Bundle bundle) {
-    	android.util.Log.d("TRACK", "parseErrorBundle GetCategoriesHelper");
+    	android.util.Log.d("TRACK", "parseErrorBundle GetApiInfoHelper");
         bundle.putString(Constants.BUNDLE_URL_KEY, " GetCategories");
         return bundle;
     }

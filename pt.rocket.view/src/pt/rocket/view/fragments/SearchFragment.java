@@ -11,14 +11,14 @@ import pt.rocket.controllers.SearchSuggestionsAdapter;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.ErrorCode;
-import pt.rocket.framework.event.EventManager;
-import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.event.ResponseEvent;
-import pt.rocket.framework.event.ResponseResultEvent;
-import pt.rocket.framework.event.events.GetSearchSuggestionsEvent;
 import pt.rocket.framework.objects.SearchSuggestion;
 import pt.rocket.framework.utils.AnalyticsGoogle;
+import pt.rocket.framework.utils.Constants;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.helpers.GetSearchSuggestionHelper;
+import pt.rocket.interfaces.IResponseCallback;
+import pt.rocket.utils.JumiaApplication;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.RightDrawableOnTouchListener;
@@ -334,8 +334,11 @@ public class SearchFragment extends BaseFragment implements OnItemClickListener 
     
     private void requestSuggestions() {
         mBeginRequestMillis = System.currentTimeMillis();
-        EventManager.getSingleton().triggerRequestEvent(
-                new GetSearchSuggestionsEvent(searchSuggestionText));
+        Bundle bundle = new Bundle();
+        bundle.putString(GetSearchSuggestionHelper.SEACH_PARAM, searchSuggestionText);
+        JumiaApplication.INSTANCE.sendRequest(new GetSearchSuggestionHelper(), bundle,mCallBack);
+//        EventManager.getSingleton().triggerRequestEvent(
+//                new GetSearchSuggestionsEvent(searchSuggestionText));
     }
     
     /**
@@ -394,22 +397,11 @@ public class SearchFragment extends BaseFragment implements OnItemClickListener 
         getActivity().findViewById(R.id.dummy_search_layout).requestFocus();
     }
     
-
-    @Override
-    protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
-        Log.d(TAG, "ON SUCCESS EVENT: " + event.getType().name());
-        
-        // Validate fragment visibility
-        if(!isVisible()){
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return true;
-        }
-            
-        AnalyticsGoogle.get().trackLoadTiming(R.string.gsearchsuggestions, mBeginRequestMillis);
-        setSearchSuggestions((List<SearchSuggestion>) event.result);
-        searchSuggestions = (List<SearchSuggestion>) event.result;
-        return true;
-    }
+//    @Override
+//    protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
+//        
+//        return true;
+//    }
     
     // SEARCH SUGGESTIONS
     private void setSearchSuggestions(final List<SearchSuggestion> arrayList) {
@@ -420,21 +412,33 @@ public class SearchFragment extends BaseFragment implements OnItemClickListener 
         suggestionsLayout.setVisibility( View.GONE );
     }
     
-    @Override
-    protected boolean onErrorEvent(ResponseEvent event) {
-        mBeginRequestMillis = System.currentTimeMillis();
-        // Validate fragment visibility
-        if(!isVisible()){
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return true;
+    IResponseCallback mCallBack = new IResponseCallback() {
+        
+        @Override
+        public void onRequestError(Bundle bundle) {
+            mBeginRequestMillis = System.currentTimeMillis();
+            // Validate fragment visibility
+            if(isVisible()){
+                setEmptySuggestions( R.string.searchsuggestions_empty);
+                ((BaseActivity) getActivity()).showContentContainer(false);
+            }
         }
         
-        if(event.errorCode == ErrorCode.REQUEST_ERROR) {
-            setEmptySuggestions( R.string.searchsuggestions_empty);
-            ((BaseActivity) getActivity()).showContentContainer(false);
-            return true;
+        @Override
+        public void onRequestComplete(Bundle bundle) {
+//            Log.d(TAG, "ON SUCCESS EVENT: " + event.getType().name());
+            
+            // Validate fragment visibility
+            if(isVisible()){
+                AnalyticsGoogle.get().trackLoadTiming(R.string.gsearchsuggestions, mBeginRequestMillis);
+                searchSuggestions = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
+
+                setSearchSuggestions((List<SearchSuggestion>) searchSuggestions);
+            }
+                
+            
+            
         }
-        return super.onErrorEvent(event);
-    }
+    };
 
 }
