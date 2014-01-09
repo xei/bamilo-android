@@ -20,10 +20,12 @@ import pt.rocket.framework.objects.ProductSimple;
 import pt.rocket.framework.objects.ShoppingCartItem;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.AnalyticsGoogle;
+import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CurrencyFormatter;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.GetProductHelper;
+import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.FragmentCommunicator;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
@@ -437,14 +439,15 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
         
         Bundle bundle = new Bundle();
         bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
-        sendRequest(new GetProductHelper(), PRODUCT_URL, responseCallback)
-        triggerContentEvent(new GetProductEvent(mCompleteProductUrl));
+        triggerContentEvent(new GetProductHelper(), bundle, responseCallback);
         ((BaseActivity) getActivity()).setProcessShow(false);
     }
 
     private void loadProductPartial() {
         mBeginRequestMillis = System.currentTimeMillis();
-        triggerContentEventWithNoLoading(new GetProductEvent(mCompleteProductUrl));
+        Bundle bundle = new Bundle();
+        bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
+        triggerContentEventWithNoLoading(new GetProductHelper(), bundle, responseCallback);
     }
 
     private void preselectASimpleItem() {
@@ -989,15 +992,25 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see pt.rocket.utils.MyActivity#handleTriggeredEvent(pt.rocket.framework.event.ResponseEvent)
-     */
-    @Override
-    protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
-        Log.d(TAG, "onSuccessEvent: type = " + event.getType());
-        switch (event.getType()) {
+    IResponseCallback responseCallback = new IResponseCallback() {
+        
+        @Override
+        public void onRequestError(Bundle bundle) {
+            onErrorEvent(bundle);
+            
+        }
+        
+        @Override
+        public void onRequestComplete(Bundle bundle) {
+            onSuccessEvent(bundle);
+            
+        }
+    };
+    
+    protected boolean onSuccessEvent(Bundle bundle) {
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        Log.d(TAG, "onSuccessEvent: type = " + eventType);
+        switch (eventType) {
         case ADD_ITEM_TO_SHOPPING_CART_EVENT:
             mAddToCartButton.setEnabled(true);
             executeAddToShoppingCartCompleted();
@@ -1023,12 +1036,6 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see pt.rocket.utils.MyActivity#onErrorEvent(pt.rocket.framework.event.ResponseEvent)
-     */
-    @Override
     protected boolean onErrorEvent(ResponseEvent event) {
         Log.d(TAG, "onErrorEvent: type = " + event.getType());
         switch (event.getType()) {

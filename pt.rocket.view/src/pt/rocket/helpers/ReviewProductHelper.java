@@ -17,8 +17,9 @@ import pt.rocket.framework.objects.ProductsPage;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.rest.RestContract;
 import pt.rocket.framework.utils.Constants;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
-import pt.rocket.pojo.EventType;
+import pt.rocket.utils.JumiaApplication;
 import android.content.ContentValues;
 import android.net.Uri;
 import android.os.Bundle;
@@ -48,7 +49,7 @@ public class ReviewProductHelper extends BaseHelper {
             values.put(RestConstants.REVIEW_CUSTOMER_ID, args.getInt(CUSTOMER_ID));
         }
         
-        for (Entry<String, HashMap<String, String>> option : ProductHelper.getRatingOptions().entrySet()) {
+        for (Entry<String, HashMap<String, String>> option : JumiaApplication.INSTANCE.getRatingOptions().entrySet()) {
             
             values.put(RestConstants.REVIEW_OPTION_FIELD + option.getKey(), option.getValue().get(String.valueOf(productReviewCreated.getRating().get(option.getKey()).intValue())));
 
@@ -58,7 +59,7 @@ public class ReviewProductHelper extends BaseHelper {
 
         bundle.putString(Constants.BUNDLE_URL_KEY, EventType.REVIEW_PRODUCT_EVENT.action);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY,
-                HelperPriorityConfiguration.CATEGORIES_PRIORITY);
+                HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.POST);
         bundle.putParcelable(Constants.BUNDLE_FORM_DATA_KEY, values);
         bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));

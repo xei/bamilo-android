@@ -16,11 +16,15 @@ import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
+import pt.rocket.framework.ErrorCode;
+import pt.rocket.framework.interfaces.IMetaData;
 import pt.rocket.framework.objects.Product;
 import pt.rocket.framework.objects.ProductsPage;
 import pt.rocket.framework.rest.RestContract;
 import pt.rocket.framework.utils.AnalyticsGoogle;
+import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.Direction;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LoadingBarView;
 import pt.rocket.framework.utils.ProductSort;
 import pt.rocket.helpers.GetProductsHelper;
@@ -433,23 +437,19 @@ public class CatalogPageModel {
             }
 
             mBeginRequestMillis = System.currentTimeMillis();
-            public static final String PRODUCT_URL = "productUrl";
-            public static final String SEARCH_QUERY = "searchQuery";
-            public static final String PAGE_NUMBER = "pageNumber";
-            public static final String TOTAL_COUNT = "totalCount";
-            public static final String SORT = "sort";
-            public static final String DIRECTION = "direction";
+
             Bundle bundle = new Bundle();
             bundle.putString(GetProductsHelper.PRODUCT_URL, productsURL);
             bundle.putString(GetProductsHelper.SEARCH_QUERY, searchQuery);
             bundle.putInt(GetProductsHelper.PAGE_NUMBER, pageNumber);
             bundle.putInt(GetProductsHelper.TOTAL_COUNT, MAX_PAGE_ITEMS);
-            bundle.putInt(GetProductsHelper.SORT, sort);
+            bundle.putInt(GetProductsHelper.SORT, sort.id);
+            bundle.putInt(GetProductsHelper.DIRECTION, dir.id);
             JumiaApplication.INSTANCE.sendRequest(new GetProductsHelper(), bundle, responseCallback);
             
-            EventManager.getSingleton().triggerRequestEvent(
-                    new GetProductsEvent(productsURL, searchQuery, pageNumber, MAX_PAGE_ITEMS,
-                            sort, dir, md5Hash));
+//            EventManager.getSingleton().triggerRequestEvent(
+//                    new GetProductsEvent(productsURL, searchQuery, pageNumber, MAX_PAGE_ITEMS,
+//                            sort, dir, md5Hash));
         } else {
             hideProductsLoading();
         }
@@ -644,15 +644,15 @@ public class CatalogPageModel {
         }
     };
     
-    @Override
-    public void handleEvent(ResponseEvent event) {
-        if (event.getSuccess()) {
-            processSuccess((ResponseResultEvent<?>) event);
-        } else {
-            processError(event);
-        }
-
-    }
+//    @Override
+//    public void handleEvent(ResponseEvent event) {
+//        if (event.getSuccess()) {
+//            processSuccess((ResponseResultEvent<?>) event);
+//        } else {
+//            processError(event);
+//        }
+//
+//    }
 
     private void checkRedirectFromSearch(String location) {
         Log.d(TAG, "url = " + productsURL);
@@ -696,8 +696,10 @@ public class CatalogPageModel {
         }
     }
 
-    private void processError(ResponseEvent event) {
-        if (event.errorCode != null && pageNumber == 1) {
+    private void processError(Bundle bundle) {
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        if (errorCode != null && pageNumber == 1) {
             showProductsNotfound();
             ((BaseActivity) mActivity).showContentContainer(false);
         } else {
@@ -723,7 +725,7 @@ public class CatalogPageModel {
         Log.d(TAG, "ON SUCCESS EVENT");
 
         // Get Products Event
-        ProductsPage productsPage = (ProductsPage) bundle.getParcelable(key)
+        ProductsPage productsPage = (ProductsPage) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
         Log.d(TAG, "onSuccessEvent: products on page = " + productsPage.getProducts().size() +
                 " total products = " + productsPage.getTotalProducts());
         if (productsPage != null && productsPage.getTotalProducts() > 0) {
@@ -734,7 +736,7 @@ public class CatalogPageModel {
             //setTotalItemLable();
         }
 
-        String location = event.metaData.getString(IMetaData.LOCATION);
+        String location = bundle.getString(IMetaData.LOCATION);
         Log.d(TAG, "Location = " + location);
         checkRedirectFromSearch(location);
 
@@ -775,18 +777,6 @@ public class CatalogPageModel {
         }
 
         AnalyticsGoogle.get().trackSearch(searchQuery, productsPage.getTotalProducts());
-    }
-
-    @Override
-    public boolean removeAfterHandlingEvent() {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public String getMD5Hash() {
-        // TODO Auto-generated method stub
-        return md5Hash;
     }
 
     /**

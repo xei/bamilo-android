@@ -19,14 +19,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import pt.rocket.framework.event.EventManager;
-import pt.rocket.framework.event.ResponseEvent;
-import pt.rocket.framework.event.ResponseListener;
-import pt.rocket.framework.event.ResponseResultEvent;
-import pt.rocket.framework.event.events.GetFormsDatasetListEvent;
 import pt.rocket.framework.objects.IJSONSerializable;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.helpers.GetFormsDatasetListHelper;
+import pt.rocket.utils.InputType;
+import pt.rocket.utils.JumiaApplication;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -35,7 +33,7 @@ import de.akquinet.android.androlog.Log;
  * @author GuilhermeSilva
  * 
  */
-public class FormField implements IJSONSerializable, IFormField, ResponseListener {
+public class FormField implements IJSONSerializable, IFormField {
 	private final static String TAG = LogTagHelper.create(FormField.class);
 	
     public interface OnDataSetReceived {
@@ -211,6 +209,8 @@ public class FormField implements IJSONSerializable, IFormField, ResponseListene
                     if (!jsonObject.isNull(RestConstants.JSON_DATASET_SOURCE_TAG)) {
                         datasetSource = jsonObject.optString(RestConstants.JSON_DATASET_SOURCE_TAG);
                         if (!datasetSource.equals("")) {
+                            
+                            JumiaApplication.INSTANCE.sendRequest(new GetFormsDatasetListHelper(), args, responseCallback)
                             EventManager.getSingleton().triggerRequestEvent(new GetFormsDatasetListEvent(key, datasetSource), this);
                         }
                     }

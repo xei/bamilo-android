@@ -10,8 +10,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import pt.rocket.framework.enums.RequestType;
-import pt.rocket.framework.objects.Homepage;
-import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
@@ -27,13 +25,16 @@ import de.akquinet.android.androlog.Log;
  * @author Guilherme Silva
  * @modified Manuel Silva
  */
-public class GetTeasersHelper extends BaseHelper {
-    private static String TAG = GetTeasersHelper.class.getSimpleName();
+public class GetFormsDatasetListHelper extends BaseHelper {
+    
+    private static String TAG = GetFormsDatasetListHelper.class.getSimpleName();
+    
+    private ArrayList<TeaserSpecification<ITargeting>> teasers = new ArrayList<TeaserSpecification<ITargeting>>();
     
     @Override
     public Bundle generateRequestBundle(Bundle args) {
         Bundle bundle = new Bundle();
-        bundle.putString(Constants.BUNDLE_URL_KEY, EventType.GET_TEASERS_EVENT.action);
+        bundle.putString(Constants.BUNDLE_URL_KEY, EventType.GET_FORMS_DATASET_LIST_EVENT.action);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
         bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
         return bundle;
@@ -45,18 +46,21 @@ public class GetTeasersHelper extends BaseHelper {
     	Log.d(TAG, "parseResponseBundle GetTeasersHelper");
     	
     	
-        try {
-            JSONArray dataArray = jsonObject.getJSONArray(RestConstants.JSON_DATA_TAG);
-            int dataArrayLenght = dataArray.length();
-            ArrayList<Homepage> homepageSpecifications = new ArrayList<Homepage>();
-            for (int i = 0; i < dataArrayLenght; ++i) {
-                Homepage homepage = new Homepage();
-                homepage.initialize(dataArray.getJSONObject(i));
-                homepageSpecifications.add(homepage);
-            }
-           bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, homepageSpecifications);
+        try {// TODO add further object parsing possibilities : for example data
+            // not being an array but a dictionary
+           JSONArray data = jsonObject.getJSONArray(JSONConstants.JSON_DATA_TAG);
+           int dataSize = data.length();
            
-           Log.i(TAG,"Teasers size "+homepageSpecifications.size());
+           for (int i = 0; i < dataSize; i++) {
+               TeaserSpecification<ITargeting> teaser = (TeaserSpecification<ITargeting>) TeaserSpecification.parse(data.getJSONObject(i));
+                
+               teasers.add(teaser);
+
+           }
+           
+           bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, teasers);
+           
+           Log.i(TAG,"Teasers size "+teasers.size());
            
                      
        } catch (JSONException e) {

@@ -9,13 +9,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pt.rocket.framework.database.CategoriesTableHelper;
 import pt.rocket.framework.enums.RequestType;
+import pt.rocket.framework.objects.Category;
+import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.Constants;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
-import pt.rocket.pojo.Category;
-import pt.rocket.utils.JSONConstants;
 import android.os.Bundle;
-import de.akquinet.android.androlog.Log;
 
 /**
  * Example helper
@@ -28,13 +29,12 @@ public class GetCategoriesHelper extends BaseHelper {
     public static final String CATEGORY_URL = "category_url";
     
     private static String TAG = GetCategoriesHelper.class.getSimpleName();
-    ArrayList<Category> categoriesList= new ArrayList<Category>();
 
     @Override
-    public Bundle generateRequestBundle() {
+    public Bundle generateRequestBundle(Bundle args) {
         Bundle bundle = new Bundle();
-        bundle.putString(Constants.BUNDLE_URL_KEY, "http://www.linio.com.ve/mobileapi/catalog/categories/");
-        bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.CATEGORIES_PRIORITY);
+        bundle.putString(Constants.BUNDLE_URL_KEY, EventType.GET_CATEGORIES_EVENT.action);
+        bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
         bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
         return bundle;
@@ -45,20 +45,21 @@ public class GetCategoriesHelper extends BaseHelper {
         try {// TODO add further object parsing possibilities : for example data
              // not being an array but a dictionary
         	android.util.Log.d("TRACK", "parseResponseBundle GetCategoriesHelper");
-            JSONArray data = jsonObject.getJSONArray(JSONConstants.JSON_DATA_TAG);
-            int dataSize = data.length();
-            for (int i = 0; i < dataSize; i++) {
+        	JSONArray categoriesArray = jsonObject
+                    .getJSONArray(RestConstants.JSON_DATA_TAG);
+            int categoriesArrayLenght = categoriesArray
+                    .length();
+            ArrayList<Category> categories = new ArrayList<Category>();
+            for (int i = 0; i < categoriesArrayLenght; ++i) {
+                JSONObject categoryObject = categoriesArray
+                        .getJSONObject(i);
                 Category category = new Category();
-                category.initialize(data.getJSONObject(i));
-                categoriesList.add(category);
+                category.initialize(categoryObject);
+                categories.add(category);
             }
-            
-            Log.i(TAG,"Categories size => "+categoriesList.size());
-            
-            bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, categoriesList);
-            
-            //FIXME next line is just for test porpouse, to delete
-            bundle.putString(Constants.BUNDLE_URL_KEY, " GetCategories");
+            CategoriesTableHelper.saveCategories(categories);
+
+            bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, categories);
             
             
         } catch (JSONException e) {

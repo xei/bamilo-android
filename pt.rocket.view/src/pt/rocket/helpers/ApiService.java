@@ -51,15 +51,15 @@ public class ApiService {
 	private VersionInfo mVersionInfo;
 
 	public ApiService() {
-		super(EnumSet.noneOf(EventType.class), EnumSet.of(EventType.INIT_SHOP,
-				EventType.GET_API_INFO));
+//		super(EnumSet.noneOf(EventType.class), EnumSet.of(EventType.INIT_SHOP,
+//				EventType.GET_API_INFO));
 		mVersionInfo = new VersionInfo();
 	}
 
-	@Override
-	public void onInit(Context context) {
-		super.onInit(context);
-	}
+//	@Override
+//	public void onInit(Context context) {
+//		super.onInit(context);
+//	}
 
 	/**
 	 * Gets the categories from the api.

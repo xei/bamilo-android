@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Set;
 
 import pt.rocket.forms.FormField.OnDataSetReceived;
+import pt.rocket.utils.InputType;
 
 public class FormFieldMeta implements IFormField {
 	private IFormField metaFormField;

@@ -11,6 +11,7 @@ import java.util.Map;
 import de.akquinet.android.androlog.Log;
 
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.utils.InputType;
 
 /**
  * This Singleton Class defines the mapping for the order which the fields are displayed on the UI

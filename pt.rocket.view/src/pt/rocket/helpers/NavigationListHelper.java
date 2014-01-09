@@ -7,7 +7,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import pt.rocket.framework.enums.RequestType;
+import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.Constants;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
 import pt.rocket.pojo.NavigationListComponent;
 import pt.rocket.utils.JSONConstants;
@@ -21,8 +23,8 @@ public class NavigationListHelper extends BaseHelper {
     public Bundle generateRequestBundle(Bundle args) {
         // TODO Auto-generated method stub
         Bundle bundle = new Bundle();
-        bundle.putString(Constants.BUNDLE_URL_KEY, "http://www.linio.com.ve/mobileapi/main/getstatic?key=mobile_navigation");
-        bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.CATEGORIES_PRIORITY);
+        bundle.putString(Constants.BUNDLE_URL_KEY, EventType.GET_NAVIGATION_LIST_COMPONENTS_EVENT.action);
+        bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_NOT_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
         bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
         return bundle;
@@ -33,14 +35,18 @@ public class NavigationListHelper extends BaseHelper {
         // TODO Auto-generated method stub
         navComponentList = new ArrayList<NavigationListComponent>();
         try {
-            JSONArray data =(JSONArray) jsonObject.getJSONArray(JSONConstants.JSON_DATA_TAG);
-            int size = data.length();
-            
-            for (int i=0;i<size;i++){
-                NavigationListComponent navComponent = new NavigationListComponent();
-                navComponent.initialize(data.getJSONObject(i));
-                navComponentList.add(navComponent);
+            ArrayList<NavigationListComponent> components = new ArrayList<NavigationListComponent>();
+            JSONArray dataArray = jsonObject
+                    .getJSONArray(RestConstants.JSON_DATA_TAG);
+            NavigationListComponent component;
+            int dataArrayLenght = dataArray.length();
+            for (int i = 0; i < dataArrayLenght; ++i) {
+                component = new NavigationListComponent();
+                component.initialize(dataArray.getJSONObject(i));
+                components.add(component);
             }
+
+            components.add(new NavigationListComponent(0, null, "loginout", null));
             
             bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, navComponentList);
             

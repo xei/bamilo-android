@@ -9,10 +9,10 @@ import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.framework.objects.CategoryTeaserGroup.TeaserCategory;
 import pt.rocket.framework.objects.ITargeting;
-import pt.rocket.framework.objects.ImageTeaserGroup.TeaserImage;
 import pt.rocket.framework.objects.ProductTeaserGroup.TeaserProduct;
 import pt.rocket.framework.objects.TeaserSpecification;
-import pt.rocket.framework.objects.TeaserSpecification.TeaserGroupType;
+import pt.rocket.framework.objects.TeaserGroupType;
+import pt.rocket.framework.objects.TeaserImage;
 import pt.rocket.view.R;
 import android.annotation.SuppressLint;
 import android.content.Context;

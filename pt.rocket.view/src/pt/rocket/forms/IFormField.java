@@ -3,6 +3,7 @@ package pt.rocket.forms;
 import java.util.Map;
 
 import pt.rocket.forms.FormField.OnDataSetReceived;
+import pt.rocket.utils.InputType;
 
 public interface IFormField {
 

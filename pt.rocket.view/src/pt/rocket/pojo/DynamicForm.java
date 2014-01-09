@@ -6,8 +6,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import pt.rocket.forms.InputType;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.utils.InputType;
 import android.content.ContentValues;
 import android.text.TextWatcher;
 import android.view.View;

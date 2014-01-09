@@ -183,7 +183,7 @@ public class CheckVersion {
     }
     
     private static Version getVersion( Context context ) {
-        VersionInfo vInfo = ServiceManager.SERVICES.get(ApiService.class).getVersionInfo();
+        VersionInfo vInfo = JumiaApplication.INSTANCE.getVersionInfo();
         if ( vInfo == null) {
             return null;
         }

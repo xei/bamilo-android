@@ -23,10 +23,10 @@ import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.forms.FormField;
 import pt.rocket.forms.IFormField;
-import pt.rocket.forms.InputType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.dialogfragments.DialogDatePickerFragment;
 import pt.rocket.utils.dialogfragments.DialogDatePickerFragment.OnDatePickerDialogListener;
+import pt.rocket.utils.InputType;
 import pt.rocket.utils.RadioGroupLayout;
 import pt.rocket.utils.UIUtils;
 import pt.rocket.view.BaseActivity;

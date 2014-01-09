@@ -2,11 +2,6 @@ package pt.rocket.controllers;
 
 import java.lang.ref.WeakReference;
 
-import pt.rocket.framework.event.EventManager;
-import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.event.RequestEvent;
-import pt.rocket.framework.event.ResponseEvent;
-import pt.rocket.framework.event.ResponseListener;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogProgressFragment;
 import pt.rocket.view.BaseActivity;

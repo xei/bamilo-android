@@ -11,8 +11,8 @@ import de.akquinet.android.androlog.Log;
 import pt.rocket.forms.FormField;
 import pt.rocket.forms.FormFieldMeta;
 import pt.rocket.forms.IFormField;
-import pt.rocket.forms.InputType;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.utils.InputType;
 
 public class MetaFormExtractor {
 	private final static String TAG = LogTagHelper.create( MetaFormExtractor.class );

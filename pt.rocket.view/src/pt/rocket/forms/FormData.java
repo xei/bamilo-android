@@ -3,15 +3,21 @@ package pt.rocket.forms;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import pt.rocket.framework.objects.Brand;
+import pt.rocket.framework.objects.BrandImage;
 import pt.rocket.framework.objects.IJSONSerializable;
 import pt.rocket.framework.rest.RestConstants;
 
 /**
  * Defines the data from the form.
  * @author GuilhermeSilva
+ * @modified Manuel Silva
  *
  */
-public class FormData implements IJSONSerializable {
+public class FormData implements IJSONSerializable, Parcelable {
 //    /**
 //     * Defines the json action tag.
 //     */
@@ -79,4 +85,41 @@ public class FormData implements IJSONSerializable {
         return jsonObject;
     }
 
+    @Override
+    public int describeContents() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(action);
+        dest.writeString(url);
+        
+    }
+
+    /**
+     * Parcel constructor
+     * @param in
+     */
+    private FormData(Parcel in) {
+        id = in.readString();
+        action = in.readString();
+        url = in.readString();
+    }
+    
+    /**
+     * Create parcelable 
+     */
+    public static final Parcelable.Creator<FormData> CREATOR = new Parcelable.Creator<FormData>() {
+        public FormData createFromParcel(Parcel in) {
+            return new FormData(in);
+        }
+
+        public FormData[] newArray(int size) {
+            return new FormData[size];
+        }
+    };
+    
 }

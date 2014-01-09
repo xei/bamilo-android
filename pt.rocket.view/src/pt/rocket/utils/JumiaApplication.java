@@ -11,6 +11,8 @@ import pt.rocket.app.ImageLoaderComponent;
 import pt.rocket.app.UrbanAirshipComponent;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.interfaces.IMetaData;
+import pt.rocket.framework.objects.CompleteProduct;
+import pt.rocket.framework.objects.VersionInfo;
 import pt.rocket.framework.service.IRemoteService;
 import pt.rocket.framework.service.IRemoteServiceCallback;
 import pt.rocket.framework.service.RemoteService;
@@ -38,6 +40,15 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     private static final String TAG = JumiaApplication.class.getSimpleName();
 
     public static JumiaApplication INSTANCE;
+    
+    
+    /**
+     * General Persistent Variables
+     */
+    private HashMap<String, HashMap<String, String>> ratingOptions = null;
+    private CompleteProduct currentProduct = null;
+    private VersionInfo mVersionInfo;
+    
 
     public static final SingletonMap<ApplicationComponent> COMPONENTS =
             new SingletonMap<ApplicationComponent>(new UrbanAirshipComponent(),
@@ -63,7 +74,6 @@ public class JumiaApplication extends Application implements ExceptionCallback {
         bindService(new Intent(this, RemoteService.class), mConnection, Context.BIND_AUTO_CREATE);
         INSTANCE = this;
         responseCallbacks = new HashMap<String, IResponseCallback>();
-//        EventManager.getSingleton().addResponseListener(EventType.INITIALIZE, this);
         init(false);
         
         // Get the current shop id
@@ -196,6 +206,51 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     }
     
     
+    /**
+     * @return the ratingOptions
+     */
+    public HashMap<String, HashMap<String, String>> getRatingOptions() {
+        return ratingOptions;
+    }
+
+    /**
+     * @param ratingOptions the ratingOptions to set
+     */
+    public void setRatingOptions(HashMap<String, HashMap<String, String>> ratingOptions) {
+        this.ratingOptions = ratingOptions;
+    }
+
+
+    /**
+     * @return the currentProduct
+     */
+    public CompleteProduct getCurrentProduct() {
+        return currentProduct;
+    }
+
+    /**
+     * @param currentProduct the currentProduct to set
+     */
+    public void setCurrentProduct(CompleteProduct currentProduct) {
+        this.currentProduct = currentProduct;
+    }
+
+
+    /**
+     * @return the mVersionInfo
+     */
+    public VersionInfo getVersionInfo() {
+        return mVersionInfo;
+    }
+
+    /**
+     * @param mVersionInfo the mVersionInfo to set
+     */
+    public void setVersionInfo(VersionInfo mVersionInfo) {
+        this.mVersionInfo = mVersionInfo;
+    }
+
+
     /**
      * Service Stuff
      */
