@@ -71,6 +71,12 @@ Then /^I enter the password$/ do
 
 end
 
+Then /^I enter the wrong password$/ do
+  
+  performAction('enter_text_into_named_field',"", @login_password.to_s)
+  performAction('enter_text_into_named_field',@wrong_password, @login_password.to_s)
+end
+
 Then /^I enter the repeated password$/ do 
   
   performAction('enter_text_into_named_field',"", @register_password2.to_s)
@@ -134,10 +140,20 @@ Then /^I choose the Sign In option$/ do
   performAction('click_on_text',@sign_in.to_s)
 end
 
+Then /^I press Login Button$/ do
+  
+  performAction('click_on_view_by_id',@login_button_id.to_s)
+end
+
 Then /^I press Logout Button$/ do
   
   performAction('click_on_text',@signout.to_s)
   performAction('click_on_text',@yes.to_s)
+end
+
+Then /^I press Ok$/ do
+  
+  performAction('click_on_text',@ok.to_s)
 end
 
 Then /^I enter My Account$/ do 
@@ -169,10 +185,10 @@ Then /^I go to cart$/ do
   performAction('press',@gotocart.to_s)
 end
 
-
 Then /^I proceed to checkout$/ do 
   performAction('press',@proceedcheckout.to_s)
 end
+
 
 #
 #
@@ -187,7 +203,6 @@ end
 Then /^I should see my email$/ do 
   performAction('assert_text', @username.to_s, true) 
 end
-
 
 Then /^I should see the email error message$/ do 
 

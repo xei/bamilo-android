@@ -10,6 +10,8 @@ def initvars
   @navigation="abs__home"
   @login_username="email"
   @login_password="password"
+  @wrong_password="fakepassword"
+  @login_button_id="middle_login_button_signin"
   
   @register_password2="password2"
   @register_birthday="birthday"
@@ -26,12 +28,14 @@ def initvars
   @proceedcheckout="Proceed to checkout"
   @continueshopping="Continue Shopping"
   
-  
   @shippingbtn="shippingbtn"
   @billingbtn="billingbtn"
   @finish="finishbtn"
   @payment="paymentbtn"
   @paymentmethod="paymentmethodbtn"
+  
+  @yes="Yes"
+  @ok="OK"
 end
 
 
@@ -130,6 +134,7 @@ def initvars_MA
   
   @addtocart="Ajouter au panier"
   
+  @yes="Oui"
 end
 
 def initvars_NG
@@ -163,4 +168,34 @@ def initvars_NG
   
 end
 
+def initvars_EG
+
+  
+  @venture_name="Egypt"
+  @sign_in="Sign In"
+  @wrong_username="faketester@tester.tt"
+  @invalidsearch= "adddddf" 
+  @search= "nikon" 
+  @myaccount="My Account"
+  @myinfo="User Data"
+  @categories="Categories"
+  @categoryfashion="Computing"
+  
+  @checkoutNext="Next"
+  @checkout1="TestPayment"
+  @checkout3="Confirm Order"
+  
+  @emailerrormessage="Please fill in the E-Mail";
+  @passerrormessage="Please fill in the Password";
+  
+  @loginerror="Login failed"
+  @signout="Sign Out"
+  @mandatory="Please fill in the required(*) fields"
+  @sameemail="This email already exists."
+  @searchdefault="Please enter a term for suggestions!"
+  @nosuggest="No suggestions for your search term!"
+  
+  @addtocart="Add to Cart"
+  
+end
 

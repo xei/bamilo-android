@@ -1,37 +1,41 @@
 @MA @login_MA
 Feature: Login feature
 
-
   Background:
     When I verify app for MA venture
     Then I choose the Morocco venture
-    And I wait for 10 seconds
     Then I open the navigation menu
     And I choose the Sign In option
     
-    
     @login_test_MA
   Scenario: I login with user
-  
-  	When I press "Login Button"
-  	And I wait for 5 seconds
+	#wrong_empty_login
+  	When I press Login Button
   	Then I should see the email error message
   	Then I should see the password error message
   
-  	And I wait for 5 seconds
+    #wrong_username_login
     Then I enter a wrong username
   	And I enter the password
-  	Then I press "Login Button"
-  	And I wait for 5 seconds
+  	Then I press Login Button
   	Then I should see the login error message
-  	And I press "Ok"
+  	And I press Ok
+  	
+  	#wrong_pasword
+  	Then I enter a valid username
+  	And I enter the wrong password
+  	Then I press Login Button
+  	Then I should see the login error message
+  	And I press Ok
   
-  	And I wait for 5 seconds
+ 	#valid_login
     Then I enter a valid username
   	And I enter the password
-  	Then I press "Login Button"
-  	And I wait for 10 seconds
+  	Then I press Login Button
     Then I open the navigation menu
-    And I wait for 5 seconds
 	And I should see sign out button
-  	
+	
+	#logout
+	Given I press Logout Button
+  	Then I open the navigation menu
+  	And I should see the login button 

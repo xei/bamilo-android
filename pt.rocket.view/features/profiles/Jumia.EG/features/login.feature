@@ -1,13 +1,13 @@
-@IC @login_IC @login
+@EG @login_EG
 Feature: Login feature
 
   Background:
-    When I verify app for IC venture
-    Then I choose the Ivory Coast venture
+    When I verify app for EG venture
+    Then I choose the Egypt venture
     Then I open the navigation menu
     And I choose the Sign In option
     
-    @login_test_IC
+    @login_test_EG
   Scenario: I login with user
 	#wrong_empty_login
   	When I press Login Button
