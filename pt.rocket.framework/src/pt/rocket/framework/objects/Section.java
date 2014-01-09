@@ -15,6 +15,7 @@ import pt.rocket.framework.rest.RestConstants;
  * For each section, there is a service.
  * Each section contain name, url. 
  * @author GuilhermeSilva
+ * @modified Manuel Silva
  *
  */
 public class Section implements IJSONSerializable, Parcelable {
