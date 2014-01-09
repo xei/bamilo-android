@@ -36,6 +36,8 @@ def initvars
   
   @yes="Yes"
   @ok="OK"
+  @createaccbutton_id="middle_login_link_register"
+  @registerbutton_id="register_button_submit"
 end
 
 
@@ -96,6 +98,7 @@ def initvars_IC
   @sameemail="Cet email existe déjà."
   @searchdefault="Entrer votre recherche ici!"
   @nosuggest="Aucune suggestion pour votre recherche!"
+  @differentpassword="Le mot de passe ne correspond pas"
   
   @addtocart="Ajouter au panier"
   

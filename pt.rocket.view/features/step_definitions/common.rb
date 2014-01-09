@@ -7,8 +7,8 @@ end
 
 Then /^I enter a random email into "([^\"]*)"$/ do |name|
   @unique_random_email= rand(899999999) + 100000000
-  puts 'random email:'
-    puts @unique_random_email
+#  puts 'random email:'
+#    puts @unique_random_email
   @email='Tester' + @unique_random_email.to_s + '@mailinator.com'
   performAction('enter_text_into_named_field',@email.to_s, name)
 end
@@ -56,8 +56,8 @@ end
 
 Then /^I enter a random email$/ do 
   @unique_random_email= rand(899999999) + 100000000
-  puts 'random email:'
-    puts @unique_random_email
+#  puts 'random email:'
+#    puts @unique_random_email
   @email='Tester' + @unique_random_email.to_s + '@mailinator.com'
  performAction('enter_text_into_named_field',"", @login_username.to_s)
  performAction('enter_text_into_named_field',@email, @login_username.to_s)
@@ -81,6 +81,13 @@ Then /^I enter the repeated password$/ do
   
   performAction('enter_text_into_named_field',"", @register_password2.to_s)
   performAction('enter_text_into_named_field',@password.to_s, @register_password2.to_s)
+
+end
+
+Then /^I enter the wrong repeated password$/ do 
+  
+  performAction('enter_text_into_named_field',"", @register_password2.to_s)
+  performAction('enter_text_into_named_field',@password.to_s+"x", @register_password2.to_s)
 
 end
 
@@ -142,7 +149,17 @@ end
 
 Then /^I press Login Button$/ do
   
-  performAction('click_on_view_by_id',@login_button_id.to_s)
+  performAction('click_on_view_by_id', @login_button_id.to_s)
+end
+
+Then /^I press the create account button$/ do
+  
+  performAction('click_on_view_by_id', @createaccbutton_id.to_s)
+end
+
+Then /^I press the register button$/ do
+  
+  performAction('click_on_view_by_id', @registerbutton_id.to_s)
 end
 
 Then /^I press Logout Button$/ do
@@ -232,6 +249,11 @@ end
 Then /^I should see the email exists error message$/ do 
 
   performAction('assert_text', @sameemail.to_s, true) 
+end
+
+Then /^I should see the passwords dont match error message$/ do
+  
+  performAction('assert_text', @differentpassword.to_s, true)
 end
 
 Then /^I should see the search message$/ do 
