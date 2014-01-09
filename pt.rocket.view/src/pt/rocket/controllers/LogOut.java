@@ -2,10 +2,14 @@ package pt.rocket.controllers;
 
 import java.lang.ref.WeakReference;
 
+import pt.rocket.helpers.GetLogoutHelper;
+import pt.rocket.interfaces.IResponseCallback;
+import pt.rocket.utils.JumiaApplication;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogProgressFragment;
 import pt.rocket.view.BaseActivity;
 import android.app.Activity;
+import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
 /**
@@ -39,29 +43,46 @@ public class LogOut {
     public static void performLogOut(final WeakReference<Activity> activityRef) {
         final DialogProgressFragment dialog = DialogProgressFragment.newInstance();
         dialog.show(((FragmentActivity)activityRef.get()).getSupportFragmentManager(), null);
-        EventManager.getSingleton().triggerRequestEvent(new RequestEvent(EventType.LOGOUT_EVENT),
-                new ResponseListener() {
-
-                    @Override
-                    public void handleEvent(ResponseEvent event) {
-                        TrackerDelegator.trackLogoutSuccessful(((BaseActivity) activityRef.get()));
-                        if(((BaseActivity) activityRef.get()) != null)
-                                ((BaseActivity) activityRef.get()).updateSlidingMenuCompletly();
-                        dialog.dismiss();                        
-                    }
-
-                    @Override
-                    public boolean removeAfterHandlingEvent() {
-                        return true;
-                    }
-
-                    @Override
-                    public String getMD5Hash() {
-                        // TODO Auto-generated method stub
-                        return null;
-                    }
-
-                });
+        
+        JumiaApplication.INSTANCE.sendRequest(new GetLogoutHelper(), null, new IResponseCallback() {
+            
+            @Override
+            public void onRequestError(Bundle bundle) {
+                // TODO Auto-generated method stub
+            }
+            
+            @Override
+            public void onRequestComplete(Bundle bundle) {
+                TrackerDelegator.trackLogoutSuccessful(((BaseActivity) activityRef.get()));
+                if(((BaseActivity) activityRef.get()) != null)
+                        ((BaseActivity) activityRef.get()).updateSlidingMenuCompletly();
+                dialog.dismiss();
+            }
+        });
+        
+//        EventManager.getSingleton().triggerRequestEvent(new RequestEvent(EventType.LOGOUT_EVENT),
+//                new ResponseListener() {
+//
+//                    @Override
+//                    public void handleEvent(ResponseEvent event) {
+//                        TrackerDelegator.trackLogoutSuccessful(((BaseActivity) activityRef.get()));
+//                        if(((BaseActivity) activityRef.get()) != null)
+//                                ((BaseActivity) activityRef.get()).updateSlidingMenuCompletly();
+//                        dialog.dismiss();                        
+//                    }
+//
+//                    @Override
+//                    public boolean removeAfterHandlingEvent() {
+//                        return true;
+//                    }
+//
+//                    @Override
+//                    public String getMD5Hash() {
+//                        // TODO Auto-generated method stub
+//                        return null;
+//                    }
+//
+//                });
     }
 
 }
