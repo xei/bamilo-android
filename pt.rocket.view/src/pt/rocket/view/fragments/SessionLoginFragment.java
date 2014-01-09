@@ -35,6 +35,14 @@ import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.service.ServiceManager;
 import pt.rocket.framework.service.services.CustomerAccountService;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.helpers.GetAutoLoginHelper;
+import pt.rocket.helpers.GetCategoriesHelper;
+import pt.rocket.helpers.GetFacebookLoginHelper;
+import pt.rocket.helpers.GetForgotPasswordFormHelper;
+import pt.rocket.helpers.GetInitFormHelper;
+import pt.rocket.helpers.GetLoginFormHelper;
+import pt.rocket.helpers.GetLoginHelper;
+import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.pojo.DynamicForm;
 import pt.rocket.pojo.DynamicFormItem;
 import pt.rocket.utils.MyMenuItem;
@@ -204,14 +212,27 @@ public class SessionLoginFragment extends BaseFragment {
         // Valdiate form
         if(ServiceManager.SERVICES.get(CustomerAccountService.class).hasCredentials()) {
             Log.d(TAG, "FORM: TRY AUTO LOGIN");
-            triggerContentEvent(LogInEvent.TRY_AUTO_LOGIN);
+
+            /**
+             * TRIGGERS
+             * @author sergiopereira
+             */
+            triggerAutoLogin();
+            //triggerContentEvent(LogInEvent.TRY_AUTO_LOGIN);
+            
         } else if (formResponse != null) {
             Log.d(TAG, "FORM ISN'T NULL");
             loadForm(formResponse);
         } else {
             Log.d(TAG, "FORM IS NULL");
             // triggerContentEvent(LogInEvent.TRY_AUTO_LOGIN);
-            triggerContentEvent(EventType.GET_LOGIN_FORM_EVENT);
+            
+            /**
+             * TRIGGERS
+             * @author sergiopereira
+             */
+            triggerLoginForm();
+            //triggerContentEvent(EventType.GET_LOGIN_FORM_EVENT);
         }
 
         setLoginBottomLayout();
@@ -356,7 +377,13 @@ public class SessionLoginFragment extends BaseFragment {
                     if (dynamicForm.validate())
                         requestLogin();
                 } else {
-                    triggerContentEvent(EventType.GET_LOGIN_FORM_EVENT);                    
+                    
+                    /**
+                     * TRIGGERS
+                     * @author sergiopereira
+                     */
+                    triggerLoginForm();
+                    //triggerContentEvent(EventType.GET_LOGIN_FORM_EVENT);                    
                 }
 
             }
@@ -383,11 +410,17 @@ public class SessionLoginFragment extends BaseFragment {
         values.put(CustomerAccountService.INTERNAL_AUTOLOGIN_FLAG, true);
         // }
 
-        triggerContentEvent(new LogInEvent(values));
+        /**
+         * TRIGGERS
+         * @author sergiopereira
+         */
+        triggerLogin(values);
+        //triggerContentEvent(new LogInEvent(values));
+        
         wasAutologin = false;
 		autoLogin = false;
     }
-    
+
     private void requestFacebookLogin(GraphUser user) {
         Log.d(TAG, "requestLogin: triggerEvent LogInEvent");
         ContentValues values = new ContentValues();
@@ -399,7 +432,13 @@ public class SessionLoginFragment extends BaseFragment {
         values.put("gender", (String) user.getProperty("gender"));
         values.put(CustomerAccountService.INTERNAL_AUTOLOGIN_FLAG, true);
 
-        triggerContentEvent(new FacebookLogInEvent(values));
+        /**
+         * TRIGGERS
+         * @author sergiopereira
+         */
+        triggerFacebookLogin(values);
+        //triggerContentEvent(new FacebookLogInEvent(values));
+        
         wasAutologin = false;
     }
 
@@ -488,7 +527,14 @@ public class SessionLoginFragment extends BaseFragment {
                             @Override
                             public void onClick(View v) {
                                 ((BaseActivity) getActivity()).showLoading(false);
-                                EventManager.getSingleton().triggerRequestEvent(event.request);
+                                
+                                /**
+                                 * TRIGGERS
+                                 * @author sergiopereira
+                                 */
+                                triggerLoginForm();
+                                //EventManager.getSingleton().triggerRequestEvent(event.request);
+                                
                                 dialog.dismiss();
                             }
                         }, false);
@@ -557,8 +603,16 @@ public class SessionLoginFragment extends BaseFragment {
                     autoLogin = false;
                     if (formResponse == null) {
                         // Sometimes formDataRegistry is null, so init forms
-                        triggerContentEvent(EventType.INIT_FORMS);
-                        triggerContentEvent(EventType.GET_LOGIN_FORM_EVENT);
+                        
+                        /**
+                         * TRIGGERS
+                         * @author sergiopereira
+                         */
+                        triggerInitForm();
+                        triggerLoginForm();
+                        //triggerContentEvent(EventType.INIT_FORMS);
+                        //triggerContentEvent(EventType.GET_LOGIN_FORM_EVENT);
+                        
                     }
                 } 
                 else {
@@ -594,5 +648,53 @@ public class SessionLoginFragment extends BaseFragment {
         }
         return false;
     }
+    
+    
+    
+    /**
+     * TRIGGERS
+     * @author sergiopereira
+     */
+    private void triggerAutoLogin(){
+        Bundle bundle = new Bundle();
+        triggerContentEvent(new GetAutoLoginHelper(), bundle, mCallBack);
+    }
+    
+    private void triggerLogin(ContentValues values) {
+        Bundle bundle = new Bundle();
+        triggerContentEvent(new GetLoginHelper(), bundle, mCallBack);   
+    }
+    
+    private void triggerFacebookLogin(ContentValues values){
+        Bundle bundle = new Bundle();
+        triggerContentEvent(new GetFacebookLoginHelper(), bundle, mCallBack);
+    }
+    
+    private void triggerLoginForm(){
+        Bundle bundle = new Bundle();
+        triggerContentEvent(new GetLoginFormHelper(), bundle, mCallBack);
+    }
+    
+    private void triggerInitForm(){
+        Bundle bundle = new Bundle();
+        triggerContentEvent(new GetInitFormHelper(), bundle, mCallBack);
+    }
+    
+    /**
+     * CALLBACK
+     * @author sergiopereira
+     */
+    IResponseCallback mCallBack = new IResponseCallback() {
+        
+        @Override
+        public void onRequestError(Bundle bundle) {
+            // TODO
+        }
+        
+        @Override
+        public void onRequestComplete(Bundle bundle) {
+            // TODO
+        }
+    };
 
 }

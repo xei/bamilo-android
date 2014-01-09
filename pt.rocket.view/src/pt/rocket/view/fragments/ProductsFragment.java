@@ -13,13 +13,19 @@ import pt.rocket.controllers.ProductsListAdapter;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.objects.Product;
+import pt.rocket.framework.objects.ProductRatingPage;
 import pt.rocket.framework.objects.ProductsPage;
 import pt.rocket.framework.rest.RestContract;
 import pt.rocket.framework.utils.AnalyticsGoogle;
+import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.Direction;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.framework.utils.ProductSort;
+import pt.rocket.helpers.GetProductReviewsHelper;
+import pt.rocket.helpers.GetProductsHelper;
+import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.DialogList;
+import pt.rocket.utils.JumiaApplication;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.TrackerDelegator;
@@ -451,13 +457,26 @@ public class ProductsFragment extends BaseFragment implements
             }
 
             mBeginRequestMillis = System.currentTimeMillis();
-            EventManager.getSingleton().triggerRequestEvent(
-                    new GetProductsEvent(productsURL, searchQuery, pageNumber, MAX_PAGE_ITEMS,
-                            sort, dir, md5Hash));
+            
+            /**
+             * TRIGGERS
+             * @author sergiopereira
+             */
+            Bundle bundle = new Bundle();
+            bundle.putString(GetProductsHelper.PRODUCT_URL, productsURL);
+            bundle.putString(GetProductsHelper.SEARCH_QUERY, searchQuery);
+            bundle.putInt(GetProductsHelper.PAGE_NUMBER, pageNumber);
+            bundle.putInt(GetProductsHelper.TOTAL_COUNT, MAX_PAGE_ITEMS);
+            bundle.putSerializable(GetProductsHelper.SORT, sort);
+            bundle.putSerializable(GetProductsHelper.DIRECTION, dir);
+            JumiaApplication.INSTANCE.sendRequest(new GetProductsHelper(), bundle, mCallBack);
+            //EventManager.getSingleton().triggerRequestEvent(new GetProductsEvent(productsURL, searchQuery, pageNumber, MAX_PAGE_ITEMS, sort, dir, md5Hash));
+            
         } else {
             hideProductsLoading();
         }
     }
+    
 
     private void setSort(int position) {
         mSortPosition = position;
@@ -704,4 +723,68 @@ public class ProductsFragment extends BaseFragment implements
     public void onScrollStateChanged(AbsListView view, int scrollState) {
         // noop
     }
+    
+    
+    
+    
+    /**
+     * CALLBACK
+     * @author sergiopereira
+     */
+    IResponseCallback mCallBack = new IResponseCallback() {
+        
+        @Override
+        public void onRequestError(Bundle bundle) {
+            // TODO
+        }
+        
+        @Override
+        public void onRequestComplete(Bundle bundle) {
+            Log.d(TAG, "ON SUCCESS EVENT");
+            // sortButton.setOnClickListener(this);
+            // Get Products Event
+            ProductsPage productsPage = (ProductsPage) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            Log.d(TAG, "onSuccessEvent: products on page = " + productsPage.getProducts().size() + " total products = " + productsPage.getTotalProducts());
+            if (productsPage != null && productsPage.getTotalProducts() > 0) {
+                totalProducts = productsPage.getTotalProducts();
+            }
+
+//            String location = event.metaData.getString(IMetaData.LOCATION);
+//            Log.d(TAG, "Location = " + location);
+//            checkRedirectFromSearch(location);
+
+            AnalyticsGoogle.get().trackLoadTiming(R.string.gproductlist, mBeginRequestMillis);
+
+            if (searchQuery != null && !TextUtils.isEmpty(searchQuery)) {
+                ((BaseActivity) getActivity()).setTitle(searchQuery + " (" + productsPage.getTotalProducts() + ")");
+                TrackerDelegator.trackSearchMade(getActivity().getApplicationContext(), searchQuery,
+                        productsPage.getTotalProducts());
+            } else {
+                TrackerDelegator.trackCategoryView(getActivity().getApplicationContext(), title,
+                        pageNumber);
+            }
+
+            productsAdapter.appendProducts(productsPage.getProducts());
+
+            showProductsContent();
+
+            Log.i(TAG, "code1 " + productsPage.getProducts().size() + " pageNumber is : "+pageNumber);
+            pageNumber = productsPage.getProducts().size() >= productsPage.getTotalProducts() ? NO_MORE_PAGES : pageNumber + 1;
+
+            if (totalProducts < ((pageNumber - 1) * MAX_PAGE_ITEMS)) {
+                pageNumber = NO_MORE_PAGES;
+            }
+            isLoadingMore = false;
+            if (productsPage.getProducts().size() >= productsPage.getTotalProducts()) {
+                isLoadingMore = true;
+            }
+            
+            AnalyticsGoogle.get().trackSearch(searchQuery, productsPage.getTotalProducts());
+
+            // Debug.MemoryInfo memoryInfo = new Debug.MemoryInfo();
+            // Debug.getMemoryInfo(memoryInfo);
+
+        }
+    };
+    
  }

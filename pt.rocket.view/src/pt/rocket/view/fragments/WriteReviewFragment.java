@@ -15,12 +15,21 @@ import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.objects.ProductReviewCommentCreated;
 import pt.rocket.framework.service.ServiceManager;
 import pt.rocket.framework.service.services.ProductService;
+import pt.rocket.framework.utils.AnalyticsGoogle;
+import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.helpers.GetAutoLoginHelper;
+import pt.rocket.helpers.GetCategoriesHelper;
+import pt.rocket.helpers.GetCustomerHelper;
+import pt.rocket.helpers.GetRatingsHelper;
+import pt.rocket.helpers.GetWriteReviewHelper;
+import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.view.BaseActivity;
+import pt.rocket.view.MainFragmentActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.Context;
@@ -118,9 +127,18 @@ public class WriteReviewFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
         completeProduct = ServiceManager.SERVICES.get(ProductHelper.class).getCurrentProduct();
-        EventManager.getSingleton().triggerRequestEvent(LogInEvent.TRY_AUTO_LOGIN);
-        triggerContentEvent(EventType.GET_CUSTOMER);
+        
+        /**
+         * TRIGGERS
+         * @author sergiopereira
+         */
+        triggerAutoLogin();
+        triggerCustomer();
+        //EventManager.getSingleton().triggerRequestEvent(LogInEvent.TRY_AUTO_LOGIN);
+        //triggerContentEvent(EventType.GET_CUSTOMER);
     }
+
+
 
     /*
      * (non-Javadoc)
@@ -150,7 +168,13 @@ public class WriteReviewFragment extends BaseFragment {
     public void onStart() {
         super.onStart();
         Log.i(TAG, "ON START");
-        triggerContentEvent(EventType.GET_RATING_OPTIONS_EVENT);
+        
+        /**
+         * TRIGGERS
+         * @author sergiopereira
+         */
+        triggerRatingOptions();
+        //triggerContentEvent(EventType.GET_RATING_OPTIONS_EVENT);
     }
 
     /*
@@ -306,12 +330,22 @@ public class WriteReviewFragment extends BaseFragment {
         productReviewCreated.setRating(ratings);
         if (customerCred != null) {
             Log.i("SENDING CUSTOMER ID", " HERE " + customerCred.getId());
-            triggerContentEvent(new ReviewProductEvent(completeProduct.getSku(),
-                    customerCred.getId(), productReviewCreated));
+
+            /**
+             * TRIGGERS
+             * @author sergiopereira
+             */
+            triggerWriteReview(completeProduct.getSku(), customerCred.getId(), productReviewCreated);
+            //triggerContentEvent(new ReviewProductEvent(completeProduct.getSku(), customerCred.getId(), productReviewCreated));
         } else {
             Log.i("NOT SENDING CUSTOMER ID", " HERE ");
-            triggerContentEvent(new ReviewProductEvent(completeProduct.getSku(),
-                    productReviewCreated));
+            
+            /**
+             * TRIGGERS
+             * @author sergiopereira
+             */
+            triggerWriteReview(completeProduct.getSku(), productReviewCreated);
+            //triggerContentEvent(new ReviewProductEvent(completeProduct.getSku(), productReviewCreated));
         }
         
         
@@ -406,4 +440,50 @@ public class WriteReviewFragment extends BaseFragment {
         
     }
 
+    
+    /**
+     * TRIGGERS
+     * @author sergiopereira
+     */
+    private void triggerAutoLogin() {
+        Bundle bundle = new Bundle();
+        triggerContentEvent(new GetAutoLoginHelper(), bundle, mCallBack);
+    }
+    
+    private void triggerCustomer(){
+        Bundle bundle = new Bundle();
+        triggerContentEvent(new GetCustomerHelper(), bundle, mCallBack);
+    }
+    
+    private void triggerRatingOptions(){
+        Bundle bundle = new Bundle();
+        triggerContentEvent(new GetRatingsHelper(), bundle, mCallBack);
+    }
+    
+    private void triggerWriteReview(String string, int i, ProductReviewCommentCreated productReviewCreated2){
+        Bundle bundle = new Bundle();
+        triggerContentEvent(new GetWriteReviewHelper(), bundle, mCallBack);
+    }
+    
+    private void triggerWriteReview(String sku, ProductReviewCommentCreated productReviewCreated2) {
+        Bundle bundle = new Bundle();
+        triggerContentEvent(new GetWriteReviewHelper(), bundle, mCallBack);
+    }
+    
+    /**
+     * CALLBACK
+     * @author sergiopereira
+     */
+    IResponseCallback mCallBack = new IResponseCallback() {
+        
+        @Override
+        public void onRequestError(Bundle bundle) {
+            // TODO
+        }
+        
+        @Override
+        public void onRequestComplete(Bundle bundle) {
+         // TODO
+        }
+    };
 }

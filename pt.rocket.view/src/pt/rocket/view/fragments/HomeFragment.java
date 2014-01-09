@@ -29,7 +29,13 @@ import pt.rocket.framework.objects.ProductTeaserGroup;
 import pt.rocket.framework.objects.Promotion;
 import pt.rocket.framework.objects.TeaserSpecification;
 import pt.rocket.framework.utils.AnalyticsGoogle;
+import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.MixpanelTracker;
+import pt.rocket.helpers.GetCallToOrderHelper;
+import pt.rocket.helpers.GetCategoriesHelper;
+import pt.rocket.helpers.GetPromotionsHelper;
+import pt.rocket.helpers.GetTeasersHelper;
+import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.CheckVersion;
 import pt.rocket.utils.HockeyStartup;
 import pt.rocket.utils.JumiaViewPager;
@@ -39,6 +45,7 @@ import pt.rocket.utils.OnActivityFragmentInteraction;
 import pt.rocket.utils.dialogfragments.DialogPromotionFragment;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.ChangeCountryFragmentActivity;
+import pt.rocket.view.MainFragmentActivity;
 import pt.rocket.view.R;
 import uk.co.senab.photoview.PhotoViewAttacher.OnMatrixChangedListener;
 import android.app.Activity;
@@ -171,14 +178,29 @@ public class HomeFragment extends BaseFragment {
         SharedPreferences sP = getActivity().getSharedPreferences(
                 ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         if (sP.getBoolean(ConstantsSharedPrefs.KEY_SHOW_PROMOTIONS, true)) {
-            triggerContentEvent(new RequestEvent(EventType.GET_PROMOTIONS));
+            
+            /**
+             * TRIGGERS
+             * @author sergiopereira
+             */
+            triggerPromotions();
+            //triggerContentEvent(new RequestEvent(EventType.GET_PROMOTIONS));
+            
         }
 
         if (requestResponse == null) {
             ((BaseActivity) getActivity()).setProcessShow(false);
-//            triggerContentEvent(new RequestEvent(EventType.GET_NAVIGATION_LIST_COMPONENTS_EVENT));
-            triggerContentEvent(new RequestEvent(EventType.GET_TEASERS_EVENT));
-            triggerContentEvent(new RequestEvent(EventType.GET_CALL_TO_ORDER_PHONE));
+            //triggerContentEvent(new RequestEvent(EventType.GET_NAVIGATION_LIST_COMPONENTS_EVENT));
+
+            /**
+             * TRIGGERS
+             * @author sergiopereira
+             */
+            triggerTeasers();
+            //triggerContentEvent(new RequestEvent(EventType.GET_TEASERS_EVENT));
+            triggerCallToOrder();
+            //triggerContentEvent(new RequestEvent(EventType.GET_CALL_TO_ORDER_PHONE));
+            
         } else {
             restoreLayout();
         }
@@ -357,7 +379,13 @@ public class HomeFragment extends BaseFragment {
         } else {
             Log.i(TAG, "restoreLayout -> NULL");
             ((BaseActivity) getActivity()).setProcessShow(false);
-            triggerContentEvent(new RequestEvent(EventType.GET_TEASERS_EVENT));
+            
+            /**
+             * TRIGGERS
+             * @author sergiopereira
+             */
+            triggerTeasers();
+            //triggerContentEvent(new RequestEvent(EventType.GET_TEASERS_EVENT));
         }
     }
 
@@ -472,7 +500,14 @@ public class HomeFragment extends BaseFragment {
             setLayout(currentPosition);
         } else {
             ((BaseActivity) getActivity()).setProcessShow(false);
-            triggerContentEvent(new RequestEvent(EventType.GET_TEASERS_EVENT));
+            
+            /**
+             * TRIGGERS
+             * @author sergiopereira
+             */
+            triggerTeasers();
+            //triggerContentEvent(new RequestEvent(EventType.GET_TEASERS_EVENT));
+            
         }
         configureLayout();
     }
@@ -578,7 +613,14 @@ public class HomeFragment extends BaseFragment {
     }
 
     public void triggerContentEventFromHomeObjectFragment() {
-        triggerContentEvent(new RequestEvent(EventType.GET_TEASERS_EVENT));
+        
+        /**
+         * TRIGGERS
+         * @author sergiopereira
+         */
+        triggerTeasers();
+        //triggerContentEvent(new RequestEvent(EventType.GET_TEASERS_EVENT));
+        
     }
 
     // Instances of this class are fragments representing a single
@@ -757,4 +799,43 @@ public class HomeFragment extends BaseFragment {
   
 
     }
+    
+    
+    
+    
+    /**
+     * TRIGGERS
+     * @author sergiopereira
+     */
+    private void triggerPromotions(){
+        Bundle bundle = new Bundle();
+        triggerContentEvent(new GetPromotionsHelper(), bundle, mCallBack);
+    }
+    
+    private void triggerTeasers(){
+        Bundle bundle = new Bundle();
+        triggerContentEvent(new GetTeasersHelper(), bundle, mCallBack);
+    }
+    
+    private void triggerCallToOrder(){
+        Bundle bundle = new Bundle();
+        triggerContentEvent(new GetCallToOrderHelper(), bundle, mCallBack);
+    }
+    
+    /**
+     * CALLBACK
+     * @author sergiopereira
+     */
+    IResponseCallback mCallBack = new IResponseCallback() {
+        
+        @Override
+        public void onRequestError(Bundle bundle) {
+            // TODO
+        }
+        
+        @Override
+        public void onRequestComplete(Bundle bundle) {
+            // TODO
+        }
+    };
 }

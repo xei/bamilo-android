@@ -19,10 +19,15 @@ import pt.rocket.framework.event.EventManager;
 import pt.rocket.framework.event.EventType;
 import pt.rocket.framework.event.RequestEvent;
 import pt.rocket.framework.event.ResponseResultEvent;
+import pt.rocket.framework.objects.ProductRatingPage;
 import pt.rocket.framework.objects.ShoppingCart;
 import pt.rocket.framework.service.ServiceManager;
 import pt.rocket.framework.service.services.CustomerAccountService;
+import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.helpers.GetCategoriesHelper;
+import pt.rocket.helpers.NavigationListHelper;
+import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
@@ -151,7 +156,14 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
             fillNavigationContainer(navigationListComponents);
             updateCart();
         } else {
-            triggerContentEvent(new RequestEvent(EventType.GET_NAVIGATION_LIST_COMPONENTS_EVENT));
+            
+            /**
+             * TRIGGERS
+             * @author sergiopereira
+             */
+            trigger();
+            //triggerContentEvent(new RequestEvent(EventType.GET_NAVIGATION_LIST_COMPONENTS_EVENT));
+            
         }
     }
 
@@ -667,4 +679,31 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
         }
     }
 
+    /**
+     * TRIGGERS
+     * @author sergiopereira
+     */
+    private void trigger(){
+        Bundle bundle = new Bundle();
+        triggerContentEvent(new NavigationListHelper(), bundle, mCallBack);
+        //JumiaApplication.INSTANCE.sendRequest(new GetCategoriesHelper(), bundle, mCallBack);
+    }
+    
+    /**
+     * CALLBACK
+     * @author sergiopereira
+     */
+    IResponseCallback mCallBack = new IResponseCallback() {
+        
+        @Override
+        public void onRequestError(Bundle bundle) {
+            // TODO
+        }
+        
+        @Override
+        public void onRequestComplete(Bundle bundle) {                
+            mProductRatingPage = (ProductRatingPage) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            displayReviews();
+        }
+    };
 }

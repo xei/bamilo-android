@@ -29,7 +29,15 @@ import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.objects.Errors;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.service.services.CustomerAccountService;
+import pt.rocket.framework.utils.AnalyticsGoogle;
+import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.helpers.GetCategoriesHelper;
+import pt.rocket.helpers.GetRegisterFormHelper;
+import pt.rocket.helpers.GetRegisterHelper;
+import pt.rocket.helpers.GetStoreLoginHelper;
+import pt.rocket.helpers.GetTermsConditionsHelper;
+import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.pojo.DynamicForm;
 import pt.rocket.pojo.DynamicFormItem;
 import pt.rocket.utils.MyMenuItem;
@@ -37,6 +45,7 @@ import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.view.BaseActivity;
+import pt.rocket.view.MainFragmentActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
@@ -172,7 +181,13 @@ public class SessionRegisterFragment extends BaseFragment {
         if (formResponse != null)
             loadForm(formResponse);
         else
-            triggerContentEvent(EventType.GET_REGISTRATION_FORM_EVENT);
+            
+            /**
+             * TRIGGERS
+             * @author sergiopereira
+             */
+            triggerRegisterForm();
+            //triggerContentEvent(EventType.GET_REGISTRATION_FORM_EVENT);
         
         setAppContentLayout();
         getFormComponents();
@@ -239,15 +254,21 @@ public class SessionRegisterFragment extends BaseFragment {
         termsRequiredText = (TextView) getView().findViewById( R.id.termsRequired);
         
         if (!termsAreRequired) {
-            EventManager.getSingleton().triggerRequestEvent(new RequestEvent(EventType.GET_TERMS_EVENT));
+            
+            /**
+             * TRIGGERS
+             * @author sergiopereira
+             */
+            triggerTerms();
+            //EventManager.getSingleton().triggerRequestEvent(new RequestEvent(EventType.GET_TERMS_EVENT));
+            
         } else {
             View termsContainer = getView().findViewById( R.id.termsContainer );
             termsContainer.setVisibility( View.GONE );
         }
 
     }
-    
-    
+
     /**
      * Get Components
      */
@@ -496,7 +517,13 @@ public class SessionRegisterFragment extends BaseFragment {
     void requestRegister() {
         // Create Event Manager
         ContentValues values = serverForm.save();
-        triggerContentEvent(new RegisterAccountEvent(values));
+        
+        /**
+         * TRIGGERS
+         * @author sergiopereira
+         */
+        triggerRegister(values);
+        //triggerContentEvent(new RegisterAccountEvent(values));
     }
     
     
@@ -565,9 +592,16 @@ public class SessionRegisterFragment extends BaseFragment {
             values.put(item.getName(), value);
         }
         values.put(CustomerAccountService.INTERNAL_AUTOLOGIN_FLAG, true);
-        EventManager.getSingleton().triggerRequestEvent(new StoreEvent(EventType.STORE_LOGIN, values));
+        
+        /**
+         * TRIGGERS
+         * @author sergiopereira
+         */
+        triggerStoreLogin(values);
+        //EventManager.getSingleton().triggerRequestEvent(new StoreEvent(EventType.STORE_LOGIN, values));
     }
-    
+
+
     /**
      * 
      * @param form
@@ -662,5 +696,51 @@ public class SessionRegisterFragment extends BaseFragment {
 
         return (v.getPaint().measureText(text) > width);
     }
+    
+    /**
+     * TRIGGERS
+     * @author sergiopereira
+     * @param values 
+     */
+    private void triggerRegister(ContentValues values){
+        Bundle bundle = new Bundle();
+        //bundle.putString(GetCategoriesHelper.CATEGORY_URL, categoryUrl);
+        triggerContentEvent(new GetRegisterHelper(), bundle, mCallBack);
+    }
+    
+    private void triggerRegisterForm(){
+        Bundle bundle = new Bundle();
+        //bundle.putString(GetCategoriesHelper.CATEGORY_URL, categoryUrl);
+        triggerContentEvent(new GetRegisterFormHelper(), bundle, mCallBack);
+    }    
+    
+    private void triggerTerms() {
+        Bundle bundle = new Bundle();
+        //bundle.putString(GetCategoriesHelper.CATEGORY_URL, categoryUrl);
+        triggerContentEvent(new GetTermsConditionsHelper(), bundle, mCallBack);
+    }
+    
+    
+    private void triggerStoreLogin(ContentValues values) {
+        Bundle bundle = new Bundle();
+        triggerContentEvent(new GetStoreLoginHelper(), bundle, mCallBack);
+    }
+    
+    /**
+     * CALLBACK
+     * @author sergiopereira
+     */
+    IResponseCallback mCallBack = new IResponseCallback() {
+        
+        @Override
+        public void onRequestError(Bundle bundle) {
+            // TODO
+        }
+        
+        @Override
+        public void onRequestComplete(Bundle bundle) {
+         // TODO
+        }
+    };
 
 }

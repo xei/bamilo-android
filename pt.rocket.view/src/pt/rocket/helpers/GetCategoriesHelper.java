@@ -25,6 +25,8 @@ import de.akquinet.android.androlog.Log;
  */
 public class GetCategoriesHelper extends BaseHelper {
     
+    public static final String CATEGORY_URL = "category_url";
+    
     private static String TAG = GetCategoriesHelper.class.getSimpleName();
     ArrayList<Category> categoriesList= new ArrayList<Category>();
 

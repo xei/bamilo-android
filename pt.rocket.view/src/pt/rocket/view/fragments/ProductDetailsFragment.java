@@ -26,13 +26,18 @@ import pt.rocket.framework.event.events.AddItemToShoppingCartEvent;
 import pt.rocket.framework.event.events.GetProductEvent;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.Errors;
+import pt.rocket.framework.objects.ProductRatingPage;
 import pt.rocket.framework.objects.ProductSimple;
 import pt.rocket.framework.objects.ShoppingCartItem;
 import pt.rocket.framework.objects.Variation;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.AnalyticsGoogle;
+import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CurrencyFormatter;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.helpers.GetCategoriesHelper;
+import pt.rocket.helpers.GetProductHelper;
+import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.HorizontalListView;
 import pt.rocket.utils.JumiaApplication;
 import pt.rocket.utils.MyMenuItem;
@@ -412,7 +417,14 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
          */
         if(mCompleteProductUrl != null) {
             mBeginRequestMillis = System.currentTimeMillis();
-            triggerContentEvent(new GetProductEvent(mCompleteProductUrl));
+            
+            /**
+             * TRIGGERS
+             * @author sergiopereira
+             */
+            triggerProduct(mCompleteProductUrl);
+            //triggerContentEvent(new GetProductEvent(mCompleteProductUrl));
+            
         } else {
             if(getBaseActivity() != null){
                 Toast.makeText(getActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_SHORT).show();
@@ -818,6 +830,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
                 mCompleteProduct.getSpecialPrice(), mCompleteProduct.getPrice(), 1);
 
         ((BaseActivity) getActivity()).showProgress();
+        
         EventManager.getSingleton().triggerRequestEvent(new AddItemToShoppingCartEvent(item));
 
         AnalyticsGoogle.get().trackAddToCart(sku, price);
@@ -1151,5 +1164,43 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
     }
     
     
+    /**
+     * TRIGGERS
+     * @author sergiopereira
+     */
+    private void triggerProduct(String mCompleteProductUrl){
+        Bundle bundle = new Bundle();
+        bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
+        triggerContentEvent(new GetProductHelper(), bundle, mCallBack);
+        //JumiaApplication.INSTANCE.sendRequest(new GetCategoriesHelper(), bundle, mCallBack);
+    }
+    
+    /**
+     * CALLBACK
+     * @author sergiopereira
+     */
+    IResponseCallback mCallBack = new IResponseCallback() {
+        
+        @Override
+        public void onRequestError(Bundle bundle) {
+            // TODO
+        }
+        
+        @Override
+        public void onRequestComplete(Bundle bundle) {
+//            Log.d(TAG, "ON SUCCESS EVENT: " + event.getType());
+//            switch (event.getType()) {
+//            case ADD_ITEM_TO_SHOPPING_CART_EVENT:
+//                mAddToCartButton.setEnabled(true);
+//                executeAddToShoppingCartCompleted();
+//                break;
+//            case GET_PRODUCT_EVENT:
+                AnalyticsGoogle.get().trackLoadTiming(R.string.gproductdetail, mBeginRequestMillis);
+                displayProduct((CompleteProduct) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY));
+//                break;
+//            }
+            
+        }
+    };
 
 }

@@ -17,11 +17,18 @@ import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.event.events.ChangePasswordEvent;
 import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.rest.RestConstants;
+import pt.rocket.framework.utils.AnalyticsGoogle;
+import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.helpers.GetCategoriesHelper;
+import pt.rocket.helpers.GetChangePasswordHelper;
+import pt.rocket.helpers.GetCustomerHelper;
+import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.OnFragmentActivityInteraction;
 import pt.rocket.view.BaseActivity;
+import pt.rocket.view.MainFragmentActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
@@ -121,7 +128,13 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
     }
 
     private void init() {
-        triggerContentEvent(EventType.GET_CUSTOMER);
+        
+        /**
+         * TRIGGERS
+         * @author sergiopereira
+         */
+        triggerCustomer();
+        //triggerContentEvent(EventType.GET_CUSTOMER);
     }
 
     /*
@@ -223,12 +236,19 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
                 newPassword2);
         values.put("Alice_Module_Customer_Model_PasswordForm[email]", emailText.getText()
                 .toString());
-        triggerContentEvent(new ChangePasswordEvent(values));
+        
+        /**
+         * TRIGGERS
+         * @author sergiopereira
+         */
+        triggerChangePass(values);
+        //triggerContentEvent(new ChangePasswordEvent(values));
+        
         displayErrorHint(null);
         
 //        mCallbackMyAccountUserDataFragment.sendValuesToActivity(0, values);
     }
-    
+
     private void displayErrorHint( String hint ) {
         if ( hint != null) {
             passwordErrorHint.setText(hint);
@@ -318,4 +338,37 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
     private void finish(){
         getActivity().onBackPressed();
     }
+    
+    
+    /**
+     * TRIGGERS
+     * @author sergiopereira
+     */
+    private void triggerCustomer(){
+        Bundle bundle = new Bundle();
+        triggerContentEvent(new GetCustomerHelper(), bundle, mCallBack);
+    }
+    
+    private void triggerChangePass(ContentValues values) {
+        // TODO Auto-generated method stub
+        Bundle bundle = new Bundle();
+        triggerContentEvent(new GetChangePasswordHelper(), bundle, mCallBack);
+    }
+    
+    /**
+     * CALLBACK
+     * @author sergiopereira
+     */
+    IResponseCallback mCallBack = new IResponseCallback() {
+        
+        @Override
+        public void onRequestError(Bundle bundle) {
+            // TODO
+        }
+        
+        @Override
+        public void onRequestComplete(Bundle bundle) {
+            // TODO
+        }
+    };
 }

@@ -16,13 +16,19 @@ import pt.rocket.framework.event.events.ForgetPasswordEvent;
 import pt.rocket.framework.forms.Form;
 import pt.rocket.framework.objects.Errors;
 import pt.rocket.framework.rest.RestConstants;
+import pt.rocket.framework.utils.AnalyticsGoogle;
+import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.helpers.GetCategoriesHelper;
+import pt.rocket.helpers.GetForgotPasswordFormHelper;
+import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.pojo.DynamicForm;
 import pt.rocket.pojo.DynamicFormItem;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.view.BaseActivity;
+import pt.rocket.view.MainFragmentActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
@@ -135,7 +141,12 @@ public class SessionForgotPasswordFragment extends BaseFragment {
         if (formResponse != null)
             displayForm(formResponse);
         else
-            triggerContentEvent(EventType.GET_FORGET_PASSWORD_FORM_EVENT);
+            /**
+             * TRIGGERS
+             * @author sergiopereira
+             */
+            triggerForgotForm();
+            //triggerContentEvent(EventType.GET_FORGET_PASSWORD_FORM_EVENT);
         
         setAppContentLayout();
     }
@@ -212,7 +223,13 @@ public class SessionForgotPasswordFragment extends BaseFragment {
      */
     private void requestPassword() {
         ContentValues values = dynamicForm.save();
-        triggerContentEvent(new ForgetPasswordEvent(values));
+        
+        /**
+         * TRIGGERS
+         * @author sergiopereira
+         */
+        triggerForgot(values);
+        //triggerContentEvent(new ForgetPasswordEvent(values));
     }
 
     
@@ -315,4 +332,38 @@ public class SessionForgotPasswordFragment extends BaseFragment {
         }
         return false;  
     }
+    
+    
+    /**
+     * TRIGGERS
+     * @author sergiopereira
+     */
+    private void triggerForgotForm(){
+        Bundle bundle = new Bundle();
+        triggerContentEvent(new GetForgotPasswordFormHelper(), bundle, mCallBack);
+    }
+    
+    private void triggerForgot(ContentValues values){
+        Bundle bundle = new Bundle();
+        //bundle.putString(GetCategoriesHelper.CATEGORY_URL, categoryUrl);
+        triggerContentEvent(new GetCategoriesHelper(), bundle, mCallBack);
+    }
+    
+    /**
+     * CALLBACK
+     * @author sergiopereira
+     */
+    IResponseCallback mCallBack = new IResponseCallback() {
+        
+        @Override
+        public void onRequestError(Bundle bundle) {
+            // TODO
+        }
+        
+        @Override
+        public void onRequestComplete(Bundle bundle) {
+            // TODO
+        }
+    };
+    
 }

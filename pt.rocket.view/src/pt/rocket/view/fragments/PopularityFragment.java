@@ -5,6 +5,7 @@ package pt.rocket.view.fragments;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.List;
 
 import org.holoeverywhere.widget.TextView;
 
@@ -21,10 +22,18 @@ import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.ProductRatingPage;
 import pt.rocket.framework.objects.ProductReviewComment;
 import pt.rocket.framework.objects.RatingOption;
+import pt.rocket.framework.objects.SearchSuggestion;
 import pt.rocket.framework.service.ServiceManager;
 import pt.rocket.framework.service.services.ProductService;
+import pt.rocket.framework.utils.AnalyticsGoogle;
+import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.LoadingBarView;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.helpers.GetCategoriesHelper;
+import pt.rocket.helpers.GetProductReviewsHelper;
+import pt.rocket.helpers.GetSearchSuggestionHelper;
+import pt.rocket.interfaces.IResponseCallback;
+import pt.rocket.utils.JumiaApplication;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.TrackerDelegator;
@@ -158,7 +167,12 @@ public class PopularityFragment extends BaseFragment {
             return;
         }
         
-        triggerContentEvent(new GetProductReviewsEvent(selectedProduct.getUrl(), pageNumber));
+        /**
+         * TRIGGERS
+         * @author sergiopereira
+         */
+        triggerReviews(selectedProduct.getUrl(), pageNumber);
+        //triggerContentEvent(new GetProductReviewsEvent(selectedProduct.getUrl(), pageNumber));
         
         setAppContentLayout();
         setContextualLoading();
@@ -169,6 +183,8 @@ public class PopularityFragment extends BaseFragment {
             startWriteReviewFragment();
         }
     }
+
+
 
     /*
      * (non-Javadoc)
@@ -350,8 +366,13 @@ public class PopularityFragment extends BaseFragment {
         if (selectedProduct.getUrl() != null) {
             Log.d(TAG, "getMoreRevies: pageNumber = " + pageNumber);
             pageNumber++;
-            EventManager.getSingleton().triggerRequestEvent(
-                    new GetProductReviewsEvent(selectedProduct.getUrl(), pageNumber));
+            
+            /**
+             * TRIGGERS
+             * @author sergiopereira
+             */
+            triggerReviews(selectedProduct.getUrl(), pageNumber);            
+            //EventManager.getSingleton().triggerRequestEvent(new GetProductReviewsEvent(selectedProduct.getUrl(), pageNumber));
         }
 
     }
@@ -484,5 +505,34 @@ public class PopularityFragment extends BaseFragment {
             hideContextualLoading();
         }
     }
+    
+    /**
+     * TRIGGERS
+     * @author sergiopereira
+     */
+    private void triggerReviews(String url, int pageNumber) {
+        Bundle bundle = new Bundle();
+        bundle.putString(GetProductReviewsHelper.PRODUCT_URL, url);
+        bundle.putInt(GetProductReviewsHelper.PAGE_NUMBER, pageNumber);
+        triggerContentEvent(new GetProductReviewsHelper(), bundle, mCallBack);
+    }
+    
+    /**
+     * CALLBACK
+     * @author sergiopereira
+     */
+    IResponseCallback mCallBack = new IResponseCallback() {
+        
+        @Override
+        public void onRequestError(Bundle bundle) {
+            // TODO
+        }
+        
+        @Override
+        public void onRequestComplete(Bundle bundle) {                
+            mProductRatingPage = (ProductRatingPage) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            displayReviews();
+        }
+    };
 
 }

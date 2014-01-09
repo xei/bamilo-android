@@ -14,9 +14,15 @@ import pt.rocket.framework.event.ResponseEvent;
 import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.event.events.GetCategoriesEvent;
 import pt.rocket.framework.objects.Category;
+import pt.rocket.framework.objects.ProductRatingPage;
 import pt.rocket.framework.utils.AnalyticsGoogle;
+import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.helpers.GetCategoriesHelper;
+import pt.rocket.helpers.GetProductReviewsHelper;
+import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.FragmentCommunicator;
+import pt.rocket.utils.JumiaApplication;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.view.BaseActivity;
@@ -199,12 +205,21 @@ public class CategoriesContainerFragment extends BaseFragment {
             }
         } else if(getView() != null) {
             mBeginRequestMillis = System.currentTimeMillis();
-            triggerContentEvent(new GetCategoriesEvent(categoryUrl));
+            
+            /**
+             * TRIGGERS
+             * @author sergiopereira
+             */
+            trigger(categoryUrl);
+            //triggerContentEvent(new GetCategoriesEvent(categoryUrl));
+            
         } else {
             ((BaseActivity) getActivity()).onBackPressed();
         }
             
     }
+    
+ 
 
     /*
      * (non-Javadoc)
@@ -480,7 +495,14 @@ public class CategoriesContainerFragment extends BaseFragment {
         
         if(bundle.containsKey(GET_CATEGORIES)){
             mBeginRequestMillis = System.currentTimeMillis();
-            triggerContentEvent(new GetCategoriesEvent(categoryUrl));
+            
+            /**
+             * TRIGGERS
+             * @author sergiopereira
+             */
+            trigger(categoryUrl);
+            //triggerContentEvent(new GetCategoriesEvent(categoryUrl));
+            
             return;
         }
         
@@ -494,5 +516,48 @@ public class CategoriesContainerFragment extends BaseFragment {
             updateBoth(bundle);
         }
     }
+    
+    
+    /**
+     * TRIGGERS
+     * @author sergiopereira
+     */
+    private void trigger(String categoryUrl){
+        Bundle bundle = new Bundle();
+        bundle.putString(GetCategoriesHelper.CATEGORY_URL, categoryUrl);
+        triggerContentEvent(new GetCategoriesHelper(), bundle, mCallBack);
+        //JumiaApplication.INSTANCE.sendRequest(new GetCategoriesHelper(), bundle, mCallBack);
+    }
+    
+    /**
+     * CALLBACK
+     * @author sergiopereira
+     */
+    IResponseCallback mCallBack = new IResponseCallback() {
+        
+        @Override
+        public void onRequestError(Bundle bundle) {
+            // TODO
+        }
+        
+        @Override
+        public void onRequestComplete(Bundle bundle) {
+         // Validate if fragment is on the screen
+            if(isVisible()) {
+                AnalyticsGoogle.get().trackLoadTiming(R.string.gcategories, mBeginRequestMillis);
+                MainFragmentActivity.currentCategories = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
+                
+                if(MainFragmentActivity.currentCategories != null && getView() != null){
+                    Log.d(TAG, "handleEvent: categories size = " + MainFragmentActivity.currentCategories.size());
+                    if(((BaseActivity) getActivity()).isTabletInLandscape()){
+                        createFragmentsForLandscape();
+                    } else {
+                        createFragment();
+                    }
+                }
+            }
+            
+        }
+    };
     
 }
