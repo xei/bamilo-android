@@ -38,6 +38,10 @@ def initvars
   @ok="OK"
   @createaccbutton_id="middle_login_link_register"
   @registerbutton_id="register_button_submit"
+  @male="male"
+  @birthday="birthday"
+  @termsandconditionscheck="Terms and Conditions"
+  @termsandconditions="Terms and Conditions"
 end
 
 
@@ -103,6 +107,7 @@ def initvars_IC
   @addtocart="Ajouter au panier"
   
   @yes="Oui"
+  @termsandconditions="Termes et conditions"
   
 end
 
@@ -138,6 +143,7 @@ def initvars_MA
   @addtocart="Ajouter au panier"
   
   @yes="Oui"
+  @termsandconditions="Termes et conditions"
 end
 
 def initvars_NG

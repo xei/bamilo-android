@@ -1,14 +1,14 @@
-@IC @register_IC
+@NG @register_EG
 Feature: Registration feature
 
   Background:
-    Given I verify app for IC venture
-    And I choose the Ivory Coast venture
+    Given I verify app for EG venture
+    And I choose the Egypt venture
     Then I open the navigation menu
     And I choose the Sign In option
       
     
-  @register_test_IC
+  @register_test_EG
   Scenario: I register with correct form
 	#wrong_empty_register
   	Given I press the create account button
