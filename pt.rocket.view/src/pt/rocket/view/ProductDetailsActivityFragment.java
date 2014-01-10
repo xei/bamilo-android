@@ -25,8 +25,10 @@ import pt.rocket.framework.utils.CurrencyFormatter;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.GetProductHelper;
+import pt.rocket.helpers.GetShoppingCartAddItemHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.FragmentCommunicator;
+import pt.rocket.utils.JumiaApplication;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.ScrollViewWithHorizontal;
@@ -40,6 +42,7 @@ import pt.rocket.view.fragments.ProductDetailsDescriptionFragment;
 import pt.rocket.view.fragments.ProductImageGalleryFragment;
 import pt.rocket.view.fragments.ProductSpecificationsFragment;
 import pt.rocket.view.fragments.ProductVariationsFragment;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -756,13 +759,31 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
         ((BaseActivity) getActivity()).showProgress();
         
         
-        EventManager.getSingleton().triggerRequestEvent(new AddItemToShoppingCartEvent(item));
+        triggerAddItemToCart(item);
 
         AnalyticsGoogle.get().trackAddToCart(sku, price);
         TrackerDelegator.trackProductAddedToCart(getActivity(), mCompleteProduct, simple,
                 (double) price, getString(R.string.mixprop_itemlocationdetails));
 
     }
+    
+    private void triggerAddItemToCart(ShoppingCartItem item){
+//      ShoppingCartItem item = event.value;
+
+      ContentValues values = new ContentValues();
+
+      // add the simple data to the registry
+      if (item.getSimpleData() != null) {
+          JumiaApplication.INSTANCE.getItemSimpleDataRegistry().put(item.getConfigSKU(), item.getSimpleData());
+      }
+
+      values.put("p", item.getConfigSKU());
+      values.put("sku", item.getConfigSimpleSKU());
+      values.put("quantity", "" + item.getQuantity());
+      Bundle bundle = new Bundle();
+      bundle.putString(GetShoppingCartAddItemHelper.ADD_ITEM, mCompleteProductUrl);
+      triggerContentEvent(new GetShoppingCartAddItemHelper(), bundle, responseCallback);
+  }
 
     private void showChooseReminder() {
         ((BaseActivity) getActivity()).showWarningVariation(true);
@@ -1046,7 +1067,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
         case ADD_ITEM_TO_SHOPPING_CART_EVENT:
             ((BaseActivity) getActivity()).dismissProgress();
             if (errorCode == ErrorCode.REQUEST_ERROR) {
-                List<String> errorMessages = (List<String>) bundle
+                HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle
                         .getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
                 
                 if (errorMessages != null) {
@@ -1054,12 +1075,12 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
                     int msgRes = -1;
 
                     String message = null;
-                    if (errorMessages.contains(Errors.CODE_ORDER_PRODUCT_SOLD_OUT)) {
+                    if (errorMessages.get(RestConstants.JSON_ERROR_TAG).contains(Errors.CODE_ORDER_PRODUCT_SOLD_OUT)) {
                         msgRes = R.string.product_outof_stock;
-                    } else if (errorMessages.contains(Errors.CODE_PRODUCT_ADD_OVERQUANTITY)) {
+                    } else if (errorMessages.get(RestConstants.JSON_ERROR_TAG).contains(Errors.CODE_PRODUCT_ADD_OVERQUANTITY)) {
                         msgRes = R.string.error_add_to_shopping_cart_quantity;
-                    } else if (errorMessages.contains(Errors.CODE_ORDER_PRODUCT_ERROR_ADDING)) {
-                        List<String> validateMessages = event.errorMessages
+                    } else if (errorMessages.get(RestConstants.JSON_ERROR_TAG).contains(Errors.CODE_ORDER_PRODUCT_ERROR_ADDING)) {
+                        List<String> validateMessages = errorMessages
                                 .get(RestConstants.JSON_VALIDATE_TAG);
                         if (validateMessages != null && validateMessages.size() > 0) {
                             message = validateMessages.get(0);
@@ -1104,6 +1125,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
                 return true;
             }
         }
+        return false;
     }
 
     private class TipsPagerAdapter extends PagerAdapter {

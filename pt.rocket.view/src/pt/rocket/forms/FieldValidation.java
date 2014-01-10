@@ -17,13 +17,15 @@ import org.json.JSONObject;
 
 import pt.rocket.framework.objects.IJSONSerializable;
 import pt.rocket.framework.rest.RestConstants;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 /**
  * Class that represents the form fiel validation parameters.
  * @author GuilhermeSilva
  *
  */
-public class FieldValidation implements IJSONSerializable {
+public class FieldValidation implements IJSONSerializable, Parcelable {
 //	private static final String JSON_REQUIRED_TAG = "required";
 //	private static final String JSON_MIN_TAG = "min";
 //	private static final String JSON_MAX_TAG = "max";
@@ -102,4 +104,51 @@ public class FieldValidation implements IJSONSerializable {
 		}
 		return jsonObject;
 	}
+
+
+    @Override
+    public int describeContents() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(MIN_CHARACTERS);
+        dest.writeInt(MAX_CHARACTERS);
+        dest.writeString(DEFAULT_REGEX);
+        dest.writeBooleanArray(new boolean[] {required});
+        dest.writeInt(min);
+        dest.writeInt(max);
+        dest.writeString(regex);
+    }
+    
+    /**
+     * Parcel constructor
+     * @param in
+     */
+    private FieldValidation(Parcel in) {
+        
+        MIN_CHARACTERS = in.readInt();
+        MAX_CHARACTERS = in.readInt();
+        DEFAULT_REGEX = in.readString();
+        in.readBooleanArray(new boolean[] {required});
+        min = in.readInt();
+        max = in.readInt();
+        regex = in.readString();
+    }
+    
+    /**
+     * Create parcelable 
+     */
+    public static final Parcelable.Creator<FieldValidation> CREATOR = new Parcelable.Creator<FieldValidation>() {
+        public FieldValidation createFromParcel(Parcel in) {
+            return new FieldValidation(in);
+        }
+
+        public FieldValidation[] newArray(int size) {
+            return new FieldValidation[size];
+        }
+    };
 }

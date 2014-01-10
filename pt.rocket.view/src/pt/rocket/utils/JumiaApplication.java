@@ -2,6 +2,7 @@ package pt.rocket.utils;
 
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
@@ -13,9 +14,11 @@ import pt.rocket.app.ApplicationComponent;
 import pt.rocket.app.DarwinComponent;
 import pt.rocket.app.ImageLoaderComponent;
 import pt.rocket.app.UrbanAirshipComponent;
+import pt.rocket.forms.FormData;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.interfaces.IMetaData;
 import pt.rocket.framework.objects.CompleteProduct;
+import pt.rocket.framework.objects.ShoppingCart;
 import pt.rocket.framework.objects.VersionInfo;
 import pt.rocket.framework.service.IRemoteService;
 import pt.rocket.framework.service.IRemoteServiceCallback;
@@ -63,7 +66,19 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     private CompleteProduct currentProduct = null;
     private VersionInfo mVersionInfo;
     
-
+    /**
+     * Cart
+     */
+    private Map<String, Map<String, String>> itemSimpleDataRegistry =
+            new HashMap<String, Map<String,String>>();
+    private ShoppingCart cart;
+    
+    
+    /**
+     * Forms
+     */
+    private HashMap<String, FormData> formDataRegistry = new HashMap<String, FormData>();
+    
     public static final SingletonMap<ApplicationComponent> COMPONENTS =
             new SingletonMap<ApplicationComponent>(new UrbanAirshipComponent(),
                     new ImageLoaderComponent(), new DarwinComponent());
@@ -92,7 +107,10 @@ public class JumiaApplication extends Application implements ExceptionCallback {
         
         // Get the current shop id
         SHOP_ID = ShopPreferences.getShopId(getApplicationContext());
+        setItemSimpleDataRegistry(new HashMap<String, Map<String, String>>());
+        setCart(null);
         
+        setFormDataRegistry(new HashMap<String, FormData>());
     }
 
     public synchronized void init(boolean isReInit) {
@@ -281,6 +299,51 @@ public class JumiaApplication extends Application implements ExceptionCallback {
      */
     public void setCustomerUtils(CustomerUtils mCustomerUtils) {
         this.mCustomerUtils = mCustomerUtils;
+    }
+
+
+    /**
+     * @return the cart
+     */
+    public ShoppingCart getCart() {
+        return cart;
+    }
+
+    /**
+     * @param cart the cart to set
+     */
+    public void setCart(ShoppingCart cart) {
+        this.cart = cart;
+    }
+
+
+    /**
+     * @return the itemSimpleDataRegistry
+     */
+    public Map<String, Map<String, String>> getItemSimpleDataRegistry() {
+        return itemSimpleDataRegistry;
+    }
+
+    /**
+     * @param itemSimpleDataRegistry the itemSimpleDataRegistry to set
+     */
+    public void setItemSimpleDataRegistry(Map<String, Map<String, String>> itemSimpleDataRegistry) {
+        this.itemSimpleDataRegistry = itemSimpleDataRegistry;
+    }
+
+
+    /**
+     * @return the formDataRegistry
+     */
+    public HashMap<String, FormData> getFormDataRegistry() {
+        return formDataRegistry;
+    }
+
+    /**
+     * @param formDataRegistry the formDataRegistry to set
+     */
+    public void setFormDataRegistry(HashMap<String, FormData> formDataRegistry) {
+        this.formDataRegistry = formDataRegistry;
     }
 
 

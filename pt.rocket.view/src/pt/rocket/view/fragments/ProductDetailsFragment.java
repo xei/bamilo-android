@@ -32,6 +32,7 @@ import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.GetCategoriesHelper;
 import pt.rocket.helpers.GetProductHelper;
+import pt.rocket.helpers.GetShoppingCartAddItemHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.HorizontalListView;
 import pt.rocket.utils.JumiaApplication;
@@ -43,6 +44,7 @@ import pt.rocket.utils.dialogfragments.DialogListFragment.OnDialogListListener;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Paint;
@@ -826,7 +828,8 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
 
         ((BaseActivity) getActivity()).showProgress();
         
-        EventManager.getSingleton().triggerRequestEvent(new AddItemToShoppingCartEvent(item));
+        triggerAddItemToCart(item);
+//        EventManager.getSingleton().triggerRequestEvent(new AddItemToShoppingCartEvent(item));
 
         AnalyticsGoogle.get().trackAddToCart(sku, price);
     }
@@ -1048,19 +1051,19 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
                 act.dismissProgress();
             }
             if (errorCode == ErrorCode.REQUEST_ERROR) {
-                List<String> errorMessages = (List<String>) bundle
+                HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle
                         .getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
                 if (errorMessages != null) {
                     int titleRes = R.string.error_add_to_cart_failed;
                     int msgRes = -1;
 
                     String message = null;
-                    if (errorMessages.contains(Errors.CODE_ORDER_PRODUCT_SOLD_OUT)) {
+                    if (errorMessages.get(RestConstants.JSON_ERROR_TAG).contains(Errors.CODE_ORDER_PRODUCT_SOLD_OUT)) {
                         msgRes = R.string.product_outof_stock;
-                    } else if (errorMessages.contains(Errors.CODE_PRODUCT_ADD_OVERQUANTITY)) {
+                    } else if (errorMessages.get(RestConstants.JSON_ERROR_TAG).contains(Errors.CODE_PRODUCT_ADD_OVERQUANTITY)) {
                         msgRes = R.string.error_add_to_shopping_cart_quantity;
-                    } else if (errorMessages.contains(Errors.CODE_ORDER_PRODUCT_ERROR_ADDING)) {
-                        List<String> validateMessages = event.errorMessages
+                    } else if (errorMessages.get(RestConstants.JSON_ERROR_TAG).contains(Errors.CODE_ORDER_PRODUCT_ERROR_ADDING)) {
+                        List<String> validateMessages = errorMessages
                                 .get(RestConstants.JSON_VALIDATE_TAG);
                         if (validateMessages != null && validateMessages.size() > 0) {
                             message = validateMessages.get(0);
@@ -1160,6 +1163,24 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
         triggerContentEvent(new GetProductHelper(), bundle, mCallBack);
         //JumiaApplication.INSTANCE.sendRequest(new GetCategoriesHelper(), bundle, mCallBack);
+    }
+    
+    private void triggerAddItemToCart(ShoppingCartItem item){
+//        ShoppingCartItem item = event.value;
+
+        ContentValues values = new ContentValues();
+
+        // add the simple data to the registry
+        if (item.getSimpleData() != null) {
+            JumiaApplication.INSTANCE.getItemSimpleDataRegistry().put(item.getConfigSKU(), item.getSimpleData());
+        }
+
+        values.put("p", item.getConfigSKU());
+        values.put("sku", item.getConfigSimpleSKU());
+        values.put("quantity", "" + item.getQuantity());
+        Bundle bundle = new Bundle();
+        bundle.putString(GetShoppingCartAddItemHelper.ADD_ITEM, mCompleteProductUrl);
+        triggerContentEvent(new GetShoppingCartAddItemHelper(), bundle, mCallBack);
     }
     
     /**

@@ -19,10 +19,19 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import pt.rocket.framework.objects.Brand;
+import pt.rocket.framework.objects.BrandImage;
 import pt.rocket.framework.objects.IJSONSerializable;
 import pt.rocket.framework.rest.RestConstants;
+import pt.rocket.framework.utils.Constants;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.GetFormsDatasetListHelper;
+import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.InputType;
 import pt.rocket.utils.JumiaApplication;
 import de.akquinet.android.androlog.Log;
@@ -33,21 +42,21 @@ import de.akquinet.android.androlog.Log;
  * @author GuilhermeSilva
  * 
  */
-public class FormField implements IJSONSerializable, IFormField {
-	private final static String TAG = LogTagHelper.create(FormField.class);
-	
+public class FormField implements IJSONSerializable, IFormField, Parcelable {
+    private final static String TAG = LogTagHelper.create(FormField.class);
+
     public interface OnDataSetReceived {
         public void DataSetReceived(Map<String, String> dataSet);
     }
 
-//    private static final String JSON_TYPE_TAG = "type";
-//    private static final String JSON_KEY_TAG = "key";
-//    private static final String JSON_NAME_TAG = "name";
-//    private static final String JSON_LABEL_TAG = "label";
-//    private static final String JSON_VALIDATION_TAG = "rules";
-//    private static final String JSON_DATASET_TAG = "dataset";
-//    private static final String JSON_VALUE_TAG = "value";
-//    private static final String JSON_DATASET_SOURCE_TAG = "dataset_source";
+    // private static final String JSON_TYPE_TAG = "type";
+    // private static final String JSON_KEY_TAG = "key";
+    // private static final String JSON_NAME_TAG = "name";
+    // private static final String JSON_LABEL_TAG = "label";
+    // private static final String JSON_VALIDATION_TAG = "rules";
+    // private static final String JSON_DATASET_TAG = "dataset";
+    // private static final String JSON_VALUE_TAG = "value";
+    // private static final String JSON_DATASET_SOURCE_TAG = "dataset_source";
 
     private Form parent;
 
@@ -84,8 +93,7 @@ public class FormField implements IJSONSerializable, IFormField {
     private String regEx;
 
     /**
-     * value that is shown to the user. It's empty when it is to show the label
-     * transparent instead.
+     * value that is shown to the user. It's empty when it is to show the label transparent instead.
      */
     private String value;
 
@@ -127,7 +135,8 @@ public class FormField implements IJSONSerializable, IFormField {
      * @param regEx
      *            . Reguslar expression used to validate the form field.
      */
-    public FormField(Form parent, String name, String id, boolean obligatory, InputType inputType, int maxSize, String regEx) {
+    public FormField(Form parent, String name, String id, boolean obligatory, InputType inputType,
+            int maxSize, String regEx) {
         this.id = id;
         this.name = name;
         this.inputType = inputType;
@@ -145,9 +154,7 @@ public class FormField implements IJSONSerializable, IFormField {
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * pt.rocket.framework.objects.IJSONSerializable#initialize(org.json.JSONObject
-     * )
+     * @see pt.rocket.framework.objects.IJSONSerializable#initialize(org.json.JSONObject )
      */
     @Override
     public boolean initialize(JSONObject jsonObject) {
@@ -209,9 +216,11 @@ public class FormField implements IJSONSerializable, IFormField {
                     if (!jsonObject.isNull(RestConstants.JSON_DATASET_SOURCE_TAG)) {
                         datasetSource = jsonObject.optString(RestConstants.JSON_DATASET_SOURCE_TAG);
                         if (!datasetSource.equals("")) {
-                            
-                            JumiaApplication.INSTANCE.sendRequest(new GetFormsDatasetListHelper(), args, responseCallback)
-                            EventManager.getSingleton().triggerRequestEvent(new GetFormsDatasetListEvent(key, datasetSource), this);
+                            Bundle bundle = new Bundle();
+                            bundle.putString(GetFormsDatasetListHelper.KEY, key);
+                            bundle.putString(GetFormsDatasetListHelper.URL, datasetSource);
+                            JumiaApplication.INSTANCE.sendRequest(new GetFormsDatasetListHelper(), bundle, responseCallback);
+//                            EventManager.getSingleton().triggerRequestEvent(new GetFormsDatasetListEvent(key, datasetSource), this);
                         }
                     }
                 }
@@ -226,6 +235,20 @@ public class FormField implements IJSONSerializable, IFormField {
         return result;
     }
 
+    IResponseCallback responseCallback = new IResponseCallback() {
+        
+        @Override
+        public void onRequestError(Bundle bundle) {
+            handleErrorEvent(bundle);
+        }
+        
+        @Override
+        public void onRequestComplete(Bundle bundle) {
+            handleSuccessEvent(bundle);
+            
+        }
+    };
+    
     /*
      * (non-Javadoc)
      * 
@@ -290,145 +313,167 @@ public class FormField implements IJSONSerializable, IFormField {
         return jsonObject;
     }
 
-    /* (non-Javadoc)
-	 * @see pt.rocket.framework.forms.IFormField#getParent()
-	 */
+    /*
+     * (non-Javadoc)
+     * 
+     * @see pt.rocket.framework.forms.IFormField#getParent()
+     */
     @Override
-	public Form getParent() {
-		return parent;
-	}
+    public Form getParent() {
+        return parent;
+    }
 
-	public void setParent(Form parent) {
-		this.parent = parent;
-	}
+    public void setParent(Form parent) {
+        this.parent = parent;
+    }
 
-	/* (non-Javadoc)
-	 * @see pt.rocket.framework.forms.IFormField#getId()
-	 */
-	@Override
-	public String getId() {
-		return id;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see pt.rocket.framework.forms.IFormField#getId()
+     */
+    @Override
+    public String getId() {
+        return id;
+    }
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	/* (non-Javadoc)
-	 * @see pt.rocket.framework.forms.IFormField#getKey()
-	 */
-	@Override
-	public String getKey() {
-		return key;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see pt.rocket.framework.forms.IFormField#getKey()
+     */
+    @Override
+    public String getKey() {
+        return key;
+    }
 
-	public void setKey(String key) {
-		this.key = key;
-	}
+    public void setKey(String key) {
+        this.key = key;
+    }
 
-	/* (non-Javadoc)
-	 * @see pt.rocket.framework.forms.IFormField#getName()
-	 */
-	@Override
-	public String getName() {
-		return name;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see pt.rocket.framework.forms.IFormField#getName()
+     */
+    @Override
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	/* (non-Javadoc)
-	 * @see pt.rocket.framework.forms.IFormField#getInputType()
-	 */
-	@Override
-	public InputType getInputType() {
-		return inputType;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see pt.rocket.framework.forms.IFormField#getInputType()
+     */
+    @Override
+    public InputType getInputType() {
+        return inputType;
+    }
 
-	public void setInputType(InputType inputType) {
-		this.inputType = inputType;
-	}
+    public void setInputType(InputType inputType) {
+        this.inputType = inputType;
+    }
 
-	/* (non-Javadoc)
-	 * @see pt.rocket.framework.forms.IFormField#getLabel()
-	 */
-	@Override
-	public String getLabel() {
-		return label;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see pt.rocket.framework.forms.IFormField#getLabel()
+     */
+    @Override
+    public String getLabel() {
+        return label;
+    }
 
-	public void setLabel(String label) {
-		this.label = label;
-	}
+    public void setLabel(String label) {
+        this.label = label;
+    }
 
-	/* (non-Javadoc)
-	 * @see pt.rocket.framework.forms.IFormField#getDataSet()
-	 */
-	@Override
-	public Map<String, String> getDataSet() {
-		return dataSet;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see pt.rocket.framework.forms.IFormField#getDataSet()
+     */
+    @Override
+    public Map<String, String> getDataSet() {
+        return dataSet;
+    }
 
-	public void setDataSet(HashMap<String, String> dataSet) {
-		this.dataSet = dataSet;
-	}
+    public void setDataSet(HashMap<String, String> dataSet) {
+        this.dataSet = dataSet;
+    }
 
-	/* (non-Javadoc)
-	 * @see pt.rocket.framework.forms.IFormField#getDatasetSource()
-	 */
-	@Override
-	public String getDatasetSource() {
-		return datasetSource;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see pt.rocket.framework.forms.IFormField#getDatasetSource()
+     */
+    @Override
+    public String getDatasetSource() {
+        return datasetSource;
+    }
 
-	public void setDatasetSource(String datasetSource) {
-		this.datasetSource = datasetSource;
-	}
+    public void setDatasetSource(String datasetSource) {
+        this.datasetSource = datasetSource;
+    }
 
-	/* (non-Javadoc)
-	 * @see pt.rocket.framework.forms.IFormField#getValidation()
-	 */
-	@Override
-	public FieldValidation getValidation() {
-		return validation;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see pt.rocket.framework.forms.IFormField#getValidation()
+     */
+    @Override
+    public FieldValidation getValidation() {
+        return validation;
+    }
 
-	public void setValidation(FieldValidation validation) {
-		this.validation = validation;
-	}
+    public void setValidation(FieldValidation validation) {
+        this.validation = validation;
+    }
 
-	/* (non-Javadoc)
-	 * @see pt.rocket.framework.forms.IFormField#getRegEx()
-	 */
-	@Override
-	public String getRegEx() {
-		return regEx;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see pt.rocket.framework.forms.IFormField#getRegEx()
+     */
+    @Override
+    public String getRegEx() {
+        return regEx;
+    }
 
-	public void setRegEx(String regEx) {
-		this.regEx = regEx;
-	}
+    public void setRegEx(String regEx) {
+        this.regEx = regEx;
+    }
 
-	/* (non-Javadoc)
-	 * @see pt.rocket.framework.forms.IFormField#getValue()
-	 */
-	@Override
-	public String getValue() {
-		return value;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see pt.rocket.framework.forms.IFormField#getValue()
+     */
+    @Override
+    public String getValue() {
+        return value;
+    }
 
-	public void setValue(String value) {
-		this.value = value;
-	}
-	
-	public Map<String, IFormField> getSubFormFields() {
-		return null;
-	}
-	
-	public void setSubFormFields( Map<String, IFormField> subFormFields) {
-		// noop
-	}
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public Map<String, IFormField> getSubFormFields() {
+        return null;
+    }
+
+    public void setSubFormFields(Map<String, IFormField> subFormFields) {
+        // noop
+    }
 
     /**
      * Listener used when the data set is received.
@@ -439,48 +484,82 @@ public class FormField implements IJSONSerializable, IFormField {
         dataset_Listener = listener;
     }
 
-	@Override
-	public OnDataSetReceived getOnDataSetReceived() {
-		return dataset_Listener;
-	}
+    @Override
+    public OnDataSetReceived getOnDataSetReceived() {
+        return dataset_Listener;
+    }
 
-	/* (non-Javadoc)
-	 * @see pt.rocket.framework.event.EventListener#handleEvent(pt.rocket.framework.event.IEvent)
-	 */
-	@Override
-	public void handleEvent(ResponseEvent event) {
-		switch (event.getType()) {
+    public void handleSuccessEvent(Bundle bundle) {
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        switch (eventType) {
         case GET_FORMS_DATASET_LIST_EVENT:
-        	Log.d( TAG, "Received GET_FORMS_DATASET_LIST_EVENT");
+            Log.d(TAG, "Received GET_FORMS_DATASET_LIST_EVENT");
 
-            if (event.getSuccess()) {
-            	Log.d( TAG, "Received GET_FORMS_DATASET_LIST_EVENT  ==> SUCCESS");
+            Log.d(TAG, "Received GET_FORMS_DATASET_LIST_EVENT  ==> SUCCESS");
 
-                dataSet = ((ResponseResultEvent<Map<String,String>>)event).result;
+            dataSet = (Map<String, String>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_KEY);
 
-                if (null != dataset_Listener) {
-                    dataset_Listener.DataSetReceived(dataSet);
-                }
-            } else {
-            	Log.d( TAG, "Received GET_FORMS_DATASET_LIST_EVENT  ==> FAIL");
+            if (null != dataset_Listener) {
+                dataset_Listener.DataSetReceived(dataSet);
             }
         }
-	}
+    }
 
-	/* (non-Javadoc)
-	 * @see pt.rocket.framework.event.EventListener#removeAfterHandlingEvent()
-	 */
-	@Override
-	public boolean removeAfterHandlingEvent() {
-		return false;
-	}
+    public void handleErrorEvent(Bundle bundle) {
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        switch (eventType) {
+        case GET_FORMS_DATASET_LIST_EVENT:
+            Log.d(TAG, "Received GET_FORMS_DATASET_LIST_EVENT  ==> FAIL");
+        }
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see pt.rocket.framework.event.ResponseListener#getMD5Hash()
-	 */
-	@Override
-	public String getMD5Hash() {
-		return null;
-	}
+    @Override
+    public int describeContents() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(name);
+        dest.writeSerializable(inputType);
+        dest.writeString(label);
+        dest.writeValue(validation);
+        dest.writeString(value);
+        dest.writeMap(dataSet);
+        dest.writeString(datasetSource);
+        dest.writeValue(parent);
+        dest.writeValue(dataset_Listener);
+    }
+    
+    /**
+     * Parcel constructor
+     * @param in
+     */
+    private FormField(Parcel in) {
+        id = in.readString();
+        name = in.readString();
+        inputType = (InputType) in.readSerializable();
+        label = in.readString();
+        validation = (FieldValidation) in.readValue(FieldValidation.class.getClassLoader());
+        value = in.readString();
+        dataSet = in.readHashMap(null);
+        datasetSource = in.readString();
+        parent = (Form) in.readValue(Form.class.getClassLoader());
+        dataset_Listener = in.readParcelable(null);
+    }
+    
+    /**
+     * Create parcelable 
+     */
+    public static final Parcelable.Creator<FormField> CREATOR = new Parcelable.Creator<FormField>() {
+        public FormField createFromParcel(Parcel in) {
+            return new FormField(in);
+        }
+
+        public FormField[] newArray(int size) {
+            return new FormField[size];
+        }
+    };
 }

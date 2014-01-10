@@ -25,8 +25,8 @@ import android.util.Log;
  * @author Guilherme Silva
  * 
  */
-public class GetLoginHelper extends BaseHelper {
-    private static String TAG = GetLoginFormHelper.class.getSimpleName();
+public class GetItemToShoppingCartHelper extends BaseHelper {
+    private static String TAG = GetItemToShoppingCartHelper.class.getSimpleName();
 
     public static final String LOGIN_CONTENT_VALUES = "contentValues";
     boolean saveCredentials = false;
@@ -66,6 +66,7 @@ public class GetLoginHelper extends BaseHelper {
                 jsonObject = jsonObject.getJSONObject(RestConstants.JSON_DATA_TAG);
             }
         } catch (JSONException e) {
+            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, new Customer(jsonObject));

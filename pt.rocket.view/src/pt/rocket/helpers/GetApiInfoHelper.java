@@ -5,12 +5,16 @@
 package pt.rocket.helpers;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
+import pt.rocket.framework.database.CategoriesTableHelper;
+import pt.rocket.framework.database.DarwinDatabaseHelper;
+import pt.rocket.framework.database.ImageResolutionTableHelper;
 import pt.rocket.framework.database.SectionsTablesHelper;
 import pt.rocket.framework.enums.RequestType;
 import pt.rocket.framework.objects.Section;
@@ -19,7 +23,9 @@ import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 
 /**
  * Get Product Information helper
@@ -69,13 +75,69 @@ public class GetApiInfoHelper extends BaseHelper {
             e.printStackTrace();
         }
         
+        if (outDatedSections != null
+                && outDatedSections.size() != 0) {
+            clearOutDatedMainSections(outDatedSections, EventType.GET_API_INFO);
+        }
+        
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, info);
         bundle.putParcelableArrayList(API_INFO_OUTDATEDSECTIONS, outDatedSections);
 
         return bundle;
     }
 
-    
+    /**
+     * Clears the database of outdated sections
+     */
+    private void clearOutDatedMainSections(List<Section> sections,
+            final EventType event) {
+
+        SQLiteDatabase db = DarwinDatabaseHelper.getInstance()
+                .getReadableDatabase();
+
+        final Set<EventType> eventsToAwait = EnumSet.noneOf(EventType.class);
+
+        // Log.d(TAG, "#Sections = " + sections.size());
+
+        for (Section section : sections) {
+            // Log.d(TAG, "Going to clear db for " + section.getName());
+            // if (section.getName().equals(Section.SECTION_NAME_TEASERS)) {
+            // IntroTeasersTableHelper.clearTeasers(db);
+            // }
+
+            // if (section.getName().equals(Section.SECTION_NAME_BRANDS)) {
+            // BrandsTableHelper.clearBrands(db);
+            // }
+
+            if (section.getName().equals(Section.SECTION_NAME_CATEGORIES)) {
+                CategoriesTableHelper.clearCategories(db);
+                eventsToAwait.add(EventType.GET_CATEGORIES_EVENT);
+            }
+
+            // if (section.getName().equals(Section.SECTION_NAME_SEGMENTS)) {
+            // SegmentTeasersTableHelper.clearSegmentTeasers(db);
+            // }
+
+            // if (section.getName().equals(Section.SECTION_NAME_STATIC_BLOCKS))
+            // {
+            // StaticBlocksTableHelper.clearStaticBlocks(db);
+            // eventsToAwait.add(EventType.GET_STATIC_BLOCKS_EVENT);
+            // }
+
+            if (section.getName()
+                    .equals(Section.SECTION_NAME_IMAGE_RESOLUTIONS)) {
+                ImageResolutionTableHelper.clearImageResolutions(db);
+                eventsToAwait.add(EventType.GET_RESOLUTIONS);
+            }
+            //
+            // if (section.getName().equals(
+            // Section.SECTION_NAME_GET_3_HOUR_DELIVERY_ZIPCODES)) {
+            // ZipCodesTableHelper.clearZipCodes(db);
+            // }
+        }
+
+        Log.d(TAG, "Events to watch " + eventsToAwait.toString());
+    }
     /**
      * Parses the json array containing the
      * 

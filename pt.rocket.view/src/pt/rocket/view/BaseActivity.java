@@ -14,6 +14,7 @@ import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
+import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.ShoppingCart;
 import pt.rocket.framework.rest.RestConstants;
@@ -28,6 +29,7 @@ import pt.rocket.framework.utils.ShopSelector;
 import pt.rocket.framework.utils.Utils;
 import pt.rocket.framework.utils.WindowHelper;
 import pt.rocket.helpers.BaseHelper;
+import pt.rocket.helpers.GetShoppingCartItemsHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.CheckVersion;
 import pt.rocket.utils.JumiaApplication;
@@ -275,13 +277,26 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
             showContent();
         
         if (!contentEvents.contains(EventType.GET_SHOPPING_CART_ITEMS_EVENT)) {
-            
-            JumiaApplication.INSTANCE.sendRequest(new GetShopp, args, responseCallback)
-            EventManager.getSingleton().triggerRequestEvent(GetShoppingCartItemsEvent.GET_FROM_CACHE);
+            triggerContentEvent(new GetShoppingCartItemsHelper(), null, mIResponseCallback);
+//            EventManager.getSingleton().triggerRequestEvent(GetShoppingCartItemsEvent.GET_FROM_CACHE);
         }
     
             
 	}
+	
+	IResponseCallback mIResponseCallback = new IResponseCallback() {
+        
+        @Override
+        public void onRequestError(Bundle bundle) {
+            handleErrorEvent(bundle);
+            
+        }
+        
+        @Override
+        public void onRequestComplete(Bundle bundle) {
+           handleSuccessEvent(bundle); 
+        }
+    };
 	
     /*
      * (non-Javadoc)
@@ -1175,53 +1190,54 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     /**
      * ADAPTNEWFRAMEWORK
      */
-//    /**
-//     * Handles a successful event and reflects necessary changes on the UI.
-//     * 
-//     * @param event
-//     *            The successful event with {@link ResponseEvent#getSuccess()} == <code>true</code>
-//     */
-//    @SuppressWarnings("unchecked")
-//    private void handleSuccessEvent(ResponseEvent event) {
-//        switch (event.getType()) {
-//        case GET_SHOPPING_CART_ITEMS_EVENT:
-//        case ADD_ITEM_TO_SHOPPING_CART_EVENT:
-//        case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
-//        case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
-//            updateCartInfo(((ResponseResultEvent<ShoppingCart>) event).result);
-//            break;
-//        case LOGOUT_EVENT:
-//            Log.i(TAG, "LOGOUT EVENT");
-//            onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-//            updateSlidingMenu();
-//            int trackRes;
-//            if (event.getSuccess()) {
-//                trackRes = R.string.glogoutsuccess;
-//            }
-//            else {
-//                trackRes = R.string.glogoutfailed;
-//            }
-//            AnalyticsGoogle.get().trackAccount(trackRes, null);
-//            break;
-//        }
-//    }
+    /**
+     * Handles a successful event and reflects necessary changes on the UI.
+     * 
+     * @param event
+     *            The successful event with {@link ResponseEvent#getSuccess()} == <code>true</code>
+     */
+    
+    private void handleSuccessEvent(Bundle bundle) {
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        switch (eventType) {
+        case GET_SHOPPING_CART_ITEMS_EVENT:
+        case ADD_ITEM_TO_SHOPPING_CART_EVENT:
+        case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
+        case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
+            updateCartInfo((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY));
+            break;
+        case LOGOUT_EVENT:
+            Log.i(TAG, "LOGOUT EVENT");
+            onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            updateSlidingMenu();
+            
+            int trackRes = R.string.glogoutsuccess;
+           
+            AnalyticsGoogle.get().trackAccount(trackRes, null);
+            break;
+        }
+    }
     /**
      * ADAPTNEWFRAMEWORK
      */
-//    /**
-//     * Handles a failed event and shows dialogs to the user.
-//     * 
-//     * @param event
-//     *            The failed event with {@link ResponseEvent#getSuccess()} == <code>false</code>
-//     */
-//    public void handleErrorEvent(final ResponseEvent event) {
-//        if (event.errorCode.isNetworkError()) {
-//            if (event.type == EventType.GET_SHOPPING_CART_ITEMS_EVENT) {
+    /**
+     * Handles a failed event and shows dialogs to the user.
+     * 
+     * @param event
+     *            The failed event with {@link ResponseEvent#getSuccess()} == <code>false</code>
+     */
+    public void handleErrorEvent(final Bundle bundle) {
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        List<String> errors = (List<String>) bundle
+                .getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+//        if (errorCode.isNetworkError()) {
+//            if (eventType == EventType.GET_SHOPPING_CART_ITEMS_EVENT) {
 //                updateCartInfo(null);
 //            }
-//            if (contentEvents.contains(event.type)) {
+//            if (contentEvents.contains(eventType)) {
 //                showError(event.request);
-//            } else if (userEvents.contains(event.type)) {
+//            } else if (userEvents.contains(eventType)) {
 //                showContentContainer(false);
 //                dialog = DialogGenericFragment.createNoNetworkDialog(BaseActivity.this,
 //                        new OnClickListener() {
@@ -1294,35 +1310,35 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
 //            dialog.show(getSupportFragmentManager(), null);
 //            return;
 //        }
-//        
-//        /* TODO: finish to distinguish between errors
-//         * else if (event.errorCode.isServerError()) {
-//            dialog = DialogGeneric.createServerErrorDialog(MyActivity.this, new OnClickListener() {
-//
-//                @Override
-//                public void onClick(View v) {
-//                    showLoadingInfo();
-//                    EventManager.getSingleton().triggerRequestEvent(event.request);
-//                    dialog.dismiss();
-//                }
-//            }, false);
-//            dialog.show();
-//            return;
-//        } else if (event.errorCode.isClientError()) {
-//            dialog = DialogGeneric.createClientErrorDialog( MyActivity.this, new OnClickListener() {
-//                
-//                @Override
-//                public void onClick(View v) {
-//                    showLoadingInfo();
-//                    EventManager.getSingleton().triggerRequestEvent(event.request);
-//                    dialog.dismiss();
-//                }
-//            }, false);
-//            dialog.show();
-//            return;
-//        }
-//        */
-//    }
+        
+        /* TODO: finish to distinguish between errors
+         * else if (event.errorCode.isServerError()) {
+            dialog = DialogGeneric.createServerErrorDialog(MyActivity.this, new OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    showLoadingInfo();
+                    EventManager.getSingleton().triggerRequestEvent(event.request);
+                    dialog.dismiss();
+                }
+            }, false);
+            dialog.show();
+            return;
+        } else if (event.errorCode.isClientError()) {
+            dialog = DialogGeneric.createClientErrorDialog( MyActivity.this, new OnClickListener() {
+                
+                @Override
+                public void onClick(View v) {
+                    showLoadingInfo();
+                    EventManager.getSingleton().triggerRequestEvent(event.request);
+                    dialog.dismiss();
+                }
+            }, false);
+            dialog.show();
+            return;
+        }
+        */
+    }
 //	
 //    @Override
 //    public final boolean removeAfterHandlingEvent() {

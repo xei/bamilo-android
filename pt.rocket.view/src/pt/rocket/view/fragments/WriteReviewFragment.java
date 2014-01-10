@@ -377,7 +377,7 @@ public class WriteReviewFragment extends BaseFragment {
             dialog_review_submitted.show(getActivity().getSupportFragmentManager(), null);
             return false;
         case GET_RATING_OPTIONS_EVENT:
-            ratingOptions = (HashMap<String, HashMap<String, String>>) event.result;
+            ratingOptions = (HashMap<String, HashMap<String, String>>) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             setLayout();
             return true;
             // case GET_CUSTOMER:

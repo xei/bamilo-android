@@ -20,6 +20,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import pt.rocket.framework.objects.Brand;
+import pt.rocket.framework.objects.BrandImage;
 import pt.rocket.framework.objects.IJSONSerializable;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -31,14 +36,8 @@ import de.akquinet.android.androlog.Log;
  * @author GuilhermeSilva
  * 
  */
-public class Form implements IJSONSerializable {
+public class Form implements IJSONSerializable, Parcelable {
 	private final static String TAG = LogTagHelper.create( Form.class );
-	
-//    private static final String JSON_NAME_TAG = "form";
-//    private static final String JSON_METHOD_TAG = "method";
-//    private static final String JSON_ACTION_TAG = "action";
-//    private static final String JSON_SUBMIT_TAG = "submit";
-//    private static final String JSON_FIELDS_TAG = "fields";
 
     public String id;
     public String name;
@@ -159,4 +158,52 @@ public class Form implements IJSONSerializable {
         }
         return jsonObject;
     }
+
+    @Override
+    public int describeContents() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(name);
+        dest.writeString(method);
+        dest.writeString(action);
+        dest.writeString(submit);
+        dest.writeList(fields);
+        dest.writeMap(fieldMapping);
+        
+    }
+    
+    /**
+     * Parcel constructor
+     * @param in
+     */
+    private Form(Parcel in) {
+        id = in.readString();
+        name = in.readString();
+        method = in.readString();
+        action = in.readString();
+        submit = in.readString();
+        fields = new ArrayList<FormField>();
+        in.readArrayList(FormField.class.getClassLoader());
+        in.readMap(fieldMapping, null);
+        
+        
+    }
+    
+    /**
+     * Create parcelable 
+     */
+    public static final Parcelable.Creator<Form> CREATOR = new Parcelable.Creator<Form>() {
+        public Form createFromParcel(Parcel in) {
+            return new Form(in);
+        }
+
+        public Form[] newArray(int size) {
+            return new Form[size];
+        }
+    };
 }

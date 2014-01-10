@@ -4,6 +4,7 @@
 package pt.rocket.view.fragments;
 
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -256,11 +257,11 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
         }
     }
 
-    
-    @Override
-    protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
+    protected boolean onSuccessEvent(Bundle bundle) {
         Log.i(TAG, "ON SUCCESS EVENT");
-        switch (event.type) {
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        
+        switch (eventType) {
         case CHANGE_PASSWORD_EVENT:
             Log.d(TAG, "changePasswordEvent: Password changed with success");
             if (null != getActivity() ) {
@@ -270,7 +271,7 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
             
             return true;
         case GET_CUSTOMER:
-            Customer customer = (Customer) event.result;
+            Customer customer = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             Log.d(TAG, "CUSTOMER: " + customer.getLastName() + " " + customer.getFirstName() + " " + customer.getEmail());
             if ( null != lastNameText ) {
                 lastNameText.setText(customer.getLastName());
@@ -286,22 +287,25 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
         }
     }
 
-    @Override
-    protected boolean onErrorEvent(ResponseEvent event) {
+    protected boolean onErrorEvent(Bundle bundle) {
         Log.i(TAG, "ON ERROR EVENT");
-        switch (event.type) {
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        
+        switch (eventType) {
         case CHANGE_PASSWORD_EVENT:
             Log.d(TAG, "changePasswordEvent: Password changed was not successful");
-            if (event.errorCode == ErrorCode.REQUEST_ERROR) {
-                List<String> errorMessages = event.errorMessages.get(RestConstants.JSON_ERROR_TAG);
+            if (errorCode == ErrorCode.REQUEST_ERROR) {
+                HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle
+                        .getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
                 if (errorMessages == null) {
                     return false;
                 }
                 ((BaseActivity) getActivity()).showContentContainer(false);
-                Map<String, ? extends List<String>> messages = event.errorMessages;
-                List<String> validateMessages = messages.get(RestConstants.JSON_VALIDATE_TAG);
+
+                List<String> validateMessages = errorMessages.get(RestConstants.JSON_VALIDATE_TAG);
                 if (validateMessages == null || validateMessages.isEmpty()) {
-                    validateMessages = messages.get(RestConstants.JSON_ERROR_TAG);
+                    validateMessages = errorMessages.get(RestConstants.JSON_ERROR_TAG);
                 }
 
                 String errorMessage = null;
@@ -347,8 +351,8 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
     }
     
     private void triggerChangePass(ContentValues values) {
-        // TODO Auto-generated method stub
         Bundle bundle = new Bundle();
+        bundle.putParcelable(GetChangePasswordHelper.CONTENT_VALUES, values);
         triggerContentEvent(new GetChangePasswordHelper(), bundle, mCallBack);
     }
     
@@ -360,12 +364,12 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
         
         @Override
         public void onRequestError(Bundle bundle) {
-            // TODO
+            onErrorEvent(bundle);
         }
         
         @Override
         public void onRequestComplete(Bundle bundle) {
-            // TODO
+            onSuccessEvent(bundle);
         }
     };
 }

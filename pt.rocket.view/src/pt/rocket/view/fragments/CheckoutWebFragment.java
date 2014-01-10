@@ -16,11 +16,16 @@ import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
+import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.rest.RestClientSingleton;
 import pt.rocket.framework.rest.RestContract;
+import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.helpers.GetCustomerHelper;
+import pt.rocket.helpers.GetShoppingCartItemsHelper;
+import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.TrackerDelegator;
@@ -45,6 +50,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
+
+import ch.boye.httpclientandroidlib.cookie.Cookie;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.shouldit.proxy.lib.ProxyConfiguration;
@@ -135,10 +142,37 @@ public class CheckoutWebFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-        EventManager.getSingleton().triggerRequestEvent(new RequestEvent(EventType.GET_CUSTOMER));
-        EventManager.getSingleton().triggerRequestEvent(GetShoppingCartItemsEvent.FORCE_API_CALL);
-        
+       
+        triggerGetCustomer();
+        triggerGetShoppingCartItems();
     }
+    
+    private void triggerGetCustomer(){
+        
+        triggerContentEvent(new GetCustomerHelper(), null, mCallback);
+//        EventManager.getSingleton().triggerRequestEvent(new RequestEvent(EventType.GET_CUSTOMER));
+    }
+    
+    private void triggerGetShoppingCartItems(){
+        
+        triggerContentEvent(new GetShoppingCartItemsHelper(), null, mCallback);
+//        EventManager.getSingleton().triggerRequestEvent(GetShoppingCartItemsEvent.FORCE_API_CALL);
+    }
+    
+    IResponseCallback mCallback = new IResponseCallback() {
+        
+        @Override
+        public void onRequestError(Bundle bundle) {
+            // TODO Auto-generated method stub
+            
+        }
+        
+        @Override
+        public void onRequestComplete(Bundle bundle) {
+            onSuccessEvent(bundle);
+            
+        }
+    };
 
     /*
      * (non-Javadoc)
@@ -494,7 +528,7 @@ public class CheckoutWebFragment extends BaseFragment {
                 final JSONObject result = new JSONObject(content);
                 if (result.optBoolean("success")) {
                     // Measure to escape the webview thread
-                    triggerContentEventWithNoLoading(GetShoppingCartItemsEvent.FORCE_API_CALL);
+                    triggerContentEventWithNoLoading(new GetShoppingCartItemsHelper(), null, mCallback);
                     
                     handler.post( new Runnable() {
                         
@@ -520,16 +554,12 @@ public class CheckoutWebFragment extends BaseFragment {
     }
 
     
-    /*
-     * (non-Javadoc)
-     * 
-     * @see pt.rocket.utils.MyActivity#handleTriggeredEvent(pt.rocket.framework.event.ResponseEvent)
-     */
-    @Override
-    protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
-        switch (event.type) {
+
+    protected boolean onSuccessEvent(Bundle bundle) {
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        switch (eventType) {
         case GET_CUSTOMER:
-            customer = (Customer) event.result;
+            customer = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             break;
         case GET_SHOPPING_CART_ITEMS_EVENT:
             break;

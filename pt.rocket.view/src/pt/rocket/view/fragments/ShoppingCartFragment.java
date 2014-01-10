@@ -14,14 +14,20 @@ import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.controllers.ShoppingBasketFragListAdapter;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
+import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.components.ExpandableGridViewComponent;
 import pt.rocket.framework.objects.MinOrderAmount;
 import pt.rocket.framework.objects.ShoppingCart;
 import pt.rocket.framework.objects.ShoppingCartItem;
 import pt.rocket.framework.utils.AnalyticsGoogle;
+import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CurrencyFormatter;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.helpers.GetShoppingCartChangeItemQuantityHelper;
+import pt.rocket.helpers.GetShoppingCartItemsHelper;
+import pt.rocket.helpers.GetShoppingCartRemoveItemHelper;
+import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.TrackerDelegator;
@@ -31,6 +37,7 @@ import pt.rocket.utils.dialogfragments.DialogListFragment.OnDialogListListener;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
+import android.content.ContentValues;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -209,11 +216,26 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         super.onResume();
         Log.i(TAG, "ON RESUME");
         mBeginRequestMillis = System.currentTimeMillis();
-        triggerContentEvent(GetShoppingCartItemsEvent.FORCE_API_CALL);
+        triggerGetShoppingCart();
+        
         setListeners();
         AnalyticsGoogle.get().trackPage(R.string.gshoppingcart);
     }
+    
+    private void triggerGetShoppingCart(){
+        triggerContentEvent(new GetShoppingCartItemsHelper(), null, responseCallback);
+//        triggerContentEvent(GetShoppingCartItemsEvent.FORCE_API_CALL);
+    }
 
+    private void triggerRemoveItem(ShoppingCartItem item){
+        ContentValues values = new ContentValues();
+        values.put("sku", item.getConfigSimpleSKU());
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(GetShoppingCartRemoveItemHelper.ITEM, values);
+        triggerContentEvent(new GetShoppingCartRemoveItemHelper(), bundle, responseCallback);
+//        EventManager.getSingleton().triggerRequestEvent(
+//                new RemoveItemFromShoppingCartEvent(items));
+    }
     /*
      * (non-Javadoc)
      * 
@@ -235,10 +257,10 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         super.onStop();
         Log.i(TAG, "ON STOP");
         releaseVars();
-        EventManager.getSingleton().removeResponseListener(this,
-                EnumSet.of(EventType.GET_SHOPPING_CART_ITEMS_EVENT,
-                        EventType.REMOVE_ITEM_FROM_SHOPPING_CART_EVENT,
-                        EventType.CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT));
+//        EventManager.getSingleton().removeResponseListener(this,
+//                EnumSet.of(EventType.GET_SHOPPING_CART_ITEMS_EVENT,
+//                        EventType.REMOVE_ITEM_FROM_SHOPPING_CART_EVENT,
+//                        EventType.CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT));
         System.gc();
     }
 
@@ -312,10 +334,13 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
 
     }
 
-    @Override
-    protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
-        Log.d(TAG, "onSuccessEvent: eventType = " + event.getType());
-        switch (event.type) {
+    protected boolean onSuccessEvent(Bundle bundle) {
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        List<String> errors = (List<String>) bundle
+                .getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+        Log.d(TAG, "onSuccessEvent: eventType = " + eventType);
+        switch (eventType) {
 
         // case GET_SESSION_STATE:
         // if ((Boolean) event.result) {
@@ -326,20 +351,19 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         // }
         // return false;
         case GET_SHOPPING_CART_ITEMS_EVENT:
-            if(((ShoppingCart) event.result).getCartItems() != null && ((ShoppingCart) event.result).getCartItems().values() != null){
-                TrackerDelegator.trackViewCart(getActivity().getApplicationContext(), ((ShoppingCart) event.result).getCartItems().values().size());
+            if(((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getCartItems() != null && ((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getCartItems().values() != null){
+                TrackerDelegator.trackViewCart(getActivity().getApplicationContext(), ((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getCartItems().values().size());
             }
         default:
             AnalyticsGoogle.get().trackLoadTiming(R.string.gshoppingcart, mBeginRequestMillis);
-            displayShoppingCart((ShoppingCart) event.result);
+            displayShoppingCart((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY));
         }
         return true;
     }
 
-    @Override
-    protected boolean onErrorEvent(ResponseEvent event) {
+    protected boolean onErrorEvent(Bundle bundle) {
         mBeginRequestMillis = System.currentTimeMillis();
-        return super.onErrorEvent(event);
+        return true;
     }
 
     private void displayShoppingCart(ShoppingCart cart) {
@@ -517,6 +541,8 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
 //        AnalyticsGoogle.get().trackCheckout(items);
 //        TrackerDelegator.trackCheckout(getActivity().getApplicationContext(), items);
 //    }
+    
+    
 
     /**
      * This method manages the deletion of selected elements
@@ -526,8 +552,9 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
             if (itemsValues.get(position).is_checked) {
                 itemsValues.remove(position);
                 mBeginRequestMillis = System.currentTimeMillis();
-                EventManager.getSingleton().triggerRequestEvent(
-                        new RemoveItemFromShoppingCartEvent(items.get(position)));
+                
+                triggerRemoveItem(items.get(position));
+                
                 items.remove(position);
 
             }
@@ -576,7 +603,34 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
     public void changeQuantityOfItem(int position, int quantity) {
         items.get(position).setQuantity(quantity);
         mBeginRequestMillis = System.currentTimeMillis();
-        triggerContentEventProgress(new ChangeItemQuantityInShoppingCartEvent(items));
+        changeItemQuantityInShoppingCart(items);
     }
+    
+    
+    private void changeItemQuantityInShoppingCart(List<ShoppingCartItem> items){
+        Bundle bundle = new Bundle();
+        ContentValues values = new ContentValues();
+        for (ShoppingCartItem item : items) {
+            values.put("qty_" + item.getConfigSimpleSKU(), String.valueOf(item.getQuantity()));
+        }
+        bundle.putParcelable(GetShoppingCartChangeItemQuantityHelper.CART_ITEMS, values);
+        triggerContentEventProgress(new GetShoppingCartChangeItemQuantityHelper(), bundle, responseCallback);
+//        triggerContentEventProgress(new ChangeItemQuantityInShoppingCartEvent(items));
+    }
+    
+    IResponseCallback responseCallback = new IResponseCallback() {
+        
+        @Override
+        public void onRequestError(Bundle bundle) {
+            onErrorEvent(bundle);
+            
+        }
+        
+        @Override
+        public void onRequestComplete(Bundle bundle) {
+            onSuccessEvent(bundle);
+            
+        }
+    };
 
 }

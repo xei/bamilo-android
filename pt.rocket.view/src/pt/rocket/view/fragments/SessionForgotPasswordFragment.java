@@ -16,10 +16,13 @@ import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.GetCategoriesHelper;
+import pt.rocket.helpers.GetChangePasswordHelper;
 import pt.rocket.helpers.GetForgotPasswordFormHelper;
+import pt.rocket.helpers.GetInitFormHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.pojo.DynamicForm;
 import pt.rocket.pojo.DynamicFormItem;
+import pt.rocket.utils.JumiaApplication;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
@@ -329,13 +332,19 @@ public class SessionForgotPasswordFragment extends BaseFragment {
      */
     private void triggerForgotForm(){
         Bundle bundle = new Bundle();
-        triggerContentEvent(new GetForgotPasswordFormHelper(), bundle, mCallBack);
+        if(JumiaApplication.INSTANCE.getFormDataRegistry() != null && JumiaApplication.INSTANCE.getFormDataRegistry().size() > 0){
+            triggerContentEvent(new GetInitFormHelper(), bundle, mCallBack);    
+        } else {
+            bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, ErrorCode.UNKNOWN_ERROR);
+            mCallBack.onRequestError(bundle);
+        }
+        
     }
     
     private void triggerForgot(ContentValues values){
         Bundle bundle = new Bundle();
-        //bundle.putString(GetCategoriesHelper.CATEGORY_URL, categoryUrl);
-        triggerContentEvent(new GetCategoriesHelper(), bundle, mCallBack);
+        bundle.putParcelable(GetChangePasswordHelper.CONTENT_VALUES, values);
+        triggerContentEvent(new GetChangePasswordHelper(), bundle, mCallBack);
     }
     
     /**

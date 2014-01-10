@@ -15,6 +15,7 @@ import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
+import pt.rocket.utils.JumiaApplication;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -48,7 +49,7 @@ public class GetInitFormHelper extends BaseHelper {
 
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
-        HashMap<String, FormData> formDataRegistry = new HashMap<String, FormData>();
+        
 
         JSONArray dataArray = null;
         try {
@@ -60,7 +61,7 @@ public class GetInitFormHelper extends BaseHelper {
                         .getJSONObject(i);
                 FormData formData = new FormData();
                 formData.initialize(formDataObject);
-                formDataRegistry.put(formData.getAction(), formData);
+                JumiaApplication.INSTANCE.getFormDataRegistry().put(formData.getAction(), formData);
             }
         } catch (JSONException e) {
             // TODO Auto-generated catch block
