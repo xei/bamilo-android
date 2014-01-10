@@ -3,7 +3,7 @@
     package="pt.rocket.jumia.dev"
     android:installLocation="auto"
     android:versionCode="10121"
-    android:versionName="1.3" >
+    android:versionName="1.5" >
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
@@ -69,7 +69,7 @@
         <activity android:name="net.hockeyapp.android.UpdateActivity" />
 
         <service
-            android:name="pt.rocket.framework.rest.RestService"
+            android:name="pt.rocket.framework.service.RemoteService"
             android:exported="false" />
 
         <!-- Ad X Tracker -->
