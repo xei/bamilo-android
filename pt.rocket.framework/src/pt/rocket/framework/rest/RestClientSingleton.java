@@ -218,7 +218,7 @@ public final class RestClientSingleton implements HttpRoutePlanner {
         if (ConfigurationConstants.LOG_DEBUG_ENABLED) {
             Log.d(TAG, "post: " + uri.toString());
         }
-        HttpPost httpRequest = new HttpPost(uri.toString());
+        HttpPost httpRequest = new HttpPost(RemoteService.completeUri(uri).toString());
 
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         for (Entry<String, Object> entry : formData.valueSet()) {
@@ -565,7 +565,7 @@ public final class RestClientSingleton implements HttpRoutePlanner {
         bundle.putString(Constants.BUNDLE_RESPONSE_KEY, response);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, priority);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, eventType);
-        if(elapsed!=null){
+        if(elapsed!=null && elapsed.length > 0){
             bundle.putLong(Constants.BUNDLE_ELAPSED_REQUEST_TIME, elapsed[0]);
         }
         msg.setData(bundle);
