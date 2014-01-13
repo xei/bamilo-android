@@ -355,6 +355,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
                 TrackerDelegator.trackViewCart(getActivity().getApplicationContext(), ((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getCartItems().values().size());
             }
         default:
+            getBaseActivity().showContentContainer(false);
             AnalyticsGoogle.get().trackLoadTiming(R.string.gshoppingcart, mBeginRequestMillis);
             displayShoppingCart((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY));
         }
