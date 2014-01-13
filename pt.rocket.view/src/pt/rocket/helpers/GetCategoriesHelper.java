@@ -57,16 +57,13 @@ public class GetCategoriesHelper extends BaseHelper {
                 category.initialize(categoryObject);
                 categories.add(category);
             }
-            CategoriesTableHelper.saveCategories(categories);
-
             bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, categories);
-            
-            
+            CategoriesTableHelper.saveCategories(categories);
         } catch (JSONException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_CATEGORIES_EVENT);
         return bundle;
     }
 

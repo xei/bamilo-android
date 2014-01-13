@@ -3,6 +3,7 @@
  */
 package pt.rocket.view;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
@@ -61,7 +62,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
 
     private boolean wasReceivedNotification = false;
     
-    public static List<Category> currentCategories;
+    public static ArrayList<Category> currentCategories;
 
     /**
      * Constructor

@@ -9,6 +9,7 @@ import java.util.List;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.CategoriesAdapter;
 import pt.rocket.controllers.fragments.FragmentType;
+import pt.rocket.framework.database.CategoriesTableHelper;
 import pt.rocket.framework.objects.Category;
 import pt.rocket.framework.objects.ProductRatingPage;
 import pt.rocket.framework.utils.AnalyticsGoogle;
@@ -45,6 +46,8 @@ import de.akquinet.android.androlog.Log;
 public class CategoriesContainerFragment extends BaseFragment {
 
     private static final String TAG = LogTagHelper.create(CategoriesContainerFragment.class);
+
+    private static final String USED_CACHED_CATEGORIES = null;
     
     private CategoriesAdapter mainCatAdapter;
 
@@ -296,16 +299,23 @@ public class CategoriesContainerFragment extends BaseFragment {
     }
 
     protected boolean onSuccessEvent(Bundle bundle) {
+        Log.i(TAG, "code1 received categories");
         // Validate if fragment is on the screen
         if(isVisible()) {
-            AnalyticsGoogle.get().trackLoadTiming(R.string.gcategories, mBeginRequestMillis);
+            if(!bundle.getBoolean(USED_CACHED_CATEGORIES, false)){
+                AnalyticsGoogle.get().trackLoadTiming(R.string.gcategories, mBeginRequestMillis);
+            } else {
+                Log.i(TAG, "code1 received categories from database"+MainFragmentActivity.currentCategories.size());
+            }
             MainFragmentActivity.currentCategories = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
             
             if(MainFragmentActivity.currentCategories != null && getView() != null){
-                Log.d(TAG, "handleEvent: categories size = " + MainFragmentActivity.currentCategories.size());
-                if(((BaseActivity) getActivity()).isTabletInLandscape()){
+                Log.d(TAG, "code1 received categories size = " + MainFragmentActivity.currentCategories.size());
+                if(getBaseActivity().isTabletInLandscape()){
+                    Log.d(TAG, "code1 going to create fragment createFragmentsForLandscape");
                     createFragmentsForLandscape();
                 } else {
+                    Log.d(TAG, "code1 going to create fragment");
                     createFragment();
                 }
             }
@@ -327,7 +337,7 @@ public class CategoriesContainerFragment extends BaseFragment {
         currentFragment = FragmentType.CATEGORIES_LEVEL_1;
         args.putString(ConstantsIntentExtra.CATEGORY_URL, categoryUrl);
         args.putInt(ConstantsIntentExtra.SELECTED_CATEGORY_INDEX, categoryIndex);
-        args.getInt(ConstantsIntentExtra.SELECTED_SUB_CATEGORY_INDEX, subCategoryIndex);
+        args.putInt(ConstantsIntentExtra.SELECTED_SUB_CATEGORY_INDEX, subCategoryIndex);
         args.putBoolean(CATEGORY_PARENT, true);
         mCategoriesFragment = CategoriesFragment.getInstance(args);
         FragmentManager     fm = getChildFragmentManager();
@@ -513,8 +523,14 @@ public class CategoriesContainerFragment extends BaseFragment {
     private void trigger(String categoryUrl){
         Bundle bundle = new Bundle();
         bundle.putString(GetCategoriesHelper.CATEGORY_URL, categoryUrl);
-        triggerContentEvent(new GetCategoriesHelper(), bundle, mCallBack);
-        //JumiaApplication.INSTANCE.sendRequest(new GetCategoriesHelper(), bundle, mCallBack);
+        MainFragmentActivity.currentCategories = CategoriesTableHelper.getCategories();
+        if(MainFragmentActivity.currentCategories != null && MainFragmentActivity.currentCategories.size() > 0){
+            bundle.putBoolean(USED_CACHED_CATEGORIES, true);
+            bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, MainFragmentActivity.currentCategories); 
+            onSuccessEvent(bundle);
+        } else {
+            triggerContentEvent(new GetCategoriesHelper(), bundle, mCallBack);    
+        }
     }
     
     /**

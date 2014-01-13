@@ -238,6 +238,7 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
      */
     private void createList() {
         if(categories == null){
+            Log.i(TAG, "code1 creating list "+MainFragmentActivity.currentCategories.size());
             categories = MainFragmentActivity.currentCategories;
         }
         
@@ -268,11 +269,13 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
             getActivity().finish();
             return;
         }
+        Log.i(TAG, "code1 categories view is not null");
         categoriesList = (ListView) getView().findViewById(R.id.sub_categories_grid);
         //categoriesList.setExpanded(true);
         mainCatAdapter = new CategoriesAdapter(getActivity(), categories);
         categoriesList.setAdapter(mainCatAdapter);
         categoriesList.setOnItemClickListener(this);
+        getBaseActivity().showContentContainer(false);
     }
     
     /**

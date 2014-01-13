@@ -8,10 +8,10 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.holoeverywhere.FontLoader;
+import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.FormConstants;
-import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.factories.FormFactory;
@@ -19,16 +19,12 @@ import pt.rocket.forms.Form;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.objects.Errors;
-import pt.rocket.framework.rest.RestConstants;
-import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CustomerUtils;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.helpers.GetCategoriesHelper;
 import pt.rocket.helpers.GetRegisterFormHelper;
 import pt.rocket.helpers.GetRegisterHelper;
-import pt.rocket.helpers.GetStoreLoginHelper;
 import pt.rocket.helpers.GetTermsConditionsHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.pojo.DynamicForm;
@@ -40,7 +36,6 @@ import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.view.BaseActivity;
-import pt.rocket.view.MainFragmentActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
@@ -55,7 +50,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
-import org.holoeverywhere.widget.TextView;
 
 import com.actionbarsherlock.internal.widget.IcsAdapterView;
 
@@ -701,19 +695,16 @@ public class SessionRegisterFragment extends BaseFragment {
      */
     private void triggerRegister(ContentValues values) {
         Bundle bundle = new Bundle();
-        // bundle.putString(GetCategoriesHelper.CATEGORY_URL, categoryUrl);
         triggerContentEvent(new GetRegisterHelper(), bundle, mCallBack);
     }
 
     private void triggerRegisterForm() {
         Bundle bundle = new Bundle();
-        // bundle.putString(GetCategoriesHelper.CATEGORY_URL, categoryUrl);
         triggerContentEvent(new GetRegisterFormHelper(), bundle, mCallBack);
     }
 
     private void triggerTerms() {
         Bundle bundle = new Bundle();
-        // bundle.putString(GetCategoriesHelper.CATEGORY_URL, categoryUrl);
         triggerContentEvent(new GetTermsConditionsHelper(), bundle, mCallBack);
     }
 

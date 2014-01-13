@@ -677,7 +677,6 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
      */
     private void trigger() {
         triggerContentEvent(new NavigationListHelper(), null, mCallBack);
-        // JumiaApplication.INSTANCE.sendRequest(new GetCategoriesHelper(), bundle, mCallBack);
     }
 
     /**

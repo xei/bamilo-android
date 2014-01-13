@@ -20,7 +20,6 @@ import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.Errors;
-import pt.rocket.framework.objects.ProductRatingPage;
 import pt.rocket.framework.objects.ProductSimple;
 import pt.rocket.framework.objects.ShoppingCartItem;
 import pt.rocket.framework.objects.Variation;
@@ -30,7 +29,6 @@ import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CurrencyFormatter;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.helpers.GetCategoriesHelper;
 import pt.rocket.helpers.GetProductHelper;
 import pt.rocket.helpers.GetShoppingCartAddItemHelper;
 import pt.rocket.interfaces.IResponseCallback;
@@ -1162,7 +1160,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         Bundle bundle = new Bundle();
         bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
         triggerContentEvent(new GetProductHelper(), bundle, mCallBack);
-        //JumiaApplication.INSTANCE.sendRequest(new GetCategoriesHelper(), bundle, mCallBack);
     }
     
     private void triggerAddItemToCart(ShoppingCartItem item){
