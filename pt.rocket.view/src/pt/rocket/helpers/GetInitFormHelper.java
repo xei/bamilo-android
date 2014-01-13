@@ -3,8 +3,6 @@
  */
 package pt.rocket.helpers;
 
-import java.util.HashMap;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,7 +14,6 @@ import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
 import pt.rocket.utils.JumiaApplication;
-
 import android.os.Bundle;
 import android.util.Log;
 
@@ -35,15 +32,6 @@ public class GetInitFormHelper extends BaseHelper {
         bundle.putString(Constants.BUNDLE_URL_KEY, EventType.INIT_FORMS.action);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
         bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
-        return bundle;
-    }
-
-    @Override
-    public Bundle parseErrorBundle(Bundle bundle) {
-        // TODO Auto-generated method stub
-    	android.util.Log.d("TRACK", "parseErrorBundle GetLoginHelper");
-    	//FIXME next line is just for test porpouse, to delete
-    	bundle.putString(Constants.BUNDLE_URL_KEY, " GetLoginHelper");
         return bundle;
     }
 
@@ -69,6 +57,21 @@ public class GetInitFormHelper extends BaseHelper {
         }
         
         Log.i(TAG,"parseResponseBundle");
+        return bundle;
+    }
+    
+    @Override
+    public Bundle parseErrorBundle(Bundle bundle) {
+        android.util.Log.d(TAG, "parseErrorBundle GetInitFormsHelper");
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.INIT_FORMS);
+        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
+        return bundle;
+    }
+
+    @Override
+    public Bundle parseResponseErrorBundle(Bundle bundle) {
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.INIT_FORMS);
+        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }
 }

@@ -3,18 +3,12 @@
  */
 package pt.rocket.helpers;
 
-import java.util.ArrayList;
-
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import pt.rocket.framework.enums.RequestType;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
-import pt.rocket.pojo.ITargeting;
-import pt.rocket.utils.JSONConstants;
 import android.os.Bundle;
 import de.akquinet.android.androlog.Log;
 
@@ -43,13 +37,19 @@ public class GetForgotPasswordHelper extends BaseHelper {
     	Log.d(TAG, "parseResponseBundle GetForgotPasswordHelper");
         return bundle;
     }
-    
 
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
-        // TODO Auto-generated method stub
-        android.util.Log.d("TRACK", "parseErrorBundle GetForgotPasswordHelper");
+        android.util.Log.d(TAG, "parseErrorBundle GetForgotPasswordHelper");
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.FORGET_PASSWORD_EVENT);
+        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
+        return bundle;
+    }
 
+    @Override
+    public Bundle parseResponseErrorBundle(Bundle bundle) {
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.FORGET_PASSWORD_EVENT);
+        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }
 

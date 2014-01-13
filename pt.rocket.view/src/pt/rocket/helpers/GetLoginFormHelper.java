@@ -37,20 +37,11 @@ public class GetLoginFormHelper extends BaseHelper {
         saveCredentials = args.getBoolean(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG);
         contentValues = args.getParcelable(LOGIN_CONTENT_VALUES);
         Bundle bundle = new Bundle();
-        bundle.putString(Constants.BUNDLE_URL_KEY, EventType.LOGIN_EVENT.action);
+        bundle.putString(Constants.BUNDLE_URL_KEY, EventType.GET_LOGIN_FORM_EVENT.action);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.POST);
         bundle.putParcelable(Constants.BUNDLE_FORM_DATA_KEY, contentValues);
         bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
-        return bundle;
-    }
-
-    @Override
-    public Bundle parseErrorBundle(Bundle bundle) {
-        // TODO Auto-generated method stub
-        android.util.Log.d("TRACK", "parseErrorBundle GetLoginHelper");
-        // FIXME next line is just for test porpouse, to delete
-        bundle.putString(Constants.BUNDLE_URL_KEY, " GetLoginHelper");
         return bundle;
     }
 
@@ -70,6 +61,21 @@ public class GetLoginFormHelper extends BaseHelper {
             e.printStackTrace();
         }
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, new Customer(jsonObject));
+        return bundle;
+    }
+    
+    @Override
+    public Bundle parseErrorBundle(Bundle bundle) {
+        android.util.Log.d(TAG, "parseErrorBundle GetLoginFormHelper");
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_LOGIN_FORM_EVENT);
+        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
+        return bundle;
+    }
+
+    @Override
+    public Bundle parseResponseErrorBundle(Bundle bundle) {
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_LOGIN_FORM_EVENT);
+        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }
 }
