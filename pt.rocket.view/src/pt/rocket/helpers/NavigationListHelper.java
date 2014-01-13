@@ -6,12 +6,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import de.akquinet.android.androlog.Log;
+
+import pt.rocket.framework.components.NavigationListComponent;
 import pt.rocket.framework.enums.RequestType;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
-import pt.rocket.pojo.NavigationListComponent;
+
 
 import android.os.Bundle;
 
@@ -19,7 +22,6 @@ public class NavigationListHelper extends BaseHelper {
 
     private static final String TAG = NavigationListHelper.class.getSimpleName();
     
-    private ArrayList<NavigationListComponent> navComponentList;
     @Override
     public Bundle generateRequestBundle(Bundle args) {
         // TODO Auto-generated method stub
@@ -33,8 +35,6 @@ public class NavigationListHelper extends BaseHelper {
 
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
-        // TODO Auto-generated method stub
-        navComponentList = new ArrayList<NavigationListComponent>();
         try {
             ArrayList<NavigationListComponent> components = new ArrayList<NavigationListComponent>();
             JSONArray dataArray = jsonObject
@@ -42,20 +42,22 @@ public class NavigationListHelper extends BaseHelper {
             NavigationListComponent component;
             int dataArrayLenght = dataArray.length();
             for (int i = 0; i < dataArrayLenght; ++i) {
+                Log.i(TAG, "code1 parsing components ...");
                 component = new NavigationListComponent();
                 component.initialize(dataArray.getJSONObject(i));
                 components.add(component);
+                Log.i(TAG, "code1 parsing component : "+component.getElementText());
             }
 
             components.add(new NavigationListComponent(0, null, "loginout", null));
             
-            bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, navComponentList);
+            bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, components);
             
         } catch (JSONException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_NAVIGATION_LIST_COMPONENTS_EVENT);
         return bundle;
     }
 

@@ -56,7 +56,7 @@ public class GetInitFormHelper extends BaseHelper {
             e.printStackTrace();
         }
         
-        Log.i(TAG,"parseResponseBundle");
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.INIT_FORMS);
         return bundle;
     }
     

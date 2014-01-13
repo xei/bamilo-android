@@ -29,7 +29,7 @@ public class GetLoginHelper extends BaseHelper {
     private static String TAG = GetLoginFormHelper.class.getSimpleName();
 
     public static final String LOGIN_CONTENT_VALUES = "contentValues";
-    boolean saveCredentials = false;
+    boolean saveCredentials = true;
     ContentValues contentValues;
 
     @Override
@@ -48,7 +48,9 @@ public class GetLoginHelper extends BaseHelper {
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
         if (saveCredentials) {
+            Log.i(TAG, "code1 saving credentials : ");
             JumiaApplication.INSTANCE.getCustomerUtils().storeCredentials(contentValues);
+            Log.i(TAG, "code1 hasCredentials : "+JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials());
         }
         try {
             if (jsonObject.has(RestConstants.JSON_USER_TAG)) {
@@ -60,6 +62,7 @@ public class GetLoginHelper extends BaseHelper {
             e.printStackTrace();
         }
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, new Customer(jsonObject));
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.LOGIN_EVENT);
         return bundle;
     }
     

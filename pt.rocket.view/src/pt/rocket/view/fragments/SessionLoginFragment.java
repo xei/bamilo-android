@@ -224,7 +224,12 @@ public class SessionLoginFragment extends BaseFragment {
              * TRIGGERS
              * @author sergiopereira
              */
-            triggerLoginForm();
+            if(JumiaApplication.INSTANCE.getFormDataRegistry() == null || JumiaApplication.INSTANCE.getFormDataRegistry().size() == 0){
+               triggerInitForm(); 
+            } else {
+                triggerLoginForm();    
+            }
+            
             //triggerContentEvent(EventType.GET_LOGIN_FORM_EVENT);
         }
 
@@ -407,7 +412,7 @@ public class SessionLoginFragment extends BaseFragment {
          * TRIGGERS
          * @author sergiopereira
          */
-        triggerLogin(values);
+        triggerLogin(values, true);
         //triggerContentEvent(new LogInEvent(values));
         
         wasAutologin = false;
@@ -468,7 +473,9 @@ public class SessionLoginFragment extends BaseFragment {
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         switch (eventType) {
-
+        case INIT_FORMS:
+            triggerLoginForm();
+            return true;
         case FACEBOOK_LOGIN_EVENT:
             Log.d(TAG, "facebookloginCompletedEvent : success");
             // Get Customer
@@ -542,7 +549,7 @@ public class SessionLoginFragment extends BaseFragment {
      * @param form
      */
     private void loadForm(Form form) {
-    
+        Log.i(TAG, "code1 loading form : "+form.name);
         dynamicForm = FormFactory.getSingleton().CreateForm(FormConstants.LOGIN_FORM,
                 getActivity(), form);
         container.removeAllViews();
@@ -558,6 +565,8 @@ public class SessionLoginFragment extends BaseFragment {
             }
         }
         container.refreshDrawableState();
+        getBaseActivity().showContentContainer(false);
+        Log.i(TAG, "code1 loading form completed : "+dynamicForm.getControlsCount());
     }
 
 
@@ -640,19 +649,21 @@ public class SessionLoginFragment extends BaseFragment {
      */
     private void triggerAutoLogin(){
         Bundle bundle = new Bundle();
-        bundle.putParcelable(GetLoginFormHelper.LOGIN_CONTENT_VALUES, JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
+        bundle.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
+        bundle.putBoolean(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, autoLogin);
         triggerContentEvent(new GetLoginHelper(), bundle, mCallBack);
     }
     
-    private void triggerLogin(ContentValues values) {
+    private void triggerLogin(ContentValues values, boolean saveCredentials) {
         Bundle bundle = new Bundle();
-        bundle.putParcelable(GetLoginFormHelper.LOGIN_CONTENT_VALUES, values);
+        bundle.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, values);
+        bundle.putBoolean(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, saveCredentials);
         triggerContentEvent(new GetLoginHelper(), bundle, mCallBack);
     }
     
     private void triggerFacebookLogin(ContentValues values){
         Bundle bundle = new Bundle();
-        bundle.putParcelable(GetLoginFormHelper.LOGIN_CONTENT_VALUES, values);
+        bundle.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, values);
         triggerContentEvent(new GetFacebookLoginHelper(), bundle, mCallBack);
     }
     

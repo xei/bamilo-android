@@ -4,17 +4,17 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+import org.holoeverywhere.widget.EditText;
+import org.holoeverywhere.widget.TextView;
+
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.objects.ProductReviewCommentCreated;
-import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.helpers.GetCategoriesHelper;
 import pt.rocket.helpers.GetCustomerHelper;
-import pt.rocket.helpers.GetLoginFormHelper;
 import pt.rocket.helpers.GetLoginHelper;
 import pt.rocket.helpers.GetRatingsHelper;
 import pt.rocket.helpers.GetWriteReviewHelper;
@@ -25,7 +25,6 @@ import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.view.BaseActivity;
-import pt.rocket.view.MainFragmentActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.Context;
@@ -37,10 +36,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
-import org.holoeverywhere.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
-import org.holoeverywhere.widget.TextView;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -438,7 +435,7 @@ public class WriteReviewFragment extends BaseFragment {
      */
     private void triggerAutoLogin() {
         Bundle bundle = new Bundle();
-        bundle.putParcelable(GetLoginFormHelper.LOGIN_CONTENT_VALUES, JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
+        bundle.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
         triggerContentEvent(new GetLoginHelper(), bundle, mCallBack);
     }
     

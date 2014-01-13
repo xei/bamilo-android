@@ -5,7 +5,6 @@ package pt.rocket.view.fragments;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.EnumSet;
 
 import org.holoeverywhere.widget.TextView;
@@ -14,14 +13,11 @@ import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.LogOut;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
-import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.components.NavigationListComponent;
-import pt.rocket.framework.objects.ProductRatingPage;
 import pt.rocket.framework.objects.ShoppingCart;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.helpers.GetCategoriesHelper;
 import pt.rocket.helpers.NavigationListHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.JumiaApplication;
@@ -342,6 +338,7 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
                 .findViewById(R.id.slide_menu_scrollable_container);
 
         for (NavigationListComponent component : components) {
+            Log.i(TAG, "code1 creating component : "+component.getElementText());
             // Basket
             ViewGroup viewGroup = scrollableContainer;
             // if (component.getElementId() == 7 && component.getElementText().equals("Basket"))
@@ -697,7 +694,7 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
 
         @Override
         public void onRequestComplete(Bundle bundle) {
-
+            onSuccessEvent(bundle);
         }
     };
 }
