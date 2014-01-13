@@ -51,10 +51,11 @@ public class GetApiInfoHelper extends BaseHelper {
     
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
-        android.util.Log.d("TRACK", "parseResponseBundle GetApiInfoHelper");
+        android.util.Log.i(TAG, "code1 parseResponseBundle GetApiInfoHelper "+ jsonObject.toString());
         
         JSONArray sessionJSONArray = jsonObject
                 .optJSONArray(RestConstants.JSON_DATA_TAG);
+        android.util.Log.i(TAG, "code1  GetApiInfoHelper "+ sessionJSONArray.toString());
         ArrayList<Section> outDatedSections = null;
         if (sessionJSONArray != null) {
             List<Section> oldSections = SectionsTablesHelper
@@ -79,7 +80,7 @@ public class GetApiInfoHelper extends BaseHelper {
                 && outDatedSections.size() != 0) {
             clearOutDatedMainSections(outDatedSections, EventType.GET_API_INFO);
         }
-        
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_API_INFO);
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, info);
         bundle.putParcelableArrayList(API_INFO_OUTDATEDSECTIONS, outDatedSections);
 
@@ -202,10 +203,19 @@ public class GetApiInfoHelper extends BaseHelper {
         return null;
     }
     
-    @Override   
+    @Override
     public Bundle parseErrorBundle(Bundle bundle) {
-    	android.util.Log.d("TRACK", "parseErrorBundle GetApiInfoHelper");
-        bundle.putString(Constants.BUNDLE_URL_KEY, " GetCategories");
+        android.util.Log.d(TAG, "parseErrorBundle GetTeasersHelper");
+     
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_API_INFO);
+        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
+        return bundle;
+    }
+
+    @Override
+    public Bundle parseResponseErrorBundle(Bundle bundle) {
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_API_INFO);
+        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }
 }

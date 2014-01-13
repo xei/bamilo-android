@@ -20,6 +20,7 @@ import pt.rocket.framework.interfaces.IMetaData;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.ShoppingCart;
 import pt.rocket.framework.objects.VersionInfo;
+import pt.rocket.framework.rest.RestClientSingleton;
 import pt.rocket.framework.service.IRemoteService;
 import pt.rocket.framework.service.IRemoteServiceCallback;
 import pt.rocket.framework.service.RemoteService;
@@ -43,6 +44,7 @@ import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.os.RemoteException;
 import de.akquinet.android.androlog.Log;
 
@@ -51,14 +53,14 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     private static final String TAG = JumiaApplication.class.getSimpleName();
 
     public static JumiaApplication INSTANCE;
-    
+    boolean mIsBound;
     /**
      * Account Variables
      */
-    private CustomerUtils mCustomerUtils; 
+    private CustomerUtils mCustomerUtils;
     private boolean loggedIn = false;
     private Integer shopId = null;
-    
+
     /**
      * General Persistent Variables
      */
@@ -66,113 +68,126 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     private CompleteProduct currentProduct = null;
     private VersionInfo mVersionInfo;
     
+    boolean resendInitializationSignal = false;
+
     /**
      * Cart
      */
     private Map<String, Map<String, String>> itemSimpleDataRegistry =
-            new HashMap<String, Map<String,String>>();
+            new HashMap<String, Map<String, String>>();
     private ShoppingCart cart;
-    
-    
+
     /**
      * Forms
      */
     private HashMap<String, FormData> formDataRegistry = new HashMap<String, FormData>();
-    
+
     public static final SingletonMap<ApplicationComponent> COMPONENTS =
             new SingletonMap<ApplicationComponent>(new UrbanAirshipComponent(),
                     new ImageLoaderComponent(), new DarwinComponent());
-    
-    private IRemoteService mService;
+
     /**
      * The md5 registry
      */
     public HashMap<String, IResponseCallback> responseCallbacks;
 
     public static int SHOP_ID = -1;
-    
+
     private boolean isInitializing = false;
-
-    private IResponseCallback initListener;
-
-    private Bundle lastInitEvent;
+    private Handler resendHandler;
+    private Message resendMsg;
 
     @Override
     public void onCreate() {
+        doBindService();
         Log.init(getApplicationContext());
-        bindService(new Intent(this, RemoteService.class), mConnection, Context.BIND_AUTO_CREATE);
+        Log.d(TAG, "onCreate");
         INSTANCE = this;
+
+//        init(false);
         responseCallbacks = new HashMap<String, IResponseCallback>();
-        init(false);
-        
         // Get the current shop id
         SHOP_ID = ShopPreferences.getShopId(getApplicationContext());
         setItemSimpleDataRegistry(new HashMap<String, Map<String, String>>());
         setCart(null);
-        
+
         setFormDataRegistry(new HashMap<String, FormData>());
+
     }
 
-    public synchronized void init(boolean isReInit) {
+    public synchronized void init(boolean isReInit, Handler initializationHandler) {
         isInitializing = true;
         Log.d(TAG, "Starting initialisation phase");
         AnalyticsGoogle.clearCheckoutStarted();
         for (ApplicationComponent component : COMPONENTS.values()) {
             ErrorCode result = component.init(this);
             if (result != ErrorCode.NO_ERROR) {
-                handleEvent(ErrorCode.REQUIRES_USER_INTERACTION);
+                
+                handleEvent(ErrorCode.REQUIRES_USER_INTERACTION, null, initializationHandler);
                 return;
             }
         }
+
         CheckVersion.clearDialogSeenInLaunch(getApplicationContext());
-//        InitializeEvent event = new InitializeEvent(EnumSet.noneOf(EventType.class));
-//        if ( isReInit ) {
-//            event.metaData.putBoolean( IMetaData.MD_IGNORE_CACHE, true);
-//        }
-//        EventManager.getSingleton().triggerRequestEvent( event );
+        handleEvent(ErrorCode.NO_ERROR, EventType.INITIALIZE, initializationHandler);
+        // InitializeEvent event = new InitializeEvent(EnumSet.noneOf(EventType.class));
+        // if ( isReInit ) {
+        // event.metaData.putBoolean( IMetaData.MD_IGNORE_CACHE, true);
+        // }
+        // EventManager.getSingleton().triggerRequestEvent( event );
         CheckVersion.init(getApplicationContext());
     }
 
-    public synchronized void waitForInitResult(IResponseCallback listener, boolean isReInit) {
-        if (lastInitEvent != null) {
-            Log.d(TAG, "Informing listener about last init event " + lastInitEvent);
-            listener.onRequestComplete(lastInitEvent);
-            lastInitEvent = null;
-            return;
-        } else {
-            this.initListener = listener;
-            if (!isInitializing) {
-                init(isReInit);
-            }
-        }
-    }
-    
-    public synchronized void clearInitListener() {
-        initListener = null;
-    }
+//    public synchronized void waitForInitResult(IResponseCallback listener, boolean isReInit) {
+//        if (lastInitEvent != null) {
+//            Log.d(TAG, "Informing listener about last init event " + lastInitEvent);
+//            listener.onRequestComplete(lastInitEvent);
+//            lastInitEvent = null;
+//            return;
+//        } else {
+//            Log.d(TAG, "Informing listener " + isInitializing);
+//            this.initListener = listener;
+//            if (!isInitializing) {
+//                init(isReInit);
+//            }
+//        }
+//    }
 
-    public synchronized void handleEvent(ErrorCode errorType) {
+
+    public synchronized void handleEvent(ErrorCode errorType, EventType eventType, Handler initializationHandler) {
         isInitializing = false;
         Bundle bundle = new Bundle();
         bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, errorType);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, eventType);
         Log.d(TAG, "Handle initialization result: " + errorType);
-        if (initListener != null) {
-            Log.d(TAG, "Informing initialisation listener: " + initListener);
-            initListener.onRequestComplete(bundle);
-        } else {
-            this.lastInitEvent = bundle;
+        Message msg = new Message();
+        msg.obj = bundle;
+        if(eventType == EventType.INITIALIZE && errorType == ErrorCode.NO_ERROR && ServiceSingleton.getInstance().getService() == null ){
+            resendInitializationSignal = true;
+            resendHandler = initializationHandler;
+            resendMsg = msg;
+            doBindService();
+            return;
         }
+
+        initializationHandler.sendMessage(msg);
     }
 
-    public void registerFragmentCallback(IRemoteServiceCallback mCallback){
-        mService = ServiceSingleton.getInstance().getService();
-        
+    public void registerFragmentCallback(IRemoteServiceCallback mCallback) {
+        if (mCallback == null) {
+            Log.i(TAG, "mCallback is null");
+        }
+        if (ServiceSingleton.getInstance().getService() == null) {
+            Log.i(TAG, "ServiceSingleton.getInstance().getService() is null");
+        }
         try {
-            mService.registerCallback(mCallback);
+            ServiceSingleton.getInstance().getService().registerCallback(mCallback);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
     }
+
+    
     
     /**
      * Triggers the request for a new api call
@@ -216,29 +231,26 @@ public class JumiaApplication extends Application implements ExceptionCallback {
         return md5;
     }
 
-    
-    
-    public void sendRequest(Bundle bundle){
+    public void sendRequest(Bundle bundle) {
         try {
-            mService.sendRequest(bundle);
+            ServiceSingleton.getInstance().getService().sendRequest(bundle);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
     }
-    
+
     /**
      * Method called then the activity is connected to the service
      */
     protected void onServiceActivation() {
 
     }
-    
+
     @Override
     public void lastBreath(Exception arg0) {
-              
+
     }
-    
-    
+
     /**
      * @return the ratingOptions
      */
@@ -247,12 +259,12 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     }
 
     /**
-     * @param ratingOptions the ratingOptions to set
+     * @param ratingOptions
+     *            the ratingOptions to set
      */
     public void setRatingOptions(HashMap<String, HashMap<String, String>> ratingOptions) {
         this.ratingOptions = ratingOptions;
     }
-
 
     /**
      * @return the currentProduct
@@ -262,12 +274,12 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     }
 
     /**
-     * @param currentProduct the currentProduct to set
+     * @param currentProduct
+     *            the currentProduct to set
      */
     public void setCurrentProduct(CompleteProduct currentProduct) {
         this.currentProduct = currentProduct;
     }
-
 
     /**
      * @return the mVersionInfo
@@ -277,30 +289,30 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     }
 
     /**
-     * @param mVersionInfo the mVersionInfo to set
+     * @param mVersionInfo
+     *            the mVersionInfo to set
      */
     public void setVersionInfo(VersionInfo mVersionInfo) {
         this.mVersionInfo = mVersionInfo;
     }
 
-
     /**
      * @return the mCustomerUtils
      */
     public CustomerUtils getCustomerUtils() {
-        if(mCustomerUtils == null){
+        if (mCustomerUtils == null) {
             mCustomerUtils = new CustomerUtils(getApplicationContext());
         }
         return mCustomerUtils;
     }
 
     /**
-     * @param mCustomerUtils the mCustomerUtils to set
+     * @param mCustomerUtils
+     *            the mCustomerUtils to set
      */
     public void setCustomerUtils(CustomerUtils mCustomerUtils) {
         this.mCustomerUtils = mCustomerUtils;
     }
-
 
     /**
      * @return the cart
@@ -310,12 +322,12 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     }
 
     /**
-     * @param cart the cart to set
+     * @param cart
+     *            the cart to set
      */
     public void setCart(ShoppingCart cart) {
         this.cart = cart;
     }
-
 
     /**
      * @return the itemSimpleDataRegistry
@@ -325,12 +337,12 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     }
 
     /**
-     * @param itemSimpleDataRegistry the itemSimpleDataRegistry to set
+     * @param itemSimpleDataRegistry
+     *            the itemSimpleDataRegistry to set
      */
     public void setItemSimpleDataRegistry(Map<String, Map<String, String>> itemSimpleDataRegistry) {
         this.itemSimpleDataRegistry = itemSimpleDataRegistry;
     }
-
 
     /**
      * @return the formDataRegistry
@@ -340,17 +352,35 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     }
 
     /**
-     * @param formDataRegistry the formDataRegistry to set
+     * @param formDataRegistry
+     *            the formDataRegistry to set
      */
     public void setFormDataRegistry(HashMap<String, FormData> formDataRegistry) {
         this.formDataRegistry = formDataRegistry;
     }
-
-
+    
+    public void doBindService() {
+        // Establish a connection with the service.  We use an explicit
+        // class name because we want a specific service implementation that
+        // we know will be running in our own process (and thus won't be
+        // supporting component replacement by other applications).
+        bindService(new Intent(this, 
+                RemoteService.class), mConnection, Context.BIND_AUTO_CREATE);
+        mIsBound = true;
+    }
+    
+    public void doUnbindService() {
+        if (mIsBound) {
+            // Detach our existing connection.
+            unbindService(mConnection);
+            mIsBound = false;
+        }
+    }
+    
     /**
      * Service Stuff
      */
-    
+
     public ServiceConnection mConnection = new ServiceConnection() {
 
         @Override
@@ -366,11 +396,12 @@ public class JumiaApplication extends Application implements ExceptionCallback {
             // service through an IDL interface, so get a client-side
             // representation of that from the raw service object.
             Log.i(TAG, "onServiceConnected");
-            mService = IRemoteService.Stub.asInterface(service);
-            
+            ServiceSingleton.getInstance().setService(IRemoteService.Stub.asInterface(service));
+            if(resendInitializationSignal){
+                resendHandler.sendMessage(resendMsg);
+                resendInitializationSignal = false;
+            }
         }
     };
     
-
-
 }

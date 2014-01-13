@@ -32,6 +32,8 @@ public class ServiceSingleton {
         return mService;
     }
 
+    
+    
     public void setResponseCallbacks(HashMap<String, IResponseCallback> responseMap) {
         responseCallbacks = responseMap;
     }

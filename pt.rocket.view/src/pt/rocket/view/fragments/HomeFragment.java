@@ -522,7 +522,7 @@ public class HomeFragment extends BaseFragment {
         switch (eventType) {
         case GET_TEASERS_EVENT:
             isFirstBoot = false;
-            proccessResult((Collection<? extends Homepage>) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY));
+            proccessResult((Collection<? extends Homepage>) bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY));
             Log.i(TAG, "code1 checkversion called");
             configureLayout();
             break;

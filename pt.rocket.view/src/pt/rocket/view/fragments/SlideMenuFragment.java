@@ -159,7 +159,9 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
              * 
              * @author sergiopereira
              */
-            trigger();
+            Log.i(TAG, "slidemenu trigger");
+            if(JumiaApplication.INSTANCE.SHOP_ID >= 0)
+                trigger();
             // triggerContentEvent(new
             // RequestEvent(EventType.GET_NAVIGATION_LIST_COMPONENTS_EVENT));
 

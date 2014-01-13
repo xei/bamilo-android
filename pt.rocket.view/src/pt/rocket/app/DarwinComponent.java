@@ -11,6 +11,7 @@ import pt.rocket.view.ChangeCountryFragmentActivity;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 /**
  * @author nutzer2
@@ -18,6 +19,8 @@ import android.content.SharedPreferences;
  */
 public class DarwinComponent extends ApplicationComponent {
     
+    private static final String TAG = DarwinComponent.class.getName();
+
     /* (non-Javadoc)
      * @see pt.rocket.app.ApplicationComponent#init(android.app.Application)
      */
@@ -38,8 +41,10 @@ public class DarwinComponent extends ApplicationComponent {
         int shopId = sharedPrefs.getInt(ChangeCountryFragmentActivity.KEY_COUNTRY, -1);
         boolean isChangeShop = sharedPrefs.getBoolean(ChangeCountryFragmentActivity.KEY_COUNTRY_CHANGED, false);
         if (shopId == -1) {
+            Log.i(TAG, "DarwinComponent 1");
             return ErrorCode.REQUIRES_USER_INTERACTION;
         }
+        Log.i(TAG, "DarwinComponent shop id is : "+ shopId);
         if (Darwin.initialize(DarwinMode.DEBUG, app.getApplicationContext(), shopId, isChangeShop)) {
             return ErrorCode.NO_ERROR;
         }

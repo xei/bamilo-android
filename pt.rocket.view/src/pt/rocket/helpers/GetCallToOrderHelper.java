@@ -28,6 +28,7 @@ public class GetCallToOrderHelper extends BaseHelper {
         Bundle bundle = new Bundle();
         bundle.putString(Constants.BUNDLE_URL_KEY, EventType.GET_CALL_TO_ORDER_PHONE.action);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
+        bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_NOT_PRIORITARY);
         bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
         return bundle;
     }
@@ -42,8 +43,9 @@ public class GetCallToOrderHelper extends BaseHelper {
             phone = jsonObject.optString(RestConstants.JSON_CALL_PHONE_TAG).split("-")[0];
         }
 
-        // FIXME next line is just for test porpouse, to delete
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_CALL_TO_ORDER_PHONE);
         bundle.putString(Constants.BUNDLE_URL_KEY, phone);
+        
         return bundle;
     }
 
@@ -52,8 +54,15 @@ public class GetCallToOrderHelper extends BaseHelper {
         // TODO Auto-generated method stub
         android.util.Log.d("TRACK", "parseErrorBundle GetTeasersHelper");
 
-        // FIXME next line is just for test porpouse, to delete
-        bundle.putString(Constants.BUNDLE_URL_KEY, " GetTeasersHelper");
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_CALL_TO_ORDER_PHONE);
+        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
+        return bundle;
+    }
+    
+    @Override
+    public Bundle parseResponseErrorBundle(Bundle bundle) {
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_CALL_TO_ORDER_PHONE);
+        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }
 

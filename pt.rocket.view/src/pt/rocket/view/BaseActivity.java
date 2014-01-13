@@ -20,6 +20,7 @@ import pt.rocket.framework.objects.ShoppingCart;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.service.IRemoteService;
 import pt.rocket.framework.service.IRemoteServiceCallback;
+import pt.rocket.framework.service.RemoteService;
 import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
@@ -43,11 +44,14 @@ import pt.rocket.utils.dialogfragments.DialogProgressFragment;
 import pt.rocket.view.R;
 import pt.rocket.view.fragments.SlideMenuFragment;
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.os.RemoteException;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -172,7 +176,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
 	
 	private boolean initialCountry = false;
 	
-
+	private boolean mIsBound;
     
 	/**
 	 * Constructor used to initialize the navigation list component and the
@@ -203,7 +207,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+		JumiaApplication.INSTANCE.doBindService();
 		Log.d(TAG, "ON CREATE");
 		
         // Validate if is phone and force orientaion
@@ -276,7 +280,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         else
             showContent();
         
-        if (!contentEvents.contains(EventType.GET_SHOPPING_CART_ITEMS_EVENT)) {
+        if (!contentEvents.contains(EventType.GET_SHOPPING_CART_ITEMS_EVENT) && JumiaApplication.INSTANCE.SHOP_ID >= 0) {
             triggerContentEvent(new GetShoppingCartItemsHelper(), null, mIResponseCallback);
 //            EventManager.getSingleton().triggerRequestEvent(GetShoppingCartItemsEvent.GET_FROM_CACHE);
         }
@@ -308,6 +312,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         super.onPause();
         // OLD FRAMEWORK
 //        EventManager.getSingleton().removeResponseListener(this, allHandledEvents);
+        JumiaApplication.INSTANCE.doUnbindService();
         isRegistered = false;
     }
 
@@ -1091,6 +1096,50 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         Log.d(getTag(), "onClosed");
     }
 
+
+//    public void doBindService() {
+//        // Establish a connection with the service.  We use an explicit
+//        // class name because we want a specific service implementation that
+//        // we know will be running in our own process (and thus won't be
+//        // supporting component replacement by other applications).
+//        bindService(new Intent(this, 
+//                RemoteService.class), mConnection, Context.BIND_ABOVE_CLIENT);
+//        mIsBound = true;
+//    }
+//    
+//    public void doUnbindService() {
+//        if (mIsBound) {
+//            // Detach our existing connection.
+//            unbindService(mConnection);
+//            mIsBound = false;
+//        }
+//    }
+//    
+    /**
+     * Service Stuff
+     */
+
+    public ServiceConnection mConnection = new ServiceConnection() {
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            Log.i(TAG, "onServiceDisconnected");
+        }
+
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            // This is called when the connection with the service has been
+            // established, giving us the service object we can use to
+            // interact with the service. We are communicating with our
+            // service through an IDL interface, so get a client-side
+            // representation of that from the raw service object.
+            Log.i(TAG, "onServiceConnected");
+            ServiceSingleton.getInstance().setService(IRemoteService.Stub.asInterface(service));
+           
+        }
+    };
+
+    
     public void unbindDrawables(View view) {
 
         try {
