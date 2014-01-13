@@ -1053,7 +1053,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
                 displayProduct(mCompleteProduct);
                 displayGallery(mCompleteProduct);
             }
-
+            getBaseActivity().showContentContainer(false);
             break;
         }
         return true;

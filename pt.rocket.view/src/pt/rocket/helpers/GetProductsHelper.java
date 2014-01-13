@@ -113,7 +113,7 @@ public class GetProductsHelper extends BaseHelper {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_PRODUCTS_EVENT);
         return bundle;
     }
     

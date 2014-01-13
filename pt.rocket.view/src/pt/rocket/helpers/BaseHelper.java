@@ -50,7 +50,7 @@ public abstract class BaseHelper {
             // removing unnecessary information from bundle
             bundle.remove(Constants.BUNDLE_RESPONSE_KEY);
             if (success) {
-                Log.d(TAG, "checkResponseForStatus");
+                Log.i(TAG, "code1 success response checkResponseForStatus");
                 return parseResponseBundle(bundle, metaData);
             } else {
             	JSONObject messagesObject = jsonObject.optJSONObject(JSONConstants.JSON_MESSAGES_TAG);
@@ -58,12 +58,14 @@ public abstract class BaseHelper {
                         .createErrorMessageMap(messagesObject);
                 bundle.putSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY, errors);
                 bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
+                Log.i(TAG, "code1 error response checkResponseForStatus : "+errors.toString());
                 return parseResponseErrorBundle(bundle);
             }
         } catch (JSONException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
             bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
+            Log.i(TAG, "code1 error response checkResponseForStatus : json error");
             return parseResponseErrorBundle(bundle);
         }
     }

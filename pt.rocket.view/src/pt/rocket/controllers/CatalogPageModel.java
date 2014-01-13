@@ -633,13 +633,13 @@ public class CatalogPageModel {
         
         @Override
         public void onRequestError(Bundle bundle) {
-            processSuccess(bundle);
+            processError(bundle);
             
         }
         
         @Override
         public void onRequestComplete(Bundle bundle) {
-            processError(bundle);
+            processSuccess(bundle);
             
         }
     };
@@ -697,6 +697,7 @@ public class CatalogPageModel {
     }
 
     private void processError(Bundle bundle) {
+        Log.i(TAG, "code1 product list on error event");
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         if (errorCode != null && pageNumber == 1) {
@@ -738,7 +739,10 @@ public class CatalogPageModel {
 
         String location = bundle.getString(IMetaData.LOCATION);
         Log.d(TAG, "Location = " + location);
-        checkRedirectFromSearch(location);
+        if(location != null){
+            checkRedirectFromSearch(location);    
+        }
+        
 
         AnalyticsGoogle.get().trackLoadTiming(R.string.gproductlist, mBeginRequestMillis);
 

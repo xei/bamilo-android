@@ -44,6 +44,7 @@ public class GetProductHelper extends BaseHelper {
         CompleteProduct product = new CompleteProduct();
         product.initialize(jsonObject);
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, product);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_PRODUCT_EVENT);
 
         return bundle;
     }
