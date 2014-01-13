@@ -53,6 +53,6 @@ public class ConfigurationConstants {
 	
 	public static final String HEADER_ACCEPT_ENCODING = "Accept-Encoding";
 	public static final String ENCODING_GZIP = "gzip";
-	public static final boolean ACTIVATE_GZIP = true;
+	public static final boolean ACTIVATE_GZIP = false;
     
 }

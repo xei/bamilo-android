@@ -27,7 +27,7 @@ public class Constants {
 	public static final String BUNDLE_ELAPSED_REQUEST_TIME = "elapsedtime";
 	public static final String BUNDLE_JSON_VALIDATION_KEY = "jsonvalidation";
 	public static final String BUNDLE_WRONG_PARAMETER_MESSAGE_KEY = "parametererrormessage";
-	
+	public static final String BUNDLE_ERROR_OCURRED_KEY = "errorocurred";
 	/**
 	 * Test bundle information - key used to pass the result of the assertion made for the generic rules
 	 */

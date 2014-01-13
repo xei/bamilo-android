@@ -62,10 +62,12 @@ public class CurrencyFormatter {
     	String codes[] = context.getResources().getStringArray( R.array.formatter_currency_codes );
     	int i;
     	for( i = 0; i < codes.length; i++ ) {
+    		Log.i(TAG, "code1 is : "+codes[i]);
     		if ( codes[i].equals( currCode))
     			break;
     	}
 
+    	Log.i(TAG, "code1 is : "+i);
     	currencyThousandsDelim = context.getResources().getStringArray(R.array.formatter_currency_thousands_delim )[i].charAt(0);
     	currencyFractionCount = Integer.parseInt( context.getResources().getStringArray(R.array.formatter_currency_fraction_count)[i]);
     	

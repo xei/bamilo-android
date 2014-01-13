@@ -103,7 +103,7 @@ public class Darwin {
 		retrieveVersionCode();
 		ShopSelector.init(context, shopId, isChangeShop);
 //		RestServiceHelper.init(context);
-		RestClientSingleton.init(context);
+		
 		// Clear Login Data
 //		ServiceManager.init(context, shopId);
 		Log.d(TAG, "Darwin is initialized with id " + shopId);

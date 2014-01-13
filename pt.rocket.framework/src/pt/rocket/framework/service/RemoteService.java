@@ -9,8 +9,10 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import pt.rocket.framework.Darwin;
 import pt.rocket.framework.network.ConfigurationConstants;
 import pt.rocket.framework.rest.RestClientSingleton;
+import pt.rocket.framework.rest.RestContract;
 //import pt.rocket.framework.tracking.TrackerManager;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.worker.RequestWorker;
@@ -19,6 +21,7 @@ import de.akquinet.android.androlog.Log;
 import android.app.Service;
 import android.content.Intent;
 import android.net.Uri;
+import android.net.Uri.Builder;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -128,11 +131,31 @@ public class RemoteService extends Service {
         }
     }
 
-    public static Uri completeUri(Uri parse) {
-        // TODO Create a method to generate the full URI
-    	Uri uri = parse;
-        return uri;
-    }
+	public static Uri completeUri( Uri uri ) {
+		if ( Darwin.logDebugEnabled) {
+			Log.d( TAG, "completeUri: uri = " + uri);
+		}
+		Builder builder = uri.buildUpon();
+		
+		if (uri.getAuthority() == null) {
+			builder.authority(RestContract.REQUEST_HOST).path(RestContract.REST_BASE_PATH + uri.getPath());
+			Log.w(TAG, "Url " + uri + " should include authority, authority and base path added");
+		}
+		
+		if(RestContract.USE_ONLY_HTTPS){
+			if ( Darwin.logDebugEnabled) {
+				Log.d(TAG, "Request type changed to https.");
+			}
+			builder.scheme("https");
+		}
+		
+		
+		uri = builder.build();
+		if ( Darwin.logDebugEnabled) {
+			Log.d(TAG, "Rebuilded uri: " + uri);
+		}
+		return uri;
+	}
     
     private static Handler mHandler = new Handler(){
     	public void handleMessage(android.os.Message msg) {

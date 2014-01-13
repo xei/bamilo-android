@@ -190,13 +190,13 @@ public final class RestClientSingleton implements HttpRoutePlanner {
      */
     public String executeGetRestUrlString(Uri uri, Handler mHandler, Bundle metaData) {
         // databaseHelper.getReadableDatabase().quer
-    	android.util.Log.d("TRACK", "executeGetRestUrlString");
+    	android.util.Log.d("TRACK", "executeGetRestUrlString : "+uri.toString()+" complete: "+RemoteService.completeUri(uri).toString());
     	
         if (ConfigurationConstants.LOG_DEBUG_ENABLED) {
             Log.d(TAG, "get: " + uri.toString());
         }
         // TODO - Create a pattern
-        HttpGet httpRequest = new HttpGet(uri.toString().replaceAll(" ", "%20"));
+        HttpGet httpRequest = new HttpGet(RemoteService.completeUri(uri).toString().replaceAll(" ", "%20"));
         return executeHttpRequest(httpRequest, mHandler, metaData);
     }
 
@@ -342,7 +342,7 @@ public final class RestClientSingleton implements HttpRoutePlanner {
         try {
             long now = System.currentTimeMillis();
             response = httpClient.execute(httpRequest, httpContext);
-//            Log.i(TAG, "HEADER => " + response.toString() + ".");
+           
             int statusCode = response.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_OK) {
                 mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.HTTP_STATUS, result, md5, priority));
@@ -402,6 +402,7 @@ public final class RestClientSingleton implements HttpRoutePlanner {
             }
             // FIXME - OutOfMemoryError
             result = EntityUtils.toString(entity);
+            Log.i(TAG, "code1 request response is: " + result.toString());
             // result =
             // org.apache.commons.io.IOUtils.toString(entity.getContent());
             // closes the stream

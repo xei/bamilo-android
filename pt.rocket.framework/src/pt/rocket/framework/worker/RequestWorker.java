@@ -8,10 +8,6 @@ import android.content.ContentValues;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Parcel;
-import android.os.Parcelable;
-import android.os.ResultReceiver;
-
 /**
  * Worker class that deals with the request call of the RestClientSingleton
  * @author josedourado

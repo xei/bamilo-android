@@ -58,6 +58,7 @@ public class RestContract {
 	private static Context context;
 
 	public static void init(Context context, int selectedId) {
+		Log.i(TAG, "initializing RestContract");
 		RestContract.context = context;
 		REQUEST_HOST = context.getResources().getStringArray(R.array.servers)[selectedId];
 		
