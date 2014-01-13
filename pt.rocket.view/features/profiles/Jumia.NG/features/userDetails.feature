@@ -2,34 +2,38 @@
 Feature: Update User feature
 
   Background:
- 	When I verify app for NG venture
-    Then I choose the Nigeria venture
-    And I wait for 10 seconds
-    Then I open the navigation menu
-    And I choose the Sign In option
+ 	Given I verify app for NG venture
+    And I choose the Nigeria venture
+    When I open the navigation menu
+    Then I choose the Sign In option
     
     
- @userdetails_update_NG
-   Scenario: update user info
-   And I wait for 5 seconds
-    Then I enter a valid username
+ 	@userdetails_update_NG
+ 	Scenario: update user info
+   	* I wait for 1 seconds
+    Given I enter a valid username
   	And I enter the password
-  	Then I press "Login Button"
-  	And I wait for 10 seconds
-    Then I open the navigation menu
-    And I wait for 5 seconds
-	And I should see sign out button
-	Then I enter My Account
-	Then I enter My User Data
-	And I wait for 5 seconds
-	And I should see my email
-	And I wait for 5 seconds
+  	And I press Login Button
+  	* I wait for 1 seconds
+    When I open the navigation menu
+	Then I should see sign out button
+	When I enter My Account
+	And I enter My User Data
+	
+	#Scenario: See the user details
+	Then I should see my email
 	And I should see my first name
-	Then I enter the new password
+	
+	#Scenario: Try different passwords
+	When I enter the new password
+	And I enter a wrong repeated password
+	And I press Save
+	Then I should see the passwords dont match error message
+	
+	#Scenario: change password success
+	When I enter the new password
 	And I enter the new repeated password
-	Then I press "Save"
-	And I wait for 10 seconds
-  	Then I open the navigation menu
-  	And I wait for 5 seconds
-	And I should see sign out button
-  	
+	And I press Save
+	Then I should see the password changed with success message
+	When I open the navigation menu
+  	Then I should see sign out button

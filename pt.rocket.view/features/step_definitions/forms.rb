@@ -86,3 +86,9 @@ Then /^I enter the new repeated password$/ do
   performAction('enter_text_into_named_field',"", @newrepeatedpassword.to_s)
   performAction('enter_text_into_named_field',@password.to_s, @newrepeatedpassword.to_s)
 end
+
+Then /^I enter a wrong repeated password$/ do 
+  performAction('enter_text_into_named_field',"", @newrepeatedpassword.to_s)
+  performAction('enter_text_into_named_field',@password.to_s+"x", @newrepeatedpassword.to_s)
+end
+

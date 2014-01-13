@@ -77,3 +77,7 @@ end
 Then /^I check Terms and Conditions$/ do
   performAction('press',@termsandconditionscheck.to_s)
 end
+
+Then /^I press Save$/ do
+  performAction('press', @save.to_s)
+end

@@ -1,14 +1,14 @@
-@MA @userdetails_MA
+@EG @userdetails_EG
 Feature: Update User feature
 
   Background:
- 	Given I verify app for MA venture
-    And I choose the Morocco venture
+ 	Given I verify app for EG venture
+    And I choose the Egypt venture
     When I open the navigation menu
     Then I choose the Sign In option
     
- 
-    @userdetails_update_MA
+    
+	@userdetails_update_EG
     Scenario: update user info
    	* I wait for 1 seconds
     Given I enter a valid username

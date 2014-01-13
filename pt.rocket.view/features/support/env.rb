@@ -42,6 +42,9 @@ def initvars
   @birthday="birthday"
   @termsandconditionscheck="Terms and Conditions"
   @termsandconditions="Terms and Conditions"
+  @password_changed_message="Password changed with success"
+  @save="Save"
+  @differentpassword="Passwords do not match"
 end
 
 
@@ -108,6 +111,7 @@ def initvars_IC
   
   @yes="Oui"
   @termsandconditions="Termes et conditions"
+  @password_changed_message="Le mot de passe a été modifié avec succès"
   
 end
 
@@ -144,6 +148,8 @@ def initvars_MA
   
   @yes="Oui"
   @termsandconditions="Termes et conditions"
+  @password_changed_message="Le mot de passe a été modifié avec succès"
+  @differentpassword="Le mot de passe ne correspond pas"
 end
 
 def initvars_NG
