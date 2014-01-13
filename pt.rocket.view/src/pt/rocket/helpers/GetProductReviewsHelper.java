@@ -15,6 +15,7 @@ import pt.rocket.framework.objects.ProductsPage;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.rest.RestContract;
 import pt.rocket.framework.utils.Constants;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
 import android.net.Uri;
 import android.os.Bundle;
@@ -73,8 +74,18 @@ public class GetProductReviewsHelper extends BaseHelper {
 
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
-        android.util.Log.d("TRACK", "parseErrorBundle GetCategoriesHelper");
-        bundle.putString(Constants.BUNDLE_URL_KEY, " GetCategories");
+        android.util.Log.d(TAG, "parseErrorBundle GetProductReviewsHelper");
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_PRODUCT_REVIEWS_EVENT);
+        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }
+
+    @Override
+    public Bundle parseResponseErrorBundle(Bundle bundle) {
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_PRODUCT_REVIEWS_EVENT);
+        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
+        return bundle;
+    }
+    
+    
 }
