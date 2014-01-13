@@ -17,6 +17,8 @@ import android.os.Bundle;
 
 public class NavigationListHelper extends BaseHelper {
 
+    private static final String TAG = NavigationListHelper.class.getSimpleName();
+    
     private ArrayList<NavigationListComponent> navComponentList;
     @Override
     public Bundle generateRequestBundle(Bundle args) {
@@ -57,10 +59,21 @@ public class NavigationListHelper extends BaseHelper {
         return bundle;
     }
 
+    
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
-        // TODO Auto-generated method stub
+        android.util.Log.d(TAG, "parseErrorBundle GetNAvListHelper");
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_NAVIGATION_LIST_COMPONENTS_EVENT);
+        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }
+
+    @Override
+    public Bundle parseResponseErrorBundle(Bundle bundle) {
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_NAVIGATION_LIST_COMPONENTS_EVENT);
+        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
+        return bundle;
+    }
+
 
 }

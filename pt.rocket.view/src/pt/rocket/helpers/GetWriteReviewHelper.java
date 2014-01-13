@@ -15,6 +15,7 @@ import pt.rocket.framework.objects.ProductsPage;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.rest.RestContract;
 import pt.rocket.framework.utils.Constants;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
 import android.net.Uri;
 import android.os.Bundle;
@@ -41,9 +42,8 @@ public class GetWriteReviewHelper extends BaseHelper {
         Uri uri = Uri.parse(args.getString(PRODUCT_URL)).buildUpon().appendQueryParameter(RestContract.REST_PARAM_RATING, "1")
                 .appendQueryParameter(RestContract.REST_PARAM_PAGE, String.valueOf(args.getInt(PAGE_NUMBER))).build();
 
-        bundle.putString(Constants.BUNDLE_URL_KEY, uri.toString());
-        bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY,
-                HelperPriorityConfiguration.IS_PRIORITARY);
+        bundle.putString(Constants.BUNDLE_URL_KEY, EventType.REVIEW_PRODUCT_EVENT.action);
+        bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
         bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
         return bundle;
@@ -71,10 +71,20 @@ public class GetWriteReviewHelper extends BaseHelper {
         return bundle;
     }
 
+    
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
-        android.util.Log.d("TRACK", "parseErrorBundle GetCategoriesHelper");
-        bundle.putString(Constants.BUNDLE_URL_KEY, " GetCategories");
+        android.util.Log.d(TAG, "parseErrorBundle GetWriteReviewHelper");
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.REVIEW_PRODUCT_EVENT);
+        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }
+
+    @Override
+    public Bundle parseResponseErrorBundle(Bundle bundle) {
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.REVIEW_PRODUCT_EVENT);
+        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
+        return bundle;
+    }
+    
 }

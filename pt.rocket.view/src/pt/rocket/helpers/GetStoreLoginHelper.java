@@ -32,18 +32,24 @@ public class GetStoreLoginHelper extends BaseHelper {
     }
 
     @Override
-    public Bundle parseErrorBundle(Bundle bundle) {
+    public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
         // TODO Auto-generated method stub
-    	android.util.Log.d("TRACK", "parseErrorBundle GetLoginHelper");
-    	//FIXME next line is just for test porpouse, to delete
-    	bundle.putString(Constants.BUNDLE_URL_KEY, " GetLoginHelper");
+        Log.i(TAG,"parseResponseBundle");
+        return bundle;
+    }
+    
+    @Override
+    public Bundle parseErrorBundle(Bundle bundle) {
+        android.util.Log.d(TAG, "parseErrorBundle GetStoreLoginHelper");
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.STORE_LOGIN);
+        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }
 
     @Override
-    public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
-        // TODO Auto-generated method stub
-        Log.i(TAG,"parseResponseBundle");
+    public Bundle parseResponseErrorBundle(Bundle bundle) {
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.STORE_LOGIN);
+        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }
 }

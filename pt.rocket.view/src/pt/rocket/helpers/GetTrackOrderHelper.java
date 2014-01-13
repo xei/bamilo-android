@@ -42,14 +42,7 @@ public class GetTrackOrderHelper extends BaseHelper {
         return bundle;
     }
 
-    @Override
-    public Bundle parseErrorBundle(Bundle bundle) {
-        // TODO Auto-generated method stub
-        android.util.Log.d("TRACK", "parseErrorBundle GetLoginHelper");
-        // FIXME next line is just for test porpouse, to delete
-        bundle.putString(Constants.BUNDLE_URL_KEY, " GetLoginHelper");
-        return bundle;
-    }
+
 
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
@@ -62,4 +55,20 @@ public class GetTrackOrderHelper extends BaseHelper {
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, mOrderTracker);
         return bundle;
     }
+    
+    @Override
+    public Bundle parseErrorBundle(Bundle bundle) {
+        android.util.Log.d(TAG, "parseErrorBundle GetTrackOrderHelper");
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.TRACK_ORDER_EVENT);
+        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
+        return bundle;
+    }
+
+    @Override
+    public Bundle parseResponseErrorBundle(Bundle bundle) {
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.TRACK_ORDER_EVENT);
+        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
+        return bundle;
+    }
+    
 }

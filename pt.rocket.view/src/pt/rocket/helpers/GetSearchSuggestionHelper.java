@@ -72,11 +72,19 @@ public class GetSearchSuggestionHelper extends BaseHelper {
 
         return bundle;
     }
-
-    @Override   
+    
+    @Override
     public Bundle parseErrorBundle(Bundle bundle) {
-    	android.util.Log.d("TRACK", "parseErrorBundle GetCategoriesHelper");
-        bundle.putString(Constants.BUNDLE_URL_KEY, " GetCategories");
+        android.util.Log.d(TAG, "parseErrorBundle GetSuggestionsHelper");
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_SEARCH_SUGGESTIONS_EVENT);
+        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
+        return bundle;
+    }
+
+    @Override
+    public Bundle parseResponseErrorBundle(Bundle bundle) {
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_SEARCH_SUGGESTIONS_EVENT);
+        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }
 }
