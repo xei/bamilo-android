@@ -53,13 +53,20 @@ public class GetCustomerHelper extends BaseHelper {
         return bundle;
     }
     
-
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
-        android.util.Log.d("TRACK", "parseErrorBundle GetCustomerHelper");
-    
-        bundle.putString(Constants.BUNDLE_URL_KEY, " GetCustomerHelper");
+        android.util.Log.d(TAG, "parseErrorBundle GetCustomerHelper");
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_CUSTOMER);
+        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }
+
+    @Override
+    public Bundle parseResponseErrorBundle(Bundle bundle) {
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_CUSTOMER);
+        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
+        return bundle;
+    }
+    
 
 }

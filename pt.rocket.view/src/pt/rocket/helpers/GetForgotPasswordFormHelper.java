@@ -16,8 +16,6 @@ import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
-import pt.rocket.pojo.ITargeting;
-import pt.rocket.utils.JSONConstants;
 import pt.rocket.utils.JumiaApplication;
 import android.os.Bundle;
 import de.akquinet.android.androlog.Log;
@@ -75,14 +73,19 @@ public class GetForgotPasswordFormHelper extends BaseHelper {
 
         return bundle;
     }
-
+    
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
-        // TODO Auto-generated method stub
-        android.util.Log.d("TRACK", "parseErrorBundle GetTeasersHelper");
+        android.util.Log.d(TAG, "parseErrorBundle GetForgotPasswordFormHelper");
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_FORGET_PASSWORD_FORM_EVENT);
+        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
+        return bundle;
+    }
 
-        // FIXME next line is just for test porpouse, to delete
-        bundle.putString(Constants.BUNDLE_URL_KEY, " GetTeasersHelper");
+    @Override
+    public Bundle parseResponseErrorBundle(Bundle bundle) {
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_FORGET_PASSWORD_FORM_EVENT);
+        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }
 

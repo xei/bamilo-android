@@ -14,10 +14,8 @@ import pt.rocket.framework.utils.CustomerUtils;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
 import pt.rocket.utils.JumiaApplication;
-
 import android.content.ContentValues;
 import android.os.Bundle;
-import android.util.Log;
 
 /**
  * Example helper
@@ -46,15 +44,6 @@ public class GetFacebookLoginHelper extends BaseHelper {
     }
 
     @Override
-    public Bundle parseErrorBundle(Bundle bundle) {
-        // TODO Auto-generated method stub
-        android.util.Log.d("TRACK", "parseErrorBundle GetLoginHelper");
-        // FIXME next line is just for test porpouse, to delete
-        bundle.putString(Constants.BUNDLE_URL_KEY, " GetLoginHelper");
-        return bundle;
-    }
-
-    @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
         if (saveCredentials) {
             JumiaApplication.INSTANCE.getCustomerUtils().storeCredentials(contentValues);
@@ -70,6 +59,22 @@ public class GetFacebookLoginHelper extends BaseHelper {
             e.printStackTrace();
         }
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, new Customer(jsonObject));
+        return bundle;
+    }
+    
+    
+    @Override
+    public Bundle parseErrorBundle(Bundle bundle) {
+        android.util.Log.d(TAG, "parseErrorBundle GetFacebookLoginHelper");
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.FACEBOOK_LOGIN_EVENT);
+        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
+        return bundle;
+    }
+
+    @Override
+    public Bundle parseResponseErrorBundle(Bundle bundle) {
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.FACEBOOK_LOGIN_EVENT);
+        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }
 }
