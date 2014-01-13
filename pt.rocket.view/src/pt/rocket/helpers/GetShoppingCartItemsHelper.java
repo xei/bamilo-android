@@ -56,15 +56,24 @@ public class GetShoppingCartItemsHelper extends BaseHelper {
         }
         JumiaApplication.INSTANCE.setCart(cart);
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, cart);
-
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_SHOPPING_CART_ITEMS_EVENT);
 
         return bundle;
     }
 
-    @Override   
+    @Override
     public Bundle parseErrorBundle(Bundle bundle) {
-    	android.util.Log.d("TRACK", "parseErrorBundle GetShoppingCartItemsHelper");
-        bundle.putString(Constants.BUNDLE_URL_KEY, " GetShoppingCartItemsHelper");
+        android.util.Log.d(TAG, "parseErrorBundle GetShoppingCartItemsHelper");
+     
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_SHOPPING_CART_ITEMS_EVENT);
+        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
+        return bundle;
+    }
+
+    @Override
+    public Bundle parseResponseErrorBundle(Bundle bundle) {
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_SHOPPING_CART_ITEMS_EVENT);
+        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }
 }

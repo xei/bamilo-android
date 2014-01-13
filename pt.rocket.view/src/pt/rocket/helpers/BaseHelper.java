@@ -57,11 +57,13 @@ public abstract class BaseHelper {
                 HashMap<String, List<String>> errors = Errors
                         .createErrorMessageMap(messagesObject);
                 bundle.putSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY, errors);
+                bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
                 return parseResponseErrorBundle(bundle);
             }
         } catch (JSONException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+            bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
             return parseResponseErrorBundle(bundle);
         }
     }
