@@ -781,8 +781,8 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
       values.put("sku", item.getConfigSimpleSKU());
       values.put("quantity", "" + item.getQuantity());
       Bundle bundle = new Bundle();
-      bundle.putString(GetShoppingCartAddItemHelper.ADD_ITEM, mCompleteProductUrl);
-      triggerContentEvent(new GetShoppingCartAddItemHelper(), bundle, responseCallback);
+      bundle.putParcelable(GetShoppingCartAddItemHelper.ADD_ITEM, values);
+      triggerContentEventWithNoLoading(new GetShoppingCartAddItemHelper(), bundle, responseCallback);
   }
 
     private void showChooseReminder() {
@@ -794,6 +794,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
     }
 
     private void displayProduct(CompleteProduct product) {
+        JumiaApplication.INSTANCE.setCurrentProduct(product);
         mCompleteProduct = product;
         mCompleteProductUrl = product.getUrl();
         ((BaseActivity) getActivity()).setTitle(mCompleteProduct.getBrand() + " " + mCompleteProduct.getName());
@@ -1020,13 +1021,11 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
         @Override
         public void onRequestError(Bundle bundle) {
             onErrorEvent(bundle);
-            
         }
         
         @Override
         public void onRequestComplete(Bundle bundle) {
             onSuccessEvent(bundle);
-            
         }
     };
     
@@ -1035,6 +1034,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
         Log.d(TAG, "onSuccessEvent: type = " + eventType);
         switch (eventType) {
         case ADD_ITEM_TO_SHOPPING_CART_EVENT:
+            ((BaseActivity) getActivity()).dismissProgress();
             mAddToCartButton.setEnabled(true);
             executeAddToShoppingCartCompleted();
             break;
@@ -1053,6 +1053,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
                 displayProduct(mCompleteProduct);
                 displayGallery(mCompleteProduct);
             }
+            
             getBaseActivity().showContentContainer(false);
             break;
         }

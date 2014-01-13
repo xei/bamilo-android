@@ -727,9 +727,10 @@ public class CatalogPageModel {
 
         // Get Products Event
         ProductsPage productsPage = (ProductsPage) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-        Log.d(TAG, "onSuccessEvent: products on page = " + productsPage.getProducts().size() +
-                " total products = " + productsPage.getTotalProducts());
+
         if (productsPage != null && productsPage.getTotalProducts() > 0) {
+            Log.d(TAG, "onSuccessEvent: products on page = " + productsPage.getProducts().size() +
+                    " total products = " + productsPage.getTotalProducts());
             totalProducts = productsPage.getTotalProducts();
             //set total items lable
             
