@@ -10,20 +10,28 @@
         android:layout_height="wrap_content"
         android:background="@drawable/titlebar"
         android:gravity="center_vertical"
-        android:visibility="gone" >
+        android:visibility="visible" >
 
         <org.holoeverywhere.widget.TextView
             android:id="@+id/title"
             style="@style/headline_title"
             android:layout_width="wrap_content"
-            android:fontFamily="roboto_bold" />
+            android:layout_alignParentLeft="true"
+            android:ellipsize="end"
+            android:fontFamily="roboto_bold"
+            android:maxLines="1"
+            android:paddingRight="85dp"
+            android:singleLine="true" />
 
         <org.holoeverywhere.widget.TextView
             android:id="@+id/totalProducts"
             style="@style/headline_totalItems"
-            android:layout_width="match_parent"
-            android:layout_toRightOf="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_alignEnd="@id/title"
+            android:layout_alignParentEnd="@id/title"
+            android:layout_alignRight="@id/title"
             android:fontFamily="roboto_regular"
+            android:gravity="left"
             android:textColor="@color/orange_basic" />
     </RelativeLayout>
     <!-- Main Content Layout -->
