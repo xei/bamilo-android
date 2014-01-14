@@ -66,3 +66,7 @@ end
 Then /^I should see the password changed with success message$/ do
   performAction('assert_text', @password_changed_message.to_s, true)
 end
+
+Then /^I should see the password is to short message$/ do
+  performAction('assert_text', @new_pass_short.to_s, true)
+end

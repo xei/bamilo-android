@@ -1,4 +1,4 @@
-@IC @login_IC @login
+
 Feature: Login feature
 
   Background:

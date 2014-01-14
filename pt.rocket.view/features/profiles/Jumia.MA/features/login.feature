@@ -1,4 +1,4 @@
-@MA @login_MA
+
 Feature: Login feature
 
   Background:

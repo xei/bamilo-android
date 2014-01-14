@@ -5,7 +5,15 @@
 # click_on_text
 # press
 
+Then /^I go to home$/ do
+  performAction('click_on_text',@home.to_s)
+end
+
 Then /^I open the navigation menu$/ do 
+  performAction('click_on_view_by_id',@navigation.to_s)
+end
+
+Then /^I close the navigation menu$/ do 
   performAction('click_on_view_by_id',@navigation.to_s)
 end
 
@@ -56,6 +64,11 @@ end
 
 Then /^I press Terms and Conditions$/ do
   performAction('click_on_text',@termsandconditions.to_s)
+end
+
+Then /^I select the country$/ do
+  performAction('click_on_text',@venture_name.to_s)
+  puts @venture_name.to_s
 end
 
 Then /^I go to cart$/ do 

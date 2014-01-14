@@ -1,4 +1,4 @@
-@KE @login_KE @login
+
 Feature: Login feature
 
   Background:

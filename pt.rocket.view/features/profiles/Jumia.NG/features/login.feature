@@ -1,4 +1,4 @@
-@NG @login_NG
+
 Feature: Login feature
 
   Background:
