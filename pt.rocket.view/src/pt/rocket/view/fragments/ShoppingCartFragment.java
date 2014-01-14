@@ -141,11 +141,12 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
      */
     public ShoppingCartFragment() {
         super(EnumSet.of(EventType.GET_SHOPPING_CART_ITEMS_EVENT),
-                EnumSet.of(EventType.REMOVE_ITEM_FROM_SHOPPING_CART_EVENT,
-                        EventType.CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT), EnumSet
-                        .of(MyMenuItem.SEARCH),
+                EnumSet.of(EventType.REMOVE_ITEM_FROM_SHOPPING_CART_EVENT, 
+                           EventType.CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT), 
+                EnumSet.of(MyMenuItem.SEARCH),
                 NavigationAction.Basket,
                 R.string.shoppingcart_title);
+        
         this.setRetainInstance(true);
     }
 
@@ -357,8 +358,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         items = new ArrayList<ShoppingCartItem>(cart.getCartItems().values());
         priceTotal.setText(cart.getCartValue());
 
-        String articleString = getResources().getQuantityString(
-                R.plurals.shoppingcart_text_article, cart.getCartCount());
+        String articleString = getResources().getQuantityString(R.plurals.shoppingcart_text_article, cart.getCartCount());
         articlesCount.setText(cart.getCartCount() + " " + articleString);
         if (items.size() == 0) {
             showNoItems();
@@ -389,6 +389,8 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
                 values.simpleData = item.getSimpleData();
                 values.variation = item.getVariation();
                 itemsValues.add(values);
+                
+                Log.i(TAG, "PROD NUM: " + i + " " + values.product_name);
 
                 if (!item.getPrice().equals(item.getSpecialPrice())) {
                     cartHasReducedItem = true;
@@ -484,8 +486,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         bundle.putString(ConstantsIntentExtra.CONTENT_URL, items.get(position).getProductUrl());
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcart_prefix);
         bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
-        ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle,
-                FragmentController.ADD_TO_BACK_STACK);
+        ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
     private void checkMinOrderAmount() {

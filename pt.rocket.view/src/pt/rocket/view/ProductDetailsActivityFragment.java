@@ -100,9 +100,10 @@ import de.akquinet.android.androlog.Log;
  * @description This class displays the product detail screen
  * 
  */
-public class ProductDetailsActivityFragment extends BaseFragment implements
-        OnClickListener, OnDialogListListener {
+public class ProductDetailsActivityFragment extends BaseFragment implements OnClickListener, OnDialogListListener {
+    
     private final static String TAG = LogTagHelper.create(ProductDetailsActivityFragment.class);
+    
     private final static int NO_SIMPLE_SELECTED = -1;
     private final static String VARIATION_PICKER_ID = "variation_picker";
 
@@ -178,8 +179,9 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
     
     private static ProductDetailsActivityFragment mProductDetailsActivityFragment;
     public ProductDetailsActivityFragment() {
-        super(EnumSet.of(EventType.GET_PRODUCT_EVENT), EnumSet
-                .of(EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT), EnumSet.of(MyMenuItem.SHARE),
+        super(EnumSet.of(EventType.GET_PRODUCT_EVENT), 
+                EnumSet.of(EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT), 
+                EnumSet.of(MyMenuItem.SHARE),
                 NavigationAction.Products, 0);
     }
 
@@ -230,8 +232,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sharedPreferences = getActivity().getSharedPreferences(
-                ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        sharedPreferences = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         mVariationsListPosition = sharedPreferences.getInt(VARIATION_LIST_POSITION, -1);
         mSelectedSimple = sharedPreferences.getInt(SELECTED_SIMPLE_POSITION, NO_SIMPLE_SELECTED);
     }
@@ -272,7 +273,11 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
     private void init() {
         mContext = getActivity();
         Bundle bundle = getArguments();
+        
         mCompleteProductUrl = bundle.getString(ConstantsIntentExtra.CONTENT_URL);
+        
+        Log.i(TAG, "RECEIVED PROD URL: " + mCompleteProductUrl);
+        
         if (mCompleteProductUrl == null) {
             getActivity().onBackPressed();
             return;
