@@ -3,8 +3,6 @@ package pt.rocket.controllers;
 import java.util.ArrayList;
 import java.util.Collection;
 
-//import org.holoeverywhere.widget.TextView;
-
 import pt.rocket.framework.objects.Product;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.view.R;
@@ -22,10 +20,6 @@ import android.widget.TextView;
 import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxStatus;
 import com.androidquery.callback.BitmapAjaxCallback;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
-import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 
 import de.akquinet.android.androlog.Log;
 
@@ -64,8 +58,6 @@ public class ProductsListAdapter extends BaseAdapter {
     private LayoutInflater inflater;
 
     private Context context;
-
-    private boolean canIScroll = true;
 
     /**
      * A representation of each item on the list

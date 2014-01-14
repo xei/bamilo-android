@@ -8,7 +8,6 @@ import java.util.EnumSet;
 
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.GalleryPagerAdapter;
-import pt.rocket.controllers.ProductImagesAdapter;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.event.EventType;
@@ -50,8 +49,6 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
     private static final String TAG = LogTagHelper.create(ProductImageGalleryFragment.class);
 
     private static ProductImageGalleryFragment productImageGalleryFragment;
-
-    private ProductImagesAdapter mImageListAdapter;
 
     // private NormalizingViewPagerWrapper mPagerWrapper;
 
@@ -236,6 +233,8 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
                         mViewPager.toggleJumiaScroller(false);
                         mViewPager.setCurrentItem(1);
                     }
+                    
+                    //Log.d(TAG, "PAGER NEW POS: " + currentPosition);
                 }
             });
 
