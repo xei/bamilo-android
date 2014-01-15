@@ -524,6 +524,7 @@ public class HomeFragment extends BaseFragment {
     
     
     
+    @SuppressWarnings("unchecked")
     protected boolean onSuccessEvent(Bundle bundle) {
         getBaseActivity().handleSuccessEvent(bundle);
         Log.i(TAG,"ON onSuccessEvent");
