@@ -879,9 +879,17 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         if (titleView == null)
             return;
         if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(subtitle)) {
+            // Set text and force measure
+            subtitleView.setText((String) subtitle);
+            subtitleView.measure(0, 0);            
+            // Get the subtitle width
+            int subWidth = subtitleView.getMeasuredWidth();
+            int midPadding = getResources().getDimensionPixelSize(R.dimen.margin_mid);
+            Log.i(TAG, "SUB WITH: " + subWidth + " PAD MID:" + midPadding);
+            // Set title
             titleView.setText(title);
-            subtitleView.setText(subtitle);
-            
+            titleView.setPadding(midPadding, midPadding, subWidth, 0);
+            // Set visibility
             header_title.setVisibility(View.VISIBLE);
             subtitleView.setVisibility(View.VISIBLE);
         } else if (TextUtils.isEmpty(title)){

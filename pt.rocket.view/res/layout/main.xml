@@ -12,6 +12,8 @@
         android:gravity="center_vertical"
         android:visibility="visible" >
 
+		<!-- The right padding is calculated by code -->
+
         <org.holoeverywhere.widget.TextView
             android:id="@+id/title"
             style="@style/headline_title"
@@ -20,7 +22,7 @@
             android:ellipsize="end"
             android:fontFamily="roboto_bold"
             android:maxLines="1"
-            android:paddingRight="85dp"
+            android:paddingRight="100dp"
             android:singleLine="true" />
 
         <org.holoeverywhere.widget.TextView
