@@ -492,7 +492,7 @@
     </style>
     
     <style name="headline_title" parent="@style/white_text_12sp_normal">
-        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginLeft">0dp</item>
         <item name="android:ellipsize">end</item>
@@ -504,10 +504,9 @@
     </style>
     
     <style name="headline_totalItems" parent="@style/white_text_12sp_normal">
-        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginLeft">0dp</item>
-        <item name="android:ellipsize">end</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:maxLines">1</item>
 		 <item name="android:paddingRight">8dp</item>

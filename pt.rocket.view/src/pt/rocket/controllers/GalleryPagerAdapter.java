@@ -2,12 +2,11 @@ package pt.rocket.controllers;
 
 import java.util.ArrayList;
 
-import pt.rocket.app.ImageLoaderComponent;
 import pt.rocket.controllers.NormalizingViewPagerWrapper.IPagerAdapter;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.utils.JumiaApplication;
 import pt.rocket.view.R;
 import uk.co.senab.photoview.PhotoView;
+import uk.co.senab.photoview.PhotoViewAttacher;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v4.view.PagerAdapter;
@@ -17,22 +16,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 
 import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxStatus;
 import com.androidquery.callback.BitmapAjaxCallback;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 
 import de.akquinet.android.androlog.Log;
 
 public class GalleryPagerAdapter extends PagerAdapter implements IPagerAdapter {
 
     private static final String TAG = LogTagHelper.create(GalleryPagerAdapter.class);
+    
+    private final static int MIN_NUM_OF_IMAGES = 3;
+    
     private ArrayList<String> mImageUrls;
     private LayoutInflater mInflater;
     private boolean isZoomAvailable = false;
     private Context mContext;
+    private View primaryView;
 
     public GalleryPagerAdapter(Context context, ArrayList<String> imageUrls, boolean isZoomAvailable) {
         mImageUrls = imageUrls;
@@ -92,7 +94,7 @@ public class GalleryPagerAdapter extends PagerAdapter implements IPagerAdapter {
         View view = null;
         try {
             if (this.isZoomAvailable) {
-                Log.i(TAG, " full_screen_gallery ");
+                Log.i(TAG, " full_screen_gallery: " + position);
                 view = mInflater.inflate(R.layout.full_screen_gallery, container, false);
             } else {
                 view = mInflater.inflate(R.layout.image_loadable, container, false);
@@ -115,20 +117,19 @@ public class GalleryPagerAdapter extends PagerAdapter implements IPagerAdapter {
         if (this.isZoomAvailable) {
             final PhotoView imageView = (PhotoView) imageTeaserView.findViewById(R.id.image_view);
             imageView.setImageResource(R.drawable.no_image_small);
-            
+            Log.i(TAG, "LOAD PHOTO: " + imageView.getId() + " " + imageUrl);
             if (!TextUtils.isEmpty(imageUrl)) {
                 AQuery aq = new AQuery(mContext);
                 aq.id(imageView).image(imageUrl, true, true, 0, 0, new BitmapAjaxCallback() {
 
                             @Override
-                            public void callback(String url, ImageView iv, Bitmap bm,
-                                    AjaxStatus status) {
-
+                            public void callback(String url, ImageView iv, Bitmap bm, AjaxStatus status) {
                                 iv.setImageBitmap(bm);
                                 progressBar.setVisibility(View.GONE);
-
                             }
                         });
+                
+                
                 // ImageLoader
                 // .getInstance()
                 // .displayImage(
@@ -210,7 +211,51 @@ public class GalleryPagerAdapter extends PagerAdapter implements IPagerAdapter {
     public void destroyItem(ViewGroup container, int position, Object object) {
         container.removeView((View) object);
     }
-
+    
+    /*
+     * (non-Javadoc)
+     * @see android.support.v4.view.PagerAdapter#setPrimaryItem(android.view.ViewGroup, int, java.lang.Object)
+     */
+    @Override
+    public void setPrimaryItem(ViewGroup container, int position, Object object) {
+        // Check the primary view
+        resetPrimaryView(container, position, object);
+    }
+        
+    /**
+     * Force the reset of the primary image view for a product that only has one image 
+     * Fix the ticket MOBILE-3733
+     * @author sergiopereira
+     * @see <a href="https://github.com/chrisbanes/PhotoView">Github: PhotoView</a>
+     */
+    private void resetPrimaryView(ViewGroup container, int position, Object object){
+        //Log.d(TAG, "SET PRIMARY ITEM: " + position + " ITEMS: " + getRealCount() );
+        // Validate zoom support
+        if (this.isZoomAvailable && getRealCount() == MIN_NUM_OF_IMAGES) {
+            // Get the primary view and reset view
+            try {
+                primaryView = (View) object;
+                ImageView mCurrentPhotoView = (ImageView) primaryView.findViewById(R.id.image_view);
+                PhotoViewAttacher mAttacher = new PhotoViewAttacher(mCurrentPhotoView);
+                mAttacher.setScaleType(ScaleType.FIT_CENTER);
+                mAttacher = null;
+            } catch (IllegalStateException e) {
+                Log.w(TAG, "RESETING IMAGE VIEW: " + e.getMessage());
+            } catch (NullPointerException e) {
+                Log.w(TAG, "RESETING IMAGE VIEW: " + e.getMessage());
+            }
+        }
+    }
+    
+    /**
+     * Get the primary view on the view pager
+     * @return View
+     * @author sergiopereira
+     */
+    public View getPrimaryView(){
+        return primaryView;
+    }
+    
     @Override
     public int getStartVirtualPosition() {
         return 1;

@@ -36,6 +36,7 @@ import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.ServiceSingleton;
 import pt.rocket.utils.TrackerDelegator;
+import pt.rocket.utils.dialogfragments.CustomToastView;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.utils.dialogfragments.DialogProgressFragment;
 import pt.rocket.view.fragments.SlideMenuFragment;
@@ -47,6 +48,7 @@ import android.content.ServiceConnection;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.support.v4.app.DialogFragment;
@@ -61,6 +63,7 @@ import android.view.ViewStub;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.actionbarsherlock.ActionBarSherlock;
 import com.actionbarsherlock.internal.ActionBarSherlockNative;
@@ -127,6 +130,11 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     private DialogProgressFragment progressDialog;
 
     private Activity activity;
+    
+    private static final int TOAST_LENGTH_SHORT = 2000; // 2 seconds
+    
+    private boolean backPressedOnce = false;
+
 
     /**
      * Use this variable to have a more precise control on when to show the content container.
@@ -271,8 +279,8 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         }
 
         // Validate if is in landscape and tablet and forcing menu
-        if (isTabletInLandscape() && !initialCountry)
-            showMenu();
+        if(isTabletInLandscape(this) && !initialCountry)
+             showMenu();
         else
             showContent();
 
@@ -413,17 +421,16 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
 
         return result;
     }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.app.Activity#onBackPressed()
-     */
-    @Override
-    public void onBackPressed() {
-        Log.i(getTag(), "onBackPressed");
-        if (getSlidingMenu().isMenuShowing() && getSlidingMenu().isSlidingEnabled()
-                && !isTabletInLandscape()) {
+    
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onBackPressed()
+	 */
+	@Override
+	public void onBackPressed() {
+		Log.i(getTag(), "onBackPressed");
+		if (getSlidingMenu().isMenuShowing() && getSlidingMenu().isSlidingEnabled() && !isTabletInLandscape(this)) {
             showContent();
         } else {
             super.onBackPressed();
@@ -454,7 +461,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
         Log.i(TAG, "codeW : " + onChangeCountry);
         // Validate current orientation and device
-        if (isTabletInLandscape() && !onChangeCountry) {
+        if(isTabletInLandscape(this) && !onChangeCountry) {
             // Landscape mode
             slideMenuInLandscapeMode(sm);
         } else {
@@ -582,9 +589,8 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
      * 
      * @return true if yes, false otherwise
      */
-    public boolean isTabletInLandscape() {
-        if (getResources().getBoolean(R.bool.isTablet)
-                && getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+    public static boolean isTabletInLandscape(Context context){
+        if (context.getResources().getBoolean(R.bool.isTablet) && context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
             return true;
         return false;
     }
@@ -686,16 +692,15 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     /**
      * ############### SEARCH BAR #################
      */
-
-    /**
-     * Method used to set the search bar in/below the Action bar.
-     * 
-     * @param menu
-     * @author sergiopereira
-     */
-    private void setSearchBar(Menu menu) {
-        // Validate the Sliding
-        if (!isTabletInLandscape()) {
+	
+	/**
+	 * Method used to set the search bar in/below the Action bar. 
+	 * @param menu
+	 * @author sergiopereira
+	 */
+	private void setSearchBar(Menu menu) {
+	    // Validate the Sliding
+        if(!isTabletInLandscape(this)) {
             // Show search below the action bar
             findViewById(R.id.rocket_app_header_search).setVisibility(View.VISIBLE);
             // Show the normal search
@@ -923,25 +928,38 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
             header_title.setVisibility(View.GONE);
         }
     }
-
-    public void setTitleAndSubTitle(CharSequence title, CharSequence subtitle) {
+    
+    /**
+     * Method used to set the number of products
+     * @param title
+     * @param subtitle
+     */
+    public void setTitleAndSubTitle(CharSequence title,CharSequence subtitle) {
         TextView titleView = (TextView) findViewById(R.id.title);
         TextView subtitleView = (TextView) findViewById(R.id.totalProducts);
         RelativeLayout header_title = (RelativeLayout) findViewById(R.id.header_title);
-
+        
         if (titleView == null)
             return;
         if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(subtitle)) {
+            // Set text and force measure
+            subtitleView.setText((String) subtitle);
+            subtitleView.measure(0, 0);            
+            // Get the subtitle width
+            int subWidth = subtitleView.getMeasuredWidth();
+            int midPadding = getResources().getDimensionPixelSize(R.dimen.margin_mid);
+            Log.i(TAG, "SUB WITH: " + subWidth + " PAD MID:" + midPadding);
+            // Set title
             titleView.setText(title);
-            subtitleView.setText(subtitle);
-
+            titleView.setPadding(midPadding, midPadding, subWidth, 0);
+            // Set visibility
             header_title.setVisibility(View.VISIBLE);
             subtitleView.setVisibility(View.VISIBLE);
-        } else if (TextUtils.isEmpty(title)) {
+        } else if (TextUtils.isEmpty(title)){
             header_title.setVisibility(View.GONE);
         }
     }
-
+    
     public void hideTitle() {
         findViewById(R.id.header_title).setVisibility(View.GONE);
     }
@@ -1120,7 +1138,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     @Override
     public void onOpened() {
         Log.d(getTag(), "onOpened");
-        if (!isTabletInLandscape())
+        if(!isTabletInLandscape(this))
             hideKeyboard();
         AnalyticsGoogle.get().trackPage(R.string.gnavigation);
     }
@@ -1641,7 +1659,30 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         dialog.show(getSupportFragmentManager(), null);
         return false;
     }
-
+    /**
+     * Method used to control the double back pressed
+     * @author sergiopereira
+     * @see <a href="http://stackoverflow.com/questions/7965135/what-is-the-duration-of-a-toast-length-long-and-length-short">Toast duration</a>
+     * <br>Toast.LENGTH_LONG is 3500 seconds.
+     * <br>Toast.LENGTH_SHORT is 2000 seconds.
+     */
+    public void doubleBackPressToExit(){
+        Log.d(TAG, "DOUBLE BACK PRESSED TO EXIT: " + backPressedOnce);
+        // If was pressed once
+        if (backPressedOnce) {
+            finish();
+            return;
+        }
+        // First time show toast
+        this.backPressedOnce = true;
+        CustomToastView.makeText(this, getString(R.string.exit_press_back_again), Toast.LENGTH_SHORT).show();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                backPressedOnce = false;
+            }
+        }, TOAST_LENGTH_SHORT);
+    }
     /**
      * Triggers the request for a new api call
      * 

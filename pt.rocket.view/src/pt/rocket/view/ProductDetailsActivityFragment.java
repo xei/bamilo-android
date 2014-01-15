@@ -29,6 +29,7 @@ import pt.rocket.helpers.GetShoppingCartAddItemHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.FragmentCommunicator;
 import pt.rocket.utils.JumiaApplication;
+import pt.rocket.utils.FragmentCommunicatorForProduct;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.ScrollViewWithHorizontal;
@@ -409,17 +410,17 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
     private void startFragmentCallbacks() {
         Log.i(TAG, "code1 starting callbacks!!!");
         CompleteProduct cProduct = null;
-        if (!sharedPreferences.getBoolean(LOAD_FROM_SCRATCH, true)) {
-            cProduct = FragmentCommunicator.getInstance().getCurrentProduct();
+        if(!sharedPreferences.getBoolean(LOAD_FROM_SCRATCH, true)){
+            cProduct = FragmentCommunicatorForProduct.getInstance().getCurrentProduct();
         }
-        FragmentCommunicator.getInstance().destroyInstance();
-        FragmentCommunicator.getInstance().startFragmentsCallBacks(this,
+        FragmentCommunicatorForProduct.getInstance().destroyInstance();
+        FragmentCommunicatorForProduct.getInstance().startFragmentsCallBacks(this,
                 productVariationsFragment, productImagesViewPagerFragment,
                 productSpecificationFragment, productBasicInfoFragment);
-        if (cProduct == null) {
-            FragmentCommunicator.getInstance().updateCurrentProduct(mCompleteProduct);
+        if(cProduct == null) {
+            FragmentCommunicatorForProduct.getInstance().updateCurrentProduct(mCompleteProduct);
         } else {
-            FragmentCommunicator.getInstance().updateCurrentProduct(cProduct);
+            FragmentCommunicatorForProduct.getInstance().updateCurrentProduct(cProduct);
         }
 
     }
@@ -462,7 +463,6 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
         Set<String> knownVariations = scanSimpleAttributesForKnownVariants(ps);
 
         if (ps.size() == 1) {
-            // XXX
             if (knownVariations.size() <= 1) {
                 mSelectedSimple = 0;
                 mHideVariationSelection = true;
@@ -584,7 +584,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
             bundle.putString(ProductBasicInfoFragment.DEFINE_UNIT_PRICE, unitPrice);
             bundle.putString(ProductBasicInfoFragment.DEFINE_SPECIAL_PRICE, specialPrice);
             bundle.putInt(ProductBasicInfoFragment.DEFINE_DISCOUNT_PERCENTAGE, discountPercentage);
-            FragmentCommunicator.getInstance().notifyTarget(productBasicInfoFragment, bundle, 4);
+            FragmentCommunicatorForProduct.getInstance().notifyTarget(productBasicInfoFragment, bundle, 4);
 
         } else {
             // Simple Products prices dont come with currency preformatted
@@ -600,7 +600,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
             bundle.putString(ProductBasicInfoFragment.DEFINE_UNIT_PRICE, unitPrice);
             bundle.putString(ProductBasicInfoFragment.DEFINE_SPECIAL_PRICE, specialPrice);
             bundle.putInt(ProductBasicInfoFragment.DEFINE_DISCOUNT_PERCENTAGE, discountPercentage);
-            FragmentCommunicator.getInstance().notifyTarget(productBasicInfoFragment, bundle, 4);
+            FragmentCommunicatorForProduct.getInstance().notifyTarget(productBasicInfoFragment, bundle, 4);
 
         }
     }
@@ -627,7 +627,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
         if (getSelectedSimple() == null) {
             Bundle bundle = new Bundle();
             bundle.putInt(ProductBasicInfoFragment.DEFINE_STOCK, -1);
-            FragmentCommunicator.getInstance().notifyTarget(productBasicInfoFragment, bundle, 4);
+            FragmentCommunicatorForProduct.getInstance().notifyTarget(productBasicInfoFragment, bundle, 4);
 
             return;
         }
@@ -646,7 +646,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
         }
         Bundle bundle = new Bundle();
         bundle.putInt(ProductBasicInfoFragment.DEFINE_STOCK, stockQuantity);
-        FragmentCommunicator.getInstance().notifyTarget(productBasicInfoFragment, bundle, 4);
+        FragmentCommunicatorForProduct.getInstance().notifyTarget(productBasicInfoFragment, bundle, 4);
 
     }
 
@@ -721,7 +721,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
 
     private void executeAddProductToCart() {
         ProductSimple simple = getSelectedSimple();
-        if (simple == null && !((BaseActivity) getActivity()).isTabletInLandscape()) {
+        if (simple == null && ! BaseActivity.isTabletInLandscape(getBaseActivity())) {
             showChooseReminder();
             return;
         } else if (simple == null) {
@@ -805,7 +805,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
             args.putInt(ConstantsIntentExtra.VARIATION_LISTPOSITION, mVariationsListPosition);
             args.putBoolean(ConstantsIntentExtra.IS_ZOOM_AVAILABLE, false);
             productImagesViewPagerFragment = ProductImageGalleryFragment.getInstance(args);
-            if (((BaseActivity) getActivity()).isTabletInLandscape()) {
+            if(BaseActivity.isTabletInLandscape(getBaseActivity())){
                 productSpecificationFragment = ProductDetailsDescriptionFragment.getInstance();
             } else {
                 productSpecificationFragment = ProductSpecificationsFragment.getInstance();
@@ -822,23 +822,23 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
             fragmentManagerTransition(R.id.product_basicinfo_container, productBasicInfoFragment,
                     false, true);
 
-            FragmentCommunicator.getInstance().updateCurrentProduct(mCompleteProduct);
+            FragmentCommunicatorForProduct.getInstance().updateCurrentProduct(mCompleteProduct);
             Bundle bundle = new Bundle();
             bundle.putBoolean(PRODUCT_COMPLETE, true);
             bundle.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProductUrl);
             bundle.putInt(ConstantsIntentExtra.VARIATION_LISTPOSITION, mVariationsListPosition);
             bundle.putInt(ConstantsIntentExtra.CURRENT_LISTPOSITION, mSelectedSimple);
             bundle.putBoolean(ConstantsIntentExtra.IS_ZOOM_AVAILABLE, false);
-            FragmentCommunicator.getInstance().notifyOthers(0, bundle);
+            FragmentCommunicatorForProduct.getInstance().notifyOthers(0, bundle);
         } else {
-            // mSelectedSimple = NO_SIMPLE_SELECTED;
-            FragmentCommunicator.getInstance().updateCurrentProduct(mCompleteProduct);
+//            mSelectedSimple = NO_SIMPLE_SELECTED;
+            FragmentCommunicatorForProduct.getInstance().updateCurrentProduct(mCompleteProduct);
             Bundle bundle = new Bundle();
             bundle.putBoolean(PRODUCT_COMPLETE, true);
             bundle.putInt(ConstantsIntentExtra.VARIATION_LISTPOSITION, mVariationsListPosition);
             bundle.putInt(ConstantsIntentExtra.CURRENT_LISTPOSITION, mSelectedSimple);
             bundle.putBoolean(ConstantsIntentExtra.IS_ZOOM_AVAILABLE, false);
-            FragmentCommunicator.getInstance().notifyOthers(0, bundle);
+            FragmentCommunicatorForProduct.getInstance().notifyOthers(0, bundle);
 
             displayPriceInfoOverallOrForSimple();
         }
@@ -1054,7 +1054,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
                 mCompleteProduct = (CompleteProduct) bundle
                         .getParcelable(Constants.BUNDLE_RESPONSE_KEY);
 
-                FragmentCommunicator.getInstance().updateCurrentProduct(mCompleteProduct);
+                FragmentCommunicatorForProduct.getInstance().updateCurrentProduct(mCompleteProduct);
                 ((BaseActivity) getActivity()).setProcessShow(true);
                 AnalyticsGoogle.get().trackLoadTiming(R.string.gproductdetail, mBeginRequestMillis);
                 displayProduct(mCompleteProduct);
@@ -1185,7 +1185,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
         onVariationElementSelected(bundle
                 .getInt(ProductDetailsActivityFragment.LOADING_PRODUCT_KEY));
         bundle.putBoolean(LOADING_PRODUCT, true);
-        FragmentCommunicator.getInstance().notifyOthers(0, bundle);
+        FragmentCommunicatorForProduct.getInstance().notifyOthers(0, bundle);
     }
 
     protected void fragmentManagerTransition(int container, Fragment fragment,

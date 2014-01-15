@@ -122,7 +122,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         public String simple_product_sku;
         public String product_sku;
         public Double discount_value;
-        public Integer stock;
+        public long stock;
         public Integer min_delivery_time;
         public Integer max_delivery_time;
         public Map<String, String> simpleData;
@@ -581,10 +581,10 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
     public void changeQuantityOfItem(final int position) {
         ArrayList<String> quantities = new ArrayList<String>();
 
-        int stock = items.get(position).getStock();
+        long stock = items.get(position).getStock();
         int maxQuantity = items.get(position).getMaxQuantity();
 
-        int actualMaxQuantity = stock < maxQuantity ? stock : maxQuantity;
+        long actualMaxQuantity = stock < maxQuantity ? stock : maxQuantity;
 
         for (int i = 0; i <= actualMaxQuantity; i++) {
             quantities.add(String.valueOf(i));

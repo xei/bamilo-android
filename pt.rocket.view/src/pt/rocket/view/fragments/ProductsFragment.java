@@ -227,7 +227,7 @@ public class ProductsFragment extends BaseFragment implements
 
         productsAdapter = new ProductsListAdapter(getActivity());
         
-        if(((BaseActivity) getActivity()).isTabletInLandscape()){
+        if(((BaseActivity) getActivity()).isTabletInLandscape(getBaseActivity())){
             productsListGridView.setAdapter(productsAdapter);
         } else {
             productsListView.setAdapter(productsAdapter);
@@ -252,7 +252,7 @@ public class ProductsFragment extends BaseFragment implements
     private void setAppContentLayout() {
 
         productsContent = mainView.findViewById(R.id.products_content);
-        if(((BaseActivity) getActivity()).isTabletInLandscape()){
+        if(((BaseActivity) getActivity()).isTabletInLandscape(getBaseActivity())){
             productsListGridView = (GridView) mainView.findViewById(R.id.middle_productslist_list);
             productsListGridView.setOnItemClickListener(new OnItemClickListener() {
                 public void onItemClick(AdapterView<?> parent, View view,
@@ -347,7 +347,7 @@ public class ProductsFragment extends BaseFragment implements
     private void showProductsContent() {
         Log.d(TAG, "showProductsContent");
         if (pageNumber == 1) {
-            if(((BaseActivity) getActivity()).isTabletInLandscape()){
+            if(((BaseActivity) getActivity()).isTabletInLandscape(getBaseActivity())){
                 productsListGridView.post(new Runnable() {
                     @Override
                     public void run() {

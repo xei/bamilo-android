@@ -158,19 +158,23 @@ public class TrackerDelegator {
         new Thread( new Runnable() {
             @Override
             public void run() {
-                trackPurchaseInt( context, result, customer );
+                trackPurchaseInt( context, result, customer);
             }
             
         }).run();        
     }
+    
+//    Got checkout response
 
     private static void trackPurchaseInt(Context context, JSONObject result, Customer customer) {
-        Log.d(TAG, "trackPurchase: started");
+        Log.i(TAG, "TRACK SALE: STARTED");
         if ( result == null) {
             return;
         }
         
         Log.d( TAG, "tracking for " + ShopSelector.getShopName() + " in country " + ShopSelector.getCountryName());
+        
+        Log.d(TAG, "TRACK SALE: JSON " + result.toString());
                 
         String orderNr;
         String value;
@@ -179,23 +183,27 @@ public class TrackerDelegator {
             orderNr = result.getString(JSON_TAG_ORDER_NR);
             value = result.getString(JSON_TAG_GRAND_TOTAL);
             itemsJson = result.getJSONObject(JSON_TAG_ITEMS_JSON);
-            Log.d( TAG, result.toString(2));
+			Log.d(TAG, "TRACK SALE: RESULT: ORDER=" + orderNr + " VALUE=" + value + " ITEMS=" + result.toString(2));
         } catch (JSONException e) {
-            Log.e(TAG, "json parsing error: ", e);
+            Log.e(TAG, "TRACK SALE: json parsing error: ", e);
             return;
         }
+        
         List<PurchaseItem> items = PurchaseItem.parseItems(itemsJson);
+        
         AnalyticsGoogle.get().trackSales(orderNr, value, items);
         
         if (customer == null) {
-            Log.w(TAG, "no customer - cannot track further without customerId");
+            Log.w(TAG, "TRACK SALE: no customer - cannot track further without customerId");
             AdXTracker.trackSale(context, value);
-        }else{
-            String customerId = customer.getIdAsString();
             
+        } else { 
+            String customerId = customer.getIdAsString();
             boolean isFirstCustomer = checkCheckoutAfterSignup(context, customer);
-            Log.d( TAG, "trackPurchaseInt: isFirstCustomer = " + isFirstCustomer );
-            AdXTracker.trackSale(context,value, customerId, orderNr, isFirstCustomer);
+            
+            Log.d(TAG, "TRACK SALE: CUSTOMER ID: " + customerId + " IS FIRST TIME: " + isFirstCustomer);
+            
+            AdXTracker.trackSale(context, value, customerId, orderNr, isFirstCustomer);
         }
         
         MixpanelTracker.trackSale(context, value, items);

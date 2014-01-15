@@ -5,9 +5,11 @@ Then /^I verify app for MA venture$/ do
 end
 
 Then /^I choose the Morocco venture$/ do
-  
   performAction('click_on_text',@venture_name.to_s)
 end
 
-#####################################################
+
+
+
+############################################################
 

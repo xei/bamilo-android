@@ -198,7 +198,7 @@ public class CategoriesContainerFragment extends BaseFragment {
         super.onResume();
         Log.i(TAG, "ON RESUME");
         if(MainFragmentActivity.currentCategories != null && getView() != null){
-            if(((BaseActivity) getActivity()).isTabletInLandscape()){
+            if(((BaseActivity) getActivity()).isTabletInLandscape(getBaseActivity())){
                 createFragmentsForLandscape();
             } else { 
                 createFragment();
@@ -266,7 +266,7 @@ public class CategoriesContainerFragment extends BaseFragment {
         if(getActivity() == null){
             return false;
         }
-        if(!((BaseActivity) getActivity()).isTabletInLandscape()){
+        if(!((BaseActivity) getActivity()).isTabletInLandscape(getBaseActivity())){
             if(currentFragment == FragmentType.CATEGORIES_LEVEL_3){
                 currentFragment = FragmentType.CATEGORIES_LEVEL_2;
                 Bundle bundleParent = new Bundle(); 
@@ -312,7 +312,7 @@ public class CategoriesContainerFragment extends BaseFragment {
             
             if(MainFragmentActivity.currentCategories != null && getView() != null){
                 Log.d(TAG, "code1 received categories size = " + MainFragmentActivity.currentCategories.size());
-                if(getBaseActivity().isTabletInLandscape()){
+                if(getBaseActivity().isTabletInLandscape(getBaseActivity())){
                     Log.d(TAG, "code1 going to create fragment createFragmentsForLandscape");
                     createFragmentsForLandscape();
                 } else {
@@ -508,7 +508,7 @@ public class CategoriesContainerFragment extends BaseFragment {
         
         Log.i(TAG, "CATEGORY_LEVEL : "+(FragmentType) bundle.getSerializable(ConstantsIntentExtra.CATEGORY_LEVEL));
         Log.i(TAG, "SELECTED_SUB_CATEGORY_INDEX : "+bundle.getInt(ConstantsIntentExtra.SELECTED_SUB_CATEGORY_INDEX));
-        if(!((BaseActivity) getActivity()).isTabletInLandscape()){
+        if(!((BaseActivity) getActivity()).isTabletInLandscape(getBaseActivity())){
             updateFragment(bundle);
         } else if(bundle.containsKey(UPDATE_CHILD)){
             updateChild(bundle);
