@@ -402,11 +402,11 @@ public class WriteReviewFragment extends BaseFragment {
     
     protected boolean onErrorEvent(Bundle bundle) {
         if(isVisible()){
-            return;
+            return true;
         }
         
         if(getBaseActivity().handleErrorEvent(bundle)){
-            return;
+            return true;
         }
         
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
