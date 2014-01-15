@@ -21,22 +21,22 @@ public class TeaserBrand extends TeaserBrandElement implements ITargeting {
 	}
 
 	public String getImage() {
-		return getImageUrl();
+		return super.getImageUrl();
 	}
 
 	@Override
 	public String getBrandUrl() {
-		return getBrandUrl();
+		return super.getBrandUrl();
 	}
 
 	@Override
 	public String getTargetUrl() {
-		return getName();
+		return super.getName();
 	}
 
 	@Override
 	public String getTargetTitle() {
-		return getName();
+		return super.getName();
 	}
 	
 	@Override

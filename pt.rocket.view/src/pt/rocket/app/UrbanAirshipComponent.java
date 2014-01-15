@@ -14,7 +14,6 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.urbanairship.AirshipConfigOptions;
-import com.urbanairship.Autopilot;
 import com.urbanairship.Logger;
 import com.urbanairship.UAirship;
 import com.urbanairship.push.BasicPushNotificationBuilder;
@@ -30,19 +29,20 @@ public class UrbanAirshipComponent extends ApplicationComponent {
 
     private Context context;
 
-    /* 
+    /*
      * (non-Javadoc)
      * 
      * @see pt.rocket.utils.ApplicationComponent#init(pt.rocket.utils.Context)
      */
     @Override
     protected ErrorCode initInternal(Application app) {
-        Log.i(TAG, "initInternal");
+        if(JumiaApplication.INSTANCE.isUAInitialized){
+            return ErrorCode.NO_ERROR;
+        }
+        JumiaApplication.INSTANCE.isUAInitialized = true;
         context = app.getApplicationContext();
         AirshipConfigOptions options = AirshipConfigOptions.loadDefaultOptions(app);
-        Autopilot.automaticTakeOff(app);
         UAirship.takeOff(app, options);
-        Logger.logLevel = Log.VERBOSE;
         BasicPushNotificationBuilder bnb = new BasicPushNotificationBuilder();
         bnb.iconDrawableId = R.drawable.ic_push_status_bar;
         // Set the builder

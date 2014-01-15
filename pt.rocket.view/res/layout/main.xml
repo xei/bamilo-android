@@ -29,8 +29,6 @@
             android:id="@+id/totalProducts"
             style="@style/headline_totalItems"
             android:layout_width="wrap_content"
-            android:layout_alignEnd="@id/title"
-            android:layout_alignParentEnd="@id/title"
             android:layout_alignRight="@id/title"
             android:fontFamily="roboto_regular"
             android:gravity="left"
@@ -81,7 +79,8 @@
     <include
         layout="@layout/promotion_layout"
         android:visibility="gone" />
-    <RelativeLayout
+        
+      <RelativeLayout
         android:id="@+id/fallback_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

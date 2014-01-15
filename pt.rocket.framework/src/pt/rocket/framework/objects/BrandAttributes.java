@@ -35,7 +35,7 @@ public class BrandAttributes implements IJSONSerializable, Parcelable {
 	private String brand_url;
 	private String description;
 	private String target_type;
-private String imageTableUrl;
+	private String imageTableUrl;
 
 	/**
 	 * ProductAttributes empty constructor
@@ -47,6 +47,7 @@ private String imageTableUrl;
 		brand_url = "";
 		description = "";
 		target_type = "";
+		imageTableUrl = "";
 	}
 
 	/**
