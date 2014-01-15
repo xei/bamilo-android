@@ -49,6 +49,7 @@ import android.graphics.Paint;
 import android.graphics.Shader;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -462,7 +463,7 @@ public class HomeFragment extends BaseFragment {
         ((BaseActivity) getActivity()).showContentContainer(false);
     }
 
-    private void proccessResult(Collection<? extends Homepage> result) {
+    private void proccessResult(Collection<Parcelable> result) {
         Log.i(TAG,"ON proccessResult");
         requestResponse = new ArrayList<Collection<? extends TeaserSpecification<?>>>();
         pagesTitles = new ArrayList<String>();
@@ -478,10 +479,10 @@ public class HomeFragment extends BaseFragment {
 
         pagesTitles.add(lastHomePage.getHomepageTitle());
         requestResponse.add(lastHomePage.getTeaserSpecification());
-        for (Homepage homepage : result) {
+        for (Parcelable homepage : result) {
 
-            pagesTitles.add(homepage.getHomepageTitle());
-            requestResponse.add(homepage.getTeaserSpecification());
+            pagesTitles.add(((Homepage) homepage).getHomepageTitle());
+            requestResponse.add(((Homepage) homepage).getTeaserSpecification());
 
             count++;
         }
@@ -524,7 +525,7 @@ public class HomeFragment extends BaseFragment {
     
     
     
-    @SuppressWarnings("unchecked")
+    
     protected boolean onSuccessEvent(Bundle bundle) {
         getBaseActivity().handleSuccessEvent(bundle);
         Log.i(TAG,"ON onSuccessEvent");
@@ -532,7 +533,7 @@ public class HomeFragment extends BaseFragment {
         switch (eventType) {
         case GET_TEASERS_EVENT:
             isFirstBoot = false;
-            proccessResult((Collection<? extends Homepage>) bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY));
+            proccessResult((Collection<Parcelable>) bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY));
             Log.i(TAG, "code1 checkversion called");
             configureLayout();
             break;
