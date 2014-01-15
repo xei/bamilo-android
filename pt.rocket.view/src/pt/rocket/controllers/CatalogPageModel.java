@@ -747,8 +747,7 @@ public class CatalogPageModel {
         AnalyticsGoogle.get().trackLoadTiming(R.string.gproductlist, mBeginRequestMillis);
 
         if (searchQuery != null && !TextUtils.isEmpty(searchQuery)) {
-            ((BaseActivity) mActivity).setTitle(searchQuery + " ("
-                    + productsPage.getTotalProducts() + ")");
+            ((BaseActivity) mActivity).setTitleAndSubTitle(searchQuery," ("+productsPage.getTotalProducts()+" "+((BaseActivity) mActivity).getString(R.string.shoppingcart_items)+")");
             
             if(pageNumber == 1){
                 TrackerDelegator.trackSearchViewSortMade(mActivity.getApplicationContext(), searchQuery,
