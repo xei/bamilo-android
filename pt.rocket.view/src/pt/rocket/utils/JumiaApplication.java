@@ -91,8 +91,6 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     private boolean isInitializing = false;
     private Handler resendHandler;
     private Message resendMsg;
-
-    public boolean isUAInitialized = false;
     
     /**
      * Fallback and retry backups

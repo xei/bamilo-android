@@ -534,6 +534,7 @@ public class CategoriesContainerFragment extends BaseFragment {
         MainFragmentActivity.currentCategories = CategoriesTableHelper.getCategories();
         if(MainFragmentActivity.currentCategories != null && MainFragmentActivity.currentCategories.size() > 0){
             bundle.putBoolean(USED_CACHED_CATEGORIES, true);
+            bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_CATEGORIES_EVENT);
             bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, MainFragmentActivity.currentCategories); 
             onSuccessEvent(bundle);
         } else {
