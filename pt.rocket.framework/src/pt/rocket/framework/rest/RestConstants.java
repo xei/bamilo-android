@@ -32,6 +32,7 @@ public class RestConstants {
 	public static final String JSON_BIRTHDAY_TAG = "birthday";
 	public static final String JSON_GENDER_TAG = "gender";
 	public static final String JSON_CREATED_AT_TAG = "created_at";
+	public static final String JSON_PASSWORD_TAG = "password";
 
 	// FormsService Tags
 	public static final String JSON_NAME_TAG = "name";

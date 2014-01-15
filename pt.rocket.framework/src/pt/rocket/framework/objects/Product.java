@@ -215,13 +215,13 @@ public class Product implements IJSONSerializable, Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);        
-        dest.writeParcelable(attributes, PARCELABLE_WRITE_RETURN_VALUE);
+        dest.writeValue(attributes);
         dest.writeList(images);
     }
     
     private Product(Parcel in) {
         id = in.readString();
-        attributes = in.readParcelable(ProductAttributes.class.getClassLoader());
+        attributes = (ProductAttributes) in.readValue(ProductAttributes.class.getClassLoader());
         images = new ArrayList<Image>();
         in.readList(images, Image.class.getClassLoader());
     }

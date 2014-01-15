@@ -14,6 +14,9 @@ public class CustomerUtils {
 	private static final String TAG = CustomerUtils.class.getName();
 	private ObscuredSharedPreferences obscuredPreferences;
 	public static final String INTERNAL_AUTOLOGIN_FLAG = "__autologin_requested__";
+	public static final String INTERNAL_PASSWORD_VALUE = "Alice_Module_Customer_Model_LoginForm[password]";
+	public static final String INTERNAL_EMAIL_VALUE = " Alice_Module_Customer_Model_LoginForm[email] ";
+	
     private static final String CRED_PREFS = "cred";
 
 	public CustomerUtils(Context ctx) {

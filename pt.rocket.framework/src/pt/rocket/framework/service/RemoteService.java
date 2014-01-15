@@ -4,20 +4,14 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import pt.rocket.framework.Darwin;
-import pt.rocket.framework.network.ConfigurationConstants;
-import pt.rocket.framework.rest.RestClientSingleton;
 import pt.rocket.framework.rest.RestContract;
-//import pt.rocket.framework.tracking.TrackerManager;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.worker.RequestWorker;
-
-import de.akquinet.android.androlog.Log;
 import android.app.Service;
 import android.content.Intent;
 import android.net.Uri;
@@ -27,8 +21,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteCallbackList;
 import android.os.RemoteException;
-import android.os.ResultReceiver;
-import android.text.format.Time;
+import de.akquinet.android.androlog.Log;
 
 public class RemoteService extends Service {
     

@@ -16,6 +16,7 @@ import android.os.Parcelable;
 
 import pt.rocket.framework.interfaces.IJSONSerializable;
 import pt.rocket.framework.rest.RestConstants;
+import pt.rocket.framework.utils.CurrencyFormatter;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -164,15 +165,16 @@ public class ProductAttributes implements IJSONSerializable, Parcelable {
 
             String priceString = jsonObject.optString(RestConstants.JSON_PRICE_TAG);
             double priceDouble = Double.parseDouble(priceString);
-            // price = CurrencyFormatter.formatCurrency(priceDouble);
+             price = CurrencyFormatter.formatCurrency(priceDouble);
 
             String maxPriceString = jsonObject.optString(RestConstants.JSON_MAX_PRICE_TAG, price);
+            
             if (!maxPriceString.equals("")) {
                 maxPrice = price;
             } else {
                 double maxPriceDouble = Double.parseDouble(jsonObject.optString(
                         RestConstants.JSON_MAX_PRICE_TAG, price));
-                // maxPrice = CurrencyFormatter.formatCurrency(maxPriceDouble);
+                 maxPrice = CurrencyFormatter.formatCurrency(maxPriceDouble);
             }
 
             double specialPriceDouble;
@@ -182,11 +184,12 @@ public class ProductAttributes implements IJSONSerializable, Parcelable {
             } else {
                 specialPriceDouble = priceDouble;
             }
-            // specialPrice = CurrencyFormatter.formatCurrency(specialPriceDouble);
+
+             specialPrice = CurrencyFormatter.formatCurrency(specialPriceDouble);
 
             if (!jsonObject.isNull(RestConstants.JSON_MAX_SPECIAL_PRICE_TAG)) {
-                // maxSpecialPrice =
-                // CurrencyFormatter.formatCurrency(Double.parseDouble(jsonObject.getString(RestConstants.JSON_MAX_SPECIAL_PRICE_TAG)));
+                 maxSpecialPrice =
+                 CurrencyFormatter.formatCurrency(Double.parseDouble(jsonObject.getString(RestConstants.JSON_MAX_SPECIAL_PRICE_TAG)));
             } else {
                 maxSpecialPrice = specialPrice;
             }
