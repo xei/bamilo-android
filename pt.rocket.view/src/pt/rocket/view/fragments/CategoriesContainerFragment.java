@@ -198,11 +198,13 @@ public class CategoriesContainerFragment extends BaseFragment {
         super.onResume();
         Log.i(TAG, "ON RESUME");
         if(MainFragmentActivity.currentCategories != null && getView() != null){
+            
             if(((BaseActivity) getActivity()).isTabletInLandscape(getBaseActivity())){
                 createFragmentsForLandscape();
             } else { 
                 createFragment();
             }
+            
         } else if(getView() != null) {
             mBeginRequestMillis = System.currentTimeMillis();
             
@@ -300,9 +302,11 @@ public class CategoriesContainerFragment extends BaseFragment {
 
     protected boolean onSuccessEvent(Bundle bundle) {
         getBaseActivity().handleSuccessEvent(bundle);
-        Log.i(TAG, "code1 received categories");
+        
         // Validate if fragment is on the screen
         if(isVisible()) {
+            Log.i(TAG, "code1 received categories");
+            getBaseActivity().showContentContainer(false);
             if(!bundle.getBoolean(USED_CACHED_CATEGORIES, false)){
                 AnalyticsGoogle.get().trackLoadTiming(R.string.gcategories, mBeginRequestMillis);
             } else {

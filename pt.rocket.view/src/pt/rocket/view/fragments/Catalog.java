@@ -179,6 +179,7 @@ public class Catalog extends BaseFragment {
             e.printStackTrace();
         }
         AnalyticsGoogle.get().trackPage(R.string.gproductlist);
+        getBaseActivity().showContentContainer(false);
         
     }
 

@@ -17,12 +17,14 @@ import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.rest.RestContract;
 import pt.rocket.framework.service.IRemoteServiceCallback;
+import pt.rocket.framework.utils.AdXTracker;
 import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.GetApiInfoHelper;
 import pt.rocket.interfaces.IResponseCallback;
+import pt.rocket.preferences.ShopPreferences;
 import pt.rocket.utils.DialogGeneric;
 import pt.rocket.utils.HockeyStartup;
 import pt.rocket.utils.JumiaApplication;
@@ -88,7 +90,7 @@ public class SplashScreenActivity extends FragmentActivity {
     private String productUrl;
     private String utm;
     private boolean isUrbainAirshipInitialized = false;
-
+    private boolean sendAdxLaunchEvent = false;
 
     /*
      * (non-Javadoc)
@@ -110,6 +112,9 @@ public class SplashScreenActivity extends FragmentActivity {
         Log.i(TAG, "code1 onCreate");
         shouldHandleEvent = true; 
         
+     // Adx launch event
+        launchEvent();
+        
         JumiaApplication.INSTANCE.init(false, initializationHandler);
         
     }
@@ -117,8 +122,10 @@ public class SplashScreenActivity extends FragmentActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if(isUrbainAirshipInitialized)
+        if(isUrbainAirshipInitialized){
+            isUrbainAirshipInitialized = false;
             UAirship.shared().getAnalytics().activityStarted(this);
+        }
     }
 
     @Override
@@ -138,6 +145,9 @@ public class SplashScreenActivity extends FragmentActivity {
         if (dialog != null) {
             dialog.dismiss();
         }
+        
+        // Adx launch event
+        sendAdxLaunchEvent = false;
     }
 
     @Override
@@ -539,6 +549,31 @@ public class SplashScreenActivity extends FragmentActivity {
         }
         JumiaApplication.INSTANCE.responseCallbacks.remove(id);
 
+    }
+    
+    /**
+     * Method used to send the adx launch event
+     * @author sergiopereira
+     */
+    private void launchEvent(){
+        // Get the current shop id
+        int shopId = ShopPreferences.getShopId(getApplicationContext());
+        // Validate shop id and launch the Adx event if is the same country on start app
+        // First time
+        if(JumiaApplication.SHOP_ID == -1 && shopId > JumiaApplication.SHOP_ID) {
+            sendAdxLaunchEvent = true;
+        }
+        // Current shop is the same
+        if(JumiaApplication.SHOP_ID == shopId) {
+            sendAdxLaunchEvent = true;
+        }
+        // Save current shop id
+        JumiaApplication.SHOP_ID = shopId;
+        // Send launch
+        if(sendAdxLaunchEvent ) {
+            AdXTracker.launch(this);
+            sendAdxLaunchEvent = false;
+        }
     }
 
 }

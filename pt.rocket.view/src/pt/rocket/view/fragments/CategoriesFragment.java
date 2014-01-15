@@ -402,7 +402,6 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
            FragmentCommunicator.getInstance().notifyTarget(this, args, 0);
         }
         
-        
     }
     
 }

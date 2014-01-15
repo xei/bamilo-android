@@ -89,6 +89,7 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     public static int SHOP_ID = -1;
 
     private boolean isInitializing = false;
+    public boolean isUAInitialized = false;
     private Handler resendHandler;
     private Message resendMsg;
     
