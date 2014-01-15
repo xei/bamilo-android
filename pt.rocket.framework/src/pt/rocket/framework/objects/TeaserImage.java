@@ -6,6 +6,8 @@ package pt.rocket.framework.objects;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import de.akquinet.android.androlog.Log;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -27,6 +29,7 @@ public class TeaserImage implements IJSONSerializable, ITargeting, Parcelable {
 	private String navigationUrl;
 	private String description;
 	private TargetType targetType;
+	private String imageTableUrl;
 
 	/**
 		 * 
@@ -35,30 +38,53 @@ public class TeaserImage implements IJSONSerializable, ITargeting, Parcelable {
 		initialize(jsonObject);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see pt.rocket.framework.objects.IJSONSerializable#initialize(org.json
-	 * .JSONObject )
-	 */
-	@Override
-	public boolean initialize(JSONObject jsonObject) {
-		id = jsonObject.optInt(RestConstants.JSON_ID_TAG, -1);
-		JSONObject attributes = jsonObject.optJSONObject(RestConstants.JSON_TEASER_ATTRIBUTES_TAG);
-		if (attributes == null) return false;
-		setDescription(attributes.optString(RestConstants.JSON_TEASER_DESCRIPTION_TAG));
-		targetType = TargetType.byValue(attributes.optInt(RestConstants.JSON_TARGET_TAG, -1));
-		JSONArray imageList = attributes.optJSONArray(RestConstants.JSON_TEASER_IMAGES_TAG);
-		if (imageList == null) return false;
-		JSONObject image = imageList.optJSONObject(0);
-		if (image == null) return false;
-		imageUrl = image.optString(RestConstants.JSON_TEASER_IMAGE_URL_TAG);
-		navigationUrl = image.optString(RestConstants.JSON_TEASER_URL_TAG);
-		format = image.optString(RestConstants.JSON_FORMAT_TAG);
-		width = image.optString(RestConstants.JSON_WIDTH_TAG);
-		height = image.optString(RestConstants.JSON_HEIGHT_TAG);
-		return true;
-	}
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see
+		 * pt.rocket.framework.objects.IJSONSerializable#initialize(org.json
+		 * .JSONObject )
+		 */
+		@Override
+		public boolean initialize(JSONObject jsonObject) {
+			id = jsonObject.optInt(RestConstants.JSON_ID_TAG, -1);
+			JSONObject attributes = jsonObject.optJSONObject(RestConstants.JSON_TEASER_ATTRIBUTES_TAG);
+			if (attributes == null)
+				return false;
+			setDescription(attributes.optString(RestConstants.JSON_TEASER_DESCRIPTION_TAG));
+			targetType = TargetType.byValue(attributes.optInt(RestConstants.JSON_TARGET_TAG, -1));
+			
+			// Get image list
+			JSONArray imageList = attributes.optJSONArray(RestConstants.JSON_TEASER_IMAGES_TAG);
+			if (imageList == null) return false;
+			
+			// Validate image structure
+			JSONObject jsonImage = null;
+			int size = imageList.length();
+			for (int i = 0; i < size; i++) {
+				// Validate device type
+				jsonImage = imageList.optJSONObject(i);
+				if (jsonImage == null) return false;
+				/**
+				 * Get the device type tag, phone or tablet
+				 * The old version haven't the tag so return phone
+				 * @author sergiopereira
+				 */
+				String device = jsonImage.optString(RestConstants.JSON_IMAGE_DEVICE_TYPE_TAG, RestConstants.JSON_PHONE_TAG);
+				Log.d("IMAGE TEASER", "DEVICE: " + device);
+				if(device.equalsIgnoreCase(RestConstants.JSON_PHONE_TAG))
+					imageUrl = jsonImage.optString(RestConstants.JSON_TEASER_IMAGE_URL_TAG);
+				else if(device.equalsIgnoreCase(RestConstants.JSON_TABLET_TAG))
+					imageTableUrl = jsonImage.optString(RestConstants.JSON_TEASER_IMAGE_URL_TAG);
+			}
+			// Save the same data
+			navigationUrl = jsonImage.optString(RestConstants.JSON_TEASER_URL_TAG);
+			format = jsonImage.optString(RestConstants.JSON_FORMAT_TAG);
+			width = jsonImage.optString(RestConstants.JSON_WIDTH_TAG);
+			height = jsonImage.optString(RestConstants.JSON_HEIGHT_TAG);
+			
+			return true;
+		}
 
 	/*
 	 * (non-Javadoc)
@@ -157,6 +183,23 @@ public class TeaserImage implements IJSONSerializable, ITargeting, Parcelable {
 		return description;
 	}
 	
+		/**
+		 * Get the image URL for tablet
+		 * @return
+		 */
+		public String getImageTableUrl() {
+			return imageTableUrl;
+		}
+
+
+		/**
+		 * Set the image URL for tablet
+		 * @param imageTableUrl
+		 */
+		public void setImageTableUrl(String imageTableUrl) {
+			this.imageTableUrl = imageTableUrl;
+		}
+
     /**
      * ########### Parcelable ###########
      * @author sergiopereira

@@ -38,5 +38,10 @@ public class TeaserBrand extends TeaserBrandElement implements ITargeting {
 	public String getTargetTitle() {
 		return getName();
 	}
+	
+	@Override
+	public String getImageTableUrl() {
+		return getImageTableUrl();
+	}
 
 }

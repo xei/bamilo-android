@@ -86,7 +86,7 @@ public class AdXTracker {
 	public static void launch(Context context) {
 		if (!isEnabled)
 			return;
-		Log.d(TAG, "launch tracked: event = " + context.getString(R.string.xlaunch));
+		Log.d(TAG, "ADX: launch tracked event = " + context.getString(R.string.xlaunch));
 		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xlaunch), "", "");
 	}
 

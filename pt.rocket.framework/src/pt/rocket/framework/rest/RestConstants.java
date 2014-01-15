@@ -203,6 +203,7 @@ public class RestConstants {
 	public static final String JSON_BRAND_URL_TAG = "brand_url";
 	// private static final String JSON_DESCRIPTION_TAG = "description";
 	public static final String JSON_TARGET_TYPE_TAG = "target_type";
+	public static final String JSON_IMAGE_DEVICE_TYPE_TAG = "device_type";
 
 	// Address Tags
 	public static final String JSON_ADDRESS_ID_TAG = "id_customer_address";
@@ -210,6 +211,7 @@ public class RestConstants {
 	public static final String JSON_MIDDLE_NAME_TAG = "middle_name";
 	// public static final String JSON_LAST_NAME_TAG = "last_name";
 	public static final String JSON_PHONE_TAG = "phone";
+	public static final String JSON_TABLET_TAG = "tablet";
 	public static final String JSON_ADDRESS1_TAG = "address1";
 	public static final String JSON_ADDRESS2_TAG = "address2";
 	public static final String JSON_CITY_TAG = "city";

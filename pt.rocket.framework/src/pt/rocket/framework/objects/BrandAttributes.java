@@ -9,6 +9,7 @@
  */
 package pt.rocket.framework.objects;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -34,6 +35,7 @@ public class BrandAttributes implements IJSONSerializable, Parcelable {
 	private String brand_url;
 	private String description;
 	private String target_type;
+private String imageTableUrl;
 
 	/**
 	 * ProductAttributes empty constructor
@@ -89,27 +91,69 @@ public class BrandAttributes implements IJSONSerializable, Parcelable {
 		return TargetType.BRAND;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * pt.rocket.framework.objects.IJSONSerializable#initialize(org.json.JSONObject
-	 * )
-	 */
-	@Override
-	public boolean initialize(JSONObject jsonObject) {
-		try {
-			name = jsonObject.getString(RestConstants.JSON_BRAND_DESCRIPTION_TAG);
-			target_type = jsonObject.optString(RestConstants.JSON_TARGET_TYPE_TAG, "");
-			description = jsonObject.optString(RestConstants.JSON_DESCRIPTION_TAG, "");
-			brand_url = jsonObject.getJSONObject(RestConstants.JSON_IMAGE_LIST_TAG).getString(RestConstants.JSON_BRAND_URL_TAG);
-			image_url = jsonObject.getJSONObject(RestConstants.JSON_IMAGE_LIST_TAG).getString(RestConstants.JSON_IMAGE_URL_TAG);
-		} catch (JSONException e) {
-			Log.e(TAG, "Error Parsing the product json", e);
-			return false;
+        /**
+		 * @return the imageTableUrl
+		 */
+		public String getImageTableUrl() {
+			return imageTableUrl;
 		}
-		return true;
-	}
+
+		/**
+		 * @param imageTableUrl the imageTableUrl to set
+		 */
+		public void setImageTableUrl(String imageTableUrl) {
+			this.imageTableUrl = imageTableUrl;
+		}
+
+/* (non-Javadoc)
+         * @see pt.rocket.framework.objects.IJSONSerializable#initialize(org.json.JSONObject)
+         */
+        @Override
+        public boolean initialize(JSONObject jsonObject) {
+                        
+            try {
+            	
+        		name = jsonObject.getString(RestConstants.JSON_BRAND_DESCRIPTION_TAG);
+        		target_type = jsonObject.optString(RestConstants.JSON_TARGET_TYPE_TAG, "");
+                description = jsonObject.optString(RestConstants.JSON_DESCRIPTION_TAG, "");
+                
+                try {
+                	/**
+                	 * The new method, returns an array
+                	 */
+                	// Get image list
+        			JSONArray imageList = jsonObject.optJSONArray(RestConstants.JSON_IMAGE_LIST_TAG);
+        			// Validate image structure
+        			int size = imageList.length();
+        			for (int i = 0; i < size; i++) {
+        				// Validate device type
+        				JSONObject jsonImage = imageList.optJSONObject(i);
+        				String device = jsonImage.optString(RestConstants.JSON_IMAGE_DEVICE_TYPE_TAG);
+        				Log.d("IMAGE TEASER", "BRAND DEVICE: " + device);
+        				if(device.equalsIgnoreCase(RestConstants.JSON_PHONE_TAG))
+        					image_url = jsonImage.optString(RestConstants.JSON_TEASER_IMAGE_URL_TAG);
+        				else if(device.equalsIgnoreCase(RestConstants.JSON_TABLET_TAG))
+        					imageTableUrl = jsonImage.optString(RestConstants.JSON_TEASER_IMAGE_URL_TAG);
+        				// Save brand
+        				brand_url = jsonImage.getString(RestConstants.JSON_BRAND_URL_TAG);
+        			}
+				} catch (Exception e) {
+					/**
+					 * The old method, the tag is a json object.
+					 */
+	                image_url = jsonObject.getJSONObject(RestConstants.JSON_IMAGE_LIST_TAG).getString(RestConstants.JSON_IMAGE_URL_TAG);
+	                brand_url = jsonObject.getJSONObject(RestConstants.JSON_IMAGE_LIST_TAG).getString(RestConstants.JSON_BRAND_URL_TAG);
+	                Log.w(TAG, "PARSE EXCEPTION: The JSON structure for brand teaser is the old method.");
+				}
+                
+            } catch (JSONException e) {
+            	Log.e(TAG, "Error Parsing the product json", e);
+                return false;
+            }
+            
+            return true;
+        }
+
 
 	/*
 	 * (non-Javadoc)
@@ -160,6 +204,7 @@ public class BrandAttributes implements IJSONSerializable, Parcelable {
 	    dest.writeString(brand_url);
 	    dest.writeString(description);
 	    dest.writeString(target_type);
+	    dest.writeString(imageTableUrl);
 	}
 	
 	/**
@@ -173,6 +218,7 @@ public class BrandAttributes implements IJSONSerializable, Parcelable {
 		brand_url = in.readString();
 		description = in.readString();
 		target_type = in.readString();
+		imageTableUrl = in.readString();
     }
 	
 	/**

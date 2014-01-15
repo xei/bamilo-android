@@ -138,7 +138,14 @@ public class TeaserBrandElement implements IJSONSerializable, Parcelable{
     public TargetType getTargetType() {
         return attributes.getTargetType();
     }
-    
+
+        /**
+	 * @return the imageTableUrl
+	 */
+	public String getImageTableUrl() {
+		return attributes.getImageTableUrl();
+	}
+
     /**
      * ########### Parcelable ###########
      * @author sergiopereira
