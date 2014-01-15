@@ -41,7 +41,7 @@ public class TeaserBrand extends TeaserBrandElement implements ITargeting {
 	
 	@Override
 	public String getImageTableUrl() {
-		return getImageTableUrl();
+		return super.getImageTableUrl();
 	}
 
 }
