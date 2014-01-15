@@ -8,15 +8,10 @@ import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.view.View;
-import android.view.View.OnClickListener;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -246,10 +241,16 @@ public class FragmentController {
         Log.i(TAG, "BACK STACK SIZE: " + size);
         switch (size) {
         case 1:
+            /**
+             * In this point if fragment type isn't HOME then something wrong is happening, to fix show the HOME
+             * @author sergiopereira
+             */
+            if (getLastEntry().equals(FragmentType.HOME.toString())) 
+                activity.doubleBackPressToExit();
+            else 
+                activity.onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
             
-           activity.exitApplication(this);
-               //popLastEntry(); 
-            break;            
+            break;
         case 0:
             activity.onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
             break;
