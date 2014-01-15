@@ -16,6 +16,7 @@ import pt.rocket.framework.objects.TeaserBrand;
 import pt.rocket.framework.objects.TeaserImage;
 import pt.rocket.framework.objects.TeaserSpecification;
 import pt.rocket.framework.utils.WindowHelper;
+import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -114,7 +115,14 @@ public class TeasersFactory {
         } else if(teaserImageArrayList!= null && teaserImageArrayList.size() == 1) {
             pager.setVisibility(View.GONE);
             imageContainer.setVisibility(View.VISIBLE);
-            setImageToLoad(teaserImageArrayList.get(0).getImageUrl(),imageContainer, 0);
+            
+            // Validate device and orientation
+            if(BaseActivity.isTabletInLandscape(mContext) && teaserImageArrayList.get(0).getImageTableUrl() != null) {
+                setImageToLoad(teaserImageArrayList.get(0).getImageTableUrl(),imageContainer, 0);
+            } else {
+                setImageToLoad(teaserImageArrayList.get(0).getImageUrl(),imageContainer, 0);
+            }
+            
             attachTeaserListener(teaserImageArrayList.get(0), imageContainer);
         }
         return rootView;
@@ -176,8 +184,7 @@ public class TeasersFactory {
 
     private View getBrandsListTeaser(LayoutInflater mInflater, BrandsTeaserGroup brandsTeaserGroup) {
         View rootView = mInflater.inflate(R.layout.teaser_brands_group, mainView, false);
-        ViewGroup container = (ViewGroup) rootView
-                .findViewById(R.id.teaser_group_container);
+        ViewGroup container = (ViewGroup) rootView.findViewById(R.id.teaser_group_container);
         if(brandsTeaserGroup!=null){
             for (TeaserBrand brand : brandsTeaserGroup.getTeasers()) {
                 container.addView(createBrandTeaserView(brand, container, mInflater, brandsTeaserGroup.getTeasers().size()));
@@ -194,9 +201,15 @@ public class TeasersFactory {
      * @return
      */
     private View createImageTeaserView(TeaserImage teaserImage, ViewGroup vg, LayoutInflater mInflater, int size) {
-        View imageTeaserView = mInflater.inflate(R.layout.image_loadable, vg,
-                false);
-        setImageToLoad(teaserImage.getImageUrl(), imageTeaserView, size);
+        View imageTeaserView = mInflater.inflate(R.layout.image_loadable, vg, false);
+        
+        // Validate device and orientation
+        if(BaseActivity.isTabletInLandscape(mContext) && teaserImage.getImageTableUrl() != null) {
+            setImageToLoad(teaserImage.getImageTableUrl(), imageTeaserView, size);
+        } else {
+            setImageToLoad(teaserImage.getImageUrl(), imageTeaserView, size);
+        }
+        
         attachTeaserListener(teaserImage, imageTeaserView);
         return imageTeaserView;
     }
@@ -270,19 +283,23 @@ public class TeasersFactory {
         } else {
             price = product.getPrice();
         }
-        ((TextView) productTeaserView.findViewById(R.id.item_price))
-                .setText(price);
+        ((TextView) productTeaserView.findViewById(R.id.item_price)).setText(price);
         attachTeaserListener(product, productTeaserView);
         return productTeaserView;
     }
     
+
     private View createBrandTeaserView(TeaserBrand brand, ViewGroup vg, LayoutInflater mInflater, int size) {
-        View brandTeaserView = mInflater.inflate(R.layout.brand_item_small,
-                vg, false);
-        if (brand.getImageUrl() != null) {
-            setImageToLoad(brand.getImageUrl(),
-                    brandTeaserView, size);
+        View brandTeaserView = mInflater.inflate(R.layout.brand_item_small, vg, false);
+        
+        // Tablet in landscape
+        if(BaseActivity.isTabletInLandscape(mContext) && brand.getImageTableUrl() != null) {
+            setImageToLoad(brand.getImageTableUrl(), brandTeaserView, size);
+        } // Portrait
+        else if (brand.getImageUrl() != null) {
+            setImageToLoad(brand.getImageUrl(), brandTeaserView, size);
         }
+        
         attachTeaserListener(brand, brandTeaserView);
         return brandTeaserView;
     }
@@ -293,10 +310,8 @@ public class TeasersFactory {
      * @param imageTeaserView
      */
     private void setImageToLoad(String imageUrl, View imageTeaserView, int size) {
-        final ImageView imageView = (ImageView) imageTeaserView
-                .findViewById(R.id.image_view);
-        final View progressBar = imageTeaserView
-                .findViewById(R.id.image_loading_progress);
+        final ImageView imageView = (ImageView) imageTeaserView.findViewById(R.id.image_view);
+        final View progressBar = imageTeaserView.findViewById(R.id.image_loading_progress);
         // Adapts the Image size if needed
         if(size > 0 && imageTeaserView.getLayoutParams() != null){
             int mainContentWidth = (int) (WindowHelper.getWidth(mContext) * mContext.getResources().getFraction(R.dimen.navigation_menu_offset,1,1));

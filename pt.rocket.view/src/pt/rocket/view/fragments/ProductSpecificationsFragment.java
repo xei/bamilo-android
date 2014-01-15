@@ -13,16 +13,15 @@ import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.utils.FragmentCommunicatorForProduct;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
-import pt.rocket.utils.FragmentCommunicator;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.ProductDetailsActivityFragment;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.text.Html;
 import android.text.Spannable;
 import android.text.TextUtils;
@@ -178,7 +177,7 @@ public class ProductSpecificationsFragment extends BaseFragment implements OnCli
         Log.i(TAG, "ON RESUME");
         Bundle bundle = getArguments();
         if(bundle != null && bundle.containsKey(ProductDetailsActivityFragment.PRODUCT_COMPLETE))
-            mCompleteProduct = (CompleteProduct) bundle.get(ProductDetailsActivityFragment.PRODUCT_COMPLETE);
+            mCompleteProduct = FragmentCommunicatorForProduct.getInstance().getCurrentProduct();
     }
 
     /*
@@ -228,7 +227,7 @@ public class ProductSpecificationsFragment extends BaseFragment implements OnCli
     }
     
     private void displaySpecification() {
-        this.mCompleteProduct = FragmentCommunicator.getInstance().getCurrentProduct();
+        this.mCompleteProduct = FragmentCommunicatorForProduct.getInstance().getCurrentProduct();
         String shortDescription = (this.mCompleteProduct != null && this.mCompleteProduct.getShortDescription() != null) ? this.mCompleteProduct.getShortDescription() : "" ;
         
         if(mProductSpecSku!=null && this.mCompleteProduct != null){
@@ -269,7 +268,7 @@ public class ProductSpecificationsFragment extends BaseFragment implements OnCli
             showContentLoading();
         }
         
-        mCompleteProduct = FragmentCommunicator.getInstance().getCurrentProduct();
+        mCompleteProduct = FragmentCommunicatorForProduct.getInstance().getCurrentProduct();
         
         displaySpecification();
     }
