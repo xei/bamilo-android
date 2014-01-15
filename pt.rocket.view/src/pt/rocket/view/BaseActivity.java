@@ -332,7 +332,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
+        super.onDestroy(); 
     }
 
     /**

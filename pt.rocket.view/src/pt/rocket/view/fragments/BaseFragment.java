@@ -5,6 +5,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Calendar;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -517,8 +518,9 @@ public abstract class BaseFragment extends Fragment implements
     public void handleErrorEvent(Bundle bundle) {
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-        List<String> errors = (List<String>) bundle
+        HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle
                 .getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+        List<String> errors = (List<String>) errorMessages.get(RestConstants.JSON_VALIDATE_TAG);
         Log.i(TAG, "ON HANDLE ERROR EVENT: " + eventType);
         if(errors != null)
             Log.i(TAG, "ON HANDLE ERROR EVENT error response was : error code : " + errorCode +" error message : " + errors.toString());

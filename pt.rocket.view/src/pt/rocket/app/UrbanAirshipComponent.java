@@ -14,7 +14,6 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.urbanairship.AirshipConfigOptions;
-import com.urbanairship.Logger;
 import com.urbanairship.UAirship;
 import com.urbanairship.push.BasicPushNotificationBuilder;
 import com.urbanairship.push.PushManager;

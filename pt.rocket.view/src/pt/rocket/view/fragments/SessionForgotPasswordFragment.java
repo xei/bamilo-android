@@ -4,6 +4,7 @@
 package pt.rocket.view.fragments;
 
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import pt.rocket.factories.FormFactory;
 import pt.rocket.forms.Form;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.Errors;
+import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -304,14 +306,15 @@ public class SessionForgotPasswordFragment extends BaseFragment {
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         if (eventType == EventType.FORGET_PASSWORD_EVENT) {
-            List<String> errorMessages = (List<String>) bundle
+            HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle
                     .getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
-            if (errorMessages != null
-                    && errorMessages.contains(Errors.CODE_FORGOTPW_NOSUCH_CUSTOMER)) {
+            List<String> errorMessages = (List<String>) errors.get(RestConstants.JSON_VALIDATE_TAG);
+
+            if (errors != null && errorMessages.size() > 0) {
                 ((BaseActivity) getActivity()).showContentContainer(false);
                 dialog = DialogGenericFragment.newInstance(true, true, false,
                         getString(R.string.error_forgotpassword_title),
-                        getString(R.string.error_forgotpassword_text),
+                        errorMessages.get(0),
                         getString(R.string.ok_label), "", new OnClickListener() {
 
                             @Override

@@ -5,6 +5,7 @@ package pt.rocket.view.fragments;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -337,11 +338,13 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         if(!isVisible()){
             return true;
         }
-        getBaseActivity().handleSuccessEvent(bundle);
+        if(getBaseActivity() == null){
+            getBaseActivity().handleSuccessEvent(bundle);
+            return true;
+        }
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-        List<String> errors = (List<String>) bundle
-                .getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+        
         Log.d(TAG, "onSuccessEvent: eventType = " + eventType);
         switch (eventType) {
 
@@ -373,6 +376,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         if(getBaseActivity().handleErrorEvent(bundle)){
             return true;
         }
+        
         mBeginRequestMillis = System.currentTimeMillis();
         getBaseActivity().handleErrorEvent(bundle);
         return true;

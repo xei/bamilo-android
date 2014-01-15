@@ -103,29 +103,30 @@ public class SplashScreenActivity extends FragmentActivity {
         
         Log.i(TAG, "code1 onCreate");
         setContentView(R.layout.splash_screen);
+        JumiaApplication.INSTANCE.init(false, initializationHandler);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        Log.i(TAG, "code1 onCreate");
+        Log.i(TAG, "code1 onResume");
         shouldHandleEvent = true; 
         
-     // Adx launch event
+        // Adx launch event
         launchEvent();
-        
-        JumiaApplication.INSTANCE.init(false, initializationHandler);
+
         
     }
-
+     
     @Override
     protected void onStart() {
         super.onStart();
-        if(isUrbainAirshipInitialized){
-            isUrbainAirshipInitialized = false;
+        Log.i(TAG, "onStart");
+//        if(isUrbainAirshipInitialized){
+//            isUrbainAirshipInitialized = false;
             UAirship.shared().getAnalytics().activityStarted(this);
-        }
+//        }
     }
 
     @Override

@@ -525,7 +525,11 @@ public class HomeFragment extends BaseFragment {
     }
     
     protected boolean onSuccessEvent(Bundle bundle) {
-        getBaseActivity().handleSuccessEvent(bundle);
+        if(getBaseActivity() != null){
+            getBaseActivity().handleSuccessEvent(bundle);
+        } else {
+            return true;
+        }
         Log.i(TAG,"ON onSuccessEvent");
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         switch (eventType) {

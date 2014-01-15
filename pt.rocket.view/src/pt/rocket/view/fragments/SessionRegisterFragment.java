@@ -543,7 +543,11 @@ public class SessionRegisterFragment extends BaseFragment {
 
 
     protected boolean onSuccessEvent(Bundle bundle) {
-        getBaseActivity().handleSuccessEvent(bundle);
+        if(getBaseActivity() != null){
+            getBaseActivity().handleSuccessEvent(bundle);
+        } else {
+            return true;
+        }
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         switch (eventType) {
         case REGISTER_ACCOUNT_EVENT:

@@ -5,6 +5,7 @@ package pt.rocket.view.fragments;
 
 import java.util.Arrays;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -17,6 +18,7 @@ import pt.rocket.forms.Form;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.objects.Errors;
+import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CustomerUtils;
 import pt.rocket.framework.utils.EventType;
@@ -465,7 +467,11 @@ public class SessionLoginFragment extends BaseFragment {
 
 
     protected boolean onSuccessEvent(Bundle bundle) {
-        getBaseActivity().handleSuccessEvent(bundle);
+        if(getBaseActivity() != null){
+            getBaseActivity().handleSuccessEvent(bundle);
+        } else {
+            return true;
+        }
          
         Log.d(TAG, "ON SUCCESS EVENT");
         // Validate fragment visibility
@@ -617,17 +623,18 @@ public class SessionLoginFragment extends BaseFragment {
                 } else {
                     
                     Log.d(TAG, "SHOW DIALOG");
-                    List<String> errorMessages = (List<String>) bundle
+                    HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle
                             .getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
-                    
-                    if (errorMessages != null && (errorMessages.contains(Errors.CODE_LOGIN_FAILED) || errorMessages.contains(Errors.CODE_LOGIN_CHECK_PASSWORD))) {
+                    List<String> errorMessages = (List<String>) errors.get(RestConstants.JSON_VALIDATE_TAG);
+
+                    if (errors != null && errorMessages.size() > 0) {
                         
                         if(getActivity() != null)
                             ((BaseActivity) getActivity()).showContentContainer(false);
                         
                         dialog = DialogGenericFragment.newInstance(true, true, false,
                                 getString(R.string.error_login_title),
-                                getString(R.string.error_login_check_text),
+                                errorMessages.get(0),
                                 getString(R.string.ok_label), "", new OnClickListener() {
 
                                     @Override

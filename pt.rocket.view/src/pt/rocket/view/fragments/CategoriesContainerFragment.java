@@ -301,7 +301,11 @@ public class CategoriesContainerFragment extends BaseFragment {
     }
 
     protected boolean onSuccessEvent(Bundle bundle) {
-        getBaseActivity().handleSuccessEvent(bundle);
+        if(getBaseActivity() != null){
+            getBaseActivity().handleSuccessEvent(bundle);
+        } else {
+            return true;
+        }
         
         // Validate if fragment is on the screen
         if(isVisible()) {
