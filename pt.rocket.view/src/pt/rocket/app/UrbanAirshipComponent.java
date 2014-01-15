@@ -4,6 +4,7 @@
 package pt.rocket.app;
 
 import pt.rocket.framework.ErrorCode;
+import pt.rocket.utils.JumiaApplication;
 import pt.rocket.utils.PushNotificationIntentReceiver;
 import pt.rocket.view.R;
 import android.app.Application;
@@ -34,6 +35,10 @@ public class UrbanAirshipComponent extends ApplicationComponent {
      */
     @Override
     protected ErrorCode initInternal(Application app) {
+        if(JumiaApplication.INSTANCE.isUAInitialized){
+            return ErrorCode.NO_ERROR;
+        }
+        JumiaApplication.INSTANCE.isUAInitialized = true;
         context = app.getApplicationContext();
         AirshipConfigOptions options = AirshipConfigOptions.loadDefaultOptions(app);
         UAirship.takeOff(app, options);

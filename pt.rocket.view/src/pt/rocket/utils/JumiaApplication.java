@@ -92,6 +92,8 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     private Handler resendHandler;
     private Message resendMsg;
 
+    public boolean isUAInitialized = false;
+    
     @Override
     public void onCreate() {
         doBindService();

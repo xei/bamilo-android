@@ -4,6 +4,7 @@
 package pt.rocket.view.fragments;
 
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -19,6 +20,7 @@ import pt.rocket.forms.Form;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.objects.Errors;
+import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CustomerUtils;
 import pt.rocket.framework.utils.EventType;
@@ -168,9 +170,9 @@ public class SessionRegisterFragment extends BaseFragment {
         super.onResume();
         Log.i(TAG, "ON RESUME");
         registerLocation = getString(R.string.mixprop_loginlocation);
-        if (formResponse != null)
+        if (formResponse != null){
             loadForm(formResponse);
-        else
+        } else {
 
             /**
              * TRIGGERS
@@ -178,6 +180,7 @@ public class SessionRegisterFragment extends BaseFragment {
              * @author sergiopereira
              */
             triggerRegisterForm();
+        }
         // triggerContentEvent(EventType.GET_REGISTRATION_FORM_EVENT);
 
         setAppContentLayout();
@@ -544,6 +547,7 @@ public class SessionRegisterFragment extends BaseFragment {
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         switch (eventType) {
         case REGISTER_ACCOUNT_EVENT:
+            getBaseActivity().showContentContainer(false);
             // Get Register Completed Event
             Customer customer = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             TrackerDelegator.trackSignupSuccessful(getActivity(), customer, registerLocation);
@@ -557,6 +561,7 @@ public class SessionRegisterFragment extends BaseFragment {
             Log.d(TAG, "event done - REGISTER_ACCOUNT_EVENT");
             return false;
         case GET_REGISTRATION_FORM_EVENT:
+            getBaseActivity().showContentContainer(false);
             Form form = (Form) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             Log.d(TAG, "getRegistrationFormCompleted: form = " + form.toJSON());
             if (null != form) {
@@ -631,14 +636,34 @@ public class SessionRegisterFragment extends BaseFragment {
         if (eventType == EventType.REGISTER_ACCOUNT_EVENT) {
             TrackerDelegator.trackSignupFailed();
             if (errorCode == ErrorCode.REQUEST_ERROR) {
-                List<String> errorMessages = (List<String>) bundle
+                HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle
                         .getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
-                if (errorMessages != null
-                        && errorMessages.contains(Errors.CODE_REGISTER_CUSTOMEREXISTS)) {
+                List<String> validateMessages = errorMessages.get(RestConstants.JSON_VALIDATE_TAG);
+                if (validateMessages != null
+                        && validateMessages.contains(Errors.CODE_REGISTER_CUSTOMEREXISTS)) {
                     ((BaseActivity) getActivity()).showContentContainer(false);
                     dialog = DialogGenericFragment.newInstance(true, true, false,
                             getString(R.string.error_register_title),
                             getString(R.string.error_register_alreadyexists),
+                            getString(R.string.ok_label), "", new OnClickListener() {
+
+                                @Override
+                                public void onClick(View v) {
+                                    int id = v.getId();
+                                    if (id == R.id.button1) {
+                                        dialog.dismiss();
+                                    }
+
+                                }
+
+                            });
+                    dialog.show(getActivity().getSupportFragmentManager(), null);
+                    return true;
+                } else {
+                    ((BaseActivity) getActivity()).showContentContainer(false);
+                    dialog = DialogGenericFragment.newInstance(true, true, false,
+                            getString(R.string.error_register_title),
+                            getString(R.string.incomplete_alert),
                             getString(R.string.ok_label), "", new OnClickListener() {
 
                                 @Override
@@ -699,17 +724,16 @@ public class SessionRegisterFragment extends BaseFragment {
      */
     private void triggerRegister(ContentValues values) {
         Bundle bundle = new Bundle();
+        bundle.putParcelable(GetRegisterHelper.REGISTER_CONTENT_VALUES, values);
         triggerContentEvent(new GetRegisterHelper(), bundle, mCallBack);
     }
 
     private void triggerRegisterForm() {
-        Bundle bundle = new Bundle();
-        triggerContentEvent(new GetRegisterFormHelper(), bundle, mCallBack);
+        triggerContentEvent(new GetRegisterFormHelper(), null, mCallBack);
     }
 
     private void triggerTerms() {
-        Bundle bundle = new Bundle();
-        triggerContentEvent(new GetTermsConditionsHelper(), bundle, mCallBack);
+        triggerContentEventWithNoLoading(new GetTermsConditionsHelper(), null, mCallBack);
     }
 
     private void triggerStoreLogin(ContentValues values) {

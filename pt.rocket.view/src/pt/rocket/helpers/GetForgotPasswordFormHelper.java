@@ -39,6 +39,7 @@ public class GetForgotPasswordFormHelper extends BaseHelper {
         bundle.putString(Constants.BUNDLE_URL_KEY, url);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
         bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_FORGET_PASSWORD_FORM_EVENT);
         return bundle;
     }
 
@@ -66,6 +67,7 @@ public class GetForgotPasswordFormHelper extends BaseHelper {
             if (forms.size() > 0) {
                 bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, forms.get(0));
             }
+            bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_FORGET_PASSWORD_FORM_EVENT);
         } catch (JSONException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
