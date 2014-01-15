@@ -10,7 +10,6 @@ import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.SearchSuggestionsAdapter;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
-import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.SearchSuggestion;
 import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.Constants;
@@ -416,29 +415,33 @@ public class SearchFragment extends BaseFragment implements OnItemClickListener 
         
         @Override
         public void onRequestError(Bundle bundle) {
-            mBeginRequestMillis = System.currentTimeMillis();
-            // Validate fragment visibility
-            if(isVisible()){
-                setEmptySuggestions( R.string.searchsuggestions_empty);
-                ((BaseActivity) getActivity()).showContentContainer(false);
-            }
+            onErrorEvent(bundle);
         }
         
         @Override
         public void onRequestComplete(Bundle bundle) {
-//            Log.d(TAG, "ON SUCCESS EVENT: " + event.getType().name());
-            
-            // Validate fragment visibility
-            if(isVisible()){
-                AnalyticsGoogle.get().trackLoadTiming(R.string.gsearchsuggestions, mBeginRequestMillis);
-                searchSuggestions = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
-
-                setSearchSuggestions((List<SearchSuggestion>) searchSuggestions);
-            }
-                
-            
-            
+            onSuccessEvent(bundle);
         }
     };
 
+    private void onErrorEvent(Bundle bundle){
+        mBeginRequestMillis = System.currentTimeMillis();
+        if(getBaseActivity().handleErrorEvent(bundle)){
+            return;
+        }
+        // Validate fragment visibility
+        if(isVisible()){
+            setEmptySuggestions( R.string.searchsuggestions_empty);
+            ((BaseActivity) getActivity()).showContentContainer(false);
+        }
+    }
+    
+    private void onSuccessEvent(Bundle bundle){
+        if(isVisible()){
+            AnalyticsGoogle.get().trackLoadTiming(R.string.gsearchsuggestions, mBeginRequestMillis);
+            searchSuggestions = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
+
+            setSearchSuggestions((List<SearchSuggestion>) searchSuggestions);
+        }
+    }
 }

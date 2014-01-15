@@ -392,8 +392,13 @@ public class PopularityFragment extends BaseFragment {
 
     protected boolean onSuccessEvent(Bundle bundle) {
         mProductRatingPage =  bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);;
+        getBaseActivity().showContentContainer(false);
         displayReviews();
         return true;
+    }
+    
+    protected void onErrorEvent(Bundle bundle){
+        getBaseActivity().handleErrorEvent(bundle);    
     }
     
     
@@ -470,9 +475,6 @@ public class PopularityFragment extends BaseFragment {
                     bundle.putDouble(ConstantsIntentExtra.REVIEW_RATING, review.getRating());
                     bundle.putString(ConstantsIntentExtra.REVIEW_DATE, stringCor[0]);
                     ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.REVIEW, bundle, true);
-//                    ActivitiesWorkFlow.reviewActivity(getActivity(), review.getTitle(),
-//                            review.getComments(), review.getName(), review.getRating(),
-//                            stringCor[0]);
                 }
             });
 
@@ -511,7 +513,7 @@ public class PopularityFragment extends BaseFragment {
         
         @Override
         public void onRequestError(Bundle bundle) {
-            // TODO
+            onErrorEvent(bundle);
         }
         
         @Override

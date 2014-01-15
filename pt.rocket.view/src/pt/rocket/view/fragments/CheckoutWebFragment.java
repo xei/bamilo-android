@@ -149,13 +149,12 @@ public class CheckoutWebFragment extends BaseFragment {
     
     private void triggerGetCustomer(){
         
-        triggerContentEvent(new GetCustomerHelper(), null, mCallback);
-//        EventManager.getSingleton().triggerRequestEvent(new RequestEvent(EventType.GET_CUSTOMER));
+        triggerContentEventWithNoLoading(new GetCustomerHelper(), null, mCallback);
     }
     
     private void triggerGetShoppingCartItems(){
         
-        triggerContentEvent(new GetShoppingCartItemsHelper(), null, mCallback);
+        triggerContentEventWithNoLoading(new GetShoppingCartItemsHelper(), null, mCallback);
 //        EventManager.getSingleton().triggerRequestEvent(GetShoppingCartItemsEvent.FORCE_API_CALL);
     }
     
@@ -163,8 +162,7 @@ public class CheckoutWebFragment extends BaseFragment {
         
         @Override
         public void onRequestError(Bundle bundle) {
-            // TODO Auto-generated method stub
-            
+            getBaseActivity().handleErrorEvent(bundle);
         }
         
         @Override

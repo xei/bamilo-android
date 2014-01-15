@@ -1,14 +1,8 @@
 package pt.rocket.utils;
 
-import java.util.EnumSet;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
-import java.util.Map.Entry;
-
-import oak.ObscuredSharedPreferences;
-
-import com.bugsense.trace.ExceptionCallback;
 
 import pt.rocket.app.ApplicationComponent;
 import pt.rocket.app.DarwinComponent;
@@ -16,11 +10,10 @@ import pt.rocket.app.ImageLoaderComponent;
 import pt.rocket.app.UrbanAirshipComponent;
 import pt.rocket.forms.FormData;
 import pt.rocket.framework.ErrorCode;
-import pt.rocket.framework.interfaces.IMetaData;
+import pt.rocket.framework.components.NavigationListComponent;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.ShoppingCart;
 import pt.rocket.framework.objects.VersionInfo;
-import pt.rocket.framework.rest.RestClientSingleton;
 import pt.rocket.framework.service.IRemoteService;
 import pt.rocket.framework.service.IRemoteServiceCallback;
 import pt.rocket.framework.service.RemoteService;
@@ -35,17 +28,17 @@ import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.preferences.ShopPreferences;
 import android.app.Application;
 import android.content.ComponentName;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.RemoteException;
+
+import com.bugsense.trace.ExceptionCallback;
+
 import de.akquinet.android.androlog.Log;
 
 public class JumiaApplication extends Application implements ExceptionCallback {
@@ -86,6 +79,8 @@ public class JumiaApplication extends Application implements ExceptionCallback {
             new SingletonMap<ApplicationComponent>(new UrbanAirshipComponent(),
                     new ImageLoaderComponent(), new DarwinComponent());
 
+    public static ArrayList<NavigationListComponent> navigationListComponents;
+    
     /**
      * The md5 registry
      */
@@ -112,7 +107,7 @@ public class JumiaApplication extends Application implements ExceptionCallback {
         setCart(null);
 
         setFormDataRegistry(new HashMap<String, FormData>());
-
+        navigationListComponents = null;
     }
 
     public synchronized void init(boolean isReInit, Handler initializationHandler) {
@@ -120,14 +115,15 @@ public class JumiaApplication extends Application implements ExceptionCallback {
         Log.d(TAG, "Starting initialisation phase");
         AnalyticsGoogle.clearCheckoutStarted();
         for (ApplicationComponent component : COMPONENTS.values()) {
-            ErrorCode result = component.init(this);
+            ErrorCode result = component.init(JumiaApplication.this);
+            Log.i(TAG, "code1 initializing component : "+component.getClass().getName());
             if (result != ErrorCode.NO_ERROR) {
-                
+                Log.i(TAG, "code1 component : "+component.getClass().getName()+" error code : "+result);
                 handleEvent(ErrorCode.REQUIRES_USER_INTERACTION, null, initializationHandler);
                 return;
             }
         }
-
+        SHOP_ID = ShopPreferences.getShopId(getApplicationContext());
         CheckVersion.clearDialogSeenInLaunch(getApplicationContext());
         handleEvent(ErrorCode.NO_ERROR, EventType.INITIALIZE, initializationHandler);
         // InitializeEvent event = new InitializeEvent(EnumSet.noneOf(EventType.class));
@@ -167,10 +163,9 @@ public class JumiaApplication extends Application implements ExceptionCallback {
             resendHandler = initializationHandler;
             resendMsg = msg;
             doBindService();
-            return;
+        } else {
+            initializationHandler.sendMessage(msg);    
         }
-
-        initializationHandler.sendMessage(msg);
     }
 
     public void registerFragmentCallback(IRemoteServiceCallback mCallback) {
@@ -377,6 +372,20 @@ public class JumiaApplication extends Application implements ExceptionCallback {
         }
     }
     
+    /**
+     * @return the loggedIn
+     */
+    public boolean isLoggedIn() {
+        return loggedIn;
+    }
+
+    /**
+     * @param loggedIn the loggedIn to set
+     */
+    public void setLoggedIn(boolean loggedIn) {
+        this.loggedIn = loggedIn;
+    }
+
     /**
      * Service Stuff
      */

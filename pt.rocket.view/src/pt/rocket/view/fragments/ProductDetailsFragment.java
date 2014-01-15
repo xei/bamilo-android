@@ -1031,6 +1031,10 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
     }
 
     protected boolean onErrorEvent(Bundle bundle) {
+        
+        if(getBaseActivity().handleErrorEvent(bundle)){
+            return true;
+        }
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         Log.d(TAG, "onErrorEvent: type = " + eventType);

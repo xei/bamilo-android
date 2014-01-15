@@ -299,6 +299,7 @@ public class CategoriesContainerFragment extends BaseFragment {
     }
 
     protected boolean onSuccessEvent(Bundle bundle) {
+        getBaseActivity().handleSuccessEvent(bundle);
         Log.i(TAG, "code1 received categories");
         // Validate if fragment is on the screen
         if(isVisible()) {
@@ -323,9 +324,10 @@ public class CategoriesContainerFragment extends BaseFragment {
         return true;
     }
 
-    protected boolean onErrorEvent(Bundle bundle) {
+    
+    public void onErrorEvent(Bundle bundle) {
         mBeginRequestMillis = System.currentTimeMillis();
-        return true;
+        getBaseActivity().handleErrorEvent(bundle);
     }
 
     /**
@@ -541,7 +543,7 @@ public class CategoriesContainerFragment extends BaseFragment {
         
         @Override
         public void onRequestError(Bundle bundle) {
-            onErrorEvent(bundle);
+            handleErrorEvent(bundle);
         }
         
         @Override

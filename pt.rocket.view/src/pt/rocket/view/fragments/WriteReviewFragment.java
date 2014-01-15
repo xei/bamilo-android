@@ -17,7 +17,7 @@ import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.GetCustomerHelper;
 import pt.rocket.helpers.GetLoginHelper;
 import pt.rocket.helpers.GetRatingsHelper;
-import pt.rocket.helpers.GetWriteReviewHelper;
+import pt.rocket.helpers.ReviewProductHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.JumiaApplication;
 import pt.rocket.utils.MyMenuItem;
@@ -374,8 +374,11 @@ public class WriteReviewFragment extends BaseFragment {
             dialog_review_submitted.show(getActivity().getSupportFragmentManager(), null);
             return false;
         case GET_RATING_OPTIONS_EVENT:
-            ratingOptions = (HashMap<String, HashMap<String, String>>) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            ratingOptions = (HashMap<String, HashMap<String, String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_KEY);
+            JumiaApplication.INSTANCE.setRatingOptions(ratingOptions);
+            getBaseActivity().showContentContainer(false);
             setLayout();
+            
             return true;
             // case GET_CUSTOMER:
         case LOGIN_EVENT:
@@ -447,14 +450,19 @@ public class WriteReviewFragment extends BaseFragment {
         triggerContentEvent(new GetRatingsHelper(), null, mCallBack);
     }
     
-    private void triggerWriteReview(String string, int i, ProductReviewCommentCreated productReviewCreated2){
+    private void triggerWriteReview(String sku, int id, ProductReviewCommentCreated productReviewCreated2){
         Bundle bundle = new Bundle();
-        triggerContentEvent(new GetWriteReviewHelper(), bundle, mCallBack);
+        bundle.putParcelable(ReviewProductHelper.COMMENT_CREATED, productReviewCreated2);
+        bundle.putString(ReviewProductHelper.PRODUCT_SKU, sku);
+        bundle.putInt(ReviewProductHelper.CUSTOMER_ID, id);
+        triggerContentEventWithNoLoading(new ReviewProductHelper(), bundle, mCallBack);
     }
     
     private void triggerWriteReview(String sku, ProductReviewCommentCreated productReviewCreated2) {
         Bundle bundle = new Bundle();
-        triggerContentEvent(new GetWriteReviewHelper(), bundle, mCallBack);
+        bundle.putParcelable(ReviewProductHelper.COMMENT_CREATED, productReviewCreated2);
+        bundle.putString(ReviewProductHelper.PRODUCT_SKU, sku);
+        triggerContentEventWithNoLoading(new ReviewProductHelper(), bundle, mCallBack);
     }
     
     /**

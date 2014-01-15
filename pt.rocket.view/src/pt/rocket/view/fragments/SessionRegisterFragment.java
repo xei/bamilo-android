@@ -540,6 +540,7 @@ public class SessionRegisterFragment extends BaseFragment {
 
 
     protected boolean onSuccessEvent(Bundle bundle) {
+        getBaseActivity().handleSuccessEvent(bundle);
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         switch (eventType) {
         case REGISTER_ACCOUNT_EVENT:
@@ -621,6 +622,9 @@ public class SessionRegisterFragment extends BaseFragment {
     }
 
     protected boolean onErrorEvent(Bundle bundle) {
+        if(getBaseActivity().handleErrorEvent(bundle)){
+            return true;
+        }
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
 

@@ -22,14 +22,18 @@ import pt.rocket.framework.objects.Promotion;
 import pt.rocket.framework.objects.TeaserSpecification;
 import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.Constants;
+import pt.rocket.framework.utils.CustomerUtils;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.MixpanelTracker;
 import pt.rocket.helpers.GetCallToOrderHelper;
+import pt.rocket.helpers.GetLoginHelper;
 import pt.rocket.helpers.GetPromotionsHelper;
+import pt.rocket.helpers.GetShoppingCartAddItemHelper;
 import pt.rocket.helpers.GetTeasersHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.CheckVersion;
 import pt.rocket.utils.HockeyStartup;
+import pt.rocket.utils.JumiaApplication;
 import pt.rocket.utils.JumiaViewPager;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
@@ -135,6 +139,10 @@ public class HomeFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         HockeyStartup.register(getActivity());
+        
+        if(JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials() && !JumiaApplication.INSTANCE.isLoggedIn()){
+            triggerAutoLogin();
+        }
         Log.i(TAG, "onCreate");
     }
 
@@ -517,6 +525,7 @@ public class HomeFragment extends BaseFragment {
     
     
     protected boolean onSuccessEvent(Bundle bundle) {
+        getBaseActivity().handleSuccessEvent(bundle);
         Log.i(TAG,"ON onSuccessEvent");
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         switch (eventType) {
@@ -549,8 +558,7 @@ public class HomeFragment extends BaseFragment {
         return false;
     }
 
-    
-    protected boolean onErrorEvent(Bundle bundle) {
+    public void onErrorEvent(Bundle bundle) {
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         switch (eventType) {
         case GET_TEASERS_EVENT:
@@ -559,7 +567,6 @@ public class HomeFragment extends BaseFragment {
         case GET_PROMOTIONS:
             break;
         }
-        return true;
     }
 
     // Since this is an object collection, use a FragmentStatePagerAdapter,
@@ -812,6 +819,16 @@ public class HomeFragment extends BaseFragment {
         triggerContentEvent(new GetCallToOrderHelper(), bundle, mCallBack);
     }
     
+    /**
+     * TRIGGERS
+     * @author Manuel Silva
+     */
+    private void triggerAutoLogin(){
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
+        bundle.putBoolean(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, true);
+        triggerContentEventWithNoLoading(new GetLoginHelper(), bundle, mCallBack);
+    }
     /**
      * CALLBACK
      * @author sergiopereira

@@ -3,14 +3,9 @@ package pt.rocket.controllers;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Calendar;
-import java.util.EnumSet;
 
 import org.holoeverywhere.widget.Button;
 import org.holoeverywhere.widget.TextView;
-
-import com.nostra13.universalimageloader.core.ImageLoader;
-
-import de.akquinet.android.androlog.Log;
 
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.ConstantsSharedPrefs;
@@ -34,7 +29,6 @@ import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.ProductDetailsActivityFragment;
 import pt.rocket.view.R;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -48,14 +42,15 @@ import android.view.View.OnTouchListener;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
+import de.akquinet.android.androlog.Log;
 
 public class CatalogPageModel {
 
@@ -633,13 +628,13 @@ public class CatalogPageModel {
         
         @Override
         public void onRequestError(Bundle bundle) {
-            processError(bundle);
+            onErrorEvent(bundle);
             
         }
         
         @Override
         public void onRequestComplete(Bundle bundle) {
-            processSuccess(bundle);
+            onSuccessEvent(bundle);
             
         }
     };
@@ -696,7 +691,10 @@ public class CatalogPageModel {
         }
     }
 
-    private void processError(Bundle bundle) {
+    private void onErrorEvent(Bundle bundle) {
+        if(((BaseActivity) mActivity).handleErrorEvent(bundle)){
+            return;
+        }
         Log.i(TAG, "code1 product list on error event");
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
@@ -722,11 +720,12 @@ public class CatalogPageModel {
         totalItems.setVisibility(View.VISIBLE);
         //totalItemsLable = " ("+String.valueOf(getTotalProducts())+" "+((BaseActivity) mActivity).getString(R.string.shoppingcart_items)+")";
     }
-    private void processSuccess(Bundle bundle) {
+    private void onSuccessEvent(Bundle bundle) {
+        ((BaseActivity) mActivity).handleSuccessEvent(bundle);
         Log.d(TAG, "ON SUCCESS EVENT");
 
         // Get Products Event
-        ProductsPage productsPage = (ProductsPage) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+        ProductsPage productsPage = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
 
         if (productsPage != null && productsPage.getTotalProducts() > 0) {
             Log.d(TAG, "onSuccessEvent: products on page = " + productsPage.getProducts().size() +

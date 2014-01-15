@@ -27,7 +27,7 @@ public class GetFacebookLoginHelper extends BaseHelper {
     private static String TAG = GetLoginFormHelper.class.getSimpleName();
 
     public static final String LOGIN_CONTENT_VALUES = "contentValues";
-    boolean saveCredentials = false;
+    boolean saveCredentials = true;
     ContentValues contentValues;
 
     @Override
@@ -45,12 +45,15 @@ public class GetFacebookLoginHelper extends BaseHelper {
 
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
-        if (saveCredentials) {
-            JumiaApplication.INSTANCE.getCustomerUtils().storeCredentials(contentValues);
-        }
+        
         try {
             if (jsonObject.has(RestConstants.JSON_USER_TAG)) {
                 jsonObject = jsonObject.getJSONObject(RestConstants.JSON_USER_TAG);
+                if (saveCredentials) {
+                    contentValues.put(CustomerUtils.INTERNAL_PASSWORD_VALUE, jsonObject.getString(RestConstants.JSON_PASSWORD_TAG));
+                    contentValues.put(CustomerUtils.INTERNAL_EMAIL_VALUE, jsonObject.getString(RestConstants.JSON_EMAIL_TAG));
+                    JumiaApplication.INSTANCE.getCustomerUtils().storeCredentials(contentValues);
+                }
             } else if (jsonObject.has(RestConstants.JSON_DATA_TAG)) {
                 jsonObject = jsonObject.getJSONObject(RestConstants.JSON_DATA_TAG);
             }
@@ -59,6 +62,7 @@ public class GetFacebookLoginHelper extends BaseHelper {
             e.printStackTrace();
         }
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, new Customer(jsonObject));
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.FACEBOOK_LOGIN_EVENT);
         return bundle;
     }
     

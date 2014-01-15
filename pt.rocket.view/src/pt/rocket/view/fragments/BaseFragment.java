@@ -479,33 +479,41 @@ public abstract class BaseFragment extends Fragment implements
 //        }
 //    }
 
-//    /**
-//     * Handles a successful event and reflects necessary changes on the UI.
-//     * 
-//     * @param event
-//     *            The successful event with {@link ResponseEvent#getSuccess()} == <code>true</code>
-//     */
-//    private void handleSuccessEvent(ResponseEvent event) {
-//        Log.i(TAG, "ON HANDLE SUCCESS EVENT: " + event.getType().toString());
-//        switch (event.getType()) {
-//        case GET_SHOPPING_CART_ITEMS_EVENT:
-//        case ADD_ITEM_TO_SHOPPING_CART_EVENT:
-//        case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
-//        case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
-//            break;
-//        case LOGOUT_EVENT:
-//            break;
-//        }
-//    }
+    /**
+     * Handles a successful event and reflects necessary changes on the UI.
+     * 
+     * @param event
+     *            The successful event with {@link ResponseEvent#getSuccess()} == <code>true</code>
+     */
+    private void handleSuccessEvent(Bundle bundle) {
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        Log.i(TAG, "ON HANDLE SUCCESS EVENT: " + eventType);
+        switch (eventType) {
+        case GET_SHOPPING_CART_ITEMS_EVENT:
+        case ADD_ITEM_TO_SHOPPING_CART_EVENT:
+        case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
+        case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
+            getBaseActivity().updateCartInfo();
+            break;
+        case LOGOUT_EVENT:
+            break;
+        }
+    }
 
-//    /**
-//     * Handles a failed event and shows dialogs to the user.
-//     * 
-//     * @param event
-//     *            The failed event with {@link ResponseEvent#getSuccess()} == <code>false</code>
-//     */
-//    public void handleErrorEvent(final ResponseEvent event) {
-//        Log.i(TAG, "ON HANDLE ERROR EVENT: " + event.getType());
+    /**
+     * Handles a failed event and shows dialogs to the user.
+     * 
+     * @param event
+     *            The failed event with {@link ResponseEvent#getSuccess()} == <code>false</code>
+     */
+    public void handleErrorEvent(Bundle bundle) {
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        List<String> errors = (List<String>) bundle
+                .getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+        Log.i(TAG, "ON HANDLE ERROR EVENT: " + eventType);
+        if(errors != null)
+            Log.i(TAG, "ON HANDLE ERROR EVENT error response was : error code : " + errorCode +" error message : " + errors.toString());
 //        if (!(event.request.eventType.equals(EventType.GET_CUSTOMER) && ((BaseActivity) getActivity())
 //                .getLocalClassName().equals(writeReviewFragment))) {
 //            if (event.errorCode.isNetworkError()) {
@@ -655,21 +663,21 @@ public abstract class BaseFragment extends Fragment implements
 //            ((BaseActivity) getActivity()).showContentContainer(false);
 //            return;
 //        }
-//
-//        /*
-//         * TODO: finish to distinguish between errors else if (event.errorCode.isServerError()) {
-//         * dialog = DialogGeneric.createServerErrorDialog(MyActivity.this, new OnClickListener() {
-//         * 
-//         * @Override public void onClick(View v) { showLoadingInfo();
-//         * EventManager.getSingleton().triggerRequestEvent(event.request); dialog.dismiss(); } },
-//         * false); dialog.show(); return; } else if (event.errorCode.isClientError()) { dialog =
-//         * DialogGeneric.createClientErrorDialog( MyActivity.this, new OnClickListener() {
-//         * 
-//         * @Override public void onClick(View v) { showLoadingInfo();
-//         * EventManager.getSingleton().triggerRequestEvent(event.request); dialog.dismiss(); } },
-//         * false); dialog.show(); return; }
-//         */
-//    }
+
+        /*
+         * TODO: finish to distinguish between errors else if (event.errorCode.isServerError()) {
+         * dialog = DialogGeneric.createServerErrorDialog(MyActivity.this, new OnClickListener() {
+         * 
+         * @Override public void onClick(View v) { showLoadingInfo();
+         * EventManager.getSingleton().triggerRequestEvent(event.request); dialog.dismiss(); } },
+         * false); dialog.show(); return; } else if (event.errorCode.isClientError()) { dialog =
+         * DialogGeneric.createClientErrorDialog( MyActivity.this, new OnClickListener() {
+         * 
+         * @Override public void onClick(View v) { showLoadingInfo();
+         * EventManager.getSingleton().triggerRequestEvent(event.request); dialog.dismiss(); } },
+         * false); dialog.show(); return; }
+         */
+    }
 //      OLD FRAMEWORK
 //    @Override
 //    public final boolean removeAfterHandlingEvent() {
@@ -798,12 +806,7 @@ public abstract class BaseFragment extends Fragment implements
 
     public void setActivity(BaseActivity activity) {
         this.mainActivity = activity;
-    }
-//      OLD FRAMEWORK
-//    @Override
-//    public String getMD5Hash() {         
-//        return md5Hash;
-//    }    
+    }   
     
     /**
      * The variable mainActivity is setted onStart

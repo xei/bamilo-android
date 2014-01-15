@@ -567,7 +567,7 @@ public class ProductsFragment extends BaseFragment implements
     }
 
     protected boolean onSuccessEvent(Bundle bundle) {
-        
+
         Log.d(TAG, "ON SUCCESS EVENT");
         // sortButton.setOnClickListener(this);
         // Get Products Event
@@ -641,6 +641,9 @@ public class ProductsFragment extends BaseFragment implements
     }
 
     protected boolean onErrorEvent(Bundle bundle) {
+        if(getBaseActivity().handleErrorEvent(bundle)){
+            return true;
+        }
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         if (errorCode != null && pageNumber == 1) {
             showProductsNotfound();

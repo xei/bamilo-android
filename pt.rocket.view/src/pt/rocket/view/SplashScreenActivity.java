@@ -1,7 +1,9 @@
 package pt.rocket.view;
 
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -11,6 +13,7 @@ import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.ErrorCode;
+import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.rest.RestContract;
 import pt.rocket.framework.service.IRemoteServiceCallback;
 import pt.rocket.framework.utils.AnalyticsGoogle;
@@ -23,6 +26,7 @@ import pt.rocket.utils.DialogGeneric;
 import pt.rocket.utils.HockeyStartup;
 import pt.rocket.utils.JumiaApplication;
 import pt.rocket.utils.TrackerDelegator;
+import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -34,6 +38,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.RemoteException;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -72,9 +77,9 @@ import com.urbanairship.push.PushManager;
  * 
  */
 
-public class SplashScreenActivity extends Activity {
+public class SplashScreenActivity extends FragmentActivity {
     private final static String TAG = LogTagHelper.create(SplashScreenActivity.class);
-    private DialogGeneric dialog;
+    private DialogGenericFragment dialog;
 
     private static boolean shouldHandleEvent = true;
 
@@ -153,7 +158,6 @@ public class SplashScreenActivity extends Activity {
                Log.d(TAG, "Waiting for the registration process to finish");
            } else if(eventType == EventType.INITIALIZE){
                showDevInfo();
-               UAirship.shared().getAnalytics().activityStarted(SplashScreenActivity.this);
            }
           
            handleSuccessResponse(bundle);
@@ -295,16 +299,14 @@ public class SplashScreenActivity extends Activity {
      * @param bundle
      */
     private void handleSuccessResponse(Bundle bundle) {
+        Log.i(TAG,"on handleSuccessResponse");
         if (!shouldHandleEvent) {
             return;
         }
         
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-        List<String> errors = (List<String>) bundle
-                .getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
-        Log.i(TAG, "Got initialization result: " + eventType + " error code : "+errorCode.name());
-        if (dialog != null && dialog.isShowing()) {
+        if (dialog != null && dialog.isVisible()) {
             try {
                 dialog.dismiss();
             } catch (Exception e) {
@@ -313,10 +315,9 @@ public class SplashScreenActivity extends Activity {
         }
         if (eventType == EventType.INITIALIZE) {
             Log.d(TAG, "HANDLE EVENT: " + eventType.toString());
-            // /*
-            // * Get image resolutions supported by server
-            // */
-            // getSupportedImageResolutions();
+            /**
+             * Get Api info
+             */
             JumiaApplication.INSTANCE.registerFragmentCallback(mCallback);
             JumiaApplication.INSTANCE.sendRequest(new GetApiInfoHelper(), null, responseCallback);
 
@@ -325,7 +326,7 @@ public class SplashScreenActivity extends Activity {
             // Show activity
             selectActivity(); 
             finish();
-        } else if (errorCode == ErrorCode.REQUIRES_USER_INTERACTION) {
+        }  else if (errorCode == ErrorCode.REQUIRES_USER_INTERACTION) {
 
             Intent intent = new Intent(this, MainFragmentActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -334,61 +335,6 @@ public class SplashScreenActivity extends Activity {
             // Start activity
             startActivity(intent);
             finish();
-        } else if (errorCode.isNetworkError()) {
-            dialog = DialogGeneric.createNoNetworkDialog(SplashScreenActivity.this,
-                    new OnClickListener() {
-
-                        @Override
-                        public void onClick(View v) {
-                            JumiaApplication.INSTANCE.init(true, initializationHandler);
-                            dialog.dismiss();
-                        }
-                    }, true);
-            dialog.setCancelable(false);
-            try {
-                dialog.show();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else if (errorCode == ErrorCode.REQUEST_ERROR && errors != null) {
-            String message = "";
-
-            for (String error : errors) {
-                message += "\n" + error;
-            }
-            message = message.replaceFirst("\n", "");
-            dialog = DialogGeneric.createServerErrorDialog(message, SplashScreenActivity.this,
-                    new OnClickListener() {
-
-                        @Override
-                        public void onClick(View v) {
-                            JumiaApplication.INSTANCE.init(true, initializationHandler);
-                            dialog.dismiss();
-                        }
-                    }, true);
-            dialog.setCancelable(false);
-            try {
-                dialog.show();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-        } else {
-            dialog = DialogGeneric.createServerErrorDialog(SplashScreenActivity.this,
-                    new OnClickListener() {
-
-                        @Override
-                        public void onClick(View v) {
-                            JumiaApplication.INSTANCE.init(true, initializationHandler);
-                            dialog.dismiss();
-                        }
-                    }, true);
-            dialog.setCancelable(false);
-            try {
-                dialog.show();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
     }
 
@@ -413,9 +359,87 @@ public class SplashScreenActivity extends Activity {
      * @param bundle
      */
     private void handleErrorResponse(Bundle bundle) {
-        Log.i(TAG, "something went wrong!!!");
-        if (!shouldHandleEvent) {
-            return;
+        Log.i(TAG, "codeerror");
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle
+                .getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+        Log.i(TAG, "codeerror "+errorCode);
+        if (errorCode.isNetworkError()) {
+            switch (errorCode) {
+            case NO_NETWORK:
+                Log.i(TAG, "code1 no network "+eventType);
+                // Remove dialog if exist
+                if (dialog != null){
+                    try {
+                        
+                        
+                        dialog.dismiss();    
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                dialog = DialogGenericFragment.createNoNetworkDialog(SplashScreenActivity.this,
+                        new OnClickListener() {
+
+                            @Override
+                            public void onClick(View v) {
+                                /**
+                                 * Re-send initialize event result to get Api Info
+                                 */
+                                Bundle args = new Bundle();
+                                args.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.INITIALIZE);
+                                handleSuccessResponse(args);
+                                dialog.dismiss();
+                            }
+                        }, true);
+                try {
+                    dialog.show(getSupportFragmentManager(), null);
+                    dialog.setCancelable(false);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+            case SERVER_IN_MAINTENANCE:
+                // TODO implement fallback when server is in maintenance
+                break;
+            case REQUEST_ERROR:
+                List<String> validateMessages = errorMessages.get(RestConstants.JSON_VALIDATE_TAG);
+                String dialogMsg = "";
+                if (validateMessages == null || validateMessages.isEmpty()) {
+                    validateMessages = errorMessages.get(RestConstants.JSON_ERROR_TAG);
+                }
+                if (validateMessages != null) {
+                    for (String message : validateMessages) {
+                        dialogMsg += message + "\n";
+                    }
+                } else {
+                    for (Entry<String, ? extends List<String>> entry : errorMessages.entrySet()) {
+                        dialogMsg += entry.getKey() + ": " + entry.getValue().get(0) + "\n";
+                    }
+                }
+                if (dialogMsg.equals("")) {
+                    dialogMsg = getString(R.string.validation_errortext);
+                }
+                dialog = DialogGenericFragment.newInstance(
+                        true, true, false, getString(R.string.validation_title),
+                        dialogMsg, getResources().getString(R.string.ok_label), "",
+                        new OnClickListener() {
+
+                            @Override
+                            public void onClick(View v) {
+                                int id = v.getId();
+                                if (id == R.id.button1) {
+                                    dialog.dismiss();
+                                }
+
+                            }
+
+                        });
+
+                dialog.show(getSupportFragmentManager(), null);
+            }
         }
     }
     

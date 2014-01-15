@@ -224,7 +224,6 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
     
     private void triggerGetShoppingCart(){
         triggerContentEvent(new GetShoppingCartItemsHelper(), null, responseCallback);
-//        triggerContentEvent(GetShoppingCartItemsEvent.FORCE_API_CALL);
     }
 
     private void triggerRemoveItem(ShoppingCartItem item){
@@ -335,6 +334,10 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
     }
 
     protected boolean onSuccessEvent(Bundle bundle) {
+        if(!isVisible()){
+            return true;
+        }
+        getBaseActivity().handleSuccessEvent(bundle);
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         List<String> errors = (List<String>) bundle
@@ -364,6 +367,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
 
     protected boolean onErrorEvent(Bundle bundle) {
         mBeginRequestMillis = System.currentTimeMillis();
+        getBaseActivity().handleErrorEvent(bundle);
         return true;
     }
 

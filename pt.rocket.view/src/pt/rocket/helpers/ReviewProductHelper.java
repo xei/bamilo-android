@@ -62,10 +62,11 @@ public class ReviewProductHelper extends BaseHelper {
                 HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.POST);
         bundle.putParcelable(Constants.BUNDLE_FORM_DATA_KEY, values);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.REVIEW_PRODUCT_EVENT);
         bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
         return bundle;
     }
-
+ 
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
         android.util.Log.d("TRACK", "parseResponseBundle GetProductReviewsHelper");
@@ -74,9 +75,9 @@ public class ReviewProductHelper extends BaseHelper {
             bundle.putString(Constants.BUNDLE_RESPONSE_KEY, jsonObject.getString("success"));
         } catch (JSONException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            e.printStackTrace(); 
         }
-
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.REVIEW_PRODUCT_EVENT);
         return bundle;
     }
 

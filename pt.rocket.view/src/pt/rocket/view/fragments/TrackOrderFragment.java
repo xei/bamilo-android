@@ -273,6 +273,9 @@ public class TrackOrderFragment extends BaseFragment {
     }
     
     protected boolean onErrorEvent(Bundle bundle) {
+        if(getBaseActivity().handleErrorEvent(bundle)){
+            return true;
+        }
         mOrderTrackerError = true;
         proccessError();
         return true;

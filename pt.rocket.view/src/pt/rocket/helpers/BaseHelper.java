@@ -8,6 +8,7 @@ import org.json.JSONObject;
 
 import pt.rocket.framework.objects.Errors;
 import pt.rocket.framework.utils.Constants;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.utils.JSONConstants;
 
 import android.os.Bundle;
@@ -37,15 +38,21 @@ public abstract class BaseHelper {
      * @return
      */
     public Bundle checkResponseForStatus(Bundle bundle) {
-    	Log.d(TAG, "checkResponseForStatus");
+    	
         String response = bundle.getString(Constants.BUNDLE_RESPONSE_KEY);
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        Log.d(TAG, "checkResponseForStatus : "+eventType);
         try {// TODO maintain generic information here, no need to pass on the
              // full object in order
             JSONObject jsonObject = new JSONObject(response);
 
             Boolean success = jsonObject.optBoolean(JSONConstants.JSON_SUCCESS_TAG, false);
-
-            JSONObject metaData = jsonObject.getJSONObject(JSONConstants.JSON_METADATA_TAG);
+            JSONObject metaData;
+            if(eventType == EventType.GET_CALL_TO_ORDER_PHONE || eventType == EventType.REVIEW_PRODUCT_EVENT){
+                metaData = jsonObject;
+            } else {
+                metaData = jsonObject.getJSONObject(JSONConstants.JSON_METADATA_TAG);
+            }
 
             // removing unnecessary information from bundle
             bundle.remove(Constants.BUNDLE_RESPONSE_KEY);
@@ -64,8 +71,8 @@ public abstract class BaseHelper {
         } catch (JSONException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+            Log.i(TAG, "code1 error response checkResponseForStatus : json error "+ eventType);
             bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
-            Log.i(TAG, "code1 error response checkResponseForStatus : json error");
             return parseResponseErrorBundle(bundle);
         }
     }

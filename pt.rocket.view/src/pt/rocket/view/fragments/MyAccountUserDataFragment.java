@@ -272,6 +272,7 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
                 lastNameText.setText(customer.getLastName());
                 firstNameText.setText(customer.getFirstName());
                 emailText.setText(customer.getEmail());
+                getBaseActivity().showContentContainer(false);
             } else {
                 restartAllFragments();
                 finish();
@@ -284,6 +285,9 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
 
     protected boolean onErrorEvent(Bundle bundle) {
         Log.i(TAG, "ON ERROR EVENT");
+        if(getBaseActivity().handleErrorEvent(bundle)){
+            return true;
+        }
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         

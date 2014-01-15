@@ -46,9 +46,7 @@ public class GetChangePasswordHelper extends BaseHelper {
     	savedValues.remove( "Alice_Module_Customer_Model_PasswordForm[password2]" );
         JumiaApplication.INSTANCE.getCustomerUtils().storeCredentials(savedValues);
     	
-    	
-    	//FIXME next line is just for test porpouse, to delete
-    	bundle.putString(Constants.BUNDLE_URL_KEY, " GetTeasersHelper");
+    	bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.CHANGE_PASSWORD_EVENT);
         return bundle;
     }
     

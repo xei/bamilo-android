@@ -80,7 +80,8 @@ public class GetRatingsHelper extends BaseHelper {
             }
         }
 
-        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, (Parcelable) ratingOptions);
+        bundle.putSerializable(Constants.BUNDLE_RESPONSE_KEY,  ratingOptions);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_RATING_OPTIONS_EVENT);
 
         return bundle;
     }

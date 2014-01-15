@@ -27,7 +27,7 @@ public class NavigationListHelper extends BaseHelper {
         // TODO Auto-generated method stub
         Bundle bundle = new Bundle();
         bundle.putString(Constants.BUNDLE_URL_KEY, EventType.GET_NAVIGATION_LIST_COMPONENTS_EVENT.action);
-        bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_NOT_PRIORITARY);
+        bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
         bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
         return bundle;
@@ -47,14 +47,13 @@ public class NavigationListHelper extends BaseHelper {
                 component.initialize(dataArray.getJSONObject(i));
                 components.add(component);
                 Log.i(TAG, "code1 parsing component : "+component.getElementText());
-            }
+            } 
 
             components.add(new NavigationListComponent(0, null, "loginout", null));
             
             bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, components);
             
         } catch (JSONException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_NAVIGATION_LIST_COMPONENTS_EVENT);

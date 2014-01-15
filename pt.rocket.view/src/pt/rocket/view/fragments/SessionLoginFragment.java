@@ -217,9 +217,12 @@ public class SessionLoginFragment extends BaseFragment {
             Log.d(TAG, "FORM ISN'T NULL");
             loadForm(formResponse);
         } else {
+            
             Log.d(TAG, "FORM IS NULL");
             // triggerContentEvent(LogInEvent.TRY_AUTO_LOGIN);
             
+            Session s = Session.getActiveSession();
+            s.closeAndClearTokenInformation();
             /**
              * TRIGGERS
              * @author sergiopereira
@@ -275,7 +278,7 @@ public class SessionLoginFragment extends BaseFragment {
      */
     private void onSessionStateChange(Session session, SessionState state, Exception exception) {
         if (state.isOpened()) {
-            ((BaseActivity) getActivity()).showLoading(false);
+            getBaseActivity().showLoading(false);
             // make request to the /me API
             Request request = Request.newMeRequest(
                     session,
@@ -429,12 +432,11 @@ public class SessionLoginFragment extends BaseFragment {
         values.put("birthday", user.getBirthday());
         values.put("gender", (String) user.getProperty("gender"));
         values.put(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, true);
-
         /**
          * TRIGGERS
          * @author sergiopereira
          */
-        triggerFacebookLogin(values);
+        triggerFacebookLogin(values, true);
         //triggerContentEvent(new FacebookLogInEvent(values));
         
         wasAutologin = false;
@@ -463,7 +465,8 @@ public class SessionLoginFragment extends BaseFragment {
 
 
     protected boolean onSuccessEvent(Bundle bundle) {
-        
+        getBaseActivity().handleSuccessEvent(bundle);
+         
         Log.d(TAG, "ON SUCCESS EVENT");
         // Validate fragment visibility
         if(!isVisible()){
@@ -571,6 +574,12 @@ public class SessionLoginFragment extends BaseFragment {
 
 
     protected boolean onErrorEvent(Bundle bundle) {
+    	if(!isVisible()){
+    		return true;
+    	}
+        if(getBaseActivity().handleErrorEvent(bundle)){
+            return true;
+        }
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         Log.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
@@ -605,8 +614,7 @@ public class SessionLoginFragment extends BaseFragment {
                         //triggerContentEvent(EventType.GET_LOGIN_FORM_EVENT);
                         
                     }
-                } 
-                else {
+                } else {
                     
                     Log.d(TAG, "SHOW DIALOG");
                     List<String> errorMessages = (List<String>) bundle
@@ -661,10 +669,11 @@ public class SessionLoginFragment extends BaseFragment {
         triggerContentEvent(new GetLoginHelper(), bundle, mCallBack);
     }
     
-    private void triggerFacebookLogin(ContentValues values){
+    private void triggerFacebookLogin(ContentValues values,  boolean saveCredentials){
         Bundle bundle = new Bundle();
         bundle.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, values);
-        triggerContentEvent(new GetFacebookLoginHelper(), bundle, mCallBack);
+        bundle.putBoolean(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, saveCredentials);
+        triggerContentEventWithNoLoading(new GetFacebookLoginHelper(), bundle, mCallBack);
     }
     
     private void triggerLoginForm(){

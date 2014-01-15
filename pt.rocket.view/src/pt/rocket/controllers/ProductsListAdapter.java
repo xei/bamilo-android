@@ -231,7 +231,7 @@ public class ProductsListAdapter extends BaseAdapter {
 
             }
         });
-
+        
         aq.id(prodItem.name).text(product.getBrand() + " " + product.getName());
         aq.id(prodItem.price).text(product.getSuggestedPrice());
         if (product.getRating() != null && product.getRating() > 0) {

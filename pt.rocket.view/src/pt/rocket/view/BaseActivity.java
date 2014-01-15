@@ -4,23 +4,21 @@ import java.math.BigDecimal;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
 import org.holoeverywhere.widget.EditText;
 import org.holoeverywhere.widget.TextView;
+
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.CompleteProduct;
-import pt.rocket.framework.objects.ShoppingCart;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.service.IRemoteService;
 import pt.rocket.framework.service.IRemoteServiceCallback;
-import pt.rocket.framework.service.RemoteService;
 import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
@@ -36,12 +34,10 @@ import pt.rocket.utils.CheckVersion;
 import pt.rocket.utils.JumiaApplication;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
-import pt.rocket.utils.OnFragmentActivityInteraction;
 import pt.rocket.utils.ServiceSingleton;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.utils.dialogfragments.DialogProgressFragment;
-import pt.rocket.view.R;
 import pt.rocket.view.fragments.SlideMenuFragment;
 import android.app.Activity;
 import android.content.ComponentName;
@@ -55,7 +51,6 @@ import android.os.IBinder;
 import android.os.RemoteException;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -64,7 +59,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AbsoluteLayout.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.RelativeLayout;
 
@@ -107,13 +101,14 @@ import de.akquinet.android.androlog.Log;
  *          2012/06/19
  * 
  */
-public abstract class BaseActivity extends SlidingFragmentActivity implements OnOpenedListener, OnClosedListener {
+public abstract class BaseActivity extends SlidingFragmentActivity implements OnOpenedListener,
+        OnClosedListener {
 
     private ShareActionProvider mShareActionProvider;
-    
+
     // private int navigationComponentsHashCode;
     private View navigationContainer;
-    
+
     // REMOVED FINAL ATRIBUTE
     private NavigationAction action;
 
@@ -130,16 +125,14 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     protected DialogFragment dialog;
 
     private DialogProgressFragment progressDialog;
-    
-    private Activity activity;
 
-    
+    private Activity activity;
 
     /**
      * Use this variable to have a more precise control on when to show the content container.
      */
     private boolean processShow = true;
-    
+
     private static final Set<EventType> HANDLED_EVENTS = EnumSet.of(
             EventType.GET_SHOPPING_CART_ITEMS_EVENT,
             EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT,
@@ -172,25 +165,28 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
 
     private View searchOverlay;
 
-	private FragmentController	fragmentController;
-	
-	private boolean initialCountry = false;
-	
-	private boolean mIsBound;
-    
-	/**
-	 * Constructor used to initialize the navigation list component and the
-	 * autocomplete handler
-	 * @param userEvents
-	 */
+    private FragmentController fragmentController;
+
+    private boolean initialCountry = false;
+
+    private boolean mIsBound;
+
+    /**
+     * Constructor used to initialize the navigation list component and the autocomplete handler
+     * 
+     * @param userEvents
+     */
     public BaseActivity(NavigationAction action, Set<MyMenuItem> enabledMenuItems,
-            Set<EventType> contentEvents, Set<EventType> userEvents, int titleResId, int contentLayoutId) {
-        this(R.layout.main, action, enabledMenuItems, contentEvents, userEvents, titleResId, contentLayoutId);
-        
+            Set<EventType> contentEvents, Set<EventType> userEvents, int titleResId,
+            int contentLayoutId) {
+        this(R.layout.main, action, enabledMenuItems, contentEvents, userEvents, titleResId,
+                contentLayoutId);
+
     }
 
     public BaseActivity(int activityLayoutId, NavigationAction action,
-            Set<MyMenuItem> enabledMenuItems, Set<EventType> contentEvents, Set<EventType> userEvents,
+            Set<MyMenuItem> enabledMenuItems, Set<EventType> contentEvents,
+            Set<EventType> userEvents,
             int titleResId, int contentLayoutId) {
         this.activityLayoutId = activityLayoutId;
         this.contentEvents = contentEvents;
@@ -201,107 +197,107 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         this.menuItems = enabledMenuItems;
         this.titleResId = titleResId;
         this.contentLayoutId = contentLayoutId;
-        
+
     }
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		JumiaApplication.INSTANCE.doBindService();
-		Log.d(TAG, "ON CREATE");
-		
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        JumiaApplication.INSTANCE.doBindService();
+        Log.d(TAG, "ON CREATE");
+
         // Validate if is phone and force orientaion
         setOrientationForHandsetDevices();
-		
+
         // Get fragment controller
         fragmentController = FragmentController.getInstance();
 
-		ShopSelector.resetConfiguration(getBaseContext());
-		//OLD FRAMEWORK
-//		EventManager.getSingleton().addResponseListener(this, allHandledEvents);
-		setupActionBar();
-		setupContentViews();
-		
-		if(getIntent().getExtras() != null){
-		    initialCountry = getIntent().getExtras().getBoolean(ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, false);
-		}
-		// Set sliding menu
-		setupNavigationMenu(initialCountry);
-		
-		isRegistered = true;
-		setAppContentLayout();
+        ShopSelector.resetConfiguration(getBaseContext());
+        // OLD FRAMEWORK
+        // EventManager.getSingleton().addResponseListener(this, allHandledEvents);
+        setupActionBar();
+        setupContentViews();
+
+        if (getIntent().getExtras() != null) {
+            initialCountry = getIntent().getExtras().getBoolean(
+                    ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, false);
+        }
+        // Set sliding menu
+        setupNavigationMenu(initialCountry);
+
+        isRegistered = true;
+        setAppContentLayout();
         setTitle(titleResId);
         BugSenseHandler.leaveBreadcrumb(getTag() + " _onCreate");
-	}
-	
-	@Override
-	protected void onNewIntent( Intent intent ) {
-	    super.onNewIntent(intent);
-        BugSenseHandler.leaveBreadcrumb(getTag() + " _onNewIntent");
-	    ActivitiesWorkFlow.addStandardTransition(this);
-	}
-	
-	@Override
-	protected void onStart() {
-		super.onStart();
-		UAirship.shared().getAnalytics().activityStarted(this);
-	}
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.app.Activity#onResume()
-	 */
-	@Override
-	public void onResume() {
-		super.onResume();
-		Log.d(TAG, "ON RESUME");
-		
-		
-        
-		if (!isRegistered) {
-		    // OLD FRAMEWORK
-		    /**
-	         * Register service callback
-	         */
-	        JumiaApplication.INSTANCE.registerFragmentCallback(mCallback);
-	        isRegistered = true;
-		}
-		
-		CheckVersion.run(getApplicationContext());
-		
-		if(getIntent().getExtras() != null){
-            initialCountry = getIntent().getExtras().getBoolean(ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, false);
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        BugSenseHandler.leaveBreadcrumb(getTag() + " _onNewIntent");
+        ActivitiesWorkFlow.addStandardTransition(this);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        UAirship.shared().getAnalytics().activityStarted(this);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see android.app.Activity#onResume()
+     */
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "ON RESUME");
+
+        if (!isRegistered) {
+            // OLD FRAMEWORK
+            /**
+             * Register service callback
+             */
+            JumiaApplication.INSTANCE.registerFragmentCallback(mCallback);
+            isRegistered = true;
         }
-		
+
+        CheckVersion.run(getApplicationContext());
+
+        if (getIntent().getExtras() != null) {
+            initialCountry = getIntent().getExtras().getBoolean(
+                    ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, false);
+        }
+
         // Validate if is in landscape and tablet and forcing menu
-        if(isTabletInLandscape() && !initialCountry)
-             showMenu();
+        if (isTabletInLandscape() && !initialCountry)
+            showMenu();
         else
             showContent();
-        
-        if (!contentEvents.contains(EventType.GET_SHOPPING_CART_ITEMS_EVENT) && JumiaApplication.INSTANCE.SHOP_ID >= 0) {
+
+        if (!contentEvents.contains(EventType.GET_SHOPPING_CART_ITEMS_EVENT)
+                && JumiaApplication.INSTANCE.SHOP_ID >= 0) {
             triggerContentEvent(new GetShoppingCartItemsHelper(), null, mIResponseCallback);
-//            EventManager.getSingleton().triggerRequestEvent(GetShoppingCartItemsEvent.GET_FROM_CACHE);
+            // EventManager.getSingleton().triggerRequestEvent(GetShoppingCartItemsEvent.GET_FROM_CACHE);
         }
-    
-            
-	}
-	
-	IResponseCallback mIResponseCallback = new IResponseCallback() {
-        
+
+    }
+
+    IResponseCallback mIResponseCallback = new IResponseCallback() {
+
         @Override
         public void onRequestError(Bundle bundle) {
             handleErrorEvent(bundle);
-            
+
         }
-        
+
         @Override
         public void onRequestComplete(Bundle bundle) {
-           handleSuccessEvent(bundle); 
+            handleSuccessEvent(bundle);
         }
     };
-	
+
     /*
      * (non-Javadoc)
      * 
@@ -311,43 +307,41 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     public void onPause() {
         super.onPause();
         // OLD FRAMEWORK
-//        EventManager.getSingleton().removeResponseListener(this, allHandledEvents);
+        // EventManager.getSingleton().removeResponseListener(this, allHandledEvents);
         JumiaApplication.INSTANCE.doUnbindService();
         isRegistered = false;
     }
 
-
-    
     @Override
     protected void onStop() {
         super.onStop();
         Log.d(TAG, "ON STOP");
         UAirship.shared().getAnalytics().activityStopped(this);
     }
-    
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
     }
 
-
     /**
      * #### ACTION BAR ####
      */
-    
+
     /**
-     * Method used to update the sliding menu and items on action bar.
-     * Called from BaseFragment
+     * Method used to update the sliding menu and items on action bar. Called from BaseFragment
+     * 
      * @param enabledMenuItems
      * @param action
      * @param titleResId
      * @author sergiopereira
      */
-	
-	public void updateBaseComponents(Set<MyMenuItem> enabledMenuItems, NavigationAction action, int titleResId){
+
+    public void updateBaseComponents(Set<MyMenuItem> enabledMenuItems, NavigationAction action,
+            int titleResId) {
         // Update options menu and search bar
         menuItems = enabledMenuItems;
-        if(action != NavigationAction.Country)
+        if (action != NavigationAction.Country)
             findViewById(R.id.rocket_app_header_search).setVisibility(View.GONE);
         hideKeyboard();
         invalidateOptionsMenu();
@@ -355,45 +349,46 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         this.action = action != null ? action : NavigationAction.Unknown;
         updateSlidingMenu();
         // Update the title of fragment
-        if(titleResId == 0){
+        if (titleResId == 0) {
             hideTitle();
-         
+
             findViewById(R.id.totalProducts).setVisibility(View.GONE);
-            }
-        else setTitle(titleResId);
+        }
+        else
+            setTitle(titleResId);
     }
-	
-	public void updateActionForCountry(NavigationAction action){
-	    this.action = action != null ? action : NavigationAction.Unknown;
-	    updateSlidingMenu();
-	}
-    
+
+    public void updateActionForCountry(NavigationAction action) {
+        this.action = action != null ? action : NavigationAction.Unknown;
+        updateSlidingMenu();
+    }
+
     public void setupActionBar() {
         ActionBarSherlock.unregisterImplementation(ActionBarSherlockNative.class);
         getSupportActionBar().setHomeButtonEnabled(true);
     }
-    
+
     private void setupContentViews() {
         setContentView(activityLayoutId);
         contentContainer = (ViewGroup) findViewById(R.id.rocket_app_content);
         loadingBarContainer = findViewById(R.id.loading_bar);
         loadingBarView = (LoadingBarView) findViewById(R.id.loading_bar_view);
         warningView = findViewById(R.id.warning);
-        warningVariationView  = findViewById(R.id.warning_variations);
+        warningVariationView = findViewById(R.id.warning_variations);
         warningView.setOnClickListener(new OnClickListener() {
-            
+
             @Override
             public void onClick(View v) {
                 showWarning(false);
-                
+
             }
         });
         warningVariationView.setOnClickListener(new OnClickListener() {
-            
+
             @Override
             public void onClick(View v) {
                 showWarningVariation(false);
-                
+
             }
         });
         errorView = findViewById(R.id.alert_view);
@@ -402,104 +397,109 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     private String getTag() {
         return this.getClass().getSimpleName();
     }
-    
+
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         boolean result = super.dispatchKeyEvent(event);
-        if ( result ) {
-            return result;   
+        if (result) {
+            return result;
         }
-        
-        if ( event.getKeyCode() == KeyEvent.KEYCODE_MENU && event.getAction() == KeyEvent.ACTION_DOWN ) {
+
+        if (event.getKeyCode() == KeyEvent.KEYCODE_MENU
+                && event.getAction() == KeyEvent.ACTION_DOWN) {
             toggle();
             return true;
-        } 
-        
+        }
+
         return result;
     }
-    
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.app.Activity#onBackPressed()
-	 */
-	@Override
-	public void onBackPressed() {
-		Log.i(getTag(), "onBackPressed");
-		if (getSlidingMenu().isMenuShowing() && getSlidingMenu().isSlidingEnabled() && !isTabletInLandscape()) {
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see android.app.Activity#onBackPressed()
+     */
+    @Override
+    public void onBackPressed() {
+        Log.i(getTag(), "onBackPressed");
+        if (getSlidingMenu().isMenuShowing() && getSlidingMenu().isSlidingEnabled()
+                && !isTabletInLandscape()) {
             showContent();
         } else {
-          super.onBackPressed();
+            super.onBackPressed();
         }
-	}
+    }
 
     /**
      * ############### SLIDE MENU #################
      */
-	
-	/**
-	 * Method used to set the sliding menu with support for tablet
-	 * @author sergiopereira
-	 */
+
+    /**
+     * Method used to set the sliding menu with support for tablet
+     * 
+     * @author sergiopereira
+     */
     private void setupNavigationMenu(boolean onChangeCountry) {
         // Set Behind Content View
         setBehindContentView(R.layout.navigation_container_fragments);
         // Customize sliding menu
         SlidingMenu sm = getSlidingMenu();
         // Set the SlidingMenu width with a percentage of the display width
-        sm.setBehindWidth((int) (WindowHelper.getWidth(getApplicationContext()) * getResources().getFraction(R.dimen.navigation_menu_width, 1, 1)));
+        sm.setBehindWidth((int) (WindowHelper.getWidth(getApplicationContext()) * getResources()
+                .getFraction(R.dimen.navigation_menu_width, 1, 1)));
         sm.setShadowWidthRes(R.dimen.navigation_shadow_width);
         sm.setShadowDrawable(R.drawable.gradient_sidemenu);
         sm.setFadeDegree(0.35f);
         sm.setBackgroundColor(getResources().getColor(R.color.sidemenu_background));
         sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
-        Log.i(TAG, "codeW : "+onChangeCountry);
+        Log.i(TAG, "codeW : " + onChangeCountry);
         // Validate current orientation and device
-        if(isTabletInLandscape() && !onChangeCountry) {
+        if (isTabletInLandscape() && !onChangeCountry) {
             // Landscape mode
             slideMenuInLandscapeMode(sm);
-        }else {
+        } else {
             // Portrait mode
             slideMenuInPortraitMode(sm);
         }
     }
-    
+
     /**
      * Customize slide menu and action bar for landscape in tablet
+     * 
      * @param sm
      * @author sergiopereira
      */
-    private void slideMenuInLandscapeMode(SlidingMenu sm){
+    private void slideMenuInLandscapeMode(SlidingMenu sm) {
         Log.i(TAG, "SET SLIDE MENU: LANDSCAPE MODE");
         sm.setSlidingEnabled(false);
         sm.setOnOpenedListener(this);
         sm.setOnClosedListener(this);
         setSlidingActionBarEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        getSupportActionBar().setHomeButtonEnabled(false);       
+        getSupportActionBar().setHomeButtonEnabled(false);
         getSupportActionBar().setLogo(R.drawable.logo_ic);
-        
-        
+
         // Get the width of main content
-        int mainContentWidth = (int) (WindowHelper.getWidth(getApplicationContext()) * getResources().getFraction(R.dimen.navigation_menu_offset,1,1));
+        int mainContentWidth = (int) (WindowHelper.getWidth(getApplicationContext()) * getResources()
+                .getFraction(R.dimen.navigation_menu_offset, 1, 1));
         findViewById(R.id.main_layout).getLayoutParams().width = mainContentWidth;
-        
+
         // Show Menu
         sm.postDelayed(new Runnable() {
             @Override
             public void run() {
-              showMenu();
+                showMenu();
             }
         }, 0);
     }
-    
+
     /**
-     * Customize slide menu and action bar for portrait
-     * The same for phone or tablet
+     * Customize slide menu and action bar for portrait The same for phone or tablet
+     * 
      * @param sm
      * @author sergiopereira
      */
-    private void slideMenuInPortraitMode(SlidingMenu sm){
+    private void slideMenuInPortraitMode(SlidingMenu sm) {
         Log.i(TAG, "SET SLIDE MENU: PORTRAIT MODE");
         // Set action bar
         setActionBarInPortraitMode();
@@ -514,31 +514,31 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
             }
         }, 0);
     }
-    
-    
+
     /**
      * Update the sliding menu
      */
-    public void updateSlidingMenu(){
-        SlideMenuFragment slideMenuFragment = (SlideMenuFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_slide_menu);
-        if(slideMenuFragment != null)
+    public void updateSlidingMenu() {
+        SlideMenuFragment slideMenuFragment = (SlideMenuFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.fragment_slide_menu);
+        if (slideMenuFragment != null)
             slideMenuFragment.onUpdate();
     }
-    
+
     /**
      * Update the sliding menu
      */
-    public void updateSlidingMenuCompletly(){
-        SlideMenuFragment slideMenuFragment = (SlideMenuFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_slide_menu);
-        if(slideMenuFragment != null)
+    public void updateSlidingMenuCompletly() {
+        SlideMenuFragment slideMenuFragment = (SlideMenuFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.fragment_slide_menu);
+        if (slideMenuFragment != null)
             slideMenuFragment.onUpdate();
     }
-    
+
     /**
-     * Set the action bar for portrait orientation
-     * Action bar with logo and custom view
+     * Set the action bar for portrait orientation Action bar with logo and custom view
      */
-    private void setActionBarInPortraitMode(){
+    private void setActionBarInPortraitMode() {
         // Set logo
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
@@ -546,49 +546,53 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         // Set custom view
         getSupportActionBar().setDisplayShowCustomEnabled(true);
-        getSupportActionBar().setCustomView(R.layout.action_bar_logo_layout);        
-        getSupportActionBar().getCustomView().findViewById(R.id.ic_logo).setOnClickListener(onActionBarClickListener);
+        getSupportActionBar().setCustomView(R.layout.action_bar_logo_layout);
+        getSupportActionBar().getCustomView().findViewById(R.id.ic_logo)
+                .setOnClickListener(onActionBarClickListener);
     }
-    
+
     /**
      * Listener used for custom view on action bar
      */
     OnClickListener onActionBarClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            if(!initialCountry){
-                onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            if (!initialCountry) {
+                onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE,
+                        FragmentController.ADD_TO_BACK_STACK);
             }
-                
+
         }
     };
-    
+
     /**
      * ############### ORIENTATION #################
      */
-    
-    public void setOrientationForHandsetDevices(){
+
+    public void setOrientationForHandsetDevices() {
         // Validate if is phone and force portrait orientaion
-        if(!getResources().getBoolean(R.bool.isTablet)) {
+        if (!getResources().getBoolean(R.bool.isTablet)) {
             Log.i(TAG, "IS PHONE: FORCE PORTRAIT ORIENTATION");
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
     }
-    
+
     /**
      * Verifies if the current screen orientation is Landscape
+     * 
      * @return true if yes, false otherwise
      */
-    public boolean isTabletInLandscape(){
-        if (getResources().getBoolean(R.bool.isTablet) && getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+    public boolean isTabletInLandscape() {
+        if (getResources().getBoolean(R.bool.isTablet)
+                && getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
             return true;
         return false;
     }
-    
+
     /**
      * ############### OPTIONS MENU #################
      */
-    
+
     /**
      * When a user selects an option of the menu that is on the action bar. The centralization of
      * this in this activity, prevents all the activities to have to handle this events
@@ -598,7 +602,10 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
      */
     /*
      * (non-Javadoc)
-     * @see com.actionbarsherlock.app.SherlockFragmentActivity#onOptionsItemSelected(android.view.MenuItem)
+     * 
+     * @see
+     * com.actionbarsherlock.app.SherlockFragmentActivity#onOptionsItemSelected(android.view.MenuItem
+     * )
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -608,25 +615,29 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
             toggle();
             return true;
         } else if (itemId == R.id.menu_search) {
-            onSwitchFragment(FragmentType.SEARCH, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            onSwitchFragment(FragmentType.SEARCH, FragmentController.NO_BUNDLE,
+                    FragmentController.ADD_TO_BACK_STACK);
             return false;
-		} else if (itemId == R.id.menu_basket) {
-			onSwitchFragment(FragmentType.SHOPPING_CART, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-			return false;
-		} else {
-			return super.onOptionsItemSelected(item);
-		}
-	}
-    
+        } else if (itemId == R.id.menu_basket) {
+            onSwitchFragment(FragmentType.SHOPPING_CART, FragmentController.NO_BUNDLE,
+                    FragmentController.ADD_TO_BACK_STACK);
+            return false;
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
     /*
      * (non-Javadoc)
-     * @see com.actionbarsherlock.app.SherlockFragmentActivity#onCreateOptionsMenu(android.view.Menu)
+     * 
+     * @see
+     * com.actionbarsherlock.app.SherlockFragmentActivity#onCreateOptionsMenu(android.view.Menu)
      */
-	@Override
-	public boolean onCreateOptionsMenu(final Menu menu) {
-	    Log.d(TAG, "ON OPTIONS MENU: CREATE");
-	    getSupportMenuInflater().inflate(R.menu.main_menu, menu);
-	    
+    @Override
+    public boolean onCreateOptionsMenu(final Menu menu) {
+        Log.d(TAG, "ON OPTIONS MENU: CREATE");
+        getSupportMenuInflater().inflate(R.menu.main_menu, menu);
+
         /**
          * Setting Menu Options
          */
@@ -639,10 +650,13 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
             case SHARE:
                 menu.findItem(item.resId).setVisible(true);
                 menu.findItem(item.resId).setEnabled(true);
-                mShareActionProvider = (ShareActionProvider) menu.findItem(item.resId).getActionProvider();
-                mShareActionProvider.setOnShareTargetSelectedListener(new OnShareTargetSelectedListener() {
+                mShareActionProvider = (ShareActionProvider) menu.findItem(item.resId)
+                        .getActionProvider();
+                mShareActionProvider
+                        .setOnShareTargetSelectedListener(new OnShareTargetSelectedListener() {
                             @Override
-                            public boolean onShareTargetSelected(ShareActionProvider source, Intent intent) {
+                            public boolean onShareTargetSelected(ShareActionProvider source,
+                                    Intent intent) {
                                 getApplicationContext().startActivity(intent);
                                 TrackerDelegator.trackItemShared(getApplicationContext(), intent);
                                 return true;
@@ -656,30 +670,32 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
                 break;
             }
         }
-        
-        tvActionCartCount = (TextView) menu.findItem(R.id.menu_basket).getActionView().findViewById(R.id.cart_count);
+
+        tvActionCartCount = (TextView) menu.findItem(R.id.menu_basket).getActionView()
+                .findViewById(R.id.cart_count);
         tvActionCartCount.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 menu.performIdentifierAction(R.id.menu_basket, 0);
             }
         });
-        
+
         return super.onCreateOptionsMenu(menu);
     }
-	
+
     /**
      * ############### SEARCH BAR #################
      */
-	
-	/**
-	 * Method used to set the search bar in/below the Action bar. 
-	 * @param menu
-	 * @author sergiopereira
-	 */
-	private void setSearchBar(Menu menu) {
-	    // Validate the Sliding
-        if(!isTabletInLandscape()) {
+
+    /**
+     * Method used to set the search bar in/below the Action bar.
+     * 
+     * @param menu
+     * @author sergiopereira
+     */
+    private void setSearchBar(Menu menu) {
+        // Validate the Sliding
+        if (!isTabletInLandscape()) {
             // Show search below the action bar
             findViewById(R.id.rocket_app_header_search).setVisibility(View.VISIBLE);
             // Show the normal search
@@ -688,57 +704,62 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         } else {
             // Set search on action bar
             menu.findItem(R.id.menu_search_view).setVisible(true);
-            // Set search 
-            searchComponent = (EditText) menu.findItem(R.id.menu_search_view).getActionView().findViewById(R.id.search_component);
-            searchOverlay = menu.findItem(R.id.menu_search_view).getActionView().findViewById(R.id.search_overlay);
+            // Set search
+            searchComponent = (EditText) menu.findItem(R.id.menu_search_view).getActionView()
+                    .findViewById(R.id.search_component);
+            searchOverlay = menu.findItem(R.id.menu_search_view).getActionView()
+                    .findViewById(R.id.search_overlay);
 
             // Get the width of main content
-            int mainContentWidth = (int) (WindowHelper.getWidth(getApplicationContext()) * getResources().getFraction(R.dimen.navigation_menu_offset,1,1));            
+            int mainContentWidth = (int) (WindowHelper.getWidth(getApplicationContext()) * getResources()
+                    .getFraction(R.dimen.navigation_menu_offset, 1, 1));
             // Get cart item and forcing measure
-            View cartCount = menu.findItem(R.id.menu_basket).getActionView().findViewById(R.id.cart_count_layout);
+            View cartCount = menu.findItem(R.id.menu_basket).getActionView()
+                    .findViewById(R.id.cart_count_layout);
             cartCount.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
             int cartCountWidth = cartCount.getMeasuredWidth() + cartCount.getPaddingRight();
             Log.d(TAG, "CART WIDTH SIZE: " + cartCountWidth);
             // Calculate the search width
             int searchComponentWidth = mainContentWidth - cartCountWidth;
             Log.d(TAG, "SEARCH WIDTH SIZE: " + searchComponentWidth);
-            
+
             // Set width on search component
             searchComponent.getLayoutParams().width = searchComponentWidth;
             searchOverlay.getLayoutParams().width = searchComponentWidth;
         }
-        // Set search 
+        // Set search
         setSearchForwardBehaviour(searchComponent, searchOverlay);
 
-        
         // XXX
-//        WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
-//        Display display = wm.getDefaultDisplay();
-//        Point size = new Point();
-//        int width;
-//        int height;
-//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
-//            display.getSize(size);
-//            width = size.x;
-//            height = size.y;
-//       } else {
-//           width = display.getWidth();
-//           height = display.getHeight();
-//       }
-//       
-//        getSlidingMenu().getWidth();
-//        findViewById(R.id.abs__home).getLayoutParams().width = getSlidingMenu().getWidth();
-//        findViewById(R.id.abs__home).getLayoutParams().width = (int) (width - getResources().getDimension(R.dimen.navigation_menu_offset));
-        
-	}
-	
+        // WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+        // Display display = wm.getDefaultDisplay();
+        // Point size = new Point();
+        // int width;
+        // int height;
+        // if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
+        // display.getSize(size);
+        // width = size.x;
+        // height = size.y;
+        // } else {
+        // width = display.getWidth();
+        // height = display.getHeight();
+        // }
+        //
+        // getSlidingMenu().getWidth();
+        // findViewById(R.id.abs__home).getLayoutParams().width = getSlidingMenu().getWidth();
+        // findViewById(R.id.abs__home).getLayoutParams().width = (int) (width -
+        // getResources().getDimension(R.dimen.navigation_menu_offset));
+
+    }
+
     /**
      * Set the forward behaviour on search bar
+     * 
      * @param autoComplete
      * @param searchOverlay
      * @author sergiopereira
      */
-    private void setSearchForwardBehaviour(EditText autoComplete, View searchOverlay){   
+    private void setSearchForwardBehaviour(EditText autoComplete, View searchOverlay) {
         Log.d(TAG, "SEARCH MODE: FORWARD BEHAVIOUR");
         autoComplete.setEnabled(false);
         autoComplete.setFocusable(false);
@@ -748,17 +769,18 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
                 new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        onSwitchFragment(FragmentType.SEARCH, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                        onSwitchFragment(FragmentType.SEARCH, FragmentController.NO_BUNDLE,
+                                FragmentController.ADD_TO_BACK_STACK);
                     }
                 });
     }
-    
+
     /**
      * Set the normal behaviour on search bar
      */
-    public void setSearchNormalBehaviour(){
+    public void setSearchNormalBehaviour() {
         Log.d(TAG, "SEARCH MODE: NORMAL BEHAVIOUR");
-        if(searchComponent == null) {
+        if (searchComponent == null) {
             Log.w(TAG, "SEARCH COMPONENT IS NULL");
             return;
         }
@@ -768,16 +790,16 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         searchOverlay.setVisibility(View.GONE);
         searchOverlay.setOnClickListener(null);
     }
-    
+
     public EditText getSearchComponent() {
         return searchComponent;
     }
-    
+
     public void cleanSearchConponent() {
-        if(searchComponent != null)
+        if (searchComponent != null)
             searchComponent.setText("");
     }
-    
+
     /**
      * #########################################
      */
@@ -808,40 +830,45 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
      * @param quantity
      *            The number of items that currently the shopping cart holds
      */
-    public void updateCartInfo(ShoppingCart cart) {
-        if (cart != null) {
+    public void updateCartInfo() {
+        if (JumiaApplication.INSTANCE.getCart() != null) {
             Log.d(getTag(),
-                    "updateCartInfo value = " + cart.getCartValue() + " quantity = "
-                            + cart.getCartCount());
+                    "updateCartInfo value = " + JumiaApplication.INSTANCE.getCart().getCartValue()
+                            + " quantity = "
+                            + JumiaApplication.INSTANCE.getCart().getCartCount());
         }
-        updateCartInfoInActionBar(cart);
-        updateCartInfoInNavigation(cart);
+        updateCartInfoInActionBar();
+        updateCartInfoInNavigation();
     }
-	
-	public void updateCartInfoInActionBar(final ShoppingCart cart) {
+
+    public void updateCartInfoInActionBar() {
         if (tvActionCartCount == null) {
             Log.w(getTag(), "updateCartInfoInActionBar: cant find quantity in actionbar");
             return;
         }
-        
-        final String quantity = cart == null ? "?" : cart.getCartCount() > 0 ? String.valueOf(cart.getCartCount()) : "";
+
+        final String quantity = JumiaApplication.INSTANCE.getCart() == null ? "?"
+                : JumiaApplication.INSTANCE.getCart().getCartCount() > 0 ? String
+                        .valueOf(JumiaApplication.INSTANCE.getCart().getCartCount()) : "";
         tvActionCartCount.post(new Runnable() {
             @Override
             public void run() {
                 tvActionCartCount.setText(quantity);
             }
         });
-        
+
     }
 
-    private void updateCartInfoInNavigation(final ShoppingCart cart) {
+    private void updateCartInfoInNavigation() {
         Log.d(getTag(), "updateCartInfoInNavigation");
-        SlideMenuFragment slideMenu = (SlideMenuFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_slide_menu);
-        if(slideMenu == null) {
-            Log.w(getTag(), "updateCartInfoInNavigation: navigation container empty - doing nothing");
+        SlideMenuFragment slideMenu = (SlideMenuFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.fragment_slide_menu);
+        if (slideMenu == null) {
+            Log.w(getTag(),
+                    "updateCartInfoInNavigation: navigation container empty - doing nothing");
             return;
-        }else{
-            slideMenu.updateCartInfo(cart);
+        } else {
+            slideMenu.updateCartInfo();
         }
     }
 
@@ -857,16 +884,19 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         sharingIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_subject));
 
         CompleteProduct prod = JumiaApplication.INSTANCE.getCurrentProduct();
-        
+
         if (null != prod) {
-            //For tracking when sharing
-            sharingIntent.putExtra(getString(R.string.mixprop_sharelocation), getString(R.string.mixprop_sharelocationproduct));
-            sharingIntent.putExtra(getString(R.string.mixprop_sharecategory), prod.getCategories().size() > 0 ? prod.getCategories().get(0) : "");
+            // For tracking when sharing
+            sharingIntent.putExtra(getString(R.string.mixprop_sharelocation),
+                    getString(R.string.mixprop_sharelocationproduct));
+            sharingIntent.putExtra(getString(R.string.mixprop_sharecategory), prod.getCategories()
+                    .size() > 0 ? prod.getCategories().get(0) : "");
             sharingIntent.putExtra(getString(R.string.mixprop_sharename), prod.getName());
             sharingIntent.putExtra(getString(R.string.mixprop_sharebrand), prod.getBrand());
             sharingIntent.putExtra(getString(R.string.mixprop_shareprice), prod.getPrice());
-            
-            String msg = getString(R.string.share_checkout_this_product) + "\n" + prod.getUrl().replace("/mobapi", "");
+
+            String msg = getString(R.string.share_checkout_this_product) + "\n"
+                    + prod.getUrl().replace("/mobapi", "");
             sharingIntent.putExtra(Intent.EXTRA_TEXT, msg);
         }
 
@@ -889,29 +919,29 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         if (!TextUtils.isEmpty(title)) {
             titleView.setText(title);
             header_title.setVisibility(View.VISIBLE);
-        } else if (TextUtils.isEmpty(title)){
+        } else if (TextUtils.isEmpty(title)) {
             header_title.setVisibility(View.GONE);
         }
     }
-    
-    public void setTitleAndSubTitle(CharSequence title,CharSequence subtitle) {
+
+    public void setTitleAndSubTitle(CharSequence title, CharSequence subtitle) {
         TextView titleView = (TextView) findViewById(R.id.title);
         TextView subtitleView = (TextView) findViewById(R.id.totalProducts);
         RelativeLayout header_title = (RelativeLayout) findViewById(R.id.header_title);
-        
+
         if (titleView == null)
             return;
         if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(subtitle)) {
             titleView.setText(title);
             subtitleView.setText(subtitle);
-            
+
             header_title.setVisibility(View.VISIBLE);
             subtitleView.setVisibility(View.VISIBLE);
-        } else if (TextUtils.isEmpty(title)){
+        } else if (TextUtils.isEmpty(title)) {
             header_title.setVisibility(View.GONE);
         }
     }
-    
+
     public void hideTitle() {
         findViewById(R.id.header_title).setVisibility(View.GONE);
     }
@@ -927,22 +957,26 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
             setTitle(getString(titleId));
         }
     }
-	
-	/**
-	 * Don't show loading if we are using fragments, no need to redraw all the layout...
-	 * @param event
-	 */
-	
-    protected final void triggerContentEventWithNoLoading(final BaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
+
+    /**
+     * Don't show loading if we are using fragments, no need to redraw all the layout...
+     * 
+     * @param event
+     */
+
+    protected final void triggerContentEventWithNoLoading(final BaseHelper helper, Bundle args,
+            final IResponseCallback responseCallback) {
         sendRequest(helper, args, responseCallback);
     }
 
-    protected final void triggerContentEvent(final BaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
+    protected final void triggerContentEvent(final BaseHelper helper, Bundle args,
+            final IResponseCallback responseCallback) {
         showLoading(false);
         sendRequest(helper, args, responseCallback);
     }
 
-    protected final void triggerContentEventProgress(final BaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
+    protected final void triggerContentEventProgress(final BaseHelper helper, Bundle args,
+            final IResponseCallback responseCallback) {
         showProgress();
         sendRequest(helper, args, responseCallback);
     }
@@ -950,40 +984,41 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     private String getFragmentTag() {
         return this.getClass().getSimpleName();
     }
-	
-	public final void showLoadingInfo() {
-	    Log.d(getTag(), "Showing loading info");
-		if (loadingBarContainer != null) {
-			loadingBarContainer.setVisibility(View.VISIBLE);
-		} else {
-		    Log.w(getTag(), "Did not find loading bar container, check layout!");
-		}
-		if (loadingBarView != null) {
-			loadingBarView.startRendering();
-		}
-	}
-	
-	/**
-	 * Hides the loading screen that appears on the front of the activity while
-	 * it waits for the data to arrive from the server
-	 */
-	public void hideLoadingInfo() {
-	    Log.d(getTag(), "Hiding loading info");
-		if (loadingBarView != null) {
-			loadingBarView.stopRendering();
-		}
-		if (loadingBarContainer != null) {
-			loadingBarContainer.setVisibility(View.GONE);
-		}
-	}
-	
-	private static void setVisibility(View view, boolean show) {
-	    if(view != null) {
-	        view.setVisibility(show ? View.VISIBLE : View.GONE);
-	    }
-	}
-	
-    public void showError(final BaseHelper helper, final Bundle bundle, final IResponseCallback responseCallback) {
+
+    public final void showLoadingInfo() {
+        Log.d(getTag(), "Showing loading info");
+        if (loadingBarContainer != null) {
+            loadingBarContainer.setVisibility(View.VISIBLE);
+        } else {
+            Log.w(getTag(), "Did not find loading bar container, check layout!");
+        }
+        if (loadingBarView != null) {
+            loadingBarView.startRendering();
+        }
+    }
+
+    /**
+     * Hides the loading screen that appears on the front of the activity while it waits for the
+     * data to arrive from the server
+     */
+    public void hideLoadingInfo() {
+        Log.d(getTag(), "Hiding loading info");
+        if (loadingBarView != null) {
+            loadingBarView.stopRendering();
+        }
+        if (loadingBarContainer != null) {
+            loadingBarContainer.setVisibility(View.GONE);
+        }
+    }
+
+    private static void setVisibility(View view, boolean show) {
+        if (view != null) {
+            view.setVisibility(show ? View.VISIBLE : View.GONE);
+        }
+    }
+
+    public void showError(final BaseHelper helper, final Bundle bundle,
+            final IResponseCallback responseCallback) {
         showError(new OnClickListener() {
 
             @Override
@@ -996,17 +1031,17 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
 
     public void showLoading(boolean fromCheckout) {
         setVisibility(errorView, false);
-        if(!fromCheckout){
+        if (!fromCheckout) {
             setVisibility(contentContainer, false);
         }
-            
+
         showLoadingInfo();
     }
-    
+
     protected void showError(OnClickListener clickListener, boolean fromCheckout) {
         Log.d(getTag(), "Showing error view");
         hideLoadingInfo();
-        if(!fromCheckout){
+        if (!fromCheckout) {
             setVisibility(contentContainer, false);
         }
         setVisibility(errorView, true);
@@ -1014,17 +1049,16 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     }
 
     public final void showContentContainer(boolean fromCheckout) {
-        if(processShow){
+        if (processShow) {
             Log.d(getTag(), "Showing the content container");
             hideLoadingInfo();
             dismissProgress();
             setVisibility(errorView, false);
-            if(!fromCheckout){
+            if (!fromCheckout) {
                 setVisibility(contentContainer, true);
             }
         }
     }
-		
 
     public final void showWarning(boolean show) {
         Log.d(getTag(), "Showing warning: " + show);
@@ -1037,10 +1071,10 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         if (warningVariationView != null) {
 
             warningVariationView.setVisibility(show ? View.VISIBLE : View.GONE);
-          
+
         }
     }
-    
+
     private void setAppContentLayout() {
         if (contentLayoutId == 0) {
             return;
@@ -1086,7 +1120,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     @Override
     public void onOpened() {
         Log.d(getTag(), "onOpened");
-        if(!isTabletInLandscape())
+        if (!isTabletInLandscape())
             hideKeyboard();
         AnalyticsGoogle.get().trackPage(R.string.gnavigation);
     }
@@ -1096,25 +1130,24 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         Log.d(getTag(), "onClosed");
     }
 
-
-//    public void doBindService() {
-//        // Establish a connection with the service.  We use an explicit
-//        // class name because we want a specific service implementation that
-//        // we know will be running in our own process (and thus won't be
-//        // supporting component replacement by other applications).
-//        bindService(new Intent(this, 
-//                RemoteService.class), mConnection, Context.BIND_ABOVE_CLIENT);
-//        mIsBound = true;
-//    }
-//    
-//    public void doUnbindService() {
-//        if (mIsBound) {
-//            // Detach our existing connection.
-//            unbindService(mConnection);
-//            mIsBound = false;
-//        }
-//    }
-//    
+    // public void doBindService() {
+    // // Establish a connection with the service. We use an explicit
+    // // class name because we want a specific service implementation that
+    // // we know will be running in our own process (and thus won't be
+    // // supporting component replacement by other applications).
+    // bindService(new Intent(this,
+    // RemoteService.class), mConnection, Context.BIND_ABOVE_CLIENT);
+    // mIsBound = true;
+    // }
+    //
+    // public void doUnbindService() {
+    // if (mIsBound) {
+    // // Detach our existing connection.
+    // unbindService(mConnection);
+    // mIsBound = false;
+    // }
+    // }
+    //
     /**
      * Service Stuff
      */
@@ -1135,11 +1168,10 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
             // representation of that from the raw service object.
             Log.i(TAG, "onServiceConnected");
             ServiceSingleton.getInstance().setService(IRemoteService.Stub.asInterface(service));
-           
+
         }
     };
 
-    
     public void unbindDrawables(View view) {
 
         try {
@@ -1167,8 +1199,8 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         Log.e(getTag(), "LOW MEM");
         ImageLoader.getInstance().clearMemoryCache();
         System.gc();
-    }    
-    
+    }
+
     public void hideKeyboard() {
         // Log.d( getTag() , "hideKeyboard" );
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -1186,23 +1218,20 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         // use the above as the method below does not always work
         // imm.showSoftInput(getSlidingMenu().getCurrentFocus(), InputMethodManager.SHOW_IMPLICIT);
     }
-    
+
     /**
-     * Use this variable to have a more precise control on when to show the content container.
-     * The content will show by default after finishing the event request.
+     * Use this variable to have a more precise control on when to show the content container. The
+     * content will show by default after finishing the event request.
      * 
      * @param b
      */
-    public void setProcessShow(boolean b){
+    public void setProcessShow(boolean b) {
         processShow = b;
     }
-    
-    public void finishFromAdapter(){
+
+    public void finishFromAdapter() {
         finish();
     }
-    
- 
-
 
     /**
      * Method called then the activity is connected to the service
@@ -1210,32 +1239,31 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     protected void onServiceActivation() {
 
     }
-    
 
     /**
      * ADAPTNEWFRAMEWORK
      */
-//    public final void handleEvent(final ResponseEvent event) {
-//        if (event.getSuccess()) {
-//            if (contentEvents.contains(event.type) || userEvents.contains(event.type)) {
-//                boolean showContent = onSuccessEvent((ResponseResultEvent<?>) event);
-//                if (showContent) {
-//                    showContentContainer(false);
-//                }
-//                showWarning(event.warning != null);
-//            }
-//            handleSuccessEvent(event);
-//
-//        } else {
-//            boolean needsErrorHandling = true;
-//            if (contentEvents.contains(event.type) || userEvents.contains(event.type)) {
-//                needsErrorHandling = !onErrorEvent(event);
-//            }
-//            if (needsErrorHandling) {
-//                handleErrorEvent(event);
-//            }
-//        }
-//    }
+    // public final void handleEvent(final ResponseEvent event) {
+    // if (event.getSuccess()) {
+    // if (contentEvents.contains(event.type) || userEvents.contains(event.type)) {
+    // boolean showContent = onSuccessEvent((ResponseResultEvent<?>) event);
+    // if (showContent) {
+    // showContentContainer(false);
+    // }
+    // showWarning(event.warning != null);
+    // }
+    // handleSuccessEvent(event);
+    //
+    // } else {
+    // boolean needsErrorHandling = true;
+    // if (contentEvents.contains(event.type) || userEvents.contains(event.type)) {
+    // needsErrorHandling = !onErrorEvent(event);
+    // }
+    // if (needsErrorHandling) {
+    // handleErrorEvent(event);
+    // }
+    // }
+    // }
     /**
      * ADAPTNEWFRAMEWORK
      */
@@ -1245,27 +1273,32 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
      * @param event
      *            The successful event with {@link ResponseEvent#getSuccess()} == <code>true</code>
      */
-    
-    private void handleSuccessEvent(Bundle bundle) {
+
+    public void handleSuccessEvent(Bundle bundle) {
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         switch (eventType) {
         case GET_SHOPPING_CART_ITEMS_EVENT:
         case ADD_ITEM_TO_SHOPPING_CART_EVENT:
         case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
         case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
-            updateCartInfo((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY));
+            updateCartInfo();
             break;
         case LOGOUT_EVENT:
             Log.i(TAG, "LOGOUT EVENT");
-            onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE,
+                    FragmentController.ADD_TO_BACK_STACK);
             updateSlidingMenu();
-            
+
             int trackRes = R.string.glogoutsuccess;
-           
+
             AnalyticsGoogle.get().trackAccount(trackRes, null);
+            break;
+        case LOGIN_EVENT:
+            triggerContentEventWithNoLoading(new GetShoppingCartItemsHelper(), null, mIResponseCallback);
             break;
         }
     }
+
     /**
      * ADAPTNEWFRAMEWORK
      */
@@ -1275,146 +1308,208 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
      * @param event
      *            The failed event with {@link ResponseEvent#getSuccess()} == <code>false</code>
      */
-    public void handleErrorEvent(final Bundle bundle) {
+    public boolean handleErrorEvent(final Bundle bundle) {
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-        List<String> errors = (List<String>) bundle
+        HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle
                 .getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
-//        if (errorCode.isNetworkError()) {
-//            if (eventType == EventType.GET_SHOPPING_CART_ITEMS_EVENT) {
-//                updateCartInfo(null);
-//            }
-//            if (contentEvents.contains(eventType)) {
-//                showError(event.request);
-//            } else if (userEvents.contains(eventType)) {
-//                showContentContainer(false);
-//                dialog = DialogGenericFragment.createNoNetworkDialog(BaseActivity.this,
-//                        new OnClickListener() {
-//
-//                            @Override
-//                            public void onClick(View v) {
-//                                showLoadingInfo();
-//                                EventManager.getSingleton().triggerRequestEvent(event.request);
-//                                dialog.dismiss();
-//                            }
-//                        }, false);
-//                dialog.show(getSupportFragmentManager(), null);
-//            }
-//            return;
-//        } else if (event.type == EventType.GET_PROMOTIONS) {
-//            /**
-//             * No promotions available!
-//             * Ignore error
-//             */
-//        } else if (event.errorCode == ErrorCode.REQUEST_ERROR) {
-//            Map<String, ? extends List<String>> messages = event.errorMessages;
-//            List<String> validateMessages = messages.get(RestConstants.JSON_VALIDATE_TAG);
-//            String dialogMsg = "";
-//            if (validateMessages == null || validateMessages.isEmpty()) {
-//                validateMessages = messages.get(RestConstants.JSON_ERROR_TAG);
-//            }
-//            if (validateMessages != null) {
-//                for (String message : validateMessages) {
-//                    dialogMsg += message + "\n";
-//                }
-//            } else {
-//                for (Entry<String, ? extends List<String>> entry : messages.entrySet()) {
-//                    dialogMsg += entry.getKey() + ": " + entry.getValue().get(0) + "\n";
-//                }
-//            }
-//            if (dialogMsg.equals("")) {
-//                dialogMsg = getString(R.string.validation_errortext);
-//            }
-//            showContentContainer(false);
-//            dialog = DialogGenericFragment.newInstance(
-//                    true, true, false, getString(R.string.validation_title),
-//                    dialogMsg, getResources().getString(R.string.ok_label), "",
-//                    new OnClickListener() {
-//
-//                        @Override
-//                        public void onClick(View v) {
-//                            int id = v.getId();
-//                            if (id == R.id.button1) {
-//                                dialog.dismiss();
-//                            }
-//
-//                        }
-//
-//                    });
-//
-//            dialog.show(getSupportFragmentManager(), null);
-//            return;
-//        } else if (!event.getSuccess()) {
-//            showContentContainer(false);
-//            dialog = DialogGenericFragment.createServerErrorDialog(BaseActivity.this, new OnClickListener() {
-//
-//                @Override
-//                public void onClick(View v) {
-//                    showLoadingInfo();
-//                    event.request.metaData.putBoolean( IMetaData.MD_IGNORE_CACHE, IMetaData.TRUE);
-//                    EventManager.getSingleton().triggerRequestEvent(event.request);
-//                    dialog.dismiss();
-//                }
-//            }, false);
-//            dialog.show(getSupportFragmentManager(), null);
-//            return;
-//        }
-        
-        /* TODO: finish to distinguish between errors
-         * else if (event.errorCode.isServerError()) {
-            dialog = DialogGeneric.createServerErrorDialog(MyActivity.this, new OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    showLoadingInfo();
-                    EventManager.getSingleton().triggerRequestEvent(event.request);
-                    dialog.dismiss();
-                }
-            }, false);
-            dialog.show();
-            return;
-        } else if (event.errorCode.isClientError()) {
-            dialog = DialogGeneric.createClientErrorDialog( MyActivity.this, new OnClickListener() {
+        if (errorCode.isNetworkError()) {
+            switch (errorCode) {
+            case NO_NETWORK:
+                showContentContainer(false);
                 
-                @Override
-                public void onClick(View v) {
-                    showLoadingInfo();
-                    EventManager.getSingleton().triggerRequestEvent(event.request);
-                    dialog.dismiss();
+                // Remove dialog if exist
+                if (dialog != null){
+                    try {
+                        dialog.dismiss();    
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
-            }, false);
-            dialog.show();
-            return;
+
+                dialog = DialogGenericFragment.createNoNetworkDialog(this,
+                        new OnClickListener() {
+
+                            @Override
+                            public void onClick(View v) {
+                                
+                                dialog.dismiss();
+                            }
+                        }, false);
+                try {
+                    dialog.show(getSupportFragmentManager(), null);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return true;
+            case SERVER_IN_MAINTENANCE:
+                // TODO implement fallback when server is in maintenance
+                return true;
+            case REQUEST_ERROR:
+                List<String> validateMessages = errorMessages.get(RestConstants.JSON_VALIDATE_TAG);
+                String dialogMsg = "";
+                if (validateMessages == null || validateMessages.isEmpty()) {
+                    validateMessages = errorMessages.get(RestConstants.JSON_ERROR_TAG);
+                }
+                if (validateMessages != null) {
+                    for (String message : validateMessages) {
+                        dialogMsg += message + "\n";
+                    }
+                } else {
+                    for (Entry<String, ? extends List<String>> entry : errorMessages.entrySet()) {
+                        dialogMsg += entry.getKey() + ": " + entry.getValue().get(0) + "\n";
+                    }
+                }
+                if (dialogMsg.equals("")) {
+                    dialogMsg = getString(R.string.validation_errortext);
+                }
+                showContentContainer(false);
+                dialog = DialogGenericFragment.newInstance(
+                        true, true, false, getString(R.string.validation_title),
+                        dialogMsg, getResources().getString(R.string.ok_label), "",
+                        new OnClickListener() {
+
+                            @Override
+                            public void onClick(View v) {
+                                int id = v.getId();
+                                if (id == R.id.button1) {
+                                    dialog.dismiss();
+                                }
+
+                            }
+
+                        });
+
+                dialog.show(getSupportFragmentManager(), null);
+                return true;
+            }
         }
-        */
+        return false;
+        // if (errorCode.isNetworkError()) {
+        // if (eventType == EventType.GET_SHOPPING_CART_ITEMS_EVENT) {
+        // updateCartInfo(null);
+        // }
+        // if (contentEvents.contains(eventType)) {
+        // showError(event.request);
+        // } else if (userEvents.contains(eventType)) {
+        // showContentContainer(false);
+        // dialog = DialogGenericFragment.createNoNetworkDialog(BaseActivity.this,
+        // new OnClickListener() {
+        //
+        // @Override
+        // public void onClick(View v) {
+        // showLoadingInfo();
+        // EventManager.getSingleton().triggerRequestEvent(event.request);
+        // dialog.dismiss();
+        // }
+        // }, false);
+        // dialog.show(getSupportFragmentManager(), null);
+        // }
+        // return;
+        // } else if (event.type == EventType.GET_PROMOTIONS) {
+        // /**
+        // * No promotions available!
+        // * Ignore error
+        // */
+        // } else if (event.errorCode == ErrorCode.REQUEST_ERROR) {
+        // Map<String, ? extends List<String>> messages = event.errorMessages;
+        // List<String> validateMessages = messages.get(RestConstants.JSON_VALIDATE_TAG);
+        // String dialogMsg = "";
+        // if (validateMessages == null || validateMessages.isEmpty()) {
+        // validateMessages = messages.get(RestConstants.JSON_ERROR_TAG);
+        // }
+        // if (validateMessages != null) {
+        // for (String message : validateMessages) {
+        // dialogMsg += message + "\n";
+        // }
+        // } else {
+        // for (Entry<String, ? extends List<String>> entry : messages.entrySet()) {
+        // dialogMsg += entry.getKey() + ": " + entry.getValue().get(0) + "\n";
+        // }
+        // }
+        // if (dialogMsg.equals("")) {
+        // dialogMsg = getString(R.string.validation_errortext);
+        // }
+        // showContentContainer(false);
+        // dialog = DialogGenericFragment.newInstance(
+        // true, true, false, getString(R.string.validation_title),
+        // dialogMsg, getResources().getString(R.string.ok_label), "",
+        // new OnClickListener() {
+        //
+        // @Override
+        // public void onClick(View v) {
+        // int id = v.getId();
+        // if (id == R.id.button1) {
+        // dialog.dismiss();
+        // }
+        //
+        // }
+        //
+        // });
+        //
+        // dialog.show(getSupportFragmentManager(), null);
+        // return;
+        // } else if (!event.getSuccess()) {
+        // showContentContainer(false);
+        // dialog = DialogGenericFragment.createServerErrorDialog(BaseActivity.this, new
+        // OnClickListener() {
+        //
+        // @Override
+        // public void onClick(View v) {
+        // showLoadingInfo();
+        // event.request.metaData.putBoolean( IMetaData.MD_IGNORE_CACHE, IMetaData.TRUE);
+        // EventManager.getSingleton().triggerRequestEvent(event.request);
+        // dialog.dismiss();
+        // }
+        // }, false);
+        // dialog.show(getSupportFragmentManager(), null);
+        // return;
+        // }
+
+        /*
+         * TODO: finish to distinguish between errors else if (event.errorCode.isServerError()) {
+         * dialog = DialogGeneric.createServerErrorDialog(MyActivity.this, new OnClickListener() {
+         * 
+         * @Override public void onClick(View v) { showLoadingInfo();
+         * EventManager.getSingleton().triggerRequestEvent(event.request); dialog.dismiss(); } },
+         * false); dialog.show(); return; } else if (event.errorCode.isClientError()) { dialog =
+         * DialogGeneric.createClientErrorDialog( MyActivity.this, new OnClickListener() {
+         * 
+         * @Override public void onClick(View v) { showLoadingInfo();
+         * EventManager.getSingleton().triggerRequestEvent(event.request); dialog.dismiss(); } },
+         * false); dialog.show(); return; }
+         */
     }
-//	
-//    @Override
-//    public final boolean removeAfterHandlingEvent() {
-//        return false;
-//    }
-//    
-//    /**
-//     * Handles a successful event in the concrete activity.
-//     * 
-//     * @param event
-//     *            The successful event with {@link ResponseEvent#getSuccess()} == <code>true</code>
-//     * @return Returns whether the content container should be shown.
-//     */
-//    protected abstract boolean onSuccessEvent(ResponseResultEvent<?> event);
-//
-//    /**
-//     * Handles a failed event in the concrete activity. Override this if the concrete activity wants
-//     * to handle a special error case.
-//     * 
-//     * @param event
-//     *            The failed event with {@link ResponseEvent#getSuccess()} == <code>false</code>
-//     * @return Whether the concrete activity handled the failed event and no further actions have to
-//     *         be made.
-//     */
-//    protected boolean onErrorEvent(ResponseEvent event) {
-//        return false;
-//    }
+
+    //
+    // @Override
+    // public final boolean removeAfterHandlingEvent() {
+    // return false;
+    // }
+    //
+    // /**
+    // * Handles a successful event in the concrete activity.
+    // *
+    // * @param event
+    // * The successful event with {@link ResponseEvent#getSuccess()} == <code>true</code>
+    // * @return Returns whether the content container should be shown.
+    // */
+    // protected abstract boolean onSuccessEvent(ResponseResultEvent<?> event);
+    //
+    // /**
+    // * Handles a failed event in the concrete activity. Override this if the concrete activity
+    // wants
+    // * to handle a special error case.
+    // *
+    // * @param event
+    // * The failed event with {@link ResponseEvent#getSuccess()} == <code>false</code>
+    // * @return Whether the concrete activity handled the failed event and no further actions have
+    // to
+    // * be made.
+    // */
+    // protected boolean onErrorEvent(ResponseEvent event) {
+    // return false;
+    // }
 
     /**
      * @return the action
@@ -1422,19 +1517,20 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     public NavigationAction getAction() {
         return action;
     }
-    
+
     /**
      * Set action
+     * 
      * @param action
      */
     public void setAction(NavigationAction action) {
         this.action = action;
     }
 
-	 /**
+    /**
      * ############### FRAGMENTS #################
-     */  
-    
+     */
+
     /**
      * This method should be implemented by fragment activity to manage the work flow for fragments.
      * Each fragment should call this method.
@@ -1452,31 +1548,35 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
      * @param addToBackStack
      * @author sergiopereira
      */
-    public void fragmentManagerTransition(int container, Fragment fragment, String tag, Boolean addToBackStack) {
+    public void fragmentManagerTransition(int container, Fragment fragment, String tag,
+            Boolean addToBackStack) {
         showContentContainer(false);
         fragmentController.startTransition(this, container, fragment, tag, addToBackStack);
     }
-    
+
     /**
      * Method used to perform a back stack using fragments
+     * 
      * @author sergiopereira
      */
-    public void fragmentManagerBackPressed(){
+    public void fragmentManagerBackPressed() {
         showContentContainer(false);
         fragmentController.fragmentBackPressed(this);
     }
-    
+
     /**
      * Pop all back stack
+     * 
      * @param tag
      * @author sergiopereira
      */
-    protected void popAllBackStack(String tag){
+    protected void popAllBackStack(String tag) {
         fragmentController.popAllBackStack(this, tag);
     }
 
     /**
      * Pop back stack until tag
+     * 
      * @param tag
      * @param inclusive
      * @author sergiopereira
@@ -1484,7 +1584,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     public void popBackStackUntilTag(String tag) {
         fragmentController.popAllEntriesUntil(this, tag);
     }
-    
+
     /**
      * Constructor used to initialize the navigation list component and the autocomplete handler
      * 
@@ -1494,26 +1594,32 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
      */
     public interface OnActivityFragmentInteraction {
         public void sendValuesToFragment(int identifier, Object values);
+
         public void sendPositionToFragment(int position);
+
         public void sendListener(int identifier, OnClickListener clickListener);
+
         public boolean allowBackPressed();
     }
-    
-    public void onFragmentSelected(FragmentType fragmentIdentifier){}
-    
-    public void onFragmentElementSelected(int position){}
-    
-    public void sendClickListenerToActivity(OnClickListener clickListener){}
-    
-    public void sendValuesToActivity(int identifier, Object values){}
-    
+
+    public void onFragmentSelected(FragmentType fragmentIdentifier) {
+    }
+
+    public void onFragmentElementSelected(int position) {
+    }
+
+    public void sendClickListenerToActivity(OnClickListener clickListener) {
+    }
+
+    public void sendValuesToActivity(int identifier, Object values) {
+    }
+
     /**
      * Confirm backPress to exit application
-     *
+     * 
      */
-    public Boolean exitApplication(final FragmentController fragC){
-        
-     
+    public Boolean exitApplication(final FragmentController fragC) {
+
         dialog = DialogGenericFragment.newInstance(false, false, true,
                 null, // no title
                 getString(R.string.logout_text_question), getString(R.string.no_label),
@@ -1524,10 +1630,10 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
                         dialog.dismiss();
                         int id = v.getId();
                         if (id == R.id.button1) {
-                            //fragC.popLastEntry(); 
+                            // fragC.popLastEntry();
                         } else if (id == R.id.button2) {
                             finish();
-                          
+
                         }
 
                     }
@@ -1544,7 +1650,8 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
      * @param responseCallback
      * @return the md5 of the reponse
      */
-    public String sendRequest(final BaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
+    public String sendRequest(final BaseHelper helper, Bundle args,
+            final IResponseCallback responseCallback) {
         Bundle bundle = helper.generateRequestBundle(args);
         String md5 = Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY);
         bundle.putString(Constants.BUNDLE_MD5_KEY, md5);
@@ -1557,12 +1664,12 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
                 // We have to parse this bundle to the final one
                 Bundle formatedBundle = (Bundle) helper.checkResponseForStatus(bundle);
                 if (responseCallback != null) {
-                    if(formatedBundle.getBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY)){
+                    if (formatedBundle.getBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY)) {
                         responseCallback.onRequestError(formatedBundle);
                     } else {
-                        responseCallback.onRequestComplete(formatedBundle);    
+                        responseCallback.onRequestComplete(formatedBundle);
                     }
-                    
+
                 }
             }
 
@@ -1577,17 +1684,15 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
             }
         });
 
-        
         JumiaApplication.INSTANCE.sendRequest(bundle);
-        
 
         return md5;
     }
-    
+
     /**
      * Requests and Callbacks methods
      */
-    
+
     /**
      * Callback which deals with the IRemoteServiceCallback
      */
@@ -1604,7 +1709,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
             handleResponse(response);
         }
     };
-    
+
     /**
      * Handles correct responses
      * 

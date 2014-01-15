@@ -28,6 +28,7 @@ public class GetCallToOrderHelper extends BaseHelper {
         Bundle bundle = new Bundle();
         bundle.putString(Constants.BUNDLE_URL_KEY, EventType.GET_CALL_TO_ORDER_PHONE.action);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_CALL_TO_ORDER_PHONE);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_NOT_PRIORITARY);
         bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
         return bundle;
