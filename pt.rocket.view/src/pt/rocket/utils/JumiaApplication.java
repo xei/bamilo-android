@@ -204,7 +204,9 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     public String sendRequest(final BaseHelper helper, Bundle args,
             final IResponseCallback responseCallback) {
 
-        
+        if(helper == null){
+            return "";
+        }
         Bundle bundle = helper.generateRequestBundle(args);
         
         if(bundle.containsKey(Constants.BUNDLE_EVENT_TYPE_KEY)){
