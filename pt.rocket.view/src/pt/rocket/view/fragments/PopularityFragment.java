@@ -398,7 +398,13 @@ public class PopularityFragment extends BaseFragment {
     }
     
     protected void onErrorEvent(Bundle bundle){
-        getBaseActivity().handleErrorEvent(bundle);    
+        if(isVisible()){
+            return;
+        }
+        
+        if(getBaseActivity().handleErrorEvent(bundle)){
+            return;
+        }    
     }
     
     

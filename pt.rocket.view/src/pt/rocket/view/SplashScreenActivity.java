@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import org.holoeverywhere.widget.Button;
 import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.constants.ConstantsIntentExtra;
@@ -42,6 +43,7 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ImageView;
 
 import com.bugsense.trace.BugSenseHandler;
 import com.shouldit.proxy.lib.ProxyConfiguration;
@@ -99,7 +101,6 @@ public class SplashScreenActivity extends FragmentActivity {
         
         Log.i(TAG, "code1 onCreate");
         setContentView(R.layout.splash_screen);
-        
     }
 
     @Override
@@ -298,6 +299,7 @@ public class SplashScreenActivity extends FragmentActivity {
      * 
      * @param bundle
      */
+    
     private void handleSuccessResponse(Bundle bundle) {
         Log.i(TAG,"on handleSuccessResponse");
         if (!shouldHandleEvent) {
@@ -320,7 +322,6 @@ public class SplashScreenActivity extends FragmentActivity {
              */
             JumiaApplication.INSTANCE.registerFragmentCallback(mCallback);
             JumiaApplication.INSTANCE.sendRequest(new GetApiInfoHelper(), null, responseCallback);
-
         } else if (eventType == EventType.GET_API_INFO) {
             Log.d(TAG, "HANDLE EVENT: " + eventType.toString());
             // Show activity
@@ -338,6 +339,53 @@ public class SplashScreenActivity extends FragmentActivity {
         }
     }
 
+    private void setLayoutMaintenance(final EventType eventType) {
+        
+        findViewById(R.id.fallback_content).setVisibility(View.VISIBLE);
+        Button retry = (Button) findViewById(R.id.fallback_retry);
+        retry.setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+                findViewById(R.id.fallback_content).setVisibility(View.GONE);
+               JumiaApplication.INSTANCE.sendRequest(JumiaApplication.INSTANCE.getRequestsRetryHelperList().get(eventType), 
+                       JumiaApplication.INSTANCE.getRequestsRetryBundleList().get(eventType), JumiaApplication.INSTANCE.getRequestsResponseList().get(eventType)); 
+            }
+        });
+        ImageView mapBg = (ImageView) findViewById(R.id.home_fallback_country_map);
+        SharedPreferences sharedPrefs = getSharedPreferences(
+                ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        int position = sharedPrefs.getInt(ChangeCountryFragmentActivity.KEY_COUNTRY, 0);
+
+        mapBg.setImageDrawable(this.getResources().obtainTypedArray(R.array.country_fallback_map)
+                .getDrawable(position));
+
+        String country = this.getResources().obtainTypedArray(R.array.country_names)
+                .getString(position);
+        if (country.split(" ").length == 1) {
+            TextView tView = (TextView) findViewById(R.id.fallback_country);
+            tView.setVisibility(View.VISIBLE);
+            TextView txView = (TextView) findViewById(R.id.fallback_options_bottom);
+            txView.setVisibility(View.VISIBLE);
+            txView.setText(country.toUpperCase());
+            findViewById(R.id.fallback_country_double).setVisibility(View.GONE);
+            tView.setText(country.toUpperCase());
+        } else {
+            TextView tView = (TextView) findViewById(R.id.fallback_country_top);
+            tView.setText(country.split(" ")[0].toUpperCase());
+            TextView tViewBottom = (TextView) findViewById(R.id.fallback_country_bottom);
+            tViewBottom.setText(country.split(" ")[1].toUpperCase());
+            ((TextView) findViewById(R.id.fallback_best)).setTextSize(11.88f);
+            TextView txView = (TextView) findViewById(R.id.fallback_options_bottom);
+            txView.setVisibility(View.VISIBLE);
+            txView.setText(country.toUpperCase());
+            findViewById(R.id.fallback_country_double).setVisibility(View.VISIBLE);
+            findViewById(R.id.fallback_country).setVisibility(View.GONE);
+
+        }
+        findViewById(R.id.fallback_best).setSelected(true);
+       
+    }
     
     IResponseCallback responseCallback = new IResponseCallback() {
 
@@ -402,7 +450,7 @@ public class SplashScreenActivity extends FragmentActivity {
                 }
                 break;
             case SERVER_IN_MAINTENANCE:
-                // TODO implement fallback when server is in maintenance
+                setLayoutMaintenance(eventType);
                 break;
             case REQUEST_ERROR:
                 List<String> validateMessages = errorMessages.get(RestConstants.JSON_VALIDATE_TAG);

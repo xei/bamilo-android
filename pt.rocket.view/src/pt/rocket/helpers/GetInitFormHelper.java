@@ -32,6 +32,7 @@ public class GetInitFormHelper extends BaseHelper {
         bundle.putString(Constants.BUNDLE_URL_KEY, EventType.INIT_FORMS.action);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
         bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.INIT_FORMS);
         return bundle;
     }
 

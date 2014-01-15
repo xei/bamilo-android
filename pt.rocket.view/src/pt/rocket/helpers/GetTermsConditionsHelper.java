@@ -60,7 +60,7 @@ public class GetTermsConditionsHelper extends BaseHelper {
             e.printStackTrace();
         }
         bundle.putString(Constants.BUNDLE_RESPONSE_KEY, text);
-
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_TERMS_EVENT);
         return bundle;
     }
     

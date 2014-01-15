@@ -390,6 +390,14 @@ public abstract class BaseFragment extends Fragment implements
      */
     public String sendRequest(final BaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
         Bundle bundle = helper.generateRequestBundle(args);
+        if(bundle.containsKey(Constants.BUNDLE_EVENT_TYPE_KEY)){
+            Log.i(TAG, "codesave saving : "+(EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
+            JumiaApplication.INSTANCE.getRequestsRetryHelperList().put((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY), helper);
+            JumiaApplication.INSTANCE.getRequestsRetryBundleList().put((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY), args);
+            JumiaApplication.INSTANCE.getRequestsResponseList().put((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY), responseCallback);
+        } else {
+            Log.w(TAG, " MISSING EVENT TYPE from "+helper.toString());
+        }
         String md5 = Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY);
         bundle.putString(Constants.BUNDLE_MD5_KEY, md5);
         Log.d("TRACK", "sendRequest");

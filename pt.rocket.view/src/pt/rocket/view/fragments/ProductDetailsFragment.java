@@ -1032,6 +1032,10 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
 
     protected boolean onErrorEvent(Bundle bundle) {
         
+        if(isVisible()){
+            return true;
+        }
+        
         if(getBaseActivity().handleErrorEvent(bundle)){
             return true;
         }

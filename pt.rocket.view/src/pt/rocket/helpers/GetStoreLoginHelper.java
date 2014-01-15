@@ -28,6 +28,7 @@ public class GetStoreLoginHelper extends BaseHelper {
         bundle.putString(Constants.BUNDLE_URL_KEY, EventType.STORE_LOGIN.action);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.POST);
         bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.STORE_LOGIN);
         return bundle;
     }
 
@@ -35,6 +36,7 @@ public class GetStoreLoginHelper extends BaseHelper {
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
         // TODO Auto-generated method stub
         Log.i(TAG,"parseResponseBundle");
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.STORE_LOGIN);
         return bundle;
     }
     

@@ -293,6 +293,14 @@ public class SessionForgotPasswordFragment extends BaseFragment {
     }
 
     protected boolean onErrorEvent(Bundle bundle) {
+        if(isVisible()){
+            return true;
+        }
+        
+        if(getBaseActivity().handleErrorEvent(bundle)){
+            return true;
+        }
+        
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         if (eventType == EventType.FORGET_PASSWORD_EVENT) {

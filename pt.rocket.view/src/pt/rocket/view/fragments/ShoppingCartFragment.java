@@ -366,6 +366,13 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
     }
 
     protected boolean onErrorEvent(Bundle bundle) {
+        if(isVisible()){
+            return true;
+        }
+        
+        if(getBaseActivity().handleErrorEvent(bundle)){
+            return true;
+        }
         mBeginRequestMillis = System.currentTimeMillis();
         getBaseActivity().handleErrorEvent(bundle);
         return true;

@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import pt.rocket.framework.enums.RequestType;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.Constants;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
 import android.os.Bundle;
 import de.akquinet.android.androlog.Log;
@@ -36,6 +37,7 @@ public class GetFormsDatasetListHelper extends BaseHelper {
         bundle.putString(Constants.BUNDLE_URL_KEY, args.getString(URL));
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
         bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_FORMS_DATASET_LIST_EVENT);
         return bundle;
     }
 

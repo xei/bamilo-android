@@ -16,6 +16,7 @@ import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.factories.TeasersFactory;
+import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.Homepage;
 import pt.rocket.framework.objects.ITargeting.TargetType;
 import pt.rocket.framework.objects.Promotion;
@@ -523,9 +524,6 @@ public class HomeFragment extends BaseFragment {
         }
     }
     
-    
-    
-    
     protected boolean onSuccessEvent(Bundle bundle) {
         getBaseActivity().handleSuccessEvent(bundle);
         Log.i(TAG,"ON onSuccessEvent");
@@ -561,6 +559,13 @@ public class HomeFragment extends BaseFragment {
     }
 
     public void onErrorEvent(Bundle bundle) {
+        if(isVisible()){
+            return;
+        }
+        
+        if(getBaseActivity().handleErrorEvent(bundle)){
+            return;
+        }
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         switch (eventType) {
         case GET_TEASERS_EVENT:

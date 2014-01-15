@@ -39,6 +39,7 @@ public class GetTrackOrderHelper extends BaseHelper {
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
         bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.TRACK_ORDER_EVENT);
         return bundle;
     }
 
@@ -53,6 +54,7 @@ public class GetTrackOrderHelper extends BaseHelper {
         }
 
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, mOrderTracker);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.TRACK_ORDER_EVENT);
         return bundle;
     }
     

@@ -33,6 +33,7 @@ public class GetCustomerHelper extends BaseHelper {
         bundle.putString(Constants.BUNDLE_URL_KEY, EventType.GET_CUSTOMER.action);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.POST);
         bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_CUSTOMER);
         return bundle;
     }
 

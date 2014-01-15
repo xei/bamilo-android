@@ -94,6 +94,14 @@ public class JumiaApplication extends Application implements ExceptionCallback {
 
     public boolean isUAInitialized = false;
     
+    /**
+     * Fallback and retry backups
+     */
+    
+    private HashMap<EventType, Bundle> requestsRetryBundleList = new HashMap<EventType, Bundle>();
+    private HashMap<EventType, BaseHelper> requestsRetryHelperList = new HashMap<EventType, BaseHelper>();
+    private HashMap<EventType, IResponseCallback> requestsResponseList = new HashMap<EventType, IResponseCallback>();
+    
     @Override
     public void onCreate() {
         doBindService();
@@ -196,7 +204,18 @@ public class JumiaApplication extends Application implements ExceptionCallback {
      */
     public String sendRequest(final BaseHelper helper, Bundle args,
             final IResponseCallback responseCallback) {
+
+        
         Bundle bundle = helper.generateRequestBundle(args);
+        
+        if(bundle.containsKey(Constants.BUNDLE_EVENT_TYPE_KEY)){
+            Log.i(TAG, "codesave saving : "+(EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
+            requestsRetryHelperList.put((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY), helper);
+            requestsRetryBundleList.put((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY), args);
+            requestsResponseList.put((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY), responseCallback);
+        } else {
+            Log.w(TAG, " MISSING EVENT TYPE from "+helper.toString());
+        }
         String md5 = Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY);
         bundle.putString(Constants.BUNDLE_MD5_KEY, md5);
         Log.d("TRACK", "sendRequest");
@@ -386,6 +405,49 @@ public class JumiaApplication extends Application implements ExceptionCallback {
      */
     public void setLoggedIn(boolean loggedIn) {
         this.loggedIn = loggedIn;
+    }
+
+
+    /**
+     * @return the requestsRetryBundleList
+     */
+    public HashMap<EventType, Bundle> getRequestsRetryBundleList() {
+        return requestsRetryBundleList;
+    }
+
+    /**
+     * @param requestsRetryBundleList the requestsRetryBundleList to set
+     */
+    public void setRequestsRetryBundleList(HashMap<EventType, Bundle> requestsRetryBundleList) {
+        this.requestsRetryBundleList = requestsRetryBundleList;
+    }
+
+    /**
+     * @return the requestsRetryHelperList
+     */
+    public HashMap<EventType, BaseHelper> getRequestsRetryHelperList() {
+        return requestsRetryHelperList;
+    }
+
+    /**
+     * @param requestsRetryHelperList the requestsRetryHelperList to set
+     */
+    public void setRequestsRetryHelperList(HashMap<EventType, BaseHelper> requestsRetryHelperList) {
+        this.requestsRetryHelperList = requestsRetryHelperList;
+    }
+
+    /**
+     * @return the requestsResponseList
+     */
+    public HashMap<EventType, IResponseCallback> getRequestsResponseList() {
+        return requestsResponseList;
+    }
+
+    /**
+     * @param requestsResponseList the requestsResponseList to set
+     */
+    public void setRequestsResponseList(HashMap<EventType, IResponseCallback> requestsResponseList) {
+        this.requestsResponseList = requestsResponseList;
     }
 
     /**

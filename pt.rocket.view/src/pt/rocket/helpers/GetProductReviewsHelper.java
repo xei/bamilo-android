@@ -47,6 +47,7 @@ public class GetProductReviewsHelper extends BaseHelper {
                 HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
         bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_PRODUCT_REVIEWS_EVENT);
         return bundle;
     }
 
@@ -68,7 +69,7 @@ public class GetProductReviewsHelper extends BaseHelper {
             e.printStackTrace();
         }
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, rating);
-
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_PRODUCT_REVIEWS_EVENT);
         return bundle;
     }
 

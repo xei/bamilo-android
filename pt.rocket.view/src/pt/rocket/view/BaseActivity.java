@@ -7,10 +7,12 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.holoeverywhere.widget.Button;
 import org.holoeverywhere.widget.EditText;
 import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.constants.ConstantsIntentExtra;
+import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
@@ -45,6 +47,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -62,6 +65,7 @@ import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -130,11 +134,10 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     private DialogProgressFragment progressDialog;
 
     private Activity activity;
-    
-    private static final int TOAST_LENGTH_SHORT = 2000; // 2 seconds
-    
-    private boolean backPressedOnce = false;
 
+    private static final int TOAST_LENGTH_SHORT = 2000; // 2 seconds
+
+    private boolean backPressedOnce = false;
 
     /**
      * Use this variable to have a more precise control on when to show the content container.
@@ -279,8 +282,8 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         }
 
         // Validate if is in landscape and tablet and forcing menu
-        if(isTabletInLandscape(this) && !initialCountry)
-             showMenu();
+        if (isTabletInLandscape(this) && !initialCountry)
+            showMenu();
         else
             showContent();
 
@@ -421,16 +424,17 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
 
         return result;
     }
-    
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.app.Activity#onBackPressed()
-	 */
-	@Override
-	public void onBackPressed() {
-		Log.i(getTag(), "onBackPressed");
-		if (getSlidingMenu().isMenuShowing() && getSlidingMenu().isSlidingEnabled() && !isTabletInLandscape(this)) {
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see android.app.Activity#onBackPressed()
+     */
+    @Override
+    public void onBackPressed() {
+        Log.i(getTag(), "onBackPressed");
+        if (getSlidingMenu().isMenuShowing() && getSlidingMenu().isSlidingEnabled()
+                && !isTabletInLandscape(this)) {
             showContent();
         } else {
             super.onBackPressed();
@@ -461,7 +465,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
         Log.i(TAG, "codeW : " + onChangeCountry);
         // Validate current orientation and device
-        if(isTabletInLandscape(this) && !onChangeCountry) {
+        if (isTabletInLandscape(this) && !onChangeCountry) {
             // Landscape mode
             slideMenuInLandscapeMode(sm);
         } else {
@@ -589,8 +593,9 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
      * 
      * @return true if yes, false otherwise
      */
-    public static boolean isTabletInLandscape(Context context){
-        if (context.getResources().getBoolean(R.bool.isTablet) && context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+    public static boolean isTabletInLandscape(Context context) {
+        if (context.getResources().getBoolean(R.bool.isTablet)
+                && context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
             return true;
         return false;
     }
@@ -692,15 +697,16 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     /**
      * ############### SEARCH BAR #################
      */
-	
-	/**
-	 * Method used to set the search bar in/below the Action bar. 
-	 * @param menu
-	 * @author sergiopereira
-	 */
-	private void setSearchBar(Menu menu) {
-	    // Validate the Sliding
-        if(!isTabletInLandscape(this)) {
+
+    /**
+     * Method used to set the search bar in/below the Action bar.
+     * 
+     * @param menu
+     * @author sergiopereira
+     */
+    private void setSearchBar(Menu menu) {
+        // Validate the Sliding
+        if (!isTabletInLandscape(this)) {
             // Show search below the action bar
             findViewById(R.id.rocket_app_header_search).setVisibility(View.VISIBLE);
             // Show the normal search
@@ -928,23 +934,24 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
             header_title.setVisibility(View.GONE);
         }
     }
-    
+
     /**
      * Method used to set the number of products
+     * 
      * @param title
      * @param subtitle
      */
-    public void setTitleAndSubTitle(CharSequence title,CharSequence subtitle) {
+    public void setTitleAndSubTitle(CharSequence title, CharSequence subtitle) {
         TextView titleView = (TextView) findViewById(R.id.title);
         TextView subtitleView = (TextView) findViewById(R.id.totalProducts);
         RelativeLayout header_title = (RelativeLayout) findViewById(R.id.header_title);
-        
+
         if (titleView == null)
             return;
         if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(subtitle)) {
             // Set text and force measure
             subtitleView.setText((String) subtitle);
-            subtitleView.measure(0, 0);            
+            subtitleView.measure(0, 0);
             // Get the subtitle width
             int subWidth = subtitleView.getMeasuredWidth();
             int midPadding = getResources().getDimensionPixelSize(R.dimen.margin_mid);
@@ -955,11 +962,11 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
             // Set visibility
             header_title.setVisibility(View.VISIBLE);
             subtitleView.setVisibility(View.VISIBLE);
-        } else if (TextUtils.isEmpty(title)){
+        } else if (TextUtils.isEmpty(title)) {
             header_title.setVisibility(View.GONE);
         }
     }
-    
+
     public void hideTitle() {
         findViewById(R.id.header_title).setVisibility(View.GONE);
     }
@@ -1138,7 +1145,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     @Override
     public void onOpened() {
         Log.d(getTag(), "onOpened");
-        if(!isTabletInLandscape(this))
+        if (!isTabletInLandscape(this))
             hideKeyboard();
         AnalyticsGoogle.get().trackPage(R.string.gnavigation);
     }
@@ -1312,7 +1319,8 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
             AnalyticsGoogle.get().trackAccount(trackRes, null);
             break;
         case LOGIN_EVENT:
-            triggerContentEventWithNoLoading(new GetShoppingCartItemsHelper(), null, mIResponseCallback);
+            triggerContentEventWithNoLoading(new GetShoppingCartItemsHelper(), null,
+                    mIResponseCallback);
             break;
         }
     }
@@ -1327,7 +1335,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
      *            The failed event with {@link ResponseEvent#getSuccess()} == <code>false</code>
      */
     public boolean handleErrorEvent(final Bundle bundle) {
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        final EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle
                 .getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
@@ -1335,11 +1343,11 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
             switch (errorCode) {
             case NO_NETWORK:
                 showContentContainer(false);
-                
+
                 // Remove dialog if exist
-                if (dialog != null){
+                if (dialog != null) {
                     try {
-                        dialog.dismiss();    
+                        dialog.dismiss();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -1350,7 +1358,8 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
 
                             @Override
                             public void onClick(View v) {
-                                
+                                JumiaApplication.INSTANCE.sendRequest(JumiaApplication.INSTANCE.getRequestsRetryHelperList().get(eventType), 
+                                        JumiaApplication.INSTANCE.getRequestsRetryBundleList().get(eventType), JumiaApplication.INSTANCE.getRequestsResponseList().get(eventType));
                                 dialog.dismiss();
                             }
                         }, false);
@@ -1361,7 +1370,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
                 }
                 return true;
             case SERVER_IN_MAINTENANCE:
-                // TODO implement fallback when server is in maintenance
+                setLayoutMaintenance(eventType);
                 return true;
             case REQUEST_ERROR:
                 List<String> validateMessages = errorMessages.get(RestConstants.JSON_VALIDATE_TAG);
@@ -1659,14 +1668,18 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         dialog.show(getSupportFragmentManager(), null);
         return false;
     }
+
     /**
      * Method used to control the double back pressed
+     * 
      * @author sergiopereira
-     * @see <a href="http://stackoverflow.com/questions/7965135/what-is-the-duration-of-a-toast-length-long-and-length-short">Toast duration</a>
-     * <br>Toast.LENGTH_LONG is 3500 seconds.
-     * <br>Toast.LENGTH_SHORT is 2000 seconds.
+     * @see <a
+     *      href="http://stackoverflow.com/questions/7965135/what-is-the-duration-of-a-toast-length-long-and-length-short">Toast
+     *      duration</a> <br>
+     *      Toast.LENGTH_LONG is 3500 seconds. <br>
+     *      Toast.LENGTH_SHORT is 2000 seconds.
      */
-    public void doubleBackPressToExit(){
+    public void doubleBackPressToExit() {
         Log.d(TAG, "DOUBLE BACK PRESSED TO EXIT: " + backPressedOnce);
         // If was pressed once
         if (backPressedOnce) {
@@ -1675,7 +1688,8 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         }
         // First time show toast
         this.backPressedOnce = true;
-        CustomToastView.makeText(this, getString(R.string.exit_press_back_again), Toast.LENGTH_SHORT).show();
+        CustomToastView.makeText(this, getString(R.string.exit_press_back_again),
+                Toast.LENGTH_SHORT).show();
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -1683,6 +1697,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
             }
         }, TOAST_LENGTH_SHORT);
     }
+
     /**
      * Triggers the request for a new api call
      * 
@@ -1694,6 +1709,14 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     public String sendRequest(final BaseHelper helper, Bundle args,
             final IResponseCallback responseCallback) {
         Bundle bundle = helper.generateRequestBundle(args);
+        if(bundle.containsKey(Constants.BUNDLE_EVENT_TYPE_KEY)){
+            Log.i(TAG, "codesave saving : "+(EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
+            JumiaApplication.INSTANCE.getRequestsRetryHelperList().put((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY), helper);
+            JumiaApplication.INSTANCE.getRequestsRetryBundleList().put((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY), args);
+            JumiaApplication.INSTANCE.getRequestsResponseList().put((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY), responseCallback);
+        } else {
+            Log.w(TAG, " MISSING EVENT TYPE from "+helper.toString());
+        }
         String md5 = Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY);
         bundle.putString(Constants.BUNDLE_MD5_KEY, md5);
         Log.d("TRACK", "sendRequest");
@@ -1708,9 +1731,11 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
                     if (formatedBundle.getBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY)) {
                         responseCallback.onRequestError(formatedBundle);
                     } else {
+                        JumiaApplication.INSTANCE.getRequestsRetryHelperList().remove((EventType) formatedBundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
+                        JumiaApplication.INSTANCE.getRequestsRetryBundleList().remove((EventType) formatedBundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
+                        JumiaApplication.INSTANCE.getRequestsResponseList().remove((EventType) formatedBundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
                         responseCallback.onRequestComplete(formatedBundle);
                     }
-
                 }
             }
 
@@ -1775,5 +1800,56 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
             JumiaApplication.INSTANCE.responseCallbacks.get(id).onRequestError(bundle);
         }
         JumiaApplication.INSTANCE.responseCallbacks.remove(id);
+    }
+    
+    /**
+     * Sets Maintenance page
+     */
+    private void setLayoutMaintenance(final EventType eventType) {
+
+        findViewById(R.id.fallback_content).setVisibility(View.VISIBLE);
+        Button retry = (Button) findViewById(R.id.fallback_retry);
+        retry.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                findViewById(R.id.fallback_content).setVisibility(View.GONE);
+                JumiaApplication.INSTANCE.sendRequest(JumiaApplication.INSTANCE.getRequestsRetryHelperList().get(eventType), 
+                        JumiaApplication.INSTANCE.getRequestsRetryBundleList().get(eventType), JumiaApplication.INSTANCE.getRequestsResponseList().get(eventType));
+            }
+        });
+        ImageView mapBg = (ImageView) findViewById(R.id.home_fallback_country_map);
+        SharedPreferences sharedPrefs = getSharedPreferences(
+                ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        int position = sharedPrefs.getInt(ChangeCountryFragmentActivity.KEY_COUNTRY, 0);
+
+        mapBg.setImageDrawable(this.getResources().obtainTypedArray(R.array.country_fallback_map)
+                .getDrawable(position));
+
+        String country = this.getResources().obtainTypedArray(R.array.country_names)
+                .getString(position);
+        if (country.split(" ").length == 1) {
+            TextView tView = (TextView) findViewById(R.id.fallback_country);
+            tView.setVisibility(View.VISIBLE);
+            TextView txView = (TextView) findViewById(R.id.fallback_options_bottom);
+            txView.setVisibility(View.VISIBLE);
+            txView.setText(country.toUpperCase());
+            findViewById(R.id.fallback_country_double).setVisibility(View.GONE);
+            tView.setText(country.toUpperCase());
+        } else {
+            TextView tView = (TextView) findViewById(R.id.fallback_country_top);
+            tView.setText(country.split(" ")[0].toUpperCase());
+            TextView tViewBottom = (TextView) findViewById(R.id.fallback_country_bottom);
+            tViewBottom.setText(country.split(" ")[1].toUpperCase());
+            ((TextView) findViewById(R.id.fallback_best)).setTextSize(11.88f);
+            TextView txView = (TextView) findViewById(R.id.fallback_options_bottom);
+            txView.setVisibility(View.VISIBLE);
+            txView.setText(country.toUpperCase());
+            findViewById(R.id.fallback_country_double).setVisibility(View.VISIBLE);
+            findViewById(R.id.fallback_country).setVisibility(View.GONE);
+
+        }
+        findViewById(R.id.fallback_best).setSelected(true);
+
     }
 }

@@ -1066,7 +1066,11 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
     }
 
     public void onErrorEvent(Bundle bundle) {
-        if (getBaseActivity().handleErrorEvent(bundle)) {
+        if(isVisible()){
+            return;
+        }
+        
+        if(getBaseActivity().handleErrorEvent(bundle)){
             return;
         }
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);

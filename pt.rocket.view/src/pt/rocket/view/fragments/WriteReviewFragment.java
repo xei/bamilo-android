@@ -401,6 +401,14 @@ public class WriteReviewFragment extends BaseFragment {
 
     
     protected boolean onErrorEvent(Bundle bundle) {
+        if(isVisible()){
+            return;
+        }
+        
+        if(getBaseActivity().handleErrorEvent(bundle)){
+            return;
+        }
+        
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         switch (eventType) {
         // case GET_CUSTOMER:
