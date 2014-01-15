@@ -38,6 +38,7 @@ import android.os.Message;
 import android.os.RemoteException;
 
 import com.bugsense.trace.ExceptionCallback;
+import com.urbanairship.UAirship;
 
 import de.akquinet.android.androlog.Log;
 
@@ -103,11 +104,15 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     
     @Override
     public void onCreate() {
+        /**
+         * Force UA clean the previous configurations.
+         */
+        UAirship.takeOff(this);
         doBindService();
         Log.init(getApplicationContext());
         Log.d(TAG, "onCreate");
         INSTANCE = this;
-
+         
 //        init(false);
         responseCallbacks = new HashMap<String, IResponseCallback>();
         // Get the current shop id
