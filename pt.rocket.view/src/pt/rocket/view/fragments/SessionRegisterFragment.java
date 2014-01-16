@@ -633,9 +633,7 @@ public class SessionRegisterFragment extends BaseFragment {
     }
 
     protected boolean onErrorEvent(Bundle bundle) {
-        if(isVisible()){
-            return true;
-        }
+        Log.d(TAG, "ON ERROR EVENT");
         
         if(getBaseActivity().handleErrorEvent(bundle)){
             return true;
