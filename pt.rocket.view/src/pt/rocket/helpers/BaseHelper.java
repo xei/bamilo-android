@@ -84,7 +84,6 @@ public abstract class BaseHelper {
                 return parseResponseErrorBundle(bundle);
             }
         } catch (JSONException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             Log.i(TAG, "code1 error response checkResponseForStatus : json error " + eventType);
             bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);

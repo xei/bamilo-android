@@ -16,7 +16,6 @@ import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.factories.TeasersFactory;
-import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.Homepage;
 import pt.rocket.framework.objects.ITargeting.TargetType;
 import pt.rocket.framework.objects.Promotion;
@@ -29,7 +28,6 @@ import pt.rocket.framework.utils.MixpanelTracker;
 import pt.rocket.helpers.GetCallToOrderHelper;
 import pt.rocket.helpers.GetLoginHelper;
 import pt.rocket.helpers.GetPromotionsHelper;
-import pt.rocket.helpers.GetShoppingCartAddItemHelper;
 import pt.rocket.helpers.GetTeasersHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.CheckVersion;
@@ -567,9 +565,10 @@ public class HomeFragment extends BaseFragment {
             return;
         }
         
-        if(getBaseActivity().handleErrorEvent(bundle)){
+        if(getBaseActivity()!= null && getBaseActivity().handleErrorEvent(bundle)){
             return;
         }
+        
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         switch (eventType) {
         case GET_TEASERS_EVENT:

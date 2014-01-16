@@ -243,7 +243,11 @@ public class JumiaApplication extends Application implements ExceptionCallback {
                 // We have to parse this bundle to the final one
                 Bundle formatedBundle = (Bundle) helper.checkResponseForStatus(bundle);
                 if (responseCallback != null) {
-                    responseCallback.onRequestComplete(formatedBundle);
+                    if (formatedBundle.getBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY)) {
+                        responseCallback.onRequestError(formatedBundle);
+                    } else {
+                        responseCallback.onRequestComplete(formatedBundle);
+                    }
                 }
             }
 

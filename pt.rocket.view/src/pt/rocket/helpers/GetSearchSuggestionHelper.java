@@ -55,7 +55,6 @@ public class GetSearchSuggestionHelper extends BaseHelper {
         try {
             suggestionsArray = jsonObject.getJSONArray(RestConstants.JSON_SUGGESTIONS_TAG);
         } catch (JSONException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         for (int i = 0; i < suggestionsArray.length(); ++i) {
@@ -63,7 +62,6 @@ public class GetSearchSuggestionHelper extends BaseHelper {
             try {
                 suggestion.initialize(suggestionsArray.getJSONObject(i));
             } catch (JSONException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
             suggestions.add(suggestion);
@@ -84,6 +82,7 @@ public class GetSearchSuggestionHelper extends BaseHelper {
 
     @Override
     public Bundle parseResponseErrorBundle(Bundle bundle) {
+        android.util.Log.d(TAG, "parseResponseErrorBundle GetSuggestionsHelper");
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_SEARCH_SUGGESTIONS_EVENT);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;

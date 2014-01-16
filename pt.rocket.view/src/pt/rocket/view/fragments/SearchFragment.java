@@ -335,7 +335,7 @@ public class SearchFragment extends BaseFragment implements OnItemClickListener 
         mBeginRequestMillis = System.currentTimeMillis();
         Bundle bundle = new Bundle();
         bundle.putString(GetSearchSuggestionHelper.SEACH_PARAM, searchSuggestionText);
-        JumiaApplication.INSTANCE.sendRequest(new GetSearchSuggestionHelper(), bundle,mCallBack);
+        JumiaApplication.INSTANCE.sendRequest(new GetSearchSuggestionHelper(), bundle, mCallBack);
 //        EventManager.getSingleton().triggerRequestEvent(
 //                new GetSearchSuggestionsEvent(searchSuggestionText));
     }
@@ -411,7 +411,8 @@ public class SearchFragment extends BaseFragment implements OnItemClickListener 
             listView.setAdapter(searchSuggestionsAdapter);
             suggestionsLayout.setVisibility( View.GONE );
         } catch (NullPointerException e) {
-            Log.w(TAG, "NPE ON set search suggestion: " + e.getMessage());
+            Log.w(TAG, "NPE ON set search suggestion: ");
+            e.printStackTrace();
         }
     }
     
@@ -429,6 +430,7 @@ public class SearchFragment extends BaseFragment implements OnItemClickListener 
     };
 
     private void onErrorEvent(Bundle bundle){
+        Log.d(TAG, "ON ERROR EVENT");
         mBeginRequestMillis = System.currentTimeMillis();
         if(getBaseActivity().handleErrorEvent(bundle)){
             return;
@@ -441,6 +443,7 @@ public class SearchFragment extends BaseFragment implements OnItemClickListener 
     }
     
     private void onSuccessEvent(Bundle bundle){
+        Log.d(TAG, "ON SUCCESS EVENT");
         if(isVisible()){
             AnalyticsGoogle.get().trackLoadTiming(R.string.gsearchsuggestions, mBeginRequestMillis);
             searchSuggestions = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);

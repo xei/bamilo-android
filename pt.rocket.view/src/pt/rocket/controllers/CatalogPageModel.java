@@ -760,7 +760,12 @@ public class CatalogPageModel {
             }
         }
 
-        productsAdapter.appendProducts(productsPage.getProducts());
+        try {
+            productsAdapter.appendProducts(productsPage.getProducts());
+        } catch (NullPointerException e) {
+            Log.w(TAG, "NPE ON APPEND PRODUCTS: ");
+            e.printStackTrace();
+        }
 
         Log.i(TAG, "code1 " + productsPage.getProducts().size() + " pageNumber is : " + pageNumber);
 
