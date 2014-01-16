@@ -58,9 +58,6 @@ public final class ShopSelector {
 		MixpanelTracker.startup(context, shopId);
 		MixpanelTracker.launch(context);
 		AdXTracker.startup(context);
-		if(!isChangeShop){
-			AdXTracker.launch(context);	
-		}
 		
 		sShopId = shopId;
 		sShopName = context.getResources().getStringArray( R.array.shop_names)[sShopId];
