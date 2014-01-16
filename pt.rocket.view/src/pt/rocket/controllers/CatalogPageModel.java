@@ -29,7 +29,6 @@ import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.ProductDetailsActivityFragment;
 import pt.rocket.view.R;
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -107,7 +106,7 @@ public class CatalogPageModel {
     private ImageView imageViewPt;
     private TextView textViewPt;
 
-    private Activity mActivity;
+    private BaseActivity mActivity;
 
     private String md5Hash;
 
@@ -119,7 +118,7 @@ public class CatalogPageModel {
     
     private CharSequence totalItemsLable = "";
     
-    public CatalogPageModel(int index, Activity activity) {
+    public CatalogPageModel(int index, BaseActivity activity) {
         this.index = index;
         this.mActivity = activity;
         setIndex(index);
@@ -306,8 +305,7 @@ public class CatalogPageModel {
                     bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, navigationPath);
                     if(title != null)
                         bundle.putString(ProductDetailsActivityFragment.PRODUCT_CATEGORY, title);
-                    ((BaseActivity) mActivity).onSwitchFragment(FragmentType.PRODUCT_DETAILS,
-                            bundle, FragmentController.ADD_TO_BACK_STACK);
+                        mActivity.onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
                 }
 
             }
@@ -337,8 +335,7 @@ public class CatalogPageModel {
                     bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, navigationPath);
                     if(title != null)
                         bundle.putString(ProductDetailsActivityFragment.PRODUCT_CATEGORY, title);
-                    ((BaseActivity) mActivity).onSwitchFragment(FragmentType.PRODUCT_DETAILS,
-                            bundle, FragmentController.ADD_TO_BACK_STACK);
+                    mActivity.onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
                 }
             }
         });
@@ -692,7 +689,7 @@ public class CatalogPageModel {
     }
 
     private void onErrorEvent(Bundle bundle) {
-        if(((BaseActivity) mActivity).handleErrorEvent(bundle)){
+        if(mActivity.handleErrorEvent(bundle)){
             return;
         }
         Log.i(TAG, "code1 product list on error event");
@@ -700,14 +697,13 @@ public class CatalogPageModel {
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         if (errorCode != null && pageNumber == 1) {
             showProductsNotfound();
-            ((BaseActivity) mActivity).showContentContainer(false);
+            mActivity.showContentContainer(false);
         } else {
             Log.d(TAG, "onErrorEvent: loading more products failed");
             hideProductsLoading();
 
             if (totalProducts != -1 && totalProducts > ((pageNumber - 1) * MAX_PAGE_ITEMS)) {
-                Toast.makeText(mActivity, R.string.products_could_notloaded, Toast.LENGTH_SHORT)
-                        .show();
+                Toast.makeText(mActivity, R.string.products_could_notloaded, Toast.LENGTH_SHORT).show();
             }
         }
         mBeginRequestMillis = System.currentTimeMillis();
@@ -715,13 +711,13 @@ public class CatalogPageModel {
     }
    public void setTotalItemLable(){
     
-        TextView totalItems = (TextView) ((BaseActivity) mActivity).findViewById(R.id.totalProducts);
-        totalItems.setText(" ("+String.valueOf(getTotalProducts())+" "+((BaseActivity) mActivity).getString(R.string.shoppingcart_items)+")");
+        TextView totalItems = (TextView) mActivity.findViewById(R.id.totalProducts);
+        totalItems.setText(" ("+String.valueOf(getTotalProducts())+" "+mActivity.getString(R.string.shoppingcart_items)+")");
         totalItems.setVisibility(View.VISIBLE);
         //totalItemsLable = " ("+String.valueOf(getTotalProducts())+" "+((BaseActivity) mActivity).getString(R.string.shoppingcart_items)+")";
     }
     private void onSuccessEvent(Bundle bundle) {
-        ((BaseActivity) mActivity).handleSuccessEvent(bundle);
+        mActivity.handleSuccessEvent(bundle);
         Log.d(TAG, "ON SUCCESS EVENT");
 
         // Get Products Event
@@ -733,7 +729,7 @@ public class CatalogPageModel {
             totalProducts = productsPage.getTotalProducts();
             //set total items lable
             
-            ((BaseActivity) mActivity).setTitleAndSubTitle(title," ("+String.valueOf(getTotalProducts())+" "+((BaseActivity) mActivity).getString(R.string.shoppingcart_items)+")");
+            mActivity.setTitleAndSubTitle(title," ("+String.valueOf(getTotalProducts())+" "+mActivity.getString(R.string.shoppingcart_items)+")");
             //setTotalItemLable();
         }
 
@@ -747,7 +743,7 @@ public class CatalogPageModel {
         AnalyticsGoogle.get().trackLoadTiming(R.string.gproductlist, mBeginRequestMillis);
 
         if (searchQuery != null && !TextUtils.isEmpty(searchQuery)) {
-            ((BaseActivity) mActivity).setTitleAndSubTitle(searchQuery," ("+productsPage.getTotalProducts()+" "+((BaseActivity) mActivity).getString(R.string.shoppingcart_items)+")");
+            mActivity.setTitleAndSubTitle(searchQuery," ("+productsPage.getTotalProducts()+" "+mActivity.getString(R.string.shoppingcart_items)+")");
             
             if(pageNumber == 1){
                 TrackerDelegator.trackSearchViewSortMade(mActivity.getApplicationContext(), searchQuery,

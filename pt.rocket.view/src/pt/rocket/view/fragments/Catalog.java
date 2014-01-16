@@ -86,8 +86,6 @@ public class Catalog extends BaseFragment {
         mSortOptions = new ArrayList<String>(Arrays.asList(getResources()
                 .getStringArray(R.array.products_picker)));
         mCatalogPageModel = new CatalogPageModel[mSortOptions.size()];
-        
-        initPageModel();
     }
 
     @Override
@@ -96,6 +94,8 @@ public class Catalog extends BaseFragment {
         View view = inflater.inflate(R.layout.products_frame, container, false);
         mViewPager = (JumiaCatalogViewPager) view.findViewById(R.id.viewpager_products_list);
         pagerTabStrip = (PagerTabStrip) view.findViewById(R.id.products_list_titles);
+        // Initialize the catalog model with fresh data
+        initPageModel();
         return view;
     }
 
@@ -234,7 +234,7 @@ public class Catalog extends BaseFragment {
 
     private void initPageModel() {
         for (int i = 0; i < mCatalogPageModel.length; i++) {
-            mCatalogPageModel[i] = new CatalogPageModel(i, getActivity());
+            mCatalogPageModel[i] = new CatalogPageModel(i, getBaseActivity());
             mCatalogPageModel[i].setTitle(mSortOptions.get(i));
             
         }
