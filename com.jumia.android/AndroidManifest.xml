@@ -60,8 +60,8 @@
             android:name="pt.rocket.view.MainFragmentActivity"
             android:screenOrientation="unspecified" />
 
-		<service
-            android:name="pt.rocket.framework.rest.RestService"
+        <service
+            android:name="pt.rocket.framework.service.RemoteService"
             android:exported="false" />
 
         <!-- hockey -->
