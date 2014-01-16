@@ -287,8 +287,7 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
     private void updateNavigationItems() {
         try {
             // For each child validate the selected item
-            ViewGroup vGroup = ((ViewGroup) getView().findViewById(
-                    R.id.slide_menu_scrollable_container));
+            ViewGroup vGroup = ((ViewGroup) getView().findViewById(R.id.slide_menu_scrollable_container));
             int count = vGroup.getChildCount();
             for (int i = 0; i < count; i++)
                 updateItem(vGroup.getChildAt(i));
@@ -614,7 +613,9 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
 
     private void updateCart() {
 
-        if (JumiaApplication.INSTANCE.getCart() == null || getView() == null)
+        Log.d(TAG, "UPDATE CART");
+        
+        if (JumiaApplication.INSTANCE.getCart() == null && getView() == null)
             return;
 
         // Update ActionBar
@@ -646,10 +647,10 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
                     navIm.setVisibility(View.VISIBLE);
                     navVat.setVisibility(View.VISIBLE);
                     navCartEmptyText.setVisibility(View.INVISIBLE);
-                    Log.d(getTag(), "updateCartInfo: setting for cart not empty");
+                    Log.d(TAG, "updateCartInfo: setting for cart not empty");
                 } else {
                     vCartCount.setText(quantity);
-                    Log.d(getTag(), "updateCartInfo: setting for cart empty");
+                    Log.d(TAG, "updateCartInfo: setting for cart empty");
                     navIm.setVisibility(View.INVISIBLE);
                     navVat.setVisibility(View.INVISIBLE);
                     navCartEmptyText.setVisibility(View.VISIBLE);

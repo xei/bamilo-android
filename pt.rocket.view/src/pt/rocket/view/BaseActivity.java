@@ -531,8 +531,8 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
      * Update the sliding menu
      */
     public void updateSlidingMenu() {
-        SlideMenuFragment slideMenuFragment = (SlideMenuFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.fragment_slide_menu);
+        Log.d(TAG, "UPDATE SLIDE MENU");
+        SlideMenuFragment slideMenuFragment = (SlideMenuFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_slide_menu);
         if (slideMenuFragment != null)
             slideMenuFragment.onUpdate();
     }
@@ -873,8 +873,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
 
     private void updateCartInfoInNavigation() {
         Log.d(getTag(), "updateCartInfoInNavigation");
-        SlideMenuFragment slideMenu = (SlideMenuFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.fragment_slide_menu);
+        SlideMenuFragment slideMenu = (SlideMenuFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_slide_menu);
         if (slideMenu == null) {
             Log.w(getTag(),
                     "updateCartInfoInNavigation: navigation container empty - doing nothing");
@@ -1311,17 +1310,15 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
             break;
         case LOGOUT_EVENT:
             Log.i(TAG, "LOGOUT EVENT");
-            onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE,
-                    FragmentController.ADD_TO_BACK_STACK);
+            onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            JumiaApplication.INSTANCE.setCart(null);
             updateSlidingMenu();
-
+            dismissProgress();
             int trackRes = R.string.glogoutsuccess;
-
             AnalyticsGoogle.get().trackAccount(trackRes, null);
             break;
         case LOGIN_EVENT:
-            triggerContentEventWithNoLoading(new GetShoppingCartItemsHelper(), null,
-                    mIResponseCallback);
+            triggerContentEventWithNoLoading(new GetShoppingCartItemsHelper(), null, mIResponseCallback);
             break;
         }
     }

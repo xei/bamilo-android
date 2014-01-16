@@ -41,13 +41,18 @@ public class LogOut {
      *            The activity where the logout is called from
      */
     public static void performLogOut(final WeakReference<Activity> activityRef) {
-        final DialogProgressFragment dialog = DialogProgressFragment.newInstance();
-        dialog.show(((FragmentActivity) activityRef.get()).getSupportFragmentManager(), null);
-
+//        final DialogProgressFragment dialog = DialogProgressFragment.newInstance();
+//        dialog.show(((FragmentActivity) activityRef.get()).getSupportFragmentManager(), null);
+        
+        ((BaseActivity) activityRef.get()).showProgress();
+        
         JumiaApplication.INSTANCE.sendRequest(new GetLogoutHelper(), null, new IResponseCallback() {
 
             @Override
             public void onRequestError(Bundle bundle) {
+                // 
+                ((BaseActivity) activityRef.get()).dismissProgress();
+                // 
                 if (((BaseActivity) activityRef.get()) != null) {
                     ((BaseActivity) activityRef.get()).handleSuccessEvent(bundle);
                 }
@@ -55,12 +60,16 @@ public class LogOut {
 
             @Override
             public void onRequestComplete(Bundle bundle) {
+                // 
+                ((BaseActivity) activityRef.get()).dismissProgress();
+                // 
                 TrackerDelegator.trackLogoutSuccessful(((BaseActivity) activityRef.get()));
                 if (((BaseActivity) activityRef.get()) != null) {
                     ((BaseActivity) activityRef.get()).updateSlidingMenuCompletly();
                     ((BaseActivity) activityRef.get()).handleSuccessEvent(bundle);
                 }
-                dialog.dismiss();
+                
+                //dialog.dismiss();
             }
         });
     }
