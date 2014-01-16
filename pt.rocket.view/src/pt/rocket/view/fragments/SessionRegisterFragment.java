@@ -331,13 +331,15 @@ public class SessionRegisterFragment extends BaseFragment {
                 }
 
                 if (checkPasswords() && serverForm.validate() && checkTermsIfRequired()) {
+                    getBaseActivity().hideKeyboard();
                     registerRequiredText.setVisibility(View.GONE);
                     termsRequiredText.setVisibility(View.GONE);
                     requestRegister();
                 } else if (!checkTermsIfRequired()) {
                     termsRequiredText.setVisibility(View.VISIBLE);
+                    getBaseActivity().hideKeyboard();
                 } else {
-                    ((BaseActivity) getActivity()).hideKeyboard();
+                    getBaseActivity().hideKeyboard();
                 }
             }
         });
