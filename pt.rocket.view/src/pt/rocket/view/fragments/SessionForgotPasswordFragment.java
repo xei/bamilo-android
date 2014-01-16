@@ -362,6 +362,7 @@ public class SessionForgotPasswordFragment extends BaseFragment {
         Bundle bundle = new Bundle();
         bundle.putParcelable(GetForgotPasswordHelper.CONTENT_VALUES, values);
         triggerContentEvent(new GetForgotPasswordHelper(), bundle, mCallBack);
+        getBaseActivity().hideKeyboard();
     }
     
     /**
