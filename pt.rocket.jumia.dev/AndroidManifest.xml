@@ -3,7 +3,7 @@
     package="pt.rocket.jumia.dev"
     android:installLocation="auto"
     android:versionCode="10121"
-    android:versionName="1.5" >
+    android:versionName="1.3" >
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
@@ -60,16 +60,12 @@
 
         <!-- Fragment Activities -->
         <activity
-            android:name="pt.rocket.view.ChangeCountryFragmentActivity"
-            android:noHistory="true"
-            android:screenOrientation="unspecified" />
-        <activity
             android:name="pt.rocket.view.MainFragmentActivity"
             android:screenOrientation="unspecified" />
         <activity android:name="net.hockeyapp.android.UpdateActivity" />
 
-        <service
-            android:name="pt.rocket.framework.service.RemoteService"
+		<service
+            android:name="pt.rocket.framework.rest.RestService"
             android:exported="false" />
 
         <!-- Ad X Tracker -->
