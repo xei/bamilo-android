@@ -110,9 +110,9 @@ public class GetProductsHelper extends BaseHelper {
             products.initialize(jsonObject);
             bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, products);
             
-            
         } catch (JSONException e) {
             e.printStackTrace();
+            return parseErrorBundle(bundle);
         }
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_PRODUCTS_EVENT);
         return bundle;
