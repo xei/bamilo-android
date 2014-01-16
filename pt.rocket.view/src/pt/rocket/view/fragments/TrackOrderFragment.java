@@ -256,6 +256,7 @@ public class TrackOrderFragment extends BaseFragment {
     }
     
     private void proccessError(){
+        mOrderTracker = null;
         String orderNumber = mEditText.getText().toString();
         ((TextView) getView().findViewById(R.id.title_status_text)).setText("# "+orderNumber);
         if(loadingTrackBarView != null){
