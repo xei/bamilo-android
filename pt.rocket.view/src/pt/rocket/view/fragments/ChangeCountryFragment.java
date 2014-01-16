@@ -246,6 +246,10 @@ public class ChangeCountryFragment extends BaseFragment {
     protected void setCountry(int position) {
         HomeFragment.requestResponse = null;
         JumiaApplication.INSTANCE.currentCategories = null;
+        JumiaApplication.INSTANCE.setCart(null);
+        getBaseActivity().updateCartInfo();
+        JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
+        
         System.gc();
         SharedPreferences sharedPrefs = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPrefs.edit();
