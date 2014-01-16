@@ -18,6 +18,8 @@ import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.GetChangePasswordHelper;
+import pt.rocket.helpers.GetForgotPasswordFormHelper;
+import pt.rocket.helpers.GetForgotPasswordHelper;
 import pt.rocket.helpers.GetInitFormHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.pojo.DynamicForm;
@@ -235,6 +237,7 @@ public class SessionForgotPasswordFragment extends BaseFragment {
      * 
      */
     private void displayForm(Form form) {
+        Log.d(TAG, "DISPLAY FORM");
         dynamicForm = FormFactory.getSingleton().CreateForm(FormConstants.FORGET_PASSWORD_FORM, getActivity(), form);
         DynamicFormItem item = dynamicForm.getItemByKey("email");
         if (item == null)
@@ -260,10 +263,14 @@ public class SessionForgotPasswordFragment extends BaseFragment {
     }
     
     protected boolean onSuccessEvent(Bundle bundle) {
+        Log.d(TAG, "ON SUCCESS EVENT");
+        getBaseActivity().showContentContainer(false);
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         switch (eventType) {
+        case INIT_FORMS:
         case GET_FORGET_PASSWORD_FORM_EVENT:
+            Log.d(TAG, "FORGET_PASSWORD_FORM");
             Form form = (Form) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             if (null != form) {
                 this.formResponse = form;
@@ -295,9 +302,6 @@ public class SessionForgotPasswordFragment extends BaseFragment {
     }
 
     protected boolean onErrorEvent(Bundle bundle) {
-        if(isVisible()){
-            return true;
-        }
         
         if(getBaseActivity().handleErrorEvent(bundle)){
             return true;
@@ -305,12 +309,16 @@ public class SessionForgotPasswordFragment extends BaseFragment {
         
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        
+        Log.d(TAG, "ON ERROR EVENT: " + eventType.toString());
+        
         if (eventType == EventType.FORGET_PASSWORD_EVENT) {
-            HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle
-                    .getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+            Log.d(TAG, "FORGET_PASSWORD_EVENT");
+            
+            HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
             List<String> errorMessages = (List<String>) errors.get(RestConstants.JSON_VALIDATE_TAG);
 
-            if (errors != null && errorMessages.size() > 0) {
+            if (errors != null && errorMessages != null && errorMessages.size() > 0) {
                 ((BaseActivity) getActivity()).showContentContainer(false);
                 dialog = DialogGenericFragment.newInstance(true, true, false,
                         getString(R.string.error_forgotpassword_title),
@@ -342,7 +350,7 @@ public class SessionForgotPasswordFragment extends BaseFragment {
     private void triggerForgotForm(){
         Bundle bundle = new Bundle();
         if(JumiaApplication.INSTANCE.getFormDataRegistry() != null && JumiaApplication.INSTANCE.getFormDataRegistry().size() > 0){
-            triggerContentEvent(new GetInitFormHelper(), bundle, mCallBack);    
+            triggerContentEvent(new GetForgotPasswordFormHelper(), bundle, mCallBack);
         } else {
             bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, ErrorCode.UNKNOWN_ERROR);
             mCallBack.onRequestError(bundle);
@@ -352,8 +360,8 @@ public class SessionForgotPasswordFragment extends BaseFragment {
     
     private void triggerForgot(ContentValues values){
         Bundle bundle = new Bundle();
-        bundle.putParcelable(GetChangePasswordHelper.CONTENT_VALUES, values);
-        triggerContentEvent(new GetChangePasswordHelper(), bundle, mCallBack);
+        bundle.putParcelable(GetForgotPasswordHelper.CONTENT_VALUES, values);
+        triggerContentEvent(new GetForgotPasswordHelper(), bundle, mCallBack);
     }
     
     /**
@@ -364,12 +372,12 @@ public class SessionForgotPasswordFragment extends BaseFragment {
         
         @Override
         public void onRequestError(Bundle bundle) {
-            // TODO
+            onErrorEvent(bundle);
         }
         
         @Override
         public void onRequestComplete(Bundle bundle) {
-            // TODO
+            onSuccessEvent(bundle);
         }
     };
     

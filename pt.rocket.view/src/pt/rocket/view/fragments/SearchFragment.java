@@ -406,9 +406,13 @@ public class SearchFragment extends BaseFragment implements OnItemClickListener 
     private void setSearchSuggestions(final List<SearchSuggestion> arrayList) {
         Log.d( TAG, "setSearchSuggestions" );
         //SearchSuggestionsAdapter searchSuggestionsAdapter = new SearchSuggestionsAdapter(getActivity(), arrayList);
-        searchSuggestionsAdapter = new SearchSuggestionsAdapter(getActivity(), arrayList);
-        listView.setAdapter(searchSuggestionsAdapter);
-        suggestionsLayout.setVisibility( View.GONE );
+        try {
+            searchSuggestionsAdapter = new SearchSuggestionsAdapter(getActivity(), arrayList);
+            listView.setAdapter(searchSuggestionsAdapter);
+            suggestionsLayout.setVisibility( View.GONE );
+        } catch (NullPointerException e) {
+            Log.w(TAG, "NPE ON set search suggestion: " + e.getMessage());
+        }
     }
     
     IResponseCallback mCallBack = new IResponseCallback() {

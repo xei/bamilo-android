@@ -518,12 +518,15 @@ public abstract class BaseFragment extends Fragment implements
     public void handleErrorEvent(Bundle bundle) {
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-        HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle
-                .getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
-        List<String> errors = (List<String>) errorMessages.get(RestConstants.JSON_VALIDATE_TAG);
-        Log.i(TAG, "ON HANDLE ERROR EVENT: " + eventType);
-        if(errors != null)
-            Log.i(TAG, "ON HANDLE ERROR EVENT error response was : error code : " + errorCode +" error message : " + errors.toString());
+        try {
+            HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+            List<String> errors = (List<String>) errorMessages.get(RestConstants.JSON_VALIDATE_TAG);
+            Log.i(TAG, "ON HANDLE ERROR EVENT: " + eventType);
+            if(errors != null)
+                Log.i(TAG, "ON HANDLE ERROR EVENT error response was : error code : " + errorCode +" error message : " + errors.toString());
+        } catch (NullPointerException e) {
+            Log.w(TAG, "ON HANDLE ERROR: The Message is null: " + e.getMessage());
+        }
 //        if (!(event.request.eventType.equals(EventType.GET_CUSTOMER) && ((BaseActivity) getActivity())
 //                .getLocalClassName().equals(writeReviewFragment))) {
 //            if (event.errorCode.isNetworkError()) {

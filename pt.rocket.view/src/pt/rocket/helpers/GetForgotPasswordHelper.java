@@ -9,6 +9,7 @@ import pt.rocket.framework.enums.RequestType;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
+import android.content.ContentValues;
 import android.os.Bundle;
 import de.akquinet.android.androlog.Log;
 
@@ -22,11 +23,16 @@ public class GetForgotPasswordHelper extends BaseHelper {
     
     private static String TAG = GetForgotPasswordHelper.class.getSimpleName();
     
+    public static final String CONTENT_VALUES = "contentValues";
+    private ContentValues savedValues;
+    
     @Override
     public Bundle generateRequestBundle(Bundle args) {
+        savedValues = args.getParcelable(CONTENT_VALUES);
         Bundle bundle = new Bundle();
         bundle.putString(Constants.BUNDLE_URL_KEY, EventType.FORGET_PASSWORD_EVENT.action);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.POST);
+        bundle.putParcelable(Constants.BUNDLE_FORM_DATA_KEY, savedValues);
         bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.FORGET_PASSWORD_EVENT);
         return bundle;
