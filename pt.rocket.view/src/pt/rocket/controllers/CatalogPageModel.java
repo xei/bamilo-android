@@ -710,12 +710,14 @@ public class CatalogPageModel {
         isLoadingMore = false;
     }
    public void setTotalItemLable(){
-    
         TextView totalItems = (TextView) mActivity.findViewById(R.id.totalProducts);
-        totalItems.setText(" ("+String.valueOf(getTotalProducts())+" "+mActivity.getString(R.string.shoppingcart_items)+")");
-        totalItems.setVisibility(View.VISIBLE);
-        //totalItemsLable = " ("+String.valueOf(getTotalProducts())+" "+((BaseActivity) mActivity).getString(R.string.shoppingcart_items)+")";
+        if(getTotalProducts() > 0 ) {
+            totalItems.setText(" ("+String.valueOf(getTotalProducts())+" "+mActivity.getString(R.string.shoppingcart_items)+")");
+            totalItems.setVisibility(View.VISIBLE);
+            //totalItemsLable = " ("+String.valueOf(getTotalProducts())+" "+((BaseActivity) mActivity).getString(R.string.shoppingcart_items)+")";
+        }
     }
+   
     private void onSuccessEvent(Bundle bundle) {
         mActivity.handleSuccessEvent(bundle);
         Log.d(TAG, "ON SUCCESS EVENT");
@@ -729,7 +731,10 @@ public class CatalogPageModel {
             totalProducts = productsPage.getTotalProducts();
             //set total items lable
             
-            mActivity.setTitleAndSubTitle(title," ("+String.valueOf(getTotalProducts())+" "+mActivity.getString(R.string.shoppingcart_items)+")");
+            if(getTotalProducts() > 0)
+                mActivity.setTitleAndSubTitle(title," ("+String.valueOf(getTotalProducts())+" "+mActivity.getString(R.string.shoppingcart_items)+")");
+            else
+                mActivity.setTitle(title);
             //setTotalItemLable();
         }
 
@@ -743,7 +748,10 @@ public class CatalogPageModel {
         AnalyticsGoogle.get().trackLoadTiming(R.string.gproductlist, mBeginRequestMillis);
 
         if (searchQuery != null && !TextUtils.isEmpty(searchQuery)) {
-            mActivity.setTitleAndSubTitle(searchQuery," ("+productsPage.getTotalProducts()+" "+mActivity.getString(R.string.shoppingcart_items)+")");
+            if(getTotalProducts() > 0)
+                mActivity.setTitleAndSubTitle(searchQuery," ("+productsPage.getTotalProducts()+" "+mActivity.getString(R.string.shoppingcart_items)+")");
+            else
+                mActivity.setTitle(searchQuery);
             
             if(pageNumber == 1){
                 TrackerDelegator.trackSearchViewSortMade(mActivity.getApplicationContext(), searchQuery,
