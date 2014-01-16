@@ -2,9 +2,9 @@ package pt.rocket.controllers;
 
 import java.util.ArrayList;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
-
+import com.androidquery.AQuery;
+import com.androidquery.callback.AjaxStatus;
+import com.androidquery.callback.BitmapAjaxCallback;
 import pt.rocket.framework.objects.Variation;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.view.R;
@@ -86,7 +86,7 @@ public class ProductImagesAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 
 		View view = convertView;
-		Holder h;
+		final Holder h;
 		if (view == null) {
 			LayoutInflater inflater = LayoutInflater.from(context);
 			view = inflater.inflate(R.layout.productdetails_images_item, parent, false);
@@ -98,24 +98,38 @@ public class ProductImagesAdapter extends BaseAdapter {
 		} else
 			h = (Holder) view.getTag();
 
+		AQuery mAQuery = new AQuery(view);
+		
 		String imageUrl = images.get(position);
 		Log.d(TAG, "getView: loading imageUrl = " + imageUrl);
 		h.itemProgress.setVisibility(View.VISIBLE);
 		h.itemImage.setImageResource(R.drawable.no_image_small);
 
 		final Holder fh = h;
-		ImageLoader.getInstance().displayImage(imageUrl, h.itemImage, new SimpleImageLoadingListener() {
+		
+        mAQuery.id(h.itemImage).image(imageUrl, true, true, 0, 0, new BitmapAjaxCallback() {
 
-		    /* (non-Javadoc)
-		     * @see com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener#onLoadingComplete(java.lang.String, android.view.View, android.graphics.Bitmap)
-		     */
-		    @Override
-		    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-		        Log.d(TAG, "getView: onLoadingComplete");
-                fh.itemProgress.setVisibility(View.GONE);
-		    }
-		    
-		});
+            @Override
+            public void callback(String url, ImageView iv, Bitmap bm,
+                    AjaxStatus status) {
+
+                iv.setImageBitmap(bm);
+                h.itemProgress.setVisibility(View.GONE);
+
+            }
+        });
+//		ImageLoader.getInstance().displayImage(imageUrl, h.itemImage, new SimpleImageLoadingListener() {
+//
+//		    /* (non-Javadoc)
+//		     * @see com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener#onLoadingComplete(java.lang.String, android.view.View, android.graphics.Bitmap)
+//		     */
+//		    @Override
+//		    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+//		        Log.d(TAG, "getView: onLoadingComplete");
+//                fh.itemProgress.setVisibility(View.GONE);
+//		    }
+//		    
+//		});
 
 		return view;
 	}

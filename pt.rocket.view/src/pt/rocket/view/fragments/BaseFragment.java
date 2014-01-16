@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-
-import com.nostra13.universalimageloader.core.ImageLoader;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.framework.ErrorCode;
@@ -191,7 +189,7 @@ public abstract class BaseFragment extends Fragment implements
             ((BaseActivity) getActivity()).updateBaseComponents(enabledMenuItems, action,
                     titleResId);
             // Force resume
-            ImageLoader.getInstance().resume();
+//            ImageLoader.getInstance().resume();
         }
     }
 
@@ -295,8 +293,6 @@ public abstract class BaseFragment extends Fragment implements
     public void onLowMemory() {
         super.onLowMemory();
         Log.i(TAG, "ON LOW MEMORY");
-        ImageLoader.getInstance().clearMemoryCache();
-        ImageLoader.getInstance().clearDiscCache();
 
         // TODO - Validate this is necessary
         if (getView() != null && isHidden())

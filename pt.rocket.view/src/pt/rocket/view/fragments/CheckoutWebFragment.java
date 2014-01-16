@@ -53,7 +53,6 @@ import android.widget.Toast;
 
 import ch.boye.httpclientandroidlib.cookie.Cookie;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
 import com.shouldit.proxy.lib.ProxyConfiguration;
 import com.shouldit.proxy.lib.ProxySettings;
 import com.shouldit.proxy.lib.ProxyUtils;
@@ -275,7 +274,6 @@ public class CheckoutWebFragment extends BaseFragment {
     public void onLowMemory() {
         super.onLowMemory();
         Log.e(getTag(), "LOW MEM");
-        ImageLoader.getInstance().clearMemoryCache();
         System.gc();
     }
     

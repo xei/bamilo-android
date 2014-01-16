@@ -4,7 +4,9 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 import org.holoeverywhere.widget.TextView;
+
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.view.R;
 import pt.rocket.view.fragments.ShoppingCartFragment;
@@ -20,11 +22,11 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 
 import com.actionbarsherlock.view.ActionMode;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
+import com.androidquery.AQuery;
+import com.androidquery.callback.AjaxStatus;
+import com.androidquery.callback.BitmapAjaxCallback;
 
 /**
  * This Class implements the Basket Adapter
@@ -146,22 +148,31 @@ public class ShoppingBasketFragListAdapter extends BaseAdapter {
 
         
         String url = prodItem.itemValues.image;
+        AQuery aq = new AQuery(this.activity.getBaseActivity());
+        aq.id(prodItem.productView).image(url, true, true, 0, 0, new BitmapAjaxCallback() {
 
-        ImageLoader.getInstance().displayImage(url, prodItem.productView, new SimpleImageLoadingListener() {
-
-            /*
-             * (non-Javadoc)
-             * 
-             * @see com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener#
-             * onLoadingComplete(java.lang.String, android.view.View, android.graphics.Bitmap)
-             */
-            @Override
-            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                prodItem.productView.setVisibility(View.VISIBLE);
-                prodItem.pBar.setVisibility(View.GONE);
-            }
-
-        });
+                    @Override
+                    public void callback(String url, ImageView iv, Bitmap bm, AjaxStatus status) {
+                        prodItem.productView.setImageBitmap(bm);
+                        prodItem.productView.setVisibility(View.VISIBLE);
+                        prodItem.pBar.setVisibility(View.GONE);
+                    }
+                });
+//        ImageLoader.getInstance().displayImage(url, prodItem.productView, new SimpleImageLoadingListener() {
+//
+//            /*
+//             * (non-Javadoc)
+//             * 
+//             * @see com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener#
+//             * onLoadingComplete(java.lang.String, android.view.View, android.graphics.Bitmap)
+//             */
+//            @Override
+//            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+//                prodItem.productView.setVisibility(View.VISIBLE);
+//                prodItem.pBar.setVisibility(View.GONE);
+//            }
+//
+//        });
 
         
 

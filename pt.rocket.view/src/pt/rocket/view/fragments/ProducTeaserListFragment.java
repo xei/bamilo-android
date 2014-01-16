@@ -3,31 +3,28 @@
  */
 package pt.rocket.view.fragments;
 
-import java.util.EnumSet;
+import org.holoeverywhere.widget.TextView;
+
 import pt.rocket.framework.objects.ITargeting;
 import pt.rocket.framework.objects.ProductTeaserGroup;
 import pt.rocket.framework.objects.ProductTeaserGroup.TeaserProduct;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.framework.utils.WindowHelper;
-import pt.rocket.utils.MyMenuItem;
-import pt.rocket.utils.NavigationAction;
 import pt.rocket.view.R;
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import org.holoeverywhere.widget.TextView;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
+
+import com.androidquery.AQuery;
+import com.androidquery.callback.AjaxStatus;
+import com.androidquery.callback.BitmapAjaxCallback;
+
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -212,23 +209,33 @@ public class ProducTeaserListFragment extends BaseFragment {
         imageTeaserView.getLayoutParams().width = mainContentWidth / productTeaserGroup.getTeasers().size();
 
         if (!TextUtils.isEmpty(imageUrl)) {
-            ImageLoader.getInstance().displayImage(imageUrl, imageView,
-                    new SimpleImageLoadingListener() {
+            AQuery aq = new AQuery(getBaseActivity());
+            aq.id(imageView).image(imageUrl, true, true, 0, 0, new BitmapAjaxCallback() {
 
-                        /*
-                         * (non-Javadoc)
-                         * 
-                         * @see
-                         * com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener
-                         * #onLoadingComplete(java.lang.String, android.view.View,
-                         * android.graphics.Bitmap)
-                         */
                         @Override
-                        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                            progressBar.setVisibility(View.GONE);
+                        public void callback(String url, ImageView iv, Bitmap bm, AjaxStatus status) {
+                            imageView.setImageBitmap(bm);
                             imageView.setVisibility(View.VISIBLE);
+                            progressBar.setVisibility(View.GONE);
                         }
                     });
+//            ImageLoader.getInstance().displayImage(imageUrl, imageView,
+//                    new SimpleImageLoadingListener() {
+//
+//                        /*
+//                         * (non-Javadoc)
+//                         * 
+//                         * @see
+//                         * com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener
+//                         * #onLoadingComplete(java.lang.String, android.view.View,
+//                         * android.graphics.Bitmap)
+//                         */
+//                        @Override
+//                        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+//                            progressBar.setVisibility(View.GONE);
+//                            imageView.setVisibility(View.VISIBLE);
+//                        }
+//                    });
         }
 
     }

@@ -6,7 +6,6 @@ import java.util.Map;
 
 import pt.rocket.app.ApplicationComponent;
 import pt.rocket.app.DarwinComponent;
-import pt.rocket.app.ImageLoaderComponent;
 import pt.rocket.app.UrbanAirshipComponent;
 import pt.rocket.forms.FormData;
 import pt.rocket.framework.ErrorCode;
@@ -22,6 +21,7 @@ import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CustomerUtils;
 import pt.rocket.framework.utils.EventType;
+import pt.rocket.framework.utils.ImageResolutionHelper;
 import pt.rocket.framework.utils.SingletonMap;
 import pt.rocket.framework.utils.Utils;
 import pt.rocket.helpers.BaseHelper;
@@ -79,7 +79,7 @@ public class JumiaApplication extends Application implements ExceptionCallback {
 
     public static final SingletonMap<ApplicationComponent> COMPONENTS =
             new SingletonMap<ApplicationComponent>(new UrbanAirshipComponent(),
-                    new ImageLoaderComponent(), new DarwinComponent());
+                     new DarwinComponent());
 
     public static ArrayList<NavigationListComponent> navigationListComponents;
     
@@ -124,6 +124,7 @@ public class JumiaApplication extends Application implements ExceptionCallback {
 //        trackerFile = new AndroidFileFunctions();
         UAirship.takeOff(this);
         doBindService();
+        
         Log.init(getApplicationContext());
         Log.d(TAG, "onCreate");
         INSTANCE = this;
@@ -134,7 +135,7 @@ public class JumiaApplication extends Application implements ExceptionCallback {
         SHOP_ID = ShopPreferences.getShopId(getApplicationContext());
         setItemSimpleDataRegistry(new HashMap<String, Map<String, String>>());
         setCart(null);
-
+        ImageResolutionHelper.init(this);
         setFormDataRegistry(new HashMap<String, FormData>());
         navigationListComponents = null;
     }

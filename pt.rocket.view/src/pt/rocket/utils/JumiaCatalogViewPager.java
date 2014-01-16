@@ -6,8 +6,6 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
-
 public class JumiaCatalogViewPager extends ViewPager {
 
     public JumiaCatalogViewPager(Context context) {
@@ -25,7 +23,6 @@ public class JumiaCatalogViewPager extends ViewPager {
     
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        ImageLoader.getInstance().pause();
         return super.onTouchEvent(event);
     }
 }

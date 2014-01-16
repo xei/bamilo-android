@@ -11,8 +11,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.holoeverywhere.widget.TextView;
-
-import pt.rocket.app.ImageLoaderComponent;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.ProductImagesAdapter;
 import pt.rocket.controllers.fragments.FragmentController;
@@ -65,8 +63,9 @@ import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
+import com.androidquery.AQuery;
+import com.androidquery.callback.AjaxStatus;
+import com.androidquery.callback.BitmapAjaxCallback;
 
 import de.akquinet.android.androlog.Log;
 
@@ -598,26 +597,37 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         final ProgressBar loadingImage = mProductImageLoading;
         loadingImage.setVisibility(View.VISIBLE);
         String imageURL = mCompleteProduct.getImageList().get(indexInImageList);
-        ImageLoader.getInstance().displayImage(imageURL, image,
-                JumiaApplication.COMPONENTS.get(ImageLoaderComponent.class).largeLoaderOptions,
-                new SimpleImageLoadingListener() {
+        AQuery aq = new AQuery(mContext);
+        aq.id(image).image(imageURL, true, true, 0, 0, new BitmapAjaxCallback() {
 
-                    /*
-                     * (non-Javadoc)
-                     * 
-                     * @see
-                     * com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener#
-                     * onLoadingComplete(java.lang.String, android.view.View,
-                     * android.graphics.Bitmap)
-                     */
                     @Override
-                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                    public void callback(String url, ImageView iv, Bitmap bm, AjaxStatus status) {
+                        image.setImageBitmap(bm);
                         image.setVisibility(View.VISIBLE);
                         loadingImage.setVisibility(View.GONE);
-                        Log.d(TAG, "loadProductImage: onLoadingComplete");
                     }
-
                 });
+        
+//        ImageLoader.getInstance().displayImage(imageURL, image,
+//                JumiaApplication.COMPONENTS.get(ImageLoaderComponent.class).largeLoaderOptions,
+//                new SimpleImageLoadingListener() {
+//
+//                    /*
+//                     * (non-Javadoc)
+//                     * 
+//                     * @see
+//                     * com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener#
+//                     * onLoadingComplete(java.lang.String, android.view.View,
+//                     * android.graphics.Bitmap)
+//                     */
+//                    @Override
+//                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+//                        image.setVisibility(View.VISIBLE);
+//                        loadingImage.setVisibility(View.GONE);
+//                        Log.d(TAG, "loadProductImage: onLoadingComplete");
+//                    }
+//
+//                });
     }
 
     // XXX

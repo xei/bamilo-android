@@ -58,8 +58,6 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
-
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -428,7 +426,6 @@ public class ProductsFragment extends BaseFragment implements
     @Override
     public void onLowMemory() {
         super.onLowMemory();
-        ImageLoader.getInstance().clearMemoryCache();
         System.gc();
     }
 

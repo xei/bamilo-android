@@ -7,8 +7,6 @@ import java.util.EnumSet;
 
 import org.holoeverywhere.widget.Button;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
-
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.CatalogPageModel;
 import pt.rocket.framework.utils.AnalyticsGoogle;
@@ -150,9 +148,8 @@ public class Catalog extends BaseFragment {
                         updateCatalogPageModelIdexes(-1);
                     }
                     
-                    ImageLoader.getInstance().resume();
                 } else if(state == ViewPager.SCROLL_STATE_DRAGGING){
-                    ImageLoader.getInstance().pause();
+                   
                 }
             }
             

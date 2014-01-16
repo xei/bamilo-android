@@ -76,7 +76,6 @@ import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.ShareActionProvider;
 import com.actionbarsherlock.widget.ShareActionProvider.OnShareTargetSelectedListener;
 import com.bugsense.trace.BugSenseHandler;
-import com.nostra13.universalimageloader.core.ImageLoader;
 import com.slidingmenu.lib.SlidingMenu;
 import com.slidingmenu.lib.SlidingMenu.OnClosedListener;
 import com.slidingmenu.lib.SlidingMenu.OnOpenedListener;
@@ -1222,7 +1221,6 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     public void onLowMemory() {
         super.onLowMemory();
         Log.e(getTag(), "LOW MEM");
-        ImageLoader.getInstance().clearMemoryCache();
         System.gc();
     }
 
