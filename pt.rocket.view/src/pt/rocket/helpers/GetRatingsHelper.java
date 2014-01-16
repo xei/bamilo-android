@@ -15,8 +15,10 @@ import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
+import pt.rocket.utils.JumiaApplication;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.util.Log;
 
 /**
  * Get Ratings helper
@@ -83,7 +85,10 @@ public class GetRatingsHelper extends BaseHelper {
 
         bundle.putSerializable(Constants.BUNDLE_RESPONSE_KEY,  ratingOptions);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_RATING_OPTIONS_EVENT);
-
+//        long elapsed = System.currentTimeMillis() - JumiaApplication.INSTANCE.timeTrackerMap.get(EventType.GET_RATING_OPTIONS_EVENT);
+//        Log.i("REQUEST", "event type response : "+bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY)+" time spent : "+elapsed);
+//        String trackValue = bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY) + " : "+elapsed;
+//        JumiaApplication.INSTANCE.writeToTrackerFile(trackValue);
         return bundle;
     }
     

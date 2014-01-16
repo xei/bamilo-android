@@ -288,7 +288,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
             showContent();
 
         if (!contentEvents.contains(EventType.GET_SHOPPING_CART_ITEMS_EVENT)
-                && JumiaApplication.INSTANCE.SHOP_ID >= 0) {
+                && JumiaApplication.INSTANCE.SHOP_ID >= 0 && JumiaApplication.INSTANCE.getCart() == null) {
             triggerContentEvent(new GetShoppingCartItemsHelper(), null, mIResponseCallback);
             // EventManager.getSingleton().triggerRequestEvent(GetShoppingCartItemsEvent.GET_FROM_CACHE);
         }

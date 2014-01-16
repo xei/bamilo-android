@@ -24,6 +24,7 @@ import pt.rocket.framework.utils.Utils;
 import pt.rocket.utils.JumiaApplication;
 import android.content.ContentValues;
 import android.os.Bundle;
+import android.util.Log;
 
 /**
  * Get Shopping Cart Items helper
@@ -63,6 +64,10 @@ public class GetShoppingCartAddItemHelper extends BaseHelper {
         JumiaApplication.INSTANCE.setCart(cart);
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, cart);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT);
+//        long elapsed = System.currentTimeMillis() - JumiaApplication.INSTANCE.timeTrackerMap.get(EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT);
+//        Log.i("REQUEST", "event type response : "+bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY)+" time spent : "+elapsed);
+//        String trackValue = bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY) + " : "+elapsed;
+//        JumiaApplication.INSTANCE.writeToTrackerFile(trackValue);
         return bundle;
     }
 

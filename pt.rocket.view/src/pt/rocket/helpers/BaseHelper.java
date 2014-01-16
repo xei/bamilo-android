@@ -45,10 +45,6 @@ public abstract class BaseHelper {
         String response = bundle.getString(Constants.BUNDLE_RESPONSE_KEY);
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         
-        long elapsed = System.currentTimeMillis() - JumiaApplication.INSTANCE.timeTrackerMap.get(eventType);
-        Log.i("REQUEST", "event type response : "+bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY)+" time spent : "+elapsed);
-        String trackValue = bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY) + " : "+elapsed;
-        JumiaApplication.INSTANCE.writeToTrackerFile(trackValue);
         Log.d(TAG, "checkResponseForStatus : " + eventType);
         try {// TODO maintain generic information here, no need to pass on the
              // full object in order

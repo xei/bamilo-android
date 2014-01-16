@@ -58,6 +58,10 @@ public class GetInitFormHelper extends BaseHelper {
         }
         
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.INIT_FORMS);
+//        long elapsed = System.currentTimeMillis() - JumiaApplication.INSTANCE.timeTrackerMap.get(EventType.INIT_FORMS);
+//        Log.i("REQUEST", "event type response : "+bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY)+" time spent : "+elapsed);
+//        String trackValue = bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY) + " : "+elapsed;
+//        JumiaApplication.INSTANCE.writeToTrackerFile(trackValue);
         return bundle;
     }
     

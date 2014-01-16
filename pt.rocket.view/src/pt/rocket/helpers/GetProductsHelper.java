@@ -11,10 +11,12 @@ import pt.rocket.framework.objects.ProductsPage;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
+import pt.rocket.utils.JumiaApplication;
 import android.net.Uri;
 import android.net.Uri.Builder;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 
 /**
  * Get Products Page helper
@@ -115,6 +117,10 @@ public class GetProductsHelper extends BaseHelper {
             return parseErrorBundle(bundle);
         }
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_PRODUCTS_EVENT);
+//        long elapsed = System.currentTimeMillis() - JumiaApplication.INSTANCE.timeTrackerMap.get(EventType.GET_PRODUCTS_EVENT);
+//        Log.i("REQUEST", "event type response : "+bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY)+" time spent : "+elapsed);
+//        String trackValue = bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY) + " : "+elapsed;
+//        JumiaApplication.INSTANCE.writeToTrackerFile(trackValue);
         return bundle;
     }
     

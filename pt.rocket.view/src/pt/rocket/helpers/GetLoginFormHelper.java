@@ -73,6 +73,10 @@ public class GetLoginFormHelper extends BaseHelper {
             e.printStackTrace();
         }
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_LOGIN_FORM_EVENT);
+//        long elapsed = System.currentTimeMillis() - JumiaApplication.INSTANCE.timeTrackerMap.get(EventType.GET_LOGIN_FORM_EVENT);
+//        Log.i("REQUEST", "event type response : "+bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY)+" time spent : "+elapsed);
+//        String trackValue = bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY) + " : "+elapsed;
+//        JumiaApplication.INSTANCE.writeToTrackerFile(trackValue);
         return bundle;
     }
     

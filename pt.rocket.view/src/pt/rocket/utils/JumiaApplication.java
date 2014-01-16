@@ -83,7 +83,7 @@ public class JumiaApplication extends Application implements ExceptionCallback {
 
     public static ArrayList<NavigationListComponent> navigationListComponents;
     
-    public HashMap<EventType, Long> timeTrackerMap = new HashMap<EventType, Long>(); 
+
     
     /**
      * The md5 registry
@@ -109,14 +109,19 @@ public class JumiaApplication extends Application implements ExceptionCallback {
      * Current categories
      */
     public static ArrayList<Category> currentCategories;
-    public AndroidFileFunctions trackerFile;
+    
+    /**
+     * Tracking Request performance
+     */
+//    public AndroidFileFunctions trackerFile;
+//	public HashMap<EventType, Long> timeTrackerMap = new HashMap<EventType, Long>(); 
     
     @Override
     public void onCreate() {
         /**
          * Force UA clean the previous configurations.
          */
-        trackerFile = new AndroidFileFunctions();
+//        trackerFile = new AndroidFileFunctions();
         UAirship.takeOff(this);
         doBindService();
         Log.init(getApplicationContext());
@@ -270,7 +275,7 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     public void sendRequest(Bundle bundle) {
         long timeMillis = System.currentTimeMillis();
         Log.i("REQUEST", "performing event type request : "+bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY)+" url : "+bundle.getString(Constants.BUNDLE_URL_KEY));
-        timeTrackerMap.put((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY), timeMillis);
+//        timeTrackerMap.put((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY), timeMillis);
         try {
             ServiceSingleton.getInstance().getService().sendRequest(bundle);
         } catch (RemoteException e) {
@@ -500,8 +505,11 @@ public class JumiaApplication extends Application implements ExceptionCallback {
         }
     };
     
-    
-    public void writeToTrackerFile(String value){
-        trackerFile.writeToFile(value, this, Context.MODE_APPEND);
-    }
+    /**
+     * Save tracking values to the file
+     * Only for dev environment
+     */
+//    public void writeToTrackerFile(String value){
+//        trackerFile.writeToFile(value, this, Context.MODE_APPEND);
+//    }
 }

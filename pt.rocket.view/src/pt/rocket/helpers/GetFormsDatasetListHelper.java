@@ -14,6 +14,7 @@ import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
+import pt.rocket.utils.JumiaApplication;
 import android.os.Bundle;
 import de.akquinet.android.androlog.Log;
 

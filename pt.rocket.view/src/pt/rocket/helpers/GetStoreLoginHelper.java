@@ -9,6 +9,7 @@ import pt.rocket.framework.enums.RequestType;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
+import pt.rocket.utils.JumiaApplication;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -37,6 +38,10 @@ public class GetStoreLoginHelper extends BaseHelper {
         // TODO Auto-generated method stub
         Log.i(TAG,"parseResponseBundle");
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.STORE_LOGIN);
+//        long elapsed = System.currentTimeMillis() - JumiaApplication.INSTANCE.timeTrackerMap.get(EventType.STORE_LOGIN);
+//        Log.i("REQUEST", "event type response : "+bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY)+" time spent : "+elapsed);
+//        String trackValue = bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY) + " : "+elapsed;
+//        JumiaApplication.INSTANCE.writeToTrackerFile(trackValue);
         return bundle;
     }
     

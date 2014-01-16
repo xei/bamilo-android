@@ -14,6 +14,7 @@ import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
+import pt.rocket.utils.JumiaApplication;
 
 
 import android.os.Bundle;
@@ -58,6 +59,10 @@ public class NavigationListHelper extends BaseHelper {
             e.printStackTrace();
         }
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_NAVIGATION_LIST_COMPONENTS_EVENT);
+//        long elapsed = System.currentTimeMillis() - JumiaApplication.INSTANCE.timeTrackerMap.get( EventType.GET_NAVIGATION_LIST_COMPONENTS_EVENT);
+//        Log.i("REQUEST", "event type response : "+bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY)+" time spent : "+elapsed);
+//        String trackValue = bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY) + " : "+elapsed;
+//        JumiaApplication.INSTANCE.writeToTrackerFile(trackValue);
         return bundle;
     }
 

@@ -508,7 +508,7 @@ public class PopularityFragment extends BaseFragment {
         Bundle bundle = new Bundle();
         bundle.putString(GetProductReviewsHelper.PRODUCT_URL, url);
         bundle.putInt(GetProductReviewsHelper.PAGE_NUMBER, pageNumber);
-        triggerContentEvent(new GetProductReviewsHelper(), bundle, mCallBack);
+        triggerContentEventWithNoLoading(new GetProductReviewsHelper(), bundle, mCallBack);
     }
     
     /**
