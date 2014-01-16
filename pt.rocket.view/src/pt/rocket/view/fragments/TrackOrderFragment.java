@@ -268,6 +268,9 @@ public class TrackOrderFragment extends BaseFragment {
     }
     
     protected boolean onSuccessEvent(Bundle bundle) {
+        if(!isVisible()){
+            return true;
+        }
         Log.d(TAG, "ON SUCCESS EVENT");
         mOrderTracker = (OrderTracker) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
         proccessSuccess();
@@ -275,6 +278,9 @@ public class TrackOrderFragment extends BaseFragment {
     }
     
     protected boolean onErrorEvent(Bundle bundle) {
+        if(!isVisible()){
+            return true;
+        }
         Log.d(TAG, "ON ERROR EVENT");
         mOrderTrackerError = true;
         proccessError();
