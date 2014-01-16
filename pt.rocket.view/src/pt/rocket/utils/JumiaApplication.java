@@ -46,6 +46,10 @@ import de.akquinet.android.androlog.Log;
 public class JumiaApplication extends Application implements ExceptionCallback {
 
     private static final String TAG = JumiaApplication.class.getSimpleName();
+    
+    public static int SHOP_ID = -1;
+    
+    public static int SHOP_ID_FOR_ADX = -1;
 
     public static JumiaApplication INSTANCE;
     boolean mIsBound;
@@ -89,8 +93,6 @@ public class JumiaApplication extends Application implements ExceptionCallback {
      * The md5 registry
      */
     public HashMap<String, IResponseCallback> responseCallbacks;
-
-    public static int SHOP_ID = -1;
 
     private boolean isInitializing = false;
     public boolean isUAInitialized = false;

@@ -561,15 +561,15 @@ public class SplashScreenActivity extends FragmentActivity {
         int shopId = ShopPreferences.getShopId(getApplicationContext());
         // Validate shop id and launch the Adx event if is the same country on start app
         // First time
-        if(JumiaApplication.SHOP_ID == -1 && shopId > JumiaApplication.SHOP_ID) {
+        if(JumiaApplication.SHOP_ID_FOR_ADX == -1 && shopId > JumiaApplication.SHOP_ID_FOR_ADX) {
             sendAdxLaunchEvent = true;
         }
         // Current shop is the same
-        if(JumiaApplication.SHOP_ID == shopId) {
+        if(JumiaApplication.SHOP_ID_FOR_ADX == shopId) {
             sendAdxLaunchEvent = true;
         }
         // Save current shop id
-        JumiaApplication.SHOP_ID = shopId;
+        JumiaApplication.SHOP_ID_FOR_ADX = shopId;
         // Send launch
         if(sendAdxLaunchEvent ) {
             AdXTracker.launch(this);
