@@ -398,7 +398,7 @@ public class PopularityFragment extends BaseFragment {
     }
     
     protected void onErrorEvent(Bundle bundle){
-        if(isVisible()){
+        if(!isVisible()){
             return;
         }
          

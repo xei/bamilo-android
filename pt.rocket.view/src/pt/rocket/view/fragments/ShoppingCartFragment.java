@@ -369,7 +369,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
     }
 
     protected boolean onErrorEvent(Bundle bundle) {
-        if(isVisible()){
+        if(!isVisible()){
             return true;
         }
         

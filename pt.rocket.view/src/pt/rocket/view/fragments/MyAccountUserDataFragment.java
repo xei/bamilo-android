@@ -285,7 +285,7 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
 
     protected boolean onErrorEvent(Bundle bundle) {
         Log.i(TAG, "ON ERROR EVENT");
-        if(isVisible()){
+        if(!isVisible()){
             return true;
         }
         

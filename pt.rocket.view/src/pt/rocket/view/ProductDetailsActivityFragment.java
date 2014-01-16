@@ -1075,7 +1075,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
     }
 
     public void onErrorEvent(Bundle bundle) {
-        if(isVisible()){
+        if(!isVisible()){
             return;
         }
         

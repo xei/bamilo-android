@@ -561,7 +561,7 @@ public class HomeFragment extends BaseFragment {
     }
 
     public void onErrorEvent(Bundle bundle) {
-        if(isVisible()){
+        if(!isVisible()){
             return;
         }
         

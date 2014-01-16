@@ -339,7 +339,7 @@ public class CategoriesContainerFragment extends BaseFragment {
     
     public void onErrorEvent(Bundle bundle) {
         mBeginRequestMillis = System.currentTimeMillis();
-        if(isVisible()){
+        if(!isVisible()){
             return;
         }
         
