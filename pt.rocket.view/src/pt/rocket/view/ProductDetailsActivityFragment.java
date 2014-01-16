@@ -626,18 +626,47 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
     }
 
     private void updateStockInfo() {
+        
+        Log.d(TAG, "UPDATE STOCK INFO");
+        
         // TextView stockInfo = (TextView) findViewById(R.id.product_instock);
+        
+        /**
+         * No simple selected show the stock for the current product
+         */
+        ProductSimple currentSimple = mCompleteProduct.getSimples().get(0);
+        if (mSelectedSimple == NO_SIMPLE_SELECTED && currentSimple != null) {
+            try {
+                long stockQuantity = 0;
+                stockQuantity = Long.valueOf(currentSimple.getAttributeByKey(ProductSimple.QUANTITY_TAG));
+                Log.d(TAG, "STOCK:  NO SIMPLE SELECTED " + stockQuantity);
+                Bundle bundle = new Bundle();
+                bundle.putLong(ProductBasicInfoFragment.DEFINE_STOCK, stockQuantity);
+                FragmentCommunicatorForProduct.getInstance().notifyTarget(productBasicInfoFragment, bundle, 4);
+                return;
+            } catch (NumberFormatException e) {
+                Log.w(TAG, "STOCK INFO: quantity in simple is null: ", e);
+            }
+        }
+        
+        /**
+         * Simple selected but is null
+         */
         if (getSelectedSimple() == null) {
+            Log.d(TAG, "STOCK:  SIMPLE IS NULL " + mSelectedSimple);
             Bundle bundle = new Bundle();
             bundle.putLong(ProductBasicInfoFragment.DEFINE_STOCK, -1);
             FragmentCommunicatorForProduct.getInstance().notifyTarget(productBasicInfoFragment, bundle, 4);
-
             return;
         }
+        
+        /**
+         * Simple selected
+         */
+        Log.d(TAG, "STOCK: SIMPLE " + mSelectedSimple);
         long stockQuantity = 0;
         try {
-            stockQuantity = Long.valueOf(getSelectedSimple().getAttributeByKey(
-                    ProductSimple.QUANTITY_TAG));
+            stockQuantity = Long.valueOf(getSelectedSimple().getAttributeByKey(ProductSimple.QUANTITY_TAG));
         } catch (NumberFormatException e) {
             Log.w(TAG, "updateStockInfo: quantity in simple is not a number:", e);
         }
@@ -647,6 +676,9 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
         } else {
             mAddToCartButton.setBackgroundResource(R.drawable.btn_grey);
         }
+        
+        Log.d(TAG, "UPDATE STOCK INFO: " + stockQuantity);
+        
         Bundle bundle = new Bundle();
         bundle.putLong(ProductBasicInfoFragment.DEFINE_STOCK, stockQuantity);
         FragmentCommunicatorForProduct.getInstance().notifyTarget(productBasicInfoFragment, bundle, 4);

@@ -301,7 +301,7 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
         }
 
         if (bundle.containsKey(ProductBasicInfoFragment.DEFINE_STOCK)) {
-            stockQuantity = bundle.getInt(ProductBasicInfoFragment.DEFINE_STOCK);
+            stockQuantity = bundle.getLong(ProductBasicInfoFragment.DEFINE_STOCK);
             updateStockInfo();
         }
         if (bundle.containsKey(ProductBasicInfoFragment.DEFINE_UNIT_PRICE)) {
