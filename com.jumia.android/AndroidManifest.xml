@@ -57,14 +57,10 @@
 
         <!-- Fragment Activities -->
         <activity
-            android:name="pt.rocket.view.ChangeCountryFragmentActivity"
-            android:noHistory="true"
-            android:screenOrientation="unspecified" />
-        <activity
             android:name="pt.rocket.view.MainFragmentActivity"
             android:screenOrientation="unspecified" />
 
-        <service
+		<service
             android:name="pt.rocket.framework.rest.RestService"
             android:exported="false" />
 
