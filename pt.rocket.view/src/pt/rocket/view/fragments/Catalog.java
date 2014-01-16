@@ -231,7 +231,7 @@ public class Catalog extends BaseFragment {
 
     private void initPageModel() {
         for (int i = 0; i < mCatalogPageModel.length; i++) {
-            mCatalogPageModel[i] = new CatalogPageModel(i, getBaseActivity());
+            mCatalogPageModel[i] = new CatalogPageModel(i, getBaseActivity(), this);
             mCatalogPageModel[i].setTitle(mSortOptions.get(i));
             
         }

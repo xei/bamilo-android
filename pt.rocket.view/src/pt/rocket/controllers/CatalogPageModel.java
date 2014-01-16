@@ -33,6 +33,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
@@ -117,11 +118,12 @@ public class CatalogPageModel {
     private int totalProducts = -1;
     
     private CharSequence totalItemsLable = "";
-    
-    public CatalogPageModel(int index, BaseActivity activity) {
+    private Fragment mFragment;
+    public CatalogPageModel(int index, BaseActivity activity, Fragment mFragment) {
         this.index = index;
         this.mActivity = activity;
         setIndex(index);
+        this.mFragment = mFragment;
         md5Hash = uniqueMD5(TAG + index);
         switch (index) {
         case 0: // <item > Copy of Brand for infinite scroll</item>
@@ -721,7 +723,7 @@ public class CatalogPageModel {
     private void onSuccessEvent(Bundle bundle) {
         mActivity.handleSuccessEvent(bundle);
         Log.d(TAG, "ON SUCCESS EVENT");
-
+        
         // Get Products Event
         ProductsPage productsPage = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
 
@@ -729,12 +731,13 @@ public class CatalogPageModel {
             Log.d(TAG, "onSuccessEvent: products on page = " + productsPage.getProducts().size() +
                     " total products = " + productsPage.getTotalProducts());
             totalProducts = productsPage.getTotalProducts();
-            //set total items lable
-            
-            if(getTotalProducts() > 0)
-                mActivity.setTitleAndSubTitle(title," ("+String.valueOf(getTotalProducts())+" "+mActivity.getString(R.string.shoppingcart_items)+")");
-            else
-                mActivity.setTitle(title);
+            if(mFragment.isVisible()){
+                //set total items lable
+                if(getTotalProducts() > 0)
+                    mActivity.setTitleAndSubTitle(title," ("+String.valueOf(getTotalProducts())+" "+mActivity.getString(R.string.shoppingcart_items)+")");
+                else
+                    mActivity.setTitle(title);
+            }
             //setTotalItemLable();
         }
 
@@ -748,11 +751,12 @@ public class CatalogPageModel {
         AnalyticsGoogle.get().trackLoadTiming(R.string.gproductlist, mBeginRequestMillis);
 
         if (searchQuery != null && !TextUtils.isEmpty(searchQuery)) {
-            if(getTotalProducts() > 0)
-                mActivity.setTitleAndSubTitle(searchQuery," ("+productsPage.getTotalProducts()+" "+mActivity.getString(R.string.shoppingcart_items)+")");
-            else
-                mActivity.setTitle(searchQuery);
-            
+            if(mFragment.isVisible()){
+                if(getTotalProducts() > 0)
+                    mActivity.setTitleAndSubTitle(searchQuery," ("+productsPage.getTotalProducts()+" "+mActivity.getString(R.string.shoppingcart_items)+")");
+                else
+                    mActivity.setTitle(searchQuery);
+            }
             if(pageNumber == 1){
                 TrackerDelegator.trackSearchViewSortMade(mActivity.getApplicationContext(), searchQuery,
                         productsPage.getTotalProducts(), sort.name());
