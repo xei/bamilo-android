@@ -47,7 +47,7 @@ public class CategoriesContainerFragment extends BaseFragment {
 
     private static final String TAG = LogTagHelper.create(CategoriesContainerFragment.class);
 
-    private static final String USED_CACHED_CATEGORIES = null;
+    private static final String USED_CACHED_CATEGORIES = "used_cached";
     
     private CategoriesAdapter mainCatAdapter;
 
@@ -197,17 +197,19 @@ public class CategoriesContainerFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        if(MainFragmentActivity.currentCategories != null && getView() != null){
-            
+        if(JumiaApplication.INSTANCE.currentCategories != null && getView() != null){
+            Log.i(TAG, "ON currentCategories != null");
             if(((BaseActivity) getActivity()).isTabletInLandscape(getBaseActivity())){
+                Log.i(TAG, "ON createFragmentsForLandscape != null");
                 createFragmentsForLandscape();
             } else { 
+                Log.i(TAG, "ON createFragment != null");
                 createFragment();
             }
             
         } else if(getView() != null) {
             mBeginRequestMillis = System.currentTimeMillis();
-            
+            Log.i(TAG, "ON trigger(categoryUrl); "+categoryUrl);
             /**
              * TRIGGERS
              * @author sergiopereira
@@ -216,6 +218,7 @@ public class CategoriesContainerFragment extends BaseFragment {
             //triggerContentEvent(new GetCategoriesEvent(categoryUrl));
             
         } else {
+            Log.i(TAG, "ON tonBackPressed");
             ((BaseActivity) getActivity()).onBackPressed();
         }
             
@@ -301,6 +304,7 @@ public class CategoriesContainerFragment extends BaseFragment {
     }
 
     protected boolean onSuccessEvent(Bundle bundle) {
+        Log.i(TAG, "onSuccessEvent");
         if(getBaseActivity() != null){
             getBaseActivity().handleSuccessEvent(bundle);
         } else {
@@ -308,27 +312,27 @@ public class CategoriesContainerFragment extends BaseFragment {
         }
         
         // Validate if fragment is on the screen
-        if(isVisible()) {
-            Log.i(TAG, "code1 received categories");
-            getBaseActivity().showContentContainer(false);
-            if(!bundle.getBoolean(USED_CACHED_CATEGORIES, false)){
-                AnalyticsGoogle.get().trackLoadTiming(R.string.gcategories, mBeginRequestMillis);
+    
+        Log.i(TAG, "code1 received categories");
+        getBaseActivity().showContentContainer(false);
+        if(!bundle.getBoolean(USED_CACHED_CATEGORIES, false)){
+            AnalyticsGoogle.get().trackLoadTiming(R.string.gcategories, mBeginRequestMillis);
+        } else {
+            Log.i(TAG, "code1 received categories from database"+JumiaApplication.INSTANCE.currentCategories.size());
+        }
+        JumiaApplication.INSTANCE.currentCategories = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
+        
+        if(JumiaApplication.INSTANCE.currentCategories != null && getView() != null){
+            Log.d(TAG, "code1 received categories size = " + JumiaApplication.INSTANCE.currentCategories.size());
+            if(getBaseActivity().isTabletInLandscape(getBaseActivity())){
+                Log.d(TAG, "code1 going to create fragment createFragmentsForLandscape");
+                createFragmentsForLandscape();
             } else {
-                Log.i(TAG, "code1 received categories from database"+MainFragmentActivity.currentCategories.size());
-            }
-            MainFragmentActivity.currentCategories = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
-            
-            if(MainFragmentActivity.currentCategories != null && getView() != null){
-                Log.d(TAG, "code1 received categories size = " + MainFragmentActivity.currentCategories.size());
-                if(getBaseActivity().isTabletInLandscape(getBaseActivity())){
-                    Log.d(TAG, "code1 going to create fragment createFragmentsForLandscape");
-                    createFragmentsForLandscape();
-                } else {
-                    Log.d(TAG, "code1 going to create fragment");
-                    createFragment();
-                }
+                Log.d(TAG, "code1 going to create fragment");
+                createFragment();
             }
         }
+  
         return true;
     }
 
@@ -539,11 +543,11 @@ public class CategoriesContainerFragment extends BaseFragment {
     private void trigger(String categoryUrl){
         Bundle bundle = new Bundle();
         bundle.putString(GetCategoriesHelper.CATEGORY_URL, categoryUrl);
-        MainFragmentActivity.currentCategories = CategoriesTableHelper.getCategories();
-        if(MainFragmentActivity.currentCategories != null && MainFragmentActivity.currentCategories.size() > 0){
+        JumiaApplication.INSTANCE.currentCategories = CategoriesTableHelper.getCategories();
+        if(JumiaApplication.INSTANCE.currentCategories != null && JumiaApplication.INSTANCE.currentCategories.size() > 0){
             bundle.putBoolean(USED_CACHED_CATEGORIES, true);
             bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_CATEGORIES_EVENT);
-            bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, MainFragmentActivity.currentCategories); 
+            bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, JumiaApplication.INSTANCE.currentCategories); 
             onSuccessEvent(bundle);
         } else {
             triggerContentEvent(new GetCategoriesHelper(), bundle, mCallBack);    

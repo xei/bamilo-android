@@ -317,10 +317,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     @Override
     public void onPause() {
         super.onPause();
-        // OLD FRAMEWORK
-        // EventManager.getSingleton().removeResponseListener(this, allHandledEvents);
-        JumiaApplication.INSTANCE.doUnbindService();
-        isRegistered = false;
+        
     }
 
     @Override
@@ -333,6 +330,10 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     @Override
     protected void onDestroy() {
         super.onDestroy(); 
+        // OLD FRAMEWORK
+        // EventManager.getSingleton().removeResponseListener(this, allHandledEvents);
+        JumiaApplication.INSTANCE.doUnbindService();
+        isRegistered = false;
     }
 
     /**

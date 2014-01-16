@@ -62,7 +62,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
 
     private boolean wasReceivedNotification = false;
     
-    public static ArrayList<Category> currentCategories;
+    
 
     /**
      * Constructor
@@ -176,7 +176,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         super.onDestroy();
         Log.i(TAG, "ON DESTROY");
         // Delete categories
-        currentCategories = null;
+        JumiaApplication.INSTANCE.currentCategories = null;
         // 
         if(wasReceivedNotification) {
             wasReceivedNotification = false;

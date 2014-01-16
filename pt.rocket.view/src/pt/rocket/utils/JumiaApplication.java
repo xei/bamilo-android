@@ -11,6 +11,7 @@ import pt.rocket.app.UrbanAirshipComponent;
 import pt.rocket.forms.FormData;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.components.NavigationListComponent;
+import pt.rocket.framework.objects.Category;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.ShoppingCart;
 import pt.rocket.framework.objects.VersionInfo;
@@ -101,6 +102,11 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     private HashMap<EventType, Bundle> requestsRetryBundleList = new HashMap<EventType, Bundle>();
     private HashMap<EventType, BaseHelper> requestsRetryHelperList = new HashMap<EventType, BaseHelper>();
     private HashMap<EventType, IResponseCallback> requestsResponseList = new HashMap<EventType, IResponseCallback>();
+    
+    /**
+     * Current categories
+     */
+    public static ArrayList<Category> currentCategories;
     
     @Override
     public void onCreate() {

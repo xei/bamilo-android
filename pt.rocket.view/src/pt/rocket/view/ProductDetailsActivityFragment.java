@@ -27,8 +27,8 @@ import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.GetProductHelper;
 import pt.rocket.helpers.GetShoppingCartAddItemHelper;
 import pt.rocket.interfaces.IResponseCallback;
-import pt.rocket.utils.JumiaApplication;
 import pt.rocket.utils.FragmentCommunicatorForProduct;
+import pt.rocket.utils.JumiaApplication;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.ScrollViewWithHorizontal;
@@ -58,7 +58,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -625,14 +624,14 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
         // TextView stockInfo = (TextView) findViewById(R.id.product_instock);
         if (getSelectedSimple() == null) {
             Bundle bundle = new Bundle();
-            bundle.putInt(ProductBasicInfoFragment.DEFINE_STOCK, -1);
+            bundle.putLong(ProductBasicInfoFragment.DEFINE_STOCK, -1);
             FragmentCommunicatorForProduct.getInstance().notifyTarget(productBasicInfoFragment, bundle, 4);
 
             return;
         }
-        int stockQuantity = 0;
+        long stockQuantity = 0;
         try {
-            stockQuantity = Integer.valueOf(getSelectedSimple().getAttributeByKey(
+            stockQuantity = Long.valueOf(getSelectedSimple().getAttributeByKey(
                     ProductSimple.QUANTITY_TAG));
         } catch (NumberFormatException e) {
             Log.w(TAG, "updateStockInfo: quantity in simple is not a number:", e);
@@ -644,7 +643,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
             mAddToCartButton.setBackgroundResource(R.drawable.btn_grey);
         }
         Bundle bundle = new Bundle();
-        bundle.putInt(ProductBasicInfoFragment.DEFINE_STOCK, stockQuantity);
+        bundle.putLong(ProductBasicInfoFragment.DEFINE_STOCK, stockQuantity);
         FragmentCommunicatorForProduct.getInstance().notifyTarget(productBasicInfoFragment, bundle, 4);
 
     }
@@ -1033,6 +1032,8 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
     };
 
     public void onSuccessEvent(Bundle bundle) {
+        if(getBaseActivity() == null)
+            return;
         getBaseActivity().handleSuccessEvent(bundle);
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         Log.d(TAG, "onSuccessEvent: type = " + eventType);

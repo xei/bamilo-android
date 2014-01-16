@@ -54,7 +54,7 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
     private String unitPrice;
     private String specialPrice;
     private int discountPercentage;
-    private int stockQuantity;
+    private long stockQuantity;
 
     public static final String DEFINE_UNIT_PRICE = "unit_price";
     public static final String DEFINE_SPECIAL_PRICE = "special_price";

@@ -13,6 +13,7 @@ import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.objects.Category;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.FragmentCommunicator;
+import pt.rocket.utils.JumiaApplication;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.MainFragmentActivity;
@@ -238,8 +239,8 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
      */
     private void createList() {
         if(categories == null){
-            Log.i(TAG, "code1 creating list "+MainFragmentActivity.currentCategories.size());
-            categories = MainFragmentActivity.currentCategories;
+            Log.i(TAG, "code1 creating list "+JumiaApplication.INSTANCE.currentCategories.size());
+            categories = JumiaApplication.INSTANCE.currentCategories;
         }
         
         if(categories == null)
@@ -392,7 +393,7 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
         
         Log.i(TAG, "subCategoryIndex : "+subCategoryIndex + " categoryIndex : "+categoryIndex);
         
-        categories = MainFragmentActivity.currentCategories;
+        categories = JumiaApplication.INSTANCE.currentCategories;
         
         if(categories != null && getView() != null){
             createList();

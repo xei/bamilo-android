@@ -10,6 +10,7 @@ import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.controllers.CountryAdapter;
 import pt.rocket.framework.rest.RestClientSingleton;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.utils.JumiaApplication;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
@@ -246,7 +247,7 @@ public class ChangeCountryFragment extends BaseFragment {
 
     protected void setCountry(int position) {
         HomeFragment.requestResponse = null;
-        MainFragmentActivity.currentCategories = null;
+        JumiaApplication.INSTANCE.currentCategories = null;
         System.gc();
         SharedPreferences sharedPrefs = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPrefs.edit();
