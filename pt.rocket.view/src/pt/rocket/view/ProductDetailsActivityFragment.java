@@ -270,6 +270,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
     }
 
     private void init() {
+        Log.d(TAG, "INIT");
         mContext = getActivity();
         Bundle bundle = getArguments();
         mCompleteProductUrl = bundle.getString(ConstantsIntentExtra.CONTENT_URL);
@@ -280,8 +281,13 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
 
         mNavigationSource = bundle.getInt(ConstantsIntentExtra.NAVIGATION_SOURCE, -1);
         mNavigationPath = bundle.getString(ConstantsIntentExtra.NAVIGATION_PATH);
-        if (sharedPreferences.getBoolean(LOAD_FROM_SCRATCH, true)) {
+        
+        // Validate the current product
+        mCompleteProduct = JumiaApplication.INSTANCE.getCurrentProduct();
+        if (mCompleteProduct == null || sharedPreferences.getBoolean(LOAD_FROM_SCRATCH, true)) {
             loadProduct();
+        } else {
+            displayProduct(mCompleteProduct);
         }
 
     }
@@ -424,20 +430,19 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
     }
 
     private void setContentInformation() {
-        ((BaseActivity) getActivity()).setTitle(mCompleteProduct.getBrand() + " "
-                + mCompleteProduct.getName());
+        Log.d(TAG, "SET DATA");
+        ((BaseActivity) getActivity()).setTitle(mCompleteProduct.getBrand() + " " + mCompleteProduct.getName());
         updateVariants();
         updateStockInfo();
         preselectASimpleItem();
         displayPriceInfoOverallOrForSimple();
         displayRatingInfo();
         displayVariantsContainer();
-
     }
 
     private void loadProduct() {
+        Log.d(TAG, "LOAD PRODUCT");
         mBeginRequestMillis = System.currentTimeMillis();
-
         Bundle bundle = new Bundle();
         bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
         triggerContentEvent(new GetProductHelper(), bundle, responseCallback);
@@ -660,8 +665,10 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
 
     public void displayVariantsContainer() {
         if (mHideVariationSelection) {
+            Log.d(TAG, "HIDE VARIATIONS");
             mVarianceContainer.setVisibility(View.GONE);
         } else {
+            Log.d(TAG, "SHOW VARIATIONS");
             mVarianceContainer.setVisibility(View.VISIBLE);
         }
     }
@@ -790,6 +797,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
     }
 
     private void displayProduct(CompleteProduct product) {
+        Log.d(TAG, "SHOW PRODUCT");
         JumiaApplication.INSTANCE.setCurrentProduct(product);
         mCompleteProduct = product;
         mCompleteProductUrl = product.getUrl();
@@ -840,8 +848,8 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
 
             displayPriceInfoOverallOrForSimple();
         }
-        ((BaseActivity) getActivity()).setShareIntent(((BaseActivity) getActivity())
-                .createShareIntent());
+        ((BaseActivity) getActivity()).setShareIntent(((BaseActivity) getActivity()).createShareIntent());
+
         setContentInformation();
 
         AnalyticsGoogle.get().trackProduct(mNavigationSource, mNavigationPath,
