@@ -293,7 +293,7 @@ public class TeasersFactory {
         View brandTeaserView = mInflater.inflate(R.layout.brand_item_small, vg, false);
         
         // Tablet in landscape
-        if(BaseActivity.isTabletInLandscape(mContext) && brand.getImageTableUrl() != null) {
+        if(BaseActivity.isTabletInLandscape(mContext) && brand.getImageTableUrl() != null && brand.getImageTableUrl().length() > 0) {
             setImageToLoad(brand.getImageTableUrl(), brandTeaserView, size);
         } // Portrait
         else if (brand.getImageUrl() != null) {
