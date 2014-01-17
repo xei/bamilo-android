@@ -4,6 +4,7 @@ require 'calabash-android/cucumber'
 $country = ENV['country']
   
 def initvars
+  
   @username="testcalabash@mailinator.com"
   @password="password1"
   @firstname="tester"
@@ -48,163 +49,267 @@ def initvars
   @save="Save"
   @differentpassword="Passwords do not match"
   
+  #password recovery
+  @submit="submit_button"
+  @pass_rec_email=""
+  
+  
   
   #initializes the country variables
-  case $country
+  case $country.to_s
     when "ke"
-      @venture_name="Kenya"
-      @sign_in="Sign In"
-      @wrong_username="faketester@tester.tt"
-      @invalidsearch= "addddd" 
-      @search= "nikon" 
-      @myaccount="My Account"
-      @myinfo="User Data"
-      @categories="Categories"
-      @categoryfashion="Books"
-      
-      @checkoutNext="Next"
-      @checkout1="TestPayment"
-      @checkout3="Confirm Order"
-      
-      @emailerrormessage="Please fill in";
-      @passerrormessage="Please fill in the Password";
-      
-      @loginerror="Login failed"
-      @signout="Sign Out"
-      @mandatory="Please fill in the required(*) fields"
-      @sameemail="This email already exists."
-      @searchdefault="Please enter a term for suggestions!"
-      @nosuggest="No suggestions for your search term!"
-       
-      @addtocart="Add to Cart"
-      @home="Home"
-      @new_pass_short="The new password has to have at least 6 characters"
-      
-      
+    @venture_name="Kenya"
+    @sign_in="Sign In"
+    @wrong_username="faketester@tester.tt"
+    @invalidsearch= "addddd" 
+    @search_p= "nikon" 
+    @search="Search"
+    @myaccount="My Account"
+    @myinfo="User Data"
+    @categories="Categories"
+    @categoryfashion="Books"
+    @choose_country="Choose Country"
+    @order_status="Order Status"
+    
+    @checkoutNext="Next"
+    @checkout1="TestPayment"
+    @checkout3="Confirm Order"
+    
+    @emailerrormessage="Please fill in";
+    @passerrormessage="Please fill in the Password";
+    
+    @loginerror="Login failed"
+    @signout="Sign Out"
+    @mandatory="Please fill in the required(*) fields"
+    @sameemail="This email already exists."
+    @searchdefault="Please enter a term for suggestions!"
+    @nosuggest="No suggestions for your search term!"
+     
+    @addtocart="Add to Cart"
+    @home="Home"
+    @new_pass_short="The new password has to have at least 6 characters"
+   
+    #password recovery
+    @forgot_password="Forgot Password?"
+    @password_recovery="Password Recovery"
+    @pass_rec_empty_email="Please fill in the E-Mail"
+    @pass_rec_failed="Password recovery failed"
+    @pass_rec_sent="Email sent"
+    
+    #cart
+    @item_added="was added to shopping cart"
+    @no_items="You have no items in the cart"
+    @got_it="Got it"
+    @clear_cart_message="This clears the cart"
+    
+    #catalog
+    @currency= "KSh"
+    @loading_items="Loading more items"
+          
     when "ic"
-      @venture_name="Ivory Coast"
-      @sign_in="Accéder au compte"
-      @wrong_username="faketester@tester.tt"
-      @invalidsearch= "addddd" 
-      @search= "caresse Sava" 
-      @myaccount="Mon compte"
-      @myinfo="Les données de"
-      @categories="Catégories"
-      @categoryfashion="Informatique"
-       
-      @checkoutNext="Next"
-      @checkout1="TestPayment"
-      @checkout3="Confirm Order"
-        
-      @emailerrormessage="dans le Email";
-      @passerrormessage="dans le Mot de passe";
-       
-      @loginerror="L'authentification a échoué"
-      @signout="se déconnecter"
-      @mandatory="Veillez remplir les champs obligatoires"
-      @sameemail="Cet email existe déjà."
-      @searchdefault="Entrer votre recherche ici!"
-      @nosuggest="Aucune suggestion pour votre recherche!"
-      @differentpassword="Le mot de passe ne correspond pas"
-        
-      @addtocart="Ajouter au panier"
-       
-      @yes="Oui"
-      @termsandconditions="Termes et conditions"
-      @password_changed_message="Le mot de passe a été modifié avec succès"
-      @home="Accueil"
-      @new_pass_short="Le nouveau mot de passe doit comprendre au moins 6 caractères"
+    @venture_name="Ivory Coast"
+    @sign_in="Accéder au compte"
+    @wrong_username="faketester@tester.tt"
+    @invalidsearch= "addddd" 
+    @search_p= "caresse Sava" 
+    @search="Rechercher"
+    @myaccount="Mon compte"
+    @myinfo="Les données de"
+    @categories="Catégories"
+    @categoryfashion="Informatique"
+    @choose_country="Choisir le pays"
+    @order_status="Suivi de commande"
+     
+    @checkoutNext="Next"
+    @checkout1="TestPayment"
+    @checkout3="Confirm Order"
+      
+    @emailerrormessage="dans le Email";
+    @passerrormessage="dans le Mot de passe";
+     
+    @loginerror="L'authentification a échoué"
+    @signout="se déconnecter"
+    @mandatory="Veillez remplir les champs obligatoires"
+    @sameemail="Cet email existe déjà."
+    @searchdefault="Entrer votre recherche ici!"
+    @nosuggest="Aucune suggestion pour votre recherche!"
+    @differentpassword="Le mot de passe ne correspond pas"
+      
+    @addtocart="Ajouter au panier"
+     
+    @yes="Oui"
+    @termsandconditions="Termes et conditions"
+    @password_changed_message="Le mot de passe a été modifié avec succès"
+    @home="Accueil"
+    @new_pass_short="Le nouveau mot de passe doit comprendre au moins 6 caractères"
+    
+    #password recovery
+    @forgot_password="Mot de passe oublié ?"
+    @password_recovery="Récupération de mot de passe"
+    @pass_rec_empty_email="S'il vous plait écrire dans le Email"
+    @pass_rec_failed="Le renouvellement du mot de passe a échoué"
+    @pass_rec_sent="Email envoyé"
+    
+    #cart
+    @item_added="a été ajouté au panier"
+    @no_items="Vous n'avez pas d'articles dans le panier"
+    @got_it="J'ai Compris"
+    @clear_cart_message="Ceci efface le panier"
+    
+    #catalog
+    @currency= "FCFA"
+    @loading_items="Charger plus de produits"
       
     when "ma"
-      @venture_name="Morocco"
-      @sign_in="Accéder au compte"
-      @wrong_username="faketester@tester.tt"
-      @invalidsearch= "addddf" 
-      @search= "Pierre Pelot" 
-      @myaccount="Mon compte"
-      @myinfo="Les données de"
-      @categories="Catégories"
-      @categoryfashion="Informatique"
-      
-      @checkoutNext="Next"
-      @checkout1="TestPayment"
-      @checkout3="Confirm Order"
-      
-      @emailerrormessage="dans le Email";
-      @passerrormessage="dans le Mot de passe";
-      
-      @loginerror="L'authentification a échoué"
-      @signout="se déconnecter"
-      @mandatory="Veillez remplir les champs obligatoires"
-      @sameemail="Cet email existe déjà."
-      @searchdefault="Entrer votre recherche ici!"
-      @nosuggest="Aucune suggestion pour votre recherche!"
-      
-      @addtocart="Ajouter au panier"
-      
-      @yes="Oui"
-      @termsandconditions="Termes et conditions"
-      @password_changed_message="Le mot de passe a été modifié avec succès"
-      @differentpassword="Le mot de passe ne correspond pas"
-      @home="Accueil"
-      @new_pass_short="Le nouveau mot de passe doit comprendre au moins 6 caractères"
+    @venture_name="Morocco"
+    @sign_in="Accéder au compte"
+    @wrong_username="faketester@tester.tt"
+    @invalidsearch= "addddf" 
+    @search_p= "Pierre Pelot" 
+    @search="Rechercher"
+    @myaccount="Mon compte"
+    @myinfo="Les données de"
+    @categories="Catégories"
+    @categoryfashion="Informatique"
+    @choose_country="Choisir le pays"
+    @order_status="Suivre la commande"
+    
+    @checkoutNext="Next"
+    @checkout1="TestPayment"
+    @checkout3="Confirm Order"
+    
+    @emailerrormessage="dans le Email";
+    @passerrormessage="dans le Mot de passe";
+    
+    @loginerror="L'authentification a échoué"
+    @signout="se déconnecter"
+    @mandatory="Veillez remplir les champs obligatoires"
+    @sameemail="Cet email existe déjà."
+    @searchdefault="Entrer votre recherche ici!"
+    @nosuggest="Aucune suggestion pour votre recherche!"
+    
+    @addtocart="Ajouter au panier"
+    
+    @yes="Oui"
+    @termsandconditions="Termes et conditions"
+    @password_changed_message="Le mot de passe a été modifié avec succès"
+    @differentpassword="Le mot de passe ne correspond pas"
+    @home="Accueil"
+    @new_pass_short="Le nouveau mot de passe doit comprendre au moins 6 caractères"
+    
+    #password recovery
+    @forgot_password="Mot de passe oublié ?"
+    @password_recovery="Récupération de mot de passe"
+    @pass_rec_empty_email="S'il vous plait écrire dans le Email"
+    @pass_rec_failed="Le renouvellement du mot de passe a échoué"
+    @pass_rec_sent="Email envoyé"
+    
+    #cart
+    @item_added="a été ajouté au panier"
+    @no_items="Vous n'avez pas d'articles dans le panier"
+    @got_it="J'ai Compris"
+    @clear_cart_message="Ceci efface le panier"
+    
+    #catalog
+    @currency= "Dhs"
+    @loading_items="Charger plus de produits"
       
     when "ng"
-      @venture_name="Nigeria"
-      @sign_in="Sign In"
-      @wrong_username="faketester@tester.tt"
-      @invalidsearch= "adddddf" 
-      @search= "nikon" 
-      @myaccount="My Account"
-      @myinfo="User Data"
-      @categories="Categories"
-      @categoryfashion="Computing"
-      
-      @checkoutNext="Next"
-      @checkout1="TestPayment"
-      @checkout3="Confirm Order"
-      
-      @emailerrormessage="Please fill in the E-Mail";
-      @passerrormessage="Please fill in the Password";
-      
-      @loginerror="Login failed"
-      @signout="Sign Out"
-      @mandatory="Please fill in the required(*) fields"
-      @sameemail="This email already exists."
-      @searchdefault="Please enter a term for suggestions!"
-      @nosuggest="No suggestions for your search term!"
-      
-      @addtocart="Add to Cart"
-      @home="Home"
-      @new_pass_short="The new password has to have at least 6 characters"
+    @venture_name="Nigeria"
+    @sign_in="Sign In"
+    @wrong_username="faketester@tester.tt"
+    @invalidsearch= "adddddf" 
+    @search_p= "nikon" 
+    @search="Search"
+    @myaccount="My Account"
+    @myinfo="User Data"
+    @categories="Categories"
+    @categoryfashion="Computing"
+    @choose_country="Choose Country"
+    @order_status="Order Status"
+    
+    @checkoutNext="Next"
+    @checkout1="TestPayment"
+    @checkout3="Confirm Order"
+    
+    @emailerrormessage="Please fill in the E-Mail";
+    @passerrormessage="Please fill in the Password";
+    
+    @loginerror="Login failed"
+    @signout="Sign Out"
+    @mandatory="Please fill in the required(*) fields"
+    @sameemail="This email already exists."
+    @searchdefault="Please enter a term for suggestions!"
+    @nosuggest="No suggestions for your search term!"
+    
+    @addtocart="Add to Cart"
+    @home="Home"
+    @new_pass_short="The new password has to have at least 6 characters"
+        
+    #password recovery
+    @forgot_password="Forgot Password?"
+    @password_recovery="Password Recovery"
+    @pass_rec_empty_email="Please fill in the E-Mail"
+    @pass_rec_failed="Password recovery failed"
+    @pass_rec_sent="Email sent"
+    
+    #cart
+    @item_added="was added to shopping cart"
+    @no_items="You have no items in the cart"
+    @got_it="Got it"
+    @clear_cart_message="This clears the cart"
+    
+    #catalog
+    @currency= "₦"
+    @loading_items="Loading more items"
       
     when "eg"
-      @venture_name="Egypt"
-      @sign_in="Sign In"
-      @wrong_username="faketester@tester.tt"
-      @invalidsearch= "adddddf" 
-      @search= "nikon" 
-      @myaccount="My Account"
-      @myinfo="User Data"
-      @categories="Categories"
-      @categoryfashion="Computing"
-      
-      @checkoutNext="Next"
-      @checkout1="TestPayment"
-      @checkout3="Confirm Order"
-      
-      @emailerrormessage="Please fill in the E-Mail";
-      @passerrormessage="Please fill in the Password";
-      
-      @loginerror="Login failed"
-      @signout="Sign Out"
-      @mandatory="Please fill in the required(*) fields"
-      @sameemail="This email already exists."
-      @searchdefault="Please enter a term for suggestions!"
-      @nosuggest="No suggestions for your search term!"
-      
-      @addtocart="Add to Cart"
-      @home="Home"
-      @new_pass_short="The new password has to have at least 6 characters"
+    @venture_name="Egypt"
+    @sign_in="Sign In"
+    @wrong_username="faketester@tester.tt"
+    @invalidsearch= "adddddf" 
+    @search_p= "nikon" 
+    @search="Search" 
+    @myaccount="My Account"
+    @myinfo="User Data"
+    @categories="Categories"
+    @categoryfashion="Books"
+    @choose_country="Choose Country"
+    @order_status="Order Status"
+    
+    @checkoutNext="Next"
+    @checkout1="TestPayment"
+    @checkout3="Confirm Order"
+    
+    @emailerrormessage="Please fill in the E-Mail";
+    @passerrormessage="Please fill in the Password";
+    
+    @loginerror="Login failed"
+    @signout="Sign Out"
+    @mandatory="Please fill in the required(*) fields"
+    @sameemail="This email already exists."
+    @searchdefault="Please enter a term for suggestions!"
+    @nosuggest="No suggestions for your search term!"
+    
+    @addtocart="Add to Cart"
+    @home="Home"
+    @new_pass_short="The new password has to have at least 6 characters"
+    
+    #password recovery
+    @forgot_password="Forgot Password?"
+    @password_recovery="Password Recovery"
+    @pass_rec_empty_email="Please fill in the E-Mail"
+    @pass_rec_failed="Password recovery failed"
+    @pass_rec_sent="Email sent"
+    
+    #cart
+    @item_added="was added to shopping cart"
+    @no_items="You have no items in the cart"
+    @got_it="Got it"
+    @clear_cart_message="This clears the cart"
+    
+    #catalog
+    @currency= "EGP"
+    @loading_items="Loading more items"
   end
 end

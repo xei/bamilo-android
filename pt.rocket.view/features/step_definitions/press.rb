@@ -10,7 +10,7 @@ Then /^I go to home$/ do
 end
 
 Then /^I open the navigation menu$/ do 
-  performAction('click_on_view_by_id',@navigation.to_s)
+  performAction('click_on_view_by_id', @navigation.to_s)
 end
 
 Then /^I close the navigation menu$/ do 
@@ -27,6 +27,18 @@ end
 
 Then /^I press the register button$/ do
   performAction('click_on_view_by_id', @registerbutton_id.to_s)
+end
+
+Then /^I press Submit$/ do
+  performAction('click_on_view_by_id', @submit.to_s)
+end
+
+Then /^I go to cart$/ do 
+  performAction('press',@gotocart.to_s)
+end
+
+Then /^I press the cart icon$/ do
+  performAction('press', @gotocart.to_s)
 end
 
 Then /^I choose the Sign In option$/ do
@@ -71,8 +83,20 @@ Then /^I select the country$/ do
   puts @venture_name.to_s
 end
 
-Then /^I go to cart$/ do 
-  performAction('press',@gotocart.to_s)
+Then /^I click forgot password$/ do
+  performAction('click_on_text', @forgot_password.to_s)
+end
+
+Then /^I press Got it$/ do
+  performAction('click_on_text', @got_it.to_s)
+end
+
+Then /^I press Choose Country$/ do
+  performAction('click_on_text', @choose_country.to_s)
+end
+
+Then /^I press Yes$/ do
+  performAction('click_on_text',@yes.to_s)
 end
 
 Then /^I proceed to checkout$/ do 

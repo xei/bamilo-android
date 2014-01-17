@@ -5,7 +5,7 @@ Feature: Login feature
 	Given I call the variables
 	And I open the navigation menu
 	Then I choose the Sign In option
-	* I wait for 2 seconds
+	* I wait for 5 seconds
 	
 	@login_e
 	Scenario: Try to login with empty fields
@@ -41,6 +41,7 @@ Feature: Login feature
   	And I enter the password
   	And I press Login Button
     Then I open the navigation menu
+    * I wait for 5 seconds
 	And I should see sign out button
 	Then I close the navigation menu
 	

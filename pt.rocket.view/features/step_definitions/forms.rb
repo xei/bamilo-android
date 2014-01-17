@@ -92,3 +92,11 @@ Then /^I enter a wrong repeated password$/ do
   performAction('enter_text_into_named_field',@password.to_s+"x", @newrepeatedpassword.to_s)
 end
 
+Then /^I enter (a fake email|my email) on password recovery$/ do |email|
+  case email.to_s
+  when "a fake email"
+    performAction('enter_text_into_named_field', @wrong_username, @login_username.to_s)  
+  when "my email"
+    performAction('enter_text_into_named_field', @username, @login_username.to_s)
+  end
+end
