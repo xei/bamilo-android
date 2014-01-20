@@ -20,6 +20,9 @@
 
     <!-- Adx additional permissions -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    
+	<!-- Location Helper -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
     <permission
         android:name="com.jumia.android.permission.C2D_MESSAGE"

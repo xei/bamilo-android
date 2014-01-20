@@ -42,7 +42,7 @@ public class DarwinComponent extends ApplicationComponent {
         boolean isChangeShop = sharedPrefs.getBoolean(ChangeCountryFragmentActivity.KEY_COUNTRY_CHANGED, false);
         if (shopId == -1) {
             Log.i(TAG, "DarwinComponent 1");
-            return ErrorCode.REQUIRES_USER_INTERACTION;
+            return ErrorCode.AUTO_COUNTRY_SELECTION;
         }
         Log.i(TAG, "DarwinComponent shop id is : "+ shopId);
         if (Darwin.initialize(DarwinMode.DEBUG, app.getApplicationContext(), shopId, isChangeShop)) {

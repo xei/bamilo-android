@@ -25,13 +25,12 @@ import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.GetApiInfoHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.preferences.ShopPreferences;
-import pt.rocket.utils.DialogGeneric;
 import pt.rocket.utils.HockeyStartup;
 import pt.rocket.utils.JumiaApplication;
+import pt.rocket.utils.LocationHelper;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -82,7 +81,9 @@ import com.urbanairship.push.PushManager;
  */
 
 public class SplashScreenActivity extends FragmentActivity {
+    
     private final static String TAG = LogTagHelper.create(SplashScreenActivity.class);
+    
     private DialogGenericFragment dialog;
 
     private static boolean shouldHandleEvent = true;
@@ -104,6 +105,9 @@ public class SplashScreenActivity extends FragmentActivity {
         Log.i(TAG, "code1 onCreate");
         setContentView(R.layout.splash_screen);
         JumiaApplication.INSTANCE.init(false, initializationHandler);
+        
+        
+        
     }
 
     @Override
@@ -133,8 +137,7 @@ public class SplashScreenActivity extends FragmentActivity {
     protected void onStop() {
         super.onStop();
         UAirship.shared().getAnalytics().activityStopped(this);
-        SharedPreferences sP = this.getSharedPreferences(
-                ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences sP = this.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor eD = sP.edit();
         eD.putBoolean(ConstantsSharedPrefs.KEY_SHOW_PROMOTIONS, true);
         eD.commit();
@@ -338,8 +341,11 @@ public class SplashScreenActivity extends FragmentActivity {
             // Show activity
             selectActivity(); 
             finish();
+        }  else if (errorCode == ErrorCode.AUTO_COUNTRY_SELECTION) {
+            // Auto country selection
+            LocationHelper.getInstance().autoCountrySelection(getApplicationContext(), initializationHandler);
         }  else if (errorCode == ErrorCode.REQUIRES_USER_INTERACTION) {
-
+            // Show Change country
             Intent intent = new Intent(this, MainFragmentActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.putExtra(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.CHANGE_COUNTRY);

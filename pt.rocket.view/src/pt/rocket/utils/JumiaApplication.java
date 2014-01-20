@@ -151,7 +151,7 @@ public class JumiaApplication extends Application implements ExceptionCallback {
             Log.i(TAG, "code1 initializing component : "+component.getClass().getName());
             if (result != ErrorCode.NO_ERROR) {
                 Log.i(TAG, "code1 component : "+component.getClass().getName()+" error code : "+result);
-                handleEvent(ErrorCode.REQUIRES_USER_INTERACTION, null, initializationHandler);
+                handleEvent(result, null, initializationHandler);
                 return;
             }
         }
