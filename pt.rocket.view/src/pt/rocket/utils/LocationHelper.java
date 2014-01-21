@@ -12,7 +12,6 @@ import pt.rocket.view.R;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.location.Address;
-import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
@@ -39,9 +38,15 @@ public class LocationHelper implements LocationListener {
     
     public static final boolean NO_SELECTED = false;
     
+    public static final int TIMEOUT = 7000;
+    
     private Context context;
 
     private Handler callback;
+
+    private Handler timeoutHandle = new Handler();
+    
+    private boolean locationReceived = false;
     
     /**
      * Get instance of the Location Helper
@@ -141,18 +146,17 @@ public class LocationHelper implements LocationListener {
             Location lastKnownLocation = locationManager.getLastKnownLocation(bestProvider);
             double lat = lastKnownLocation.getLatitude();
             double lng = lastKnownLocation.getLongitude();
-            Log.i(TAG, "GET COUNTRY FROM LASTLOCATION: " + lat + " " + lng );
             String geoCountry = getCountryCodeFomGeoCoder(lat, lng);
             if(isCountryAvailable(geoCountry)) {
-                Log.i(TAG, "MATCH COUNTRY FROM LASTLOCATION: " + geoCountry);
+                Log.i(TAG, "MATCH COUNTRY FROM LASTLOCATION: " + geoCountry + " (" + lat + "/" +lng + ")");
                 sendInitializeMessage();
                 return true;
             }
-            Log.i(TAG, "NO MATCH COUNTRY FROM LASTLOCATION: " + geoCountry);
+            Log.i(TAG, "NO MATCH COUNTRY FROM LASTLOCATION: " + geoCountry + " (" + lat + "/" +lng + ")");
             return false;
 
         } catch (Exception e) {
-            Log.w(TAG, "NO MATCH COUNTRY FROM LASTLOCATION", e);
+            Log.w(TAG, "NO MATCH COUNTRY FROM LASTLOCATION: LAST KNOWN LOCATION IS NULL " + e.getMessage());
             return false;
         }
         
@@ -171,6 +175,7 @@ public class LocationHelper implements LocationListener {
             String bestProvider = getBestLocationProvider(locationManager);
             if(bestProvider != null) {
                 locationManager.requestLocationUpdates(bestProvider, 0, 0, this);
+                timeoutHandle.postDelayed(timeoutRunnable, TIMEOUT);
                 return true;
             }
             Log.i(TAG, "NO MATCH COUNTRY FROM CURRENT LOCATION");
@@ -183,6 +188,7 @@ public class LocationHelper implements LocationListener {
         
     }
     
+    
     /**
      * Get the best location provider GPS or Network 
      * @param locationManager
@@ -190,23 +196,55 @@ public class LocationHelper implements LocationListener {
      * @author sergiopereira
      */
     private String getBestLocationProvider(LocationManager locationManager){
-        Criteria criteria = new Criteria();
-        // criteria.setAccuracy(Criteria.ACCURACY_COARSE);
-        //String bestProvider = (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) ? LocationManager.NETWORK_PROVIDER : LocationManager.GPS_PROVIDER;
-        String bestProvider = locationManager.getBestProvider(criteria, false);
-        Log.i(TAG, "BEST PROVIDER: " + bestProvider);
-        return (checkConnection() && locationManager.isProviderEnabled(bestProvider)) ? bestProvider : null;
+//        Criteria criteria = new Criteria();
+//        // criteria.setAccuracy(Criteria.ACCURACY_COARSE);
+//        //String bestProvider = (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) ? LocationManager.NETWORK_PROVIDER : LocationManager.GPS_PROVIDER;
+//        String bestProvider = locationManager.getBestProvider(criteria, false);
+//        Log.i(TAG, "BEST PROVIDER: " + bestProvider);
+//        return (checkConnection() && locationManager.isProviderEnabled(bestProvider)) ? bestProvider : null;
+
+        // Get the best provider
+        String bestProvider = null;
+        // Validate if GPS is enabled
+        if(checkConnection() && locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER))
+            bestProvider = LocationManager.NETWORK_PROVIDER;
+        // Validate if GPS disabled, connection and Network provider
+        if(bestProvider == null && checkConnection() && locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
+            bestProvider = LocationManager.GPS_PROVIDER;
+        
+        // Return provider
+        Log.i(TAG, "SELECTED PROVIDER: " + bestProvider);
+        return bestProvider;
     }
     
     /**
      * Check the connection
      * @return true or false
+     * @author sergiopereira
      */
     private boolean checkConnection() {
         ConnectivityManager connManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connManager.getActiveNetworkInfo();
         return networkInfo != null && networkInfo.isConnected();
     }
+    
+    /**
+     * Timeout runnable executed after TIMEOUT delay.
+     * @author sergiopereira
+     */
+    Runnable timeoutRunnable = new Runnable() {
+        @Override
+        public void run() {
+            Log.i(TAG, "ON TIMEOUT RUNNABLE: " + locationReceived);
+            // Valdiate flag
+            if(!locationReceived) {
+                // Remove the listener previously added
+                LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+                locationManager.removeUpdates(LocationHelper.this);
+                sendUserInteractionMessage(null, ErrorCode.REQUIRES_USER_INTERACTION);
+            }
+        }
+    };
     
     /**
      * ################## VALIDATE COUNTRY ################## 
@@ -251,22 +289,26 @@ public class LocationHelper implements LocationListener {
     @Override
     public void onLocationChanged(Location location) {
         Log.d(TAG, "ON LOCATION CHANGED");
+                
+        // Set the flag
+        locationReceived = true;
+        if(timeoutHandle != null) timeoutHandle.removeCallbacks(timeoutRunnable);
+        
+        // Remove the listener previously added
+        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        locationManager.removeUpdates(this);
         
         double lat = location.getLatitude();
         double lng = location.getLongitude();
-        Log.i(TAG, "GET COUNTRY FROM CURRENT LOCATION: " + lat + " " + lng );
         String geoCountry = getCountryCodeFomGeoCoder(lat, lng);
         if(isCountryAvailable(geoCountry)) {
-        	Log.d(TAG, "MATCH COUNTRY FROM GEOLOCATION: " + geoCountry);
+        	Log.i(TAG, "MATCH COUNTRY FROM GEOLOCATION: " + geoCountry + " (" + lat + "/" +lng + ")");
         	sendInitializeMessage();
         } else {
-        	Log.d(TAG, "NO MATCH COUNTRY FROM GEOLOCATION: " + geoCountry);
+        	Log.i(TAG, "NO MATCH COUNTRY FROM GEOLOCATION: " + geoCountry + " (" + lat + "/" +lng + ")");
         	sendUserInteractionMessage(null, ErrorCode.REQUIRES_USER_INTERACTION);
         }
         
-        // Remove the listener you previously added
-        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        locationManager.removeUpdates(this);
     }
 
     /*
@@ -324,7 +366,7 @@ public class LocationHelper implements LocationListener {
             countryCode =  address.getCountryCode();
             Log.d(TAG, "GET COUNTRY FROM GEOCODER: " +  countryCode.toString());
         } catch (Exception e) {
-            Log.w(TAG, "GET ADDRESS: ", e);
+            Log.w(TAG, "GET ADDRESS EXCEPTION: " + e.getMessage());
         }
         return countryCode;
     }

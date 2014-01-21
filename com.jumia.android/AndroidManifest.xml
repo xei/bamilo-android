@@ -21,7 +21,8 @@
     <!-- Adx additional permissions -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     
-	<!-- Location Helper -->
+    <!-- Location Helper -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
     <permission
