@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Action Bar -->
+    <color name="actionbar_text_color">#777777</color>
+	
+	<!-- Contextual Action Bar -->
+	<color name="cab_text_color">#46a1cc</color>
+    
+</resources>
