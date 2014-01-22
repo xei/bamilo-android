@@ -69,7 +69,7 @@ end
 
 Then /^I enter a valid search$/ do 
   performAction('enter_text_into_named_field',"", @search_input.to_s)
-  performAction('enter_text_into_named_field',@search.to_s, @search_input.to_s)
+  performAction('enter_text_into_named_field',@search_p.to_s, @search_input.to_s)
 end
 
 Then /^I enter a invalid search$/ do 

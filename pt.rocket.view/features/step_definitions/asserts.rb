@@ -165,3 +165,49 @@ end
 Then /^I should see the loading items message$/ do
   performAction('assert_text', @loading_items.to_s, true)
 end
+
+Then /^I should see the filter (popularity|price up|price down|name|brand)$/ do |filter|
+  case filter
+  when "popularity"
+    performAction('assert_text', @popularity.to_s, true)
+  when "price up"
+    performAction('assert_text', @price_up.to_s, true)
+  when "price down"
+    performAction('assert_text', @price_down.to_s, true)
+  when "name"
+    performAction('assert_text', @name.to_s, true)
+  when "brand"
+    performAction('assert_text', @brand.to_s, true)
+  end
+end
+
+Then /^I should see the (first|second) tip$/ do |tip|
+  case tip
+  when "first"
+    performAction('assert_text', @first_tip.to_s, true)
+  when "second"
+    performAction('assert_text', @second_tip.to_s, true)
+  end
+end
+
+Then /^I should see the got it button$/ do
+  performAction('assert_text', @got_it.to_s, true)
+end
+
+Then /^I should not see the tips$/ do
+  performAction('assert_text', @first_tip.to_s, false)
+  performAction('assert_text', @second_tip.to_s, false)
+end
+
+Then /^I should (see|not see) the currency$/ do |value|
+  case value
+  when "see"
+    performAction('assert_text', @currency.to_s, true)
+  when "not see"
+    performAction('assert_text', @currency.to_s, false)
+  end
+end
+
+Then /^I should see the specifications$/ do
+  performAction('assert_text', @specification.to_s, true)
+end

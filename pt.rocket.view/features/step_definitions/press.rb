@@ -99,6 +99,10 @@ Then /^I press Yes$/ do
   performAction('click_on_text',@yes.to_s)
 end
 
+Then /^I press Search$/ do
+  performAction('click_on_text', @search.to_s)
+end
+
 Then /^I proceed to checkout$/ do 
   performAction('press',@proceedcheckout.to_s)
 end

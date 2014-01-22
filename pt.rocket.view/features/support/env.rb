@@ -57,6 +57,7 @@ def initvars
   
   #initializes the country variables
   case $country.to_s
+    ##### Kenya  ############################################ KE
     when "ke"
     @venture_name="Kenya"
     @sign_in="Sign In"
@@ -105,7 +106,18 @@ def initvars
     #catalog
     @currency= "KSh"
     @loading_items="Loading more items"
-          
+    @popularity="POPULARITY"
+    @price_up="PRICE UP"
+    @price_down="PRICE DOWN"
+    @name="NAME"
+    @brand="BRAND"
+    
+    #product detail
+    @first_tip="Swipe left or right to"
+    @second_tip="Tap to open the product gallery"
+    @specification="Specification"
+    
+    ##### Ivory Coast ####################################### IC          
     when "ic"
     @venture_name="Ivory Coast"
     @sign_in="Accéder au compte"
@@ -159,7 +171,18 @@ def initvars
     #catalog
     @currency= "FCFA"
     @loading_items="Charger plus de produits"
+    @popularity="POPULARITÉ"
+    @price_up="PRIX CROISSANT"
+    @price_down="PRIX DÉCROISSANT"
+    @name="NOM"
+    @brand="MARQUE"
+    
+    #product detail
+    @first_tip="Balayez vers la gauche ou la droite pour"
+    @second_tip="Cliquez pour voir l'ensemble"
+    @specification="Caractéristiques"
       
+    ##### Morocco ########################################### MA
     when "ma"
     @venture_name="Morocco"
     @sign_in="Accéder au compte"
@@ -213,7 +236,18 @@ def initvars
     #catalog
     @currency= "Dhs"
     @loading_items="Charger plus de produits"
+    @popularity="POPULARITÉ"
+    @price_up="PRIX CROISSANT"
+    @price_down="PRIX DÉCROISSANT"
+    @name="NOM"
+    @brand="MARQUE"
+    
+    #product detail
+    @first_tip="Balayez vers la gauche ou la droite pour"
+    @second_tip="Cliquez pour voir l'ensemble"
+    @specification="Caractéristiques"
       
+    ##### Nigeria ########################################### NG
     when "ng"
     @venture_name="Nigeria"
     @sign_in="Sign In"
@@ -262,7 +296,18 @@ def initvars
     #catalog
     @currency= "₦"
     @loading_items="Loading more items"
+    @popularity="POPULARITY"
+    @price_up="PRICE UP"
+    @price_down="PRICE DOWN"
+    @name="NAME"
+    @brand="BRAND"
+    
+    #product detail
+    @first_tip="Swipe left or right to"
+    @second_tip="Tap to open the product gallery"
+    @specification="Specification"
       
+    ##### Egypt ############################################# EG
     when "eg"
     @venture_name="Egypt"
     @sign_in="Sign In"
@@ -311,5 +356,15 @@ def initvars
     #catalog
     @currency= "EGP"
     @loading_items="Loading more items"
+    @popularity="POPULARITY"
+    @price_up="PRICE UP"
+    @price_down="PRICE DOWN"
+    @name="NAME"
+    @brand="BRAND"
+    
+    #product detail
+    @first_tip="Swipe left or right to"
+    @second_tip="Tap to open the product gallery"
+    @specification="Specification"
   end
 end

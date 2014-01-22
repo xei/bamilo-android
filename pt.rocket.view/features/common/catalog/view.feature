@@ -17,7 +17,7 @@ Feature:
 	@infinite_scroll
 	Scenario: Scroll down to the end of the page
 		Products should load after reaching the infinite scroll loader
-	When I swipe down moving with 10 steps
+	When I swipe up moving with 10 steps
 	Then I should see the loading items message
 	
 	
