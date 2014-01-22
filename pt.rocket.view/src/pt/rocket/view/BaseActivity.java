@@ -1679,13 +1679,13 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         Log.d(TAG, "DOUBLE BACK PRESSED TO EXIT: " + backPressedOnce);
         // If was pressed once
         if (backPressedOnce) {
+            fragmentController.popLastEntry();
             finish();
             return;
         }
         // First time show toast
         this.backPressedOnce = true;
-        CustomToastView.makeText(this, getString(R.string.exit_press_back_again),
-                Toast.LENGTH_SHORT).show();
+        CustomToastView.makeText(this, getString(R.string.exit_press_back_again), Toast.LENGTH_SHORT).show();
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

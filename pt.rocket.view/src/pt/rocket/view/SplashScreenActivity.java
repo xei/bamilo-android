@@ -89,8 +89,9 @@ public class SplashScreenActivity extends FragmentActivity {
     private static boolean shouldHandleEvent = true;
 
     private String productUrl;
+    
     private String utm;
-    private boolean isUrbainAirshipInitialized = false;
+    
     private boolean sendAdxLaunchEvent = false;
 
     /*
@@ -101,12 +102,12 @@ public class SplashScreenActivity extends FragmentActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
         Log.i(TAG, "code1 onCreate");
         setContentView(R.layout.splash_screen);
         JumiaApplication.INSTANCE.init(false, initializationHandler);
         
-        
+        // Get values from intent
+        getPushNotifications();
         
     }
 
@@ -157,6 +158,7 @@ public class SplashScreenActivity extends FragmentActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        // Clean push notifications
         cleanIntent(getIntent());
     }
 
@@ -167,8 +169,6 @@ public class SplashScreenActivity extends FragmentActivity {
            EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
            Log.i(TAG, "code1 received response : "+errorCode + " event type : "+eventType);
            if(eventType == null){
-               isUrbainAirshipInitialized = true;
-               getPushNotifications();
                initBugSense();
                Log.d(TAG, "Waiting for the registration process to finish");
            } else if(eventType == EventType.INITIALIZE){
@@ -196,7 +196,7 @@ public class SplashScreenActivity extends FragmentActivity {
         utm = getIntent().getStringExtra(ConstantsIntentExtra.UTM_STRING);
         // ## Product URL ##
         productUrl = getIntent().getStringExtra(ConstantsIntentExtra.CONTENT_URL);
-        Log.d(TAG, " PRODUCT DETAILS " + productUrl);
+        Log.d(TAG, "PRODUCT DETAILS " + productUrl);
     }
 
     /**
@@ -205,10 +205,8 @@ public class SplashScreenActivity extends FragmentActivity {
      */
     public void selectActivity() {
         // ## Google Analytics "General Campaign Measurement" ##
-        AnalyticsGoogle.get().setCampaign(
-                getIntent().getStringExtra(ConstantsIntentExtra.UTM_STRING));
-        // Push Notification Start
-        String productUrl = getIntent().getStringExtra(ConstantsIntentExtra.PRODUCT_URL);
+        AnalyticsGoogle.get().setCampaign(utm);
+        // ## Product URL ##
         if (productUrl != null && !productUrl.equals("")) {
             // Start home with notification
             Log.d(TAG, "SHOW NOTIFICATION: PRODUCT DETAILS " + productUrl);
@@ -427,8 +425,7 @@ public class SplashScreenActivity extends FragmentActivity {
         Log.i(TAG, "codeerror");
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-        HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle
-                .getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+        HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
         Log.i(TAG, "codeerror "+errorCode);
         if (errorCode.isNetworkError()) {
             switch (errorCode) {

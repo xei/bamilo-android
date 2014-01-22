@@ -247,8 +247,10 @@ public class FragmentController {
              */
             if (getLastEntry().equals(FragmentType.HOME.toString())) 
                 activity.doubleBackPressToExit();
-            else 
+            else {
+                popAllBackStack(activity, null);
                 activity.onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            }
             
             break;
         case 0:

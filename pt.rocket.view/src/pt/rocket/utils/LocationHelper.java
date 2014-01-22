@@ -38,7 +38,7 @@ public class LocationHelper implements LocationListener {
     
     public static final boolean NO_SELECTED = false;
     
-    public static final int TIMEOUT = 7000;
+    public static final int TIMEOUT = 5000;
     
     private Context context;
 
