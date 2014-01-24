@@ -95,6 +95,12 @@ public enum EventType {
         
 	GET_CUSTOMER("https:/customer/getdetails?setDevice=mobileApi", RestContract.MIN_CACHE_TIME),
 	
+	GET_CUSTOMER_ADDRESSES_EVENT("https:/customer/address/list/", RestContract.MIN_CACHE_TIME),
+	
+	GET_CREATE_ADDRESS_FORM_EVENT("addresscreate", RestContract.MAX_CACHE_TIME),
+	
+	GET_EDIT_ADDRESS_FORM_EVENT("addressedit", RestContract.MAX_CACHE_TIME),
+
 	STORE_LOGIN,
 	
 	GET_MIN_ORDER_AMOUNT("http:/main/getstatic?key=api_cartminorderamount", RestContract.MAX_CACHE_TIME),
@@ -105,7 +111,19 @@ public enum EventType {
 	
 	GET_PROMOTIONS("http:/main/getstatic?key=mobile_promotions", null),
 	
-	TRACK_ORDER_EVENT("http:/order/trackingorder/?setDevice=mobileApi", null)
+	TRACK_ORDER_EVENT("http:/order/trackingorder/?setDevice=mobileApi", null),
+	
+	GET_POLL_FORM_EVENT("https:/forms/poll", RestContract.MAX_CACHE_TIME),
+	
+	SEND_POLL_ANSWER_EVENT("https:/multistep/checkoutpoll", null), // finish/checkoutpoll/
+	
+	SEND_BILLING_ADDRESS_EVENT("https:/multistep/billing", null),
+	
+	SEND_SHIPPING_ADDRESS_EVENT("https:/multistep/shipping", null),
+	
+	GET_SHIPPING_METHODS_EVENT("https:/multistep/shippingmethod", RestContract.MAX_CACHE_TIME),
+	
+	GET_PAYMENT_METHODS_EVENT("https:/multistep/paymentmethod", RestContract.MAX_CACHE_TIME)	
 	
 //	GET_SESSION_STATE("http:/main/session/")
 	;

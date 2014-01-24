@@ -19,13 +19,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.os.Bundle;
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import pt.rocket.framework.objects.Brand;
-import pt.rocket.framework.objects.BrandImage;
 import pt.rocket.framework.objects.IJSONSerializable;
+import pt.rocket.framework.objects.PollOption;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
@@ -34,6 +29,9 @@ import pt.rocket.helpers.GetFormsDatasetListHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.InputType;
 import pt.rocket.utils.JumiaApplication;
+import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -97,6 +95,8 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
      */
     private String value;
 
+    private Map<String, String> dataValues;
+
     /**
      * FormField param constructor
      * 
@@ -104,15 +104,15 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
      *            . Form hat encapsulates the form field.
      */
     public FormField(Form parent) {
-        id = "defaultId";
-        name = "defaultName";
-        inputType = InputType.text;
-        label = "default";
-        validation = new FieldValidation();
-        value = "";
-        dataSet = new HashMap<String, String>();
-        // dataSet = new ArrayList<String>();
-        datasetSource = "";
+        this.id = "defaultId";
+        this.name = "defaultName";
+        this.inputType = InputType.text;
+        this.label = "default";
+        this.validation = new FieldValidation();
+        this.value = "";
+        this.dataSet = new HashMap<String, String>();
+        this.dataValues = new HashMap<String, String>();
+        this.datasetSource = "";
         this.parent = parent;
         this.dataset_Listener = null;
     }
@@ -135,18 +135,16 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
      * @param regEx
      *            . Reguslar expression used to validate the form field.
      */
-    public FormField(Form parent, String name, String id, boolean obligatory, InputType inputType,
-            int maxSize, String regEx) {
+    public FormField(Form parent, String name, String id, boolean obligatory, InputType inputType, int maxSize, String regEx) {
         this.id = id;
         this.name = name;
         this.inputType = inputType;
-        value = "";
-
-        validation = new FieldValidation();
-        validation.required = obligatory;
-        dataSet = new HashMap<String, String>();
-        // dataSet = new ArrayList<String>();
-        datasetSource = "";
+        this.value = "";
+        this.validation = new FieldValidation();
+        this.validation.required = obligatory;
+        this.dataSet = new HashMap<String, String>();
+        this.dataValues = new HashMap<String, String>();
+        this.datasetSource = "";
         this.parent = parent;
         this.dataset_Listener = null;
     }
@@ -224,6 +222,21 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                         }
                     }
                 }
+                
+                // TODO: Validate this method
+                // Get poll values
+                dataValues.clear();
+                JSONArray dataValuesArray = null;
+                if (!jsonObject.isNull("values")) {
+                    dataValuesArray = jsonObject.optJSONArray("values");
+                }
+                if (dataValuesArray != null && dataValuesArray.length() > 0) {
+                    for (int i = 0; i < dataValuesArray.length(); ++i) {
+                        PollOption option = new PollOption(dataValuesArray.getJSONObject(i));
+                        dataValues.put(option.getOption(), option.getValue());
+                    }
+                }
+                
             }
 
         } catch (JSONException e) {
@@ -409,6 +422,21 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
 
     public void setDataSet(HashMap<String, String> dataSet) {
         this.dataSet = dataSet;
+    }
+    
+    
+    /*
+     * (non-Javadoc)
+     * 
+     * @see pt.rocket.framework.forms.IFormField#getDataSet()
+     */
+    @Override
+    public Map<String, String> getDataValues() {
+        return dataValues;
+    }
+
+    public void setDataSet(Map<String, String> dataValues) {
+        this.dataValues = dataValues;
     }
 
     /*

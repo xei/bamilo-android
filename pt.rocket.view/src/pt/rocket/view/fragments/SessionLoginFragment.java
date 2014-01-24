@@ -23,10 +23,16 @@ import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CustomerUtils;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.helpers.GetCreateAddressFormHelper;
+import pt.rocket.helpers.GetEditAddressFormHelper;
+import pt.rocket.helpers.GetFormPollHelper;
+import pt.rocket.helpers.GetCustomerAddressesHelper;
 import pt.rocket.helpers.GetFacebookLoginHelper;
 import pt.rocket.helpers.GetInitFormHelper;
 import pt.rocket.helpers.GetLoginFormHelper;
 import pt.rocket.helpers.GetLoginHelper;
+import pt.rocket.helpers.SendBillingAddressHelper;
+import pt.rocket.helpers.SendPollAnswerHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.pojo.DynamicForm;
 import pt.rocket.pojo.DynamicFormItem;
@@ -508,19 +514,53 @@ public class SessionLoginFragment extends BaseFragment {
             // Get Customer
             ((BaseActivity) getActivity()).hideKeyboard();
             ((BaseActivity) getActivity()).updateSlidingMenuCompletly();
-            // Switch to next fragment
-            getActivity().onBackPressed();
-            if(nextFragmentType != null && getActivity() != null){
-                ((BaseActivity) getActivity()).onSwitchFragment(nextFragmentType, null, true);
-            }
-            // NullPointerException on orientation change
-            if(getActivity() != null)
-                TrackerDelegator.trackLoginSuccessful(getActivity(), (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY), wasAutologin, loginOrigin, false);
+//            // Switch to next fragment
+//            getActivity().onBackPressed();
+//            if(nextFragmentType != null && getActivity() != null){
+//                ((BaseActivity) getActivity()).onSwitchFragment(nextFragmentType, null, true);
+//            }
+//            // NullPointerException on orientation change
+//            if(getActivity() != null)
+//                TrackerDelegator.trackLoginSuccessful(getActivity(), (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY), wasAutologin, loginOrigin, false);
+//            
+//            wasAutologin = false;
             
-            wasAutologin = false;
+            // TODO: Only for tests
+            sendRequest(new GetCustomerAddressesHelper(), null, mCallBack); // DONE
+            sendRequest(new GetFormPollHelper(), null, mCallBack);          // DONE
+            sendRequest(new GetCreateAddressFormHelper(), null, mCallBack); //
+            sendRequest(new GetEditAddressFormHelper(), null, mCallBack); //
+            Bundle b = new Bundle();
+            b.putString("Alice_Module_Checkout_Model_PollingForm[id_poll]", "");
+            b.putString("Alice_Module_Checkout_Model_PollingForm[pollRevision]", "");
+            b.putString("Alice_Module_Checkout_Model_PollingForm[pollQuestion]", "Facebook");
+            sendRequest(new SendPollAnswerHelper(), b, mCallBack);
+            Bundle b1 = new Bundle();
+            b1.putString("billingForm[billingAddressId]", "");
+            b1.putString("billingForm[shippingAddressDifferent]", "");
+            b1.putString("billingForm[shippingAddressId]", "");
+            sendRequest(new SendBillingAddressHelper(), b1, mCallBack);
+            Bundle b2 = new Bundle();
+            b2.putString("shippingForm[shippingAddressId]", "");
+            sendRequest(new SendBillingAddressHelper(), b2, mCallBack);
             
             return true;
-
+            
+         // TODO: Only for tests
+        case GET_CUSTOMER_ADDRESSES_EVENT:
+            Log.d(TAG, "RECEIVED GET_CUSTOMER_ADDRESSES_EVENT");
+            return true;
+        case GET_POLL_FORM_EVENT:
+            Log.d(TAG, "RECEIVED GET_POLL_FORM_EVENT");
+            return true;
+        case GET_CREATE_ADDRESS_FORM_EVENT:
+            Log.d(TAG, "RECEIVED GET_CREATE_ADDRESS_FORM_EVENT");
+            return true;
+        case GET_EDIT_ADDRESS_FORM_EVENT:
+            Log.d(TAG, "RECEIVED GET_EDIT_ADDRESS_FORM_EVENT");
+            return true;
+            
+            
         case GET_LOGIN_FORM_EVENT:
             Form form = (Form) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             if (form == null) {

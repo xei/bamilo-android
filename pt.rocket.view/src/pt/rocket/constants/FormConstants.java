@@ -23,5 +23,6 @@ public class FormConstants {
 	public final static int FORGET_PASSWORD_FORM = 5;
 	public final static int ADDRESS_EDIT_FORM = 6;
 	public final static int PAYMENT_DETAILS_CHECKOUT_FORM = 7;
+	public final static int POLL_FORM = 8;
 	
 }

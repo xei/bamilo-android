@@ -712,6 +712,14 @@ public class DynamicFormItem {
                 } else {
                 	createRadioGroup(  MANDATORYSIGNALSIZE, params, dataContainer );
                 }
+            
+                // TODO: Validate this method for poll    
+                Log.d("Poll", "Type: Radio Group");
+                if(entry.getKey().contains("poll")){
+                    Log.d("Poll", "Key: Poll");
+                    createPollRadioGroup(MANDATORYSIGNALSIZE, params, dataContainer);
+                }
+                
                 	
                 break;
             case metadate:
@@ -981,6 +989,40 @@ public class DynamicFormItem {
 		    }
 		} );
 	}
+	
+	// TODO: Validate this method for poll
+	private void createPollRadioGroup( final int MANDATORYSIGNALSIZE, RelativeLayout.LayoutParams params, RelativeLayout dataContainer ) {
+        RadioGroupLayout radioGroup = (RadioGroupLayout) View.inflate(this.context, R.layout.form_radiolayout, null );
+        radioGroup.setItems(new ArrayList<String>( this.entry.getDataValues().values() ), RadioGroupLayout.NO_DEFAULT_SELECTION );
+        radioGroup.setOnCheckedChangeListener( new OnCheckedChangeListener() {
+            
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                DynamicFormItem.this.mandatoryControl.setVisibility( View.GONE );
+            }
+        });
+        
+        this.dataControl = radioGroup;
+        this.dataControl.setId( parent.getNextId() );
+        this.dataControl.setLayoutParams(params);
+        dataContainer.addView( this.dataControl );
+        
+        params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        params.addRule(RelativeLayout.CENTER_VERTICAL); 
+        params.rightMargin = 10;
+        this.mandatoryControl = new TextView(this.context);
+        this.mandatoryControl.setLayoutParams(params);
+        this.mandatoryControl.setText("*");
+        this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_basic));
+        this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
+        this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE : View.GONE);                
+        dataContainer.addView( this.mandatoryControl );
+        
+        ((ViewGroup) this.control).addView(dataContainer);
+    }
+	
+	
 	
 	private void createRadioGroup( final int MANDATORYSIGNALSIZE, RelativeLayout.LayoutParams params, RelativeLayout dataContainer ) {
 		RadioGroupLayout radioGroup = (RadioGroupLayout) View.inflate(this.context, R.layout.form_radiolayout, null );

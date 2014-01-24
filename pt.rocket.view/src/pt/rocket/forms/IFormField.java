@@ -38,5 +38,7 @@ public interface IFormField {
 	public abstract Map<String, IFormField> getSubFormFields();
 	
 	public abstract void setSubFormFields( Map<String, IFormField> formFields);
+	
+	public abstract Map<String, String> getDataValues();
 
 }

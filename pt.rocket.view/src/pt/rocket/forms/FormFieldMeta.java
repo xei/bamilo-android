@@ -116,6 +116,15 @@ public class FormFieldMeta implements IFormField {
 				
 		return sb.toString();
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see pt.rocket.forms.IFormField#getDataValues()
+	 */
+    @Override
+    public Map<String, String> getDataValues() {
+        return metaFormField.getDataValues();
+    }
 	
 	
 

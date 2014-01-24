@@ -14,6 +14,7 @@ public class RestConstants {
 	public static final String JSON_ID_TAG = "id";
 	public final static String JSON_SUCCESS_TAG = "success";
 	public final static String JSON_MESSAGE_IN_MESSAGES_TAG = "message";
+	public static final String JSON_METADATA_TAG = "metadata";
 
 	// ConfigurationService Tags
 	public static final String JSON_CALL_PHONE_TAG = "metadata";
@@ -305,4 +306,21 @@ public class RestConstants {
 	public static final String JSON_ORDER_STATUS_TAG = "status";
 	public static final String JSON_ORDER_ITEM_STATUS_TAG = "item_status";
 	public static final String JSON_ORDER_ITEM_STATUS_UPDATE_TAG = "last_status_change";
+	
+	
+	/**
+	 * Address
+	 */
+	public static final String JSON_SHIPPING_TAG = "shipping";
+	public static final String JSON_BILLING_TAG = "billing";
+	public static final String JSON_OTHER_TAG = "other";
+	public static final String JSON_FASTLINE_TAG = "fastlane";
+    public static final String JSON_CUSTOMER_ID_TAG = "fk_customer";
+    public static final String JSON_COUNTRY_ID_TAG = "fk_country";
+    public static final String JSON_REGION_ID_TAG = "fk_customer_address_region";
+    public static final String JSON_CITY_ID_TAG = "fk_customer_address_city";
+    public static final String JSON_HIDDEN_TAG = "hidden";
+    public static final String JSON_CREATED_BY_TAG = "created_by";
+    public static final String JSON_UPDATED_BY_TAG = "updated_by";
+	
 }

@@ -40,6 +40,7 @@ public class FormFactory {
     private DynamicForm loginForm = null;
     private DynamicForm paymentForm = null;
     private DynamicForm registerForm = null;
+    private DynamicForm pollForm = null;
     private float scale = 1;
 
     /**
@@ -102,7 +103,11 @@ public class FormFactory {
         case FormConstants.FORGET_PASSWORD_FORM:
             parent = createForgetPasswordForm(context, form);
             break;
-
+            
+        // TODO: Validate this method for poll
+        case FormConstants.POLL_FORM:
+            parent = createPollForm(context, form);
+            break;
         }
         
         FontLoader.applyDefaultFont( parent.getContainer());
@@ -228,6 +233,25 @@ public class FormFactory {
         return createGenericForm(context, form, registerForm, ctrlParams);
     }
     
+    /**
+     * Create the poll form 
+     * 
+     * @param context The context where the form is to be inserted
+     * @param form The definition provided by the framework
+     * @return An instance of a DynamicForm with the form representation implemented
+     */
+    // TODO: Validate this method for poll
+    private DynamicForm createPollForm(Context context, Form form) {
+        final int CTRLMARGIN_LEFT = 0;
+        final int CTRLMARGIN_TOP = (int) (5 * scale);
+        final int CTRLMARGIN_RIGHT = 0;
+        final int CTRLMARGIN_BOTTOM = 0;
+
+        LinearLayout.LayoutParams ctrlParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        ctrlParams.setMargins(CTRLMARGIN_LEFT, CTRLMARGIN_TOP, CTRLMARGIN_RIGHT, CTRLMARGIN_BOTTOM);
+
+        return createGenericForm(context, form, pollForm, ctrlParams);
+    }
     
     
     /**
