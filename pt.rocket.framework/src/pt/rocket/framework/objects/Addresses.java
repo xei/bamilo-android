@@ -17,9 +17,9 @@ import android.util.Log;
  * @author sergiopereira
  *
  */
-public class CustomerAddresses implements IJSONSerializable, Parcelable {
+public class Addresses implements IJSONSerializable, Parcelable {
 
-	private static final String TAG = CustomerAddresses.class.getSimpleName();
+	private static final String TAG = Addresses.class.getSimpleName();
 
 	private Address shippingAddress;
 	
@@ -27,7 +27,7 @@ public class CustomerAddresses implements IJSONSerializable, Parcelable {
 	
 	private Address fastline;
 	
-	private HashMap<String, Address> addresses = new HashMap<String, CustomerAddresses.Address>();
+	private HashMap<String, Address> addresses = new HashMap<String, Addresses.Address>();
 
 
 	/**
@@ -35,7 +35,7 @@ public class CustomerAddresses implements IJSONSerializable, Parcelable {
 	 * @param jsonObject
 	 * @throws JSONException 
 	 */
-	public CustomerAddresses(JSONObject jsonObject) throws JSONException{
+	public Addresses(JSONObject jsonObject) throws JSONException{
 		initialize(jsonObject);
 	}
     
@@ -48,10 +48,10 @@ public class CustomerAddresses implements IJSONSerializable, Parcelable {
 		Log.d(TAG, "INITIALIZE");
 		// Get shipping address and save it
 		shippingAddress = new Address(jsonObject.getJSONObject(RestConstants.JSON_SHIPPING_TAG));
-		addresses.put("" + shippingAddress.getIdCustomerAddress(), shippingAddress);
+		//addresses.put("" + shippingAddress.getIdCustomerAddress(), shippingAddress);
 		// Get billing address and save it
 		billingAddress = new Address(jsonObject.getJSONObject(RestConstants.JSON_BILLING_TAG));
-		addresses.put("" + billingAddress.getIdCustomerAddress(), billingAddress);
+		//addresses.put("" + billingAddress.getIdCustomerAddress(), billingAddress);
 		// Get other addresses
 		JSONObject jsonOther = jsonObject.getJSONObject(RestConstants.JSON_OTHER_TAG);
         Iterator<?> jsonIteretor = jsonOther.keys();
@@ -167,7 +167,7 @@ public class CustomerAddresses implements IJSONSerializable, Parcelable {
 	 * Parcel constructor
 	 * @param in
 	 */
-	private CustomerAddresses(Parcel in) {
+	private Addresses(Parcel in) {
 		shippingAddress = in.readParcelable(Address.class.getClassLoader());
 		billingAddress = in.readParcelable(Address.class.getClassLoader());
 		fastline = in.readParcelable(Address.class.getClassLoader());
@@ -177,13 +177,13 @@ public class CustomerAddresses implements IJSONSerializable, Parcelable {
 	/**
 	 * Create parcelable 
 	 */
-	public static final Parcelable.Creator<CustomerAddresses> CREATOR = new Parcelable.Creator<CustomerAddresses>() {
-        public CustomerAddresses createFromParcel(Parcel in) {
-            return new CustomerAddresses(in);
+	public static final Parcelable.Creator<Addresses> CREATOR = new Parcelable.Creator<Addresses>() {
+        public Addresses createFromParcel(Parcel in) {
+            return new Addresses(in);
         }
 
-        public CustomerAddresses[] newArray(int size) {
-            return new CustomerAddresses[size];
+        public Addresses[] newArray(int size) {
+            return new Addresses[size];
         }
     };
 	

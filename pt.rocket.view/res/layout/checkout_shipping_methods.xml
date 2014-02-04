@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <!-- SHIPPING METHODS -->
+
+        <org.holoeverywhere.widget.TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_huge"
+            android:fontFamily="roboto_regular"
+            android:gravity="center"
+            android:text="Shipping"
+            android:textColor="@color/grey_divider_light_text"
+            android:textSize="@dimen/text_l" />
+
+        <LinearLayout
+            android:id="@+id/checkout_shipping_methods_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_midhuge"
+            android:layout_marginTop="@dimen/margin_midhuge"
+            android:orientation="vertical" >
+        </LinearLayout>
+
+        <!-- CART -->
+
+        <org.holoeverywhere.widget.TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_huge"
+            android:fontFamily="roboto_regular"
+            android:gravity="center"
+            android:text="Cart"
+            android:textColor="@color/grey_divider_light_text"
+            android:textSize="@dimen/text_l" />
+
+        <LinearLayout
+            android:id="@+id/checkout_shipping_cart_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_midhuge"
+            android:layout_marginTop="@dimen/margin_midhuge"
+            android:orientation="vertical" >
+        </LinearLayout>
+
+        <!-- SUBMIT -->
+
+        <org.holoeverywhere.widget.Button
+            android:id="@+id/checkout_shipping_button_enter"
+            style="@style/button_orange_style"
+            android:contentDescription="@string/login_button_description"
+            android:text="Next" />
+
+    </LinearLayout>
+
+</ScrollView>

@@ -14,6 +14,7 @@ package pt.rocket.forms;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.json.JSONArray;
@@ -47,7 +48,8 @@ public class Form implements IJSONSerializable, Parcelable {
 
     public ArrayList<FormField> fields;
     public Map<String, Integer> fieldMapping;
-
+    
+    public Map<String, FormField> theRealFieldMapping;
     /**
      * Form empty constructor.
      */
@@ -59,6 +61,7 @@ public class Form implements IJSONSerializable, Parcelable {
         this.submit = "";
 
         this.fields = new ArrayList<FormField>();
+        this.theRealFieldMapping = new HashMap<String, FormField>();
         this.fieldMapping = null;
     }
 
@@ -80,6 +83,7 @@ public class Form implements IJSONSerializable, Parcelable {
         this.submit = submit;
 
         this.fields = fields;
+        this.theRealFieldMapping = new HashMap<String, FormField>();
         this.fieldMapping = null;
     }
 
@@ -111,6 +115,12 @@ public class Form implements IJSONSerializable, Parcelable {
                 FormField field = new FormField(this);
                 if (field.initialize(fieldsArray.getJSONObject(i))) {
                     fields.add(field);
+                    
+                    /**
+                     * TODO: Validate if is necessary this map
+                     */
+                    theRealFieldMapping.put(field.getKey(), field);
+                    
                 }
             }
 

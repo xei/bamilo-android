@@ -260,4 +260,8 @@
     <string name="app_id">321703697936806</string>
     <string name="exit_press_back_again">Please press back again if you wish to leave the app</string>
     
+    <string name="edit_address">Edit Address</string>
+    <string name="add_address">Add Address</string>
+    <string name="my_addresses">My Addresses</string>
+    
 </resources>

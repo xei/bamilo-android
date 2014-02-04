@@ -18,6 +18,7 @@ public class RestContract {
 		
 	}
 
+	public final static Integer NO_CACHE = null;
 	public final static int MIN_CACHE_TIME = 0;
 	public final static int DEFAULT_CACHE_TIME = 1800;
 	public final static int MAX_CACHE_TIME = 3600;

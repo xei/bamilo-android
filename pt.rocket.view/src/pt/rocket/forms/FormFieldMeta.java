@@ -125,6 +125,12 @@ public class FormFieldMeta implements IFormField {
     public Map<String, String> getDataValues() {
         return metaFormField.getDataValues();
     }
+
+    
+    @Override
+    public Map<String, String> getDataCalls() {
+        return metaFormField.getDataCalls();
+    }
 	
 	
 

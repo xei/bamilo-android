@@ -52,12 +52,21 @@ public abstract class BaseHelper {
 
             Boolean success = jsonObject.optBoolean(JSONConstants.JSON_SUCCESS_TAG, false);
             JSONObject metaData;
-            if (eventType == EventType.GET_CALL_TO_ORDER_PHONE
-                    || eventType == EventType.REVIEW_PRODUCT_EVENT) {
+            if (eventType == EventType.GET_CALL_TO_ORDER_PHONE || eventType == EventType.REVIEW_PRODUCT_EVENT) {
                 metaData = jsonObject;
             } else {
                 if (jsonObject.has(JSONConstants.JSON_METADATA_TAG)) {
-                    metaData = jsonObject.getJSONObject(JSONConstants.JSON_METADATA_TAG);
+                	
+                	/**
+                	 * TODO: Validate this method because GetCities returns a json array
+                	 */
+                    try {
+                        metaData = jsonObject.getJSONObject(JSONConstants.JSON_METADATA_TAG);
+                    } catch (JSONException e) {
+                        Log.w(TAG, "METADATA IS AN ARRAY: " + e.getMessage());
+                        metaData = jsonObject;
+                    }
+                    
                 } else {
                     metaData = jsonObject;
                 }

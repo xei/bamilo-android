@@ -176,8 +176,7 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 
 	public static synchronized RestClientSingleton getSingleton() {
 		if (INSTANCE == null) {
-			throw new RuntimeException(
-					"RestClientSingleton needs to be initialized!");
+			throw new RuntimeException("RestClientSingleton needs to be initialized!");
 		}
 		return INSTANCE;
 	}

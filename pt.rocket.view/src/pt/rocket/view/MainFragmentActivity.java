@@ -22,6 +22,11 @@ import pt.rocket.view.fragments.BaseFragment;
 import pt.rocket.view.fragments.Catalog;
 import pt.rocket.view.fragments.CategoriesContainerFragment;
 import pt.rocket.view.fragments.ChangeCountryFragment;
+import pt.rocket.view.fragments.CheckoutAboutYouFragment;
+import pt.rocket.view.fragments.CheckoutCreateAddressFragment;
+import pt.rocket.view.fragments.CheckoutCustomerAddressesFragment;
+import pt.rocket.view.fragments.CheckoutEditAddressFragment;
+import pt.rocket.view.fragments.CheckoutShippingMethodsFragment;
 import pt.rocket.view.fragments.CheckoutStep5Fragment;
 import pt.rocket.view.fragments.CheckoutWebFragment;
 import pt.rocket.view.fragments.HomeFragment;
@@ -261,9 +266,6 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         case CHECKOUT_THANKS:
             fragment = CheckoutStep5Fragment.getInstance();
             break;
-        case LOGIN:
-            fragment = SessionLoginFragment.getInstance(bundle);
-            break;
         case REGISTER:
             fragment = SessionRegisterFragment.getInstance();
             break;
@@ -285,6 +287,27 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         case CHANGE_COUNTRY:
             fragment = ChangeCountryFragment.getInstance();
             break;
+            
+        /**
+         * TODO: NEW FRAGMENTS
+         */
+        case LOGIN:
+            //fragment = SessionLoginFragment.getInstance(bundle);
+            fragment = CheckoutAboutYouFragment.getInstance(bundle);
+            break;
+        case MY_ADDRESSES:
+            fragment = CheckoutCustomerAddressesFragment.getInstance(bundle);
+            break;
+        case CREATE_ADDRESS:
+            fragment = CheckoutCreateAddressFragment.getInstance(bundle);
+            break;
+        case EDIT_ADDRESS:
+            fragment = CheckoutEditAddressFragment.getInstance(bundle);
+            break;
+        case SHIPPING_METHODS:
+            fragment = CheckoutShippingMethodsFragment.getInstance(bundle);
+            break;
+            
         default:
             Log.w(TAG, "INVALIDE FRAGMENT TYPE");
             return;

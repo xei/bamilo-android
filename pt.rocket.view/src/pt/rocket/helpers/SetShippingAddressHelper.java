@@ -10,20 +10,21 @@ import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 
 /**
- * Helper used to set the poll answer 
+ * Helper used to set the shipping address 
  * @author sergiopereira
  */
-public class SendPollAnswerHelper extends BaseHelper {
+public class SetShippingAddressHelper extends BaseHelper {
     
-    private static String TAG = SendPollAnswerHelper.class.getSimpleName();
+    private static String TAG = SetShippingAddressHelper.class.getSimpleName();
+    
+    public static final String FORM_CONTENT_VALUES = "content_values";
 
     // TODO: Send the respective value
-    // Alice_Module_Checkout_Model_PollingForm[id_poll]
-    // Alice_Module_Checkout_Model_PollingForm[pollRevision]
-    // Alice_Module_Checkout_Model_PollingForm[pollQuestion] -> Facebook
+    // shippingForm[shippingAddressId]
             
     /*
      * (non-Javadoc)
@@ -32,11 +33,13 @@ public class SendPollAnswerHelper extends BaseHelper {
     @Override
     public Bundle generateRequestBundle(Bundle args) {
         Log.d(TAG, "REQUEST");
+        Parcelable contentValues = args.getParcelable(FORM_CONTENT_VALUES);
         Bundle bundle = new Bundle();
-        bundle.putString(Constants.BUNDLE_URL_KEY, EventType.SEND_POLL_ANSWER_EVENT.action);
+        bundle.putString(Constants.BUNDLE_URL_KEY, EventType.SET_SHIPPING_ADDRESS_EVENT.action);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.POST);
-        bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_NOT_PRIORITARY);
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.SEND_POLL_ANSWER_EVENT);
+        bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.SET_SHIPPING_ADDRESS_EVENT);
+        bundle.putParcelable(Constants.BUNDLE_FORM_DATA_KEY, contentValues);
         bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
         return bundle;
     }
@@ -48,7 +51,8 @@ public class SendPollAnswerHelper extends BaseHelper {
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
         Log.d(TAG, "PARSE BUNDLE");
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.SEND_POLL_ANSWER_EVENT);
+     // TODO: Parse the response
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.SET_SHIPPING_ADDRESS_EVENT);
         return bundle;
     }
     
@@ -59,7 +63,7 @@ public class SendPollAnswerHelper extends BaseHelper {
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
         android.util.Log.d(TAG, "PARSE ERROR BUNDLE");
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.SEND_POLL_ANSWER_EVENT);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.SET_SHIPPING_ADDRESS_EVENT);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }
@@ -71,7 +75,7 @@ public class SendPollAnswerHelper extends BaseHelper {
     @Override
     public Bundle parseResponseErrorBundle(Bundle bundle) {
         android.util.Log.d(TAG, "PARSE RESPONSE BUNDLE");
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.SEND_POLL_ANSWER_EVENT);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.SET_SHIPPING_ADDRESS_EVENT);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }

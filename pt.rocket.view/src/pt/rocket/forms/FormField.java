@@ -13,6 +13,7 @@
 package pt.rocket.forms;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.json.JSONArray;
@@ -97,6 +98,8 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
 
     private Map<String, String> dataValues;
 
+    private HashMap<String, String> dataCalls;
+
     /**
      * FormField param constructor
      * 
@@ -112,6 +115,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         this.value = "";
         this.dataSet = new HashMap<String, String>();
         this.dataValues = new HashMap<String, String>();
+        this.dataCalls = new HashMap<String, String>();
         this.datasetSource = "";
         this.parent = parent;
         this.dataset_Listener = null;
@@ -144,6 +148,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         this.validation.required = obligatory;
         this.dataSet = new HashMap<String, String>();
         this.dataValues = new HashMap<String, String>();
+        this.dataCalls = new HashMap<String, String>();
         this.datasetSource = "";
         this.parent = parent;
         this.dataset_Listener = null;
@@ -200,13 +205,36 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                     }
                 }
 
+                Log.d(TAG, "KEYS: " + key);
+                
                 dataSet.clear();
+                dataCalls.clear();
                 JSONArray dataSetArray = null;
+                JSONObject dataSetObject = null;
                 if (!jsonObject.isNull(RestConstants.JSON_DATASET_TAG)) {
                     dataSetArray = jsonObject.optJSONArray(RestConstants.JSON_DATASET_TAG);
+                    dataSetObject = jsonObject.optJSONObject(RestConstants.JSON_DATASET_TAG);
                 }
-
-                if (dataSetArray != null && dataSetArray.length() > 0) {
+                
+                /**
+                 * TODO: Validate this method to save the api calls
+                 */
+                if(dataSetObject != null && dataSetObject.length() > 0){
+                    Iterator<?> it = dataSetObject.keys();
+                    while (it.hasNext()) {
+                        String curKey = (String) it.next();
+                        if(curKey.equals("api_call")){
+                            Log.d(TAG, "API CALL: " + dataSetObject.toString());
+                            dataCalls.put(curKey, (String) dataSetObject.get("api_call"));
+                        } else{
+                            dataSet.put((String) dataSetObject.get(key), (String) dataSetObject.get(key));
+                        }
+                    }
+                /**
+                 * ########################################################
+                 */  
+                    
+                } else if (dataSetArray != null && dataSetArray.length() > 0) {
                     for (int i = 0; i < dataSetArray.length(); ++i) {
                         dataSet.put(dataSetArray.getString(i), dataSetArray.getString(i));
                     }
@@ -223,8 +251,9 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                     }
                 }
                 
-                // TODO: Validate this method
-                // Get poll values
+                /**
+                 * TODO: Validate this method to get the poll values
+                 */
                 dataValues.clear();
                 JSONArray dataValuesArray = null;
                 if (!jsonObject.isNull("values")) {
@@ -236,6 +265,9 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                         dataValues.put(option.getOption(), option.getValue());
                     }
                 }
+                /**
+                 * ########################################################
+                 */
                 
             }
 
@@ -453,6 +485,12 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         this.datasetSource = datasetSource;
     }
 
+    
+    @Override
+    public Map<String, String> getDataCalls() {
+        return dataCalls;
+    }
+    
     /*
      * (non-Javadoc)
      * 

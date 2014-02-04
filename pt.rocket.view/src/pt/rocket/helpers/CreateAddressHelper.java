@@ -10,20 +10,33 @@ import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 
 /**
- * Helper used to set the shipping address 
+ * Helper used to create an address 
  * @author sergiopereira
  */
-public class SendShippingAddressHelper extends BaseHelper {
+public class CreateAddressHelper extends BaseHelper {
     
-    private static String TAG = SendShippingAddressHelper.class.getSimpleName();
+    private static String TAG = CreateAddressHelper.class.getSimpleName();
 
-    // TODO: Send the respective value
-    // Alice_Module_Checkout_Model_PollingForm[id_poll]
-    // Alice_Module_Checkout_Model_PollingForm[pollRevision]
-    // Alice_Module_Checkout_Model_PollingForm[pollQuestion] -> Facebook
+    
+    public static final String FORM_CONTENT_VALUES = "form_content_values";
+
+
+    private Parcelable contentValues;
+    
+    
+    // Alice_Module_Customer_Model_AddressForm[first_name]
+    // Alice_Module_Customer_Model_AddressForm[last_name]
+    // Alice_Module_Customer_Model_AddressForm[address1]
+    // Alice_Module_Customer_Model_AddressForm[address2]
+    // Alice_Module_Customer_Model_AddressForm[city]
+    // Alice_Module_Customer_Model_AddressForm[phone]
+    // Alice_Module_Customer_Model_AddressForm[fk_customer_address_region]
+    // Alice_Module_Customer_Model_AddressForm[fk_customer_address_city]
+    // Alice_Module_Customer_Model_AddressForm[country]
             
     /*
      * (non-Javadoc)
@@ -33,10 +46,12 @@ public class SendShippingAddressHelper extends BaseHelper {
     public Bundle generateRequestBundle(Bundle args) {
         Log.d(TAG, "REQUEST");
         Bundle bundle = new Bundle();
-        bundle.putString(Constants.BUNDLE_URL_KEY, EventType.SEND_SHIPPING_ADDRESS_EVENT.action);
+        contentValues = args.getParcelable(FORM_CONTENT_VALUES);
+        bundle.putString(Constants.BUNDLE_URL_KEY, EventType.CREATE_ADDRESS_EVENT.action);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.POST);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.SEND_SHIPPING_ADDRESS_EVENT);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.CREATE_ADDRESS_EVENT);
+        bundle.putParcelable(Constants.BUNDLE_FORM_DATA_KEY, contentValues);
         bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
         return bundle;
     }
@@ -47,9 +62,8 @@ public class SendShippingAddressHelper extends BaseHelper {
      */
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
-        Log.d(TAG, "PARSE BUNDLE");
-     // TODO: Parse the response
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.SEND_SHIPPING_ADDRESS_EVENT);
+        Log.d(TAG, "PARSE BUNDLE: " + jsonObject);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.CREATE_ADDRESS_EVENT);
         return bundle;
     }
     
@@ -60,7 +74,7 @@ public class SendShippingAddressHelper extends BaseHelper {
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
         android.util.Log.d(TAG, "PARSE ERROR BUNDLE");
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.SEND_SHIPPING_ADDRESS_EVENT);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.CREATE_ADDRESS_EVENT);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }
@@ -72,7 +86,7 @@ public class SendShippingAddressHelper extends BaseHelper {
     @Override
     public Bundle parseResponseErrorBundle(Bundle bundle) {
         android.util.Log.d(TAG, "PARSE RESPONSE BUNDLE");
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.SEND_SHIPPING_ADDRESS_EVENT);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.CREATE_ADDRESS_EVENT);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }

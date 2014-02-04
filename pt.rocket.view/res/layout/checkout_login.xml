@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/checkout_login_main"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <!-- TOGGLE -->
+
+    <org.holoeverywhere.widget.TextView
+        android:id="@+id/checkout_login_toogle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:background="@drawable/searchfield"
+        android:drawableEnd="@drawable/selector_next"
+        android:fontFamily="roboto_regular"
+        android:gravity="center_vertical"
+        android:padding="@dimen/margin_mid"
+        android:text="Login"
+        android:textColor="@color/orange_basic"
+        android:textSize="@dimen/text_l" />
+
+    <!-- CONTENT -->
+
+    <LinearLayout
+        android:id="@+id/checkout_login_form_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_mid"
+        android:layout_marginRight="@dimen/margin_mid"
+        android:orientation="vertical"
+        android:visibility="visible" >
+
+        <!-- FORM -->
+
+        <LinearLayout
+            android:id="@+id/checkout_login_form_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_midhuge"
+            android:layout_marginTop="@dimen/margin_midhuge"
+            android:orientation="vertical" >
+        </LinearLayout>
+
+        <!-- LOGIN -->
+
+        <org.holoeverywhere.widget.Button
+            android:id="@+id/checkout_login_form_button_enter"
+            style="@style/button_orange_style"
+            android:contentDescription="@string/login_button_description"
+            android:text="@string/login_label" />
+
+        <!-- FORGOT -->
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/checkout_login_form_button_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_large"
+            android:gravity="center"
+            android:paddingLeft="3dp"
+            android:text="@string/fgt_pass"
+            android:textColor="@color/blue_basic"
+            android:textSize="@dimen/text_small" />
+
+        <!-- DIVIDER -->
+
+        <org.holoeverywhere.widget.TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_huge"
+            android:fontFamily="roboto_regular"
+            android:gravity="center"
+            android:text="OR"
+            android:textColor="@color/grey_divider_light_text"
+            android:textSize="@dimen/text_l" />
+
+        <!-- FACEBOOK -->
+
+        <com.facebook.widget.LoginButton
+            xmlns:fb="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/checkout_login_form_button_facebook"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/margin_huge"
+            android:text="Login with Facebook"
+            fb:login_text="Login with Facebook" />
+        <!-- @string/facebook_login_button_text -->
+
+    </LinearLayout>
+
+</LinearLayout>

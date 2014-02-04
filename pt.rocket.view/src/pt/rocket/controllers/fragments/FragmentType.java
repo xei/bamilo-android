@@ -32,5 +32,9 @@ public enum FragmentType {
     MY_ACCOUNT, 
     MY_USER_DATA,
     TRACK_ORDER,
-    CHANGE_COUNTRY
+    CHANGE_COUNTRY, 
+    CREATE_ADDRESS, 
+    MY_ADDRESSES, 
+    SHIPPING_METHODS, 
+    EDIT_ADDRESS
 }

@@ -94,12 +94,6 @@ public enum EventType {
     GET_API_INFO("http:/main/md5?setDevice=mobileApi", RestContract.MIN_CACHE_TIME),
         
 	GET_CUSTOMER("https:/customer/getdetails?setDevice=mobileApi", RestContract.MIN_CACHE_TIME),
-	
-	GET_CUSTOMER_ADDRESSES_EVENT("https:/customer/address/list/", RestContract.MIN_CACHE_TIME),
-	
-	GET_CREATE_ADDRESS_FORM_EVENT("addresscreate", RestContract.MAX_CACHE_TIME),
-	
-	GET_EDIT_ADDRESS_FORM_EVENT("addressedit", RestContract.MAX_CACHE_TIME),
 
 	STORE_LOGIN,
 	
@@ -113,19 +107,48 @@ public enum EventType {
 	
 	TRACK_ORDER_EVENT("http:/order/trackingorder/?setDevice=mobileApi", null),
 	
-	GET_POLL_FORM_EVENT("https:/forms/poll", RestContract.MAX_CACHE_TIME),
+	/**
+	 * NATIVE CHECKOUT EVENTS
+	 */
 	
-	SEND_POLL_ANSWER_EVENT("https:/multistep/checkoutpoll", null), // finish/checkoutpoll/
+	GET_CREATE_ADDRESS_FORM_EVENT("addresscreate", RestContract.MAX_CACHE_TIME),
 	
-	SEND_BILLING_ADDRESS_EVENT("https:/multistep/billing", null),
+	GET_EDIT_ADDRESS_FORM_EVENT("addressedit", RestContract.MAX_CACHE_TIME),
 	
-	SEND_SHIPPING_ADDRESS_EVENT("https:/multistep/shipping", null),
+	GET_CUSTOMER_ADDRESSES_EVENT("https:/customer/address/list/", RestContract.MIN_CACHE_TIME),
 	
-	GET_SHIPPING_METHODS_EVENT("https:/multistep/shippingmethod", RestContract.MAX_CACHE_TIME),
+	CREATE_ADDRESS_EVENT("https:/customer/address/create/", RestContract.NO_CACHE),
 	
-	GET_PAYMENT_METHODS_EVENT("https:/multistep/paymentmethod", RestContract.MAX_CACHE_TIME)	
+	EDIT_ADDRESS_EVENT("https:/customer/address/save/", RestContract.NO_CACHE),
 	
-//	GET_SESSION_STATE("http:/main/session/")
+	// DELETE_ADDRESS_EVENT("https:/customer/address/delete/", RestContract.NO_CACHE),
+	
+	GET_REGIONS_EVENT("https:/customer/address/regions/", RestContract.MAX_CACHE_TIME),
+	
+	GET_CITIES_EVENT("https:/customer/address/cities/", RestContract.MAX_CACHE_TIME),
+	
+	GET_POLL_FORM_EVENT("https:/forms/poll/", RestContract.MAX_CACHE_TIME),
+	
+	SEND_POLL_ANSWER_EVENT("https:/multistep/checkoutpoll/", RestContract.NO_CACHE),
+	
+	SET_BILLING_ADDRESS_EVENT("https:/multistep/billing/", RestContract.NO_CACHE),
+	
+	SET_SHIPPING_ADDRESS_EVENT("https:/multistep/shipping/", RestContract.NO_CACHE),
+	
+	SHIPPING_METHODS_EVENT("https:/multistep/shippingmethod/", RestContract.DEFAULT_CACHE_TIME),
+	
+	PAYMENT_METHODS_EVENT("https:/multistep/paymentmethod/", RestContract.DEFAULT_CACHE_TIME),
+	
+	CHECKOUT_FINISH_EVENT("https:/multistep/finish/", RestContract.NO_CACHE)
+		
+//	customer/address/create
+//	customer/address/save
+//	customer/address/list
+//	customer/shippingaddress
+//	customer/billingaddress
+//	customer/address/makeDefaultShipping
+//	customer/address/makeDefaultBilling
+	
 	;
     
     public final String action;

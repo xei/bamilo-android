@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/checkout_signup_main"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <!-- TOGGLE -->
+
+    <org.holoeverywhere.widget.TextView
+        android:id="@+id/checkout_signup_toogle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:background="@drawable/searchfield"
+        android:drawableEnd="@drawable/selector_next"
+        android:fontFamily="roboto_regular"
+        android:gravity="center_vertical"
+        android:padding="@dimen/margin_mid"
+        android:text="Signup"
+        android:textColor="@color/orange_basic"
+        android:textSize="@dimen/text_l" />
+
+    <!-- CONTENT -->
+
+    <LinearLayout
+        android:id="@+id/checkout_signup_form_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_mid"
+        android:layout_marginRight="@dimen/margin_mid"
+        android:orientation="vertical"
+        android:visibility="visible" >
+
+        <!-- FORM -->
+
+        <org.holoeverywhere.widget.EditText
+            android:id="@+id/checkout_signup_form_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_huge"
+            android:layout_marginTop="@dimen/margin_huge"
+            android:background="@drawable/textfield_activated_holo_light"
+            android:drawableEnd="@drawable/ic_star_formular"
+            android:fontFamily="rocoto_regular"
+            android:hint="Email"
+            android:textColorHint="#b3b3b3" />
+
+        <!-- SIGNUP -->
+
+        <org.holoeverywhere.widget.Button
+            android:id="@+id/checkout_signup_form_button_enter"
+            style="@style/button_orange_style"
+            android:contentDescription="@string/login_button_description"
+            android:text="Signup" />
+
+        <!-- DIVIDER -->
+
+        <org.holoeverywhere.widget.TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_huge"
+            android:fontFamily="roboto_regular"
+            android:gravity="center"
+            android:text="OR"
+            android:textColor="@color/grey_divider_light_text"
+            android:textSize="@dimen/text_l" />
+
+        <!-- FACEBOOK -->
+
+        <com.facebook.widget.LoginButton
+            xmlns:fb="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/checkout_signup_form_button_facebook"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20.00dp"
+            android:text="Sign up with Facebook"
+            fb:login_text="Sign up with Facebook" />
+    </LinearLayout>
+
+</LinearLayout>

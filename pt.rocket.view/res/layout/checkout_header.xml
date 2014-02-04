@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="23dp"
+    android:background="@color/grey_dark"
+    android:gravity="center"
+    android:orientation="horizontal" >
+
+    <!-- STEP 1 -->
+
+    <ImageView
+        android:id="@+id/checkout_header_step_1"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:src="@drawable/selector_shop" />
+
+    <!-- STEP 2 -->
+
+    <ImageView
+        android:id="@+id/checkout_header_step_2"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_toRightOf="@+id/checkout_header_step_1"
+        android:paddingLeft="-15dp"
+        android:src="@drawable/abs__ic_go" />
+
+    <!-- STEP 3 -->
+
+    <ImageView
+        android:id="@+id/checkout_header_step_3"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_toRightOf="@+id/checkout_header_step_2"
+        android:paddingLeft="-15dp"
+        android:src="@drawable/abs__ic_go" />
+
+    <!-- STEP 4 -->
+
+    <ImageView
+        android:id="@+id/checkout_header_step_4"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_toRightOf="@+id/checkout_header_step_3"
+        android:paddingLeft="-15dp"
+        android:src="@drawable/abs__ic_go" />
+
+</RelativeLayout>

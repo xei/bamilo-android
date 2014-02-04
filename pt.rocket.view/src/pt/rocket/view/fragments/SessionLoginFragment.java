@@ -31,8 +31,8 @@ import pt.rocket.helpers.GetFacebookLoginHelper;
 import pt.rocket.helpers.GetInitFormHelper;
 import pt.rocket.helpers.GetLoginFormHelper;
 import pt.rocket.helpers.GetLoginHelper;
-import pt.rocket.helpers.SendBillingAddressHelper;
-import pt.rocket.helpers.SendPollAnswerHelper;
+import pt.rocket.helpers.CreateAddressHelper;
+import pt.rocket.helpers.SetPollAnswerHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.pojo.DynamicForm;
 import pt.rocket.pojo.DynamicFormItem;
@@ -525,7 +525,9 @@ public class SessionLoginFragment extends BaseFragment {
 //            
 //            wasAutologin = false;
             
-            // TODO: Only for tests
+            /**
+             * TODO: REMOVE THIS, ONLY FOR TESTS
+             */
             sendRequest(new GetCustomerAddressesHelper(), null, mCallBack); // DONE
             sendRequest(new GetFormPollHelper(), null, mCallBack);          // DONE
             sendRequest(new GetCreateAddressFormHelper(), null, mCallBack); //
@@ -534,15 +536,15 @@ public class SessionLoginFragment extends BaseFragment {
             b.putString("Alice_Module_Checkout_Model_PollingForm[id_poll]", "");
             b.putString("Alice_Module_Checkout_Model_PollingForm[pollRevision]", "");
             b.putString("Alice_Module_Checkout_Model_PollingForm[pollQuestion]", "Facebook");
-            sendRequest(new SendPollAnswerHelper(), b, mCallBack);
+            sendRequest(new SetPollAnswerHelper(), b, mCallBack);
             Bundle b1 = new Bundle();
             b1.putString("billingForm[billingAddressId]", "");
             b1.putString("billingForm[shippingAddressDifferent]", "");
             b1.putString("billingForm[shippingAddressId]", "");
-            sendRequest(new SendBillingAddressHelper(), b1, mCallBack);
+            sendRequest(new CreateAddressHelper(), b1, mCallBack);
             Bundle b2 = new Bundle();
             b2.putString("shippingForm[shippingAddressId]", "");
-            sendRequest(new SendBillingAddressHelper(), b2, mCallBack);
+            sendRequest(new CreateAddressHelper(), b2, mCallBack);
             
             return true;
             

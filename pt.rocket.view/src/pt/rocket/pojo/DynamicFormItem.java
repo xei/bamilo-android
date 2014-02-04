@@ -14,21 +14,20 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.holoeverywhere.FontLoader;
-import org.holoeverywhere.widget.EditText;
 import org.holoeverywhere.widget.Button;
 import org.holoeverywhere.widget.CheckBox;
+import org.holoeverywhere.widget.EditText;
 import org.holoeverywhere.widget.Spinner;
 import org.holoeverywhere.widget.TextView;
-
 
 import pt.rocket.forms.FormField;
 import pt.rocket.forms.IFormField;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.utils.dialogfragments.DialogDatePickerFragment;
-import pt.rocket.utils.dialogfragments.DialogDatePickerFragment.OnDatePickerDialogListener;
 import pt.rocket.utils.InputType;
 import pt.rocket.utils.RadioGroupLayout;
 import pt.rocket.utils.UIUtils;
+import pt.rocket.utils.dialogfragments.DialogDatePickerFragment;
+import pt.rocket.utils.dialogfragments.DialogDatePickerFragment.OnDatePickerDialogListener;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.annotation.SuppressLint;
@@ -47,7 +46,6 @@ import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.RelativeLayout;
-
 
 import com.actionbarsherlock.internal.widget.IcsAdapterView;
 import com.actionbarsherlock.internal.widget.IcsSpinner;
@@ -1183,6 +1181,5 @@ public class DynamicFormItem {
         
         return dataContainer;
     }
-
 
 }
