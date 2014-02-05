@@ -100,6 +100,8 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
 
     private HashMap<String, String> dataCalls;
 
+    private HashMap<String, String>  dataOptions;
+
     /**
      * FormField param constructor
      * 
@@ -116,6 +118,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         this.dataSet = new HashMap<String, String>();
         this.dataValues = new HashMap<String, String>();
         this.dataCalls = new HashMap<String, String>();
+        this.dataOptions = new HashMap<String, String>();
         this.datasetSource = "";
         this.parent = parent;
         this.dataset_Listener = null;
@@ -149,6 +152,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         this.dataSet = new HashMap<String, String>();
         this.dataValues = new HashMap<String, String>();
         this.dataCalls = new HashMap<String, String>();
+        this.dataOptions = new HashMap<String, String>();
         this.datasetSource = "";
         this.parent = parent;
         this.dataset_Listener = null;
@@ -195,6 +199,10 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                 label = jsonObject.optString(RestConstants.JSON_LABEL_TAG);
                 value = !jsonObject.isNull(RestConstants.JSON_VALUE_TAG) ? jsonObject.optString(RestConstants.JSON_VALUE_TAG) : "";
 
+                
+                Log.d(TAG, "FORM FIELD: " + key + " " + name + " " + " " + label + " " + value);
+
+                
                 JSONObject validationObject = jsonObject.optJSONObject(RestConstants.JSON_VALIDATION_TAG);
 
                 if (validationObject != null) {
@@ -204,8 +212,6 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                         result = false;
                     }
                 }
-
-                Log.d(TAG, "KEYS: " + key);
                 
                 dataSet.clear();
                 dataCalls.clear();
@@ -265,6 +271,50 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                         dataValues.put(option.getOption(), option.getValue());
                     }
                 }
+                
+                
+                /**
+                 * TODO: Validate this method to save the shipping methods
+                 */
+                JSONArray dataOptionsArray = null;
+                JSONObject dataOptionsObject = null;
+                if(!jsonObject.isNull("options")) {
+                    dataOptionsArray = jsonObject.optJSONArray("options");
+                    dataOptionsObject = jsonObject.optJSONObject("options");
+                }
+                // 
+                dataOptions.clear();
+                if(dataOptionsArray != null){
+                    for (int i = 0; i < dataOptionsArray.length(); ++i) {
+                        Log.d(TAG, "FORM FIELD: CURRENT KEY " + dataOptionsArray.getString(i));
+                        dataOptions.put(dataOptionsArray.getString(i), dataOptionsArray.getString(i));
+                    }
+                }else if(dataOptionsObject != null){
+                    Iterator<?> it = dataOptionsObject.keys();
+                    while (it.hasNext()) {
+                        String curKey = (String) it.next();
+                        Log.d(TAG, "FORM FIELD: CURRENT KEY " + curKey);
+                        //dataOptions.put(curKey, (String) dataSetObject.get("api_call"));
+                    }
+                }
+                
+                
+                /**
+                 * TODO: Validate this method to save the payment methods
+                 */
+                if(key.equals("payment_method")){
+                    dataSet.clear();
+                    dataOptionsObject = jsonObject.optJSONObject("options");
+                    Iterator<?> it = dataOptionsObject.keys();
+                    while (it.hasNext()) {
+                        String curKey = (String) it.next();
+                        String value = dataOptionsObject.getJSONObject(curKey).getString("value");
+                        Log.d(TAG, "FORM FIELD: CURRENT KEY " + curKey + " VALUE: " + value);
+                        dataSet.put(value, curKey);
+                    }
+                }
+                
+                
                 /**
                  * ########################################################
                  */

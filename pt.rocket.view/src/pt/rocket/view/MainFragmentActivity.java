@@ -24,8 +24,10 @@ import pt.rocket.view.fragments.CategoriesContainerFragment;
 import pt.rocket.view.fragments.ChangeCountryFragment;
 import pt.rocket.view.fragments.CheckoutAboutYouFragment;
 import pt.rocket.view.fragments.CheckoutCreateAddressFragment;
-import pt.rocket.view.fragments.CheckoutCustomerAddressesFragment;
+import pt.rocket.view.fragments.CheckoutFinishFragment;
+import pt.rocket.view.fragments.CheckoutMyAddressesFragment;
 import pt.rocket.view.fragments.CheckoutEditAddressFragment;
+import pt.rocket.view.fragments.CheckoutPaymentMethodsFragment;
 import pt.rocket.view.fragments.CheckoutShippingMethodsFragment;
 import pt.rocket.view.fragments.CheckoutStep5Fragment;
 import pt.rocket.view.fragments.CheckoutWebFragment;
@@ -296,7 +298,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             fragment = CheckoutAboutYouFragment.getInstance(bundle);
             break;
         case MY_ADDRESSES:
-            fragment = CheckoutCustomerAddressesFragment.getInstance(bundle);
+            fragment = CheckoutMyAddressesFragment.getInstance(bundle);
             break;
         case CREATE_ADDRESS:
             fragment = CheckoutCreateAddressFragment.getInstance(bundle);
@@ -306,6 +308,12 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             break;
         case SHIPPING_METHODS:
             fragment = CheckoutShippingMethodsFragment.getInstance(bundle);
+            break;
+        case PAYMENT_METHODS:
+            fragment = CheckoutPaymentMethodsFragment.getInstance(bundle);
+            break;
+        case CHECKOUT_FINISH:
+            fragment = CheckoutFinishFragment.getInstance(bundle);
             break;
             
         default:

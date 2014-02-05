@@ -6,10 +6,6 @@ package pt.rocket.view.fragments;
 import java.util.ArrayList;
 import java.util.EnumSet;
 
-import com.actionbarsherlock.internal.widget.IcsAdapterView;
-import com.actionbarsherlock.internal.widget.IcsAdapterView.OnItemSelectedListener;
-import com.actionbarsherlock.internal.widget.IcsSpinner;
-
 import pt.rocket.constants.FormConstants;
 import pt.rocket.factories.FormFactory;
 import pt.rocket.forms.Form;
@@ -17,34 +13,37 @@ import pt.rocket.forms.FormField;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.AddressCity;
 import pt.rocket.framework.objects.AddressRegion;
-import pt.rocket.framework.objects.Addresses.Address;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.helpers.CreateAddressHelper;
-import pt.rocket.helpers.GetAddressCitiesHelper;
-import pt.rocket.helpers.GetAddressRegionsHelper;
-import pt.rocket.helpers.GetCreateAddressFormHelper;
 import pt.rocket.helpers.GetInitFormHelper;
+import pt.rocket.helpers.address.SetNewAddressHelper;
+import pt.rocket.helpers.address.GetFormAddAddressHelper;
+import pt.rocket.helpers.address.GetCitiesHelper;
+import pt.rocket.helpers.address.GetRegionsHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.pojo.DynamicForm;
 import pt.rocket.pojo.DynamicFormItem;
 import pt.rocket.utils.JumiaApplication;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
-import android.database.CursorJoiner.Result;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.RadioGroup;
 import android.widget.Toast;
+
+import com.actionbarsherlock.internal.widget.IcsAdapterView;
+import com.actionbarsherlock.internal.widget.IcsAdapterView.OnItemSelectedListener;
+import com.actionbarsherlock.internal.widget.IcsSpinner;
+
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -86,7 +85,7 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
                 EnumSet.noneOf(EventType.class),
                 EnumSet.noneOf(MyMenuItem.class), 
                 NavigationAction.MyAccount, 
-                R.string.add_address);
+                BaseActivity.CHECKOUT_STEP_2);
     }
 
     /*
@@ -385,9 +384,6 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         
         try {
             
-            // Hide country
-            DynamicFormItem v = formGenerator.getItemByKey("country");
-            v.getControl().setVisibility(View.GONE);
             // Get Regions
             FormField field = form.theRealFieldMapping.get("fk_customer_address_region");
             String url = field.getDataCalls().get("api_call");
@@ -488,8 +484,8 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
             //values.put("Alice_Module_Customer_Model_AddressForm[country]", "Germany");
             
             Bundle bundle = new Bundle();
-            bundle.putParcelable(CreateAddressHelper.FORM_CONTENT_VALUES, values);
-            triggerContentEvent(new CreateAddressHelper(), bundle, this);
+            bundle.putParcelable(SetNewAddressHelper.FORM_CONTENT_VALUES, values);
+            triggerContentEvent(new SetNewAddressHelper(), bundle, this);
             
         }else {
             Log.d(TAG, "FORM: IS NOT VALID " + values.toString());
@@ -499,7 +495,7 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
     
     private void triggerCreateAddressForm(){
         Log.i(TAG, "TRIGGER: LOGIN FORM");
-        triggerContentEvent(new GetCreateAddressFormHelper(), null, this);
+        triggerContentEvent(new GetFormAddAddressHelper(), null, this);
     }
     
     private void triggerInitForm(){
@@ -511,15 +507,15 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         Log.i(TAG, "TRIGGER: GET REGIONS: " + apiCall);
         Bundle bundle = new Bundle();
         bundle.putString(Constants.BUNDLE_URL_KEY, apiCall);
-        triggerContentEventWithNoLoading(new GetAddressRegionsHelper(), bundle, this);
+        triggerContentEventWithNoLoading(new GetRegionsHelper(), bundle, this);
     }
     
     private void triggerGetCities(String apiCall, int region){
         Log.i(TAG, "TRIGGER: GET REGIONS: " + apiCall);
         Bundle bundle = new Bundle();
         bundle.putString(Constants.BUNDLE_URL_KEY, apiCall);
-        bundle.putInt(GetAddressCitiesHelper.REGION_ID_TAG, region);
-        triggerContentEventWithNoLoading(new GetAddressCitiesHelper(), bundle, this);
+        bundle.putInt(GetCitiesHelper.REGION_ID_TAG, region);
+        triggerContentEventWithNoLoading(new GetCitiesHelper(), bundle, this);
     }
     
     /**

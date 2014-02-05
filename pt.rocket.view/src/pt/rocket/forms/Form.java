@@ -110,7 +110,7 @@ public class Form implements IJSONSerializable, Parcelable {
             }
 
             JSONArray fieldsArray = jsonObject.getJSONArray(RestConstants.JSON_FIELDS_TAG);
-
+            
             for (int i = 0; i < fieldsArray.length(); ++i) {
                 FormField field = new FormField(this);
                 if (field.initialize(fieldsArray.getJSONObject(i))) {
@@ -123,7 +123,7 @@ public class Form implements IJSONSerializable, Parcelable {
                     
                 }
             }
-
+            
             if (null != fieldMapping) {
                 // Remove unsorted fields.
                 FormsMapping.removeUnsortedFields(this, fieldMapping);

@@ -263,5 +263,9 @@
     <string name="edit_address">Edit Address</string>
     <string name="add_address">Add Address</string>
     <string name="my_addresses">My Addresses</string>
+    <string name="shipping_methods">Shipping Methods</string>
+    <string name="payment_methods">Payment Methods</string>
+    <string name="finish_checkout">Finish</string>
+    
     
 </resources>

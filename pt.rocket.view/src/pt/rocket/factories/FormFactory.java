@@ -41,7 +41,10 @@ public class FormFactory {
     private DynamicForm paymentForm = null;
     private DynamicForm registerForm = null;
     private DynamicForm pollForm = null;
+    private DynamicForm shippingForm = null;
     private float scale = 1;
+
+    
 
     /**
      * The constructor is private to prevent the creation of the object
@@ -92,10 +95,6 @@ public class FormFactory {
             parent = createLoginForm(context, form);
             break;
             
-        case FormConstants.PAYMENT_DETAILS_FORM:
-            parent = createPaymentMethodsForm(context, form);
-            break;
-            
         case FormConstants.REGISTRATION_FORM:
             parent = createRegistrationForm(context, form);
             break;
@@ -108,6 +107,13 @@ public class FormFactory {
         case FormConstants.POLL_FORM:
             parent = createPollForm(context, form);
             break;
+        case FormConstants.SHIPPING_DETAILS_FORM:
+            parent = createShippingMethodsForm(context, form);
+            break;
+        case FormConstants.PAYMENT_DETAILS_FORM:
+            parent = createPaymentMethodsForm(context, form);
+            break;
+            
         }
         
         FontLoader.applyDefaultFont( parent.getContainer());
@@ -255,6 +261,26 @@ public class FormFactory {
     
     
     /**
+     * Create the payment methods edit form 
+     * 
+     * @param context The context where the form is to be inserted
+     * @param form The definition provided by the framework
+     * @return An instance of a DynamicForm with the form representation implemented
+     */
+    private DynamicForm createShippingMethodsForm(Context context, Form form) {
+        final int CTRLMARGIN_LEFT = 0;
+        final int CTRLMARGIN_TOP = (int) (5 * scale);
+        final int CTRLMARGIN_RIGHT = 0;
+        final int CTRLMARGIN_BOTTOM = (int) (5 * scale);
+
+        LinearLayout.LayoutParams ctrlParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        ctrlParams.setMargins(CTRLMARGIN_LEFT, CTRLMARGIN_TOP, CTRLMARGIN_RIGHT, CTRLMARGIN_BOTTOM);
+
+        return createGenericForm(context, form, shippingForm, ctrlParams);
+    }
+    
+    
+    /**
      * This is used as base to create the given form. Here all the controls are instantiated.
      * 
      * @param context The context where the form is to be inserted
@@ -284,6 +310,7 @@ public class FormFactory {
             
             DynamicFormItem ctrl;
             
+            // XXX
             ArrayList<IFormField> transformedFields = MetaFormExtractor.generateMetaFields( form.fields );
             MetaFormExtractor.dumpIFormField(transformedFields);
 

@@ -26,6 +26,12 @@ import pt.rocket.helpers.GetFacebookLoginHelper;
 import pt.rocket.helpers.GetInitFormHelper;
 import pt.rocket.helpers.GetLoginFormHelper;
 import pt.rocket.helpers.GetLoginHelper;
+import pt.rocket.helpers.address.GetDefaultBillingAddressHelper;
+import pt.rocket.helpers.address.GetDefaultShippingAddressHelper;
+import pt.rocket.helpers.address.SetBillingAddressHelper;
+import pt.rocket.helpers.address.SetShippingAddressHelper;
+import pt.rocket.helpers.checkout.GetFormPollHelper;
+import pt.rocket.helpers.checkout.SetPollAnswerHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.pojo.DynamicForm;
 import pt.rocket.pojo.DynamicFormItem;
@@ -128,7 +134,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
                 EnumSet.of(EventType.LOGIN_EVENT, EventType.FACEBOOK_LOGIN_EVENT),
                 EnumSet.noneOf(MyMenuItem.class), 
                 NavigationAction.LoginOut, 
-                R.string.login_title);
+                BaseActivity.CHECKOUT_STEP_1);
     }
 
     /*
@@ -516,10 +522,53 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
 //                getBaseActivity().onSwitchFragment(nextFragmentType, null, true);
 //            TrackerDelegator.trackLoginSuccessful(getBaseActivity(), (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY), onAutoLogin, loginOrigin, false);
             
-            // TODO
-            getBaseActivity().onSwitchFragment(FragmentType.MY_ADDRESSES, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            
+            /**
+             * TODO: REMOVE THIS, ONLY FOR TESTS
+             */
+            //sendRequest(new GetFormPollHelper(), null, this);    // DONE
+            //Bundle b = new Bundle();
+            //b.putString("Alice_Module_Checkout_Model_PollingForm[id_poll]", "");
+            //b.putString("Alice_Module_Checkout_Model_PollingForm[pollRevision]", "");
+            //b.putString("Alice_Module_Checkout_Model_PollingForm[pollQuestion]", "Facebook");
+            //sendRequest(new SetPollAnswerHelper(), b, this);
+            
+            //Bundle b1 = new Bundle();
+            //b1.putString("billingForm[billingAddressId]", "4040");
+            //b1.putString("billingForm[shippingAddressDifferent]", "1");
+            //b1.putString("billingForm[shippingAddressId]", "4040");
+            //sendRequest(new SetBillingAddressHelper(), b1, this);
+            //Bundle b2 = new Bundle();
+            //b2.putString("shippingForm[shippingAddressId]", "4040");
+            //sendRequest(new SetShippingAddressHelper(), b2, this);
+            
+            sendRequest(new GetDefaultBillingAddressHelper(), null, this);
+            sendRequest(new GetDefaultShippingAddressHelper(), null, this);
             
             return true;
+            
+            // TODO: Only for tests
+           case GET_POLL_FORM_EVENT:
+               Log.d(TAG, "RECEIVED GET_POLL_FORM_EVENT");
+               return true;
+           case SEND_POLL_ANSWER_EVENT:
+               Log.d(TAG, "RECEIVED SEND_POLL_ANSWER_EVENT");
+               return true;
+           case SET_BILLING_ADDRESS_EVENT:
+               Log.d(TAG, "RECEIVED SET_BILLING_ADDRESS_EVENT");
+               return true;
+           case SET_SHIPPING_ADDRESS_EVENT:
+               Log.d(TAG, "RECEIVED SET_SHIPPING_ADDRESS_EVENT");               
+               return true;
+           case GET_DEFAULT_BILLING_ADDRESS_EVENT:
+               Log.d(TAG, "RECEIVED GET_DEFAULT_BILLING_ADDRESS_EVENT");
+               return true;
+           case GET_DEFAULT_SHIPPING_ADDRESS_EVENT:
+               Log.d(TAG, "RECEIVED GET_DEFAULT_SHIPPING_ADDRESS_EVENT");
+               // Next step
+               getBaseActivity().onSwitchFragment(FragmentType.MY_ADDRESSES, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+               return true;
+
             
         case GET_LOGIN_FORM_EVENT:
             Form form = (Form) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);

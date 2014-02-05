@@ -15,25 +15,26 @@ import pt.rocket.factories.FormFactory;
 import pt.rocket.forms.Form;
 import pt.rocket.forms.FormField;
 import pt.rocket.framework.ErrorCode;
+import pt.rocket.framework.objects.Address;
 import pt.rocket.framework.objects.AddressCity;
 import pt.rocket.framework.objects.AddressRegion;
-import pt.rocket.framework.objects.Addresses.Address;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.helpers.CreateAddressHelper;
-import pt.rocket.helpers.EditAddressHelper;
-import pt.rocket.helpers.GetAddressCitiesHelper;
-import pt.rocket.helpers.GetAddressRegionsHelper;
-import pt.rocket.helpers.GetCreateAddressFormHelper;
-import pt.rocket.helpers.GetEditAddressFormHelper;
 import pt.rocket.helpers.GetInitFormHelper;
+import pt.rocket.helpers.address.SetNewAddressHelper;
+import pt.rocket.helpers.address.SetEditedAddressHelper;
+import pt.rocket.helpers.address.GetCitiesHelper;
+import pt.rocket.helpers.address.GetRegionsHelper;
+import pt.rocket.helpers.address.GetFormAddAddressHelper;
+import pt.rocket.helpers.address.GetFormEditAddressHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.pojo.DynamicForm;
 import pt.rocket.pojo.DynamicFormItem;
 import pt.rocket.utils.JumiaApplication;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
@@ -95,7 +96,7 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
                 EnumSet.noneOf(EventType.class),
                 EnumSet.noneOf(MyMenuItem.class), 
                 NavigationAction.MyAccount, 
-                R.string.edit_address);
+                BaseActivity.CHECKOUT_STEP_2);
     }
 
     /*
@@ -415,8 +416,8 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
             values.put("Alice_Module_Customer_Model_AddressForm[fk_customer_address_city]", "419");
             
             Bundle bundle = new Bundle();
-            bundle.putParcelable(EditAddressHelper.FORM_CONTENT_VALUES, values);
-            triggerContentEvent(new EditAddressHelper(), bundle, this);
+            bundle.putParcelable(SetEditedAddressHelper.FORM_CONTENT_VALUES, values);
+            triggerContentEvent(new SetEditedAddressHelper(), bundle, this);
             
         }else {
             Log.d(TAG, "FORM: IS NOT VALID " + values.toString());
@@ -426,7 +427,7 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
     
     private void triggerEditAddressForm(){
         Log.i(TAG, "TRIGGER: EDIT FORM");
-        triggerContentEvent(new GetEditAddressFormHelper(), null, this);
+        triggerContentEvent(new GetFormEditAddressHelper(), null, this);
     }
     
     private void triggerInitForm(){
@@ -438,15 +439,15 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
         Log.i(TAG, "TRIGGER: GET REGIONS: " + apiCall);
         Bundle bundle = new Bundle();
         bundle.putString(Constants.BUNDLE_URL_KEY, apiCall);
-        triggerContentEventWithNoLoading(new GetAddressRegionsHelper(), bundle, this);
+        triggerContentEventWithNoLoading(new GetRegionsHelper(), bundle, this);
     }
     
     private void triggerGetCities(String apiCall, int region){
         Log.i(TAG, "TRIGGER: GET REGIONS: " + apiCall);
         Bundle bundle = new Bundle();
         bundle.putString(Constants.BUNDLE_URL_KEY, apiCall);
-        bundle.putInt(GetAddressCitiesHelper.REGION_ID_TAG, region);
-        triggerContentEventWithNoLoading(new GetAddressCitiesHelper(), bundle, this);
+        bundle.putInt(GetCitiesHelper.REGION_ID_TAG, region);
+        triggerContentEventWithNoLoading(new GetCitiesHelper(), bundle, this);
     }
     
     /**

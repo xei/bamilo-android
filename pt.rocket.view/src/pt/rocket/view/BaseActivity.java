@@ -348,8 +348,13 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
      * @author sergiopereira
      */
 
-    public void updateBaseComponents(Set<MyMenuItem> enabledMenuItems, NavigationAction action,
-            int titleResId) {
+    
+    public static final int CHECKOUT_STEP_1 = -11;
+    public static final int CHECKOUT_STEP_2 = -22;
+    public static final int CHECKOUT_STEP_3 = -33;
+    public static final int CHECKOUT_STEP_4 = -44;
+    
+    public void updateBaseComponents(Set<MyMenuItem> enabledMenuItems, NavigationAction action, int titleResId) {
         // Update options menu and search bar
         menuItems = enabledMenuItems;
         if (action != NavigationAction.Country)
@@ -360,15 +365,21 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         this.action = action != null ? action : NavigationAction.Unknown;
         updateSlidingMenu();
         // Update the title of fragment
-        if (titleResId == 0) {
+        
+        if(setCheckoutHeader(titleResId))
+            Log.d(TAG, "SET CHECKOUT STEP");
+        else if (titleResId == 0) {
             hideTitle();
-
             findViewById(R.id.totalProducts).setVisibility(View.GONE);
-        }
-        else
-            setTitle(titleResId);
+        } else setTitle(titleResId);
+        
     }
-
+    
+    
+    
+    
+    
+    
     public void updateActionForCountry(NavigationAction action) {
         this.action = action != null ? action : NavigationAction.Unknown;
         updateSlidingMenu();
@@ -1848,4 +1859,116 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         findViewById(R.id.fallback_best).setSelected(true);
 
     }
+    
+    
+    
+    /**
+     * Set the current checkout step otherwise return false
+     * @param checkoutStep
+     * @return true/false
+     */
+    private boolean setCheckoutHeader(int checkoutStep){
+        int visibility = View.VISIBLE;
+        boolean result = true;
+        switch (checkoutStep) {
+        case CHECKOUT_STEP_1:
+            selectCheckoutStep(CHECKOUT_STEP_1);
+            unSelectCheckoutStep(CHECKOUT_STEP_2);
+            unSelectCheckoutStep(CHECKOUT_STEP_3);
+            unSelectCheckoutStep(CHECKOUT_STEP_4);
+            break;
+        case CHECKOUT_STEP_2:
+            unSelectCheckoutStep(CHECKOUT_STEP_1);
+            selectCheckoutStep(CHECKOUT_STEP_2);
+            unSelectCheckoutStep(CHECKOUT_STEP_3);
+            unSelectCheckoutStep(CHECKOUT_STEP_4);
+            break;
+        case CHECKOUT_STEP_3:
+            unSelectCheckoutStep(CHECKOUT_STEP_1);
+            unSelectCheckoutStep(CHECKOUT_STEP_2);
+            selectCheckoutStep(CHECKOUT_STEP_3);
+            unSelectCheckoutStep(CHECKOUT_STEP_4);
+            break;
+        case CHECKOUT_STEP_4:
+            unSelectCheckoutStep(CHECKOUT_STEP_1);
+            unSelectCheckoutStep(CHECKOUT_STEP_2);
+            unSelectCheckoutStep(CHECKOUT_STEP_3);
+            selectCheckoutStep(CHECKOUT_STEP_4);
+            break;
+        default:
+            visibility = View.GONE;
+            result = false;
+            break;
+        }
+        // Set header visibility
+        findViewById(R.id.checkout_header).setVisibility(visibility);
+        // Return value
+        return result;
+    }
+    
+    /**
+     * Unselect the a checkout step 
+     * @param step
+     * @author sergiopereira
+     */
+    private void unSelectCheckoutStep(int step){
+        switch (step) {
+        case CHECKOUT_STEP_1:
+            findViewById(R.id.checkout_header_step_1).setSelected(false);
+            findViewById(R.id.checkout_header_step_1_icon).setSelected(false);
+            findViewById(R.id.checkout_header_step_1_text).setVisibility(View.GONE);
+            break;
+        case CHECKOUT_STEP_2:
+            findViewById(R.id.checkout_header_step_2).setSelected(false);
+            findViewById(R.id.checkout_header_step_2_icon).setSelected(false);
+            findViewById(R.id.checkout_header_step_2_text).setVisibility(View.GONE);
+            break;
+        case CHECKOUT_STEP_3:
+            findViewById(R.id.checkout_header_step_3).setSelected(false);
+            findViewById(R.id.checkout_header_step_3_icon).setSelected(false);
+            findViewById(R.id.checkout_header_step_3_text).setVisibility(View.GONE);
+            break;
+        case CHECKOUT_STEP_4:
+            findViewById(R.id.checkout_header_step_4).setSelected(false);
+            findViewById(R.id.checkout_header_step_4_icon).setSelected(false);
+            findViewById(R.id.checkout_header_step_4_text).setVisibility(View.GONE);
+            break;
+        default:
+            break;
+        }
+    }
+    
+    /**
+     * Set the selected checkout step 
+     * @param step
+     * @author sergiopereira
+     */
+    private void selectCheckoutStep(int step){
+        switch (step) {
+        case CHECKOUT_STEP_1:
+            findViewById(R.id.checkout_header_step_1).setSelected(true);
+            findViewById(R.id.checkout_header_step_1_icon).setSelected(true);
+            findViewById(R.id.checkout_header_step_1_text).setVisibility(View.VISIBLE);
+            break;
+        case CHECKOUT_STEP_2:
+            findViewById(R.id.checkout_header_step_2).setSelected(true);
+            findViewById(R.id.checkout_header_step_2_icon).setSelected(true);
+            findViewById(R.id.checkout_header_step_2_text).setVisibility(View.VISIBLE);
+            break;
+        case CHECKOUT_STEP_3:
+            findViewById(R.id.checkout_header_step_3).setSelected(true);
+            findViewById(R.id.checkout_header_step_3_icon).setSelected(true);
+            findViewById(R.id.checkout_header_step_3_text).setVisibility(View.VISIBLE);
+            break;
+        case CHECKOUT_STEP_4:
+            findViewById(R.id.checkout_header_step_4).setSelected(true);
+            findViewById(R.id.checkout_header_step_4_icon).setSelected(true);
+            findViewById(R.id.checkout_header_step_4_text).setVisibility(View.VISIBLE);
+            break;
+        default:
+            break;
+        }
+    }
+    
+    
 }

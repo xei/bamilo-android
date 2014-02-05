@@ -1,47 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="23dp"
+    android:layout_height="25dp"
     android:background="@color/grey_dark"
     android:gravity="center"
-    android:orientation="horizontal" >
+    android:orientation="horizontal"
+    android:paddingBottom="2dp"
+    android:paddingTop="2dp" >
 
     <!-- STEP 1 -->
 
-    <ImageView
+    <LinearLayout
         android:id="@+id/checkout_header_step_1"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:src="@drawable/selector_shop" />
+        android:background="@drawable/selector_checkout_step_back"
+        android:gravity="center"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp" >
+
+        <ImageView
+            android:id="@+id/checkout_header_step_1_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/selector_checkout_step_1_icon" />
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/checkout_header_step_1_text"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:fontFamily="roboto_bold"
+            android:gravity="left|center"
+            android:paddingLeft="5dp"
+            android:text="1. About you"
+            android:textColor="@android:color/white"
+            android:visibility="gone" />
+    </LinearLayout>
 
     <!-- STEP 2 -->
 
-    <ImageView
+    <LinearLayout
         android:id="@+id/checkout_header_step_2"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_toRightOf="@+id/checkout_header_step_1"
-        android:paddingLeft="-15dp"
-        android:src="@drawable/abs__ic_go" />
+        android:background="@drawable/selector_checkout_step_back"
+        android:gravity="center"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp" >
+
+        <ImageView
+            android:id="@+id/checkout_header_step_2_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/selector_checkout_step_2_icon" />
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/checkout_header_step_2_text"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:fontFamily="roboto_bold"
+            android:gravity="left|center"
+            android:paddingLeft="5dp"
+            android:text="2. Address"
+            android:textColor="@android:color/white"
+            android:visibility="gone" />
+    </LinearLayout>
 
     <!-- STEP 3 -->
 
-    <ImageView
+    <LinearLayout
         android:id="@+id/checkout_header_step_3"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_toRightOf="@+id/checkout_header_step_2"
-        android:paddingLeft="-15dp"
-        android:src="@drawable/abs__ic_go" />
+        android:background="@drawable/selector_checkout_step_back"
+        android:gravity="center"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp" >
+
+        <ImageView
+            android:id="@+id/checkout_header_step_3_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/selector_checkout_step_3_icon" />
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/checkout_header_step_3_text"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:fontFamily="roboto_bold"
+            android:gravity="left|center"
+            android:paddingLeft="5dp"
+            android:text="3. Shipping"
+            android:textColor="@android:color/white"
+            android:visibility="gone" />
+    </LinearLayout>
 
     <!-- STEP 4 -->
 
-    <ImageView
+    <LinearLayout
         android:id="@+id/checkout_header_step_4"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_toRightOf="@+id/checkout_header_step_3"
-        android:paddingLeft="-15dp"
-        android:src="@drawable/abs__ic_go" />
+        android:background="@drawable/selector_checkout_step_back"
+        android:gravity="center"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp" >
+
+        <ImageView
+            android:id="@+id/checkout_header_step_4_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/selector_checkout_step_4_icon" />
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/checkout_header_step_4_text"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:fontFamily="roboto_bold"
+            android:gravity="left|center"
+            android:paddingLeft="5dp"
+            android:text="4. Payment"
+            android:textColor="@android:color/white"
+            android:visibility="gone" />
+    </LinearLayout>
 
 </RelativeLayout>

@@ -5,16 +5,22 @@ package pt.rocket.view.fragments;
 
 import java.util.EnumSet;
 
+import pt.rocket.constants.FormConstants;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
+import pt.rocket.factories.FormFactory;
+import pt.rocket.forms.Form;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.helpers.GetShippingMethodsHelper;
+import pt.rocket.helpers.checkout.GetShippingMethodsHelper;
+import pt.rocket.helpers.checkout.SetShippingMethodHelper;
 import pt.rocket.interfaces.IResponseCallback;
+import pt.rocket.pojo.DynamicForm;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.Intent;
@@ -52,15 +58,21 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
 
     private ViewGroup cartContainer;
 
+    private Form formResponse;
+
+    private DynamicForm formGenerator;
+
+    private ViewGroup formContainer;
+
     /**
      * Empty constructor
      */
     public CheckoutShippingMethodsFragment() {
-        super(EnumSet.of(EventType.SHIPPING_METHODS_EVENT), 
+        super(EnumSet.of(EventType.GET_SHIPPING_METHODS_EVENT), 
                 EnumSet.noneOf(EventType.class),
                 EnumSet.noneOf(MyMenuItem.class), 
                 NavigationAction.MyAccount, 
-                R.string.login_title);
+                BaseActivity.CHECKOUT_STEP_3);
     }
 
     /*
@@ -98,7 +110,7 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
     public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState) {
         super.onCreateView(inflater, viewGroup, savedInstanceState);
         Log.i(TAG, "ON CREATE VIEW");
-        return inflater.inflate(R.layout.checkout_customer_addresses, viewGroup, false);
+        return inflater.inflate(R.layout.checkout_shipping_methods, viewGroup, false);
     }
     
     /*
@@ -113,10 +125,10 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
         shippingMethodsContainer = (ViewGroup) view.findViewById(R.id.checkout_shipping_methods_container);
         cartContainer = (ViewGroup) view.findViewById(R.id.checkout_shipping_cart_container);
         // Buttons
-        view.findViewById(R.id.checkout_addresses_button_enter).setOnClickListener(this);
+        view.findViewById(R.id.checkout_shipping_button_enter).setOnClickListener(this);
         
         // Get and show addresses
-        triggerGetSHippingMethods();
+        triggerGetShippingMethods();
                 
     }
     
@@ -214,6 +226,21 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
     
     
     
+    /**
+     * Load the dynamic form
+     * 
+     * @param form
+     */
+    private void loadForm(Form form) {
+        Log.i(TAG, "LOAD FORM");
+        formResponse = form;
+        formGenerator = FormFactory.getSingleton().CreateForm(FormConstants.SHIPPING_DETAILS_FORM, getActivity(), form);
+        shippingMethodsContainer.removeAllViews();
+        shippingMethodsContainer.addView(formGenerator.getContainer());        
+        shippingMethodsContainer.refreshDrawableState();
+        getBaseActivity().showContentContainer(false);
+    }
+    
     
     
     /**
@@ -225,23 +252,17 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
         // Get view id
         int id = view.getId();
         // Submit
-        if(id == R.id.checkout_addresses_button_enter) onClickSubmitAddressesButton();
-        // Add new
-        else if(id == R.id.checkout_addresses_button_add) onClickCreateAddressButton(); 
+        if(id == R.id.checkout_shipping_button_enter) onClickSubmitShippingMethod();
         // Unknown view
         else Log.i(TAG, "ON CLICK: UNKNOWN VIEW");
     }
     
     
     
-    private void onClickSubmitAddressesButton() {
+    private void onClickSubmitShippingMethod() {
         Log.i(TAG, "ON CLICK: LOGIN");
         //triggerSubmitAddresses(null, null);
-    }
-    
-    private void onClickCreateAddressButton() {
-        Log.i(TAG, "ON CLICK: LOGIN");
-        getBaseActivity().onSwitchFragment(FragmentType.CREATE_ADDRESS, null, FragmentController.ADD_TO_BACK_STACK);
+        getBaseActivity().onSwitchFragment(FragmentType.PAYMENT_METHODS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
     }
     
    
@@ -253,14 +274,17 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         Log.i(TAG, "ON SUCCESS EVENT: " + eventType);
         
-        if(eventType == EventType.SHIPPING_METHODS_EVENT) {
-            Log.d(TAG, "RECEIVED SHIPPING_METHODS_EVENT");
-            // Save and load form
-        } 
-        
-        // TODO: SET SHIPPING METHOD
-        else if(eventType == EventType.SET_SHIPPING_ADDRESS_EVENT) {
-            Log.d(TAG, "RECEIVED SEND_BILLING_ADDRESS_EVENT");
+        switch (eventType) {
+        case GET_SHIPPING_METHODS_EVENT:
+            Log.d(TAG, "RECEIVED GET_SHIPPING_METHODS_EVENT");
+            Form form = (Form) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            loadForm(form);
+            break;
+        case SET_SHIPPING_METHOD_EVENT:
+            Log.d(TAG, "RECEIVED SET_SHIPPING_METHOD_EVENT");
+            break;
+        default:
+            break;
         }
         
         return true;
@@ -279,9 +303,16 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         Log.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
-        
-        if (eventType == EventType.SHIPPING_METHODS_EVENT) {
+
+        switch (eventType) {
+        case GET_SHIPPING_METHODS_EVENT:
             Log.d(TAG, "RECEIVED GET_SHIPPING_METHODS_EVENT");
+            break;
+        case SET_SHIPPING_METHOD_EVENT:
+            Log.d(TAG, "RECEIVED SET_SHIPPING_METHOD_EVENT");
+            break;
+        default:
+            break;
         }
         
         return false;
@@ -291,13 +322,12 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
      * ############# REQUESTS #############
      */
     
-    private void triggerSubmitShipping() {
+    private void triggerSubmitShippingMethod() {
         Log.i(TAG, "TRIGGER: SET SHIPPING METHOD");
-        // TODO: SET SHIPPING METHOD
-        // triggerContentEvent(new CreateAddressHelper(), null, this);
+        triggerContentEvent(new SetShippingMethodHelper(), null, this);
     }
     
-    private void triggerGetSHippingMethods(){
+    private void triggerGetShippingMethods(){
         Log.i(TAG, "TRIGGER: GET SHIPPING METHODS");
         triggerContentEvent(new GetShippingMethodsHelper(), null, this);
     }
@@ -318,5 +348,5 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
     public void onRequestComplete(Bundle bundle) {
         onSuccessEvent(bundle);
     }
-
+    
 }

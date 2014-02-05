@@ -117,11 +117,19 @@ public enum EventType {
 	
 	GET_CUSTOMER_ADDRESSES_EVENT("https:/customer/address/list/", RestContract.MIN_CACHE_TIME),
 	
+	GET_DEFAULT_BILLING_ADDRESS_EVENT("https:/customer/billingaddress/", RestContract.NO_CACHE),
+	
+	GET_DEFAULT_SHIPPING_ADDRESS_EVENT("https:/customer/shippingaddress/", RestContract.NO_CACHE),
+	
 	CREATE_ADDRESS_EVENT("https:/customer/address/create/", RestContract.NO_CACHE),
 	
 	EDIT_ADDRESS_EVENT("https:/customer/address/save/", RestContract.NO_CACHE),
 	
 	// DELETE_ADDRESS_EVENT("https:/customer/address/delete/", RestContract.NO_CACHE),
+	
+	SET_BILLING_ADDRESS_EVENT("https:/multistep/billing/", RestContract.NO_CACHE),
+	
+	SET_SHIPPING_ADDRESS_EVENT("https:/multistep/shipping/", RestContract.NO_CACHE),
 	
 	GET_REGIONS_EVENT("https:/customer/address/regions/", RestContract.MAX_CACHE_TIME),
 	
@@ -131,13 +139,13 @@ public enum EventType {
 	
 	SEND_POLL_ANSWER_EVENT("https:/multistep/checkoutpoll/", RestContract.NO_CACHE),
 	
-	SET_BILLING_ADDRESS_EVENT("https:/multistep/billing/", RestContract.NO_CACHE),
+	GET_SHIPPING_METHODS_EVENT("https:/multistep/shippingmethod/", RestContract.DEFAULT_CACHE_TIME),
 	
-	SET_SHIPPING_ADDRESS_EVENT("https:/multistep/shipping/", RestContract.NO_CACHE),
+	SET_SHIPPING_METHOD_EVENT("https:/multistep/shippingmethod/", RestContract.DEFAULT_CACHE_TIME),
 	
-	SHIPPING_METHODS_EVENT("https:/multistep/shippingmethod/", RestContract.DEFAULT_CACHE_TIME),
+	GET_PAYMENT_METHODS_EVENT("https:/multistep/paymentmethod/", RestContract.DEFAULT_CACHE_TIME),
 	
-	PAYMENT_METHODS_EVENT("https:/multistep/paymentmethod/", RestContract.DEFAULT_CACHE_TIME),
+	SET_PAYMENT_METHOD_EVENT("https:/multistep/paymentmethod/", RestContract.DEFAULT_CACHE_TIME),
 	
 	CHECKOUT_FINISH_EVENT("https:/multistep/finish/", RestContract.NO_CACHE)
 		
