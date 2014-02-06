@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" >
+
+    <!-- CREATE ADDRESS -->
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.75"
+        android:fillViewport="true"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <!-- FORM -->
+
+            <LinearLayout
+                android:id="@+id/checkout_address_form_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_midhuge"
+                android:layout_marginTop="@dimen/margin_midhuge"
+                android:orientation="vertical" >
+            </LinearLayout>
+
+            <org.holoeverywhere.widget.Button
+                android:id="@+id/checkout_address_button_enter"
+                style="@style/button_orange_style"
+                android:contentDescription="@string/login_button_description"
+                android:text="Next" />
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- DIVIDER -->
+
+    <View
+        style="@style/divider_vertical"
+        android:layout_marginBottom="@dimen/margin_mid"
+        android:layout_marginTop="@dimen/margin_mid"
+        android:background="@color/orange_basic" />
+
+    <!-- ORDER SUMMARY -->
+
+    <fragment
+        android:name="pt.rocket.view.fragments.CheckoutSummaryFragment"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/margin_mid"
+        android:layout_marginRight="@dimen/margin_mid"
+        android:layout_weight="0.25" />
+
+</LinearLayout>

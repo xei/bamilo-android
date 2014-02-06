@@ -29,14 +29,23 @@
         </LinearLayout>
     </ScrollView>
 
+    <!-- DIVIDER -->
+
+    <View
+        style="@style/divider_vertical"
+        android:layout_marginBottom="@dimen/margin_mid"
+        android:layout_marginTop="@dimen/margin_mid"
+        android:background="@color/orange_basic" />
+
     <!-- ORDER SUMMARY -->
 
     <fragment
-        android:name="pt.rocket.view.fragments.ShoppingCartFragment"
+        android:name="pt.rocket.view.fragments.CheckoutSummaryFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="0.25"
-        android:tag="shopping_cart" />
+        android:layout_marginLeft="@dimen/margin_mid"
+        android:layout_marginRight="@dimen/margin_mid"
+        android:layout_weight="0.25" />
 
     <FrameLayout
         android:id="@+id/checkout_order_summary_frame"

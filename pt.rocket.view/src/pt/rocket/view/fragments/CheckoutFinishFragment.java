@@ -100,7 +100,7 @@ public class CheckoutFinishFragment extends BaseFragment implements OnClickListe
     public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState) {
         super.onCreateView(inflater, viewGroup, savedInstanceState);
         Log.i(TAG, "ON CREATE VIEW");
-        return inflater.inflate(R.layout.checkout_customer_addresses, viewGroup, false);
+        return inflater.inflate(R.layout.checkout_my_addresses, viewGroup, false);
     }
     
     /*
