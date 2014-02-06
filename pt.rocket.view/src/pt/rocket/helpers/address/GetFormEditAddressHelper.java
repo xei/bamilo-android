@@ -29,6 +29,8 @@ public class GetFormEditAddressHelper extends BaseHelper {
     
     private static String TAG = GetFormEditAddressHelper.class.getSimpleName();
 
+    private static final EventType type = EventType.GET_EDIT_ADDRESS_FORM_EVENT;
+    
     /*
      * (non-Javadoc)
      * @see pt.rocket.helpers.BaseHelper#generateRequestBundle(android.os.Bundle)
@@ -36,13 +38,13 @@ public class GetFormEditAddressHelper extends BaseHelper {
     @Override
     public Bundle generateRequestBundle(Bundle args) {
         Log.d(TAG, "REQUEST");
-        String url = JumiaApplication.INSTANCE.getFormDataRegistry().get(EventType.GET_EDIT_ADDRESS_FORM_EVENT.action).getUrl();
+        String url = JumiaApplication.INSTANCE.getFormDataRegistry().get(type.action).getUrl();
         Bundle bundle = new Bundle();
         bundle.putString(Constants.BUNDLE_URL_KEY, url);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
         bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_EDIT_ADDRESS_FORM_EVENT);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
         return bundle;
     }
 
@@ -77,7 +79,7 @@ public class GetFormEditAddressHelper extends BaseHelper {
             return parseErrorBundle(bundle);
         }
         Log.i(TAG, "PARSE JSON: SUCCESS");
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_EDIT_ADDRESS_FORM_EVENT);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
         return bundle;
     }
     
@@ -88,7 +90,7 @@ public class GetFormEditAddressHelper extends BaseHelper {
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
         Log.d(TAG, "PARSE ERROR BUNDLE");
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_EDIT_ADDRESS_FORM_EVENT);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }
@@ -100,7 +102,7 @@ public class GetFormEditAddressHelper extends BaseHelper {
     @Override
     public Bundle parseResponseErrorBundle(Bundle bundle) {
         Log.d(TAG, "PARSE RESPONSE BUNDLE");
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_EDIT_ADDRESS_FORM_EVENT);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }

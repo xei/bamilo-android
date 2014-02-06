@@ -34,17 +34,14 @@
 
         <!-- FORM -->
 
-        <org.holoeverywhere.widget.EditText
-            android:id="@+id/checkout_signup_form_email"
+        <LinearLayout
+            android:id="@+id/checkout_signup_form_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_huge"
-            android:layout_marginTop="@dimen/margin_huge"
-            android:background="@drawable/textfield_activated_holo_light"
-            android:drawableEnd="@drawable/ic_star_formular"
-            android:fontFamily="rocoto_regular"
-            android:hint="Email"
-            android:textColorHint="#b3b3b3" />
+            android:layout_marginBottom="@dimen/margin_midhuge"
+            android:layout_marginTop="@dimen/margin_midhuge"
+            android:orientation="vertical" >
+        </LinearLayout>
 
         <!-- SIGNUP -->
 

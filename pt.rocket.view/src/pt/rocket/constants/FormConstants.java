@@ -29,5 +29,6 @@ public class FormConstants {
     public final static int PAYMENT_DETAILS_CHECKOUT_FORM = 7;
     public final static int POLL_FORM = 8;
     public static final int SHIPPING_DETAILS_FORM = 9;
+    public static final int SIGNUP_FORM = 10;
 
 }

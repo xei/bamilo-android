@@ -17,6 +17,7 @@ import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
 import pt.rocket.helpers.BaseHelper;
 import pt.rocket.helpers.HelperPriorityConfiguration;
+import pt.rocket.utils.JumiaApplication;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -28,6 +29,8 @@ public class GetFormPollHelper extends BaseHelper {
     
     private static String TAG = GetFormPollHelper.class.getSimpleName();
 
+    private static final EventType type = EventType.GET_POLL_FORM_EVENT;
+    
     /*
      * (non-Javadoc)
      * @see pt.rocket.helpers.BaseHelper#generateRequestBundle(android.os.Bundle)
@@ -36,10 +39,11 @@ public class GetFormPollHelper extends BaseHelper {
     public Bundle generateRequestBundle(Bundle args) {
         Log.d(TAG, "REQUEST");
         Bundle bundle = new Bundle();
-        bundle.putString(Constants.BUNDLE_URL_KEY, EventType.GET_POLL_FORM_EVENT.action);
+        String url = JumiaApplication.INSTANCE.getFormDataRegistry().get(type.action).getUrl();
+        bundle.putString(Constants.BUNDLE_URL_KEY, url);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_POLL_FORM_EVENT);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
         bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
         return bundle;
     }
@@ -72,7 +76,7 @@ public class GetFormPollHelper extends BaseHelper {
             Log.d(TAG, "PARSE JSON", e);
             return parseErrorBundle(bundle);
         }
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_POLL_FORM_EVENT);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
         return bundle;
     }
     
@@ -83,7 +87,7 @@ public class GetFormPollHelper extends BaseHelper {
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
         android.util.Log.d(TAG, "PARSE ERROR BUNDLE");
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_POLL_FORM_EVENT);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }
@@ -95,7 +99,7 @@ public class GetFormPollHelper extends BaseHelper {
     @Override
     public Bundle parseResponseErrorBundle(Bundle bundle) {
         android.util.Log.d(TAG, "PARSE RESPONSE BUNDLE");
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_POLL_FORM_EVENT);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }

@@ -2,7 +2,7 @@ package pt.rocket.controllers;
 
 import java.lang.ref.WeakReference;
 
-import pt.rocket.helpers.GetLogoutHelper;
+import pt.rocket.helpers.session.GetLogoutHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.JumiaApplication;
 import pt.rocket.utils.TrackerDelegator;

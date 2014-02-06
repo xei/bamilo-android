@@ -111,6 +111,14 @@ public enum EventType {
 	 * NATIVE CHECKOUT EVENTS
 	 */
 	
+	GET_SIGNUP_FORM_EVENT("registersignup", RestContract.MAX_CACHE_TIME),
+	
+	SET_SIGNUP_EVENT("https:/customer/create/", RestContract.NO_CACHE),
+	
+	GET_POLL_FORM_EVENT("poll", RestContract.MAX_CACHE_TIME),
+	
+	SET_POLL_ANSWER_EVENT("https:/finish/checkoutpoll/", RestContract.NO_CACHE),
+	
 	GET_CREATE_ADDRESS_FORM_EVENT("addresscreate", RestContract.MAX_CACHE_TIME),
 	
 	GET_EDIT_ADDRESS_FORM_EVENT("addressedit", RestContract.MAX_CACHE_TIME),
@@ -135,10 +143,6 @@ public enum EventType {
 	
 	GET_CITIES_EVENT("https:/customer/address/cities/", RestContract.MAX_CACHE_TIME),
 	
-	GET_POLL_FORM_EVENT("https:/forms/poll/", RestContract.MAX_CACHE_TIME),
-	
-	SEND_POLL_ANSWER_EVENT("https:/multistep/checkoutpoll/", RestContract.NO_CACHE),
-	
 	GET_SHIPPING_METHODS_EVENT("https:/multistep/shippingmethod/", RestContract.DEFAULT_CACHE_TIME),
 	
 	SET_SHIPPING_METHOD_EVENT("https:/multistep/shippingmethod/", RestContract.DEFAULT_CACHE_TIME),
@@ -148,14 +152,6 @@ public enum EventType {
 	SET_PAYMENT_METHOD_EVENT("https:/multistep/paymentmethod/", RestContract.DEFAULT_CACHE_TIME),
 	
 	CHECKOUT_FINISH_EVENT("https:/multistep/finish/", RestContract.NO_CACHE)
-		
-//	customer/address/create
-//	customer/address/save
-//	customer/address/list
-//	customer/shippingaddress
-//	customer/billingaddress
-//	customer/address/makeDefaultShipping
-//	customer/address/makeDefaultBilling
 	
 	;
     
