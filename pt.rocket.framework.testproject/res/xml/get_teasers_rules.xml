@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <data type="jsonarray" children="true" method="getJSONArray" optional="false">
+    	<homepage_id type="integer" children="false" method="getInt" optional="false"/>
+		<homepage_title type="string" children="false" method="getString" optional="false"/>
+		<homepage_default type="integer" children="false" method="getInt" optional="false"/>
+		<homepage_layout type="string" children="false" method="getString" optional="false"/>
+		<data type="jsonarray" children="true" method="getJSONArray" optional="false">
+		    <group_type type="integer" children="false" method="getInt" optional="false"/>
+			<group_title type="string" children="false" method="getString" optional="false"/>
+			<data type="jsonarray" children="true" method="getJSONArray" optional="false">
+			    <id type="integer" children="false" method="getInt" optional="false"/>
+			    <attributes type="jsonobject" children="true" method="getJSONObject" optional="true">
+			        <description type="string" children="false" method="getString" optional="true"/>
+			        <image_list type="jsonarray" children="true" method="getJSONArray" optional="true">
+			            <image_url type="string" children="false" method="getString" optional="true"/>
+			            <product_url type="string" children="false" method="getString" optional="true"/>
+			        </image_list>
+			    </attributes>
+		    </data>
+		</data>
+	</data>
+
+</resources>

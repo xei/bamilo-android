@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <data type="jsonarray" children="true" method="getJSONArray" optional="false">
+        <identifier type="string" children="false" method="getString" optional="false"/>
+        <width type="string" children="false" method="getString" optional="false"/>
+        <height type="string" children="false" method="getString" optional="false"/>
+        <extension type="string" children="false" method="getString" optional="false"/>
+    </data>
+
+</resources>
