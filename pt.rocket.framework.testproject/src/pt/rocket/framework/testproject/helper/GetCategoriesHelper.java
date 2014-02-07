@@ -40,9 +40,9 @@ public class GetCategoriesHelper extends BaseHelper {
     ArrayList<Category> categoriesList= new ArrayList<Category>();
 
     @Override
-    public Bundle generateRequestBundle() {
+    public Bundle generateRequestBundle(Bundle args) {
         Bundle bundle = new Bundle();
-        bundle.putString(Constants.BUNDLE_URL_KEY, "http://www.linio.com.ve/mobileapi/catalog/categories/");
+        bundle.putString(Constants.BUNDLE_URL_KEY, args.getString(BaseHelper.KEY_COUNTRY));
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.CATEGORIES_PRIORITY);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
         bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));

@@ -34,9 +34,6 @@ public class FrameworkServiceTests extends ServiceTestCase<RemoteService> {
     public FrameworkServiceTests() {
         super(RemoteService.class);
         Log.i(TAG, "FrameworkServiceTests Constructor");
-
-        // TODO Auto-generated constructor stub
-
     }
 
     /**
@@ -161,8 +158,8 @@ public class FrameworkServiceTests extends ServiceTestCase<RemoteService> {
      * @param iResponseCallback
      * @return the md5 of the reponse
      */
-    public String sendRequest(final BaseHelper helper, final pt.rocket.framework.testproject.interfaces.IResponseCallback iResponseCallback) {
-        Bundle bundle = helper.generateRequestBundle();
+    public String sendRequest(Bundle args, final BaseHelper helper, final pt.rocket.framework.testproject.interfaces.IResponseCallback iResponseCallback) {
+        Bundle bundle = helper.generateRequestBundle(args);
         String md5 = Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY);
         bundle.putString(Constants.BUNDLE_MD5_KEY, md5);
 
@@ -173,7 +170,7 @@ public class FrameworkServiceTests extends ServiceTestCase<RemoteService> {
                 // We have to parse this bundle to the final one
                 Bundle formatedBundle = (Bundle) helper.checkResponseForStatus(bundle, mContext);
                 if (iResponseCallback != null) {
-                    if ((ErrorCode) formatedBundle.getSerializable(Constants.BUNDLE_ERROR_KEY) != ErrorCode.NO_ERROR) {
+                    if ((ErrorCode) formatedBundle.getSerializable(Constants.BUNDLE_ERROR_KEY) == ErrorCode.NO_ERROR) {
                         iResponseCallback.onRequestComplete(formatedBundle);
                     } else {
                         iResponseCallback.onRequestError(formatedBundle);

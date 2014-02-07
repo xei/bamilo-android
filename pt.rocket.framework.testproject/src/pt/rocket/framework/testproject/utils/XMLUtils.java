@@ -18,8 +18,9 @@ import android.util.Log;
 
 /**
  * This class encloses all methods related to XML
+ * 
  * @author josedourado
- *
+ * 
  */
 public class XMLUtils {
 
@@ -37,7 +38,7 @@ public class XMLUtils {
     public static XMLObject xmlParser(Context context, int id) throws XmlPullParserException, IOException {
         // mastertree created to contain all written rules in the xml
         ArrayList<XMLObject> masterChildrenList = new ArrayList<XMLObject>();
-        XMLObject masterTree = new XMLObject("mastertree", masterChildrenList, "", "", "");
+        XMLObject masterTree = new XMLObject("mastertree", masterChildrenList, "", "", "", false);
 
         XmlPullParser xpp = context.getResources().getXml(id);
         int eventType = xpp.getEventType();
@@ -45,7 +46,6 @@ public class XMLUtils {
         int previousDepth;
         int currentDepth;
 
-        // try {
         while (eventType != XmlPullParser.END_DOCUMENT) {
             if (eventType == XmlPullParser.START_TAG) {
                 // Advances "resources" tag
@@ -59,30 +59,40 @@ public class XMLUtils {
 
                     XMLObject object = new XMLObject(xpp.getName(), null, xpp.getAttributeValue(null, XMLReadingConfiguration.XML_TYPE_TAG),
                             xpp.getAttributeValue(null, XMLReadingConfiguration.XML_METHOD_TAG), xpp.getAttributeValue(null,
-                                    XMLReadingConfiguration.XML_EXPECTED_TAG));
+                                    XMLReadingConfiguration.XML_EXPECTED_TAG), xpp.getAttributeValue(null, XMLReadingConfiguration.XML_OPTIONAL_TAG).equals(
+                                    "true") ? true : false);
                     previousDepth = xpp.getDepth();
                     xpp.next();
                     currentDepth = xpp.getDepth();
+                    
                     ArrayList<XMLObject> childrenList = new ArrayList<XMLObject>();
                     childrenList = object.getChildrenNode();
 
                     while (previousDepth < currentDepth) {
 
                         object.setHasChildren(true);
+                        
+//                        Log.i("TAG", " current xpp " + xpp.getName() + " currentDepth " + currentDepth  );
                         XMLObject child = new XMLObject(xpp.getName(), null, xpp.getAttributeValue(null, XMLReadingConfiguration.XML_TYPE_TAG),
                                 xpp.getAttributeValue(null, XMLReadingConfiguration.XML_METHOD_TAG), xpp.getAttributeValue(null,
-                                        XMLReadingConfiguration.XML_EXPECTED_TAG));
+                                        XMLReadingConfiguration.XML_EXPECTED_TAG), xpp.getAttributeValue(null, XMLReadingConfiguration.XML_OPTIONAL_TAG)
+                                        .equals("true") ? true : false);
                         if (xpp.getAttributeValue(null, XMLReadingConfiguration.XML_CHILDREN_TAG).equals(XMLReadingConfiguration.XML_TRUE_TAG)) {
                             child.setHasChildren(true);
                             depthSearch(child, xpp);
                         }
 
                         childrenList.add(child);
+//                        Log.i("TAG", " 1 - End tag " + xpp.getName() +" => "+(eventType == XmlPullParser.END_TAG)+" xpp.getDepth "+xpp.getDepth()+" currentDepth " + currentDepth);
                         eventType = xpp.next();
-
+//                        Log.i("TAG", " 2 -  End tag " + xpp.getName() +" => "+(eventType == XmlPullParser.END_TAG)+" xpp.getDepth "+xpp.getDepth()+" currentDepth " + currentDepth);
                         // Advancing end tags
-                        if (eventType == XmlPullParser.END_TAG)
+                        if (eventType == XmlPullParser.END_TAG){
                             xpp.next();
+//                            Log.i("TAG", " xpp.getName " + xpp.getName() + " currentDepth " + currentDepth  );
+                        }
+                        
+                        
 
                         // if we find an item with a depth inferior, we stopped
                         // getting children
@@ -93,7 +103,6 @@ public class XMLUtils {
                         }
                     }
                     object.setChildrenNode(childrenList);
-                    Log.i(TAG, "childrenList.size() " + childrenList.size());
                     if (childrenList.size() == 0)
                         eventType = xpp.next();
 
@@ -103,8 +112,6 @@ public class XMLUtils {
                     // add object to master tree
                     masterChildrenList.add(object);
                     masterTree.setChildrenNode(masterChildrenList);
-                    Log.i(TAG, "MASTER TREE HAS " + masterChildrenList.size());
-
                 }
 
             } else {
@@ -130,19 +137,23 @@ public class XMLUtils {
     private static void depthSearch(XMLObject parent, XmlPullParser xpp) throws XmlPullParserException, IOException {
         int previousDepth = 0;
         int currentDepth = 0;
+        int parentDepth = xpp.getDepth();
         int eventType = xpp.getEventType();
         if (eventType != XmlPullParser.END_DOCUMENT & eventType != XmlPullParser.END_TAG) {
             ArrayList<XMLObject> subChildren = new ArrayList<XMLObject>();
             subChildren = parent.getChildrenNode();
             previousDepth = xpp.getDepth();
+//            Log.i("TAG", " depthSearch current " + xpp.getName() + " previousDepth " + previousDepth  );
             eventType = xpp.next();
             if (eventType != XmlPullParser.END_DOCUMENT && eventType != XmlPullParser.END_TAG) {
                 currentDepth = xpp.getDepth();
-
+                
                 while (previousDepth < currentDepth) {
+//                    Log.i("TAG", " depthSearch current xpp " + xpp.getName() + " currentDepth " + currentDepth  );
                     XMLObject child = new XMLObject(xpp.getName(), null, xpp.getAttributeValue(null, XMLReadingConfiguration.XML_TYPE_TAG),
                             xpp.getAttributeValue(null, XMLReadingConfiguration.XML_METHOD_TAG), xpp.getAttributeValue(null,
-                                    XMLReadingConfiguration.XML_EXPECTED_TAG));
+                                    XMLReadingConfiguration.XML_EXPECTED_TAG), xpp.getAttributeValue(null, XMLReadingConfiguration.XML_OPTIONAL_TAG).equals(
+                                    "true") ? true : false);
                     if (xpp.getAttributeValue(null, XMLReadingConfiguration.XML_CHILDREN_TAG).equals(XMLReadingConfiguration.XML_TRUE_TAG)) {
                         child.setHasChildren(true);
                         depthSearch(child, xpp);
@@ -151,16 +162,15 @@ public class XMLUtils {
 
                     subChildren.add(child);
 
+                    xpp.next();
                     // Advancing end tags
-                    if (xpp.next() == XmlPullParser.END_TAG)
+                    if (xpp.getEventType() == XmlPullParser.END_TAG && xpp.getDepth() != parentDepth)
                         xpp.next();
 
                     currentDepth = xpp.getDepth();
                 }
-            } else {
-                xpp.next();
-                eventType = xpp.getEventType();
-            }
+            } 
+
         }
 
     }
@@ -178,8 +188,11 @@ public class XMLUtils {
         for (int i = 0; i < size; i++) {
             Log.i("printXMLTree", "  " + level + " " + tab + " <" + children.get(i).getTag() + ">");
             if (children.get(i).getHasChildren()) {
+
                 printXMLTree(children.get(i), level + 1, tab + " ");
+                Log.i("printXMLTree", "  " + level + " " + tab + " </" + children.get(i).getTag() + ">");
             }
+
         }
 
     }
@@ -203,10 +216,11 @@ public class XMLUtils {
 
         for (int i = 0; i < size; i++) {
             try {
-                Log.i(TAG, " rules.get(i).getTag() " + rules.get(i).getTag());
+                 Log.i(TAG, " rules.get(i).getTag() " + rules.get(i).getTag()
+                 + " rules.get(i).isOptional() " + rules.get(i).isOptional());
                 Method method = jsonObject.getClass().getMethod((String) rules.get(i).getMethod(), String.class);
-                Log.i(TAG, " class => " + method.invoke(jsonObject, rules.get(i).getTag()).getClass().getSimpleName().toLowerCase());
-                if (method.invoke(jsonObject, rules.get(i).getTag()) == null) {
+
+                if (method.invoke(jsonObject, rules.get(i).getTag()) == null && rules.get(i).isOptional() == false) {
                     jsonIsValid = false;
                     failedParameterMessage = "'" + rules.get(i).getTag() + "'" + " doesn't exist";
                     break;
@@ -229,8 +243,13 @@ public class XMLUtils {
                     JSONArray subJSON = (JSONArray) method.invoke(jsonObject, rules.get(i).getTag());
                     JSONObject index;
                     try {
-                        index = (JSONObject) subJSON.getJSONObject(0);
-                        jsonIsValid = jsonObjectAssertion(index, rules.get(i));
+                        
+                        for(int j=0;j<subJSON.length();j++){
+                            Log.i("TAG"," j "+j);
+                            index = (JSONObject) subJSON.getJSONObject(j);
+                            jsonIsValid = jsonObjectAssertion(index, rules.get(i));
+                        
+                        }
                     } catch (JSONException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
@@ -251,8 +270,11 @@ public class XMLUtils {
                 e.printStackTrace();
                 jsonIsValid = false;
             } catch (InvocationTargetException e) {
-                e.printStackTrace();
-                jsonIsValid = false;
+
+                if (rules.get(i).isOptional() == false) {
+                    e.printStackTrace();
+                    jsonIsValid = false;
+                }
             }
 
         }
@@ -261,8 +283,12 @@ public class XMLUtils {
         return jsonIsValid;
 
     }
-    
-    public static String getMessage(){
+
+    public static String getMessage() {
         return failedParameterMessage;
+    }
+    
+    public static String setMessage(String message) {
+        return failedParameterMessage = message;
     }
 }

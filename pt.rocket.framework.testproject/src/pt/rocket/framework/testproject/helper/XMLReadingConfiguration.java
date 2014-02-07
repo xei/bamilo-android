@@ -11,6 +11,7 @@ public class XMLReadingConfiguration {
     public static String XML_METHOD_TAG="method";
     public static String XML_EXPECTED_TAG="expected";
     public static String XML_TRUE_TAG="true";
+    public static String XML_OPTIONAL_TAG="optional";
     
     public static String XML_METADATA_CONTAINER_TAG = "metadata";
 

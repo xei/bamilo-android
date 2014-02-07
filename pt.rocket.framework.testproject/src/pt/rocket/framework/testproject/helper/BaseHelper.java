@@ -1,37 +1,17 @@
 package pt.rocket.framework.testproject.helper;
 
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
 
-import com.rocket.framework.testshell.test.R;
-
-import pt.rocket.framework.testproject.objects.JSONConstants;
+import pt.rocket.framework.errormanager.ErrorCode;
 import pt.rocket.framework.testproject.objects.XMLObject;
 import pt.rocket.framework.testproject.utils.XMLUtils;
 import pt.rocket.framework.utils.Constants;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+
+import com.rocket.framework.testshell.test.R;
 
 /**
  * Base helper for the test app. The helper is responsible for generating the
@@ -44,13 +24,14 @@ public abstract class BaseHelper {
     private static String TAG = BaseHelper.class.getSimpleName();
     protected Context mContext;
     protected String failedParameterMessage;
-
+    public static String KEY_COUNTRY = "key_country";
+    public static String KEY_COUNTRY_TAG = "key_country_tag";
     /**
      * Creates the bundle for the request
      * 
      * @return
      */
-    public abstract Bundle generateRequestBundle();
+    public abstract Bundle generateRequestBundle(Bundle args);
 
     /**
      * Checks the response status of the response that came in a bundle in order
@@ -77,17 +58,18 @@ public abstract class BaseHelper {
             }
             if (validation) {
                 jsonObject = jsonObject.getJSONObject(XMLReadingConfiguration.XML_METADATA_CONTAINER_TAG);
-                
+                bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, ErrorCode.NO_ERROR);
                 return parseResponseBundle(bundle, jsonObject);
 
             } else {
                 Log.i(TAG," Failed validation ");
                 Log.i(TAG,  " failedParameterMessage "+XMLUtils.getMessage());
                 bundle.putString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY, XMLUtils.getMessage());
+                bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, ErrorCode.ERROR_PARSING_SERVER_DATA);
                 return parseResponseErrorBundle(bundle);
             }
         } catch (JSONException e) {
-            // TODO Auto-generated catch block
+        	XMLUtils.setMessage("Response empty or server error[not a JSONObject]");
             e.printStackTrace();
             return parseResponseErrorBundle(bundle);
         }
