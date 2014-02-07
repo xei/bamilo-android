@@ -38,5 +38,6 @@ public enum FragmentType {
     EDIT_ADDRESS, 
     SHIPPING_METHODS, 
     PAYMENT_METHODS, 
-    CHECKOUT_FINISH
+    CHECKOUT_FINISH, 
+    ABOUT_YOU
 }

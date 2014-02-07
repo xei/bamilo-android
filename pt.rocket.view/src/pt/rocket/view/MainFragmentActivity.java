@@ -294,7 +294,9 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
          * TODO: NEW FRAGMENTS
          */
         case LOGIN:
-            //fragment = SessionLoginFragment.getInstance(bundle);
+            fragment = SessionLoginFragment.getInstance(bundle);
+            break;
+        case ABOUT_YOU:
             fragment = CheckoutAboutYouFragment.getInstance(bundle);
             break;
         case MY_ADDRESSES:

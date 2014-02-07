@@ -17,16 +17,13 @@ import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.factories.FormFactory;
 import pt.rocket.forms.Form;
 import pt.rocket.framework.ErrorCode;
+import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CustomerUtils;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.GetInitFormHelper;
-import pt.rocket.helpers.address.GetDefaultBillingAddressHelper;
-import pt.rocket.helpers.address.GetDefaultShippingAddressHelper;
-import pt.rocket.helpers.checkout.GetFormPollHelper;
-import pt.rocket.helpers.checkout.SetPollAnswerHelper;
 import pt.rocket.helpers.session.GetFacebookLoginHelper;
 import pt.rocket.helpers.session.GetLoginFormHelper;
 import pt.rocket.helpers.session.GetLoginHelper;
@@ -65,9 +62,7 @@ import com.facebook.widget.LoginButton;
 
 import de.akquinet.android.androlog.Log;
 
-/**
- * 
- * FIXME: Waiting for NAFAMZ-5272 MOBILE API - allow GUEST CHECKOUT on the Native Checkout 
+/** 
  * 
  * 
  * @author sergiopereira
@@ -80,10 +75,6 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
     private final static String FORM_ITEM_EMAIL = "email";
 
     private final static String FORM_ITEM_PASSWORD = "password";
-
-    private EditText pass_p;
-
-    private EditText user;
 
     private Form formResponse = null;
 
@@ -115,6 +106,10 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
 
     @SuppressWarnings("unused")
     private boolean temp;
+
+    private View loginToogle;
+
+    private View signupToogle;
     
     private static final String PERMISSION_EMAIL = "email";
     
@@ -123,9 +118,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
      * @return
      */
     public static CheckoutAboutYouFragment getInstance(Bundle bundle) {
-        // if (loginFragment == null)
         loginFragment = new CheckoutAboutYouFragment();
-
         if (bundle != null) {
             loginFragment.nextFragmentType = (FragmentType) bundle.getSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE);
             loginFragment.loginOrigin = bundle.getString(ConstantsIntentExtra.LOGIN_ORIGIN);
@@ -137,8 +130,8 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
      * Empty constructor
      */
     public CheckoutAboutYouFragment() {
-        super(EnumSet.of(EventType.GET_LOGIN_FORM_EVENT), 
-                EnumSet.of(EventType.LOGIN_EVENT, EventType.FACEBOOK_LOGIN_EVENT),
+        super(EnumSet.of(EventType.GET_LOGIN_FORM_EVENT, EventType.GET_SIGNUP_FORM_EVENT), 
+                EnumSet.of(EventType.LOGIN_EVENT, EventType.FACEBOOK_LOGIN_EVENT, EventType.SET_SIGNUP_EVENT),
                 EnumSet.noneOf(MyMenuItem.class), 
                 NavigationAction.LoginOut, 
                 BaseActivity.CHECKOUT_STEP_1);
@@ -164,14 +157,13 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
+        // Retain the fragment
         setRetainInstance(true);
         // Init the helper
         String appId = getBaseActivity().getResources().getString(R.string.app_id);
         uiHelper = new UiLifecycleHelper(getActivity(), this, appId);
         uiHelper.onCreate(savedInstanceState);
     }
-    
-
     
     /*
      * (non-Javadoc)
@@ -196,7 +188,9 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         Log.i(TAG, "ON VIEW CREATED");
         
         // Login toggle
-        view.findViewById(R.id.checkout_login_toogle).setOnClickListener(this);
+        loginToogle = view.findViewById(R.id.checkout_login_toogle);
+        loginToogle.setOnClickListener(this);
+        loginToogle.setSelected(true);
         // Login main
         loginMainContainer = view.findViewById(R.id.checkout_login_form_main);
         // Login form
@@ -207,7 +201,8 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         view.findViewById(R.id.checkout_login_form_button_password).setOnClickListener(this);
         
         // Sign toggle
-        view.findViewById(R.id.checkout_signup_toogle).setOnClickListener(this);
+        signupToogle = view.findViewById(R.id.checkout_signup_toogle);
+        signupToogle.setOnClickListener(this);
         // Sign main
         signupMainContainer = view.findViewById(R.id.checkout_signup_form_main);
         // Sign form
@@ -256,7 +251,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         super.onResume();
         Log.i(TAG, "ON RESUME");
         // Resume helper
-        String appId = getActivity().getResources().getString(R.string.app_id);
+        String appId = getBaseActivity().getResources().getString(R.string.app_id);
         uiHelper.setJumiaAppId(appId);
         uiHelper.onResume();
     }
@@ -351,44 +346,59 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         // Get view id
         int id = view.getId();
         // Login toggle
-        if(id == R.id.checkout_login_toogle) onClickLoginToogle();
+        if(id == R.id.checkout_login_toogle) onClickLoginToogle(view);
         // Login button
         else if(id == R.id.checkout_login_form_button_enter) onClickLoginButton();
         // Forgot Password
         else if(id == R.id.checkout_login_form_button_password) onClickForgotPassword();
         // Sign toggle
-        else if(id == R.id.checkout_signup_toogle) onClickSignupToogle();
+        else if(id == R.id.checkout_signup_toogle) onClickSignupToogle(view);
         // Sign button
         else if(id == R.id.checkout_signup_form_button_enter) onClickSignupButton();
-        // Facebook button
-        else if(id == R.id.checkout_login_form_button_facebook) onClickFacebookButton();
-        // Facebook button
-        else if(id == R.id.checkout_signup_form_button_facebook) onClickFacebookButton();
+//        // Facebook button
+//        else if(id == R.id.checkout_login_form_button_facebook) onClickFacebookLoginButton();
+//        // Facebook button
+//        else if(id == R.id.checkout_signup_form_button_facebook) onClickFacebookSignupButton();
         // Unknown view
         else Log.i(TAG, "ON CLICK: UNKNOWN VIEW");
     }
     
-    private void onClickLoginToogle() {
+    private void onClickLoginToogle(View view) {
         Log.i(TAG, "ON CLICK: LOGIN TOOGLE");
         // Validate view
-        if(loginMainContainer != null){
+        if(loginMainContainer != null && signupMainContainer != null){
             // Validate visibility
-            if(loginMainContainer.getVisibility() == View.VISIBLE)
+            if (loginMainContainer.getVisibility() == View.VISIBLE) {
+                loginToogle.setSelected(false);
                 loginMainContainer.setVisibility(View.GONE);
-            else
+                signupToogle.setSelected(true);
+                signupMainContainer.setVisibility(View.VISIBLE);
+            } else {
+                loginToogle.setSelected(true);
                 loginMainContainer.setVisibility(View.VISIBLE);
+                signupToogle.setSelected(false);
+                signupMainContainer.setVisibility(View.GONE);
+            }
+                
         }
     }
     
-    private void onClickSignupToogle() {
+    private void onClickSignupToogle(View view) {
         Log.i(TAG, "ON CLICK: SIGNUP TOOGLE");
         // Validate view
-        if(signupMainContainer != null){
+        if(signupMainContainer != null && loginMainContainer != null){
             // Validate visibility
-            if(signupMainContainer.getVisibility() == View.VISIBLE)
+            if (signupMainContainer.getVisibility() == View.VISIBLE) {
+                signupToogle.setSelected(false);
                 signupMainContainer.setVisibility(View.GONE);
-            else
+                loginToogle.setSelected(true);
+                loginMainContainer.setVisibility(View.VISIBLE);
+            } else {
+                signupToogle.setSelected(true);
                 signupMainContainer.setVisibility(View.VISIBLE);
+                loginToogle.setSelected(false);
+                loginMainContainer.setVisibility(View.GONE);
+            }
         }
     }
     
@@ -417,8 +427,14 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         getBaseActivity().onSwitchFragment(FragmentType.FORGOT_PASSWORD, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
     }
     
-    private void onClickFacebookButton() {
+    private void onClickFacebookLoginButton() {
         Log.i(TAG, "ON CLICK: FACEBOOK");
+        // TODO
+    }
+    
+    private void onClickFacebookSignupButton() {
+        Log.i(TAG, "ON CLICK: FACEBOOK");
+     // TODO
     }
 
     /**
@@ -462,27 +478,28 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             Log.i(TAG, "SESSION IS CLOSED");
     }
 
-
+    /**
+     * ########## SET FORMS ########## 
+     */
+    
     /**
      * This method defines the click behavior of the edit texts from the dynamic form, allowing the
      * to login only when the form is completely filled.
      */
-    public void setFormClickDetails() {
-
-        DynamicFormItem emailItem = loginForm.getItemByKey(FORM_ITEM_EMAIL);
+    public void setFormClickDetails(DynamicForm dynamicForm) {
+        // Email
+        DynamicFormItem emailItem = dynamicForm.getItemByKey(FORM_ITEM_EMAIL);
         if (emailItem == null) {
             return;
         }
-        user = (EditText) emailItem.getEditControl();
-        user.setId(21);
-
-        DynamicFormItem passwordItem = loginForm.getItemByKey(FORM_ITEM_PASSWORD);
+        ((EditText) emailItem.getEditControl()).setId(21);
+        // Pass
+        DynamicFormItem passwordItem = dynamicForm.getItemByKey(FORM_ITEM_PASSWORD);
         if (passwordItem == null) {
             return;
         }
-        pass_p = (EditText) passwordItem.getEditControl();
-        pass_p.setId(22);
-    }
+        ((EditText) emailItem.getEditControl()).setId(22);
+    }    
     
     /**
      * Load the dynamic form
@@ -494,7 +511,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         loginForm = FormFactory.getSingleton().CreateForm(FormConstants.LOGIN_FORM, getActivity(), form);
         loginFormContainer.removeAllViews();
         loginFormContainer.addView(loginForm.getContainer());
-        setFormClickDetails();
+        setFormClickDetails(loginForm);
 
         // Show save state
         if (null != this.savedInstanceState && null != loginForm) {
@@ -521,7 +538,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         signupForm = FormFactory.getSingleton().CreateForm(FormConstants.SIGNUP_FORM, getActivity(), form);
         signupFormContainer.removeAllViews();
         signupFormContainer.addView(signupForm.getContainer());
-        //setFormClickDetails();
+        setFormClickDetails(signupForm);
         signupFormContainer.refreshDrawableState();
         getBaseActivity().showContentContainer(false);
         return true;
@@ -540,18 +557,19 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
     protected boolean onSuccessEvent(Bundle bundle) {
         Log.d(TAG, "ON SUCCESS EVENT");
         
-        if(getBaseActivity() != null){
-            getBaseActivity().handleSuccessEvent(bundle);
-        } else {
-            return true;
-        }
-         
         // Validate fragment visibility
         if(!isVisible()){
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
         
+        if(getBaseActivity() != null){
+            Log.d(TAG, "BASE ACTIVITY HANDLE SUCCESS EVENT");
+            getBaseActivity().handleSuccessEvent(bundle);
+        } else {
+            return true;
+        }
+         
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         Log.i(TAG, "ON SUCCESS EVENT: " + eventType);
         
@@ -559,121 +577,125 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         case INIT_FORMS:
             triggerLoginForm();
             triggerSignupForm();
-            return true;
-            
-//        case FACEBOOK_LOGIN_EVENT:
-//            Log.d(TAG, "facebookloginCompletedEvent : success");
-//            // Get Customer
-//            getBaseActivity().hideKeyboard();
-//            getBaseActivity().updateSlidingMenuCompletly();
-//            getBaseActivity().onBackPressed();
-//            if(nextFragmentType != null) 
-//                getBaseActivity().onSwitchFragment(nextFragmentType, null, true);
-//            TrackerDelegator.trackLoginSuccessful(getBaseActivity(), (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY), onAutoLogin, loginOrigin, true);
-//            return true;
-            
+            return true;            
         case SET_SIGNUP_EVENT:
             Log.d(TAG, "RECEIVED SET_SIGNUP_EVENT");
             getBaseActivity().hideKeyboard();
             getBaseActivity().updateSlidingMenuCompletly();
-            getBaseActivity().onSwitchFragment(FragmentType.CREATE_ADDRESS, null, FragmentController.ADD_TO_BACK_STACK);
-            return true;
-            
+            getBaseActivity().onBackPressed();
+            getBaseActivity().onSwitchFragment(FragmentType.CREATE_ADDRESS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            // TODO: Add the respective track
+            break;
         case FACEBOOK_LOGIN_EVENT:
+          // Get Customer
+          getBaseActivity().hideKeyboard();
+          getBaseActivity().updateSlidingMenuCompletly();
+          getBaseActivity().onBackPressed();
+          /**
+           * TODO:
+           * Login with Facebook button ->  Default Shipping Address page
+           * Sign Up with Facebook button -> Add New Address
+           */
+          // if(nextFragmentType != null) getBaseActivity().onSwitchFragment(nextFragmentType, null, true);
+          getBaseActivity().onSwitchFragment(FragmentType.MY_ADDRESSES, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+          
+          TrackerDelegator.trackLoginSuccessful(getBaseActivity(), (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY), onAutoLogin, loginOrigin, true);
+          return true;
         case LOGIN_EVENT:
             // Get Customer
             getBaseActivity().hideKeyboard();
             getBaseActivity().updateSlidingMenuCompletly();
-//            getBaseActivity().onBackPressed();
-//            if(nextFragmentType != null) 
-//                getBaseActivity().onSwitchFragment(nextFragmentType, null, true);
-//            TrackerDelegator.trackLoginSuccessful(getBaseActivity(), (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY), onAutoLogin, loginOrigin, false);
-            
-            
-            /**
-             * TODO: REMOVE THIS, ONLY FOR TESTS
-             */
-            sendRequest(new GetFormPollHelper(), null, this);    // DONE
-            Bundle b = new Bundle();
-            b.putString("Alice_Module_Checkout_Model_PollingForm[pollQuestion]", "Facebook");
-            sendRequest(new SetPollAnswerHelper(), b, this);
-            
-            //Bundle b1 = new Bundle();
-            //b1.putString("billingForm[billingAddressId]", "4040");
-            //b1.putString("billingForm[shippingAddressDifferent]", "1");
-            //b1.putString("billingForm[shippingAddressId]", "4040");
-            //sendRequest(new SetBillingAddressHelper(), b1, this);
-            //Bundle b2 = new Bundle();
-            //b2.putString("shippingForm[shippingAddressId]", "4040");
-            //sendRequest(new SetShippingAddressHelper(), b2, this);
-            
-            sendRequest(new GetDefaultBillingAddressHelper(), null, this);
-            sendRequest(new GetDefaultShippingAddressHelper(), null, this);
-            
-            return true;
-            
-        // TODO: Only for tests
-       case GET_POLL_FORM_EVENT:
-           Log.d(TAG, "RECEIVED GET_POLL_FORM_EVENT");
-           return true;
-       case SET_POLL_ANSWER_EVENT:
-           Log.d(TAG, "RECEIVED SET_POLL_ANSWER_EVENT");
-           return true;
-       case SET_BILLING_ADDRESS_EVENT:
-           Log.d(TAG, "RECEIVED SET_BILLING_ADDRESS_EVENT");
-           return true;
-       case SET_SHIPPING_ADDRESS_EVENT:
-           Log.d(TAG, "RECEIVED SET_SHIPPING_ADDRESS_EVENT");               
-           return true;
-       case GET_DEFAULT_BILLING_ADDRESS_EVENT:
-           Log.d(TAG, "RECEIVED GET_DEFAULT_BILLING_ADDRESS_EVENT");
-           return true;
-       case GET_DEFAULT_SHIPPING_ADDRESS_EVENT:
-           Log.d(TAG, "RECEIVED GET_DEFAULT_SHIPPING_ADDRESS_EVENT");
-           // Next step
-           getBaseActivity().onSwitchFragment(FragmentType.MY_ADDRESSES, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-           return true;
-
+            getBaseActivity().onBackPressed();
+            getBaseActivity().onSwitchFragment(FragmentType.MY_ADDRESSES, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            TrackerDelegator.trackLoginSuccessful(getBaseActivity(), (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY), onAutoLogin, loginOrigin, false);
+            break;
        case GET_SIGNUP_FORM_EVENT:
-           Form signupForm = (Form) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
            // Save and load form
+           Form signupForm = (Form) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
            loadSignupForm(signupForm);
            this.signupFormResponse = signupForm;
-           return true;
+           break;
         case GET_LOGIN_FORM_EVENT:
             Form form = (Form) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            // Validate form
             if (form == null) {
-                dialog = DialogGenericFragment.createServerErrorDialog(getActivity(),
-                        new OnClickListener() {
-
-                            @Override
-                            public void onClick(View v) {
-                                ((BaseActivity) getActivity()).showLoading(false);
-                                triggerLoginForm();
-                                dialog.dismiss();
-                            }
-                        }, false);
-                dialog.show(getActivity().getSupportFragmentManager(), null);
-                return false;
+                showLoginFormErrorDialog();
+            } else {
+                // Save and load form
+                loadForm(form);
+                this.formResponse = form;
+                // Clean FACEBOOK session
+                cleanFacebookSession();
             }
-
-            // Save and load form
-            loadForm(form);
-            this.formResponse = form;
-            // Clean FACEBOOK session
-            cleanFacebookSession();
+            break;
+            
+            
+//            /**
+//             * TODO: REMOVE THIS, ONLY FOR TESTS
+//             */
+//            sendRequest(new GetFormPollHelper(), null, this);
+//            Bundle b = new Bundle();
+//            b.putString("Alice_Module_Checkout_Model_PollingForm[pollQuestion]", "Facebook");
+//            sendRequest(new SetPollAnswerHelper(), b, this);
+//            
+//            //Bundle b1 = new Bundle();
+//            //b1.putString("billingForm[billingAddressId]", "4040");
+//            //b1.putString("billingForm[shippingAddressDifferent]", "1");
+//            //b1.putString("billingForm[shippingAddressId]", "4040");
+//            //sendRequest(new SetBillingAddressHelper(), b1, this);
+//            //Bundle b2 = new Bundle();
+//            //b2.putString("shippingForm[shippingAddressId]", "4040");
+//            //sendRequest(new SetShippingAddressHelper(), b2, this);
+//            
+//            sendRequest(new GetDefaultBillingAddressHelper(), null, this);
+//            sendRequest(new GetDefaultShippingAddressHelper(), null, this);
+//            
+//            return true;
+//            
+//        // TODO: Only for tests
+//       case GET_POLL_FORM_EVENT:
+//           Log.d(TAG, "RECEIVED GET_POLL_FORM_EVENT");
+//           return true;
+//       case SET_POLL_ANSWER_EVENT:
+//           Log.d(TAG, "RECEIVED SET_POLL_ANSWER_EVENT");
+//           return true;
+//       case SET_BILLING_ADDRESS_EVENT:
+//           Log.d(TAG, "RECEIVED SET_BILLING_ADDRESS_EVENT");
+//           return true;
+//       case SET_SHIPPING_ADDRESS_EVENT:
+//           Log.d(TAG, "RECEIVED SET_SHIPPING_ADDRESS_EVENT");               
+//           return true;
+//       case GET_DEFAULT_BILLING_ADDRESS_EVENT:
+//           Log.d(TAG, "RECEIVED GET_DEFAULT_BILLING_ADDRESS_EVENT");
+//           return true;
+//       case GET_DEFAULT_SHIPPING_ADDRESS_EVENT:
+//           Log.d(TAG, "RECEIVED GET_DEFAULT_SHIPPING_ADDRESS_EVENT");
+//           // Next step
+//           getBaseActivity().onSwitchFragment(FragmentType.MY_ADDRESSES, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+//           return true;
+            
         }
         return true;
     }
 
 
+    /**
+     * 
+     * @param bundle
+     * @return
+     */
     protected boolean onErrorEvent(Bundle bundle) {
+        
     	if(!isVisible()){
+    	    Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
     		return true;
     	}
+    	
         if(getBaseActivity().handleErrorEvent(bundle)){
+            Log.w(TAG, "BASE ACTIVITY HANDLE ERROR EVENT!");
             return true;
         }
+        
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         Log.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
@@ -683,62 +705,29 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             Log.w(TAG, "ON ERRER RECEIVED: GET_LOGIN_FORM_EVENT");
             if (errorCode == ErrorCode.UNKNOWN_ERROR && null == loginForm) {
                 restartAllFragments();
-                return true;
             }
             break;
         case LOGIN_EVENT:
-            Log.w(TAG, "ON ERRER RECEIVED: LOGIN_EVENT");
-            // Validate fragment visibility
-            if(!isVisible()){
-                Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-                return true;
-            }
-            
             if (errorCode == ErrorCode.REQUEST_ERROR) {
                 TrackerDelegator.trackLoginFailed(onAutoLogin);
                 if (onAutoLogin) {
-                    if (formResponse == null) {
-                        // Sometimes formDataRegistry is null, so init forms
-                        triggerInitForm();
-                    }
+                    // Sometimes formDataRegistry is null, so init forms
+                    if (formResponse == null) triggerInitForm();
                 } else {
-                    
-                    Log.d(TAG, "SHOW DIALOG");
+                    // Show error
                     HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
-                    List<String> errorMessages = (List<String>) errors.get(RestConstants.JSON_VALIDATE_TAG);
-
-                    if (errors != null && errorMessages.size() > 0) {
-                        
-                        if(getActivity() != null)
-                            ((BaseActivity) getActivity()).showContentContainer(false);
-                        
-                        dialog = DialogGenericFragment.newInstance(true, true, false,
-                                getString(R.string.error_login_title),
-                                errorMessages.get(0),
-                                getString(R.string.ok_label), "", new OnClickListener() {
-
-                                    @Override
-                                    public void onClick(View v) {
-                                        int id = v.getId();
-                                        if (id == R.id.button1) {
-                                            dialog.dismiss();
-                                        }
-
-                                    }
-
-                                });
-                        dialog.show(getActivity().getSupportFragmentManager(), null);
-                    }
+                    showErrorDialog(errors);
+                    getBaseActivity().showContentContainer(false);
                 }
-                return true;
             }
             break;
         case SET_SIGNUP_EVENT:
             Log.w(TAG, "ON ERRER RECEIVED: SET_SIGNUP_EVENT");
-            /**
-             * TODO: implement
-             */
-            Toast.makeText(getBaseActivity(), "Email already used!", Toast.LENGTH_SHORT).show();
+            if (errorCode == ErrorCode.REQUEST_ERROR) {
+                HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY); 
+                showErrorDialog(errors);
+                getBaseActivity().showContentContainer(false);
+            }
             break;
         case GET_SIGNUP_FORM_EVENT:
             Log.w(TAG, "ON ERRER RECEIVED: GET_SIGNUP_FORM_EVENT");
@@ -747,8 +736,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         default:
             break;
         }
-        
-        return false;
+        return true;
     }
     
     /**
@@ -778,6 +766,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         // DynamicFormItem scenarioItem = signupForm.getItemByKey("scenario");
         //values.put(scenarioItem.getName(), scenarioItem.getValue());
         values.put("Alice_Module_Customer_Model_RegistrationForm[scenario]", "guest");
+        values.put(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, true);
         triggerSignup(values, true);
     }
 
@@ -823,6 +812,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         Log.i(TAG, "TRIGGER: SIGNUP " + values.toString());
         Bundle bundle = new Bundle();
         bundle.putParcelable(SetSignupHelper.FORM_CONTENT_VALUES, values);
+        bundle.putBoolean(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, saveCredentials);
         triggerContentEvent(new SetSignupHelper(), bundle, this);
     }
     
@@ -864,10 +854,68 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
     public void onRequestError(Bundle bundle) {
         onErrorEvent(bundle);
     }
-        
+     
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.interfaces.IResponseCallback#onRequestComplete(android.os.Bundle)
+     */
     @Override
     public void onRequestComplete(Bundle bundle) {
         onSuccessEvent(bundle);
     }
 
+    
+    /**
+     * ########### DIALOGS ###########  
+     */    
+    
+    
+    private void showErrorDialog(HashMap<String, List<String>> errors){
+        Log.d(TAG, "SHOW LOGIN ERROR DIALOG");
+        List<String> errorMessages = (List<String>) errors.get(RestConstants.JSON_VALIDATE_TAG);
+
+        if (errors != null && errorMessages != null && errorMessages.size() > 0) {
+            
+            if(getBaseActivity() != null) getBaseActivity().showContentContainer(false);
+            
+            dialog = DialogGenericFragment.newInstance(true, true, false,
+                    getString(R.string.error_login_title),
+                    errorMessages.get(0),
+                    getString(R.string.ok_label), "", new OnClickListener() {
+
+                        @Override
+                        public void onClick(View v) {
+                            int id = v.getId();
+                            if (id == R.id.button1) {
+                                dialog.dismiss();
+                            }
+
+                        }
+
+                    });
+            dialog.show(getBaseActivity().getSupportFragmentManager(), null);
+        } else {
+            
+            /**
+             * TODO: THE ERROR MUST RETURN THE MESSAGE
+             */
+            Toast.makeText(getBaseActivity(), "Please try with other email!", Toast.LENGTH_SHORT).show();
+        }
+    }
+    
+    
+    private void showLoginFormErrorDialog(){
+        dialog = DialogGenericFragment.createServerErrorDialog(getBaseActivity(),
+                new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        getBaseActivity().showLoading(false);
+                        triggerLoginForm();
+                        dialog.dismiss();
+                    }
+                }, false);
+        dialog.show(getBaseActivity().getSupportFragmentManager(), null);
+    }
+    
+    
 }

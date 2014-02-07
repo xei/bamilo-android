@@ -40,6 +40,11 @@ public class TrackerDelegator {
     public final static void trackLoginSuccessful(Context context, Customer customer, boolean wasAutologin, String origin, boolean wasFacebookLogin) {
         String mOrigin;
         int resLogin;
+        
+        // TODO : Add this filter Signup stings
+        // R.string.gfacebooksignupsuccess;
+        // R.string.gsignupsuccess;
+        
         if( wasFacebookLogin ){
             resLogin = R.string.gfacebookloginsuccess;
             mOrigin = origin;

@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:background="@drawable/searchfield"
-        android:drawableEnd="@drawable/selector_next"
+        android:drawableEnd="@drawable/selector_dropdown_indicator"
         android:fontFamily="roboto_regular"
         android:gravity="center_vertical"
         android:padding="@dimen/margin_mid"

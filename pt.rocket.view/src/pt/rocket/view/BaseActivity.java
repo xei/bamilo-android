@@ -1962,6 +1962,11 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         }
         // Set header visibility
         findViewById(R.id.checkout_header).setVisibility(visibility);
+        // Force the state for other headers
+        if(visibility == View.VISIBLE) {
+            hideTitle();
+            findViewById(R.id.totalProducts).setVisibility(View.GONE);
+        }
         // Return value
         return result;
     }

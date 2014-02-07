@@ -5,8 +5,10 @@ package pt.rocket.helpers.session;
 
 import org.json.JSONObject;
 
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.framework.enums.RequestType;
 import pt.rocket.framework.utils.Constants;
+import pt.rocket.framework.utils.CustomerUtils;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
 import pt.rocket.helpers.BaseHelper;
@@ -32,9 +34,14 @@ public class SetSignupHelper extends BaseHelper {
     
     ContentValues contentValues;
 
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.helpers.BaseHelper#generateRequestBundle(android.os.Bundle)
+     */
     @Override
     public Bundle generateRequestBundle(Bundle args) {
         Log.d(TAG, "REQUEST");
+        saveCredentials = args.getBoolean(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG);
         contentValues = args.getParcelable(FORM_CONTENT_VALUES);
         Bundle bundle = new Bundle();
         bundle.putString(Constants.BUNDLE_URL_KEY, type.action);
@@ -46,13 +53,40 @@ public class SetSignupHelper extends BaseHelper {
         return bundle;
     }
     
+    
+//    {
+//        "success": true,
+//        "messages": {
+//            "success": [
+//                "CUSTOMER_REGISTRATION_SUCCESS",
+//                "CUSTOMER_LOGIN_SUCCESS"
+//            ]
+//        },
+//        "session": {
+//            "id": "rh7fagpr4ukv0doofepfoe5se1",
+//            "expire": null,
+//            "YII_CSRF_TOKEN": "f656244287a02f7f03f595016c68fb2941582368"
+//        }
+//    }
+    
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.helpers.BaseHelper#parseResponseBundle(android.os.Bundle, org.json.JSONObject)
+     */
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
-        Log.d(TAG, "PARSE BUNDLE: " + jsonObject);        
+        Log.d(TAG, "PARSE BUNDLE: " + jsonObject);
+        if (saveCredentials) {
+            JumiaApplication.INSTANCE.getCustomerUtils().storeCredentials(contentValues);
+        }
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
         return bundle;
     }
     
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.helpers.BaseHelper#parseErrorBundle(android.os.Bundle)
+     */
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
         Log.d(TAG, "PARSE ERROR BUNDLE");
@@ -61,6 +95,10 @@ public class SetSignupHelper extends BaseHelper {
         return bundle;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.helpers.BaseHelper#parseResponseErrorBundle(android.os.Bundle)
+     */
     @Override
     public Bundle parseResponseErrorBundle(Bundle bundle) {
         Log.d(TAG, "PARSE ERROR BUNDLE");
