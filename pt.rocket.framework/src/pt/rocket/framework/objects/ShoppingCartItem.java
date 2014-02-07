@@ -25,11 +25,11 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
     private String productUrl;
     private String configSKU;
     private String configSimpleSKU;
-    private int quantity;
+    private long quantity;
     private int maxQuantity;
     private String configId;
     private String name;
-    private int stock;
+    private long stock;
     private String specialPrice;
     private Double savingPercentage;
     private String price;
@@ -70,11 +70,11 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
             imageUrl = getImageUrl(jsonObject.getString(RestConstants.JSON_ITEM_IMAGE_TAG));
             productUrl = jsonObject.optString(RestConstants.JSON_PRODUCT_URL_TAG);
             configSKU = jsonObject.getString(RestConstants.JSON_CONFIG_SKU_TAG);
-            quantity = jsonObject.getInt(RestConstants.JSON_QUANTITY_TAG);
+            quantity = jsonObject.getLong(RestConstants.JSON_QUANTITY_TAG);
             maxQuantity = jsonObject.getInt(RestConstants.JSON_MAX_QUANTITY );
             configId = jsonObject.getString(RestConstants.JSON_CONFIG_ID);
             name = jsonObject.getString(RestConstants.JSON_ITEM_NAME_TAG);            
-            stock = Integer.parseInt(jsonObject.getString(RestConstants.JSON_STOCK_TAG));
+            stock = Long.parseLong(jsonObject.getString(RestConstants.JSON_STOCK_TAG));
 
             
             if (!jsonObject.isNull(RestConstants.JSON_ITEM_PRICE_TAG)) {
@@ -116,7 +116,7 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
      * @param price
      * @param quantity
      */
-    public void initialize(String productSKU, String simpleProductSKU, String imageURL, String productURL, String productName, int stock, String specialPrice,
+    public void initialize(String productSKU, String simpleProductSKU, String imageURL, String productURL, String productName, long stock, String specialPrice,
             String price, int quantity) {
 
         this.imageUrl = imageURL;
@@ -170,14 +170,14 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
     /*
      * @param quantity of the product
      */
-    public void setQuantity( int quantity ) {
+    public void setQuantity( long quantity ) {
     	this.quantity = quantity;
     }
 
     /**
      * @return the quantity
      */
-    public int getQuantity() {
+    public long getQuantity() {
         return quantity;
     }
     
@@ -212,7 +212,7 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
     /**
      * @return the stock
      */
-    public int getStock() {
+    public long getStock() {
         return stock;
     }
 
@@ -319,11 +319,11 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
 	    dest.writeString(productUrl);
 	    dest.writeString(configSKU);
 	    dest.writeString(configSimpleSKU);
-	    dest.writeInt(quantity);
+	    dest.writeLong(quantity);
 	    dest.writeInt(maxQuantity);
 	    dest.writeString(configId);
 	    dest.writeString(name);
-	    dest.writeInt(stock);
+	    dest.writeLong(stock);
 	    dest.writeString(specialPrice);
 	    dest.writeDouble(savingPercentage);
 	    dest.writeString(price);
@@ -344,11 +344,11 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
 	    productUrl = in.readString();
 	    configSKU = in.readString();
 	    configSimpleSKU = in.readString();
-	    quantity = in.readInt();
+	    quantity = in.readLong();
 	    maxQuantity = in.readInt();
 	    configId = in.readString();
 	    name = in.readString();
-	    stock = in.readInt();
+	    stock = in.readLong();
 	    specialPrice = in.readString();
 	    savingPercentage = in.readDouble();
 	    price = in.readString();

@@ -8,29 +8,24 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.EmptyStackException;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import com.shouldit.proxy.lib.ProxyConfiguration;
-import com.shouldit.proxy.lib.ProxySettings;
-
-//import pt.rocket.framework.errormanager.ErrorCode;
+import pt.rocket.framework.Darwin;
+import pt.rocket.framework.DarwinMode;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.interfaces.IMetaData;
 import pt.rocket.framework.network.ConfigurationConstants;
 import pt.rocket.framework.network.DarwinHttpClient;
 import pt.rocket.framework.network.LazHttpClientAndroidLog;
 import pt.rocket.framework.service.RemoteService;
-//import pt.rocket.framework.tracking.TrackerManager;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.ErrorMonitoring;
 import pt.rocket.framework.utils.EventType;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.IntentSender.SendIntentException;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -80,6 +75,9 @@ import ch.boye.httpclientandroidlib.protocol.ExecutionContext;
 import ch.boye.httpclientandroidlib.protocol.HTTP;
 import ch.boye.httpclientandroidlib.protocol.HttpContext;
 import ch.boye.httpclientandroidlib.util.EntityUtils;
+
+import com.shouldit.proxy.lib.ProxyConfiguration;
+import com.shouldit.proxy.lib.ProxySettings;
 
 import de.akquinet.android.androlog.Log;
 
@@ -150,7 +148,7 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 		cacheConfig.setSharedCache(false);
 		cache = new DBHttpCacheStorage(context, cacheConfig);
 		darwinHttpClient = new DarwinHttpClient(getHttpParams(context));
-		setAuthentication(darwinHttpClient);
+		setAuthentication(context, darwinHttpClient);
 		darwinHttpClient.setRoutePlanner(this);
 
 		CachingHttpClient cachingClient = new CachingHttpClient(
@@ -174,10 +172,12 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 		return INSTANCE;
 	}
 
-	public static synchronized RestClientSingleton getSingleton() {
+	public static synchronized RestClientSingleton getSingleton(Context context) {
 		if (INSTANCE == null) {
-			throw new RuntimeException("RestClientSingleton needs to be initialized!");
+			Log.w(TAG, "RestClientSingleton needs to be initialized!");
+			return init(context);
 		}
+		INSTANCE.context = context;
 		return INSTANCE;
 	}
 
@@ -334,8 +334,12 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 		android.util.Log.d("TRACK", "executeHttpRequest count:" + count);
 		String result = "";
 		String md5 = metaData.getString(Constants.BUNDLE_MD5_KEY);
+		
 		EventType eventType = (EventType) metaData
 				.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+//		Log.i(TAG, "code1removing executeHttpRequest with id : "+ md5);
+//		Log.i(TAG, "code1removing executeHttpRequest with eventType : "+ eventType);
+		
 		Boolean priority = metaData.getBoolean(Constants.BUNDLE_PRIORITY_KEY,
 				false);
 		if(!checkConnection()){
@@ -365,7 +369,6 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 		try {
 			long now = System.currentTimeMillis();
 			response = httpClient.execute(httpRequest, httpContext);
-
 			int statusCode = response.getStatusLine().getStatusCode();
 			
 			if (statusCode != HttpStatus.SC_OK) {
@@ -459,7 +462,8 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 			}
 			// FIXME - OutOfMemoryError
 			result = EntityUtils.toString(entity);
-			Log.i(TAG, "code1 request response is: " + result.toString());
+			Log.i(TAG, "code1response : "+result.toString());
+//			Log.i(TAG, "code1 request response is: " + result.toString());
 			// result =
 			// org.apache.commons.io.IOUtils.toString(entity.getContent());
 			// closes the stream
@@ -559,8 +563,24 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 		return httpParameters;
 	}
 
-	private static void setAuthentication(DefaultHttpClient httpClient) {
-		// TODO IMPLEMENT USE AUTHENTICATION
+	private static void setAuthentication(Context mContext, DefaultHttpClient httpClient) {
+		if(RestContract.RUNNING_TESTS){
+			httpClient.getCredentialsProvider()
+			.setCredentials(
+					new AuthScope(RestContract.REQUEST_HOST,
+							AuthScope.ANY_PORT),
+					new UsernamePasswordCredentials(
+							RestContract.AUTHENTICATION_USER_TEST,
+							RestContract.AUTHENTICATION_PASS_TEST));
+			return;
+		}
+		
+		if(RestContract.USE_AUTHENTICATION == null){
+			SharedPreferences sharedPrefs = mContext.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+	        int shopId = sharedPrefs.getInt(Darwin.KEY_COUNTRY, -1);
+			RestContract.init(mContext,shopId);
+			Darwin.initialize(DarwinMode.DEBUG, mContext, shopId, false);
+		}
 		if (RestContract.USE_AUTHENTICATION) {
 			httpClient.getCredentialsProvider()
 					.setCredentials(

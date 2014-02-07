@@ -40,6 +40,7 @@ public enum EventType {
 	FACEBOOK_LOGIN_EVENT("https:/customer/facebooklogin?setDevice=mobileApi&facebook=true", null),
 		
 	GET_LOGIN_FORM_EVENT("login", RestContract.MAX_CACHE_TIME),
+	GET_LOGIN_FORM_FALLBACK_EVENT("http:/forms/login/", RestContract.MAX_CACHE_TIME),
 
 	LOGOUT_EVENT("https:/customer/logout/", null), 
 
@@ -70,6 +71,7 @@ public enum EventType {
 	GET_CHANGE_PASSWORD_FORM_EVENT("changepassword", RestContract.MAX_CACHE_TIME),
 	
 	GET_FORGET_PASSWORD_FORM_EVENT("forgotpassword", RestContract.MAX_CACHE_TIME),
+	GET_FORGET_PASSWORD_FORM_FALLBACK_EVENT("http:/forms/forgotpassword/", RestContract.MAX_CACHE_TIME),
 
     FORGET_PASSWORD_EVENT("https:/customer/forgotpassword?setDevice=mobileApi", null),
 	
@@ -94,7 +96,7 @@ public enum EventType {
     GET_API_INFO("http:/main/md5?setDevice=mobileApi", RestContract.MIN_CACHE_TIME),
         
 	GET_CUSTOMER("https:/customer/getdetails?setDevice=mobileApi", RestContract.MIN_CACHE_TIME),
-
+	
 	STORE_LOGIN,
 	
 	GET_MIN_ORDER_AMOUNT("http:/main/getstatic?key=api_cartminorderamount", RestContract.MAX_CACHE_TIME),

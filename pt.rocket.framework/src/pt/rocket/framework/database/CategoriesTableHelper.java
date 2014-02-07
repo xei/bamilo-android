@@ -265,7 +265,6 @@ public class CategoriesTableHelper {
     
     private static ContentValues getContentValues(Category category, long parentId) {
     	ContentValues contentValues = new ContentValues();
-//    	
     	contentValues.put(Columns.NAME, category.getName());
     	contentValues.put(Columns.ID_CATALOG, category.getId());
     	String firstSegment = category.getSegments();

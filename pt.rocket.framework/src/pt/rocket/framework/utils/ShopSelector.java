@@ -52,7 +52,7 @@ public final class ShopSelector {
 		RestClientSingleton.init(context);
 		String currencyCode = context.getResources().getStringArray(
 				R.array.currency_codes)[shopId];
-		Log.i(TAG, "code1 currency code is :_ "+currencyCode);
+//		Log.i(TAG, "code1 currency code is :_ "+currencyCode);
 		CurrencyFormatter.initialize(context, currencyCode);
 		AnalyticsGoogle.startup(context, shopId);
 		MixpanelTracker.startup(context, shopId);
@@ -72,6 +72,9 @@ public final class ShopSelector {
 	 */
 	private static void setLocale(Context context, String language) {
 		Resources res = context.getResources();
+		if(language.equalsIgnoreCase("ug")){
+		    language = "en";
+		}
 		String[] languageCountry = language.split("_");
 		sLocale = languageCountry.length >= 2 ? new Locale(
 				languageCountry[0], languageCountry[1]) : new Locale(language);

@@ -3,9 +3,6 @@
  */
 package pt.rocket.framework.network;
 
-
-
-
 import de.akquinet.android.androlog.Log;
 
 import android.content.ContentValues;
@@ -18,6 +15,7 @@ import de.akquinet.android.androlog.Log;
 
 /**
  * @author nutzer2
+ * @modified by Manuel Silva - 30/01/2014
  * 
  */
 public class HttpCacheDatabaseHelper extends SQLiteOpenHelper {
@@ -40,9 +38,9 @@ public class HttpCacheDatabaseHelper extends SQLiteOpenHelper {
 	private static final String SQL_CREATE_MAIN = "CREATE TABLE " + TABLE_NAME + " (" + COLUMN_ID
 			+ " INTEGER PRIMARY KEY, " + COLUMN_PAYLOAD + " BLOB, " + COLUMN_TIMESTAMP + " NUMERIC )";
 
-	private SQLiteDatabase readableDatabase;
-
-	private SQLiteDatabase writableDatabase;
+//	private SQLiteDatabase readableDatabase;
+//
+//	private SQLiteDatabase writableDatabase;
 
 	/**
 	 * Returns the singleton instance.
@@ -70,8 +68,8 @@ public class HttpCacheDatabaseHelper extends SQLiteOpenHelper {
 	private HttpCacheDatabaseHelper(Context context) throws NameNotFoundException {
 		super(context, DB_NAME, null,
 				context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionCode);
-		readableDatabase = getReadableDatabase();
-		writableDatabase = getWritableDatabase();
+//		readableDatabase = getReadableDatabase();
+//		writableDatabase = getWritableDatabase();
 	}
 
 	/*
@@ -114,7 +112,7 @@ public class HttpCacheDatabaseHelper extends SQLiteOpenHelper {
 //		values.put(COLUMN_URI, key);
 		values.put(COLUMN_PAYLOAD, cacheEntry);
 		values.put(COLUMN_TIMESTAMP, System.currentTimeMillis());
-		return writableDatabase.insert(TABLE_NAME, null, values);
+		return getWritableDatabase().insert(TABLE_NAME, null, values);
 	}
 
 	/**
@@ -127,7 +125,7 @@ public class HttpCacheDatabaseHelper extends SQLiteOpenHelper {
 	public byte[] getCacheEntry(String key) {
 		byte[] cacheEntry = null;
 		
-		Cursor entryCursor = readableDatabase.query(TABLE_NAME, new String[] { COLUMN_PAYLOAD },
+		Cursor entryCursor = getReadableDatabase().query(TABLE_NAME, new String[] { COLUMN_PAYLOAD },
 				COLUMN_ID + " = " + key.hashCode(), null, null, null, null);
 		if (entryCursor != null) {
 			if (entryCursor.getCount() > 0) {

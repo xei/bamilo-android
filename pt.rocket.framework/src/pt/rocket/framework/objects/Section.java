@@ -5,6 +5,8 @@ import java.util.HashMap;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import de.akquinet.android.androlog.Log;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -30,6 +32,7 @@ public class Section implements IJSONSerializable, Parcelable {
 	public static final String SECTION_NAME_SLIDER = "slider";
 	public static final String SECTION_NAME_IMAGE_RESOLUTIONS = "imageresolutions";
 	public static final String SECTION_NAME_GET_3_HOUR_DELIVERY_ZIPCODES = "get3hourdeliveryzipcodes";
+	private static final String TAG = Section.class.getName();;
 	
     /**
      * Name of the section.
@@ -90,12 +93,13 @@ public class Section implements IJSONSerializable, Parcelable {
              * use System.currentTimeMillis in the mean time to "replace" md5.
              */
             String md5 = ""+System.currentTimeMillis();
-            		
+            String url = jsonObject.getString(RestConstants.JSON_SECTION_URL_TAG);
             if(jsonObject.has(RestConstants.JSON_SECTION_MD5_TAG)){
             	md5 = jsonObject.getString(RestConstants.JSON_SECTION_MD5_TAG);
+//            	Log.i(TAG, "code1md5 got md5 for : "+url+ " md5 is : "+md5);
             }
              
-            String url = jsonObject.getString(RestConstants.JSON_SECTION_URL_TAG);
+            
             
         	init(name, md5, url);
 

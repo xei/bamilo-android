@@ -5,6 +5,7 @@ import pt.rocket.framework.enums.RequestType;
 import pt.rocket.framework.rest.RestClientSingleton;
 import pt.rocket.framework.utils.Constants;
 import android.content.ContentValues;
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,16 +16,18 @@ import android.os.Handler;
  */
 public class RequestWorker implements Runnable{
 	
-	private static final String TAG=RequestWorker.class.getSimpleName();
+	private static final String TAG = RequestWorker.class.getSimpleName();
 	private Uri uri;
 	private RequestType type;
 	private ContentValues formData;
 	private Handler mHandler;
 	private Bundle mBundle;
+	private Context context;
 
 	
 	
-	public RequestWorker(Bundle bundle,Handler handler){
+	public RequestWorker(Bundle bundle,Handler handler, Context context){
+		this.context = context;
 		uri = Uri.parse(bundle.getString(Constants.BUNDLE_URL_KEY));
 		Log.i(TAG,"Executing => "+uri.toString());
 		type =(RequestType) bundle.getSerializable(Constants.BUNDLE_TYPE_KEY);
@@ -36,8 +39,7 @@ public class RequestWorker implements Runnable{
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
-		RestClientSingleton client = RestClientSingleton.getSingleton();
+		RestClientSingleton client = RestClientSingleton.getSingleton(context);	
 		switch(type){
 		case GET:
 			client.executeGetRestUrlString(uri, mHandler, mBundle);

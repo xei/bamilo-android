@@ -5,7 +5,7 @@ public class ConfigurationConstants {
     /**
      * Configuration variables
      */
-	public static Boolean LOG_DEBUG_ENABLED = true;
+	public static Boolean LOG_DEBUG_ENABLED = false;
 
 	/**
 	 * ---- Cache defining variables ----
@@ -31,7 +31,7 @@ public class ConfigurationConstants {
 	 * Sets the timeout until a connection is established. A value of zero means
 	 * the timeout is not used. The default value is zero.
 	 */
-	public static final int CONNECTION_TIMEOUT = 60 * 1000; // ms
+	public static final int CONNECTION_TIMEOUT = 20 * 1000; // ms
 	
 	/**
 	 * Sets the default socket timeout (SO_TIMEOUT) in milliseconds which is the
@@ -39,7 +39,7 @@ public class ConfigurationConstants {
 	 * an infinite timeout. This value is used when no socket timeout is set in
 	 * the method parameters.
 	 */
-	public static final int SOCKET_TIMEOUT = 60 * 1000;
+	public static final int SOCKET_TIMEOUT = 20 * 1000;
 	
 	/**
 	 * Retry number allowed - if value is set to 0 then the system does not provide the usage of the retry handler

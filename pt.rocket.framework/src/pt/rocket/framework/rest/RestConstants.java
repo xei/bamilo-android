@@ -14,10 +14,11 @@ public class RestConstants {
 	public static final String JSON_ID_TAG = "id";
 	public final static String JSON_SUCCESS_TAG = "success";
 	public final static String JSON_MESSAGE_IN_MESSAGES_TAG = "message";
-	public static final String JSON_METADATA_TAG = "metadata";
 
 	// ConfigurationService Tags
-	public static final String JSON_CALL_PHONE_TAG = "metadata";
+	public static final String JSON_METADATA_TAG = "metadata";
+	public static final String JSON_CALL_PHONE_TAG = "phone_number";
+	
 
 	// VersionInfo Tags
 	public static final String JSON_VERSION_TAG = "version";

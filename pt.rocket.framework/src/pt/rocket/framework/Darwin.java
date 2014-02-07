@@ -65,7 +65,9 @@ public class Darwin {
 	private static final String FRAMEWORK_PREFS = "framework";
 	
 	private static final String KEY_INITSUCCESSFUL = "init_successful";
-
+	
+	public final static String SHARED_PREFERENCES = "whitelabel_prefs";
+	public static String KEY_COUNTRY = "country";
 	/**
 	 * Prevent this class from being instantiated. Make this class into a
 	 * singleton
@@ -113,6 +115,11 @@ public class Darwin {
 		
 		return true;
 	}
+	
+	public static int getShopId(){
+		return SHOP_ID;
+	}
+	
 
 	/**
 	 * Gets the mode on which the framework is running

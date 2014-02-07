@@ -34,6 +34,7 @@
     <string name="gcategory_prefix">cat</string>
     <string name="gteaser_prefix">teaser</string>
     <string name="gteaserprod_prefix">teaser_prd</string>
+    <string name="gteaserrecentlyviewed_prefix">teaser_recently_viewed</string>
     <string name="gsearch_prefix">search</string>
     <string name="gpush_prefix">push</string>
     <string name="gcart_prefix">cart</string>

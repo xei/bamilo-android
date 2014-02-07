@@ -63,11 +63,11 @@ public class CustomerUtils {
 
 	public void storeCredentials(ContentValues values) {
 		Editor editor = obscuredPreferences.edit();
-		Log.i(TAG, "code1 storing credentials");
+//		Log.i(TAG, "code1 storing credentials");
 		for (Entry<String, ?> entry : values.valueSet()) {
 			if (entry.getKey() != null && entry.getValue() != null
 					&& entry.getValue().toString() != null) {
-				Log.i(TAG, "code1 storing credentials : key : "+entry.getKey()+" value : "+entry.getValue().toString());
+//				Log.i(TAG, "code1 storing credentials : key : "+entry.getKey()+" value : "+entry.getValue().toString());
 				editor.putString(entry.getKey(), entry.getValue().toString());
 			} else {
 				Log.e(TAG, "MISSING PARAMETERS FROM API!");

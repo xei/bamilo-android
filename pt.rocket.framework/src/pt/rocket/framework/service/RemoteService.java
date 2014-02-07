@@ -73,7 +73,7 @@ public class RemoteService extends Service {
         @Override
         public void sendRequest(Bundle bundle) throws RemoteException {
             // TODO Auto-generated method stub
-            RequestWorker request = new RequestWorker(bundle,mHandler);
+            RequestWorker request = new RequestWorker(bundle, mHandler, getApplicationContext());
             tpe.execute(request);
             
             Log.i(TAG,"THREAD POOL "+tpe.getActiveCount());

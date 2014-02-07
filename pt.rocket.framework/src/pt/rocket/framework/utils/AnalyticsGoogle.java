@@ -197,7 +197,13 @@ public class AnalyticsGoogle {
 
 		// Log.d( TAG, "trackProduct: navigationPath = " + navigationPath +
 		// " name = " + name );
-		String pageView = mContext.getString(navigationPrefix) + "_" + navigationPath + "/" + name.replace(" ", "_");
+		String pageView;
+		if(navigationPath != null && !navigationPath.equalsIgnoreCase("")){
+			pageView = mContext.getString(navigationPrefix) + "_" + navigationPath + "/" + name.replace(" ", "_");	
+		} else {
+			pageView = mContext.getString(navigationPrefix) + "_" + name.replace(" ", "_");
+		}
+		
 
 		Log.d(TAG, "trackProduct pageView = " + pageView);
 		mTracker.sendView(pageView);

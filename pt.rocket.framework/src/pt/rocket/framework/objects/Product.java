@@ -15,6 +15,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import de.akquinet.android.androlog.Log;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -39,6 +41,8 @@ public class Product implements IJSONSerializable, Parcelable {
     
     private ArrayList<Image> images;
 
+	private ArrayList<Image> imagesTablet;
+
     /**
      * simple product constructor.
      */
@@ -46,6 +50,7 @@ public class Product implements IJSONSerializable, Parcelable {
         id = "";
         attributes = new ProductAttributes();
         images = new ArrayList<Image>();
+        imagesTablet = new ArrayList<Image>();
     }
 
     /**
@@ -68,6 +73,10 @@ public class Product implements IJSONSerializable, Parcelable {
     public ArrayList<Image> getImages() {
         return images;
     }
+    
+    public ArrayList<Image> getImagesTablet() {
+        return imagesTablet;
+    }
 
     /* (non-Javadoc)
      * @see pt.rocket.framework.objects.IJSONSerializable#initialize(org.json.JSONObject)
@@ -88,17 +97,46 @@ public class Product implements IJSONSerializable, Parcelable {
             }
             
             images.clear();
-            JSONArray imageArray = jsonObject.optJSONArray(RestConstants.JSON_IMAGES_TAG);
-            if (imageArray != null) {
-                
-                int imageArrayLenght = imageArray.length();
-                for (int i = 0; i < imageArrayLenght; ++i) {
-                    JSONObject imageObject = imageArray.getJSONObject(i);
-                    Image image = new Image();
-                    image.initialize(imageObject);
-                    images.add(image);
+            imagesTablet.clear();
+            
+            // New method
+            if (jsonObject.has(RestConstants.JSON_TEASER_IMAGES_TAG)){
+            	JSONArray newImageArray = jsonObject.optJSONArray(RestConstants.JSON_IMAGES_TAG);
+            	if (newImageArray != null) {
+		        	for (int i = 0; i < newImageArray.length(); i++) {
+						// Validate device type
+						JSONObject jsonImage = newImageArray.optJSONObject(i);
+						String device = jsonImage.optString(RestConstants.JSON_IMAGE_DEVICE_TYPE_TAG, RestConstants.JSON_PHONE_TAG);
+						Log.d("IMAGE TEASER", "DEVICE: " + device);
+						if(device.equalsIgnoreCase(RestConstants.JSON_PHONE_TAG)) {
+							String imageUrl = jsonImage.optString(RestConstants.JSON_TEASER_IMAGE_URL_TAG);
+							Image image = new Image(imageUrl, null, null, null);
+							images.add(image);
+						} else if(device.equalsIgnoreCase(RestConstants.JSON_TABLET_TAG)){
+							String imageTableUrl = jsonImage.optString(RestConstants.JSON_TEASER_IMAGE_URL_TAG);
+							Image image = new Image(imageTableUrl, null, null, null);
+							imagesTablet.add(image);
+						}
+					}
+            	}
+            	
+            } else {
+            	
+            	// Old method
+            	JSONArray imageArray = jsonObject.optJSONArray(RestConstants.JSON_IMAGES_TAG);
+            	if (imageArray != null) {
+                    int imageArrayLenght = imageArray.length();
+                    for (int i = 0; i < imageArrayLenght; ++i) {
+                        JSONObject imageObject = imageArray.getJSONObject(i);
+                        Image image = new Image();
+                        image.initialize(imageObject);
+                        images.add(image);
+                    }
                 }
             }
+            
+            
+            
         } catch (JSONException e) {
             e.printStackTrace();
             return false;
@@ -217,6 +255,7 @@ public class Product implements IJSONSerializable, Parcelable {
         dest.writeString(id);        
         dest.writeValue(attributes);
         dest.writeList(images);
+        dest.writeList(imagesTablet);
     }
     
     private Product(Parcel in) {
@@ -224,6 +263,8 @@ public class Product implements IJSONSerializable, Parcelable {
         attributes = (ProductAttributes) in.readValue(ProductAttributes.class.getClassLoader());
         images = new ArrayList<Image>();
         in.readList(images, Image.class.getClassLoader());
+        imagesTablet = new ArrayList<Image>();
+        in.readList(imagesTablet, Image.class.getClassLoader());
     }
     
     public static final Parcelable.Creator<Product> CREATOR = new Parcelable.Creator<Product>() {
