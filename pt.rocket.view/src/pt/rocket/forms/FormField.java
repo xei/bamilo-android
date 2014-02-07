@@ -300,6 +300,10 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                 
                 
                 /**
+                 * ########### PAYMENT METHODS ########### 
+                 */
+                
+                /**
                  * TODO: Validate this method to save the payment methods
                  */
                 if(key.equals("payment_method")){
@@ -311,6 +315,22 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                         String value = dataOptionsObject.getJSONObject(curKey).getString("value");
                         Log.d(TAG, "FORM FIELD: CURRENT KEY " + curKey + " VALUE: " + value);
                         dataSet.put(value, curKey);
+                    }
+                }
+                
+                /**
+                 * TODO: Validate this method to save the payment methods
+                 */
+                if(key.equals("payment_method")){
+                    dataOptionsObject = jsonObject.optJSONObject("options");
+                    Iterator<?> it = dataOptionsObject.keys();
+                    while (it.hasNext()) {
+                        String curKey = (String) it.next();
+                        JSONObject json = dataOptionsObject.getJSONObject(curKey);
+                        FieldPaymentMethod fieldPaymentMethod = new FieldPaymentMethod(curKey, json);
+                        Log.d(TAG, "FORM FIELD: NAME: " + fieldPaymentMethod.getName() + 
+                                             " VALUE: " + fieldPaymentMethod.getValue() +
+                                            " FIELDS: " + fieldPaymentMethod.getFields().size());
                     }
                 }
                 
