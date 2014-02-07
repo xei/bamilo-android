@@ -123,7 +123,7 @@ public class ProductsViewFragment extends BaseFragment {
                 ConstantsIntentExtra.NAVIGATION_SOURCE, -1);
         navigationPath = getArguments().getString(
                 ConstantsIntentExtra.NAVIGATION_PATH);
-        Log.i(TAG, "code1 title is : " + title);
+//        Log.i(TAG, "code1 title is : " + title);
         Log.i(TAG, "ON RESUME");
         AnalyticsGoogle.get().trackPage(R.string.gproductlist);
         if(mProductsListPagerAdapter == null){

@@ -7,6 +7,7 @@ import pt.rocket.framework.objects.Category;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.Context;
+import android.database.DataSetObserver;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -111,5 +112,15 @@ public class CategoriesAdapter extends BaseAdapter {
 		this.categories = cats;
 		this.notifyDataSetChanged();
 	}
-
+	
+	/**
+	 * #FIX: java.lang.IllegalArgumentException: The observer is null.
+	 * @solution from : https://code.google.com/p/android/issues/detail?id=22946 
+	 */
+	@Override
+	public void unregisterDataSetObserver(DataSetObserver observer) {
+	    if(observer !=null){
+	        super.unregisterDataSetObserver(observer);    
+	    }
+	}
 }

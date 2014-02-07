@@ -712,13 +712,37 @@ public class DynamicFormItem {
                 }
             
                 // TODO: Validate this method for poll    
+//                Log.d("Poll", "Type: Radio Group");
+//                if(entry.getKey().contains("poll")){
+//                    Log.d("Poll", "Key: Poll");
+//                    createPollRadioGroup(MANDATORYSIGNALSIZE, params, dataContainer);
+//                }
+                
+                	
+                break;
+                
+            case list:
+                this.control.setLayoutParams(params);
+                // data controls
+                params = new RelativeLayout.LayoutParams( controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                dataContainer = new RelativeLayout(this.context);
+                dataContainer.setId(parent.getNextId());
+                dataContainer.setLayoutParams(params);
+                
+                params = new RelativeLayout.LayoutParams( controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                
+                
+                createSpinnerForRadioGroup(MANDATORYSIGNALSIZE, params, dataContainer);
+                
+            
+                // TODO: Validate this method for poll    
                 Log.d("Poll", "Type: Radio Group");
                 if(entry.getKey().contains("poll")){
                     Log.d("Poll", "Key: Poll");
                     createPollRadioGroup(MANDATORYSIGNALSIZE, params, dataContainer);
                 }
                 
-                	
+                    
                 break;
             case metadate:
             case date:
@@ -794,7 +818,8 @@ public class DynamicFormItem {
 					
 					@Override
 					public void onClick(View v) {
-						dialogDate.show(((BaseActivity)context).getSupportFragmentManager(), null);						
+					    if(!dialogDate.isVisible())
+					        dialogDate.show(((BaseActivity)context).getSupportFragmentManager(), null);						
 					}
 				});
         

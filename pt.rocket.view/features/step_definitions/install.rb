@@ -16,5 +16,5 @@ end
 
 Then /^I call the variables$/ do  
   initvars
-  #puts $country
+  #puts @venture_name.to_s
 end

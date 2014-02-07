@@ -10,6 +10,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.forms.Form;
 import pt.rocket.forms.FormData;
 import pt.rocket.framework.enums.RequestType;
@@ -18,9 +19,6 @@ import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
 import pt.rocket.helpers.BaseHelper;
-import pt.rocket.utils.JumiaApplication;
-
-import android.content.ContentValues;
 import android.os.Bundle;
 import android.util.Log;
 

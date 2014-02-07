@@ -14,7 +14,7 @@ import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
 import pt.rocket.helpers.BaseHelper;
 import pt.rocket.helpers.HelperPriorityConfiguration;
-import pt.rocket.utils.JumiaApplication;
+import pt.rocket.app.JumiaApplication;
 import android.os.Bundle;
 import android.util.Log;
 

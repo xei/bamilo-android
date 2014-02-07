@@ -11,6 +11,7 @@ import java.util.List;
 import org.holoeverywhere.FontLoader;
 import org.holoeverywhere.widget.TextView;
 
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.FormConstants;
 import pt.rocket.controllers.fragments.FragmentController;
@@ -32,7 +33,6 @@ import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.pojo.DynamicForm;
 import pt.rocket.pojo.DynamicFormItem;
 import pt.rocket.utils.InputType;
-import pt.rocket.utils.JumiaApplication;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.TrackerDelegator;
@@ -209,8 +209,13 @@ public class SessionRegisterFragment extends BaseFragment {
         super.onStop();
         Log.i(TAG, "ON STOP");
 
-        if (container != null)
-            container.removeAllViews();
+        if (container != null){
+            try {
+                container.removeAllViews();
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -618,7 +623,11 @@ public class SessionRegisterFragment extends BaseFragment {
         serverForm.setOnItemSelectedListener(selected_listener);
         serverForm.setTextWatcher(text_watcher);
         container = (LinearLayout) getView().findViewById(R.id.registerform_container);
-        container.removeAllViews();
+        try {
+            container.removeAllViews();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
         container.addView(serverForm.getContainer());
         if (null != this.savedInstanceState && null != serverForm) {
             Iterator<DynamicFormItem> iter = serverForm.getIterator();
@@ -646,7 +655,9 @@ public class SessionRegisterFragment extends BaseFragment {
             if (errorCode == ErrorCode.REQUEST_ERROR) {
                 HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle
                         .getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
-                List<String> validateMessages = errorMessages.get(RestConstants.JSON_VALIDATE_TAG);
+//                Log.i(TAG, "code1exists : errorMessages : "+errorMessages);
+                List<String> validateMessages = errorMessages.get(RestConstants.JSON_ERROR_TAG);
+//                Log.i(TAG, "code1exists : validateMessages : "+validateMessages);
                 if (validateMessages != null
                         && validateMessages.contains(Errors.CODE_REGISTER_CUSTOMEREXISTS)) {
                     ((BaseActivity) getActivity()).showContentContainer(false);

@@ -1,12 +1,10 @@
-package pt.rocket.utils;
+package pt.rocket.app;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
-import pt.rocket.app.ApplicationComponent;
-import pt.rocket.app.DarwinComponent;
-import pt.rocket.app.UrbanAirshipComponent;
 import pt.rocket.forms.FormData;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.components.NavigationListComponent;
@@ -27,17 +25,23 @@ import pt.rocket.framework.utils.Utils;
 import pt.rocket.helpers.BaseHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.preferences.ShopPreferences;
+import pt.rocket.utils.CheckVersion;
+import pt.rocket.utils.ServiceSingleton;
 import android.app.Application;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.RemoteException;
+import android.view.View;
 
+import com.androidquery.callback.AjaxCallback;
+import com.androidquery.callback.BitmapAjaxCallback;
 import com.bugsense.trace.ExceptionCallback;
 import com.urbanairship.UAirship;
 
@@ -52,7 +56,7 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     public static int SHOP_ID_FOR_ADX = -1;
 
     public static JumiaApplication INSTANCE;
-    boolean mIsBound;
+    public static boolean mIsBound = false;
     /**
      * Account Variables
      */
@@ -95,8 +99,9 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     public HashMap<String, IResponseCallback> responseCallbacks;
 
     private boolean isInitializing = false;
-    public boolean isUAInitialized = false;
+//    public boolean isUAInitialized = false;
     private Handler resendHandler;
+    private Handler resendMenuHandler;
     private Message resendMsg;
     
     /**
@@ -106,6 +111,8 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     private HashMap<EventType, Bundle> requestsRetryBundleList = new HashMap<EventType, Bundle>();
     private HashMap<EventType, BaseHelper> requestsRetryHelperList = new HashMap<EventType, BaseHelper>();
     private HashMap<EventType, IResponseCallback> requestsResponseList = new HashMap<EventType, IResponseCallback>();
+
+    private IRemoteServiceCallback callBackWaitingService;
     
     /**
      * Current categories
@@ -124,13 +131,20 @@ public class JumiaApplication extends Application implements ExceptionCallback {
          * Force UA clean the previous configurations.
          */
 //        trackerFile = new AndroidFileFunctions();
-        UAirship.takeOff(this);
+//        UAirship.takeOff(this);
         doBindService();
         
         Log.init(getApplicationContext());
         Log.d(TAG, "onCreate");
         INSTANCE = this;
-         
+        
+        /**
+         * AQuery Configurations
+         */
+        BitmapAjaxCallback.setCacheLimit(50);
+        //set the max number of concurrent network connections, default is 4
+        AjaxCallback.setNetworkLimit(2);
+        
 //        init(false);
         responseCallbacks = new HashMap<String, IResponseCallback>();
         // Get the current shop id
@@ -140,17 +154,28 @@ public class JumiaApplication extends Application implements ExceptionCallback {
         ImageResolutionHelper.init(this);
         setFormDataRegistry(new HashMap<String, FormData>());
         navigationListComponents = null;
+        
+        COMPONENTS.get(UrbanAirshipComponent.class).init(this);
     }
 
+    @Override
+    public void onLowMemory() {     
+        super.onLowMemory();
+        
+        //clear all memory cached images when system is in low memory
+        //note that you can configure the max image cache count, see CONFIGURATION
+        BitmapAjaxCallback.clearCache();
+    }
+    
     public synchronized void init(boolean isReInit, Handler initializationHandler) {
         isInitializing = true;
         Log.d(TAG, "Starting initialisation phase");
         AnalyticsGoogle.clearCheckoutStarted();
         for (ApplicationComponent component : COMPONENTS.values()) {
             ErrorCode result = component.init(JumiaApplication.this);
-            Log.i(TAG, "code1 initializing component : "+component.getClass().getName());
+//            Log.i(TAG, "code1 initializing component : "+component.getClass().getName());
             if (result != ErrorCode.NO_ERROR) {
-                Log.i(TAG, "code1 component : "+component.getClass().getName()+" error code : "+result);
+//                Log.i(TAG, "code1 component : "+component.getClass().getName()+" error code : "+result);
                 handleEvent(result, null, initializationHandler);
                 return;
             }
@@ -206,6 +231,11 @@ public class JumiaApplication extends Application implements ExceptionCallback {
         }
         if (ServiceSingleton.getInstance().getService() == null) {
             Log.i(TAG, "ServiceSingleton.getInstance().getService() is null");
+            // Try connect with service
+            doBindService();
+            // Save the call back
+            callBackWaitingService = mCallback;
+            return;
         }
         try {
             ServiceSingleton.getInstance().getService().registerCallback(mCallback);
@@ -213,7 +243,36 @@ public class JumiaApplication extends Application implements ExceptionCallback {
             e.printStackTrace();
         }
     }
+    
+    public void unRegisterFragmentCallback(IRemoteServiceCallback mCallback) {
+        if (mCallback == null) {
+            Log.i(TAG, "mCallback is null");
+        }
+        if (ServiceSingleton.getInstance().getService() != null) {
+            try {
+                ServiceSingleton.getInstance().getService().unregisterCallback(mCallback);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }    
+        }
+        
+    }
 
+    /**
+     * Method used to register the call back that is waiting for service.
+     * @author sergiopereira
+     */
+    private void registerCallBackIsWaiting() {
+        try {
+            // Validate the current call back waiting by service
+            if (callBackWaitingService != null){
+                ServiceSingleton.getInstance().getService().registerCallback(callBackWaitingService);
+                callBackWaitingService = null;
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
     
     
     /**
@@ -240,9 +299,9 @@ public class JumiaApplication extends Application implements ExceptionCallback {
         } else {
             Log.w(TAG, " MISSING EVENT TYPE from "+helper.toString());
         }
-        String md5 = Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY);
-        bundle.putString(Constants.BUNDLE_MD5_KEY, md5);
+        String md5 = bundle.getString(Constants.BUNDLE_MD5_KEY);
         Log.d("TRACK", "sendRequest");
+
         JumiaApplication.INSTANCE.responseCallbacks.put(md5, new IResponseCallback() {
 
             @Override
@@ -277,13 +336,16 @@ public class JumiaApplication extends Application implements ExceptionCallback {
 
     public void sendRequest(Bundle bundle) {
         long timeMillis = System.currentTimeMillis();
-        Log.i("REQUEST", "performing event type request : "+bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY)+" url : "+bundle.getString(Constants.BUNDLE_URL_KEY));
+//        Log.i("REQUEST", "performing event type request : "+bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY)+" url : "+bundle.getString(Constants.BUNDLE_URL_KEY));
 //        timeTrackerMap.put((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY), timeMillis);
-        try {
-            ServiceSingleton.getInstance().getService().sendRequest(bundle);
-        } catch (RemoteException e) {
-            e.printStackTrace();
+        if(ServiceSingleton.getInstance().getService() != null){
+            try {
+                ServiceSingleton.getInstance().getService().sendRequest(bundle);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }    
         }
+        
     }
 
     /**
@@ -407,20 +469,23 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     }
     
     public void doBindService() {
-        // Establish a connection with the service.  We use an explicit
-        // class name because we want a specific service implementation that
-        // we know will be running in our own process (and thus won't be
-        // supporting component replacement by other applications).
-        bindService(new Intent(this, 
-                RemoteService.class), mConnection, Context.BIND_AUTO_CREATE);
-        mIsBound = true;
+        
+        if(!mIsBound){
+            
+            /**
+             *  Establish a connection with the service.  We use an explicit
+             *  class name because we want a specific service implementation that
+             *  we know will be running in our own process (and thus won't be
+             *  supporting component replacement by other applications).
+             */
+            bindService(new Intent(this, RemoteService.class), mConnection, Context.BIND_AUTO_CREATE);
+        }
     }
     
     public void doUnbindService() {
         if (mIsBound) {
             // Detach our existing connection.
             unbindService(mConnection);
-            mIsBound = false;
         }
     }
     
@@ -481,6 +546,16 @@ public class JumiaApplication extends Application implements ExceptionCallback {
         this.requestsResponseList = requestsResponseList;
     }
 
+    public void setResendHander(Handler mHandler){
+        resendInitializationSignal = true;
+        resendMsg = new Message();
+        resendHandler = mHandler;
+    }
+    
+    public void setResendMenuHander(Handler mHandler){
+        resendMenuHandler = mHandler;
+    }
+    
     /**
      * Service Stuff
      */
@@ -490,6 +565,7 @@ public class JumiaApplication extends Application implements ExceptionCallback {
         @Override
         public void onServiceDisconnected(ComponentName name) {
             Log.i(TAG, "onServiceDisconnected");
+            mIsBound = false;
         }
 
         @Override
@@ -500,11 +576,20 @@ public class JumiaApplication extends Application implements ExceptionCallback {
             // service through an IDL interface, so get a client-side
             // representation of that from the raw service object.
             Log.i(TAG, "onServiceConnected");
+            mIsBound = true;
             ServiceSingleton.getInstance().setService(IRemoteService.Stub.asInterface(service));
             if(resendInitializationSignal){
                 resendHandler.sendMessage(resendMsg);
                 resendInitializationSignal = false;
             }
+            
+            if(resendMenuHandler != null){
+                resendMenuHandler.sendEmptyMessage(0);
+                resendMenuHandler = null;
+            }
+            
+            // Register the fragment callback
+            registerCallBackIsWaiting();
         }
     };
     

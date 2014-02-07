@@ -8,13 +8,13 @@ import org.json.JSONObject;
 
 import de.akquinet.android.androlog.Log;
 
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.framework.components.NavigationListComponent;
 import pt.rocket.framework.enums.RequestType;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
-import pt.rocket.utils.JumiaApplication;
 
 
 import android.os.Bundle;
@@ -44,11 +44,11 @@ public class NavigationListHelper extends BaseHelper {
             NavigationListComponent component;
             int dataArrayLenght = dataArray.length();
             for (int i = 0; i < dataArrayLenght; ++i) {
-                Log.i(TAG, "code1 parsing components ...");
+//                Log.i(TAG, "code1 parsing components ...");
                 component = new NavigationListComponent();
                 component.initialize(dataArray.getJSONObject(i));
                 components.add(component);
-                Log.i(TAG, "code1 parsing component : "+component.getElementText());
+//                Log.i(TAG, "code1 parsing component : "+component.getElementText());
             } 
 
             components.add(new NavigationListComponent(0, null, "loginout", null));

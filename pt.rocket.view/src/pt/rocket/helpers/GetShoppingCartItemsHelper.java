@@ -11,6 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.framework.database.SectionsTablesHelper;
 import pt.rocket.framework.enums.RequestType;
 import pt.rocket.framework.objects.Section;
@@ -20,7 +21,6 @@ import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
-import pt.rocket.utils.JumiaApplication;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -40,7 +40,10 @@ public class GetShoppingCartItemsHelper extends BaseHelper {
         bundle.putString(Constants.BUNDLE_URL_KEY, EventType.GET_SHOPPING_CART_ITEMS_EVENT.action);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_NOT_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
-        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
+        String md5 = Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY);
+        bundle.putString(Constants.BUNDLE_MD5_KEY, md5);
+//        Log.i(TAG, "code1removing making callback from request type : "+ EventType.GET_SHOPPING_CART_ITEMS_EVENT);
+//        Log.i(TAG, "code1removing making callback with id : "+ md5);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_SHOPPING_CART_ITEMS_EVENT);
         return bundle;
     }

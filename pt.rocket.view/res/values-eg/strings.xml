@@ -183,6 +183,7 @@
 	<string name="country_name_kenya">Kenya</string>
 	<string name="country_name_ivorycoast">Ivory Coast</string>
 	<string name="country_name_egypt">Egypt</string>
+    <string name="country_name_uganda">Uganda</string>
 	<string name="email">E-Mail</string>
 	<string name="name">Name</string>
 	<string name="default_quantity_label">1</string>
@@ -222,4 +223,5 @@
 	<!-- Facebook App Id DO NOT TRANSLATE -->
 	<string name="app_id">390085037744566</string>
 	<string name="exit_press_back_again">Please press back again if you wish to leave the app</string>
+	<string name="recently_viewed">Recently Viewed</string>
 </resources>

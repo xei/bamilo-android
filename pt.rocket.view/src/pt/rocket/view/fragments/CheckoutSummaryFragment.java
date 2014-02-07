@@ -16,7 +16,7 @@ import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.GetShoppingCartItemsHelper;
 import pt.rocket.helpers.GetShoppingCartRemoveItemHelper;
 import pt.rocket.interfaces.IResponseCallback;
-import pt.rocket.utils.JumiaApplication;
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.view.R;

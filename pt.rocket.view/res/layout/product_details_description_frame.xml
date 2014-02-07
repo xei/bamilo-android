@@ -46,6 +46,16 @@
                 android:textColor="@color/grey_light"
                 android:textSize="14dp"
                 android:textStyle="bold" />
+
+            <RelativeLayout
+                android:id="@+id/loading_specifications"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_centerInParent="true"
+                android:visibility="gone" >
+
+                <include layout="@layout/loading_bar_simple" />
+            </RelativeLayout>
         </RelativeLayout>
 
         <LinearLayout

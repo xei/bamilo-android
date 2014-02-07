@@ -6,12 +6,12 @@ import java.util.List;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.Errors;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.utils.JSONConstants;
-import pt.rocket.utils.JumiaApplication;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -52,7 +52,8 @@ public abstract class BaseHelper {
 
             Boolean success = jsonObject.optBoolean(JSONConstants.JSON_SUCCESS_TAG, false);
             JSONObject metaData;
-            if (eventType == EventType.GET_CALL_TO_ORDER_PHONE || eventType == EventType.REVIEW_PRODUCT_EVENT) {
+            if (eventType == EventType.GET_CALL_TO_ORDER_PHONE
+                    || eventType == EventType.REVIEW_PRODUCT_EVENT) {
                 metaData = jsonObject;
             } else {
                 if (jsonObject.has(JSONConstants.JSON_METADATA_TAG)) {
@@ -75,7 +76,7 @@ public abstract class BaseHelper {
             // removing unnecessary information from bundle
             bundle.remove(Constants.BUNDLE_RESPONSE_KEY);
             if (success) {
-                Log.i(TAG, "code1 success response checkResponseForStatus");
+//                Log.i(TAG, "code1 success response checkResponseForStatus");
                 return parseResponseBundle(bundle, metaData);
             } else {
                 JSONObject messagesObject = jsonObject
@@ -85,12 +86,12 @@ public abstract class BaseHelper {
                 bundle.putSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY, errors);
                 bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, ErrorCode.REQUEST_ERROR);
                 bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
-                Log.i(TAG, "code1 error response checkResponseForStatus : " + errors.toString());
+//                Log.i(TAG, "code1 error response checkResponseForStatus : " + errors.toString());
                 return parseResponseErrorBundle(bundle);
             }
         } catch (JSONException e) {
             e.printStackTrace();
-            Log.i(TAG, "code1 error response checkResponseForStatus : json error " + eventType);
+//            Log.i(TAG, "code1 error response checkResponseForStatus : json error " + eventType);
             bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
             return parseResponseErrorBundle(bundle);
         }

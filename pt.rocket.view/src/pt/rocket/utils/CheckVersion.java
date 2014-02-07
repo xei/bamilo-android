@@ -1,5 +1,6 @@
 package pt.rocket.utils;
 
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.framework.objects.Version;

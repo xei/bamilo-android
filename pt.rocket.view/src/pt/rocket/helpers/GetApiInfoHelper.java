@@ -12,6 +12,8 @@ import java.util.Set;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.framework.database.CategoriesTableHelper;
 import pt.rocket.framework.database.DarwinDatabaseHelper;
 import pt.rocket.framework.database.ImageResolutionTableHelper;
@@ -23,7 +25,6 @@ import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
-import pt.rocket.utils.JumiaApplication;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
@@ -53,11 +54,11 @@ public class GetApiInfoHelper extends BaseHelper {
     
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
-        android.util.Log.i(TAG, "code1 parseResponseBundle GetApiInfoHelper "+ jsonObject.toString());
+//        android.util.Log.i(TAG, "code1 parseResponseBundle GetApiInfoHelper "+ jsonObject.toString());
         
         JSONArray sessionJSONArray = jsonObject
                 .optJSONArray(RestConstants.JSON_DATA_TAG);
-        android.util.Log.i(TAG, "code1  GetApiInfoHelper "+ sessionJSONArray.toString());
+//        android.util.Log.i(TAG, "code1  GetApiInfoHelper "+ sessionJSONArray.toString());
         ArrayList<Section> outDatedSections = null;
         if (sessionJSONArray != null) {
             List<Section> oldSections = SectionsTablesHelper
@@ -106,6 +107,7 @@ public class GetApiInfoHelper extends BaseHelper {
         // Log.d(TAG, "#Sections = " + sections.size());
 
         for (Section section : sections) {
+//            Log.i(TAG, "code1md5 outdated section : "+section.getName());
             // Log.d(TAG, "Going to clear db for " + section.getName());
             // if (section.getName().equals(Section.SECTION_NAME_TEASERS)) {
             // IntroTeasersTableHelper.clearTeasers(db);

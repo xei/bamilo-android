@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.view.R;
 import android.app.Activity;
+import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -40,7 +41,7 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
 	
 	private String mId;
 	
-	private int mInitialPosition;
+	private long mInitialPosition;
 	
 	private Activity mActivity;
 	
@@ -125,7 +126,7 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
 	 * @param initialPosition
 	 * @return
 	 */
-	public static DialogListFragment newInstance(Activity activity, OnDialogListListener listener, String id, String title, ArrayList<String> items, int initialPosition) {
+	public static DialogListFragment newInstance(Activity activity, OnDialogListListener listener, String id, String title, ArrayList<String> items, long initialPosition) {
 	    Log.d(TAG, "NEW INSTANCE");
 	    DialogListFragment dialogListFragment = new DialogListFragment();  
 	    dialogListFragment.mActivity = activity;
@@ -179,7 +180,7 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
         if(mAdapter == null){
             mAdapter = new DialogListAdapter();
         }
-        mAdapter.setCheckedPosition(mInitialPosition);
+        mAdapter.setCheckedPosition((int) mInitialPosition);
         list.setAdapter(mAdapter);
         list.setOnItemClickListener(this);
         this.mActivity.getWindow().getAttributes().width = LayoutParams.MATCH_PARENT;
@@ -245,6 +246,17 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
 		public void setCheckedPosition(int position) {
 			mCheckedPosition = position;
 		}
+		
+		  /**
+	     * #FIX: java.lang.IllegalArgumentException: The observer is null.
+	     * @solution from : https://code.google.com/p/android/issues/detail?id=22946 
+	     */
+	    @Override
+	    public void unregisterDataSetObserver(DataSetObserver observer) {
+	        if(observer !=null){
+	            super.unregisterDataSetObserver(observer);    
+	        }
+	    }
 
 	}
 

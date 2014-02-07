@@ -29,7 +29,7 @@ import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.GetFormsDatasetListHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.InputType;
-import pt.rocket.utils.JumiaApplication;
+import pt.rocket.app.JumiaApplication;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -181,8 +181,10 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                 inputType = InputType.number;
             } else if (formFieldString.equals("password")) {
                 inputType = InputType.password;
-            } else if (formFieldString.equals("radio") || formFieldString.equals("list")) {
+            } else if(formFieldString.equals("radio")){
                 inputType = InputType.radioGroup;
+            } else if (formFieldString.equals("list")) {
+                inputType = InputType.list;
             } else if (formFieldString.equals("boolean")) {
                 inputType = InputType.checkBox;
             } else if (formFieldString.equals("")) {
@@ -252,7 +254,6 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                             bundle.putString(GetFormsDatasetListHelper.KEY, key);
                             bundle.putString(GetFormsDatasetListHelper.URL, datasetSource);
                             JumiaApplication.INSTANCE.sendRequest(new GetFormsDatasetListHelper(), bundle, responseCallback);
-//                            EventManager.getSingleton().triggerRequestEvent(new GetFormsDatasetListEvent(key, datasetSource), this);
                         }
                     }
                 }
@@ -391,6 +392,9 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                 break;
             case radioGroup:
                 jsonObject.put(RestConstants.JSON_TYPE_TAG, "radio");
+                break;
+            case list:
+                jsonObject.put(RestConstants.JSON_TYPE_TAG, "list");
                 break;
             case text:
                 jsonObject.put(RestConstants.JSON_TYPE_TAG, "string");

@@ -210,7 +210,10 @@ public class CheckoutWebFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        webview.loadUrl("about:blank");
+        if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1){
+            webview.loadUrl("about:blank");    
+        }
+        
 
         // Needed for 2.3 problem with not showing keyboard by tapping in webview
         webview.requestFocus();
@@ -229,7 +232,9 @@ public class CheckoutWebFragment extends BaseFragment {
     @Override
     public void onPause() {
         super.onPause();
-        webview.loadUrl("about:blank");
+        if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1){
+            webview.loadUrl("about:blank");
+        }
         Log.i(TAG, "ON PAUSE");
     }
 
@@ -241,7 +246,9 @@ public class CheckoutWebFragment extends BaseFragment {
     @Override
     public void onStop() {
         super.onStop();
-        webview.loadUrl("about:blank");
+        if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1){
+            webview.loadUrl("about:blank");
+        }
         Log.i(TAG, "ON STOP");
     }
 
@@ -262,7 +269,12 @@ public class CheckoutWebFragment extends BaseFragment {
         super.onDestroy();
         if(webview != null) {
             webview.setWebViewClient(null);
-            webview.removeAllViews();
+            try {
+                webview.removeAllViews();
+            } catch (IllegalArgumentException e) {
+                // TODO: handle exception
+            }
+            
             webview.destroy();
             webview = null;
         }
@@ -306,7 +318,9 @@ public class CheckoutWebFragment extends BaseFragment {
     private void startCheckout() {
         ((BaseActivity) getActivity()).showLoading(true);
         webview.clearView();
-        webview.loadUrl("about:blank"); 
+        if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1){
+            webview.loadUrl("about:blank");
+        }
         checkoutUrl = "https://" + RestContract.REQUEST_HOST + CHECKOUT_URL_WITH_PARAM;
         setProxy( checkoutUrl );
         Log.d(TAG, "Loading Url: " + checkoutUrl);
@@ -329,8 +343,7 @@ public class CheckoutWebFragment extends BaseFragment {
     }
     
     private void prepareCookieStore() {
-        List<Cookie> cookies = RestClientSingleton.getSingleton()
-                .getCookieStore().getCookies();
+        List<Cookie> cookies = RestClientSingleton.getSingleton(getBaseActivity()).getCookieStore().getCookies();
         CookieManager cookieManager = CookieManager.getInstance();
         if (!cookies.isEmpty()) {
             CookieSyncManager.createInstance(getActivity());

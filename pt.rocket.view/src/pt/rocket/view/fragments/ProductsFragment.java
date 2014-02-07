@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
 
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.ProductsListAdapter;
@@ -28,7 +29,6 @@ import pt.rocket.helpers.GetProductReviewsHelper;
 import pt.rocket.helpers.GetProductsHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.DialogList;
-import pt.rocket.utils.JumiaApplication;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.TrackerDelegator;
@@ -213,7 +213,7 @@ public class ProductsFragment extends BaseFragment implements
         setSort(pos);
         
         
-        Log.i(TAG, "code1 creating ProductsFragment " + pos);
+//        Log.i(TAG, "code1 creating ProductsFragment " + pos);
 
         Log.d(TAG, "onCreate: searchQuery = " + searchQuery);
         
@@ -596,7 +596,7 @@ public class ProductsFragment extends BaseFragment implements
 
         showProductsContent();
 
-        Log.i(TAG, "code1 " + productsPage.getProducts().size() + " pageNumber is : "+pageNumber);
+//        Log.i(TAG, "code1 " + productsPage.getProducts().size() + " pageNumber is : "+pageNumber);
         pageNumber = productsPage.getProducts().size() >= productsPage.getTotalProducts() ? NO_MORE_PAGES
                 : pageNumber + 1;
 

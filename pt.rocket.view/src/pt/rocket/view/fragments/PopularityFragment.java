@@ -8,6 +8,7 @@ import java.util.EnumSet;
 
 import org.holoeverywhere.widget.TextView;
 
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
@@ -23,7 +24,6 @@ import pt.rocket.framework.utils.LoadingBarView;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.GetProductReviewsHelper;
 import pt.rocket.interfaces.IResponseCallback;
-import pt.rocket.utils.JumiaApplication;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.TrackerDelegator;
@@ -391,6 +391,9 @@ public class PopularityFragment extends BaseFragment {
     
 
     protected boolean onSuccessEvent(Bundle bundle) {
+        if(!isVisible()){
+            return true;
+        }
         mProductRatingPage =  bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);;
         getBaseActivity().showContentContainer(false);
         displayReviews();
@@ -412,7 +415,12 @@ public class PopularityFragment extends BaseFragment {
         ArrayList<ProductReviewComment> reviews = mProductRatingPage.getReviewComments();
         LinearLayout reviewsLin = (LinearLayout) getView().findViewById(R.id.linear_reviews);
         if(pageNumber == 1){
-            reviewsLin.removeAllViews();
+            try {
+                reviewsLin.removeAllViews();
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+            }
+            
         }
         // Log.i("REVIEW COUNT", " IS " + review.size());
         if (mProductRatingPage.getCommentsCount() >= 0) {

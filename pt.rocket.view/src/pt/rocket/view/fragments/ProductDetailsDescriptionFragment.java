@@ -5,12 +5,14 @@ package pt.rocket.view.fragments;
 
 import java.util.EnumSet;
 
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.utils.JumiaApplication;
+import pt.rocket.utils.FragmentCommunicatorForProduct;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.view.ProductDetailsActivityFragment;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.graphics.Paint;
@@ -24,6 +26,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import org.holoeverywhere.widget.TextView;
@@ -43,6 +46,7 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
     private TextView mProductFeaturesText;
     private TextView mProductDescriptionText;
     private TextView mProductDetailsText;
+    private RelativeLayout mLoading;
     private LinearLayout mProductFeaturesContainer;
     private CompleteProduct mCompleteProduct;
     private View mainView;
@@ -114,7 +118,8 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
         mProductFeaturesText = (TextView) mainView.findViewById( R.id.product_features_text );
         mProductDescriptionText = (TextView) mainView.findViewById( R.id.product_description_text );
         mProductDetailsText = (TextView) mainView.findViewById( R.id.product_details_text );
-        
+        mLoading = (RelativeLayout) mainView
+                .findViewById(R.id.loading_specifications);
         return mainView;
     }
 
@@ -198,6 +203,19 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
         System.gc();
     }
     
+    private void showContentLoading(){
+        mLoading.setVisibility(View.VISIBLE);
+        mProductName.setVisibility(View.GONE);
+        mProductNormalPrice.setVisibility(View.GONE);
+    }
+    
+    private void hideContentLoading(){
+        mLoading.setVisibility(View.GONE);
+        mProductName.setVisibility(View.VISIBLE);
+        mProductNormalPrice.setVisibility(View.VISIBLE);
+    }
+    
+    
     private void getViews(){
         mProductName = (TextView) mainView.findViewById( R.id.product_name );
         mProductResultPrice = (TextView) mainView.findViewById( R.id.product_price_result );
@@ -215,6 +233,7 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
         displaySpecification();
         displayDescription();
         displayDetails(view);
+        hideContentLoading();
     }
     
     private void displayPriceInformation() {
@@ -300,6 +319,22 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
         // The database for complete product delivers two similar texts.
         // It looks strange to show them both as "long description" and as details
         view.findViewById( R.id.product_details_container).setVisibility( View.GONE );
+    }
+    
+    @Override
+    public void notifyFragment(Bundle bundle) {
+//        Log.i(TAG, "code1 notifyFragment Specification");
+        // Validate if fragment is on the screen
+        if(!isVisible()){
+            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return;
+        }
+        
+        showContentLoading();
+        
+        mCompleteProduct = FragmentCommunicatorForProduct.getInstance().getCurrentProduct();
+        
+        displayProductInformation(getView());
     }
 
 }

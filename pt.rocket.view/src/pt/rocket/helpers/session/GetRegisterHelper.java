@@ -6,6 +6,7 @@ package pt.rocket.helpers.session;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.framework.enums.RequestType;
 import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.rest.RestConstants;
@@ -14,7 +15,6 @@ import pt.rocket.framework.utils.CustomerUtils;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
 import pt.rocket.helpers.BaseHelper;
-import pt.rocket.utils.JumiaApplication;
 
 import android.content.ContentValues;
 import android.os.Bundle;
@@ -23,7 +23,7 @@ import android.util.Log;
 /**
  * Example helper
  * 
- * @author Guilherme Silva
+ * @author Manuel Silva
  * 
  */
 public class GetRegisterHelper extends BaseHelper {

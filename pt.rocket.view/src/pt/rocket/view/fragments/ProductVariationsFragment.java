@@ -72,23 +72,6 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
         this.setRetainInstance(true);
     }
 
-    // @Override
-    // public void sendValuesToFragment(int identifier, Object values) {
-    // this.mCompleteProduct= (CompleteProduct) values;
-    // if(identifier == 1){
-    // displayVariations();
-    // }
-    // }
-    //
-    // @Override
-    // public void sendPositionToFragment(int position){
-    // this.mVariationsListPosition = position;
-    // if(mList!=null){
-    // mList.setSelectedItem(mVariationsListPosition, HorizontalListView.MOVE_TO_DIRECTLY);
-    // mList.setPosition(mVariationsListPosition);
-    // }
-    // }
-    //
     @Override
     public void sendListener(int identifier, OnClickListener onTeaserClickListener) {
 
@@ -182,7 +165,6 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
         }
 
         if (isNotValidVariation(mCompleteProduct.getVariations())) {
-            Log.i(TAG, "isNotValidVariation is false!!!");
             if (mVariationsContainer != null) {
                 mVariationsContainer.setVisibility(View.GONE);
             }
@@ -191,7 +173,6 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
         }
         
         mVariationsContainer.setVisibility(View.VISIBLE);
-//        if (mList == null)
         mList = (HorizontalListView) mainView.findViewById(R.id.variations_list);
         if (mAdapter == null) {
             mAdapter = new ProductImagesAdapter(this.getActivity(),

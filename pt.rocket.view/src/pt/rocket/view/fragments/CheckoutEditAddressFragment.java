@@ -3,35 +3,24 @@
  */
 package pt.rocket.view.fragments;
 
-import java.util.ArrayList;
 import java.util.EnumSet;
 
-import com.actionbarsherlock.internal.widget.IcsAdapterView;
-import com.actionbarsherlock.internal.widget.IcsAdapterView.OnItemSelectedListener;
-import com.actionbarsherlock.internal.widget.IcsSpinner;
-
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.FormConstants;
 import pt.rocket.factories.FormFactory;
 import pt.rocket.forms.Form;
-import pt.rocket.forms.FormField;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.Address;
-import pt.rocket.framework.objects.AddressCity;
-import pt.rocket.framework.objects.AddressRegion;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.GetInitFormHelper;
-import pt.rocket.helpers.address.SetNewAddressHelper;
-import pt.rocket.helpers.address.SetEditedAddressHelper;
 import pt.rocket.helpers.address.GetCitiesHelper;
-import pt.rocket.helpers.address.GetRegionsHelper;
-import pt.rocket.helpers.address.GetFormAddAddressHelper;
 import pt.rocket.helpers.address.GetFormEditAddressHelper;
+import pt.rocket.helpers.address.GetRegionsHelper;
+import pt.rocket.helpers.address.SetEditedAddressHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.pojo.DynamicForm;
-import pt.rocket.pojo.DynamicFormItem;
-import pt.rocket.utils.JumiaApplication;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.view.BaseActivity;
@@ -39,15 +28,11 @@ import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
-import android.database.CursorJoiner.Result;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 import de.akquinet.android.androlog.Log;
 

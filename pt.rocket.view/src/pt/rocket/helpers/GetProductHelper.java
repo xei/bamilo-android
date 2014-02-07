@@ -5,13 +5,13 @@ package pt.rocket.helpers;
 
 import org.json.JSONObject;
 
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.framework.enums.RequestType;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.ProductsPage;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
-import pt.rocket.utils.JumiaApplication;
 import android.os.Bundle;
 import android.util.Log;
 

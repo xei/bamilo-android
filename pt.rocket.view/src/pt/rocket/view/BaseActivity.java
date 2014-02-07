@@ -11,6 +11,7 @@ import org.holoeverywhere.widget.Button;
 import org.holoeverywhere.widget.EditText;
 import org.holoeverywhere.widget.TextView;
 
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.ActivitiesWorkFlow;
@@ -33,7 +34,6 @@ import pt.rocket.helpers.BaseHelper;
 import pt.rocket.helpers.GetShoppingCartItemsHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.CheckVersion;
-import pt.rocket.utils.JumiaApplication;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.ServiceSingleton;
@@ -139,6 +139,12 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     private boolean backPressedOnce = false;
 
     /**
+     * @FIX: IllegalStateException: Can not perform this action after onSaveInstanceState
+     * @Solution : http://stackoverflow.com/questions/7575921/illegalstateexception-can-not-perform-this-action-after-onsaveinstancestate-h
+     */
+    private Intent mOnActivityResultIntent = null; 
+    
+    /**
      * Use this variable to have a more precise control on when to show the content container.
      */
     private boolean processShow = true;
@@ -227,10 +233,15 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         // EventManager.getSingleton().addResponseListener(this, allHandledEvents);
         setupActionBar();
         setupContentViews();
-
-        if (getIntent().getExtras() != null) {
+        
+        /**
+         * @FIX: IllegalStateException: Can not perform this action after onSaveInstanceState
+         * @Solution : http://stackoverflow.com/questions/7575921/illegalstateexception-can-not-perform-this-action-after-onsaveinstancestate-h
+         */
+        if(getIntent().getExtras() != null){
             initialCountry = getIntent().getExtras().getBoolean(
                     ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, false);
+            mOnActivityResultIntent = null;
         }
         // Set sliding menu
         setupNavigationMenu(initialCountry);
@@ -274,10 +285,15 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         }
 
         CheckVersion.run(getApplicationContext());
-
-        if (getIntent().getExtras() != null) {
+        
+        /**
+         * @FIX: IllegalStateException: Can not perform this action after onSaveInstanceState
+         * @Solution : http://stackoverflow.com/questions/7575921/illegalstateexception-can-not-perform-this-action-after-onsaveinstancestate-h
+         */
+        if(mOnActivityResultIntent != null){
             initialCountry = getIntent().getExtras().getBoolean(
                     ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, false);
+            mOnActivityResultIntent = null;
         }
 
         // Validate if is in landscape and tablet and forcing menu
@@ -308,6 +324,17 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         }
     };
 
+    /**
+     * @FIX: IllegalStateException: Can not perform this action after onSaveInstanceState
+     * @Solution : http://stackoverflow.com/questions/7575921/illegalstateexception-can-not-perform-this-action-after-onsaveinstancestate-h
+     */
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        if(data != null){
+            mOnActivityResultIntent = data;
+        }
+    }
+    
     /*
      * (non-Javadoc)
      * 
@@ -605,6 +632,9 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
      * @return true if yes, false otherwise
      */
     public static boolean isTabletInLandscape(Context context) {
+        if(context == null){
+            return false;
+        }
         if (context.getResources().getBoolean(R.bool.isTablet)
                 && context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
             return true;
@@ -1187,25 +1217,6 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
      * Service Stuff
      */
 
-    public ServiceConnection mConnection = new ServiceConnection() {
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            Log.i(TAG, "onServiceDisconnected");
-        }
-
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            // This is called when the connection with the service has been
-            // established, giving us the service object we can use to
-            // interact with the service. We are communicating with our
-            // service through an IDL interface, so get a client-side
-            // representation of that from the raw service object.
-            Log.i(TAG, "onServiceConnected");
-            ServiceSingleton.getInstance().setService(IRemoteService.Stub.asInterface(service));
-
-        }
-    };
 
     public void unbindDrawables(View view) {
 
@@ -1219,8 +1230,12 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
                 }
                 if (view instanceof AdapterView<?>)
                     return;
-
-                ((ViewGroup) view).removeAllViews();
+                try {
+                    ((ViewGroup) view).removeAllViews();
+                } catch (IllegalArgumentException e) {
+                	e.printStackTrace();
+                }
+                
             }
         } catch (RuntimeException e) {
             Log.w(getTag(), "" + e);
@@ -1327,6 +1342,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
             AnalyticsGoogle.get().trackAccount(trackRes, null);
             break;
         case LOGIN_EVENT:
+            JumiaApplication.INSTANCE.setLoggedIn(true);
             triggerContentEventWithNoLoading(new GetShoppingCartItemsHelper(), null, mIResponseCallback);
             break;
         }
@@ -1346,6 +1362,9 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle
                 .getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+        if(errorCode ==  null){
+            return false;
+        }
         if (errorCode.isNetworkError()) {
             switch (errorCode) {
             case NO_NETWORK:
@@ -1416,7 +1435,36 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
 
                 dialog.show(getSupportFragmentManager(), null);
                 return true;
+                default:
+                    showContentContainer(false);
+
+                    // Remove dialog if exist
+                    if (dialog != null) {
+                        try {
+                            dialog.dismiss();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    dialog = DialogGenericFragment.createNoNetworkDialog(this,
+                            new OnClickListener() {
+
+                                @Override
+                                public void onClick(View v) {
+                                    JumiaApplication.INSTANCE.sendRequest(JumiaApplication.INSTANCE.getRequestsRetryHelperList().get(eventType), 
+                                            JumiaApplication.INSTANCE.getRequestsRetryBundleList().get(eventType), JumiaApplication.INSTANCE.getRequestsResponseList().get(eventType));
+                                    dialog.dismiss();
+                                }
+                            }, false);
+                    try {
+                        dialog.show(getSupportFragmentManager(), null);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    return true;
             }
+            
         }
         return false;
         // if (errorCode.isNetworkError()) {
@@ -1724,9 +1772,9 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         } else {
             Log.w(TAG, " MISSING EVENT TYPE from "+helper.toString());
         }
-        String md5 = Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY);
-        bundle.putString(Constants.BUNDLE_MD5_KEY, md5);
+        String md5 = bundle.getString(Constants.BUNDLE_MD5_KEY);
         Log.d("TRACK", "sendRequest");
+
         JumiaApplication.INSTANCE.responseCallbacks.put(md5, new IResponseCallback() {
 
             @Override
@@ -1789,8 +1837,12 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
      * @param bundle
      */
     private void handleResponse(Bundle bundle) {
+        
         String id = bundle.getString(Constants.BUNDLE_MD5_KEY);
+//        Log.i(TAG, "code1removing callback from request type : "+ bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY)+ " size is : " +JumiaApplication.INSTANCE.responseCallbacks.size());
+//        Log.i(TAG, "code1removing callback with id : "+ id);
         if (JumiaApplication.INSTANCE.responseCallbacks.containsKey(id)) {
+//            Log.i(TAG, "code1removing removed callback with id : "+ id);
             JumiaApplication.INSTANCE.responseCallbacks.get(id).onRequestComplete(bundle);
         }
         JumiaApplication.INSTANCE.responseCallbacks.remove(id);
@@ -1799,11 +1851,14 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     /**
      * Handles error responses
      * 
-     * @param bundle
+     * @param bundle 
      */
     private void handleError(Bundle bundle) {
         String id = bundle.getString(Constants.BUNDLE_MD5_KEY);
+//        Log.i(TAG, "code1removing callback from request type : "+ bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
+//        Log.i(TAG, "code1removing callback with id : "+ id);
         if (JumiaApplication.INSTANCE.responseCallbacks.containsKey(id)) {
+//            Log.i(TAG, "code1removing removed callback with id : "+ id);
             JumiaApplication.INSTANCE.responseCallbacks.get(id).onRequestError(bundle);
         }
         JumiaApplication.INSTANCE.responseCallbacks.remove(id);
@@ -1821,8 +1876,13 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
             @Override
             public void onClick(View v) {
                 findViewById(R.id.fallback_content).setVisibility(View.GONE);
-                JumiaApplication.INSTANCE.sendRequest(JumiaApplication.INSTANCE.getRequestsRetryHelperList().get(eventType), 
+                String result = JumiaApplication.INSTANCE.sendRequest(JumiaApplication.INSTANCE.getRequestsRetryHelperList().get(eventType), 
                         JumiaApplication.INSTANCE.getRequestsRetryBundleList().get(eventType), JumiaApplication.INSTANCE.getRequestsResponseList().get(eventType));
+                
+                if(result.equalsIgnoreCase("") || result == null ){
+                    onSwitchFragment(FragmentType.HOME,
+                            FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                }
             }
         });
         ImageView mapBg = (ImageView) findViewById(R.id.home_fallback_country_map);

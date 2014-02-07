@@ -9,6 +9,7 @@ import java.util.EnumSet;
 
 import org.holoeverywhere.widget.TextView;
 
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.LogOut;
 import pt.rocket.controllers.fragments.FragmentController;
@@ -22,7 +23,6 @@ import pt.rocket.framework.utils.LoadingBarView;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.NavigationListHelper;
 import pt.rocket.interfaces.IResponseCallback;
-import pt.rocket.utils.JumiaApplication;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
@@ -30,6 +30,7 @@ import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -153,6 +154,21 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
+        if(JumiaApplication.INSTANCE.mIsBound){
+            onResumeExecution();    
+        } else {
+//            Log.i(TAG, "code1service not received ok from service! set handler");
+            JumiaApplication.INSTANCE.setResendMenuHander(serviceConnectedHandler);
+        }
+    }
+    
+    private Handler serviceConnectedHandler = new Handler(){
+        public void handleMessage(android.os.Message msg) {
+           onResumeExecution();
+        }; 
+     };
+
+    private void onResumeExecution(){
         // Update
         if (JumiaApplication.INSTANCE.navigationListComponents != null) {
             fillNavigationContainer(JumiaApplication.INSTANCE.navigationListComponents);
@@ -165,14 +181,14 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
              * @author sergiopereira
              */
             Log.i(TAG, "slidemenu trigger");
-            if(JumiaApplication.INSTANCE.SHOP_ID >= 0)
+            if (JumiaApplication.INSTANCE.SHOP_ID >= 0)
                 trigger();
             // triggerContentEvent(new
             // RequestEvent(EventType.GET_NAVIGATION_LIST_COMPONENTS_EVENT));
 
         }
     }
-
+    
     /*
      * (non-Javadoc)
      * 
@@ -336,7 +352,12 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
      */
     private void fillNavigationContainer(ArrayList<NavigationListComponent> components) {
         Log.d(TAG, "FILL NAVIGATION CONTAINER");
-        navigationContainer.removeAllViews();
+        try {
+            navigationContainer.removeAllViews();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+        
 
         // Header component
         inflater.inflate(R.layout.navigation_header_component, navigationContainer, true);
@@ -352,7 +373,7 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
                 .findViewById(R.id.slide_menu_scrollable_container);
 
         for (NavigationListComponent component : components) {
-            Log.i(TAG, "code1 creating component : "+component.getElementText());
+//            Log.i(TAG, "code1 creating component : "+component.getElementText());
             // Basket
             ViewGroup viewGroup = scrollableContainer;
             // if (component.getElementId() == 7 && component.getElementText().equals("Basket"))
@@ -371,10 +392,10 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
                         R.id.slide_menu_scrollable_container)).getChildCount();
                 LinearLayout vGroup = ((LinearLayout) getView().findViewById(
                         R.id.slide_menu_scrollable_container));
-                Log.i(TAG, "code1 size is : " + count);
+//                Log.i(TAG, "code1 size is : " + count);
                 for (int i = 0; i < count; i++) {
                     View view = vGroup.getChildAt(i);
-                    Log.i(TAG, "code1 tag is  : " + count);
+//                    Log.i(TAG, "code1 tag is  : " + count);
                     setActionSelected(view);
                 }
             }
@@ -618,9 +639,17 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
         if (JumiaApplication.INSTANCE.getCart() == null && getView() == null)
             return;
 
+        if(getActivity() == null){
+            return;
+        }
+        
         // Update ActionBar
         ((BaseActivity) getActivity()).updateCartInfoInActionBar();
 
+        if(getView() == null){
+            return;
+        }
+        
         View container = getView().findViewById(R.id.nav_basket);
         if (container == null) {
             Log.w(getTag(), "updateCartInfo: cant find basket container - doing nothing");

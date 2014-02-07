@@ -12,6 +12,7 @@ import pt.rocket.view.R;
 import pt.rocket.view.fragments.ShoppingCartFragment;
 import pt.rocket.view.fragments.ShoppingCartFragment.CartItemValues;
 import android.content.Context;
+import android.database.DataSetObserver;
 import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
@@ -134,7 +135,7 @@ public class ShoppingBasketFragListAdapter extends BaseAdapter {
             prodItem.discountPercentage = (TextView) view.findViewById(R.id.discount_percentage);
             prodItem.priceDisc = (TextView) view.findViewById(R.id.item_discount);
             prodItem.promoImg = (ImageView) view.findViewById(R.id.item_promotion);
-            prodItem.variancesContainer = (LinearLayout) view
+            prodItem.variancesContainer = (TextView) view
                     .findViewById(R.id.variances_container);
             prodItem.stockInfo = (TextView) view.findViewById(R.id.item_stock);
             prodItem.deleteBtn = (Button) view.findViewById(R.id.delete_button);
@@ -158,23 +159,6 @@ public class ShoppingBasketFragListAdapter extends BaseAdapter {
                         prodItem.pBar.setVisibility(View.GONE);
                     }
                 });
-//        ImageLoader.getInstance().displayImage(url, prodItem.productView, new SimpleImageLoadingListener() {
-//
-//            /*
-//             * (non-Javadoc)
-//             * 
-//             * @see com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener#
-//             * onLoadingComplete(java.lang.String, android.view.View, android.graphics.Bitmap)
-//             */
-//            @Override
-//            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-//                prodItem.productView.setVisibility(View.VISIBLE);
-//                prodItem.pBar.setVisibility(View.GONE);
-//            }
-//
-//        });
-
-        
 
         if (!prodItem.itemValues.price.equals(prodItem.itemValues.price_disc)) {
             prodItem.priceDisc.setText(prodItem.itemValues.price_disc);
@@ -194,28 +178,19 @@ public class ShoppingBasketFragListAdapter extends BaseAdapter {
             prodItem.promoImg.setVisibility(View.GONE);
             prodItem.discountPercentage.setVisibility(View.GONE);
         }
-
-
-        prodItem.variancesContainer.removeAllViews();
-
-        if (prodItem.itemValues.simpleData != null) {
-            prodItem.variancesContainer.setVisibility(View.VISIBLE);
+        prodItem.variancesContainer.setVisibility(View.GONE);
+        if (prodItem.itemValues.variation != null) {
+            
             Map<String, String> simpleData = prodItem.itemValues.simpleData;
 
-            // FIXME COMMENT UNTIL DEPLY OF API TO LIVE
-            try {
+                if (prodItem.itemValues.variation != null && prodItem.itemValues.variation.length() > 0 && !prodItem.itemValues.variation.equalsIgnoreCase(",") && !prodItem.itemValues.variation.equalsIgnoreCase("...") && !prodItem.itemValues.variation.equalsIgnoreCase(".")) {
+//                    TextView variances = (TextView) inflater.inflate(
+//                            R.layout.shopping_basket_variance_text, prodItem.variancesContainer, false);
 
-                if (prodItem.itemValues.variation != null && prodItem.itemValues.variation.length() > 0) {
-                    TextView variances = (TextView) inflater.inflate(
-                            R.layout.shopping_basket_variance_text, prodItem.variancesContainer, false);
-
-                    variances.setText(prodItem.itemValues.variation);
-                    prodItem.variancesContainer.addView(variances);
-                }
-            } catch (Exception e) {
-                // TODO: handle exception
-            }
-
+//                    variances.setText(prodItem.itemValues.variation);
+                    prodItem.variancesContainer.setVisibility(View.VISIBLE);
+                    prodItem.variancesContainer.setText(prodItem.itemValues.variation);
+                } 
         }
 
         
@@ -283,7 +258,7 @@ public class ShoppingBasketFragListAdapter extends BaseAdapter {
         public TextView discountPercentage;
         public TextView priceDisc;
         public ImageView promoImg;
-        public LinearLayout variancesContainer;
+        public TextView variancesContainer;
         public TextView stockInfo;
         public Button deleteBtn;
         public CartItemValues itemValues;
@@ -312,4 +287,15 @@ public class ShoppingBasketFragListAdapter extends BaseAdapter {
         }
     }
 
+    
+    /**
+     * #FIX: java.lang.IllegalArgumentException: The observer is null.
+     * @solution from : https://code.google.com/p/android/issues/detail?id=22946 
+     */
+    @Override
+    public void unregisterDataSetObserver(DataSetObserver observer) {
+        if(observer !=null){
+            super.unregisterDataSetObserver(observer);    
+        }
+    }
 }

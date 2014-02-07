@@ -117,7 +117,7 @@ public class TeasersFactory {
             imageContainer.setVisibility(View.VISIBLE);
             
             // Validate device and orientation
-            if(BaseActivity.isTabletInLandscape(mContext) && teaserImageArrayList.get(0).getImageTableUrl() != null) {
+            if(mContext.getResources().getBoolean(R.bool.isTablet) && teaserImageArrayList.get(0).getImageTableUrl() != null) {
                 setImageToLoad(teaserImageArrayList.get(0).getImageTableUrl(),imageContainer, 0);
             } else {
                 setImageToLoad(teaserImageArrayList.get(0).getImageUrl(),imageContainer, 0);
@@ -204,7 +204,7 @@ public class TeasersFactory {
         View imageTeaserView = mInflater.inflate(R.layout.image_loadable, vg, false);
         
         // Validate device and orientation
-        if(BaseActivity.isTabletInLandscape(mContext) && teaserImage.getImageTableUrl() != null) {
+        if(mContext.getResources().getBoolean(R.bool.isTablet) && teaserImage.getImageTableUrl() != null) {
             setImageToLoad(teaserImage.getImageTableUrl(), imageTeaserView, size);
         } else {
             setImageToLoad(teaserImage.getImageUrl(), imageTeaserView, size);
@@ -267,16 +267,18 @@ public class TeasersFactory {
      * @param mInflater
      * @return
      */
-    private View createProductTeaserView(TeaserProduct product, ViewGroup vg,
-            LayoutInflater mInflater, int size) {
-        View productTeaserView = mInflater.inflate(R.layout.product_item_small,
-                vg, false);
-        if (product.getImages().size() > 0) {
-            setImageToLoad(product.getImages().get(0).getUrl(),
-                    productTeaserView, size);
+    private View createProductTeaserView(TeaserProduct product, ViewGroup vg, LayoutInflater mInflater, int size) {
+        View productTeaserView = mInflater.inflate(R.layout.product_item_small, vg, false);
+        
+        // Tablet
+        if(mContext.getResources().getBoolean(R.bool.isTablet) && product.getImagesTablet() != null && product.getImagesTablet().size() > 0) {
+            setImageToLoad(product.getImagesTablet().get(0).getUrl(), productTeaserView, size);
+        } // Portrait
+        else if (product.getImages() != null && product.getImages().size() > 0) {
+            setImageToLoad(product.getImages().get(0).getUrl(), productTeaserView, size);
         }
-        ((TextView) productTeaserView.findViewById(R.id.item_title))
-                .setText(product.getName());
+        
+        ((TextView) productTeaserView.findViewById(R.id.item_title)).setText(product.getName());
         String price;
         if (!TextUtils.isEmpty(product.getSpecialPrice())) {
             price = product.getSpecialPrice();
@@ -292,8 +294,8 @@ public class TeasersFactory {
     private View createBrandTeaserView(TeaserBrand brand, ViewGroup vg, LayoutInflater mInflater, int size) {
         View brandTeaserView = mInflater.inflate(R.layout.brand_item_small, vg, false);
         
-        // Tablet in landscape
-        if(BaseActivity.isTabletInLandscape(mContext) && brand.getImageTableUrl() != null && brand.getImageTableUrl().length() > 0) {
+        // Tablet
+        if(mContext.getResources().getBoolean(R.bool.isTablet) && brand.getImageTableUrl() != null && brand.getImageTableUrl().length() > 0) {
             setImageToLoad(brand.getImageTableUrl(), brandTeaserView, size);
         } // Portrait
         else if (brand.getImageUrl() != null) {
@@ -335,31 +337,7 @@ public class TeasersFactory {
 
                         }
                     });
-//            ImageLoader.getInstance().displayImage(imageUrl, imageView,
-//                    new SimpleImageLoadingListener() {
-//
-//                        /*
-//                         * (non-Javadoc)
-//                         * 
-//                         * @see
-//                         * com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener
-//                         * #onLoadingComplete(java.lang.String, android.view.View,
-//                         * android.graphics.Bitmap)
-//                         */
-//                        @Override
-//                        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-//                            progressBar.setVisibility(View.GONE);
-//                            imageView.setScaleType(ScaleType.FIT_XY);
-//                            imageView.setVisibility(View.VISIBLE);
-//                        }
-//                        
-//                        @Override
-//                        public void onLoadingStarted(String imageUri, View view) {
-//                            // TODO Auto-generated method stub
-//                            super.onLoadingStarted(imageUri, view);
-//                            imageView.setScaleType(ScaleType.FIT_CENTER);
-//                        }
-//                    });
+
         }
 
     }

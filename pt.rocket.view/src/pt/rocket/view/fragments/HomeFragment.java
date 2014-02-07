@@ -11,13 +11,18 @@ import java.util.Iterator;
 
 import org.holoeverywhere.widget.TextView;
 
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.ConstantsSharedPrefs;
+import pt.rocket.controllers.LastViewedAdapter;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.factories.TeasersFactory;
+import pt.rocket.framework.ErrorCode;
+import pt.rocket.framework.database.LastViewedTableHelper;
 import pt.rocket.framework.objects.Homepage;
 import pt.rocket.framework.objects.ITargeting.TargetType;
+import pt.rocket.framework.objects.LastViewed;
 import pt.rocket.framework.objects.Promotion;
 import pt.rocket.framework.objects.TeaserSpecification;
 import pt.rocket.framework.utils.AnalyticsGoogle;
@@ -32,10 +37,10 @@ import pt.rocket.helpers.session.GetLoginHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.CheckVersion;
 import pt.rocket.utils.HockeyStartup;
-import pt.rocket.utils.JumiaApplication;
 import pt.rocket.utils.JumiaViewPager;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.utils.ScrollViewWithHorizontal;
 import pt.rocket.utils.dialogfragments.DialogPromotionFragment;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.ChangeCountryFragmentActivity;
@@ -48,11 +53,14 @@ import android.graphics.Paint;
 import android.graphics.Shader;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerTabStrip;
+import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -88,8 +96,6 @@ public class HomeFragment extends BaseFragment {
     private static ArrayList<String> pagesTitles;
     public static ArrayList<Collection<? extends TeaserSpecification<?>>> requestResponse;
 
-    private boolean isFirstBoot = true;
-
     // private int defaultPosition=Math.abs(requestResponse.size() / 2);
 
     private int currentPosition = -1;
@@ -97,6 +103,8 @@ public class HomeFragment extends BaseFragment {
 
     private static HomeFragment mHomeFragment;
 
+    public static ArrayList<LastViewed> lastViewed = null;
+    
     /**
      * Get instance
      * 
@@ -139,13 +147,22 @@ public class HomeFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         HockeyStartup.register(getActivity());
-        
-        if(JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials() && !JumiaApplication.INSTANCE.isLoggedIn()){
-            triggerAutoLogin();
+        if(JumiaApplication.INSTANCE.mIsBound){
+            onCreateExecution();    
+        } else {
+            JumiaApplication.INSTANCE.setResendHander(serviceConnectedHandler);
         }
         Log.i(TAG, "onCreate");
     }
 
+    Handler serviceConnectedHandler = new Handler(){
+        public void handleMessage(android.os.Message msg) {
+//            Log.i(TAG, "code1service received ok from service!");
+           onCreateExecution();
+           onResumeExecution();
+        }; 
+     };
+    
     /*
      * (non-Javadoc)
      * 
@@ -166,6 +183,24 @@ public class HomeFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "onResume");
+        
+        if(JumiaApplication.INSTANCE.mIsBound){
+            onResumeExecution();    
+        } else {
+//            Log.i(TAG, "code1service not received ok from service! set handler");
+            JumiaApplication.INSTANCE.setResendHander(serviceConnectedHandler);
+        }
+        
+    }
+    
+    private void onCreateExecution(){
+
+        if(JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials() && !JumiaApplication.INSTANCE.isLoggedIn()){
+            triggerAutoLogin();
+        }
+    }
+    
+    private void onResumeExecution(){
         if (CheckVersion.needsToShowDialog()) {
             CheckVersion.showDialog(getActivity());
         }
@@ -202,9 +237,13 @@ public class HomeFragment extends BaseFragment {
 
         AnalyticsGoogle.get().trackPage(R.string.ghomepage);
        
-        
+        if(LastViewedTableHelper.getLastViewedEntriesCount(JumiaApplication.INSTANCE.getApplicationContext()) > 0){
+            lastViewed = LastViewedTableHelper.getLastViewedList();
+        } else {
+            lastViewed = null;
+        }
     }
-
+    
     @Override
     public void onStart() {
         super.onStart();
@@ -247,6 +286,9 @@ public class HomeFragment extends BaseFragment {
     private void setLayout(int currentPositionPager) {
         Log.i(TAG, "setLayout");
         if (mPager == null) {
+            if(getView() == null){
+                return;
+            }
             Log.i(TAG, "setLayout -> mPager NULL");
             mPager = (JumiaViewPager) getView().findViewById(R.id.home_viewpager);
             mPager.setOnPageChangeListener(new OnPageChangeListener() {
@@ -274,25 +316,6 @@ public class HomeFragment extends BaseFragment {
 
                     if (arg0 == mPager.SCROLL_STATE_IDLE) {
                         new ChangePageTask().execute(arg0);
-//                        mPager.setPagingEnabled(true);
-//                        mPager.toggleJumiaScroller(true);
-//                        
-//              
-//                        // change event of first(last) fragment to jump for original fragment
-//                        if (mPager.getCurrentItem() == 0) {
-//                            mPager.toggleJumiaScroller(false);
-//
-//                            mPager.setCurrentItem(pageCount - 2);
-//
-//                            // change event of last(first) fragment to jump for original fragment
-//                        } else if (mPager.getCurrentItem() == pageCount - 1) {
-//                            mPager.toggleJumiaScroller(false);
-//
-//                            mPager.setCurrentItem(1);
-//
-//                        }
-//
-//                        
                     }
 
                 }
@@ -394,6 +417,10 @@ public class HomeFragment extends BaseFragment {
     private void setLayoutSpec() throws NoSuchFieldException, IllegalArgumentException,
             IllegalAccessException {
         Log.i(TAG, "setLayoutSpec");
+        if(pagerTabStrip == null){
+            return;
+        }
+        
         // Get text
         final android.widget.TextView currTextView = (android.widget.TextView) pagerTabStrip
                 .getChildAt(TAB_CURR_ID);
@@ -523,18 +550,21 @@ public class HomeFragment extends BaseFragment {
     }
     
     protected boolean onSuccessEvent(Bundle bundle) {
-        if(getBaseActivity() != null){
-            getBaseActivity().handleSuccessEvent(bundle);
-        } else {
+        Log.i(TAG,"ON onSuccessEvent");
+        
+        if(!isVisible()){
+            Log.i(TAG,"ON is invisible");
             return true;
         }
-        Log.i(TAG,"ON onSuccessEvent");
+        
+        if(getBaseActivity() == null){
+            return true;
+        }
+        
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         switch (eventType) {
         case GET_TEASERS_EVENT:
-            isFirstBoot = false;
             proccessResult((Collection<Parcelable>) bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY));
-            Log.i(TAG, "code1 checkversion called");
             configureLayout();
             break;
         case GET_CALL_TO_ORDER_PHONE:
@@ -568,6 +598,11 @@ public class HomeFragment extends BaseFragment {
         if(getBaseActivity()!= null && getBaseActivity().handleErrorEvent(bundle)){
             return;
         }
+        
+        if(getBaseActivity() == null){
+            return;
+        }
+        
         
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         switch (eventType) {
@@ -639,6 +674,10 @@ public class HomeFragment extends BaseFragment {
 
         private int position;
 
+        private ScrollViewWithHorizontal mScrollViewWithHorizontal;
+        
+        private RelativeLayout mPopArrows;
+        
         public HomeObjectFragment() {
         }
 
@@ -724,7 +763,8 @@ public class HomeFragment extends BaseFragment {
 
             View rootView = inflater.inflate(
                     R.layout.fragment_collection_object, container, false);
-
+            mScrollViewWithHorizontal = (ScrollViewWithHorizontal) rootView.findViewById(R.id.view_pager_element_scrollview);
+            
             mInflater = inflater;
 
             return rootView;
@@ -751,19 +791,19 @@ public class HomeFragment extends BaseFragment {
 
         @Override
         public void onLowMemory() {
-            Log.i(TAG, "onLowMemory");
+            Log.i(HomeObjectFragment.class.getName(), "onLowMemory");
             super.onLowMemory();
         }
 
         @Override
         public void onPause() {
-            Log.i(TAG, "onLowMemory");
+            Log.i(HomeObjectFragment.class.getName(), "onPause");
             super.onPause();
         }
 
         @Override
         public void onDestroy() {
-            Log.i(TAG, "onDestroy");
+            Log.i(HomeObjectFragment.class.getName(), "onDestroy");
             super.onDestroy();
         }
 
@@ -794,7 +834,12 @@ public class HomeFragment extends BaseFragment {
         private void processTeasersResult(Collection<? extends TeaserSpecification<?>> result,
                 LinearLayout mainView) {
             TeasersFactory mTeasersFactory = new TeasersFactory();
-            mainView.removeAllViews();
+            try {
+                mainView.removeAllViews();
+            } catch (IllegalArgumentException e) {
+               e.printStackTrace();
+            }
+            
             for (Iterator iterator = result.iterator(); iterator.hasNext();) {
                 TeaserSpecification<?> teaserSpecification = (TeaserSpecification<?>) iterator
                         .next();
@@ -802,14 +847,42 @@ public class HomeFragment extends BaseFragment {
                 mainView.addView(mTeasersFactory.getSpecificTeaser(getActivity(), mainView,
                         teaserSpecification, mInflater, teaserClickListener));
             }
+//            Log.i(TAG, "code1last");
+            if(lastViewed != null && lastViewed.size() > 0){
+//                Log.i(TAG, "code1last adding view");
+                mainView.addView(generateLastViewedLayout(mainView));
+            }
         }
         
-  
-
+        private View generateLastViewedLayout(ViewGroup parent){
+            View lastViewedView = mInflater.inflate(R.layout.teaser_last_viewed, parent, false);
+            mPopArrows = (RelativeLayout) lastViewedView.findViewById(R.id.pop_arrows_container);
+            if(lastViewed.size() >3){
+                mScrollViewWithHorizontal.sendListenerAndView(receiveIsVisible, lastViewedView);    
+            }
+            
+            ViewPager mViewPager = (ViewPager) lastViewedView.findViewById(R.id.last_viewed_viewpager);
+            LastViewedAdapter mLastViewedAdapter = new LastViewedAdapter(getActivity(), lastViewed, mInflater);
+            mViewPager.setAdapter(mLastViewedAdapter);
+            return lastViewedView;
+        }
+        
+        private Handler receiveIsVisible = new Handler(){
+            
+            public void handleMessage(android.os.Message msg) {
+                mPopArrows.setVisibility(View.VISIBLE);
+                hideArrows.sendEmptyMessageDelayed(0, 1000);
+            }
+        }; 
+        
+        private Handler hideArrows = new Handler(){
+            
+            public void handleMessage(android.os.Message msg) {
+                mPopArrows.setVisibility(View.GONE);
+            }
+        }; 
+        
     }
-    
-    
-    
     
     /**
      * TRIGGERS
@@ -817,16 +890,16 @@ public class HomeFragment extends BaseFragment {
      */
     private void triggerPromotions(){
         Bundle bundle = new Bundle();
-        triggerContentEvent(new GetPromotionsHelper(), bundle, mCallBack);
+        triggerContentEvent(new GetPromotionsHelper(), bundle, responseCallback);
     }
     
     private void triggerTeasers(){
-        triggerContentEvent(new GetTeasersHelper(), null, mCallBack);
+        triggerContentEvent(new GetTeasersHelper(), null, responseCallback);
     }
     
     private void triggerCallToOrder(){
         Bundle bundle = new Bundle();
-        triggerContentEvent(new GetCallToOrderHelper(), bundle, mCallBack);
+        triggerContentEvent(new GetCallToOrderHelper(), bundle, responseCallback);
     }
     
     /**
@@ -837,13 +910,13 @@ public class HomeFragment extends BaseFragment {
         Bundle bundle = new Bundle();
         bundle.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
         bundle.putBoolean(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, true);
-        triggerContentEventWithNoLoading(new GetLoginHelper(), bundle, mCallBack);
+        triggerContentEventWithNoLoading(new GetLoginHelper(), bundle, responseCallback);
     }
     /**
      * CALLBACK
      * @author sergiopereira
      */
-    IResponseCallback mCallBack = new IResponseCallback() {
+    IResponseCallback responseCallback = new IResponseCallback() {
         
         @Override
         public void onRequestError(Bundle bundle) {

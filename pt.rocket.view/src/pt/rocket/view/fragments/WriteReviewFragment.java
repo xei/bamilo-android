@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 import org.holoeverywhere.widget.EditText;
 import org.holoeverywhere.widget.TextView;
 
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.Customer;
@@ -19,7 +20,6 @@ import pt.rocket.helpers.GetRatingsHelper;
 import pt.rocket.helpers.ReviewProductHelper;
 import pt.rocket.helpers.session.GetLoginHelper;
 import pt.rocket.interfaces.IResponseCallback;
-import pt.rocket.utils.JumiaApplication;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.TrackerDelegator;
@@ -78,6 +78,8 @@ public class WriteReviewFragment extends BaseFragment {
 
     private String userName="user";
     
+    private boolean isExecutingSendReview = false;
+    
     private HashMap<String, HashMap<String, String>> ratingOptions;
     /**
      * Get instance
@@ -120,7 +122,7 @@ public class WriteReviewFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
         completeProduct = JumiaApplication.INSTANCE.getCurrentProduct();
-        
+        isExecutingSendReview = false;
         /**
          * TRIGGERS
          * @author sergiopereira
@@ -178,7 +180,7 @@ public class WriteReviewFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        
+        isExecutingSendReview = false;
         if(getArguments() != null && getArguments().containsKey(PopularityFragment.CAME_FROM_POPULARITY)){
             getView().findViewById(R.id.product_basicinfo_container).setVisibility(View.GONE);
         }
@@ -231,11 +233,13 @@ public class WriteReviewFragment extends BaseFragment {
             return;
         LayoutInflater mInflater = (LayoutInflater) getActivity()
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        
+        int id = 77;
         for (Entry<String, HashMap<String, String>> option : ratingOptions.entrySet()) {
             View viewRating = mInflater.inflate(R.layout.rating_bar_component, null, false);
             View viewLabel = mInflater.inflate(R.layout.label_rating_component, null, false);
             viewRating.setTag(option.getKey());
+            viewRating.setId(id);
+            id++;
             viewLabel.setTag(option.getKey());
             ((TextView) viewLabel).setText(option.getKey());
             ratingBarContainer.addView(viewRating);
@@ -254,8 +258,11 @@ public class WriteReviewFragment extends BaseFragment {
 
                     @Override
                     public void onClick(View v) {
-                        if (checkReview())
+                        if (checkReview() && !isExecutingSendReview){
+                            isExecutingSendReview = true;
                             executeSendReview();
+                        }
+                            
                     }
                 });
 
@@ -350,6 +357,7 @@ public class WriteReviewFragment extends BaseFragment {
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         switch (eventType) {
         case REVIEW_PRODUCT_EVENT:
+            
             Log.d(TAG, "review product completed: success");
             TrackerDelegator.trackItemReview(getActivity().getApplicationContext(), completeProduct, productReviewCreated, ratings);
             dialog_review_submitted = DialogGenericFragment.newInstance(false, true, false,
@@ -360,7 +368,7 @@ public class WriteReviewFragment extends BaseFragment {
                         @Override
                         public void onClick(View v) {
                             dialog_review_submitted.dismiss();
-                            
+                            isExecutingSendReview = false;
                             if(((BaseActivity) getActivity()) != null){
                                 ((BaseActivity) getActivity()).onBackPressed();
                             }
@@ -382,6 +390,7 @@ public class WriteReviewFragment extends BaseFragment {
             return true;
             // case GET_CUSTOMER:
         case LOGIN_EVENT:
+            JumiaApplication.INSTANCE.setLoggedIn(true);
             Customer customer = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
 //            TrackerDelegator.trackLoginSuccessful(getActivity(), customer, true, getActivity().getString(R.string.mixprop_loginlocationreview), false);
             if(nameText != null && customer != null && customer.getFirstName() != null){
@@ -404,7 +413,7 @@ public class WriteReviewFragment extends BaseFragment {
         
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         Log.i(TAG, "eventType : "+eventType);
-        
+        isExecutingSendReview = false;
         switch (eventType) {
         // case GET_CUSTOMER:
         // List<String> errors = event.errorMessages.get( Errors.JSON_ERROR_TAG);

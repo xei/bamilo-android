@@ -6,6 +6,7 @@ import java.util.List;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.objects.ProductReviewCommentCreated;
@@ -193,9 +194,15 @@ public class TrackerDelegator {
         
         AnalyticsGoogle.get().trackSales(orderNr, value, items);
         
+
         if (customer == null) {
             Log.w(TAG, "TRACK SALE: no customer - cannot track further without customerId");
-            AdXTracker.trackSale(context, value);
+            //AdXTracker.trackSale(context, value);
+            
+            // Send the track sale without customer id
+            String customerId = "";
+            boolean isFirstCustomer = false;
+            AdXTracker.trackSale(context, value, customerId, orderNr, isFirstCustomer);
             
         } else { 
             String customerId = customer.getIdAsString();

@@ -5,12 +5,12 @@ package pt.rocket.helpers;
 
 import org.json.JSONObject;
 
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.framework.enums.RequestType;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
-import pt.rocket.utils.JumiaApplication;
 import android.os.Bundle;
 import de.akquinet.android.androlog.Log;
 
@@ -42,7 +42,13 @@ public class GetCallToOrderHelper extends BaseHelper {
 
         String phone = "";
         if (null != jsonObject) {
-            phone = jsonObject.optString(RestConstants.JSON_CALL_PHONE_TAG).split("-")[0];
+            if(jsonObject.has(RestConstants.JSON_CALL_PHONE_TAG)){
+                phone = jsonObject.optString(RestConstants.JSON_CALL_PHONE_TAG).split("-")[0];    
+            } else {
+                phone = jsonObject.optString(RestConstants.JSON_METADATA_TAG).split("-")[0];
+            }
+            
+            
         }
 
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_CALL_TO_ORDER_PHONE);

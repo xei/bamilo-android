@@ -10,6 +10,7 @@ import java.util.zip.ZipFile;
 import org.holoeverywhere.widget.Button;
 import org.holoeverywhere.widget.TextView;
 
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.fragments.FragmentType;
@@ -26,7 +27,6 @@ import pt.rocket.helpers.GetApiInfoHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.preferences.ShopPreferences;
 import pt.rocket.utils.HockeyStartup;
-import pt.rocket.utils.JumiaApplication;
 import pt.rocket.utils.LocationHelper;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
@@ -102,7 +102,7 @@ public class SplashScreenActivity extends FragmentActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "code1 onCreate");
+        Log.i(TAG, "onCreate");
         setContentView(R.layout.splash_screen);
         JumiaApplication.INSTANCE.init(false, initializationHandler);
         
@@ -115,7 +115,7 @@ public class SplashScreenActivity extends FragmentActivity {
     protected void onResume() {
         super.onResume();
 
-        Log.i(TAG, "code1 onResume");
+        Log.i(TAG, "onResume");
         shouldHandleEvent = true; 
         
         // Adx launch event
@@ -158,6 +158,7 @@ public class SplashScreenActivity extends FragmentActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        JumiaApplication.INSTANCE.unRegisterFragmentCallback(mCallback);
         // Clean push notifications
         cleanIntent(getIntent());
     }
@@ -167,11 +168,9 @@ public class SplashScreenActivity extends FragmentActivity {
            Bundle bundle = (Bundle) msg.obj;
            ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
            EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-           Log.i(TAG, "code1 received response : "+errorCode + " event type : "+eventType);
-           if(eventType == null){
+           Log.i(TAG, "received response : "+errorCode + " event type : "+eventType);
+           if(eventType == EventType.INITIALIZE){
                initBugSense();
-               Log.d(TAG, "Waiting for the registration process to finish");
-           } else if(eventType == EventType.INITIALIZE){
                showDevInfo();
            }
           
@@ -430,7 +429,7 @@ public class SplashScreenActivity extends FragmentActivity {
         if (errorCode.isNetworkError()) {
             switch (errorCode) {
             case NO_NETWORK:
-                Log.i(TAG, "code1 no network "+eventType);
+//                Log.i(TAG, "code1 no network "+eventType);
                 // Remove dialog if exist
                 if (dialog != null){
                     try {

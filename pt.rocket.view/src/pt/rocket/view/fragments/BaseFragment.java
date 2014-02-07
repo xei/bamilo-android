@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.framework.ErrorCode;
@@ -21,7 +23,6 @@ import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.framework.utils.Utils;
 import pt.rocket.helpers.BaseHelper;
 import pt.rocket.interfaces.IResponseCallback;
-import pt.rocket.utils.JumiaApplication;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.OnActivityFragmentInteraction;
@@ -254,6 +255,7 @@ public abstract class BaseFragment extends Fragment implements
     @Override
     public void onDestroy() {
         super.onDestroy();
+        JumiaApplication.INSTANCE.unRegisterFragmentCallback(mCallback);
         // Remove listeners
 //        EventManager.getSingleton().removeResponseListener(this, allHandledEvents);
         // Recycle bitmaps
@@ -322,7 +324,12 @@ public abstract class BaseFragment extends Fragment implements
                     unbindDrawables(((ViewGroup) view).getChildAt(i));
                 if (view instanceof AdapterView<?>)
                     return;
-                ((ViewGroup) view).removeAllViews();
+                
+                try {
+                    ((ViewGroup) view).removeAllViews();
+                } catch (IllegalArgumentException e) {
+                    e.printStackTrace();
+                }
             }
 
         } catch (RuntimeException e) {
@@ -398,6 +405,7 @@ public abstract class BaseFragment extends Fragment implements
         String md5 = Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY);
         bundle.putString(Constants.BUNDLE_MD5_KEY, md5);
         Log.d("TRACK", "sendRequest");
+        
         JumiaApplication.INSTANCE.responseCallbacks.put(md5, new IResponseCallback() {
 
             @Override
@@ -523,155 +531,7 @@ public abstract class BaseFragment extends Fragment implements
         } catch (NullPointerException e) {
             Log.w(TAG, "ON HANDLE ERROR: The Message is null: " + e.getMessage());
         }
-//        if (!(event.request.eventType.equals(EventType.GET_CUSTOMER) && ((BaseActivity) getActivity())
-//                .getLocalClassName().equals(writeReviewFragment))) {
-//            if (event.errorCode.isNetworkError()) {
-//                if (event.type == EventType.GET_SHOPPING_CART_ITEMS_EVENT && null != ((BaseActivity) getActivity())) {
-//                    ((BaseActivity) getActivity()).updateCartInfo(null);
-//                }
-//                if (contentEvents.contains(event.type)) {
-//                    ((BaseActivity) getActivity()).showError(event.request);
-//                } else if (userEvents.contains(event.type)) {
-//                    ((BaseActivity) getActivity()).showContentContainer(false);
-//                    
-//                    // Remove dialog if exist
-//                    if (dialog != null){
-//                        try {
-//                            dialog.dismiss();    
-//                        } catch (Exception e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//
-//                    dialog = DialogGenericFragment.createNoNetworkDialog(getActivity(),
-//                            new OnClickListener() {
-//
-//                                @Override
-//                                public void onClick(View v) {
-//                                    if (null != getActivity()) {
-//                                    ((BaseActivity) getActivity()).showLoadingInfo();
-//                                    EventManager.getSingleton().triggerRequestEvent(event.request);
-//                                    dialog.dismiss();
-//                                } else {
-//                                    restartAllFragments();
-//                                }
-//                                }
-//                            }, false);
-//                    try {
-//                        dialog.show(getActivity().getSupportFragmentManager(), null);
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//                    
-//                }
-//                return;
-//            } else if (event.errorCode == ErrorCode.REQUEST_ERROR) {
-//                Map<String, ? extends List<String>> messages = event.errorMessages;
-//                List<String> validateMessages = messages.get(RestConstants.JSON_VALIDATE_TAG);
-//                String dialogMsg = "";
-//                if (validateMessages == null || validateMessages.isEmpty()) {
-//                    validateMessages = messages.get(RestConstants.JSON_ERROR_TAG);
-//                }
-//                if (validateMessages != null) {
-//                    for (String message : validateMessages) {
-//                        dialogMsg += message + "\n";
-//                    }
-//                } else {
-//                    for (Entry<String, ? extends List<String>> entry : messages.entrySet()) {
-//                        dialogMsg += entry.getKey() + ": " + entry.getValue().get(0) + "\n";
-//                    }
-//                }
-//                if (dialogMsg.equals("")) {
-//                    dialogMsg = getString(R.string.validation_errortext);
-//                }
-//                ((BaseActivity) getActivity()).showContentContainer(false);
-//
-//                // Remove dialog if exist
-//                if (dialog != null){
-//                    try {
-//                        dialog.dismiss();    
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//
-//                dialog = DialogGenericFragment.newInstance(
-//                        true, true, false, getString(R.string.validation_title),
-//                        dialogMsg, getResources().getString(R.string.ok_label), "",
-//                        new OnClickListener() {
-//
-//                            @Override
-//                            public void onClick(View v) {
-//                                int id = v.getId();
-//                                if (id == R.id.button1) {
-//                                    dialog.dismiss();
-//                                }
-//
-//                            }
-//
-//                        });
-//
-//                
-//                try {
-//                    dialog.show(getActivity().getSupportFragmentManager(), null);
-//                } catch (Exception e) {
-//                   e.printStackTrace();
-//                }
-//                return;
-//            } else if (event.errorCode == ErrorCode.UNKNOWN_ERROR) {
-//            dialog = DialogGenericFragment.createServerErrorDialog(getActivity(),
-//                    new OnClickListener() {
-//
-//                        @Override
-//                        public void onClick(View v) {
-//                            restartAllFragments();
-//                            dialog.dismiss();
-//                        }
-//                    }, false);
-//
-//            try {
-//                dialog.show(((BaseActivity) getActivity()).getSupportFragmentManager(), null);
-//            } catch (Exception e) {
-//                Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-//            }
-//
-//        } else if (!event.getSuccess()) {
-//
-//                // Remove dialog if exist
-//                if (dialog != null){
-//                    try {
-//                        dialog.dismiss();    
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//                    
-//
-//                dialog = DialogGenericFragment.createServerErrorDialog(getActivity(),
-//                        new OnClickListener() {
-//
-//                            @Override
-//                            public void onClick(View v) {
-//                                ((BaseActivity) getActivity()).showLoadingInfo();
-//
-//                                EventManager.getSingleton().triggerRequestEvent(event.request);
-//                                dialog.dismiss();
-//                            }
-//                        }, false);
-//                
-//                try {
-//                    dialog.show(getActivity().getSupportFragmentManager(), null);
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//                return;
-//            }
-//        }
-//        else{
-//            Log.i("TAG","ENTERED HERE");
-//            ((BaseActivity) getActivity()).showContentContainer(false);
-//            return;
-//        }
+
 
         /*
          * TODO: finish to distinguish between errors else if (event.errorCode.isServerError()) {
@@ -687,33 +547,7 @@ public abstract class BaseFragment extends Fragment implements
          * false); dialog.show(); return; }
          */
     }
-//      OLD FRAMEWORK
-//    @Override
-//    public final boolean removeAfterHandlingEvent() {
-//        return false;
-//    }
-//  OLD FRAMEWORK
-//    /**
-//     * Handles a successful event in the concrete activity.
-//     * 
-//     * @param event
-//     *            The successful event with {@link ResponseEvent#getSuccess()} == <code>true</code>
-//     * @return Returns whether the content container should be shown.
-//     */
-//    protected abstract boolean onSuccessEvent(ResponseResultEvent<?> event);
-//
-//    /**
-//     * Handles a failed event in the concrete activity. Override this if the concrete activity wants
-//     * to handle a special error case.
-//     * 
-//     * @param event
-//     *            The failed event with {@link ResponseEvent#getSuccess()} == <code>false</code>
-//     * @return Whether the concrete activity handled the failed event and no further actions have to
-//     *         be made.
-//     */
-//    protected boolean onErrorEvent(ResponseEvent event) {
-//        return false;
-//    }
+
 
     /**
      * @return the action
@@ -894,9 +728,15 @@ public abstract class BaseFragment extends Fragment implements
      */
     private void handleResponse(Bundle bundle) {
         String id = bundle.getString(Constants.BUNDLE_MD5_KEY);
+//        Log.i(TAG, "code1removing callback from request type : "+ bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY)+" size is : "+JumiaApplication.INSTANCE.responseCallbacks.size());
+//        Log.i(TAG, "code1removing callback with id : "+ id);
         if (JumiaApplication.INSTANCE.responseCallbacks.containsKey(id)) {
+//            Log.i(TAG, "code1removing removed callback with id : "+ id);
             JumiaApplication.INSTANCE.responseCallbacks.get(id).onRequestComplete(bundle);
         }
+        JumiaApplication.INSTANCE.getRequestsRetryHelperList().remove((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
+        JumiaApplication.INSTANCE.getRequestsRetryBundleList().remove((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
+        JumiaApplication.INSTANCE.getRequestsResponseList().remove((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
         JumiaApplication.INSTANCE.responseCallbacks.remove(id);
     }
 
@@ -907,7 +747,10 @@ public abstract class BaseFragment extends Fragment implements
      */
     private void handleError(Bundle bundle) {
         String id = bundle.getString(Constants.BUNDLE_MD5_KEY);
+//        Log.i(TAG, "code1removing callback from request type : "+ bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
+//        Log.i(TAG, "code1removing callback with id : "+ id);
         if (JumiaApplication.INSTANCE.responseCallbacks.containsKey(id)) {
+//            Log.i(TAG, "code1removing removed callback with id : "+ id);
             JumiaApplication.INSTANCE.responseCallbacks.get(id).onRequestError(bundle);
         }
         JumiaApplication.INSTANCE.responseCallbacks.remove(id);

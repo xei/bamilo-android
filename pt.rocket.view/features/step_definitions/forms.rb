@@ -69,7 +69,7 @@ end
 
 Then /^I enter a valid search$/ do 
   performAction('enter_text_into_named_field',"", @search_input.to_s)
-  performAction('enter_text_into_named_field',@search.to_s, @search_input.to_s)
+  performAction('enter_text_into_named_field',@search_p.to_s, @search_input.to_s)
 end
 
 Then /^I enter a invalid search$/ do 
@@ -92,3 +92,28 @@ Then /^I enter a wrong repeated password$/ do
   performAction('enter_text_into_named_field',@password.to_s+"x", @newrepeatedpassword.to_s)
 end
 
+Then /^I enter (a fake email|my email) on password recovery$/ do |email|
+  case email.to_s
+  when "a fake email"
+    performAction('enter_text_into_named_field', @wrong_username, @login_username.to_s)  
+  when "my email"
+    performAction('enter_text_into_named_field', @username, @login_username.to_s)
+  end
+end
+
+Then /^I enter a variation search$/ do 
+  performAction('enter_text_into_named_field',"", @search_input.to_s)
+  performAction('enter_text_into_named_field',@search_v.to_s, @search_input.to_s)
+end
+
+Then /^I fill the review information$/ do
+
+  performAction('enter_text_into_named_field', @firstname, @review_name)
+  performAction('enter_text_into_named_field', @review_title_t, @review_title)
+  performAction('enter_text_into_named_field', @review_comment_t, @review_comment)
+end
+
+Then /^I enter a color search$/ do 
+  performAction('enter_text_into_named_field',"", @search_input.to_s)
+  performAction('enter_text_into_named_field',@search_color.to_s, @search_input.to_s)
+end

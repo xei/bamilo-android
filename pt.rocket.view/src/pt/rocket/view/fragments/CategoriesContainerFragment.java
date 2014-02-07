@@ -6,6 +6,7 @@ package pt.rocket.view.fragments;
 import java.util.EnumSet;
 import java.util.List;
 
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.CategoriesAdapter;
 import pt.rocket.controllers.fragments.FragmentType;
@@ -20,7 +21,6 @@ import pt.rocket.helpers.GetCategoriesHelper;
 import pt.rocket.helpers.GetProductReviewsHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.FragmentCommunicator;
-import pt.rocket.utils.JumiaApplication;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.view.BaseActivity;
@@ -313,22 +313,22 @@ public class CategoriesContainerFragment extends BaseFragment {
         
         // Validate if fragment is on the screen
     
-        Log.i(TAG, "code1 received categories");
+//        Log.i(TAG, "code1 received categories");
         getBaseActivity().showContentContainer(false);
         if(!bundle.getBoolean(USED_CACHED_CATEGORIES, false)){
             AnalyticsGoogle.get().trackLoadTiming(R.string.gcategories, mBeginRequestMillis);
         } else {
-            Log.i(TAG, "code1 received categories from database"+JumiaApplication.INSTANCE.currentCategories.size());
+//            Log.i(TAG, "code1 received categories from database"+JumiaApplication.INSTANCE.currentCategories.size());
         }
         JumiaApplication.INSTANCE.currentCategories = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
         
         if(JumiaApplication.INSTANCE.currentCategories != null && getView() != null){
-            Log.d(TAG, "code1 received categories size = " + JumiaApplication.INSTANCE.currentCategories.size());
+//            Log.d(TAG, "code1 received categories size = " + JumiaApplication.INSTANCE.currentCategories.size());
             if(getBaseActivity().isTabletInLandscape(getBaseActivity())){
-                Log.d(TAG, "code1 going to create fragment createFragmentsForLandscape");
+//                Log.d(TAG, "code1 going to create fragment createFragmentsForLandscape");
                 createFragmentsForLandscape();
             } else {
-                Log.d(TAG, "code1 going to create fragment");
+//                Log.d(TAG, "code1 going to create fragment");
                 createFragment();
             }
         }

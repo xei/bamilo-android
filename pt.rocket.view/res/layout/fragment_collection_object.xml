@@ -4,6 +4,7 @@
     android:layout_height="match_parent" >
 
     <pt.rocket.utils.ScrollViewWithHorizontal
+        android:id="@+id/view_pager_element_scrollview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 

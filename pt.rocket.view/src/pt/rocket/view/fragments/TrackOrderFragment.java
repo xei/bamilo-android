@@ -227,8 +227,12 @@ public class TrackOrderFragment extends BaseFragment {
         LayoutInflater mInflater = (LayoutInflater) getActivity()
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         LinearLayout mLinearLayout = (LinearLayout) getView().findViewById(R.id.products_items_container);
-                
-        mLinearLayout.removeAllViews();
+        try {
+            mLinearLayout.removeAllViews();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+        
         for (OrderTrackerItem orderTrackerItem : items) {
             LinearLayout view = (LinearLayout) mInflater.inflate(R.layout.track_order_item, null, false);
             ((TextView) view.findViewById(R.id.order_item_name)).setText(orderTrackerItem.getName());

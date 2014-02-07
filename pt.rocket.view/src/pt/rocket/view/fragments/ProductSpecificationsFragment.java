@@ -257,7 +257,7 @@ public class ProductSpecificationsFragment extends BaseFragment implements OnCli
 
     @Override
     public void notifyFragment(Bundle bundle) {
-        Log.i(TAG, "code1 notifyFragment Specification");
+//        Log.i(TAG, "code1 notifyFragment Specification");
         // Validate if fragment is on the screen
         if(!isVisible()){
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");

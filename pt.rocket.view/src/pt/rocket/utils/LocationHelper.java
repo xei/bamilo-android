@@ -3,6 +3,7 @@ package pt.rocket.utils;
 import java.util.List;
 import java.util.Locale;
 
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.utils.Constants;

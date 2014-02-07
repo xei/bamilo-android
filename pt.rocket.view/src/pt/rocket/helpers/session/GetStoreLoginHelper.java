@@ -10,15 +10,13 @@ import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
 import pt.rocket.helpers.BaseHelper;
-import pt.rocket.utils.JumiaApplication;
-
 import android.os.Bundle;
 import android.util.Log;
 
 /**
  * Example helper
  * 
- * @author Guilherme Silva
+ * @author Manuel Silva
  * 
  */
 public class GetStoreLoginHelper extends BaseHelper {

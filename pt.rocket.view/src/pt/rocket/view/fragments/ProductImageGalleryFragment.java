@@ -310,11 +310,13 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
     }
 
     private void createViewPager() {
-
+        if(mCompleteProduct.getImageList().size() <=0 ){
+            return;
+        }
         if (galleryAdapter != null) {
-            if (imagesList != null)
-
+            if (imagesList != null){
                 imagesList = (ArrayList<String>) mCompleteProduct.getImageList().clone();
+            }
             imagesList.add(0, imagesList.get(imagesList.size() - 1));
             imagesList.add(imagesList.get(1));
 
@@ -478,7 +480,7 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
             return;
         }
 
-        Log.i(TAG, "code1 notifyFragment" + productImageGalleryFragment.currentPosition);
+//        Log.i(TAG, "code1 notifyFragment" + productImageGalleryFragment.currentPosition);
         mImagesList = (HorizontalListView) mainView.findViewById(R.id.images_list);
 
         if (!showHorizontalListView) {

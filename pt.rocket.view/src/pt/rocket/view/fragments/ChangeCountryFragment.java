@@ -3,12 +3,13 @@
  */
 package pt.rocket.view.fragments;
 
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.controllers.CountryAdapter;
+import pt.rocket.framework.database.LastViewedTableHelper;
 import pt.rocket.framework.rest.RestClientSingleton;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.utils.JumiaApplication;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
@@ -188,8 +189,8 @@ public class ChangeCountryFragment extends BaseFragment {
     private void setList() {
 
         // Data
-        String[] countries = getResources().getStringArray(R.array.country_names);
-        TypedArray flags = getResources().obtainTypedArray(R.array.country_icons);
+        String[] countries = context.getResources().getStringArray(R.array.country_names);
+        TypedArray flags = context.getResources().obtainTypedArray(R.array.country_icons);
 
         // Inflate
         final ListView countryList = (ListView) getView().findViewById(R.id.change_country_list);
@@ -249,7 +250,9 @@ public class ChangeCountryFragment extends BaseFragment {
         JumiaApplication.INSTANCE.setCart(null);
         getBaseActivity().updateCartInfo();
         JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
-        
+        if(isChangeCountry){
+            LastViewedTableHelper.deleteAllLastViewed();
+        }
         System.gc();
         SharedPreferences sharedPrefs = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPrefs.edit();

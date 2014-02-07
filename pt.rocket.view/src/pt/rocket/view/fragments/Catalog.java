@@ -118,7 +118,7 @@ public class Catalog extends BaseFragment {
                 ConstantsIntentExtra.NAVIGATION_PATH);
         
         
-        Log.i(TAG, "code1 title is : " + title);
+//        Log.i(TAG, "code1 title is : " + title);
         Log.i(TAG, "ON RESUME");
         AnalyticsGoogle.get().trackPage(R.string.gproductlist);
 
@@ -314,10 +314,19 @@ public class Catalog extends BaseFragment {
                 currentPage.setButtonRavb((Button) currentPage.getRelativeLayout().findViewById(R.id.retry_alert_view_button));
                 currentPage.setRelativeLayoutPc((RelativeLayout) currentPage.getRelativeLayout().findViewById(R.id.products_content));
                 currentPage.setLinearLayoutLm((LinearLayout) currentPage.getRelativeLayout().findViewById(R.id.loadmore));
-                if(((BaseActivity) getActivity()).isTabletInLandscape(getBaseActivity())){
-                    currentPage.setGridView((GridView) currentPage.getRelativeLayout().findViewById(R.id.middle_productslist_list));    
+                if(getBaseActivity().isTabletInLandscape(getBaseActivity())){
+                    try {
+                        currentPage.setGridView((GridView) currentPage.getRelativeLayout().findViewById(R.id.middle_productslist_list));    
+                    } catch (ClassCastException e) {
+                        currentPage.setListView((ListView) currentPage.getRelativeLayout().findViewById(R.id.middle_productslist_list));    
+                    }
+                        
                 } else {
-                    currentPage.setListView((ListView) currentPage.getRelativeLayout().findViewById(R.id.middle_productslist_list));    
+                    try {
+                        currentPage.setListView((ListView) currentPage.getRelativeLayout().findViewById(R.id.middle_productslist_list));    
+                    } catch (ClassCastException e) {
+                        currentPage.setGridView((GridView) currentPage.getRelativeLayout().findViewById(R.id.middle_productslist_list));
+                    }
                 }
                 
                 currentPage.setLinearLayoutLb((LinearLayout) currentPage.getRelativeLayout().findViewById(R.id.loading_view_pager));

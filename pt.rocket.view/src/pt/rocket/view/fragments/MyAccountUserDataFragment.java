@@ -253,6 +253,9 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
     }
 
     protected boolean onSuccessEvent(Bundle bundle) {
+        if(!isVisible()){
+            return true;
+        }
         Log.i(TAG, "ON SUCCESS EVENT");
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         

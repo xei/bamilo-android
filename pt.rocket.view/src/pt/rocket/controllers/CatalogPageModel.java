@@ -7,6 +7,7 @@ import java.util.Calendar;
 import org.holoeverywhere.widget.Button;
 import org.holoeverywhere.widget.TextView;
 
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.fragments.FragmentController;
@@ -24,7 +25,6 @@ import pt.rocket.framework.utils.LoadingBarView;
 import pt.rocket.framework.utils.ProductSort;
 import pt.rocket.helpers.GetProductsHelper;
 import pt.rocket.interfaces.IResponseCallback;
-import pt.rocket.utils.JumiaApplication;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.ProductDetailsActivityFragment;
@@ -116,6 +116,9 @@ public class CatalogPageModel {
     private static boolean isLoadingMore = false;
 
     private int totalProducts = -1;
+    
+    // Flag used to stop the loading more when an error occurs
+    private boolean receivedError = false;
     
     private CharSequence totalItemsLable = "";
     private Fragment mFragment;
@@ -474,13 +477,13 @@ public class CatalogPageModel {
                     final int lastItem = firstVisibleItem + visibleItemCount;
                     if (totalItemCount != 0 && lastItem == totalItemCount) {
                         Log.i(TAG, "onScroll: last item visible ");
-                        if (!isLoadingMore) {
+                        if (!isLoadingMore && !receivedError) {
                             Log.i(TAG, "onScroll: last item visible and start loading" + pageNumber);
                             isLoadingMore = true;
                             showProductsLoading();
                             getMoreProducts();
                         }
-                    }
+                    } else receivedError = false;
 
                 }
             });
@@ -694,7 +697,7 @@ public class CatalogPageModel {
         if(mActivity.handleErrorEvent(bundle)){
             return;
         }
-        Log.i(TAG, "code1 product list on error event");
+//        Log.i(TAG, "code1 product list on error event");
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         if (errorCode != null && pageNumber == 1) {
@@ -710,6 +713,7 @@ public class CatalogPageModel {
         }
         mBeginRequestMillis = System.currentTimeMillis();
         isLoadingMore = false;
+        receivedError = true;
     }
    public void setTotalItemLable(){
         TextView totalItems = (TextView) mActivity.findViewById(R.id.totalProducts);
@@ -779,7 +783,7 @@ public class CatalogPageModel {
             e.printStackTrace();
         }
 
-        Log.i(TAG, "code1 " + productsPage.getProducts().size() + " pageNumber is : " + pageNumber);
+//        Log.i(TAG, "code1 " + productsPage.getProducts().size() + " pageNumber is : " + pageNumber);
 
         pageNumber = productsPage.getProducts().size() >= productsPage.getTotalProducts() ? NO_MORE_PAGES
                 : pageNumber + 1;

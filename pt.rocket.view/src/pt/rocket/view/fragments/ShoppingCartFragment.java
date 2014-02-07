@@ -118,7 +118,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         public String price;
         public String price_disc;
         public Integer product_id;
-        public Integer quantity;
+        public long quantity;
         public String image;
         public String simple_product_sku;
         public String product_sku;
@@ -300,6 +300,9 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
      * Set the ShoppingCart layout using inflate
      */
     public void setAppContentLayout() {
+        if(getView() == null){
+            return;
+        }
         checkoutButton = (Button) getView().findViewById(R.id.checkout_button);
         noItems = (LinearLayout) getView().findViewById(R.id.no_items_container);
         container = (LinearLayout) getView().findViewById(R.id.container1);
@@ -316,7 +319,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                 case MotionEvent.ACTION_UP:
-                    if (items.size() > 0) {
+                    if (items != null && items.size() > 0) {
                         checkMinOrderAmount();
                     } else {
                         String title = getString(R.string.shoppingcart_alert_header);
@@ -364,6 +367,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
             getBaseActivity().showContentContainer(false);
             AnalyticsGoogle.get().trackLoadTiming(R.string.gshoppingcart, mBeginRequestMillis);
             displayShoppingCart((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY));
+            getBaseActivity().updateSlidingMenu();
         }
         return true;
     }
@@ -444,7 +448,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
              * Setting Adapter
              */
             lView.setAdapter(mAdapter);
-            lView.setFastScrollEnabled(true);
+            lView.setFastScrollEnabled(false);
 
             TextView priceUnreduced = (TextView) getView().findViewById(R.id.price_unreduced);
             if (cartHasReducedItem) {
@@ -480,6 +484,10 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
      * showNoItems update the layout when basket has no items
      */
     public void showNoItems() {
+        setAppContentLayout();
+        if(noItems == null){
+            return;
+        }
         noItems.setVisibility(View.VISIBLE);
         container.setVisibility(View.GONE);
         Button continueShopping = (Button) noItems.findViewById(R.id.continue_shopping_button);
@@ -584,9 +592,9 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
     }
 
     public void hideNoItems() {
-        noItems.setVisibility(View.GONE);
-        container.setVisibility(View.VISIBLE);
-        lView.setVisibility(View.VISIBLE);
+        if(noItems != null) noItems.setVisibility(View.GONE);    
+        if(container != null) container.setVisibility(View.VISIBLE);
+        if(lView != null) lView.setVisibility(View.VISIBLE);
     }
 
     public void changeQuantityOfItem(final int position) {
@@ -601,7 +609,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
             quantities.add(String.valueOf(i));
         }
 
-        int crrQuantity = items.get(position).getQuantity();
+        long crrQuantity = items.get(position).getQuantity();
 
         OnDialogListListener listener = new OnDialogListListener() {
 
@@ -645,7 +653,6 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         @Override
         public void onRequestComplete(Bundle bundle) {
             onSuccessEvent(bundle);
-            
         }
     };
 

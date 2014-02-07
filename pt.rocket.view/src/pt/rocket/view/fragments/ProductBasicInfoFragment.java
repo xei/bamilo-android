@@ -85,21 +85,6 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
 
     @Override
     public void sendValuesToFragment(int identifier, Object values) {
-        // if(identifier == 0){
-        // this.mCompleteProduct = (CompleteProduct) values;
-        // } else if(identifier==1){
-        // this.mCompleteProduct = (CompleteProduct) values;
-        // setBasicInfo();
-        // } else if(identifier == DEFINE_UNIT_PRICE){
-        // unitPrice = (String) values;
-        // } else if(identifier == DEFINE_SPECIAL_PRICE){
-        // specialPrice = (String) values;
-        // } else if(identifier == DEFINE_DISCOUNT_PERCENTAGE){
-        // discountPercentage = (Integer) values;
-        // } else if(identifier == DEFINE_STOCK){
-        // stockQuantity = (Integer) values;
-        // updateStockInfo();
-        // }
     }
 
     @Override
@@ -174,7 +159,6 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
     public void onStart() {
         super.onStart();
         Log.i(TAG, "ON START");
-        // FlurryTracker.get().begin();
     }
 
     /*
@@ -187,9 +171,6 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
         super.onResume();
         Log.i(TAG, "ON RESUME");
         setBasicInfo();
-        //
-        // AnalyticsGoogle.get().trackPage(R.string.gteaser_prefix);
-        //
     }
 
     /*
@@ -217,7 +198,6 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
 
     @Override
     public void onClick(View v) {
-        // TODO Auto-generated method stub
         mCallback.onFragmentSelected(FragmentType.PRODUCT_BASIC_INFO);
     }
 
@@ -282,7 +262,7 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
 
     @Override
     public void notifyFragment(Bundle bundle) {
-        Log.i(TAG, "code1 notifyFragment basic info");
+//        Log.i(TAG, "code1 notifyFragment basic info");
         if (bundle == null) {
             return;
         }

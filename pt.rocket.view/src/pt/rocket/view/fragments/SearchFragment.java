@@ -6,6 +6,7 @@ package pt.rocket.view.fragments;
 import java.util.EnumSet;
 import java.util.List;
 
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.SearchSuggestionsAdapter;
 import pt.rocket.controllers.fragments.FragmentController;
@@ -17,7 +18,6 @@ import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.GetSearchSuggestionHelper;
 import pt.rocket.interfaces.IResponseCallback;
-import pt.rocket.utils.JumiaApplication;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.RightDrawableOnTouchListener;
@@ -431,6 +431,10 @@ public class SearchFragment extends BaseFragment implements OnItemClickListener 
 
     private void onErrorEvent(Bundle bundle){
         Log.d(TAG, "ON ERROR EVENT");
+        if(getBaseActivity() == null){
+            return;
+        }
+        
         mBeginRequestMillis = System.currentTimeMillis();
         if(getBaseActivity().handleErrorEvent(bundle)){
             return;

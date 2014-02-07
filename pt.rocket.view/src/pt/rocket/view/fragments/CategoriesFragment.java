@@ -6,6 +6,7 @@ package pt.rocket.view.fragments;
 import java.util.ArrayList;
 import java.util.List;
 
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.CategoriesAdapter;
 import pt.rocket.controllers.SubCategoriesAdapter;
@@ -13,7 +14,6 @@ import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.objects.Category;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.FragmentCommunicator;
-import pt.rocket.utils.JumiaApplication;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.MainFragmentActivity;
@@ -208,7 +208,7 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         // LEVEL 1
         if(currentFragment == FragmentType.CATEGORIES_LEVEL_1) {
-            Log.i(TAG, "code1 requested level 1");
+//            Log.i(TAG, "code1 requested level 1");
             Category category = categories.get(position);
             if (!category.getHasChildren()) {
                 showProducts(category);
@@ -239,7 +239,7 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
      */
     private void createList() {
         if(categories == null){
-            Log.i(TAG, "code1 creating list "+JumiaApplication.INSTANCE.currentCategories.size());
+//            Log.i(TAG, "code1 creating list "+JumiaApplication.INSTANCE.currentCategories.size());
             categories = JumiaApplication.INSTANCE.currentCategories;
         }
         
@@ -270,7 +270,7 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
             getActivity().finish();
             return;
         }
-        Log.i(TAG, "code1 categories view is not null");
+//        Log.i(TAG, "code1 categories view is not null");
         categoriesList = (ListView) getView().findViewById(R.id.sub_categories_grid);
         //categoriesList.setExpanded(true);
         mainCatAdapter = new CategoriesAdapter(getActivity(), categories);
@@ -284,7 +284,9 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
      */
     private void categoryLevel2() {
         categoriesList = (ListView) getView().findViewById(R.id.sub_categories_grid);
-        
+        if( categories == null || categories.size() <= 0 ){
+            return;
+        }
         parent = categories;
         child = categories.get(categoryIndex).getChildren();
         currentCategory = parent.get(categoryIndex);

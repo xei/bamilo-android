@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.FormConstants;
 import pt.rocket.controllers.fragments.FragmentController;
@@ -40,7 +41,6 @@ import pt.rocket.helpers.session.GetLoginHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.pojo.DynamicForm;
 import pt.rocket.pojo.DynamicFormItem;
-import pt.rocket.utils.JumiaApplication;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.TrackerDelegator;
@@ -346,8 +346,13 @@ public class SessionLoginFragment extends BaseFragment {
     public void onStop() {
         super.onStop();
         Log.i(TAG, "ON STOP");
-        if (container != null)
-            container.removeAllViews();
+        if (container != null){
+            try {
+                container.removeAllViews();
+            } catch (IllegalArgumentException e) {
+               e.printStackTrace();
+            }
+        }
 
         uiHelper.onStop();
     }
@@ -496,6 +501,7 @@ public class SessionLoginFragment extends BaseFragment {
             triggerLoginForm();
             return true;
         case FACEBOOK_LOGIN_EVENT:
+            JumiaApplication.INSTANCE.setLoggedIn(true);
             Log.d(TAG, "facebookloginCompletedEvent : success");
             // Get Customer
             ((BaseActivity) getActivity()).hideKeyboard();
@@ -514,6 +520,7 @@ public class SessionLoginFragment extends BaseFragment {
             return true;
         
         case LOGIN_EVENT:
+            JumiaApplication.INSTANCE.setLoggedIn(true);
             Log.d(TAG, "loginCompletedEvent : success");
             // Get Customer
             ((BaseActivity) getActivity()).hideKeyboard();
@@ -566,10 +573,14 @@ public class SessionLoginFragment extends BaseFragment {
      * @param form
      */
     private void loadForm(Form form) {
-        Log.i(TAG, "code1 loading form : "+form.name);
+//        Log.i(TAG, "code1 loading form : "+form.name);
         dynamicForm = FormFactory.getSingleton().CreateForm(FormConstants.LOGIN_FORM,
                 getActivity(), form);
-        container.removeAllViews();
+        try {
+            container.removeAllViews();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
         container.addView(dynamicForm.getContainer());
         setFormClickDetails();
 

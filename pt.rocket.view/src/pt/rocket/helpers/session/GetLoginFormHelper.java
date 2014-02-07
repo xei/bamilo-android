@@ -10,6 +10,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.forms.Form;
 import pt.rocket.forms.FormData;
 import pt.rocket.framework.enums.RequestType;
@@ -19,7 +20,6 @@ import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
 import pt.rocket.helpers.BaseHelper;
 import pt.rocket.helpers.HelperPriorityConfiguration;
-import pt.rocket.utils.JumiaApplication;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -34,12 +34,15 @@ public class GetLoginFormHelper extends BaseHelper {
 
     @Override
     public Bundle generateRequestBundle(Bundle args) {
-        Log.i(TAG, "code1 FormDataRegistry size is : "+JumiaApplication.INSTANCE.getFormDataRegistry().size());
-        FormData formData = JumiaApplication.INSTANCE.getFormDataRegistry().get(EventType.GET_LOGIN_FORM_EVENT.action);
-        String url = formData.getUrl();
-        Log.i(TAG, "code1 getting login form : " + url);
         Bundle bundle = new Bundle();
-        bundle.putString(Constants.BUNDLE_URL_KEY, url);
+        try {
+            FormData formData = JumiaApplication.INSTANCE.getFormDataRegistry().get(EventType.GET_LOGIN_FORM_EVENT.action);
+            String url = formData.getUrl();
+            bundle.putString(Constants.BUNDLE_URL_KEY, url);
+        } catch (NullPointerException e) {
+            Log.w(TAG, "FORM DATA IS NULL THEN GET LOGIN FORM FALLBACK", e);
+            bundle.putString(Constants.BUNDLE_URL_KEY, EventType.GET_LOGIN_FORM_FALLBACK_EVENT.action);
+        }
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
         bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));

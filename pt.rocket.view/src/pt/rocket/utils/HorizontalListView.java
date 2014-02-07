@@ -165,7 +165,12 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
 
     private synchronized void reset() {
         initView();
-        removeAllViewsInLayout();
+        try {
+            removeAllViewsInLayout();
+        } catch (IllegalArgumentException e) {
+           e.printStackTrace();
+        }
+        
         requestLayout();
     }
 
@@ -243,7 +248,11 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
             int savedSelected = mSelected;
             int oldCurrentX = mCurrentX;
             initView();
-            removeAllViewsInLayout();
+            try {
+                removeAllViewsInLayout();
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+            }
             mSelected = savedSelected;
             mNextX = oldCurrentX;
             mDataChanged = false;

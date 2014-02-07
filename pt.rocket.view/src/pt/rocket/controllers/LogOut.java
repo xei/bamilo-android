@@ -2,9 +2,10 @@ package pt.rocket.controllers;
 
 import java.lang.ref.WeakReference;
 
+import pt.rocket.app.JumiaApplication;
+import pt.rocket.framework.rest.RestClientSingleton;
 import pt.rocket.helpers.session.GetLogoutHelper;
 import pt.rocket.interfaces.IResponseCallback;
-import pt.rocket.utils.JumiaApplication;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogProgressFragment;
 import pt.rocket.view.BaseActivity;
@@ -54,6 +55,10 @@ public class LogOut {
                 ((BaseActivity) activityRef.get()).dismissProgress();
                 // 
                 if (((BaseActivity) activityRef.get()) != null) {
+                    RestClientSingleton.getSingleton(((BaseActivity) activityRef.get())).getCookieStore().clear();
+                    JumiaApplication.INSTANCE.setLoggedIn(false);
+                    JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
+                    ((BaseActivity) activityRef.get()).updateSlidingMenuCompletly();
                     ((BaseActivity) activityRef.get()).handleSuccessEvent(bundle);
                 }
             }
@@ -63,8 +68,11 @@ public class LogOut {
                 // 
                 ((BaseActivity) activityRef.get()).dismissProgress();
                 // 
-                TrackerDelegator.trackLogoutSuccessful(((BaseActivity) activityRef.get()));
+                
                 if (((BaseActivity) activityRef.get()) != null) {
+                    JumiaApplication.INSTANCE.setLoggedIn(false);
+                    TrackerDelegator.trackLogoutSuccessful(((BaseActivity) activityRef.get()));
+                    JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
                     ((BaseActivity) activityRef.get()).updateSlidingMenuCompletly();
                     ((BaseActivity) activityRef.get()).handleSuccessEvent(bundle);
                 }
