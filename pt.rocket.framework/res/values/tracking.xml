@@ -49,6 +49,8 @@
     <string name="gaddtocart">AddToCart</string>
     <string name="gloginsuccess">LoginSuccess</string>
     <string name="gfacebookloginsuccess">FacebookLoginSuccess</string>
+    <string name="gfacebooksignupsuccess">FacebookSignupSuccess</string>
+    <string name="gsignupsuccess">SignupSuccess</string>
     <string name="gloginfailed">LoginFailed</string>
     <string name="glogoutsuccess">LogoutSuccess</string>
     <string name="glogoutfailed">LogoutFailed</string>

@@ -129,4 +129,9 @@
     <dimen name="shopping_cart_item_image_width">84dp</dimen>
     <dimen name="shopping_cart_item_image_height">84dp</dimen>
     
+    <!-- ABOUT YOU -->
+    <dimen name="about_you_form_width">@dimen/match_parent</dimen>
+    
+    
+    
 </resources>

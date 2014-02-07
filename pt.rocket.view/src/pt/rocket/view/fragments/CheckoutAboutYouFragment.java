@@ -355,10 +355,6 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         else if(id == R.id.checkout_signup_toogle) onClickSignupToogle(view);
         // Sign button
         else if(id == R.id.checkout_signup_form_button_enter) onClickSignupButton();
-//        // Facebook button
-//        else if(id == R.id.checkout_login_form_button_facebook) onClickFacebookLoginButton();
-//        // Facebook button
-//        else if(id == R.id.checkout_signup_form_button_facebook) onClickFacebookSignupButton();
         // Unknown view
         else Log.i(TAG, "ON CLICK: UNKNOWN VIEW");
     }
@@ -371,13 +367,13 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             if (loginMainContainer.getVisibility() == View.VISIBLE) {
                 loginToogle.setSelected(false);
                 loginMainContainer.setVisibility(View.GONE);
-                signupToogle.setSelected(true);
-                signupMainContainer.setVisibility(View.VISIBLE);
+                //signupToogle.setSelected(true);
+                //signupMainContainer.setVisibility(View.VISIBLE);
             } else {
                 loginToogle.setSelected(true);
                 loginMainContainer.setVisibility(View.VISIBLE);
-                signupToogle.setSelected(false);
-                signupMainContainer.setVisibility(View.GONE);
+                //signupToogle.setSelected(false);
+                //signupMainContainer.setVisibility(View.GONE);
             }
                 
         }
@@ -391,13 +387,13 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             if (signupMainContainer.getVisibility() == View.VISIBLE) {
                 signupToogle.setSelected(false);
                 signupMainContainer.setVisibility(View.GONE);
-                loginToogle.setSelected(true);
-                loginMainContainer.setVisibility(View.VISIBLE);
+                //loginToogle.setSelected(true);
+                //loginMainContainer.setVisibility(View.VISIBLE);
             } else {
                 signupToogle.setSelected(true);
                 signupMainContainer.setVisibility(View.VISIBLE);
-                loginToogle.setSelected(false);
-                loginMainContainer.setVisibility(View.GONE);
+                //loginToogle.setSelected(false);
+                //loginMainContainer.setVisibility(View.GONE);
             }
         }
     }
@@ -425,16 +421,6 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
     private void onClickForgotPassword() {
         Log.i(TAG, "ON CLICK: FORGOT PASS");
         getBaseActivity().onSwitchFragment(FragmentType.FORGOT_PASSWORD, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-    }
-    
-    private void onClickFacebookLoginButton() {
-        Log.i(TAG, "ON CLICK: FACEBOOK");
-        // TODO
-    }
-    
-    private void onClickFacebookSignupButton() {
-        Log.i(TAG, "ON CLICK: FACEBOOK");
-     // TODO
     }
 
     /**

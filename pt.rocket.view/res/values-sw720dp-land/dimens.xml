@@ -72,6 +72,9 @@
     <!-- SHOPPING CART -->
     <dimen name="shopping_cart_item_image_width">150dp</dimen>
     <dimen name="shopping_cart_item_image_height">150dp</dimen>
+    
+    <!-- ABOUT YOU -->
+    <dimen name="about_you_form_width">560dp</dimen>
 
 	
 </resources>

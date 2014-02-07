@@ -219,7 +219,7 @@
     <string name="rating_quality">Quality</string>
     <string name="call_to_order_number">014604400</string>
     <string name="home_tip_text">Swipe left or right to change the category</string>
-    <string name="facebook_login_button_text">Login with Facebook</string>
+    
     <string name="tip_tap_text">Tap to open the product gallery</string>
     <string name="tip_swipe_text">Swipe left or right to\nview different images </string>
     <string name="tip_pinch_text">Pinch to zoom</string>
@@ -268,6 +268,10 @@
     <string name="shipping_methods">Shipping Methods</string>
     <string name="payment_methods">Payment Methods</string>
     <string name="finish_checkout">Finish</string>
+    
+    <string name="signup_label">Signup</string>
+    <string name="facebook_signup_button_text">Sign up with Facebook</string>
+    <string name="facebook_login_button_text">Login with Facebook</string>
     
     
 </resources>

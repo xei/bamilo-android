@@ -3,6 +3,9 @@
     android:id="@+id/checkout_login_main"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/margin_huge"
+    android:layout_marginLeft="@dimen/margin_mid"
+    android:layout_marginRight="@dimen/margin_mid"
     android:orientation="vertical" >
 
     <!-- TOGGLE -->
@@ -10,27 +13,31 @@
     <org.holoeverywhere.widget.TextView
         android:id="@+id/checkout_login_toogle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_alignParentLeft="true"
+        android:layout_marginBottom="@dimen/margin_mid"
         android:background="@drawable/searchfield"
         android:drawableEnd="@drawable/selector_dropdown_indicator"
         android:fontFamily="roboto_regular"
         android:gravity="center_vertical"
         android:padding="@dimen/margin_mid"
-        android:text="Login"
+        android:text="@string/login_label"
         android:textColor="@color/orange_basic"
-        android:textSize="@dimen/text_l" />
+        android:textSize="@dimen/text_xl" />
 
     <!-- CONTENT -->
 
     <LinearLayout
         android:id="@+id/checkout_login_form_main"
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/about_you_form_width"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_huge"
         android:layout_marginLeft="@dimen/margin_mid"
         android:layout_marginRight="@dimen/margin_mid"
         android:orientation="vertical"
-        android:visibility="visible" >
+        android:visibility="visible"
+        android:layout_gravity="center"
+        android:gravity="center" >
 
         <!-- FORM -->
 
@@ -39,7 +46,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin_midhuge"
-            android:layout_marginTop="@dimen/margin_midhuge"
+            android:layout_marginTop="@dimen/margin_huge"
             android:orientation="vertical" >
         </LinearLayout>
 
@@ -66,15 +73,29 @@
 
         <!-- DIVIDER -->
 
-        <org.holoeverywhere.widget.TextView
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_huge"
-            android:fontFamily="roboto_regular"
-            android:gravity="center"
-            android:text="OR"
-            android:textColor="@color/grey_divider_light_text"
-            android:textSize="@dimen/text_l" />
+            android:layout_marginTop="@dimen/margin_huge" >
+
+            <View
+                style="@style/divider_horizontal"
+                android:layout_height="0.75dp"
+                android:layout_centerInParent="true"
+                android:background="@color/grey_divider_light_text" />
+
+            <org.holoeverywhere.widget.TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:background="@android:color/white"
+                android:fontFamily="roboto_regular"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="OR"
+                android:textColor="@color/grey_divider_light_text"
+                android:textSize="@dimen/text_l" />
+        </RelativeLayout>
 
         <!-- FACEBOOK -->
 
@@ -85,10 +106,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/margin_huge"
-            android:text="Login with Facebook"
-            fb:login_text="Login with Facebook" />
-        <!-- @string/facebook_login_button_text -->
-
+            android:text="@string/facebook_login_button_text"
+            fb:login_text="@string/facebook_login_button_text" />
     </LinearLayout>
 
 </LinearLayout>
