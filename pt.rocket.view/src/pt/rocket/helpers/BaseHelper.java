@@ -59,7 +59,7 @@ public abstract class BaseHelper {
                 if (jsonObject.has(JSONConstants.JSON_METADATA_TAG)) {
                 	
                 	/**
-                	 * TODO: Validate this method because GetCities returns a json array
+                	 * The methods GetRegions and GetCities receive a the metadata field as json array
                 	 */
                     try {
                         metaData = jsonObject.getJSONObject(JSONConstants.JSON_METADATA_TAG);

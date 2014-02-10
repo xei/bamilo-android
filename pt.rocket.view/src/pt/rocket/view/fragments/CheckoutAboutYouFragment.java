@@ -83,8 +83,6 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
     private Bundle savedInstanceState;
 
     private static CheckoutAboutYouFragment loginFragment = null;
-
-    private FragmentType nextFragmentType;
     
     private UiLifecycleHelper uiHelper;
     
@@ -114,13 +112,12 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
     private static final String PERMISSION_EMAIL = "email";
     
     /**
-     * 
-     * @return
+     * Get the instance of CheckoutAboutYouFragment
+     * @return {@link BaseFragment}
      */
     public static CheckoutAboutYouFragment getInstance(Bundle bundle) {
         loginFragment = new CheckoutAboutYouFragment();
         if (bundle != null) {
-            loginFragment.nextFragmentType = (FragmentType) bundle.getSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE);
             loginFragment.loginOrigin = bundle.getString(ConstantsIntentExtra.LOGIN_ORIGIN);
         }
         return loginFragment;
@@ -359,6 +356,10 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         else Log.i(TAG, "ON CLICK: UNKNOWN VIEW");
     }
     
+    /**
+     * Process the click on the login toogle
+     * @param toogle view
+     */
     private void onClickLoginToogle(View view) {
         Log.i(TAG, "ON CLICK: LOGIN TOOGLE");
         // Validate view
@@ -379,6 +380,10 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         }
     }
     
+    /**
+     * Process the click on the sign up toogle
+     * @param toogle view
+     */
     private void onClickSignupToogle(View view) {
         Log.i(TAG, "ON CLICK: SIGNUP TOOGLE");
         // Validate view
@@ -398,6 +403,9 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         }
     }
     
+    /**
+     * Process the click on login button
+     */
     private void onClickLoginButton() {
         Log.i(TAG, "ON CLICK: LOGIN");
         try {
@@ -408,6 +416,9 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         }
     }
     
+    /**
+     * Process the click on sign up button
+     */
     private void onClickSignupButton() {
         Log.i(TAG, "ON CLICK: SIGNUP");
         try {
@@ -418,6 +429,9 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         }
     }
     
+    /**
+     * Process the click on forgot password
+     */
     private void onClickForgotPassword() {
         Log.i(TAG, "ON CLICK: FORGOT PASS");
         getBaseActivity().onSwitchFragment(FragmentType.FORGOT_PASSWORD, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
@@ -427,12 +441,19 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
      * ############# FACEBOOK #############
      */
     
+    /**
+     * Set the facebook button behavior
+     * @param button
+     */
     private void setFacebookButton(LoginButton button){
         button.setFragment(this);
         button.setLoginBehavior(SessionLoginBehavior.SUPPRESS_SSO);
         button.setReadPermissions(Arrays.asList(PERMISSION_EMAIL));
     }
     
+    /**
+     * Clean the facebook session
+     */
     private void cleanFacebookSession(){
         Session s = Session.getActiveSession();
         s.closeAndClearTokenInformation();
@@ -536,9 +557,9 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
      */
     
     /**
-     * 
+     * Filter the reponse bundle
      * @param bundle
-     * @return
+     * @return true/false
      */
     protected boolean onSuccessEvent(Bundle bundle) {
         Log.d(TAG, "ON SUCCESS EVENT");
@@ -570,7 +591,6 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             getBaseActivity().updateSlidingMenuCompletly();
             getBaseActivity().onBackPressed();
             getBaseActivity().onSwitchFragment(FragmentType.CREATE_ADDRESS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-            // TODO: Add the respective track
             break;
         case FACEBOOK_LOGIN_EVENT:
           // Get Customer
@@ -638,7 +658,6 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
 //            
 //            return true;
 //            
-//        // TODO: Only for tests
 //       case GET_POLL_FORM_EVENT:
 //           Log.d(TAG, "RECEIVED GET_POLL_FORM_EVENT");
 //           return true;
@@ -730,7 +749,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
      */
     
     /**
-     * Request auto login
+     * Method used to trigger the login
      */
     private void requestLogin() {
         Log.i(TAG, "TRIGGER: LOGIN EVENT");
@@ -740,6 +759,9 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         triggerLogin(values, true);
     }
     
+    /**
+     * Method used to trigger the sign up
+     */
     private void requestSignup() {
         Log.i(TAG, "TRIGGER: SIGNUP EVENT");
         getBaseActivity().hideKeyboard();
@@ -756,6 +778,10 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         triggerSignup(values, true);
     }
 
+    /**
+     * Method used to trigger the Facebook login
+     * @param user
+     */
     private void requestFacebookLogin(GraphUser user) {
         Log.d(TAG, "REQUEST FACEBOOK LOGIN");
         ContentValues values = new ContentValues();
@@ -774,8 +800,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
      */
     
     /**
-     * TRIGGERS
-     * @author sergiopereira
+     * Trigger used to perform an auto login
      */
     private void triggerAutoLogin(){
         Log.i(TAG, "TRIGGER: AUTO LOGIN");
@@ -786,6 +811,11 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         triggerContentEvent(new GetLoginHelper(), bundle, this);
     }
     
+    /**
+     * Trigger used to login an user
+     * @param values
+     * @param saveCredentials
+     */
     private void triggerLogin(ContentValues values, boolean saveCredentials) {
         Log.i(TAG, "TRIGGER: LOGIN");
         Bundle bundle = new Bundle();
@@ -794,6 +824,11 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         triggerContentEvent(new GetLoginHelper(), bundle, this);
     }
     
+    /**
+     * Trigger used to sign up an user
+     * @param values
+     * @param saveCredentials
+     */
     private void triggerSignup(ContentValues values, boolean saveCredentials) {
         Log.i(TAG, "TRIGGER: SIGNUP " + values.toString());
         Bundle bundle = new Bundle();
@@ -802,6 +837,11 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         triggerContentEvent(new SetSignupHelper(), bundle, this);
     }
     
+    /**
+     * Trigger used to perform a login/signup from Facebook
+     * @param values
+     * @param saveCredentials
+     */
     private void triggerFacebookLogin(ContentValues values,  boolean saveCredentials){
         Log.i(TAG, "TRIGGER: FACEBOOK LOGIN");
         Bundle bundle = new Bundle();
@@ -810,6 +850,10 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         triggerContentEventWithNoLoading(new GetFacebookLoginHelper(), bundle, this);
     }
     
+    /**
+     * Trigger used to get the login form
+     * @return true
+     */
     private boolean triggerLoginForm(){
         Log.i(TAG, "TRIGGER: LOGIN FORM");
         onAutoLogin = false;
@@ -817,12 +861,20 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         return true;
     }
     
+    /**
+     * Trigger used to get the signup form
+     * @return true
+     */
     private boolean triggerSignupForm(){
         Log.i(TAG, "TRIGGER: SIGNUP FORM");
+        onAutoLogin = false;
         triggerContentEvent(new GetSignupFormHelper(), null, this);
         return true;
     }
     
+    /**
+     * Trigger used to get the initialize forms
+     */
     private void triggerInitForm(){
         Log.i(TAG, "TRIGGER: INIT FORMS");
         Bundle bundle = new Bundle();
@@ -855,7 +907,10 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
      * ########### DIALOGS ###########  
      */    
     
-    
+    /**
+     * Dialog used to show an error
+     * @param errors
+     */
     private void showErrorDialog(HashMap<String, List<String>> errors){
         Log.d(TAG, "SHOW LOGIN ERROR DIALOG");
         List<String> errorMessages = (List<String>) errors.get(RestConstants.JSON_VALIDATE_TAG);
@@ -889,7 +944,9 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         }
     }
     
-    
+    /**
+     * Notification used to show an error
+     */
     private void showLoginFormErrorDialog(){
         dialog = DialogGenericFragment.createServerErrorDialog(getBaseActivity(),
                 new OnClickListener() {
