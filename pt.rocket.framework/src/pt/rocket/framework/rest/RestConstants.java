@@ -62,6 +62,7 @@ public class RestConstants {
 
 	// FieldValidation Tags
 	public static final String JSON_REQUIRED_TAG = "required";
+	public static final String JSON_REQUIREDVALUE_TAG = "requiredValue";
 	public static final String JSON_MIN_TAG = "min";
 	public static final String JSON_MAX_TAG = "max";
 	public static final String JSON_REGEX_TAG = "regex";
