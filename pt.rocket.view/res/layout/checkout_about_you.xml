@@ -11,11 +11,11 @@
 
         <!-- LOGIN -->
 
-        <include layout="@layout/checkout_login" />
+        <include layout="@layout/checkout_about_you_login" />
 
         <!-- SIGNUP -->
 
-        <include layout="@layout/checkout_signup" />
+        <include layout="@layout/checkout_about_you_signup" />
         
     </LinearLayout>
 

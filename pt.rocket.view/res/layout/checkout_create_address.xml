@@ -1,29 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:layout_marginLeft="@dimen/margin_mid"
+    android:layout_marginRight="@dimen/margin_mid" >
 
-    <LinearLayout
+    <!-- CONTENT -->
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:layout_height="match_parent"
+        android:layout_above="@+id/checkout_address_button_enter"
+        android:layout_alignParentTop="true" >
 
-        <!-- FORM -->
+        <!-- FORMS -->
 
         <LinearLayout
-            android:id="@+id/checkout_address_form_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_midhuge"
-            android:layout_marginTop="@dimen/margin_midhuge"
             android:orientation="vertical" >
+
+            <!-- SHIPPING FORM -->
+
+            <include
+                android:id="@+id/checkout_address_form_include_shipping"
+                layout="@layout/checkout_create_address_shipping" />
+
+            <!-- BILLING FORM -->
+
+            <include
+                android:id="@+id/checkout_address_form_include_billing"
+                layout="@layout/checkout_create_address_billing"
+                android:visibility="gone" />
         </LinearLayout>
+    </ScrollView>
 
-        <org.holoeverywhere.widget.Button
-            android:id="@+id/checkout_address_button_enter"
-            style="@style/button_orange_style"
-            android:contentDescription="@string/login_button_description"
-            android:text="Next" />
-    </LinearLayout>
+    <!-- NEXT BUTTON -->
 
-</ScrollView>
+    <org.holoeverywhere.widget.Button
+        android:id="@+id/checkout_address_button_enter"
+        style="@style/button_orange_style"
+        android:layout_alignParentBottom="true"
+        android:contentDescription="@string/login_button_description"
+        android:text="Next" />
+
+</RelativeLayout>

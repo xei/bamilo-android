@@ -33,10 +33,11 @@ public class Address implements IJSONSerializable, Parcelable {
     private int idCustomerAddress;
     private String firstName;
     private String lastName;
-    private String address;
+    private String address1;
+    private String address2;
     private String city;
     private String postcode;
-    private int phone;
+    private String phone;
     private int fkCustomer;
     private int fkCountry;
     private int fkCustomerAddressRegion;
@@ -68,10 +69,11 @@ public class Address implements IJSONSerializable, Parcelable {
 		idCustomerAddress = dataObject.optInt(RestConstants.JSON_ADDRESS_ID_TAG);
 		firstName = dataObject.optString(RestConstants.JSON_FIRST_NAME_TAG);
 		lastName = dataObject.optString(RestConstants.JSON_LAST_NAME_TAG);
-		address = dataObject.optString(RestConstants.JSON_ADDRESS1_TAG);
+		address1 = dataObject.optString(RestConstants.JSON_ADDRESS1_TAG);
+		address2 = dataObject.optString(RestConstants.JSON_ADDRESS2_TAG);
 		city = dataObject.optString(RestConstants.JSON_CITY_TAG);
 		postcode = dataObject.optString(RestConstants.JSON_POSTCODE_TAG);
-		phone = dataObject.optInt(RestConstants.JSON_PHONE_TAG);
+		phone = dataObject.optString(RestConstants.JSON_PHONE_TAG);
 		fkCustomer = dataObject.optInt(RestConstants.JSON_CUSTOMER_ID_TAG);
 		fkCountry = dataObject.optInt(RestConstants.JSON_COUNTRY_ID_TAG);
 		fkCustomerAddressRegion = dataObject.optInt(RestConstants.JSON_REGION_ID_TAG);
@@ -121,7 +123,14 @@ public class Address implements IJSONSerializable, Parcelable {
 	 * @return the address
 	 */
 	public String getAddress() {
-		return address;
+		return address1;
+	}
+	
+	/**
+	 * @return the address 2
+	 */
+	public String getAddress2() {
+		return address2;
 	}
 
 	/**
@@ -141,7 +150,7 @@ public class Address implements IJSONSerializable, Parcelable {
 	/**
 	 * @return the phone
 	 */
-	public int getPhone() {
+	public String getPhone() {
 		return phone;
 	}
 
@@ -247,7 +256,14 @@ public class Address implements IJSONSerializable, Parcelable {
 	 * @param address the address to set
 	 */
 	public void setAddress(String address) {
-		this.address = address;
+		this.address1 = address;
+	}
+	
+	/**
+	 * @param address the address 2 to set
+	 */
+	public void setAddress2(String address) {
+		this.address2 = address;
 	}
 
 	/**
@@ -267,7 +283,7 @@ public class Address implements IJSONSerializable, Parcelable {
 	/**
 	 * @param phone the phone to set
 	 */
-	public void setPhone(int phone) {
+	public void setPhone(String phone) {
 		this.phone = phone;
 	}
 
@@ -371,10 +387,11 @@ public class Address implements IJSONSerializable, Parcelable {
 		dest.writeInt(idCustomerAddress);
 		dest.writeString(firstName);
 		dest.writeString(lastName);
-		dest.writeString(address);
+		dest.writeString(address1);
+		dest.writeString(address2);
 		dest.writeString(city);
 		dest.writeString(postcode);
-		dest.writeInt(phone);
+		dest.writeString(phone);
 		dest.writeInt(fkCustomer);
 		dest.writeInt(fkCountry);
 		dest.writeInt(fkCustomerAddressRegion);
@@ -395,10 +412,11 @@ public class Address implements IJSONSerializable, Parcelable {
 		idCustomerAddress = in.readInt();
 		firstName = in.readString();
 		lastName = in.readString();
-		address = in.readString();
+		address1 = in.readString();
+		address2 = in.readString();
 		city = in.readString();
 		postcode = in.readString();
-		phone = in.readInt();
+		phone = in.readString();
 		fkCustomer = in.readInt();
 		fkCountry = in.readInt();
 		fkCustomerAddressRegion = in.readInt();

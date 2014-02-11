@@ -19,6 +19,21 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
+            <!-- TITLE -->
+
+            <org.holoeverywhere.widget.TextView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_alignParentLeft="true"
+                android:layout_marginBottom="@dimen/margin_mid"
+                android:background="@drawable/searchfield"
+                android:fontFamily="roboto_regular"
+                android:gravity="center_vertical"
+                android:padding="@dimen/margin_mid"
+                android:text="Edit Address"
+                android:textColor="@color/orange_basic"
+                android:textSize="@dimen/text_xl" />
+
             <!-- FORM -->
 
             <LinearLayout
@@ -30,10 +45,29 @@
                 android:orientation="vertical" >
             </LinearLayout>
 
-            <org.holoeverywhere.widget.Button
-                android:id="@+id/checkout_edit_button_enter"
-                style="@style/button_orange_style"
-                android:text="Next" />
+            <!-- BUTTONS -->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <org.holoeverywhere.widget.Button
+                    android:id="@+id/checkout_edit_button_cancel"
+                    style="@style/button_grey_style"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:fontFamily="roboto_regular"
+                    android:text="Cancel" />
+
+                <org.holoeverywhere.widget.Button
+                    android:id="@+id/checkout_edit_button_enter"
+                    style="@style/button_orange_style"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:fontFamily="roboto_regular"
+                    android:text="Save Changes" />
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
     <!-- DIVIDER -->

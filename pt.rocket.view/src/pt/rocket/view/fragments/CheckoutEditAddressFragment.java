@@ -3,14 +3,21 @@
  */
 package pt.rocket.view.fragments;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.List;
 
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.FormConstants;
 import pt.rocket.factories.FormFactory;
 import pt.rocket.forms.Form;
+import pt.rocket.forms.FormField;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.Address;
+import pt.rocket.framework.objects.AddressCity;
+import pt.rocket.framework.objects.AddressRegion;
+import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -21,63 +28,68 @@ import pt.rocket.helpers.address.GetRegionsHelper;
 import pt.rocket.helpers.address.SetEditedAddressHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.pojo.DynamicForm;
+import pt.rocket.pojo.DynamicFormItem;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Toast;
+
+import com.actionbarsherlock.internal.widget.IcsAdapterView;
+import com.actionbarsherlock.internal.widget.IcsAdapterView.OnItemSelectedListener;
+import com.actionbarsherlock.internal.widget.IcsSpinner;
+
 import de.akquinet.android.androlog.Log;
 
 /**
  * 
- * FIXME: Waiting for: 
- * > NAFAMZ-5428: MOBILE API - Action is "edit" in the response for Edit Address Form 
- * > NAFAMZ-5429: MOBILE API - Remove unused json fields from Add/Edit Address Form 
- * > NAFAMZ-5431: MOBILE API - The Edit Address Form doesn't have the api calls for regions and cities
- * 
  * @author sergiopereira
  * 
  */
-public class CheckoutEditAddressFragment extends BaseFragment implements OnClickListener, IResponseCallback {
+public class CheckoutEditAddressFragment extends BaseFragment implements OnClickListener, IResponseCallback, OnItemSelectedListener {
 
     private static final String TAG = LogTagHelper.create(CheckoutEditAddressFragment.class);
-
-    public static final String SELECTED_ADDRESS = "selected_address";
     
     private static CheckoutEditAddressFragment editAddressFragment;
+    
+    private ViewGroup editFormContainer;
 
+    private DynamicForm editFormGenerator;
+
+    private Form formResponse;
+
+    private ArrayList<AddressRegion> regions;
+    
+    public static final String SELECTED_ADDRESS = "selected_address";
+    
     private Address selectedAddress;
+    
     
     /**
      * 
      * @return
      */
     public static CheckoutEditAddressFragment getInstance(Bundle bundle) {
-        // if (loginFragment == null)
         editAddressFragment = new CheckoutEditAddressFragment();
         editAddressFragment.selectedAddress = bundle.getParcelable(SELECTED_ADDRESS);
         return editAddressFragment;
     }
 
-    private ViewGroup formContainer;
-
-    private DynamicForm formGenerator;
-
-    private Form formResponse;
-
     /**
      * Empty constructor
      */
     public CheckoutEditAddressFragment() {
-        super(EnumSet.of(EventType.GET_EDIT_ADDRESS_FORM_EVENT), 
+        super(EnumSet.of(EventType.GET_EDIT_ADDRESS_FORM_EVENT, EventType.EDIT_ADDRESS_EVENT), 
                 EnumSet.noneOf(EventType.class),
                 EnumSet.noneOf(MyMenuItem.class), 
                 NavigationAction.MyAccount, 
@@ -107,8 +119,6 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
         setRetainInstance(true);
     }
     
-
-    
     /*
      * (non-Javadoc)
      * 
@@ -131,16 +141,19 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
         
+        
         // Create address form
-        formContainer = (ViewGroup) view.findViewById(R.id.checkout_edit_form_container);
-        // Button
-        view.findViewById(R.id.checkout_edit_button_enter).setOnClickListener(this);
+        editFormContainer = (ViewGroup) view.findViewById(R.id.checkout_edit_form_container);
+        // Next button
+        view.findViewById(R.id.checkout_edit_button_enter).setOnClickListener((OnClickListener) this);
+        // Cancel button
+        view.findViewById(R.id.checkout_edit_button_cancel).setOnClickListener((OnClickListener) this);
         
         // Get and show form
         if(JumiaApplication.INSTANCE.getFormDataRegistry() == null || JumiaApplication.INSTANCE.getFormDataRegistry().size() == 0){
             triggerInitForm();
         } else if(formResponse != null){
-            loadForm(formResponse);
+            loadEditAddressForm(formResponse);
         } else {
             triggerEditAddressForm();
         }
@@ -209,75 +222,345 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
     public void onDestroy() {
         super.onDestroy();
         Log.i(TAG, "ON DESTROY");
+        regions = null;
     }
     
-    /*
-     * (non-Javadoc)
-     * @see android.support.v4.app.Fragment#onActivityResult(int, int, android.content.Intent)
+    
+    /**
+     * Load the dynamic form
+     * @param form
      */
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    private void loadEditAddressForm(Form form) {
+        Log.i(TAG, "LOAD EDIT ADDRESS FORM: " + form.name);
+
+        // Edit form
+        editFormGenerator = FormFactory.getSingleton().CreateForm(FormConstants.ADDRESS_FORM, getActivity(), form);
+        editFormContainer.removeAllViews();
+        editFormContainer.addView(editFormGenerator.getContainer());                
+        editFormContainer.refreshDrawableState();
+        
+        // Validate Regions
+        if(regions == null) {
+            FormField field = form.theRealFieldMapping.get("fk_customer_address_region");
+            String url = field.getDataCalls().get("api_call");
+            Log.d(TAG, "API CALL: " + url);
+            triggerGetRegions(url);
+        } else {
+            Log.d(TAG, "REGIONS ISN'T NULL");
+            setRegions(editFormGenerator, regions, selectedAddress);
+        }
+        
+        // Hide check boxes
+        hideDefaultCheckBoxes(editFormGenerator);
+        // Show selected address content
+        showSelectedAddress(editFormGenerator, selectedAddress);
+                
+        getBaseActivity().showContentContainer(false);
+        
     }
     
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onSaveInstanceState(android.os.Bundle)
+    private void showSelectedAddress(DynamicForm dynamicForm, Address selectedAddress){
+        // First name       
+        ((EditText) dynamicForm.getItemByKey("first_name").getEditControl()).setText(selectedAddress.getFirstName());
+        // Last name        
+        ((EditText) dynamicForm.getItemByKey("last_name").getEditControl()).setText(selectedAddress.getLastName());
+        // Address 1        
+        ((EditText) dynamicForm.getItemByKey("address1").getEditControl()).setText(selectedAddress.getAddress());
+        // Address 2        
+        ((EditText) dynamicForm.getItemByKey("address2").getEditControl()).setText(selectedAddress.getAddress2());
+        // Phone            
+        ((EditText) dynamicForm.getItemByKey("phone").getEditControl()).setText(selectedAddress.getPhone());
+        // DEFAULT SHIPPING 
+        //((CheckBox) dynamicForm.getItemByKey("is_default_shipping").getControl()).setChecked(true);
+        // DEFAULT BILLING 
+        //((CheckBox) dynamicForm.getItemByKey("is_default_billing").getControl()).setChecked(true);
+        
+        
+        // Region           fk_customer_address_region
+        // City id          fk_customer_address_city
+        // City Name        city
+        
+        // Alice_Module_Customer_Model_AddressForm[id_customer_address]
+
+        
+    }
+    
+    /**
+     * Hide the default check boxes
+     * @param dynamicForm
      */
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-//        if (null != loginForm) {
-//            Iterator<DynamicFormItem> iterator = loginForm.iterator();
-//            while (iterator.hasNext()) {
-//                DynamicFormItem item = iterator.next();
-//                item.saveState(outState);
-//            }
-//            savedInstanceState = outState;
-//        }
-//        super.onSaveInstanceState(outState);
-//        uiHelper.onSaveInstanceState(outState);
+    private void hideDefaultCheckBoxes(DynamicForm dynamicForm){
+        DynamicFormItem item = dynamicForm.getItemByKey("is_default_shipping");
+        item.getEditControl().setVisibility(View.GONE);
+        item = dynamicForm.getItemByKey("is_default_billing");
+        item.getEditControl().setVisibility(View.GONE);
     }
     
+    /**
+     * Method used to set the regions on the respective form
+     * @param dynamicForm
+     * @param regions
+     * @param tag
+     */
+    private void setRegions(DynamicForm dynamicForm, ArrayList<AddressRegion> regions, Address selecedAddress){
+        Log.d(TAG, "SET REGIONS REGIONS: ");
+
+        DynamicFormItem v = dynamicForm.getItemByKey("fk_customer_address_region");
+        
+        ViewGroup group = (ViewGroup) v.getControl();
+        group.removeAllViews();
+        
+        IcsSpinner spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout.form_icsspinner, null);
+        spinner.setLayoutParams(group.getLayoutParams());
+
+        ArrayAdapter<AddressRegion> adapter = new ArrayAdapter<AddressRegion>(
+                    getBaseActivity(), 
+                    R.layout.form_spinner_item, 
+                    regions);
+        
+        spinner.setPrompt("Select country");
+        spinner.setAdapter(adapter);
+        spinner.setSelection(getRegionPosition(regions, selecedAddress));
+        spinner.setOnItemSelectedListener(this);
+        group.addView(spinner);
+    }
     
+    /**
+     * Get the position of the address region
+     * @param regions
+     * @param selecedAddress
+     * @return int
+     */
+    private int getRegionPosition(ArrayList<AddressRegion> regions, Address selecedAddress){
+        for (int i = 0; i < regions.size(); i++) {
+            if(regions.get(i).getId() == selecedAddress.getFkCustomerAddressRegion()) return i;
+        }
+        return 0;
+    }
+        
+    /**
+     * Validate the current region selection and update the cities
+     * @param requestedRegionAndFields
+     * @param cities
+     */
+    private void setCitiesOnSelectedRegion(ArrayList<AddressCity> cities){
+        setCities(editFormGenerator, cities);
+    }
     
-    
+    /**
+     * Method used to set the cities on the respective form
+     * @param dynamicForm
+     * @param cities
+     * @param tag
+     */
+    private void setCities(DynamicForm dynamicForm, ArrayList<AddressCity> cities){
+        // SHIPPING
+        DynamicFormItem v = dynamicForm.getItemByKey("fk_customer_address_city");
+        ViewGroup group = (ViewGroup) v.getControl();
+        group.removeAllViews();
+        
+        IcsSpinner spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout.form_icsspinner, null);
+        spinner.setLayoutParams(group.getLayoutParams());
+        
+        ArrayAdapter<AddressCity> adapter = new ArrayAdapter<AddressCity>(
+                getBaseActivity(), 
+                R.layout.form_spinner_item, 
+                cities);
+        //adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
+        spinner.setPrompt("Select country");
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(this);
+        group.addView(spinner);
+    }
     
     /**
      * ############# CLICK LISTENER #############
      */
-    
+    /*
+     * (non-Javadoc)
+     * @see android.view.View.OnClickListener#onClick(android.view.View)
+     */
     @Override
     public void onClick(View view) {
         // Get view id
         int id = view.getId();
-        // Login toggle
+        // Next button
         if(id == R.id.checkout_edit_button_enter) onClickEditAddressButton();
+        // Next button
+        else if(id == R.id.checkout_edit_button_cancel) onClickCancelAddressButton();
         // Unknown view
         else Log.i(TAG, "ON CLICK: UNKNOWN VIEW");
     }
     
-    
-    
-    
+    /**
+     * Process the click on the next step button
+     */
     private void onClickEditAddressButton() {
-        Log.i(TAG, "ON CLICK: LOGIN");
-        ContentValues values = formGenerator.save();
-        
-        Log.d(TAG, "CURRENT CONTENT VALUES: " + values.toString());
-
-        triggerEditAddress(values);
+        Log.i(TAG, "ON CLICK: EDIT");
+        if(editFormGenerator.validate()) {
+            Log.i(TAG, "EDIT ADDRESS");    
+            triggerEditAddress(createContentValues(editFormGenerator));
+        }
     }
+    
+    
+    /**
+     * Process the click on the cancel button
+     */
+    private void onClickCancelAddressButton() {
+        Log.i(TAG, "ON CLICK: CANCEL");
+        getBaseActivity().onBackPressed();
+    }
+    
+    /**
+     * Method used to create the content values
+     * @param dynamicForm
+     * @param isDefaultShipping
+     * @param isDefaultBilling
+     * @return new content values
+     */
+    private ContentValues createContentValues(DynamicForm dynamicForm){
+        // Save content values
+        ContentValues mContentValues = dynamicForm.save();
+        // Get the region
+        ViewGroup mRegionGroup = (ViewGroup) dynamicForm.getItemByKey("fk_customer_address_region").getControl();
+        IcsSpinner mRegionSpinner = (IcsSpinner) mRegionGroup.getChildAt(0);
+        AddressRegion mSelectedRegion = (AddressRegion) mRegionSpinner.getSelectedItem(); 
+        Log.d(TAG, "SELECTED REGION: " + mSelectedRegion.getName() + " " + mSelectedRegion.getId());
+        // Get the city
+        ViewGroup mCityGroup = (ViewGroup) dynamicForm.getItemByKey("fk_customer_address_city").getControl();
+        IcsSpinner mCitySpinner = (IcsSpinner) mCityGroup.getChildAt(0);
+        AddressCity mSelectedCity = (AddressCity) mCitySpinner.getSelectedItem(); 
+        Log.d(TAG, "SELECTED CITY: " + mSelectedCity.getValue() + " " + mSelectedCity.getId() );
+        // Get some values
+        int mAddressId = selectedAddress.getIdCustomerAddress();
+        int mRegionId = mSelectedRegion.getId();
+        int mCityId = mSelectedCity.getId();
+        String mCityName = mSelectedCity.getValue();
+        int isDefaultBilling = (selectedAddress.isDefaultBilling()) ? 1 : 0;
+        int isDefaultShipping = (selectedAddress.isDefaultShipping()) ? 1 : 0;
+        // Put values
+        mContentValues.put("Alice_Module_Customer_Model_AddressForm[address_id]", mAddressId);
+        mContentValues.put("Alice_Module_Customer_Model_AddressForm[is_default_billing]", isDefaultBilling);
+        mContentValues.put("Alice_Module_Customer_Model_AddressForm[is_default_shipping]", isDefaultShipping);
+        mContentValues.put("Alice_Module_Customer_Model_AddressForm[fk_customer_address_region]", mRegionId);
+        mContentValues.put("Alice_Module_Customer_Model_AddressForm[fk_customer_address_city]", mCityId);
+        mContentValues.put("Alice_Module_Customer_Model_AddressForm[city]", mCityName);
+        Log.d(TAG, "CURRENT CONTENT VALUES: " + mContentValues.toString());
+        // return the new content values
+        return mContentValues;
+    }
+    
+    /**
+     * ########### ON ITEM SELECTED LISTENER ###########  
+     */
+    /*
+     * (non-Javadoc)
+     * @see com.actionbarsherlock.internal.widget.IcsAdapterView.OnItemSelectedListener#onNothingSelected(com.actionbarsherlock.internal.widget.IcsAdapterView)
+     */
+    @Override
+    public void onNothingSelected(IcsAdapterView<?> parent) { }
+    
+    /*
+     * (non-Javadoc)
+     * @see com.actionbarsherlock.internal.widget.IcsAdapterView.OnItemSelectedListener#onItemSelected(com.actionbarsherlock.internal.widget.IcsAdapterView, android.view.View, int, long)
+     */
+    @Override
+    public void onItemSelected(IcsAdapterView<?> parent, View view, int position, long id) {
+        Log.d(TAG, "CURRENT TAG: " + parent.getTag());
+        Object object = parent.getItemAtPosition(position);
+        if(object instanceof AddressRegion) {
+            FormField field = formResponse.theRealFieldMapping.get("fk_customer_address_city");
+            String url = field.getDataCalls().get("api_call");
+            Log.d(TAG, "API CALL: " + url);
+            // Request the cities for this region id 
+            int regionId = ((AddressRegion) object).getId();
+            // Get cities
+            triggerGetCities(url, regionId);
+        }
+    }
+    
+    /**
+     * ############# REQUESTS #############
+     */
+    /**
+     * Trigger to edit an address
+     * @param values
+     */
+    private void triggerEditAddress(ContentValues values) {
+        Log.i(TAG, "TRIGGER: EDIT ADDRESS");
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(SetEditedAddressHelper.FORM_CONTENT_VALUES, values);
+        triggerContentEvent(new SetEditedAddressHelper(), bundle, this);
+    }
+    
+    /**
+     * Trigger to get the address form
+     */
+    private void triggerEditAddressForm(){
+        Log.i(TAG, "TRIGGER: LOGIN FORM");
+        triggerContentEvent(new GetFormEditAddressHelper(), null, this);
+    }
+    
+    /**
+     * Trigger to initialize forms
+     */
+    private void triggerInitForm(){
+        Log.i(TAG, "TRIGGER: INIT FORMS");
+        triggerContentEvent(new GetInitFormHelper(), null, this);
+    }
+    
+    /**
+     * Trigger to get regions
+     * @param apiCall
+     */
+    private void triggerGetRegions(String apiCall){
+        Log.i(TAG, "TRIGGER: GET REGIONS: " + apiCall);
+        Bundle bundle = new Bundle();
+        bundle.putString(Constants.BUNDLE_URL_KEY, apiCall);
+        triggerContentEventWithNoLoading(new GetRegionsHelper(), bundle, this);
+    }
+    
+    /**
+     * Trigger to get cities
+     * @param apiCall
+     * @param region id
+     * @param selectedTag 
+     */
+    private void triggerGetCities(String apiCall, int region){
+        Log.i(TAG, "TRIGGER: GET REGIONS: " + apiCall);
+        Bundle bundle = new Bundle();
+        bundle.putString(Constants.BUNDLE_URL_KEY, apiCall);
+        bundle.putInt(GetCitiesHelper.REGION_ID_TAG, region);
+        triggerContentEventWithNoLoading(new GetCitiesHelper(), bundle, this);
+    }
+    
     
    
     /**
      * ############# RESPONSE #############
-     * 
-     * TODO: ADD SUCCESS VALIDATIONS
-     * 
      */
-  
+    /**
+     * Filter the success response
+     * @param bundle
+     * @return boolean
+     */
     protected boolean onSuccessEvent(Bundle bundle) {
+        Log.i(TAG, "ON SUCCESS EVENT");
+        
+        // Validate fragment visibility
+        if(!isVisible()){
+            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return true;
+        }
+        
+        if(getBaseActivity() != null){
+            Log.d(TAG, "BASE ACTIVITY HANDLE SUCCESS EVENT");
+            getBaseActivity().handleSuccessEvent(bundle);
+        } else {
+            return true;
+        }
+        
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         Log.i(TAG, "ON SUCCESS EVENT: " + eventType);
         
@@ -288,22 +571,23 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
             break;
         case GET_EDIT_ADDRESS_FORM_EVENT:
             Log.d(TAG, "RECEIVED GET_EDIT_ADDRESS_FORM_EVENT");
-            // Save and load form
             Form form = (Form) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-            loadForm(form);
+            formResponse = form;
+            loadEditAddressForm(form);
             break;
         case GET_REGIONS_EVENT:
             Log.d(TAG, "RECEIVED GET_REGIONS_EVENT");
-            // TODO: IS NECESSARY?
+            regions = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
+            setRegions(editFormGenerator, regions, selectedAddress);
             break;
         case GET_CITIES_EVENT:
             Log.d(TAG, "RECEIVED GET_CITIES_EVENT");
-            // TODO: IS NECESSARY?
+            ArrayList<AddressCity> cities = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
+            setCitiesOnSelectedRegion(cities);
             break;
         case EDIT_ADDRESS_EVENT:
             Log.d(TAG, "RECEIVED EDIT_ADDRESS_EVENT");
-            // TODO: Implement
-            Toast.makeText(getBaseActivity(), "EDITED THE DUMMY ADDRESS", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getBaseActivity(), "Address updated with success!", Toast.LENGTH_SHORT).show();
             getBaseActivity().onBackPressed();
             break;
         default:
@@ -312,35 +596,14 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
         
         return true;
     }
-
-    /**
-     * Load the dynamic form
-     * 
-     * @param form
-     */
-    private void loadForm(Form form) {
-        Log.i(TAG, "LOAD FORM: " + form.name);
-        formResponse = form;
-        formGenerator = FormFactory.getSingleton().CreateForm(FormConstants.ADDRESS_FORM, getActivity(), form);
-        formContainer.removeAllViews();
-        formContainer.addView(formGenerator.getContainer());        
-        formContainer.refreshDrawableState();
-        getBaseActivity().showContentContainer(false);
-        
-        
-        try {
-            Log.d(TAG, "SELECTED ADDRESS: " + selectedAddress.toString());
-        } catch (Exception e) {
-            Log.d(TAG, "SELECTED ADDRESS IS NULL: " + e.getMessage());
-        }
-    }
-
-
     
     /**
+     * Filter the error response
+     * 
      * TODO: ADD ERROR VALIDATIONS
+     * 
      * @param bundle
-     * @return
+     * @return boolean
      */
     protected boolean onErrorEvent(Bundle bundle) {
     	if(!isVisible()){
@@ -368,6 +631,11 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
             break;
         case EDIT_ADDRESS_EVENT:
             Log.d(TAG, "RECEIVED EDIT_ADDRESS_EVENT");
+            if (errorCode == ErrorCode.REQUEST_ERROR) {
+                HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY); 
+                showErrorDialog(errors);
+                getBaseActivity().showContentContainer(false);
+            }
             break;
         default:
             break;
@@ -376,64 +644,7 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
         return false;
     }
     
-    /**
-     * ############# REQUESTS #############
-     */
-    
-    private void triggerEditAddress(ContentValues values) {
-        Log.i(TAG, "TRIGGER: EDIT");
-        
-        // TODO: Remove the true condition
-        if (formGenerator.validate() || true) {
-            
-            Log.d(TAG, "FORM: IS VALID" + values.toString());
-            
-            values = new ContentValues();
-            // 8132, 8131, 8080
-            values.put("Alice_Module_Customer_Model_AddressForm[address_id]", "8132");
-            values.put("Alice_Module_Customer_Model_AddressForm[first_name]", "MY FIRST NAME EDIT 1");
-            values.put("Alice_Module_Customer_Model_AddressForm[last_name]", "MY LAST NAME EDIT 1");
-            values.put("Alice_Module_Customer_Model_AddressForm[address1]", "MY ADDRESS EDIT 1");
-            values.put("Alice_Module_Customer_Model_AddressForm[address2]", "MY ADDRESS EDIT 2");
-            values.put("Alice_Module_Customer_Model_AddressForm[city]", "MY CITY");
-            values.put("Alice_Module_Customer_Model_AddressForm[phone]", "123456789");
-            values.put("Alice_Module_Customer_Model_AddressForm[fk_customer_address_region]", "234");
-            values.put("Alice_Module_Customer_Model_AddressForm[fk_customer_address_city]", "419");
-            
-            Bundle bundle = new Bundle();
-            bundle.putParcelable(SetEditedAddressHelper.FORM_CONTENT_VALUES, values);
-            triggerContentEvent(new SetEditedAddressHelper(), bundle, this);
-            
-        }else {
-            Log.d(TAG, "FORM: IS NOT VALID " + values.toString());
-        }
-        
-    }
-    
-    private void triggerEditAddressForm(){
-        Log.i(TAG, "TRIGGER: EDIT FORM");
-        triggerContentEvent(new GetFormEditAddressHelper(), null, this);
-    }
-    
-    private void triggerInitForm(){
-        Log.i(TAG, "TRIGGER: INIT FORMS");
-        triggerContentEvent(new GetInitFormHelper(), null, this);
-    }
-    
-    private void triggerGetRegions(String apiCall){
-        Log.i(TAG, "TRIGGER: GET REGIONS: " + apiCall);
-        Bundle bundle = new Bundle();
-        bundle.putString(Constants.BUNDLE_URL_KEY, apiCall);
-        triggerContentEventWithNoLoading(new GetRegionsHelper(), bundle, this);
-    }
-    
-    private void triggerGetCities(String apiCall, int region){
-        Log.i(TAG, "TRIGGER: GET REGIONS: " + apiCall);
-        Bundle bundle = new Bundle();
-        bundle.putString(Constants.BUNDLE_URL_KEY, apiCall);
-        bundle.putInt(GetCitiesHelper.REGION_ID_TAG, region);
-        triggerContentEventWithNoLoading(new GetCitiesHelper(), bundle, this);
-    }
+   
     
     /**
      * ########### RESPONSE LISTENER ###########  
@@ -446,10 +657,54 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
     public void onRequestError(Bundle bundle) {
         onErrorEvent(bundle);
     }
-        
+       
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.interfaces.IResponseCallback#onRequestComplete(android.os.Bundle)
+     */
     @Override
     public void onRequestComplete(Bundle bundle) {
         onSuccessEvent(bundle);
+    }
+    
+    /**
+     * ########### DIALOGS ###########  
+     */    
+    /**
+     * Dialog used to show an error
+     * @param errors
+     */
+    private void showErrorDialog(HashMap<String, List<String>> errors){
+        Log.d(TAG, "SHOW LOGIN ERROR DIALOG");
+        List<String> errorMessages = (List<String>) errors.get(RestConstants.JSON_VALIDATE_TAG);
+
+        if (errors != null && errorMessages != null && errorMessages.size() > 0) {
+            
+            if(getBaseActivity() != null) getBaseActivity().showContentContainer(false);
+            
+            dialog = DialogGenericFragment.newInstance(true, true, false,
+                    getString(R.string.error_login_title),
+                    errorMessages.get(0),
+                    getString(R.string.ok_label), "", new OnClickListener() {
+
+                        @Override
+                        public void onClick(View v) {
+                            int id = v.getId();
+                            if (id == R.id.button1) {
+                                dialog.dismiss();
+                            }
+
+                        }
+
+                    });
+            dialog.show(getBaseActivity().getSupportFragmentManager(), null);
+        } else {
+            
+            /**
+             * TODO: THE ERROR MUST RETURN THE MESSAGE
+             */
+            Toast.makeText(getBaseActivity(), "Please fill the form!", Toast.LENGTH_SHORT).show();
+        }
     }
 
 

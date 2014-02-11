@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <!-- TITLE -->
+
+    <org.holoeverywhere.widget.TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="@dimen/margin_mid"
+        android:background="@drawable/searchfield"
+        android:fontFamily="roboto_regular"
+        android:gravity="center_vertical"
+        android:padding="@dimen/margin_mid"
+        android:text="Billing Address"
+        android:textColor="@color/orange_basic"
+        android:textSize="@dimen/text_xl" />
+
+    <!-- FORM -->
+
+    <LinearLayout
+        android:id="@+id/checkout_address_form_billing_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_mid"
+        android:layout_marginLeft="@dimen/margin_mid"
+        android:layout_marginRight="@dimen/margin_mid"
+        android:layout_marginTop="@dimen/margin_huge"
+        android:orientation="vertical" >
+    </LinearLayout>
+
+</LinearLayout>

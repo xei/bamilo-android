@@ -30,7 +30,11 @@ public class GetCitiesHelper extends BaseHelper {
     
     public static String REGION_ID_TAG = "region_id";
     
+    public static String CUSTOM_TAG = "custom_tag";
+    
     private static final EventType type = EventType.GET_CITIES_EVENT;
+
+    private String customTag;
     
             
     /*
@@ -41,6 +45,7 @@ public class GetCitiesHelper extends BaseHelper {
     public Bundle generateRequestBundle(Bundle bundle) {
         Log.d(TAG, "REQUEST");
         // Bundle bundle = new Bundle();
+        customTag = bundle.getString(CUSTOM_TAG);
         // Get region
         int region = bundle.getInt(REGION_ID_TAG);
         // Get action
@@ -78,6 +83,7 @@ public class GetCitiesHelper extends BaseHelper {
             }
             // Save regions
             bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, cities);
+            bundle.putString(CUSTOM_TAG, customTag);
         } catch (JSONException e) {
             Log.w(TAG, "PARSE EXCEPTION", e);
             return parseErrorBundle(bundle);

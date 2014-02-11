@@ -3,9 +3,7 @@
  */
 package pt.rocket.view;
 
-import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.List;
 
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.app.UrbanAirshipComponent;
@@ -13,7 +11,6 @@ import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
-import pt.rocket.framework.objects.Category;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
@@ -24,9 +21,9 @@ import pt.rocket.view.fragments.CategoriesContainerFragment;
 import pt.rocket.view.fragments.ChangeCountryFragment;
 import pt.rocket.view.fragments.CheckoutAboutYouFragment;
 import pt.rocket.view.fragments.CheckoutCreateAddressFragment;
+import pt.rocket.view.fragments.CheckoutEditAddressFragment;
 import pt.rocket.view.fragments.CheckoutFinishFragment;
 import pt.rocket.view.fragments.CheckoutMyAddressesFragment;
-import pt.rocket.view.fragments.CheckoutEditAddressFragment;
 import pt.rocket.view.fragments.CheckoutPaymentMethodsFragment;
 import pt.rocket.view.fragments.CheckoutShippingMethodsFragment;
 import pt.rocket.view.fragments.CheckoutStep5Fragment;
