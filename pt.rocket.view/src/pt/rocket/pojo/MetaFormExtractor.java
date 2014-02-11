@@ -37,8 +37,9 @@ public class MetaFormExtractor {
 			if ( field.getKey().equals( metaFieldKey))
 				foundMetaField = field;
 		}
-		
+		Log.i(TAG, "code1checked MetaFormExtractor");
 		if ( foundMetaField == null) {
+		    Log.i(TAG, "code1checked foundMetaField == null");
 			return straightCopyFields(fields);
 		}
 		
@@ -49,7 +50,8 @@ public class MetaFormExtractor {
 		Map<String, IFormField> newSubFields = new HashMap<String, IFormField>();
 		ArrayList<IFormField> transformedFields = new ArrayList<IFormField>();
 		
-		for( IFormField field: fields ) {			
+		for( IFormField field: fields ) {	
+		    Log.i(TAG, "code1checked  field.getKey() : "+ field.getKey());
 			if ( field.getKey().equals( newMetaField.getKey()))
 				transformedFields.add( newMetaField );
 			else if ( subFieldKeys.contains( field.getKey()))

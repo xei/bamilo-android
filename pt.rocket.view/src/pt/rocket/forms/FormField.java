@@ -27,6 +27,7 @@ import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.GetFormsDatasetListHelper;
+import pt.rocket.helpers.checkout.SetPaymentMethodHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.InputType;
 import pt.rocket.app.JumiaApplication;
@@ -101,6 +102,8 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     private HashMap<String, String> dataCalls;
 
     private HashMap<String, String>  dataOptions;
+    
+    private HashMap<String, Form>  paymentFields;
 
     /**
      * FormField param constructor
@@ -185,7 +188,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                 inputType = InputType.radioGroup;
             } else if (formFieldString.equals("list")) {
                 inputType = InputType.list;
-            } else if (formFieldString.equals("boolean")) {
+            } else if (formFieldString.equals("boolean") || formFieldString.equals("checkbox")) {
                 inputType = InputType.checkBox;
             } else if (formFieldString.equals("")) {
             	inputType = InputType.meta;
@@ -323,15 +326,22 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                  * TODO: Validate this method to save the payment methods
                  */
                 if(key.equals("payment_method")){
+                    dataSet.clear();
+                    paymentFields = new HashMap<String, Form>();
                     dataOptionsObject = jsonObject.optJSONObject("options");
                     Iterator<?> it = dataOptionsObject.keys();
                     while (it.hasNext()) {
+                        
                         String curKey = (String) it.next();
+                        String value = dataOptionsObject.getJSONObject(curKey).getString("value");
+                        Log.d(TAG, "FORM FIELD: CURRENT KEY " + curKey + " VALUE: " + value);
+                        dataSet.put(value, curKey);
+                        
                         JSONObject json = dataOptionsObject.getJSONObject(curKey);
-                        FieldPaymentMethod fieldPaymentMethod = new FieldPaymentMethod(curKey, json);
-                        Log.d(TAG, "FORM FIELD: NAME: " + fieldPaymentMethod.getName() + 
-                                             " VALUE: " + fieldPaymentMethod.getValue() +
-                                            " FIELDS: " + fieldPaymentMethod.getFields().size());
+                        Form mForm = new Form();
+                        mForm.initialize(json);
+                        paymentFields.put(curKey, mForm);
+                        
                     }
                 }
                 
@@ -530,6 +540,10 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         this.dataSet = dataSet;
     }
     
+    
+    public HashMap<String, Form> getPaymentMethodsField(){
+        return this.paymentFields;
+    }
     
     /*
      * (non-Javadoc)

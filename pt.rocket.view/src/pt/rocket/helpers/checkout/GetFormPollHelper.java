@@ -30,7 +30,7 @@ public class GetFormPollHelper extends BaseHelper {
     private static String TAG = GetFormPollHelper.class.getSimpleName();
 
     private static final EventType type = EventType.GET_POLL_FORM_EVENT;
-    
+    private static final EventType fallback_type = EventType.GET_POLL_FORM_FALLBACK_EVENT;
     /*
      * (non-Javadoc)
      * @see pt.rocket.helpers.BaseHelper#generateRequestBundle(android.os.Bundle)
@@ -39,7 +39,13 @@ public class GetFormPollHelper extends BaseHelper {
     public Bundle generateRequestBundle(Bundle args) {
         Log.d(TAG, "REQUEST");
         Bundle bundle = new Bundle();
-        String url = JumiaApplication.INSTANCE.getFormDataRegistry().get(type.action).getUrl();
+        String url;
+        if(JumiaApplication.INSTANCE.getFormDataRegistry() != null && JumiaApplication.INSTANCE.getFormDataRegistry().get(type.action) != null ){
+            url = JumiaApplication.INSTANCE.getFormDataRegistry().get(type.action).getUrl();    
+        } else {
+            url = fallback_type.action;
+        }
+        
         bundle.putString(Constants.BUNDLE_URL_KEY, url);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);

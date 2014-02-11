@@ -21,14 +21,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import pt.rocket.framework.objects.Brand;
-import pt.rocket.framework.objects.BrandImage;
 import pt.rocket.framework.objects.IJSONSerializable;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.LogTagHelper;
+import android.os.Parcel;
+import android.os.Parcelable;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -110,10 +107,11 @@ public class Form implements IJSONSerializable, Parcelable {
             }
 
             JSONArray fieldsArray = jsonObject.getJSONArray(RestConstants.JSON_FIELDS_TAG);
-            
             for (int i = 0; i < fieldsArray.length(); ++i) {
                 FormField field = new FormField(this);
                 if (field.initialize(fieldsArray.getJSONObject(i))) {
+                    Log.i(TAG, "code1checked : name is : "+field.getName());
+                    
                     fields.add(field);
                     
                     /**

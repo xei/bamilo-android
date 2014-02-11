@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -20,11 +21,13 @@ import org.holoeverywhere.widget.EditText;
 import org.holoeverywhere.widget.Spinner;
 import org.holoeverywhere.widget.TextView;
 
+import pt.rocket.forms.Form;
 import pt.rocket.forms.FormField;
 import pt.rocket.forms.IFormField;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.InputType;
 import pt.rocket.utils.RadioGroupLayout;
+import pt.rocket.utils.RadioGroupLayoutVertical;
 import pt.rocket.utils.UIUtils;
 import pt.rocket.utils.dialogfragments.DialogDatePickerFragment;
 import pt.rocket.utils.dialogfragments.DialogDatePickerFragment.OnDatePickerDialogListener;
@@ -71,7 +74,7 @@ public class DynamicFormItem {
 
     private final static int ERRORTEXTSIZE = 14;
     private final static int MANDATORYSIGNALSIZE = 18;
-    
+        
     private Context context;
     private DynamicForm parent;
     private float scale = 1;
@@ -473,8 +476,10 @@ public class DynamicFormItem {
         	
         	if ( this.dataControl instanceof IcsSpinner) {
         		valid = ((IcsSpinner)this.dataControl).getSelectedItemPosition() != Spinner.INVALID_POSITION;
+        	} else if (this.dataControl instanceof RadioGroupLayoutVertical ) {
+        		valid = ((RadioGroupLayoutVertical) this.dataControl).getSelectedIndex() != RadioGroupLayout.NO_DEFAULT_SELECTION;
         	} else {
-        		valid = ((RadioGroupLayout)this.dataControl).getSelectedIndex() != RadioGroupLayout.NO_DEFAULT_SELECTION;
+        	    valid = ((RadioGroupLayout) this.dataControl).getSelectedIndex() != RadioGroupLayout.NO_DEFAULT_SELECTION;
         	}
         		
         		
@@ -561,8 +566,12 @@ public class DynamicFormItem {
             
             if ( this.dataControl instanceof IcsSpinner )
             	valid = ((IcsSpinner)this.dataControl).getSelectedItemPosition() != Spinner.INVALID_POSITION;
-            else
-            	valid = ((RadioGroupLayout)this.dataControl).getSelectedIndex() != RadioGroupLayout.NO_DEFAULT_SELECTION;
+            else if ( this.dataControl instanceof RadioGroupLayoutVertical ){
+                valid = ((RadioGroupLayoutVertical) this.dataControl).getSelectedIndex() != RadioGroupLayout.NO_DEFAULT_SELECTION;
+            } else {
+                valid = ((RadioGroupLayout)this.dataControl).getSelectedIndex() != RadioGroupLayout.NO_DEFAULT_SELECTION;
+            }
+            	
             
             if ( !valid ) {
                 result = !this.entry.getValidation().isRequired();
@@ -704,11 +713,12 @@ public class DynamicFormItem {
                 dataContainer.setLayoutParams(params);
                 
                 params = new RelativeLayout.LayoutParams( controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                
                 if (this.entry.getDataSet().size() > 2) {
-                	createSpinnerForRadioGroup(MANDATORYSIGNALSIZE, params, dataContainer);
+                    Log.d("createRadioGroup", "createRadioGroup: Radio Group ORIENTATION_VERTICAL");
+                    createRadioGroupVertical(  MANDATORYSIGNALSIZE, params, dataContainer);
                 } else {
-                	createRadioGroup(  MANDATORYSIGNALSIZE, params, dataContainer );
+                    Log.d("createRadioGroup", "createRadioGroup: Radio Group ORIENTATION_HORIZONTAL");
+                    createRadioGroup(  MANDATORYSIGNALSIZE, params, dataContainer);
                 }
             
                 // TODO: Validate this method for poll    
@@ -742,7 +752,6 @@ public class DynamicFormItem {
                     createPollRadioGroup(MANDATORYSIGNALSIZE, params, dataContainer);
                 }
                 
-                    
                 break;
             case metadate:
             case date:
@@ -1048,7 +1057,10 @@ public class DynamicFormItem {
 	
 	
 	private void createRadioGroup( final int MANDATORYSIGNALSIZE, RelativeLayout.LayoutParams params, RelativeLayout dataContainer ) {
-		RadioGroupLayout radioGroup = (RadioGroupLayout) View.inflate(this.context, R.layout.form_radiolayout, null );
+	    
+	    RadioGroupLayout  radioGroup = (RadioGroupLayout) View.inflate(this.context, R.layout.form_radiolayout, null );    
+	    
+	    
 		radioGroup.setItems(new ArrayList<String>( this.entry.getDataSet().values() ), RadioGroupLayout.NO_DEFAULT_SELECTION );
 		radioGroup.setOnCheckedChangeListener( new OnCheckedChangeListener() {
 			
@@ -1074,9 +1086,71 @@ public class DynamicFormItem {
 		this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
 		this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE : View.GONE);                
 		dataContainer.addView( this.mandatoryControl );
-		
+		    
         ((ViewGroup) this.control).addView(dataContainer);
 	}
+	
+	/**
+	 * Generates a Vertical RadioGroup
+	 * @param MANDATORYSIGNALSIZE - tells if is optional or mandatory
+	 * @param params
+	 * @param dataContainer
+	 */
+	private void createRadioGroupVertical( final int MANDATORYSIGNALSIZE, RelativeLayout.LayoutParams params, RelativeLayout dataContainer ) {
+        
+        RadioGroupLayoutVertical  radioGroup = (RadioGroupLayoutVertical) View.inflate(this.context, R.layout.form_radiolistlayout, null );    
+        HashMap<String, Form> formsMap = new HashMap<String, Form>();
+        Iterator<String> it =  this.entry.getDataSet().values().iterator();
+        while(it.hasNext()){
+            
+            String key = it.next();
+            if(this.parent.getForm().fields.get(0).getPaymentMethodsField().get(key).fields.size()>0){
+                formsMap.put(key, this.parent.getForm().fields.get(0).getPaymentMethodsField().get(key));
+            }
+            Log.i(TAG, "code1checked "+key+" createRadioGroupVertical: "+this.parent.getForm().fields.get(0).getPaymentMethodsField().get(key).fields.size());           
+        }
+
+        
+        
+        radioGroup.setItems(new ArrayList<String>( this.entry.getDataSet().values() ), formsMap,  RadioGroupLayoutVertical.NO_DEFAULT_SELECTION );
+        radioGroup.setOnCheckedChangeListener( new OnCheckedChangeListener() {
+            
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                for (int i = 0; i < group.getChildCount(); i++) {
+                    if(i != checkedId){
+                        if(group.getChildAt(i).findViewById(R.id.extras) != null){
+                            group.getChildAt(i).findViewById(R.id.extras).setVisibility(View.GONE);    
+                        }
+                    } else if(i == checkedId){
+                        if(group.getChildAt(i).findViewById(R.id.extras) != null){
+                            group.getChildAt(i).findViewById(R.id.extras).setVisibility(View.VISIBLE);    
+                        }
+                    }
+                }
+                DynamicFormItem.this.mandatoryControl.setVisibility( View.GONE );
+            }
+        });
+        
+        this.dataControl = radioGroup;
+        this.dataControl.setId( parent.getNextId() );
+        this.dataControl.setLayoutParams(params);
+        dataContainer.addView( this.dataControl );
+        
+        params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        params.addRule(RelativeLayout.CENTER_VERTICAL); 
+        params.rightMargin = 10;
+        this.mandatoryControl = new TextView(this.context);
+        this.mandatoryControl.setLayoutParams(params);
+        this.mandatoryControl.setText("*");
+        this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_basic));
+        this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
+        this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE : View.GONE);                
+        dataContainer.addView( this.mandatoryControl );
+        
+        ((ViewGroup) this.control).addView(dataContainer);
+    }
 
 	@SuppressLint("SimpleDateFormat")
 	public void addSubFormFieldValues(ContentValues model) {

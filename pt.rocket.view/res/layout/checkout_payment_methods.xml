@@ -31,24 +31,24 @@
 
         <!-- CART -->
 
-        <org.holoeverywhere.widget.TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_huge"
-            android:fontFamily="roboto_regular"
-            android:gravity="center"
-            android:text="Cart"
-            android:textColor="@color/grey_divider_light_text"
-            android:textSize="@dimen/text_l" />
+<!--         <org.holoeverywhere.widget.TextView -->
+<!--             android:layout_width="match_parent" -->
+<!--             android:layout_height="wrap_content" -->
+<!--             android:layout_marginTop="@dimen/margin_huge" -->
+<!--             android:fontFamily="roboto_regular" -->
+<!--             android:gravity="center" -->
+<!--             android:text="Cart" -->
+<!--             android:textColor="@color/grey_divider_light_text" -->
+<!--             android:textSize="@dimen/text_l" /> -->
 
-        <LinearLayout
-            android:id="@+id/checkout_payment_cart_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_midhuge"
-            android:layout_marginTop="@dimen/margin_midhuge"
-            android:orientation="vertical" >
-        </LinearLayout>
+<!--         <LinearLayout -->
+<!--             android:id="@+id/checkout_payment_cart_container" -->
+<!--             android:layout_width="match_parent" -->
+<!--             android:layout_height="wrap_content" -->
+<!--             android:layout_marginBottom="@dimen/margin_midhuge" -->
+<!--             android:layout_marginTop="@dimen/margin_midhuge" -->
+<!--             android:orientation="vertical" > -->
+<!--         </LinearLayout> -->
 
         <!-- SUBMIT -->
 

@@ -39,6 +39,7 @@ public class FieldValidation implements IJSONSerializable, Parcelable {
 	public int min;
 	public int max;
 	public String regex;
+	public String message;
 
 	/**
 	 * FormValidation empty constructor.
@@ -48,6 +49,7 @@ public class FieldValidation implements IJSONSerializable, Parcelable {
 		min = MIN_CHARACTERS;
 		max = MAX_CHARACTERS;
 		regex = DEFAULT_REGEX;
+		message = "";
 	}
 
 	
@@ -58,9 +60,15 @@ public class FieldValidation implements IJSONSerializable, Parcelable {
 	public boolean initialize(JSONObject jsonObject) {
 
 		required = jsonObject.optBoolean(RestConstants.JSON_REQUIRED_TAG, false);
+		
+		if(!required){
+		    required = jsonObject.optBoolean(RestConstants.JSON_REQUIREDVALUE_TAG, false);
+		}
+		
 		min = jsonObject.optInt(RestConstants.JSON_MIN_TAG, MIN_CHARACTERS);
 		max = jsonObject.optInt(RestConstants.JSON_MAX_TAG, MAX_CHARACTERS);
         regex = jsonObject.optString(RestConstants.JSON_REGEX_TAG, DEFAULT_REGEX);
+        message = jsonObject.optString(RestConstants.JSON_MESSAGE_IN_MESSAGES_TAG,"");
         
         if ( regex.substring(0, 2).equals("a/") ) {
             regex = regex.substring(2);
@@ -122,6 +130,7 @@ public class FieldValidation implements IJSONSerializable, Parcelable {
         dest.writeInt(min);
         dest.writeInt(max);
         dest.writeString(regex);
+        dest.writeString(message);
     }
     
     /**
@@ -137,6 +146,7 @@ public class FieldValidation implements IJSONSerializable, Parcelable {
         min = in.readInt();
         max = in.readInt();
         regex = in.readString();
+        message = in.readString();
     }
     
     /**

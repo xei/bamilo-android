@@ -290,7 +290,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
          * @FIX: IllegalStateException: Can not perform this action after onSaveInstanceState
          * @Solution : http://stackoverflow.com/questions/7575921/illegalstateexception-can-not-perform-this-action-after-onsaveinstancestate-h
          */
-        if(mOnActivityResultIntent != null){
+        if(mOnActivityResultIntent != null && getIntent().getExtras() != null){
             initialCountry = getIntent().getExtras().getBoolean(
                     ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, false);
             mOnActivityResultIntent = null;
@@ -332,6 +332,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         if(data != null){
             mOnActivityResultIntent = data;
+            super.onActivityResult(requestCode, resultCode, data);
         }
     }
     

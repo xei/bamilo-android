@@ -318,7 +318,7 @@ public class FormFactory {
     private DynamicForm createGenericForm(Context context, Form form, DynamicForm userForm, ViewGroup.LayoutParams ctrlParams) {
 
         LinearLayout parent;
-
+        Log.i(TAG,"code1form id : "+form.id+" name: "+form.name);
         if (null == userForm) {
             parent = new LinearLayout(context);
             LinearLayout.LayoutParams frmParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);

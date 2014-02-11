@@ -4,6 +4,9 @@
 package pt.rocket.view.fragments;
 
 import java.util.EnumSet;
+import java.util.Iterator;
+
+import org.holoeverywhere.widget.Toast;
 
 import pt.rocket.constants.FormConstants;
 import pt.rocket.factories.FormFactory;
@@ -229,6 +232,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
     private void loadForm(Form form) {
         Log.i(TAG, "LOAD FORM");
         formResponse = form;
+        
         formGenerator = FormFactory.getSingleton().CreateForm(FormConstants.PAYMENT_DETAILS_FORM, getActivity(), form);
         paymentMethodsContainer.removeAllViews();
         paymentMethodsContainer.addView(formGenerator.getContainer());        
@@ -246,8 +250,9 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
         // Get view id
         int id = view.getId();
         // Submit
-        if(id == R.id.checkout_payment_button_enter) onClickSubmitAddressesButton(); 
-        // Unknown view
+        if(id == R.id.checkout_payment_button_enter){
+            onClickSubmitAddressesButton(); 
+        } // Unknown view
         else Log.i(TAG, "ON CLICK: UNKNOWN VIEW");
     }
     
@@ -255,7 +260,16 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
     
     private void onClickSubmitAddressesButton() {
         Log.i(TAG, "ON CLICK: LOGIN");
-        //triggerSubmitAddresses(null, null);
+        if(formGenerator != null){
+            if(formGenerator.validate()){
+                Toast.makeText(getActivity(), "Validated!", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getActivity(), "Not Validated!", Toast.LENGTH_SHORT).show();
+            }
+//            triggerSubmitAddresses(null, null);    
+        }
+        
+        
     }
     
    
