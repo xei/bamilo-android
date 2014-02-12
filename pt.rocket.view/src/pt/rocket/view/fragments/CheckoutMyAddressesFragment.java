@@ -14,6 +14,7 @@ import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.Address;
 import pt.rocket.framework.objects.Addresses;
+import pt.rocket.framework.objects.ShippingMethods;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -192,38 +193,6 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
         Log.i(TAG, "ON DESTROY");
     }
     
-    /*
-     * (non-Javadoc)
-     * @see android.support.v4.app.Fragment#onActivityResult(int, int, android.content.Intent)
-     */
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-    
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onSaveInstanceState(android.os.Bundle)
-     */
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-//        if (null != loginForm) {
-//            Iterator<DynamicFormItem> iterator = loginForm.iterator();
-//            while (iterator.hasNext()) {
-//                DynamicFormItem item = iterator.next();
-//                item.saveState(outState);
-//            }
-//            savedInstanceState = outState;
-//        }
-//        super.onSaveInstanceState(outState);
-//        uiHelper.onSaveInstanceState(outState);
-    }
-    
-    
-    
-    
-    
     /**
      * ############# CLICK LISTENER #############
      */
@@ -266,13 +235,27 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
     
     private void onClickEditAddressButton(View view){
         // Get tag
-        String addressId = view.getTag().toString();
+        int addressId = Integer.parseInt(view.getTag().toString());
         Log.i(TAG, "ON CLICK: EDIT ADDRESS " + addressId);
-        // Get Address
-        Address selectedAddress = addresses.getAddresses().get(addressId);
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(CheckoutEditAddressFragment.SELECTED_ADDRESS, selectedAddress);
-        getBaseActivity().onSwitchFragment(FragmentType.EDIT_ADDRESS, bundle, FragmentController.ADD_TO_BACK_STACK);
+        
+        Address selectedAddress = null;
+        
+        // Validate
+        Address shippingAddress = addresses.getShippingAddress();
+        Address billingAddress = addresses.getBillingAddress();
+        if (shippingAddress != null && shippingAddress.getId() == addressId)
+            selectedAddress = shippingAddress;
+        else if (billingAddress != null && billingAddress.getId() == addressId)
+            selectedAddress = billingAddress;
+        else
+            selectedAddress = addresses.getAddresses().get(addressId);
+        
+        // Validate selected address
+        if(selectedAddress != null){
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(CheckoutEditAddressFragment.SELECTED_ADDRESS, selectedAddress);
+            getBaseActivity().onSwitchFragment(FragmentType.EDIT_ADDRESS, bundle, FragmentController.ADD_TO_BACK_STACK);
+        }
         
     }
     
@@ -324,26 +307,50 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
         this.addresses = addresses;
         
         
+        /**
+         * TODO : Improve this method
+         */
+        
         // Show shipping addresses
         Address shippingAddress = addresses.getShippingAddress();
         Log.d(TAG, "SHIPPING ADDRESS: " + shippingAddress.getAddress());
         View shippingAddressView = LayoutInflater.from(getBaseActivity()).inflate(R.layout.checkout_address_item, defaultContainer, false);
-        ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_name)).setText(shippingAddress.getFirstName());
+        ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_name)).setText(shippingAddress.getFirstName() + " " + shippingAddress.getLastName());
         ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_street)).setText(shippingAddress.getAddress());
         ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_region)).setText(shippingAddress.getCity());
         ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_postcode)).setText(shippingAddress.getPostcode());
         ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_phone)).setText(""+shippingAddress.getPhone());
+        // Buttons
+        View radioBtn = shippingAddressView.findViewById(R.id.checkout_address_item_btn_radio);
+        View editBtn = shippingAddressView.findViewById(R.id.checkout_address_item_btn_edit);
+        View deleteBtn = shippingAddressView.findViewById(R.id.checkout_address_item_btn_delete);
+        radioBtn.setTag(shippingAddress.getId());
+        editBtn.setTag(shippingAddress.getId());
+        deleteBtn.setTag(shippingAddress.getId());
+        radioBtn.setOnClickListener(this);
+        editBtn.setOnClickListener(this);
+        deleteBtn.setOnClickListener(this);
         defaultContainer.addView(shippingAddressView);
         
         // Show billing addresses
         Address billingAddress = addresses.getBillingAddress();
         Log.d(TAG, "BILLING ADDRESS: " + billingAddress.getAddress());
         View billingAddressView = LayoutInflater.from(getBaseActivity()).inflate(R.layout.checkout_address_item, defaultContainer, false);
-        ((TextView) billingAddressView.findViewById(R.id.checkout_address_item_name)).setText(billingAddress.getFirstName());
+        ((TextView) billingAddressView.findViewById(R.id.checkout_address_item_name)).setText(billingAddress.getFirstName() + " " + shippingAddress.getLastName());
         ((TextView) billingAddressView.findViewById(R.id.checkout_address_item_street)).setText(billingAddress.getAddress());
         ((TextView) billingAddressView.findViewById(R.id.checkout_address_item_region)).setText(billingAddress.getCity());
         ((TextView) billingAddressView.findViewById(R.id.checkout_address_item_postcode)).setText(billingAddress.getPostcode());
         ((TextView) billingAddressView.findViewById(R.id.checkout_address_item_phone)).setText(""+billingAddress.getPhone());
+        // Buttons
+        View radioBtn1 = billingAddressView.findViewById(R.id.checkout_address_item_btn_radio);
+        View editBtn1 = billingAddressView.findViewById(R.id.checkout_address_item_btn_edit);
+        View deleteBtn1 = billingAddressView.findViewById(R.id.checkout_address_item_btn_delete);
+        radioBtn1.setTag(billingAddress.getId());
+        editBtn1.setTag(billingAddress.getId());
+        deleteBtn1.setTag(billingAddress.getId());
+        radioBtn1.setOnClickListener(this);
+        editBtn1.setOnClickListener(this);
+        deleteBtn1.setOnClickListener(this);
         defaultContainer.addView(billingAddressView);
         
         // Show other addresses
@@ -356,20 +363,21 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
             Log.d(TAG, "ADDRESS: " + otherAddress.getAddress());
             //ViewGroup.inflate(getBaseActivity(), R.layout.checkout_address_item, otherContainer);
             View otherAddressView = LayoutInflater.from(getBaseActivity()).inflate(R.layout.checkout_address_item, otherContainer, false);
-            ((TextView) otherAddressView.findViewById(R.id.checkout_address_item_name)).setText(otherAddress.getFirstName());
+            ((TextView) otherAddressView.findViewById(R.id.checkout_address_item_name)).setText(otherAddress.getFirstName() + " " + shippingAddress.getLastName());
             ((TextView) otherAddressView.findViewById(R.id.checkout_address_item_street)).setText(otherAddress.getAddress());
             ((TextView) otherAddressView.findViewById(R.id.checkout_address_item_region)).setText(otherAddress.getCity());
             ((TextView) otherAddressView.findViewById(R.id.checkout_address_item_postcode)).setText(otherAddress.getPostcode());
             ((TextView) otherAddressView.findViewById(R.id.checkout_address_item_phone)).setText(""+otherAddress.getPhone());
-            View radioBtn = otherAddressView.findViewById(R.id.checkout_address_item_btn_radio);
-            View editBtn = otherAddressView.findViewById(R.id.checkout_address_item_btn_edit);
-            View deleteBtn = otherAddressView.findViewById(R.id.checkout_address_item_btn_delete);
-            radioBtn.setTag(item.getKey());
-            editBtn.setTag(item.getKey());
-            deleteBtn.setTag(item.getKey());
-            radioBtn.setOnClickListener(this);
-            editBtn.setOnClickListener(this);
-            deleteBtn.setOnClickListener(this);
+            // Buttons
+            View radioBtn2 = otherAddressView.findViewById(R.id.checkout_address_item_btn_radio);
+            View editBtn2 = otherAddressView.findViewById(R.id.checkout_address_item_btn_edit);
+            View deleteBtn2 = otherAddressView.findViewById(R.id.checkout_address_item_btn_delete);
+            radioBtn2.setTag(item.getKey());
+            editBtn2.setTag(item.getKey());
+            deleteBtn2.setTag(item.getKey());
+            radioBtn2.setOnClickListener(this);
+            editBtn2.setOnClickListener(this);
+            deleteBtn2.setOnClickListener(this);
             // Add view
             otherContainer.addView(otherAddressView);
         }

@@ -11,7 +11,9 @@ package pt.rocket.framework.objects;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Locale;
 
 import org.json.JSONException;
@@ -46,7 +48,10 @@ public class Customer implements IJSONSerializable, Parcelable{
     private CustomerGender gender;
     private String password;
     private String created_at;
-
+    
+	private ArrayList<String> addresses;
+    
+    
     /**
      * Customer empty constructor
      */
@@ -60,6 +65,7 @@ public class Customer implements IJSONSerializable, Parcelable{
         gender = CustomerGender.Gender;
         password = "";
         setCreatedAt("");
+        this.addresses = null;
     }
     
     public Customer(JSONObject jsonObject) {
@@ -78,7 +84,7 @@ public class Customer implements IJSONSerializable, Parcelable{
      * @param customerPrefix of the customer.
      */
     public Customer(String id, String firstName, String middleName, String lastName, String email, String password, CustomerGender gender, Date birthDay,
-            CustomerPrefix customerPrefix, String createdAt) {
+            CustomerPrefix customerPrefix, String createdAt, ArrayList<String> addresses) {
         this.id = id;
         this.firstName = firstName;
         this.middleName = middleName;
@@ -89,6 +95,7 @@ public class Customer implements IJSONSerializable, Parcelable{
         this.password = password;
         this.prefix = customerPrefix;
         this.created_at = createdAt;
+        this.addresses = addresses;
     }
 
     /**
@@ -259,8 +266,30 @@ public class Customer implements IJSONSerializable, Parcelable{
 	public void setCreatedAt(String created_at) {
 		this.created_at = created_at;
 	}
-    
-    /* (non-Javadoc)
+	
+    /**
+	 * @return the addresses
+	 */
+	public ArrayList<String> getAddresses() {
+		return addresses;
+	}
+
+	/**
+	 * @param addresses the addresses to set
+	 */
+	public void setAddresses(ArrayList<String> addresses) {
+		this.addresses = addresses;
+	}
+	
+	/**
+	 * Method that validate if user has addresses
+	 * @return true/false
+	 */
+	public boolean hasAddresses(){
+		return (this.addresses != null && this.addresses.size() > 0 ) ? true : false;
+	}
+
+	/* (non-Javadoc)
      * @see pt.rocket.framework.objects.IJSONSerializable#initialize(org.json.JSONObject)
      */
     @Override
@@ -288,6 +317,17 @@ public class Customer implements IJSONSerializable, Parcelable{
                 gender = CustomerGender.Female;
             } else {
                 gender = CustomerGender.Gender;
+            }
+            
+            // Save addresses :> "address_collection": { "4040": {}, "8241": {} }
+            JSONObject addressesJson = jsonObject.optJSONObject("address_collection");
+            if(addressesJson != null && addressesJson.length() > 0 ){
+            	addresses = new ArrayList<String>();
+            	Iterator<?> iterator = addressesJson.keys();
+            	while (iterator.hasNext()) {
+					String key = (String) iterator.next();
+					addresses.add(key);
+				}
             }
             
         } catch (JSONException e) {

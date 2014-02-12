@@ -47,18 +47,22 @@ public class Addresses implements IJSONSerializable, Parcelable {
 	public boolean initialize(JSONObject jsonObject) throws JSONException {
 		Log.d(TAG, "INITIALIZE");
 		// Get shipping address and save it
-		shippingAddress = new Address(jsonObject.getJSONObject(RestConstants.JSON_SHIPPING_TAG));
+		JSONObject jsonShip = jsonObject.optJSONObject(RestConstants.JSON_SHIPPING_TAG);
+		if(jsonShip != null) shippingAddress = new Address(jsonShip);
 		//addresses.put("" + shippingAddress.getIdCustomerAddress(), shippingAddress);
 		// Get billing address and save it
-		billingAddress = new Address(jsonObject.getJSONObject(RestConstants.JSON_BILLING_TAG));
+		JSONObject jsonBil = jsonObject.optJSONObject(RestConstants.JSON_BILLING_TAG);
+		if(jsonBil != null) billingAddress = new Address(jsonBil);
 		//addresses.put("" + billingAddress.getIdCustomerAddress(), billingAddress);
 		// Get other addresses
-		JSONObject jsonOther = jsonObject.getJSONObject(RestConstants.JSON_OTHER_TAG);
-        Iterator<?> jsonIteretor = jsonOther.keys();
-        while (jsonIteretor.hasNext()) {
-            String key = (String) jsonIteretor.next();
-            addresses.put(key, new Address((JSONObject) jsonOther.get(key)));
-        }
+		JSONObject jsonOther = jsonObject.optJSONObject(RestConstants.JSON_OTHER_TAG);
+		if(jsonOther != null && jsonOther.length() > 0) {
+	        Iterator<?> jsonIteretor = jsonOther.keys();
+	        while (jsonIteretor.hasNext()) {
+	            String key = (String) jsonIteretor.next();
+	            addresses.put(key, new Address((JSONObject) jsonOther.get(key)));
+	        }
+		}
 		// TODO: Get fast line
 		// fastline = new Address().initialize(jsonObject.getJSONObject(RestConstants.JSON_FASTLINE_TAG));
         return true;
@@ -135,6 +139,18 @@ public class Addresses implements IJSONSerializable, Parcelable {
 	 */
 	public void setAddresses(HashMap<String, Address> addresses) {
 		this.addresses = addresses;
+	}
+	
+	public boolean hasShippingAddress(){
+		return (shippingAddress != null) ? true : false;
+	}
+	
+	public boolean hasBillingAddress(){
+		return (billingAddress != null) ? true : false;
+	}
+	
+	public boolean hasOtherAddresses(){
+		return (addresses != null && addresses.size() > 0) ? true : false;
 	}
 	
 	

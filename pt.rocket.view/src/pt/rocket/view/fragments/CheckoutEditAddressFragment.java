@@ -433,7 +433,7 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
         AddressCity mSelectedCity = (AddressCity) mCitySpinner.getSelectedItem(); 
         Log.d(TAG, "SELECTED CITY: " + mSelectedCity.getValue() + " " + mSelectedCity.getId() );
         // Get some values
-        int mAddressId = selectedAddress.getIdCustomerAddress();
+        int mAddressId = selectedAddress.getId();
         int mRegionId = mSelectedRegion.getId();
         int mCityId = mSelectedCity.getId();
         String mCityName = mSelectedCity.getValue();

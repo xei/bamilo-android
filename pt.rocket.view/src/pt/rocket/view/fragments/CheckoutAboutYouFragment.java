@@ -593,6 +593,8 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             getBaseActivity().onSwitchFragment(FragmentType.CREATE_ADDRESS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
             break;
         case FACEBOOK_LOGIN_EVENT:
+            // Get customer
+            Customer customerFb = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
           // Get Customer
           getBaseActivity().hideKeyboard();
           getBaseActivity().updateSlidingMenuCompletly();
@@ -602,18 +604,23 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
            * Login with Facebook button ->  Default Shipping Address page
            * Sign Up with Facebook button -> Add New Address
            */
-          // if(nextFragmentType != null) getBaseActivity().onSwitchFragment(nextFragmentType, null, true);
-          getBaseActivity().onSwitchFragment(FragmentType.MY_ADDRESSES, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-          
-          TrackerDelegator.trackLoginSuccessful(getBaseActivity(), (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY), onAutoLogin, loginOrigin, true);
+          if(customerFb.hasAddresses()) getBaseActivity().onSwitchFragment(FragmentType.MY_ADDRESSES, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+          else getBaseActivity().onSwitchFragment(FragmentType.CREATE_ADDRESS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+          // Tracking
+          TrackerDelegator.trackLoginSuccessful(getBaseActivity(), customerFb, onAutoLogin, loginOrigin, true);
           return true;
         case LOGIN_EVENT:
+            // Get customer
+            Customer customer = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             // Get Customer
             getBaseActivity().hideKeyboard();
             getBaseActivity().updateSlidingMenuCompletly();
             getBaseActivity().onBackPressed();
-            getBaseActivity().onSwitchFragment(FragmentType.MY_ADDRESSES, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-            TrackerDelegator.trackLoginSuccessful(getBaseActivity(), (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY), onAutoLogin, loginOrigin, false);
+            // Validate customer addresses
+            if(customer.hasAddresses()) getBaseActivity().onSwitchFragment(FragmentType.MY_ADDRESSES, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            else getBaseActivity().onSwitchFragment(FragmentType.CREATE_ADDRESS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            // Tracking
+            TrackerDelegator.trackLoginSuccessful(getBaseActivity(), customer, onAutoLogin, loginOrigin, false);
             break;
        case GET_SIGNUP_FORM_EVENT:
            // Save and load form

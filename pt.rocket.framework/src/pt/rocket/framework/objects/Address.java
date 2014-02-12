@@ -30,7 +30,7 @@ public class Address implements IJSONSerializable, Parcelable {
 	
 	private static final String TAG = Address.class.getSimpleName();
 	
-    private int idCustomerAddress;
+    private int id;
     private String firstName;
     private String lastName;
     private String address1;
@@ -66,7 +66,7 @@ public class Address implements IJSONSerializable, Parcelable {
 	public boolean initialize(JSONObject jsonObject) throws JSONException{
 		Log.d(TAG, "INITIALIZE");
         JSONObject dataObject = jsonObject;
-		idCustomerAddress = dataObject.optInt(RestConstants.JSON_ADDRESS_ID_TAG);
+		id = dataObject.optInt(RestConstants.JSON_ADDRESS_ID_TAG);
 		firstName = dataObject.optString(RestConstants.JSON_FIRST_NAME_TAG);
 		lastName = dataObject.optString(RestConstants.JSON_LAST_NAME_TAG);
 		address1 = dataObject.optString(RestConstants.JSON_ADDRESS1_TAG);
@@ -101,8 +101,8 @@ public class Address implements IJSONSerializable, Parcelable {
 	/**
 	 * @return the idCustomerAddress
 	 */
-	public int getIdCustomerAddress() {
-		return idCustomerAddress;
+	public int getId() {
+		return id;
 	}
 
 	/**
@@ -234,8 +234,8 @@ public class Address implements IJSONSerializable, Parcelable {
 	/**
 	 * @param idCustomerAddress the idCustomerAddress to set
 	 */
-	public void setIdCustomerAddress(int idCustomerAddress) {
-		this.idCustomerAddress = idCustomerAddress;
+	public void setId(int idCustomerAddress) {
+		this.id = idCustomerAddress;
 	}
 
 	/**
@@ -384,7 +384,7 @@ public class Address implements IJSONSerializable, Parcelable {
 	 */
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeInt(idCustomerAddress);
+		dest.writeInt(id);
 		dest.writeString(firstName);
 		dest.writeString(lastName);
 		dest.writeString(address1);
@@ -409,7 +409,7 @@ public class Address implements IJSONSerializable, Parcelable {
 	 * @param in
 	 */
 	private Address(Parcel in) {
-		idCustomerAddress = in.readInt();
+		id = in.readInt();
 		firstName = in.readString();
 		lastName = in.readString();
 		address1 = in.readString();

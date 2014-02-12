@@ -72,14 +72,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
 
-            <ImageView
+            <org.holoeverywhere.widget.CheckBox
                 android:id="@+id/checkout_address_item_btn_radio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp"
-                android:src="@drawable/radiobutton_selected" />
+                android:button="@drawable/selector_address_radio" />
 
             <ImageView
                 android:id="@+id/checkout_address_item_btn_edit"
