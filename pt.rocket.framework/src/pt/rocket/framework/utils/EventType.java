@@ -40,6 +40,7 @@ public enum EventType {
 	FACEBOOK_LOGIN_EVENT("https:/customer/facebooklogin?setDevice=mobileApi&facebook=true", null),
 		
 	GET_LOGIN_FORM_EVENT("login", RestContract.MAX_CACHE_TIME),
+	
 	GET_LOGIN_FORM_FALLBACK_EVENT("http:/forms/login/", RestContract.MAX_CACHE_TIME),
 
 	LOGOUT_EVENT("https:/customer/logout/", null), 
@@ -118,6 +119,7 @@ public enum EventType {
 	SET_SIGNUP_EVENT("https:/customer/create/", RestContract.NO_CACHE),
 	
 	GET_POLL_FORM_EVENT("poll", RestContract.MAX_CACHE_TIME),
+	
 	GET_POLL_FORM_FALLBACK_EVENT("http:/forms/poll/", RestContract.MAX_CACHE_TIME),
 	
 	SET_POLL_ANSWER_EVENT("https:/finish/checkoutpoll/", RestContract.NO_CACHE),
@@ -153,6 +155,8 @@ public enum EventType {
 	GET_PAYMENT_METHODS_EVENT("https:/multistep/paymentmethod/", RestContract.DEFAULT_CACHE_TIME),
 	
 	SET_PAYMENT_METHOD_EVENT("https:/multistep/paymentmethod/", RestContract.DEFAULT_CACHE_TIME),
+	
+	GET_MY_ORDER_EVENT("http:/order/status/", RestContract.NO_CACHE), // TODO : Update the url
 	
 	CHECKOUT_FINISH_EVENT("https:/multistep/finish/", RestContract.NO_CACHE)
 	

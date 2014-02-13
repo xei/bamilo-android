@@ -50,7 +50,7 @@ public class GetDefaultShippingAddressHelper extends BaseHelper {
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
         Log.d(TAG, "PARSE BUNDLE: " + jsonObject.toString());
         try {
-            bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, new Address(jsonObject));
+            bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, new Address(jsonObject.getJSONObject("data")));
         } catch (JSONException e) {
             Log.w(TAG, "ERROR ON PARSE: " + e.getMessage());
             return parseErrorBundle(bundle);

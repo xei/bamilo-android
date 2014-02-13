@@ -2,14 +2,16 @@ package pt.rocket.app;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 import pt.rocket.forms.FormData;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.components.NavigationListComponent;
+import pt.rocket.framework.objects.Address;
 import pt.rocket.framework.objects.Category;
 import pt.rocket.framework.objects.CompleteProduct;
+import pt.rocket.framework.objects.PaymentMethods;
+import pt.rocket.framework.objects.ShippingMethods;
 import pt.rocket.framework.objects.ShoppingCart;
 import pt.rocket.framework.objects.VersionInfo;
 import pt.rocket.framework.service.IRemoteService;
@@ -32,18 +34,15 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.RemoteException;
-import android.view.View;
 
 import com.androidquery.callback.AjaxCallback;
 import com.androidquery.callback.BitmapAjaxCallback;
 import com.bugsense.trace.ExceptionCallback;
-import com.urbanairship.UAirship;
 
 import de.akquinet.android.androlog.Log;
 
@@ -592,6 +591,46 @@ public class JumiaApplication extends Application implements ExceptionCallback {
             registerCallBackIsWaiting();
         }
     };
+
+    /**
+     * ######### TODO: REMOVE ######### 
+     */
+    private Address shippingAddress;
+    private Address billingAddress;
+    private ShippingMethods shippingMethod;
+    private PaymentMethods paymentMethod;
+
+    public Address getShippingAddress() {
+        return shippingAddress;
+    }
+    
+    public void setShippingAddress(Address shippingAddress ) {
+        this.shippingAddress = shippingAddress;
+    }
+    
+    public Address getBillingAddress() {
+        return billingAddress;
+    }
+    
+    public void setBillingAddress(Address billingAddress ) {
+        this.billingAddress = billingAddress;
+    }
+    
+    public ShippingMethods getShippingMethod() {
+        return shippingMethod;
+    }
+    
+    public void setShippingMethod(ShippingMethods shippingMethod ) {
+        this.shippingMethod = shippingMethod;
+    }
+    
+    public PaymentMethods getPaymentMethod() {
+        return paymentMethod;
+    }
+    
+    public void setPaymentMethod(PaymentMethods paymentMethod ) {
+        this.paymentMethod = paymentMethod;
+    }
     
     /**
      * Save tracking values to the file

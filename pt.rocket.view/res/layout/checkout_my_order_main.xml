@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="@dimen/margin_mid"
+    android:layout_marginRight="@dimen/margin_mid" >
+
+    <!-- CONTENT -->
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/checkout_my_order_button_enter"
+        android:layout_alignParentTop="true" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <!-- PRODUCTS -->
+
+            <include
+                android:id="@+id/checkout_my_order_include_cart"
+                layout="@layout/checkout_my_order_products" />
+
+            <!-- SUB TOTAL -->
+
+            <include
+                android:id="@+id/checkout_my_order_include_subtotal"
+                layout="@layout/checkout_my_order_subtotal" />
+
+            <!-- SHIPPING ADDRESS -->
+
+            <include
+                android:id="@+id/checkout_my_order_include_shipping_address"
+                layout="@layout/checkout_my_order_shipping_address"
+                android:visibility="visible" />
+
+            <!-- BILLING ADDRESS -->
+
+            <include
+                android:id="@+id/checkout_my_order_include_billing_address"
+                layout="@layout/checkout_my_order_billing_address"
+                android:visibility="visible" />
+
+            <!-- SHIPPING METHOD -->
+
+            <include
+                android:id="@+id/checkout_my_order_include_shipping_method"
+                layout="@layout/checkout_my_order_shipping_method"
+                android:visibility="visible" />
+
+            <!-- PAYMENT OPTIONS -->
+
+            <include
+                android:id="@+id/checkout_my_order_include_payment_options"
+                layout="@layout/checkout_my_order_payment_options"
+                android:visibility="visible" />
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- NEXT STEP BUTTON -->
+
+    <org.holoeverywhere.widget.Button
+        android:id="@+id/checkout_my_order_button_enter"
+        style="@style/button_orange_style"
+        android:layout_alignParentBottom="true"
+        android:contentDescription="@string/login_button_description"
+        android:text="Confirm Order" />
+
+</RelativeLayout>

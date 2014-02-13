@@ -1,13 +1,14 @@
 /**
  * 
  */
-package pt.rocket.helpers.address;
+package pt.rocket.helpers.checkout;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import pt.rocket.framework.enums.RequestType;
 import pt.rocket.framework.objects.Address;
+import pt.rocket.framework.objects.OrderSummary;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
@@ -20,11 +21,11 @@ import android.util.Log;
  * Helper used to ...
  * @author sergiopereira
  */
-public class GetDefaultBillingAddressHelper extends BaseHelper {
+public class GetMyOrderHelper extends BaseHelper {
     
-    private static String TAG = GetDefaultBillingAddressHelper.class.getSimpleName();
+    private static String TAG = GetMyOrderHelper.class.getSimpleName();
     
-    private static final EventType type = EventType.GET_DEFAULT_BILLING_ADDRESS_EVENT;
+    private static final EventType type = EventType.GET_MY_ORDER_EVENT;
             
     /*
      * (non-Javadoc)
@@ -35,7 +36,7 @@ public class GetDefaultBillingAddressHelper extends BaseHelper {
         Log.d(TAG, "REQUEST");
         Bundle bundle = new Bundle();
         bundle.putString(Constants.BUNDLE_URL_KEY, type.action);
-        bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
+        bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.POST);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
         bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
@@ -50,7 +51,18 @@ public class GetDefaultBillingAddressHelper extends BaseHelper {
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
         Log.d(TAG, "PARSE BUNDLE: " + jsonObject.toString());
         try {
+            
+            // TODO:
+            // Get products
+            // Get shipping address
+            // Get billing address
+            // Get shipping method
+            // Get payment options
+            
+            OrderSummary orderSummary = new OrderSummary();
+            
             bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, new Address(jsonObject.getJSONObject("data")));
+            
         } catch (JSONException e) {
             Log.w(TAG, "ERROR ON PARSE: " + e.getMessage());
             return parseErrorBundle(bundle);

@@ -4,11 +4,10 @@
 package pt.rocket.view.fragments;
 
 import java.util.EnumSet;
-import java.util.Iterator;
-
-import org.holoeverywhere.widget.Toast;
 
 import pt.rocket.constants.FormConstants;
+import pt.rocket.controllers.fragments.FragmentController;
+import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.factories.FormFactory;
 import pt.rocket.forms.Form;
 import pt.rocket.framework.ErrorCode;
@@ -17,7 +16,6 @@ import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.checkout.GetPaymentMethodsHelper;
 import pt.rocket.helpers.checkout.SetPaymentMethodHelper;
-import pt.rocket.helpers.session.GetLoginHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.pojo.DynamicForm;
 import pt.rocket.utils.MyMenuItem;
@@ -288,6 +286,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
             break;
         case SET_PAYMENT_METHOD_EVENT:
             Log.d(TAG, "RECEIVED SET_PAYMENT_METHOD_EVENT");
+            getBaseActivity().onSwitchFragment(FragmentType.MY_ORDER, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
             break;
         default:
             break;

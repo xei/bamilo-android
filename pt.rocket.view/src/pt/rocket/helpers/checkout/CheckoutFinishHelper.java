@@ -21,6 +21,8 @@ import android.util.Log;
 public class CheckoutFinishHelper extends BaseHelper {
     
     private static String TAG = CheckoutFinishHelper.class.getSimpleName();
+    
+    private static final EventType type = EventType.CHECKOUT_FINISH_EVENT;
             
     /*
      * (non-Javadoc)
@@ -30,10 +32,10 @@ public class CheckoutFinishHelper extends BaseHelper {
     public Bundle generateRequestBundle(Bundle args) {
         Log.d(TAG, "REQUEST");
         Bundle bundle = new Bundle();
-        bundle.putString(Constants.BUNDLE_URL_KEY, EventType.CHECKOUT_FINISH_EVENT.action);
+        bundle.putString(Constants.BUNDLE_URL_KEY, type.action);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.POST);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.CHECKOUT_FINISH_EVENT);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
         bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
         return bundle;
     }
@@ -44,9 +46,29 @@ public class CheckoutFinishHelper extends BaseHelper {
      */
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
-        Log.d(TAG, "PARSE BUNDLE");
+        Log.d(TAG, "PARSE BUNDLE: " + jsonObject.toString());
         // TODO: Parse the response
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.CHECKOUT_FINISH_EVENT);
+        
+        // Get order number
+        String mOrderNumber = jsonObject.optString("order_nr");
+        // Get first name
+        String mFirstName = jsonObject.optString("customer_first_name");
+        // Get last name
+        String mLastName = jsonObject.optString("customer_last_name");
+        
+        // This step only occurs if the response returned on step 6 has a key "payment".
+        // Depending on the selected payment method, client will be asked to provide payment details or redirected to the payment provider's external page to provide payment details.
+        // TODO: Filter response by method
+        // Cash On Delivery -   If the payment method selected was "Cash On Delivery" this step not applicable.
+        // Paga             -   The follow response tell us that is need made a auto submit form for action
+        // WebPAY           -   In this case the form has a property named "target" that indicates the result of the form's submit has to be displayed in an iframe, whose NAME is "target" property's value
+        // GlobalPay        -   Auto-submit-external
+        // Wallety          -   Submit-external
+        // AdyenPayment     -   Page
+        
+        bundle.putString(Constants.BUNDLE_RESPONSE_KEY, mOrderNumber);
+        
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
         return bundle;
     }
     
@@ -57,7 +79,7 @@ public class CheckoutFinishHelper extends BaseHelper {
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
         android.util.Log.d(TAG, "PARSE ERROR BUNDLE");
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.CHECKOUT_FINISH_EVENT);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }
@@ -69,7 +91,7 @@ public class CheckoutFinishHelper extends BaseHelper {
     @Override
     public Bundle parseResponseErrorBundle(Bundle bundle) {
         android.util.Log.d(TAG, "PARSE RESPONSE BUNDLE");
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.CHECKOUT_FINISH_EVENT);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }

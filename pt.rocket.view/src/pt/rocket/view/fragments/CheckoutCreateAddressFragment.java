@@ -156,7 +156,7 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
     public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState) {
         super.onCreateView(inflater, viewGroup, savedInstanceState);
         Log.i(TAG, "ON CREATE VIEW");
-        return inflater.inflate(R.layout.checkout_create_address, viewGroup, false);
+        return inflater.inflate(R.layout.checkout_create_address_main, viewGroup, false);
     }
     
     /*
