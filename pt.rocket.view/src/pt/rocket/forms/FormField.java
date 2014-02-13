@@ -307,24 +307,6 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                  * ########### PAYMENT METHODS ########### 
                  */
                 
-                /**
-                 * TODO: Validate this method to save the payment methods
-                 */
-                if(key.equals("payment_method")){
-                    dataSet.clear();
-                    dataOptionsObject = jsonObject.optJSONObject("options");
-                    Iterator<?> it = dataOptionsObject.keys();
-                    while (it.hasNext()) {
-                        String curKey = (String) it.next();
-                        String value = dataOptionsObject.getJSONObject(curKey).getString("value");
-                        Log.d(TAG, "FORM FIELD: CURRENT KEY " + curKey + " VALUE: " + value);
-                        dataSet.put(value, curKey);
-                    }
-                }
-                
-                /**
-                 * TODO: Validate this method to save the payment methods
-                 */
                 if(key.equals("payment_method")){
                     dataSet.clear();
                     paymentFields = new HashMap<String, Form>();
@@ -572,7 +554,6 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     public void setDatasetSource(String datasetSource) {
         this.datasetSource = datasetSource;
     }
-
     
     @Override
     public Map<String, String> getDataCalls() {

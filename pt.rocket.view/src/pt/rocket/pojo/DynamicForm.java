@@ -326,6 +326,10 @@ public class DynamicForm implements Iterable<DynamicFormItem>{
             if (control != null && control.getType() == InputType.metadate) {
                 control.addSubFormFieldValues(model);
                 model.put(control.getName().toString(), control.getValue().toString());
+            } else if (null != control && control.getType() == InputType.radioGroup && control.isRadioGroupLayoutVertical()) {
+                ContentValues mValues = control.getSubFormsValues();
+                model.putAll(mValues);
+                model.put(control.getName().toString(), control.getValue().toString());
             } else if (null != control && null != control.getValue()) {
                 model.put(control.getName().toString(), control.getValue().toString());
             } else {

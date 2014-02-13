@@ -17,6 +17,7 @@ import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.checkout.GetPaymentMethodsHelper;
 import pt.rocket.helpers.checkout.SetPaymentMethodHelper;
+import pt.rocket.helpers.session.GetLoginHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.pojo.DynamicForm;
 import pt.rocket.utils.MyMenuItem;
@@ -24,6 +25,7 @@ import pt.rocket.utils.NavigationAction;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -259,17 +261,14 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
     
     
     private void onClickSubmitAddressesButton() {
-        Log.i(TAG, "ON CLICK: LOGIN");
+        Log.i(TAG, "ON CLICK: Submit Payment Method");
         if(formGenerator != null){
             if(formGenerator.validate()){
-                Toast.makeText(getActivity(), "Validated!", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(getActivity(), "Not Validated!", Toast.LENGTH_SHORT).show();
+                ContentValues values = formGenerator.save();
+//                Log.i(TAG, "code1values : "+values.toString());
+                triggerSubmitPaymentMethod(values);
             }
-//            triggerSubmitAddresses(null, null);    
         }
-        
-        
     }
     
    
@@ -330,9 +329,10 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
      * ############# REQUESTS #############
      */
     
-    private void triggerSubmitPaymentMethod() {
-        Log.i(TAG, "TRIGGER: SET PAYMENT METHOD");
-        triggerContentEvent(new SetPaymentMethodHelper(), null, this);
+    private void triggerSubmitPaymentMethod(ContentValues values) {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(SetPaymentMethodHelper.FORM_CONTENT_VALUES, values);
+        triggerContentEvent(new SetPaymentMethodHelper(), bundle, this);
     }
     
     private void triggerGetPaymentMethods(){

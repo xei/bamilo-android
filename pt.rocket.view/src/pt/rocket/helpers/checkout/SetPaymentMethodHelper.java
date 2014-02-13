@@ -26,9 +26,6 @@ public class SetPaymentMethodHelper extends BaseHelper {
     public static final String FORM_CONTENT_VALUES = "content_values";
     
     private static final EventType type = EventType.SET_PAYMENT_METHOD_EVENT;
-
-    // TODO: Send the respective value
-    // paymentMethodForm[payment_method]
             
     /*
      * (non-Javadoc)
@@ -55,7 +52,7 @@ public class SetPaymentMethodHelper extends BaseHelper {
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
         Log.d(TAG, "PARSE BUNDLE");
-     // TODO: Parse the response
+        
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
         return bundle;
     }

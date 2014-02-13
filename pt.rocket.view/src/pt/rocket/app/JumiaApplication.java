@@ -483,7 +483,7 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     }
     
     public void doUnbindService() {
-        if (mIsBound) {
+        if (mIsBound && mConnection != null) {
             // Detach our existing connection.
             unbindService(mConnection);
         }

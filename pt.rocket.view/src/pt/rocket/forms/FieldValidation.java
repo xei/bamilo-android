@@ -15,6 +15,8 @@ package pt.rocket.forms;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import de.akquinet.android.androlog.Log;
+
 import pt.rocket.framework.objects.IJSONSerializable;
 import pt.rocket.framework.rest.RestConstants;
 import android.os.Parcel;
@@ -26,6 +28,7 @@ import android.os.Parcelable;
  *
  */
 public class FieldValidation implements IJSONSerializable, Parcelable {
+private static final String TAG = FieldValidation.class.getName();
 //	private static final String JSON_REQUIRED_TAG = "required";
 //	private static final String JSON_MIN_TAG = "min";
 //	private static final String JSON_MAX_TAG = "max";
@@ -60,15 +63,28 @@ public class FieldValidation implements IJSONSerializable, Parcelable {
 	public boolean initialize(JSONObject jsonObject) {
 
 		required = jsonObject.optBoolean(RestConstants.JSON_REQUIRED_TAG, false);
-		
+		Log.i(TAG, "code1message :  jsonObject : "+jsonObject.toString()+" required : "+required);
 		if(!required){
-		    required = jsonObject.optBoolean(RestConstants.JSON_REQUIREDVALUE_TAG, false);
+		    JSONObject mJSONObject = null;
+		    
+		    try {
+                mJSONObject = jsonObject.getJSONObject(RestConstants.JSON_REQUIRED_TAG);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+		    
+		    if(mJSONObject != null){
+		        required = mJSONObject.optBoolean(RestConstants.JSON_REQUIREDVALUE_TAG, false);
+		        Log.i(TAG, "code1message : "+required);
+		        message = mJSONObject.optString(RestConstants.JSON_MESSAGE_IN_MESSAGES_TAG,"");
+		        Log.i(TAG, "code1message : "+message);
+		    }
+		    
 		}
 		
 		min = jsonObject.optInt(RestConstants.JSON_MIN_TAG, MIN_CHARACTERS);
 		max = jsonObject.optInt(RestConstants.JSON_MAX_TAG, MAX_CHARACTERS);
         regex = jsonObject.optString(RestConstants.JSON_REGEX_TAG, DEFAULT_REGEX);
-        message = jsonObject.optString(RestConstants.JSON_MESSAGE_IN_MESSAGES_TAG,"");
         
         if ( regex.substring(0, 2).equals("a/") ) {
             regex = regex.substring(2);
@@ -91,6 +107,13 @@ public class FieldValidation implements IJSONSerializable, Parcelable {
 	public boolean isRequired() {
 		return required;
 	}
+	
+	/**
+     * @return the field error message.
+     */
+    public String getMessage() {
+        return message;
+    }
 	
 	/*
      * (non-Javadoc)

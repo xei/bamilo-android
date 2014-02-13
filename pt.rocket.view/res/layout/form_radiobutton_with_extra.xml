@@ -5,19 +5,17 @@
     android:orientation="vertical"
     android:paddingRight="10dp" >
 
-    <RadioButton
-        android:id="@+id/radio_button"
+    <LinearLayout
+        android:id="@+id/radio_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:button="@drawable/btn_radio_holo_light"
-        android:textColor="@color/grey_middle"
-        android:textSize="18dp" />
+		>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/extras"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/radio_button"
         android:orientation="horizontal"
         android:paddingRight="10dp"
         android:visibility="gone" >

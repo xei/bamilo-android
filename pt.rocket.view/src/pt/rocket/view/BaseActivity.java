@@ -185,8 +185,6 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
 
     private boolean initialCountry = false;
 
-    private boolean mIsBound;
-
     /**
      * Constructor used to initialize the navigation list component and the autocomplete handler
      * 
@@ -1195,25 +1193,6 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     public void onClosed() {
         Log.d(getTag(), "onClosed");
     }
-
-    // public void doBindService() {
-    // // Establish a connection with the service. We use an explicit
-    // // class name because we want a specific service implementation that
-    // // we know will be running in our own process (and thus won't be
-    // // supporting component replacement by other applications).
-    // bindService(new Intent(this,
-    // RemoteService.class), mConnection, Context.BIND_ABOVE_CLIENT);
-    // mIsBound = true;
-    // }
-    //
-    // public void doUnbindService() {
-    // if (mIsBound) {
-    // // Detach our existing connection.
-    // unbindService(mConnection);
-    // mIsBound = false;
-    // }
-    // }
-    //
     /**
      * Service Stuff
      */

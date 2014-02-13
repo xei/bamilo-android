@@ -8,8 +8,10 @@ import pt.rocket.factories.FormFactory;
 import pt.rocket.forms.Form;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.pojo.DynamicForm;
+import pt.rocket.pojo.DynamicFormItem;
 import pt.rocket.view.R;
 import android.annotation.SuppressLint;
+import android.content.ContentValues;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -32,6 +34,7 @@ public class RadioGroupLayoutVertical extends LinearLayout {
 
     private ArrayList<String> mItems;
     private HashMap<String, Form> formsMap;
+    private HashMap<Integer, DynamicForm> generatedForms;
     private int mDefaultSelected;
     private RadioGroup mGroup;
     private LayoutInflater mInflater;
@@ -83,20 +86,28 @@ public class RadioGroupLayoutVertical extends LinearLayout {
         
 
         int idx;
+        generatedForms = new HashMap<Integer, DynamicForm>();
         for (idx = 0; idx < mItems.size(); idx++) {
             if(formsMap.containsKey(mItems.get(idx))){
                 DynamicForm formGenerator = FormFactory.getSingleton().CreateForm(FormConstants.PAYMENT_DETAILS_FORM, mContext, formsMap.get(mItems.get(idx)));
-                
+                generatedForms.put(idx, formGenerator);
                 
                 
                 Log.d(TAG, "updateRadioGroup: inserting idx = " + idx + " name = " + mItems.get(idx));
-                LinearLayout mLinearLayout = (LinearLayout) mInflater.inflate(R.layout.form_radiobutton_with_extra, mGroup,
+                final LinearLayout mLinearLayout = (LinearLayout) mInflater.inflate(R.layout.form_radiobutton_with_extra, mGroup,
                         false);
                 
-                final RadioButton button = (RadioButton) mLinearLayout.findViewById(R.id.radio_button);
+                final LinearLayout buttonContainer = (LinearLayout) mLinearLayout.findViewById(R.id.radio_container);
                 final LinearLayout extras = (LinearLayout) mLinearLayout.findViewById(R.id.extras);
                 extras.addView(formGenerator.getContainer());
+                mLinearLayout.setId(idx);
+                
+                final RadioButton button = (RadioButton) mInflater.inflate(R.layout.form_radiobutton, mGroup,
+                        false);
                 button.setId(idx);
+                button.setText(mItems.get(idx));
+                RadioGroup.LayoutParams layoutParams = new RadioGroup.LayoutParams(
+                        RadioGroup.LayoutParams.WRAP_CONTENT, RadioGroup.LayoutParams.WRAP_CONTENT);
                 button.setText(mItems.get(idx));
                 if (idx == mDefaultSelected)
                     button.setChecked(true);
@@ -109,11 +120,14 @@ public class RadioGroupLayoutVertical extends LinearLayout {
                        } else {
                            extras.setVisibility(View.GONE);
                        }
-                       mGroup.check(button.getId());
+                       setSelection(mLinearLayout.getId());
+                       mGroup.check(mLinearLayout.getId());
                     }
                 });
                 
-                mGroup.addView(mLinearLayout, idx);
+                buttonContainer.addView(button, layoutParams);
+                
+                mGroup.addView(mLinearLayout);
                 
             } else {
                 
@@ -138,7 +152,7 @@ public class RadioGroupLayoutVertical extends LinearLayout {
         int radioButtonID = mGroup.getCheckedRadioButtonId();
         View radioButton = mGroup.findViewById(radioButtonID);
         int idx = mGroup.indexOfChild(radioButton);
-
+        Log.i(TAG, "code1validate radioButtonId : "+radioButtonID + " idx : "+idx );
         return idx;
     }
 
@@ -152,10 +166,38 @@ public class RadioGroupLayoutVertical extends LinearLayout {
 
     public void setSelection(int idx) {
         if(idx>0){
-            RadioButton button = (RadioButton) mGroup.getChildAt(idx);
-            button.setChecked(true);    
+            if(mGroup.getChildAt(idx) instanceof RadioButton){
+                RadioButton button = (RadioButton) mGroup.getChildAt(idx);
+                button.setChecked(true);    
+            } else if(mGroup.getChildAt(idx).findViewById(R.id.radio_container).findViewById(idx) instanceof RadioButton) {
+                RadioButton button = (RadioButton) mGroup.getChildAt(idx).findViewById(R.id.radio_container).findViewById(idx);
+                button.setChecked(true);
+            }
         }
+    }
+    
+    public boolean validateSelected(){
+        boolean result = false;
+        if(mGroup.getChildAt(mGroup.getCheckedRadioButtonId()) instanceof RadioButton){
+            result = true;
+        } else {
+            result = generatedForms.get(mGroup.getCheckedRadioButtonId()).validate();
+        }
+        return result;
+    }
+    
+    public String getErrorMessage(){
+        String result = mContext.getString(R.string.register_required_text);
         
+        result = ((DynamicFormItem) generatedForms.get(mGroup.getCheckedRadioButtonId()).getItem(0)).getMessage();
+       
+        return result;
+    }
+    
+    public ContentValues getSubFieldParameters(){
+        ContentValues result = generatedForms.get(mGroup.getCheckedRadioButtonId()).save();
+       
+        return result;
     }
 
 }
