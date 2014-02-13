@@ -324,5 +324,10 @@ public class RestConstants {
     public static final String JSON_HIDDEN_TAG = "hidden";
     public static final String JSON_CREATED_BY_TAG = "created_by";
     public static final String JSON_UPDATED_BY_TAG = "updated_by";
+    
+    
+    /**
+     * Native Checkout
+     */
 	
 }
