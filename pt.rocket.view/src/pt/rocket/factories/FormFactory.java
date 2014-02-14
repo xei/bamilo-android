@@ -121,7 +121,7 @@ public class FormFactory {
             
         }
         
-        FontLoader.applyDefaultFont( parent.getContainer());
+//        FontLoader.applyDefaultFont( parent.getContainer());
         
         return parent;
     }
@@ -351,5 +351,46 @@ public class FormFactory {
         
         return userForm;
     }
-    
+    /**
+     * This is used as base to create the given form. Here all the controls are instantiated.
+     * 
+     * @param context The context where the form is to be inserted
+     * @param form The definition provided by the framework
+     * @param userForm 
+     * @param ctrlParams
+     * @return n instance of a DynamicForm with the form representation implemented
+     */
+    private DynamicForm createPaymentMethodsForm(Context context, Form form, DynamicForm userForm, ViewGroup.LayoutParams ctrlParams) {
+
+        LinearLayout parent;
+        Log.i(TAG,"code1form id : "+form.id+" name: "+form.name);
+        if (null == userForm) {
+            parent = new LinearLayout(context);
+            LinearLayout.LayoutParams frmParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            parent.setOrientation(LinearLayout.VERTICAL);
+            parent.setLayoutParams(frmParams);
+
+            userForm = new DynamicForm(parent);
+            userForm.setForm( form );
+            
+            DynamicFormItem ctrl;
+            
+            // XXX
+            ArrayList<IFormField> transformedFields = MetaFormExtractor.generateMetaFields( form.fields );
+            MetaFormExtractor.dumpIFormField(transformedFields);
+
+//            for (IFormField frmEntry : transformedFields) {
+//                Log.d( TAG, "createGenericForm: " + frmEntry.getKey() + " inputType = " + frmEntry.getInputType() );
+                ctrl = new DynamicFormItem(userForm, context, transformedFields); 
+                userForm.addControl(ctrl, ctrlParams);
+//            }
+        } else {
+            ((ViewGroup) userForm.getContainer().getParent()).removeView(userForm.getContainer());
+        }
+        
+        return userForm;
+    }
+        
 }
+
+

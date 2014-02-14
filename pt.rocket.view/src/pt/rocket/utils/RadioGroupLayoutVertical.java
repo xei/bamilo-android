@@ -10,7 +10,6 @@ import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.pojo.DynamicForm;
 import pt.rocket.pojo.DynamicFormItem;
 import pt.rocket.view.R;
-import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.util.AttributeSet;
@@ -19,11 +18,9 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
-import android.widget.RadioGroup.OnCheckedChangeListener;
 import de.akquinet.android.androlog.Log;
 
-public class RadioGroupLayoutVertical extends LinearLayout {
+public class RadioGroupLayoutVertical extends RadioGroup {
     private final static String TAG = LogTagHelper.create(RadioGroupLayoutVertical.class);
 
     public interface OnRadioGroupSelected {
@@ -51,21 +48,9 @@ public class RadioGroupLayoutVertical extends LinearLayout {
         init();
     }
 
-    @SuppressLint("NewApi")
-    public RadioGroupLayoutVertical(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-        mContext = context;
-        init();
-    }
-
     private void init() {
         mInflater = LayoutInflater.from(getContext());
-        mGroup = (RadioGroup) mInflater.inflate(R.layout.form_radiogroup_vertical, this, false);
-        this.addView(mGroup);
-    }
-
-    public void setOnCheckedChangeListener(OnCheckedChangeListener listener) {
-        mGroup.setOnCheckedChangeListener(listener);
+        mGroup = this;
     }
 
     public void setItems(ArrayList<String> items, HashMap<String, Form> map,int defaultSelected) {
@@ -94,7 +79,7 @@ public class RadioGroupLayoutVertical extends LinearLayout {
                 
                 
                 Log.d(TAG, "updateRadioGroup: inserting idx = " + idx + " name = " + mItems.get(idx));
-                final LinearLayout mLinearLayout = (LinearLayout) mInflater.inflate(R.layout.form_radiobutton_with_extra, mGroup,
+                final LinearLayout mLinearLayout = (LinearLayout) mInflater.inflate(R.layout.form_radiobutton_with_extra, null,
                         false);
                 
                 final LinearLayout buttonContainer = (LinearLayout) mLinearLayout.findViewById(R.id.radio_container);
@@ -102,7 +87,7 @@ public class RadioGroupLayoutVertical extends LinearLayout {
                 extras.addView(formGenerator.getContainer());
                 mLinearLayout.setId(idx);
                 
-                final RadioButton button = (RadioButton) mInflater.inflate(R.layout.form_radiobutton, mGroup,
+                final RadioButton button = (RadioButton) mInflater.inflate(R.layout.form_radiobutton, null,
                         false);
                 button.setId(idx);
                 button.setText(mItems.get(idx));
@@ -132,7 +117,7 @@ public class RadioGroupLayoutVertical extends LinearLayout {
             } else {
                 
                 Log.d(TAG, "updateRadioGroup: inserting idx = " + idx + " name = " + mItems.get(idx));
-                RadioButton button = (RadioButton) mInflater.inflate(R.layout.form_radiobutton, mGroup,
+                RadioButton button = (RadioButton) mInflater.inflate(R.layout.form_radiobutton, null,
                         false);
                 button.setId(idx);
                 button.setText(mItems.get(idx));
@@ -195,7 +180,11 @@ public class RadioGroupLayoutVertical extends LinearLayout {
     }
     
     public ContentValues getSubFieldParameters(){
-        ContentValues result = generatedForms.get(mGroup.getCheckedRadioButtonId()).save();
+        ContentValues result = null;
+        if(generatedForms != null && generatedForms.get(mGroup.getCheckedRadioButtonId()) != null){
+            result = generatedForms.get(mGroup.getCheckedRadioButtonId()).save();    
+        }
+        
        
         return result;
     }

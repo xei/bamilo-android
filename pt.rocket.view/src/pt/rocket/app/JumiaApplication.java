@@ -31,6 +31,7 @@ import pt.rocket.utils.CheckVersion;
 import pt.rocket.utils.ServiceSingleton;
 import android.app.Application;
 import android.content.ComponentName;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
@@ -598,7 +599,7 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     private Address shippingAddress;
     private Address billingAddress;
     private ShippingMethods shippingMethod;
-    private PaymentMethods paymentMethod;
+    private ContentValues paymentMethod;
 
     public Address getShippingAddress() {
         return shippingAddress;
@@ -624,11 +625,11 @@ public class JumiaApplication extends Application implements ExceptionCallback {
         this.shippingMethod = shippingMethod;
     }
     
-    public PaymentMethods getPaymentMethod() {
+    public ContentValues getPaymentMethod() {
         return paymentMethod;
     }
     
-    public void setPaymentMethod(PaymentMethods paymentMethod ) {
+    public void setPaymentMethod(ContentValues paymentMethod ) {
         this.paymentMethod = paymentMethod;
     }
     

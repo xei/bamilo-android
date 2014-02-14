@@ -29,6 +29,7 @@ import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.view.R;
 import android.app.Activity;
+import android.content.ContentValues;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -83,7 +84,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
 
     private ShippingMethods shippingMethod;
 
-    private PaymentMethods paymentOptions;
+    private ContentValues paymentOptions;
 
     /**
      * 

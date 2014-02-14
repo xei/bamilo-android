@@ -5,12 +5,14 @@ package pt.rocket.view.fragments;
 
 import java.util.EnumSet;
 
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.FormConstants;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.factories.FormFactory;
 import pt.rocket.forms.Form;
 import pt.rocket.framework.ErrorCode;
+import pt.rocket.framework.objects.PaymentMethods;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -251,19 +253,19 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
         int id = view.getId();
         // Submit
         if(id == R.id.checkout_payment_button_enter){
-            onClickSubmitAddressesButton(); 
+            onClickSubmitPaymentButton(); 
         } // Unknown view
         else Log.i(TAG, "ON CLICK: UNKNOWN VIEW");
     }
     
     
     
-    private void onClickSubmitAddressesButton() {
+    private void onClickSubmitPaymentButton() {
         Log.i(TAG, "ON CLICK: Submit Payment Method");
         if(formGenerator != null){
             if(formGenerator.validate()){
                 ContentValues values = formGenerator.save();
-//                Log.i(TAG, "code1values : "+values.toString());
+                JumiaApplication.INSTANCE.setPaymentMethod(values);
                 triggerSubmitPaymentMethod(values);
             }
         }

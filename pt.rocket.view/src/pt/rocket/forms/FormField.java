@@ -14,6 +14,7 @@ package pt.rocket.forms;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.json.JSONArray;
@@ -27,7 +28,6 @@ import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.GetFormsDatasetListHelper;
-import pt.rocket.helpers.checkout.SetPaymentMethodHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.InputType;
 import pt.rocket.app.JumiaApplication;
@@ -79,7 +79,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
      */
     private String label;
 
-    private Map<String, String> dataSet;
+    private LinkedHashMap<String, String> dataSet;
     // public ArrayList<String> dataSet;
     private String datasetSource;
     private OnDataSetReceived dataset_Listener;
@@ -118,7 +118,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         this.label = "default";
         this.validation = new FieldValidation();
         this.value = "";
-        this.dataSet = new HashMap<String, String>();
+        this.dataSet = new LinkedHashMap<String, String>();
         this.dataValues = new HashMap<String, String>();
         this.dataCalls = new HashMap<String, String>();
         this.dataOptions = new HashMap<String, String>();
@@ -152,7 +152,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         this.value = "";
         this.validation = new FieldValidation();
         this.validation.required = obligatory;
-        this.dataSet = new HashMap<String, String>();
+        this.dataSet = new LinkedHashMap<String, String>();
         this.dataValues = new HashMap<String, String>();
         this.dataCalls = new HashMap<String, String>();
         this.dataOptions = new HashMap<String, String>();
@@ -174,7 +174,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             // get the form field
             String formFieldString = jsonObject.optString(RestConstants.JSON_TYPE_TAG);
 
-            if (formFieldString.equals("string")) {
+            if (formFieldString.equals("string") || formFieldString.equals("text")) {
                 inputType = InputType.text;
             } else if (formFieldString.equals("email")) {
                 inputType = InputType.email;
@@ -186,7 +186,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                 inputType = InputType.password;
             } else if(formFieldString.equals("radio")){
                 inputType = InputType.radioGroup;
-            } else if (formFieldString.equals("list")) {
+            } else if (formFieldString.equals("list") || formFieldString.equals("select")) {
                 inputType = InputType.list;
             } else if (formFieldString.equals("boolean") || formFieldString.equals("checkbox")) {
                 inputType = InputType.checkBox;
@@ -227,6 +227,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                     dataSetObject = jsonObject.optJSONObject(RestConstants.JSON_DATASET_TAG);
                 }
                 
+                                
                 /**
                  * TODO: Validate this method to save the api calls
                  */
@@ -248,6 +249,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                 } else if (dataSetArray != null && dataSetArray.length() > 0) {
                     for (int i = 0; i < dataSetArray.length(); ++i) {
                         dataSet.put(dataSetArray.getString(i), dataSetArray.getString(i));
+                        Log.i(TAG, "code1put : "+dataSetArray.getString(i) );
                     }
                 } else {
                     if (!jsonObject.isNull(RestConstants.JSON_DATASET_SOURCE_TAG)) {
@@ -259,6 +261,10 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                             JumiaApplication.INSTANCE.sendRequest(new GetFormsDatasetListHelper(), bundle, responseCallback);
                         }
                     }
+                }
+                
+                if(dataSet != null) {
+                    Log.i(TAG, "code1put : "+dataSet.toString() );
                 }
                 
                 /**
@@ -307,7 +313,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                  * ########### PAYMENT METHODS ########### 
                  */
                 
-                if(key.equals("payment_method")){
+                if(key.equals("payment_method") || key.equals("shipping_method")){
                     dataSet.clear();
                     paymentFields = new HashMap<String, Form>();
                     dataOptionsObject = jsonObject.optJSONObject("options");
@@ -514,11 +520,11 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
      * @see pt.rocket.framework.forms.IFormField#getDataSet()
      */
     @Override
-    public Map<String, String> getDataSet() {
+    public LinkedHashMap<String, String> getDataSet() {
         return dataSet;
     }
 
-    public void setDataSet(HashMap<String, String> dataSet) {
+    public void setDataSet(LinkedHashMap<String, String> dataSet) {
         this.dataSet = dataSet;
     }
     
@@ -632,7 +638,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
 
             Log.d(TAG, "Received GET_FORMS_DATASET_LIST_EVENT  ==> SUCCESS");
 
-            dataSet = (Map<String, String>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_KEY);
+            dataSet = (LinkedHashMap<String, String>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_KEY);
 
             if (null != dataset_Listener) {
                 dataset_Listener.DataSetReceived(dataSet);
@@ -679,7 +685,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         label = in.readString();
         validation = (FieldValidation) in.readValue(FieldValidation.class.getClassLoader());
         value = in.readString();
-        dataSet = in.readHashMap(null);
+        dataSet = (LinkedHashMap<String, String>) in.readHashMap(null);
         datasetSource = in.readString();
         parent = (Form) in.readValue(Form.class.getClassLoader());
         dataset_Listener = in.readParcelable(null);
