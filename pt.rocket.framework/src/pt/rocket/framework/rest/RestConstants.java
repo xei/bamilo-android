@@ -60,6 +60,7 @@ public class RestConstants {
 	public static final String JSON_VALUE_TAG = "value";
 	public static final String JSON_VALUES_TAG = "values";
 	public static final String JSON_DATASET_SOURCE_TAG = "dataset_source";
+	public static final String JSON_SCENARIO_TAG = "scenario";
 
 	// FieldValidation Tags
 	public static final String JSON_REQUIRED_TAG = "required";
@@ -331,4 +332,18 @@ public class RestConstants {
      * Native Checkout
      */
 	
+    
+    /**
+     * Pickup Stations
+     */
+    public static final String JSON_PICKUP_STATION_ID = "id_pickupstation";
+    public static final String JSON_PICKUP_ID = "pickup_id";
+    public static final String JSON_PICKUP_ADDRESS = "address";
+    public static final String JSON_PICKUP_PLACE = "place";
+    public static final String JSON_PICKUP_CITY = "city";
+    public static final String JSON_PICKUP_OPENING_HOURS = "opening_hours";
+    public static final String JSON_PICKUP_ID_PICKUPSTATION_REGION = "id_pickupstation_region";
+    public static final String JSON_PICKUP_PAYMENT_METHOD = "payment_method";
+    public static final String JSON_PICKUP_REGIONS = "regions";
+
 }
