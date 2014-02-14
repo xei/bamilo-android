@@ -43,4 +43,6 @@ public interface IFormField {
 
 	public abstract Map<String, String> getDataCalls();
 
+    String getScenario();
+
 }

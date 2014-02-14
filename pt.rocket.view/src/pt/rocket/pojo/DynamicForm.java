@@ -322,14 +322,13 @@ public class DynamicForm implements Iterable<DynamicFormItem>{
         while (it.hasNext()) {
 
             control = it.next();
-//            Log.i(TAG,"code1 control: "+control.getName().toString());
             if (control != null && control.getType() == InputType.metadate) {
                 control.addSubFormFieldValues(model);
                 model.put(control.getName().toString(), control.getValue().toString());
             } else if (null != control && control.getType() == InputType.radioGroup && control.isRadioGroupLayoutVertical()) {
                 ContentValues mValues = control.getSubFormsValues();
                 if(mValues != null){
-                    model.putAll(mValues);    
+                    model.putAll(mValues);
                 }
                 
                 model.put("name", control.getRadioGroupLayoutVerticalSelectedFieldName());

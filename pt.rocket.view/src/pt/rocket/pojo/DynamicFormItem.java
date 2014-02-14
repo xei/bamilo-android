@@ -103,8 +103,8 @@ public class DynamicFormItem {
     private int errorColor;
 
     private float screenDensity;
-
-    private ArrayList<IFormField> entries;
+    
+    private ArrayList<DynamicForm> childDynamicForm;
 
     private final static int MARGIN_TOP = 0;
     private final static int MARGIN_BOTTOM = 1;
@@ -135,44 +135,13 @@ public class DynamicFormItem {
         this.dataControl = null;
         this.errorTextControl = null;
         this.mandatoryControl = null;
-
+        
         this.errorText = context.getString(R.string.dynamic_errortext);
 
         this.scale = context.getResources().getDisplayMetrics().density;
         this.errorColor = context.getResources().getColor(R.color.red_basic);
 
         buildControl();
-    }
-
-    /**
-     * The constructor for the DynamicFormItem
-     * 
-     * @param parent
-     *            The parent of this control ( an instance of a DynamicForm )
-     * @param context
-     *            The context where this control is to be inserted. If the FormItem type date should
-     *            be used, an activity needs to be given, as the date type wants to open a dialog.
-     * @param entry
-     *            The entry that corresponds to this control on the form return by the framework
-     * @return
-     */
-    public DynamicFormItem(DynamicForm parent, Context context, ArrayList<IFormField> entries) {
-        this.context = context;
-        this.parent = parent;
-        this.screenDensity = context.getResources().getDisplayMetrics().density;
-        this.entries = entries;
-        this.control = null;
-        this.errorControl = null;
-        this.dataControl = null;
-        this.errorTextControl = null;
-        this.mandatoryControl = null;
-
-        this.errorText = context.getString(R.string.dynamic_errortext);
-
-        this.scale = context.getResources().getDisplayMetrics().density;
-        this.errorColor = context.getResources().getColor(R.color.red_basic);
-
-        buildPaymentMethodControl();
     }
 
     /**
@@ -555,6 +524,14 @@ public class DynamicFormItem {
             if (this.dataControl instanceof IcsSpinner) {
                 valid = ((IcsSpinner) this.dataControl).getSelectedItemPosition() != Spinner.INVALID_POSITION;
             } else if (this.dataControl instanceof RadioGroupLayoutVertical) {
+                if(childDynamicForm != null && childDynamicForm.size()>0){
+                    for (int i = 0; i < childDynamicForm.size(); i++) {
+                        if(!childDynamicForm.get(i).validate()){
+                            valid = false;
+                            break;
+                        }
+                    }
+                }
                 Log.i(TAG, "code1validate validating  : instanceof RadioGroupLayoutVertical");
                 valid = ((RadioGroupLayoutVertical) this.dataControl).getSelectedIndex() != RadioGroupLayout.NO_DEFAULT_SELECTION;
                 // validate if accepted terms of payment method
@@ -1072,62 +1049,6 @@ public class DynamicFormItem {
         }
     }
 
-    /**
-     * Creates the control with all the validation settings and mandatory representations
-     */
-    private void buildPaymentMethodControl() {
-
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        int controlWidth = RelativeLayout.LayoutParams.MATCH_PARENT;
-
-        Log.i("CONTROL", " => " + this.entry.getLabel() + " " + this.entry.getInputType());
-
-        if (null != this.entries) {
-
-            RelativeLayout dataContainer = null;
-
-            // form item container
-            this.control = (View) new RelativeLayout(this.context);
-            this.control.setId(parent.getNextId());
-
-            switch (this.entry.getInputType()) {
-            case checkBox:
-                buildCheckBox(dataContainer, params, controlWidth);
-                break;
-            case radioGroup:
-                buildRadioGroup(dataContainer, params, controlWidth);
-
-                // TODO: Validate this method for poll
-                // Log.d("Poll", "Type: Radio Group");
-                // if(entry.getKey().contains("poll")){
-                // Log.d("Poll", "Key: Poll");
-                // createPollRadioGroup(MANDATORYSIGNALSIZE, params, dataContainer);
-                // }
-                break;
-
-            case list:
-                buildList(dataContainer, params, controlWidth);
-                break;
-            case metadate:
-            case date:
-                buildDate(dataContainer, params, controlWidth);
-                break;
-            case number:
-            case email:
-            case text:
-            case password:
-                buildText(dataContainer, params, controlWidth);
-                break;
-
-            default:
-                Log.w(TAG, "buildControl: Field type not suported (" + this.entry.getInputType()
-                        + ") - " + this.entry.getInputType());
-                break;
-            }
-        }
-    }
-
     private void createSpinnerForRadioGroup(final int MANDATORYSIGNALSIZE,
             RelativeLayout.LayoutParams params,
             RelativeLayout dataContainer) {
@@ -1343,10 +1264,13 @@ public class DynamicFormItem {
         while (it.hasNext()) {
 
             String key = it.next();
-            if (this.parent.getForm().fields.get(0).getPaymentMethodsField().get(key).fields.size() > 0) {
-                formsMap.put(key,
-                        this.parent.getForm().fields.get(0).getPaymentMethodsField().get(key));
+            if(this.parent.getForm().fields != null && this.parent.getForm().fields.size() >0 && this.parent.getForm().fields.get(0).getPaymentMethodsField() != null){
+                if (this.parent.getForm().fields.get(0).getPaymentMethodsField().get(key).fields.size() > 0) {
+                    formsMap.put(key,
+                            this.parent.getForm().fields.get(0).getPaymentMethodsField().get(key));
+                }
             }
+            
         }
 
         radioGroup.setItems(new ArrayList<String>(this.entry.getDataSet().values()), formsMap,
@@ -1625,6 +1549,23 @@ public class DynamicFormItem {
             this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
             this.mandatoryControl.setVisibility(View.VISIBLE);
         }
+    }
+
+    /**
+     * @return the childDynamicForm
+     */
+    public ArrayList<DynamicForm> getChildDynamicForm() {
+        if(childDynamicForm == null){
+            childDynamicForm = new ArrayList<DynamicForm>();
+        }
+        return childDynamicForm;
+    }
+
+    /**
+     * @param childDynamicForm the childDynamicForm to set
+     */
+    public void setChildDynamicForm(ArrayList<DynamicForm> childDynamicForm) {
+        this.childDynamicForm = childDynamicForm;
     }
 
 }

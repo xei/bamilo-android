@@ -131,6 +131,13 @@ public class FormFieldMeta implements IFormField {
     public Map<String, String> getDataCalls() {
         return metaFormField.getDataCalls();
     }
+
+
+    @Override
+    public String getScenario() {
+        // TODO Auto-generated method stub
+        return metaFormField.getScenario();
+    }
 	
 	
 

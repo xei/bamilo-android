@@ -110,8 +110,6 @@ public class Form implements IJSONSerializable, Parcelable {
             for (int i = 0; i < fieldsArray.length(); ++i) {
                 FormField field = new FormField(this);
                 if (field.initialize(fieldsArray.getJSONObject(i))) {
-                    Log.i(TAG, "code1checked : name is : "+field.getName());
-                    
                     fields.add(field);
                     
                     /**

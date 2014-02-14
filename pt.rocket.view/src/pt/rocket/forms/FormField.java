@@ -12,6 +12,7 @@
  */
 package pt.rocket.forms;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -22,6 +23,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import pt.rocket.framework.objects.IJSONSerializable;
+import pt.rocket.framework.objects.PickUpStationObject;
 import pt.rocket.framework.objects.PollOption;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.Constants;
@@ -79,6 +81,11 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
      */
     private String label;
 
+    /**
+     * Value that defines for each scenario the Form Field should appear
+     */
+    private String scenario;
+    
     private LinkedHashMap<String, String> dataSet;
     // public ArrayList<String> dataSet;
     private String datasetSource;
@@ -93,7 +100,8 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     private String regEx;
 
     /**
-     * value that is shown to the user. It's empty when it is to show the label transparent instead.
+     * value that is shown to the user. 
+     * It's empty when it is to show the label transparent instead.
      */
     private String value;
 
@@ -104,6 +112,8 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     private HashMap<String, String>  dataOptions;
     
     private HashMap<String, Form>  paymentFields;
+    
+    private LinkedHashMap<Object,Object> extrasValues; 
 
     /**
      * FormField param constructor
@@ -125,6 +135,8 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         this.datasetSource = "";
         this.parent = parent;
         this.dataset_Listener = null;
+        this.extrasValues = new LinkedHashMap<Object, Object>();
+        this.scenario = null;
     }
 
     /**
@@ -159,6 +171,8 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         this.datasetSource = "";
         this.parent = parent;
         this.dataset_Listener = null;
+        this.extrasValues = new LinkedHashMap<Object, Object>();
+        this.scenario = null;
     }
 
     /*
@@ -203,7 +217,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                 name = jsonObject.getString(RestConstants.JSON_FIELD_NAME_TAG);
                 label = jsonObject.optString(RestConstants.JSON_LABEL_TAG);
                 value = !jsonObject.isNull(RestConstants.JSON_VALUE_TAG) ? jsonObject.optString(RestConstants.JSON_VALUE_TAG) : "";
-
+                scenario = jsonObject.optString(RestConstants.JSON_SCENARIO_TAG);
                 
                 Log.d(TAG, "FORM FIELD: " + key + " " + name + " " + " " + label + " " + value);
 
@@ -284,7 +298,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                 
                 
                 /**
-                 * TODO: Validate this method to save the shipping methods
+                 * Validate this method to save the shipping methods
                  */
                 JSONArray dataOptionsArray = null;
                 JSONObject dataOptionsObject = null;
@@ -296,21 +310,34 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                     if(dataOptionsObject != null)
                         Log.i(TAG,"code1options json "+dataOptionsObject.toString());
                 }
-                // 
+
                 dataOptions.clear();
                 if(dataOptionsArray != null){
                     for (int i = 0; i < dataOptionsArray.length(); ++i) {
+                        if(scenario != null){
+                            extrasValues.clear();
+                            for (int j = 0; j < dataOptionsArray.length(); j++) {
+                                PickUpStationObject pStation = new PickUpStationObject();
+                                pStation.initialize(dataOptionsArray.getJSONObject(j));
+                                extrasValues.put(pStation.getIdPickupstation(), pStation);
+                                dataSet.put(pStation.getName(), pStation.getName());
+                            }
+                            
+                        } else {
+                            dataSet.put(dataOptionsArray.getString(i), dataOptionsArray.getString(i));    
+                        }
                         Log.d(TAG, "FORM FIELD: CURRENT KEY " + dataOptionsArray.getString(i));
-                        dataOptions.put(dataOptionsArray.getString(i), dataOptionsArray.getString(i));
+                        
                     }
                 }else if(dataOptionsObject != null){
                     Iterator<?> it = dataOptionsObject.keys();
                     while (it.hasNext()) {
                         String curKey = (String) it.next();
-                        Log.d(TAG, "FORM FIELD: CURRENT KEY " + curKey);
-                        //dataOptions.put(curKey, (String) dataSetObject.get("api_call"));
+                        dataSet.put(curKey, curKey);
                     }
                 }
+                
+                
                 
                 
                 /**
@@ -490,6 +517,20 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         this.name = name;
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see pt.rocket.framework.forms.IFormField#getName()
+     */
+    @Override
+    public String getScenario() {
+        return scenario;
+    }
+
+    public void setScenario(String scenario) {
+        this.name = scenario;
+    }
+    
     /*
      * (non-Javadoc)
      * 
@@ -676,6 +717,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         dest.writeString(datasetSource);
         dest.writeValue(parent);
         dest.writeValue(dataset_Listener);
+        dest.writeMap(extrasValues);
     }
     
     /**
@@ -693,8 +735,26 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         datasetSource = in.readString();
         parent = (Form) in.readValue(Form.class.getClassLoader());
         dataset_Listener = in.readParcelable(null);
+        extrasValues = (LinkedHashMap<Object, Object>) in.readHashMap(null);
     }
     
+    /**
+     * @return the extrasValues
+     */
+    public LinkedHashMap<Object, Object> getExtrasValues() {
+        return extrasValues;
+    }
+
+    /**
+     * Some of the Form Fields have extra content that needs to be set after the user selects an option
+     * This(extrasValues) will keep a list of objects with that info.
+     * 
+     * @param extrasValues the extrasValues to set
+     */
+    public void setExtrasValues(LinkedHashMap<Object, Object> extrasValues) {
+        this.extrasValues = extrasValues;
+    }
+
     /**
      * Create parcelable 
      */

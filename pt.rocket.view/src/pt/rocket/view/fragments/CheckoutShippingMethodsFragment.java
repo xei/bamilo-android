@@ -5,6 +5,7 @@ package pt.rocket.view.fragments;
 
 import java.util.EnumSet;
 
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.FormConstants;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
@@ -15,6 +16,7 @@ import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.checkout.GetShippingMethodsHelper;
+import pt.rocket.helpers.checkout.SetPaymentMethodHelper;
 import pt.rocket.helpers.checkout.SetShippingMethodHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.pojo.DynamicForm;
@@ -23,6 +25,7 @@ import pt.rocket.utils.NavigationAction;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -205,25 +208,6 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
         super.onActivityResult(requestCode, resultCode, data);
     }
     
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onSaveInstanceState(android.os.Bundle)
-     */
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-//        if (null != loginForm) {
-//            Iterator<DynamicFormItem> iterator = loginForm.iterator();
-//            while (iterator.hasNext()) {
-//                DynamicFormItem item = iterator.next();
-//                item.saveState(outState);
-//            }
-//            savedInstanceState = outState;
-//        }
-//        super.onSaveInstanceState(outState);
-//        uiHelper.onSaveInstanceState(outState);
-    }
-    
     
     
     /**
@@ -260,9 +244,12 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
     
     
     private void onClickSubmitShippingMethod() {
-        Log.i(TAG, "ON CLICK: LOGIN");
-        //triggerSubmitAddresses(null, null);
-        getBaseActivity().onSwitchFragment(FragmentType.PAYMENT_METHODS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        Log.i(TAG, "ON CLICK: SET SHIPPING METHOD");
+        if(formGenerator.validate()){
+            ContentValues values = formGenerator.save();
+            JumiaApplication.INSTANCE.setShippingMethod(values);
+            triggerSubmitShippingMethod(values);
+        } 
     }
     
    
@@ -281,6 +268,7 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
             loadForm(form);
             break;
         case SET_SHIPPING_METHOD_EVENT:
+            getBaseActivity().onSwitchFragment(FragmentType.PAYMENT_METHODS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
             Log.d(TAG, "RECEIVED SET_SHIPPING_METHOD_EVENT");
             break;
         default:
@@ -322,9 +310,11 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
      * ############# REQUESTS #############
      */
     
-    private void triggerSubmitShippingMethod() {
+    private void triggerSubmitShippingMethod(ContentValues values) {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(SetShippingMethodHelper.FORM_CONTENT_VALUES, values);
         Log.i(TAG, "TRIGGER: SET SHIPPING METHOD");
-        triggerContentEvent(new SetShippingMethodHelper(), null, this);
+        triggerContentEvent(new SetShippingMethodHelper(), bundle, this);
     }
     
     private void triggerGetShippingMethods(){

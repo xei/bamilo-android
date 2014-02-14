@@ -598,7 +598,7 @@ public class JumiaApplication extends Application implements ExceptionCallback {
      */
     private Address shippingAddress;
     private Address billingAddress;
-    private ShippingMethods shippingMethod;
+    private ContentValues shippingMethod;
     private ContentValues paymentMethod;
 
     public Address getShippingAddress() {
@@ -617,11 +617,11 @@ public class JumiaApplication extends Application implements ExceptionCallback {
         this.billingAddress = billingAddress;
     }
     
-    public ShippingMethods getShippingMethod() {
+    public ContentValues getShippingMethod() {
         return shippingMethod;
     }
     
-    public void setShippingMethod(ShippingMethods shippingMethod ) {
+    public void setShippingMethod(ContentValues shippingMethod ) {
         this.shippingMethod = shippingMethod;
     }
     

@@ -5,6 +5,8 @@ package pt.rocket.view.fragments;
 
 import java.util.EnumSet;
 
+import org.holoeverywhere.widget.Toast;
+
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.FormConstants;
 import pt.rocket.controllers.fragments.FragmentController;
@@ -267,6 +269,8 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
                 ContentValues values = formGenerator.save();
                 JumiaApplication.INSTANCE.setPaymentMethod(values);
                 triggerSubmitPaymentMethod(values);
+            } else {
+                Toast.makeText(getActivity(), "Please fill all the data",Toast.LENGTH_SHORT).show();
             }
         }
     }
