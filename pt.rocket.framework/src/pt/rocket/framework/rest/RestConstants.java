@@ -58,6 +58,7 @@ public class RestConstants {
 	public static final String JSON_VALIDATION_TAG = "rules";
 	public static final String JSON_DATASET_TAG = "dataset";
 	public static final String JSON_VALUE_TAG = "value";
+	public static final String JSON_VALUES_TAG = "values";
 	public static final String JSON_DATASET_SOURCE_TAG = "dataset_source";
 
 	// FieldValidation Tags
