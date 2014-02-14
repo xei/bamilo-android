@@ -9,11 +9,13 @@ import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.controllers.ActivitiesWorkFlow;
+import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.view.MainFragmentActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ClipData;
@@ -31,27 +33,27 @@ import de.akquinet.android.androlog.Log;
  * @author sergiopereira
  * 
  */
-public class CheckoutStep5Fragment extends BaseFragment implements OnClickListener{
+public class CheckoutThanksFragment extends BaseFragment implements OnClickListener{
 
-    private static final String TAG = LogTagHelper.create(CheckoutStep5Fragment.class);
+    private static final String TAG = LogTagHelper.create(CheckoutThanksFragment.class);
 
-    private static CheckoutStep5Fragment checkoutStep5Fragment;
+    private static CheckoutThanksFragment checkoutStep5Fragment;
 
     /**
      * Get instance
      * 
      * @return
      */
-    public static CheckoutStep5Fragment getInstance() {
+    public static CheckoutThanksFragment getInstance() {
         if (checkoutStep5Fragment == null)
-            checkoutStep5Fragment = new CheckoutStep5Fragment();
+            checkoutStep5Fragment = new CheckoutThanksFragment();
         return checkoutStep5Fragment;
     }
 
     /**
      * Empty constructor
      */
-    public CheckoutStep5Fragment() {
+    public CheckoutThanksFragment() {
         super(EnumSet.noneOf(EventType.class), EnumSet.noneOf(EventType.class), EnumSet.noneOf(MyMenuItem.class), NavigationAction.Basket,0);
         this.setRetainInstance(true);
     }
@@ -182,6 +184,15 @@ public class CheckoutStep5Fragment extends BaseFragment implements OnClickListen
     public void onClick(View v) {
         ActivitiesWorkFlow.homePageActivity(getActivity());
     }
-
+    
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.view.fragments.BaseFragment#allowBackPressed()
+     */
+    @Override
+    public boolean allowBackPressed() {
+        ((MainFragmentActivity) getBaseActivity()).popBackStack(FragmentType.HOME.toString());
+        return true;
+    }
 
 }

@@ -273,5 +273,8 @@
     <string name="facebook_signup_button_text">Sign up with Facebook</string>
     <string name="facebook_login_button_text">Login with Facebook</string>
     
+    <string name="my_order_items_label">items</string>
+    <string name="my_order_item_label">item</string>
+    
     
 </resources>

@@ -57,6 +57,14 @@
                 android:id="@+id/checkout_my_order_include_payment_options"
                 layout="@layout/checkout_my_order_payment_options"
                 android:visibility="visible" />
+
+            <LinearLayout
+                android:id="@+id/checkout_payment_form_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_midhuge"
+                android:layout_marginTop="@dimen/margin_midhuge"
+                android:orientation="vertical" />
         </LinearLayout>
     </ScrollView>
 

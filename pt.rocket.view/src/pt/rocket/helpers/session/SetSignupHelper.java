@@ -53,22 +53,6 @@ public class SetSignupHelper extends BaseHelper {
         return bundle;
     }
     
-    
-//    {
-//        "success": true,
-//        "messages": {
-//            "success": [
-//                "CUSTOMER_REGISTRATION_SUCCESS",
-//                "CUSTOMER_LOGIN_SUCCESS"
-//            ]
-//        },
-//        "session": {
-//            "id": "rh7fagpr4ukv0doofepfoe5se1",
-//            "expire": null,
-//            "YII_CSRF_TOKEN": "f656244287a02f7f03f595016c68fb2941582368"
-//        }
-//    }
-    
     /*
      * (non-Javadoc)
      * @see pt.rocket.helpers.BaseHelper#parseResponseBundle(android.os.Bundle, org.json.JSONObject)

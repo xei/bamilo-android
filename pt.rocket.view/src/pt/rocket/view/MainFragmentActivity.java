@@ -27,7 +27,7 @@ import pt.rocket.view.fragments.CheckoutMyAddressesFragment;
 import pt.rocket.view.fragments.CheckoutMyOrderFragment;
 import pt.rocket.view.fragments.CheckoutPaymentMethodsFragment;
 import pt.rocket.view.fragments.CheckoutShippingMethodsFragment;
-import pt.rocket.view.fragments.CheckoutStep5Fragment;
+import pt.rocket.view.fragments.CheckoutThanksFragment;
 import pt.rocket.view.fragments.CheckoutWebFragment;
 import pt.rocket.view.fragments.HomeFragment;
 import pt.rocket.view.fragments.MyAccountFragment;
@@ -263,9 +263,6 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         case CHECKOUT_BASKET:
             fragment = CheckoutWebFragment.getInstance();
             break;
-        case CHECKOUT_THANKS:
-            fragment = CheckoutStep5Fragment.getInstance();
-            break;
         case REGISTER:
             fragment = SessionRegisterFragment.getInstance();
             break;
@@ -317,6 +314,9 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             break;
         case CHECKOUT_FINISH:
             fragment = CheckoutFinishFragment.getInstance(bundle);
+            break;
+        case CHECKOUT_THANKS:
+            fragment = CheckoutThanksFragment.getInstance();
             break;
             
         default:

@@ -16,7 +16,6 @@ import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.checkout.GetShippingMethodsHelper;
-import pt.rocket.helpers.checkout.SetPaymentMethodHelper;
 import pt.rocket.helpers.checkout.SetShippingMethodHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.pojo.DynamicForm;
@@ -268,8 +267,8 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
             loadForm(form);
             break;
         case SET_SHIPPING_METHOD_EVENT:
-            getBaseActivity().onSwitchFragment(FragmentType.PAYMENT_METHODS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
             Log.d(TAG, "RECEIVED SET_SHIPPING_METHOD_EVENT");
+            getBaseActivity().onSwitchFragment(FragmentType.PAYMENT_METHODS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
             break;
         default:
             break;

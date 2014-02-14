@@ -19,12 +19,14 @@ import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.address.GetMyAddressesHelper;
+import pt.rocket.helpers.address.SetBillingAddressHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -262,8 +264,28 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
     
     private void onClickSubmitAddressesButton() {
         Log.i(TAG, "ON CLICK: LOGIN");
-        //triggerSubmitAddresses(null, null);
-        getBaseActivity().onSwitchFragment(FragmentType.SHIPPING_METHODS, null, FragmentController.ADD_TO_BACK_STACK);
+
+        int shippingId = addresses.getShippingAddress().getId();
+        int billingId = addresses.getBillingAddress().getId();
+        int isDifferent = (shippingId == billingId) ? 1 : 0;
+        
+        /**
+         * This request it's only for the multi step to know the addresses id
+         */
+        
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("billingForm[billingAddressId]", billingId);
+        contentValues.put("billingForm[shippingAddressDifferent]", isDifferent);
+        contentValues.put("billingForm[shippingAddressId]", shippingId);
+        
+        Bundle b1 = new Bundle();
+        b1.putParcelable(SetBillingAddressHelper.FORM_CONTENT_VALUES, contentValues);
+        sendRequest(new SetBillingAddressHelper(), b1, this);
+        
+      //Bundle b2 = new Bundle();
+      //b2.putString("shippingForm[shippingAddressId]", "4040");
+      //sendRequest(new SetShippingAddressHelper(), b2, this);
+        
     }
     
     private void onClickCreateAddressButton() {
@@ -288,6 +310,10 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
             break;
         case CREATE_ADDRESS_EVENT:
             Log.d(TAG, "RECEIVED CREATE_ADDRESS_EVENT");
+            break;
+        case SET_BILLING_ADDRESS_EVENT:
+            Log.d(TAG, "RECEIVED SET_BILLING_ADDRESS_EVENT");
+            getBaseActivity().onSwitchFragment(FragmentType.SHIPPING_METHODS, null, FragmentController.ADD_TO_BACK_STACK);
             break;
         default:
             break;

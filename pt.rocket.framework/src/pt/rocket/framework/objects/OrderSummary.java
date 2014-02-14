@@ -11,11 +11,13 @@ package pt.rocket.framework.objects;
 
 import java.util.ArrayList;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import pt.rocket.framework.utils.LogTagHelper;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 /**
  * Class that represents an Order Tracked
@@ -43,10 +45,24 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
 
 	private PaymentMethods mPaymentOptions;
 
+	private String mOrderNumber;
+
+	private String mFirstName;
+
+	private String mLastName;
+
 	/**
 	 * OrderTracker empty constructor.
 	 */
 	public OrderSummary() {
+	}
+	
+	/**
+	 * OrderTracker empty constructor.
+	 * @throws JSONException 
+	 */
+	public OrderSummary(JSONObject jsonObject) throws JSONException {
+		initialize(jsonObject);
 	}
 
 	/**
@@ -169,6 +185,48 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
 		this.mPaymentOptions = mPaymentOptions;
 	}
 
+	/**
+	 * @return the mOrderNumber
+	 */
+	public String getOrderNumber() {
+		return mOrderNumber;
+	}
+
+	/**
+	 * @return the mFirstName
+	 */
+	public String getFirstName() {
+		return mFirstName;
+	}
+
+	/**
+	 * @return the mLastName
+	 */
+	public String getLastName() {
+		return mLastName;
+	}
+
+	/**
+	 * @param mOrderNumber the mOrderNumber to set
+	 */
+	public void setOrderNumber(String mOrderNumber) {
+		this.mOrderNumber = mOrderNumber;
+	}
+
+	/**
+	 * @param mFirstName the mFirstName to set
+	 */
+	public void setFirstName(String mFirstName) {
+		this.mFirstName = mFirstName;
+	}
+
+	/**
+	 * @param mLastName the mLastName to set
+	 */
+	public void setLastName(String mLastName) {
+		this.mLastName = mLastName;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -177,30 +235,64 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
 	 * )
 	 */
 	@Override
-	public boolean initialize(JSONObject jsonObject) {
-
-		// order_id = jsonObject.optString(RestConstants.JSON_ORDER_ID_TAG);
-		// creation_date =
-		// jsonObject.optString(RestConstants.JSON_ORDER_CREATION_DATE_TAG);
-		// payment_method =
-		// jsonObject.optString(RestConstants.JSON_ORDER_PAYMENT_METHOD_TAG);
-		// last_order_update =
-		// jsonObject.optString(RestConstants.JSON_ORDER_LAST_UPDATE_TAG);
-		// JSONObject items =
-		// jsonObject.optJSONObject(RestConstants.JSON_ORDER_ITEM_COLLECTION_TAG);
-		//
-		// Iterator keys = items.keys();
-		//
-		// while(keys.hasNext()){
-		// OrderTrackerItem mOrderTrackerItem = new OrderTrackerItem();
-		// try {
-		// mOrderTrackerItem.initialize(items.getJSONObject((String)
-		// keys.next()));
-		// } catch (JSONException e) {
-		// e.printStackTrace();
-		// }
-		// orderTracketItems.add(mOrderTrackerItem);
-		// }
+	public boolean initialize(JSONObject jsonObject) throws JSONException {
+		
+        // Metada:
+        
+        // Cash On Delivery:
+//        {
+//            "success": true,
+//            "messages": {
+//                "success": [
+//                    "ORDER_SUCCESS"
+//                ]
+//            },
+//            "session": {
+//                "id": "hec322fvnb97f0kqp7mv6s2e81",
+//                "expire": null,
+//                "YII_CSRF_TOKEN": "92945c37307600580b25eee7e6d6fa690a9aa126"
+//            },
+//            "metadata": {
+//                "order_nr": "300012712",
+//                "customer_first_name": "mob nsme",
+//                "customer_last_name": "mob last",
+//                "payment": []
+//            }
+//        }
+		
+		
+		// Get order number
+        mOrderNumber = jsonObject.getString("order_nr");
+        // Get first name
+        mFirstName = jsonObject.optString("customer_first_name");
+        // Get last name
+        mLastName = jsonObject.optString("customer_last_name");
+        
+        // Validate payment content
+        if(jsonObject.has("payment")){
+        	Log.d(TAG, "HAS PAYMENT DATA");	
+        	JSONObject jsonPayment = jsonObject.optJSONObject("payment");
+        	if(jsonPayment != null) {
+        		Log.d(TAG, "PAYMENT DATA: " + jsonPayment.toString());
+        	}
+        	
+        }
+        
+        
+        // Paga:
+        // payment: { type, method, form, url}
+        
+        // This step only occurs if the response returned on step 6 has a key "payment".
+        // Depending on the selected payment method, client will be asked to provide payment details or redirected to the payment provider's external page to provide payment details.
+        // TODO: Filter response by method
+        // Cash On Delivery -   If the payment method selected was "Cash On Delivery" this step not applicable.
+        // Paga             -   The follow response tell us that is need made a auto submit form for action
+        // WebPAY           -   In this case the form has a property named "target" that indicates the result of the form's submit has to be displayed in an iframe, whose NAME is "target" property's value
+        // GlobalPay        -   Auto-submit-external
+        // Wallety          -   Submit-external
+        // AdyenPayment     -   Page
+		
+		
 		return true;
 
 	}

@@ -2,16 +2,24 @@ package pt.rocket.view.fragments;
 
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsCheckout;
+import pt.rocket.constants.FormConstants;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
+import pt.rocket.factories.FormFactory;
+import pt.rocket.forms.Form;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.Address;
+import pt.rocket.framework.objects.Order;
+import pt.rocket.framework.objects.OrderSummary;
 import pt.rocket.framework.objects.PaymentMethods;
 import pt.rocket.framework.objects.ShippingMethods;
 import pt.rocket.framework.objects.ShoppingCart;
@@ -24,6 +32,7 @@ import pt.rocket.helpers.address.GetDefaultBillingAddressHelper;
 import pt.rocket.helpers.address.GetDefaultShippingAddressHelper;
 import pt.rocket.helpers.checkout.CheckoutFinishHelper;
 import pt.rocket.interfaces.IResponseCallback;
+import pt.rocket.pojo.DynamicForm;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
@@ -64,7 +73,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
 
     private ViewGroup mShippingAddressContainer;
 
-    private ViewGroup mShippingMethodView;
+    private TextView mShippingMethodName;
 
     private ViewGroup totalView;
 
@@ -76,15 +85,23 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
 
     private View mBillingAddressIsSame;
 
-    private ViewGroup mPaymentOptionsView;
+    private TextView mPaymentName;
 
     private Address shippingAddress;
 
     private Address billingAddress;
 
-    private ShippingMethods shippingMethod;
+    private ContentValues shippingMethod;
 
     private ContentValues paymentOptions;
+
+    private TextView mProductsNum;
+
+    private TextView mProductsValue;
+
+    private TextView mCoupon;
+
+    private ViewGroup mPaymentFormContainer;
 
     /**
      * 
@@ -158,8 +175,8 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
         mProductsContainer = (ViewGroup) view.findViewById(R.id.checkout_my_order_products_list);
                 
         // Get sub total
-        view.findViewById(R.id.checkout_my_order_products_text_n_items);
-        view.findViewById(R.id.checkout_my_order_products_text_total_items);
+        mProductsNum = (TextView) view.findViewById(R.id.checkout_my_order_products_text_n_items);
+        mProductsValue = (TextView) view.findViewById(R.id.checkout_my_order_products_text_total_items);
         mShipFeeView = (ViewGroup) view.findViewById(R.id.checkout_my_order_products_shippingfee_container);
         mShipFeeValue = (TextView) view.findViewById(R.id.checkout_my_order_products_text_shippingfee);
         mVoucherView = (ViewGroup) view.findViewById(R.id.checkout_my_order_products_voucher_container);
@@ -177,11 +194,16 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
         
         // Get shipping method
         view.findViewById(R.id.checkout_my_order_shipping_method_btn_edit).setOnClickListener((OnClickListener) this);
-        mShippingMethodView = (ViewGroup) view.findViewById(R.id.checkout_my_order_shipping_method_list);
+        mShippingMethodName = (TextView) view.findViewById(R.id.checkout_my_order_shipping_method_name);
         
         // Get payment options
         view.findViewById(R.id.checkout_my_order_payment_options_btn_edit).setOnClickListener((OnClickListener) this);
-        mPaymentOptionsView = (ViewGroup) view.findViewById(R.id.checkout_my_order_payment_options_list);
+        mPaymentName = (TextView) view.findViewById(R.id.checkout_my_order_payment_name);
+        mCoupon = (TextView) view.findViewById(R.id.checkout_my_order_payment_coupon);
+        
+        // XXX
+        mPaymentFormContainer = (ViewGroup) view.findViewById(R.id.checkout_payment_form_container);
+        
         
         // Get the next step button
         view.findViewById(R.id.checkout_my_order_button_enter).setOnClickListener((OnClickListener) this);
@@ -308,7 +330,12 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
      * 
      */
     private void showSubTotal() {
+        int size = cart.getCartItems().size();
+        String itemsLabel = (size > 1) ? getString(R.string.my_order_items_label) : getString(R.string.my_order_item_label);
+        mProductsNum.setText(size + " " + itemsLabel);
+        mProductsValue.setText(cart.getCartValue()); 
         mShipFeeValue.setText(cart.getShippingValue());
+        mVoucherView.setVisibility(View.GONE);
         mTotalValue.setText(cart.getCartValue());
     }
     
@@ -353,14 +380,24 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
      * 
      */
     private void showShippingMethod() {
-        // TODO
+        for (String key : shippingMethod.keySet()) {
+            String curKey = key;
+            String curValue = (String) shippingMethod.get(key);
+            Log.d(TAG, "SHIPPING METHOD: " + curKey + " " + curValue);
+            if(curKey.equals("name")) mShippingMethodName.setText(curValue);
+        }
     }
     
     /**
      * 
      */
     private void showPaymentOptions() {
-        // TODO
+        for (String key : paymentOptions.keySet()) {
+            String curKey = key;
+            String curValue = (String) paymentOptions.get(key);
+            Log.d(TAG, "PAYMENT OPTION: " + curKey + " " + curValue);
+            if(curKey.equals("name")) mPaymentName.setText(curValue);
+        }
     }
 
     /**
@@ -426,6 +463,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
      */
     private void triggerGetMyOrder() {
         Log.i(TAG, "TRIGGER: GET MY ORDER");
+        // TODO: Get order summary
         // triggerContentEvent(new GetMyOrderHelper(), null, this);
         triggerContentEvent(new GetDefaultShippingAddressHelper(), null, this);
     }
@@ -472,9 +510,32 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
             break;
         case CHECKOUT_FINISH_EVENT:
             Log.d(TAG, "RECEIVED CHECKOUT_FINISH_EVENT");
-            String order_number = bundle.getString(Constants.BUNDLE_RESPONSE_KEY);
-            bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR, order_number);
-            getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_THANKS, bundle, FragmentController.ADD_TO_BACK_STACK);
+            
+            String orderNumber = bundle.getString(Constants.BUNDLE_RESPONSE_KEY);
+            Form paymentForm = bundle.getParcelable("payment_form");
+            String paymentUrl = bundle.getString("payment_url");
+            
+            // XXX
+            if(paymentForm != null) {
+                Toast.makeText(getBaseActivity(), "LOADED PAYMENT FORM", Toast.LENGTH_SHORT).show();
+                DynamicForm formGenerator = FormFactory.getSingleton().CreateForm(FormConstants.PAYMENT_DETAILS_FORM, getActivity(), paymentForm);
+                mPaymentFormContainer.removeAllViews();
+                mPaymentFormContainer.addView(formGenerator.getContainer());                
+                mPaymentFormContainer.refreshDrawableState();
+                getBaseActivity().showContentContainer(false);
+            } else if(paymentUrl != null){
+                Toast.makeText(getBaseActivity(), "LOAD URL: " + paymentUrl, Toast.LENGTH_SHORT).show();
+                getBaseActivity().showContentContainer(false);
+            } else {
+                bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR, orderNumber);
+                getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_THANKS, bundle, FragmentController.ADD_TO_BACK_STACK);
+            }
+                
+            
+            
+            //Order order = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            //bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR, order.getOrderNumber());
+            //getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_THANKS, bundle, FragmentController.ADD_TO_BACK_STACK);
             break;
             
         // TODO: Remove this filters    

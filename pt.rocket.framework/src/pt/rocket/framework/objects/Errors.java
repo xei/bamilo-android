@@ -34,6 +34,8 @@ public class Errors implements Parcelable {
 	public final static String CODE_FORM_VALIDATION_FAILED = "FORM_VALIDATION_FAILED";
 	public final static String CODE_PRODUCT_ADD_OVERQUANTITY = "SR_ORDER_PRODUCT_ERROR_ADDING_STOCK_ABOVE_ALLOWED_QUANTITY";
 	public final static String CODE_ORDER_PRODUCT_ERROR_ADDING = "ORDER_PRODUCT_ERROR_ADDING";
+	public final static String CODE_ALREADY_LOGGED_IN = "CUSTOMER_ALREADY_LOGGED_IN";
+	
 
 	private static List<String> errorMessages;
 	private static List<String> validateMessages;

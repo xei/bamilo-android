@@ -39,9 +39,39 @@
     <!-- OPTIONS -->
 
     <LinearLayout
-        android:id="@+id/checkout_my_order_payment_options_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_huge" />
+        android:layout_marginTop="@dimen/margin_huge"
+        android:orientation="vertical" >
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/checkout_my_order_payment_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="roboto_regular"
+            android:gravity="left"
+            android:textColor="@color/grey_divider_light_text"
+            android:textSize="@dimen/text_m" />
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/checkout_my_order_payment_extra"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="roboto_regular"
+            android:gravity="left"
+            android:textColor="@color/grey_divider_light_text"
+            android:textSize="@dimen/text_m"
+            android:visibility="gone" />
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/checkout_my_order_payment_coupon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="roboto_regular"
+            android:gravity="left"
+            android:textColor="@color/grey_divider_light_text"
+            android:textSize="@dimen/text_m"
+            android:visibility="gone" />
+    </LinearLayout>
 
 </LinearLayout>

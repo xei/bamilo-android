@@ -39,9 +39,18 @@
     <!-- ADDRESS -->
 
     <LinearLayout
-        android:id="@+id/checkout_my_order_shipping_method_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_huge" />
+        android:layout_marginTop="@dimen/margin_huge" >
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/checkout_my_order_shipping_method_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="roboto_regular"
+            android:gravity="left"
+            android:textColor="@color/grey_divider_light_text"
+            android:textSize="@dimen/text_m" />
+    </LinearLayout>
 
 </LinearLayout>
