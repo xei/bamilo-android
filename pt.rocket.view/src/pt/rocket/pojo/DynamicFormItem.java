@@ -260,6 +260,10 @@ public class DynamicFormItem {
         return ((RadioGroupLayoutVertical) this.dataControl).getSubFieldParameters();
     }
 
+    public String getRadioGroupLayoutVerticalSelectedFieldName(){
+        return ((RadioGroupLayoutVertical) this.dataControl).getSelectedFieldName();
+    }
+    
     /**
      * Stores the value inputed by the user on the control and acts accordingly
      * 

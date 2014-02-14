@@ -188,5 +188,12 @@ public class RadioGroupLayoutVertical extends RadioGroup {
        
         return result;
     }
+    
+    public String getSelectedFieldName(){
+        String result = mItems.get(mGroup.getCheckedRadioButtonId());
+        
+       
+        return result;
+    }
 
 }

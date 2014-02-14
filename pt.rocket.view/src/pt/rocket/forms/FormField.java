@@ -291,6 +291,10 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                 if(!jsonObject.isNull("options")) {
                     dataOptionsArray = jsonObject.optJSONArray("options");
                     dataOptionsObject = jsonObject.optJSONObject("options");
+                    if(dataOptionsArray != null)
+                        Log.i(TAG, "code1options : array : "+dataOptionsArray.toString());
+                    if(dataOptionsObject != null)
+                        Log.i(TAG,"code1options json "+dataOptionsObject.toString());
                 }
                 // 
                 dataOptions.clear();
@@ -313,7 +317,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                  * ########### PAYMENT METHODS ########### 
                  */
                 
-                if(key.equals("payment_method") || key.equals("shipping_method")){
+                if(key.equals("payment_method")){
                     dataSet.clear();
                     paymentFields = new HashMap<String, Form>();
                     dataOptionsObject = jsonObject.optJSONObject("options");

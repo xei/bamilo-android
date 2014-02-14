@@ -332,6 +332,7 @@ public class DynamicForm implements Iterable<DynamicFormItem>{
                     model.putAll(mValues);    
                 }
                 
+                model.put("name", control.getRadioGroupLayoutVerticalSelectedFieldName());
                 model.put(control.getName().toString(), control.getValue().toString());
             } else if (null != control && null != control.getValue()) {
                 model.put(control.getName().toString(), control.getValue().toString());
