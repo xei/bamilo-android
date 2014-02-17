@@ -14,7 +14,6 @@ import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.Address;
 import pt.rocket.framework.objects.Addresses;
-import pt.rocket.framework.objects.ShippingMethods;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -27,7 +26,6 @@ import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -313,7 +311,13 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
             break;
         case SET_BILLING_ADDRESS_EVENT:
             Log.d(TAG, "RECEIVED SET_BILLING_ADDRESS_EVENT");
-            getBaseActivity().onSwitchFragment(FragmentType.SHIPPING_METHODS, null, FragmentController.ADD_TO_BACK_STACK);
+            
+            // Get next step
+            FragmentType nextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
+            nextFragment = (nextFragment != FragmentType.UNKNOWN) ? nextFragment : FragmentType.SHIPPING_METHODS;
+            // Switch
+            getBaseActivity().onSwitchFragment(nextFragment, null, FragmentController.ADD_TO_BACK_STACK);
+            
             break;
         default:
             break;

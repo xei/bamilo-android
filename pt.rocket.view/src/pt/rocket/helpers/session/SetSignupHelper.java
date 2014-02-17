@@ -13,6 +13,7 @@ import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
 import pt.rocket.helpers.BaseHelper;
 import pt.rocket.helpers.HelperPriorityConfiguration;
+import pt.rocket.utils.CheckoutStepManager;
 import android.content.ContentValues;
 import android.os.Bundle;
 import android.util.Log;
@@ -64,6 +65,7 @@ public class SetSignupHelper extends BaseHelper {
             JumiaApplication.INSTANCE.getCustomerUtils().storeCredentials(contentValues);
         }
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
+        bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextCheckoutStep(jsonObject));
         return bundle;
     }
     

@@ -47,7 +47,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.facebook.Request;
 import com.facebook.Request.GraphUserCallback;
@@ -587,38 +586,37 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             return true;            
         case SET_SIGNUP_EVENT:
             Log.d(TAG, "RECEIVED SET_SIGNUP_EVENT");
+            // Get next step
+            FragmentType signupNextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
+            signupNextFragment = (signupNextFragment != FragmentType.UNKNOWN) ? signupNextFragment : FragmentType.CREATE_ADDRESS;
             getBaseActivity().hideKeyboard();
             getBaseActivity().updateSlidingMenuCompletly();
             getBaseActivity().onBackPressed();
-            getBaseActivity().onSwitchFragment(FragmentType.CREATE_ADDRESS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            getBaseActivity().onSwitchFragment(signupNextFragment, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);            
             break;
         case FACEBOOK_LOGIN_EVENT:
             // Get customer
             Customer customerFb = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-          // Get Customer
-          getBaseActivity().hideKeyboard();
-          getBaseActivity().updateSlidingMenuCompletly();
-          getBaseActivity().onBackPressed();
-          /**
-           * TODO:
-           * Login with Facebook button ->  Default Shipping Address page
-           * Sign Up with Facebook button -> Add New Address
-           */
-          if(customerFb.hasAddresses()) getBaseActivity().onSwitchFragment(FragmentType.MY_ADDRESSES, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-          else getBaseActivity().onSwitchFragment(FragmentType.CREATE_ADDRESS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-          // Tracking
-          TrackerDelegator.trackLoginSuccessful(getBaseActivity(), customerFb, onAutoLogin, loginOrigin, true);
-          return true;
-        case LOGIN_EVENT:
-            // Get customer
-            Customer customer = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            // Get next step
+            FragmentType fbNextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
             // Get Customer
             getBaseActivity().hideKeyboard();
             getBaseActivity().updateSlidingMenuCompletly();
             getBaseActivity().onBackPressed();
-            // Validate customer addresses
-            if(customer.hasAddresses()) getBaseActivity().onSwitchFragment(FragmentType.MY_ADDRESSES, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-            else getBaseActivity().onSwitchFragment(FragmentType.CREATE_ADDRESS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            getBaseActivity().onSwitchFragment(fbNextFragment, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            // Tracking
+            TrackerDelegator.trackLoginSuccessful(getBaseActivity(), customerFb, onAutoLogin, loginOrigin, true);
+            return true;
+        case LOGIN_EVENT:
+            // Get customer
+            Customer customer = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            // Get next step
+            FragmentType loginNextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
+            // Get Customer
+            getBaseActivity().hideKeyboard();
+            getBaseActivity().updateSlidingMenuCompletly();
+            getBaseActivity().onBackPressed();
+            getBaseActivity().onSwitchFragment(loginNextFragment, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
             // Tracking
             TrackerDelegator.trackLoginSuccessful(getBaseActivity(), customer, onAutoLogin, loginOrigin, false);
             break;
@@ -641,51 +639,6 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
                 cleanFacebookSession();
             }
             break;
-            
-            
-//            /**
-//             * TODO: REMOVE THIS, ONLY FOR TESTS
-//             */
-//            sendRequest(new GetFormPollHelper(), null, this);
-//            Bundle b = new Bundle();
-//            b.putString("Alice_Module_Checkout_Model_PollingForm[pollQuestion]", "Facebook");
-//            sendRequest(new SetPollAnswerHelper(), b, this);
-//            
-//            //Bundle b1 = new Bundle();
-//            //b1.putString("billingForm[billingAddressId]", "4040");
-//            //b1.putString("billingForm[shippingAddressDifferent]", "1");
-//            //b1.putString("billingForm[shippingAddressId]", "4040");
-//            //sendRequest(new SetBillingAddressHelper(), b1, this);
-//            //Bundle b2 = new Bundle();
-//            //b2.putString("shippingForm[shippingAddressId]", "4040");
-//            //sendRequest(new SetShippingAddressHelper(), b2, this);
-//            
-//            sendRequest(new GetDefaultBillingAddressHelper(), null, this);
-//            sendRequest(new GetDefaultShippingAddressHelper(), null, this);
-//            
-//            return true;
-//            
-//       case GET_POLL_FORM_EVENT:
-//           Log.d(TAG, "RECEIVED GET_POLL_FORM_EVENT");
-//           return true;
-//       case SET_POLL_ANSWER_EVENT:
-//           Log.d(TAG, "RECEIVED SET_POLL_ANSWER_EVENT");
-//           return true;
-//       case SET_BILLING_ADDRESS_EVENT:
-//           Log.d(TAG, "RECEIVED SET_BILLING_ADDRESS_EVENT");
-//           return true;
-//       case SET_SHIPPING_ADDRESS_EVENT:
-//           Log.d(TAG, "RECEIVED SET_SHIPPING_ADDRESS_EVENT");               
-//           return true;
-//       case GET_DEFAULT_BILLING_ADDRESS_EVENT:
-//           Log.d(TAG, "RECEIVED GET_DEFAULT_BILLING_ADDRESS_EVENT");
-//           return true;
-//       case GET_DEFAULT_SHIPPING_ADDRESS_EVENT:
-//           Log.d(TAG, "RECEIVED GET_DEFAULT_SHIPPING_ADDRESS_EVENT");
-//           // Next step
-//           getBaseActivity().onSwitchFragment(FragmentType.MY_ADDRESSES, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-//           return true;
-            
         }
         return true;
     }
@@ -942,13 +895,10 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
 
                     });
             dialog.show(getBaseActivity().getSupportFragmentManager(), null);
-        } else {
-            
-            /**
-             * TODO: THE ERROR MUST RETURN THE MESSAGE
-             */
-            Toast.makeText(getBaseActivity(), "Please try with other email!", Toast.LENGTH_SHORT).show();
-        }
+        } 
+        //else {
+        //    Toast.makeText(getBaseActivity(), "Please try with other email!", Toast.LENGTH_SHORT).show();
+        //}
     }
     
     /**

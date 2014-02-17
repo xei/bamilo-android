@@ -17,6 +17,7 @@ import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
 import pt.rocket.helpers.BaseHelper;
 import pt.rocket.helpers.HelperPriorityConfiguration;
+import pt.rocket.utils.CheckoutStepManager;
 import pt.rocket.app.JumiaApplication;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,9 +26,9 @@ import android.util.Log;
  * Helper used to get the poll form 
  * @author sergiopereira
  */
-public class GetFormPollHelper extends BaseHelper {
+public class GetPollFormHelper extends BaseHelper {
     
-    private static String TAG = GetFormPollHelper.class.getSimpleName();
+    private static String TAG = GetPollFormHelper.class.getSimpleName();
 
     private static final EventType type = EventType.GET_POLL_FORM_EVENT;
     private static final EventType fallback_type = EventType.GET_POLL_FORM_FALLBACK_EVENT;
@@ -83,6 +84,7 @@ public class GetFormPollHelper extends BaseHelper {
             return parseErrorBundle(bundle);
         }
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
+        bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextCheckoutStep(jsonObject));
         return bundle;
     }
     

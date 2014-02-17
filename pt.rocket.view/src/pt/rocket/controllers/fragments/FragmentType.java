@@ -1,7 +1,14 @@
 package pt.rocket.controllers.fragments;
 
-public enum FragmentType {
 
+/**
+ * Enum used to set the fragment types
+ * @author sergiopereira
+ *
+ */
+public enum FragmentType {
+    
+    UNKNOWN,
     LOGIN,
     REGISTER,
     FORGOT_PASSWORD,
@@ -39,5 +46,7 @@ public enum FragmentType {
     SHIPPING_METHODS, 
     PAYMENT_METHODS, 
     CHECKOUT_FINISH, 
-    ABOUT_YOU, MY_ORDER
+    ABOUT_YOU, 
+    MY_ORDER, 
+    POLL
 }

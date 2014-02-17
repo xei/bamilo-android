@@ -815,13 +815,14 @@ public class DynamicFormItem {
         params = new RelativeLayout.LayoutParams(controlWidth,
                 RelativeLayout.LayoutParams.WRAP_CONTENT);
 
-        createSpinnerForRadioGroup(MANDATORYSIGNALSIZE, params, dataContainer);
-
         // TODO: Validate this method for poll
         Log.d("Poll", "Type: Radio Group");
         if (entry.getKey().contains("poll")) {
             Log.d("Poll", "Key: Poll");
             createPollRadioGroup(MANDATORYSIGNALSIZE, params, dataContainer);
+        } else {
+            // Default: old call
+            createSpinnerForRadioGroup(MANDATORYSIGNALSIZE, params, dataContainer);
         }
     }
 
@@ -1172,14 +1173,14 @@ public class DynamicFormItem {
     }
 
     // TODO: Validate this method for poll
-    private void createPollRadioGroup(final int MANDATORYSIGNALSIZE,
-            RelativeLayout.LayoutParams params, RelativeLayout dataContainer) {
-        RadioGroupLayout radioGroup = (RadioGroupLayout) View.inflate(this.context,
-                R.layout.form_radiolayout, null);
-        radioGroup.setItems(new ArrayList<String>(this.entry.getDataValues().values()),
-                RadioGroupLayout.NO_DEFAULT_SELECTION);
+    private void createPollRadioGroup(final int MANDATORYSIGNALSIZE, RelativeLayout.LayoutParams params, RelativeLayout dataContainer) {
+        
+        RadioGroupLayoutVertical radioGroup = (RadioGroupLayoutVertical) View.inflate(this.context, R.layout.form_radiolistlayout, null);
+        
+        HashMap<String, Form> formsMap = new HashMap<String, Form>();
+        
+        radioGroup.setItems(new ArrayList<String>(this.entry.getDataValues().values()), formsMap, RadioGroupLayout.NO_DEFAULT_SELECTION);
         radioGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 DynamicFormItem.this.mandatoryControl.setVisibility(View.GONE);
@@ -1191,8 +1192,7 @@ public class DynamicFormItem {
         this.dataControl.setLayoutParams(params);
         dataContainer.addView(this.dataControl);
 
-        params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.MATCH_PARENT);
+        params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         params.addRule(RelativeLayout.CENTER_VERTICAL);
         params.rightMargin = 10;
@@ -1201,8 +1201,7 @@ public class DynamicFormItem {
         this.mandatoryControl.setText("*");
         this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_basic));
         this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
-        this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE
-                : View.GONE);
+        this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE : View.GONE);
         dataContainer.addView(this.mandatoryControl);
 
         ((ViewGroup) this.control).addView(dataContainer);

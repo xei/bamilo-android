@@ -331,7 +331,8 @@ public class RestConstants {
     /**
      * Native Checkout
      */
-	
+    public static final String JSON_NATIVE_CHECKOUT_TAG = "native_checkout";
+    public static final String JSON_NEXT_STEP_TAG = "next_step";
     
     /**
      * Pickup Stations

@@ -15,8 +15,9 @@ import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.helpers.checkout.GetShippingMethodsHelper;
-import pt.rocket.helpers.checkout.SetShippingMethodHelper;
+import pt.rocket.helpers.GetInitFormHelper;
+import pt.rocket.helpers.checkout.GetPollFormHelper;
+import pt.rocket.helpers.checkout.SetPollAnswerHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.pojo.DynamicForm;
 import pt.rocket.utils.MyMenuItem;
@@ -25,7 +26,6 @@ import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,47 +34,42 @@ import android.view.ViewGroup;
 import de.akquinet.android.androlog.Log;
 
 /**
- * FIXME: Waiting for: 
- * > NAFAMZ-5435:  MOBILE API - Add parameter in the Shipping/Payment Methods to get form with success  
  * 
  * @author sergiopereira
  * 
  */
-public class CheckoutShippingMethodsFragment extends BaseFragment implements OnClickListener, IResponseCallback {
+public class CheckoutPollAnswerFragment extends BaseFragment implements OnClickListener, IResponseCallback {
 
-    private static final String TAG = LogTagHelper.create(CheckoutShippingMethodsFragment.class);
+    private static final String TAG = LogTagHelper.create(CheckoutPollAnswerFragment.class);
     
-    private static CheckoutShippingMethodsFragment shippingMethodsFragment;
+    private static CheckoutPollAnswerFragment pollFragment;
+    
+    private ViewGroup pollFormContainer;
+
+    private DynamicForm pollFormGenerator;
+
+    private Form formResponse;
+    
     
     /**
      * 
      * @return
      */
-    public static CheckoutShippingMethodsFragment getInstance(Bundle bundle) {
-        // if (loginFragment == null)
-        shippingMethodsFragment = new CheckoutShippingMethodsFragment();
-        return shippingMethodsFragment;
+    public static CheckoutPollAnswerFragment getInstance(Bundle bundle) {
+        if(pollFragment == null)
+            pollFragment = new CheckoutPollAnswerFragment();
+        return pollFragment;
     }
-
-    private ViewGroup shippingMethodsContainer;
-
-    private ViewGroup cartContainer;
-
-    private Form formResponse;
-
-    private DynamicForm formGenerator;
-
-    private ViewGroup formContainer;
 
     /**
      * Empty constructor
      */
-    public CheckoutShippingMethodsFragment() {
-        super(EnumSet.of(EventType.GET_SHIPPING_METHODS_EVENT), 
+    public CheckoutPollAnswerFragment() {
+        super(EnumSet.of(EventType.GET_POLL_FORM_EVENT, EventType.SET_POLL_ANSWER_EVENT), 
                 EnumSet.noneOf(EventType.class),
                 EnumSet.noneOf(MyMenuItem.class), 
                 NavigationAction.MyAccount, 
-                BaseActivity.CHECKOUT_STEP_3);
+                BaseActivity.CHECKOUT_STEP_1);
     }
 
     /*
@@ -100,8 +95,6 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
         setRetainInstance(true);
     }
     
-
-    
     /*
      * (non-Javadoc)
      * 
@@ -112,7 +105,7 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
     public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState) {
         super.onCreateView(inflater, viewGroup, savedInstanceState);
         Log.i(TAG, "ON CREATE VIEW");
-        return inflater.inflate(R.layout.checkout_shipping_methods, viewGroup, false);
+        return inflater.inflate(R.layout.checkout_poll_question, viewGroup, false);
     }
     
     /*
@@ -123,15 +116,21 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
-        // Get containers
-        shippingMethodsContainer = (ViewGroup) view.findViewById(R.id.checkout_shipping_methods_container);
-        cartContainer = (ViewGroup) view.findViewById(R.id.checkout_shipping_cart_container);
-        // Buttons
-        view.findViewById(R.id.checkout_shipping_button_enter).setOnClickListener(this);
-        
-        // Get and show addresses
-        triggerGetShippingMethods();
                 
+        // Create address form
+        pollFormContainer = (ViewGroup) view.findViewById(R.id.checkout_poll_form_container);
+        // Next button
+        view.findViewById(R.id.checkout_poll_button_enter).setOnClickListener((OnClickListener) this);
+
+        // Get and show form
+        if(JumiaApplication.INSTANCE.getFormDataRegistry() == null || JumiaApplication.INSTANCE.getFormDataRegistry().size() == 0){
+            triggerInitForm();
+        } else if(formResponse != null){
+            loadPollForm(formResponse);
+        } else {
+            triggerPollForm();
+        }
+        
     }
     
     
@@ -198,79 +197,140 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
         Log.i(TAG, "ON DESTROY");
     }
     
-    /*
-     * (non-Javadoc)
-     * @see android.support.v4.app.Fragment#onActivityResult(int, int, android.content.Intent)
-     */
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-    
-    
     
     /**
      * Load the dynamic form
-     * 
      * @param form
      */
-    private void loadForm(Form form) {
-        Log.i(TAG, "LOAD FORM");
-        formResponse = form;
-        formGenerator = FormFactory.getSingleton().CreateForm(FormConstants.SHIPPING_DETAILS_FORM, getActivity(), form);
-        shippingMethodsContainer.removeAllViews();
-        shippingMethodsContainer.addView(formGenerator.getContainer());        
-        shippingMethodsContainer.refreshDrawableState();
+    private void loadPollForm(Form form) {
+        Log.i(TAG, "LOAD POLL FORM");
+        pollFormGenerator = FormFactory.getSingleton().CreateForm(FormConstants.POLL_FORM, getBaseActivity(), form);
+        pollFormContainer.removeAllViews();
+        pollFormContainer.addView(pollFormGenerator.getContainer());                
+        pollFormContainer.refreshDrawableState();                
         getBaseActivity().showContentContainer(false);
     }
-    
     
     
     /**
      * ############# CLICK LISTENER #############
      */
-    
+    /*
+     * (non-Javadoc)
+     * @see android.view.View.OnClickListener#onClick(android.view.View)
+     */
     @Override
     public void onClick(View view) {
         // Get view id
         int id = view.getId();
-        // Submit
-        if(id == R.id.checkout_shipping_button_enter) onClickSubmitShippingMethod();
+        // Next button
+        if(id == R.id.checkout_poll_button_enter) onClickPollAnswerButton();
         // Unknown view
         else Log.i(TAG, "ON CLICK: UNKNOWN VIEW");
     }
     
+    /**
+     * Process the click on the next step button
+     */
+    private void onClickPollAnswerButton() {
+        Log.i(TAG, "ON CLICK: POLL ANSWER");
+        if(pollFormGenerator.validate()) {
+            Log.i(TAG, "POLL ANSWER");    
+            triggerPollAnswer(createContentValues(pollFormGenerator));
+        }
+    }
     
+    /**
+     * Method used to create the content values
+     * @param dynamicForm
+     * @param isDefaultShipping
+     * @param isDefaultBilling
+     * @return new content values
+     */
+    private ContentValues createContentValues(DynamicForm dynamicForm){
+        // Save content values
+        ContentValues mContentValues = dynamicForm.save();
+        Log.d(TAG, "CURRENT CONTENT VALUES: " + mContentValues.toString());
+        // FIXME:
+        mContentValues.put("Alice_Module_Checkout_Model_PollingForm[pollQuestion]", "Facebook");
+        Log.d(TAG, "CURRENT CONTENT VALUES: " + mContentValues.toString());
+        // return the new content values
+        return mContentValues;
+    }
     
-    private void onClickSubmitShippingMethod() {
-        Log.i(TAG, "ON CLICK: SET SHIPPING METHOD");
-        if(formGenerator.validate()){
-            ContentValues values = formGenerator.save();
-            JumiaApplication.INSTANCE.setShippingMethod(values);
-            triggerSubmitShippingMethod(values);
-        } 
+    /**
+     * ############# REQUESTS #############
+     */
+    /**
+     * Trigger to poll answer
+     * @param values
+     */
+    private void triggerPollAnswer(ContentValues values) {
+        Log.i(TAG, "TRIGGER: POLL ANSWER");
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(SetPollAnswerHelper.FORM_CONTENT_VALUES, values);
+        triggerContentEvent(new SetPollAnswerHelper(), bundle, this);
+    }
+    
+    /**
+     * Trigger to get the address form
+     */
+    private void triggerPollForm(){
+        Log.i(TAG, "TRIGGER: POLLFORM");
+        triggerContentEvent(new GetPollFormHelper(), null, this);
+    }
+    
+    /**
+     * Trigger to initialize forms
+     */
+    private void triggerInitForm(){
+        Log.i(TAG, "TRIGGER: INIT FORMS");
+        triggerContentEvent(new GetInitFormHelper(), null, this);
     }
     
    
     /**
      * ############# RESPONSE #############
      */
-  
+    /**
+     * Filter the success response
+     * @param bundle
+     * @return boolean
+     */
     protected boolean onSuccessEvent(Bundle bundle) {
+        Log.i(TAG, "ON SUCCESS EVENT");
+        
+        // Validate fragment visibility
+        if(!isVisible()){
+            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return true;
+        }
+        
+        if(getBaseActivity() != null){
+            Log.d(TAG, "BASE ACTIVITY HANDLE SUCCESS EVENT");
+            getBaseActivity().handleSuccessEvent(bundle);
+        } else {
+            return true;
+        }
+        
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         Log.i(TAG, "ON SUCCESS EVENT: " + eventType);
         
         switch (eventType) {
-        case GET_SHIPPING_METHODS_EVENT:
-            Log.d(TAG, "RECEIVED GET_SHIPPING_METHODS_EVENT");
-            Form form = (Form) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-            loadForm(form);
+        case INIT_FORMS:
+            Log.d(TAG, "RECEIVED INIT_FORMS");
+            triggerPollForm();
             break;
-        case SET_SHIPPING_METHOD_EVENT:
-            Log.d(TAG, "RECEIVED SET_SHIPPING_METHOD_EVENT");
+        case GET_POLL_FORM_EVENT:
+            Log.d(TAG, "RECEIVED GET_POLL_FORM_EVENT");
+            Form form = (Form) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            formResponse = form;
+            loadPollForm(form);
+            break;
+        case SET_POLL_ANSWER_EVENT:
+            Log.d(TAG, "RECEIVED SET_POLL_ANSWER_EVENT");
             // Get next step
             FragmentType nextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
-            nextFragment = (nextFragment != FragmentType.UNKNOWN) ? nextFragment : FragmentType.PAYMENT_METHODS;
             // Switch
             getBaseActivity().onSwitchFragment(nextFragment, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
             break;
@@ -280,27 +340,39 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
         
         return true;
     }
-
-
-
-
+    
+    /**
+     * Filter the error response
+     * 
+     * TODO: ADD ERROR VALIDATIONS
+     * 
+     * @param bundle
+     * @return boolean
+     */
     protected boolean onErrorEvent(Bundle bundle) {
+        
     	if(!isVisible()){
     		return true;
     	}
         if(getBaseActivity().handleErrorEvent(bundle)){
             return true;
         }
+        
+        getBaseActivity().showContentContainer(false);
+        
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         Log.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
-
+        
         switch (eventType) {
-        case GET_SHIPPING_METHODS_EVENT:
-            Log.d(TAG, "RECEIVED GET_SHIPPING_METHODS_EVENT");
+        case INIT_FORMS:
+            Log.d(TAG, "RECEIVED INIT_FORMS");
             break;
-        case SET_SHIPPING_METHOD_EVENT:
-            Log.d(TAG, "RECEIVED SET_SHIPPING_METHOD_EVENT");
+        case GET_POLL_FORM_EVENT:
+            Log.d(TAG, "RECEIVED GET_POLL_FORM_EVENT");
+            break;
+        case SET_POLL_ANSWER_EVENT:
+            Log.d(TAG, "RECEIVED SET_POLL_ANSWER_EVENT");
             break;
         default:
             break;
@@ -309,21 +381,7 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
         return false;
     }
     
-    /**
-     * ############# REQUESTS #############
-     */
-    
-    private void triggerSubmitShippingMethod(ContentValues values) {
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(SetShippingMethodHelper.FORM_CONTENT_VALUES, values);
-        Log.i(TAG, "TRIGGER: SET SHIPPING METHOD");
-        triggerContentEvent(new SetShippingMethodHelper(), bundle, this);
-    }
-    
-    private void triggerGetShippingMethods(){
-        Log.i(TAG, "TRIGGER: GET SHIPPING METHODS");
-        triggerContentEvent(new GetShippingMethodsHelper(), null, this);
-    }
+   
     
     /**
      * ########### RESPONSE LISTENER ###########  
@@ -336,10 +394,18 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
     public void onRequestError(Bundle bundle) {
         onErrorEvent(bundle);
     }
-        
+       
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.interfaces.IResponseCallback#onRequestComplete(android.os.Bundle)
+     */
     @Override
     public void onRequestComplete(Bundle bundle) {
         onSuccessEvent(bundle);
     }
     
+    /**
+     * ########### DIALOGS ###########  
+     */    
+
 }

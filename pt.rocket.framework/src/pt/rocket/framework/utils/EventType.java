@@ -122,7 +122,7 @@ public enum EventType {
 	
 	GET_POLL_FORM_FALLBACK_EVENT("http:/forms/poll/", RestContract.MAX_CACHE_TIME),
 	
-	SET_POLL_ANSWER_EVENT("https:/finish/checkoutpoll/", RestContract.NO_CACHE),
+	SET_POLL_ANSWER_EVENT("https:/multistep/checkoutpoll/", RestContract.NO_CACHE),
 	
 	GET_CREATE_ADDRESS_FORM_EVENT("addresscreate", RestContract.MAX_CACHE_TIME),
 	

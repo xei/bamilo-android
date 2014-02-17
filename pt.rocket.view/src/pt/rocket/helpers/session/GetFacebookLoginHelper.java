@@ -16,9 +16,9 @@ import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
 import pt.rocket.helpers.BaseHelper;
 import pt.rocket.helpers.HelperPriorityConfiguration;
+import pt.rocket.utils.CheckoutStepManager;
 import android.content.ContentValues;
 import android.os.Bundle;
-import android.util.Log;
 
 /**
  * Example helper
@@ -50,27 +50,24 @@ public class GetFacebookLoginHelper extends BaseHelper {
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
         
+        JSONObject jsonUser = null;
         try {
             if (jsonObject.has(RestConstants.JSON_USER_TAG)) {
-                jsonObject = jsonObject.getJSONObject(RestConstants.JSON_USER_TAG);
+                jsonUser = jsonObject.getJSONObject(RestConstants.JSON_USER_TAG);
                 if (saveCredentials) {
-                    contentValues.put(CustomerUtils.INTERNAL_PASSWORD_VALUE, jsonObject.getString(RestConstants.JSON_PASSWORD_TAG));
-                    contentValues.put(CustomerUtils.INTERNAL_EMAIL_VALUE, jsonObject.getString(RestConstants.JSON_EMAIL_TAG));
+                    contentValues.put(CustomerUtils.INTERNAL_PASSWORD_VALUE, jsonUser.getString(RestConstants.JSON_PASSWORD_TAG));
+                    contentValues.put(CustomerUtils.INTERNAL_EMAIL_VALUE, jsonUser.getString(RestConstants.JSON_EMAIL_TAG));
                     JumiaApplication.INSTANCE.getCustomerUtils().storeCredentials(contentValues);
                 }
             } else if (jsonObject.has(RestConstants.JSON_DATA_TAG)) {
-                jsonObject = jsonObject.getJSONObject(RestConstants.JSON_DATA_TAG);
+                jsonUser = jsonObject.getJSONObject(RestConstants.JSON_DATA_TAG);
             }
         } catch (JSONException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, new Customer(jsonObject));
+        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, new Customer(jsonUser));
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.FACEBOOK_LOGIN_EVENT);
-//        long elapsed = System.currentTimeMillis() - JumiaApplication.INSTANCE.timeTrackerMap.get(EventType.FACEBOOK_LOGIN_EVENT);
-//        Log.i("REQUEST", "event type response : "+bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY)+" time spent : "+elapsed);
-//        String trackValue = bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY) + " : "+elapsed;
-//        JumiaApplication.INSTANCE.writeToTrackerFile(trackValue);
+        bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextCheckoutStep(jsonObject));
         return bundle;
     }
     
