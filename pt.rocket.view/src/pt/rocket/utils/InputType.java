@@ -18,5 +18,5 @@ package pt.rocket.utils;
  *
  */
 public enum InputType {
-	text, number, password, radioGroup, checkBox, email, date, meta, metadate, semiRequired, list
+	text, number, password, radioGroup, checkBox, email, date, meta, metadate, semiRequired, list, hide
 }

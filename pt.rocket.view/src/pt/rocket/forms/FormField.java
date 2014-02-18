@@ -206,6 +206,8 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                 inputType = InputType.checkBox;
             } else if (formFieldString.equals("")) {
             	inputType = InputType.meta;
+            } else if (formFieldString.equals("hidden")) {
+                inputType = InputType.hide;
             } else {
             	return false;
             }

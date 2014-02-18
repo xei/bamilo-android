@@ -19,6 +19,7 @@ import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
@@ -77,7 +78,7 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
                 EnumSet.noneOf(EventType.class),
                 EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.Unknown,
-                0);
+                BaseActivity.CHECKOUT_NO_SET_HEADER);
     }
 
     /*

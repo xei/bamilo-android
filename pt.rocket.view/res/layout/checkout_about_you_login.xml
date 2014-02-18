@@ -13,7 +13,7 @@
     <org.holoeverywhere.widget.TextView
         android:id="@+id/checkout_login_toogle"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="@dimen/about_you_toogle_height"
         android:layout_alignParentLeft="true"
         android:layout_marginBottom="@dimen/margin_mid"
         android:background="@drawable/searchfield"
@@ -66,7 +66,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_large"
             android:gravity="center"
-            android:paddingLeft="3dp"
             android:text="@string/fgt_pass"
             android:textColor="@color/blue_basic"
             android:textSize="@dimen/text_small" />
@@ -91,8 +90,8 @@
                 android:background="@android:color/white"
                 android:fontFamily="roboto_regular"
                 android:gravity="center"
-                android:padding="10dp"
-                android:text="OR"
+                android:padding="@dimen/margin_large"
+                android:text="@string/or_text"
                 android:textColor="@color/grey_divider_light_text"
                 android:textSize="@dimen/text_l" />
         </RelativeLayout>

@@ -73,8 +73,8 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
         super(EnumSet.of(EventType.GET_SHIPPING_METHODS_EVENT), 
                 EnumSet.noneOf(EventType.class),
                 EnumSet.noneOf(MyMenuItem.class), 
-                NavigationAction.MyAccount, 
-                BaseActivity.CHECKOUT_STEP_3);
+                NavigationAction.Unknown, 
+                BaseActivity.CHECKOUT_SHIPPING);
     }
 
     /*
@@ -246,7 +246,6 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
         Log.i(TAG, "ON CLICK: SET SHIPPING METHOD");
         if(formGenerator.validate()){
             ContentValues values = formGenerator.save();
-            Log.i(TAG, "code1shipping : "+values.toString());
             JumiaApplication.INSTANCE.setShippingMethod(values);
             triggerSubmitShippingMethod(values);
         } 

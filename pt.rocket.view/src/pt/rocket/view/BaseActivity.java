@@ -66,6 +66,7 @@ import android.view.ViewStub;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -370,19 +371,11 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
      * @param action
      * @param titleResId
      * @author sergiopereira
-     */
-
-    
-    public static final int CHECKOUT_STEP_1 = -11;
-    public static final int CHECKOUT_STEP_2 = -22;
-    public static final int CHECKOUT_STEP_3 = -33;
-    public static final int CHECKOUT_STEP_4 = -44;
-    
+     */    
     public void updateBaseComponents(Set<MyMenuItem> enabledMenuItems, NavigationAction action, int titleResId) {
         // Update options menu and search bar
         menuItems = enabledMenuItems;
-        if (action != NavigationAction.Country)
-            findViewById(R.id.rocket_app_header_search).setVisibility(View.GONE);
+        if (action != NavigationAction.Country) findViewById(R.id.rocket_app_header_search).setVisibility(View.GONE);
         hideKeyboard();
         invalidateOptionsMenu();
         // Update the sliding menu
@@ -390,8 +383,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         updateSlidingMenu();
         // Update the title of fragment
         
-        if(setCheckoutHeader(titleResId))
-            Log.d(TAG, "SET CHECKOUT STEP");
+        if(setCheckoutHeader(titleResId));
         else if (titleResId == 0) {
             hideTitle();
             findViewById(R.id.totalProducts).setVisibility(View.GONE);
@@ -520,7 +512,12 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         sm.setSlidingEnabled(false);
         sm.setOnOpenedListener(this);
         sm.setOnClosedListener(this);
-        setSlidingActionBarEnabled(false);
+        try {
+            setSlidingActionBarEnabled(false);
+        } catch (IllegalStateException e) {
+            // It happens because is being called from the new checkout behavior
+            Log.w(TAG, "To enable Sliding Action Bar must be called in onCreate.");
+        }
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setHomeButtonEnabled(false);
         getSupportActionBar().setLogo(R.drawable.logo_ic);
@@ -539,6 +536,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         }, 0);
     }
 
+    // XXX
     /**
      * Customize slide menu and action bar for portrait The same for phone or tablet
      * 
@@ -1898,6 +1896,17 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
 
     }
     
+    /**
+     * ########## CHECKOUT HEADER ########## 
+     */
+    
+    public static final int CHECKOUT_ABOUT_YOU = -1;
+    public static final int CHECKOUT_BILLING = -2;
+    public static final int CHECKOUT_SHIPPING = -3;
+    public static final int CHECKOUT_PAYMENT = -4;
+    public static final int CHECKOUT_NO_SET_HEADER = -5;
+    
+    private boolean inLandscapeOnCheckout = false;
     
     
     /**
@@ -1906,47 +1915,107 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
      * @return true/false
      */
     private boolean setCheckoutHeader(int checkoutStep){
+        Log.d(TAG, "SET CHECKOUT HEADER STEP ID: " + checkoutStep);
+        
         int visibility = View.VISIBLE;
         boolean result = true;
         switch (checkoutStep) {
-        case CHECKOUT_STEP_1:
-            selectCheckoutStep(CHECKOUT_STEP_1);
-            unSelectCheckoutStep(CHECKOUT_STEP_2);
-            unSelectCheckoutStep(CHECKOUT_STEP_3);
-            unSelectCheckoutStep(CHECKOUT_STEP_4);
+        case CHECKOUT_ABOUT_YOU:
+            selectCheckoutStep(CHECKOUT_ABOUT_YOU);
+            unSelectCheckoutStep(CHECKOUT_BILLING);
+            unSelectCheckoutStep(CHECKOUT_SHIPPING);
+            unSelectCheckoutStep(CHECKOUT_PAYMENT);
             break;
-        case CHECKOUT_STEP_2:
-            unSelectCheckoutStep(CHECKOUT_STEP_1);
-            selectCheckoutStep(CHECKOUT_STEP_2);
-            unSelectCheckoutStep(CHECKOUT_STEP_3);
-            unSelectCheckoutStep(CHECKOUT_STEP_4);
+        case CHECKOUT_BILLING:
+            unSelectCheckoutStep(CHECKOUT_ABOUT_YOU);
+            selectCheckoutStep(CHECKOUT_BILLING);
+            unSelectCheckoutStep(CHECKOUT_SHIPPING);
+            unSelectCheckoutStep(CHECKOUT_PAYMENT);
             break;
-        case CHECKOUT_STEP_3:
-            unSelectCheckoutStep(CHECKOUT_STEP_1);
-            unSelectCheckoutStep(CHECKOUT_STEP_2);
-            selectCheckoutStep(CHECKOUT_STEP_3);
-            unSelectCheckoutStep(CHECKOUT_STEP_4);
+        case CHECKOUT_SHIPPING:
+            unSelectCheckoutStep(CHECKOUT_ABOUT_YOU);
+            unSelectCheckoutStep(CHECKOUT_BILLING);
+            selectCheckoutStep(CHECKOUT_SHIPPING);
+            unSelectCheckoutStep(CHECKOUT_PAYMENT);
             break;
-        case CHECKOUT_STEP_4:
-            unSelectCheckoutStep(CHECKOUT_STEP_1);
-            unSelectCheckoutStep(CHECKOUT_STEP_2);
-            unSelectCheckoutStep(CHECKOUT_STEP_3);
-            selectCheckoutStep(CHECKOUT_STEP_4);
+        case CHECKOUT_PAYMENT:
+            unSelectCheckoutStep(CHECKOUT_ABOUT_YOU);
+            unSelectCheckoutStep(CHECKOUT_BILLING);
+            unSelectCheckoutStep(CHECKOUT_SHIPPING);
+            selectCheckoutStep(CHECKOUT_PAYMENT);
             break;
+        case CHECKOUT_NO_SET_HEADER:
+            updateBaseComponentsInCheckout(View.GONE);
+            return true;
         default:
             visibility = View.GONE;
             result = false;
             break;
         }
-        // Set header visibility
-        findViewById(R.id.checkout_header).setVisibility(visibility);
-        // Force the state for other headers
-        if(visibility == View.VISIBLE) {
-            hideTitle();
-            findViewById(R.id.totalProducts).setVisibility(View.GONE);
-        }
+
+        // Update the base components for checkout
+        if(visibility == View.VISIBLE) updateBaseComponentsInCheckout(visibility);
+        // Update the base components for non checkout
+        else updateBaseComponentsOutCheckout(visibility);
+        
         // Return value
         return result;
+    }
+    
+    
+    /**
+     * Update the base components out checkout
+     * @param visibility
+     */
+    private void updateBaseComponentsOutCheckout(int visibility){
+        Log.d(TAG, "SET BASE FOR NON CHECKOUT: HIDE");
+        // Set header visibility
+        findViewById(R.id.checkout_header).setVisibility(visibility);
+        // Put sliding menu normal behavior
+        if(isTabletInLandscape(getApplicationContext()) && inLandscapeOnCheckout){
+            // Set the flag
+            inLandscapeOnCheckout = false;
+            getSlidingMenu().setSlidingEnabled(false);
+            // Get the width of main content
+            int mainContentWidth = (int) (WindowHelper.getWidth(getApplicationContext()) * getResources().getFraction(R.dimen.navigation_menu_offset, 1, 1));
+            findViewById(R.id.main_layout).getLayoutParams().width = mainContentWidth;
+            // Show Menu
+            getSlidingMenu().post(new Runnable() {
+                @Override
+                public void run() {
+                    showMenu();
+                }
+            });
+
+        }
+    }
+    
+    /**
+     * Update the base components in checkout
+     * @param visibility
+     */
+    private void updateBaseComponentsInCheckout(int visibility){
+        Log.d(TAG, "SET BASE FOR CHECKOUT: SHOW");
+        // Set header visibility
+        findViewById(R.id.checkout_header).setVisibility(visibility);
+        // Hide title and prod
+        hideTitle();
+        findViewById(R.id.totalProducts).setVisibility(View.GONE);
+        // Validate device and orientation
+        if(isTabletInLandscape(getApplicationContext())){
+            inLandscapeOnCheckout = true;
+            // Put sliding menu normal behavior
+            getSlidingMenu().setSlidingEnabled(true);
+            // Update with for main content
+            findViewById(R.id.main_layout).getLayoutParams().width = LayoutParams.MATCH_PARENT;
+            getSlidingMenu().post(new Runnable() {
+                @Override
+                public void run() {
+                    showContent();
+                }
+            });
+            
+        }
     }
     
     /**
@@ -1956,22 +2025,22 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
      */
     private void unSelectCheckoutStep(int step){
         switch (step) {
-        case CHECKOUT_STEP_1:
+        case CHECKOUT_ABOUT_YOU:
             findViewById(R.id.checkout_header_step_1).setSelected(false);
             findViewById(R.id.checkout_header_step_1_icon).setSelected(false);
             findViewById(R.id.checkout_header_step_1_text).setVisibility(View.GONE);
             break;
-        case CHECKOUT_STEP_2:
+        case CHECKOUT_BILLING:
             findViewById(R.id.checkout_header_step_2).setSelected(false);
             findViewById(R.id.checkout_header_step_2_icon).setSelected(false);
             findViewById(R.id.checkout_header_step_2_text).setVisibility(View.GONE);
             break;
-        case CHECKOUT_STEP_3:
+        case CHECKOUT_SHIPPING:
             findViewById(R.id.checkout_header_step_3).setSelected(false);
             findViewById(R.id.checkout_header_step_3_icon).setSelected(false);
             findViewById(R.id.checkout_header_step_3_text).setVisibility(View.GONE);
             break;
-        case CHECKOUT_STEP_4:
+        case CHECKOUT_PAYMENT:
             findViewById(R.id.checkout_header_step_4).setSelected(false);
             findViewById(R.id.checkout_header_step_4_icon).setSelected(false);
             findViewById(R.id.checkout_header_step_4_text).setVisibility(View.GONE);
@@ -1988,22 +2057,22 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
      */
     private void selectCheckoutStep(int step){
         switch (step) {
-        case CHECKOUT_STEP_1:
+        case CHECKOUT_ABOUT_YOU:
             findViewById(R.id.checkout_header_step_1).setSelected(true);
             findViewById(R.id.checkout_header_step_1_icon).setSelected(true);
             findViewById(R.id.checkout_header_step_1_text).setVisibility(View.VISIBLE);
             break;
-        case CHECKOUT_STEP_2:
+        case CHECKOUT_BILLING:
             findViewById(R.id.checkout_header_step_2).setSelected(true);
             findViewById(R.id.checkout_header_step_2_icon).setSelected(true);
             findViewById(R.id.checkout_header_step_2_text).setVisibility(View.VISIBLE);
             break;
-        case CHECKOUT_STEP_3:
+        case CHECKOUT_SHIPPING:
             findViewById(R.id.checkout_header_step_3).setSelected(true);
             findViewById(R.id.checkout_header_step_3_icon).setSelected(true);
             findViewById(R.id.checkout_header_step_3_text).setVisibility(View.VISIBLE);
             break;
-        case CHECKOUT_STEP_4:
+        case CHECKOUT_PAYMENT:
             findViewById(R.id.checkout_header_step_4).setSelected(true);
             findViewById(R.id.checkout_header_step_4_icon).setSelected(true);
             findViewById(R.id.checkout_header_step_4_text).setVisibility(View.VISIBLE);

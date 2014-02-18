@@ -119,8 +119,8 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         super(EnumSet.of(EventType.GET_CREATE_ADDRESS_FORM_EVENT, EventType.CREATE_ADDRESS_EVENT), 
                 EnumSet.noneOf(EventType.class),
                 EnumSet.noneOf(MyMenuItem.class), 
-                NavigationAction.MyAccount, 
-                BaseActivity.CHECKOUT_STEP_2);
+                NavigationAction.Unknown, 
+                BaseActivity.CHECKOUT_BILLING);
     }
 
     /*

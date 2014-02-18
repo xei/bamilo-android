@@ -304,6 +304,11 @@ public class DynamicFormItem {
             }
 
             break;
+        case hide:
+            String text1 = (null == value) ? "" : (String) value;
+            ((EditText) this.dataControl).setText(text1);
+            ((EditText) this.dataControl).setVisibility(View.GONE);
+            break;
         }
     }
 
@@ -396,7 +401,13 @@ public class DynamicFormItem {
             }
 
             break;
+        case hide:
+            String text1 = inStat.getString(getKey());
+            ((EditText) this.dataControl).setText(text1);
+            ((EditText) this.dataControl).setVisibility(View.GONE);
+            break;
         }
+
     }
 
     /**
@@ -442,6 +453,7 @@ public class DynamicFormItem {
         case date:
             result = dialogDate.getDate();
             break;
+        case hide:
         case email:
         case text:
         case password:
@@ -501,6 +513,7 @@ public class DynamicFormItem {
         case date:
             outState.putString(getKey(), dialogDate.getDate());
             break;
+        case hide:
         case email:
         case text:
         case password:
@@ -583,6 +596,8 @@ public class DynamicFormItem {
 
             break;
         }
+        case hide:
+            break;
         }
 
         if (null != errorControl) {
@@ -688,7 +703,10 @@ public class DynamicFormItem {
             }
 
             break;
+        case hide:
+            break;
         }
+        
 
         return result;
     }
@@ -917,13 +935,11 @@ public class DynamicFormItem {
         ((ViewGroup) this.control).addView(dataContainer);
     }
 
-    private void buildText(RelativeLayout dataContainer, RelativeLayout.LayoutParams params,
-            int controlWidth) {
+    private void buildText(RelativeLayout dataContainer, RelativeLayout.LayoutParams params, int controlWidth) {
         this.control.setLayoutParams(params);
         createTextDataContainer(controlWidth);
         int dataControlId = this.control.getId();
-        params = new RelativeLayout.LayoutParams(controlWidth,
-                RelativeLayout.LayoutParams.WRAP_CONTENT);
+        params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
 //        this.dataControl = createTextDataControl();
 //        this.dataControl.setId(parent.getNextId());
 //        this.dataControl.setLayoutParams(params);
@@ -998,6 +1014,18 @@ public class DynamicFormItem {
 
         });
     }
+    
+    /**
+     * Creates the control with hidden value
+     */
+    private void buildHide(RelativeLayout dataContainer, RelativeLayout.LayoutParams params, int controlWidth) {
+        this.control.setLayoutParams(params);
+        createTextDataContainer(controlWidth);
+        EditText editText = ((EditText) this.dataControl);
+        editText.setText(this.entry.getValue());
+        editText.setContentDescription(this.entry.getKey());
+        editText.setVisibility(View.GONE);
+    }
 
     /**
      * Creates the control with all the validation settings and mandatory representations
@@ -1046,7 +1074,10 @@ public class DynamicFormItem {
             case password:
                 buildText(dataContainer, params, controlWidth);
                 break;
-
+            case hide:
+                buildHide(dataContainer, params, controlWidth);
+                break;
+                
             default:
                 Log.w(TAG, "buildControl: Field type not suported (" + this.entry.getInputType()
                         + ") - " + this.entry.getInputType());

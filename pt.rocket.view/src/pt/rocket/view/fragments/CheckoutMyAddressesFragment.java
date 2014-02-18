@@ -49,9 +49,7 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
      * @return
      */
     public static CheckoutMyAddressesFragment getInstance(Bundle bundle) {
-        // if (loginFragment == null)
-        customerAddressesFragment = new CheckoutMyAddressesFragment();
-        return customerAddressesFragment;
+        return (customerAddressesFragment == null) ? customerAddressesFragment = new CheckoutMyAddressesFragment() : customerAddressesFragment;
     }
 
     private ViewGroup defaultContainer;
@@ -67,8 +65,8 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
         super(EnumSet.of(EventType.GET_CUSTOMER_ADDRESSES_EVENT), 
                 EnumSet.noneOf(EventType.class),
                 EnumSet.noneOf(MyMenuItem.class), 
-                NavigationAction.MyAccount, 
-                BaseActivity.CHECKOUT_STEP_2);
+                NavigationAction.Unknown, 
+                BaseActivity.CHECKOUT_BILLING);
     }
 
     /*

@@ -62,18 +62,20 @@ import com.facebook.widget.LoginButton;
 import de.akquinet.android.androlog.Log;
 
 /** 
- * 
- * 
+ * Class used to perform the login or sign up
  * @author sergiopereira
- * 
  */
 public class CheckoutAboutYouFragment extends BaseFragment implements OnClickListener, GraphUserCallback, StatusCallback, IResponseCallback {
 
     private static final String TAG = LogTagHelper.create(CheckoutAboutYouFragment.class);
 
-    private final static String FORM_ITEM_EMAIL = "email";
+    private static final String FORM_ITEM_EMAIL = "email";
 
-    private final static String FORM_ITEM_PASSWORD = "password";
+    private static final String FORM_ITEM_PASSWORD = "password";
+    
+    private static final String FB_PERMISSION_EMAIL = "email";
+    
+    private static CheckoutAboutYouFragment aboutYouFragment = null;
 
     private Form formResponse = null;
 
@@ -81,8 +83,6 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
 
     private Bundle savedInstanceState;
 
-    private static CheckoutAboutYouFragment loginFragment = null;
-    
     private UiLifecycleHelper uiHelper;
     
     private String loginOrigin = "";
@@ -108,18 +108,18 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
 
     private View signupToogle;
     
-    private static final String PERMISSION_EMAIL = "email";
+    
     
     /**
      * Get the instance of CheckoutAboutYouFragment
      * @return {@link BaseFragment}
      */
     public static CheckoutAboutYouFragment getInstance(Bundle bundle) {
-        loginFragment = new CheckoutAboutYouFragment();
+        aboutYouFragment = new CheckoutAboutYouFragment();
         if (bundle != null) {
-            loginFragment.loginOrigin = bundle.getString(ConstantsIntentExtra.LOGIN_ORIGIN);
+            aboutYouFragment.loginOrigin = bundle.getString(ConstantsIntentExtra.LOGIN_ORIGIN);
         }
-        return loginFragment;
+        return aboutYouFragment;
     }
 
     /**
@@ -130,7 +130,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
                 EnumSet.of(EventType.LOGIN_EVENT, EventType.FACEBOOK_LOGIN_EVENT, EventType.SET_SIGNUP_EVENT),
                 EnumSet.noneOf(MyMenuItem.class), 
                 NavigationAction.LoginOut, 
-                BaseActivity.CHECKOUT_STEP_1);
+                BaseActivity.CHECKOUT_ABOUT_YOU);
     }
 
     /*
@@ -367,15 +367,14 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             if (loginMainContainer.getVisibility() == View.VISIBLE) {
                 loginToogle.setSelected(false);
                 loginMainContainer.setVisibility(View.GONE);
-                //signupToogle.setSelected(true);
-                //signupMainContainer.setVisibility(View.VISIBLE);
+                signupToogle.setSelected(true);
+                signupMainContainer.setVisibility(View.VISIBLE);
             } else {
                 loginToogle.setSelected(true);
                 loginMainContainer.setVisibility(View.VISIBLE);
-                //signupToogle.setSelected(false);
-                //signupMainContainer.setVisibility(View.GONE);
+                signupToogle.setSelected(false);
+                signupMainContainer.setVisibility(View.GONE);
             }
-                
         }
     }
     
@@ -391,13 +390,13 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             if (signupMainContainer.getVisibility() == View.VISIBLE) {
                 signupToogle.setSelected(false);
                 signupMainContainer.setVisibility(View.GONE);
-                //loginToogle.setSelected(true);
-                //loginMainContainer.setVisibility(View.VISIBLE);
+                loginToogle.setSelected(true);
+                loginMainContainer.setVisibility(View.VISIBLE);
             } else {
                 signupToogle.setSelected(true);
                 signupMainContainer.setVisibility(View.VISIBLE);
-                //loginToogle.setSelected(false);
-                //loginMainContainer.setVisibility(View.GONE);
+                loginToogle.setSelected(false);
+                loginMainContainer.setVisibility(View.GONE);
             }
         }
     }
@@ -447,7 +446,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
     private void setFacebookButton(LoginButton button){
         button.setFragment(this);
         button.setLoginBehavior(SessionLoginBehavior.SUPPRESS_SSO);
-        button.setReadPermissions(Arrays.asList(PERMISSION_EMAIL));
+        button.setReadPermissions(Arrays.asList(FB_PERMISSION_EMAIL));
     }
     
     /**
@@ -514,7 +513,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
      */
     private boolean loadForm(Form form) {
         Log.i(TAG, "LOAD FORM: " + form.name);
-        loginForm = FormFactory.getSingleton().CreateForm(FormConstants.LOGIN_FORM, getActivity(), form);
+        loginForm = FormFactory.getSingleton().CreateForm(FormConstants.LOGIN_FORM, getBaseActivity(), form);
         loginFormContainer.removeAllViews();
         loginFormContainer.addView(loginForm.getContainer());
         setFormClickDetails(loginForm);
@@ -535,13 +534,13 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
     }
     
     /**
-     * Load the dynamic signup form
+     * Load the dynamic sign up form
      * 
      * @param form
      */
     private boolean loadSignupForm(Form form) {
         Log.i(TAG, "LOAD SIGNUP FORM: " + form.name);
-        signupForm = FormFactory.getSingleton().CreateForm(FormConstants.SIGNUP_FORM, getActivity(), form);
+        signupForm = FormFactory.getSingleton().CreateForm(FormConstants.SIGNUP_FORM, getBaseActivity(), form);
         signupFormContainer.removeAllViews();
         signupFormContainer.addView(signupForm.getContainer());
         setFormClickDetails(signupForm);
@@ -556,7 +555,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
      */
     
     /**
-     * Filter the reponse bundle
+     * Filter the response bundle
      * @param bundle
      * @return true/false
      */
@@ -680,6 +679,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
                     if (formResponse == null) triggerInitForm();
                 } else {
                     // Show error
+                    @SuppressWarnings("unchecked")
                     HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
                     showErrorDialog(errors);
                     getBaseActivity().showContentContainer(false);
@@ -689,6 +689,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         case SET_SIGNUP_EVENT:
             Log.w(TAG, "ON ERRER RECEIVED: SET_SIGNUP_EVENT");
             if (errorCode == ErrorCode.REQUEST_ERROR) {
+                @SuppressWarnings("unchecked")
                 HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY); 
                 showErrorDialog(errors);
                 getBaseActivity().showContentContainer(false);
@@ -726,15 +727,6 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         Log.i(TAG, "TRIGGER: SIGNUP EVENT");
         getBaseActivity().hideKeyboard();
         ContentValues values = signupForm.save();
-        // Get the flag for this scenario
-        /**
-         * TODO: Get the guest flag from form
-         */
-        //FormField scenarioItem = signupFormResponse.theRealFieldMapping.get("scenario");
-        // DynamicFormItem scenarioItem = signupForm.getItemByKey("scenario");
-        //values.put(scenarioItem.getName(), scenarioItem.getValue());
-        values.put("Alice_Module_Customer_Model_RegistrationForm[scenario]", "guest");
-        values.put(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, true);
         triggerSignup(values, true);
     }
 
@@ -872,7 +864,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
      * @param errors
      */
     private void showErrorDialog(HashMap<String, List<String>> errors){
-        Log.d(TAG, "SHOW LOGIN ERROR DIALOG");
+        Log.d(TAG, "SHOW ERROR DIALOG: " + errors.toString());
         List<String> errorMessages = (List<String>) errors.get(RestConstants.JSON_VALIDATE_TAG);
 
         if (errors != null && errorMessages != null && errorMessages.size() > 0) {
@@ -895,10 +887,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
 
                     });
             dialog.show(getBaseActivity().getSupportFragmentManager(), null);
-        } 
-        //else {
-        //    Toast.makeText(getBaseActivity(), "Please try with other email!", Toast.LENGTH_SHORT).show();
-        //}
+        }
     }
     
     /**

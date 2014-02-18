@@ -13,7 +13,7 @@
     <org.holoeverywhere.widget.TextView
         android:id="@+id/checkout_signup_toogle"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="@dimen/about_you_toogle_height"
         android:layout_alignParentLeft="true"
         android:layout_marginBottom="@dimen/margin_mid"
         android:background="@drawable/searchfield"
@@ -78,8 +78,8 @@
                 android:background="@android:color/white"
                 android:fontFamily="roboto_regular"
                 android:gravity="center"
-                android:padding="10dp"
-                android:text="OR"
+                android:padding="@dimen/margin_large"
+                android:text="@string/or_text"
                 android:textColor="@color/grey_divider_light_text"
                 android:textSize="@dimen/text_l" />
         </RelativeLayout>
@@ -92,7 +92,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20.00dp"
+            android:layout_marginTop="@dimen/margin_huge"
             android:text="@string/facebook_signup_button_text"
             fb:login_text="@string/facebook_signup_button_text" />
     </LinearLayout>
