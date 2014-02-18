@@ -23,7 +23,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import pt.rocket.framework.objects.IJSONSerializable;
-//import pt.rocket.framework.objects.PickUpStationObject;
+import pt.rocket.framework.objects.PickUpStationObject;
 import pt.rocket.framework.objects.PollOption;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.Constants;
@@ -317,10 +317,10 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                         if(scenario != null){
                             extrasValues.clear();
                             for (int j = 0; j < dataOptionsArray.length(); j++) {
-//                                PickUpStationObject pStation = new PickUpStationObject();
-//                                pStation.initialize(dataOptionsArray.getJSONObject(j));
-//                                extrasValues.put(pStation.getIdPickupstation(), pStation);
-//                                dataSet.put(pStation.getName(), pStation.getName());
+                                PickUpStationObject pStation = new PickUpStationObject();
+                                pStation.initialize(dataOptionsArray.getJSONObject(j));
+                                extrasValues.put(pStation.getIdPickupstation(), pStation);
+                                dataSet.put(pStation.getName(), pStation.getName());
                             }
                             
                         } else {

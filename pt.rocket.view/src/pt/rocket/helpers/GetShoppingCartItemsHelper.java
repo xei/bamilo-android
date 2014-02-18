@@ -14,6 +14,7 @@ import org.json.JSONObject;
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.framework.database.SectionsTablesHelper;
 import pt.rocket.framework.enums.RequestType;
+import pt.rocket.framework.interfaces.IMetaData;
 import pt.rocket.framework.objects.Section;
 import pt.rocket.framework.objects.ShoppingCart;
 import pt.rocket.framework.objects.VersionInfo;
@@ -42,6 +43,7 @@ public class GetShoppingCartItemsHelper extends BaseHelper {
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
         String md5 = Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY);
         bundle.putString(Constants.BUNDLE_MD5_KEY, md5);
+        bundle.putBoolean(IMetaData.MD_IGNORE_CACHE, true);
 //        Log.i(TAG, "code1removing making callback from request type : "+ EventType.GET_SHOPPING_CART_ITEMS_EVENT);
 //        Log.i(TAG, "code1removing making callback with id : "+ md5);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_SHOPPING_CART_ITEMS_EVENT);

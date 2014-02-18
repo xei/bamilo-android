@@ -6,7 +6,9 @@ package pt.rocket.helpers.checkout;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.forms.Form;
+import pt.rocket.forms.PaymentMethodForm;
 import pt.rocket.framework.enums.RequestType;
 import pt.rocket.framework.objects.Order;
 import pt.rocket.framework.utils.Constants;
@@ -24,7 +26,7 @@ import android.util.Log;
 public class CheckoutFinishHelper extends BaseHelper {
     
     private static String TAG = CheckoutFinishHelper.class.getSimpleName();
-    
+    private static final String PAYMENT_FORM = "payment_form";
     private static final EventType type = EventType.CHECKOUT_FINISH_EVENT;
             
     /*
@@ -97,6 +99,9 @@ public class CheckoutFinishHelper extends BaseHelper {
             if (jsonObject.has("payment")) {
                 Log.d(TAG, "HAS PAYMENT DATA");
                 JSONObject jsonPayment = jsonObject.optJSONObject("payment");
+                PaymentMethodForm mPaymentMethodForm = new PaymentMethodForm();
+                mPaymentMethodForm.initialize(jsonObject);
+                JumiaApplication.INSTANCE.setPaymentMethodForm(mPaymentMethodForm);
                 if (jsonPayment != null) {
                     Log.d(TAG, "PAYMENT DATA: " + jsonPayment.toString());
                     // Get type
@@ -121,6 +126,16 @@ public class CheckoutFinishHelper extends BaseHelper {
 
             // Paga:
             // payment: { type, method, form, url}
+            /**
+             * IPay payment methods: 
+             * M-PESA: { value: "17" } 
+             * Airtel_Money: { value: "18" } 
+             * yuCash: { value: "19" } 
+             * MI_Cards: { value: "20" } 
+             * VISA: { value: "21" } 
+             * Wallety: { value: "26" }
+             */
+            
             
             // PAGA     {"form":{ "action":"https:\/\/jumiaqa1v1.mypaga.com\/paga-web\/epay\/ePay.paga", "id":"Paga", "method":"post", "fields":[ {"id":"customer_account", "value":"9272","label":"","type":"hidden","rules":null,"key":"customer_account","name":"customer_account"},{"id":"description","value":"Jumia Invoice number 300036712","label":"","type":"hidden","rules":null,"key":"description","name":"description"},{"id":"invoice","value":"300036712","label":"","type":"hidden","rules":null,"key":"invoice","name":"invoice"},        {"id":"return_url","value":"https:\/\/alice-staging.jumia.co.ke\/checkout\/paga\/confirm\/","label":"","type":"hidden","rules":null,"key":"return_url","name":"return_url"},{"id":"subtotal","value":"2899.00","label":"","type":"hidden","rules":null,"key":"subtotal","name":"subtotal"},{"id":"key","value":"ed4e40cf-a9f9-403b-bf9b-37cda286d8a7","label":"","type":"hidden","rules":null,"key":"key","name":"key"},{"id":"method","value":"paga","label":"","type":"hidden","rules":null,"key":"method","name":"method"},{"id":"request_locale","value":"en","label":"","type":"hidden","rules":null,"key":"request_locale","name":"request_locale"}],"name":"Paga"},"type":"auto-submit-external","method":"post"}
             // VISA     {"form":{"action":"https:\/\/ipay.intrepid.co.ke\/inm\/","id":"iPay_VISA","method":"post","fields":[{"id":"order_id","value":"300089712","label":"","type":"hidden","rules":null,"key":"order_id","name":"order_id"},{"id":"invoice","value":"","label":"","type":"hidden","rules":null,"key":"invoice","name":"invoice"},{"id":"total","value":2899,"label":"","type":"hidden","rules":null,"key":"total","name":"total"},{"id":"phone1","value":"123456789","label":"","type":"hidden","rules":null,"key":"phone1","name":"phone1"},{"id":"email","value":"test02@jumia.com","label":"E-Mail","type":"email","rules":{"required":true,"min":5,"regex":"[a-zA-Z0-9äöüÄÖÜ_+.-]+@[a-zA-Z0-9äöüÄÖÜ][a-zA-Z0-9-äöüÄÖÜ.]+\\.([a-zA-Z]{2,6})","max":70},"key":"email","name":"email"},{"id":"vendor_ref","value":"jumiatest","label":"","type":"hidden","rules":null,"key":"vendor_ref","name":"vendor_ref"},{"id":"p1","value":"YV385AAAA9UQNAFAMZ-21772","label":"","type":"hidden","rules":null,"key":"p1","name":"p1"},{"id":"p2","value":"2899.00","label":"","type":"hidden","rules":null,"key":"p2","name":"p2"},{"id":"merchant","value":"Jumia Kenya","label":"","type":"hidden","rules":null,"key":"merchant","name":"merchant"},{"id":"callback","value":"https:\/\/alice-staging.jumia.co.ke\/checkout\/ipay\/confirm\/","label":"","type":"hidden","rules":null,"key":"callback","name":"callback"},{"id":"custemail","value":"","label":"","type":"hidden","rules":null,"key":"custemail","name":"custemail"},{"id":"tc","value":"","label":"I accept the Terms & Agreements","type":"checkbox","rules":{"required":{"message":"Required field","requiredValue":true}},"key":"tc","name":"tc"},{"id":"hashid","value":"0135993357804f02ab750c031a7eb956ec79d43a","label":"","type":"hidden","rules":null,"key":"hashid","name":"hashid"},{"id":"cur","value":"KES","label":"","type":"hidden","rules":null,"key":"cur","name":"cur"}],"name":"iPay_VISA"},"type":"submit-external","method":"post"}
@@ -152,7 +167,7 @@ public class CheckoutFinishHelper extends BaseHelper {
             
             //bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, new Order(jsonObject));
             bundle.putString(Constants.BUNDLE_RESPONSE_KEY, mOrderNumber);
-            bundle.putParcelable("payment_form", mPaymentForm);
+            bundle.putParcelable(PAYMENT_FORM, mPaymentForm);
             bundle.putString("payment_url", mPaymentUrl);
             
             

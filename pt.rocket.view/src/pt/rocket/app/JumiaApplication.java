@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import pt.rocket.forms.FormData;
+import pt.rocket.forms.PaymentMethodForm;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.components.NavigationListComponent;
 import pt.rocket.framework.objects.Address;
@@ -483,7 +484,9 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     }
     
     public void doUnbindService() {
-        if (mIsBound && mConnection != null) {
+        if (mIsBound) {
+            mIsBound = false;
+            
             // Detach our existing connection.
             unbindService(mConnection);
         }
@@ -600,6 +603,7 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     private Address billingAddress;
     private ContentValues shippingMethod;
     private ContentValues paymentMethod;
+    private PaymentMethodForm paymentMethodForm;
 
     public Address getShippingAddress() {
         return shippingAddress;
@@ -631,6 +635,14 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     
     public void setPaymentMethod(ContentValues paymentMethod ) {
         this.paymentMethod = paymentMethod;
+    }
+    
+    public void setPaymentMethodForm(PaymentMethodForm paymentMethodForm ) {
+        this.paymentMethodForm = paymentMethodForm;
+    }
+    
+    public PaymentMethodForm getPaymentMethodForm() {
+        return this.paymentMethodForm;
     }
     
     /**

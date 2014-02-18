@@ -221,8 +221,9 @@ public class GetShippingMethodsHelper extends BaseHelper {
             if (!form.initialize(formJSON)) Log.e(TAG, "Error initializing the form using the data");
             
             // Get cart
-            JSONObject cartJSON = jsonObject.getJSONObject("cart");
-            Log.d(TAG, "CAT JSON: " + cartJSON.toString());
+            JSONObject cartJSON = jsonObject.optJSONObject("cart");
+            if(cartJSON != null)
+                Log.d(TAG, "CAT JSON: " + cartJSON.toString());
 //            ShoppingCart cart = new ShoppingCart(JumiaApplication.INSTANCE.getItemSimpleDataRegistry());
 //            cart.initialize(cartJSON);
             

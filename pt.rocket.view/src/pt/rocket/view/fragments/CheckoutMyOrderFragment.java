@@ -16,6 +16,7 @@ import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.factories.FormFactory;
 import pt.rocket.forms.Form;
+import pt.rocket.forms.PaymentMethodForm;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.Address;
 import pt.rocket.framework.objects.Order;
@@ -380,9 +381,11 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
      * 
      */
     private void showShippingMethod() {
-        for (String key : shippingMethod.keySet()) {
-            String curKey = key;
-            String curValue = (String) shippingMethod.get(key);
+        Log.d(TAG, "code1shipping : " + shippingMethod.toString());
+        Set<Entry<String, Object>> ships = shippingMethod.valueSet();
+        for (Entry<String, Object> entry : ships) {
+            String curKey = entry.getKey();
+            String curValue = (String)  entry.getValue();
             Log.d(TAG, "SHIPPING METHOD: " + curKey + " " + curValue);
             if(curKey.equals("name")) mShippingMethodName.setText(curValue);
         }
@@ -392,12 +395,14 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
      * 
      */
     private void showPaymentOptions() {
-        for (String key : paymentOptions.keySet()) {
-            String curKey = key;
-            String curValue = (String) paymentOptions.get(key);
+        Set<Entry<String, Object>> ships = paymentOptions.valueSet();
+        for (Entry<String, Object> entry : ships) {
+            String curKey = entry.getKey();
+            String curValue = (String) entry.getValue();
             Log.d(TAG, "PAYMENT OPTION: " + curKey + " " + curValue);
             if(curKey.equals("name")) mPaymentName.setText(curValue);
         }
+        
     }
 
     /**
@@ -510,26 +515,34 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
             break;
         case CHECKOUT_FINISH_EVENT:
             Log.d(TAG, "RECEIVED CHECKOUT_FINISH_EVENT");
-            
-            String orderNumber = bundle.getString(Constants.BUNDLE_RESPONSE_KEY);
-            Form paymentForm = bundle.getParcelable("payment_form");
-            String paymentUrl = bundle.getString("payment_url");
-            
-            // XXX
-            if(paymentForm != null) {
-                Toast.makeText(getBaseActivity(), "LOADED PAYMENT FORM", Toast.LENGTH_SHORT).show();
-                DynamicForm formGenerator = FormFactory.getSingleton().CreateForm(FormConstants.PAYMENT_DETAILS_FORM, getActivity(), paymentForm);
-                mPaymentFormContainer.removeAllViews();
-                mPaymentFormContainer.addView(formGenerator.getContainer());                
-                mPaymentFormContainer.refreshDrawableState();
-                getBaseActivity().showContentContainer(false);
-            } else if(paymentUrl != null){
-                Toast.makeText(getBaseActivity(), "LOAD URL: " + paymentUrl, Toast.LENGTH_SHORT).show();
-                getBaseActivity().showContentContainer(false);
+            if(JumiaApplication.INSTANCE.getPaymentMethodForm().getPaymentType() == PaymentMethodForm.METHOD_AUTO_SUBMIT_EXTERNAL){
+                
+            } else if(JumiaApplication.INSTANCE.getPaymentMethodForm().getPaymentType() == PaymentMethodForm.METHOD_SUBMIT_EXTERNAL){
+                getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_EXTERNAL_PAYMENT, bundle, FragmentController.ADD_TO_BACK_STACK);
             } else {
-                bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR, orderNumber);
-                getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_THANKS, bundle, FragmentController.ADD_TO_BACK_STACK);
+                bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR, JumiaApplication.INSTANCE.getPaymentMethodForm().getOrderNumber());
+                getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_THANKS, bundle, FragmentController.ADD_TO_BACK_STACK); 
             }
+//            
+//            String orderNumber = bundle.getString(Constants.BUNDLE_RESPONSE_KEY);
+//            Form paymentForm = bundle.getParcelable("payment_form");
+//            String paymentUrl = bundle.getString("payment_url");
+//            
+//            // XXX
+//            IF(PAYMENTFORM != NULL) {
+//                TOAST.MAKETEXT(GETBASEACTIVITY(), "LOADED PAYMENT FORM", TOAST.LENGTH_SHORT).SHOW();
+//                DYNAMICFORM FORMGENERATOR = FORMFACTORY.GETSINGLETON().CREATEFORM(FORMCONSTANTS.PAYMENT_DETAILS_FORM, GETACTIVITY(), PAYMENTFORM);
+//                MPAYMENTFORMCONTAINER.REMOVEALLVIEWS();
+//                MPAYMENTFORMCONTAINER.ADDVIEW(FORMGENERATOR.GETCONTAINER());                
+//                MPAYMENTFORMCONTAINER.REFRESHDRAWABLESTATE();
+//                GETBASEACTIVITY().SHOWCONTENTCONTAINER(FALSE);
+//            } ELSE IF(PAYMENTURL != NULL){
+//                TOAST.MAKETEXT(GETBASEACTIVITY(), "LOAD URL: " + PAYMENTURL, TOAST.LENGTH_SHORT).SHOW();
+//                GETBASEACTIVITY().SHOWCONTENTCONTAINER(FALSE);
+//            } ELSE {
+//                BUNDLE.PUTSTRING(CONSTANTSCHECKOUT.CHECKOUT_THANKS_ORDER_NR, ORDERNUMBER);
+//                GETBASEACTIVITY().ONSWITCHFRAGMENT(FRAGMENTTYPE.CHECKOUT_THANKS, BUNDLE, FRAGMENTCONTROLLER.ADD_TO_BACK_STACK);
+//            }
                 
             
             

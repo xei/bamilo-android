@@ -22,6 +22,7 @@ import pt.rocket.view.fragments.ChangeCountryFragment;
 import pt.rocket.view.fragments.CheckoutAboutYouFragment;
 import pt.rocket.view.fragments.CheckoutCreateAddressFragment;
 import pt.rocket.view.fragments.CheckoutEditAddressFragment;
+import pt.rocket.view.fragments.CheckoutExternalPaymentFragment;
 import pt.rocket.view.fragments.CheckoutFinishFragment;
 import pt.rocket.view.fragments.CheckoutMyAddressesFragment;
 import pt.rocket.view.fragments.CheckoutMyOrderFragment;
@@ -321,6 +322,9 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             break;
         case CHECKOUT_THANKS:
             fragment = CheckoutThanksFragment.getInstance();
+            break;
+        case CHECKOUT_EXTERNAL_PAYMENT:
+            fragment = CheckoutExternalPaymentFragment.getInstance();
             break;
             
         default:
