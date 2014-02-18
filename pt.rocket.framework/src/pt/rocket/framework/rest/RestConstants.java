@@ -303,6 +303,7 @@ public class RestConstants {
 	 * Order Tracking TAGS
 	 */
 	public static final String JSON_ORDER_ID_TAG = "order_id";
+	public static final String JSON_ORDER_NUMBER_TAG = "order_nr";
 	public static final String JSON_ORDER_CREATION_DATE_TAG = "creation_date";
 	public static final String JSON_ORDER_ITEM_COLLECTION_TAG = "item_collection";
 	public static final String JSON_ORDER_LAST_UPDATE_TAG = "last_order_update";
@@ -326,6 +327,8 @@ public class RestConstants {
     public static final String JSON_HIDDEN_TAG = "hidden";
     public static final String JSON_CREATED_BY_TAG = "created_by";
     public static final String JSON_UPDATED_BY_TAG = "updated_by";
+    public static final String JSON_CUSTOMER_FIRST_NAME_TAG = "customer_first_name";
+    public static final String JSON_CUSTOMER_LAST_NAME_TAG = "customer_last_name";
     
     
     /**
