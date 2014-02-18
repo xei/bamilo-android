@@ -8,6 +8,7 @@ import org.json.JSONObject;
 
 import pt.rocket.forms.Form;
 import pt.rocket.framework.enums.RequestType;
+import pt.rocket.framework.interfaces.IMetaData;
 import pt.rocket.framework.objects.ShoppingCart;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
@@ -200,6 +201,7 @@ public class GetShippingMethodsHelper extends BaseHelper {
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.POST);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
+        bundle.putBoolean(IMetaData.MD_IGNORE_CACHE, true);
         bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
         return bundle;
     }

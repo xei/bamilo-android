@@ -355,9 +355,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     @Override
     protected void onDestroy() {
         super.onDestroy(); 
-        // OLD FRAMEWORK
-        // EventManager.getSingleton().removeResponseListener(this, allHandledEvents);
-        JumiaApplication.INSTANCE.doUnbindService();
+        JumiaApplication.INSTANCE.unRegisterFragmentCallback(mCallback);
         isRegistered = false;
     }
 

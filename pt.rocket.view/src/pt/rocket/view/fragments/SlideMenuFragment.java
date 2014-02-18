@@ -16,7 +16,6 @@ import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.components.NavigationListComponent;
-import pt.rocket.framework.objects.ShoppingCart;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LoadingBarView;
@@ -31,6 +30,7 @@ import pt.rocket.view.R;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,7 +60,7 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
 
     private View loadingBarContainer;
 
-    
+    private int recoveryCount = 0;
 
     private static DialogGenericFragment dialogLogout;
 
@@ -304,10 +304,19 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
         try {
             // For each child validate the selected item
             ViewGroup vGroup = ((ViewGroup) getView().findViewById(R.id.slide_menu_scrollable_container));
+            if(vGroup == null && recoveryCount <3 ){
+                recoveryCount++;
+                Message msg = new Message();
+                msg.arg1 = 0;
+                recoveryHandler.sendMessageDelayed(msg, 500);
+                return;
+            } else if(vGroup == null){
+                return;
+            }
             int count = vGroup.getChildCount();
             for (int i = 0; i < count; i++)
                 updateItem(vGroup.getChildAt(i));
-
+            recoveryCount = 0;
         } catch (NullPointerException e) {
             Log.w(TAG, "ON UPDATE NAVIGATION: NULL POINTER EXCEPTION");
             e.printStackTrace();
@@ -316,6 +325,14 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
             e.printStackTrace();
         }
     }
+    
+    Handler recoveryHandler = new Handler(){
+        public void handleMessage(android.os.Message msg) {
+            if(msg.arg1 == 0){
+                updateNavigationItems();
+            }
+        };
+    };
 
     /**
      * Update item

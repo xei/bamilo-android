@@ -146,7 +146,6 @@ public class JumiaApplication extends Application implements ExceptionCallback {
         //set the max number of concurrent network connections, default is 4
         AjaxCallback.setNetworkLimit(2);
         
-//        init(false);
         responseCallbacks = new HashMap<String, IResponseCallback>();
         // Get the current shop id
         SHOP_ID = ShopPreferences.getShopId(getApplicationContext());
@@ -191,22 +190,6 @@ public class JumiaApplication extends Application implements ExceptionCallback {
         // EventManager.getSingleton().triggerRequestEvent( event );
         CheckVersion.init(getApplicationContext());
     }
-
-//    public synchronized void waitForInitResult(IResponseCallback listener, boolean isReInit) {
-//        if (lastInitEvent != null) {
-//            Log.d(TAG, "Informing listener about last init event " + lastInitEvent);
-//            listener.onRequestComplete(lastInitEvent);
-//            lastInitEvent = null;
-//            return;
-//        } else {
-//            Log.d(TAG, "Informing listener " + isInitializing);
-//            this.initListener = listener;
-//            if (!isInitializing) {
-//                init(isReInit);
-//            }
-//        }
-//    }
-
 
     public synchronized void handleEvent(ErrorCode errorType, EventType eventType, Handler initializationHandler) {
         isInitializing = false;
@@ -488,7 +471,7 @@ public class JumiaApplication extends Application implements ExceptionCallback {
             mIsBound = false;
             
             // Detach our existing connection.
-            unbindService(mConnection);
+            //            unbindService(mConnection);
         }
     }
     

@@ -383,11 +383,16 @@ public class DynamicFormItem {
             this.errorControl.setVisibility(View.GONE);
 
             if (text.length() == 0) {
-                this.mandatoryControl
-                        .setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE
-                                : View.GONE);
+                if(this.mandatoryControl != null ){
+                    this.mandatoryControl
+                            .setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE
+                                    : View.GONE);
+                }
             } else {
-                this.mandatoryControl.setVisibility(View.GONE);
+                if(this.mandatoryControl != null ){
+                    this.mandatoryControl.setVisibility(View.GONE);    
+                }
+                
             }
 
             break;
