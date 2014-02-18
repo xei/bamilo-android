@@ -3,8 +3,11 @@
  */
 package pt.rocket.view.fragments;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.Proxy.Type;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map.Entry;
@@ -55,8 +58,12 @@ import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 
+import ch.boye.httpclientandroidlib.NameValuePair;
+import ch.boye.httpclientandroidlib.client.entity.UrlEncodedFormEntity;
 import ch.boye.httpclientandroidlib.cookie.Cookie;
+import ch.boye.httpclientandroidlib.message.BasicNameValuePair;
 import ch.boye.httpclientandroidlib.util.EncodingUtils;
+import ch.boye.httpclientandroidlib.util.EntityUtils;
 
 import com.shouldit.proxy.lib.ProxyConfiguration;
 import com.shouldit.proxy.lib.ProxySettings;
@@ -184,8 +191,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.checkoutweb, container, false);
         
         webview = (WebView) view.findViewById(R.id.webview);
-//        webview = new WebView(getActivity());
-//        mWebContainer.addView(webview);
         
         return view;    
     }
@@ -309,19 +314,26 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
         setProxy( paymentUrl );
         Log.d(TAG, "Loading Url: " + paymentUrl);
         String postData = "";
+        List<NameValuePair> parameters = new ArrayList<NameValuePair>(); 
         Set<Entry<String, Object>>  mValues = JumiaApplication.INSTANCE.getPaymentMethodForm().getContentValues().valueSet();
         boolean firstValue = true;
         for (Entry<String, Object> entry : mValues) {
-            if(firstValue){
-                postData+=entry.getKey()+"="+entry.getValue();
-                firstValue = false;
-            } else {
-                postData+="&"+entry.getKey()+"="+entry.getValue();    
-            }
+            parameters.add(new BasicNameValuePair(entry.getKey(),(String) entry.getValue()));
         }
         
         Log.i(TAG, "code1content : " + postData);
-        webview.postUrl(paymentUrl, EncodingUtils.getBytes(postData, "application/x-www-form-urlencoded"));
+        UrlEncodedFormEntity entity;
+        try {
+            entity = new UrlEncodedFormEntity(parameters);
+            webview.postUrl(paymentUrl, EntityUtils.toByteArray(entity));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } 
+        
+        
+        
         isRequestedPage = true;
     }
     
@@ -384,7 +396,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
 
         private static final String SUCCESS_URL_TAG = "checkout/success";
         private static final String JAVASCRIPT_PROCESS = "javascript:window.INTERFACE.processContent" + 
-                                                "(document.getElementById('jsonAppObject').innerHTML);";
+                                                "(document.innerHTML);";
         private boolean wasLoadingErrorPage;
         
         @Override
@@ -396,16 +408,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
             failedPageRequest = failingUrl;
             webview.stopLoading();
             webview.clearView();
-//            mCallbackCheckoutWebFragment.sendClickListenerToActivity(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Log.d( TAG, "showError: onClick:");
-//                    ((BaseActivity) getActivity()).showLoading();
-//                    isRequestedPage = true;
-//                    webview.requestFocus();
-//                    webview.loadUrl( failingUrl );
-//                }
-//            });
            
         }
 

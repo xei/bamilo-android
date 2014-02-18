@@ -259,14 +259,13 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
         else Log.i(TAG, "ON CLICK: UNKNOWN VIEW");
     }
     
-    
-    
     private void onClickSubmitPaymentButton() {
         Log.i(TAG, "ON CLICK: Submit Payment Method");
         if(formGenerator != null){
             if(formGenerator.validate()){
                 ContentValues values = formGenerator.save();
                 JumiaApplication.INSTANCE.setPaymentMethod(values);
+                Log.i(TAG, "code1payment : "+values.toString());
                 triggerSubmitPaymentMethod(values);
             } else {
                 Toast.makeText(getActivity(), "Please fill all the data",Toast.LENGTH_SHORT).show();
