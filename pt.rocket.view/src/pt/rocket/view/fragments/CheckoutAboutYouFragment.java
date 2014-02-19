@@ -681,7 +681,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
                     // Show error
                     @SuppressWarnings("unchecked")
                     HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
-                    showErrorDialog(errors);
+                    showErrorDialog(errors, R.string.error_login_title);
                     getBaseActivity().showContentContainer(false);
                 }
             }
@@ -691,7 +691,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             if (errorCode == ErrorCode.REQUEST_ERROR) {
                 @SuppressWarnings("unchecked")
                 HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY); 
-                showErrorDialog(errors);
+                showErrorDialog(errors, R.string.error_signup_title);
                 getBaseActivity().showContentContainer(false);
             }
             break;
@@ -863,7 +863,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
      * Dialog used to show an error
      * @param errors
      */
-    private void showErrorDialog(HashMap<String, List<String>> errors){
+    private void showErrorDialog(HashMap<String, List<String>> errors, int titleId){
         Log.d(TAG, "SHOW ERROR DIALOG: " + errors.toString());
         List<String> errorMessages = (List<String>) errors.get(RestConstants.JSON_VALIDATE_TAG);
 
@@ -872,7 +872,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             if(getBaseActivity() != null) getBaseActivity().showContentContainer(false);
             
             dialog = DialogGenericFragment.newInstance(true, true, false,
-                    getString(R.string.error_login_title),
+                    getString(titleId),
                     errorMessages.get(0),
                     getString(R.string.ok_label), "", new OnClickListener() {
 
