@@ -96,6 +96,7 @@ Then /^I should see the countries$/ do
   performAction('assert_text', "Morocco", true)
   performAction('assert_text', "Egypt", true)
   performAction('assert_text', "Ivory Coast", true)
+  performAction('assert_text', "Uganda", true)
 end
 
 Then /^I should see the corresponding server$/ do
@@ -119,7 +120,7 @@ Then /^I should see the corresponding server$/ do
 end
 
 Then /^I sould see the splash screen$/ do
-  performAction('assert_text', "Jumia Dev", true)
+  performAction('click_on_view_by_id', "imgView")
 end
 
 Then /^I should see the home$/ do

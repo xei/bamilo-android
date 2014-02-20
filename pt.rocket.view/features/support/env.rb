@@ -442,5 +442,79 @@ def initvars
     
     #cart
     @delete="Delete"
+    
+    ##### Uganda  ############################################ UG ##############################################################################
+    when "ug"
+    @venture_name="Uganda"
+    @sign_in="Sign In"
+    @wrong_username="faketester@tester.tt"
+    @invalidsearch= "addddd" 
+    @search_p= "nikon" 
+    @search="Search"
+    @myaccount="My Account"
+    @myinfo="User Data"
+    @categories="Categories"
+    @categoryfashion="Books"
+    @choose_country="Choose Country"
+    @order_status="Order Status"
+    
+    @checkoutNext="Next"
+    @checkout1="TestPayment"
+    @checkout3="Confirm Order"
+    
+    @emailerrormessage="Please fill in";
+    @passerrormessage="Please fill in the Password";
+    
+    @loginerror="Login failed"
+    @signout="Sign Out"
+    @mandatory="Please fill in the required(*) fields"
+    @sameemail="This email already exists."
+    @searchdefault="Please enter a term for suggestions!"
+    @nosuggest="No suggestions for your search term!"
+     
+    @addtocart="Add to Cart"
+    @home="Home"
+    @new_pass_short="The new password has to have at least 6 characters"
+   
+    #password recovery
+    @forgot_password="Forgot Password?"
+    @password_recovery="Password Recovery"
+    @pass_rec_empty_email="Please fill in the E-Mail"
+    @pass_rec_failed="Password recovery failed"
+    @pass_rec_sent="Email sent"
+    
+    #cart
+    @item_added="was added to shopping cart"
+    @no_items="You have no items in the cart"
+    @got_it="Got it"
+    @clear_cart_message="This clears the cart"
+    
+    #catalog
+    @currency= "USH"
+    @loading_items="Loading more items"
+    @popularity="POPULARITY"
+    @price_up="PRICE UP"
+    @price_down="PRICE DOWN"
+    @name="NAME"
+    @brand="BRAND"
+    
+    #product detail
+    @first_tip="Swipe left or right to"
+    @second_tip="Tap to open the product gallery"
+    @specification="Specification"
+    @please_choose="Please choose"
+    @search_v="flip flops"
+    @product_features="Product Features"
+    @product_description="Product Description"
+    @write_review="Write a Review"
+    @rating_t="posted by"
+    @write_review="Write a Review"
+    @send_review="Send Review"
+    @to_reviews="To reviews"
+    @messaging="Messaging"
+    
+    #cart
+    @delete="Delete"
+    
   end
 end
