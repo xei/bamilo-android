@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <product_count type="string" children="false" method="getString" optional="false"/>
     <category_ids type="string" children="false" method="getString" optional="false"/>
     <results type="jsonarray" children="true" method="getJSONArray" optional="false">
@@ -39,5 +38,4 @@
         	</children>	
         </children>
     </categories>
-
 </resources>

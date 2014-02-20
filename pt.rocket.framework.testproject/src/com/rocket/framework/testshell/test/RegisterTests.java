@@ -25,7 +25,7 @@ public class RegisterTests extends FrameworkServiceTests {
 		ContentValues contentValues = new ContentValues();
 		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_BIRTHDAY, RequestConstants.CUSTOMER_BIRTHDAY);
 		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_DAY, RequestConstants.CUSTOMER_DAY);
-		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_EMAIL, RequestConstants.CUSTOMER_EMAIL);
+		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_EMAIL, RequestConstants.CUSTOMER_NEW_EMAIL);
 		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_FIRST_NAME, RequestConstants.CUSTOMER_FIRST_NAME);
 		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_GENDER, RequestConstants.CUSTOMER_GENDER);
 		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_LAST_NAME, RequestConstants.CUSTOMER_LAST_NAME);
@@ -91,7 +91,7 @@ public class RegisterTests extends FrameworkServiceTests {
 		ContentValues contentValues = new ContentValues();
 		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_BIRTHDAY, RequestConstants.CUSTOMER_BIRTHDAY);
 		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_DAY, RequestConstants.CUSTOMER_DAY);
-		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_EMAIL, RequestConstants.CUSTOMER_EMAIL);
+		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_EMAIL, RequestConstants.CUSTOMER_NEW_EMAIL);
 		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_FIRST_NAME, RequestConstants.CUSTOMER_FIRST_NAME);
 		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_GENDER, RequestConstants.CUSTOMER_GENDER);
 		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_LAST_NAME, RequestConstants.CUSTOMER_LAST_NAME);
@@ -157,7 +157,7 @@ public class RegisterTests extends FrameworkServiceTests {
 		ContentValues contentValues = new ContentValues();
 		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_BIRTHDAY, RequestConstants.CUSTOMER_BIRTHDAY);
 		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_DAY, RequestConstants.CUSTOMER_DAY);
-		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_EMAIL, RequestConstants.CUSTOMER_EMAIL);
+		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_EMAIL, RequestConstants.CUSTOMER_NEW_EMAIL);
 		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_FIRST_NAME, RequestConstants.CUSTOMER_FIRST_NAME);
 		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_GENDER, RequestConstants.CUSTOMER_GENDER);
 		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_LAST_NAME, RequestConstants.CUSTOMER_LAST_NAME);
@@ -216,7 +216,7 @@ public class RegisterTests extends FrameworkServiceTests {
 		ContentValues contentValues = new ContentValues();
 		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_BIRTHDAY, RequestConstants.CUSTOMER_BIRTHDAY);
 		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_DAY, RequestConstants.CUSTOMER_DAY);
-		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_EMAIL, RequestConstants.CUSTOMER_EMAIL);
+		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_EMAIL, RequestConstants.CUSTOMER_NEW_EMAIL);
 		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_FIRST_NAME, RequestConstants.CUSTOMER_FIRST_NAME);
 		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_GENDER, RequestConstants.CUSTOMER_GENDER);
 		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_LAST_NAME, RequestConstants.CUSTOMER_LAST_NAME);
@@ -274,7 +274,7 @@ public class RegisterTests extends FrameworkServiceTests {
 		ContentValues contentValues = new ContentValues();
 		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_BIRTHDAY, RequestConstants.CUSTOMER_BIRTHDAY);
 		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_DAY, RequestConstants.CUSTOMER_DAY);
-		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_EMAIL, RequestConstants.CUSTOMER_EMAIL);
+		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_EMAIL, RequestConstants.CUSTOMER_NEW_EMAIL);
 		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_FIRST_NAME, RequestConstants.CUSTOMER_FIRST_NAME);
 		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_GENDER, RequestConstants.CUSTOMER_GENDER);
 		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_LAST_NAME, RequestConstants.CUSTOMER_LAST_NAME);
@@ -332,7 +332,7 @@ public class RegisterTests extends FrameworkServiceTests {
 		ContentValues contentValues = new ContentValues();
 		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_BIRTHDAY, RequestConstants.CUSTOMER_BIRTHDAY);
 		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_DAY, RequestConstants.CUSTOMER_DAY);
-		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_EMAIL, RequestConstants.CUSTOMER_EMAIL);
+		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_EMAIL, RequestConstants.CUSTOMER_NEW_EMAIL);
 		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_FIRST_NAME, RequestConstants.CUSTOMER_FIRST_NAME);
 		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_GENDER, RequestConstants.CUSTOMER_GENDER);
 		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_LAST_NAME, RequestConstants.CUSTOMER_LAST_NAME);

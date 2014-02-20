@@ -26,13 +26,16 @@ import com.rocket.framework.testshell.test.R;
  * 
  */
 public class GetLogoutHelper extends BaseHelper {
+	
+	public static final String LOGOUT_CONTENT_VALUES = "contentValues";
 
 	private static String TAG = GetLogoutHelper.class.getSimpleName();
 
 	@Override
 	public Bundle generateRequestBundle(Bundle args) {
 		Bundle bundle = new Bundle();
-		bundle.putString(Constants.BUNDLE_URL_KEY, EventType.LOGOUT_EVENT.action);
+		bundle.putParcelable(Constants.BUNDLE_FORM_DATA_KEY, args.getParcelable(LOGOUT_CONTENT_VALUES));
+		bundle.putString(Constants.BUNDLE_URL_KEY, args.getString(KEY_COUNTRY));
 		bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.POST);
 		bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
 		bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.LOGOUT_EVENT);

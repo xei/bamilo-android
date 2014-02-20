@@ -51,7 +51,7 @@ public class GetShoppingCartRemoveItemHelper extends BaseHelper {
 		boolean validation = true;
 
 		try {
-			XMLObject responseRules = XMLUtils.xmlParser(mContext, R.xml.get_category_rules);
+			XMLObject responseRules = XMLUtils.xmlParser(mContext, R.xml.get_shopping_cart_remove_item_rules);
 			validation = XMLUtils.jsonObjectAssertion(jsonObject, responseRules);
 			bundle.putBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY, validation);
 			if (!validation)

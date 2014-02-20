@@ -50,12 +50,16 @@ public class XMLUtils {
             if (eventType == XmlPullParser.START_TAG) {
                 // Advances "resources" tag
                 if (xpp.getName().equals("resources")) {
+//                    Log.i("TAG","1");
                     // if last element is "/resources" breaks the cycle
                     if (eventType == XmlPullParser.END_TAG) {
                         break;
                     }
                     eventType = xpp.next();
                 } else if (xpp.getAttributeValue(null, XMLReadingConfiguration.XML_TYPE_TAG) != null) {
+                    
+//                    Log.i("TAG"," NOW I'M BACK HERE");
+//                    Log.i("TAG", " xpp.getName " + xpp.getName() + " currentDepth "  );
 
                     XMLObject object = new XMLObject(xpp.getName(), null, xpp.getAttributeValue(null, XMLReadingConfiguration.XML_TYPE_TAG),
                             xpp.getAttributeValue(null, XMLReadingConfiguration.XML_METHOD_TAG), xpp.getAttributeValue(null,
@@ -83,7 +87,7 @@ public class XMLUtils {
                         }
 
                         childrenList.add(child);
-//                        Log.i("TAG", " 1 - End tag " + xpp.getName() +" => "+(eventType == XmlPullParser.END_TAG)+" xpp.getDepth "+xpp.getDepth()+" currentDepth " + currentDepth);
+//                        Log.i("TAG", " 1 - End tag " + xpp.getName() +" => "+(xpp.getEventType() == XmlPullParser.END_TAG)+" xpp.getDepth "+xpp.getDepth()+" currentDepth " + currentDepth);
                         eventType = xpp.next();
 //                        Log.i("TAG", " 2 -  End tag " + xpp.getName() +" => "+(eventType == XmlPullParser.END_TAG)+" xpp.getDepth "+xpp.getDepth()+" currentDepth " + currentDepth);
                         // Advancing end tags
@@ -92,16 +96,18 @@ public class XMLUtils {
 //                            Log.i("TAG", " xpp.getName " + xpp.getName() + " currentDepth " + currentDepth  );
                         }
                         
-                        
+//                      Log.i("TAG", " xpp.getName " + xpp.getName() + " currentDepth " + currentDepth +" +previous "+previousDepth +" xpp.getDepth "+xpp.getDepth() );
 
                         // if we find an item with a depth inferior, we stopped
                         // getting children
                         if (xpp.getDepth() < currentDepth) {
+//                            Log.i("TAG"," BREAK ");
                             break;
                         } else {
                             currentDepth = xpp.getDepth();
                         }
                     }
+//                    Log.i("TAG"," OBJECT IS "+object.getTag()+" has "+childrenList.size()+" children");
                     object.setChildrenNode(childrenList);
                     if (childrenList.size() == 0)
                         eventType = xpp.next();
@@ -112,9 +118,13 @@ public class XMLUtils {
                     // add object to master tree
                     masterChildrenList.add(object);
                     masterTree.setChildrenNode(masterChildrenList);
+                    
+//                    Log.i("TAG", " xpp.getName " + xpp.getName() + " currentDepth " + currentDepth +" +previous "+previousDepth +" xpp.getDepth "+xpp.getDepth() );
+                    eventType = xpp.getEventType();
                 }
 
             } else {
+//                Log.i("TAG","2");
                 eventType = xpp.next();
             }
 
@@ -164,9 +174,12 @@ public class XMLUtils {
 
                     xpp.next();
                     // Advancing end tags
-                    if (xpp.getEventType() == XmlPullParser.END_TAG && xpp.getDepth() != parentDepth)
+                    while (xpp.getEventType() == XmlPullParser.END_TAG && xpp.getDepth() != parentDepth){
+//                        Log.i("TAG"," END TAG  1 "+xpp.getName());
                         xpp.next();
-
+                    }
+                    
+//                    Log.i("TAG"," END TAG 2 "+xpp.getName());
                     currentDepth = xpp.getDepth();
                 }
             } 
@@ -254,26 +267,32 @@ public class XMLUtils {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
                         jsonIsValid = false;
+                        break;
                     }
 
                 }
             } catch (SecurityException e) {
                 e.printStackTrace();
                 jsonIsValid = false;
+                break;
             } catch (NoSuchMethodException e) {
                 e.printStackTrace();
                 jsonIsValid = false;
+                break;
             } catch (IllegalArgumentException e) {
                 e.printStackTrace();
                 jsonIsValid = false;
+                break;
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
                 jsonIsValid = false;
+                break;
             } catch (InvocationTargetException e) {
 
                 if (rules.get(i).isOptional() == false) {
                     e.printStackTrace();
                     jsonIsValid = false;
+                    break;
                 }
             }
 

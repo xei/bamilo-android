@@ -10,7 +10,7 @@
 		    <group_type type="integer" children="false" method="getInt" optional="false"/>
 			<group_title type="string" children="false" method="getString" optional="false"/>
 			<data type="jsonarray" children="true" method="getJSONArray" optional="false">
-			    <id type="integer" children="false" method="getInt" optional="false"/>
+			    <id type="integer" children="false" method="getInt" optional="true"/>
 			    <attributes type="jsonobject" children="true" method="getJSONObject" optional="true">
 			        <description type="string" children="false" method="getString" optional="true"/>
 			        <image_list type="jsonarray" children="true" method="getJSONArray" optional="true">

@@ -12,9 +12,9 @@
         <price type="string" children="false" method="getString" optional="false"/>
         <max_price type="string" children="false" method="getString" optional="false"/>
         <brand type="string" children="false" method="getString" optional="false"/>
-        <special_price type="string" children="false" method="getString" optional="false"/>
-        <max_special_price type="string" children="false" method="getString" optional="false"/>
-        <max_saving_percentage type="string" children="false" method="getString" optional="false"/>
+        <special_price type="string" children="false" method="getString" optional="true"/>
+        <max_special_price type="string" children="false" method="getString" optional="true"/>
+        <max_saving_percentage type="string" children="false" method="getString" optional="true"/>
         <avr type="string" children="false" method="getString" optional="true"/>
         <sum type="string" children="false" method="getString" optional="true"/>
         <categories type="jsonarray" children="false" method="getJSONArray" optional="false"/>

@@ -35,7 +35,7 @@ public class GetShoppingCartAddItemHelper extends BaseHelper {
 	@Override
 	public Bundle generateRequestBundle(Bundle args) {
 		Bundle bundle = new Bundle();
-		bundle.putString(Constants.BUNDLE_URL_KEY, EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT.action);
+		bundle.putString(Constants.BUNDLE_URL_KEY, args.getString(BaseHelper.KEY_COUNTRY));
 		bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
 		bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.POST);
 		bundle.putParcelable(Constants.BUNDLE_FORM_DATA_KEY, args.getParcelable(ADD_ITEM));
@@ -49,7 +49,7 @@ public class GetShoppingCartAddItemHelper extends BaseHelper {
 		boolean validation = true;
 
 		try {
-			XMLObject responseRules = XMLUtils.xmlParser(mContext, R.xml.get_category_rules);
+			XMLObject responseRules = XMLUtils.xmlParser(mContext, R.xml.get_shopping_cart_add_item_rules);
 			validation = XMLUtils.jsonObjectAssertion(jsonObject, responseRules);
 			bundle.putBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY, validation);
 			if (!validation)
