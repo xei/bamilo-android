@@ -251,7 +251,7 @@ function checkErrors($test, $result, $country){
 	global $count_passed;	
 	global $failed_tests;
 	foreach ($result as $value){
-		if (strpos($value,'Error') !== false) {
+		if (strpos($value,'Error') !== false && strpos($value,'NullPointerException') !== false) {
 			$count_error=  $count_error + 1;
 			$failed_tests =$failed_tests.$test.$country."\n";
 			echo "\033[01;5;31mFAILED\033[0m\n";
