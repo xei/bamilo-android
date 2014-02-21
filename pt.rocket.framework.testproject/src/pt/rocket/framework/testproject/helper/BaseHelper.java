@@ -49,7 +49,13 @@ public abstract class BaseHelper {
             boolean validation = true;
 
             try {
-                XMLObject generalRules = XMLUtils.xmlParser(mContext, R.xml.general_rules);
+            	XMLObject generalRules;
+            	if(bundle.getBoolean(Constants.BUNDLE_METADATA_REQUIRED_KEY)){
+            		generalRules = XMLUtils.xmlParser(mContext, R.xml.general_rules);	
+            	} else {
+            		generalRules = XMLUtils.xmlParser(mContext, R.xml.general_rules_metadata_not_required);	
+            	}
+                
                 validation = XMLUtils.jsonObjectAssertion(jsonObject , generalRules);
                 bundle.putBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY, validation);
                 Log.i(TAG," received validation "+validation);

@@ -158,8 +158,9 @@ public class FrameworkServiceTests extends ServiceTestCase<RemoteService> {
      * @param iResponseCallback
      * @return the md5 of the reponse
      */
-    public String sendRequest(Bundle args, final BaseHelper helper, final pt.rocket.framework.testproject.interfaces.IResponseCallback iResponseCallback) {
-        Bundle bundle = helper.generateRequestBundle(args);
+    public String sendRequest(final Bundle args, final BaseHelper helper, final pt.rocket.framework.testproject.interfaces.IResponseCallback iResponseCallback) {
+    	final boolean metadataRequired = args.getBoolean(Constants.BUNDLE_METADATA_REQUIRED_KEY, true);
+    	Bundle bundle = helper.generateRequestBundle(args);
         String md5 = Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY);
         bundle.putString(Constants.BUNDLE_MD5_KEY, md5);
 
@@ -168,6 +169,7 @@ public class FrameworkServiceTests extends ServiceTestCase<RemoteService> {
             @Override
             public void onRequestComplete(Bundle bundle) {
                 // We have to parse this bundle to the final one
+            	bundle.putBoolean(Constants.BUNDLE_METADATA_REQUIRED_KEY, metadataRequired);
                 Bundle formatedBundle = (Bundle) helper.checkResponseForStatus(bundle, mContext);
                 if (iResponseCallback != null) {
                     if ((ErrorCode) formatedBundle.getSerializable(Constants.BUNDLE_ERROR_KEY) == ErrorCode.NO_ERROR) {
