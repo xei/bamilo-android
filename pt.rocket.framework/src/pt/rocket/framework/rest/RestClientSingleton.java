@@ -337,8 +337,6 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 		
 		EventType eventType = (EventType) metaData
 				.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-//		Log.i(TAG, "code1removing executeHttpRequest with id : "+ md5);
-//		Log.i(TAG, "code1removing executeHttpRequest with eventType : "+ eventType);
 		
 		Boolean priority = metaData.getBoolean(Constants.BUNDLE_PRIORITY_KEY,
 				false);
@@ -347,12 +345,6 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 					Constants.FAILURE, ErrorCode.NO_NETWORK, result, md5,
 					priority));
 		}
-		// Log.i(TAG, " PRIORITY REQUEST => " + priority);
-
-		// for (Map.Entry<String, String> headerEntry :
-		// DEFAULT_HEADER.entrySet()) {
-		// httpRequest.addHeader(headerEntry.getKey(), headerEntry.getValue());
-		// }
 
 		metaData.putString(IMetaData.URI, httpRequest.getURI().toString());
 		if (metaData.getBoolean(IMetaData.MD_IGNORE_CACHE)) {
@@ -458,6 +450,7 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 				Log.w(TAG,
 						"Got empty entity for request: " + httpRequest.getURI()
 								+ " -> " + statusCode);
+				EntityUtils.consume(entity);
 				return null;
 			}
 			// FIXME - OutOfMemoryError

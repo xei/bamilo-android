@@ -29,7 +29,7 @@ public class Constants {
 	public static final String BUNDLE_WRONG_PARAMETER_MESSAGE_KEY = "parametererrormessage";
 	public static final String BUNDLE_ERROR_OCURRED_KEY = "errorocurred";
 	public static final String BUNDLE_NEXT_STEP_KEY = "next_step";
-	
+	public static final String BUNDLE_METADATA_REQUIRED_KEY = "metadata_required";
 	/**
 	 * Test bundle information - key used to pass the result of the assertion made for the generic rules
 	 */
