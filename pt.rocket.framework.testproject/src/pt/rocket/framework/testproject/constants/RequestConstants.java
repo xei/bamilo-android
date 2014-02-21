@@ -103,5 +103,16 @@ public class RequestConstants {
 	public static final String PRODUCT_SKU_UG = "SA948ELAAEAUNAFAMZ";
 	public static final String PRODUCT_SKU_SIMPLE_UG = "SA948ELAAEAUNAFAMZ-35467";
 	
+	/**
+	 * About you
+	 */
+	
+	public static final String KEY_CUSTOMER_SIGNUP_EMAIL = "Alice_Module_Customer_Model_RegistrationForm[email]";
+	public static final String KEY_CUSTOMER_SIGNUP_SCENARIO = "Alice_Module_Customer_Model_RegistrationForm[scenario]";
+	
+	static Random rand2 = new Random();
+	static int n2 = rand2.nextInt(10000) + 1;
+	public static final String CUSTOMER_SIGNUP_EMAIL = "tester"+n+"@mailinator.com";
+	public static final String CUSTOMER_SIGNUP_SCENARIO = "guest";
 }
 

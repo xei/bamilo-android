@@ -12,13 +12,13 @@
          <password type="string" children="false" method="getString"  optional="false"/>
          <is_confirmed type="string" children="false" method="getString"  optional="false"/>
          <created_at type="string" children="false" method="getString" optional="false" />
-         <updated_at type="string" children="false" method="getString" optional="false" />
-         <created_by type="string" children="false" method="getString" optional="false" />
-         <updated_by type="string" children="false" method="getString"  optional="false"/>
+<!--          <updated_at type="string" children="false" method="getString" optional="false" /> -->
+<!--          <created_by type="string" children="false" method="getString" optional="false" /> -->
+<!--          <updated_by type="string" children="false" method="getString"  optional="false"/> -->
          <fk_language type="string" children="false" method="getString" optional="true" />
          <fk_venture type="string" children="false" method="getString" optional="true" />
          <corporate_customer type="string" children="false" method="getString" optional="true" />
-         <address_collection type="jsonobject" children="false" method="getJSONObject" optional="true"/>
+<!--          <address_collection type="jsonobject" children="false" method="getJSONObject" optional="true"/> -->
     </user>
     
 </resources>

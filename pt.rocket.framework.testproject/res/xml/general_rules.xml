@@ -8,6 +8,8 @@
    		<expire type="string" children="false" method="getString"  optional="false"/>
    		<YII_CSRF_TOKEN type="string" children="false" method="getString"  optional="false"/>
    </session>
-   <metadata type="jsonobject" children="false" method="getJSONObject" optional="false"/>
+   <metadata type="jsonobject" children="true" method="getJSONObject" optional="false">
+       <md5 type="string" children="false" method="getString" optional="true"/>
+   </metadata>
 
 </resources>
