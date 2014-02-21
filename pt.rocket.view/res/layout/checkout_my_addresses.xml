@@ -3,11 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginLeft="@dimen/margin_mid"
-    android:layout_marginRight="@dimen/margin_mid" >
+    android:layout_marginRight="@dimen/margin_mid"
+    android:background="@android:color/white" >
 
     <!-- CONTENT -->
 
     <ScrollView
+        android:id="@+id/checkout_addresses_one_scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/checkout_addresses_button_enter"
@@ -19,82 +21,13 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <!-- DEFAULT ADDRESSES -->
+            <!-- TOP ADDRESSES -->
 
-            <org.holoeverywhere.widget.TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="@dimen/margin_huge"
-                android:fontFamily="roboto_regular"
-                android:gravity="left"
-                android:text="Shipping Address"
-                android:textColor="@color/orange_basic"
-                android:textSize="@dimen/text_l" />
+            <include layout="@layout/checkout_my_addresses_top" />
 
-            <View style="@style/divider_horizontal" />
+            <!-- BOTTOM ADDRESSES -->
 
-            <LinearLayout
-                android:id="@+id/checkout_addresses_default_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_midhuge"
-                android:layout_marginTop="@dimen/margin_small"
-                android:orientation="vertical" >
-            </LinearLayout>
-
-            <!-- BILLING CHECK BOX -->
-
-            <org.holoeverywhere.widget.CheckBox
-                android:id="@+id/checkout_address_billing_checkbox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_midhuge"
-                android:text="Billing to the same address"
-                android:textSize="@dimen/text_m"
-                android:fontFamily="roboto_regular" />
-
-            <!-- OTHER ADDRESSES -->
-
-            <org.holoeverywhere.widget.TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="@dimen/margin_huge"
-                android:drawableEnd="@drawable/btn_addaddress_orange"
-                android:fontFamily="roboto_regular"
-                android:gravity="left"
-                android:text="Other Addresses"
-                android:textColor="@color/orange_basic"
-                android:textSize="@dimen/text_l" />
-
-            <View style="@style/divider_horizontal" />
-
-            <LinearLayout
-                android:id="@+id/checkout_addresses_other_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_midhuge"
-                android:layout_marginTop="@dimen/margin_midhuge"
-                android:orientation="vertical" >
-            </LinearLayout>
-
-            <!-- ADD NEW ADDRESS -->
-
-            <org.holoeverywhere.widget.Button
-                android:id="@+id/checkout_addresses_button_add"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_mid"
-                android:background="@android:color/transparent"
-                android:drawableEnd="@drawable/ico_addaddress_grey"
-                android:fontFamily="roboto_regular"
-                android:gravity="left|center"
-                android:text="Add new address"
-                android:textColor="@color/grey_divider_light_text"
-                android:textSize="@dimen/text_l" />
-
-            <View style="@style/divider_horizontal" />
+            <include layout="@layout/checkout_my_addresses_bottom" />
         </LinearLayout>
     </ScrollView>
 
@@ -105,6 +38,7 @@
         style="@style/button_orange_style"
         android:layout_alignParentBottom="true"
         android:fontFamily="roboto_regular"
-        android:text="Next" />
+        android:text="@string/next_button"
+        android:width="@dimen/inner_container_width" />
 
 </RelativeLayout>

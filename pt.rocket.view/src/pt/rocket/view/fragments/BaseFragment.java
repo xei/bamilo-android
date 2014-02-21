@@ -7,13 +7,11 @@ import java.util.Calendar;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import pt.rocket.app.JumiaApplication;
-import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.controllers.fragments.FragmentController;
+import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.service.IRemoteServiceCallback;
@@ -26,10 +24,7 @@ import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.OnActivityFragmentInteraction;
-import pt.rocket.utils.ServiceSingleton;
-import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.view.BaseActivity;
-import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -90,7 +85,7 @@ public abstract class BaseFragment extends Fragment implements
 
     public BaseFragment() {
     }
-    protected BaseActivity mainActivity;
+    protected static BaseActivity mainActivity;
     
     /**
      * Constructor
@@ -261,7 +256,8 @@ public abstract class BaseFragment extends Fragment implements
         // Recycle bitmaps
         if (getView() != null)
             unbindDrawables(getView());
-        mainActivity = null;
+        
+        // mainActivity = null;
     }
 
     /**

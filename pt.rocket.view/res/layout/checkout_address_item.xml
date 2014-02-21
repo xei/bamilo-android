@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/checkout_address_master"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@android:color/white"
     android:orientation="vertical" >
 
     <!-- ITEM -->
@@ -9,7 +11,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="13.33dp"
+        android:layout_marginBottom="@dimen/margin_large"
+        android:layout_marginLeft="@dimen/margin_large"
+        android:layout_marginRight="@dimen/margin_small"
+        android:layout_marginTop="@dimen/margin_large"
         android:orientation="horizontal" >
 
         <!-- VALUES -->
@@ -25,7 +30,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="roboto_regular"
-                android:text="Kundle XYZ"
                 android:textColor="@color/grey_middle"
                 android:textSize="@dimen/text_l" />
 
@@ -34,7 +38,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="roboto_regular"
-                android:text="Franzoy Str 24"
                 android:textColor="@color/grey_middle"
                 android:textSize="@dimen/text_l" />
 
@@ -43,7 +46,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="roboto_regular"
-                android:text="Kuala Lumpur  WP Kuala Lumpur"
                 android:textColor="@color/grey_middle"
                 android:textSize="@dimen/text_l" />
 
@@ -52,7 +54,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="roboto_regular"
-                android:text="10458"
                 android:textColor="@color/grey_middle"
                 android:textSize="@dimen/text_l" />
 
@@ -61,46 +62,45 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="roboto_regular"
-                android:text="1234567"
                 android:textColor="@color/grey_middle"
                 android:textSize="@dimen/text_l" />
         </LinearLayout>
 
         <!-- BUTTONS -->
 
-        <RelativeLayout
+        <ImageView
+            android:id="@+id/checkout_address_item_btn_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:paddingLeft="@dimen/margin_mid"
+            android:paddingRight="@dimen/margin_mid"
+            android:src="@drawable/btn_remove"
+            android:visibility="visible" />
+
+        <LinearLayout
             android:id="@+id/checkout_address_item_btn_container"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical" >
 
-            <org.holoeverywhere.widget.CheckBox
+            <RadioButton
                 android:id="@+id/checkout_address_item_btn_radio"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:button="@drawable/selector_address_radio" />
 
             <ImageView
                 android:id="@+id/checkout_address_item_btn_edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/checkout_address_item_btn_radio"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_gravity="bottom"
+                android:paddingLeft="@dimen/margin_mid"
+                android:paddingRight="@dimen/margin_mid"
                 android:src="@drawable/btn_edit" />
-
-            <ImageView
-                android:id="@+id/checkout_address_item_btn_delete"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/checkout_address_item_btn_edit"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp"
-                android:src="@drawable/btn_remove" />
-        </RelativeLayout>
+        </LinearLayout>
     </LinearLayout>
 
     <!-- DIVIDER -->

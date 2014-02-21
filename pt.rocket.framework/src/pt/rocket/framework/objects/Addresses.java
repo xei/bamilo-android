@@ -1,5 +1,6 @@
 package pt.rocket.framework.objects;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -13,7 +14,6 @@ import android.util.Log;
 
 /**
  * Class used to save the customer addresses
- * TODO: Save the fast line from JSON object 
  * @author sergiopereira
  *
  */
@@ -63,8 +63,6 @@ public class Addresses implements IJSONSerializable, Parcelable {
 	            addresses.put(key, new Address((JSONObject) jsonOther.get(key)));
 	        }
 		}
-		// TODO: Get fast line
-		// fastline = new Address().initialize(jsonObject.getJSONObject(RestConstants.JSON_FASTLINE_TAG));
         return true;
 	}
 	
@@ -85,14 +83,12 @@ public class Addresses implements IJSONSerializable, Parcelable {
 		return shippingAddress;
 	}
 
-
 	/**
 	 * @return the billingAddress
 	 */
 	public Address getBillingAddress() {
 		return billingAddress;
 	}
-
 
 	/**
 	 * @return the fastline
@@ -101,14 +97,12 @@ public class Addresses implements IJSONSerializable, Parcelable {
 		return fastline;
 	}
 
-
 	/**
 	 * @return the addresses
 	 */
 	public HashMap<String, Address> getAddresses() {
 		return addresses;
 	}
-
 
 	/**
 	 * @param shippingAddress the shippingAddress to set
@@ -117,14 +111,12 @@ public class Addresses implements IJSONSerializable, Parcelable {
 		this.shippingAddress = shippingAddress;
 	}
 
-
 	/**
 	 * @param billingAddress the billingAddress to set
 	 */
 	public void setBillingAddress(Address billingAddress) {
 		this.billingAddress = billingAddress;
 	}
-
 
 	/**
 	 * @param fastline the fastline to set
@@ -141,16 +133,64 @@ public class Addresses implements IJSONSerializable, Parcelable {
 		this.addresses = addresses;
 	}
 	
+	/**
+	 * Validate has shipping address
+	 * @return true/false
+	 */
 	public boolean hasShippingAddress(){
 		return (shippingAddress != null) ? true : false;
 	}
 	
+	/**
+	 * Validate has billing address
+	 * @return true/false
+	 */
 	public boolean hasBillingAddress(){
 		return (billingAddress != null) ? true : false;
 	}
 	
+	/**
+	 * Validate has other address
+	 * @return true/false
+	 */
 	public boolean hasOtherAddresses(){
 		return (addresses != null && addresses.size() > 0) ? true : false;
+	}
+	
+	/**
+	 * Validate if the shipping and billing addresses are the same
+	 * @return true/false
+	 */
+	public boolean hasDefaultShippingAndBillingAddress(){
+		return (shippingAddress.getId() == billingAddress.getId()) ? true : false;
+	}
+	
+	/**
+	 * Method used to switch the defaults address for the current
+	 * @param position
+	 */
+	public void switchShippingAddress(int position){
+		try {
+			ArrayList<Address> array = new ArrayList<Address>(addresses.values()) ;
+			// Get selected address
+			Address selectedAddress = array.get(position);
+			// Add old shipping to map
+			addresses.put("" + shippingAddress.getId(), shippingAddress);
+			// Set the new shipping
+			shippingAddress = selectedAddress;
+			// Validate the old billing
+			if(shippingAddress.getId() != billingAddress.getId()){
+				// Add old billing to map
+				addresses.put("" + billingAddress.getId(), billingAddress);
+				// Set the new
+				billingAddress = selectedAddress;
+			}
+			// Remove from others
+			addresses.remove( "" + selectedAddress.getId());
+			array = null;
+		} catch (IndexOutOfBoundsException e) {
+			Log.w(TAG, "Exception on switch shipping address", e);
+		}
 	}
 	
 	

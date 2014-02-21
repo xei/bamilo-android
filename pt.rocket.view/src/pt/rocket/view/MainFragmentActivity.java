@@ -183,7 +183,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         super.onDestroy();
         Log.i(TAG, "ON DESTROY");
         // Delete categories
-        JumiaApplication.INSTANCE.currentCategories = null;
+        JumiaApplication.currentCategories = null;
         // 
         if(wasReceivedNotification) {
             wasReceivedNotification = false;

@@ -49,6 +49,7 @@ public class Address implements IJSONSerializable, Parcelable {
     private String updatedAt;
     private int createdBy;
     private int updatedBy;
+	private String region;
     
     /**
      * Constructor
@@ -85,6 +86,7 @@ public class Address implements IJSONSerializable, Parcelable {
 		updatedAt = dataObject.optString(RestConstants.JSON_UPDATED_AT_TAG);
 		createdBy = dataObject.optInt(RestConstants.JSON_CREATED_BY_TAG);
 		updatedBy = dataObject.optInt(RestConstants.JSON_UPDATED_BY_TAG);
+		region = dataObject.optString(RestConstants.JSON_REGION_NAME_TAG);
         return true;
 	}
 
@@ -180,6 +182,13 @@ public class Address implements IJSONSerializable, Parcelable {
 	 */
 	public int getFkCustomerAddressCity() {
 		return fkCustomerAddressCity;
+	}
+	
+	/**
+	 * @return the region
+	 */
+	public String getRegion() {
+		return region;
 	}
 
 	/**
@@ -364,6 +373,12 @@ public class Address implements IJSONSerializable, Parcelable {
 		this.updatedBy = updatedBy;
 	}
 	
+	/**
+	 * @param set the region name
+	 */
+	public void setRegion(String region) {
+		this.region = region;
+	}
 	
 	/**
 	 * ########### PARCEL ########### 
@@ -401,6 +416,7 @@ public class Address implements IJSONSerializable, Parcelable {
 		dest.writeString(updatedAt);
 		dest.writeInt(createdBy);
 		dest.writeInt(updatedBy);
+		dest.writeString(region);
 	}
 	
 	
@@ -426,6 +442,7 @@ public class Address implements IJSONSerializable, Parcelable {
 		updatedAt = in.readString();
 		createdBy = in.readInt();
 		updatedBy = in.readInt();
+		region = in.readString();
     }
 		
 	/**

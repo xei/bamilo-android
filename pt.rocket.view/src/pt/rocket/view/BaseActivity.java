@@ -1606,9 +1606,8 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
      * @param addToBackStack
      * @author sergiopereira
      */
-    public void fragmentManagerTransition(int container, Fragment fragment, String tag,
-            Boolean addToBackStack) {
-        showContentContainer(false);
+    public void fragmentManagerTransition(int container, Fragment fragment, String tag, Boolean addToBackStack) {
+        // showContentContainer(false);
         fragmentController.startTransition(this, container, fragment, tag, addToBackStack);
     }
 

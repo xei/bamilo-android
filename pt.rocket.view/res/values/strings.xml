@@ -277,5 +277,17 @@
     
     <string name="my_order_items_label">items</string>
     <string name="my_order_item_label">item</string>
+    
+    <string name="billing_same_label">Billing to the same address</string>
+    <string name="billing_add_label">Add new address</string>
+    <string name="billing_shipping_label">Shipping Address</string>
+    <string name="billing_billing_label">Billing Address</string>
+    <string name="billing_def_shipping_label">Default Shipping Address</string>
+    <string name="billing_others_label">Other Addresses</string>
+    <string name="billing_choose_address">Please choose an address!</string>
+    
+    <string name="next_button">Next</string>
+    
+    
 
 </resources>

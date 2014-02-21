@@ -130,8 +130,10 @@
     <dimen name="shopping_cart_item_image_height">84dp</dimen>
     
     <!-- ABOUT YOU -->
-    <dimen name="about_you_form_width">@dimen/match_parent</dimen>
     <dimen name="about_you_toogle_height">48dp</dimen>
+    
+    <!-- INNER CONTAINER -->
+    <dimen name="inner_container_width">@dimen/match_parent</dimen>
     
     
     

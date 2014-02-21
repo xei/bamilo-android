@@ -1,10 +1,11 @@
 /**
  * 
  */
-package pt.rocket.helpers.address;
+package pt.rocket.helpers.checkout;
 
 import org.json.JSONObject;
 
+import pt.rocket.forms.Form;
 import pt.rocket.framework.enums.RequestType;
 import pt.rocket.framework.objects.Addresses;
 import pt.rocket.framework.utils.Constants;
@@ -21,11 +22,11 @@ import de.akquinet.android.androlog.Log;
  * @author sergiopereira
  *
  */
-public class GetMyAddressesHelper extends BaseHelper {
+public class GetBillingFormHelper extends BaseHelper {
     
-    private static String TAG = GetMyAddressesHelper.class.getSimpleName();
+    private static String TAG = GetBillingFormHelper.class.getSimpleName();
     
-    private static final EventType type = EventType.GET_CUSTOMER_ADDRESSES_EVENT;
+    private static final EventType type = EventType.GET_BILLING_FORM_EVENT;
     
     /*
      * (non-Javadoc)
@@ -50,7 +51,17 @@ public class GetMyAddressesHelper extends BaseHelper {
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
         try {
-            bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, new Addresses(jsonObject));
+            // Get json object
+            JSONObject jsonForm = jsonObject.getJSONObject("billingForm");
+            JSONObject jsonList = jsonObject.getJSONObject("customer").getJSONObject("address_list");
+            // Create form
+            Form form = new Form();
+            form.initialize(jsonForm);
+            // Create addresses
+            Addresses addresses = new Addresses(jsonList);
+            // Add to bundle
+            bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, addresses);
+            bundle.putParcelable(Constants.BUNDLE_FORM_DATA_KEY, form);
             bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
         } catch (Exception e) {
             Log.d(TAG, "PARSE EXCEPTION:", e);

@@ -329,6 +329,7 @@ public class RestConstants {
     public static final String JSON_UPDATED_BY_TAG = "updated_by";
     public static final String JSON_CUSTOMER_FIRST_NAME_TAG = "customer_first_name";
     public static final String JSON_CUSTOMER_LAST_NAME_TAG = "customer_last_name";
+    public static final String JSON_REGION_NAME_TAG = "customer_address_region";
     
     
     /**

@@ -229,7 +229,7 @@ public class CheckoutFinishFragment extends BaseFragment implements OnClickListe
         // Submit
         if(id == R.id.checkout_addresses_button_enter) onClickSubmitAddressesButton();
         // Add new
-        else if(id == R.id.checkout_addresses_button_add) onClickCreateAddressButton(); 
+        else if(id == R.id.checkout_addresses_default_button_add) onClickCreateAddressButton(); 
         // Unknown view
         else Log.i(TAG, "ON CLICK: UNKNOWN VIEW");
     }
