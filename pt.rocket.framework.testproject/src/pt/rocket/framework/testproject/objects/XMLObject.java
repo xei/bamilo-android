@@ -57,5 +57,9 @@ public class XMLObject {
     	return mOptional;
     }
     
+    public String getExpectedResult(){
+    	return mExpectedResult;
+    }
+    
     
 }

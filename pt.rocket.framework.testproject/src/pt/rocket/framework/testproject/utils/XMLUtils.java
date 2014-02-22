@@ -232,6 +232,16 @@ public class XMLUtils {
                  Log.i(TAG, " rules.get(i).getTag() " + rules.get(i).getTag()
                  + " rules.get(i).isOptional() " + rules.get(i).isOptional());
                 Method method = jsonObject.getClass().getMethod((String) rules.get(i).getMethod(), String.class);
+                
+                Boolean expectedResult = null;
+                
+                try {
+					expectedResult = jsonObject.getBoolean(rules.get(i).getTag());
+					Log.i("TAG",rules.get(i).getTag()+" Fetching result from jsonObject "+expectedResult);
+				} catch (JSONException e1) {
+					
+					//e1.printStackTrace(); NOTE: Only necessary to evaluate this if something is wrong with the test results, otherwise no need to be printed
+				}
 
                 if (method.invoke(jsonObject, rules.get(i).getTag()) == null && rules.get(i).isOptional() == false) {
                     jsonIsValid = false;
@@ -243,6 +253,14 @@ public class XMLUtils {
                     failedParameterMessage = "'" + rules.get(i).getTag() + "'" + " doesn't match the expected type";
                     Log.i(TAG, " failedParameterMessage " + failedParameterMessage);
                     break;
+                }
+                if(expectedResult!=null && rules.get(i).getExpectedResult() != null){
+                	if(!rules.get(i).getExpectedResult().equals(String.valueOf(expectedResult))){
+                		jsonIsValid = false;
+                        failedParameterMessage = "'" + rules.get(i).getTag() + "'" + " doesn't match the expected result";
+                        Log.i(TAG, " failedParameterMessage " + failedParameterMessage);
+                        break;
+                	}
                 }
                 // when an object is of the json object type and has children
                 // defined in the rules
@@ -261,6 +279,8 @@ public class XMLUtils {
                             Log.i("TAG"," j "+j);
                             index = (JSONObject) subJSON.getJSONObject(j);
                             jsonIsValid = jsonObjectAssertion(index, rules.get(i));
+                            if(!jsonIsValid)
+                            	break;
                         
                         }
                     } catch (JSONException e) {
