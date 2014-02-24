@@ -122,7 +122,7 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 	// DEFAULT_HEADER.put("X-ROCKET-MOBAPI-TOKEN", "1");
 	// }
 
-	private static RestClientSingleton INSTANCE;
+	public static RestClientSingleton INSTANCE;
 
 	private DarwinHttpClient darwinHttpClient;
 	private final HttpClient httpClient;
@@ -131,6 +131,9 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 	// handles all Database operations
 	private HttpCacheStorage cache;
 
+	private int VERSION = 0;
+	private String VERSION_PARAMETER = "version";
+	
 	private ConnectivityManager connManager;
 
 	private static boolean updateParamsFlag;
@@ -202,12 +205,25 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 		if (ConfigurationConstants.LOG_DEBUG_ENABLED) {
 			Log.d(TAG, "get: " + uri.toString());
 		}
-		// TODO - Create a pattern
-		HttpGet httpRequest = new HttpGet(RemoteService.completeUri(uri)
-				.toString().replaceAll(" ", "%20"));
+		
+		String url = RemoteService.completeUri(uri)
+				.toString();
+		if(VERSION > 0){
+			if(url.contains("?")){
+				url = url+"&"+VERSION_PARAMETER+"="+VERSION;
+			} else {
+				url = url+"?"+VERSION_PARAMETER+"="+VERSION;
+			}
+		}
+		
+		if (ConfigurationConstants.LOG_DEBUG_ENABLED) {
+			Log.d(TAG, "get: " + url.toString());
+		}
+		
+		HttpGet httpRequest = new HttpGet(url.replaceAll(" ", "%20"));
 		return executeHttpRequest(httpRequest, mHandler, metaData);
 	}
-
+	
 	/**
 	 * Sends a HTTP POST request with formData to the given url and returns the
 	 * response as String (e.g. a json string).
@@ -227,7 +243,21 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 		if (ConfigurationConstants.LOG_DEBUG_ENABLED) {
 			Log.d(TAG, "post: " + uri.toString());
 		}
-		HttpPost httpRequest = new HttpPost(RemoteService.completeUri(uri)
+		
+		String url = RemoteService.completeUri(uri)
+				.toString();
+		if(VERSION > 0){
+			if(url.contains("?")){
+				url = url+"&"+VERSION_PARAMETER+"="+VERSION;
+			} else {
+				url = url+"?"+VERSION_PARAMETER+"="+VERSION;
+			}
+		}
+		if (ConfigurationConstants.LOG_DEBUG_ENABLED) {
+			Log.d(TAG, "post: " + url.toString());
+		}
+		
+		HttpPost httpRequest = new HttpPost(url
 				.toString());
 
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -382,7 +412,7 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 				}
 				
 				
-				
+				EntityUtils.consumeQuietly(response.getEntity());
 				Log.w(TAG,
 						"Got bad status code for request: "
 								+ httpRequest.getURI() + " -> " + statusCode);
@@ -450,7 +480,7 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 				Log.w(TAG,
 						"Got empty entity for request: " + httpRequest.getURI()
 								+ " -> " + statusCode);
-				EntityUtils.consume(entity);
+				EntityUtils.consumeQuietly(entity);
 				return null;
 			}
 			// FIXME - OutOfMemoryError
@@ -460,7 +490,7 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 			// result =
 			// org.apache.commons.io.IOUtils.toString(entity.getContent());
 			// closes the stream
-			EntityUtils.consume(entity);
+			EntityUtils.consumeQuietly(entity);
 
 			long elapsed = System.currentTimeMillis() - now;
 			Log.i(TAG, httpRequest.getURI()
@@ -689,5 +719,13 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 
 		return msg;
 	}
+	
+	public void setAPIVersion(int version){
+		VERSION = version;
+	}
 
+	public int getAPIVersion(){
+		return VERSION;
+	}
+	
 }

@@ -50,6 +50,7 @@ public final class ShopSelector {
 				context.getResources().getStringArray(R.array.language_codes)[shopId]);
 		RestContract.init(context, shopId);
 		RestClientSingleton.init(context);
+		RestClientSingleton.INSTANCE.setAPIVersion(context.getResources().getIntArray(R.array.country_api_version)[shopId]);
 		String currencyCode = context.getResources().getStringArray(
 				R.array.currency_codes)[shopId];
 //		Log.i(TAG, "code1 currency code is :_ "+currencyCode);

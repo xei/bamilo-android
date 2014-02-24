@@ -320,7 +320,7 @@ public class Customer implements IJSONSerializable, Parcelable{
             }
             
             // Save addresses :> "address_collection": { "4040": {}, "8241": {} }
-            JSONObject addressesJson = jsonObject.optJSONObject("address_collection");
+            JSONObject addressesJson = jsonObject.optJSONObject(RestConstants.JSON_CUSTOMER_ADDRESS_COLLECTION_TAG);
             if(addressesJson != null && addressesJson.length() > 0 ){
             	addresses = new ArrayList<String>();
             	Iterator<?> iterator = addressesJson.keys();

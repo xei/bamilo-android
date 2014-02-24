@@ -14,6 +14,7 @@
     <string-array name="country_names"></string-array>
     <string-array name="language_codes"></string-array>
 	<string-array name="country_protocol"></string-array>
+    <string-array name="country_api_version"></string-array>
     
     <integer-array name="icons"></integer-array>
 

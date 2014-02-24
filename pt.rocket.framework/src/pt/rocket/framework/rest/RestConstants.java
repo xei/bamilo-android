@@ -311,7 +311,8 @@ public class RestConstants {
 	public static final String JSON_ORDER_STATUS_TAG = "status";
 	public static final String JSON_ORDER_ITEM_STATUS_TAG = "item_status";
 	public static final String JSON_ORDER_ITEM_STATUS_UPDATE_TAG = "last_status_change";
-	
+	public static final String JSON_ORDER_TAG = "order";
+	public static final String JSON_ORDER_GRAND_TOTAL_TAG = "grand_total";
 	
 	/**
 	 * Address
@@ -329,8 +330,9 @@ public class RestConstants {
     public static final String JSON_UPDATED_BY_TAG = "updated_by";
     public static final String JSON_CUSTOMER_FIRST_NAME_TAG = "customer_first_name";
     public static final String JSON_CUSTOMER_LAST_NAME_TAG = "customer_last_name";
+    public static final String JSON_CUSTOMER_ADDRESS_COLLECTION_TAG = "address_collection";
     public static final String JSON_REGION_NAME_TAG = "customer_address_region";
-    
+
     
     /**
      * Native Checkout
