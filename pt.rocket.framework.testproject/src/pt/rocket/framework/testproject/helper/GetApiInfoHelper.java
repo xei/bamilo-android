@@ -9,7 +9,7 @@ import java.io.IOException;
 import org.json.JSONObject;
 import org.xmlpull.v1.XmlPullParserException;
 import pt.rocket.framework.enums.RequestType;
-import pt.rocket.framework.errormanager.ErrorCode;
+import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.testproject.objects.XMLObject;
 import pt.rocket.framework.testproject.utils.XMLUtils;
 import pt.rocket.framework.utils.Constants;

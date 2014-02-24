@@ -193,7 +193,7 @@ public class InitFormTest extends FrameworkServiceTests {
     public void testInitFormUG() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.com.ug/mobapi/forms/index/");
+        args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.ug/mobapi/forms/index/");
         
         sendRequest(args, new GetInitFormHelper(), new IResponseCallback() {
 

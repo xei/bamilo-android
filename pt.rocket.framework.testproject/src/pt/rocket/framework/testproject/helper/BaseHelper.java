@@ -3,7 +3,7 @@ package pt.rocket.framework.testproject.helper;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import pt.rocket.framework.errormanager.ErrorCode;
+import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.testproject.objects.XMLObject;
 import pt.rocket.framework.testproject.utils.XMLUtils;
 import pt.rocket.framework.utils.Constants;
@@ -51,8 +51,10 @@ public abstract class BaseHelper {
             try {
             	XMLObject generalRules;
             	if(bundle.getBoolean(Constants.BUNDLE_METADATA_REQUIRED_KEY)){
-            		generalRules = XMLUtils.xmlParser(mContext, R.xml.general_rules);	
+            		generalRules = XMLUtils.xmlParser(mContext, R.xml.general_rules);
+            		Log.i(TAG, "code1 with metadata");
             	} else {
+            		Log.i(TAG, "code1nometadata");
             		generalRules = XMLUtils.xmlParser(mContext, R.xml.general_rules_metadata_not_required);	
             	}
                 
@@ -62,17 +64,30 @@ public abstract class BaseHelper {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            if (validation) {
-                jsonObject = jsonObject.getJSONObject(XMLReadingConfiguration.XML_METADATA_CONTAINER_TAG);
-                bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, ErrorCode.NO_ERROR);
-                return parseResponseBundle(bundle, jsonObject);
-
-            } else {
-                Log.i(TAG," Failed validation ");
-                Log.i(TAG,  " failedParameterMessage "+XMLUtils.getMessage());
-                bundle.putString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY, XMLUtils.getMessage());
-                bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, ErrorCode.ERROR_PARSING_SERVER_DATA);
-                return parseResponseErrorBundle(bundle);
+            if(bundle.getBoolean(Constants.BUNDLE_METADATA_REQUIRED_KEY)){
+	            if (validation) {
+	                jsonObject = jsonObject.getJSONObject(XMLReadingConfiguration.XML_METADATA_CONTAINER_TAG);
+	                bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, ErrorCode.NO_ERROR);
+	                return parseResponseBundle(bundle, jsonObject);
+	
+	            } else {
+	                Log.i(TAG," Failed validation ");
+	                Log.i(TAG,  " failedParameterMessage "+XMLUtils.getMessage());
+	                bundle.putString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY, XMLUtils.getMessage());
+	                bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, ErrorCode.ERROR_PARSING_SERVER_DATA);
+	                return parseResponseErrorBundle(bundle);
+	            }
+            }else{
+            	 Log.i(TAG," RETURNING JSON VALIDATION "+validation);
+            	if (validation) {
+            		return parseResponseBundle(bundle, jsonObject);
+            	}else{
+            		bundle.putString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY, XMLUtils.getMessage());
+	                bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, ErrorCode.ERROR_PARSING_SERVER_DATA);
+	                return parseResponseErrorBundle(bundle);
+            	}
+            	
+            	 
             }
         } catch (JSONException e) {
         	XMLUtils.setMessage("Response empty or server error[not a JSONObject]");

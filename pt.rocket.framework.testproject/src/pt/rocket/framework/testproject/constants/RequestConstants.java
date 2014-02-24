@@ -112,7 +112,7 @@ public class RequestConstants {
 	
 	static Random rand2 = new Random();
 	static int n2 = rand2.nextInt(10000) + 1;
-	public static final String CUSTOMER_SIGNUP_EMAIL = "tester"+n+"@mailinator.com";
+	public static final String CUSTOMER_SIGNUP_EMAIL = "tester"+n+"123123123@mailinator.com";
 	public static final String CUSTOMER_SIGNUP_SCENARIO = "guest";
 }
 

@@ -2,7 +2,10 @@ package com.rocket.framework.testshell.test;
 
 import java.util.HashMap;
 
-import pt.rocket.framework.errormanager.ErrorCode;
+
+
+
+import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.service.IRemoteService;
 import pt.rocket.framework.service.IRemoteServiceCallback;
 import pt.rocket.framework.service.RemoteService;
@@ -171,13 +174,16 @@ public class FrameworkServiceTests extends ServiceTestCase<RemoteService> {
                 // We have to parse this bundle to the final one
             	bundle.putBoolean(Constants.BUNDLE_METADATA_REQUIRED_KEY, metadataRequired);
                 Bundle formatedBundle = (Bundle) helper.checkResponseForStatus(bundle, mContext);
-                if (iResponseCallback != null) {
+                
+            	if (iResponseCallback != null) {
                     if ((ErrorCode) formatedBundle.getSerializable(Constants.BUNDLE_ERROR_KEY) == ErrorCode.NO_ERROR) {
                         iResponseCallback.onRequestComplete(formatedBundle);
                     } else {
                         iResponseCallback.onRequestError(formatedBundle);
                     }
                 }
+				
+                
             }
 
             @Override

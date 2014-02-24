@@ -47,6 +47,7 @@ public class GetSignupHelper extends BaseHelper {
 		boolean validation = true;
 
 		try {
+			Log.i(TAG," parse response bundle ");
 			XMLObject responseRules = XMLUtils.xmlParser(mContext, R.xml.get_signup_rules);
 			validation = XMLUtils.jsonObjectAssertion(jsonObject, responseRules);
 			bundle.putBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY, validation);

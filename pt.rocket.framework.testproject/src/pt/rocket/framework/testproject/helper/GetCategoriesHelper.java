@@ -16,7 +16,7 @@ import com.rocket.framework.testshell.test.R;
 
 
 import pt.rocket.framework.enums.RequestType;
-import pt.rocket.framework.errormanager.ErrorCode;
+import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.testproject.objects.Category;
 import pt.rocket.framework.testproject.objects.JSONConstants;
 import pt.rocket.framework.testproject.objects.XMLObject;

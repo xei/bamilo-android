@@ -17,34 +17,34 @@ public class SignupTest extends FrameworkServiceTests {
 	protected boolean processed2 = false;
 
 	@SmallTest
-	public void testGetLogoutIC() throws Throwable {
-		executeLogout("https://www.jumia.ci");
+	public void testGetSignupIC() throws Throwable {
+		executeLogout("https://alice-staging.jumia.ci");
 	}
 
 	@SmallTest
-	public void testGetLogoutKE() throws Throwable {
-		executeLogout("https://www.jumia.co.ke");
+	public void testGetSignupKE() throws Throwable {
+		executeLogout("https://alice-staging.jumia.co.ke");
 	}
-
-	@SmallTest
-	public void testGetLogoutMA() throws Throwable {
-		executeLogout("https://www.jumia.ma");
-	}
-
-	@SmallTest
-	public void testGetLogoutEG() throws Throwable {
-		executeLogout("https://www.jumia.com.eg");
-	}
-
-	@SmallTest
-	public void testGetLogoutNG() throws Throwable {
-		executeLogout("https://www.jumia.com.ng");
-	}
-
-	@SmallTest
-	public void testGetLogoutUG() throws Throwable {
-		executeLogout("https://www.jumia.ug");
-	}
+//
+//	@SmallTest
+//	public void testGetSignupMA() throws Throwable {
+//		executeLogout("https://www.jumia.ma");
+//	}
+//
+//	@SmallTest
+//	public void testGetSignupEG() throws Throwable {
+//		executeLogout("https://www.jumia.com.eg");
+//	}
+//
+//	@SmallTest
+//	public void testGetSignupNG() throws Throwable {
+//		executeLogout("https://www.jumia.com.ng");
+//	}
+//
+//	@SmallTest
+//	public void testGetSignupUG() throws Throwable {
+//		executeLogout("https://www.jumia.ug");
+//	}
 
 	private void executeLogout(String url) {
 
@@ -55,6 +55,7 @@ public class SignupTest extends FrameworkServiceTests {
 		contentValues1.put(RequestConstants.KEY_CUSTOMER_SIGNUP_SCENARIO,RequestConstants.CUSTOMER_SIGNUP_SCENARIO);
 		args.putParcelable(GetSignupHelper.CONTENT_VALUES, contentValues1);
 		args.putString(BaseHelper.KEY_COUNTRY, url + "/mobapi/customer/create/");
+		args.putBoolean(Constants.BUNDLE_METADATA_REQUIRED_KEY, false);
 		sendRequest(args, new GetSignupHelper(), new IResponseCallback() {
 
 			@Override
