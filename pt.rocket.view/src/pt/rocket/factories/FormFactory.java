@@ -342,10 +342,8 @@ public class FormFactory {
 
             for (IFormField frmEntry : transformedFields) {
             	Log.d( TAG, "createGenericForm: " + frmEntry.getKey() + " inputType = " + frmEntry.getInputType() );
-            	if(frmEntry.getDataSet().size()>0){
-            	    ctrl = new DynamicFormItem(userForm, context, frmEntry); 
-            	    userForm.addControl(ctrl, ctrlParams);
-            	}
+                ctrl = new DynamicFormItem(userForm, context, frmEntry); 
+                userForm.addControl(ctrl, ctrlParams);
             }
         } else {
             ((ViewGroup) userForm.getContainer().getParent()).removeView(userForm.getContainer());

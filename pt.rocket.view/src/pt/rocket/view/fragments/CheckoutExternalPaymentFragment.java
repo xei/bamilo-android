@@ -402,17 +402,22 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
                     + failingUrl);
             webview.setWebViewClient(new WebViewClient() {
                 public void onReceivedSslError (WebView view, SslErrorHandler handler, SslError error) {
-                    handler.proceed();
+                handler.proceed();
                 }
                });
-//            failedPageRequest = failingUrl;
-//            webview.stopLoading();
-//            webview.clearView();
+            failedPageRequest = failingUrl;
+            webview.stopLoading();
+            webview.clearView();
            
+        }
+        
+        public void onReceivedSslError (){
+            
         }
         
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            
             return false;
         }
         

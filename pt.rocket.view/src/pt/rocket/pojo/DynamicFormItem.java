@@ -1102,6 +1102,7 @@ public class DynamicFormItem {
 
         }
         else {
+            
             ArrayList<String> default_string = new ArrayList<String>();
             default_string.add("Empty");
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(context,

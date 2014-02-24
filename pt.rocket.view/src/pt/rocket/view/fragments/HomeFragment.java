@@ -18,7 +18,6 @@ import pt.rocket.controllers.LastViewedAdapter;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.factories.TeasersFactory;
-import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.database.LastViewedTableHelper;
 import pt.rocket.framework.objects.Homepage;
 import pt.rocket.framework.objects.ITargeting.TargetType;
@@ -54,7 +53,6 @@ import android.graphics.Shader;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -157,7 +155,6 @@ public class HomeFragment extends BaseFragment {
 
     Handler serviceConnectedHandler = new Handler(){
         public void handleMessage(android.os.Message msg) {
-//            Log.i(TAG, "code1service received ok from service!");
            onCreateExecution();
            onResumeExecution();
         }; 
@@ -187,7 +184,6 @@ public class HomeFragment extends BaseFragment {
         if(JumiaApplication.INSTANCE.mIsBound){
             onResumeExecution();    
         } else {
-//            Log.i(TAG, "code1service not received ok from service! set handler");
             JumiaApplication.INSTANCE.setResendHander(serviceConnectedHandler);
         }
         
@@ -214,22 +210,18 @@ public class HomeFragment extends BaseFragment {
              * @author sergiopereira
              */
             triggerPromotions();
-            //triggerContentEvent(new RequestEvent(EventType.GET_PROMOTIONS));
             
         }
 
         if (requestResponse == null) {
             ((BaseActivity) getActivity()).setProcessShow(false);
-            //triggerContentEvent(new RequestEvent(EventType.GET_NAVIGATION_LIST_COMPONENTS_EVENT));
 
             /**
              * TRIGGERS
              * @author sergiopereira
              */
             triggerTeasers();
-            //triggerContentEvent(new RequestEvent(EventType.GET_TEASERS_EVENT));
             triggerCallToOrder();
-            //triggerContentEvent(new RequestEvent(EventType.GET_CALL_TO_ORDER_PHONE));
             
         } else {
             restoreLayout();
@@ -265,8 +257,6 @@ public class HomeFragment extends BaseFragment {
     public void onStop() {
         Log.i(TAG, "onStop");
         requestResponse = null;
-        // TODO Auto-generated method stub
-        //getActivity().finish();
         super.onStop();
 
     }
@@ -339,9 +329,7 @@ public class HomeFragment extends BaseFragment {
 
         @Override
         protected Boolean doInBackground(Integer... params) {
-//            int arg0 = params[0];
-//            
-//            if (arg0 == mPager.SCROLL_STATE_IDLE) {
+
             if (null != mPager ) {
                 mPager.setPagingEnabled(true);
                 mPager.toggleJumiaScroller(true);
@@ -662,7 +650,6 @@ public class HomeFragment extends BaseFragment {
          * @author sergiopereira
          */
         triggerTeasers();
-        //triggerContentEvent(new RequestEvent(EventType.GET_TEASERS_EVENT));
         
     }
 
@@ -847,9 +834,7 @@ public class HomeFragment extends BaseFragment {
                 mainView.addView(mTeasersFactory.getSpecificTeaser(getActivity(), mainView,
                         teaserSpecification, mInflater, teaserClickListener));
             }
-//            Log.i(TAG, "code1last");
             if(lastViewed != null && lastViewed.size() > 0){
-//                Log.i(TAG, "code1last adding view");
                 mainView.addView(generateLastViewedLayout(mainView));
             }
         }
@@ -912,6 +897,7 @@ public class HomeFragment extends BaseFragment {
         bundle.putBoolean(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, true);
         triggerContentEventWithNoLoading(new GetLoginHelper(), bundle, responseCallback);
     }
+    
     /**
      * CALLBACK
      * @author sergiopereira

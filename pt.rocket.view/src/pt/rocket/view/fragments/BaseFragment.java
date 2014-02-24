@@ -184,8 +184,6 @@ public abstract class BaseFragment extends Fragment implements
                             + action.toString());
             ((BaseActivity) getActivity()).updateBaseComponents(enabledMenuItems, action,
                     titleResId);
-            // Force resume
-//            ImageLoader.getInstance().resume();
         }
     }
 
@@ -251,13 +249,10 @@ public abstract class BaseFragment extends Fragment implements
     public void onDestroy() {
         super.onDestroy();
         JumiaApplication.INSTANCE.unRegisterFragmentCallback(mCallback);
-        // Remove listeners
-//        EventManager.getSingleton().removeResponseListener(this, allHandledEvents);
+
         // Recycle bitmaps
         if (getView() != null)
             unbindDrawables(getView());
-        
-        // mainActivity = null;
     }
 
     /**
