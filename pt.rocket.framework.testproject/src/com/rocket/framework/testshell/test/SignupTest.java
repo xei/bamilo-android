@@ -16,10 +16,10 @@ public class SignupTest extends FrameworkServiceTests {
 	protected boolean processed1 = false;
 	protected boolean processed2 = false;
 
-	@SmallTest
-	public void testGetSignupIC() throws Throwable {
-		executeLogout("https://alice-staging.jumia.ci");
-	}
+//	@SmallTest
+//	public void testGetSignupIC() throws Throwable {
+//		executeLogout("https://alice-staging.jumia.ci");
+//	}
 
 	@SmallTest
 	public void testGetSignupKE() throws Throwable {
