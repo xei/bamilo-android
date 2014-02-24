@@ -225,7 +225,6 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
     }
     
     
-    
     /**
      * ############# CLICK LISTENER #############
      */

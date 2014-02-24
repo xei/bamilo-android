@@ -3,10 +3,13 @@
  */
 package pt.rocket.view.fragments;
 
+import java.util.HashMap;
+
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.controllers.CountryAdapter;
+import pt.rocket.forms.FormData;
 import pt.rocket.framework.database.LastViewedTableHelper;
 import pt.rocket.framework.rest.RestClientSingleton;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -248,6 +251,7 @@ public class ChangeCountryFragment extends BaseFragment {
         HomeFragment.requestResponse = null;
         JumiaApplication.INSTANCE.currentCategories = null;
         JumiaApplication.INSTANCE.setCart(null);
+        JumiaApplication.INSTANCE.setFormDataRegistry(new HashMap<String, FormData>());
         getBaseActivity().updateCartInfo();
         JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
         if(isChangeCountry){

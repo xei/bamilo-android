@@ -22,9 +22,8 @@ import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
-import pt.rocket.framework.ErrorCode;
-import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.rest.RestClientSingleton;
+import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.rest.RestContract;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
@@ -34,12 +33,10 @@ import pt.rocket.helpers.GetShoppingCartItemsHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
-import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.ContentValues;
 import android.graphics.Bitmap;
 import android.net.http.SslError;
 import android.os.Build;
@@ -56,13 +53,10 @@ import android.webkit.SslErrorHandler;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
-
-
 import ch.boye.httpclientandroidlib.NameValuePair;
 import ch.boye.httpclientandroidlib.client.entity.UrlEncodedFormEntity;
 import ch.boye.httpclientandroidlib.cookie.Cookie;
 import ch.boye.httpclientandroidlib.message.BasicNameValuePair;
-import ch.boye.httpclientandroidlib.util.EncodingUtils;
 import ch.boye.httpclientandroidlib.util.EntityUtils;
 
 import com.shouldit.proxy.lib.ProxyConfiguration;
@@ -315,23 +309,26 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
         Log.d(TAG, "Loading Url: " + paymentUrl);
         String postData = "";
         List<NameValuePair> parameters = new ArrayList<NameValuePair>(); 
-        Set<Entry<String, Object>>  mValues = JumiaApplication.INSTANCE.getPaymentMethodForm().getContentValues().valueSet();
-        boolean firstValue = true;
-        for (Entry<String, Object> entry : mValues) {
-            parameters.add(new BasicNameValuePair(entry.getKey(),(String) entry.getValue()));
+        if(JumiaApplication.INSTANCE.getPaymentMethodForm() != null &&  JumiaApplication.INSTANCE.getPaymentMethodForm().getContentValues() != null){
+            Set<Entry<String, Object>>  mValues = JumiaApplication.INSTANCE.getPaymentMethodForm().getContentValues().valueSet();
+            boolean firstValue = true;
+            for (Entry<String, Object> entry : mValues) {
+                parameters.add(new BasicNameValuePair(entry.getKey(),(String) entry.getValue()));
+            }
+            
+            Log.i(TAG, "code1content : " + postData);
+            UrlEncodedFormEntity entity;
+            try {
+                entity = new UrlEncodedFormEntity(parameters);
+                webview.postUrl(paymentUrl, EntityUtils.toByteArray(entity));
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } 
+        } else {
+            webview.loadUrl(paymentUrl);
         }
-        
-        Log.i(TAG, "code1content : " + postData);
-        UrlEncodedFormEntity entity;
-        try {
-            entity = new UrlEncodedFormEntity(parameters);
-            webview.postUrl(paymentUrl, EntityUtils.toByteArray(entity));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } 
-        
         
         
         isRequestedPage = true;
@@ -395,8 +392,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
     private class CustomWebViewClient extends WebViewClient {
 
         private static final String SUCCESS_URL_TAG = "checkout/success";
-        private static final String JAVASCRIPT_PROCESS = "javascript:window.INTERFACE.processContent" + 
-                                                "(document.innerHTML);";
+        private static final String JAVASCRIPT_PROCESS = "javascript:window.INTERFACE.processContent(document.documentElement.getElementsByTagName('body').innerText);";
         private boolean wasLoadingErrorPage;
         
         @Override
@@ -404,16 +400,19 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
                 String description, final String failingUrl) {
             Log.e(TAG, "Received error: " + errorCode + " " + description + " "
                     + failingUrl);
-
-            failedPageRequest = failingUrl;
-            webview.stopLoading();
-            webview.clearView();
+            webview.setWebViewClient(new WebViewClient() {
+                public void onReceivedSslError (WebView view, SslErrorHandler handler, SslError error) {
+                    handler.proceed();
+                }
+               });
+//            failedPageRequest = failingUrl;
+//            webview.stopLoading();
+//            webview.clearView();
            
         }
-
+        
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            
             return false;
         }
         
@@ -553,8 +552,8 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
                      * TODO: Verify if we need to send customer email
                      */
 //                    bundle.putString(ConstantsIntentExtra.CUSTOMER_EMAIL, (customer != null ) ? customer.getEmail() : ""); 
-					String order_number = result.optString("orderNr");
-                    String grandTotal = result.optString("grandTotal");
+					String order_number = result.optJSONObject(RestConstants.JSON_METADATA_TAG).optJSONObject(RestConstants.JSON_ORDER_TAG).optString(RestConstants.JSON_ORDER_NUMBER_TAG);
+                    String grandTotal = result.optJSONObject(RestConstants.JSON_METADATA_TAG).optJSONObject(RestConstants.JSON_ORDER_TAG).optString(RestConstants.JSON_ORDER_GRAND_TOTAL_TAG);
 					bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR, order_number);                   
 					((BaseActivity) getActivity()).onSwitchFragment(FragmentType.CHECKOUT_THANKS, bundle, FragmentController.ADD_TO_BACK_STACK);
                 }

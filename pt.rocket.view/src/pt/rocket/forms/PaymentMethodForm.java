@@ -17,9 +17,11 @@ public class PaymentMethodForm implements Parcelable {
 
     private final static String PAYMENT_METHOD_AUTO_SUBMIT_EXTERNAL = "auto-submit-external";
     private final static String PAYMENT_METHOD_SUBMIT_EXTERNAL = "submit-external";
+    private final static String PAYMENT_METHOD_AUTO_REDIRECT_EXTERNAL = "auto-redirect-external";
     private final static int METHOD_OTHER = 0;
     public final static int METHOD_AUTO_SUBMIT_EXTERNAL = 1;
     public final static int METHOD_SUBMIT_EXTERNAL = 2;
+    public final static int METHOD_AUTO_REDIRECT_EXTERNAL = 3;
     private static final String TAG = PaymentMethodForm.class.getName();
 
     private int payment_type;
@@ -66,6 +68,8 @@ public class PaymentMethodForm implements Parcelable {
             setPaymentType(METHOD_AUTO_SUBMIT_EXTERNAL);
         } else if (type.equalsIgnoreCase(PAYMENT_METHOD_SUBMIT_EXTERNAL)) {
             setPaymentType(METHOD_SUBMIT_EXTERNAL);
+        } else if (type.equalsIgnoreCase(PAYMENT_METHOD_AUTO_REDIRECT_EXTERNAL)){
+            setPaymentType(METHOD_AUTO_REDIRECT_EXTERNAL);
         }
 
         String method = mJSONObject.optString(RestConstants.JSON_METHOD_TAG);
@@ -76,7 +80,12 @@ public class PaymentMethodForm implements Parcelable {
         }
 
         try {
-            JSONObject formJson = mJSONObject.getJSONObject(RestConstants.JSON_FORM_TAG);
+            JSONObject formJson = mJSONObject.optJSONObject(RestConstants.JSON_FORM_TAG);
+            if(formJson == null || formJson.length() == 0 ){
+                String url = mJSONObject.optString(RestConstants.JSON_URL_TAG);
+                setAction(url);
+                return;
+            }
 
             setAction(formJson.optString(RestConstants.JSON_ACTION_TAG));
             setId(formJson.optString(RestConstants.JSON_ID_TAG));
@@ -99,6 +108,7 @@ public class PaymentMethodForm implements Parcelable {
 
         } catch (JSONException e) {
             e.printStackTrace();
+            
         }
     }
 

@@ -587,6 +587,10 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             Log.d(TAG, "RECEIVED SET_SIGNUP_EVENT");
             // Get next step
             FragmentType signupNextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
+            if(signupNextFragment == null || signupNextFragment == FragmentType.UNKNOWN){
+                handleErrorEvent(bundle);
+                return true;
+            }
             signupNextFragment = (signupNextFragment != FragmentType.UNKNOWN) ? signupNextFragment : FragmentType.CREATE_ADDRESS;
             getBaseActivity().hideKeyboard();
             getBaseActivity().updateSlidingMenuCompletly();
@@ -598,6 +602,10 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             Customer customerFb = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             // Get next step
             FragmentType fbNextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
+            if(fbNextFragment == null){
+                handleErrorEvent(bundle);
+                return true;
+            }
             // Get Customer
             getBaseActivity().hideKeyboard();
             getBaseActivity().updateSlidingMenuCompletly();
@@ -611,6 +619,10 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             Customer customer = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             // Get next step
             FragmentType loginNextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
+            if(loginNextFragment == null){
+                handleErrorEvent(bundle);
+                return true;
+            }
             // Get Customer
             getBaseActivity().hideKeyboard();
             getBaseActivity().updateSlidingMenuCompletly();
@@ -655,11 +667,16 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
     		return true;
     	}
     	
-        if(getBaseActivity().handleErrorEvent(bundle)){
-            Log.w(TAG, "BASE ACTIVITY HANDLE ERROR EVENT!");
-            return true;
-        }
-        
+    	/**
+    	 * TODO: Improve this method to correctly handle issues with Native Checkout
+    	 */
+    	if(true){
+    	    Bundle args = new Bundle();
+    	    args.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.CHECKOUT_BASKET);
+    	    getBaseActivity().onSwitchFragment(FragmentType.LOGIN, args, FragmentController.ADD_TO_BACK_STACK);
+    	    return true;
+    	}
+    	
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         Log.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
@@ -700,6 +717,10 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             triggerInitForm();
             break;
         default:
+            if(getBaseActivity().handleErrorEvent(bundle)){
+                Log.w(TAG, "BASE ACTIVITY HANDLE ERROR EVENT!");
+                return true;
+            }
             break;
         }
         return true;
