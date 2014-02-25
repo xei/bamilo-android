@@ -34,17 +34,17 @@
             android:gravity="left"
             android:textColor="@color/orange_basic" />
     </RelativeLayout>
-    
+
     <!-- NATIVE CHECKOUT HEADER -->
 
     <include
         android:id="@+id/checkout_header"
         android:layout_width="match_parent"
-		android:layout_height="25dp"
-        layout="@layout/checkout_header"
+        android:layout_height="wrap_content"
         android:layout_below="@id/header_title"
+        layout="@layout/checkout_header"
         android:visibility="gone" />
-    
+
     <!-- Main Content Layout -->
 
     <RelativeLayout
@@ -80,6 +80,8 @@
     <include
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_alignWithParentIfMissing="true"
+        android:layout_below="@id/checkout_header"
         layout="@layout/loading_bar"
         android:visibility="gone" />
 

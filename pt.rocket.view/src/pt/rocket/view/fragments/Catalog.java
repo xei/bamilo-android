@@ -101,21 +101,19 @@ public class Catalog extends BaseFragment {
     public void onResume() {
         super.onResume();
         
+        // http://www.jumia.co.ke:80/mobapi/womens-casual-shoes/
+        
         title = getArguments().getString(ConstantsIntentExtra.CONTENT_TITLE);
         
         ((BaseActivity) getActivity()).setTitle(title);
         
-        productsURL = getArguments()
-                .getString(ConstantsIntentExtra.CONTENT_URL);
+        productsURL = getArguments().getString(ConstantsIntentExtra.CONTENT_URL);
         
-        searchQuery = getArguments()
-                .getString(ConstantsIntentExtra.SEARCH_QUERY);
+        searchQuery = getArguments().getString(ConstantsIntentExtra.SEARCH_QUERY);
         
-        navigationSource = getArguments().getInt(
-                ConstantsIntentExtra.NAVIGATION_SOURCE, -1);
+        navigationSource = getArguments().getInt(ConstantsIntentExtra.NAVIGATION_SOURCE, -1);
         
-        navigationPath = getArguments().getString(
-                ConstantsIntentExtra.NAVIGATION_PATH);
+        navigationPath = getArguments().getString(ConstantsIntentExtra.NAVIGATION_PATH);
         
         
 //        Log.i(TAG, "code1 title is : " + title);

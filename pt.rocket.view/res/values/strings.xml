@@ -291,6 +291,11 @@
     
     <string name="save_changes_label">Save Changes</string>
     
+    <string name="checkout_header_step_1">1. About you</string>
+    <string name="checkout_header_step_2">2. Address</string>
+    <string name="checkout_header_step_3">3. Shipping</string>
+    <string name="checkout_header_step_4">4. Payment</string>
+    
     <string name="next_button">Next</string>
     
     

@@ -21,6 +21,7 @@ import pt.rocket.framework.service.IRemoteServiceCallback;
 import pt.rocket.framework.utils.AdXTracker;
 import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.Constants;
+import pt.rocket.framework.utils.DarwinRegex;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.GetApiInfoHelper;
@@ -41,6 +42,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.RemoteException;
 import android.support.v4.app.FragmentActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -178,13 +180,17 @@ public class SplashScreenActivity extends FragmentActivity {
        }; 
     };
 
+    private String mCatalogDeepLink;
+
     private void cleanIntent(Intent intent) {
         Log.d(TAG, "CLEAN NOTIFICATION");
         utm = null; 
         productUrl = null;
+        mCatalogDeepLink = null;
         // setIntent(null);
         intent.putExtra(ConstantsIntentExtra.UTM_STRING, "");
         intent.putExtra(ConstantsIntentExtra.CONTENT_URL, "");
+        intent.putExtra(ConstantsIntentExtra.CATALOG_DEEP_LINK_TAG, "");
     }
 
     /**
@@ -195,6 +201,8 @@ public class SplashScreenActivity extends FragmentActivity {
         utm = getIntent().getStringExtra(ConstantsIntentExtra.UTM_STRING);
         // ## Product URL ##
         productUrl = getIntent().getStringExtra(ConstantsIntentExtra.CONTENT_URL);
+        // ## Product URL ##
+        mCatalogDeepLink = getIntent().getStringExtra(ConstantsIntentExtra.CATALOG_DEEP_LINK_TAG);
         Log.d(TAG, "PRODUCT DETAILS " + productUrl);
     }
 
@@ -206,36 +214,63 @@ public class SplashScreenActivity extends FragmentActivity {
         // ## Google Analytics "General Campaign Measurement" ##
         AnalyticsGoogle.get().setCampaign(utm);
         // ## Product URL ##
-        if (productUrl != null && !productUrl.equals("")) {
-            // Start home with notification
-            Log.d(TAG, "SHOW NOTIFICATION: PRODUCT DETAILS " + productUrl);
-            // ActivitiesWorkFlow.homePageActivity(SplashScreen.this, productUrl,
-            // R.string.gpush_prefix, "");
-            // Create bundle for fragment
-            Bundle bundle = new Bundle();
-            bundle.putString(ConstantsIntentExtra.CONTENT_URL, productUrl);
-            bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gpush_prefix);
-            bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
-
-            // Create intent with fragment type and bundle
-            Intent intent = new Intent(this, MainFragmentActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.putExtra(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.PRODUCT_DETAILS);
-            intent.putExtra(ConstantsIntentExtra.FRAGMENT_BUNDLE, bundle);
-            // Start activity
-            startActivity(intent);
-            TrackerDelegator.trackPushNotificationsEnabled(getApplicationContext(), true);
+        if (!TextUtils.isEmpty(productUrl)) {
+            // Start with deep link to product detail
+            startActivityWithDeepLink(ConstantsIntentExtra.CONTENT_URL, productUrl, FragmentType.PRODUCT_DETAILS);
+        } else if (!TextUtils.isEmpty(mCatalogDeepLink)) {
+            /**
+             * FIXME: Open the deep link on the respective country store 
+             */
+            // Receive like this: <country code>/c/<category url key> - ex. eg/c/surprise-your-guests 
+            String[] catalogSplit = mCatalogDeepLink.split(DarwinRegex.REGEX_CATALOG_DL);
+            // Get country code
+            String countryCode = catalogSplit[0];
+            // Get catalog URL key
+            String catalogUrl = getBaseURL() +  "/" +catalogSplit[1] + "/";
+            // Start with deep link to catalog 
+            startActivityWithDeepLink(ConstantsIntentExtra.CONTENT_URL, catalogUrl, FragmentType.PRODUCT_LIST);
         } else {
             // Default Start
             Intent intent = new Intent(this, MainFragmentActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            // intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         }
         overridePendingTransition(R.animator.activityfadein, R.animator.splashfadeout);
         finish();
     }
+    
+    /**
+     * Get the base URL
+     * @return String
+     */
+    private String getBaseURL(){
+        return RestContract.HTTPS_PROTOCOL + "://" + RestContract.REQUEST_HOST + "/" + RestContract.REST_BASE_PATH;
+    }
 
+    /**
+     * Start the main activity with a deep link
+     * @param key the deep link key
+     * @param value the deep link value
+     * @param receiverType the fragment to receive the deep link
+     * @author sergiopereira
+     */
+    private void startActivityWithDeepLink(String key, String value, FragmentType receiverType) {
+        Log.d(TAG, "START DEEP LINK: KEY:" + key + " VALUE:" + value + " RECEIVER:" + receiverType.toString());
+        // Create bundle for fragment
+        Bundle bundle = new Bundle();
+        bundle.putString(key, value);
+        bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gpush_prefix);
+        bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
+        // Create intent with fragment type and bundle
+        Intent intent = new Intent(this, MainFragmentActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra(ConstantsIntentExtra.FRAGMENT_TYPE, receiverType);
+        intent.putExtra(ConstantsIntentExtra.FRAGMENT_BUNDLE, bundle);
+        // Start activity
+        startActivity(intent);
+        TrackerDelegator.trackPushNotificationsEnabled(getApplicationContext(), true);
+    }
+    
     @SuppressLint("NewApi")
     private void showDevInfo() {
         if (!HockeyStartup.isSplashRequired(getApplicationContext())) {
@@ -424,6 +459,7 @@ public class SplashScreenActivity extends FragmentActivity {
         Log.i(TAG, "codeerror");
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        @SuppressWarnings("unchecked")
         HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
         Log.i(TAG, "codeerror "+errorCode);
         if (errorCode.isNetworkError()) {

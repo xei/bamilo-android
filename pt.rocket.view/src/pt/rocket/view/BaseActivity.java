@@ -2022,21 +2022,25 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         switch (step) {
         case CHECKOUT_ABOUT_YOU:
             findViewById(R.id.checkout_header_step_1).setSelected(false);
+            findViewById(R.id.checkout_header_step_1).getLayoutParams().width = getResources().getDimensionPixelSize(R.dimen.checkout_header_step_width);
             findViewById(R.id.checkout_header_step_1_icon).setSelected(false);
             findViewById(R.id.checkout_header_step_1_text).setVisibility(View.GONE);
             break;
         case CHECKOUT_BILLING:
             findViewById(R.id.checkout_header_step_2).setSelected(false);
+            findViewById(R.id.checkout_header_step_2).getLayoutParams().width = getResources().getDimensionPixelSize(R.dimen.checkout_header_step_width);
             findViewById(R.id.checkout_header_step_2_icon).setSelected(false);
             findViewById(R.id.checkout_header_step_2_text).setVisibility(View.GONE);
             break;
         case CHECKOUT_SHIPPING:
             findViewById(R.id.checkout_header_step_3).setSelected(false);
+            findViewById(R.id.checkout_header_step_3).getLayoutParams().width = getResources().getDimensionPixelSize(R.dimen.checkout_header_step_width);
             findViewById(R.id.checkout_header_step_3_icon).setSelected(false);
             findViewById(R.id.checkout_header_step_3_text).setVisibility(View.GONE);
             break;
         case CHECKOUT_PAYMENT:
             findViewById(R.id.checkout_header_step_4).setSelected(false);
+            findViewById(R.id.checkout_header_step_4).getLayoutParams().width = getResources().getDimensionPixelSize(R.dimen.checkout_header_step_width);
             findViewById(R.id.checkout_header_step_4_icon).setSelected(false);
             findViewById(R.id.checkout_header_step_4_text).setVisibility(View.GONE);
             break;
@@ -2054,21 +2058,25 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         switch (step) {
         case CHECKOUT_ABOUT_YOU:
             findViewById(R.id.checkout_header_step_1).setSelected(true);
+            findViewById(R.id.checkout_header_step_1).getLayoutParams().width = getResources().getDimensionPixelSize(R.dimen.checkout_header_step_selected_width);
             findViewById(R.id.checkout_header_step_1_icon).setSelected(true);
             findViewById(R.id.checkout_header_step_1_text).setVisibility(View.VISIBLE);
             break;
         case CHECKOUT_BILLING:
             findViewById(R.id.checkout_header_step_2).setSelected(true);
+            findViewById(R.id.checkout_header_step_2).getLayoutParams().width = getResources().getDimensionPixelSize(R.dimen.checkout_header_step_selected_width);
             findViewById(R.id.checkout_header_step_2_icon).setSelected(true);
             findViewById(R.id.checkout_header_step_2_text).setVisibility(View.VISIBLE);
             break;
         case CHECKOUT_SHIPPING:
             findViewById(R.id.checkout_header_step_3).setSelected(true);
+            findViewById(R.id.checkout_header_step_3).getLayoutParams().width = getResources().getDimensionPixelSize(R.dimen.checkout_header_step_selected_width);
             findViewById(R.id.checkout_header_step_3_icon).setSelected(true);
             findViewById(R.id.checkout_header_step_3_text).setVisibility(View.VISIBLE);
             break;
         case CHECKOUT_PAYMENT:
             findViewById(R.id.checkout_header_step_4).setSelected(true);
+            findViewById(R.id.checkout_header_step_4).getLayoutParams().width = getResources().getDimensionPixelSize(R.dimen.checkout_header_step_selected_width);
             findViewById(R.id.checkout_header_step_4_icon).setSelected(true);
             findViewById(R.id.checkout_header_step_4_text).setVisibility(View.VISIBLE);
             break;

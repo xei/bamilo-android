@@ -29,5 +29,10 @@ public class DarwinRegex {
 	 */
 	public static final String REGEX_RESOLUTION_TAG = "(\\-)([a-zA-Z]*)(\\.)";
 	
+	
+	/**
+	 * Regex used on deep link for catalog
+	 */
+	public static final String REGEX_CATALOG_DL = "/c/";
 
 }
