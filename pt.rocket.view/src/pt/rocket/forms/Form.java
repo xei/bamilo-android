@@ -46,7 +46,7 @@ public class Form implements IJSONSerializable, Parcelable {
     public ArrayList<FormField> fields;
     public Map<String, Integer> fieldMapping;
     
-    public Map<String, FormField> theRealFieldMapping;
+    public Map<String, FormField> mFieldKeyMap;
     /**
      * Form empty constructor.
      */
@@ -58,7 +58,7 @@ public class Form implements IJSONSerializable, Parcelable {
         this.submit = "";
 
         this.fields = new ArrayList<FormField>();
-        this.theRealFieldMapping = new HashMap<String, FormField>();
+        this.mFieldKeyMap = new HashMap<String, FormField>();
         this.fieldMapping = null;
     }
 
@@ -80,7 +80,7 @@ public class Form implements IJSONSerializable, Parcelable {
         this.submit = submit;
 
         this.fields = fields;
-        this.theRealFieldMapping = new HashMap<String, FormField>();
+        this.mFieldKeyMap = new HashMap<String, FormField>();
         this.fieldMapping = null;
     }
 
@@ -111,12 +111,7 @@ public class Form implements IJSONSerializable, Parcelable {
                 FormField field = new FormField(this);
                 if (field.initialize(fieldsArray.getJSONObject(i))) {
                     fields.add(field);
-                    
-                    /**
-                     * TODO: Validate if is necessary this map
-                     */
-                    theRealFieldMapping.put(field.getKey(), field);
-                    
+                    mFieldKeyMap.put(field.getKey(), field);
                 }
             }
             
@@ -165,9 +160,13 @@ public class Form implements IJSONSerializable, Parcelable {
         return jsonObject;
     }
 
+    
+    public Map<String, FormField> getFieldKeyMap(){
+        return mFieldKeyMap;
+    }
+    
     @Override
     public int describeContents() {
-        // TODO Auto-generated method stub
         return 0;
     }
 

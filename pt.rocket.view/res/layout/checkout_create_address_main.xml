@@ -41,7 +41,8 @@
         android:id="@+id/checkout_address_button_enter"
         style="@style/button_orange_style"
         android:layout_alignParentBottom="true"
-        android:contentDescription="@string/login_button_description"
-        android:text="Next" />
+        android:fontFamily="roboto_regular"
+        android:text="@string/next_button"
+        android:width="@dimen/inner_container_width" />
 
 </RelativeLayout>

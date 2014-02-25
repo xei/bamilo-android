@@ -29,17 +29,6 @@ public class SetNewAddressHelper extends BaseHelper {
     
     private static final EventType type = EventType.CREATE_ADDRESS_EVENT;
     
-    
-    // Alice_Module_Customer_Model_AddressForm[first_name]
-    // Alice_Module_Customer_Model_AddressForm[last_name]
-    // Alice_Module_Customer_Model_AddressForm[address1]
-    // Alice_Module_Customer_Model_AddressForm[address2]
-    // Alice_Module_Customer_Model_AddressForm[city]
-    // Alice_Module_Customer_Model_AddressForm[phone]
-    // Alice_Module_Customer_Model_AddressForm[fk_customer_address_region]
-    // Alice_Module_Customer_Model_AddressForm[fk_customer_address_city]
-    // Alice_Module_Customer_Model_AddressForm[country]
-            
     /*
      * (non-Javadoc)
      * @see pt.rocket.helpers.BaseHelper#generateRequestBundle(android.os.Bundle)

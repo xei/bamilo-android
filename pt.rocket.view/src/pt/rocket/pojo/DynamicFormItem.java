@@ -825,18 +825,15 @@ public class DynamicFormItem {
         }
     }
 
-    private void buildList(RelativeLayout dataContainer, RelativeLayout.LayoutParams params,
-            int controlWidth) {
+    private void buildList(RelativeLayout dataContainer, RelativeLayout.LayoutParams params, int controlWidth) {
         this.control.setLayoutParams(params);
         // data controls
-        params = new RelativeLayout.LayoutParams(controlWidth,
-                RelativeLayout.LayoutParams.WRAP_CONTENT);
+        params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
         dataContainer = new RelativeLayout(this.context);
         dataContainer.setId(parent.getNextId());
         dataContainer.setLayoutParams(params);
 
-        params = new RelativeLayout.LayoutParams(controlWidth,
-                RelativeLayout.LayoutParams.WRAP_CONTENT);
+        params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
 
         // TODO: Validate this method for poll
         Log.d("Poll", "Type: Radio Group");
@@ -1052,15 +1049,7 @@ public class DynamicFormItem {
                 break;
             case radioGroup:
                 buildRadioGroup(dataContainer, params, controlWidth);
-
-                // TODO: Validate this method for poll
-                // Log.d("Poll", "Type: Radio Group");
-                // if(entry.getKey().contains("poll")){
-                // Log.d("Poll", "Key: Poll");
-                // createPollRadioGroup(MANDATORYSIGNALSIZE, params, dataContainer);
-                // }
                 break;
-
             case list:
                 buildList(dataContainer, params, controlWidth);
                 break;
@@ -1086,9 +1075,7 @@ public class DynamicFormItem {
         }
     }
 
-    private void createSpinnerForRadioGroup(final int MANDATORYSIGNALSIZE,
-            RelativeLayout.LayoutParams params,
-            RelativeLayout dataContainer) {
+    private void createSpinnerForRadioGroup(final int MANDATORYSIGNALSIZE, RelativeLayout.LayoutParams params, RelativeLayout dataContainer) {
         this.dataControl = View.inflate(this.context, R.layout.form_icsspinner, null);
         this.dataControl.setId(parent.getNextId());
         this.dataControl.setLayoutParams(params);
@@ -1102,7 +1089,6 @@ public class DynamicFormItem {
 
         }
         else {
-            
             ArrayList<String> default_string = new ArrayList<String>();
             default_string.add("Empty");
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(context,

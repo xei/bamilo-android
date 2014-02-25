@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@android:color/white"
     android:orientation="horizontal" >
 
     <!-- CREATE ADDRESS -->
@@ -22,7 +23,7 @@
             android:layout_alignParentTop="true" >
 
             <!-- FORMS -->
-            
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -34,6 +35,8 @@
                     android:id="@+id/checkout_address_form_include_shipping"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/margin_mid"
+                    android:layout_marginRight="@dimen/margin_mid"
                     android:layout_weight="1"
                     layout="@layout/checkout_create_address_shipping" />
 
@@ -43,9 +46,11 @@
                     android:id="@+id/checkout_address_form_include_billing"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/margin_mid"
+                    android:layout_marginRight="@dimen/margin_mid"
                     android:layout_weight="1"
                     layout="@layout/checkout_create_address_billing"
-                    android:visibility="gone" />
+                    android:visibility="visible" />
             </LinearLayout>
         </ScrollView>
 
@@ -54,9 +59,12 @@
         <org.holoeverywhere.widget.Button
             android:id="@+id/checkout_address_button_enter"
             style="@style/button_orange_style"
+            android:layout_width="@dimen/inner_container_width"
             android:layout_alignParentBottom="true"
-            android:contentDescription="@string/login_button_description"
-            android:text="Next" />
+            android:layout_centerInParent="true"
+            android:background="@drawable/btn_orange"
+            android:fontFamily="roboto_regular"
+            android:text="@string/next_button" />
     </RelativeLayout>
 
     <!-- DIVIDER -->

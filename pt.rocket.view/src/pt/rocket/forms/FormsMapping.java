@@ -76,7 +76,7 @@ public class FormsMapping {
         currMapping.put("fk_customer_address_city", 9);
         currMapping.put("is_default_shipping", 10);
         currMapping.put("is_default_billing", 11);
-        //currMapping.put("city", 7);
+        currMapping.put("city", 7);
 //        currMapping.put("AddressForm_fk_customer", 14);   
 //        currMapping.put("AddressForm_middle_name", 3);
 //        currMapping.put("AddressForm_region", 9);

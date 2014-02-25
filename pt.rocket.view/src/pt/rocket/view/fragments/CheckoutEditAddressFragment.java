@@ -60,19 +60,19 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
 
     private static final String TAG = LogTagHelper.create(CheckoutEditAddressFragment.class);
     
-    private static CheckoutEditAddressFragment editAddressFragment;
-    
-    private ViewGroup editFormContainer;
-
-    private DynamicForm editFormGenerator;
-
-    private Form formResponse;
-
-    private ArrayList<AddressRegion> regions;
-    
     public static final String SELECTED_ADDRESS = "selected_address";
     
-    private Address selectedAddress;
+    private static CheckoutEditAddressFragment mEditAddressFragment;
+    
+    private ViewGroup mEditFormContainer;
+
+    private DynamicForm mEditFormGenerator;
+
+    private Form mFormResponse;
+
+    private ArrayList<AddressRegion> mRegions;
+    
+    private Address mCurrentAddress;
     
     
     /**
@@ -80,9 +80,9 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
      * @return
      */
     public static CheckoutEditAddressFragment getInstance(Bundle bundle) {
-        editAddressFragment = new CheckoutEditAddressFragment();
-        editAddressFragment.selectedAddress = bundle.getParcelable(SELECTED_ADDRESS);
-        return editAddressFragment;
+        mEditAddressFragment = new CheckoutEditAddressFragment();
+        mEditAddressFragment.mCurrentAddress = bundle.getParcelable(SELECTED_ADDRESS);
+        return mEditAddressFragment;
     }
 
     /**
@@ -129,7 +129,7 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
     public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState) {
         super.onCreateView(inflater, viewGroup, savedInstanceState);
         Log.i(TAG, "ON CREATE VIEW");
-        return inflater.inflate(R.layout.checkout_edit_address, viewGroup, false);
+        return inflater.inflate(R.layout.checkout_edit_address_main, viewGroup, false);
     }
     
     /*
@@ -141,9 +141,11 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
         
+        // Validate current address, if null goto back
+        if(mCurrentAddress == null) onClickCancelAddressButton();
         
         // Create address form
-        editFormContainer = (ViewGroup) view.findViewById(R.id.checkout_edit_form_container);
+        mEditFormContainer = (ViewGroup) view.findViewById(R.id.checkout_edit_form_container);
         // Next button
         view.findViewById(R.id.checkout_edit_button_enter).setOnClickListener((OnClickListener) this);
         // Cancel button
@@ -152,12 +154,11 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
         // Get and show form
         if(JumiaApplication.INSTANCE.getFormDataRegistry() == null || JumiaApplication.INSTANCE.getFormDataRegistry().size() == 0){
             triggerInitForm();
-        } else if(formResponse != null){
-            loadEditAddressForm(formResponse);
+        } else if(mFormResponse != null){
+            loadEditAddressForm(mFormResponse);
         } else {
             triggerEditAddressForm();
         }
-        
     }
     
     
@@ -222,7 +223,7 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
     public void onDestroy() {
         super.onDestroy();
         Log.i(TAG, "ON DESTROY");
-        regions = null;
+        mRegions = null;
     }
     
     
@@ -231,69 +232,58 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
      * @param form
      */
     private void loadEditAddressForm(Form form) {
-        Log.i(TAG, "LOAD EDIT ADDRESS FORM: " + form.name);
-
+        Log.i(TAG, "LOAD EDIT ADDRESS FORM");
         // Edit form
-        editFormGenerator = FormFactory.getSingleton().CreateForm(FormConstants.ADDRESS_FORM, getActivity(), form);
-        editFormContainer.removeAllViews();
-        editFormContainer.addView(editFormGenerator.getContainer());                
-        editFormContainer.refreshDrawableState();
-        
+        mEditFormGenerator = FormFactory.getSingleton().CreateForm(FormConstants.ADDRESS_FORM, getActivity(), form);
+        mEditFormContainer.removeAllViews();
+        mEditFormContainer.addView(mEditFormGenerator.getContainer());                
+        mEditFormContainer.refreshDrawableState();
         // Validate Regions
-        if(regions == null) {
-            FormField field = form.theRealFieldMapping.get("fk_customer_address_region");
-            String url = field.getDataCalls().get("api_call");
-            Log.d(TAG, "API CALL: " + url);
+        if(mRegions == null) {
+            FormField field = form.getFieldKeyMap().get(RestConstants.JSON_REGION_ID_TAG);
+            String url = field.getDataCalls().get(RestConstants.JSON_API_CALL_TAG);
             triggerGetRegions(url);
         } else {
             Log.d(TAG, "REGIONS ISN'T NULL");
-            setRegions(editFormGenerator, regions, selectedAddress);
+            setRegions(mEditFormGenerator, mRegions, mCurrentAddress);
         }
-        
         // Hide check boxes
-        hideDefaultCheckBoxes(editFormGenerator);
+        hideSomeFields(mEditFormGenerator);
         // Show selected address content
-        showSelectedAddress(editFormGenerator, selectedAddress);
-                
+        showSelectedAddress(mEditFormGenerator, mCurrentAddress);
+        // Show
         getBaseActivity().showContentContainer(false);
-        
     }
     
+    /**
+     * 
+     * @param dynamicForm
+     * @param selectedAddress
+     */
     private void showSelectedAddress(DynamicForm dynamicForm, Address selectedAddress){
         // First name       
-        ((EditText) dynamicForm.getItemByKey("first_name").getEditControl()).setText(selectedAddress.getFirstName());
+        ((EditText) dynamicForm.getItemByKey(RestConstants.JSON_FIRST_NAME_TAG).getEditControl()).setText(selectedAddress.getFirstName());
         // Last name        
-        ((EditText) dynamicForm.getItemByKey("last_name").getEditControl()).setText(selectedAddress.getLastName());
+        ((EditText) dynamicForm.getItemByKey(RestConstants.JSON_LAST_NAME_TAG).getEditControl()).setText(selectedAddress.getLastName());
         // Address 1        
-        ((EditText) dynamicForm.getItemByKey("address1").getEditControl()).setText(selectedAddress.getAddress());
+        ((EditText) dynamicForm.getItemByKey(RestConstants.JSON_ADDRESS1_TAG).getEditControl()).setText(selectedAddress.getAddress());
         // Address 2        
-        ((EditText) dynamicForm.getItemByKey("address2").getEditControl()).setText(selectedAddress.getAddress2());
+        ((EditText) dynamicForm.getItemByKey(RestConstants.JSON_ADDRESS2_TAG).getEditControl()).setText(selectedAddress.getAddress2());
         // Phone            
-        ((EditText) dynamicForm.getItemByKey("phone").getEditControl()).setText(selectedAddress.getPhone());
-        // DEFAULT SHIPPING 
-        //((CheckBox) dynamicForm.getItemByKey("is_default_shipping").getControl()).setChecked(true);
-        // DEFAULT BILLING 
-        //((CheckBox) dynamicForm.getItemByKey("is_default_billing").getControl()).setChecked(true);
-        
-        
-        // Region           fk_customer_address_region
-        // City id          fk_customer_address_city
-        // City Name        city
-        
-        // Alice_Module_Customer_Model_AddressForm[id_customer_address]
-
-        
+        ((EditText) dynamicForm.getItemByKey(RestConstants.JSON_PHONE_TAG).getEditControl()).setText(selectedAddress.getPhone());
     }
     
     /**
      * Hide the default check boxes
      * @param dynamicForm
      */
-    private void hideDefaultCheckBoxes(DynamicForm dynamicForm){
-        DynamicFormItem item = dynamicForm.getItemByKey("is_default_shipping");
+    private void hideSomeFields(DynamicForm dynamicForm){
+        DynamicFormItem item = dynamicForm.getItemByKey(RestConstants.JSON_IS_DEFAULT_SHIPPING_TAG);
         item.getEditControl().setVisibility(View.GONE);
-        item = dynamicForm.getItemByKey("is_default_billing");
+        item = dynamicForm.getItemByKey(RestConstants.JSON_IS_DEFAULT_BILLING_TAG);
         item.getEditControl().setVisibility(View.GONE);
+        item = dynamicForm.getItemByKey(RestConstants.JSON_CITY_TAG);
+        item.getControl().setVisibility(View.GONE);
     }
     
     /**
@@ -304,21 +294,16 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
      */
     private void setRegions(DynamicForm dynamicForm, ArrayList<AddressRegion> regions, Address selecedAddress){
         Log.d(TAG, "SET REGIONS REGIONS: ");
-
-        DynamicFormItem v = dynamicForm.getItemByKey("fk_customer_address_region");
-        
+        // Get region item
+        DynamicFormItem v = dynamicForm.getItemByKey(RestConstants.JSON_REGION_ID_TAG);
+        // Clean group
         ViewGroup group = (ViewGroup) v.getControl();
         group.removeAllViews();
-        
+        // Add a spinner
         IcsSpinner spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout.form_icsspinner, null);
         spinner.setLayoutParams(group.getLayoutParams());
-
-        ArrayAdapter<AddressRegion> adapter = new ArrayAdapter<AddressRegion>(
-                    getBaseActivity(), 
-                    R.layout.form_spinner_item, 
-                    regions);
-        
-        spinner.setPrompt("Select country");
+        // Create adapter
+        ArrayAdapter<AddressRegion> adapter = new ArrayAdapter<AddressRegion>( getBaseActivity(), R.layout.form_spinner_item, regions);
         spinner.setAdapter(adapter);
         spinner.setSelection(getRegionPosition(regions, selecedAddress));
         spinner.setOnItemSelectedListener(this);
@@ -329,7 +314,7 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
      * Get the position of the address region
      * @param regions
      * @param selecedAddress
-     * @return int
+     * @return int the position
      */
     private int getRegionPosition(ArrayList<AddressRegion> regions, Address selecedAddress){
         for (int i = 0; i < regions.size(); i++) {
@@ -342,35 +327,47 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
      * Validate the current region selection and update the cities
      * @param requestedRegionAndFields
      * @param cities
+     * @param selectedAddress 
      */
-    private void setCitiesOnSelectedRegion(ArrayList<AddressCity> cities){
-        setCities(editFormGenerator, cities);
+    private void setCitiesOnSelectedRegion(ArrayList<AddressCity> cities, Address selectedAddress){
+        setCities(mEditFormGenerator, cities, selectedAddress);
     }
     
     /**
      * Method used to set the cities on the respective form
      * @param dynamicForm
      * @param cities
+     * @param selectedAddress 
      * @param tag
      */
-    private void setCities(DynamicForm dynamicForm, ArrayList<AddressCity> cities){
-        // SHIPPING
-        DynamicFormItem v = dynamicForm.getItemByKey("fk_customer_address_city");
+    private void setCities(DynamicForm dynamicForm, ArrayList<AddressCity> cities, Address selectedAddress){
+        // Get city item
+        DynamicFormItem v = dynamicForm.getItemByKey(RestConstants.JSON_CITY_ID_TAG);
+        // Clean group
         ViewGroup group = (ViewGroup) v.getControl();
-        group.removeAllViews();
-        
+        group.removeAllViews();        
+        // Add a spinner
         IcsSpinner spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout.form_icsspinner, null);
         spinner.setLayoutParams(group.getLayoutParams());
-        
-        ArrayAdapter<AddressCity> adapter = new ArrayAdapter<AddressCity>(
-                getBaseActivity(), 
-                R.layout.form_spinner_item, 
-                cities);
-        //adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
-        spinner.setPrompt("Select country");
+        // Create adapter
+        ArrayAdapter<AddressCity> adapter = new ArrayAdapter<AddressCity>( getBaseActivity(), R.layout.form_spinner_item, cities);
         spinner.setAdapter(adapter);
+        spinner.setSelection(getCityPosition(cities, selectedAddress));
         spinner.setOnItemSelectedListener(this);
         group.addView(spinner);
+    }
+    
+    /**
+     * Get the position of the address city
+     * @param cities
+     * @param selecedAddress
+     * @return int the position
+     */
+    private int getCityPosition(ArrayList<AddressCity> cities, Address selecedAddress){
+        for (int i = 0; i < cities.size(); i++) {
+            if(cities.get(i).getId() == selecedAddress.getFkCustomerAddressCity()) return i;
+        }
+        return 0;
     }
     
     /**
@@ -397,10 +394,7 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
      */
     private void onClickEditAddressButton() {
         Log.i(TAG, "ON CLICK: EDIT");
-        if(editFormGenerator.validate()) {
-            Log.i(TAG, "EDIT ADDRESS");    
-            triggerEditAddress(createContentValues(editFormGenerator));
-        }
+        triggerEditAddress(createContentValues(mEditFormGenerator));
     }
     
     
@@ -423,33 +417,49 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
         // Save content values
         ContentValues mContentValues = dynamicForm.save();
         // Get the region
-        ViewGroup mRegionGroup = (ViewGroup) dynamicForm.getItemByKey("fk_customer_address_region").getControl();
+        ViewGroup mRegionGroup = (ViewGroup) dynamicForm.getItemByKey(RestConstants.JSON_REGION_ID_TAG).getControl();
         IcsSpinner mRegionSpinner = (IcsSpinner) mRegionGroup.getChildAt(0);
         AddressRegion mSelectedRegion = (AddressRegion) mRegionSpinner.getSelectedItem(); 
         Log.d(TAG, "SELECTED REGION: " + mSelectedRegion.getName() + " " + mSelectedRegion.getId());
         // Get the city
-        ViewGroup mCityGroup = (ViewGroup) dynamicForm.getItemByKey("fk_customer_address_city").getControl();
+        ViewGroup mCityGroup = (ViewGroup) dynamicForm.getItemByKey(RestConstants.JSON_CITY_ID_TAG).getControl();
         IcsSpinner mCitySpinner = (IcsSpinner) mCityGroup.getChildAt(0);
         AddressCity mSelectedCity = (AddressCity) mCitySpinner.getSelectedItem(); 
         Log.d(TAG, "SELECTED CITY: " + mSelectedCity.getValue() + " " + mSelectedCity.getId() );
         // Get some values
-        int mAddressId = selectedAddress.getId();
+        int mAddressId = mCurrentAddress.getId();
         int mRegionId = mSelectedRegion.getId();
         int mCityId = mSelectedCity.getId();
         String mCityName = mSelectedCity.getValue();
-        int isDefaultBilling = (selectedAddress.isDefaultBilling()) ? 1 : 0;
-        int isDefaultShipping = (selectedAddress.isDefaultShipping()) ? 1 : 0;
+        int isDefaultBilling = (mCurrentAddress.isDefaultBilling()) ? 1 : 0;
+        int isDefaultShipping = (mCurrentAddress.isDefaultShipping()) ? 1 : 0;
         // Put values
-        mContentValues.put("Alice_Module_Customer_Model_AddressForm[address_id]", mAddressId);
-        mContentValues.put("Alice_Module_Customer_Model_AddressForm[is_default_billing]", isDefaultBilling);
-        mContentValues.put("Alice_Module_Customer_Model_AddressForm[is_default_shipping]", isDefaultShipping);
-        mContentValues.put("Alice_Module_Customer_Model_AddressForm[fk_customer_address_region]", mRegionId);
-        mContentValues.put("Alice_Module_Customer_Model_AddressForm[fk_customer_address_city]", mCityId);
-        mContentValues.put("Alice_Module_Customer_Model_AddressForm[city]", mCityName);
+        for (String key : mContentValues.keySet()) {
+            if(key.contains(RestConstants.JSON_ADDRESS_ID_TAG)) mContentValues.put(key, mAddressId);
+            else if(key.contains(RestConstants.JSON_IS_DEFAULT_BILLING_TAG)) mContentValues.put(key, isDefaultBilling);
+            else if(key.contains(RestConstants.JSON_IS_DEFAULT_SHIPPING_TAG)) mContentValues.put(key, isDefaultShipping);
+            else if(key.contains(RestConstants.JSON_REGION_ID_TAG)) mContentValues.put(key, mRegionId);
+            else if(key.contains(RestConstants.JSON_CITY_ID_TAG)) mContentValues.put(key, mCityId);
+            else if(key.contains(RestConstants.JSON_CITY_TAG)) mContentValues.put(key, mCityName);
+        }
         Log.d(TAG, "CURRENT CONTENT VALUES: " + mContentValues.toString());
         // return the new content values
         return mContentValues;
     }
+    
+    // XXX
+    // Alice_Module_Customer_Model_AddressForm[is_default_billing]=0 
+    // Alice_Module_Customer_Model_AddressForm[city]=Kangundo 
+    // Alice_Module_Customer_Model_AddressForm[address1]=my street 1 
+    // Alice_Module_Customer_Model_AddressForm[is_default_shipping]=0 
+    // Alice_Module_Customer_Model_AddressForm[id_customer_address]=8373 
+    // Alice_Module_Customer_Model_AddressForm[phone]=123456789 
+    // Alice_Module_Customer_Model_AddressForm[address2]=my street 2 
+    // Alice_Module_Customer_Model_AddressForm[first_name]=second f 
+    // Alice_Module_Customer_Model_AddressForm[last_name]=second l 
+    // Alice_Module_Customer_Model_AddressForm[fk_customer_address_region]=236 
+    // Alice_Module_Customer_Model_AddressForm[fk_customer_address_city]=381
+    
     
     /**
      * ########### ON ITEM SELECTED LISTENER ###########  
@@ -470,8 +480,8 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
         Log.d(TAG, "CURRENT TAG: " + parent.getTag());
         Object object = parent.getItemAtPosition(position);
         if(object instanceof AddressRegion) {
-            FormField field = formResponse.theRealFieldMapping.get("fk_customer_address_city");
-            String url = field.getDataCalls().get("api_call");
+            FormField field = mFormResponse.getFieldKeyMap().get(RestConstants.JSON_CITY_ID_TAG);
+            String url = field.getDataCalls().get(RestConstants.JSON_API_CALL_TAG);
             Log.d(TAG, "API CALL: " + url);
             // Request the cities for this region id 
             int regionId = ((AddressRegion) object).getId();
@@ -572,22 +582,22 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
         case GET_EDIT_ADDRESS_FORM_EVENT:
             Log.d(TAG, "RECEIVED GET_EDIT_ADDRESS_FORM_EVENT");
             Form form = (Form) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-            formResponse = form;
+            mFormResponse = form;
             loadEditAddressForm(form);
             break;
         case GET_REGIONS_EVENT:
             Log.d(TAG, "RECEIVED GET_REGIONS_EVENT");
-            regions = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
-            setRegions(editFormGenerator, regions, selectedAddress);
+            mRegions = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
+            setRegions(mEditFormGenerator, mRegions, mCurrentAddress);
             break;
         case GET_CITIES_EVENT:
             Log.d(TAG, "RECEIVED GET_CITIES_EVENT");
             ArrayList<AddressCity> cities = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
-            setCitiesOnSelectedRegion(cities);
+            setCitiesOnSelectedRegion(cities, mCurrentAddress);
             break;
         case EDIT_ADDRESS_EVENT:
             Log.d(TAG, "RECEIVED EDIT_ADDRESS_EVENT");
-            Toast.makeText(getBaseActivity(), "Address updated with success!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getBaseActivity(), getString(R.string.edit_address_success), Toast.LENGTH_SHORT).show();
             getBaseActivity().onBackPressed();
             break;
         default:
@@ -632,6 +642,7 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
         case EDIT_ADDRESS_EVENT:
             Log.d(TAG, "RECEIVED EDIT_ADDRESS_EVENT");
             if (errorCode == ErrorCode.REQUEST_ERROR) {
+                @SuppressWarnings("unchecked")
                 HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY); 
                 showErrorDialog(errors);
                 getBaseActivity().showContentContainer(false);

@@ -332,7 +332,8 @@ public class RestConstants {
     public static final String JSON_CUSTOMER_LAST_NAME_TAG = "customer_last_name";
     public static final String JSON_CUSTOMER_ADDRESS_COLLECTION_TAG = "address_collection";
     public static final String JSON_REGION_NAME_TAG = "customer_address_region";
-
+    public static final String JSON_API_CALL_TAG = "api_call";
+    
     
     /**
      * Native Checkout

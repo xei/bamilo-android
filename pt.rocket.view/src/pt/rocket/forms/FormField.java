@@ -245,23 +245,22 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                 
                                 
                 /**
-                 * TODO: Validate this method to save the api calls
+                 * Get data from dataset as json object
                  */
                 if(dataSetObject != null && dataSetObject.length() > 0){
                     Iterator<?> it = dataSetObject.keys();
                     while (it.hasNext()) {
                         String curKey = (String) it.next();
-                        if(curKey.equals("api_call")){
-                            Log.d(TAG, "API CALL: " + dataSetObject.toString());
-                            dataCalls.put(curKey, (String) dataSetObject.get("api_call"));
+                        // Validate keys
+                        if(curKey.equals(RestConstants.JSON_API_CALL_TAG)){
+                            dataCalls.put(curKey, (String) dataSetObject.get(RestConstants.JSON_API_CALL_TAG));
                         } else{
                             dataSet.put((String) dataSetObject.get(key), (String) dataSetObject.get(key));
                         }
                     }
                 /**
-                 * ########################################################
+                 * Get data from dataset as json array
                  */  
-                    
                 } else if (dataSetArray != null && dataSetArray.length() > 0) {
                     for (int i = 0; i < dataSetArray.length(); ++i) {
                         dataSet.put(dataSetArray.getString(i), dataSetArray.getString(i));

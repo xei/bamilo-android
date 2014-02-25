@@ -71,7 +71,6 @@ public class GetFormAddAddressHelper extends BaseHelper {
                 
                 forms.add(form);
             }
-            // formRegistry.put(action, forms);
             if (forms.size() > 0) {
                 bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, forms.get(0));
             }

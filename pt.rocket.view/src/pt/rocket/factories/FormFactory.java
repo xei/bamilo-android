@@ -2,10 +2,6 @@ package pt.rocket.factories;
 
 import java.util.ArrayList;
 
-import org.holoeverywhere.FontLoader;
-
-import de.akquinet.android.androlog.Log;
-
 import pt.rocket.constants.FormConstants;
 import pt.rocket.forms.Form;
 import pt.rocket.forms.IFormField;
@@ -16,6 +12,7 @@ import pt.rocket.pojo.MetaFormExtractor;
 import android.content.Context;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import de.akquinet.android.androlog.Log;
 
 /**
  * A Singleton factory for the creation of dynamic forms based on information returned by the framework <p/><br> 
@@ -336,7 +333,6 @@ public class FormFactory {
             
             DynamicFormItem ctrl;
             
-            // XXX
             ArrayList<IFormField> transformedFields = MetaFormExtractor.generateMetaFields( form.fields );
             MetaFormExtractor.dumpIFormField(transformedFields);
 

@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.holoeverywhere.widget.CheckBox;
+import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.FormConstants;
@@ -47,6 +48,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.Toast;
 
 import com.actionbarsherlock.internal.widget.IcsAdapterView;
@@ -78,15 +80,15 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
     
     private static final int ISNT_DEFAULT_BILLING_ADDRESS = 0;
     
-    private ViewGroup shippingFormContainer;
+    private ViewGroup mShippingFormContainer;
 
     private DynamicForm shippingFormGenerator;
 
-    private Form formResponse;
+    private Form mFormResponse;
 
-    private ViewGroup billingContainer;
+    private ViewGroup mBillingIncludeContainer;
 
-    private ViewGroup billingFormContainer;
+    private ViewGroup mBillingFormContainer;
 
     private DynamicForm billingFormGenerator;
 
@@ -96,9 +98,11 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
     
     private String selectedRegionOnBilling = "";
 
-    private CheckBox billingCheckBox;
+    private CheckBox mIsSameCheckBox;
 
-    private boolean wasCreatedTwoAddresses = false;
+    private TextView mShippingTitle;
+
+    private View mShippingFormMain;
     
     
     /**
@@ -167,31 +171,31 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
-        
+        // Shipping title
+        mShippingTitle = (TextView) view.findViewById(R.id.checkout_address_form_shipping_title);
         // Shipping form
-        shippingFormContainer = (ViewGroup) view.findViewById(R.id.checkout_address_form_shipping_container);
+        mShippingFormContainer = (ViewGroup) view.findViewById(R.id.checkout_address_form_shipping_container);
+        mShippingFormMain = view.findViewById(R.id.checkout_address_form_shipping_main);
         // Billing container
-        billingContainer = (ViewGroup) view.findViewById(R.id.checkout_address_form_include_billing);
+        mBillingIncludeContainer = (ViewGroup) view.findViewById(R.id.checkout_address_form_include_billing);
         // Billing form
-        billingFormContainer = (ViewGroup) view.findViewById(R.id.checkout_address_form_billing_container);
+        mBillingFormContainer = (ViewGroup) view.findViewById(R.id.checkout_address_form_billing_container);
         // Billing check box
-        billingCheckBox = (CheckBox) view.findViewById(R.id.checkout_address_billing_checkbox); 
-        billingCheckBox.setOnCheckedChangeListener((OnCheckedChangeListener) this);
-        billingCheckBox.setChecked(true);
+        mIsSameCheckBox = (CheckBox) view.findViewById(R.id.checkout_address_billing_checkbox); 
+        mIsSameCheckBox.setOnCheckedChangeListener((OnCheckedChangeListener) this);
+        mIsSameCheckBox.setChecked(true);
         // Next button
         view.findViewById(R.id.checkout_address_button_enter).setOnClickListener((OnClickListener) this);
         
         // Get and show form
         if(JumiaApplication.INSTANCE.getFormDataRegistry() == null || JumiaApplication.INSTANCE.getFormDataRegistry().size() == 0){
             triggerInitForm();
-        } else if(formResponse != null){
-            loadCreateAddressForm(formResponse);
+        } else if(mFormResponse != null){
+            loadCreateAddressForm(mFormResponse);
         } else {
             triggerCreateAddressForm();
         }
-        
     }
-    
     
     /*
      * (non-Javadoc)
@@ -264,38 +268,30 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
      * @author sergiopereira
      */
     private void loadCreateAddressForm(Form form) {
-        Log.i(TAG, "LOAD CREATE ADDRESS FORM: " + form.name);
-
-        // Shipping form
+        Log.i(TAG, "LOAD CREATE ADDRESS FORM");
         shippingFormGenerator = FormFactory.getSingleton().CreateForm(FormConstants.ADDRESS_FORM, getActivity(), form);
-        shippingFormContainer.removeAllViews();
-        shippingFormContainer.addView(shippingFormGenerator.getContainer());                
-        shippingFormContainer.refreshDrawableState();
-        
+        mShippingFormContainer.removeAllViews();
+        mShippingFormContainer.addView(shippingFormGenerator.getContainer());                
+        mShippingFormContainer.refreshDrawableState();
         // Billing form
         billingFormGenerator = FormFactory.getSingleton().CreateForm(FormConstants.ADDRESS_FORM, getActivity(), form);
-        billingFormContainer.removeAllViews();
-        billingFormContainer.addView(billingFormGenerator.getContainer());
-        billingFormContainer.refreshDrawableState();
-        
-        // Hide default check box
-        hideDefaultCheckBoxes(shippingFormGenerator);
-        hideDefaultCheckBoxes(billingFormGenerator);
-        
+        mBillingFormContainer.removeAllViews();
+        mBillingFormContainer.addView(billingFormGenerator.getContainer());
+        mBillingFormContainer.refreshDrawableState();
+        // Hide unused fields form
+        hideSomeFields(shippingFormGenerator);
+        hideSomeFields(billingFormGenerator);
         // Validate Regions
         if(regions == null) {
-            FormField field = form.theRealFieldMapping.get("fk_customer_address_region");
-            String url = field.getDataCalls().get("api_call");
-            Log.d(TAG, "API CALL: " + url);
+            FormField field = form.getFieldKeyMap().get(RestConstants.JSON_REGION_ID_TAG);
+            String url = field.getDataCalls().get(RestConstants.JSON_API_CALL_TAG);
             triggerGetRegions(url);
         } else {
-            Log.d(TAG, "REGIONS ISN'T NULL");
             setRegions(shippingFormGenerator, regions, SHIPPING_FORM_TAG);
             setRegions(billingFormGenerator, regions, BILLING_FORM_TAG);
         }
-        
+        // Show
         getBaseActivity().showContentContainer(false);
-        
     }
     
     /**
@@ -303,11 +299,13 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
      * @param dynamicForm
      * @author sergiopereira
      */
-    private void hideDefaultCheckBoxes(DynamicForm dynamicForm){
-        DynamicFormItem item = dynamicForm.getItemByKey("is_default_shipping");
+    private void hideSomeFields(DynamicForm dynamicForm){
+        DynamicFormItem item = dynamicForm.getItemByKey(RestConstants.JSON_IS_DEFAULT_SHIPPING_TAG);
         item.getEditControl().setVisibility(View.GONE);
-        item = dynamicForm.getItemByKey("is_default_billing");
+        item = dynamicForm.getItemByKey(RestConstants.JSON_IS_DEFAULT_BILLING_TAG);
         item.getEditControl().setVisibility(View.GONE);
+        item = dynamicForm.getItemByKey(RestConstants.JSON_CITY_TAG);
+        item.getControl().setVisibility(View.GONE);
     }
     
     /**
@@ -318,23 +316,16 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
      * @author sergiopereira
      */
     private void setRegions(DynamicForm dynamicForm, ArrayList<AddressRegion> regions, String tag){
-        Log.d(TAG, "SET REGIONS REGIONS: " + tag);
-
-        DynamicFormItem v = dynamicForm.getItemByKey("fk_customer_address_region");
-        
+        // Get region item
+        DynamicFormItem v = dynamicForm.getItemByKey(RestConstants.JSON_REGION_ID_TAG);
+        // Clean group
         ViewGroup group = (ViewGroup) v.getControl();
         group.removeAllViews();
-        
+        // Add a spinner
         IcsSpinner spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout.form_icsspinner, null);
         spinner.setLayoutParams(group.getLayoutParams());
-
-        ArrayAdapter<AddressRegion> adapter = new ArrayAdapter<AddressRegion>(
-                    getBaseActivity(), 
-                    R.layout.form_spinner_item, 
-                    regions);
-        
-        //adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
-        spinner.setPrompt("Select country");
+        // Create adapter
+        ArrayAdapter<AddressRegion> adapter = new ArrayAdapter<AddressRegion>( getBaseActivity(), R.layout.form_spinner_item, regions);
         spinner.setAdapter(adapter);
         spinner.setTag(tag);
         spinner.setOnItemSelectedListener(this);
@@ -360,20 +351,16 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
      * @author sergiopereira
      */
     private void setCities(DynamicForm dynamicForm, ArrayList<AddressCity> cities, String tag){
-        // SHIPPING
-        DynamicFormItem v = dynamicForm.getItemByKey("fk_customer_address_city");
+        // Get city item
+        DynamicFormItem v = dynamicForm.getItemByKey(RestConstants.JSON_CITY_ID_TAG);
+        // Clean group
         ViewGroup group = (ViewGroup) v.getControl();
-        group.removeAllViews();
-        
+        group.removeAllViews();        
+        // Add a spinner
         IcsSpinner spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout.form_icsspinner, null);
         spinner.setLayoutParams(group.getLayoutParams());
-        
-        ArrayAdapter<AddressCity> adapter = new ArrayAdapter<AddressCity>(
-                getBaseActivity(), 
-                R.layout.form_spinner_item, 
-                cities);
-        //adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
-        spinner.setPrompt("Select country");
+        // Create adapter
+        ArrayAdapter<AddressCity> adapter = new ArrayAdapter<AddressCity>( getBaseActivity(), R.layout.form_spinner_item, cities);
         spinner.setAdapter(adapter);
         spinner.setTag(tag);
         spinner.setOnItemSelectedListener(this);
@@ -403,18 +390,24 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
      */
     private void onClickCreateAddressButton() {
         Log.i(TAG, "ON CLICK: CREATE");
-        if(billingCheckBox.isChecked() && shippingFormGenerator.validate()) {
-            Log.i(TAG, "CREATE ADDRESS: IS SHIPPING AND IS BILLING TOO");    
-            triggerCreateAddress(createContentValues(shippingFormGenerator, IS_DEFAULT_SHIPPING_ADDRESS, IS_DEFAULT_BILLING_ADDRESS));
-            wasCreatedTwoAddresses = false;
-        } else if(shippingFormGenerator.validate() && billingFormGenerator.validate()) {
+
+        // Validate check
+        if(mIsSameCheckBox.isChecked()) {
+            Log.i(TAG, "CREATE ADDRESS: IS SHIPPING AND IS BILLING TOO");
+            ContentValues mContentValues = createContentValues(shippingFormGenerator, IS_DEFAULT_SHIPPING_ADDRESS, IS_DEFAULT_BILLING_ADDRESS);
+            Log.d(TAG, "CONTENT VALUES: " + mContentValues.toString());
+            triggerCreateAddress(mContentValues);
+        } else {
             Log.i(TAG, "CREATE ADDRESS: SHIPPING AND BILLING");
-            triggerCreateAddress(createContentValues(shippingFormGenerator, IS_DEFAULT_SHIPPING_ADDRESS, ISNT_DEFAULT_BILLING_ADDRESS));
-            triggerCreateAddress(createContentValues(billingFormGenerator, ISNT_DEFAULT_SHIPPING_ADDRESS, IS_DEFAULT_BILLING_ADDRESS));
-            wasCreatedTwoAddresses  = true;
+            ContentValues mShipValues = createContentValues(shippingFormGenerator, IS_DEFAULT_SHIPPING_ADDRESS, ISNT_DEFAULT_BILLING_ADDRESS);
+            Log.d(TAG, "CONTENT SHIP VALUES: " + mShipValues.toString());
+            triggerCreateAddress(mShipValues);
+            ContentValues mBillValues = createContentValues(billingFormGenerator, ISNT_DEFAULT_SHIPPING_ADDRESS, IS_DEFAULT_BILLING_ADDRESS);
+            Log.d(TAG, "CONTENT BILL VALUES: " + mBillValues.toString());            
+            triggerCreateAddress(mBillValues);
         }
     }
-    
+            
     /**
      * Method used to create the content values
      * @param dynamicForm
@@ -427,12 +420,12 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         // Save content values
         ContentValues mContentValues = dynamicForm.save();
         // Get the region
-        ViewGroup mRegionGroup = (ViewGroup) dynamicForm.getItemByKey("fk_customer_address_region").getControl();
+        ViewGroup mRegionGroup = (ViewGroup) dynamicForm.getItemByKey(RestConstants.JSON_REGION_ID_TAG).getControl();
         IcsSpinner mRegionSpinner = (IcsSpinner) mRegionGroup.getChildAt(0);
         AddressRegion mSelectedRegion = (AddressRegion) mRegionSpinner.getSelectedItem(); 
         Log.d(TAG, "SELECTED REGION: " + mSelectedRegion.getName() + " " + mSelectedRegion.getId());
         // Get the city
-        ViewGroup mCityGroup = (ViewGroup) dynamicForm.getItemByKey("fk_customer_address_city").getControl();
+        ViewGroup mCityGroup = (ViewGroup) dynamicForm.getItemByKey(RestConstants.JSON_CITY_ID_TAG).getControl();
         IcsSpinner mCitySpinner = (IcsSpinner) mCityGroup.getChildAt(0);
         AddressCity mSelectedCity = (AddressCity) mCitySpinner.getSelectedItem(); 
         Log.d(TAG, "SELECTED CITY: " + mSelectedCity.getValue() + " " + mSelectedCity.getId() );
@@ -441,15 +434,29 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         int mCityId = mSelectedCity.getId();
         String mCityName = mSelectedCity.getValue();
         // Put values
-        mContentValues.put("Alice_Module_Customer_Model_AddressForm[is_default_billing]", isDefaultBilling);
-        mContentValues.put("Alice_Module_Customer_Model_AddressForm[is_default_shipping]", isDefaultShipping);
-        mContentValues.put("Alice_Module_Customer_Model_AddressForm[fk_customer_address_region]", mRegionId);
-        mContentValues.put("Alice_Module_Customer_Model_AddressForm[fk_customer_address_city]", mCityId);
-        mContentValues.put("Alice_Module_Customer_Model_AddressForm[city]", mCityName);
-        Log.d(TAG, "CURRENT CONTENT VALUES: " + mContentValues.toString());
+        for (String key : mContentValues.keySet()) {
+            if(key.contains(RestConstants.JSON_IS_DEFAULT_BILLING_TAG)) mContentValues.put(key, isDefaultBilling);
+            else if(key.contains(RestConstants.JSON_IS_DEFAULT_SHIPPING_TAG)) mContentValues.put(key, isDefaultShipping);
+            else if(key.contains(RestConstants.JSON_REGION_ID_TAG)) mContentValues.put(key, mRegionId);
+            else if(key.contains(RestConstants.JSON_CITY_ID_TAG)) mContentValues.put(key, mCityId);
+            else if(key.contains(RestConstants.JSON_CITY_TAG)) mContentValues.put(key, mCityName);
+        }
         // return the new content values
         return mContentValues;
     }
+
+    // XXX
+    // Alice_Module_Customer_Model_AddressForm[is_default_billing]=1 
+    // Alice_Module_Customer_Model_AddressForm[city]=Busia 
+    // Alice_Module_Customer_Model_AddressForm[address1]=address q 
+    // Alice_Module_Customer_Model_AddressForm[is_default_shipping]=1 
+    // Alice_Module_Customer_Model_AddressForm[id_customer_address]= 
+    // Alice_Module_Customer_Model_AddressForm[phone]=123456789 
+    // Alice_Module_Customer_Model_AddressForm[address2]=address w 
+    // Alice_Module_Customer_Model_AddressForm[first_name]=Thanksq 
+    // Alice_Module_Customer_Model_AddressForm[last_name]=Thanksw 
+    // Alice_Module_Customer_Model_AddressForm[fk_customer_address_region]=240 
+    // Alice_Module_Customer_Model_AddressForm[fk_customer_address_city]=404
     
     /**
      * ########### ON ITEM SELECTED LISTENER ###########  
@@ -470,8 +477,8 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         Log.d(TAG, "CURRENT TAG: " + parent.getTag());
         Object object = parent.getItemAtPosition(position);
         if(object instanceof AddressRegion) {
-            FormField field = formResponse.theRealFieldMapping.get("fk_customer_address_city");
-            String url = field.getDataCalls().get("api_call");
+            FormField field = mFormResponse.getFieldKeyMap().get(RestConstants.JSON_CITY_ID_TAG);
+            String url = field.getDataCalls().get(RestConstants.JSON_API_CALL_TAG);
             Log.d(TAG, "API CALL: " + url);
             // Request the cities for this region id 
             int regionId = ((AddressRegion) object).getId();
@@ -497,8 +504,23 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         // Validate if is billing address
-        if(isChecked) billingContainer.setVisibility(View.GONE);
-        else billingContainer.setVisibility(View.VISIBLE);
+        if(isChecked) {
+            // Set title
+            mShippingTitle.setText(getString(R.string.action_label_add_address));
+            // Hide billing container
+            mBillingIncludeContainer.setVisibility(View.GONE);
+            // Update the ship form width
+            if(BaseActivity.isTabletInLandscape(getBaseActivity()))
+                mShippingFormMain.getLayoutParams().width = getResources().getDimensionPixelSize(R.dimen.inner_container_width);
+        } else {
+            // Set title
+            mShippingTitle.setText(getString(R.string.billing_shipping_label));
+            // Hide billing container
+            mBillingIncludeContainer.setVisibility(View.VISIBLE);
+            // Update the ship form width
+            if(BaseActivity.isTabletInLandscape(getBaseActivity()))
+                mShippingFormMain.getLayoutParams().width = LayoutParams.MATCH_PARENT;
+        }
     }
     
     /**
@@ -600,7 +622,7 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
             Log.d(TAG, "RECEIVED GET_CREATE_ADDRESS_FORM_EVENT");
             // Save and load form
             Form form = (Form) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-            formResponse = form;
+            mFormResponse = form;
             loadCreateAddressForm(form);
             break;
         case GET_REGIONS_EVENT:
@@ -618,15 +640,8 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
             break;
         case CREATE_ADDRESS_EVENT:
             Log.d(TAG, "RECEIVED CREATE_ADDRESS_EVENT");
-            if(wasCreatedTwoAddresses) {
-                wasCreatedTwoAddresses = false;
-                Toast.makeText(getBaseActivity(), "Billing Address created with success!", Toast.LENGTH_SHORT).show();
-            }else{
-                Toast.makeText(getBaseActivity(), "Shipping Address created with success!", Toast.LENGTH_SHORT).show();
-                //getBaseActivity().onBackPressed();
-                getBaseActivity().onSwitchFragment(FragmentType.SHIPPING_METHODS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-            }
-
+            Toast.makeText(getBaseActivity(), getString(R.string.create_addresses_success), Toast.LENGTH_SHORT).show();
+            getBaseActivity().onSwitchFragment(FragmentType.SHIPPING_METHODS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
             break;
         default:
             break;
@@ -637,9 +652,6 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
     
     /**
      * Filter the error response
-     * 
-     * TODO: ADD ERROR VALIDATIONS
-     * 
      * @param bundle
      * @return boolean
      * @author sergiopereira
@@ -671,9 +683,8 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         case CREATE_ADDRESS_EVENT:
             Log.d(TAG, "RECEIVED CREATE_ADDRESS_EVENT");
             //
-            if(wasCreatedTwoAddresses) wasCreatedTwoAddresses = false;
-            //
             if (errorCode == ErrorCode.REQUEST_ERROR) {
+                @SuppressWarnings("unchecked")
                 HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY); 
                 showErrorDialog(errors);
                 getBaseActivity().showContentContainer(false);

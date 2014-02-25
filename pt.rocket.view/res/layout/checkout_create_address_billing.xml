@@ -8,16 +8,18 @@
 
     <org.holoeverywhere.widget.TextView
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentLeft="true"
-        android:layout_marginBottom="@dimen/margin_mid"
-        android:background="@drawable/searchfield"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_large"
+        android:layout_marginTop="@dimen/margin_huge"
         android:fontFamily="roboto_regular"
-        android:gravity="center_vertical"
-        android:padding="@dimen/margin_mid"
-        android:text="Billing Address"
+        android:gravity="left"
+        android:text="@string/billing_billing_label"
         android:textColor="@color/orange_basic"
-        android:textSize="@dimen/text_xl" />
+        android:textSize="@dimen/text_l" />
+
+    <View
+        style="@style/divider_horizontal"
+        android:layout_width="wrap_content" />
 
     <!-- FORM -->
 
