@@ -151,6 +151,7 @@ public class RestConstants {
 	public static final String JSON_CATEGORY_URL_TAG = JSON_URL_TAG;
 
 	// ShoppingCart Tags
+	public static final String JSON_CART_TAG = "cart";
 	public static final String JSON_CART_VALUE_TAG = "cartValue";
 	public static final String JSON_CART_COUNT_TAG = "cartCount";
 	public static final String JSON_CART_ITEMS_TAG = "cartItems";
@@ -340,6 +341,8 @@ public class RestConstants {
      */
     public static final String JSON_NATIVE_CHECKOUT_TAG = "native_checkout";
     public static final String JSON_NEXT_STEP_TAG = "next_step";
+    
+    public static final String JSON_SHIPPING_METHOD_TAG = "shippingMethodForm";
     
     /**
      * Pickup Stations
