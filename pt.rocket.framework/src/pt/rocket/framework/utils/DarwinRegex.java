@@ -33,6 +33,12 @@ public class DarwinRegex {
 	/**
 	 * Regex used on deep link for catalog
 	 */
-	public static final String REGEX_CATALOG_DL = "/c/";
+	public static final String CATALOG_DEEP_LINK = "/c/";
+	
+	/**
+	 * Regex used on deep link for cart
+	 */
+	public static final String CART_DEEP_LINK = "/cart/";
+	public static final String SKU_DELIMITER = "_";
 
 }

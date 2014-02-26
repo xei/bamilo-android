@@ -80,6 +80,8 @@ public class ConstantsIntentExtra {
     public static final String CHANGED_COUNTRY              = mPackage + "ChangedCountry";
     
     // ########### DEEP LINK ##############    
-    public static final String CATALOG_DEEP_LINK_TAG        = "u";
+    public static final String DEEP_LINK_TAG                = "u";
+    public static final String CATALOG_DEEP_LINK_TAG        = "/c/";
+    public static final String CART_DEEP_LINK_TAG           = "/cart/";
 
 }

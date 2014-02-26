@@ -49,5 +49,6 @@ public enum FragmentType {
     ABOUT_YOU, 
     MY_ORDER, 
     POLL,
-    CHECKOUT_EXTERNAL_PAYMENT
+    CHECKOUT_EXTERNAL_PAYMENT, 
+    HEADLESS_CART
 }

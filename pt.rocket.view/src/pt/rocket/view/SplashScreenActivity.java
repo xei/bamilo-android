@@ -182,15 +182,19 @@ public class SplashScreenActivity extends FragmentActivity {
 
     private String mCatalogDeepLink;
 
+    private String mCartDeepLink;
+
     private void cleanIntent(Intent intent) {
         Log.d(TAG, "CLEAN NOTIFICATION");
         utm = null; 
         productUrl = null;
         mCatalogDeepLink = null;
+        mCartDeepLink = null;
         // setIntent(null);
         intent.putExtra(ConstantsIntentExtra.UTM_STRING, "");
         intent.putExtra(ConstantsIntentExtra.CONTENT_URL, "");
-        intent.putExtra(ConstantsIntentExtra.CATALOG_DEEP_LINK_TAG, "");
+        intent.putExtra(ConstantsIntentExtra.DEEP_LINK_TAG, "");
+        intent.putExtra(ConstantsIntentExtra.CART_DEEP_LINK_TAG, "");
     }
 
     /**
@@ -201,9 +205,15 @@ public class SplashScreenActivity extends FragmentActivity {
         utm = getIntent().getStringExtra(ConstantsIntentExtra.UTM_STRING);
         // ## Product URL ##
         productUrl = getIntent().getStringExtra(ConstantsIntentExtra.CONTENT_URL);
-        // ## Product URL ##
-        mCatalogDeepLink = getIntent().getStringExtra(ConstantsIntentExtra.CATALOG_DEEP_LINK_TAG);
-        Log.d(TAG, "PRODUCT DETAILS " + productUrl);
+        // ## DEEP LINK ##
+        String deepLink = getIntent().getStringExtra(ConstantsIntentExtra.DEEP_LINK_TAG);
+        if(!TextUtils.isEmpty(deepLink)){
+            // ## Catalog URL ##
+            mCatalogDeepLink = (deepLink.contains(DarwinRegex.CATALOG_DEEP_LINK)) ? deepLink : "";
+            // ## Cart URL ##
+            mCartDeepLink = (deepLink.contains(DarwinRegex.CART_DEEP_LINK)) ? deepLink : "";
+        }
+
     }
 
     /**
@@ -217,18 +227,33 @@ public class SplashScreenActivity extends FragmentActivity {
         if (!TextUtils.isEmpty(productUrl)) {
             // Start with deep link to product detail
             startActivityWithDeepLink(ConstantsIntentExtra.CONTENT_URL, productUrl, FragmentType.PRODUCT_DETAILS);
+            
         } else if (!TextUtils.isEmpty(mCatalogDeepLink)) {
-            /**
-             * FIXME: Open the deep link on the respective country store 
-             */
-            // Receive like this: <country code>/c/<category url key> - ex. eg/c/surprise-your-guests 
-            String[] catalogSplit = mCatalogDeepLink.split(DarwinRegex.REGEX_CATALOG_DL);
+            // Receives like this: <country code>/c/<category url key> - ex: ke/c/womens-casual-shoes 
+            String[] catalogSplit = mCatalogDeepLink.split(DarwinRegex.CATALOG_DEEP_LINK);
             // Get country code
+            @SuppressWarnings("unused")
             String countryCode = catalogSplit[0];
             // Get catalog URL key
             String catalogUrl = getBaseURL() +  "/" +catalogSplit[1] + "/";
             // Start with deep link to catalog 
             startActivityWithDeepLink(ConstantsIntentExtra.CONTENT_URL, catalogUrl, FragmentType.PRODUCT_LIST);
+            
+        } else if (!TextUtils.isEmpty(mCartDeepLink)) {
+            // Receives like this: <country code>/cart/<sku1_sku2_sku3> - ex: ke/cart/ or ke/cart/
+            String[] cartSplit = mCartDeepLink.split(DarwinRegex.CART_DEEP_LINK);
+            // Get country code
+            @SuppressWarnings("unused")
+            String countryCode = cartSplit[0];
+            Log.d(TAG, "SPLIT: " + cartSplit.length );
+            String simpleSkuArray = (cartSplit.length > 1) ? cartSplit[1] : "";
+            // Validate
+            if(TextUtils.isEmpty(simpleSkuArray)){
+                startActivityWithDeepLink(ConstantsIntentExtra.CONTENT_URL, null, FragmentType.SHOPPING_CART);
+            } else {
+                startActivityWithDeepLink(ConstantsIntentExtra.CONTENT_URL, simpleSkuArray, FragmentType.HEADLESS_CART);
+            }
+            
         } else {
             // Default Start
             Intent intent = new Intent(this, MainFragmentActivity.class);

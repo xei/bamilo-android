@@ -31,6 +31,7 @@ import pt.rocket.view.fragments.CheckoutPollAnswerFragment;
 import pt.rocket.view.fragments.CheckoutShippingMethodsFragment;
 import pt.rocket.view.fragments.CheckoutThanksFragment;
 import pt.rocket.view.fragments.CheckoutWebFragment;
+import pt.rocket.view.fragments.HeadlessAddToCartFragment;
 import pt.rocket.view.fragments.HomeFragment;
 import pt.rocket.view.fragments.MyAccountFragment;
 import pt.rocket.view.fragments.MyAccountUserDataFragment;
@@ -285,6 +286,9 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             break;
         case CHANGE_COUNTRY:
             fragment = ChangeCountryFragment.getInstance();
+            break;
+        case HEADLESS_CART:
+            fragment = HeadlessAddToCartFragment.getInstance();
             break;
             
         /**

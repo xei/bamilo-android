@@ -118,6 +118,15 @@ public class FragmentController {
     }
     
     /**
+     * Remove the last entry if is the tag
+     * @param tag
+     */
+    public void popLastEntry(String tag){
+        if(!backStack.isEmpty() && backStack.getLast().equals(tag))
+            backStack.removeLast();
+    }
+    
+    /**
      * Get the last entry
      * @return {@link String}
      */
