@@ -31,6 +31,8 @@ public class GetSignupFormHelper extends BaseHelper {
     private static String TAG = GetSignupFormHelper.class.getSimpleName();
     
     private static final EventType type = EventType.GET_SIGNUP_FORM_EVENT;
+    
+    private static final EventType fallback = EventType.GET_SIGNUP_FORM_FALLBACK_EVENT;
 
     /*
      * (non-Javadoc)
@@ -39,7 +41,12 @@ public class GetSignupFormHelper extends BaseHelper {
     @Override
     public Bundle generateRequestBundle(Bundle args) {
         Log.d(TAG, "REQUEST");
-        String url = JumiaApplication.INSTANCE.getFormDataRegistry().get(type.action).getUrl();
+        String url = JumiaApplication.INSTANCE.getFormDataRegistry().get(fallback.action).getUrl();
+        try {
+            url = JumiaApplication.INSTANCE.getFormDataRegistry().get(type.action).getUrl();
+        } catch (NullPointerException e) {
+            Log.w(TAG, "GET SIGN UP FORM FROM FALLBACK");
+        }
         Bundle bundle = new Bundle();
         bundle.putString(Constants.BUNDLE_URL_KEY, url);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);

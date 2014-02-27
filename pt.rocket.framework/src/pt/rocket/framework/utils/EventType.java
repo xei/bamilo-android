@@ -116,6 +116,8 @@ public enum EventType {
 	
 	GET_SIGNUP_FORM_EVENT("registersignup", RestContract.MAX_CACHE_TIME),
 	
+	GET_SIGNUP_FORM_FALLBACK_EVENT("http:/forms/registersignup/", RestContract.MAX_CACHE_TIME),
+	
 	SET_SIGNUP_EVENT("https:/customer/create/", RestContract.NO_CACHE),
 	
 	GET_POLL_FORM_EVENT("poll", RestContract.MAX_CACHE_TIME),

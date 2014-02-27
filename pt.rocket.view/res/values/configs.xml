@@ -369,33 +369,33 @@
     </string-array>
     
     <array name="country_api_version">
-        <item>0</item>
-        <item>0</item>
-        <item>0</item>
-        <item>0</item>
-        <item>0</item>
-        <item>0</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
         
-        <item>0</item>
         <item>1</item>
-        <item>0</item>
         <item>1</item>
-        <item>0</item>
-        <item>0</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
         
-        <item>0</item>
-        <item>0</item>
-        <item>0</item>
-        <item>0</item>
-        <item>0</item>
-        <item>0</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
         
-        <item>0</item>
         <item>1</item>
-        <item>0</item>
         <item>1</item>
-        <item>0</item>
-        <item>0</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
     </array>
 
     <array name="country_fallback_map">
