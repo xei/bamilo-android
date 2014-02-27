@@ -41,7 +41,7 @@ public class GetSignupFormHelper extends BaseHelper {
     @Override
     public Bundle generateRequestBundle(Bundle args) {
         Log.d(TAG, "REQUEST");
-        String url = JumiaApplication.INSTANCE.getFormDataRegistry().get(fallback.action).getUrl();
+        String url = fallback.action;
         try {
             url = JumiaApplication.INSTANCE.getFormDataRegistry().get(type.action).getUrl();
         } catch (NullPointerException e) {
