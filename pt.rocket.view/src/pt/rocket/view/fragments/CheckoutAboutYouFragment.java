@@ -588,7 +588,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             // Get next step
             FragmentType signupNextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
             if(signupNextFragment == null || signupNextFragment == FragmentType.UNKNOWN){
-                handleErrorEvent(bundle);
+                onErrorEvent(bundle);
                 return true;
             }
             signupNextFragment = (signupNextFragment != FragmentType.UNKNOWN) ? signupNextFragment : FragmentType.CREATE_ADDRESS;
@@ -603,7 +603,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             // Get next step
             FragmentType fbNextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
             if(fbNextFragment == null){
-                handleErrorEvent(bundle);
+                onErrorEvent(bundle);
                 return true;
             }
             // Get Customer
@@ -620,7 +620,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             // Get next step
             FragmentType loginNextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
             if(loginNextFragment == null){
-                handleErrorEvent(bundle);
+                onErrorEvent(bundle);
                 return true;
             }
             // Get Customer
