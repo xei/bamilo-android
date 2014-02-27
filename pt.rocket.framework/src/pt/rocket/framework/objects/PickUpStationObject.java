@@ -203,6 +203,7 @@ public class PickUpStationObject implements Parcelable {
 	public void initialize(JSONObject jsonObject){
 		
 		this.id_pickupstation_region = jsonObject.optString(RestConstants.JSON_PICKUP_ID_PICKUPSTATION_REGION);
+		this.pickup_id =  jsonObject.optString(RestConstants.JSON_PICKUP_STATION_ID);
 		this.name = jsonObject.optString(RestConstants.JSON_NAME_TAG);
 		this.id_pickupstation = jsonObject.optString(RestConstants.JSON_PICKUP_ID);
 		this.image = jsonObject.optString(RestConstants.JSON_IMAGE_TAG);
@@ -233,7 +234,8 @@ public class PickUpStationObject implements Parcelable {
 			while(keys.hasNext()) {
 				String key = keys.next().toString();
 				Log.i(TAG, "code1adding key : "+key);
-				this.payment_method.add(arrayRegions.getString(key));
+				Region mRegion = new Region(key,arrayRegions.getString(key));
+				this.regions.add(mRegion);
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
