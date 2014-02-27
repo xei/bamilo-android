@@ -7,9 +7,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import pt.rocket.forms.Form;
+import pt.rocket.forms.ShippingMethodFormBuilder;
 import pt.rocket.framework.enums.RequestType;
 import pt.rocket.framework.interfaces.IMetaData;
 import pt.rocket.framework.objects.ShoppingCart;
+import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
@@ -217,13 +219,13 @@ public class GetShippingMethodsHelper extends BaseHelper {
         try {
         
             // Get shipping methods
-            JSONObject formJSON = jsonObject.getJSONObject("shippingMethodForm");
+            JSONObject formJSON = jsonObject.getJSONObject(RestConstants.JSON_SHIPPING_METHOD_TAG);
             Log.d(TAG, "FORM JSON: " + formJSON.toString());
-            Form form = new Form();
+            ShippingMethodFormBuilder form = new ShippingMethodFormBuilder();
             if (!form.initialize(formJSON)) Log.e(TAG, "Error initializing the form using the data");
             
             // Get cart
-            JSONObject cartJSON = jsonObject.optJSONObject("cart");
+            JSONObject cartJSON = jsonObject.optJSONObject(RestConstants.JSON_CART_TAG);
             if(cartJSON != null)
                 Log.d(TAG, "CAT JSON: " + cartJSON.toString());
 //            ShoppingCart cart = new ShoppingCart(JumiaApplication.INSTANCE.getItemSimpleDataRegistry());

@@ -12,7 +12,6 @@
  */
 package pt.rocket.forms;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -22,6 +21,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.framework.objects.IJSONSerializable;
 import pt.rocket.framework.objects.PickUpStationObject;
 import pt.rocket.framework.objects.PollOption;
@@ -32,7 +32,6 @@ import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.GetFormsDatasetListHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.InputType;
-import pt.rocket.app.JumiaApplication;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -348,12 +347,12 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                 if(key.equals("payment_method")){
                     dataSet.clear();
                     paymentFields = new HashMap<String, Form>();
-                    dataOptionsObject = jsonObject.optJSONObject("options");
+                    dataOptionsObject = jsonObject.optJSONObject(RestConstants.JSON_OPTIONS_TAG);
                     Iterator<?> it = dataOptionsObject.keys();
                     while (it.hasNext()) {
                         
                         String curKey = (String) it.next();
-                        String value = dataOptionsObject.getJSONObject(curKey).getString("value");
+                        String value = dataOptionsObject.getJSONObject(curKey).getString(RestConstants.JSON_VALUE_TAG);
                         Log.d(TAG, "FORM FIELD: CURRENT KEY " + curKey + " VALUE: " + value);
                         dataSet.put(value, curKey);
                         
@@ -577,6 +576,10 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     
     public HashMap<String, Form> getPaymentMethodsField(){
         return this.paymentFields;
+    }
+    
+    public void setPaymentMethodsField(HashMap<String, Form> pFields){
+        this.paymentFields = pFields;
     }
     
     /*

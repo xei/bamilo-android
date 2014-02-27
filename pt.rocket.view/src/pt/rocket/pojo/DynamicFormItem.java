@@ -1287,12 +1287,12 @@ public class DynamicFormItem {
 
             String key = it.next();
             if(this.parent.getForm().fields != null && this.parent.getForm().fields.size() >0 && this.parent.getForm().fields.get(0).getPaymentMethodsField() != null){
-                if (this.parent.getForm().fields.get(0).getPaymentMethodsField().get(key).fields.size() > 0) {
+               Log.i(TAG, "code1subForms : "+key + " --> "+this.parent.getForm().fields.get(0).getPaymentMethodsField().toString());
+                if (this.parent.getForm().fields.get(0).getPaymentMethodsField().containsKey(key) && (this.parent.getForm().fields.get(0).getPaymentMethodsField().get(key).fields.size() > 0 || this.parent.getForm().fields.get(0).getPaymentMethodsField().get(key).subForms.size() > 0)) {
                     formsMap.put(key,
                             this.parent.getForm().fields.get(0).getPaymentMethodsField().get(key));
                 }
             }
-            
         }
 
         radioGroup.setItems(new ArrayList<String>(this.entry.getDataSet().values()), formsMap,
@@ -1373,7 +1373,7 @@ public class DynamicFormItem {
         }
     }
 
-    private View createErrorControlOld(int dataControlId, int controlWidth) {
+    private View createErrorControl(int dataControlId, int controlWidth) {
         ViewGroup errorControl;
 
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(controlWidth,
@@ -1415,7 +1415,7 @@ public class DynamicFormItem {
 
     }
 
-    private View createErrorControl(int dataControlId, int controlWidth) {
+    private View createErrorControlNew(int dataControlId, int controlWidth) {
         // ViewGroup errorControl;
 
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(controlWidth,

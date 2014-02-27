@@ -11,6 +11,7 @@ import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.factories.FormFactory;
 import pt.rocket.forms.Form;
+import pt.rocket.forms.ShippingMethodFormBuilder;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
@@ -21,6 +22,7 @@ import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.pojo.DynamicForm;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.utils.ShippingRadioGroupList;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
@@ -60,11 +62,9 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
 
     private ViewGroup cartContainer;
 
-    private Form formResponse;
+    private ShippingMethodFormBuilder formResponse;
 
-    private DynamicForm formGenerator;
-
-    private ViewGroup formContainer;
+    private View formContainer;
 
     /**
      * Empty constructor
@@ -214,16 +214,15 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
      * 
      * @param form
      */
-    private void loadForm(Form form) {
+    private void loadForm(ShippingMethodFormBuilder form) {
         Log.i(TAG, "LOAD FORM");
         formResponse = form;
-        formGenerator = FormFactory.getSingleton().CreateForm(FormConstants.SHIPPING_DETAILS_FORM, getActivity(), form);
         shippingMethodsContainer.removeAllViews();
-        shippingMethodsContainer.addView(formGenerator.getContainer());        
+        formContainer = formResponse.generateForm(getActivity());
+        shippingMethodsContainer.addView(formContainer);        
         shippingMethodsContainer.refreshDrawableState();
         getBaseActivity().showContentContainer(false);
     }
-    
     
     /**
      * ############# CLICK LISTENER #############
@@ -243,11 +242,13 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
     
     private void onClickSubmitShippingMethod() {
         Log.i(TAG, "ON CLICK: SET SHIPPING METHOD");
-        if(formGenerator.validate()){
-            ContentValues values = formGenerator.save();
-            JumiaApplication.INSTANCE.setShippingMethod(values);
-            triggerSubmitShippingMethod(values);
-        } 
+        
+            ContentValues values = formResponse.getValues();
+            if(values != null && values.size() > 0){
+                Log.i(TAG, "code1values : "+values.toString());
+                JumiaApplication.INSTANCE.setShippingMethod(values);
+                triggerSubmitShippingMethod(values);
+            }
     }
     
    
@@ -262,7 +263,7 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
         switch (eventType) {
         case GET_SHIPPING_METHODS_EVENT:
             Log.d(TAG, "RECEIVED GET_SHIPPING_METHODS_EVENT");
-            Form form = (Form) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            ShippingMethodFormBuilder form = (ShippingMethodFormBuilder) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             loadForm(form);
             break;
         case SET_SHIPPING_METHOD_EVENT:

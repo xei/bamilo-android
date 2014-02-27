@@ -155,7 +155,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
     private void triggerGetShoppingCartItems(){
         
         triggerContentEventWithNoLoading(new GetShoppingCartItemsHelper(), null, mCallback);
-//        EventManager.getSingleton().triggerRequestEvent(GetShoppingCartItemsEvent.FORCE_API_CALL);
     }
     
     IResponseCallback mCallback = new IResponseCallback() {
@@ -305,13 +304,12 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
             webview.loadUrl("about:blank");
         }
         paymentUrl = JumiaApplication.INSTANCE.getPaymentMethodForm().getAction();
-        setProxy( paymentUrl );
+        
         Log.d(TAG, "Loading Url: " + paymentUrl);
         String postData = "";
         List<NameValuePair> parameters = new ArrayList<NameValuePair>(); 
         if(JumiaApplication.INSTANCE.getPaymentMethodForm() != null &&  JumiaApplication.INSTANCE.getPaymentMethodForm().getContentValues() != null){
             Set<Entry<String, Object>>  mValues = JumiaApplication.INSTANCE.getPaymentMethodForm().getContentValues().valueSet();
-            boolean firstValue = true;
             for (Entry<String, Object> entry : mValues) {
                 parameters.add(new BasicNameValuePair(entry.getKey(),(String) entry.getValue()));
             }
@@ -320,6 +318,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
             UrlEncodedFormEntity entity;
             try {
                 entity = new UrlEncodedFormEntity(parameters);
+                Log.d(TAG, "Loading Url complete: " + paymentUrl+"  "+parameters.toString());
                 webview.postUrl(paymentUrl, EntityUtils.toByteArray(entity));
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
@@ -327,6 +326,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
                 e.printStackTrace();
             } 
         } else {
+            setProxy( paymentUrl );
             webview.loadUrl(paymentUrl);
         }
         
@@ -400,19 +400,10 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
                 String description, final String failingUrl) {
             Log.e(TAG, "Received error: " + errorCode + " " + description + " "
                     + failingUrl);
-            webview.setWebViewClient(new WebViewClient() {
-                public void onReceivedSslError (WebView view, SslErrorHandler handler, SslError error) {
-                handler.proceed();
-                }
-               });
             failedPageRequest = failingUrl;
             webview.stopLoading();
             webview.clearView();
            
-        }
-        
-        public void onReceivedSslError (){
-            
         }
         
         @Override

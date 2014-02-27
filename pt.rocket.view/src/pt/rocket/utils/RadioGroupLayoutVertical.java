@@ -73,7 +73,9 @@ public class RadioGroupLayoutVertical extends RadioGroup {
         int idx;
         generatedForms = new HashMap<Integer, DynamicForm>();
         for (idx = 0; idx < mItems.size(); idx++) {
+            Log.i(TAG, "code1subForms updateRadioGroup : "+mItems.get(idx)+" formsMap size : "+formsMap.size());
             if(formsMap.containsKey(mItems.get(idx))){
+                Log.i(TAG, "code1subForms updateRadioGroup contains : "+mItems.get(idx));
                 DynamicForm formGenerator = FormFactory.getSingleton().CreateForm(FormConstants.PAYMENT_DETAILS_FORM, mContext, formsMap.get(mItems.get(idx)));
                 generatedForms.put(idx, formGenerator);
                 

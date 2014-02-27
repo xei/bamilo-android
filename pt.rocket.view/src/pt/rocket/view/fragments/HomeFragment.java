@@ -830,9 +830,14 @@ public class HomeFragment extends BaseFragment {
             for (Iterator iterator = result.iterator(); iterator.hasNext();) {
                 TeaserSpecification<?> teaserSpecification = (TeaserSpecification<?>) iterator
                         .next();
-
-                mainView.addView(mTeasersFactory.getSpecificTeaser(getActivity(), mainView,
-                        teaserSpecification, mInflater, teaserClickListener));
+                if(mainView != null && mTeasersFactory != null && teaserSpecification != null){
+                    View mView = mTeasersFactory.getSpecificTeaser(getActivity(), mainView,
+                            teaserSpecification, mInflater, teaserClickListener);
+                            if(mView != null){
+                                mainView.addView(mView);            
+                            }
+                }
+                
             }
             if(lastViewed != null && lastViewed.size() > 0){
                 mainView.addView(generateLastViewedLayout(mainView));

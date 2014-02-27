@@ -4,29 +4,28 @@
 package pt.rocket.view.fragments;
 
 import java.util.EnumSet;
-import java.util.List;
 
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
+import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.CategoriesAdapter;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.database.CategoriesTableHelper;
-import pt.rocket.framework.objects.Category;
-import pt.rocket.framework.objects.ProductRatingPage;
 import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.GetCategoriesHelper;
-import pt.rocket.helpers.GetProductReviewsHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.FragmentCommunicator;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.view.BaseActivity;
-import pt.rocket.view.MainFragmentActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -62,6 +61,7 @@ public class CategoriesContainerFragment extends BaseFragment {
     private int subCategoryIndex;
     
     private FragmentType currentFragment = FragmentType.CATEGORIES_LEVEL_1;
+    private FragmentType childCurrentFragment = FragmentType.CATEGORIES_LEVEL_2;
     
     public static String CATEGORY_PARENT ="category_parent";
     public static String UPDATE_CHILD ="update_child";
@@ -78,6 +78,10 @@ public class CategoriesContainerFragment extends BaseFragment {
     
     RelativeLayout backLevelButton;
     private static CategoriesContainerFragment categoriesFragment;
+    
+    SharedPreferences sharedPrefs;
+    int selectedCategory;
+    int selectedSubCategory;
     /**
      * Get instance
      * 
@@ -106,6 +110,7 @@ public class CategoriesContainerFragment extends BaseFragment {
                 
                 if(categoriesFragment.currentFragment == null){
                     categoriesFragment.currentFragment = FragmentType.CATEGORIES_LEVEL_1;
+                    categoriesFragment.childCurrentFragment = FragmentType.CATEGORIES_LEVEL_2;
                 }
                 
             }
@@ -116,10 +121,12 @@ public class CategoriesContainerFragment extends BaseFragment {
                 
             if(bundle.containsKey(ConstantsIntentExtra.SELECTED_CATEGORY_INDEX)){
                 categoriesFragment.categoryIndex = bundle.getInt(ConstantsIntentExtra.SELECTED_CATEGORY_INDEX);
+                categoriesFragment.selectedCategory = bundle.getInt(ConstantsIntentExtra.SELECTED_CATEGORY_INDEX);
             }
                 
             if(bundle.containsKey(ConstantsIntentExtra.SELECTED_SUB_CATEGORY_INDEX)){
                 categoriesFragment.subCategoryIndex = bundle.getInt(ConstantsIntentExtra.SELECTED_SUB_CATEGORY_INDEX);
+                categoriesFragment.selectedSubCategory = bundle.getInt(ConstantsIntentExtra.SELECTED_SUB_CATEGORY_INDEX);
             }
                 
         }
@@ -159,6 +166,8 @@ public class CategoriesContainerFragment extends BaseFragment {
         Log.i(TAG, "ON CREATE");
         // Retain this fragment across configuration changes.
         setRetainInstance(true);
+        sharedPrefs = getBaseActivity().getSharedPreferences(
+                ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
     }
 
     /*
@@ -215,7 +224,6 @@ public class CategoriesContainerFragment extends BaseFragment {
              * @author sergiopereira
              */
             trigger(categoryUrl);
-            //triggerContentEvent(new GetCategoriesEvent(categoryUrl));
             
         } else {
             Log.i(TAG, "ON tonBackPressed");
@@ -223,8 +231,6 @@ public class CategoriesContainerFragment extends BaseFragment {
         }
             
     }
-    
- 
 
     /*
      * (non-Javadoc)
@@ -234,6 +240,12 @@ public class CategoriesContainerFragment extends BaseFragment {
     @Override
     public void onPause() {
         Log.i(TAG, "ON PAUSE");
+        Editor eDitor = sharedPrefs.edit();
+        eDitor.putInt(ConstantsSharedPrefs.KEY_CATEGORY_SELECTED, selectedCategory);
+        eDitor.putInt(ConstantsSharedPrefs.KEY_SUB_CATEGORY_SELECTED, selectedSubCategory);
+        eDitor.putString(ConstantsSharedPrefs.KEY_CURRENT_FRAGMENT, currentFragment.toString());
+        eDitor.putString(ConstantsSharedPrefs.KEY_CHILD_CURRENT_FRAGMENT, childCurrentFragment.toString());
+        eDitor.commit();
         // if any fragment is active, remove it.
         if(mCategoriesFragment != null || mChildCategoriesFragment != null)
             removeOldFragments();
@@ -242,6 +254,17 @@ public class CategoriesContainerFragment extends BaseFragment {
        
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Editor eDitor = sharedPrefs.edit();
+        eDitor.putInt(ConstantsSharedPrefs.KEY_CATEGORY_SELECTED, selectedCategory);
+        eDitor.putInt(ConstantsSharedPrefs.KEY_SUB_CATEGORY_SELECTED, selectedSubCategory);
+        eDitor.putString(ConstantsSharedPrefs.KEY_CURRENT_FRAGMENT, currentFragment.toString());
+        eDitor.putString(ConstantsSharedPrefs.KEY_CHILD_CURRENT_FRAGMENT, childCurrentFragment.toString());
+        eDitor.commit();
+    }
+    
     /*
      * (non-Javadoc)
      * 
@@ -251,6 +274,13 @@ public class CategoriesContainerFragment extends BaseFragment {
     public void onStop() {
         super.onStop();
         Log.i(TAG, "ON STOP");
+        Editor eDitor = sharedPrefs.edit();
+        eDitor.remove(ConstantsSharedPrefs.KEY_CATEGORY_SELECTED);
+        eDitor.remove(ConstantsSharedPrefs.KEY_SUB_CATEGORY_SELECTED);
+        eDitor.remove(ConstantsSharedPrefs.KEY_CURRENT_FRAGMENT);
+        eDitor.remove(ConstantsSharedPrefs.KEY_CHILD_CURRENT_FRAGMENT);
+        eDitor.commit();
+        
     }
 
     /*
@@ -263,6 +293,17 @@ public class CategoriesContainerFragment extends BaseFragment {
         super.onDestroyView();
         Log.i(TAG, "ON DESTROY");
 //        EventManager.getSingleton().removeResponseListener(this, EnumSet.of(EventType.GET_CATEGORIES_EVENT));
+    }
+    
+    private FragmentType getFragmentType(String type){
+       if(FragmentType.CATEGORIES_LEVEL_1.toString().equalsIgnoreCase(type)) {
+           return FragmentType.CATEGORIES_LEVEL_1;
+       } else if(FragmentType.CATEGORIES_LEVEL_2.toString().equalsIgnoreCase(type)) {
+           return FragmentType.CATEGORIES_LEVEL_2;
+       } else {
+           return FragmentType.CATEGORIES_LEVEL_3;
+       }
+        
     }
     
     
@@ -280,6 +321,7 @@ public class CategoriesContainerFragment extends BaseFragment {
                 return true;
             } else if(currentFragment == FragmentType.CATEGORIES_LEVEL_2){
                 currentFragment = FragmentType.CATEGORIES_LEVEL_1;
+                childCurrentFragment = FragmentType.CATEGORIES_LEVEL_2;
                 Bundle bundleParent = new Bundle(); 
                 bundleParent.putSerializable(ConstantsIntentExtra.CATEGORY_LEVEL, FragmentType.CATEGORIES_LEVEL_1);
                 FragmentCommunicator.getInstance().notifyTarget(CategoriesContainerFragment.this, bundleParent, 1);
@@ -292,7 +334,8 @@ public class CategoriesContainerFragment extends BaseFragment {
             Bundle bundleParent = new Bundle(); 
             bundleParent.putSerializable(ConstantsIntentExtra.CATEGORY_LEVEL, FragmentType.CATEGORIES_LEVEL_1);
             FragmentCommunicator.getInstance().notifyTarget(CategoriesContainerFragment.this, bundleParent, 1);
-            
+            currentFragment = FragmentType.CATEGORIES_LEVEL_1;
+            childCurrentFragment = FragmentType.CATEGORIES_LEVEL_2;
             Bundle bundleChild = new Bundle();
             bundleChild.putSerializable(ConstantsIntentExtra.CATEGORY_LEVEL, FragmentType.CATEGORIES_LEVEL_2);
             FragmentCommunicator.getInstance().notifyTarget(CategoriesContainerFragment.this, bundleChild, 2);
@@ -354,10 +397,22 @@ public class CategoriesContainerFragment extends BaseFragment {
     private void createFragment() {
         ((BaseActivity) getActivity()).setTitle(R.string.categories_title);
         Bundle args = new Bundle();
-        currentFragment = FragmentType.CATEGORIES_LEVEL_1;
+        
+        if(sharedPrefs != null){
+            currentFragment = getFragmentType(sharedPrefs.getString(ConstantsSharedPrefs.KEY_CURRENT_FRAGMENT, FragmentType.CATEGORIES_LEVEL_1.toString()));
+            childCurrentFragment = getFragmentType(sharedPrefs.getString(ConstantsSharedPrefs.KEY_CHILD_CURRENT_FRAGMENT, FragmentType.CATEGORIES_LEVEL_2.toString()));
+            selectedCategory = sharedPrefs.getInt(ConstantsSharedPrefs.KEY_CATEGORY_SELECTED, categoryIndex);
+            selectedSubCategory = sharedPrefs.getInt(ConstantsSharedPrefs.KEY_SUB_CATEGORY_SELECTED, subCategoryIndex);
+        } else {
+            currentFragment = FragmentType.CATEGORIES_LEVEL_1;
+            childCurrentFragment = FragmentType.CATEGORIES_LEVEL_2;
+            selectedCategory = categoryIndex;
+            selectedSubCategory = subCategoryIndex;
+        }
+        
         args.putString(ConstantsIntentExtra.CATEGORY_URL, categoryUrl);
-        args.putInt(ConstantsIntentExtra.SELECTED_CATEGORY_INDEX, categoryIndex);
-        args.putInt(ConstantsIntentExtra.SELECTED_SUB_CATEGORY_INDEX, subCategoryIndex);
+        args.putInt(ConstantsIntentExtra.SELECTED_CATEGORY_INDEX, selectedCategory);
+        args.putInt(ConstantsIntentExtra.SELECTED_SUB_CATEGORY_INDEX, selectedSubCategory);
         args.putBoolean(CATEGORY_PARENT, true);
         mCategoriesFragment = CategoriesFragment.getInstance(args);
         FragmentManager     fm = getChildFragmentManager();
@@ -371,13 +426,28 @@ public class CategoriesContainerFragment extends BaseFragment {
      * Creates the list with all the categories
      */
     private void createFragmentsForLandscape() {
+        Log.i(TAG, "createFragmentsForLandscape : ");
         FragmentCommunicator.getInstance().destroyInstance();
         startButtonListener();
-        currentFragment = FragmentType.CATEGORIES_LEVEL_1;
+        if(sharedPrefs != null){
+            currentFragment = getFragmentType(sharedPrefs.getString(ConstantsSharedPrefs.KEY_CURRENT_FRAGMENT, FragmentType.CATEGORIES_LEVEL_1.toString()));
+            childCurrentFragment = getFragmentType(sharedPrefs.getString(ConstantsSharedPrefs.KEY_CURRENT_FRAGMENT, FragmentType.CATEGORIES_LEVEL_2.toString()));
+            selectedCategory = sharedPrefs.getInt(ConstantsSharedPrefs.KEY_CATEGORY_SELECTED, 0);
+            selectedSubCategory = sharedPrefs.getInt(ConstantsSharedPrefs.KEY_SUB_CATEGORY_SELECTED, 0);
+            Log.i(TAG, "createFragmentsForLandscape sharedPrefs: currentFragment "+currentFragment+" childCurrentFragment "+childCurrentFragment+ " selectedCategory: "+selectedCategory+" selectedSubCategory : "+selectedSubCategory);
+        } else {
+            currentFragment = FragmentType.CATEGORIES_LEVEL_1;
+            childCurrentFragment = FragmentType.CATEGORIES_LEVEL_2;
+            selectedCategory = 0;
+            selectedSubCategory = 0;
+            Log.i(TAG, "createFragmentsForLandscape : currentFragment "+currentFragment+" childCurrentFragment "+childCurrentFragment+ " selectedCategory: "+selectedCategory+" selectedSubCategory : "+selectedSubCategory);
+        }
+        
+        
         Bundle args = new Bundle();
         args.putString(ConstantsIntentExtra.CATEGORY_URL, categoryUrl);
-        args.putInt(ConstantsIntentExtra.SELECTED_CATEGORY_INDEX, 0);
-        args.putInt(ConstantsIntentExtra.SELECTED_SUB_CATEGORY_INDEX, 0);
+        args.putInt(ConstantsIntentExtra.SELECTED_CATEGORY_INDEX, selectedCategory);
+        args.putInt(ConstantsIntentExtra.SELECTED_SUB_CATEGORY_INDEX, selectedSubCategory);
         args.putSerializable(ConstantsIntentExtra.CATEGORY_LEVEL, currentFragment);
         args.putBoolean(CATEGORY_PARENT, true);
         mCategoriesFragment = CategoriesFragment.getInstance(args);
@@ -386,9 +456,9 @@ public class CategoriesContainerFragment extends BaseFragment {
         ft.replace(R.id.categories_fragments_container, mCategoriesFragment);
         
         Bundle bundle = new Bundle();
-        bundle.putInt(ConstantsIntentExtra.SELECTED_CATEGORY_INDEX, 0);
-        bundle.putInt(ConstantsIntentExtra.SELECTED_SUB_CATEGORY_INDEX, 0);
-        bundle.putSerializable(ConstantsIntentExtra.CATEGORY_LEVEL, FragmentType.CATEGORIES_LEVEL_2);
+        bundle.putInt(ConstantsIntentExtra.SELECTED_CATEGORY_INDEX, selectedCategory);
+        bundle.putInt(ConstantsIntentExtra.SELECTED_SUB_CATEGORY_INDEX, selectedSubCategory);
+        bundle.putSerializable(ConstantsIntentExtra.CATEGORY_LEVEL, childCurrentFragment);
         bundle.putBoolean(CATEGORY_PARENT, false);
         mChildCategoriesFragment = CategoriesFragment.getInstance(bundle);
         ft.replace(R.id.categories_child_fragments_container, mChildCategoriesFragment);
@@ -484,17 +554,20 @@ public class CategoriesContainerFragment extends BaseFragment {
     }
     
     private void updateBoth(Bundle bundle){
-
+        selectedCategory = bundle.getInt(ConstantsIntentExtra.SELECTED_CATEGORY_INDEX);
+        selectedSubCategory = bundle.getInt(ConstantsIntentExtra.SELECTED_SUB_CATEGORY_INDEX);
         Bundle bParent = new Bundle();
-        bParent.putSerializable(ConstantsIntentExtra.CATEGORY_LEVEL, (FragmentType) bundle.getSerializable(PARENT_LEVEL));
-        bParent.putInt(ConstantsIntentExtra.SELECTED_CATEGORY_INDEX, bundle.getInt(ConstantsIntentExtra.SELECTED_CATEGORY_INDEX));
-        bParent.putInt(ConstantsIntentExtra.SELECTED_SUB_CATEGORY_INDEX, bundle.getInt(ConstantsIntentExtra.SELECTED_SUB_CATEGORY_INDEX));
+        currentFragment = (FragmentType) bundle.getSerializable(PARENT_LEVEL);
+        bParent.putSerializable(ConstantsIntentExtra.CATEGORY_LEVEL, currentFragment);
+        bParent.putInt(ConstantsIntentExtra.SELECTED_CATEGORY_INDEX, selectedCategory);
+        bParent.putInt(ConstantsIntentExtra.SELECTED_SUB_CATEGORY_INDEX, selectedSubCategory);
         FragmentCommunicator.getInstance().notifyTarget(this, bParent, 1);
         
+        childCurrentFragment = (FragmentType) bundle.getSerializable(CHILD_LEVEL);
         Bundle bChild = new Bundle();
-        bChild.putSerializable(ConstantsIntentExtra.CATEGORY_LEVEL, (FragmentType) bundle.getSerializable(CHILD_LEVEL));
-        bChild.putInt(ConstantsIntentExtra.SELECTED_CATEGORY_INDEX, bundle.getInt(ConstantsIntentExtra.SELECTED_CATEGORY_INDEX));
-        bChild.putInt(ConstantsIntentExtra.SELECTED_SUB_CATEGORY_INDEX, bundle.getInt(ConstantsIntentExtra.SELECTED_SUB_CATEGORY_INDEX));
+        bChild.putSerializable(ConstantsIntentExtra.CATEGORY_LEVEL, childCurrentFragment);
+        bChild.putInt(ConstantsIntentExtra.SELECTED_CATEGORY_INDEX, selectedCategory);
+        bChild.putInt(ConstantsIntentExtra.SELECTED_SUB_CATEGORY_INDEX, selectedSubCategory);
         FragmentCommunicator.getInstance().notifyTarget(this, bChild, 2);
         
         if((FragmentType) bundle.getSerializable(CHILD_LEVEL) == FragmentType.CATEGORIES_LEVEL_3){

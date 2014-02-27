@@ -8,6 +8,7 @@ import java.util.List;
 
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
+import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.CategoriesAdapter;
 import pt.rocket.controllers.SubCategoriesAdapter;
 import pt.rocket.controllers.fragments.FragmentType;
@@ -19,6 +20,9 @@ import pt.rocket.view.BaseActivity;
 import pt.rocket.view.MainFragmentActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,6 +62,8 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
     
     private boolean isParent = false;
 
+    SharedPreferences sharedPrefs;
+    
     /**
      * Get instance
      * 
@@ -77,6 +83,7 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
         CategoriesFragment categoriesFragment = new CategoriesFragment();
         // Get data
         if(bundle != null) {
+            Log.i(TAG, "CategoriesFragment bundle != null");
             categoriesFragment.currentFragment = (FragmentType) bundle.getSerializable(ConstantsIntentExtra.CATEGORY_LEVEL);
             if(categoriesFragment.currentFragment == null){
                 categoriesFragment.currentFragment = FragmentType.CATEGORIES_LEVEL_1;
@@ -116,7 +123,8 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-       
+        sharedPrefs = getBaseActivity().getSharedPreferences(
+                ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         
     }
 
@@ -212,6 +220,7 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
             Category category = categories.get(position);
             if (!category.getHasChildren()) {
                 showProducts(category);
+                
             } else {
                 Bundle bundle = new Bundle();
                 bundle.putBoolean(CategoriesContainerFragment.UPDATE_CHILD, true);
@@ -226,6 +235,7 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
         else {
             if (position == 0) {
                 showProducts(currentCategory);
+                
             } else {
                 requestSubcategory(position - 1);
             }
@@ -367,7 +377,13 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
      * @param category
      */
     private void showProducts( Category category ) {
-       
+        Editor eDitor = sharedPrefs.edit();
+        eDitor.remove(ConstantsSharedPrefs.KEY_CATEGORY_SELECTED);
+        eDitor.remove(ConstantsSharedPrefs.KEY_SUB_CATEGORY_SELECTED);
+        eDitor.remove(ConstantsSharedPrefs.KEY_CURRENT_FRAGMENT);
+        eDitor.remove(ConstantsSharedPrefs.KEY_CHILD_CURRENT_FRAGMENT);
+        eDitor.commit();
+        
         Bundle bundle2 = new Bundle();
         bundle2.putBoolean(CategoriesContainerFragment.REMOVE_FRAGMENTS, true);
         bundle2.putString(ConstantsIntentExtra.CONTENT_URL, category.getApiUrl());

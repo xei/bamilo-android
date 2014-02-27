@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,6 +45,7 @@ public class Form implements IJSONSerializable, Parcelable {
     public String submit;
 
     public ArrayList<FormField> fields;
+    public Map<String, Form> subForms;
     public Map<String, Integer> fieldMapping;
     
     public Map<String, FormField> mFieldKeyMap;
@@ -58,6 +60,7 @@ public class Form implements IJSONSerializable, Parcelable {
         this.submit = "";
 
         this.fields = new ArrayList<FormField>();
+        this.subForms = new HashMap<String, Form>();
         this.mFieldKeyMap = new HashMap<String, FormField>();
         this.fieldMapping = null;
     }
@@ -80,6 +83,7 @@ public class Form implements IJSONSerializable, Parcelable {
         this.submit = submit;
 
         this.fields = fields;
+        this.subForms = new HashMap<String, Form>();
         this.mFieldKeyMap = new HashMap<String, FormField>();
         this.fieldMapping = null;
     }
@@ -101,18 +105,57 @@ public class Form implements IJSONSerializable, Parcelable {
             submit = jsonObject.optString(RestConstants.JSON_SUBMIT_TAG);
 
             fields.clear();
-
+            subForms.clear();
             if (FormsMapping.genericMapping.containsKey(id)) {
                 fieldMapping = FormsMapping.genericMapping.get(id);
             }
 
-            JSONArray fieldsArray = jsonObject.getJSONArray(RestConstants.JSON_FIELDS_TAG);
-            for (int i = 0; i < fieldsArray.length(); ++i) {
-                FormField field = new FormField(this);
-                if (field.initialize(fieldsArray.getJSONObject(i))) {
-                    fields.add(field);
-                    mFieldKeyMap.put(field.getKey(), field);
+            
+            JSONArray fieldsArray = null;
+            if(jsonObject.has(RestConstants.JSON_FIELDS_TAG)){
+                fieldsArray = jsonObject.getJSONArray(RestConstants.JSON_FIELDS_TAG);
+            } else if(jsonObject.has(RestConstants.JSON_OPTIONS_TAG)) {
+                fieldsArray = jsonObject.getJSONArray(RestConstants.JSON_OPTIONS_TAG);
+                Log.i(TAG, "code1subForms : fieldsArray :  "+fieldsArray.length()+" name : "+name);
+            }
+            if(fieldsArray != null){
+                for (int i = 0; i < fieldsArray.length(); ++i) {
+                    if(!fieldsArray.getJSONObject(i).has(RestConstants.JSON_SCENARIO_TAG)){
+                        FormField field = new FormField(this);
+                        if (field.initialize(fieldsArray.getJSONObject(i))) {
+                            fields.add(field);
+    
+                            /**
+                             * TODO: Validate if is necessary this map
+                             */
+                            mFieldKeyMap.put(field.getKey(), field);
+                            
+                        }
+                    } else {
+                        
+                        Form subForm = new Form();
+                        subForm.initialize(fieldsArray.getJSONObject(i));
+                        Log.i(TAG, "code1subForms : subForm :  "+subForm.name+" "+subForm.toString());
+                        subForms.put(fieldsArray.getJSONObject(i).getString(RestConstants.JSON_SCENARIO_TAG), subForm);
+                    }
                 }
+            }
+            
+            if(subForms != null && subForms.size() > 0){
+                for (int i = 0; i < fields.size(); i++) {
+                    if(fields.get(i).getDataSet().size()>0){
+                        Set<String> keys = fields.get(i).getDataSet().keySet();
+                        fields.get(i).setPaymentMethodsField(new HashMap<String, Form>());
+                        for (String key : keys) {
+                            if(subForms.containsKey(key)){
+                                Log.i(TAG, "code1subForms : "+key+" : "+subForms.get(key).toString());
+                                fields.get(i).getPaymentMethodsField().put(key, subForms.get(key));
+                            }
+                        }
+                    }
+                }
+                subForms.clear();
+                subForms = null;
             }
             
             if (null != fieldMapping) {

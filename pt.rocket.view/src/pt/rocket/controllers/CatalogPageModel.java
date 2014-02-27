@@ -626,7 +626,7 @@ public class CatalogPageModel {
 
     }
 
-    IResponseCallback responseCallback = new IResponseCallback() {
+    private IResponseCallback responseCallback = new IResponseCallback() {
         
         @Override
         public void onRequestError(Bundle bundle) {
