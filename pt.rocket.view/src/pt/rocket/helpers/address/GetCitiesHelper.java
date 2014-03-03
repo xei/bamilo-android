@@ -75,7 +75,7 @@ public class GetCitiesHelper extends BaseHelper {
             // Regions
             ArrayList<AddressCity> cities = new ArrayList<AddressCity>();
             // For each item
-            JSONArray jsonArray = jsonObject.getJSONArray(JSONConstants.JSON_METADATA_TAG);
+            JSONArray jsonArray = jsonObject.getJSONArray(JSONConstants.JSON_DATA_TAG);
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject json = jsonArray.getJSONObject(i);
                 // Save the region

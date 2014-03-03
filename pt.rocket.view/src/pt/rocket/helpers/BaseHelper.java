@@ -52,8 +52,7 @@ public abstract class BaseHelper {
 
             Boolean success = jsonObject.optBoolean(JSONConstants.JSON_SUCCESS_TAG, false);
             JSONObject metaData;
-            if (eventType == EventType.GET_CALL_TO_ORDER_PHONE
-                    || eventType == EventType.REVIEW_PRODUCT_EVENT) {
+            if (eventType == EventType.GET_CALL_TO_ORDER_PHONE || eventType == EventType.REVIEW_PRODUCT_EVENT) {
                 metaData = jsonObject;
             } else {
                 if (jsonObject.has(JSONConstants.JSON_METADATA_TAG)) {
