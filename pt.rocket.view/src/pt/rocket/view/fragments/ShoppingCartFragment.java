@@ -550,9 +550,9 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         
         
         
-        if(getBaseActivity().getResources().getIntArray(R.array.country_api_version)[JumiaApplication.INSTANCE.SHOP_ID] >0){
+        if(getBaseActivity().getResources().getIntArray(R.array.country_api_version)[JumiaApplication.SHOP_ID] >0){
             Bundle bundle = new Bundle();
-            bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.CHECKOUT_BASKET);
+            //bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.CHECKOUT_BASKET);
             bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationcart));
             getBaseActivity().onSwitchFragment(FragmentType.ABOUT_YOU, bundle, FragmentController.ADD_TO_BACK_STACK);    
         } else {

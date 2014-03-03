@@ -12,6 +12,7 @@ import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.factories.FormFactory;
 import pt.rocket.forms.Form;
 import pt.rocket.framework.ErrorCode;
+import pt.rocket.framework.objects.OrderSummary;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -49,6 +50,8 @@ public class CheckoutPollAnswerFragment extends BaseFragment implements OnClickL
     private DynamicForm pollFormGenerator;
 
     private Form formResponse;
+
+    private OrderSummary orderSummary;
     
     
     /**
@@ -125,7 +128,7 @@ public class CheckoutPollAnswerFragment extends BaseFragment implements OnClickL
         // Get and show form
         if(JumiaApplication.INSTANCE.getFormDataRegistry() == null || JumiaApplication.INSTANCE.getFormDataRegistry().size() == 0){
             triggerInitForm();
-        } else if(formResponse != null){
+        } else if(formResponse != null && orderSummary != null){
             loadPollForm(formResponse);
         } else {
             triggerPollForm();
@@ -207,7 +210,9 @@ public class CheckoutPollAnswerFragment extends BaseFragment implements OnClickL
         pollFormGenerator = FormFactory.getSingleton().CreateForm(FormConstants.POLL_FORM, getBaseActivity(), form);
         pollFormContainer.removeAllViews();
         pollFormContainer.addView(pollFormGenerator.getContainer());                
-        pollFormContainer.refreshDrawableState();                
+        pollFormContainer.refreshDrawableState();
+        // Show
+        super.showOrderSummaryIfPresent(BaseActivity.CHECKOUT_ABOUT_YOU, orderSummary);
         getBaseActivity().showContentContainer(false);
     }
     
@@ -323,6 +328,9 @@ public class CheckoutPollAnswerFragment extends BaseFragment implements OnClickL
             break;
         case GET_POLL_FORM_EVENT:
             Log.d(TAG, "RECEIVED GET_POLL_FORM_EVENT");
+            // Get order summary
+            orderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
+            // Form
             Form form = (Form) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             formResponse = form;
             loadPollForm(form);

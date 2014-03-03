@@ -5,9 +5,12 @@ package pt.rocket.helpers.checkout;
 
 import org.json.JSONObject;
 
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.forms.Form;
 import pt.rocket.framework.enums.RequestType;
 import pt.rocket.framework.objects.Addresses;
+import pt.rocket.framework.objects.OrderSummary;
+import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
@@ -52,16 +55,21 @@ public class GetBillingFormHelper extends BaseHelper {
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
         try {
             // Get json object
-            JSONObject jsonForm = jsonObject.getJSONObject("billingForm");
-            JSONObject jsonList = jsonObject.getJSONObject("customer").getJSONObject("address_list");
+            JSONObject jsonForm = jsonObject.getJSONObject(RestConstants.JSON_BILLING_FORM_TAG);
+            JSONObject jsonList = jsonObject.getJSONObject(RestConstants.JSON_CUSTOMER_TAG).getJSONObject(RestConstants.JSON_ADDRESS_LIST_TAG);
             // Create form
             Form form = new Form();
             form.initialize(jsonForm);
             // Create addresses
             Addresses addresses = new Addresses(jsonList);
+            
+            // Get order summary
+            OrderSummary orderSummary = new OrderSummary(jsonObject, JumiaApplication.INSTANCE.getItemSimpleDataRegistry());
+            
             // Add to bundle
             bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, addresses);
             bundle.putParcelable(Constants.BUNDLE_FORM_DATA_KEY, form);
+            bundle.putParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY, orderSummary);
             bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
         } catch (Exception e) {
             Log.d(TAG, "PARSE EXCEPTION:", e);

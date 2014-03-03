@@ -13,6 +13,7 @@ import pt.rocket.app.JumiaApplication;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.ErrorCode;
+import pt.rocket.framework.objects.OrderSummary;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.service.IRemoteServiceCallback;
 import pt.rocket.framework.utils.Constants;
@@ -25,12 +26,14 @@ import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.OnActivityFragmentInteraction;
 import pt.rocket.view.BaseActivity;
+import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -82,6 +85,10 @@ public abstract class BaseFragment extends Fragment implements
     private Boolean isNestedFragment = false;
 
     private boolean isVisible = false;
+    
+    private boolean isOrderSummaryPresent;
+    
+    private int ORDER_SUMMARY_CONTAINER = R.id.order_summary_container;
 
     public BaseFragment() {
     }
@@ -160,6 +167,33 @@ public abstract class BaseFragment extends Fragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return super.onCreateView(inflater, container, savedInstanceState);
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see android.support.v4.app.Fragment#onViewCreated(android.view.View, android.os.Bundle)
+     */
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        // Exist order summary
+        isOrderSummaryPresent = (view.findViewById(ORDER_SUMMARY_CONTAINER) != null) ? true : false;
+    }
+    
+    /**
+     * Show the summary order if the view is present
+     * @author sergiopereira
+     */
+    public void showOrderSummaryIfPresent(int checkoutStep, OrderSummary orderSummary){
+        // Get order summary
+        if(isOrderSummaryPresent) {
+            Log.i(TAG, "ORDER SUMMARY IS PRESENT");
+            FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+            ft.replace(ORDER_SUMMARY_CONTAINER, CheckoutSummaryFragment.getInstance(checkoutStep, orderSummary));
+            ft.commit();
+        } else {
+            Log.i(TAG, "ORDER SUMMARY IS NOT PRESENT");
+        }
     }
     
     /*

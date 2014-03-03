@@ -17,6 +17,7 @@ import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.Address;
 import pt.rocket.framework.objects.AddressCity;
 import pt.rocket.framework.objects.AddressRegion;
+import pt.rocket.framework.objects.OrderSummary;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
@@ -73,6 +74,8 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
     private ArrayList<AddressRegion> mRegions;
     
     private Address mCurrentAddress;
+
+    private OrderSummary orderSummary;
     
     
     /**
@@ -154,7 +157,7 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
         // Get and show form
         if(JumiaApplication.INSTANCE.getFormDataRegistry() == null || JumiaApplication.INSTANCE.getFormDataRegistry().size() == 0){
             triggerInitForm();
-        } else if(mFormResponse != null){
+        } else if(mFormResponse != null && orderSummary != null){
             loadEditAddressForm(mFormResponse);
         } else {
             triggerEditAddressForm();
@@ -251,6 +254,8 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
         hideSomeFields(mEditFormGenerator);
         // Show selected address content
         showSelectedAddress(mEditFormGenerator, mCurrentAddress);
+        // Show
+        super.showOrderSummaryIfPresent(BaseActivity.CHECKOUT_BILLING, orderSummary);
         // Show
         getBaseActivity().showContentContainer(false);
     }
@@ -581,6 +586,9 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
             break;
         case GET_EDIT_ADDRESS_FORM_EVENT:
             Log.d(TAG, "RECEIVED GET_EDIT_ADDRESS_FORM_EVENT");
+            // Get order summary
+            orderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
+            // Form
             Form form = (Form) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             mFormResponse = form;
             loadEditAddressForm(form);

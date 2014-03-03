@@ -1,15 +1,7 @@
-/**
- * @author Manuel Silva
- * 
- * @version 1.1
- * 
- * 2013/10/22
- * 
- * Copyright (c) Rocket Internet All Rights Reserved
- */
+
 package pt.rocket.framework.objects;
 
-import java.util.ArrayList;
+import java.util.Map;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,77 +12,227 @@ import android.os.Parcelable;
 import android.util.Log;
 
 /**
- * Class that represents an Order Tracked
  * 
- * @author manuelsilva
- * 
+ * @author sergiopereira
+ *
  */
 public class OrderSummary implements IJSONSerializable, Parcelable {
 
 	public final static String TAG = LogTagHelper.create(OrderSummary.class);
 
-	private String mSubTotal;
+	private String mGrandTotal;
 
-	private String mShippingFee;
+	private String mShippingAmount;
 
-	private String mTotal;
+	private String mExtraCost;
 
-	private ArrayList<String> mProducts;
+	private String mDiscountAmount;
 
+	private String mInstallmentFees;
+
+	private String mTaxAmount;
+
+	private String mCustomerDevice;
+	
+	private ShoppingCart mCart;
+	
+	private String mShippingMethod;
+	
+	private String mPaymentMethod;
+	
 	private Address mShippingAddress;
-
+	
 	private Address mBillingAddress;
 
-	private ShippingMethods mShippingMethod;
-
-	private PaymentMethods mPaymentOptions;
-
-	private String mOrderNumber;
-
-	private String mFirstName;
-
-	private String mLastName;
+	private Map<String, Map<String, String>> simpleData;
 
 	/**
-	 * OrderTracker empty constructor.
+	 * 
 	 */
 	public OrderSummary() {
 	}
-	
+
 	/**
-	 * OrderTracker empty constructor.
-	 * @throws JSONException 
+	 * 
+	 * @param jsonObject
+	 * @throws JSONException
 	 */
-	public OrderSummary(JSONObject jsonObject) throws JSONException {
+	public OrderSummary(JSONObject jsonObject, Map<String, Map<String, String>> simpleData) throws JSONException {
+		this.simpleData = simpleData;
 		initialize(jsonObject);
 	}
 
-	/**
-	 * @return the mSubTotal
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * pt.rocket.framework.objects.IJSONSerializable#initialize(org.json.JSONObject
+	 * )
 	 */
-	public String getSubTotal() {
-		return mSubTotal;
+	@Override
+	public boolean initialize(JSONObject jsonObject) throws JSONException {
+		
+		
+		// Get order
+        JSONObject jsonOrder = null;
+        if(!jsonObject.isNull("order")) {
+            jsonOrder = jsonObject.optJSONObject("order");
+            Log.d(TAG, "ORDER: " + jsonOrder.toString());
+    		mGrandTotal = jsonOrder.optString("grand_total");
+    		mShippingAmount = jsonOrder.optString("shipping_amount");
+    		mExtraCost = jsonOrder.optString("extra_payment_cost");
+    		mDiscountAmount = jsonOrder.optString("bnp_discount_amount");
+    		mInstallmentFees = jsonOrder.optString("installment_fees");
+    		mTaxAmount = jsonOrder.optString("tax_amount");
+    		mCustomerDevice = jsonOrder.optString("customer_device");
+        }
+        
+        // Get cart
+        if(jsonOrder != null && !jsonObject.isNull("cart")) {
+            JSONObject jsonCart = jsonObject.optJSONObject("cart");
+            ShoppingCart cart = new ShoppingCart(simpleData);
+            cart.initialize(jsonCart);
+            mCart = cart;
+        }
+        
+        // Get shipping method
+        if(jsonOrder != null && !jsonOrder.isNull("shipping_method")) {
+            JSONObject jsonShip = jsonOrder.optJSONObject("shipping_method");
+            Log.d(TAG, "SHIP METHOD: " + jsonShip.toString());
+            String shipMethod = jsonShip.optString("method");
+            mShippingMethod = shipMethod;
+        }
+    
+        // Get payment method
+        if(jsonOrder != null && !jsonOrder.isNull("payment_method")) {
+            JSONObject jsonPay = jsonOrder.optJSONObject("payment_method");
+            Log.d(TAG, "PAY METHOD: " + jsonPay.toString());
+            // String payId = jsonPay.optString("id");
+            String payProvider = jsonPay.optString("provider");
+            mPaymentMethod = payProvider;
+        }
+        
+        // Get billing address
+        if(jsonOrder != null && !jsonOrder.isNull("billing_address")) {
+            JSONObject jsonBilAddress = jsonOrder.optJSONObject("billing_address");
+            Log.d(TAG, "BILLING ADDRESS: " + jsonBilAddress.toString());
+            Address billingAddress = new Address(jsonBilAddress);
+            mBillingAddress = billingAddress;
+        }
+        
+        // Get shipping address
+        if(jsonOrder != null && !jsonOrder.isNull("shipping_address")) {
+            JSONObject jsonShipAddress = jsonOrder.optJSONObject("shipping_address");
+            Log.d(TAG, "SHIPPING ADDRESS: " + jsonShipAddress.toString());
+            Address shippingAddress = new Address(jsonShipAddress);
+            mShippingAddress = shippingAddress;
+        }
+
+		return true;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see pt.rocket.framework.objects.IJSONSerializable#toJSON()
+	 */
+	@Override
+	public JSONObject toJSON() {
+		// TODO
+		return null;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		String shipAddress = (mShippingAddress != null) ? mShippingAddress.getAddress() : "";
+		String billAddress = (mBillingAddress != null) ? mBillingAddress.getAddress() : "";
+		String shipMethod = (mShippingMethod != null) ? mShippingMethod : "";
+		String payMethod = (mPaymentMethod != null) ? mPaymentMethod : "";
+		return mGrandTotal + " " + 
+				mShippingAmount + " " + 
+				mExtraCost + " " + 
+				mDiscountAmount + " " + 
+				mInstallmentFees + " " + 
+				mTaxAmount + " " + 
+				mCustomerDevice + " " +
+				shipAddress + " " + 
+				billAddress + " " +
+				shipMethod + " " +
+				payMethod;
 	}
 
 	/**
-	 * @return the mShippingFee
-	 */
-	public String getShippingFee() {
-		return mShippingFee;
-	}
-
-	/**
-	 * @return the mTotal
+	 * @return the total
 	 */
 	public String getTotal() {
-		return mTotal;
+		return mGrandTotal;
 	}
 
 	/**
-	 * @return the mProducts
+	 * @return the shippingAmount
 	 */
-	public ArrayList<String> getProducts() {
-		return mProducts;
+	public String getShippingAmount() {
+		return mShippingAmount;
+	}
+
+	/**
+	 * @return the extraCost
+	 */
+	public String getExtraCost() {
+		return mExtraCost;
+	}
+
+	/**
+	 * @return the discountAmount
+	 */
+	public String getDiscountAmount() {
+		return mDiscountAmount;
+	}
+
+	/**
+	 * @return the installmentFees
+	 */
+	public String getInstallmentFees() {
+		return mInstallmentFees;
+	}
+
+	/**
+	 * @return the taxAmount
+	 */
+	public String getTaxAmount() {
+		return mTaxAmount;
+	}
+
+	/**
+	 * @return the customerDevice
+	 */
+	public String getCustomerDevice() {
+		return mCustomerDevice;
+	}
+	
+	/**
+	 * @return the mCart
+	 */
+	public ShoppingCart getCart() {
+		return mCart;
+	}
+
+	/**
+	 * @return the mShippingMethod
+	 */
+	public String getShippingMethod() {
+		return mShippingMethod;
+	}
+
+	/**
+	 * @return the mPaymentMethod
+	 */
+	public String getPaymentMethod() {
+		return mPaymentMethod;
 	}
 
 	/**
@@ -108,205 +250,119 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
 	}
 
 	/**
-	 * @return the mShippingMethod
+	 * @param total
+	 *            the total to set
 	 */
-	public ShippingMethods getShippingMethod() {
-		return mShippingMethod;
+	public void setTotal(String total) {
+		this.mGrandTotal = total;
 	}
 
 	/**
-	 * @return the mPaymentOptions
+	 * @param shippingAmount
+	 *            the shippingAmount to set
 	 */
-	public PaymentMethods getPaymentOptions() {
-		return mPaymentOptions;
+	public void setShippingAmount(String shippingAmount) {
+		this.mShippingAmount = shippingAmount;
 	}
 
 	/**
-	 * @param mSubTotal
-	 *            the mSubTotal to set
+	 * @param extraCost
+	 *            the extraCost to set
 	 */
-	public void setSubTotal(String mSubTotal) {
-		this.mSubTotal = mSubTotal;
+	public void setExtraCost(String extraCost) {
+		this.mExtraCost = extraCost;
 	}
 
 	/**
-	 * @param mShippingFee
-	 *            the mShippingFee to set
+	 * @param discountAmount
+	 *            the discountAmount to set
 	 */
-	public void setShippingFee(String mShippingFee) {
-		this.mShippingFee = mShippingFee;
+	public void setDiscountAmount(String discountAmount) {
+		this.mDiscountAmount = discountAmount;
 	}
 
 	/**
-	 * @param mTotal
-	 *            the mTotal to set
+	 * @param installmentFees
+	 *            the installmentFees to set
 	 */
-	public void setTotal(String mTotal) {
-		this.mTotal = mTotal;
+	public void setInstallmentFees(String installmentFees) {
+		this.mInstallmentFees = installmentFees;
 	}
 
 	/**
-	 * @param mProducts
-	 *            the mProducts to set
+	 * @param taxAmount
+	 *            the taxAmount to set
 	 */
-	public void setProducts(ArrayList<String> mProducts) {
-		this.mProducts = mProducts;
+	public void setTaxAmount(String taxAmount) {
+		this.mTaxAmount = taxAmount;
 	}
 
 	/**
-	 * @param mShippingAddress
-	 *            the mShippingAddress to set
+	 * @param customerDevice
+	 *            the customerDevice to set
 	 */
-	public void setShippingAddress(Address mShippingAddress) {
-		this.mShippingAddress = mShippingAddress;
+	public void setCustomerDevice(String customerDevice) {
+		this.mCustomerDevice = customerDevice;
 	}
-
+	
 	/**
-	 * @param mBillingAddress
-	 *            the mBillingAddress to set
+	 * @param customerDevice
+	 *            the customerDevice to set
 	 */
-	public void setBillingAddress(Address mBillingAddress) {
-		this.mBillingAddress = mBillingAddress;
+	public void setCart(ShoppingCart cart) {
+		this.mCart = cart;
 	}
-
+	
 	/**
-	 * @param mShippingMethod
-	 *            the mShippingMethod to set
+	 * @param customerDevice
+	 *            the customerDevice to set
 	 */
-	public void setShippingMethod(ShippingMethods mShippingMethod) {
-		this.mShippingMethod = mShippingMethod;
+	public void setShippingMethod(String method) {
+		this.mShippingMethod = method;
 	}
-
+	
 	/**
-	 * @param mPaymentOptions
-	 *            the mPaymentOptions to set
+	 * @param customerDevice
+	 *            the customerDevice to set
 	 */
-	public void setPaymentOptions(PaymentMethods mPaymentOptions) {
-		this.mPaymentOptions = mPaymentOptions;
+	public void setPaymentMethod(String method) {
+		this.mPaymentMethod = method;
 	}
-
+	
 	/**
-	 * @return the mOrderNumber
+	 * @param customerDevice
+	 *            the customerDevice to set
 	 */
-	public String getOrderNumber() {
-		return mOrderNumber;
+	public void setShippingAddress(Address address) {
+		this.mShippingAddress = address;
 	}
-
+	
 	/**
-	 * @return the mFirstName
+	 * @param customerDevice
+	 *            the customerDevice to set
 	 */
-	public String getFirstName() {
-		return mFirstName;
+	public void setBillingAddress(Address address) {
+		this.mBillingAddress = address;
 	}
-
+	
 	/**
-	 * @return the mLastName
+	 * ########### VALIDATORS ###########
 	 */
-	public String getLastName() {
-		return mLastName;
+	
+	
+	public boolean hasShippingAddress(){
+		return (mShippingAddress != null) ? true : false;
 	}
-
-	/**
-	 * @param mOrderNumber the mOrderNumber to set
-	 */
-	public void setOrderNumber(String mOrderNumber) {
-		this.mOrderNumber = mOrderNumber;
+	
+	public boolean hasShippingMethod(){
+		return (mShippingMethod != null) ? true : false;
 	}
-
-	/**
-	 * @param mFirstName the mFirstName to set
-	 */
-	public void setFirstName(String mFirstName) {
-		this.mFirstName = mFirstName;
+	
+	public boolean hasShippingFees(){
+		return (mInstallmentFees != null) ? true : false;
 	}
-
-	/**
-	 * @param mLastName the mLastName to set
-	 */
-	public void setLastName(String mLastName) {
-		this.mLastName = mLastName;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * pt.rocket.framework.objects.IJSONSerializable#initialize(org.json.JSONObject
-	 * )
-	 */
-	@Override
-	public boolean initialize(JSONObject jsonObject) throws JSONException {
-		
-        // Metada:
-        
-        // Cash On Delivery:
-//        {
-//            "success": true,
-//            "messages": {
-//                "success": [
-//                    "ORDER_SUCCESS"
-//                ]
-//            },
-//            "session": {
-//                "id": "hec322fvnb97f0kqp7mv6s2e81",
-//                "expire": null,
-//                "YII_CSRF_TOKEN": "92945c37307600580b25eee7e6d6fa690a9aa126"
-//            },
-//            "metadata": {
-//                "order_nr": "300012712",
-//                "customer_first_name": "mob nsme",
-//                "customer_last_name": "mob last",
-//                "payment": []
-//            }
-//        }
-		
-		
-		// Get order number
-        mOrderNumber = jsonObject.getString("order_nr");
-        // Get first name
-        mFirstName = jsonObject.optString("customer_first_name");
-        // Get last name
-        mLastName = jsonObject.optString("customer_last_name");
-        
-        // Validate payment content
-        if(jsonObject.has("payment")){
-        	Log.d(TAG, "HAS PAYMENT DATA");	
-        	JSONObject jsonPayment = jsonObject.optJSONObject("payment");
-        	if(jsonPayment != null) {
-        		Log.d(TAG, "PAYMENT DATA: " + jsonPayment.toString());
-        	}
-        	
-        }
-        
-        
-        // Paga:
-        // payment: { type, method, form, url}
-        
-        // This step only occurs if the response returned on step 6 has a key "payment".
-        // Depending on the selected payment method, client will be asked to provide payment details or redirected to the payment provider's external page to provide payment details.
-        // TODO: Filter response by method
-        // Cash On Delivery -   If the payment method selected was "Cash On Delivery" this step not applicable.
-        // Paga             -   The follow response tell us that is need made a auto submit form for action
-        // WebPAY           -   In this case the form has a property named "target" that indicates the result of the form's submit has to be displayed in an iframe, whose NAME is "target" property's value
-        // GlobalPay        -   Auto-submit-external
-        // Wallety          -   Submit-external
-        // AdyenPayment     -   Page
-		
-		
-		return true;
-
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see pt.rocket.framework.objects.IJSONSerializable#toJSON()
-	 */
-	@Override
-	public JSONObject toJSON() {
-		// TODO
-		return null;
-	}
+	
+	
 
 	/**
 	 * ########### Parcelable ###########
@@ -331,12 +387,18 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
 	 */
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
-		// TODO
-		// dest.writeString(order_id);
-		// dest.writeString(creation_date);
-		// dest.writeString(payment_method);
-		// dest.writeString(last_order_update);
-		// dest.writeList(orderTracketItems);
+		 dest.writeString(mGrandTotal);
+		 dest.writeString(mShippingAmount);
+		 dest.writeString(mExtraCost);
+		 dest.writeString(mDiscountAmount);
+		 dest.writeString(mInstallmentFees);
+		 dest.writeString(mTaxAmount);
+		 dest.writeString(mCustomerDevice);
+		 dest.writeParcelable(mCart, 0);
+		 dest.writeString(mShippingMethod);
+		 dest.writeString(mPaymentMethod);
+		 dest.writeParcelable(mShippingAddress, 0);
+		 dest.writeParcelable(mBillingAddress, 0);
 	}
 
 	/**
@@ -345,13 +407,18 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
 	 * @param in
 	 */
 	private OrderSummary(Parcel in) {
-		// TODO
-		// order_id = in.readString();
-		// creation_date = in.readString();
-		// payment_method = in.readString();
-		// last_order_update = in.readString();
-		// in.readList(orderTracketItems,
-		// OrderTrackerItem.class.getClassLoader());
+		 mGrandTotal = in.readString();
+		 mShippingAmount = in.readString();
+		 mExtraCost = in.readString();
+		 mDiscountAmount = in.readString();
+		 mInstallmentFees = in.readString();
+		 mTaxAmount = in.readString();
+		 mCustomerDevice = in.readString();
+		 mCart = in.readParcelable(ShoppingCart.class.getClassLoader());
+		 mShippingMethod = in.readString();
+		 mPaymentMethod = in.readString();
+		 mShippingAddress = in.readParcelable(Address.class.getClassLoader());
+		 mBillingAddress = in.readParcelable(Address.class.getClassLoader());
 	}
 
 	/**

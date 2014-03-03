@@ -21,6 +21,7 @@ import pt.rocket.forms.FormField;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.AddressCity;
 import pt.rocket.framework.objects.AddressRegion;
+import pt.rocket.framework.objects.OrderSummary;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
@@ -103,6 +104,8 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
     private TextView mShippingTitle;
 
     private View mShippingFormMain;
+
+    private OrderSummary orderSummary;
     
     
     /**
@@ -190,7 +193,7 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         // Get and show form
         if(JumiaApplication.INSTANCE.getFormDataRegistry() == null || JumiaApplication.INSTANCE.getFormDataRegistry().size() == 0){
             triggerInitForm();
-        } else if(mFormResponse != null){
+        } else if(mFormResponse != null && orderSummary != null){
             loadCreateAddressForm(mFormResponse);
         } else {
             triggerCreateAddressForm();
@@ -290,6 +293,10 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
             setRegions(shippingFormGenerator, regions, SHIPPING_FORM_TAG);
             setRegions(billingFormGenerator, regions, BILLING_FORM_TAG);
         }
+        
+        // Show order summary
+        super.showOrderSummaryIfPresent(BaseActivity.CHECKOUT_BILLING, orderSummary);
+        
         // Show
         getBaseActivity().showContentContainer(false);
     }
@@ -620,6 +627,8 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
             break;
         case GET_CREATE_ADDRESS_FORM_EVENT:
             Log.d(TAG, "RECEIVED GET_CREATE_ADDRESS_FORM_EVENT");
+            // Get order summary
+            orderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
             // Save and load form
             Form form = (Form) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             mFormResponse = form;

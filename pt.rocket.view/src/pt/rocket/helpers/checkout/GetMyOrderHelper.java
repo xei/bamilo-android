@@ -6,14 +6,15 @@ package pt.rocket.helpers.checkout;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.framework.enums.RequestType;
-import pt.rocket.framework.objects.Address;
 import pt.rocket.framework.objects.OrderSummary;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
 import pt.rocket.helpers.BaseHelper;
 import pt.rocket.helpers.HelperPriorityConfiguration;
+import pt.rocket.utils.CheckoutStepManager;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -51,17 +52,15 @@ public class GetMyOrderHelper extends BaseHelper {
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
         Log.d(TAG, "PARSE BUNDLE: " + jsonObject.toString());
         try {
+
+            // Get order
+            OrderSummary orderSummary = new OrderSummary(jsonObject, JumiaApplication.INSTANCE.getItemSimpleDataRegistry());
             
-            // TODO:
-            // Get products
-            // Get shipping address
-            // Get billing address
-            // Get shipping method
-            // Get payment options
+            // Get next step
+            bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextCheckoutStep(jsonObject));
             
-            OrderSummary orderSummary = new OrderSummary();
             
-            bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, new Address(jsonObject.getJSONObject("data")));
+            bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, orderSummary);
             
         } catch (JSONException e) {
             Log.w(TAG, "ERROR ON PARSE: " + e.getMessage());

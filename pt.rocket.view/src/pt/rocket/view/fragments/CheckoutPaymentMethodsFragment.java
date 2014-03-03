@@ -8,12 +8,14 @@ import java.util.EnumSet;
 import org.holoeverywhere.widget.Toast;
 
 import pt.rocket.app.JumiaApplication;
+import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.FormConstants;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.factories.FormFactory;
 import pt.rocket.forms.Form;
 import pt.rocket.framework.ErrorCode;
+import pt.rocket.framework.objects.OrderSummary;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -285,16 +287,25 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
         switch (eventType) {
         case GET_PAYMENT_METHODS_EVENT:
             Log.d(TAG, "RECEIVED GET_SHIPPING_METHODS_EVENT");
+            // Get order summary
+            OrderSummary orderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
+            super.showOrderSummaryIfPresent(BaseActivity.CHECKOUT_PAYMENT, orderSummary);
+            // Form
             Form form = (Form) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             loadForm(form);
             break;
         case SET_PAYMENT_METHOD_EVENT:
             Log.d(TAG, "RECEIVED SET_PAYMENT_METHOD_EVENT");
+            // Get order summary
+            OrderSummary orderFinish = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
+            Log.d(TAG, "ORDER SUMMARY: " + orderFinish.toString());
             // Get next step
             FragmentType nextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
             nextFragment = (nextFragment != FragmentType.UNKNOWN) ? nextFragment : FragmentType.MY_ORDER;
-            // Switch
-            getBaseActivity().onSwitchFragment(nextFragment, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            // Switch to FINISH
+            bundle.clear();
+            bundle.putParcelable(ConstantsIntentExtra.ORDER_FINISH, orderFinish);
+            getBaseActivity().onSwitchFragment(nextFragment, bundle, FragmentController.ADD_TO_BACK_STACK);
             break;
         default:
             break;

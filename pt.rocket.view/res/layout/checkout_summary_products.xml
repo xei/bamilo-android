@@ -2,16 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp" >
+    android:orientation="vertical" >
 
     <!-- TITLE -->
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="@dimen/margin_mid"
         android:layout_marginTop="@dimen/margin_huge"
         android:orientation="horizontal" >
 
@@ -21,14 +19,14 @@
             android:layout_weight="1"
             android:fontFamily="roboto_regular"
             android:gravity="left"
-            android:text="Order Summary"
+            android:text="@string/order_summary_label"
             android:textColor="@color/grey_divider_light_text"
-            android:textSize="@dimen/text_l" />
+            android:textSize="@dimen/text_xl" />
 
         <ImageView
             android:id="@+id/checkout_summary_products_btn_edit"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:src="@drawable/btn_edit" />
     </LinearLayout>
 
@@ -44,15 +42,16 @@
         android:layout_marginTop="@dimen/margin_huge"
         android:fontFamily="roboto_regular"
         android:gravity="left"
-        android:text="Products:"
+        android:text="@string/order_track_products"
         android:textColor="@color/grey_divider_light_text"
-        android:textSize="@dimen/text_l" />
+        android:textSize="@dimen/text_m" />
 
     <LinearLayout
         android:id="@+id/checkout_summary_products_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_huge" />
+        android:layout_marginTop="@dimen/margin_large"
+        android:orientation="vertical" />
 
     <!-- SHIPPING FEE -->
 
@@ -60,8 +59,9 @@
         android:id="@+id/checkout_summary_products_shippingfee_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_huge"
-        android:orientation="horizontal" >
+        android:layout_marginTop="@dimen/margin_large"
+        android:orientation="horizontal"
+        android:visibility="gone" >
 
         <org.holoeverywhere.widget.TextView
             android:layout_width="0dp"
@@ -69,9 +69,9 @@
             android:layout_weight="1"
             android:fontFamily="roboto_regular"
             android:gravity="left"
-            android:text="Shipping Fee:"
+            android:text="@string/order_summary_shipping_fee_label"
             android:textColor="@color/grey_divider_light_text"
-            android:textSize="@dimen/text_l" />
+            android:textSize="@dimen/text_m" />
 
         <org.holoeverywhere.widget.TextView
             android:id="@+id/checkout_summary_products_text_shippingfee"
@@ -79,9 +79,8 @@
             android:layout_height="wrap_content"
             android:fontFamily="roboto_regular"
             android:gravity="left"
-            android:text="€25"
             android:textColor="@color/grey_divider_light_text"
-            android:textSize="@dimen/text_l" />
+            android:textSize="@dimen/text_m" />
     </LinearLayout>
 
     <!-- SUB TOTAL -->
@@ -90,8 +89,8 @@
         android:id="@+id/checkout_summary_products_subtotal_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="@dimen/margin_huge"
+        android:layout_marginBottom="@dimen/margin_mid"
+        android:layout_marginTop="@dimen/margin_large"
         android:orientation="horizontal" >
 
         <org.holoeverywhere.widget.TextView
@@ -100,9 +99,9 @@
             android:layout_weight="1"
             android:fontFamily="roboto_regular"
             android:gravity="left"
-            android:text="Subtotal:"
+            android:text="@string/order_summary_subtotal_label"
             android:textColor="@color/grey_divider_light_text"
-            android:textSize="@dimen/text_l" />
+            android:textSize="@dimen/text_m" />
 
         <org.holoeverywhere.widget.TextView
             android:id="@+id/checkout_summary_products_text_subtotal"
@@ -110,9 +109,8 @@
             android:layout_height="wrap_content"
             android:fontFamily="roboto_regular"
             android:gravity="left"
-            android:text="€100"
             android:textColor="@color/grey_divider_light_text"
-            android:textSize="@dimen/text_l" />
+            android:textSize="@dimen/text_m" />
     </LinearLayout>
 
 </LinearLayout>

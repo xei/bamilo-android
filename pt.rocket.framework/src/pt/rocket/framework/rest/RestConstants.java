@@ -356,5 +356,9 @@ public class RestConstants {
     public static final String JSON_PICKUP_ID_PICKUPSTATION_REGION = "id_pickupstation_region";
     public static final String JSON_PICKUP_PAYMENT_METHOD = "payment_method";
     public static final String JSON_PICKUP_REGIONS = "regions";
+    
+    public static final String JSON_BILLING_FORM_TAG = "billingForm";
+    public static final String JSON_CUSTOMER_TAG = "customer";
+    public static final String JSON_ADDRESS_LIST_TAG = "address_list";
 
 }

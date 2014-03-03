@@ -2,27 +2,19 @@ package pt.rocket.view.fragments;
 
 import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map.Entry;
-import java.util.Set;
 
 import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsCheckout;
-import pt.rocket.constants.FormConstants;
+import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
-import pt.rocket.factories.FormFactory;
-import pt.rocket.forms.Form;
 import pt.rocket.forms.PaymentMethodForm;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.Address;
-import pt.rocket.framework.objects.Order;
 import pt.rocket.framework.objects.OrderSummary;
-import pt.rocket.framework.objects.PaymentMethods;
-import pt.rocket.framework.objects.ShippingMethods;
 import pt.rocket.framework.objects.ShoppingCart;
 import pt.rocket.framework.objects.ShoppingCartItem;
 import pt.rocket.framework.rest.RestConstants;
@@ -33,7 +25,6 @@ import pt.rocket.helpers.address.GetDefaultBillingAddressHelper;
 import pt.rocket.helpers.address.GetDefaultShippingAddressHelper;
 import pt.rocket.helpers.checkout.CheckoutFinishHelper;
 import pt.rocket.interfaces.IResponseCallback;
-import pt.rocket.pojo.DynamicForm;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
@@ -104,6 +95,12 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
 
     private ViewGroup mPaymentFormContainer;
 
+    private OrderSummary mOrderFinish;
+
+    private String shipMethod;
+
+    private String payMethod;
+
     /**
      * 
      * @return
@@ -172,6 +169,10 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
         Log.i(TAG, "ON VIEW CREATED");
         // Get containers
         
+        Bundle bundle = getArguments();
+        mOrderFinish = (OrderSummary) bundle.getParcelable(ConstantsIntentExtra.ORDER_FINISH); 
+        
+        
         // Get product items
         mProductsContainer = (ViewGroup) view.findViewById(R.id.checkout_my_order_products_list);
                 
@@ -210,7 +211,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
         view.findViewById(R.id.checkout_my_order_button_enter).setOnClickListener((OnClickListener) this);
                 
         // Get my Order
-        triggerGetMyOrder();
+        showMyOrder();
 
     }
 
@@ -285,20 +286,27 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
      */
     private void showMyOrder() {
         // Get cart
-        cart = JumiaApplication.INSTANCE.getCart();
+        //cart = JumiaApplication.INSTANCE.getCart();
+        cart = mOrderFinish.getCart();
         if(cart != null) showProducts();
         // Get shipping address
-        shippingAddress = JumiaApplication.INSTANCE.getShippingAddress();
+        //shippingAddress = JumiaApplication.INSTANCE.getShippingAddress();
+        shippingAddress = mOrderFinish.getShippingAddress();
         if(shippingAddress != null) showShippingAddress();
         // Get billing address
-        billingAddress = JumiaApplication.INSTANCE.getBillingAddress();
+        //billingAddress = JumiaApplication.INSTANCE.getBillingAddress();
+        billingAddress = mOrderFinish.getBillingAddress();
         if(billingAddress != null) showBillingAddress();
         // Get shipping method
-        shippingMethod = JumiaApplication.INSTANCE.getShippingMethod();
-        if(shippingMethod != null) showShippingMethod();
+        //shippingMethod = JumiaApplication.INSTANCE.getShippingMethod();
+        //if(shippingMethod != null) showShippingMethod();
+        shipMethod = mOrderFinish.getShippingMethod();
+        if(shipMethod != null) showShippingMethod();
         // Get payment options
-        paymentOptions = JumiaApplication.INSTANCE.getPaymentMethod();
-        if(paymentOptions != null) showPaymentOptions();
+        //paymentOptions = JumiaApplication.INSTANCE.getPaymentMethod();
+        //if(paymentOptions != null) showPaymentOptions();
+        payMethod = mOrderFinish.getPaymentMethod();
+        if(payMethod != null) showPaymentOptions();
         
         getBaseActivity().showContentContainer(false);
     }
@@ -335,9 +343,9 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
         String itemsLabel = (size > 1) ? getString(R.string.my_order_items_label) : getString(R.string.my_order_item_label);
         mProductsNum.setText(size + " " + itemsLabel);
         mProductsValue.setText(cart.getCartValue()); 
-        mShipFeeValue.setText(cart.getShippingValue());
+        mShipFeeValue.setText(mOrderFinish.getShippingAmount());
         mVoucherView.setVisibility(View.GONE);
-        mTotalValue.setText(cart.getCartValue());
+        mTotalValue.setText(mOrderFinish.getTotal());
     }
     
     /**
@@ -381,28 +389,31 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
      * 
      */
     private void showShippingMethod() {
-        Log.d(TAG, "code1shipping : " + shippingMethod.toString());
-        Set<Entry<String, Object>> ships = shippingMethod.valueSet();
-        for (Entry<String, Object> entry : ships) {
-            String curKey = entry.getKey();
-            String curValue = (String)  entry.getValue();
-            Log.d(TAG, "SHIPPING METHOD: " + curKey + " " + curValue);
-            if(curKey.equals("name")) mShippingMethodName.setText(curValue);
-        }
+//        Log.d(TAG, "code1shipping : " + shippingMethod.toString());
+//        Set<Entry<String, Object>> ships = shippingMethod.valueSet();
+//        for (Entry<String, Object> entry : ships) {
+//            String curKey = entry.getKey();
+//            String curValue = (String)  entry.getValue();
+//            Log.d(TAG, "SHIPPING METHOD: " + curKey + " " + curValue);
+//            if(curKey.equals("name")) mShippingMethodName.setText(curValue);
+//        }
+        
+        mShippingMethodName.setText(shipMethod);
     }
     
     /**
      * 
      */
     private void showPaymentOptions() {
-        Set<Entry<String, Object>> ships = paymentOptions.valueSet();
-        for (Entry<String, Object> entry : ships) {
-            String curKey = entry.getKey();
-            String curValue = (String) entry.getValue();
-            Log.d(TAG, "PAYMENT OPTION: " + curKey + " " + curValue);
-            if(curKey.equals("name")) mPaymentName.setText(curValue);
-        }
+//        Set<Entry<String, Object>> ships = paymentOptions.valueSet();
+//        for (Entry<String, Object> entry : ships) {
+//            String curKey = entry.getKey();
+//            String curValue = (String) entry.getValue();
+//            Log.d(TAG, "PAYMENT OPTION: " + curKey + " " + curValue);
+//            if(curKey.equals("name")) mPaymentName.setText(curValue);
+//        }
         
+        mPaymentName.setText(payMethod);
     }
 
     /**

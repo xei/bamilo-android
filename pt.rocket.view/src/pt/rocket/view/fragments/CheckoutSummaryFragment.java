@@ -3,22 +3,28 @@
  */
 package pt.rocket.view.fragments;
 
-import java.util.EnumSet;
+import java.util.ArrayList;
+import java.util.Map;
 
 import org.holoeverywhere.widget.TextView;
 
+import pt.rocket.app.JumiaApplication;
+import pt.rocket.controllers.ActivitiesWorkFlow;
+import pt.rocket.controllers.fragments.FragmentController;
+import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.ErrorCode;
+import pt.rocket.framework.objects.Address;
+import pt.rocket.framework.objects.OrderSummary;
 import pt.rocket.framework.objects.ShoppingCart;
 import pt.rocket.framework.objects.ShoppingCartItem;
 import pt.rocket.framework.utils.Constants;
+import pt.rocket.framework.utils.CurrencyFormatter;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.GetShoppingCartItemsHelper;
 import pt.rocket.helpers.GetShoppingCartRemoveItemHelper;
 import pt.rocket.interfaces.IResponseCallback;
-import pt.rocket.app.JumiaApplication;
-import pt.rocket.utils.MyMenuItem;
-import pt.rocket.utils.NavigationAction;
+import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
@@ -31,54 +37,66 @@ import android.view.ViewGroup;
 import de.akquinet.android.androlog.Log;
 
 /**
+ * Class used to show the order summary in the checkout process
  * @author sergiopereira
  * 
  */
-public class CheckoutSummaryFragment extends BaseFragment implements OnClickListener,
-        IResponseCallback {
+public class CheckoutSummaryFragment extends BaseFragment implements OnClickListener, IResponseCallback {
 
     private static final String TAG = LogTagHelper.create(CheckoutSummaryFragment.class);
 
     private static CheckoutSummaryFragment mOrderSummaryFragment;
 
-    private ViewGroup prodList;
+    private ViewGroup mProductList;
 
-    private TextView prodSubTotal;
+    private TextView mSubTotal;
 
-    private ShoppingCart cart;
+    private ShoppingCart mCart;
 
-    private TextView prodShipFeeValue;
+    private TextView mShippingFeeValue;
 
-    private ViewGroup prodShipFeeView;
+    private ViewGroup mShippingFeeView;
 
-    private ViewGroup shipAddressView;
+    private ViewGroup mShippingAddressView;
 
-    private ViewGroup shipMethodView;
+    private ViewGroup mShippingMethodView;
 
-    private ViewGroup totalView;
+    private ViewGroup mTotalView;
+
+    private OrderSummary mOrderSummary;
+
+    private ViewGroup mShippingAddressList;
+
+    private TextView mShippingMethodText;
+
+    private TextView mTotal;
+
+    private int mCheckoutStep;
+
+    private View mNoItemsView;
+
+    private ViewGroup mProductListView;
 
     /**
-     * 
-     * @return
+     * Get instance
+     * @return CheckoutSummaryFragment
      */
-    public static CheckoutSummaryFragment getInstance(Bundle bundle) {
-        if (mOrderSummaryFragment == null)
-            mOrderSummaryFragment = new CheckoutSummaryFragment();
+    public static CheckoutSummaryFragment getInstance(int checkoutStep, OrderSummary orderSummary) {
+        //if (mOrderSummaryFragment == null) 
+        mOrderSummaryFragment = new CheckoutSummaryFragment();
+        // Save order summary
+        mOrderSummaryFragment.mCheckoutStep = checkoutStep;
+        // Save order summary
+        mOrderSummaryFragment.mOrderSummary = orderSummary;
+        // return instance
         return mOrderSummaryFragment;
     }
 
     /**
-     * Empty constructor
+     * Empty constructor for nested fragment
      */
     public CheckoutSummaryFragment() {
-        super(EnumSet.of(
-                EventType.GET_SHOPPING_CART_ITEMS_EVENT,
-                EventType.REMOVE_ITEM_FROM_SHOPPING_CART_EVENT,
-                EventType.CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT),
-                EnumSet.noneOf(EventType.class),
-                EnumSet.noneOf(MyMenuItem.class),
-                NavigationAction.Unknown,
-                BaseActivity.CHECKOUT_NO_SET_HEADER);
+        super(IS_NESTED_FRAGMENT);
     }
 
     /*
@@ -101,7 +119,6 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-        setRetainInstance(true);
     }
 
     /*
@@ -126,29 +143,34 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
-        // Get containers
         
+        // No items
+        mNoItemsView = view.findViewById(R.id.checkout_summary_include_no_items);
         // Products
-        prodList = (ViewGroup) view.findViewById(R.id.checkout_summary_products_list);
+        mProductListView = (ViewGroup) view.findViewById(R.id.checkout_summary_include_products);
+        mProductList = (ViewGroup) view.findViewById(R.id.checkout_summary_products_list);
         view.findViewById(R.id.checkout_summary_products_btn_edit).setOnClickListener(this);
-        prodShipFeeView = (ViewGroup) view.findViewById(R.id.checkout_summary_products_shippingfee_container);
-        prodShipFeeValue = (TextView) view.findViewById(R.id.checkout_summary_products_text_shippingfee);
-        prodSubTotal = (TextView) view.findViewById(R.id.checkout_summary_products_text_subtotal);
+        mShippingFeeView = (ViewGroup) view.findViewById(R.id.checkout_summary_products_shippingfee_container);
+        mShippingFeeValue = (TextView) view.findViewById(R.id.checkout_summary_products_text_shippingfee);
+        mSubTotal = (TextView) view.findViewById(R.id.checkout_summary_products_text_subtotal);
         // Shipping Address
-        shipAddressView = (ViewGroup) view.findViewById(R.id.checkout_summary_include_shipping_address);
+        mShippingAddressView = (ViewGroup) view.findViewById(R.id.checkout_summary_include_shipping_address);
+        mShippingAddressList = (ViewGroup) view.findViewById(R.id.checkout_summary_shipping_address_list);
         view.findViewById(R.id.checkout_summary_shipping_address_btn_edit).setOnClickListener(this);
         // Shipping Method
-        shipMethodView = (ViewGroup) view.findViewById(R.id.checkout_summary_include_shipping_method);
+        mShippingMethodView = (ViewGroup) view.findViewById(R.id.checkout_summary_include_shipping_method);
+        mShippingMethodText = (TextView) view.findViewById(R.id.checkout_summary_shipping_method_text);
         view.findViewById(R.id.checkout_summary_shipping_method_btn_edit).setOnClickListener(this);
         // Total
-        totalView = (ViewGroup) view.findViewById(R.id.checkout_summary_include_total);
-
+        mTotalView = (ViewGroup) view.findViewById(R.id.checkout_summary_include_total);
+        mTotal = (TextView) view.findViewById(R.id.checkout_summary_total_text);
+        
         // Get cart
-        cart = JumiaApplication.INSTANCE.getCart();
-        if (cart == null) triggerGetShoppingCart();
+        mCart = JumiaApplication.INSTANCE.getCart();
+        if (mCart == null) triggerGetShoppingCart();
         else showOrderSummary();
     }
-
+    
     /*
      * (non-Javadoc)
      * 
@@ -215,20 +237,154 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
         Log.i(TAG, "ON DESTROY");
     }
 
+    /**
+     * Show the order summary
+     * @author sergiopereira
+     */
     private void showOrderSummary() {
-        // Get and ser sub total
-        prodSubTotal.setText(cart.getCartValue());
-//        // Show each item
-//        Map<String, ShoppingCartItem> items = cart.getCartItems();
-//        ArrayList<ShoppingCartItem> cenas = (ArrayList<ShoppingCartItem>) items.values();
-//        ShoppingCartItem item = cenas.get(0);
-//        Log.d(TAG, "ORDER ITEM:" + item.getName());
+        
+        // Validate current cart
+        if(mCart != null && mCart.getCartItems().size() == 0) {
+            showNoItems();
+            return;
+        }
+
+        // Validate order summary
+        if(mOrderSummary == null)  Log.w(TAG, "ORDER SUMMARY IS NULL");
+        else Log.d(TAG, "ORDER SUMMARY: " + mOrderSummary.toString());
+
+        // Validate the current checkout step
+        switch (mCheckoutStep) {
+        case BaseActivity.CHECKOUT_PAYMENT:
+            // Validate shipping method
+            if(mOrderSummary != null && mOrderSummary.hasShippingMethod()) showShippingMethod(mOrderSummary.getShippingMethod());
+            // continue
+            
+        case BaseActivity.CHECKOUT_SHIPPING:
+            // Shipping fees
+            if(mOrderSummary != null && mOrderSummary.hasShippingFees()) showShippingFees(mOrderSummary.getInstallmentFees());
+            // Validate shipping address
+            if(mOrderSummary != null && mOrderSummary.hasShippingAddress()) showShippingAddress(mOrderSummary.getShippingAddress());
+            // Validate total
+            if(mOrderSummary != null) showTotal(mOrderSummary.getTotal());
+            // continue
+            
+        case BaseActivity.CHECKOUT_BILLING:
+        case BaseActivity.CHECKOUT_ABOUT_YOU:
+        default:
+            // Show cart
+            showCart();
+            break;
+        }
+        
     }
+    
+    /**
+     * Show the current cart
+     * @author sergiopereira
+     */
+    private void showCart() {
+        // Show all items
+        Map<String, ShoppingCartItem> mShopMapItems = mCart.getCartItems();
+        ArrayList<ShoppingCartItem> mShopList = new ArrayList<ShoppingCartItem>(mShopMapItems.values());
+        mProductList.removeAllViews();
+        for (ShoppingCartItem item : mShopList) {
+            View cartItemView = LayoutInflater.from(getBaseActivity()).inflate(R.layout.checkout_summary_list_item, mProductList, false);
+            ((TextView) cartItemView.findViewById(R.id.order_summary_item_name)).setText(item.getName());
+            ((TextView) cartItemView.findViewById(R.id.order_summary_item_quantity)).setText(item.getQuantity() + " x  " + item.getPrice());
+            View deleteButton = cartItemView.findViewById(R.id.order_summary_item_btn_remove);
+            deleteButton.setOnClickListener((OnClickListener)this);
+            deleteButton.setTag(item.getConfigSimpleSKU());
+            mProductList.addView(cartItemView);
+        }
+        // Show sub total
+        mSubTotal.setText(CurrencyFormatter.formatCurrency(mCart.getCartValue()));
+    }
+    
+    /**
+     * Show the current shipping address
+     * @author sergiopereira
+     */
+    private void showShippingAddress(Address shippingAddress) {
+        Log.d(TAG, "SHOW SHIPPING ADDRESS: " + shippingAddress.getAddress());
+        mShippingAddressList.removeAllViews();
+        View shippingAddressView = LayoutInflater.from(getBaseActivity()).inflate(R.layout.checkout_address_item, mShippingAddressList, false);
+        ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_name)).setText(shippingAddress.getFirstName() + " " + shippingAddress.getLastName());
+        ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_street)).setText(shippingAddress.getAddress());
+        ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_region)).setText(shippingAddress.getRegion() + " " + shippingAddress.getCity());
+        ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_postcode)).setText(shippingAddress.getPostcode());
+        ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_phone)).setText(""+shippingAddress.getPhone());
+        shippingAddressView.findViewById(R.id.checkout_address_item_btn_container).setVisibility(View.GONE);
+        mShippingAddressList.addView(shippingAddressView);
+        mShippingAddressView.setVisibility(View.VISIBLE);
+    }
+    
+    /**
+     * Show the current shipping method
+     * @author sergiopereira
+     */
+    private void showShippingMethod(String method) {
+        mShippingMethodText.setText(method);
+        mShippingMethodView.setVisibility(View.VISIBLE);
+    }
+    
+    /**
+     * Show the shipping fee
+     * @author sergiopereira
+     */
+    private void showShippingFees(String fee) {
+        mShippingFeeValue.setText(fee);
+        mShippingFeeView.setVisibility(View.VISIBLE);
+    }
+    
+    /**
+     * Show the current total
+     * @author sergiopereira
+     */
+    private void showTotal(String total) {
+        mTotal.setText(total);
+        mTotalView.setVisibility(View.VISIBLE);
+    }
+    
+    /**
+     * Show dialog to exit from checkout process
+     * @author sergiopereira
+     */
+    public void showNoItems() {
+        //setAppContentLayout();
+        mNoItemsView.setVisibility(View.VISIBLE);
+        mProductListView.setVisibility(View.GONE);
+        mShippingAddressView.setVisibility(View.GONE);
+        mShippingMethodView.setVisibility(View.GONE);
+        mTotalView.setVisibility(View.GONE);
+        // Show dialog
+        dialog = DialogGenericFragment.newInstance(true, true, false,
+                getString(R.string.order_summary_label),
+                getString(R.string.wishlist_notiems),
+                getString(R.string.ok_label), "", new OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        int id = v.getId();
+                        if (id == R.id.button1) {
+                          ActivitiesWorkFlow.homePageActivity(getBaseActivity());
+                          getBaseActivity().finish();
+                        }
+                    }
+
+                });
+        dialog.show(getBaseActivity().getSupportFragmentManager(), null);
+    }
+    
 
     /**
      * ############# CLICK LISTENER #############
      */
 
+    /*
+     * (non-Javadoc)
+     * @see android.view.View.OnClickListener#onClick(android.view.View)
+     */
     @Override
     public void onClick(View view) {
         // Get view id
@@ -240,31 +396,88 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
         // Ship Address Edit
         else if (id == R.id.checkout_summary_shipping_method_btn_edit) onClickEditMethodButton();
         // Remove
-        else if (id == R.id.order_summary_item_btn_remove) onClickRemoveItemButton();
+        else if (id == R.id.order_summary_item_btn_remove) onClickRemoveItemButton(view);
         // Unknown view
         else Log.i(TAG, "ON CLICK: UNKNOWN VIEW");
     }
 
+    /**
+     * Process the click on edit cart
+     * @author sergiopereira
+     */
     private void onClickEditProdButton() {
         Log.i(TAG, "ON CLICK: EDIT PROD");
+        getBaseActivity().onSwitchFragment(FragmentType.SHOPPING_CART, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
     }
     
+    /**
+     * Process the click on edit address
+     * @author sergiopereira
+     */
     private void onClickEditAddessButton() {
         Log.i(TAG, "ON CLICK: EDIT ADDRESS");
+        getBaseActivity().onSwitchFragment(FragmentType.MY_ADDRESSES, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
     }
     
+    /**
+     * Process the click on edit method
+     */
     private void onClickEditMethodButton() {
         Log.i(TAG, "ON CLICK: EDIT METHOD");
+        getBaseActivity().onSwitchFragment(FragmentType.SHIPPING_METHODS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
     }
 
-    private void onClickRemoveItemButton() {
-        Log.i(TAG, "ON CLICK: REMOVE ITEM");
+    /**
+     * Process the click on delete item on cart
+     * @author sergiopereira
+     */
+    private void onClickRemoveItemButton(View view) {
+        try {
+            // Get sku from tag
+            String sku = view.getTag().toString();
+            Log.i(TAG, "ON CLICK: REMOVE ITEM: " + sku);
+            // Remove clicked item
+            triggerRemoveItem(sku);
+        } catch (NullPointerException e) {
+            Log.w(TAG, "ON DELETE CLICK", e);
+        }
     }
 
+    /**
+     * ############# REQUESTS #############
+     */
+
+    /**
+     * Trigger to get the shopping cart
+     * @author sergiopereira
+     */
+    private void triggerGetShoppingCart() {
+        Log.i(TAG, "TRIGGER: GET SHOPPING CART");
+        triggerContentEvent(new GetShoppingCartItemsHelper(), null, this);
+    }
+    
+    /**
+     * Trigger to remove an item from the shopping cart
+     * @author sergiopereira
+     * @param sku
+     */
+    private void triggerRemoveItem(String sku){
+        ContentValues values = new ContentValues();
+        values.put("sku", sku);
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(GetShoppingCartRemoveItemHelper.ITEM, values);
+        triggerContentEventProgress(new GetShoppingCartRemoveItemHelper(), bundle, (IResponseCallback) this);
+    }
+    
     /**
      * ############# RESPONSE #############
      */
 
+    /**
+     * Process the success response
+     * @param bundle
+     * @return
+     */
     protected boolean onSuccessEvent(Bundle bundle) {
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         Log.i(TAG, "ON SUCCESS EVENT: " + eventType);
@@ -272,23 +485,29 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
         switch (eventType) {
         case GET_SHOPPING_CART_ITEMS_EVENT:
             Log.d(TAG, "RECEIVED GET_SHOPPING_CART_ITEMS_EVENT");
-            cart = (ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            mCart = (ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             showOrderSummary();
             getBaseActivity().showContentContainer(false);
             break;
         case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
             Log.d(TAG, "RECEIVED REMOVE_ITEM_FROM_SHOPPING_CART_EVENT");
-            break;
-        case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
-            Log.d(TAG, "RECEIVED CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT");
+            mCart = (ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            showOrderSummary();
+            getBaseActivity().showContentContainer(false);
             break;
         default:
+            Log.d(TAG, "RECEIVED UNKNOWN EVENT");
             break;
         }
 
         return true;
     }
 
+    /**
+     * Process the error response
+     * @param bundle
+     * @return
+     */
     protected boolean onErrorEvent(Bundle bundle) {
         if (!isVisible()) {
             return true;
@@ -307,37 +526,15 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
         case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
             Log.d(TAG, "RECEIVED REMOVE_ITEM_FROM_SHOPPING_CART_EVENT");
             break;
-        case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
-            Log.d(TAG, "RECEIVED CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT");
-            break;
         default:
+            Log.d(TAG, "RECEIVED UNKNOWN EVENT");
             break;
         }
 
         return false;
     }
 
-    /**
-     * ############# REQUESTS #############
-     */
 
-    private void triggerGetShoppingCart() {
-        Log.i(TAG, "TRIGGER: GET SHOPPING CART");
-        triggerContentEvent(new GetShoppingCartItemsHelper(), null, this);
-    }
-
-    private void triggerRemoveItemFromShoppingCart(ShoppingCartItem item) {
-        Log.i(TAG, "TRIGGER: REMOVE ITEM SHOPPING CART");
-        ContentValues values = new ContentValues();
-        values.put("sku", item.getConfigSimpleSKU());
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(GetShoppingCartRemoveItemHelper.ITEM, values);
-        triggerContentEvent(new GetShoppingCartRemoveItemHelper(), bundle, this);
-    }
-
-    private void triggerChangeQuantityInShoppingCart() {
-        Log.i(TAG, "TRIGGER: CHANGE QUANTITY SHOPPING CART");
-    }
 
     /**
      * ########### RESPONSE LISTENER ###########
@@ -352,6 +549,10 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
         onErrorEvent(bundle);
     }
 
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.interfaces.IResponseCallback#onRequestComplete(android.os.Bundle)
+     */
     @Override
     public void onRequestComplete(Bundle bundle) {
         onSuccessEvent(bundle);

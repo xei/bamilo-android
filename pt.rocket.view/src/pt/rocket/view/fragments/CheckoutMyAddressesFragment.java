@@ -19,6 +19,7 @@ import pt.rocket.forms.FormField;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.Address;
 import pt.rocket.framework.objects.Addresses;
+import pt.rocket.framework.objects.OrderSummary;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
@@ -599,6 +600,9 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
             Addresses addresses = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             this.addresses = addresses;
             showAddresses(addresses.hasDefaultShippingAndBillingAddress());
+            // Get order summary
+            OrderSummary orderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
+            super.showOrderSummaryIfPresent(BaseActivity.CHECKOUT_BILLING, orderSummary);
             break;
         case SET_BILLING_ADDRESS_EVENT:
             Log.d(TAG, "RECEIVED SET_BILLING_ADDRESS_EVENT");

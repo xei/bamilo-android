@@ -2,9 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp" >
+    android:layout_marginBottom="@dimen/margin_mid"
+    android:layout_marginTop="@dimen/margin_huge"
+    android:orientation="vertical" >
 
     <!-- TOTAL -->
 
@@ -12,8 +12,7 @@
         android:id="@+id/checkout_summary_total_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="@dimen/margin_huge"
+        android:layout_marginBottom="@dimen/margin_mid"
         android:orientation="horizontal" >
 
         <org.holoeverywhere.widget.TextView
@@ -22,7 +21,7 @@
             android:layout_weight="1"
             android:fontFamily="roboto_regular"
             android:gravity="left"
-            android:text="Total:"
+            android:text="@string/order_summary_total_label"
             android:textColor="@color/grey_divider_light_text"
             android:textSize="@dimen/text_l" />
 
@@ -32,9 +31,8 @@
             android:layout_height="wrap_content"
             android:fontFamily="roboto_regular"
             android:gravity="left"
-            android:text="€100"
             android:textColor="@color/grey_divider_light_text"
-            android:textSize="@dimen/text_l" />
+            android:textSize="@dimen/text_xl" />
     </LinearLayout>
 
     <View

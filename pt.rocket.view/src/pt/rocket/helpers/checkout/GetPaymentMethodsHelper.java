@@ -6,9 +6,11 @@ package pt.rocket.helpers.checkout;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.forms.Form;
 import pt.rocket.framework.enums.RequestType;
 import pt.rocket.framework.interfaces.IMetaData;
+import pt.rocket.framework.objects.OrderSummary;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
@@ -211,6 +213,10 @@ public class GetPaymentMethodsHelper extends BaseHelper {
                 Log.d(TAG, "CAT JSON: " + cartJSON.toString());
 //            ShoppingCart cart = new ShoppingCart(JumiaApplication.INSTANCE.getItemSimpleDataRegistry());
 //            cart.initialize(cartJSON);
+
+            // XXX
+            OrderSummary orderSummary = new OrderSummary(jsonObject, JumiaApplication.INSTANCE.getItemSimpleDataRegistry());
+            bundle.putParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY, orderSummary);
             
             bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, form);
 

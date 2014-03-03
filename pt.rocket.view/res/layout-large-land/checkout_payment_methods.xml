@@ -9,7 +9,7 @@
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="0.75"
+        android:layout_weight="@dimen/checkout_main_container"
         android:fillViewport="true"
         android:paddingLeft="10dp"
         android:paddingRight="10dp" >
@@ -80,12 +80,20 @@
 
     <!-- ORDER SUMMARY -->
 
-    <fragment
+    <FrameLayout
+        android:id="@+id/order_summary_container"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/margin_mid"
+        android:layout_marginRight="@dimen/margin_mid"
+        android:layout_weight="@dimen/checkout_order_summary" />
+
+<!--     <fragment
         android:name="pt.rocket.view.fragments.CheckoutSummaryFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/margin_mid"
         android:layout_marginRight="@dimen/margin_mid"
-        android:layout_weight="0.25" />
+        android:layout_weight="0.25" /> -->
 
 </LinearLayout>

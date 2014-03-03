@@ -18,6 +18,7 @@ import pt.rocket.factories.FormFactory;
 import pt.rocket.forms.Form;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.Customer;
+import pt.rocket.framework.objects.OrderSummary;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CustomerUtils;
@@ -116,6 +117,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
      */
     public static CheckoutAboutYouFragment getInstance(Bundle bundle) {
         aboutYouFragment = new CheckoutAboutYouFragment();
+        
         if (bundle != null) {
             aboutYouFragment.loginOrigin = bundle.getString(ConstantsIntentExtra.LOGIN_ORIGIN);
         }
@@ -126,8 +128,11 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
      * Empty constructor
      */
     public CheckoutAboutYouFragment() {
-        super(EnumSet.of(EventType.GET_LOGIN_FORM_EVENT, EventType.GET_SIGNUP_FORM_EVENT), 
-                EnumSet.of(EventType.LOGIN_EVENT, EventType.FACEBOOK_LOGIN_EVENT, EventType.SET_SIGNUP_EVENT),
+        super(EnumSet.of(EventType.GET_LOGIN_FORM_EVENT, 
+                EventType.GET_SIGNUP_FORM_EVENT), 
+                EnumSet.of(EventType.LOGIN_EVENT, 
+                EventType.FACEBOOK_LOGIN_EVENT, 
+                EventType.SET_SIGNUP_EVENT),
                 EnumSet.noneOf(MyMenuItem.class), 
                 NavigationAction.LoginOut, 
                 BaseActivity.CHECKOUT_ABOUT_YOU);
@@ -157,7 +162,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         setRetainInstance(true);
         // Init the helper
         String appId = getBaseActivity().getResources().getString(R.string.app_id);
-        uiHelper = new UiLifecycleHelper(getActivity(), this, appId);
+        uiHelper = new UiLifecycleHelper(getActivity(), (StatusCallback) this, appId);
         uiHelper.onCreate(savedInstanceState);
     }
     
@@ -585,48 +590,54 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             return true;            
         case SET_SIGNUP_EVENT:
             Log.d(TAG, "RECEIVED SET_SIGNUP_EVENT");
+            JumiaApplication.INSTANCE.setLoggedIn(true);
             // Get next step
             FragmentType signupNextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
             if(signupNextFragment == null || signupNextFragment == FragmentType.UNKNOWN){
-                onErrorEvent(bundle);
+                Log.w(TAG, "NEXT STEP IS NULL");
+                //onErrorEvent(bundle);
                 return true;
             }
             signupNextFragment = (signupNextFragment != FragmentType.UNKNOWN) ? signupNextFragment : FragmentType.CREATE_ADDRESS;
             getBaseActivity().hideKeyboard();
             getBaseActivity().updateSlidingMenuCompletly();
-            getBaseActivity().onBackPressed();
+            FragmentController.getInstance().popLastEntry(FragmentType.ABOUT_YOU.toString());
             getBaseActivity().onSwitchFragment(signupNextFragment, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);            
             break;
         case FACEBOOK_LOGIN_EVENT:
+            JumiaApplication.INSTANCE.setLoggedIn(true);
             // Get customer
             Customer customerFb = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             // Get next step
             FragmentType fbNextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
             if(fbNextFragment == null){
-                onErrorEvent(bundle);
+                Log.w(TAG, "NEXT STEP IS NULL");
+                //onErrorEvent(bundle);
                 return true;
             }
             // Get Customer
             getBaseActivity().hideKeyboard();
             getBaseActivity().updateSlidingMenuCompletly();
-            getBaseActivity().onBackPressed();
+            FragmentController.getInstance().popLastEntry(FragmentType.ABOUT_YOU.toString());
             getBaseActivity().onSwitchFragment(fbNextFragment, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
             // Tracking
             TrackerDelegator.trackLoginSuccessful(getBaseActivity(), customerFb, onAutoLogin, loginOrigin, true);
             return true;
         case LOGIN_EVENT:
+            JumiaApplication.INSTANCE.setLoggedIn(true);
             // Get customer
             Customer customer = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             // Get next step
             FragmentType loginNextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
             if(loginNextFragment == null){
-                onErrorEvent(bundle);
+                Log.w(TAG, "NEXT STEP IS NULL");
+                //onErrorEvent(bundle);
                 return true;
             }
             // Get Customer
             getBaseActivity().hideKeyboard();
             getBaseActivity().updateSlidingMenuCompletly();
-            getBaseActivity().onBackPressed();
+            FragmentController.getInstance().popLastEntry(FragmentType.ABOUT_YOU.toString());
             getBaseActivity().onSwitchFragment(loginNextFragment, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
             // Tracking
             TrackerDelegator.trackLoginSuccessful(getBaseActivity(), customer, onAutoLogin, loginOrigin, false);
@@ -636,6 +647,9 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
            Form signupForm = (Form) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
            loadSignupForm(signupForm);
            this.signupFormResponse = signupForm;
+           // Get order summary
+           OrderSummary orderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
+           super.showOrderSummaryIfPresent(BaseActivity.CHECKOUT_ABOUT_YOU, orderSummary);
            break;
         case GET_LOGIN_FORM_EVENT:
             Form form = (Form) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
@@ -667,15 +681,15 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
     		return true;
     	}
     	
-    	/**
-    	 * TODO: Improve this method to correctly handle issues with Native Checkout
-    	 */
-    	if(true){
-    	    Bundle args = new Bundle();
-    	    args.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.CHECKOUT_BASKET);
-    	    getBaseActivity().onSwitchFragment(FragmentType.LOGIN, args, FragmentController.ADD_TO_BACK_STACK);
-    	    return true;
-    	}
+//    	/**
+//    	 * TODO: Improve this method to correctly handle issues with Native Checkout
+//    	 */
+//    	if(true){
+//    	    Bundle args = new Bundle();
+//    	    args.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.CHECKOUT_BASKET);
+//    	    getBaseActivity().onSwitchFragment(FragmentType.LOGIN, args, FragmentController.ADD_TO_BACK_STACK);
+//    	    return true;
+//    	}
     	
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
@@ -781,7 +795,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         Bundle bundle = new Bundle();
         bundle.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
         bundle.putBoolean(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, onAutoLogin);
-        triggerContentEvent(new GetLoginHelper(), bundle, this);
+        triggerContentEvent(new GetLoginHelper(), bundle, (IResponseCallback) this);
     }
     
     /**

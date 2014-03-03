@@ -6,23 +6,19 @@ package pt.rocket.view.fragments;
 import java.util.EnumSet;
 
 import pt.rocket.app.JumiaApplication;
-import pt.rocket.constants.FormConstants;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
-import pt.rocket.factories.FormFactory;
-import pt.rocket.forms.Form;
 import pt.rocket.forms.ShippingMethodFormBuilder;
 import pt.rocket.framework.ErrorCode;
+import pt.rocket.framework.objects.OrderSummary;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.checkout.GetShippingMethodsHelper;
 import pt.rocket.helpers.checkout.SetShippingMethodHelper;
 import pt.rocket.interfaces.IResponseCallback;
-import pt.rocket.pojo.DynamicForm;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
-import pt.rocket.utils.ShippingRadioGroupList;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
@@ -263,6 +259,10 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
         switch (eventType) {
         case GET_SHIPPING_METHODS_EVENT:
             Log.d(TAG, "RECEIVED GET_SHIPPING_METHODS_EVENT");
+            // Get order summary
+            OrderSummary orderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
+            super.showOrderSummaryIfPresent(BaseActivity.CHECKOUT_SHIPPING, orderSummary);
+            // Form
             ShippingMethodFormBuilder form = (ShippingMethodFormBuilder) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             loadForm(form);
             break;

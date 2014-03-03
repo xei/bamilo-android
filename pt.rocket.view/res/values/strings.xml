@@ -291,6 +291,16 @@
     
     <string name="save_changes_label">Save Changes</string>
     
+    <string name="poll_question_label">Poll Question</string>
+    
+    <string name="order_summary_label">Order Summary</string>
+    <string name="order_summary_shipping_method">Shipping Method</string>
+    <string name="order_summary_shipping_fee_label">Shipping Fee:</string>
+    <string name="order_summary_subtotal_label">Subtotal:</string>
+    <string name="order_summary_total_label">Total:</string>
+    
+    
+    
     <string name="checkout_header_step_1">1. About you</string>
     <string name="checkout_header_step_2">2. Address</string>
     <string name="checkout_header_step_3">3. Shipping</string>

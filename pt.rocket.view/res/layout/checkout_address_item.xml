@@ -76,7 +76,7 @@
             android:paddingLeft="@dimen/margin_mid"
             android:paddingRight="@dimen/margin_mid"
             android:src="@drawable/btn_remove"
-            android:visibility="visible" />
+            android:visibility="invisible" />
 
         <LinearLayout
             android:id="@+id/checkout_address_item_btn_container"
