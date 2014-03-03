@@ -22,6 +22,7 @@ import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
+import pt.rocket.framework.enums.RequestType;
 import pt.rocket.framework.rest.RestClientSingleton;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.rest.RestContract;
@@ -144,7 +145,9 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-      
+       
+//        triggerGetCustomer();
+//        triggerGetShoppingCartItems();
     }
     
     private void triggerGetCustomer(){
@@ -155,6 +158,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
     private void triggerGetShoppingCartItems(){
         
         triggerContentEventWithNoLoading(new GetShoppingCartItemsHelper(), null, mCallback);
+//        EventManager.getSingleton().triggerRequestEvent(GetShoppingCartItemsEvent.FORCE_API_CALL);
     }
     
     IResponseCallback mCallback = new IResponseCallback() {
@@ -185,7 +189,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
         
         webview = (WebView) view.findViewById(R.id.webview);
         
-        return view;    
+        return view;
     }
 
     /*
@@ -211,14 +215,12 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
         if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1){
             webview.loadUrl("about:blank");    
         }
-        
 
         // Needed for 2.3 problem with not showing keyboard by tapping in webview
         webview.requestFocus();
-//        webview.setHttpAuthUsernamePassword("https://" + RestContract.REQUEST_HOST, "", "rocket", "rock4me");
         prepareCookieStore();
         setupWebView();
-        // XXX
+
         startCheckout();
     }
 
@@ -292,7 +294,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
         CustomWebViewClient customWebViewClient = new CustomWebViewClient();
         webview.setWebViewClient(customWebViewClient);
         webview.getSettings().setJavaScriptEnabled(true);
-        webview.getSettings().setSaveFormData(false);
+        webview.getSettings().setSaveFormData(true);
         webview.getSettings().setSavePassword(false);
         webview.addJavascriptInterface(new JavaScriptInterface(), "INTERFACE");
     }
@@ -306,19 +308,21 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
         paymentUrl = JumiaApplication.INSTANCE.getPaymentMethodForm().getAction();
         
         Log.d(TAG, "Loading Url: " + paymentUrl);
-        String postData = "";
+
         List<NameValuePair> parameters = new ArrayList<NameValuePair>(); 
-        if(JumiaApplication.INSTANCE.getPaymentMethodForm() != null &&  JumiaApplication.INSTANCE.getPaymentMethodForm().getContentValues() != null){
+        
+        if(JumiaApplication.INSTANCE.getPaymentMethodForm() != null &&  JumiaApplication.INSTANCE.getPaymentMethodForm().getContentValues() != null&& JumiaApplication.INSTANCE.getPaymentMethodForm().getMethod() == RequestType.POST){
             Set<Entry<String, Object>>  mValues = JumiaApplication.INSTANCE.getPaymentMethodForm().getContentValues().valueSet();
             for (Entry<String, Object> entry : mValues) {
                 parameters.add(new BasicNameValuePair(entry.getKey(),(String) entry.getValue()));
             }
             
-            Log.i(TAG, "code1content : " + postData);
+            Log.i(TAG, "code1content : " + parameters.toString());
             UrlEncodedFormEntity entity;
             try {
                 entity = new UrlEncodedFormEntity(parameters);
                 Log.d(TAG, "Loading Url complete: " + paymentUrl+"  "+parameters.toString());
+                setProxy( paymentUrl );
                 webview.postUrl(paymentUrl, EntityUtils.toByteArray(entity));
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
@@ -330,7 +334,8 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
             webview.loadUrl(paymentUrl);
         }
         
-        
+        setProxy( paymentUrl );
+        webview.loadUrl(paymentUrl);
         isRequestedPage = true;
     }
     
@@ -392,7 +397,8 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
     private class CustomWebViewClient extends WebViewClient {
 
         private static final String SUCCESS_URL_TAG = "checkout/success";
-        private static final String JAVASCRIPT_PROCESS = "javascript:window.INTERFACE.processContent(document.documentElement.getElementsByTagName('body').innerText);";
+        private static final String JAVASCRIPT_PROCESS = "javascript:window.INTERFACE.processContent" + 
+                                                "(document.getElementById('jsonAppObject').innerHTML);";
         private boolean wasLoadingErrorPage;
         
         @Override
@@ -421,6 +427,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
         @Override
         public void onReceivedHttpAuthRequest(WebView view,
                 HttpAuthHandler handler, String host, String realm) {
+            Log.i(TAG, "code1payment : onReceivedHttpAuthRequest");
             handler.proceed(RestContract.AUTHENTICATION_USER,
                     RestContract.AUTHENTICATION_PASS);
         }
@@ -434,6 +441,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
+            Log.i(TAG, "code1payment : onPageFinished");
             Log.d(TAG, "onPageFinished: url = " + url );
             if ( wasLoadingErrorPage ) {
                 Log.d( TAG, "onPageFinished: resetting error page inforamtion");
@@ -444,12 +452,12 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
                 wasLoadingErrorPage = true;
             } else if ( isRequestedPage ) {
                 if(getActivity() != null)
-                    ((BaseActivity) getActivity()).showContentContainer(true);
+                    ((BaseActivity) getActivity()).showContentContainer();
                 isRequestedPage = false;
             } else if (getActivity() != null) {
-                ((BaseActivity) getActivity()).showContentContainer(true);
+                ((BaseActivity) getActivity()).showContentContainer();
             }
-            
+
             if (url.contains(SUCCESS_URL_TAG)) {
             	/**
             	 * This line causes a JNI exception only in the emulators 2.3.X.
@@ -466,6 +474,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
         @Override
         public void onLoadResource(WebView view, String url) {
             super.onLoadResource(view, url);
+            Log.i(TAG, "code1payment : onLoadResource");
             try {
                 Log.d(TAG, "onLoadResource: url = " + url);
             } catch (OutOfMemoryError e) {
@@ -481,6 +490,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
+            Log.i(TAG, "code1payment : onPageStarted : "+url);
             Log.d(TAG, "onPageStarted: url = " + url);
             if ( url.equals(failedPageRequest)) {
                 return;
@@ -507,6 +517,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
         @Override
         public void onReceivedSslError(WebView view, SslErrorHandler handler,
                 SslError error) {
+            Log.i(TAG, "code1payment : onReceivedSslError : "+error);
             Log.w(TAG, "Received ssl error: " + error);
             if (error.getPrimaryError() == SslError.SSL_IDMISMATCH) {
                 Toast.makeText(

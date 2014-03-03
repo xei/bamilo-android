@@ -5,11 +5,12 @@ package pt.rocket.view.fragments;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import pt.rocket.constants.ConstantsCheckout;
+import org.holoeverywhere.widget.TextView;
+
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.controllers.ShoppingBasketFragListAdapter;
@@ -47,14 +48,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
-import android.webkit.WebView.FindListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.Toast;
-
-import org.holoeverywhere.widget.TextView;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -549,10 +546,27 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         // dialog.show( getActivity().getSupportFragmentManager(), null);
         // } else {
         TrackerDelegator.trackCheckout(getActivity().getApplicationContext(), items);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.CHECKOUT_BASKET);
-        bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationcart));
-        getBaseActivity().onSwitchFragment(FragmentType.ABOUT_YOU, bundle, FragmentController.ADD_TO_BACK_STACK);
+        
+        
+        
+        
+        if(getBaseActivity().getResources().getIntArray(R.array.country_api_version)[JumiaApplication.INSTANCE.SHOP_ID] >0){
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.CHECKOUT_BASKET);
+            bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationcart));
+            getBaseActivity().onSwitchFragment(FragmentType.ABOUT_YOU, bundle, FragmentController.ADD_TO_BACK_STACK);    
+        } else {
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE,
+                    FragmentType.CHECKOUT_BASKET);
+            bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN,
+                    getString(R.string.mixprop_loginlocationcart));
+            ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.LOGIN, bundle,
+                    FragmentController.ADD_TO_BACK_STACK);
+        }
+        
+        
+        
         // }
     }
 

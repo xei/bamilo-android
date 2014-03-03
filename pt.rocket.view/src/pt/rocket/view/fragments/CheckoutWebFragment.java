@@ -16,7 +16,6 @@ import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
-import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.rest.RestClientSingleton;
 import pt.rocket.framework.rest.RestContract;
@@ -49,8 +48,6 @@ import android.webkit.SslErrorHandler;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
-
-
 import ch.boye.httpclientandroidlib.cookie.Cookie;
 
 import com.shouldit.proxy.lib.ProxyConfiguration;
@@ -447,10 +444,10 @@ public class CheckoutWebFragment extends BaseFragment {
                 wasLoadingErrorPage = true;
             } else if ( isRequestedPage ) {
                 if(getActivity() != null)
-                    ((BaseActivity) getActivity()).showContentContainer(true);
+                    ((BaseActivity) getActivity()).showContentContainer();
                 isRequestedPage = false;
             } else if (getActivity() != null) {
-                ((BaseActivity) getActivity()).showContentContainer(true);
+                ((BaseActivity) getActivity()).showContentContainer();
             }
             
             if (url.contains(SUCCESS_URL_TAG)) {

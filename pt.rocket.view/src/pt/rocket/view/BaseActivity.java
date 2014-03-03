@@ -1118,6 +1118,16 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
             }
         }
     }
+    
+    public final void showContentContainer() {
+        if (processShow) {
+            Log.d(getTag(), "Showing the content container");
+            hideLoadingInfo();
+            dismissProgress();
+            setVisibility(errorView, false);
+            setVisibility(contentContainer, true);
+        }
+    }
 
     public final void showWarning(boolean show) {
         Log.d(getTag(), "Showing warning: " + show);
