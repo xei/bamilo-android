@@ -18,10 +18,12 @@ public class PaymentMethodForm implements Parcelable {
     private final static String PAYMENT_METHOD_AUTO_SUBMIT_EXTERNAL = "auto-submit-external";
     private final static String PAYMENT_METHOD_SUBMIT_EXTERNAL = "submit-external";
     private final static String PAYMENT_METHOD_AUTO_REDIRECT_EXTERNAL = "auto-redirect-external";
+    private final static String PAYMENT_METHOD_RENDER_INTERNAL = "render-internal";
     private final static int METHOD_OTHER = 0;
     public final static int METHOD_AUTO_SUBMIT_EXTERNAL = 1;
     public final static int METHOD_SUBMIT_EXTERNAL = 2;
     public final static int METHOD_AUTO_REDIRECT_EXTERNAL = 3;
+    public final static int METHOD_RENDER_INTERNAL = 4;
     private static final String TAG = PaymentMethodForm.class.getName();
 
     private int payment_type;
@@ -70,6 +72,8 @@ public class PaymentMethodForm implements Parcelable {
             setPaymentType(METHOD_SUBMIT_EXTERNAL);
         } else if (type.equalsIgnoreCase(PAYMENT_METHOD_AUTO_REDIRECT_EXTERNAL)){
             setPaymentType(METHOD_AUTO_REDIRECT_EXTERNAL);
+        } else if(type.equalsIgnoreCase(PAYMENT_METHOD_RENDER_INTERNAL)){
+            setPaymentType(METHOD_RENDER_INTERNAL);
         }
 
         String method = mJSONObject.optString(RestConstants.JSON_METHOD_TAG);
@@ -98,7 +102,7 @@ public class PaymentMethodForm implements Parcelable {
                 String key = element.getString(RestConstants.JSON_KEY_TAG);
                 if (!key.equalsIgnoreCase("redirect")) {
                     mContentValues.put(key, element.getString(RestConstants.JSON_VALUE_TAG));
-                } else if (key.equalsIgnoreCase("redirect")){
+                } else if (key.equalsIgnoreCase("redirect") || key.equalsIgnoreCase("return_url")){
                     setRedirect(element.getString(RestConstants.JSON_VALUE_TAG));
                     mContentValues.put(key, element.getString(RestConstants.JSON_VALUE_TAG));
                 }

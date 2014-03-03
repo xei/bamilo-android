@@ -460,7 +460,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
 
             if (url.contains(SUCCESS_URL_TAG)) {
             	/**
-            	 * This line causes a JNI exception only in the emulators 2.3.X.
+            	 * This line cause s a JNI exception only in the emulators 2.3.X.
             	 * @see http://code.google.com/p/android/issues/detail?id=12987
             	 */
             	Log.d(TAG, "LOAD URL: JAVASCRIPT PROCESS");
@@ -524,12 +524,13 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
                         getActivity(),
                         "The host name does not match the certificate: "
                                 + error, Toast.LENGTH_LONG).show();
-                handler.proceed();
+                
             } else {
                 Toast.makeText(getActivity(),
                         "An SSL error occured: " + error, Toast.LENGTH_LONG)
                         .show();
             }
+            handler.proceed();
         }
 
     }
