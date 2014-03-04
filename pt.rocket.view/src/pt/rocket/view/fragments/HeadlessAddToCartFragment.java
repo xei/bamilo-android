@@ -120,6 +120,7 @@ public class HeadlessAddToCartFragment extends BaseFragment implements IResponse
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState) {
         Log.i(TAG, "ON CREATE VIEW");
+        getBaseActivity().showLoading(false);
         return super.onCreateView(inflater, viewGroup, savedInstanceState); 
     }
 

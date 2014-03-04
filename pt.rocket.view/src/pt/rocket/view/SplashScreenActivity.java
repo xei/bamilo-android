@@ -208,10 +208,10 @@ public class SplashScreenActivity extends FragmentActivity {
         // ## DEEP LINK ##
         String deepLink = getIntent().getStringExtra(ConstantsIntentExtra.DEEP_LINK_TAG);
         if(!TextUtils.isEmpty(deepLink)){
-            // ## Catalog URL ##
-            mCatalogDeepLink = (deepLink.contains(DarwinRegex.CATALOG_DEEP_LINK)) ? deepLink : "";
             // ## Cart URL ##
             mCartDeepLink = (deepLink.contains(DarwinRegex.CART_DEEP_LINK)) ? deepLink : "";
+            // ## Catalog URL ##
+            mCatalogDeepLink = (deepLink.contains(DarwinRegex.CATALOG_DEEP_LINK)) ? deepLink : "";
         }
 
     }
@@ -229,24 +229,24 @@ public class SplashScreenActivity extends FragmentActivity {
             startActivityWithDeepLink(ConstantsIntentExtra.CONTENT_URL, productUrl, FragmentType.PRODUCT_DETAILS);
             
         } else if (!TextUtils.isEmpty(mCatalogDeepLink)) {
-            // Receives like this: <country code>/c/<category url key> - ex: ke/c/womens-casual-shoes 
-            String[] catalogSplit = mCatalogDeepLink.split(DarwinRegex.CATALOG_DEEP_LINK);
-            // Get country code
-            @SuppressWarnings("unused")
+            // Receives like this: <country code>/c/<category url key> - ex: ke/c/womens-casual-shoes
+            String[] catalogSplit = mCatalogDeepLink.split(DarwinRegex.DL_DELIMITER);
+            // 0 - country; 1 - tag; 2 - data;
             String countryCode = catalogSplit[0];
-            // Get catalog URL key
-            String catalogUrl = getBaseURL() +  "/" +catalogSplit[1] + "/";
+            String tag = catalogSplit[1];
+            String catalogUrl = getBaseURL() +  "/" +catalogSplit[2] + "/";
+            Log.i(TAG, "DEEP LINK: " + countryCode + " " + tag + " " + catalogUrl);
             // Start with deep link to catalog 
             startActivityWithDeepLink(ConstantsIntentExtra.CONTENT_URL, catalogUrl, FragmentType.PRODUCT_LIST);
             
         } else if (!TextUtils.isEmpty(mCartDeepLink)) {
             // Receives like this: <country code>/cart/<sku1_sku2_sku3> - ex: ke/cart/ or ke/cart/
-            String[] cartSplit = mCartDeepLink.split(DarwinRegex.CART_DEEP_LINK);
-            // Get country code
-            @SuppressWarnings("unused")
+            String[] cartSplit = mCartDeepLink.split(DarwinRegex.DL_DELIMITER);
+            // 0 - country; 1 - tag; 2 - data;
             String countryCode = cartSplit[0];
-            Log.d(TAG, "SPLIT: " + cartSplit.length );
-            String simpleSkuArray = (cartSplit.length > 1) ? cartSplit[1] : "";
+            String tag = cartSplit[1];
+            String simpleSkuArray = (cartSplit.length > 2) ? cartSplit[2] : "";
+            Log.i(TAG, "DEEP LINK: " + countryCode + " " + tag + " " + simpleSkuArray);
             // Validate
             if(TextUtils.isEmpty(simpleSkuArray)){
                 startActivityWithDeepLink(ConstantsIntentExtra.CONTENT_URL, null, FragmentType.SHOPPING_CART);

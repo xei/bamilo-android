@@ -38,7 +38,9 @@ public class DarwinRegex {
 	/**
 	 * Regex used on deep link for cart
 	 */
-	public static final String CART_DEEP_LINK = "/cart/";
+	public static final String CART_DEEP_LINK = "/cart";
 	public static final String SKU_DELIMITER = "_";
+	
+	public static final String DL_DELIMITER = "/";
 
 }
