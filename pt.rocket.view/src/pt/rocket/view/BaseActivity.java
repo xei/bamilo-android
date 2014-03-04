@@ -102,8 +102,7 @@ import de.akquinet.android.androlog.Log;
  *          2012/06/19
  * 
  */
-public abstract class BaseActivity extends SlidingFragmentActivity implements OnOpenedListener,
-        OnClosedListener {
+public abstract class BaseActivity extends SlidingFragmentActivity implements OnOpenedListener, OnClosedListener {
 
     private ShareActionProvider mShareActionProvider;
 
@@ -2092,6 +2091,53 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
             break;
         }
     }
+    
+    /**
+     * Checkout header click listener associated to each item on layout
+     * @param view
+     * @author sergiopereira
+     */
+    public void OnCheckoutHeaderClickListener(View view){
+        Log.i(TAG, "PROCESS CLICK ON CHECKOUT HEADER");
+        int id = view.getId();
+        // CHECKOUT_ABOUT_YOU
+        if(id == R.id.checkout_header_step_1 && !view.isSelected()){
+            removeAllCheckoutEntries();
+            onSwitchFragment(FragmentType.ABOUT_YOU, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        }
+        //CHECKOUT_BILLING
+        else if(id == R.id.checkout_header_step_2 && !view.isSelected()){
+            // Validate back stack
+            if(FragmentController.getInstance().hasEntry(FragmentType.MY_ADDRESSES.toString()))
+                FragmentController.getInstance().popAllEntriesUntil(this, FragmentType.MY_ADDRESSES.toString());
+            else if(FragmentController.getInstance().hasEntry(FragmentType.CREATE_ADDRESS.toString())){
+                removeAllCheckoutEntries();
+                onSwitchFragment(FragmentType.ABOUT_YOU, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            }
+        }
+        // CHECKOUT_SHIPPING
+        else if(id == R.id.checkout_header_step_3 && !view.isSelected()) {
+            // Validate back stack
+            if(FragmentController.getInstance().hasEntry(FragmentType.SHIPPING_METHODS.toString()))
+                FragmentController.getInstance().popAllEntriesUntil(this, FragmentType.SHIPPING_METHODS.toString());
+        }
+        //CHECKOUT_PAYMENT IS THE LAST
+    }
+    
+    /**
+     * Remove all checkout entries to call the base of checkout
+     * @author sergiopereira
+     */
+    private void removeAllCheckoutEntries(){
+        FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.PAYMENT_METHODS.toString());
+        FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.SHIPPING_METHODS.toString());
+        FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.MY_ADDRESSES.toString());
+        FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.CREATE_ADDRESS.toString());
+        FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.EDIT_ADDRESS.toString());
+        FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.POLL.toString());
+    }
+    
+
     
     
 }

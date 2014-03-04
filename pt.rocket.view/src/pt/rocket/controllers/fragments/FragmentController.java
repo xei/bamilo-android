@@ -148,7 +148,7 @@ public class FragmentController {
      * Remove all old entries
      * @param tag
      */
-    private synchronized void removeAllEntriesWithTag(String tag) {
+    public synchronized void removeAllEntriesWithTag(String tag) {
         Log.i(TAG, "REMOVE OLD ENTRIES: " + tag);
         Iterator<String> iterator = backStack.iterator();
         while (iterator.hasNext()) {

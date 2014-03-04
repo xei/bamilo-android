@@ -20,7 +20,9 @@
             android:layout_width="@dimen/checkout_header_step_width"
             android:layout_height="match_parent"
             android:background="@drawable/selector_checkout_step_back"
-            android:gravity="center" >
+            android:clickable="true"
+            android:gravity="center"
+            android:onClick="OnCheckoutHeaderClickListener" >
 
             <ImageView
                 android:id="@+id/checkout_header_step_1_icon"
@@ -52,7 +54,9 @@
             android:layout_height="match_parent"
             android:layout_toRightOf="@+id/checkout_header_step_1"
             android:background="@drawable/selector_checkout_step_back"
-            android:gravity="center" >
+            android:clickable="true"
+            android:gravity="center"
+            android:onClick="OnCheckoutHeaderClickListener" >
 
             <ImageView
                 android:id="@+id/checkout_header_step_2_icon"
@@ -84,7 +88,9 @@
             android:layout_height="match_parent"
             android:layout_toRightOf="@+id/checkout_header_step_2"
             android:background="@drawable/selector_checkout_step_back"
-            android:gravity="center" >
+            android:clickable="true"
+            android:gravity="center"
+            android:onClick="OnCheckoutHeaderClickListener" >
 
             <ImageView
                 android:id="@+id/checkout_header_step_3_icon"
@@ -116,9 +122,7 @@
             android:layout_height="match_parent"
             android:layout_toRightOf="@+id/checkout_header_step_3"
             android:background="@drawable/selector_checkout_step_back"
-            android:gravity="center"
-            android:paddingLeft="0dp"
-            android:paddingRight="0dp" >
+            android:gravity="center" >
 
             <ImageView
                 android:id="@+id/checkout_header_step_4_icon"
