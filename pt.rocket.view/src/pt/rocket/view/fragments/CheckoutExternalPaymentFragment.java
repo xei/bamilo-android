@@ -334,8 +334,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
             webview.loadUrl(paymentUrl);
         }
         
-        setProxy( paymentUrl );
-        webview.loadUrl(paymentUrl);
         isRequestedPage = true;
     }
     
@@ -559,9 +557,22 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
                     /**
                      * TODO: Verify if we need to send customer email
                      */
-//                    bundle.putString(ConstantsIntentExtra.CUSTOMER_EMAIL, (customer != null ) ? customer.getEmail() : ""); 
-					String order_number = result.optJSONObject(RestConstants.JSON_METADATA_TAG).optJSONObject(RestConstants.JSON_ORDER_TAG).optString(RestConstants.JSON_ORDER_NUMBER_TAG);
-                    String grandTotal = result.optJSONObject(RestConstants.JSON_METADATA_TAG).optJSONObject(RestConstants.JSON_ORDER_TAG).optString(RestConstants.JSON_ORDER_GRAND_TOTAL_TAG);
+//                    bundle.putString(ConstantsIntentExtra.CUSTOMER_EMAIL, (customer != null ) ? customer.getEmail() : "");
+                    String order_number = "";
+                    String grandTotal = "";
+                    if(result.has(RestConstants.JSON_ORDER_NUMBER_TAG)){
+                        order_number = result.optString(RestConstants.JSON_ORDER_NUMBER_TAG);   
+                    } else if(result.has("orderNr")){
+                        order_number = result.optString("orderNr");
+                    }
+                    
+                    if(result.has(RestConstants.JSON_ORDER_GRAND_TOTAL_TAG)){
+                        grandTotal = result.optString(RestConstants.JSON_ORDER_GRAND_TOTAL_TAG);
+                    } else if (result.has("grandTotal")){   
+                        grandTotal = result.optString("grandTotal");
+                    }
+					 
+                    
 					bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR, order_number);                   
 					((BaseActivity) getActivity()).onSwitchFragment(FragmentType.CHECKOUT_THANKS, bundle, FragmentController.ADD_TO_BACK_STACK);
                 }
