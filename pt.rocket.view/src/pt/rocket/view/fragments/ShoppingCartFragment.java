@@ -29,6 +29,7 @@ import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.GetShoppingCartChangeItemQuantityHelper;
 import pt.rocket.helpers.GetShoppingCartItemsHelper;
 import pt.rocket.helpers.GetShoppingCartRemoveItemHelper;
+import pt.rocket.helpers.checkout.GetNativeCheckoutAvailableHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
@@ -230,8 +231,10 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         Bundle bundle = new Bundle();
         bundle.putParcelable(GetShoppingCartRemoveItemHelper.ITEM, values);
         triggerContentEvent(new GetShoppingCartRemoveItemHelper(), bundle, responseCallback);
-//        EventManager.getSingleton().triggerRequestEvent(
-//                new RemoveItemFromShoppingCartEvent(items));
+    }
+    
+    private void triggerIsNativeCheckoutAvailable(){
+        triggerContentEventWithNoLoading(new GetNativeCheckoutAvailableHelper(), null, responseCallback);
     }
     /*
      * (non-Javadoc)
@@ -254,10 +257,6 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         super.onStop();
         Log.i(TAG, "ON STOP");
         releaseVars();
-//        EventManager.getSingleton().removeResponseListener(this,
-//                EnumSet.of(EventType.GET_SHOPPING_CART_ITEMS_EVENT,
-//                        EventType.REMOVE_ITEM_FROM_SHOPPING_CART_EVENT,
-//                        EventType.CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT));
         System.gc();
     }
 
@@ -347,15 +346,16 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         
         Log.d(TAG, "onSuccessEvent: eventType = " + eventType);
         switch (eventType) {
-
-        // case GET_SESSION_STATE:
-        // if ((Boolean) event.result) {
-        // goToCheckout();
-        // } else {
-        // ActivitiesWorkFlow
-        // .loginActivity(ShoppingCartActivity.this, true);
-        // }
-        // return false;
+        case NATIVE_CHECKOUT_AVAILABLE:
+            boolean isAvailable = bundle.getBoolean(Constants.BUNDLE_RESPONSE_KEY);
+            if(isAvailable){
+                 Bundle mBundle = new Bundle();
+                 mBundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationcart));
+                 getBaseActivity().onSwitchFragment(FragmentType.ABOUT_YOU, mBundle, FragmentController.ADD_TO_BACK_STACK);
+            } else {
+                goToWebCheckout();
+            }
+            return true;
         case GET_SHOPPING_CART_ITEMS_EVENT:
             if(((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getCartItems() != null && ((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getCartItems().values() != null){
                 TrackerDelegator.trackViewCart(getActivity().getApplicationContext(), ((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getCartItems().values().size());
@@ -373,13 +373,17 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         if(!isVisible()){
             return true;
         }
-        
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        switch (eventType) {
+        case NATIVE_CHECKOUT_AVAILABLE:
+            goToWebCheckout();
+            break;
+        }
         if(getBaseActivity().handleErrorEvent(bundle)){
             return true;
         }
         
         mBeginRequestMillis = System.currentTimeMillis();
-        getBaseActivity().handleErrorEvent(bundle);
         return true;
     }
 
@@ -525,6 +529,16 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle,
                 FragmentController.ADD_TO_BACK_STACK);
     }
+    
+    private void goToWebCheckout(){
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE,
+                FragmentType.CHECKOUT_BASKET);
+        bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN,
+                getString(R.string.mixprop_loginlocationcart));
+        ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.LOGIN, bundle,
+                FragmentController.ADD_TO_BACK_STACK);
+    }
 
     private void checkMinOrderAmount() {
         // if (minAmount == null) {
@@ -551,18 +565,9 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         
         
         if(getBaseActivity().getResources().getIntArray(R.array.country_api_version)[JumiaApplication.SHOP_ID] >0){
-            Bundle bundle = new Bundle();
-            //bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.CHECKOUT_BASKET);
-            bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationcart));
-            getBaseActivity().onSwitchFragment(FragmentType.ABOUT_YOU, bundle, FragmentController.ADD_TO_BACK_STACK);    
+           triggerIsNativeCheckoutAvailable();
         } else {
-            Bundle bundle = new Bundle();
-            bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE,
-                    FragmentType.CHECKOUT_BASKET);
-            bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN,
-                    getString(R.string.mixprop_loginlocationcart));
-            ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.LOGIN, bundle,
-                    FragmentController.ADD_TO_BACK_STACK);
+            goToWebCheckout();
         }
         
         
@@ -650,7 +655,6 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         }
         bundle.putParcelable(GetShoppingCartChangeItemQuantityHelper.CART_ITEMS, values);
         triggerContentEventProgress(new GetShoppingCartChangeItemQuantityHelper(), bundle, responseCallback);
-//        triggerContentEventProgress(new ChangeItemQuantityInShoppingCartEvent(items));
     }
     
     IResponseCallback responseCallback = new IResponseCallback() {

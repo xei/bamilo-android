@@ -269,7 +269,9 @@ public class ShippingRadioGroupList extends RadioGroup {
                     mContentValues.put(element.name, element.options.get(((IcsSpinner) element.dataControl).getSelectedItemPosition()).getPickupId());
                     Log.i(TAG, "code1values : element.name : "+element.name);    
                 } else {
-                    mContentValues.put(element.name, selectedPickup.getRegions().get(0).getId());
+                    if(selectedPickup.getRegions() != null && selectedPickup.getRegions().size() > 0){
+                        mContentValues.put(element.name, selectedPickup.getRegions().get(0).getId());
+                    }
                 }
             }
         }
