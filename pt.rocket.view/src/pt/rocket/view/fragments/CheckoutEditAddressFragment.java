@@ -426,16 +426,34 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
         IcsSpinner mRegionSpinner = (IcsSpinner) mRegionGroup.getChildAt(0);
         AddressRegion mSelectedRegion = (AddressRegion) mRegionSpinner.getSelectedItem(); 
         Log.d(TAG, "SELECTED REGION: " + mSelectedRegion.getName() + " " + mSelectedRegion.getId());
-        // Get the city
+        
+        // Save city
+        String mCityId = "";
+        String mCityName = "";
+        // Get from spinner
         ViewGroup mCityGroup = (ViewGroup) dynamicForm.getItemByKey(RestConstants.JSON_CITY_ID_TAG).getControl();
-        IcsSpinner mCitySpinner = (IcsSpinner) mCityGroup.getChildAt(0);
-        AddressCity mSelectedCity = (AddressCity) mCitySpinner.getSelectedItem(); 
-        Log.d(TAG, "SELECTED CITY: " + mSelectedCity.getValue() + " " + mSelectedCity.getId() );
+        if(mCityGroup.getChildAt(0) instanceof IcsSpinner) {
+            // Get the city
+            IcsSpinner mCitySpinner = (IcsSpinner) mCityGroup.getChildAt(0);
+            AddressCity mSelectedCity = (AddressCity) mCitySpinner.getSelectedItem(); 
+            Log.d(TAG, "SELECTED CITY: " + mSelectedCity.getValue() + " " + mSelectedCity.getId() );
+            mCityId = "" + mSelectedCity.getId();
+            mCityName = mSelectedCity.getValue();
+        }
+        // Get from edit text
+        else {
+            try {
+                EditText mCityEdit = (EditText) dynamicForm.getItemByKey(RestConstants.JSON_CITY_ID_TAG).getEditControl();
+                mCityName = mCityEdit.getText().toString();
+                Log.d(TAG, "SELECTED CITY: " + mCityName );
+            } catch (ClassCastException e) {
+                Log.w(TAG, "CREATE VALUES: THE CITY IS NOT A EDIT TEXT", e);
+            } 
+        }
+        
         // Get some values
         int mAddressId = mCurrentAddress.getId();
         int mRegionId = mSelectedRegion.getId();
-        int mCityId = mSelectedCity.getId();
-        String mCityName = mSelectedCity.getValue();
         int isDefaultBilling = (mCurrentAddress.isDefaultBilling()) ? 1 : 0;
         int isDefaultShipping = (mCurrentAddress.isDefaultShipping()) ? 1 : 0;
         // Put values

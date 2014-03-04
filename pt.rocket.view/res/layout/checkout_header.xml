@@ -2,12 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/grey_dark"
     android:orientation="vertical" >
 
     <RelativeLayout
+        android:id="@+id/checkout_header_main_step"
         android:layout_width="match_parent"
         android:layout_height="@dimen/checkout_header_height"
-        android:background="@color/grey_dark"
+        android:background="@android:color/transparent"
         android:gravity="center"
         android:orientation="horizontal"
         android:paddingBottom="@dimen/checkout_header_margin"

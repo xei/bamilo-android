@@ -49,6 +49,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.EditText;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.Toast;
 
@@ -431,15 +432,33 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         IcsSpinner mRegionSpinner = (IcsSpinner) mRegionGroup.getChildAt(0);
         AddressRegion mSelectedRegion = (AddressRegion) mRegionSpinner.getSelectedItem(); 
         Log.d(TAG, "SELECTED REGION: " + mSelectedRegion.getName() + " " + mSelectedRegion.getId());
-        // Get the city
-        ViewGroup mCityGroup = (ViewGroup) dynamicForm.getItemByKey(RestConstants.JSON_CITY_ID_TAG).getControl();
-        IcsSpinner mCitySpinner = (IcsSpinner) mCityGroup.getChildAt(0);
-        AddressCity mSelectedCity = (AddressCity) mCitySpinner.getSelectedItem(); 
-        Log.d(TAG, "SELECTED CITY: " + mSelectedCity.getValue() + " " + mSelectedCity.getId() );
-        // Get some values
+        
+        // Save region id
         int mRegionId = mSelectedRegion.getId();
-        int mCityId = mSelectedCity.getId();
-        String mCityName = mSelectedCity.getValue();
+        // Save city
+        String mCityId = "";
+        String mCityName = "";
+        
+        // Get from spinner
+        ViewGroup mCityGroup = (ViewGroup) dynamicForm.getItemByKey(RestConstants.JSON_CITY_ID_TAG).getControl();
+        if(mCityGroup.getChildAt(0) instanceof IcsSpinner) {
+            IcsSpinner mCitySpinner = (IcsSpinner) mCityGroup.getChildAt(0);
+            AddressCity mSelectedCity = (AddressCity) mCitySpinner.getSelectedItem(); 
+            Log.d(TAG, "SELECTED CITY: " + mSelectedCity.getValue() + " " + mSelectedCity.getId() );
+            mCityId = "" + mSelectedCity.getId();
+            mCityName = mSelectedCity.getValue();
+        }
+        // Get from edit text
+        else {
+            try {
+                EditText mCityEdit = (EditText) dynamicForm.getItemByKey(RestConstants.JSON_CITY_ID_TAG).getEditControl();
+                mCityName = mCityEdit.getText().toString();
+                Log.d(TAG, "SELECTED CITY: " + mCityName );
+            } catch (ClassCastException e) {
+                Log.w(TAG, "CREATE VALUES: THE CITY IS NOT A EDIT TEXT", e);
+            } 
+        }
+
         // Put values
         for (String key : mContentValues.keySet()) {
             if(key.contains(RestConstants.JSON_IS_DEFAULT_BILLING_TAG)) mContentValues.put(key, isDefaultBilling);
@@ -485,6 +504,9 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         Object object = parent.getItemAtPosition(position);
         if(object instanceof AddressRegion) {
             FormField field = mFormResponse.getFieldKeyMap().get(RestConstants.JSON_CITY_ID_TAG);
+            // Validate API call
+            if(field.getDataCalls() ==  null) { Log.w(TAG, "GET CITY: API CALL IS NULL"); return; }
+            // Get API call
             String url = field.getDataCalls().get(RestConstants.JSON_API_CALL_TAG);
             Log.d(TAG, "API CALL: " + url);
             // Request the cities for this region id 

@@ -95,7 +95,7 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         Log.i(TAG, "ON CREATE VIEW");
-        View view = inflater.inflate(R.layout.checkout_step5, container, false);
+        View view = inflater.inflate(R.layout.checkout_thanks, container, false);
         return view;
     }
 

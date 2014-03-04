@@ -8,12 +8,12 @@
         android:layout_height="match_parent"
         android:orientation="vertical" >
 
-        <ImageView
+<!--         <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/titlebar"
             android:scaleType="center"
-            android:src="@drawable/checkout_state04" />
+            android:src="@drawable/checkout_state04" /> -->
 
         <RelativeLayout
             android:layout_width="match_parent"

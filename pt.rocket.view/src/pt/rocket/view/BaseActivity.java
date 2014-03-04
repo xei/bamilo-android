@@ -1946,6 +1946,8 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
             break;
         case CHECKOUT_ORDER:
         case CHECKOUT_THANKS:
+            findViewById(R.id.checkout_header_main_step).setVisibility(View.INVISIBLE);
+            return true;
         case CHECKOUT_NO_SET_HEADER:
             updateBaseComponentsInCheckout(View.GONE);
             return true;
@@ -1964,7 +1966,6 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         return result;
     }
     
-    
     /**
      * Update the base components out checkout
      * @param visibility
@@ -1972,6 +1973,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     private void updateBaseComponentsOutCheckout(int visibility){
         Log.d(TAG, "SET BASE FOR NON CHECKOUT: HIDE");
         // Set header visibility
+        findViewById(R.id.checkout_header_main_step).setVisibility(visibility);
         findViewById(R.id.checkout_header).setVisibility(visibility);
         // Put sliding menu normal behavior
         if(isTabletInLandscape(getApplicationContext()) && inLandscapeOnCheckout){
@@ -1999,6 +2001,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     private void updateBaseComponentsInCheckout(int visibility){
         Log.d(TAG, "SET BASE FOR CHECKOUT: SHOW");
         // Set header visibility
+        findViewById(R.id.checkout_header_main_step).setVisibility(visibility);
         findViewById(R.id.checkout_header).setVisibility(visibility);
         // Hide title and prod
         hideTitle();
@@ -2016,7 +2019,6 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
                     showContent();
                 }
             });
-            
         }
     }
     
