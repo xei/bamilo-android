@@ -362,6 +362,10 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
 		return (mInstallmentFees != null) ? true : false;
 	}
 	
+	public boolean hasCoupon(){
+		return (mDiscountAmount != null) ? true : false;
+	}
+	
 	
 
 	/**

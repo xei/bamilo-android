@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 import pt.rocket.app.JumiaApplication;
+import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.ErrorCode;
@@ -779,6 +780,19 @@ public abstract class BaseFragment extends Fragment implements
             JumiaApplication.INSTANCE.responseCallbacks.get(id).onRequestError(bundle);
         }
         JumiaApplication.INSTANCE.responseCallbacks.remove(id);
+    }
+    
+    
+    /**
+     * Method used to redirect the native checkout to the old checkout method
+     * @param activity
+     * @author sergiopereira
+     */
+    public void gotoOldCheckoutMethod(BaseActivity activity){
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.CHECKOUT_BASKET);
+        bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationcart));
+        activity.onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
     
 }

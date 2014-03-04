@@ -58,13 +58,13 @@
                 layout="@layout/checkout_my_order_payment_options"
                 android:visibility="visible" />
 
-            <LinearLayout
+<!--             <LinearLayout
                 android:id="@+id/checkout_payment_form_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_midhuge"
                 android:layout_marginTop="@dimen/margin_midhuge"
-                android:orientation="vertical" />
+                android:orientation="vertical" /> -->
         </LinearLayout>
     </ScrollView>
 
@@ -72,9 +72,11 @@
 
     <org.holoeverywhere.widget.Button
         android:id="@+id/checkout_my_order_button_enter"
+        android:layout_width="@dimen/inner_container_width"
         style="@style/button_orange_style"
         android:layout_alignParentBottom="true"
         android:contentDescription="@string/login_button_description"
-        android:text="Confirm Order" />
+        android:text="@string/my_order_confirm_button"
+        android:gravity="center" />
 
 </RelativeLayout>

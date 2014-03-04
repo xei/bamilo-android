@@ -2,31 +2,39 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="@dimen/margin_mid"
+    android:background="@color/grey_dividerlight"
     android:orientation="horizontal"
-    android:padding="10dp" >
+    android:paddingBottom="1dp" >
 
     <ImageView
-        android:id="@+id/my_order_item_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/image_view"
+        android:layout_width="60dp"
+        android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:src="@drawable/ic_launcher" />
+        android:adjustViewBounds="false"
+        android:background="@android:color/white"
+        android:paddingRight="@dimen/margin_large"
+        android:scaleType="fitCenter"
+        android:src="@drawable/no_image_small" />
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:orientation="vertical" >
+        android:background="@android:color/white"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/margin_mid" >
 
         <org.holoeverywhere.widget.TextView
             android:id="@+id/my_order_item_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_mid"
             android:fontFamily="roboto_regular"
             android:gravity="left"
-            android:text="Camera Voice Recorder"
             android:textColor="@color/grey_divider_light_text"
-            android:textSize="@dimen/text_l" />
+            android:textSize="@dimen/text_m" />
 
         <org.holoeverywhere.widget.TextView
             android:id="@+id/my_order_item_quantity"
@@ -34,9 +42,8 @@
             android:layout_height="wrap_content"
             android:fontFamily="roboto_regular"
             android:gravity="left"
-            android:text="Qty: 1"
             android:textColor="@color/grey_divider_light_text"
-            android:textSize="@dimen/text_l" />
+            android:textSize="@dimen/text_m" />
 
         <org.holoeverywhere.widget.TextView
             android:id="@+id/my_order_item_price"
@@ -44,9 +51,8 @@
             android:layout_height="wrap_content"
             android:fontFamily="roboto_regular"
             android:gravity="left"
-            android:text="RM 100.00"
             android:textColor="@color/grey_divider_light_text"
-            android:textSize="@dimen/text_l" />
+            android:textSize="@dimen/text_m" />
     </LinearLayout>
 
 </LinearLayout>

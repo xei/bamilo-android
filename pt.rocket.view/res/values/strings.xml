@@ -299,6 +299,22 @@
     <string name="order_summary_subtotal_label">Subtotal:</string>
     <string name="order_summary_total_label">Total:</string>
     
+    <string name="my_order_label">My Order</string>
+    <string name="my_order_ship_fee_label">Shipping Fee</string>
+    <string name="my_order_voucher_label">Voucher</string>
+    <string name="my_order_total_label">Total</string>
+    <string name="my_order_confirm_button">Confirm Order</string>
+    <string name="my_order_is_same">Billing to same address</string>
+    <string name="my_order_payment">Payment Options</string>
+    <string name="my_order_qty">Qty:</string>
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     <string name="checkout_header_step_1">1. About you</string>

@@ -15,6 +15,7 @@ import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.view.BaseActivity;
 import pt.rocket.view.MainFragmentActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
@@ -54,7 +55,11 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
      * Empty constructor
      */
     public CheckoutThanksFragment() {
-        super(EnumSet.noneOf(EventType.class), EnumSet.noneOf(EventType.class), EnumSet.noneOf(MyMenuItem.class), NavigationAction.Basket,0);
+        super(EnumSet.noneOf(EventType.class), 
+                EnumSet.noneOf(EventType.class), 
+                EnumSet.noneOf(MyMenuItem.class), 
+                NavigationAction.Basket,
+                BaseActivity.CHECKOUT_THANKS);
         this.setRetainInstance(true);
     }
 

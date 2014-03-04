@@ -3,15 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp" >
+    android:paddingLeft="@dimen/margin_mid"
+    android:paddingRight="@dimen/margin_mid" >
 
     <!-- TITLE -->
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="@dimen/margin_mid"
         android:layout_marginTop="@dimen/margin_huge"
         android:orientation="horizontal" >
 
@@ -21,7 +21,7 @@
             android:layout_weight="1"
             android:fontFamily="roboto_regular"
             android:gravity="left"
-            android:text="Payment Options"
+            android:text="@string/my_order_payment"
             android:textColor="@color/orange_basic"
             android:textSize="@dimen/text_l" />
 
@@ -41,7 +41,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_huge"
+        android:layout_marginLeft="@dimen/checkout_order_inner_margin_left"
+        android:layout_marginRight="@dimen/checkout_order_inner_margin_right"
+        android:layout_marginTop="@dimen/margin_mid"
         android:orientation="vertical" >
 
         <org.holoeverywhere.widget.TextView

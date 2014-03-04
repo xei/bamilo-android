@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginLeft="@dimen/margin_mid"
-    android:layout_marginRight="@dimen/margin_mid" >
+    android:layout_marginRight="@dimen/margin_mid"
+    android:background="@android:color/white" >
 
     <!-- CONTENT -->
 
@@ -84,8 +85,10 @@
     <org.holoeverywhere.widget.Button
         android:id="@+id/checkout_my_order_button_enter"
         style="@style/button_orange_style"
+        android:layout_width="@dimen/inner_container_width"
         android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
         android:contentDescription="@string/login_button_description"
-        android:text="Confirm Order" />
+        android:text="@string/my_order_confirm_button" />
 
 </RelativeLayout>

@@ -1903,7 +1903,9 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     public static final int CHECKOUT_BILLING = -2;
     public static final int CHECKOUT_SHIPPING = -3;
     public static final int CHECKOUT_PAYMENT = -4;
-    public static final int CHECKOUT_NO_SET_HEADER = -5;
+    public static final int CHECKOUT_ORDER = -5;
+    public static final int CHECKOUT_THANKS = -6;
+    public static final int CHECKOUT_NO_SET_HEADER = -7;
     
     private boolean inLandscapeOnCheckout = false;
     
@@ -1943,6 +1945,8 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
             unSelectCheckoutStep(CHECKOUT_SHIPPING);
             selectCheckoutStep(CHECKOUT_PAYMENT);
             break;
+        case CHECKOUT_ORDER:
+        case CHECKOUT_THANKS:
         case CHECKOUT_NO_SET_HEADER:
             updateBaseComponentsInCheckout(View.GONE);
             return true;
