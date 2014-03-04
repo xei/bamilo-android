@@ -340,7 +340,7 @@ public class RestConstants {
 	 */
 	public static final String JSON_NATIVE_CHECKOUT_TAG = "native_checkout";
 	public static final String JSON_NEXT_STEP_TAG = "next_step";
-
+	   public static final String JSON_NATIVE_CHECKOUT_AVAILABLE = "native_checkout_mobile_api";
 	public static final String JSON_SHIPPING_METHOD_TAG = "shippingMethodForm";
 
 	/**
