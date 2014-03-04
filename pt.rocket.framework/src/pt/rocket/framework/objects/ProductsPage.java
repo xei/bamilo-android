@@ -26,6 +26,8 @@ public class ProductsPage implements IJSONSerializable, Parcelable {
 	private int totalProducts;
 	private ArrayList<Product> products;
 	private ArrayList<Category> categories;
+
+	private String mPageName;
 	
 	public ProductsPage() {
 	
@@ -39,6 +41,7 @@ public class ProductsPage implements IJSONSerializable, Parcelable {
 		products = new ArrayList<Product>();
 		categories = new ArrayList<Category>();
 		totalProducts = metadataObject.optInt(RestConstants.JSON_PRODUCT_COUNT_TAG, 0);
+		mPageName = metadataObject.optString(RestConstants.JSON_CATALOG_NAME_TAG, "");
 
 		JSONArray productObjectArray = metadataObject.getJSONArray(RestConstants.JSON_RESULTS_TAG);
 
@@ -89,6 +92,10 @@ public class ProductsPage implements IJSONSerializable, Parcelable {
 	 */
 	public int getTotalProducts() {
 		return totalProducts;
+	}
+	
+	public String getName(){
+		return mPageName;
 	}
 
 	@Override

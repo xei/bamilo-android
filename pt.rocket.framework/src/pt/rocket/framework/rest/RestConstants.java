@@ -18,7 +18,6 @@ public class RestConstants {
 	// ConfigurationService Tags
 	public static final String JSON_METADATA_TAG = "metadata";
 	public static final String JSON_CALL_PHONE_TAG = "phone_number";
-	
 
 	// VersionInfo Tags
 	public static final String JSON_VERSION_TAG = "version";
@@ -123,6 +122,7 @@ public class RestConstants {
 	// ProductsPage Tags
 	public static final String JSON_RESULTS_TAG = "results";
 	public static final String JSON_PRODUCT_COUNT_TAG = "product_count";
+	public static final String JSON_CATALOG_NAME_TAG = "category_name";
 	// public static final String JSON_PROD_CATEGORIES_TAG =
 	// JSON_CATEGORIES_TAG;
 
@@ -314,7 +314,7 @@ public class RestConstants {
 	public static final String JSON_ORDER_ITEM_STATUS_UPDATE_TAG = "last_status_change";
 	public static final String JSON_ORDER_TAG = "order";
 	public static final String JSON_ORDER_GRAND_TOTAL_TAG = "grand_total";
-	
+
 	/**
 	 * Address
 	 */
@@ -322,43 +322,42 @@ public class RestConstants {
 	public static final String JSON_BILLING_TAG = "billing";
 	public static final String JSON_OTHER_TAG = "other";
 	public static final String JSON_FASTLINE_TAG = "fastlane";
-    public static final String JSON_CUSTOMER_ID_TAG = "fk_customer";
-    public static final String JSON_COUNTRY_ID_TAG = "fk_country";
-    public static final String JSON_REGION_ID_TAG = "fk_customer_address_region";
-    public static final String JSON_CITY_ID_TAG = "fk_customer_address_city";
-    public static final String JSON_HIDDEN_TAG = "hidden";
-    public static final String JSON_CREATED_BY_TAG = "created_by";
-    public static final String JSON_UPDATED_BY_TAG = "updated_by";
-    public static final String JSON_CUSTOMER_FIRST_NAME_TAG = "customer_first_name";
-    public static final String JSON_CUSTOMER_LAST_NAME_TAG = "customer_last_name";
-    public static final String JSON_CUSTOMER_ADDRESS_COLLECTION_TAG = "address_collection";
-    public static final String JSON_REGION_NAME_TAG = "customer_address_region";
-    public static final String JSON_API_CALL_TAG = "api_call";
-    
-    
-    /**
-     * Native Checkout
-     */
-    public static final String JSON_NATIVE_CHECKOUT_TAG = "native_checkout";
-    public static final String JSON_NEXT_STEP_TAG = "next_step";
-    
-    public static final String JSON_SHIPPING_METHOD_TAG = "shippingMethodForm";
-    
-    /**
-     * Pickup Stations
-     */
-    public static final String JSON_PICKUP_STATION_ID = "id_pickupstation";
-    public static final String JSON_PICKUP_ID = "pickup_id";
-    public static final String JSON_PICKUP_ADDRESS = "address";
-    public static final String JSON_PICKUP_PLACE = "place";
-    public static final String JSON_PICKUP_CITY = "city";
-    public static final String JSON_PICKUP_OPENING_HOURS = "opening_hours";
-    public static final String JSON_PICKUP_ID_PICKUPSTATION_REGION = "id_pickupstation_region";
-    public static final String JSON_PICKUP_PAYMENT_METHOD = "payment_method";
-    public static final String JSON_PICKUP_REGIONS = "regions";
-    
-    public static final String JSON_BILLING_FORM_TAG = "billingForm";
-    public static final String JSON_CUSTOMER_TAG = "customer";
-    public static final String JSON_ADDRESS_LIST_TAG = "address_list";
+	public static final String JSON_CUSTOMER_ID_TAG = "fk_customer";
+	public static final String JSON_COUNTRY_ID_TAG = "fk_country";
+	public static final String JSON_REGION_ID_TAG = "fk_customer_address_region";
+	public static final String JSON_CITY_ID_TAG = "fk_customer_address_city";
+	public static final String JSON_HIDDEN_TAG = "hidden";
+	public static final String JSON_CREATED_BY_TAG = "created_by";
+	public static final String JSON_UPDATED_BY_TAG = "updated_by";
+	public static final String JSON_CUSTOMER_FIRST_NAME_TAG = "customer_first_name";
+	public static final String JSON_CUSTOMER_LAST_NAME_TAG = "customer_last_name";
+	public static final String JSON_CUSTOMER_ADDRESS_COLLECTION_TAG = "address_collection";
+	public static final String JSON_REGION_NAME_TAG = "customer_address_region";
+	public static final String JSON_API_CALL_TAG = "api_call";
+
+	/**
+	 * Native Checkout
+	 */
+	public static final String JSON_NATIVE_CHECKOUT_TAG = "native_checkout";
+	public static final String JSON_NEXT_STEP_TAG = "next_step";
+
+	public static final String JSON_SHIPPING_METHOD_TAG = "shippingMethodForm";
+
+	/**
+	 * Pickup Stations
+	 */
+	public static final String JSON_PICKUP_STATION_ID = "id_pickupstation";
+	public static final String JSON_PICKUP_ID = "pickup_id";
+	public static final String JSON_PICKUP_ADDRESS = "address";
+	public static final String JSON_PICKUP_PLACE = "place";
+	public static final String JSON_PICKUP_CITY = "city";
+	public static final String JSON_PICKUP_OPENING_HOURS = "opening_hours";
+	public static final String JSON_PICKUP_ID_PICKUPSTATION_REGION = "id_pickupstation_region";
+	public static final String JSON_PICKUP_PAYMENT_METHOD = "payment_method";
+	public static final String JSON_PICKUP_REGIONS = "regions";
+
+	public static final String JSON_BILLING_FORM_TAG = "billingForm";
+	public static final String JSON_CUSTOMER_TAG = "customer";
+	public static final String JSON_ADDRESS_LIST_TAG = "address_list";
 
 }

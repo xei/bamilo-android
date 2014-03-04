@@ -730,7 +730,11 @@ public class CatalogPageModel {
         
         // Get Products Event
         ProductsPage productsPage = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+        
+        // Validate title
+        if(TextUtils.isEmpty(title)) title = productsPage.getName();
 
+        // Valdiate products
         if (productsPage != null && productsPage.getTotalProducts() > 0) {
             Log.d(TAG, "onSuccessEvent: products on page = " + productsPage.getProducts().size() +
                     " total products = " + productsPage.getTotalProducts());
