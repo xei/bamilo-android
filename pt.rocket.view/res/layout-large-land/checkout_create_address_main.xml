@@ -50,7 +50,7 @@
                     android:layout_marginRight="@dimen/margin_mid"
                     android:layout_weight="1"
                     layout="@layout/checkout_create_address_billing"
-                    android:visibility="visible" />
+                    android:visibility="gone" />
             </LinearLayout>
         </ScrollView>
 
