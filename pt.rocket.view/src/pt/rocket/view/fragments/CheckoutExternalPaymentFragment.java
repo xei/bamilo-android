@@ -319,7 +319,12 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
             Set<Entry<String, Object>> mValues = JumiaApplication.INSTANCE.getPaymentMethodForm()
                     .getContentValues().valueSet();
             for (Entry<String, Object> entry : mValues) {
-                parameters.add(new BasicNameValuePair(entry.getKey(), (String) entry.getValue()));
+                if(entry.getKey().equalsIgnoreCase("tc")){
+                    parameters.add(new BasicNameValuePair(entry.getKey(), "1"));
+                } else {
+                    parameters.add(new BasicNameValuePair(entry.getKey(), (String) entry.getValue()));
+                }
+                
             }
 
             Log.i(TAG, "code1content : " + parameters.toString());

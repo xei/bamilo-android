@@ -63,7 +63,8 @@ public class PaymentMethodForm implements Parcelable {
         if (mJSONObject == null || mJSONObject.length() == 0) {
             setPaymentType(METHOD_OTHER);
             setOrderNumber(jsonObject.optString(RestConstants.JSON_ORDER_NUMBER_TAG));
-        }
+            return;
+        } 
 
         String type = mJSONObject.optString(RestConstants.JSON_TYPE_TAG);
         if (type.equalsIgnoreCase(PAYMENT_METHOD_AUTO_SUBMIT_EXTERNAL)) {

@@ -931,16 +931,79 @@ public class DynamicFormItem {
 
         ((ViewGroup) this.control).addView(dataContainer);
     }
+    
+    private void buildText(RelativeLayout dataContainer, RelativeLayout.LayoutParams params, int controlWidth){
+        this.control.setLayoutParams(params);
+        dataContainer = createTextDataContainer( controlWidth);
+        int dataControlId = dataContainer.getId();
+        this.errorControl = createErrorControl(dataControlId, controlWidth);
+        ((ViewGroup) this.control).addView(dataContainer);
+        ((ViewGroup) this.control).addView(this.errorControl);
+        
+        final CharSequence editText = ((EditText) this.dataControl).getHint();             
+        ((View) this.dataControl).setContentDescription(this.entry.getKey());
+        // Listeners
+        this.dataControl.setOnFocusChangeListener(new OnFocusChangeListener() {
 
-    private void buildText(RelativeLayout dataContainer, RelativeLayout.LayoutParams params, int controlWidth) {
+            @Override 
+            public void onFocusChange(View v, boolean hasFocus) {
+                EditText dataCtrl = (EditText) v;
+                if (hasFocus) {
+                    errorControl.setVisibility(View.GONE); 
+                    mandatoryControl.setVisibility(View.GONE);
+                    dataCtrl.setHint(" ");
+                    dataCtrl.setCursorVisible(true);
+                } else {
+                    if (entry.getValidation().isRequired()) {
+                        mandatoryControl.setVisibility(dataCtrl.getText().toString().length() == 0 ? View.VISIBLE : View.GONE);
+                    }
+                    if(dataCtrl.getHint().toString().equals(" ")){
+                        dataCtrl.setHint(editText);
+                    }
+
+                } 
+                
+                if ( null != editFocusListener ) {
+                    editFocusListener.onFocusChange( v, hasFocus );
+                   
+                }
+            }
+        });
+
+        ((EditText)this.dataControl).addTextChangedListener( new TextWatcher(){
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if ( null != textWatcher ) {
+                    textWatcher.afterTextChanged( s );
+                }
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                if ( null != textWatcher ) {
+                    textWatcher.beforeTextChanged(s, start, count, after);
+                }
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if ( null != textWatcher ) {
+                    textWatcher.onTextChanged(s, start, before, count);
+                }                        
+            }
+            
+        });
+    }
+
+    private void buildText2(RelativeLayout dataContainer, RelativeLayout.LayoutParams params, int controlWidth) {
         this.control.setLayoutParams(params);
         createTextDataContainer(controlWidth);
-        int dataControlId = this.control.getId();
         params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
-//        this.dataControl = createTextDataControl();
-//        this.dataControl.setId(parent.getNextId());
-//        this.dataControl.setLayoutParams(params);
-        this.errorControl = createErrorControl(dataControlId, controlWidth);
+        this.dataControl = createTextDataControl();
+        this.dataControl.setId(parent.getNextId());
+        this.dataControl.setLayoutParams(params);
+        this.errorControl = createErrorControl(this.dataControl.getId(), controlWidth);
         ((ViewGroup) this.control).addView(this.dataControl);
         if(this.mandatoryControl != null){
             ((ViewGroup) this.control).addView(this.mandatoryControl);    
@@ -1391,6 +1454,8 @@ public class DynamicFormItem {
         params.setMargins(
                 (int) context.getResources().getDimension(R.dimen.form_errormessage_margin), 0, 0,
                 0);
+        
+        
         ImageView errImage = new ImageView(this.context);
         errImage.setId(parent.getNextId());
         errImage.setLayoutParams(params);
@@ -1544,7 +1609,7 @@ public class DynamicFormItem {
         return textDataControl;
     }
 
-    private void createTextDataContainer(int controlWidth) {
+    private void createTextDataContainerOld(int controlWidth) {
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
         params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
         this.dataControl = createTextDataControl();
@@ -1565,6 +1630,35 @@ public class DynamicFormItem {
             this.mandatoryControl.setVisibility(View.VISIBLE);
         }
     }
+    
+    private RelativeLayout createTextDataContainer( int controlWidth ) {
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        RelativeLayout dataContainer = new RelativeLayout(this.context);
+        dataContainer.setId(parent.getNextId());
+        dataContainer.setLayoutParams(params);
+
+        params = new RelativeLayout.LayoutParams( controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        this.dataControl = createTextDataControl();
+        this.dataControl.setId( parent.getNextId() );
+        this.dataControl.setLayoutParams(params);
+
+        params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        params.addRule(RelativeLayout.CENTER_VERTICAL);
+        params.rightMargin = 10;
+        this.mandatoryControl = new TextView(this.context);
+        this.mandatoryControl.setLayoutParams(params);
+        this.mandatoryControl.setText("*");
+        this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_basic));
+        this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
+        this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE : View.GONE);
+
+        dataContainer.addView(this.dataControl);
+        dataContainer.addView(this.mandatoryControl);
+        
+        return dataContainer;
+    }
+
 
     /**
      * @return the childDynamicForm
