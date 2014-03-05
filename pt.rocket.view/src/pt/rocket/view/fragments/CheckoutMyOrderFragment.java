@@ -423,7 +423,10 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
      */
     private void onClickEditAddressesButton() {
         Log.i(TAG, "ON CLICK: EditAddresses");
-        getBaseActivity().onSwitchFragment(FragmentType.MY_ADDRESSES, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        if(FragmentController.getInstance().hasEntry(FragmentType.MY_ADDRESSES.toString()))
+            FragmentController.getInstance().popAllEntriesUntil(getBaseActivity(), FragmentType.MY_ADDRESSES.toString());
+        else
+            getBaseActivity().onSwitchFragment(FragmentType.MY_ADDRESSES, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
     }
 
     /**
@@ -431,7 +434,10 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
      */
     private void onClickEditShippingMethodButton() {
         Log.i(TAG, "ON CLICK: EditShippingMethod");
-        getBaseActivity().onSwitchFragment(FragmentType.SHIPPING_METHODS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        if(FragmentController.getInstance().hasEntry(FragmentType.SHIPPING_METHODS.toString()))
+            FragmentController.getInstance().popAllEntriesUntil(getBaseActivity(), FragmentType.SHIPPING_METHODS.toString());
+        else
+            getBaseActivity().onSwitchFragment(FragmentType.SHIPPING_METHODS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
     }
     
     /**
@@ -439,7 +445,10 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
      */
     private void onClickEditPaymentOptionsButton() {
         Log.i(TAG, "ON CLICK: EditPaymentOptions");
-        getBaseActivity().onSwitchFragment(FragmentType.PAYMENT_METHODS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        if(FragmentController.getInstance().hasEntry(FragmentType.PAYMENT_METHODS.toString()))
+            FragmentController.getInstance().popAllEntriesUntil(getBaseActivity(), FragmentType.PAYMENT_METHODS.toString());
+        else
+            getBaseActivity().onSwitchFragment(FragmentType.PAYMENT_METHODS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
     }
     
     /**

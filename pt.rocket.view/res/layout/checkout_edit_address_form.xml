@@ -2,8 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="@dimen/margin_large"
-    android:layout_marginRight="@dimen/margin_large"
     android:orientation="vertical" >
 
     <!-- TITLE -->
@@ -35,35 +33,6 @@
         android:layout_marginRight="@dimen/margin_mid"
         android:layout_marginTop="@dimen/margin_small"
         android:orientation="vertical" >
-    </LinearLayout>
-
-    <!-- BUTTONS -->
-
-    <LinearLayout
-        android:layout_width="@dimen/inner_container_width"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginLeft="@dimen/margin_mid"
-        android:layout_marginRight="@dimen/margin_mid"
-        android:orientation="horizontal" >
-
-        <org.holoeverywhere.widget.Button
-            android:id="@+id/checkout_edit_button_cancel"
-            style="@style/button_grey_style"
-            android:layout_width="0dp"
-            android:layout_marginRight="@dimen/margin_small"
-            android:layout_weight="1"
-            android:fontFamily="roboto_regular"
-            android:text="@string/cancel_label" />
-
-        <org.holoeverywhere.widget.Button
-            android:id="@+id/checkout_edit_button_enter"
-            style="@style/button_orange_style"
-            android:layout_width="0dp"
-            android:layout_marginLeft="@dimen/margin_small"
-            android:layout_weight="1"
-            android:fontFamily="roboto_regular"
-            android:text="@string/save_changes_label" />
     </LinearLayout>
 
 </LinearLayout>

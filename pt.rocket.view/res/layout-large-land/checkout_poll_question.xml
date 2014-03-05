@@ -5,7 +5,7 @@
     android:background="@android:color/white"
     android:orientation="horizontal" >
 
-    <!-- ADDRESSES -->
+    <!-- POLL -->
 
     <RelativeLayout
         android:layout_width="0dp"
