@@ -124,12 +124,7 @@ public class Form implements IJSONSerializable, Parcelable {
                         FormField field = new FormField(this);
                         if (field.initialize(fieldsArray.getJSONObject(i))) {
                             fields.add(field);
-    
-                            /**
-                             * TODO: Validate if is necessary this map
-                             */
                             mFieldKeyMap.put(field.getKey(), field);
-                            
                         }
                     } else {
                         

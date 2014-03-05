@@ -13,7 +13,7 @@ public enum NavigationAction {
 	LoginOut("loginout"), Basket("cartdata"), Brands("brands"), Search("search"), Categories(
 			"categories"), Home("shop"), MyAccount("account"), Sales("sales"), Configurator(
 			"configurator"), Products("products"), Settings("settings"), Country(
-			"language"), TrackOrder("trackingorder"), Unknown("unknown");
+			"language"), TrackOrder("trackingorder"), Unknown("unknown"), Checkout("checkout");
 
 	private final String action;
 

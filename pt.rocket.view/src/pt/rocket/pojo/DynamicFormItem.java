@@ -1545,29 +1545,22 @@ public class DynamicFormItem {
     }
 
     private void createTextDataContainer(int controlWidth) {
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(controlWidth,
-                RelativeLayout.LayoutParams.WRAP_CONTENT);
-//        RelativeLayout dataContainer = new RelativeLayout(this.context);
-//        dataContainer.setId(parent.getNextId());
-//        dataContainer.setLayoutParams(params);
-
-        params = new RelativeLayout.LayoutParams(controlWidth,
-                RelativeLayout.LayoutParams.WRAP_CONTENT);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
         this.dataControl = createTextDataControl();
         this.dataControl.setId(parent.getNextId());
         this.dataControl.setLayoutParams(params);
 
         if (this.entry.getValidation().isRequired()) {
-            params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
-                    RelativeLayout.LayoutParams.MATCH_PARENT);
+            Log.d(TAG, "############## IS REQUIRED");
+            params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
             params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
             params.addRule(RelativeLayout.CENTER_VERTICAL);
             params.rightMargin = 10;
             this.mandatoryControl = new TextView(this.context);
             this.mandatoryControl.setLayoutParams(params);
             this.mandatoryControl.setText("*");
-            this.mandatoryControl.setTextColor(context.getResources()
-                    .getColor(R.color.orange_basic));
+            this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_basic));
             this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
             this.mandatoryControl.setVisibility(View.VISIBLE);
         }

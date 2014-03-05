@@ -78,6 +78,9 @@ private static final String TAG = FieldValidation.class.getName();
 		        Log.i(TAG, "code1message : "+required);
 		        message = mJSONObject.optString(RestConstants.JSON_MESSAGE_IN_MESSAGES_TAG,"");
 		        Log.i(TAG, "code1message : "+message);
+		        
+		        // If contains message is required
+		        if(message != null) required = true;
 		    }
 		    
 		}
