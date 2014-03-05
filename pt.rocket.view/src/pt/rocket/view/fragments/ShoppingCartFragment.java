@@ -564,7 +564,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         
         
         
-        if(getBaseActivity().getResources().getIntArray(R.array.country_api_version)[JumiaApplication.SHOP_ID] >0){
+        if(getBaseActivity().getResources().getStringArray(R.array.restbase_paths)[JumiaApplication.SHOP_ID].equalsIgnoreCase("mobapi/v1")){
            triggerIsNativeCheckoutAvailable();
         } else {
             goToWebCheckout();

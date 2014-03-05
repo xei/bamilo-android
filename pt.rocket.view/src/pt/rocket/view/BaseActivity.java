@@ -343,12 +343,14 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         super.onStop();
         Log.d(TAG, "ON STOP");
         UAirship.shared().getAnalytics().activityStopped(this);
+        JumiaApplication.INSTANCE.setLoggedIn(false);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy(); 
         JumiaApplication.INSTANCE.unRegisterFragmentCallback(mCallback);
+        JumiaApplication.INSTANCE.setLoggedIn(false);
         isRegistered = false;
     }
 
