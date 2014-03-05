@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import pt.rocket.app.JumiaApplication;
+import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.constants.FormConstants;
 import pt.rocket.factories.FormFactory;
 import pt.rocket.forms.Form;
@@ -33,7 +34,6 @@ import pt.rocket.pojo.DynamicFormItem;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
-import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
@@ -94,9 +94,9 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
     public CheckoutEditAddressFragment() {
         super(EnumSet.of(EventType.GET_EDIT_ADDRESS_FORM_EVENT, EventType.EDIT_ADDRESS_EVENT), 
                 EnumSet.noneOf(EventType.class),
-                EnumSet.noneOf(MyMenuItem.class), 
-                NavigationAction.Unknown, 
-                BaseActivity.CHECKOUT_BILLING);
+                EnumSet.of(MyMenuItem.SEARCH), 
+                NavigationAction.Checkout,
+                ConstantsCheckout.CHECKOUT_BILLING);
     }
 
     /*
@@ -255,7 +255,7 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
         // Show selected address content
         showSelectedAddress(mEditFormGenerator, mCurrentAddress);
         // Show
-        super.showOrderSummaryIfPresent(BaseActivity.CHECKOUT_BILLING, orderSummary);
+        super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_BILLING, orderSummary);
         // Show
         getBaseActivity().showContentContainer(false);
     }
@@ -581,18 +581,18 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
     protected boolean onSuccessEvent(Bundle bundle) {
         Log.i(TAG, "ON SUCCESS EVENT");
         
-        // Validate fragment visibility
-        if(!isVisible()){
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return true;
-        }
+//        // Validate fragment visibility
+//        if(!isVisible()){
+//            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+//            return true;
+//        }
         
-        if(getBaseActivity() != null){
-            Log.d(TAG, "BASE ACTIVITY HANDLE SUCCESS EVENT");
-            getBaseActivity().handleSuccessEvent(bundle);
-        } else {
-            return true;
-        }
+//        if(getBaseActivity() != null){
+//            Log.d(TAG, "BASE ACTIVITY HANDLE SUCCESS EVENT");
+//            getBaseActivity().handleSuccessEvent(bundle);
+//        } else {
+//            return true;
+//        }
         
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         Log.i(TAG, "ON SUCCESS EVENT: " + eventType);

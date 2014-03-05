@@ -48,8 +48,7 @@ import de.akquinet.android.androlog.Log;
  * @author sergiopereira
  * 
  */
-public abstract class BaseFragment extends Fragment implements
-        OnActivityFragmentInteraction {
+public abstract class BaseFragment extends Fragment implements OnActivityFragmentInteraction {
 
     private static final Set<EventType> HANDLED_EVENTS = EnumSet.noneOf(EventType.class);
     protected String md5Hash = null;
@@ -79,7 +78,7 @@ public abstract class BaseFragment extends Fragment implements
 
     private Set<EventType> userEvents;
 
-    private Set<MyMenuItem> enabledMenuItems;
+    protected Set<MyMenuItem> enabledMenuItems;
 
     private int titleResId;
    
@@ -177,6 +176,7 @@ public abstract class BaseFragment extends Fragment implements
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Log.d(TAG, "ON VIEW CREATED");
         // Exist order summary
         isOrderSummaryPresent = (view.findViewById(ORDER_SUMMARY_CONTAINER) != null) ? true : false;
     }
@@ -205,23 +205,31 @@ public abstract class BaseFragment extends Fragment implements
     @Override
     public void onStart() {
         super.onStart();
-        // Save the current state
+
         setVisiblility(VISIBLE);
         
         if(this.action == NavigationAction.Country){
             ((BaseActivity) getActivity()).updateActionForCountry(this.action);
         }
         
+        // Validate if is checkout process
+        if(action == NavigationAction.Checkout) enabledMenuItems = getCheckoutMenuItem();
+        
         // Update base components, like items on action bar
         if (!isNestedFragment && enabledMenuItems != null) {
-            Log.i(TAG,
-                    "UPDATE BASE COMPONENTS: " + enabledMenuItems.toString() + " "
-                            + action.toString());
-            ((BaseActivity) getActivity()).updateBaseComponents(enabledMenuItems, action,
-                    titleResId);
+            Log.i(TAG, "UPDATE BASE COMPONENTS: " + enabledMenuItems.toString() + " " + action.toString());
+            ((BaseActivity) getActivity()).updateBaseComponents(enabledMenuItems, action, titleResId);
         }
     }
 
+    /**
+     * XXX 
+     * @return
+     */
+    private static Set<MyMenuItem> getCheckoutMenuItem(){
+        return (BaseActivity.isTabletInLandscape(JumiaApplication.INSTANCE)) ? EnumSet.of(MyMenuItem.SEARCH_BAR) : EnumSet.of(MyMenuItem.SEARCH);
+    }
+    
     /*
      * (non-Javadoc)
      * 

@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import pt.rocket.app.JumiaApplication;
+import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.FormConstants;
 import pt.rocket.controllers.fragments.FragmentController;
@@ -37,7 +38,6 @@ import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
-import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
@@ -48,6 +48,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.facebook.Request;
 import com.facebook.Request.GraphUserCallback;
@@ -108,8 +109,8 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
     private View loginToogle;
 
     private View signupToogle;
-    
-    
+
+    private OrderSummary mOrderSummary;
     
     /**
      * Get the instance of CheckoutAboutYouFragment
@@ -118,14 +119,14 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
     public static CheckoutAboutYouFragment getInstance(Bundle bundle) {
         aboutYouFragment = new CheckoutAboutYouFragment();
         
-        if (bundle != null) {
-            aboutYouFragment.loginOrigin = bundle.getString(ConstantsIntentExtra.LOGIN_ORIGIN);
-        }
+        if (bundle != null) aboutYouFragment.loginOrigin = bundle.getString(ConstantsIntentExtra.LOGIN_ORIGIN);
+        
         return aboutYouFragment;
     }
 
     /**
      * Empty constructor
+     * WARNING: TODO MyMenuItem
      */
     public CheckoutAboutYouFragment() {
         super(EnumSet.of(EventType.GET_LOGIN_FORM_EVENT, 
@@ -133,11 +134,11 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
                 EnumSet.of(EventType.LOGIN_EVENT, 
                 EventType.FACEBOOK_LOGIN_EVENT, 
                 EventType.SET_SIGNUP_EVENT),
-                EnumSet.noneOf(MyMenuItem.class), 
-                NavigationAction.LoginOut, 
-                BaseActivity.CHECKOUT_ABOUT_YOU);
+                EnumSet.of(MyMenuItem.SEARCH), 
+                NavigationAction.Checkout, 
+                ConstantsCheckout.CHECKOUT_ABOUT_YOU);
     }
-
+    
     /*
      * (non-Javadoc)
      * 
@@ -226,8 +227,8 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             triggerInitForm();
         } else {
             Log.d(TAG, "VALIDATE: LOGIN/SIGNUP FORM");
-            temp = (formResponse != null)       ? loadForm(formResponse)                : triggerLoginForm() ;
-            temp = (signupFormResponse != null) ? loadSignupForm(signupFormResponse)    : triggerSignupForm();
+            temp = (formResponse != null)                                   ? loadForm(formResponse)                : triggerLoginForm() ;
+            temp = (signupFormResponse != null && mOrderSummary != null)    ? loadSignupForm(signupFormResponse)    : triggerSignupForm();
         }
     }
     
@@ -522,7 +523,13 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         loginFormContainer.removeAllViews();
         loginFormContainer.addView(loginForm.getContainer());
         setFormClickDetails(loginForm);
-
+        
+//        // Validate the credentials and add the email 
+//        if(JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials()) {
+//            EditText editText = (EditText) loginForm.getItemByKey("email").getEditControl();
+//            editText.setText(JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
+//        }
+                
         // Show save state
         if (null != this.savedInstanceState && null != loginForm) {
             Iterator<DynamicFormItem> iter = loginForm.getIterator();
@@ -534,6 +541,8 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         loginFormContainer.refreshDrawableState();
         getBaseActivity().showContentContainer(false);
         Log.i(TAG, "code1 loading form completed : "+loginForm.getControlsCount());
+        
+
         
         return true;
     }
@@ -550,195 +559,13 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         signupFormContainer.addView(signupForm.getContainer());
         setFormClickDetails(signupForm);
         signupFormContainer.refreshDrawableState();
+        // Show order summary
+        super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_ABOUT_YOU, mOrderSummary);
+        // Show container
         getBaseActivity().showContentContainer(false);
         return true;
     }
     
-    
-    /**
-     * ########## RESPONSE ########## 
-     */
-    
-    /**
-     * Filter the response bundle
-     * @param bundle
-     * @return true/false
-     */
-    protected boolean onSuccessEvent(Bundle bundle) {
-        Log.d(TAG, "ON SUCCESS EVENT");
-        
-        // Validate fragment visibility
-        if(!isVisible()){
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return true;
-        }
-        
-        if(getBaseActivity() != null){
-            Log.d(TAG, "BASE ACTIVITY HANDLE SUCCESS EVENT");
-            getBaseActivity().handleSuccessEvent(bundle);
-        } else {
-            return true;
-        }
-         
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        Log.i(TAG, "ON SUCCESS EVENT: " + eventType);
-        
-        switch (eventType) {
-        case INIT_FORMS:
-            triggerLoginForm();
-            triggerSignupForm();
-            return true;            
-        case SET_SIGNUP_EVENT:
-            Log.d(TAG, "RECEIVED SET_SIGNUP_EVENT");
-            JumiaApplication.INSTANCE.setLoggedIn(true);
-            // Get next step
-            FragmentType signupNextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
-            if(signupNextFragment == null || signupNextFragment == FragmentType.UNKNOWN){
-                Log.w(TAG, "NEXT STEP IS NULL");
-                //onErrorEvent(bundle);
-                return true;
-            }
-            signupNextFragment = (signupNextFragment != FragmentType.UNKNOWN) ? signupNextFragment : FragmentType.CREATE_ADDRESS;
-            getBaseActivity().hideKeyboard();
-            getBaseActivity().updateSlidingMenuCompletly();
-            FragmentController.getInstance().popLastEntry(FragmentType.ABOUT_YOU.toString());
-            getBaseActivity().onSwitchFragment(signupNextFragment, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);            
-            break;
-        case FACEBOOK_LOGIN_EVENT:
-            JumiaApplication.INSTANCE.setLoggedIn(true);
-            // Get customer
-            Customer customerFb = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-            // Get next step
-            FragmentType fbNextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
-            if(fbNextFragment == null){
-                Log.w(TAG, "NEXT STEP IS NULL");
-                //onErrorEvent(bundle);
-                return true;
-            }
-            // Get Customer
-            getBaseActivity().hideKeyboard();
-            getBaseActivity().updateSlidingMenuCompletly();
-            FragmentController.getInstance().popLastEntry(FragmentType.ABOUT_YOU.toString());
-            getBaseActivity().onSwitchFragment(fbNextFragment, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-            // Tracking
-            TrackerDelegator.trackLoginSuccessful(getBaseActivity(), customerFb, onAutoLogin, loginOrigin, true);
-            return true;
-        case LOGIN_EVENT:
-            JumiaApplication.INSTANCE.setLoggedIn(true);
-            // Get customer
-            Customer customer = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-            // Get next step
-            FragmentType loginNextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
-            if(loginNextFragment == null){
-                Log.w(TAG, "NEXT STEP IS NULL");
-                //onErrorEvent(bundle);
-                return true;
-            }
-            // Get Customer
-            getBaseActivity().hideKeyboard();
-            getBaseActivity().updateSlidingMenuCompletly();
-            FragmentController.getInstance().popLastEntry(FragmentType.ABOUT_YOU.toString());
-            getBaseActivity().onSwitchFragment(loginNextFragment, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-            // Tracking
-            TrackerDelegator.trackLoginSuccessful(getBaseActivity(), customer, onAutoLogin, loginOrigin, false);
-            break;
-       case GET_SIGNUP_FORM_EVENT:
-           // Save and load form
-           Form signupForm = (Form) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-           loadSignupForm(signupForm);
-           this.signupFormResponse = signupForm;
-           // Get order summary
-           OrderSummary orderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
-           super.showOrderSummaryIfPresent(BaseActivity.CHECKOUT_ABOUT_YOU, orderSummary);
-           break;
-        case GET_LOGIN_FORM_EVENT:
-            Form form = (Form) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-            // Validate form
-            if (form == null) {
-                showLoginFormErrorDialog();
-            } else {
-                // Save and load form
-                loadForm(form);
-                this.formResponse = form;
-                // Clean FACEBOOK session
-                cleanFacebookSession();
-            }
-            break;
-        }
-        return true;
-    }
-
-
-    /**
-     * 
-     * @param bundle
-     * @return
-     */
-    protected boolean onErrorEvent(Bundle bundle) {
-        
-    	if(!isVisible()){
-    	    Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-    		return true;
-    	}
-    	
-//    	/**
-//    	 * TODO: Improve this method to correctly handle issues with Native Checkout
-//    	 */
-//    	if(true){
-//    	    Bundle args = new Bundle();
-//    	    args.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.CHECKOUT_BASKET);
-//    	    getBaseActivity().onSwitchFragment(FragmentType.LOGIN, args, FragmentController.ADD_TO_BACK_STACK);
-//    	    return true;
-//    	}
-    	
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-        Log.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
-        
-        switch (eventType) {
-        case GET_LOGIN_FORM_EVENT:
-            Log.w(TAG, "ON ERRER RECEIVED: GET_LOGIN_FORM_EVENT");
-            if (errorCode == ErrorCode.UNKNOWN_ERROR && null == loginForm) {
-                restartAllFragments();
-            }
-            break;
-        case LOGIN_EVENT:
-            if (errorCode == ErrorCode.REQUEST_ERROR) {
-                TrackerDelegator.trackLoginFailed(onAutoLogin);
-                if (onAutoLogin) {
-                    // Sometimes formDataRegistry is null, so init forms
-                    if (formResponse == null) triggerInitForm();
-                } else {
-                    // Show error
-                    @SuppressWarnings("unchecked")
-                    HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
-                    showErrorDialog(errors, R.string.error_login_title);
-                    getBaseActivity().showContentContainer(false);
-                }
-            }
-            break;
-        case SET_SIGNUP_EVENT:
-            Log.w(TAG, "ON ERRER RECEIVED: SET_SIGNUP_EVENT");
-            if (errorCode == ErrorCode.REQUEST_ERROR) {
-                @SuppressWarnings("unchecked")
-                HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY); 
-                showErrorDialog(errors, R.string.error_signup_title);
-                getBaseActivity().showContentContainer(false);
-            }
-            break;
-        case GET_SIGNUP_FORM_EVENT:
-            Log.w(TAG, "ON ERRER RECEIVED: GET_SIGNUP_FORM_EVENT");
-            triggerInitForm();
-            break;
-        default:
-            if(getBaseActivity().handleErrorEvent(bundle)){
-                Log.w(TAG, "BASE ACTIVITY HANDLE ERROR EVENT!");
-                return true;
-            }
-            break;
-        }
-        return true;
-    }
     
     /**
      * ############# REQUESTS #############
@@ -867,6 +694,196 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         Bundle bundle = new Bundle();
         triggerContentEvent(new GetInitFormHelper(), bundle, this);
     }
+    
+    
+    /**
+     * ########## RESPONSE ########## 
+     */
+    
+    /**
+     * Filter the response bundle
+     * @param bundle
+     * @return true/false
+     */
+    protected boolean onSuccessEvent(Bundle bundle) {
+        Log.d(TAG, "ON SUCCESS EVENT");
+        
+//        // Validate fragment visibility
+//        if(!isVisible()){
+//            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+//            return true;
+//        }
+        
+//        if(getBaseActivity() != null){
+//            Log.d(TAG, "BASE ACTIVITY HANDLE SUCCESS EVENT");
+//            getBaseActivity().handleSuccessEvent(bundle);
+//        } else {
+//            return true;
+//        }
+         
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        Log.i(TAG, "ON SUCCESS EVENT: " + eventType);
+        
+        switch (eventType) {
+        case INIT_FORMS:
+            triggerLoginForm();
+            triggerSignupForm();
+            return true;
+        case SET_SIGNUP_EVENT:
+            Log.d(TAG, "RECEIVED SET_SIGNUP_EVENT");
+            JumiaApplication.INSTANCE.setLoggedIn(true);
+            // Get next step
+            FragmentType signupNextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
+            if(signupNextFragment == null || signupNextFragment == FragmentType.UNKNOWN){
+                Log.w(TAG, "NEXT STEP IS NULL");
+                Toast.makeText(getBaseActivity(), getString(R.string.error_please_try_again), Toast.LENGTH_LONG).show();
+                super.gotoOldCheckoutMethod(getBaseActivity());
+                return true;
+            }
+            signupNextFragment = (signupNextFragment != FragmentType.UNKNOWN) ? signupNextFragment : FragmentType.CREATE_ADDRESS;
+            getBaseActivity().hideKeyboard();
+            getBaseActivity().updateSlidingMenuCompletly();
+            FragmentController.getInstance().popLastEntry(FragmentType.ABOUT_YOU.toString());
+            getBaseActivity().onSwitchFragment(signupNextFragment, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);            
+            break;
+        case FACEBOOK_LOGIN_EVENT:
+            JumiaApplication.INSTANCE.setLoggedIn(true);
+            // Get customer
+            Customer customerFb = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            // Get next step
+            FragmentType fbNextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
+            if(fbNextFragment == null){
+                Log.w(TAG, "NEXT STEP IS NULL");
+                Toast.makeText(getBaseActivity(), getString(R.string.error_please_try_again), Toast.LENGTH_LONG).show();
+                super.gotoOldCheckoutMethod(getBaseActivity());
+                return true;
+            }
+            // Get Customer
+            getBaseActivity().hideKeyboard();
+            getBaseActivity().updateSlidingMenuCompletly();
+            FragmentController.getInstance().popLastEntry(FragmentType.ABOUT_YOU.toString());
+            getBaseActivity().onSwitchFragment(fbNextFragment, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            // Tracking
+            TrackerDelegator.trackLoginSuccessful(getBaseActivity(), customerFb, onAutoLogin, loginOrigin, true);
+            return true;
+        case LOGIN_EVENT:
+            JumiaApplication.INSTANCE.setLoggedIn(true);
+            // Get customer
+            Customer customer = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            // Get next step
+            FragmentType loginNextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
+            if(loginNextFragment == null){
+                Log.w(TAG, "NEXT STEP IS NULL");
+                Toast.makeText(getBaseActivity(), getString(R.string.error_please_try_again), Toast.LENGTH_LONG).show();
+                super.gotoOldCheckoutMethod(getBaseActivity());
+                return true;
+            }
+            // Get Customer
+            getBaseActivity().hideKeyboard();
+            getBaseActivity().updateSlidingMenuCompletly();
+            FragmentController.getInstance().popLastEntry(FragmentType.ABOUT_YOU.toString());
+            getBaseActivity().onSwitchFragment(loginNextFragment, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            // Tracking
+            TrackerDelegator.trackLoginSuccessful(getBaseActivity(), customer, onAutoLogin, loginOrigin, false);
+            break;
+       case GET_SIGNUP_FORM_EVENT:
+           // Get order summary
+           mOrderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
+           // Save and load form
+           Form signupForm = (Form) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+           loadSignupForm(signupForm);
+           this.signupFormResponse = signupForm;
+           break;
+        case GET_LOGIN_FORM_EVENT:
+            Form form = (Form) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            // Validate form
+            if (form == null) {
+                showLoginFormErrorDialog();
+            } else {
+                // Save and load form
+                loadForm(form);
+                this.formResponse = form;
+                // Clean FACEBOOK session
+                cleanFacebookSession();
+            }
+            break;
+        }
+        return true;
+    }
+
+
+    /**
+     * 
+     * @param bundle
+     * @return
+     */
+    protected boolean onErrorEvent(Bundle bundle) {
+        
+    	if(!isVisible()){
+    	    Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+    		return true;
+    	}
+    	
+//    	/**
+//    	 * TODO: Improve this method to correctly handle issues with Native Checkout
+//    	 */
+//    	if(true){
+//    	    Bundle args = new Bundle();
+//    	    args.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.CHECKOUT_BASKET);
+//    	    getBaseActivity().onSwitchFragment(FragmentType.LOGIN, args, FragmentController.ADD_TO_BACK_STACK);
+//    	    return true;
+//    	}
+    	
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        Log.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
+        
+        switch (eventType) {
+        case GET_LOGIN_FORM_EVENT:
+            Log.w(TAG, "ON ERRER RECEIVED: GET_LOGIN_FORM_EVENT");
+            if (errorCode == ErrorCode.UNKNOWN_ERROR && null == loginForm) {
+                restartAllFragments();
+            }
+            break;
+        case LOGIN_EVENT:
+            if (errorCode == ErrorCode.REQUEST_ERROR) {
+                TrackerDelegator.trackLoginFailed(onAutoLogin);
+                if (onAutoLogin) {
+                    // Sometimes formDataRegistry is null, so init forms
+                    if (formResponse == null) triggerInitForm();
+                } else {
+                    // Show error
+                    @SuppressWarnings("unchecked")
+                    HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+                    showErrorDialog(errors, R.string.error_login_title);
+                    getBaseActivity().showContentContainer(false);
+                }
+            }
+            break;
+        case SET_SIGNUP_EVENT:
+            Log.w(TAG, "ON ERRER RECEIVED: SET_SIGNUP_EVENT");
+            if (errorCode == ErrorCode.REQUEST_ERROR) {
+                @SuppressWarnings("unchecked")
+                HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY); 
+                showErrorDialog(errors, R.string.error_signup_title);
+                getBaseActivity().showContentContainer(false);
+            }
+            break;
+        case GET_SIGNUP_FORM_EVENT:
+            Log.w(TAG, "ON ERRER RECEIVED: GET_SIGNUP_FORM_EVENT");
+            triggerInitForm();
+            break;
+        default:
+            if(getBaseActivity().handleErrorEvent(bundle)){
+                Log.w(TAG, "BASE ACTIVITY HANDLE ERROR EVENT!");
+                return true;
+            }
+            break;
+        }
+        return true;
+    }
+    
+
     
     /**
      * ########### RESPONSE LISTENER ###########  

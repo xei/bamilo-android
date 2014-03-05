@@ -6,6 +6,7 @@ package pt.rocket.view.fragments;
 import java.util.EnumSet;
 
 import pt.rocket.app.JumiaApplication;
+import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.forms.ShippingMethodFormBuilder;
@@ -19,7 +20,6 @@ import pt.rocket.helpers.checkout.SetShippingMethodHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
-import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
@@ -68,9 +68,9 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
     public CheckoutShippingMethodsFragment() {
         super(EnumSet.of(EventType.GET_SHIPPING_METHODS_EVENT), 
                 EnumSet.noneOf(EventType.class),
-                EnumSet.noneOf(MyMenuItem.class), 
-                NavigationAction.Unknown, 
-                BaseActivity.CHECKOUT_SHIPPING);
+                EnumSet.of(MyMenuItem.SEARCH), 
+                NavigationAction.Checkout, 
+                ConstantsCheckout.CHECKOUT_SHIPPING);
     }
 
     /*
@@ -261,7 +261,7 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
             Log.d(TAG, "RECEIVED GET_SHIPPING_METHODS_EVENT");
             // Get order summary
             OrderSummary orderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
-            super.showOrderSummaryIfPresent(BaseActivity.CHECKOUT_SHIPPING, orderSummary);
+            super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_SHIPPING, orderSummary);
             // Form
             ShippingMethodFormBuilder form = (ShippingMethodFormBuilder) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             loadForm(form);
@@ -285,12 +285,13 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
 
 
     protected boolean onErrorEvent(Bundle bundle) {
-    	if(!isVisible()){
-    		return true;
-    	}
-        if(getBaseActivity().handleErrorEvent(bundle)){
-            return true;
-        }
+//    	if(!isVisible()){
+//    		return true;
+//    	}
+//        if(getBaseActivity().handleErrorEvent(bundle)){
+//            return true;
+//        }
+        
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         Log.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);

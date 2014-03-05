@@ -9,6 +9,7 @@ import java.util.Map;
 import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.app.JumiaApplication;
+import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
@@ -25,7 +26,6 @@ import pt.rocket.helpers.GetShoppingCartItemsHelper;
 import pt.rocket.helpers.GetShoppingCartRemoveItemHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
-import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
@@ -255,12 +255,12 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
 
         // Validate the current checkout step
         switch (mCheckoutStep) {
-        case BaseActivity.CHECKOUT_PAYMENT:
+        case ConstantsCheckout.CHECKOUT_PAYMENT:
             // Validate shipping method
             if(mOrderSummary != null && mOrderSummary.hasShippingMethod()) showShippingMethod(mOrderSummary.getShippingMethod());
             // continue
             
-        case BaseActivity.CHECKOUT_SHIPPING:
+        case ConstantsCheckout.CHECKOUT_SHIPPING:
             // Shipping fees
             if(mOrderSummary != null && mOrderSummary.hasShippingFees()) showShippingFees(mOrderSummary.getInstallmentFees());
             // Validate shipping address
@@ -269,8 +269,8 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
             if(mOrderSummary != null) showTotal(mOrderSummary.getTotal());
             // continue
             
-        case BaseActivity.CHECKOUT_BILLING:
-        case BaseActivity.CHECKOUT_ABOUT_YOU:
+        case ConstantsCheckout.CHECKOUT_BILLING:
+        case ConstantsCheckout.CHECKOUT_ABOUT_YOU:
         default:
             // Show cart
             showCart();

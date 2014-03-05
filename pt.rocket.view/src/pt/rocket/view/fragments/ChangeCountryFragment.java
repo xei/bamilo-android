@@ -6,6 +6,7 @@ package pt.rocket.view.fragments;
 import java.util.HashMap;
 
 import pt.rocket.app.JumiaApplication;
+import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.controllers.CountryAdapter;
@@ -143,6 +144,7 @@ public class ChangeCountryFragment extends BaseFragment {
         Log.i(TAG, "ON RESUME");
         ((BaseActivity) getActivity()).showContentContainer(false);
         ((BaseActivity) getActivity()).hideTitle();
+        ((BaseActivity) getActivity()).setCheckoutHeader(ConstantsCheckout.CHECKOUT_NO_SET_HEADER);
     }
 
     /*

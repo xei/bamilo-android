@@ -12,6 +12,7 @@ import java.util.Map.Entry;
 
 import org.holoeverywhere.widget.CheckBox;
 
+import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.forms.Form;
@@ -31,7 +32,6 @@ import pt.rocket.utils.GenericRadioGroup;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
-import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
@@ -100,9 +100,9 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
     public CheckoutMyAddressesFragment() {
         super(EnumSet.of(EventType.GET_BILLING_FORM_EVENT), 
                 EnumSet.noneOf(EventType.class),
-                EnumSet.noneOf(MyMenuItem.class), 
-                NavigationAction.Unknown, 
-                BaseActivity.CHECKOUT_BILLING);
+                EnumSet.of(MyMenuItem.SEARCH), 
+                NavigationAction.Checkout, 
+                ConstantsCheckout.CHECKOUT_BILLING);
     }
 
     /*
@@ -584,11 +584,11 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
      */
     protected boolean onSuccessEvent(Bundle bundle) {
         
-        // Validate fragment visibility
-        if(!isVisible()){
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return true;
-        }
+//        // Validate fragment visibility
+//        if(!isVisible()){
+//            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+//            return true;
+//        }
         
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         Log.i(TAG, "ON SUCCESS EVENT: " + eventType);
@@ -602,7 +602,7 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
             showAddresses(addresses.hasDefaultShippingAndBillingAddress());
             // Get order summary
             OrderSummary orderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
-            super.showOrderSummaryIfPresent(BaseActivity.CHECKOUT_BILLING, orderSummary);
+            super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_BILLING, orderSummary);
             break;
         case SET_BILLING_ADDRESS_EVENT:
             Log.d(TAG, "RECEIVED SET_BILLING_ADDRESS_EVENT");

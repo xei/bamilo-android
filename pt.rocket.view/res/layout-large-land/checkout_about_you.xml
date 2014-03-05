@@ -41,17 +41,6 @@
 
     <!-- ORDER SUMMARY -->
 
-
-    <!--
-         <fragment
-        android:name="pt.rocket.view.fragments.CheckoutSummaryFragment"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/margin_mid"
-        android:layout_marginRight="@dimen/margin_mid"
-        android:layout_weight="0.25" />
-    -->
-
     <FrameLayout
         android:id="@+id/order_summary_container"
         android:layout_width="0dp"

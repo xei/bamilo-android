@@ -110,8 +110,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
      */
     public CheckoutExternalPaymentFragment() {
         super(EnumSet.of(EventType.GET_SHOPPING_CART_ITEMS_EVENT, EventType.GET_CUSTOMER),
-                EnumSet.noneOf(EventType.class), EnumSet.noneOf(MyMenuItem.class),
-                NavigationAction.Unknown, 0);
+        EnumSet.noneOf(EventType.class),EnumSet.noneOf(MyMenuItem.class),NavigationAction.Checkout,0);
         this.setRetainInstance(true);
     }
 

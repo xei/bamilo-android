@@ -27,7 +27,6 @@ import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
-import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
@@ -115,9 +114,9 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
     public CheckoutMyOrderFragment() {
         super(EnumSet.of(EventType.CHECKOUT_FINISH_EVENT, EventType.GET_MY_ORDER_EVENT),
                 EnumSet.noneOf(EventType.class),
-                EnumSet.noneOf(MyMenuItem.class),
-                NavigationAction.Unknown,
-                BaseActivity.CHECKOUT_ORDER);
+                EnumSet.of(MyMenuItem.SEARCH),
+                NavigationAction.Checkout,
+                ConstantsCheckout.CHECKOUT_ORDER);
     }
 
     /*
@@ -466,18 +465,18 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
     protected boolean onSuccessEvent(Bundle bundle) {
         Log.i(TAG, "ON SUCCESS EVENT");
         
-        // Validate fragment visibility
-        if(!isVisible()){
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return true;
-        }
+//        // Validate fragment visibility
+//        if(!isVisible()){
+//            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+//            return true;
+//        }
         
-        if(getBaseActivity() != null){
-            Log.d(TAG, "BASE ACTIVITY HANDLE SUCCESS EVENT");
-            getBaseActivity().handleSuccessEvent(bundle);
-        } else {
-            return true;
-        }
+//        if(getBaseActivity() != null){
+//            Log.d(TAG, "BASE ACTIVITY HANDLE SUCCESS EVENT");
+//            getBaseActivity().handleSuccessEvent(bundle);
+//        } else {
+//            return true;
+//        }
         
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         Log.i(TAG, "ON SUCCESS EVENT: " + eventType);

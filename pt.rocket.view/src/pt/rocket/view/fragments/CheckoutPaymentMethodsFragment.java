@@ -8,6 +8,7 @@ import java.util.EnumSet;
 import org.holoeverywhere.widget.Toast;
 
 import pt.rocket.app.JumiaApplication;
+import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.FormConstants;
 import pt.rocket.controllers.fragments.FragmentController;
@@ -25,7 +26,6 @@ import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.pojo.DynamicForm;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
-import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
@@ -74,9 +74,9 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
     public CheckoutPaymentMethodsFragment() {
         super(EnumSet.of(EventType.GET_PAYMENT_METHODS_EVENT), 
                 EnumSet.noneOf(EventType.class),
-                EnumSet.noneOf(MyMenuItem.class), 
-                NavigationAction.Unknown, 
-                BaseActivity.CHECKOUT_PAYMENT);
+                EnumSet.of(MyMenuItem.SEARCH), 
+                NavigationAction.Checkout, 
+                ConstantsCheckout.CHECKOUT_PAYMENT);
     }
 
     /*
@@ -289,7 +289,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
             Log.d(TAG, "RECEIVED GET_SHIPPING_METHODS_EVENT");
             // Get order summary
             OrderSummary orderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
-            super.showOrderSummaryIfPresent(BaseActivity.CHECKOUT_PAYMENT, orderSummary);
+            super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_PAYMENT, orderSummary);
             // Form
             Form form = (Form) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             loadForm(form);

@@ -144,6 +144,9 @@ public class HomeFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        this.setRetainInstance(true);
+        
         HockeyStartup.register(getActivity());
         if(JumiaApplication.INSTANCE.mIsBound){
             onCreateExecution();    

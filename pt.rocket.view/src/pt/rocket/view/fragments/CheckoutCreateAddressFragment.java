@@ -12,6 +12,7 @@ import org.holoeverywhere.widget.CheckBox;
 import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.app.JumiaApplication;
+import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.constants.FormConstants;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
@@ -126,9 +127,9 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
     public CheckoutCreateAddressFragment() {
         super(EnumSet.of(EventType.GET_CREATE_ADDRESS_FORM_EVENT, EventType.CREATE_ADDRESS_EVENT), 
                 EnumSet.noneOf(EventType.class),
-                EnumSet.noneOf(MyMenuItem.class), 
-                NavigationAction.Unknown, 
-                BaseActivity.CHECKOUT_BILLING);
+                EnumSet.of(MyMenuItem.SEARCH), 
+                NavigationAction.Checkout, 
+                ConstantsCheckout.CHECKOUT_BILLING);
     }
 
     /*
@@ -296,7 +297,7 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         }
         
         // Show order summary
-        super.showOrderSummaryIfPresent(BaseActivity.CHECKOUT_BILLING, orderSummary);
+        super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_BILLING, orderSummary);
         
         // Show
         getBaseActivity().showContentContainer(false);
@@ -626,18 +627,18 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
     protected boolean onSuccessEvent(Bundle bundle) {
         Log.i(TAG, "ON SUCCESS EVENT");
         
-        // Validate fragment visibility
-        if(!isVisible()){
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return true;
-        }
+//        // Validate fragment visibility
+//        if(!isVisible()){
+//            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+//            return true;
+//        }
         
-        if(getBaseActivity() != null){
-            Log.d(TAG, "BASE ACTIVITY HANDLE SUCCESS EVENT");
-            getBaseActivity().handleSuccessEvent(bundle);
-        } else {
-            return true;
-        }
+//        if(getBaseActivity() != null){
+//            Log.d(TAG, "BASE ACTIVITY HANDLE SUCCESS EVENT");
+//            getBaseActivity().handleSuccessEvent(bundle);
+//        } else {
+//            return true;
+//        }
         
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         Log.i(TAG, "ON SUCCESS EVENT: " + eventType);

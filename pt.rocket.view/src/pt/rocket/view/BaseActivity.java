@@ -12,6 +12,7 @@ import org.holoeverywhere.widget.EditText;
 import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.app.JumiaApplication;
+import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.ActivitiesWorkFlow;
@@ -231,10 +232,10 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
          * @Solution : http://stackoverflow.com/questions/7575921/illegalstateexception-can-not-perform-this-action-after-onsaveinstancestate-h
          */
         if(getIntent().getExtras() != null){
-            initialCountry = getIntent().getExtras().getBoolean(
-                    ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, false);
+            initialCountry = getIntent().getExtras().getBoolean(ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, false);
             mOnActivityResultIntent = null;
         }
+        
         // Set sliding menu
         setupNavigationMenu(initialCountry);
 
@@ -283,16 +284,15 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
          * @Solution : http://stackoverflow.com/questions/7575921/illegalstateexception-can-not-perform-this-action-after-onsaveinstancestate-h
          */
         if(mOnActivityResultIntent != null && getIntent().getExtras() != null){
-            initialCountry = getIntent().getExtras().getBoolean(
-                    ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, false);
+            initialCountry = getIntent().getExtras().getBoolean(ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, false);
             mOnActivityResultIntent = null;
         }
-
-        // Validate if is in landscape and tablet and forcing menu
-        if (isTabletInLandscape(this) && !initialCountry)
-            showMenu();
-        else
-            showContent();
+        
+//        // Validate if is in landscape and tablet and forcing menu
+//        if (isTabletInLandscape(this) && !initialCountry && !inCheckoutProcess)
+//            showMenu();
+//        else
+//            showContent();
 
         if (!contentEvents.contains(EventType.GET_SHOPPING_CART_ITEMS_EVENT)
                 && JumiaApplication.INSTANCE.SHOP_ID >= 0 && JumiaApplication.INSTANCE.getCart() == null) {
@@ -477,8 +477,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         // Customize sliding menu
         SlidingMenu sm = getSlidingMenu();
         // Set the SlidingMenu width with a percentage of the display width
-        sm.setBehindWidth((int) (WindowHelper.getWidth(getApplicationContext()) * getResources()
-                .getFraction(R.dimen.navigation_menu_width, 1, 1)));
+        sm.setBehindWidth((int) (WindowHelper.getWidth(getApplicationContext()) * getResources().getFraction(R.dimen.navigation_menu_width, 1, 1)));
         sm.setShadowWidthRes(R.dimen.navigation_shadow_width);
         sm.setShadowDrawable(R.drawable.gradient_sidemenu);
         sm.setFadeDegree(0.35f);
@@ -517,8 +516,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         getSupportActionBar().setLogo(R.drawable.logo_ic);
 
         // Get the width of main content
-        int mainContentWidth = (int) (WindowHelper.getWidth(getApplicationContext()) * getResources()
-                .getFraction(R.dimen.navigation_menu_offset, 1, 1));
+        int mainContentWidth = (int) (WindowHelper.getWidth(getApplicationContext()) * getResources().getFraction(R.dimen.navigation_menu_offset, 1, 1));
         findViewById(R.id.main_layout).getLayoutParams().width = mainContentWidth;
 
         // Show Menu
@@ -539,6 +537,8 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
      */
     private void slideMenuInPortraitMode(SlidingMenu sm) {
         Log.i(TAG, "SET SLIDE MENU: PORTRAIT MODE");
+        // Update with for main content
+        findViewById(R.id.main_layout).getLayoutParams().width = LayoutParams.MATCH_PARENT;
         // Set action bar
         setActionBarInPortraitMode();
         // Set listeners
@@ -585,8 +585,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         // Set custom view
         getSupportActionBar().setDisplayShowCustomEnabled(true);
         getSupportActionBar().setCustomView(R.layout.action_bar_logo_layout);
-        getSupportActionBar().getCustomView().findViewById(R.id.ic_logo)
-                .setOnClickListener(onActionBarClickListener);
+        getSupportActionBar().getCustomView().findViewById(R.id.ic_logo).setOnClickListener(onActionBarClickListener);
     }
 
     /**
@@ -1899,78 +1898,79 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     /**
      * ########## CHECKOUT HEADER ########## 
      */
-    
-    public static final int CHECKOUT_ABOUT_YOU = -1;
-    public static final int CHECKOUT_BILLING = -2;
-    public static final int CHECKOUT_SHIPPING = -3;
-    public static final int CHECKOUT_PAYMENT = -4;
-    public static final int CHECKOUT_ORDER = -5;
-    public static final int CHECKOUT_THANKS = -6;
-    public static final int CHECKOUT_NO_SET_HEADER = -7;
-    
-    private boolean inLandscapeOnCheckout = false;
-    
-    
+        
     /**
      * Set the current checkout step otherwise return false
      * @param checkoutStep
      * @return true/false
      */
-    private boolean setCheckoutHeader(int checkoutStep){
+    public boolean setCheckoutHeader(int checkoutStep){
         Log.d(TAG, "SET CHECKOUT HEADER STEP ID: " + checkoutStep);
         
         int visibility = View.VISIBLE;
         boolean result = true;
         switch (checkoutStep) {
-        case CHECKOUT_ABOUT_YOU:
-            selectCheckoutStep(CHECKOUT_ABOUT_YOU);
-            unSelectCheckoutStep(CHECKOUT_BILLING);
-            unSelectCheckoutStep(CHECKOUT_SHIPPING);
-            unSelectCheckoutStep(CHECKOUT_PAYMENT);
+        case ConstantsCheckout.CHECKOUT_ABOUT_YOU:
+            selectCheckoutStep(ConstantsCheckout.CHECKOUT_ABOUT_YOU);
+            unSelectCheckoutStep(ConstantsCheckout.CHECKOUT_BILLING);
+            unSelectCheckoutStep(ConstantsCheckout.CHECKOUT_SHIPPING);
+            unSelectCheckoutStep(ConstantsCheckout.CHECKOUT_PAYMENT);
+            updateBaseComponentsInCheckout(visibility);
             break;
-        case CHECKOUT_BILLING:
-            unSelectCheckoutStep(CHECKOUT_ABOUT_YOU);
-            selectCheckoutStep(CHECKOUT_BILLING);
-            unSelectCheckoutStep(CHECKOUT_SHIPPING);
-            unSelectCheckoutStep(CHECKOUT_PAYMENT);
+        case ConstantsCheckout.CHECKOUT_BILLING:
+            unSelectCheckoutStep(ConstantsCheckout.CHECKOUT_ABOUT_YOU);
+            selectCheckoutStep(ConstantsCheckout.CHECKOUT_BILLING);
+            unSelectCheckoutStep(ConstantsCheckout.CHECKOUT_SHIPPING);
+            unSelectCheckoutStep(ConstantsCheckout.CHECKOUT_PAYMENT);
+            updateBaseComponentsInCheckout(visibility);
             break;
-        case CHECKOUT_SHIPPING:
-            unSelectCheckoutStep(CHECKOUT_ABOUT_YOU);
-            unSelectCheckoutStep(CHECKOUT_BILLING);
-            selectCheckoutStep(CHECKOUT_SHIPPING);
-            unSelectCheckoutStep(CHECKOUT_PAYMENT);
+        case ConstantsCheckout.CHECKOUT_SHIPPING:
+            unSelectCheckoutStep(ConstantsCheckout.CHECKOUT_ABOUT_YOU);
+            unSelectCheckoutStep(ConstantsCheckout.CHECKOUT_BILLING);
+            selectCheckoutStep(ConstantsCheckout.CHECKOUT_SHIPPING);
+            unSelectCheckoutStep(ConstantsCheckout.CHECKOUT_PAYMENT);
+            updateBaseComponentsInCheckout(visibility);
             break;
-        case CHECKOUT_PAYMENT:
-            unSelectCheckoutStep(CHECKOUT_ABOUT_YOU);
-            unSelectCheckoutStep(CHECKOUT_BILLING);
-            unSelectCheckoutStep(CHECKOUT_SHIPPING);
-            selectCheckoutStep(CHECKOUT_PAYMENT);
+        case ConstantsCheckout.CHECKOUT_PAYMENT:
+            unSelectCheckoutStep(ConstantsCheckout.CHECKOUT_ABOUT_YOU);
+            unSelectCheckoutStep(ConstantsCheckout.CHECKOUT_BILLING);
+            unSelectCheckoutStep(ConstantsCheckout.CHECKOUT_SHIPPING);
+            selectCheckoutStep(ConstantsCheckout.CHECKOUT_PAYMENT);
+            updateBaseComponentsInCheckout(visibility);
             break;
-        case CHECKOUT_ORDER:
-        case CHECKOUT_THANKS:
-            findViewById(R.id.checkout_header_main_step).setVisibility(View.INVISIBLE);
-            return true;
-        case CHECKOUT_NO_SET_HEADER:
-            updateBaseComponentsInCheckout(View.GONE);
-            return true;
+        case ConstantsCheckout.CHECKOUT_ORDER:
+        case ConstantsCheckout.CHECKOUT_THANKS:
+            updateBaseComponentsInCheckout(visibility);
+            hideOnlySteps();
+            break;
+        case ConstantsCheckout.CHECKOUT_NO_SET_HEADER:
+            // Hide title and total
+            hideTitle();
+            findViewById(R.id.totalProducts).setVisibility(View.GONE);
+            break;
         default:
             visibility = View.GONE;
             result = false;
+            updateBaseComponentsOutCheckout(visibility);
             break;
         }
 
-        // Update the base components for checkout
-        if(visibility == View.VISIBLE) updateBaseComponentsInCheckout(visibility);
-        // Update the base components for non checkout
-        else updateBaseComponentsOutCheckout(visibility);
-        
         // Return value
         return result;
     }
     
     /**
+     * Hide only the steps
+     * @author sergiopereira
+     */
+    private void hideOnlySteps(){
+        findViewById(R.id.checkout_header_main_step).setVisibility(View.INVISIBLE);
+    }
+    
+    /**
      * Update the base components out checkout
      * @param visibility
+     * @author sergiopereira
      */
     private void updateBaseComponentsOutCheckout(int visibility){
         Log.d(TAG, "SET BASE FOR NON CHECKOUT: HIDE");
@@ -1978,27 +1978,16 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         findViewById(R.id.checkout_header_main_step).setVisibility(visibility);
         findViewById(R.id.checkout_header).setVisibility(visibility);
         // Put sliding menu normal behavior
-        if(isTabletInLandscape(getApplicationContext()) && inLandscapeOnCheckout){
-            // Set the flag
-            inLandscapeOnCheckout = false;
-            getSlidingMenu().setSlidingEnabled(false);
-            // Get the width of main content
-            int mainContentWidth = (int) (WindowHelper.getWidth(getApplicationContext()) * getResources().getFraction(R.dimen.navigation_menu_offset, 1, 1));
-            findViewById(R.id.main_layout).getLayoutParams().width = mainContentWidth;
-            // Show Menu
-            getSlidingMenu().post(new Runnable() {
-                @Override
-                public void run() {
-                    showMenu();
-                }
-            });
-
+        if(isTabletInLandscape(getApplicationContext())){
+            // Set slide in landscape mode
+            slideMenuInLandscapeMode(getSlidingMenu());
         }
     }
     
     /**
      * Update the base components in checkout
      * @param visibility
+     * @author sergiopereira
      */
     private void updateBaseComponentsInCheckout(int visibility){
         Log.d(TAG, "SET BASE FOR CHECKOUT: SHOW");
@@ -2010,17 +1999,15 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         findViewById(R.id.totalProducts).setVisibility(View.GONE);
         // Validate device and orientation
         if(isTabletInLandscape(getApplicationContext())){
-            inLandscapeOnCheckout = true;
-            // Put sliding menu normal behavior
-            getSlidingMenu().setSlidingEnabled(true);
             // Update with for main content
             findViewById(R.id.main_layout).getLayoutParams().width = LayoutParams.MATCH_PARENT;
-            getSlidingMenu().post(new Runnable() {
+            // Set slide in portrait mode
+            getSlidingMenu().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    showContent();
+                    slideMenuInPortraitMode(getSlidingMenu());
                 }
-            });
+            }, 0);
         }
     }
     
@@ -2031,29 +2018,17 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
      */
     private void unSelectCheckoutStep(int step){
         switch (step) {
-        case CHECKOUT_ABOUT_YOU:
-            findViewById(R.id.checkout_header_step_1).setSelected(false);
-            findViewById(R.id.checkout_header_step_1).getLayoutParams().width = getResources().getDimensionPixelSize(R.dimen.checkout_header_step_width);
-            findViewById(R.id.checkout_header_step_1_icon).setSelected(false);
-            findViewById(R.id.checkout_header_step_1_text).setVisibility(View.GONE);
+        case ConstantsCheckout.CHECKOUT_ABOUT_YOU:
+            unSelectStep(R.id.checkout_header_step_1, R.id.checkout_header_step_1_icon, R.id.checkout_header_step_1_text);
             break;
-        case CHECKOUT_BILLING:
-            findViewById(R.id.checkout_header_step_2).setSelected(false);
-            findViewById(R.id.checkout_header_step_2).getLayoutParams().width = getResources().getDimensionPixelSize(R.dimen.checkout_header_step_width);
-            findViewById(R.id.checkout_header_step_2_icon).setSelected(false);
-            findViewById(R.id.checkout_header_step_2_text).setVisibility(View.GONE);
+        case ConstantsCheckout.CHECKOUT_BILLING:
+            unSelectStep(R.id.checkout_header_step_2, R.id.checkout_header_step_2_icon, R.id.checkout_header_step_2_text);
             break;
-        case CHECKOUT_SHIPPING:
-            findViewById(R.id.checkout_header_step_3).setSelected(false);
-            findViewById(R.id.checkout_header_step_3).getLayoutParams().width = getResources().getDimensionPixelSize(R.dimen.checkout_header_step_width);
-            findViewById(R.id.checkout_header_step_3_icon).setSelected(false);
-            findViewById(R.id.checkout_header_step_3_text).setVisibility(View.GONE);
+        case ConstantsCheckout.CHECKOUT_SHIPPING:
+            unSelectStep(R.id.checkout_header_step_3, R.id.checkout_header_step_3_icon, R.id.checkout_header_step_3_text);
             break;
-        case CHECKOUT_PAYMENT:
-            findViewById(R.id.checkout_header_step_4).setSelected(false);
-            findViewById(R.id.checkout_header_step_4).getLayoutParams().width = getResources().getDimensionPixelSize(R.dimen.checkout_header_step_width);
-            findViewById(R.id.checkout_header_step_4_icon).setSelected(false);
-            findViewById(R.id.checkout_header_step_4_text).setVisibility(View.GONE);
+        case ConstantsCheckout.CHECKOUT_PAYMENT:
+            unSelectStep(R.id.checkout_header_step_4, R.id.checkout_header_step_4_icon, R.id.checkout_header_step_4_text);
             break;
         default:
             break;
@@ -2067,33 +2042,49 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
      */
     private void selectCheckoutStep(int step){
         switch (step) {
-        case CHECKOUT_ABOUT_YOU:
-            findViewById(R.id.checkout_header_step_1).setSelected(true);
-            findViewById(R.id.checkout_header_step_1).getLayoutParams().width = getResources().getDimensionPixelSize(R.dimen.checkout_header_step_selected_width);
-            findViewById(R.id.checkout_header_step_1_icon).setSelected(true);
-            findViewById(R.id.checkout_header_step_1_text).setVisibility(View.VISIBLE);
+        case ConstantsCheckout.CHECKOUT_ABOUT_YOU:
+            selectStep(R.id.checkout_header_step_1, R.id.checkout_header_step_1_icon, R.id.checkout_header_step_1_text);
             break;
-        case CHECKOUT_BILLING:
-            findViewById(R.id.checkout_header_step_2).setSelected(true);
-            findViewById(R.id.checkout_header_step_2).getLayoutParams().width = getResources().getDimensionPixelSize(R.dimen.checkout_header_step_selected_width);
-            findViewById(R.id.checkout_header_step_2_icon).setSelected(true);
-            findViewById(R.id.checkout_header_step_2_text).setVisibility(View.VISIBLE);
+        case ConstantsCheckout.CHECKOUT_BILLING:
+            selectStep(R.id.checkout_header_step_2, R.id.checkout_header_step_2_icon, R.id.checkout_header_step_2_text);
             break;
-        case CHECKOUT_SHIPPING:
-            findViewById(R.id.checkout_header_step_3).setSelected(true);
-            findViewById(R.id.checkout_header_step_3).getLayoutParams().width = getResources().getDimensionPixelSize(R.dimen.checkout_header_step_selected_width);
-            findViewById(R.id.checkout_header_step_3_icon).setSelected(true);
-            findViewById(R.id.checkout_header_step_3_text).setVisibility(View.VISIBLE);
+        case ConstantsCheckout.CHECKOUT_SHIPPING:
+            selectStep(R.id.checkout_header_step_3, R.id.checkout_header_step_3_icon, R.id.checkout_header_step_3_text);
             break;
-        case CHECKOUT_PAYMENT:
-            findViewById(R.id.checkout_header_step_4).setSelected(true);
-            findViewById(R.id.checkout_header_step_4).getLayoutParams().width = getResources().getDimensionPixelSize(R.dimen.checkout_header_step_selected_width);
-            findViewById(R.id.checkout_header_step_4_icon).setSelected(true);
-            findViewById(R.id.checkout_header_step_4_text).setVisibility(View.VISIBLE);
+        case ConstantsCheckout.CHECKOUT_PAYMENT:
+            selectStep(R.id.checkout_header_step_4, R.id.checkout_header_step_4_icon, R.id.checkout_header_step_4_text);
             break;
         default:
             break;
         }
+    }
+    
+    /**
+     * Set a step selected
+     * @param main
+     * @param icon
+     * @param text
+     * @author sergiopereira
+     */
+    private void selectStep(int main, int icon, int text){
+        findViewById(main).setSelected(true);
+        findViewById(main).getLayoutParams().width = getResources().getDimensionPixelSize(R.dimen.checkout_header_step_selected_width);
+        findViewById(icon).setSelected(true);
+        findViewById(text).setVisibility(View.VISIBLE);
+    }
+    
+    /**
+     * Set a step unselected
+     * @param main
+     * @param icon
+     * @param text
+     * @author sergiopereira
+     */
+    private void unSelectStep(int main, int icon, int text){
+        findViewById(main).setSelected(false);
+        findViewById(main).getLayoutParams().width = getResources().getDimensionPixelSize(R.dimen.checkout_header_step_width);
+        findViewById(icon).setSelected(false);
+        findViewById(text).setVisibility(View.GONE);
     }
     
     /**
@@ -2106,8 +2097,9 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         int id = view.getId();
         // CHECKOUT_ABOUT_YOU
         if(id == R.id.checkout_header_step_1 && !view.isSelected()){
-            removeAllCheckoutEntries();
-            onSwitchFragment(FragmentType.ABOUT_YOU, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            // Uncomment if you want click on about you step
+            //removeAllCheckoutEntries();
+            //onSwitchFragment(FragmentType.ABOUT_YOU, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         }
         //CHECKOUT_BILLING
         else if(id == R.id.checkout_header_step_2 && !view.isSelected()){
@@ -2140,8 +2132,5 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.EDIT_ADDRESS.toString());
         FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.POLL.toString());
     }
-    
 
-    
-    
 }

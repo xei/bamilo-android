@@ -40,6 +40,7 @@ public class ConstantsIntentExtra {
     
     // ########### Checkout ###########
     //
+    public static final String CHECKOUT_PROCESS             = mPackage + "CheckoutProcess";
     public static final String CONTENT_TITLE                = mPackage + "ContentTitle";
     public static final String SUCESS_INFORMATION           = mPackage + "SucessInformation";
     public static final String CUSTOMER_EMAIL               = mPackage + "CustomerEmail";
