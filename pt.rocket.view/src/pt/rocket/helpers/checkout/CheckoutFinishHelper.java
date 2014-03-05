@@ -104,7 +104,8 @@ public class CheckoutFinishHelper extends BaseHelper {
                 PaymentMethodForm mPaymentMethodForm = new PaymentMethodForm();
                 mPaymentMethodForm.initialize(jsonObject);
                 JumiaApplication.INSTANCE.setPaymentMethodForm(mPaymentMethodForm);
-                if (jsonPayment != null) {
+                
+                if (jsonPayment != null && jsonPayment.length() > 0) {
                     Log.d(TAG, "PAYMENT DATA: " + jsonPayment.toString());
                     // Get type
                     String paymentType = jsonPayment.optString("type");

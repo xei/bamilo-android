@@ -178,6 +178,8 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
             }
         });
         getView().findViewById(R.id.btn_checkout_continue).setOnClickListener(this);
+        
+        getBaseActivity().showContentContainer();
     }
     
     /*

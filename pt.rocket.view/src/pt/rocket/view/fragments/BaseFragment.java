@@ -399,7 +399,11 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     }
 
     protected final void triggerContentEvent(final BaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
-        ((BaseActivity) getActivity()).showLoading(false);
+        if(((BaseActivity) getActivity()) != null){
+            ((BaseActivity) getActivity()).showLoading(false);    
+        }
+        
+        
         sendRequest(helper, args, responseCallback);
     }
 
