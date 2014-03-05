@@ -130,9 +130,6 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 	private HttpContext httpContext;
 	// handles all Database operations
 	private HttpCacheStorage cache;
-
-	private int VERSION = 0;
-	private String VERSION_PARAMETER = "version";
 	
 	private ConnectivityManager connManager;
 
@@ -208,13 +205,6 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 		
 		String url = RemoteService.completeUri(uri)
 				.toString();
-		if(VERSION > 0){
-			if(url.contains("?")){
-				url = url+"&"+VERSION_PARAMETER+"="+VERSION;
-			} else {
-				url = url+"?"+VERSION_PARAMETER+"="+VERSION;
-			}
-		}
 		
 		if (ConfigurationConstants.LOG_DEBUG_ENABLED) {
 			Log.d(TAG, "get: " + url.toString());
@@ -246,13 +236,7 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 		
 		String url = RemoteService.completeUri(uri)
 				.toString();
-		if(VERSION > 0){
-			if(url.contains("?")){
-				url = url+"&"+VERSION_PARAMETER+"="+VERSION;
-			} else {
-				url = url+"?"+VERSION_PARAMETER+"="+VERSION;
-			}
-		}
+		
 		if (ConfigurationConstants.LOG_DEBUG_ENABLED) {
 			Log.d(TAG, "post: " + url.toString());
 		}
@@ -718,14 +702,6 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 		msg.setData(bundle);
 
 		return msg;
-	}
-	
-	public void setAPIVersion(int version){
-		VERSION = version;
-	}
-
-	public int getAPIVersion(){
-		return VERSION;
 	}
 	
 }
