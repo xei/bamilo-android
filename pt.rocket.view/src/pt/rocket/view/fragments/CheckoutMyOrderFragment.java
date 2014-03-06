@@ -416,7 +416,18 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
      */
     private void onClickNextStepButton() {
         Log.i(TAG, "ON CLICK: NextStep");
-        triggerCheckoutFinish();
+        if(JumiaApplication.INSTANCE.getPaymentMethodForm() != null ){
+            if(JumiaApplication.INSTANCE.getPaymentMethodForm().getPaymentType() == PaymentMethodForm.METHOD_SUBMIT_EXTERNAL || JumiaApplication.INSTANCE.getPaymentMethodForm().getPaymentType() == PaymentMethodForm.METHOD_AUTO_SUBMIT_EXTERNAL || JumiaApplication.INSTANCE.getPaymentMethodForm().getPaymentType() == PaymentMethodForm.METHOD_AUTO_REDIRECT_EXTERNAL || JumiaApplication.INSTANCE.getPaymentMethodForm().getPaymentType() == PaymentMethodForm.METHOD_RENDER_INTERNAL){
+                getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_EXTERNAL_PAYMENT, null, FragmentController.ADD_TO_BACK_STACK);
+            } else {
+                Bundle bundle = new Bundle();
+                bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR, JumiaApplication.INSTANCE.getPaymentMethodForm().getOrderNumber());
+                getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_THANKS, bundle, FragmentController.ADD_TO_BACK_STACK); 
+            }
+        } else {
+            triggerCheckoutFinish();    
+        }
+        
     }    
     
     /**
@@ -424,10 +435,12 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
      */
     private void onClickEditAddressesButton() {
         Log.i(TAG, "ON CLICK: EditAddresses");
-        if(FragmentController.getInstance().hasEntry(FragmentType.MY_ADDRESSES.toString()))
-            FragmentController.getInstance().popAllEntriesUntil(getBaseActivity(), FragmentType.MY_ADDRESSES.toString());
-        else
-            getBaseActivity().onSwitchFragment(FragmentType.MY_ADDRESSES, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        if(JumiaApplication.INSTANCE.getPaymentMethodForm() == null){
+            if(FragmentController.getInstance().hasEntry(FragmentType.MY_ADDRESSES.toString()))
+                FragmentController.getInstance().popAllEntriesUntil(getBaseActivity(), FragmentType.MY_ADDRESSES.toString());
+            else
+                getBaseActivity().onSwitchFragment(FragmentType.MY_ADDRESSES, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        }
     }
 
     /**
@@ -435,10 +448,12 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
      */
     private void onClickEditShippingMethodButton() {
         Log.i(TAG, "ON CLICK: EditShippingMethod");
-        if(FragmentController.getInstance().hasEntry(FragmentType.SHIPPING_METHODS.toString()))
-            FragmentController.getInstance().popAllEntriesUntil(getBaseActivity(), FragmentType.SHIPPING_METHODS.toString());
-        else
-            getBaseActivity().onSwitchFragment(FragmentType.SHIPPING_METHODS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        if(JumiaApplication.INSTANCE.getPaymentMethodForm() == null){
+            if(FragmentController.getInstance().hasEntry(FragmentType.SHIPPING_METHODS.toString()))
+                FragmentController.getInstance().popAllEntriesUntil(getBaseActivity(), FragmentType.SHIPPING_METHODS.toString());
+            else
+                getBaseActivity().onSwitchFragment(FragmentType.SHIPPING_METHODS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        }
     }
     
     /**
@@ -446,10 +461,12 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
      */
     private void onClickEditPaymentOptionsButton() {
         Log.i(TAG, "ON CLICK: EditPaymentOptions");
-        if(FragmentController.getInstance().hasEntry(FragmentType.PAYMENT_METHODS.toString()))
-            FragmentController.getInstance().popAllEntriesUntil(getBaseActivity(), FragmentType.PAYMENT_METHODS.toString());
-        else
-            getBaseActivity().onSwitchFragment(FragmentType.PAYMENT_METHODS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        if(JumiaApplication.INSTANCE.getPaymentMethodForm() == null){
+            if(FragmentController.getInstance().hasEntry(FragmentType.PAYMENT_METHODS.toString()))
+                FragmentController.getInstance().popAllEntriesUntil(getBaseActivity(), FragmentType.PAYMENT_METHODS.toString());
+            else
+                getBaseActivity().onSwitchFragment(FragmentType.PAYMENT_METHODS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        }
     }
     
     /**
@@ -624,5 +641,37 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
         gotoOldCheckoutMethod(getBaseActivity());
     }
 
+    
+    @Override
+    public boolean allowBackPressed() {
+        if (JumiaApplication.INSTANCE.getPaymentMethodForm() == null) {
+            return false;
+        } else {
+           
+            dialog = DialogGenericFragment.newInstance(true, true, false,
+                    getString(R.string.confirm_order_loosing_order_title),
+                    getString(R.string.confirm_order_loosing_order),
+                    getString(R.string.ok_label), getString(R.string.cancel_label), new OnClickListener() {
+
+                        @Override
+                        public void onClick(View v) {
+                            int id = v.getId();
+                            if (id == R.id.button1) {
+                                dialog.dismiss();
+                                JumiaApplication.INSTANCE.setPaymentMethodForm(null);
+                                JumiaApplication.INSTANCE.setCart(null);
+                                getBaseActivity().updateCartInfo();
+                                getBaseActivity().onSwitchFragment(FragmentType.HOME, null, FragmentController.ADD_TO_BACK_STACK);
+                            } else if(id == R.id.button2){
+                                dialog.dismiss();
+                            }
+
+                        }
+
+                    });
+            dialog.show(getBaseActivity().getSupportFragmentManager(), null);
+            return true;
+        }
+    }
 
 }

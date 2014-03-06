@@ -209,26 +209,6 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
         super.onActivityResult(requestCode, resultCode, data);
     }
     
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onSaveInstanceState(android.os.Bundle)
-     */
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-//        if (null != loginForm) {
-//            Iterator<DynamicFormItem> iterator = loginForm.iterator();
-//            while (iterator.hasNext()) {
-//                DynamicFormItem item = iterator.next();
-//                item.saveState(outState);
-//            }
-//            savedInstanceState = outState;
-//        }
-//        super.onSaveInstanceState(outState);
-//        uiHelper.onSaveInstanceState(outState);
-    }
-    
-    
     /**
      * Load the dynamic form
      * 

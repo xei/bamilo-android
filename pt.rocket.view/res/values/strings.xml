@@ -329,7 +329,7 @@
     
     
     <string name="next_button">Next</string>
-    
-    
+    <string name="confirm_order_loosing_order_title">Order already created!</string>
+    <string name="confirm_order_loosing_order">Your order was already created, you cannot perform any changes, please proceed with the payment. Are you sure you want to leave this step? Please contact support for more information</string>
 
 </resources>

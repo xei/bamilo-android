@@ -7,6 +7,7 @@ import java.util.EnumSet;
 
 import org.holoeverywhere.widget.TextView;
 
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.controllers.fragments.FragmentController;
@@ -162,8 +163,8 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
     }
     
     private void prepareLayout(){
-        Bundle args = this.getArguments();
-        String order_number = args.getString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR);
+//        String order_number = args.getString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR);
+        String order_number = JumiaApplication.INSTANCE.getPaymentMethodForm().getOrderNumber();
         TextView tV = (TextView) getView().findViewById(R.id.order_number_id);
         tV.setText(order_number);
         tV.setOnClickListener(new OnClickListener() {
@@ -189,6 +190,9 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
         setOrderStatusLink(order_number);
         // Show the container
         getBaseActivity().showContentContainer();
+        JumiaApplication.INSTANCE.setPaymentMethodForm(null);
+        JumiaApplication.INSTANCE.setCart(null);
+        getBaseActivity().updateCartInfo();
     }
     
     /**
