@@ -397,8 +397,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         items = new ArrayList<ShoppingCartItem>(cart.getCartItems().values());
         priceTotal.setText(cart.getCartValue());
 
-        String articleString = getResources().getQuantityString(
-                R.plurals.shoppingcart_text_article, cart.getCartCount());
+        String articleString = getResources().getQuantityString(R.plurals.shoppingcart_text_article, cart.getCartCount());
         articlesCount.setText(cart.getCartCount() + " " + articleString);
         if (items.size() == 0) {
             showNoItems();

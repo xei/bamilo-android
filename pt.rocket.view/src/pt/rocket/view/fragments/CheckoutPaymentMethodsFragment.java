@@ -261,6 +261,13 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
      */
   
     protected boolean onSuccessEvent(Bundle bundle) {
+        
+        // Validate fragment visibility
+        if (isOnStoppingProcess) {
+            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return true;
+        }
+        
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         Log.i(TAG, "ON SUCCESS EVENT: " + eventType);
         
@@ -296,9 +303,12 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
     
 
     protected boolean onErrorEvent(Bundle bundle) {
-    	if(!isVisible()){
-    		return true;
-    	}
+        
+        // Validate fragment visibility
+        if (isOnStoppingProcess) {
+            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return true;
+        }
         
     	// Generic error
         if (getBaseActivity() != null && getBaseActivity().handleErrorEvent(bundle)) {

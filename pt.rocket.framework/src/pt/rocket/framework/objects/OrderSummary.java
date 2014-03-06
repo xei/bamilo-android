@@ -363,9 +363,13 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
 	}
 	
 	public boolean hasCoupon(){
-		return (mDiscountAmount != null) ? true : false;
+		return (mDiscountAmount != null && !mDiscountAmount.equals("0")) ? true : false;
 	}
-	
+
+	public boolean hasDiscount(){
+		Log.d(TAG, "DISCOUNT: " + mDiscountAmount);
+		return (mDiscountAmount != null && !mDiscountAmount.equals("0")) ? true : false;
+	}
 	
 
 	/**

@@ -708,16 +708,11 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
     protected boolean onSuccessEvent(Bundle bundle) {
         Log.d(TAG, "ON SUCCESS EVENT");
         
-//        // Validate fragment visibility
-//        if(!isVisible()){
-//            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-//            return true;
-//        }
+        if(isOnStoppingProcess){
+            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return true;
+        }
         
-
-        
-        
-         
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         Log.i(TAG, "ON SUCCESS EVENT: " + eventType);
         
@@ -816,7 +811,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
      */
     protected boolean onErrorEvent(Bundle bundle) {
         
-    	if(!isVisible()){
+    	if(isOnStoppingProcess){
     	    Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
     		return true;
     	}

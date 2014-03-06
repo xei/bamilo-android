@@ -253,6 +253,13 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
      */
   
     protected boolean onSuccessEvent(Bundle bundle) {
+        
+        // Validate fragment visibility
+        if (isOnStoppingProcess) {
+            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return true;
+        }
+        
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         Log.i(TAG, "ON SUCCESS EVENT: " + eventType);
         
@@ -285,9 +292,12 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
 
 
     protected boolean onErrorEvent(Bundle bundle) {
-//    	if(!isVisible()){
-//    		return true;
-//    	}
+        
+        // Validate fragment visibility
+        if (isOnStoppingProcess) {
+            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return true;
+        }
         
         // Generic error
         if (getBaseActivity() != null && getBaseActivity().handleErrorEvent(bundle)) {

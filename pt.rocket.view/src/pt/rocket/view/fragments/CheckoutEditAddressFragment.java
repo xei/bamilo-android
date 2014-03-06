@@ -581,11 +581,10 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
     protected boolean onSuccessEvent(Bundle bundle) {
         Log.i(TAG, "ON SUCCESS EVENT");
         
-//        // Validate fragment visibility
-//        if(!isVisible()){
-//            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-//            return true;
-//        }
+        if(isOnStoppingProcess){
+            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return true;
+        }
         
 //        if(getBaseActivity() != null){
 //            Log.d(TAG, "BASE ACTIVITY HANDLE SUCCESS EVENT");
@@ -642,9 +641,11 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
      * @return boolean
      */
     protected boolean onErrorEvent(Bundle bundle) {
-    	if(!isVisible()){
-    		return true;
-    	}
+        
+        if(isOnStoppingProcess){
+            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return true;
+        }
     	
         // Generic error
         if (getBaseActivity() != null && getBaseActivity().handleErrorEvent(bundle)) {

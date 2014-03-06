@@ -29,7 +29,6 @@ import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.view.R;
 import android.app.Activity;
-import android.content.ContentValues;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -66,7 +65,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
 
     private TextView mShippingMethodName;
 
-    private ViewGroup totalView;
+    //private ViewGroup totalView;
 
     private ViewGroup mVoucherView;
 
@@ -81,10 +80,6 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
     private Address shippingAddress;
 
     private Address billingAddress;
-
-    private ContentValues shippingMethod;
-
-    private ContentValues paymentOptions;
 
     private TextView mProductsNum;
 
@@ -303,7 +298,9 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
             // Quantity
             ((TextView) prodInflateView.findViewById(R.id.my_order_item_quantity)).setText(getString(R.string.my_order_qty) + " " + item.getQuantity());
             // Price
-            ((TextView) prodInflateView.findViewById(R.id.my_order_item_price)).setText(item.getPrice());
+            String price = item.getPrice();
+            if (!item.getPrice().equals(item.getSpecialPrice())) price = item.getSpecialPrice();  
+            ((TextView) prodInflateView.findViewById(R.id.my_order_item_price)).setText(price);
             // Add item view
             mProductsContainer.addView(prodInflateView);
         }
@@ -317,13 +314,18 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
      * @author sergiopereira
      */
     private void showSubTotal() {
-        int size = cart.getCartItems().size();
+        int size = cart.getCartCount();
         String itemsLabel = (size > 1) ? getString(R.string.my_order_items_label) : getString(R.string.my_order_item_label);
         mProductsNum.setText(size + " " + itemsLabel);
         Log.d(TAG, "SHOW SUB TOTAL: " + cart.getCartValue() + " " + mOrderFinish.getExtraCost());
         mProductsValue.setText(CurrencyFormatter.formatCurrency(cart.getCartValue()));
-        mShipFeeValue.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getExtraCost()));
-        mVoucherView.setVisibility(View.GONE);
+        // Shipping fee
+        if(mOrderFinish.getExtraCost() != "0") mShipFeeValue.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getExtraCost()));
+        else mShipFeeView.setVisibility(View.GONE);
+        // Voucher
+        if(mOrderFinish.hasDiscount()) mVoucherValue.setText(mOrderFinish.getDiscountAmount());
+        else mVoucherView.setVisibility(View.GONE);
+        // Total
         mTotalValue.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getTotal()));
     }
     
@@ -492,11 +494,11 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
     protected boolean onSuccessEvent(Bundle bundle) {
         Log.i(TAG, "ON SUCCESS EVENT");
         
-//        // Validate fragment visibility
-//        if(!isVisible()){
-//            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-//            return true;
-//        }
+        // Validate fragment visibility
+        if (isOnStoppingProcess) {
+            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return true;
+        }
         
 //        if(getBaseActivity() != null){
 //            Log.d(TAG, "BASE ACTIVITY HANDLE SUCCESS EVENT");
@@ -533,7 +535,10 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
      */
     
     protected boolean onErrorEvent(Bundle bundle) {
-        if (!isVisible()) {
+        
+        // Validate fragment visibility
+        if (isOnStoppingProcess) {
+            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
         

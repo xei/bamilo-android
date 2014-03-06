@@ -89,6 +89,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     private boolean isOrderSummaryPresent;
     
     private int ORDER_SUMMARY_CONTAINER = R.id.order_summary_container;
+    
+    protected boolean isOnStoppingProcess = true;
 
     public BaseFragment() {
     }
@@ -177,6 +179,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.d(TAG, "ON VIEW CREATED");
+        // 
+        isOnStoppingProcess = false;
         // Exist order summary
         isOrderSummaryPresent = (view.findViewById(ORDER_SUMMARY_CONTAINER) != null) ? true : false;
     }
@@ -259,6 +263,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     @Override
     public void onPause() {
         super.onPause();
+        // Set that fragment is on the stopping process
+        isOnStoppingProcess = true;
         // Save the current state
         setVisiblility(NOT_VISIBLE);
     }

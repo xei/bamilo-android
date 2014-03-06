@@ -538,6 +538,8 @@ public class HomeFragment extends BaseFragment {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        
+        ((BaseActivity) getActivity()).showContentContainer();
     }
     
     protected boolean onSuccessEvent(Bundle bundle) {

@@ -584,11 +584,11 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
      */
     protected boolean onSuccessEvent(Bundle bundle) {
         
-//        // Validate fragment visibility
-//        if(!isVisible()){
-//            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-//            return true;
-//        }
+        // Validate fragment visibility
+        if (isOnStoppingProcess) {
+            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return true;
+        }
         
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         Log.i(TAG, "ON SUCCESS EVENT: " + eventType);
@@ -624,7 +624,8 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
      * @return boolean
      */
     protected boolean onErrorEvent(Bundle bundle) {
-        if(!isVisible()){
+        // Validate fragment visibility
+        if (isOnStoppingProcess) {
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }

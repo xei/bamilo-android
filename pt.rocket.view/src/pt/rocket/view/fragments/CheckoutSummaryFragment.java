@@ -488,6 +488,13 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
      * @return
      */
     protected boolean onSuccessEvent(Bundle bundle) {
+        
+        // Validate fragment visibility
+        if (isOnStoppingProcess) {
+            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return true;
+        }
+        
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         Log.i(TAG, "ON SUCCESS EVENT: " + eventType);
 
@@ -518,7 +525,11 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
      * @return
      */
     protected boolean onErrorEvent(Bundle bundle) {
-        if (!isVisible()) {
+        
+        
+        // Validate fragment visibility
+        if (isOnStoppingProcess) {
+            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
         

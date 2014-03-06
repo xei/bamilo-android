@@ -305,11 +305,11 @@ public class CheckoutPollAnswerFragment extends BaseFragment implements OnClickL
     protected boolean onSuccessEvent(Bundle bundle) {
         Log.i(TAG, "ON SUCCESS EVENT");
         
-//        // Validate fragment visibility
-//        if(!isVisible()){
-//            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-//            return true;
-//        }
+        // Validate fragment visibility
+        if (isOnStoppingProcess) {
+            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return true;
+        }
         
 //        if(getBaseActivity() != null){
 //            Log.d(TAG, "BASE ACTIVITY HANDLE SUCCESS EVENT");
@@ -359,9 +359,11 @@ public class CheckoutPollAnswerFragment extends BaseFragment implements OnClickL
      */
     protected boolean onErrorEvent(Bundle bundle) {
         
-    	if(!isVisible()){
-    		return true;
-    	}
+        // Validate fragment visibility
+        if (isOnStoppingProcess) {
+            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return true;
+        }
         
         // Generic error
         if (getBaseActivity() != null && getBaseActivity().handleErrorEvent(bundle)) {
