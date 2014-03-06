@@ -714,12 +714,9 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
 //            return true;
 //        }
         
-//        if(getBaseActivity() != null){
-//            Log.d(TAG, "BASE ACTIVITY HANDLE SUCCESS EVENT");
-//            getBaseActivity().handleSuccessEvent(bundle);
-//        } else {
-//            return true;
-//        }
+
+        
+        
          
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         Log.i(TAG, "ON SUCCESS EVENT: " + eventType);
@@ -823,6 +820,12 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
     	    Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
     		return true;
     	}
+    	
+    	// Generic error
+        if (getBaseActivity() != null && getBaseActivity().handleErrorEvent(bundle)) {
+            Log.d(TAG, "BASE ACTIVITY HANDLE ERROR EVENT");
+            return true;
+        }
     	
 //    	/**
 //    	 * TODO: Improve this method to correctly handle issues with Native Checkout

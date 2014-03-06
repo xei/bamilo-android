@@ -303,7 +303,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
             // Quantity
             ((TextView) prodInflateView.findViewById(R.id.my_order_item_quantity)).setText(getString(R.string.my_order_qty) + " " + item.getQuantity());
             // Price
-            ((TextView) prodInflateView.findViewById(R.id.my_order_item_price)).setText(CurrencyFormatter.formatCurrency(item.getPrice()));
+            ((TextView) prodInflateView.findViewById(R.id.my_order_item_price)).setText(item.getPrice());
             // Add item view
             mProductsContainer.addView(prodInflateView);
         }
@@ -320,8 +320,9 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
         int size = cart.getCartItems().size();
         String itemsLabel = (size > 1) ? getString(R.string.my_order_items_label) : getString(R.string.my_order_item_label);
         mProductsNum.setText(size + " " + itemsLabel);
-        mProductsValue.setText(CurrencyFormatter.formatCurrency(cart.getCartValue())); 
-        mShipFeeValue.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getShippingAmount()));
+        Log.d(TAG, "SHOW SUB TOTAL: " + cart.getCartValue() + " " + mOrderFinish.getExtraCost());
+        mProductsValue.setText(CurrencyFormatter.formatCurrency(cart.getCartValue()));
+        mShipFeeValue.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getExtraCost()));
         mVoucherView.setVisibility(View.GONE);
         mTotalValue.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getTotal()));
     }
@@ -518,9 +519,13 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
         if (!isVisible()) {
             return true;
         }
-        if (getBaseActivity().handleErrorEvent(bundle)) {
+        
+        // Generic error
+        if (getBaseActivity() != null && getBaseActivity().handleErrorEvent(bundle)) {
+            Log.d(TAG, "BASE ACTIVITY HANDLE ERROR EVENT");
             return true;
         }
+        
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         Log.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);

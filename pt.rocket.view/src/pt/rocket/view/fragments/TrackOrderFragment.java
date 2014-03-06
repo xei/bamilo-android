@@ -9,6 +9,8 @@ import java.util.EnumSet;
 import org.holoeverywhere.widget.Button;
 import org.holoeverywhere.widget.EditText;
 import org.holoeverywhere.widget.TextView;
+
+import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.framework.objects.OrderTracker;
 import pt.rocket.framework.objects.OrderTrackerItem;
 import pt.rocket.framework.utils.Constants;
@@ -24,12 +26,10 @@ import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.view.FocusFinder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.webkit.WebView.FindListener;
 import android.widget.LinearLayout;
 import de.akquinet.android.androlog.Log;
 
@@ -169,15 +169,22 @@ public class TrackOrderFragment extends BaseFragment {
     }
     
     private void setupView() {
+        
         mEditText = (EditText) getView().findViewById(R.id.order_nr_edittext);
         Button mButton = (Button) getView().findViewById(R.id.btn_track_order);
         mButton.setOnClickListener(trackOrderClickListener);
+        
+        Bundle args = this.getArguments();
+        String order_number = null;
+        if(args != null) order_number = args.getString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR, null);
+        if(order_number != null) mEditText.setText(order_number);
         
         if(mEditText.getText() != null && mEditText.getText().length() > 0 && mOrderTracker != null){
             proccessSuccess();
         } else if(mEditText.getText() != null && mEditText.getText().length() > 0 && mOrderTrackerError){
             proccessError();
         }
+        
     }
     
     OnClickListener trackOrderClickListener = new OnClickListener() {

@@ -53,6 +53,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -382,6 +383,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         if(getBaseActivity().handleErrorEvent(bundle)){
             return true;
         }
+
         
         mBeginRequestMillis = System.currentTimeMillis();
         return true;

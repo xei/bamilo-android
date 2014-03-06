@@ -90,7 +90,7 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
      * @return CheckoutMyAddressesFragment
      */
     public static CheckoutMyAddressesFragment getInstance(Bundle bundle) {
-        return (customerAddressesFragment == null) ? customerAddressesFragment = new CheckoutMyAddressesFragment() : customerAddressesFragment;
+        return customerAddressesFragment = new CheckoutMyAddressesFragment();
     }
 
 
@@ -629,8 +629,9 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
             return true;
         }
         
-        if(getBaseActivity().handleErrorEvent(bundle)){
-            Log.w(TAG, "BASE ACTIVITY HANDLE ERROR EVENT!");
+        // Generic error
+        if (getBaseActivity() != null && getBaseActivity().handleErrorEvent(bundle)) {
+            Log.d(TAG, "BASE ACTIVITY HANDLE ERROR EVENT");
             return true;
         }
         

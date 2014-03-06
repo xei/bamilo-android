@@ -234,6 +234,7 @@
     <string name="thank_you_order_title">Merci!</string>
     <string name="order_success">Votre commande a été enregistré avec succès,\nsous le numéro suivant:</string>
     <string name="order_track_success">Vous pouvez suivre le statut de votre commande en allant \ndans la rubrique dédiée dans l\'application</string>
+    <string name="order_track_link">statut de votre</string>
     <string name="track_order_status">Statut actuel:</string>
     <string name="track_other_order">Consultez une autre commande</string>
     <string name="order_status">Suivi de commande</string>

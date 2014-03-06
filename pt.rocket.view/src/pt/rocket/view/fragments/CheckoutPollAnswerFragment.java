@@ -362,7 +362,10 @@ public class CheckoutPollAnswerFragment extends BaseFragment implements OnClickL
     	if(!isVisible()){
     		return true;
     	}
-        if(getBaseActivity().handleErrorEvent(bundle)){
+        
+        // Generic error
+        if (getBaseActivity() != null && getBaseActivity().handleErrorEvent(bundle)) {
+            Log.d(TAG, "BASE ACTIVITY HANDLE ERROR EVENT");
             return true;
         }
         

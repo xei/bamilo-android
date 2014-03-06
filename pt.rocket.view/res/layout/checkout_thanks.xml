@@ -8,12 +8,14 @@
         android:layout_height="match_parent"
         android:orientation="vertical" >
 
-<!--         <ImageView
+        <!--
+             <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/titlebar"
             android:scaleType="center"
-            android:src="@drawable/checkout_state04" /> -->
+            android:src="@drawable/checkout_state04" />
+        -->
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -43,7 +45,7 @@
             android:gravity="center"
             android:text="@string/order_success"
             android:textColor="@color/grey_middle"
-            android:textSize="11.22sp" />
+            android:textSize="@dimen/text_s" />
 
         <org.holoeverywhere.widget.TextView
             android:id="@+id/order_number_id"
@@ -59,13 +61,15 @@
             android:textSize="13.2sp" />
 
         <org.holoeverywhere.widget.TextView
+            android:id="@+id/order_status_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginTop="19.8dp"
             android:gravity="center"
             android:text="@string/order_track_success"
             android:textColor="@color/grey_middle"
-            android:textSize="11.22sp" />
+            android:textSize="@dimen/text_s" />
 
         <org.holoeverywhere.widget.Button
             android:id="@+id/btn_checkout_continue"

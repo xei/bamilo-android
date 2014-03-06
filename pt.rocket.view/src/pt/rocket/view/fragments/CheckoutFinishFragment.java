@@ -271,9 +271,13 @@ public class CheckoutFinishFragment extends BaseFragment implements OnClickListe
     	if(!isVisible()){
     		return true;
     	}
-        if(getBaseActivity().handleErrorEvent(bundle)){
+        
+        // Generic error
+        if (getBaseActivity() != null && getBaseActivity().handleErrorEvent(bundle)) {
+            Log.d(TAG, "BASE ACTIVITY HANDLE ERROR EVENT");
             return true;
         }
+        
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         Log.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);

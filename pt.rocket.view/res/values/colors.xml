@@ -20,6 +20,8 @@
     <color name="black_shadow">#6f251c</color>
     <color name="promotion_dialog_bkg">#80000000</color>
     <color name="loadingbackground_dimmed">#FFFFFFFF</color>
+    
+    <color name="yellow_dark">#feaf07</color>
 
     <!-- The color used in the divider -->
     <color name="semi_transparent">#88000000</color>

@@ -83,7 +83,7 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
     		mExtraCost = jsonOrder.optString("extra_payment_cost");
     		mDiscountAmount = jsonOrder.optString("bnp_discount_amount");
     		mInstallmentFees = jsonOrder.optString("installment_fees");
-    		mTaxAmount = jsonOrder.optString("tax_amount");
+    		mTaxAmount = jsonOrder.optString("tax_amount");				// VAT
     		mCustomerDevice = jsonOrder.optString("customer_device");
         }
         

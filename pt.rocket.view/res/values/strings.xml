@@ -233,7 +233,9 @@
     <string name="track_order_hint">Order id</string>
     <string name="thank_you_order_title">Thank You!</string>
     <string name="order_success">Your order has been successfully registered\n with the number:</string>
-    <string name="order_track_success">You can track your order status visiting \nthe order status area in this app</string>
+    <!-- WARNING: The string order_track_success should contain the string order_track_link. -->
+    <string name="order_track_success">You can track your order visiting \nthe order status area in this app</string>
+    <string name="order_track_link">order status</string>
     <string name="track_order_status">Current Status:</string>
     <string name="track_other_order">Check Another Order</string>
     <string name="order_status">Order Status</string>
