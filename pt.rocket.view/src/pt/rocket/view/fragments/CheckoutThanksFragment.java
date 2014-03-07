@@ -46,6 +46,8 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
 
     private static CheckoutThanksFragment checkoutStep5Fragment;
 
+    private static String order_number;
+    
     /**
      * Get instance
      * 
@@ -164,7 +166,10 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
     
     private void prepareLayout(){
 //        String order_number = args.getString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR);
-        String order_number = JumiaApplication.INSTANCE.getPaymentMethodForm().getOrderNumber();
+        if(JumiaApplication.INSTANCE.getPaymentMethodForm() != null && JumiaApplication.INSTANCE.getPaymentMethodForm().getOrderNumber() != null){
+            order_number = JumiaApplication.INSTANCE.getPaymentMethodForm().getOrderNumber();    
+        }
+        
         TextView tV = (TextView) getView().findViewById(R.id.order_number_id);
         tV.setText(order_number);
         tV.setOnClickListener(new OnClickListener() {

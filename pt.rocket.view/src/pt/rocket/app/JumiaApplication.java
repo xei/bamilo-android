@@ -11,6 +11,7 @@ import pt.rocket.framework.components.NavigationListComponent;
 import pt.rocket.framework.objects.Address;
 import pt.rocket.framework.objects.Category;
 import pt.rocket.framework.objects.CompleteProduct;
+import pt.rocket.framework.objects.PaymentInfo;
 import pt.rocket.framework.objects.PaymentMethods;
 import pt.rocket.framework.objects.ShippingMethods;
 import pt.rocket.framework.objects.ShoppingCart;
@@ -119,6 +120,11 @@ public class JumiaApplication extends Application implements ExceptionCallback {
      * Current categories
      */
     public static ArrayList<Category> currentCategories;
+    
+    /**
+     * Payment methods Info
+     */
+    private static HashMap<String,PaymentInfo> paymentsInfoList;
     
     /**
      * Tracking Request performance
@@ -626,6 +632,20 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     
     public PaymentMethodForm getPaymentMethodForm() {
         return this.paymentMethodForm;
+    }
+
+    /**
+     * @return the paymentsInfoList
+     */
+    public static HashMap<String,PaymentInfo> getPaymentsInfoList() {
+        return paymentsInfoList;
+    }
+
+    /**
+     * @param paymentsInfoList the paymentsInfoList to set
+     */
+    public static void setPaymentsInfoList(HashMap<String,PaymentInfo> paymentsInfoList) {
+        JumiaApplication.paymentsInfoList = paymentsInfoList;
     }
     
     /**

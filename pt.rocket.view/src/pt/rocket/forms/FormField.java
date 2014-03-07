@@ -12,6 +12,7 @@
  */
 package pt.rocket.forms;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -23,6 +24,7 @@ import org.json.JSONObject;
 
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.framework.objects.IJSONSerializable;
+import pt.rocket.framework.objects.PaymentInfo;
 import pt.rocket.framework.objects.PickUpStationObject;
 import pt.rocket.framework.objects.PollOption;
 import pt.rocket.framework.rest.RestConstants;
@@ -349,6 +351,9 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                     paymentFields = new HashMap<String, Form>();
                     dataOptionsObject = jsonObject.optJSONObject(RestConstants.JSON_OPTIONS_TAG);
                     Iterator<?> it = dataOptionsObject.keys();
+                    //Clean payment method info
+                    JumiaApplication.INSTANCE.setPaymentMethodForm(null);
+                    JumiaApplication.INSTANCE.setPaymentsInfoList(new HashMap<String,PaymentInfo>());
                     while (it.hasNext()) {
                         
                         String curKey = (String) it.next();
@@ -357,13 +362,18 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                         dataSet.put(value, curKey);
                         
                         
-                        JSONObject paymentDescription = dataOptionsObject.getJSONObject(curKey).getJSONObject(RestConstants.JSON_DESCRIPTION_TAG);
+                        JSONObject paymentDescription = dataOptionsObject.optJSONObject(curKey).optJSONObject(RestConstants.JSON_DESCRIPTION_TAG);
+                        Log.i(TAG, "code1paymentDescription : "+paymentDescription.toString());
+                        PaymentInfo mPaymentInfo = new PaymentInfo();
+                        mPaymentInfo.initialize(paymentDescription);
+                        JumiaApplication.INSTANCE.getPaymentsInfoList().put(curKey,mPaymentInfo);
                         
+                        Log.i(TAG, "code1paymentDescription : saved : "+curKey);
                         JSONObject json = dataOptionsObject.getJSONObject(curKey);
                         Form mForm = new Form();
                         mForm.initialize(json);
                         paymentFields.put(curKey, mForm);
-                        
+                        Log.i(TAG, "code1paymentDescription : initialized form : "+curKey);
                     }
                 }
                 

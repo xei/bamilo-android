@@ -8,17 +8,33 @@
     <LinearLayout
         android:id="@+id/radio_container"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-		>
+        android:layout_height="wrap_content" >
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/extras"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:paddingRight="10dp"
         android:visibility="gone" >
-    </LinearLayout>
 
+        <ImageView
+            android:id="@+id/payment_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal" 
+            android:visibility="gone"/>
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/payment_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/grey_divider_light_text"
+            android:textSize="@dimen/text_xs"
+            android:visibility="gone" />
+    </LinearLayout>
 </LinearLayout>

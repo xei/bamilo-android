@@ -176,7 +176,7 @@ public class TrackOrderFragment extends BaseFragment {
         
         Bundle args = this.getArguments();
         String order_number = null;
-        if(args != null) order_number = args.getString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR, null);
+        if(args != null) order_number = args.getString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR);
         if(order_number != null) mEditText.setText(order_number);
         
         if(mEditText.getText() != null && mEditText.getText().length() > 0 && mOrderTracker != null){

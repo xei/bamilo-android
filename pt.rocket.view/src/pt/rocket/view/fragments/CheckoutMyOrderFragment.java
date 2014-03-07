@@ -664,7 +664,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
            
             dialog = DialogGenericFragment.newInstance(true, true, false,
                     getString(R.string.confirm_order_loosing_order_title),
-                    getString(R.string.confirm_order_loosing_order),
+                    getString(R.string.confirm_order_loosing_order)+" \n"+JumiaApplication.INSTANCE.getPaymentMethodForm().getOrderNumber(),
                     getString(R.string.ok_label), getString(R.string.cancel_label), new OnClickListener() {
 
                         @Override
