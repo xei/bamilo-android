@@ -843,6 +843,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
                 restartAllFragments();
             }
             break;
+        case FACEBOOK_LOGIN_EVENT:
         case LOGIN_EVENT:
             if (errorCode == ErrorCode.REQUEST_ERROR) {
                 TrackerDelegator.trackLoginFailed(onAutoLogin);

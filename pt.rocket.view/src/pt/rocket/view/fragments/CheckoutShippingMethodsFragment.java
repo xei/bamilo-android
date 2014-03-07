@@ -32,9 +32,6 @@ import android.view.ViewGroup;
 import de.akquinet.android.androlog.Log;
 
 /**
- * FIXME: Waiting for: 
- * > NAFAMZ-5435:  MOBILE API - Add parameter in the Shipping/Payment Methods to get form with success  
- * 
  * @author sergiopereira
  * 
  */
@@ -43,24 +40,21 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
     private static final String TAG = LogTagHelper.create(CheckoutShippingMethodsFragment.class);
     
     private static CheckoutShippingMethodsFragment shippingMethodsFragment;
+
+    private ViewGroup mShippingMethodsContainer;
+
+    private ShippingMethodFormBuilder mFormResponse;
+
+    private View nFormContainer;
     
     /**
-     * 
-     * @return
+     * Get instance
+     * @return CheckoutShippingMethodsFragment
      */
     public static CheckoutShippingMethodsFragment getInstance(Bundle bundle) {
-        // if (loginFragment == null)
         shippingMethodsFragment = new CheckoutShippingMethodsFragment();
         return shippingMethodsFragment;
     }
-
-    private ViewGroup shippingMethodsContainer;
-
-    private ViewGroup cartContainer;
-
-    private ShippingMethodFormBuilder formResponse;
-
-    private View formContainer;
 
     /**
      * Empty constructor
@@ -120,14 +114,11 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
         // Get containers
-        shippingMethodsContainer = (ViewGroup) view.findViewById(R.id.checkout_shipping_methods_container);
-        cartContainer = (ViewGroup) view.findViewById(R.id.checkout_shipping_cart_container);
+        mShippingMethodsContainer = (ViewGroup) view.findViewById(R.id.checkout_shipping_methods_container);
         // Buttons
         view.findViewById(R.id.checkout_shipping_button_enter).setOnClickListener(this);
-        
         // Get and show addresses
         triggerGetShippingMethods();
-                
     }
     
     
@@ -212,11 +203,11 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
      */
     private void loadForm(ShippingMethodFormBuilder form) {
         Log.i(TAG, "LOAD FORM");
-        formResponse = form;
-        shippingMethodsContainer.removeAllViews();
-        formContainer = formResponse.generateForm(getActivity());
-        shippingMethodsContainer.addView(formContainer);        
-        shippingMethodsContainer.refreshDrawableState();
+        mFormResponse = form;
+        mShippingMethodsContainer.removeAllViews();
+        nFormContainer = mFormResponse.generateForm(getBaseActivity());
+        mShippingMethodsContainer.addView(nFormContainer);        
+        mShippingMethodsContainer.refreshDrawableState();
         getBaseActivity().showContentContainer(false);
     }
     
@@ -224,6 +215,10 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
      * ############# CLICK LISTENER #############
      */
     
+    /*
+     * (non-Javadoc)
+     * @see android.view.View.OnClickListener#onClick(android.view.View)
+     */
     @Override
     public void onClick(View view) {
         // Get view id
@@ -235,16 +230,17 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
     }
     
     
-    
+    /**
+     * Process the click on submit button
+     * @author sergiopereira
+     */
     private void onClickSubmitShippingMethod() {
         Log.i(TAG, "ON CLICK: SET SHIPPING METHOD");
-        
-            ContentValues values = formResponse.getValues();
-            if(values != null && values.size() > 0){
-                Log.i(TAG, "code1values : "+values.toString());
-                JumiaApplication.INSTANCE.setShippingMethod(values);
-                triggerSubmitShippingMethod(values);
-            }
+        ContentValues values = mFormResponse.getValues();
+        if(values != null && values.size() > 0){
+            JumiaApplication.INSTANCE.setShippingMethod(values);
+            triggerSubmitShippingMethod(values);
+        }
     }
     
    
@@ -252,6 +248,11 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
      * ############# RESPONSE #############
      */
   
+    /**
+     * Process the success response
+     * @param bundle
+     * @return boolean
+     */
     protected boolean onSuccessEvent(Bundle bundle) {
         
         // Validate fragment visibility
@@ -327,13 +328,22 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
      * ############# REQUESTS #############
      */
     
+    /**
+     * Trigger to set the shipping method
+     * @param values
+     * @author sergiopereira
+     */
     private void triggerSubmitShippingMethod(ContentValues values) {
+        Log.i(TAG, "TRIGGER: SET SHIPPING METHOD");
         Bundle bundle = new Bundle();
         bundle.putParcelable(SetShippingMethodHelper.FORM_CONTENT_VALUES, values);
-        Log.i(TAG, "TRIGGER: SET SHIPPING METHOD");
         triggerContentEvent(new SetShippingMethodHelper(), bundle, this);
     }
     
+    /**
+     * Trigger to get the shipping methods
+     * @author sergiopereira
+     */
     private void triggerGetShippingMethods(){
         Log.i(TAG, "TRIGGER: GET SHIPPING METHODS");
         triggerContentEvent(new GetShippingMethodsHelper(), null, this);
@@ -350,7 +360,11 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
     public void onRequestError(Bundle bundle) {
         onErrorEvent(bundle);
     }
-        
+     
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.interfaces.IResponseCallback#onRequestComplete(android.os.Bundle)
+     */
     @Override
     public void onRequestComplete(Bundle bundle) {
         onSuccessEvent(bundle);

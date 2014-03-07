@@ -111,7 +111,6 @@ public class CheckoutFinishFragment extends BaseFragment implements OnClickListe
         Log.i(TAG, "ON VIEW CREATED");
         // Get containers
         shippingMethodsContainer = (ViewGroup) view.findViewById(R.id.checkout_shipping_methods_container);
-        cartContainer = (ViewGroup) view.findViewById(R.id.checkout_shipping_cart_container);
         // Buttons
         view.findViewById(R.id.checkout_addresses_button_enter).setOnClickListener(this);
         
