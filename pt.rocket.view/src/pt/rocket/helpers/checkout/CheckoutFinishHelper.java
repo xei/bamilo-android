@@ -12,6 +12,7 @@ import pt.rocket.forms.PaymentMethodForm;
 import pt.rocket.framework.enums.RequestType;
 import pt.rocket.framework.interfaces.IMetaData;
 import pt.rocket.framework.objects.Order;
+import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
@@ -104,7 +105,9 @@ public class CheckoutFinishHelper extends BaseHelper {
                 PaymentMethodForm mPaymentMethodForm = new PaymentMethodForm();
                 mPaymentMethodForm.initialize(jsonObject);
                 JumiaApplication.INSTANCE.setPaymentMethodForm(mPaymentMethodForm);
-                
+                if(jsonObject.has(RestConstants.JSON_ORDER_NUMBER_TAG)){
+                    JumiaApplication.INSTANCE.getPaymentMethodForm().setOrderNumber(jsonObject.optString(RestConstants.JSON_ORDER_NUMBER_TAG));
+                }
                 if (jsonPayment != null && jsonPayment.length() > 0) {
                     Log.d(TAG, "PAYMENT DATA: " + jsonPayment.toString());
                     // Get type

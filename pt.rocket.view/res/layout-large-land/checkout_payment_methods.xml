@@ -6,70 +6,79 @@
 
     <!-- PAYMENT -->
 
-    <ScrollView
+    <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="@dimen/checkout_main_container"
-        android:fillViewport="true"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp" >
+        android:layout_weight="@dimen/checkout_main_container" >
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
-
-            <!-- PAYMENT METHODS -->
-
-            <org.holoeverywhere.widget.TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_huge"
-                android:fontFamily="roboto_regular"
-                android:gravity="center"
-                android:text="Payment"
-                android:textColor="@color/grey_divider_light_text"
-                android:textSize="@dimen/text_l" />
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp" >
 
             <LinearLayout
-                android:id="@+id/checkout_payment_methods_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_midhuge"
-                android:layout_marginTop="@dimen/margin_midhuge"
                 android:orientation="vertical" >
+
+                <!-- PAYMENT METHODS -->
+
+                <org.holoeverywhere.widget.TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_huge"
+                    android:fontFamily="roboto_regular"
+                    android:gravity="center"
+                    android:text="Payment"
+                    android:textColor="@color/grey_divider_light_text"
+                    android:textSize="@dimen/text_l" />
+
+                <LinearLayout
+                    android:id="@+id/checkout_payment_methods_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_midhuge"
+                    android:layout_marginTop="@dimen/margin_midhuge"
+                    android:orientation="vertical" >
+                </LinearLayout>
+
+                <!-- CART -->
+
+                <org.holoeverywhere.widget.TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_huge"
+                    android:fontFamily="roboto_regular"
+                    android:gravity="center"
+                    android:text="Cart"
+                    android:textColor="@color/grey_divider_light_text"
+                    android:textSize="@dimen/text_l" />
+
+                <LinearLayout
+                    android:id="@+id/checkout_payment_cart_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_midhuge"
+                    android:layout_marginTop="@dimen/margin_midhuge"
+                    android:orientation="vertical" >
+                </LinearLayout>
+
+                <!-- SUBMIT -->
+
             </LinearLayout>
+        </ScrollView>
+        <!-- NEXT BUTTON -->
 
-            <!-- CART -->
-
-            <org.holoeverywhere.widget.TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_huge"
-                android:fontFamily="roboto_regular"
-                android:gravity="center"
-                android:text="Cart"
-                android:textColor="@color/grey_divider_light_text"
-                android:textSize="@dimen/text_l" />
-
-            <LinearLayout
-                android:id="@+id/checkout_payment_cart_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_midhuge"
-                android:layout_marginTop="@dimen/margin_midhuge"
-                android:orientation="vertical" >
-            </LinearLayout>
-
-            <!-- SUBMIT -->
-
-            <org.holoeverywhere.widget.Button
-                android:id="@+id/checkout_payment_button_enter"
-                style="@style/button_orange_style"
-                android:contentDescription="@string/login_button_description"
-                android:text="Next" />
-        </LinearLayout>
-    </ScrollView>
+        <org.holoeverywhere.widget.Button
+            android:id="@+id/checkout_payment_button_enter"
+            style="@style/button_orange_style"
+            android:layout_alignParentBottom="true"
+            android:fontFamily="roboto_regular"
+            android:text="@string/next_button"
+            android:width="@dimen/inner_container_width" />
+    </RelativeLayout>
     <!-- DIVIDER -->
 
     <View
@@ -88,12 +97,14 @@
         android:layout_marginRight="@dimen/margin_mid"
         android:layout_weight="@dimen/checkout_order_summary" />
 
-<!--     <fragment
+    <!--
+         <fragment
         android:name="pt.rocket.view.fragments.CheckoutSummaryFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/margin_mid"
         android:layout_marginRight="@dimen/margin_mid"
-        android:layout_weight="0.25" /> -->
+        android:layout_weight="0.25" />
+    -->
 
 </LinearLayout>

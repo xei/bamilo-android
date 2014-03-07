@@ -426,6 +426,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
      * Process the click on next step button
      * @author sergiopereira
      */
+    
     private void onClickNextStepButton() {
         Log.i(TAG, "ON CLICK: NextStep");
         if(JumiaApplication.INSTANCE.getPaymentMethodForm() != null ){
