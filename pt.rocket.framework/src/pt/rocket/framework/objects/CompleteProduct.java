@@ -543,10 +543,10 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
         categories = (ArrayList<String>)in.readArrayList(null);
         
         attributes = new HashMap<String, String>();
-        in.readMap(attributes, null);
+        in.readMap(attributes, String.class.getClassLoader());
         
         shipmentData = new HashMap<String, String>();
-        in.readMap(shipmentData, null);
+        in.readMap(shipmentData, String.class.getClassLoader());
 
         
         simples = new ArrayList<ProductSimple>();

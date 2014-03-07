@@ -179,7 +179,7 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 	 * @param in
 	 */
 	private ShoppingCart(Parcel in) {
-		in.readMap(cartItems, null);
+		in.readMap(cartItems, ShoppingCartItem.class.getClassLoader());
 		cartValue = in.readString();
 		cartCount = in.readInt();
 		vat_value = in.readString();

@@ -159,7 +159,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
         Log.i(TAG, "ON VIEW CREATED");
         // Get order
         Bundle bundle = getArguments();
-        mOrderFinish = (OrderSummary) bundle.getParcelable(ConstantsIntentExtra.ORDER_FINISH); 
+        mOrderFinish = (OrderSummary) bundle.getParcelable(ConstantsIntentExtra.ORDER_FINISH);
         
         // Get product items
         mProductsContainer = (ViewGroup) view.findViewById(R.id.checkout_my_order_products_list);

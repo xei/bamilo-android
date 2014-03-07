@@ -353,7 +353,7 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
 	    savingPercentage = in.readDouble();
 	    price = in.readString();
 	    taxAmount = in.readDouble();
-	    in.readMap(simpleData, null);
+	    in.readMap(simpleData, String.class.getClassLoader());
 	    cartRuleDiscount = in.readDouble();
 	    variation = in.readString();
 	    priceVal = in.readDouble();
