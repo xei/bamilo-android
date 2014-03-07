@@ -728,7 +728,6 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             FragmentType signupNextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
             if(signupNextFragment == null || signupNextFragment == FragmentType.UNKNOWN){
                 Log.w(TAG, "NEXT STEP IS NULL");
-                Toast.makeText(getBaseActivity(), getString(R.string.error_please_try_again), Toast.LENGTH_LONG).show();
                 super.gotoOldCheckoutMethod(getBaseActivity());
                 return true;
             }
@@ -746,7 +745,6 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             FragmentType fbNextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
             if(fbNextFragment == null){
                 Log.w(TAG, "NEXT STEP IS NULL");
-                Toast.makeText(getBaseActivity(), getString(R.string.error_please_try_again), Toast.LENGTH_LONG).show();
                 super.gotoOldCheckoutMethod(getBaseActivity());
                 return true;
             }
@@ -766,7 +764,6 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             FragmentType loginNextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
             if(loginNextFragment == null){
                 Log.w(TAG, "NEXT STEP IS NULL");
-                Toast.makeText(getBaseActivity(), getString(R.string.error_please_try_again), Toast.LENGTH_LONG).show();
                 super.gotoOldCheckoutMethod(getBaseActivity());
                 return true;
             }

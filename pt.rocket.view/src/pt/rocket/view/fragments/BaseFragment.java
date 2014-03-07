@@ -3,6 +3,7 @@ package pt.rocket.view.fragments;
 import java.lang.reflect.Field;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -41,6 +42,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.Toast;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -805,10 +807,41 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * @author sergiopereira
      */
     public void gotoOldCheckoutMethod(BaseActivity activity){
+        // Warning user
+        Toast.makeText(getBaseActivity(), getString(R.string.error_please_try_again), Toast.LENGTH_LONG).show();
+        // Remove native checkout
+        removeNativeCheckoutFromBackStack();
+        // Create bundle
         Bundle bundle = new Bundle();
         bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.CHECKOUT_BASKET);
         bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationcart));
         activity.onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+    }
+    
+    
+    /**
+     * Method used to remove all native checkout entries from the back stack on the Fragment Controller
+     * TODO: Updated this method if you add a new native checkout step
+     * @author sergiopereira 
+     */
+    protected void removeNativeCheckoutFromBackStack(){
+        // Native Checkout
+        FragmentType[] type = { FragmentType.CHECKOUT_THANKS,   FragmentType.MY_ORDER,      FragmentType.PAYMENT_METHODS,
+                                FragmentType.SHIPPING_METHODS,  FragmentType.MY_ADDRESSES,  FragmentType.CREATE_ADDRESS,
+                                FragmentType.EDIT_ADDRESS,      FragmentType.POLL,          FragmentType.ABOUT_YOU };
+        // Remove tags
+        for (FragmentType fragmentType : type)  FragmentController.getInstance().removeAllEntriesWithTag(fragmentType.toString());
+    }
+    
+    
+    /**
+     * Check the array has content
+     * @param array
+     * @return true or false
+     * @author sergiopereira
+     */
+    protected boolean hasContent(ArrayList<?> array){
+        return (array != null && !array.isEmpty()) ? true : false;
     }
     
 }

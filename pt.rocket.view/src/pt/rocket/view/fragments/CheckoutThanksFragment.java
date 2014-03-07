@@ -164,6 +164,9 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
         Log.i(TAG, "ON DESTROY");
     }
     
+    /**
+     * Show content
+     */
     private void prepareLayout(){
 //        String order_number = args.getString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR);
         if(JumiaApplication.INSTANCE.getPaymentMethodForm() != null && JumiaApplication.INSTANCE.getPaymentMethodForm().getOrderNumber() != null){
@@ -183,7 +186,6 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
                 } else {
                     ClipboardManager ClipMan = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
                     ClipMan.setPrimaryClip(ClipData.newPlainText("simple text",((TextView) v).getText()));
-                    
                 }
                     
                 Toast.makeText(getActivity(), getString(R.string.copied_to_clipboard), Toast.LENGTH_SHORT).show();
@@ -234,23 +236,25 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
         public void onClick(View view) { 
             int viewId = view.getId();
             if(viewId == R.id.order_status_text) {
-                Log.d(TAG, "ON CLICK SPAN: " + view.getId() + " " + R.id.order_status_text);
-                // Remove all checkout process entries
-                FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.CHECKOUT_THANKS.toString());
-                FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.PAYMENT_METHODS.toString());
-                FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.SHIPPING_METHODS.toString());
-                FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.MY_ADDRESSES.toString());
-                FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.CREATE_ADDRESS.toString());
-                FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.EDIT_ADDRESS.toString());
-                FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.POLL.toString());
-                // Switch to track order
-                Bundle bundle = new Bundle();
-                bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR, view.getTag().toString());
-                getBaseActivity().onSwitchFragment(FragmentType.TRACK_ORDER, bundle, FragmentController.ADD_TO_BACK_STACK);
+                Log.d(TAG, "ON CLICK SPAN: " + view.getId());
+                onClickSpannableString(view);
             }
         }  
     };  
     
+    /**
+     * Process the click on the spannable string
+     * @param view
+     * @author sergiopereira
+     */
+    private void onClickSpannableString(View view){
+        // Remove all checkout process entries
+        super.removeNativeCheckoutFromBackStack();
+        // Switch to track order
+        Bundle bundle = new Bundle();
+        bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR, view.getTag().toString());
+        getBaseActivity().onSwitchFragment(FragmentType.TRACK_ORDER, bundle, FragmentController.ADD_TO_BACK_STACK);
+    }
     
     /*
      * (non-Javadoc)

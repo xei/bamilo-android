@@ -613,7 +613,12 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
         case GET_REGIONS_EVENT:
             Log.d(TAG, "RECEIVED GET_REGIONS_EVENT");
             mRegions = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
-            setRegions(mEditFormGenerator, mRegions, mCurrentAddress);
+            if (super.hasContent(mRegions)){
+                setRegions(mEditFormGenerator, mRegions, mCurrentAddress);
+            } else {
+                Log.w(TAG, "GET REGIONS EVENT: IS EMPTY");
+                super.gotoOldCheckoutMethod(getBaseActivity());
+            }
             break;
         case GET_CITIES_EVENT:
             Log.d(TAG, "RECEIVED GET_CITIES_EVENT");
@@ -662,13 +667,16 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
             Log.d(TAG, "RECEIVED INIT_FORMS");
             break;
         case GET_EDIT_ADDRESS_FORM_EVENT:
-            Log.d(TAG, "RECEIVED GET_EDIT_ADDRESS_FORM_EVENT");
+            Log.w(TAG, "RECEIVED GET_EDIT_ADDRESS_FORM_EVENT");
+            super.gotoOldCheckoutMethod(getBaseActivity());
             break;
         case GET_REGIONS_EVENT:
-            Log.d(TAG, "RECEIVED GET_REGIONS_EVENT");
+            Log.w(TAG, "RECEIVED GET_REGIONS_EVENT");
+            super.gotoOldCheckoutMethod(getBaseActivity());
             break;
         case GET_CITIES_EVENT:
-            Log.d(TAG, "RECEIVED GET_CITIES_EVENT");
+            Log.w(TAG, "RECEIVED GET_CITIES_EVENT");
+            super.gotoOldCheckoutMethod(getBaseActivity());
             break;
         case EDIT_ADDRESS_EVENT:
             Log.d(TAG, "RECEIVED EDIT_ADDRESS_EVENT");

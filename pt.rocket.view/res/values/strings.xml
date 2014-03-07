@@ -310,7 +310,7 @@
     <string name="my_order_payment">Payment Options</string>
     <string name="my_order_qty">Qty:</string>
     
-   	<string name="error_please_try_again">Please try again.</string>
+   	<string name="error_please_try_again">We have encountered a small problem fetching the data. Please try again.</string>
     
     <string name="checkout_header_step_1">1. About you</string>
     <string name="checkout_header_step_2">2. Address</string>

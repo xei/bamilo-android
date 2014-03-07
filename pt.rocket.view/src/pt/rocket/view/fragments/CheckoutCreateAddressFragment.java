@@ -659,8 +659,14 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         case GET_REGIONS_EVENT:
             Log.d(TAG, "RECEIVED GET_REGIONS_EVENT");
             regions = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
-            setRegions(shippingFormGenerator, regions, SHIPPING_FORM_TAG);
-            setRegions(billingFormGenerator, regions, BILLING_FORM_TAG);
+            // Validate response
+            if (super.hasContent(regions)){
+                setRegions(shippingFormGenerator, regions, SHIPPING_FORM_TAG);
+                setRegions(billingFormGenerator, regions, BILLING_FORM_TAG);
+            } else {
+                Log.w(TAG, "GET REGIONS EVENT: IS EMPTY");
+                super.gotoOldCheckoutMethod(getBaseActivity());
+            }
             break;
         case GET_CITIES_EVENT:
             Log.d(TAG, "RECEIVED GET_CITIES_EVENT");
@@ -708,13 +714,16 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
             Log.d(TAG, "RECEIVED INIT_FORMS");
             break;
         case GET_CREATE_ADDRESS_FORM_EVENT:
-            Log.d(TAG, "RECEIVED GET_CREATE_ADDRESS_FORM_EVENT");
+            Log.w(TAG, "RECEIVED GET_CREATE_ADDRESS_FORM_EVENT");
+            super.gotoOldCheckoutMethod(getBaseActivity());
             break;
         case GET_REGIONS_EVENT:
-            Log.d(TAG, "RECEIVED GET_REGIONS_EVENT");
+            Log.w(TAG, "RECEIVED GET_REGIONS_EVENT");
+            super.gotoOldCheckoutMethod(getBaseActivity());
             break;
         case GET_CITIES_EVENT:
-            Log.d(TAG, "RECEIVED GET_CITIES_EVENT");
+            Log.w(TAG, "RECEIVED GET_CITIES_EVENT");
+            super.gotoOldCheckoutMethod(getBaseActivity());
             break;
         case CREATE_ADDRESS_EVENT:
             Log.d(TAG, "RECEIVED CREATE_ADDRESS_EVENT");
@@ -732,8 +741,6 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         
         return false;
     }
-    
-   
     
     /**
      * ########### RESPONSE LISTENER ###########  
