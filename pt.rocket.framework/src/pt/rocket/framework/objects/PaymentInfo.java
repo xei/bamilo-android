@@ -2,6 +2,12 @@ package pt.rocket.framework.objects;
 
 import java.util.ArrayList;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import pt.rocket.framework.rest.RestConstants;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -23,6 +29,26 @@ public class PaymentInfo implements Parcelable{
 		this.setCvcText("");
 	}
 
+	
+	public void initialize(JSONObject mJSONObject){
+		
+		this.text = mJSONObject.optString(RestConstants.JSON_TEXT_TAG);
+		this.tooltip_text = mJSONObject.optString(RestConstants.JSON_TOOLTIP_TEXT_TAG);
+		this.cvc_text = mJSONObject.optString(RestConstants.JSON_CVC_TEXT_TAG);
+		JSONArray mJSONArray = mJSONObject.optJSONArray(RestConstants.JSON_IMAGES_TAG);
+		if(mJSONArray != null && mJSONArray.length() > 0){
+			for (int i = 0; i < mJSONArray.length(); i++) {
+				try {
+					this.images.add(mJSONArray.getString(i));
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}	
+			}
+		}
+		
+		
+		
+	}
     
     /*
      * (non-Javadoc)
