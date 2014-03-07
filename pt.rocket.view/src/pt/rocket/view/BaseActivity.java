@@ -514,7 +514,8 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setHomeButtonEnabled(false);
         getSupportActionBar().setLogo(R.drawable.logo_ic);
-
+        getSupportActionBar().setDisplayShowCustomEnabled(false);
+        
         // Get the width of main content
         int mainContentWidth = (int) (WindowHelper.getWidth(getApplicationContext()) * getResources().getFraction(R.dimen.navigation_menu_offset, 1, 1));
         findViewById(R.id.main_layout).getLayoutParams().width = mainContentWidth;
@@ -528,7 +529,6 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         }, 0);
     }
 
-    // XXX
     /**
      * Customize slide menu and action bar for portrait The same for phone or tablet
      * 
@@ -2006,6 +2006,12 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
                 @Override
                 public void run() {
                     slideMenuInPortraitMode(getSlidingMenu());
+                    try {
+                    	// Disable click on custom view
+                        getSupportActionBar().getCustomView().findViewById(R.id.ic_logo).setOnClickListener(null);
+                    } catch (NullPointerException e) {
+                        Log.w(TAG, "ACTION BAR CUSTOM VIEW IS NOT PRESENT");
+                    }
                 }
             }, 0);
         }

@@ -329,8 +329,9 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
         String value = cart.getCartValue().replace(",", "");
         mProductsValue.setText(CurrencyFormatter.formatCurrency(value));
         // Shipping fee
-        if(mOrderFinish.hasShippingFees()) mShipFeeValue.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getExtraCost()));
-        else mShipFeeView.setVisibility(View.GONE);
+        //if(mOrderFinish.hasShippingFees()) mShipFeeValue.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getExtraCost()));
+        //else mShipFeeView.setVisibility(View.GONE);
+        mShipFeeValue.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getExtraCost()));
         // Voucher
         if(mOrderFinish.hasDiscount()) mVoucherValue.setText(mOrderFinish.getDiscountAmount());
         else mVoucherView.setVisibility(View.GONE);
