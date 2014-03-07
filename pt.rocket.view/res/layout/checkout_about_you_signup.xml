@@ -27,7 +27,7 @@
 
     <!-- CONTENT -->
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/checkout_signup_form_main"
         android:layout_width="@dimen/inner_container_width"
         android:layout_height="wrap_content"
@@ -55,14 +55,17 @@
         <org.holoeverywhere.widget.Button
             android:id="@+id/checkout_signup_form_button_enter"
             style="@style/button_orange_style"
+            android:layout_below="@id/checkout_signup_form_container"
             android:contentDescription="@string/login_button_description"
             android:text="@string/signup_label" />
 
         <!-- DIVIDER -->
 
         <RelativeLayout
+            android:id="@+id/divider_horizontal_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/checkout_signup_form_button_enter"
             android:layout_marginTop="@dimen/margin_huge" >
 
             <View
@@ -91,10 +94,11 @@
             android:id="@+id/checkout_signup_form_button_facebook"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/divider_horizontal_container"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/margin_huge"
             android:text="@string/facebook_signup_button_text"
             fb:login_text="@string/facebook_signup_button_text" />
-    </LinearLayout>
+    </RelativeLayout>
 
 </LinearLayout>

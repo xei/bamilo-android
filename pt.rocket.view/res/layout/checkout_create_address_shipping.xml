@@ -23,7 +23,7 @@
 
     <!-- CONTENT -->
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/checkout_address_form_shipping_main"
         android:layout_width="@dimen/inner_container_width"
         android:layout_height="wrap_content"
@@ -53,9 +53,10 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin_mid"
             android:fontFamily="roboto_regular"
+            android:layout_below="@id/checkout_address_form_shipping_container"
             android:text="@string/billing_same_label"
             android:textColor="@color/grey_middle"
             android:textSize="@dimen/text_m" />
-    </LinearLayout>
+    </RelativeLayout>
 
 </LinearLayout>
