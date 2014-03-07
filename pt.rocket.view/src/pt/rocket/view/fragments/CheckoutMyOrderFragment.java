@@ -65,8 +65,6 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
 
     private TextView mShippingMethodName;
 
-    //private ViewGroup totalView;
-
     private ViewGroup mVoucherView;
 
     private TextView mVoucherValue;
@@ -301,6 +299,16 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
             String price = item.getPrice();
             if (!item.getPrice().equals(item.getSpecialPrice())) price = item.getSpecialPrice();  
             ((TextView) prodInflateView.findViewById(R.id.my_order_item_price)).setText(price);
+            // Variation
+            String variation = item.getVariation(); 
+            if ( variation != null && 
+                 variation.length() > 0 && 
+                 !variation.equalsIgnoreCase(",") && 
+                 !variation.equalsIgnoreCase("...") && 
+                 !variation.equalsIgnoreCase(".")) {
+                ((TextView) prodInflateView.findViewById(R.id.my_order_item_variation)).setText(variation);
+                ((TextView) prodInflateView.findViewById(R.id.my_order_item_variation)).setVisibility(View.VISIBLE);
+          } 
             // Add item view
             mProductsContainer.addView(prodInflateView);
         }
@@ -318,9 +326,10 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
         String itemsLabel = (size > 1) ? getString(R.string.my_order_items_label) : getString(R.string.my_order_item_label);
         mProductsNum.setText(size + " " + itemsLabel);
         Log.d(TAG, "SHOW SUB TOTAL: " + cart.getCartValue() + " " + mOrderFinish.getExtraCost());
-        mProductsValue.setText(CurrencyFormatter.formatCurrency(cart.getCartValue()));
+        String value = cart.getCartValue().replace(",", "");
+        mProductsValue.setText(CurrencyFormatter.formatCurrency(value));
         // Shipping fee
-        if(mOrderFinish.getExtraCost() != "0") mShipFeeValue.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getExtraCost()));
+        if(mOrderFinish.hasShippingFees()) mShipFeeValue.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getExtraCost()));
         else mShipFeeView.setVisibility(View.GONE);
         // Voucher
         if(mOrderFinish.hasDiscount()) mVoucherValue.setText(mOrderFinish.getDiscountAmount());

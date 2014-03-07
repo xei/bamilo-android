@@ -262,7 +262,7 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
             
         case ConstantsCheckout.CHECKOUT_SHIPPING:
             // Shipping fees
-            if(mOrderSummary != null && mOrderSummary.hasShippingFees()) showShippingFees(mOrderSummary.getInstallmentFees());
+            if(mOrderSummary != null && mOrderSummary.hasShippingFees()) showShippingFees(CurrencyFormatter.formatCurrency(mOrderSummary.getExtraCost()));
             // Validate shipping address
             if(mOrderSummary != null && mOrderSummary.hasShippingAddress()) showShippingAddress(mOrderSummary.getShippingAddress());
             // Validate total
@@ -290,15 +290,32 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
         mProductList.removeAllViews();
         for (ShoppingCartItem item : mShopList) {
             View cartItemView = LayoutInflater.from(getBaseActivity()).inflate(R.layout.checkout_summary_list_item, mProductList, false);
-            ((TextView) cartItemView.findViewById(R.id.order_summary_item_name)).setText(item.getName());
-            ((TextView) cartItemView.findViewById(R.id.order_summary_item_quantity)).setText(item.getQuantity() + " x  " + item.getPrice());
+            // Name
+            ((TextView) cartItemView.findViewById(R.id.order_summary_item_name)).setText(item.getName());            
+            // Price
+            String price = item.getPrice();
+            if (!item.getPrice().equals(item.getSpecialPrice())) price = item.getSpecialPrice();  
+            ((TextView) cartItemView.findViewById(R.id.order_summary_item_quantity)).setText(item.getQuantity() + " x  " + price);
+            // Variation
+            String variation = item.getVariation();
+            if (variation != null &&
+                    variation.length() > 0 &&
+                    !variation.equalsIgnoreCase(",") &&
+                    !variation.equalsIgnoreCase("...") &&
+                    !variation.equalsIgnoreCase(".")) {
+                ((TextView) cartItemView.findViewById(R.id.order_summary_item_variation)).setText(variation);
+                ((TextView) cartItemView.findViewById(R.id.order_summary_item_variation)).setVisibility(View.VISIBLE);
+            } 
+            // Buttons
             View deleteButton = cartItemView.findViewById(R.id.order_summary_item_btn_remove);
             deleteButton.setOnClickListener((OnClickListener)this);
             deleteButton.setTag(item.getConfigSimpleSKU());
+            // Add view
             mProductList.addView(cartItemView);
         }
         // Show sub total
-        mSubTotal.setText(CurrencyFormatter.formatCurrency(mCart.getCartValue()));
+        String value = mCart.getCartValue().replace(",", "");
+        mSubTotal.setText(CurrencyFormatter.formatCurrency(value));
     }
     
     /**
