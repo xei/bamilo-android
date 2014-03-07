@@ -545,8 +545,9 @@ public class HomeFragment extends BaseFragment {
     protected boolean onSuccessEvent(Bundle bundle) {
         Log.i(TAG,"ON onSuccessEvent");
         
-        if(!isVisible()){
-            Log.i(TAG,"ON is invisible");
+        // Validate fragment visibility
+        if (isOnStoppingProcess) {
+            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
         

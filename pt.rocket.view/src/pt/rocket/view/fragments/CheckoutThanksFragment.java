@@ -256,6 +256,7 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
         Log.d(TAG, "VIEW ID: " + v.getId() + " " + R.id.order_status_text);
         if(v.getId() == R.id.btn_checkout_continue)
             ActivitiesWorkFlow.homePageActivity(getActivity());
+            //getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         else
             getBaseActivity().onSwitchFragment(FragmentType.TRACK_ORDER, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
     }
