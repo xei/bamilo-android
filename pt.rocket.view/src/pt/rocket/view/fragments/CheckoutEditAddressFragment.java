@@ -685,6 +685,9 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
                 HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY); 
                 showErrorDialog(errors);
                 getBaseActivity().showContentContainer(false);
+            } else {
+                Log.w(TAG, "RECEIVED GET_CITIES_EVENT: " + errorCode.name());
+                super.gotoOldCheckoutMethod(getBaseActivity());
             }
             break;
         default:

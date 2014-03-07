@@ -312,10 +312,12 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
 
         switch (eventType) {
         case GET_SHIPPING_METHODS_EVENT:
-            Log.d(TAG, "RECEIVED GET_SHIPPING_METHODS_EVENT");
+            Log.w(TAG, "RECEIVED GET_SHIPPING_METHODS_EVENT");
+            super.gotoOldCheckoutMethod(getBaseActivity());
             break;
         case SET_SHIPPING_METHOD_EVENT:
-            Log.d(TAG, "RECEIVED SET_SHIPPING_METHOD_EVENT");
+            Log.w(TAG, "RECEIVED SET_SHIPPING_METHOD_EVENT");
+            super.gotoOldCheckoutMethod(getBaseActivity());
             break;
         default:
             break;

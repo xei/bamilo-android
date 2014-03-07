@@ -642,9 +642,8 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
         
         switch (eventType) {
         case GET_BILLING_FORM_EVENT:
-            Log.d(TAG, "RECEIVED GET_BILLING_FORM_EVENT");
-            getBaseActivity().showContentContainer(false);
-            // TODO
+            Log.w(TAG, "RECEIVED GET_BILLING_FORM_EVENT");
+            super.gotoOldCheckoutMethod(getBaseActivity());
             break;
         case SET_BILLING_ADDRESS_EVENT:
             Log.d(TAG, "RECEIVED SET_BILLING_ADDRESS_EVENT");
@@ -654,7 +653,8 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
                 HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY); 
                 showErrorDialog(errors, R.string.add_address);
             }else{
-                Toast.makeText(getBaseActivity(), getString(R.string.no_connect_dialog_content), Toast.LENGTH_SHORT).show();
+                Log.w(TAG, "RECEIVED SET_BILLING_ADDRESS_EVENT: " + errorCode.name());
+                super.gotoOldCheckoutMethod(getBaseActivity());
             }
         default:
             break;
