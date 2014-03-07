@@ -187,7 +187,6 @@ public class RadioGroupLayoutVertical extends RadioGroup {
             result = generatedForms.get(mGroup.getCheckedRadioButtonId()).save();    
         }
         
-       
         return result;
     }
     

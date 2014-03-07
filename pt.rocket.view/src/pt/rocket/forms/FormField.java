@@ -356,6 +356,9 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                         Log.d(TAG, "FORM FIELD: CURRENT KEY " + curKey + " VALUE: " + value);
                         dataSet.put(value, curKey);
                         
+                        
+                        JSONObject paymentDescription = dataOptionsObject.getJSONObject(curKey).getJSONObject(RestConstants.JSON_DESCRIPTION_TAG);
+                        
                         JSONObject json = dataOptionsObject.getJSONObject(curKey);
                         Form mForm = new Form();
                         mForm.initialize(json);
