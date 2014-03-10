@@ -220,7 +220,6 @@
     <string name="rating_quality">Quality</string>
     <string name="call_to_order_number">014604400</string>
     <string name="home_tip_text">Swipe left or right to change the category</string>
-    
     <string name="tip_tap_text">Tap to open the product gallery</string>
     <string name="tip_swipe_text">Swipe left or right to\nview different images </string>
     <string name="tip_pinch_text">Pinch to zoom</string>
@@ -271,15 +270,12 @@
     <string name="shipping_methods">Shipping Methods</string>
     <string name="payment_methods">Payment Methods</string>
     <string name="finish_checkout">Finish</string>
-    
     <string name="signup_label">Signup</string>
     <string name="facebook_signup_button_text">Sign up with Facebook</string>
     <string name="facebook_login_button_text">Login with Facebook</string>
     <string name="or_text">OR</string>
-    
     <string name="my_order_items_label">items</string>
     <string name="my_order_item_label">item</string>
-    
     <string name="billing_same_label">Billing to the same address</string>
     <string name="billing_add_label">Add new address</string>
     <string name="billing_shipping_label">Shipping Address</string>
@@ -287,20 +283,15 @@
     <string name="billing_def_shipping_label">Default Shipping Address</string>
     <string name="billing_others_label">Other Addresses</string>
     <string name="billing_choose_address">Please choose an address!</string>
-    
     <string name="create_addresses_success">Created addresses successfully.</string>
     <string name="edit_address_success">Edited address successfully.</string>
-    
     <string name="save_changes_label">Save Changes</string>
-    
     <string name="poll_question_label">Poll Question</string>
-    
     <string name="order_summary_label">Order Summary</string>
     <string name="order_summary_shipping_method">Shipping Method</string>
     <string name="order_summary_shipping_fee_label">Shipping Fee:</string>
     <string name="order_summary_subtotal_label">Subtotal:</string>
     <string name="order_summary_total_label">Total:</string>
-    
     <string name="my_order_label">My Order</string>
     <string name="my_order_ship_fee_label">Shipping Fee</string>
     <string name="my_order_voucher_label">Voucher</string>
@@ -308,18 +299,14 @@
     <string name="my_order_confirm_button">Confirm Order</string>
     <string name="my_order_is_same">Billing to same address</string>
     <string name="my_order_payment">Payment Options</string>
+    <string name="my_order_coupon_label">Coupon</string>
     <string name="my_order_qty">Qty:</string>
-    
-   	<string name="error_please_try_again">We have encountered a small problem fetching the data. Please try again.</string>
-    
+    <string name="error_please_try_again">We have encountered a small problem fetching the data. Please try again.</string>
     <string name="checkout_header_step_1">1. About you</string>
     <string name="checkout_header_step_2">2. Address</string>
     <string name="checkout_header_step_3">3. Shipping</string>
     <string name="checkout_header_step_4">4. Payment</string>
-    
     <string name="some_products_not_added">Unfortunately, some products were not added to cart.</string>
-    
-    
     <string name="next_button">Next</string>
     <string name="confirm_order_loosing_order_title">Order already created!</string>
     <string name="confirm_order_loosing_order">Warning: if you go back again your order will be invalidated and you will be repositioned on the homepage.</string>

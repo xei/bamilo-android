@@ -55,6 +55,7 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
 
     private static final String TAG = LogTagHelper.create(CheckoutMyAddressesFragment.class);
     
+    @SuppressWarnings("unused")
     private static CheckoutMyAddressesFragment customerAddressesFragment;
     
     private static final String IS_SAME_ADDRESS = "1";

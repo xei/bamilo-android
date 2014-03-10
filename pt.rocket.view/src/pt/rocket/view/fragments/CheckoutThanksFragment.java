@@ -177,6 +177,7 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
         tV.setText(order_number);
         tV.setOnClickListener(new OnClickListener() {
             
+            @SuppressWarnings("deprecation")
             @Override
             public void onClick(View v) {
                 

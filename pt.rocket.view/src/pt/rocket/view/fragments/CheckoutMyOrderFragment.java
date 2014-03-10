@@ -35,15 +35,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.androidquery.AQuery;
 
 import de.akquinet.android.androlog.Log;
 
 /**
+ * Class used to shoe the order
  * @author sergiopereira
- * 
  */
 public class CheckoutMyOrderFragment extends BaseFragment implements OnClickListener, IResponseCallback {
 
@@ -58,8 +57,6 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
     private ShoppingCart cart;
 
     private TextView mShipFeeValue;
-
-    private ViewGroup mShipFeeView;
 
     private ViewGroup mShippingAddressContainer;
 
@@ -91,13 +88,16 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
 
     private TextView mCoupon;
 
+    private TextView mVatValue;
+
     /**
-     * 
+     * Get CheckoutMyOrderFragment instance
      * @return
      */
     public static CheckoutMyOrderFragment getInstance(Bundle bundle) {
         if (mMyOrderFragment == null)
             mMyOrderFragment = new CheckoutMyOrderFragment();
+        mMyOrderFragment.mOrderFinish = (OrderSummary) bundle.getParcelable(ConstantsIntentExtra.ORDER_FINISH);
         return mMyOrderFragment;
     }
 
@@ -158,15 +158,16 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
         // Get order
-        Bundle bundle = getArguments();
-        mOrderFinish = (OrderSummary) bundle.getParcelable(ConstantsIntentExtra.ORDER_FINISH);
+        //Bundle bundle = getArguments();
+        //mOrderFinish = (OrderSummary) bundle.getParcelable(ConstantsIntentExtra.ORDER_FINISH);
         
         // Get product items
         mProductsContainer = (ViewGroup) view.findViewById(R.id.checkout_my_order_products_list);
         // Get sub total
         mProductsNum = (TextView) view.findViewById(R.id.checkout_my_order_products_text_n_items);
         mProductsValue = (TextView) view.findViewById(R.id.checkout_my_order_products_text_total_items);
-        mShipFeeView = (ViewGroup) view.findViewById(R.id.checkout_my_order_products_shippingfee_container);
+        mVatValue = (TextView) view.findViewById(R.id.checkout_my_order_products_text_vat_value);
+        //mShipFeeView = (ViewGroup) view.findViewById(R.id.checkout_my_order_products_shippingfee_container);
         mShipFeeValue = (TextView) view.findViewById(R.id.checkout_my_order_products_text_shippingfee);
         mVoucherView = (ViewGroup) view.findViewById(R.id.checkout_my_order_products_voucher_container);
         mVoucherValue = (TextView) view.findViewById(R.id.checkout_my_order_products_text_voucher);
@@ -258,7 +259,8 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
     }
 
     /**
-     * 
+     * Show the order content
+     * @author sergiopereira
      */
     private void showMyOrder() {
         // Get cart
@@ -281,7 +283,8 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
     }
     
     /**
-     * 
+     * Show products on order
+     * @author sergiopereira
      */
     private void showProducts(){
         // Show products
@@ -301,11 +304,8 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
             ((TextView) prodInflateView.findViewById(R.id.my_order_item_price)).setText(price);
             // Variation
             String variation = item.getVariation(); 
-            if ( variation != null && 
-                 variation.length() > 0 && 
-                 !variation.equalsIgnoreCase(",") && 
-                 !variation.equalsIgnoreCase("...") && 
-                 !variation.equalsIgnoreCase(".")) {
+            if ( variation != null && variation.length() > 0 && !variation.equalsIgnoreCase(",") && 
+                 !variation.equalsIgnoreCase("...") && !variation.equalsIgnoreCase(".")) {
                 ((TextView) prodInflateView.findViewById(R.id.my_order_item_variation)).setText(variation);
                 ((TextView) prodInflateView.findViewById(R.id.my_order_item_variation)).setVisibility(View.VISIBLE);
           } 
@@ -325,13 +325,15 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
         int size = cart.getCartCount();
         String itemsLabel = (size > 1) ? getString(R.string.my_order_items_label) : getString(R.string.my_order_item_label);
         mProductsNum.setText(size + " " + itemsLabel);
-        Log.d(TAG, "SHOW SUB TOTAL: " + cart.getCartValue() + " " + mOrderFinish.getExtraCost());
-        String value = cart.getCartValue().replace(",", "");
+        // Set cart value
+        String value = cart.getCartValue().replace(",", "").replaceAll(" ", "");
         mProductsValue.setText(CurrencyFormatter.formatCurrency(value));
+        // Vat value
+        mVatValue.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getTaxAmount()));
         // Shipping fee
         //if(mOrderFinish.hasShippingFees()) mShipFeeValue.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getExtraCost()));
         //else mShipFeeView.setVisibility(View.GONE);
-        mShipFeeValue.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getExtraCost()));
+        mShipFeeValue.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getShippingAmount()));
         // Voucher
         if(mOrderFinish.hasDiscount()) mVoucherValue.setText(mOrderFinish.getDiscountAmount());
         else mVoucherView.setVisibility(View.GONE);
@@ -394,7 +396,10 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
         // Payment name
         mPaymentName.setText(payMethod);
         // Coupon
-        if(mOrderFinish.hasCoupon()) mCoupon.setText(mOrderFinish.getDiscountAmount());
+        if(mOrderFinish.hasCoupon()){
+            mCoupon.setText(getString(R.string.my_order_coupon_label) + "\n" + mOrderFinish.getDiscountAmount());
+            mCoupon.setVisibility(View.VISIBLE);
+        }
     }
 
     /**
@@ -426,7 +431,6 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
      * Process the click on next step button
      * @author sergiopereira
      */
-    
     private void onClickNextStepButton() {
         Log.i(TAG, "ON CLICK: NextStep");
         if(JumiaApplication.INSTANCE.getPaymentMethodForm() != null ){
@@ -444,7 +448,8 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
     }    
     
     /**
-     * 
+     * Process the click on the edit address button
+     * @author sergiopereira
      */
     private void onClickEditAddressesButton() {
         Log.i(TAG, "ON CLICK: EditAddresses");
@@ -457,7 +462,9 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
     }
 
     /**
-     * 
+     *
+     * Process the click on the edit shipping method button
+     * @author sergiopereira
      */
     private void onClickEditShippingMethodButton() {
         Log.i(TAG, "ON CLICK: EditShippingMethod");
@@ -470,7 +477,8 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
     }
     
     /**
-     * 
+     * Process the click on the edit payment method button
+     * @author sergiopereira
      */
     private void onClickEditPaymentOptionsButton() {
         Log.i(TAG, "ON CLICK: EditPaymentOptions");
@@ -487,7 +495,8 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
      */
     
     /**
-     * 
+     * Trigger ti finish the checkout process
+     * @author sergiopereira
      */
     private void triggerCheckoutFinish() {
         Log.i(TAG, "TRIGGER: CHECKOUT FINISH");
@@ -498,7 +507,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
      * ############# RESPONSE #############
      */
     /**
-     * 
+     * Process the success event
      * @param bundle
      * @return
      */
@@ -510,13 +519,6 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
-        
-//        if(getBaseActivity() != null){
-//            Log.d(TAG, "BASE ACTIVITY HANDLE SUCCESS EVENT");
-//            getBaseActivity().handleSuccessEvent(bundle);
-//        } else {
-//            return true;
-//        }
         
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         Log.i(TAG, "ON SUCCESS EVENT: " + eventType);
@@ -540,11 +542,10 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
     }
 
     /**
-     * 
+     * Process the error event
      * @param bundle
      * @return
      */
-    
     protected boolean onErrorEvent(Bundle bundle) {
         
         // Validate fragment visibility
@@ -566,19 +567,15 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
         switch (eventType) {
         case CHECKOUT_FINISH_EVENT:
             Log.d(TAG, "RECEIVED CHECKOUT_FINISH_EVENT");
-            
             if (errorCode == ErrorCode.REQUEST_ERROR) {
                 @SuppressWarnings("unchecked")
                 HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY); 
                 showErrorDialog(errors);
                 getBaseActivity().showContentContainer(false);
+            } else {
+                Log.w(TAG, "RECEIVED CHECKOUT_FINISH_EVENT: " + errorCode.name());
+                super.gotoOldCheckoutMethod(getBaseActivity());
             }
-            break;
-        case GET_DEFAULT_SHIPPING_ADDRESS_EVENT:
-            Log.d(TAG, "RECEIVED CHECKOUT_FINISH_EVENT");
-            break;
-        case GET_DEFAULT_BILLING_ADDRESS_EVENT:
-            Log.d(TAG, "RECEIVED GET_DEFAULT_BILLING_ADDRESS_EVENT");
             break;
         default:
             break;
@@ -641,11 +638,8 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
                     });
             dialog.show(getBaseActivity().getSupportFragmentManager(), null);
         } else {
-            
-            /**
-             * TODO: THE ERROR MUST RETURN THE MESSAGE
-             */
-            Toast.makeText(getBaseActivity(), "ERROR ON FINISH CHECKOUT!", Toast.LENGTH_SHORT).show();
+            Log.w(TAG, "ERROR ON FINISH CHECKOUT");
+            gotoWebCheckout();
         }
     }
     
@@ -654,10 +648,14 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
      * @author sergiopereira
      */
     private void gotoWebCheckout(){
-        gotoOldCheckoutMethod(getBaseActivity());
+        Log.w(TAG, "GO TO WEBCKECOUT");
+        super.gotoOldCheckoutMethod(getBaseActivity());
     }
 
-    
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.view.fragments.BaseFragment#allowBackPressed()
+     */
     @Override
     public boolean allowBackPressed() {
         if (JumiaApplication.INSTANCE.getPaymentMethodForm() == null) {

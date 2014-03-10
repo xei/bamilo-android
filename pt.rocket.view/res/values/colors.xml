@@ -22,6 +22,7 @@
     <color name="loadingbackground_dimmed">#FFFFFFFF</color>
     
     <color name="yellow_dark">#feaf07</color>
+    <color name="green_basic">#47b638</color>
 
     <!-- The color used in the divider -->
     <color name="semi_transparent">#88000000</color>
