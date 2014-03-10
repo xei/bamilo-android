@@ -17,6 +17,8 @@ public class CustomerUtils {
 	public static final String INTERNAL_PASSWORD_VALUE = "Alice_Module_Customer_Model_LoginForm[password]";
 	public static final String INTERNAL_EMAIL_VALUE = " Alice_Module_Customer_Model_LoginForm[email] ";
 	
+	public static final String INTERNAL_FACEBOOK_FLAG = "facebook_login";
+	
     private static final String CRED_PREFS = "cred";
 
 	public CustomerUtils(Context ctx) {

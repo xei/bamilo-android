@@ -440,13 +440,7 @@ public class SessionLoginFragment extends BaseFragment {
         values.put("birthday", user.getBirthday());
         values.put("gender", (String) user.getProperty("gender"));
         values.put(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, true);
-        /**
-         * TRIGGERS
-         * @author sergiopereira
-         */
         triggerFacebookLogin(values, true);
-        //triggerContentEvent(new FacebookLogInEvent(values));
-        
         wasAutologin = false;
     }
 

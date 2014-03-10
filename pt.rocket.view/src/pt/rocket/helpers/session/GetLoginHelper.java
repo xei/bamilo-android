@@ -53,6 +53,7 @@ public class GetLoginHelper extends BaseHelper {
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
         if (saveCredentials) {
             Log.i(TAG, "code1 saving credentials : ");
+            contentValues.put(CustomerUtils.INTERNAL_FACEBOOK_FLAG, false);
             JumiaApplication.INSTANCE.getCustomerUtils().storeCredentials(contentValues);
             Log.i(TAG, "code1 hasCredentials : "+JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials());
         }

@@ -57,6 +57,7 @@ public class GetFacebookLoginHelper extends BaseHelper {
                 if (saveCredentials) {
                     contentValues.put(CustomerUtils.INTERNAL_PASSWORD_VALUE, jsonUser.getString(RestConstants.JSON_PASSWORD_TAG));
                     contentValues.put(CustomerUtils.INTERNAL_EMAIL_VALUE, jsonUser.getString(RestConstants.JSON_EMAIL_TAG));
+                    contentValues.put(CustomerUtils.INTERNAL_FACEBOOK_FLAG, true);
                     JumiaApplication.INSTANCE.getCustomerUtils().storeCredentials(contentValues);
                 }
             } else if (jsonObject.has(RestConstants.JSON_DATA_TAG)) {

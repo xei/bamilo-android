@@ -618,10 +618,22 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
     private void triggerAutoLogin(){
         Log.i(TAG, "TRIGGER: AUTO LOGIN");
         onAutoLogin = true;
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
-        bundle.putBoolean(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, onAutoLogin);
-        triggerContentEvent(new GetLoginHelper(), bundle, (IResponseCallback) this);
+        
+        ContentValues values = JumiaApplication.INSTANCE.getCustomerUtils().getCredentials();
+        
+        // Validate used has facebook credentials
+        try {
+            if(values.getAsBoolean(CustomerUtils.INTERNAL_FACEBOOK_FLAG)) {
+                getBaseActivity().showLoading(false);
+                triggerFacebookLogin(values, true);
+                return;
+            }
+        } catch (NullPointerException e) {
+            Log.i(TAG, "USER HASN'T FACEBOOK CREDENTIALS");
+        }
+        
+        // Try login with saved credentials
+        triggerLogin(values, onAutoLogin);
     }
     
     /**
@@ -737,6 +749,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             getBaseActivity().onSwitchFragment(signupNextFragment, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);            
             break;
         case FACEBOOK_LOGIN_EVENT:
+            // Set logged in
             JumiaApplication.INSTANCE.setLoggedIn(true);
             // Get customer
             Customer customerFb = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);

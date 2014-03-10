@@ -265,8 +265,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     @Override
     public void onPause() {
         super.onPause();
-        // Set that fragment is on the stopping process
-        isOnStoppingProcess = true;
         // Save the current state
         setVisiblility(NOT_VISIBLE);
     }
@@ -279,6 +277,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     @Override
     public void onStop() {
         super.onStop();
+        // Set that fragment is on the stopping process
+        isOnStoppingProcess = true;
     }
 
     /*
