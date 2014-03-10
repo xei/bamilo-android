@@ -164,7 +164,11 @@ public enum EventType {
 	
 	CHECKOUT_FINISH_EVENT("https:/multistep/finish/", RestContract.NO_CACHE),
 	
-	NATIVE_CHECKOUT_AVAILABLE("http:/main/getconfig/module/configuration/key/native_checkout_mobile_api/", RestContract.NO_CACHE)
+	NATIVE_CHECKOUT_AVAILABLE("http:/main/getconfig/module/configuration/key/native_checkout_mobile_api/", RestContract.NO_CACHE),
+	
+	ADD_VOUCHER("http:/order/addvoucher/", RestContract.NO_CACHE), 
+	
+	REMOVE_VOUCHER("http:/order/addvoucher/", RestContract.NO_CACHE)
 	
 	;
     
