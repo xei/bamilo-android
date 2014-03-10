@@ -262,7 +262,7 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
             
         case ConstantsCheckout.CHECKOUT_SHIPPING:
             // Shipping fees
-            if(mOrderSummary != null) showShippingFees(CurrencyFormatter.formatCurrency(mOrderSummary.getExtraCost()));
+            if(mOrderSummary != null) showShippingFees(CurrencyFormatter.formatCurrency(mOrderSummary.getShippingAmount()));
             // Validate shipping address
             if(mOrderSummary != null && mOrderSummary.hasShippingAddress()) showShippingAddress(mOrderSummary.getShippingAddress());
             // Validate total
@@ -358,7 +358,7 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
      * @author sergiopereira
      */
     private void showTotal(String total) {
-        mTotal.setText(total);
+        mTotal.setText(CurrencyFormatter.formatCurrency(total));
         mTotalView.setVisibility(View.VISIBLE);
     }
     
