@@ -28,11 +28,12 @@
                 <org.holoeverywhere.widget.TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_large"
                     android:layout_marginTop="@dimen/margin_huge"
                     android:fontFamily="roboto_regular"
-                    android:gravity="center"
+                    android:gravity="left"
                     android:text="Payment"
-                    android:textColor="@color/grey_divider_light_text"
+                    android:textColor="@color/orange_basic"
                     android:textSize="@dimen/text_l" />
 
                 <LinearLayout

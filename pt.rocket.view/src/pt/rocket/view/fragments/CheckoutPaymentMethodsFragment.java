@@ -5,6 +5,9 @@ package pt.rocket.view.fragments;
 
 import java.util.EnumSet;
 
+import org.holoeverywhere.widget.Button;
+import org.holoeverywhere.widget.EditText;
+import org.holoeverywhere.widget.TextView;
 import org.holoeverywhere.widget.Toast;
 
 import pt.rocket.app.JumiaApplication;
@@ -17,9 +20,11 @@ import pt.rocket.factories.FormFactory;
 import pt.rocket.forms.Form;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.OrderSummary;
+import pt.rocket.framework.objects.Voucher;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.helpers.SetVoucherHelper;
 import pt.rocket.helpers.checkout.GetPaymentMethodsHelper;
 import pt.rocket.helpers.checkout.SetPaymentMethodHelper;
 import pt.rocket.interfaces.IResponseCallback;
@@ -68,6 +73,13 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
 
     private DynamicForm formGenerator;
 
+    //Voucher
+    private Button couponButton;
+    private View voucherDivider;
+    private TextView voucherError;
+    
+    private Voucher mVoucher; 
+
     /**
      * Empty constructor
      */
@@ -110,6 +122,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
      * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
      * android.view.ViewGroup, android.os.Bundle)
      */
+    
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState) {
         super.onCreateView(inflater, viewGroup, savedInstanceState);
@@ -135,7 +148,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
         triggerGetPaymentMethods();
                 
     }
-    
+
     
     /*
      * (non-Javadoc)
@@ -220,11 +233,36 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
         
         formGenerator = FormFactory.getSingleton().CreateForm(FormConstants.PAYMENT_DETAILS_FORM, getActivity(), form);
         paymentMethodsContainer.removeAllViews();
-        paymentMethodsContainer.addView(formGenerator.getContainer());        
+        paymentMethodsContainer.addView(formGenerator.getContainer());     
+        paymentMethodsContainer.addView(generateCouponView());
         paymentMethodsContainer.refreshDrawableState();
         getBaseActivity().showContentContainer(false);
     }
     
+    private View generateCouponView(){
+        LayoutInflater mLayoutInflater = LayoutInflater.from(getBaseActivity());
+        View view = mLayoutInflater.inflate(R.layout.voucher_insert_layout, null);
+        final EditText voucherValue = (EditText) view.findViewById(R.id.voucher_name);
+        voucherDivider = view.findViewById(R.id.voucher_divider);
+        voucherError = (TextView) view.findViewById(R.id.voucher_error_message);
+        couponButton = (Button) view.findViewById(R.id.voucher_btn); 
+        couponButton.setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+                String value = voucherValue.getText().toString();
+                if(value != null && value.length() > 0){
+                    ContentValues mContentValues = new ContentValues();
+                    mContentValues.put(SetVoucherHelper.VOUCHER_PARAM, value);
+                    Log.i(TAG, "code1coupon : "+value);
+                    triggerSubmitVoucher(mContentValues);
+                } else {
+                    Toast.makeText(getBaseActivity(), "Please enter a valid Coupon Code", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        return view;
+    }
     
     /**
      * ############# CLICK LISTENER #############
@@ -294,6 +332,19 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
             bundle.putParcelable(ConstantsIntentExtra.ORDER_FINISH, orderFinish);
             getBaseActivity().onSwitchFragment(nextFragment, bundle, FragmentController.ADD_TO_BACK_STACK);
             break;
+        case ADD_VOUCHER:
+            couponButton.setText(getString(R.string.voucher_remove));
+            voucherError.setVisibility(View.GONE);
+            voucherDivider.setBackgroundColor(R.color.grey_dividerlight);
+            getBaseActivity().showContentContainer();
+            mVoucher = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            break;
+        case REMOVE_VOUCHER:
+            couponButton.setText(getString(R.string.voucher_use));
+            voucherError.setVisibility(View.GONE);
+            voucherDivider.setBackgroundColor(R.color.grey_dividerlight);
+            getBaseActivity().showContentContainer();
+            break;
         default:
             break;
         }
@@ -327,6 +378,12 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
         case SET_PAYMENT_METHOD_EVENT:
             Log.d(TAG, "RECEIVED SET_PAYMENT_METHOD_EVENT");
             break;
+        case ADD_VOUCHER:
+        case REMOVE_VOUCHER:
+            voucherError.setVisibility(View.VISIBLE);
+            voucherDivider.setBackgroundColor(R.color.red_middle);
+            getBaseActivity().showContentContainer();
+            break;
         default:
             break;
         }
@@ -343,6 +400,12 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
         Bundle bundle = new Bundle();
         bundle.putParcelable(SetPaymentMethodHelper.FORM_CONTENT_VALUES, values);
         triggerContentEvent(new SetPaymentMethodHelper(), bundle, this);
+    }
+    
+    private void triggerSubmitVoucher(ContentValues values) {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(SetVoucherHelper.VOUCHER_PARAM, values);
+        triggerContentEvent(new SetVoucherHelper(), bundle, this);
     }
     
     private void triggerGetPaymentMethods(){

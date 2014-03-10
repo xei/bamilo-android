@@ -363,7 +363,6 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                         
                         
                         JSONObject paymentDescription = dataOptionsObject.optJSONObject(curKey).optJSONObject(RestConstants.JSON_DESCRIPTION_TAG);
-                        Log.i(TAG, "code1paymentDescription : "+paymentDescription.toString());
                         PaymentInfo mPaymentInfo = new PaymentInfo();
                         mPaymentInfo.initialize(paymentDescription);
                         JumiaApplication.INSTANCE.getPaymentsInfoList().put(curKey,mPaymentInfo);
