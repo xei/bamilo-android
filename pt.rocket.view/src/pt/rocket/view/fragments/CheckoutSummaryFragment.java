@@ -314,8 +314,7 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
             mProductList.addView(cartItemView);
         }
         // Show sub total
-        String value = mCart.getCartValue().replace(",", "");
-        mSubTotal.setText(CurrencyFormatter.formatCurrency(value));
+        mSubTotal.setText(CurrencyFormatter.formatCurrency(mCart.getCartValue()));
     }
     
     /**

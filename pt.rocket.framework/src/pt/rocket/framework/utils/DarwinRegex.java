@@ -42,5 +42,10 @@ public class DarwinRegex {
 	public static final String SKU_DELIMITER = "_";
 	
 	public static final String DL_DELIMITER = "/";
+	
+	/**
+	 * Regex used to remove the unused chars from cart value
+	 */
+	public static final String CART_VALUE = "[, ]";
 
 }

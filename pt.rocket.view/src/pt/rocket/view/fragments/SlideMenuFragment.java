@@ -18,6 +18,7 @@ import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.components.NavigationListComponent;
 import pt.rocket.framework.utils.Constants;
+import pt.rocket.framework.utils.CurrencyFormatter;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LoadingBarView;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -690,7 +691,7 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
                 if (quantity.length() > 0) {
                     vCartCount.setText(quantity);
                     Log.i(getTag(), "VALUE = " + value);
-                    navIm.setText(value);
+                    navIm.setText(CurrencyFormatter.formatCurrency(value));
                     navIm.setVisibility(View.VISIBLE);
                     navVat.setVisibility(View.VISIBLE);
                     navCartEmptyText.setVisibility(View.INVISIBLE);

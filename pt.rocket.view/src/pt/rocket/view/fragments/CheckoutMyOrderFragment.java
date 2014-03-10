@@ -326,8 +326,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
         String itemsLabel = (size > 1) ? getString(R.string.my_order_items_label) : getString(R.string.my_order_item_label);
         mProductsNum.setText(size + " " + itemsLabel);
         // Set cart value
-        String value = cart.getCartValue().replace(",", "").replaceAll(" ", "");
-        mProductsValue.setText(CurrencyFormatter.formatCurrency(value));
+        mProductsValue.setText(CurrencyFormatter.formatCurrency(cart.getCartValue()));
         // Vat value
         mVatValue.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getTaxAmount()));
         // Shipping fee

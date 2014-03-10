@@ -14,6 +14,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import pt.rocket.framework.rest.RestConstants;
+import pt.rocket.framework.utils.DarwinRegex;
 
 import de.akquinet.android.androlog.Log;
 
@@ -96,8 +97,7 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 	 */
 	@Override
 	public boolean initialize(JSONObject jsonObject) throws JSONException{
-
-		cartValue = jsonObject.getString(RestConstants.JSON_CART_VALUE_TAG);
+		cartValue = jsonObject.getString(RestConstants.JSON_CART_VALUE_TAG).replaceAll(DarwinRegex.CART_VALUE, "");
 		cartCount = jsonObject.getInt(RestConstants.JSON_CART_COUNT_TAG);
 		vat_value = jsonObject.optString(RestConstants.JSON_CART_VAT_VALUE_TAG);
 		shipping_value = jsonObject.optString(RestConstants.JSON_CART_SHIPPING_VALUE_TAG);

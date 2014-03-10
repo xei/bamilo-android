@@ -395,7 +395,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         TextView articlesCount = (TextView) getView().findViewById(R.id.articles_count);
 
         items = new ArrayList<ShoppingCartItem>(cart.getCartItems().values());
-        priceTotal.setText(cart.getCartValue());
+        priceTotal.setText(CurrencyFormatter.formatCurrency(cart.getCartValue()));
 
         String articleString = getResources().getQuantityString(R.plurals.shoppingcart_text_article, cart.getCartCount());
         articlesCount.setText(cart.getCartCount() + " " + articleString);

@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:background="@android:color/white" >
+    android:background="@android:color/white"
+    android:orientation="vertical" >
 
     <!-- TOP ADDRESSES -->
 
@@ -39,6 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/margin_mid"
+        android:layout_marginLeft="@dimen/margin_mid"
         android:button="@drawable/selector_checkbox_orange"
         android:drawablePadding="@dimen/margin_mid"
         android:fontFamily="roboto_regular"
