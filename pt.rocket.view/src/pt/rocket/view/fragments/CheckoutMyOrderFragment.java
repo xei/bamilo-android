@@ -95,8 +95,8 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
      * @return
      */
     public static CheckoutMyOrderFragment getInstance(Bundle bundle) {
-        if (mMyOrderFragment == null)
-            mMyOrderFragment = new CheckoutMyOrderFragment();
+        if (mMyOrderFragment == null) mMyOrderFragment = new CheckoutMyOrderFragment();
+        // Save order
         mMyOrderFragment.mOrderFinish = (OrderSummary) bundle.getParcelable(ConstantsIntentExtra.ORDER_FINISH);
         return mMyOrderFragment;
     }
@@ -157,10 +157,6 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
-        // Get order
-        //Bundle bundle = getArguments();
-        //mOrderFinish = (OrderSummary) bundle.getParcelable(ConstantsIntentExtra.ORDER_FINISH);
-        
         // Get product items
         mProductsContainer = (ViewGroup) view.findViewById(R.id.checkout_my_order_products_list);
         // Get sub total
@@ -263,6 +259,12 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
      * @author sergiopereira
      */
     private void showMyOrder() {
+        // Validate order
+        if(mOrderFinish == null) {
+            Log.w(TAG, "WARNING: ORDER IS NULL - GOTO WEB CHECKOUT");
+            super.gotoOldCheckoutMethod(getBaseActivity());
+            return;
+        }
         // Get cart
         cart = mOrderFinish.getCart();
         if(cart != null) showProducts();
@@ -326,12 +328,10 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
         String itemsLabel = (size > 1) ? getString(R.string.my_order_items_label) : getString(R.string.my_order_item_label);
         mProductsNum.setText(size + " " + itemsLabel);
         // Set cart value
-        mProductsValue.setText(CurrencyFormatter.formatCurrency(cart.getCartValue()));
+        mProductsValue.setText(CurrencyFormatter.formatCurrency(cart.getCartCleanValue()));
         // Vat value
         mVatValue.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getTaxAmount()));
         // Shipping fee
-        //if(mOrderFinish.hasShippingFees()) mShipFeeValue.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getExtraCost()));
-        //else mShipFeeView.setVisibility(View.GONE);
         mShipFeeValue.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getShippingAmount()));
         // Voucher
         if(mOrderFinish.hasDiscount()) mVoucherValue.setText(mOrderFinish.getDiscountAmount());
@@ -443,7 +443,6 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
         } else {
             triggerCheckoutFinish();    
         }
-        
     }    
     
     /**

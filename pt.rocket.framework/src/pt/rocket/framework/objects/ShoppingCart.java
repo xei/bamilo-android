@@ -12,6 +12,7 @@ import org.json.JSONObject;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
 
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.DarwinRegex;
@@ -32,6 +33,8 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 	private String vat_value;
 	private String shipping_value;
 	private Map<String, Map<String, String>> itemSimpleDataRegistry;
+
+	private String cartCleanValue;
 
 	/**
 	 * 
@@ -89,6 +92,20 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 	public String getShippingValue(){
 		return this.shipping_value;
 	}
+	
+	/**
+	 * @return the cartCleanValue
+	 */
+	public String getCartCleanValue() {
+		return (!TextUtils.isEmpty(cartCleanValue)) ? cartCleanValue.replaceAll(DarwinRegex.CART_VALUE, "") : cartValue;
+	}
+
+	/**
+	 * @param cartCleanValue the cartCleanValue to set
+	 */
+	public void setCartCleanValue(String cartCleanValue) {
+		this.cartCleanValue = cartCleanValue;
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -98,6 +115,7 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 	@Override
 	public boolean initialize(JSONObject jsonObject) throws JSONException{
 		cartValue = jsonObject.getString(RestConstants.JSON_CART_VALUE_TAG).replaceAll(DarwinRegex.CART_VALUE, "");
+		cartCleanValue = jsonObject.optString(RestConstants.JSON_CART_CLEAN_VALUE_TAG);
 		cartCount = jsonObject.getInt(RestConstants.JSON_CART_COUNT_TAG);
 		vat_value = jsonObject.optString(RestConstants.JSON_CART_VAT_VALUE_TAG);
 		shipping_value = jsonObject.optString(RestConstants.JSON_CART_SHIPPING_VALUE_TAG);
@@ -168,6 +186,7 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 	public void writeToParcel(Parcel dest, int flags) {
 	    dest.writeMap(cartItems);
 	    dest.writeString(cartValue);
+	    dest.writeString(cartCleanValue);
 	    dest.writeInt(cartCount);
 	    dest.writeString(vat_value);
 	    dest.writeString(shipping_value);
@@ -181,6 +200,7 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 	private ShoppingCart(Parcel in) {
 		in.readMap(cartItems, ShoppingCartItem.class.getClassLoader());
 		cartValue = in.readString();
+		cartCleanValue = in.readString();
 		cartCount = in.readInt();
 		vat_value = in.readString();
 		shipping_value = in.readString();

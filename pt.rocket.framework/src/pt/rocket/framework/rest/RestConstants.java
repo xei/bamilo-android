@@ -157,6 +157,7 @@ public class RestConstants {
 	public static final String JSON_CART_ITEMS_TAG = "cartItems";
 	public static final String JSON_CART_VAT_VALUE_TAG = "vat_value";
 	public static final String JSON_CART_SHIPPING_VALUE_TAG = "shipping_value";
+	public static final String JSON_CART_CLEAN_VALUE_TAG = "cart_clean_value";
 
 	// ShoppingCartItem Tags
 	public static final String JSON_ITEM_IMAGE_TAG = JSON_IMAGE_TAG;
@@ -303,6 +304,7 @@ public class RestConstants {
 	/**
 	 * Order Tracking TAGS
 	 */
+	public static final String JSON_ORDER_TAG = "order";
 	public static final String JSON_ORDER_ID_TAG = "order_id";
 	public static final String JSON_ORDER_NUMBER_TAG = "order_nr";
 	public static final String JSON_ORDER_CREATION_DATE_TAG = "creation_date";
@@ -312,9 +314,17 @@ public class RestConstants {
 	public static final String JSON_ORDER_STATUS_TAG = "status";
 	public static final String JSON_ORDER_ITEM_STATUS_TAG = "item_status";
 	public static final String JSON_ORDER_ITEM_STATUS_UPDATE_TAG = "last_status_change";
-	public static final String JSON_ORDER_TAG = "order";
 	public static final String JSON_ORDER_GRAND_TOTAL_TAG = "grand_total";
-
+	public static final String JSON_ORDER_SHIP_AMOUNT_TAG = "shipping_amount";
+	public static final String JSON_ORDER_EXTRA_PAYMENTS_TAG = "extra_payment_cost";
+	public static final String JSON_ORDER_BNP_DISCOUNT_TAG = "bnp_discount_amount";
+	public static final String JSON_ORDER_INSTALLMENT_FEES_TAG = "installment_fees";
+	public static final String JSON_ORDER_USER_DEVICE_TAG = "customer_device";
+	public static final String JSON_ORDER_SHIP_MET_TAG = "shipping_method";
+	public static final String JSON_ORDER_PAYMENT_PROVIDER_TAG = "provider";
+	public static final String JSON_ORDER_BIL_ADDRESS_TAG = "billing_address";
+	public static final String JSON_ORDER_SHIP_ADDRESS_TAG = "shipping_address";
+	
 	/**
 	 * Address
 	 */

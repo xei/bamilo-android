@@ -6,6 +6,7 @@ import java.util.Map;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.LogTagHelper;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -75,54 +76,54 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
 		
 		// Get order
         JSONObject jsonOrder = null;
-        if(!jsonObject.isNull("order")) {
-            jsonOrder = jsonObject.optJSONObject("order");
+        if(!jsonObject.isNull(RestConstants.JSON_ORDER_TAG)) {
+            jsonOrder = jsonObject.optJSONObject(RestConstants.JSON_ORDER_TAG);
             Log.d(TAG, "ORDER: " + jsonOrder.toString());
-    		mGrandTotal = jsonOrder.optString("grand_total");
-    		mShippingAmount = jsonOrder.optString("shipping_amount");
-    		mExtraCost = jsonOrder.optString("extra_payment_cost");
-    		mDiscountAmount = jsonOrder.optString("bnp_discount_amount");
-    		mInstallmentFees = jsonOrder.optString("installment_fees");
-    		mTaxAmount = jsonOrder.optString("tax_amount");				// VAT
-    		mCustomerDevice = jsonOrder.optString("customer_device");
+    		mGrandTotal = jsonOrder.optString(RestConstants.JSON_ORDER_GRAND_TOTAL_TAG);
+    		mShippingAmount = jsonOrder.optString(RestConstants.JSON_ORDER_SHIP_AMOUNT_TAG);
+    		mExtraCost = jsonOrder.optString(RestConstants.JSON_ORDER_EXTRA_PAYMENTS_TAG);
+    		mDiscountAmount = jsonOrder.optString(RestConstants.JSON_ORDER_BNP_DISCOUNT_TAG);
+    		mInstallmentFees = jsonOrder.optString(RestConstants.JSON_ORDER_INSTALLMENT_FEES_TAG);
+    		mTaxAmount = jsonOrder.optString(RestConstants.JSON_TAX_AMOUNT_TAG);				// VAT
+    		mCustomerDevice = jsonOrder.optString(RestConstants.JSON_ORDER_USER_DEVICE_TAG);
         }
         
         // Get cart
-        if(jsonOrder != null && !jsonObject.isNull("cart")) {
-            JSONObject jsonCart = jsonObject.optJSONObject("cart");
+        if(jsonOrder != null && !jsonObject.isNull(RestConstants.JSON_CART_TAG)) {
+            JSONObject jsonCart = jsonObject.optJSONObject(RestConstants.JSON_CART_TAG);
             ShoppingCart cart = new ShoppingCart(simpleData);
             cart.initialize(jsonCart);
             mCart = cart;
         }
         
         // Get shipping method
-        if(jsonOrder != null && !jsonOrder.isNull("shipping_method")) {
-            JSONObject jsonShip = jsonOrder.optJSONObject("shipping_method");
+        if(jsonOrder != null && !jsonOrder.isNull(RestConstants.JSON_ORDER_SHIP_MET_TAG)) {
+            JSONObject jsonShip = jsonOrder.optJSONObject(RestConstants.JSON_ORDER_SHIP_MET_TAG);
             Log.d(TAG, "SHIP METHOD: " + jsonShip.toString());
-            String shipMethod = jsonShip.optString("method");
+            String shipMethod = jsonShip.optString(RestConstants.JSON_METHOD_TAG);
             mShippingMethod = shipMethod;
         }
     
         // Get payment method
-        if(jsonOrder != null && !jsonOrder.isNull("payment_method")) {
-            JSONObject jsonPay = jsonOrder.optJSONObject("payment_method");
+        if(jsonOrder != null && !jsonOrder.isNull(RestConstants.JSON_ORDER_PAYMENT_METHOD_TAG)) {
+            JSONObject jsonPay = jsonOrder.optJSONObject(RestConstants.JSON_ORDER_PAYMENT_METHOD_TAG);
             Log.d(TAG, "PAY METHOD: " + jsonPay.toString());
             // String payId = jsonPay.optString("id");
-            String payProvider = jsonPay.optString("provider");
+            String payProvider = jsonPay.optString(RestConstants.JSON_ORDER_PAYMENT_PROVIDER_TAG);
             mPaymentMethod = payProvider;
         }
         
         // Get billing address
-        if(jsonOrder != null && !jsonOrder.isNull("billing_address")) {
-            JSONObject jsonBilAddress = jsonOrder.optJSONObject("billing_address");
+        if(jsonOrder != null && !jsonOrder.isNull(RestConstants.JSON_ORDER_BIL_ADDRESS_TAG)) {
+            JSONObject jsonBilAddress = jsonOrder.optJSONObject(RestConstants.JSON_ORDER_BIL_ADDRESS_TAG);
             Log.d(TAG, "BILLING ADDRESS: " + jsonBilAddress.toString());
             Address billingAddress = new Address(jsonBilAddress);
             mBillingAddress = billingAddress;
         }
         
         // Get shipping address
-        if(jsonOrder != null && !jsonOrder.isNull("shipping_address")) {
-            JSONObject jsonShipAddress = jsonOrder.optJSONObject("shipping_address");
+        if(jsonOrder != null && !jsonOrder.isNull(RestConstants.JSON_ORDER_SHIP_ADDRESS_TAG)) {
+            JSONObject jsonShipAddress = jsonOrder.optJSONObject(RestConstants.JSON_ORDER_SHIP_ADDRESS_TAG);
             Log.d(TAG, "SHIPPING ADDRESS: " + jsonShipAddress.toString());
             Address shippingAddress = new Address(jsonShipAddress);
             mShippingAddress = shippingAddress;
