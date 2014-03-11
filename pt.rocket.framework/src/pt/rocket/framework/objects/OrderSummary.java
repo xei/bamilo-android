@@ -107,10 +107,15 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
         // Get payment method
         if(jsonOrder != null && !jsonOrder.isNull(RestConstants.JSON_ORDER_PAYMENT_METHOD_TAG)) {
             JSONObject jsonPay = jsonOrder.optJSONObject(RestConstants.JSON_ORDER_PAYMENT_METHOD_TAG);
-            Log.d(TAG, "PAY METHOD: " + jsonPay.toString());
-            // String payId = jsonPay.optString("id");
-            String payProvider = jsonPay.optString(RestConstants.JSON_ORDER_PAYMENT_PROVIDER_TAG);
-            mPaymentMethod = payProvider;
+            if(jsonPay != null){
+            	Log.d(TAG, "PAY METHOD: " + jsonPay.toString());
+                // String payId = jsonPay.optString("id");
+                String payProvider = jsonPay.optString(RestConstants.JSON_ORDER_PAYMENT_PROVIDER_TAG);
+                mPaymentMethod = payProvider;	
+            } else {
+            	mPaymentMethod = jsonOrder.optString(RestConstants.JSON_ORDER_PAYMENT_METHOD_TAG);
+            }
+            
         }
         
         // Get billing address
