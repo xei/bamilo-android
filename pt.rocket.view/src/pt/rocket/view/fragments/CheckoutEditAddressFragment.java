@@ -399,6 +399,12 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
      */
     private void onClickEditAddressButton() {
         Log.i(TAG, "ON CLICK: EDIT");
+        
+        // Validate spinner
+        ViewGroup mRegionGroup = (ViewGroup) mEditFormGenerator.getItemByKey(RestConstants.JSON_REGION_ID_TAG).getControl();
+        // Validate if region group is filled
+        if(!(mRegionGroup.getChildAt(0) instanceof IcsSpinner)) { Log.w(TAG, "REGION SPINNER NOT FILL YET"); return; };
+        
         triggerEditAddress(createContentValues(mEditFormGenerator));
     }
     

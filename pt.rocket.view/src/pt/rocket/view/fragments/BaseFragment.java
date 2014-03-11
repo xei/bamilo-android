@@ -182,7 +182,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         super.onViewCreated(view, savedInstanceState);
         Log.d(TAG, "ON VIEW CREATED");
         // 
-        
+        isOnStoppingProcess = false;
         // Exist order summary
         isOrderSummaryPresent = (view.findViewById(ORDER_SUMMARY_CONTAINER) != null) ? true : false;
     }
@@ -244,7 +244,9 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     @Override
     public void onResume() {
         super.onResume();
+        
         isOnStoppingProcess = false;
+        
         /**
          * Register service callback
          */

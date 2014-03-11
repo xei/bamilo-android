@@ -399,6 +399,11 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
      */
     private void onClickCreateAddressButton() {
         Log.i(TAG, "ON CLICK: CREATE");
+        
+        // Validate spinner
+        ViewGroup mRegionGroup = (ViewGroup) shippingFormGenerator.getItemByKey(RestConstants.JSON_REGION_ID_TAG).getControl();
+        // Validate if region group is filled
+        if(!(mRegionGroup.getChildAt(0) instanceof IcsSpinner)) { Log.w(TAG, "REGION SPINNER NOT FILL YET"); return; };
 
         // Validate check
         if(mIsSameCheckBox.isChecked()) {
@@ -430,7 +435,9 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         ContentValues mContentValues = dynamicForm.save();
         // Get the region
         ViewGroup mRegionGroup = (ViewGroup) dynamicForm.getItemByKey(RestConstants.JSON_REGION_ID_TAG).getControl();
+        // Get spinner
         IcsSpinner mRegionSpinner = (IcsSpinner) mRegionGroup.getChildAt(0);
+        // Get selected region
         AddressRegion mSelectedRegion = (AddressRegion) mRegionSpinner.getSelectedItem(); 
         Log.d(TAG, "SELECTED REGION: " + mSelectedRegion.getName() + " " + mSelectedRegion.getId());
         
