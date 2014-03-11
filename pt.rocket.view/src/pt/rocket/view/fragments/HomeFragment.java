@@ -886,7 +886,7 @@ public class HomeFragment extends BaseFragment {
      */
     private void triggerPromotions(){
         Bundle bundle = new Bundle();
-        triggerContentEvent(new GetPromotionsHelper(), bundle, responseCallback);
+        triggerContentEventWithNoLoading(new GetPromotionsHelper(), bundle, responseCallback);
     }
     
     private void triggerTeasers(){
@@ -895,7 +895,7 @@ public class HomeFragment extends BaseFragment {
     
     private void triggerCallToOrder(){
         Bundle bundle = new Bundle();
-        triggerContentEvent(new GetCallToOrderHelper(), bundle, responseCallback);
+        triggerContentEventWithNoLoading(new GetCallToOrderHelper(), bundle, responseCallback);
     }
     
     /**

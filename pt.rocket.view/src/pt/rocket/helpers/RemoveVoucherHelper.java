@@ -44,7 +44,7 @@ public class RemoveVoucherHelper extends BaseHelper {
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.ADD_VOUCHER);
         return bundle;
     }
-
+ 
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
         android.util.Log

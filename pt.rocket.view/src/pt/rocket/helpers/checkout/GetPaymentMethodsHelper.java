@@ -20,18 +20,21 @@ import android.os.Bundle;
 import android.util.Log;
 
 /**
- * Helper used to get the payment methods 
+ * Helper used to get the payment methods
+ * 
  * @author sergiopereira
  * @modified Manuel Silva
  */
 public class GetPaymentMethodsHelper extends BaseHelper {
-    
-    private static String TAG = GetPaymentMethodsHelper.class.getSimpleName();
-    
-    private static final EventType type = EventType.GET_PAYMENT_METHODS_EVENT;
 
+    private static String TAG = GetPaymentMethodsHelper.class.getSimpleName();
+
+    private static final EventType type = EventType.GET_PAYMENT_METHODS_EVENT;
+    
+    public static final String NO_PAYMENT = "no_payment";
     /*
      * (non-Javadoc)
+     * 
      * @see pt.rocket.helpers.BaseHelper#generateRequestBundle(android.os.Bundle)
      */
     @Override
@@ -46,9 +49,10 @@ public class GetPaymentMethodsHelper extends BaseHelper {
         bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
         return bundle;
     }
-   
+
     /*
      * (non-Javadoc)
+     * 
      * @see pt.rocket.helpers.BaseHelper#parseResponseBundle(android.os.Bundle, org.json.JSONObject)
      */
     @Override
@@ -56,37 +60,41 @@ public class GetPaymentMethodsHelper extends BaseHelper {
         Log.i(TAG, "PARSE BUNDLE");
 
         try {
-        
-         // Get shipping methods
+
+            // Get shipping methods
             JSONObject formJSON = jsonObject.getJSONObject("paymentMethodForm");
             Log.d(TAG, "FORM JSON: " + formJSON.toString());
             Form form = new Form();
-            if (!form.initialize(formJSON)) Log.e(TAG, "Error initializing the form using the data");
-            
+            if (!form.initialize(formJSON))
+                Log.e(TAG, "Error initializing the form using the data");
+
             // Get cart
             JSONObject cartJSON = jsonObject.optJSONObject("cart");
-            if(cartJSON != null)
+            if (cartJSON != null)
                 Log.d(TAG, "CAT JSON: " + cartJSON.toString());
-//            ShoppingCart cart = new ShoppingCart(JumiaApplication.INSTANCE.getItemSimpleDataRegistry());
-//            cart.initialize(cartJSON);
+            // ShoppingCart cart = new
+            // ShoppingCart(JumiaApplication.INSTANCE.getItemSimpleDataRegistry());
+            // cart.initialize(cartJSON);
 
             // XXX
-            OrderSummary orderSummary = new OrderSummary(jsonObject, JumiaApplication.INSTANCE.getItemSimpleDataRegistry());
+            OrderSummary orderSummary = new OrderSummary(jsonObject,
+                    JumiaApplication.INSTANCE.getItemSimpleDataRegistry());
             bundle.putParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY, orderSummary);
-            
+
             bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, form);
 
         } catch (JSONException e) {
-            Log.d(TAG, "PARSE EXCEPTION: " , e);
+            Log.d(TAG, "PARSE EXCEPTION: ", e);
             return parseErrorBundle(bundle);
         }
         Log.i(TAG, "PARSE JSON: SUCCESS");
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
         return bundle;
     }
-    
+
     /*
      * (non-Javadoc)
+     * 
      * @see pt.rocket.helpers.BaseHelper#parseErrorBundle(android.os.Bundle)
      */
     @Override
@@ -99,6 +107,7 @@ public class GetPaymentMethodsHelper extends BaseHelper {
 
     /*
      * (non-Javadoc)
+     * 
      * @see pt.rocket.helpers.BaseHelper#parseResponseErrorBundle(android.os.Bundle)
      */
     @Override

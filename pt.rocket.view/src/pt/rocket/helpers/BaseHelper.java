@@ -5,8 +5,6 @@ import java.util.List;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import pt.rocket.app.JumiaApplication;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.Errors;
 import pt.rocket.framework.utils.Constants;

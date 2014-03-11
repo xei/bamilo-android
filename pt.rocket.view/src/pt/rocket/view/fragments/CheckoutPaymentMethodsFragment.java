@@ -24,6 +24,7 @@ import pt.rocket.framework.objects.Voucher;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.helpers.RemoveVoucherHelper;
 import pt.rocket.helpers.SetVoucherHelper;
 import pt.rocket.helpers.checkout.GetPaymentMethodsHelper;
 import pt.rocket.helpers.checkout.SetPaymentMethodHelper;
@@ -255,7 +256,12 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
                     ContentValues mContentValues = new ContentValues();
                     mContentValues.put(SetVoucherHelper.VOUCHER_PARAM, value);
                     Log.i(TAG, "code1coupon : "+value);
-                    triggerSubmitVoucher(mContentValues);
+                    if(couponButton.getText().toString().equalsIgnoreCase("use")){
+                        triggerSubmitVoucher(mContentValues);    
+                    } else {
+                        triggerRemoveVoucher(mContentValues);
+                    }
+                    
                 } else {
                     Toast.makeText(getBaseActivity(), "Please enter a valid Coupon Code", Toast.LENGTH_LONG).show();
                 }
@@ -293,7 +299,6 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
         }
     }
     
-   
     /**
      * ############# RESPONSE #############
      */
@@ -338,12 +343,14 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
             voucherDivider.setBackgroundColor(R.color.grey_dividerlight);
             getBaseActivity().showContentContainer();
             mVoucher = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            triggerGetPaymentMethods();
             break;
         case REMOVE_VOUCHER:
             couponButton.setText(getString(R.string.voucher_use));
             voucherError.setVisibility(View.GONE);
             voucherDivider.setBackgroundColor(R.color.grey_dividerlight);
             getBaseActivity().showContentContainer();
+            triggerGetPaymentMethods();
             break;
         default:
             break;
@@ -406,6 +413,12 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
         Bundle bundle = new Bundle();
         bundle.putParcelable(SetVoucherHelper.VOUCHER_PARAM, values);
         triggerContentEvent(new SetVoucherHelper(), bundle, this);
+    }
+    
+    private void triggerRemoveVoucher(ContentValues values) {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(RemoveVoucherHelper.VOUCHER_PARAM, values);
+        triggerContentEvent(new RemoveVoucherHelper(), bundle, this);
     }
     
     private void triggerGetPaymentMethods(){
