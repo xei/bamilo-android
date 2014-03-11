@@ -216,6 +216,7 @@ public class RestConstants {
 
 	// Address Tags
 	public static final String JSON_ADDRESS_ID_TAG = "id_customer_address";
+	public static final String JSON_ADDRESS_ID_TAG_2 = "customer_address_id";
 	// public static final String JSON_FIRST_NAME_TAG = "first_name";
 	public static final String JSON_MIDDLE_NAME_TAG = "middle_name";
 	// public static final String JSON_LAST_NAME_TAG = "last_name";

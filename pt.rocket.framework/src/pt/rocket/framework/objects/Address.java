@@ -67,7 +67,11 @@ public class Address implements IJSONSerializable, Parcelable {
 	public boolean initialize(JSONObject jsonObject) throws JSONException{
 		Log.d(TAG, "INITIALIZE");
         JSONObject dataObject = jsonObject;
-		id = dataObject.optInt(RestConstants.JSON_ADDRESS_ID_TAG);
+        
+        id = dataObject.optInt(RestConstants.JSON_ADDRESS_ID_TAG);
+        if (dataObject.has(RestConstants.JSON_ADDRESS_ID_TAG_2)) 
+        	id = dataObject.optInt(RestConstants.JSON_ADDRESS_ID_TAG_2); 
+		
 		firstName = dataObject.optString(RestConstants.JSON_FIRST_NAME_TAG);
 		lastName = dataObject.optString(RestConstants.JSON_LAST_NAME_TAG);
 		address1 = dataObject.optString(RestConstants.JSON_ADDRESS1_TAG);
