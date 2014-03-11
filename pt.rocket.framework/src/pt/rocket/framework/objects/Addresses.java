@@ -162,7 +162,7 @@ public class Addresses implements IJSONSerializable, Parcelable {
 	 * @return true/false
 	 */
 	public boolean hasDefaultShippingAndBillingAddress(){
-		return (shippingAddress.getId() == billingAddress.getId()) ? true : false;
+		return (hasShippingAddress() && hasBillingAddress() && shippingAddress.getId() == billingAddress.getId()) ? true : false;
 	}
 	
 	/**

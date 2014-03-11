@@ -763,7 +763,9 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             // Get Customer
             getBaseActivity().hideKeyboard();
             getBaseActivity().updateSlidingMenuCompletly();
-            FragmentController.getInstance().popLastEntry(FragmentType.ABOUT_YOU.toString());
+            // Clean stack for new native checkout on the back stack (auto ogin)
+            super.removeNativeCheckoutFromBackStack();
+            // Goto next step
             getBaseActivity().onSwitchFragment(fbNextFragment, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
             // Tracking
             TrackerDelegator.trackLoginSuccessful(getBaseActivity(), customerFb, onAutoLogin, loginOrigin, true);

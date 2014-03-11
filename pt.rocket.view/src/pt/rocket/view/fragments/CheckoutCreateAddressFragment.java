@@ -632,13 +632,6 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
             return true;
         }
         
-//        if(getBaseActivity() != null){
-//            Log.d(TAG, "BASE ACTIVITY HANDLE SUCCESS EVENT");
-//            getBaseActivity().handleSuccessEvent(bundle);
-//        } else {
-//            return true;
-//        }
-        
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         Log.i(TAG, "ON SUCCESS EVENT: " + eventType);
         
@@ -677,8 +670,15 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
             break;
         case CREATE_ADDRESS_EVENT:
             Log.d(TAG, "RECEIVED CREATE_ADDRESS_EVENT");
+            // Get next step
+            FragmentType nextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
+            if(nextFragment == null || nextFragment == FragmentType.UNKNOWN){
+                Log.w(TAG, "NEXT STEP IS UNKNOWN OR NULL -> FALL BACK MY_ADDRESSES");
+                nextFragment = FragmentType.MY_ADDRESSES;
+            }
             Toast.makeText(getBaseActivity(), getString(R.string.create_addresses_success), Toast.LENGTH_SHORT).show();
-            getBaseActivity().onSwitchFragment(FragmentType.SHIPPING_METHODS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            FragmentController.getInstance().popLastEntry(FragmentType.CREATE_ADDRESS.toString());
+            getBaseActivity().onSwitchFragment(nextFragment, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
             break;
         default:
             break;

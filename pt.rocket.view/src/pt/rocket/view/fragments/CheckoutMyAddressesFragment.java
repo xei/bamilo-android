@@ -602,6 +602,9 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
             this.hiddenForm = bundle.getParcelable(Constants.BUNDLE_FORM_DATA_KEY);
             Addresses addresses = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             this.addresses = addresses;
+            // Validate response
+            if(!isValidateResponse()){ gotoOldCheckoutMethod(getBaseActivity()); return true; }
+            // Show addresses
             showAddresses(addresses.hasDefaultShippingAndBillingAddress());
             // Get order summary
             OrderSummary orderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
@@ -665,6 +668,19 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
         
         
         return false;
+    }
+    
+    /**
+     * Method used to validate if the user has shipping and billing address
+     * @return true or false
+     * @author sergiopereira
+     */
+    private boolean isValidateResponse(){
+        // Validate addresses at this point the user should have addresses
+        try {
+            if(addresses.hasBillingAddress() && addresses.hasShippingAddress()){ return true; } 
+            else { Log.w(TAG, "WARNING: CUSTOMER SHIPPING OR BILLING ADDRESS IS NULL"); return false; }
+        } catch (NullPointerException e) { Log.w(TAG, "WARNING: ADDRESSES IS NULL"); return false; }
     }
     
     /**
