@@ -18,7 +18,7 @@
     <View
         android:id="@+id/voucher_divider"
         style="@style/divider_horizontal"
-        android:layout_width="wrap_content"	
+        android:layout_width="wrap_content"
         android:layout_below="@id/title" />
 
     <RelativeLayout
@@ -27,48 +27,49 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/voucher_divider"
         android:layout_gravity="center_horizontal"
-        android:orientation="horizontal"
         android:layout_marginTop="10dp"
-		 >
-		<org.holoeverywhere.widget.Button
+        android:orientation="horizontal" >
+
+        <org.holoeverywhere.widget.Button
             android:id="@+id/voucher_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ellipsize="marquee"
-            android:singleLine="true"
             android:layout_alignParentRight="true"
-            android:paddingRight="6.6dp"
+            android:ellipsize="marquee"
             android:paddingLeft="6.6dp"
+            android:paddingRight="6.6dp"
+            android:singleLine="true"
             android:text="@string/voucher_use"
             android:textColor="@color/grey_dark"
             android:textSize="@dimen/text_xs" />
+
         <org.holoeverywhere.widget.EditText
             android:id="@+id/voucher_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/voucher_btn"
             android:background="@drawable/selector_edittext_bottomline"
             android:cursorVisible="true"
-            android:layout_toLeftOf="@id/voucher_btn"
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:hint="@string/voucher_message_hint"
             android:textColor="@color/form_text"
             android:textColorHint="@color/form_text_hint"
             android:textCursorDrawable="@null" />
-
-        
     </RelativeLayout>
-	<org.holoeverywhere.widget.TextView
+
+    <org.holoeverywhere.widget.TextView
         android:id="@+id/voucher_error_message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/voucher_container"
         android:layout_marginBottom="@dimen/margin_large"
         android:layout_marginTop="@dimen/margin_x_small"
-        android:layout_below="@id/voucher_container"
         android:fontFamily="roboto_regular"
         android:gravity="left"
         android:text="@string/voucher_error_message"
         android:textColor="@color/red_middle"
         android:textSize="@dimen/text_xs"
         android:visibility="gone" />
+
 </RelativeLayout>

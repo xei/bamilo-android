@@ -20,7 +20,6 @@ import pt.rocket.factories.FormFactory;
 import pt.rocket.forms.Form;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.OrderSummary;
-import pt.rocket.framework.objects.Voucher;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -68,7 +67,6 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
 
     private ViewGroup paymentMethodsContainer;
 
-    private ViewGroup cartContainer;
 
     private Form formResponse;
 
@@ -78,9 +76,12 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
     private Button couponButton;
     private View voucherDivider;
     private TextView voucherError;
-    
-    private Voucher mVoucher; 
 
+    private String mVoucher = null;
+    private boolean noPaymentNeeded = false;
+    
+    
+    private OrderSummary orderSummary; 
     /**
      * Empty constructor
      */
@@ -141,7 +142,6 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
         Log.i(TAG, "ON VIEW CREATED");
         // Get containers
         paymentMethodsContainer = (ViewGroup) view.findViewById(R.id.checkout_payment_methods_container);
-        cartContainer = (ViewGroup) view.findViewById(R.id.checkout_payment_cart_container);
         // Buttons
         view.findViewById(R.id.checkout_payment_button_enter).setOnClickListener(this);
         
@@ -240,10 +240,24 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
         getBaseActivity().showContentContainer(false);
     }
     
+    private void generateNoPayment(){
+        paymentMethodsContainer.removeAllViews();
+        LayoutInflater mLayoutInflater = LayoutInflater.from(getBaseActivity());
+        View view = mLayoutInflater.inflate(R.layout.no_payment_layout, null);
+        paymentMethodsContainer.addView(view);
+        paymentMethodsContainer.addView(generateCouponView());
+        paymentMethodsContainer.refreshDrawableState();
+        getBaseActivity().showContentContainer(false);
+    }
+    
     private View generateCouponView(){
         LayoutInflater mLayoutInflater = LayoutInflater.from(getBaseActivity());
         View view = mLayoutInflater.inflate(R.layout.voucher_insert_layout, null);
         final EditText voucherValue = (EditText) view.findViewById(R.id.voucher_name);
+        if(mVoucher != null && mVoucher.length() > 0){
+            voucherValue.setText(mVoucher);
+        }
+        
         voucherDivider = view.findViewById(R.id.voucher_divider);
         voucherError = (TextView) view.findViewById(R.id.voucher_error_message);
         couponButton = (Button) view.findViewById(R.id.voucher_btn); 
@@ -251,11 +265,11 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
             
             @Override
             public void onClick(View v) {
-                String value = voucherValue.getText().toString();
-                if(value != null && value.length() > 0){
+                mVoucher = voucherValue.getText().toString();
+                if(mVoucher != null && mVoucher.length() > 0){
                     ContentValues mContentValues = new ContentValues();
-                    mContentValues.put(SetVoucherHelper.VOUCHER_PARAM, value);
-                    Log.i(TAG, "code1coupon : "+value);
+                    mContentValues.put(SetVoucherHelper.VOUCHER_PARAM, mVoucher);
+                    Log.i(TAG, "code1coupon : "+mVoucher);
                     if(couponButton.getText().toString().equalsIgnoreCase("use")){
                         triggerSubmitVoucher(mContentValues);    
                     } else {
@@ -296,6 +310,13 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
             } else {
                 Toast.makeText(getActivity(), "Please fill all the data",Toast.LENGTH_SHORT).show();
             }
+        } else if (noPaymentNeeded) {
+         // Get next step
+            FragmentType nextFragment = FragmentType.MY_ORDER;;
+            
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(ConstantsIntentExtra.ORDER_FINISH, orderSummary);
+            getBaseActivity().onSwitchFragment(nextFragment, bundle, FragmentController.ADD_TO_BACK_STACK);
         }
     }
     
@@ -318,11 +339,18 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
         case GET_PAYMENT_METHODS_EVENT:
             Log.d(TAG, "RECEIVED GET_SHIPPING_METHODS_EVENT");
             // Get order summary
-            OrderSummary orderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
+            orderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
             super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_PAYMENT, orderSummary);
-            // Form
-            Form form = (Form) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-            loadForm(form);
+            if(orderSummary != null && orderSummary.getTotal()!= null && Integer.parseInt(orderSummary.getTotal()) == 0){
+                noPaymentNeeded = true;
+                formGenerator = null;
+                generateNoPayment();
+            } else {
+                // Form
+                Form form = (Form) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                loadForm(form);                
+            }
+
             break;
         case SET_PAYMENT_METHOD_EVENT:
             Log.d(TAG, "RECEIVED SET_PAYMENT_METHOD_EVENT");
@@ -342,10 +370,11 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
             voucherError.setVisibility(View.GONE);
             voucherDivider.setBackgroundColor(R.color.grey_dividerlight);
             getBaseActivity().showContentContainer();
-            mVoucher = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            noPaymentNeeded = false;
             triggerGetPaymentMethods();
             break;
         case REMOVE_VOUCHER:
+            noPaymentNeeded = false;
             couponButton.setText(getString(R.string.voucher_use));
             voucherError.setVisibility(View.GONE);
             voucherDivider.setBackgroundColor(R.color.grey_dividerlight);

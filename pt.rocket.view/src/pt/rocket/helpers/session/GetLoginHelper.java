@@ -25,7 +25,7 @@ import android.util.Log;
 /**
  * Example helper
  * 
- * @author Guilherme Silva
+ * @author Manuel Silva
  * 
  */
 public class GetLoginHelper extends BaseHelper {
