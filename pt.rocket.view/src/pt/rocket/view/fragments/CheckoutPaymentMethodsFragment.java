@@ -80,7 +80,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
     private String mVoucher = null;
     private boolean noPaymentNeeded = false;
     
-    
+    private boolean removeVoucher = false;
     private OrderSummary orderSummary; 
     /**
      * Empty constructor
@@ -261,15 +261,20 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
         voucherDivider = view.findViewById(R.id.voucher_divider);
         voucherError = (TextView) view.findViewById(R.id.voucher_error_message);
         couponButton = (Button) view.findViewById(R.id.voucher_btn); 
+        
+        if(removeVoucher){
+            couponButton.setText(getString(R.string.voucher_remove));
+        }
+        
         couponButton.setOnClickListener(new OnClickListener() {
             
             @Override
             public void onClick(View v) {
                 mVoucher = voucherValue.getText().toString();
+                getBaseActivity().hideKeyboard();
                 if(mVoucher != null && mVoucher.length() > 0){
                     ContentValues mContentValues = new ContentValues();
                     mContentValues.put(SetVoucherHelper.VOUCHER_PARAM, mVoucher);
-                    Log.i(TAG, "code1coupon : "+mVoucher);
                     if(couponButton.getText().toString().equalsIgnoreCase("use")){
                         triggerSubmitVoucher(mContentValues);    
                     } else {
@@ -281,6 +286,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
                 }
             }
         });
+        
         return view;
     }
     
@@ -371,6 +377,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
             voucherDivider.setBackgroundColor(R.color.grey_dividerlight);
             getBaseActivity().showContentContainer();
             noPaymentNeeded = false;
+            removeVoucher = true;
             triggerGetPaymentMethods();
             break;
         case REMOVE_VOUCHER:
@@ -380,6 +387,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
             voucherDivider.setBackgroundColor(R.color.grey_dividerlight);
             getBaseActivity().showContentContainer();
             triggerGetPaymentMethods();
+            removeVoucher = false;
             break;
         default:
             break;
