@@ -12,10 +12,12 @@ import org.apache.http.ParseException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
+import pt.rocket.forms.PaymentMethodForm;
 import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.rest.RestClientSingleton;
 import pt.rocket.framework.rest.RestContract;
@@ -545,9 +547,14 @@ public class CheckoutWebFragment extends BaseFragment {
                     });
                     Bundle bundle = new Bundle();
                     bundle.putString(ConstantsIntentExtra.SUCESS_INFORMATION, content);
-                    bundle.putString(ConstantsIntentExtra.CUSTOMER_EMAIL, (customer != null ) ? customer.getEmail() : ""); 
+                    bundle.putString(ConstantsIntentExtra.CUSTOMER_EMAIL, (customer != null ) ? customer.getEmail() : "");
+                    JumiaApplication.INSTANCE.setPaymentMethodForm(new PaymentMethodForm());
+                    
 					String order_number = result.optString("orderNr");
                     String grandTotal = result.optString("grandTotal");
+                    JumiaApplication.INSTANCE.getPaymentMethodForm().setOrderNumber(order_number);
+                    JumiaApplication.INSTANCE.getPaymentMethodForm().setCustomerFirstName((customer != null ) ? customer.getFirstName() : "");
+                    JumiaApplication.INSTANCE.getPaymentMethodForm().setCustomerFirstName((customer != null ) ? customer.getLastName() : "");
 					bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR, order_number);                   
 					((BaseActivity) getActivity()).onSwitchFragment(FragmentType.CHECKOUT_THANKS, bundle, FragmentController.ADD_TO_BACK_STACK);
                 }

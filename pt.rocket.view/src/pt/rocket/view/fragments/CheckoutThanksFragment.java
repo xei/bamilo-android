@@ -171,11 +171,7 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
 //        String order_number = args.getString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR);
         if(JumiaApplication.INSTANCE.getPaymentMethodForm() != null && JumiaApplication.INSTANCE.getPaymentMethodForm().getOrderNumber() != null){
             order_number = JumiaApplication.INSTANCE.getPaymentMethodForm().getOrderNumber();    
-        } else {
-            Bundle args = this.getArguments();
-            order_number = args.getString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR);
-        }
-        
+        } 
         TextView tV = (TextView) getView().findViewById(R.id.order_number_id);
         tV.setText(order_number);
         tV.setOnClickListener(new OnClickListener() {
