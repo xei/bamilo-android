@@ -73,9 +73,6 @@ public final class ShopSelector {
 	 */
 	private static void setLocale(Context context, String language) {
 		Resources res = context.getResources();
-		if(language.equalsIgnoreCase("ug")){
-		    language = "en";
-		}
 		String[] languageCountry = language.split("_");
 		sLocale = languageCountry.length >= 2 ? new Locale(
 				languageCountry[0], languageCountry[1]) : new Locale(language);
