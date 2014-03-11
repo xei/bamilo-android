@@ -261,11 +261,9 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
         voucherDivider = view.findViewById(R.id.voucher_divider);
         voucherError = (TextView) view.findViewById(R.id.voucher_error_message);
         couponButton = (Button) view.findViewById(R.id.voucher_btn); 
-        
         if(removeVoucher){
             couponButton.setText(getString(R.string.voucher_remove));
         }
-        
         couponButton.setOnClickListener(new OnClickListener() {
             
             @Override
@@ -275,6 +273,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
                 if(mVoucher != null && mVoucher.length() > 0){
                     ContentValues mContentValues = new ContentValues();
                     mContentValues.put(SetVoucherHelper.VOUCHER_PARAM, mVoucher);
+                    Log.i(TAG, "code1coupon : "+mVoucher);
                     if(couponButton.getText().toString().equalsIgnoreCase("use")){
                         triggerSubmitVoucher(mContentValues);    
                     } else {
@@ -286,7 +285,6 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
                 }
             }
         });
-        
         return view;
     }
     
@@ -347,7 +345,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
             // Get order summary
             orderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
             super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_PAYMENT, orderSummary);
-            if(orderSummary != null && orderSummary.getTotal()!= null && Integer.parseInt(orderSummary.getTotal()) == 0){
+            if(orderSummary != null && orderSummary.getTotal()!= null && Float.parseFloat(orderSummary.getTotal()) == 0){
                 noPaymentNeeded = true;
                 formGenerator = null;
                 generateNoPayment();
