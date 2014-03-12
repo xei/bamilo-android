@@ -313,7 +313,7 @@
     <string name="voucher_use">Use</string>
     <string name="voucher_remove">Remove</string>
     <string name="voucher_message_hint">Enter your coupon code here</string>
-    <string name="voucher_error_message">invalid coupon code</string>
+    <string name="voucher_error_message">Please input a valid Coupon Code</string>
     <string name="payment">Payment</string>
     <string name="no_payment">No payment necessary</string>
     
