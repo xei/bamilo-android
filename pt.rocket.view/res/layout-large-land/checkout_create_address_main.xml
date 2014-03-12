@@ -34,7 +34,7 @@
                 <include
                     android:id="@+id/checkout_address_form_include_shipping"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/margin_mid"
                     android:layout_marginRight="@dimen/margin_mid"
                     android:layout_weight="1"
@@ -45,7 +45,7 @@
                 <include
                     android:id="@+id/checkout_address_form_include_billing"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/margin_mid"
                     android:layout_marginRight="@dimen/margin_mid"
                     android:layout_weight="1"
@@ -76,17 +76,6 @@
         android:background="@color/orange_basic" />
 
     <!-- ORDER SUMMARY -->
-
-
-    <!--
-         <fragment
-        android:name="pt.rocket.view.fragments.CheckoutSummaryFragment"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/margin_mid"
-        android:layout_marginRight="@dimen/margin_mid"
-        android:layout_weight="0.25" />
-    -->
 
     <FrameLayout
         android:id="@+id/order_summary_container"
