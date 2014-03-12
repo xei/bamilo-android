@@ -59,7 +59,7 @@ public class CatalogPageModel {
     private int pageNumber;
 
     private boolean isLandScape = false;
-    
+
     private ProductSort sort = ProductSort.NONE;
     private Direction dir = Direction.ASCENDENT;
 
@@ -76,6 +76,8 @@ public class CatalogPageModel {
     private static int navigationSource;
 
     private ProductsListAdapter productsAdapter;
+
+    private int lastItem;
 
     /**
      * Layout Stuff
@@ -109,25 +111,23 @@ public class CatalogPageModel {
 
     private BaseActivity mActivity;
 
-    private String md5Hash;
-
     private long mBeginRequestMillis;
 
-    private static boolean isLoadingMore = false;
+    private boolean isLoadingMore = false;
 
     private int totalProducts = -1;
-    
+
     // Flag used to stop the loading more when an error occurs
     private boolean receivedError = false;
-    
+
     private CharSequence totalItemsLable = "";
     private Fragment mFragment;
+
     public CatalogPageModel(int index, BaseActivity activity, Fragment mFragment) {
         this.index = index;
         this.mActivity = activity;
         setIndex(index);
         this.mFragment = mFragment;
-        md5Hash = uniqueMD5(TAG + index);
         switch (index) {
         case 0: // <item > Copy of Brand for infinite scroll</item>
             // TODO when available change this to Sales
@@ -167,17 +167,15 @@ public class CatalogPageModel {
 
         }
     }
+
     /*
      * Get total number of products
-     * 
-     * 
-     * */
-    public int getTotalProducts(){
-        
+     */
+    public int getTotalProducts() {
+
         return totalProducts;
     }
-    
-    
+
     public void setVariables(String p, String s, String n, String t, int navSource) {
         CatalogPageModel.productsURL = p;
         CatalogPageModel.searchQuery = s;
@@ -188,8 +186,14 @@ public class CatalogPageModel {
         if (index == 1) {
             showTips();
         }
+        new Thread(new Runnable() {
 
-        executeRequest();
+            @Override
+            public void run() {
+                // TODO Auto-generated method stub
+                executeRequest();
+            }
+        }).run();
     }
 
     public int getIndex() {
@@ -308,9 +312,10 @@ public class CatalogPageModel {
                             ((Product) productsAdapter.getItem(activePosition)).getUrl());
                     bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, navigationSource);
                     bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, navigationPath);
-                    if(title != null)
+                    if (title != null)
                         bundle.putString(ProductDetailsActivityFragment.PRODUCT_CATEGORY, title);
-                        mActivity.onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
+                    mActivity.onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle,
+                            FragmentController.ADD_TO_BACK_STACK);
                 }
 
             }
@@ -318,7 +323,7 @@ public class CatalogPageModel {
 
     }
 
-    public void setListView(ListView listView) {        
+    public void setListView(ListView listView) {
         this.listView = listView;
         this.setLandScape(false);
         this.listView.setOnItemClickListener(new OnItemClickListener() {
@@ -338,9 +343,10 @@ public class CatalogPageModel {
                             ((Product) productsAdapter.getItem(activePosition)).getUrl());
                     bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, navigationSource);
                     bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, navigationPath);
-                    if(title != null)
+                    if (title != null)
                         bundle.putString(ProductDetailsActivityFragment.PRODUCT_CATEGORY, title);
-                    mActivity.onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
+                    mActivity.onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle,
+                            FragmentController.ADD_TO_BACK_STACK);
                 }
             }
         });
@@ -414,7 +420,9 @@ public class CatalogPageModel {
         pageNumber = 1;
         showProductsContent();
         productsAdapter.clearProducts();
+
         getMoreProducts();
+
     }
 
     /**
@@ -442,11 +450,9 @@ public class CatalogPageModel {
             bundle.putInt(GetProductsHelper.TOTAL_COUNT, MAX_PAGE_ITEMS);
             bundle.putInt(GetProductsHelper.SORT, sort.id);
             bundle.putInt(GetProductsHelper.DIRECTION, dir.id);
-            JumiaApplication.INSTANCE.sendRequest(new GetProductsHelper(), bundle, responseCallback);
-            
-//            EventManager.getSingleton().triggerRequestEvent(
-//                    new GetProductsEvent(productsURL, searchQuery, pageNumber, MAX_PAGE_ITEMS,
-//                            sort, dir, md5Hash));
+            JumiaApplication.INSTANCE
+                    .sendRequest(new GetProductsHelper(), bundle, responseCallback);
+
         } else {
             hideProductsLoading();
         }
@@ -454,91 +460,75 @@ public class CatalogPageModel {
 
     private void showProductsContent() {
         Log.d(TAG, "showProductsContent");
-        if(this.isLandScape){
+        if (this.isLandScape) {
             if (pageNumber == 1) {
                 Log.i(TAG, "scrolling to position 0");
                 gridView.setSelection(0);
             }
-            gridView.setOnScrollListener(new OnScrollListener() {
-
-                @Override
-                public void onScrollStateChanged(AbsListView view, int scrollState) {
-
-                }
-
-                @Override
-                public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
-                        int totalItemCount) {
-                    // Make your calculation stuff here. You have all your
-                    // needed info from the parameters of this function.
-
-                    // Sample calculation to determine if the last
-                    // item is fully visible.
-                    final int lastItem = firstVisibleItem + visibleItemCount;
-                    if (totalItemCount != 0 && lastItem == totalItemCount) {
-                        Log.i(TAG, "onScroll: last item visible ");
-                        if (!isLoadingMore && !receivedError) {
-                            Log.i(TAG, "onScroll: last item visible and start loading" + pageNumber);
-                            isLoadingMore = true;
-                            showProductsLoading();
-                            getMoreProducts();
-                        }
-                    } else receivedError = false;
-
-                }
-            });
+            gridView.setOnScrollListener(scrollListener);
         } else {
             if (pageNumber == 1) {
                 Log.i(TAG, "scrolling to position 0");
                 listView.setSelection(0);
             }
-            listView.setOnScrollListener(new OnScrollListener() {
-
-                @Override
-                public void onScrollStateChanged(AbsListView view, int scrollState) {
-
-                }
-
-                @Override
-                public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
-                        int totalItemCount) {
-                    // Make your calculation stuff here. You have all your
-                    // needed info from the parameters of this function.
-
-                    // Sample calculation to determine if the last
-                    // item is fully visible.
-                    final int lastItem = firstVisibleItem + visibleItemCount;
-                    if (totalItemCount != 0 && lastItem == totalItemCount) {
-                        Log.i(TAG, "onScroll: last item visible ");
-                        if (!isLoadingMore) {
-                            Log.i(TAG, "onScroll: last item visible and start loading" + pageNumber);
-                            isLoadingMore = true;
-                            showProductsLoading();
-                            getMoreProducts();
-                        }
-                    }
-
-                }
-            });
+            listView.setOnScrollListener(scrollListener);
         }
-        
+
         relativeLayoutPc.setVisibility(View.VISIBLE);
         textViewSpnf.setVisibility(View.GONE);
         linearLayoutLm.setVisibility(View.GONE);
         linearLayoutLm.refreshDrawableState();
-        
-        if(this.isLandScape){
+
+        if (this.isLandScape) {
             gridView.setAdapter(productsAdapter);
         } else {
-            listView.setAdapter(productsAdapter);    
+            listView.setAdapter(productsAdapter);
         }
-        
+
         if (relativeLayout != null) {
             linearLayoutLb.setVisibility(View.GONE);
         }
     }
-    
-    private void showCatalogContent(){
+
+    private OnScrollListener scrollListener = new OnScrollListener() {
+
+        @Override
+        public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+        }
+
+        @Override
+        public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
+                int totalItemCount) {
+            // Make your calculation stuff here. You have all your
+            // needed info from the parameters of this function.
+
+            // Sample calculation to determine if the last
+            // item is fully visible.
+            lastItem = firstVisibleItem + visibleItemCount;
+            if (totalItemCount != 0 && lastItem == totalItemCount) {
+                Log.i(TAG, "onScroll: last item visible ");
+                if (!isLoadingMore && !receivedError) {
+                    Log.i(TAG, "onScroll: last item visible and start loading" + pageNumber);
+                    isLoadingMore = true;
+                    showProductsLoading();
+                    new Thread(new Runnable() {
+                        
+                        @Override
+                        public void run() {
+                            getMoreProducts();
+                        }
+                    }).run(); 
+                    
+                }
+            } else {
+                receivedError = false;
+            }
+
+        }
+    };
+
+    private void showCatalogContent() {
         relativeLayoutPc.setVisibility(View.VISIBLE);
         textViewSpnf.setVisibility(View.GONE);
         linearLayoutLm.setVisibility(View.GONE);
@@ -627,29 +617,29 @@ public class CatalogPageModel {
     }
 
     private IResponseCallback responseCallback = new IResponseCallback() {
-        
+
         @Override
         public void onRequestError(Bundle bundle) {
             onErrorEvent(bundle);
-            
+
         }
-        
+
         @Override
         public void onRequestComplete(Bundle bundle) {
             onSuccessEvent(bundle);
-            
+
         }
     };
-    
-//    @Override
-//    public void handleEvent(ResponseEvent event) {
-//        if (event.getSuccess()) {
-//            processSuccess((ResponseResultEvent<?>) event);
-//        } else {
-//            processError(event);
-//        }
-//
-//    }
+
+    // @Override
+    // public void handleEvent(ResponseEvent event) {
+    // if (event.getSuccess()) {
+    // processSuccess((ResponseResultEvent<?>) event);
+    // } else {
+    // processError(event);
+    // }
+    //
+    // }
 
     private void checkRedirectFromSearch(String location) {
         Log.d(TAG, "url = " + productsURL);
@@ -694,10 +684,10 @@ public class CatalogPageModel {
     }
 
     private void onErrorEvent(Bundle bundle) {
-        if(mActivity.handleErrorEvent(bundle)){
+        if (mActivity.handleErrorEvent(bundle)) {
             return;
         }
-//        Log.i(TAG, "code1 product list on error event");
+        // Log.i(TAG, "code1 product list on error event");
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         if (errorCode != null && pageNumber == 1) {
@@ -708,75 +698,85 @@ public class CatalogPageModel {
             hideProductsLoading();
 
             if (totalProducts != -1 && totalProducts > ((pageNumber - 1) * MAX_PAGE_ITEMS)) {
-                Toast.makeText(mActivity, R.string.products_could_notloaded, Toast.LENGTH_SHORT).show();
+                Toast.makeText(mActivity, R.string.products_could_notloaded, Toast.LENGTH_SHORT)
+                        .show();
             }
         }
         mBeginRequestMillis = System.currentTimeMillis();
         isLoadingMore = false;
         receivedError = true;
     }
-   public void setTotalItemLable(){
+
+    public void setTotalItemLable() {
         TextView totalItems = (TextView) mActivity.findViewById(R.id.totalProducts);
-        if(getTotalProducts() > 0 ) {
-            totalItems.setText(" ("+String.valueOf(getTotalProducts())+" "+mActivity.getString(R.string.shoppingcart_items)+")");
+        if (getTotalProducts() > 0) {
+            totalItems.setText(" (" + String.valueOf(getTotalProducts()) + " "
+                    + mActivity.getString(R.string.shoppingcart_items) + ")");
             totalItems.setVisibility(View.VISIBLE);
-            //totalItemsLable = " ("+String.valueOf(getTotalProducts())+" "+((BaseActivity) mActivity).getString(R.string.shoppingcart_items)+")";
+            // totalItemsLable = " ("+String.valueOf(getTotalProducts())+" "+((BaseActivity)
+            // mActivity).getString(R.string.shoppingcart_items)+")";
         }
     }
-   
+
     private void onSuccessEvent(Bundle bundle) {
         mActivity.handleSuccessEvent(bundle);
         Log.d(TAG, "ON SUCCESS EVENT");
-        
+
         // Get Products Event
         ProductsPage productsPage = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-        
+
         // Validate title
-        if(TextUtils.isEmpty(title)) title = productsPage.getName();
+        if (TextUtils.isEmpty(title)) {
+            title = productsPage.getName();
+        }
 
         // Valdiate products
         if (productsPage != null && productsPage.getTotalProducts() > 0) {
             Log.d(TAG, "onSuccessEvent: products on page = " + productsPage.getProducts().size() +
                     " total products = " + productsPage.getTotalProducts());
             totalProducts = productsPage.getTotalProducts();
-            if(mFragment.isVisible()){
-                //set total items lable
-                if(getTotalProducts() > 0)
-                    mActivity.setTitleAndSubTitle(title," ("+String.valueOf(getTotalProducts())+" "+mActivity.getString(R.string.shoppingcart_items)+")");
+            if (mFragment.isVisible()) {
+                // set total items lable
+                if (getTotalProducts() > 0)
+                    mActivity.setTitleAndSubTitle(title, " (" + String.valueOf(getTotalProducts())
+                            + " " + mActivity.getString(R.string.shoppingcart_items) + ")");
                 else
                     mActivity.setTitle(title);
             }
-            //setTotalItemLable();
+            // setTotalItemLable();
         }
 
         String location = bundle.getString(IMetaData.LOCATION);
         Log.d(TAG, "Location = " + location);
-        if(location != null){
-            checkRedirectFromSearch(location);    
+        if (location != null) {
+            checkRedirectFromSearch(location);
         }
-        
 
         AnalyticsGoogle.get().trackLoadTiming(R.string.gproductlist, mBeginRequestMillis);
 
         if (searchQuery != null && !TextUtils.isEmpty(searchQuery)) {
-            if(mFragment.isVisible()){
-                if(getTotalProducts() > 0)
-                    mActivity.setTitleAndSubTitle(searchQuery," ("+productsPage.getTotalProducts()+" "+mActivity.getString(R.string.shoppingcart_items)+")");
+            if (mFragment.isVisible()) {
+                if (getTotalProducts() > 0)
+                    mActivity.setTitleAndSubTitle(
+                            searchQuery,
+                            " (" + productsPage.getTotalProducts() + " "
+                                    + mActivity.getString(R.string.shoppingcart_items) + ")");
                 else
                     mActivity.setTitle(searchQuery);
             }
-            if(pageNumber == 1){
-                TrackerDelegator.trackSearchViewSortMade(mActivity.getApplicationContext(), searchQuery,
+            if (pageNumber == 1) {
+                TrackerDelegator.trackSearchViewSortMade(mActivity.getApplicationContext(),
+                        searchQuery,
                         productsPage.getTotalProducts(), sort.name());
-                
+
                 TrackerDelegator.trackSearchMade(mActivity.getApplicationContext(), searchQuery,
                         productsPage.getTotalProducts());
             }
-            
+
         } else {
-            if(pageNumber == 1){
+            if (pageNumber == 1) {
                 TrackerDelegator.trackCategoryView(mActivity.getApplicationContext(), title,
-                    pageNumber);
+                        pageNumber);
             }
         }
 
@@ -787,7 +787,8 @@ public class CatalogPageModel {
             e.printStackTrace();
         }
 
-//        Log.i(TAG, "code1 " + productsPage.getProducts().size() + " pageNumber is : " + pageNumber);
+        // Log.i(TAG, "code1 " + productsPage.getProducts().size() + " pageNumber is : " +
+        // pageNumber);
 
         pageNumber = productsPage.getProducts().size() >= productsPage.getTotalProducts() ? NO_MORE_PAGES
                 : pageNumber + 1;
@@ -811,7 +812,8 @@ public class CatalogPageModel {
     }
 
     /**
-     * @param isLandScape the isLandScape to set
+     * @param isLandScape
+     *            the isLandScape to set
      */
     public void setLandScape(boolean isLandScape) {
         this.isLandScape = isLandScape;

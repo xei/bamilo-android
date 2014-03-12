@@ -304,33 +304,41 @@ public class Catalog extends BaseFragment {
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             final CatalogPageModel currentPage = getCurrentCatalogPageModel(position);
-            if(currentPage.getRelativeLayout() == null || ((BaseActivity) getActivity()).isTabletInLandscape(getBaseActivity()) != currentPage.isLandScape() ){
-                RelativeLayout mRelativeLayout = (RelativeLayout) mInflater.inflate(R.layout.products,
-                    null);
-                currentPage.setRelativeLayout(mRelativeLayout);
-                currentPage.setTextViewSpnf((org.holoeverywhere.widget.TextView) currentPage.getRelativeLayout().findViewById(R.id.search_products_not_found));
-                currentPage.setButtonRavb((Button) currentPage.getRelativeLayout().findViewById(R.id.retry_alert_view_button));
-                currentPage.setRelativeLayoutPc((RelativeLayout) currentPage.getRelativeLayout().findViewById(R.id.products_content));
-                currentPage.setLinearLayoutLm((LinearLayout) currentPage.getRelativeLayout().findViewById(R.id.loadmore));
-                if(getBaseActivity().isTabletInLandscape(getBaseActivity())){
-                    try {
-                        currentPage.setGridView((GridView) currentPage.getRelativeLayout().findViewById(R.id.middle_productslist_list));    
-                    } catch (ClassCastException e) {
-                        currentPage.setListView((ListView) currentPage.getRelativeLayout().findViewById(R.id.middle_productslist_list));    
-                    }
-                        
-                } else {
-                    try {
-                        currentPage.setListView((ListView) currentPage.getRelativeLayout().findViewById(R.id.middle_productslist_list));    
-                    } catch (ClassCastException e) {
-                        currentPage.setGridView((GridView) currentPage.getRelativeLayout().findViewById(R.id.middle_productslist_list));
-                    }
-                }
+            new Thread(new Runnable() {
                 
-                currentPage.setLinearLayoutLb((LinearLayout) currentPage.getRelativeLayout().findViewById(R.id.loading_view_pager));
-                currentPage.setRelativeLayoutPt((RelativeLayout) currentPage.getRelativeLayout().findViewById(R.id.products_tip));
-                currentPage.setVariables(productsURL, searchQuery, navigationPath, title, navigationSource);
-            }
+                @Override
+                public void run() {
+                    if(currentPage.getRelativeLayout() == null || ((BaseActivity) getActivity()).isTabletInLandscape(getBaseActivity()) != currentPage.isLandScape() ){
+                        RelativeLayout mRelativeLayout = (RelativeLayout) mInflater.inflate(R.layout.products,
+                            null);
+                        currentPage.setRelativeLayout(mRelativeLayout);
+                        currentPage.setTextViewSpnf((org.holoeverywhere.widget.TextView) currentPage.getRelativeLayout().findViewById(R.id.search_products_not_found));
+                        currentPage.setButtonRavb((Button) currentPage.getRelativeLayout().findViewById(R.id.retry_alert_view_button));
+                        currentPage.setRelativeLayoutPc((RelativeLayout) currentPage.getRelativeLayout().findViewById(R.id.products_content));
+                        currentPage.setLinearLayoutLm((LinearLayout) currentPage.getRelativeLayout().findViewById(R.id.loadmore));
+                        if(getBaseActivity().isTabletInLandscape(getBaseActivity())){
+                            try {
+                                currentPage.setGridView((GridView) currentPage.getRelativeLayout().findViewById(R.id.middle_productslist_list));    
+                            } catch (ClassCastException e) {
+                                currentPage.setListView((ListView) currentPage.getRelativeLayout().findViewById(R.id.middle_productslist_list));    
+                            }
+                                
+                        } else {
+                            try {
+                                currentPage.setListView((ListView) currentPage.getRelativeLayout().findViewById(R.id.middle_productslist_list));    
+                            } catch (ClassCastException e) {
+                                currentPage.setGridView((GridView) currentPage.getRelativeLayout().findViewById(R.id.middle_productslist_list));
+                            }
+                        }
+                        
+                        currentPage.setLinearLayoutLb((LinearLayout) currentPage.getRelativeLayout().findViewById(R.id.loading_view_pager));
+                        currentPage.setRelativeLayoutPt((RelativeLayout) currentPage.getRelativeLayout().findViewById(R.id.products_tip));
+                        currentPage.setVariables(productsURL, searchQuery, navigationPath, title, navigationSource);
+                    }
+                    
+                }
+            }).run();
+            
             container.addView(currentPage.getRelativeLayout());
             return currentPage.getRelativeLayout();
         }
