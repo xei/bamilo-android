@@ -123,7 +123,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
     private Button couponButton;
     private View voucherDivider;
     private TextView voucherError;
-
+    EditText voucherValue;
     private String mVoucher = null;
     private boolean noPaymentNeeded = false;
 
@@ -436,6 +436,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
             break;
         case ADD_VOUCHER:
         case REMOVE_VOUCHER:
+            voucherValue.setText("");
             voucherError.setVisibility(View.VISIBLE);
             voucherDivider.setBackgroundColor(R.color.red_middle);
             getBaseActivity().showContentContainer();
@@ -877,7 +878,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
 
     private void prepareCouponView() {
 
-        final EditText voucherValue = (EditText) getView().findViewById(R.id.voucher_name);
+        voucherValue = (EditText) getView().findViewById(R.id.voucher_name);
         if (mVoucher != null && mVoucher.length() > 0) {
             voucherValue.setText(mVoucher);
         }

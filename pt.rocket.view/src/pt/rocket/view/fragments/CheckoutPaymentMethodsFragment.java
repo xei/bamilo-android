@@ -76,12 +76,14 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
     private Button couponButton;
     private View voucherDivider;
     private TextView voucherError;
-
+    EditText voucherValue;
     private String mVoucher = null;
     private boolean noPaymentNeeded = false;
     
     private boolean removeVoucher = false;
-    private OrderSummary orderSummary; 
+    private OrderSummary orderSummary;
+    
+    
     /**
      * Empty constructor
      */
@@ -253,7 +255,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
     private View generateCouponView(){
         LayoutInflater mLayoutInflater = LayoutInflater.from(getBaseActivity());
         View view = mLayoutInflater.inflate(R.layout.voucher_insert_layout, null);
-        final EditText voucherValue = (EditText) view.findViewById(R.id.voucher_name);
+        voucherValue = (EditText) view.findViewById(R.id.voucher_name);
         if(mVoucher != null && mVoucher.length() > 0){
             voucherValue.setText(mVoucher);
         }
@@ -422,6 +424,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
             break;
         case ADD_VOUCHER:
         case REMOVE_VOUCHER:
+            voucherValue.setText("");
             voucherError.setVisibility(View.VISIBLE);
             voucherDivider.setBackgroundColor(R.color.red_middle);
             getBaseActivity().showContentContainer();

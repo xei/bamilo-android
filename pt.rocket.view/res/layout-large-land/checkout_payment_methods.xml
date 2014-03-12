@@ -14,10 +14,12 @@
         <org.holoeverywhere.widget.Button
             android:id="@+id/checkout_payment_button_enter"
             style="@style/button_orange_style"
+            android:layout_width="@dimen/inner_container_width"
             android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            android:background="@drawable/btn_orange"
             android:fontFamily="roboto_regular"
-            android:text="@string/next_button"
-            android:width="@dimen/inner_container_width" />
+            android:text="@string/next_button" />
 
         <ScrollView
             android:layout_width="match_parent"
