@@ -37,6 +37,7 @@ import pt.rocket.pojo.DynamicForm;
 import pt.rocket.pojo.DynamicFormItem;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
@@ -227,6 +228,7 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
+        TrackerDelegator.trackCheckoutStep(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), R.string.gcheckoutCreateAddress, R.string.xcheckoutcreateaddress, R.string.mixprop_checkout_create_address);
     }
 
     /*
@@ -664,7 +666,7 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
                 setRegions(billingFormGenerator, regions, BILLING_FORM_TAG);
             } else {
                 Log.w(TAG, "GET REGIONS EVENT: IS EMPTY");
-                super.gotoOldCheckoutMethod(getBaseActivity());
+                super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "GET REGIONS EVENT: IS EMPTY");
             }
             break;
         case GET_CITIES_EVENT:
@@ -728,15 +730,15 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
             break;
         case GET_CREATE_ADDRESS_FORM_EVENT:
             Log.w(TAG, "RECEIVED GET_CREATE_ADDRESS_FORM_EVENT");
-            super.gotoOldCheckoutMethod(getBaseActivity());
+            super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_CREATE_ADDRESS_FORM_EVENT");
             break;
         case GET_REGIONS_EVENT:
             Log.w(TAG, "RECEIVED GET_REGIONS_EVENT");
-            super.gotoOldCheckoutMethod(getBaseActivity());
+            super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_CREATE_ADDRESS_FORM_EVENT");
             break;
         case GET_CITIES_EVENT:
             Log.w(TAG, "RECEIVED GET_CITIES_EVENT");
-            super.gotoOldCheckoutMethod(getBaseActivity());
+            super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_CITIES_EVENT");
             break;
         case CREATE_ADDRESS_EVENT:
             Log.d(TAG, "RECEIVED CREATE_ADDRESS_EVENT");
@@ -752,7 +754,7 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
                 getBaseActivity().showContentContainer(false);
             } else {
                 Log.w(TAG, "RECEIVED CREATE_ADDRESS_EVENT: " + errorCode.name());
-                super.gotoOldCheckoutMethod(getBaseActivity());
+                super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED CREATE_ADDRESS_EVENT" + errorCode.name());
             }
             break;
         default:

@@ -27,6 +27,7 @@ import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.OnActivityFragmentInteraction;
+import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
@@ -808,7 +809,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * @param activity
      * @author sergiopereira
      */
-    public void gotoOldCheckoutMethod(BaseActivity activity){
+    public void gotoOldCheckoutMethod(BaseActivity activity, String email, String error){
+        TrackerDelegator.trackNativeCheckoutError(activity, email, error);
         // Warning user
         Toast.makeText(getBaseActivity(), getString(R.string.error_please_try_again), Toast.LENGTH_LONG).show();
         // Remove native checkout

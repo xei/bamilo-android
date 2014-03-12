@@ -31,6 +31,7 @@ import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.pojo.DynamicForm;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
@@ -172,6 +173,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
+        TrackerDelegator.trackCheckoutStep(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), R.string.gcheckoutPaymentMethods, R.string.xcheckoutpaymentmethods, R.string.mixprop_checkout_payment_methods);
     }
 
     /*
@@ -236,9 +238,9 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
         
         formGenerator = FormFactory.getSingleton().CreateForm(FormConstants.PAYMENT_DETAILS_FORM, getActivity(), form);
         paymentMethodsContainer.removeAllViews();
-        paymentMethodsContainer.addView(formGenerator.getContainer());     
-        paymentMethodsContainer.addView(generateCouponView());
+        paymentMethodsContainer.addView(formGenerator.getContainer());
         paymentMethodsContainer.refreshDrawableState();
+        prepareCouponView();
         getBaseActivity().showContentContainer(false);
     }
     
@@ -247,7 +249,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
         LayoutInflater mLayoutInflater = LayoutInflater.from(getBaseActivity());
         View view = mLayoutInflater.inflate(R.layout.no_payment_layout, null);
         paymentMethodsContainer.addView(view);
-        paymentMethodsContainer.addView(generateCouponView());
+        prepareCouponView();
         paymentMethodsContainer.refreshDrawableState();
         getBaseActivity().showContentContainer(false);
     }
@@ -289,6 +291,44 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
         });
         return view;
     }
+    
+    private void prepareCouponView() {
+
+        voucherValue = (EditText) getView().findViewById(R.id.voucher_name);
+        if (mVoucher != null && mVoucher.length() > 0) {
+            voucherValue.setText(mVoucher);
+        }
+
+        voucherDivider = getView().findViewById(R.id.voucher_divider);
+        voucherError = (TextView) getView().findViewById(R.id.voucher_error_message);
+        couponButton = (Button) getView().findViewById(R.id.voucher_btn);
+        if (removeVoucher) {
+            couponButton.setText(getString(R.string.voucher_remove));
+        }
+        couponButton.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                mVoucher = voucherValue.getText().toString();
+                getBaseActivity().hideKeyboard();
+                if (mVoucher != null && mVoucher.length() > 0) {
+                    ContentValues mContentValues = new ContentValues();
+                    mContentValues.put(SetVoucherHelper.VOUCHER_PARAM, mVoucher);
+                    Log.i(TAG, "code1coupon : " + mVoucher);
+                    if (couponButton.getText().toString().equalsIgnoreCase("use")) {
+                        triggerSubmitVoucher(mContentValues);
+                    } else {
+                        triggerRemoveVoucher(mContentValues);
+                    }
+
+                } else {
+                    Toast.makeText(getBaseActivity(), "Please enter a valid Coupon Code",
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+
     
     /**
      * ############# CLICK LISTENER #############

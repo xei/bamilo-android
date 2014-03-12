@@ -258,6 +258,8 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         String appId = getBaseActivity().getResources().getString(R.string.app_id);
         uiHelper.setJumiaAppId(appId);
         uiHelper.onResume();
+        
+        TrackerDelegator.trackCheckoutStep(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), R.string.gcheckoutAboutYou, R.string.xcheckoutaboutyou, R.string.mixprop_checkout_about_you);
     }
 
     /*
@@ -744,7 +746,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         // Get next step
         if(mNextFragment == null) {
             Log.w(TAG, "NEXT STEP IS NULL");
-            super.gotoOldCheckoutMethod(getBaseActivity());
+            super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "next step is null");
         } else {
             Log.i(TAG, "GOTO NEXT STEP: " + mNextFragment.toString());
             // Update
@@ -789,7 +791,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             FragmentType signupNextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
             if(signupNextFragment == null || signupNextFragment == FragmentType.UNKNOWN){
                 Log.w(TAG, "NEXT STEP IS NULL");
-                super.gotoOldCheckoutMethod(getBaseActivity());
+                super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "next step is null");
                 return true;
             }
             signupNextFragment = (signupNextFragment != FragmentType.UNKNOWN) ? signupNextFragment : FragmentType.CREATE_ADDRESS;

@@ -26,6 +26,7 @@ import pt.rocket.helpers.checkout.CheckoutFinishHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.view.R;
 import android.app.Activity;
@@ -208,6 +209,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
+        TrackerDelegator.trackCheckoutStep(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), R.string.gcheckoutMyOrder, R.string.xcheckoutmyorder, R.string.mixprop_checkout_my_order);
     }
 
     /*
@@ -262,7 +264,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
         // Validate order
         if(mOrderFinish == null) {
             Log.w(TAG, "WARNING: ORDER IS NULL - GOTO WEB CHECKOUT");
-            super.gotoOldCheckoutMethod(getBaseActivity());
+            super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "WARNING: ORDER IS NULL - GOTO WEB CHECKOUT");
             return;
         }
         // Get cart
@@ -572,7 +574,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
                 getBaseActivity().showContentContainer(false);
             } else {
                 Log.w(TAG, "RECEIVED CHECKOUT_FINISH_EVENT: " + errorCode.name());
-                super.gotoOldCheckoutMethod(getBaseActivity());
+                super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED CHECKOUT_FINISH_EVENT: " + errorCode.name());
             }
             break;
         default:
@@ -612,7 +614,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
      */
     private void showErrorDialog(HashMap<String, List<String>> errors){
         Log.d(TAG, "SHOW LOGIN ERROR DIALOG");
-        List<String> errorMessages = (List<String>) errors.get(RestConstants.JSON_VALIDATE_TAG);
+        final List<String> errorMessages = (List<String>) errors.get(RestConstants.JSON_VALIDATE_TAG);
 
         if (errors != null && errorMessages != null && errorMessages.size() > 0) {
             
@@ -628,7 +630,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
                             int id = v.getId();
                             if (id == R.id.button1) {
                                 dialog.dismiss();
-                                gotoWebCheckout();
+                                gotoWebCheckout(errorMessages.get(0));
                             }
 
                         }
@@ -637,7 +639,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
             dialog.show(getBaseActivity().getSupportFragmentManager(), null);
         } else {
             Log.w(TAG, "ERROR ON FINISH CHECKOUT");
-            gotoWebCheckout();
+            gotoWebCheckout("ERROR ON FINISH CHECKOUT");
         }
     }
     
@@ -645,9 +647,9 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
      * Redirect for web checkout
      * @author sergiopereira
      */
-    private void gotoWebCheckout(){
+    private void gotoWebCheckout(String error){
         Log.w(TAG, "GO TO WEBCKECOUT");
-        super.gotoOldCheckoutMethod(getBaseActivity());
+        super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), error);
     }
 
     /*

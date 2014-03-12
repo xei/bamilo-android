@@ -23,6 +23,7 @@ import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.enums.RequestType;
+import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.rest.RestClientSingleton;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.rest.RestContract;
@@ -34,6 +35,7 @@ import pt.rocket.helpers.GetShoppingCartItemsHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.annotation.SuppressLint;
@@ -90,6 +92,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
 
     private static CheckoutExternalPaymentFragment checkoutWebFragment;
 
+    private Customer customer;
     /**
      * Get instance
      * 
@@ -148,7 +151,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
 
-        // triggerGetCustomer();
+         triggerGetCustomer();
         // triggerGetShoppingCartItems();
     }
 
@@ -160,7 +163,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
     private void triggerGetShoppingCartItems() {
 
         triggerContentEventWithNoLoading(new GetShoppingCartItemsHelper(), null, mCallback);
-        // EventManager.getSingleton().triggerRequestEvent(GetShoppingCartItemsEvent.FORCE_API_CALL);
     }
 
     IResponseCallback mCallback = new IResponseCallback() {
@@ -224,6 +226,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
         setupWebView();
 
         startCheckout();
+        TrackerDelegator.trackCheckoutStep(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), R.string.gcheckoutExternalPayment, R.string.xcheckoutexternalpayment, R.string.mixprop_checkout_external_payment);
     }
 
     /*
@@ -308,7 +311,10 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
             webview.loadUrl("about:blank");
         }
         paymentUrl = JumiaApplication.INSTANCE.getPaymentMethodForm().getAction();
-
+        
+        Log.i(TAG, "trackPaymentMethod : payment method : "+JumiaApplication.INSTANCE.getPaymentMethodForm().getName() + " email : "+JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
+        TrackerDelegator.trackPaymentMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), JumiaApplication.INSTANCE.getPaymentMethodForm().getName());
+        
         Log.d(TAG, "Loading Url: " + paymentUrl);
 
         List<NameValuePair> parameters = new ArrayList<NameValuePair>();
@@ -408,13 +414,10 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
         }
         return transDomain;
     }
-
-    /**
-     * TODO: Implement trackers!
-     */
+    
     private void trackPurchase(final JSONObject result) {
-
-        // TrackerDelegator.trackPurchase(getActivity().getApplicationContext(), result, customer);
+        
+         TrackerDelegator.trackPurchase(getActivity().getApplicationContext(), result, customer);
     }
 
     private class CustomWebViewClient extends WebViewClient {
@@ -626,7 +629,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
             /**
              * TODO: Verify if we need to fill customer
              */
-            // customer = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+             customer = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             break;
         case GET_SHOPPING_CART_ITEMS_EVENT:
             break;

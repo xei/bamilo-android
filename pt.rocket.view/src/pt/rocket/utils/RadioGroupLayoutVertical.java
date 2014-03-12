@@ -142,11 +142,16 @@ public class RadioGroupLayoutVertical extends RadioGroup {
 
                     @Override
                     public void onClick(View v) {
-                        if (button.isChecked()) {
-                            extras.setVisibility(View.VISIBLE);
-                        } else {
-                            extras.setVisibility(View.GONE);
+                        try {
+                            if (button.isChecked()) {
+                                extras.setVisibility(View.VISIBLE);
+                            } else {
+                                extras.setVisibility(View.GONE);
+                            }    
+                        } catch (StackOverflowError e) {
+                            e.printStackTrace();
                         }
+                        
                         setSelection(mLinearLayout.getId());
                         mGroup.check(mLinearLayout.getId());
                     }

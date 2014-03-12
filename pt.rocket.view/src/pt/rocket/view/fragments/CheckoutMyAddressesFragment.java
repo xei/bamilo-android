@@ -12,6 +12,7 @@ import java.util.Map.Entry;
 
 import org.holoeverywhere.widget.CheckBox;
 
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
@@ -31,6 +32,7 @@ import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.GenericRadioGroup;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.view.R;
 import android.app.Activity;
@@ -190,6 +192,7 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
+        TrackerDelegator.trackCheckoutStep(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), R.string.gcheckoutMyAddresses, R.string.xcheckoutmyaddresses, R.string.mixprop_checkout_my_addresses);
     }
 
     /*
@@ -603,7 +606,7 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
             Addresses addresses = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             this.addresses = addresses;
             // Validate response
-            if(!isValidateResponse()){ gotoOldCheckoutMethod(getBaseActivity()); return true; }
+            if(!isValidateResponse()){ super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_BILLING_FORM_EVENT"); return true; }
             // Show addresses
             showAddresses(addresses.hasDefaultShippingAndBillingAddress());
             // Get order summary
@@ -649,7 +652,7 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
         switch (eventType) {
         case GET_BILLING_FORM_EVENT:
             Log.w(TAG, "RECEIVED GET_BILLING_FORM_EVENT");
-            super.gotoOldCheckoutMethod(getBaseActivity());
+            super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_BILLING_FORM_EVENT");
             break;
         case SET_BILLING_ADDRESS_EVENT:
             Log.d(TAG, "RECEIVED SET_BILLING_ADDRESS_EVENT");
@@ -660,7 +663,7 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
                 showErrorDialog(errors, R.string.add_address);
             }else{
                 Log.w(TAG, "RECEIVED SET_BILLING_ADDRESS_EVENT: " + errorCode.name());
-                super.gotoOldCheckoutMethod(getBaseActivity());
+                super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED SET_BILLING_ADDRESS_EVENT: ");
             }
         default:
             break;

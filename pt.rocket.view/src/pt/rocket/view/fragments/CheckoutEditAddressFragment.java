@@ -33,6 +33,7 @@ import pt.rocket.pojo.DynamicForm;
 import pt.rocket.pojo.DynamicFormItem;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.view.R;
 import android.app.Activity;
@@ -188,6 +189,7 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
+        TrackerDelegator.trackCheckoutStep(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), R.string.gcheckoutEditAddress, R.string.xcheckouteditaddress, R.string.mixprop_checkout_edit_address);
     }
 
     /*
@@ -612,7 +614,7 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
                 setRegions(mEditFormGenerator, mRegions, mCurrentAddress);
             } else {
                 Log.w(TAG, "GET REGIONS EVENT: IS EMPTY");
-                super.gotoOldCheckoutMethod(getBaseActivity());
+                super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "GET REGIONS EVENT: IS EMPTY");
             }
             break;
         case GET_CITIES_EVENT:
@@ -660,15 +662,15 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
             break;
         case GET_EDIT_ADDRESS_FORM_EVENT:
             Log.w(TAG, "RECEIVED GET_EDIT_ADDRESS_FORM_EVENT");
-            super.gotoOldCheckoutMethod(getBaseActivity());
+            super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_EDIT_ADDRESS_FORM_EVENT");
             break;
         case GET_REGIONS_EVENT:
             Log.w(TAG, "RECEIVED GET_REGIONS_EVENT");
-            super.gotoOldCheckoutMethod(getBaseActivity());
+            super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_REGIONS_EVENT");
             break;
         case GET_CITIES_EVENT:
             Log.w(TAG, "RECEIVED GET_CITIES_EVENT");
-            super.gotoOldCheckoutMethod(getBaseActivity());
+            super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_CITIES_EVENT");
             break;
         case EDIT_ADDRESS_EVENT:
             Log.d(TAG, "RECEIVED EDIT_ADDRESS_EVENT");
@@ -679,7 +681,7 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
                 getBaseActivity().showContentContainer(false);
             } else {
                 Log.w(TAG, "RECEIVED GET_CITIES_EVENT: " + errorCode.name());
-                super.gotoOldCheckoutMethod(getBaseActivity());
+                super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_CITIES_EVENT: " + errorCode.name());
             }
             break;
         default:

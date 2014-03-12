@@ -50,6 +50,10 @@
                 android:paddingBottom="@dimen/margin_midhuge" >
             </LinearLayout>
 
+            <include
+                android:layout_marginLeft="6.6dp"
+                android:layout_marginRight="6.6dp"
+                layout="@layout/voucher_insert_layout" />
             <!-- SUBMIT -->
 
         </LinearLayout>

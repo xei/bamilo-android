@@ -24,6 +24,7 @@ import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.pojo.DynamicForm;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
@@ -156,6 +157,7 @@ public class CheckoutPollAnswerFragment extends BaseFragment implements OnClickL
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
+        TrackerDelegator.trackCheckoutStep(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), R.string.gcheckoutPollQuestion, R.string.xcheckoutpollquestion, R.string.mixprop_checkout_poll_question);
     }
 
     /*

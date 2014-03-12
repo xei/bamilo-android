@@ -10,7 +10,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="@dimen/checkout_main_container" >
-
+ 
         <org.holoeverywhere.widget.Button
             android:id="@+id/checkout_payment_button_enter"
             style="@style/button_orange_style"
@@ -25,7 +25,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@id/checkout_payment_button_enter"
-            android:fillViewport="true"
             android:paddingLeft="10dp"
             android:paddingRight="10dp" >
 
@@ -57,6 +56,10 @@
                 </LinearLayout>
                 <!-- SUBMIT -->
 
+                <include
+                    android:layout_marginLeft="6.6dp"
+                    android:layout_marginRight="6.6dp"
+                    layout="@layout/voucher_insert_layout" />
             </LinearLayout>
         </ScrollView>
         <!-- NEXT BUTTON -->

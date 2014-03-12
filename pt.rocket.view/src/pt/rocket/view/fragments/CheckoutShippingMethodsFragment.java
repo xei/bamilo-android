@@ -20,6 +20,7 @@ import pt.rocket.helpers.checkout.SetShippingMethodHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
@@ -141,6 +142,7 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
+        TrackerDelegator.trackCheckoutStep(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), R.string.gcheckoutShippingMethods, R.string.xcheckoutshippingmethods, R.string.mixprop_checkout_shipping_methods);
     }
 
     /*
@@ -313,11 +315,11 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
         switch (eventType) {
         case GET_SHIPPING_METHODS_EVENT:
             Log.w(TAG, "RECEIVED GET_SHIPPING_METHODS_EVENT");
-            super.gotoOldCheckoutMethod(getBaseActivity());
+            super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_SHIPPING_METHODS_EVENT");
             break;
         case SET_SHIPPING_METHOD_EVENT:
             Log.w(TAG, "RECEIVED SET_SHIPPING_METHOD_EVENT");
-            super.gotoOldCheckoutMethod(getBaseActivity());
+            super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED SET_SHIPPING_METHOD_EVENT");
             break;
         default:
             break;

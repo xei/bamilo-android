@@ -5,8 +5,6 @@ import java.util.List;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import pt.rocket.app.JumiaApplication;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.objects.ProductReviewCommentCreated;
@@ -165,6 +163,57 @@ public class TrackerDelegator {
             @Override
             public void run() {
                 trackPurchaseInt( context, result, customer);
+            }
+            
+        }).run();        
+    }
+    
+    /**
+     * Track Checkout Step
+     * @param context
+     * @param result
+     * @param customer
+     */
+    public static void trackCheckoutStep( final Context context, final String email, final int gstep, final int xstep, final int mixstep ) {
+        
+        new Thread( new Runnable() {
+            @Override
+            public void run() {
+                AnalyticsGoogle.get().trackCheckoutStep(email, gstep);
+                AdXTracker.trackCheckoutStep(context, email, xstep);
+                MixpanelTracker.trackCheckoutStep(context, email, mixstep);
+            }
+            
+        }).run();        
+    }
+    
+    /**
+     * Track Payment Method
+     * @param context
+     * @param email
+     * @param payment
+     */
+    public static void trackPaymentMethod( final Context context, final String email, final String payment) {
+        
+        new Thread( new Runnable() {
+            @Override
+            public void run() {
+                AnalyticsGoogle.get().trackPaymentMethod(email, payment);
+                AdXTracker.trackPaymentMethod(context, email, payment);
+                MixpanelTracker.trackPaymentMethod(context, email, payment);
+            }
+            
+        }).run();        
+    }
+    
+    public static void trackNativeCheckoutError( final Context context, final String email, final String error) {
+        
+        new Thread( new Runnable() {
+            @Override
+            public void run() {
+                AnalyticsGoogle.get().trackNativeCheckoutError(email, error);
+                AdXTracker.trackNativeCheckoutError(context, email, error);
+                MixpanelTracker.trackNativeCheckoutError(context, email, error);
             }
             
         }).run();        
