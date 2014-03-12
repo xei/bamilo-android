@@ -626,13 +626,28 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         
         // Validate used has facebook credentials
         try {
+            // Facebook flag
             if(values.getAsBoolean(CustomerUtils.INTERNAL_FACEBOOK_FLAG)) {
+                Log.i(TAG, "USER HAS FACEBOOK CREDENTIALS");
                 getBaseActivity().showLoading(false);
                 triggerFacebookLogin(values, onAutoLogin);
                 return;
             }
         } catch (NullPointerException e) {
             Log.i(TAG, "USER HASN'T FACEBOOK CREDENTIALS");
+        }
+        
+        // Signup flag
+        try {
+            if(values.getAsBoolean(CustomerUtils.INTERNAL_SIGNUP_FLAG)){
+                Log.i(TAG, "USER HAS SIGNUP CREDENTIALS");
+                // Go direct to next step
+                mNextFragment = FragmentType.CREATE_ADDRESS;
+                gotoNextStep();
+                return;
+            }
+        } catch (NullPointerException e) {
+            Log.i(TAG, "USER HASN'T SIGNUP CREDENTIALS");
         }
         
         // Try login with saved credentials

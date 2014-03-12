@@ -19,6 +19,8 @@ public class CustomerUtils {
 	
 	public static final String INTERNAL_FACEBOOK_FLAG = "facebook_login";
 	
+	public static final String INTERNAL_SIGNUP_FLAG = "signup";
+	
     private static final String CRED_PREFS = "cred";
 
 	public CustomerUtils(Context ctx) {

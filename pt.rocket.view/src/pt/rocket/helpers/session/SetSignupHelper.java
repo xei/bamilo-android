@@ -7,6 +7,7 @@ import org.json.JSONObject;
 
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.framework.enums.RequestType;
+import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CustomerUtils;
 import pt.rocket.framework.utils.EventType;
@@ -27,7 +28,7 @@ public class SetSignupHelper extends BaseHelper {
     
     private static String TAG = SetSignupHelper.class.getSimpleName();
 
-    public static final String FORM_CONTENT_VALUES = "content_values";
+    public static final String FORM_CONTENT_VALUES = "contentValues";
     
     private static final EventType type = EventType.SET_SIGNUP_EVENT;
 
@@ -62,7 +63,12 @@ public class SetSignupHelper extends BaseHelper {
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
         Log.d(TAG, "PARSE BUNDLE: " + jsonObject);
         if (saveCredentials) {
+            contentValues.put(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, true);
+            contentValues.put(CustomerUtils.INTERNAL_PASSWORD_VALUE, "");
+            contentValues.put(CustomerUtils.INTERNAL_EMAIL_VALUE, "");
+            contentValues.put(CustomerUtils.INTERNAL_SIGNUP_FLAG, true);
             JumiaApplication.INSTANCE.getCustomerUtils().storeCredentials(contentValues);
+            Log.d(TAG, "STORE CREDENTIALS: " + contentValues.toString());
         }
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
         bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextCheckoutStep(jsonObject));
