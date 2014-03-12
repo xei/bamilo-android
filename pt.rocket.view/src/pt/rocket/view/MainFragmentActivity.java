@@ -71,8 +71,6 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
 
     private SharedPreferences sharedPrefs;
     
-    
-
     /**
      * Constructor
      */

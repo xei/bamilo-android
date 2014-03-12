@@ -470,8 +470,8 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
         // Get some values
         int mAddressId = mCurrentAddress.getId();
         int mRegionId = mSelectedRegion.getId();
-        int isDefaultBilling = (mCurrentAddress.isDefaultBilling()) ? 1 : 0;
-        int isDefaultShipping = (mCurrentAddress.isDefaultShipping()) ? 1 : 0;
+        String isDefaultBilling = (mCurrentAddress.isDefaultBilling()) ? "1" : "0";
+        String isDefaultShipping = (mCurrentAddress.isDefaultShipping()) ? "1" : "0";
         // Put values
         for (String key : mContentValues.keySet()) {
             if(key.contains(RestConstants.JSON_ADDRESS_ID_TAG)) mContentValues.put(key, mAddressId);

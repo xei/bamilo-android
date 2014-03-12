@@ -83,8 +83,8 @@ public class Address implements IJSONSerializable, Parcelable {
 		fkCountry = dataObject.optInt(RestConstants.JSON_COUNTRY_ID_TAG);
 		fkCustomerAddressRegion = dataObject.optInt(RestConstants.JSON_REGION_ID_TAG);
 		fkCustomerAddressCity = dataObject.optInt(RestConstants.JSON_CITY_ID_TAG);
-		isDefaultBilling = dataObject.optBoolean(RestConstants.JSON_IS_DEFAULT_BILLING_TAG);
-		isDefaultShipping = dataObject.optBoolean(RestConstants.JSON_IS_DEFAULT_SHIPPING_TAG);
+		isDefaultBilling = ("1".equals(dataObject.optString(RestConstants.JSON_IS_DEFAULT_BILLING_TAG))) ? true : false;
+		isDefaultShipping = ("1".equals(dataObject.optString(RestConstants.JSON_IS_DEFAULT_SHIPPING_TAG))) ? true : false;
 		hidden = dataObject.optBoolean(RestConstants.JSON_HIDDEN_TAG);
 		createdAt = dataObject.optString(RestConstants.JSON_CREATED_AT_TAG);
 		updatedAt = dataObject.optString(RestConstants.JSON_UPDATED_AT_TAG);
