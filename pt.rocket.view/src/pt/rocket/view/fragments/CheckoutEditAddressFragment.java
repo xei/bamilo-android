@@ -76,6 +76,8 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
     private Address mCurrentAddress;
 
     private OrderSummary orderSummary;
+
+    private View mMsgRequired;
     
     
     /**
@@ -149,6 +151,8 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
         
         // Create address form
         mEditFormContainer = (ViewGroup) view.findViewById(R.id.checkout_edit_form_container);
+        // Message
+        mMsgRequired = view.findViewById(R.id.checkout_edit_address_required_text);
         // Next button
         view.findViewById(R.id.checkout_edit_button_enter).setOnClickListener((OnClickListener) this);
         // Cancel button
@@ -402,10 +406,18 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
     private void onClickEditAddressButton() {
         Log.i(TAG, "ON CLICK: EDIT");
         
+        // Hide error message
+        if(mMsgRequired!=null) mMsgRequired.setVisibility(View.GONE);
+        
         // Validate spinner
         ViewGroup mRegionGroup = (ViewGroup) mEditFormGenerator.getItemByKey(RestConstants.JSON_REGION_ID_TAG).getControl();
         // Validate if region group is filled
-        if(!(mRegionGroup.getChildAt(0) instanceof IcsSpinner)) { Log.w(TAG, "REGION SPINNER NOT FILL YET"); return; };
+        if(!(mRegionGroup.getChildAt(0) instanceof IcsSpinner)) { 
+            Log.w(TAG, "REGION SPINNER NOT FILL YET");
+            // Show error message
+            if(mMsgRequired != null) mMsgRequired.setVisibility(View.VISIBLE);
+            return; 
+        };
         
         triggerEditAddress(createContentValues(mEditFormGenerator));
     }
@@ -439,24 +451,20 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
         String mCityId = "";
         String mCityName = "";
         // Get from spinner
-        ViewGroup mCityGroup = (ViewGroup) dynamicForm.getItemByKey(RestConstants.JSON_CITY_ID_TAG).getControl();
-        if(mCityGroup.getChildAt(0) instanceof IcsSpinner) {
+        View mCityView = dynamicForm.getItemByKey(RestConstants.JSON_CITY_ID_TAG).getControl();
+        if(((ViewGroup) mCityView).getChildAt(0) instanceof IcsSpinner) {
             // Get the city
-            IcsSpinner mCitySpinner = (IcsSpinner) mCityGroup.getChildAt(0);
+            IcsSpinner mCitySpinner = (IcsSpinner) ((ViewGroup) mCityView).getChildAt(0);
             AddressCity mSelectedCity = (AddressCity) mCitySpinner.getSelectedItem(); 
             Log.d(TAG, "SELECTED CITY: " + mSelectedCity.getValue() + " " + mSelectedCity.getId() );
             mCityId = "" + mSelectedCity.getId();
             mCityName = mSelectedCity.getValue();
         }
         // Get from edit text
-        else {
-            try {
-                EditText mCityEdit = (EditText) dynamicForm.getItemByKey(RestConstants.JSON_CITY_ID_TAG).getEditControl();
-                mCityName = mCityEdit.getText().toString();
-                Log.d(TAG, "SELECTED CITY: " + mCityName );
-            } catch (ClassCastException e) {
-                Log.w(TAG, "CREATE VALUES: THE CITY IS NOT A EDIT TEXT", e);
-            } 
+        else if(mCityView instanceof EditText) {
+            EditText mCityEdit = (EditText) dynamicForm.getItemByKey(RestConstants.JSON_CITY_ID_TAG).getEditControl();
+            mCityName = mCityEdit.getText().toString();
+            Log.d(TAG, "SELECTED CITY: " + mCityName );
         }
         
         // Get some values
@@ -477,20 +485,6 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
         // return the new content values
         return mContentValues;
     }
-    
-    // XXX
-    // Alice_Module_Customer_Model_AddressForm[is_default_billing]=0 
-    // Alice_Module_Customer_Model_AddressForm[city]=Kangundo 
-    // Alice_Module_Customer_Model_AddressForm[address1]=my street 1 
-    // Alice_Module_Customer_Model_AddressForm[is_default_shipping]=0 
-    // Alice_Module_Customer_Model_AddressForm[id_customer_address]=8373 
-    // Alice_Module_Customer_Model_AddressForm[phone]=123456789 
-    // Alice_Module_Customer_Model_AddressForm[address2]=my street 2 
-    // Alice_Module_Customer_Model_AddressForm[first_name]=second f 
-    // Alice_Module_Customer_Model_AddressForm[last_name]=second l 
-    // Alice_Module_Customer_Model_AddressForm[fk_customer_address_region]=236 
-    // Alice_Module_Customer_Model_AddressForm[fk_customer_address_city]=381
-    
     
     /**
      * ########### ON ITEM SELECTED LISTENER ###########  
@@ -594,13 +588,6 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
             return true;
         }
         
-//        if(getBaseActivity() != null){
-//            Log.d(TAG, "BASE ACTIVITY HANDLE SUCCESS EVENT");
-//            getBaseActivity().handleSuccessEvent(bundle);
-//        } else {
-//            return true;
-//        }
-        
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         Log.i(TAG, "ON SUCCESS EVENT: " + eventType);
         
@@ -647,9 +634,6 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
     
     /**
      * Filter the error response
-     * 
-     * TODO: ADD ERROR VALIDATIONS
-     * 
      * @param bundle
      * @return boolean
      */
@@ -760,11 +744,8 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
                     });
             dialog.show(getBaseActivity().getSupportFragmentManager(), null);
         } else {
-            
-            /**
-             * TODO: THE ERROR MUST RETURN THE MESSAGE
-             */
-            Toast.makeText(getBaseActivity(), "Please fill the form!", Toast.LENGTH_SHORT).show();
+            if(mMsgRequired!=null) mMsgRequired.setVisibility(View.VISIBLE);
+            else Toast.makeText(getBaseActivity(), getString(R.string.register_required_text), Toast.LENGTH_SHORT).show();
         }
     }
 

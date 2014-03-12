@@ -19,7 +19,7 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/checkout_address_button_enter"
+            android:layout_above="@+id/checkout_address_button_container"
             android:layout_alignParentTop="true" >
 
             <!-- FORMS -->
@@ -56,15 +56,38 @@
 
         <!-- NEXT BUTTON -->
 
-        <org.holoeverywhere.widget.Button
-            android:id="@+id/checkout_address_button_enter"
-            style="@style/button_orange_style"
+        <LinearLayout
+            android:id="@+id/checkout_address_button_container"
             android:layout_width="@dimen/inner_container_width"
+            android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerInParent="true"
-            android:background="@drawable/btn_orange"
-            android:fontFamily="roboto_regular"
-            android:text="@string/next_button" />
+            android:orientation="vertical" >
+
+            <org.holoeverywhere.widget.TextView
+                android:id="@+id/checkout_address_required_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_mid"
+                android:layout_marginRight="@dimen/margin_mid"
+                android:layout_marginTop="@dimen/margin_mid"
+                android:ellipsize="end"
+                android:fontFamily="roboto_regular"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:text="@string/register_required_text"
+                android:textColor="@color/red_basic"
+                android:textSize="@dimen/text_smid"
+                android:visibility="gone" />
+
+            <org.holoeverywhere.widget.Button
+                android:layout_width="match_parent"
+                android:id="@+id/checkout_address_button_enter"
+                style="@style/button_orange_style"
+                android:background="@drawable/btn_orange"
+                android:fontFamily="roboto_regular"
+                android:text="@string/next_button" />
+        </LinearLayout>
     </RelativeLayout>
 
     <!-- DIVIDER -->
