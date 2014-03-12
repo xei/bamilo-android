@@ -409,6 +409,47 @@ public class MixpanelTracker {
 		Log.d( TAG, "checkout tracking:  " + context.getString(R.string.mixcheckout) );
 		mixpanel.track(context.getString(R.string.mixcheckout), props);
 	}
+	
+	public static void trackCheckoutStep(Context context, String email, int step) {
+		if (!isEnabled)
+			return;
+		
+		
+
+		props = null;
+		setProperty(context.getString(step), "");
+		setProperty(context.getString(R.string.mixprop_email), "" + email);
+		
+		Log.d( TAG, "trackCheckoutStep tracking:  " + context.getString(R.string.mixnativecheckout) );
+		mixpanel.track(context.getString(R.string.mixnativecheckout), props);
+	}
+	
+	public static void trackPaymentMethod(Context context, String email, String payment) {
+		if (!isEnabled)
+			return;
+		
+		
+
+		props = null;
+		setProperty(context.getString(R.string.mixprop_checkout_payment_method), payment);
+		setProperty(context.getString(R.string.mixprop_email), "" + email);
+		
+		Log.d( TAG, "trackPaymentMethod tracking:  " + context.getString(R.string.mixnativecheckout) );
+		mixpanel.track(context.getString(R.string.mixnativecheckout), props);
+	}
+	
+	
+	public static void trackNativeCheckoutError(Context context, String email, String error) {
+		if (!isEnabled)
+			return;
+		
+		props = null;
+		setProperty(context.getString(R.string.mixnativecheckouterror), error);
+		setProperty(context.getString(R.string.mixprop_email), "" + email);
+		
+		Log.d( TAG, "trackNativeCheckoutError tracking:  " + context.getString(R.string.mixnativecheckouterror) );
+		mixpanel.track(context.getString(R.string.mixnativecheckouterror), props);
+	}
 
 	public static void share(Context context, Intent intent) {
 		if (!isEnabled)

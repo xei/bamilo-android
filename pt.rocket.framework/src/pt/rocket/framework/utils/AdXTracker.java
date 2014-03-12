@@ -71,18 +71,30 @@ public class AdXTracker {
 	}
 	
 
-//	public static void trackSaleData(Context context, String userId, String transactionId, boolean isFirstCustomer) {
-//		if (!isEnabled)
-//			return;
-//
-//		Log.d(TAG, "trackSaleData: userId = " + userId + " transactionId = " + transactionId);
-//		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xsaledata), userId, transactionId);
-//		if (isFirstCustomer) {
-//			Log.d(TAG, "trackSaleData: is first customer");
-//			AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xcustomer), userId, "");
-//		}
-//	}
+	public static void trackCheckoutStep(Context context, String email, int step) {
+		if (!isEnabled)
+			return;
 
+		Log.d(TAG, "trackCheckoutStep: email = " + email + " step = " + context.getString(step));
+		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xnativecheckout), email, context.getString(step));
+	}
+
+	public static void trackPaymentMethod(Context context, String email, String payment) {
+		if (!isEnabled)
+			return;
+
+		Log.d(TAG, "trackPaymentMethod: email = " + email + " payment = " + payment);
+		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xpaymentmethod), email, payment);
+	}
+	
+	public static void trackNativeCheckoutError(Context context, String email, String error) {
+		if (!isEnabled)
+			return;
+
+		Log.d(TAG, "trackNativeCheckoutError: email = " + email + " error = " + error);
+		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xnativecheckouterror), email, error);
+	}
+	
 	public static void launch(Context context) {
 		if (!isEnabled)
 			return;

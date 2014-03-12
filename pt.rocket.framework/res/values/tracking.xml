@@ -63,6 +63,20 @@
     <string name="gfinished">Finished</string>
     <string name="gcontinueshopping">ContinueShopping</string>
     
+    <!-- Checkout Steps -->
+    <string name="gNativeCheckout">NativeCheckout</string>
+    <string name="gNativeCheckoutError">NativeCheckoutError</string>
+    <string name="gPaymentMethod">PaymentMethod</string>
+    <string name="gcheckoutAboutYou">CheckoutAboutYou</string>
+    <string name="gcheckoutCreateAddress">CheckoutCreateAddress</string>
+    <string name="gcheckoutEditAddress">CheckoutEditAddress</string>
+    <string name="gcheckoutExternalPayment">CheckoutExternalPayment</string>
+    <string name="gcheckoutMyAddresses">CheckoutMyAddresses</string>
+    <string name="gcheckoutMyOrder">CheckoutMyOrder</string>
+    <string name="gcheckoutPaymentMethods">CheckoutPaymentMethods</string>
+    <string name="gcheckoutPollQuestion">CheckoutPollQuestion</string>
+    <string name="gcheckoutShippingMethods">CheckoutShippingMethods</string>
+    
     <!--  Label -->
     <string name="gcustomerid">CustomerId</string>
     <string name="gsimplesku">Simple-SKU</string>
@@ -90,7 +104,19 @@
     <string name="xreferral">InstallReferral</string>
     <string name="xreceiver">ReceiverDone</string>
     <string name="xpreferences">AdXPrefrences</string>
-    
+    <string name="xnativecheckout">NativeCheckout</string>
+    <string name="xnativecheckouterror">NativeCheckoutError</string>
+    <!-- Checkout Steps -->
+    <string name="xcheckoutaboutyou">CheckoutAboutYou</string>
+    <string name="xcheckoutcreateaddress">CheckoutCreateAddress</string>
+    <string name="xcheckouteditaddress">CheckoutEditAddress</string>
+    <string name="xcheckoutexternalpayment">CheckoutExternalPayment</string>
+    <string name="xcheckoutmyaddresses">CheckoutMyAddresses</string>
+    <string name="xcheckoutmyorder">CheckoutMyOrder</string>
+    <string name="xcheckoutpaymentmethods">CheckoutPaymentMethods</string>
+    <string name="xcheckoutpollquestion">CheckoutPollQuestion</string>
+    <string name="xcheckoutshippingmethods">CheckoutShippingMethods</string>
+    <string name="xpaymentmethod">PaymentMethod</string>
     <!-- End of AdX Tracking Parameters -->
     
     <!-- Begin of Flurry Tracking Parameters -->    
@@ -131,6 +157,8 @@
 	<string name="mixviewcategory">Category Viewed</string>
 	<string name="mixrate">Item Rated</string>
 	<string name="mixviewrate">Ratings read</string>
+	<string name="mixnativecheckout">Native Checkout</string>
+	<string name="mixnativecheckouterror">Native Checkout Error</string>
 	
     <string name="mixprop_appverion">App Version</string>
     <string name="mixprop_shopcountry">Shop Country</string>
@@ -194,6 +222,19 @@
     <string name="mixprop_carttotal">Total Cart Amount</string>
     
     <string name="mixprop_cartitems">Number of items in cart</string>
+    
+    <!-- Checkout Steps -->
+    <string name="mixprop_native_checkout">Native Checkout</string>
+    <string name="mixprop_checkout_about_you">Checkout About You</string>
+    <string name="mixprop_checkout_create_address">Checkout Create Address</string>
+    <string name="mixprop_checkout_edit_address">Checkout Edit Address</string>
+    <string name="mixprop_checkout_external_payment">Checkout External Payment</string>
+    <string name="mixprop_checkout_my_addresses">Checkout My Addresses</string>
+    <string name="mixprop_checkout_my_order">Checkout My Order</string>
+    <string name="mixprop_checkout_payment_methods">Checkout Payment Methods</string>
+    <string name="mixprop_checkout_payment_method">Checkout Payment Method</string>
+    <string name="mixprop_checkout_poll_question">Checkout Poll Question</string>
+    <string name="mixprop_checkout_shipping_methods">Checkout Shipping Methods</string>
     
     <string name="mixprop_sharenetwork">Social Network</string>
     <string name="mixprop_sharelocation">Share location</string>

@@ -294,6 +294,42 @@ public class AnalyticsGoogle {
 			mTracker.sendEvent(category, action, sku, price);
 		}
 	}
+	
+	public void trackCheckoutStep(String email, int step) {
+		if (!isEnabled) {
+			return;
+		}
+
+		String category = mContext.getString(step);
+		String action = mContext.getString(R.string.gNativeCheckout);
+		Log.d(TAG, "trackCheckoutStep: category = " + category + " action = " + action + " email " + email);
+		mTracker.sendEvent(category, action, email, (long) 0);
+		
+	}
+	
+	public void trackPaymentMethod(String email, String payment) {
+		if (!isEnabled) {
+			return;
+		}
+
+		String category = mContext.getString(R.string.gPaymentMethod);
+
+		Log.d(TAG, "trackCheckoutStep: category = " + category + " payment = " + payment + " email " + email);
+		mTracker.sendEvent(category, payment, email, (long) 0);
+		
+	}
+	
+	public void trackNativeCheckoutError(String email, String error) {
+		if (!isEnabled) {
+			return;
+		}
+
+		String category = mContext.getString(R.string.gNativeCheckoutError);
+
+		Log.d(TAG, "trackNativeCheckoutError: category = " + category + " error = " + error + " email " + email);
+		mTracker.sendEvent(category, error, email, (long) 0);
+		
+	}
 
 	private void trackTiming(int categoryId, int nameId, long milliSeconds, String label) {
 		if (!isEnabled) {
