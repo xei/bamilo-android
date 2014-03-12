@@ -44,8 +44,6 @@ public class GetShoppingCartItemsHelper extends BaseHelper {
         String md5 = Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY);
         bundle.putString(Constants.BUNDLE_MD5_KEY, md5);
         bundle.putBoolean(IMetaData.MD_IGNORE_CACHE, true);
-//        Log.i(TAG, "code1removing making callback from request type : "+ EventType.GET_SHOPPING_CART_ITEMS_EVENT);
-//        Log.i(TAG, "code1removing making callback with id : "+ md5);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_SHOPPING_CART_ITEMS_EVENT);
         return bundle;
     }
@@ -58,16 +56,11 @@ public class GetShoppingCartItemsHelper extends BaseHelper {
         try {
             cart.initialize(jsonObject);
         } catch (JSONException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         JumiaApplication.INSTANCE.setCart(cart);
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, cart);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_SHOPPING_CART_ITEMS_EVENT);
-//        long elapsed = System.currentTimeMillis() - JumiaApplication.INSTANCE.timeTrackerMap.get(EventType.GET_SHOPPING_CART_ITEMS_EVENT);
-//        Log.i("REQUEST", "event type response : "+bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY)+" time spent : "+elapsed);
-//        String trackValue = bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY) + " : "+elapsed;
-//        JumiaApplication.INSTANCE.writeToTrackerFile(trackValue);
         return bundle;
     }
 

@@ -24,7 +24,9 @@
             android:background="@drawable/selector_checkout_step_back"
             android:clickable="true"
             android:gravity="center"
-            android:onClick="OnCheckoutHeaderClickListener" >
+            android:onClick="OnCheckoutHeaderClickListener"
+            android:paddingLeft="@dimen/margin_large"
+            android:paddingRight="@dimen/margin_mid" >
 
             <ImageView
                 android:id="@+id/checkout_header_step_1_icon"
@@ -58,7 +60,9 @@
             android:background="@drawable/selector_checkout_step_back"
             android:clickable="true"
             android:gravity="center"
-            android:onClick="OnCheckoutHeaderClickListener" >
+            android:onClick="OnCheckoutHeaderClickListener"
+            android:paddingLeft="@dimen/margin_large"
+            android:paddingRight="@dimen/margin_mid" >
 
             <ImageView
                 android:id="@+id/checkout_header_step_2_icon"
@@ -92,7 +96,9 @@
             android:background="@drawable/selector_checkout_step_back"
             android:clickable="true"
             android:gravity="center"
-            android:onClick="OnCheckoutHeaderClickListener" >
+            android:onClick="OnCheckoutHeaderClickListener"
+            android:paddingLeft="@dimen/margin_large"
+            android:paddingRight="@dimen/margin_mid" >
 
             <ImageView
                 android:id="@+id/checkout_header_step_3_icon"
@@ -124,7 +130,9 @@
             android:layout_height="match_parent"
             android:layout_toRightOf="@+id/checkout_header_step_3"
             android:background="@drawable/selector_checkout_step_back"
-            android:gravity="center" >
+            android:gravity="center"
+            android:paddingLeft="@dimen/margin_large"
+            android:paddingRight="@dimen/margin_mid" >
 
             <ImageView
                 android:id="@+id/checkout_header_step_4_icon"
