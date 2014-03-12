@@ -233,8 +233,6 @@
     <string name="track_order_hint">Numéro de commande</string>
     <string name="thank_you_order_title">Merci!</string>
     <string name="order_success">Votre commande a été enregistré avec succès,\nsous le numéro suivant:</string>
-    <string name="order_track_success">Vous pouvez suivre le statut de votre commande en allant \ndans la rubrique dédiée dans l\'application</string>
-    <string name="order_track_link">statut de votre</string>
     <string name="track_order_status">Statut actuel:</string>
     <string name="track_other_order">Consultez une autre commande</string>
     <string name="order_status">Suivi de commande</string>
@@ -263,5 +261,56 @@
     <string name="app_id">472507709498904</string>
     <string name="exit_press_back_again">Appuyez de nouveau sur retour si vous souhaitez quitter l\'app</string>
     <string name="recently_viewed">Derniers Produits Vus</string>
+    
+    
+    <!-- WARNING: The string order_track_success should contain the string order_track_link. -->
+	<string name="order_track_success">Vous pouvez suivre le statut de votre commande \nen allant dans la rubrique dédiée dans l\'application</string>
+    <string name="order_track_link">statut de votre commande</string>
+    <string name="error_signup_title">La création de compte a échoué</string>
+    <string name="edit_address">Modifier l\'adresse</string>
+    <string name="add_address">Ajouter une adresse</string>
+    <string name="my_addresses">Mon adresse</string>
+    <string name="shipping_methods">Modes de livraison</string>
+    <string name="payment_methods">Modes de paiement</string>
+    <string name="signup_label">Créer un compte</string>
+    <string name="facebook_signup_button_text">Créer un compte via Facebook</string>
+    <string name="facebook_login_button_text">Se connecter via Facebook</string>
+    <string name="or_text">OU</string>
+    <string name="my_order_items_label">produits</string>
+    <string name="my_order_item_label">produit</string>
+    <string name="billing_same_label">Facturer à la même adresse</string>
+    <string name="billing_add_label">Ajouter une adresse</string>
+    <string name="billing_shipping_label">Adresse de livraison</string>
+    <string name="billing_billing_label">Adresse de facturation</string>
+    <string name="billing_def_shipping_label">Adresse de livraison par défaut</string>
+    <string name="billing_others_label">Autres adresses</string>
+    <string name="billing_choose_address">Veuillez sélectionner une adresse</string>
+    <string name="create_addresses_success">Adresse créée avec succès</string>
+    <string name="edit_address_success">Adresse modifiée avec succès</string>
+    <string name="save_changes_label">Enregistrer les changements</string>
+    <string name="poll_question_label">Questionnaire</string>
+    <string name="order_summary_label">Résumé de la commande</string>
+    <string name="order_summary_shipping_method">Mode de livraison</string>
+    <string name="order_summary_shipping_fee_label">Frais de livraison:</string>
+    <string name="order_summary_subtotal_label">Sous-total:</string>
+    <string name="order_summary_total_label">Total:</string>
+    <string name="my_order_label">Ma commande</string>
+    <string name="my_order_ship_fee_label">Frais de livraison</string>
+    <string name="my_order_voucher_label">Code promotionel</string>
+    <string name="my_order_total_label">Total</string>
+    <string name="my_order_confirm_button">Confirmer la commande</string>
+    <string name="my_order_is_same">Facturer à la même adresse</string>
+    <string name="my_order_payment">Mode de paiement</string>
+    <string name="my_order_coupon_label">Coupon</string>
+    <string name="my_order_qty">Qté:</string>
+    <string name="error_please_try_again">Nous avons eu un léger problème lors de la récupération des donnés. Veuillez réessayer.</string>
+    <string name="checkout_header_step_1">1. Informations client</string>
+    <string name="checkout_header_step_2">2. Adresse</string>
+    <string name="checkout_header_step_3">3. Livraison</string>
+    <string name="checkout_header_step_4">4. Paiement</string>
+    <string name="some_products_not_added">Malheureusement certains produits n\'ont pas été ajoutés à votre panier.</string>
+    <string name="next_button">Suivant</string>
+    <string name="confirm_order_loosing_order_title">Commande déjà effectuée!</string>
+    <string name="confirm_order_loosing_order">Attention: si vous retournez encore en arrière votre commande sera annulée et vous serez dirigez vers la page d\'accueil.</string>
 
 </resources>

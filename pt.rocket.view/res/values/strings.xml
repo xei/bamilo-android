@@ -189,7 +189,6 @@
     <string name="name">Name</string>
     <string name="default_quantity_label">1</string>
     <string name="error_login_title">Login failed</string>
-    <string name="error_signup_title">Signup failed</string>
     <string name="error_login_check_text">Please check your username or password.</string>
     <string name="error_register_title">Registration failed</string>
     <string name="error_register_alreadyexists">This email already exists. Please choose another one.</string>
@@ -231,10 +230,7 @@
     <string name="track_order">Track Order</string>
     <string name="track_order_hint">Order id</string>
     <string name="thank_you_order_title">Thank You!</string>
-    <string name="order_success">Your order has been successfully registered\n with the number:</string>
-    <!-- WARNING: The string order_track_success should contain the string order_track_link. -->
-    <string name="order_track_success">You can track your order visiting \nthe order status area in this app</string>
-    <string name="order_track_link">order status</string>
+    <string name="order_success">Your order has been successfully registered\n with the number:</string>    
     <string name="track_order_status">Current Status:</string>
     <string name="track_other_order">Check Another Order</string>
     <string name="order_status">Order Status</string>
@@ -264,6 +260,11 @@
     <string name="app_id">321703697936806</string>
     <string name="exit_press_back_again">Please press back again if you wish to leave the app</string>
     <string name="recently_viewed">Recently Viewed</string>
+    
+	<!-- WARNING: The string order_track_success should contain the string order_track_link. -->
+    <string name="order_track_success">You can track your order visiting \nthe order status area in this app</string>
+    <string name="order_track_link">order status</string>
+    <string name="error_signup_title">Signup failed</string>
     <string name="edit_address">Edit Address</string>
     <string name="add_address">Add Address</string>
     <string name="my_addresses">My Addresses</string>
@@ -310,6 +311,8 @@
     <string name="confirm_order_loosing_order_title">Order already created!</string>
     <string name="confirm_order_loosing_order">Warning: if you go back again your order will be invalidated and you will be repositioned on the homepage.</string>
 
+    
+    <!-- NEED TRANSLATION -->
     <string name="voucher_use">Use</string>
     <string name="voucher_remove">Remove</string>
     <string name="voucher_message_hint">Enter your coupon code here</string>
