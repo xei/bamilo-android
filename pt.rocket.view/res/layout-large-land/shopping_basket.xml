@@ -2,7 +2,8 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/main_basket_container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    >
 
     <RelativeLayout
         android:id="@+id/shopping_main_container"
@@ -16,32 +17,27 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <include layout="@layout/shopping_basket_header_element" 
-                />
+            <include layout="@layout/shopping_basket_header_element" />
 
-            <RelativeLayout
-                android:id="@+id/content_container"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content" >
-
-                <pt.rocket.framework.components.ExpandableGridViewComponent
-                    android:id="@+id/shoppingcart_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="fill_parent"
-                    android:layout_alignParentTop="true"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="@dimen/margin_buttons"
-                    android:layout_marginRight="@dimen/margin_buttons"
-                    android:listSelector="@android:color/transparent" />
-            </RelativeLayout>
-
+            <LinearLayout
+                android:id="@+id/shoppingcart_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" 
+                android:orientation="vertical"
+                >
+            </LinearLayout>
+            
+			<include layout="@layout/voucher_insert_layout"
+			    android:layout_marginLeft="6.6dp"
+			    android:layout_marginRight="6.6dp"/>
+            
             <include layout="@layout/shopping_basket_subtotal_element" />
 
             <org.holoeverywhere.widget.Button
                 android:id="@+id/checkout_button"
                 style="@style/button_orange_style"
-                android:layout_marginLeft="@dimen/margin_buttons"
-                android:layout_marginRight="@dimen/margin_buttons"
+                android:layout_marginLeft="@dimen/margin_huge"
+                android:layout_marginRight="@dimen/margin_huge"
                 android:contentDescription="@string/shopping_cart_button_description"
                 android:text="@string/checkout_button_text" />
         </LinearLayout>
@@ -51,9 +47,9 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_below="@id/container1"
-            android:layout_marginLeft="@dimen/margin_buttons"
-            android:layout_marginRight="@dimen/margin_buttons"
             android:orientation="vertical"
+            android:paddingLeft="17dp"
+            android:paddingRight="17dp"
             android:visibility="gone" >
 
             <ImageView

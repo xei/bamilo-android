@@ -8,7 +8,12 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 
+import org.holoeverywhere.widget.EditText;
 import org.holoeverywhere.widget.TextView;
+
+import com.androidquery.AQuery;
+import com.androidquery.callback.AjaxStatus;
+import com.androidquery.callback.BitmapAjaxCallback;
 
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
@@ -17,7 +22,6 @@ import pt.rocket.controllers.ShoppingBasketFragListAdapter;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.ErrorCode;
-import pt.rocket.framework.components.ExpandableGridViewComponent;
 import pt.rocket.framework.objects.MinOrderAmount;
 import pt.rocket.framework.objects.ShoppingCart;
 import pt.rocket.framework.objects.ShoppingCartItem;
@@ -29,6 +33,8 @@ import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.GetShoppingCartChangeItemQuantityHelper;
 import pt.rocket.helpers.GetShoppingCartItemsHelper;
 import pt.rocket.helpers.GetShoppingCartRemoveItemHelper;
+import pt.rocket.helpers.RemoveVoucherHelper;
+import pt.rocket.helpers.SetVoucherHelper;
 import pt.rocket.helpers.checkout.GetNativeCheckoutAvailableHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.MyMenuItem;
@@ -41,6 +47,7 @@ import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
+import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -52,7 +59,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Toast;
 import de.akquinet.android.androlog.Log;
 
@@ -92,12 +101,12 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
     /**
      * mAdapter Basket adapter(ShoppingBasketListAdapter)
      */
-    private ShoppingBasketFragListAdapter mAdapter;
+//    private ShoppingBasketFragListAdapter mAdapter;
 
     /**
      * lView Basket grid view
      */
-    private ExpandableGridViewComponent lView;
+    private LinearLayout lView;
 
     /**
      * Button container so we can control positioning in the screen
@@ -109,6 +118,16 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
      * dialogList for DialogList
      */
     private DialogListFragment dialogList;
+
+    // Voucher
+    private Button couponButton;
+    private View voucherDivider;
+    private TextView voucherError;
+
+    private String mVoucher = null;
+    private boolean noPaymentNeeded = false;
+
+    private boolean removeVoucher = false;
 
     public static class CartItemValues {
         public Boolean is_in_wishlist;
@@ -200,7 +219,6 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         Log.i(TAG, "ON START");
         setAppContentLayout();
 
-
         // EventManager.getSingleton().triggerRequestEvent(new RequestEvent(
         // EventType.GET_MIN_ORDER_AMOUNT));
 
@@ -217,26 +235,40 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         Log.i(TAG, "ON RESUME");
         mBeginRequestMillis = System.currentTimeMillis();
         triggerGetShoppingCart();
-        
+
         setListeners();
         AnalyticsGoogle.get().trackPage(R.string.gshoppingcart);
     }
-    
-    private void triggerGetShoppingCart(){
+
+    private void triggerGetShoppingCart() {
         triggerContentEvent(new GetShoppingCartItemsHelper(), null, responseCallback);
     }
 
-    private void triggerRemoveItem(ShoppingCartItem item){
+    private void triggerRemoveItem(ShoppingCartItem item) {
         ContentValues values = new ContentValues();
         values.put("sku", item.getConfigSimpleSKU());
         Bundle bundle = new Bundle();
         bundle.putParcelable(GetShoppingCartRemoveItemHelper.ITEM, values);
         triggerContentEvent(new GetShoppingCartRemoveItemHelper(), bundle, responseCallback);
     }
-    
-    private void triggerIsNativeCheckoutAvailable(){
-        triggerContentEventWithNoLoading(new GetNativeCheckoutAvailableHelper(), null, responseCallback);
+
+    private void triggerIsNativeCheckoutAvailable() {
+        triggerContentEventWithNoLoading(new GetNativeCheckoutAvailableHelper(), null,
+                responseCallback);
     }
+
+    private void triggerSubmitVoucher(ContentValues values) {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(SetVoucherHelper.VOUCHER_PARAM, values);
+        triggerContentEvent(new SetVoucherHelper(), bundle, responseCallback);
+    }
+
+    private void triggerRemoveVoucher(ContentValues values) {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(RemoveVoucherHelper.VOUCHER_PARAM, values);
+        triggerContentEvent(new RemoveVoucherHelper(), bundle, responseCallback);
+    }
+
     /*
      * (non-Javadoc)
      * 
@@ -284,8 +316,6 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
 
         itemsValues = null;
 
-        mAdapter = null;
-
         lView = null;
 
         checkoutButton = null;
@@ -297,12 +327,13 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
      * Set the ShoppingCart layout using inflate
      */
     public void setAppContentLayout() {
-        if(getView() == null){
+        if (getView() == null) {
             return;
         }
         checkoutButton = (Button) getView().findViewById(R.id.checkout_button);
         noItems = (LinearLayout) getView().findViewById(R.id.no_items_container);
         container = (LinearLayout) getView().findViewById(R.id.container1);
+        prepareCouponView();
     }
 
     public void setListeners() {
@@ -335,31 +366,55 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
     }
 
     protected boolean onSuccessEvent(Bundle bundle) {
-        if(!isVisible()){
+        if (!isVisible()) {
             return true;
         }
-        if(getBaseActivity() == null){
+        if (getBaseActivity() == null) {
             getBaseActivity().handleSuccessEvent(bundle);
             return true;
         }
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-        
+
         Log.d(TAG, "onSuccessEvent: eventType = " + eventType);
         switch (eventType) {
+        case ADD_VOUCHER:
+            couponButton.setText(getString(R.string.voucher_remove));
+            voucherError.setVisibility(View.GONE);
+            voucherDivider.setBackgroundColor(R.color.grey_dividerlight);
+            getBaseActivity().showContentContainer();
+            noPaymentNeeded = false;
+            removeVoucher = true;
+            triggerGetShoppingCart();
+            return true;
+        case REMOVE_VOUCHER:
+            noPaymentNeeded = false;
+            couponButton.setText(getString(R.string.voucher_use));
+            voucherError.setVisibility(View.GONE);
+            voucherDivider.setBackgroundColor(R.color.grey_dividerlight);
+            getBaseActivity().showContentContainer();
+            triggerGetShoppingCart();
+            removeVoucher = false;
+            return true;
         case NATIVE_CHECKOUT_AVAILABLE:
             boolean isAvailable = bundle.getBoolean(Constants.BUNDLE_RESPONSE_KEY);
-            if(isAvailable){
-                 Bundle mBundle = new Bundle();
-                 mBundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationcart));
-                 getBaseActivity().onSwitchFragment(FragmentType.ABOUT_YOU, mBundle, FragmentController.ADD_TO_BACK_STACK);
+            if (isAvailable) {
+                Bundle mBundle = new Bundle();
+                mBundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN,
+                        getString(R.string.mixprop_loginlocationcart));
+                getBaseActivity().onSwitchFragment(FragmentType.ABOUT_YOU, mBundle,
+                        FragmentController.ADD_TO_BACK_STACK);
             } else {
                 goToWebCheckout();
             }
             return true;
         case GET_SHOPPING_CART_ITEMS_EVENT:
-            if(((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getCartItems() != null && ((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getCartItems().values() != null){
-                TrackerDelegator.trackViewCart(getActivity().getApplicationContext(), ((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getCartItems().values().size());
+            if (((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getCartItems() != null
+                    && ((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY))
+                            .getCartItems().values() != null) {
+                TrackerDelegator.trackViewCart(getActivity().getApplicationContext(),
+                        ((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY))
+                                .getCartItems().values().size());
             }
         default:
             getBaseActivity().showContentContainer(false);
@@ -371,7 +426,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
     }
 
     protected boolean onErrorEvent(Bundle bundle) {
-        if(!isVisible()){
+        if (!isVisible()) {
             return true;
         }
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
@@ -379,12 +434,17 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         case NATIVE_CHECKOUT_AVAILABLE:
             goToWebCheckout();
             break;
+        case ADD_VOUCHER:
+        case REMOVE_VOUCHER:
+            voucherError.setVisibility(View.VISIBLE);
+            voucherDivider.setBackgroundColor(R.color.red_middle);
+            getBaseActivity().showContentContainer();
+            break;
         }
-        if(getBaseActivity().handleErrorEvent(bundle)){
+        if (getBaseActivity().handleErrorEvent(bundle)) {
             return true;
         }
 
-        
         mBeginRequestMillis = System.currentTimeMillis();
         return true;
     }
@@ -397,15 +457,14 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         items = new ArrayList<ShoppingCartItem>(cart.getCartItems().values());
         priceTotal.setText(CurrencyFormatter.formatCurrency(cart.getCartValue()));
 
-        String articleString = getResources().getQuantityString(R.plurals.shoppingcart_text_article, cart.getCartCount());
+        String articleString = getResources().getQuantityString(
+                R.plurals.shoppingcart_text_article, cart.getCartCount());
         articlesCount.setText(cart.getCartCount() + " " + articleString);
         if (items.size() == 0) {
             showNoItems();
         } else {
-            lView = (ExpandableGridViewComponent) getView().findViewById(R.id.shoppingcart_list);
-            lView.setExpanded(true);
-            lView.setOnItemClickListener(this);
-
+            lView = (LinearLayout) getView().findViewById(R.id.shoppingcart_list);
+            lView.removeAllViewsInLayout();
             itemsValues = new ArrayList<CartItemValues>();
             unreduced_cart_price = 0;
             reduced_cart_price = 0;
@@ -428,7 +487,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
                 values.simpleData = item.getSimpleData();
                 values.variation = item.getVariation();
                 itemsValues.add(values);
-
+                lView.addView(getView(i, lView, LayoutInflater.from(getBaseActivity()), values));
                 if (!item.getPrice().equals(item.getSpecialPrice())) {
                     cartHasReducedItem = true;
                 }
@@ -443,14 +502,6 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
                 reduced_cart_price += actItemPrice * item.getQuantity();
                 unreduced_cart_price += item.getPriceVal() * item.getQuantity();
             }
-
-            mAdapter = new ShoppingBasketFragListAdapter(ShoppingCartFragment.this, itemsValues);
-
-            /**
-             * Setting Adapter
-             */
-            lView.setAdapter(mAdapter);
-            lView.setFastScrollEnabled(false);
 
             TextView priceUnreduced = (TextView) getView().findViewById(R.id.price_unreduced);
             if (cartHasReducedItem) {
@@ -483,11 +534,166 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
     }
 
     /**
+     * A representation of each item on the list
+     */
+    private static class Item {
+
+        public TextView itemName;
+        public TextView priceView;
+        public Button quantityBtn;
+        public ImageView productView;
+        public View pBar;
+        public TextView discountPercentage;
+        public TextView priceDisc;
+        public ImageView promoImg;
+        public TextView variancesContainer;
+        public TextView stockInfo;
+        public Button deleteBtn;
+        public CartItemValues itemValues;
+        public int position;
+
+        /*
+         * (non-Javadoc)
+         * 
+         * @see java.lang.Object#finalize()
+         */
+        @Override
+        protected void finalize() throws Throwable {
+            itemValues = null;
+            itemName = null;
+            priceView = null;
+            quantityBtn = null;
+            productView = null;
+            pBar = null;
+            discountPercentage = null;
+            priceDisc = null;
+            promoImg = null;
+            variancesContainer = null;
+            stockInfo = null;
+            deleteBtn = null;
+
+            super.finalize();
+        }
+    }
+
+    public View getView(final int position, ViewGroup parent, LayoutInflater mInflater,
+            CartItemValues item) {
+        View view = mInflater.inflate(R.layout.shopping_basket_product_element_container, parent,
+                false);
+
+        final Item prodItem = new Item();
+        prodItem.itemValues = item;
+        // Log.d( TAG, "getView: productName = " + itemValues.product_name);
+
+        prodItem.itemName = (TextView) view.findViewById(R.id.item_name);
+        prodItem.priceView = (TextView) view.findViewById(R.id.item_regprice);
+        prodItem.quantityBtn = (Button) view.findViewById(R.id.changequantity_button);
+
+        prodItem.productView = (ImageView) view.findViewById(R.id.image_view);
+
+        prodItem.pBar = view.findViewById(R.id.image_loading_progress);
+        prodItem.discountPercentage = (TextView) view.findViewById(R.id.discount_percentage);
+        prodItem.priceDisc = (TextView) view.findViewById(R.id.item_discount);
+        prodItem.promoImg = (ImageView) view.findViewById(R.id.item_promotion);
+        prodItem.variancesContainer = (TextView) view
+                .findViewById(R.id.variances_container);
+        prodItem.stockInfo = (TextView) view.findViewById(R.id.item_stock);
+        prodItem.deleteBtn = (Button) view.findViewById(R.id.delete_button);
+        view.setTag(prodItem);
+
+        prodItem.itemName.setText(prodItem.itemValues.product_name);
+        prodItem.itemName.setSelected(true);
+
+        String url = prodItem.itemValues.image;
+        AQuery aq = new AQuery(getBaseActivity());
+        aq.id(prodItem.productView).image(url, true, true, 0, 0, new BitmapAjaxCallback() {
+
+            @Override
+            public void callback(String url, ImageView iv, Bitmap bm, AjaxStatus status) {
+                prodItem.productView.setImageBitmap(bm);
+                prodItem.productView.setVisibility(View.VISIBLE);
+                prodItem.pBar.setVisibility(View.GONE);
+            }
+        });
+
+        if (!prodItem.itemValues.price.equals(prodItem.itemValues.price_disc)) {
+            prodItem.priceDisc.setText(prodItem.itemValues.price_disc);
+            prodItem.priceDisc.setVisibility(View.VISIBLE);
+
+            prodItem.priceView.setText(prodItem.itemValues.price);
+            prodItem.priceView.setVisibility(View.VISIBLE);
+            prodItem.priceView.setPaintFlags(prodItem.priceView.getPaintFlags()
+                    | Paint.STRIKE_THRU_TEXT_FLAG);
+            prodItem.priceView.setTextColor(getResources().getColor(R.color.grey_middlelight));
+
+            prodItem.discountPercentage.setText("-" + prodItem.itemValues.discount_value.intValue()
+                    + "%");
+            prodItem.discountPercentage.setVisibility(View.VISIBLE);
+            prodItem.promoImg.setVisibility(View.VISIBLE);
+        } else {
+            prodItem.priceDisc.setText(prodItem.itemValues.price);
+            prodItem.priceView.setVisibility(View.INVISIBLE);
+            prodItem.promoImg.setVisibility(View.GONE);
+            prodItem.discountPercentage.setVisibility(View.GONE);
+        }
+        prodItem.variancesContainer.setVisibility(View.GONE);
+        if (prodItem.itemValues.variation != null) {
+
+            Map<String, String> simpleData = prodItem.itemValues.simpleData;
+
+            if (prodItem.itemValues.variation != null && prodItem.itemValues.variation.length() > 0
+                    && !prodItem.itemValues.variation.equalsIgnoreCase(",")
+                    && !prodItem.itemValues.variation.equalsIgnoreCase("...")
+                    && !prodItem.itemValues.variation.equalsIgnoreCase(".")) {
+                prodItem.variancesContainer.setVisibility(View.VISIBLE);
+                prodItem.variancesContainer.setText(prodItem.itemValues.variation);
+            }
+        }
+
+        if (prodItem.itemValues.stock > 0) {
+            prodItem.stockInfo.setText(getString(R.string.shoppingcart_instock));
+            prodItem.stockInfo.setTextColor(getResources().getColor(R.color.green_stock));
+        } else {
+            prodItem.stockInfo.setText(getString(R.string.shoppingcart_notinstock));
+            prodItem.stockInfo.setTextColor(getResources().getColor(R.color.red_basic));
+        }
+
+        prodItem.deleteBtn.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                prodItem.itemValues.is_checked = true;
+                deleteSelectedElements();
+            }
+        });
+
+        prodItem.quantityBtn.setText("  " + String.valueOf(prodItem.itemValues.quantity) + "  ");
+        prodItem.quantityBtn.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                prodItem.itemValues.is_checked = true;
+                changeQuantityOfItem(position);
+            }
+        });
+        
+        view.setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+                goToProducDetails(prodItem.position);
+            }
+        });
+
+        return view;
+    }
+
+    /**
      * showNoItems update the layout when basket has no items
      */
     public void showNoItems() {
         setAppContentLayout();
-        if(noItems == null){
+        if (noItems == null) {
             return;
         }
         noItems.setVisibility(View.VISIBLE);
@@ -530,8 +736,8 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle,
                 FragmentController.ADD_TO_BACK_STACK);
     }
-    
-    private void goToWebCheckout(){
+
+    private void goToWebCheckout() {
         Bundle bundle = new Bundle();
         bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE,
                 FragmentType.CHECKOUT_BASKET);
@@ -561,29 +767,23 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         // dialog.show( getActivity().getSupportFragmentManager(), null);
         // } else {
         TrackerDelegator.trackCheckout(getActivity().getApplicationContext(), items);
-        
-        
-        
-        
-        if(getBaseActivity().getResources().getStringArray(R.array.restbase_paths)[JumiaApplication.SHOP_ID].equalsIgnoreCase("mobapi/v1")){
-           triggerIsNativeCheckoutAvailable();
+
+        if (getBaseActivity().getResources().getStringArray(R.array.restbase_paths)[JumiaApplication.SHOP_ID]
+                .equalsIgnoreCase("mobapi/v1")) {
+            triggerIsNativeCheckoutAvailable();
         } else {
             goToWebCheckout();
         }
-        
-        
-        
+
         // }
     }
 
-//    public void goToCheckout() {
-//        ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.CHECKOUT_BASKET,
-//                FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-//        AnalyticsGoogle.get().trackCheckout(items);
-//        TrackerDelegator.trackCheckout(getActivity().getApplicationContext(), items);
-//    }
-    
-    
+    // public void goToCheckout() {
+    // ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.CHECKOUT_BASKET,
+    // FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+    // AnalyticsGoogle.get().trackCheckout(items);
+    // TrackerDelegator.trackCheckout(getActivity().getApplicationContext(), items);
+    // }
 
     /**
      * This method manages the deletion of selected elements
@@ -593,9 +793,9 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
             if (itemsValues.get(position).is_checked) {
                 itemsValues.remove(position);
                 mBeginRequestMillis = System.currentTimeMillis();
-                
+
                 triggerRemoveItem(items.get(position));
-                
+
                 items.remove(position);
 
             }
@@ -609,9 +809,12 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
     }
 
     public void hideNoItems() {
-        if(noItems != null) noItems.setVisibility(View.GONE);    
-        if(container != null) container.setVisibility(View.VISIBLE);
-        if(lView != null) lView.setVisibility(View.VISIBLE);
+        if (noItems != null)
+            noItems.setVisibility(View.GONE);
+        if (container != null)
+            container.setVisibility(View.VISIBLE);
+        if (lView != null)
+            lView.setVisibility(View.VISIBLE);
     }
 
     public void changeQuantityOfItem(final int position) {
@@ -646,30 +849,67 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         mBeginRequestMillis = System.currentTimeMillis();
         changeItemQuantityInShoppingCart(items);
     }
-    
-    
-    private void changeItemQuantityInShoppingCart(List<ShoppingCartItem> items){
+
+    private void changeItemQuantityInShoppingCart(List<ShoppingCartItem> items) {
         Bundle bundle = new Bundle();
         ContentValues values = new ContentValues();
         for (ShoppingCartItem item : items) {
             values.put("qty_" + item.getConfigSimpleSKU(), String.valueOf(item.getQuantity()));
         }
         bundle.putParcelable(GetShoppingCartChangeItemQuantityHelper.CART_ITEMS, values);
-        triggerContentEventProgress(new GetShoppingCartChangeItemQuantityHelper(), bundle, responseCallback);
+        triggerContentEventProgress(new GetShoppingCartChangeItemQuantityHelper(), bundle,
+                responseCallback);
     }
-    
+
     IResponseCallback responseCallback = new IResponseCallback() {
-        
+
         @Override
         public void onRequestError(Bundle bundle) {
             onErrorEvent(bundle);
-            
+
         }
-        
+
         @Override
         public void onRequestComplete(Bundle bundle) {
             onSuccessEvent(bundle);
         }
     };
+
+    private void prepareCouponView() {
+
+        final EditText voucherValue = (EditText) getView().findViewById(R.id.voucher_name);
+        if (mVoucher != null && mVoucher.length() > 0) {
+            voucherValue.setText(mVoucher);
+        }
+
+        voucherDivider = getView().findViewById(R.id.voucher_divider);
+        voucherError = (TextView) getView().findViewById(R.id.voucher_error_message);
+        couponButton = (Button) getView().findViewById(R.id.voucher_btn);
+        if (removeVoucher) {
+            couponButton.setText(getString(R.string.voucher_remove));
+        }
+        couponButton.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                mVoucher = voucherValue.getText().toString();
+                getBaseActivity().hideKeyboard();
+                if (mVoucher != null && mVoucher.length() > 0) {
+                    ContentValues mContentValues = new ContentValues();
+                    mContentValues.put(SetVoucherHelper.VOUCHER_PARAM, mVoucher);
+                    Log.i(TAG, "code1coupon : " + mVoucher);
+                    if (couponButton.getText().toString().equalsIgnoreCase("use")) {
+                        triggerSubmitVoucher(mContentValues);
+                    } else {
+                        triggerRemoveVoucher(mContentValues);
+                    }
+
+                } else {
+                    Toast.makeText(getBaseActivity(), "Please enter a valid Coupon Code",
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
 
 }
