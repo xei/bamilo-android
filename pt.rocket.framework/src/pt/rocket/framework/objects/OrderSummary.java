@@ -10,6 +10,7 @@ import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.LogTagHelper;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
 import android.util.Log;
 
 /**
@@ -46,6 +47,10 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
 	private Address mBillingAddress;
 
 	private Map<String, Map<String, String>> simpleData;
+
+	private String mDiscountCouponValue;
+
+	private String mDiscountCouponCode;
 
 	/**
 	 * 
@@ -86,6 +91,8 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
     		mInstallmentFees = jsonOrder.optString(RestConstants.JSON_ORDER_INSTALLMENT_FEES_TAG);
     		mTaxAmount = jsonOrder.optString(RestConstants.JSON_TAX_AMOUNT_TAG);				// VAT
     		mCustomerDevice = jsonOrder.optString(RestConstants.JSON_ORDER_USER_DEVICE_TAG);
+    		mDiscountCouponValue = jsonOrder.optString(RestConstants.JSON_ORDER_COUPON_DISCOUNT_TAG);
+    		mDiscountCouponCode = jsonOrder.optString(RestConstants.JSON_ORDER_COUPON_CODE_TAG);
         }
         
         // Get cart
@@ -351,6 +358,36 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
 		this.mBillingAddress = address;
 	}
 	
+	
+	
+	/**
+	 * @return the mDiscountCouponValue
+	 */
+	public String getDiscountCouponValue() {
+		return mDiscountCouponValue;
+	}
+
+	/**
+	 * @return the mDiscountCouponCode
+	 */
+	public String getDiscountCouponCode() {
+		return mDiscountCouponCode;
+	}
+
+	/**
+	 * @param mDiscountCouponValue the mDiscountCouponValue to set
+	 */
+	public void setDiscountCouponValue(String mDiscountCouponValue) {
+		this.mDiscountCouponValue = mDiscountCouponValue;
+	}
+
+	/**
+	 * @param mDiscountCouponCode the mDiscountCouponCode to set
+	 */
+	public void setDiscountCouponCode(String mDiscountCouponCode) {
+		this.mDiscountCouponCode = mDiscountCouponCode;
+	}
+
 	/**
 	 * ########### VALIDATORS ###########
 	 */
@@ -365,16 +402,17 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
 	}
 	
 	public boolean hasShippingFees(){
-		return (mExtraCost != null && !mExtraCost.equals("0")) ? true : false;
+		return (!TextUtils.isEmpty(mExtraCost)) ? true : false;
 	}
 	
-	public boolean hasCoupon(){
-		return (mDiscountAmount != null && !mDiscountAmount.equals("0")) ? true : false;
+	public boolean hasCouponCode(){
+		Log.d(TAG, "DISCOUNT CODE: " + mDiscountCouponCode);
+		return (!TextUtils.isEmpty(mDiscountCouponCode)) ? true : false;
 	}
 
-	public boolean hasDiscount(){
-		Log.d(TAG, "DISCOUNT: " + mDiscountAmount);
-		return (mDiscountAmount != null && !mDiscountAmount.equals("0")) ? true : false;
+	public boolean hasCouponDiscount(){
+		Log.d(TAG, "DISCOUNT VALUE: " + mDiscountCouponValue);
+		return (!TextUtils.isEmpty(mDiscountCouponValue) && !mDiscountCouponValue.equals("0")) ? true : false;
 	}
 	
 

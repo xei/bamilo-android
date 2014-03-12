@@ -334,7 +334,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
         // Shipping fee
         mShipFeeValue.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getShippingAmount()));
         // Voucher
-        if(mOrderFinish.hasDiscount()) mVoucherValue.setText(mOrderFinish.getDiscountAmount());
+        if(mOrderFinish.hasCouponDiscount()) mVoucherValue.setText("- " + CurrencyFormatter.formatCurrency(mOrderFinish.getDiscountCouponValue()));
         else mVoucherView.setVisibility(View.GONE);
         // Total
         mTotalValue.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getTotal()));
@@ -395,8 +395,8 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
         // Payment name
         mPaymentName.setText(payMethod);
         // Coupon
-        if(mOrderFinish.hasCoupon()){
-            mCoupon.setText(getString(R.string.my_order_coupon_label) + "\n" + mOrderFinish.getDiscountAmount());
+        if(mOrderFinish.hasCouponCode()){
+            mCoupon.setText(getString(R.string.my_order_coupon_label) + "\n" + mOrderFinish.getDiscountCouponCode());
             mCoupon.setVisibility(View.VISIBLE);
         }
     }

@@ -327,6 +327,8 @@ public class RestConstants {
 	public static final String JSON_ORDER_PAYMENT_PROVIDER_TAG = "provider";
 	public static final String JSON_ORDER_BIL_ADDRESS_TAG = "billing_address";
 	public static final String JSON_ORDER_SHIP_ADDRESS_TAG = "shipping_address";
+	public static final String JSON_ORDER_COUPON_DISCOUNT_TAG = "discount";
+	public static final String JSON_ORDER_COUPON_CODE_TAG = "coupon_code";
 	
 	/**
 	 * Address
