@@ -5,6 +5,8 @@
     android:background="@android:color/white"
     android:orientation="horizontal" >
 
+    <!-- EDIT ADDRESS -->
+
     <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
@@ -12,23 +14,30 @@
         android:layout_marginRight="@dimen/margin_mid"
         android:layout_weight="@dimen/checkout_main_container" >
 
-        <!-- EDIT ADDRESS -->
+        <!-- CONTENT -->
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/checkout_addresses_button_enter"
-            android:layout_alignParentTop="true"
-            android:layout_marginRight="@dimen/margin_mid"
-            android:fillViewport="true"
-            android:orientation="horizontal" >
+            android:layout_above="@+id/checkout_my_order_buttons"
+            android:layout_alignParentTop="true" >
 
             <!-- FORM -->
 
-            <include layout="@layout/checkout_edit_address_form" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <include
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    layout="@layout/checkout_edit_address_form" />
+            </LinearLayout>
         </ScrollView>
 
         <LinearLayout
+            android:id="@+id/checkout_my_order_buttons"
             android:layout_width="@dimen/inner_container_width"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"

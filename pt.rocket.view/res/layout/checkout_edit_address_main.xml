@@ -2,16 +2,16 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     android:paddingLeft="@dimen/margin_mid"
-    android:paddingRight="@dimen/margin_mid"
-    android:background="@android:color/white" >
+    android:paddingRight="@dimen/margin_mid" >
 
     <!-- CONTENT -->
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/checkout_my_order_button_enter"
+        android:layout_above="@+id/checkout_my_order_buttons"
         android:layout_alignParentTop="true" >
 
         <!-- FORM -->
@@ -22,6 +22,7 @@
     <!-- BUTTONS -->
 
     <LinearLayout
+        android:id="@+id/checkout_my_order_buttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

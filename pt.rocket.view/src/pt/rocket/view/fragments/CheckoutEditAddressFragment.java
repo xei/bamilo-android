@@ -237,7 +237,7 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
     private void loadEditAddressForm(Form form) {
         Log.i(TAG, "LOAD EDIT ADDRESS FORM");
         // Edit form
-        mEditFormGenerator = FormFactory.getSingleton().CreateForm(FormConstants.ADDRESS_FORM, getActivity(), form);
+        mEditFormGenerator = FormFactory.getSingleton().CreateForm(FormConstants.ADDRESS_FORM, getBaseActivity(), form);
         mEditFormContainer.removeAllViews();
         mEditFormContainer.addView(mEditFormGenerator.getContainer());                
         mEditFormContainer.refreshDrawableState();
@@ -258,6 +258,8 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
         super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_BILLING, orderSummary);
         // Show
         getBaseActivity().showContentContainer(false);
+        
+        mEditFormContainer.refreshDrawableState();
     }
     
     /**

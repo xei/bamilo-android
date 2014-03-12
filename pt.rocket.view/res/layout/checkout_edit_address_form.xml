@@ -23,7 +23,7 @@
 
     <!-- FORM -->
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/checkout_edit_form_container"
         android:layout_width="@dimen/inner_container_width"
         android:layout_height="wrap_content"
@@ -32,7 +32,8 @@
         android:layout_marginLeft="@dimen/margin_mid"
         android:layout_marginRight="@dimen/margin_mid"
         android:layout_marginTop="@dimen/margin_small"
-        android:orientation="vertical" >
-    </LinearLayout>
+        android:gravity="center"
+        android:orientation="vertical"
+        android:background="@android:color/white" />
 
 </LinearLayout>
