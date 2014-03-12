@@ -522,7 +522,7 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
      * @author sergiopereira
      */
     private void addAddress(GenericRadioGroup container, Address address){
-        Log.d(TAG, "ADD ADDRESS:"+address.getId()+":");
+        Log.d(TAG, "ADD ADDRESS: " + address.getId());
         View addressView = LayoutInflater.from(getBaseActivity()).inflate(R.layout.checkout_address_item, container, false);
         setAddressView(addressView, address, "" + address.getId());
         container.addView(addressView, "" + address.getId());

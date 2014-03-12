@@ -26,6 +26,7 @@ import pt.rocket.framework.utils.CustomerUtils;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.GetInitFormHelper;
+import pt.rocket.helpers.GetShoppingCartItemsHelper;
 import pt.rocket.helpers.session.GetFacebookLoginHelper;
 import pt.rocket.helpers.session.GetLoginFormHelper;
 import pt.rocket.helpers.session.GetLoginHelper;
@@ -110,6 +111,8 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
     private View signupToogle;
 
     private OrderSummary mOrderSummary;
+
+    private FragmentType mNextFragment;
     
     /**
      * Get the instance of CheckoutAboutYouFragment
@@ -625,7 +628,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         try {
             if(values.getAsBoolean(CustomerUtils.INTERNAL_FACEBOOK_FLAG)) {
                 getBaseActivity().showLoading(false);
-                triggerFacebookLogin(values, true);
+                triggerFacebookLogin(values, onAutoLogin);
                 return;
             }
         } catch (NullPointerException e) {
@@ -706,6 +709,38 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         triggerContentEvent(new GetInitFormHelper(), bundle, this);
     }
     
+    /**
+     * Trigger used to force the cart update if user not in auto login 
+     */
+    private void triggerGetShoppingCart(){
+        Log.i(TAG, "TRIGGER: GET CART AFTER LOGGED IN");
+        triggerContentEvent(new GetShoppingCartItemsHelper(), null, this);
+    }
+    
+    /**
+     * ########## NEXT STEP VALIDATION ########## 
+     */
+    
+    /**
+     * Method used to switch the checkoput step
+     * @author sergiopereira
+     */
+    private void gotoNextStep(){
+        // Get next step
+        if(mNextFragment == null) {
+            Log.w(TAG, "NEXT STEP IS NULL");
+            super.gotoOldCheckoutMethod(getBaseActivity());
+        } else {
+            Log.i(TAG, "GOTO NEXT STEP: " + mNextFragment.toString());
+            // Update
+            getBaseActivity().hideKeyboard();
+            getBaseActivity().updateSlidingMenuCompletly();
+            // Clean stack for new native checkout on the back stack (auto ogin)
+            super.removeNativeCheckoutFromBackStack();
+            // Goto next step
+            getBaseActivity().onSwitchFragment(mNextFragment, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        }
+    }
     
     /**
      * ########## RESPONSE ########## 
@@ -731,7 +766,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         case INIT_FORMS:
             triggerLoginForm();
             triggerSignupForm();
-            return true;
+            break;
         case SET_SIGNUP_EVENT:
             Log.d(TAG, "RECEIVED SET_SIGNUP_EVENT");
             JumiaApplication.INSTANCE.setLoggedIn(true);
@@ -754,44 +789,32 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             // Get customer
             Customer customerFb = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             // Get next step
-            FragmentType fbNextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
-            if(fbNextFragment == null){
-                Log.w(TAG, "NEXT STEP IS NULL");
-                super.gotoOldCheckoutMethod(getBaseActivity());
-                return true;
-            }
-            // Get Customer
-            getBaseActivity().hideKeyboard();
-            getBaseActivity().updateSlidingMenuCompletly();
-            // Clean stack for new native checkout on the back stack (auto ogin)
-            super.removeNativeCheckoutFromBackStack();
-            // Goto next step
-            getBaseActivity().onSwitchFragment(fbNextFragment, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            mNextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
             // Tracking
             TrackerDelegator.trackLoginSuccessful(getBaseActivity(), customerFb, onAutoLogin, loginOrigin, true);
-            return true;
+            // Force update the cart and after goto next step
+            if(!onAutoLogin) triggerGetShoppingCart();
+            else gotoNextStep();
+            break;
         case LOGIN_EVENT:
+            // Set logged in
             JumiaApplication.INSTANCE.setLoggedIn(true);
             // Get customer
             Customer customer = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             // Get next step
-            FragmentType loginNextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
-            if(loginNextFragment == null){
-                Log.w(TAG, "NEXT STEP IS NULL");
-                super.gotoOldCheckoutMethod(getBaseActivity());
-                return true;
-            }
-            // Get Customer
-            getBaseActivity().hideKeyboard();
-            getBaseActivity().updateSlidingMenuCompletly();
-            // Clean stack for new native checkout on the back stack (auto ogin)
-            super.removeNativeCheckoutFromBackStack();
-            // Goto next step
-            getBaseActivity().onSwitchFragment(loginNextFragment, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            mNextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
             // Tracking
             TrackerDelegator.trackLoginSuccessful(getBaseActivity(), customer, onAutoLogin, loginOrigin, false);
+            // Force update the cart and after goto next step
+            if(!onAutoLogin) triggerGetShoppingCart();
+            else gotoNextStep();
             break;
-       case GET_SIGNUP_FORM_EVENT:
+        case GET_SHOPPING_CART_ITEMS_EVENT:
+            Log.d(TAG, "RECEIVED GET_SHOPPING_CART_ITEMS_EVENT");
+            // Cart updated goto next step
+            gotoNextStep();
+            break;
+        case GET_SIGNUP_FORM_EVENT:
            // Get order summary
            mOrderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
            // Save and load form
@@ -835,16 +858,6 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             return true;
         }
     	
-//    	/**
-//    	 * TODO: Improve this method to correctly handle issues with Native Checkout
-//    	 */
-//    	if(true){
-//    	    Bundle args = new Bundle();
-//    	    args.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.CHECKOUT_BASKET);
-//    	    getBaseActivity().onSwitchFragment(FragmentType.LOGIN, args, FragmentController.ADD_TO_BACK_STACK);
-//    	    return true;
-//    	}
-    	
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         Log.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
@@ -885,6 +898,11 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             Log.w(TAG, "ON ERRER RECEIVED: GET_SIGNUP_FORM_EVENT");
             triggerInitForm();
             break;
+        case GET_SHOPPING_CART_ITEMS_EVENT:
+            Log.w(TAG, "ON ERRER RECEIVED: GET_SHOPPING_CART_ITEMS_EVENT");
+            // Ignore the cart event
+            gotoNextStep();
+            break;
         default:
             if(getBaseActivity().handleErrorEvent(bundle)){
                 Log.w(TAG, "BASE ACTIVITY HANDLE ERROR EVENT!");
@@ -894,8 +912,6 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         }
         return true;
     }
-    
-
     
     /**
      * ########### RESPONSE LISTENER ###########  

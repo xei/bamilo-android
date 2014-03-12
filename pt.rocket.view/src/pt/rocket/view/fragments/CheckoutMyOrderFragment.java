@@ -307,7 +307,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
             // Variation
             String variation = item.getVariation(); 
             if ( variation != null && variation.length() > 0 && !variation.equalsIgnoreCase(",") && 
-                 !variation.equalsIgnoreCase("...") && !variation.equalsIgnoreCase(".")) {
+                 !variation.equalsIgnoreCase("...") && !variation.equalsIgnoreCase(".") && !variation.equalsIgnoreCase("false")) {
                 ((TextView) prodInflateView.findViewById(R.id.my_order_item_variation)).setText(variation);
                 ((TextView) prodInflateView.findViewById(R.id.my_order_item_variation)).setVisibility(View.VISIBLE);
           } 
