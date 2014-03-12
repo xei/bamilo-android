@@ -43,11 +43,9 @@ import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.os.Bundle;
-import android.support.v4.app._HoloActivity.OnWindowFocusChangeListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
@@ -112,6 +110,8 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
     private OrderSummary orderSummary;
 
     private View mMsgRequired;
+    
+    private Boolean oneAddressCreated = false;
     
     
     /**
@@ -270,6 +270,7 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         super.onDestroy();
         Log.i(TAG, "ON DESTROY");
         regions = null;
+        oneAddressCreated = false;
     }
     
     
@@ -675,6 +676,13 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
             break;
         case CREATE_ADDRESS_EVENT:
             Log.d(TAG, "RECEIVED CREATE_ADDRESS_EVENT");
+            
+            // Waiting for both responses
+            if(!mIsSameCheckBox.isChecked() && !oneAddressCreated){
+                oneAddressCreated = true;
+                break;
+            }
+            
             // Get next step
             FragmentType nextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
             if(nextFragment == null || nextFragment == FragmentType.UNKNOWN){
@@ -732,6 +740,10 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
             break;
         case CREATE_ADDRESS_EVENT:
             Log.d(TAG, "RECEIVED CREATE_ADDRESS_EVENT");
+            
+            // Clean flag to wait for both different responses
+            oneAddressCreated = false;
+            
             //
             if (errorCode == ErrorCode.REQUEST_ERROR) {
                 @SuppressWarnings("unchecked")
