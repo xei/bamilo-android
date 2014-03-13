@@ -187,6 +187,19 @@ public class TrackerDelegator {
         }).run();        
     }
     
+    public static void trackSignUpSuccess( final Context context, final String email) {
+        
+        new Thread( new Runnable() {
+            @Override
+            public void run() {
+                AnalyticsGoogle.get().trackSignUpSuccess(email);
+                AdXTracker.trackSignUpSuccess(context, email);
+                MixpanelTracker.trackSignUpSuccess(context, email);
+            }
+            
+        }).run();        
+    }
+    
     /**
      * Track Payment Method
      * @param context
