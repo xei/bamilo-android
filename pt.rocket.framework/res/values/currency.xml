@@ -61,7 +61,7 @@
     <string name="currency_unit_pattern_cfa">%s FCFA</string>
     <string name="currency_unit_pattern_ugx">USH %s</string>
     
-    <string name="currency_thousands_delim_ngn">.</string>
+    <string name="currency_thousands_delim_ngn">,</string>
     <string name="currency_thousands_delim_ksh">,</string>
     <string name="currency_thousands_delim_mad">,</string>
     <string name="currency_thousands_delim_egp">,</string>
@@ -77,7 +77,7 @@
     
     <string name="currency_fraction_delim_ngn">,</string>
     <string name="currency_fraction_delim_ksh">,</string>
-    <string name="currency_fraction_delim_mad">.</string>
+    <string name="currency_fraction_delim_mad">,</string>
     <string name="currency_fraction_delim_egp">,</string>
     <string name="currency_fraction_delim_cfa">,</string>
     <string name="currency_fraction_delim_ugx">.</string>
