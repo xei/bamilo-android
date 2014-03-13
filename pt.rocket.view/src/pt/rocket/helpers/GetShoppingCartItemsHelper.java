@@ -4,26 +4,17 @@
  */
 package pt.rocket.helpers;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import pt.rocket.app.JumiaApplication;
-import pt.rocket.framework.database.SectionsTablesHelper;
 import pt.rocket.framework.enums.RequestType;
 import pt.rocket.framework.interfaces.IMetaData;
-import pt.rocket.framework.objects.Section;
 import pt.rocket.framework.objects.ShoppingCart;
-import pt.rocket.framework.objects.VersionInfo;
-import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
 import android.os.Bundle;
-import android.util.Log;
 
 /**
  * Get Shopping Cart Items helper
@@ -50,8 +41,9 @@ public class GetShoppingCartItemsHelper extends BaseHelper {
     
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
-        android.util.Log.d("TRACK", "parseResponseBundle GetShoppingCartItemsHelper");
+        android.util.Log.d(TAG, "ON PARSE REPONSE" + jsonObject.toString());
         JumiaApplication.INSTANCE.setCart(null);
+        android.util.Log.d(TAG, "CLEAN CART");        
         ShoppingCart cart = new ShoppingCart(JumiaApplication.INSTANCE.getItemSimpleDataRegistry());
         try {
             cart.initialize(jsonObject);
@@ -59,6 +51,7 @@ public class GetShoppingCartItemsHelper extends BaseHelper {
             e.printStackTrace();
         }
         JumiaApplication.INSTANCE.setCart(cart);
+        android.util.Log.d(TAG, "ADD CART: " + cart.getCartValue());
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, cart);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_SHOPPING_CART_ITEMS_EVENT);
         return bundle;
