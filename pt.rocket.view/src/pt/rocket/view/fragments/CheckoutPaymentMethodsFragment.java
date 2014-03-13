@@ -285,7 +285,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
                     }
                     
                 } else {
-                    Toast.makeText(getBaseActivity(), "Please enter a valid Coupon Code", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getBaseActivity(), getString(R.string.voucher_error_message), Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -322,7 +322,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
                     }
 
                 } else {
-                    Toast.makeText(getBaseActivity(), "Please enter a valid Coupon Code",
+                    Toast.makeText(getBaseActivity(), getString(R.string.voucher_error_message),
                             Toast.LENGTH_LONG).show();
                 }
             }
@@ -354,7 +354,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
                 Log.i(TAG, "code1payment : "+values.toString());
                 triggerSubmitPaymentMethod(values);
             } else {
-                Toast.makeText(getActivity(), "Please fill all the data",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), getString(R.string.please_fill_all_data),Toast.LENGTH_SHORT).show();
             }
         } else if (noPaymentNeeded) {
          // Get next step

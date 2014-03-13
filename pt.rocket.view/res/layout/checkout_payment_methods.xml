@@ -32,7 +32,7 @@
                 android:layout_marginTop="@dimen/margin_huge"
                 android:fontFamily="roboto_regular"
                 android:gravity="left"
-                android:text="Payment"
+                android:text="@string/payment"
                 android:textColor="@color/orange_basic"
                 android:textSize="@dimen/text_l" />
 

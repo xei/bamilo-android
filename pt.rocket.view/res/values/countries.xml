@@ -137,12 +137,12 @@
 <!--     <string name="jumia_ma_country_name_dev_live">Morocco Dev Live</string> -->
 
 <!--     Jumia Egypt Configuration -->
-<!--     <string name="jumia_eg_shopname_dev_live">Jumia</string> -->
-<!--     <string name="jumia_eg_server_dev_live">www.dev1.jumia.com</string> -->
-<!--     <string name="jumia_eg_user_dev_live">rocket</string> -->
-<!--     <string name="jumia_eg_password_dev_live">rock4me</string> -->
-<!--     <string name="jumia_eg_restbase_path_dev_live">mobapi</string> -->
-<!--     <string name="jumia_eg_country_name_dev_live">Egypt Dev Live</string> -->
+    <string name="jumia_eg_shopname_dev_live">Jumia</string>
+    <string name="jumia_eg_server_dev_live">www.dev1.jumia.com</string>
+    <string name="jumia_eg_user_dev_live">rocket</string>
+    <string name="jumia_eg_password_dev_live">rock4me</string>
+    <string name="jumia_eg_restbase_path_dev_live">mobapi</string>
+    <string name="jumia_eg_country_name_dev_live">Egypt Dev Live</string>
 
 
 <!--     Jumia Ivory Coast Configuration -->

@@ -140,7 +140,7 @@ public class ShippingMethodFormBuilder implements IJSONSerializable, Parcelable 
         LinearLayout.LayoutParams frmParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         parent.setOrientation(LinearLayout.VERTICAL);
         parent.setLayoutParams(frmParams);
-        Log.i(TAG, "code1generate ...");
+        
         if(fields != null && fields.size() > 0){
             for (ShippingMethodForm field : fields) {
                 ShippingRadioGroupList mGroup = field.generateForm(context, parent);

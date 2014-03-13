@@ -312,5 +312,11 @@
     <string name="next_button">Suivant</string>
     <string name="confirm_order_loosing_order_title">Commande déjà effectuée!</string>
     <string name="confirm_order_loosing_order">Attention: si vous retournez encore en arrière votre commande sera annulée et vous serez dirigez vers la page d\'accueil.</string>
-
+    <string name="voucher_use">Utiliser</string>
+    <string name="voucher_remove">Supprimer</string>
+    <string name="voucher_message_hint">Entrez votre Code Promotionnel ici</string>
+    <string name="voucher_error_message">Veuillez Entrer un Code Valide</string>
+    <string name="payment">Paiement</string>
+    <string name="no_payment">Aucun paiement nécessaire</string>
+    <string name="please_fill_all_data">Veuillez entrer toutes les données</string>
 </resources>

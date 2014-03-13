@@ -147,6 +147,7 @@ public class ShippingMethodSubForm implements IJSONSerializable, Parcelable {
                     R.layout.form_spinner_item, new ArrayList<String>(mSpinnerOptions));
             adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
             ((IcsSpinner) this.dataControl).setAdapter(adapter);
+            ((IcsSpinner) this.dataControl).setPrompt(this.label);
 
         }
         else {
@@ -154,7 +155,7 @@ public class ShippingMethodSubForm implements IJSONSerializable, Parcelable {
         }
 
         // sets the spinner value
-        int position = 0;
+        int position = -1;
         ((IcsSpinner) this.dataControl).setSelection(position);
 //        if (null != this.entry.getValue() && !this.entry.getValue().trim().equals("")) {
 //            for (String item : new ArrayList<String>(this.entry.getDataSet().values())) {
@@ -168,23 +169,6 @@ public class ShippingMethodSubForm implements IJSONSerializable, Parcelable {
 
         this.dataControl.setVisibility(View.GONE);
 
-//        params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
-//                RelativeLayout.LayoutParams.MATCH_PARENT);
-//        params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-//        params.addRule(RelativeLayout.CENTER_VERTICAL);
-//        params.rightMargin = 10;
-//        this.mandatoryControl = new TextView(this.context);
-//        this.mandatoryControl.setLayoutParams(params);
-//        this.mandatoryControl.setText("*");
-//        this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_basic));
-//        this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
-//
-//        this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE
-//                : View.GONE);
-//        dataContainer.addView(this.dataControl);
-//        dataContainer.addView(this.mandatoryControl);
-//
-//        ((ViewGroup) this.control).addView(dataContainer);
 
         FontLoader.applyDefaultFont( this.dataControl );
         // Listeners
@@ -223,6 +207,8 @@ public class ShippingMethodSubForm implements IJSONSerializable, Parcelable {
 
         return this.dataControl;
     }
+    
+//    public void
     
     @Override
     public int describeContents() {

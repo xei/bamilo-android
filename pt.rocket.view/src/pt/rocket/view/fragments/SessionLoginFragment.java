@@ -3,6 +3,7 @@
  */
 package pt.rocket.view.fragments;
 
+import java.lang.ref.WeakReference;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -12,6 +13,7 @@ import java.util.List;
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.FormConstants;
+import pt.rocket.controllers.LogOut;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.factories.FormFactory;
@@ -600,6 +602,8 @@ public class SessionLoginFragment extends BaseFragment {
                 return true;
             }
         } else if (eventType == EventType.LOGIN_EVENT) {
+            JumiaApplication.INSTANCE.setLoggedIn(false);
+            LogOut.performLogOut(new WeakReference<Activity>(getBaseActivity())); 
             // Validate fragment visibility
             if(!isVisible()){
                 Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");

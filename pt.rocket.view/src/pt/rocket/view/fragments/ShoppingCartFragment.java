@@ -906,7 +906,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
                     }
 
                 } else {
-                    Toast.makeText(getBaseActivity(), "Please enter a valid Coupon Code",
+                    Toast.makeText(getBaseActivity(), getString(R.string.voucher_error_message),
                             Toast.LENGTH_LONG).show();
                 }
             }
