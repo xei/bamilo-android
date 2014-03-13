@@ -771,7 +771,7 @@ public class DynamicFormItem {
                 android.R.color.black));
         ((CheckBox) this.dataControl).setTextSize(14);
         ((CheckBox) this.dataControl).setText(this.entry.getLabel().length() > 0 ? this.entry
-                .getLabel() : "please accept the terms!");
+                .getLabel() : this.context.getString(R.string.register_text_terms_a)+" "+this.context.getString(R.string.register_text_terms_b));
         ((CheckBox) this.dataControl).setPadding((int) (25 * scale),
                 this.dataControl.getPaddingTop(), this.dataControl.getPaddingRight(),
                 this.dataControl.getPaddingBottom());
@@ -795,9 +795,10 @@ public class DynamicFormItem {
 
         this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE
                 : View.GONE);
-        dataContainer.addView(this.dataControl);
+        
+        ((ViewGroup) this.control).addView(this.dataControl);
 
-        dataContainer.addView(this.mandatoryControl);
+        ((ViewGroup) this.control).addView(this.mandatoryControl);
 
         ((ViewGroup) this.control).addView(dataContainer);
 

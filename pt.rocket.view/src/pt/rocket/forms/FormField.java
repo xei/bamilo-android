@@ -357,21 +357,22 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                     while (it.hasNext()) {
                         
                         String curKey = (String) it.next();
+                        String label = dataOptionsObject.getJSONObject(curKey).getString(RestConstants.JSON_LABEL_TAG);
                         String value = dataOptionsObject.getJSONObject(curKey).getString(RestConstants.JSON_VALUE_TAG);
                         Log.d(TAG, "FORM FIELD: CURRENT KEY " + curKey + " VALUE: " + value);
-                        dataSet.put(value, curKey);
+                        dataSet.put(value, label);
                         
                         
                         JSONObject paymentDescription = dataOptionsObject.optJSONObject(curKey).optJSONObject(RestConstants.JSON_DESCRIPTION_TAG);
                         PaymentInfo mPaymentInfo = new PaymentInfo();
                         mPaymentInfo.initialize(paymentDescription);
-                        JumiaApplication.INSTANCE.getPaymentsInfoList().put(curKey,mPaymentInfo);
+                        JumiaApplication.INSTANCE.getPaymentsInfoList().put(label,mPaymentInfo);
                         
                         Log.i(TAG, "code1paymentDescription : saved : "+curKey);
                         JSONObject json = dataOptionsObject.getJSONObject(curKey);
                         Form mForm = new Form();
                         mForm.initialize(json);
-                        paymentFields.put(curKey, mForm);
+                        paymentFields.put(label, mForm);
                         Log.i(TAG, "code1paymentDescription : initialized form : "+curKey);
                     }
                 }
