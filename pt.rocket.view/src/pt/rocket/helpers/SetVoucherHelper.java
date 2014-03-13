@@ -41,7 +41,7 @@ public class SetVoucherHelper extends BaseHelper {
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.POST);
         bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
-        if(args.getParcelable(VOUCHER_PARAM) == null){
+        if(args == null){
             bundle.putParcelable(Constants.BUNDLE_FORM_DATA_KEY, new ContentValues());
         } else {
             bundle.putParcelable(Constants.BUNDLE_FORM_DATA_KEY, args.getParcelable(VOUCHER_PARAM));
