@@ -424,6 +424,21 @@ public class MixpanelTracker {
 		mixpanel.track(context.getString(R.string.mixnativecheckout), props);
 	}
 	
+	public static void trackSignUpSuccess(Context context, String email) {
+		if (!isEnabled)
+			return;
+		
+		
+
+		props = null;
+		
+		setProperty(context.getString(R.string.mixprop_signup), "" + email);
+		
+		Log.d( TAG, "trackSignUpSuccess tracking:  " + context.getString(R.string.mixprop_signup) );
+		mixpanel.track(context.getString(R.string.mixprop_signup), props);
+	}
+	
+	
 	public static void trackPaymentMethod(Context context, String email, String payment) {
 		if (!isEnabled)
 			return;

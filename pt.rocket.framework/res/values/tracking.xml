@@ -76,7 +76,7 @@
     <string name="gcheckoutPaymentMethods">CheckoutPaymentMethods</string>
     <string name="gcheckoutPollQuestion">CheckoutPollQuestion</string>
     <string name="gcheckoutShippingMethods">CheckoutShippingMethods</string>
-    
+    <string name="gSignUp">CustomerSignUp</string>
     <!--  Label -->
     <string name="gcustomerid">CustomerId</string>
     <string name="gsimplesku">Simple-SKU</string>
@@ -106,6 +106,7 @@
     <string name="xpreferences">AdXPrefrences</string>
     <string name="xnativecheckout">NativeCheckout</string>
     <string name="xnativecheckouterror">NativeCheckoutError</string>
+    <string name="xsignup">CustomerSignUp</string>
     <!-- Checkout Steps -->
     <string name="xcheckoutaboutyou">CheckoutAboutYou</string>
     <string name="xcheckoutcreateaddress">CheckoutCreateAddress</string>
@@ -187,6 +188,7 @@
     <string name="mixprop_email">Email</string>
     <string name="mixprop_createdate">Account Created Date</string>
     <string name="mixprop_country">Country</string>
+    <string name="mixprop_signup">Customer Sign Up</string>
     
     <!-- Begin of Urban AirShip Tracking Parameters -->
     <string name="ua_preisntall">preinstall-</string>

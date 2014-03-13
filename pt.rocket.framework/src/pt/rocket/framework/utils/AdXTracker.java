@@ -78,6 +78,14 @@ public class AdXTracker {
 		Log.d(TAG, "trackCheckoutStep: email = " + email + " step = " + context.getString(step));
 		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xnativecheckout), email, context.getString(step));
 	}
+	
+	public static void trackSignUpSuccess(Context context, String email) {
+		if (!isEnabled)
+			return;
+
+		Log.d(TAG, "trackSignUpSuccess: email = " + email + " step = " + context.getString(R.string.xsignup));
+		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xsignup), email, context.getString(R.string.xsignup));
+	}
 
 	public static void trackPaymentMethod(Context context, String email, String payment) {
 		if (!isEnabled)

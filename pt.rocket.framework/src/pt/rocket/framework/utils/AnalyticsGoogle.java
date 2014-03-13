@@ -307,6 +307,18 @@ public class AnalyticsGoogle {
 		
 	}
 	
+	public void trackSignUpSuccess(String email) {
+		if (!isEnabled) {
+			return;
+		}
+
+		String category = mContext.getString(R.string.gSignUp);
+		String action = mContext.getString(R.string.gSignUp);
+		Log.d(TAG, "trackSignUpSuccess: category = " + category + " action = " + action + " email " + email);
+		mTracker.sendEvent(category, action, email, (long) 0);
+		
+	}
+	
 	public void trackPaymentMethod(String email, String payment) {
 		if (!isEnabled) {
 			return;
