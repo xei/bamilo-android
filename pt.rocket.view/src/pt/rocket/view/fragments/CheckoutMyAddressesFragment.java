@@ -468,6 +468,8 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
             mTopAddContainer.setVisibility(View.GONE);
             // Set bottom container
             mBottomTitle.setText(getString(R.string.billing_others_label));
+            // Add billing address if different
+            if(!addresses.hasDefaultShippingAndBillingAddress()) addAddress(mBottomRadioGroup, addresses.getBillingAddress());
             // Set the other addresses
             addAddresses(mBottomRadioGroup, addresses.getAddresses());
         }else{

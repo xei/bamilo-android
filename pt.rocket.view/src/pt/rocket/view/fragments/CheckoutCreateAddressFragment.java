@@ -410,8 +410,11 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
     private void onClickCreateAddressButton() {
         Log.i(TAG, "ON CLICK: CREATE");
         
+        // Clean the flag for each click
+        oneAddressCreated = false;
+        
         // Hide error message
-        if(mMsgRequired!=null) mMsgRequired.setVisibility(View.GONE);
+        if(mMsgRequired != null) mMsgRequired.setVisibility(View.GONE);
         
         // Validate spinner
         ViewGroup mRegionGroup = (ViewGroup) shippingFormGenerator.getItemByKey(RestConstants.JSON_REGION_ID_TAG).getControl();

@@ -128,7 +128,6 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
 
     /**
      * Empty constructor
-     * WARNING: TODO MyMenuItem
      */
     public CheckoutAboutYouFragment() {
         super(EnumSet.of(EventType.GET_LOGIN_FORM_EVENT, 
@@ -643,9 +642,8 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         try {
             if(values.getAsBoolean(CustomerUtils.INTERNAL_SIGNUP_FLAG)){
                 Log.i(TAG, "USER HAS SIGNUP CREDENTIALS");
-                // Go direct to next step
-                mNextFragment = FragmentType.CREATE_ADDRESS;
-                gotoNextStep();
+                getBaseActivity().showLoading(false);
+                triggerSignup(values, onAutoLogin);
                 return;
             }
         } catch (NullPointerException e) {
@@ -744,7 +742,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
      */
     private void gotoNextStep(){
         // Get next step
-        if(mNextFragment == null) {
+        if(mNextFragment == null || mNextFragment == FragmentType.UNKNOWN) {
             Log.w(TAG, "NEXT STEP IS NULL");
             super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "next step is null");
         } else {
@@ -788,17 +786,9 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             Log.d(TAG, "RECEIVED SET_SIGNUP_EVENT");
             JumiaApplication.INSTANCE.setLoggedIn(true);
             // Get next step
-            FragmentType signupNextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
-            if(signupNextFragment == null || signupNextFragment == FragmentType.UNKNOWN){
-                Log.w(TAG, "NEXT STEP IS NULL");
-                super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "next step is null");
-                return true;
-            }
-            signupNextFragment = (signupNextFragment != FragmentType.UNKNOWN) ? signupNextFragment : FragmentType.CREATE_ADDRESS;
-            getBaseActivity().hideKeyboard();
-            getBaseActivity().updateSlidingMenuCompletly();
-            FragmentController.getInstance().popLastEntry(FragmentType.ABOUT_YOU.toString());
-            getBaseActivity().onSwitchFragment(signupNextFragment, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);            
+            mNextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
+            // Next step
+            gotoNextStep();            
             break;
         case FACEBOOK_LOGIN_EVENT:
             // Set logged in

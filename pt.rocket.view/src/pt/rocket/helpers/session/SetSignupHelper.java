@@ -7,7 +7,6 @@ import org.json.JSONObject;
 
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.framework.enums.RequestType;
-import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CustomerUtils;
 import pt.rocket.framework.utils.EventType;
@@ -63,10 +62,10 @@ public class SetSignupHelper extends BaseHelper {
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
         Log.d(TAG, "PARSE BUNDLE: " + jsonObject);
         if (saveCredentials) {
-            contentValues.put(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, true);
-            contentValues.put(CustomerUtils.INTERNAL_PASSWORD_VALUE, "");
-            contentValues.put(CustomerUtils.INTERNAL_EMAIL_VALUE, "");
-            contentValues.put(CustomerUtils.INTERNAL_SIGNUP_FLAG, true);
+             contentValues.put(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, true);
+             contentValues.put(CustomerUtils.INTERNAL_PASSWORD_VALUE, "");
+             contentValues.put(CustomerUtils.INTERNAL_EMAIL_VALUE, "");
+             contentValues.put(CustomerUtils.INTERNAL_SIGNUP_FLAG, true);
             JumiaApplication.INSTANCE.getCustomerUtils().storeCredentials(contentValues);
             Log.d(TAG, "STORE CREDENTIALS: " + contentValues.toString());
         }
