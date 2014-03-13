@@ -22,6 +22,8 @@ import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CurrencyFormatter;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.helpers.ClearShoppingCartHelper;
+import pt.rocket.helpers.SetVoucherHelper;
 import pt.rocket.helpers.checkout.CheckoutFinishHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.MyMenuItem;
@@ -503,6 +505,12 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
         triggerContentEvent(new CheckoutFinishHelper(), null, this);
     }
 
+    private void triggerClearCart() {
+        Log.i(TAG, "TRIGGER: CHECKOUT FINISH");
+        triggerContentEventWithNoLoading(new ClearShoppingCartHelper(), null, this);
+        triggerContentEventWithNoLoading(new SetVoucherHelper(), null, this);
+    }
+    
     /**
      * ############# RESPONSE #############
      */
@@ -532,6 +540,9 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
                 bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR, JumiaApplication.INSTANCE.getPaymentMethodForm().getOrderNumber());
                 getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_THANKS, bundle, FragmentController.ADD_TO_BACK_STACK); 
             }
+            triggerClearCart();
+            JumiaApplication.INSTANCE.setCart(null);
+            getBaseActivity().updateCartInfo();
             break;
 
         default:
@@ -674,6 +685,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
                                 dialog.dismiss();
                                 JumiaApplication.INSTANCE.setPaymentMethodForm(null);
                                 JumiaApplication.INSTANCE.setCart(null);
+                                triggerClearCart();
                                 getBaseActivity().updateCartInfo();
                                 getBaseActivity().onSwitchFragment(FragmentType.HOME, null, FragmentController.ADD_TO_BACK_STACK);
                             } else if(id == R.id.button2){
