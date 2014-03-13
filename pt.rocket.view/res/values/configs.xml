@@ -14,17 +14,17 @@
         <item>@string/jumia_ci_server</item>
         <item>@string/jumia_ug_server</item>
         
-        <item>@string/jumia_ng_server_dev</item>
-        <item>@string/jumia_ke_server_dev</item>
-        <item>@string/jumia_ma_server_dev</item>
-        <item>@string/jumia_eg_server_dev</item>
-        <item>@string/jumia_ci_server_dev</item>
-        <item>@string/jumia_ug_server_dev</item>
+<!--         <item>@string/jumia_ng_server_dev</item> -->
+<!--         <item>@string/jumia_ke_server_dev</item> -->
+<!--         <item>@string/jumia_ma_server_dev</item> -->
+<!--         <item>@string/jumia_eg_server_dev</item> -->
+<!--         <item>@string/jumia_ci_server_dev</item> -->
+<!--         <item>@string/jumia_ug_server_dev</item> -->
 
 <!--         <item>@string/jumia_ng_server_dev_live</item> -->
 <!--         <item>@string/jumia_ke_server_dev_live</item> -->
 <!--         <item>@string/jumia_ma_server_dev_live</item> -->
-        <item>@string/jumia_eg_server_dev_live</item>
+<!--         <item>@string/jumia_eg_server_dev_live</item> -->
 <!--         <item>@string/jumia_ci_server_dev_live</item> -->
 <!--         <item>@string/jumia_ug_server_dev_live</item> -->
         
@@ -43,17 +43,17 @@
         <item>@string/jumia_ci_user</item>
         <item>@string/jumia_ug_user</item>
         
-        <item>@string/jumia_ng_user_dev</item>
-        <item>@string/jumia_ke_user_dev</item>
-        <item>@string/jumia_ma_user_dev</item>
-        <item>@string/jumia_eg_user_dev</item>
-        <item>@string/jumia_ci_user_dev</item>
-        <item>@string/jumia_ug_user_dev</item>
+<!--         <item>@string/jumia_ng_user_dev</item> -->
+<!--         <item>@string/jumia_ke_user_dev</item> -->
+<!--         <item>@string/jumia_ma_user_dev</item> -->
+<!--         <item>@string/jumia_eg_user_dev</item> -->
+<!--         <item>@string/jumia_ci_user_dev</item> -->
+<!--         <item>@string/jumia_ug_user_dev</item> -->
         
 <!--         <item>@string/jumia_ng_user_dev_live</item> -->
 <!--         <item>@string/jumia_ke_user_dev_live</item> -->
 <!--         <item>@string/jumia_ma_user_dev_live</item> -->
-        <item>@string/jumia_eg_user_dev_live</item>
+<!--         <item>@string/jumia_eg_user_dev_live</item> -->
 <!--         <item>@string/jumia_ci_user_dev_live</item> -->
 <!--         <item>@string/jumia_ug_user_dev_live</item> -->
         
@@ -73,17 +73,17 @@
         <item>@string/jumia_ci_password</item>
         <item>@string/jumia_ug_password</item>
         
-        <item>@string/jumia_ng_password_dev</item>
-        <item>@string/jumia_ke_password_dev</item>
-        <item>@string/jumia_ma_password_dev</item>
-        <item>@string/jumia_eg_password_dev</item>
-        <item>@string/jumia_ci_password_dev</item>
-        <item>@string/jumia_ug_password_dev</item>
+<!--         <item>@string/jumia_ng_password_dev</item> -->
+<!--         <item>@string/jumia_ke_password_dev</item> -->
+<!--         <item>@string/jumia_ma_password_dev</item> -->
+<!--         <item>@string/jumia_eg_password_dev</item> -->
+<!--         <item>@string/jumia_ci_password_dev</item> -->
+<!--         <item>@string/jumia_ug_password_dev</item> -->
         
 <!--         <item>@string/jumia_ng_password_dev_live</item> -->
 <!--         <item>@string/jumia_ke_password_dev_live</item> -->
 <!--         <item>@string/jumia_ma_password_dev_live</item> -->
-        <item>@string/jumia_eg_password_dev_live</item>
+<!--         <item>@string/jumia_eg_password_dev_live</item> -->
 <!--         <item>@string/jumia_ci_password_dev_live</item> -->
 <!--         <item>@string/jumia_ug_password_dev_live</item> -->
         
@@ -103,18 +103,18 @@
         <item>@string/jumia_ci_restbase_path</item>
         <item>@string/jumia_ug_restbase_path</item>
         
-        <item>@string/jumia_ng_restbase_path_dev</item>
-        <item>@string/jumia_ke_restbase_path_dev</item>
-        <item>@string/jumia_ma_restbase_path_dev</item>
-        <item>@string/jumia_eg_restbase_path_dev</item>
-        <item>@string/jumia_ci_restbase_path_dev</item>
-        <item>@string/jumia_ug_restbase_path_dev</item>
+<!--         <item>@string/jumia_ng_restbase_path_dev</item> -->
+<!--         <item>@string/jumia_ke_restbase_path_dev</item> -->
+<!--         <item>@string/jumia_ma_restbase_path_dev</item> -->
+<!--         <item>@string/jumia_eg_restbase_path_dev</item> -->
+<!--         <item>@string/jumia_ci_restbase_path_dev</item> -->
+<!--         <item>@string/jumia_ug_restbase_path_dev</item> -->
         
                 
 <!--         <item>@string/jumia_ng_restbase_path_dev_live</item> -->
 <!--         <item>@string/jumia_ke_restbase_path_dev_live</item> -->
 <!--         <item>@string/jumia_ma_restbase_path_dev_live</item> -->
-        <item>@string/jumia_eg_restbase_path_dev_live</item>
+<!--         <item>@string/jumia_eg_restbase_path_dev_live</item> -->
 <!--         <item>@string/jumia_ci_restbase_path_dev_live</item> -->
 <!--         <item>@string/jumia_ug_restbase_path_dev_live</item> -->
         
@@ -135,17 +135,17 @@
         <item>@string/jumia_ci_shopname</item>
         <item>@string/jumia_ug_shopname</item>
         
-        <item>@string/jumia_ng_shopname_dev</item>
-        <item>@string/jumia_ke_shopname_dev</item>
-        <item>@string/jumia_ma_shopname_dev</item>
-        <item>@string/jumia_eg_shopname_dev</item>
-        <item>@string/jumia_ci_shopname_dev</item>
-        <item>@string/jumia_ug_shopname_dev</item>
+<!--         <item>@string/jumia_ng_shopname_dev</item> -->
+<!--         <item>@string/jumia_ke_shopname_dev</item> -->
+<!--         <item>@string/jumia_ma_shopname_dev</item> -->
+<!--         <item>@string/jumia_eg_shopname_dev</item> -->
+<!--         <item>@string/jumia_ci_shopname_dev</item> -->
+<!--         <item>@string/jumia_ug_shopname_dev</item> -->
         
 <!--         <item>@string/jumia_ng_shopname_dev_live</item> -->
 <!--         <item>@string/jumia_ke_shopname_dev_live</item> -->
 <!--         <item>@string/jumia_ma_shopname_dev_live</item> -->
-        <item>@string/jumia_eg_shopname_dev_live</item>
+<!--         <item>@string/jumia_eg_shopname_dev_live</item> -->
 <!--         <item>@string/jumia_ci_shopname_dev_live</item> -->
 <!--         <item>@string/jumia_ug_shopname_dev_live</item> -->
         
@@ -165,17 +165,17 @@
         <item>@string/jumia_ci_country_name</item>
         <item>@string/jumia_ug_country_name</item>
         
-        <item>@string/jumia_ng_country_name_dev</item>
-        <item>@string/jumia_ke_country_name_dev</item>
-        <item>@string/jumia_ma_country_name_dev</item>
-        <item>@string/jumia_eg_country_name_dev</item>
-        <item>@string/jumia_ci_country_name_dev</item>
-        <item>@string/jumia_ug_country_name_dev</item>
+<!--         <item>@string/jumia_ng_country_name_dev</item> -->
+<!--         <item>@string/jumia_ke_country_name_dev</item> -->
+<!--         <item>@string/jumia_ma_country_name_dev</item> -->
+<!--         <item>@string/jumia_eg_country_name_dev</item> -->
+<!--         <item>@string/jumia_ci_country_name_dev</item> -->
+<!--         <item>@string/jumia_ug_country_name_dev</item> -->
         
 <!--         <item>@string/jumia_ng_country_name_dev_live</item> -->
 <!--         <item>@string/jumia_ke_country_name_dev_live</item> -->
 <!--         <item>@string/jumia_ma_country_name_dev_live</item> -->
-        <item>@string/jumia_eg_country_name_dev_live</item>
+<!--         <item>@string/jumia_eg_country_name_dev_live</item> -->
 <!--         <item>@string/jumia_ci_country_name_dev_live</item> -->
 <!--         <item>@string/jumia_ug_country_name_dev_live</item> -->
         
@@ -195,17 +195,17 @@
         <item>@drawable/jumia_ci_icon</item>
         <item>@drawable/jumia_ug_icon</item>
         
-        <item>@drawable/jumia_ng_icon</item>
-        <item>@drawable/jumia_ke_icon</item>
-        <item>@drawable/jumia_ma_icon</item>
-        <item>@drawable/jumia_eg_icon</item>
-        <item>@drawable/jumia_ci_icon</item>
-        <item>@drawable/jumia_ug_icon</item>        
+<!--         <item>@drawable/jumia_ng_icon</item> -->
+<!--         <item>@drawable/jumia_ke_icon</item> -->
+<!--         <item>@drawable/jumia_ma_icon</item> -->
+<!--         <item>@drawable/jumia_eg_icon</item> -->
+<!--         <item>@drawable/jumia_ci_icon</item> -->
+<!--         <item>@drawable/jumia_ug_icon</item>         -->
         
 <!--         <item>@drawable/jumia_ng_icon</item> -->
 <!--         <item>@drawable/jumia_ke_icon</item> -->
 <!--         <item>@drawable/jumia_ma_icon</item> -->
-        <item>@drawable/jumia_eg_icon</item>
+<!--         <item>@drawable/jumia_eg_icon</item> -->
 <!--         <item>@drawable/jumia_ci_icon</item> -->
 <!--         <item>@drawable/jumia_ug_icon</item>         -->
         
@@ -225,17 +225,17 @@
         <item>@string/currency_code_xof</item>
         <item>@string/currency_code_ugx</item>
         
-        <item>@string/currency_code_ngn</item>
-        <item>@string/currency_code_ksh</item>
-        <item>@string/currency_code_mad</item>
-        <item>@string/currency_code_egp</item>
-        <item>@string/currency_code_xof</item>
-        <item>@string/currency_code_ugx</item>
+<!--         <item>@string/currency_code_ngn</item> -->
+<!--         <item>@string/currency_code_ksh</item> -->
+<!--         <item>@string/currency_code_mad</item> -->
+<!--         <item>@string/currency_code_egp</item> -->
+<!--         <item>@string/currency_code_xof</item> -->
+<!--         <item>@string/currency_code_ugx</item> -->
 
 <!--         <item>@string/currency_code_ngn</item> -->
 <!--         <item>@string/currency_code_ksh</item> -->
 <!--         <item>@string/currency_code_mad</item> -->
-        <item>@string/currency_code_egp</item>
+<!--         <item>@string/currency_code_egp</item> -->
 <!--         <item>@string/currency_code_xof</item> -->
 <!--         <item>@string/currency_code_ugx</item> -->
         
@@ -256,17 +256,17 @@
         <item>@string/gaid_ci_test</item>
         <item>@string/gaid_ug_test</item>
         
-        <item>@string/gaid_ng_test</item>
-        <item>@string/gaid_ke_test</item>
-        <item>@string/gaid_ma_test</item>
-        <item>@string/gaid_eg_test</item>
-        <item>@string/gaid_ci_test</item>
-        <item>@string/gaid_ug_test</item>
+<!--         <item>@string/gaid_ng_test</item> -->
+<!--         <item>@string/gaid_ke_test</item> -->
+<!--         <item>@string/gaid_ma_test</item> -->
+<!--         <item>@string/gaid_eg_test</item> -->
+<!--         <item>@string/gaid_ci_test</item> -->
+<!--         <item>@string/gaid_ug_test</item> -->
         
 <!--         <item>@string/gaid_ng_test</item> -->
 <!--         <item>@string/gaid_ke_test</item> -->
 <!--         <item>@string/gaid_ma_test</item> -->
-        <item>@string/gaid_eg_test</item>
+<!--         <item>@string/gaid_eg_test</item> -->
 <!--         <item>@string/gaid_ci_test</item> -->
 <!--         <item>@string/gaid_ug_test</item> -->
         
@@ -286,17 +286,17 @@
         <item>@string/gaid_ci_live</item>
         <item>@string/gaid_ug_live</item>
         
-        <item>@string/gaid_ng_live</item>
-        <item>@string/gaid_ke_live</item>
-        <item>@string/gaid_ma_live</item>
-        <item>@string/gaid_eg_live</item>
-        <item>@string/gaid_ci_live</item>
-        <item>@string/gaid_ug_live</item>
+<!--         <item>@string/gaid_ng_live</item> -->
+<!--         <item>@string/gaid_ke_live</item> -->
+<!--         <item>@string/gaid_ma_live</item> -->
+<!--         <item>@string/gaid_eg_live</item> -->
+<!--         <item>@string/gaid_ci_live</item> -->
+<!--         <item>@string/gaid_ug_live</item> -->
         
 <!--         <item>@string/gaid_ng_live</item> -->
 <!--         <item>@string/gaid_ke_live</item> -->
 <!--         <item>@string/gaid_ma_live</item> -->
-        <item>@string/gaid_eg_live</item>
+<!--         <item>@string/gaid_eg_live</item> -->
 <!--         <item>@string/gaid_ci_live</item> -->
 <!--         <item>@string/gaid_ug_live</item> -->
         
@@ -316,17 +316,17 @@
         <item>ci</item>
 		<item>ug</item>
         
-        <item>ng</item>
-        <item>ke</item>
-        <item>ma</item>
-        <item>eg</item>
-        <item>ci</item>
-        <item>ug</item>
+<!--         <item>ng</item> -->
+<!--         <item>ke</item> -->
+<!--         <item>ma</item> -->
+<!--         <item>eg</item> -->
+<!--         <item>ci</item> -->
+<!--         <item>ug</item> -->
         
 <!--         <item>ng</item> -->
 <!--         <item>ke</item> -->
 <!--         <item>ma</item> -->
-        <item>eg</item>
+<!--         <item>eg</item> -->
 <!--         <item>ci</item> -->
 <!-- 		<item>ug</item> -->
         
@@ -346,17 +346,17 @@
         <item>false</item>
         <item>false</item>
         
-        <item>false</item>
-        <item>false</item>
-        <item>false</item>
-        <item>true</item>
-        <item>false</item>
-        <item>false</item>
+<!--         <item>false</item> -->
+<!--         <item>false</item> -->
+<!--         <item>false</item> -->
+<!--         <item>true</item> -->
+<!--         <item>false</item> -->
+<!--         <item>false</item> -->
         
 <!--         <item>false</item> -->
 <!--         <item>false</item> -->
 <!--         <item>false</item> -->
-        <item>false</item>
+<!--         <item>true</item> -->
 <!--         <item>false</item> -->
 <!--         <item>false</item> -->
         
@@ -376,17 +376,17 @@
         <item>@drawable/map_ci</item>
         <item>@drawable/map_ug</item>
         
-        <item>@drawable/map_ng</item>
-        <item>@drawable/map_ke</item>
-        <item>@drawable/map_ma</item>
-        <item>@drawable/map_eg</item>
-        <item>@drawable/map_ci</item>
-        <item>@drawable/map_ug</item>
+<!--         <item>@drawable/map_ng</item> -->
+<!--         <item>@drawable/map_ke</item> -->
+<!--         <item>@drawable/map_ma</item> -->
+<!--         <item>@drawable/map_eg</item> -->
+<!--         <item>@drawable/map_ci</item> -->
+<!--         <item>@drawable/map_ug</item> -->
         
 <!--         <item>@drawable/map_ng</item> -->
 <!--         <item>@drawable/map_ke</item> -->
 <!--         <item>@drawable/map_ma</item> -->
-        <item>@drawable/map_eg</item>
+<!--         <item>@drawable/map_eg</item> -->
 <!--         <item>@drawable/map_ci</item> -->
 <!--         <item>@drawable/map_ug</item> -->
         

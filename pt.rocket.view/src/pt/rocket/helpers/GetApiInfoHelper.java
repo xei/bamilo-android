@@ -83,6 +83,7 @@ public class GetApiInfoHelper extends BaseHelper {
                 && outDatedSections.size() != 0) {
             clearOutDatedMainSections(outDatedSections, EventType.GET_API_INFO);
         }
+        JumiaApplication.INSTANCE.setVersionInfo(info);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_API_INFO);
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, info);
         bundle.putParcelableArrayList(API_INFO_OUTDATEDSECTIONS, outDatedSections);

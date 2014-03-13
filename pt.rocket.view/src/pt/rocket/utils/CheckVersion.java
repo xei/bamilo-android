@@ -62,6 +62,7 @@ public class CheckVersion {
     }
 
     public static boolean run(Context context) {
+        Log.i(TAG, "code1checkversion");
         sContext = context;
         if (runEvents(context))
             return false;
@@ -73,7 +74,7 @@ public class CheckVersion {
         updateUnwantedVersionFromPrefs();
         if (!checkVersionInfo())
             return false;
-        
+        Log.i(TAG, "code1checkversion checkResult : "+checkResult);
         if (checkResult == UpdateStatus.FORCED_AVAILABLE) {
             sNeedsToShowDialog = true;
         } else if ( checkResult == UpdateStatus.OPTIONAL_AVAILABLE) {
@@ -233,7 +234,7 @@ public class CheckVersion {
         String url;
         if (packageName.startsWith("pt.rocket.jumia.dev")
                 || packageName.startsWith("pt.rocket.jumia.weekly"))
-            packageName = "abc.vietcontent.news.zalora";
+            packageName = "com.jumia.android";
 
         url = PLAY_MARKET_QUERY + packageName;
 
