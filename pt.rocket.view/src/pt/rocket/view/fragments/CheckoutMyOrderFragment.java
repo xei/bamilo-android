@@ -81,7 +81,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
 
     private TextView mProductsNum;
 
-    private TextView mProductsValue;
+    private TextView mSubTotal;
 
     private OrderSummary mOrderFinish;
 
@@ -164,7 +164,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
         mProductsContainer = (ViewGroup) view.findViewById(R.id.checkout_my_order_products_list);
         // Get sub total
         mProductsNum = (TextView) view.findViewById(R.id.checkout_my_order_products_text_n_items);
-        mProductsValue = (TextView) view.findViewById(R.id.checkout_my_order_products_text_total_items);
+        mSubTotal = (TextView) view.findViewById(R.id.checkout_my_order_products_text_total_items);
         mVatValue = (TextView) view.findViewById(R.id.checkout_my_order_products_text_vat_value);
         //mShipFeeView = (ViewGroup) view.findViewById(R.id.checkout_my_order_products_shippingfee_container);
         mShipFeeValue = (TextView) view.findViewById(R.id.checkout_my_order_products_text_shippingfee);
@@ -332,7 +332,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
         String itemsLabel = (size > 1) ? getString(R.string.my_order_items_label) : getString(R.string.my_order_item_label);
         mProductsNum.setText(size + " " + itemsLabel);
         // Set cart value
-        mProductsValue.setText(CurrencyFormatter.formatCurrency(cart.getCartCleanValue()));
+        mSubTotal.setText(CurrencyFormatter.formatCurrency(cart.getCartCleanValue()));
         // Vat value
         mVatValue.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getTaxAmount()));
         // Shipping fee

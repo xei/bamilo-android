@@ -729,6 +729,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
      */
     private void triggerGetShoppingCart(){
         Log.i(TAG, "TRIGGER: GET CART AFTER LOGGED IN");
+        getBaseActivity().showLoading(false);
         triggerContentEvent(new GetShoppingCartItemsHelper(), null, this);
     }
     

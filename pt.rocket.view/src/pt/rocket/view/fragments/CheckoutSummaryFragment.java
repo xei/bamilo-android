@@ -77,6 +77,14 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
 
     private ViewGroup mProductListView;
 
+    private ViewGroup mVoucherView;
+
+    private TextView mVoucherValue;
+
+    private TextView mVatValue;
+
+    private View mVatView;
+
     /**
      * Get instance
      * @return CheckoutSummaryFragment
@@ -150,8 +158,12 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
         mProductListView = (ViewGroup) view.findViewById(R.id.checkout_summary_include_products);
         mProductList = (ViewGroup) view.findViewById(R.id.checkout_summary_products_list);
         view.findViewById(R.id.checkout_summary_products_btn_edit).setOnClickListener(this);
+        mVatView = view.findViewById(R.id.checkout_summary_products_vat_container);
+        mVatValue = (TextView) view.findViewById(R.id.checkout_summary_products_text_vat_value);
         mShippingFeeView = (ViewGroup) view.findViewById(R.id.checkout_summary_products_shippingfee_container);
         mShippingFeeValue = (TextView) view.findViewById(R.id.checkout_summary_products_text_shippingfee);
+        mVoucherView = (ViewGroup) view.findViewById(R.id.checkout_summary_products_voucher_container);
+        mVoucherValue = (TextView) view.findViewById(R.id.checkout_summary_products_text_voucher);
         mSubTotal = (TextView) view.findViewById(R.id.checkout_summary_products_text_subtotal);
         // Shipping Address
         mShippingAddressView = (ViewGroup) view.findViewById(R.id.checkout_summary_include_shipping_address);
@@ -262,7 +274,7 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
             
         case ConstantsCheckout.CHECKOUT_SHIPPING:
             // Shipping fees
-            if(mOrderSummary != null) showShippingFees(CurrencyFormatter.formatCurrency(mOrderSummary.getShippingAmount()));
+            if(mOrderSummary != null) showShippingFees();
             // Validate shipping address
             if(mOrderSummary != null && mOrderSummary.hasShippingAddress()) showShippingAddress(mOrderSummary.getShippingAddress());
             // Validate total
@@ -270,6 +282,11 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
             // continue
             
         case ConstantsCheckout.CHECKOUT_BILLING:
+            // VAT
+            if(mOrderSummary != null) showVat();
+            // Voucher
+            if(mOrderSummary != null) showVoucher();
+            
         case ConstantsCheckout.CHECKOUT_ABOUT_YOU:
         default:
             // Show cart
@@ -313,7 +330,7 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
             // Add view
             mProductList.addView(cartItemView);
         }
-        // Show sub total
+        // Sub total
         mSubTotal.setText(CurrencyFormatter.formatCurrency(mCart.getCartValue()));
     }
     
@@ -348,9 +365,31 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
      * Show the shipping fee
      * @author sergiopereira
      */
-    private void showShippingFees(String fee) {
-        mShippingFeeValue.setText(fee);
+    private void showShippingFees() {
+        mShippingFeeValue.setText(CurrencyFormatter.formatCurrency(mOrderSummary.getShippingAmount()));
         mShippingFeeView.setVisibility(View.VISIBLE);
+    }
+    
+    /**
+     * Show voucher
+     * @author sergiopereira
+     */
+    private void showVoucher() {
+        Log.d(TAG, "ORDER VOUCHER: " + mOrderSummary.getDiscountCouponValue());
+        if(mOrderSummary.hasCouponDiscount()) {
+            mVoucherValue.setText("- " + CurrencyFormatter.formatCurrency(mOrderSummary.getDiscountCouponValue()));
+            mVoucherView.setVisibility(View.VISIBLE);
+        }
+    }
+    
+    /**
+     * Show VAT
+     * @author sergiopereira
+     */
+    private void showVat() {
+        Log.d(TAG, "ORDER VAT: " + mOrderSummary.getTaxAmount());
+        mVatValue.setText(CurrencyFormatter.formatCurrency(mOrderSummary.getTaxAmount()));
+        mVatView.setVisibility(View.VISIBLE);
     }
     
     /**
@@ -525,6 +564,7 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
             Log.d(TAG, "RECEIVED REMOVE_ITEM_FROM_SHOPPING_CART_EVENT");
             mCart = (ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             showOrderSummary();
+            getBaseActivity().updateSlidingMenu();
             getBaseActivity().showContentContainer(false);
             break;
         default:
