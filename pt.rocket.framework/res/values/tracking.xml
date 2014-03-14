@@ -104,9 +104,6 @@
     <string name="xreferral">InstallReferral</string>
     <string name="xreceiver">ReceiverDone</string>
     <string name="xpreferences">AdXPrefrences</string>
-    <string name="xnativecheckout">NativeCheckout</string>
-    <string name="xnativecheckouterror">NativeCheckoutError</string>
-    <string name="xsignup">CustomerSignUp</string>
     <!-- Checkout Steps -->
     <string name="xcheckoutaboutyou">CheckoutAboutYou</string>
     <string name="xcheckoutcreateaddress">CheckoutCreateAddress</string>
@@ -118,6 +115,9 @@
     <string name="xcheckoutpollquestion">CheckoutPollQuestion</string>
     <string name="xcheckoutshippingmethods">CheckoutShippingMethods</string>
     <string name="xpaymentmethod">PaymentMethod</string>
+    <string name="xnativecheckout">NativeCheckout</string>
+    <string name="xnativecheckouterror">NativeCheckoutError</string>
+    <string name="xcustomersignup">CustomerSignUp</string>
     <!-- End of AdX Tracking Parameters -->
     
     <!-- Begin of Flurry Tracking Parameters -->    
@@ -158,8 +158,7 @@
 	<string name="mixviewcategory">Category Viewed</string>
 	<string name="mixrate">Item Rated</string>
 	<string name="mixviewrate">Ratings read</string>
-	<string name="mixnativecheckout">Native Checkout</string>
-	<string name="mixnativecheckouterror">Native Checkout Error</string>
+	
 	
     <string name="mixprop_appverion">App Version</string>
     <string name="mixprop_shopcountry">Shop Country</string>
@@ -237,7 +236,9 @@
     <string name="mixprop_checkout_payment_method">Checkout Payment Method</string>
     <string name="mixprop_checkout_poll_question">Checkout Poll Question</string>
     <string name="mixprop_checkout_shipping_methods">Checkout Shipping Methods</string>
-    
+    <string name="mixnativecheckout">Native Checkout</string>
+	<string name="mixnativecheckouterror">Native Checkout Error</string>
+	
     <string name="mixprop_sharenetwork">Social Network</string>
     <string name="mixprop_sharelocation">Share location</string>
     <string name="mixprop_sharelocationproduct">Product Page</string>
