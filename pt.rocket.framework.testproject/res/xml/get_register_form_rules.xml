@@ -8,7 +8,7 @@
             <key type="string" children="false" method="getString" optional="false" />
             <type type="string" children="false" method="getString" optional="true" />
             <label type="string" children="false" method="getString" optional="true" />
-            <rules type="jsonobject" children="true" method="getJSONObject" optional="false" >
+            <rules type="jsonobject" children="true" method="getJSONObject" optional="true" >
                 <required type="boolean" children="false" method="getBoolean" optional="false" />
                 <regex type="string" children="false" method="getString" optional="true" />
                 <max type="integer" children="false" method="getInt" optional="true" />

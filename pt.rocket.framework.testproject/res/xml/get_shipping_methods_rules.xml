@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <shippingMethodForm type="jsonobject" method="getJSONObject" children="true" optional="false">
+        <id type="string" method="getString" children="false" optional="false"/>
+        <name type="string" method="getString" children="false" optional="false"/>
+        <method type="string" method="getString" children="false" optional="false"/>
+        <action type="string" method="getString" children="false" optional="false"/>
+        <fields type="jsonarray" method="getJSONArray" children="true" optional="false">
+            <key type="string" method="getString" children="false" optional="false"/>
+            <options type="jsonobject" method="getJSONObject" children="true" optional="true">
+                <free type="jsonarray" method="getJSONArray" children="false" optional="true"/>
+                <PickupStation type="jsonarray" method="getJSONArray" children="false" optional="true"/>
+                <UniversalShippingMatrix type="jsonarray" method="getJSONArray" children="false" optional="true"/>
+            </options>
+            <type type="string" method="getString" children="false" optional="true"/>
+            <rules type="jsonobject" method="getJSONObject" children="true" optional="false">
+                <required type="boolean" method="getBoolean" children="false" optional="true"/>
+            </rules>
+            <value type="string" method="getString" children="false" optional="false"/>
+            <label type="string" method="getString" children="false" optional="false"/>
+            <name type="string" method="getString" children="false" optional="false"/>
+            <id type="string" method="getString" children="false" optional="false"/>
+        </fields>
+    </shippingMethodForm>
+    <order type="jsonobject" method="getJSONObject" children="true" optional="false">
+        <grand_total type="integer" method="getInt" children="false" optional="false"/>
+        <shipping_amount type="integer" method="getInt" children="false" optional="false"/>
+        <extra_payment_cost type="integer" method="getInt" children="false" optional="false"/>
+        <bnp_discount_amount type="integer" method="getInt" children="false" optional="false"/>
+        <installment_fees type="integer" method="getInt" children="false" optional="true"/>
+        <tax_amount type="integer" method="getInt" children="false" optional="false"/>
+        <_locale type="string" method="getString" children="false" optional="false"/>
+        <shipping_address type="jsonobject" method="getJSONObject" children="true" optional="true">
+             <_locale type="string" method="getString" children="false" optional="false"/>
+        </shipping_address>
+    </order>
+    <next_step type="string" method="getString" children="false" optional="false" expected="paymentMethod"/>
+    
+</resources>

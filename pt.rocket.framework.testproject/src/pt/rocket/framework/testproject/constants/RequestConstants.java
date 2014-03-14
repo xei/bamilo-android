@@ -10,12 +10,14 @@ public class RequestConstants {
 	 * Customer
 	 */
 	public static final String CUSTOMER_EMAIL = "msilvaTester5@mailinator.com";
+	public static final String CUSTOMER_EMAIL2 = "testcalabash@mailinator.com";
 	static Random rand = new Random();
 
 	static int n = rand.nextInt(10000) + 1;
 	public static final String CUSTOMER_NEW_EMAIL = "msilvaTester"+n+"@mailinator.com";
 	public static final String CUSTOMER_WRONG_EMAIL = "testestest@mailinator.com";
 	public static final String CUSTOMER_PASSWORD = "123456";
+	public static final String CUSTOMER_PASSWORD2 = "password1";
 	public static final String CUSTOMER_PASSWORD_2 = "qwerty";
 	public static final String CUSTOMER_DAY = "1";
 	public static final String CUSTOMER_MONTH = "1";
@@ -114,5 +116,82 @@ public class RequestConstants {
 	static int n2 = rand2.nextInt(10000) + 1;
 	public static final String CUSTOMER_SIGNUP_EMAIL = "tester"+n+"123123123@mailinator.com";
 	public static final String CUSTOMER_SIGNUP_SCENARIO = "guest";
+	
+	/**
+	 * Poll
+	 */
+	public static final String KEY_POLL_ANSWER= "Alice_Module_Checkout_Model_PollingForm[pollQuestion]";
+	public static final String POLL_ANSWER = "Facebook";
+	
+	/**
+	 * Create Address
+	 */
+	public static final String KEY_CREATE_ADDRESS_FIRST_NAME= "Alice_Module_Customer_Model_AddressForm[first_name]";
+	public static final String CREATE_ADDRESS_FIRST_NAME = "msilva";
+
+	public static final String KEY_CREATE_ADDRESS_LAST_NAME= "Alice_Module_Customer_Model_AddressForm[last_name]";
+	public static final String CREATE_ADDRESS_LAST_NAME = "last name";
+
+	public static final String KEY_CREATE_ADDRESS_ADDRESS1= "Alice_Module_Customer_Model_AddressForm[address1]";
+	public static final String CREATE_ADDRESS_ADDRESS1 = "address 1";
+	
+	public static final String KEY_CREATE_ADDRESS_ADDRESS2= "Alice_Module_Customer_Model_AddressForm[address2]";
+	public static final String CREATE_ADDRESS_ADDRESS2 = "address 1";
+	
+	public static final String KEY_CREATE_ADDRESS_CITY= "Alice_Module_Customer_Model_AddressForm[city]";
+	public static final String CREATE_ADDRESS_CITY = "Porto";
+	
+	public static final String KEY_CREATE_ADDRESS_PHONE= "Alice_Module_Customer_Model_AddressForm[phone]";
+	public static final String CREATE_ADDRESS_PHONE = "123456789";
+	
+	public static final String KEY_CREATE_ADDRESS_FK_REGION= "Alice_Module_Customer_Model_AddressForm[fk_customer_address_region]";
+	public static final String CREATE_ADDRESS_FK_REGION = "233";
+	
+	public static final String KEY_CREATE_ADDRESS_FK_CITY= "Alice_Module_Customer_Model_AddressForm[fk_customer_address_city]";
+	public static final String CREATE_ADDRESS_FK_CITY = "373";
+	
+	public static final String KEY_CREATE_ADDRESS_COUNTRY= "Alice_Module_Customer_Model_AddressForm[country]";
+	public static final String CREATE_ADDRESS_COUNTRY = "Germany";
+	
+	/**
+	 * Set Shipping Method
+	 */
+	
+	public static final String KEY_SET_SHIPPING_METHOD = "shippingMethodForm[shipping_method]";
+	public static final String KEY_SET_SHIPPING_STATION = "shippingMethodForm[pickup_station]";
+	public static final String KEY_SET_SHIPPING_REGION = "shippingMethodForm[pickup_station_customer_address_region]";
+	
+	public static final String SET_SHIPPING_METHOD = "UniversalShippingMatrix";
+	
+	public static final String SET_SHIPPING_METHOD2 = "PickupStation";
+	public static final String SET_SHIPPING_STATION = "15";
+	public static final String SET_SHIPPING_REGION = "105";
+	
+	/**
+	 * Set Payment Method
+	 */
+	
+	public static final String KEY_SET_PAYMENT_METHOD = "paymentMethodForm[payment_method]";
+	public static final String SET_PAYMENT_METHOD_EG = "3";
+	public static final String SET_PAYMENT_METHOD_IC = "1";
+	public static final String SET_PAYMENT_METHOD_MA = "2";
+	public static final String SET_PAYMENT_METHOD_NG = "1";
+	
+	/**
+	 * Set Billing Method
+	 */
+	
+	public static final String KEY_BILLING_METHOD_BILLING_ADDRESS_ID = "billingForm[billingAddressId]";
+	//public static final String BILLING_METHOD_BILLING_ADDRESS_ID = "116953";
+	
+	public static final String KEY_BILLING_METHOD_DIFFERENT = "billingForm[shippingAddressDifferent]";
+	public static final String BILLING_METHOD_DIFFERENT = "1";
+	
+	public static final String KEY_BILLING_METHOD_SHIPPING_ADDRESS_ID = "billingForm[shippingAddressId]";
+	public static final String BILLING_METHOD_SHIPPING_ADDRESS_ID_EG = "116953";
+	
+	public static final String BILLING_METHOD_SHIPPING_ADDRESS_ID_IC = "11977";
+	public static final String BILLING_METHOD_SHIPPING_ADDRESS_ID_MA = "58028";
+	public static final String BILLING_METHOD_SHIPPING_ADDRESS_ID_NG = "311198";
 }
 

@@ -163,6 +163,7 @@ public class FrameworkServiceTests extends ServiceTestCase<RemoteService> {
      */
     public String sendRequest(final Bundle args, final BaseHelper helper, final pt.rocket.framework.testproject.interfaces.IResponseCallback iResponseCallback) {
     	final boolean metadataRequired = args.getBoolean(Constants.BUNDLE_METADATA_REQUIRED_KEY, true);
+
     	Bundle bundle = helper.generateRequestBundle(args);
         String md5 = Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY);
         bundle.putString(Constants.BUNDLE_MD5_KEY, md5);
