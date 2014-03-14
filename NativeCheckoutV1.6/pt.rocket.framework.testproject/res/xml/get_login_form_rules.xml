@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <data type="jsonarray" children="true" method="getJSONArray" optional="false" >
+        <id type="string" children="false" method="getString" optional="false" />
+        <method type="string" children="false" method="getString" optional="false" />
+        <action type="string" children="false" method="getString" optional="false" />
+        <fields type="jsonarray" children="true" method="getJSONArray" optional="false">
+            <key type="string" children="false" method="getString" optional="false" />
+            <type type="string" children="false" method="getString" optional="false" />
+            <label type="string" children="false" method="getString" optional="false" />
+            <rules type="jsonobject" method="getJSONObject" children="true" optional="false">
+	            <regex type="string" method="getString" children="false" optional="true"/>
+	            <max type="integer" method="getInt" children="false" optional="false"/>
+	            <min type="integer" method="getInt" children="false" optional="false"/>
+	            <required type="boolean" method="getBoolean" children="false" optional="false"/>
+            </rules>
+            <value type="string" method="getString" children="false" optional="false"/>
+            <name type="string" method="getString" children="false" optional="false"/>
+            <id type="string" method="getString" children="false" optional="false"/>
+        </fields>      
+    </data>
+    
+</resources>

@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/margin_mid"
+    android:paddingRight="@dimen/margin_mid" >
+
+    <!-- TOTAL -->
+
+    <org.holoeverywhere.widget.TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_mid"
+        android:layout_marginTop="@dimen/margin_huge"
+        android:fontFamily="roboto_regular"
+        android:gravity="left"
+        android:text="@string/sub_total_title"
+        android:textColor="@color/orange_basic"
+        android:textSize="@dimen/text_l" />
+
+    <View
+        style="@style/divider_horizontal"
+        android:background="@color/grey_divider_light_text" />
+
+    <!-- ITEMS -->
+
+    <LinearLayout
+        android:id="@+id/checkout_my_order_products_total_items_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/checkout_order_inner_margin_left"
+        android:layout_marginRight="@dimen/checkout_order_inner_margin_right"
+        android:layout_marginTop="@dimen/margin_mid"
+        android:orientation="horizontal" >
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/checkout_my_order_products_text_n_items"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="roboto_regular"
+            android:gravity="left"
+            android:textColor="@color/grey_divider_light_text"
+            android:textSize="@dimen/text_m" />
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/checkout_my_order_products_text_total_items"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="roboto_regular"
+            android:gravity="left"
+            android:textColor="@color/grey_divider_light_text"
+            android:textSize="@dimen/text_m" />
+    </LinearLayout>
+
+    <!-- VAT -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/checkout_order_inner_margin_left"
+        android:layout_marginRight="@dimen/checkout_order_inner_margin_right"
+        android:layout_marginTop="@dimen/margin_mid"
+        android:orientation="horizontal" >
+
+        <org.holoeverywhere.widget.TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="roboto_regular"
+            android:gravity="left"
+            android:text="@string/vat_string"
+            android:textColor="@color/grey_divider_light_text"
+            android:textSize="@dimen/text_m" />
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/checkout_my_order_products_text_vat_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="roboto_regular"
+            android:gravity="left"
+            android:textColor="@color/grey_divider_light_text"
+            android:textSize="@dimen/text_m" />
+    </LinearLayout>
+
+    <!-- SHIPPING FEE -->
+
+    <LinearLayout
+        android:id="@+id/checkout_my_order_products_shippingfee_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/checkout_order_inner_margin_left"
+        android:layout_marginRight="@dimen/checkout_order_inner_margin_right"
+        android:layout_marginTop="@dimen/margin_mid"
+        android:orientation="horizontal" >
+
+        <org.holoeverywhere.widget.TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="roboto_regular"
+            android:gravity="left"
+            android:text="@string/my_order_ship_fee_label"
+            android:textColor="@color/grey_divider_light_text"
+            android:textSize="@dimen/text_m" />
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/checkout_my_order_products_text_shippingfee"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="roboto_regular"
+            android:gravity="left"
+            android:textColor="@color/grey_divider_light_text"
+            android:textSize="@dimen/text_m" />
+    </LinearLayout>
+
+    <!-- VOUCHER -->
+
+    <LinearLayout
+        android:id="@+id/checkout_my_order_products_voucher_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/checkout_order_inner_margin_left"
+        android:layout_marginRight="@dimen/checkout_order_inner_margin_right"
+        android:layout_marginTop="@dimen/margin_mid"
+        android:orientation="horizontal" >
+
+        <org.holoeverywhere.widget.TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="roboto_regular"
+            android:gravity="left"
+            android:text="@string/my_order_voucher_label"
+            android:textColor="@color/green_basic"
+            android:textSize="@dimen/text_m" />
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/checkout_my_order_products_text_voucher"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="roboto_regular"
+            android:gravity="left"
+            android:textColor="@color/green_basic"
+            android:textSize="@dimen/text_m" />
+    </LinearLayout>
+
+    <View
+        style="@style/divider_horizontal"
+        android:layout_marginLeft="@dimen/checkout_order_inner_margin_left"
+        android:layout_marginRight="@dimen/checkout_order_inner_margin_right"
+        android:layout_marginTop="@dimen/margin_mid" />
+
+    <!-- TOTAL -->
+
+    <LinearLayout
+        android:id="@+id/checkout_my_order_products_total_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_mid"
+        android:layout_marginLeft="@dimen/checkout_order_inner_margin_left"
+        android:layout_marginRight="@dimen/checkout_order_inner_margin_right"
+        android:layout_marginTop="@dimen/margin_mid"
+        android:orientation="horizontal" >
+
+        <org.holoeverywhere.widget.TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="roboto_regular"
+            android:gravity="left"
+            android:text="@string/my_order_total_label"
+            android:textColor="@color/grey_divider_light_text"
+            android:textSize="@dimen/text_m" />
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/checkout_my_order_products_text_total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="roboto_regular"
+            android:gravity="left"
+            android:textColor="@color/grey_divider_light_text"
+            android:textSize="@dimen/text_m" />
+    </LinearLayout>
+
+</LinearLayout>

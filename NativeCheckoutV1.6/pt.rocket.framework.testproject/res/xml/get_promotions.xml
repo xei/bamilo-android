@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <data type="jsonobject" children="true" method="getJSONObject" optional="false">
+		<title type="string" children="false" method="getString" optional="false"/>
+		<description type="string" children="false" method="getString" optional="false"/>
+		<coupon_code type="string" children="false" method="getString" optional="false"/>
+		<terms_conditions type="string" children="false" method="getString" optional="false"/>
+		<end_date type="string" children="false" method="getString" optional="false"/>
+	</data>
+
+</resources>
