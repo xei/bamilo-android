@@ -740,28 +740,24 @@ containing a value of this type.
         /**  End of GA Tracking Parameters 
  Begin of AdX Tracking Parameters 
          */
-        public static final int adx_enable=0x7f07000d;
-        public static final int f_testmode=0x7f07000f;
+        public static final int adx_enable=0x7f07000c;
+        public static final int f_testmode=0x7f07000e;
         /**  End of AdX Tracking Parameters 
  Begin of Flurry Tracking Parameters 
          */
-        public static final int flurry_enable=0x7f07000e;
-        /** Enable automatic activity tracking
- Begin of GA Tracking Parameters 
+        public static final int flurry_enable=0x7f07000d;
+        /**  Begin of GA Tracking Parameters 
          */
-        public static final int ga_autoActivityTracking=0x7f070006;
-        public static final int ga_enable=0x7f07000c;
-        public static final int ga_logenabled=0x7f070007;
-        /** Enable automatic exception tracking
-         */
-        public static final int ga_reportUncaughtExceptions=0x7f070008;
-        public static final int ga_testmode=0x7f07000b;
-        public static final int isTablet=0x7f07000a;
+        public static final int ga_autoActivityTracking=0x7f070008;
+        public static final int ga_enable=0x7f07000b;
+        public static final int ga_reportUncaughtExceptions=0x7f070009;
+        public static final int ga_testmode=0x7f07000a;
+        public static final int isTablet=0x7f070007;
         /**  End of Flurry Tracking Parameters 
  Begin of Mixpanel Tracking Parameters 
          */
-        public static final int mixpanel_enable=0x7f070010;
-        public static final int rest_host_auth_use_it=0x7f070009;
+        public static final int mixpanel_enable=0x7f07000f;
+        public static final int rest_host_auth_use_it=0x7f070006;
     }
     public static final class color {
         public static final int abs__background_holo_dark=0x7f080000;
@@ -1089,7 +1085,6 @@ containing a value of this type.
     }
     public static final class integer {
         public static final int abs__max_action_buttons=0x7f0a0000;
-        public static final int ga_dispatchperiod=0x7f0a0001;
     }
     public static final class layout {
         public static final int abs__action_bar_home=0x7f030000;
@@ -1124,11 +1119,11 @@ containing a value of this type.
         public static final int activity_main=0x7f0c0000;
     }
     public static final class string {
-        public static final int STRING_ERROR_GENERIC=0x7f0500f3;
+        public static final int STRING_ERROR_GENERIC=0x7f050122;
         /**  Error Strings 
          */
-        public static final int STRING_ERROR_TIMEOUT=0x7f0500f2;
-        public static final int STRING_OK_LABEL=0x7f0500f1;
+        public static final int STRING_ERROR_TIMEOUT=0x7f050121;
+        public static final int STRING_OK_LABEL=0x7f050120;
         /**  Content description for the action bar "home" affordance. [CHAR LIMIT=NONE] 
          */
         public static final int abs__action_bar_home_description=0x7f05000e;
@@ -1175,223 +1170,260 @@ containing a value of this type.
          */
         public static final int abs__shareactionprovider_share_with_application=0x7f050017;
         public static final int app_name=0x7f050000;
-        public static final int currency_code_egp=0x7f050022;
-        public static final int currency_code_ksh=0x7f050020;
-        public static final int currency_code_mad=0x7f050021;
-        public static final int currency_code_ngn=0x7f05001f;
-        public static final int currency_code_xof=0x7f050023;
-        public static final int currency_fraction_count_cfa=0x7f050032;
-        public static final int currency_fraction_count_egp=0x7f050031;
-        public static final int currency_fraction_count_ksh=0x7f05002f;
-        public static final int currency_fraction_count_mad=0x7f050030;
-        public static final int currency_fraction_count_ngn=0x7f05002e;
-        public static final int currency_fraction_delim_cfa=0x7f050037;
-        public static final int currency_fraction_delim_egp=0x7f050036;
-        public static final int currency_fraction_delim_ksh=0x7f050034;
-        public static final int currency_fraction_delim_mad=0x7f050035;
-        public static final int currency_fraction_delim_ngn=0x7f050033;
-        public static final int currency_thousands_delim_cfa=0x7f05002d;
-        public static final int currency_thousands_delim_egp=0x7f05002c;
-        public static final int currency_thousands_delim_ksh=0x7f05002a;
-        public static final int currency_thousands_delim_mad=0x7f05002b;
-        public static final int currency_thousands_delim_ngn=0x7f050029;
+        public static final int currency_code_egp=0x7f050021;
+        public static final int currency_code_ksh=0x7f05001f;
+        public static final int currency_code_mad=0x7f050020;
+        public static final int currency_code_ngn=0x7f05001e;
+        public static final int currency_code_ugx=0x7f050023;
+        public static final int currency_code_xof=0x7f050022;
+        public static final int currency_fraction_count_cfa=0x7f050034;
+        public static final int currency_fraction_count_egp=0x7f050033;
+        public static final int currency_fraction_count_ksh=0x7f050031;
+        public static final int currency_fraction_count_mad=0x7f050032;
+        public static final int currency_fraction_count_ngn=0x7f050030;
+        public static final int currency_fraction_count_ugx=0x7f050035;
+        public static final int currency_fraction_delim_cfa=0x7f05003a;
+        public static final int currency_fraction_delim_egp=0x7f050039;
+        public static final int currency_fraction_delim_ksh=0x7f050037;
+        public static final int currency_fraction_delim_mad=0x7f050038;
+        public static final int currency_fraction_delim_ngn=0x7f050036;
+        public static final int currency_fraction_delim_ugx=0x7f05003b;
+        public static final int currency_thousands_delim_cfa=0x7f05002e;
+        public static final int currency_thousands_delim_egp=0x7f05002d;
+        public static final int currency_thousands_delim_ksh=0x7f05002b;
+        public static final int currency_thousands_delim_mad=0x7f05002c;
+        public static final int currency_thousands_delim_ngn=0x7f05002a;
+        public static final int currency_thousands_delim_ugx=0x7f05002f;
         public static final int currency_unit_pattern_cfa=0x7f050028;
         public static final int currency_unit_pattern_egp=0x7f050027;
-        public static final int currency_unit_pattern_idr=0x7f050038;
+        public static final int currency_unit_pattern_idr=0x7f05003c;
         public static final int currency_unit_pattern_ksh=0x7f050025;
         public static final int currency_unit_pattern_mad=0x7f050026;
         public static final int currency_unit_pattern_ngn=0x7f050024;
-        public static final int currency_unit_pattern_thb=0x7f050039;
-        public static final int fcurrency=0x7f05007f;
-        public static final int fcustomerid=0x7f05007c;
-        public static final int forderid=0x7f05007b;
-        public static final int fpurchase=0x7f05007a;
-        public static final int fsignin=0x7f050077;
-        public static final int fsigninauto=0x7f050079;
-        public static final int fsigninjust=0x7f050078;
-        public static final int fsignup=0x7f050076;
-        public static final int fuserid=0x7f05007e;
-        public static final int fvalue=0x7f05007d;
-        /** Replace placeholder ID with your tracking ID
+        public static final int currency_unit_pattern_thb=0x7f05003d;
+        public static final int currency_unit_pattern_ugx=0x7f050029;
+        public static final int fcurrency=0x7f0500a0;
+        public static final int fcustomerid=0x7f05009d;
+        public static final int forderid=0x7f05009c;
+        public static final int fpurchase=0x7f05009b;
+        public static final int fsignin=0x7f050098;
+        public static final int fsigninauto=0x7f05009a;
+        public static final int fsigninjust=0x7f050099;
+        public static final int fsignup=0x7f050097;
+        public static final int fuserid=0x7f05009f;
+        public static final int fvalue=0x7f05009e;
+        /**  Checkout Steps 
          */
-        public static final int ga_trackingId=0x7f05001d;
-        public static final int gaccount=0x7f050047;
-        public static final int gaddtocart=0x7f050056;
-        public static final int gautologinfailed=0x7f05005d;
-        public static final int gautologinsuccess=0x7f05005c;
+        public static final int gNativeCheckout=0x7f05006c;
+        public static final int gNativeCheckoutError=0x7f05006d;
+        public static final int gPaymentMethod=0x7f05006e;
+        public static final int gSignUp=0x7f050078;
+        public static final int ga_trackingId=0x7f05003e;
+        public static final int gaccount=0x7f05004c;
+        public static final int gaddtocart=0x7f05005c;
+        public static final int gautologinfailed=0x7f050065;
+        public static final int gautologinsuccess=0x7f050064;
         /**  prefixes for page string encoding 
          */
-        public static final int gbrand_prefix=0x7f05004b;
-        public static final int gbrands=0x7f05003d;
-        public static final int gcart_prefix=0x7f050051;
-        public static final int gcartempty=0x7f050041;
-        public static final int gcartwithitems=0x7f050040;
+        public static final int gbrand_prefix=0x7f050050;
+        public static final int gbrands=0x7f050042;
+        public static final int gcart_prefix=0x7f050057;
+        public static final int gcartempty=0x7f050046;
+        public static final int gcartwithitems=0x7f050045;
         /**  Event Categories 
          */
-        public static final int gcatalog=0x7f050052;
-        public static final int gcategories=0x7f05003c;
-        public static final int gcategory_prefix=0x7f05004c;
-        public static final int gcheckout=0x7f050053;
-        public static final int gcheckoutbegin=0x7f050044;
-        public static final int gcheckoutfinal=0x7f050045;
-        public static final int gcontinueshopping=0x7f050063;
-        public static final int gcreatefailed=0x7f05005f;
-        public static final int gcreatesuccess=0x7f05005e;
-        public static final int gcustomeraccount=0x7f050046;
+        public static final int gcatalog=0x7f050058;
+        public static final int gcategories=0x7f050041;
+        public static final int gcategory_prefix=0x7f050051;
+        public static final int gcheckout=0x7f050059;
+        public static final int gcheckoutAboutYou=0x7f05006f;
+        public static final int gcheckoutCreateAddress=0x7f050070;
+        public static final int gcheckoutEditAddress=0x7f050071;
+        public static final int gcheckoutExternalPayment=0x7f050072;
+        public static final int gcheckoutMyAddresses=0x7f050073;
+        public static final int gcheckoutMyOrder=0x7f050074;
+        public static final int gcheckoutPaymentMethods=0x7f050075;
+        public static final int gcheckoutPollQuestion=0x7f050076;
+        public static final int gcheckoutShippingMethods=0x7f050077;
+        public static final int gcheckoutbegin=0x7f050049;
+        public static final int gcheckoutfinal=0x7f05004a;
+        public static final int gcontinueshopping=0x7f05006b;
+        public static final int gcreatefailed=0x7f050067;
+        public static final int gcreatesuccess=0x7f050066;
+        public static final int gcustomeraccount=0x7f05004b;
         /**   Label 
          */
-        public static final int gcustomerid=0x7f050064;
-        public static final int gfacebookloginsuccess=0x7f050058;
-        public static final int gfinished=0x7f050062;
-        public static final int ghomepage=0x7f05003b;
-        public static final int gload=0x7f050068;
-        public static final int glogin=0x7f050048;
-        public static final int gloginfailed=0x7f050059;
-        public static final int gloginsuccess=0x7f050057;
-        public static final int glogout=0x7f050060;
-        public static final int glogoutfailed=0x7f05005b;
-        public static final int glogoutsuccess=0x7f05005a;
+        public static final int gcustomerid=0x7f050079;
+        public static final int gfacebookloginsuccess=0x7f05005e;
+        public static final int gfacebooksignupsuccess=0x7f05005f;
+        public static final int gfinished=0x7f05006a;
+        public static final int ghomepage=0x7f050040;
+        public static final int gload=0x7f05007d;
+        public static final int glogin=0x7f05004d;
+        public static final int gloginfailed=0x7f050061;
+        public static final int gloginsuccess=0x7f05005d;
+        public static final int glogout=0x7f050068;
+        public static final int glogoutfailed=0x7f050063;
+        public static final int glogoutsuccess=0x7f050062;
         /**   PageView Names 
          */
-        public static final int gnavigation=0x7f05003a;
-        public static final int gorderid=0x7f050066;
+        public static final int gnavigation=0x7f05003f;
+        public static final int gorderid=0x7f05007b;
         /**  Action 
          */
-        public static final int gpdv=0x7f050054;
-        public static final int gproductdetail=0x7f05004a;
-        public static final int gproductlist=0x7f05003e;
-        public static final int gproductreviews=0x7f050042;
-        public static final int gproductreviewscreate=0x7f050043;
-        public static final int gpush_prefix=0x7f050050;
-        public static final int gregister=0x7f050049;
-        public static final int gsearch=0x7f050055;
-        public static final int gsearch_prefix=0x7f05004f;
+        public static final int gpdv=0x7f05005a;
+        public static final int gproductdetail=0x7f05004f;
+        public static final int gproductlist=0x7f050043;
+        public static final int gproductreviews=0x7f050047;
+        public static final int gproductreviewscreate=0x7f050048;
+        public static final int gpush_prefix=0x7f050056;
+        public static final int gregister=0x7f05004e;
+        public static final int gsearch=0x7f05005b;
+        public static final int gsearch_prefix=0x7f050055;
         /**   For load timing only 
          */
-        public static final int gsearchsuggestions=0x7f050067;
-        public static final int gshoppingcart=0x7f05003f;
-        public static final int gsimplesku=0x7f050065;
-        public static final int gstarted=0x7f050061;
-        public static final int gteaser_prefix=0x7f05004d;
-        public static final int gteaserprod_prefix=0x7f05004e;
-        public static final int hello_world=0x7f0500ef;
-        public static final int menu_settings=0x7f0500f0;
-        public static final int mixcart=0x7f05008c;
-        public static final int mixcheckout=0x7f05008e;
-        public static final int mixcustomer=0x7f050086;
-        public static final int mixlaunch=0x7f050080;
-        public static final int mixlogin=0x7f050081;
-        public static final int mixloginWithFB=0x7f050082;
-        public static final int mixlogout=0x7f050083;
-        public static final int mixpanel_token=0x7f05001e;
-        public static final int mixproduct=0x7f05008b;
-        public static final int mixprop_age=0x7f0500a8;
-        public static final int mixprop_appverion=0x7f050093;
-        public static final int mixprop_cartcategories=0x7f0500c1;
-        public static final int mixprop_cartitems=0x7f0500c4;
-        public static final int mixprop_cartnumber=0x7f0500c2;
-        public static final int mixprop_carttotal=0x7f0500c3;
-        public static final int mixprop_category=0x7f0500cc;
-        public static final int mixprop_country=0x7f0500ab;
-        public static final int mixprop_createdate=0x7f0500a5;
-        public static final int mixprop_email=0x7f0500aa;
-        public static final int mixprop_gender=0x7f0500a9;
-        public static final int mixprop_itembrand=0x7f0500ba;
-        public static final int mixprop_itemcategory=0x7f0500b1;
-        public static final int mixprop_itemid=0x7f0500b8;
-        public static final int mixprop_itemlocation=0x7f0500be;
-        public static final int mixprop_itemlocationdetails=0x7f0500bf;
-        public static final int mixprop_itemlocationwishlist=0x7f0500c0;
-        public static final int mixprop_itemname=0x7f0500b9;
-        public static final int mixprop_itemprice=0x7f0500bc;
-        public static final int mixprop_itemquantity=0x7f0500bd;
-        public static final int mixprop_itemsubcategory=0x7f0500bb;
-        public static final int mixprop_loginlocation=0x7f05009a;
-        public static final int mixprop_loginlocationautologin=0x7f05009f;
-        public static final int mixprop_loginlocationcart=0x7f0500a1;
-        public static final int mixprop_loginlocationcheckout=0x7f05009b;
-        public static final int mixprop_loginlocationmyaccount=0x7f05009d;
-        public static final int mixprop_loginlocationreview=0x7f0500a0;
-        public static final int mixprop_loginlocationsidemenu=0x7f05009e;
-        public static final int mixprop_loginlocationwishlist=0x7f05009c;
-        public static final int mixprop_loginmethod=0x7f050097;
-        public static final int mixprop_loginmethodemail=0x7f050098;
-        public static final int mixprop_loginmethodfacebook=0x7f050099;
-        public static final int mixprop_logoutlocation=0x7f0500a2;
-        public static final int mixprop_numberresults=0x7f0500af;
-        public static final int mixprop_page=0x7f0500cd;
-        public static final int mixprop_paymentmethod=0x7f0500b0;
-        public static final int mixprop_platform=0x7f050095;
-        public static final int mixprop_platformmobile=0x7f050096;
-        public static final int mixprop_preinstall=0x7f0500a6;
-        public static final int mixprop_purchacecount=0x7f0500b6;
-        public static final int mixprop_pushnotifications=0x7f0500b7;
-        public static final int mixprop_ratebrand=0x7f0500d0;
-        public static final int mixprop_ratecategory=0x7f0500d1;
-        public static final int mixprop_rateid=0x7f0500ce;
-        public static final int mixprop_ratename=0x7f0500cf;
-        public static final int mixprop_rateprice=0x7f0500d3;
-        public static final int mixprop_ratesubcategory=0x7f0500d2;
-        public static final int mixprop_ratingappearance=0x7f0500d5;
-        public static final int mixprop_ratingaverage=0x7f0500d7;
-        public static final int mixprop_ratingprice=0x7f0500d4;
-        public static final int mixprop_ratingquality=0x7f0500d6;
-        public static final int mixprop_registrationlocation=0x7f0500a4;
-        public static final int mixprop_registrationmethod=0x7f0500a3;
-        public static final int mixprop_searchsort=0x7f0500ae;
+        public static final int gsearchsuggestions=0x7f05007c;
+        public static final int gshoppingcart=0x7f050044;
+        public static final int gsignupsuccess=0x7f050060;
+        public static final int gsimplesku=0x7f05007a;
+        public static final int gstarted=0x7f050069;
+        public static final int gteaser_prefix=0x7f050052;
+        public static final int gteaserprod_prefix=0x7f050053;
+        public static final int gteaserrecentlyviewed_prefix=0x7f050054;
+        public static final int hello_world=0x7f05011e;
+        public static final int menu_settings=0x7f05011f;
+        public static final int mixcart=0x7f0500ad;
+        public static final int mixcheckout=0x7f0500af;
+        public static final int mixcustomer=0x7f0500a7;
+        public static final int mixlaunch=0x7f0500a1;
+        public static final int mixlogin=0x7f0500a2;
+        public static final int mixloginWithFB=0x7f0500a3;
+        public static final int mixlogout=0x7f0500a4;
+        public static final int mixnativecheckout=0x7f0500b4;
+        public static final int mixnativecheckouterror=0x7f0500b5;
+        public static final int mixpanel_token=0x7f05001d;
+        public static final int mixproduct=0x7f0500ac;
+        public static final int mixprop_age=0x7f0500cb;
+        public static final int mixprop_appverion=0x7f0500b6;
+        public static final int mixprop_cartcategories=0x7f0500e5;
+        public static final int mixprop_cartitems=0x7f0500e8;
+        public static final int mixprop_cartnumber=0x7f0500e6;
+        public static final int mixprop_carttotal=0x7f0500e7;
+        public static final int mixprop_category=0x7f0500fb;
+        public static final int mixprop_checkout_about_you=0x7f0500ea;
+        public static final int mixprop_checkout_create_address=0x7f0500eb;
+        public static final int mixprop_checkout_edit_address=0x7f0500ec;
+        public static final int mixprop_checkout_external_payment=0x7f0500ed;
+        public static final int mixprop_checkout_my_addresses=0x7f0500ee;
+        public static final int mixprop_checkout_my_order=0x7f0500ef;
+        public static final int mixprop_checkout_payment_method=0x7f0500f1;
+        public static final int mixprop_checkout_payment_methods=0x7f0500f0;
+        public static final int mixprop_checkout_poll_question=0x7f0500f2;
+        public static final int mixprop_checkout_shipping_methods=0x7f0500f3;
+        public static final int mixprop_country=0x7f0500ce;
+        public static final int mixprop_createdate=0x7f0500c8;
+        public static final int mixprop_email=0x7f0500cd;
+        public static final int mixprop_gender=0x7f0500cc;
+        public static final int mixprop_itembrand=0x7f0500de;
+        public static final int mixprop_itemcategory=0x7f0500d5;
+        public static final int mixprop_itemid=0x7f0500dc;
+        public static final int mixprop_itemlocation=0x7f0500e2;
+        public static final int mixprop_itemlocationdetails=0x7f0500e3;
+        public static final int mixprop_itemlocationwishlist=0x7f0500e4;
+        public static final int mixprop_itemname=0x7f0500dd;
+        public static final int mixprop_itemprice=0x7f0500e0;
+        public static final int mixprop_itemquantity=0x7f0500e1;
+        public static final int mixprop_itemsubcategory=0x7f0500df;
+        public static final int mixprop_loginlocation=0x7f0500bd;
+        public static final int mixprop_loginlocationautologin=0x7f0500c2;
+        public static final int mixprop_loginlocationcart=0x7f0500c4;
+        public static final int mixprop_loginlocationcheckout=0x7f0500be;
+        public static final int mixprop_loginlocationmyaccount=0x7f0500c0;
+        public static final int mixprop_loginlocationreview=0x7f0500c3;
+        public static final int mixprop_loginlocationsidemenu=0x7f0500c1;
+        public static final int mixprop_loginlocationwishlist=0x7f0500bf;
+        public static final int mixprop_loginmethod=0x7f0500ba;
+        public static final int mixprop_loginmethodemail=0x7f0500bb;
+        public static final int mixprop_loginmethodfacebook=0x7f0500bc;
+        public static final int mixprop_logoutlocation=0x7f0500c5;
+        /**  Checkout Steps 
+         */
+        public static final int mixprop_native_checkout=0x7f0500e9;
+        public static final int mixprop_numberresults=0x7f0500d3;
+        public static final int mixprop_page=0x7f0500fc;
+        public static final int mixprop_paymentmethod=0x7f0500d4;
+        public static final int mixprop_platform=0x7f0500b8;
+        public static final int mixprop_platformmobile=0x7f0500b9;
+        public static final int mixprop_preinstall=0x7f0500c9;
+        public static final int mixprop_purchacecount=0x7f0500da;
+        public static final int mixprop_pushnotifications=0x7f0500db;
+        public static final int mixprop_ratebrand=0x7f0500ff;
+        public static final int mixprop_ratecategory=0x7f050100;
+        public static final int mixprop_rateid=0x7f0500fd;
+        public static final int mixprop_ratename=0x7f0500fe;
+        public static final int mixprop_rateprice=0x7f050102;
+        public static final int mixprop_ratesubcategory=0x7f050101;
+        public static final int mixprop_ratingappearance=0x7f050104;
+        public static final int mixprop_ratingaverage=0x7f050106;
+        public static final int mixprop_ratingprice=0x7f050103;
+        public static final int mixprop_ratingquality=0x7f050105;
+        public static final int mixprop_registrationlocation=0x7f0500c7;
+        public static final int mixprop_registrationmethod=0x7f0500c6;
+        public static final int mixprop_searchsort=0x7f0500d2;
         /**  End of Urban AirShip Tracking Parameters 
          */
-        public static final int mixprop_searchtearm=0x7f0500ad;
-        public static final int mixprop_sharebrand=0x7f0500ca;
-        public static final int mixprop_sharecategory=0x7f0500c8;
-        public static final int mixprop_sharelocation=0x7f0500c6;
-        public static final int mixprop_sharelocationproduct=0x7f0500c7;
-        public static final int mixprop_sharename=0x7f0500c9;
-        public static final int mixprop_sharenetwork=0x7f0500c5;
-        public static final int mixprop_shareprice=0x7f0500cb;
-        public static final int mixprop_shopcountry=0x7f050094;
-        public static final int mixprop_signupplatform=0x7f0500a7;
-        public static final int mixprop_totalcart=0x7f0500b3;
-        public static final int mixprop_totalitems=0x7f0500b2;
-        public static final int mixprop_usevoucher=0x7f0500b5;
-        public static final int mixprop_voucheramout=0x7f0500b4;
-        public static final int mixproppeople_age=0x7f0500e1;
-        public static final int mixproppeople_country=0x7f0500e4;
-        public static final int mixproppeople_created=0x7f0500db;
-        public static final int mixproppeople_email=0x7f0500e5;
-        public static final int mixproppeople_firstname=0x7f0500df;
-        public static final int mixproppeople_gender=0x7f0500e2;
-        public static final int mixproppeople_itemscategory=0x7f0500e9;
-        public static final int mixproppeople_lastname=0x7f0500e0;
-        public static final int mixproppeople_loginsused=0x7f0500d9;
-        public static final int mixproppeople_numberitems=0x7f0500eb;
-        public static final int mixproppeople_numberlogins=0x7f0500d8;
-        public static final int mixproppeople_numberlogouts=0x7f0500da;
-        public static final int mixproppeople_numbersearches=0x7f0500e7;
-        public static final int mixproppeople_numbershares=0x7f0500ec;
-        public static final int mixproppeople_postalcode=0x7f0500e3;
-        public static final int mixproppeople_preinstall=0x7f0500dc;
-        public static final int mixproppeople_rateitemnumber=0x7f0500ee;
-        public static final int mixproppeople_sharenetwork=0x7f0500ed;
-        public static final int mixproppeople_shopcountry=0x7f0500e6;
-        public static final int mixproppeople_signupplatform=0x7f0500dd;
-        public static final int mixproppeople_source=0x7f0500de;
-        public static final int mixproppeople_totalnumpurchaces=0x7f0500e8;
-        public static final int mixproppeople_transations=0x7f0500ea;
-        public static final int mixpushnotification=0x7f05008a;
-        public static final int mixrate=0x7f050091;
-        public static final int mixsale=0x7f050085;
-        public static final int mixsearch=0x7f050087;
-        public static final int mixsearchviewsorted=0x7f050088;
-        public static final int mixshare=0x7f05008d;
-        public static final int mixshop=0x7f050089;
-        public static final int mixsignup=0x7f050084;
-        public static final int mixviewcart=0x7f05008f;
-        public static final int mixviewcategory=0x7f050090;
-        public static final int mixviewrate=0x7f050092;
+        public static final int mixprop_searchtearm=0x7f0500d1;
+        public static final int mixprop_sharebrand=0x7f0500f9;
+        public static final int mixprop_sharecategory=0x7f0500f7;
+        public static final int mixprop_sharelocation=0x7f0500f5;
+        public static final int mixprop_sharelocationproduct=0x7f0500f6;
+        public static final int mixprop_sharename=0x7f0500f8;
+        public static final int mixprop_sharenetwork=0x7f0500f4;
+        public static final int mixprop_shareprice=0x7f0500fa;
+        public static final int mixprop_shopcountry=0x7f0500b7;
+        public static final int mixprop_signup=0x7f0500cf;
+        public static final int mixprop_signupplatform=0x7f0500ca;
+        public static final int mixprop_totalcart=0x7f0500d7;
+        public static final int mixprop_totalitems=0x7f0500d6;
+        public static final int mixprop_usevoucher=0x7f0500d9;
+        public static final int mixprop_voucheramout=0x7f0500d8;
+        public static final int mixproppeople_age=0x7f050110;
+        public static final int mixproppeople_country=0x7f050113;
+        public static final int mixproppeople_created=0x7f05010a;
+        public static final int mixproppeople_email=0x7f050114;
+        public static final int mixproppeople_firstname=0x7f05010e;
+        public static final int mixproppeople_gender=0x7f050111;
+        public static final int mixproppeople_itemscategory=0x7f050118;
+        public static final int mixproppeople_lastname=0x7f05010f;
+        public static final int mixproppeople_loginsused=0x7f050108;
+        public static final int mixproppeople_numberitems=0x7f05011a;
+        public static final int mixproppeople_numberlogins=0x7f050107;
+        public static final int mixproppeople_numberlogouts=0x7f050109;
+        public static final int mixproppeople_numbersearches=0x7f050116;
+        public static final int mixproppeople_numbershares=0x7f05011b;
+        public static final int mixproppeople_postalcode=0x7f050112;
+        public static final int mixproppeople_preinstall=0x7f05010b;
+        public static final int mixproppeople_rateitemnumber=0x7f05011d;
+        public static final int mixproppeople_sharenetwork=0x7f05011c;
+        public static final int mixproppeople_shopcountry=0x7f050115;
+        public static final int mixproppeople_signupplatform=0x7f05010c;
+        public static final int mixproppeople_source=0x7f05010d;
+        public static final int mixproppeople_totalnumpurchaces=0x7f050117;
+        public static final int mixproppeople_transations=0x7f050119;
+        public static final int mixpushnotification=0x7f0500ab;
+        public static final int mixrate=0x7f0500b2;
+        public static final int mixsale=0x7f0500a6;
+        public static final int mixsearch=0x7f0500a8;
+        public static final int mixsearchviewsorted=0x7f0500a9;
+        public static final int mixshare=0x7f0500ae;
+        public static final int mixshop=0x7f0500aa;
+        public static final int mixsignup=0x7f0500a5;
+        public static final int mixviewcart=0x7f0500b0;
+        public static final int mixviewcategory=0x7f0500b1;
+        public static final int mixviewrate=0x7f0500b3;
         /**  Begin of Urban AirShip Tracking Parameters 
          */
-        public static final int ua_preisntall=0x7f0500ac;
+        public static final int ua_preisntall=0x7f0500d0;
         /**  Do not translate.  Concise terminology for wifi with 802.1x EAP security 
          */
         public static final int wifi_security_eap=0x7f050007;
@@ -1431,19 +1463,33 @@ containing a value of this type.
         /**  Do not translate.  Terminology for wifi with both WPA/WPA2 security, or unknown 
          */
         public static final int wifi_security_wpa_wpa2=0x7f050005;
-        public static final int xFBlogin=0x7f05006b;
-        public static final int xcustomer=0x7f05006f;
-        public static final int xlaunch=0x7f050069;
-        public static final int xlogin=0x7f05006a;
-        public static final int xnetwork=0x7f050070;
-        public static final int xpreferences=0x7f050075;
-        public static final int xpreinstall=0x7f050072;
-        public static final int xreceiver=0x7f050074;
-        public static final int xreference=0x7f050071;
-        public static final int xreferral=0x7f050073;
-        public static final int xsale=0x7f05006d;
-        public static final int xsaledata=0x7f05006e;
-        public static final int xsignup=0x7f05006c;
+        public static final int xFBlogin=0x7f050080;
+        /**  Checkout Steps 
+         */
+        public static final int xcheckoutaboutyou=0x7f05008d;
+        public static final int xcheckoutcreateaddress=0x7f05008e;
+        public static final int xcheckouteditaddress=0x7f05008f;
+        public static final int xcheckoutexternalpayment=0x7f050090;
+        public static final int xcheckoutmyaddresses=0x7f050091;
+        public static final int xcheckoutmyorder=0x7f050092;
+        public static final int xcheckoutpaymentmethods=0x7f050093;
+        public static final int xcheckoutpollquestion=0x7f050094;
+        public static final int xcheckoutshippingmethods=0x7f050095;
+        public static final int xcustomer=0x7f050084;
+        public static final int xlaunch=0x7f05007e;
+        public static final int xlogin=0x7f05007f;
+        public static final int xnativecheckout=0x7f05008b;
+        public static final int xnativecheckouterror=0x7f05008c;
+        public static final int xnetwork=0x7f050085;
+        public static final int xpaymentmethod=0x7f050096;
+        public static final int xpreferences=0x7f05008a;
+        public static final int xpreinstall=0x7f050087;
+        public static final int xreceiver=0x7f050089;
+        public static final int xreference=0x7f050086;
+        public static final int xreferral=0x7f050088;
+        public static final int xsale=0x7f050082;
+        public static final int xsaledata=0x7f050083;
+        public static final int xsignup=0x7f050081;
     }
     public static final class style {
         /** 
@@ -1466,31 +1512,9 @@ containing a value of this type.
         res/values-v11/styles.xml on API 14+ devices.
     
  API 14 theme customizations can go here. 
-
-        Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
-    
-
-            Theme customizations available in newer API levels can go in
-            res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
-        
-
-        Base application theme for API 11+. This theme completely replaces
-        AppBaseTheme from res/values/styles.xml on API 11+ devices.
-    
- API 11 theme customizations can go here. 
-
-        Base application theme for API 14+. This theme completely replaces
-        AppBaseTheme from BOTH res/values/styles.xml and
-        res/values-v11/styles.xml on API 14+ devices.
-    
- API 14 theme customizations can go here. 
          */
         public static final int AppBaseTheme=0x7f0b0059;
         /**  Application theme. 
- All customizations that are NOT specific to a particular API-level can go here. 
- Application theme. 
  All customizations that are NOT specific to a particular API-level can go here. 
          */
         public static final int AppTheme=0x7f0b005a;

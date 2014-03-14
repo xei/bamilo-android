@@ -1,4 +1,3 @@
-
 package org.holoeverywhere.widget;
 
 import org.holoeverywhere.FontLoader;

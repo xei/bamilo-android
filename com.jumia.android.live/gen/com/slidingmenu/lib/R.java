@@ -138,10 +138,10 @@ public final class R {
 		public static final int abs__bright_foreground_inverse_holo_dark = 0x7f0b0006;
 		public static final int abs__bright_foreground_inverse_holo_light = 0x7f0b0007;
 		public static final int abs__holo_blue_light = 0x7f0b0008;
-		public static final int abs__primary_text_disable_only_holo_dark = 0x7f0b006c;
-		public static final int abs__primary_text_disable_only_holo_light = 0x7f0b006d;
-		public static final int abs__primary_text_holo_dark = 0x7f0b006e;
-		public static final int abs__primary_text_holo_light = 0x7f0b006f;
+		public static final int abs__primary_text_disable_only_holo_dark = 0x7f0b0070;
+		public static final int abs__primary_text_disable_only_holo_light = 0x7f0b0071;
+		public static final int abs__primary_text_holo_dark = 0x7f0b0072;
+		public static final int abs__primary_text_holo_light = 0x7f0b0073;
 	}
 	public static final class dimen {
 		public static final int abs__action_bar_default_height = 0x7f0c0001;
@@ -269,8 +269,8 @@ public final class R {
 		public static final int abs__textfield_searchview_right_holo_dark = 0x7f020067;
 		public static final int abs__textfield_searchview_right_holo_light = 0x7f020068;
 		public static final int abs__toast_frame = 0x7f020069;
-		public static final int actionoverflow = 0x7f02006e;
-		public static final int actionoverflow_selected = 0x7f02006f;
+		public static final int actionoverflow = 0x7f02006c;
+		public static final int actionoverflow_selected = 0x7f02006d;
 	}
 	public static final class id {
 		public static final int abs__action_bar = 0x7f090056;
@@ -326,7 +326,7 @@ public final class R {
 		public static final int showCustom = 0x7f090008;
 		public static final int showHome = 0x7f090005;
 		public static final int showTitle = 0x7f090007;
-		public static final int slidingmenumain = 0x7f0901c9;
+		public static final int slidingmenumain = 0x7f09026f;
 		public static final int tabMode = 0x7f090003;
 		public static final int useLogo = 0x7f090004;
 		public static final int wrap_content = 0x7f090000;
@@ -357,7 +357,7 @@ public final class R {
 		public static final int abs__search_dropdown_item_icons_2line = 0x7f030013;
 		public static final int abs__search_view = 0x7f030014;
 		public static final int abs__simple_dropdown_hint = 0x7f030015;
-		public static final int slidingmenumain = 0x7f030097;
+		public static final int slidingmenumain = 0x7f0300b9;
 	}
 	public static final class string {
 		public static final int abs__action_bar_home_description = 0x7f0e0000;
