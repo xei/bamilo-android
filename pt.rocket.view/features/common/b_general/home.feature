@@ -33,3 +33,17 @@ Feature: Initial app features
 	Scenario: Check the sidebar layout
 	Given I open the navigation menu
 	Then I should see the sidebar
+	
+	@device_lock
+	Scenario: Lock the device
+	Then I should see the home
+	When I push the power button
+	* I wait for 5 seconds
+	When I push the power button
+	Then I should see the home
+	
+	@rotate_device
+	Scenario: Rotate the screen
+	#Then I rotate the device to landscape
+	#Then I rotate the device to portrait
+	

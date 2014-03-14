@@ -117,3 +117,13 @@ Then /^I enter a color search$/ do
   performAction('enter_text_into_named_field',"", @search_input.to_s)
   performAction('enter_text_into_named_field',@search_color.to_s, @search_input.to_s)
 end
+
+Then /^I enter a valid track order number$/ do
+  performAction('enter_text_into_id_field', "", @order_nr_field)
+  performAction('enter_text_into_id_field', @order_valid, @order_nr_field)
+end
+
+Then /^I enter an invalid track order number$/ do
+  performAction('enter_text_into_id_field', "", @order_nr_field)
+  performAction('enter_text_into_id_field', @order_invalid, @order_nr_field)
+end

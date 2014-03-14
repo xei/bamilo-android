@@ -229,3 +229,39 @@ end
 Then /^I should see the write a review button$/ do
   performAction('assert_text', @write_review.to_s, true)
 end
+
+Then /^I should see the order$/ do
+  performAction('assert_text', @order_successful.to_s, true)
+end
+
+Then /^I should not see the order$/ do
+  performAction('assert_text', @order_error.to_s, true)
+end
+
+Then /^I should (not |)see the home tip$/ do |home_tip|
+  case home_tip
+  when "not "
+    performAction('assert_text', @home_tip.to_s, false)
+  when ""
+    performAction('assert_text', @home_tip.to_s, true)
+  end
+
+end
+
+Then /^I should (not |)see the catalog tip$/ do |home_tip|
+  case home_tip
+  when "not "
+    performAction('assert_text', @catalog_tip.to_s, false)
+  when ""
+    performAction('assert_text', @catalog_tip.to_s, true)
+  end
+
+end
+
+Then /^I should see the close message$/ do
+  performAction('assert_text', @close_message.to_s, true)
+end
+
+Then /^I should see the number of items$/ do
+  performAction('assert_text', @items.to_s, true)
+end

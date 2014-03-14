@@ -5,7 +5,8 @@ $country = ENV['country']
   
 def initvars
   
-  @dev=" Dev"
+  #@dev=" Dev"
+  @dev=""
   
   @username="testcalabash@mailinator.com"
   @password="password1"
@@ -64,7 +65,8 @@ def initvars
   @review_comment_t="Arrived Fast"
   @share="share_button"
   
-  
+  @track_order="btn_track_order"
+  @order_nr_field="order_nr_edittext"
   
   #initializes the country variables
   case $country.to_s
@@ -122,6 +124,7 @@ def initvars
     @price_down="PRICE DOWN"
     @name="NAME"
     @brand="BRAND"
+    @items="Items"
     
     #product detail
     @first_tip="Swipe left or right to"
@@ -140,6 +143,19 @@ def initvars
     
     #cart
     @delete="Delete"
+    
+    #track order
+    @order_valid="300093356"
+    @order_invalid="69ABC69"
+    @order_error="No results found for the searched order id."
+    @order_successful="Creation Date"
+    
+    #tips
+    @home_tip="Swipe left or right to change the category"
+    @catalog_tip="Swipe left or right to change the Sort type"
+    
+    #close message
+    @close_message="Please press back again if you wish to leave the app"
     
     ##### Ivory Coast ####################################### IC ##############################################################################          
     when "ic"
@@ -200,6 +216,7 @@ def initvars
     @price_down="PRIX DÉCROISSANT"
     @name="NOM"
     @brand="MARQUE"
+    @items="Articles"
     
     #product detail
     @first_tip="Balayez vers la gauche ou la droite pour"
@@ -218,6 +235,19 @@ def initvars
     
     #cart
     @delete="Effacer"
+    
+    #track order
+    @order_valid="300084499"
+    @order_invalid="69ABC69"
+    @order_error="Aucun résultat pour le numéro de commande recherché."
+    @order_successful="Date de création"
+    
+    #tips
+    @home_tip="Faites défiler vers la gauche ou la droite pour changer de catégorie"
+    @catalog_tip="Balayez vers la gauche ou la droite pour changer de filtre"
+    
+    #close message
+    @close_message="Appuyez de nouveau sur retour si vous souhaitez quitter l'app"
       
     ##### Morocco ########################################### MA ##############################################################################
     when "ma"
@@ -278,6 +308,7 @@ def initvars
     @price_down="PRIX DÉCROISSANT"
     @name="NOM"
     @brand="MARQUE"
+    @items="Articles"
     
     #product detail
     @first_tip="Balayez vers la gauche ou la droite pour"
@@ -296,6 +327,19 @@ def initvars
       
     #cart
     @delete="Effacer"
+    
+    #track order
+    @order_valid="300512182"
+    @order_invalid="69ABC69"
+    @order_error="Aucun résultat pour le numéro de commande recherché."
+    @order_successful="Date de création"
+    
+    #tips
+    @home_tip="Faites défiler vers la gauche ou la droite pour changer de catégorie"
+    @catalog_tip="Balayez vers la gauche ou la droite pour changer de filtre"
+    
+    #close message
+    @close_message="Appuyez de nouveau sur retour si vous souhaitez quitter l'app"
         
     ##### Nigeria ########################################### NG ##############################################################################
     when "ng"
@@ -351,6 +395,7 @@ def initvars
     @price_down="PRICE DOWN"
     @name="NAME"
     @brand="BRAND"
+    @items="Items"
     
     #product detail
     @first_tip="Swipe left or right to"
@@ -369,6 +414,19 @@ def initvars
       
     #cart
     @delete="Delete"
+    
+    #track order
+    @order_valid="300249723"
+    @order_invalid="69ABC69"
+    @order_error="No results found for the searched order id."
+    @order_successful="Creation Date"
+    
+    #tips
+    @home_tip="Swipe left or right to change the category"
+    @catalog_tip="Swipe left or right to change the Sort type"
+    
+    #close message
+    @close_message="Please press back again if you wish to leave the app"
     
     ##### Egypt ############################################# EG ##############################################################################
     when "eg"
@@ -424,6 +482,7 @@ def initvars
     @price_down="PRICE DOWN"
     @name="NAME"
     @brand="BRAND"
+    @items="Items"
     
     #product detail
     @first_tip="Swipe left or right to"
@@ -442,6 +501,19 @@ def initvars
     
     #cart
     @delete="Delete"
+    
+    #track order
+    @order_valid="300695556"
+    @order_invalid="69ABC69"
+    @order_error="No results found for the searched order id."
+    @order_successful="Creation Date"
+    
+    #tips
+    @home_tip="Swipe left or right to change the category"
+    @catalog_tip="Swipe left or right to change the Sort type"
+    
+    #close message
+    @close_message="Please press back again if you wish to leave the app"
     
     ##### Uganda  ############################################ UG ##############################################################################
     when "ug"
@@ -497,6 +569,7 @@ def initvars
     @price_down="PRICE DOWN"
     @name="NAME"
     @brand="BRAND"
+    @items="Items"
     
     #product detail
     @first_tip="Swipe left or right to"
@@ -515,6 +588,19 @@ def initvars
     
     #cart
     @delete="Delete"
+    
+    #track order
+    @order_valid="400036169"
+    @order_invalid="69ABC69"
+    @order_error="No results found for the searched order id."
+    @order_successful="Creation Date"
+    
+    #tips
+    @home_tip="Swipe left or right to change the category"
+    @catalog_tip="Swipe left or right to change the Sort type"
+    
+    #close message
+    @close_message="Please press back again if you wish to leave the app"
     
   end
 end

@@ -30,6 +30,14 @@ Feature: Check the product detail view
 	Then I should see the currency
 	And I should see the specifications
 	
+	@product_zoom_in_out
+	Scenario: Zoom the image then zoom out
+	When I click in the image
+	Then I should not see the currency
+	When I go back
+	Then I should see the specifications
+	
+	
 	
 	
 	

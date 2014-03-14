@@ -172,6 +172,10 @@ Then /^I press Messaging$/ do
   performAction('click_on_text', @messaging.to_s)
 end
 
+Then /^I press Order Status$/ do
+  performAction('click_on_text', @order_status.to_s)
+end
+
 Then /^I press delete product$/ do
   performAction('click_on_text', @delete.to_s)
 end
@@ -213,4 +217,8 @@ Then /^I add multiple products$/ do
     
     $i += 1
   end
+end
+
+Then /^I press Track Order$/ do
+  performAction('click_on_view_by_id', @track_order.to_s)
 end

@@ -17,3 +17,5 @@ Feature: Prepare the app
 	Given I call the variables
 	And I select the country
 	* I wait for 5 seconds
+	
+	

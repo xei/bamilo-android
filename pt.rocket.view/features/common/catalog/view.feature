@@ -20,4 +20,8 @@ Feature:
 	When I swipe up moving with 10 steps
 	Then I should see the loading items message
 	
+	@categorie_item_number
+	Scenario: See the number of items
+	Then I should see the number of items
+	
 	

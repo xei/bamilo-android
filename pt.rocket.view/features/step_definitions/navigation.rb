@@ -22,3 +22,9 @@ end
 Then /^I click in the image$/ do
   performAction('click_on_screen',50, 35)
 end
+
+Then /^I push the power button$/ do
+  cmd = "adb shell input keyevent 26"
+  system(cmd)
+  #exec "adb shell input keyevent 24"
+end
