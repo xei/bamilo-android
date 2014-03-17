@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <data type="jsonarray" children="true" method="getJSONArray">
+        <id type="string" children="false" method="getString" />
+        <method type="string" children="false" method="getString" />
+        <action type="string" children="false" method="getString" />
+        <fields type="jsonarray" children="true" method="getJSONArray">
+            <key type="string" children="false" method="getString" />
+            <type type="string" children="false" method="getString" />
+            <rules type="jsonobject" children="true" method="getJSONObject">
+                <regex type="string" children="false" method="getString" />
+            </rules>
+        </fields>      
+    </data>
+    
+</resources>

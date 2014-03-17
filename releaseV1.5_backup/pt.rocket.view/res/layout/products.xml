@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="0dp" >
+
+    <org.holoeverywhere.widget.TextView
+        android:id="@+id/search_products_not_found"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="0dp"
+        android:drawablePadding="20dp"
+        android:drawableTop="@drawable/no_items_icon_2"
+        android:gravity="center"
+        android:text="@string/search_no_items"
+        android:textColor="@color/blue_basic"
+        android:textSize="12dp"
+        android:visibility="gone" />
+
+    <org.holoeverywhere.widget.Button
+        android:id="@+id/retry_alert_view_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/search_products_not_found"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/btn_grey"
+        android:clickable="false"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:text="@string/try_again"
+        android:textColor="@color/grey_dark"
+        android:textSize="@dimen/text_mid"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:id="@+id/products_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <include
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            layout="@layout/loading_more" />
+
+        <ListView
+            android:id="@+id/middle_productslist_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/loadmore"
+            android:layout_alignParentTop="true"
+            android:listSelector="@android:color/transparent"
+            android:numColumns="1" />
+
+    </RelativeLayout>
+
+    <include
+        android:id="@+id/loading_view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/loading_bar"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:id="@+id/products_tip"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#90000000"
+        android:visibility="gone" >
+
+        <ImageView
+            android:id="@+id/products_tip_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="52.8dp"
+            android:src="@drawable/img_instructions_swipe" />
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/products_tip_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/products_tip_img"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="33dp"
+            android:gravity="center"
+            android:shadowColor="#000000"
+            android:text="@string/products_tip_text"
+            android:textColor="#c3c3c3"
+            android:textSize="19.8sp" />
+    </RelativeLayout>
+
+</RelativeLayout>
