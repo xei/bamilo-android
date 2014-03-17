@@ -1,0 +1,4 @@
+
+com.rocket.framework.testshell.test.RegisterTests:INSTRUMENTATION_RESULT: shortMsg=junit.framework.AssertionFailedError
+INSTRUMENTATION_RESULT: longMsg=junit.framework.AssertionFailedError: Failed onRequestComplete - The base of the json is wrongly constructed, something is missing
+INSTRUMENTATION_CODE: 0

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:orientation="horizontal" >
+
+    <!-- EDIT ADDRESS -->
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/margin_mid"
+        android:layout_marginRight="@dimen/margin_mid"
+        android:layout_weight="@dimen/checkout_main_container" >
+
+        <!-- CONTENT -->
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/checkout_my_order_buttons"
+            android:layout_alignParentTop="true" >
+
+            <!-- FORM -->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <include
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    layout="@layout/checkout_edit_address_form" />
+            </LinearLayout>
+        </ScrollView>
+
+        <!-- BUTTONS -->
+
+        <LinearLayout
+            android:id="@+id/checkout_my_order_buttons"
+            android:layout_width="@dimen/inner_container_width"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            android:orientation="vertical" >
+
+            <org.holoeverywhere.widget.TextView
+                android:id="@+id/checkout_edit_address_required_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_mid"
+                android:layout_marginRight="@dimen/margin_mid"
+                android:layout_marginTop="@dimen/margin_mid"
+                android:ellipsize="end"
+                android:fontFamily="roboto_regular"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:text="@string/register_required_text"
+                android:textColor="@color/red_basic"
+                android:textSize="@dimen/text_smid"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <org.holoeverywhere.widget.Button
+                    android:id="@+id/checkout_edit_button_cancel"
+                    style="@style/button_grey_style"
+                    android:layout_width="0dp"
+                    android:layout_marginRight="@dimen/margin_small"
+                    android:layout_weight="1"
+                    android:fontFamily="roboto_regular"
+                    android:text="@string/cancel_label" />
+
+                <org.holoeverywhere.widget.Button
+                    android:id="@+id/checkout_edit_button_enter"
+                    style="@style/button_orange_style"
+                    android:layout_width="0dp"
+                    android:layout_marginLeft="@dimen/margin_small"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:fontFamily="roboto_regular"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:text="@string/save_changes_label" />
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+    <!-- DIVIDER -->
+
+    <View
+        style="@style/divider_vertical"
+        android:layout_marginBottom="@dimen/margin_mid"
+        android:layout_marginTop="@dimen/margin_mid"
+        android:background="@color/orange_basic" />
+
+    <!-- ORDER SUMMARY -->
+
+    <FrameLayout
+        android:id="@+id/order_summary_container"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/margin_mid"
+        android:layout_marginRight="@dimen/margin_mid"
+        android:layout_weight="@dimen/checkout_order_summary" />
+
+</LinearLayout>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" >
+
+    <!-- PAYMENT -->
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="@dimen/checkout_main_container" >
+ 
+        <org.holoeverywhere.widget.Button
+            android:id="@+id/checkout_payment_button_enter"
+            style="@style/button_orange_style"
+            android:layout_width="@dimen/inner_container_width"
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            android:background="@drawable/btn_orange"
+            android:fontFamily="roboto_regular"
+            android:text="@string/next_button" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/checkout_payment_button_enter"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <!-- PAYMENT METHODS -->
+
+                <org.holoeverywhere.widget.TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_large"
+                    android:layout_marginTop="@dimen/margin_huge"
+                    android:fontFamily="roboto_regular"
+                    android:gravity="left"
+                    android:text="@string/payment"
+                    android:textColor="@color/orange_basic"
+                    android:textSize="@dimen/text_l" />
+
+                <LinearLayout
+                    android:id="@+id/checkout_payment_methods_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_midhuge"
+                    android:layout_marginTop="@dimen/margin_midhuge"
+                    android:orientation="vertical" >
+                </LinearLayout>
+                <!-- SUBMIT -->
+
+                <include
+                    android:layout_marginLeft="6.6dp"
+                    android:layout_marginRight="6.6dp"
+                    layout="@layout/voucher_insert_layout" />
+            </LinearLayout>
+        </ScrollView>
+        <!-- NEXT BUTTON -->
+
+    </RelativeLayout>
+    <!-- DIVIDER -->
+
+    <View
+        style="@style/divider_vertical"
+        android:layout_marginBottom="@dimen/margin_mid"
+        android:layout_marginTop="@dimen/margin_mid"
+        android:background="@color/orange_basic" />
+
+    <!-- ORDER SUMMARY -->
+
+    <FrameLayout
+        android:id="@+id/order_summary_container"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/margin_mid"
+        android:layout_marginRight="@dimen/margin_mid"
+        android:layout_weight="@dimen/checkout_order_summary" />
+
+    <!--
+         <fragment
+        android:name="pt.rocket.view.fragments.CheckoutSummaryFragment"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/margin_mid"
+        android:layout_marginRight="@dimen/margin_mid"
+        android:layout_weight="0.25" />
+    -->
+
+</LinearLayout>
