@@ -838,7 +838,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         ((BaseActivity) getActivity()).showProgress();
         
         triggerAddItemToCart(item);
-//        EventManager.getSingleton().triggerRequestEvent(new AddItemToShoppingCartEvent(item));
 
         AnalyticsGoogle.get().trackAddToCart(sku, price);
     }

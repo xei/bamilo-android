@@ -11,6 +11,7 @@ import pt.rocket.framework.components.NavigationListComponent;
 import pt.rocket.framework.objects.Address;
 import pt.rocket.framework.objects.Category;
 import pt.rocket.framework.objects.CompleteProduct;
+import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.objects.PaymentInfo;
 import pt.rocket.framework.objects.PaymentMethods;
 import pt.rocket.framework.objects.ShippingMethods;
@@ -65,7 +66,7 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     private CustomerUtils mCustomerUtils;
     private boolean loggedIn = false;
     private Integer shopId = null;
-
+    private Customer customer;
     /**
      * General Persistent Variables
      */
@@ -653,6 +654,20 @@ public class JumiaApplication extends Application implements ExceptionCallback {
      */
     public static void setPaymentsInfoList(HashMap<String,PaymentInfo> paymentsInfoList) {
         JumiaApplication.paymentsInfoList = paymentsInfoList;
+    }
+
+    /**
+     * @return the customer
+     */
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    /**
+     * @param customer the customer to set
+     */
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
     
     /**
