@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-    <data type="jsonobject" method="getJSONObject" children="true" optional="false">
-        <phone_number type="string" method="getString" children="false" optional="false"/>
-    </data>
-    
-</resources>
