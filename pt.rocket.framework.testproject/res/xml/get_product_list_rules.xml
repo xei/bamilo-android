@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <product_count type="string" children="false" method="getString" optional="false"/>
+    <category_ids type="string" children="false" method="getString" optional="false"/>
+    <results type="jsonarray" children="true" method="getJSONArray" optional="false">
+    	<id type="string" children="false" method="getString" optional="false"/>
+    	<data type="jsonobject" children="true" method="getJSONObject" optional="false">
+    		<sku type="string" children="false" method="getString" optional="false"/>
+    		<name type="string" children="false" method="getString" optional="false"/>
+    		<url type="string" children="false" method="getString" optional="false"/>
+    		<description type="string" children="false" method="getString" optional="false"/>
+    		<brand type="string" children="false" method="getString" optional="false"/>
+    		<max_price type="string" children="false" method="getString" optional="false"/>
+    		<price type="string" children="false" method="getString" optional="false"/>   
+    		<ratings_total type="string" children="false" method="getString" optional="false"/> 
+    	</data>    
+    	<images type="jsonarray" children="true" method="getJSONArray" optional="false">
+    	    <path type="string" children="false" method="getString" optional="false"/>
+    	    <format type="string" children="false" method="getString" optional="false"/>
+    	    <width type="string" children="false" method="getString" optional="false"/>
+    	    <height type="string" children="false" method="getString" optional="false"/>
+    	</images>
+    </results>
+    <categories type="jsonarray" children="true" method="getJSONArray" optional="false">
+        <id type="string" children="false" method="getString" optional="false"/>
+        <url type="string" children="false" method="getString" optional="false"/>
+        <name type="string" children="false" method="getString" optional="false"/>
+        <children type="jsonarray" children="true" method="getJSONArray" optional="false">
+            <id type="string" children="false" method="getString" optional="false"/>
+	        <url type="string" children="false" method="getString" optional="false"/>
+	        <name type="string" children="false" method="getString" optional="false"/>
+	        <number type="integer" children="false" method="getInt" optional="false"/>
+	        <children type="jsonarray" children="true" method="getJSONArray" optional="true">
+	            <id type="string" children="false" method="getString" optional="true"/>
+		        <url type="string" children="false" method="getString" optional="true"/>
+		        <name type="string" children="false" method="getString" optional="true"/>
+		        <number type="integer" children="false" method="getInt" optional="true"/>
+        	</children>	
+        </children>
+    </categories>
+</resources>

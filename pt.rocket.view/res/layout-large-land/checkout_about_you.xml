@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:orientation="horizontal" >
+
+    <!-- ABOUT YOU -->
+
+    <ScrollView
+        android:id="@+id/checkout_about_you_scroll"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="@dimen/checkout_main_container"
+        android:scrollbars="none" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_mid"
+            android:layout_marginRight="@dimen/margin_mid"
+            android:orientation="vertical" >
+
+            <!-- LOGIN -->
+
+            <include layout="@layout/checkout_about_you_login" />
+
+            <!-- SIGNUP -->
+
+            <include layout="@layout/checkout_about_you_signup" />
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- DIVIDER -->
+
+    <View
+        style="@style/divider_vertical"
+        android:layout_marginBottom="@dimen/margin_mid"
+        android:layout_marginTop="@dimen/margin_mid"
+        android:background="@color/orange_basic" />
+
+    <!-- ORDER SUMMARY -->
+
+    <FrameLayout
+        android:id="@+id/order_summary_container"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/margin_mid"
+        android:layout_marginRight="@dimen/margin_mid"
+        android:layout_weight="@dimen/checkout_order_summary" />
+
+</LinearLayout>

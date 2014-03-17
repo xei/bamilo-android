@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/subtotal_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <RelativeLayout
+        android:id="@+id/sectionheader_container"
+        style="@style/activity_sectionheader_container"
+        android:layout_marginTop="@dimen/margin_huge" >
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/title"
+            style="@style/activity_sectionheader_text"
+            android:text="@string/sub_total_title" />
+
+        <View
+            style="@style/activity_sectionheader_divider"
+            android:layout_below="@+id/title" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_huge"
+        android:layout_marginRight="@dimen/margin_huge"
+        android:layout_below="@id/sectionheader_container"
+        android:layout_marginTop="8dp" >
+
+        <RelativeLayout
+            android:id="@+id/price_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_x_small" >
+
+            <org.holoeverywhere.widget.TextView
+                android:id="@+id/articles_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_toLeftOf="@+id/price_unreduced"
+                android:textColor="@color/grey_middle"
+                android:textSize="@dimen/text_smid" />
+
+            <org.holoeverywhere.widget.TextView
+                android:id="@+id/price_unreduced"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/margin_mid"
+                android:layout_toLeftOf="@+id/price_total"
+                android:textColor="@color/grey_light"
+                android:textSize="@dimen/text_smid" />
+
+            <org.holoeverywhere.widget.TextView
+                android:id="@+id/price_total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:textColor="@color/red_basic"
+                android:textSize="@dimen/text_smid" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/price_container"
+            android:layout_marginTop="10dp" >
+
+            <org.holoeverywhere.widget.TextView
+                android:id="@+id/vat_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="@string/vat_string"
+                android:textColor="@color/grey_middle" 
+                android:visibility="gone"/>
+
+            <org.holoeverywhere.widget.TextView
+                android:id="@+id/shipping_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/vat_value"
+                android:text="@string/vat_string"
+                android:textColor="@color/grey_middle" 
+                android:visibility="gone"/>
+        </RelativeLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

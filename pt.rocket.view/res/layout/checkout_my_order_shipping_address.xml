@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/margin_mid"
+    android:paddingRight="@dimen/margin_mid" >
+
+    <!-- TITLE -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_mid"
+        android:layout_marginTop="@dimen/margin_huge"
+        android:orientation="horizontal" >
+
+        <org.holoeverywhere.widget.TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="roboto_regular"
+            android:gravity="left"
+            android:text="@string/billing_shipping_label"
+            android:textColor="@color/orange_basic"
+            android:textSize="@dimen/text_l" />
+
+        <ImageView
+            android:id="@+id/checkout_my_order_shipping_address_btn_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/btn_edit" />
+    </LinearLayout>
+
+    <View
+        style="@style/divider_horizontal"
+        android:background="@color/grey_divider_light_text" />
+
+    <!-- ADDRESS -->
+
+    <LinearLayout
+        android:id="@+id/checkout_my_order_shipping_address_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/checkout_order_inner_margin_left"
+        android:layout_marginRight="@dimen/checkout_order_inner_margin_right"
+        android:orientation="vertical" />
+
+</LinearLayout>

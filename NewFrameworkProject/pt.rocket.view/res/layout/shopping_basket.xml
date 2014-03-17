@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_basket_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:id="@+id/shopping_main_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:id="@+id/container1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <include layout="@layout/shopping_basket_header_element" />
+
+            <RelativeLayout
+                android:id="@+id/content_container"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" 
+                android:paddingBottom="10dp">
+
+                <pt.rocket.framework.components.ExpandableGridViewComponent
+                    android:id="@+id/shoppingcart_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_alignParentTop="true"
+                    android:listSelector="@android:color/transparent"
+                    android:layout_gravity="center" />
+            </RelativeLayout>
+
+            <include layout="@layout/shopping_basket_subtotal_element" />
+
+            <org.holoeverywhere.widget.Button
+                android:id="@+id/checkout_button"
+                style="@style/button_orange_style"
+                android:layout_marginLeft="@dimen/margin_huge"
+                android:layout_marginRight="@dimen/margin_huge"
+                android:contentDescription="@string/shopping_cart_button_description"
+                android:text="@string/checkout_button_text" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/no_items_container"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_below="@id/container1"
+            android:orientation="vertical"
+            android:paddingLeft="17dp"
+            android:paddingRight="17dp"
+            android:visibility="gone" >
+
+            <ImageView
+                android:layout_width="120dp"
+                android:layout_height="158dp"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:layout_marginTop="55dp"
+                android:src="@drawable/empty_shoppingcart" />
+
+            <org.holoeverywhere.widget.TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="50dp"
+                android:gravity="center_horizontal"
+                android:text="@string/wishlist_notiems"
+                android:textColor="@color/grey_middlelight"
+                android:textSize="17dp" />
+
+            <org.holoeverywhere.widget.Button
+                android:id="@+id/continue_shopping_button"
+                style="@style/button_orange_style"
+                android:text="@string/continue_shopping" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</ScrollView>

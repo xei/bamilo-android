@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/product_specifications_frame"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/selector_clickableitem_highlight"
+    android:paddingBottom="@dimen/margin_mid"
+    android:paddingTop="@dimen/margin_mid" >
+
+    <ImageView
+        android:id="@+id/product_spec_next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/selector_next" />
+
+    <org.holoeverywhere.widget.TextView
+        android:id="@+id/product_specifications_title"
+        style="@style/activity_sectionheader_text"
+        android:layout_marginBottom="@dimen/margin_mid"
+        android:text="@string/product_specifications" />
+
+    <org.holoeverywhere.widget.TextView
+        android:id="@+id/product_sku_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/product_specifications_title"
+        android:layout_marginLeft="@dimen/margin_huge"
+        android:textColor="@color/grey_middle"
+        android:textSize="@dimen/text_s" />
+
+    <org.holoeverywhere.widget.TextView
+        android:id="@+id/product_specifications_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/product_sku_text"
+        android:layout_marginLeft="@dimen/margin_huge"
+        android:layout_marginTop="@dimen/margin_huge"
+        android:layout_toLeftOf="@+id/product_spec_next"
+        android:textColor="@color/grey_middle"
+        android:textSize="@dimen/text_s" />
+
+    <RelativeLayout
+        android:id="@+id/loading_specifications"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:visibility="gone">
+		
+        <include layout="@layout/loading_bar_simple" />
+    </RelativeLayout>
+
+</RelativeLayout>

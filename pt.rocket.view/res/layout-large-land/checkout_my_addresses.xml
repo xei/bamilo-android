@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:orientation="horizontal" >
+
+    <!-- ADDRESSES -->
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/margin_mid"
+        android:layout_marginRight="@dimen/margin_mid"
+        android:layout_weight="@dimen/checkout_main_container" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/checkout_addresses_button_enter"
+            android:layout_alignParentTop="true"
+            android:orientation="horizontal" >
+
+            <!-- LEFT ADDRESSES -->
+
+            <ScrollView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="@dimen/margin_mid"
+                android:layout_weight="1"
+                android:fillViewport="true" >
+
+                <include layout="@layout/checkout_my_addresses_top" />
+            </ScrollView>
+
+            <!-- RIGHT ADDRESSES -->
+
+            <ScrollView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="@dimen/margin_mid"
+                android:layout_weight="1"
+                android:fillViewport="true" >
+
+                <include layout="@layout/checkout_my_addresses_bottom" />
+            </ScrollView>
+        </LinearLayout>
+
+        <!-- NEXT BUTTON -->
+
+        <org.holoeverywhere.widget.Button
+            android:id="@+id/checkout_addresses_button_enter"
+            style="@style/button_orange_style"
+            android:layout_width="@dimen/inner_container_width"
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            android:background="@drawable/btn_orange"
+            android:fontFamily="roboto_regular"
+            android:text="@string/next_button" />
+    </RelativeLayout>
+
+    <!-- DIVIDER -->
+
+    <View
+        style="@style/divider_vertical"
+        android:layout_marginBottom="@dimen/margin_mid"
+        android:layout_marginTop="@dimen/margin_mid"
+        android:background="@color/orange_basic" />
+
+    <!-- ORDER SUMMARY -->
+
+    <FrameLayout
+        android:id="@+id/order_summary_container"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/margin_mid"
+        android:layout_marginRight="@dimen/margin_mid"
+        android:layout_weight="@dimen/checkout_order_summary" />
+
+</LinearLayout>

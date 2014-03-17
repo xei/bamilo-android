@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<user type="jsonobject" method="getJSONObject" children="true" optional="false">
+		<id_customer  type="string" method="getString" children="false" optional="false"/>
+		<email type="string" method="getString" children="false" optional="false"/>
+		<increment_id type="string" method="getString" children="false" optional="false"/>
+		<first_name type="string" method="getString" children="false" optional="false"/>
+		<last_name type="string" method="getString" children="false" optional="false"/>
+		<birthday type="string" method="getString" children="false" optional="false"/>
+		<gender type="string" method="getString" children="false" optional="false"/>
+		<password type="string" method="getString" children="false" optional="false"/>
+		<is_confirmed type="string" method="getString" children="false" optional="false"/>
+		<created_at type="string" method="getString" children="false" optional="false"/>
+		<updated_at type="string" method="getString" children="false" optional="false"/>
+		<created_by type="string" method="getString" children="false" optional="false"/>
+		<updated_by type="string" method="getString" children="false" optional="false"/>
+		<fk_language type="string" method="getString" children="false" optional="false"/>
+	</user>
+</resources>

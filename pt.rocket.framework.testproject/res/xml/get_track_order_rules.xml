@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <order_id type="string" children="false" method="getString" optional="false"/>
+    <creation_date type="string" children="false" method="getString" optional="false"/>
+    <last_order_update type="string" children="false" method="getString" optional="false"/>
+    <payment_method type="string" children="false" method="getString" optional="false"/>
+    <item_collection type="jsonobject" children="true" method="getJSONObject" optional="false">
+        
+    </item_collection>
+        
+</resources>
