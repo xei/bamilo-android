@@ -562,10 +562,7 @@ public class MixpanelTracker {
 	}
 	
 	public static void flush (){
-		if (!isEnabled)
-			return;		
-		
-		mixpanel.flush();
+		if (isEnabled && mixpanel != null) mixpanel.flush();
 	}
 	
 	/**
