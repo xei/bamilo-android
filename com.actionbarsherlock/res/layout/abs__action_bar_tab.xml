@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<view
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    class="com.actionbarsherlock.internal.widget.ScrollingTabContainerView$TabView"
+    android:background="@android:color/transparent"
+    style="?attr/actionBarTabStyle"
+/>
