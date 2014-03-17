@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.jumia.mtnng"
+    android:installLocation="auto"
+    android:versionCode="34"
+    android:versionName="1.7" >
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission
+        android:name="android.permission.CALL_PHONE"
+        android:required="false" />
+
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="false" >
+    </uses-feature>
+
+    <!-- Urban Airship. -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+
+    <!-- Adx additional permissions -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
+    <!-- Location Helper -->
+    <uses-permission
+        android:name="android.permission.ACCESS_COARSE_LOCATION"
+        android:required="false" />
+    <uses-permission
+        android:name="android.permission.ACCESS_FINE_LOCATION"
+        android:required="false" />
+
+    <uses-feature
+        android:name="android.hardware.location.gps"
+        android:required="false" />
+
+    <permission
+        android:name="com.jumia.mtnng.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.jumia.mtnng.permission.C2D_MESSAGE" />
+
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="17" />
+
+    <application
+        android:name="pt.rocket.app.JumiaApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:largeHeap="true"
+        android:logo="@drawable/actionbar_logo"
+        android:theme="@style/Theme.Jumia" >
+        <activity
+            android:name="pt.rocket.view.SplashScreenActivity"
+            android:noHistory="true"
+            android:screenOrientation="unspecified" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.facebook.LoginActivity"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <!-- Fragment Activities -->
+        <activity
+            android:name="pt.rocket.view.MainFragmentActivity"
+            android:screenOrientation="unspecified" />
+        <!-- android:windowSoftInputMode="adjustPan" -->
+
+        <service
+            android:name="pt.rocket.framework.service.RemoteService"
+            android:exported="false" />
+
+        <!-- hockey -->
+        <activity android:name="net.hockeyapp.android.UpdateActivity" />
+
+        <!-- Ad X Tracker -->
+        <receiver
+            android:name="com.AdX.tag.AdXAppTracker"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="com.android.vending.INSTALL_REFERRER" />
+            </intent-filter>
+        </receiver>
+
+        <!--
+             <meta-data
+            android:name="NETWORK"
+            android:value="@string/xmtnng" />
+        <meta-data
+            android:name="REFERENCE"
+            android:value="StoreDownload" />
+        -->
+        <meta-data
+            android:name="OTHERSTORE"
+            android:value="SELFHOST" />
+        <meta-data
+            android:name="APP_NAME"
+            android:value="@string/adx_app_name" />
+        <meta-data
+            android:name="ADX_CLIENT_ID"
+            android:value="@string/xid" />
+
+        <!-- Urban Airship GCM -->
+        <receiver android:name="pt.rocket.utils.PushNotificationIntentReceiver" />
+        <receiver android:name="com.urbanairship.CoreReceiver" />
+        <receiver
+            android:name="com.urbanairship.push.GCMPushReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+
+                <category android:name="com.jumia.mtnng" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_REPLACED" />
+
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name="com.urbanairship.push.PushService"
+            android:label="Push Notification Service" />
+        <!-- <service android:name="com.urbanairship.push.PushWorkerService" android:label="Push Notification Worker Service" /> -->
+        <service
+            android:name="com.urbanairship.analytics.EventService"
+            android:label="Event Service" />
+
+        <provider
+            android:name="com.urbanairship.UrbanAirshipProvider"
+            android:authorities="com.jumia.mtnng.urbanairship.provider"
+            android:exported="false"
+            android:multiprocess="true" />
+        <!-- Urban Airship END -->
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/app_id" />
+    </application>
+
+</manifest>
