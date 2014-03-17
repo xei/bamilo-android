@@ -34,7 +34,19 @@ public class ErrorMonitoring {
 	private static int sVersionCode;
 	
 	private static  void buildErrorMap(Context mContext, String uri, ErrorCode errorCode, Exception exception, String msg ) {
-		map.clear();
+		
+		/**
+		 * Try fix the Hockey report:
+		 * https://rink.hockeyapp.net/manage/apps/33641/app_versions/97/crash_reasons/11084528?type=overview
+		 * 
+		 * Log:
+		 * java.lang.NullPointerException
+		 * 		at java.util.TreeMap.find(TreeMap.java:277)
+		 * 		at java.util.TreeMap.putInternal(TreeMap.java:240)
+		 * 		at java.util.TreeMap.put(TreeMap.java:186)
+		 */
+		//map.clear();
+		
 		map.put( "Country", ShopSelector.getCountryName());
 		map.put( "Uri", uri);
 		if (errorCode != null && errorCode.name() != null) {
