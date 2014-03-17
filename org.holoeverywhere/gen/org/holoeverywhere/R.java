@@ -3544,7 +3544,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
          */
         public static final int[] IconMenuView = {
             0x01010132, 0x01010133, 0x01010134, 0x01010135,
-            0x0101040d
+            0x01010436
         };
         /**
           <p>This symbol is the offset where the {@link android.R.attr#maxItems}
@@ -3766,7 +3766,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
          */
         public static final int[] MenuView = {
             0x010100ae, 0x0101012d, 0x0101012e, 0x0101012f,
-            0x01010131, 0x0101040c, 0x7f010074, 0x7f010075
+            0x01010131, 0x01010435, 0x7f010074, 0x7f010075
         };
         /**
           <p>This symbol is the offset where the {@link android.R.attr#headerBackground}
@@ -5282,7 +5282,7 @@ containing a value of this type.
          */
         public static final int[] SherlockSpinner = {
             0x010100af, 0x01010175, 0x01010176, 0x0101017b,
-            0x01010262, 0x010102ac, 0x010102ad, 0x01010411
+            0x01010262, 0x010102ac, 0x010102ad, 0x0101043a
         };
         /**
           <p>
