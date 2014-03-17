@@ -1128,7 +1128,10 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
     }
 
     public void onErrorEvent(Bundle bundle) {
-        if(!isVisible()){
+        
+        // Validate fragment visibility
+        if (isOnStoppingProcess) {
+            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         
@@ -1198,9 +1201,12 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
             }
         case GET_PRODUCT_EVENT:
             if (!errorCode.isNetworkError()) {
-                Toast.makeText(getActivity(), getString(R.string.product_could_not_retrieved),
-                        Toast.LENGTH_LONG).show();
-                getActivity().onBackPressed();
+                Toast.makeText(getBaseActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
+                try {
+                    getBaseActivity().onBackPressed();
+                } catch (IllegalStateException e) {
+                    ((MainFragmentActivity)getBaseActivity()).popBackStackUntilTag(FragmentType.HOME.toString());
+                }
                 return;
             }
         }

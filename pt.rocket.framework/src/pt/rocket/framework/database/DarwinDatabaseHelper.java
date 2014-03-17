@@ -48,7 +48,8 @@ public class DarwinDatabaseHelper extends SQLiteOpenHelper {
     		version = CONTEXT.getPackageManager().getPackageInfo(CONTEXT.getPackageName(), 0).versionCode;
 			
 		} catch (NameNotFoundException e) {
-			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NullPointerException e) {
 			e.printStackTrace();
 		}
     	

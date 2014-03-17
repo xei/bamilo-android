@@ -18,6 +18,7 @@ import pt.rocket.helpers.BaseHelper;
 import pt.rocket.helpers.HelperPriorityConfiguration;
 import pt.rocket.utils.JSONConstants;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 
 /**
@@ -36,7 +37,8 @@ public class GetRegionsHelper extends BaseHelper {
     public Bundle generateRequestBundle(Bundle args) {
         Log.d(TAG, "REQUEST");
         Bundle bundle = new Bundle();
-        String action = args.getString(Constants.BUNDLE_URL_KEY, EventType.GET_REGIONS_EVENT.action);
+        String action = args.getString(Constants.BUNDLE_URL_KEY);
+        if(TextUtils.isEmpty(action)) action = EventType.GET_REGIONS_EVENT.action.toString();
         Log.d(TAG, "URL: " + action);
         bundle.putString(Constants.BUNDLE_URL_KEY, action);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);

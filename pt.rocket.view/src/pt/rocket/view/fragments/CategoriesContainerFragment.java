@@ -473,6 +473,12 @@ public class CategoriesContainerFragment extends BaseFragment {
             backLevelButton = (RelativeLayout) getView().findViewById(R.id.back_level_button);    
         }
         
+        // Validate if is present
+        if(backLevelButton == null) {
+            Log.w(TAG, "THE BACK LEVEL BUTTON IS NOT PRESENT");
+            return;
+        }
+        
         backLevelButton.setOnClickListener(new OnClickListener() {
             
             @Override

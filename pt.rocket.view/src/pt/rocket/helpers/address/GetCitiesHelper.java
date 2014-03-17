@@ -18,6 +18,7 @@ import pt.rocket.helpers.BaseHelper;
 import pt.rocket.helpers.HelperPriorityConfiguration;
 import pt.rocket.utils.JSONConstants;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 
 /**
@@ -49,7 +50,8 @@ public class GetCitiesHelper extends BaseHelper {
         // Get region
         int region = bundle.getInt(REGION_ID_TAG);
         // Get action
-        String action = bundle.getString(Constants.BUNDLE_URL_KEY, type.action);        
+        String action = bundle.getString(Constants.BUNDLE_URL_KEY);
+        if(TextUtils.isEmpty(action)) action = type.action.toString();    
         // Validate action
         if(action.contains("fk_customer_address_region")) action = action.replace("fk_customer_address_region", "" + region);
         else action += "?region=" + region; 
