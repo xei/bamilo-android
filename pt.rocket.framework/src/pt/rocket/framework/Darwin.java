@@ -6,7 +6,6 @@ import java.util.Set;
 import java.util.TimeZone;
 
 import pt.rocket.framework.database.DarwinDatabaseHelper;
-import pt.rocket.framework.rest.RestClientSingleton;
 import pt.rocket.framework.utils.PreInstallController;
 import pt.rocket.framework.utils.ShopSelector;
 import android.content.Context;
@@ -152,6 +151,7 @@ public class Darwin {
 		tags.add(Build.MANUFACTURER.replaceAll(" ", "-"));
 		tags.add(Build.MODEL.replaceAll(" ", "-"));
 		tags.add(Build.VERSION.RELEASE.replaceAll(" ", "-"));
+		tags.add(context.getString(R.string.ua_store));
 		// Check pre-install flag
 		if(isPreInstallApp) {
 			preInstallTag(context, tags, Build.MANUFACTURER);

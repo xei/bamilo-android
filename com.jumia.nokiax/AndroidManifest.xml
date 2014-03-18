@@ -104,7 +104,7 @@
 
         <meta-data
             android:name="OTHERSTORE"
-            android:value="NOKIA" />
+            android:value="@string/x_store" />
         <meta-data
             android:name="APP_NAME"
             android:value="com.jumia.nokiax" />
@@ -123,7 +123,7 @@
             <intent-filter>
 
                 <!-- NOKIA X SUPPORT -->
-				<action android:name="com.nokia.pushnotifications.intent.RECEIVE" />
+                <action android:name="com.nokia.pushnotifications.intent.RECEIVE" />
                 <action android:name="com.nokia.pushnotifications.intent.REGISTRATION" />
 
                 <category android:name="com.jumia.nokiax" />

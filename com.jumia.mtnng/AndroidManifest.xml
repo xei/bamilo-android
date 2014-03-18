@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.jumia.mtnng"
     android:installLocation="auto"
-    android:versionCode="34"
+    android:versionCode="1"
     android:versionName="1.7" >
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -94,17 +94,9 @@
             </intent-filter>
         </receiver>
 
-        <!--
-             <meta-data
-            android:name="NETWORK"
-            android:value="@string/xmtnng" />
-        <meta-data
-            android:name="REFERENCE"
-            android:value="StoreDownload" />
-        -->
         <meta-data
             android:name="OTHERSTORE"
-            android:value="SELFHOST" />
+            android:value="@string/x_store" />
         <meta-data
             android:name="APP_NAME"
             android:value="@string/adx_app_name" />
@@ -134,7 +126,6 @@
         <service
             android:name="com.urbanairship.push.PushService"
             android:label="Push Notification Service" />
-        <!-- <service android:name="com.urbanairship.push.PushWorkerService" android:label="Push Notification Worker Service" /> -->
         <service
             android:name="com.urbanairship.analytics.EventService"
             android:label="Event Service" />
