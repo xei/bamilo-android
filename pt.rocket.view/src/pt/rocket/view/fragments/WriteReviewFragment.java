@@ -400,7 +400,7 @@ public class WriteReviewFragment extends BaseFragment {
         case GET_CUSTOMER:
             Log.i("GOT CUSTOMER", "HERE ");
             customerCred = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-
+            JumiaApplication.INSTANCE.CUSTOMER = customerCred;
             return true;
 
         default:

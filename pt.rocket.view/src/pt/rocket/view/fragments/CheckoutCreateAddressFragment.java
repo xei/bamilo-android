@@ -6,7 +6,9 @@ package pt.rocket.view.fragments;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 
 import org.holoeverywhere.widget.CheckBox;
 import org.holoeverywhere.widget.TextView;
@@ -43,6 +45,7 @@ import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -483,15 +486,17 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
             mCityName = mCityEdit.getText().toString();
             Log.d(TAG, "SELECTED CITY: " + mCityName );
         }
-
+       
         // Put values
-        for (String key : mContentValues.keySet()) {
+        for (Entry<String, Object> value : mContentValues.valueSet()) {
+            String key = value.getKey();
             if(key.contains(RestConstants.JSON_IS_DEFAULT_BILLING_TAG)) mContentValues.put(key, isDefaultBilling);
             else if(key.contains(RestConstants.JSON_IS_DEFAULT_SHIPPING_TAG)) mContentValues.put(key, isDefaultShipping);
             else if(key.contains(RestConstants.JSON_REGION_ID_TAG)) mContentValues.put(key, mRegionId);
             else if(key.contains(RestConstants.JSON_CITY_ID_TAG)) mContentValues.put(key, mCityId);
             else if(key.contains(RestConstants.JSON_CITY_TAG)) mContentValues.put(key, mCityName);
-        }
+        }            
+   
         // return the new content values
         return mContentValues;
     }
@@ -549,7 +554,10 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
             // Set title
             mShippingTitle.setText(getString(R.string.action_label_add_address));
             // Hide billing container
-            mBillingIncludeContainer.setVisibility(View.GONE);
+            if (mBillingIncludeContainer != null) {
+                mBillingIncludeContainer.setVisibility(View.GONE);
+            }
+            
             // Update the ship form width
             if(BaseActivity.isTabletInLandscape(getBaseActivity()))
                 mShippingFormMain.getLayoutParams().width = getResources().getDimensionPixelSize(R.dimen.inner_container_width);

@@ -103,6 +103,8 @@ public class SessionLoginFragment extends BaseFragment {
     
     private String loginOrigin = "";
     
+    private boolean cameFromRegister = false;
+    
     /**
      * 
      * @return
@@ -220,6 +222,7 @@ public class SessionLoginFragment extends BaseFragment {
         } else if (formResponse != null) {
             Log.d(TAG, "FORM ISN'T NULL");
             loadForm(formResponse);
+            cameFromRegister = false;
         } else {
             
             Log.d(TAG, "FORM IS NULL");
@@ -236,6 +239,7 @@ public class SessionLoginFragment extends BaseFragment {
             } else {
                 triggerLoginForm();    
             }
+            cameFromRegister = false;
             
             //triggerContentEvent(EventType.GET_LOGIN_FORM_EVENT);
         }
@@ -402,6 +406,7 @@ public class SessionLoginFragment extends BaseFragment {
                 ((MainFragmentActivity) getActivity()).onSwitchFragment(FragmentType.FORGOT_PASSWORD, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
             }
             else if (id == R.id.middle_login_link_register) {
+                cameFromRegister = true;
                 ((MainFragmentActivity) getActivity()).onSwitchFragment(FragmentType.REGISTER, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                 
             }
@@ -499,9 +504,13 @@ public class SessionLoginFragment extends BaseFragment {
                 ((BaseActivity) getActivity()).onSwitchFragment(nextFragmentType, null, true);
             }
             // NullPointerException on orientation change
-            if(getActivity() != null)
-                TrackerDelegator.trackLoginSuccessful(getActivity(), (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY),
+            if(getActivity() != null){
+                Customer customer = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                JumiaApplication.INSTANCE.CUSTOMER = customer;
+                TrackerDelegator.trackLoginSuccessful(getActivity(), customer,
                     wasAutologin, loginOrigin, true);
+            }
+                
             
             wasAutologin = false;
             return true;
@@ -518,9 +527,13 @@ public class SessionLoginFragment extends BaseFragment {
                 ((BaseActivity) getActivity()).onSwitchFragment(nextFragmentType, null, true);
             }
             // NullPointerException on orientation change
-            if(getActivity() != null)
-                TrackerDelegator.trackLoginSuccessful(getActivity(), (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY), wasAutologin, loginOrigin, false);
-            
+            if(getActivity() != null && !cameFromRegister){
+                Customer customer = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                JumiaApplication.INSTANCE.CUSTOMER = customer;
+                TrackerDelegator.trackLoginSuccessful(getActivity(), customer, wasAutologin, loginOrigin, false);
+            }
+                
+            cameFromRegister = false;
             wasAutologin = false;
             return true;
         case GET_LOGIN_FORM_EVENT:
@@ -603,7 +616,7 @@ public class SessionLoginFragment extends BaseFragment {
             }
         } else if (eventType == EventType.LOGIN_EVENT) {
             JumiaApplication.INSTANCE.setLoggedIn(false);
-            LogOut.performLogOut(new WeakReference<Activity>(getBaseActivity())); 
+            
             // Validate fragment visibility
             if(!isVisible()){
                 Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
@@ -627,6 +640,8 @@ public class SessionLoginFragment extends BaseFragment {
                         //triggerContentEvent(EventType.INIT_FORMS);
                         //triggerContentEvent(EventType.GET_LOGIN_FORM_EVENT);
                         
+                    } else {
+                        LogOut.performLogOut(new WeakReference<Activity>(getBaseActivity()));
                     }
                 } else {
                     

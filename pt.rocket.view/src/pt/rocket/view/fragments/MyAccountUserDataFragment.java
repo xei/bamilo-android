@@ -10,6 +10,7 @@ import java.util.List;
 import org.holoeverywhere.widget.EditText;
 import org.holoeverywhere.widget.TextView;
 
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.rest.RestConstants;
@@ -270,6 +271,7 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
             return true;
         case GET_CUSTOMER:
             Customer customer = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            JumiaApplication.INSTANCE.CUSTOMER = customer;
             Log.d(TAG, "CUSTOMER: " + customer.getLastName() + " " + customer.getFirstName() + " " + customer.getEmail());
             if ( null != lastNameText ) {
                 lastNameText.setText(customer.getLastName());

@@ -36,7 +36,7 @@ public class PaymentMethodForm implements Parcelable {
     private String order_nr;
     private String customer_first_name;
     private String customer_last_name;
-
+    private boolean cameFromWebCheckout;
     public PaymentMethodForm() {
 
     }
@@ -144,6 +144,7 @@ public class PaymentMethodForm implements Parcelable {
         dest.writeString(order_nr);
         dest.writeString(customer_first_name);
         dest.writeString(customer_last_name);
+        dest.writeBooleanArray(new boolean[] {cameFromWebCheckout});
     }
 
     /**
@@ -162,6 +163,7 @@ public class PaymentMethodForm implements Parcelable {
         order_nr = in.readString();
         customer_first_name = in.readString();
         customer_last_name = in.readString();
+        in.readBooleanArray(new boolean[] {cameFromWebCheckout});
     }
 
     /**
@@ -324,6 +326,20 @@ public class PaymentMethodForm implements Parcelable {
      */
     public void setCustomerLastName(String customer_last_name) {
         this.customer_last_name = customer_last_name;
+    }
+
+    /**
+     * @return the cameFromWebCheckout
+     */
+    public boolean isCameFromWebCheckout() {
+        return cameFromWebCheckout;
+    }
+
+    /**
+     * @param cameFromWebCheckout the cameFromWebCheckout to set
+     */
+    public void setCameFromWebCheckout(boolean cameFromWebCheckout) {
+        this.cameFromWebCheckout = cameFromWebCheckout;
     }
 
     /**

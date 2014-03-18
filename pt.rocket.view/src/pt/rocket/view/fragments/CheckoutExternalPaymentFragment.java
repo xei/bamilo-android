@@ -630,6 +630,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
              * TODO: Verify if we need to fill customer
              */
              customer = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+             JumiaApplication.INSTANCE.CUSTOMER = customer;
             break;
         case GET_SHOPPING_CART_ITEMS_EVENT:
             break;

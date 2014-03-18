@@ -11,6 +11,7 @@ import pt.rocket.framework.components.NavigationListComponent;
 import pt.rocket.framework.objects.Address;
 import pt.rocket.framework.objects.Category;
 import pt.rocket.framework.objects.CompleteProduct;
+import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.objects.PaymentInfo;
 import pt.rocket.framework.objects.PaymentMethods;
 import pt.rocket.framework.objects.ShippingMethods;
@@ -31,6 +32,7 @@ import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.preferences.ShopPreferences;
 import pt.rocket.utils.CheckVersion;
 import pt.rocket.utils.ServiceSingleton;
+import pt.rocket.view.R;
 import android.app.Application;
 import android.content.ComponentName;
 import android.content.ContentValues;
@@ -54,7 +56,8 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     private static final String TAG = JumiaApplication.class.getSimpleName();
     
     public static int SHOP_ID = -1;
-    
+    public static String SHOP_NAME = "";
+    public static Customer CUSTOMER;
     public static int SHOP_ID_FOR_ADX = -1;
 
     public static JumiaApplication INSTANCE;
@@ -155,6 +158,8 @@ public class JumiaApplication extends Application implements ExceptionCallback {
         responseCallbacks = new HashMap<String, IResponseCallback>();
         // Get the current shop id
         SHOP_ID = ShopPreferences.getShopId(getApplicationContext());
+        if(SHOP_ID>-1)
+            SHOP_NAME = getResources().getStringArray(R.array.language_codes)[SHOP_ID];
         setItemSimpleDataRegistry(new HashMap<String, Map<String, String>>());
         setCart(null);
         ImageResolutionHelper.init(this);
@@ -187,6 +192,7 @@ public class JumiaApplication extends Application implements ExceptionCallback {
             }
         }
         SHOP_ID = ShopPreferences.getShopId(getApplicationContext());
+        SHOP_NAME = getResources().getStringArray(R.array.language_codes)[SHOP_ID];
         CheckVersion.clearDialogSeenInLaunch(getApplicationContext());
         handleEvent(ErrorCode.NO_ERROR, EventType.INITIALIZE, initializationHandler);
         // InitializeEvent event = new InitializeEvent(EnumSet.noneOf(EventType.class));

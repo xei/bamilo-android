@@ -553,6 +553,7 @@ public class CheckoutWebFragment extends BaseFragment {
 					String order_number = result.optString("orderNr");
                     String grandTotal = result.optString("grandTotal");
                     JumiaApplication.INSTANCE.getPaymentMethodForm().setOrderNumber(order_number);
+                    JumiaApplication.INSTANCE.getPaymentMethodForm().setCameFromWebCheckout(true);
                     JumiaApplication.INSTANCE.getPaymentMethodForm().setCustomerFirstName((customer != null ) ? customer.getFirstName() : "");
                     JumiaApplication.INSTANCE.getPaymentMethodForm().setCustomerFirstName((customer != null ) ? customer.getLastName() : "");
 					bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR, order_number);                   
@@ -573,6 +574,7 @@ public class CheckoutWebFragment extends BaseFragment {
         switch (eventType) {
         case GET_CUSTOMER:
             customer = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            JumiaApplication.INSTANCE.CUSTOMER = customer;
             break;
         case GET_SHOPPING_CART_ITEMS_EVENT:
             break;
