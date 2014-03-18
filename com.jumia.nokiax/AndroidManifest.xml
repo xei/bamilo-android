@@ -46,14 +46,6 @@
         android:name="com.jumia.nokiax.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
 
-    <!-- Location Helper -->
-    <uses-permission
-        android:name="android.permission.ACCESS_COARSE_LOCATION"
-        android:required="false" />
-    <uses-permission
-        android:name="android.permission.ACCESS_FINE_LOCATION"
-        android:required="false" />
-
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="17" />
@@ -87,11 +79,12 @@
             android:screenOrientation="unspecified" />
         <!-- android:windowSoftInputMode="adjustPan" -->
 
-        <activity android:name="net.hockeyapp.android.UpdateActivity" />
-
         <service
             android:name="pt.rocket.framework.service.RemoteService"
             android:exported="false" />
+
+        <!-- hockey -->
+        <activity android:name="net.hockeyapp.android.UpdateActivity" />
 
         <!-- Ad X Tracker -->
         <receiver
@@ -107,7 +100,7 @@
             android:value="@string/x_store" />
         <meta-data
             android:name="APP_NAME"
-            android:value="com.jumia.nokiax" />
+            android:value="@string/adx_app_name" />
         <meta-data
             android:name="ADX_CLIENT_ID"
             android:value="@string/xid" />
@@ -147,7 +140,7 @@
             android:authorities="com.jumia.nokiax.urbanairship.provider"
             android:exported="false"
             android:multiprocess="true" />
-        <!-- END OF REQUIRED ITEMS -->
+        <!-- Urban Airship END -->
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/app_id" />
