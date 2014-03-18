@@ -96,6 +96,7 @@
 
     <string name="xlaunch">Launch</string>
     <string name="xlogin">Login</string>
+    <string name="xlogout">Logout</string>
     <string name="xFBlogin">FBConnect</string>
     <string name="xsignup">Signup</string>
     <string name="xsale">Sale</string>
@@ -109,7 +110,8 @@
     <string name="xpreferences">AdXPrefrences</string>
     <string name="xnativecheckout">NativeCheckout</string>
     <string name="xnativecheckouterror">NativeCheckoutError</string>
-    <string name="xsignup">CustomerSignUp</string>
+    <string name="xcustomersignup">CustomerSignUp</string>
+    <string name="xaddtocart">AddToCart</string>
     <!-- Checkout Steps -->
     <string name="xcheckoutaboutyou">CheckoutAboutYou</string>
     <string name="xcheckoutcreateaddress">CheckoutCreateAddress</string>

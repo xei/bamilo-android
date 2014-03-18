@@ -2,6 +2,7 @@ package pt.rocket.framework.objects;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -77,6 +78,21 @@ public class PurchaseItem implements Parcelable {
 		return items;
 	}
 	
+	public static List<PurchaseItem> parseItems(Map<String, ShoppingCartItem> mItems) {
+		List<PurchaseItem> items = new ArrayList<PurchaseItem>();
+		
+		for(String key: mItems.keySet()){
+            ShoppingCartItem mShoppingCartItem = mItems.get(key);
+            PurchaseItem mPurchaseItem = new PurchaseItem();
+            mPurchaseItem.sku = mShoppingCartItem.getConfigSimpleSKU();
+            mPurchaseItem.name = mShoppingCartItem.getName();
+            mPurchaseItem.paidprice = mShoppingCartItem.getPrice();
+            mPurchaseItem.quantity = String.valueOf(mShoppingCartItem.getQuantity());
+            items.add(mPurchaseItem);
+        }
+
+		return items;
+	}
 	
     /**
      * ########### Parcelable ###########

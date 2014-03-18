@@ -63,20 +63,20 @@
     
     <string name="currency_thousands_delim_ngn">,</string>
     <string name="currency_thousands_delim_ksh">,</string>
-    <string name="currency_thousands_delim_mad">,</string>
+    <string name="currency_thousands_delim_mad">.</string>
     <string name="currency_thousands_delim_egp">,</string>
     <string name="currency_thousands_delim_cfa">.</string>
     <string name="currency_thousands_delim_ugx">,</string>
     
     <string name="currency_fraction_count_ngn">0</string>
-    <string name="currency_fraction_count_ksh">2</string>
+    <string name="currency_fraction_count_ksh">0</string>
     <string name="currency_fraction_count_mad">2</string>
     <string name="currency_fraction_count_egp">0</string>
     <string name="currency_fraction_count_cfa">0</string>
     <string name="currency_fraction_count_ugx">0</string>
     
-    <string name="currency_fraction_delim_ngn">,</string>
-    <string name="currency_fraction_delim_ksh">,</string>
+    <string name="currency_fraction_delim_ngn">.</string>
+    <string name="currency_fraction_delim_ksh">.</string>
     <string name="currency_fraction_delim_mad">,</string>
     <string name="currency_fraction_delim_egp">,</string>
     <string name="currency_fraction_delim_cfa">,</string>

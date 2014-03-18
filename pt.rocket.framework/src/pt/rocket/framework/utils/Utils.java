@@ -71,6 +71,40 @@ public class Utils {
     }
 
     /**
+     * This method generates the MD5 hash based on a
+     * given key
+     * 
+     * @param key
+     * @return the unique MD5
+     */
+    public static String cleanMD5(String key) {
+    	if(key == null || key.length() == 0)
+    		return "";
+        String md5String = "";
+        try {
+            Calendar calendar = Calendar.getInstance();
+
+            // Create MD5 Hash
+            MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
+            digest.update(key.getBytes());
+            byte messageDigest[] = digest.digest();
+
+            // Create Hex String
+            StringBuffer hexString = new StringBuffer();
+            for (int i = 0; i < messageDigest.length; i++) {
+                hexString.append(Integer.toHexString(0xFF & messageDigest[i]));
+            }
+            md5String = hexString.toString();
+
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
+        return md5String;
+
+    }
+    
+    /**
      * Method to encrypt a given data
      * @param obj
      * @return

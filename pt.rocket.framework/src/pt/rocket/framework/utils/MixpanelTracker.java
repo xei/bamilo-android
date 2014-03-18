@@ -293,7 +293,8 @@ public class MixpanelTracker {
 			
 			people.set(context.getString(R.string.mixproppeople_itemscategory), category);
 			people.set(context.getString(R.string.mixproppeople_transations), cartValue);
-			people.trackCharge(Double.parseDouble(cartValue), null);
+			Log.i(TAG, "code1track value "+CurrencyFormatter.getValueDouble(cartValue.trim()));
+			people.trackCharge(CurrencyFormatter.getValueDouble(cartValue.trim()), null);
 		}
         
 		props = null;
@@ -424,17 +425,15 @@ public class MixpanelTracker {
 		mixpanel.track(context.getString(R.string.mixnativecheckout), props);
 	}
 	
-	public static void trackSignUpSuccess(Context context, String email) {
+	public static void trackSignUp(Context context, String email) {
 		if (!isEnabled)
 			return;
-		
-		
 
 		props = null;
 		
 		setProperty(context.getString(R.string.mixprop_signup), "" + email);
 		
-		Log.d( TAG, "trackSignUpSuccess tracking:  " + context.getString(R.string.mixprop_signup) );
+		Log.d( TAG, "trackSignUp tracking:  " + context.getString(R.string.mixprop_signup) );
 		mixpanel.track(context.getString(R.string.mixprop_signup), props);
 	}
 	

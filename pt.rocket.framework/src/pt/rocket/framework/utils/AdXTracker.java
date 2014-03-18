@@ -49,42 +49,55 @@ public class AdXTracker {
 		isStarted = true;
 	}
 
-	public static void trackSale(Context context, String cartValue ) {
+	public static void trackSale(Context context, String cartValue, String shop ) {
 		if (!isEnabled)
 			return;
 
 		String currency = CurrencyFormatter.getCurrencyCode();
 		Log.d( TAG, "trackSale: cartValue = " + cartValue + " currency = " + currency );
-		AdXConnect.getAdXConnectEventInstance(context, context.getString( R.string.xsale), cartValue, currency);
+		cartValue = CurrencyFormatter.getCleanValue(cartValue);
+		AdXConnect.getAdXConnectEventInstance(context, context.getString( R.string.xsale), cartValue, shop+"_"+currency);
 	}
 	
-	public static void trackSale(Context context, String cartValue, String userId, String transactionId,  boolean isFirstCustomer ) {
+	public static void trackSale(Context context, String cartValue, String userId, String transactionId,  boolean isFirstCustomer, String shop ) {
 		if (!isEnabled)
 			return;
+		
+		cartValue = CurrencyFormatter.getCleanValue(cartValue);
 		String currency = CurrencyFormatter.getCurrencyCode();
 		Log.d( TAG, "trackSale: cartValue = " + cartValue + " currency = " + currency );
-		AdXConnect.getAdXConnectEventInstance(context, context.getString( R.string.xsale), cartValue, currency,transactionId+"-"+userId);
+		AdXConnect.getAdXConnectEventInstance(context, context.getString( R.string.xsale), cartValue, currency,shop+"_"+userId+"_"+transactionId);
 		if (isFirstCustomer) {
 			Log.d(TAG, "trackSaleData: is first customer");
-			AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xcustomer), userId, "");
+			AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xcustomer), shop+"_"+userId, "");
 		}
 	}
 	
-
+//
+//	public static void trackAddToCart(Context context, CompleteProduct product, ProductSimple simple, Double price, String location, String country) {
+//		if (!isEnabled) {
+//			Log.d(TAG, "adx seems to be disabled - ignoring");
+//			return;
+//		}
+//
+//		Log.d(TAG, "xaddtocart tracked: event = " + context.getString(R.string.xaddtocart) + " customerId = " + customerId+" country = "+country);
+//		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xaddtocart), product.getPrice(), );
+//	}
+	
 	public static void trackCheckoutStep(Context context, String email, int step) {
 		if (!isEnabled)
 			return;
 
 		Log.d(TAG, "trackCheckoutStep: email = " + email + " step = " + context.getString(step));
-		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xnativecheckout), email, context.getString(step));
+		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xnativecheckout), email+"_"+context.getString(step), "");
 	}
 	
-	public static void trackSignUpSuccess(Context context, String email) {
+	public static void trackSignUp(Context context, String email, String shop) {
 		if (!isEnabled)
 			return;
 
-		Log.d(TAG, "trackSignUpSuccess: email = " + email + " step = " + context.getString(R.string.xsignup));
-		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xsignup), email, context.getString(R.string.xsignup));
+		Log.d(TAG, "trackSignUp: email = " + email + " step = " + context.getString(R.string.xcustomersignup));
+		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xcustomersignup), "", "", shop+"_0_"+email);
 	}
 
 	public static void trackPaymentMethod(Context context, String email, String payment) {
@@ -92,7 +105,7 @@ public class AdXTracker {
 			return;
 
 		Log.d(TAG, "trackPaymentMethod: email = " + email + " payment = " + payment);
-		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xpaymentmethod), email, payment);
+		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xpaymentmethod), email+"_"+payment, "");
 	}
 	
 	public static void trackNativeCheckoutError(Context context, String email, String error) {
@@ -100,7 +113,7 @@ public class AdXTracker {
 			return;
 
 		Log.d(TAG, "trackNativeCheckoutError: email = " + email + " error = " + error);
-		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xnativecheckouterror), email, error);
+		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xnativecheckouterror), email+"_"+error, "");
 	}
 	
 	public static void launch(Context context) {
@@ -110,32 +123,42 @@ public class AdXTracker {
 		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xlaunch), "", "");
 	}
 
-	public static void login(Context context, String customerId) {
+	public static void login(Context context, String customerId, String country) {
 		if (!isEnabled) {
 			Log.d(TAG, "adx seems to be disabled - ignoring");
 			return;
 		}
 
-		Log.d(TAG, "login tracked: event = " + context.getString(R.string.xlogin) + " customerId = " + customerId);
-		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xlogin), customerId, "");
+		Log.d(TAG, "login tracked: event = " + context.getString(R.string.xlogin) + " customerId = " + customerId+" country = "+country);
+		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xlogin), "", "", country+"_"+customerId);
 	}
 	
-	public static void facebookLogin(Context context, String customerId) {
+	public static void logout(Context context, String customerId, String country) {
 		if (!isEnabled) {
 			Log.d(TAG, "adx seems to be disabled - ignoring");
 			return;
 		}
 
-		Log.d(TAG, "facebook login tracked: event = " + context.getString(R.string.xFBlogin) + " customerId = " + customerId);
-		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xFBlogin), customerId, "");
+		Log.d(TAG, "logout tracked: event = " + context.getString(R.string.xlogout) + " customerId = " + customerId+" country = "+country);
+		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xlogout), "", "", country+"_"+customerId);
+	}
+	
+	public static void facebookLogin(Context context, String customerId, String country) {
+		if (!isEnabled) {
+			Log.d(TAG, "adx seems to be disabled - ignoring");
+			return;
+		}
+
+		Log.d(TAG, "facebook login tracked: event = " + context.getString(R.string.xFBlogin) + " customerId = " + customerId+" country = "+country);
+		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xFBlogin), "", "", country+"_"+customerId);
 	}
 
-	public static void signup(Context context, String customerId) {
+	public static void signup(Context context, String customerId, String country) {
 		if (!isEnabled)
 			return;
 
-		Log.d(TAG, "signup tracked: event = " + context.getString(R.string.xsignup) + " customerId = " + customerId);
-		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xsignup), customerId, "");
+		Log.d(TAG, "signup tracked: event = " + context.getString(R.string.xsignup) + " customerId = " + customerId+" country = "+country);
+		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xsignup), "", "", country+"_"+customerId);
 	}
 	
 	

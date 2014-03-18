@@ -307,14 +307,14 @@ public class AnalyticsGoogle {
 		
 	}
 	
-	public void trackSignUpSuccess(String email) {
+	public void trackSignUp(String email) {
 		if (!isEnabled) {
 			return;
 		}
 
 		String category = mContext.getString(R.string.gSignUp);
 		String action = mContext.getString(R.string.gSignUp);
-		Log.d(TAG, "trackSignUpSuccess: category = " + category + " action = " + action + " email " + email);
+		Log.d(TAG, "trackSignUp: category = " + category + " action = " + action + " email " + email);
 		mTracker.sendEvent(category, action, email, (long) 0);
 		
 	}
@@ -364,8 +364,10 @@ public class AnalyticsGoogle {
 		if (items == null || items.size() == 0) {
 			return;
 		}
-
-		Double valueDouble = Double.parseDouble(value);
+		
+		
+		Log.i(TAG, "code1track value "+value);
+		Double valueDouble = CurrencyFormatter.getValueDouble(value.trim());
 		long valueAsLongMicro = (long) (valueDouble * MICRO_MULTI);
 		String currencyCode = CurrencyFormatter.getCurrencyCode();
 
