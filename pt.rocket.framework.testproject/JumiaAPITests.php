@@ -198,6 +198,90 @@ function ShoppingCartRemoveItemTest($countries){
 	Test($countries, $test, $function);
 }
 
+function GetSignup($countries){
+	$test = "SignupTest";
+	$function = "testGetSignup";
+	Test($countries, $test, $function);
+}
+
+function GetCostumerAddress($countries){
+	$test = "AddressTest";
+	$function = "testAddress";
+	Test($countries, $test, $function);
+}
+
+function GetPollForm($countries){
+	$test = "PollFormTest";
+	$function = "testPollForm";
+	Test($countries, $test, $function);
+}
+
+function GetBillingAddress($countries){
+	$test = "BillingAddressTest";
+	$function = "testBillingAdress";
+	Test($countries, $test, $function);
+}
+
+function SetBillingAddress($countries){
+	$test = "SetBillingMethodTest";
+	$function = "testSetBillingMethod";
+	Test($countries, $test, $function);
+}
+
+function CreateAddress($countries){
+	$test = "CreateAdressTest";
+	$function = "testCreateAddress";
+	Test($countries, $test, $function);
+}
+
+function GetRegions($countries){
+	$test = "RegionsTest";
+	$function = "testRegions";
+	Test($countries, $test, $function);
+}
+
+function GetCities($countries){
+	$test = "CitiesTest";
+	$function = "testCities";
+	Test($countries, $test, $function);
+}
+
+function GetShippingMethods($countries){
+	$test = "GetShippingMethodsTest";
+	$function = "testGetShippingMethods";
+	Test($countries, $test, $function);
+}
+
+function SetShippingMethods($countries){
+	$test = "SetShippingMethodTest";
+	$function = "testSetShippingMethod";
+	Test($countries, $test, $function);
+}
+
+function GetPaymentMethods($countries){
+	$test = "GetPaymentMethodsTest";
+	$function = "testGetPaymentMethods";
+	Test($countries, $test, $function);
+}
+
+function SetPaymentMethods($countries){
+	$test = "SetPaymentMethodTest";
+	$function = "testSetPaymentMethod";
+	Test($countries, $test, $function);
+}
+
+function GetMyOrder($countries){
+	$test = "MyOrderTest";
+	$function = "testMyOrderTest";
+	Test($countries, $test, $function);
+}
+
+function FinishTest($countries){
+	$test = "FinishTest";
+	$function = "testFinish";
+	Test($countries, $test, $function);
+}
+
 ## Functions #### Functions #### Functions #### Functions #### Functions #### Functions #### Functions #### Functions #### Functions #### Functions #### Functions #### Functions ##
 
 function startEmulator(){

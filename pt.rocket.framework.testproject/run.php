@@ -43,6 +43,22 @@ ShoppingCartItemTest($countries);
 ShoppingCartRemoveItemTest($countries);
 CallToOrder($countries);
 
+GetSignup($countries);
+GetCostumerAddress($countries);
+GetPollForm($countries);
+#SetPollAnswer($countries);
+GetBillingAddress($countries);
+SetBillingAddress($countries);
+CreateAddress($countries);
+GetRegions($countries);
+GetCities($countries);
+GetShippingMethods($countries);
+SetShippingMethods($countries);
+GetPaymentMethods($countries);
+SetPaymentMethods($countries);
+GetMyOrder($countries);
+CheckoutFinish($countries);
+
 #**/
 
 /** Will change
