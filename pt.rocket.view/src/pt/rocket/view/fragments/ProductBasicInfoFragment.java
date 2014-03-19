@@ -5,13 +5,9 @@ package pt.rocket.view.fragments;
 
 import java.util.EnumSet;
 
-import org.holoeverywhere.widget.TextView;
-
 import pt.rocket.controllers.fragments.FragmentType;
-import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.event.ResponseEvent;
-import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.objects.CompleteProduct;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.FragmentCommunicatorForProduct;
 import pt.rocket.utils.MyMenuItem;
@@ -27,6 +23,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import org.holoeverywhere.widget.TextView;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -57,7 +54,7 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
     private String unitPrice;
     private String specialPrice;
     private int discountPercentage;
-    private int stockQuantity;
+    private long stockQuantity;
 
     public static final String DEFINE_UNIT_PRICE = "unit_price";
     public static final String DEFINE_SPECIAL_PRICE = "special_price";
@@ -88,21 +85,6 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
 
     @Override
     public void sendValuesToFragment(int identifier, Object values) {
-        // if(identifier == 0){
-        // this.mCompleteProduct = (CompleteProduct) values;
-        // } else if(identifier==1){
-        // this.mCompleteProduct = (CompleteProduct) values;
-        // setBasicInfo();
-        // } else if(identifier == DEFINE_UNIT_PRICE){
-        // unitPrice = (String) values;
-        // } else if(identifier == DEFINE_SPECIAL_PRICE){
-        // specialPrice = (String) values;
-        // } else if(identifier == DEFINE_DISCOUNT_PERCENTAGE){
-        // discountPercentage = (Integer) values;
-        // } else if(identifier == DEFINE_STOCK){
-        // stockQuantity = (Integer) values;
-        // updateStockInfo();
-        // }
     }
 
     @Override
@@ -177,7 +159,6 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
     public void onStart() {
         super.onStart();
         Log.i(TAG, "ON START");
-        // FlurryTracker.get().begin();
     }
 
     /*
@@ -190,9 +171,6 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
         super.onResume();
         Log.i(TAG, "ON RESUME");
         setBasicInfo();
-        //
-        // AnalyticsGoogle.get().trackPage(R.string.gteaser_prefix);
-        //
     }
 
     /*
@@ -218,24 +196,8 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
         // FlurryTracker.get().end();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see pt.rocket.utils.MyActivity#handleTriggeredEvent(pt.rocket.framework.event.ResponseEvent)
-     */
-    @Override
-    protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
-        return false;
-    }
-
-    @Override
-    protected boolean onErrorEvent(ResponseEvent event) {
-        return false;
-    }
-
     @Override
     public void onClick(View v) {
-        // TODO Auto-generated method stub
         mCallback.onFragmentSelected(FragmentType.PRODUCT_BASIC_INFO);
     }
 
@@ -300,7 +262,7 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
 
     @Override
     public void notifyFragment(Bundle bundle) {
-        Log.i(TAG, "code1 notifyFragment basic info");
+//        Log.i(TAG, "code1 notifyFragment basic info");
         if (bundle == null) {
             return;
         }
@@ -319,7 +281,7 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
         }
 
         if (bundle.containsKey(ProductBasicInfoFragment.DEFINE_STOCK)) {
-            stockQuantity = bundle.getInt(ProductBasicInfoFragment.DEFINE_STOCK);
+            stockQuantity = bundle.getLong(ProductBasicInfoFragment.DEFINE_STOCK);
             updateStockInfo();
         }
         if (bundle.containsKey(ProductBasicInfoFragment.DEFINE_UNIT_PRICE)) {

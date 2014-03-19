@@ -34,6 +34,10 @@ public class UrbanAirshipComponent extends ApplicationComponent {
      */
     @Override
     protected ErrorCode initInternal(Application app) {
+//        if(JumiaApplication.INSTANCE.isUAInitialized){
+//            return ErrorCode.NO_ERROR;
+//        }
+//        JumiaApplication.INSTANCE.isUAInitialized = true;
         context = app.getApplicationContext();
         AirshipConfigOptions options = AirshipConfigOptions.loadDefaultOptions(app);
         UAirship.takeOff(app, options);
@@ -41,16 +45,15 @@ public class UrbanAirshipComponent extends ApplicationComponent {
         bnb.iconDrawableId = R.drawable.ic_push_status_bar;
         // Set the builder
         PushManager.shared().setNotificationBuilder(bnb);
-        // Log.i("Jumia Application", "My Application onCreate - App APID: " + apid);
         PushManager.shared().setIntentReceiver(PushNotificationIntentReceiver.class);
+        Log.i("Jumia Application", "My Application onCreate - appid: " + PushManager.shared().getAPID());
         setUserPushSettings();
         return ErrorCode.NO_ERROR;
     }
 
     public void setUserPushSettings() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        if (prefs.getBoolean(context.getString(R.string.pref_notification),
-                context.getResources().getBoolean(R.bool.default_notification))) {
+        if (prefs.getBoolean(context.getString(R.string.pref_notification), context.getResources().getBoolean(R.bool.default_notification))) {
             Log.d(TAG, "Enable push notifications");
             PushManager.enablePush();
             PushManager

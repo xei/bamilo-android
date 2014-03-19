@@ -12,19 +12,21 @@ import org.apache.http.ParseException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
-import pt.rocket.framework.event.EventManager;
-import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.event.RequestEvent;
-import pt.rocket.framework.event.ResponseResultEvent;
-import pt.rocket.framework.event.events.GetShoppingCartItemsEvent;
+import pt.rocket.forms.PaymentMethodForm;
 import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.rest.RestClientSingleton;
 import pt.rocket.framework.rest.RestContract;
+import pt.rocket.framework.utils.Constants;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.helpers.GetCustomerHelper;
+import pt.rocket.helpers.GetShoppingCartItemsHelper;
+import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.TrackerDelegator;
@@ -50,7 +52,6 @@ import android.webkit.WebViewClient;
 import android.widget.Toast;
 import ch.boye.httpclientandroidlib.cookie.Cookie;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
 import com.shouldit.proxy.lib.ProxyConfiguration;
 import com.shouldit.proxy.lib.ProxySettings;
 import com.shouldit.proxy.lib.ProxyUtils;
@@ -102,7 +103,7 @@ public class CheckoutWebFragment extends BaseFragment {
      */
     public CheckoutWebFragment() {
         super(EnumSet.of(EventType.GET_SHOPPING_CART_ITEMS_EVENT, EventType.GET_CUSTOMER),
-        EnumSet.noneOf(EventType.class),EnumSet.noneOf(MyMenuItem.class),NavigationAction.Unknown,0);
+        EnumSet.noneOf(EventType.class),EnumSet.noneOf(MyMenuItem.class),NavigationAction.Unknown, 0);
         this.setRetainInstance(true);
     }
     
@@ -139,10 +140,35 @@ public class CheckoutWebFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-        EventManager.getSingleton().triggerRequestEvent(new RequestEvent(EventType.GET_CUSTOMER));
-        EventManager.getSingleton().triggerRequestEvent(GetShoppingCartItemsEvent.FORCE_API_CALL);
-        
+       
+        triggerGetCustomer();
+        triggerGetShoppingCartItems();
     }
+    
+    private void triggerGetCustomer(){
+        
+        triggerContentEventWithNoLoading(new GetCustomerHelper(), null, mCallback);
+    }
+    
+    private void triggerGetShoppingCartItems(){
+        
+        triggerContentEventWithNoLoading(new GetShoppingCartItemsHelper(), null, mCallback);
+//        EventManager.getSingleton().triggerRequestEvent(GetShoppingCartItemsEvent.FORCE_API_CALL);
+    }
+    
+    IResponseCallback mCallback = new IResponseCallback() {
+        
+        @Override
+        public void onRequestError(Bundle bundle) {
+            getBaseActivity().handleErrorEvent(bundle);
+        }
+        
+        @Override
+        public void onRequestComplete(Bundle bundle) {
+            onSuccessEvent(bundle);
+            
+        }
+    };
 
     /*
      * (non-Javadoc)
@@ -183,7 +209,10 @@ public class CheckoutWebFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        webview.loadUrl("about:blank");
+        if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1){
+            webview.loadUrl("about:blank");    
+        }
+        
 
         // Needed for 2.3 problem with not showing keyboard by tapping in webview
         webview.requestFocus();
@@ -202,7 +231,9 @@ public class CheckoutWebFragment extends BaseFragment {
     @Override
     public void onPause() {
         super.onPause();
-        webview.loadUrl("about:blank");
+        if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1){
+            webview.loadUrl("about:blank");
+        }
         Log.i(TAG, "ON PAUSE");
     }
 
@@ -214,7 +245,9 @@ public class CheckoutWebFragment extends BaseFragment {
     @Override
     public void onStop() {
         super.onStop();
-        webview.loadUrl("about:blank");
+        if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1){
+            webview.loadUrl("about:blank");
+        }
         Log.i(TAG, "ON STOP");
     }
 
@@ -235,7 +268,12 @@ public class CheckoutWebFragment extends BaseFragment {
         super.onDestroy();
         if(webview != null) {
             webview.setWebViewClient(null);
-            webview.removeAllViews();
+            try {
+                webview.removeAllViews();
+            } catch (IllegalArgumentException e) {
+                // TODO: handle exception
+            }
+            
             webview.destroy();
             webview = null;
         }
@@ -247,7 +285,6 @@ public class CheckoutWebFragment extends BaseFragment {
     public void onLowMemory() {
         super.onLowMemory();
         Log.e(getTag(), "LOW MEM");
-        ImageLoader.getInstance().clearMemoryCache();
         System.gc();
     }
     
@@ -280,7 +317,9 @@ public class CheckoutWebFragment extends BaseFragment {
     private void startCheckout() {
         ((BaseActivity) getActivity()).showLoading(true);
         webview.clearView();
-        webview.loadUrl("about:blank"); 
+        if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1){
+            webview.loadUrl("about:blank");
+        }
         checkoutUrl = "https://" + RestContract.REQUEST_HOST + CHECKOUT_URL_WITH_PARAM;
         setProxy( checkoutUrl );
         Log.d(TAG, "Loading Url: " + checkoutUrl);
@@ -303,8 +342,7 @@ public class CheckoutWebFragment extends BaseFragment {
     }
     
     private void prepareCookieStore() {
-        List<Cookie> cookies = RestClientSingleton.getSingleton()
-                .getCookieStore().getCookies();
+        List<Cookie> cookies = RestClientSingleton.getSingleton(getBaseActivity()).getCookieStore().getCookies();
         CookieManager cookieManager = CookieManager.getInstance();
         if (!cookies.isEmpty()) {
             CookieSyncManager.createInstance(getActivity());
@@ -408,10 +446,10 @@ public class CheckoutWebFragment extends BaseFragment {
                 wasLoadingErrorPage = true;
             } else if ( isRequestedPage ) {
                 if(getActivity() != null)
-                    ((BaseActivity) getActivity()).showContentContainer(true);
+                    ((BaseActivity) getActivity()).showContentContainer();
                 isRequestedPage = false;
             } else if (getActivity() != null) {
-                ((BaseActivity) getActivity()).showContentContainer(true);
+                ((BaseActivity) getActivity()).showContentContainer();
             }
             
             if (url.contains(SUCCESS_URL_TAG)) {
@@ -498,7 +536,7 @@ public class CheckoutWebFragment extends BaseFragment {
                 final JSONObject result = new JSONObject(content);
                 if (result.optBoolean("success")) {
                     // Measure to escape the webview thread
-                    triggerContentEventWithNoLoading(GetShoppingCartItemsEvent.FORCE_API_CALL);
+                    triggerContentEventWithNoLoading(new GetShoppingCartItemsHelper(), null, mCallback);
                     
                     handler.post( new Runnable() {
                         
@@ -509,9 +547,15 @@ public class CheckoutWebFragment extends BaseFragment {
                     });
                     Bundle bundle = new Bundle();
                     bundle.putString(ConstantsIntentExtra.SUCESS_INFORMATION, content);
-                    bundle.putString(ConstantsIntentExtra.CUSTOMER_EMAIL, (customer != null ) ? customer.getEmail() : ""); 
+                    bundle.putString(ConstantsIntentExtra.CUSTOMER_EMAIL, (customer != null ) ? customer.getEmail() : "");
+                    JumiaApplication.INSTANCE.setPaymentMethodForm(new PaymentMethodForm());
+                    
 					String order_number = result.optString("orderNr");
                     String grandTotal = result.optString("grandTotal");
+                    JumiaApplication.INSTANCE.getPaymentMethodForm().setOrderNumber(order_number);
+                    JumiaApplication.INSTANCE.getPaymentMethodForm().setCameFromWebCheckout(true);
+                    JumiaApplication.INSTANCE.getPaymentMethodForm().setCustomerFirstName((customer != null ) ? customer.getFirstName() : "");
+                    JumiaApplication.INSTANCE.getPaymentMethodForm().setCustomerFirstName((customer != null ) ? customer.getLastName() : "");
 					bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR, order_number);                   
 					((BaseActivity) getActivity()).onSwitchFragment(FragmentType.CHECKOUT_THANKS, bundle, FragmentController.ADD_TO_BACK_STACK);
                 }
@@ -524,16 +568,13 @@ public class CheckoutWebFragment extends BaseFragment {
     }
 
     
-    /*
-     * (non-Javadoc)
-     * 
-     * @see pt.rocket.utils.MyActivity#handleTriggeredEvent(pt.rocket.framework.event.ResponseEvent)
-     */
-    @Override
-    protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
-        switch (event.type) {
+
+    protected boolean onSuccessEvent(Bundle bundle) {
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        switch (eventType) {
         case GET_CUSTOMER:
-            customer = (Customer) event.result;
+            customer = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            JumiaApplication.INSTANCE.CUSTOMER = customer;
             break;
         case GET_SHOPPING_CART_ITEMS_EVENT:
             break;

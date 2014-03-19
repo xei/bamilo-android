@@ -8,11 +8,11 @@ import java.util.Set;
 
 import de.akquinet.android.androlog.Log;
 
-import pt.rocket.framework.forms.FormField;
-import pt.rocket.framework.forms.FormFieldMeta;
-import pt.rocket.framework.forms.IFormField;
-import pt.rocket.framework.forms.InputType;
+import pt.rocket.forms.FormField;
+import pt.rocket.forms.FormFieldMeta;
+import pt.rocket.forms.IFormField;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.utils.InputType;
 
 public class MetaFormExtractor {
 	private final static String TAG = LogTagHelper.create( MetaFormExtractor.class );
@@ -37,8 +37,9 @@ public class MetaFormExtractor {
 			if ( field.getKey().equals( metaFieldKey))
 				foundMetaField = field;
 		}
-		
+		Log.i(TAG, "code1checked MetaFormExtractor");
 		if ( foundMetaField == null) {
+		    Log.i(TAG, "code1checked foundMetaField == null");
 			return straightCopyFields(fields);
 		}
 		
@@ -49,7 +50,8 @@ public class MetaFormExtractor {
 		Map<String, IFormField> newSubFields = new HashMap<String, IFormField>();
 		ArrayList<IFormField> transformedFields = new ArrayList<IFormField>();
 		
-		for( IFormField field: fields ) {			
+		for( IFormField field: fields ) {	
+		    Log.i(TAG, "code1checked  field.getKey() : "+ field.getKey());
 			if ( field.getKey().equals( newMetaField.getKey()))
 				transformedFields.add( newMetaField );
 			else if ( subFieldKeys.contains( field.getKey()))

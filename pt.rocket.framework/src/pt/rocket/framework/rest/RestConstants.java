@@ -16,7 +16,8 @@ public class RestConstants {
 	public final static String JSON_MESSAGE_IN_MESSAGES_TAG = "message";
 
 	// ConfigurationService Tags
-	public static final String JSON_CALL_PHONE_TAG = "metadata";
+	public static final String JSON_METADATA_TAG = "metadata";
+	public static final String JSON_CALL_PHONE_TAG = "phone_number";
 
 	// VersionInfo Tags
 	public static final String JSON_VERSION_TAG = "version";
@@ -32,6 +33,7 @@ public class RestConstants {
 	public static final String JSON_BIRTHDAY_TAG = "birthday";
 	public static final String JSON_GENDER_TAG = "gender";
 	public static final String JSON_CREATED_AT_TAG = "created_at";
+	public static final String JSON_PASSWORD_TAG = "password";
 
 	// FormsService Tags
 	public static final String JSON_NAME_TAG = "name";
@@ -55,10 +57,13 @@ public class RestConstants {
 	public static final String JSON_VALIDATION_TAG = "rules";
 	public static final String JSON_DATASET_TAG = "dataset";
 	public static final String JSON_VALUE_TAG = "value";
+	public static final String JSON_VALUES_TAG = "values";
 	public static final String JSON_DATASET_SOURCE_TAG = "dataset_source";
+	public static final String JSON_SCENARIO_TAG = "scenario";
 
 	// FieldValidation Tags
 	public static final String JSON_REQUIRED_TAG = "required";
+	public static final String JSON_REQUIREDVALUE_TAG = "requiredValue";
 	public static final String JSON_MIN_TAG = "min";
 	public static final String JSON_MAX_TAG = "max";
 	public static final String JSON_REGEX_TAG = "regex";
@@ -117,6 +122,7 @@ public class RestConstants {
 	// ProductsPage Tags
 	public static final String JSON_RESULTS_TAG = "results";
 	public static final String JSON_PRODUCT_COUNT_TAG = "product_count";
+	public static final String JSON_CATALOG_NAME_TAG = "category_name";
 	// public static final String JSON_PROD_CATEGORIES_TAG =
 	// JSON_CATEGORIES_TAG;
 
@@ -145,11 +151,15 @@ public class RestConstants {
 	public static final String JSON_CATEGORY_URL_TAG = JSON_URL_TAG;
 
 	// ShoppingCart Tags
+	public static final String JSON_CART_TAG = "cart";
 	public static final String JSON_CART_VALUE_TAG = "cartValue";
 	public static final String JSON_CART_COUNT_TAG = "cartCount";
 	public static final String JSON_CART_ITEMS_TAG = "cartItems";
 	public static final String JSON_CART_VAT_VALUE_TAG = "vat_value";
 	public static final String JSON_CART_SHIPPING_VALUE_TAG = "shipping_value";
+	public static final String JSON_CART_COUPON_VALUE_TAG = "couponMoneyValue";
+	public final static String JSON_MESSAGES_TAG = "messages";
+	public static final String JSON_CART_CLEAN_VALUE_TAG = "cartCleanValue";
 
 	// ShoppingCartItem Tags
 	public static final String JSON_ITEM_IMAGE_TAG = JSON_IMAGE_TAG;
@@ -206,6 +216,7 @@ public class RestConstants {
 
 	// Address Tags
 	public static final String JSON_ADDRESS_ID_TAG = "id_customer_address";
+	public static final String JSON_ADDRESS_ID_TAG_2 = "customer_address_id";
 	// public static final String JSON_FIRST_NAME_TAG = "first_name";
 	public static final String JSON_MIDDLE_NAME_TAG = "middle_name";
 	// public static final String JSON_LAST_NAME_TAG = "last_name";
@@ -296,7 +307,9 @@ public class RestConstants {
 	/**
 	 * Order Tracking TAGS
 	 */
+	public static final String JSON_ORDER_TAG = "order";
 	public static final String JSON_ORDER_ID_TAG = "order_id";
+	public static final String JSON_ORDER_NUMBER_TAG = "order_nr";
 	public static final String JSON_ORDER_CREATION_DATE_TAG = "creation_date";
 	public static final String JSON_ORDER_ITEM_COLLECTION_TAG = "item_collection";
 	public static final String JSON_ORDER_LAST_UPDATE_TAG = "last_order_update";
@@ -304,4 +317,65 @@ public class RestConstants {
 	public static final String JSON_ORDER_STATUS_TAG = "status";
 	public static final String JSON_ORDER_ITEM_STATUS_TAG = "item_status";
 	public static final String JSON_ORDER_ITEM_STATUS_UPDATE_TAG = "last_status_change";
+	public static final String JSON_ORDER_GRAND_TOTAL_TAG = "grand_total";
+	public static final String JSON_ORDER_SHIP_AMOUNT_TAG = "shipping_amount";
+	public static final String JSON_ORDER_EXTRA_PAYMENTS_TAG = "extra_payment_cost";
+	public static final String JSON_ORDER_BNP_DISCOUNT_TAG = "bnp_discount_amount";
+	public static final String JSON_ORDER_INSTALLMENT_FEES_TAG = "installment_fees";
+	public static final String JSON_ORDER_USER_DEVICE_TAG = "customer_device";
+	public static final String JSON_ORDER_SHIP_MET_TAG = "shipping_method";
+	public static final String JSON_ORDER_PAYMENT_PROVIDER_TAG = "provider";
+	public static final String JSON_ORDER_BIL_ADDRESS_TAG = "billing_address";
+	public static final String JSON_ORDER_SHIP_ADDRESS_TAG = "shipping_address";
+	public static final String JSON_ORDER_COUPON_DISCOUNT_TAG = "discount";
+	public static final String JSON_ORDER_COUPON_CODE_TAG = "coupon_code";
+	
+	/**
+	 * Address
+	 */
+	public static final String JSON_SHIPPING_TAG = "shipping";
+	public static final String JSON_BILLING_TAG = "billing";
+	public static final String JSON_OTHER_TAG = "other";
+	public static final String JSON_FASTLINE_TAG = "fastlane";
+	public static final String JSON_CUSTOMER_ID_TAG = "fk_customer";
+	public static final String JSON_COUNTRY_ID_TAG = "fk_country";
+	public static final String JSON_REGION_ID_TAG = "fk_customer_address_region";
+	public static final String JSON_CITY_ID_TAG = "fk_customer_address_city";
+	public static final String JSON_HIDDEN_TAG = "hidden";
+	public static final String JSON_CREATED_BY_TAG = "created_by";
+	public static final String JSON_UPDATED_BY_TAG = "updated_by";
+	public static final String JSON_CUSTOMER_FIRST_NAME_TAG = "customer_first_name";
+	public static final String JSON_CUSTOMER_LAST_NAME_TAG = "customer_last_name";
+	public static final String JSON_CUSTOMER_ADDRESS_COLLECTION_TAG = "address_collection";
+	public static final String JSON_REGION_NAME_TAG = "customer_address_region";
+	public static final String JSON_API_CALL_TAG = "api_call";
+
+	/**
+	 * Native Checkout
+	 */
+	public static final String JSON_NATIVE_CHECKOUT_TAG = "native_checkout";
+	public static final String JSON_NEXT_STEP_TAG = "next_step";
+	public static final String JSON_NATIVE_CHECKOUT_AVAILABLE = "native_checkout_mobile_api";
+	public static final String JSON_SHIPPING_METHOD_TAG = "shippingMethodForm";
+	public static final String JSON_TEXT_TAG = "text";
+	public static final String JSON_TOOLTIP_TEXT_TAG = "tooltip_text";
+	public static final String JSON_CVC_TEXT_TAG = "cvc_text";
+	
+	/**
+	 * Pickup Stations
+	 */
+	public static final String JSON_PICKUP_STATION_ID = "id_pickupstation";
+	public static final String JSON_PICKUP_ID = "pickup_id";
+	public static final String JSON_PICKUP_ADDRESS = "address";
+	public static final String JSON_PICKUP_PLACE = "place";
+	public static final String JSON_PICKUP_CITY = "city";
+	public static final String JSON_PICKUP_OPENING_HOURS = "opening_hours";
+	public static final String JSON_PICKUP_ID_PICKUPSTATION_REGION = "id_pickupstation_region";
+	public static final String JSON_PICKUP_PAYMENT_METHOD = "payment_method";
+	public static final String JSON_PICKUP_REGIONS = "regions";
+
+	public static final String JSON_BILLING_FORM_TAG = "billingForm";
+	public static final String JSON_CUSTOMER_TAG = "customer";
+	public static final String JSON_ADDRESS_LIST_TAG = "address_list";
+
 }

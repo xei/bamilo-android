@@ -1,72 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-	<!-- better naming sceme for the text dimensions -->
+    <!-- better naming sceme for the text dimensions -->
     <dimen name="text_xs">18sp</dimen>
     <dimen name="text_s">20sp</dimen>
     <dimen name="text_m">21sp</dimen>
     <dimen name="text_l">22sp</dimen>
     <dimen name="text_xl">23sp</dimen>
     <dimen name="text_xxl">24sp</dimen>
-    
+
     <!-- HOME -->
-	<dimen name="teaser_swipe_banner_height">435dp</dimen>
+    <dimen name="teaser_swipe_banner_height">435dp</dimen>
     <dimen name="teaser_product_item_width">208dp</dimen>
-	<!-- <dimen name="teaser_product_item_height">312dp</dimen> -->
+    <!-- <dimen name="teaser_product_item_height">312dp</dimen> -->
     <dimen name="teaser_product_item_height">@dimen/wrap_content</dimen>
     <dimen name="teaser_product_item_image_width">190dp</dimen>
     <dimen name="teaser_product_item_image_height">160dp</dimen>
     <dimen name="teaser_product_item_image_margin">7.5dp</dimen>
-	<dimen name="teaser_banners_group_height">220dp</dimen>
-    
+    <dimen name="teaser_banners_group_height">220dp</dimen>
+
     <!-- SLIDING MENU -->
     <item name="navigation_menu_width" type="dimen">40%</item>
     <!-- <dimen name="navigation_menu_offset">480dp</dimen> -->
-    
-	<dimen name="navigation_title_height">56dp</dimen>
+
+    <dimen name="navigation_title_height">56dp</dimen>
     <dimen name="navigation_item_divider_height">1dp</dimen>
     <dimen name="navigation_cart_vertical_distance">17dp</dimen>
     <dimen name="navigation_shadow_width">6dp</dimen>
-    
+
     <!-- ACTION BAR TABLET -->
     <dimen name="action_bar_title_bar">48dp</dimen>
 
-	<!-- MAIN LAYOUT -->
+    <!-- MAIN LAYOUT -->
     <dimen name="main_layout_width">@dimen/match_parent</dimen>
-    
-	<!-- WRITE REVIEW -->
-    <dimen name="text_stars_max_width">500dp</dimen>    
-    
-	<!-- PRODUCT LIST ITEM -->
-	<dimen name="product_list_item_image_width">320dp</dimen>
+
+    <!-- WRITE REVIEW -->
+    <dimen name="text_stars_max_width">500dp</dimen>
+
+    <!-- PRODUCT LIST ITEM -->
+    <dimen name="product_list_item_image_width">320dp</dimen>
     <dimen name="product_list_item_image_height">200dp</dimen>
-	<dimen name="product_list_item_discount_percentage_image_width">90dp</dimen>
+    <dimen name="product_list_item_discount_percentage_image_width">90dp</dimen>
     <dimen name="product_list_item_discount_percentage_image_height">60dp</dimen>
-	<dimen name="product_list_item_discount_percentage_text_width">90dp</dimen>
+    <dimen name="product_list_item_discount_percentage_text_width">90dp</dimen>
     <dimen name="product_list_item_discount_percentage_text_margin">10dp</dimen>
     <dimen name="product_list_item_star_rating_bar_min_height">17dp</dimen>
     <dimen name="product_list_item_star_rating_bar_max_height">17dp</dimen>
+
     <drawable name="product_list_item_star_rating_bar_drawable">@drawable/star_ratingbar_big</drawable>
-	<dimen name="button_sort_line_distance_horizontal">160dp</dimen>
+
+    <dimen name="button_sort_line_distance_horizontal">160dp</dimen>
     <dimen name="button_sort_height">64dp</dimen>
-    
-	<!-- PRODUCT DETAIL ITEM -->
+
+    <!-- PRODUCT DETAIL ITEM -->
     <dimen name="product_detail_item_variation_list_height">110dp</dimen>
     <dimen name="product_detail_item_variation_image_width">90dp</dimen>
     <dimen name="product_detail_item_variation_image_height">90dp</dimen>
     <dimen name="product_detail_item_image_width">400dp</dimen>
     <dimen name="product_detail_item_image_height">400dp</dimen>
-	<dimen name="product_detail_item_discount_image_width">90dp</dimen>
+    <dimen name="product_detail_item_discount_image_width">90dp</dimen>
     <dimen name="product_detail_item_discount_image_height">60dp</dimen>
-	<dimen name="product_detail_item_discount_image_margin">15dp</dimen>
+    <dimen name="product_detail_item_discount_image_margin">15dp</dimen>
     <dimen name="product_detail_item_discount_text_margin">8dp</dimen>
-    
-	<!-- PRODUCT GALLERY ITEM -->
+
+    <!-- PRODUCT GALLERY ITEM -->
     <dimen name="product_gallery_item_variation_list_height">@dimen/product_detail_item_variation_list_height</dimen>
     <dimen name="product_gallery_item_image_list_height">@dimen/product_gallery_item_variation_list_height</dimen>
-    
-	<!-- SHOPPING CART -->
+
+    <!-- SHOPPING CART -->
     <dimen name="shopping_cart_item_image_width">150dp</dimen>
     <dimen name="shopping_cart_item_image_height">150dp</dimen>
-    
+
+    <!-- CHECKOUT HEADER -->
+    <dimen name="checkout_header_height">32dp</dimen>
+    <dimen name="checkout_header_margin">@dimen/margin_small</dimen>
+    <dimen name="checkout_header_step_width">125dp</dimen>
+    <dimen name="checkout_header_step_selected_width">260dp</dimen>
+    <dimen name="checkout_header_step_icon">15dp</dimen>
+    <dimen name="checkout_header_step_s_icon">20dp</dimen>
+    <dimen name="checkout_header_divider_height">1.5dp</dimen>
+
 </resources>

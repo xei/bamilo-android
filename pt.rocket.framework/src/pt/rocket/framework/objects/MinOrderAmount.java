@@ -5,18 +5,17 @@ import org.json.JSONObject;
 
 import pt.rocket.framework.rest.RestConstants;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.text.TextUtils;
 
 /**
  * 
  * Class that represents the minimum order amount
  */
-public class MinOrderAmount implements IJSONSerializable {
+public class MinOrderAmount implements IJSONSerializable, Parcelable {
 
-	private final static String TAG = MinOrderAmount.class.getSimpleName();
-
-//	private final static String JSON_PAYMENT_SETTINGS_TAG = "payment_settings";
-//	private final static String JSON_CART_MIN_ORDER_TAG = "cart_min_order_amount";
+	public final static String TAG = MinOrderAmount.class.getSimpleName();
 
 	double value = 0;
 
@@ -49,4 +48,49 @@ public class MinOrderAmount implements IJSONSerializable {
 		return value;
 	}
 
+	
+    /**
+     * ########### Parcelable ###########
+     * @author sergiopereira
+     */
+    
+    /*
+     * (non-Javadoc)
+     * @see android.os.Parcelable#describeContents()
+     */
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see android.os.Parcelable#writeToParcel(android.os.Parcel, int)
+	 */
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+	    dest.writeDouble(value);
+	}
+	
+	/**
+	 * Parcel constructor
+	 * @param in
+	 */
+	private MinOrderAmount(Parcel in) {
+	    value = in.readDouble();
+    }
+		
+	/**
+	 * Create parcelable 
+	 */
+	public static final Parcelable.Creator<MinOrderAmount> CREATOR = new Parcelable.Creator<MinOrderAmount>() {
+        public MinOrderAmount createFromParcel(Parcel in) {
+            return new MinOrderAmount(in);
+        }
+
+        public MinOrderAmount[] newArray(int size) {
+            return new MinOrderAmount[size];
+        }
+    };
+	
 }

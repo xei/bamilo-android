@@ -3,12 +3,12 @@ package pt.rocket.framework.objects;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import pt.rocket.framework.rest.RestConstants;
 
-public class ProductSimpleUnique implements IJSONSerializable {
-//    private final String JSON_SKU_TAG = "sku";
-//    private final String JSON_QUANTITY_TAG = "quantity";
-//    private final String JSON_VARIATION_TAG = "variation";
+public class ProductSimpleUnique implements IJSONSerializable, Parcelable {
 
     private String sku;
     private int quantity;
@@ -73,4 +73,53 @@ public class ProductSimpleUnique implements IJSONSerializable {
     public String getVariation() {
         return variation;
     }
+    
+    /**
+     * ########### Parcelable ###########
+     * @author sergiopereira
+     */
+    
+    /*
+     * (non-Javadoc)
+     * @see android.os.Parcelable#describeContents()
+     */
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see android.os.Parcelable#writeToParcel(android.os.Parcel, int)
+	 */
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+	    dest.writeString(sku);
+	    dest.writeInt(quantity);
+	    dest.writeString(variation);
+	}
+	
+	/**
+	 * Parcel constructor
+	 * @param in
+	 */
+	private ProductSimpleUnique(Parcel in) {
+	    sku = in.readString();
+	    quantity = in.readInt();
+	    variation = in.readString();
+    }
+		
+	/**
+	 * Create parcelable 
+	 */
+	public static final Parcelable.Creator<ProductSimpleUnique> CREATOR = new Parcelable.Creator<ProductSimpleUnique>() {
+        public ProductSimpleUnique createFromParcel(Parcel in) {
+            return new ProductSimpleUnique(in);
+        }
+
+        public ProductSimpleUnique[] newArray(int size) {
+            return new ProductSimpleUnique[size];
+        }
+    };
+	
 }

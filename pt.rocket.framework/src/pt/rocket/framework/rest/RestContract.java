@@ -18,6 +18,7 @@ public class RestContract {
 		
 	}
 
+	public final static Integer NO_CACHE = null;
 	public final static int MIN_CACHE_TIME = 0;
 	public final static int DEFAULT_CACHE_TIME = 1800;
 	public final static int MAX_CACHE_TIME = 3600;
@@ -42,6 +43,7 @@ public class RestContract {
 	public static String AUTHENTICATION_PASS = null;
 	
     // AUTH CONSTANTS										//false
+	public static boolean RUNNING_TESTS = false;
     public static final boolean USE_AUTHENTICATION_TEST = true;
     public static final String AUTHENTICATION_USER_TEST = "rocket";
     public static final String AUTHENTICATION_PASS_TEST = "rock4me";
@@ -58,6 +60,7 @@ public class RestContract {
 	private static Context context;
 
 	public static void init(Context context, int selectedId) {
+		Log.i(TAG, "initializing RestContract");
 		RestContract.context = context;
 		REQUEST_HOST = context.getResources().getStringArray(R.array.servers)[selectedId];
 		

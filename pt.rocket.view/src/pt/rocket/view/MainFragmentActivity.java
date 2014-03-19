@@ -4,7 +4,6 @@
 package pt.rocket.view;
 
 import java.util.EnumSet;
-import java.util.List;
 
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.app.UrbanAirshipComponent;
@@ -12,9 +11,7 @@ import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
-import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.event.ResponseResultEvent;
-import pt.rocket.framework.objects.Category;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.PreferenceListFragment.OnPreferenceAttachedListener;
@@ -22,8 +19,18 @@ import pt.rocket.view.fragments.BaseFragment;
 import pt.rocket.view.fragments.Catalog;
 import pt.rocket.view.fragments.CategoriesContainerFragment;
 import pt.rocket.view.fragments.ChangeCountryFragment;
-import pt.rocket.view.fragments.CheckoutStep5Fragment;
+import pt.rocket.view.fragments.CheckoutAboutYouFragment;
+import pt.rocket.view.fragments.CheckoutCreateAddressFragment;
+import pt.rocket.view.fragments.CheckoutEditAddressFragment;
+import pt.rocket.view.fragments.CheckoutExternalPaymentFragment;
+import pt.rocket.view.fragments.CheckoutMyAddressesFragment;
+import pt.rocket.view.fragments.CheckoutMyOrderFragment;
+import pt.rocket.view.fragments.CheckoutPaymentMethodsFragment;
+import pt.rocket.view.fragments.CheckoutPollAnswerFragment;
+import pt.rocket.view.fragments.CheckoutShippingMethodsFragment;
+import pt.rocket.view.fragments.CheckoutThanksFragment;
 import pt.rocket.view.fragments.CheckoutWebFragment;
+import pt.rocket.view.fragments.HeadlessAddToCartFragment;
 import pt.rocket.view.fragments.HomeFragment;
 import pt.rocket.view.fragments.MyAccountFragment;
 import pt.rocket.view.fragments.MyAccountUserDataFragment;
@@ -61,9 +68,9 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
     private FragmentType currentFragmentType;
 
     private boolean wasReceivedNotification = false;
-    
-    public static List<Category> currentCategories;
 
+    private SharedPreferences sharedPrefs;
+    
     /**
      * Constructor
      */
@@ -85,7 +92,18 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "ON CREATE");
+        sharedPrefs = getApplicationContext().getSharedPreferences(
+                ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         
+        /**
+         * Remove Caching variables for Categories
+         */
+        Editor eDitor = sharedPrefs.edit();
+        eDitor.remove(ConstantsSharedPrefs.KEY_CATEGORY_SELECTED);
+        eDitor.remove(ConstantsSharedPrefs.KEY_SUB_CATEGORY_SELECTED);
+        eDitor.remove(ConstantsSharedPrefs.KEY_CURRENT_FRAGMENT);
+        eDitor.remove(ConstantsSharedPrefs.KEY_CHILD_CURRENT_FRAGMENT);
+        eDitor.commit();
         // ON ORIENTATION CHANGE
         if(savedInstanceState == null) {
             Log.d(TAG, "################### SAVED INSTANCE IS NULL");
@@ -176,7 +194,9 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         super.onDestroy();
         Log.i(TAG, "ON DESTROY");
         // Delete categories
-        currentCategories = null;
+        JumiaApplication.currentCategories = null;
+        JumiaApplication.INSTANCE.setLoggedIn(false);
+        
         // 
         if(wasReceivedNotification) {
             wasReceivedNotification = false;
@@ -230,7 +250,8 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             fragment = Catalog.getInstance();
             break;
         case PRODUCT_DETAILS:
-            SharedPreferences sP = getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+            SharedPreferences sP = getSharedPreferences(
+                    ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
             Editor eD = sP.edit();
             eD.putBoolean(ProductDetailsActivityFragment.LOAD_FROM_SCRATCH, true);
             eD.commit();
@@ -257,12 +278,6 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         case CHECKOUT_BASKET:
             fragment = CheckoutWebFragment.getInstance();
             break;
-        case CHECKOUT_THANKS:
-            fragment = CheckoutStep5Fragment.getInstance();
-            break;
-        case LOGIN:
-            fragment = SessionLoginFragment.getInstance(bundle);
-            break;
         case REGISTER:
             fragment = SessionRegisterFragment.getInstance();
             break;
@@ -284,6 +299,47 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         case CHANGE_COUNTRY:
             fragment = ChangeCountryFragment.getInstance();
             break;
+        case HEADLESS_CART:
+            fragment = HeadlessAddToCartFragment.getInstance();
+            break;
+            
+        /**
+         * TODO: NEW FRAGMENTS
+         */
+        case LOGIN:
+            fragment = SessionLoginFragment.getInstance(bundle);
+            break;
+        case ABOUT_YOU:
+            fragment = CheckoutAboutYouFragment.getInstance(bundle);
+            break;
+        case POLL:
+            fragment = CheckoutPollAnswerFragment.getInstance(bundle);
+            break;
+        case MY_ADDRESSES:
+            fragment = CheckoutMyAddressesFragment.getInstance(bundle);
+            break;
+        case CREATE_ADDRESS:
+            fragment = CheckoutCreateAddressFragment.getInstance(bundle);
+            break;
+        case EDIT_ADDRESS:
+            fragment = CheckoutEditAddressFragment.getInstance(bundle);
+            break;
+        case SHIPPING_METHODS:
+            fragment = CheckoutShippingMethodsFragment.getInstance(bundle);
+            break;
+        case PAYMENT_METHODS:
+            fragment = CheckoutPaymentMethodsFragment.getInstance(bundle);
+            break;
+        case MY_ORDER:
+            fragment = CheckoutMyOrderFragment.getInstance(bundle);
+            break;
+        case CHECKOUT_THANKS:
+            fragment = CheckoutThanksFragment.getInstance();
+            break;
+        case CHECKOUT_EXTERNAL_PAYMENT:
+            fragment = CheckoutExternalPaymentFragment.getInstance();
+            break;
+            
         default:
             Log.w(TAG, "INVALIDE FRAGMENT TYPE");
             return;
@@ -311,7 +367,6 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
     public void onBackPressed() {
         Log.i(TAG, "ON BACK PRESSED");
         fragment = getActiveFragment();
-        Log.i(TAG, "code1 : "+fragment.getTag());
         if(fragment == null || !fragment.allowBackPressed()) {
             Log.i(TAG, "NOT ALLOW BACK PRESSED: FRAGMENT");
             fragmentManagerBackPressed();
@@ -340,24 +395,10 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         fragment = (BaseFragment) getSupportFragmentManager().findFragmentByTag(tag);
     }
     
-    /*
-     * (non-Javadoc)
-     * 
-     * @see pt.rocket.utils.MyActivity#handleTriggeredEvent(pt.rocket.framework.event.ResponseEvent)
-     */
-    @Override
-    protected boolean onSuccessEvent(final ResponseResultEvent<?> event) {
-        return false;
-    }
 
     // ####################### MY ACCOUNT FRAGMENT #######################
     @Override
     public void onPreferenceAttached(PreferenceScreen root, int xmlId) {
-    }
-
-    @Override
-    public String getMD5Hash() {
-        return null;
     }
 
 }

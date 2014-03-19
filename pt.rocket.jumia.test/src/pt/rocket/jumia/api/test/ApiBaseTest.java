@@ -4,11 +4,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Random;
 
-import junit.framework.Assert;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import pt.rocket.framework.test.RestClientSingletonTest;
 import pt.rocket.framework.rest.RestService;
 import pt.rocket.jumia.api.constants.JsonConstants;

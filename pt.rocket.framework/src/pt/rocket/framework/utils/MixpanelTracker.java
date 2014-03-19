@@ -293,7 +293,8 @@ public class MixpanelTracker {
 			
 			people.set(context.getString(R.string.mixproppeople_itemscategory), category);
 			people.set(context.getString(R.string.mixproppeople_transations), cartValue);
-			people.trackCharge(Double.parseDouble(cartValue), null);
+			Log.i(TAG, "code1track value "+CurrencyFormatter.getValueDouble(cartValue.trim()));
+			people.trackCharge(CurrencyFormatter.getValueDouble(cartValue.trim()), null);
 		}
         
 		props = null;
@@ -409,6 +410,60 @@ public class MixpanelTracker {
 		Log.d( TAG, "checkout tracking:  " + context.getString(R.string.mixcheckout) );
 		mixpanel.track(context.getString(R.string.mixcheckout), props);
 	}
+	
+	public static void trackCheckoutStep(Context context, String email, int step) {
+		if (!isEnabled)
+			return;
+		
+		
+
+		props = null;
+		setProperty(context.getString(step), "");
+		setProperty(context.getString(R.string.mixprop_email), "" + email);
+		
+		Log.d( TAG, "trackCheckoutStep tracking:  " + context.getString(R.string.mixnativecheckout) );
+		mixpanel.track(context.getString(R.string.mixnativecheckout), props);
+	}
+	
+	public static void trackSignUp(Context context, String email) {
+		if (!isEnabled)
+			return;
+
+		props = null;
+		
+		setProperty(context.getString(R.string.mixprop_signup), "" + email);
+		
+		Log.d( TAG, "trackSignUp tracking:  " + context.getString(R.string.mixprop_signup) );
+		mixpanel.track(context.getString(R.string.mixprop_signup), props);
+	}
+	
+	
+	public static void trackPaymentMethod(Context context, String email, String payment) {
+		if (!isEnabled)
+			return;
+		
+		
+
+		props = null;
+		setProperty(context.getString(R.string.mixprop_checkout_payment_method), payment);
+		setProperty(context.getString(R.string.mixprop_email), "" + email);
+		
+		Log.d( TAG, "trackPaymentMethod tracking:  " + context.getString(R.string.mixnativecheckout) );
+		mixpanel.track(context.getString(R.string.mixnativecheckout), props);
+	}
+	
+	
+	public static void trackNativeCheckoutError(Context context, String email, String error) {
+		if (!isEnabled)
+			return;
+		
+		props = null;
+		setProperty(context.getString(R.string.mixnativecheckouterror), error);
+		setProperty(context.getString(R.string.mixprop_email), "" + email);
+		
+		Log.d( TAG, "trackNativeCheckoutError tracking:  " + context.getString(R.string.mixnativecheckouterror) );
+		mixpanel.track(context.getString(R.string.mixnativecheckouterror), props);
+	}
 
 	public static void share(Context context, Intent intent) {
 		if (!isEnabled)
@@ -506,10 +561,7 @@ public class MixpanelTracker {
 	}
 	
 	public static void flush (){
-		if (!isEnabled)
-			return;		
-		
-		mixpanel.flush();
+		if (isEnabled && mixpanel != null) mixpanel.flush();
 	}
 	
 	/**

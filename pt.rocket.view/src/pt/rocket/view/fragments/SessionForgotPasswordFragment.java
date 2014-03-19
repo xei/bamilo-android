@@ -4,19 +4,25 @@
 package pt.rocket.view.fragments;
 
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.FormConstants;
 import pt.rocket.factories.FormFactory;
-import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.event.ResponseEvent;
-import pt.rocket.framework.event.ResponseResultEvent;
-import pt.rocket.framework.event.events.ForgetPasswordEvent;
-import pt.rocket.framework.forms.Form;
+import pt.rocket.forms.Form;
+import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.Errors;
 import pt.rocket.framework.rest.RestConstants;
+import pt.rocket.framework.utils.Constants;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.helpers.GetChangePasswordHelper;
+import pt.rocket.helpers.GetInitFormHelper;
+import pt.rocket.helpers.session.GetForgotPasswordFormHelper;
+import pt.rocket.helpers.session.GetForgotPasswordHelper;
+import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.pojo.DynamicForm;
 import pt.rocket.pojo.DynamicFormItem;
 import pt.rocket.utils.MyMenuItem;
@@ -135,7 +141,12 @@ public class SessionForgotPasswordFragment extends BaseFragment {
         if (formResponse != null)
             displayForm(formResponse);
         else
-            triggerContentEvent(EventType.GET_FORGET_PASSWORD_FORM_EVENT);
+            /**
+             * TRIGGERS
+             * @author sergiopereira
+             */
+            triggerForgotForm();
+            //triggerContentEvent(EventType.GET_FORGET_PASSWORD_FORM_EVENT);
         
         setAppContentLayout();
     }
@@ -175,7 +186,14 @@ public class SessionForgotPasswordFragment extends BaseFragment {
     public void onStop() {
         super.onStop();
         Log.i(TAG, "ON STOP");
-        if(container != null) container.removeAllViews();
+        if(container != null){
+            
+            try {
+                container.removeAllViews();
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+            }
+        }
     }
     
     /*
@@ -212,7 +230,13 @@ public class SessionForgotPasswordFragment extends BaseFragment {
      */
     private void requestPassword() {
         ContentValues values = dynamicForm.save();
-        triggerContentEvent(new ForgetPasswordEvent(values));
+        
+        /**
+         * TRIGGERS
+         * @author sergiopereira
+         */
+        triggerForgot(values);
+        //triggerContentEvent(new ForgetPasswordEvent(values));
     }
 
     
@@ -220,6 +244,7 @@ public class SessionForgotPasswordFragment extends BaseFragment {
      * 
      */
     private void displayForm(Form form) {
+        Log.d(TAG, "DISPLAY FORM");
         dynamicForm = FormFactory.getSingleton().CreateForm(FormConstants.FORGET_PASSWORD_FORM, getActivity(), form);
         DynamicFormItem item = dynamicForm.getItemByKey("email");
         if (item == null)
@@ -244,16 +269,16 @@ public class SessionForgotPasswordFragment extends BaseFragment {
         }
     }
     
-
-    /*
-     * (non-Javadoc)
-     * @see pt.rocket.view.fragments.MyFragment#onSuccessEvent(pt.rocket.framework.event.ResponseResultEvent)
-     */
-    @Override
-    protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
-        switch (event.getType()) {
+    protected boolean onSuccessEvent(Bundle bundle) {
+        Log.d(TAG, "ON SUCCESS EVENT");
+        getBaseActivity().showContentContainer(false);
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        switch (eventType) {
+        case INIT_FORMS:
         case GET_FORGET_PASSWORD_FORM_EVENT:
-            Form form = (Form) event.result;
+            Log.d(TAG, "FORGET_PASSWORD_FORM");
+            Form form = (Form) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             if (null != form) {
                 this.formResponse = form;
                 displayForm(form);
@@ -283,20 +308,28 @@ public class SessionForgotPasswordFragment extends BaseFragment {
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see pt.rocket.view.fragments.MyFragment#onErrorEvent(pt.rocket.framework.event.ResponseEvent)
-     */
-    @Override
-    protected boolean onErrorEvent(ResponseEvent event) {
-        if (event.getType() == EventType.FORGET_PASSWORD_EVENT) {
-            List<String> errorMessages = event.errorMessages.get(RestConstants.JSON_ERROR_TAG);
-            if (errorMessages != null
-                    && errorMessages.contains(Errors.CODE_FORGOTPW_NOSUCH_CUSTOMER)) {
+    protected boolean onErrorEvent(Bundle bundle) {
+        
+        if(getBaseActivity().handleErrorEvent(bundle)){
+            return true;
+        }
+        
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        
+        Log.d(TAG, "ON ERROR EVENT: " + eventType.toString());
+        
+        if (eventType == EventType.FORGET_PASSWORD_EVENT) {
+            Log.d(TAG, "FORGET_PASSWORD_EVENT");
+            
+            HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+            List<String> errorMessages = (List<String>) errors.get(RestConstants.JSON_VALIDATE_TAG);
+
+            if (errors != null && errorMessages != null && errorMessages.size() > 0) {
                 ((BaseActivity) getActivity()).showContentContainer(false);
                 dialog = DialogGenericFragment.newInstance(true, true, false,
                         getString(R.string.error_forgotpassword_title),
-                        getString(R.string.error_forgotpassword_text),
+                        errorMessages.get(0),
                         getString(R.string.ok_label), "", new OnClickListener() {
 
                             @Override
@@ -315,4 +348,45 @@ public class SessionForgotPasswordFragment extends BaseFragment {
         }
         return false;  
     }
+    
+    
+    /**
+     * TRIGGERS
+     * @author sergiopereira
+     */
+    private void triggerForgotForm(){
+        Bundle bundle = new Bundle();
+        if(JumiaApplication.INSTANCE.getFormDataRegistry() != null && JumiaApplication.INSTANCE.getFormDataRegistry().size() > 0){
+            triggerContentEvent(new GetForgotPasswordFormHelper(), bundle, mCallBack);
+        } else {
+            bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, ErrorCode.UNKNOWN_ERROR);
+            mCallBack.onRequestError(bundle);
+        }
+        
+    }
+    
+    private void triggerForgot(ContentValues values){
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(GetForgotPasswordHelper.CONTENT_VALUES, values);
+        triggerContentEvent(new GetForgotPasswordHelper(), bundle, mCallBack);
+        getBaseActivity().hideKeyboard();
+    }
+    
+    /**
+     * CALLBACK
+     * @author sergiopereira
+     */
+    IResponseCallback mCallBack = new IResponseCallback() {
+        
+        @Override
+        public void onRequestError(Bundle bundle) {
+            onErrorEvent(bundle);
+        }
+        
+        @Override
+        public void onRequestComplete(Bundle bundle) {
+            onSuccessEvent(bundle);
+        }
+    };
+    
 }

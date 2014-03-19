@@ -9,13 +9,21 @@ package pt.rocket.framework;
 public enum ErrorCode {
 
 	NO_ERROR(0),
-
-	UNKNOWN_ERROR(-1), NO_NETWORK(-2),
-
-	CONNECT_ERROR(-3), TIME_OUT(-4),
-
-	ERROR_PARSING_SERVER_DATA(-5), HTTP_PROTOCOL(-6), IO(-7), EMPTY_ENTITY(-8), HTTP_STATUS(-9), REQUEST_ERROR(-10), INTERNAL_ERROR(
-			-101), REQUIRES_USER_INTERACTION(-201);
+	UNKNOWN_ERROR(-1), 
+	NO_NETWORK(-2),
+	CONNECT_ERROR(-3), 
+	TIME_OUT(-4),
+	ERROR_PARSING_SERVER_DATA(-5), 
+	HTTP_PROTOCOL(-6), 
+	IO(-7), 
+	EMPTY_ENTITY(-8), 
+	HTTP_STATUS(-9), 
+	REQUEST_ERROR(-10),
+	AUTO_COUNTRY_SELECTION(-11),
+	INTERNAL_ERROR(-101), 
+	REQUIRES_USER_INTERACTION(-201), 
+	SERVER_IN_MAINTENANCE(-503); 
+	
 
 	public final int id;
 
@@ -40,6 +48,7 @@ public enum ErrorCode {
 	public static boolean isNetworkError(ErrorCode error) {
 		switch (error) {
 		case NO_NETWORK:
+		case SERVER_IN_MAINTENANCE:
 		case CONNECT_ERROR:
 		case TIME_OUT:
 			return true;

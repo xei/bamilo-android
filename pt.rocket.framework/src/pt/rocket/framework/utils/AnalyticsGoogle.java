@@ -197,7 +197,13 @@ public class AnalyticsGoogle {
 
 		// Log.d( TAG, "trackProduct: navigationPath = " + navigationPath +
 		// " name = " + name );
-		String pageView = mContext.getString(navigationPrefix) + "_" + navigationPath + "/" + name.replace(" ", "_");
+		String pageView;
+		if(navigationPath != null && !navigationPath.equalsIgnoreCase("")){
+			pageView = mContext.getString(navigationPrefix) + "_" + navigationPath + "/" + name.replace(" ", "_");	
+		} else {
+			pageView = mContext.getString(navigationPrefix) + "_" + name.replace(" ", "_");
+		}
+		
 
 		Log.d(TAG, "trackProduct pageView = " + pageView);
 		mTracker.sendView(pageView);
@@ -288,6 +294,54 @@ public class AnalyticsGoogle {
 			mTracker.sendEvent(category, action, sku, price);
 		}
 	}
+	
+	public void trackCheckoutStep(String email, int step) {
+		if (!isEnabled) {
+			return;
+		}
+
+		String category = mContext.getString(step);
+		String action = mContext.getString(R.string.gNativeCheckout);
+		Log.d(TAG, "trackCheckoutStep: category = " + category + " action = " + action + " email " + email);
+		mTracker.sendEvent(category, action, email, (long) 0);
+		
+	}
+	
+	public void trackSignUp(String email) {
+		if (!isEnabled) {
+			return;
+		}
+
+		String category = mContext.getString(R.string.gSignUp);
+		String action = mContext.getString(R.string.gSignUp);
+		Log.d(TAG, "trackSignUp: category = " + category + " action = " + action + " email " + email);
+		mTracker.sendEvent(category, action, email, (long) 0);
+		
+	}
+	
+	public void trackPaymentMethod(String email, String payment) {
+		if (!isEnabled) {
+			return;
+		}
+
+		String category = mContext.getString(R.string.gPaymentMethod);
+
+		Log.d(TAG, "trackCheckoutStep: category = " + category + " payment = " + payment + " email " + email);
+		mTracker.sendEvent(category, payment, email, (long) 0);
+		
+	}
+	
+	public void trackNativeCheckoutError(String email, String error) {
+		if (!isEnabled) {
+			return;
+		}
+
+		String category = mContext.getString(R.string.gNativeCheckoutError);
+
+		Log.d(TAG, "trackNativeCheckoutError: category = " + category + " error = " + error + " email " + email);
+		mTracker.sendEvent(category, error, email, (long) 0);
+		
+	}
 
 	private void trackTiming(int categoryId, int nameId, long milliSeconds, String label) {
 		if (!isEnabled) {
@@ -310,8 +364,10 @@ public class AnalyticsGoogle {
 		if (items == null || items.size() == 0) {
 			return;
 		}
-
-		Double valueDouble = Double.parseDouble(value);
+		
+		
+		Log.i(TAG, "code1track value "+value);
+		Double valueDouble = CurrencyFormatter.getValueDouble(value.trim());
 		long valueAsLongMicro = (long) (valueDouble * MICRO_MULTI);
 		String currencyCode = CurrencyFormatter.getCurrencyCode();
 

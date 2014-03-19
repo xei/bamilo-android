@@ -8,6 +8,9 @@ import java.util.Map.Entry;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import pt.rocket.framework.rest.RestConstants;
 
 import de.akquinet.android.androlog.Log;
@@ -17,11 +20,8 @@ import de.akquinet.android.androlog.Log;
  * Helpers class responsible for parsing the error messages from the api. Use the method createErrorMessageMap to parse the json object into an string -> string array map.
  *
  */
-public class Errors {
+public class Errors implements Parcelable {
 	private final static String TAG = Errors.class.getSimpleName();
-	
-//	public static final String JSON_VALIDATE_TAG = "validate";
-//	public static final String JSON_ERROR_TAG = "error";
 
 	public final static String CODE_LOGIN_FAILED = "CUSTOMER_LOGIN_FAILED";
 	public final static String CODE_LOGIN_CHECK_PASSWORD = "CUSTOMER_LOGIN_CHECK_EMAIL_PASSWORD";
@@ -32,13 +32,10 @@ public class Errors {
 	public final static String CODE_ORDER_PRODUCT_SOLD_OUT = "ORDER_PRODUCT_SOLD_OUT";
 	public final static String CODE_CUSTOMER_NOT_LOGGED_ID = "CUSTOMER_NOT_LOGGED_IN";
 	public final static String CODE_FORM_VALIDATION_FAILED = "FORM_VALIDATION_FAILED";
-	
-	
 	public final static String CODE_PRODUCT_ADD_OVERQUANTITY = "SR_ORDER_PRODUCT_ERROR_ADDING_STOCK_ABOVE_ALLOWED_QUANTITY";
 	public final static String CODE_ORDER_PRODUCT_ERROR_ADDING = "ORDER_PRODUCT_ERROR_ADDING";
-
-//	private final static String JSON_SUCCESS_TAG = "success";
-//	private final static String JSON_MESSAGE_IN_MESSAGES_TAG = "message";
+	public final static String CODE_ALREADY_LOGGED_IN = "CUSTOMER_ALREADY_LOGGED_IN";
+	
 
 	private static List<String> errorMessages;
 	private static List<String> validateMessages;
@@ -304,5 +301,52 @@ public class Errors {
 		}
 		return content;
 	}
+	
+	
+    /**
+     * ########### Parcelable ###########
+     * @author sergiopereira
+     */
+    
+    /*
+     * (non-Javadoc)
+     * @see android.os.Parcelable#describeContents()
+     */
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see android.os.Parcelable#writeToParcel(android.os.Parcel, int)
+	 */
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+	    dest.writeStringList(errorMessages);
+	    dest.writeStringList(validateMessages);
+	}
+	
+	/**
+	 * Parcel constructor
+	 * @param in
+	 */
+	private Errors(Parcel in) {
+		in.readStringList(errorMessages);
+		in.readStringList(validateMessages);
+    }
+		
+	/**
+	 * Create parcelable 
+	 */
+	public static final Parcelable.Creator<Errors> CREATOR = new Parcelable.Creator<Errors>() {
+        public Errors createFromParcel(Parcel in) {
+            return new Errors(in);
+        }
+
+        public Errors[] newArray(int size) {
+            return new Errors[size];
+        }
+    };
 
 }

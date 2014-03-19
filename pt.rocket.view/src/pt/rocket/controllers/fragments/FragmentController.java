@@ -118,6 +118,15 @@ public class FragmentController {
     }
     
     /**
+     * Remove the last entry if is the tag
+     * @param tag
+     */
+    public void popLastEntry(String tag){
+        if(!backStack.isEmpty() && backStack.getLast().equals(tag))
+            backStack.removeLast();
+    }
+    
+    /**
      * Get the last entry
      * @return {@link String}
      */
@@ -139,7 +148,7 @@ public class FragmentController {
      * Remove all old entries
      * @param tag
      */
-    private synchronized void removeAllEntriesWithTag(String tag) {
+    public synchronized void removeAllEntriesWithTag(String tag) {
         Log.i(TAG, "REMOVE OLD ENTRIES: " + tag);
         Iterator<String> iterator = backStack.iterator();
         while (iterator.hasNext()) {
@@ -247,10 +256,12 @@ public class FragmentController {
              */
             if (getLastEntry().equals(FragmentType.HOME.toString())) 
                 activity.doubleBackPressToExit();
-            else 
+            else {
+                popAllBackStack(activity, null);
                 activity.onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            }
             
-            break;            
+            break;
         case 0:
             activity.onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
             break;

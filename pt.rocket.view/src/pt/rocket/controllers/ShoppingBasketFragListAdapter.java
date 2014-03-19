@@ -4,12 +4,15 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 import org.holoeverywhere.widget.TextView;
+
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.view.R;
 import pt.rocket.view.fragments.ShoppingCartFragment;
 import pt.rocket.view.fragments.ShoppingCartFragment.CartItemValues;
 import android.content.Context;
+import android.database.DataSetObserver;
 import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
@@ -20,11 +23,11 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 
 import com.actionbarsherlock.view.ActionMode;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
+import com.androidquery.AQuery;
+import com.androidquery.callback.AjaxStatus;
+import com.androidquery.callback.BitmapAjaxCallback;
 
 /**
  * This Class implements the Basket Adapter
@@ -132,7 +135,7 @@ public class ShoppingBasketFragListAdapter extends BaseAdapter {
             prodItem.discountPercentage = (TextView) view.findViewById(R.id.discount_percentage);
             prodItem.priceDisc = (TextView) view.findViewById(R.id.item_discount);
             prodItem.promoImg = (ImageView) view.findViewById(R.id.item_promotion);
-            prodItem.variancesContainer = (LinearLayout) view
+            prodItem.variancesContainer = (TextView) view
                     .findViewById(R.id.variances_container);
             prodItem.stockInfo = (TextView) view.findViewById(R.id.item_stock);
             prodItem.deleteBtn = (Button) view.findViewById(R.id.delete_button);
@@ -146,24 +149,16 @@ public class ShoppingBasketFragListAdapter extends BaseAdapter {
 
         
         String url = prodItem.itemValues.image;
+        AQuery aq = new AQuery(this.activity.getBaseActivity());
+        aq.id(prodItem.productView).image(url, true, true, 0, 0, new BitmapAjaxCallback() {
 
-        ImageLoader.getInstance().displayImage(url, prodItem.productView, new SimpleImageLoadingListener() {
-
-            /*
-             * (non-Javadoc)
-             * 
-             * @see com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener#
-             * onLoadingComplete(java.lang.String, android.view.View, android.graphics.Bitmap)
-             */
-            @Override
-            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                prodItem.productView.setVisibility(View.VISIBLE);
-                prodItem.pBar.setVisibility(View.GONE);
-            }
-
-        });
-
-        
+                    @Override
+                    public void callback(String url, ImageView iv, Bitmap bm, AjaxStatus status) {
+                        prodItem.productView.setImageBitmap(bm);
+                        prodItem.productView.setVisibility(View.VISIBLE);
+                        prodItem.pBar.setVisibility(View.GONE);
+                    }
+                });
 
         if (!prodItem.itemValues.price.equals(prodItem.itemValues.price_disc)) {
             prodItem.priceDisc.setText(prodItem.itemValues.price_disc);
@@ -183,28 +178,19 @@ public class ShoppingBasketFragListAdapter extends BaseAdapter {
             prodItem.promoImg.setVisibility(View.GONE);
             prodItem.discountPercentage.setVisibility(View.GONE);
         }
-
-
-        prodItem.variancesContainer.removeAllViews();
-
-        if (prodItem.itemValues.simpleData != null) {
-            prodItem.variancesContainer.setVisibility(View.VISIBLE);
+        prodItem.variancesContainer.setVisibility(View.GONE);
+        if (prodItem.itemValues.variation != null) {
+            
             Map<String, String> simpleData = prodItem.itemValues.simpleData;
 
-            // FIXME COMMENT UNTIL DEPLY OF API TO LIVE
-            try {
+                if (prodItem.itemValues.variation != null && prodItem.itemValues.variation.length() > 0 && !prodItem.itemValues.variation.equalsIgnoreCase(",") && !prodItem.itemValues.variation.equalsIgnoreCase("...") && !prodItem.itemValues.variation.equalsIgnoreCase(".")) {
+//                    TextView variances = (TextView) inflater.inflate(
+//                            R.layout.shopping_basket_variance_text, prodItem.variancesContainer, false);
 
-                if (prodItem.itemValues.variation != null && prodItem.itemValues.variation.length() > 0) {
-                    TextView variances = (TextView) inflater.inflate(
-                            R.layout.shopping_basket_variance_text, prodItem.variancesContainer, false);
-
-                    variances.setText(prodItem.itemValues.variation);
-                    prodItem.variancesContainer.addView(variances);
-                }
-            } catch (Exception e) {
-                // TODO: handle exception
-            }
-
+//                    variances.setText(prodItem.itemValues.variation);
+                    prodItem.variancesContainer.setVisibility(View.VISIBLE);
+                    prodItem.variancesContainer.setText(prodItem.itemValues.variation);
+                } 
         }
 
         
@@ -272,7 +258,7 @@ public class ShoppingBasketFragListAdapter extends BaseAdapter {
         public TextView discountPercentage;
         public TextView priceDisc;
         public ImageView promoImg;
-        public LinearLayout variancesContainer;
+        public TextView variancesContainer;
         public TextView stockInfo;
         public Button deleteBtn;
         public CartItemValues itemValues;
@@ -301,4 +287,15 @@ public class ShoppingBasketFragListAdapter extends BaseAdapter {
         }
     }
 
+    
+    /**
+     * #FIX: java.lang.IllegalArgumentException: The observer is null.
+     * @solution from : https://code.google.com/p/android/issues/detail?id=22946 
+     */
+    @Override
+    public void unregisterDataSetObserver(DataSetObserver observer) {
+        if(observer !=null){
+            super.unregisterDataSetObserver(observer);    
+        }
+    }
 }

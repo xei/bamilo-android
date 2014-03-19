@@ -3,22 +3,26 @@ package pt.rocket.framework.objects;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import de.akquinet.android.androlog.Log;
 
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.ImageResolutionHelper;
 import pt.rocket.framework.utils.LogTagHelper;
 
-public class Variation implements IJSONSerializable {
+public class Variation implements IJSONSerializable, Parcelable {
 	private static final String TAG = LogTagHelper.create(Variation.class);
-
-//	private static final String JSON_LINK_TAG = "link";
-//	private static final String JSON_IMAGE_TAG = "image";
 
 	private String sku;
 	private String link;
 	private String image;
 
+	public Variation() {
+
+	}
+	
 	public boolean initialize(String sku, JSONObject jsonObject) {
 		this.sku = sku;
 		try {
@@ -80,5 +84,34 @@ public class Variation implements IJSONSerializable {
 			return modUrl;
 		return url;
 	}
+
+	@Override
+	public int describeContents() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeString(sku);
+		dest.writeString(link);
+		dest.writeString(image);
+	}
+	
+	private Variation(Parcel in){
+		sku = in.readString();
+		link = in.readString();
+		image = in.readString();
+	}
+	
+    public static final Parcelable.Creator<Variation> CREATOR = new Parcelable.Creator<Variation>() {
+        public Variation createFromParcel(Parcel in) {
+            return new Variation(in);
+        }
+
+        public Variation[] newArray(int size) {
+            return new Variation[size];
+        }
+    };
 	
 }

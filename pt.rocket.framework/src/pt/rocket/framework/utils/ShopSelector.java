@@ -3,6 +3,7 @@ package pt.rocket.framework.utils;
 import java.util.Locale;
 
 import pt.rocket.framework.R;
+import pt.rocket.framework.rest.RestClientSingleton;
 import pt.rocket.framework.rest.RestContract;
 import android.content.Context;
 import android.content.res.Resources;
@@ -48,17 +49,15 @@ public final class ShopSelector {
 				context,
 				context.getResources().getStringArray(R.array.language_codes)[shopId]);
 		RestContract.init(context, shopId);
+		RestClientSingleton.init(context);
+
 		String currencyCode = context.getResources().getStringArray(
 				R.array.currency_codes)[shopId];
+//		Log.i(TAG, "code1 currency code is :_ "+currencyCode);
 		CurrencyFormatter.initialize(context, currencyCode);
 		AnalyticsGoogle.startup(context, shopId);
 		MixpanelTracker.startup(context, shopId);
 		MixpanelTracker.launch(context);
-		
-		/**
-		 * Startup the Adx tracker, the launch event is performed on the splash screen
-		 * @author sergiopereira
-		 */
 		AdXTracker.startup(context);
 		
 		sShopId = shopId;

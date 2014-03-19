@@ -28,5 +28,12 @@ public class ConstantsSharedPrefs {
 	public static String KEY_SHOW_PROMOTIONS = "show_promotions";
 	
 	public static String KEY_COUNTRY = "country";
-
+	
+	/**
+	 * Categories Keys
+	 */
+	public static String KEY_CATEGORY_SELECTED = "selectedCategory";
+	public static String KEY_SUB_CATEGORY_SELECTED = "selectedSubCategory";
+	public static String KEY_CURRENT_FRAGMENT = "currentFragment";
+	public static String KEY_CHILD_CURRENT_FRAGMENT = "childCurrentFragment";
 }

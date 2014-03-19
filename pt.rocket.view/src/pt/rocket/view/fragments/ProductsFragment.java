@@ -4,26 +4,30 @@
 package pt.rocket.view.fragments;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.EnumSet;
 
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.ProductsListAdapter;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
-import pt.rocket.framework.event.EventManager;
-import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.event.IMetaData;
-import pt.rocket.framework.event.ResponseEvent;
-import pt.rocket.framework.event.ResponseResultEvent;
-import pt.rocket.framework.event.events.GetProductsEvent;
+import pt.rocket.framework.ErrorCode;
+import pt.rocket.framework.interfaces.IMetaData;
 import pt.rocket.framework.objects.Product;
+import pt.rocket.framework.objects.ProductRatingPage;
 import pt.rocket.framework.objects.ProductsPage;
 import pt.rocket.framework.rest.RestContract;
 import pt.rocket.framework.utils.AnalyticsGoogle;
+import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.Direction;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.framework.utils.ProductSort;
+import pt.rocket.helpers.GetProductReviewsHelper;
+import pt.rocket.helpers.GetProductsHelper;
+import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.DialogList;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
@@ -53,8 +57,6 @@ import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
-
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 import de.akquinet.android.androlog.Log;
 
@@ -211,7 +213,7 @@ public class ProductsFragment extends BaseFragment implements
         setSort(pos);
         
         
-        Log.i(TAG, "code1 creating ProductsFragment " + pos);
+//        Log.i(TAG, "code1 creating ProductsFragment " + pos);
 
         Log.d(TAG, "onCreate: searchQuery = " + searchQuery);
         
@@ -223,7 +225,7 @@ public class ProductsFragment extends BaseFragment implements
 
         productsAdapter = new ProductsListAdapter(getActivity());
         
-        if(BaseActivity.isTabletInLandscape(getBaseActivity())){
+        if(((BaseActivity) getActivity()).isTabletInLandscape(getBaseActivity())){
             productsListGridView.setAdapter(productsAdapter);
         } else {
             productsListView.setAdapter(productsAdapter);
@@ -248,7 +250,7 @@ public class ProductsFragment extends BaseFragment implements
     private void setAppContentLayout() {
 
         productsContent = mainView.findViewById(R.id.products_content);
-        if(BaseActivity.isTabletInLandscape(getBaseActivity())){
+        if(((BaseActivity) getActivity()).isTabletInLandscape(getBaseActivity())){
             productsListGridView = (GridView) mainView.findViewById(R.id.middle_productslist_list);
             productsListGridView.setOnItemClickListener(new OnItemClickListener() {
                 public void onItemClick(AdapterView<?> parent, View view,
@@ -343,7 +345,7 @@ public class ProductsFragment extends BaseFragment implements
     private void showProductsContent() {
         Log.d(TAG, "showProductsContent");
         if (pageNumber == 1) {
-            if(BaseActivity.isTabletInLandscape(getBaseActivity())){
+            if(((BaseActivity) getActivity()).isTabletInLandscape(getBaseActivity())){
                 productsListGridView.post(new Runnable() {
                     @Override
                     public void run() {
@@ -424,7 +426,6 @@ public class ProductsFragment extends BaseFragment implements
     @Override
     public void onLowMemory() {
         super.onLowMemory();
-        ImageLoader.getInstance().clearMemoryCache();
         System.gc();
     }
 
@@ -456,13 +457,26 @@ public class ProductsFragment extends BaseFragment implements
             }
 
             mBeginRequestMillis = System.currentTimeMillis();
-            EventManager.getSingleton().triggerRequestEvent(
-                    new GetProductsEvent(productsURL, searchQuery, pageNumber, MAX_PAGE_ITEMS,
-                            sort, dir, md5Hash));
+            
+            /**
+             * TRIGGERS
+             * @author sergiopereira
+             */
+            Bundle bundle = new Bundle();
+            bundle.putString(GetProductsHelper.PRODUCT_URL, productsURL);
+            bundle.putString(GetProductsHelper.SEARCH_QUERY, searchQuery);
+            bundle.putInt(GetProductsHelper.PAGE_NUMBER, pageNumber);
+            bundle.putInt(GetProductsHelper.TOTAL_COUNT, MAX_PAGE_ITEMS);
+            bundle.putSerializable(GetProductsHelper.SORT, sort);
+            bundle.putSerializable(GetProductsHelper.DIRECTION, dir);
+            JumiaApplication.INSTANCE.sendRequest(new GetProductsHelper(), bundle, mCallBack);
+            //EventManager.getSingleton().triggerRequestEvent(new GetProductsEvent(productsURL, searchQuery, pageNumber, MAX_PAGE_ITEMS, sort, dir, md5Hash));
+            
         } else {
             hideProductsLoading();
         }
     }
+    
 
     private void setSort(int position) {
         mSortPosition = position;
@@ -505,6 +519,40 @@ public class ProductsFragment extends BaseFragment implements
             
         }
     }
+    
+    private int getDirection(Direction direction) {
+        int value = -1;
+        switch (direction) {
+        case ASCENDENT:
+            value = 0;
+            break;
+        case DESCENDENT:
+            value = 1;
+            break;
+        }
+        
+        return value;
+    }
+    
+    
+    private int getSort(ProductSort position) {
+        int value = -1;
+        switch (position) {
+        case POPULARITY:
+            value = 0;
+            break;
+        case NAME:
+            value = 1;
+            break;
+        case PRICE:
+            value = 2;
+            break;
+        case BRAND:
+            value = 3;
+            break;
+        }
+        return value;
+    }
 
     @Override
     public void onDialogListItemSelect(String id, int position, String value) {
@@ -515,12 +563,12 @@ public class ProductsFragment extends BaseFragment implements
         }
     }
 
-    @Override
-    protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
+    protected boolean onSuccessEvent(Bundle bundle) {
+
         Log.d(TAG, "ON SUCCESS EVENT");
         // sortButton.setOnClickListener(this);
         // Get Products Event
-        ProductsPage productsPage = (ProductsPage) event.result;
+        ProductsPage productsPage = (ProductsPage)  bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
         Log.d(TAG, "onSuccessEvent: products on page = " + productsPage.getProducts().size() +
                 " total products = " + productsPage.getTotalProducts());
         if (productsPage != null && productsPage.getTotalProducts() > 0) {
@@ -529,7 +577,7 @@ public class ProductsFragment extends BaseFragment implements
 
         
 
-        String location = event.metaData.getString(IMetaData.LOCATION);
+        String location = bundle.getString(IMetaData.LOCATION);
         Log.d(TAG, "Location = " + location);
         checkRedirectFromSearch(location);
 
@@ -548,7 +596,7 @@ public class ProductsFragment extends BaseFragment implements
 
         showProductsContent();
 
-        Log.i(TAG, "code1 " + productsPage.getProducts().size() + " pageNumber is : "+pageNumber);
+//        Log.i(TAG, "code1 " + productsPage.getProducts().size() + " pageNumber is : "+pageNumber);
         pageNumber = productsPage.getProducts().size() >= productsPage.getTotalProducts() ? NO_MORE_PAGES
                 : pageNumber + 1;
 
@@ -589,9 +637,12 @@ public class ProductsFragment extends BaseFragment implements
         return;
     }
 
-    @Override
-    protected boolean onErrorEvent(ResponseEvent event) {
-        if (event.errorCode != null && pageNumber == 1) {
+    protected boolean onErrorEvent(Bundle bundle) {
+        if(getBaseActivity().handleErrorEvent(bundle)){
+            return true;
+        }
+        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        if (errorCode != null && pageNumber == 1) {
             showProductsNotfound();
             ((BaseActivity) getActivity()).showContentContainer(false);
         } else {
@@ -675,4 +726,26 @@ public class ProductsFragment extends BaseFragment implements
     public void onScrollStateChanged(AbsListView view, int scrollState) {
         // noop
     }
+    
+    
+    
+    
+    /**
+     * CALLBACK
+     * @author sergiopereira
+     */
+    IResponseCallback mCallBack = new IResponseCallback() {
+        
+        @Override
+        public void onRequestError(Bundle bundle) {
+            onErrorEvent(bundle);
+        }
+        
+        @Override
+        public void onRequestComplete(Bundle bundle) {
+            onSuccessEvent(bundle);
+
+        }
+    };
+    
  }

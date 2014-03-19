@@ -3,9 +3,11 @@ package pt.rocket.framework.components;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import pt.rocket.framework.objects.IJSONSerializable;
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import pt.rocket.framework.interfaces.IJSONSerializable;
 import pt.rocket.framework.rest.RestConstants;
-import pt.rocket.framework.utils.LogTagHelper;
 
 /**
  * Navigation List Component
@@ -16,8 +18,8 @@ import pt.rocket.framework.utils.LogTagHelper;
  * @author manuelsilva
  * 
  */
-public class NavigationListComponent implements IJSONSerializable {
-	private final static String TAG = LogTagHelper.create( NavigationListComponent.class );
+public class NavigationListComponent implements IJSONSerializable, Parcelable {
+	private final static String TAG = "";
 
 //	private static final String JSON_ATTRIBUTES_TAG = "attributes";
 //	private static final String JSON_NAME_TAG = "name";
@@ -103,14 +105,15 @@ public class NavigationListComponent implements IJSONSerializable {
     @Override
     public boolean initialize(JSONObject jsonObject) {
         try {
+        	
             element_id = Integer.parseInt(jsonObject.getString(RestConstants.JSON_ID_TAG));
-            
             JSONObject attributesObject = jsonObject.getJSONObject(RestConstants.JSON_ATTRIBUTES_TAG);
             element_text = attributesObject.getString(RestConstants.JSON_NAVLIST_NAME_TAG);
             
             element_url = attributesObject.getString(RestConstants.JSON_NAVIGATION_URL_TAG);
             JSONObject imageObject = attributesObject.getJSONObject(RestConstants.JSON_IMAGE_TAG);
             element_image_url = imageObject.getString(RestConstants.JSON_IMAGE_URL_TAG);
+            
         } catch (JSONException e) {
             e.printStackTrace();
             return false;
@@ -122,7 +125,7 @@ public class NavigationListComponent implements IJSONSerializable {
     /* (non-Javadoc)
      * @see pt.rocket.framework.objects.IJSONSerializable#toJSON()
      */
-    @Override
+
     public JSONObject toJSON() {
         JSONObject jsonObject = new JSONObject();
         try {
@@ -142,6 +145,18 @@ public class NavigationListComponent implements IJSONSerializable {
         }    
         
         return jsonObject;
+    }
+
+    @Override
+    public int describeContents() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        // TODO Auto-generated method stub
+        
     }
     
     

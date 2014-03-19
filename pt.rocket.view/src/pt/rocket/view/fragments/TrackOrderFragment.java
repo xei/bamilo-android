@@ -10,15 +10,15 @@ import org.holoeverywhere.widget.Button;
 import org.holoeverywhere.widget.EditText;
 import org.holoeverywhere.widget.TextView;
 
-import pt.rocket.framework.event.EventManager;
-import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.event.ResponseEvent;
-import pt.rocket.framework.event.ResponseResultEvent;
-import pt.rocket.framework.event.events.TrackOrderEvent;
+import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.framework.objects.OrderTracker;
 import pt.rocket.framework.objects.OrderTrackerItem;
+import pt.rocket.framework.utils.Constants;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LoadingBarView;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.helpers.GetTrackOrderHelper;
+import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.view.BaseActivity;
@@ -26,12 +26,10 @@ import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.view.FocusFinder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.webkit.WebView.FindListener;
 import android.widget.LinearLayout;
 import de.akquinet.android.androlog.Log;
 
@@ -171,15 +169,22 @@ public class TrackOrderFragment extends BaseFragment {
     }
     
     private void setupView() {
+        
         mEditText = (EditText) getView().findViewById(R.id.order_nr_edittext);
         Button mButton = (Button) getView().findViewById(R.id.btn_track_order);
         mButton.setOnClickListener(trackOrderClickListener);
+        
+        Bundle args = this.getArguments();
+        String order_number = null;
+        if(args != null) order_number = args.getString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR);
+        if(order_number != null) mEditText.setText(order_number);
         
         if(mEditText.getText() != null && mEditText.getText().length() > 0 && mOrderTracker != null){
             proccessSuccess();
         } else if(mEditText.getText() != null && mEditText.getText().length() > 0 && mOrderTrackerError){
             proccessError();
         }
+        
     }
     
     OnClickListener trackOrderClickListener = new OnClickListener() {
@@ -190,7 +195,22 @@ public class TrackOrderFragment extends BaseFragment {
             String orderNumber = mEditText.getText().toString();
             if(orderNumber != null && orderNumber.length()>0){
                 showLoading();
-                EventManager.getSingleton().triggerRequestEvent(new TrackOrderEvent(orderNumber));
+                Bundle args = new Bundle();
+                args.putString(GetTrackOrderHelper.ORDER_NR, orderNumber);
+                sendRequest(new GetTrackOrderHelper(), args, new IResponseCallback() {
+                    
+                    @Override
+                    public void onRequestError(Bundle bundle) {
+                        onErrorEvent(bundle);
+                        
+                    }
+                    
+                    @Override
+                    public void onRequestComplete(Bundle bundle) {
+                        onSuccessEvent(bundle);
+                        
+                    }
+                });
             }    
 
         }
@@ -214,8 +234,12 @@ public class TrackOrderFragment extends BaseFragment {
         LayoutInflater mInflater = (LayoutInflater) getActivity()
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         LinearLayout mLinearLayout = (LinearLayout) getView().findViewById(R.id.products_items_container);
-                
-        mLinearLayout.removeAllViews();
+        try {
+            mLinearLayout.removeAllViews();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+        
         for (OrderTrackerItem orderTrackerItem : items) {
             LinearLayout view = (LinearLayout) mInflater.inflate(R.layout.track_order_item, null, false);
             ((TextView) view.findViewById(R.id.order_item_name)).setText(orderTrackerItem.getName());
@@ -243,6 +267,7 @@ public class TrackOrderFragment extends BaseFragment {
     }
     
     private void proccessError(){
+        mOrderTracker = null;
         String orderNumber = mEditText.getText().toString();
         ((TextView) getView().findViewById(R.id.title_status_text)).setText("# "+orderNumber);
         if(loadingTrackBarView != null){
@@ -253,15 +278,21 @@ public class TrackOrderFragment extends BaseFragment {
         getView().findViewById(R.id.error_trakcing_order).setVisibility(View.VISIBLE);
     }
     
-    @Override
-    protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
-        mOrderTracker = (OrderTracker) event.result;
+    protected boolean onSuccessEvent(Bundle bundle) {
+        if(!isVisible()){
+            return true;
+        }
+        Log.d(TAG, "ON SUCCESS EVENT");
+        mOrderTracker = (OrderTracker) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
         proccessSuccess();
         return true;
     }
     
-    @Override
-    protected boolean onErrorEvent(ResponseEvent event) {
+    protected boolean onErrorEvent(Bundle bundle) {
+        if(!isVisible()){
+            return true;
+        }
+        Log.d(TAG, "ON ERROR EVENT");
         mOrderTrackerError = true;
         proccessError();
         return true;

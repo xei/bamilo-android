@@ -6,19 +6,21 @@ import java.util.Arrays;
 import java.util.EnumSet;
 
 import pt.rocket.constants.ConstantsIntentExtra;
-import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.utils.AnalyticsGoogle;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.framework.utils.ProductSort;
 import pt.rocket.utils.JumiaViewPager;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
+import pt.rocket.view.fragments.ProductsViewFragment.ProductsListPagerAdapter;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Shader;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -113,15 +115,20 @@ public class ProductsViewFragment extends BaseFragment {
         title = getArguments().getString(ConstantsIntentExtra.CONTENT_TITLE);
         ((BaseActivity) getActivity()).setTitle(title);
 
-        productsURL = getArguments().getString(ConstantsIntentExtra.CONTENT_URL);
-        searchQuery = getArguments().getString(ConstantsIntentExtra.SEARCH_QUERY);
-        navigationSource = getArguments().getInt(ConstantsIntentExtra.NAVIGATION_SOURCE, -1);
-        navigationPath = getArguments().getString(ConstantsIntentExtra.NAVIGATION_PATH);
-        Log.i(TAG, "code1 title is : " + title);
+        productsURL = getArguments()
+                .getString(ConstantsIntentExtra.CONTENT_URL);
+        searchQuery = getArguments()
+                .getString(ConstantsIntentExtra.SEARCH_QUERY);
+        navigationSource = getArguments().getInt(
+                ConstantsIntentExtra.NAVIGATION_SOURCE, -1);
+        navigationPath = getArguments().getString(
+                ConstantsIntentExtra.NAVIGATION_PATH);
+//        Log.i(TAG, "code1 title is : " + title);
         Log.i(TAG, "ON RESUME");
         AnalyticsGoogle.get().trackPage(R.string.gproductlist);
         if(mProductsListPagerAdapter == null){
-            mProductsListPagerAdapter = new ProductsListPagerAdapter(getChildFragmentManager());
+            mProductsListPagerAdapter = new ProductsListPagerAdapter(
+                getChildFragmentManager());
         } else {
             mProductsListPagerAdapter.notifyDataSetChanged();
         }
@@ -148,12 +155,12 @@ public class ProductsViewFragment extends BaseFragment {
                 int pageCount = getResources().getStringArray(R.array.products_picker).length;
                       
                 
-                if(arg0 == ViewPager.SCROLL_STATE_SETTLING){
+                if(arg0 == mViewPager.SCROLL_STATE_SETTLING){
                     if(mViewPager != null)
                         mViewPager.setPagingEnabled(false);
                 }
                 
-                if (arg0 == ViewPager.SCROLL_STATE_IDLE ) {
+                if (arg0 == mViewPager.SCROLL_STATE_IDLE ) {
                     mViewPager.setPagingEnabled(true);
                     mViewPager.toggleJumiaScroller(true);
                     
@@ -276,9 +283,4 @@ public class ProductsViewFragment extends BaseFragment {
 
     }
 
-    @Override
-    protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
-        // TODO Auto-generated method stub
-        return false;
-    }
 }

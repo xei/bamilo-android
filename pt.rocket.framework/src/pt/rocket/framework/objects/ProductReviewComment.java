@@ -6,6 +6,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import pt.rocket.framework.rest.RestConstants;
 
 import de.akquinet.android.androlog.Log;
@@ -16,22 +19,7 @@ import de.akquinet.android.androlog.Log;
  * @author nunocastro
  * @modified GuilhermeSilva
  */
-public class ProductReviewComment implements IJSONSerializable {
-
-//    private static final String JSON_TITLE_TAG = "title";
-//    private static final String JSON_DETAILS_TAG = "detail";
-//    private static final String JSON_NICKNAME_TAG = "nickname";
-//    private static final String JSON_DATE_TAG = "created_at";
-//    private static final String JSON_OPTIONS_TAG = "options";
-//
-//    // private static final String JSON_TYPE_ID_TAG = "type_id";
-//    // private static final String JSON_TYPE_CODE_TAG = "type_code";
-//    // private static final String JSON_TYPE_TITLE_TAG = "type_title";
-//    // private static final String JSON_OPTION_CODE_TAG = "option_code";
-//    // private static final String JSON_SIZE_STARS_BACK_TAG = "size-stars-back";
-//    private static final String JSON_SIZE_STARS_FORE_TAG = "size-stars-fore";
-//    private static final String JSON_TYPE_TITLE_TAG = "type_title";
-
+public class ProductReviewComment implements IJSONSerializable, Parcelable {
 
     private String title = "";
     private String comments = "";
@@ -42,6 +30,10 @@ public class ProductReviewComment implements IJSONSerializable {
     
     private ArrayList<RatingOption> ratingOptions;
 
+    public ProductReviewComment() {
+	
+	}
+    
     /*
      * (non-Javadoc)
      * 
@@ -133,4 +125,43 @@ public class ProductReviewComment implements IJSONSerializable {
     public ArrayList<RatingOption> getRatingOptions(){
         return ratingOptions;
     }
+
+	@Override
+	public int describeContents() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeString(title);
+		dest.writeString(comments);
+		dest.writeString(name);
+		dest.writeString(date);
+		dest.writeDouble(rating);
+		dest.writeString(optionTitle);
+		dest.writeList(ratingOptions);
+		
+	}
+	
+	private ProductReviewComment(Parcel in) {
+		 title = in.readString();
+		 comments = in.readString();
+		 name = in.readString();
+		 date = in.readString();
+		 rating = in.readDouble();
+		 optionTitle = in.readString();
+		 ratingOptions = new ArrayList<RatingOption>(); 
+		 in.readList(ratingOptions, RatingOption.class.getClassLoader());
+	}
+	
+    public static final Parcelable.Creator<ProductReviewComment> CREATOR = new Parcelable.Creator<ProductReviewComment>() {
+        public ProductReviewComment createFromParcel(Parcel in) {
+            return new ProductReviewComment(in);
+        }
+
+        public ProductReviewComment[] newArray(int size) {
+            return new ProductReviewComment[size];
+        }
+    };
 }

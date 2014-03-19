@@ -3,20 +3,21 @@
  */
 package pt.rocket.view.fragments;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.EnumSet;
 
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.GalleryPagerAdapter;
+import pt.rocket.controllers.ProductImagesAdapter;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
-import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.event.ResponseEvent;
-import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.objects.CompleteProduct;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.FragmentCommunicatorForProduct;
 import pt.rocket.utils.HorizontalListView;
+import pt.rocket.utils.JumiaCatalogViewPager;
 import pt.rocket.utils.JumiaViewPagerWithZoom;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
@@ -26,6 +27,7 @@ import pt.rocket.view.R;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.GestureDetector;
@@ -35,6 +37,7 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.RelativeLayout;
 import de.akquinet.android.androlog.Log;
@@ -49,6 +52,8 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
     private static final String TAG = LogTagHelper.create(ProductImageGalleryFragment.class);
 
     private static ProductImageGalleryFragment productImageGalleryFragment;
+
+    private ProductImagesAdapter mImageListAdapter;
 
     // private NormalizingViewPagerWrapper mPagerWrapper;
 
@@ -233,8 +238,6 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
                         mViewPager.toggleJumiaScroller(false);
                         mViewPager.setCurrentItem(1);
                     }
-                    
-                    //Log.d(TAG, "PAGER NEW POS: " + currentPosition);
                 }
             });
 
@@ -277,9 +280,10 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
         	getBaseActivity().onBackPressed();
             return;
         }
+        Log.i(TAG, "ON RESUME");
 
         createViewPager();
-        ((BaseActivity) getActivity()).findViewById(R.id.totalProducts).setVisibility(View.VISIBLE);
+      ((BaseActivity) getActivity()).findViewById(R.id.totalProducts).setVisibility(View.VISIBLE);
         // updateImage(productImageGalleryFragment.mVariationsListPosition);
     }
 
@@ -306,11 +310,13 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
     }
 
     private void createViewPager() {
-
+        if(mCompleteProduct.getImageList().size() <=0 ){
+            return;
+        }
         if (galleryAdapter != null) {
-            if (imagesList != null)
-
+            if (imagesList != null){
                 imagesList = (ArrayList<String>) mCompleteProduct.getImageList().clone();
+            }
             imagesList.add(0, imagesList.get(imagesList.size() - 1));
             imagesList.add(imagesList.get(1));
 
@@ -442,27 +448,6 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
         currentPosition = position;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see pt.rocket.utils.MyActivity#handleTriggeredEvent(pt.rocket.framework.event.ResponseEvent)
-     */
-    @Override
-    protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
-
-        return false;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see pt.rocket.utils.MyActivity#onErrorEvent(pt.rocket.framework.event.ResponseEvent)
-     */
-    @Override
-    protected boolean onErrorEvent(ResponseEvent event) {
-        return false;
-    }
-
     @Override
     public void notifyFragment(Bundle bundle) {
 
@@ -495,7 +480,7 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
             return;
         }
 
-        Log.i(TAG, "code1 notifyFragment" + productImageGalleryFragment.currentPosition);
+//        Log.i(TAG, "code1 notifyFragment" + productImageGalleryFragment.currentPosition);
         mImagesList = (HorizontalListView) mainView.findViewById(R.id.images_list);
 
         if (!showHorizontalListView) {

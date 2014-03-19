@@ -3,27 +3,27 @@ package pt.rocket.framework.objects;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import pt.rocket.framework.interfaces.IJSONSerializable;
 import pt.rocket.framework.rest.RestConstants;
-import pt.rocket.framework.utils.ImageResolutionHelper;
-import pt.rocket.framework.utils.LogTagHelper;
 import de.akquinet.android.androlog.Log;
 
 /**
- * Image for products, brands, and categories. contains path, with, height, format
+ * Image for products, brands, and categories. contains path, width, height, format
  * @author GuilhermeSilva
+ * @modified Manuel Silva
  *
  */
-/**
- * @author GuilhermeSilva
- * 
- */
-public class Image implements IJSONSerializable {
-	private final static String TAG = LogTagHelper.create( Image.class );
-	
-//    private String JSON_URL_TAG = "path";
-//    private String JSON_FORMAT_TAG = "format";
-//    private String JSON_WIDTH_TAG = "width";
-//    private String JSON_HEIGHT_TAG = "height";
+
+public class Image implements IJSONSerializable, Parcelable {
+    private final static String TAG = "";
+
+    // private String JSON_URL_TAG = "path";
+    // private String JSON_FORMAT_TAG = "format";
+    // private String JSON_WIDTH_TAG = "width";
+    // private String JSON_HEIGHT_TAG = "height";
 
     private String url;
     private String format;
@@ -90,14 +90,12 @@ public class Image implements IJSONSerializable {
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * pt.rocket.framework.objects.IJSONSerializable#initialize(org.json.JSONObject
-     * )
+     * @see pt.rocket.framework.objects.IJSONSerializable#initialize(org.json.JSONObject )
      */
     @Override
     public boolean initialize(JSONObject jsonObject) {
         try {
-            url = getImageUrl(jsonObject.getString(RestConstants.JSON_PATH_TAG));
+            url = jsonObject.getString(RestConstants.JSON_PATH_TAG);
             format = jsonObject.optString(RestConstants.JSON_FORMAT_TAG);
             width = jsonObject.optString(RestConstants.JSON_WIDTH_TAG);
             height = jsonObject.optString(RestConstants.JSON_HEIGHT_TAG);
@@ -105,14 +103,14 @@ public class Image implements IJSONSerializable {
 
             try {
                 for (int i = 0; i < jsonObject.names().length(); ++i) {
-                	Log.d( TAG, jsonObject.names().getString(i));
+                    Log.d(TAG, jsonObject.names().getString(i));
                 }
 
             } catch (JSONException e1) {
-            	Log.e(TAG, "error during debug output", e1);
+                Log.e(TAG, "error during debug output", e1);
             }
 
-        	Log.e(TAG, "error during debug output", e);
+            Log.e(TAG, "error during debug output", e);
             return false;
         }
         return true;
@@ -123,7 +121,7 @@ public class Image implements IJSONSerializable {
      * 
      * @see pt.rocket.framework.objects.IJSONSerializable#toJSON()
      */
-    @Override
+
     public JSONObject toJSON() {
         JSONObject jsonObject = new JSONObject();
         try {
@@ -137,11 +135,35 @@ public class Image implements IJSONSerializable {
         }
         return jsonObject;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(url);
+        dest.writeString(format);
+        dest.writeString(width);
+        dest.writeString(height);
+
+    }
+
+    private Image(Parcel in) {
+        url = in.readString();
+        format = in.readString();
+        width = in.readString();
+        height = in.readString();
+    }
     
-    private String getImageUrl(String url) {
-		String modUrl = ImageResolutionHelper.replaceResolution(url);
-		if(modUrl != null)
-			return modUrl;
-		return url;
-	}
+    public static final Parcelable.Creator<Image> CREATOR = new Parcelable.Creator<Image>() {
+        public Image createFromParcel(Parcel in) {
+            return new Image(in);
+        }
+
+        public Image[] newArray(int size) {
+            return new Image[size];
+        }
+    };
 }

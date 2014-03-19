@@ -3,38 +3,37 @@ package pt.rocket.controllers;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Calendar;
-import java.util.EnumSet;
 
 import org.holoeverywhere.widget.Button;
 import org.holoeverywhere.widget.TextView;
 
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
-import pt.rocket.framework.event.EventManager;
-import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.event.IMetaData;
-import pt.rocket.framework.event.ResponseEvent;
-import pt.rocket.framework.event.ResponseListener;
-import pt.rocket.framework.event.ResponseResultEvent;
-import pt.rocket.framework.event.events.GetProductsEvent;
+import pt.rocket.framework.ErrorCode;
+import pt.rocket.framework.interfaces.IMetaData;
 import pt.rocket.framework.objects.Product;
 import pt.rocket.framework.objects.ProductsPage;
 import pt.rocket.framework.rest.RestContract;
 import pt.rocket.framework.utils.AnalyticsGoogle;
+import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.Direction;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LoadingBarView;
 import pt.rocket.framework.utils.ProductSort;
+import pt.rocket.helpers.GetProductsHelper;
+import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.ProductDetailsActivityFragment;
 import pt.rocket.view.R;
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
@@ -53,14 +52,14 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 import de.akquinet.android.androlog.Log;
 
-public class CatalogPageModel implements ResponseListener {
+public class CatalogPageModel {
 
     private static final String TAG = CatalogPageModel.class.getName();
 
     private int pageNumber;
 
     private boolean isLandScape = false;
-    
+
     private ProductSort sort = ProductSort.NONE;
     private Direction dir = Direction.ASCENDENT;
 
@@ -77,6 +76,8 @@ public class CatalogPageModel implements ResponseListener {
     private static int navigationSource;
 
     private ProductsListAdapter productsAdapter;
+
+    private int lastItem;
 
     /**
      * Layout Stuff
@@ -108,23 +109,25 @@ public class CatalogPageModel implements ResponseListener {
     private ImageView imageViewPt;
     private TextView textViewPt;
 
-    private Activity mActivity;
-
-    private String md5Hash;
+    private BaseActivity mActivity;
 
     private long mBeginRequestMillis;
 
-    private static boolean isLoadingMore = false;
+    private boolean isLoadingMore = false;
 
     private int totalProducts = -1;
-    
+
+    // Flag used to stop the loading more when an error occurs
+    private boolean receivedError = false;
+
     private CharSequence totalItemsLable = "";
-    
-    public CatalogPageModel(int index, Activity activity) {
+    private Fragment mFragment;
+
+    public CatalogPageModel(int index, BaseActivity activity, Fragment mFragment) {
         this.index = index;
         this.mActivity = activity;
         setIndex(index);
-        md5Hash = uniqueMD5(TAG + index);
+        this.mFragment = mFragment;
         switch (index) {
         case 0: // <item > Copy of Brand for infinite scroll</item>
             // TODO when available change this to Sales
@@ -164,17 +167,15 @@ public class CatalogPageModel implements ResponseListener {
 
         }
     }
+
     /*
      * Get total number of products
-     * 
-     * 
-     * */
-    public int getTotalProducts(){
-        
+     */
+    public int getTotalProducts() {
+
         return totalProducts;
     }
-    
-    
+
     public void setVariables(String p, String s, String n, String t, int navSource) {
         CatalogPageModel.productsURL = p;
         CatalogPageModel.searchQuery = s;
@@ -185,10 +186,14 @@ public class CatalogPageModel implements ResponseListener {
         if (index == 1) {
             showTips();
         }
+        new Thread(new Runnable() {
 
-        EventManager.getSingleton().addResponseListener(this,
-                EnumSet.of(EventType.GET_PRODUCTS_EVENT));
-        executeRequest();
+            @Override
+            public void run() {
+                // TODO Auto-generated method stub
+                executeRequest();
+            }
+        }).run();
     }
 
     public int getIndex() {
@@ -307,10 +312,10 @@ public class CatalogPageModel implements ResponseListener {
                             ((Product) productsAdapter.getItem(activePosition)).getUrl());
                     bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, navigationSource);
                     bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, navigationPath);
-                    if(title != null)
+                    if (title != null)
                         bundle.putString(ProductDetailsActivityFragment.PRODUCT_CATEGORY, title);
-                    ((BaseActivity) mActivity).onSwitchFragment(FragmentType.PRODUCT_DETAILS,
-                            bundle, FragmentController.ADD_TO_BACK_STACK);
+                    mActivity.onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle,
+                            FragmentController.ADD_TO_BACK_STACK);
                 }
 
             }
@@ -318,7 +323,7 @@ public class CatalogPageModel implements ResponseListener {
 
     }
 
-    public void setListView(ListView listView) {        
+    public void setListView(ListView listView) {
         this.listView = listView;
         this.setLandScape(false);
         this.listView.setOnItemClickListener(new OnItemClickListener() {
@@ -338,10 +343,10 @@ public class CatalogPageModel implements ResponseListener {
                             ((Product) productsAdapter.getItem(activePosition)).getUrl());
                     bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, navigationSource);
                     bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, navigationPath);
-                    if(title != null)
+                    if (title != null)
                         bundle.putString(ProductDetailsActivityFragment.PRODUCT_CATEGORY, title);
-                    ((BaseActivity) mActivity).onSwitchFragment(FragmentType.PRODUCT_DETAILS,
-                            bundle, FragmentController.ADD_TO_BACK_STACK);
+                    mActivity.onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle,
+                            FragmentController.ADD_TO_BACK_STACK);
                 }
             }
         });
@@ -415,7 +420,9 @@ public class CatalogPageModel implements ResponseListener {
         pageNumber = 1;
         showProductsContent();
         productsAdapter.clearProducts();
+
         getMoreProducts();
+
     }
 
     /**
@@ -433,13 +440,19 @@ public class CatalogPageModel implements ResponseListener {
                     linearLayoutLb.setVisibility(View.VISIBLE);
                 }
             }
-            EventManager.getSingleton().addResponseListener(this,
-                    EnumSet.of(EventType.GET_PRODUCTS_EVENT));
 
             mBeginRequestMillis = System.currentTimeMillis();
-            EventManager.getSingleton().triggerRequestEvent(
-                    new GetProductsEvent(productsURL, searchQuery, pageNumber, MAX_PAGE_ITEMS,
-                            sort, dir, md5Hash));
+
+            Bundle bundle = new Bundle();
+            bundle.putString(GetProductsHelper.PRODUCT_URL, productsURL);
+            bundle.putString(GetProductsHelper.SEARCH_QUERY, searchQuery);
+            bundle.putInt(GetProductsHelper.PAGE_NUMBER, pageNumber);
+            bundle.putInt(GetProductsHelper.TOTAL_COUNT, MAX_PAGE_ITEMS);
+            bundle.putInt(GetProductsHelper.SORT, sort.id);
+            bundle.putInt(GetProductsHelper.DIRECTION, dir.id);
+            JumiaApplication.INSTANCE
+                    .sendRequest(new GetProductsHelper(), bundle, responseCallback);
+
         } else {
             hideProductsLoading();
         }
@@ -447,91 +460,75 @@ public class CatalogPageModel implements ResponseListener {
 
     private void showProductsContent() {
         Log.d(TAG, "showProductsContent");
-        if(this.isLandScape){
+        if (this.isLandScape) {
             if (pageNumber == 1) {
                 Log.i(TAG, "scrolling to position 0");
                 gridView.setSelection(0);
             }
-            gridView.setOnScrollListener(new OnScrollListener() {
-
-                @Override
-                public void onScrollStateChanged(AbsListView view, int scrollState) {
-
-                }
-
-                @Override
-                public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
-                        int totalItemCount) {
-                    // Make your calculation stuff here. You have all your
-                    // needed info from the parameters of this function.
-
-                    // Sample calculation to determine if the last
-                    // item is fully visible.
-                    final int lastItem = firstVisibleItem + visibleItemCount;
-                    if (totalItemCount != 0 && lastItem == totalItemCount) {
-                        Log.i(TAG, "onScroll: last item visible ");
-                        if (!isLoadingMore) {
-                            Log.i(TAG, "onScroll: last item visible and start loading" + pageNumber);
-                            isLoadingMore = true;
-                            showProductsLoading();
-                            getMoreProducts();
-                        }
-                    }
-
-                }
-            });
+            gridView.setOnScrollListener(scrollListener);
         } else {
             if (pageNumber == 1) {
                 Log.i(TAG, "scrolling to position 0");
                 listView.setSelection(0);
             }
-            listView.setOnScrollListener(new OnScrollListener() {
-
-                @Override
-                public void onScrollStateChanged(AbsListView view, int scrollState) {
-
-                }
-
-                @Override
-                public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
-                        int totalItemCount) {
-                    // Make your calculation stuff here. You have all your
-                    // needed info from the parameters of this function.
-
-                    // Sample calculation to determine if the last
-                    // item is fully visible.
-                    final int lastItem = firstVisibleItem + visibleItemCount;
-                    if (totalItemCount != 0 && lastItem == totalItemCount) {
-                        Log.i(TAG, "onScroll: last item visible ");
-                        if (!isLoadingMore) {
-                            Log.i(TAG, "onScroll: last item visible and start loading" + pageNumber);
-                            isLoadingMore = true;
-                            showProductsLoading();
-                            getMoreProducts();
-                        }
-                    }
-
-                }
-            });
+            listView.setOnScrollListener(scrollListener);
         }
-        
+
         relativeLayoutPc.setVisibility(View.VISIBLE);
         textViewSpnf.setVisibility(View.GONE);
         linearLayoutLm.setVisibility(View.GONE);
         linearLayoutLm.refreshDrawableState();
-        
-        if(this.isLandScape){
+
+        if (this.isLandScape) {
             gridView.setAdapter(productsAdapter);
         } else {
-            listView.setAdapter(productsAdapter);    
+            listView.setAdapter(productsAdapter);
         }
-        
+
         if (relativeLayout != null) {
             linearLayoutLb.setVisibility(View.GONE);
         }
     }
-    
-    private void showCatalogContent(){
+
+    private OnScrollListener scrollListener = new OnScrollListener() {
+
+        @Override
+        public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+        }
+
+        @Override
+        public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
+                int totalItemCount) {
+            // Make your calculation stuff here. You have all your
+            // needed info from the parameters of this function.
+
+            // Sample calculation to determine if the last
+            // item is fully visible.
+            lastItem = firstVisibleItem + visibleItemCount;
+            if (totalItemCount != 0 && lastItem == totalItemCount) {
+                Log.i(TAG, "onScroll: last item visible ");
+                if (!isLoadingMore && !receivedError) {
+                    Log.i(TAG, "onScroll: last item visible and start loading" + pageNumber);
+                    isLoadingMore = true;
+                    showProductsLoading();
+                    new Thread(new Runnable() {
+                        
+                        @Override
+                        public void run() {
+                            getMoreProducts();
+                        }
+                    }).run(); 
+                    
+                }
+            } else {
+                receivedError = false;
+            }
+
+        }
+    };
+
+    private void showCatalogContent() {
         relativeLayoutPc.setVisibility(View.VISIBLE);
         textViewSpnf.setVisibility(View.GONE);
         linearLayoutLm.setVisibility(View.GONE);
@@ -619,15 +616,30 @@ public class CatalogPageModel implements ResponseListener {
 
     }
 
-    @Override
-    public void handleEvent(ResponseEvent event) {
-        if (event.getSuccess()) {
-            processSuccess((ResponseResultEvent<?>) event);
-        } else {
-            processError(event);
+    private IResponseCallback responseCallback = new IResponseCallback() {
+
+        @Override
+        public void onRequestError(Bundle bundle) {
+            onErrorEvent(bundle);
+
         }
 
-    }
+        @Override
+        public void onRequestComplete(Bundle bundle) {
+            onSuccessEvent(bundle);
+
+        }
+    };
+
+    // @Override
+    // public void handleEvent(ResponseEvent event) {
+    // if (event.getSuccess()) {
+    // processSuccess((ResponseResultEvent<?>) event);
+    // } else {
+    // processError(event);
+    // }
+    //
+    // }
 
     private void checkRedirectFromSearch(String location) {
         Log.d(TAG, "url = " + productsURL);
@@ -671,10 +683,16 @@ public class CatalogPageModel implements ResponseListener {
         }
     }
 
-    private void processError(ResponseEvent event) {
-        if (event.errorCode != null && pageNumber == 1) {
+    private void onErrorEvent(Bundle bundle) {
+        if (mActivity.handleErrorEvent(bundle)) {
+            return;
+        }
+        // Log.i(TAG, "code1 product list on error event");
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        if (errorCode != null && pageNumber == 1) {
             showProductsNotfound();
-            ((BaseActivity) mActivity).showContentContainer(false);
+            mActivity.showContentContainer(false);
         } else {
             Log.d(TAG, "onErrorEvent: loading more products failed");
             hideProductsLoading();
@@ -686,57 +704,91 @@ public class CatalogPageModel implements ResponseListener {
         }
         mBeginRequestMillis = System.currentTimeMillis();
         isLoadingMore = false;
+        receivedError = true;
     }
-   public void setTotalItemLable(){
-    
-        TextView totalItems = (TextView) ((BaseActivity) mActivity).findViewById(R.id.totalProducts);
-        totalItems.setText(" ("+String.valueOf(getTotalProducts())+" "+((BaseActivity) mActivity).getString(R.string.shoppingcart_items)+")");
-        totalItems.setVisibility(View.VISIBLE);
-        //totalItemsLable = " ("+String.valueOf(getTotalProducts())+" "+((BaseActivity) mActivity).getString(R.string.shoppingcart_items)+")";
+
+    public void setTotalItemLable() {
+        TextView totalItems = (TextView) mActivity.findViewById(R.id.totalProducts);
+        if (getTotalProducts() > 0) {
+            totalItems.setText(" (" + String.valueOf(getTotalProducts()) + " "
+                    + mActivity.getString(R.string.shoppingcart_items) + ")");
+            totalItems.setVisibility(View.VISIBLE);
+            // totalItemsLable = " ("+String.valueOf(getTotalProducts())+" "+((BaseActivity)
+            // mActivity).getString(R.string.shoppingcart_items)+")";
+        }
     }
-    private void processSuccess(ResponseResultEvent<?> event) {
+
+    private void onSuccessEvent(Bundle bundle) {
+        mActivity.handleSuccessEvent(bundle);
         Log.d(TAG, "ON SUCCESS EVENT");
 
         // Get Products Event
-        ProductsPage productsPage = (ProductsPage) event.result;
-        Log.d(TAG, "onSuccessEvent: products on page = " + productsPage.getProducts().size() +
-                " total products = " + productsPage.getTotalProducts());
-        if (productsPage != null && productsPage.getTotalProducts() > 0) {
-            totalProducts = productsPage.getTotalProducts();
-            //set total items lable
-            
-            ((BaseActivity) mActivity).setTitleAndSubTitle(title," ("+String.valueOf(getTotalProducts())+" "+((BaseActivity) mActivity).getString(R.string.shoppingcart_items)+")");
-            //setTotalItemLable();
+        ProductsPage productsPage = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+
+        // Validate title
+        if (TextUtils.isEmpty(title)) {
+            title = productsPage.getName();
         }
 
-        String location = event.metaData.getString(IMetaData.LOCATION);
+        // Valdiate products
+        if (productsPage != null && productsPage.getTotalProducts() > 0) {
+            Log.d(TAG, "onSuccessEvent: products on page = " + productsPage.getProducts().size() +
+                    " total products = " + productsPage.getTotalProducts());
+            totalProducts = productsPage.getTotalProducts();
+            if (mFragment.isVisible()) {
+                // set total items lable
+                if (getTotalProducts() > 0)
+                    mActivity.setTitleAndSubTitle(title, " (" + String.valueOf(getTotalProducts())
+                            + " " + mActivity.getString(R.string.shoppingcart_items) + ")");
+                else
+                    mActivity.setTitle(title);
+            }
+            // setTotalItemLable();
+        }
+
+        String location = bundle.getString(IMetaData.LOCATION);
         Log.d(TAG, "Location = " + location);
-        checkRedirectFromSearch(location);
+        if (location != null) {
+            checkRedirectFromSearch(location);
+        }
 
         AnalyticsGoogle.get().trackLoadTiming(R.string.gproductlist, mBeginRequestMillis);
 
         if (searchQuery != null && !TextUtils.isEmpty(searchQuery)) {
-            ((BaseActivity) mActivity).setTitle(searchQuery + " ("
-                    + productsPage.getTotalProducts() + ")");
-            
-            if(pageNumber == 1){
-                TrackerDelegator.trackSearchViewSortMade(mActivity.getApplicationContext(), searchQuery,
+            if (mFragment.isVisible()) {
+                if (getTotalProducts() > 0)
+                    mActivity.setTitleAndSubTitle(
+                            searchQuery,
+                            " (" + productsPage.getTotalProducts() + " "
+                                    + mActivity.getString(R.string.shoppingcart_items) + ")");
+                else
+                    mActivity.setTitle(searchQuery);
+            }
+            if (pageNumber == 1) {
+                TrackerDelegator.trackSearchViewSortMade(mActivity.getApplicationContext(),
+                        searchQuery,
                         productsPage.getTotalProducts(), sort.name());
-                
+
                 TrackerDelegator.trackSearchMade(mActivity.getApplicationContext(), searchQuery,
                         productsPage.getTotalProducts());
             }
-            
+
         } else {
-            if(pageNumber == 1){
+            if (pageNumber == 1) {
                 TrackerDelegator.trackCategoryView(mActivity.getApplicationContext(), title,
-                    pageNumber);
+                        pageNumber);
             }
         }
 
-        productsAdapter.appendProducts(productsPage.getProducts());
+        try {
+            productsAdapter.appendProducts(productsPage.getProducts());
+        } catch (NullPointerException e) {
+            Log.w(TAG, "NPE ON APPEND PRODUCTS: ");
+            e.printStackTrace();
+        }
 
-        Log.i(TAG, "code1 " + productsPage.getProducts().size() + " pageNumber is : " + pageNumber);
+        // Log.i(TAG, "code1 " + productsPage.getProducts().size() + " pageNumber is : " +
+        // pageNumber);
 
         pageNumber = productsPage.getProducts().size() >= productsPage.getTotalProducts() ? NO_MORE_PAGES
                 : pageNumber + 1;
@@ -752,18 +804,6 @@ public class CatalogPageModel implements ResponseListener {
         AnalyticsGoogle.get().trackSearch(searchQuery, productsPage.getTotalProducts());
     }
 
-    @Override
-    public boolean removeAfterHandlingEvent() {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public String getMD5Hash() {
-        // TODO Auto-generated method stub
-        return md5Hash;
-    }
-
     /**
      * @return the isLandScape
      */
@@ -772,7 +812,8 @@ public class CatalogPageModel implements ResponseListener {
     }
 
     /**
-     * @param isLandScape the isLandScape to set
+     * @param isLandScape
+     *            the isLandScape to set
      */
     public void setLandScape(boolean isLandScape) {
         this.isLandScape = isLandScape;

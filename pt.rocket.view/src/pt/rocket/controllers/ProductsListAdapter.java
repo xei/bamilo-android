@@ -7,6 +7,7 @@ import pt.rocket.framework.objects.Product;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.view.R;
 import android.content.Context;
+import android.database.DataSetObserver;
 import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
@@ -287,6 +288,17 @@ public class ProductsListAdapter extends BaseAdapter {
     public void appendProducts(Collection<? extends Product> newProducts) {
         products.addAll(newProducts);
         notifyDataSetChanged();
+    }
+    
+    /**
+     * #FIX: java.lang.IllegalArgumentException: The observer is null.
+     * @solution from : https://code.google.com/p/android/issues/detail?id=22946 
+     */
+    @Override
+    public void unregisterDataSetObserver(DataSetObserver observer) {
+        if(observer !=null){
+            super.unregisterDataSetObserver(observer);    
+        }
     }
 
 }

@@ -16,9 +16,11 @@ Feature: Check the product detail view
 	Then I should not see the currency
 	Then I go back
 	
-	#@product_zoom
-	#Scenario: Zoom Image
-	#* I wait for 1 seconds
+	@product_zoom
+	Scenario: Zoom Image
+	* I wait for 1 seconds
+	When I click in the image
+	When I click in the image
 	#When I click in the image
 	#And I pinch to zoom in
 	#Then I go back
@@ -27,5 +29,7 @@ Feature: Check the product detail view
 	Scenario: Details
 	Then I should see the currency
 	And I should see the specifications
+	
+	
 	
 	

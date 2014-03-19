@@ -1,6 +1,8 @@
 package pt.rocket.framework.database;
 
+import de.akquinet.android.androlog.Log;
 import android.content.Context;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -11,7 +13,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class DarwinDatabaseHelper extends SQLiteOpenHelper {
 	
-	private static final int DATABASE_VERSION = 1;
+	private static final int DATABASE_VERSION = 3;
 
     public static final String DB_NAME = "darwin.db";
     
@@ -20,6 +22,8 @@ public class DarwinDatabaseHelper extends SQLiteOpenHelper {
     private static final String SQL_DROP_MAIN = "DROP TABLE IF EXISTS " + ImageResolutionTableHelper._NAME;
     
     private static final String SQL_DROP_TABLE = "DROP TABLE IF EXISTS ";
+
+	private static final String TAG = DarwinDatabaseHelper.class.getName();
 
 	private static DarwinDatabaseHelper db;
 
@@ -39,14 +43,45 @@ public class DarwinDatabaseHelper extends SQLiteOpenHelper {
 	 * @return
 	 */
     public static DarwinDatabaseHelper getInstance() {
-    	return (db == null) ? db = new DarwinDatabaseHelper() : db;
+    	int version = DATABASE_VERSION;
+    	try {
+    		version = CONTEXT.getPackageManager().getPackageInfo(CONTEXT.getPackageName(), 0).versionCode;
+			
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+		}
+    	
+    	return (db == null) ? db = new DarwinDatabaseHelper(version) : db;
+    }
+    
+    /**
+	 * Get instance
+	 * @return
+	 */
+    public static DarwinDatabaseHelper getInstance(Context ctx) {
+    	int version = DATABASE_VERSION;
+    	if(CONTEXT == null){
+    		CONTEXT = ctx;
+    	}
+    	try {
+    		version = CONTEXT.getPackageManager().getPackageInfo(CONTEXT.getPackageName(), 0).versionCode;
+			
+		} catch (NameNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	return (db == null) ? db = new DarwinDatabaseHelper(version) : db;
     }
     
     /**
      * Constructor
+     * @throws NameNotFoundException 
      */
-    DarwinDatabaseHelper() {
-        super(CONTEXT, DB_NAME, null, DATABASE_VERSION);
+    DarwinDatabaseHelper(int version) {
+        super(CONTEXT, DB_NAME, null, version);
     }
 
     /* (non-Javadoc)
@@ -57,6 +92,7 @@ public class DarwinDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_MAIN);
         db.execSQL(SectionsTablesHelper.CREATE);
         db.execSQL(CategoriesTableHelper.CREATE);
+        db.execSQL(LastViewedTableHelper.CREATE);
     }
 
     /* (non-Javadoc)
@@ -68,6 +104,7 @@ public class DarwinDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_DROP_MAIN);
         db.execSQL(SQL_DROP_TABLE + CategoriesTableHelper.TABLE);
         db.execSQL(SQL_DROP_TABLE + SectionsTablesHelper.TABLE);
+        db.execSQL(SQL_DROP_TABLE + LastViewedTableHelper.TABLE);
         // Create tables again
         onCreate(db);
     }

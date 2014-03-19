@@ -23,8 +23,9 @@ import org.json.JSONObject;
 
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.CurrencyFormatter;
-import pt.rocket.framework.utils.ImageResolutionHelper;
 import pt.rocket.framework.utils.LogTagHelper;
+import android.os.Parcel;
+import android.os.Parcelable;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -32,34 +33,9 @@ import de.akquinet.android.androlog.Log;
  * @author GuilhermeSilva
  *
  */
-public class CompleteProduct implements IJSONSerializable {
+public class CompleteProduct implements IJSONSerializable, Parcelable {
 	
 	private static final String TAG = LogTagHelper.create( CompleteProduct.class);
-	
-//    private static final String JSON_SKU_TAG = "sku";
-//    private static final String JSON_NAME_TAG = "name";
-//    private static final String JSON_ID_CATALOG_CONFIG_TAG = "id_catalog_config";
-//    private static final String JSON_ATTRIBUTE_SET_ID_TAG = "attribute_set_id";
-//    private static final String JSON_ACTIVATED_AT_TAG = "activated_at";
-//    private static final String JSON_MAX_PRICE_TAG = "max_price";
-//    private static final String JSON_PRICE_TAG = "price";
-//    private static final String JSON_BRAND_TAG = "brand";
-//    private static final String JSON_CATEGORIES_TAG = "categories";
-//    private static final String JSON_ATTRIBUTES_TAG = "attributes";
-//    private static final String JSON_SIMPLES_TAG = "simples";
-//    private static final String JSON_IMAGE_LIST_TAG = "image_list";
-//    private static final String JSON_URL_TAG = "url";
-//    private static final String JSON_DESCRIPTION_TAG = "description";
-//    private static final String JSON_SHORT_DESC_TAG = "short_description";
-//    private static final String JSON_MAX_SAVING_PERCENTAGE_TAG = "max_saving_percentage";
-//    private static final String JSON_MAX_SPECIAL_PRICE_TAG = "max_special_price";
-//    private static final String JSON_SPECIAL_PRICE_TAG = "special_price";
-//
-//    private static final String JSON_RATINGS_TOTAL_TAG = "ratings_total";
-//    private static final String JSON_RATINGS_TOTAL_SUM_TAG = "sum";
-//    private static final String JSON_RATINGS_TOTAL_AVG_TAG = "avr";
-//    
-//    private static final String JSON_VARIATIONS_TAG = "variations";
     
     private String sku;
     private String name;
@@ -538,4 +514,67 @@ public class CompleteProduct implements IJSONSerializable {
 	public ArrayList<Variation> getVariations() {
 		return variations;
 	}
+
+	@Override
+	public int describeContents() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		 dest.writeList(categories);
+		 dest.writeMap(attributes);
+	     dest.writeMap(shipmentData);
+	     dest.writeList(simples);
+	     dest.writeList(imageList);
+	     dest.writeList(variations);
+	     dest.writeString(url);
+	     dest.writeString(description);
+	     dest.writeString(specialPrice);
+	     dest.writeString(maxSpecialPrice);
+	     dest.writeDouble(maxSavingPercentage);   
+	     dest.writeDouble(ratingsAverage);
+	     dest.writeInt(ratingsCount);
+	}
+	
+    private CompleteProduct(Parcel in) {
+
+        categories = (ArrayList<String>)in.readArrayList(null);
+        
+        attributes = new HashMap<String, String>();
+        in.readMap(attributes, String.class.getClassLoader());
+        
+        shipmentData = new HashMap<String, String>();
+        in.readMap(shipmentData, String.class.getClassLoader());
+
+        
+        simples = new ArrayList<ProductSimple>();
+        in.readList(simples, ProductSimple.class.getClassLoader());
+        
+        imageList = new ArrayList<String>();
+        in.readList(imageList, null);
+        
+        variations = new ArrayList<Variation>();
+        in.readList(variations, Variation.class.getClassLoader());
+        url = in.readString();
+        description = in.readString();
+
+        specialPrice = in.readString();
+        maxSpecialPrice = in.readString();
+        maxSavingPercentage = in.readDouble();
+        
+        ratingsAverage = in.readDouble();
+        ratingsCount = in.readInt();
+    }
+	
+    public static final Parcelable.Creator<CompleteProduct> CREATOR = new Parcelable.Creator<CompleteProduct>() {
+        public CompleteProduct createFromParcel(Parcel in) {
+            return new CompleteProduct(in);
+        }
+
+        public CompleteProduct[] newArray(int size) {
+            return new CompleteProduct[size];
+        }
+    };
 }

@@ -3,11 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/general_container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginBottom="6dp"
+    android:layout_height="wrap_content"
+    android:paddingBottom="6dp"
     android:layout_marginLeft="@dimen/margin_huge"
     android:layout_marginRight="@dimen/margin_mid"
-    android:paddingTop="8dp" >
+    android:layout_marginTop="8dp" >
 
     <include
         android:id="@+id/image_loadable"
@@ -67,14 +67,23 @@
             style="@style/product_price_current_list_text" />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/variances_container"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/item_name"
+<!--     <LinearLayout -->
+<!--         android:id="@+id/variances_container" -->
+<!--         android:layout_width="wrap_content" -->
+<!--         android:layout_height="wrap_content" -->
+<!--         android:layout_alignLeft="@+id/item_name" -->
+<!--         android:layout_below="@+id/price_container" -->
+<!--         android:orientation="vertical" /> -->
+	<org.holoeverywhere.widget.TextView         
+	    android:id="@+id/variances_container"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:textColor="@color/grey_middle"
+       	android:layout_alignLeft="@+id/item_name"
         android:layout_below="@+id/price_container"
-        android:orientation="vertical" />
-
+	    android:textSize="@dimen/text_small"
+	    android:visibility="gone" />
+    
     <org.holoeverywhere.widget.TextView
         android:id="@+id/item_stock"
         style="@style/product_price_current_list_text"

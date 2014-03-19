@@ -6,11 +6,12 @@ package pt.rocket.view.fragments;
 import java.util.ArrayList;
 import java.util.List;
 
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
+import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.CategoriesAdapter;
 import pt.rocket.controllers.SubCategoriesAdapter;
 import pt.rocket.controllers.fragments.FragmentType;
-import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.objects.Category;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.FragmentCommunicator;
@@ -19,6 +20,9 @@ import pt.rocket.view.BaseActivity;
 import pt.rocket.view.MainFragmentActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,6 +62,8 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
     
     private boolean isParent = false;
 
+    SharedPreferences sharedPrefs;
+    
     /**
      * Get instance
      * 
@@ -77,6 +83,7 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
         CategoriesFragment categoriesFragment = new CategoriesFragment();
         // Get data
         if(bundle != null) {
+            Log.i(TAG, "CategoriesFragment bundle != null");
             categoriesFragment.currentFragment = (FragmentType) bundle.getSerializable(ConstantsIntentExtra.CATEGORY_LEVEL);
             if(categoriesFragment.currentFragment == null){
                 categoriesFragment.currentFragment = FragmentType.CATEGORIES_LEVEL_1;
@@ -116,7 +123,8 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-       
+        sharedPrefs = getBaseActivity().getSharedPreferences(
+                ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         
     }
 
@@ -208,10 +216,11 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         // LEVEL 1
         if(currentFragment == FragmentType.CATEGORIES_LEVEL_1) {
-            Log.i(TAG, "code1 requested level 1");
+//            Log.i(TAG, "code1 requested level 1");
             Category category = categories.get(position);
             if (!category.getHasChildren()) {
                 showProducts(category);
+                
             } else {
                 Bundle bundle = new Bundle();
                 bundle.putBoolean(CategoriesContainerFragment.UPDATE_CHILD, true);
@@ -226,6 +235,7 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
         else {
             if (position == 0) {
                 showProducts(currentCategory);
+                
             } else {
                 requestSubcategory(position - 1);
             }
@@ -239,7 +249,8 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
      */
     private void createList() {
         if(categories == null){
-            categories = MainFragmentActivity.currentCategories;
+//            Log.i(TAG, "code1 creating list "+JumiaApplication.INSTANCE.currentCategories.size());
+            categories = JumiaApplication.INSTANCE.currentCategories;
         }
         
         if(categories == null)
@@ -269,11 +280,13 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
             getActivity().finish();
             return;
         }
+//        Log.i(TAG, "code1 categories view is not null");
         categoriesList = (ListView) getView().findViewById(R.id.sub_categories_grid);
         //categoriesList.setExpanded(true);
         mainCatAdapter = new CategoriesAdapter(getActivity(), categories);
         categoriesList.setAdapter(mainCatAdapter);
         categoriesList.setOnItemClickListener(this);
+        getBaseActivity().showContentContainer(false);
     }
     
     /**
@@ -281,7 +294,9 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
      */
     private void categoryLevel2() {
         categoriesList = (ListView) getView().findViewById(R.id.sub_categories_grid);
-        
+        if( categories == null || categories.size() <= 0 ){
+            return;
+        }
         parent = categories;
         child = categories.get(categoryIndex).getChildren();
         currentCategory = parent.get(categoryIndex);
@@ -362,7 +377,13 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
      * @param category
      */
     private void showProducts( Category category ) {
-       
+        Editor eDitor = sharedPrefs.edit();
+        eDitor.remove(ConstantsSharedPrefs.KEY_CATEGORY_SELECTED);
+        eDitor.remove(ConstantsSharedPrefs.KEY_SUB_CATEGORY_SELECTED);
+        eDitor.remove(ConstantsSharedPrefs.KEY_CURRENT_FRAGMENT);
+        eDitor.remove(ConstantsSharedPrefs.KEY_CHILD_CURRENT_FRAGMENT);
+        eDitor.commit();
+        
         Bundle bundle2 = new Bundle();
         bundle2.putBoolean(CategoriesContainerFragment.REMOVE_FRAGMENTS, true);
         bundle2.putString(ConstantsIntentExtra.CONTENT_URL, category.getApiUrl());
@@ -390,7 +411,7 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
         
         Log.i(TAG, "subCategoryIndex : "+subCategoryIndex + " categoryIndex : "+categoryIndex);
         
-        categories = MainFragmentActivity.currentCategories;
+        categories = JumiaApplication.INSTANCE.currentCategories;
         
         if(categories != null && getView() != null){
             createList();
@@ -400,12 +421,6 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
            FragmentCommunicator.getInstance().notifyTarget(this, args, 0);
         }
         
-        
-    }
-
-    @Override
-    protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
-        return false;
     }
     
 }

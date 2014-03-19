@@ -9,6 +9,7 @@ package pt.rocket.constants;
  * Proprietary and confidential.
  * 
  * @author Nuno Castro
+ * @updated sergiopereira
  * 
  * @version 1.00
  *
@@ -16,13 +17,15 @@ package pt.rocket.constants;
 public class ConstantsCheckout {
 
     // Checkout Steps
-    public static final int CHECKOUT_BASKET = 1;
-    public static final int CHECKOUT_ADDRESS = 2;
-    public static final int CHECKOUT_PAYMENT = 3;
-    public static final int CHECKOUT_PAYMENT_FORM = 35;
-    public static final int CHECKOUT_CONFIRM = 4;
-    public static final int CHECKOUT_THANKS = 5;  
     
     public static final String CHECKOUT_THANKS_ORDER_NR = "order_nr";  
+    
+    public static final int CHECKOUT_ABOUT_YOU = -1;
+    public static final int CHECKOUT_BILLING = -2;
+    public static final int CHECKOUT_SHIPPING = -3;
+    public static final int CHECKOUT_PAYMENT = -4;
+    public static final int CHECKOUT_ORDER = -5;
+    public static final int CHECKOUT_THANKS = -6;
+    public static final int CHECKOUT_NO_SET_HEADER = -7;
     
 }

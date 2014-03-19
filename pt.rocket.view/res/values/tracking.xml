@@ -60,6 +60,10 @@
     <!-- Live: UA-41452964-3 -->
     <string name="gaid_ci_test">UA-41452964-2</string>
     <string name="gaid_ci_live">UA-41452964-3</string>
+    
+    <!-- Jumia UG -->
+    <string name="gaid_ug_test">UA-46256089-3</string>
+    <string name="gaid_ug_live">UA-46256089-4</string>
 
     <!--  -->
     <!-- AD-X tracking -->

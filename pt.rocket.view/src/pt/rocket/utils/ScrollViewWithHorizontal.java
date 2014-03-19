@@ -1,13 +1,18 @@
 package pt.rocket.utils;
 
 import android.content.Context;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.ScrollView;
 
 public class ScrollViewWithHorizontal extends ScrollView {
 	private float xDistance, yDistance, lastX, lastY;
 
+	private Handler mHandler;
+	private View view;
+	
 	public ScrollViewWithHorizontal(Context context) {
 		super(context);
 	}
@@ -41,5 +46,19 @@ public class ScrollViewWithHorizontal extends ScrollView {
 
 		return super.onInterceptTouchEvent(ev);
 	}
+	
+    @Override 
+    protected void onScrollChanged(int l, int t, int oldl, int oldt) {
+        super.onScrollChanged(l, t, oldl, oldt);
+        if(this.view != null && this.view.isShown()){
+            this.mHandler.sendEmptyMessage(0);
+        }
+        
+    }
+    
+    public void sendListenerAndView(Handler handler, View v){
+        this.view = v;
+        this.mHandler = handler;
+    }
 	
 }

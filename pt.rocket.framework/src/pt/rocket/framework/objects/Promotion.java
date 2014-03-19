@@ -18,7 +18,8 @@ import java.util.Locale;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.util.Log;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -30,8 +31,9 @@ import pt.rocket.framework.utils.LogTagHelper;
  * @author manuelsilva
  * 
  */
-public class Promotion implements IJSONSerializable {
-	private final static String TAG = LogTagHelper.create( Promotion.class );
+public class Promotion implements IJSONSerializable, Parcelable {
+	
+	public final static String TAG = LogTagHelper.create( Promotion.class );
 
     private String title;
     private String description;
@@ -175,4 +177,60 @@ public class Promotion implements IJSONSerializable {
         }
         return jsonObject;
     }
+    
+    
+    /**
+     * ########### Parcelable ###########
+     * @author sergiopereira
+     */
+    
+    /*
+     * (non-Javadoc)
+     * @see android.os.Parcelable#describeContents()
+     */
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see android.os.Parcelable#writeToParcel(android.os.Parcel, int)
+	 */
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+	    dest.writeString(title);
+	    dest.writeString(description);
+	    dest.writeString(coupon_code);
+	    dest.writeString(terms_conditions);
+	    dest.writeString(end_date);
+	    dest.writeBooleanArray(new boolean[] {is_valid});
+	}
+	
+	/**
+	 * Parcel constructor
+	 * @param in
+	 */
+	private Promotion(Parcel in) {
+        title = in.readString();
+        description = in.readString();
+        coupon_code = in.readString();
+        terms_conditions = in.readString();
+        end_date = in.readString();
+        in.readBooleanArray(new boolean[] {is_valid});
+    }
+		
+	/**
+	 * Create parcelable 
+	 */
+	public static final Parcelable.Creator<Promotion> CREATOR = new Parcelable.Creator<Promotion>() {
+        public Promotion createFromParcel(Parcel in) {
+            return new Promotion(in);
+        }
+
+        public Promotion[] newArray(int size) {
+            return new Promotion[size];
+        }
+    };
+	
 }

@@ -6,6 +6,7 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Currency;
 import java.util.Locale;
+import java.util.StringTokenizer;
 
 import pt.rocket.framework.R;
 import android.content.Context;
@@ -83,6 +84,8 @@ public class CurrencyFormatter {
     	currencyUnitPattern = context.getResources().getStringArray(R.array.formatter_currency_unit_pattern)[i];
     }
     
+    
+    
     public static void setCurrency( String currencyCode ) {
     	currency = Currency.getInstance(currencyCode);
     }
@@ -94,7 +97,96 @@ public class CurrencyFormatter {
      */
     public static String formatCurrency(double value) {
     	
-    	return String.format( currencyUnitPattern, formatter.format(value));
+    	String result =  String.valueOf(value);
+
+    	String noFraction;
+    	String fraction;
+    	if(result.contains(".")){
+    		StringTokenizer tokens = new StringTokenizer(result, ".");
+    		noFraction = tokens.nextToken();
+    		fraction = tokens.nextToken();
+    	} else {
+    		noFraction = result;
+    		fraction =null;
+    	}
+    	
+    	if(noFraction.length()>3){
+	    	String thousands = noFraction.substring(noFraction.length()-3, noFraction.length());
+	    	String other = noFraction.substring(0, noFraction.length()-3);
+	    
+	    	if(currencyFractionCount == 0)
+	    		result = other+currencyThousandsDelim+thousands;
+	    	else { 
+	    		
+	    		while(fraction.length()<currencyFractionCount){
+	    			fraction+="0";
+	    		}
+	    		result = other+currencyThousandsDelim+thousands+currencyFractionDelim+fraction;
+	    	}
+    	} else {
+    		
+    		if(currencyFractionCount == 0)
+    			result = noFraction;
+	    	else { 
+	    		while(fraction.length()<currencyFractionCount){
+	    			fraction+="0";
+	    		}
+	    		
+	    		result = noFraction+currencyFractionDelim+fraction;
+	    	}
+    		
+    	}
+
+    	result = String.format(currencyUnitPattern, result);
+    	
+    	return result;
+    }
+    
+    /**
+     * This Function restrieves the double value of a previously formatted value with currency and locale options.
+     * @param value
+     * @return
+     */
+    public static double getValueDouble(String value ) {
+    	double result = 0;
+    	if(currencyFractionCount == 0)
+    		value = value.replace(",", "");
+    	else { 
+    		if(value.contains(",") && (""+currencyFractionDelim).equalsIgnoreCase(",") && !value.contains(".")){
+    			value = value.replace(",", ".");
+    		} else if(value.contains(",") && (""+currencyFractionDelim).equalsIgnoreCase(",") && value.contains(".")) {
+    			value = value.replace(".", "");
+    			value = value.replace(",", ".");
+    		} else if(value.contains(",")){
+    			value = value.replace(",", "");
+    		}
+    	}
+    	result = Double.parseDouble(value);
+    	return result;
+    }
+    
+    /**
+     * This Function restrieves the double value of a previously formatted value with currency and locale options.
+     * @param value
+     * @return
+     */
+    public static String getCleanValue(String value ) {
+    	value = value.trim();
+    	String result = "";
+    	if(currencyFractionCount == 0)
+    		value = value.replace(",", "");
+    	else { 
+    		if(value.contains(",") && (""+currencyFractionDelim).equalsIgnoreCase(",") && !value.contains(".")){
+    			value = value.replace(",", ".");
+    		} else if(value.contains(",") && (""+currencyFractionDelim).equalsIgnoreCase(",") && value.contains(".")) {
+    			value = value.replace(".", "");
+    			value = value.replace(",", ".");
+    		} else if(value.contains(",")){
+    			value = value.replace(",", "");
+    		}
+    	}
+    	result = value;
+    	return result;
     }
     
     /**

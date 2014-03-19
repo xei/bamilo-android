@@ -3,6 +3,9 @@ package pt.rocket.framework.objects;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.CurrencyFormatter;
 import pt.rocket.framework.utils.ImageResolutionHelper;
@@ -16,31 +19,13 @@ import java.util.Map;
  * @author GuilhermeSilva
  * 
  */
-public class ShoppingCartItem implements IJSONSerializable {
-//    private static final String JSON_IMAGE_TAG = "image";
-//    private static final String JSON_PRODUCT_URL_TAG = "url";
-//    private static final String JSON_CONFIG_SKU_TAG = "configSku";    
-//    private static final String JSON_QUANTITY_TAG = "quantity";
-//    private static final String JSON_CONFIG_ID = "configId";
-//    private static final String JSON_NAME_TAG = "name";
-//    private static final String JSON_STOCK_TAG = "stock";
-//    private static final String JSON_SPECIAL_PRICE_TAG = "specialPrice";
-//    private static final String JSON_PRICE_TAG = "unit_price";
-//    private static final String JSON_TAX_AMOUNT_TAG = "tax_amount";
-//    private static final String JSON_MAX_QUANTITY = "max_quantity";
-//    private static final String JSON_VARIATION = "variation";
-//
-    // TODO: implement these tags
-//    private static final String JSON_CART_RULE_DISPLAY_NAMES = "cart_rule_display_names";
-//    private static final String JSON_SALES_ORDER_ITEM = "salesOrderItem";
-//    private static final String JSON_CART_RULE_DISCOUNT = "cart_rule_discount";
-
-    
+public class ShoppingCartItem implements IJSONSerializable, Parcelable {
+   
     private String imageUrl;
     private String productUrl;
     private String configSKU;
     private String configSimpleSKU;
-    private int quantity;
+    private long quantity;
     private int maxQuantity;
     private String configId;
     private String name;
@@ -85,11 +70,11 @@ public class ShoppingCartItem implements IJSONSerializable {
             imageUrl = getImageUrl(jsonObject.getString(RestConstants.JSON_ITEM_IMAGE_TAG));
             productUrl = jsonObject.optString(RestConstants.JSON_PRODUCT_URL_TAG);
             configSKU = jsonObject.getString(RestConstants.JSON_CONFIG_SKU_TAG);
-            quantity = jsonObject.getInt(RestConstants.JSON_QUANTITY_TAG);
+            quantity = jsonObject.getLong(RestConstants.JSON_QUANTITY_TAG);
             maxQuantity = jsonObject.getInt(RestConstants.JSON_MAX_QUANTITY );
             configId = jsonObject.getString(RestConstants.JSON_CONFIG_ID);
             name = jsonObject.getString(RestConstants.JSON_ITEM_NAME_TAG);            
-            stock = jsonObject.getLong(RestConstants.JSON_STOCK_TAG);
+            stock = Long.parseLong(jsonObject.getString(RestConstants.JSON_STOCK_TAG));
 
             
             if (!jsonObject.isNull(RestConstants.JSON_ITEM_PRICE_TAG)) {
@@ -109,9 +94,6 @@ public class ShoppingCartItem implements IJSONSerializable {
             taxAmount = jsonObject.optDouble(RestConstants.JSON_TAX_AMOUNT_TAG, 0);
             savingPercentage = 100 - specialPriceVal / priceVal * 100;
             
-            // TODO: find out what these fields are for
-            // jsonObject.getJSONArray(JSON_CART_RULE_DISPLAY_NAMES);            
-            // jsonObject.getJSONObject(JSON_SALES_ORDER_ITEM);
             cartRuleDiscount = jsonObject.getDouble(RestConstants.JSON_CART_RULE_DISCOUNT );
             variation =  jsonObject.getString(RestConstants.JSON_VARIATION);
         } catch (JSONException e) {
@@ -188,14 +170,14 @@ public class ShoppingCartItem implements IJSONSerializable {
     /*
      * @param quantity of the product
      */
-    public void setQuantity( int quantity ) {
+    public void setQuantity( long quantity ) {
     	this.quantity = quantity;
     }
 
     /**
      * @return the quantity
      */
-    public int getQuantity() {
+    public long getQuantity() {
         return quantity;
     }
     
@@ -312,6 +294,84 @@ public class ShoppingCartItem implements IJSONSerializable {
 			return modUrl;
 		return url;
 	}
+	
+    /**
+     * ########### Parcelable ###########
+     * @author sergiopereira
+     */
+    
+    /*
+     * (non-Javadoc)
+     * @see android.os.Parcelable#describeContents()
+     */
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see android.os.Parcelable#writeToParcel(android.os.Parcel, int)
+	 */
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+	    dest.writeString(imageUrl);
+	    dest.writeString(productUrl);
+	    dest.writeString(configSKU);
+	    dest.writeString(configSimpleSKU);
+	    dest.writeLong(quantity);
+	    dest.writeInt(maxQuantity);
+	    dest.writeString(configId);
+	    dest.writeString(name);
+	    dest.writeLong(stock);
+	    dest.writeString(specialPrice);
+	    dest.writeDouble(savingPercentage);
+	    dest.writeString(price);
+	    dest.writeDouble(taxAmount);
+	    dest.writeMap(simpleData);
+	    dest.writeDouble(cartRuleDiscount);
+	    dest.writeString(variation);
+	    dest.writeDouble(priceVal);
+	    dest.writeDouble(specialPriceVal);
+	}
+	
+	/**
+	 * Parcel constructor
+	 * @param in
+	 */
+	private ShoppingCartItem(Parcel in) {
+		imageUrl = in.readString();
+	    productUrl = in.readString();
+	    configSKU = in.readString();
+	    configSimpleSKU = in.readString();
+	    quantity = in.readLong();
+	    maxQuantity = in.readInt();
+	    configId = in.readString();
+	    name = in.readString();
+	    stock = in.readLong();
+	    specialPrice = in.readString();
+	    savingPercentage = in.readDouble();
+	    price = in.readString();
+	    taxAmount = in.readDouble();
+	    in.readMap(simpleData, String.class.getClassLoader());
+	    cartRuleDiscount = in.readDouble();
+	    variation = in.readString();
+	    priceVal = in.readDouble();
+	    specialPriceVal = in.readDouble();
+    }
+		
+	/**
+	 * Create parcelable 
+	 */
+	public static final Parcelable.Creator<ShoppingCartItem> CREATOR = new Parcelable.Creator<ShoppingCartItem>() {
+        public ShoppingCartItem createFromParcel(Parcel in) {
+            return new ShoppingCartItem(in);
+        }
+
+        public ShoppingCartItem[] newArray(int size) {
+            return new ShoppingCartItem[size];
+        }
+    };
     
     
 }

@@ -10,21 +10,18 @@ import org.holoeverywhere.widget.TextView;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
-import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.event.ResponseEvent;
-import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.objects.CompleteProduct;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.utils.FragmentCommunicatorForProduct;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
-import pt.rocket.utils.FragmentCommunicatorForProduct;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.ProductDetailsActivityFragment;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.text.Html;
 import android.text.Spannable;
 import android.text.TextUtils;
@@ -180,7 +177,7 @@ public class ProductSpecificationsFragment extends BaseFragment implements OnCli
         Log.i(TAG, "ON RESUME");
         Bundle bundle = getArguments();
         if(bundle != null && bundle.containsKey(ProductDetailsActivityFragment.PRODUCT_COMPLETE))
-            mCompleteProduct = (CompleteProduct) bundle.get(ProductDetailsActivityFragment.PRODUCT_COMPLETE);
+            mCompleteProduct = FragmentCommunicatorForProduct.getInstance().getCurrentProduct();
     }
 
     /*
@@ -203,17 +200,6 @@ public class ProductSpecificationsFragment extends BaseFragment implements OnCli
     public void onStop() {
         super.onStop();
         Log.i(TAG, "ON STOP");
-    }
-
-    @Override
-    protected boolean onSuccessEvent(final ResponseResultEvent<?> event) {
-               
-        return true;
-    }
-
-    @Override
-    protected boolean onErrorEvent(ResponseEvent event) {
-        return false;
     }
  
     @Override
@@ -271,7 +257,7 @@ public class ProductSpecificationsFragment extends BaseFragment implements OnCli
 
     @Override
     public void notifyFragment(Bundle bundle) {
-        Log.i(TAG, "code1 notifyFragment Specification");
+//        Log.i(TAG, "code1 notifyFragment Specification");
         // Validate if fragment is on the screen
         if(!isVisible()){
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");

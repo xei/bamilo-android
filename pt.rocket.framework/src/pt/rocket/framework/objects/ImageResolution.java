@@ -1,5 +1,7 @@
 package pt.rocket.framework.objects;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import pt.rocket.framework.utils.LogTagHelper;
 
 /**
@@ -7,7 +9,7 @@ import pt.rocket.framework.utils.LogTagHelper;
  * @author sergiopereira
  *
  */
-public class ImageResolution {
+public class ImageResolution implements Parcelable {
 	
 	protected final static String TAG = LogTagHelper.create( ImageResolution.class );
 	
@@ -118,5 +120,55 @@ public class ImageResolution {
      * ############################ JSON #################################
      */
 
+
+    /**
+     * ########### Parcelable ###########
+     * @author sergiopereira
+     */
+    
+    /*
+     * (non-Javadoc)
+     * @see android.os.Parcelable#describeContents()
+     */
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see android.os.Parcelable#writeToParcel(android.os.Parcel, int)
+	 */
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+	    dest.writeString(identifier);
+	    dest.writeInt(width);
+	    dest.writeInt(heigth);
+	    dest.writeString(extension);
+	}
+	
+	/**
+	 * Parcel constructor
+	 * @param in
+	 */
+	private ImageResolution(Parcel in) {
+		identifier = in.readString();
+		width = in.readInt();
+		heigth = in.readInt();
+		extension = in.readString();
+    }
+		
+	/**
+	 * Create parcelable 
+	 */
+	public static final Parcelable.Creator<ImageResolution> CREATOR = new Parcelable.Creator<ImageResolution>() {
+        public ImageResolution createFromParcel(Parcel in) {
+            return new ImageResolution(in);
+        }
+
+        public ImageResolution[] newArray(int size) {
+            return new ImageResolution[size];
+        }
+    };
 	
 }

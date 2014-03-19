@@ -4,8 +4,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import pt.rocket.framework.rest.RestConstants;
+import android.os.Parcel;
+import android.os.Parcelable;
 
+import pt.rocket.framework.rest.RestConstants;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
@@ -14,8 +16,7 @@ import java.util.Map.Entry;
  * @author GuilhermeSilva
  *
  */
-public class ProductSimple implements IJSONSerializable {
-//    private static final String JSON_ATTRIBUTES_TAG = "meta";
+public class ProductSimple implements IJSONSerializable, Parcelable {
 
     public static final String SKU_TAG = "sku";
     public static final String PRICE_TAG = "price";
@@ -99,4 +100,29 @@ public class ProductSimple implements IJSONSerializable {
     public void setAttributes(HashMap<String, String> attributes) {
        this.attributes=attributes;
     }
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeMap(attributes);
+		
+	}
+	
+	private ProductSimple(Parcel in){
+		attributes = (HashMap<String, String>) in.readHashMap(null);
+	}
+	
+    public static final Parcelable.Creator<ProductSimple> CREATOR = new Parcelable.Creator<ProductSimple>() {
+        public ProductSimple createFromParcel(Parcel in) {
+            return new ProductSimple(in);
+        }
+
+        public ProductSimple[] newArray(int size) {
+            return new ProductSimple[size];
+        }
+    };
 }

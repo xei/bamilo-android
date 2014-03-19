@@ -5,24 +5,25 @@ package pt.rocket.view.fragments;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.EnumSet;
 
 import org.holoeverywhere.widget.TextView;
 
+import pt.rocket.app.JumiaApplication;
+import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.LogOut;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
+import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.components.NavigationListComponent;
-import pt.rocket.framework.event.EventManager;
-import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.event.RequestEvent;
-import pt.rocket.framework.event.ResponseResultEvent;
-import pt.rocket.framework.objects.ShoppingCart;
-import pt.rocket.framework.service.ServiceManager;
-import pt.rocket.framework.service.services.CustomerAccountService;
+import pt.rocket.framework.utils.Constants;
+import pt.rocket.framework.utils.CurrencyFormatter;
+import pt.rocket.framework.utils.EventType;
+import pt.rocket.framework.utils.LoadingBarView;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.helpers.NavigationListHelper;
+import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
@@ -30,6 +31,8 @@ import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,9 +58,11 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
 
     private LayoutInflater inflater;
 
-    private static ShoppingCart shoppingCart;
+    private LoadingBarView loadingBarView;
 
-    public static ArrayList<NavigationListComponent> navigationListComponents;
+    private View loadingBarContainer;
+
+    private int recoveryCount = 0;
 
     private static DialogGenericFragment dialogLogout;
 
@@ -81,7 +86,7 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
                 EnumSet.noneOf(EventType.class),
                 EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.Unknown,
-                0);
+                ConstantsCheckout.CHECKOUT_NO_SET_HEADER);
     }
 
     /*
@@ -104,10 +109,10 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-        
+
         // Retain this fragment across configuration changes.
         setRetainInstance(true);
-        
+
         inflater = LayoutInflater.from(getActivity());
     }
 
@@ -123,6 +128,11 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
         Log.i(TAG, "ON CREATE VIEW");
         View view = inflater.inflate(R.layout.navigation_container, container, false);
         navigationContainer = (ViewGroup) view.findViewById(R.id.slide_menu_container);
+        loadingBarContainer = navigationContainer.findViewById(R.id.loading_slide_menu_container);
+        loadingBarView = (LoadingBarView) loadingBarContainer.findViewById(R.id.loading_bar_view);
+        if (loadingBarView != null) {
+            loadingBarView.startRendering();
+        }
         return view;
     }
 
@@ -146,15 +156,41 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        // Update
-        if (navigationListComponents != null) {
-            fillNavigationContainer(navigationListComponents);
-            updateCart();
+        if(JumiaApplication.INSTANCE.mIsBound){
+            onResumeExecution();    
         } else {
-            triggerContentEvent(new RequestEvent(EventType.GET_NAVIGATION_LIST_COMPONENTS_EVENT));
+//            Log.i(TAG, "code1service not received ok from service! set handler");
+            JumiaApplication.INSTANCE.setResendMenuHander(serviceConnectedHandler);
         }
     }
+    
+    private Handler serviceConnectedHandler = new Handler(){
+        public void handleMessage(android.os.Message msg) {
+           onResumeExecution();
+        }; 
+     };
 
+    private void onResumeExecution(){
+        // Update
+        if (JumiaApplication.INSTANCE.navigationListComponents != null) {
+            fillNavigationContainer(JumiaApplication.INSTANCE.navigationListComponents);
+            updateCart();
+        } else {
+
+            /**
+             * TRIGGERS
+             * 
+             * @author sergiopereira
+             */
+            Log.i(TAG, "slidemenu trigger");
+            if (JumiaApplication.INSTANCE.SHOP_ID >= 0)
+                trigger();
+            // triggerContentEvent(new
+            // RequestEvent(EventType.GET_NAVIGATION_LIST_COMPONENTS_EVENT));
+
+        }
+    }
+    
     /*
      * (non-Javadoc)
      * 
@@ -175,8 +211,6 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
     public void onStop() {
         super.onStop();
         Log.i(TAG, "ON STOP");
-        EventManager.getSingleton().removeResponseListener(this,
-                EnumSet.of(EventType.GET_NAVIGATION_LIST_COMPONENTS_EVENT));
     }
 
     /*
@@ -194,45 +228,40 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
     public void onDestroy() {
         super.onDestroy();
         Log.i(TAG, "ON DESTROY");
-        // System.gc();
-        EventManager.getSingleton().removeResponseListener(this,
-                EnumSet.of(EventType.GET_NAVIGATION_LIST_COMPONENTS_EVENT));
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see pt.rocket.view.fragments.BaseFragment#onSuccessEvent(pt.rocket.framework.event.
-     * ResponseResultEvent)
-     */
-    @Override
-    protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
+    protected boolean onSuccessEvent(Bundle bundle) {
 
         if (!isVisible())
             return true;
-
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         Log.i(TAG, "ON SUCCESS EVENT");
-        if (event.getSuccess()) {
-            switch (event.type) {
-            case GET_NAVIGATION_LIST_COMPONENTS_EVENT:
-                Log.d(TAG, "GET NAVIGATION LIST COMPONENTS EVENT");
-                ResponseResultEvent<Collection<NavigationListComponent>> getNavEvent = (ResponseResultEvent<Collection<NavigationListComponent>>) event;
-                navigationListComponents = (ArrayList<NavigationListComponent>) getNavEvent.result;
-                fillNavigationContainer(navigationListComponents);
-                updateCart();
-                break;
+
+        switch (eventType) {
+        case GET_NAVIGATION_LIST_COMPONENTS_EVENT:
+            if (loadingBarView != null) {
+                loadingBarView.stopRendering();
             }
+            if (loadingBarContainer != null) {
+                loadingBarContainer.setVisibility(View.GONE);
+            }
+            Log.d(TAG, "GET NAVIGATION LIST COMPONENTS EVENT");
+            JumiaApplication.INSTANCE.navigationListComponents = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
+            fillNavigationContainer(JumiaApplication.INSTANCE.navigationListComponents);
+            updateCart();
+            break;
         }
+
         return true;
     }
 
     /**
-     * Update the sliding menu
-     * Called from BaseFragment
+     * Update the sliding menu Called from BaseFragment
+     * 
      * @author sergiopereira
      */
-    public void onUpdate(){
-        if(navigationListComponents != null) {
+    public void onUpdate() {
+        if (JumiaApplication.INSTANCE.navigationListComponents != null) {
             Log.i(TAG, "ON UPDATE: NAV LIST IS NOT NULL");
             // Update generic items or force reload for LogInOut
             updateNavigationItems();
@@ -240,41 +269,56 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
             updateCart();
         }
     }
-//
-//    /**
-//     * Set the wish list counter
-//     * @param layout
-//     * @author sergiopereira
-//     */
-//    private void setWishlistCount(View layout) {
-//        if(wishlistCounter > 0) 
-//            ((TextView) layout.findViewById(R.id.component_text)).setText(getString(R.string.nav_wishlist) + " (" + wishlistCounter + ")");
-//        else
-//            ((TextView) layout.findViewById(R.id.component_text)).setText(getString(R.string.nav_wishlist));
-//    }
-//    
+
+    //
+    // /**
+    // * Set the wish list counter
+    // * @param layout
+    // * @author sergiopereira
+    // */
+    // private void setWishlistCount(View layout) {
+    // if(wishlistCounter > 0)
+    // ((TextView)
+    // layout.findViewById(R.id.component_text)).setText(getString(R.string.nav_wishlist) + " (" +
+    // wishlistCounter + ")");
+    // else
+    // ((TextView)
+    // layout.findViewById(R.id.component_text)).setText(getString(R.string.nav_wishlist));
+    // }
+    //
     /**
      * 
      * @param view
      */
-    private void setLogInOutText(View view){
-        int text = ServiceManager.SERVICES.get(CustomerAccountService.class).hasCredentials() ? R.string.sign_out : R.string.sign_in;
+    private void setLogInOutText(View view) {
+        int text = JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials() ? R.string.sign_out
+                : R.string.sign_in;
         ((TextView) view.findViewById(R.id.component_text)).setText(text);
         view.setId(R.id.loginout_view);
     }
-    
+
     /**
      * Updated generic items
+     * 
      * @author sergiopereira
      */
-    private void updateNavigationItems(){
+    private void updateNavigationItems() {
         try {
             // For each child validate the selected item
             ViewGroup vGroup = ((ViewGroup) getView().findViewById(R.id.slide_menu_scrollable_container));
+            if(vGroup == null && recoveryCount <3 ){
+                recoveryCount++;
+                Message msg = new Message();
+                msg.arg1 = 0;
+                recoveryHandler.sendMessageDelayed(msg, 500);
+                return;
+            } else if(vGroup == null){
+                return;
+            }
             int count = vGroup.getChildCount();
             for (int i = 0; i < count; i++)
                 updateItem(vGroup.getChildAt(i));
-            
+            recoveryCount = 0;
         } catch (NullPointerException e) {
             Log.w(TAG, "ON UPDATE NAVIGATION: NULL POINTER EXCEPTION");
             e.printStackTrace();
@@ -283,10 +327,18 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
             e.printStackTrace();
         }
     }
-
     
+    Handler recoveryHandler = new Handler(){
+        public void handleMessage(android.os.Message msg) {
+            if(msg.arg1 == 0){
+                updateNavigationItems();
+            }
+        };
+    };
+
     /**
      * Update item
+     * 
      * @param view
      */
     private void updateItem(View view) {
@@ -297,10 +349,10 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
         case LoginOut:
             setLogInOutText(view);
             break;
-//        // Update wish list counter
-//        case Wishlist:
-//            setWishlistCount(view);
-//            break;
+        // // Update wish list counter
+        // case Wishlist:
+        // setWishlistCount(view);
+        // break;
         case Home:
         case Search:
         case Categories:
@@ -312,23 +364,27 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
         // Set selected
         setActionSelected(view);
     }
-    
-    
+
     /**
      * 
      * @param components
      */
     private void fillNavigationContainer(ArrayList<NavigationListComponent> components) {
         Log.d(TAG, "FILL NAVIGATION CONTAINER");
-        navigationContainer.removeAllViews();
+        try {
+            navigationContainer.removeAllViews();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+        
 
         // Header component
         inflater.inflate(R.layout.navigation_header_component, navigationContainer, true);
 
-//        // Static container
-//        inflater.inflate(R.layout.navigation_static_container, navigationContainer, true);
-//        ViewGroup staticContainer = (ViewGroup) navigationContainer
-//                .findViewById(R.id.slide_menu_static_container);
+        // // Static container
+        // inflater.inflate(R.layout.navigation_static_container, navigationContainer, true);
+        // ViewGroup staticContainer = (ViewGroup) navigationContainer
+        // .findViewById(R.id.slide_menu_static_container);
 
         // Scrollable container
         inflater.inflate(R.layout.navigation_scrollable_container, navigationContainer, true);
@@ -336,10 +392,11 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
                 .findViewById(R.id.slide_menu_scrollable_container);
 
         for (NavigationListComponent component : components) {
+//            Log.i(TAG, "code1 creating component : "+component.getElementText());
             // Basket
             ViewGroup viewGroup = scrollableContainer;
-            //if (component.getElementId() == 7 && component.getElementText().equals("Basket"))
-                //viewGroup = staticContainer;
+            // if (component.getElementId() == 7 && component.getElementText().equals("Basket"))
+            // viewGroup = staticContainer;
             // Others
             View actionElementLayout = getActionElementLayout(component, viewGroup);
             if (actionElementLayout != null)
@@ -354,10 +411,10 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
                         R.id.slide_menu_scrollable_container)).getChildCount();
                 LinearLayout vGroup = ((LinearLayout) getView().findViewById(
                         R.id.slide_menu_scrollable_container));
-                Log.i(TAG, "code1 size is : " + count);
+//                Log.i(TAG, "code1 size is : " + count);
                 for (int i = 0; i < count; i++) {
                     View view = vGroup.getChildAt(i);
-                    Log.i(TAG, "code1 tag is  : " + count);
+//                    Log.i(TAG, "code1 tag is  : " + count);
                     setActionSelected(view);
                 }
             }
@@ -410,7 +467,7 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
                     R.string.my_account, this);
             break;
         case LoginOut:
-            int text = ServiceManager.SERVICES.get(CustomerAccountService.class).hasCredentials() ?
+            int text = JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials() ?
                     R.string.sign_out : R.string.sign_in;
             layout = createGenericComponent(parent, component,
                     R.drawable.selector_navigation_loginout,
@@ -590,19 +647,28 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
      * 
      * @param cart
      */
-    public void updateCartInfo(ShoppingCart cart) {
-        shoppingCart = cart;
+    public void updateCartInfo() {
         updateCart();
     }
 
     private void updateCart() {
 
-        if (shoppingCart == null || getView() == null)
+        Log.d(TAG, "UPDATE CART");
+        
+        if (JumiaApplication.INSTANCE.getCart() == null && getView() == null)
             return;
 
+        if(getActivity() == null){
+            return;
+        }
+        
         // Update ActionBar
-        ((BaseActivity) getActivity()).updateCartInfoInActionBar(shoppingCart);
+        ((BaseActivity) getActivity()).updateCartInfoInActionBar();
 
+        if(getView() == null){
+            return;
+        }
+        
         View container = getView().findViewById(R.id.nav_basket);
         if (container == null) {
             Log.w(getTag(), "updateCartInfo: cant find basket container - doing nothing");
@@ -614,10 +680,10 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
         final TextView navVat = (TextView) container.findViewById(R.id.nav_basket_vat);
         final View navCartEmptyText = container.findViewById(R.id.nav_basket_empty);
 
-        final String value = shoppingCart != null ? shoppingCart.getCartValue() : "";
-        final String quantity = shoppingCart == null ? "?" : shoppingCart.getCartCount() == 0 ? ""
+        final String value = JumiaApplication.INSTANCE.getCart() != null ? JumiaApplication.INSTANCE.getCart().getCartValue() : "";
+        final String quantity = JumiaApplication.INSTANCE.getCart() == null ? "?" : JumiaApplication.INSTANCE.getCart().getCartCount() == 0 ? ""
                 : String
-                        .valueOf(shoppingCart.getCartCount());
+                        .valueOf(JumiaApplication.INSTANCE.getCart().getCartCount());
 
         vCartCount.post(new Runnable() {
             @Override
@@ -625,14 +691,14 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
                 if (quantity.length() > 0) {
                     vCartCount.setText(quantity);
                     Log.i(getTag(), "VALUE = " + value);
-                    navIm.setText(value);
+                    navIm.setText(CurrencyFormatter.formatCurrency(value));
                     navIm.setVisibility(View.VISIBLE);
                     navVat.setVisibility(View.VISIBLE);
                     navCartEmptyText.setVisibility(View.INVISIBLE);
-                    Log.d(getTag(), "updateCartInfo: setting for cart not empty");
+                    Log.d(TAG, "updateCartInfo: setting for cart not empty");
                 } else {
                     vCartCount.setText(quantity);
-                    Log.d(getTag(), "updateCartInfo: setting for cart empty");
+                    Log.d(TAG, "updateCartInfo: setting for cart empty");
                     navIm.setVisibility(View.INVISIBLE);
                     navVat.setVisibility(View.INVISIBLE);
                     navCartEmptyText.setVisibility(View.VISIBLE);
@@ -642,7 +708,7 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
     }
 
     public static void loginOut(final BaseActivity activity) {
-        if (ServiceManager.SERVICES.get(CustomerAccountService.class).hasCredentials()) {
+        if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials()) {
             FragmentManager fm = activity.getSupportFragmentManager();
             dialogLogout = DialogGenericFragment.newInstance(false, true, false,
                     activity.getString(R.string.logout_title),
@@ -656,7 +722,7 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
                                 LogOut.performLogOut(new WeakReference<Activity>(activity));
                             }
                             dialogLogout.dismiss();
-                            
+
                         }
 
                     });
@@ -667,4 +733,31 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
         }
     }
 
+    /**
+     * TRIGGERS
+     * 
+     * @author sergiopereira
+     */
+    private void trigger() {
+        triggerContentEvent(new NavigationListHelper(), null, mCallBack);
+    }
+
+    /**
+     * CALLBACK
+     * 
+     * @author sergiopereira
+     */
+    IResponseCallback mCallBack = new IResponseCallback() {
+
+        @Override
+        public void onRequestError(Bundle bundle) {
+            ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+            Log.i(TAG, "failed to get navigation  "+ errorCode);
+        }
+
+        @Override
+        public void onRequestComplete(Bundle bundle) {
+            onSuccessEvent(bundle);
+        }
+    };
 }

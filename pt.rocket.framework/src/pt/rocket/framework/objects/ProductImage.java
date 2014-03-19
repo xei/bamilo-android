@@ -3,6 +3,9 @@ package pt.rocket.framework.objects;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import pt.rocket.framework.rest.RestConstants;
 
 /**
@@ -10,23 +13,7 @@ import pt.rocket.framework.rest.RestConstants;
  * @author GuilhermeSilva
  *
  */
-public class ProductImage implements IJSONSerializable {
-//    private static final String JSON_ID_CATALOG_PRODUCT_IMAGE_TAG = "id_catalog_product_image";
-//    private static final String JSON_FK_CATALOG_CONFIG_TAG = "fk_catalog_config";
-//    private static final String JSON_FK_CATALOG_SIMPLE_TAG = "fk_catalog_simple";
-//    private static final String JSON_IMAGE_TAG = "image";
-//    private static final String JSON_MAIN_TAG = "main";
-//    private static final String JSON_UPDATED_AT_TAG = "updated_at";
-//    private static final String JSON_UPDATED_AT_TS_TAG = "updated_at_ts";
-//    private static final String JSON_SKU_TAG = "sku";
-//    private static final String JSON_FK_CATALOG_BRAND_TAG = "fk_catalog_brand";
-//    private static final String JSON_SKU_SIMPLE_TAG = "sku_simple";
-//    private static final String JSON_ID_CATALOG_BRAND_TAG = "id_catalog_brand";
-//    private static final String JSON_BRAND_NAME_TAG = "brand_name";
-//    private static final String JSON_BRAND_URL_KEY_TAG = "brand_url_key";
-//    private static final String JSON_URL_TAG = "url";
-//    private static final String JSON_PATH_TAG = "path";
-//    private static final String JSON_SPRITE_TAG = "sprite";
+public class ProductImage implements IJSONSerializable, Parcelable {
 
     private String idCatalogProductImage;
     private Integer fkCatalogConfig;
@@ -214,11 +201,85 @@ public class ProductImage implements IJSONSerializable {
             jsonObject.put(RestConstants.JSON_SPRITE_TAG, sprite);
 
         } catch (JSONException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
         return jsonObject;
     }
+    
+    /**
+     * ########### Parcelable ###########
+     * @author sergiopereira
+     */
+    
+    /*
+     * (non-Javadoc)
+     * @see android.os.Parcelable#describeContents()
+     */
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see android.os.Parcelable#writeToParcel(android.os.Parcel, int)
+	 */
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+	    dest.writeString(idCatalogProductImage);
+	    dest.writeInt(fkCatalogConfig);
+	    dest.writeInt(fkCatalogSimple);
+	    dest.writeString(image);
+	    dest.writeString(main);
+	    dest.writeString(updatedAt);
+	    dest.writeString(updatedAtTs);
+	    dest.writeString(sku);
+	    dest.writeString(fkCatalogBrand);
+	    dest.writeString(skuSimple);
+	    dest.writeString(idCatalogBrand);
+	    dest.writeString(brandName);
+	    dest.writeString(brandUrlKey);
+	    dest.writeString(url);
+	    dest.writeString(path);
+	    dest.writeString(sprite);
+	}
+	
+	/**
+	 * Parcel constructor
+	 * @param in
+	 */
+	private ProductImage(Parcel in) {
+	    idCatalogProductImage = in.readString();
+	    fkCatalogConfig = in.readInt();
+	    fkCatalogSimple = in.readInt();
+	    image = in.readString();
+	    main = in.readString();
+	    updatedAt = in.readString();
+	    updatedAtTs = in.readString();
+	    sku = in.readString();
+	    fkCatalogBrand = in.readString();
+	    skuSimple = in.readString();
+	    idCatalogBrand = in.readString();
+	    brandName = in.readString();
+	    brandUrlKey = in.readString();
+	    url = in.readString();
+	    path = in.readString();
+	    sprite = in.readString();
+    }
+		
+	/**
+	 * Create parcelable 
+	 */
+	public static final Parcelable.Creator<ProductImage> CREATOR = new Parcelable.Creator<ProductImage>() {
+        public ProductImage createFromParcel(Parcel in) {
+            return new ProductImage(in);
+        }
+
+        public ProductImage[] newArray(int size) {
+            return new ProductImage[size];
+        }
+    };
+	
 
 }

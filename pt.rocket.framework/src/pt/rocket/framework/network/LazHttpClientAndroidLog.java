@@ -1,6 +1,6 @@
 package pt.rocket.framework.network;
 
-import pt.rocket.framework.utils.AnalyticsGoogle;
+
 import ch.boye.httpclientandroidlib.androidextra.HttpClientAndroidLog;
 import de.akquinet.android.androlog.Log;
 
@@ -59,8 +59,6 @@ public class LazHttpClientAndroidLog extends HttpClientAndroidLog {
 	}
 
 	public void error(Object message, Throwable t) {
-		AnalyticsGoogle.get().sendException(message.toString(), new Exception(t), false);
-		
 		if(isErrorEnabled()) {
 			Log.e(logTag, message.toString(), t);
 		}
@@ -81,7 +79,6 @@ public class LazHttpClientAndroidLog extends HttpClientAndroidLog {
 	}
 
 	public void warn(Object message, Throwable t) {
-		AnalyticsGoogle.get().sendException(message.toString(), new Exception(t), false);
 		if(isWarnEnabled()) {
 			Log.w(logTag, message.toString(), t);
 		}

@@ -9,13 +9,16 @@
  */
 package pt.rocket.framework.objects;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Class that represents the Payment result for the old api
  * @author Guilherme Silva
  *
  * TODO:Please check if class is deprecated and if so delete it
  */
-public class PaymentResult {
+public class PaymentResult implements Parcelable{
 	String authCode;
 	String dccAmount;
 	String dccSignature;
@@ -126,4 +129,67 @@ public class PaymentResult {
 	public String getResultCode() {
 		return resultCode;
 	}
+	
+    /**
+     * ########### Parcelable ###########
+     * @author sergiopereira
+     */
+    
+    /*
+     * (non-Javadoc)
+     * @see android.os.Parcelable#describeContents()
+     */
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see android.os.Parcelable#writeToParcel(android.os.Parcel, int)
+	 */
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+	    dest.writeString(authCode);
+	    dest.writeString(dccAmount);
+	    dest.writeString(dccSignature);
+	    dest.writeString(fraudResult);
+	    dest.writeString(issuerUrl);
+	    dest.writeString(md);
+	    dest.writeString(paResult);
+	    dest.writeLong(pspReference);
+	    dest.writeString(refusalReason);
+	    dest.writeString(resultCode);
+	}
+	
+	/**
+	 * Parcel constructor
+	 * @param in
+	 */
+	private PaymentResult(Parcel in) {
+		this.authCode = in.readString();
+		this.dccAmount = in.readString();
+		this.dccSignature = in.readString();
+		this.fraudResult = in.readString();
+		this.issuerUrl = in.readString();
+		this.md = in.readString();
+		this.paResult = in.readString();
+		this.pspReference = in.readLong();
+		this.refusalReason = in.readString();
+		this.resultCode = in.readString();
+    }
+		
+	/**
+	 * Create parcelable 
+	 */
+	public static final Parcelable.Creator<PaymentResult> CREATOR = new Parcelable.Creator<PaymentResult>() {
+        public PaymentResult createFromParcel(Parcel in) {
+            return new PaymentResult(in);
+        }
+
+        public PaymentResult[] newArray(int size) {
+            return new PaymentResult[size];
+        }
+    };
+	
 }

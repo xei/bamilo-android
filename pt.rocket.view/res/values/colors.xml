@@ -5,6 +5,7 @@
     <color name="strip_title">#e0e0e0</color>
     <color name="strip_title_background">#333333</color>
     <color name="red_basic">#c11800</color>
+    <color name="red_middle">#cc0000</color>
     <color name="blue_basic">#004789</color>
     <color name="orange_basic">#faa41a</color>
     <color name="grey_dark">#333333</color>
@@ -13,11 +14,15 @@
     <color name="grey_dark_line">#d9d9d9</color>
     <color name="grey_highlight">#e6e6e6</color>
     <color name="grey_dividerlight">#f0f0f0</color>
+    <color name="grey_divider_light_text">#999999</color>
     <color name="green_stock">#458B00</color>
     <color name="grey_light">@color/grey_middlelight</color>
     <color name="black_shadow">#6f251c</color>
     <color name="promotion_dialog_bkg">#80000000</color>
     <color name="loadingbackground_dimmed">#FFFFFFFF</color>
+    
+    <color name="yellow_dark">#feaf07</color>
+    <color name="green_basic">#47b638</color>
 
     <!-- The color used in the divider -->
     <color name="semi_transparent">#88000000</color>

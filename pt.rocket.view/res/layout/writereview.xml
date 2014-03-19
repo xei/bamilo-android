@@ -106,7 +106,8 @@
                 android:inputType="text"
                 android:textColor="@color/form_text"
                 android:textColorHint="@color/form_text_hint"
-                android:textSize="@dimen/text_mid" />
+                android:textSize="@dimen/text_mid"
+                android:contentDescription="review_name" />
 
             <org.holoeverywhere.widget.EditText
                 android:id="@+id/title_box"
@@ -118,7 +119,8 @@
                 android:inputType="text"
                 android:textColor="@color/form_text"
                 android:textColorHint="@color/form_text_hint"
-                android:textSize="@dimen/text_mid" />
+                android:textSize="@dimen/text_mid"
+                android:contentDescription="review_title" />
 
             <org.holoeverywhere.widget.EditText
                 android:id="@+id/review_box"
@@ -130,7 +132,8 @@
                 android:inputType="text"
                 android:textColor="@color/form_text"
                 android:textColorHint="@color/form_text_hint"
-                android:textSize="@dimen/text_mid" />
+                android:textSize="@dimen/text_mid"
+                android:contentDescription="review_comment" />
         </LinearLayout>
 
         <org.holoeverywhere.widget.Button

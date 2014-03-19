@@ -29,5 +29,23 @@ public class DarwinRegex {
 	 */
 	public static final String REGEX_RESOLUTION_TAG = "(\\-)([a-zA-Z]*)(\\.)";
 	
+	
+	/**
+	 * Regex used on deep link for catalog
+	 */
+	public static final String CATALOG_DEEP_LINK = "/c/";
+	
+	/**
+	 * Regex used on deep link for cart
+	 */
+	public static final String CART_DEEP_LINK = "/cart";
+	public static final String SKU_DELIMITER = "_";
+	
+	public static final String DL_DELIMITER = "/";
+	
+	/**
+	 * Regex used to remove the unused chars from cart value
+	 */
+	public static final String CART_VALUE = "[, ]";
 
 }

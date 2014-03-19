@@ -12,19 +12,12 @@ import java.util.Set;
 
 import org.holoeverywhere.widget.TextView;
 
-import pt.rocket.app.ImageLoaderComponent;
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.ProductImagesAdapter;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.ErrorCode;
-import pt.rocket.framework.event.EventManager;
-import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.event.ResponseEvent;
-import pt.rocket.framework.event.ResponseResultEvent;
-import pt.rocket.framework.event.events.AddItemToShoppingCartEvent;
-import pt.rocket.framework.event.events.GetProductEvent;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.Errors;
 import pt.rocket.framework.objects.ProductSimple;
@@ -32,8 +25,13 @@ import pt.rocket.framework.objects.ShoppingCartItem;
 import pt.rocket.framework.objects.Variation;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.AnalyticsGoogle;
+import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CurrencyFormatter;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.helpers.GetProductHelper;
+import pt.rocket.helpers.GetShoppingCartAddItemHelper;
+import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.HorizontalListView;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
@@ -43,6 +41,7 @@ import pt.rocket.utils.dialogfragments.DialogListFragment.OnDialogListListener;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Paint;
@@ -65,8 +64,9 @@ import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
+import com.androidquery.AQuery;
+import com.androidquery.callback.AjaxStatus;
+import com.androidquery.callback.BitmapAjaxCallback;
 
 import de.akquinet.android.androlog.Log;
 
@@ -412,7 +412,14 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
          */
         if(mCompleteProductUrl != null) {
             mBeginRequestMillis = System.currentTimeMillis();
-            triggerContentEvent(new GetProductEvent(mCompleteProductUrl));
+            
+            /**
+             * TRIGGERS
+             * @author sergiopereira
+             */
+            triggerProduct(mCompleteProductUrl);
+            //triggerContentEvent(new GetProductEvent(mCompleteProductUrl));
+            
         } else {
             if(getBaseActivity() != null){
                 Toast.makeText(getActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_SHORT).show();
@@ -591,26 +598,37 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         final ProgressBar loadingImage = mProductImageLoading;
         loadingImage.setVisibility(View.VISIBLE);
         String imageURL = mCompleteProduct.getImageList().get(indexInImageList);
-        ImageLoader.getInstance().displayImage(imageURL, image,
-                JumiaApplication.COMPONENTS.get(ImageLoaderComponent.class).largeLoaderOptions,
-                new SimpleImageLoadingListener() {
+        AQuery aq = new AQuery(mContext);
+        aq.id(image).image(imageURL, true, true, 0, 0, new BitmapAjaxCallback() {
 
-                    /*
-                     * (non-Javadoc)
-                     * 
-                     * @see
-                     * com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener#
-                     * onLoadingComplete(java.lang.String, android.view.View,
-                     * android.graphics.Bitmap)
-                     */
                     @Override
-                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                    public void callback(String url, ImageView iv, Bitmap bm, AjaxStatus status) {
+                        image.setImageBitmap(bm);
                         image.setVisibility(View.VISIBLE);
                         loadingImage.setVisibility(View.GONE);
-                        Log.d(TAG, "loadProductImage: onLoadingComplete");
                     }
-
                 });
+        
+//        ImageLoader.getInstance().displayImage(imageURL, image,
+//                JumiaApplication.COMPONENTS.get(ImageLoaderComponent.class).largeLoaderOptions,
+//                new SimpleImageLoadingListener() {
+//
+//                    /*
+//                     * (non-Javadoc)
+//                     * 
+//                     * @see
+//                     * com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener#
+//                     * onLoadingComplete(java.lang.String, android.view.View,
+//                     * android.graphics.Bitmap)
+//                     */
+//                    @Override
+//                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+//                        image.setVisibility(View.VISIBLE);
+//                        loadingImage.setVisibility(View.GONE);
+//                        Log.d(TAG, "loadProductImage: onLoadingComplete");
+//                    }
+//
+//                });
     }
 
     // XXX
@@ -814,11 +832,13 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
 
         ShoppingCartItem item = new ShoppingCartItem(createVariantAttributesHashMap(simple));
         item.initialize(mCompleteProduct.getSku(), sku, mCompleteProduct.getImageList().get(0),
-                mCompleteProduct.getUrl(), mCompleteProduct.getName(), (long) quantity,
+                mCompleteProduct.getUrl(), mCompleteProduct.getName(), quantity,
                 mCompleteProduct.getSpecialPrice(), mCompleteProduct.getPrice(), 1);
 
         ((BaseActivity) getActivity()).showProgress();
-        EventManager.getSingleton().triggerRequestEvent(new AddItemToShoppingCartEvent(item));
+        
+        triggerAddItemToCart(item);
+//        EventManager.getSingleton().triggerRequestEvent(new AddItemToShoppingCartEvent(item));
 
         AnalyticsGoogle.get().trackAddToCart(sku, price);
     }
@@ -998,42 +1018,41 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
             mCompleteProduct = null;
         }
     }
-    
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see pt.rocket.utils.MyActivity#handleTriggeredEvent(pt.rocket.framework.event.ResponseEvent)
-     */
-    @Override
-    protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
+    protected boolean onSuccessEvent(Bundle bundle) {
         // Validate if fragment is on the screen
         if (!isVisible()) {
             return true;
         }
         
-        Log.d(TAG, "ON SUCCESS EVENT: " + event.getType());
-        switch (event.getType()) {
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        
+        Log.d(TAG, "ON SUCCESS EVENT: " + eventType);
+        switch (eventType) {
         case ADD_ITEM_TO_SHOPPING_CART_EVENT:
             mAddToCartButton.setEnabled(true);
             executeAddToShoppingCartCompleted();
             break;
         case GET_PRODUCT_EVENT:
             AnalyticsGoogle.get().trackLoadTiming(R.string.gproductdetail, mBeginRequestMillis);
-            displayProduct((CompleteProduct) event.result);
+            displayProduct((CompleteProduct) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY));
             break;
         }
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see pt.rocket.utils.MyActivity#onErrorEvent(pt.rocket.framework.event.ResponseEvent)
-     */
-    @Override
-    protected boolean onErrorEvent(ResponseEvent event) {
-        Log.d(TAG, "onErrorEvent: type = " + event.getType());
+    protected boolean onErrorEvent(Bundle bundle) {
+        
+        if(!isVisible()){
+            return true;
+        }
+        
+        if(getBaseActivity().handleErrorEvent(bundle)){
+            return true;
+        }
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        Log.d(TAG, "onErrorEvent: type = " + eventType);
         mBeginRequestMillis = System.currentTimeMillis();
         // Validate dialog
         if(dialog != null && dialog.isVisible()){
@@ -1043,24 +1062,25 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         // Get activity
         BaseActivity act = (BaseActivity) getActivity(); 
         
-        switch (event.getType()) {
+        switch (eventType) {
         case ADD_ITEM_TO_SHOPPING_CART_EVENT:
             if ( null != act ) {
                 act.dismissProgress();
             }
-            if (event.errorCode == ErrorCode.REQUEST_ERROR) {
-                List<String> errorMessages = event.errorMessages.get(RestConstants.JSON_ERROR_TAG);
+            if (errorCode == ErrorCode.REQUEST_ERROR) {
+                HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle
+                        .getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
                 if (errorMessages != null) {
                     int titleRes = R.string.error_add_to_cart_failed;
                     int msgRes = -1;
 
                     String message = null;
-                    if (errorMessages.contains(Errors.CODE_ORDER_PRODUCT_SOLD_OUT)) {
+                    if (errorMessages.get(RestConstants.JSON_ERROR_TAG).contains(Errors.CODE_ORDER_PRODUCT_SOLD_OUT)) {
                         msgRes = R.string.product_outof_stock;
-                    } else if (errorMessages.contains(Errors.CODE_PRODUCT_ADD_OVERQUANTITY)) {
+                    } else if (errorMessages.get(RestConstants.JSON_ERROR_TAG).contains(Errors.CODE_PRODUCT_ADD_OVERQUANTITY)) {
                         msgRes = R.string.error_add_to_shopping_cart_quantity;
-                    } else if (errorMessages.contains(Errors.CODE_ORDER_PRODUCT_ERROR_ADDING)) {
-                        List<String> validateMessages = event.errorMessages
+                    } else if (errorMessages.get(RestConstants.JSON_ERROR_TAG).contains(Errors.CODE_ORDER_PRODUCT_ERROR_ADDING)) {
+                        List<String> validateMessages = errorMessages
                                 .get(RestConstants.JSON_VALIDATE_TAG);
                         if (validateMessages != null && validateMessages.size() > 0) {
                             message = validateMessages.get(0);
@@ -1092,12 +1112,12 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
                     return true;
                 }
             }
-            if (!event.errorCode.isNetworkError()) {
+            if (!errorCode.isNetworkError()) {
                 addToShoppingCartFailed();
                 return true;
             }
         case GET_PRODUCT_EVENT:
-            if (!event.errorCode.isNetworkError()) {
+            if (!errorCode.isNetworkError()) {
                 try {
 
                     //Hide content
@@ -1127,7 +1147,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
                 return true;
             }
         }
-        return super.onErrorEvent(event);
+        return true;
     }
     
     /**
@@ -1151,5 +1171,49 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
     }
     
     
+    /**
+     * TRIGGERS
+     * @author sergiopereira
+     */
+    private void triggerProduct(String mCompleteProductUrl){
+        Bundle bundle = new Bundle();
+        bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
+        triggerContentEvent(new GetProductHelper(), bundle, mCallBack);
+    }
+    
+    private void triggerAddItemToCart(ShoppingCartItem item){
+//        ShoppingCartItem item = event.value;
+
+        ContentValues values = new ContentValues();
+
+        // add the simple data to the registry
+        if (item.getSimpleData() != null) {
+            JumiaApplication.INSTANCE.getItemSimpleDataRegistry().put(item.getConfigSKU(), item.getSimpleData());
+        }
+
+        values.put("p", item.getConfigSKU());
+        values.put("sku", item.getConfigSimpleSKU());
+        values.put("quantity", "" + item.getQuantity());
+        Bundle bundle = new Bundle();
+        bundle.putString(GetShoppingCartAddItemHelper.ADD_ITEM, mCompleteProductUrl);
+        triggerContentEvent(new GetShoppingCartAddItemHelper(), bundle, mCallBack);
+    }
+    
+    /**
+     * CALLBACK
+     * @author sergiopereira
+     */
+    IResponseCallback mCallBack = new IResponseCallback() {
+        
+        @Override
+        public void onRequestError(Bundle bundle) {
+            // TODO
+        }
+        
+        @Override
+        public void onRequestComplete(Bundle bundle) {
+            onSuccessEvent(bundle);
+        }
+    };
 
 }

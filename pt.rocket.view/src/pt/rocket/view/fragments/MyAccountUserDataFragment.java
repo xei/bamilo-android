@@ -4,23 +4,24 @@
 package pt.rocket.view.fragments;
 
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.holoeverywhere.widget.EditText;
 import org.holoeverywhere.widget.TextView;
 
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.framework.ErrorCode;
-import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.event.ResponseEvent;
-import pt.rocket.framework.event.ResponseResultEvent;
-import pt.rocket.framework.event.events.ChangePasswordEvent;
 import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.rest.RestConstants;
+import pt.rocket.framework.utils.Constants;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.helpers.GetChangePasswordHelper;
+import pt.rocket.helpers.GetCustomerHelper;
+import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
-import pt.rocket.utils.OnFragmentActivityInteraction;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
@@ -121,7 +122,13 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
     }
 
     private void init() {
-        triggerContentEvent(EventType.GET_CUSTOMER);
+        
+        /**
+         * TRIGGERS
+         * @author sergiopereira
+         */
+        triggerCustomer();
+        //triggerContentEvent(EventType.GET_CUSTOMER);
     }
 
     /*
@@ -223,12 +230,19 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
                 newPassword2);
         values.put("Alice_Module_Customer_Model_PasswordForm[email]", emailText.getText()
                 .toString());
-        triggerContentEvent(new ChangePasswordEvent(values));
+        
+        /**
+         * TRIGGERS
+         * @author sergiopereira
+         */
+        triggerChangePass(values);
+        //triggerContentEvent(new ChangePasswordEvent(values));
+        
         displayErrorHint(null);
         
 //        mCallbackMyAccountUserDataFragment.sendValuesToActivity(0, values);
     }
-    
+
     private void displayErrorHint( String hint ) {
         if ( hint != null) {
             passwordErrorHint.setText(hint);
@@ -239,11 +253,14 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
         }
     }
 
-    
-    @Override
-    protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
+    protected boolean onSuccessEvent(Bundle bundle) {
+        if(!isVisible()){
+            return true;
+        }
         Log.i(TAG, "ON SUCCESS EVENT");
-        switch (event.type) {
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        
+        switch (eventType) {
         case CHANGE_PASSWORD_EVENT:
             Log.d(TAG, "changePasswordEvent: Password changed with success");
             if (null != getActivity() ) {
@@ -253,12 +270,14 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
             
             return true;
         case GET_CUSTOMER:
-            Customer customer = (Customer) event.result;
+            Customer customer = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            JumiaApplication.INSTANCE.CUSTOMER = customer;
             Log.d(TAG, "CUSTOMER: " + customer.getLastName() + " " + customer.getFirstName() + " " + customer.getEmail());
             if ( null != lastNameText ) {
                 lastNameText.setText(customer.getLastName());
                 firstNameText.setText(customer.getFirstName());
                 emailText.setText(customer.getEmail());
+                getBaseActivity().showContentContainer(false);
             } else {
                 restartAllFragments();
                 finish();
@@ -269,22 +288,32 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
         }
     }
 
-    @Override
-    protected boolean onErrorEvent(ResponseEvent event) {
+    protected boolean onErrorEvent(Bundle bundle) {
         Log.i(TAG, "ON ERROR EVENT");
-        switch (event.type) {
+        if(!isVisible()){
+            return true;
+        }
+        
+        if(getBaseActivity().handleErrorEvent(bundle)){
+            return true;
+        }
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        
+        switch (eventType) {
         case CHANGE_PASSWORD_EVENT:
             Log.d(TAG, "changePasswordEvent: Password changed was not successful");
-            if (event.errorCode == ErrorCode.REQUEST_ERROR) {
-                List<String> errorMessages = event.errorMessages.get(RestConstants.JSON_ERROR_TAG);
+            if (errorCode == ErrorCode.REQUEST_ERROR) {
+                HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle
+                        .getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
                 if (errorMessages == null) {
                     return false;
                 }
                 ((BaseActivity) getActivity()).showContentContainer(false);
-                Map<String, ? extends List<String>> messages = event.errorMessages;
-                List<String> validateMessages = messages.get(RestConstants.JSON_VALIDATE_TAG);
+
+                List<String> validateMessages = errorMessages.get(RestConstants.JSON_VALIDATE_TAG);
                 if (validateMessages == null || validateMessages.isEmpty()) {
-                    validateMessages = messages.get(RestConstants.JSON_ERROR_TAG);
+                    validateMessages = errorMessages.get(RestConstants.JSON_ERROR_TAG);
                 }
 
                 String errorMessage = null;
@@ -318,4 +347,37 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
     private void finish(){
         getActivity().onBackPressed();
     }
+    
+    
+    /**
+     * TRIGGERS
+     * @author sergiopereira
+     */
+    private void triggerCustomer(){
+        Bundle bundle = new Bundle();
+        triggerContentEvent(new GetCustomerHelper(), bundle, mCallBack);
+    }
+    
+    private void triggerChangePass(ContentValues values) {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(GetChangePasswordHelper.CONTENT_VALUES, values);
+        triggerContentEvent(new GetChangePasswordHelper(), bundle, mCallBack);
+    }
+    
+    /**
+     * CALLBACK
+     * @author sergiopereira
+     */
+    IResponseCallback mCallBack = new IResponseCallback() {
+        
+        @Override
+        public void onRequestError(Bundle bundle) {
+            onErrorEvent(bundle);
+        }
+        
+        @Override
+        public void onRequestComplete(Bundle bundle) {
+            onSuccessEvent(bundle);
+        }
+    };
 }

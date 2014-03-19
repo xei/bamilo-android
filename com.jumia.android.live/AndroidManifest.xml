@@ -16,14 +16,18 @@
     <!--  Adx additional permissions -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     
+    <!-- Location Helper -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    
     <permission android:name="com.jumia.android.test.permission.C2D_MESSAGE" android:protectionLevel="signature" />
 
     <uses-permission android:name="com.jumia.android.test.permission.C2D_MESSAGE" />
 
     <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="15" />
 
-    <application android:name="pt.rocket.app.JumiaApplication" android:icon="@drawable/ic_launcher" android:label="@string/app_name" android:largeHeap="true" android:theme="@style/Theme.Jumia" android:logo="@drawable/actionbar_logo">
-        <activity android:name="pt.rocket.view.SplashScreen" android:screenOrientation="portrait" android:noHistory="true">
+    <application android:name="pt.rocket.utils.JumiaApplication" android:icon="@drawable/ic_launcher" android:label="@string/app_name" android:largeHeap="true" android:theme="@style/Theme.Jumia" android:logo="@drawable/actionbar_logo">
+        <activity android:name="pt.rocket.view.SplashScreenActivity" android:screenOrientation="portrait" android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

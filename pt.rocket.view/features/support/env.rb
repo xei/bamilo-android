@@ -5,6 +5,8 @@ $country = ENV['country']
   
 def initvars
   
+  @dev=" Dev"
+  
   @username="testcalabash@mailinator.com"
   @password="password1"
   @firstname="tester"
@@ -53,11 +55,20 @@ def initvars
   @submit="submit_button"
   @pass_rec_email=""
   
+  #rating
+  @rating="product_rating_container"
+  @review_name="review_name"
+  @review_title="review_title"
+  @review_title_t="Great Product"
+  @review_comment="review_comment"
+  @review_comment_t="Arrived Fast"
+  @share="share_button"
+  
   
   
   #initializes the country variables
   case $country.to_s
-    ##### Kenya  ############################################ KE
+    ##### Kenya  ############################################ KE ##############################################################################
     when "ke"
     @venture_name="Kenya"
     @sign_in="Sign In"
@@ -116,8 +127,21 @@ def initvars
     @first_tip="Swipe left or right to"
     @second_tip="Tap to open the product gallery"
     @specification="Specification"
+    @please_choose="Please choose"
+    @search_v="flip flops"
+    @product_features="Product Features"
+    @product_description="Product Description"
+    @write_review="Write a Review"
+    @rating_t="posted by"
+    @write_review="Write a Review"
+    @send_review="Send Review"
+    @to_reviews="To reviews"
+    @messaging="Messaging"
     
-    ##### Ivory Coast ####################################### IC          
+    #cart
+    @delete="Delete"
+    
+    ##### Ivory Coast ####################################### IC ##############################################################################          
     when "ic"
     @venture_name="Ivory Coast"
     @sign_in="Accéder au compte"
@@ -181,8 +205,21 @@ def initvars
     @first_tip="Balayez vers la gauche ou la droite pour"
     @second_tip="Cliquez pour voir l'ensemble"
     @specification="Caractéristiques"
+    @please_choose="Choisissez"
+    @search_v="sandales à Clous - argent"
+    @product_features="Spécificités du produit"
+    @product_description="Description du produit"
+    @write_review="Donnez-nous notre avis"
+    @posted_by="Posté"
+    @write_review="Donnez-nous notre avis"
+    @send_review="Envoyer votre avis"
+    @to_reviews="Pour revue"
+    @messaging="Messaging"
+    
+    #cart
+    @delete="Effacer"
       
-    ##### Morocco ########################################### MA
+    ##### Morocco ########################################### MA ##############################################################################
     when "ma"
     @venture_name="Morocco"
     @sign_in="Accéder au compte"
@@ -246,8 +283,21 @@ def initvars
     @first_tip="Balayez vers la gauche ou la droite pour"
     @second_tip="Cliquez pour voir l'ensemble"
     @specification="Caractéristiques"
+    @please_choose="Choisissez"
+    @search_v="bottes en daim"
+    @product_features="Spécificités du produit"
+    @product_description="Description du produit"
+    @write_review="Donnez-nous notre avis"
+    @posted_by="Posté"
+    @write_review="Donnez-nous notre avis"
+    @send_review="Envoyer votre avis"
+    @to_reviews="Pour revue"
+    @messaging="Messaging"
       
-    ##### Nigeria ########################################### NG
+    #cart
+    @delete="Effacer"
+        
+    ##### Nigeria ########################################### NG ##############################################################################
     when "ng"
     @venture_name="Nigeria"
     @sign_in="Sign In"
@@ -306,8 +356,21 @@ def initvars
     @first_tip="Swipe left or right to"
     @second_tip="Tap to open the product gallery"
     @specification="Specification"
+    @please_choose="Please choose"
+    @search_v="sandal"
+    @product_features="Product Features"
+    @product_description="Product Description"
+    @write_review="Write a Review"
+    @posted_by="posted by"
+    @write_review="Write a Review"
+    @send_review="Send Review"
+    @to_reviews="To reviews"
+    @messaging="Messaging"
       
-    ##### Egypt ############################################# EG
+    #cart
+    @delete="Delete"
+    
+    ##### Egypt ############################################# EG ##############################################################################
     when "eg"
     @venture_name="Egypt"
     @sign_in="Sign In"
@@ -366,5 +429,92 @@ def initvars
     @first_tip="Swipe left or right to"
     @second_tip="Tap to open the product gallery"
     @specification="Specification"
+    @please_choose="Please choose"
+    @search_v="sandal"
+    @product_features="Product Features"
+    @product_description="Product Description"
+    @write_review="Write a Review"
+    @posted_by="posted by"
+    @write_review="Write a Review"
+    @send_review="Send Review"
+    @to_reviews="To reviews"
+    @messaging="Messaging"
+    
+    #cart
+    @delete="Delete"
+    
+    ##### Uganda  ############################################ UG ##############################################################################
+    when "ug"
+    @venture_name="Uganda"
+    @sign_in="Sign In"
+    @wrong_username="faketester@tester.tt"
+    @invalidsearch= "addddd" 
+    @search_p= "nikon" 
+    @search="Search"
+    @myaccount="My Account"
+    @myinfo="User Data"
+    @categories="Categories"
+    @categoryfashion="Books"
+    @choose_country="Choose Country"
+    @order_status="Order Status"
+    
+    @checkoutNext="Next"
+    @checkout1="TestPayment"
+    @checkout3="Confirm Order"
+    
+    @emailerrormessage="Please fill in";
+    @passerrormessage="Please fill in the Password";
+    
+    @loginerror="Login failed"
+    @signout="Sign Out"
+    @mandatory="Please fill in the required(*) fields"
+    @sameemail="This email already exists."
+    @searchdefault="Please enter a term for suggestions!"
+    @nosuggest="No suggestions for your search term!"
+     
+    @addtocart="Add to Cart"
+    @home="Home"
+    @new_pass_short="The new password has to have at least 6 characters"
+   
+    #password recovery
+    @forgot_password="Forgot Password?"
+    @password_recovery="Password Recovery"
+    @pass_rec_empty_email="Please fill in the E-Mail"
+    @pass_rec_failed="Password recovery failed"
+    @pass_rec_sent="Email sent"
+    
+    #cart
+    @item_added="was added to shopping cart"
+    @no_items="You have no items in the cart"
+    @got_it="Got it"
+    @clear_cart_message="This clears the cart"
+    
+    #catalog
+    @currency= "USH"
+    @loading_items="Loading more items"
+    @popularity="POPULARITY"
+    @price_up="PRICE UP"
+    @price_down="PRICE DOWN"
+    @name="NAME"
+    @brand="BRAND"
+    
+    #product detail
+    @first_tip="Swipe left or right to"
+    @second_tip="Tap to open the product gallery"
+    @specification="Specification"
+    @please_choose="Please choose"
+    @search_v="flip flops"
+    @product_features="Product Features"
+    @product_description="Product Description"
+    @write_review="Write a Review"
+    @rating_t="posted by"
+    @write_review="Write a Review"
+    @send_review="Send Review"
+    @to_reviews="To reviews"
+    @messaging="Messaging"
+    
+    #cart
+    @delete="Delete"
+    
   end
 end

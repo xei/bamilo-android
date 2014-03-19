@@ -9,16 +9,14 @@ import java.util.EnumSet;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.ProductImagesAdapter;
-import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.event.ResponseEvent;
-import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.Variation;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.utils.FragmentCommunicatorForProduct;
 import pt.rocket.utils.HorizontalListView;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
-import pt.rocket.utils.FragmentCommunicatorForProduct;
 import pt.rocket.view.ProductDetailsActivityFragment;
 import pt.rocket.view.R;
 import android.content.Context;
@@ -74,23 +72,6 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
         this.setRetainInstance(true);
     }
 
-    // @Override
-    // public void sendValuesToFragment(int identifier, Object values) {
-    // this.mCompleteProduct= (CompleteProduct) values;
-    // if(identifier == 1){
-    // displayVariations();
-    // }
-    // }
-    //
-    // @Override
-    // public void sendPositionToFragment(int position){
-    // this.mVariationsListPosition = position;
-    // if(mList!=null){
-    // mList.setSelectedItem(mVariationsListPosition, HorizontalListView.MOVE_TO_DIRECTLY);
-    // mList.setPosition(mVariationsListPosition);
-    // }
-    // }
-    //
     @Override
     public void sendListener(int identifier, OnClickListener onTeaserClickListener) {
 
@@ -176,21 +157,6 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
         Log.i(TAG, "ON STOP");
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see pt.rocket.utils.MyActivity#handleTriggeredEvent(pt.rocket.framework.event.ResponseEvent)
-     */
-    @Override
-    protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
-        return false;
-    }
-
-    @Override
-    protected boolean onErrorEvent(ResponseEvent event) {
-        return false;
-    }
-
     private void displayVariations() {
         mCompleteProduct = FragmentCommunicatorForProduct.getInstance().getCurrentProduct();
         if (mCompleteProduct == null) {
@@ -199,7 +165,6 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
         }
 
         if (isNotValidVariation(mCompleteProduct.getVariations())) {
-            Log.i(TAG, "isNotValidVariation is false!!!");
             if (mVariationsContainer != null) {
                 mVariationsContainer.setVisibility(View.GONE);
             }
@@ -208,7 +173,6 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
         }
         
         mVariationsContainer.setVisibility(View.VISIBLE);
-//        if (mList == null)
         mList = (HorizontalListView) mainView.findViewById(R.id.variations_list);
         if (mAdapter == null) {
             mAdapter = new ProductImagesAdapter(this.getActivity(),

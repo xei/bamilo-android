@@ -2,15 +2,21 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.jumia.android"
     android:installLocation="auto"
-    android:versionCode="29"
-    android:versionName="1.4.1" >
+    android:versionCode="35"
+    android:versionName="1.7.1" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-feature android:name="android.hardware.telephony" android:required="false"></uses-feature>
+    <uses-permission
+        android:name="android.permission.CALL_PHONE"
+        android:required="false" />
+
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="false" >
+    </uses-feature>
 
     <!-- Urban Airship. -->
     <uses-permission android:name="android.permission.VIBRATE" />
@@ -20,6 +26,18 @@
 
     <!-- Adx additional permissions -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
+    <!-- Location Helper -->
+    <uses-permission
+        android:name="android.permission.ACCESS_COARSE_LOCATION"
+        android:required="false" />
+    <uses-permission
+        android:name="android.permission.ACCESS_FINE_LOCATION"
+        android:required="false" />
+
+    <uses-feature
+        android:name="android.hardware.location.gps"
+        android:required="false" />
 
     <permission
         android:name="com.jumia.android.permission.C2D_MESSAGE"
@@ -33,13 +51,13 @@
 
     <application
         android:name="pt.rocket.app.JumiaApplication"
+        android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
-        android:allowBackup="true"
         android:logo="@drawable/actionbar_logo"
         android:theme="@style/Theme.Jumia" >
-                <activity
+        <activity
             android:name="pt.rocket.view.SplashScreenActivity"
             android:noHistory="true"
             android:screenOrientation="unspecified" >
@@ -49,7 +67,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name="com.facebook.LoginActivity"
             android:label="@string/app_name"
@@ -57,15 +74,12 @@
 
         <!-- Fragment Activities -->
         <activity
-            android:name="pt.rocket.view.ChangeCountryFragmentActivity"
-            android:noHistory="true"
-            android:screenOrientation="unspecified" />
-        <activity
             android:name="pt.rocket.view.MainFragmentActivity"
             android:screenOrientation="unspecified" />
+        <!-- android:windowSoftInputMode="adjustPan" -->
 
         <service
-            android:name="pt.rocket.framework.rest.RestService"
+            android:name="pt.rocket.framework.service.RemoteService"
             android:exported="false" />
 
         <!-- hockey -->
@@ -109,7 +123,6 @@
         <service
             android:name="com.urbanairship.push.PushService"
             android:label="Push Notification Service" />
-        <!-- <service android:name="com.urbanairship.push.PushWorkerService" android:label="Push Notification Worker Service" /> -->
         <service
             android:name="com.urbanairship.analytics.EventService"
             android:label="Event Service" />

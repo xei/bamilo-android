@@ -8,5 +8,11 @@ package pt.rocket.framework.utils;
  * 
  */
 public enum ProductSort {
-    NONE, POPULARITY, NAME, PRICE, BRAND
+    NONE(-1), POPULARITY(0), NAME(1), PRICE(2), BRAND(3);
+    
+    public final int id;
+    
+    ProductSort(int id){
+    	this.id = id;
+    }
 }

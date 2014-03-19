@@ -14,8 +14,11 @@ import java.util.TreeMap;
 
 import org.apache.http.conn.util.InetAddressUtils;
 
-import pt.rocket.framework.Darwin;
+//import pt.rocket.framework.Darwin;
 import pt.rocket.framework.ErrorCode;
+import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.text.TextUtils;
 
 import com.bugsense.trace.BugSenseHandler;
@@ -28,8 +31,22 @@ public class ErrorMonitoring {
 
 	private static SortedMap<String, String> map = new TreeMap<String, String>();
 	
-	private static  void buildErrorMap(String uri, ErrorCode errorCode, Exception exception, String msg ) {
-		map.clear();
+	private static int sVersionCode;
+	
+	private static  void buildErrorMap(Context mContext, String uri, ErrorCode errorCode, Exception exception, String msg ) {
+		
+		/**
+		 * Try fix the Hockey report:
+		 * https://rink.hockeyapp.net/manage/apps/33641/app_versions/97/crash_reasons/11084528?type=overview
+		 * 
+		 * Log:
+		 * java.lang.NullPointerException
+		 * 		at java.util.TreeMap.find(TreeMap.java:277)
+		 * 		at java.util.TreeMap.putInternal(TreeMap.java:240)
+		 * 		at java.util.TreeMap.put(TreeMap.java:186)
+		 */
+		//map.clear();
+		
 		map.put( "Country", ShopSelector.getCountryName());
 		map.put( "Uri", uri);
 		if (errorCode != null && errorCode.name() != null) {
@@ -42,13 +59,13 @@ public class ErrorMonitoring {
 		}		
 		
 		map.put( "Timestamp", SimpleDateFormat.getInstance().format(new Date()));
-		map.put( "VersionCode", String.valueOf( Darwin.getVersionCode()));
+		map.put( "VersionCode", String.valueOf(getVersionCode(mContext)));
 		map.put( "Exception Message", exception.getMessage());
 	}
 
-	public static void sendException(Exception e, String uri, ErrorCode errorCode, String msg, String msgTwo, boolean nonFatal) {
+	public static void sendException(Context mContext, Exception e, String uri, ErrorCode errorCode, String msg, String msgTwo, boolean nonFatal) {
 		Log.d(TAG, "sendException: sending exception for uri = " + uri + " with errorCode = " + errorCode );
-		buildErrorMap(uri, errorCode, e, msg);
+		buildErrorMap(mContext, uri, errorCode, e, msg);
 		/*
 		StringBuilder sb = new StringBuilder();
 		for(Entry<String, String> entry: map.entrySet()) {
@@ -96,5 +113,23 @@ public class ErrorMonitoring {
 		} // for now eat exceptions
 		return "unknown";
 	}
+	
+    private static void retrieveVersionCode() {
+        
+    }
+    
+    private static int getVersionCode(Context mContext) {
+    	PackageInfo pinfo;
+        int versionCode = -1;
+        try {
+            pinfo = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0);
+            versionCode = pinfo.versionCode;
+        } catch (NameNotFoundException e) {
+            // ignore
+        }
+        
+        sVersionCode = versionCode;        
+    	return sVersionCode;
+    }
 	
 }

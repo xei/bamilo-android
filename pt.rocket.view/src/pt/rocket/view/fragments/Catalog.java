@@ -7,16 +7,14 @@ import java.util.EnumSet;
 
 import org.holoeverywhere.widget.Button;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
-
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.CatalogPageModel;
-import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.event.ResponseResultEvent;
 import pt.rocket.framework.utils.AnalyticsGoogle;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.utils.JumiaCatalogViewPager;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.utils.dialogfragments.DialogFilterFragment;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.graphics.LinearGradient;
@@ -28,6 +26,7 @@ import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.LinearLayout;
@@ -87,8 +86,6 @@ public class Catalog extends BaseFragment {
         mSortOptions = new ArrayList<String>(Arrays.asList(getResources()
                 .getStringArray(R.array.products_picker)));
         mCatalogPageModel = new CatalogPageModel[mSortOptions.size()];
-        
-        initPageModel();
     }
 
     @Override
@@ -97,6 +94,19 @@ public class Catalog extends BaseFragment {
         View view = inflater.inflate(R.layout.products_frame, container, false);
         mViewPager = (JumiaCatalogViewPager) view.findViewById(R.id.viewpager_products_list);
         pagerTabStrip = (PagerTabStrip) view.findViewById(R.id.products_list_titles);
+        // Initialize the catalog model with fresh data
+        initPageModel();
+        
+        
+        // XXX
+        view.findViewById(R.id.products_list_filter_button).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFilterFragment newFragment = DialogFilterFragment.newInstance();
+                newFragment.show(getBaseActivity().getSupportFragmentManager(), "dialog");
+            }
+        });
+        
         return view;
     }
 
@@ -104,24 +114,22 @@ public class Catalog extends BaseFragment {
     public void onResume() {
         super.onResume();
         
+        // http://www.jumia.co.ke:80/mobapi/womens-casual-shoes/
+        
         title = getArguments().getString(ConstantsIntentExtra.CONTENT_TITLE);
         
         ((BaseActivity) getActivity()).setTitle(title);
         
-        productsURL = getArguments()
-                .getString(ConstantsIntentExtra.CONTENT_URL);
+        productsURL = getArguments().getString(ConstantsIntentExtra.CONTENT_URL);
         
-        searchQuery = getArguments()
-                .getString(ConstantsIntentExtra.SEARCH_QUERY);
+        searchQuery = getArguments().getString(ConstantsIntentExtra.SEARCH_QUERY);
         
-        navigationSource = getArguments().getInt(
-                ConstantsIntentExtra.NAVIGATION_SOURCE, -1);
+        navigationSource = getArguments().getInt(ConstantsIntentExtra.NAVIGATION_SOURCE, -1);
         
-        navigationPath = getArguments().getString(
-                ConstantsIntentExtra.NAVIGATION_PATH);
+        navigationPath = getArguments().getString(ConstantsIntentExtra.NAVIGATION_PATH);
         
         
-        Log.i(TAG, "code1 title is : " + title);
+//        Log.i(TAG, "code1 title is : " + title);
         Log.i(TAG, "ON RESUME");
         AnalyticsGoogle.get().trackPage(R.string.gproductlist);
 
@@ -151,9 +159,8 @@ public class Catalog extends BaseFragment {
                         updateCatalogPageModelIdexes(-1);
                     }
                     
-                    ImageLoader.getInstance().resume();
                 } else if(state == ViewPager.SCROLL_STATE_DRAGGING){
-                    ImageLoader.getInstance().pause();
+                   
                 }
             }
             
@@ -180,6 +187,7 @@ public class Catalog extends BaseFragment {
             e.printStackTrace();
         }
         AnalyticsGoogle.get().trackPage(R.string.gproductlist);
+        getBaseActivity().showContentContainer(false);
         
     }
 
@@ -234,7 +242,7 @@ public class Catalog extends BaseFragment {
 
     private void initPageModel() {
         for (int i = 0; i < mCatalogPageModel.length; i++) {
-            mCatalogPageModel[i] = new CatalogPageModel(i, getActivity());
+            mCatalogPageModel[i] = new CatalogPageModel(i, getBaseActivity(), this);
             mCatalogPageModel[i].setTitle(mSortOptions.get(i));
             
         }
@@ -309,24 +317,41 @@ public class Catalog extends BaseFragment {
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             final CatalogPageModel currentPage = getCurrentCatalogPageModel(position);
-            if(currentPage.getRelativeLayout() == null || BaseActivity.isTabletInLandscape(getBaseActivity()) != currentPage.isLandScape() ){
-                RelativeLayout mRelativeLayout = (RelativeLayout) mInflater.inflate(R.layout.products,
-                    null);
-                currentPage.setRelativeLayout(mRelativeLayout);
-                currentPage.setTextViewSpnf((org.holoeverywhere.widget.TextView) currentPage.getRelativeLayout().findViewById(R.id.search_products_not_found));
-                currentPage.setButtonRavb((Button) currentPage.getRelativeLayout().findViewById(R.id.retry_alert_view_button));
-                currentPage.setRelativeLayoutPc((RelativeLayout) currentPage.getRelativeLayout().findViewById(R.id.products_content));
-                currentPage.setLinearLayoutLm((LinearLayout) currentPage.getRelativeLayout().findViewById(R.id.loadmore));
-                if(BaseActivity.isTabletInLandscape(getBaseActivity())){
-                    currentPage.setGridView((GridView) currentPage.getRelativeLayout().findViewById(R.id.middle_productslist_list));    
-                } else {
-                    currentPage.setListView((ListView) currentPage.getRelativeLayout().findViewById(R.id.middle_productslist_list));    
-                }
+            new Thread(new Runnable() {
                 
-                currentPage.setLinearLayoutLb((LinearLayout) currentPage.getRelativeLayout().findViewById(R.id.loading_view_pager));
-                currentPage.setRelativeLayoutPt((RelativeLayout) currentPage.getRelativeLayout().findViewById(R.id.products_tip));
-                currentPage.setVariables(productsURL, searchQuery, navigationPath, title, navigationSource);
-            }
+                @Override
+                public void run() {
+                    if(currentPage.getRelativeLayout() == null || ((BaseActivity) getActivity()).isTabletInLandscape(getBaseActivity()) != currentPage.isLandScape() ){
+                        RelativeLayout mRelativeLayout = (RelativeLayout) mInflater.inflate(R.layout.products,
+                            null);
+                        currentPage.setRelativeLayout(mRelativeLayout);
+                        currentPage.setTextViewSpnf((org.holoeverywhere.widget.TextView) currentPage.getRelativeLayout().findViewById(R.id.search_products_not_found));
+                        currentPage.setButtonRavb((Button) currentPage.getRelativeLayout().findViewById(R.id.retry_alert_view_button));
+                        currentPage.setRelativeLayoutPc((RelativeLayout) currentPage.getRelativeLayout().findViewById(R.id.products_content));
+                        currentPage.setLinearLayoutLm((LinearLayout) currentPage.getRelativeLayout().findViewById(R.id.loadmore));
+                        if(getBaseActivity().isTabletInLandscape(getBaseActivity())){
+                            try {
+                                currentPage.setGridView((GridView) currentPage.getRelativeLayout().findViewById(R.id.middle_productslist_list));    
+                            } catch (ClassCastException e) {
+                                currentPage.setListView((ListView) currentPage.getRelativeLayout().findViewById(R.id.middle_productslist_list));    
+                            }
+                                
+                        } else {
+                            try {
+                                currentPage.setListView((ListView) currentPage.getRelativeLayout().findViewById(R.id.middle_productslist_list));    
+                            } catch (ClassCastException e) {
+                                currentPage.setGridView((GridView) currentPage.getRelativeLayout().findViewById(R.id.middle_productslist_list));
+                            }
+                        }
+                        
+                        currentPage.setLinearLayoutLb((LinearLayout) currentPage.getRelativeLayout().findViewById(R.id.loading_view_pager));
+                        currentPage.setRelativeLayoutPt((RelativeLayout) currentPage.getRelativeLayout().findViewById(R.id.products_tip));
+                        currentPage.setVariables(productsURL, searchQuery, navigationPath, title, navigationSource);
+                    }
+                    
+                }
+            }).run();
+            
             container.addView(currentPage.getRelativeLayout());
             return currentPage.getRelativeLayout();
         }
@@ -336,14 +361,6 @@ public class Catalog extends BaseFragment {
             return view == (View) obj;
         }
     }
-
-    @Override
-    protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-    
-    
 
 
 }

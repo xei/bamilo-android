@@ -96,6 +96,7 @@ Then /^I should see the countries$/ do
   performAction('assert_text', "Morocco", true)
   performAction('assert_text', "Egypt", true)
   performAction('assert_text', "Ivory Coast", true)
+  performAction('assert_text', "Uganda", true)
 end
 
 Then /^I should see the corresponding server$/ do
@@ -119,7 +120,7 @@ Then /^I should see the corresponding server$/ do
 end
 
 Then /^I sould see the splash screen$/ do
-  performAction('assert_text', "Jumia Dev", true)
+  performAction('click_on_view_by_id', "imgView")
 end
 
 Then /^I should see the home$/ do
@@ -210,4 +211,21 @@ end
 
 Then /^I should see the specifications$/ do
   performAction('assert_text', @specification.to_s, true)
+end
+
+Then /^I should see the variations$/ do
+  performAction('assert_text', @please_choose.to_s, true)
+end
+
+Then /^I should see the product (features|description)$/ do |arg1|
+  case arg1
+  when "features" 
+    performAction('assert_text', @product_features.to_s, true)
+  when "description"
+    performAction('assert_text', @product_description.to_s, true)
+  end
+end
+
+Then /^I should see the write a review button$/ do
+  performAction('assert_text', @write_review.to_s, true)
 end

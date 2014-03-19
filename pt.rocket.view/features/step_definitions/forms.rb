@@ -100,3 +100,20 @@ Then /^I enter (a fake email|my email) on password recovery$/ do |email|
     performAction('enter_text_into_named_field', @username, @login_username.to_s)
   end
 end
+
+Then /^I enter a variation search$/ do 
+  performAction('enter_text_into_named_field',"", @search_input.to_s)
+  performAction('enter_text_into_named_field',@search_v.to_s, @search_input.to_s)
+end
+
+Then /^I fill the review information$/ do
+
+  performAction('enter_text_into_named_field', @firstname, @review_name)
+  performAction('enter_text_into_named_field', @review_title_t, @review_title)
+  performAction('enter_text_into_named_field', @review_comment_t, @review_comment)
+end
+
+Then /^I enter a color search$/ do 
+  performAction('enter_text_into_named_field',"", @search_input.to_s)
+  performAction('enter_text_into_named_field',@search_color.to_s, @search_input.to_s)
+end

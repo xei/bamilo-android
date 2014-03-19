@@ -17,6 +17,7 @@
 
 <resources>
 
+    <dimen name="margin_x_small">2dp</dimen>
     <dimen name="margin_small">4dp</dimen>
     <dimen name="margin_mid">8dp</dimen>
     <dimen name="margin_large">12dp</dimen>
@@ -30,21 +31,21 @@
     <dimen name="navigation_item_divider_height">1dp</dimen>
     <dimen name="navigation_cart_vertical_distance">17dp</dimen>
     <dimen name="navigation_shadow_width">6dp</dimen>
-    
+
     <!-- <dimen name="navigation_menu_offset">35dp</dimen> -->
-    <item name="navigation_menu_offset" type="dimen" >100%</item>
+    <item name="navigation_menu_offset" type="dimen">100%</item>
     <item name="navigation_menu_width" type="dimen">90%</item>
-    
+
     <dimen name="item_height_normal">48dp</dimen>
     <dimen name="dialog_list_margin_horizontal">40dp</dimen>
     <dimen name="form_errormessage_margin">4dp</dimen>
-    
+
     <!-- deprecated text definitions, use alternative below -->
     <dimen name="text_small">@dimen/text_xs</dimen>
     <dimen name="text_smid">@dimen/text_m</dimen>
     <dimen name="text_mid">@dimen/text_l</dimen>
     <dimen name="text_large">@dimen/text_xxl</dimen>
-    
+
     <!-- better naming sceme for the text dimensions -->
     <dimen name="text_xs">12sp</dimen>
     <dimen name="text_s">14sp</dimen>
@@ -53,7 +54,6 @@
     <dimen name="text_xl">20sp</dimen>
     <dimen name="text_xxl">22sp</dimen>
     <dimen name="text_xxxl">32sp</dimen>
-    
 
     <item name="dialog_min_width_major" type="dimen">65%</item>
     <item name="dialog_min_width_minor" type="dimen">95%</item>
@@ -65,40 +65,38 @@
     <dimen name="teaser_swipe_banner_height">196dp</dimen>
     <dimen name="teaser_product_item_width">120dp</dimen>
     <dimen name="teaser_banners_group_height">96dp</dimen>
-    
-    
+    <dimen name="teaser_recently_viewed_height">196dp</dimen>
+
     <!-- actual values for hdpi - are referenced as aliases -->
     <dimen name="teaser_product_item_width_sw320dp">108dp</dimen>
     <dimen name="teaser_swipe_banner_height_sw320dp">171dp</dimen>
     <dimen name="teaser_banners_group_height_sw320dp">171dp</dimen>
-    
     <dimen name="button_sort_line_distance_horizontal_sw320dp">90dp</dimen>
-	<dimen name="button_sort_height_sw320dp">48dp</dimen>
+    <dimen name="button_sort_height_sw320dp">48dp</dimen>
 
-	<!-- BASE -->
+    <!-- BASE -->
     <dimen name="match_parent">-1dp</dimen>
     <dimen name="wrap_content">-2dp</dimen>
-	
-    
-	<!-- HOME -->
+
+    <!-- HOME -->
     <dimen name="teaser_product_item_width">120dp</dimen>
     <dimen name="teaser_product_item_height">@dimen/wrap_content</dimen>
     <dimen name="teaser_product_item_image_width">@dimen/match_parent</dimen>
     <dimen name="teaser_product_item_image_height">84dp</dimen>
     <dimen name="teaser_product_item_image_margin">@dimen/margin_mid</dimen>
     <dimen name="teaser_banners_group_height">100dp</dimen>
-		
-	<!-- ACTION BAR TABLET -->
+
+    <!-- ACTION BAR TABLET -->
     <dimen name="action_bar_search">50dp</dimen>
     <dimen name="action_bar_title_bar">22dp</dimen>
-    
+
     <!-- WRITE REVIEW -->
     <dimen name="text_stars_max_width">145dp</dimen>
-    
+
     <!-- MAIN LAYOUT -->
     <dimen name="main_layout_width">@dimen/match_parent</dimen>
-    
-	<!-- PRODUCT LIST ITEM -->
+
+    <!-- PRODUCT LIST ITEM -->
     <dimen name="product_list_item_image_width">116dp</dimen>
     <dimen name="product_list_item_image_height">84dp</dimen>
     <dimen name="product_list_item_discount_percentage_image_width">45dp</dimen>
@@ -107,25 +105,49 @@
     <dimen name="product_list_item_discount_percentage_text_margin">4dp</dimen>
     <dimen name="product_list_item_star_rating_bar_min_height">11dp</dimen>
     <dimen name="product_list_item_star_rating_bar_max_height">11dp</dimen>
+
     <drawable name="product_list_item_star_rating_bar_drawable">@drawable/star_ratingbar_small</drawable>
-    	
+
     <!-- PRODUCT DETAIL ITEM -->
     <dimen name="product_detail_item_variation_list_height">63dp</dimen>
-	<dimen name="product_detail_item_variation_image_width">75dp</dimen>
+    <dimen name="product_detail_item_variation_image_width">75dp</dimen>
     <dimen name="product_detail_item_variation_image_height">50dp</dimen>
-	<dimen name="product_detail_item_image_width">250dp</dimen>
+    <dimen name="product_detail_item_image_width">250dp</dimen>
     <dimen name="product_detail_item_image_height">250dp</dimen>
-	<dimen name="product_detail_item_discount_image_width">65dp</dimen>
+    <dimen name="product_detail_item_discount_image_width">65dp</dimen>
     <dimen name="product_detail_item_discount_image_height">40dp</dimen>
     <dimen name="product_detail_item_discount_image_margin">@dimen/margin_small</dimen>
     <dimen name="product_detail_item_discount_text_margin">4.5dp</dimen>
-    
-	<!-- PRODUCT GALLERY ITEM -->
+
+    <!-- PRODUCT GALLERY ITEM -->
     <dimen name="product_gallery_item_variation_list_height">@dimen/product_detail_item_variation_list_height</dimen>
     <dimen name="product_gallery_item_image_list_height">@dimen/product_gallery_item_variation_list_height</dimen>
-    
+
     <!-- SHOPPING CART -->
     <dimen name="shopping_cart_item_image_width">84dp</dimen>
     <dimen name="shopping_cart_item_image_height">84dp</dimen>
+
+    <!-- ABOUT YOU -->
+    <dimen name="about_you_toogle_height">48dp</dimen>
+
+    <!-- INNER CONTAINER -->
+    <dimen name="inner_container_width">@dimen/match_parent</dimen>
+
+    <!-- CHECKOUT HEADER -->
+    <dimen name="checkout_header_height">22dp</dimen>
+    <dimen name="checkout_header_margin">@dimen/margin_x_small</dimen>
+    <dimen name="checkout_header_step_width">60dp</dimen>
+    <dimen name="checkout_header_step_selected_width">120dp</dimen>
+    <dimen name="checkout_header_step_icon">7.5dp</dimen>
+    <dimen name="checkout_header_step_s_icon">10dp</dimen>
+    <dimen name="checkout_header_divider_height">@dimen/divider_height</dimen>
+
+    <item name="checkout_main_container" format="float" type="dimen">0.70</item>
+    <item name="checkout_order_summary" format="float" type="dimen">0.30</item>
     
+    <!-- MY ORDER -->
+    <dimen name="checkout_order_inner_margin_left">@dimen/margin_mid</dimen>
+    <dimen name="checkout_order_inner_margin_right">@dimen/margin_mid</dimen>
+    
+
 </resources>

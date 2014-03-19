@@ -5,6 +5,9 @@ package pt.rocket.framework.objects;
 
 import org.json.JSONObject;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import pt.rocket.framework.objects.ProductTeaserGroup.TeaserProduct;
 
 /**
@@ -65,5 +68,31 @@ public class ProductTeaserGroup extends TeaserSpecification<TeaserProduct> {
 		}
 
 	}
+	
+    /**
+     * ########### Parcelable ###########
+     * @author sergiopereira
+     */
+	
+	/**
+	 * Parcel constructor
+	 * @param in
+	 */
+	public ProductTeaserGroup(Parcel in) {
+		super(in);
+	}
+		
+	/**
+	 * Create parcelable 
+	 */
+	public static final Parcelable.Creator<ProductTeaserGroup> CREATOR = new Parcelable.Creator<ProductTeaserGroup>() {
+        public ProductTeaserGroup createFromParcel(Parcel in) {
+            return new ProductTeaserGroup(in);
+        }
+
+        public ProductTeaserGroup[] newArray(int size) {
+            return new ProductTeaserGroup[size];
+        }
+    };
 
 }

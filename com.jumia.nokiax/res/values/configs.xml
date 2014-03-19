@@ -1,0 +1,14 @@
+<resources>
+
+    <string name="app_name">Jumia</string>
+    <string name="adx_app_name">com.jumia.nokiax</string>
+    <string name="urban_airship_category">com.jumia.nokiax</string>
+    <string name="hockeyapp_token">f3711b5d6c6e0b16819c7a1fe011d077</string>
+    <string name="bugsense_apikey">753c3181</string>
+    <string name="mixpanel_token">473cfc6baf3055f4bb818b229b95edbf</string>
+
+    <bool name="rest_host_auth_use_it">true</bool>
+    <bool name="ga_testmode">false</bool>
+    <bool name="f_testmode">false</bool>
+
+</resources>

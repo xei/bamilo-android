@@ -1,14 +1,10 @@
 package pt.rocket.utils;
 
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.ActivitiesWorkFlow;
-import pt.rocket.framework.event.EventManager;
-import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.event.RequestEvent;
 import pt.rocket.framework.objects.Version;
 import pt.rocket.framework.objects.VersionInfo;
-import pt.rocket.framework.service.ServiceManager;
-import pt.rocket.framework.service.services.ApiService;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.view.R;
 import android.app.Activity;
@@ -66,6 +62,7 @@ public class CheckVersion {
     }
 
     public static boolean run(Context context) {
+        Log.i(TAG, "code1checkversion");
         sContext = context;
         if (runEvents(context))
             return false;
@@ -77,7 +74,7 @@ public class CheckVersion {
         updateUnwantedVersionFromPrefs();
         if (!checkVersionInfo())
             return false;
-        
+        Log.i(TAG, "code1checkversion checkResult : "+checkResult);
         if (checkResult == UpdateStatus.FORCED_AVAILABLE) {
             sNeedsToShowDialog = true;
         } else if ( checkResult == UpdateStatus.OPTIONAL_AVAILABLE) {
@@ -188,7 +185,7 @@ public class CheckVersion {
     }
     
     private static Version getVersion( Context context ) {
-        VersionInfo vInfo = ServiceManager.SERVICES.get(ApiService.class).getVersionInfo();
+        VersionInfo vInfo = JumiaApplication.INSTANCE.getVersionInfo();
         if ( vInfo == null) {
             return null;
         }
@@ -237,7 +234,7 @@ public class CheckVersion {
         String url;
         if (packageName.startsWith("pt.rocket.jumia.dev")
                 || packageName.startsWith("pt.rocket.jumia.weekly"))
-            packageName = "abc.vietcontent.news.zalora";
+            packageName = "com.jumia.android";
 
         url = PLAY_MARKET_QUERY + packageName;
 

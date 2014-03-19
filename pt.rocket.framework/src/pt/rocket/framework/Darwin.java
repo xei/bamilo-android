@@ -6,9 +6,6 @@ import java.util.Set;
 import java.util.TimeZone;
 
 import pt.rocket.framework.database.DarwinDatabaseHelper;
-import pt.rocket.framework.rest.RestClientSingleton;
-import pt.rocket.framework.rest.RestServiceHelper;
-import pt.rocket.framework.service.ServiceManager;
 import pt.rocket.framework.utils.PreInstallController;
 import pt.rocket.framework.utils.ShopSelector;
 import android.content.Context;
@@ -67,7 +64,9 @@ public class Darwin {
 	private static final String FRAMEWORK_PREFS = "framework";
 	
 	private static final String KEY_INITSUCCESSFUL = "init_successful";
-
+	
+	public final static String SHARED_PREFERENCES = "whitelabel_prefs";
+	public static String KEY_COUNTRY = "country";
 	/**
 	 * Prevent this class from being instantiated. Make this class into a
 	 * singleton
@@ -104,10 +103,10 @@ public class Darwin {
 		
 		retrieveVersionCode();
 		ShopSelector.init(context, shopId, isChangeShop);
-		RestServiceHelper.init(context);
-		RestClientSingleton.init(context);
+//		RestServiceHelper.init(context);
+		
 		// Clear Login Data
-		ServiceManager.init(context, shopId);
+//		ServiceManager.init(context, shopId);
 		Log.d(TAG, "Darwin is initialized with id " + shopId);
 		SHOP_ID = shopId;
 		
@@ -115,6 +114,11 @@ public class Darwin {
 		
 		return true;
 	}
+	
+	public static int getShopId(){
+		return SHOP_ID;
+	}
+	
 
 	/**
 	 * Gets the mode on which the framework is running
@@ -147,6 +151,7 @@ public class Darwin {
 		tags.add(Build.MANUFACTURER.replaceAll(" ", "-"));
 		tags.add(Build.MODEL.replaceAll(" ", "-"));
 		tags.add(Build.VERSION.RELEASE.replaceAll(" ", "-"));
+		tags.add(context.getString(R.string.ua_store));
 		// Check pre-install flag
 		if(isPreInstallApp) {
 			preInstallTag(context, tags, Build.MANUFACTURER);

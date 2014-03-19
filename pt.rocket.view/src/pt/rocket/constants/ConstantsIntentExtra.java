@@ -40,6 +40,7 @@ public class ConstantsIntentExtra {
     
     // ########### Checkout ###########
     //
+    public static final String CHECKOUT_PROCESS             = mPackage + "CheckoutProcess";
     public static final String CONTENT_TITLE                = mPackage + "ContentTitle";
     public static final String SUCESS_INFORMATION           = mPackage + "SucessInformation";
     public static final String CUSTOMER_EMAIL               = mPackage + "CustomerEmail";
@@ -78,5 +79,12 @@ public class ConstantsIntentExtra {
     
     // ########### Change Country ##############
     public static final String CHANGED_COUNTRY              = mPackage + "ChangedCountry";
+    
+    // ########### DEEP LINK ##############    
+    public static final String DEEP_LINK_TAG                = "u";
+    public static final String CATALOG_DEEP_LINK_TAG        = "c";
+    public static final String CART_DEEP_LINK_TAG           = "cart";
+
+    public static final String ORDER_FINISH                 = mPackage + "OrderFinish";
 
 }

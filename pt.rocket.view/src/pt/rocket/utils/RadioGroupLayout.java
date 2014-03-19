@@ -64,7 +64,12 @@ public class RadioGroupLayout extends LinearLayout {
     }
 
     private void updateRadioGroup() {
-        mGroup.removeAllViews();
+        try {
+            mGroup.removeAllViews();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+        
 
         int idx;
         for (idx = 0; idx < mItems.size(); idx++) {

@@ -2,10 +2,12 @@ package pt.rocket.utils;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.objects.ProductReviewCommentCreated;
@@ -16,11 +18,13 @@ import pt.rocket.framework.utils.AdXTracker;
 import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.MixpanelTracker;
 import pt.rocket.framework.utils.ShopSelector;
+import pt.rocket.framework.utils.Utils;
 import pt.rocket.view.R;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
+import com.facebook.android.Util;
 import com.urbanairship.push.PushManager;
 
 import de.akquinet.android.androlog.Log;
@@ -39,6 +43,11 @@ public class TrackerDelegator {
     public final static void trackLoginSuccessful(Context context, Customer customer, boolean wasAutologin, String origin, boolean wasFacebookLogin) {
         String mOrigin;
         int resLogin;
+        
+        // TODO : Add this filter Signup stings
+        // R.string.gfacebooksignupsuccess;
+        // R.string.gsignupsuccess;
+        
         if( wasFacebookLogin ){
             resLogin = R.string.gfacebookloginsuccess;
             mOrigin = origin;
@@ -66,10 +75,10 @@ public class TrackerDelegator {
         PushManager.shared().setAlias(customer.getIdAsString());
         if(wasFacebookLogin){
             MixpanelTracker.loginWithFacebook(context, customer.getIdAsString(), mOrigin, customer.getCreatedAt());
-            AdXTracker.facebookLogin(context, customer.getIdAsString());
+            AdXTracker.facebookLogin(context, customer.getIdAsString(), JumiaApplication.INSTANCE.SHOP_NAME);
         } else {
             MixpanelTracker.login(context, customer.getIdAsString(), mOrigin, customer.getCreatedAt());
-            AdXTracker.login(context, customer.getIdAsString());    
+            AdXTracker.login(context, customer.getIdAsString(), JumiaApplication.INSTANCE.SHOP_NAME);    
         }
     }
 
@@ -86,6 +95,7 @@ public class TrackerDelegator {
     
     public final static void trackLogoutSuccessful(Context context) {
         MixpanelTracker.logout(context);
+        AdXTracker.logout(context, JumiaApplication.INSTANCE.CUSTOMER.getIdAsString(), JumiaApplication.INSTANCE.SHOP_NAME);
     }
 
     public final static void trackSearchMade(Context context, String criteria, long results) {
@@ -143,7 +153,7 @@ public class TrackerDelegator {
             return ;
         }
         
-        AdXTracker.signup(context, customer.getIdAsString());
+        AdXTracker.signup(context, customer.getIdAsString(), JumiaApplication.INSTANCE.SHOP_NAME);
         MixpanelTracker.signup(context, customer, location); 
         PushManager.shared().setAlias(customer.getIdAsString());
         storeSignupProcess(context, customer);
@@ -159,6 +169,82 @@ public class TrackerDelegator {
             @Override
             public void run() {
                 trackPurchaseInt( context, result, customer);
+            }
+            
+        }).run();        
+    }
+    
+    /**
+     * Track Checkout Step
+     * @param context
+     * @param result
+     * @param customer
+     */
+    public static void trackCheckoutStep( final Context context, String email, final int gstep, final int xstep, final int mixstep ) {
+        final String hashedemail = Utils.cleanMD5(email);
+        new Thread( new Runnable() {
+            @Override
+            public void run() {
+                
+                AnalyticsGoogle.get().trackCheckoutStep(hashedemail, gstep);
+                AdXTracker.trackCheckoutStep(context, hashedemail, xstep);
+                MixpanelTracker.trackCheckoutStep(context, hashedemail, mixstep);
+            }
+            
+        }).run();        
+    }
+    
+    public static void trackSignUp( final Context context, String email) {
+        final String hashedemail = Utils.cleanMD5(email);
+        new Thread( new Runnable() {
+            @Override
+            public void run() {
+                AnalyticsGoogle.get().trackSignUp(hashedemail);
+                AdXTracker.trackSignUp(context, hashedemail, JumiaApplication.INSTANCE.SHOP_NAME);
+                MixpanelTracker.trackSignUp(context, hashedemail);
+            }
+            
+        }).run();        
+    }
+    
+    /**
+     * Track Payment Method
+     * @param context
+     * @param email
+     * @param payment
+     */
+    public static void trackPaymentMethod( final Context context, String email, final String payment) {
+        final String hashedemail = Utils.cleanMD5(email);
+        new Thread( new Runnable() {
+            @Override
+            public void run() {
+                AnalyticsGoogle.get().trackPaymentMethod(hashedemail, payment);
+                AdXTracker.trackPaymentMethod(context, hashedemail, payment);
+                MixpanelTracker.trackPaymentMethod(context, hashedemail, payment);
+            }
+            
+        }).run();        
+    }
+    
+    public static void trackNativeCheckoutError( final Context context, String email, final String error) {
+        final String hashedemail = Utils.cleanMD5(email);
+        new Thread( new Runnable() {
+            @Override
+            public void run() {
+                AnalyticsGoogle.get().trackNativeCheckoutError(hashedemail, error);
+                AdXTracker.trackNativeCheckoutError(context, hashedemail, error);
+                MixpanelTracker.trackNativeCheckoutError(context, hashedemail, error);
+            }
+            
+        }).run();        
+    }
+    
+    public static void trackPurchaseNativeCheckout( final Context context, final String order_nr, final String value, final String email, final Map<String, ShoppingCartItem> mItems, final Customer customer ) {
+        
+        new Thread( new Runnable() {
+            @Override
+            public void run() {
+                trackNativeCheckoutPurchase(context, order_nr, value, email, mItems, customer);
             }
             
         }).run();        
@@ -193,9 +279,15 @@ public class TrackerDelegator {
         
         AnalyticsGoogle.get().trackSales(orderNr, value, items);
         
+
         if (customer == null) {
             Log.w(TAG, "TRACK SALE: no customer - cannot track further without customerId");
-            AdXTracker.trackSale(context, value);
+            //AdXTracker.trackSale(context, value);
+            
+            // Send the track sale without customer id
+            String customerId = "";
+            boolean isFirstCustomer = false;
+            AdXTracker.trackSale(context, value, customerId, orderNr, isFirstCustomer, JumiaApplication.INSTANCE.SHOP_NAME);
             
         } else { 
             String customerId = customer.getIdAsString();
@@ -203,49 +295,48 @@ public class TrackerDelegator {
             
             Log.d(TAG, "TRACK SALE: CUSTOMER ID: " + customerId + " IS FIRST TIME: " + isFirstCustomer);
             
-            AdXTracker.trackSale(context, value, customerId, orderNr, isFirstCustomer);
+            AdXTracker.trackSale(context, value, customerId, orderNr, isFirstCustomer, JumiaApplication.INSTANCE.SHOP_NAME);
         }
         
         MixpanelTracker.trackSale(context, value, items);
         
     }    
     
-//    private static void trackPurchaseInt(Context context, JSONObject result, Customer customer) {
-//        Log.d(TAG, "trackPurchase: started");
-//        if ( result == null) {
-//            return;
-//        }
-//        
-//        Log.d( TAG, "tracking for " + ShopSelector.getShopName() + " in country " + ShopSelector.getCountryName());
-//                
-//        String orderNr;
-//        String value;
-//        JSONObject itemsJson;
-//        try {
-//            orderNr = result.getString(JSON_TAG_ORDER_NR);
-//            value = result.getString(JSON_TAG_GRAND_TOTAL);
-//            itemsJson = result.getJSONObject(JSON_TAG_ITEMS_JSON);
-//            Log.d( TAG, result.toString(2));
-//        } catch (JSONException e) {
-//            Log.e(TAG, "json parsing error: ", e);
-//            return;
-//        }
-//        List<PurchaseItem> items = PurchaseItem.parseItems(itemsJson);
-//        AnalyticsGoogle.get().trackSales(orderNr, value, items);
-//        AdXTracker.trackSale(context, value);
-//
-//        if (customer == null) {
-//            Log.w(TAG, "no customer - cannot track further without customerId");
-//            return;
-//        }
-//
-//        String customerId = customer.getIdAsString();
-//        FlurryTracker.get().purchase(orderNr, customerId, value);
-//        
-//        boolean isFirstCustomer = checkCheckoutAfterSignup(context, customer);
-//        Log.d( TAG, "trackPurchaseInt: isFirstCustomer = " + isFirstCustomer );
-//        AdXTracker.trackSaleData(context, customerId, orderNr, isFirstCustomer);
-//    }
+    private static void trackNativeCheckoutPurchase(Context context, String order_nr, String value, String email, Map<String, ShoppingCartItem> mItems, Customer customer) {
+        Log.i(TAG, "TRACK SALE: STARTED");
+        
+        Log.d( TAG, "tracking for " + ShopSelector.getShopName() + " in country " + ShopSelector.getCountryName());
+        
+        Log.d(TAG, "TRACK SALE: JSON " + order_nr);
+                
+        
+        
+        List<PurchaseItem> items = PurchaseItem.parseItems(mItems);
+        
+        AnalyticsGoogle.get().trackSales(order_nr, value, items);
+        
+
+        if (customer == null) {
+            Log.w(TAG, "TRACK SALE: no customer - cannot track further without customerId");
+            //AdXTracker.trackSale(context, value);
+            
+            // Send the track sale without customer id
+            String customerId = Utils.cleanMD5(email);
+            boolean isFirstCustomer = false;
+            AdXTracker.trackSale(context, value, customerId, order_nr, isFirstCustomer, JumiaApplication.INSTANCE.SHOP_NAME);
+            
+        } else { 
+            String customerId = customer.getIdAsString();
+            boolean isFirstCustomer = checkCheckoutAfterSignup(context, customer);
+            
+            Log.d(TAG, "TRACK SALE: CUSTOMER ID: " + customerId + " IS FIRST TIME: " + isFirstCustomer);
+            
+            AdXTracker.trackSale(context, value, customerId, order_nr, isFirstCustomer, JumiaApplication.INSTANCE.SHOP_NAME);
+        }
+        
+        MixpanelTracker.trackSale(context, value, items);
+        
+    }    
 
     public static void storeSignupProcess(Context context, Customer customer) {
         Log.d( TAG, "storing signup tags" );

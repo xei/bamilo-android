@@ -1,7 +1,14 @@
 package pt.rocket.framework.objects;
 
+import java.util.HashMap;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import de.akquinet.android.androlog.Log;
+
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import pt.rocket.framework.rest.RestConstants;
 
@@ -10,9 +17,10 @@ import pt.rocket.framework.rest.RestConstants;
  * For each section, there is a service.
  * Each section contain name, url. 
  * @author GuilhermeSilva
+ * @modified Manuel Silva
  *
  */
-public class Section implements IJSONSerializable {
+public class Section implements IJSONSerializable, Parcelable {
 	
 	public static final String SECTION_NAME_TEASERS = "teasers";
 	public static final String SECTION_NAME_BRANDS = "brands";
@@ -24,6 +32,7 @@ public class Section implements IJSONSerializable {
 	public static final String SECTION_NAME_SLIDER = "slider";
 	public static final String SECTION_NAME_IMAGE_RESOLUTIONS = "imageresolutions";
 	public static final String SECTION_NAME_GET_3_HOUR_DELIVERY_ZIPCODES = "get3hourdeliveryzipcodes";
+	private static final String TAG = Section.class.getName();;
 	
     /**
      * Name of the section.
@@ -84,12 +93,13 @@ public class Section implements IJSONSerializable {
              * use System.currentTimeMillis in the mean time to "replace" md5.
              */
             String md5 = ""+System.currentTimeMillis();
-            		
+            String url = jsonObject.getString(RestConstants.JSON_SECTION_URL_TAG);
             if(jsonObject.has(RestConstants.JSON_SECTION_MD5_TAG)){
             	md5 = jsonObject.getString(RestConstants.JSON_SECTION_MD5_TAG);
+//            	Log.i(TAG, "code1md5 got md5 for : "+url+ " md5 is : "+md5);
             }
              
-            String url = jsonObject.getString(RestConstants.JSON_SECTION_URL_TAG);
+            
             
         	init(name, md5, url);
 
@@ -114,4 +124,33 @@ public class Section implements IJSONSerializable {
         }
         return jsonObject;
     }
+
+	@Override
+	public int describeContents() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeString(name);
+		dest.writeString(md5);
+		dest.writeString(url);
+	}
+	
+	private Section(Parcel in){
+    	name = in.readString();
+    	md5 = in.readString();
+    	url = in.readString();
+	}
+	
+    private static final Parcelable.Creator<Section> CREATOR = new Parcelable.Creator<Section>() {
+        public Section createFromParcel(Parcel in) {
+            return new Section(in);
+        }
+
+        public Section[] newArray(int size) {
+            return new Section[size];
+        }
+    };
 }

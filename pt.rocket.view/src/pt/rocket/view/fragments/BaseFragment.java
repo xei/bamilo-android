@@ -3,42 +3,47 @@ package pt.rocket.view.fragments;
 import java.lang.reflect.Field;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
-import pt.rocket.controllers.fragments.FragmentType;
+import pt.rocket.app.JumiaApplication;
+import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.fragments.FragmentController;
+import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.ErrorCode;
-import pt.rocket.framework.event.EventManager;
-import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.event.RequestEvent;
-import pt.rocket.framework.event.ResponseEvent;
-import pt.rocket.framework.event.ResponseListener;
-import pt.rocket.framework.event.ResponseResultEvent;
+import pt.rocket.framework.objects.OrderSummary;
 import pt.rocket.framework.rest.RestConstants;
+import pt.rocket.framework.service.IRemoteServiceCallback;
+import pt.rocket.framework.utils.Constants;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.framework.utils.Utils;
+import pt.rocket.helpers.BaseHelper;
+import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.OnActivityFragmentInteraction;
-import pt.rocket.utils.dialogfragments.DialogGenericFragment;
+import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.RemoteException;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.Toast;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -46,8 +51,7 @@ import de.akquinet.android.androlog.Log;
  * @author sergiopereira
  * 
  */
-public abstract class BaseFragment extends Fragment implements ResponseListener,
-        OnActivityFragmentInteraction {
+public abstract class BaseFragment extends Fragment implements OnActivityFragmentInteraction {
 
     private static final Set<EventType> HANDLED_EVENTS = EnumSet.noneOf(EventType.class);
     protected String md5Hash = null;
@@ -77,17 +81,23 @@ public abstract class BaseFragment extends Fragment implements ResponseListener,
 
     private Set<EventType> userEvents;
 
-    private Set<MyMenuItem> enabledMenuItems;
+    protected Set<MyMenuItem> enabledMenuItems;
 
     private int titleResId;
    
     private Boolean isNestedFragment = false;
 
     private boolean isVisible = false;
+    
+    private boolean isOrderSummaryPresent;
+    
+    private int ORDER_SUMMARY_CONTAINER = R.id.order_summary_container;
+    
+    protected boolean isOnStoppingProcess = true;
 
     public BaseFragment() {
     }
-    protected BaseActivity mainActivity;
+    protected static BaseActivity mainActivity;
     
     /**
      * Constructor
@@ -142,7 +152,6 @@ public abstract class BaseFragment extends Fragment implements ResponseListener,
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);       
         md5Hash = null;
-        EventManager.getSingleton().addResponseListener(this, allHandledEvents);
     }
     
     /*
@@ -167,31 +176,67 @@ public abstract class BaseFragment extends Fragment implements ResponseListener,
     
     /*
      * (non-Javadoc)
+     * @see android.support.v4.app.Fragment#onViewCreated(android.view.View, android.os.Bundle)
+     */
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Log.d(TAG, "ON VIEW CREATED");
+        // 
+        isOnStoppingProcess = false;
+        // Exist order summary
+        isOrderSummaryPresent = (view.findViewById(ORDER_SUMMARY_CONTAINER) != null) ? true : false;
+    }
+    
+    /**
+     * Show the summary order if the view is present
+     * @author sergiopereira
+     */
+    public void showOrderSummaryIfPresent(int checkoutStep, OrderSummary orderSummary){
+        // Get order summary
+        if(isOrderSummaryPresent) {
+            Log.i(TAG, "ORDER SUMMARY IS PRESENT");
+            FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+            ft.replace(ORDER_SUMMARY_CONTAINER, CheckoutSummaryFragment.getInstance(checkoutStep, orderSummary));
+            ft.commit();
+        } else {
+            Log.i(TAG, "ORDER SUMMARY IS NOT PRESENT");
+        }
+    }
+    
+    /*
+     * (non-Javadoc)
      * 
      * @see android.support.v4.app.Fragment#onStart()
      */
     @Override
     public void onStart() {
         super.onStart();
-        // Save the current state
+
         setVisiblility(VISIBLE);
         
         if(this.action == NavigationAction.Country){
             ((BaseActivity) getActivity()).updateActionForCountry(this.action);
         }
         
+        // Validate if is checkout process
+        if(action == NavigationAction.Checkout) enabledMenuItems = getCheckoutMenuItem();
+        
         // Update base components, like items on action bar
         if (!isNestedFragment && enabledMenuItems != null) {
-            Log.i(TAG,
-                    "UPDATE BASE COMPONENTS: " + enabledMenuItems.toString() + " "
-                            + action.toString());
-            ((BaseActivity) getActivity()).updateBaseComponents(enabledMenuItems, action,
-                    titleResId);
-            // Force resume
-            ImageLoader.getInstance().resume();
+            Log.i(TAG, "UPDATE BASE COMPONENTS: " + enabledMenuItems.toString() + " " + action.toString());
+            ((BaseActivity) getActivity()).updateBaseComponents(enabledMenuItems, action, titleResId);
         }
     }
 
+    /**
+     * XXX 
+     * @return
+     */
+    private static Set<MyMenuItem> getCheckoutMenuItem(){
+        return (BaseActivity.isTabletInLandscape(JumiaApplication.INSTANCE)) ? EnumSet.of(MyMenuItem.SEARCH_BAR) : EnumSet.of(MyMenuItem.SEARCH);
+    }
+    
     /*
      * (non-Javadoc)
      * 
@@ -200,6 +245,14 @@ public abstract class BaseFragment extends Fragment implements ResponseListener,
     @Override
     public void onResume() {
         super.onResume();
+        
+        isOnStoppingProcess = false;
+        
+        /**
+         * Register service callback
+         */
+        JumiaApplication.INSTANCE.registerFragmentCallback(mCallback);
+        
         if(((BaseActivity) getActivity()) != null){
             ((BaseActivity) getActivity()).showWarning(false);
             ((BaseActivity) getActivity()).showWarningVariation(false);
@@ -227,6 +280,8 @@ public abstract class BaseFragment extends Fragment implements ResponseListener,
     @Override
     public void onStop() {
         super.onStop();
+        // Set that fragment is on the stopping process
+        isOnStoppingProcess = true;
     }
 
     /*
@@ -247,12 +302,11 @@ public abstract class BaseFragment extends Fragment implements ResponseListener,
     @Override
     public void onDestroy() {
         super.onDestroy();
-        // Remove listeners
-        EventManager.getSingleton().removeResponseListener(this, allHandledEvents);
+        JumiaApplication.INSTANCE.unRegisterFragmentCallback(mCallback);
+
         // Recycle bitmaps
         if (getView() != null)
             unbindDrawables(getView());
-        mainActivity = null;
     }
 
     /**
@@ -286,8 +340,6 @@ public abstract class BaseFragment extends Fragment implements ResponseListener,
     public void onLowMemory() {
         super.onLowMemory();
         Log.i(TAG, "ON LOW MEMORY");
-        ImageLoader.getInstance().clearMemoryCache();
-        ImageLoader.getInstance().clearDiscCache();
 
         // TODO - Validate this is necessary
         if (getView() != null && isHidden())
@@ -317,7 +369,12 @@ public abstract class BaseFragment extends Fragment implements ResponseListener,
                     unbindDrawables(((ViewGroup) view).getChildAt(i));
                 if (view instanceof AdapterView<?>)
                     return;
-                ((ViewGroup) view).removeAllViews();
+                
+                try {
+                    ((ViewGroup) view).removeAllViews();
+                } catch (IllegalArgumentException e) {
+                    e.printStackTrace();
+                }
             }
 
         } catch (RuntimeException e) {
@@ -348,78 +405,139 @@ public abstract class BaseFragment extends Fragment implements ResponseListener,
      * @param type
      */
 
-    protected final void triggerContentEventWithNoLoading(RequestEvent event) {
-        EventManager.getSingleton().triggerRequestEvent(event);
+    protected final void triggerContentEventWithNoLoading(final BaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
+        sendRequest(helper, args, responseCallback);
     }
 
-    protected final void triggerContentEvent(EventType type) {
-        triggerContentEvent(new RequestEvent(type));
+    protected final void triggerContentEvent(final BaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
+        if(getBaseActivity() != null){
+        	getBaseActivity().showLoading(false);
+        }
+        sendRequest(helper, args, responseCallback);
     }
 
-    protected final void triggerContentEvent(RequestEvent event) {
-        ((BaseActivity) getActivity()).showLoading(false);
-        EventManager.getSingleton().triggerRequestEvent(event);
-    }
+//    protected final void triggerContentEvent(RequestEvent event) {
+//        ((BaseActivity) getActivity()).showLoading(false);
+//        EventManager.getSingleton().triggerRequestEvent(event);
+//    }
 
-    protected final void triggerContentEventProgress(RequestEvent event) {
+    protected final void triggerContentEventProgress(final BaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
         ((BaseActivity) getActivity()).showProgress();
-        EventManager.getSingleton().triggerRequestEvent(event);
+        sendRequest(helper, args, responseCallback);
     }
 
     private String getFragmentTag() {
         return this.getClass().getSimpleName();
     }
     
+    
+    /**
+     * Triggers the request for a new api call
+     * 
+     * @param helper
+     *            of the api call
+     * @param responseCallback
+     * @return the md5 of the reponse
+     */
+    public String sendRequest(final BaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
+        Bundle bundle = helper.generateRequestBundle(args);
+        if(bundle.containsKey(Constants.BUNDLE_EVENT_TYPE_KEY)){
+            Log.i(TAG, "codesave saving : "+(EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
+            JumiaApplication.INSTANCE.getRequestsRetryHelperList().put((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY), helper);
+            JumiaApplication.INSTANCE.getRequestsRetryBundleList().put((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY), args);
+            JumiaApplication.INSTANCE.getRequestsResponseList().put((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY), responseCallback);
+        } else {
+            Log.w(TAG, " MISSING EVENT TYPE from "+helper.toString());
+        }
+        String md5 = Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY);
+        bundle.putString(Constants.BUNDLE_MD5_KEY, md5);
+        Log.d("TRACK", "sendRequest");
+        
+        JumiaApplication.INSTANCE.responseCallbacks.put(md5, new IResponseCallback() {
+
+            @Override
+            public void onRequestComplete(Bundle bundle) {
+                Log.d("TRACK", "onRequestComplete BaseActivity");
+                // We have to parse this bundle to the final one
+                Bundle formatedBundle = (Bundle) helper.checkResponseForStatus(bundle);
+                
+                if (responseCallback != null) {
+                    if(formatedBundle.getBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY)){
+                        responseCallback.onRequestError(formatedBundle);
+                    } else {
+                        responseCallback.onRequestComplete(formatedBundle);    
+                    }
+                    
+                }
+            }
+
+            @Override
+            public void onRequestError(Bundle bundle) {
+                Log.d("TRACK", "onRequestError  BaseActivity");
+                // We have to parse this bundle to the final one
+                Bundle formatedBundle = (Bundle) helper.parseErrorBundle(bundle);
+                if (responseCallback != null) {
+                    responseCallback.onRequestError(formatedBundle);
+                }
+            }
+        });
+
+        
+        JumiaApplication.INSTANCE.sendRequest(bundle);
+        
+
+        return md5;
+    }
     /**
      * #### HANDLE EVENT ####
      */
-    /*
-     * (non-Javadoc)
-     * 
-     * @see pt.rocket.framework.event.EventListener#handleEvent(pt.rocket.framework.event.IEvent)
-     */
-    @Override
-    public final void handleEvent(final ResponseEvent event) {
-
-        // Validate fragment visibility
-        if (!isOnTheScreen() && event.getType() != EventType.FACEBOOK_LOGIN_EVENT) {
-            Log.w(TAG, "RECEIVED EVENT IN BACKGROUND WAS DISCARDED: " + event.getType().name());
-            return;
-        }
-
-        if (event.getSuccess()) {
-            Log.i(TAG, "HANDLE EVENT: SUCCESS");
-            if (contentEvents.contains(event.type) || userEvents.contains(event.type)) {
-                boolean showContent = onSuccessEvent((ResponseResultEvent<?>) event);
-                try {
-                    if (showContent) {
-                        ((BaseActivity) getActivity()).showContentContainer(false);
-                    }
-                    ((BaseActivity) getActivity()).showWarning(event.warning != null);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                
-                if(getActivity() != null){
-                    ((BaseActivity) getActivity()).showWarning(event.warning != null);                    
-                } else {
-                   return;
-                }
-                
-
-            }
-            handleSuccessEvent(event);
-
-        } else {
-            boolean needsErrorHandling = true;
-            if (contentEvents.contains(event.type) || userEvents.contains(event.type)) {
-                needsErrorHandling = !onErrorEvent(event);
-            }
-            if (needsErrorHandling) {
-                handleErrorEvent(event);
-            }
-        }
-    }
+//    /*
+//     * (non-Javadoc)
+//     * 
+//     * @see pt.rocket.framework.event.EventListener#handleEvent(pt.rocket.framework.event.IEvent)
+//     */
+//    @Override
+//    public final void handleEvent(final ResponseEvent event) {
+//
+//        // Validate fragment visibility
+//        if (!isOnTheScreen() && event.getType() != EventType.FACEBOOK_LOGIN_EVENT) {
+//            Log.w(TAG, "RECEIVED EVENT IN BACKGROUND WAS DISCARDED: " + event.getType().name());
+//            return;
+//        }
+//
+//        if (event.getSuccess()) {
+//            Log.i(TAG, "HANDLE EVENT: SUCCESS");
+//            if (contentEvents.contains(event.type) || userEvents.contains(event.type)) {
+//                boolean showContent = onSuccessEvent((ResponseResultEvent<?>) event);
+//                try {
+//                    if (showContent) {
+//                        ((BaseActivity) getActivity()).showContentContainer(false);
+//                    }
+//                    ((BaseActivity) getActivity()).showWarning(event.warning != null);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//                
+//                if(getActivity() != null){
+//                    ((BaseActivity) getActivity()).showWarning(event.warning != null);                    
+//                } else {
+//                   return;
+//                }
+//                
+//
+//            }
+//            handleSuccessEvent(event);
+//
+//        } else {
+//            boolean needsErrorHandling = true;
+//            if (contentEvents.contains(event.type) || userEvents.contains(event.type)) {
+//                needsErrorHandling = !onErrorEvent(event);
+//            }
+//            if (needsErrorHandling) {
+//                handleErrorEvent(event);
+//            }
+//        }
+//    }
 
     /**
      * Handles a successful event and reflects necessary changes on the UI.
@@ -427,13 +545,15 @@ public abstract class BaseFragment extends Fragment implements ResponseListener,
      * @param event
      *            The successful event with {@link ResponseEvent#getSuccess()} == <code>true</code>
      */
-    private void handleSuccessEvent(ResponseEvent event) {
-        Log.i(TAG, "ON HANDLE SUCCESS EVENT: " + event.getType().toString());
-        switch (event.getType()) {
+    private void handleSuccessEvent(Bundle bundle) {
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        Log.i(TAG, "ON HANDLE SUCCESS EVENT: " + eventType);
+        switch (eventType) {
         case GET_SHOPPING_CART_ITEMS_EVENT:
         case ADD_ITEM_TO_SHOPPING_CART_EVENT:
         case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
         case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
+            getBaseActivity().updateCartInfo();
             break;
         case LOGOUT_EVENT:
             break;
@@ -446,157 +566,19 @@ public abstract class BaseFragment extends Fragment implements ResponseListener,
      * @param event
      *            The failed event with {@link ResponseEvent#getSuccess()} == <code>false</code>
      */
-    public void handleErrorEvent(final ResponseEvent event) {
-        Log.i(TAG, "ON HANDLE ERROR EVENT: " + event.getType());
-        if (!(event.request.eventType.equals(EventType.GET_CUSTOMER) && ((BaseActivity) getActivity())
-                .getLocalClassName().equals(writeReviewFragment))) {
-            if (event.errorCode.isNetworkError()) {
-                if (event.type == EventType.GET_SHOPPING_CART_ITEMS_EVENT && null != ((BaseActivity) getActivity())) {
-                    ((BaseActivity) getActivity()).updateCartInfo(null);
-                }
-                if (contentEvents.contains(event.type)) {
-                    ((BaseActivity) getActivity()).showError(event.request);
-                } else if (userEvents.contains(event.type)) {
-                    ((BaseActivity) getActivity()).showContentContainer(false);
-                    
-                    // Remove dialog if exist
-                    if (dialog != null){
-                        try {
-                            dialog.dismiss();    
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    dialog = DialogGenericFragment.createNoNetworkDialog(getActivity(),
-                            new OnClickListener() {
-
-                                @Override
-                                public void onClick(View v) {
-                                    if (null != getActivity()) {
-                                    ((BaseActivity) getActivity()).showLoadingInfo();
-                                    EventManager.getSingleton().triggerRequestEvent(event.request);
-                                    dialog.dismiss();
-                                } else {
-                                    restartAllFragments();
-                                }
-                                }
-                            }, false);
-                    try {
-                        dialog.show(getActivity().getSupportFragmentManager(), null);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    
-                }
-                return;
-            } else if (event.errorCode == ErrorCode.REQUEST_ERROR) {
-                Map<String, ? extends List<String>> messages = event.errorMessages;
-                List<String> validateMessages = messages.get(RestConstants.JSON_VALIDATE_TAG);
-                String dialogMsg = "";
-                if (validateMessages == null || validateMessages.isEmpty()) {
-                    validateMessages = messages.get(RestConstants.JSON_ERROR_TAG);
-                }
-                if (validateMessages != null) {
-                    for (String message : validateMessages) {
-                        dialogMsg += message + "\n";
-                    }
-                } else {
-                    for (Entry<String, ? extends List<String>> entry : messages.entrySet()) {
-                        dialogMsg += entry.getKey() + ": " + entry.getValue().get(0) + "\n";
-                    }
-                }
-                if (dialogMsg.equals("")) {
-                    dialogMsg = getString(R.string.validation_errortext);
-                }
-                ((BaseActivity) getActivity()).showContentContainer(false);
-
-                // Remove dialog if exist
-                if (dialog != null){
-                    try {
-                        dialog.dismiss();    
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                dialog = DialogGenericFragment.newInstance(
-                        true, true, false, getString(R.string.validation_title),
-                        dialogMsg, getResources().getString(R.string.ok_label), "",
-                        new OnClickListener() {
-
-                            @Override
-                            public void onClick(View v) {
-                                int id = v.getId();
-                                if (id == R.id.button1) {
-                                    dialog.dismiss();
-                                }
-
-                            }
-
-                        });
-
-                
-                try {
-                    dialog.show(getActivity().getSupportFragmentManager(), null);
-                } catch (Exception e) {
-                   e.printStackTrace();
-                }
-                return;
-            } else if (event.errorCode == ErrorCode.UNKNOWN_ERROR) {
-            dialog = DialogGenericFragment.createServerErrorDialog(getActivity(),
-                    new OnClickListener() {
-
-                        @Override
-                        public void onClick(View v) {
-                            restartAllFragments();
-                            dialog.dismiss();
-                        }
-                    }, false);
-
-            try {
-                dialog.show(((BaseActivity) getActivity()).getSupportFragmentManager(), null);
-            } catch (Exception e) {
-                Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            }
-
-        } else if (!event.getSuccess()) {
-
-                // Remove dialog if exist
-                if (dialog != null){
-                    try {
-                        dialog.dismiss();    
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                    
-
-                dialog = DialogGenericFragment.createServerErrorDialog(getActivity(),
-                        new OnClickListener() {
-
-                            @Override
-                            public void onClick(View v) {
-                                ((BaseActivity) getActivity()).showLoadingInfo();
-
-                                EventManager.getSingleton().triggerRequestEvent(event.request);
-                                dialog.dismiss();
-                            }
-                        }, false);
-                
-                try {
-                    dialog.show(getActivity().getSupportFragmentManager(), null);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                return;
-            }
+    public void handleErrorEvent(Bundle bundle) {
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        try {
+            HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+            List<String> errors = (List<String>) errorMessages.get(RestConstants.JSON_VALIDATE_TAG);
+            Log.i(TAG, "ON HANDLE ERROR EVENT: " + eventType);
+            if(errors != null)
+                Log.i(TAG, "ON HANDLE ERROR EVENT error response was : error code : " + errorCode +" error message : " + errors.toString());
+        } catch (NullPointerException e) {
+            Log.w(TAG, "ON HANDLE ERROR: The Message is null: " + e.getMessage());
         }
-        else{
-            Log.i("TAG","ENTERED HERE");
-            ((BaseActivity) getActivity()).showContentContainer(false);
-            return;
-        }
+
 
         /*
          * TODO: finish to distinguish between errors else if (event.errorCode.isServerError()) {
@@ -613,32 +595,6 @@ public abstract class BaseFragment extends Fragment implements ResponseListener,
          */
     }
 
-    @Override
-    public final boolean removeAfterHandlingEvent() {
-        return false;
-    }
-
-    /**
-     * Handles a successful event in the concrete activity.
-     * 
-     * @param event
-     *            The successful event with {@link ResponseEvent#getSuccess()} == <code>true</code>
-     * @return Returns whether the content container should be shown.
-     */
-    protected abstract boolean onSuccessEvent(ResponseResultEvent<?> event);
-
-    /**
-     * Handles a failed event in the concrete activity. Override this if the concrete activity wants
-     * to handle a special error case.
-     * 
-     * @param event
-     *            The failed event with {@link ResponseEvent#getSuccess()} == <code>false</code>
-     * @return Whether the concrete activity handled the failed event and no further actions have to
-     *         be made.
-     */
-    protected boolean onErrorEvent(ResponseEvent event) {
-        return false;
-    }
 
     /**
      * @return the action
@@ -740,12 +696,7 @@ public abstract class BaseFragment extends Fragment implements ResponseListener,
 
     public void setActivity(BaseActivity activity) {
         this.mainActivity = activity;
-    }
-
-    @Override
-    public String getMD5Hash() {         
-        return md5Hash;
-    }    
+    }   
     
     /**
      * The variable mainActivity is setted onStart
@@ -796,6 +747,105 @@ public abstract class BaseFragment extends Fragment implements ResponseListener,
         }
     }
     
- 
+    /**
+     * Requests and Callbacks methods
+     */
+    
+    /**
+     * Callback which deals with the IRemoteServiceCallback
+     */
+    private IRemoteServiceCallback mCallback = new IRemoteServiceCallback.Stub() {
+
+        @Override
+        public void getError(Bundle response) throws RemoteException {
+            Log.i(TAG, "Set target to handle error");
+            handleError(response);
+        }
+
+        @Override
+        public void getResponse(Bundle response) throws RemoteException {
+            handleResponse(response);
+        }
+    };
+    
+    /**
+     * Handles correct responses
+     * 
+     * @param bundle
+     */
+    private void handleResponse(Bundle bundle) {
+        String id = bundle.getString(Constants.BUNDLE_MD5_KEY);
+//        Log.i(TAG, "code1removing callback from request type : "+ bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY)+" size is : "+JumiaApplication.INSTANCE.responseCallbacks.size());
+//        Log.i(TAG, "code1removing callback with id : "+ id);
+        if (JumiaApplication.INSTANCE.responseCallbacks.containsKey(id)) {
+//            Log.i(TAG, "code1removing removed callback with id : "+ id);
+            JumiaApplication.INSTANCE.responseCallbacks.get(id).onRequestComplete(bundle);
+        }
+        JumiaApplication.INSTANCE.getRequestsRetryHelperList().remove((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
+        JumiaApplication.INSTANCE.getRequestsRetryBundleList().remove((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
+        JumiaApplication.INSTANCE.getRequestsResponseList().remove((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
+        JumiaApplication.INSTANCE.responseCallbacks.remove(id);
+    }
+
+    /**
+     * Handles error responses
+     * 
+     * @param bundle
+     */
+    private void handleError(Bundle bundle) {
+        String id = bundle.getString(Constants.BUNDLE_MD5_KEY);
+//        Log.i(TAG, "code1removing callback from request type : "+ bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
+//        Log.i(TAG, "code1removing callback with id : "+ id);
+        if (JumiaApplication.INSTANCE.responseCallbacks.containsKey(id)) {
+//            Log.i(TAG, "code1removing removed callback with id : "+ id);
+            JumiaApplication.INSTANCE.responseCallbacks.get(id).onRequestError(bundle);
+        }
+        JumiaApplication.INSTANCE.responseCallbacks.remove(id);
+    }
+    
+    
+    /**
+     * Method used to redirect the native checkout to the old checkout method
+     * @param activity
+     * @author sergiopereira
+     */
+    public void gotoOldCheckoutMethod(BaseActivity activity, String email, String error){
+        TrackerDelegator.trackNativeCheckoutError(activity, email, error);
+        // Warning user
+        Toast.makeText(getBaseActivity(), getString(R.string.error_please_try_again), Toast.LENGTH_LONG).show();
+        // Remove native checkout
+        removeNativeCheckoutFromBackStack();
+        // Create bundle
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.CHECKOUT_BASKET);
+        bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationcart));
+        activity.onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+    }
+    
+    
+    /**
+     * Method used to remove all native checkout entries from the back stack on the Fragment Controller
+     * TODO: Updated this method if you add a new native checkout step
+     * @author sergiopereira 
+     */
+    protected void removeNativeCheckoutFromBackStack(){
+        // Native Checkout
+        FragmentType[] type = { FragmentType.CHECKOUT_THANKS,   FragmentType.MY_ORDER,      FragmentType.PAYMENT_METHODS,
+                                FragmentType.SHIPPING_METHODS,  FragmentType.MY_ADDRESSES,  FragmentType.CREATE_ADDRESS,
+                                FragmentType.EDIT_ADDRESS,      FragmentType.POLL,          FragmentType.ABOUT_YOU };
+        // Remove tags
+        for (FragmentType fragmentType : type)  FragmentController.getInstance().removeAllEntriesWithTag(fragmentType.toString());
+    }
+    
+    
+    /**
+     * Check the array has content
+     * @param array
+     * @return true or false
+     * @author sergiopereira
+     */
+    protected boolean hasContent(ArrayList<?> array){
+        return (array != null && !array.isEmpty()) ? true : false;
+    }
     
 }

@@ -3,12 +3,15 @@
  */
 package pt.rocket.view.fragments;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
+import java.util.HashMap;
 
+import pt.rocket.app.JumiaApplication;
+import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.controllers.CountryAdapter;
-import pt.rocket.framework.event.ResponseResultEvent;
+import pt.rocket.forms.FormData;
+import pt.rocket.framework.database.LastViewedTableHelper;
 import pt.rocket.framework.rest.RestClientSingleton;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.NavigationAction;
@@ -139,8 +142,11 @@ public class ChangeCountryFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        ((BaseActivity) getActivity()).showContentContainer(false);
-        ((BaseActivity) getActivity()).hideTitle();
+        if(selected != SHOP_NOT_SELECTED){
+            ((BaseActivity) getActivity()).showContentContainer(false);
+            ((BaseActivity) getActivity()).hideTitle();
+            ((BaseActivity) getActivity()).setCheckoutHeader(R.string.nav_country);
+        }
     }
 
     /*
@@ -190,8 +196,8 @@ public class ChangeCountryFragment extends BaseFragment {
     private void setList() {
 
         // Data
-        String[] countries = getResources().getStringArray(R.array.country_names);
-        TypedArray flags = getResources().obtainTypedArray(R.array.country_icons);
+        String[] countries = context.getResources().getStringArray(R.array.country_names);
+        TypedArray flags = context.getResources().obtainTypedArray(R.array.country_icons);
 
         // Inflate
         final ListView countryList = (ListView) getView().findViewById(R.id.change_country_list);
@@ -247,7 +253,14 @@ public class ChangeCountryFragment extends BaseFragment {
 
     protected void setCountry(int position) {
         HomeFragment.requestResponse = null;
-        MainFragmentActivity.currentCategories = null;
+        JumiaApplication.INSTANCE.currentCategories = null;
+        JumiaApplication.INSTANCE.setCart(null);
+        JumiaApplication.INSTANCE.setFormDataRegistry(new HashMap<String, FormData>());
+        getBaseActivity().updateCartInfo();
+        JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
+        if(isChangeCountry){
+            LastViewedTableHelper.deleteAllLastViewed();
+        }
         System.gc();
         SharedPreferences sharedPrefs = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPrefs.edit();
@@ -256,19 +269,8 @@ public class ChangeCountryFragment extends BaseFragment {
         editor.putBoolean(ConstantsSharedPrefs.KEY_SHOW_PROMOTIONS, true);
         editor.commit();
         TrackerDelegator.trackShopchanged(getActivity().getApplicationContext());
-        if(ImageLoader.getInstance() != null){
-            ImageLoader.getInstance().clearMemoryCache();
-            ImageLoader.getInstance().clearDiscCache();
-            System.gc();
-        }
         ActivitiesWorkFlow.splashActivityNewTask(getActivity());
         getActivity().finish();
-    }
-
-    @Override
-    protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
-        // TODO Auto-generated method stub
-        return false;
     }
 
 }

@@ -11,25 +11,27 @@ import org.json.JSONObject;
 
 import pt.rocket.framework.rest.RestConstants;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 /**
  * @author nutzer2
  *
  */
-public class ProductsPage implements IJSONSerializable{
+public class ProductsPage implements IJSONSerializable, Parcelable {
 	
 	private static final String TAG = ProductsPage.class.getSimpleName();
-	
-//	private static final String JSON_RESULTS_TAG = "results";
-//	private static final String JSON_PRODUCT_COUNT_TAG = "product_count";
-//	private static final String JSON_CATEGORIES_TAG = "categories";
-	
+		
 	private int totalProducts;
 	private ArrayList<Product> products;
 	private ArrayList<Category> categories;
+
+	private String mPageName;
 	
+	public ProductsPage() {
 	
+	}
 
 	/* (non-Javadoc)
 	 * @see pt.rocket.framework.objects.IJSONSerializable#initialize(org.json.JSONObject)
@@ -39,6 +41,7 @@ public class ProductsPage implements IJSONSerializable{
 		products = new ArrayList<Product>();
 		categories = new ArrayList<Category>();
 		totalProducts = metadataObject.optInt(RestConstants.JSON_PRODUCT_COUNT_TAG, 0);
+		mPageName = metadataObject.optString(RestConstants.JSON_CATALOG_NAME_TAG, "");
 
 		JSONArray productObjectArray = metadataObject.getJSONArray(RestConstants.JSON_RESULTS_TAG);
 
@@ -90,5 +93,41 @@ public class ProductsPage implements IJSONSerializable{
 	public int getTotalProducts() {
 		return totalProducts;
 	}
+	
+	public String getName(){
+		return mPageName;
+	}
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeValue(totalProducts);
+		dest.writeList(products);
+		dest.writeList(categories);
+	}
+	
+	private ProductsPage(Parcel in){
+		totalProducts = in.readInt();
+		
+		products = new ArrayList<Product>();
+		in.readList(products, Product.class.getClassLoader());
+		
+		categories = new ArrayList<Category>();
+		in.readList(categories, Category.class.getClassLoader());
+	}
+	
+    public static final Parcelable.Creator<ProductsPage> CREATOR = new Parcelable.Creator<ProductsPage>() {
+        public ProductsPage createFromParcel(Parcel in) {
+            return new ProductsPage(in);
+        }
+
+        public ProductsPage[] newArray(int size) {
+            return new ProductsPage[size];
+        }
+    };
 
 }

@@ -4,7 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import pt.rocket.framework.Darwin;
+
 import pt.rocket.framework.network.HttpCacheDatabaseHelper;
 
 import android.content.Context;
@@ -28,6 +28,7 @@ public class DBHttpCacheStorage implements HttpCacheStorage {
 
 	/** Logging tag. */
 	private static final String TAG = DBHttpCacheStorage.class.getSimpleName();
+	private static Boolean logDebugEnabled = true;
 	private HttpCacheDatabaseHelper dbHelper;
 	private DefaultHttpCacheEntrySerializer serializer;
 	private final CacheMap entries;
@@ -51,7 +52,7 @@ public class DBHttpCacheStorage implements HttpCacheStorage {
 	 */
 	@Override
 	public HttpCacheEntry getEntry(String url) throws IOException {
-		if (Darwin.logDebugEnabled) {
+		if (logDebugEnabled) {
 			Log.d(TAG, "Searching entry for key " + url);
 		}
 		HttpCacheEntry entry = entries.get(url);
@@ -60,9 +61,6 @@ public class DBHttpCacheStorage implements HttpCacheStorage {
 			if (serializedEntry != null) {
 				entry = serializer.readFrom(new ByteArrayInputStream(serializedEntry));
 				if (entry != null) {
-					if (Darwin.logDebugEnabled) {
-						Log.d(TAG, "Adding entry for key " + url);
-					}
 					entries.put(url, entry);
 				}
 			}
@@ -80,14 +78,13 @@ public class DBHttpCacheStorage implements HttpCacheStorage {
 	 */
 	@Override
 	public void putEntry(String url, HttpCacheEntry entry) throws IOException {
-		if (entries.put(url, entry) == null ) {
+		if (logDebugEnabled) {
+			Log.d(TAG, "Putting entry for key " + url + "\n" + entry);
+		}
+		if (entries.put(url, entry) == null) {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			serializer.writeTo(entry, baos);
 			dbHelper.insert(url, baos.toByteArray());
-		}
-		
-		if (Darwin.logDebugEnabled) {
-			Log.d(TAG, "Putting entry for key |" + entries.size() + "| " + url +  "\n" + entry);
 		}
 	}
 
@@ -100,7 +97,7 @@ public class DBHttpCacheStorage implements HttpCacheStorage {
 	 */
 	@Override
 	public void removeEntry(String url) throws IOException {
-		if (Darwin.logDebugEnabled) {
+		if (logDebugEnabled) {
 			Log.d(TAG, "Removing entry for key " + url);
 		}
 		if (entries.remove(url) != null) {
@@ -118,14 +115,14 @@ public class DBHttpCacheStorage implements HttpCacheStorage {
 	 */
 	@Override
 	public void updateEntry(String url, HttpCacheUpdateCallback callback) throws IOException {
-		if (Darwin.logDebugEnabled) {
+		if (logDebugEnabled) {
 			Log.d(TAG, "Updating entry for key " + url);
 		}
-		HttpCacheEntry existingEntry = getEntry(url);
-		HttpCacheEntry updatedEntry = callback.update(existingEntry);
-		if (existingEntry != updatedEntry) {
-			if (Darwin.logDebugEnabled) {
-				Log.d(TAG, "Updating entry for key " + url + " existing: " + existingEntry + " updated: "
+		HttpCacheEntry exitingEntry = getEntry(url);
+		HttpCacheEntry updatedEntry = callback.update(exitingEntry);
+		if (exitingEntry != updatedEntry) {
+			if (logDebugEnabled) {
+				Log.d(TAG, "Updating entry for key " + url + "\nexiting: " + exitingEntry + "\nupdated: "
 						+ updatedEntry);
 			}
 			putEntry(url, updatedEntry);

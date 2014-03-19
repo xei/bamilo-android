@@ -9,6 +9,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import pt.rocket.framework.rest.RestConstants;
 
 /**
@@ -16,18 +19,15 @@ import pt.rocket.framework.rest.RestConstants;
  * @author nutzer2
  * 
  */
-public class ProductRatingPage implements IJSONSerializable {
-
-//	private static final String JSON_AGGREGATEDATA_TAG = "aggregatedData";
-//	private static final String JSON_STARS_TAG = "stars";
-//	private static final String JSON_SIZE_STARS_FORE_TAG = "size-stars-fore";
-//	private static final String JSON_COMMENTS_COUNT_TAG = "commentsCount";
-//	private static final String JSON_COMMENTS_TAG = "comments";
+public class ProductRatingPage implements IJSONSerializable, Parcelable {
 
 	private double productRating;
 	private int commentsCount;
 	private ArrayList<ProductReviewComment> reviewComments;
 
+	public ProductRatingPage() {
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -102,4 +102,35 @@ public class ProductRatingPage implements IJSONSerializable {
 		return commentsCount;
 	}
 
+	@Override
+	public int describeContents() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeDouble(productRating);
+		dest.writeInt(commentsCount);
+		dest.writeList(reviewComments);
+		
+	}
+
+	private ProductRatingPage(Parcel in) {
+		productRating = in.readDouble();
+		commentsCount = in.readInt();
+		reviewComments = new ArrayList<ProductReviewComment>();
+		in.readList(reviewComments, ProductReviewComment.class.getClassLoader());
+	}
+	
+    public static final Parcelable.Creator<ProductRatingPage> CREATOR = new Parcelable.Creator<ProductRatingPage>() {
+        public ProductRatingPage createFromParcel(Parcel in) {
+            return new ProductRatingPage(in);
+        }
+
+        public ProductRatingPage[] newArray(int size) {
+            return new ProductRatingPage[size];
+        }
+    };
+	
 }

@@ -4,6 +4,7 @@
     <dimen name="teaser_swipe_banner_height">326dp</dimen>
     <dimen name="teaser_product_item_width">208dp</dimen>
 	<dimen name="teaser_banners_group_height">160dp</dimen>
+	<dimen name="teaser_recently_viewed_height">236dp</dimen>
     
 	<dimen name="button_sort_line_distance_horizontal">160dp</dimen>
 	<dimen name="button_sort_height">64dp</dimen>
