@@ -14,6 +14,7 @@ import pt.rocket.framework.utils.EventType;
 import pt.rocket.utils.JumiaCatalogViewPager;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.utils.dialogfragments.DialogFilterFragment;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.graphics.LinearGradient;
@@ -25,6 +26,7 @@ import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.LinearLayout;
@@ -94,6 +96,17 @@ public class Catalog extends BaseFragment {
         pagerTabStrip = (PagerTabStrip) view.findViewById(R.id.products_list_titles);
         // Initialize the catalog model with fresh data
         initPageModel();
+        
+        
+        // XXX
+        view.findViewById(R.id.products_list_filter_button).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFilterFragment newFragment = DialogFilterFragment.newInstance();
+                newFragment.show(getBaseActivity().getSupportFragmentManager(), "dialog");
+            }
+        });
+        
         return view;
     }
 

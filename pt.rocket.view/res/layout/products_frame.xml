@@ -4,13 +4,12 @@
     android:layout_height="match_parent"
     android:paddingBottom="0dp" >
 
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:duplicateParentState="true" >
 
-   <pt.rocket.utils.JumiaCatalogViewPager
+        <pt.rocket.utils.JumiaCatalogViewPager
             android:id="@+id/viewpager_products_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -23,15 +22,22 @@
                 android:layout_gravity="top"
                 android:background="@color/strip_title_background"
                 android:textColor="@color/strip_title"
-                android:textSize="12.54sp"
-                 />
+                android:textSize="12.54sp" />
         </pt.rocket.utils.JumiaCatalogViewPager>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="31.72dp"
-            android:background="@drawable/filter_header" 
-            />
+            android:background="@drawable/filter_header" />
+
+        <Button
+            android:id="@+id/products_list_filter_button"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:text="Filters" />
     </RelativeLayout>
 
 </RelativeLayout>
