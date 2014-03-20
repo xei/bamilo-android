@@ -928,10 +928,15 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
                     public void onClick(View v) {
                         int id = v.getId();
                         if (id == R.id.button1) {
-                            ((BaseActivity) getActivity()).onSwitchFragment(
-                                    FragmentType.SHOPPING_CART, FragmentController.NO_BUNDLE,
-                                    FragmentController.ADD_TO_BACK_STACK);
-                            mDialogAddedToCart.dismiss();
+                            if(getBaseActivity() != null){
+                                getBaseActivity().onSwitchFragment(
+                                        FragmentType.SHOPPING_CART, FragmentController.NO_BUNDLE,
+                                        FragmentController.ADD_TO_BACK_STACK);    
+                            }
+                            if(mDialogAddedToCart != null){
+                                mDialogAddedToCart.dismiss();    
+                            }
+                            
                         } else if (id == R.id.button2) {
                             mDialogAddedToCart.dismiss();
                         }

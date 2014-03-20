@@ -877,7 +877,6 @@ public class HomeFragment extends BaseFragment {
                 mPopArrows.setVisibility(View.GONE);
             }
         }; 
-        
     }
     
     /**
