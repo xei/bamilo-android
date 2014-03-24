@@ -85,6 +85,7 @@ public class ActionBarWrapper extends ActionBar implements android.app.ActionBar
         mActionBar.setLogo(logo);
     }
 
+    
     @Override
     public void setListNavigationCallbacks(SpinnerAdapter adapter, OnNavigationListener callback) {
         mNavigationListener = callback;
@@ -477,4 +478,10 @@ public class ActionBarWrapper extends ActionBar implements android.app.ActionBar
             listener.onMenuVisibilityChanged(isVisible);
         }
     }
+
+
+	@Override
+	public void updateUpState(boolean state) {
+		updateUpState(state);
+	}
 }

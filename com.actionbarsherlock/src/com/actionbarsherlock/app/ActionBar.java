@@ -245,6 +245,13 @@ public abstract class ActionBar {
     public abstract void setLogo(Drawable logo);
 
     /**
+     * JUMIA CHANGES
+     * Updates the state of the Navigation Drawer
+     * @param state
+     */
+    public abstract void updateUpState(boolean state);
+    
+    /**
      * Set the adapter and navigation callback for list navigation mode.
      *
      * The supplied adapter will provide views for the expanded list as well as

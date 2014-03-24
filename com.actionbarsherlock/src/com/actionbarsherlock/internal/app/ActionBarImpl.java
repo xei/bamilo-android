@@ -1028,4 +1028,9 @@ public class ActionBarImpl extends ActionBar {
     public void setLogo(Drawable logo) {
         mActionView.setLogo(logo);
     }
+    
+    @Override
+    public void updateUpState(boolean state){
+    	mActionView.animateUpButton(state);
+    }
 }
