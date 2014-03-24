@@ -419,6 +419,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 //                  getActionBar().setTitle(mTitle);
                     // calling onPrepareOptionsMenu() to show action bar icons
                     onClosed();
+                    getSupportActionBar().updateUpState(true);
                     invalidateOptionsMenu();
                 }
 
@@ -426,6 +427,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 //                                getActionBar().setTitle(mDrawerTitle);
                 // calling onPrepareOptionsMenu() to hide action bar icons
                     onOpened();
+                    getSupportActionBar().updateUpState(false);
                     invalidateOptionsMenu();
                 }
         };
