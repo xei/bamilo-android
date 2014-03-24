@@ -19,6 +19,7 @@ import pt.rocket.framework.database.DarwinDatabaseHelper;
 import pt.rocket.framework.database.ImageResolutionTableHelper;
 import pt.rocket.framework.database.SectionsTablesHelper;
 import pt.rocket.framework.enums.RequestType;
+import pt.rocket.framework.interfaces.IMetaData;
 import pt.rocket.framework.objects.Section;
 import pt.rocket.framework.objects.VersionInfo;
 import pt.rocket.framework.rest.RestConstants;
@@ -48,6 +49,7 @@ public class GetApiInfoHelper extends BaseHelper {
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
         bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
+        bundle.putBoolean(IMetaData.MD_IGNORE_CACHE, true);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_API_INFO);
         return bundle;
     }

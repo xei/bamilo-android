@@ -40,8 +40,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.slidingmenu.lib.SlidingMenu;
-
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -185,9 +183,6 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
             Log.i(TAG, "slidemenu trigger");
             if (JumiaApplication.INSTANCE.SHOP_ID >= 0)
                 trigger();
-            // triggerContentEvent(new
-            // RequestEvent(EventType.GET_NAVIGATION_LIST_COMPONENTS_EVENT));
-
         }
     }
     
@@ -242,9 +237,11 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
             if (loadingBarView != null) {
                 loadingBarView.stopRendering();
             }
+            
             if (loadingBarContainer != null) {
                 loadingBarContainer.setVisibility(View.GONE);
             }
+            
             Log.d(TAG, "GET NAVIGATION LIST COMPONENTS EVENT");
             JumiaApplication.INSTANCE.navigationListComponents = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
             fillNavigationContainer(JumiaApplication.INSTANCE.navigationListComponents);
@@ -378,13 +375,8 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
         }
         
 
-        // Header component
-        inflater.inflate(R.layout.navigation_header_component, navigationContainer, true);
-
-        // // Static container
-        // inflater.inflate(R.layout.navigation_static_container, navigationContainer, true);
-        // ViewGroup staticContainer = (ViewGroup) navigationContainer
-        // .findViewById(R.id.slide_menu_static_container);
+        // Header component [deprecated for version with Navigation Drawer]
+        //  inflater.inflate(R.layout.navigation_header_component, navigationContainer, true);
 
         // Scrollable container
         inflater.inflate(R.layout.navigation_scrollable_container, navigationContainer, true);
@@ -392,11 +384,10 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
                 .findViewById(R.id.slide_menu_scrollable_container);
 
         for (NavigationListComponent component : components) {
-//            Log.i(TAG, "code1 creating component : "+component.getElementText());
+
             // Basket
             ViewGroup viewGroup = scrollableContainer;
-            // if (component.getElementId() == 7 && component.getElementText().equals("Basket"))
-            // viewGroup = staticContainer;
+
             // Others
             View actionElementLayout = getActionElementLayout(component, viewGroup);
             if (actionElementLayout != null)
@@ -411,10 +402,8 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
                         R.id.slide_menu_scrollable_container)).getChildCount();
                 LinearLayout vGroup = ((LinearLayout) getView().findViewById(
                         R.id.slide_menu_scrollable_container));
-//                Log.i(TAG, "code1 size is : " + count);
                 for (int i = 0; i < count; i++) {
                     View view = vGroup.getChildAt(i);
-//                    Log.i(TAG, "code1 tag is  : " + count);
                     setActionSelected(view);
                 }
             }
@@ -579,27 +568,29 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
                 "Clicked on " + navAction + " while in "
                         + ((BaseActivity) getActivity()).getAction());
 
-        SlidingMenu slidingMenu = ((BaseActivity) getActivity()).getSlidingMenu();
+//        SlidingMenu slidingMenu = ((BaseActivity) getActivity()).getSlidingMenu();
 
         if (navAction != null && ((BaseActivity) getActivity()).getAction() != navAction) {
             switch (navAction) {
             case Basket:
                 ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.SHOPPING_CART,
                         FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-                if (slidingMenu.isSlidingEnabled())
-                    slidingMenu.toggle(true);
+//                if (slidingMenu.isSlidingEnabled())
+                    getBaseActivity().toggle();
                 break;
             case Home:
                 ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.HOME,
                         FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-                if (slidingMenu.isSlidingEnabled())
-                    slidingMenu.toggle(true);
+//                if (slidingMenu.isSlidingEnabled())
+//                    slidingMenu.toggle(true);
+                getBaseActivity().toggle();
                 break;
             case Search:
                 ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.SEARCH,
                         FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-                if (slidingMenu.isSlidingEnabled())
-                    slidingMenu.toggle(true);
+//                if (slidingMenu.isSlidingEnabled())
+//                    slidingMenu.toggle(true);
+                getBaseActivity().toggle();
                 break;
             case Categories:
                 Bundle bundle = new Bundle();
@@ -608,32 +599,37 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
                         FragmentType.CATEGORIES_LEVEL_1);
                 ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.CATEGORIES_LEVEL_1,
                         bundle, FragmentController.ADD_TO_BACK_STACK);
-                if (slidingMenu.isSlidingEnabled())
-                    slidingMenu.toggle(true);
+//                if (slidingMenu.isSlidingEnabled())
+//                    slidingMenu.toggle(true);
+                getBaseActivity().toggle();
                 break;
             case MyAccount:
                 ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.MY_ACCOUNT,
                         FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-                if (slidingMenu.isSlidingEnabled())
-                    slidingMenu.toggle(true);
+//                if (slidingMenu.isSlidingEnabled())
+//                    slidingMenu.toggle(true);
+                getBaseActivity().toggle();
                 break;
             case LoginOut:
                 // ActivitiesWorkFlow.loginOut(getActivity());
                 loginOut((BaseActivity) getActivity());
-                if (slidingMenu.isSlidingEnabled())
-                    slidingMenu.toggle(true);
+//                if (slidingMenu.isSlidingEnabled())
+//                    slidingMenu.toggle(true);
+                getBaseActivity().toggle();
                 break;
             case Country:
                 ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.CHANGE_COUNTRY,
                         FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-                if (slidingMenu.isSlidingEnabled())
-                    slidingMenu.toggle(true);
+//                if (slidingMenu.isSlidingEnabled())
+//                    slidingMenu.toggle(true);
+                getBaseActivity().toggle();
                 break;
             case TrackOrder:
                 ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.TRACK_ORDER,
                         FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-                if (slidingMenu.isSlidingEnabled())
-                    slidingMenu.toggle(true);
+//                if (slidingMenu.isSlidingEnabled())
+//                    slidingMenu.toggle(true);
+                getBaseActivity().toggle();
                 break;
             }
 

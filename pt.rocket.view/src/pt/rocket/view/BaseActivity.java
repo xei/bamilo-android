@@ -49,15 +49,21 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.RemoteException;
+import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.DrawerLayout;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.MeasureSpec;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewStub;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -66,16 +72,13 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.actionbarsherlock.ActionBarSherlock;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.internal.ActionBarSherlockNative;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.ShareActionProvider;
 import com.actionbarsherlock.widget.ShareActionProvider.OnShareTargetSelectedListener;
 import com.bugsense.trace.BugSenseHandler;
-import com.slidingmenu.lib.SlidingMenu;
-import com.slidingmenu.lib.SlidingMenu.OnClosedListener;
-import com.slidingmenu.lib.SlidingMenu.OnOpenedListener;
-import com.slidingmenu.lib.app.SlidingFragmentActivity;
 import com.urbanairship.UAirship;
 
 import de.akquinet.android.androlog.Log;
@@ -103,7 +106,7 @@ import de.akquinet.android.androlog.Log;
  *          2012/06/19
  * 
  */
-public abstract class BaseActivity extends SlidingFragmentActivity implements OnOpenedListener, OnClosedListener {
+public abstract class BaseActivity extends SherlockFragmentActivity {
 
     private ShareActionProvider mShareActionProvider;
 
@@ -143,6 +146,9 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
      * Use this variable to have a more precise control on when to show the content container.
      */
     private boolean processShow = true;
+    
+    private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mDrawerToggle;
 
     private static final Set<EventType> HANDLED_EVENTS = EnumSet.of(
             EventType.GET_SHOPPING_CART_ITEMS_EVENT,
@@ -213,6 +219,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         JumiaApplication.INSTANCE.doBindService();
+        
         Log.d(TAG, "ON CREATE");
 
         // Validate if is phone and force orientaion
@@ -222,8 +229,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         fragmentController = FragmentController.getInstance();
 
         ShopSelector.resetConfiguration(getBaseContext());
-        // OLD FRAMEWORK
-        // EventManager.getSingleton().addResponseListener(this, allHandledEvents);
+
         setupActionBar();
         setupContentViews();
         
@@ -398,10 +404,33 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     public void setupActionBar() {
         ActionBarSherlock.unregisterImplementation(ActionBarSherlockNative.class);
         getSupportActionBar().setHomeButtonEnabled(true);
+        // Set custom view
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        getSupportActionBar().setCustomView(R.layout.action_bar_logo_layout);
+        getSupportActionBar().getCustomView().findViewById(R.id.ic_logo).setOnClickListener(onActionBarClickListener);
     }
 
     private void setupContentViews() {
         setContentView(activityLayoutId);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer,
+                R.string.app_name, R.string.app_name) {
+                public void onDrawerClosed(View view) {
+//                  getActionBar().setTitle(mTitle);
+                    // calling onPrepareOptionsMenu() to show action bar icons
+                    onClosed();
+                    invalidateOptionsMenu();
+                }
+
+                public void onDrawerOpened(View drawerView) {
+//                                getActionBar().setTitle(mDrawerTitle);
+                // calling onPrepareOptionsMenu() to hide action bar icons
+                    onOpened();
+                    invalidateOptionsMenu();
+                }
+        };
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        
         contentContainer = (ViewGroup) findViewById(R.id.rocket_app_content);
         loadingBarContainer = findViewById(R.id.loading_bar);
         loadingBarView = (LoadingBarView) findViewById(R.id.loading_bar_view);
@@ -429,6 +458,21 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     private String getTag() {
         return this.getClass().getSimpleName();
     }
+    
+    /**
+     * Toggle the navigation drawer
+     */
+    public void toggle(){
+        if(mDrawerLayout.isDrawerOpen(Gravity.LEFT)){
+            mDrawerLayout.closeDrawer(Gravity.LEFT);
+            // Animate here
+        } else {
+            if(mDrawerLayout.getDrawerLockMode(Gravity.LEFT) != DrawerLayout.LOCK_MODE_LOCKED_OPEN){
+                mDrawerLayout.openDrawer(Gravity.LEFT);
+                // Animate here
+            }
+        }
+    }
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
@@ -454,14 +498,40 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     @Override
     public void onBackPressed() {
         Log.i(getTag(), "onBackPressed");
-        if (getSlidingMenu().isMenuShowing() && getSlidingMenu().isSlidingEnabled()
+//        if (getSlidingMenu().isMenuShowing() && getSlidingMenu().isSlidingEnabled()
+//                && !isTabletInLandscape(this)) {
+//            showContent();
+//        } else {
+//            super.onBackPressed();
+//        }
+        if (mDrawerLayout.isDrawerOpen(Gravity.LEFT) && !(mDrawerLayout.getDrawerLockMode(Gravity.LEFT) == DrawerLayout.LOCK_MODE_LOCKED_OPEN)
                 && !isTabletInLandscape(this)) {
-            showContent();
+            mDrawerLayout.closeDrawer(Gravity.LEFT);
         } else {
             super.onBackPressed();
         }
     }
+    /**
+     * When using the ActionBarDrawerToggle, you must call it during
+     * onPostCreate() and onConfigurationChanged()...
+     */
+    
 
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        mDrawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        // Pass any configuration change to the drawer toggls
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+    
     /**
      * ############### SLIDE MENU #################
      */
@@ -472,26 +542,28 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
      * @author sergiopereira
      */
     private void setupNavigationMenu(boolean onChangeCountry) {
+        
+        
         // Set Behind Content View
-        setBehindContentView(R.layout.navigation_container_fragments);
+//        setBehindContentView(R.layout.navigation_container_fragments);
         // Customize sliding menu
-        SlidingMenu sm = getSlidingMenu();
+//        SlidingMenu sm = getSlidingMenu();
         // Set the SlidingMenu width with a percentage of the display width
-        sm.setBehindWidth((int) (WindowHelper.getWidth(getApplicationContext()) * getResources().getFraction(R.dimen.navigation_menu_width, 1, 1)));
-        sm.setShadowWidthRes(R.dimen.navigation_shadow_width);
-        sm.setShadowDrawable(R.drawable.gradient_sidemenu);
-        sm.setFadeDegree(0.35f);
-        sm.setBackgroundColor(getResources().getColor(R.color.sidemenu_background));
-        sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
-        Log.i(TAG, "codeW : " + onChangeCountry);
-        // Validate current orientation and device
-        if (isTabletInLandscape(this) && !onChangeCountry) {
-            // Landscape mode
-            slideMenuInLandscapeMode(sm);
-        } else {
-            // Portrait mode
-            slideMenuInPortraitMode(sm);
-        }
+//        sm.setBehindWidth((int) (WindowHelper.getWidth(getApplicationContext()) * getResources().getFraction(R.dimen.navigation_menu_width, 1, 1)));
+//        sm.setShadowWidthRes(R.dimen.navigation_shadow_width);
+//        sm.setShadowDrawable(R.drawable.gradient_sidemenu);
+//        sm.setFadeDegree(0.35f);
+//        sm.setBackgroundColor(getResources().getColor(R.color.sidemenu_background));
+//        sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
+//        Log.i(TAG, "codeW : " + onChangeCountry);
+//        // Validate current orientation and device
+//        if (isTabletInLandscape(this) && !onChangeCountry) {
+//            // Landscape mode
+//            slideMenuInLandscapeMode(sm);
+//        } else {
+//            // Portrait mode
+//            slideMenuInPortraitMode(sm);
+//        }
     }
 
     /**
@@ -500,17 +572,12 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
      * @param sm
      * @author sergiopereira
      */
-    private void slideMenuInLandscapeMode(SlidingMenu sm) {
+    private void slideMenuInLandscapeMode() {
         Log.i(TAG, "SET SLIDE MENU: LANDSCAPE MODE");
-        sm.setSlidingEnabled(false);
-        sm.setOnOpenedListener(this);
-        sm.setOnClosedListener(this);
-        try {
-            setSlidingActionBarEnabled(false);
-        } catch (IllegalStateException e) {
-            // It happens because is being called from the new checkout behavior
-            Log.w(TAG, "To enable Sliding Action Bar must be called in onCreate.");
-        }
+//        sm.setSlidingEnabled(false);
+//        sm.setOnOpenedListener(this);
+//        sm.setOnClosedListener(this);
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setHomeButtonEnabled(false);
         getSupportActionBar().setLogo(R.drawable.logo_ic);
@@ -521,12 +588,12 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         findViewById(R.id.main_layout).getLayoutParams().width = mainContentWidth;
 
         // Show Menu
-        sm.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                showMenu();
-            }
-        }, 0);
+//        sm.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                showMenu();
+//            }
+//        }, 0);
     }
 
     /**
@@ -535,22 +602,20 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
      * @param sm
      * @author sergiopereira
      */
-    private void slideMenuInPortraitMode(SlidingMenu sm) {
+    private void slideMenuInPortraitMode() {
         Log.i(TAG, "SET SLIDE MENU: PORTRAIT MODE");
         // Update with for main content
         findViewById(R.id.main_layout).getLayoutParams().width = LayoutParams.MATCH_PARENT;
         // Set action bar
         setActionBarInPortraitMode();
-        // Set listeners
-        sm.setOnOpenedListener(this);
-        sm.setOnClosedListener(this);
+        
         // Show content
-        sm.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                showContent();
-            }
-        }, 0);
+//        sm.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                showContent();
+//            }
+//        }, 0);
     }
 
     /**
@@ -594,7 +659,9 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     OnClickListener onActionBarClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (!initialCountry) {
+            if(mDrawerLayout.isDrawerOpen(Gravity.LEFT)){
+                toggle();
+            } else if (!initialCountry) {
                 onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE,
                         FragmentController.ADD_TO_BACK_STACK);
             }
@@ -1180,7 +1247,6 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         return rounded.doubleValue();
     }
 
-    @Override
     public void onOpened() {
         Log.d(getTag(), "onOpened");
         if (!isTabletInLandscape(this))
@@ -1188,7 +1254,6 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         AnalyticsGoogle.get().trackPage(R.string.gnavigation);
     }
 
-    @Override
     public void onClosed() {
         Log.d(getTag(), "onClosed");
     }
@@ -1232,7 +1297,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     public void hideKeyboard() {
         // Log.d( getTag() , "hideKeyboard" );
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        View v = getSlidingMenu();
+        View v = mDrawerLayout;
         if (v == null)
             v = getWindow().getCurrentFocus();
 
@@ -1980,7 +2045,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
         // Put sliding menu normal behavior
         if(isTabletInLandscape(getApplicationContext())){
             // Set slide in landscape mode
-            slideMenuInLandscapeMode(getSlidingMenu());
+//            slideMenuInLandscapeMode(getSlidingMenu());
         }
     }
     
@@ -2002,18 +2067,18 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
             // Update with for main content
             findViewById(R.id.main_layout).getLayoutParams().width = LayoutParams.MATCH_PARENT;
             // Set slide in portrait mode
-            getSlidingMenu().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    slideMenuInPortraitMode(getSlidingMenu());
-                    try {
-                    	// Disable click on custom view
-                        getSupportActionBar().getCustomView().findViewById(R.id.ic_logo).setOnClickListener(null);
-                    } catch (NullPointerException e) {
-                        Log.w(TAG, "ACTION BAR CUSTOM VIEW IS NOT PRESENT");
-                    }
-                }
-            }, 0);
+//            getSlidingMenu().postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    slideMenuInPortraitMode(getSlidingMenu());
+//                    try {
+//                    	// Disable click on custom view
+//                        getSupportActionBar().getCustomView().findViewById(R.id.ic_logo).setOnClickListener(null);
+//                    } catch (NullPointerException e) {
+//                        Log.w(TAG, "ACTION BAR CUSTOM VIEW IS NOT PRESENT");
+//                    }
+//                }
+//            }, 0);
         }
     }
     
