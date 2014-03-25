@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/dialog_filter_one"
-    android:layout_width="293.33dp"
-    android:layout_height="450.00dp"
-    android:background="@android:color/holo_blue_light"
+    android:layout_width="@dimen/dialog_catalog_filter_width"
+    android:layout_height="@dimen/dialog_catalog_filter_height"
     android:orientation="vertical" >
 
     <!-- HEADER -->
@@ -61,44 +60,5 @@
     <!-- BUTTONS -->
 
     <include layout="@layout/dialog_filter_bottom_buttons" />
-
-    <!--
-         <LinearLayout
-        android:id="@+id/dialog_filter_buttons_container"
-        android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:layout_gravity="center"
-        android:background="@color/grey_dividerlight"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:paddingTop="0.75dp" >
-
-        <org.holoeverywhere.widget.TextView
-            android:id="@+id/dialog_filter_button_cancel"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@android:color/white"
-            android:fontFamily="roboto_regular"
-            android:gravity="center"
-            android:text="Cancel"
-            android:textColor="@color/grey_dark"
-            android:textSize="@dimen/text_xl" />
-
-        <View style="@style/divider_vertical" />
-
-        <org.holoeverywhere.widget.TextView
-            android:id="@+id/dialog_filter_button_done"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@android:color/white"
-            android:fontFamily="roboto_regular"
-            android:gravity="center"
-            android:text="Done"
-            android:textColor="@color/grey_dark"
-            android:textSize="@dimen/text_xl" />
-    </LinearLayout>
-    -->
 
 </LinearLayout>

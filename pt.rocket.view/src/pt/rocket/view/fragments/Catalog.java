@@ -12,12 +12,14 @@ import pt.rocket.controllers.CatalogPageModel;
 import pt.rocket.framework.objects.CatalogFilter;
 import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.EventType;
+import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.JumiaCatalogViewPager;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.dialogfragments.DialogFilterFragment;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
+import android.content.ContentValues;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Shader;
@@ -37,6 +39,8 @@ import android.widget.TextView;
 import de.akquinet.android.androlog.Log;
 
 public class Catalog extends BaseFragment implements OnClickListener{
+    
+    private static final String TAG = LogTagHelper.create(Catalog.class);
 
     private static Catalog mCatalogFragment;
     private CatalogPagerAdaper mCatalogPagerAdapter;
@@ -70,6 +74,7 @@ public class Catalog extends BaseFragment implements OnClickListener{
     private int currentPosition = 1;
     private View mFilterButton;
     private ArrayList<CatalogFilter> mCatalogFilter;
+    private ContentValues mCatalogFilterValues = new ContentValues();
 
     public Catalog() {
         super(EnumSet.noneOf(EventType.class), EnumSet.noneOf(EventType.class), EnumSet
@@ -97,9 +102,11 @@ public class Catalog extends BaseFragment implements OnClickListener{
         View view = inflater.inflate(R.layout.products_frame, container, false);
         mViewPager = (JumiaCatalogViewPager) view.findViewById(R.id.viewpager_products_list);
         pagerTabStrip = (PagerTabStrip) view.findViewById(R.id.products_list_titles);
+        
         // XXX
         mFilterButton = view.findViewById(R.id.products_list_filter_button);
-        
+        mFilterButton.setSelected((mCatalogFilterValues.size() == 0) ? false : true);
+
         // Initialize the catalog model with fresh data
         initPageModel();
 
@@ -109,13 +116,18 @@ public class Catalog extends BaseFragment implements OnClickListener{
 
     // XXX
     public void setFilter(ArrayList<CatalogFilter> filters){
-        // Validate
-        if(mCatalogFilter != null) { Log.w(TAG, "DISCARTED: FILTER IS NOT NULL"); return; }
         // Validate    
         if(mFilterButton == null){ Log.w(TAG, "FILTER VIEW IS NULL"); return; }
+        // Validate
+        if(mCatalogFilter != null) { Log.w(TAG, "DISCARTED: FILTER IS NOT NULL"); return; }
         // Save filters
         mCatalogFilter = filters;
         Log.i(TAG, "SAVED THE FILTER");
+        setFilterAction();
+    }
+    
+    
+    private void setFilterAction(){
         // Set listener
         mFilterButton.setOnClickListener(null);
         mFilterButton.setOnClickListener(this);
@@ -127,13 +139,33 @@ public class Catalog extends BaseFragment implements OnClickListener{
      */
     @Override
     public void onClick(View v) {
-        Log.d(TAG, "ON CLICK: FILTER BUTTON");
-        Bundle bundle = new Bundle();
-        bundle.putParcelableArrayList(DialogFilterFragment.FILTER_TAG, mCatalogFilter);
-        DialogFilterFragment newFragment = DialogFilterFragment.newInstance(bundle);
-        newFragment.show(getBaseActivity().getSupportFragmentManager(), "dialog");
+        // Get the view id
+        int id = v.getId();
+        // Validate the click
+        if(id == R.id.products_list_filter_button) {
+            Log.d(TAG, "ON CLICK: FILTER BUTTON");
+            Bundle bundle = new Bundle();
+            bundle.putParcelableArrayList(DialogFilterFragment.FILTER_TAG, mCatalogFilter);
+            DialogFilterFragment newFragment = DialogFilterFragment.newInstance(bundle, this);
+            newFragment.show(getBaseActivity().getSupportFragmentManager(), "dialog");
+        }
     }
     
+    // XXX
+    /**
+     * 
+     * @param filterValues
+     */
+    public void onSubmitFilterValues(ContentValues filterValues) {
+        Log.d(TAG, "FILTER VALUES: " + filterValues.toString());
+        mCatalogFilterValues = filterValues;
+        mFilterButton.setSelected((mCatalogFilterValues.size() == 0) ? false : true);
+        // Update the current view pager
+        Log.d(TAG, "FILTER UPDATE PAGEVALUES: " + filterValues.toString());
+        getCurrentCatalogPageModel(mSelectedPageIndex).setVariables(productsURL, searchQuery, navigationPath, title, navigationSource, mCatalogFilterValues);
+        getCurrentCatalogPageModel(mSelectedPageIndex-1).setVariables(productsURL, searchQuery, navigationPath, title, navigationSource, mCatalogFilterValues);
+        getCurrentCatalogPageModel(mSelectedPageIndex+1).setVariables(productsURL, searchQuery, navigationPath, title, navigationSource, mCatalogFilterValues);
+    }
     
     
     
@@ -141,6 +173,7 @@ public class Catalog extends BaseFragment implements OnClickListener{
     @Override
     public void onResume() {
         super.onResume();
+        Log.d(TAG, "FILTER ON RESUME");
         
         // http://www.jumia.co.ke:80/mobapi/womens-casual-shoes/
         
@@ -195,6 +228,7 @@ public class Catalog extends BaseFragment implements OnClickListener{
         });
 
         if (mCatalogPagerAdapter == null) {
+            Log.d(TAG, "FILTER: ADAPTER IS NULL");
             mCatalogPagerAdapter = new CatalogPagerAdaper();
 
         } else {
@@ -213,6 +247,10 @@ public class Catalog extends BaseFragment implements OnClickListener{
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
+        
+        // XXX Set catalog filters
+        if(mCatalogFilter != null) setFilterAction();
+        
         AnalyticsGoogle.get().trackPage(R.string.gproductlist);
         getBaseActivity().showContentContainer(false);
         
@@ -371,9 +409,11 @@ public class Catalog extends BaseFragment implements OnClickListener{
                             }
                         }
                         
+                        
+                        Log.d(TAG, "XXXXXX FILTER");
                         currentPage.setLinearLayoutLb((LinearLayout) currentPage.getRelativeLayout().findViewById(R.id.loading_view_pager));
                         currentPage.setRelativeLayoutPt((RelativeLayout) currentPage.getRelativeLayout().findViewById(R.id.products_tip));
-                        currentPage.setVariables(productsURL, searchQuery, navigationPath, title, navigationSource);
+                        currentPage.setVariables(productsURL, searchQuery, navigationPath, title, navigationSource, mCatalogFilterValues);
                     }
                     
                 }
@@ -388,6 +428,8 @@ public class Catalog extends BaseFragment implements OnClickListener{
             return view == (View) obj;
         }
     }
+
+
 
 
 }

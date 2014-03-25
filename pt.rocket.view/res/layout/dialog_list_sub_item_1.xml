@@ -19,15 +19,20 @@
 
     <org.holoeverywhere.widget.TextView
         android:id="@+id/dialog_item_subtitle"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/dialog_item_title"
         android:fontFamily="roboto_regular"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:ellipsize="marquee"
         android:text="subtitle"
+        android:layout_toLeftOf="@+id/arrow"
         android:textColor="@color/grey_divider_light_text"
         android:textSize="@dimen/text_xl" />
 
     <ImageView
+        android:id="@+id/arrow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"

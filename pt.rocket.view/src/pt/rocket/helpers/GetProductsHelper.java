@@ -3,6 +3,8 @@
  */
 package pt.rocket.helpers;
 
+import java.util.Map.Entry;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -12,9 +14,11 @@ import pt.rocket.framework.objects.ProductsPage;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
+import android.content.ContentValues;
 import android.net.Uri;
 import android.net.Uri.Builder;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -34,13 +38,15 @@ public class GetProductsHelper extends BaseHelper {
     public static final String TOTAL_COUNT = "totalCount";
     public static final String SORT = "sort";
     public static final String DIRECTION = "direction";
+    public static final String FILTERS = "filters";
     
     ProductsPage mProductsPage= new ProductsPage();
 
     @Override
     public Bundle generateRequestBundle(Bundle args) {
+        Log.d(TAG, "FILTER REQUEST");
         Bundle bundle = new Bundle();
-        bundle.putString(Constants.BUNDLE_URL_KEY, getRequestURI(args.getString(PRODUCT_URL), args.getString(SEARCH_QUERY), args.getInt(PAGE_NUMBER), args.getInt(TOTAL_COUNT), args.getInt(SORT), args.getInt(DIRECTION)));
+        bundle.putString(Constants.BUNDLE_URL_KEY, getRequestURI(args.getString(PRODUCT_URL), args.getString(SEARCH_QUERY), args.getInt(PAGE_NUMBER), args.getInt(TOTAL_COUNT), args.getInt(SORT), args.getInt(DIRECTION), (ContentValues) args.getParcelable(FILTERS)));
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
         bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
@@ -48,7 +54,7 @@ public class GetProductsHelper extends BaseHelper {
         return bundle;
     }
 
-    private String getRequestURI(String productUrl, String searchQuery, int pageNumber, int totalCount, int sort, int direction){
+    private String getRequestURI(String productUrl, String searchQuery, int pageNumber, int totalCount, int sort, int direction, ContentValues parcelable){
         Uri productsUri;
         if (TextUtils.isEmpty(productUrl)) {
             productsUri = Uri.parse(EventType.GET_PRODUCTS_EVENT.action);
@@ -98,8 +104,18 @@ public class GetProductsHelper extends BaseHelper {
             }
             if (!TextUtils.isEmpty(sortString)) {
                 uriBuilder.appendQueryParameter("dir", "" + sortString);
+            }            
+        }
+        
+        // Append filter values
+        //Log.d(TAG, "APPEND FILTER VALUES");
+        if(parcelable != null) {
+            for (Entry<String, Object> entry : parcelable.valueSet()) {
+                //Log.d(TAG, "ADD FILTER ENTRY: " + entry.getKey() + " " + entry.getValue());
+                uriBuilder.appendQueryParameter(entry.getKey(), (String) entry.getValue());
             }
         }
+        
         return uriBuilder.build().toString();
     }
     

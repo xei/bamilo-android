@@ -9,4 +9,8 @@
 	<dimen name="button_sort_line_distance_horizontal">160dp</dimen>
 	<dimen name="button_sort_height">64dp</dimen>
 	
+	<!-- DIALOG CATALOG FILTER -->
+    <dimen name="dialog_catalog_filter_width">353.33dp</dimen>
+    <dimen name="dialog_catalog_filter_height">450.00dp</dimen>
+	
 </resources>

@@ -6,7 +6,7 @@ import org.holoeverywhere.widget.TextView;
 import pt.rocket.framework.components.RangeSeekBar;
 import pt.rocket.framework.components.RangeSeekBar.OnRangeSeekBarChangeListener;
 import pt.rocket.framework.objects.CatalogFilter;
-import pt.rocket.framework.objects.CatalogFilter.FilterOption;
+import pt.rocket.framework.objects.CatalogFilterOption;
 import pt.rocket.view.R;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -93,7 +93,7 @@ class FilterPriceFragment extends Fragment implements OnRangeSeekBarChangeListen
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         // Get data from filter
-        FilterOption filterOption = mPriceFilter.getFilterOption();
+        CatalogFilterOption filterOption = mPriceFilter.getFilterOption();
         // Get min and max
         mCurrMinValue = mMin = filterOption.getMin();
         mCurrMaxValue = mMax = filterOption.getMax();

@@ -6,12 +6,13 @@ import org.holoeverywhere.widget.CheckBox;
 import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.framework.objects.CatalogFilter;
-import pt.rocket.framework.objects.CatalogFilter.FilterOption;
+import pt.rocket.framework.objects.CatalogFilterOption;
 import pt.rocket.view.R;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -48,8 +49,10 @@ public class FilterColorFragment extends Fragment implements OnClickListener, On
 
     private FilterOptionArrayAdapter mOptionArray;
     
-    private int mSelectedOptionPos = -1;
-
+    private SparseArray<CatalogFilterOption> mCurrentSelectedOptions = new SparseArray<CatalogFilterOption>();
+    
+    private boolean allowMultiselection;
+    
 
     /**
      * 
@@ -92,11 +95,15 @@ public class FilterColorFragment extends Fragment implements OnClickListener, On
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        
+        // Get multi selection option
+        allowMultiselection = mColorFilter.isMulti();
+        Log.d(TAG, "IS MULTI SELECTION: " + allowMultiselection);
+        
         // Get pre selected option
-        if(mColorFilter.hasOptionSelected()){
-            mSelectedOptionPos = mColorFilter.getSelectedOption();
-            mColorFilter.getFilterOptions().get(mSelectedOptionPos).setSelected(true);
-        }
+        if(mColorFilter.hasOptionSelected()) loadSelectedItems();
+        else Log.i(TAG, "PRE SELECTION IS EMPTY");
+        
         // Title
         ((TextView) view.findViewById(R.id.dialog_filter_header_title)).setText(mColorFilter.getName());
         // Back button
@@ -114,7 +121,7 @@ public class FilterColorFragment extends Fragment implements OnClickListener, On
         // Set adapter
         ((ListView) view.findViewById(mListId)).setAdapter(mOptionArray);
     }
-
+    
     /*
      * (non-Javadoc)
      * @see android.view.View.OnClickListener#onClick(android.view.View)
@@ -126,23 +133,26 @@ public class FilterColorFragment extends Fragment implements OnClickListener, On
         
         // Clean current selection
         if(id == mBackButtonId || id == mCancelButtonId) {
+            Log.d(TAG, "FILTER BACK: " + mCurrentSelectedOptions.size());
             // Clean the current selection
-            if(mSelectedOptionPos != -1) mColorFilter.getFilterOptions().get(mSelectedOptionPos).setSelected(false);
+            cleanOldSelections();
             // Go to back
             mParent.allowBackPressed();
             
         } else if(id == mClearButtonId) {
+            Log.d(TAG, "FILTER CLEAN: " + mCurrentSelectedOptions.size());
             // Clean the current selection
-            if(mSelectedOptionPos != -1){
-                mColorFilter.getFilterOptions().get(mSelectedOptionPos).setSelected(false);
-                mSelectedOptionPos = -1;
+            if(mCurrentSelectedOptions.size() > 0){
+                //
+                cleanOldSelections();
+                // 
                 mOptionArray.notifyDataSetChanged();
             }
             
         } else if(id == mDoneButtonId) {
+            Log.d(TAG, "FILTER SAVE: " + mCurrentSelectedOptions.size());
             // Save the current selection
-            if(mSelectedOptionPos != -1) mColorFilter.setSelectedOption(mSelectedOptionPos);
-            else mColorFilter.cleanSelectedOption();
+            mColorFilter.setSelectedOption(mCurrentSelectedOptions);
             // Goto back
             mParent.allowBackPressed();
         }
@@ -156,36 +166,116 @@ public class FilterColorFragment extends Fragment implements OnClickListener, On
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Log.d(TAG, "ON ITEM CLICK: FILTER OPTION " + position);
         // Validate if is multi
-        
-        // Not multi selection 
-        if(position == mSelectedOptionPos) {
-            // Disable the current selection
-            mSelectedOptionPos = -1;
-            // Set unselected
-            ((FilterOption) parent.getItemAtPosition(position)).setSelected(false);
-        } else {
-            // Disable old selection
-            if(mSelectedOptionPos != -1) ((FilterOption) parent.getItemAtPosition(mSelectedOptionPos)).setSelected(false);
-            // Save the new selection
-            mSelectedOptionPos = position;
-            // Set selected
-            ((FilterOption) parent.getItemAtPosition(position)).setSelected(true);
-        }
+        if(allowMultiselection) processMultiSelection(parent, position);
+        else processSingleSelection(parent, position);
         // Update adapter
         ((BaseAdapter) parent.getAdapter()).notifyDataSetChanged();
     }
     
+    /**
+     * Method used to save multiple options
+     * @param parent
+     * @param position
+     * @author sergiopereira
+     */
+    private void processMultiSelection(AdapterView<?> parent, int position){
+        // Validate if checked or not
+        CatalogFilterOption option = mCurrentSelectedOptions.get(position);
+        if( option == null) {
+            Log.d(TAG, "FILTER MULTI SELECTION: CHECK " + position);
+            // Add item
+            addSelectedItem((CatalogFilterOption) parent.getItemAtPosition(position), position);
+        } else {
+            // Uncheck
+            Log.d(TAG, "FILTER MULTI SELECTION: UNCHECK " + position);
+            cleanSelectedItem(option, position);
+        }
+    }
+    
+    /**
+     * Method used to save only one option
+     * @param parent
+     * @param position
+     * @author sergiopereira
+     */
+    private void processSingleSelection(AdapterView<?> parent, int position){
+        // Option is the last
+        if(mCurrentSelectedOptions.get(position) != null) {
+            Log.d(TAG, "FILTER SINGLE SELECTION: DISABLE " + position);
+            // Clean old selection
+            cleanOldSelections();
+        } else {
+            Log.d(TAG, "FILTER SINGLE SELECTION: CLEAN AND ADD " + position);
+            // Clean old selection
+            cleanOldSelections();
+            // Add item
+            addSelectedItem((CatalogFilterOption) parent.getItemAtPosition(position), position);
+        }
+    }
+
+    /**
+     * Clean selected item
+     * @author sergiopereira
+     */
+    private void cleanSelectedItem(CatalogFilterOption option, int position){
+        // Disable old selection
+        option.setSelected(false);
+        // Remove item
+        mCurrentSelectedOptions.remove(position);
+    }
+    
+    /**
+     * Clean all old selections
+     * @author sergiopereira
+     */
+    private void cleanOldSelections(){
+        // Disable old selection
+        for(int i = 0; i < mCurrentSelectedOptions.size(); i++) 
+            ((CatalogFilterOption) mCurrentSelectedOptions.valueAt(i)).setSelected(false);
+        // Clean array
+        mCurrentSelectedOptions.clear();
+    }
+
+    /**
+     * Save the selected item
+     * @author sergiopereira
+     */
+    private void addSelectedItem(CatalogFilterOption option, int position){
+        // Add selected
+        mCurrentSelectedOptions.put(position, option);
+        // Set selected
+        option.setSelected(true);
+    }
+    
+    /**
+     * Load the pre selected options
+     * @author sergiopereira
+     */
+    private void loadSelectedItems(){
+        Log.d(TAG, "PRE SELECTION SIZE: " + mColorFilter.getSelectedOption().size());
+        // Copy all selected items
+        for (int i = 0; i < mColorFilter.getSelectedOption().size(); i++) {
+            // Get position
+            int position = mColorFilter.getSelectedOption().keyAt(i);
+            // Get option
+            CatalogFilterOption option = mColorFilter.getSelectedOption().get(position);
+            // Save item
+            mCurrentSelectedOptions.put(position, option);
+            // Set option as selected
+            option.setSelected(true);
+        }
+    }
     
     /**
      * 
      * @author sergiopereira
      *
      */
-     public static class FilterOptionArrayAdapter extends ArrayAdapter<FilterOption> {
+     public static class FilterOptionArrayAdapter extends ArrayAdapter<CatalogFilterOption> {
             
         private static int layout = R.layout.dialog_list_sub_item_2;
 
-        public FilterOptionArrayAdapter(Context context, List<FilterOption> objects) {
+        public FilterOptionArrayAdapter(Context context, List<CatalogFilterOption> objects) {
             super(context, layout, objects);
         }
 
@@ -196,7 +286,7 @@ public class FilterColorFragment extends Fragment implements OnClickListener, On
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             // Get Filter
-            FilterOption option = getItem(position);
+            CatalogFilterOption option = getItem(position);
             // Validate current view
             if (convertView == null) convertView = LayoutInflater.from(getContext()).inflate(layout, null);
             // Set color box

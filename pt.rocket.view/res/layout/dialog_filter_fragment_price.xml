@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/dialog_filter_one"
-    android:layout_width="293.33dp"
-    android:layout_height="450.00dp"
+    android:layout_width="@dimen/dialog_catalog_filter_width"
+    android:layout_height="@dimen/dialog_catalog_filter_height"
     android:orientation="vertical" >
 
    <!-- HEADER -->

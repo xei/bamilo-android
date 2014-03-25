@@ -6,15 +6,17 @@ import java.util.List;
 import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.framework.objects.CatalogFilter;
+import pt.rocket.framework.objects.CatalogFilterOption;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.view.R;
+import pt.rocket.view.fragments.Catalog;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -47,21 +49,24 @@ public class DialogFilterFragment extends DialogFragment {
 
     private static ArrayList<CatalogFilter> mFilters;
 
+    private Catalog mParentFrament;
+
     /**
-     * 
+     * Empty constructor
      */
-    public DialogFilterFragment() {
-    }
+    public DialogFilterFragment() { }
 
     /**
      * 
      * @param bundle
+     * @param onClickListener 
      * @return
      */
-    public static DialogFilterFragment newInstance(Bundle bundle) {
+    public static DialogFilterFragment newInstance(Bundle bundle, Catalog mParentFrament) {
         Log.d(TAG, "NEW INSTANCE");
         DialogFilterFragment dialogListFragment = new DialogFilterFragment();
         dialogListFragment.setArguments(bundle);
+        dialogListFragment.mParentFrament = mParentFrament;
         return dialogListFragment;
     }
 
@@ -169,6 +174,9 @@ public class DialogFilterFragment extends DialogFragment {
         fragmentTransaction.commitAllowingStateLoss();
     }
 
+    /**
+     * Process the back
+     */
     public void allowBackPressed() {
         Log.d(TAG, "ALLOW BACK PRESSED");
         getChildFragmentManager().popBackStack();
@@ -183,14 +191,14 @@ public class DialogFilterFragment extends DialogFragment {
         super.onPause();
         dismiss();
     }
-
-    /*
-     * (non-Javadoc)
-     * @see android.support.v4.app.DialogFragment#onDismiss(android.content.DialogInterface)
+    
+    /**
+     * Method used to send the content values to parent
+     * @param filterValues
+     * @author sergiopereira
      */
-    @Override
-    public void onDismiss(DialogInterface dialog) {
-        super.onDismiss(dialog);
+    public void onSubmitFilterValues(ContentValues filterValues){
+        if(mParentFrament != null) mParentFrament.onSubmitFilterValues(filterValues);
     }
     
     /*
@@ -208,7 +216,7 @@ public class DialogFilterFragment extends DialogFragment {
         private ContentValues mContentValues;
 
         /**
-         * 
+         * Constructor
          * @param parent
          * @return
          */
@@ -300,14 +308,32 @@ public class DialogFilterFragment extends DialogFragment {
         private void proccessOnClickDone(){
             Log.d(TAG, "CLICKED ON: DONE");
             // Create query
-            mContentValues = new ContentValues();
+            mContentValues = createContentValues();
+            Log.d(TAG, "FILTER QUERY: " + mContentValues.toString());
+            // Validate and send to catalog fragment
+            mParent.onSubmitFilterValues(mContentValues);
+            // Dismiss dialog
+            mParent.dismiss();
+        }
+        
+        
+        /**
+         * Create content values to filter catalog
+         * @author sergiopereira
+         * @return ContentValues
+         */
+        private ContentValues createContentValues(){
+            // Create query
+            ContentValues contentValues = new ContentValues();
             // Save all values
             for (CatalogFilter filter : mFilters) {
                 // Generic filter: Get filter id and values
                 if(filter.hasOptionSelected()){
                     String filterId = filter.getId();
-                    String filterValue = filter.getFilterOptions().get(filter.getSelectedOption()).getLabel();
-                    mContentValues.put(filterId, filterValue);
+                    String filterValue = "";
+                    for(int i = 0; i < filter.getSelectedOption().size(); i++) 
+                        filterValue += filter.getSelectedOption().valueAt(i).getLabel() + "--";
+                    contentValues.put(filterId, filterValue);
                 }
                 // Range filter: Get range value 
                 if(filter.hasRangeValues()) {
@@ -315,14 +341,11 @@ public class DialogFilterFragment extends DialogFragment {
                     int min = filter.getMinRangeValue();
                     int max = filter.getMaxRangeValue();
                     boolean discount = filter.isRangeWithDiscount();
-                    mContentValues.put(filterId, min + "-" + max);
+                    contentValues.put(filterId, min + "-" + max);
                 }
             }
-            Log.d(TAG, "FILTER QUERY: " + mContentValues.toString());
-            // Dismiss dialog
-            mParent.dismiss();
+            return contentValues;
         }
-        
         
         /**
          * Process the click on clean button
@@ -334,8 +357,7 @@ public class DialogFilterFragment extends DialogFragment {
             for (CatalogFilter filter : mFilters) {
                 // Generic filter: Get filter id and values
                 if(filter.hasOptionSelected()) {
-                    //Log.d(TAG, "FILTER: " + filter.getId() + " VALUE:" + filter.getFilterOptions().get(filter.getSelectedOption()).getLabel());
-                    filter.getFilterOptions().get(filter.getSelectedOption()).setSelected(false);
+                    // Clean and disable old selection
                     filter.cleanSelectedOption();
                 }
                 // Range filter: Get range value 
@@ -355,14 +377,28 @@ public class DialogFilterFragment extends DialogFragment {
      * ################# ADAPTER ################
      */
     
+    /**
+     * Adapter used to show the filters
+     * @author sergiopereira
+     *
+     */
     public static class FiltersArrayAdapter extends ArrayAdapter<CatalogFilter> {
         
         private static int layout = R.layout.dialog_list_sub_item_1;
 
+        /**
+         * Constructor
+         * @param context
+         * @param objects
+         */
         public FiltersArrayAdapter(Context context, List<CatalogFilter> objects) {
             super(context, layout, objects);
         }
 
+        /*
+         * (non-Javadoc)
+         * @see android.widget.ArrayAdapter#getView(int, android.view.View, android.view.ViewGroup)
+         */
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             // Get Filter
@@ -374,13 +410,24 @@ public class DialogFilterFragment extends DialogFragment {
             // Set sub title
             if (!filter.hasOptionSelected() && !filter.hasRangeValues())
                 ((TextView) convertView.findViewById(R.id.dialog_item_subtitle)).setText("All");
-            else if(filter.hasOptionSelected())
-                ((TextView) convertView.findViewById(R.id.dialog_item_subtitle)).setText(filter.getFilterOptions().get(filter.getSelectedOption()).getLabel());
             else if(filter.hasRangeValues())
                 ((TextView) convertView.findViewById(R.id.dialog_item_subtitle)).setText(filter.getMinRangeValue() + " - " + filter.getMaxRangeValue());
+            else if (filter.hasOptionSelected())
+                ((TextView) convertView.findViewById(R.id.dialog_item_subtitle)).setText(getOptionsToString(filter.getSelectedOption()));
                 
             // Return the filter view
             return convertView;
+        }
+        
+        /**
+         * Create a string
+         * @param array
+         * @return String
+         */
+        private String getOptionsToString(SparseArray<CatalogFilterOption> array){
+            String string = "";
+            for (int i = 0; i < array.size(); i++) string += array.valueAt(i).getLabel() + "  ";
+            return string;
         }
 
     }

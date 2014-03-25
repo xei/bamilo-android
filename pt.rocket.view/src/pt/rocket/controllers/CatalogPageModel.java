@@ -32,6 +32,7 @@ import pt.rocket.view.BaseActivity;
 import pt.rocket.view.ProductDetailsActivityFragment;
 import pt.rocket.view.R;
 import pt.rocket.view.fragments.Catalog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -77,6 +78,8 @@ public class CatalogPageModel {
     private static String navigationPath;
     private static String title;
     private static int navigationSource;
+
+    private static ContentValues filters;
 
     private ProductsListAdapter productsAdapter;
 
@@ -133,7 +136,6 @@ public class CatalogPageModel {
         this.mFragment = mFragment;
         switch (index) {
         case 0: // <item > Copy of Brand for infinite scroll</item>
-            // TODO when available change this to Sales
             // option
             sort = ProductSort.BRAND;
             dir = Direction.ASCENDENT;
@@ -177,12 +179,16 @@ public class CatalogPageModel {
         return totalProducts;
     }
 
-    public void setVariables(String p, String s, String n, String t, int navSource) {
+    public void setVariables(String p, String s, String n, String t, int navSource, ContentValues filterValues) {
+        
+        Log.d(TAG, "FILTER SET VARIABLES" );
+        
         CatalogPageModel.productsURL = p;
         CatalogPageModel.searchQuery = s;
         CatalogPageModel.navigationPath = n;
         CatalogPageModel.title = t;
         CatalogPageModel.navigationSource = navSource;
+        CatalogPageModel.filters = filterValues;
 
         if (index == 1) {
             showTips();
@@ -191,7 +197,6 @@ public class CatalogPageModel {
 
             @Override
             public void run() {
-                // TODO Auto-generated method stub
                 executeRequest();
             }
         }).run();
@@ -417,6 +422,9 @@ public class CatalogPageModel {
      */
 
     private void executeRequest() {
+        
+        Log.d(TAG, "FILTER EXECUTE REQ");
+        
         productsAdapter = new ProductsListAdapter(mActivity);
         pageNumber = 1;
         showProductsContent();
@@ -430,7 +438,7 @@ public class CatalogPageModel {
      * gets the next page of products from the API
      */
     private void getMoreProducts() {
-        Log.d(TAG, "GET MORE PRODUCTS");
+        Log.d(TAG, "FILTER GET MORE PRODUCTS");
 
         if (pageNumber != NO_MORE_PAGES) {
             // Test to see if we already have all the products available
@@ -444,6 +452,8 @@ public class CatalogPageModel {
 
             mBeginRequestMillis = System.currentTimeMillis();
 
+            Log.d(TAG, "FILTER CREATE BUNDLE");
+            
             Bundle bundle = new Bundle();
             bundle.putString(GetProductsHelper.PRODUCT_URL, productsURL);
             bundle.putString(GetProductsHelper.SEARCH_QUERY, searchQuery);
@@ -451,34 +461,14 @@ public class CatalogPageModel {
             bundle.putInt(GetProductsHelper.TOTAL_COUNT, MAX_PAGE_ITEMS);
             bundle.putInt(GetProductsHelper.SORT, sort.id);
             bundle.putInt(GetProductsHelper.DIRECTION, dir.id);
-            JumiaApplication.INSTANCE
-                    .sendRequest(new GetProductsHelper(), bundle, responseCallback);
+            bundle.putParcelable(GetProductsHelper.FILTERS, filters);
+            JumiaApplication.INSTANCE.sendRequest(new GetProductsHelper(), bundle, responseCallback);
 
         } else {
             hideProductsLoading();
         }
     }
     
-    
-    // XXX
-    private void getProductsWithFilterValues() {
-        Log.d(TAG, "GET MORE PRODUCTS");
-        
-            mBeginRequestMillis = System.currentTimeMillis();
-
-            Bundle bundle = new Bundle();
-            bundle.putString(GetProductsHelper.PRODUCT_URL, productsURL);
-            bundle.putString(GetProductsHelper.SEARCH_QUERY, searchQuery);
-            bundle.putInt(GetProductsHelper.PAGE_NUMBER, pageNumber);
-            bundle.putInt(GetProductsHelper.TOTAL_COUNT, MAX_PAGE_ITEMS);
-            bundle.putInt(GetProductsHelper.SORT, sort.id);
-            bundle.putInt(GetProductsHelper.DIRECTION, dir.id);
-            JumiaApplication.INSTANCE.sendRequest(new GetProductsHelper(), bundle, responseCallback);
-
-    }
-    
-    
-
     private void showProductsContent() {
         Log.d(TAG, "showProductsContent");
         if (this.isLandScape) {
@@ -509,10 +499,6 @@ public class CatalogPageModel {
         if (relativeLayout != null) {
             linearLayoutLb.setVisibility(View.GONE);
         }
-        
-        // XXX
-        // Updated filter
-        if(mCatalogFilters != null) ((Catalog) mFragment).setFilter(mCatalogFilters);
     }
 
     private OnScrollListener scrollListener = new OnScrollListener() {
