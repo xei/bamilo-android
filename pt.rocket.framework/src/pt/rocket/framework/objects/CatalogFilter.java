@@ -13,7 +13,6 @@ import pt.rocket.framework.utils.LogTagHelper;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.SparseArray;
-import de.akquinet.android.androlog.Log;
 
 
 /**
@@ -24,11 +23,11 @@ import de.akquinet.android.androlog.Log;
  */
 public class CatalogFilter implements IJSONSerializable, Parcelable {
 
-	private static final String TAG = LogTagHelper.create(CatalogFilter.class);
+	public static final String TAG = LogTagHelper.create(CatalogFilter.class);
 	
-	private ArrayList<FilterOption> mFilterOptions;
+	private ArrayList<CatalogFilterOption> mFilterOptions;
 
-	private FilterOption mFilterOption;
+	private CatalogFilterOption mFilterOption;
 
 	private String mId;
 
@@ -36,13 +35,11 @@ public class CatalogFilter implements IJSONSerializable, Parcelable {
 
 	private boolean mMulti;
 	
-	private int mSelectedOption = -1;
-	
 	private int[] mRangeValues = null;
 	
 	private boolean isRangeWithDiscount = false;
 
-	private SparseArray<FilterOption> mSelectedOption2;
+	private SparseArray<CatalogFilterOption> mSelectedOption;
 
 	/**
 	 * ########### CONSTRUCTOR ###########  
@@ -60,6 +57,10 @@ public class CatalogFilter implements IJSONSerializable, Parcelable {
 	 * ############### IJSON ###############
 	 */
 
+	/*
+	 * (non-Javadoc)
+	 * @see pt.rocket.framework.objects.IJSONSerializable#initialize(org.json.JSONObject)
+	 */
 	@Override
 	public boolean initialize(JSONObject jsonObject) throws JSONException {
 		// Get id
@@ -69,19 +70,19 @@ public class CatalogFilter implements IJSONSerializable, Parcelable {
 		// Get multi
 		mMulti = jsonObject.getBoolean("multi");
 		
-		Log.d(TAG, "FILTER: " + mId + " " + mName + " " + mMulti);
+		//Log.d(TAG, "FILTER: " + mId + " " + mName + " " + mMulti);
 		
 		// Get options
 		JSONArray jsonOptions = jsonObject.optJSONArray("option");
 		if(jsonOptions != null) {
 			// Init array
-			mFilterOptions = new ArrayList<FilterOption>();
+			mFilterOptions = new ArrayList<CatalogFilterOption>();
 			// Get options
 			for (int i = 0; i < jsonOptions.length(); i++) {
 				// Get json option
 				JSONObject jsonOption = jsonOptions.getJSONObject(i);
 				// Create filter option
-				FilterOption filterOption = new FilterOption(jsonOption);
+				CatalogFilterOption filterOption = new CatalogFilterOption(jsonOption);
 				// Save filter option
 				mFilterOptions.add(filterOption);
 			}
@@ -97,43 +98,47 @@ public class CatalogFilter implements IJSONSerializable, Parcelable {
 			
 			
 		}else if(jsonObject.optJSONObject("option") != null) {
-			Log.d(TAG, "FILTER: PRICE : " + jsonObject.optJSONObject("option"));
 			// Get json option
 			JSONObject json = jsonObject.optJSONObject("option");
 			// Create filter option
-			mFilterOption = new FilterOption(json);
+			mFilterOption = new CatalogFilterOption(json);
 		}
 		
 		return true;
 	}
 	
-    public class AlphabeticComparator implements Comparator<FilterOption> {
+	/**
+	 * Method used to sort the brands 
+	 * @author sergiopereira
+	 */
+    public class AlphabeticComparator implements Comparator<CatalogFilterOption> {
         @Override
-        public int compare(FilterOption o1, FilterOption o2) {
+        public int compare(CatalogFilterOption o1, CatalogFilterOption o2) {
             return o1.getLabel().compareToIgnoreCase(o2.getLabel());
         }
     }
     
     
     /**
-     * 
+     * Method used to create sections for brands
      * @param objects
-     * @return
+     * @return ArrayList<FilterOption>
+     * @author sergiopereira
      */
-    private static ArrayList<FilterOption> createSections(ArrayList<FilterOption> objects){
+    private static ArrayList<CatalogFilterOption> createSections(ArrayList<CatalogFilterOption> objects){
         // Create new list with sections
-        ArrayList<FilterOption> listSections = new ArrayList<FilterOption>();
+        ArrayList<CatalogFilterOption> listSections = new ArrayList<CatalogFilterOption>();
         // Init char
         char savedChar = 0;
         // For each option
-        for (FilterOption option : objects) {
+        for (CatalogFilterOption option : objects) {
             // Get the first char
             char currentChar = option.getLabel().charAt(0);
             // If different the current
             if(currentChar != savedChar) {
                 // Create the section item
                 savedChar = currentChar;
-                FilterOption optionSection = new FilterOption();
+                CatalogFilterOption optionSection = new CatalogFilterOption();
                 optionSection.setSectionBrand(true);
                 optionSection.setLabel(String.valueOf((char)(currentChar)).toUpperCase(Locale.getDefault()));
                 listSections.add(optionSection);
@@ -160,20 +165,16 @@ public class CatalogFilter implements IJSONSerializable, Parcelable {
 	 * ########### GETTERS ###########  
 	 */
 	
-	public ArrayList<FilterOption> getFilterOptions() {
+	public ArrayList<CatalogFilterOption> getFilterOptions() {
 		return mFilterOptions;
 	}
 
-	public FilterOption getFilterOption() {
+	public CatalogFilterOption getFilterOption() {
 		return mFilterOption;
 	}
 	
-	public int getSelectedOption() {
+	public SparseArray<CatalogFilterOption> getSelectedOption() {
 		return this.mSelectedOption;
-	}
-	
-	public SparseArray<FilterOption> getSelectedOption2() {
-		return this.mSelectedOption2;
 	}
 	
 	public String getId() {
@@ -201,24 +202,21 @@ public class CatalogFilter implements IJSONSerializable, Parcelable {
 	 * ########### SETTERS ###########  
 	 */
 	
-	public void setFilterOptions(ArrayList<FilterOption> mFilterOptions) {
+	public void setFilterOptions(ArrayList<CatalogFilterOption> mFilterOptions) {
 		this.mFilterOptions = mFilterOptions;
 	}
 
-	public void setFilterOption(FilterOption mFilterOption) {
+	public void setFilterOption(CatalogFilterOption mFilterOption) {
 		this.mFilterOption = mFilterOption;
 	}
 	
-	public void setSelectedOption(int position) {
-		this.mSelectedOption = position;
-	}
-	
-	public void setSelectedOption2(SparseArray<FilterOption> selectedOption) {
-		this.mSelectedOption2 = selectedOption;
+	public void setSelectedOption(SparseArray<CatalogFilterOption> selectedOption) {
+		this.mSelectedOption = selectedOption;
 	}
 	
 	public void cleanSelectedOption() {
-		this.mSelectedOption = -1;
+        for(int i = 0; i < mSelectedOption.size(); i++) mSelectedOption.valueAt(i).setSelected(false);
+		this.mSelectedOption.clear();
 	}
 	
 	public void setId(String id) {
@@ -258,12 +256,7 @@ public class CatalogFilter implements IJSONSerializable, Parcelable {
 	}
 	
 	public boolean hasOptionSelected(){
-		return (mSelectedOption != -1) ? true : false;
-	}
-
-	
-	public boolean hasOptionSelected2(){
-		return (mSelectedOption2 != null && mSelectedOption2.size() >0) ? true : false;
+		return (mSelectedOption != null && mSelectedOption.size() >0) ? true : false;
 	}
 	
 	
@@ -292,6 +285,12 @@ public class CatalogFilter implements IJSONSerializable, Parcelable {
 	 */
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeList(mFilterOptions);
+		dest.writeParcelable(mFilterOption, flags);
+		dest.writeString(mId);
+		dest.writeString(mName);
+		dest.writeBooleanArray(new boolean[] {mMulti, isRangeWithDiscount});
+		dest.writeIntArray(mRangeValues);
 	}
 
 	/**
@@ -300,6 +299,12 @@ public class CatalogFilter implements IJSONSerializable, Parcelable {
 	 * @param in
 	 */
 	private CatalogFilter(Parcel in) {
+		in.readList(mFilterOptions, CatalogFilterOption.class.getClassLoader());
+		mFilterOption = in.readParcelable(CatalogFilterOption.class.getClassLoader());
+		mId = in.readString();
+		mName = in.readString();
+		in.readBooleanArray(new boolean[] {mMulti, isRangeWithDiscount});
+		in.readIntArray(mRangeValues);
 	}
 
 	/**
@@ -314,257 +319,5 @@ public class CatalogFilter implements IJSONSerializable, Parcelable {
 			return new CatalogFilter[size];
 		}
 	};
-	
-	
-	
-	
-	
-	/**
-	 * 
-	 * @author sergiopereira
-	 *
-	 */
-	public static class FilterOption implements IJSONSerializable, Parcelable {
-
-		private String mId;
-		
-		private String mLabel;
-		
-		private String mValue;
-		
-		private String mCount;
-		
-		private String mHex;
-		
-		private String mImg;
-		
-		private int mMax = -1;
-		
-		private int mMin = -1;
-		
-		private int mInterval = 0;
-		
-		private boolean isSelected;
-		
-		private boolean isSectionBrand;
-
-
-		public FilterOption(JSONObject jsonObject) throws JSONException {
-			initialize(jsonObject);
-		}
-		
-		public FilterOption() { 
-			isSectionBrand = false;
-		}
-		
-
-		@Override
-		public boolean initialize(JSONObject jsonOption) throws JSONException {
-			// Get id
-			mId = jsonOption.optString("id");
-			// Get label
-			mLabel = jsonOption.optString("label");
-			// Get value
-			mValue = jsonOption.optString("val");
-			// Get products count
-			mCount = jsonOption.optString("products_count");
-			// Get hex value
-			mHex = jsonOption.optString("hex_value");
-			// Get image url
-			mImg = jsonOption.optString("image_url");
-			// Get max
-			mMax = jsonOption.optInt("max");
-			// Get min
-			mMin = jsonOption.optInt("min");
-			// Get interval
-			mInterval = jsonOption.optInt("interval");
-			// Set selected
-			isSelected = false;
-			// Set 
-			isSectionBrand = false;
-
-			Log.d(TAG, "FILTER OPTION:" +
-					" ID:" + mId + 
-					" LABEL:" + mLabel + 
-					" VAL:" + mValue + 
-					" COUNT:" + mCount + 
-					" HEX:" + mHex + 
-					" IMG:" + mImg + 
-					" MAX:" + mMax + 
-					" MIN:" + mMin + 
-					" INTERVAL:" + mInterval);
-			
-			return true;
-		}
-
-		@Override
-		public JSONObject toJSON() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		/**
-		 * ########### GETTERS ###########  
-		 */
-
-		
-		public String getId() {
-			return mId;
-		}
-
-
-		public String getLabel() {
-			return mLabel;
-		}
-
-
-		public String getValue() {
-			return mValue;
-		}
-
-
-		public String getCount() {
-			return mCount;
-		}
-
-
-		public String getHex() {
-			return mHex;
-		}
-
-
-		public String getImg() {
-			return mImg;
-		}
-
-
-		public int getMax() {
-			return mMax;
-		}
-
-
-		public int getMin() {
-			return mMin;
-		}
-
-
-		public int getInterval() {
-			return mInterval;
-		}
-		
-		public boolean isSelected() {
-			return isSelected;
-		}
-		
-		public boolean isSectionItem() {
-			return isSectionBrand;
-		}
-
-		
-		/**
-		 * ########### SETTERS ###########  
-		 */
-
-		public void setId(String mId) {
-			this.mId = mId;
-		}
-
-
-		public void setLabel(String mLabel) {
-			this.mLabel = mLabel;
-		}
-
-
-		public void setValue(String mValue) {
-			this.mValue = mValue;
-		}
-
-
-		public void setCount(String mCount) {
-			this.mCount = mCount;
-		}
-
-
-		public void setHex(String mHex) {
-			this.mHex = mHex;
-		}
-
-
-		public void setImg(String mImg) {
-			this.mImg = mImg;
-		}
-
-
-		public void setMax(int mMax) {
-			this.mMax = mMax;
-		}
-
-
-		public void setMin(int mMin) {
-			this.mMin = mMin;
-		}
-
-
-		public void setInterval(int mInterval) {
-			this.mInterval = mInterval;
-		}
-
-		
-		public void setSelected(Boolean bool) {
-			this.isSelected = bool;
-		}
-		
-		public void setSectionBrand(Boolean bool) {
-			this.isSectionBrand = bool;
-		}
-
-		/**
-		 * ############### Parcelable ###############
-		 */
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see android.os.Parcelable#describeContents()
-		 */
-		@Override
-		public int describeContents() {
-			return 0;
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see android.os.Parcelable#writeToParcel(android.os.Parcel, int)
-		 */
-		@Override
-		public void writeToParcel(Parcel dest, int flags) {
-			// TODO
-		}
-
-		/**
-		 * Constructor with parcel
-		 * 
-		 * @param in
-		 */
-		private FilterOption(Parcel in) {
-			// TODO
-		}
-
-
-		/**
-		 * The creator
-		 */
-		public static final Parcelable.Creator<CatalogFilter> CREATOR = new Parcelable.Creator<CatalogFilter>() {
-			public CatalogFilter createFromParcel(Parcel in) {
-				return new CatalogFilter(in);
-			}
-
-			public CatalogFilter[] newArray(int size) {
-				return new CatalogFilter[size];
-			}
-		};
-		
-	}
 
 }
