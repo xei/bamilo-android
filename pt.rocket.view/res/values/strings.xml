@@ -317,4 +317,11 @@
     <string name="payment">Payment</string>
     <string name="no_payment">No payment necessary</string>
     <string name="please_fill_all_data">Please fill all the data</string>
+    
+    <string name="done_label">Done</string>
+    <string name="clear_uppercase_label">CLEAR</string>
+    <string name="clear_all_uppercase_label">CLEAR ALL</string>
+    <string name="filter_label">Filter</string>
+    <string name="all_label">All</string>
+    
 </resources>

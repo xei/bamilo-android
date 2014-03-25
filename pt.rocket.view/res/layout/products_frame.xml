@@ -21,23 +21,29 @@
                 android:layout_height="31.72dp"
                 android:layout_gravity="top"
                 android:background="@color/strip_title_background"
+                android:paddingRight="90dp"
                 android:textColor="@color/strip_title"
                 android:textSize="12.54sp" />
         </pt.rocket.utils.JumiaCatalogViewPager>
 
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/products_list_filter_button"
+            android:layout_width="90dp"
+            android:layout_height="30.72dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:background="@android:color/white"
+            android:drawableLeft="@drawable/selector_catalog_filter"
+            android:fontFamily="roboto_regular"
+            android:gravity="center"
+            android:paddingLeft="@dimen/margin_mid"
+            android:text="Filter" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="31.72dp"
+            android:layout_toLeftOf="@id/products_list_filter_button"
             android:background="@drawable/filter_header" />
-
-        <Button
-            android:id="@+id/products_list_filter_button"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:text="Filters" />
     </RelativeLayout>
 
 </RelativeLayout>

@@ -1,12 +1,16 @@
 package pt.rocket.utils.dialogfragments;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import org.holoeverywhere.widget.TextView;
+
+import pt.rocket.framework.objects.CatalogFilter;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.view.R;
-import android.app.Activity;
-import android.app.Dialog;
-import android.database.DataSetObserver;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -15,13 +19,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.BaseAdapter;
-import android.widget.CheckBox;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import org.holoeverywhere.widget.TextView;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -29,56 +30,38 @@ import de.akquinet.android.androlog.Log;
  * @author sergiopereira
  * 
  */
-public class DialogFilterFragment extends DialogFragment implements OnClickListener {
+public class DialogFilterFragment extends DialogFragment {
 
     private final static String TAG = LogTagHelper.create(DialogFilterFragment.class);
 
-    private static final long DELAY_DISMISS = 250;
-
     public static final int NO_INITIAL_POSITION = -1;
 
-    private String mTitle;
+    private static final int FILTER_CATEGORY = 0;
+    private static final int FILTER_BRAND = 1;
+    private static final int FILTER_SIZE = 2;
+    private static final int FILTER_PRICE = 3;
+    private static final int FILTER_COLOR = 4;
+    private static final int FILTER_MAIN = 5;
 
-    private ArrayList<String> mItems;
-    private ArrayList<String> mItemsAvailable;
+    public final static String FILTER_TAG = "catalog_filters";
 
-    private String mId;
-
-    private long mInitialPosition;
-
-    private Activity mActivity;
-
-    // private Dialog mDialog;
-    private ListView list;
-
-    // private DialogListAdapter mAdapter;
-
-    public DialogFilterFragment() { }
+    private static ArrayList<CatalogFilter> mFilters;
 
     /**
      * 
-     * @param activity
-     * @param listener
-     * @param id
-     * @param title
-     * @param items
-     * @param initialPosition
+     */
+    public DialogFilterFragment() {
+    }
+
+    /**
+     * 
+     * @param bundle
      * @return
      */
-    public static DialogFilterFragment newInstance(Activity activity, String id, String title, ArrayList<String> items, long initialPosition) {
+    public static DialogFilterFragment newInstance(Bundle bundle) {
         Log.d(TAG, "NEW INSTANCE");
         DialogFilterFragment dialogListFragment = new DialogFilterFragment();
-        dialogListFragment.mActivity = activity;
-        dialogListFragment.mId = id;
-        dialogListFragment.mTitle = title;
-        dialogListFragment.mItems = items;
-        dialogListFragment.mInitialPosition = initialPosition;
-        return dialogListFragment;
-    }
-    
-    public static DialogFilterFragment newInstance() {
-        Log.d(TAG, "NEW INSTANCE");
-        DialogFilterFragment dialogListFragment = new DialogFilterFragment();
+        dialogListFragment.setArguments(bundle);
         return dialogListFragment;
     }
 
@@ -91,6 +74,9 @@ public class DialogFilterFragment extends DialogFragment implements OnClickListe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStyle(R.style.Theme_Jumia_Dialog_Blue_NoTitle, R.style.Theme_Jumia_Dialog_Blue_NoTitle);
+        Bundle bundle = getArguments();
+        mFilters = bundle.getParcelableArrayList(FILTER_TAG);
+        Log.d(TAG, "FILTERS: " + mFilters.size());
     }
 
     /*
@@ -112,139 +98,291 @@ public class DialogFilterFragment extends DialogFragment implements OnClickListe
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        // Get header
-        view.findViewById(R.id.dialog_filter_header_title).setOnClickListener(this);
-        view.findViewById(R.id.dialog_filter_header_clear).setOnClickListener(this);
         // Get container
-        onSwitchChildFragment(1);
-        // Get buttons
+        onSwitchChildFragment(FILTER_MAIN, null);
     }
 
-    private void onSwitchChildFragment(int type) {
-        switch (type) {
-        case 1:
-            FragmentOne fragmentOne = FragmentOne.newInstance(this);
+    /**
+     * 
+     * @param filterType
+     * @param bundle 
+     */
+    private void onSwitchChildFragment(int filterType, Bundle bundle) {
+        switch (filterType) {
+        case FILTER_MAIN:
+            Log.i(TAG, "ON SWITCH FILTER: FILTER_MAIN");
+            FilterMainFragment fragmentOne = FilterMainFragment.newInstance(this);
             fragmentChildManagerTransition(R.id.dialog_filter_container, fragmentOne, false, true);
             break;
-        case 2:
-            FragmentTwo fragmentTwo = FragmentTwo.newInstance(this);
-            fragmentChildManagerTransition(R.id.dialog_filter_container, fragmentTwo, true, true);
+        case FILTER_CATEGORY:
+            Log.i(TAG, "ON SWITCH FILTER: FILTER_CATEGORY");
+            FilterCategoryFragment fragmentCategory = FilterCategoryFragment.newInstance(this, bundle);
+            fragmentChildManagerTransition(R.id.dialog_filter_container, fragmentCategory, true, true);
             break;
-
+        case FILTER_BRAND:
+            Log.i(TAG, "ON SWITCH FILTER: FILTER_BRAND");
+            FilterBrandFragment fragmentBrand = FilterBrandFragment.newInstance(this, bundle);
+            fragmentChildManagerTransition(R.id.dialog_filter_container, fragmentBrand, true, true);
+            break;
+        case FILTER_SIZE:
+            Log.i(TAG, "ON SWITCH FILTER: FILTER_SIZE");
+            FilterSizeFragment fragmentSize = FilterSizeFragment.newInstance(this, bundle);
+            fragmentChildManagerTransition(R.id.dialog_filter_container, fragmentSize, true, true);
+            break;
+        case FILTER_PRICE:
+            Log.i(TAG, "ON SWITCH FILTER: FILTER_PRICE");
+            FilterPriceFragment fragmentPrice = FilterPriceFragment.newInstance(this, bundle);
+            fragmentChildManagerTransition(R.id.dialog_filter_container, fragmentPrice, true, true);
+            break;
+        case FILTER_COLOR:
+            Log.i(TAG, "ON SWITCH FILTER: FILTER_COLOR");
+            FilterColorFragment fragmentColor = FilterColorFragment.newInstance(this, bundle);
+            fragmentChildManagerTransition(R.id.dialog_filter_container, fragmentColor, true, true);
+            break;
         default:
+            Log.w(TAG, "ON SWITCH FILTER: UNKNOWN TYPE");
             break;
         }
     }
-    
+
     /**
      * Method used to associate the container and fragment
+     * 
      * @param container
      * @param fragment
      * @param animated
      */
-    public void fragmentChildManagerTransition(int container, Fragment fragment, boolean animated, boolean addToBackStack) {
+    public void fragmentChildManagerTransition(int container, Fragment fragment, boolean animated,
+            boolean addToBackStack) {
         FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
         // Animations
-        if(animated)
-            fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
+        if (animated)
+            fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left,
+                    R.anim.slide_in_left, R.anim.slide_out_right);
         // Replace
         fragmentTransaction.replace(container, fragment);
         // Back stack
-        if(addToBackStack)
+        if (addToBackStack)
             fragmentTransaction.addToBackStack(null);
         // Commit
-        //fragmentTransaction.commit();
+        // fragmentTransaction.commit();
         fragmentTransaction.commitAllowingStateLoss();
     }
 
-    private void allowBackPressed() {
+    public void allowBackPressed() {
         Log.d(TAG, "ALLOW BACK PRESSED");
         getChildFragmentManager().popBackStack();
     }
 
-    @Override
-    public void onClick(View v) {
-         if(v.getId() == R.id.dialog_filter_header_title)
-             dismiss();
-        // else if (v.getId() == R.id.dialog_filter_header_clear) {
-        // // Create the fragment and show it as a dialog.
-        // DialogFilterFragment newFragment = new DialogFilterFragment();
-        // newFragment.show(getFragmentManager(), "dialog");
-        // }
-    }
-
+    /*
+     * (non-Javadoc)
+     * @see android.support.v4.app.Fragment#onPause()
+     */
     @Override
     public void onPause() {
         super.onPause();
         dismiss();
     }
 
-    /**
-     * FRAGMENT 1
+    /*
+     * (non-Javadoc)
+     * @see android.support.v4.app.DialogFragment#onDismiss(android.content.DialogInterface)
      */
-
-    private static class FragmentOne extends Fragment {
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+    }
+    
+    /*
+     * ################# MAIN FRAGMENT ################
+     */
+    /**
+     * 
+     * @author sergiopereira
+     * 
+     */
+    private static class FilterMainFragment extends Fragment implements OnClickListener, OnItemClickListener {
 
         private DialogFilterFragment mParent;
+        private ListView mFilterListView;
+        private ContentValues mContentValues;
 
-        public static FragmentOne newInstance(DialogFilterFragment parent) {
-            Log.d(TAG, "NEW INSTANCE ONE");
-            FragmentOne frag = new FragmentOne();
+        /**
+         * 
+         * @param parent
+         * @return
+         */
+        public static FilterMainFragment newInstance(DialogFilterFragment parent) {
+            Log.d(TAG, "NEW INSTANCE: MAIN");
+            FilterMainFragment frag = new FilterMainFragment();
             frag.mParent = parent;
             return frag;
         }
 
+        /*
+         * (non-Javadoc)
+         * 
+         * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
+         * android.view.ViewGroup, android.os.Bundle)
+         */
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            return inflater.inflate(R.layout.dialog_filter_fragment_one, container, false);
+            return inflater.inflate(R.layout.dialog_filter_fragment_main, container, false);
         }
 
+        /*
+         * (non-Javadoc)
+         * 
+         * @see android.support.v4.app.Fragment#onViewCreated(android.view.View, android.os.Bundle)
+         */
         @Override
         public void onViewCreated(View view, Bundle savedInstanceState) {
             super.onViewCreated(view, savedInstanceState);
-            view.findViewById(R.id.dialog_filter_one).setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mParent.onSwitchChildFragment(2);
-                }
-            });
+            // Clean button
+            view.findViewById(R.id.dialog_filter_header_clear).setOnClickListener(this);
+            // Filter list
+            mFilterListView = (ListView) view.findViewById(R.id.dialog_filter_list); 
+            mFilterListView.setOnItemClickListener(this);
+            mFilterListView.setAdapter(new FiltersArrayAdapter(getActivity(), mFilters));
+            // Button cancel
+            view.findViewById(R.id.dialog_filter_button_cancel).setOnClickListener(this);
+            // Button done
+            view.findViewById(R.id.dialog_filter_button_done).setOnClickListener(this);
         }
+
+        /*
+         * (non-Javadoc)
+         * 
+         * @see
+         * android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget.AdapterView,
+         * android.view.View, int, long)
+         */
+        @Override
+        public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
+            Log.d(TAG, "ON ITEM CLICK: " + position);
+            // Get selected filter
+            CatalogFilter selectedFilter = mFilters.get(position);
+            // Get the id
+            String filterId = selectedFilter.getId();
+            // Create bundle
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(FILTER_TAG, selectedFilter);
+            // Goto for respective fragment
+            if(filterId.contains("category")) ((DialogFilterFragment) getParentFragment()).onSwitchChildFragment(FILTER_CATEGORY, bundle); 
+            else if(filterId.contains("brand")) ((DialogFilterFragment) getParentFragment()).onSwitchChildFragment(FILTER_BRAND, bundle);
+            else if(filterId.contains("size")) ((DialogFilterFragment) getParentFragment()).onSwitchChildFragment(FILTER_SIZE, bundle);
+            else if(filterId.contains("price")) ((DialogFilterFragment) getParentFragment()).onSwitchChildFragment(FILTER_PRICE, bundle);
+            else if(filterId.contains("color")) ((DialogFilterFragment) getParentFragment()).onSwitchChildFragment(FILTER_COLOR, bundle);
+            else { Log.w(TAG, "UNKNOWN FILTER ID"); bundle = null; }
+        }
+
+        /*
+         * (non-Javadoc)
+         * 
+         * @see android.view.View.OnClickListener#onClick(android.view.View)
+         */
+        @Override
+        public void onClick(View view) {
+            // Get view id
+            int id = view.getId();
+            // Clean
+            if (id == R.id.dialog_filter_header_clear) processOnClickClean();
+            // Cancel 
+            else if (id == R.id.dialog_filter_button_cancel) mParent.dismiss();
+            // Save
+            else if (id == R.id.dialog_filter_button_done) proccessOnClickDone();
+        }
+        
+        /**
+         * Process the click on save button
+         * @author sergiopereira
+         */
+        private void proccessOnClickDone(){
+            Log.d(TAG, "CLICKED ON: DONE");
+            // Create query
+            mContentValues = new ContentValues();
+            // Save all values
+            for (CatalogFilter filter : mFilters) {
+                // Generic filter: Get filter id and values
+                if(filter.hasOptionSelected()){
+                    String filterId = filter.getId();
+                    String filterValue = filter.getFilterOptions().get(filter.getSelectedOption()).getLabel();
+                    mContentValues.put(filterId, filterValue);
+                }
+                // Range filter: Get range value 
+                if(filter.hasRangeValues()) {
+                    String filterId = filter.getId();
+                    int min = filter.getMinRangeValue();
+                    int max = filter.getMaxRangeValue();
+                    boolean discount = filter.isRangeWithDiscount();
+                    mContentValues.put(filterId, min + "-" + max);
+                }
+            }
+            Log.d(TAG, "FILTER QUERY: " + mContentValues.toString());
+            // Dismiss dialog
+            mParent.dismiss();
+        }
+        
+        
+        /**
+         * Process the click on clean button
+         * @author sergiopereira
+         */
+        private void processOnClickClean(){
+            Log.d(TAG, "CLICKED ON: CLEAR");
+            // Clean all saved values
+            for (CatalogFilter filter : mFilters) {
+                // Generic filter: Get filter id and values
+                if(filter.hasOptionSelected()) {
+                    //Log.d(TAG, "FILTER: " + filter.getId() + " VALUE:" + filter.getFilterOptions().get(filter.getSelectedOption()).getLabel());
+                    filter.getFilterOptions().get(filter.getSelectedOption()).setSelected(false);
+                    filter.cleanSelectedOption();
+                }
+                // Range filter: Get range value 
+                if(filter.hasRangeValues()) {
+                    //Log.d(TAG, "FILTER: " + filter.getId() + " VALUE:" + filter.getMinRangeValue() + " " + filter.getMaxRangeValue() + " " + filter.isRangeWithDiscount());
+                    filter.cleanRangeValues();
+                } 
+            }
+            // Update adapter
+            ((FiltersArrayAdapter) mFilterListView.getAdapter()).notifyDataSetChanged();
+        }
+        
+        
     }
 
-    /**
-     * FRAGMENT 2
+    /*
+     * ################# ADAPTER ################
      */
+    
+    public static class FiltersArrayAdapter extends ArrayAdapter<CatalogFilter> {
+        
+        private static int layout = R.layout.dialog_list_sub_item_1;
 
-    private static class FragmentTwo extends Fragment {
-
-        private DialogFilterFragment mParent;
-
-        public static FragmentTwo newInstance(DialogFilterFragment parent) {
-            Log.d(TAG, "NEW INSTANCE TWO");
-            FragmentTwo frag = new FragmentTwo();
-            frag.mParent = parent;
-            return frag;
+        public FiltersArrayAdapter(Context context, List<CatalogFilter> objects) {
+            super(context, layout, objects);
         }
 
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            return inflater.inflate(R.layout.dialog_filter_fragment_two, container, false);
+        public View getView(int position, View convertView, ViewGroup parent) {
+            // Get Filter
+            CatalogFilter filter = getItem(position);
+            // Validate current view
+            if (convertView == null) convertView = LayoutInflater.from(getContext()).inflate(layout, null);
+            // Set title
+            ((TextView) convertView.findViewById(R.id.dialog_item_title)).setText(filter.getName());
+            // Set sub title
+            if (!filter.hasOptionSelected() && !filter.hasRangeValues())
+                ((TextView) convertView.findViewById(R.id.dialog_item_subtitle)).setText("All");
+            else if(filter.hasOptionSelected())
+                ((TextView) convertView.findViewById(R.id.dialog_item_subtitle)).setText(filter.getFilterOptions().get(filter.getSelectedOption()).getLabel());
+            else if(filter.hasRangeValues())
+                ((TextView) convertView.findViewById(R.id.dialog_item_subtitle)).setText(filter.getMinRangeValue() + " - " + filter.getMaxRangeValue());
+                
+            // Return the filter view
+            return convertView;
         }
 
-        @Override
-        public void onViewCreated(View view, Bundle savedInstanceState) {
-            super.onViewCreated(view, savedInstanceState);
-            view.findViewById(R.id.dialog_filter_two).setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.d(TAG, "NEW INSTANCE TWO");
-                    mParent.allowBackPressed();
-                }
-            });
-        }
     }
     
-    
-
-
 }

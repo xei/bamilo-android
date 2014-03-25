@@ -2,6 +2,7 @@ package pt.rocket.controllers;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import org.holoeverywhere.widget.Button;
@@ -14,6 +15,7 @@ import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.interfaces.IMetaData;
+import pt.rocket.framework.objects.CatalogFilter;
 import pt.rocket.framework.objects.Product;
 import pt.rocket.framework.objects.ProductsPage;
 import pt.rocket.framework.rest.RestContract;
@@ -29,6 +31,7 @@ import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.ProductDetailsActivityFragment;
 import pt.rocket.view.R;
+import pt.rocket.view.fragments.Catalog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -148,13 +151,11 @@ public class CatalogPageModel {
             dir = Direction.DESCENDENT;
             break;
         case 4: // <item >Name</item>
-            // TODO when available change this to Top
             // Offer option
             sort = ProductSort.NAME;
             dir = Direction.ASCENDENT;
             break;
         case 5: // <item >Brand</item>
-            // TODO when available change this to Sales
             // option
             sort = ProductSort.BRAND;
             dir = Direction.ASCENDENT;
@@ -457,6 +458,26 @@ public class CatalogPageModel {
             hideProductsLoading();
         }
     }
+    
+    
+    // XXX
+    private void getProductsWithFilterValues() {
+        Log.d(TAG, "GET MORE PRODUCTS");
+        
+            mBeginRequestMillis = System.currentTimeMillis();
+
+            Bundle bundle = new Bundle();
+            bundle.putString(GetProductsHelper.PRODUCT_URL, productsURL);
+            bundle.putString(GetProductsHelper.SEARCH_QUERY, searchQuery);
+            bundle.putInt(GetProductsHelper.PAGE_NUMBER, pageNumber);
+            bundle.putInt(GetProductsHelper.TOTAL_COUNT, MAX_PAGE_ITEMS);
+            bundle.putInt(GetProductsHelper.SORT, sort.id);
+            bundle.putInt(GetProductsHelper.DIRECTION, dir.id);
+            JumiaApplication.INSTANCE.sendRequest(new GetProductsHelper(), bundle, responseCallback);
+
+    }
+    
+    
 
     private void showProductsContent() {
         Log.d(TAG, "showProductsContent");
@@ -488,6 +509,10 @@ public class CatalogPageModel {
         if (relativeLayout != null) {
             linearLayoutLb.setVisibility(View.GONE);
         }
+        
+        // XXX
+        // Updated filter
+        if(mCatalogFilters != null) ((Catalog) mFragment).setFilter(mCatalogFilters);
     }
 
     private OnScrollListener scrollListener = new OnScrollListener() {
@@ -631,6 +656,16 @@ public class CatalogPageModel {
         }
     };
 
+    
+    public ArrayList<CatalogFilter> getFilters(){
+        return mFilters;
+    }
+    
+    
+    public ArrayList<CatalogFilter> mFilters;
+
+    private ArrayList<CatalogFilter> mCatalogFilters;
+
     // @Override
     // public void handleEvent(ResponseEvent event) {
     // if (event.getSuccess()) {
@@ -732,14 +767,12 @@ public class CatalogPageModel {
 
         // Valdiate products
         if (productsPage != null && productsPage.getTotalProducts() > 0) {
-            Log.d(TAG, "onSuccessEvent: products on page = " + productsPage.getProducts().size() +
-                    " total products = " + productsPage.getTotalProducts());
+            Log.d(TAG, "onSuccessEvent: products on page = " + productsPage.getProducts().size() + " total products = " + productsPage.getTotalProducts());
             totalProducts = productsPage.getTotalProducts();
             if (mFragment.isVisible()) {
                 // set total items lable
                 if (getTotalProducts() > 0)
-                    mActivity.setTitleAndSubTitle(title, " (" + String.valueOf(getTotalProducts())
-                            + " " + mActivity.getString(R.string.shoppingcart_items) + ")");
+                    mActivity.setTitleAndSubTitle(title, " (" + String.valueOf(getTotalProducts()) + " " + mActivity.getString(R.string.shoppingcart_items) + ")");
                 else
                     mActivity.setTitle(title);
             }
@@ -790,8 +823,7 @@ public class CatalogPageModel {
         // Log.i(TAG, "code1 " + productsPage.getProducts().size() + " pageNumber is : " +
         // pageNumber);
 
-        pageNumber = productsPage.getProducts().size() >= productsPage.getTotalProducts() ? NO_MORE_PAGES
-                : pageNumber + 1;
+        pageNumber = productsPage.getProducts().size() >= productsPage.getTotalProducts() ? NO_MORE_PAGES : pageNumber + 1;
         showCatalogContent();
         if (totalProducts < ((pageNumber - 1) * MAX_PAGE_ITEMS)) {
             pageNumber = NO_MORE_PAGES;
@@ -801,6 +833,15 @@ public class CatalogPageModel {
             isLoadingMore = true;
         }
 
+        
+        
+        // Updated filter
+        // XXX
+        mCatalogFilters = productsPage.getFilters();
+        ((Catalog) mFragment).setFilter(productsPage.getFilters());
+        
+        
+        
         AnalyticsGoogle.get().trackSearch(searchQuery, productsPage.getTotalProducts());
     }
 

@@ -236,7 +236,7 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
 			    textView.setVisibility(View.VISIBLE);
 	            textView.setText(mItems.get(position));
 			}
-			CheckBox checkBox = (CheckBox) view.findViewById(R.id.item_checkbox);
+			CheckBox checkBox = (CheckBox) view.findViewById(R.id.dialog_item_checkbox);
 			checkBox.setChecked(position == mCheckedPosition);
 
 			return view;

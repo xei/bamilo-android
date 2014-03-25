@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/dialog_filter_one"
+    android:layout_width="293.33dp"
+    android:layout_height="450.00dp"
+    android:orientation="vertical" >
+
+    <!-- HEADER -->
+
+    <RelativeLayout
+        android:id="@+id/dialog_filter_header_container"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:background="@drawable/modal_dialog_header"
+        android:paddingLeft="@dimen/margin_mid"
+        android:paddingRight="@dimen/margin_mid" >
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/dialog_filter_header_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:drawableLeft="@drawable/arrow_back"
+            android:drawablePadding="@dimen/margin_mid"
+            android:fontFamily="roboto_bold"
+            android:gravity="left|center"
+            android:text="Category"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/text_xl" />
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/dialog_filter_header_clear"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:fontFamily="roboto_regular"
+            android:gravity="right|center"
+            android:text="@string/clear_uppercase_label"
+            android:textColor="@color/orange_basic"
+            android:textSize="@dimen/text_l" />
+    </RelativeLayout>
+
+    <!-- MAIN CONTAINER -->
+
+    <ListView
+        android:id="@+id/dialog_filter_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:divider="@color/grey_dividerlight"
+        android:dividerHeight="0.75dp"
+        android:entries="@array/products_picker"
+        android:footerDividersEnabled="true"
+        android:listSelector="@android:color/transparent"
+        android:visibility="visible" />
+
+    <!-- BUTTONS -->
+
+    <LinearLayout
+        android:id="@+id/dialog_filter_buttons_container"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_gravity="center"
+        android:background="@android:color/white"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/dialog_filter_button_cancel"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fontFamily="roboto_regular"
+            android:gravity="center"
+            android:text="Cancel"
+            android:textColor="@color/grey_dark"
+            android:textSize="@dimen/text_xl" />
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/dialog_filter_button_done"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fontFamily="roboto_regular"
+            android:gravity="center"
+            android:text="Done"
+            android:textColor="@color/grey_dark"
+            android:textSize="@dimen/text_xl" />
+    </LinearLayout>
+
+</LinearLayout>

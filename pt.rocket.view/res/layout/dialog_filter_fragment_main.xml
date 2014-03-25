@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/dialog_filter_one"
-    android:layout_width="match_parent"
-    android:layout_height="64dp"
+    android:layout_width="293.33dp"
+    android:layout_height="450.00dp"
     android:background="@android:color/holo_blue_light"
     android:orientation="vertical" >
 
@@ -16,8 +16,8 @@
         android:background="@drawable/modal_dialog_header"
         android:gravity="center"
         android:orientation="horizontal"
-        android:paddingLeft="@dimen/margin_mid"
-        android:paddingRight="@dimen/margin_mid" >
+        android:paddingLeft="@dimen/margin_large"
+        android:paddingRight="@dimen/margin_large" >
 
         <org.holoeverywhere.widget.TextView
             android:id="@+id/dialog_filter_header_title"
@@ -26,7 +26,7 @@
             android:layout_weight="1"
             android:fontFamily="roboto_bold"
             android:gravity="left"
-            android:text="Filter"
+            android:text="@string/filter_label"
             android:textColor="@android:color/white"
             android:textSize="@dimen/text_xl" />
 
@@ -36,62 +36,69 @@
             android:layout_height="wrap_content"
             android:fontFamily="roboto_regular"
             android:gravity="right"
-            android:text="CLEAR ALL"
+            android:text="@string/clear_all_uppercase_label"
             android:textColor="@color/orange_basic"
-            android:textSize="@dimen/text_xl" />
+            android:textSize="@dimen/text_l" />
     </LinearLayout>
-    <!--
-         MAIN CONTAINER
 
-    <FrameLayout
-        android:id="@+id/dialog_filter_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/white" >
-    </FrameLayout>
+    <!-- MAIN CONTAINER -->
 
-    
-         <ListView
+    <ListView
         android:id="@+id/dialog_filter_list"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:background="@android:color/white"
-        android:listSelector="@android:color/transparent" />
-    -->
-    
-        <!-- CANCEL -->
+        android:divider="@color/grey_dividerlight"
+        android:dividerHeight="0.75dp"
+        android:footerDividersEnabled="false"
+        android:listSelector="@android:color/transparent"
+        android:visibility="visible" />
 
-    <LinearLayout
-        android:id="@+id/dialog_filter_header_container"
+    <!-- android:entries="@array/formatter_currency_codes" -->
+
+
+    <!-- BUTTONS -->
+
+    <include layout="@layout/dialog_filter_bottom_buttons" />
+
+    <!--
+         <LinearLayout
+        android:id="@+id/dialog_filter_buttons_container"
         android:layout_width="match_parent"
         android:layout_height="64dp"
         android:layout_gravity="center"
-        android:background="@drawable/modal_dialog_header"
+        android:background="@color/grey_dividerlight"
         android:gravity="center"
         android:orientation="horizontal"
-        android:paddingLeft="@dimen/margin_mid"
-        android:paddingRight="@dimen/margin_mid" >
+        android:paddingTop="0.75dp" >
 
         <org.holoeverywhere.widget.TextView
-            android:id="@+id/dialog_filter_header_title"
+            android:id="@+id/dialog_filter_button_cancel"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:fontFamily="roboto_bold"
-            android:gravity="left"
-            android:text="Filter"
-            android:textColor="@android:color/white"
+            android:background="@android:color/white"
+            android:fontFamily="roboto_regular"
+            android:gravity="center"
+            android:text="Cancel"
+            android:textColor="@color/grey_dark"
             android:textSize="@dimen/text_xl" />
 
+        <View style="@style/divider_vertical" />
+
         <org.holoeverywhere.widget.TextView
-            android:id="@+id/dialog_filter_header_clear"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/dialog_filter_button_done"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/white"
             android:fontFamily="roboto_regular"
-            android:gravity="right"
-            android:text="CLEAR ALL"
-            android:textColor="@color/orange_basic"
+            android:gravity="center"
+            android:text="Done"
+            android:textColor="@color/grey_dark"
             android:textSize="@dimen/text_xl" />
     </LinearLayout>
+    -->
 
 </LinearLayout>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/dialog_filter_one"
+    android:layout_width="293.33dp"
+    android:layout_height="450.00dp"
+    android:orientation="vertical" >
+
+   <!-- HEADER -->
+
+    <RelativeLayout
+        android:id="@+id/dialog_filter_header_container"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:background="@drawable/modal_dialog_header"
+        android:paddingLeft="@dimen/margin_mid"
+        android:paddingRight="@dimen/margin_mid" >
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/dialog_filter_header_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:drawableLeft="@drawable/arrow_back"
+            android:drawablePadding="@dimen/margin_mid"
+            android:fontFamily="roboto_bold"
+            android:gravity="left|center"
+            android:text="Price"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/text_xl" />
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/dialog_filter_header_clear"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:fontFamily="roboto_regular"
+            android:gravity="right|center"
+            android:text="@string/clear_uppercase_label"
+            android:textColor="@color/orange_basic"
+            android:textSize="@dimen/text_l" />
+    </RelativeLayout>
+    <!-- MAIN CONTAINER -->
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@android:color/white" >
+
+        <LinearLayout
+            android:id="@+id/dialog_filter_buttons_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/margin_huge"
+            android:paddingLeft="@dimen/margin_large"
+            android:paddingRight="@dimen/margin_large"
+            android:paddingTop="@dimen/margin_huge"
+            tools:context="pt.rocket.view.BaseActivity" >
+
+            <!-- RANGE VALUES -->
+
+            <org.holoeverywhere.widget.TextView
+                android:id="@+id/dialog_filter_range_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="roboto_regular"
+                android:gravity="center"
+                android:textColor="@color/grey_dark"
+                android:textSize="@dimen/text_xl" />
+
+            <!-- RANGE BAR -->
+
+            <FrameLayout
+                android:id="@+id/dialog_filter_range_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_midhuge" />
+
+            <!-- CHECK DISCOUNT -->
+
+            <org.holoeverywhere.widget.CheckBox
+                android:id="@+id/dialog_filter_check_discount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_midhuge"
+                android:fontFamily="roboto_regular"
+                android:text="With discount only"
+                android:textColor="@color/grey_middle"
+                android:textSize="@dimen/text_l" />
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- BUTTONS -->
+
+    <include layout="@layout/dialog_filter_bottom_buttons" />
+
+</LinearLayout>

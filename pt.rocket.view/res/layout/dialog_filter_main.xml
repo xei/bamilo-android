@@ -1,60 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="293.33dp"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dialog_filter_container"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="vertical" >
+    android:background="@android:color/white" />
 
-    <!-- HEADER -->
 
-    <LinearLayout
-        android:id="@+id/dialog_filter_header_container"
-        android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:layout_gravity="center"
-        android:background="@drawable/modal_dialog_header"
-        android:gravity="center"
-        android:paddingLeft="@dimen/margin_mid"
-        android:paddingRight="@dimen/margin_mid"
-        android:orientation="horizontal" >
-
-        <org.holoeverywhere.widget.TextView
-            android:id="@+id/dialog_filter_header_title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fontFamily="roboto_bold"
-            android:gravity="left"
-            android:text="Filter"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/text_xl" />
-
-        <org.holoeverywhere.widget.TextView
-            android:id="@+id/dialog_filter_header_clear"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="roboto_regular"
-            android:gravity="right"
-            android:text="CLEAR ALL"
-            android:textColor="@color/orange_basic"
-            android:textSize="@dimen/text_xl" />
-    </LinearLayout>
-
-    <!-- MAIN CONTAINER -->
-
-    <FrameLayout
-        android:id="@+id/dialog_filter_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/white" >
-    </FrameLayout>
-
-    <!--
-         <ListView
-        android:id="@+id/dialog_filter_list"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:background="@android:color/white"
-        android:listSelector="@android:color/transparent" />
-    -->
-
-</LinearLayout>

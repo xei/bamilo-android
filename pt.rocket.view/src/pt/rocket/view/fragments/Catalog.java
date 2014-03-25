@@ -9,6 +9,7 @@ import org.holoeverywhere.widget.Button;
 
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.CatalogPageModel;
+import pt.rocket.framework.objects.CatalogFilter;
 import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.utils.JumiaCatalogViewPager;
@@ -35,7 +36,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import de.akquinet.android.androlog.Log;
 
-public class Catalog extends BaseFragment {
+public class Catalog extends BaseFragment implements OnClickListener{
 
     private static Catalog mCatalogFragment;
     private CatalogPagerAdaper mCatalogPagerAdapter;
@@ -67,6 +68,8 @@ public class Catalog extends BaseFragment {
     public static String title;
     public static int navigationSource;
     private int currentPosition = 1;
+    private View mFilterButton;
+    private ArrayList<CatalogFilter> mCatalogFilter;
 
     public Catalog() {
         super(EnumSet.noneOf(EventType.class), EnumSet.noneOf(EventType.class), EnumSet
@@ -94,22 +97,47 @@ public class Catalog extends BaseFragment {
         View view = inflater.inflate(R.layout.products_frame, container, false);
         mViewPager = (JumiaCatalogViewPager) view.findViewById(R.id.viewpager_products_list);
         pagerTabStrip = (PagerTabStrip) view.findViewById(R.id.products_list_titles);
+        // XXX
+        mFilterButton = view.findViewById(R.id.products_list_filter_button);
+        
         // Initialize the catalog model with fresh data
         initPageModel();
-        
-        
-        // XXX
-        view.findViewById(R.id.products_list_filter_button).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogFilterFragment newFragment = DialogFilterFragment.newInstance();
-                newFragment.show(getBaseActivity().getSupportFragmentManager(), "dialog");
-            }
-        });
-        
+
         return view;
     }
+    
 
+    // XXX
+    public void setFilter(ArrayList<CatalogFilter> filters){
+        // Validate
+        if(mCatalogFilter != null) { Log.w(TAG, "DISCARTED: FILTER IS NOT NULL"); return; }
+        // Validate    
+        if(mFilterButton == null){ Log.w(TAG, "FILTER VIEW IS NULL"); return; }
+        // Save filters
+        mCatalogFilter = filters;
+        Log.i(TAG, "SAVED THE FILTER");
+        // Set listener
+        mFilterButton.setOnClickListener(null);
+        mFilterButton.setOnClickListener(this);
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see android.view.View.OnClickListener#onClick(android.view.View)
+     */
+    @Override
+    public void onClick(View v) {
+        Log.d(TAG, "ON CLICK: FILTER BUTTON");
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList(DialogFilterFragment.FILTER_TAG, mCatalogFilter);
+        DialogFilterFragment newFragment = DialogFilterFragment.newInstance(bundle);
+        newFragment.show(getBaseActivity().getSupportFragmentManager(), "dialog");
+    }
+    
+    
+    
+    
+    
     @Override
     public void onResume() {
         super.onResume();
@@ -138,7 +166,6 @@ public class Catalog extends BaseFragment {
             @Override
             public void onPageSelected(int position) {
                 mSelectedPageIndex = position;
-                
             }
 
             @Override

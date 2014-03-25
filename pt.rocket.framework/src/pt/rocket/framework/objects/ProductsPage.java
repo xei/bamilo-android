@@ -10,7 +10,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import pt.rocket.framework.rest.RestConstants;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
@@ -26,6 +25,7 @@ public class ProductsPage implements IJSONSerializable, Parcelable {
 	private int totalProducts;
 	private ArrayList<Product> products;
 	private ArrayList<Category> categories;
+	private ArrayList<CatalogFilter> mFilters;
 
 	private String mPageName;
 	
@@ -38,8 +38,11 @@ public class ProductsPage implements IJSONSerializable, Parcelable {
 	 */
 	@Override
 	public boolean initialize(JSONObject metadataObject) throws JSONException {
+		Log.d(TAG, "FILTER: PRODUCT PAGE");
+		
 		products = new ArrayList<Product>();
 		categories = new ArrayList<Category>();
+		mFilters = new ArrayList<CatalogFilter>();
 		totalProducts = metadataObject.optInt(RestConstants.JSON_PRODUCT_COUNT_TAG, 0);
 		mPageName = metadataObject.optString(RestConstants.JSON_CATALOG_NAME_TAG, "");
 
@@ -64,6 +67,21 @@ public class ProductsPage implements IJSONSerializable, Parcelable {
 		} else {
 			Log.d(TAG, " there are no categories");
 		}
+		
+		// Get filters
+		if(!metadataObject.isNull("filters")){
+			JSONArray jsonArray = metadataObject.getJSONArray("filters");
+			for (int i = 0; i < jsonArray.length(); i++) {
+				// Get json filter
+				JSONObject jsonFilter = jsonArray.getJSONObject(i);
+				// Create catalog filter
+				CatalogFilter catalogFilter = new CatalogFilter(jsonFilter);
+				// save filter
+				mFilters.add(catalogFilter);
+			}
+		}
+		
+		
 		return true;
 	}
 
@@ -92,6 +110,13 @@ public class ProductsPage implements IJSONSerializable, Parcelable {
 	 */
 	public int getTotalProducts() {
 		return totalProducts;
+	}
+	
+	/**
+	 * @return the filters
+	 */
+	public ArrayList<CatalogFilter> getFilters() {
+		return mFilters;
 	}
 	
 	public String getName(){

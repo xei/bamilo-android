@@ -114,7 +114,7 @@ public class DialogList implements OnItemClickListener {
 
 			TextView textView = (TextView) view.findViewById(R.id.item_text);
 			textView.setText(mItems.get(position));
-			CheckBox checkBox = (CheckBox) view.findViewById(R.id.item_checkbox);
+			CheckBox checkBox = (CheckBox) view.findViewById(R.id.dialog_item_checkbox);
 			checkBox.setChecked(position == mCheckedPosition);
 
 			return view;
