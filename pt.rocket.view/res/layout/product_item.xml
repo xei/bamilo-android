@@ -17,10 +17,15 @@
                 android:layout_width="132dp"
                 android:layout_height="99dp"
                 android:layout_marginBottom="13.2dp"
-                android:layout_marginLeft="13.2dp"
+                android:layout_marginLeft="@dimen/margin_small"
                 android:layout_marginRight="13.2dp"
-                android:layout_marginTop="13.2dp"
+                android:layout_marginTop="@dimen/margin_small"
                 layout="@layout/catalog_image_item" />
+
+            <!--
+            android:layout_marginLeft="13.2dp"
+            android:layout_marginTop="13.2dp"
+            -->
 
             <ImageView
                 android:id="@+id/image_is_new"
@@ -57,7 +62,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/item_brand"
-                android:layout_marginRight="16dp"
+                android:layout_marginRight="@dimen/margin_huge"
                 android:layout_marginTop="6dp"
                 android:layout_toRightOf="@+id/image_loadable"
                 android:ellipsize="end"

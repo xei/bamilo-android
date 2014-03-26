@@ -409,7 +409,7 @@ public class DialogFilterFragment extends DialogFragment {
             ((TextView) convertView.findViewById(R.id.dialog_item_title)).setText(filter.getName());
             // Set sub title
             if (!filter.hasOptionSelected() && !filter.hasRangeValues())
-                ((TextView) convertView.findViewById(R.id.dialog_item_subtitle)).setText("All");
+                ((TextView) convertView.findViewById(R.id.dialog_item_subtitle)).setText(R.string.all_label);
             else if(filter.hasRangeValues())
                 ((TextView) convertView.findViewById(R.id.dialog_item_subtitle)).setText(filter.getMinRangeValue() + " - " + filter.getMaxRangeValue());
             else if (filter.hasOptionSelected())
@@ -426,7 +426,7 @@ public class DialogFilterFragment extends DialogFragment {
          */
         private String getOptionsToString(SparseArray<CatalogFilterOption> array){
             String string = "";
-            for (int i = 0; i < array.size(); i++) string += array.valueAt(i).getLabel() + "  ";
+            for (int i = 0; i < array.size(); i++) string += ((i == 0) ? "" : ", ") + array.valueAt(i).getLabel();
             return string;
         }
 

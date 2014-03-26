@@ -47,7 +47,7 @@ public class FilterColorFragment extends Fragment implements OnClickListener, On
     
     private CatalogFilter mColorFilter;
 
-    private FilterOptionArrayAdapter mOptionArray;
+    private FilterColorOptionArrayAdapter mOptionArray;
     
     private SparseArray<CatalogFilterOption> mCurrentSelectedOptions = new SparseArray<CatalogFilterOption>();
     
@@ -117,7 +117,7 @@ public class FilterColorFragment extends Fragment implements OnClickListener, On
         // Filter list
         ((ListView) view.findViewById(mListId)).setOnItemClickListener(this);
         // Get filter options
-        mOptionArray = new FilterOptionArrayAdapter(getActivity(), mColorFilter.getFilterOptions());
+        mOptionArray = new FilterColorOptionArrayAdapter(getActivity(), mColorFilter.getFilterOptions());
         // Set adapter
         ((ListView) view.findViewById(mListId)).setAdapter(mOptionArray);
     }
@@ -271,11 +271,11 @@ public class FilterColorFragment extends Fragment implements OnClickListener, On
      * @author sergiopereira
      *
      */
-     public static class FilterOptionArrayAdapter extends ArrayAdapter<CatalogFilterOption> {
+     public static class FilterColorOptionArrayAdapter extends ArrayAdapter<CatalogFilterOption> {
             
         private static int layout = R.layout.dialog_list_sub_item_2;
 
-        public FilterOptionArrayAdapter(Context context, List<CatalogFilterOption> objects) {
+        public FilterColorOptionArrayAdapter(Context context, List<CatalogFilterOption> objects) {
             super(context, layout, objects);
         }
 

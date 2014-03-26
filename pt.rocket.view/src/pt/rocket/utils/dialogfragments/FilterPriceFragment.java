@@ -51,6 +51,8 @@ class FilterPriceFragment extends Fragment implements OnRangeSeekBarChangeListen
 
     private RangeSeekBar<Integer> mRangeBar;
 
+    private int mInterval;
+
     /**
      * 
      * @param parent
@@ -97,7 +99,8 @@ class FilterPriceFragment extends Fragment implements OnRangeSeekBarChangeListen
         // Get min and max
         mCurrMinValue = mMin = filterOption.getMin();
         mCurrMaxValue = mMax = filterOption.getMax();
-        Log.d(TAG, "FILTER RANGE: " + mMin + " " +  mMax);
+        mInterval = filterOption.getInterval();
+        Log.d(TAG, "FILTER RANGE: " + mMin + " " +  mMax + " " + mInterval);
         
         // Title
         ((TextView) view.findViewById(R.id.dialog_filter_header_title)).setText(mPriceFilter.getName());
@@ -115,7 +118,7 @@ class FilterPriceFragment extends Fragment implements OnRangeSeekBarChangeListen
         mRangeValues = (TextView) view.findViewById(R.id.dialog_filter_range_text);
         
         // Get range bar
-        mRangeBar = new RangeSeekBar<Integer>(mMin, mMax, getActivity());
+        mRangeBar = new RangeSeekBar<Integer>(getMinIntervalValue(mMin), getMaxIntervalValue(mMax), getActivity());
         mRangeBar.setNotifyWhileDragging(true);
         mRangeBar.setOnRangeSeekBarChangeListener(this);
         ((ViewGroup) view.findViewById(R.id.dialog_filter_range_bar)).addView(mRangeBar);
@@ -126,8 +129,8 @@ class FilterPriceFragment extends Fragment implements OnRangeSeekBarChangeListen
             mCurrMaxValue = mPriceFilter.getMaxRangeValue();
         }
         // Set init range values
-        mRangeBar.setSelectedMinValue(mCurrMinValue);
-        mRangeBar.setSelectedMaxValue(mCurrMaxValue);
+        mRangeBar.setSelectedMinValue(getMinIntervalValue(mCurrMinValue));
+        mRangeBar.setSelectedMaxValue(getMaxIntervalValue(mCurrMaxValue));
         // Set current range
         mRangeValues.setText( mCurrMinValue + " - " + mCurrMaxValue);
         // Set discount box
@@ -142,9 +145,9 @@ class FilterPriceFragment extends Fragment implements OnRangeSeekBarChangeListen
      */
     @Override
     public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Integer minValue, Integer maxValue) {
-        mCurrMinValue = minValue;
-        mCurrMaxValue = maxValue;
-        mRangeValues.setText(mCurrMinValue + " - " + mCurrMaxValue);
+        mCurrMinValue = getMinRealValue(minValue);
+        mCurrMaxValue = getMaxRealValue(maxValue);
+        mRangeValues.setText( mCurrMinValue + " - " + mCurrMaxValue );
     }
 
     /*
@@ -172,8 +175,8 @@ class FilterPriceFragment extends Fragment implements OnRangeSeekBarChangeListen
         mCurrMinValue = mMin;
         mCurrMaxValue = mMax;
         // Reset range view
-        mRangeBar.setSelectedMinValue(mCurrMinValue);
-        mRangeBar.setSelectedMaxValue(mCurrMaxValue);
+        mRangeBar.setSelectedMinValue(getMinIntervalValue(mCurrMinValue));
+        mRangeBar.setSelectedMaxValue(getMaxIntervalValue(mCurrMaxValue));
         // Reset text
         mRangeValues.setText(mCurrMinValue + " - " + mCurrMaxValue);
         // Reset discount box
@@ -191,7 +194,7 @@ class FilterPriceFragment extends Fragment implements OnRangeSeekBarChangeListen
     private void processOnClickDone() {
         Log.d(TAG, "FILTER: DONE " + mCurrMinValue + " " + mCurrMaxValue);
         // Validate current values
-        if(mCurrMinValue == mMin && mCurrMaxValue == mMax) {
+        if(getMinIntervalValue(mCurrMinValue) == getMinIntervalValue(mMin) && getMaxIntervalValue(mCurrMaxValue) == getMaxIntervalValue(mMax)) {
             // Clean saved values
             mPriceFilter.cleanRangeValues();
             mPriceFilter.setRangeWithDiscount(false);
@@ -202,6 +205,46 @@ class FilterPriceFragment extends Fragment implements OnRangeSeekBarChangeListen
         }
         // Goto back
         mParent.allowBackPressed();
+    }
+    
+    /**
+     * Get the max value using the respective interval
+     * @param max
+     * @return max interval value
+     * @author sergiopereira
+     */
+    private int getMaxIntervalValue(int max){
+        return (mInterval != 0) ? max / mInterval : max;   
+    }
+
+    /**
+     * Get the min value using the respective interval
+     * @param min
+     * @return min interval value
+     * @author sergiopereira
+     */
+    private int getMinIntervalValue(int min){
+        return (mInterval != 0) ? min / mInterval : min;   
+    }
+    
+    /**
+     * Get the real min value using the respective interval
+     * @param min
+     * @return min real value
+     * @author sergiopereira
+     */
+    private int getMinRealValue(int min){
+        return (mInterval != 0) ? min * mInterval : min;   
+    }
+    
+    /**
+     * Get the real max value using the respective interval
+     * @param min
+     * @return min real value
+     * @author sergiopereira
+     */
+    private int getMaxRealValue(int max){
+        return (mInterval != 0) ? max * mInterval : max;   
     }
 
 }

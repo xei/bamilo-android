@@ -28,16 +28,18 @@
 
         <org.holoeverywhere.widget.TextView
             android:id="@+id/products_list_filter_button"
-            android:layout_width="90dp"
+            android:layout_width="wrap_content"
             android:layout_height="30.72dp"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:background="@android:color/white"
             android:drawableLeft="@drawable/selector_catalog_filter"
+            android:drawablePadding="@dimen/margin_small"
             android:fontFamily="roboto_regular"
             android:gravity="center"
-            android:paddingLeft="@dimen/margin_mid"
-            android:text="Filter" />
+            android:paddingLeft="@dimen/margin_large"
+            android:paddingRight="@dimen/margin_large"
+            android:text="@string/filter_label" />
 
         <View
             android:layout_width="match_parent"

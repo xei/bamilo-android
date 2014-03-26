@@ -100,7 +100,7 @@
     <dimen name="checkout_order_inner_margin_right">50dp</dimen>
     
 	<!-- DIALOG CATALOG FILTER -->
-    <dimen name="dialog_catalog_filter_width">440.33dp</dimen>
+	<dimen name="dialog_catalog_filter_width">@dimen/match_parent</dimen>
     <dimen name="dialog_catalog_filter_height">450.00dp</dimen>
     
 
