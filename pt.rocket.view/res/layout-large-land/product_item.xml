@@ -23,41 +23,50 @@
                 layout="@layout/image_loadable" />
 
             <ImageView
-                android:id="@+id/item_promotion"
+                android:id="@+id/image_is_new"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignRight="@id/image_loadable"
-                android:layout_alignTop="@id/image_loadable"
-                android:src="@drawable/ic_reduced" />
-
-            <org.holoeverywhere.widget.TextView
-                android:id="@+id/discount_percentage"
-                android:layout_width="45dp"
-                android:layout_height="wrap_content"
-                android:layout_alignRight="@id/item_promotion"
-                android:layout_alignTop="@id/item_promotion"
-                android:layout_marginTop="4dp"
-                android:gravity="center_horizontal"
-                android:text="99%"
-                android:textColor="@android:color/white"
-                android:textSize="14sp" />
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="@dimen/margin_small"
+                android:layout_marginTop="@dimen/margin_small"
+                android:src="@drawable/img_newarrival_en" />
         </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" 
-            android:layout_gravity="center_vertical">
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical" >
+
+            <org.holoeverywhere.widget.TextView
+                android:id="@+id/item_brand"
+                style="@style/product_name_list_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/margin_huge"
+                android:layout_marginTop="6dp"
+                android:layout_toRightOf="@+id/image_loadable"
+                android:ellipsize="end"
+                android:fontFamily="roboto_bold"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:text="BRAND" />
 
             <org.holoeverywhere.widget.TextView
                 android:id="@+id/item_name"
-                style="@style/product_name_list_text"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/item_brand"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="6dp"
-                android:maxLines="1"
-                android:singleLine="true"
                 android:layout_toRightOf="@+id/image_loadable"
-                android:text="Name" />
+                android:ellipsize="end"
+                android:gravity="center|left"
+                android:lines="2"
+                android:maxLines="2"
+                android:text="Name"
+                android:textColor="@color/grey_middle"
+                android:textSize="@dimen/text_xs" />
 
             <org.holoeverywhere.widget.TextView
                 android:id="@+id/item_discount"
@@ -66,10 +75,10 @@
                 android:layout_below="@id/item_name"
                 android:layout_marginRight="4dp"
                 android:layout_marginTop="4dp"
+                android:layout_toRightOf="@+id/image_loadable"
+                android:ellipsize="marquee"
                 android:maxLines="1"
                 android:singleLine="true"
-                android:ellipsize="marquee"
-                android:layout_toRightOf="@+id/image_loadable"
                 android:text="Discount" />
 
             <org.holoeverywhere.widget.TextView
@@ -77,10 +86,10 @@
                 style="@style/product_price_current_list_text"
                 android:layout_alignTop="@id/item_discount"
                 android:layout_below="@id/item_name"
+                android:layout_toRightOf="@id/item_discount"
+                android:ellipsize="marquee"
                 android:maxLines="1"
                 android:singleLine="true"
-                android:ellipsize="marquee"
-                android:layout_toRightOf="@id/item_discount"
                 android:text="Price" />
 
             <RatingBar
@@ -107,6 +116,24 @@
                 android:text="Reviews"
                 android:textColor="@color/grey_light"
                 android:textSize="12sp" />
+
+            <org.holoeverywhere.widget.TextView
+                android:id="@+id/discount_percentage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/item_regprice"
+                android:layout_marginRight="@dimen/margin_large"
+                android:layout_marginTop="@dimen/margin_small"
+                android:background="@drawable/discount_badge"
+                android:fontFamily="roboto_bold"
+                android:gravity="center"
+                android:paddingBottom="@dimen/margin_small"
+                android:paddingLeft="@dimen/margin_mid"
+                android:paddingRight="@dimen/margin_mid"
+                android:text="99%"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_s" />
         </RelativeLayout>
     </LinearLayout>
 

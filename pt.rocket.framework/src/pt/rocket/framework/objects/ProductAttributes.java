@@ -42,6 +42,7 @@ public class ProductAttributes implements IJSONSerializable, Parcelable {
 
     private Integer reviews;
     private Double rating;
+	private boolean isNew;
 
     /**
      * ProductAttributes empty constructor
@@ -147,8 +148,26 @@ public class ProductAttributes implements IJSONSerializable, Parcelable {
     public Double getMaxSavingPercentage() {
         return maxSavingPercentage;
     }
+    
+    
+    /**
+     * Is new flag
+     * @return true/false
+     * @author sergiopereira
+     */
+    public boolean isNew() {
+		return isNew;
+	}
 
-    /*
+    /**
+     * Set the is new flag
+     * @author sergiopereira
+     */
+	public void setNew(boolean isNew) {
+		this.isNew = isNew;
+	}
+
+	/*
      * (non-Javadoc)
      * 
      * @see pt.rocket.framework.objects.IJSONSerializable#initialize(org.json.JSONObject)
@@ -206,6 +225,9 @@ public class ProductAttributes implements IJSONSerializable, Parcelable {
                 reviews = ratings.optInt(RestConstants.JSON_RATINGS_TOTAL_SUM_TAG);
                 rating = ratings.optDouble(RestConstants.JSON_RATINGS_TOTAL_AVG_TAG);
             }
+            
+            // Get the is new JSON tag
+            isNew = jsonObject.optBoolean(RestConstants.JSON_IS_NEW_TAG, false);
 
         } catch (JSONException e) {
             Log.e(TAG, "Error Parsing the product json", e);

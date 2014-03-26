@@ -3,20 +3,25 @@ package pt.rocket.controllers;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.holoeverywhere.widget.TextView;
+
+import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.framework.objects.Product;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.view.ChangeCountryFragmentActivity;
 import pt.rocket.view.R;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.DataSetObserver;
 import android.graphics.Bitmap;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.RatingBar;
-import android.widget.TextView;
 
 import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxStatus;
@@ -60,6 +65,8 @@ public class ProductsListAdapter extends BaseAdapter {
 
     private Context context;
 
+    private Drawable isNewDrawable;
+
     /**
      * A representation of each item on the list
      */
@@ -74,6 +81,8 @@ public class ProductsListAdapter extends BaseAdapter {
         public TextView price;
         public TextView discountPercentage;
         public TextView reviews;
+        public TextView brand;
+        public ImageView isNew;
 
         // /*
         // * (non-Javadoc)
@@ -109,6 +118,12 @@ public class ProductsListAdapter extends BaseAdapter {
 
         this.inflater = LayoutInflater.from(context);
         reviewLabel = context.getString(R.string.reviews);
+        
+        // Get is new image for respective country
+        SharedPreferences sharedPrefs = context.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        int position = sharedPrefs.getInt(ChangeCountryFragmentActivity.KEY_COUNTRY, 0);
+        this.isNewDrawable = context.getResources().obtainTypedArray(R.array.catalog_new_item).getDrawable(position);
+
     }
 
     // /*
@@ -191,12 +206,16 @@ public class ProductsListAdapter extends BaseAdapter {
             prodItem.rating = (RatingBar) itemView.findViewById(R.id.item_rating);
             prodItem.price = (TextView) itemView.findViewById(R.id.item_regprice);
             prodItem.discount = (TextView) itemView.findViewById(R.id.item_discount);
-            prodItem.discountPercentage = (TextView) itemView
-                    .findViewById(R.id.discount_percentage);
+            prodItem.discountPercentage = (TextView) itemView.findViewById(R.id.discount_percentage);
             // prodItem.vertSeperator = itemView.findViewById(R.id.prod_right_seperator);
             // prodItem.multiselect = itemView.findViewById(R.id.products_multiselect);
             prodItem.reviews = (TextView) itemView.findViewById(R.id.item_reviews);
 
+            // Get brand
+            prodItem.brand = (TextView) itemView.findViewById(R.id.item_brand);
+            // Get is new
+            prodItem.isNew= (ImageView) itemView.findViewById(R.id.image_is_new);
+            
             // stores the item representation on the tag of the view for later
             // retrieval
             itemView.setTag(prodItem);
@@ -225,7 +244,18 @@ public class ProductsListAdapter extends BaseAdapter {
             }
         });
 
-        aq.id(prodItem.name).text(product.getBrand() + " " + product.getName());
+        // Set is new image
+        if(product.getAttributes().isNew()) {
+            prodItem.isNew.setImageDrawable(isNewDrawable);
+            prodItem.isNew.setVisibility(View.VISIBLE);
+        } else {
+            prodItem.isNew.setVisibility(View.GONE);
+        }
+        
+        // Set brand
+        prodItem.brand.setText(product.getBrand().toUpperCase());
+        
+        aq.id(prodItem.name).text(product.getName());
         aq.id(prodItem.price).text(product.getSuggestedPrice());
         if (product.getRating() != null && product.getRating() > 0) {
             aq.id(prodItem.rating).rating(product.getRating().floatValue());

@@ -108,6 +108,7 @@ public class RestConstants {
 	public static final String JSON_MAX_SAVING_PERCENTAGE_TAG = "max_saving_percentage";
 	public static final String JSON_MAX_SPECIAL_PRICE_TAG = "max_special_price";
 	public static final String JSON_SPECIAL_PRICE_TAG = "special_price";
+	public static final String JSON_IS_NEW_TAG = "is_new";
 
 	public static final String JSON_RATINGS_TOTAL_TAG = "ratings_total";
 	public static final String JSON_RATINGS_TOTAL_SUM_TAG = "sum";

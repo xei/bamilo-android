@@ -398,6 +398,36 @@
         <item>@drawable/map_ug</item>
     </array>
     
+	<array name="catalog_new_item">
+        <item>@drawable/img_newarrival_en</item> <!-- NG -->
+        <item>@drawable/img_newarrival_en</item> <!-- KE -->
+        <item>@drawable/img_newarrival_fr</item> <!-- MA -->
+        <item>@drawable/img_newarrival_en</item> <!-- EG -->
+        <item>@drawable/img_newarrival_fr</item> <!-- CI -->
+        <item>@drawable/img_newarrival_en</item> <!-- UG -->
+        
+        <item>@drawable/img_newarrival_en</item> <!-- NG -->
+        <item>@drawable/img_newarrival_en</item> <!-- KE -->
+        <item>@drawable/img_newarrival_fr</item> <!-- MA -->
+        <item>@drawable/img_newarrival_en</item> <!-- EG -->
+        <item>@drawable/img_newarrival_fr</item> <!-- CI -->
+        <item>@drawable/img_newarrival_en</item> <!-- UG -->
+        
+        <item>@drawable/img_newarrival_en</item> <!-- NG -->
+        <item>@drawable/img_newarrival_en</item> <!-- KE -->
+        <item>@drawable/img_newarrival_fr</item> <!-- MA -->
+        <item>@drawable/img_newarrival_en</item> <!-- EG -->
+        <item>@drawable/img_newarrival_fr</item> <!-- CI -->
+        <item>@drawable/img_newarrival_en</item> <!-- UG -->
+        
+        <item>@drawable/img_newarrival_en</item> <!-- NG -->
+        <item>@drawable/img_newarrival_en</item> <!-- KE -->
+        <item>@drawable/img_newarrival_fr</item> <!-- MA -->
+        <item>@drawable/img_newarrival_en</item> <!-- EG -->
+        <item>@drawable/img_newarrival_fr</item> <!-- CI -->
+        <item>@drawable/img_newarrival_en</item> <!-- UG -->
+    </array>
+    
     <item name="default_vibrate" type="bool">false</item>
     <item name="default_notification" type="bool">true</item>
     <item name="default_led" type="bool">true</item>
