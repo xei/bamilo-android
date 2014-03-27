@@ -644,7 +644,7 @@ public class ProductsFragment extends BaseFragment implements
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         if (errorCode != null && pageNumber == 1) {
             showProductsNotfound();
-            ((BaseActivity) getActivity()).showContentContainer(false);
+            ((BaseActivity) getActivity()).showContentContainer();
         } else {
             Log.d(TAG, "onErrorEvent: loading more products failed");
             hideProductsLoading();

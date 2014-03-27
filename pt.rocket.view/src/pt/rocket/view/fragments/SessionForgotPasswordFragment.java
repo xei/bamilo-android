@@ -271,7 +271,7 @@ public class SessionForgotPasswordFragment extends BaseFragment {
     
     protected boolean onSuccessEvent(Bundle bundle) {
         Log.d(TAG, "ON SUCCESS EVENT");
-        getBaseActivity().showContentContainer(false);
+        getBaseActivity().showContentContainer();
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         switch (eventType) {
@@ -326,7 +326,7 @@ public class SessionForgotPasswordFragment extends BaseFragment {
             List<String> errorMessages = (List<String>) errors.get(RestConstants.JSON_VALIDATE_TAG);
 
             if (errors != null && errorMessages != null && errorMessages.size() > 0) {
-                ((BaseActivity) getActivity()).showContentContainer(false);
+                ((BaseActivity) getActivity()).showContentContainer();
                 dialog = DialogGenericFragment.newInstance(true, true, false,
                         getString(R.string.error_forgotpassword_title),
                         errorMessages.get(0),

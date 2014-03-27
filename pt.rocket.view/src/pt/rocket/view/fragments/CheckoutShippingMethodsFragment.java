@@ -210,7 +210,7 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
         nFormContainer = mFormResponse.generateForm(getBaseActivity());
         mShippingMethodsContainer.addView(nFormContainer);        
         mShippingMethodsContainer.refreshDrawableState();
-        getBaseActivity().showContentContainer(false);
+        getBaseActivity().showContentContainer();
     }
     
     /**

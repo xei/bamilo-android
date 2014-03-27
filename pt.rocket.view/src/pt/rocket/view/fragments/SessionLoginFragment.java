@@ -593,7 +593,7 @@ public class SessionLoginFragment extends BaseFragment {
             }
         }
         container.refreshDrawableState();
-        getBaseActivity().showContentContainer(false);
+        getBaseActivity().showContentContainer();
         Log.i(TAG, "code1 loading form completed : "+dynamicForm.getControlsCount());
     }
 
@@ -653,7 +653,7 @@ public class SessionLoginFragment extends BaseFragment {
                     if (errors != null && errorMessages.size() > 0) {
                         
                         if(getActivity() != null)
-                            ((BaseActivity) getActivity()).showContentContainer(false);
+                            ((BaseActivity) getActivity()).showContentContainer();
                         
                         dialog = DialogGenericFragment.newInstance(true, true, false,
                                 getString(R.string.error_login_title),

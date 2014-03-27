@@ -384,7 +384,7 @@ public class WriteReviewFragment extends BaseFragment {
         case GET_RATING_OPTIONS_EVENT:
             ratingOptions = (HashMap<String, HashMap<String, String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_KEY);
             JumiaApplication.INSTANCE.setRatingOptions(ratingOptions);
-            getBaseActivity().showContentContainer(false);
+            getBaseActivity().showContentContainer();
             setLayout();
             
             return true;

@@ -215,7 +215,7 @@ public class CheckoutPollAnswerFragment extends BaseFragment implements OnClickL
         pollFormContainer.refreshDrawableState();
         // Show
         super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_ABOUT_YOU, orderSummary);
-        getBaseActivity().showContentContainer(false);
+        getBaseActivity().showContentContainer();
     }
     
     
@@ -373,7 +373,7 @@ public class CheckoutPollAnswerFragment extends BaseFragment implements OnClickL
             return true;
         }
         
-        getBaseActivity().showContentContainer(false);
+        getBaseActivity().showContentContainer();
         
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);

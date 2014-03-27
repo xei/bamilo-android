@@ -143,7 +143,7 @@ public class ChangeCountryFragment extends BaseFragment {
         super.onResume();
         Log.i(TAG, "ON RESUME");
         if(selected != SHOP_NOT_SELECTED){
-            ((BaseActivity) getActivity()).showContentContainer(false);
+            ((BaseActivity) getActivity()).showContentContainer();
             ((BaseActivity) getActivity()).hideTitle();
             ((BaseActivity) getActivity()).setCheckoutHeader(R.string.nav_country);
         }

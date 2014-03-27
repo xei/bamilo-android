@@ -285,7 +285,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
         payMethod = mOrderFinish.getPaymentMethod();
         if(payMethod != null) showPaymentOptions();
         // Show container
-        getBaseActivity().showContentContainer(false);
+        getBaseActivity().showContentContainer();
     }
     
     /**
@@ -583,7 +583,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
                 @SuppressWarnings("unchecked")
                 HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY); 
                 showErrorDialog(errors);
-                getBaseActivity().showContentContainer(false);
+                getBaseActivity().showContentContainer();
             } else {
                 Log.w(TAG, "RECEIVED CHECKOUT_FINISH_EVENT: " + errorCode.name());
                 super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED CHECKOUT_FINISH_EVENT: " + errorCode.name());
@@ -630,7 +630,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
 
         if (errors != null && errorMessages != null && errorMessages.size() > 0) {
             
-            if(getBaseActivity() != null) getBaseActivity().showContentContainer(false);
+            if(getBaseActivity() != null) getBaseActivity().showContentContainer();
             
             dialog = DialogGenericFragment.newInstance(true, true, false,
                     getString(R.string.error_login_title),

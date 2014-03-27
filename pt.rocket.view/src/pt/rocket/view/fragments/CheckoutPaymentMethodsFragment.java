@@ -241,7 +241,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
         paymentMethodsContainer.addView(formGenerator.getContainer());
         paymentMethodsContainer.refreshDrawableState();
         prepareCouponView();
-        getBaseActivity().showContentContainer(false);
+        getBaseActivity().showContentContainer();
     }
     
     private void generateNoPayment(){
@@ -251,7 +251,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
         paymentMethodsContainer.addView(view);
         prepareCouponView();
         paymentMethodsContainer.refreshDrawableState();
-        getBaseActivity().showContentContainer(false);
+        getBaseActivity().showContentContainer();
     }
     
     private View generateCouponView(){

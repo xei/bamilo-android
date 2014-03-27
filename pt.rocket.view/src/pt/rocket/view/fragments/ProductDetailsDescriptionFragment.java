@@ -227,7 +227,7 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
     }
     
     private void displayProductInformation(View view ) {
-        getBaseActivity().showContentContainer(false);
+        getBaseActivity().showContentContainer();
         mProductName.setText( mCompleteProduct.getBrand() + " " + mCompleteProduct.getName());
         displayPriceInformation();
         displaySpecification();

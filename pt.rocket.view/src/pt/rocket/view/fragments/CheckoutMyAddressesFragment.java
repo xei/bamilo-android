@@ -492,7 +492,7 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
             addAddresses(mBottomRadioGroup, addresses.getAddresses());
         }
         // Show content
-        getBaseActivity().showContentContainer(false);
+        getBaseActivity().showContentContainer();
     }
     
     /**
@@ -658,7 +658,7 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
             break;
         case SET_BILLING_ADDRESS_EVENT:
             Log.d(TAG, "RECEIVED SET_BILLING_ADDRESS_EVENT");
-            getBaseActivity().showContentContainer(false);
+            getBaseActivity().showContentContainer();
             if (errorCode == ErrorCode.REQUEST_ERROR) {
                 @SuppressWarnings("unchecked")
                 HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY); 
@@ -724,7 +724,7 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
 
         if (errors != null && errorMessages != null && errorMessages.size() > 0) {
             
-            if(getBaseActivity() != null) getBaseActivity().showContentContainer(false);
+            if(getBaseActivity() != null) getBaseActivity().showContentContainer();
             
             dialog = DialogGenericFragment.newInstance(true, true, false,
                     getString(titleId),

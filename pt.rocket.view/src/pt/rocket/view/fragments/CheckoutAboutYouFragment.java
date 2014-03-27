@@ -542,7 +542,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             }
         }
         loginFormContainer.refreshDrawableState();
-        getBaseActivity().showContentContainer(false);
+        getBaseActivity().showContentContainer();
         Log.i(TAG, "code1 loading form completed : "+loginForm.getControlsCount());
         
 
@@ -565,7 +565,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         // Show order summary
         super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_ABOUT_YOU, mOrderSummary);
         // Show container
-        getBaseActivity().showContentContainer(false);
+        getBaseActivity().showContentContainer();
         return true;
     }
     
@@ -891,7 +891,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
                     @SuppressWarnings("unchecked")
                     HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
                     showErrorDialog(errors, R.string.error_login_title);
-                    getBaseActivity().showContentContainer(false);
+                    getBaseActivity().showContentContainer();
                 }
             }
             break;
@@ -901,7 +901,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
                 @SuppressWarnings("unchecked")
                 HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY); 
                 showErrorDialog(errors, R.string.error_signup_title);
-                getBaseActivity().showContentContainer(false);
+                getBaseActivity().showContentContainer();
             }
             break;
         case GET_SIGNUP_FORM_EVENT:
@@ -959,7 +959,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
 
         if (errors != null && errorMessages != null && errorMessages.size() > 0) {
             
-            if(getBaseActivity() != null) getBaseActivity().showContentContainer(false);
+            if(getBaseActivity() != null) getBaseActivity().showContentContainer();
             
             dialog = DialogGenericFragment.newInstance(true, true, false,
                     getString(titleId),

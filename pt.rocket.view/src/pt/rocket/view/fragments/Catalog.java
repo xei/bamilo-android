@@ -251,7 +251,8 @@ public class Catalog extends BaseFragment implements OnClickListener{
         if(mCatalogFilter != null) setFilterAction();
         
         AnalyticsGoogle.get().trackPage(R.string.gproductlist);
-        getBaseActivity().showContentContainer(false);
+        getBaseActivity().setProcessShow(true);
+        getBaseActivity().showContentContainer();
         
     }
 

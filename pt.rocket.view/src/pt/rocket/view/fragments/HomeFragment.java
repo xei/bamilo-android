@@ -324,7 +324,7 @@ public class HomeFragment extends BaseFragment {
         configureLayout();
         // }
         ((BaseActivity) getActivity()).setProcessShow(true);
-        ((BaseActivity) getActivity()).showContentContainer(false);
+        ((BaseActivity) getActivity()).showContentContainer();
         
     }
 
@@ -477,7 +477,7 @@ public class HomeFragment extends BaseFragment {
         }
         getView().findViewById(R.id.fallback_best).setSelected(true);
         ((BaseActivity) getActivity()).setProcessShow(true);
-        ((BaseActivity) getActivity()).showContentContainer(false);
+        ((BaseActivity) getActivity()).showContentContainer();
     }
 
     private void proccessResult(Collection<Parcelable> result) {

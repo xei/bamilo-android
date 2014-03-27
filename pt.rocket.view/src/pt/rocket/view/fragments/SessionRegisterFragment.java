@@ -558,7 +558,7 @@ public class SessionRegisterFragment extends BaseFragment {
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         switch (eventType) {
         case REGISTER_ACCOUNT_EVENT:
-            getBaseActivity().showContentContainer(false);
+            getBaseActivity().showContentContainer();
             // Get Register Completed Event
             Customer customer = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             JumiaApplication.INSTANCE.CUSTOMER = customer;
@@ -573,7 +573,7 @@ public class SessionRegisterFragment extends BaseFragment {
             Log.d(TAG, "event done - REGISTER_ACCOUNT_EVENT");
             return false;
         case GET_REGISTRATION_FORM_EVENT:
-            getBaseActivity().showContentContainer(false);
+            getBaseActivity().showContentContainer();
             Form form = (Form) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             Log.d(TAG, "getRegistrationFormCompleted: form = " + form.toJSON());
             if (null != form) {
@@ -661,7 +661,7 @@ public class SessionRegisterFragment extends BaseFragment {
 //                Log.i(TAG, "code1exists : validateMessages : "+validateMessages);
                 if (validateMessages != null
                         && validateMessages.contains(Errors.CODE_REGISTER_CUSTOMEREXISTS)) {
-                    ((BaseActivity) getActivity()).showContentContainer(false);
+                    ((BaseActivity) getActivity()).showContentContainer();
                     dialog = DialogGenericFragment.newInstance(true, true, false,
                             getString(R.string.error_register_title),
                             getString(R.string.error_register_alreadyexists),
@@ -680,7 +680,7 @@ public class SessionRegisterFragment extends BaseFragment {
                     dialog.show(getActivity().getSupportFragmentManager(), null);
                     return true;
                 } else {
-                    ((BaseActivity) getActivity()).showContentContainer(false);
+                    ((BaseActivity) getActivity()).showContentContainer();
                     dialog = DialogGenericFragment.newInstance(true, true, false,
                             getString(R.string.error_register_title),
                             getString(R.string.incomplete_alert),

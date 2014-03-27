@@ -277,7 +277,7 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
                 lastNameText.setText(customer.getLastName());
                 firstNameText.setText(customer.getFirstName());
                 emailText.setText(customer.getEmail());
-                getBaseActivity().showContentContainer(false);
+                getBaseActivity().showContentContainer();
             } else {
                 restartAllFragments();
                 finish();
@@ -309,7 +309,7 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
                 if (errorMessages == null) {
                     return false;
                 }
-                ((BaseActivity) getActivity()).showContentContainer(false);
+                ((BaseActivity) getActivity()).showContentContainer();
 
                 List<String> validateMessages = errorMessages.get(RestConstants.JSON_VALIDATE_TAG);
                 if (validateMessages == null || validateMessages.isEmpty()) {
@@ -323,7 +323,7 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
 
                 errorMessage = validateMessages.get(0);
                 displayErrorHint(errorMessage);
-                ((BaseActivity) getActivity()).showContentContainer(false);
+                ((BaseActivity) getActivity()).showContentContainer();
                 return true;
 
             }

@@ -151,7 +151,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
-    private int drawable_state = -1;
+    private int drawable_state = DrawerLayout.STATE_IDLE;
 
     private static final Set<EventType> HANDLED_EVENTS = EnumSet.of(
             EventType.GET_SHOPPING_CART_ITEMS_EVENT,
@@ -502,7 +502,13 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             }
         }
     }
-
+    
+    public void closeDrawerIfOpen() {
+        if (mDrawerLayout.isDrawerOpen(mDrawerNavigation)) {
+            mDrawerLayout.closeDrawer(mDrawerNavigation);
+        }
+    }
+    
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         boolean result = super.dispatchKeyEvent(event);
@@ -756,7 +762,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             return true;
         } else if (itemId == R.id.menu_search) {
             if(drawable_state == mDrawerLayout.STATE_IDLE){
-                toggle();
+                closeDrawerIfOpen();
                 onSwitchFragment(FragmentType.SEARCH, FragmentController.NO_BUNDLE,
                         FragmentController.ADD_TO_BACK_STACK);
             }
@@ -765,7 +771,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         } else if (itemId == R.id.menu_basket) {
             Log.i(TAG, "code1state : "+mDrawerLayout.getDrawableState()[0]+" : idle : "+mDrawerLayout.STATE_IDLE+" : dragging :  "+mDrawerLayout.STATE_DRAGGING+"  : settling : "+mDrawerLayout.STATE_SETTLING);
             if(drawable_state == mDrawerLayout.STATE_IDLE){
-                toggle();
+                closeDrawerIfOpen();
                 onSwitchFragment(FragmentType.SHOPPING_CART, FragmentController.NO_BUNDLE,
                         FragmentController.ADD_TO_BACK_STACK);
             }
@@ -820,15 +826,18 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                 break;
             }
         }
-
-        tvActionCartCount = (TextView) menu.findItem(R.id.menu_basket).getActionView()
-                .findViewById(R.id.cart_count);
-        tvActionCartCount.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                menu.performIdentifierAction(R.id.menu_basket, 0);
-            }
-        });
+        if(!initialCountry){
+            tvActionCartCount = (TextView) menu.findItem(R.id.menu_basket).getActionView()
+                    .findViewById(R.id.cart_count);
+            tvActionCartCount.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    menu.performIdentifierAction(R.id.menu_basket, 0);
+                }
+            });
+        } else {
+            menu.findItem(R.id.menu_basket).setVisible(false);
+        }
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -1213,17 +1222,17 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         errorView.setOnClickListener(clickListener);
     }
 
-    public final void showContentContainer(boolean fromCheckout) {
-        if (processShow) {
-            Log.d(getTag(), "Showing the content container");
-            hideLoadingInfo();
-            dismissProgress();
-            setVisibility(errorView, false);
-            if (!fromCheckout) {
-                setVisibility(contentContainer, true);
-            }
-        }
-    }
+//    public final void showContentContainer(boolean fromCheckout) {
+//        if (processShow) {
+//            Log.d(getTag(), "Showing the content container");
+//            hideLoadingInfo();
+//            dismissProgress();
+//            setVisibility(errorView, false);
+//            if (!fromCheckout) {
+//                setVisibility(contentContainer, true);
+//            }
+//        }
+//    }
 
     public final void showContentContainer() {
         if (processShow) {
@@ -1459,7 +1468,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         if (errorCode.isNetworkError()) {
             switch (errorCode) {
             case NO_NETWORK:
-                showContentContainer(false);
+                showContentContainer();
 
                 // Remove dialog if exist
                 if (dialog != null) {
@@ -1511,7 +1520,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                 if (dialogMsg.equals("")) {
                     dialogMsg = getString(R.string.validation_errortext);
                 }
-                showContentContainer(false);
+                showContentContainer();
                 dialog = DialogGenericFragment.newInstance(
                         true, true, false, getString(R.string.validation_title),
                         dialogMsg, getResources().getString(R.string.ok_label), "",
@@ -1531,7 +1540,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                 dialog.show(getSupportFragmentManager(), null);
                 return true;
             default:
-                showContentContainer(false);
+                showContentContainer();
 
                 // Remove dialog if exist
                 if (dialog != null) {
@@ -1741,7 +1750,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      * @author sergiopereira
      */
     public void fragmentManagerBackPressed() {
-        showContentContainer(false);
+        showContentContainer();
         fragmentController.fragmentBackPressed(this);
     }
 

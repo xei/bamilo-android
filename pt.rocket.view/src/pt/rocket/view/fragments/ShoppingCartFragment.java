@@ -417,7 +417,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
                                 .getCartItems().values().size());
             }
         default:
-            getBaseActivity().showContentContainer(false);
+            getBaseActivity().showContentContainer();
             AnalyticsGoogle.get().trackLoadTiming(R.string.gshoppingcart, mBeginRequestMillis);
             displayShoppingCart((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY));
             getBaseActivity().updateSlidingMenu();

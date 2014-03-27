@@ -433,7 +433,7 @@ public class SearchFragment extends BaseFragment implements OnItemClickListener 
         // Validate fragment visibility
         if(isVisible()){
             setEmptySuggestions( R.string.searchsuggestions_empty);
-            ((BaseActivity) getActivity()).showContentContainer(false);
+            ((BaseActivity) getActivity()).showContentContainer();
         }
     }
     

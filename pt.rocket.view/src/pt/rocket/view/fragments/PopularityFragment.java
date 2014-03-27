@@ -395,7 +395,7 @@ public class PopularityFragment extends BaseFragment {
             return true;
         }
         mProductRatingPage =  bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);;
-        getBaseActivity().showContentContainer(false);
+        getBaseActivity().showContentContainer();
         displayReviews();
         return true;
     }

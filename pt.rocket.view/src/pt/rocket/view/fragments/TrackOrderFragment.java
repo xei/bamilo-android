@@ -227,7 +227,7 @@ public class TrackOrderFragment extends BaseFragment {
         }
         ((Button) getView().findViewById(R.id.btn_track_order)).setText(R.string.track_order);
         ((TextView) getView().findViewById(R.id.title_text)).setText(getActivity().getString(R.string.track_your_order));
-        ((BaseActivity) getActivity()).showContentContainer(false);
+        ((BaseActivity) getActivity()).showContentContainer();
     }
     
     private void inflateItemsList(ArrayList<OrderTrackerItem> items){

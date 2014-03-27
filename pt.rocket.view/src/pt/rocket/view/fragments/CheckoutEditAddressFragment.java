@@ -263,7 +263,7 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
         // Show
         super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_BILLING, orderSummary);
         // Show
-        getBaseActivity().showContentContainer(false);
+        getBaseActivity().showContentContainer();
         
         mEditFormContainer.refreshDrawableState();
     }
@@ -678,7 +678,7 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
                 @SuppressWarnings("unchecked")
                 HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY); 
                 showErrorDialog(errors);
-                getBaseActivity().showContentContainer(false);
+                getBaseActivity().showContentContainer();
             } else {
                 Log.w(TAG, "RECEIVED GET_CITIES_EVENT: " + errorCode.name());
                 super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_CITIES_EVENT: " + errorCode.name());
@@ -727,7 +727,7 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
 
         if (errors != null && errorMessages != null && errorMessages.size() > 0) {
             
-            if(getBaseActivity() != null) getBaseActivity().showContentContainer(false);
+            if(getBaseActivity() != null) getBaseActivity().showContentContainer();
             
             dialog = DialogGenericFragment.newInstance(true, true, false,
                     getString(R.string.error_login_title),

@@ -356,8 +356,6 @@ public class CategoriesContainerFragment extends BaseFragment {
         
         // Validate if fragment is on the screen
     
-//        Log.i(TAG, "code1 received categories");
-        getBaseActivity().showContentContainer(false);
         if(!bundle.getBoolean(USED_CACHED_CATEGORIES, false)){
             AnalyticsGoogle.get().trackLoadTiming(R.string.gcategories, mBeginRequestMillis);
         } else {
@@ -420,6 +418,8 @@ public class CategoriesContainerFragment extends BaseFragment {
         ft.replace(R.id.categories_fragments_container, mCategoriesFragment);
         ft.commit();
         FragmentCommunicator.getInstance().startFragmentsCallBacks(this, mCategoriesFragment);
+        
+        getBaseActivity().showContentContainer();
     }
     
     /**
@@ -465,6 +465,8 @@ public class CategoriesContainerFragment extends BaseFragment {
         ft.commit();
         
         FragmentCommunicator.getInstance().startFragmentsCallBacks(this, mCategoriesFragment, mChildCategoriesFragment);
+        
+        getBaseActivity().showContentContainer();
         
     }
     
@@ -592,7 +594,7 @@ public class CategoriesContainerFragment extends BaseFragment {
         
         if(bundle.containsKey(GET_CATEGORIES)){
             mBeginRequestMillis = System.currentTimeMillis();
-            
+            Log.i(TAG, "on notifyFragment  trigger(categoryUrl)");
             /**
              * TRIGGERS
              * @author sergiopereira

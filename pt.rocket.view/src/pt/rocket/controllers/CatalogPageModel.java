@@ -713,7 +713,7 @@ public class CatalogPageModel {
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         if (errorCode != null && pageNumber == 1) {
             showProductsNotfound();
-            mActivity.showContentContainer(false);
+            mActivity.showContentContainer();
         } else {
             Log.d(TAG, "onErrorEvent: loading more products failed");
             hideProductsLoading();

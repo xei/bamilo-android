@@ -1094,7 +1094,12 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
     };
 
     public void onSuccessEvent(Bundle bundle) {
+       
         if(!isVisible()){
+            if(getBaseActivity() != null){
+                getBaseActivity().setProcessShow(true);    
+            }
+            
             return;
         }
         if(getBaseActivity() == null)
@@ -1127,13 +1132,13 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
                 displayGallery(mCompleteProduct);
             }
 
-            getBaseActivity().showContentContainer(false);
+            getBaseActivity().showContentContainer();
             break;
         }
     }
 
     public void onErrorEvent(Bundle bundle) {
-        
+        ((BaseActivity) getActivity()).setProcessShow(true);
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
