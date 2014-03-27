@@ -1365,6 +1365,7 @@ public class ActionBarView extends AbsActionBarView {
 	public static class HomeView extends FrameLayout {
 		private View mUpView;
 		private ImageView mIconView;
+		private ImageView mIconTextView;
 		private int mUpWidth;
 
 		public HomeView(Context context) {
@@ -1469,7 +1470,7 @@ public class ActionBarView extends AbsActionBarView {
 		}
 		
 		public View getUpView(){
-			return mIconView;
+			return mUpView;
 		}
 
 		@Override

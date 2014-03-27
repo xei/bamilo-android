@@ -918,6 +918,7 @@ containing a value of this type.
         public static int abs__toast_frame=0x7f020069;
         public static int actionoverflow=0x7f02006a;
         public static int actionoverflow_selected=0x7f02006b;
+        public static int logo_ic_text=0x7f02006c;
     }
     public static final class id {
         public static int abs__action_bar=0x7f050022;

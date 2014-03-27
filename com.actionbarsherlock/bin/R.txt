@@ -241,6 +241,7 @@ int drawable abs__textfield_searchview_right_holo_light 0x7f020068
 int drawable abs__toast_frame 0x7f020069
 int drawable actionoverflow 0x7f02006a
 int drawable actionoverflow_selected 0x7f02006b
+int drawable logo_ic_text 0x7f02006c
 int id abs__action_bar 0x7f050022
 int id abs__action_bar_container 0x7f050021
 int id abs__action_bar_subtitle 0x7f050011
