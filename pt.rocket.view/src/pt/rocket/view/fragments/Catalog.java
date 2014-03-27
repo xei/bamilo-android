@@ -112,7 +112,6 @@ public class Catalog extends BaseFragment implements OnClickListener{
 
         return view;
     }
-    
 
     // XXX
     public void setFilter(ArrayList<CatalogFilter> filters){

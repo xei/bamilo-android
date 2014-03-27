@@ -71,6 +71,8 @@ public class SearchFragment extends BaseFragment implements OnItemClickListener 
     private String searchSuggestionText;
     
     private long mBeginRequestMillis;
+
+    private List<SearchSuggestion> searchSuggestions;
     
 
     /**
@@ -336,8 +338,6 @@ public class SearchFragment extends BaseFragment implements OnItemClickListener 
         Bundle bundle = new Bundle();
         bundle.putString(GetSearchSuggestionHelper.SEACH_PARAM, searchSuggestionText);
         JumiaApplication.INSTANCE.sendRequest(new GetSearchSuggestionHelper(), bundle, mCallBack);
-//        EventManager.getSingleton().triggerRequestEvent(
-//                new GetSearchSuggestionsEvent(searchSuggestionText));
     }
     
     /**
@@ -364,7 +364,6 @@ public class SearchFragment extends BaseFragment implements OnItemClickListener 
         }
     };
 
-    private List<SearchSuggestion> searchSuggestions;
 
     
     
@@ -382,11 +381,9 @@ public class SearchFragment extends BaseFragment implements OnItemClickListener 
         hideKeyboardAndFocus();
         getActivity().findViewById(R.id.dummy_search_layout).requestFocus();
         executeSearch( ((SearchSuggestion)parent.getAdapter().getItem(position)).getResult());
-        // autoCompleteView.setText( "" );
     }
     
     protected void showKeyboardAndFocus() {
-        // autoCompleteView.clearFocus();
         searchTermView.requestFocus();
         ((BaseActivity) getActivity()).showKeyboard();
     }
@@ -395,12 +392,6 @@ public class SearchFragment extends BaseFragment implements OnItemClickListener 
         ((BaseActivity) getActivity()).hideKeyboard();
         getActivity().findViewById(R.id.dummy_search_layout).requestFocus();
     }
-    
-//    @Override
-//    protected boolean onSuccessEvent(ResponseResultEvent<?> event) {
-//        
-//        return true;
-//    }
     
     // SEARCH SUGGESTIONS
     private void setSearchSuggestions(final List<SearchSuggestion> arrayList) {

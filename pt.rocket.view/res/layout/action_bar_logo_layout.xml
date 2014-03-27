@@ -13,7 +13,7 @@
         android:contentDescription="@string/app_name"
         android:focusable="false"
         android:longClickable="false"
-        android:src="@drawable/logo_ic" />
+        android:src="@drawable/logo_ic_text" />
 
     <!-- android:src="@drawable/actionbar_selector_logo" -->
 

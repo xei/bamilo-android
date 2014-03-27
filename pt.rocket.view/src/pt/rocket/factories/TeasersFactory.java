@@ -16,7 +16,6 @@ import pt.rocket.framework.objects.TeaserBrand;
 import pt.rocket.framework.objects.TeaserImage;
 import pt.rocket.framework.objects.TeaserSpecification;
 import pt.rocket.framework.utils.WindowHelper;
-import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -316,7 +315,7 @@ public class TeasersFactory {
         final View progressBar = imageTeaserView.findViewById(R.id.image_loading_progress);
         // Adapts the Image size if needed
         if(size > 0 && imageTeaserView.getLayoutParams() != null){
-            int mainContentWidth = (int) (WindowHelper.getWidth(mContext) * mContext.getResources().getFraction(R.dimen.navigation_menu_offset,1,1));
+            int mainContentWidth = WindowHelper.getWidth(mContext);
             imageTeaserView.getLayoutParams().width = mainContentWidth / size;
         }
         

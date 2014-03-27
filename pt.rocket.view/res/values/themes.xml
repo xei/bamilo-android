@@ -52,7 +52,7 @@
         <!-- <item name="homeAsUpIndicator">@drawable/ic_sidemenu</item> -->
         <!-- <item name="android:popupMenuStyle">@style/MyPopupMenu</item> -->
         <!-- <item name="popupMenuStyle">@style/MyPopupMenu</item> -->
-        <item name="homeAsUpIndicator">@null</item>
+        <item name="homeAsUpIndicator">@drawable/ic_drawer</item>
         <item name="android:windowBackground">@android:color/white</item>
         <item name="actionModeShareDrawable">@drawable/selector_share</item>
         <item name="android:actionBarItemBackground" tools:targetApi="14">@null</item>
