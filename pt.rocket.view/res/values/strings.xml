@@ -144,10 +144,12 @@
     <string name="product_sort">Sort by:</string>
     <string name="product_sort_button">Sort</string>
     <string name="products_sort_popularity">Popularity</string>
+    <string name="products_sort_newin">New in</string>
     <string name="products_sort_priceup">Price up</string>
     <string name="products_sort_pricedown">Price down</string>
     <string name="products_sort_name">Name</string>
     <string name="products_sort_brand">Brand</string>
+    <string name="products_sort_bestrated">Best Rating</string>
     <string name="try_again">Retry</string>
     <string name="no_conn">No Connection Available</string>
     <string name="no_service">Service unavailable</string>

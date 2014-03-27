@@ -1138,7 +1138,9 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
     }
 
     public void onErrorEvent(Bundle bundle) {
-        ((BaseActivity) getActivity()).setProcessShow(true);
+        if(getActivity() != null){
+            ((BaseActivity) getActivity()).setProcessShow(true);
+        }
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");

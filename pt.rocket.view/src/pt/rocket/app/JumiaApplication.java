@@ -31,6 +31,7 @@ import pt.rocket.helpers.BaseHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.preferences.ShopPreferences;
 import pt.rocket.utils.CheckVersion;
+import pt.rocket.utils.RocketImageLoader;
 import pt.rocket.utils.ServiceSingleton;
 import pt.rocket.view.R;
 import android.app.Application;
@@ -145,6 +146,7 @@ public class JumiaApplication extends Application implements ExceptionCallback {
         doBindService();
         
         Log.init(getApplicationContext());
+        RocketImageLoader.init(this);
         Log.d(TAG, "onCreate");
         INSTANCE = this;
         

@@ -8,6 +8,8 @@ import org.holoeverywhere.widget.TextView;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.framework.objects.Product;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.utils.RocketImageLoader;
+import pt.rocket.utils.RocketImageLoader.RocketImageLoaderListener;
 import pt.rocket.view.ChangeCountryFragmentActivity;
 import pt.rocket.view.R;
 import android.content.Context;
@@ -224,25 +226,44 @@ public class ProductsListAdapter extends BaseAdapter {
         }
 
         AQuery aq = new AQuery(itemView);
-
+        
         String imageURL = "";
         Product product = products.get(position);
         if (product.getImages().size() > 0) {
             imageURL = product.getImages().get(0).getUrl();
         }
         prodItem.progress.setVisibility(View.VISIBLE);
-        
-        aq.id(prodItem.image).image(imageURL, true, true, 0, 0, new BitmapAjaxCallback() {
-
+        RocketImageLoader.instance.loadImage(imageURL, prodItem.image, new RocketImageLoaderListener() {
+            
             @Override
-            public void callback(String url, ImageView iv, Bitmap bm,
-                    AjaxStatus status) {
-
-                iv.setImageBitmap(bm);
+            public void onLoadedSuccess(Bitmap bitmap) {
+                prodItem.image.setImageBitmap(bitmap);
                 prodItem.progress.setVisibility(View.GONE);
-
+            }
+            
+            @Override
+            public void onLoadedError() {
+                // TODO Auto-generated method stub
+                
+            }
+            
+            @Override
+            public void onLoadedCancel(String imageUrl) {
+                // TODO Auto-generated method stub
+                
             }
         });
+//        aq.id(prodItem.image).image(imageURL, true, true, 0, 0, new BitmapAjaxCallback() {
+//
+//            @Override
+//            public void callback(String url, ImageView iv, Bitmap bm,
+//                    AjaxStatus status) {
+//
+//                iv.setImageBitmap(bm);
+//                prodItem.progress.setVisibility(View.GONE);
+//
+//            }
+//        });
 
         // Set is new image
         if(product.getAttributes().isNew()) {

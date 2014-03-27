@@ -328,8 +328,8 @@ public class Catalog extends BaseFragment implements OnClickListener{
         for (int i = 0; i < mCatalogPageModel.length; i++) {
             int index = mCatalogPageModel[i].getIndex();
             if(index+val < 0){
-                mCatalogPageModel[i].setIndex(4);
-            } else if(index+val == 5){
+                mCatalogPageModel[i].setIndex(6);
+            } else if(index+val == 7){
                 mCatalogPageModel[i].setIndex(0);    
             } else{
                 mCatalogPageModel[i].setIndex(index + val);

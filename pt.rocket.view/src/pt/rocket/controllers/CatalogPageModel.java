@@ -135,38 +135,48 @@ public class CatalogPageModel {
         setIndex(index);
         this.mFragment = mFragment;
         switch (index) {
-        case 0: // <item > Copy of Brand for infinite scroll</item>
+        case 0: // <item > Copy of Best Rating for infinite scroll</item>
             // option
-            sort = ProductSort.BRAND;
-            dir = Direction.ASCENDENT;
+            sort = ProductSort.BESTRATING;
+            dir = Direction.DESCENDENT;
             break;
         case 1: // <item >Popularity</item>
             sort = ProductSort.POPULARITY;
             dir = Direction.DESCENDENT;
             break;
         case 2: // <item >Price up</item>
+            sort = ProductSort.NEWIN;
+            dir = Direction.DESCENDENT;
+            break;
+        case 3: // <item >Price up</item>
             sort = ProductSort.PRICE;
             dir = Direction.ASCENDENT;
             break;
-        case 3: // <item >Price down</item>
+        case 4: // <item >Price down</item>
             sort = ProductSort.PRICE;
             dir = Direction.DESCENDENT;
             break;
-        case 4: // <item >Name</item>
+        case 5: // <item >Name</item>
             // Offer option
             sort = ProductSort.NAME;
             dir = Direction.ASCENDENT;
             break;
-        case 5: // <item >Brand</item>
+        case 6: // <item >Brand</item>
             // option
             sort = ProductSort.BRAND;
             dir = Direction.ASCENDENT;
             break;
+        case 7: // <item >Best Rating</item>
+            // option
+            sort = ProductSort.BESTRATING;
+            dir = Direction.DESCENDENT;
+            break;
 
-        case 6: // <item >Copy of Popularity for infinite scroll</item>
+        case 8: // <item >Copy of Popularity for infinite scroll</item>
             sort = ProductSort.POPULARITY;
             dir = Direction.DESCENDENT;
             break;
+
 
         }
     }

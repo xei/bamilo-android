@@ -9,11 +9,13 @@
     <string-array name="products_picker">
 
         <!-- <item>@string/products_sort_brand</item> -->
-        <item>@string/products_sort_brand</item>
+        <item>@string/products_sort_bestrated</item>
         <item>@string/products_sort_popularity</item>
+        <item>@string/products_sort_newin</item>
         <item>@string/products_sort_priceup</item>
         <item>@string/products_sort_pricedown</item>
         <item>@string/products_sort_name</item>
+        <item>@string/products_sort_brand</item>
 
         <!-- <item>@string/products_sort_popularity</item> -->
     </string-array>

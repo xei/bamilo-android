@@ -88,6 +88,12 @@ public class GetProductsHelper extends BaseHelper {
             case 3:
                 sortString = "brand";
                 break;
+            case 4:
+                sortString = "newest";
+                break;
+            case 5:
+                sortString = "rating";
+                break;
             }
             if (!TextUtils.isEmpty(sortString)) {
                 uriBuilder.appendQueryParameter("sort", "" + sortString);
