@@ -8,7 +8,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.holoeverywhere.widget.Button;
-import org.holoeverywhere.widget.DrawerLayout;
 import org.holoeverywhere.widget.EditText;
 import org.holoeverywhere.widget.TextView;
 
@@ -53,6 +52,7 @@ import android.os.RemoteException;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.DrawerLayout;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -151,6 +151,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
+    private int drawable_state = -1;
 
     private static final Set<EventType> HANDLED_EVENTS = EnumSet.of(
             EventType.GET_SHOPPING_CART_ITEMS_EVENT,
@@ -451,6 +452,13 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                 getSupportActionBar().updateUpState(false);
                 invalidateOptionsMenu();
             }
+            
+            @Override
+            public void onDrawerStateChanged(int newState) {
+                drawable_state = newState;
+                super.onDrawerStateChanged(newState);
+                
+            }
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
@@ -487,7 +495,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      */
     public void toggle() {
         if (mDrawerLayout.isDrawerOpen(mDrawerNavigation)) {
-            mDrawerToggle.onDrawerStateChanged(DrawerLayout.STATE_DRAGGING);
             mDrawerLayout.closeDrawer(mDrawerNavigation);
         } else {
             if (mDrawerLayout.getDrawerLockMode(mDrawerNavigation) != DrawerLayout.LOCK_MODE_LOCKED_OPEN) {
@@ -748,12 +755,21 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             toggle();
             return true;
         } else if (itemId == R.id.menu_search) {
-            onSwitchFragment(FragmentType.SEARCH, FragmentController.NO_BUNDLE,
-                    FragmentController.ADD_TO_BACK_STACK);
+            if(drawable_state == mDrawerLayout.STATE_IDLE){
+                toggle();
+                onSwitchFragment(FragmentType.SEARCH, FragmentController.NO_BUNDLE,
+                        FragmentController.ADD_TO_BACK_STACK);
+            }
+           
             return false;
         } else if (itemId == R.id.menu_basket) {
-            onSwitchFragment(FragmentType.SHOPPING_CART, FragmentController.NO_BUNDLE,
-                    FragmentController.ADD_TO_BACK_STACK);
+            Log.i(TAG, "code1state : "+mDrawerLayout.getDrawableState()[0]+" : idle : "+mDrawerLayout.STATE_IDLE+" : dragging :  "+mDrawerLayout.STATE_DRAGGING+"  : settling : "+mDrawerLayout.STATE_SETTLING);
+            if(drawable_state == mDrawerLayout.STATE_IDLE){
+                toggle();
+                onSwitchFragment(FragmentType.SHOPPING_CART, FragmentController.NO_BUNDLE,
+                        FragmentController.ADD_TO_BACK_STACK);
+            }
+            
             return false;
         } else {
             return super.onOptionsItemSelected(item);
@@ -778,11 +794,9 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             switch (item) {
             case SEARCH_BAR:
                 Log.i(TAG, "ON OPTIONS MENU: CREATE SEARCH BAR");
-                closeDrawerIfOpen();
                 setSearchBar(menu);
                 break;
             case SHARE:
-                closeDrawerIfOpen();
                 menu.findItem(item.resId).setVisible(true);
                 menu.findItem(item.resId).setEnabled(true);
                 mShareActionProvider = (ShareActionProvider) menu.findItem(item.resId)
@@ -802,7 +816,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                 break;
             case BUY_ALL:
             default:
-                closeDrawerIfOpen();
                 menu.findItem(item.resId).setVisible(true);
                 break;
             }
@@ -814,18 +827,12 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             @Override
             public void onClick(View v) {
                 menu.performIdentifierAction(R.id.menu_basket, 0);
-                closeDrawerIfOpen();
             }
         });
 
         return super.onCreateOptionsMenu(menu);
     }
 
-    public void closeDrawerIfOpen(){
-        if (mDrawerLayout.isDrawerOpen(mDrawerNavigation)) {
-            mDrawerLayout.closeDrawer(mDrawerNavigation);
-        }
-    }
     /**
      * ############### SEARCH BAR #################
      */
