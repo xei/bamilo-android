@@ -12,6 +12,7 @@ import com.AdX.tag.AdXConnect;
 
 import de.akquinet.android.androlog.Log;
 
+
 public class AdXTracker {
 	private final static String TAG = AdXTracker.class.getSimpleName();
 	private static boolean isEnabled;

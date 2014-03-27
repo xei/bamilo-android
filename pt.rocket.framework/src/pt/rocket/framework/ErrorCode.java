@@ -51,6 +51,7 @@ public enum ErrorCode {
 		case SERVER_IN_MAINTENANCE:
 		case CONNECT_ERROR:
 		case TIME_OUT:
+		case IO:
 			return true;
 		}
 		return false;
