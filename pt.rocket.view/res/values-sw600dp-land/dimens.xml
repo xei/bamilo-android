@@ -12,7 +12,7 @@
     <!-- General -->
     <dimen name="margin_buttons">66dp</dimen>
     <!-- HOME -->
-    <dimen name="teaser_swipe_banner_height">240dp</dimen>
+    <dimen name="teaser_swipe_banner_height">350dp</dimen>
     <dimen name="teaser_product_item_width">208dp</dimen>
     <!-- <dimen name="teaser_product_item_height">240dp</dimen> -->
     <dimen name="teaser_product_item_height">@dimen/wrap_content</dimen>
@@ -20,6 +20,7 @@
     <dimen name="teaser_product_item_image_height">106.67dp</dimen>
     <dimen name="teaser_product_item_image_margin">10dp</dimen>
     <dimen name="teaser_banners_group_height">200dp</dimen>
+    <dimen name="teaser_banners_brands_list_height">88dp</dimen>
 
     <!-- SLIDING MENU -->
     <!-- <dimen name="navigation_menu_offset">750dp</dimen> -->

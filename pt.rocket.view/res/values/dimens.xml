@@ -73,6 +73,7 @@
     <dimen name="teaser_banners_group_height_sw320dp">171dp</dimen>
     <dimen name="button_sort_line_distance_horizontal_sw320dp">90dp</dimen>
     <dimen name="button_sort_height_sw320dp">48dp</dimen>
+    <dimen name="teaser_banners_brands_list_height">88dp</dimen>
 
     <!-- BASE -->
     <dimen name="match_parent">-1dp</dimen>

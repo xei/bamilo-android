@@ -442,7 +442,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                 // calling onPrepareOptionsMenu() to show action bar icons
                 onClosed();
                 getSupportActionBar().updateUpState(true);
-                invalidateOptionsMenu();
             }
 
             public void onDrawerOpened(View drawerView) {
@@ -450,7 +449,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                 // calling onPrepareOptionsMenu() to hide action bar icons
                 onOpened();
                 getSupportActionBar().updateUpState(false);
-                invalidateOptionsMenu();
             }
             
             @Override
@@ -1306,11 +1304,10 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         if (!isTabletInLandscape(this))
             hideKeyboard();
         AnalyticsGoogle.get().trackPage(R.string.gnavigation);
-        mDrawerToggle.onDrawerStateChanged(DrawerLayout.STATE_SETTLING);
+        updateCartInfoInActionBar();
     }
 
     public void onClosed() {
-        mDrawerToggle.onDrawerStateChanged(DrawerLayout.STATE_SETTLING);
         Log.d(getTag(), "onClosed");
     }
 
