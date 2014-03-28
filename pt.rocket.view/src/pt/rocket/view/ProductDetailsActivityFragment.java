@@ -183,8 +183,9 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
     private String mLastSelectedVariance;
     
     public ProductDetailsActivityFragment() {
-        super(EnumSet.of(EventType.GET_PRODUCT_EVENT), EnumSet
-                .of(EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT), EnumSet.of(MyMenuItem.SHARE),
+        super(EnumSet.of(EventType.GET_PRODUCT_EVENT), 
+                EnumSet.of(EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT), 
+                EnumSet.of(MyMenuItem.SHARE),
                 NavigationAction.Products, 0);
     }
 

@@ -54,20 +54,20 @@ import de.akquinet.android.androlog.Log;
 public abstract class BaseFragment extends Fragment implements OnActivityFragmentInteraction {
 
     private static final Set<EventType> HANDLED_EVENTS = EnumSet.noneOf(EventType.class);
-    protected String md5Hash = null;
     
-    private static String writeReviewFragment = "pt.rocket.view.WriteReviewFragmentActivity";
+    protected static final String TAG = LogTagHelper.create(BaseFragment.class);
+    
     private static Field sChildFragmentManagerField;
 
 	public static final Boolean IS_NESTED_FRAGMENT = true;
+	
     public static final Boolean ISNT_NESTED_FRAGMENT = false;
 
     private static final boolean VISIBLE = true;
 
     private static final boolean NOT_VISIBLE = false;
-
-
-	protected static final String TAG = LogTagHelper.create(BaseFragment.class);
+	
+	protected String md5Hash = null;
 
     protected View contentContainer;
 
@@ -230,11 +230,15 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     }
 
     /**
-     * XXX 
-     * @return
+     * Get the menu items for checkout
+     * @return Set
+     * @author sergiopereira
      */
-    private static Set<MyMenuItem> getCheckoutMenuItem(){
-        return (BaseActivity.isTabletInLandscape(JumiaApplication.INSTANCE)) ? EnumSet.of(MyMenuItem.SEARCH_BAR) : EnumSet.of(MyMenuItem.SEARCH);
+    private Set<MyMenuItem> getCheckoutMenuItem(){
+        // Old method: force this item
+        // return (BaseActivity.isTabletInLandscape(JumiaApplication.INSTANCE)) ? EnumSet.of(MyMenuItem.SEARCH_BAR) : EnumSet.of(MyMenuItem.SEARCH);
+        // New method: use items from constructor
+        return enabledMenuItems;
     }
     
     /*

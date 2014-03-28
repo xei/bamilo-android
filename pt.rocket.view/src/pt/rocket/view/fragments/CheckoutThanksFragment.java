@@ -74,7 +74,7 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
     public CheckoutThanksFragment() {
         super(EnumSet.noneOf(EventType.class),
                 EnumSet.noneOf(EventType.class),
-                EnumSet.of(MyMenuItem.SEARCH),
+                EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.Checkout,
                 ConstantsCheckout.CHECKOUT_THANKS);
         this.setRetainInstance(true);

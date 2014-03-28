@@ -17,14 +17,14 @@
                 android:layout_width="132dp"
                 android:layout_height="99dp"
                 android:layout_marginBottom="13.2dp"
-                android:layout_marginLeft="@dimen/margin_small"
+                android:layout_marginLeft="13.2dp"
                 android:layout_marginRight="13.2dp"
-                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginTop="13.2dp"
                 layout="@layout/catalog_image_item" />
 
             <!--
-            android:layout_marginLeft="13.2dp"
-            android:layout_marginTop="13.2dp"
+            android:layout_marginLeft="@dimen/margin_small"
+            android:layout_marginTop="@dimen/margin_small"
             -->
 
             <ImageView

@@ -1,21 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/list_row_style"
-    android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:orientation="horizontal" >
+
+    <ImageView
+        android:id="@+id/item_img"
+        android:layout_width="30dp"
+        android:layout_height="@dimen/item_height_normal"
+        android:contentDescription="@string/app_name"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/margin_huge"
+        android:src="@drawable/magnlens" />
 
     <org.holoeverywhere.widget.TextView
-        android:id="@+id/item_text"
-        android:layout_width="match_parent"
+        android:id="@+id/item_text_suggestion"
+        android:layout_width="0dp"
         android:layout_height="@dimen/item_height_normal"
+        android:layout_marginRight="@dimen/margin_mid"
+        android:layout_weight="1"
         android:ellipsize="end"
+        android:fontFamily="roboto_regular"
         android:gravity="center_vertical"
         android:maxLines="1"
-        android:paddingLeft="@dimen/margin_huge"
+        android:paddingLeft="@dimen/margin_mid"
+        android:singleLine="true"
         android:text="Search suggestion"
         android:textColor="@color/grey_dark"
         android:textSize="@dimen/text_mid"
-        android:textStyle="bold"
+        tools:ignore="HardcodedText" />
+    
+    <!-- android:textStyle="bold" -->
+
+    <org.holoeverywhere.widget.TextView
+        android:id="@+id/item_text_n_items"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/item_height_normal"
+        android:ellipsize="none"
+        android:fontFamily="roboto_regular"
+        android:gravity="left|center_vertical"
+        android:maxLines="1"
+        android:paddingLeft="@dimen/margin_huge"
+        android:paddingRight="@dimen/margin_huge"
+        android:singleLine="true"
+        android:text="(9000 items)"
+        android:textColor="@color/grey_dividerlight"
+        android:textSize="@dimen/text_s"
+        android:visibility="gone"
         tools:ignore="HardcodedText" />
 
 </LinearLayout>

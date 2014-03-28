@@ -63,7 +63,7 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
     public CheckoutShippingMethodsFragment() {
         super(EnumSet.of(EventType.GET_SHIPPING_METHODS_EVENT), 
                 EnumSet.noneOf(EventType.class),
-                EnumSet.of(MyMenuItem.SEARCH), 
+                EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.Checkout, 
                 ConstantsCheckout.CHECKOUT_SHIPPING);
     }

@@ -16,10 +16,12 @@ import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.ActivitiesWorkFlow;
+import pt.rocket.controllers.SearchDropDownAdapter;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.CompleteProduct;
+import pt.rocket.framework.objects.SearchSuggestion;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.service.IRemoteServiceCallback;
 import pt.rocket.framework.utils.AnalyticsGoogle;
@@ -30,11 +32,15 @@ import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.framework.utils.ShopSelector;
 import pt.rocket.framework.utils.WindowHelper;
 import pt.rocket.helpers.BaseHelper;
+import pt.rocket.helpers.GetSearchSuggestionHelper;
 import pt.rocket.helpers.GetShoppingCartItemsHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.CheckVersion;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.utils.RightDrawableOnTouchListener;
+import pt.rocket.utils.SearchSuggestionImeBackListener;
+import pt.rocket.utils.SearchSuggestionText;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.CustomToastView;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
@@ -53,19 +59,25 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.MeasureSpec;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewStub;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.RelativeLayout;
+import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
 import com.actionbarsherlock.ActionBarSherlock;
@@ -106,6 +118,12 @@ import de.akquinet.android.androlog.Log;
 public abstract class BaseActivity extends SherlockFragmentActivity {
 
     private ShareActionProvider mShareActionProvider;
+    
+    private static final int SEARCH_EDIT_DELAY = 150;
+    
+    private static final int SEARCH_EDIT_SIZE = 2;
+    
+    private static final int TOAST_LENGTH_SHORT = 2000; // 2 seconds
 
     // private int navigationComponentsHashCode;
     private View navigationContainer;
@@ -128,8 +146,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     private DialogProgressFragment progressDialog;
 
     private Activity activity;
-
-    private static final int TOAST_LENGTH_SHORT = 2000; // 2 seconds
 
     private boolean backPressedOnce = false;
 
@@ -177,17 +193,21 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
     private final int contentLayoutId;
 
-    private Set<EventType> userEvents;
-
     private TextView tvActionCartCount;
 
-    private EditText searchComponent;
+    private SearchSuggestionText searchComponent;
 
     private View searchOverlay;
 
     private FragmentController fragmentController;
 
     private boolean initialCountry = false;
+
+    private Set<EventType> userEvents;
+    
+    private Menu currentMenu;
+    
+    private long beginInMillis;
 
     /**
      * Constructor used to initialize the navigation list component and the autocomplete handler
@@ -316,7 +336,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 //         showContent();
 
         if (!contentEvents.contains(EventType.GET_SHOPPING_CART_ITEMS_EVENT)
-                && JumiaApplication.INSTANCE.SHOP_ID >= 0
+                && JumiaApplication.SHOP_ID >= 0
                 && JumiaApplication.INSTANCE.getCart() == null) {
             triggerContentEvent(new GetShoppingCartItemsHelper(), null, mIResponseCallback);
         }
@@ -361,7 +381,8 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     @Override
     public void onPause() {
         super.onPause();
-
+        // Hide search component
+        hideSearchComponent(currentMenu);
     }
 
     @Override
@@ -392,12 +413,13 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      * @param titleResId
      * @author sergiopereira
      */
-    public void updateBaseComponents(Set<MyMenuItem> enabledMenuItems, NavigationAction action,
-            int titleResId) {
+    public void updateBaseComponents(Set<MyMenuItem> enabledMenuItems, NavigationAction action, int titleResId) {
+        Log.i(TAG, "ON UPDATE BASE COMPONENTS");
+        
         // Update options menu and search bar
         menuItems = enabledMenuItems;
         if (action != NavigationAction.Country)
-            findViewById(R.id.rocket_app_header_search).setVisibility(View.GONE);
+            findViewById(R.id.rocket_app_header_search_bar).setVisibility(View.GONE);
         hideKeyboard();
         invalidateOptionsMenu();
         // Update the sliding menu
@@ -453,9 +475,9 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             
             @Override
             public void onDrawerStateChanged(int newState) {
+              //Log.d(TAG, "SEARCH: ON STATE CHANGED " + newState);
                 drawable_state = newState;
                 super.onDrawerStateChanged(newState);
-                
             }
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
@@ -699,12 +721,16 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             if (mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
                 toggle();
             } else if (!initialCountry) {
-                onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE,
-                        FragmentController.ADD_TO_BACK_STACK);
+                // Hide search component and keyboard
+                hideSearchComponent(currentMenu);
+                hideKeyboard();
+                // Goto home
+                onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
             }
-
         }
     };
+
+    
 
     /**
      * ############### ORIENTATION #################
@@ -754,27 +780,32 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
-        Log.d(getTag(), "onOptionsItemSelected: item id = " + itemId);
+        Log.d(getTag(), "ON OPTION ITEM SELECTED: " + item.getTitle());
+        
+        // HOME
         if (itemId == android.R.id.home) {
             toggle();
             return true;
-        } else if (itemId == R.id.menu_search) {
-            if(drawable_state == mDrawerLayout.STATE_IDLE){
-                closeDrawerIfOpen();
-                onSwitchFragment(FragmentType.SEARCH, FragmentController.NO_BUNDLE,
-                        FragmentController.ADD_TO_BACK_STACK);
-            }
-           
-            return false;
-        } else if (itemId == R.id.menu_basket) {
-            Log.i(TAG, "code1state : "+mDrawerLayout.getDrawableState()[0]+" : idle : "+mDrawerLayout.STATE_IDLE+" : dragging :  "+mDrawerLayout.STATE_DRAGGING+"  : settling : "+mDrawerLayout.STATE_SETTLING);
-            if(drawable_state == mDrawerLayout.STATE_IDLE){
-                closeDrawerIfOpen();
-                onSwitchFragment(FragmentType.SHOPPING_CART, FragmentController.NO_BUNDLE,
-                        FragmentController.ADD_TO_BACK_STACK);
-            }
             
+        // SEARCH    
+        } else if (itemId == R.id.menu_search) {
+            // Validate menu state
+            if(drawable_state == DrawerLayout.STATE_IDLE) closeDrawerIfOpen();
+            // Show search component
+            showSearchComponent(currentMenu);
+            // 
+            return true;
+        
+        // CART
+        } else if (itemId == R.id.menu_basket) {
+            Log.i(TAG, "code1state : "+mDrawerLayout.getDrawableState()[0]+" : idle : "+ DrawerLayout.STATE_IDLE+" : dragging :  "+DrawerLayout.STATE_DRAGGING+"  : settling : "+DrawerLayout.STATE_SETTLING);
+            if(drawable_state == DrawerLayout.STATE_IDLE){
+                closeDrawerIfOpen();
+                onSwitchFragment(FragmentType.SHOPPING_CART, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            }
             return false;
+            
+        // DEFAULT:    
         } else {
             return super.onOptionsItemSelected(item);
         }
@@ -790,6 +821,9 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     public boolean onCreateOptionsMenu(final Menu menu) {
         Log.d(TAG, "ON OPTIONS MENU: CREATE");
         getSupportMenuInflater().inflate(R.menu.main_menu, menu);
+        
+        // Save the current menu
+        currentMenu = menu;
 
         /**
          * Setting Menu Options
@@ -803,20 +837,16 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             case SHARE:
                 menu.findItem(item.resId).setVisible(true);
                 menu.findItem(item.resId).setEnabled(true);
-                mShareActionProvider = (ShareActionProvider) menu.findItem(item.resId)
-                        .getActionProvider();
-                mShareActionProvider
-                        .setOnShareTargetSelectedListener(new OnShareTargetSelectedListener() {
+                mShareActionProvider = (ShareActionProvider) menu.findItem(item.resId).getActionProvider();
+                mShareActionProvider.setOnShareTargetSelectedListener(new OnShareTargetSelectedListener() {
                             @Override
-                            public boolean onShareTargetSelected(ShareActionProvider source,
-                                    Intent intent) {
+                            public boolean onShareTargetSelected(ShareActionProvider source, Intent intent) {
                                 getApplicationContext().startActivity(intent);
                                 TrackerDelegator.trackItemShared(getApplicationContext(), intent);
                                 return true;
                             }
                         });
                 setShareIntent(createShareIntent());
-
                 break;
             case BUY_ALL:
             default:
@@ -825,8 +855,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             }
         }
         if(!initialCountry){
-            tvActionCartCount = (TextView) menu.findItem(R.id.menu_basket).getActionView()
-                    .findViewById(R.id.cart_count);
+            tvActionCartCount = (TextView) menu.findItem(R.id.menu_basket).getActionView().findViewById(R.id.cart_count);
             tvActionCartCount.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -853,27 +882,24 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     private void setSearchBar(Menu menu) {
         // Validate the Sliding
         if (!isTabletInLandscape(this)) {
-            // Show search below the action bar
-            findViewById(R.id.rocket_app_header_search).setVisibility(View.VISIBLE);
+            // Show only one ICON or BAR (default is gone)
+            if(!menuItems.contains(MyMenuItem.SEARCH)) findViewById(R.id.rocket_app_header_search_bar).setVisibility(View.VISIBLE);
             // Show the normal search
-            searchComponent = (EditText) findViewById(R.id.search_component);
+            searchComponent = (SearchSuggestionText) findViewById(R.id.search_component);
             searchOverlay = findViewById(R.id.search_overlay);
         } else {
-            // Set search on action bar
-            menu.findItem(R.id.menu_search_view).setVisible(true);
+            // Show only one ICON or BAR (default is gone)
+            if(!menuItems.contains(MyMenuItem.SEARCH)) menu.findItem(R.id.menu_search_view).setVisible(true);
             // Set search
-            searchComponent = (EditText) menu.findItem(R.id.menu_search_view).getActionView()
-                    .findViewById(R.id.search_component);
-            searchOverlay = menu.findItem(R.id.menu_search_view).getActionView()
-                    .findViewById(R.id.search_overlay);
+            searchComponent = (SearchSuggestionText) menu.findItem(R.id.menu_search_view).getActionView().findViewById(R.id.search_component);
+            searchOverlay = menu.findItem(R.id.menu_search_view).getActionView().findViewById(R.id.search_overlay);
 
             // Get the width of main content
             logoView.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
             int logoViewWidth = logoView.getMeasuredWidth() + logoView.getPaddingRight();
             int mainContentWidth = WindowHelper.getWidth(getApplicationContext());
             // Get cart item and forcing measure
-            View cartCount = menu.findItem(R.id.menu_basket).getActionView()
-                    .findViewById(R.id.cart_count_layout);
+            View cartCount = menu.findItem(R.id.menu_basket).getActionView().findViewById(R.id.cart_count_layout);
             cartCount.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
             int cartCountWidth = cartCount.getMeasuredWidth() + cartCount.getPaddingRight();
             Log.d(TAG, "CART WIDTH SIZE: " + cartCountWidth);
@@ -885,39 +911,21 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             searchComponent.getLayoutParams().width = searchComponentWidth;
             searchOverlay.getLayoutParams().width = searchComponentWidth;
         }
+        
         // Set search
-        setSearchForwardBehaviour(searchComponent, searchOverlay);
-
-        // XXX
-        // WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
-        // Display display = wm.getDefaultDisplay();
-        // Point size = new Point();
-        // int width;
-        // int height;
-        // if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
-        // display.getSize(size);
-        // width = size.x;
-        // height = size.y;
-        // } else {
-        // width = display.getWidth();
-        // height = display.getHeight();
-        // }
-        //
-        // getSlidingMenu().getWidth();
-        // findViewById(R.id.abs__home).getLayoutParams().width = getSlidingMenu().getWidth();
-        // findViewById(R.id.abs__home).getLayoutParams().width = (int) (width -
-        // getResources().getDimension(R.dimen.navigation_menu_offset));
-
+        setSearchBehavior();
     }
 
     /**
-     * Set the forward behaviour on search bar
+     * Set the forward behavior on search bar
      * 
      * @param autoComplete
      * @param searchOverlay
      * @author sergiopereira
+     * @deprecated
      */
-    private void setSearchForwardBehaviour(EditText autoComplete, View searchOverlay) {
+    @SuppressWarnings("unused")
+    private void setSearchForwardBehavior(EditText autoComplete, View searchOverlay) {
         Log.d(TAG, "SEARCH MODE: FORWARD BEHAVIOUR");
         autoComplete.setEnabled(false);
         autoComplete.setFocusable(false);
@@ -927,16 +935,16 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                 new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        onSwitchFragment(FragmentType.SEARCH, FragmentController.NO_BUNDLE,
-                                FragmentController.ADD_TO_BACK_STACK);
+                        onSwitchFragment(FragmentType.SEARCH, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                     }
                 });
     }
 
     /**
-     * Set the normal behaviour on search bar
+     * Set the normal behavior on search bar
+     * @deprecated
      */
-    public void setSearchNormalBehaviour() {
+    public void setSearchNormalBehavior() {
         Log.d(TAG, "SEARCH MODE: NORMAL BEHAVIOUR");
         if (searchComponent == null) {
             Log.w(TAG, "SEARCH COMPONENT IS NULL");
@@ -948,18 +956,407 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         searchOverlay.setVisibility(View.GONE);
         searchOverlay.setOnClickListener(null);
     }
+    
+    
+    /**
+     * Set the new search behavior
+     * @author sergiopereira
+     */
+    public void setSearchBehavior(){
+        Log.d(TAG, "SEARCH MODE: NEW BEHAVIOUR");
+        if(searchComponent == null) {
+            Log.w(TAG, "SEARCH COMPONENT IS NULL");
+            return;
+        }
+        
+        searchComponentDismissFocus();
+        searchComponent.dismissDropDown();
+        searchComponent.setFocusable(false);
+        searchComponent.setFocusableInTouchMode(true);
+        searchOverlay.setVisibility(View.GONE);
+        searchOverlay.setOnClickListener(null);
+        // Set drop down background
+        searchComponent.setDropDownBackgroundResource(R.drawable.suggestionlayer); //dialog_bottom_holo_light
+        
+        // Hide search warning
+        hideSearchNoMatch();
 
-    public EditText getSearchComponent() {
+        /*
+         * On item click listener
+         */
+        searchComponent.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
+                Log.d(TAG, "SEARCH: CLICKED ITEM " + position);
+                String text = ((SearchSuggestion) adapter.getItemAtPosition(position)).getResult();
+                findViewById(R.id.dummy_search_layout).requestFocus();
+                searchComponent.setText(text);
+                searchComponent.dismissDropDown();
+                executeSearchRequest(text);
+            }
+        });
+        
+        /*
+         * Listener for right drawable
+         */
+        searchComponent.setOnTouchListener(new RightDrawableOnTouchListener(searchComponent) {
+            @Override
+            public boolean onDrawableTouch(final MotionEvent event) {
+                String searchTerm = searchComponent.getText().toString();
+                Log.d(TAG, "SEARCH: ON RIGHT DRAWABLE TOUCH: " + searchTerm);
+                if ( TextUtils.isEmpty( searchTerm )) return false;
+                GetSearchSuggestionHelper.saveSearchQuery(searchTerm);
+                executeSearchRequest(searchTerm);
+                //hideSearchComponent(currentMenu);
+                return true;
+            }
+            
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                // Log.d(TAG, "SEARCH: ON TOUCH");
+                return super.onTouch(v, event);
+            }
+            
+        });
+        
+        /*
+         * Clear and add text listener
+         */
+        searchComponent.clearTextChangedListeners();
+        searchComponent.addTextChangedListener(new TextWatcher() {
+            private Handler handle = new Handler();
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            @Override
+            public void afterTextChanged(Editable s) {
+                Log.d(TAG, "SEARCH: AFTER TEXT CHANGED");
+                handle.removeCallbacks(run);
+                if (s.length() >= SEARCH_EDIT_SIZE) handle.postDelayed(run, SEARCH_EDIT_DELAY);
+                else searchComponent.setDropDownAlwaysVisible(false);
+            }
+        });
+        
+        /*
+         * Hide the search component on keyboard hide
+         */
+        searchComponent.setOnImeBackListener(new SearchSuggestionImeBackListener() {
+            @Override
+            public void onImeBackPressed(View view, String text) {
+                Log.d(TAG, "SEARCH ON IME PRESSED BACK");
+                hideSearchComponent(currentMenu);
+            }
+        });
+        
+        /*
+         * Editor 
+         */
+        searchComponent.setOnEditorActionListener(new OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(android.widget.TextView v, int actionId, KeyEvent event) {
+                if(actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_GO){
+                    String searchTerm = searchComponent.getText().toString();
+                    Log.d(TAG, "SEARCH COMPONENT: ON IME ACTION " + searchTerm);
+                    if ( TextUtils.isEmpty( searchTerm )) return false;
+                    GetSearchSuggestionHelper.saveSearchQuery(searchTerm);
+                    executeSearchRequest(searchTerm);
+                    //hideSearchComponent(currentMenu);
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+    
+    /**
+     * Execute search
+     * @param searchText
+     * @author sergiopereira
+     */
+    protected void executeSearchRequest(String searchText) {
+        Log.d(TAG, "SEARCH COMPONENT: GOTO PROD LIST");
+        Bundle bundle = new Bundle();
+        bundle.putString(ConstantsIntentExtra.CONTENT_URL, null);
+        bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, searchText);
+        bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, searchText);
+        bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gsearch);
+        bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
+        onSwitchFragment(FragmentType.PRODUCT_LIST, bundle, FragmentController.ADD_TO_BACK_STACK);
+        // Clean the search component
+        cleanSearchConponent();
+    }
+    
+    /**
+     * Get search component
+     * @return
+     * @author sergiopereira
+     */
+    public SearchSuggestionText getSearchComponent() {
+        Log.d(TAG, "GET SEARCH COMPONENT");
         return searchComponent;
     }
-
+    
+    /**
+     * Clean search component
+     * @author sergiopereira
+     */
     public void cleanSearchConponent() {
-        if (searchComponent != null)
-            searchComponent.setText("");
+        Log.d(TAG, "CLEAN SEARCH COMPONENT");
+        if(searchComponent != null) searchComponent.setText("");
+    }
+    
+    /**
+     * Hide the search component
+     * @param menu
+     * @author sergiopereira
+     */
+    private void hideSearchComponent(Menu menu){
+        Log.d(TAG, "SEARCH COMPONENT: HIDE");
+        // Validate if exist search icon and bar
+        if(menuItems.contains(MyMenuItem.SEARCH) && menuItems.contains(MyMenuItem.SEARCH_BAR)) {
+            // Hide search bar
+            if(isTabletInLandscape(getApplicationContext())) menu.findItem(MyMenuItem.SEARCH_BAR.resId).setVisible(false);
+            else findViewById(R.id.rocket_app_header_search_bar).setVisibility(View.GONE);
+            // Show icon
+            menu.findItem(MyMenuItem.SEARCH.resId).setVisible(true);
+        }
+        
+        try {
+            searchComponentDismissFocus();
+            searchComponent.dismissDropDown();
+            cleanSearchConponent();
+            hideSearchNoMatch();
+        } catch (Exception e) {
+            Log.w(TAG, "Hidding search component", e);
+        }
+    }
+    
+    /**
+     * Show the search component
+     * @param menu
+     * @author sergiopereira
+     */
+    private void showSearchComponent(Menu menu){
+        Log.d(TAG, "SEARCH COMPONENT: SHOW");
+        // Validate if exist search icon and bar
+        if(menuItems.contains(MyMenuItem.SEARCH) && menuItems.contains(MyMenuItem.SEARCH_BAR)) {
+            // Hide search bar
+            if(isTabletInLandscape(getApplicationContext())) menu.findItem(MyMenuItem.SEARCH_BAR.resId).setVisible(true);
+            else findViewById(R.id.rocket_app_header_search_bar).setVisibility(View.VISIBLE);
+        } else {
+            Log.w(TAG, "THE MENU SHOULD CONTAIN THE SEARCH ICON AND BAR.");
+        }
+        // Hide search icon, request focus and show keyboard
+        menu.findItem(MyMenuItem.SEARCH.resId).setVisible(false);
+        searchComponent.requestFocus();
+        showKeyboard(searchComponent);
+        // Close menu
+        onClosed();
+    }    
+    
+    /**
+     * Show or hide search component, from navigation menu
+     * @author sergiopereira
+     */
+    public void showOrHideSearchComponent(){
+        Log.d(TAG, "SHOW OR HIDE SEARCH COMPONENT");
+        
+        // Hide warning
+        hideSearchNoMatch();
+        
+        // HOME
+        if(getAction() == NavigationAction.Home){
+            if(!searchComponent.hasFocus()){
+                searchComponent.requestFocus();
+                showKeyboard(searchComponent);
+            }else{
+                searchComponent.dismissDropDown();
+                findViewById(R.id.dummy_search_layout).requestFocus();
+                hideKeyboard();
+            }
+            return;
+        }
+        
+        // Views with search icon and without search
+        if(menuItems.contains(MyMenuItem.SEARCH) && menuItems.contains(MyMenuItem.SEARCH_BAR)) {
+            if(isTabletInLandscape(getApplicationContext())){
+                if(currentMenu.findItem(MyMenuItem.SEARCH_BAR.resId).isVisible()) {
+                    currentMenu.findItem(MyMenuItem.SEARCH_BAR.resId).setVisible(false);
+                    currentMenu.findItem(MyMenuItem.SEARCH.resId).setVisible(true);
+                    searchComponent.dismissDropDown();
+                    searchComponentDismissFocus();
+                    hideKeyboard();
+                } else{
+                    currentMenu.findItem(MyMenuItem.SEARCH_BAR.resId).setVisible(true);
+                    currentMenu.findItem(MyMenuItem.SEARCH.resId).setVisible(false);
+                    searchComponent.requestFocus();
+                    showKeyboard(searchComponent);
+                }
+            } else {
+                if(findViewById(R.id.rocket_app_header_search_bar).getVisibility() == View.VISIBLE){
+                    findViewById(R.id.rocket_app_header_search_bar).setVisibility(View.GONE);
+                    currentMenu.findItem(MyMenuItem.SEARCH.resId).setVisible(true);
+                    searchComponent.dismissDropDown();
+                    searchComponentDismissFocus();
+                    hideKeyboard();
+                }else{
+                    Log.d(TAG, "SHOW SEARCH COMPONENT");
+                    findViewById(R.id.rocket_app_header_search_bar).setVisibility(View.VISIBLE);
+                    currentMenu.findItem(MyMenuItem.SEARCH.resId).setVisible(false);
+                    searchComponent.requestFocus();
+                    showKeyboard(searchComponent);
+                }
+            }
+        }
+    }
+   
+    /**
+     * Show keyboard for respective edit text
+     * @param view
+     * @author sergiopereira
+     */
+    private void showKeyboard(View view){
+        Log.d(TAG, "SHOW KEYBOARD FOR THIS VIEW");
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
+        //imm.showSoftInput(view, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
+        //imm.showSoftInput(view, InputMethodManager.RESULT_UNCHANGED_SHOWN);
+        //imm.toggleSoftInput(InputMethodManager.RESULT_UNCHANGED_SHOWN, InputMethodManager.RESULT_UNCHANGED_SHOWN);
+        //getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
     }
 
     /**
-     * #########################################
+     * Show the no match container
+     * @author sergiopereira
+     */
+    private void showSearchNoMatch(){
+        Log.d(TAG, "SEARCH: SHOW NO MATCH");
+        //findViewById(R.id.search_no_match_view).setVisibility(View.VISIBLE);
+        
+    }
+    
+    /**
+     * Hide the no match container
+     * @author sergiopereira
+     */
+    private void hideSearchNoMatch(){
+        Log.d(TAG, "SEARCH: HIDE NO MATCH");
+        //findViewById(R.id.search_no_match_view).setVisibility(View.GONE);
+    }
+    
+    /**
+     * Remove search focus
+     * @author sergiopereira
+     */
+    private void searchComponentDismissFocus(){
+        Log.d(TAG, "SEARCH: DISMISS FOCUS");
+        findViewById(R.id.dummy_search_layout).requestFocus();
+    }
+    
+    /**
+     * ############### SEARCH TRIGGER #################
+     */ 
+    
+    /**
+     * Runnable to get suggestions
+     * @author sergiopereira
+     */
+    private Runnable run = new Runnable() {
+        @Override
+        public void run() {
+            getSuggestions();
+        }
+    };
+
+    /**
+     * Get suggestions and recent queries
+     * @author sergiopereira
+     */
+    private void getSuggestions(){
+        beginInMillis = System.currentTimeMillis();
+        String text = searchComponent.getText().toString();
+        Log.d(TAG, "SEARCH COMPONENT: GET SUG FOR " + text);
+        
+        Bundle bundle = new Bundle();
+        bundle.putString(GetSearchSuggestionHelper.SEACH_PARAM, text);
+        JumiaApplication.INSTANCE.sendRequest(new GetSearchSuggestionHelper(), bundle, new IResponseCallback() {
+            
+            @Override
+            public void onRequestError(Bundle bundle) {
+                processErrorSearchEvent(bundle);
+            }
+            
+            @Override
+            public void onRequestComplete(Bundle bundle) {
+                processSuccessSearchEvent(bundle);
+            }
+        });
+    }    
+
+    /**
+     * ############### SEARCH RESPONSES #################
+     */  
+     
+     /**
+      * Process the search error event
+      * @param event
+      * @author sergiopereira
+      */
+     private void processErrorSearchEvent(Bundle bundle){
+         Log.d(TAG, "SEARCH COMPONENT: ON ERROR");
+         // Get query
+         String requestQuery = bundle.getString(GetSearchSuggestionHelper.SEACH_PARAM);
+         Log.d(TAG, "RECEIVED SEARCH ERROR EVENT: " + requestQuery);
+         // Validate current search component
+         if (searchComponent != null && !searchComponent.getText().toString().equals(requestQuery)) {
+             Log.w(TAG, "SEARCH ERROR: WAS DISCARTED FOR QUERY " + requestQuery);
+             return;
+         }
+         // Validate current orientation
+         if(isTabletInLandscape(getApplicationContext()) && !currentMenu.findItem(MyMenuItem.SEARCH_BAR.resId).isVisible()) return;
+         if(!isTabletInLandscape(getApplicationContext()) && findViewById(R.id.rocket_app_header_search_bar).getVisibility() != View.VISIBLE) return;
+         // Hide dropdown
+         searchComponent.dismissDropDown();
+         // Show message
+         showSearchNoMatch();
+     }
+     
+     /**
+      * Process success search event
+      * @param event
+      * @author sergiopereira
+      */
+     private void processSuccessSearchEvent(Bundle bundle){
+         Log.d(TAG, "SEARCH COMPONENT: ON SUCCESS");
+         // Get suggestions
+         List<SearchSuggestion> sug = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
+         // Get query
+         String requestQuery = bundle.getString(GetSearchSuggestionHelper.SEACH_PARAM);
+         Log.d(TAG, "RECEIVED SEARCH EVENT: " + sug.size() + " " + requestQuery );
+         
+         // Validate current objects
+         if(menuItems == null && currentMenu == null && searchComponent == null) return;
+         // Validate current menu items
+         if(menuItems!= null && !menuItems.contains(MyMenuItem.SEARCH_BAR)) return;
+         // Validate current orientation
+         if(isTabletInLandscape(getApplicationContext()) && !currentMenu.findItem(MyMenuItem.SEARCH_BAR.resId).isVisible()) return;
+         if(!isTabletInLandscape(getApplicationContext()) && findViewById(R.id.rocket_app_header_search_bar).getVisibility() != View.VISIBLE) return;
+         // Validate current search
+         if(searchComponent.getText().length() < SEARCH_EDIT_SIZE || !searchComponent.getText().toString().equals(requestQuery)){
+             Log.w(TAG, "SEARCH: DISCARTED DATA FOR QUERY " + requestQuery);
+             return;
+         }
+         // Show suggestions
+         AnalyticsGoogle.get().trackLoadTiming(R.string.gsearchsuggestions, beginInMillis);
+         SearchDropDownAdapter searchSuggestionsAdapter = new SearchDropDownAdapter(getApplicationContext(), sug, requestQuery);
+         searchComponent.setAdapter(searchSuggestionsAdapter);
+         searchComponent.showDropDown();
+         hideSearchNoMatch();
+     }
+    
+    /**
+     * #################### SHARE #####################
      */
 
     /**
@@ -1153,10 +1550,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         sendRequest(helper, args, responseCallback);
     }
 
-    private String getFragmentTag() {
-        return this.getClass().getSimpleName();
-    }
-
     public final void showLoadingInfo() {
         Log.d(getTag(), "Showing loading info");
         if (loadingBarContainer != null) {
@@ -1301,8 +1694,10 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
     public void onOpened() {
         Log.d(getTag(), "onOpened");
-        if (!isTabletInLandscape(this))
-            hideKeyboard();
+        // Hide search component and hide keyboard
+        hideSearchComponent(currentMenu);
+        hideKeyboard();
+        // Update cart
         AnalyticsGoogle.get().trackPage(R.string.gnavigation);
         updateCartInfoInActionBar();
     }
@@ -1453,12 +1848,12 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      * @param event
      *            The failed event with {@link ResponseEvent#getSuccess()} == <code>false</code>
      */
+    @SuppressWarnings("unchecked")
     public boolean handleErrorEvent(final Bundle bundle) {
         final EventType eventType = (EventType) bundle
                 .getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-        HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle
-                .getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+        HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
         if (errorCode == null) {
             return false;
         }
@@ -1572,131 +1967,9 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
         }
         return false;
-        // if (errorCode.isNetworkError()) {
-        // if (eventType == EventType.GET_SHOPPING_CART_ITEMS_EVENT) {
-        // updateCartInfo(null);
-        // }
-        // if (contentEvents.contains(eventType)) {
-        // showError(event.request);
-        // } else if (userEvents.contains(eventType)) {
-        // showContentContainer(false);
-        // dialog = DialogGenericFragment.createNoNetworkDialog(BaseActivity.this,
-        // new OnClickListener() {
-        //
-        // @Override
-        // public void onClick(View v) {
-        // showLoadingInfo();
-        // EventManager.getSingleton().triggerRequestEvent(event.request);
-        // dialog.dismiss();
-        // }
-        // }, false);
-        // dialog.show(getSupportFragmentManager(), null);
-        // }
-        // return;
-        // } else if (event.type == EventType.GET_PROMOTIONS) {
-        // /**
-        // * No promotions available!
-        // * Ignore error
-        // */
-        // } else if (event.errorCode == ErrorCode.REQUEST_ERROR) {
-        // Map<String, ? extends List<String>> messages = event.errorMessages;
-        // List<String> validateMessages = messages.get(RestConstants.JSON_VALIDATE_TAG);
-        // String dialogMsg = "";
-        // if (validateMessages == null || validateMessages.isEmpty()) {
-        // validateMessages = messages.get(RestConstants.JSON_ERROR_TAG);
-        // }
-        // if (validateMessages != null) {
-        // for (String message : validateMessages) {
-        // dialogMsg += message + "\n";
-        // }
-        // } else {
-        // for (Entry<String, ? extends List<String>> entry : messages.entrySet()) {
-        // dialogMsg += entry.getKey() + ": " + entry.getValue().get(0) + "\n";
-        // }
-        // }
-        // if (dialogMsg.equals("")) {
-        // dialogMsg = getString(R.string.validation_errortext);
-        // }
-        // showContentContainer(false);
-        // dialog = DialogGenericFragment.newInstance(
-        // true, true, false, getString(R.string.validation_title),
-        // dialogMsg, getResources().getString(R.string.ok_label), "",
-        // new OnClickListener() {
-        //
-        // @Override
-        // public void onClick(View v) {
-        // int id = v.getId();
-        // if (id == R.id.button1) {
-        // dialog.dismiss();
-        // }
-        //
-        // }
-        //
-        // });
-        //
-        // dialog.show(getSupportFragmentManager(), null);
-        // return;
-        // } else if (!event.getSuccess()) {
-        // showContentContainer(false);
-        // dialog = DialogGenericFragment.createServerErrorDialog(BaseActivity.this, new
-        // OnClickListener() {
-        //
-        // @Override
-        // public void onClick(View v) {
-        // showLoadingInfo();
-        // event.request.metaData.putBoolean( IMetaData.MD_IGNORE_CACHE, IMetaData.TRUE);
-        // EventManager.getSingleton().triggerRequestEvent(event.request);
-        // dialog.dismiss();
-        // }
-        // }, false);
-        // dialog.show(getSupportFragmentManager(), null);
-        // return;
-        // }
 
-        /*
-         * TODO: finish to distinguish between errors else if (event.errorCode.isServerError()) {
-         * dialog = DialogGeneric.createServerErrorDialog(MyActivity.this, new OnClickListener() {
-         * 
-         * @Override public void onClick(View v) { showLoadingInfo();
-         * EventManager.getSingleton().triggerRequestEvent(event.request); dialog.dismiss(); } },
-         * false); dialog.show(); return; } else if (event.errorCode.isClientError()) { dialog =
-         * DialogGeneric.createClientErrorDialog( MyActivity.this, new OnClickListener() {
-         * 
-         * @Override public void onClick(View v) { showLoadingInfo();
-         * EventManager.getSingleton().triggerRequestEvent(event.request); dialog.dismiss(); } },
-         * false); dialog.show(); return; }
-         */
     }
 
-    //
-    // @Override
-    // public final boolean removeAfterHandlingEvent() {
-    // return false;
-    // }
-    //
-    // /**
-    // * Handles a successful event in the concrete activity.
-    // *
-    // * @param event
-    // * The successful event with {@link ResponseEvent#getSuccess()} == <code>true</code>
-    // * @return Returns whether the content container should be shown.
-    // */
-    // protected abstract boolean onSuccessEvent(ResponseResultEvent<?> event);
-    //
-    // /**
-    // * Handles a failed event in the concrete activity. Override this if the concrete activity
-    // wants
-    // * to handle a special error case.
-    // *
-    // * @param event
-    // * The failed event with {@link ResponseEvent#getSuccess()} == <code>false</code>
-    // * @return Whether the concrete activity handled the failed event and no further actions have
-    // to
-    // * be made.
-    // */
-    // protected boolean onErrorEvent(ResponseEvent event) {
-    // return false;
-    // }
 
     /**
      * @return the action

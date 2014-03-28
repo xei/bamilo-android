@@ -77,8 +77,11 @@ public class Catalog extends BaseFragment implements OnClickListener{
     private ContentValues mCatalogFilterValues = new ContentValues();
 
     public Catalog() {
-        super(EnumSet.noneOf(EventType.class), EnumSet.noneOf(EventType.class), EnumSet
-                .of(MyMenuItem.SEARCH), NavigationAction.Products, R.string.products);
+        super(EnumSet.noneOf(EventType.class), 
+                EnumSet.noneOf(EventType.class), 
+                EnumSet.of(MyMenuItem.SEARCH, MyMenuItem.SEARCH_BAR), 
+                NavigationAction.Products, 
+                R.string.products);
     }
 
     public static Catalog getInstance() {
@@ -118,7 +121,11 @@ public class Catalog extends BaseFragment implements OnClickListener{
         // Validate    
         if(mFilterButton == null){ Log.w(TAG, "FILTER VIEW IS NULL"); return; }
         // Validate
-        if(mCatalogFilter != null) { Log.w(TAG, "DISCARTED: FILTER IS NOT NULL"); return; }
+        if(mCatalogFilter != null) { Log.w(TAG, "DISCARTED: CURRENT FILTER IS NOT NULL"); return; }
+        // Validate
+        if(filters == null) { Log.w(TAG, "HIDE FILTERS: DATA IS NULL"); return; }
+        // Validate
+        if(filters.size() == 0) { Log.w(TAG, "HIDE FILTERS: DATA IS EMPTY"); return; }
         // Save filters
         mCatalogFilter = filters;
         Log.i(TAG, "SAVED THE FILTER");
@@ -128,8 +135,10 @@ public class Catalog extends BaseFragment implements OnClickListener{
     
     private void setFilterAction(){
         // Set listener
+        mFilterButton.setVisibility(View.VISIBLE);
         mFilterButton.setOnClickListener(null);
         mFilterButton.setOnClickListener(this);
+        pagerTabStrip.setPadding(0, 0, getResources().getDimensionPixelSize(R.dimen.catalog_button_filter_width), 0);
     }
     
     /*

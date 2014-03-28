@@ -103,7 +103,7 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
     public CheckoutMyAddressesFragment() {
         super(EnumSet.of(EventType.GET_BILLING_FORM_EVENT), 
                 EnumSet.noneOf(EventType.class),
-                EnumSet.of(MyMenuItem.SEARCH), 
+                EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.Checkout, 
                 ConstantsCheckout.CHECKOUT_BILLING);
     }

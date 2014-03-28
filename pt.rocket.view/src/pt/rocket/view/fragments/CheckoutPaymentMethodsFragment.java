@@ -91,7 +91,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
     public CheckoutPaymentMethodsFragment() {
         super(EnumSet.of(EventType.GET_PAYMENT_METHODS_EVENT), 
                 EnumSet.noneOf(EventType.class),
-                EnumSet.of(MyMenuItem.SEARCH), 
+                EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.Checkout, 
                 ConstantsCheckout.CHECKOUT_PAYMENT);
     }

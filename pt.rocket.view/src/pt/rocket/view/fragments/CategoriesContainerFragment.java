@@ -139,7 +139,7 @@ public class CategoriesContainerFragment extends BaseFragment {
     public CategoriesContainerFragment() {
         super(EnumSet.of(EventType.GET_CATEGORIES_EVENT), 
                 EnumSet.noneOf(EventType.class),
-                EnumSet.of(MyMenuItem.SEARCH), 
+                EnumSet.of(MyMenuItem.SEARCH, MyMenuItem.SEARCH_BAR), 
                 NavigationAction.Categories, 
                 0);
     }
@@ -594,7 +594,7 @@ public class CategoriesContainerFragment extends BaseFragment {
         
         if(bundle.containsKey(GET_CATEGORIES)){
             mBeginRequestMillis = System.currentTimeMillis();
-            Log.i(TAG, "on notifyFragment  trigger(categoryUrl)");
+            
             /**
              * TRIGGERS
              * @author sergiopereira

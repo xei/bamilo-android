@@ -1,6 +1,5 @@
 package pt.rocket.framework.database;
 
-import de.akquinet.android.androlog.Log;
 import android.content.Context;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.database.sqlite.SQLiteDatabase;
@@ -13,6 +12,8 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class DarwinDatabaseHelper extends SQLiteOpenHelper {
 	
+	public static final String TAG = DarwinDatabaseHelper.class.getName();
+	
 	private static final int DATABASE_VERSION = 3;
 
     public static final String DB_NAME = "darwin.db";
@@ -22,8 +23,6 @@ public class DarwinDatabaseHelper extends SQLiteOpenHelper {
     private static final String SQL_DROP_MAIN = "DROP TABLE IF EXISTS " + ImageResolutionTableHelper._NAME;
     
     private static final String SQL_DROP_TABLE = "DROP TABLE IF EXISTS ";
-
-	private static final String TAG = DarwinDatabaseHelper.class.getName();
 
 	private static DarwinDatabaseHelper db;
 
@@ -69,7 +68,6 @@ public class DarwinDatabaseHelper extends SQLiteOpenHelper {
     		version = CONTEXT.getPackageManager().getPackageInfo(CONTEXT.getPackageName(), 0).versionCode;
 			
 		} catch (NameNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     	
@@ -93,6 +91,7 @@ public class DarwinDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(SectionsTablesHelper.CREATE);
         db.execSQL(CategoriesTableHelper.CREATE);
         db.execSQL(LastViewedTableHelper.CREATE);
+        db.execSQL(SearchRecentQueriesTableHelper.CREATE);
     }
 
     /* (non-Javadoc)
@@ -105,6 +104,7 @@ public class DarwinDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_DROP_TABLE + CategoriesTableHelper.TABLE);
         db.execSQL(SQL_DROP_TABLE + SectionsTablesHelper.TABLE);
         db.execSQL(SQL_DROP_TABLE + LastViewedTableHelper.TABLE);
+        db.execSQL(SearchRecentQueriesTableHelper.DROP);
         // Create tables again
         onCreate(db);
     }

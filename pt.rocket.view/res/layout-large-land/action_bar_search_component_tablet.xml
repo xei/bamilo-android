@@ -6,9 +6,7 @@
     android:layout_marginRight="10dp"
     android:paddingRight="10dp" >
 
-    <!-- android:background="@drawable/bg_actionbar_buttom" -->
-
-    <org.holoeverywhere.widget.EditText
+    <pt.rocket.utils.SearchSuggestionText
         android:id="@+id/search_component"
         android:layout_width="@dimen/action_bar_search"
         android:layout_height="wrap_content"
@@ -17,7 +15,9 @@
         android:layout_marginTop="0dp"
         android:background="@drawable/searchfield"
         android:drawableRight="@drawable/selector_search_edit_icon"
+        android:gravity="center_vertical"
         android:hint="@string/action_label_search_hint"
+        android:imeOptions="actionSearch|actionGo"
         android:inputType="text"
         android:paddingLeft="8dp"
         android:singleLine="true"
@@ -43,33 +43,3 @@
     </View>
 
 </RelativeLayout>
-
-<!--
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/search_header"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center" >
-    
-        android:background="@drawable/bg_actionbar_buttom"
-
-    <org.holoeverywhere.widget.EditText
-        android:id="@+id/search_component"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="0dp"
-        android:layout_marginTop="0dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="10dp"
-        android:background="@drawable/searchfield"
-        android:drawableRight="@drawable/selector_search_edit_icon"
-        android:hint="Tablet"
-        android:inputType="text"
-        android:paddingLeft="8dp"
-        android:singleLine="true"
-        android:textColor="@color/grey_middle"
-        android:textColorHint="@color/grey_middlelight"
-        android:textSize="16dp" />
-
-</LinearLayout>
--->

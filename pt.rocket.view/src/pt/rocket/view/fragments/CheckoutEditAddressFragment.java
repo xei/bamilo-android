@@ -97,7 +97,7 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
     public CheckoutEditAddressFragment() {
         super(EnumSet.of(EventType.GET_EDIT_ADDRESS_FORM_EVENT, EventType.EDIT_ADDRESS_EVENT), 
                 EnumSet.noneOf(EventType.class),
-                EnumSet.of(MyMenuItem.SEARCH), 
+                EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.Checkout,
                 ConstantsCheckout.CHECKOUT_BILLING);
     }

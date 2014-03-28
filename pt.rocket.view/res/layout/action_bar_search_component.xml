@@ -5,24 +5,24 @@
     android:layout_height="wrap_content"
     android:background="@drawable/bg_actionbar_buttom" >
 
-    <org.holoeverywhere.widget.EditText
+    <pt.rocket.utils.SearchSuggestionText
         android:id="@+id/search_component"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="6dp"
         android:layout_marginLeft="6dp"
         android:layout_marginRight="6dp"
         android:background="@drawable/searchfield"
         android:drawableRight="@drawable/selector_search_edit_icon"
+        android:gravity="center_vertical"
         android:hint="@string/action_label_search_hint"
+        android:imeOptions="actionSearch|actionGo"
         android:inputType="text"
         android:paddingLeft="8dp"
-        android:contentDescription="@string/search_input_description"
         android:singleLine="true"
-        android:imeOptions="actionSearch"
         android:textColor="@color/grey_middle"
         android:textColorHint="@color/grey_middlelight"
-        android:textSize="16dp" />
+        android:textSize="16sp" />
 
     <View
         android:id="@+id/dummy_search_layout"
@@ -31,16 +31,15 @@
         android:focusable="true"
         android:focusableInTouchMode="true" >
     </View>
-    
+
     <View
         android:id="@+id/search_overlay"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:contentDescription="@string/search_field_description"
         android:layout_alignBottom="@id/search_component"
         android:layout_alignTop="@id/search_component"
-        android:layout_gravity="fill_vertical" >
-
+        android:layout_gravity="fill_vertical"
+        android:contentDescription="@string/search_field_description" >
     </View>
 
 </RelativeLayout>

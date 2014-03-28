@@ -110,7 +110,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
     public CheckoutMyOrderFragment() {
         super(EnumSet.of(EventType.CHECKOUT_FINISH_EVENT, EventType.GET_MY_ORDER_EVENT),
                 EnumSet.noneOf(EventType.class),
-                EnumSet.of(MyMenuItem.SEARCH),
+                EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.Checkout,
                 ConstantsCheckout.CHECKOUT_ORDER);
     }

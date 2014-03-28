@@ -75,7 +75,11 @@ public class SessionForgotPasswordFragment extends BaseFragment {
      * Empty constructor
      */
     public SessionForgotPasswordFragment() {
-        super(EnumSet.of(EventType.GET_FORGET_PASSWORD_FORM_EVENT), EnumSet.of(EventType.FORGET_PASSWORD_EVENT),EnumSet.noneOf(MyMenuItem.class),NavigationAction.MyAccount,R.string.forgotpass_header);
+        super(EnumSet.of(EventType.GET_FORGET_PASSWORD_FORM_EVENT), 
+                EnumSet.of(EventType.FORGET_PASSWORD_EVENT),
+                EnumSet.noneOf(MyMenuItem.class),
+                NavigationAction.MyAccount,
+                R.string.forgotpass_header);
         this.setRetainInstance(true);
     }
 

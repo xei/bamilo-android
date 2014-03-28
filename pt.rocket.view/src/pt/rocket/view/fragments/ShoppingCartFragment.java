@@ -165,8 +165,8 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
     public ShoppingCartFragment() {
         super(EnumSet.of(EventType.GET_SHOPPING_CART_ITEMS_EVENT),
                 EnumSet.of(EventType.REMOVE_ITEM_FROM_SHOPPING_CART_EVENT,
-                        EventType.CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT), EnumSet
-                        .of(MyMenuItem.SEARCH),
+                        EventType.CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT), 
+                EnumSet.of(MyMenuItem.SEARCH, MyMenuItem.SEARCH_BAR),
                 NavigationAction.Basket,
                 R.string.shoppingcart_title);
         this.setRetainInstance(true);

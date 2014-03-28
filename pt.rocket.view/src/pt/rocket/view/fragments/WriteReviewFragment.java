@@ -96,9 +96,13 @@ public class WriteReviewFragment extends BaseFragment {
      * Empty constructor
      */
     public WriteReviewFragment() {
-        super(EnumSet.of(EventType.LOGIN_EVENT, EventType.GET_RATING_OPTIONS_EVENT,
-                EventType.GET_CUSTOMER), EnumSet.of(EventType.REVIEW_PRODUCT_EVENT), EnumSet.noneOf(MyMenuItem.class), NavigationAction.Products,  R.string.writereview_page_title);
-//        this.setRetainInstance(true);
+        super(EnumSet.of(EventType.LOGIN_EVENT, 
+                EventType.GET_RATING_OPTIONS_EVENT,
+                EventType.GET_CUSTOMER), 
+                EnumSet.of(EventType.REVIEW_PRODUCT_EVENT), 
+                EnumSet.noneOf(MyMenuItem.class), 
+                NavigationAction.Products,  
+                R.string.writereview_page_title);
     }
 
     /*

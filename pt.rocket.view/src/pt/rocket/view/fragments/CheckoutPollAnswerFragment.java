@@ -71,7 +71,7 @@ public class CheckoutPollAnswerFragment extends BaseFragment implements OnClickL
     public CheckoutPollAnswerFragment() {
         super(EnumSet.of(EventType.GET_POLL_FORM_EVENT, EventType.SET_POLL_ANSWER_EVENT), 
                 EnumSet.noneOf(EventType.class),
-                EnumSet.of(MyMenuItem.SEARCH), 
+                EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.Checkout, 
                 ConstantsCheckout.CHECKOUT_ABOUT_YOU);
     }

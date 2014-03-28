@@ -5,8 +5,9 @@
     android:orientation="vertical" >
 
     <include
-        android:id="@+id/rocket_app_header_search"
-        layout="@layout/action_bar_search_component" />
+        android:id="@+id/rocket_app_header_search_bar"
+        layout="@layout/action_bar_search_component"
+        android:visibility="gone" />
 
     <include layout="@layout/main" />
 

@@ -21,10 +21,10 @@
                 android:layout_height="31.72dp"
                 android:layout_gravity="top"
                 android:background="@color/strip_title_background"
-                android:paddingRight="90dp"
                 android:textColor="@color/strip_title"
                 android:textSize="12.54sp" />
         </pt.rocket.utils.JumiaCatalogViewPager>
+        <!-- android:paddingRight="80dp" -->
 
         <org.holoeverywhere.widget.TextView
             android:id="@+id/products_list_filter_button"
@@ -39,7 +39,8 @@
             android:gravity="center"
             android:paddingLeft="@dimen/margin_large"
             android:paddingRight="@dimen/margin_large"
-            android:text="@string/filter_label" />
+            android:text="@string/filter_label"
+            android:visibility="gone" />
 
         <View
             android:layout_width="match_parent"

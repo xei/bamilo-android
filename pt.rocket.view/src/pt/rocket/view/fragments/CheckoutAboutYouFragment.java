@@ -135,7 +135,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
                 EnumSet.of(EventType.LOGIN_EVENT, 
                 EventType.FACEBOOK_LOGIN_EVENT, 
                 EventType.SET_SIGNUP_EVENT),
-                EnumSet.of(MyMenuItem.SEARCH), 
+                EnumSet.noneOf(MyMenuItem.class), 
                 NavigationAction.Checkout, 
                 ConstantsCheckout.CHECKOUT_ABOUT_YOU);
     }

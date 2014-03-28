@@ -26,8 +26,6 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 
 import com.androidquery.AQuery;
-import com.androidquery.callback.AjaxStatus;
-import com.androidquery.callback.BitmapAjaxCallback;
 
 import de.akquinet.android.androlog.Log;
 

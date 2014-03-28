@@ -215,7 +215,7 @@ public class SearchFragment extends BaseFragment implements OnItemClickListener 
     
     
     private void setAppContentLayout() {
-        ((BaseActivity) getActivity()).setSearchNormalBehaviour();
+        ((BaseActivity) getActivity()).setSearchNormalBehavior();
         searchTermView = ((BaseActivity) getActivity()).getSearchComponent();
         searchTermView.setFocusable(true);
         listView = (ListView) getView().findViewById(R.id.search_suggestions_list_content);
@@ -253,7 +253,8 @@ public class SearchFragment extends BaseFragment implements OnItemClickListener 
                 String searchTerm = searchTermView.getText().toString();
                 if ( TextUtils.isEmpty( searchTerm ))
                     return false;
-                
+                // Save query on database
+                GetSearchSuggestionHelper.saveSearchQuery(searchTerm);
                 executeSearch(searchTerm);
                 hideKeyboardAndFocus();
                 return true;

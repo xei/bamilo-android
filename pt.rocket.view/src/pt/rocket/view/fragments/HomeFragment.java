@@ -118,11 +118,13 @@ public class HomeFragment extends BaseFragment {
     /**
 	 */
     public HomeFragment() {
-        super(EnumSet.of(EventType.GET_API_INFO, EventType.GET_TEASERS_EVENT,
-                EventType.GET_CALL_TO_ORDER_PHONE, EventType.GET_PROMOTIONS),
-                EnumSet.noneOf(EventType.class), EnumSet.noneOf(MyMenuItem.class),
+        super(EnumSet.of(EventType.GET_API_INFO, 
+                EventType.GET_TEASERS_EVENT,
+                EventType.GET_CALL_TO_ORDER_PHONE, 
+                EventType.GET_PROMOTIONS),
+                EnumSet.noneOf(EventType.class), 
+                EnumSet.of(MyMenuItem.SEARCH_BAR),
                 NavigationAction.Home, 0);
-        // this.setRetainInstance(true);
     }
 
     /*

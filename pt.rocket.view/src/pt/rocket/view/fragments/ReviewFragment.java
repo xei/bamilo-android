@@ -47,7 +47,11 @@ public class ReviewFragment extends BaseFragment {
      * Empty constructor
      */
     public ReviewFragment() {
-        super(EnumSet.noneOf(EventType.class), EnumSet.noneOf(EventType.class), EnumSet.noneOf(MyMenuItem.class), NavigationAction.Products,  R.string.review);
+        super(EnumSet.noneOf(EventType.class), 
+                EnumSet.noneOf(EventType.class), 
+                EnumSet.noneOf(MyMenuItem.class), 
+                NavigationAction.Products,  
+                R.string.review);
         this.setRetainInstance(true);
     }
 

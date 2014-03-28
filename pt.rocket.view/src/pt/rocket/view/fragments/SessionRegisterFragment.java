@@ -106,7 +106,8 @@ public class SessionRegisterFragment extends BaseFragment {
      */
     public SessionRegisterFragment() {
         super(EnumSet.of(EventType.GET_REGISTRATION_FORM_EVENT, EventType.GET_TERMS_EVENT),
-                EnumSet.of(EventType.REGISTER_ACCOUNT_EVENT), EnumSet.noneOf(MyMenuItem.class),
+                EnumSet.of(EventType.REGISTER_ACCOUNT_EVENT), 
+                EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.MyAccount,
                 R.string.register_title);
         this.setRetainInstance(true);

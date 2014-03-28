@@ -9,15 +9,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import pt.rocket.app.JumiaApplication;
+import pt.rocket.framework.database.SearchRecentQueriesTableHelper;
 import pt.rocket.framework.enums.RequestType;
-import pt.rocket.framework.objects.CompleteProduct;
-import pt.rocket.framework.objects.ProductsPage;
 import pt.rocket.framework.objects.SearchSuggestion;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
+import android.database.sqlite.SQLiteException;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,20 +25,28 @@ import android.util.Log;
  * Get Search Suggestion  helper
  * 
  * @author Manuel Silva
+ * @modified sergiopereira
  * 
  */
 public class GetSearchSuggestionHelper extends BaseHelper {
     
-    private static String TAG = GetSearchSuggestionHelper.class.getSimpleName();
+    private static final String TAG = GetSearchSuggestionHelper.class.getSimpleName();
     
     public static final String SEACH_PARAM = "searchParam";
-    
-    ProductsPage mProductsPage= new ProductsPage();
 
+    private String mQuery;
+
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.helpers.BaseHelper#generateRequestBundle(android.os.Bundle)
+     */
     @Override
     public Bundle generateRequestBundle(Bundle args) {
         Bundle bundle = new Bundle();
-        Uri uri = Uri.parse(EventType.GET_SEARCH_SUGGESTIONS_EVENT.action).buildUpon().appendQueryParameter("q", args.getString(SEACH_PARAM)).build();
+        // Get the current query
+        mQuery = args.getString(SEACH_PARAM);
+        // Request suggestions
+        Uri uri = Uri.parse(EventType.GET_SEARCH_SUGGESTIONS_EVENT.action).buildUpon().appendQueryParameter("q", mQuery).build();
         bundle.putString(Constants.BUNDLE_URL_KEY, uri.toString());
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
@@ -48,47 +55,77 @@ public class GetSearchSuggestionHelper extends BaseHelper {
         return bundle;
     }
     
+    /**
+     * Save the recent query on the database
+     * @param query
+     * @author sergiopereira
+     */
+    public static void saveSearchQuery(final String query){
+        Log.d(TAG, "SAVE SEARCH QUERY: " + query);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                SearchRecentQueriesTableHelper.insertQuery(query);
+            }
+        }).start();
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.helpers.BaseHelper#parseResponseBundle(android.os.Bundle, org.json.JSONObject)
+     */
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
-        android.util.Log.d("TRACK", "parseResponseBundle GetProductsHelper");
+        android.util.Log.d(TAG, "ON PARSE RESPONSE");
+
         ArrayList<SearchSuggestion> suggestions = new ArrayList<SearchSuggestion>();
-
-        JSONArray suggestionsArray = null;
+        
+        // Get recent queries
         try {
-            suggestionsArray = jsonObject.getJSONArray(RestConstants.JSON_SUGGESTIONS_TAG);
-        } catch (JSONException e) {
-            e.printStackTrace();
+            suggestions = SearchRecentQueriesTableHelper.getRecentQueries(mQuery); 
+        } catch (SQLiteException e) {
+            Log.w(TAG, "ERROR ON GET RECENT QUERIES");
         }
-        for (int i = 0; i < suggestionsArray.length(); ++i) {
-            SearchSuggestion suggestion = new SearchSuggestion();
-            try {
+        // Parse response
+        try {
+            JSONArray suggestionsArray = jsonObject.getJSONArray(RestConstants.JSON_SUGGESTIONS_TAG);
+            for (int i = 0; i < suggestionsArray.length(); ++i) {
+                SearchSuggestion suggestion = new SearchSuggestion();
                 suggestion.initialize(suggestionsArray.getJSONObject(i));
-            } catch (JSONException e) {
-                e.printStackTrace();
+                suggestions.add(suggestion);
             }
-            suggestions.add(suggestion);
+        } catch (JSONException e) {
+            Log.w(TAG, "ERROR PARSING SUGGESTIONS", e);
+            return parseErrorBundle(bundle);
         }
-
+        
+        bundle.putString(SEACH_PARAM, mQuery);
         bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, suggestions);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_SEARCH_SUGGESTIONS_EVENT);
-//        long elapsed = System.currentTimeMillis() - JumiaApplication.INSTANCE.timeTrackerMap.get(EventType.GET_SEARCH_SUGGESTIONS_EVENT);
-//        Log.i("REQUEST", "event type response : "+bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY)+" time spent : "+elapsed);
-//        String trackValue = bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY) + " : "+elapsed;
-//        JumiaApplication.INSTANCE.writeToTrackerFile(trackValue);
         return bundle;
     }
     
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.helpers.BaseHelper#parseErrorBundle(android.os.Bundle)
+     */
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
-        android.util.Log.d(TAG, "parseErrorBundle GetSuggestionsHelper");
+        android.util.Log.d(TAG, "ON PARSE ERROR BUNDLE");
+        bundle.putString(SEACH_PARAM, mQuery);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_SEARCH_SUGGESTIONS_EVENT);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.helpers.BaseHelper#parseResponseErrorBundle(android.os.Bundle)
+     */
     @Override
     public Bundle parseResponseErrorBundle(Bundle bundle) {
-        android.util.Log.d(TAG, "parseResponseErrorBundle GetSuggestionsHelper");
+        android.util.Log.d(TAG, "ON PARSE RESPONSE ERROR BUNDLE");
+        bundle.putString(SEACH_PARAM, mQuery);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_SEARCH_SUGGESTIONS_EVENT);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
