@@ -787,7 +787,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             toggle();
             return true;
             
-        // SEARCH    
+        // SEARCH
         } else if (itemId == R.id.menu_search) {
             // Validate menu state
             if(drawable_state == DrawerLayout.STATE_IDLE) closeDrawerIfOpen();

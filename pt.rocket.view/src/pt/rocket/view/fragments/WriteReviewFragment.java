@@ -81,6 +81,8 @@ public class WriteReviewFragment extends BaseFragment {
     private boolean isExecutingSendReview = false;
     
     private HashMap<String, HashMap<String, String>> ratingOptions;
+    
+    private String lastProductSku = "";
     /**
      * Get instance
      * 
@@ -133,8 +135,6 @@ public class WriteReviewFragment extends BaseFragment {
          */
         triggerAutoLogin();
         triggerCustomer();
-        //EventManager.getSingleton().triggerRequestEvent(LogInEvent.TRY_AUTO_LOGIN);
-        //triggerContentEvent(EventType.GET_CUSTOMER);
     }
 
 
@@ -173,7 +173,6 @@ public class WriteReviewFragment extends BaseFragment {
          * @author sergiopereira
          */
         triggerRatingOptions();
-        //triggerContentEvent(EventType.GET_RATING_OPTIONS_EVENT);
     }
 
     /*
@@ -256,7 +255,13 @@ public class WriteReviewFragment extends BaseFragment {
         titleText = (EditText) getView().findViewById(R.id.title_box);
         nameText = (EditText) getView().findViewById(R.id.name_box);
         reviewText = (EditText) getView().findViewById(R.id.review_box);
-
+        
+        if(!lastProductSku.equalsIgnoreCase(completeProduct.getSku())){
+            titleText.setText("");
+            nameText.setText("");
+            reviewText.setText("");
+            lastProductSku = completeProduct.getSku();
+        }
         ((Button) getView().findViewById(R.id.send_review))
                 .setOnClickListener(new OnClickListener() {
 
@@ -363,6 +368,10 @@ public class WriteReviewFragment extends BaseFragment {
         case REVIEW_PRODUCT_EVENT:
             
             Log.d(TAG, "review product completed: success");
+            // Clean options after success
+            titleText.setText("");
+            nameText.setText("");
+            reviewText.setText("");
             TrackerDelegator.trackItemReview(getActivity().getApplicationContext(), completeProduct, productReviewCreated, ratings);
             dialog_review_submitted = DialogGenericFragment.newInstance(false, true, false,
                     getString(R.string.submit_title), getResources().getString(
