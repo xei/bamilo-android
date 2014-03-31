@@ -52,6 +52,7 @@ public enum ErrorCode {
 		case CONNECT_ERROR:
 		case TIME_OUT:
 		case IO:
+		case HTTP_STATUS:
 			return true;
 		}
 		return false;

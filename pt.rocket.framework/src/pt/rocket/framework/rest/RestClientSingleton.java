@@ -390,7 +390,6 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 					mHandler.sendMessage(buildResponseMessage(eventType,
 							Constants.FAILURE, ErrorCode.HTTP_STATUS, result, md5,
 							priority));	
-					// TrackerManager.sendTrackingError(e);
 					trackError(context, e, httpRequest.getURI(),
 							ErrorCode.HTTP_STATUS, result, false);
 				}
