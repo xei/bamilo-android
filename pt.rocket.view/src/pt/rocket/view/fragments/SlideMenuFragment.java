@@ -351,10 +351,10 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
         // case Wishlist:
         // setWishlistCount(view);
         // break;
-        case Home:
         case Search:
             setSearchItem(view);
             break;
+        case Home:
         case Categories:
         case MyAccount:
         case Country:
@@ -537,16 +537,22 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
     private void disableSearchItem(View view) {
         view.setEnabled(false);
         view.setOnClickListener(null);
+        TextView text = (TextView) view.findViewById(R.id.component_text);
+        text.setTextColor(text.getTextColors().withAlpha(128));
+        text.getCompoundDrawables()[0].setAlpha(128);
     }
     
     /**
-     * Enable the search tiem
+     * Enable the search item
      * @param view
      * @author sergiopereira
      */
     private void enableSearchItem(View view) {
         view.setEnabled(true);
         view.setOnClickListener(this);
+        TextView text = (TextView) view.findViewById(R.id.component_text);
+        text.setTextColor(text.getTextColors().withAlpha(255));
+        text.getCompoundDrawables()[0].setAlpha(255);
     }
     
 

@@ -3,23 +3,22 @@
  */
 package pt.rocket.view.fragments;
 
+import java.util.EnumSet;
 import java.util.HashMap;
 
 import pt.rocket.app.JumiaApplication;
-import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.controllers.CountryAdapter;
 import pt.rocket.forms.FormData;
 import pt.rocket.framework.database.LastViewedTableHelper;
-import pt.rocket.framework.rest.RestClientSingleton;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.ChangeCountryFragmentActivity;
-import pt.rocket.view.MainFragmentActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.Context;
@@ -73,7 +72,7 @@ public class ChangeCountryFragment extends BaseFragment {
      * Empty constructor
      */
     public ChangeCountryFragment() {
-        super(IS_NESTED_FRAGMENT, NavigationAction.Country);
+        super(IS_NESTED_FRAGMENT, NavigationAction.Country, EnumSet.noneOf(MyMenuItem.class));
     }
 
     /*
@@ -253,7 +252,7 @@ public class ChangeCountryFragment extends BaseFragment {
 
     protected void setCountry(int position) {
         HomeFragment.requestResponse = null;
-        JumiaApplication.INSTANCE.currentCategories = null;
+        JumiaApplication.currentCategories = null;
         JumiaApplication.INSTANCE.setCart(null);
         JumiaApplication.INSTANCE.setFormDataRegistry(new HashMap<String, FormData>());
         getBaseActivity().updateCartInfo();

@@ -150,7 +150,7 @@ public class HomeFragment extends BaseFragment {
         this.setRetainInstance(true);
         
         HockeyStartup.register(getActivity());
-        if(JumiaApplication.INSTANCE.mIsBound){
+        if(JumiaApplication.mIsBound){
             onCreateExecution();    
         } else {
             JumiaApplication.INSTANCE.setResendHander(serviceConnectedHandler);
@@ -186,7 +186,7 @@ public class HomeFragment extends BaseFragment {
         super.onResume();
         Log.i(TAG, "onResume");
         
-        if(JumiaApplication.INSTANCE.mIsBound){
+        if(JumiaApplication.mIsBound){
             onResumeExecution();    
         } else {
             JumiaApplication.INSTANCE.setResendHander(serviceConnectedHandler);
@@ -304,12 +304,12 @@ public class HomeFragment extends BaseFragment {
                     int pageCount = pagesTitles.size();
                    
 
-                    if (arg0 == mPager.SCROLL_STATE_SETTLING) {
+                    if (arg0 == JumiaViewPager.SCROLL_STATE_SETTLING) {
                         if (mPager != null)
                             mPager.setPagingEnabled(false);
                     }
 
-                    if (arg0 == mPager.SCROLL_STATE_IDLE) {
+                    if (arg0 == JumiaViewPager.SCROLL_STATE_IDLE) {
                         new ChangePageTask().execute(arg0);
                     }
 
@@ -508,6 +508,10 @@ public class HomeFragment extends BaseFragment {
         pagesTitles.add(firstHomePage.getHomepageTitle());
         requestResponse.add(firstHomePage.getTeaserSpecification());
 
+        /**
+         * FIXME: Incomprehensible validation
+         * @author sergiopereira
+         */
         if (requestResponse != null) {
             // if (mPagerAdapter == null) {
             mPagerAdapter = new HomeCollectionPagerAdapter(getChildFragmentManager());

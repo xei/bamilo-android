@@ -131,6 +131,18 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         this.isNestedFragment = isNestedFragment;
         this.action = action;
     }
+    
+    /**
+     * Constructor
+     * @param isNestedFragment2
+     * @param country
+     * @param enumSet
+     */
+    public BaseFragment(Boolean isNestedFragment, NavigationAction action, EnumSet<MyMenuItem> enumSet) {
+        this.isNestedFragment = isNestedFragment;
+        this.action = action;
+        this.enabledMenuItems = enumSet;
+    }
 
 
     /**

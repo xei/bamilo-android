@@ -1014,6 +1014,9 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 // Log.d(TAG, "SEARCH: ON TOUCH");
+                // Close navigation menu
+                if (mDrawerLayout != null  && mDrawerLayout.isDrawerOpen(mDrawerNavigation)) mDrawerLayout.closeDrawer(mDrawerNavigation);
+                // Sent to supper
                 return super.onTouch(v, event);
             }
             
