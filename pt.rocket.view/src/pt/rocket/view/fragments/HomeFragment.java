@@ -519,14 +519,7 @@ public class HomeFragment extends BaseFragment {
             setLayout(currentPosition);
         } else {
             ((BaseActivity) getActivity()).setProcessShow(false);
-            
-            /**
-             * TRIGGERS
-             * @author sergiopereira
-             */
             triggerTeasers();
-            //triggerContentEvent(new RequestEvent(EventType.GET_TEASERS_EVENT));
-            
         }
         configureLayout();
     }
@@ -535,13 +528,10 @@ public class HomeFragment extends BaseFragment {
         try {
             setLayoutSpec();
         } catch (IllegalArgumentException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (NoSuchFieldException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IllegalAccessException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         
@@ -716,12 +706,9 @@ public class HomeFragment extends BaseFragment {
                     case PRODUCT:
                         if (targetUrl != null) {
                             bundle.putString(ConstantsIntentExtra.CONTENT_URL, targetUrl);
-                            bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE,
-                                    R.string.gteaserprod_prefix);
+                            bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaserprod_prefix);
                             bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
-                            ((BaseActivity) getActivity()).onSwitchFragment(
-                                    FragmentType.PRODUCT_DETAILS, bundle,
-                                    FragmentController.ADD_TO_BACK_STACK);
+                            ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
                         }
                         break;
                     case BRAND:
@@ -731,10 +718,7 @@ public class HomeFragment extends BaseFragment {
                             bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, targetUrl);
                             bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gsearch);
                             bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
-                            ((BaseActivity) getActivity()).onSwitchFragment(
-                                    FragmentType.PRODUCT_LIST, bundle,
-                                    FragmentController.ADD_TO_BACK_STACK);
-
+                            ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.PRODUCT_LIST, bundle, FragmentController.ADD_TO_BACK_STACK);
                         }
                         break;
                     default:
@@ -840,11 +824,9 @@ public class HomeFragment extends BaseFragment {
             }
             
             for (Iterator iterator = result.iterator(); iterator.hasNext();) {
-                TeaserSpecification<?> teaserSpecification = (TeaserSpecification<?>) iterator
-                        .next();
+                TeaserSpecification<?> teaserSpecification = (TeaserSpecification<?>) iterator.next();
                 if(mainView != null && mTeasersFactory != null && teaserSpecification != null){
-                    View mView = mTeasersFactory.getSpecificTeaser(getActivity(), mainView,
-                            teaserSpecification, mInflater, teaserClickListener);
+                    View mView = mTeasersFactory.getSpecificTeaser(getActivity(), mainView, teaserSpecification, mInflater, teaserClickListener);
                             if(mView != null){
                                 mainView.addView(mView);            
                             }

@@ -325,5 +325,6 @@
     <string name="clear_all_uppercase_label">CLEAR ALL</string>
     <string name="filter_label">Filter</string>
     <string name="all_label">All</string>
+    <string name="top_brands_toplevel_title">All Brands</string>
     
 </resources>

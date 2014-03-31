@@ -13,6 +13,8 @@ import pt.rocket.framework.objects.ITargeting;
 import pt.rocket.framework.objects.ProductTeaserGroup;
 import pt.rocket.framework.objects.ProductTeaserGroup.TeaserProduct;
 import pt.rocket.framework.objects.TeaserBrand;
+import pt.rocket.framework.objects.TeaserGroupTopBrands;
+import pt.rocket.framework.objects.TeaserGroupTopBrands.TeaserTopBrand;
 import pt.rocket.framework.objects.TeaserImage;
 import pt.rocket.framework.objects.TeaserSpecification;
 import pt.rocket.framework.utils.WindowHelper;
@@ -94,6 +96,9 @@ public class TeasersFactory {
             isToResize = true;
             mView = getBrandsListTeaser(mLayoutInflater, (BrandsTeaserGroup) teaserSpecification);
             break;
+        case TOP_BRANDS_LIST:
+            mView = getTeaserTopBrands(mLayoutInflater, (TeaserGroupTopBrands) teaserSpecification);
+            break;
         default:
             break;
         }
@@ -166,6 +171,9 @@ public class TeasersFactory {
         return rootView;
     }
 
+
+    
+    
     private View getProductsListTeaser(LayoutInflater mInflater, ProductTeaserGroup productTeaserGroup) {
         View rootView = mInflater.inflate(R.layout.teaser_products_group, mainView, false);
         ViewGroup container = (ViewGroup) rootView
@@ -236,8 +244,7 @@ public class TeasersFactory {
         View categoryTeaserView;
         categoryTeaserView = mInflater.inflate(R.layout.category_inner_childcat, vg, false);
         TextView textView = (TextView) categoryTeaserView.findViewById(R.id.text);
-        textView.setText(cat
-                .getName());
+        textView.setText(cat.getName());
         attachTeaserListener(cat, categoryTeaserView);
         return categoryTeaserView;
     }
@@ -249,8 +256,7 @@ public class TeasersFactory {
      * @return
      */
     private View createCategoryAllTeaserView(ViewGroup container, LayoutInflater mInflater) {
-        View view = mInflater.inflate(
-                R.layout.category_inner_currentcat, container, false);
+        View view = mInflater.inflate(R.layout.category_inner_currentcat, container, false);
         TextView textView = (TextView) view.findViewById(R.id.text);
         textView.setText(mContext.getString(R.string.categories_toplevel_title));
         view.setOnClickListener(onTeaserClickListener);
@@ -304,6 +310,72 @@ public class TeasersFactory {
         attachTeaserListener(brand, brandTeaserView);
         return brandTeaserView;
     }
+   
+    /*
+     * ################## TOP BRANDS ##################
+     */
+    
+    /**
+     * Create the view to list the top brands
+     * @param mInflater
+     * @param teaserGroupTopBrands
+     * @return View
+     * @author sergiopereira
+     */
+    private View getTeaserTopBrands(LayoutInflater mInflater, TeaserGroupTopBrands teaserGroupTopBrands) {
+        View rootView = mInflater.inflate(R.layout.teaser_top_brands_group, mainView, false);
+        ViewGroup container = (ViewGroup) rootView.findViewById(R.id.teaser_group_container);
+        if (teaserGroupTopBrands != null) {
+            ((TextView) rootView.findViewById(R.id.teaser_group_title)).setText(teaserGroupTopBrands.getTitle().replace("_", " "));
+            // Add the item all brands
+            //container.addView(createItemAllBrandsView(container, mInflater));
+            // Add each brand
+            for (TeaserTopBrand teaser : teaserGroupTopBrands.getTeasers()) {
+                container.addView(createTopBrandTeaserView(teaser, container, mInflater));
+            }
+        }
+        return rootView;
+    }
+    
+    /**
+     * Create the top brand teaser view
+     * @param teaser
+     * @param vg
+     * @param mInflater
+     * @return the brand view
+     * @author sergiopereira
+     */
+    private View createTopBrandTeaserView(TeaserTopBrand teaser, ViewGroup vg, LayoutInflater mInflater) {
+        View mTopBrandTeaserView;
+        mTopBrandTeaserView = mInflater.inflate(R.layout.category_inner_childcat, vg, false);
+        TextView textView = (TextView) mTopBrandTeaserView.findViewById(R.id.text);
+        textView.setText(teaser.getName());
+        attachTeaserListener(teaser, mTopBrandTeaserView);
+        return mTopBrandTeaserView;
+    }
+    
+    /**
+     * Generate the All Categories view
+     * @param container
+     * @param mInflater
+     * @return the view that represent all brands
+     * @author sergiopereira
+     */
+    @SuppressWarnings("unused")
+    private View createItemAllBrandsView(ViewGroup container, LayoutInflater mInflater) {
+        View view = mInflater.inflate(R.layout.category_inner_currentcat, container, false);
+        TextView textView = (TextView) view.findViewById(R.id.text);
+        textView.setText(mContext.getString(R.string.top_brands_toplevel_title));
+        view.setOnClickListener(onTeaserClickListener);
+        view.setTag(R.id.target_url, null);
+        view.setTag(R.id.target_type, ITargeting.TargetType.BRAND);
+        return view;
+    }  
+    
+    /*
+     * ################## IMAGE ##################
+     */
+    
     
     /**
      * Loads the image and hide progress bar
