@@ -44,6 +44,7 @@ import android.content.ContentValues;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -55,7 +56,7 @@ import android.widget.LinearLayout;
 
 import com.actionbarsherlock.internal.widget.IcsAdapterView;
 
-import de.akquinet.android.androlog.Log;
+
 
 /**
  * @author sergiopereira
@@ -81,7 +82,7 @@ public class SessionRegisterFragment extends BaseFragment {
 
     private TextView registerRequiredText;
 
-    private DynamicForm serverForm;
+    private static DynamicForm serverForm;
 
     private String terms;
 
@@ -170,6 +171,7 @@ public class SessionRegisterFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
+        
         registerLocation = getString(R.string.mixprop_loginlocation);
         if (formResponse != null){
             loadForm(formResponse);
@@ -221,8 +223,6 @@ public class SessionRegisterFragment extends BaseFragment {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
         if (null != serverForm) {
 
             Iterator<DynamicFormItem> iterator = serverForm.iterator();
@@ -235,10 +235,27 @@ public class SessionRegisterFragment extends BaseFragment {
                 CheckBox check = (CheckBox) getView().findViewById(R.id.checkTerms);
                 outState.putBoolean("" + R.id.checkTerms, check.isChecked());
             }
-
-            savedInstanceState = outState;
+            this.savedInstanceState = outState;
         }
+        super.onSaveInstanceState(outState);
+    }
+    
+    public void saveFormState(){
+        if (null != serverForm) {
+            if(savedInstanceState == null){
+                savedInstanceState = new Bundle();
+            }
+            Iterator<DynamicFormItem> iterator = serverForm.iterator();
 
+            while (iterator.hasNext()) {
+                DynamicFormItem item = iterator.next();
+                item.saveState(savedInstanceState);
+            }
+            if (getView() != null) {
+                CheckBox check = (CheckBox) getView().findViewById(R.id.checkTerms);
+                savedInstanceState.putBoolean("" + R.id.checkTerms, check.isChecked());
+            }
+        }
     }
 
     /**
@@ -249,7 +266,6 @@ public class SessionRegisterFragment extends BaseFragment {
      * Inflate this layout
      */
     public void setAppContentLayout() {
-        // triggerContentEvent(EventType.GET_REGISTRATION_FORM_EVENT);
 
         CheckBox check = (CheckBox) getView().findViewById(R.id.checkTerms);
         check.setPadding(check.getPaddingLeft(), check.getPaddingTop(), check.getPaddingRight(),
@@ -264,8 +280,6 @@ public class SessionRegisterFragment extends BaseFragment {
              * @author sergiopereira
              */
             triggerTerms();
-            // EventManager.getSingleton().triggerRequestEvent(new
-            // RequestEvent(EventType.GET_TERMS_EVENT));
 
         } else {
             View termsContainer = getView().findViewById(R.id.termsContainer);
@@ -296,7 +310,6 @@ public class SessionRegisterFragment extends BaseFragment {
                         termsRequiredText.setVisibility(View.GONE);
                         registerButton.setTextAppearance(getActivity(), R.style.text_bold);
                         FontLoader.apply(registerButton, FontLoader.ROBOTO_BOLD);
-
                     } else {
                         registerButton.setTextAppearance(getActivity(), R.style.text_normal);
                         FontLoader.apply(registerButton, FontLoader.ROBOTO_REGULAR);
@@ -381,6 +394,7 @@ public class SessionRegisterFragment extends BaseFragment {
 
         @Override
         public void onFocusChange(View v, boolean hasFocus) {
+            saveFormState();
             if (!hasFocus) {
                 checkInputFields();
             }
@@ -438,6 +452,7 @@ public class SessionRegisterFragment extends BaseFragment {
                     int id = v.getId();
                     if (id == R.id.termsContainerClick) {
                         Log.d(TAG, "terms click");
+                        saveFormState();
                         Bundle bundle = new Bundle();
                         bundle.putString(ConstantsIntentExtra.TERMS_CONDITIONS, terms);
                         ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.TERMS, bundle,
@@ -609,8 +624,7 @@ public class SessionRegisterFragment extends BaseFragment {
          * @author sergiopereira
          */
         triggerStoreLogin(values);
-        // EventManager.getSingleton().triggerRequestEvent(new StoreEvent(EventType.STORE_LOGIN,
-        // values));
+     
     }
 
     /**
@@ -618,29 +632,27 @@ public class SessionRegisterFragment extends BaseFragment {
      * @param form
      */
     private void loadForm(Form form) {
-
-        serverForm = FormFactory.getSingleton().CreateForm(FormConstants.REGISTRATION_FORM,
-                getActivity(), form);
-        serverForm.setOnFocusChangeListener(focus_listener);
-        serverForm.setOnItemSelectedListener(selected_listener);
-        serverForm.setTextWatcher(text_watcher);
-        container = (LinearLayout) getView().findViewById(R.id.registerform_container);
-        try {
-            container.removeAllViews();
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        }
-        container.addView(serverForm.getContainer());
-        if (null != this.savedInstanceState && null != serverForm) {
-            Iterator<DynamicFormItem> iter = serverForm.getIterator();
-            while (iter.hasNext()) {
-                DynamicFormItem item = iter.next();
-                item.loadState(savedInstanceState);
+            serverForm = FormFactory.getSingleton().CreateForm(FormConstants.REGISTRATION_FORM,
+                    getActivity(), form);
+            serverForm.setOnFocusChangeListener(focus_listener);
+            serverForm.setOnItemSelectedListener(selected_listener);
+            serverForm.setTextWatcher(text_watcher);
+            container = (LinearLayout) getView().findViewById(R.id.registerform_container);
+            try {
+                container.removeAllViews();
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
             }
-            CheckBox check = (CheckBox) getView().findViewById(R.id.checkTerms);
-            check.setChecked(this.savedInstanceState.getBoolean("" + R.id.checkTerms));
-        }
-
+            container.addView(serverForm.getContainer());
+            if (null != savedInstanceState && null != serverForm) {
+                Iterator<DynamicFormItem> iter = serverForm.getIterator();
+                while (iter.hasNext()) {
+                    DynamicFormItem item = iter.next();
+                    item.loadState(savedInstanceState);
+                }
+                CheckBox check = (CheckBox) getView().findViewById(R.id.checkTerms);
+                check.setChecked(this.savedInstanceState.getBoolean("" + R.id.checkTerms));
+            }
     }
 
     protected boolean onErrorEvent(Bundle bundle) {

@@ -351,7 +351,7 @@ public class DynamicFormItem {
      *            the Bundle that contains the stored information of the control
      */
     public void loadState(Bundle inStat) {
-
+        Log.i(TAG, "code1entry : "+this.entry.getInputType()+" key : "+inStat);
         switch (this.entry.getInputType()) {
         case meta:
             break;
@@ -376,13 +376,13 @@ public class DynamicFormItem {
         case date:
             String date = inStat.getString(getKey());
             this.dialogDate.setDate(date);
+            ((Button) this.dataControl).setText(dialogDate.getDate());
             break;
         case email:
         case text:
         case password:
         case number:
             String text = inStat.getString(getKey());
-            ;
 
             ((EditText) this.dataControl).setText(text);
             this.errorControl.setVisibility(View.GONE);
