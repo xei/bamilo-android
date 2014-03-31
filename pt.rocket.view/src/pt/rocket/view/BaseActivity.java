@@ -282,7 +282,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         setTitle(titleResId);
         BugSenseHandler.leaveBreadcrumb(getTag() + " _onCreate");
     }
-
+    
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
@@ -2590,4 +2590,13 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.POLL.toString());
     }
 
+    /**
+     * Get the current menu options specified by current fragment
+     * @return a set of menu items
+     * @author sergiopereira 
+     */
+    public Set<MyMenuItem> getCurrentMenuOptions() {
+        return menuItems;
+    }
+    
 }

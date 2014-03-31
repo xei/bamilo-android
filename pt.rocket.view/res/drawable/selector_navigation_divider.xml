@@ -3,6 +3,7 @@
 
     <item android:drawable="@color/sidemenu_list_divider_highlight" android:state_pressed="true"/>
     <item android:drawable="@color/sidemenu_list_divider_highlight" android:state_selected="true"/>
+    <item android:drawable="@color/sidemenu_list_divider_normal" android:state_enabled="false"/>
     <item android:drawable="@color/sidemenu_list_divider_normal"/>
 
 </selector>

@@ -6,6 +6,7 @@ package pt.rocket.view.fragments;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.Set;
 
 import org.holoeverywhere.widget.TextView;
 
@@ -154,7 +155,7 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        if(JumiaApplication.INSTANCE.mIsBound){
+        if(JumiaApplication.mIsBound){
             onResumeExecution();    
         } else {
 //            Log.i(TAG, "code1service not received ok from service! set handler");
@@ -170,8 +171,8 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
 
     private void onResumeExecution(){
         // Update
-        if (JumiaApplication.INSTANCE.navigationListComponents != null) {
-            fillNavigationContainer(JumiaApplication.INSTANCE.navigationListComponents);
+        if (JumiaApplication.navigationListComponents != null) {
+            fillNavigationContainer(JumiaApplication.navigationListComponents);
             updateCart();
         } else {
 
@@ -181,7 +182,7 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
              * @author sergiopereira
              */
             Log.i(TAG, "slidemenu trigger");
-            if (JumiaApplication.INSTANCE.SHOP_ID >= 0)
+            if (JumiaApplication.SHOP_ID >= 0)
                 trigger();
         }
     }
@@ -243,8 +244,8 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
             }
             
             Log.d(TAG, "GET NAVIGATION LIST COMPONENTS EVENT");
-            JumiaApplication.INSTANCE.navigationListComponents = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
-            fillNavigationContainer(JumiaApplication.INSTANCE.navigationListComponents);
+            JumiaApplication.navigationListComponents = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
+            fillNavigationContainer(JumiaApplication.navigationListComponents);
             updateCart();
             break;
         }
@@ -258,7 +259,7 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
      * @author sergiopereira
      */
     public void onUpdate() {
-        if (JumiaApplication.INSTANCE.navigationListComponents != null) {
+        if (JumiaApplication.navigationListComponents != null) {
             Log.i(TAG, "ON UPDATE: NAV LIST IS NOT NULL");
             // Update generic items or force reload for LogInOut
             updateNavigationItems();
@@ -352,6 +353,8 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
         // break;
         case Home:
         case Search:
+            setSearchItem(view);
+            break;
         case Categories:
         case MyAccount:
         case Country:
@@ -507,6 +510,45 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
             view.setSelected(false);
         }
     }
+    
+    
+    /**
+     * Set the search item
+     * @param view
+     * @author sergiopereira
+     */
+    private void setSearchItem(View view) {
+        // Get the current menu options
+        Set<MyMenuItem> currentMenuOptions = getBaseActivity().getCurrentMenuOptions();
+        // Validate current menu
+        if(currentMenuOptions != null && !currentMenuOptions.contains(MyMenuItem.SEARCH) && !currentMenuOptions.contains(MyMenuItem.SEARCH_BAR))
+            // Disable
+            disableSearchItem(view);
+        else
+            // Enable
+            enableSearchItem(view);
+    }
+    
+    /**
+     * Disable the search item
+     * @param view
+     * @author sergiopereira
+     */
+    private void disableSearchItem(View view) {
+        view.setEnabled(false);
+        view.setOnClickListener(null);
+    }
+    
+    /**
+     * Enable the search tiem
+     * @param view
+     * @author sergiopereira
+     */
+    private void enableSearchItem(View view) {
+        view.setEnabled(true);
+        view.setOnClickListener(this);
+    }
+    
 
     /**
      * 
