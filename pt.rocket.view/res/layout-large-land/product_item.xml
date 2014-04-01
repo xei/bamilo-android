@@ -6,7 +6,7 @@
     <LinearLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="140dp" >
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -69,11 +69,12 @@
                 android:layout_toRightOf="@+id/image_loadable"
                 android:ellipsize="end"
                 android:gravity="center|left"
-                android:lines="2"
                 android:maxLines="2"
                 android:text="Name"
                 android:textColor="@color/grey_middle"
                 android:textSize="@dimen/text_xs" />
+
+            <!-- android:lines="2" -->
 
             <org.holoeverywhere.widget.TextView
                 android:id="@+id/item_discount"
@@ -126,7 +127,7 @@
 
             <org.holoeverywhere.widget.TextView
                 android:id="@+id/discount_percentage"
-                android:layout_width="wrap_content"
+                android:layout_width="45dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_below="@id/item_name"
@@ -135,12 +136,12 @@
                 android:background="@drawable/discount_badge"
                 android:fontFamily="roboto_bold"
                 android:gravity="center"
+                android:maxLines="1"
                 android:paddingBottom="@dimen/margin_small"
-                android:paddingLeft="@dimen/margin_mid"
-                android:paddingRight="@dimen/margin_mid"
+                android:singleLine="true"
                 android:text="99%"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/text_s" />
+                android:textSize="14sp" />
         </RelativeLayout>
     </LinearLayout>
 

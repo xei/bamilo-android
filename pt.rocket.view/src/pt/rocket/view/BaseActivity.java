@@ -382,7 +382,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     public void onPause() {
         super.onPause();
         // Hide search component
-        hideSearchComponent(currentMenu);
+        hideSearchComponent();
     }
 
     @Override
@@ -722,7 +722,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                 toggle();
             } else if (!initialCountry) {
                 // Hide search component and keyboard
-                hideSearchComponent(currentMenu);
+                hideSearchComponent();
                 hideKeyboard();
                 // Goto home
                 onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
@@ -792,7 +792,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             // Validate menu state
             if(drawable_state == DrawerLayout.STATE_IDLE) closeDrawerIfOpen();
             // Show search component
-            showSearchComponent(currentMenu);
+            showSearchComponent();
             // 
             return true;
         
@@ -1048,7 +1048,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             @Override
             public void onImeBackPressed(View view, String text) {
                 Log.d(TAG, "SEARCH ON IME PRESSED BACK");
-                hideSearchComponent(currentMenu);
+                hideSearchComponent();
             }
         });
         
@@ -1114,16 +1114,16 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      * @param menu
      * @author sergiopereira
      */
-    private void hideSearchComponent(Menu menu){
+    private void hideSearchComponent(){
         Log.d(TAG, "SEARCH COMPONENT: HIDE");
         // Validate if exist search icon and bar
         if(menuItems.contains(MyMenuItem.SEARCH) && menuItems.contains(MyMenuItem.SEARCH_BAR)) {
             // Hide search bar
-            if(isTabletInLandscape(getApplicationContext())) menu.findItem(MyMenuItem.SEARCH_BAR.resId).setVisible(false);
+            if(isTabletInLandscape(getApplicationContext())) currentMenu.findItem(MyMenuItem.SEARCH_BAR.resId).setVisible(false);
             else findViewById(R.id.rocket_app_header_search_bar).setVisibility(View.GONE);
             // Show icon
-            menu.findItem(MyMenuItem.SEARCH.resId).setVisible(true);
-        }
+            currentMenu.findItem(MyMenuItem.SEARCH.resId).setVisible(true);
+        } 
         
         try {
             searchComponentDismissFocus();
@@ -1136,22 +1136,35 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     }
     
     /**
+     * Hide only the search bar, used by ChangeCountryFragment
+     * @author sergiopereira
+     */
+    public void hideSearchBar(){
+        // Validate if the current menu options contains the search bar item
+        if (menuItems.contains(MyMenuItem.SEARCH_BAR)) {
+            // Hide search bar
+            if(isTabletInLandscape(getApplicationContext())) currentMenu.findItem(MyMenuItem.SEARCH_BAR.resId).setVisible(false);
+            else findViewById(R.id.rocket_app_header_search_bar).setVisibility(View.GONE);
+        }
+    }
+    
+    /**
      * Show the search component
      * @param menu
      * @author sergiopereira
      */
-    private void showSearchComponent(Menu menu){
+    private void showSearchComponent(){
         Log.d(TAG, "SEARCH COMPONENT: SHOW");
         // Validate if exist search icon and bar
         if(menuItems.contains(MyMenuItem.SEARCH) && menuItems.contains(MyMenuItem.SEARCH_BAR)) {
             // Hide search bar
-            if(isTabletInLandscape(getApplicationContext())) menu.findItem(MyMenuItem.SEARCH_BAR.resId).setVisible(true);
+            if(isTabletInLandscape(getApplicationContext())) currentMenu.findItem(MyMenuItem.SEARCH_BAR.resId).setVisible(true);
             else findViewById(R.id.rocket_app_header_search_bar).setVisibility(View.VISIBLE);
         } else {
             Log.w(TAG, "THE MENU SHOULD CONTAIN THE SEARCH ICON AND BAR.");
         }
         // Hide search icon, request focus and show keyboard
-        menu.findItem(MyMenuItem.SEARCH.resId).setVisible(false);
+        currentMenu.findItem(MyMenuItem.SEARCH.resId).setVisible(false);
         searchComponent.requestFocus();
         showKeyboard(searchComponent);
         // Close menu
@@ -1698,7 +1711,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     public void onOpened() {
         Log.d(getTag(), "onOpened");
         // Hide search component and hide keyboard
-        hideSearchComponent(currentMenu);
+        hideSearchComponent();
         hideKeyboard();
         // Update cart
         AnalyticsGoogle.get().trackPage(R.string.gnavigation);

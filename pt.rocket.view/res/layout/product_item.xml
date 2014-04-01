@@ -63,7 +63,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/item_brand"
                 android:layout_marginRight="@dimen/margin_huge"
-                android:layout_marginTop="6dp"
+                android:layout_marginTop="4dp"
                 android:layout_toRightOf="@+id/image_loadable"
                 android:ellipsize="end"
                 android:gravity="left"
@@ -123,7 +123,7 @@
 
             <org.holoeverywhere.widget.TextView
                 android:id="@+id/discount_percentage"
-                android:layout_width="wrap_content"
+                android:layout_width="45dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_below="@id/item_regprice"
@@ -133,11 +133,11 @@
                 android:fontFamily="roboto_bold"
                 android:gravity="center"
                 android:paddingBottom="@dimen/margin_small"
-                android:paddingLeft="@dimen/margin_mid"
-                android:paddingRight="@dimen/margin_mid"
                 android:text="99%"
+                android:maxLines="1"
+                android:singleLine="true"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/text_s" />
+                android:textSize="14sp" />
         </RelativeLayout>
     </LinearLayout>
 
