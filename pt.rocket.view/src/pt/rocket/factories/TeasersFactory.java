@@ -122,8 +122,10 @@ public class TeasersFactory {
             
             // Validate device and orientation
             if(mContext.getResources().getBoolean(R.bool.isTablet) && teaserImageArrayList.get(0).getImageTableUrl() != null) {
+                //Log.d(TAG, "SLIDE IMG: LOADED TABLET " + teaserImageArrayList.get(0).getImageTableUrl());
                 setImageToLoad(teaserImageArrayList.get(0).getImageTableUrl(),imageContainer, 0);
             } else {
+                //Log.d(TAG, "SLIDE IMG: LOADED PHONE " + teaserImageArrayList.get(0).getImageUrl());
                 setImageToLoad(teaserImageArrayList.get(0).getImageUrl(),imageContainer, 0);
             }
             
@@ -212,8 +214,10 @@ public class TeasersFactory {
         
         // Validate device and orientation
         if(mContext.getResources().getBoolean(R.bool.isTablet) && teaserImage.getImageTableUrl() != null) {
+            // Log.d(TAG, "T IMG: LOADED TABLET " + teaserImage.getImageTableUrl());
             setImageToLoad(teaserImage.getImageTableUrl(), imageTeaserView, size);
         } else {
+            // Log.d(TAG, "T IMG: LOADED PHONE " + teaserImage.getImageUrl());
             setImageToLoad(teaserImage.getImageUrl(), imageTeaserView, size);
         }
         
@@ -277,9 +281,11 @@ public class TeasersFactory {
         
         // Tablet
         if(mContext.getResources().getBoolean(R.bool.isTablet) && product.getImagesTablet() != null && product.getImagesTablet().size() > 0) {
+            // Log.d(TAG, "PROD IMG: LOADED TABLET " + product.getImagesTablet().get(0).getUrl());
             setImageToLoad(product.getImagesTablet().get(0).getUrl(), productTeaserView, size);
         } // Portrait
         else if (product.getImages() != null && product.getImages().size() > 0) {
+            // Log.d(TAG, "PROD IMG: LOADED PHONE " + product.getImages().get(0).getUrl());
             setImageToLoad(product.getImages().get(0).getUrl(), productTeaserView, size);
         }
         
@@ -301,9 +307,11 @@ public class TeasersFactory {
         
         // Tablet
         if(mContext.getResources().getBoolean(R.bool.isTablet) && brand.getImageTableUrl() != null && brand.getImageTableUrl().length() > 0) {
+            // Log.d(TAG, "BRAND IMG: LOADED TABLET " + brand.getImageTableUrl());
             setImageToLoad(brand.getImageTableUrl(), brandTeaserView, size);
         } // Portrait
         else if (brand.getImageUrl() != null) {
+            // Log.d(TAG, "BRAND IMG: LOADED PHONE " + brand.getImageUrl());
             setImageToLoad(brand.getImageUrl(), brandTeaserView, size);
         }
         
