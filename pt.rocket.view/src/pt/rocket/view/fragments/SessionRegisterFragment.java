@@ -87,7 +87,6 @@ public class SessionRegisterFragment extends BaseFragment {
 
     private String terms;
 
-    private Form formResponse;
 
     private LinearLayout container;
 
@@ -178,8 +177,8 @@ public class SessionRegisterFragment extends BaseFragment {
         mLocale = Locale.getDefault();
         Locale.setDefault(Locale.US);
         registerLocation = getString(R.string.mixprop_loginlocation);
-        if (formResponse != null){
-            loadForm(formResponse);
+        if (JumiaApplication.INSTANCE.registerForm != null){
+            loadForm(JumiaApplication.INSTANCE.registerForm);
         } else {
 
             /**
@@ -603,7 +602,7 @@ public class SessionRegisterFragment extends BaseFragment {
             Form form = (Form) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             Log.d(TAG, "getRegistrationFormCompleted: form = " + form.toJSON());
             if (null != form) {
-                this.formResponse = form;
+                JumiaApplication.INSTANCE.registerForm = form;
                 loadForm(form);
             }
             break;

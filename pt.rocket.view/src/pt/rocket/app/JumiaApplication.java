@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import pt.rocket.forms.Form;
 import pt.rocket.forms.FormData;
 import pt.rocket.forms.PaymentMethodForm;
 import pt.rocket.framework.ErrorCode;
@@ -127,6 +128,8 @@ public class JumiaApplication extends Application implements ExceptionCallback {
      */
     private static HashMap<String,PaymentInfo> paymentsInfoList;
     
+    
+    public Form registerForm;
     /**
      * Tracking Request performance
      */
