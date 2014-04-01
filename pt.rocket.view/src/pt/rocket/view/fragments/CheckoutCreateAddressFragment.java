@@ -6,7 +6,6 @@ package pt.rocket.view.fragments;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -45,7 +44,6 @@ import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
