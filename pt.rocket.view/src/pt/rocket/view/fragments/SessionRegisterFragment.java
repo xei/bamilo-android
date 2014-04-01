@@ -69,8 +69,6 @@ public class SessionRegisterFragment extends BaseFragment {
 
     private static SessionRegisterFragment registerFragment;
 
-    private Bundle savedInstanceState;
-
     private TextView termsRequiredText;
 
     private boolean termsAreRequired = false;
@@ -86,7 +84,6 @@ public class SessionRegisterFragment extends BaseFragment {
     private static DynamicForm serverForm;
 
     private String terms;
-
 
     private LinearLayout container;
 
@@ -114,7 +111,6 @@ public class SessionRegisterFragment extends BaseFragment {
                 EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.MyAccount,
                 R.string.register_title);
-        this.setRetainInstance(true);
     }
 
     /*
@@ -244,25 +240,25 @@ public class SessionRegisterFragment extends BaseFragment {
                 checkTerms = (CheckBox) getView().findViewById(R.id.checkTerms);
                 outState.putBoolean("" + R.id.checkTerms, checkTerms.isChecked());
             }
-            savedInstanceState = outState;
+            JumiaApplication.INSTANCE.registerSavedInstanceState = outState;
         }
         super.onSaveInstanceState(outState);
     }
     
     public void saveFormState(){
         if (null != serverForm) {
-            if(savedInstanceState == null){
-                savedInstanceState = new Bundle();
+            if(JumiaApplication.INSTANCE.registerSavedInstanceState == null){
+                JumiaApplication.INSTANCE.registerSavedInstanceState = new Bundle();
             }
             Iterator<DynamicFormItem> iterator = serverForm.iterator();
 
             while (iterator.hasNext()) {
                 DynamicFormItem item = iterator.next();
-                item.saveState(savedInstanceState);
+                item.saveState(JumiaApplication.INSTANCE.registerSavedInstanceState);
             }
             if (getView() != null) {
                 checkTerms = (CheckBox) getView().findViewById(R.id.checkTerms);
-                savedInstanceState.putBoolean("" + R.id.checkTerms, checkTerms.isChecked());
+                JumiaApplication.INSTANCE.registerSavedInstanceState.putBoolean("" + R.id.checkTerms, checkTerms.isChecked());
             }
         }
     }
@@ -654,14 +650,14 @@ public class SessionRegisterFragment extends BaseFragment {
                 e.printStackTrace();
             }
             container.addView(serverForm.getContainer());
-            if (null != savedInstanceState && null != serverForm) {
+            if (null != JumiaApplication.INSTANCE.registerSavedInstanceState && null != serverForm) {
                 Iterator<DynamicFormItem> iter = serverForm.getIterator();
                 while (iter.hasNext()) {
                     DynamicFormItem item = iter.next();
-                    item.loadState(savedInstanceState);
+                    item.loadState(JumiaApplication.INSTANCE.registerSavedInstanceState);
                 }
                 CheckBox check = (CheckBox) getView().findViewById(R.id.checkTerms);
-                check.setChecked(savedInstanceState.getBoolean("" + R.id.checkTerms));
+                check.setChecked(JumiaApplication.INSTANCE.registerSavedInstanceState.getBoolean("" + R.id.checkTerms));
             }
     }
 

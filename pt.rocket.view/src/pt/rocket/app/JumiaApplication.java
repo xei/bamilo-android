@@ -130,6 +130,8 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     
     
     public Form registerForm;
+    
+    public Bundle registerSavedInstanceState;
     /**
      * Tracking Request performance
      */
