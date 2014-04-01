@@ -9,6 +9,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
@@ -43,6 +44,8 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -104,6 +107,9 @@ public class SessionLoginFragment extends BaseFragment {
     private String loginOrigin = "";
     
     private boolean cameFromRegister = false;
+    
+    // Reinforce locale to avoid RTL on UG
+    private Locale mLocale = null;
     
     /**
      * 
@@ -203,10 +209,13 @@ public class SessionLoginFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        Log.i(TAG, "ON RESUME");
         String appId = getActivity().getResources().getString(R.string.app_id);
         uiHelper.setJumiaAppId(appId);
         uiHelper.onResume();
-        Log.i(TAG, "ON RESUME");
+        mLocale = Locale.getDefault();
+        Locale.setDefault(Locale.US);
+        
         
         // Valdiate form
         if(JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials()) {
@@ -332,6 +341,11 @@ public class SessionLoginFragment extends BaseFragment {
         Log.i(TAG, "ON PAUSE");
         ((BaseActivity) getActivity()).hideKeyboard();
         uiHelper.onPause();
+        
+        //restore locale
+        if(mLocale != null){
+            Locale.setDefault(mLocale);
+        }
     }
 
     /*
@@ -366,7 +380,6 @@ public class SessionLoginFragment extends BaseFragment {
         Log.i(TAG, "ON DESTROY");
         formResponse = null;
         onCommonClickListener = null;
-
         uiHelper.onDestroy();
     }
 
@@ -573,7 +586,7 @@ public class SessionLoginFragment extends BaseFragment {
      * @param form
      */
     private void loadForm(Form form) {
-//        Log.i(TAG, "code1 loading form : "+form.name);
+        
         dynamicForm = FormFactory.getSingleton().CreateForm(FormConstants.LOGIN_FORM,
                 getActivity(), form);
         try {
@@ -594,9 +607,7 @@ public class SessionLoginFragment extends BaseFragment {
         }
         container.refreshDrawableState();
         getBaseActivity().showContentContainer();
-        Log.i(TAG, "code1 loading form completed : "+dynamicForm.getControlsCount());
     }
-
 
     protected boolean onErrorEvent(Bundle bundle) {
     	if(!isVisible()){

@@ -369,10 +369,8 @@ public class WriteReviewFragment extends BaseFragment {
             
             Log.d(TAG, "review product completed: success");
             // Clean options after success
-            titleText.setText("");
-            nameText.setText("");
-            reviewText.setText("");
-            TrackerDelegator.trackItemReview(getActivity().getApplicationContext(), completeProduct, productReviewCreated, ratings);
+           
+            TrackerDelegator.trackItemReview(getBaseActivity(), completeProduct, productReviewCreated, ratings);
             dialog_review_submitted = DialogGenericFragment.newInstance(false, true, false,
                     getString(R.string.submit_title), getResources().getString(
                             R.string.submit_text), getResources().getString(
@@ -391,7 +389,9 @@ public class WriteReviewFragment extends BaseFragment {
 
             // Fixed back bug
             dialog_review_submitted.setCancelable(false);
-
+            titleText.setText("");
+            nameText.setText("");
+            reviewText.setText("");
             dialog_review_submitted.show(getActivity().getSupportFragmentManager(), null);
             return false;
         case GET_RATING_OPTIONS_EVENT:

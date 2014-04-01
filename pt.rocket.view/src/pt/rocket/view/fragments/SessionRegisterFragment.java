@@ -7,6 +7,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 import org.holoeverywhere.FontLoader;
 import org.holoeverywhere.widget.TextView;
@@ -92,6 +93,9 @@ public class SessionRegisterFragment extends BaseFragment {
 
     private String registerLocation;
 
+    // Reinforce locale to avoid RTL on UG
+    private Locale mLocale = null;;
+
     /**
      * 
      * @return
@@ -171,7 +175,8 @@ public class SessionRegisterFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        
+        mLocale = Locale.getDefault();
+        Locale.setDefault(Locale.US);
         registerLocation = getString(R.string.mixprop_loginlocation);
         if (formResponse != null){
             loadForm(formResponse);
@@ -200,6 +205,11 @@ public class SessionRegisterFragment extends BaseFragment {
     public void onPause() {
         super.onPause();
         Log.i(TAG, "ON PAUSE");
+        
+        //restore locale
+        if(mLocale != null){
+            Locale.setDefault(mLocale);
+        }
     }
 
     /*
@@ -637,6 +647,7 @@ public class SessionRegisterFragment extends BaseFragment {
             serverForm.setOnFocusChangeListener(focus_listener);
             serverForm.setOnItemSelectedListener(selected_listener);
             serverForm.setTextWatcher(text_watcher);
+            
             container = (LinearLayout) getView().findViewById(R.id.registerform_container);
             try {
                 container.removeAllViews();

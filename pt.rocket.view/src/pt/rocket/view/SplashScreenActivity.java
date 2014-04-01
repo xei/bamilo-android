@@ -489,6 +489,7 @@ public class SplashScreenActivity extends FragmentActivity {
         Log.i(TAG, "codeerror "+errorCode);
         if (errorCode.isNetworkError()) {
             switch (errorCode) {
+            case HTTP_STATUS:
             case NO_NETWORK:
 //                Log.i(TAG, "code1 no network "+eventType);
                 // Remove dialog if exist

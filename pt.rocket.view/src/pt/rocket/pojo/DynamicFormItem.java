@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Matcher;
@@ -17,7 +18,7 @@ import java.util.regex.Pattern;
 import org.holoeverywhere.FontLoader;
 import org.holoeverywhere.widget.Button;
 import org.holoeverywhere.widget.CheckBox;
-import org.holoeverywhere.widget.EditText;
+
 import org.holoeverywhere.widget.Spinner;
 import org.holoeverywhere.widget.TextView;
 
@@ -46,6 +47,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -1496,7 +1498,7 @@ public class DynamicFormItem {
 
         EditText textDataControl = (EditText) View.inflate(this.context, R.layout.form_edittext,
                 null);
-
+        
         if (null != this.entry.getLabel() && this.entry.getLabel().trim().length() > 0) {
             textDataControl.setHint(this.entry.getLabel());
         }
@@ -1525,9 +1527,9 @@ public class DynamicFormItem {
             textDataControl.setInputType(inputType);
             textDataControl.setTextAppearance(context, R.style.form_edittext_style);
         }
-
-         FontLoader.apply( textDataControl, FontLoader.ROBOTO_REGULAR );
-
+        
+        FontLoader.apply( textDataControl, FontLoader.ROBOTO_REGULAR );
+        
         return textDataControl;
     }
 
