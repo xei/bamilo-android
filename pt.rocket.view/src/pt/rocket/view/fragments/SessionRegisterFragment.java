@@ -589,6 +589,8 @@ public class SessionRegisterFragment extends BaseFragment {
             // resultData.putExtras(saveFormToBundle());
             // getActivity().setResult(Activity.RESULT_OK, resultData);
             requestStore(saveFormToBundle());
+            JumiaApplication.INSTANCE.registerForm = null;
+            JumiaApplication.INSTANCE.registerSavedInstanceState = null;
             // Finish
             getActivity().onBackPressed();
             Log.d(TAG, "event done - REGISTER_ACCOUNT_EVENT");
