@@ -161,7 +161,8 @@ public class RestConstants {
 	public static final String JSON_CART_COUPON_VALUE_TAG = "couponMoneyValue";
 	public final static String JSON_MESSAGES_TAG = "messages";
 	public static final String JSON_CART_CLEAN_VALUE_TAG = "cartCleanValue";
-
+	public static final String JSON_CART_SUM_COSTS_TAG = "sum_costs";
+	public static final String JSON_CART_EXTRA_COSTS_TAG = "extra_costs";
 	// ShoppingCartItem Tags
 	public static final String JSON_ITEM_IMAGE_TAG = JSON_IMAGE_TAG;
 	public static final String JSON_PRODUCT_URL_TAG = "url";

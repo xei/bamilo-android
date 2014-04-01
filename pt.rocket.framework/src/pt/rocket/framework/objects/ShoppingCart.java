@@ -32,6 +32,8 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 	private int cartCount;
 	private String vat_value;
 	private String shipping_value;
+	private String extra_costs;
+	private boolean sum_costs;
 	private Map<String, Map<String, String>> itemSimpleDataRegistry;
 
 	private String cartCleanValue;
@@ -119,6 +121,14 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 		cartCount = jsonObject.getInt(RestConstants.JSON_CART_COUNT_TAG);
 		vat_value = jsonObject.optString(RestConstants.JSON_CART_VAT_VALUE_TAG);
 		shipping_value = jsonObject.optString(RestConstants.JSON_CART_SHIPPING_VALUE_TAG);
+		String sCosts = jsonObject.optString(RestConstants.JSON_CART_SUM_COSTS_TAG);
+		if(sCosts != null && sCosts.equalsIgnoreCase("0")){
+			sum_costs = false;	
+		} else {
+			sum_costs = true;
+		}
+		
+		extra_costs = jsonObject.optString(RestConstants.JSON_CART_EXTRA_COSTS_TAG);
 		if (cartCount > 0 && jsonObject.has(RestConstants.JSON_CART_ITEMS_TAG)) {
 			fillCartHashMap(jsonObject.getJSONObject(RestConstants.JSON_CART_ITEMS_TAG));
 		}
@@ -191,6 +201,8 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 	    dest.writeString(vat_value);
 	    dest.writeString(shipping_value);
 	    dest.writeMap(itemSimpleDataRegistry);
+	    dest.writeBooleanArray(new boolean[]{sum_costs});
+	    dest.writeString(extra_costs);
 	}
 	
 	/**
@@ -205,8 +217,38 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 		vat_value = in.readString();
 		shipping_value = in.readString();
 		in.readMap(itemSimpleDataRegistry, null);
+		in.readBooleanArray(new boolean[]{sum_costs});
+	    extra_costs = in.readString();
     }
 		
+	/**
+	 * @return the extra_costs
+	 */
+	public String getExtraCosts() {
+		return extra_costs;
+	}
+
+	/**
+	 * @param extra_costs the extra_costs to set
+	 */
+	public void setExtraCosts(String extra_costs) {
+		this.extra_costs = extra_costs;
+	}
+
+	/**
+	 * @return the sum_costs
+	 */
+	public boolean isSumCosts() {
+		return sum_costs;
+	}
+
+	/**
+	 * @param sum_costs the sum_costs to set
+	 */
+	public void setSumCosts(boolean sum_costs) {
+		this.sum_costs = sum_costs;
+	}
+
 	/**
 	 * Create parcelable 
 	 */
