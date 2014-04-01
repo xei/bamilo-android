@@ -137,7 +137,7 @@ public class SessionRegisterFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-        this.savedInstanceState = savedInstanceState;
+        savedInstanceState = savedInstanceState;
     }
 
     /*
@@ -241,10 +241,10 @@ public class SessionRegisterFragment extends BaseFragment {
                 item.saveState(outState);
             }
             if (getView() != null) {
-                CheckBox check = (CheckBox) getView().findViewById(R.id.checkTerms);
-                outState.putBoolean("" + R.id.checkTerms, check.isChecked());
+                checkTerms = (CheckBox) getView().findViewById(R.id.checkTerms);
+                outState.putBoolean("" + R.id.checkTerms, checkTerms.isChecked());
             }
-            this.savedInstanceState = outState;
+            savedInstanceState = outState;
         }
         super.onSaveInstanceState(outState);
     }
@@ -261,8 +261,8 @@ public class SessionRegisterFragment extends BaseFragment {
                 item.saveState(savedInstanceState);
             }
             if (getView() != null) {
-                CheckBox check = (CheckBox) getView().findViewById(R.id.checkTerms);
-                savedInstanceState.putBoolean("" + R.id.checkTerms, check.isChecked());
+                checkTerms = (CheckBox) getView().findViewById(R.id.checkTerms);
+                savedInstanceState.putBoolean("" + R.id.checkTerms, checkTerms.isChecked());
             }
         }
     }
@@ -276,9 +276,9 @@ public class SessionRegisterFragment extends BaseFragment {
      */
     public void setAppContentLayout() {
 
-        CheckBox check = (CheckBox) getView().findViewById(R.id.checkTerms);
-        check.setPadding(check.getPaddingLeft(), check.getPaddingTop(), check.getPaddingRight(),
-                check.getPaddingBottom());
+        checkTerms = (CheckBox) getView().findViewById(R.id.checkTerms);
+        checkTerms.setPadding(checkTerms.getPaddingLeft(), checkTerms.getPaddingTop(), checkTerms.getPaddingRight(),
+                checkTerms.getPaddingBottom());
         termsRequiredText = (TextView) getView().findViewById(R.id.termsRequired);
 
         if (!termsAreRequired) {
@@ -307,7 +307,7 @@ public class SessionRegisterFragment extends BaseFragment {
         registerRequiredText = (TextView) getView().findViewById(R.id.register_required_text);
 
         registerButton.setTextAppearance(getActivity(), R.style.text_normal);
-        FontLoader.apply(registerButton, FontLoader.ROBOTO_BOLD);
+        FontLoader.apply(registerButton, FontLoader.ROBOTO_REGULAR);
 
         OnClickListener click = new OnClickListener() {
 
@@ -661,7 +661,7 @@ public class SessionRegisterFragment extends BaseFragment {
                     item.loadState(savedInstanceState);
                 }
                 CheckBox check = (CheckBox) getView().findViewById(R.id.checkTerms);
-                check.setChecked(this.savedInstanceState.getBoolean("" + R.id.checkTerms));
+                check.setChecked(savedInstanceState.getBoolean("" + R.id.checkTerms));
             }
     }
 

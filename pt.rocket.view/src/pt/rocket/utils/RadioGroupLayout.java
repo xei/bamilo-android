@@ -104,9 +104,10 @@ public class RadioGroupLayout extends LinearLayout {
     }
 
     public void setSelection(int idx) {
-        if(idx>0){
+        if(idx>=0){
             RadioButton button = (RadioButton) mGroup.getChildAt(idx);
             button.setChecked(true);    
+            Log.i(TAG, "code1select :RadioButton "+idx);
         }
         
     }

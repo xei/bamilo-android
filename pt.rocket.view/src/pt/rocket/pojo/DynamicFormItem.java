@@ -353,7 +353,6 @@ public class DynamicFormItem {
      *            the Bundle that contains the stored information of the control
      */
     public void loadState(Bundle inStat) {
-        Log.i(TAG, "code1entry : "+this.entry.getInputType()+" key : "+inStat);
         switch (this.entry.getInputType()) {
         case meta:
             break;
@@ -378,7 +377,11 @@ public class DynamicFormItem {
         case date:
             String date = inStat.getString(getKey());
             this.dialogDate.setDate(date);
-            ((Button) this.dataControl).setText(dialogDate.getDate());
+            GregorianCalendar cal = new GregorianCalendar(this.dialogDate.getYear(), this.dialogDate.getMonth(), this.dialogDate.getDay());
+            Date d = new Date(cal.getTimeInMillis());
+            String dateFormated = DateFormat.getDateInstance(DateFormat.LONG).format(d);
+            ((Button) this.dataControl).setText(dateFormated);
+            this.mandatoryControl.setVisibility(View.GONE);
             break;
         case email:
         case text:

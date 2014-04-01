@@ -36,7 +36,7 @@ public class DialogDatePickerFragment extends DialogFragment implements OnClickL
     private Activity mActivity;
     private OnDatePickerDialogListener mListener;
     //private Dialog mDialog;
-    private DatePicker mDatePicker;
+    private static DatePicker mDatePicker;
     private int mDay;
     private int mMonth;
     private int mYear;
@@ -113,6 +113,7 @@ public class DialogDatePickerFragment extends DialogFragment implements OnClickL
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
         setStyle(R.style.Theme_Jumia_Dialog_Blue_NoTitle_DatePicker, R.style.Theme_Jumia_Dialog_Blue_NoTitle_DatePicker);
     }
 
@@ -171,6 +172,18 @@ public class DialogDatePickerFragment extends DialogFragment implements OnClickL
         }
     }
 
+    public int getYear(){
+        return mYear;
+    }
+    
+    public int getMonth(){
+        return mMonth;
+    }
+    
+    public int getDay(){
+        return mDay;
+    }
+    
     public void setDate(String dateString) {
 
         Date date;
@@ -191,8 +204,10 @@ public class DialogDatePickerFragment extends DialogFragment implements OnClickL
         mMonth = cal.get(Calendar.MONTH);
         mDay = cal.get(Calendar.DAY_OF_MONTH);
 
-        if (mDatePicker != null)
+        if (mDatePicker != null){
             mDatePicker.updateDate(mYear, mMonth, mDay);
+        }
+       isSetOnce = true;
     }
 
     public void setDate(int year, int month, int day) {
