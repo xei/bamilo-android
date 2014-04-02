@@ -27,7 +27,7 @@ public void testShoppingCartRemoveItemIC() throws Throwable {
         contentValues.put(RequestConstants.KEY_LOGIN_EMAIL, RequestConstants.CUSTOMER_EMAIL);
         contentValues.put(RequestConstants.KEY_LOGIN_PASSWORD, RequestConstants.CUSTOMER_PASSWORD);
         args1.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, contentValues);
-        args1.putString(BaseHelper.KEY_COUNTRY, "http://www.jumia.ci/mobapi/customer/login/");
+        args1.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.ci/mobapi/customer/login/");
         sendRequest(args1, new GetLoginHelper(), new IResponseCallback() {
 
             @Override

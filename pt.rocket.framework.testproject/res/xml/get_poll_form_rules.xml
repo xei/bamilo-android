@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <data type="jsonarray" method="getJSONArray" children="true" optional="false">
+        <id type="string" method="getString" children="false" optional="false"/>
+        <method type="string" method="getString" children="false" optional="false"/>
+        <action type="string" method="getString" children="false" optional="false"/>
+        <fields type="jsonarray" method="getJSONArray" children="true" optional="false">
+        	<key type="string" method="getString" children="false" optional="false"/>
+        	<rules type="jsonarray" method="getJSONArray" children="false" optional="false"/>
+        	<type type="string" method="getString" children="false" optional="false"/>
+        	<values type="jsonarray" method="getJSONArray" children="true" optional="true">
+        	    <option type="string" method="getString" children="false" optional="false"/>
+        	    <value type="string" method="getString" children="false" optional="false"/>
+        	    <group type="string" method="getString" children="false" optional="false"/>
+        	</values>  
+        	
+       	 	<value type="string" method="getString" children="false" optional="false"/>
+       	  	<label type="string" method="getString" children="false" optional="false"/>
+       	   	<name type="string" method="getString" children="false" optional="false"/>
+       	    <id type="string" method="getString" children="false" optional="false"/>
+        </fields>
+    </data>
+
+    
+</resources>

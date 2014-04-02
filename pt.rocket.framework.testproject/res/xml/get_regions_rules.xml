@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	
+    <data type="jsonarray" method="getJSONArray" children="true" optional="false">
+		<id_customer_address_region type="string" method="getString" children="false" optional="false"/>
+		<fk_country type="string" method="getString" children="false" optional="false"/>
+		<code type="string" method="getString" children="false" optional="false"/>
+		<name type="string" method="getString" children="false" optional="false"/>
+		<sort type="string" method="getString" children="false" optional="true"/>
+		<created_at type="string" method="getString" children="false" optional="true"/>
+		<updated_at type="string" method="getString" children="false" optional="true"/>
+	</data>
+	
+
+
+</resources>

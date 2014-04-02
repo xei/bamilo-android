@@ -3,6 +3,7 @@ include 'Color.php';
 $color = new Colors();
 
 $countries = array("IC", "KE", "MA", "NG", "EG", "UG");
+$countries_nc = array("IC", "MA", "NG", "EG");
 #$country = array("EG");
 $test = "";
 $function = "";
@@ -11,15 +12,17 @@ $count_passed = 0;
 $failed_tests = "";
 $adb_path_bruno = "/android/sdk/platform-tools/adb";
 $adb_path_jenkins = "/android-sdk-macosx/platform-tools/adb";
-$adb_path = $adb_path_jenkins;
-$emulator_executable_path = "android-sdk-macosx/tools";
+$adb_path = $adb_path_bruno;
+$emulator_executable_path = "android/sdk/tools";
 $emulator_bruno = "192.168.56.101:5555";
 $emulator_jenkins = "emulator-5554";
-$emulator= $emulator_jenkins;
+$device_boston = "FA6MA000002520";
+$device_s4 = "9b9a8c25";
+$emulator= $emulator_bruno;
 $content  = "";
-echo $color->getColoredString("##############################################", "white", "blue"). "\n";
-echo $color->getColoredString("########## Running Jumia API Tests ###########", "white", "blue"). "\n";
-echo $color->getColoredString("##############################################", "white", "blue"). "\n";
+#echo $color->getColoredString("##############################################", "white", "blue"). "\n";
+#echo $color->getColoredString("########## Running Jumia API Tests ###########", "white", "blue"). "\n";
+#echo $color->getColoredString("##############################################", "white", "blue"). "\n";
 
 ## Tests #### Tests #### Tests #### Tests #### Tests #### Tests #### Tests #### Tests #### Tests #### Tests #### Tests #### Tests #### Tests #### Tests #### Tests #### Tests ##
 
@@ -276,7 +279,7 @@ function GetMyOrder($countries){
 	Test($countries, $test, $function);
 }
 
-function FinishTest($countries){
+function CheckoutFinish($countries){
 	$test = "FinishTest";
 	$function = "testFinish";
 	Test($countries, $test, $function);
@@ -287,7 +290,7 @@ function FinishTest($countries){
 function startEmulator(){
 	global $adb_path;
 	global $emulator_executable_path;
-	$startEmulator = "~/".$emulator_executable_path."/emulator @jumia_tests_emulator";
+	$startEmulator = "~/".$emulator_executable_path."/emulator @testes_emulator";
 	shell_exec($startEmulator."> /dev/null 2>/dev/null &");
 	echo "Giving some time for the emulator to settle in before executing the tests.\n";
 	for($i = 60; $i > 0; $i--)
@@ -302,15 +305,21 @@ function restartApp(){
 	global $adb_path;
 	global $emulator;
 	
-	echo($adb_path);
+	echo($adb_path." - ".$emulator);
 	$currentPath = getcwd();
 	echo "\nCurrent Directory:\n";
 	echo $currentPath . "\n";
-	echo "----------";
+	echo "----------\n";
+	
+	$adb_devices = "~".$adb_path." devices";
+	
+	exec($adb_devices);
+	
+	echo("$adb_devices\n");
 	
 	$install ="~".$adb_path." -s ".$emulator." install -r ".$currentPath."/pt.rocket.framework.testproject/bin/pt.rocket.framework.testproject-debug.apk";
 	exec($install);
-	$install ="~".$adb_path." -s ".$emulator." install -r ".$currentPath."/pt.rocket.framework.testproject/../Shell/bin/MainActivity-debug.apk";
+	$install ="~".$adb_path." -s ".$emulator." install -r ".$currentPath."/pt.rocket.framework.testproject/Shell.apk";
 	exec($install);
 
 	echo "Installing the apps now.";
@@ -335,7 +344,7 @@ function checkErrors($test, $result, $country){
 	global $count_passed;	
 	global $failed_tests;
 	foreach ($result as $value){
-		if (strpos($value,'Error') !== false && strpos($value,'NullPointerException') !== false) {
+	if (strpos($value,'Error') !== false || strpos($value,'NullPointerException') !== false) {
 			$count_error=  $count_error + 1;
 			$failed_tests =$failed_tests.$test.$country."\n";
 			echo "\033[01;5;31mFAILED\033[0m\n";
@@ -377,10 +386,10 @@ function CalcDuration($begin, $end){
 	echo $difference->format('%h Hours %i Minutes %s Seconds')."\n\n";
 	global $content;
 	$content.=$difference->format('%h Hours %i Minutes %s Seconds')."\n\n";
-	$file_name = "./test_results/result".$time_one->format('Y-m-d H:i:s').".txt";
-	$fp = fopen($file_name,"w");
-	fwrite($fp,$content);
-	fclose($fp);
+	#$file_name = "./test_results/result".$time_one->format('Y-m-d H:i:s').".txt";
+	#$fp = fopen($file_name,"w");
+	#fwrite($fp,$content);
+	#fclose($fp);
 }
 
 ?>

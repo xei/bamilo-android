@@ -1,7 +1,7 @@
 <?php
 include 'JumiaAPITests.php';
 
-startEmulator();
+## startEmulator();
 
 ## Install App
 restartApp();
@@ -25,7 +25,6 @@ LoginFormTests($countries);
 RatingsFormTest($countries);
 RatingsTest($countries);
 TermsConditionsTest($countries);
-RegisterFormTest($countries);
 ChangePasswordTest($countries);
 FacebookLoginTest($countries);
 ForgotPasswordFormTest($countries);
@@ -41,24 +40,23 @@ ShoppingCartAddItemTest($countries);
 ShoppingCartChangeItemTest($countries);
 ShoppingCartItemTest($countries);
 ShoppingCartRemoveItemTest($countries);
-CallToOrder($countries);
+CallToOrder($countries_nc);
 
-GetSignup($countries);
-GetCostumerAddress($countries);
-GetPollForm($countries);
+GetSignup($countries_nc);
+GetCostumerAddress($countries_nc);
+#GetPollForm($countries);
 #SetPollAnswer($countries);
-GetBillingAddress($countries);
-SetBillingAddress($countries);
-CreateAddress($countries);
-GetRegions($countries);
-GetCities($countries);
-GetShippingMethods($countries);
-SetShippingMethods($countries);
-GetPaymentMethods($countries);
-SetPaymentMethods($countries);
-GetMyOrder($countries);
-CheckoutFinish($countries);
-
+GetBillingAddress($countries_nc);
+SetBillingAddress($countries_nc);
+CreateAddress($countries_nc);
+GetRegions($countries_nc);
+GetCities($countries_nc);
+GetShippingMethods($countries_nc);
+SetShippingMethods($countries_nc);
+GetPaymentMethods($countries_nc);
+SetPaymentMethods($countries_nc);
+GetMyOrder($countries_nc);
+CheckoutFinish($countries_nc);
 #**/
 
 /** Will change
