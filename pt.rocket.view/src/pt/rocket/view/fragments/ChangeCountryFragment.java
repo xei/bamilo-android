@@ -149,6 +149,7 @@ public class ChangeCountryFragment extends BaseFragment {
             ((BaseActivity) getActivity()).hideTitle();
             ((BaseActivity) getActivity()).setCheckoutHeader(R.string.nav_country);
         }
+        setList();
     }
 
     /*
@@ -206,7 +207,7 @@ public class ChangeCountryFragment extends BaseFragment {
         if(countryAdapter == null){
             countryAdapter = new CountryAdapter(getActivity(), countries, flags);
         }
-        
+        countryAdapter.updateValues(countries);
         countryList.setAdapter(countryAdapter);
         countryList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         

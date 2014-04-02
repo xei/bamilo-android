@@ -52,6 +52,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.preference.PreferenceScreen;
+import android.support.v4.widget.DrawerLayout;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -367,7 +368,12 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
     public void onBackPressed() {
         Log.i(TAG, "ON BACK PRESSED");
         fragment = getActiveFragment();
-        if(fragment == null || !fragment.allowBackPressed()) {
+        if (mDrawerLayout.isDrawerOpen(mDrawerNavigation)
+                && !(mDrawerLayout.getDrawerLockMode(mDrawerNavigation) == DrawerLayout.LOCK_MODE_LOCKED_OPEN)
+                ) {
+            
+            mDrawerLayout.closeDrawer(mDrawerNavigation);
+        } else if(fragment == null || !fragment.allowBackPressed()) {
             Log.i(TAG, "NOT ALLOW BACK PRESSED: FRAGMENT");
             fragmentManagerBackPressed();
         }else{

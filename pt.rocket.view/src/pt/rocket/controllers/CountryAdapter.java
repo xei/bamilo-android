@@ -35,7 +35,7 @@ import de.akquinet.android.androlog.Log;
 public class CountryAdapter extends ArrayAdapter<String> {
 
 	private final Context context;
-	private final String[] values;
+	private String[] values;
 	private final TypedArray flags;
 	private LayoutInflater mInflater;
 	public CountryAdapter(Context context, String[] values, TypedArray flags) {
@@ -47,7 +47,11 @@ public class CountryAdapter extends ArrayAdapter<String> {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 	
-
+	public void updateValues(String[] values){
+	    this.values = values;
+	    this.notifyDataSetChanged();
+	}
+	
 	@Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Log.i("Country List", "Position: " + position);

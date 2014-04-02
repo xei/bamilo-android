@@ -151,7 +151,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
     private View logoView = null;
     
-    private View mDrawerNavigation;
+    public View mDrawerNavigation;
     /**
      * @FIX: IllegalStateException: Can not perform this action after onSaveInstanceState
      * @Solution :
@@ -165,8 +165,8 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      */
     private boolean processShow = true;
 
-    private DrawerLayout mDrawerLayout;
-    private ActionBarDrawerToggle mDrawerToggle;
+    public DrawerLayout mDrawerLayout;
+    public ActionBarDrawerToggle mDrawerToggle;
     private int drawable_state = DrawerLayout.STATE_IDLE;
 
     private static final Set<EventType> HANDLED_EVENTS = EnumSet.of(
@@ -561,7 +561,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         // }
         if (mDrawerLayout.isDrawerOpen(mDrawerNavigation)
                 && !(mDrawerLayout.getDrawerLockMode(mDrawerNavigation) == DrawerLayout.LOCK_MODE_LOCKED_OPEN)
-                && !isTabletInLandscape(this)) {
+                ) {
             
             mDrawerLayout.closeDrawer(mDrawerNavigation);
         } else {
