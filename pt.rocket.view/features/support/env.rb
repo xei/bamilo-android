@@ -5,7 +5,8 @@ $country = ENV['country']
   
 def initvars
   
-  @dev=" Dev"
+  #@dev=" Dev"
+  @dev=""
   
   @username="testcalabash@mailinator.com"
   @password="password1"
