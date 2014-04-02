@@ -9,7 +9,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Matcher;
@@ -18,7 +17,6 @@ import java.util.regex.Pattern;
 import org.holoeverywhere.FontLoader;
 import org.holoeverywhere.widget.Button;
 import org.holoeverywhere.widget.CheckBox;
-
 import org.holoeverywhere.widget.Spinner;
 import org.holoeverywhere.widget.TextView;
 
@@ -957,7 +955,8 @@ public class DynamicFormItem {
                 if (hasFocus) {
                     errorControl.setVisibility(View.GONE); 
                     mandatoryControl.setVisibility(View.GONE);
-                    dataCtrl.setHint(" ");
+                    // Uncomment the below line if you want hide the hint when the focus changes
+                    //dataCtrl.setHint(" ");
                     dataCtrl.setCursorVisible(true);
                 } else {
                     if (entry.getValidation().isRequired()) {
