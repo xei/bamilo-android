@@ -97,7 +97,7 @@ public class PopularityFragment extends BaseFragment {
     public PopularityFragment() {
         super(EnumSet.of(EventType.GET_PRODUCT_REVIEWS_EVENT), 
                 EnumSet.noneOf(EventType.class),
-                EnumSet.noneOf(MyMenuItem.class),
+                EnumSet.of(MyMenuItem.SEARCH, MyMenuItem.SEARCH_BAR),
                 NavigationAction.Products, 
                 R.string.reviews);
         this.setRetainInstance(true);

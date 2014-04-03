@@ -60,6 +60,23 @@ public class SearchRecentQueriesTableHelper {
         return (result == -1) ? false : true;
     }
      
+    /**
+     * Get the recent queries
+     * @param searchText
+     * @return List of searchSuggestion
+     * @author sergiopereira
+     */
+    public static synchronized ArrayList<SearchSuggestion> getAllRecentQueries(){
+		Log.d(TAG, "GET LAST " + NUMBER_OF_SUGGESTIONS + " RECENT QUERIES");
+		// Select the best resolution
+		String query =	"SELECT " + _QUERY + " " +
+			    		"FROM " + _NAME + " " +
+						"ORDER BY " + _TIME_STAMP + " DESC " +
+						"LIMIT " + NUMBER_OF_SUGGESTIONS;
+		Log.i(TAG, "SQL QUERY: " + query);
+		// Return
+		return getRecentQueries(query);
+    }
     
     /**
      * Get the recent queries
@@ -67,17 +84,30 @@ public class SearchRecentQueriesTableHelper {
      * @return List of searchSuggestion
      * @author sergiopereira
      */
-    public static synchronized ArrayList<SearchSuggestion> getRecentQueries(String searchText){
+    public static synchronized ArrayList<SearchSuggestion> getFilteredRecentQueries(String searchText){
 		Log.d(TAG, "GET RECENT QUERIES FOR: " + searchText);
-		// Permission
-		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getReadableDatabase();
 		// Select the best resolution
 		String query =	"SELECT DISTINCT " + _QUERY + " " +
 			    		"FROM " + _NAME + " " +
-			    		"WHERE " + _QUERY + " LIKE '" + searchText + "%' " + 
+			    		"WHERE " + _QUERY + " LIKE '%" + searchText + "%' " + 
 						"ORDER BY " + _TIME_STAMP + " DESC " +
 						"LIMIT " + NUMBER_OF_SUGGESTIONS;
 		Log.i(TAG, "SQL QUERY: " + query);
+		// Return
+		return getRecentQueries(query);
+    }
+    
+    
+    /**
+     * Get the recent queries
+     * @param searchText
+     * @return List of searchSuggestion
+     * @author sergiopereira
+     */
+    public static synchronized ArrayList<SearchSuggestion> getRecentQueries(String query){
+    	Log.i(TAG, "SQL QUERY: " + query);
+		// Permission
+		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getReadableDatabase();
 		Cursor cursor = db.rawQuery(query, null);
 		// Get results
 		ArrayList<SearchSuggestion> recentSuggestions = new ArrayList<SearchSuggestion>();

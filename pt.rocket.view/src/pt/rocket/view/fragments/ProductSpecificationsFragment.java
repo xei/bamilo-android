@@ -71,7 +71,9 @@ public class ProductSpecificationsFragment extends BaseFragment implements OnCli
      * @param arrayList
      */
     public ProductSpecificationsFragment() {
-        super(EnumSet.noneOf(EventType.class), EnumSet.noneOf(EventType.class), EnumSet.of(MyMenuItem.SHARE), 
+        super(EnumSet.noneOf(EventType.class), 
+                EnumSet.noneOf(EventType.class), 
+                EnumSet.of(MyMenuItem.SHARE, MyMenuItem.SEARCH, MyMenuItem.SEARCH_BAR), 
                 NavigationAction.Products, 
                 R.string.product_details_title);
         this.setRetainInstance(true);

@@ -49,7 +49,7 @@ public class ReviewFragment extends BaseFragment {
     public ReviewFragment() {
         super(EnumSet.noneOf(EventType.class), 
                 EnumSet.noneOf(EventType.class), 
-                EnumSet.noneOf(MyMenuItem.class), 
+                EnumSet.of(MyMenuItem.SEARCH, MyMenuItem.SEARCH_BAR), 
                 NavigationAction.Products,  
                 R.string.review);
         this.setRetainInstance(true);

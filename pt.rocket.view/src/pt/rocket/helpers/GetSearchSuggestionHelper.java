@@ -19,6 +19,7 @@ import pt.rocket.framework.utils.Utils;
 import android.database.sqlite.SQLiteException;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 
 /**
@@ -82,9 +83,10 @@ public class GetSearchSuggestionHelper extends BaseHelper {
         
         // Get recent queries
         try {
-            suggestions = SearchRecentQueriesTableHelper.getRecentQueries(mQuery); 
+            if(TextUtils.isEmpty(mQuery)) suggestions = SearchRecentQueriesTableHelper.getAllRecentQueries();
+            else suggestions = SearchRecentQueriesTableHelper.getFilteredRecentQueries(mQuery);
         } catch (SQLiteException e) {
-            Log.w(TAG, "ERROR ON GET RECENT QUERIES");
+            Log.w(TAG, "ERROR ON GET RECENT QUERIES: " + mQuery);
         }
         // Parse response
         try {
@@ -112,9 +114,23 @@ public class GetSearchSuggestionHelper extends BaseHelper {
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
         android.util.Log.d(TAG, "ON PARSE ERROR BUNDLE");
+        
+        // Get the recent queries 
+        ArrayList<SearchSuggestion> suggestions = new ArrayList<SearchSuggestion>();
+        // Get recent queries
+        try {
+            if(TextUtils.isEmpty(mQuery)) suggestions = SearchRecentQueriesTableHelper.getAllRecentQueries();
+            else suggestions = SearchRecentQueriesTableHelper.getFilteredRecentQueries(mQuery);
+        } catch (SQLiteException e) {
+            Log.w(TAG, "ERROR ON GET RECENT QUERIES: " + mQuery);
+        }
+        Log.d(TAG, "SUGGESTION: " + suggestions.size());
+        
+        // Add error if no match
+        if(suggestions.size() > 0 ) bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, false);
         bundle.putString(SEACH_PARAM, mQuery);
+        bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, suggestions);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_SEARCH_SUGGESTIONS_EVENT);
-        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }
 
@@ -125,9 +141,10 @@ public class GetSearchSuggestionHelper extends BaseHelper {
     @Override
     public Bundle parseResponseErrorBundle(Bundle bundle) {
         android.util.Log.d(TAG, "ON PARSE RESPONSE ERROR BUNDLE");
-        bundle.putString(SEACH_PARAM, mQuery);
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_SEARCH_SUGGESTIONS_EVENT);
-        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
-        return bundle;
+//        bundle.putString(SEACH_PARAM, mQuery);
+//        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_SEARCH_SUGGESTIONS_EVENT);
+//        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
+//        return bundle;
+        return parseErrorBundle(bundle);
     }
 }

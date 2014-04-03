@@ -68,6 +68,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.MeasureSpec;
 import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.view.inputmethod.EditorInfo;
@@ -121,7 +122,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     
     private static final int SEARCH_EDIT_DELAY = 150;
     
-    private static final int SEARCH_EDIT_SIZE = 2;
+    private static final int SEARCH_EDIT_SIZE = 0;
     
     private static final int TOAST_LENGTH_SHORT = 2000; // 2 seconds
 
@@ -870,7 +871,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     }
 
     /**
-     * ############### SEARCH BAR #################
+     * ############### SEARCH COMPONENT #################
      */
 
     /**
@@ -976,7 +977,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         searchOverlay.setVisibility(View.GONE);
         searchOverlay.setOnClickListener(null);
         // Set drop down background
-        searchComponent.setDropDownBackgroundResource(R.drawable.suggestionlayer); //dialog_bottom_holo_light
+        searchComponent.setDropDownBackgroundResource(R.drawable.suggestionlayer);
         
         // Hide search warning
         hideSearchNoMatch();
@@ -988,10 +989,14 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             @Override
             public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
                 Log.d(TAG, "SEARCH: CLICKED ITEM " + position);
-                String text = ((SearchSuggestion) adapter.getItemAtPosition(position)).getResult();
+                SearchSuggestion selectedSuggestion = (SearchSuggestion) adapter.getItemAtPosition(position);
+                String text = selectedSuggestion.getResult();
                 findViewById(R.id.dummy_search_layout).requestFocus();
                 searchComponent.setText(text);
                 searchComponent.dismissDropDown();
+                // Save the selected item if not recent query
+                if(!selectedSuggestion.isRecentQuery()) GetSearchSuggestionHelper.saveSearchQuery(text);
+                // Execute request
                 executeSearchRequest(text);
             }
         });
@@ -1013,9 +1018,11 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                // Log.d(TAG, "SEARCH: ON TOUCH");
+                Log.d(TAG, "SEARCH: ON TOUCH: " + event.getAction());
                 // Close navigation menu
                 if (mDrawerLayout != null  && mDrawerLayout.isDrawerOpen(mDrawerNavigation)) mDrawerLayout.closeDrawer(mDrawerNavigation);
+                // Force show drop down
+                if (TextUtils.isEmpty(searchComponent.getText())) searchComponent.showDropDown();
                 // Sent to supper
                 return super.onTouch(v, event);
             }
@@ -1036,7 +1043,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             public void afterTextChanged(Editable s) {
                 Log.d(TAG, "SEARCH: AFTER TEXT CHANGED");
                 handle.removeCallbacks(run);
-                if (s.length() >= SEARCH_EDIT_SIZE) handle.postDelayed(run, SEARCH_EDIT_DELAY);
+                if (s.length() >= SEARCH_EDIT_SIZE && searchComponent.hasFocus()) handle.postDelayed(run, SEARCH_EDIT_DELAY);
                 else searchComponent.setDropDownAlwaysVisible(false);
             }
         });
@@ -1068,6 +1075,22 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                     return true;
                 }
                 return false;
+            }
+        });
+        
+        /*
+         * On focus to show the last recent searches
+         */
+        searchComponent.setOnFocusChangeListener(new OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                Log.d(TAG, "SEARCH: ON FOCUS " + hasFocus);
+                // Get the recent searches
+                String searchTerm = ((EditText) v).getText().toString();
+                if(hasFocus && TextUtils.isEmpty(searchTerm)) {
+                    Log.d(TAG, "GET AUTO SUGGESTION FOR FOCUS");
+                    new Handler().postDelayed(run, SEARCH_EDIT_DELAY);
+                }
             }
         });
     }

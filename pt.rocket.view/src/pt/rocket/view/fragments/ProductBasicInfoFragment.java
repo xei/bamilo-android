@@ -77,8 +77,9 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
      * @param arrayList
      */
     public ProductBasicInfoFragment() {
-        super(EnumSet.of(EventType.GET_PRODUCT_EVENT), EnumSet.noneOf(EventType.class), EnumSet
-                .of(MyMenuItem.SHARE),
+        super(EnumSet.of(EventType.GET_PRODUCT_EVENT), 
+                EnumSet.noneOf(EventType.class), 
+                EnumSet.of(MyMenuItem.SHARE, MyMenuItem.SEARCH, MyMenuItem.SEARCH_BAR),
                 NavigationAction.Products,
                 R.string.product_details_title);
     }
