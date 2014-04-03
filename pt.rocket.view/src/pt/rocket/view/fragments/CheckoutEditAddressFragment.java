@@ -529,6 +529,8 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
         Bundle bundle = new Bundle();
         bundle.putParcelable(SetEditedAddressHelper.FORM_CONTENT_VALUES, values);
         triggerContentEvent(new SetEditedAddressHelper(), bundle, this);
+        // Hide the keyboard
+        getBaseActivity().hideKeyboard();
     }
     
     /**

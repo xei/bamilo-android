@@ -583,6 +583,8 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         Bundle bundle = new Bundle();
         bundle.putParcelable(SetNewAddressHelper.FORM_CONTENT_VALUES, values);
         triggerContentEvent(new SetNewAddressHelper(), bundle, this);
+        // Hide the keyboard
+        getBaseActivity().hideKeyboard();
     }
     
     /**
