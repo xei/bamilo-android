@@ -1166,6 +1166,12 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      * @param enumSet 
      */
     public void hideActionBarItemsForChangeCountry(EnumSet<MyMenuItem> enumSet){
+        // Validate if the current menu options contains the search bar item
+        if (menuItems.contains(MyMenuItem.SEARCH_BAR)) {
+            // Hide search bar
+            if(isTabletInLandscape(getApplicationContext())) currentMenu.findItem(MyMenuItem.SEARCH_BAR.resId).setVisible(false);
+            else findViewById(R.id.rocket_app_header_search_bar).setVisibility(View.GONE);
+        }
         this.menuItems = enumSet;
         invalidateOptionsMenu();
     }

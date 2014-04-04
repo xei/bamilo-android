@@ -44,8 +44,6 @@ import android.view.ViewGroup;
 import de.akquinet.android.androlog.Log;
 
 /**
- * FIXME: Waiting for: 
- * > NAFAMZ-5435:  MOBILE API - Add parameter in the Shipping/Payment Methods to get form with success  
  * 
  * @author sergiopereira
  * 

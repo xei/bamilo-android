@@ -6,7 +6,6 @@ package pt.rocket.view.fragments;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -206,8 +205,7 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
             // Get data from form
             ContentValues mContentValues = createContentValues(mEditFormGenerator);
             // Save it
-            for (Iterator<Entry<String, Object>> iterator = mContentValues.valueSet().iterator(); iterator.hasNext();) {
-                 Entry<String, Object> entry = iterator.next();
+            for (Entry<String, Object> entry : mContentValues.valueSet()) {
                  try {
                      if(entry.getKey().contains(RestConstants.JSON_FIRST_NAME_TAG)) mCurrentAddress.setFirstName((String) entry.getValue());
                      else if(entry.getKey().contains(RestConstants.JSON_LAST_NAME_TAG)) mCurrentAddress.setLastName((String) entry.getValue());
@@ -506,14 +504,16 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
         String isDefaultBilling = (mCurrentAddress.isDefaultBilling()) ? "1" : "0";
         String isDefaultShipping = (mCurrentAddress.isDefaultShipping()) ? "1" : "0";
         // Put values
-        for (String key : mContentValues.keySet()) {
-            if(key.contains(RestConstants.JSON_ADDRESS_ID_TAG)) mContentValues.put(key, mAddressId);
-            else if(key.contains(RestConstants.JSON_IS_DEFAULT_BILLING_TAG)) mContentValues.put(key, isDefaultBilling);
-            else if(key.contains(RestConstants.JSON_IS_DEFAULT_SHIPPING_TAG)) mContentValues.put(key, isDefaultShipping);
-            else if(key.contains(RestConstants.JSON_REGION_ID_TAG)) mContentValues.put(key, mRegionId);
-            else if(key.contains(RestConstants.JSON_CITY_ID_TAG)) mContentValues.put(key, mCityId);
-            else if(key.contains(RestConstants.JSON_CITY_TAG)) mContentValues.put(key, mCityName);
+                
+        for (Entry<String, Object> entry : mContentValues.valueSet()) {
+            if(entry.getKey().contains(RestConstants.JSON_ADDRESS_ID_TAG)) mContentValues.put(entry.getKey(), mAddressId);
+            else if(entry.getKey().contains(RestConstants.JSON_IS_DEFAULT_BILLING_TAG)) mContentValues.put(entry.getKey(), isDefaultBilling);
+            else if(entry.getKey().contains(RestConstants.JSON_IS_DEFAULT_SHIPPING_TAG)) mContentValues.put(entry.getKey(), isDefaultShipping);
+            else if(entry.getKey().contains(RestConstants.JSON_REGION_ID_TAG)) mContentValues.put(entry.getKey(), mRegionId);
+            else if(entry.getKey().contains(RestConstants.JSON_CITY_ID_TAG)) mContentValues.put(entry.getKey(), mCityId);
+            else if(entry.getKey().contains(RestConstants.JSON_CITY_TAG)) mContentValues.put(entry.getKey(), mCityName);
         }
+        
         Log.d(TAG, "CURRENT CONTENT VALUES: " + mContentValues.toString());
         // return the new content values
         return mContentValues;
