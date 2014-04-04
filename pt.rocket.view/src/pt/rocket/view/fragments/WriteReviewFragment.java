@@ -47,6 +47,12 @@ import de.akquinet.android.androlog.Log;
 public class WriteReviewFragment extends BaseFragment {
 
     private static final String TAG = LogTagHelper.create(WriteReviewFragment.class);
+    
+    private static final String NAME = "name";
+    
+    private static final String TITLE = "title";
+    
+    private static final String COMMENT = "comment";
 
     private static WriteReviewFragment writeReviewFragment;
 
@@ -75,14 +81,14 @@ public class WriteReviewFragment extends BaseFragment {
     private DialogGenericFragment dialog_review_submitted;
 
     private Customer customerCred;
-
-    private String userName="user";
     
     private boolean isExecutingSendReview = false;
     
     private HashMap<String, HashMap<String, String>> ratingOptions;
     
     private String lastProductSku = "";
+
+    private Bundle mSavedState;
     /**
      * Get instance
      * 
@@ -127,12 +133,12 @@ public class WriteReviewFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
+        
+        // Save state
+        if(savedInstanceState != null) mSavedState = savedInstanceState;
+        
         completeProduct = JumiaApplication.INSTANCE.getCurrentProduct();
         isExecutingSendReview = false;
-        /**
-         * TRIGGERS
-         * @author sergiopereira
-         */
         triggerAutoLogin();
         triggerCustomer();
     }
@@ -167,11 +173,6 @@ public class WriteReviewFragment extends BaseFragment {
     public void onStart() {
         super.onStart();
         Log.i(TAG, "ON START");
-        
-        /**
-         * TRIGGERS
-         * @author sergiopereira
-         */
         triggerRatingOptions();
     }
 
@@ -183,11 +184,32 @@ public class WriteReviewFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        Log.i(TAG, "ON RESUME");
         isExecutingSendReview = false;
         if(getArguments() != null && getArguments().containsKey(PopularityFragment.CAME_FROM_POPULARITY)){
             getView().findViewById(R.id.product_basicinfo_container).setVisibility(View.GONE);
         }
-        Log.i(TAG, "ON RESUME");
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see android.support.v4.app.Fragment#onSaveInstanceState(android.os.Bundle)
+     * 
+     */
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.i(TAG, "ON SAVE INSTANCE");
+        // Get rating bars
+        for (int i = 0; i < ratingBarContainer.getChildCount(); i++)
+            outState.putFloat((String) ratingBarContainer.getChildAt(i).getTag(), ((RatingBar) ratingBarContainer.getChildAt(i)).getRating());
+        // Get name
+        outState.putString(NAME, (nameText != null) ? nameText.getText().toString() : "");
+        // Get title
+        outState.putString(TITLE, (titleText != null) ? titleText.getText().toString() : "");
+        // Get comment
+        outState.putString(COMMENT, (reviewText != null) ? reviewText.getText().toString() : "");
+        // Log.d(TAG, "VALUES: " + outState.toString());
     }
 
     /*
@@ -232,10 +254,9 @@ public class WriteReviewFragment extends BaseFragment {
             return;
         }
             
-        if(ratingBarContainer.getChildCount()>0)
-            return;
-        LayoutInflater mInflater = (LayoutInflater) getActivity()
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        if(ratingBarContainer.getChildCount()>0) return;
+        
+        LayoutInflater mInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         int id = 77;
         for (Entry<String, HashMap<String, String>> option : ratingOptions.entrySet()) {
             View viewRating = mInflater.inflate(R.layout.rating_bar_component, null, false);
@@ -277,7 +298,33 @@ public class WriteReviewFragment extends BaseFragment {
 
         productName.setText(completeProduct.getBrand()+" "+completeProduct.getName());
         displayPriceInformation();
+        
+        // Load the saved values
+        loadSavedState();
     }
+    
+    /**
+     * Load the saved state values
+     * @author sergiopereira
+     */
+    private void loadSavedState(){
+        // Validate the current container
+        if(ratingBarContainer != null && mSavedState != null) {
+            // Load ratings
+            for (int i = 0; i < ratingBarContainer.getChildCount(); i++) {
+                RatingBar ratingBar = (RatingBar) ratingBarContainer.getChildAt(i);
+                String tag = ratingBar.getTag().toString();
+                if(mSavedState.containsKey(tag)) ratingBar.setRating(mSavedState.getFloat(tag));
+            }
+            // Load name
+            nameText.setText(mSavedState.getString(NAME, ""));
+            // Load title
+            titleText.setText(mSavedState.getString(TITLE, ""));
+            // Load comment
+            reviewText.setText(mSavedState.getString(COMMENT, ""));
+        }
+    }
+    
 
     private void displayPriceInformation() {
         String unitPrice = completeProduct.getPrice();
@@ -339,26 +386,11 @@ public class WriteReviewFragment extends BaseFragment {
         productReviewCreated.setRating(ratings);
         if (customerCred != null) {
             Log.i("SENDING CUSTOMER ID", " HERE " + customerCred.getId());
-
-            /**
-             * TRIGGERS
-             * @author sergiopereira
-             */
             triggerWriteReview(completeProduct.getSku(), customerCred.getId(), productReviewCreated);
-            //triggerContentEvent(new ReviewProductEvent(completeProduct.getSku(), customerCred.getId(), productReviewCreated));
         } else {
             Log.i("NOT SENDING CUSTOMER ID", " HERE ");
-            
-            /**
-             * TRIGGERS
-             * @author sergiopereira
-             */
             triggerWriteReview(completeProduct.getSku(), productReviewCreated);
-            //triggerContentEvent(new ReviewProductEvent(completeProduct.getSku(), productReviewCreated));
         }
-        
-        
-
     }
 
     protected boolean onSuccessEvent(Bundle bundle) {

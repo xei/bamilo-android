@@ -124,6 +124,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
 
     public static String SELECTED_SIMPLE_POSITION = "selected_simple_position";
     public static String LOAD_FROM_SCRATCH = "load_from_scratch";
+    
     private int mSelectedSimple = NO_SIMPLE_SELECTED;
 
     private ViewGroup mProductRatingContainer;
@@ -237,10 +238,13 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sharedPreferences = getActivity().getSharedPreferences(
-                ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        Log.d(TAG, "ON CREATE");
+        sharedPreferences = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         mVariationsListPosition = sharedPreferences.getInt(VARIATION_LIST_POSITION, -1);
-        mSelectedSimple = sharedPreferences.getInt(SELECTED_SIMPLE_POSITION, NO_SIMPLE_SELECTED);
+        //mSelectedSimple = sharedPreferences.getInt(SELECTED_SIMPLE_POSITION, NO_SIMPLE_SELECTED);
+
+        if(savedInstanceState != null) mSelectedSimple = savedInstanceState.getInt(SELECTED_SIMPLE_POSITION, NO_SIMPLE_SELECTED);
+        Log.d(TAG, "CURRENT SELECTED SIMPLE: " + mSelectedSimple);
     }
 
     @Override
@@ -299,6 +303,20 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
         isAddingProductToCart = false;
         AnalyticsGoogle.get().trackPage(R.string.gproductdetail);
     }
+    
+    
+    /*
+     * (non-Javadoc)
+     * @see android.support.v4.app.Fragment#onSaveInstanceState(android.os.Bundle)
+     */
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        //Log.d(TAG, "ON SAVED: SELECTED SIMPLE " + mSelectedSimple);
+        // Save the current fragment type on orientation change
+        if(!mHideVariationSelection) outState.putInt(SELECTED_SIMPLE_POSITION, mSelectedSimple);
+    }
+    
 
     @Override
     public void onPause() {
@@ -1071,6 +1089,10 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
         }
     };
 
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.utils.dialogfragments.DialogListFragment.OnDialogListListener#onDialogListItemSelect(java.lang.String, int, java.lang.String)
+     */
     @Override
     public void onDialogListItemSelect(String id, int position, String value) {
         mSelectedSimple = position;

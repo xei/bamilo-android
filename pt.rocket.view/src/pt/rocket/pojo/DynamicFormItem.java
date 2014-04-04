@@ -414,6 +414,76 @@ public class DynamicFormItem {
     }
 
     /**
+     * Loads a previously saved state of the control. This is useful in an orientation changed
+     * scenario, for example.
+     * 
+     * @param inStat
+     *            the Bundle that contains the stored information of the control
+     */
+    public void loadState(ContentValues inStat) {
+        switch (this.entry.getInputType()) {
+        case meta:
+            break;
+        case checkBox:
+            boolean checked = inStat.getAsBoolean(getName());
+            ((CheckBox) this.dataControl).setChecked(checked);
+
+            break;
+        case radioGroup:
+            int position = inStat.getAsInteger(getName());
+            if (this.dataControl instanceof IcsSpinner) {
+                ((IcsSpinner) this.dataControl).setSelection(position);
+            } else if (this.dataControl instanceof RadioGroupLayoutVertical) {
+                ((RadioGroupLayoutVertical) this.dataControl).setSelection(position);
+            } else {
+                ((RadioGroupLayout) this.dataControl).setSelection(position);
+            }
+
+            break;
+
+        case metadate:
+        case date:
+            String date = inStat.getAsString(getName());
+            this.dialogDate.setDate(date);
+            GregorianCalendar cal = new GregorianCalendar(this.dialogDate.getYear(), this.dialogDate.getMonth(), this.dialogDate.getDay());
+            Date d = new Date(cal.getTimeInMillis());
+            String dateFormated = DateFormat.getDateInstance(DateFormat.LONG).format(d);
+            ((Button) this.dataControl).setText(dateFormated);
+            this.mandatoryControl.setVisibility(View.GONE);
+            break;
+        case email:
+        case text:
+        case password:
+        case number:
+            String text = inStat.getAsString(getName());
+
+            ((EditText) this.dataControl).setText(text);
+            this.errorControl.setVisibility(View.GONE);
+
+            if (text.length() == 0) {
+                if(this.mandatoryControl != null ){
+                    this.mandatoryControl
+                            .setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE
+                                    : View.GONE);
+                }
+            } else {
+                if(this.mandatoryControl != null ){
+                    this.mandatoryControl.setVisibility(View.GONE);    
+                }
+                
+            }
+
+            break;
+        case hide:
+            String text1 = inStat.getAsString(getName());
+            ((EditText) this.dataControl).setText(text1);
+            ((EditText) this.dataControl).setVisibility(View.GONE);
+            break;
+        }
+
+    }
+    
+    /**
      * Gets the value that the control currently holds
      * 
      * @return The value that the control contains

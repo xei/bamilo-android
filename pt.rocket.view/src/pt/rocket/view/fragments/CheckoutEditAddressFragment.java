@@ -6,7 +6,9 @@ package pt.rocket.view.fragments;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsCheckout;
@@ -192,6 +194,35 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
         TrackerDelegator.trackCheckoutStep(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), R.string.gcheckoutEditAddress, R.string.xcheckouteditaddress, R.string.mixprop_checkout_edit_address);
     }
 
+    /*
+     * (non-Javadoc)
+     * @see android.support.v4.app.Fragment#onSaveInstanceState(android.os.Bundle)
+     */
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        // Save values on current address
+        if(mEditFormGenerator != null && mCurrentAddress != null) {
+            // Get data from form
+            ContentValues mContentValues = createContentValues(mEditFormGenerator);
+            // Save it
+            for (Iterator<Entry<String, Object>> iterator = mContentValues.valueSet().iterator(); iterator.hasNext();) {
+                 Entry<String, Object> entry = iterator.next();
+                 try {
+                     if(entry.getKey().contains(RestConstants.JSON_FIRST_NAME_TAG)) mCurrentAddress.setFirstName((String) entry.getValue());
+                     else if(entry.getKey().contains(RestConstants.JSON_LAST_NAME_TAG)) mCurrentAddress.setLastName((String) entry.getValue());
+                     else if(entry.getKey().contains(RestConstants.JSON_ADDRESS1_TAG)) mCurrentAddress.setAddress((String) entry.getValue());
+                     else if(entry.getKey().contains(RestConstants.JSON_ADDRESS2_TAG)) mCurrentAddress.setAddress2((String) entry.getValue());
+                     else if(entry.getKey().contains(RestConstants.JSON_PHONE_TAG)) mCurrentAddress.setPhone((String) entry.getValue());
+                     else if(entry.getKey().contains(RestConstants.JSON_REGION_ID_TAG)) mCurrentAddress.setFkCustomerAddressRegion((Integer) entry.getValue());
+                     else if(entry.getKey().contains(RestConstants.JSON_CITY_ID_TAG)) mCurrentAddress.setFkCustomerAddressCity(Integer.valueOf((String) entry.getValue()));
+                } catch (NumberFormatException e) {
+                    Log.w(TAG, "INVALID FORMAT FOR REGION OR CITY", e);
+                }
+            }
+        }
+    }
+    
     /*
      * (non-Javadoc)
      * 

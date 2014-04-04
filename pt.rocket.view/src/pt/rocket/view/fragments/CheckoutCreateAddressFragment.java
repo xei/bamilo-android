@@ -6,6 +6,7 @@ package pt.rocket.view.fragments;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -77,6 +78,18 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
     
     private static final String BILLING_FORM_TAG = "billing";
     
+    private static final String SHIPPING_REGION_POS = "save_shipping_rg_position";
+    
+    private static final String BILLING_REGION_POS = "save_billing_rg_position";
+    
+    private static final String SHIPPING_CITY_POS = "save_shipping_ct_position";
+    
+    private static final String BILLING_CITY_POS = "save_billing_ct_position";
+    
+    private static final String SHIPPING_STATE = "shipping_values";
+    
+    private static final String BILLING_STATE = "billing_values";
+    
     private static final int IS_DEFAULT_SHIPPING_ADDRESS = 1;
     
     private static final int IS_DEFAULT_BILLING_ADDRESS = 1;
@@ -114,6 +127,10 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
     private View mMsgRequired;
     
     private Boolean oneAddressCreated = false;
+
+    private ContentValues mShippingSavedValues;
+    
+    private ContentValues mBillingSavedValues;
     
     
     /**
@@ -158,7 +175,19 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-        setRetainInstance(true);
+        //setRetainInstance(true);
+        
+        // Validate the saved values 
+        if(savedInstanceState != null) {
+            // Get the ship content values
+            mShippingSavedValues = savedInstanceState.getParcelable(SHIPPING_STATE);
+            // Get the bill content values
+            mBillingSavedValues = savedInstanceState.getParcelable(BILLING_STATE);
+            //Log.d(TAG, "SAVED CONTENT VALUES: " + mShippingSavedValues.toString());
+            //Log.d(TAG, "SAVED CONTENT VALUES: " + ((mBillingSavedValues!= null) ? mBillingSavedValues.toString() : "IS NULL") );
+        } else {
+            Log.d(TAG, "SAVED CONTENT VALUES IS NULL");
+        }
     }
     
     /*
@@ -230,6 +259,34 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         super.onResume();
         Log.i(TAG, "ON RESUME");
         TrackerDelegator.trackCheckoutStep(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), R.string.gcheckoutCreateAddress, R.string.xcheckoutcreateaddress, R.string.mixprop_checkout_create_address);
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see android.support.v4.app.Fragment#onSaveInstanceState(android.os.Bundle)
+     */
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.d(TAG, "ON SAVE SATE");
+        try {
+            // Validate check
+            if(mIsSameCheckBox.isChecked()) {
+                ContentValues mContentValues = createContentValues(shippingFormGenerator, IS_DEFAULT_SHIPPING_ADDRESS, IS_DEFAULT_BILLING_ADDRESS);
+                Log.d(TAG, "CONTENT SHIP VALUES: " + mContentValues.toString());
+                outState.putParcelable(SHIPPING_STATE, mContentValues);
+            } else {
+                ContentValues mShipValues = createContentValues(shippingFormGenerator, IS_DEFAULT_SHIPPING_ADDRESS, ISNT_DEFAULT_BILLING_ADDRESS);
+                Log.d(TAG, "CONTENT SHIP VALUES: " + mShipValues.toString());
+                ContentValues mBillValues = createContentValues(billingFormGenerator, ISNT_DEFAULT_SHIPPING_ADDRESS, IS_DEFAULT_BILLING_ADDRESS);
+                Log.d(TAG, "CONTENT BILL VALUES: " + mBillValues.toString());
+                
+                outState.putParcelable(SHIPPING_STATE, mShipValues);
+                outState.putParcelable(BILLING_STATE, mBillValues);
+            }
+        } catch (ClassCastException e) {
+            Log.w(TAG, "INVALID CAST ON CREATE CONTENT VALUES", e);
+        }
     }
 
     /*
@@ -309,8 +366,35 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         // Show order summary
         super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_BILLING, orderSummary);
         
+        // Load the saved shipping values
+        loadSavedValues(mShippingSavedValues, shippingFormGenerator);
+        loadSavedValues(mBillingSavedValues, billingFormGenerator);
+        
         // Show
         getBaseActivity().showContentContainer();
+    }
+    
+    /**
+     * Load the saved values to the respective form 
+     * @param savedValues
+     * @param dynamicForm
+     * @author sergiopereira
+     */
+    private void loadSavedValues(ContentValues savedValues, DynamicForm dynamicForm){
+        // Validate values
+        if(savedValues != null) {
+            // Get dynamic form and update
+            Iterator<DynamicFormItem> iter = dynamicForm.getIterator();
+            while (iter.hasNext()) {
+                DynamicFormItem item = iter.next();
+                try {
+                    item.loadState(savedValues);
+                    //Log.d(TAG, "CURRENT ITEM: " + item.getControl().getId());
+                } catch (NullPointerException e) {
+                    Log.w(TAG, "LOAD STATE: NOT CONTAINS KEY " + item.getKey());
+                }
+            }
+        }
     }
     
     /**
@@ -346,9 +430,30 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         // Create adapter
         ArrayAdapter<AddressRegion> adapter = new ArrayAdapter<AddressRegion>( getBaseActivity(), R.layout.form_spinner_item, regions);
         spinner.setAdapter(adapter);
+        setSavedSelectedRegionPos(spinner, tag);
         spinner.setTag(tag);
         spinner.setOnItemSelectedListener(this);
         group.addView(spinner);
+    }
+    
+    /**
+     * Load and set the saved region position
+     * @param spinner
+     * @param tag
+     * @author sergiopereira
+     */
+    private void setSavedSelectedRegionPos(IcsSpinner spinner, String tag){
+        // Get saved value
+        if( tag.equals(SHIPPING_FORM_TAG) && mShippingSavedValues != null && mShippingSavedValues.containsKey(SHIPPING_REGION_POS)) {
+            int pos = mShippingSavedValues.getAsInteger(SHIPPING_REGION_POS);
+            //Log.d(TAG, "SAVED SHIPPING REGION VALUE: " + pos);
+            if( pos > 0 && pos < regions.size()) spinner.setSelection(pos);
+        } 
+        else if( tag.equals(BILLING_FORM_TAG) && mBillingSavedValues != null && mBillingSavedValues.containsKey(BILLING_REGION_POS)) {
+            int pos = mBillingSavedValues.getAsInteger(BILLING_REGION_POS);
+            //Log.d(TAG, "SAVED BILLING REGION VALUE: " + pos);
+            if( pos > 0 && pos < regions.size()) spinner.setSelection(pos);
+        }
     }
         
     /**
@@ -381,9 +486,34 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         // Create adapter
         ArrayAdapter<AddressCity> adapter = new ArrayAdapter<AddressCity>( getBaseActivity(), R.layout.form_spinner_item, cities);
         spinner.setAdapter(adapter);
+        setSavedSelectedCityPos(spinner, cities, tag);
         spinner.setTag(tag);
         spinner.setOnItemSelectedListener(this);
         group.addView(spinner);
+    }
+    
+    /**
+     * Load and set the saved city position one time
+     * @param spinner
+     * @param tag
+     * @author sergiopereira
+     */
+    private void setSavedSelectedCityPos(IcsSpinner spinner, ArrayList<AddressCity> array, String tag){
+        // Get saved value
+        if( tag.equals(SHIPPING_FORM_TAG) && mShippingSavedValues != null && mShippingSavedValues.containsKey(SHIPPING_CITY_POS)) {
+            int pos = mShippingSavedValues.getAsInteger(SHIPPING_CITY_POS);
+            //Log.d(TAG, "SAVED SHIPPING CITY VALUE: " + pos);
+            if( pos > 0 && pos < array.size()) spinner.setSelection(pos);
+            // Clean the saved city pos
+            mShippingSavedValues.remove(SHIPPING_CITY_POS);
+        } 
+        else if( tag.equals(BILLING_FORM_TAG) && mBillingSavedValues != null && mBillingSavedValues.containsKey(BILLING_CITY_POS)) {
+            int pos = mBillingSavedValues.getAsInteger(BILLING_CITY_POS);
+            //Log.d(TAG, "SAVED BILLING CITY VALUE: " + pos);
+            if( pos > 0 && pos < array.size()) spinner.setSelection(pos);
+            // Clean the saved city pos
+            mBillingSavedValues.remove(BILLING_CITY_POS);
+        }
     }
     
     /**
@@ -460,8 +590,13 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         // Get spinner
         IcsSpinner mRegionSpinner = (IcsSpinner) mRegionGroup.getChildAt(0);
         // Get selected region
-        AddressRegion mSelectedRegion = (AddressRegion) mRegionSpinner.getSelectedItem(); 
+        AddressRegion mSelectedRegion = (AddressRegion) mRegionSpinner.getSelectedItem();
         Log.d(TAG, "SELECTED REGION: " + mSelectedRegion.getName() + " " + mSelectedRegion.getId());
+        
+        // Used to save state
+        int mSelectedPosition = mRegionSpinner.getSelectedItemPosition();
+        if(isDefaultShipping == IS_DEFAULT_SHIPPING_ADDRESS) mContentValues.put(SHIPPING_REGION_POS, mSelectedPosition);
+        else if(isDefaultBilling == IS_DEFAULT_BILLING_ADDRESS) mContentValues.put(BILLING_REGION_POS, mSelectedPosition);
         
         // Save region id
         int mRegionId = mSelectedRegion.getId();
@@ -472,11 +607,18 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         // Get from spinner
         View mCityView = dynamicForm.getItemByKey(RestConstants.JSON_CITY_ID_TAG).getControl();
         if(((ViewGroup) mCityView).getChildAt(0) instanceof IcsSpinner) {
-            IcsSpinner mCitySpinner = (IcsSpinner) ((ViewGroup) mCityView).getChildAt(0);
+            IcsSpinner mCitySpinner = (IcsSpinner) ((ViewGroup) mCityView).getChildAt(0);            
+            // Get selected city
             AddressCity mSelectedCity = (AddressCity) mCitySpinner.getSelectedItem(); 
             Log.d(TAG, "SELECTED CITY: " + mSelectedCity.getValue() + " " + mSelectedCity.getId() );
             mCityId = "" + mSelectedCity.getId();
             mCityName = mSelectedCity.getValue();
+            
+            // Used to save state
+            int mCitySelectedPosition = mCitySpinner.getSelectedItemPosition();
+            if(isDefaultShipping == IS_DEFAULT_SHIPPING_ADDRESS) mContentValues.put(SHIPPING_CITY_POS, mCitySelectedPosition);
+            else if(isDefaultBilling == IS_DEFAULT_BILLING_ADDRESS) mContentValues.put(BILLING_CITY_POS, mCitySelectedPosition);
+            
         } 
         // Get from edit text
         else if(mCityView instanceof EditText) {
@@ -493,7 +635,7 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
             else if(key.contains(RestConstants.JSON_REGION_ID_TAG)) mContentValues.put(key, mRegionId);
             else if(key.contains(RestConstants.JSON_CITY_ID_TAG)) mContentValues.put(key, mCityId);
             else if(key.contains(RestConstants.JSON_CITY_TAG)) mContentValues.put(key, mCityName);
-        }            
+        }
    
         // return the new content values
         return mContentValues;
@@ -548,7 +690,17 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         // Validate if is billing address
-        if(isChecked) {
+        updateContainers(isChecked);
+    }
+    
+    /**
+     * Update the container according with check box
+     * @param isSame
+     * @author sergiopereira
+     */
+    private void updateContainers(Boolean isSame) {
+        // Validate if is billing address
+        if(isSame) {
             // Set title
             mShippingTitle.setText(getString(R.string.action_label_add_address));
             // Hide billing container
