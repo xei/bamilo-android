@@ -52,6 +52,15 @@
             android:gravity="left"
             android:textColor="@color/grey_divider_light_text"
             android:textSize="@dimen/text_m" />
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/checkout_my_order_extra_costs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="roboto_regular"
+            android:gravity="left"
+            android:textColor="@color/grey_divider_light_text"
+            android:textSize="@dimen/text_m"
+            android:visibility="gone" />
     </LinearLayout>
 
     <!-- VAT -->

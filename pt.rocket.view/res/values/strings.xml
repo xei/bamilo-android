@@ -326,5 +326,5 @@
     <string name="filter_label">Filter</string>
     <string name="all_label">All</string>
     <string name="top_brands_toplevel_title">All Brands</string>
-    
+     <string name="extra_costs">Extra Costs:</string>
 </resources>

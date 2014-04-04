@@ -47,6 +47,7 @@ import android.webkit.CookieSyncManager;
 import android.webkit.HttpAuthHandler;
 import android.webkit.JavascriptInterface;
 import android.webkit.SslErrorHandler;
+import android.webkit.WebBackForwardList;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
@@ -113,7 +114,8 @@ public class CheckoutWebFragment extends BaseFragment {
     @Override
     public boolean allowBackPressed() {
         Log.d( TAG, "onBackPressed: webview.canGoBackup = " + webview.canGoBack() + " webview.hasFocus() = " + webview.hasFocus());
-        if ( webview != null && webview.canGoBack() && webview.hasFocus()) {
+        WebBackForwardList history = webview.copyBackForwardList();
+        if ( webview != null && webview.canGoBack() && webview.hasFocus() && !history.getItemAtIndex(history.getCurrentIndex() - 1).getUrl().equals("about:blank")) {
             webview.goBack();
             return true;
         } else {

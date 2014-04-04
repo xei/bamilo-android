@@ -454,10 +454,21 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         Log.d(TAG, "displayShoppingCart");
         TextView priceTotal = (TextView) getView().findViewById(R.id.price_total);
         TextView articlesCount = (TextView) getView().findViewById(R.id.articles_count);
-
+        TextView extraCosts = (TextView) getView().findViewById(R.id.extra_costs);
+        TextView extraCostsValue = (TextView) getView().findViewById(R.id.extra_costs_value);
+        
         items = new ArrayList<ShoppingCartItem>(cart.getCartItems().values());
         priceTotal.setText(CurrencyFormatter.formatCurrency(cart.getCartValue()));
-
+        if(!cart.isSumCosts()){
+            extraCosts.setVisibility(View.VISIBLE);
+            extraCostsValue.setVisibility(View.VISIBLE);
+            extraCostsValue.setText(CurrencyFormatter.formatCurrency(cart.getExtraCosts()));
+        } else {
+            extraCosts.setVisibility(View.GONE);
+            extraCostsValue.setVisibility(View.GONE);
+        }
+        
+        
         String articleString = getResources().getQuantityString(
                 R.plurals.shoppingcart_text_article, cart.getCartCount());
         articlesCount.setText(cart.getCartCount() + " " + articleString);

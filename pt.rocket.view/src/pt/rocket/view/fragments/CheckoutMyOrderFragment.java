@@ -82,7 +82,9 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
     private TextView mProductsNum;
 
     private TextView mSubTotal;
-
+    
+    private TextView mExtraCosts;
+    
     private OrderSummary mOrderFinish;
 
     private String shipMethod;
@@ -165,6 +167,8 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
         // Get sub total
         mProductsNum = (TextView) view.findViewById(R.id.checkout_my_order_products_text_n_items);
         mSubTotal = (TextView) view.findViewById(R.id.checkout_my_order_products_text_total_items);
+        mExtraCosts = (TextView) view.findViewById(R.id.checkout_my_order_extra_costs);
+        
         mVatValue = (TextView) view.findViewById(R.id.checkout_my_order_products_text_vat_value);
         //mShipFeeView = (ViewGroup) view.findViewById(R.id.checkout_my_order_products_shippingfee_container);
         mShipFeeValue = (TextView) view.findViewById(R.id.checkout_my_order_products_text_shippingfee);
@@ -333,6 +337,14 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
         mProductsNum.setText(size + " " + itemsLabel);
         // Set cart value
         mSubTotal.setText(CurrencyFormatter.formatCurrency(cart.getCartCleanValue()));
+        
+        if(!cart.isSumCosts()){
+            mExtraCosts.setText(CurrencyFormatter.formatCurrency(cart.getExtraCosts()));
+            mExtraCosts.setVisibility(View.VISIBLE);
+        } else {
+            mExtraCosts.setVisibility(View.GONE);
+        }
+        
         // Vat value
         mVatValue.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getTaxAmount()));
         // Shipping fee

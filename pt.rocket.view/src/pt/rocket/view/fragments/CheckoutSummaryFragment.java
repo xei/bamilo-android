@@ -34,6 +34,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -50,6 +51,10 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
     private ViewGroup mProductList;
 
     private TextView mSubTotal;
+    
+    private TextView mExtraCosts;
+    
+    private LinearLayout mExtraCostsContainer;
 
     private ShoppingCart mCart;
 
@@ -165,6 +170,8 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
         mVoucherView = (ViewGroup) view.findViewById(R.id.checkout_summary_products_voucher_container);
         mVoucherValue = (TextView) view.findViewById(R.id.checkout_summary_products_text_voucher);
         mSubTotal = (TextView) view.findViewById(R.id.checkout_summary_products_text_subtotal);
+        mExtraCosts = (TextView) view.findViewById(R.id.checkout_summary_extra_costs_value);
+        mExtraCostsContainer = (LinearLayout) view.findViewById(R.id.checkout_summary_extra_costs_container);
         // Shipping Address
         mShippingAddressView = (ViewGroup) view.findViewById(R.id.checkout_summary_include_shipping_address);
         mShippingAddressList = (ViewGroup) view.findViewById(R.id.checkout_summary_shipping_address_list);
@@ -332,6 +339,13 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
         }
         // Sub total
         mSubTotal.setText(CurrencyFormatter.formatCurrency(mCart.getCartValue()));
+        
+        if(!mCart.isSumCosts()){
+            mExtraCosts.setText(CurrencyFormatter.formatCurrency(mCart.getExtraCosts()));
+            mExtraCostsContainer.setVisibility(View.VISIBLE);
+        } else {
+            mExtraCostsContainer.setVisibility(View.GONE);
+        }
     }
     
     /**

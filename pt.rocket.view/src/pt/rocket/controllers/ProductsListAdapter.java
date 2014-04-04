@@ -230,27 +230,28 @@ public class ProductsListAdapter extends BaseAdapter {
         if (product.getImages().size() > 0) {
             imageURL = product.getImages().get(0).getUrl();
         }
-        prodItem.progress.setVisibility(View.VISIBLE);
-        RocketImageLoader.instance.loadImage(imageURL, prodItem.image, new RocketImageLoaderListener() {
-            
-            @Override
-            public void onLoadedSuccess(Bitmap bitmap) {
-                prodItem.image.setImageBitmap(bitmap);
-                prodItem.progress.setVisibility(View.GONE);
-            }
-            
-            @Override
-            public void onLoadedError() {
-                // TODO Auto-generated method stub
-                
-            }
-            
-            @Override
-            public void onLoadedCancel(String imageUrl) {
-                // TODO Auto-generated method stub
-                
-            }
-        });
+//        prodItem.progress.setVisibility(View.VISIBLE);
+        RocketImageLoader.instance.loadImage(imageURL, prodItem.image,  prodItem.progress, 0);
+//        (imageURL, prodItem.image, new RocketImageLoaderListener() {
+//            
+//            @Override
+//            public void onLoadedSuccess(Bitmap bitmap) {
+//                prodItem.image.setImageBitmap(bitmap);
+//                prodItem.progress.setVisibility(View.GONE);
+//            }
+//            
+//            @Override
+//            public void onLoadedError() {
+//                // TODO Auto-generated method stub
+//                
+//            }
+//            
+//            @Override
+//            public void onLoadedCancel(String imageUrl) {
+//                // TODO Auto-generated method stub
+//                
+//            }
+//        });
 //        aq.id(prodItem.image).image(imageURL, true, true, 0, 0, new BitmapAjaxCallback() {
 //
 //            @Override

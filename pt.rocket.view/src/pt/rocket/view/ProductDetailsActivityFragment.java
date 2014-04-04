@@ -182,6 +182,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
 
     boolean isAddingProductToCart = false;
     private String mLastSelectedVariance;
+    private ArrayList<String> variations;
     
     public ProductDetailsActivityFragment() {
         super(EnumSet.of(EventType.GET_PRODUCT_EVENT), 
@@ -500,8 +501,9 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
 
     private Set<String> scanSimpleAttributesForKnownVariants(ArrayList<ProductSimple> simples) {
         Set<String> foundVariations = new HashSet<String>();
-
+        Log.i(TAG, "scanSimpleForKnownVariations : scanSimpleAttributesForKnownVariants");
         for (ProductSimple simple : simples) {
+            Log.i(TAG, "scanSimpleForKnownVariations : scanSimpleAttributesForKnownVariants in");
             scanSimpleForKnownVariants(simple, foundVariations);
         }
 
@@ -509,11 +511,10 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
     }
 
     private void scanSimpleForKnownVariants(ProductSimple simple, Set<String> foundVariations) {
-        String variations[] = { "size", "color", "variation" };
+
         for (String variation : variations) {
             String attr = simple.getAttributeByKey(variation);
-            // Log.d(TAG, "scanSimpleForKnownVariations: variation = " +
-            // variation + " attr = " + attr);
+            Log.i(TAG, "scanSimpleForKnownVariations: variation = " +  variation + " attr = " + attr);
             if (attr == null)
                 continue;
             foundVariations.add(variation);
@@ -521,13 +522,16 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
     }
 
     private ArrayList<String> createSimpleVariants() {
+        Log.i(TAG, "scanSimpleForKnownVariations : createSimpleVariants" + mCompleteProduct.getName());
         ArrayList<ProductSimple> simples = (ArrayList<ProductSimple>) mCompleteProduct.getSimples()
                 .clone();
+        variations = mCompleteProduct.getKnownVariations();
         Set<String> foundKeys = scanSimpleAttributesForKnownVariants(simples);
 
         mSimpleVariantsAvailable = new ArrayList<String>();
         ArrayList<String> variationValues = new ArrayList<String>();
         for (ProductSimple simple : simples) {
+            Log.i(TAG, "scanSimpleForKnownVariations : createSimpleVariants in");
             String value = calcVariationStringForSimple(simple, foundKeys);
             String quantity = simple.getAttributeByKey(ProductSimple.QUANTITY_TAG);
 
@@ -732,7 +736,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
         }
 
         mSimpleVariants = createSimpleVariants();
-
+        Log.i(TAG, "scanSimpleForKnownVariations : updateVariants "+mSimpleVariants.size());
         ProductSimple simple = getSelectedSimple();
         mVariantChooseError.setVisibility(View.GONE);
 //        Log.i(TAG, "code1stock size selected!" + mSelectedSimple);
