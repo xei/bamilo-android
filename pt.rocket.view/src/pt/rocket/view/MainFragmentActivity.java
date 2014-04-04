@@ -53,6 +53,7 @@ import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.preference.PreferenceScreen;
 import android.support.v4.widget.DrawerLayout;
+import android.view.WindowManager;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -72,6 +73,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
 
     private SharedPreferences sharedPrefs;
     
+    private int currentAdjustState = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED;
     /**
      * Constructor
      */
@@ -224,33 +226,42 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
     @Override
     public void onSwitchFragment(FragmentType type, Bundle bundle, Boolean addToBackStack) {
         showWarningVariation(false);
-        
+        Log.i(TAG, "code1adjust : "+getWindow().getAttributes().softInputMode);
+        int newAdjustState = currentAdjustState;
         // Validate fragment type
         switch (type) {
         case HOME:
+            newAdjustState = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN;
             // Pop back stack until TEASERS
             if(FragmentController.getInstance().hasEntry(FragmentType.HOME.toString())) {
                 popBackStack(FragmentType.HOME.toString());
+                updateAdjustState(newAdjustState);
                 return;
             }
             fragment = HomeFragment.newInstance();
             break;
         case CATEGORIES_LEVEL_1:
+            newAdjustState = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN;
             fragment = CategoriesContainerFragment.getInstance(bundle);
             break;
         case CATEGORIES_LEVEL_2:
+            newAdjustState = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN;
             fragment = CategoriesContainerFragment.getInstance(bundle);
             break;
         case CATEGORIES_LEVEL_3:
+            newAdjustState = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN;
             fragment = CategoriesContainerFragment.getInstance(bundle);
             break;
         case SEARCH:
+            newAdjustState = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN;
             fragment = SearchFragment.getInstance();
             break;
         case PRODUCT_LIST:
+            newAdjustState = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN;
             fragment = Catalog.getInstance();
             break;
         case PRODUCT_DETAILS:
+            newAdjustState = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN;
             SharedPreferences sP = getSharedPreferences(
                     ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
             Editor eD = sP.edit();
@@ -259,42 +270,55 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             fragment = ProductDetailsActivityFragment.getInstance(bundle);
             break;
         case PRODUCT_DESCRIPTION:
+            newAdjustState = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN;
             fragment = ProductDetailsDescriptionFragment.getInstance();
             break;
         case PRODUCT_GALLERY:
+            newAdjustState = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN;
             fragment = ProductImageGalleryFragment.getInstance(bundle);
             break;
         case POPULARITY:
+            newAdjustState = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED;
             fragment = PopularityFragment.getInstance();
             break;
         case WRITE_REVIEW:
+            newAdjustState = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED;
             fragment = WriteReviewFragment.getInstance();
             break;
         case REVIEW:
+            newAdjustState = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED;
             fragment = ReviewFragment.getInstance();
             break;
         case SHOPPING_CART:
+            newAdjustState = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN;
             fragment = ShoppingCartFragment.getInstance();
             break;
         case CHECKOUT_BASKET:
+            newAdjustState = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN;
             fragment = CheckoutWebFragment.getInstance();
             break;
         case REGISTER:
+            newAdjustState = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED;
             fragment = SessionRegisterFragment.getInstance();
             break;
         case FORGOT_PASSWORD:
+            newAdjustState = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED;
             fragment = SessionForgotPasswordFragment.getInstance();
             break;
         case TERMS:
+            newAdjustState = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN;
             fragment = SessionTermsFragment.getInstance(bundle);
             break;
         case MY_ACCOUNT:
+            newAdjustState = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED;
             fragment = MyAccountFragment.getInstance();
             break;
         case MY_USER_DATA:
+            newAdjustState = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED;
             fragment = MyAccountUserDataFragment.getInstance();
             break;
         case TRACK_ORDER:
+            newAdjustState = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED;
             fragment = TrackOrderFragment.getInstance();
             break;
         case CHANGE_COUNTRY:
@@ -308,33 +332,41 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
          * TODO: NEW FRAGMENTS
          */
         case LOGIN:
+            newAdjustState = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED;
             fragment = SessionLoginFragment.getInstance(bundle);
             break;
         case ABOUT_YOU:
+            newAdjustState = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN;
             fragment = CheckoutAboutYouFragment.getInstance(bundle);
             break;
         case POLL:
             fragment = CheckoutPollAnswerFragment.getInstance(bundle);
             break;
         case MY_ADDRESSES:
+            newAdjustState = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED;
             fragment = CheckoutMyAddressesFragment.getInstance(bundle);
             break;
         case CREATE_ADDRESS:
+            newAdjustState = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED;
             fragment = CheckoutCreateAddressFragment.getInstance(bundle);
             break;
         case EDIT_ADDRESS:
+            newAdjustState = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED;
             fragment = CheckoutEditAddressFragment.getInstance(bundle);
             break;
         case SHIPPING_METHODS:
+            newAdjustState = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED;
             fragment = CheckoutShippingMethodsFragment.getInstance(bundle);
             break;
         case PAYMENT_METHODS:
+            newAdjustState = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED;
             fragment = CheckoutPaymentMethodsFragment.getInstance(bundle);
             break;
         case MY_ORDER:
             fragment = CheckoutMyOrderFragment.getInstance(bundle);
             break;
         case CHECKOUT_THANKS:
+            newAdjustState = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN;
             fragment = CheckoutThanksFragment.getInstance();
             break;
         case CHECKOUT_EXTERNAL_PAYMENT:
@@ -345,6 +377,10 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             Log.w(TAG, "INVALIDE FRAGMENT TYPE");
             return;
         }
+        
+
+        updateAdjustState(newAdjustState);
+        
         try {
             fragment.setArguments(null);
             fragment.setArguments(bundle);
@@ -401,10 +437,22 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         fragment = (BaseFragment) getSupportFragmentManager().findFragmentByTag(tag);
     }
     
-
     // ####################### MY ACCOUNT FRAGMENT #######################
     @Override
     public void onPreferenceAttached(PreferenceScreen root, int xmlId) {
     }
-
+    
+    private void updateAdjustState(int newAdjustState){
+        if(currentAdjustState != newAdjustState){
+            currentAdjustState = newAdjustState;
+            switch (newAdjustState) {
+            case WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN:
+                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+                break;
+            case WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED:
+                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+                break;
+            }    
+        }
+    }
 }

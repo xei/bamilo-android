@@ -432,8 +432,9 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         else if (titleResId == 0) {
             hideTitle();
             findViewById(R.id.totalProducts).setVisibility(View.GONE);
-        } else
+        } else {
             setTitle(titleResId);
+        }
 
     }
 
@@ -1793,7 +1794,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         if (v == null)
             v = getWindow().getCurrentFocus();
 
-        imm.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
 
     public void showKeyboard() {
