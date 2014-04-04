@@ -84,7 +84,7 @@ public void test(String url){
     }
     
     /**
-     * Get Shipping Method
+     * Get Payment Method
      */
     Log.i(TAG, "mService => " + mService);
     Bundle args = new Bundle();

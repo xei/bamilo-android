@@ -5,7 +5,9 @@ import pt.rocket.framework.testproject.helper.BaseHelper;
 import pt.rocket.framework.testproject.helper.CreateAddressHelper;
 import pt.rocket.framework.testproject.helper.GetLoginHelper;
 import pt.rocket.framework.testproject.helper.GetPollHelper;
+import pt.rocket.framework.testproject.helper.GetShippingMethodsHelper;
 import pt.rocket.framework.testproject.helper.GetSignupHelper;
+import pt.rocket.framework.testproject.helper.SetBillingMethodHelper;
 import pt.rocket.framework.testproject.helper.SetShippingMethodHelper;
 import pt.rocket.framework.testproject.interfaces.IResponseCallback;
 import pt.rocket.framework.testproject.utils.Log;
@@ -17,53 +19,54 @@ import android.test.suitebuilder.annotation.SmallTest;
 @SmallTest
 public class SetShippingMethodTest extends FrameworkServiceTests {
 	private static String TAG = SetShippingMethodTest.class.getSimpleName();
-	protected boolean processed = false;
-	protected boolean processed1 = false;
-	protected boolean processed2 = false;
-
+	protected boolean processedlogin = false;
+	protected boolean processedsetbilling = false;
+	protected boolean processedgetshipping = false;
+	protected boolean processedsetshipping = false;
+	
 	public void testSetShippingMethodIC() throws Throwable {
-		test("https://www.jumia.ci");
+		test("https://www.jumia.ci", "DigitalDelivery");
 	}
 
 	public void testSetShippingMethodKE() throws Throwable {
-		test("https://www.jumia.co.ke");
+//		test("https://www.jumia.co.ke", "teste");
 	}
 	
 	public void testSetShippingMethodMA() throws Throwable {
-		test("https://www.jumia.ma");
+		test("https://www.jumia.ma", "teste");
 	}
 	
 	public void testSetShippingMethodNG() throws Throwable {
-		test("https://www.jumia.com.ng");
+		test("https://www.jumia.com.ng", "teste");
 	}
 
 	public void testSetShippingMethodEG() throws Throwable {
-		test("https://www.jumia.com.eg");
+		test("https://www.jumia.com.eg", "DigitalDelivery");
 	}
 
 	public void testSetShippingMethodUG() throws Throwable {
-		test("https://www.jumia.ug");
+//		test("https://www.jumia.ug", "teste");
 	}
 
-	private void test(String url) {
+	private void test(String url, String shippinng_method) {
 		/**
-		 * Login
-		 */
-		Log.i(TAG, "mService => " + mService);
-	    Bundle args1 = new Bundle();
-	    ContentValues contentValues = new ContentValues();
-	    contentValues.put(RequestConstants.KEY_LOGIN_EMAIL, RequestConstants.CUSTOMER_EMAIL);
-	    contentValues.put(RequestConstants.KEY_LOGIN_PASSWORD, RequestConstants.CUSTOMER_PASSWORD);
-	    args1.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, contentValues);
-	    args1.putString(BaseHelper.KEY_COUNTRY, url + "/mobapi/customer/login/");
-	    sendRequest(args1, new GetLoginHelper(), new IResponseCallback() {
+	     * Login before adding to cart
+	     */
+	    Log.i(TAG, "mService => " + mService);
+	    Bundle argslogin = new Bundle();
+	    ContentValues contentValueslogin = new ContentValues();
+	    contentValueslogin.put(RequestConstants.KEY_LOGIN_EMAIL, RequestConstants.CUSTOMER_EMAIL);
+	    contentValueslogin.put(RequestConstants.KEY_LOGIN_PASSWORD, RequestConstants.CUSTOMER_PASSWORD);
+	    argslogin.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, contentValueslogin);
+	    argslogin.putString(BaseHelper.KEY_COUNTRY, url + "/mobapi/customer/login/");
+	    sendRequest(argslogin, new GetLoginHelper(), new IResponseCallback() {
 
 	        @Override
 	        public void onRequestError(Bundle bundle) {
 	            // TODO Auto-generated method stub
 	            Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
 	            assertTrue("Failed onRequestError - The base of the json is wrongly constructed, something is missing : "+bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY), jsonValidation);
-	            processed = true;
+	            processedlogin = true;
 	        }
 
 	        @Override
@@ -71,12 +74,12 @@ public class SetShippingMethodTest extends FrameworkServiceTests {
 	            // TODO Auto-generated method stub
 	            Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
 	            assertTrue("Failed onRequestComplete - The base of the json is wrongly constructed, something is missing", jsonValidation);
-	            processed = true;
+	            processedlogin = true;
 
 	        }
 	    });
 	    //necessary in order to make the test wait for the server response
-	    while (!processed) {
+	    while (!processedlogin) {
 	        try {
 	            Thread.sleep(1000);
 	        } catch (InterruptedException e) {
@@ -84,27 +87,121 @@ public class SetShippingMethodTest extends FrameworkServiceTests {
 	            e.printStackTrace();
 	        }
 	    }
-		
+	    /**
+	     * SetBilling
+	     */
+	    
+	    Bundle argsSetBilling = new Bundle();
+	    ContentValues contentValuessetbilling = new ContentValues();
+	    contentValuessetbilling.put(RequestConstants.KEY_BILLING_METHOD_DIFFERENT,RequestConstants.BILLING_METHOD_DIFFERENT);
+	    
+	    if(url.equals("https://www.jumia.ci")){
+	    	contentValuessetbilling.put(RequestConstants.KEY_BILLING_METHOD_BILLING_ADDRESS_ID,RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_IC);
+	    	contentValuessetbilling.put(RequestConstants.KEY_BILLING_METHOD_SHIPPING_ADDRESS_ID,RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_IC);
+	    }else if(url.equals("https://www.jumia.com.eg")){
+	    	contentValuessetbilling.put(RequestConstants.KEY_BILLING_METHOD_BILLING_ADDRESS_ID,RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_EG);
+	    	contentValuessetbilling.put(RequestConstants.KEY_BILLING_METHOD_SHIPPING_ADDRESS_ID,RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_EG);
+	    }else if(url.equals("https://www.jumia.ma")){
+	    	contentValuessetbilling.put(RequestConstants.KEY_BILLING_METHOD_BILLING_ADDRESS_ID,RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_MA);
+	    	contentValuessetbilling.put(RequestConstants.KEY_BILLING_METHOD_SHIPPING_ADDRESS_ID,RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_MA);
+	    }else if(url.equals("https://www.jumia.com.ng")){
+	    	contentValuessetbilling.put(RequestConstants.KEY_BILLING_METHOD_BILLING_ADDRESS_ID,RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_NG);
+	    	contentValuessetbilling.put(RequestConstants.KEY_BILLING_METHOD_SHIPPING_ADDRESS_ID,RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_NG);
+	    }
+	    
+
+	    argsSetBilling.putParcelable(GetSignupHelper.CONTENT_VALUES, contentValuessetbilling);
+	    argsSetBilling.putString(BaseHelper.KEY_COUNTRY, url + "/mobapi/v1/multistep/billing/");
+	    sendRequest(argsSetBilling, new SetBillingMethodHelper(), new IResponseCallback() {
+
+	        @Override
+	        public void onRequestError(Bundle bundle) {
+	            // TODO Auto-generated method stub
+	            Boolean jsonValidation = bundle
+	                    .getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
+	            assertTrue(
+	                    "Failed onRequestError - The base of the json is wrongly constructed, something is missing : "
+	                            + bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY),
+	                    jsonValidation);
+	            processedsetbilling = true;
+	        }
+
+	        @Override
+	        public void onRequestComplete(Bundle bundle) {
+	            // TODO Auto-generated method stub
+	            Boolean jsonValidation = bundle
+	                    .getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
+	            assertTrue(
+	                    "Failed onRequestComplete - The base of the json is wrongly constructed, something is missing",
+	                    jsonValidation);
+	            processedsetbilling = true;
+
+	        }
+	    });
+	    // necessary in order to make the test wait for the server response
+	    while (!processedsetbilling) {
+	        try {
+	            Thread.sleep(1000);
+	        } catch (InterruptedException e) {
+	            // TODO Auto-generated catch block
+	            e.printStackTrace();
+	        }
+	    }
+	    
+	    /**
+	     * Get Shipping Method
+	     */
+	    Log.i(TAG, "mService => " + mService);
+	    Bundle argsgetshipping = new Bundle();
+	    argsgetshipping.putString(BaseHelper.KEY_COUNTRY, url + "/mobapi/v1/multistep/shippingmethod/");
+	    sendRequest(argsgetshipping, new GetShippingMethodsHelper(), new IResponseCallback() {
+
+	        @Override
+	        public void onRequestError(Bundle bundle) {
+	            // TODO Auto-generated method stub
+	            Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
+	            assertTrue("Failed onRequestError - The base of the json is wrongly constructed, something is missing : "+bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY), jsonValidation);
+	            processedgetshipping = true;
+	        }
+
+	        @Override
+	        public void onRequestComplete(Bundle bundle) {
+	            // TODO Auto-generated method stub
+	            Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
+	            assertTrue("Failed onRequestComplete - The base of the json is wrongly constructed, something is missing", jsonValidation);
+	            processedgetshipping = true;
+
+	        }
+	    });
+	    //necessary in order to make the test wait for the server response
+	    while (!processedgetshipping) {
+	        try {
+	            Thread.sleep(1000);
+	        } catch (InterruptedException e) {
+	            // TODO Auto-generated catch block
+	            e.printStackTrace();
+	        }
+	    }
 	    /**
 	     * Set Shipping
 	     */
 		Log.i(TAG, "mService => " + mService);
-		Bundle args = new Bundle();
-		ContentValues contentValues1 = new ContentValues();
+		Bundle argssetshipping = new Bundle();
+		ContentValues contentValuessetshipping = new ContentValues();
 		
-		if(url.equals("https://www.jumia.ma")){
-			contentValues1.put(RequestConstants.KEY_SET_SHIPPING_METHOD,RequestConstants.SET_SHIPPING_METHOD2);
-			contentValues1.put(RequestConstants.KEY_SET_SHIPPING_STATION,RequestConstants.SET_SHIPPING_STATION);
-			contentValues1.put(RequestConstants.KEY_SET_SHIPPING_REGION,RequestConstants.SET_SHIPPING_REGION);
-		}else{
-			contentValues1.put(RequestConstants.KEY_SET_SHIPPING_METHOD,RequestConstants.SET_SHIPPING_METHOD);
-		}
-		
+//		if(url.equals("https://www.jumia.ma")){
+//			contentValuessetshipping.put(RequestConstants.KEY_SET_SHIPPING_METHOD,RequestConstants.SET_SHIPPING_METHOD2);
+//			contentValuessetshipping.put(RequestConstants.KEY_SET_SHIPPING_STATION,RequestConstants.SET_SHIPPING_STATION);
+//			contentValuessetshipping.put(RequestConstants.KEY_SET_SHIPPING_REGION,RequestConstants.SET_SHIPPING_REGION);
+//		}else{
+//			contentValuessetshipping.put(RequestConstants.KEY_SET_SHIPPING_METHOD,RequestConstants.SET_SHIPPING_METHOD);
+//		}
+		contentValuessetshipping.put(RequestConstants.KEY_SET_SHIPPING_METHOD,shippinng_method);
 		
 
-		args.putParcelable(GetSignupHelper.CONTENT_VALUES, contentValues1);
-		args.putString(BaseHelper.KEY_COUNTRY, url + "/mobapi/v1/multistep/shippingmethod/");
-		sendRequest(args, new SetShippingMethodHelper(), new IResponseCallback() {
+		argssetshipping.putParcelable(GetSignupHelper.CONTENT_VALUES, contentValuessetshipping);
+		argssetshipping.putString(BaseHelper.KEY_COUNTRY, url + "/mobapi/v1/multistep/shippingmethod/");
+		sendRequest(argssetshipping, new SetShippingMethodHelper(), new IResponseCallback() {
 
 			@Override
 			public void onRequestError(Bundle bundle) {
@@ -115,7 +212,7 @@ public class SetShippingMethodTest extends FrameworkServiceTests {
 						"Failed onRequestError - The base of the json is wrongly constructed, something is missing : "
 								+ bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY),
 						jsonValidation);
-				processed1 = true;
+				processedsetshipping = true;
 			}
 
 			@Override
@@ -126,12 +223,12 @@ public class SetShippingMethodTest extends FrameworkServiceTests {
 				assertTrue(
 						"Failed onRequestComplete - The base of the json is wrongly constructed, something is missing",
 						jsonValidation);
-				processed1 = true;
+				processedsetshipping = true;
 
 			}
 		});
 		// necessary in order to make the test wait for the server response
-		while (!processed1) {
+		while (!processedsetshipping) {
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {

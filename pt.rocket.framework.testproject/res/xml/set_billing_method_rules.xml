@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <cart type="jsonobject" method="getJSONObject" children="true" optional="false">
+        <cartValue type="string" method="getString" children="false" optional="false"/>
+        <couponMoneyValue type="integer" method="getInt" children="false" optional="false"/>
+        <cartCount type="integer" method="getInt" children="false" optional="false"/>
+        <extra_costs type="integer" method="getInt" children="false" optional="false"/>
+        <sum_costs type="string" method="getString" children="false" optional="false"/>
+        <vat_value type="string" method="getString" children="false" optional="true"/>
+        <shipping_value type="string" method="getString" children="false" optional="false"/>
+        <cartItems type="jsonarray" method="getJSONArray" children="false" optional="false"/>
+        <messages type="jsonobject" method="getJSONObject" children="true" optional="false">
+            <Delivery type="string" method="getString" children="false" optional="false"/>
+        </messages>
+        
+    </cart>
     <order type="jsonobject" method="getJSONObject" children="true" optional="false">
+        <shipping_method type="jsonobject" method="getJSONObject" children="true" optional="false">
+            <method type="string" method="getString" children="false" optional="false"/>
+        </shipping_method>
+        <customer_device type="string" method="getString" children="false" optional="false"/>
         <grand_total type="integer" method="getInt" children="false" optional="false"/>
         <shipping_amount type="integer" method="getInt" children="false" optional="false"/>
         <extra_payment_cost type="integer" method="getInt" children="false" optional="false"/>
@@ -8,10 +26,33 @@
         <installment_fees type="integer" method="getInt" children="false" optional="true"/>
         <tax_amount type="integer" method="getInt" children="false" optional="false"/>
         <_locale type="string" method="getString" children="false" optional="false"/>
-        <shipping_address type="jsonobject" method="getJSONObject" children="true" optional="true">
+        <billing_address type="jsonobject" method="getJSONObject" children="true" optional="false">
+             <customer_address_id type="string" method="getString" children="false" optional="false"/>
+             <first_name type="string" method="getString" children="false" optional="false"/>
+             <last_name type="string" method="getString" children="false" optional="false"/>
+             <address1 type="string" method="getString" children="false" optional="false"/>
+             <city type="string" method="getString" children="false" optional="false"/>
+             <postcode type="string" method="getString" children="false" optional="false"/>
+             <phone type="string" method="getString" children="false" optional="false"/>
+             <fk_country type="string" method="getString" children="false" optional="false"/>
+             <fk_customer_address_region type="string" method="getString" children="false" optional="false"/>
+             <fk_customer_address_city type="string" method="getString" children="false" optional="false"/>
+             <_locale type="string" method="getString" children="false" optional="false"/>
+        </billing_address>
+        <shipping_address type="jsonobject" method="getJSONObject" children="true" optional="false">
+             <customer_address_id type="string" method="getString" children="false" optional="false"/>
+             <first_name type="string" method="getString" children="false" optional="false"/>
+             <last_name type="string" method="getString" children="false" optional="false"/>
+             <address1 type="string" method="getString" children="false" optional="false"/>
+             <city type="string" method="getString" children="false" optional="false"/>
+             <postcode type="string" method="getString" children="false" optional="false"/>
+             <phone type="string" method="getString" children="false" optional="false"/>
+             <fk_country type="string" method="getString" children="false" optional="false"/>
+             <fk_customer_address_region type="string" method="getString" children="false" optional="false"/>
+             <fk_customer_address_city type="string" method="getString" children="false" optional="false"/>
              <_locale type="string" method="getString" children="false" optional="false"/>
         </shipping_address>
-        <item_collection type="jsonobject" method="getJSONObject" children="true" optional="true"/>
+        <item_collection type="jsonarray" method="getJSONArray" children="false" optional="false"/>
     </order>
     <next_step type="string" method="getString" optional="false" children="false" expected="shippingMethod"/>
     

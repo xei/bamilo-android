@@ -268,6 +268,7 @@ public class XMLUtils {
                 if (rules.get(i).getHasChildren() && rules.get(i).getType().equals("jsonobject")) {
                     JSONObject subJSON = (JSONObject) method.invoke(jsonObject, rules.get(i).getTag());
                     jsonIsValid = jsonObjectAssertion(subJSON, rules.get(i));
+                    
                 }
 
                 if (rules.get(i).getHasChildren() && rules.get(i).getType().equals("jsonarray")) {

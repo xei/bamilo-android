@@ -9,7 +9,7 @@
         <fields type="jsonarray" method="getJSONArray" children="true" optional="false">
             <key type="string" method="getString" children="false" optional="false"/>
             <options type="jsonobject" method="getJSONObject" children="true" optional="false">
-                <AAIB type="jsonobject" method="getJSONObject" children="true" optional="false">
+                <AAIB type="jsonobject" method="getJSONObject" children="true" optional="true">
                     <value type="string" method="getString" children="false" optional="false"/>
                 </AAIB>
                 <Mtc_MobiCash type="jsonobject" method="getJSONObject" children="true" optional="true">
@@ -81,7 +81,7 @@
                 <VISA type="jsonobject" method="getJSONObject" children="true" optional="true">
                     <value type="string" method="getString" children="false" optional="false"/>
                 </VISA>
-                <Wallety type="jsonobject" method="getJSONObject" children="true" optional="false">
+                <Wallety type="jsonobject" method="getJSONObject" children="true" optional="true">
                     <value type="string" method="getString" children="false" optional="false"/>
                 </Wallety>
                 <GlobalPay type="jsonobject" method="getJSONObject" children="true" optional="true">
