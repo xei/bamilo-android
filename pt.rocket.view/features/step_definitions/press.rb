@@ -214,3 +214,19 @@ Then /^I add multiple products$/ do
     $i += 1
   end
 end
+
+  Then /^I press Proceed to Checkout$/ do
+    performAction('click_on_text', @proceed_to_checkout.to_s)
+  end
+  
+  Then /^I press Next$/ do
+    performAction('click_on_text', @next.to_s)
+  end
+  
+  Then /^I press Pay on Delivery$/ do
+    performAction('click_on_text', @pay_on_delivery.to_s)
+  end
+  
+  Then /^I press Confirm Order$/ do
+    performAction('click_on_text', @confirm_order.to_s)
+  end

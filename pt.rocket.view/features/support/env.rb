@@ -142,6 +142,13 @@ def initvars
     #cart
     @delete="Delete"
     
+    #native checkout
+    @proceed_to_checkout="Proceed to Checkout"
+    @next="Next"
+    @pay_on_delivery="Pay On Delivery"
+    @confirm_order="Confirm Order"
+    
+    
     ##### Ivory Coast ####################################### IC ##############################################################################          
     when "ic"
     @venture_name="Ivory Coast"
@@ -219,6 +226,12 @@ def initvars
     
     #cart
     @delete="Effacer"
+    
+    #native checkout
+    @proceed_to_checkout="Valider la commande"
+    @next="Suivant"
+    @pay_on_delivery="Payer cash à la livraison"
+    @confirm_order="Confirmer la commande"
       
     ##### Morocco ########################################### MA ##############################################################################
     when "ma"
@@ -297,6 +310,12 @@ def initvars
       
     #cart
     @delete="Effacer"
+    
+    #native checkout
+    @proceed_to_checkout="Valider la commande"
+    @next="Suivant"
+    @pay_on_delivery="Payer cash à la livraison"
+    @confirm_order="Confirmer la commande"
         
     ##### Nigeria ########################################### NG ##############################################################################
     when "ng"
@@ -371,6 +390,12 @@ def initvars
     #cart
     @delete="Delete"
     
+    #native checkout
+    @proceed_to_checkout="Proceed to Checkout"
+    @next="Next"
+    @pay_on_delivery="Pay On Delivery"
+    @confirm_order="Confirm Order"
+    
     ##### Egypt ############################################# EG ##############################################################################
     when "eg"
     @venture_name="Egypt"
@@ -444,6 +469,12 @@ def initvars
     #cart
     @delete="Delete"
     
+    #native checkout
+    @proceed_to_checkout="Proceed to Checkout"
+    @next="Next"
+    @pay_on_delivery="Pay On Delivery"
+    @confirm_order="Confirm Order"
+    
     ##### Uganda  ############################################ UG ##############################################################################
     when "ug"
     @venture_name="Uganda"
@@ -516,6 +547,12 @@ def initvars
     
     #cart
     @delete="Delete"
+    
+    #native checkout
+    @proceed_to_checkout="Proceed to Checkout"
+    @next="Next"
+    @pay_on_delivery="Pay On Delivery"
+    @confirm_order="Confirm Order"
     
   end
 end
