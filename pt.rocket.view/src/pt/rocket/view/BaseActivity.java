@@ -721,7 +721,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         public void onClick(View v) {
             if (mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
                 toggle();
-            } else if (!initialCountry) {
+            } else if (!initialCountry && drawable_state == DrawerLayout.STATE_IDLE) {
                 // Hide search component and keyboard
                 hideSearchComponent();
                 hideKeyboard();
@@ -791,7 +791,9 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         // SEARCH
         } else if (itemId == R.id.menu_search) {
             // Validate menu state
-            if(drawable_state == DrawerLayout.STATE_IDLE) closeDrawerIfOpen();
+            if(drawable_state == DrawerLayout.STATE_IDLE){
+                closeDrawerIfOpen();
+            }
             // Show search component
             showSearchComponent();
             // 
