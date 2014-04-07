@@ -834,7 +834,12 @@ public class CatalogPageModel {
         // Updated filter
         // XXX
         mCatalogFilters = productsPage.getFilters();
-        ((Catalog) mFragment).setFilter(productsPage.getFilters());
+        if(mFragment.isVisible()){
+            ((Catalog) mFragment).setFilter(productsPage.getFilters());
+        } else {
+            return;
+        }
+        
         
         
         

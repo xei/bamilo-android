@@ -359,12 +359,12 @@ public class CategoriesContainerFragment extends BaseFragment {
         if(!bundle.getBoolean(USED_CACHED_CATEGORIES, false)){
             AnalyticsGoogle.get().trackLoadTiming(R.string.gcategories, mBeginRequestMillis);
         } else {
-//            Log.i(TAG, "code1 received categories from database"+JumiaApplication.INSTANCE.currentCategories.size());
+            Log.i(TAG, "code1 received categories from database "+JumiaApplication.INSTANCE.currentCategories.size());
         }
         JumiaApplication.INSTANCE.currentCategories = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
         
         if(JumiaApplication.INSTANCE.currentCategories != null && getView() != null){
-//            Log.d(TAG, "code1 received categories size = " + JumiaApplication.INSTANCE.currentCategories.size());
+            Log.d(TAG, "code1 received categories size = " + JumiaApplication.INSTANCE.currentCategories.size());
             if(getBaseActivity().isTabletInLandscape(getBaseActivity())){
 //                Log.d(TAG, "code1 going to create fragment createFragmentsForLandscape");
                 createFragmentsForLandscape();

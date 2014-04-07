@@ -132,13 +132,12 @@ public class Catalog extends BaseFragment implements OnClickListener{
         setFilterAction();
     }
     
-    
     private void setFilterAction(){
         // Set listener
         mFilterButton.setVisibility(View.VISIBLE);
         mFilterButton.setOnClickListener(null);
         mFilterButton.setOnClickListener(this);
-        pagerTabStrip.setPadding(0, 0, getResources().getDimensionPixelSize(R.dimen.catalog_button_filter_width), 0);
+        pagerTabStrip.setPadding(0, 0, getBaseActivity().getResources().getDimensionPixelSize(R.dimen.catalog_button_filter_width), 0);
     }
     
     /*
