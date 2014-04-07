@@ -286,7 +286,10 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
             }
         } catch (ClassCastException e) {
             Log.w(TAG, "INVALID CAST ON CREATE CONTENT VALUES", e);
+        } catch (NullPointerException e) {
+            Log.w(TAG, "SOME VIEW IS NULL", e);
         }
+        
     }
 
     /*

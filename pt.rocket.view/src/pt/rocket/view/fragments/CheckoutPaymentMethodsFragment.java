@@ -119,11 +119,9 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
         //setRetainInstance(true);
         
         // Validate the saved values 
-        if(savedInstanceState != null) {
+        if(savedInstanceState != null)
             // Get the ship content values
             mSavedState = savedInstanceState.getParcelable(SAVED_STATE);
-            Log.d(TAG, "LOAD SAVED: " + mSavedState.toString());
-        }
     }
     
 

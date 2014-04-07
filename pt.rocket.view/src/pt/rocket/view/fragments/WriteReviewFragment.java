@@ -200,16 +200,21 @@ public class WriteReviewFragment extends BaseFragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Log.i(TAG, "ON SAVE INSTANCE");
-        // Get rating bars
-        for (int i = 0; i < ratingBarContainer.getChildCount(); i++)
-            outState.putFloat((String) ratingBarContainer.getChildAt(i).getTag(), ((RatingBar) ratingBarContainer.getChildAt(i)).getRating());
-        // Get name
-        outState.putString(NAME, (nameText != null) ? nameText.getText().toString() : "");
-        // Get title
-        outState.putString(TITLE, (titleText != null) ? titleText.getText().toString() : "");
-        // Get comment
-        outState.putString(COMMENT, (reviewText != null) ? reviewText.getText().toString() : "");
-        // Log.d(TAG, "VALUES: " + outState.toString());
+        try {
+            // Get rating bars
+            for (int i = 0; i < ratingBarContainer.getChildCount(); i++)
+                outState.putFloat((String) ratingBarContainer.getChildAt(i).getTag(), ((RatingBar) ratingBarContainer.getChildAt(i)).getRating());
+            // Get name
+            outState.putString(NAME, (nameText != null) ? nameText.getText().toString() : "");
+            // Get title
+            outState.putString(TITLE, (titleText != null) ? titleText.getText().toString() : "");
+            // Get comment
+            outState.putString(COMMENT, (reviewText != null) ? reviewText.getText().toString() : "");
+            // Log.d(TAG, "VALUES: " + outState.toString());
+        } catch (NullPointerException e) {
+            Log.w(TAG, "SOME VIEW IS NULL", e);
+        }
+
     }
 
     /*
