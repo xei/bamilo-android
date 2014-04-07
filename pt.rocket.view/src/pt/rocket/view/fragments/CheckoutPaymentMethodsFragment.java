@@ -4,6 +4,7 @@
 package pt.rocket.view.fragments;
 
 import java.util.EnumSet;
+import java.util.Iterator;
 
 import org.holoeverywhere.widget.Button;
 import org.holoeverywhere.widget.EditText;
@@ -29,6 +30,7 @@ import pt.rocket.helpers.checkout.GetPaymentMethodsHelper;
 import pt.rocket.helpers.checkout.SetPaymentMethodHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.pojo.DynamicForm;
+import pt.rocket.pojo.DynamicFormItem;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.TrackerDelegator;
@@ -51,24 +53,13 @@ import de.akquinet.android.androlog.Log;
 public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnClickListener, IResponseCallback {
 
     private static final String TAG = LogTagHelper.create(CheckoutPaymentMethodsFragment.class);
+
+    private static final String SAVED_STATE = "saved_state";
     
     private static CheckoutPaymentMethodsFragment paymentMethodsFragment;
-    
-    /**
-     * 
-     * @return
-     */
-    public static CheckoutPaymentMethodsFragment getInstance(Bundle bundle) {
-        // if (loginFragment == null)
-        paymentMethodsFragment = new CheckoutPaymentMethodsFragment();
-        return paymentMethodsFragment;
-    }
 
     private ViewGroup paymentMethodsContainer;
-
-
-    private Form formResponse;
-
+    
     private DynamicForm formGenerator;
 
     //Voucher
@@ -81,7 +72,18 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
     
     private boolean removeVoucher = false;
     private OrderSummary orderSummary;
+
+    private ContentValues mSavedState;
     
+    /**
+     * 
+     * @return
+     */
+    public static CheckoutPaymentMethodsFragment getInstance(Bundle bundle) {
+        // if (loginFragment == null)
+        paymentMethodsFragment = new CheckoutPaymentMethodsFragment();
+        return paymentMethodsFragment;
+    }
     
     /**
      * Empty constructor
@@ -114,7 +116,14 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-        setRetainInstance(true);
+        //setRetainInstance(true);
+        
+        // Validate the saved values 
+        if(savedInstanceState != null) {
+            // Get the ship content values
+            mSavedState = savedInstanceState.getParcelable(SAVED_STATE);
+            Log.d(TAG, "LOAD SAVED: " + mSavedState.toString());
+        }
     }
     
 
@@ -145,10 +154,8 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
         paymentMethodsContainer = (ViewGroup) view.findViewById(R.id.checkout_payment_methods_container);
         // Buttons
         view.findViewById(R.id.checkout_payment_button_enter).setOnClickListener(this);
-        
         // Get and show addresses
         triggerGetPaymentMethods();
-                
     }
 
     
@@ -172,6 +179,23 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
         super.onResume();
         Log.i(TAG, "ON RESUME");
         TrackerDelegator.trackCheckoutStep(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), R.string.gcheckoutPaymentMethods, R.string.xcheckoutpaymentmethods, R.string.mixprop_checkout_payment_methods);
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see android.support.v4.app.Fragment#onSaveInstanceState(android.os.Bundle)
+     */
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        // Save the current selected item
+        try {
+            ContentValues values = formGenerator.save();
+            if(values.size() > 0)
+                outState.putParcelable(SAVED_STATE, values);
+        } catch (Exception e) {
+            Log.w(TAG, "TRY SAVE FORM BUT IS NULL");
+        } 
     }
 
     /*
@@ -232,15 +256,32 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
      */
     private void loadForm(Form form) {
         Log.i(TAG, "LOAD FORM");
-        formResponse = form;
-        
         formGenerator = FormFactory.getSingleton().CreateForm(FormConstants.PAYMENT_DETAILS_FORM, getActivity(), form);
         paymentMethodsContainer.removeAllViews();
         paymentMethodsContainer.addView(formGenerator.getContainer());
+        loadSavedValues(mSavedState, formGenerator.getIterator());
         paymentMethodsContainer.refreshDrawableState();
         prepareCouponView();
         getBaseActivity().showContentContainer();
     }
+    
+    /**
+     * Load the saved values and update the form
+     * @param savedValues
+     * @param iter
+     * @author sergiopereira
+     */
+    private void loadSavedValues(ContentValues savedValues, Iterator<DynamicFormItem> iter){
+        // Load save state
+        if (savedValues != null)
+            while (iter.hasNext())
+                try {
+                    ((DynamicFormItem) iter.next()).loadState(mSavedState);
+                } catch (Exception e) {
+                    Log.w(TAG, "CAN'T LOAD THE SAVED STATE");
+                }
+    }
+    
     
     private void generateNoPayment(){
         paymentMethodsContainer.removeAllViews();
@@ -252,6 +293,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
         getBaseActivity().showContentContainer();
     }
     
+    @SuppressWarnings("unused")
     private View generateCouponView(){
         LayoutInflater mLayoutInflater = LayoutInflater.from(getBaseActivity());
         View view = mLayoutInflater.inflate(R.layout.voucher_insert_layout, null);
