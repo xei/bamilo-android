@@ -458,7 +458,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         TextView extraCostsValue = (TextView) getView().findViewById(R.id.extra_costs_value);
         
         items = new ArrayList<ShoppingCartItem>(cart.getCartItems().values());
-        priceTotal.setText(CurrencyFormatter.formatCurrency(cart.getCartValue()));
+        priceTotal.setText(CurrencyFormatter.formatCurrency(cart.getCartCleanValue()));
         if(!cart.isSumCosts()){
             extraCosts.setVisibility(View.VISIBLE);
             extraCostsValue.setVisibility(View.VISIBLE);

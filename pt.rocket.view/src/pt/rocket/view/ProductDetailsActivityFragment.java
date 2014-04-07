@@ -1163,7 +1163,13 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
             break;
         }
     }
-
+    
+    @Override
+    public boolean allowBackPressed() {
+        ((BaseActivity) getActivity()).setProcessShow(true);
+        return super.allowBackPressed();
+    }
+    
     public void onErrorEvent(Bundle bundle) {
         if(getActivity() != null){
             ((BaseActivity) getActivity()).setProcessShow(true);
