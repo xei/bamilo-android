@@ -83,12 +83,12 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
         CategoriesFragment categoriesFragment = new CategoriesFragment();
         // Get data
         if(bundle != null) {
-            Log.i(TAG, "CategoriesFragment bundle != null");
+            Log.i(TAG, "code1categories CategoriesFragment bundle != null");
             categoriesFragment.currentFragment = (FragmentType) bundle.getSerializable(ConstantsIntentExtra.CATEGORY_LEVEL);
             if(categoriesFragment.currentFragment == null){
                 categoriesFragment.currentFragment = FragmentType.CATEGORIES_LEVEL_1;
             }
-                
+            Log.i(TAG, "code1categories categoriesFragment.currentFragment : "+categoriesFragment.currentFragment);
             categoriesFragment.isParent = bundle.getBoolean(CategoriesContainerFragment.CATEGORY_PARENT);
             categoriesFragment.categoryIndex = bundle.getInt(ConstantsIntentExtra.SELECTED_CATEGORY_INDEX);
             categoriesFragment.subCategoryIndex = bundle.getInt(ConstantsIntentExtra.SELECTED_SUB_CATEGORY_INDEX);
@@ -166,9 +166,6 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
         Log.i(TAG, "ON RESUME");
         
         createList();
-//        ((BaseActivity) getActivity()).updateActivityHeader(NavigationAction.Categories, R.string.categories_title);
-        
-        
             
     }
 
@@ -378,12 +375,12 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
      * @param category
      */
     private void showProducts( Category category ) {
-        Editor eDitor = sharedPrefs.edit();
-        eDitor.remove(ConstantsSharedPrefs.KEY_CATEGORY_SELECTED);
-        eDitor.remove(ConstantsSharedPrefs.KEY_SUB_CATEGORY_SELECTED);
-        eDitor.remove(ConstantsSharedPrefs.KEY_CURRENT_FRAGMENT);
-        eDitor.remove(ConstantsSharedPrefs.KEY_CHILD_CURRENT_FRAGMENT);
-        eDitor.commit();
+//        Editor eDitor = sharedPrefs.edit();
+//        eDitor.remove(ConstantsSharedPrefs.KEY_CATEGORY_SELECTED);
+//        eDitor.remove(ConstantsSharedPrefs.KEY_SUB_CATEGORY_SELECTED);
+//        eDitor.remove(ConstantsSharedPrefs.KEY_CURRENT_FRAGMENT);
+//        eDitor.remove(ConstantsSharedPrefs.KEY_CHILD_CURRENT_FRAGMENT);
+//        eDitor.commit();
         
         Bundle bundle2 = new Bundle();
         bundle2.putBoolean(CategoriesContainerFragment.REMOVE_FRAGMENTS, true);

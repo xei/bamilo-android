@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.forms.Form;
 import pt.rocket.forms.FormData;
 import pt.rocket.forms.PaymentMethodForm;
@@ -38,6 +39,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -144,7 +147,6 @@ public class JumiaApplication extends Application implements ExceptionCallback {
          * Force UA clean the previous configurations.
          */
 //        trackerFile = new AndroidFileFunctions();
-//        UAirship.takeOff(this);
         doBindService();
         
         Log.init(getApplicationContext());
@@ -171,6 +173,18 @@ public class JumiaApplication extends Application implements ExceptionCallback {
         navigationListComponents = null;
         
         COMPONENTS.get(UrbanAirshipComponent.class).init(this);
+        
+        /**
+         * Remove Caching State for Categories
+         */
+        SharedPreferences sharedPrefs = getApplicationContext().getSharedPreferences(
+                ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        Editor eDitor = sharedPrefs.edit();
+        eDitor.remove(ConstantsSharedPrefs.KEY_CATEGORY_SELECTED);
+        eDitor.remove(ConstantsSharedPrefs.KEY_SUB_CATEGORY_SELECTED);
+        eDitor.remove(ConstantsSharedPrefs.KEY_CURRENT_FRAGMENT);
+        eDitor.remove(ConstantsSharedPrefs.KEY_CHILD_CURRENT_FRAGMENT);
+        eDitor.commit();
     }
 
     @Override

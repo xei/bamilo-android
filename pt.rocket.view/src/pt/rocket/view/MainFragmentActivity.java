@@ -95,18 +95,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "ON CREATE");
-        sharedPrefs = getApplicationContext().getSharedPreferences(
-                ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        
-        /**
-         * Remove Caching variables for Categories
-         */
-        Editor eDitor = sharedPrefs.edit();
-        eDitor.remove(ConstantsSharedPrefs.KEY_CATEGORY_SELECTED);
-        eDitor.remove(ConstantsSharedPrefs.KEY_SUB_CATEGORY_SELECTED);
-        eDitor.remove(ConstantsSharedPrefs.KEY_CURRENT_FRAGMENT);
-        eDitor.remove(ConstantsSharedPrefs.KEY_CHILD_CURRENT_FRAGMENT);
-        eDitor.commit();
+
         // ON ORIENTATION CHANGE
         if(savedInstanceState == null) {
             Log.d(TAG, "################### SAVED INSTANCE IS NULL");
