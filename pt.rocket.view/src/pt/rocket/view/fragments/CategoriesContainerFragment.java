@@ -574,6 +574,7 @@ public class CategoriesContainerFragment extends BaseFragment {
         bundle.putBoolean(PORTRAIT_MODE, true);
         currentFragment = (FragmentType) bundle.getSerializable(ConstantsIntentExtra.CATEGORY_LEVEL);
         selectedCategory = bundle.getInt(ConstantsIntentExtra.SELECTED_CATEGORY_INDEX);
+        selectedSubCategory = bundle.getInt(ConstantsIntentExtra.SELECTED_SUB_CATEGORY_INDEX);
         FragmentCommunicator.getInstance().notifyTarget(this, bundle, 1);
         saveState();
     }
