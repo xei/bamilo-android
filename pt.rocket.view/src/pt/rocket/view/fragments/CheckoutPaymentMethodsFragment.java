@@ -353,7 +353,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
                     ContentValues mContentValues = new ContentValues();
                     mContentValues.put(SetVoucherHelper.VOUCHER_PARAM, mVoucher);
                     Log.i(TAG, "code1coupon : " + mVoucher);
-                    if (couponButton.getText().toString().equalsIgnoreCase("use")) {
+                    if (couponButton.getText().toString().equalsIgnoreCase(getResources().getString(R.string.voucher_use))) {
                         triggerSubmitVoucher(mContentValues);
                     } else {
                         triggerRemoveVoucher(mContentValues);
