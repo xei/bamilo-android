@@ -174,17 +174,8 @@ public class JumiaApplication extends Application implements ExceptionCallback {
         
         COMPONENTS.get(UrbanAirshipComponent.class).init(this);
         
-        /**
-         * Remove Caching State for Categories
-         */
-        SharedPreferences sharedPrefs = getApplicationContext().getSharedPreferences(
-                ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        Editor eDitor = sharedPrefs.edit();
-        eDitor.remove(ConstantsSharedPrefs.KEY_CATEGORY_SELECTED);
-        eDitor.remove(ConstantsSharedPrefs.KEY_SUB_CATEGORY_SELECTED);
-        eDitor.remove(ConstantsSharedPrefs.KEY_CURRENT_FRAGMENT);
-        eDitor.remove(ConstantsSharedPrefs.KEY_CHILD_CURRENT_FRAGMENT);
-        eDitor.commit();
+        cleanCategoriesState();
+        
     }
 
     @Override
@@ -677,6 +668,21 @@ public class JumiaApplication extends Application implements ExceptionCallback {
      */
     public static void setPaymentsInfoList(HashMap<String,PaymentInfo> paymentsInfoList) {
         JumiaApplication.paymentsInfoList = paymentsInfoList;
+    }
+    
+    /**
+     * Remove Caching State for Categories
+     */
+    public void cleanCategoriesState(){
+
+        SharedPreferences sharedPrefs = getApplicationContext().getSharedPreferences(
+                ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        Editor eDitor = sharedPrefs.edit();
+        eDitor.remove(ConstantsSharedPrefs.KEY_CATEGORY_SELECTED);
+        eDitor.remove(ConstantsSharedPrefs.KEY_SUB_CATEGORY_SELECTED);
+        eDitor.remove(ConstantsSharedPrefs.KEY_CURRENT_FRAGMENT);
+        eDitor.remove(ConstantsSharedPrefs.KEY_CHILD_CURRENT_FRAGMENT);
+        eDitor.commit();
     }
     
     /**

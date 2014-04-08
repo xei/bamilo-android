@@ -261,6 +261,7 @@ public class ChangeCountryFragment extends BaseFragment {
         JumiaApplication.INSTANCE.setFormDataRegistry(new HashMap<String, FormData>());
         JumiaApplication.INSTANCE.registerForm = null;
         JumiaApplication.INSTANCE.registerSavedInstanceState = null;
+        JumiaApplication.INSTANCE.cleanCategoriesState();
         getBaseActivity().updateCartInfo();
         JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
         if(isChangeCountry){
