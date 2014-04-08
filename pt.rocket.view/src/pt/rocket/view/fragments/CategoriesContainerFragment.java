@@ -240,12 +240,6 @@ public class CategoriesContainerFragment extends BaseFragment {
     @Override
     public void onPause() {
         Log.i(TAG, "ON PAUSE");
-        Editor eDitor = sharedPrefs.edit();
-        eDitor.putInt(ConstantsSharedPrefs.KEY_CATEGORY_SELECTED, selectedCategory);
-        eDitor.putInt(ConstantsSharedPrefs.KEY_SUB_CATEGORY_SELECTED, selectedSubCategory);
-        eDitor.putString(ConstantsSharedPrefs.KEY_CURRENT_FRAGMENT, currentFragment.toString());
-        eDitor.putString(ConstantsSharedPrefs.KEY_CHILD_CURRENT_FRAGMENT, childCurrentFragment.toString());
-        eDitor.commit();
         // if any fragment is active, remove it.
         if(mCategoriesFragment != null || mChildCategoriesFragment != null)
             removeOldFragments();
@@ -257,12 +251,6 @@ public class CategoriesContainerFragment extends BaseFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Editor eDitor = sharedPrefs.edit();
-        eDitor.putInt(ConstantsSharedPrefs.KEY_CATEGORY_SELECTED, selectedCategory);
-        eDitor.putInt(ConstantsSharedPrefs.KEY_SUB_CATEGORY_SELECTED, selectedSubCategory);
-        eDitor.putString(ConstantsSharedPrefs.KEY_CURRENT_FRAGMENT, currentFragment.toString());
-        eDitor.putString(ConstantsSharedPrefs.KEY_CHILD_CURRENT_FRAGMENT, childCurrentFragment.toString());
-        eDitor.commit();
     }
     
     /*
@@ -400,13 +388,13 @@ public class CategoriesContainerFragment extends BaseFragment {
             childCurrentFragment = getFragmentType(sharedPrefs.getString(ConstantsSharedPrefs.KEY_CHILD_CURRENT_FRAGMENT, FragmentType.UNKNOWN.toString()));
             selectedCategory = sharedPrefs.getInt(ConstantsSharedPrefs.KEY_CATEGORY_SELECTED, categoryIndex);
             selectedSubCategory = sharedPrefs.getInt(ConstantsSharedPrefs.KEY_SUB_CATEGORY_SELECTED, subCategoryIndex);
-//            Log.i(TAG, "code1categories createFragments sharedPrefs: currentFragment "+currentFragment+" childCurrentFragment "+childCurrentFragment+ " selectedCategory: "+selectedCategory+" selectedSubCategory : "+selectedSubCategory);
+            Log.i(TAG, "code1categories createFragments sharedPrefs: currentFragment "+currentFragment+" childCurrentFragment "+childCurrentFragment+ " selectedCategory: "+selectedCategory+" selectedSubCategory : "+selectedSubCategory);
         } else {
             currentFragment = FragmentType.CATEGORIES_LEVEL_1;
             childCurrentFragment = FragmentType.UNKNOWN;
             selectedCategory = categoryIndex;
             selectedSubCategory = subCategoryIndex;
-//            Log.i(TAG, "code1categories createFragments : currentFragment "+currentFragment+" childCurrentFragment "+childCurrentFragment+ " selectedCategory: "+selectedCategory+" selectedSubCategory : "+selectedSubCategory);
+            Log.i(TAG, "code1categories createFragments : currentFragment "+currentFragment+" childCurrentFragment "+childCurrentFragment+ " selectedCategory: "+selectedCategory+" selectedSubCategory : "+selectedSubCategory);
         }
         
         args.putString(ConstantsIntentExtra.CATEGORY_URL, categoryUrl);
@@ -449,13 +437,13 @@ public class CategoriesContainerFragment extends BaseFragment {
             }
             selectedCategory = sharedPrefs.getInt(ConstantsSharedPrefs.KEY_CATEGORY_SELECTED, 0);
             selectedSubCategory = sharedPrefs.getInt(ConstantsSharedPrefs.KEY_SUB_CATEGORY_SELECTED, 0);
-//            Log.i(TAG, "code1categories createFragmentsForLandscape sharedPrefs: currentFragment "+currentFragment+" childCurrentFragment "+childCurrentFragment+ " selectedCategory: "+selectedCategory+" selectedSubCategory : "+selectedSubCategory);
+            Log.i(TAG, "code1categories createFragmentsForLandscape sharedPrefs: currentFragment "+currentFragment+" childCurrentFragment "+childCurrentFragment+ " selectedCategory: "+selectedCategory+" selectedSubCategory : "+selectedSubCategory);
         } else {
             currentFragment = FragmentType.CATEGORIES_LEVEL_1;
             childCurrentFragment = FragmentType.CATEGORIES_LEVEL_2;
             selectedCategory = 0;
             selectedSubCategory = 0;
-//            Log.i(TAG, "code1categories createFragmentsForLandscape : currentFragment "+currentFragment+" childCurrentFragment "+childCurrentFragment+ " selectedCategory: "+selectedCategory+" selectedSubCategory : "+selectedSubCategory);
+            Log.i(TAG, "code1categories createFragmentsForLandscape : currentFragment "+currentFragment+" childCurrentFragment "+childCurrentFragment+ " selectedCategory: "+selectedCategory+" selectedSubCategory : "+selectedSubCategory);
         }
         
         if(childCurrentFragment == FragmentType.CATEGORIES_LEVEL_3){
@@ -580,6 +568,7 @@ public class CategoriesContainerFragment extends BaseFragment {
     }
     
     private void updateChild(Bundle bundle){
+        selectedCategory = bundle.getInt(ConstantsIntentExtra.SELECTED_CATEGORY_INDEX);
         selectedSubCategory = bundle.getInt(ConstantsIntentExtra.SELECTED_SUB_CATEGORY_INDEX);
         FragmentCommunicator.getInstance().notifyTarget(this, bundle, 2);
         saveState();

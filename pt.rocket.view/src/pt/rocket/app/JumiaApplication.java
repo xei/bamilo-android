@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import pt.rocket.constants.ConstantsSharedPrefs;
+import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.forms.Form;
 import pt.rocket.forms.FormData;
 import pt.rocket.forms.PaymentMethodForm;
@@ -675,13 +676,13 @@ public class JumiaApplication extends Application implements ExceptionCallback {
      */
     public void cleanCategoriesState(){
 
-        SharedPreferences sharedPrefs = getApplicationContext().getSharedPreferences(
+        SharedPreferences sharedPrefs = this.getSharedPreferences(
                 ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         Editor eDitor = sharedPrefs.edit();
-        eDitor.remove(ConstantsSharedPrefs.KEY_CATEGORY_SELECTED);
-        eDitor.remove(ConstantsSharedPrefs.KEY_SUB_CATEGORY_SELECTED);
-        eDitor.remove(ConstantsSharedPrefs.KEY_CURRENT_FRAGMENT);
-        eDitor.remove(ConstantsSharedPrefs.KEY_CHILD_CURRENT_FRAGMENT);
+        eDitor.putInt(ConstantsSharedPrefs.KEY_CATEGORY_SELECTED, 0);
+        eDitor.putInt(ConstantsSharedPrefs.KEY_SUB_CATEGORY_SELECTED, 0);
+        eDitor.putString(ConstantsSharedPrefs.KEY_CURRENT_FRAGMENT, FragmentType.CATEGORIES_LEVEL_1.toString());
+        eDitor.putString(ConstantsSharedPrefs.KEY_CHILD_CURRENT_FRAGMENT, FragmentType.CATEGORIES_LEVEL_2.toString());
         eDitor.commit();
     }
     
