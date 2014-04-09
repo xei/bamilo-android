@@ -205,26 +205,30 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 				imageList.add(getImageUrl(imageJsonObject.getString("url")));
 			}
 
-			// XXX
-			JSONObject uniquesObject = dataObject.optJSONObject(
-					RestConstants.JSON_PROD_UNIQUES_TAG).optJSONObject(
-					RestConstants.JSON_ATTRIBUTES_TAG);
+			if(dataObject.has(RestConstants.JSON_PROD_UNIQUES_TAG) &&  dataObject.optJSONObject(
+					RestConstants.JSON_PROD_UNIQUES_TAG) != null){
+				
+				JSONObject uniquesObject = dataObject.optJSONObject(
+						RestConstants.JSON_PROD_UNIQUES_TAG).optJSONObject(
+						RestConstants.JSON_ATTRIBUTES_TAG);
 
-			@SuppressWarnings("rawtypes")
-			Iterator iterUniques = uniquesObject.keys();
-			while (iterUniques.hasNext()) {
-				String key = (String) iterUniques.next();
-				String value = "";
+				@SuppressWarnings("rawtypes")
+				Iterator iterUniques = uniquesObject.keys();
+				while (iterUniques.hasNext()) {
+					String key = (String) iterUniques.next();
+					String value = "";
 
-				if (uniquesObject.has(key)) {
-					value = uniquesObject.getString(key);
-				}
-				if (value != null && !value.equalsIgnoreCase("")) {
-					this.known_variations.add(value);
+					if (uniquesObject.has(key)) {
+						value = uniquesObject.getString(key);
+					}
+					if (value != null && !value.equalsIgnoreCase("")) {
+						this.known_variations.add(value);
+					}
+
 				}
 
 			}
-
+			
 			JSONObject variationsObject = dataObject
 					.optJSONObject(RestConstants.JSON_VARIATIONS_TAG);
 			if (variationsObject == null)
