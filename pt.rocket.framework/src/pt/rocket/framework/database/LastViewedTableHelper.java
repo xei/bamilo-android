@@ -7,6 +7,7 @@ import pt.rocket.framework.objects.LastViewed;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteCantOpenDatabaseException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
@@ -89,23 +90,29 @@ public class LastViewedTableHelper {
     	SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
     	String query = "select count(*) from "+TABLE+" where "+_PRODUCT_SKU + " = '"+product_sku+"'";
     	Log.i(TAG, "SQL RESULT query :  "+query);
-    	Cursor cursor = db.rawQuery(query, null);
-    	if (cursor != null && cursor.getCount() >0 ) {
-			cursor.moveToFirst();
-			if(cursor.getInt(0)>= 1){
-				result = true;
-			} else {
-				result = false;
-			}
-			// Log result
-			Log.i(TAG, "SQL RESULT: " + cursor.getInt(0)+ " result is : "+result );
+    	try {
+    		Cursor cursor = db.rawQuery(query, null);
+        	if (cursor != null && cursor.getCount() >0 ) {
+    			cursor.moveToFirst();
+    			if(cursor.getInt(0)>= 1){
+    				result = true;
+    			} else {
+    				result = false;
+    			}
+    			// Log result
+    			Log.i(TAG, "SQL RESULT: " + cursor.getInt(0)+ " result is : "+result );
+    		}
+    		// Validate cursor
+    		if(cursor != null){
+    			cursor.close();
+    		}
+    		
+    		db.close();
+		} catch (SQLiteCantOpenDatabaseException e) {
+			Log.w(TAG, "SQLiteCantOpenDatabaseException: unable to open database file (code 14)");
+			result = true;
 		}
-		// Validate cursor
-		if(cursor != null){
-			cursor.close();
-		}
-		
-		db.close();
+    	
 		return result;
     }
     
