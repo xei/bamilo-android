@@ -55,7 +55,7 @@ public class CategoriesTableHelper {
     				Columns.TEASER_POS +			" INTEGER, " + 
     				Columns.TEASER_VISIBLE +			" INTEGER, " + 
     				Columns.SEGMENTS +			" TEXT, " + 
-    				Columns.API_URL +			" TEXT UNIQUE, " + 
+    				Columns.API_URL +			" TEXT , " + 
     				Columns.PARENT_ID_CATALOG +			" INTEGER, " +
     				Columns.API_URL_KEY +			" TEXT, " + 
     				Columns.INFO_URL_KEY +			" TEXT, " + 
