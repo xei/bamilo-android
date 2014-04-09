@@ -526,6 +526,12 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
         ArrayList<ProductSimple> simples = (ArrayList<ProductSimple>) mCompleteProduct.getSimples()
                 .clone();
         variations = mCompleteProduct.getKnownVariations();
+        if(variations == null || variations.size() == 0){
+            variations = new ArrayList<String>();
+            variations.add("size");
+            variations.add("color");
+            variations.add("variation");
+        }
         Set<String> foundKeys = scanSimpleAttributesForKnownVariants(simples);
 
         mSimpleVariantsAvailable = new ArrayList<String>();

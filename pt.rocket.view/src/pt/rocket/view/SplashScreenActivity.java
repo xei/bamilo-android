@@ -9,6 +9,7 @@ import java.util.zip.ZipFile;
 
 import org.holoeverywhere.widget.Button;
 import org.holoeverywhere.widget.TextView;
+import org.json.JSONObject;
 
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
@@ -43,6 +44,7 @@ import android.os.Handler;
 import android.os.RemoteException;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -95,6 +97,8 @@ public class SplashScreenActivity extends FragmentActivity {
     private String utm;
     
     private boolean sendAdxLaunchEvent = false;
+    
+    long launchTime;
 
     /*
      * (non-Javadoc)
@@ -104,6 +108,8 @@ public class SplashScreenActivity extends FragmentActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Keep launch time to compare with newer timestamp later
+        launchTime = System.currentTimeMillis();
         Log.i(TAG, "onCreate");
         setContentView(R.layout.splash_screen);
         JumiaApplication.INSTANCE.init(false, initializationHandler);
@@ -636,9 +642,55 @@ public class SplashScreenActivity extends FragmentActivity {
         JumiaApplication.SHOP_ID_FOR_ADX = shopId;
         // Send launch
         if(sendAdxLaunchEvent ) {
-            AdXTracker.launch(this);
+//            AdXTracker.launch(this, generateLaunchAdxTrackEvent());
             sendAdxLaunchEvent = false;
         }
     }
 
+    private JSONObject generateLaunchAdxTrackEvent(){
+    	    JSONObject jsonObject = null;
+            // Only run the following for the launch of the app
+            if (launchTime == 0) return null;
+            try {
+                jsonObject = new JSONObject();
+                // Stringify screen size float value to avoidJSON value 4.3000001928 instead of 4.3
+                jsonObject.put("display_size", ""+getScreenSizeInches());
+                try {
+                    String appVersion = getAppVersion();
+                    if (null == appVersion) {
+                        Log.d("Rocket", "Unexpected empty app version");
+                    } else {
+                        jsonObject.put("app_version", appVersion);
+                    }
+                } catch (Exception e) {
+                    Log.d("Rocket", "Unexpected exception when accessing package version: ", e);
+                }
+                jsonObject.put("duration", (System.currentTimeMillis()-launchTime));
+                Log.d("Rocket", "Launch data: " + jsonObject.toString());
+            } catch (Exception e) {
+                Log.d("Rocket", "Unexpected exception when adding information to JSON object: " + e);
+            }
+            // Reset the launch time to identify the launch was handled
+            launchTime = 0;
+            return jsonObject;
+    }
+    
+
+    private String getAppVersion() throws Exception {
+        PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+        if (null == pInfo) {
+            throw new Exception("Accessing package information failed.");
+        }
+        return pInfo.versionName;
+    }
+
+    private float getScreenSizeInches() {
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+        double x = Math.pow(dm.widthPixels/dm.xdpi,2);
+        double y = Math.pow(dm.heightPixels/dm.ydpi,2);
+        double screenInches = Math.sqrt(x+y);
+        return (float)Math.round(screenInches * 10) / 10;
+    }
+    
 }

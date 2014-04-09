@@ -189,6 +189,12 @@ public class CatalogPageModel {
         return totalProducts;
     }
 
+    public void notifyContentDataSetChanged(){
+        if(productsAdapter != null){
+            productsAdapter.notifyDataSetChanged();    
+        }
+    }
+    
     public void setVariables(String p, String s, String n, String t, int navSource, ContentValues filterValues) {
         
         Log.d(TAG, "FILTER SET VARIABLES" );
@@ -505,7 +511,9 @@ public class CatalogPageModel {
         } else {
             listView.setAdapter(productsAdapter);
         }
-
+        
+        productsAdapter.notifyDataSetChanged();
+        
         if (relativeLayout != null) {
             linearLayoutLb.setVisibility(View.GONE);
         }

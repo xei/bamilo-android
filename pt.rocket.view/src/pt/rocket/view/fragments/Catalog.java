@@ -231,7 +231,6 @@ public class Catalog extends BaseFragment implements OnClickListener{
                 }
             }
             
-            
         });
 
         if (mCatalogPagerAdapter == null) {
@@ -239,11 +238,13 @@ public class Catalog extends BaseFragment implements OnClickListener{
             mCatalogPagerAdapter = new CatalogPagerAdaper();
 
         } else {
-            mCatalogPagerAdapter.notifyDataSetChanged();
+           mCatalogPagerAdapter.notifyDataSetChanged();
            mCatalogPageModel[0].setTotalItemLable();
+           mCatalogPageModel[0].notifyContentDataSetChanged();
+           mCatalogPagerAdapter.notifyDataSetChanged();
         }
         
-        mViewPager.setAdapter(mCatalogPagerAdapter);
+        mViewPager.setAdapter(mCatalogPagerAdapter);    
         mViewPager.setCurrentItem(1);
         try {
             setLayoutSpec();
