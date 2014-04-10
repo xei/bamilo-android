@@ -25,6 +25,7 @@ import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CustomerUtils;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.helpers.GetCustomerHelper;
 import pt.rocket.helpers.GetInitFormHelper;
 import pt.rocket.helpers.GetShoppingCartItemsHelper;
 import pt.rocket.helpers.session.GetFacebookLoginHelper;
@@ -113,6 +114,8 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
     private OrderSummary mOrderSummary;
 
     private FragmentType mNextFragment;
+    
+    private boolean cameFromSignUp = false;
     
     /**
      * Get the instance of CheckoutAboutYouFragment
@@ -715,6 +718,11 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         return true;
     }
     
+    private void triggerGetCustomer(){
+        
+        triggerContentEventWithNoLoading(new GetCustomerHelper(), null, this);
+    }
+    
     /**
      * Trigger used to get the initialize forms
      */
@@ -762,6 +770,19 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
      * ########## RESPONSE ########## 
      */
     
+    
+    /**
+     * Before going to next step after Sign Up we need to get the customer information.
+     */
+    private void goToNextStepAfterSignUp(){
+        Log.d(TAG, "RECEIVED SET_SIGNUP_EVENT");
+        JumiaApplication.INSTANCE.setLoggedIn(true);
+        TrackerDelegator.trackSignUp(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), JumiaApplication.INSTANCE.CUSTOMER);
+        
+        // Next step
+        gotoNextStep();            
+    }
+    
     /**
      * Filter the response bundle
      * @param bundle
@@ -784,13 +805,9 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             triggerSignupForm();
             break;
         case SET_SIGNUP_EVENT:
-            Log.d(TAG, "RECEIVED SET_SIGNUP_EVENT");
-            JumiaApplication.INSTANCE.setLoggedIn(true);
-            TrackerDelegator.trackSignUp(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
-            // Get next step
+            cameFromSignUp = true;
             mNextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
-            // Next step
-            gotoNextStep();            
+            triggerGetCustomer();
             break;
         case FACEBOOK_LOGIN_EVENT:
             // Set logged in
@@ -844,6 +861,13 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
                 // Clean FACEBOOK session
                 cleanFacebookSession();
             }
+            break;
+        case GET_CUSTOMER:
+            if(cameFromSignUp){
+                cameFromSignUp = false;
+                goToNextStepAfterSignUp();    
+            }
+            
             break;
         }
         return true;

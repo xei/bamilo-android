@@ -293,21 +293,6 @@ public class CheckoutWebFragment extends BaseFragment {
         System.gc();
     }
     
-//    @SuppressLint("SetJavaScriptEnabled")
-//    private void setupWebView() {
-//       
-//        CustomWebViewClient customWebViewClient = new CustomWebViewClient();
-//        webview.setWebViewClient(customWebViewClient);
-//        webview.getSettings().setJavaScriptEnabled(true);
-//        webview.getSettings().setSaveFormData(false);
-//        webview.getSettings().setSavePassword(false);
-//        webview.addJavascriptInterface(new JavaScriptInterface(), "INTERFACE");
-//        checkoutUrl = "https://" + RestContract.REQUEST_HOST + CHECKOUT_URL_WITH_PARAM;
-//        Log.d(TAG, "Loading Url: " + checkoutUrl);
-//        isRequestedPage = true;
-//        webview.loadUrl(checkoutUrl);
-//    }
-    
     @SuppressLint("SetJavaScriptEnabled")
     private void setupWebView() {
         //webview = (WebView) findViewById(R.id.webview);

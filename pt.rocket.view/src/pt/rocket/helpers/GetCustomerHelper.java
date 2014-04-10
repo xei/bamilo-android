@@ -5,6 +5,8 @@ package pt.rocket.helpers;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.framework.enums.RequestType;
 import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.rest.RestConstants;
@@ -38,7 +40,6 @@ public class GetCustomerHelper extends BaseHelper {
 
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
-        // TODO Auto-generated method stub
     	Log.d(TAG, "parseResponseBundle GetTeasersHelper");
         try {
             if (jsonObject.has(RestConstants.JSON_USER_TAG)) {
@@ -49,7 +50,8 @@ public class GetCustomerHelper extends BaseHelper {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, new Customer(jsonObject));
+        JumiaApplication.INSTANCE.CUSTOMER = new Customer(jsonObject);
+        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, JumiaApplication.INSTANCE.CUSTOMER);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_CUSTOMER);
 //        long elapsed = System.currentTimeMillis() - JumiaApplication.INSTANCE.timeTrackerMap.get(EventType.GET_CUSTOMER);
 //        Log.i("REQUEST", "event type response : "+bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY)+" time spent : "+elapsed);

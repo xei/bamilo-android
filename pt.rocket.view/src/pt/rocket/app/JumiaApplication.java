@@ -34,6 +34,7 @@ import pt.rocket.utils.CheckVersion;
 import pt.rocket.utils.RocketImageLoader;
 import pt.rocket.utils.ServiceSingleton;
 import pt.rocket.view.R;
+import android.app.Activity;
 import android.app.Application;
 import android.content.ComponentName;
 import android.content.ContentValues;
@@ -42,11 +43,13 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.pm.PackageInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.RemoteException;
+import android.util.DisplayMetrics;
 
 import com.androidquery.callback.AjaxCallback;
 import com.androidquery.callback.BitmapAjaxCallback;
@@ -136,6 +139,13 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     public Form registerForm;
     
     public Bundle registerSavedInstanceState;
+    
+    /**
+     * ADX Global Values
+     */
+    public String ADX_VERSION_NAME = "";
+    public String ADX_DISPLAY_SIZE = "";
+    
     /**
      * Tracking Request performance
      */
@@ -684,6 +694,23 @@ public class JumiaApplication extends Application implements ExceptionCallback {
         eDitor.putString(ConstantsSharedPrefs.KEY_CURRENT_FRAGMENT, FragmentType.CATEGORIES_LEVEL_1.toString());
         eDitor.putString(ConstantsSharedPrefs.KEY_CHILD_CURRENT_FRAGMENT, FragmentType.CATEGORIES_LEVEL_2.toString());
         eDitor.commit();
+    }
+
+    public String getAppVersion() throws Exception {
+        PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+        if (null == pInfo) {
+            throw new Exception("Accessing package information failed.");
+        }
+        return pInfo.versionName;
+    }
+
+    public float getScreenSizeInches(Activity mActivity) {
+        DisplayMetrics dm = new DisplayMetrics();
+        mActivity.getWindowManager().getDefaultDisplay().getMetrics(dm);
+        double x = Math.pow(dm.widthPixels/dm.xdpi,2);
+        double y = Math.pow(dm.heightPixels/dm.ydpi,2);
+        double screenInches = Math.sqrt(x+y);
+        return (float)Math.round(screenInches * 10) / 10;
     }
     
     /**
