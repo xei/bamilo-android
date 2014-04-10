@@ -55,7 +55,7 @@ public class LastViewedTableHelper {
     public static void insertViewedProduct(Context ctx, String product_sku, String product_name, String product_price, String product_url, String image_url){
         
         if(!verifyIfExist(product_sku)){
-        	if(getLastViewedEntriesCount(ctx) == MAX_SAVED_PRODUCTS){
+        	if(getLastViewedEntriesCount() == MAX_SAVED_PRODUCTS){
         		removeOldestEntry();
         	}
         	SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
@@ -90,28 +90,24 @@ public class LastViewedTableHelper {
     	SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
     	String query = "select count(*) from "+TABLE+" where "+_PRODUCT_SKU + " = '"+product_sku+"'";
     	Log.i(TAG, "SQL RESULT query :  "+query);
-    	try {
-    		Cursor cursor = db.rawQuery(query, null);
-        	if (cursor != null && cursor.getCount() >0 ) {
-    			cursor.moveToFirst();
-    			if(cursor.getInt(0)>= 1){
-    				result = true;
-    			} else {
-    				result = false;
-    			}
-    			// Log result
-    			Log.i(TAG, "SQL RESULT: " + cursor.getInt(0)+ " result is : "+result );
-    		}
-    		// Validate cursor
-    		if(cursor != null){
-    			cursor.close();
-    		}
-    		
-    		db.close();
-		} catch (SQLiteCantOpenDatabaseException e) {
-			Log.w(TAG, "SQLiteCantOpenDatabaseException: unable to open database file (code 14)");
-			result = true;
+
+		Cursor cursor = db.rawQuery(query, null);
+    	if (cursor != null && cursor.getCount() >0 ) {
+			cursor.moveToFirst();
+			if(cursor.getInt(0)>= 1){
+				result = true;
+			} else {
+				result = false;
+			}
+			// Log result
+			Log.i(TAG, "SQL RESULT: " + cursor.getInt(0)+ " result is : "+result );
 		}
+		// Validate cursor
+		if(cursor != null){
+			cursor.close();
+		}
+		
+		db.close();
     	
 		return result;
     }
@@ -120,9 +116,9 @@ public class LastViewedTableHelper {
      * Get number of entries
      * @return
      */
-    public static int getLastViewedEntriesCount(Context ctx){
+    public static int getLastViewedEntriesCount(){
     	int result = 0;
-    	SQLiteDatabase db = DarwinDatabaseHelper.getInstance(ctx).getWritableDatabase();
+    	SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
     	String query = "select count(*) from "+TABLE;
     	Cursor cursor = db.rawQuery(query, null);
     	if (cursor != null && cursor.getCount() >0 ) {
