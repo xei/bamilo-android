@@ -642,55 +642,46 @@ public class SplashScreenActivity extends FragmentActivity {
         JumiaApplication.SHOP_ID_FOR_ADX = shopId;
         // Send launch
         if(sendAdxLaunchEvent ) {
-//            AdXTracker.launch(this, generateLaunchAdxTrackEvent());
+            generateAndPerformAdxTrack();
             sendAdxLaunchEvent = false;
         }
     }
 
-    private JSONObject generateLaunchAdxTrackEvent(){
-    	    JSONObject jsonObject = null;
-            // Only run the following for the launch of the app
-            if (launchTime == 0) return null;
+    private void generateAndPerformAdxTrack(){
+    	    
+    	    String appVersion = "";
+    	    String displaySize = "";
+    	    String duration = "";
             try {
-                jsonObject = new JSONObject();
-                // Stringify screen size float value to avoidJSON value 4.3000001928 instead of 4.3
-                jsonObject.put("display_size", ""+getScreenSizeInches());
+              
+                displaySize = ""+JumiaApplication.INSTANCE.getScreenSizeInches(this);
+                if(launchTime == 0){
+                    duration = "";
+                } else {
+                    duration = "" + (System.currentTimeMillis()-launchTime);    
+                }
+                
+                // Reset the launch time to identify the launch was handled
+                launchTime = 0;
+                
                 try {
-                    String appVersion = getAppVersion();
+                    appVersion = JumiaApplication.INSTANCE.getAppVersion();
                     if (null == appVersion) {
                         Log.d("Rocket", "Unexpected empty app version");
-                    } else {
-                        jsonObject.put("app_version", appVersion);
+                        appVersion = "";
                     }
                 } catch (Exception e) {
+                    appVersion = "";
                     Log.d("Rocket", "Unexpected exception when accessing package version: ", e);
                 }
-                jsonObject.put("duration", (System.currentTimeMillis()-launchTime));
-                Log.d("Rocket", "Launch data: " + jsonObject.toString());
+             
+                
             } catch (Exception e) {
                 Log.d("Rocket", "Unexpected exception when adding information to JSON object: " + e);
             }
-            // Reset the launch time to identify the launch was handled
-            launchTime = 0;
-            return jsonObject;
-    }
-    
-
-    private String getAppVersion() throws Exception {
-        PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-        if (null == pInfo) {
-            throw new Exception("Accessing package information failed.");
-        }
-        return pInfo.versionName;
+            JumiaApplication.INSTANCE.ADX_DISPLAY_SIZE = displaySize;
+            JumiaApplication.INSTANCE.ADX_VERSION_NAME = appVersion;
+            AdXTracker.launch(this, appVersion, displaySize, duration);
     }
 
-    private float getScreenSizeInches() {
-        DisplayMetrics dm = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(dm);
-        double x = Math.pow(dm.widthPixels/dm.xdpi,2);
-        double y = Math.pow(dm.heightPixels/dm.ydpi,2);
-        double screenInches = Math.sqrt(x+y);
-        return (float)Math.round(screenInches * 10) / 10;
-    }
-    
 }

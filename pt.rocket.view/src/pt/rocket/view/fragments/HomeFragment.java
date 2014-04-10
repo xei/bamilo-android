@@ -234,7 +234,7 @@ public class HomeFragment extends BaseFragment {
 
         AnalyticsGoogle.get().trackPage(R.string.ghomepage);
        
-        if(LastViewedTableHelper.getLastViewedEntriesCount(JumiaApplication.INSTANCE.getApplicationContext()) > 0){
+        if(LastViewedTableHelper.getLastViewedEntriesCount() > 0){
             lastViewed = LastViewedTableHelper.getLastViewedList();
         } else {
             lastViewed = null;

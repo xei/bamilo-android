@@ -75,10 +75,10 @@ public class TrackerDelegator {
         PushManager.shared().setAlias(customer.getIdAsString());
         if(wasFacebookLogin){
             MixpanelTracker.loginWithFacebook(context, customer.getIdAsString(), mOrigin, customer.getCreatedAt());
-            AdXTracker.facebookLogin(context, customer.getIdAsString(), JumiaApplication.INSTANCE.SHOP_NAME);
+            AdXTracker.facebookLogin(context, JumiaApplication.INSTANCE.SHOP_NAME, customer.getIdAsString(), JumiaApplication.INSTANCE.ADX_VERSION_NAME, JumiaApplication.INSTANCE.ADX_DISPLAY_SIZE);
         } else {
             MixpanelTracker.login(context, customer.getIdAsString(), mOrigin, customer.getCreatedAt());
-            AdXTracker.login(context, customer.getIdAsString(), JumiaApplication.INSTANCE.SHOP_NAME);    
+            AdXTracker.login(context, JumiaApplication.INSTANCE.SHOP_NAME, customer.getIdAsString(), JumiaApplication.INSTANCE.ADX_VERSION_NAME, JumiaApplication.INSTANCE.ADX_DISPLAY_SIZE);    
         }
     }
 
@@ -95,7 +95,7 @@ public class TrackerDelegator {
     
     public final static void trackLogoutSuccessful(Context context) {
         MixpanelTracker.logout(context);
-        AdXTracker.logout(context, JumiaApplication.INSTANCE.CUSTOMER.getIdAsString(), JumiaApplication.INSTANCE.SHOP_NAME);
+        AdXTracker.logout(context, JumiaApplication.INSTANCE.SHOP_NAME, JumiaApplication.INSTANCE.CUSTOMER.getIdAsString(), JumiaApplication.INSTANCE.ADX_VERSION_NAME, JumiaApplication.INSTANCE.ADX_DISPLAY_SIZE);
     }
 
     public final static void trackSearchMade(Context context, String criteria, long results) {
@@ -153,7 +153,7 @@ public class TrackerDelegator {
             return ;
         }
         
-        AdXTracker.signup(context, customer.getIdAsString(), JumiaApplication.INSTANCE.SHOP_NAME);
+        AdXTracker.signup(context, JumiaApplication.INSTANCE.SHOP_NAME, customer.getIdAsString(), JumiaApplication.INSTANCE.ADX_VERSION_NAME, JumiaApplication.INSTANCE.ADX_DISPLAY_SIZE);
         MixpanelTracker.signup(context, customer, location); 
         PushManager.shared().setAlias(customer.getIdAsString());
         storeSignupProcess(context, customer);
@@ -194,14 +194,18 @@ public class TrackerDelegator {
         }).run();        
     }
     
-    public static void trackSignUp( final Context context, String email) {
+    public static void trackSignUp( final Context context, String email, final Customer customer) {
         final String hashedemail = Utils.cleanMD5(email);
         new Thread( new Runnable() {
             @Override
             public void run() {
-                AnalyticsGoogle.get().trackSignUp(hashedemail);
-                AdXTracker.trackSignUp(context, hashedemail, JumiaApplication.INSTANCE.SHOP_NAME);
-                MixpanelTracker.trackSignUp(context, hashedemail);
+                String user = hashedemail;
+                if(customer != null && customer.getIdAsString() != null && customer.getIdAsString().length() > 0){
+                    user = customer.getIdAsString();
+                }
+                AnalyticsGoogle.get().trackSignUp(user);
+                AdXTracker.trackSignUp(context, JumiaApplication.INSTANCE.SHOP_NAME, user, JumiaApplication.INSTANCE.ADX_VERSION_NAME, JumiaApplication.INSTANCE.ADX_DISPLAY_SIZE);
+                MixpanelTracker.trackSignUp(context, user);
             }
             
         }).run();        
