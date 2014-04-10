@@ -1,5 +1,15 @@
 package pt.rocket.framework.utils;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Set;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import pt.rocket.framework.R;
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -93,12 +103,26 @@ public class AdXTracker {
 		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xnativecheckout), email+"_"+context.getString(step), "");
 	}
 	
-	public static void trackSignUp(Context context, String email, String shop) {
+	public static void trackSignUp(Context context, String shop_country, String user_id, String app_version, String display_size) {
 		if (!isEnabled)
 			return;
 
-		Log.d(TAG, "trackSignUp: email = " + email + " step = " + context.getString(R.string.xcustomersignup));
-		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xcustomersignup), "", "", shop+"_0_"+email);
+		String jsonEncoded = "";
+		LinkedHashMap<String, String> values = new LinkedHashMap<String, String>();
+		values.put("shop_country", shop_country);
+		values.put("user_id", user_id);
+		values.put("app_version", app_version);
+		values.put("display_size", display_size);
+		
+		try {
+			jsonEncoded = URLEncoder.encode(generateJSONObject(values).toString(), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			jsonEncoded = "";
+			e.printStackTrace();
+		}
+		
+		Log.d(TAG, "trackSignUp: " + context.getString(R.string.xcustomersignup)+ " customerId = " + user_id+" app_version = "+app_version+" display_size: "+display_size);
+		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xcustomersignup), "", "", jsonEncoded);
 	}
 
 	public static void trackPaymentMethod(Context context, String email, String payment) {
@@ -117,49 +141,127 @@ public class AdXTracker {
 		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xnativecheckouterror), email+"_"+error, "");
 	}
 	
-	public static void launch(Context context) {
+	public static JSONObject generateJSONObject(LinkedHashMap<String,String> values){
+		JSONObject jsonObject = new JSONObject();
+		Set<String> keys = values.keySet();
+		for (String key : keys) {
+			try {
+				jsonObject.put(key, values.get(key));
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return jsonObject;
+		
+	}
+	
+	public static void launch(Context context, String app_version, String display_size, String duration) {
 		if (!isEnabled)
 			return;
 		Log.d(TAG, "ADX: launch tracked event = " + context.getString(R.string.xlaunch));
-		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xlaunch), "", "");
+		LinkedHashMap<String, String> values = new LinkedHashMap<String, String>();
+		values.put("app_version", app_version);
+		values.put("display_size", display_size);
+		values.put("duration", duration);
+		String jsonEncoded = "";
+		try {
+			jsonEncoded = URLEncoder.encode(generateJSONObject(values).toString(), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			jsonEncoded = "";
+			e.printStackTrace();
+		}
+		Log.d(TAG, "ADX: launch tracked event = " + context.getString(R.string.xlaunch)+" "+jsonEncoded);
+		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xlaunch), "", "", jsonEncoded);
 	}
 
-	public static void login(Context context, String customerId, String country) {
+	public static void login(Context context, String shop_country, String user_id, String app_version, String display_size) {
 		if (!isEnabled) {
 			Log.d(TAG, "adx seems to be disabled - ignoring");
 			return;
 		}
-
-		Log.d(TAG, "login tracked: event = " + context.getString(R.string.xlogin) + " customerId = " + customerId+" country = "+country);
-		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xlogin), "", "", country+"_"+customerId);
+		String jsonEncoded = "";
+		LinkedHashMap<String, String> values = new LinkedHashMap<String, String>();
+		values.put("shop_country", shop_country);
+		values.put("user_id", user_id);
+		values.put("app_version", app_version);
+		values.put("display_size", display_size);
+		try {
+			jsonEncoded = URLEncoder.encode(generateJSONObject(values).toString(), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			jsonEncoded = "";
+			e.printStackTrace();
+		}
+		Log.d(TAG, "login tracked: event = " + context.getString(R.string.xlogin) + " customerId = " + user_id+" app_version = "+app_version+" display_size: "+display_size);
+		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xlogin), "", "", jsonEncoded);
 	}
 	
-	public static void logout(Context context, String customerId, String country) {
+	public static void logout(Context context, String shop_country, String user_id, String app_version, String display_size) {
 		if (!isEnabled) {
 			Log.d(TAG, "adx seems to be disabled - ignoring");
 			return;
 		}
-
-		Log.d(TAG, "logout tracked: event = " + context.getString(R.string.xlogout) + " customerId = " + customerId+" country = "+country);
-		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xlogout), "", "", country+"_"+customerId);
+		
+		String jsonEncoded = "";
+		LinkedHashMap<String, String> values = new LinkedHashMap<String, String>();
+		values.put("shop_country", shop_country);
+		values.put("user_id", user_id);
+		values.put("app_version", app_version);
+		values.put("display_size", display_size);
+		
+		try {
+			jsonEncoded = URLEncoder.encode(generateJSONObject(values).toString(), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			jsonEncoded = "";
+			e.printStackTrace();
+		}
+		
+		Log.d(TAG, "logout tracked: event = " + context.getString(R.string.xlogout) + " customerId = " + user_id+" app_version = "+app_version+" display_size: "+display_size);
+		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xlogout), "", "", jsonEncoded);
 	}
 	
-	public static void facebookLogin(Context context, String customerId, String country) {
+	public static void facebookLogin(Context context, String shop_country, String user_id, String app_version, String display_size) {
 		if (!isEnabled) {
 			Log.d(TAG, "adx seems to be disabled - ignoring");
 			return;
 		}
-
-		Log.d(TAG, "facebook login tracked: event = " + context.getString(R.string.xFBlogin) + " customerId = " + customerId+" country = "+country);
-		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xFBlogin), "", "", country+"_"+customerId);
+		String jsonEncoded = "";
+		LinkedHashMap<String, String> values = new LinkedHashMap<String, String>();
+		values.put("shop_country", shop_country);
+		values.put("user_id", user_id);
+		values.put("app_version", app_version);
+		values.put("display_size", display_size);
+		try {
+			jsonEncoded = URLEncoder.encode(generateJSONObject(values).toString(), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			jsonEncoded = "";
+			e.printStackTrace();
+		}
+		
+		Log.d(TAG, "facebook login tracked: event = " + context.getString(R.string.xFBlogin) + " customerId = " + user_id+" app_version = "+app_version+" display_size: "+display_size);
+		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xFBlogin), "", "", jsonEncoded);
 	}
 
-	public static void signup(Context context, String customerId, String country) {
+	public static void signup(Context context, String shop_country, String user_id, String app_version, String display_size) {
 		if (!isEnabled)
 			return;
 
-		Log.d(TAG, "signup tracked: event = " + context.getString(R.string.xsignup) + " customerId = " + customerId+" country = "+country);
-		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xsignup), "", "", country+"_"+customerId);
+		String jsonEncoded = "";
+		LinkedHashMap<String, String> values = new LinkedHashMap<String, String>();
+		values.put("shop_country", shop_country);
+		values.put("user_id", user_id);
+		values.put("app_version", app_version);
+		values.put("display_size", display_size);
+		
+		try {
+			jsonEncoded = URLEncoder.encode(generateJSONObject(values).toString(), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			jsonEncoded = "";
+			e.printStackTrace();
+		}
+		
+		Log.d(TAG, "signup tracked: event = " + context.getString(R.string.xsignup) + " customerId = " + user_id+" app_version = "+app_version+" display_size: "+display_size);
+		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xsignup), "", "", jsonEncoded);
 	}
 	
 	
