@@ -3,6 +3,7 @@ package pt.rocket.utils;
 import java.util.ArrayList;
 import java.util.List;
 
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.ConstantsSharedPrefs;
@@ -367,8 +368,9 @@ public class DeepLinkManager {
         // Validate saved shop id
         if(shopId == -1)
             locateCountryCode(context, countryCode);
-        else if(!context.getResources().getStringArray(R.array.language_codes)[shopId].equalsIgnoreCase(countryCode))
+        else if(!context.getResources().getStringArray(R.array.language_codes)[shopId].equalsIgnoreCase(countryCode)){
             locateCountryCode(context, countryCode);
+        }           
         else
             Log.i(TAG, "DEEP LINK CC IS THE SAME");
     }
@@ -397,6 +399,7 @@ public class DeepLinkManager {
             Log.d(TAG, "SUPPORTED COUNTRY: " + supportedCountry);
             if (supportedCountry.equalsIgnoreCase(countryCode)){
                 Log.d(TAG, "MATCH SUPPORTED COUNTRY: SHOP ID " + i + " " + countryCode);
+                JumiaApplication.INSTANCE.cleanAllPreviousCountryValues();
                 saveShopId(context, i);
                 break;
             }

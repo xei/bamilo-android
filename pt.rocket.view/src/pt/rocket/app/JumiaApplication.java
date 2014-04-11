@@ -34,6 +34,7 @@ import pt.rocket.utils.CheckVersion;
 import pt.rocket.utils.RocketImageLoader;
 import pt.rocket.utils.ServiceSingleton;
 import pt.rocket.view.R;
+import pt.rocket.view.fragments.HomeFragment;
 import android.app.Activity;
 import android.app.Application;
 import android.content.ComponentName;
@@ -712,6 +713,17 @@ public class JumiaApplication extends Application implements ExceptionCallback {
         double y = Math.pow(dm.heightPixels/dm.ydpi,2);
         double screenInches = Math.sqrt(x+y);
         return (float)Math.round(screenInches * 10) / 10;
+    }
+    
+    public void cleanAllPreviousCountryValues(){
+        HomeFragment.requestResponse = null;
+        currentCategories = null;
+        setCart(null);
+        setFormDataRegistry(new HashMap<String, FormData>());
+        registerForm = null;
+        registerSavedInstanceState = null;
+        cleanCategoriesState();
+        getCustomerUtils().clearCredentials();
     }
     
     /**

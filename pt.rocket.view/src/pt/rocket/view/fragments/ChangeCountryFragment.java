@@ -255,15 +255,8 @@ public class ChangeCountryFragment extends BaseFragment {
     }
 
     protected void setCountry(int position) {
-        HomeFragment.requestResponse = null;
-        JumiaApplication.currentCategories = null;
-        JumiaApplication.INSTANCE.setCart(null);
-        JumiaApplication.INSTANCE.setFormDataRegistry(new HashMap<String, FormData>());
-        JumiaApplication.INSTANCE.registerForm = null;
-        JumiaApplication.INSTANCE.registerSavedInstanceState = null;
-        JumiaApplication.INSTANCE.cleanCategoriesState();
+        JumiaApplication.INSTANCE.cleanAllPreviousCountryValues();
         getBaseActivity().updateCartInfo();
-        JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
         if(isChangeCountry){
             LastViewedTableHelper.deleteAllLastViewed();
         }
