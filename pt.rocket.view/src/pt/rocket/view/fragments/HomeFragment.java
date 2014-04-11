@@ -593,7 +593,6 @@ public class HomeFragment extends BaseFragment {
             return;
         }
         
-        
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         switch (eventType) {
         case GET_TEASERS_EVENT:

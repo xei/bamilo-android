@@ -21,6 +21,7 @@ import pt.rocket.framework.objects.Errors;
 import pt.rocket.framework.objects.ProductSimple;
 import pt.rocket.framework.objects.ShoppingCartItem;
 import pt.rocket.framework.rest.RestConstants;
+import pt.rocket.framework.utils.AdXTracker;
 import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CurrencyFormatter;
@@ -853,6 +854,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
         }
 
         String sku = simple.getAttributeByKey(ProductSimple.SKU_TAG);
+        String priceAsString = simple.getAttributeByKey(ProductSimple.PRICE_TAG);
         Long price = getPriceForTrackingAsLong(simple);
 
         if (TextUtils.isEmpty(sku))
@@ -870,7 +872,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
 
         AnalyticsGoogle.get().trackAddToCart(sku, price);
         TrackerDelegator.trackProductAddedToCart(getActivity(), mCompleteProduct, simple,
-                (double) price, getString(R.string.mixprop_itemlocationdetails));
+                (double) price, priceAsString, getString(R.string.mixprop_itemlocationdetails));
 
     }
 
@@ -1078,8 +1080,11 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
                 executeAddProductToCart();
             }
         } else if (id == R.id.call_to_order) {
-            // Toast.makeText(this, "Hello! I want to order. Can you hear me?", Toast.LENGTH_LONG)
-            // .show();
+            String user_id = "";
+            if(JumiaApplication.INSTANCE.CUSTOMER != null && JumiaApplication.INSTANCE.CUSTOMER.getIdAsString() != null){
+                user_id = JumiaApplication.INSTANCE.CUSTOMER.getIdAsString();
+            }
+            AdXTracker.trackCall(getActivity().getApplicationContext(), user_id, JumiaApplication.INSTANCE.ADX_VERSION_NAME, JumiaApplication.INSTANCE.ADX_DISPLAY_SIZE, JumiaApplication.INSTANCE.SHOP_NAME);
             makeCall();
 
         } else if (id == R.id.viewpager_tips_btn_indicator) {

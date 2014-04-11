@@ -1496,6 +1496,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             sharingIntent.putExtra(getString(R.string.mixprop_sharename), prod.getName());
             sharingIntent.putExtra(getString(R.string.mixprop_sharebrand), prod.getBrand());
             sharingIntent.putExtra(getString(R.string.mixprop_shareprice), prod.getPrice());
+            sharingIntent.putExtra(RestConstants.JSON_SKU_TAG, prod.getSku());
 
             String msg = getString(R.string.share_checkout_this_product) + "\n"
                     + prod.getUrl().replace("/mobapi", "");
@@ -1900,6 +1901,11 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         final EventType eventType = (EventType) bundle
                 .getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        if (eventType == EventType.LOGIN_EVENT){
+            JumiaApplication.INSTANCE.setLoggedIn(false);
+            JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
+            updateSlidingMenu();
+        }
         HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
         if (errorCode == null) {
             return false;

@@ -175,8 +175,9 @@ public class JumiaApplication extends Application implements ExceptionCallback {
         responseCallbacks = new HashMap<String, IResponseCallback>();
         // Get the current shop id
         SHOP_ID = ShopPreferences.getShopId(getApplicationContext());
-        if(SHOP_ID>-1)
+        if(SHOP_ID>-1){
             SHOP_NAME = getResources().getStringArray(R.array.language_codes)[SHOP_ID];
+        }
         setItemSimpleDataRegistry(new HashMap<String, Map<String, String>>());
         setCart(null);
         ImageResolutionHelper.init(this);

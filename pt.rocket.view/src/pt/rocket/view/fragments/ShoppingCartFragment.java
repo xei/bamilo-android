@@ -129,6 +129,10 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
 
     private boolean removeVoucher = false;
 
+    private String itemRemoved_sku;
+
+    private String itemRemoved_price;
+
     public static class CartItemValues {
         public Boolean is_in_wishlist;
         public Boolean is_checked;
@@ -247,6 +251,8 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
     private void triggerRemoveItem(ShoppingCartItem item) {
         ContentValues values = new ContentValues();
         values.put("sku", item.getConfigSimpleSKU());
+        itemRemoved_sku = item.getConfigSimpleSKU();
+        itemRemoved_price = item.getPrice();
         Bundle bundle = new Bundle();
         bundle.putParcelable(GetShoppingCartRemoveItemHelper.ITEM, values);
         triggerContentEvent(new GetShoppingCartRemoveItemHelper(), bundle, responseCallback);
@@ -416,6 +422,8 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
                         ((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY))
                                 .getCartItems().values().size());
             }
+        case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
+            TrackerDelegator.trackProductRemoveFromCart(getActivity().getApplicationContext(), itemRemoved_sku, itemRemoved_price);
         default:
             getBaseActivity().showContentContainer();
             AnalyticsGoogle.get().trackLoadTiming(R.string.gshoppingcart, mBeginRequestMillis);

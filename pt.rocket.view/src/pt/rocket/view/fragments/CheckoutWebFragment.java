@@ -158,7 +158,6 @@ public class CheckoutWebFragment extends BaseFragment {
     private void triggerGetShoppingCartItems(){
         
         triggerContentEventWithNoLoading(new GetShoppingCartItemsHelper(), null, mCallback);
-//        EventManager.getSingleton().triggerRequestEvent(GetShoppingCartItemsEvent.FORCE_API_CALL);
     }
     
     IResponseCallback mCallback = new IResponseCallback() {

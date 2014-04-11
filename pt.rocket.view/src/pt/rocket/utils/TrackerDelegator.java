@@ -1,5 +1,6 @@
 package pt.rocket.utils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,7 @@ import pt.rocket.framework.objects.ProductReviewCommentCreated;
 import pt.rocket.framework.objects.ProductSimple;
 import pt.rocket.framework.objects.PurchaseItem;
 import pt.rocket.framework.objects.ShoppingCartItem;
+import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.AdXTracker;
 import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.MixpanelTracker;
@@ -118,10 +120,23 @@ public class TrackerDelegator {
         MixpanelTracker.product(context, product, category);
     }
 
-    public final static void trackProductAddedToCart(Context context, CompleteProduct product, ProductSimple simple, Double price, String location) {
+    public final static void trackProductAddedToCart(Context context, CompleteProduct product, ProductSimple simple, Double price, String priceAsString, String location) {
         MixpanelTracker.productAddedToCart(context, product, simple, price, location);
+        String customer_id = "";
+        if(JumiaApplication.INSTANCE.CUSTOMER != null){
+            customer_id = JumiaApplication.INSTANCE.CUSTOMER.getIdAsString();
+        }
+        AdXTracker.trackAddToCart(context, priceAsString, customer_id, simple.getAttributeByKey(ProductSimple.SKU_TAG), JumiaApplication.INSTANCE.ADX_VERSION_NAME, JumiaApplication.INSTANCE.ADX_DISPLAY_SIZE, JumiaApplication.INSTANCE.SHOP_NAME);
     }
 
+    public final static void trackProductRemoveFromCart(Context context, String sku, String priceAsString) {
+        String customer_id = "";
+        if(JumiaApplication.INSTANCE.CUSTOMER != null){
+            customer_id = JumiaApplication.INSTANCE.CUSTOMER.getIdAsString();
+        }
+        AdXTracker.trackRemoveFromCart(context, priceAsString, customer_id, sku, JumiaApplication.INSTANCE.ADX_VERSION_NAME, JumiaApplication.INSTANCE.ADX_DISPLAY_SIZE, JumiaApplication.INSTANCE.SHOP_NAME);
+    }
+    
     public final static void trackCheckout(Context context, List<ShoppingCartItem> items) {
         MixpanelTracker.checkout(context, items);
     }
@@ -132,6 +147,12 @@ public class TrackerDelegator {
 
     public final static void trackItemShared(Context context, Intent intent) {
         MixpanelTracker.share(context, intent);
+        String sku = intent.getExtras().getString(RestConstants.JSON_SKU_TAG);
+        String user_id = "";
+        if(JumiaApplication.INSTANCE.CUSTOMER != null && JumiaApplication.INSTANCE.CUSTOMER.getIdAsString() != null){
+            user_id = JumiaApplication.INSTANCE.CUSTOMER.getIdAsString();
+        }
+        AdXTracker.trackShare(context, sku, user_id, JumiaApplication.INSTANCE.ADX_VERSION_NAME, JumiaApplication.INSTANCE.ADX_DISPLAY_SIZE, JumiaApplication.INSTANCE.SHOP_NAME);
     }
 
     public final static void trackCategoryView(Context context, String category, int page) {
@@ -140,6 +161,11 @@ public class TrackerDelegator {
 
     public final static void trackItemReview(Context context, CompleteProduct product, ProductReviewCommentCreated review, HashMap<String, Double> ratings) {
         MixpanelTracker.rate(context, product, review, ratings);
+        String user_id = "";
+        if(JumiaApplication.INSTANCE.CUSTOMER != null && JumiaApplication.INSTANCE.CUSTOMER.getIdAsString() != null){
+            user_id = JumiaApplication.INSTANCE.CUSTOMER.getIdAsString();
+        }
+        AdXTracker.trackProductRate(context, product.getSku(), review, user_id, JumiaApplication.INSTANCE.ADX_VERSION_NAME, JumiaApplication.INSTANCE.ADX_DISPLAY_SIZE, JumiaApplication.INSTANCE.SHOP_NAME);
     }
 
     public final static void trackViewReview(Context context, CompleteProduct product, float rate) {
@@ -194,14 +220,14 @@ public class TrackerDelegator {
         }).run();        
     }
     
-    public static void trackSignUp( final Context context, String email, final Customer customer) {
+    public static void trackSignUp( final Context context, String email) {
         final String hashedemail = Utils.cleanMD5(email);
         new Thread( new Runnable() {
             @Override
             public void run() {
                 String user = hashedemail;
-                if(customer != null && customer.getIdAsString() != null && customer.getIdAsString().length() > 0){
-                    user = customer.getIdAsString();
+                if(JumiaApplication.INSTANCE.CUSTOMER != null && JumiaApplication.INSTANCE.CUSTOMER.getIdAsString() != null && JumiaApplication.INSTANCE.CUSTOMER.getIdAsString().length() > 0){
+                    user = JumiaApplication.INSTANCE.CUSTOMER.getIdAsString();
                 }
                 AnalyticsGoogle.get().trackSignUp(user);
                 AdXTracker.trackSignUp(context, JumiaApplication.INSTANCE.SHOP_NAME, user, JumiaApplication.INSTANCE.ADX_VERSION_NAME, JumiaApplication.INSTANCE.ADX_DISPLAY_SIZE);
@@ -280,7 +306,10 @@ public class TrackerDelegator {
         }
         
         List<PurchaseItem> items = PurchaseItem.parseItems(itemsJson);
-        
+        ArrayList<String> skus = new ArrayList<String>();
+        for (PurchaseItem item : items) {
+            skus.add(item.sku);
+        }
         AnalyticsGoogle.get().trackSales(orderNr, value, items);
         
 
@@ -291,7 +320,7 @@ public class TrackerDelegator {
             // Send the track sale without customer id
             String customerId = "";
             boolean isFirstCustomer = false;
-            AdXTracker.trackSale(context, value, customerId, orderNr, isFirstCustomer, JumiaApplication.INSTANCE.SHOP_NAME);
+            AdXTracker.trackSale(context, value, customerId, orderNr, skus, JumiaApplication.INSTANCE.ADX_VERSION_NAME, JumiaApplication.INSTANCE.ADX_DISPLAY_SIZE, isFirstCustomer, JumiaApplication.INSTANCE.SHOP_NAME, false);
             
         } else { 
             String customerId = customer.getIdAsString();
@@ -299,7 +328,7 @@ public class TrackerDelegator {
             
             Log.d(TAG, "TRACK SALE: CUSTOMER ID: " + customerId + " IS FIRST TIME: " + isFirstCustomer);
             
-            AdXTracker.trackSale(context, value, customerId, orderNr, isFirstCustomer, JumiaApplication.INSTANCE.SHOP_NAME);
+            AdXTracker.trackSale(context, value, customerId, orderNr, skus, JumiaApplication.INSTANCE.ADX_VERSION_NAME, JumiaApplication.INSTANCE.ADX_DISPLAY_SIZE, isFirstCustomer, JumiaApplication.INSTANCE.SHOP_NAME, customer.isGuest());
         }
         
         MixpanelTracker.trackSale(context, value, items);
@@ -316,7 +345,10 @@ public class TrackerDelegator {
         
         
         List<PurchaseItem> items = PurchaseItem.parseItems(mItems);
-        
+        ArrayList<String> skus = new ArrayList<String>();
+        for (PurchaseItem item : items) {
+            skus.add(item.sku);
+        }
         AnalyticsGoogle.get().trackSales(order_nr, value, items);
         
 
@@ -327,7 +359,7 @@ public class TrackerDelegator {
             // Send the track sale without customer id
             String customerId = Utils.cleanMD5(email);
             boolean isFirstCustomer = false;
-            AdXTracker.trackSale(context, value, customerId, order_nr, isFirstCustomer, JumiaApplication.INSTANCE.SHOP_NAME);
+            AdXTracker.trackSale(context, value, customerId, order_nr, skus, JumiaApplication.INSTANCE.ADX_VERSION_NAME, JumiaApplication.INSTANCE.ADX_DISPLAY_SIZE, isFirstCustomer, JumiaApplication.INSTANCE.SHOP_NAME, false);
             
         } else { 
             String customerId = customer.getIdAsString();
@@ -335,7 +367,7 @@ public class TrackerDelegator {
             
             Log.d(TAG, "TRACK SALE: CUSTOMER ID: " + customerId + " IS FIRST TIME: " + isFirstCustomer);
             
-            AdXTracker.trackSale(context, value, customerId, order_nr, isFirstCustomer, JumiaApplication.INSTANCE.SHOP_NAME);
+            AdXTracker.trackSale(context, value, customerId, order_nr, skus, JumiaApplication.INSTANCE.ADX_VERSION_NAME, JumiaApplication.INSTANCE.ADX_DISPLAY_SIZE, isFirstCustomer, JumiaApplication.INSTANCE.SHOP_NAME, customer.isGuest());
         }
         
         MixpanelTracker.trackSale(context, value, items);

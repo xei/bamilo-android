@@ -777,7 +777,8 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
     private void goToNextStepAfterSignUp(){
         Log.d(TAG, "RECEIVED SET_SIGNUP_EVENT");
         JumiaApplication.INSTANCE.setLoggedIn(true);
-        TrackerDelegator.trackSignUp(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), JumiaApplication.INSTANCE.CUSTOMER);
+        JumiaApplication.INSTANCE.CUSTOMER.setGuest(true);
+        TrackerDelegator.trackSignUp(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
         
         // Next step
         gotoNextStep();            
@@ -865,7 +866,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         case GET_CUSTOMER:
             if(cameFromSignUp){
                 cameFromSignUp = false;
-                goToNextStepAfterSignUp();    
+                goToNextStepAfterSignUp();
             }
             
             break;
