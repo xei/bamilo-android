@@ -187,7 +187,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
     private String mLastSelectedVariance;
     private ArrayList<String> variations;
 
-    private String mSimpleSize;
+    private String mDeepLinkSimpleSize;
     
     public ProductDetailsActivityFragment() {
         super(EnumSet.of(EventType.GET_PRODUCT_EVENT), 
@@ -285,9 +285,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
         mContext = getActivity();
         Bundle bundle = getArguments();
 
-        /**
-         * XXX Deep link
-         */
+        // Validate arguments
         if(hasArgumentsFromDeepLink(bundle)) 
             return;
                 
@@ -358,10 +356,10 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
         // Get the sku
         String sku = bundle.getString(GetSearchProductHelper.SKU_TAG);
         // Get the simple size
-        mSimpleSize = bundle.getString(DeepLinkManager.PDV_SIZE_TAG);
+        mDeepLinkSimpleSize = bundle.getString(DeepLinkManager.PDV_SIZE_TAG);
         // Validate
         if(sku != null) {
-            Log.i(TAG, "DEEP LINK GET PDV: " + sku + " " + mSimpleSize);
+            Log.i(TAG, "DEEP LINK GET PDV: " + sku + " " + mDeepLinkSimpleSize);
             mNavigationSource = bundle.getInt(ConstantsIntentExtra.NAVIGATION_SOURCE, -1);
             mNavigationPath = bundle.getString(ConstantsIntentExtra.NAVIGATION_PATH);
             mBeginRequestMillis = System.currentTimeMillis();
@@ -903,15 +901,20 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
         scrollView.scrollTo(0,
                 (getView().findViewById(R.id.product_variant_choose).getBottom() + 10));
     }
-
+    
     private void displayProduct(CompleteProduct product) {
         Log.d(TAG, "SHOW PRODUCT");
+        
+        // Get simple position from deep link value
+        if(mDeepLinkSimpleSize != null)
+            locateSimplePosition(mDeepLinkSimpleSize, product);
+        
         JumiaApplication.INSTANCE.setCurrentProduct(product);
         LastViewedTableHelper.insertViewedProduct(JumiaApplication.INSTANCE.getApplicationContext(), product.getSku(), product.getBrand()+" "+product.getName(), product.getSpecialPrice(), product.getUrl(), product.getImageList().get(0));
         mCompleteProduct = product;
         mCompleteProductUrl = product.getUrl();
-        ((BaseActivity) getActivity()).setTitle(mCompleteProduct.getBrand() + " "
-                + mCompleteProduct.getName());
+        ((BaseActivity) getActivity()).setTitle(mCompleteProduct.getBrand() + " " + mCompleteProduct.getName());
+        
         if (productVariationsFragment == null) {
             productVariationsFragment = ProductVariationsFragment.getInstance();
             Bundle args = new Bundle();
@@ -966,6 +969,25 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
                 mCompleteProduct.getSku(), mCompleteProduct.getUrl());
         TrackerDelegator.trackProduct(getActivity(), mCompleteProduct, category);
     }
+    
+    
+    /**
+     * Locate the simple size from deep link and save that position
+     * @param simpleSize
+     * @param product
+     * @author sergiopereira
+     */
+    private void locateSimplePosition(String simpleSize, CompleteProduct product){
+        Log.d(TAG, "DEEP LINK SIMPLE SIZE: " + simpleSize);
+        if(product != null && product.getSimples() != null && product.getSimples().size() > 0)
+            for (int i = 0; i < product.getSimples().size(); i++) {
+                ProductSimple simple = product.getSimples().get(i);
+                if(simple != null && simple.getAttributeByKey("size") != null && simple.getAttributeByKey("size").equals(simpleSize))
+                    mSelectedSimple = i;
+            }
+        Log.d(TAG, "DEEP LINK SIMPLE POSITION: " + mSelectedSimple);
+    }
+    
 
     private void displayGallery(CompleteProduct product) {
         mCompleteProduct = product;
@@ -1123,16 +1145,10 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
         }
 
         @Override
-        public void onPageScrolled(int arg0, float arg1, int arg2) {
-            // TODO Auto-generated method stub
-
-        }
+        public void onPageScrolled(int arg0, float arg1, int arg2) { }
 
         @Override
-        public void onPageScrollStateChanged(int arg0) {
-            // TODO Auto-generated method stub
-
-        }
+        public void onPageScrollStateChanged(int arg0) { }
     };
 
     /*
