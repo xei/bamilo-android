@@ -113,12 +113,10 @@ public class SplashScreenActivity extends FragmentActivity {
         launchTime = System.currentTimeMillis();
         Log.i(TAG, "onCreate");
         setContentView(R.layout.splash_screen);
-        
         // Get values from intent
         getPushNotifications();
         // Initialize application
         JumiaApplication.INSTANCE.init(false, initializationHandler);
-        
     }
 
     @Override

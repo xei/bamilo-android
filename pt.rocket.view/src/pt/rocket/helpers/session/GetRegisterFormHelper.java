@@ -34,10 +34,14 @@ public class GetRegisterFormHelper extends BaseHelper {
     @Override
     public Bundle generateRequestBundle(Bundle args) {
         Bundle bundle = new Bundle();
-        FormData formData = JumiaApplication.INSTANCE.getFormDataRegistry().get(
-                EventType.GET_REGISTRATION_FORM_EVENT.action);
-        String url = formData.getUrl();
-        bundle.putString(Constants.BUNDLE_URL_KEY, url);
+        try {
+            FormData formData = JumiaApplication.INSTANCE.getFormDataRegistry().get(EventType.GET_REGISTRATION_FORM_EVENT.action);
+            String url = formData.getUrl();
+            bundle.putString(Constants.BUNDLE_URL_KEY, url);
+        } catch (NullPointerException e) {
+            Log.w(TAG, "FORM DATA IS NULL THEN GET LOGIN FORM FALLBACK", e);
+            bundle.putString(Constants.BUNDLE_URL_KEY, EventType.GET_REGISTRATION_FORM_FALLBACK_EVENT.action);
+        }
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_REGISTRATION_FORM_EVENT);
         bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
