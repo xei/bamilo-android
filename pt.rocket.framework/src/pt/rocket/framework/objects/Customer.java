@@ -48,6 +48,7 @@ public class Customer implements IJSONSerializable, Parcelable{
     private CustomerGender gender;
     private String password;
     private String created_at;
+    private boolean guest;
     
 	private ArrayList<String> addresses;
     
@@ -66,6 +67,7 @@ public class Customer implements IJSONSerializable, Parcelable{
         password = "";
         setCreatedAt("");
         this.addresses = null;
+        guest = false;
     }
     
     public Customer(JSONObject jsonObject) {
@@ -96,6 +98,7 @@ public class Customer implements IJSONSerializable, Parcelable{
         this.prefix = customerPrefix;
         this.created_at = createdAt;
         this.addresses = addresses;
+        this.guest = false;
     }
 
     /**
@@ -307,7 +310,7 @@ public class Customer implements IJSONSerializable, Parcelable{
             } catch (ParseException e) {  
                 e.printStackTrace();  
             }
-
+ 
             String genderString = jsonObject.optString(RestConstants.JSON_GENDER_TAG);
             if(genderString == null) {
             	gender = CustomerGender.UNKNOWN;
@@ -391,6 +394,7 @@ public class Customer implements IJSONSerializable, Parcelable{
 	    dest.writeString(password);
 	    dest.writeValue(prefix);
 	    dest.writeString(created_at);
+	    dest.writeBooleanArray(new boolean[]{guest});
 	}
 	
 	/**
@@ -408,8 +412,23 @@ public class Customer implements IJSONSerializable, Parcelable{
         this.password = in.readString();
         this.prefix = (CustomerPrefix) in.readValue(CustomerPrefix.class.getClassLoader());
         this.created_at = in.readString();
+        in.readBooleanArray(new boolean[]{guest});
     }
 		
+	/**
+	 * @return the guest
+	 */
+	public boolean isGuest() {
+		return guest;
+	}
+
+	/**
+	 * @param guest the guest to set
+	 */
+	public void setGuest(boolean guest) {
+		this.guest = guest;
+	}
+
 	/**
 	 * Create parcelable 
 	 */

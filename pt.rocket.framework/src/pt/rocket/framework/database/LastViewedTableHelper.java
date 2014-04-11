@@ -102,6 +102,7 @@ public class LastViewedTableHelper {
 			// Log result
 			Log.i(TAG, "SQL RESULT: " + cursor.getInt(0)+ " result is : "+result );
 		}
+    	
 		// Validate cursor
 		if(cursor != null){
 			cursor.close();

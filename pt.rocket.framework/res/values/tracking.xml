@@ -112,6 +112,11 @@
     <string name="xnativecheckouterror">NativeCheckoutError</string>
     <string name="xcustomersignup">CustomerSignUp</string>
     <string name="xaddtocart">AddToCart</string>
+    <string name="xremovefromcart">RemoveFromCart</string>
+    <string name="xguestsale">GuestSale</string>
+    <string name="xcall">Call</string>
+    <string name="xsocialshare">SocialShare</string>
+    <string name="xproductrate">ProductRate</string>
     <!-- Checkout Steps -->
     <string name="xcheckoutaboutyou">CheckoutAboutYou</string>
     <string name="xcheckoutcreateaddress">CheckoutCreateAddress</string>
@@ -190,7 +195,6 @@
     <string name="mixprop_age">Age</string>
     <string name="mixprop_gender">Gender</string>
     <string name="mixprop_email">Email</string>
-    <string name="mixprop_createdate">Account Created Date</string>
     <string name="mixprop_country">Country</string>
     <string name="mixprop_signup">Customer Sign Up</string>
     <string name="mixprop_searchtearm">Search term</string>
@@ -207,7 +211,6 @@
     <string name="mixprop_itemid">Item ID</string>
     <string name="mixprop_itemname">Item Name</string>
     <string name="mixprop_itembrand">Item Brand</string>
-    <string name="mixprop_itemcategory">Category</string>
     <string name="mixprop_itemsubcategory">Subcategory</string>
     <string name="mixprop_itemprice">Price</string>
     <string name="mixprop_itemquantity">Quantity</string>

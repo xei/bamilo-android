@@ -2,13 +2,17 @@ package pt.rocket.framework.utils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Set;
+import java.util.Map.Entry;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import pt.rocket.framework.R;
+import pt.rocket.framework.objects.ProductReviewCommentCreated;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -58,40 +62,104 @@ public class AdXTracker {
 		isStarted = true;
 	}
 
-	public static void trackSale(Context context, String cartValue, String shop ) {
-		if (!isEnabled)
-			return;
-
-		String currency = CurrencyFormatter.getCurrencyCode();
-		Log.d( TAG, "trackSale: cartValue = " + cartValue + " currency = " + currency );
-		cartValue = CurrencyFormatter.getCleanValue(cartValue);
-		AdXConnect.getAdXConnectEventInstance(context, context.getString( R.string.xsale), cartValue, shop+"_"+currency);
-	}
+//	public static void trackSale(Context context, String cartValue, String shop ) {
+//		if (!isEnabled)
+//			return;
+//
+//		String currency = CurrencyFormatter.getCurrencyCode();
+//		Log.d( TAG, "trackSale: cartValue = " + cartValue + " currency = " + currency );
+//		cartValue = CurrencyFormatter.getCleanValue(cartValue);
+//		AdXConnect.getAdXConnectEventInstance(context, context.getString( R.string.xsale), cartValue, shop+"_"+currency);
+//	}
 	
-	public static void trackSale(Context context, String cartValue, String userId, String transactionId,  boolean isFirstCustomer, String shop ) {
+	public static void trackSale(Context context, String cartValue, String user_id, String transaction_id, ArrayList<String> skus, String app_version, String display_size, boolean isFirstCustomer, String shop_country, boolean guest ) {
 		if (!isEnabled)
 			return;
+		String jsonEncoded = "";
+		LinkedHashMap<String, Object> values = new LinkedHashMap<String, Object>();
+		values.put("shop_country", shop_country);
+		values.put("user_id", user_id);
+		values.put("app_version", app_version);
+		values.put("transaction_id", transaction_id);
+		values.put("display_size", display_size);
+		
+		JSONArray mJSONArray = new JSONArray();
+		for (String sku : skus) {
+			mJSONArray.put(sku);
+		}
+		values.put("skus", mJSONArray);
+		try {
+			jsonEncoded = URLEncoder.encode(generateJSONObject(values).toString(), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			jsonEncoded = "";
+			e.printStackTrace();
+		}
 		
 		cartValue = CurrencyFormatter.getCleanValue(cartValue);
 		String currency = CurrencyFormatter.getCurrencyCode();
 		Log.d( TAG, "trackSale: cartValue = " + cartValue + " currency = " + currency );
-		AdXConnect.getAdXConnectEventInstance(context, context.getString( R.string.xsale), cartValue, currency,shop+"_"+userId+"_"+transactionId);
+		if(guest){
+			AdXConnect.getAdXConnectEventInstance(context, context.getString( R.string.xguestsale), cartValue, currency,jsonEncoded);
+		} else {
+			AdXConnect.getAdXConnectEventInstance(context, context.getString( R.string.xsale), cartValue, currency,jsonEncoded);
+		}
 		if (isFirstCustomer) {
 			Log.d(TAG, "trackSaleData: is first customer");
-			AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xcustomer), shop+"_"+userId, "");
+			AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xcustomer), "", "",jsonEncoded);
 		}
 	}
 	
-//
-//	public static void trackAddToCart(Context context, CompleteProduct product, ProductSimple simple, Double price, String location, String country) {
-//		if (!isEnabled) {
-//			Log.d(TAG, "adx seems to be disabled - ignoring");
-//			return;
-//		}
-//
-//		Log.d(TAG, "xaddtocart tracked: event = " + context.getString(R.string.xaddtocart) + " customerId = " + customerId+" country = "+country);
-//		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xaddtocart), product.getPrice(), );
-//	}
+
+	public static void trackAddToCart(Context context, String cartValue, String user_id, String sku, String app_version, String display_size, String shop_country ) {
+		if (!isEnabled) {
+			Log.d(TAG, "adx seems to be disabled - ignoring");
+			return;
+		}
+		
+		String jsonEncoded = "";
+		LinkedHashMap<String, Object> values = new LinkedHashMap<String, Object>();
+		values.put("shop_country", shop_country);
+		values.put("user_id", user_id);
+		values.put("app_version", app_version);
+		values.put("sku", sku);
+		values.put("display_size", display_size);
+	
+		try {
+			jsonEncoded = URLEncoder.encode(generateJSONObject(values).toString(), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			jsonEncoded = "";
+			e.printStackTrace();
+		}
+		String currency = CurrencyFormatter.getCurrencyCode();
+		Log.d(TAG, "xaddtocart tracked: event = " + context.getString(R.string.xaddtocart) + " jsonEncoded = " + jsonEncoded);
+		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xaddtocart), cartValue, currency,jsonEncoded);
+	}
+	
+	public static void trackRemoveFromCart(Context context, String cartValue, String user_id, String sku, String app_version, String display_size, String shop_country ) {
+		if (!isEnabled) {
+			Log.d(TAG, "adx seems to be disabled - ignoring");
+			return;
+		}
+
+		String jsonEncoded = "";
+		LinkedHashMap<String, Object> values = new LinkedHashMap<String, Object>();
+		values.put("shop_country", shop_country);
+		values.put("user_id", user_id);
+		values.put("app_version", app_version);
+		values.put("sku", sku);
+		values.put("display_size", display_size);
+	
+		try {
+			jsonEncoded = URLEncoder.encode(generateJSONObject(values).toString(), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			jsonEncoded = "";
+			e.printStackTrace();
+		}
+		String currency = CurrencyFormatter.getCurrencyCode();
+		
+		Log.d(TAG, "xremovefromcart tracked: event = " + context.getString(R.string.xremovefromcart) + " jsonEncoded = " + jsonEncoded);
+		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xremovefromcart), cartValue, currency,jsonEncoded);
+	}
 	
 	public static void trackCheckoutStep(Context context, String email, int step) {
 		if (!isEnabled)
@@ -106,7 +174,7 @@ public class AdXTracker {
 			return;
 
 		String jsonEncoded = "";
-		LinkedHashMap<String, String> values = new LinkedHashMap<String, String>();
+		LinkedHashMap<String, Object> values = new LinkedHashMap<String, Object>();
 		values.put("shop_country", shop_country);
 		values.put("user_id", user_id);
 		values.put("app_version", app_version);
@@ -119,7 +187,7 @@ public class AdXTracker {
 			e.printStackTrace();
 		}
 		
-		Log.d(TAG, "trackSignUp: " + context.getString(R.string.xcustomersignup)+ " customerId = " + user_id+" app_version = "+app_version+" display_size: "+display_size);
+		Log.d(TAG, "trackSignUp: " + context.getString(R.string.xcustomersignup)+ " json = " + jsonEncoded);
 		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xcustomersignup), "", "", jsonEncoded);
 	}
 
@@ -139,7 +207,7 @@ public class AdXTracker {
 		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xnativecheckouterror), email+"_"+error, "");
 	}
 	
-	public static JSONObject generateJSONObject(LinkedHashMap<String,String> values){
+	public static JSONObject generateJSONObject(LinkedHashMap<String,Object> values){
 		JSONObject jsonObject = new JSONObject();
 		Set<String> keys = values.keySet();
 		for (String key : keys) {
@@ -158,7 +226,7 @@ public class AdXTracker {
 		if (!isEnabled)
 			return;
 		Log.d(TAG, "ADX: launch tracked event = " + context.getString(R.string.xlaunch));
-		LinkedHashMap<String, String> values = new LinkedHashMap<String, String>();
+		LinkedHashMap<String, Object> values = new LinkedHashMap<String, Object>();
 		values.put("app_version", app_version);
 		values.put("display_size", display_size);
 		values.put("duration", duration);
@@ -179,7 +247,7 @@ public class AdXTracker {
 			return;
 		}
 		String jsonEncoded = "";
-		LinkedHashMap<String, String> values = new LinkedHashMap<String, String>();
+		LinkedHashMap<String, Object> values = new LinkedHashMap<String, Object>();
 		values.put("shop_country", shop_country);
 		values.put("user_id", user_id);
 		values.put("app_version", app_version);
@@ -201,7 +269,7 @@ public class AdXTracker {
 		}
 		
 		String jsonEncoded = "";
-		LinkedHashMap<String, String> values = new LinkedHashMap<String, String>();
+		LinkedHashMap<String, Object> values = new LinkedHashMap<String, Object>();
 		values.put("shop_country", shop_country);
 		values.put("user_id", user_id);
 		values.put("app_version", app_version);
@@ -224,7 +292,7 @@ public class AdXTracker {
 			return;
 		}
 		String jsonEncoded = "";
-		LinkedHashMap<String, String> values = new LinkedHashMap<String, String>();
+		LinkedHashMap<String, Object> values = new LinkedHashMap<String, Object>();
 		values.put("shop_country", shop_country);
 		values.put("user_id", user_id);
 		values.put("app_version", app_version);
@@ -245,7 +313,7 @@ public class AdXTracker {
 			return;
 
 		String jsonEncoded = "";
-		LinkedHashMap<String, String> values = new LinkedHashMap<String, String>();
+		LinkedHashMap<String, Object> values = new LinkedHashMap<String, Object>();
 		values.put("shop_country", shop_country);
 		values.put("user_id", user_id);
 		values.put("app_version", app_version);
@@ -262,6 +330,88 @@ public class AdXTracker {
 		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xsignup), "", "", jsonEncoded);
 	}
 	
+	
+	public static void trackCall(Context context, String user_id, String app_version, String display_size, String shop_country ) {
+		if (!isEnabled) {
+			Log.d(TAG, "adx seems to be disabled - ignoring");
+			return;
+		}
+
+		String jsonEncoded = "";
+		LinkedHashMap<String, Object> values = new LinkedHashMap<String, Object>();
+		values.put("shop_country", shop_country);
+		values.put("user_id", user_id);
+		values.put("app_version", app_version);
+		values.put("display_size", display_size);
+	
+		try {
+			jsonEncoded = URLEncoder.encode(generateJSONObject(values).toString(), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			jsonEncoded = "";
+			e.printStackTrace();
+		}
+		String currency = CurrencyFormatter.getCurrencyCode();
+		
+		Log.d(TAG, "xcall tracked: event = " + context.getString(R.string.xcall) + " jsonEncoded = " + jsonEncoded);
+		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xcall), "", "",jsonEncoded);
+	}
+	
+	public static void trackShare(Context context, String sku, String user_id, String app_version, String display_size, String shop_country ) {
+		if (!isEnabled) {
+			Log.d(TAG, "adx seems to be disabled - ignoring");
+			return;
+		}
+
+		String jsonEncoded = "";
+		LinkedHashMap<String, Object> values = new LinkedHashMap<String, Object>();
+		values.put("sku", sku);
+		values.put("shop_country", shop_country);
+		values.put("user_id", user_id);
+		values.put("app_version", app_version);
+		values.put("display_size", display_size);
+	
+		try {
+			jsonEncoded = URLEncoder.encode(generateJSONObject(values).toString(), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			jsonEncoded = "";
+			e.printStackTrace();
+		}
+		String currency = CurrencyFormatter.getCurrencyCode();
+		
+		Log.d(TAG, "xsocialshare tracked: event = " + context.getString(R.string.xsocialshare) + " jsonEncoded = " + jsonEncoded);
+		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xsocialshare), "", "",jsonEncoded);
+	}
+	
+	public static void trackProductRate(Context context, String sku, ProductReviewCommentCreated review, String user_id, String app_version, String display_size, String shop_country ) {
+		if (!isEnabled) {
+			Log.d(TAG, "adx seems to be disabled - ignoring");
+			return;
+		}
+
+		String jsonEncoded = "";
+		LinkedHashMap<String, Object> values = new LinkedHashMap<String, Object>();
+		values.put("sku", sku);
+		values.put("comments",review.getComments());
+		for ( Entry<String, Double> option : review.getRating().entrySet()) {
+			values.put(option.getKey(),option.getValue());
+		}
+		
+		values.put("shop_country", shop_country);
+		values.put("user_id", user_id);
+		values.put("app_version", app_version);
+		values.put("display_size", display_size);
+	
+		try {
+			jsonEncoded = URLEncoder.encode(generateJSONObject(values).toString(), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			jsonEncoded = "";
+			e.printStackTrace();
+		}
+		String currency = CurrencyFormatter.getCurrencyCode();
+		
+		Log.d(TAG, "xproductrate tracked: event = " + context.getString(R.string.xproductrate) + " jsonEncoded = " + jsonEncoded);
+		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xproductrate), "", "",jsonEncoded);
+	}
 	
 	/**
 	 * Method that adds the pre install event
