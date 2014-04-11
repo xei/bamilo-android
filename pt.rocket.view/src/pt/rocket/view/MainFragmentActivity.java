@@ -204,6 +204,12 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Log.d(TAG, "ON SAVED INSTANCE STATE: " + currentFragmentType.toString());
+        try {
+            String tag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
+            currentFragmentType = FragmentType.valueOf(tag);
+        } catch (Exception e) {
+            Log.w(TAG, "ERROR ON GET CURRENT FRAGMENT TYPE", e);
+        }
         // Save the current fragment type on orientation change
         outState.putSerializable(ConstantsIntentExtra.FRAGMENT_TYPE, currentFragmentType);
     }

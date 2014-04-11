@@ -126,9 +126,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     
     private static final int TOAST_LENGTH_SHORT = 2000; // 2 seconds
 
-    // private int navigationComponentsHashCode;
-    private View navigationContainer;
-
     // REMOVED FINAL ATRIBUTE
     private NavigationAction action;
 
@@ -145,7 +142,8 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     protected DialogFragment dialog;
 
     private DialogProgressFragment progressDialog;
-
+    
+    @SuppressWarnings("unused")
     private Activity activity;
 
     private boolean backPressedOnce = false;
@@ -204,6 +202,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
     private boolean initialCountry = false;
 
+    @SuppressWarnings("unused")
     private Set<EventType> userEvents;
     
     private Menu currentMenu;
@@ -997,8 +996,11 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                 findViewById(R.id.dummy_search_layout).requestFocus();
                 searchComponent.setText(text);
                 searchComponent.dismissDropDown();
-                // Save the selected item if not recent query
-                if(!selectedSuggestion.isRecentQuery()) GetSearchSuggestionHelper.saveSearchQuery(text);
+                // Save the selected item
+                //if(selectedSuggestion.isRecentQuery())
+                //    GetSearchSuggestionHelper.updateSearchQuery(text);
+                //else 
+                    GetSearchSuggestionHelper.saveSearchQuery(text);
                 // Execute request
                 executeSearchRequest(text);
             }
@@ -1015,7 +1017,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                 if ( TextUtils.isEmpty( searchTerm )) return false;
                 GetSearchSuggestionHelper.saveSearchQuery(searchTerm);
                 executeSearchRequest(searchTerm);
-                //hideSearchComponent(currentMenu);
                 return true;
             }
             
@@ -1023,9 +1024,11 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 Log.d(TAG, "SEARCH: ON TOUCH: " + event.getAction());
                 // Close navigation menu
-                if (mDrawerLayout != null  && mDrawerLayout.isDrawerOpen(mDrawerNavigation)) mDrawerLayout.closeDrawer(mDrawerNavigation);
+                if (mDrawerLayout != null  && mDrawerLayout.isDrawerOpen(mDrawerNavigation)) 
+                    mDrawerLayout.closeDrawer(mDrawerNavigation);
                 // Force show drop down
-                if (TextUtils.isEmpty(searchComponent.getText())) searchComponent.showDropDown();
+                if (TextUtils.isEmpty(searchComponent.getText()) && event.getAction() == MotionEvent.ACTION_DOWN)
+                    searchComponent.showDropDown();
                 // Sent to supper
                 return super.onTouch(v, event);
             }
@@ -1074,7 +1077,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                     if ( TextUtils.isEmpty( searchTerm )) return false;
                     GetSearchSuggestionHelper.saveSearchQuery(searchTerm);
                     executeSearchRequest(searchTerm);
-                    //hideSearchComponent(currentMenu);
                     return true;
                 }
                 return false;

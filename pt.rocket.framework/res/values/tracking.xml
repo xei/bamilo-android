@@ -123,6 +123,7 @@
     <string name="xcheckoutpollquestion">CheckoutPollQuestion</string>
     <string name="xcheckoutshippingmethods">CheckoutShippingMethods</string>
     <string name="xpaymentmethod">PaymentMethod</string>
+    <string name="xdeeplinklaunch">DeepLinkLaunch</string>
     <!-- End of AdX Tracking Parameters -->
 
     <!-- Begin of Flurry Tracking Parameters -->

@@ -27,8 +27,10 @@ import pt.rocket.framework.utils.CurrencyFormatter;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.GetProductHelper;
+import pt.rocket.helpers.GetSearchProductHelper;
 import pt.rocket.helpers.GetShoppingCartAddItemHelper;
 import pt.rocket.interfaces.IResponseCallback;
+import pt.rocket.utils.DeepLinkManager;
 import pt.rocket.utils.FragmentCommunicatorForProduct;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
@@ -102,9 +104,10 @@ import de.akquinet.android.androlog.Log;
  * @description This class displays the product detail screen
  * 
  */
-public class ProductDetailsActivityFragment extends BaseFragment implements
-        OnClickListener, OnDialogListListener {
+public class ProductDetailsActivityFragment extends BaseFragment implements OnClickListener, OnDialogListListener {
+    
     private final static String TAG = LogTagHelper.create(ProductDetailsActivityFragment.class);
+    
     private final static int NO_SIMPLE_SELECTED = -1;
     private final static String VARIATION_PICKER_ID = "variation_picker";
 
@@ -183,6 +186,8 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
     boolean isAddingProductToCart = false;
     private String mLastSelectedVariance;
     private ArrayList<String> variations;
+
+    private String mSimpleSize;
     
     public ProductDetailsActivityFragment() {
         super(EnumSet.of(EventType.GET_PRODUCT_EVENT), 
@@ -279,6 +284,13 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
         Log.d(TAG, "INIT");
         mContext = getActivity();
         Bundle bundle = getArguments();
+
+        /**
+         * XXX Deep link
+         */
+        if(hasArgumentsFromDeepLink(bundle)) 
+            return;
+                
         mCompleteProductUrl = bundle.getString(ConstantsIntentExtra.CONTENT_URL);
         if (mCompleteProductUrl == null) {
             getActivity().onBackPressed();
@@ -334,6 +346,30 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
         // releaseVars();
         super.onDestroy();
         System.gc();
+    }
+    
+    /**
+     * Validate and loads the received arguments comes from deep link process.
+     * @param bundle
+     * @return boolean
+     * @author sergiopereira
+     */
+    private boolean hasArgumentsFromDeepLink(Bundle bundle){
+        // Get the sku
+        String sku = bundle.getString(GetSearchProductHelper.SKU_TAG);
+        // Get the simple size
+        mSimpleSize = bundle.getString(DeepLinkManager.PDV_SIZE_TAG);
+        // Validate
+        if(sku != null) {
+            Log.i(TAG, "DEEP LINK GET PDV: " + sku + " " + mSimpleSize);
+            mNavigationSource = bundle.getInt(ConstantsIntentExtra.NAVIGATION_SOURCE, -1);
+            mNavigationPath = bundle.getString(ConstantsIntentExtra.NAVIGATION_PATH);
+            mBeginRequestMillis = System.currentTimeMillis();
+            triggerContentEvent(new GetSearchProductHelper(), bundle, responseCallback);
+            ((BaseActivity) getActivity()).setProcessShow(false); 
+            return true;
+        }
+        return false;
     }
 
     private void releaseVars() {
@@ -1148,6 +1184,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
             mAddToCartButton.setEnabled(true);
             executeAddToShoppingCartCompleted();
             break;
+        case SEARCH_PRODUCT:
         case GET_PRODUCT_EVENT:
             if (((CompleteProduct) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getName() == null) {
                 Toast.makeText(getActivity(), getString(R.string.product_could_not_retrieved),
@@ -1250,6 +1287,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements
                 addToShoppingCartFailed();
                 return;
             }
+        case SEARCH_PRODUCT:
         case GET_PRODUCT_EVENT:
             if (!errorCode.isNetworkError()) {
                 Toast.makeText(getBaseActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();

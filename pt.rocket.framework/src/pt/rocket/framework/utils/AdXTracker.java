@@ -2,8 +2,6 @@ package pt.rocket.framework.utils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Set;
 
@@ -293,6 +291,19 @@ public class AdXTracker {
 		editor.putString(REFERRAL_URL, uri);
 		editor.putString(RECEIVER_DONE, "done");
 		editor.commit();
+	}
+	
+	/**
+	 * Add the deep link launch
+	 * @param context
+	 * @param value
+	 * @author sergiopereira
+	 */
+	public static void deepLinkLaunch(Context context, String value) {
+		if (!isEnabled || value == null)
+			return;
+		Log.i(TAG, "DEEP LINK ADX TRACKING: " + context.getString(R.string.xdeeplinklaunch) + " " + value);
+		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xdeeplinklaunch), value, "");
 	}
 	
 }

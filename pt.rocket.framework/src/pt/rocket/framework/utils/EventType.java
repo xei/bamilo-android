@@ -168,7 +168,9 @@ public enum EventType {
 	
 	ADD_VOUCHER("http:/order/addvoucher/", RestContract.NO_CACHE), 
 	
-	REMOVE_VOUCHER("http:/order/removevoucher/", RestContract.NO_CACHE)
+	REMOVE_VOUCHER("http:/order/removevoucher/", RestContract.NO_CACHE),
+	
+	SEARCH_PRODUCT("http:/product.html", RestContract.NO_CACHE)
 	
 	;
     

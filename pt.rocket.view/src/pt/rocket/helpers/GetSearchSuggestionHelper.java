@@ -71,6 +71,16 @@ public class GetSearchSuggestionHelper extends BaseHelper {
         }).start();
     }
     
+    public static void updateSearchQuery(final String query){
+        Log.d(TAG, "UPDATE SEARCH QUERY: " + query);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                SearchRecentQueriesTableHelper.updateRecentQuery(query);
+            }
+        }).start();
+    }
+    
     /*
      * (non-Javadoc)
      * @see pt.rocket.helpers.BaseHelper#parseResponseBundle(android.os.Bundle, org.json.JSONObject)

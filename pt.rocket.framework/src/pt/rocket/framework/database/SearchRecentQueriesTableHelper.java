@@ -1,11 +1,15 @@
 package pt.rocket.framework.database;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 import pt.rocket.framework.objects.SearchSuggestion;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.text.format.DateFormat;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -69,7 +73,7 @@ public class SearchRecentQueriesTableHelper {
     public static synchronized ArrayList<SearchSuggestion> getAllRecentQueries(){
 		Log.d(TAG, "GET LAST " + NUMBER_OF_SUGGESTIONS + " RECENT QUERIES");
 		// Select the best resolution
-		String query =	"SELECT " + _QUERY + " " +
+		String query =	"SELECT DISTINCT " + _QUERY + " " +
 			    		"FROM " + _NAME + " " +
 						"ORDER BY " + _TIME_STAMP + " DESC " +
 						"LIMIT " + NUMBER_OF_SUGGESTIONS;
@@ -98,6 +102,24 @@ public class SearchRecentQueriesTableHelper {
     }
     
     
+    public static synchronized boolean updateRecentQuery(String query) {
+    	Log.d(TAG, "UPDATE RECENT QUERIES FOR: " + query);
+    	// Validate arguments
+    	if(query == null) return false;
+    	// Get current time stamp
+    	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+    	String timestamp = dateFormat.format(new Date());
+    	Log.d(TAG, "UPDATE TIMESTAMP: " + timestamp);
+    	// Update
+        SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(SearchRecentQueriesTableHelper._TIME_STAMP, timestamp);
+        long result = db.update(_NAME, values, _QUERY + " LIKE ?", new String[] {query});
+        db.close();
+        return (result == -1) ? false : true;
+    }
+    
+    
     /**
      * Get the recent queries
      * @param searchText
@@ -109,6 +131,29 @@ public class SearchRecentQueriesTableHelper {
 		// Permission
 		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getReadableDatabase();
 		Cursor cursor = db.rawQuery(query, null);
+		
+//		Cursor cursor = db.query(true, 
+//				_NAME, 
+//				new String[] { _QUERY }, 
+//				null, 
+//				null, 
+//				null, 
+//				null, 
+//				_TIME_STAMP + " DESC", 
+//				NUMBER_OF_SUGGESTIONS);
+//		
+//		if(query != null) {
+//			cursor = db.query(true, 
+//					_NAME, 
+//					new String[] { _QUERY }, 
+//					_QUERY + " LIKE ?", 
+//					new String[] { "%" + query + "%" }, 
+//					null, 
+//					null, 
+//					_TIME_STAMP + " DESC", 
+//					NUMBER_OF_SUGGESTIONS);
+//		}
+		
 		// Get results
 		ArrayList<SearchSuggestion> recentSuggestions = new ArrayList<SearchSuggestion>();
 		if (cursor != null && cursor.getCount() >0 ) {

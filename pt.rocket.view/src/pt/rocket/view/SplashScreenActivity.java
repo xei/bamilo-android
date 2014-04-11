@@ -9,7 +9,6 @@ import java.util.zip.ZipFile;
 
 import org.holoeverywhere.widget.Button;
 import org.holoeverywhere.widget.TextView;
-import org.json.JSONObject;
 
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
@@ -22,12 +21,12 @@ import pt.rocket.framework.service.IRemoteServiceCallback;
 import pt.rocket.framework.utils.AdXTracker;
 import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.Constants;
-import pt.rocket.framework.utils.DarwinRegex;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.GetApiInfoHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.preferences.ShopPreferences;
+import pt.rocket.utils.DeepLinkManager;
 import pt.rocket.utils.HockeyStartup;
 import pt.rocket.utils.LocationHelper;
 import pt.rocket.utils.TrackerDelegator;
@@ -38,13 +37,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.RemoteException;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -97,8 +96,10 @@ public class SplashScreenActivity extends FragmentActivity {
     private String utm;
     
     private boolean sendAdxLaunchEvent = false;
-    
-    long launchTime;
+
+    private long launchTime;
+
+    private Bundle mDeepLinkBundle;
 
     /*
      * (non-Javadoc)
@@ -112,10 +113,11 @@ public class SplashScreenActivity extends FragmentActivity {
         launchTime = System.currentTimeMillis();
         Log.i(TAG, "onCreate");
         setContentView(R.layout.splash_screen);
-        JumiaApplication.INSTANCE.init(false, initializationHandler);
         
         // Get values from intent
         getPushNotifications();
+        // Initialize application
+        JumiaApplication.INSTANCE.init(false, initializationHandler);
         
     }
 
@@ -186,16 +188,13 @@ public class SplashScreenActivity extends FragmentActivity {
        }; 
     };
 
-    private String mCatalogDeepLink;
 
-    private String mCartDeepLink;
 
     private void cleanIntent(Intent intent) {
         Log.d(TAG, "CLEAN NOTIFICATION");
         utm = null; 
         productUrl = null;
-        mCatalogDeepLink = null;
-        mCartDeepLink = null;
+        mDeepLinkBundle = null;
         // setIntent(null);
         intent.putExtra(ConstantsIntentExtra.UTM_STRING, "");
         intent.putExtra(ConstantsIntentExtra.CONTENT_URL, "");
@@ -207,21 +206,34 @@ public class SplashScreenActivity extends FragmentActivity {
      * Get values from intent, sent by push notification
      */
     private void getPushNotifications() {
+        // Get intent, action and MIME type
+        Intent intent = getIntent();
+        Log.d(TAG, "DEEP LINK RECEIVED INTENT: " + intent.toString());
+        // Get intent action ACTION_VIEW
+        String action = intent.getAction();
+        // Get intent data 
+        Uri data = intent.getData();
+        // ## DEEP LINK FROM EXTERNAL URIs ##
+        if(!TextUtils.isEmpty(action) && action.equals(Intent.ACTION_VIEW) && data != null) 
+            mDeepLinkBundle = DeepLinkManager.loadExternalDeepLink(getApplicationContext(), data);
+        else 
+            Log.i(TAG, "DEEP LINK: NO EXTERNAL URI");
+        // ## DEEP LINK FROM UA ##
+        String deepLink = getIntent().getStringExtra(ConstantsIntentExtra.DEEP_LINK_TAG);
+        if(!TextUtils.isEmpty(deepLink)){
+            // Create uri from the value 
+            Uri uri = Uri.parse(deepLink);
+            Log.d(TAG, "DEEP LINK URI: " +uri.toString() + " " + uri.getPathSegments().toString());
+            // Load deep link
+            mDeepLinkBundle = DeepLinkManager.loadExternalDeepLink(getApplicationContext(), uri);
+        } else 
+            Log.i(TAG, "DEEP LINK: NO UA TAG");
         // ## Google Analytics "General Campaign Measurement" ##
         utm = getIntent().getStringExtra(ConstantsIntentExtra.UTM_STRING);
         // ## Product URL ##
         productUrl = getIntent().getStringExtra(ConstantsIntentExtra.CONTENT_URL);
-        // ## DEEP LINK ##
-        String deepLink = getIntent().getStringExtra(ConstantsIntentExtra.DEEP_LINK_TAG);
-        if(!TextUtils.isEmpty(deepLink)){
-            // ## Cart URL ##
-            mCartDeepLink = (deepLink.contains(DarwinRegex.CART_DEEP_LINK)) ? deepLink : "";
-            // ## Catalog URL ##
-            mCatalogDeepLink = (deepLink.contains(DarwinRegex.CATALOG_DEEP_LINK)) ? deepLink : "";
-        }
-
     }
-
+    
     /**
      * Starts the Activity depending whether the app is started by the user, or by the push
      * notification.
@@ -233,33 +245,9 @@ public class SplashScreenActivity extends FragmentActivity {
         if (!TextUtils.isEmpty(productUrl)) {
             // Start with deep link to product detail
             startActivityWithDeepLink(ConstantsIntentExtra.CONTENT_URL, productUrl, FragmentType.PRODUCT_DETAILS);
-            
-        } else if (!TextUtils.isEmpty(mCatalogDeepLink)) {
-            // Receives like this: <country code>/c/<category url key> - ex: ke/c/womens-casual-shoes
-            String[] catalogSplit = mCatalogDeepLink.split(DarwinRegex.DL_DELIMITER);
-            // 0 - country; 1 - tag; 2 - data;
-            String countryCode = catalogSplit[0];
-            String tag = catalogSplit[1];
-            String catalogUrl = getBaseURL() +  "/" +catalogSplit[2] + "/";
-            Log.i(TAG, "DEEP LINK: " + countryCode + " " + tag + " " + catalogUrl);
-            // Start with deep link to catalog 
-            startActivityWithDeepLink(ConstantsIntentExtra.CONTENT_URL, catalogUrl, FragmentType.PRODUCT_LIST);
-            
-        } else if (!TextUtils.isEmpty(mCartDeepLink)) {
-            // Receives like this: <country code>/cart/<sku1_sku2_sku3> - ex: ke/cart/ or ke/cart/
-            String[] cartSplit = mCartDeepLink.split(DarwinRegex.DL_DELIMITER);
-            // 0 - country; 1 - tag; 2 - data;
-            String countryCode = cartSplit[0];
-            String tag = cartSplit[1];
-            String simpleSkuArray = (cartSplit.length > 2) ? cartSplit[2] : "";
-            Log.i(TAG, "DEEP LINK: " + countryCode + " " + tag + " " + simpleSkuArray);
-            // Validate
-            if(TextUtils.isEmpty(simpleSkuArray)){
-                startActivityWithDeepLink(ConstantsIntentExtra.CONTENT_URL, null, FragmentType.SHOPPING_CART);
-            } else {
-                startActivityWithDeepLink(ConstantsIntentExtra.CONTENT_URL, simpleSkuArray, FragmentType.HEADLESS_CART);
-            }
-            
+        // ## Deep link via URIs
+        } else if (mDeepLinkBundle != null) {
+                startDeepView(mDeepLinkBundle);
         } else {
             // Default Start
             Intent intent = new Intent(this, MainFragmentActivity.class);
@@ -274,6 +262,7 @@ public class SplashScreenActivity extends FragmentActivity {
      * Get the base URL
      * @return String
      */
+    @SuppressWarnings("unused")
     private String getBaseURL(){
         return RestContract.HTTPS_PROTOCOL + "://" + RestContract.REQUEST_HOST + "/" + RestContract.REST_BASE_PATH;
     }
@@ -302,6 +291,35 @@ public class SplashScreenActivity extends FragmentActivity {
         TrackerDelegator.trackPushNotificationsEnabled(getApplicationContext(), true);
     }
     
+    /**
+     * Start deep view with the respective bundle and set the ADX event 
+     * @param bundle
+     * @author sergiopereira
+     */
+    private void startDeepView(Bundle bundle) {
+        // Get fragment type
+        FragmentType fragmentType = (FragmentType) bundle.getSerializable(DeepLinkManager.FRAGMENT_TYPE_TAG);
+        Log.d(TAG, "DEEP LINK FRAGMENT TYPE: " + fragmentType.toString());
+        // Get and add Adx value
+        String adxValue = bundle.getString(DeepLinkManager.ADX_ID_TAG);
+        Log.d(TAG, "DEEP LINK ADX VALUE: " + adxValue);
+        AdXTracker.deepLinkLaunch(getApplicationContext(), adxValue);
+        // Default Start
+        Intent intent = new Intent(this, MainFragmentActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        // Validate fragment type
+        if(fragmentType != FragmentType.HOME || fragmentType != FragmentType.UNKNOWN) {
+            intent.putExtra(ConstantsIntentExtra.FRAGMENT_TYPE, fragmentType);
+            intent.putExtra(ConstantsIntentExtra.FRAGMENT_BUNDLE, bundle);
+        }
+        // Start activity
+        startActivity(intent);
+        TrackerDelegator.trackPushNotificationsEnabled(getApplicationContext(), true);
+    }
+    
+    /**
+     * 
+     */
     @SuppressLint("NewApi")
     private void showDevInfo() {
         if (!HockeyStartup.isSplashRequired(getApplicationContext())) {
