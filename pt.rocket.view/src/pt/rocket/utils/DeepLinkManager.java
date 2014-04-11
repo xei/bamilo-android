@@ -326,7 +326,7 @@ public class DeepLinkManager {
     private static Bundle processCatalogLink(String catalog) {
         Log.i(TAG, "DEEP LINK TO CATALOG: " + catalog);
         Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.CONTENT_URL, "/" + catalog);
+        bundle.putString(ConstantsIntentExtra.CONTENT_URL, "https:/" + catalog);
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gpush_prefix);
         bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
         bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.PRODUCT_LIST);
