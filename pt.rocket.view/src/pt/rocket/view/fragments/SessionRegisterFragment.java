@@ -33,6 +33,7 @@ import pt.rocket.helpers.session.GetRegisterHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.pojo.DynamicForm;
 import pt.rocket.pojo.DynamicFormItem;
+import pt.rocket.utils.DeepLinkManager;
 import pt.rocket.utils.InputType;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
@@ -96,9 +97,16 @@ public class SessionRegisterFragment extends BaseFragment {
      * 
      * @return
      */
-    public static SessionRegisterFragment getInstance() {
+    public static SessionRegisterFragment getInstance(Bundle bundle) {
         if (registerFragment == null)
             registerFragment = new SessionRegisterFragment();
+        
+        if(bundle != null){
+            // Force load form if comes from deep link
+            String path = bundle.getString(ConstantsIntentExtra.DEEP_LINK_TAG);
+            if(path != null && path.equals(DeepLinkManager.TAG)) JumiaApplication.INSTANCE.registerForm = null;
+        }
+        
         return registerFragment;
     }
 
@@ -133,7 +141,6 @@ public class SessionRegisterFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-        savedInstanceState = savedInstanceState;
     }
 
     /*

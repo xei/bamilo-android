@@ -16,6 +16,7 @@ import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.GetCategoriesHelper;
+import pt.rocket.helpers.GetSearchCategoryHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.FragmentCommunicator;
 import pt.rocket.utils.MyMenuItem;
@@ -82,6 +83,9 @@ public class CategoriesContainerFragment extends BaseFragment {
     SharedPreferences sharedPrefs;
     int selectedCategory;
     int selectedSubCategory;
+
+    private String mDeepLinkCategoryId;
+    
     /**
      * Get instance
      * 
@@ -127,6 +131,20 @@ public class CategoriesContainerFragment extends BaseFragment {
             if(bundle.containsKey(ConstantsIntentExtra.SELECTED_SUB_CATEGORY_INDEX)){
                 categoriesFragment.subCategoryIndex = bundle.getInt(ConstantsIntentExtra.SELECTED_SUB_CATEGORY_INDEX);
                 categoriesFragment.selectedSubCategory = bundle.getInt(ConstantsIntentExtra.SELECTED_SUB_CATEGORY_INDEX);
+            }
+            
+            // Clean the deep link mode
+            if(categoriesFragment.mDeepLinkCategoryId != null) {
+                Log.d(TAG, "IS ON DEEP LINK MODE");
+                categoriesFragment.mDeepLinkCategoryId = null;
+                categoriesFragment.clean();
+            }
+            
+            // Validate if is in deep mode
+            if(bundle.containsKey(ConstantsIntentExtra.CATEGORY_ID)) {
+                categoriesFragment.mDeepLinkCategoryId = bundle.getString(ConstantsIntentExtra.CATEGORY_ID);
+                Log.i(TAG, "DEEP LINK: CATEGORY ID " + categoriesFragment.mDeepLinkCategoryId);
+                categoriesFragment.clean();
             }
                 
         }
@@ -219,11 +237,12 @@ public class CategoriesContainerFragment extends BaseFragment {
         } else if(getView() != null) {
             mBeginRequestMillis = System.currentTimeMillis();
 //            Log.i(TAG, "ON trigger(categoryUrl); "+categoryUrl);
-            /**
-             * TRIGGERS
-             * @author sergiopereira
-             */
-            trigger(categoryUrl);
+            
+            // Validate the received data
+            if(mDeepLinkCategoryId != null)
+                triggerSearchCategory(mDeepLinkCategoryId);
+            else 
+                trigger(categoryUrl);
             
         } else {
 //            Log.i(TAG, "ON tonBackPressed");
@@ -245,12 +264,6 @@ public class CategoriesContainerFragment extends BaseFragment {
             removeOldFragments();
         FragmentCommunicator.getInstance().destroyInstance();
         super.onPause();
-       
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
     }
     
     /*
@@ -262,7 +275,6 @@ public class CategoriesContainerFragment extends BaseFragment {
     public void onStop() {
         super.onStop();
         Log.i(TAG, "ON STOP");
-        
     }
 
     /*
@@ -273,7 +285,22 @@ public class CategoriesContainerFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        Log.i(TAG, "ON DESTROY VIEW");
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.view.fragments.BaseFragment#onDestroy()
+     */
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
         Log.i(TAG, "ON DESTROY");
+        // Clean the deep link mode
+        if(mDeepLinkCategoryId != null) {
+            mDeepLinkCategoryId = null;
+            clean();
+        }
     }
     
     private FragmentType getFragmentType(String type){
@@ -607,6 +634,31 @@ public class CategoriesContainerFragment extends BaseFragment {
         eDitor.commit();
     }
     
+    /**
+     * Clean the current state for deep link
+     * @author sergiopereira
+     */
+    private void clean(){
+        Log.d(TAG, "DEEP LINK: CLEAN");
+        // Clean current categories on Jumia application
+        JumiaApplication.currentCategories = null;
+        // Clean current saved data
+        sharedPrefs = getBaseActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        Editor eDitor = sharedPrefs.edit();
+        eDitor.remove(ConstantsSharedPrefs.KEY_CATEGORY_SELECTED);
+        eDitor.remove(ConstantsSharedPrefs.KEY_SUB_CATEGORY_SELECTED);
+        eDitor.remove(ConstantsSharedPrefs.KEY_CURRENT_FRAGMENT);
+        eDitor.remove(ConstantsSharedPrefs.KEY_CHILD_CURRENT_FRAGMENT);
+        eDitor.commit();
+        mCategoriesFragment = null;
+        mChildCategoriesFragment = null;
+        currentFragment = FragmentType.CATEGORIES_LEVEL_1;
+        childCurrentFragment = FragmentType.CATEGORIES_LEVEL_2;
+        backLevelButton = null;
+        subCategoryIndex = 0;
+        selectedSubCategory = 0;
+    }
+    
     @Override
     public void notifyFragment(Bundle bundle) {
         
@@ -657,6 +709,18 @@ public class CategoriesContainerFragment extends BaseFragment {
         } else {
             triggerContentEvent(new GetCategoriesHelper(), bundle, mCallBack);    
         }
+    }
+    
+    /**
+     * Trigger to get the category via id.
+     * The GetSearchCategoryHelper event is the same that the GetCategoriesHelper.
+     * @author sergiopereira
+     */
+    private void triggerSearchCategory(String categoryId){
+        Log.i(TAG, "DEEP LINK: TRIGGER GET CATEGORY " + categoryId);
+        Bundle bundle = new Bundle();
+        bundle.putString(GetSearchCategoryHelper.CATEGORY_TAG, categoryId);
+        triggerContentEvent(new GetSearchCategoryHelper(), bundle, mCallBack);
     }
     
     /**

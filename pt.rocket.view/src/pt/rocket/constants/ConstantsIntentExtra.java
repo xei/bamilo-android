@@ -61,6 +61,7 @@ public class ConstantsIntentExtra {
     // ########### Categories ##############
     public static final String CATEGORY_LEVEL               = mPackage + "CategoryLevel";
     public static final String CATEGORY_URL                 = mPackage + "CategoryUrl";
+    public static final String CATEGORY_ID                  = mPackage + "Category";
     public static final String SELECTED_CATEGORY_INDEX      = mPackage + "CategoryIdx";
     public static final String SELECTED_SUB_CATEGORY_INDEX  = mPackage + "SubCategoryIdx";
 

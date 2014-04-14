@@ -3,11 +3,9 @@ package pt.rocket.framework.database;
 import java.util.ArrayList;
 
 import pt.rocket.framework.objects.LastViewed;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteCantOpenDatabaseException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 

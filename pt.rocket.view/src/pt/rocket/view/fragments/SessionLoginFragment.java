@@ -33,6 +33,7 @@ import pt.rocket.helpers.session.GetLoginHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.pojo.DynamicForm;
 import pt.rocket.pojo.DynamicFormItem;
+import pt.rocket.utils.DeepLinkManager;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.TrackerDelegator;
@@ -44,8 +45,6 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -73,8 +72,6 @@ public class SessionLoginFragment extends BaseFragment {
     private final static String FORM_ITEM_EMAIL = "email";
 
     private final static String FORM_ITEM_PASSWORD = "password";
-
-    private MainFragmentActivity parentActivity;
 
     private View signinButton;
 
@@ -122,6 +119,9 @@ public class SessionLoginFragment extends BaseFragment {
             if(bundle != null){
                 loginFragment.nextFragmentType  = (FragmentType) bundle.getSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE);
                 loginFragment.loginOrigin = bundle.getString(ConstantsIntentExtra.LOGIN_ORIGIN);
+                // Force load form if comes from deep link
+                String path = bundle.getString(ConstantsIntentExtra.DEEP_LINK_TAG);
+                if(path != null && path.equals(DeepLinkManager.TAG)) loginFragment.formResponse = null;
             }
         return loginFragment;
     }

@@ -642,12 +642,8 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
             case Categories:
                 Bundle bundle = new Bundle();
                 bundle.putString(ConstantsIntentExtra.CATEGORY_URL, null);
-                bundle.putSerializable(ConstantsIntentExtra.CATEGORY_LEVEL,
-                        FragmentType.CATEGORIES_LEVEL_1);
-                ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.CATEGORIES_LEVEL_1,
-                        bundle, FragmentController.ADD_TO_BACK_STACK);
-//                if (slidingMenu.isSlidingEnabled())
-//                    slidingMenu.toggle(true);
+                bundle.putSerializable(ConstantsIntentExtra.CATEGORY_LEVEL, FragmentType.CATEGORIES_LEVEL_1);
+                ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.CATEGORIES_LEVEL_1, bundle, FragmentController.ADD_TO_BACK_STACK);
                 getBaseActivity().toggle();
                 break;
             case MyAccount:

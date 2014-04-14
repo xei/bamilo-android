@@ -34,10 +34,7 @@ public class UrbanAirshipComponent extends ApplicationComponent {
      */
     @Override
     protected ErrorCode initInternal(Application app) {
-//        if(JumiaApplication.INSTANCE.isUAInitialized){
-//            return ErrorCode.NO_ERROR;
-//        }
-//        JumiaApplication.INSTANCE.isUAInitialized = true;
+        Log.i(TAG, "INIT INTERNAL");
         context = app.getApplicationContext();
         AirshipConfigOptions options = AirshipConfigOptions.loadDefaultOptions(app);
         UAirship.takeOff(app, options);
@@ -51,9 +48,14 @@ public class UrbanAirshipComponent extends ApplicationComponent {
         return ErrorCode.NO_ERROR;
     }
 
+    /**
+     * Set user settings
+     */
     public void setUserPushSettings() {
+        Log.i(TAG, "SET USER PUSH SETTINGS");
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        if (prefs.getBoolean(context.getString(R.string.pref_notification), context.getResources().getBoolean(R.bool.default_notification))) {
+        if (prefs.getBoolean(context.getString(R.string.pref_notification), 
+                context.getResources().getBoolean(R.bool.default_notification))) {
             Log.d(TAG, "Enable push notifications");
             PushManager.enablePush();
             PushManager

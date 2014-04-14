@@ -25,7 +25,7 @@ import android.util.Log;
  */
 public class DeepLinkManager {
     
-    private static final String TAG = DeepLinkManager.class.getSimpleName();
+    public static final String TAG = DeepLinkManager.class.getSimpleName();
     
     private static final int PATH_CC_POS = 0;
     
@@ -180,10 +180,9 @@ public class DeepLinkManager {
     private static Bundle processCategoryLink(String categoryId) {
         Log.i(TAG, "DEEP LINK TO CATEGORY: " + categoryId);
         // Create bundle
-        // TODO - SENT CATEGORY ID
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CATEGORY_URL, null);
-        //bundle.putString(ConstantsIntentExtra.CATEGORY_INDEX, null);
+        bundle.putString(ConstantsIntentExtra.CATEGORY_ID, categoryId);
         bundle.putSerializable(ConstantsIntentExtra.CATEGORY_LEVEL, FragmentType.CATEGORIES_LEVEL_1);
         bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.CATEGORIES_LEVEL_1);
         return bundle;
@@ -288,6 +287,7 @@ public class DeepLinkManager {
     private static Bundle processLoginLink() {
         Log.i(TAG, "DEEP LINK TO HOME");
         Bundle bundle = new Bundle();
+        bundle.putString(ConstantsIntentExtra.DEEP_LINK_TAG, TAG);
         bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.LOGIN);
         return bundle;
     }
@@ -300,6 +300,7 @@ public class DeepLinkManager {
     private static Bundle processRegisterLink() {
         Log.i(TAG, "DEEP LINK TO HOME");
         Bundle bundle = new Bundle();
+        bundle.putString(ConstantsIntentExtra.DEEP_LINK_TAG, TAG);
         bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.REGISTER);
         return bundle;
     }
@@ -368,9 +369,8 @@ public class DeepLinkManager {
         // Validate saved shop id
         if(shopId == -1)
             locateCountryCode(context, countryCode);
-        else if(!context.getResources().getStringArray(R.array.language_codes)[shopId].equalsIgnoreCase(countryCode)){
+        else if(!context.getResources().getStringArray(R.array.language_codes)[shopId].equalsIgnoreCase(countryCode))
             locateCountryCode(context, countryCode);
-        }           
         else
             Log.i(TAG, "DEEP LINK CC IS THE SAME");
     }

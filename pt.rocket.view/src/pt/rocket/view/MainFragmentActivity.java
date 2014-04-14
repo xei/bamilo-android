@@ -70,8 +70,6 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
     private FragmentType currentFragmentType;
 
     private boolean wasReceivedNotification = false;
-
-    private SharedPreferences sharedPrefs;
     
     private int currentAdjustState = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED;
     /**
@@ -127,9 +125,6 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
     
     /**
      * Validate and process intent from notification
-     * 
-     * FIXME - Validate this is the right process
-     * 
      * @param intent
      * @return
      */
@@ -141,7 +136,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             // Get extras from notifications
             FragmentType fragmentType = (FragmentType) intent.getSerializableExtra(ConstantsIntentExtra.FRAGMENT_TYPE);
             Bundle bundle = intent.getBundleExtra(ConstantsIntentExtra.FRAGMENT_BUNDLE);
-            // TODO - Validate this step to maintain the base TAG
+            // Validate this step to maintain the base TAG
             onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
             // Switch to fragment with respective bundle
             onSwitchFragment(fragmentType, bundle, FragmentController.ADD_TO_BACK_STACK);
@@ -294,7 +289,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             break;
         case REGISTER:
             newAdjustState = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED;
-            fragment = SessionRegisterFragment.getInstance();
+            fragment = SessionRegisterFragment.getInstance(bundle);
             break;
         case FORGOT_PASSWORD:
             newAdjustState = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED;
@@ -322,10 +317,6 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         case HEADLESS_CART:
             fragment = HeadlessAddToCartFragment.getInstance();
             break;
-            
-        /**
-         * TODO: NEW FRAGMENTS
-         */
         case LOGIN:
             newAdjustState = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED;
             fragment = SessionLoginFragment.getInstance(bundle);

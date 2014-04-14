@@ -17,12 +17,10 @@ import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.FragmentCommunicator;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.view.BaseActivity;
-import pt.rocket.view.MainFragmentActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -291,7 +289,7 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
      */
     private void categoryLevel2() {
         categoriesList = (ListView) getView().findViewById(R.id.sub_categories_grid);
-        if( categories == null || categories.size() <= 0 ){
+        if( categories == null || categories.size() <= 0 || categoryIndex >= categories.size()){
             return;
         }
         parent = categories;
@@ -318,7 +316,9 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
      */
     private void categoryLevel3() {
         categoriesList = (ListView) getView().findViewById(R.id.sub_categories_grid);
-        
+        if( categories == null || categories.size() <= 0 || categoryIndex >= categories.size()){
+            return;
+        }
         parent = categories.get(categoryIndex).getChildren();
         child = categories.get(categoryIndex).getChildren().get(subCategoryIndex).getChildren();
         currentCategory = parent.get(subCategoryIndex);

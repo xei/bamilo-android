@@ -9,31 +9,40 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import pt.rocket.framework.database.CategoriesTableHelper;
 import pt.rocket.framework.enums.RequestType;
 import pt.rocket.framework.objects.Category;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 
 /**
- * Example helper
+ * Class used to get a category from an id
  * 
- * @author Guilherme Silva
+ * @author sergiopereira 
  * 
  */
-public class GetCategoriesHelper extends BaseHelper {
+public class GetSearchCategoryHelper extends BaseHelper {
     
-    public static final String CATEGORY_URL = "category_url";
+    private static String TAG = GetSearchCategoryHelper.class.getSimpleName();
     
-    private static String TAG = GetCategoriesHelper.class.getSimpleName();
+    private static final EventType type = EventType.GET_CATEGORIES_EVENT;
+    
+    public static final String CATEGORY_TAG = "category";
 
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.helpers.BaseHelper#generateRequestBundle(android.os.Bundle)
+     */
     @Override
     public Bundle generateRequestBundle(Bundle args) {
+        Log.d(TAG, "REQUEST");
+        Uri uri = Uri.parse(type.action).buildUpon().appendQueryParameter(CATEGORY_TAG, args.getString(CATEGORY_TAG)).build();
         Bundle bundle = new Bundle();
-        bundle.putString(Constants.BUNDLE_URL_KEY, EventType.GET_CATEGORIES_EVENT.action);
+        bundle.putString(Constants.BUNDLE_URL_KEY, uri.toString());
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_CATEGORIES_EVENT);
@@ -41,10 +50,14 @@ public class GetCategoriesHelper extends BaseHelper {
         return bundle;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.helpers.BaseHelper#parseResponseBundle(android.os.Bundle, org.json.JSONObject)
+     */
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
-        try {// TODO add further object parsing possibilities : for example data
-             // not being an array but a dictionary
+        Log.d(TAG, "PARSE RESPONSE BUNDLE");
+        try {
         	android.util.Log.d("TRACK", "parseResponseBundle GetCategoriesHelper");
         	JSONArray categoriesArray = jsonObject.getJSONArray(RestConstants.JSON_DATA_TAG);
             int categoriesArrayLenght = categoriesArray.length();
@@ -56,24 +69,33 @@ public class GetCategoriesHelper extends BaseHelper {
                 categories.add(category);
             }
             bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, categories);
-            CategoriesTableHelper.saveCategories(categories);
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.w(TAG, "ERROR ON PARSING JSON OBJECT", e);
         }
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_CATEGORIES_EVENT);
         return bundle;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.helpers.BaseHelper#parseErrorBundle(android.os.Bundle)
+     */
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
+        Log.d(TAG, "PARSE ERROR BUNDLE");
         android.util.Log.d(TAG, "parseErrorBundle GetCategoriesHelper");
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_CATEGORIES_EVENT);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.helpers.BaseHelper#parseResponseErrorBundle(android.os.Bundle)
+     */
     @Override
     public Bundle parseResponseErrorBundle(Bundle bundle) {
+        Log.d(TAG, "PARSE RESPONSE ERROR BUNDLE");
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_CATEGORIES_EVENT);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
