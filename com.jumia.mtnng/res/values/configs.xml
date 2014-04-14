@@ -11,4 +11,10 @@
     <bool name="ga_testmode">false</bool>
     <bool name="f_testmode">false</bool>
 
+	<!-- DEEP LINK -->
+    <string name="dp_package_id">com.jumia.mtnng</string>
+    <string name="dp_app_name_uppercase">JUMIA</string>
+    <string name="dp_app_name_lowercase">jumia</string>
+    <string name="dp_intent_label">Jumia MTNNG</string>
+
 </resources>
