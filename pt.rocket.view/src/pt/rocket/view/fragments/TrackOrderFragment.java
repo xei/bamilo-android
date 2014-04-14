@@ -56,7 +56,7 @@ public class TrackOrderFragment extends BaseFragment {
      * @return
      */
     public static TrackOrderFragment getInstance() {
-        if (mTrackOrderFragment == null)
+        //if (mTrackOrderFragment == null)
             mTrackOrderFragment = new TrackOrderFragment();
         return mTrackOrderFragment;
     }
@@ -185,6 +185,7 @@ public class TrackOrderFragment extends BaseFragment {
             proccessError();
         }
         
+        getBaseActivity().showContentContainer();
     }
     
     OnClickListener trackOrderClickListener = new OnClickListener() {
@@ -300,7 +301,6 @@ public class TrackOrderFragment extends BaseFragment {
 
     @Override
     public void notifyFragment(Bundle bundle) {
-        // TODO Auto-generated method stub
         
     }
 }

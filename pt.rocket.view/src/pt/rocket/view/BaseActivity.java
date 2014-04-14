@@ -1661,18 +1661,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         errorView.setOnClickListener(clickListener);
     }
 
-//    public final void showContentContainer(boolean fromCheckout) {
-//        if (processShow) {
-//            Log.d(getTag(), "Showing the content container");
-//            hideLoadingInfo();
-//            dismissProgress();
-//            setVisibility(errorView, false);
-//            if (!fromCheckout) {
-//                setVisibility(contentContainer, true);
-//            }
-//        }
-//    }
-
     public final void showContentContainer() {
         if (processShow) {
             Log.d(getTag(), "Showing the content container");

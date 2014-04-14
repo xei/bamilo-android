@@ -9,7 +9,6 @@ import pt.rocket.framework.objects.SearchSuggestion;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.text.format.DateFormat;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -57,6 +56,9 @@ public class SearchRecentQueriesTableHelper {
     	if(query == null) return false;
     	// Insert
         SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
+        // Delete old entries
+        db.delete(_NAME, _QUERY + " LIKE ?", new String[] {query});
+	    // Insert
         ContentValues values = new ContentValues();
         values.put(SearchRecentQueriesTableHelper._QUERY, query);
         long result = db.insert(SearchRecentQueriesTableHelper._NAME, null, values);
@@ -100,8 +102,13 @@ public class SearchRecentQueriesTableHelper {
 		// Return
 		return getRecentQueries(query);
     }
-    
-    
+
+    /**
+     * Update the recent query
+     * @param query
+     * @return 
+     * @author sergiopereira
+     */
     public static synchronized boolean updateRecentQuery(String query) {
     	Log.d(TAG, "UPDATE RECENT QUERIES FOR: " + query);
     	// Validate arguments
@@ -109,7 +116,7 @@ public class SearchRecentQueriesTableHelper {
     	// Get current time stamp
     	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
     	String timestamp = dateFormat.format(new Date());
-    	Log.d(TAG, "UPDATE TIMESTAMP: " + timestamp);
+    	Log.d(TAG, "UPDATE RECENT TIMESTAMP: " + timestamp);
     	// Update
         SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
         ContentValues values = new ContentValues();

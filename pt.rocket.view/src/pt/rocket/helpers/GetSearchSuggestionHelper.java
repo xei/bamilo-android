@@ -71,6 +71,11 @@ public class GetSearchSuggestionHelper extends BaseHelper {
         }).start();
     }
     
+    /**
+     * Update the recent query on the database
+     * @param query
+     * @author sergiopereira
+     */
     public static void updateSearchQuery(final String query){
         Log.d(TAG, "UPDATE SEARCH QUERY: " + query);
         new Thread(new Runnable() {
