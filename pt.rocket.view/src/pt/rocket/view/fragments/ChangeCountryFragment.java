@@ -122,8 +122,6 @@ public class ChangeCountryFragment extends BaseFragment {
     public void onStart() {
         super.onStart();
         Log.i(TAG, "ON START");
-        // Hide search component
-        if (getBaseActivity() != null) getBaseActivity().hideActionBarItemsForChangeCountry(EnumSet.noneOf(MyMenuItem.class));
         // Get prefs
         SharedPreferences sharedPrefs = context.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         selected = sharedPrefs.getInt(ChangeCountryFragmentActivity.KEY_COUNTRY, SHOP_NOT_SELECTED);

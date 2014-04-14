@@ -535,6 +535,7 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
      * @author sergiopereira
      */
     private void disableSearchItem(View view) {
+        //Log.i(TAG, "SEARCH: DISABLED");
         view.setEnabled(false);
         view.setOnClickListener(null);
         TextView text = (TextView) view.findViewById(R.id.component_text);
@@ -548,6 +549,7 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
      * @author sergiopereira
      */
     private void enableSearchItem(View view) {
+        //Log.i(TAG, "SEARCH: ENABLED");
         view.setEnabled(true);
         view.setOnClickListener(this);
         TextView text = (TextView) view.findViewById(R.id.component_text);

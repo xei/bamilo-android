@@ -227,8 +227,11 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
         setVisiblility(VISIBLE);
         
+        // Hide search component for change country
         if(this.action == NavigationAction.Country){
-            ((BaseActivity) getActivity()).updateActionForCountry(this.action);
+            // Hide search component
+            getBaseActivity().hideActionBarItemsForChangeCountry(EnumSet.noneOf(MyMenuItem.class));
+            getBaseActivity().updateActionForCountry(this.action);
         }
         
         // Validate if is checkout process

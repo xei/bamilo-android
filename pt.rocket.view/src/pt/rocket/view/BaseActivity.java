@@ -1176,7 +1176,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             else findViewById(R.id.rocket_app_header_search_bar).setVisibility(View.GONE);
         }
         this.menuItems = enumSet;
-        invalidateOptionsMenu();
     }
     
     /**

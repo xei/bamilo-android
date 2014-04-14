@@ -320,4 +320,9 @@
     <string name="payment">Paiement</string>
     <string name="no_payment">Aucun paiement nécessaire</string>
     <string name="please_fill_all_data">Veuillez entrer toutes les données</string>
+	<string name="done_label">Valider</string>
+    <string name="clear_uppercase_label">EFFACER</string>
+    <string name="clear_all_uppercase_label">TOUT EFFACER</string>
+    <string name="filter_label">Filtre</string>
+    <string name="all_label">Tout</string>
 </resources>
