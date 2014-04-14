@@ -27,7 +27,8 @@
     <string name="glogin">Login</string>
     <string name="gregister">Register</string>
     <string name="gproductdetail">ShopProductDetail</string>
-
+	<string name="grateproduct">RateProduct</string>
+	
     <!-- prefixes for page string encoding -->
     <string name="gbrand_prefix">brand</string>
     <string name="gcategory_prefix">cat</string>

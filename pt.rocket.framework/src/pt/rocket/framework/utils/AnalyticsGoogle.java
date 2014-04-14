@@ -1,13 +1,6 @@
 package pt.rocket.framework.utils;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Set;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import pt.rocket.framework.R;
 import pt.rocket.framework.objects.Customer;
@@ -429,6 +422,16 @@ public class AnalyticsGoogle {
 		mTracker.sendSocial(category, action, user_id);
 	}
 	
+	public void trackRateProduct(Context context, String sku, Long value, String rating_type){
+		if (!isEnabled) {
+			return;
+		}
+		
+		String category = mContext.getString(R.string.gcatalog);
+		String action = mContext.getString(R.string.grateproduct)+rating_type;
+		mTracker.sendEvent(category, action, sku, value);
+	}
+	
 	public void sendException(String msg, Exception e, boolean nonFatal) {
 		mTracker.sendException(msg, e, nonFatal);
 	}
@@ -464,21 +467,6 @@ public class AnalyticsGoogle {
             Log.d(TAG, "Google Analytics, Campaign: " + campaignString);
 			mTracker.setCampaign(campaignString);
 		} 
-	}
-	
-	public static JSONObject generateJSONObject(LinkedHashMap<String,Object> values){
-		JSONObject jsonObject = new JSONObject();
-		Set<String> keys = values.keySet();
-		for (String key : keys) {
-			try {
-				jsonObject.put(key, values.get(key));
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		return jsonObject;
-		
 	}
 	
 }
