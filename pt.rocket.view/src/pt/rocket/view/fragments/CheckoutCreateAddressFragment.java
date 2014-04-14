@@ -188,6 +188,7 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         } else {
             Log.d(TAG, "SAVED CONTENT VALUES IS NULL");
         }
+        TrackerDelegator.trackCheckoutStep(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), R.string.gcheckoutCreateAddress, R.string.xcheckoutcreateaddress, R.string.mixprop_checkout_create_address);
     }
     
     /*
@@ -258,7 +259,6 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        TrackerDelegator.trackCheckoutStep(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), R.string.gcheckoutCreateAddress, R.string.xcheckoutcreateaddress, R.string.mixprop_checkout_create_address);
     }
     
     /*

@@ -104,7 +104,7 @@
     <string name="login_text">In order to comment, you have to login. Do you want to login?</string>
     <string name="login_useraccount">In order to change your account data, you have to login. Do you want to login?</string>
     <string name="added_to_shop_cart_dialog_text">Item was added to shopping cart</string>
-    <string name="vat_string">VAT included </string>
+    <string name="vat_string">VAT </string>
     <string name="shopping_cart">Shopping Cart</string>
     <string name="go_to_cart">Go to Cart</string>
     <string name="continue_shopping">Continue Shopping</string>

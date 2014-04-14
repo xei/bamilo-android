@@ -870,6 +870,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
 
         triggerAddItemToCart(item);
 
+        Log.i(TAG, "code1price : "+price);
         AnalyticsGoogle.get().trackAddToCart(sku, price);
         TrackerDelegator.trackProductAddedToCart(getActivity(), mCompleteProduct, simple,
                 (double) price, priceAsString, getString(R.string.mixprop_itemlocationdetails));

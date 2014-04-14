@@ -27,6 +27,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 
 import com.facebook.android.Util;
+import com.google.analytics.tracking.android.GoogleAnalytics;
 import com.urbanairship.push.PushManager;
 
 import de.akquinet.android.androlog.Log;
@@ -45,10 +46,7 @@ public class TrackerDelegator {
     public final static void trackLoginSuccessful(Context context, Customer customer, boolean wasAutologin, String origin, boolean wasFacebookLogin) {
         String mOrigin;
         int resLogin;
-        
-        // TODO : Add this filter Signup stings
-        // R.string.gfacebooksignupsuccess;
-        // R.string.gsignupsuccess;
+       
         
         if( wasFacebookLogin ){
             resLogin = R.string.gfacebookloginsuccess;
@@ -98,6 +96,8 @@ public class TrackerDelegator {
     public final static void trackLogoutSuccessful(Context context) {
         MixpanelTracker.logout(context);
         AdXTracker.logout(context, JumiaApplication.INSTANCE.SHOP_NAME, JumiaApplication.INSTANCE.CUSTOMER.getIdAsString(), JumiaApplication.INSTANCE.ADX_VERSION_NAME, JumiaApplication.INSTANCE.ADX_DISPLAY_SIZE);
+        int trackRes = R.string.glogoutsuccess;
+        AnalyticsGoogle.get().trackAccount(trackRes, JumiaApplication.INSTANCE.CUSTOMER);
     }
 
     public final static void trackSearchMade(Context context, String criteria, long results) {
@@ -153,6 +153,7 @@ public class TrackerDelegator {
             user_id = JumiaApplication.INSTANCE.CUSTOMER.getIdAsString();
         }
         AdXTracker.trackShare(context, sku, user_id, JumiaApplication.INSTANCE.ADX_VERSION_NAME, JumiaApplication.INSTANCE.ADX_DISPLAY_SIZE, JumiaApplication.INSTANCE.SHOP_NAME);
+        AnalyticsGoogle.get().trackShare(context, sku, user_id, JumiaApplication.INSTANCE.ADX_VERSION_NAME, JumiaApplication.INSTANCE.ADX_DISPLAY_SIZE, JumiaApplication.INSTANCE.SHOP_NAME);
     }
 
     public final static void trackCategoryView(Context context, String category, int page) {
@@ -211,10 +212,13 @@ public class TrackerDelegator {
         new Thread( new Runnable() {
             @Override
             public void run() {
-                
-                AnalyticsGoogle.get().trackCheckoutStep(hashedemail, gstep);
-                AdXTracker.trackCheckoutStep(context, hashedemail, xstep);
-                MixpanelTracker.trackCheckoutStep(context, hashedemail, mixstep);
+                String user_id = hashedemail;
+                if(JumiaApplication.INSTANCE.CUSTOMER != null && JumiaApplication.INSTANCE.CUSTOMER.getIdAsString() != null && JumiaApplication.INSTANCE.CUSTOMER.getIdAsString().length() > 0){
+                    user_id = JumiaApplication.INSTANCE.CUSTOMER.getIdAsString();
+                }
+                AnalyticsGoogle.get().trackCheckoutStep(user_id, gstep);
+                AdXTracker.trackCheckoutStep(context, JumiaApplication.INSTANCE.SHOP_NAME, user_id, JumiaApplication.INSTANCE.ADX_VERSION_NAME, JumiaApplication.INSTANCE.ADX_DISPLAY_SIZE, xstep);
+                MixpanelTracker.trackCheckoutStep(context, user_id, mixstep);
             }
             
         }).run();        
@@ -248,9 +252,13 @@ public class TrackerDelegator {
         new Thread( new Runnable() {
             @Override
             public void run() {
-                AnalyticsGoogle.get().trackPaymentMethod(hashedemail, payment);
-                AdXTracker.trackPaymentMethod(context, hashedemail, payment);
-                MixpanelTracker.trackPaymentMethod(context, hashedemail, payment);
+                String user_id = hashedemail;
+                if(JumiaApplication.INSTANCE.CUSTOMER != null && JumiaApplication.INSTANCE.CUSTOMER.getIdAsString() != null && JumiaApplication.INSTANCE.CUSTOMER.getIdAsString().length() > 0){
+                    user_id = JumiaApplication.INSTANCE.CUSTOMER.getIdAsString();
+                }
+                AnalyticsGoogle.get().trackPaymentMethod(user_id, payment);
+                AdXTracker.trackPaymentMethod(context, JumiaApplication.INSTANCE.SHOP_NAME, user_id, JumiaApplication.INSTANCE.ADX_VERSION_NAME, JumiaApplication.INSTANCE.ADX_DISPLAY_SIZE, payment);
+                MixpanelTracker.trackPaymentMethod(context, user_id, payment);
             }
             
         }).run();        
@@ -261,9 +269,13 @@ public class TrackerDelegator {
         new Thread( new Runnable() {
             @Override
             public void run() {
-                AnalyticsGoogle.get().trackNativeCheckoutError(hashedemail, error);
-                AdXTracker.trackNativeCheckoutError(context, hashedemail, error);
-                MixpanelTracker.trackNativeCheckoutError(context, hashedemail, error);
+                String user_id = hashedemail;
+                if(JumiaApplication.INSTANCE.CUSTOMER != null && JumiaApplication.INSTANCE.CUSTOMER.getIdAsString() != null && JumiaApplication.INSTANCE.CUSTOMER.getIdAsString().length() > 0){
+                    user_id = JumiaApplication.INSTANCE.CUSTOMER.getIdAsString();
+                }
+                AnalyticsGoogle.get().trackNativeCheckoutError(user_id, error);
+                AdXTracker.trackNativeCheckoutError(context, JumiaApplication.INSTANCE.SHOP_NAME, user_id, JumiaApplication.INSTANCE.ADX_VERSION_NAME, JumiaApplication.INSTANCE.ADX_DISPLAY_SIZE, error);
+                MixpanelTracker.trackNativeCheckoutError(context, user_id, error);
             }
             
         }).run();        
@@ -280,7 +292,7 @@ public class TrackerDelegator {
         }).run();        
     }
     
-//    Got checkout response
+    //    Got checkout response
 
     private static void trackPurchaseInt(Context context, JSONObject result, Customer customer) {
         Log.i(TAG, "TRACK SALE: STARTED");

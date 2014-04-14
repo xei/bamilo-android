@@ -89,6 +89,7 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
         setRetainInstance(true);
+        TrackerDelegator.trackCheckoutStep(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), R.string.gcheckoutShippingMethods, R.string.xcheckoutshippingmethods, R.string.mixprop_checkout_shipping_methods);
     }
     
 
@@ -142,7 +143,6 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        TrackerDelegator.trackCheckoutStep(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), R.string.gcheckoutShippingMethods, R.string.xcheckoutshippingmethods, R.string.mixprop_checkout_shipping_methods);
     }
 
     /*

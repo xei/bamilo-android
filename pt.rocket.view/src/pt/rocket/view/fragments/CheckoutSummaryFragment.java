@@ -380,7 +380,12 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
      * @author sergiopereira
      */
     private void showShippingFees() {
-        mShippingFeeValue.setText(CurrencyFormatter.formatCurrency(mOrderSummary.getShippingAmount()));
+        if(!mCart.isSumCosts()){
+            mShippingFeeValue.setText(CurrencyFormatter.formatCurrency(mOrderSummary.getShippingAmount()));
+        } else {
+            mShippingFeeValue.setText(CurrencyFormatter.formatCurrency(mCart.getSumCostsValue()));
+        }
+        
         mShippingFeeView.setVisibility(View.VISIBLE);
     }
     

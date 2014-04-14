@@ -138,6 +138,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
         setRetainInstance(true);
+        TrackerDelegator.trackCheckoutStep(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), R.string.gcheckoutMyOrder, R.string.xcheckoutmyorder, R.string.mixprop_checkout_my_order);
     }
 
     /*
@@ -215,7 +216,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        TrackerDelegator.trackCheckoutStep(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), R.string.gcheckoutMyOrder, R.string.xcheckoutmyorder, R.string.mixprop_checkout_my_order);
+        
     }
 
     /*
@@ -341,14 +342,17 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
         if(!cart.isSumCosts()){
             mExtraCosts.setText(CurrencyFormatter.formatCurrency(cart.getExtraCosts()));
             mExtraCosts.setVisibility(View.VISIBLE);
+            // Shipping fee
+            mShipFeeValue.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getShippingAmount()));
         } else {
             mExtraCosts.setVisibility(View.GONE);
+            // Shipping fee
+            mShipFeeValue.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getShippingAmount()));
         }
         
         // Vat value
         mVatValue.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getTaxAmount()));
-        // Shipping fee
-        mShipFeeValue.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getShippingAmount()));
+        
         // Voucher
         if(mOrderFinish.hasCouponDiscount()) mVoucherValue.setText("- " + CurrencyFormatter.formatCurrency(mOrderFinish.getDiscountCouponValue()));
         else mVoucherView.setVisibility(View.GONE);

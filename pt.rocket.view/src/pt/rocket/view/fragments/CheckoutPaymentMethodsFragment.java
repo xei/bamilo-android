@@ -119,9 +119,12 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
         //setRetainInstance(true);
         
         // Validate the saved values 
-        if(savedInstanceState != null)
+        if(savedInstanceState != null){
             // Get the ship content values
             mSavedState = savedInstanceState.getParcelable(SAVED_STATE);
+        }
+        
+        TrackerDelegator.trackCheckoutStep(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), R.string.gcheckoutPaymentMethods, R.string.xcheckoutpaymentmethods, R.string.mixprop_checkout_payment_methods);
     }
     
 
@@ -176,7 +179,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        TrackerDelegator.trackCheckoutStep(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), R.string.gcheckoutPaymentMethods, R.string.xcheckoutpaymentmethods, R.string.mixprop_checkout_payment_methods);
+        
     }
     
     /*

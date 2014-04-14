@@ -467,13 +467,24 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         
         items = new ArrayList<ShoppingCartItem>(cart.getCartItems().values());
         priceTotal.setText(CurrencyFormatter.formatCurrency(cart.getCartCleanValue()));
+        TextView shippingValue = (TextView) getView().findViewById(R.id.shipping_value);
         if(!cart.isSumCosts()){
             extraCosts.setVisibility(View.VISIBLE);
             extraCostsValue.setVisibility(View.VISIBLE);
             extraCostsValue.setText(CurrencyFormatter.formatCurrency(cart.getExtraCosts()));
+            if (cart.getShippingValue() != null
+                    && !cart.getShippingValue().equalsIgnoreCase("null")
+                    && !cart.getShippingValue().equalsIgnoreCase("")) {
+                
+                shippingValue
+                        .setText(getString(R.string.shipping) + ": " + cart.getShippingValue());
+                shippingValue.setVisibility(View.VISIBLE);
+            }
         } else {
             extraCosts.setVisibility(View.GONE);
             extraCostsValue.setVisibility(View.GONE);
+            shippingValue.setText(getString(R.string.shipping) + ": " + cart.getSumCostsValue());
+            shippingValue.setVisibility(View.VISIBLE);
         }
         
         
@@ -538,14 +549,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
                 vatValue.setText(getString(R.string.vat_string) + ": " + cart.getVatValue());
                 vatValue.setVisibility(View.VISIBLE);
             }
-            if (cart.getShippingValue() != null
-                    && !cart.getShippingValue().equalsIgnoreCase("null")
-                    && !cart.getShippingValue().equalsIgnoreCase("")) {
-                TextView shippingValue = (TextView) getView().findViewById(R.id.shipping_value);
-                shippingValue
-                        .setText(getString(R.string.shipping) + ": " + cart.getShippingValue());
-                shippingValue.setVisibility(View.VISIBLE);
-            }
+           
 
             hideNoItems();
             AnalyticsGoogle.get().trackPage(R.string.gcartwithitems);

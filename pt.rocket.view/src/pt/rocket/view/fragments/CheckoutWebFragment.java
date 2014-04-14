@@ -21,6 +21,7 @@ import pt.rocket.forms.PaymentMethodForm;
 import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.rest.RestClientSingleton;
 import pt.rocket.framework.rest.RestContract;
+import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -189,7 +190,11 @@ public class CheckoutWebFragment extends BaseFragment {
         webview = (WebView) view.findViewById(R.id.webview);
 //        webview = new WebView(getActivity());
 //        mWebContainer.addView(webview);
-        
+        String user_id = "";
+        if(JumiaApplication.INSTANCE.CUSTOMER != null && JumiaApplication.INSTANCE.CUSTOMER.getIdAsString() != null){
+            user_id = JumiaApplication.INSTANCE.CUSTOMER.getIdAsString();
+        }
+        AnalyticsGoogle.get().trackCheckoutStart(getBaseActivity(), user_id);
         return view;    
     }
 

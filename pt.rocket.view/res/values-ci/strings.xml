@@ -145,10 +145,12 @@
     <string name="product_sort">Filtrer par :</string>
     <string name="product_sort_button">Filtrer</string>
     <string name="products_sort_popularity">Popularité</string>
+    <string name="products_sort_newin">Nouveautés</string>
     <string name="products_sort_priceup">Prix croissant</string>
     <string name="products_sort_pricedown">Prix décroissant</string>
     <string name="products_sort_name">Nom</string>
     <string name="products_sort_brand">Marque</string>
+    <string name="products_sort_bestrated">Mieux Notés</string>
     <string name="try_again">Réessayer</string>
     <string name="no_conn">Pas de connexion disponible</string>
     <string name="no_service">Service non disponible</string>

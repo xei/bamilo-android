@@ -152,7 +152,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
         Log.i(TAG, "ON CREATE");
 
          triggerGetCustomer();
-        // triggerGetShoppingCartItems();
+         TrackerDelegator.trackCheckoutStep(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), R.string.gcheckoutExternalPayment, R.string.xcheckoutexternalpayment, R.string.mixprop_checkout_external_payment);
     }
 
     private void triggerGetCustomer() {
@@ -226,7 +226,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
         setupWebView();
 
         startCheckout();
-        TrackerDelegator.trackCheckoutStep(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), R.string.gcheckoutExternalPayment, R.string.xcheckoutexternalpayment, R.string.mixprop_checkout_external_payment);
     }
 
     /*

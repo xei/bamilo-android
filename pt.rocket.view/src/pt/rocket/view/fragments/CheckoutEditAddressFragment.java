@@ -124,6 +124,7 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
         setRetainInstance(true);
+        TrackerDelegator.trackCheckoutStep(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), R.string.gcheckoutEditAddress, R.string.xcheckouteditaddress, R.string.mixprop_checkout_edit_address);
     }
     
     /*
@@ -190,7 +191,6 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        TrackerDelegator.trackCheckoutStep(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), R.string.gcheckoutEditAddress, R.string.xcheckouteditaddress, R.string.mixprop_checkout_edit_address);
     }
 
     /*

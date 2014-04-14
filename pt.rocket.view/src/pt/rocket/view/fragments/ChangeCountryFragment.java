@@ -246,7 +246,6 @@ public class ChangeCountryFragment extends BaseFragment {
                         } else if (id == R.id.button2) {
                             setCountry(position);
                         }
-
                     }
                 });
         dialog.show(fm, null);

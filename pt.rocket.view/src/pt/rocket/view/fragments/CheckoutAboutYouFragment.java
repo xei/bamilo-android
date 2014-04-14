@@ -169,6 +169,8 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         String appId = getBaseActivity().getResources().getString(R.string.app_id);
         uiHelper = new UiLifecycleHelper(getActivity(), (StatusCallback) this, appId);
         uiHelper.onCreate(savedInstanceState);
+        
+        TrackerDelegator.trackCheckoutStep(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), R.string.gcheckoutAboutYou, R.string.xcheckoutaboutyou, R.string.mixprop_checkout_about_you);
     }
     
     /*
@@ -261,7 +263,6 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         uiHelper.setJumiaAppId(appId);
         uiHelper.onResume();
         
-        TrackerDelegator.trackCheckoutStep(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), R.string.gcheckoutAboutYou, R.string.xcheckoutaboutyou, R.string.mixprop_checkout_about_you);
     }
 
     /*
@@ -818,11 +819,15 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             JumiaApplication.INSTANCE.CUSTOMER = customerFb;
             // Get next step
             mNextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
-            // Tracking
-            TrackerDelegator.trackLoginSuccessful(getBaseActivity(), customerFb, onAutoLogin, loginOrigin, true);
+
             // Force update the cart and after goto next step
-            if(!onAutoLogin) triggerGetShoppingCart();
-            else gotoNextStep();
+            if(!onAutoLogin){
+                triggerGetShoppingCart();
+                // Tracking
+                TrackerDelegator.trackLoginSuccessful(getBaseActivity(), customerFb, onAutoLogin, loginOrigin, true);
+            } else {
+                gotoNextStep();
+            }
             break;
         case LOGIN_EVENT:
             // Set logged in
@@ -831,11 +836,18 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             Customer customer = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             // Get next step
             mNextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
-            // Tracking
-            TrackerDelegator.trackLoginSuccessful(getBaseActivity(), customer, onAutoLogin, loginOrigin, false);
+            
             // Force update the cart and after goto next step
-            if(!onAutoLogin) triggerGetShoppingCart();
-            else gotoNextStep();
+            if(!onAutoLogin){
+                // Tracking
+                TrackerDelegator.trackLoginSuccessful(getBaseActivity(), customer, onAutoLogin, loginOrigin, false);
+                triggerGetShoppingCart();
+            } else {
+                gotoNextStep();
+            }
+            
+          
+            
             break;
         case GET_SHOPPING_CART_ITEMS_EVENT:
             Log.d(TAG, "RECEIVED GET_SHOPPING_CART_ITEMS_EVENT");
@@ -906,8 +918,9 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             break;
         case FACEBOOK_LOGIN_EVENT:
         case LOGIN_EVENT:
+            TrackerDelegator.trackLoginFailed(onAutoLogin);
             if (errorCode == ErrorCode.REQUEST_ERROR) {
-                TrackerDelegator.trackLoginFailed(onAutoLogin);
+                
                 if (onAutoLogin) {
                     // Sometimes formDataRegistry is null, so init forms
                     if (formResponse == null) triggerInitForm();

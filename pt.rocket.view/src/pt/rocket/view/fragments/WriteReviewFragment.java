@@ -139,6 +139,7 @@ public class WriteReviewFragment extends BaseFragment {
         
         completeProduct = JumiaApplication.INSTANCE.getCurrentProduct();
         isExecutingSendReview = false;
+        
         triggerAutoLogin();
         triggerCustomer();
     }

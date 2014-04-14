@@ -305,13 +305,21 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
     @Override
     public void onClick(View v) {
         Log.d(TAG, "VIEW ID: " + v.getId() + " " + R.id.order_status_text);
-        if (v.getId() == R.id.btn_checkout_continue)
+        if (v.getId() == R.id.btn_checkout_continue){
+            String user_id = "";
+            if(JumiaApplication.INSTANCE.CUSTOMER != null && JumiaApplication.INSTANCE.CUSTOMER.getIdAsString() != null){
+                user_id = JumiaApplication.INSTANCE.CUSTOMER.getIdAsString();
+            }
+            AnalyticsGoogle.get().trackCheckoutContinueShopping(getBaseActivity(), user_id);
             ActivitiesWorkFlow.homePageActivity(getActivity());
+        }
+            
         // getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE,
         // FragmentController.ADD_TO_BACK_STACK);
-        else
+        else {
             getBaseActivity().onSwitchFragment(FragmentType.TRACK_ORDER,
                     FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        }
     }
 
     /*

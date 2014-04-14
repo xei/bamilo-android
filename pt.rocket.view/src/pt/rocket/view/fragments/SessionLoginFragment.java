@@ -627,7 +627,7 @@ public class SessionLoginFragment extends BaseFragment {
             }
         } else if (eventType == EventType.LOGIN_EVENT) {
             JumiaApplication.INSTANCE.setLoggedIn(false);
-            
+            TrackerDelegator.trackLoginFailed(wasAutologin);
             // Validate fragment visibility
             if(!isVisible()){
                 Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
@@ -635,7 +635,7 @@ public class SessionLoginFragment extends BaseFragment {
             }
             
             if (errorCode == ErrorCode.REQUEST_ERROR) {
-                TrackerDelegator.trackLoginFailed(wasAutologin);
+                
                 wasAutologin = false;
                 if (autoLogin) {
                     autoLogin = false;

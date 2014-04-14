@@ -1866,8 +1866,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             JumiaApplication.INSTANCE.setCart(null);
             updateSlidingMenu();
             dismissProgress();
-            int trackRes = R.string.glogoutsuccess;
-            AnalyticsGoogle.get().trackAccount(trackRes, null);
+            
             break;
         case LOGIN_EVENT:
             JumiaApplication.INSTANCE.setLoggedIn(true);

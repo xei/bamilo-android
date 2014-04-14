@@ -808,6 +808,7 @@ public class CatalogPageModel {
 
                 TrackerDelegator.trackSearchMade(mActivity.getApplicationContext(), searchQuery,
                         productsPage.getTotalProducts());
+                AnalyticsGoogle.get().trackSearch(searchQuery, productsPage.getTotalProducts());
             }
 
         } else {
@@ -851,7 +852,7 @@ public class CatalogPageModel {
         
         
         
-        AnalyticsGoogle.get().trackSearch(searchQuery, productsPage.getTotalProducts());
+        
     }
 
     /**

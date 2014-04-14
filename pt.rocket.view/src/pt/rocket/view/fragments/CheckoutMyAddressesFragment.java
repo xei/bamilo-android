@@ -129,6 +129,7 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
         setRetainInstance(true);
+        TrackerDelegator.trackCheckoutStep(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), R.string.gcheckoutMyAddresses, R.string.xcheckoutmyaddresses, R.string.mixprop_checkout_my_addresses);
     }
     
     /*
@@ -192,7 +193,7 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        TrackerDelegator.trackCheckoutStep(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), R.string.gcheckoutMyAddresses, R.string.xcheckoutmyaddresses, R.string.mixprop_checkout_my_addresses);
+        
     }
 
     /*
