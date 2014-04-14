@@ -152,6 +152,11 @@ public class Darwin {
 		tags.add(Build.MODEL.replaceAll(" ", "-"));
 		tags.add(Build.VERSION.RELEASE.replaceAll(" ", "-"));
 		tags.add(context.getString(R.string.ua_store));
+		try {
+			tags.add("app_version_"+context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionCode);
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+		}
 		// Check pre-install flag
 		if(isPreInstallApp) {
 			preInstallTag(context, tags, Build.MANUFACTURER);

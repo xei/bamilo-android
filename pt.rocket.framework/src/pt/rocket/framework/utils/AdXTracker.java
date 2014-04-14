@@ -18,6 +18,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.graphics.YuvImage;
 import android.os.Build;
 
 import com.AdX.tag.AdXConnect;
@@ -61,16 +62,6 @@ public class AdXTracker {
 		AdXConnect.getAdXConnectInstance(context, isUpdate, 0);
 		isStarted = true;
 	}
-
-//	public static void trackSale(Context context, String cartValue, String shop ) {
-//		if (!isEnabled)
-//			return;
-//
-//		String currency = CurrencyFormatter.getCurrencyCode();
-//		Log.d( TAG, "trackSale: cartValue = " + cartValue + " currency = " + currency );
-//		cartValue = CurrencyFormatter.getCleanValue(cartValue);
-//		AdXConnect.getAdXConnectEventInstance(context, context.getString( R.string.xsale), cartValue, shop+"_"+currency);
-//	}
 	
 	public static void trackSale(Context context, String cartValue, String user_id, String transaction_id, ArrayList<String> skus, String app_version, String display_size, boolean isFirstCustomer, String shop_country, boolean guest ) {
 		if (!isEnabled)
@@ -161,12 +152,28 @@ public class AdXTracker {
 		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xremovefromcart), cartValue, currency,jsonEncoded);
 	}
 	
-	public static void trackCheckoutStep(Context context, String email, int step) {
+	public static void trackCheckoutStep(Context context, String shop_country, String user_id, String app_version, String display_size, int step) {
 		if (!isEnabled)
 			return;
 
-		Log.d(TAG, "trackCheckoutStep: email = " + email + " step = " + context.getString(step));
-		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xnativecheckout), email+"_"+context.getString(step), "");
+		String jsonEncoded = "";
+		LinkedHashMap<String, Object> values = new LinkedHashMap<String, Object>();
+		values.put("shop_country", shop_country);
+		values.put("user_id", user_id);
+		values.put("app_version", app_version);
+		values.put("display_size", display_size);
+		values.put("checkout_step", context.getString(step));
+		
+		try {
+			jsonEncoded = URLEncoder.encode(generateJSONObject(values).toString(), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			jsonEncoded = "";
+			e.printStackTrace();
+		}
+		
+		
+		Log.d(TAG, "xnativecheckout tracked: event =  " + jsonEncoded);
+		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xnativecheckout), "","", jsonEncoded);
 	}
 	
 	public static void trackSignUp(Context context, String shop_country, String user_id, String app_version, String display_size) {
@@ -191,20 +198,50 @@ public class AdXTracker {
 		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xcustomersignup), "", "", jsonEncoded);
 	}
 
-	public static void trackPaymentMethod(Context context, String email, String payment) {
+	public static void trackPaymentMethod(Context context, String shop_country, String user_id, String app_version, String display_size, String payment) {
 		if (!isEnabled)
 			return;
 
-		Log.d(TAG, "trackPaymentMethod: email = " + email + " payment = " + payment);
-		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xpaymentmethod), email+"_"+payment, "");
+		String jsonEncoded = "";
+		LinkedHashMap<String, Object> values = new LinkedHashMap<String, Object>();
+		values.put("shop_country", shop_country);
+		values.put("user_id", user_id);
+		values.put("app_version", app_version);
+		values.put("display_size", display_size);
+		values.put("payment_method", payment);
+		
+		try {
+			jsonEncoded = URLEncoder.encode(generateJSONObject(values).toString(), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			jsonEncoded = "";
+			e.printStackTrace();
+		}
+		
+		Log.d(TAG, "xpaymentmethod  = " + jsonEncoded);
+		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xpaymentmethod), "","", jsonEncoded);
 	}
 	
-	public static void trackNativeCheckoutError(Context context, String email, String error) {
+	public static void trackNativeCheckoutError(Context context, String shop_country, String user_id, String app_version, String display_size, String error) {
 		if (!isEnabled)
 			return;
-
-		Log.d(TAG, "trackNativeCheckoutError: email = " + email + " error = " + error);
-		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xnativecheckouterror), email+"_"+error, "");
+		
+		String jsonEncoded = "";
+		LinkedHashMap<String, Object> values = new LinkedHashMap<String, Object>();
+		values.put("shop_country", shop_country);
+		values.put("user_id", user_id);
+		values.put("app_version", app_version);
+		values.put("display_size", display_size);
+		values.put("error", error);
+		
+		try {
+			jsonEncoded = URLEncoder.encode(generateJSONObject(values).toString(), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			jsonEncoded = "";
+			e.printStackTrace();
+		}
+		
+		Log.d(TAG, "xnativecheckouterror = " + jsonEncoded);
+		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xnativecheckouterror), "", "",jsonEncoded);
 	}
 	
 	public static JSONObject generateJSONObject(LinkedHashMap<String,Object> values){

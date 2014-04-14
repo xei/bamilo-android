@@ -1,6 +1,13 @@
 package pt.rocket.framework.utils;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Set;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import pt.rocket.framework.R;
 import pt.rocket.framework.objects.Customer;
@@ -300,8 +307,8 @@ public class AnalyticsGoogle {
 			return;
 		}
 
-		String category = mContext.getString(step);
-		String action = mContext.getString(R.string.gNativeCheckout);
+		String category = mContext.getString(R.string.gNativeCheckout);
+		String action = mContext.getString(step);
 		Log.d(TAG, "trackCheckoutStep: category = " + category + " action = " + action + " email " + email);
 		mTracker.sendEvent(category, action, email, (long) 0);
 		
@@ -392,6 +399,36 @@ public class AnalyticsGoogle {
 		mTracker.sendEvent(category, action, orderNr, valueDouble.longValue());
 	}
 
+	public void trackShare(Context context, String sku, String user_id, String app_version, String display_size, String shop_country ){
+		if (!isEnabled) {
+			return;
+		}
+		
+		String category = mContext.getString(R.string.gcatalog);
+		String action = mContext.getString(R.string.gsocialshare);
+		mTracker.sendSocial(category, action, sku);
+	}
+	
+	public void trackCheckoutStart(Context context, String user_id){
+		if (!isEnabled) {
+			return;
+		}
+		
+		String category = mContext.getString(R.string.gcheckout);
+		String action = mContext.getString(R.string.gcheckoutstart);
+		mTracker.sendSocial(category, action, user_id);
+	}
+	
+	public void trackCheckoutContinueShopping(Context context, String user_id){
+		if (!isEnabled) {
+			return;
+		}
+		
+		String category = mContext.getString(R.string.gcheckout);
+		String action = mContext.getString(R.string.gcheckoutcontinueshopping);
+		mTracker.sendSocial(category, action, user_id);
+	}
+	
 	public void sendException(String msg, Exception e, boolean nonFatal) {
 		mTracker.sendException(msg, e, nonFatal);
 	}
@@ -427,6 +464,21 @@ public class AnalyticsGoogle {
             Log.d(TAG, "Google Analytics, Campaign: " + campaignString);
 			mTracker.setCampaign(campaignString);
 		} 
+	}
+	
+	public static JSONObject generateJSONObject(LinkedHashMap<String,Object> values){
+		JSONObject jsonObject = new JSONObject();
+		Set<String> keys = values.keySet();
+		for (String key : keys) {
+			try {
+				jsonObject.put(key, values.get(key));
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return jsonObject;
+		
 	}
 	
 }

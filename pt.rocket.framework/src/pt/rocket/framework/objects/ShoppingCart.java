@@ -33,6 +33,7 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 	private String vat_value;
 	private String shipping_value;
 	private String extra_costs;
+	private String sum_costs_value;
 	private boolean sum_costs;
 	private Map<String, Map<String, String>> itemSimpleDataRegistry;
 
@@ -126,6 +127,7 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 			sum_costs = false;	
 		} else {
 			sum_costs = true;
+			sum_costs_value = jsonObject.optString(RestConstants.JSON_CART_SUM_COSTS_VALUE_TAG);
 		}
 		
 		extra_costs = jsonObject.optString(RestConstants.JSON_CART_EXTRA_COSTS_TAG);
@@ -203,6 +205,7 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 	    dest.writeMap(itemSimpleDataRegistry);
 	    dest.writeBooleanArray(new boolean[]{sum_costs});
 	    dest.writeString(extra_costs);
+	    dest.writeString(sum_costs_value);
 	}
 	
 	/**
@@ -219,6 +222,7 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 		in.readMap(itemSimpleDataRegistry, null);
 		in.readBooleanArray(new boolean[]{sum_costs});
 	    extra_costs = in.readString();
+	    sum_costs_value = in.readString();
     }
 		
 	/**
@@ -227,6 +231,13 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 	public String getExtraCosts() {
 		return extra_costs;
 	}
+	
+	/**
+     * @return the extra_costs
+     */
+    public String getSumCostsValue() {
+        return sum_costs_value;
+    }
 
 	/**
 	 * @param extra_costs the extra_costs to set

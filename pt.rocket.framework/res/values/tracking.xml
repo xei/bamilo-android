@@ -61,7 +61,9 @@
     <string name="gstarted">Started</string>
     <string name="gfinished">Finished</string>
     <string name="gcontinueshopping">ContinueShopping</string>
-
+	<string name="gsocialshare">SocialShare</string>
+	<string name="gcheckoutstart">CheckoutStart</string>
+	<string name="gcheckoutcontinueshopping">ContinueShopping</string>
     <!-- Checkout Steps -->
     <string name="gNativeCheckout">NativeCheckout</string>
     <string name="gNativeCheckoutError">NativeCheckoutError</string>
