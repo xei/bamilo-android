@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -167,6 +168,17 @@ public class TrackerDelegator {
             user_id = JumiaApplication.INSTANCE.CUSTOMER.getIdAsString();
         }
         AdXTracker.trackProductRate(context, product.getSku(), review, user_id, JumiaApplication.INSTANCE.ADX_VERSION_NAME, JumiaApplication.INSTANCE.ADX_DISPLAY_SIZE, JumiaApplication.INSTANCE.SHOP_NAME);
+        for ( Entry<String, Double> option : review.getRating().entrySet()) {
+            long priceLong;
+            try {
+                priceLong =  Long.parseLong(option.getValue().toString());
+            } catch (NumberFormatException e) {
+                priceLong = 0l;
+            }
+           
+            AnalyticsGoogle.get().trackRateProduct(context, product.getSku(), priceLong, option.getKey());
+        }
+        
     }
 
     public final static void trackViewReview(Context context, CompleteProduct product, float rate) {
