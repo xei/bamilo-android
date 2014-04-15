@@ -161,7 +161,12 @@ public class CurrencyFormatter {
     			value = value.replace(",", "");
     		}
     	}
-    	result = Double.parseDouble(value);
+    	try {
+    		result = Double.parseDouble(value);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    	
     	return result;
     }
     

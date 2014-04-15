@@ -38,7 +38,7 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 	private Map<String, Map<String, String>> itemSimpleDataRegistry;
 
 	private String cartCleanValue;
-
+	private String couponDiscount;
 	/**
 	 * 
 	 */
@@ -122,6 +122,7 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 		cartCount = jsonObject.getInt(RestConstants.JSON_CART_COUNT_TAG);
 		vat_value = jsonObject.optString(RestConstants.JSON_CART_VAT_VALUE_TAG);
 		shipping_value = jsonObject.optString(RestConstants.JSON_CART_SHIPPING_VALUE_TAG);
+		couponDiscount = jsonObject.optString(RestConstants.JSON_CART_COUPON_VALUE_TAG);
 		String sCosts = jsonObject.optString(RestConstants.JSON_CART_SUM_COSTS_TAG);
 		if(sCosts != null && sCosts.equalsIgnoreCase("0")){
 			sum_costs = false;	
@@ -206,6 +207,7 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 	    dest.writeBooleanArray(new boolean[]{sum_costs});
 	    dest.writeString(extra_costs);
 	    dest.writeString(sum_costs_value);
+	    dest.writeString(couponDiscount);
 	}
 	
 	/**
@@ -223,6 +225,7 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 		in.readBooleanArray(new boolean[]{sum_costs});
 	    extra_costs = in.readString();
 	    sum_costs_value = in.readString();
+	    couponDiscount = in.readString();
     }
 		
 	/**
@@ -258,6 +261,20 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 	 */
 	public void setSumCosts(boolean sum_costs) {
 		this.sum_costs = sum_costs;
+	}
+
+	/**
+	 * @return the couponDiscount
+	 */
+	public String getCouponDiscount() {
+		return couponDiscount;
+	}
+
+	/**
+	 * @param couponDiscount the couponDiscount to set
+	 */
+	public void setCouponDiscount(String couponDiscount) {
+		this.couponDiscount = couponDiscount;
 	}
 
 	/**
