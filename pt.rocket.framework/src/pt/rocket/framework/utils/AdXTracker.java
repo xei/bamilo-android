@@ -18,7 +18,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.graphics.YuvImage;
 import android.os.Build;
 
 import com.AdX.tag.AdXConnect;
