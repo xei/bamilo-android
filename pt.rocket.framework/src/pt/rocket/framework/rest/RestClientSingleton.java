@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import pt.rocket.framework.Darwin;
 import pt.rocket.framework.DarwinMode;
 import pt.rocket.framework.ErrorCode;
@@ -583,7 +584,15 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 		
 		if(RestContract.USE_AUTHENTICATION == null){
 			SharedPreferences sharedPrefs = mContext.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-	        int shopId = sharedPrefs.getInt(Darwin.KEY_COUNTRY, -1);
+	        
+	        /**
+	         * Fixed crash.
+	         * If shop id isn't present in this point something is wrong, return 0 as default value
+	         * @author sergiopereira 
+	         */
+			int shopId = sharedPrefs.getInt(Darwin.KEY_COUNTRY, 0);
+	        if(shopId == -1) shopId = 0;
+	        
 			RestContract.init(mContext,shopId);
 			Darwin.initialize(DarwinMode.DEBUG, mContext, shopId, false);
 		}

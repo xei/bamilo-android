@@ -27,8 +27,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
-import com.facebook.android.Util;
-import com.google.analytics.tracking.android.GoogleAnalytics;
 import com.urbanairship.push.PushManager;
 
 import de.akquinet.android.androlog.Log;

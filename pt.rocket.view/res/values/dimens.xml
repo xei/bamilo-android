@@ -153,7 +153,7 @@
     <!-- DIALOG CATALOG FILTER -->
     <dimen name="catalog_button_filter_width">80dp</dimen>
     <dimen name="dialog_catalog_filter_width">@dimen/match_parent</dimen>
-    <dimen name="dialog_catalog_filter_height">450.00dp</dimen>
+    <dimen name="dialog_catalog_filter_height">400.00dp</dimen>
     
     
 

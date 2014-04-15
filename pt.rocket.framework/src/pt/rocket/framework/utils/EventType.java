@@ -130,6 +130,8 @@ public enum EventType {
 	
 	GET_CREATE_ADDRESS_FORM_EVENT("addresscreate", RestContract.MAX_CACHE_TIME),
 	
+	GET_CREATE_ADDRESS_FORM_FALLBACK_EVENT("http:/forms/addresscreate/", RestContract.MAX_CACHE_TIME),
+	
 	GET_EDIT_ADDRESS_FORM_EVENT("addressedit", RestContract.MAX_CACHE_TIME),
 	
 	GET_CUSTOMER_ADDRESSES_EVENT("https:/customer/address/list/", RestContract.MIN_CACHE_TIME),
