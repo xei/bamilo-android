@@ -13,35 +13,35 @@ public class ProductListTests extends FrameworkServiceTests {
     private static String TAG = ProductListTests.class.getSimpleName();
     protected boolean processed = false;
 
-//    @SmallTest
-//    public void testProductListIC() throws Throwable {
-//        test("http://www.jumia.ci/mobapi/debardeurs-femme?page=1&maxitems=14&sort=price&dir=asc");
-//    }
-//    
-//    @SmallTest
-//    public void testProductListKE() throws Throwable {
-//        test("http://www.jumia.co.ke/mobapi/womens-dresses?page=1&maxitems=14&sort=price&dir=asc");
-//    }
-//    
-//    @SmallTest
-//    public void testProductListMA() throws Throwable {
-//        test("http://www.jumia.ma/mobapi/vetements-femmes-mode?page=1&maxitems=14&sort=price&dir=asc");
-//    }
-//    
-//    @SmallTest
-//    public void testProductListNG() throws Throwable {
-//        test("http://www.jumia.com.ng/mobapi/womens-dresses?page=1&maxitems=14&sort=price&dir=asc");
-//    }
-//    
-//    @SmallTest
-//    public void testProductListEG() throws Throwable {
-//        test("https://www.jumia.com.eg/mobapi/womens-clothing?page=1&maxitems=14&sort=price&dir=asc");
-//    }
-//
-//    public void testProductListUG() throws Throwable {
-//        test("https://www.jumia.ug/mobapi/womens-dresses?page=1&maxitems=14&sort=price&dir=asc");
-//        
-//    }
+    @SmallTest
+    public void testProductListIC() throws Throwable {
+        test("http://www.jumia.ci/mobapi/debardeurs-femme?page=1&maxitems=14&sort=price&dir=asc");
+    }
+    
+    @SmallTest
+    public void testProductListKE() throws Throwable {
+        test("http://www.jumia.co.ke/mobapi/womens-dresses?page=1&maxitems=14&sort=price&dir=asc");
+    }
+    
+    @SmallTest
+    public void testProductListMA() throws Throwable {
+        test("http://www.jumia.ma/mobapi/vetements-femmes-mode?page=1&maxitems=14&sort=price&dir=asc");
+    }
+    
+    @SmallTest
+    public void testProductListNG() throws Throwable {
+        test("http://www.jumia.com.ng/mobapi/womens-dresses?page=1&maxitems=14&sort=price&dir=asc");
+    }
+    
+    @SmallTest
+    public void testProductListEG() throws Throwable {
+        test("https://www.jumia.com.eg/mobapi/womens-clothing?page=1&maxitems=14&sort=price&dir=asc");
+    }
+
+    public void testProductListUG() throws Throwable {
+        test("https://www.jumia.ug/mobapi/womens-dresses?page=1&maxitems=14&sort=price&dir=asc");
+        
+    }
     
     public void testProductList_Staging_NG() throws Throwable {
         test("https://alice-staging.jumia.com.ng/mobapi/womens-dresses?page=1&maxitems=14&sort=price&dir=asc");
