@@ -58,6 +58,8 @@ public class LogOut {
                     RestClientSingleton.getSingleton(((BaseActivity) activityRef.get())).getCookieStore().clear();
                     JumiaApplication.INSTANCE.setLoggedIn(false);
                     JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
+                    JumiaApplication.INSTANCE.CUSTOMER = null;
+                    TrackerDelegator.trackLogoutSuccessful(((BaseActivity) activityRef.get()));
                     ((BaseActivity) activityRef.get()).updateSlidingMenuCompletly();
                     ((BaseActivity) activityRef.get()).handleSuccessEvent(bundle);
                 }
@@ -73,6 +75,7 @@ public class LogOut {
                     JumiaApplication.INSTANCE.setLoggedIn(false);
                     TrackerDelegator.trackLogoutSuccessful(((BaseActivity) activityRef.get()));
                     JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
+                    JumiaApplication.INSTANCE.CUSTOMER = null;
                     ((BaseActivity) activityRef.get()).updateSlidingMenuCompletly();
                     ((BaseActivity) activityRef.get()).handleSuccessEvent(bundle);
                 }

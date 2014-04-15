@@ -183,6 +183,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         // Delete categories
         JumiaApplication.currentCategories = null;
         JumiaApplication.INSTANCE.setLoggedIn(false);
+        JumiaApplication.INSTANCE.CUSTOMER = null;
         
         // 
         if(wasReceivedNotification) {
@@ -218,6 +219,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         showWarningVariation(false);
         Log.i(TAG, "code1adjust : "+getWindow().getAttributes().softInputMode);
         int newAdjustState = currentAdjustState;
+        setProcessShow(true);
         // Validate fragment type
         switch (type) {
         case HOME:
@@ -280,7 +282,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             fragment = ReviewFragment.getInstance();
             break;
         case SHOPPING_CART:
-            newAdjustState = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN;
+            newAdjustState = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED;
             fragment = ShoppingCartFragment.getInstance();
             break;
         case CHECKOUT_BASKET:

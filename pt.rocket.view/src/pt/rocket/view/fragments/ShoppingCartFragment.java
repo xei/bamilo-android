@@ -252,7 +252,10 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         ContentValues values = new ContentValues();
         values.put("sku", item.getConfigSimpleSKU());
         itemRemoved_sku = item.getConfigSimpleSKU();
-        itemRemoved_price = item.getPrice();
+        itemRemoved_price = item.getSpecialPrice();
+        if(itemRemoved_price == null){
+            itemRemoved_price = item.getPrice();
+        }
         Bundle bundle = new Bundle();
         bundle.putParcelable(GetShoppingCartRemoveItemHelper.ITEM, values);
         triggerContentEvent(new GetShoppingCartRemoveItemHelper(), bundle, responseCallback);
@@ -414,6 +417,14 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
                 goToWebCheckout();
             }
             return true;
+        case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
+            Log.i(TAG, "code1removing and tracking"+itemRemoved_price);
+            TrackerDelegator.trackProductRemoveFromCart(getActivity().getApplicationContext(), itemRemoved_sku, itemRemoved_price);
+            getBaseActivity().showContentContainer();
+            AnalyticsGoogle.get().trackLoadTiming(R.string.gshoppingcart, mBeginRequestMillis);
+            displayShoppingCart((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY));
+            getBaseActivity().updateSlidingMenu();
+            return true;
         case GET_SHOPPING_CART_ITEMS_EVENT:
             if (((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getCartItems() != null
                     && ((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY))
@@ -422,8 +433,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
                         ((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY))
                                 .getCartItems().values().size());
             }
-        case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
-            TrackerDelegator.trackProductRemoveFromCart(getActivity().getApplicationContext(), itemRemoved_sku, itemRemoved_price);
+        
         default:
             getBaseActivity().showContentContainer();
             AnalyticsGoogle.get().trackLoadTiming(R.string.gshoppingcart, mBeginRequestMillis);
@@ -464,27 +474,40 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         TextView articlesCount = (TextView) getView().findViewById(R.id.articles_count);
         TextView extraCosts = (TextView) getView().findViewById(R.id.extra_costs);
         TextView extraCostsValue = (TextView) getView().findViewById(R.id.extra_costs_value);
+        LinearLayout voucherContainer = (LinearLayout) getView().findViewById(R.id.voucher_discount_container);
+        if(cart.getCouponDiscount() != null && !cart.getCouponDiscount().equalsIgnoreCase("") && Double.parseDouble(cart.getCouponDiscount()) > 0){
+            voucherContainer.setVisibility(View.VISIBLE);
+            TextView voucherValue = (TextView) voucherContainer.findViewById(R.id.text_voucher);
+            voucherValue.setText("- "+CurrencyFormatter.formatCurrency(Double.parseDouble(cart.getCouponDiscount())));
+        } else {
+            voucherContainer.setVisibility(View.GONE);
+        }
+        
         
         items = new ArrayList<ShoppingCartItem>(cart.getCartItems().values());
-        priceTotal.setText(CurrencyFormatter.formatCurrency(cart.getCartCleanValue()));
+        priceTotal.setText(CurrencyFormatter.formatCurrency(Double.parseDouble(cart.getCartCleanValue())));
         TextView shippingValue = (TextView) getView().findViewById(R.id.shipping_value);
         if(!cart.isSumCosts()){
             extraCosts.setVisibility(View.VISIBLE);
             extraCostsValue.setVisibility(View.VISIBLE);
-            extraCostsValue.setText(CurrencyFormatter.formatCurrency(cart.getExtraCosts()));
+            extraCostsValue.setText(CurrencyFormatter.formatCurrency(Double.parseDouble(cart.getExtraCosts())));
             if (cart.getShippingValue() != null
                     && !cart.getShippingValue().equalsIgnoreCase("null")
                     && !cart.getShippingValue().equalsIgnoreCase("")) {
                 
                 shippingValue
-                        .setText(getString(R.string.shipping) + ": " + cart.getShippingValue());
+                        .setText(getString(R.string.shipping) + ": " + CurrencyFormatter.formatCurrency(Double.parseDouble(cart.getShippingValue())));
                 shippingValue.setVisibility(View.VISIBLE);
             }
         } else {
             extraCosts.setVisibility(View.GONE);
             extraCostsValue.setVisibility(View.GONE);
-            shippingValue.setText(getString(R.string.shipping) + ": " + cart.getSumCostsValue());
-            shippingValue.setVisibility(View.VISIBLE);
+            if (cart.getSumCostsValue() != null
+                    && !cart.getSumCostsValue().equalsIgnoreCase("null")
+                    && !cart.getSumCostsValue().equalsIgnoreCase("")) {
+                shippingValue.setText(getString(R.string.shipping) + ": " + CurrencyFormatter.formatCurrency(Double.parseDouble(cart.getSumCostsValue())));
+                shippingValue.setVisibility(View.VISIBLE);
+            }
         }
         
         
@@ -546,7 +569,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
             if (cart.getVatValue() != null && !cart.getVatValue().equalsIgnoreCase("null")
                     && !cart.getShippingValue().equalsIgnoreCase("")) {
                 TextView vatValue = (TextView) getView().findViewById(R.id.vat_value);
-                vatValue.setText(getString(R.string.vat_string) + ": " + cart.getVatValue());
+                vatValue.setText(getString(R.string.vat_string) + ": " + CurrencyFormatter.formatCurrency(Double.parseDouble(cart.getVatValue())));
                 vatValue.setVisibility(View.VISIBLE);
             }
            
@@ -793,7 +816,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         TrackerDelegator.trackCheckout(getActivity().getApplicationContext(), items);
 
         if (getBaseActivity().getResources().getStringArray(R.array.restbase_paths)[JumiaApplication.SHOP_ID]
-                .equalsIgnoreCase("mobapi/v1")) {
+                .contains("mobapi/v1")) {
             triggerIsNativeCheckoutAvailable();
         } else {
             goToWebCheckout();

@@ -854,7 +854,13 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
         }
 
         String sku = simple.getAttributeByKey(ProductSimple.SKU_TAG);
-        String priceAsString = simple.getAttributeByKey(ProductSimple.PRICE_TAG);
+        String priceAsString;
+
+        priceAsString = simple.getAttributeByKey(ProductSimple.SPECIAL_PRICE_TAG);
+        if (priceAsString == null){
+            priceAsString = simple.getAttributeByKey(ProductSimple.PRICE_TAG);
+        }
+        
         Long price = getPriceForTrackingAsLong(simple);
 
         if (TextUtils.isEmpty(sku))

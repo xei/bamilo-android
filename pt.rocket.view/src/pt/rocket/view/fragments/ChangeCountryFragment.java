@@ -142,6 +142,7 @@ public class ChangeCountryFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
+        ((BaseActivity) getActivity()).setProcessShow(true);
         if(selected != SHOP_NOT_SELECTED){
             ((BaseActivity) getActivity()).showContentContainer();
             ((BaseActivity) getActivity()).hideTitle();
