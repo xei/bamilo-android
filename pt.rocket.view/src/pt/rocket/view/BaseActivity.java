@@ -1226,7 +1226,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             }
             return;
         }
-        
+        Log.i(TAG, "code1here");
         // Views with search icon and without search
         if(menuItems.contains(MyMenuItem.SEARCH) && menuItems.contains(MyMenuItem.SEARCH_BAR)) {
             if(isTabletInLandscape(getApplicationContext())){
@@ -1236,10 +1236,12 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                     searchComponent.dismissDropDown();
                     searchComponentDismissFocus();
                     hideKeyboard();
+                    Log.i(TAG, "code1here 1");
                 } else{
                     currentMenu.findItem(MyMenuItem.SEARCH_BAR.resId).setVisible(true);
                     currentMenu.findItem(MyMenuItem.SEARCH.resId).setVisible(false);
                     searchComponent.requestFocus();
+                    Log.i(TAG, "code1here 2");
                     showKeyboard(searchComponent);
                 }
             } else {
@@ -1249,12 +1251,14 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                     searchComponent.dismissDropDown();
                     searchComponentDismissFocus();
                     hideKeyboard();
+                    Log.i(TAG, "code1here 3");
                 }else{
                     Log.d(TAG, "SHOW SEARCH COMPONENT");
                     findViewById(R.id.rocket_app_header_search_bar).setVisibility(View.VISIBLE);
                     currentMenu.findItem(MyMenuItem.SEARCH.resId).setVisible(false);
                     searchComponent.requestFocus();
                     showKeyboard(searchComponent);
+                    Log.i(TAG, "code1here 4");
                 }
             }
         }
@@ -1267,6 +1271,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      */
     private void showKeyboard(View view){
         Log.d(TAG, "SHOW KEYBOARD FOR THIS VIEW");
+        Log.i(TAG, "code1here SHOW KEYBOARD");
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
         //imm.showSoftInput(view, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
@@ -1792,6 +1797,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
     public void showKeyboard() {
         // Log.d( getTag(), "showKeyboard" );
+        Log.i(TAG, "code1here showKeyboard");
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.RESULT_UNCHANGED_SHOWN, 0);
         // use the above as the method below does not always work

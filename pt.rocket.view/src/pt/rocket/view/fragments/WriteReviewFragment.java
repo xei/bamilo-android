@@ -190,6 +190,7 @@ public class WriteReviewFragment extends BaseFragment {
         if(getArguments() != null && getArguments().containsKey(PopularityFragment.CAME_FROM_POPULARITY)){
             getView().findViewById(R.id.product_basicinfo_container).setVisibility(View.GONE);
         }
+
     }
     
     /*
