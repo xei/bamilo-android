@@ -187,6 +187,7 @@ public class PopularityFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
+        pageNumber = 1;
         
     }
 
