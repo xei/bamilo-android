@@ -58,8 +58,6 @@
                 android:layout_toLeftOf="@+id/price_total"
                 android:textColor="@color/grey_light"
                 android:textSize="@dimen/text_smid" />
-
-            
         </RelativeLayout>
 
         <RelativeLayout
@@ -86,17 +84,17 @@
                 android:text="@string/vat_string"
                 android:textColor="@color/grey_middle"
                 android:visibility="gone" />
-            
+
             <!-- Extra Costs -->
+
             <org.holoeverywhere.widget.TextView
                 android:id="@+id/extra_costs_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_below="@id/shipping_value"
-                android:textColor="@color/grey_middle"
-                />
-            
+                android:textColor="@color/grey_middle" />
+
             <org.holoeverywhere.widget.TextView
                 android:id="@+id/extra_costs"
                 android:layout_width="wrap_content"
@@ -105,41 +103,31 @@
                 android:layout_marginRight="@dimen/margin_mid"
                 android:layout_toLeftOf="@+id/extra_costs_value"
                 android:text="@string/extra_costs"
-                android:textColor="@color/grey_middle"
-                />
-            
-                <!-- VOUCHER -->
+                android:textColor="@color/grey_middle" />
 
-    <LinearLayout
-        android:id="@+id/voucher_discount_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/extra_costs_value"
-        android:layout_marginLeft="@dimen/checkout_order_inner_margin_left"
-        android:layout_marginRight="@dimen/checkout_order_inner_margin_right"
-        android:layout_marginTop="@dimen/margin_mid"
-        android:orientation="horizontal"
-        android:visibility="gone" >
+            <!-- VOUCHER -->
 
-        <org.holoeverywhere.widget.TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fontFamily="roboto_regular"
-            android:gravity="left"
-            android:text="@string/my_order_voucher_label"
-            android:textColor="@color/green_basic"
-            android:textSize="@dimen/text_m" />
+            <org.holoeverywhere.widget.TextView
+                android:id="@+id/text_voucher"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="roboto_regular"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/extra_costs"
+                android:textColor="@color/green_basic"
+                android:textSize="@dimen/text_m" />
 
-        <org.holoeverywhere.widget.TextView
-            android:id="@+id/text_voucher"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="roboto_regular"
-            android:gravity="left"
-            android:textColor="@color/green_basic"
-            android:textSize="@dimen/text_m" />
-    </LinearLayout>
+            <org.holoeverywhere.widget.TextView
+                android:id="@+id/title_voucher"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="roboto_regular"
+                android:layout_marginRight="@dimen/margin_mid"
+                android:layout_below="@id/extra_costs_value"
+                android:layout_toLeftOf="@+id/text_voucher"
+                android:text="@string/my_order_voucher_label"
+                android:textColor="@color/green_basic"
+                android:textSize="@dimen/text_m" />
         </RelativeLayout>
     </RelativeLayout>
 

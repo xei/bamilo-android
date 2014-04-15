@@ -55,9 +55,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:textColor="@color/red_basic"
-                android:textSize="@dimen/text_smid" 
-                />
-           
+                android:textSize="@dimen/text_smid" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -72,8 +70,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:text="@string/vat_string"
-                android:textColor="@color/grey_middle" 
-                android:visibility="gone"/>
+                android:textColor="@color/grey_middle"
+                android:visibility="gone" />
 
             <org.holoeverywhere.widget.TextView
                 android:id="@+id/shipping_value"
@@ -82,19 +80,19 @@
                 android:layout_alignParentRight="true"
                 android:layout_below="@id/vat_value"
                 android:text="@string/vat_string"
-                android:textColor="@color/grey_middle" 
-                android:visibility="gone"/>
-            
+                android:textColor="@color/grey_middle"
+                android:visibility="gone" />
+
             <!-- Extra Costs -->
+
             <org.holoeverywhere.widget.TextView
                 android:id="@+id/extra_costs_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_below="@id/shipping_value"
-                android:textColor="@color/grey_middle"
-                />
-            
+                android:textColor="@color/grey_middle" />
+
             <org.holoeverywhere.widget.TextView
                 android:id="@+id/extra_costs"
                 android:layout_width="wrap_content"
@@ -103,8 +101,31 @@
                 android:layout_marginRight="@dimen/margin_mid"
                 android:layout_toLeftOf="@+id/extra_costs_value"
                 android:text="@string/extra_costs"
-                android:textColor="@color/grey_middle"
-                />
+                android:textColor="@color/grey_middle" />
+
+            <!-- VOUCHER -->
+
+            <org.holoeverywhere.widget.TextView
+                android:id="@+id/text_voucher"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="roboto_regular"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/extra_costs"
+                android:textColor="@color/green_basic"
+                android:textSize="@dimen/text_m" />
+
+            <org.holoeverywhere.widget.TextView
+                android:id="@+id/title_voucher"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="roboto_regular"
+                android:layout_marginRight="@dimen/margin_mid"
+                android:layout_below="@id/extra_costs_value"
+                android:layout_toLeftOf="@+id/text_voucher"
+                android:text="@string/my_order_voucher_label"
+                android:textColor="@color/green_basic"
+                android:textSize="@dimen/text_m" />
         </RelativeLayout>
     </RelativeLayout>
 

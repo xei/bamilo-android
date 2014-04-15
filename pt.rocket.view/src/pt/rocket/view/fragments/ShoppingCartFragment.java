@@ -474,18 +474,34 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         TextView articlesCount = (TextView) getView().findViewById(R.id.articles_count);
         TextView extraCosts = (TextView) getView().findViewById(R.id.extra_costs);
         TextView extraCostsValue = (TextView) getView().findViewById(R.id.extra_costs_value);
-        LinearLayout voucherContainer = (LinearLayout) getView().findViewById(R.id.voucher_discount_container);
         if(cart.getCouponDiscount() != null && !cart.getCouponDiscount().equalsIgnoreCase("") && Double.parseDouble(cart.getCouponDiscount()) > 0){
-            voucherContainer.setVisibility(View.VISIBLE);
-            TextView voucherValue = (TextView) voucherContainer.findViewById(R.id.text_voucher);
+            
+            TextView voucherValue = (TextView) getView().findViewById(R.id.text_voucher);
+            TextView voucherTitle = (TextView) getView().findViewById(R.id.title_voucher);
             voucherValue.setText("- "+CurrencyFormatter.formatCurrency(Double.parseDouble(cart.getCouponDiscount())));
+            voucherValue.setVisibility(View.VISIBLE);
+            voucherTitle.setVisibility(View.VISIBLE);
         } else {
-            voucherContainer.setVisibility(View.GONE);
+            TextView voucherValue = (TextView) getView().findViewById(R.id.text_voucher);
+            TextView voucherTitle = (TextView) getView().findViewById(R.id.title_voucher);
+            voucherValue.setVisibility(View.GONE);
+            voucherTitle.setVisibility(View.GONE);
         }
         
         
         items = new ArrayList<ShoppingCartItem>(cart.getCartItems().values());
-        priceTotal.setText(CurrencyFormatter.formatCurrency(Double.parseDouble(cart.getCartCleanValue())));
+        double cleanValue = 0;
+        try {
+            cleanValue = Double.parseDouble(cart.getCartCleanValue());
+        } catch (Exception e) {
+            e.printStackTrace();
+            cleanValue = -1;
+        }
+        if(cleanValue > 0){
+            priceTotal.setText(CurrencyFormatter.formatCurrency(cleanValue));
+        } else {
+            priceTotal.setText(cart.getCartCleanValue());
+        }
         TextView shippingValue = (TextView) getView().findViewById(R.id.shipping_value);
         if(!cart.isSumCosts()){
             extraCosts.setVisibility(View.VISIBLE);
@@ -569,7 +585,18 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
             if (cart.getVatValue() != null && !cart.getVatValue().equalsIgnoreCase("null")
                     && !cart.getShippingValue().equalsIgnoreCase("")) {
                 TextView vatValue = (TextView) getView().findViewById(R.id.vat_value);
-                vatValue.setText(getString(R.string.vat_string) + ": " + CurrencyFormatter.formatCurrency(Double.parseDouble(cart.getVatValue())));
+                double cleanVatValue = 0;
+                try {
+                    cleanVatValue = Double.parseDouble(cart.getVatValue());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    cleanVatValue = -1;
+                }
+                if(cleanVatValue > 0){
+                    vatValue.setText(getString(R.string.vat_string) + ": " + CurrencyFormatter.formatCurrency(cleanVatValue));
+                } else {
+                    vatValue.setText(getString(R.string.vat_string) + ": " + cart.getVatValue());
+                }
                 vatValue.setVisibility(View.VISIBLE);
             }
            
