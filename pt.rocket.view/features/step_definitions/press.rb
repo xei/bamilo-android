@@ -84,7 +84,7 @@ end
 
 Then /^I select the country$/ do
   performAction('click_on_text',@venture_name.to_s+@dev.to_s )
-  puts @venture_name.to_s+@dev.to_s
+  #puts @venture_name.to_s+@dev.to_s
 end
 
 Then /^I click forgot password$/ do
@@ -164,7 +164,7 @@ Then /^I press share$/ do
   #@share=query("ShareActionProvider")
   #puts @share
   #performAction('click_on_view_by_id', "menu_share")
-  performAction('press', "share_button")
+  performAction('press', "Share with")
   
 end
 
@@ -188,30 +188,55 @@ end
 
 Then /^I add multiple products$/ do
   $i= 0
+  $f= 0
   while $i<10 do
     performAction('click_on_view_by_id',@navigation.to_s)
+    puts "navigation"
     performAction('click_on_text',@categories.to_s)
-    #category
+    puts "category"
     performAction('click_on_text',@categoryfashion.to_s)
+    puts "wait"
     performAction('wait', 2)
-    #subcategory
+    puts "subcategory"
     performAction('press_list_item', 1, 0)
+    puts "wait"
     performAction('wait', 2)
-    #product
-    performAction('drag',50,50,20,90,10)
-    performAction('wait', 10)
-    performAction('press_list_item', $i, 0)
+    
+    if $i>3
+      puts "swipe"
+      performAction('drag',90,10,50,50,10)
+    end
+    if $i>6
+      puts "swipe"
+      performAction('drag',90,10,50,50,10)
+    end
+    #performAction('wait', 10)
+    puts "product"
+    performAction('press_list_item', $f, 0)
+    puts "wait"
     performAction('wait', 2)
-    #add to cart
+    if $i == 0
+      step "I press Got it"
+    end
+      
+    puts "add to cart"
     performAction('click_on_text',@addtocart.to_s)
+    puts "wait"
     performAction('wait', 5)
-    #go to cart
+    puts "go to cart"
     performAction('press',@gotocart.to_s)
     #home
     #performAction('click_on_view_by_id',@navigation.to_s)
     #performAction('click_on_text',@home.to_s)
     
     $i += 1
+    puts $i
+    $f += 1
+    puts $f
+    if $f>3
+      $f = 0
+      puts  $f
+    end
   end
 end
 
@@ -230,3 +255,36 @@ end
   Then /^I press Confirm Order$/ do
     performAction('click_on_text', @confirm_order.to_s)
   end
+  
+  Then /^I press Order Status$/ do
+    performAction('click_on_text', @order_status.to_s)
+  end
+  
+  Then /^I press Track Order$/ do
+    performAction('click_on_view_by_id', "btn_track_order")
+  end 
+   
+  Then /^I click on the search bar$/ do
+    performAction('click_on_view_by_id', "search_component")
+  end
+  
+  Then /^I click in Filter$/ do
+    performAction('click_on_text', @filter.to_s)
+  end
+  
+  Then /^I press Done$/ do
+    performAction('click_on_text', @done.to_s)
+  end
+  
+  Then /^I press on clear all$/ do
+    performAction('click_on_text', @clear_all.to_s)
+  end
+  
+  Then /^I press the Jumia logo$/ do
+    performAction('click_on_view_by_id', "ic_logo")
+  end
+  
+  Then /^I lock the device$/ do
+    system("adb shell input keyevent 26");
+  end
+  

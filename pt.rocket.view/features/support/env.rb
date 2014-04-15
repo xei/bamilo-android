@@ -26,7 +26,7 @@ def initvars
   @register_first_name="first_name"
 
   @search_field="Search Field"
-  @search_input="Search input"  
+  @search_input="search_component"  
   @newpassword="New Password"
   @newrepeatedpassword="New Repeated Password"
   @addtocart="Add to Cart"
@@ -148,6 +148,23 @@ def initvars
     @pay_on_delivery="Pay On Delivery"
     @confirm_order="Confirm Order"
     
+    @popular_categories="Popular Categories"
+    @filter="Filter"
+    @filter_brand="Brand"
+    @filter_size="Size"
+    @filter_color_family="Color family"
+    @filter_price="Price"
+    
+    @done="Done"
+    @clear_all="CLEAR ALL"
+    @new_in="NEW IN"
+    @best_rating="BEST RATING"
+    @back="Please press back again if you wish to leave the app"
+    
+    @search_r="samsung"
+    
+    @valid_order="300095859"
+    @no_track_results="No results found"
     
     ##### Ivory Coast ####################################### IC ##############################################################################          
     when "ic"
@@ -232,6 +249,23 @@ def initvars
     @next="Suivant"
     @pay_on_delivery="Payer cash à la livraison"
     @confirm_order="Confirmer la commande"
+    
+    @popular_categories="Nos Meilleures Catégories"
+    @filter="Filter"
+    @filter_brand="Brand"
+    @filter_size="Size"
+    @filter_color_family="Color family"
+    @filter_price="Price"
+    
+    @done="Done"
+    @clear_all="CLEAR ALL"
+    @new_in="NEW IN"
+    @best_rating="BEST RATING"
+    @back="Appuyez de nouveau sur retour si vous souhaitez quitter l'app"
+    @search_r="nokia lumia 920 noir"
+    
+    @valid_order="300028219"
+    @no_track_results="Aucun résultat pour le numéro"
       
     ##### Morocco ########################################### MA ##############################################################################
     when "ma"
@@ -316,6 +350,23 @@ def initvars
     @next="Suivant"
     @pay_on_delivery="Payer cash à la livraison"
     @confirm_order="Confirmer la commande"
+    
+    @popular_categories="Nos Meilleures Catégories"
+    @filter="Filter"
+    @filter_brand="Brand"
+    @filter_size="Size"
+    @filter_color_family="Color family"
+    @filter_price="Price"
+    
+    @done="Done"
+    @clear_all="CLEAR ALL"
+    @new_in="NEW IN"
+    @best_rating="BEST RATING"
+    @back="Appuyez de nouveau sur retour si vous souhaitez quitter l'app"
+    @search_r="dane elec"
+    
+    @valid_order="300452452"
+    @no_track_results="Aucun résultat pour le numéro"
         
     ##### Nigeria ########################################### NG ##############################################################################
     when "ng"
@@ -396,6 +447,23 @@ def initvars
     @pay_on_delivery="Pay On Delivery"
     @confirm_order="Confirm Order"
     
+    @popular_categories="Popular Categories"
+    @filter="Filter"
+    @filter_brand="Brand"
+    @filter_size="Size"
+    @filter_color_family="Color family"
+    @filter_price="Price"
+    
+    @done="Done"
+    @clear_all="CLEAR ALL"
+    @new_in="NEW IN"
+    @best_rating="BEST RATING"
+    @back="Please press back again if you wish to leave the app"
+    @search_r="samsung"
+    
+    @valid_order="304442242"
+    @no_track_results="No results found"
+    
     ##### Egypt ############################################# EG ##############################################################################
     when "eg"
     @venture_name="Egypt"
@@ -474,6 +542,23 @@ def initvars
     @next="Next"
     @pay_on_delivery="Pay On Delivery"
     @confirm_order="Confirm Order"
+    
+    @popular_categories="Popular Categories"
+    @filter="Filter"
+    @filter_brand="Brand"
+    @filter_size="Size"
+    @filter_color_family="Color family"
+    @filter_price="Price"
+    
+    @done="Done"
+    @clear_all="CLEAR ALL"
+    @new_in="NEW IN"
+    @best_rating="BEST RATING"
+    @back="Please press back again if you wish to leave the app"
+    @search_r="samsung"
+    
+    @valid_order="300573169"
+    @no_track_results="No results found"
     
     ##### Uganda  ############################################ UG ##############################################################################
     when "ug"
@@ -554,5 +639,21 @@ def initvars
     @pay_on_delivery="Pay On Delivery"
     @confirm_order="Confirm Order"
     
+    @popular_categories="Popular Categories"
+    @filter="Filter"
+    @filter_brand="Brand"
+    @filter_size="Size"
+    @filter_color_family="Color family"
+    @filter_price="Price"
+    
+    @done="Done"
+    @clear_all="CLEAR ALL"
+    @new_in="NEW IN"
+    @best_rating="BEST RATING"
+    @back="Please press back again if you wish to leave the app"
+    @search_r="samsung"
+    
+    @valid_order="400093859"
+    @no_track_results="No results found"
   end
 end

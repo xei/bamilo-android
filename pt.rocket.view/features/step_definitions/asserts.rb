@@ -137,6 +137,10 @@ Then /^I should see the sidebar$/ do
   performAction('assert_text', @sign_in.to_s, true)
 end
 
+Then /^I should not see the sidebar$/ do
+  performAction('assert_text', @sign_in.to_s, false)
+end
+
 Then /^I should see the item was added to shopping cart message$/ do
   performAction('assert_text', @item_added.to_s, true)
 end
@@ -167,7 +171,7 @@ Then /^I should see the loading items message$/ do
   performAction('assert_text', @loading_items.to_s, true)
 end
 
-Then /^I should see the filter (popularity|price up|price down|name|brand)$/ do |filter|
+Then /^I should see the filter (popularity|price up|price down|name|brand|new in|best rating)$/ do |filter|
   case filter
   when "popularity"
     performAction('assert_text', @popularity.to_s, true)
@@ -179,6 +183,10 @@ Then /^I should see the filter (popularity|price up|price down|name|brand)$/ do 
     performAction('assert_text', @name.to_s, true)
   when "brand"
     performAction('assert_text', @brand.to_s, true)
+  when "new in"
+      performAction('assert_text', @new_in.to_s, true)
+  when "best rating"
+      performAction('assert_text', @best_rating.to_s, true)
   end
 end
 
@@ -228,4 +236,42 @@ end
 
 Then /^I should see the write a review button$/ do
   performAction('assert_text', @write_review.to_s, true)
+end
+
+Then /^I should see the search bar$/ do
+  performAction('assert_text', @search.to_s, true)
+end
+
+Then /^I check the popular categories$/ do
+  performAction('assert_text', @popular_categories.to_s, true)
+end
+
+Then /^I should see the filters$/ do
+  performAction('assert_text', @filter_brand.to_s, true)
+  #performAction('assert_text', @filter_size.to_s, true)
+  performAction('assert_text', @filter_color_family.to_s, true)
+  performAction('assert_text', @filter_price.to_s, true)
+end
+
+Then /^I should not see the filter screen$/ do
+  performAction('assert_text', @filter_brand.to_s, false)
+  performAction('assert_text', @filter_color_family.to_s, false)
+  performAction('assert_text', @filter_price.to_s, false)
+end
+
+Then /^I should see the warning pop up message$/ do
+  performAction('assert_text', @back.to_s, true)
+end
+
+Then /^I (should|should not) see the order$/ do |order|
+  case order.to_s
+  when "should"
+    performAction('click_on_view_by_id', "order_item_name", true)
+  when "should not"
+    performAction('assert_text', @no_track_results, true)
+  end
+end
+
+Then /^I should see the thank you screen$/ do
+  performAction('click_on_view_by_id', "btn_checkout_continue", true)
 end

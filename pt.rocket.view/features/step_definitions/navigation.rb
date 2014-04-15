@@ -8,7 +8,7 @@ Then /^I swipe left moving with (\d+) steps$/ do |steps|
 end
 
 Then /^I swipe right moving with (\d+) steps$/ do |steps|
-  performAction('drag',10,90,50,50,steps)
+  performAction('drag',5,90,50,50,steps)
 end
 
 Then /^I swipe down moving with (\d+) steps$/ do |steps|

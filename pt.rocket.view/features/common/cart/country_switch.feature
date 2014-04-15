@@ -1,9 +1,12 @@
-
+@Calabash_Tests
 Feature: Country switch
 
 	Background: 
-	#@install,@start,@country,@login_s,@add_to_cart
 	Given I call the variables
+	And I select the country
+	And I wait for 5 seconds
+	And I Login
+	And I add a product
 	When I open the navigation menu
 	
 	@country_switch

@@ -68,8 +68,8 @@ Then /^I enter the last name$/ do
 end
 
 Then /^I enter a valid search$/ do 
-  performAction('enter_text_into_named_field',"", @search_input.to_s)
-  performAction('enter_text_into_named_field',@search_p.to_s, @search_input.to_s)
+  performAction('enter_text_into_id_field',"", @search_input.to_s)
+  performAction('enter_text_into_id_field',@search_p.to_s, @search_input.to_s)
 end
 
 Then /^I enter a invalid search$/ do 
@@ -101,9 +101,25 @@ Then /^I enter (a fake email|my email) on password recovery$/ do |email|
   end
 end
 
+Then /^I enter a (valid|invalid) track order number$/ do |valid|
+  case valid.to_s
+  when "valid"
+    performAction('enter_text_into_id_field', "", "order_nr_edittext")  
+    performAction('enter_text_into_id_field', @valid_order, "order_nr_edittext")  
+  when "invalid"
+    performAction('enter_text_into_id_field', "", "order_nr_edittext")
+    performAction('enter_text_into_id_field', "invalid", "order_nr_edittext")  
+  end
+end
+
 Then /^I enter a variation search$/ do 
-  performAction('enter_text_into_named_field',"", @search_input.to_s)
-  performAction('enter_text_into_named_field',@search_v.to_s, @search_input.to_s)
+  performAction('enter_text_into_id_field',"", "search_component")
+  performAction('enter_text_into_id_field',@search_v.to_s, "search_component")
+end
+
+Then /^I enter a rated search$/ do 
+  performAction('enter_text_into_id_field',"", "search_component")
+  performAction('enter_text_into_id_field',@search_r.to_s, "search_component")
 end
 
 Then /^I fill the review information$/ do
@@ -116,4 +132,9 @@ end
 Then /^I enter a color search$/ do 
   performAction('enter_text_into_named_field',"", @search_input.to_s)
   performAction('enter_text_into_named_field',@search_color.to_s, @search_input.to_s)
+end
+
+Then /^I write a valid result on the search bar$/ do
+  performAction('clear_id_field', "search_component")
+  performAction('enter_text_into_id_field',"surf", "search_component")
 end

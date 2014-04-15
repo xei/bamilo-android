@@ -1,7 +1,7 @@
 require 'calabash-android/management/app_installation'
 
 AfterConfiguration do |config|
-	FeatureNameMemory.feature_name = nil
+  FeatureNameMemory.feature_name = nil
 end
 
 Before do |scenario|
@@ -19,13 +19,11 @@ Before do |scenario|
       log "First scenario in feature - reinstalling apps"
     end
     
-    if ENV["RESET_BETWEEN_SCENARIOS"] == "1"
-      uninstall_apps
-      install_app(ENV["TEST_APP_PATH"])
-      install_app(ENV["APP_PATH"])
-      FeatureNameMemory.feature_name = feature_name
-    end
-	FeatureNameMemory.invocation = 1
+    uninstall_apps
+    install_app(ENV["TEST_APP_PATH"])
+    install_app(ENV["APP_PATH"])
+    FeatureNameMemory.feature_name = feature_name
+  FeatureNameMemory.invocation = 1
   else
     FeatureNameMemory.invocation += 1
   end

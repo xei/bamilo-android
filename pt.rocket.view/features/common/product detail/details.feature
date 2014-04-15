@@ -1,39 +1,68 @@
+@Calabash_Tests
 Feature: Navigate to a product with different variations
 
 Background: 
     Given I call the variables
-	When I open the navigation menu
-	And I press Search 
-		When I enter a variation search
-   	And I press list item number 1
-   	And I press list item number 1
-   	* I wait for 2 seconds 
-   	And I press list item number 1
-   	And I press Got it
-
+    
     @product_size
   	Scenario: I see the variations on a product
+   	And I select the country
+	And I wait for 5 seconds
+	When I click on the search bar
+	When I enter a variation search
+#   	And I press list item number 1
+   	And I press list item number 1
+   	* I wait for 5 seconds 
+   	And I press list item number 1
+   	And I press Got it
    	Then I should see the variations
    	
    	@product_spec
-   	Scenario: I See the product details
+  	Scenario: I See the product details
+	When I click on the search bar
+	When I enter a variation search
+  	And I press list item number 1
+#   	And I press list item number 1
+   	* I wait for 5 seconds 
+   	And I press list item number 1
    	When I press product specifications
    	Then I should see the product features
    	And I should see the product description
-   	
+  	
    	@review_overview
    	Scenario: I see the product rating overview
+	When I click on the search bar
+	When I enter a variation search
+   	And I press list item number 1
+#   	And I press list item number 1
+   	* I wait for 5 seconds 
+   	And I press list item number 1
    	When I press Rating
    	Then I should see the write a review button
    	
    	@review_detail
    	Scenario: I see the rating details
+	When I click on the search bar
+	When I enter a rated search
+	* I wait for 5 seconds 
+   	And I press list item number 1
+#   	And I press list item number 1
+   	* I wait for 5 seconds 
+   	And I press list item number 1
+#   	And I press Got it
    	When I press Rating
-   	And I press a review
+#   	And I press a review
    	
    	@write_review
    	Scenario: I write a review
+	When I click on the search bar
+	When I enter a variation search
+   	And I press list item number 1
+#   	And I press list item number 1
+   	* I wait for 5 seconds 
+   	And I press list item number 1
    	When I press Rating
+	* I wait for 2 seconds 	
    	And I press Write a Review
    	* I wait for 2 seconds
   	And I fill the review information
@@ -43,5 +72,12 @@ Background:
    	
    	@sharing
    	Scenario: I share a product by sms
+	When I click on the search bar
+	When I enter a variation search
+   	* I wait for 5 seconds 
+   	And I press list item number 1
+#   	And I press list item number 1
+   	* I wait for 5 seconds 
+   	And I press list item number 1
    	When I press share 
    	And I press list item number 2

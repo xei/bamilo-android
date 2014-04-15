@@ -10,6 +10,7 @@ Then /^I Login$/ do
   step "I enter a valid username"
   step "I enter the password"
   step "I press Login Button"
+  step "I wait for 5 seconds"
   step "I open the navigation menu"
   step "I wait for 5 seconds"
   step "I should see sign out button"
@@ -27,6 +28,9 @@ Then /^I add a product$/ do
   step "I press Got it"
   step "I add product to cart"
   step "I wait for 5 seconds"    
+  step "I should see the item was added to shopping cart message"
   step "I go to cart"
+  step "I open the navigation menu"
+  step "I go to home"
 end
  
