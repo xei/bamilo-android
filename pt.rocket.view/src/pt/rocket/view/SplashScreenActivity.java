@@ -101,6 +101,8 @@ public class SplashScreenActivity extends FragmentActivity {
 
     private Bundle mDeepLinkBundle;
 
+    private boolean isDeepLinkLaunch = false;
+
     /*
      * (non-Javadoc)
      * 
@@ -212,20 +214,27 @@ public class SplashScreenActivity extends FragmentActivity {
         // Get intent data 
         Uri data = intent.getData();
         // ## DEEP LINK FROM EXTERNAL URIs ##
-        if(!TextUtils.isEmpty(action) && action.equals(Intent.ACTION_VIEW) && data != null) 
+        if(!TextUtils.isEmpty(action) && action.equals(Intent.ACTION_VIEW) && data != null) {
             mDeepLinkBundle = DeepLinkManager.loadExternalDeepLink(getApplicationContext(), data);
-        else 
+            isDeepLinkLaunch = true;
+        } else {
+            isDeepLinkLaunch = false;
             Log.i(TAG, "DEEP LINK: NO EXTERNAL URI");
+        }
+            
         // ## DEEP LINK FROM UA ##
         String deepLink = getIntent().getStringExtra(ConstantsIntentExtra.DEEP_LINK_TAG);
         if(!TextUtils.isEmpty(deepLink)){
+            isDeepLinkLaunch = true;
             // Create uri from the value 
             Uri uri = Uri.parse(deepLink);
             Log.d(TAG, "DEEP LINK URI: " +uri.toString() + " " + uri.getPathSegments().toString());
             // Load deep link
             mDeepLinkBundle = DeepLinkManager.loadExternalDeepLink(getApplicationContext(), uri);
-        } else 
+        } else {
             Log.i(TAG, "DEEP LINK: NO UA TAG");
+            isDeepLinkLaunch = false;
+        }
         // ## Google Analytics "General Campaign Measurement" ##
         utm = getIntent().getStringExtra(ConstantsIntentExtra.UTM_STRING);
         // ## Product URL ##
@@ -643,6 +652,7 @@ public class SplashScreenActivity extends FragmentActivity {
      * @author sergiopereira
      */
     private void launchEvent(){
+       
         // Get the current shop id
         int shopId = ShopPreferences.getShopId(getApplicationContext());
         // Validate shop id and launch the Adx event if is the same country on start app
@@ -656,6 +666,11 @@ public class SplashScreenActivity extends FragmentActivity {
         }
         // Save current shop id
         JumiaApplication.SHOP_ID_FOR_ADX = shopId;
+        
+        if(!isDeepLinkLaunch){
+            isDeepLinkLaunch = false;
+            sendAdxLaunchEvent = false;
+        }
         // Send launch
         if(sendAdxLaunchEvent ) {
             generateAndPerformAdxTrack();
