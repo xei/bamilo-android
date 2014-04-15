@@ -890,7 +890,7 @@ public class DynamicFormItem {
         params = new RelativeLayout.LayoutParams(controlWidth,
                 RelativeLayout.LayoutParams.WRAP_CONTENT);
 
-        if (this.entry.getDataSet().size() > 2) {
+        if (this.entry.getDataSet().size() > 2 || this.parent.getForm().fields.get(0).getPaymentMethodsField() != null) {
             Log.d("createRadioGroup", "createRadioGroup: Radio Group ORIENTATION_VERTICAL");
             createRadioGroupVertical(MANDATORYSIGNALSIZE, params, dataContainer);
         } else {
