@@ -54,7 +54,7 @@ public class GetProductsHelper extends BaseHelper {
         return bundle;
     }
 
-    private String getRequestURI(String productUrl, String searchQuery, int pageNumber, int totalCount, int sort, int direction, ContentValues parcelable){
+    private String getRequestURI(String productUrl, String searchQuery, int pageNumber, int totalCount, int sort, int direction, ContentValues filters){
         Uri productsUri;
         if (TextUtils.isEmpty(productUrl)) {
             productsUri = Uri.parse(EventType.GET_PRODUCTS_EVENT.action);
@@ -115,8 +115,8 @@ public class GetProductsHelper extends BaseHelper {
         
         // Append filter values
         //Log.d(TAG, "APPEND FILTER VALUES");
-        if(parcelable != null) {
-            for (Entry<String, Object> entry : parcelable.valueSet()) {
+        if(filters != null) {
+            for (Entry<String, Object> entry : filters.valueSet()) {
                 //Log.d(TAG, "ADD FILTER ENTRY: " + entry.getKey() + " " + entry.getValue());
                 uriBuilder.appendQueryParameter(entry.getKey(), (String) entry.getValue());
             }

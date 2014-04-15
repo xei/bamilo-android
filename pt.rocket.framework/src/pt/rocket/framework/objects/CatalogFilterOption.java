@@ -3,13 +3,14 @@ package pt.rocket.framework.objects;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pt.rocket.framework.rest.RestConstants;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
-/**
-	 * 
+	/**
+	 * Class used to represnt a filter option for catalog
 	 * @author sergiopereira
-	 *
 	 */
 	public class CatalogFilterOption implements IJSONSerializable, Parcelable {
 
@@ -44,49 +45,40 @@ import android.os.Parcelable;
 			isSectionBrand = false;
 		}
 		
-
+		/*
+		 * (non-Javadoc)
+		 * @see pt.rocket.framework.objects.IJSONSerializable#initialize(org.json.JSONObject)
+		 */
 		@Override
 		public boolean initialize(JSONObject jsonOption) throws JSONException {
 			// Get id
-			mId = jsonOption.optString("id");
+			mId = jsonOption.optString(RestConstants.JSON_ID_TAG);
 			// Get label
-			mLabel = jsonOption.optString("label");
+			mLabel = jsonOption.optString(RestConstants.JSON_LABEL_TAG);
 			// Get value
-			mValue = jsonOption.optString("val");
+			mValue = jsonOption.optString(RestConstants.JSON_VAL_TAG);
 			// Get products count
-			mCount = jsonOption.optString("products_count");
+			mCount = jsonOption.optString(RestConstants.JSON_PRODUCTS_COUNT_TAG);
 			// Get hex value
-			mHex = jsonOption.optString("hex_value");
+			mHex = jsonOption.optString(RestConstants.JSON_HEX_VALUE_TAG);
 			// Get image url
-			mImg = jsonOption.optString("image_url");
+			mImg = jsonOption.optString(RestConstants.JSON_IMAGE_URL_TAG);
 			// Get max
-			mMax = jsonOption.optInt("max");
+			mMax = jsonOption.optInt(RestConstants.JSON_MAX_TAG);
 			// Get min
-			mMin = jsonOption.optInt("min");
+			mMin = jsonOption.optInt(RestConstants.JSON_MIN_TAG);
 			// Get interval
-			mInterval = jsonOption.optInt("interval");
+			mInterval = jsonOption.optInt(RestConstants.JSON_INTERVAL_TAG);
 			// Set selected
 			isSelected = false;
 			// Set 
 			isSectionBrand = false;
-
-//			Log.d(TAG, "FILTER OPTION:" +
-//					" ID:" + mId + 
-//					" LABEL:" + mLabel + 
-//					" VAL:" + mValue + 
-//					" COUNT:" + mCount + 
-//					" HEX:" + mHex + 
-//					" IMG:" + mImg + 
-//					" MAX:" + mMax + 
-//					" MIN:" + mMin + 
-//					" INTERVAL:" + mInterval);
 			
 			return true;
 		}
 
 		@Override
 		public JSONObject toJSON() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 		

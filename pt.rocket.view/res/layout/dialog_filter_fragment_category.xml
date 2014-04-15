@@ -50,43 +50,12 @@
         android:layout_weight="1"
         android:divider="@color/grey_dividerlight"
         android:dividerHeight="0.75dp"
-        android:entries="@array/products_picker"
         android:footerDividersEnabled="true"
         android:listSelector="@android:color/transparent"
         android:visibility="visible" />
 
     <!-- BUTTONS -->
 
-    <LinearLayout
-        android:id="@+id/dialog_filter_buttons_container"
-        android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:layout_gravity="center"
-        android:background="@android:color/white"
-        android:gravity="center"
-        android:orientation="horizontal" >
-
-        <org.holoeverywhere.widget.TextView
-            android:id="@+id/dialog_filter_button_cancel"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:fontFamily="roboto_regular"
-            android:gravity="center"
-            android:text="Cancel"
-            android:textColor="@color/grey_dark"
-            android:textSize="@dimen/text_xl" />
-
-        <org.holoeverywhere.widget.TextView
-            android:id="@+id/dialog_filter_button_done"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:fontFamily="roboto_regular"
-            android:gravity="center"
-            android:text="Done"
-            android:textColor="@color/grey_dark"
-            android:textSize="@dimen/text_xl" />
-    </LinearLayout>
+    <include layout="@layout/dialog_filter_bottom_buttons" />
 
 </LinearLayout>

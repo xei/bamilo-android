@@ -129,6 +129,9 @@ public class CatalogPageModel {
     private CharSequence totalItemsLable = "";
     private Fragment mFragment;
 
+    private ProductsListAdapter mSaveAdapter;
+    
+
     public CatalogPageModel(int index, BaseActivity activity, Fragment mFragment) {
         this.index = index;
         this.mActivity = activity;
@@ -441,6 +444,8 @@ public class CatalogPageModel {
         
         Log.d(TAG, "FILTER EXECUTE REQ");
         
+        mSaveAdapter = productsAdapter;
+        
         productsAdapter = new ProductsListAdapter(mActivity);
         pageNumber = 1;
         showProductsContent();
@@ -668,7 +673,7 @@ public class CatalogPageModel {
     
     public ArrayList<CatalogFilter> mFilters;
 
-    private ArrayList<CatalogFilter> mCatalogFilters;
+    //private ArrayList<CatalogFilter> mCatalogFilters;
 
     // @Override
     // public void handleEvent(ResponseEvent event) {
@@ -726,19 +731,23 @@ public class CatalogPageModel {
         if (mActivity.handleErrorEvent(bundle)) {
             return;
         }
+        
+        // Validate the request was performed by Filter
+        if(isRequestFromFilter())
+            return;
+        
         // Log.i(TAG, "code1 product list on error event");
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        
         if (errorCode != null && pageNumber == 1) {
             showProductsNotfound();
             mActivity.showContentContainer();
         } else {
             Log.d(TAG, "onErrorEvent: loading more products failed");
             hideProductsLoading();
-
             if (totalProducts != -1 && totalProducts > ((pageNumber - 1) * MAX_PAGE_ITEMS)) {
-                Toast.makeText(mActivity, R.string.products_could_notloaded, Toast.LENGTH_SHORT)
-                        .show();
+                Toast.makeText(mActivity, R.string.products_could_notloaded, Toast.LENGTH_SHORT).show();
             }
         }
         mBeginRequestMillis = System.currentTimeMillis();
@@ -746,6 +755,28 @@ public class CatalogPageModel {
         receivedError = true;
     }
 
+    /**
+     * Validate if the request was triggered by filter.
+     * Show the old catalog and warning the parent fragment 
+     * @return boolean
+     * @author sergiopereira
+     */
+    private boolean isRequestFromFilter(){
+        if(filters != null && mSaveAdapter != null && mFragment != null) {
+            Log.d(TAG, "FILTERS: ON ERROR EVENT");
+            productsAdapter = mSaveAdapter;
+            //showCatalogContent();
+            showProductsContent();
+            // Sent to Parent that was received an error on load catalog
+            ((Catalog) mFragment).onErrorLoadingFilteredCatalog();
+            return true;
+        } else {
+            Log.d(TAG, "FILTERS IS NULL");
+            return false;
+        }
+    }
+    
+    
     public void setTotalItemLable() {
         TextView totalItems = (TextView) mActivity.findViewById(R.id.totalProducts);
         if (getTotalProducts() > 0) {
@@ -838,21 +869,10 @@ public class CatalogPageModel {
             isLoadingMore = true;
         }
 
-        
-        
         // Updated filter
-        // XXX
-        mCatalogFilters = productsPage.getFilters();
-        if(mFragment.isVisible()){
+        if(mFragment.isVisible())
             ((Catalog) mFragment).setFilter(productsPage.getFilters());
-        } else {
-            return;
-        }
-        
-        
-        
-        
-        
+
     }
 
     /**

@@ -37,6 +37,12 @@ public class RestConstants {
 
 	// FormsService Tags
 	public static final String JSON_NAME_TAG = "name";
+	public static final String JSON_NUMBER_TAG = "number";
+	public static final String JSON_VAL_TAG = "val";
+	public static final String JSON_PRODUCTS_COUNT_TAG = "products_count";
+	public static final String JSON_HEX_VALUE_TAG = "hex_value";
+	public static final String JSON_INTERVAL_TAG = "interval";
+	public static final String JSON_FILTERS_TAG = "filters";
 
 	// FormData Tags
 	public static final String JSON_ACTION_TAG = "action";

@@ -10,9 +10,11 @@ import org.holoeverywhere.widget.Button;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.CatalogPageModel;
 import pt.rocket.framework.objects.CatalogFilter;
+import pt.rocket.framework.objects.CatalogFilterOption;
 import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.helpers.GetProductsHelper;
 import pt.rocket.utils.JumiaCatalogViewPager;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
@@ -27,6 +29,7 @@ import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -36,6 +39,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import de.akquinet.android.androlog.Log;
 
 public class Catalog extends BaseFragment implements OnClickListener{
@@ -72,9 +76,16 @@ public class Catalog extends BaseFragment implements OnClickListener{
     public static String title;
     public static int navigationSource;
     private int currentPosition = 1;
+    
     private View mFilterButton;
+    
     private ArrayList<CatalogFilter> mCatalogFilter;
-    private ContentValues mCatalogFilterValues = new ContentValues();
+    
+    private ArrayList<CatalogFilter> mOldCatalogFilterState;
+    
+    private ContentValues mCatalogFilterValues;
+    
+    private boolean wasReceivedErrorEvent = false;
 
     public Catalog() {
         super(EnumSet.noneOf(EventType.class), 
@@ -94,87 +105,29 @@ public class Catalog extends BaseFragment implements OnClickListener{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mSortOptions = new ArrayList<String>(Arrays.asList(getResources()
-                .getStringArray(R.array.products_picker)));
+        mSortOptions = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.products_picker)));
         mCatalogPageModel = new CatalogPageModel[mSortOptions.size()];
     }
 
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.view.fragments.BaseFragment#onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle)
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mInflater = inflater;
         View view = inflater.inflate(R.layout.products_frame, container, false);
         mViewPager = (JumiaCatalogViewPager) view.findViewById(R.id.viewpager_products_list);
         pagerTabStrip = (PagerTabStrip) view.findViewById(R.id.products_list_titles);
-        
-        // XXX
+        // Get filter button
         mFilterButton = view.findViewById(R.id.products_list_filter_button);
-        mFilterButton.setSelected((mCatalogFilterValues.size() == 0) ? false : true);
-
+        // Set the button state if is selected or not
+        setFilterButtonState();
         // Initialize the catalog model with fresh data
         initPageModel();
-
         return view;
     }
 
-    // XXX
-    public void setFilter(ArrayList<CatalogFilter> filters){
-        // Validate    
-        if(mFilterButton == null){ Log.w(TAG, "FILTER VIEW IS NULL"); return; }
-        // Validate
-        if(mCatalogFilter != null) { Log.w(TAG, "DISCARTED: CURRENT FILTER IS NOT NULL"); return; }
-        // Validate
-        if(filters == null) { Log.w(TAG, "HIDE FILTERS: DATA IS NULL"); return; }
-        // Validate
-        if(filters.size() == 0) { Log.w(TAG, "HIDE FILTERS: DATA IS EMPTY"); return; }
-        // Save filters
-        mCatalogFilter = filters;
-        Log.i(TAG, "SAVED THE FILTER");
-        setFilterAction();
-    }
-    
-    private void setFilterAction(){
-        // Set listener
-        mFilterButton.setVisibility(View.VISIBLE);
-        mFilterButton.setOnClickListener(null);
-        mFilterButton.setOnClickListener(this);
-        pagerTabStrip.setPadding(0, 0, getBaseActivity().getResources().getDimensionPixelSize(R.dimen.catalog_button_filter_width), 0);
-    }
-    
-    /*
-     * (non-Javadoc)
-     * @see android.view.View.OnClickListener#onClick(android.view.View)
-     */
-    @Override
-    public void onClick(View v) {
-        // Get the view id
-        int id = v.getId();
-        // Validate the click
-        if(id == R.id.products_list_filter_button) {
-            Log.d(TAG, "ON CLICK: FILTER BUTTON");
-            Bundle bundle = new Bundle();
-            bundle.putParcelableArrayList(DialogFilterFragment.FILTER_TAG, mCatalogFilter);
-            DialogFilterFragment newFragment = DialogFilterFragment.newInstance(bundle, this);
-            newFragment.show(getBaseActivity().getSupportFragmentManager(), "dialog");
-        }
-    }
-    
-    // XXX
-    /**
-     * 
-     * @param filterValues
-     */
-    public void onSubmitFilterValues(ContentValues filterValues) {
-        Log.d(TAG, "FILTER VALUES: " + filterValues.toString());
-        mCatalogFilterValues = filterValues;
-        mFilterButton.setSelected((mCatalogFilterValues.size() == 0) ? false : true);
-        // Update the current view pager
-        Log.d(TAG, "FILTER UPDATE PAGEVALUES: " + filterValues.toString());
-        getCurrentCatalogPageModel(mSelectedPageIndex).setVariables(productsURL, searchQuery, navigationPath, title, navigationSource, mCatalogFilterValues);
-        getCurrentCatalogPageModel(mSelectedPageIndex-1).setVariables(productsURL, searchQuery, navigationPath, title, navigationSource, mCatalogFilterValues);
-        getCurrentCatalogPageModel(mSelectedPageIndex+1).setVariables(productsURL, searchQuery, navigationPath, title, navigationSource, mCatalogFilterValues);
-    }
-    
-    
     
     
     @Override
@@ -256,8 +209,9 @@ public class Catalog extends BaseFragment implements OnClickListener{
             e.printStackTrace();
         }
         
-        // XXX Set catalog filters
-        if(mCatalogFilter != null) setFilterAction();
+        // Set catalog filters
+        if(mCatalogFilter != null)
+            setFilterAction();
         
         AnalyticsGoogle.get().trackPage(R.string.gproductlist);
         getBaseActivity().setProcessShow(true);
@@ -265,7 +219,208 @@ public class Catalog extends BaseFragment implements OnClickListener{
         
     }
 
+    /*
+     * ######## CATALOG FILTER ########
+     * TODO : Add here more filter methods 
+     */
+    /**
+     * Method used to set the filter button.
+     * @param filters
+     * @author sergiopereira
+     */
+    public void setFilter(ArrayList<CatalogFilter> filters){
+        // Validate the view
+        if(mFilterButton == null) { Log.w(TAG, "FILTER VIEW IS NULL"); return; }
+        // Validate the current filter object
+        if(mCatalogFilter != null) { Log.w(TAG, "DISCARTED: CURRENT FILTER IS NOT NULL"); return; }
+        // Validate the received data
+        if(filters == null) { Log.w(TAG, "HIDE FILTERS: DATA IS NULL"); return; }
+        // Validate the received data
+        if(filters.size() == 0) { Log.w(TAG, "HIDE FILTERS: DATA IS EMPTY"); return; }
+        // Save filters
+        mCatalogFilter = filters;
+        // Restore the old state
+        restoreOldState();
+        // Set the button behavior
+        setFilterAction();
+        Log.i(TAG, "SAVED THE FILTER");
+    }
 
+    /**
+     * Method used to process the error event
+     * Show the old filter
+     * @author sergiopereira
+     */
+    public synchronized void onErrorLoadingFilteredCatalog(){
+        // Process only one error event
+        if(wasReceivedErrorEvent) {
+            Log.i(TAG, "DISCARTED OTHER ERROR EVENT");
+            return;
+        }
+        // Set the flag
+        wasReceivedErrorEvent = true;
+        // Show the old filter
+        mCatalogFilter = mOldCatalogFilterState; 
+        mFilterButton.setOnClickListener(this);
+        // Warning user
+        Toast.makeText(getBaseActivity(), getString(R.string.search_no_items), Toast.LENGTH_LONG).show();
+        Log.d(TAG, "RECEIVED ERROR ON LOAD CATALOG WITH FILTERS");
+    }
+    
+    /**
+     * Method used to restore the old filter state when is performed a query filtered by a new category.
+     * Match the old selection with the new filter option.
+     * @author sergiopereira
+     */
+    private void restoreOldState(){
+        Log.i(TAG, "RESTORE THE OLD SELECTED STATE");
+        // Validate the old filter state
+        if(mOldCatalogFilterState != null)
+            // Restore the filter if match with the old
+            for ( CatalogFilter newFilter : mCatalogFilter) {
+                Log.i(TAG, "RESTORE FILTER: " + newFilter.getName());
+                // Locate the old filter
+                CatalogFilter oldFilter = locateFilter(mOldCatalogFilterState, newFilter.getId());
+                Log.i(TAG, "OLD FILTER: " + oldFilter.getName());
+                // Validate old filter
+                if(oldFilter != null)  {
+                    // Case generic filter
+                    if(oldFilter.hasOptionSelected())
+                        // Locate selected options and save
+                        newFilter.setSelectedOption(locateOption(newFilter.getFilterOptions(), oldFilter.getSelectedOption()));
+                    // Case price filter
+                    else if (oldFilter.hasRangeValues()) {
+                        // Save the range
+                        newFilter.setRangeValues(oldFilter.getMinRangeValue(), oldFilter.getMaxRangeValue());
+                    }
+                }
+            }
+        else
+            Log.i(TAG, "OLD SELECTED STATE IS NULL");
+    }
+    
+    /**
+     * Locate the current options in the old selected options and save the old value.
+     * @param newOptions
+     * @param oldOptions
+     * @return The match of the selected options
+     * @author sergiopereira
+     */
+    private SparseArray<CatalogFilterOption> locateOption(ArrayList<CatalogFilterOption> newOptions, SparseArray<CatalogFilterOption> oldOptions){
+        // Array to save the selected options
+        SparseArray<CatalogFilterOption> selectedOptions = new SparseArray<CatalogFilterOption>();
+        // Loop filter options
+        for (int i = 0; i < newOptions.size(); i++) {
+            CatalogFilterOption curOption = newOptions.get(i); 
+            // Loop old selected options
+            for (int j = 0; j < oldOptions.size(); j++) {
+                CatalogFilterOption selectedOption = oldOptions.valueAt(j);
+                // If has the same value
+                if(curOption.getLabel().equals(selectedOption.getLabel())) {
+                    // Set option as selected and save it
+                    curOption.setSelected(true);
+                    selectedOptions.put(i, curOption);
+                    break;
+                }
+            }
+        }
+        return selectedOptions;
+    }
+    
+    /**
+     * Locate the current filter.
+     * @param array
+     * @param id
+     * @return The old filter with saved state
+     * @author sergiopereira
+     */
+    private CatalogFilter locateFilter(ArrayList<CatalogFilter> array, String id){
+        for ( CatalogFilter item : array)
+            if(item.getId().equals(id))
+                return item;
+        return null;
+    }
+    
+    /**
+     * Set the behavior for filter button
+     * @author sergiopereira
+     */
+    private void setFilterAction(){
+        // Set listener
+        mFilterButton.setVisibility(View.VISIBLE);
+        mFilterButton.setOnClickListener(null);
+        mFilterButton.setOnClickListener(this);
+        pagerTabStrip.setPadding(0, 0, getBaseActivity().getResources().getDimensionPixelSize(R.dimen.catalog_button_filter_width), 0);
+    }
+    
+    /**
+     * Process the filter values
+     * @param filterValues
+     * @author sergiopereira
+     */
+    public void onSubmitFilterValues(ContentValues filterValues) {
+        Log.d(TAG, "FILTER VALUES: " + filterValues.toString());
+        // Save the current filter values
+        mCatalogFilterValues = filterValues;
+        // Contains the new product URL (Category filter)
+        if(filterValues.containsKey(GetProductsHelper.PRODUCT_URL)) {
+            // Get product URL and remove it
+            productsURL = filterValues.getAsString(GetProductsHelper.PRODUCT_URL);
+            mCatalogFilterValues.remove(GetProductsHelper.PRODUCT_URL);
+            // Save the new filters to restore
+            mOldCatalogFilterState = mCatalogFilter;
+            // Clean the current category values
+            mCatalogFilter = null;
+            searchQuery = null;
+            title = null;
+            mFilterButton.setOnClickListener(null);
+        }
+        // Set the filter button selected or not
+        setFilterButtonState();
+        // Error flag
+        wasReceivedErrorEvent = false;
+        // Send new request with new filters
+        // Update the current view pages
+        getCurrentCatalogPageModel(mSelectedPageIndex).setVariables(productsURL, searchQuery, navigationPath, title, navigationSource, mCatalogFilterValues);
+        getCurrentCatalogPageModel(mSelectedPageIndex-1).setVariables(productsURL, searchQuery, navigationPath, title, navigationSource, mCatalogFilterValues);
+        getCurrentCatalogPageModel(mSelectedPageIndex+1).setVariables(productsURL, searchQuery, navigationPath, title, navigationSource, mCatalogFilterValues);
+    }
+    
+    /**
+     * Set the filter button state, to show as selected or not
+     * @author sergiopereira
+     */
+    private void setFilterButtonState(){
+        try {
+            mFilterButton.setSelected((mCatalogFilterValues.size() == 0) ? false : true);
+            Log.d(TAG, "SET FILTER BUTTON STATE: " + mFilterButton.isSelected());
+        } catch (NullPointerException e) {
+            Log.w(TAG, "BUTTON OR VALUE IS NULL", e);
+        }
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see android.view.View.OnClickListener#onClick(android.view.View)
+     */
+    @Override
+    public void onClick(View v) {
+        // Get the view id
+        int id = v.getId();
+        // Validate the click
+        if(id == R.id.products_list_filter_button) {
+            Log.d(TAG, "ON CLICK: FILTER BUTTON");
+            Bundle bundle = new Bundle();
+            bundle.putParcelableArrayList(DialogFilterFragment.FILTER_TAG, mCatalogFilter);
+            DialogFilterFragment newFragment = DialogFilterFragment.newInstance(bundle, this);
+            newFragment.show(getBaseActivity().getSupportFragmentManager(), "dialog");
+        }
+    }
+    
+    
+    /*
+     * ######### LAYOUT ######### 
+     */
     
     /**
      * Set some layout parameters that aren't possible by xml
@@ -274,8 +429,7 @@ public class Catalog extends BaseFragment implements OnClickListener{
      * @throws IllegalArgumentException
      * @throws IllegalAccessException
      */
-    private void setLayoutSpec() throws NoSuchFieldException, IllegalArgumentException,
-            IllegalAccessException {
+    private void setLayoutSpec() throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
         // Get text
         final TextView currTextView = (TextView) pagerTabStrip.getChildAt(TAB_CURR_ID);
         final TextView nextTextView = (TextView) pagerTabStrip.getChildAt(TAB_NEXT_ID);
@@ -418,8 +572,6 @@ public class Catalog extends BaseFragment implements OnClickListener{
                             }
                         }
                         
-                        
-                        Log.d(TAG, "XXXXXX FILTER");
                         currentPage.setLinearLayoutLb((LinearLayout) currentPage.getRelativeLayout().findViewById(R.id.loading_view_pager));
                         currentPage.setRelativeLayoutPt((RelativeLayout) currentPage.getRelativeLayout().findViewById(R.id.products_tip));
                         currentPage.setVariables(productsURL, searchQuery, navigationPath, title, navigationSource, mCatalogFilterValues);
@@ -437,8 +589,5 @@ public class Catalog extends BaseFragment implements OnClickListener{
             return view == (View) obj;
         }
     }
-
-
-
 
 }

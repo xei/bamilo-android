@@ -7,7 +7,9 @@ import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.framework.objects.CatalogFilter;
 import pt.rocket.framework.objects.CatalogFilterOption;
+import pt.rocket.framework.objects.CategoryFilterOption;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.helpers.GetProductsHelper;
 import pt.rocket.view.R;
 import pt.rocket.view.fragments.Catalog;
 import android.content.ContentValues;
@@ -28,9 +30,8 @@ import android.widget.ListView;
 import de.akquinet.android.androlog.Log;
 
 /**
- * 
+ * Class used to show filters for catalog
  * @author sergiopereira
- * 
  */
 public class DialogFilterFragment extends DialogFragment {
 
@@ -38,12 +39,27 @@ public class DialogFilterFragment extends DialogFragment {
 
     public static final int NO_INITIAL_POSITION = -1;
 
-    private static final int FILTER_CATEGORY = 0;
-    private static final int FILTER_BRAND = 1;
-    private static final int FILTER_SIZE = 2;
-    private static final int FILTER_PRICE = 3;
-    private static final int FILTER_COLOR = 4;
-    private static final int FILTER_MAIN = 5;
+    private static final int FILTER_CATEGORY_TYPE = 0;
+    
+    private static final int FILTER_BRAND_TYPE = 1;
+    
+    private static final int FILTER_SIZE_TYPE = 2;
+    
+    private static final int FILTER_PRICE_TYPE = 3;
+    
+    private static final int FILTER_COLOR_TYPE = 4;
+
+    private static final int FILTER_MAIN_TYPE = 5;
+    
+    public static final String CATEGORY_ID = "category";
+    
+    public static final String BRAND_ID = "brand";
+    
+    public static final String SIZE_ID = "size";
+    
+    public static final String PRICE_ID = "price";
+    
+    public static final String COLOR_ID = "color";
 
     public final static String FILTER_TAG = "catalog_filters";
 
@@ -103,43 +119,44 @@ public class DialogFilterFragment extends DialogFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        // Get container
-        onSwitchChildFragment(FILTER_MAIN, null);
+        // Show the main fragment, list of supported filters
+        onSwitchChildFragment(FILTER_MAIN_TYPE, null);
     }
 
     /**
-     * 
+     * Method used to switch between the filter fragments
      * @param filterType
      * @param bundle 
+     * @author sergiopereira
      */
     private void onSwitchChildFragment(int filterType, Bundle bundle) {
         switch (filterType) {
-        case FILTER_MAIN:
+        case FILTER_MAIN_TYPE:
             Log.i(TAG, "ON SWITCH FILTER: FILTER_MAIN");
             FilterMainFragment fragmentOne = FilterMainFragment.newInstance(this);
             fragmentChildManagerTransition(R.id.dialog_filter_container, fragmentOne, false, true);
             break;
-        case FILTER_CATEGORY:
+        case FILTER_CATEGORY_TYPE:
             Log.i(TAG, "ON SWITCH FILTER: FILTER_CATEGORY");
             FilterCategoryFragment fragmentCategory = FilterCategoryFragment.newInstance(this, bundle);
             fragmentChildManagerTransition(R.id.dialog_filter_container, fragmentCategory, true, true);
             break;
-        case FILTER_BRAND:
+        case FILTER_BRAND_TYPE:
             Log.i(TAG, "ON SWITCH FILTER: FILTER_BRAND");
             FilterBrandFragment fragmentBrand = FilterBrandFragment.newInstance(this, bundle);
             fragmentChildManagerTransition(R.id.dialog_filter_container, fragmentBrand, true, true);
             break;
-        case FILTER_SIZE:
+        case FILTER_SIZE_TYPE:
             Log.i(TAG, "ON SWITCH FILTER: FILTER_SIZE");
             FilterSizeFragment fragmentSize = FilterSizeFragment.newInstance(this, bundle);
             fragmentChildManagerTransition(R.id.dialog_filter_container, fragmentSize, true, true);
             break;
-        case FILTER_PRICE:
+        case FILTER_PRICE_TYPE:
             Log.i(TAG, "ON SWITCH FILTER: FILTER_PRICE");
             FilterPriceFragment fragmentPrice = FilterPriceFragment.newInstance(this, bundle);
             fragmentChildManagerTransition(R.id.dialog_filter_container, fragmentPrice, true, true);
             break;
-        case FILTER_COLOR:
+        case FILTER_COLOR_TYPE:
             Log.i(TAG, "ON SWITCH FILTER: FILTER_COLOR");
             FilterColorFragment fragmentColor = FilterColorFragment.newInstance(this, bundle);
             fragmentChildManagerTransition(R.id.dialog_filter_container, fragmentColor, true, true);
@@ -157,13 +174,11 @@ public class DialogFilterFragment extends DialogFragment {
      * @param fragment
      * @param animated
      */
-    public void fragmentChildManagerTransition(int container, Fragment fragment, boolean animated,
-            boolean addToBackStack) {
+    public void fragmentChildManagerTransition(int container, Fragment fragment, boolean animated, boolean addToBackStack) {
         FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
         // Animations
         if (animated)
-            fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left,
-                    R.anim.slide_in_left, R.anim.slide_out_right);
+            fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
         // Replace
         fragmentTransaction.replace(container, fragment);
         // Back stack
@@ -205,14 +220,15 @@ public class DialogFilterFragment extends DialogFragment {
      * ################# MAIN FRAGMENT ################
      */
     /**
-     * 
+     * Class used to create the main fragment that shows the list of supported filters
      * @author sergiopereira
-     * 
      */
     private static class FilterMainFragment extends Fragment implements OnClickListener, OnItemClickListener {
 
         private DialogFilterFragment mParent;
+        
         private ListView mFilterListView;
+        
         private ContentValues mContentValues;
 
         /**
@@ -276,14 +292,15 @@ public class DialogFilterFragment extends DialogFragment {
             Bundle bundle = new Bundle();
             bundle.putParcelable(FILTER_TAG, selectedFilter);
             // Goto for respective fragment
-            if(filterId.contains("category")) ((DialogFilterFragment) getParentFragment()).onSwitchChildFragment(FILTER_CATEGORY, bundle); 
-            else if(filterId.contains("brand")) ((DialogFilterFragment) getParentFragment()).onSwitchChildFragment(FILTER_BRAND, bundle);
-            else if(filterId.contains("size")) ((DialogFilterFragment) getParentFragment()).onSwitchChildFragment(FILTER_SIZE, bundle);
-            else if(filterId.contains("price")) ((DialogFilterFragment) getParentFragment()).onSwitchChildFragment(FILTER_PRICE, bundle);
-            else if(filterId.contains("color")) ((DialogFilterFragment) getParentFragment()).onSwitchChildFragment(FILTER_COLOR, bundle);
+            if(filterId.contains(CATEGORY_ID)) ((DialogFilterFragment) getParentFragment()).onSwitchChildFragment(FILTER_CATEGORY_TYPE, bundle); 
+            else if(filterId.contains(BRAND_ID)) ((DialogFilterFragment) getParentFragment()).onSwitchChildFragment(FILTER_BRAND_TYPE, bundle);
+            else if(filterId.contains(SIZE_ID)) ((DialogFilterFragment) getParentFragment()).onSwitchChildFragment(FILTER_SIZE_TYPE, bundle);
+            else if(filterId.contains(PRICE_ID)) ((DialogFilterFragment) getParentFragment()).onSwitchChildFragment(FILTER_PRICE_TYPE, bundle);
+            else if(filterId.contains(COLOR_ID)) ((DialogFilterFragment) getParentFragment()).onSwitchChildFragment(FILTER_COLOR_TYPE, bundle);
             else { Log.w(TAG, "UNKNOWN FILTER ID"); bundle = null; }
         }
-
+        
+        
         /*
          * (non-Javadoc)
          * 
@@ -302,7 +319,8 @@ public class DialogFilterFragment extends DialogFragment {
         }
         
         /**
-         * Process the click on save button
+         * Process the click on save button.
+         * Create a content values and send it to parent
          * @author sergiopereira
          */
         private void proccessOnClickDone(){
@@ -316,31 +334,42 @@ public class DialogFilterFragment extends DialogFragment {
             mParent.dismiss();
         }
         
-        
         /**
          * Create content values to filter catalog
-         * @author sergiopereira
          * @return ContentValues
+         * @author sergiopereira
          */
         private ContentValues createContentValues(){
             // Create query
             ContentValues contentValues = new ContentValues();
             // Save all values
             for (CatalogFilter filter : mFilters) {
-                // Generic filter: Get filter id and values
-                if(filter.hasOptionSelected()){
-                    String filterId = filter.getId();
-                    String filterValue = "";
-                    for(int i = 0; i < filter.getSelectedOption().size(); i++) 
-                        filterValue += filter.getSelectedOption().valueAt(i).getLabel() + "--";
+                // Get filter id and values
+                String filterId = filter.getId();
+                String filterValue = "";
+                // Case category filter
+                if(filter.hasOptionSelected() && filterId.equals(CATEGORY_ID)) {
+                    CatalogFilterOption selectedOption = filter.getSelectedOption().valueAt(0);
+                    String url = ((CategoryFilterOption) selectedOption).getUrl();
+                    Log.d(TAG, "SELECTED A NEW CATEGORY: " + url );
+                    if(url != null) {
+                        contentValues.put(GetProductsHelper.PRODUCT_URL, url);
+                        filter.cleanSelectedOption();
+                    }
+                }
+                // Case generic filter
+                else if(filter.hasOptionSelected()) {
+                    int size = filter.getSelectedOption().size();
+                    for(int i = 0; i < size; i++)
+                        filterValue += filter.getSelectedOption().valueAt(i).getLabel() + ((i + 1 < size) ? "--" : "");
                     contentValues.put(filterId, filterValue);
                 }
-                // Range filter: Get range value 
-                if(filter.hasRangeValues()) {
-                    String filterId = filter.getId();
+                // Case price filter, get range value 
+                else if(filter.hasRangeValues()) {
+                    // String filterId = filter.getId();
                     int min = filter.getMinRangeValue();
                     int max = filter.getMaxRangeValue();
-                    boolean discount = filter.isRangeWithDiscount();
+                    //boolean discount = filter.isRangeWithDiscount();
                     contentValues.put(filterId, min + "-" + max);
                 }
             }
@@ -355,16 +384,13 @@ public class DialogFilterFragment extends DialogFragment {
             Log.d(TAG, "CLICKED ON: CLEAR");
             // Clean all saved values
             for (CatalogFilter filter : mFilters) {
-                // Generic filter: Get filter id and values
-                if(filter.hasOptionSelected()) {
-                    // Clean and disable old selection
+                // Generic filter: Get filter id and values, clean and disable old selection
+                if(filter.hasOptionSelected())
                     filter.cleanSelectedOption();
-                }
-                // Range filter: Get range value 
-                if(filter.hasRangeValues()) {
-                    //Log.d(TAG, "FILTER: " + filter.getId() + " VALUE:" + filter.getMinRangeValue() + " " + filter.getMaxRangeValue() + " " + filter.isRangeWithDiscount());
+                // Price filter: Get range value 
+                if(filter.hasRangeValues())
                     filter.cleanRangeValues();
-                } 
+              //Log.d(TAG, "FILTER: " + filter.getId() + " VALUE:" + filter.getMinRangeValue() + " " + filter.getMaxRangeValue() + " " + filter.isRangeWithDiscount());
             }
             // Update adapter
             ((FiltersArrayAdapter) mFilterListView.getAdapter()).notifyDataSetChanged();
@@ -429,7 +455,6 @@ public class DialogFilterFragment extends DialogFragment {
             for (int i = 0; i < array.size(); i++) string += ((i == 0) ? "" : ", ") + array.valueAt(i).getLabel();
             return string;
         }
-
     }
     
 }

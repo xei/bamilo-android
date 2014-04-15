@@ -20,7 +20,7 @@ import android.widget.ListView;
 import de.akquinet.android.androlog.Log;
 
 /**
- * 
+ * Class used to show the category filter
  * @author sergiopereira
  *
  */
@@ -80,7 +80,7 @@ public class FilterCategoryFragment extends Fragment implements OnClickListener,
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.dialog_filter_fragment_brand, container, false);
+        return inflater.inflate(R.layout.dialog_filter_fragment_category, container, false);
     }
 
     /*

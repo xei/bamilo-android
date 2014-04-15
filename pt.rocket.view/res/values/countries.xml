@@ -67,7 +67,7 @@
     <string name="jumia_ng_server_dev">alice-staging.jumia.com.ng</string>
     <string name="jumia_ng_user_dev">rocket</string>
     <string name="jumia_ng_password_dev">rock4me</string>
-    <string name="jumia_ng_restbase_path_dev">mobapi/v1</string>
+    <string name="jumia_ng_restbase_path_dev">mobapi/v1.1</string>
     <string name="jumia_ng_country_name_dev">Nigeria Staging</string>
 
     <!-- Jumia Kenya Configuration -->

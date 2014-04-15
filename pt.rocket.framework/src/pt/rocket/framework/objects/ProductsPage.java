@@ -9,6 +9,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pt.rocket.framework.Darwin;
+import pt.rocket.framework.R;
 import pt.rocket.framework.rest.RestConstants;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -16,6 +18,7 @@ import android.util.Log;
 
 /**
  * @author nutzer2
+ * @modified sergiopereira
  *
  */
 public class ProductsPage implements IJSONSerializable, Parcelable {
@@ -23,8 +26,9 @@ public class ProductsPage implements IJSONSerializable, Parcelable {
 	private static final String TAG = ProductsPage.class.getSimpleName();
 		
 	private int totalProducts;
+	
 	private ArrayList<Product> products;
-	private ArrayList<Category> categories;
+	
 	private ArrayList<CatalogFilter> mFilters;
 
 	private String mPageName;
@@ -41,38 +45,34 @@ public class ProductsPage implements IJSONSerializable, Parcelable {
 		Log.d(TAG, "FILTER: PRODUCT PAGE");
 		
 		products = new ArrayList<Product>();
-		categories = new ArrayList<Category>();
 		mFilters = new ArrayList<CatalogFilter>();
 		totalProducts = metadataObject.optInt(RestConstants.JSON_PRODUCT_COUNT_TAG, 0);
 		mPageName = metadataObject.optString(RestConstants.JSON_CATALOG_NAME_TAG, "");
 
 		JSONArray productObjectArray = metadataObject.getJSONArray(RestConstants.JSON_RESULTS_TAG);
 
+		// Get products
 		for (int i = 0; i < productObjectArray.length(); ++i) {
 			JSONObject productObject = productObjectArray.getJSONObject(i);
 			Product product = new Product();
 			product.initialize(productObject);
 			products.add(product);
 		}
-
-		if (!metadataObject.isNull(RestConstants.JSON_CATEGORIES_TAG)) {
-			JSONArray categoriesArray = metadataObject.getJSONArray(RestConstants.JSON_CATEGORIES_TAG);
-			Log.d(TAG, " # of categories " + categoriesArray.length());
-			for (int i = 0; i < categoriesArray.length(); ++i) {
-				JSONObject categoryObject = categoriesArray.getJSONObject(i);
-				Category category = new Category();
-				category.initialize(categoryObject);
-				categories.add(category);
-			}
-		} else {
-			Log.d(TAG, " there are no categories");
-		}
 		
-		// Get filters
-		if(!metadataObject.isNull("filters")){
-			JSONArray jsonArray = metadataObject.getJSONArray("filters");
+		// Get category filter
+		if (!metadataObject.isNull(RestConstants.JSON_CATEGORIES_TAG)) {
+			// Validate array
+			JSONArray categoriesArray = metadataObject.optJSONArray(RestConstants.JSON_CATEGORIES_TAG);
+			if(categoriesArray != null && categoriesArray.length() > 0)
+				parseCategoryFilter(categoriesArray);
+			else
+				Log.d(TAG, "THERE IS NO CATEGORY FILTER");
+		}
+		// Get the other filters
+		if(!metadataObject.isNull(RestConstants.JSON_FILTERS_TAG)){
+			JSONArray jsonArray = metadataObject.getJSONArray(RestConstants.JSON_FILTERS_TAG);
 			for (int i = 0; i < jsonArray.length(); i++) {
-				// Get json filter
+				// Get JSON filter
 				JSONObject jsonFilter = jsonArray.getJSONObject(i);
 				// Create catalog filter
 				CatalogFilter catalogFilter = new CatalogFilter(jsonFilter);
@@ -80,29 +80,58 @@ public class ProductsPage implements IJSONSerializable, Parcelable {
 				mFilters.add(catalogFilter);
 			}
 		}
-		
-		
 		return true;
 	}
 
+	
+	/**
+	 * Parse the JSON for categories, supported parent and leaf structure
+	 * @param categoriesArray
+	 * @throws JSONException
+	 * @author sergiopereira
+	 */
+	private void parseCategoryFilter(JSONArray categoriesArray) throws JSONException{
+		Log.d(TAG, "PARSE CATEGORIES: # " + categoriesArray.length());
+		JSONArray categoryArray = null;
+		// Get the first position
+		JSONObject parentObject = categoriesArray.optJSONObject(0);
+		JSONArray leafObject = categoriesArray.optJSONArray(0);
+		// IS PARENT 	- If first item is a JSON object
+		if(parentObject != null) {
+			Log.d(TAG, "CURRENT CATEGORY IS PARENT");
+			categoryArray = parentObject.optJSONArray(RestConstants.JSON_CHILDREN_TAG);
+		}
+		// IS LEAF 		- If first item is a JSON array
+		else if(leafObject != null) {
+			Log.d(TAG, "CURRENT CATEGORY IS LEAF");
+			categoryArray = leafObject;
+		}
+		// Create category option and save it 
+		ArrayList<CatalogFilterOption> options = new ArrayList<CatalogFilterOption>();
+		if(categoryArray != null) {
+			Log.d(TAG, "PARSE ADD TO CATALOG");
+			for (int i = 0; i < categoryArray.length(); ++i) {
+				JSONObject json = categoryArray.optJSONObject(i);
+				if(json != null) {
+					CategoryFilterOption opt = new CategoryFilterOption(json);
+					options.add(opt);
+				}
+			}
+		}
+		// Create the category filter and save it
+		mFilters.add(new CatalogFilter("category", Darwin.context.getString(R.string.category_label), false, options));
+	}
+	
 	/* (non-Javadoc)
 	 * @see pt.rocket.framework.objects.IJSONSerializable#toJSON()
 	 */
 	@Override
 	public JSONObject toJSON() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	
 	public ArrayList<Product> getProducts() {
 		return products;
-	}
-
-	/**
-	 * @return the categories
-	 */
-	public ArrayList<Category> getCategories() {
-		return categories;
 	}
 
 	/**
@@ -132,17 +161,15 @@ public class ProductsPage implements IJSONSerializable, Parcelable {
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeValue(totalProducts);
 		dest.writeList(products);
-		dest.writeList(categories);
+		dest.writeList(mFilters);
 	}
 	
 	private ProductsPage(Parcel in){
 		totalProducts = in.readInt();
-		
 		products = new ArrayList<Product>();
 		in.readList(products, Product.class.getClassLoader());
-		
-		categories = new ArrayList<Category>();
-		in.readList(categories, Category.class.getClassLoader());
+		mFilters = new ArrayList<CatalogFilter>();
+		in.readList(mFilters, CatalogFilter.class.getClassLoader());
 	}
 	
     public static final Parcelable.Creator<ProductsPage> CREATOR = new Parcelable.Creator<ProductsPage>() {

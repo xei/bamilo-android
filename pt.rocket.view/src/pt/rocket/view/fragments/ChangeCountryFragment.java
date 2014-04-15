@@ -4,13 +4,11 @@
 package pt.rocket.view.fragments;
 
 import java.util.EnumSet;
-import java.util.HashMap;
 
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.controllers.CountryAdapter;
-import pt.rocket.forms.FormData;
 import pt.rocket.framework.database.LastViewedTableHelper;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.MyMenuItem;

@@ -68,7 +68,7 @@ public class CatalogFilter implements IJSONSerializable, Parcelable {
 		// Get name
 		mName = jsonObject.getString("name");
 		// Get multi
-		mMulti = jsonObject.getBoolean("multi");
+		mMulti = jsonObject.optBoolean("multi");
 		
 		//Log.d(TAG, "FILTER: " + mId + " " + mName + " " + mMulti);
 		
@@ -305,6 +305,13 @@ public class CatalogFilter implements IJSONSerializable, Parcelable {
 		mName = in.readString();
 		in.readBooleanArray(new boolean[] {mMulti, isRangeWithDiscount});
 		in.readIntArray(mRangeValues);
+	}
+
+	public CatalogFilter(String id, String name, Boolean isMulti, ArrayList<CatalogFilterOption> options) {
+		this.mId = id;
+		this.mName = name;
+		this.mMulti = isMulti;
+		this.mFilterOptions = options;
 	}
 
 	/**

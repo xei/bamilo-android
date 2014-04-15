@@ -22,6 +22,8 @@
     <string-array name="fkey_testkeys"></string-array>
     <string-array name="fkey_livekeys"></string-array>
     
+    <string name="category_label"></string>
+    
     <string name="mixpanel_token"></string>
     
 </resources>
