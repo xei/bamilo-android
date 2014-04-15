@@ -39,6 +39,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -95,6 +96,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     
     protected boolean isOnStoppingProcess = true;
 
+    private int adjustState = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED;
+    
     public BaseFragment() {
     }
     protected static BaseActivity mainActivity;
@@ -103,7 +106,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * Constructor
      */
     public BaseFragment(Set<EventType> contentEvents, Set<EventType> userEvents,
-            Set<MyMenuItem> enabledMenuItems, NavigationAction action, int titleResId) {
+            Set<MyMenuItem> enabledMenuItems, NavigationAction action, int titleResId, int adjust_state) {
         this.contentEvents = contentEvents;
         this.userEvents = userEvents;
         this.allHandledEvents.addAll(contentEvents);
@@ -111,6 +114,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         this.enabledMenuItems = enabledMenuItems;
         this.action = action;
         this.titleResId = titleResId;
+        this.adjustState = adjust_state;
     }
 
     /**
@@ -224,7 +228,16 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     @Override
     public void onStart() {
         super.onStart();
-
+        /**
+         * Adjust state for each fragment type.
+         */
+        if(this.adjustState >= 0){
+            updateAdjustState(this.adjustState);    
+            if(getBaseActivity() != null){
+                getBaseActivity().closeDrawerIfOpen();
+            }
+        }
+        
         setVisiblility(VISIBLE);
         
         // Hide search component for change country
@@ -865,6 +878,22 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      */
     protected boolean hasContent(ArrayList<?> array){
         return (array != null && !array.isEmpty()) ? true : false;
+    }
+    
+    private void updateAdjustState(int newAdjustState){
+        if(getBaseActivity() != null){
+            if(getBaseActivity().currentAdjustState != newAdjustState){
+                getBaseActivity().currentAdjustState = newAdjustState;
+                switch (newAdjustState) {
+                case WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN:
+                    getBaseActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+                    break;
+                case WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED:
+                    getBaseActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+                    break;
+                }    
+            }
+        }
     }
     
 }

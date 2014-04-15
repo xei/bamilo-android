@@ -34,6 +34,7 @@ import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -128,7 +129,7 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
         super(EnumSet.noneOf(EventType.class),
                 EnumSet.noneOf(EventType.class),
                 EnumSet.noneOf(MyMenuItem.class),
-                NavigationAction.Products, 0);
+                NavigationAction.Products, 0, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         this.setRetainInstance(true);
     }
 

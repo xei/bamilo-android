@@ -35,6 +35,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -114,7 +115,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
                 EnumSet.noneOf(EventType.class),
                 EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.Checkout,
-                ConstantsCheckout.CHECKOUT_ORDER);
+                ConstantsCheckout.CHECKOUT_ORDER, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
 
     /*

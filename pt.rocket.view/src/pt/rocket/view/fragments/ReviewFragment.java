@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.RatingBar;
 import de.akquinet.android.androlog.Log;
 
@@ -50,7 +51,7 @@ public class ReviewFragment extends BaseFragment {
                 EnumSet.noneOf(EventType.class), 
                 EnumSet.of(MyMenuItem.SEARCH, MyMenuItem.SEARCH_BAR), 
                 NavigationAction.Products,  
-                R.string.review);
+                R.string.review, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
         this.setRetainInstance(true);
     }
 

@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -57,7 +58,7 @@ public class MyAccountFragment extends BaseFragment {
                 EnumSet.noneOf(EventType.class),
                 EnumSet.noneOf(MyMenuItem.class), 
                 NavigationAction.MyAccount, 
-                R.string.account_name);
+                R.string.account_name, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
     }
     
     /*

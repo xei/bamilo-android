@@ -28,6 +28,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import de.akquinet.android.androlog.Log;
@@ -65,7 +66,7 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
                 EnumSet.noneOf(EventType.class),
                 EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.Checkout, 
-                ConstantsCheckout.CHECKOUT_SHIPPING);
+                ConstantsCheckout.CHECKOUT_SHIPPING, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
     }
 
     /*

@@ -47,6 +47,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -135,7 +136,7 @@ public class SessionLoginFragment extends BaseFragment {
                 EventType.FACEBOOK_LOGIN_EVENT),
                 EnumSet.noneOf(MyMenuItem.class), 
                 NavigationAction.LoginOut, 
-                R.string.login_title);
+                R.string.login_title, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
     }
 
     /*

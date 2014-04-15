@@ -85,7 +85,7 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
                 EnumSet.noneOf(EventType.class),
                 EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.Unknown,
-                ConstantsCheckout.CHECKOUT_NO_SET_HEADER);
+                ConstantsCheckout.CHECKOUT_NO_SET_HEADER,-1);
     }
 
     /*

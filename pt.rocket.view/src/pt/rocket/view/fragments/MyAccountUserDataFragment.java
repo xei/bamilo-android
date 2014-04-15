@@ -29,6 +29,7 @@ import android.content.ContentValues;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -78,7 +79,7 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
                 EnumSet.of(EventType.CHANGE_PASSWORD_EVENT), 
                 EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.MyAccount, 
-                R.string.personal_data_title);
+                R.string.personal_data_title, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
     }    
     /*
      * (non-Javadoc)

@@ -41,6 +41,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.RadioGroup;
@@ -105,7 +106,7 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
                 EnumSet.noneOf(EventType.class),
                 EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.Checkout, 
-                ConstantsCheckout.CHECKOUT_BILLING);
+                ConstantsCheckout.CHECKOUT_BILLING, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
     }
 
     /*

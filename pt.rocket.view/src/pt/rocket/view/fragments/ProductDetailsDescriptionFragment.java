@@ -25,6 +25,7 @@ import android.text.style.MetricAffectingSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -71,7 +72,7 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
                 EnumSet.noneOf(EventType.class),
                 EnumSet.of(MyMenuItem.SHARE, MyMenuItem.SEARCH, MyMenuItem.SEARCH_BAR), 
                 NavigationAction.Products, 
-                R.string.product_details_title);
+                R.string.product_details_title, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         this.mCompleteProduct = JumiaApplication.INSTANCE.getCurrentProduct();
     }
     

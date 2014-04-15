@@ -63,6 +63,7 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
@@ -124,7 +125,7 @@ public class HomeFragment extends BaseFragment {
                 EventType.GET_PROMOTIONS),
                 EnumSet.noneOf(EventType.class), 
                 EnumSet.of(MyMenuItem.SEARCH_BAR),
-                NavigationAction.Home, 0);
+                NavigationAction.Home, 0, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
 
     /*

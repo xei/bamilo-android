@@ -28,6 +28,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -68,7 +69,7 @@ public class TrackOrderFragment extends BaseFragment {
         super(EnumSet.of(EventType.TRACK_ORDER_EVENT),
         EnumSet.noneOf(EventType.class), EnumSet.noneOf(MyMenuItem.class), 
         NavigationAction.TrackOrder, 
-        R.string.nav_track_order);
+        R.string.nav_track_order, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
         this.setRetainInstance(true);
     }
 

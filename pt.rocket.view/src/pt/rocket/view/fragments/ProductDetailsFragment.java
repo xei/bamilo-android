@@ -54,6 +54,7 @@ import android.text.TextUtils;
 import android.text.style.MetricAffectingSpan;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -181,7 +182,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
                 EnumSet.of(EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT),
                 EnumSet.of(MyMenuItem.SHARE), 
                 NavigationAction.Products, 
-                0);
+                0, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
 
     /*

@@ -1270,8 +1270,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      * @author sergiopereira
      */
     private void showKeyboard(View view){
-        Log.d(TAG, "SHOW KEYBOARD FOR THIS VIEW");
-        Log.i(TAG, "code1here SHOW KEYBOARD");
+        Log.i(TAG, "SHOW KEYBOARD FOR THIS VIEW");
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
         //imm.showSoftInput(view, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
@@ -2269,6 +2268,8 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             handleResponse(response);
         }
     };
+
+    public static int currentAdjustState;
 
     /**
      * Handles correct responses

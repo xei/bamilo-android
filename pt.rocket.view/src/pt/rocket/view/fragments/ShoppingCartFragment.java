@@ -53,6 +53,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
@@ -172,7 +173,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
                         EventType.CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT), 
                 EnumSet.of(MyMenuItem.SEARCH, MyMenuItem.SEARCH_BAR),
                 NavigationAction.Basket,
-                R.string.shoppingcart_title);
+                R.string.shoppingcart_title, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
         this.setRetainInstance(true);
     }
 

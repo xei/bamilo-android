@@ -48,6 +48,7 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.HttpAuthHandler;
@@ -113,7 +114,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
      */
     public CheckoutExternalPaymentFragment() {
         super(EnumSet.of(EventType.GET_SHOPPING_CART_ITEMS_EVENT, EventType.GET_CUSTOMER),
-        EnumSet.noneOf(EventType.class),EnumSet.noneOf(MyMenuItem.class),NavigationAction.Checkout,0);
+        EnumSet.noneOf(EventType.class),EnumSet.noneOf(MyMenuItem.class),NavigationAction.Checkout,0, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         this.setRetainInstance(true);
     }
 

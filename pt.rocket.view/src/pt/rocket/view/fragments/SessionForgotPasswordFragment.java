@@ -35,6 +35,7 @@ import android.content.ContentValues;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -79,7 +80,7 @@ public class SessionForgotPasswordFragment extends BaseFragment {
                 EnumSet.of(EventType.FORGET_PASSWORD_EVENT),
                 EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.MyAccount,
-                R.string.forgotpass_header);
+                R.string.forgotpass_header, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
         this.setRetainInstance(true);
     }
 

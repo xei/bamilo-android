@@ -36,6 +36,7 @@ import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView.BufferType;
@@ -76,7 +77,7 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
                 EnumSet.noneOf(EventType.class),
                 EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.Checkout,
-                ConstantsCheckout.CHECKOUT_THANKS);
+                ConstantsCheckout.CHECKOUT_THANKS, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         this.setRetainInstance(true);
     }
 

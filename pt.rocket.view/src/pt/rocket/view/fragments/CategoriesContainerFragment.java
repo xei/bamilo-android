@@ -33,6 +33,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ListView;
@@ -159,7 +160,7 @@ public class CategoriesContainerFragment extends BaseFragment {
                 EnumSet.noneOf(EventType.class),
                 EnumSet.of(MyMenuItem.SEARCH, MyMenuItem.SEARCH_BAR), 
                 NavigationAction.Categories, 
-                0);
+                0, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
 
     /*

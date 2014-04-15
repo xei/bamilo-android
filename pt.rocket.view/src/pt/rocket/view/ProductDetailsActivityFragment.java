@@ -65,6 +65,7 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -194,7 +195,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
         super(EnumSet.of(EventType.GET_PRODUCT_EVENT), 
                 EnumSet.of(EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT), 
                 EnumSet.of(MyMenuItem.SHARE),
-                NavigationAction.Products, 0);
+                NavigationAction.Products, 0, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
     }
 
     public static ProductDetailsActivityFragment getInstance(Bundle bundle) {

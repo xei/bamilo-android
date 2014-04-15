@@ -32,6 +32,7 @@ import android.support.v4.view.ViewPager;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.GridView;
@@ -92,7 +93,7 @@ public class Catalog extends BaseFragment implements OnClickListener{
                 EnumSet.noneOf(EventType.class), 
                 EnumSet.of(MyMenuItem.SEARCH, MyMenuItem.SEARCH_BAR), 
                 NavigationAction.Products, 
-                R.string.products);
+                R.string.products, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
 
     public static Catalog getInstance() {

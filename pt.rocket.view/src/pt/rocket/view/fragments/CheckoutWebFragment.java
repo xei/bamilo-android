@@ -43,6 +43,7 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.HttpAuthHandler;
@@ -108,7 +109,7 @@ public class CheckoutWebFragment extends BaseFragment {
                 EnumSet.noneOf(EventType.class),
                 EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.Unknown, 
-                0);
+                0, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         this.setRetainInstance(true);
     }
     

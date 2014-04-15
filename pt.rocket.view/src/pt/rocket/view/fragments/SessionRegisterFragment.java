@@ -49,6 +49,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
@@ -118,7 +119,7 @@ public class SessionRegisterFragment extends BaseFragment {
                 EnumSet.of(EventType.REGISTER_ACCOUNT_EVENT), 
                 EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.MyAccount,
-                R.string.register_title);
+                R.string.register_title, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
     }
 
     /*

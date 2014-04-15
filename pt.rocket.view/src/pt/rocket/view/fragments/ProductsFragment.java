@@ -46,6 +46,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
@@ -145,7 +146,7 @@ public class ProductsFragment extends BaseFragment implements
     public ProductsFragment() {
         super(EnumSet.of(EventType.GET_PRODUCTS_EVENT), EnumSet.noneOf(EventType.class), EnumSet.of(MyMenuItem.SEARCH), 
                 NavigationAction.Products, 
-                R.string.products);
+                R.string.products, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
     
     /*

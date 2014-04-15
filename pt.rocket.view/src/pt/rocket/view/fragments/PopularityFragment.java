@@ -38,6 +38,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -99,7 +100,7 @@ public class PopularityFragment extends BaseFragment {
                 EnumSet.noneOf(EventType.class),
                 EnumSet.of(MyMenuItem.SEARCH, MyMenuItem.SEARCH_BAR),
                 NavigationAction.Products, 
-                R.string.reviews);
+                R.string.reviews, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
         this.setRetainInstance(true);
     }
 

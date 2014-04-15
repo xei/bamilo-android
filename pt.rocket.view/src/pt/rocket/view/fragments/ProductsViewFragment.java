@@ -30,6 +30,7 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.TextView;
 import de.akquinet.android.androlog.Log;
 
@@ -87,7 +88,7 @@ public class ProductsViewFragment extends BaseFragment {
     private ProductsListPagerAdapter mProductsListPagerAdapter;
     public ProductsViewFragment() {
         super(EnumSet.noneOf(EventType.class), EnumSet.noneOf(EventType.class), EnumSet
-                .of(MyMenuItem.SEARCH), NavigationAction.Products, R.string.products);
+                .of(MyMenuItem.SEARCH), NavigationAction.Products, R.string.products, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
 
     public static ProductsViewFragment getInstance() {

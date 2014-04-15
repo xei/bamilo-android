@@ -33,6 +33,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
@@ -93,7 +94,7 @@ public class SearchFragment extends BaseFragment implements OnItemClickListener 
         super(EnumSet.of(EventType.GET_SEARCH_SUGGESTIONS_EVENT), 
                 EnumSet.noneOf(EventType.class), 
                 EnumSet.of(MyMenuItem.SEARCH_BAR), 
-                NavigationAction.Search, 0);
+                NavigationAction.Search, 0, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
 
     /*

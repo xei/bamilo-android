@@ -16,6 +16,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+
 import org.holoeverywhere.widget.TextView;
 import de.akquinet.android.androlog.Log;
 
@@ -59,7 +61,7 @@ public class SessionTermsFragment extends BaseFragment {
         EnumSet.noneOf(EventType.class),
         EnumSet.noneOf(MyMenuItem.class), 
         NavigationAction.Unknown, 
-        0);
+        0, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
 
     @Override
