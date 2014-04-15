@@ -18,7 +18,7 @@ RegisterFormTest($countries);
 ApiInfoTest($countries);
 CategoriesTests($countries);
 ProductDetailsTests($countries);
-ProductListTests($countries);
+ProductListTests($countries_nc);
 ImageResolutionsTest($countries);
 InitFormTest($countries);
 LoginFormTests($countries);
@@ -44,18 +44,16 @@ CallToOrder($countries_nc);
 
 GetSignup($countries_nc);
 GetCostumerAddress($countries_nc);
-#GetPollForm($countries);
-#SetPollAnswer($countries);
-GetBillingAddress($countries_nc);
-SetBillingAddress($countries_nc);
+#GetBillingAddress($countries_nc);
+#SetBillingAddress($countries_nc);
 CreateAddress($countries_nc);
 GetRegions($countries_nc);
 GetCities($countries_nc);
-GetShippingMethods($countries_nc);
-SetShippingMethods($countries_nc);
-GetPaymentMethods($countries_nc);
-SetPaymentMethods($countries_nc);
-GetMyOrder($countries_nc);
+#GetShippingMethods($countries_nc);
+#SetShippingMethods($countries_nc);
+#GetPaymentMethods($countries_nc);
+#SetPaymentMethods($countries_nc);
+#GetMyOrder($countries_nc);
 CheckoutFinish($countries_nc);
 #**/
 
