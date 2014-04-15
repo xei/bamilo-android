@@ -390,7 +390,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         case ADD_VOUCHER:
             couponButton.setText(getString(R.string.voucher_remove));
             voucherError.setVisibility(View.GONE);
-            voucherDivider.setBackgroundColor(R.color.grey_dividerlight);
+//            voucherDivider.setBackgroundColor(R.color.grey_dividerlight);
             getBaseActivity().showContentContainer();
             noPaymentNeeded = false;
             removeVoucher = true;
@@ -400,7 +400,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
             noPaymentNeeded = false;
             couponButton.setText(getString(R.string.voucher_use));
             voucherError.setVisibility(View.GONE);
-            voucherDivider.setBackgroundColor(R.color.grey_dividerlight);
+//            voucherDivider.setBackgroundColor(R.color.grey_dividerlight);
             getBaseActivity().showContentContainer();
             triggerGetShoppingCart();
             removeVoucher = false;
@@ -456,7 +456,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         case REMOVE_VOUCHER:
             voucherValue.setText("");
             voucherError.setVisibility(View.VISIBLE);
-            voucherDivider.setBackgroundColor(R.color.red_middle);
+//            voucherDivider.setBackgroundColor(R.color.red_middle);
             getBaseActivity().showContentContainer();
             break;
         }

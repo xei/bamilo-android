@@ -35,7 +35,7 @@
 
         <org.holoeverywhere.widget.Button
             android:id="@+id/voucher_btn"
-            android:layout_width="115dp"
+            android:layout_width="110dp"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:ellipsize="marquee"
@@ -51,6 +51,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@id/voucher_btn"
+            android:layout_alignBottom="@id/voucher_btn"
             android:background="@drawable/selector_edittext_bottomline"
             android:cursorVisible="true"
             android:focusable="true"
