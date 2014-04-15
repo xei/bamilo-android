@@ -52,6 +52,7 @@ public class FragmentController {
     private LinkedList<String> backStack = new LinkedList<String>();
     
     DialogGenericFragment dialog; 
+    
     /**
      * ##################### CONSTRUCTOR #####################
      */
@@ -370,9 +371,8 @@ public class FragmentController {
             addEntryToBackStack(tag);
         }
         // Commit
-        fragmentTransaction.commit();
-        // API 11 :
-        //fragmentTransaction.commitAllowingStateLoss();
+        //fragmentTransaction.commit();
+        fragmentTransaction.commitAllowingStateLoss();
     }
     
     
