@@ -215,7 +215,7 @@ public class AnalyticsGoogle {
 		mTracker.sendEvent(category, action, sku, 0l);
 	}
 
-	public void trackAccount(int resAction, Customer customer) {
+	public void trackAccount(int resAction, String user_id) {
 		if (!isEnabled) {
 			return;
 		}
@@ -223,10 +223,10 @@ public class AnalyticsGoogle {
 		String category = mContext.getString(R.string.gaccount);
 		String action = mContext.getString(resAction);
 		String label;
-		if (customer == null) {
+		if (user_id == null) {
 			label = "";
 		} else {
-			label = customer.getIdAsString();
+			label = user_id;
 		}
 
 		Log.d(TAG, "trackAccount: category = " + category + " action = " + action + " label = " + label);
