@@ -121,15 +121,8 @@ public class AdXTracker {
 			e.printStackTrace();
 		}
 		String currency = CurrencyFormatter.getCurrencyCode();
-		String value = cartValue;
-		try {
-			value = CurrencyFormatter.formatCurrency(Double.parseDouble((cartValue)));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
 		Log.d(TAG, "xaddtocart tracked: event = " + context.getString(R.string.xaddtocart) + " jsonEncoded = " + jsonEncoded);
-		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xaddtocart), value, currency,jsonEncoded);
+		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xaddtocart), cartValue, currency,jsonEncoded);
 	}
 	
 	public static void trackRemoveFromCart(Context context, String cartValue, String user_id, String sku, String app_version, String display_size, String shop_country ) {
@@ -155,14 +148,7 @@ public class AdXTracker {
 		String currency = CurrencyFormatter.getCurrencyCode();
 		
 		Log.d(TAG, "xremovefromcart tracked: event = " + context.getString(R.string.xremovefromcart) + " jsonEncoded = " + jsonEncoded);
-		String value = cartValue;
-		try {
-			value = CurrencyFormatter.formatCurrency(Double.parseDouble((cartValue)));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xremovefromcart), value, currency,jsonEncoded);
+		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xremovefromcart), cartValue, currency,jsonEncoded);
 	}
 	
 	public static void trackCheckoutStep(Context context, String shop_country, String user_id, String app_version, String display_size, int step) {
