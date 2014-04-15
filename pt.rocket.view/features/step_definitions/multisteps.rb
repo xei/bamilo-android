@@ -23,7 +23,7 @@ Then /^I add a product$/ do
   step "I enter a valid Category"
   step "I press list item number 1"
   step "I wait for 1 seconds" 
-  step "I press list item number 4"
+  step "I press list item number 2"
   step "I wait for 3 seconds"
   step "I press Got it"
   step "I add product to cart"
