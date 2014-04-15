@@ -252,9 +252,9 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         ContentValues values = new ContentValues();
         values.put("sku", item.getConfigSimpleSKU());
         itemRemoved_sku = item.getConfigSimpleSKU();
-        itemRemoved_price = item.getSpecialPrice();
+        itemRemoved_price = item.getSpecialPriceVal().toString();
         if(itemRemoved_price == null){
-            itemRemoved_price = item.getPrice();
+            itemRemoved_price = item.getPriceVal().toString();
         }
         Bundle bundle = new Bundle();
         bundle.putParcelable(GetShoppingCartRemoveItemHelper.ITEM, values);
