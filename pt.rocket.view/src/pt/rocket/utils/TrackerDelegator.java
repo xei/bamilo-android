@@ -99,6 +99,8 @@ public class TrackerDelegator {
         AdXTracker.logout(context, JumiaApplication.INSTANCE.SHOP_NAME, JumiaApplication.INSTANCE.CUSTOMER.getIdAsString(), JumiaApplication.INSTANCE.ADX_VERSION_NAME, JumiaApplication.INSTANCE.ADX_DISPLAY_SIZE);
         int trackRes = R.string.glogoutsuccess;
         AnalyticsGoogle.get().trackAccount(trackRes, JumiaApplication.INSTANCE.CUSTOMER);
+        
+        JumiaApplication.INSTANCE.CUSTOMER = null;
     }
 
     public final static void trackSearchMade(Context context, String criteria, long results) {
