@@ -66,7 +66,9 @@ public class GetFacebookLoginHelper extends BaseHelper {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, new Customer(jsonUser));
+        
+        JumiaApplication.INSTANCE.CUSTOMER = new Customer(jsonUser);
+        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, JumiaApplication.INSTANCE.CUSTOMER);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.FACEBOOK_LOGIN_EVENT);
         bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextCheckoutStep(jsonObject));
         return bundle;

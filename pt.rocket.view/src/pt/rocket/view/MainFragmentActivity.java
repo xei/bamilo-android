@@ -179,7 +179,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.i(TAG, "ON DESTROY");
+        Log.i(TAG, "ON DESTROY"); 
         // Delete categories
         JumiaApplication.currentCategories = null;
         JumiaApplication.INSTANCE.setLoggedIn(false);

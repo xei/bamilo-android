@@ -60,7 +60,8 @@ public class GetRegisterHelper extends BaseHelper {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, new Customer(jsonObject));
+        JumiaApplication.INSTANCE.CUSTOMER = new Customer(jsonObject);
+        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, JumiaApplication.INSTANCE.CUSTOMER);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.REGISTER_ACCOUNT_EVENT);
 //        long elapsed = System.currentTimeMillis() - JumiaApplication.INSTANCE.timeTrackerMap.get(EventType.REGISTER_ACCOUNT_EVENT);
 //        Log.i("REQUEST", "event type response : "+bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY)+" time spent : "+elapsed);
