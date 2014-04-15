@@ -391,7 +391,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         Log.d(TAG, "ON STOP");
         UAirship.shared().getAnalytics().activityStopped(this);
         JumiaApplication.INSTANCE.setLoggedIn(false);
-        JumiaApplication.INSTANCE.CUSTOMER = null;
     }
 
     @Override
@@ -399,7 +398,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         super.onDestroy();
         JumiaApplication.INSTANCE.unRegisterFragmentCallback(mCallback);
         JumiaApplication.INSTANCE.setLoggedIn(false);
-        JumiaApplication.INSTANCE.CUSTOMER = null;
         isRegistered = false;
     }
 
@@ -1892,7 +1890,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         if (eventType == EventType.LOGIN_EVENT){
             JumiaApplication.INSTANCE.setLoggedIn(false);
             JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
-            JumiaApplication.INSTANCE.CUSTOMER = null;
             updateSlidingMenu();
         }
         HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);

@@ -183,7 +183,6 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         // Delete categories
         JumiaApplication.currentCategories = null;
         JumiaApplication.INSTANCE.setLoggedIn(false);
-        JumiaApplication.INSTANCE.CUSTOMER = null;
         
         // 
         if(wasReceivedNotification) {

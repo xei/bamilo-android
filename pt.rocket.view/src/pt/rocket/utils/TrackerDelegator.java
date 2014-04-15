@@ -63,8 +63,11 @@ public class TrackerDelegator {
         if(mOrigin == null || mOrigin.length() == 0){
             mOrigin = context.getString(R.string.mixprop_loginlocationsidemenu);
         }
-        
-        AnalyticsGoogle.get().trackAccount(resLogin, customer);
+        String customer_id = "";
+        if(customer != null){
+            customer_id = customer.getIdAsString();
+        }
+        AnalyticsGoogle.get().trackAccount(resLogin, customer_id);
 
         if ( customer == null) {
             return;
@@ -96,9 +99,13 @@ public class TrackerDelegator {
     
     public final static void trackLogoutSuccessful(Context context) {
         MixpanelTracker.logout(context);
-        AdXTracker.logout(context, JumiaApplication.INSTANCE.SHOP_NAME, JumiaApplication.INSTANCE.CUSTOMER.getIdAsString(), JumiaApplication.INSTANCE.ADX_VERSION_NAME, JumiaApplication.INSTANCE.ADX_DISPLAY_SIZE);
+        String customer_id = "";
+        if(JumiaApplication.INSTANCE.CUSTOMER != null){
+            customer_id = JumiaApplication.INSTANCE.CUSTOMER.getIdAsString();
+        }
+        AdXTracker.logout(context, JumiaApplication.INSTANCE.SHOP_NAME, customer_id, JumiaApplication.INSTANCE.ADX_VERSION_NAME, JumiaApplication.INSTANCE.ADX_DISPLAY_SIZE);
         int trackRes = R.string.glogoutsuccess;
-        AnalyticsGoogle.get().trackAccount(trackRes, JumiaApplication.INSTANCE.CUSTOMER);
+        AnalyticsGoogle.get().trackAccount(trackRes, customer_id);
         
         JumiaApplication.INSTANCE.CUSTOMER = null;
     }
@@ -189,7 +196,11 @@ public class TrackerDelegator {
     
     
     public final static void trackSignupSuccessful(Context context, Customer customer, String location) {
-        AnalyticsGoogle.get().trackAccount(R.string.gcreatesuccess, customer);
+        String customer_id = "";
+        if(customer != null){
+            customer_id = customer.getIdAsString();
+        }
+        AnalyticsGoogle.get().trackAccount(R.string.gcreatesuccess, customer_id);
         if ( customer == null) {
             return ;
         }

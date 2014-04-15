@@ -627,7 +627,6 @@ public class SessionLoginFragment extends BaseFragment {
             }
         } else if (eventType == EventType.LOGIN_EVENT) {
             JumiaApplication.INSTANCE.setLoggedIn(false);
-            JumiaApplication.INSTANCE.CUSTOMER = null;
             TrackerDelegator.trackLoginFailed(wasAutologin);
             // Validate fragment visibility
             if(!isVisible()){
