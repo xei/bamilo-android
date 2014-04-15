@@ -326,6 +326,7 @@
     <string name="clear_all_uppercase_label">TOUT EFFACER</string>
     <string name="filter_label">Filtre</string>
     <string name="all_label">Tout</string>
-    
+	<string name="category_label">Catégorie</string>
+    <string name="top_brands_toplevel_title">Toutes les Marques</string>
     <string name="extra_costs">Frais Supplémentaires:</string>
 </resources>
