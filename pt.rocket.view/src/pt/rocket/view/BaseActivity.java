@@ -14,7 +14,6 @@ import org.holoeverywhere.widget.TextView;
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.constants.ConstantsIntentExtra;
-import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.controllers.SearchDropDownAdapter;
 import pt.rocket.controllers.fragments.FragmentController;
@@ -49,7 +48,6 @@ import pt.rocket.view.fragments.SlideMenuFragment;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -2332,14 +2330,15 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                 }
             }
         });
-        ImageView mapBg = (ImageView) findViewById(R.id.home_fallback_country_map);
-        SharedPreferences sharedPrefs = getSharedPreferences(
-                ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        int position = sharedPrefs.getInt(ChangeCountryFragmentActivity.KEY_COUNTRY, 0);
+        ImageView mapBg = (ImageView) findViewById(R.id.fallback_country_map);
+        
+        int position = JumiaApplication.INSTANCE.SHOP_ID;
 
-        mapBg.setImageDrawable(this.getResources().obtainTypedArray(R.array.country_fallback_map)
-                .getDrawable(position));
-
+        Log.i(TAG, "code1image : "+position);
+        
+        mapBg.setImageResource(this.getResources().obtainTypedArray(R.array.country_fallback_map)
+                .getResourceId(position, -1));
+        
         String country = this.getResources().obtainTypedArray(R.array.country_names)
                 .getString(position);
         if (country.split(" ").length == 1) {

@@ -66,7 +66,7 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
                 EnumSet.noneOf(EventType.class),
                 EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.Checkout, 
-                ConstantsCheckout.CHECKOUT_SHIPPING, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
+                ConstantsCheckout.CHECKOUT_SHIPPING, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
 
     /*

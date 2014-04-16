@@ -231,7 +231,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         /**
          * Adjust state for each fragment type.
          */
-        if(this.adjustState >= 0){
+        if(this.adjustState >= 0 && !isNestedFragment){
             updateAdjustState(this.adjustState);    
             if(getBaseActivity() != null){
                 getBaseActivity().closeDrawerIfOpen();

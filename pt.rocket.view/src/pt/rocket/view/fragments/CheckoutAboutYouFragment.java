@@ -141,7 +141,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
                 EventType.SET_SIGNUP_EVENT),
                 EnumSet.noneOf(MyMenuItem.class), 
                 NavigationAction.Checkout, 
-                ConstantsCheckout.CHECKOUT_ABOUT_YOU, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+                ConstantsCheckout.CHECKOUT_ABOUT_YOU, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
     }
     
     /*

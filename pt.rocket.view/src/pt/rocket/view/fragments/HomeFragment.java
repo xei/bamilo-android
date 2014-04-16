@@ -458,8 +458,8 @@ public class HomeFragment extends BaseFragment {
                 ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         int position = sharedPrefs.getInt(ChangeCountryFragmentActivity.KEY_COUNTRY, 0);
 
-        mapBg.setImageDrawable(this.getResources().obtainTypedArray(R.array.country_fallback_map)
-                .getDrawable(position));
+        mapBg.setImageResource(this.getResources().obtainTypedArray(R.array.country_fallback_map)
+                .getResourceId(position, -1));
 
         String country = this.getResources().obtainTypedArray(R.array.country_names)
                 .getString(position);

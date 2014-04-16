@@ -100,7 +100,7 @@ public class PopularityFragment extends BaseFragment {
                 EnumSet.noneOf(EventType.class),
                 EnumSet.of(MyMenuItem.SEARCH, MyMenuItem.SEARCH_BAR),
                 NavigationAction.Products, 
-                R.string.reviews, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
+                R.string.reviews, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         this.setRetainInstance(true);
     }
 
@@ -125,8 +125,7 @@ public class PopularityFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
         context = getActivity().getApplicationContext();
-        
-        
+
     }
 
     /*
