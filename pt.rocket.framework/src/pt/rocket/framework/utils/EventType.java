@@ -134,6 +134,8 @@ public enum EventType {
 	
 	GET_EDIT_ADDRESS_FORM_EVENT("addressedit", RestContract.MAX_CACHE_TIME),
 	
+	GET_EDIT_ADDRESS_FORM_FALLBACK_EVENT("http:/forms/addressedit/", RestContract.MAX_CACHE_TIME),
+	
 	GET_CUSTOMER_ADDRESSES_EVENT("https:/customer/address/list/", RestContract.MIN_CACHE_TIME),
 	
 	GET_BILLING_FORM_EVENT("https:/multistep/billing/", RestContract.MIN_CACHE_TIME),
