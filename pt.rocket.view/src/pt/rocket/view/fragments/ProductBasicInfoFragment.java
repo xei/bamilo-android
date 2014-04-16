@@ -40,8 +40,9 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
     private TextView mProductResultPrice;
 
     private TextView mProductNormalPrice;
+    
 
-    private TextView mStockInfo;
+//    private TextView mStockInfo;
 
     private RelativeLayout mLoading;
 
@@ -145,7 +146,7 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
         mProductNormalPrice = (TextView) mainView.findViewById(R.id.product_price_normal);
         mProductNormalPrice.setPaintFlags(mProductNormalPrice.getPaintFlags()
                 | Paint.STRIKE_THRU_TEXT_FLAG);
-        mStockInfo = (TextView) mainView.findViewById(R.id.product_instock);
+//        mStockInfo = (TextView) mainView.findViewById(R.id.product_instock);
         mLoading = (RelativeLayout) mainView
                 .findViewById(R.id.loading_specifications);
 
@@ -207,26 +208,29 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
         mLoading.setVisibility(View.VISIBLE);
     }
 
-    private void updateStockInfo() {
-
-        if (mStockInfo == null) {
-            return;
-        }
-
-        if (stockQuantity < 0) {
-            mStockInfo.setVisibility(View.GONE);
-            return;
-        } else
-            mStockInfo.setVisibility(View.VISIBLE);
-
-        if (stockQuantity > 0) {
-            mStockInfo.setText(getActivity().getString(R.string.shoppingcart_instock));
-            mStockInfo.setTextColor(getActivity().getResources().getColor(R.color.green_stock));
-        } else {
-            mStockInfo.setText(getActivity().getString(R.string.shoppingcart_notinstock));
-            mStockInfo.setTextColor(getActivity().getResources().getColor(R.color.red_basic));
-        }
-    }
+    /**
+     * Product in stock info(deprecated)
+     */
+//    private void updateStockInfo() {
+//
+//        if (mStockInfo == null) {
+//            return;
+//        }
+//
+//        if (stockQuantity < 0) {
+//            mStockInfo.setVisibility(View.GONE);
+//            return;
+//        } else
+//            mStockInfo.setVisibility(View.VISIBLE);
+//
+//        if (stockQuantity > 0) {
+//            mStockInfo.setText(getActivity().getString(R.string.shoppingcart_instock));
+//            mStockInfo.setTextColor(getActivity().getResources().getColor(R.color.green_stock));
+//        } else {
+//            mStockInfo.setText(getActivity().getString(R.string.shoppingcart_notinstock));
+//            mStockInfo.setTextColor(getActivity().getResources().getColor(R.color.red_basic));
+//        }
+//    }
 
     private void hideContentLoading() {
         mLoading.setVisibility(View.GONE);
@@ -240,7 +244,7 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
             if (mProductName != null)
                 mProductName.setText(mCompleteProduct.getBrand() != null ? mCompleteProduct
                         .getBrand() + " " + mCompleteProduct.getName() : "");
-            updateStockInfo();
+//            updateStockInfo();
             displayPriceInfo();
         }
     }
@@ -284,7 +288,7 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
 
         if (bundle.containsKey(ProductBasicInfoFragment.DEFINE_STOCK)) {
             stockQuantity = bundle.getLong(ProductBasicInfoFragment.DEFINE_STOCK);
-            updateStockInfo();
+//            updateStockInfo();
         }
         if (bundle.containsKey(ProductBasicInfoFragment.DEFINE_UNIT_PRICE)) {
             unitPrice = bundle.getString(ProductBasicInfoFragment.DEFINE_UNIT_PRICE);

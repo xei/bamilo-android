@@ -38,7 +38,13 @@ public class GetFormEditAddressHelper extends BaseHelper {
     @Override
     public Bundle generateRequestBundle(Bundle args) {
         Log.d(TAG, "REQUEST");
-        String url = JumiaApplication.INSTANCE.getFormDataRegistry().get(type.action).getUrl();
+        
+        String url = EventType.GET_EDIT_ADDRESS_FORM_FALLBACK_EVENT.action;
+        try {
+            url = JumiaApplication.INSTANCE.getFormDataRegistry().get(type.action).getUrl();
+        } catch (NullPointerException e) {
+            Log.w(TAG, "FORM DATA IS NULL THEN GET CREATE ADDRESS FORM FALLBACK", e);
+        }
         Bundle bundle = new Bundle();
         bundle.putString(Constants.BUNDLE_URL_KEY, url);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);

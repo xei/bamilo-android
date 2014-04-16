@@ -148,7 +148,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
     private View mVariantPriceContainer;
     private String mNavigationPath;
     private int mNavigationSource;
-    private TextView stockInfo;
+//    private TextView stockInfo;
     private ProductImagesAdapter mAdapter;
 
     /**
@@ -375,7 +375,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         mCallToOrderButton = (Button) getView().findViewById(R.id.call_to_order);
         mCallToOrderButton.setOnClickListener(this);
         
-        stockInfo = (TextView) getView().findViewById(R.id.product_instock);
+//        stockInfo = (TextView) getView().findViewById(R.id.product_instock);
     }
 
     private void setContentInformation() {
@@ -695,31 +695,31 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
 
     private void updateStockInfo() {
 
-        if(stockInfo == null)
-            return;
-        
-        if (getSelectedSimple() == null) {
-            stockInfo.setVisibility(View.GONE);
-            return;
-        } else
-            stockInfo.setVisibility(View.VISIBLE);
-
-        int stockQuantity = 0;
-        try {
-            stockQuantity = Integer.valueOf(getSelectedSimple().getAttributeByKey(ProductSimple.QUANTITY_TAG));
-        } catch (NumberFormatException e) {
-            Log.w(TAG, "updateStockInfo: quantity in simple is not a number:", e);
-        }
-
-        if (stockQuantity > 0) {
-            stockInfo.setText(mContext.getString(R.string.shoppingcart_instock));
-            stockInfo.setTextColor(mContext.getResources().getColor(R.color.green_stock));
-            mAddToCartButton.setBackgroundResource(R.drawable.btn_orange);
-        } else {
-            stockInfo.setText(mContext.getString(R.string.shoppingcart_notinstock));
-            stockInfo.setTextColor(mContext.getResources().getColor(R.color.red_basic));
+//        if(stockInfo == null)
+//            return;
+//        
+//        if (getSelectedSimple() == null) {
+//            stockInfo.setVisibility(View.GONE);
+//            return;
+//        } else
+//            stockInfo.setVisibility(View.VISIBLE);
+//
+//        int stockQuantity = 0;
+//        try {
+//            stockQuantity = Integer.valueOf(getSelectedSimple().getAttributeByKey(ProductSimple.QUANTITY_TAG));
+//        } catch (NumberFormatException e) {
+//            Log.w(TAG, "updateStockInfo: quantity in simple is not a number:", e);
+//        }
+//
+//        if (stockQuantity > 0) {
+//            stockInfo.setText(mContext.getString(R.string.shoppingcart_instock));
+//            stockInfo.setTextColor(mContext.getResources().getColor(R.color.green_stock));
+//            mAddToCartButton.setBackgroundResource(R.drawable.btn_orange);
+//        } else {
+//            stockInfo.setText(mContext.getString(R.string.shoppingcart_notinstock));
+//            stockInfo.setTextColor(mContext.getResources().getColor(R.color.red_basic));
             mAddToCartButton.setBackgroundResource(R.drawable.btn_grey);
-        }
+//        }
     }
 
     private void displayRatingInfo() {

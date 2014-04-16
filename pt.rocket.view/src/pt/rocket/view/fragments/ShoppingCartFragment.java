@@ -11,14 +11,9 @@ import java.util.Map;
 import org.holoeverywhere.widget.EditText;
 import org.holoeverywhere.widget.TextView;
 
-import com.androidquery.AQuery;
-import com.androidquery.callback.AjaxStatus;
-import com.androidquery.callback.BitmapAjaxCallback;
-
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.ActivitiesWorkFlow;
-import pt.rocket.controllers.ShoppingBasketFragListAdapter;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.ErrorCode;
@@ -53,17 +48,21 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.Toast;
+
+import com.androidquery.AQuery;
+import com.androidquery.callback.AjaxStatus;
+import com.androidquery.callback.BitmapAjaxCallback;
+
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -622,7 +621,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         public TextView priceDisc;
         public ImageView promoImg;
         public TextView variancesContainer;
-        public TextView stockInfo;
+//        public TextView stockInfo;
         public Button deleteBtn;
         public CartItemValues itemValues;
         public int position;
@@ -644,7 +643,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
             priceDisc = null;
             promoImg = null;
             variancesContainer = null;
-            stockInfo = null;
+//            stockInfo = null;
             deleteBtn = null;
 
             super.finalize();
@@ -672,7 +671,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         prodItem.promoImg = (ImageView) view.findViewById(R.id.item_promotion);
         prodItem.variancesContainer = (TextView) view
                 .findViewById(R.id.variances_container);
-        prodItem.stockInfo = (TextView) view.findViewById(R.id.item_stock);
+//        prodItem.stockInfo = (TextView) view.findViewById(R.id.item_stock);
         prodItem.deleteBtn = (Button) view.findViewById(R.id.delete_button);
         view.setTag(prodItem);
 
@@ -725,13 +724,13 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
             }
         }
 
-        if (prodItem.itemValues.stock > 0) {
-            prodItem.stockInfo.setText(getString(R.string.shoppingcart_instock));
-            prodItem.stockInfo.setTextColor(getResources().getColor(R.color.green_stock));
-        } else {
-            prodItem.stockInfo.setText(getString(R.string.shoppingcart_notinstock));
-            prodItem.stockInfo.setTextColor(getResources().getColor(R.color.red_basic));
-        }
+//        if (prodItem.itemValues.stock > 0) {
+//            prodItem.stockInfo.setText(getString(R.string.shoppingcart_instock));
+//            prodItem.stockInfo.setTextColor(getResources().getColor(R.color.green_stock));
+//        } else {
+//            prodItem.stockInfo.setText(getString(R.string.shoppingcart_notinstock));
+//            prodItem.stockInfo.setTextColor(getResources().getColor(R.color.red_basic));
+//        }
 
         prodItem.deleteBtn.setOnClickListener(new OnClickListener() {
 

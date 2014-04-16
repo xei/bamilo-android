@@ -84,11 +84,11 @@
 	    android:textSize="@dimen/text_small"
 	    android:visibility="gone" />
     
-    <org.holoeverywhere.widget.TextView
-        android:id="@+id/item_stock"
-        style="@style/product_price_current_list_text"
-        android:layout_alignLeft="@+id/item_name"
-        android:layout_below="@+id/variances_container" />
+<!--     <org.holoeverywhere.widget.TextView -->
+<!--         android:id="@+id/item_stock" -->
+<!--         style="@style/product_price_current_list_text" -->
+<!--         android:layout_alignLeft="@+id/item_name" -->
+<!--         android:layout_below="@+id/variances_container" /> -->
 
     
     <org.holoeverywhere.widget.Button

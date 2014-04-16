@@ -275,13 +275,15 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
      */
     private void loadSavedValues(ContentValues savedValues, Iterator<DynamicFormItem> iter){
         // Load save state
-        if (savedValues != null)
-            while (iter.hasNext())
+        if (savedValues != null){
+            while (iter.hasNext()){
                 try {
                     ((DynamicFormItem) iter.next()).loadState(mSavedState);
                 } catch (Exception e) {
                     Log.w(TAG, "CAN'T LOAD THE SAVED STATE");
                 }
+            }
+        }
     }
     
     

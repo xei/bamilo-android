@@ -137,7 +137,7 @@ public class ShoppingBasketFragListAdapter extends BaseAdapter {
             prodItem.promoImg = (ImageView) view.findViewById(R.id.item_promotion);
             prodItem.variancesContainer = (TextView) view
                     .findViewById(R.id.variances_container);
-            prodItem.stockInfo = (TextView) view.findViewById(R.id.item_stock);
+//            prodItem.stockInfo = (TextView) view.findViewById(R.id.item_stock);
             prodItem.deleteBtn = (Button) view.findViewById(R.id.delete_button);
             view.setTag(prodItem);
         } else {
@@ -194,13 +194,13 @@ public class ShoppingBasketFragListAdapter extends BaseAdapter {
         }
 
         
-        if (prodItem.itemValues.stock > 0) {
-            prodItem.stockInfo.setText(activity.getString(R.string.shoppingcart_instock));
-            prodItem.stockInfo.setTextColor(activity.getResources().getColor(R.color.green_stock));
-        } else {
-            prodItem.stockInfo.setText(activity.getString(R.string.shoppingcart_notinstock));
-            prodItem.stockInfo.setTextColor(activity.getResources().getColor(R.color.red_basic));
-        }
+//        if (prodItem.itemValues.stock > 0) {
+//            prodItem.stockInfo.setText(activity.getString(R.string.shoppingcart_instock));
+//            prodItem.stockInfo.setTextColor(activity.getResources().getColor(R.color.green_stock));
+//        } else {
+//            prodItem.stockInfo.setText(activity.getString(R.string.shoppingcart_notinstock));
+//            prodItem.stockInfo.setTextColor(activity.getResources().getColor(R.color.red_basic));
+//        }
 
         
         prodItem.deleteBtn.setOnClickListener(new OnClickListener() {
@@ -259,7 +259,7 @@ public class ShoppingBasketFragListAdapter extends BaseAdapter {
         public TextView priceDisc;
         public ImageView promoImg;
         public TextView variancesContainer;
-        public TextView stockInfo;
+//        public TextView stockInfo;
         public Button deleteBtn;
         public CartItemValues itemValues;
 
@@ -280,7 +280,7 @@ public class ShoppingBasketFragListAdapter extends BaseAdapter {
             priceDisc = null;
             promoImg = null;
             variancesContainer = null;
-            stockInfo = null;
+//            stockInfo = null;
             deleteBtn = null;
 
             super.finalize();

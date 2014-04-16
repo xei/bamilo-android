@@ -159,14 +159,14 @@
                 android:textSize="@dimen/text_s"
                 android:textStyle="bold" />
 
-            <org.holoeverywhere.widget.TextView
-                android:id="@+id/product_instock"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/product_price_result"
-                android:layout_marginTop="@dimen/margin_small"
-                android:textSize="@dimen/text_s"
-                android:textStyle="bold" />
+<!--             <org.holoeverywhere.widget.TextView -->
+<!--                 android:id="@+id/product_instock" -->
+<!--                 android:layout_width="wrap_content" -->
+<!--                 android:layout_height="wrap_content" -->
+<!--                 android:layout_below="@+id/product_price_result" -->
+<!--                 android:layout_marginTop="@dimen/margin_small" -->
+<!--                 android:textSize="@dimen/text_s" -->
+<!--                 android:textStyle="bold" /> -->
         </RelativeLayout>
 
         <LinearLayout
