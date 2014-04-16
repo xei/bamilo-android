@@ -59,6 +59,7 @@
             android:hint="@string/voucher_message_hint"
             android:textColor="@color/form_text"
             android:textColorHint="@color/form_text_hint"
+            android:textSize="@dimen/text_s"
             android:textCursorDrawable="@null" />
     </RelativeLayout>
 

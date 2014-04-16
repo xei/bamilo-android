@@ -58,7 +58,7 @@ public class MyAccountFragment extends BaseFragment {
                 EnumSet.noneOf(EventType.class),
                 EnumSet.noneOf(MyMenuItem.class), 
                 NavigationAction.MyAccount, 
-                R.string.account_name, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
+                R.string.account_name, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
     
     /*

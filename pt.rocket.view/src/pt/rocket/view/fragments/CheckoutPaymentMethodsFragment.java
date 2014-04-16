@@ -383,6 +383,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
         // Submit
         if(id == R.id.checkout_payment_button_enter){
             onClickSubmitPaymentButton(); 
+            getBaseActivity().hideKeyboard();
         } // Unknown view
         else Log.i(TAG, "ON CLICK: UNKNOWN VIEW");
     }

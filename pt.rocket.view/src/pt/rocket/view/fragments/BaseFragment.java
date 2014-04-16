@@ -143,6 +143,9 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * @param enumSet
      */
     public BaseFragment(Boolean isNestedFragment, NavigationAction action, EnumSet<MyMenuItem> enumSet) {
+        if(action == NavigationAction.Country){
+            this.adjustState = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN;
+        }
         this.isNestedFragment = isNestedFragment;
         this.action = action;
         this.enabledMenuItems = enumSet;
@@ -231,7 +234,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         /**
          * Adjust state for each fragment type.
          */
-        if(this.adjustState >= 0 && !isNestedFragment){
+        if(this.adjustState >= 0 && (!isNestedFragment|| action == NavigationAction.Country)){
             updateAdjustState(this.adjustState);    
             if(getBaseActivity() != null){
                 getBaseActivity().closeDrawerIfOpen();
