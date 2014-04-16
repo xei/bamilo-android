@@ -20,7 +20,7 @@
 			    <attributes type="jsonobject" children="true" method="getJSONObject" optional="true">
 			        <description type="string" children="false" method="getString" optional="true"/>
 			        <image_list type="jsonarray" children="true" method="getJSONArray" optional="true">
-			            <device_type type="string" children="false" method="getString" optional="false"/>
+			            <device_type type="string" children="false" method="getString" optional="true"/>
 			            <image_url type="string" children="false" method="getString" optional="true"/>
 			            <product_url type="string" children="false" method="getString" optional="true"/>
 			        </image_list>

@@ -13,7 +13,7 @@ public class RequestConstants {
 	public static final String CUSTOMER_EMAIL2 = "testcalabash@mailinator.com";
 	static Random rand = new Random();
 
-	static int n = rand.nextInt(10000) + 1;
+	static int n = rand.nextInt(100000) + 1;
 	public static final String CUSTOMER_NEW_EMAIL = "msilvaTester"+n+"@mailinator.com";
 	public static final String CUSTOMER_WRONG_EMAIL = "testestest@mailinator.com";
 	public static final String CUSTOMER_PASSWORD = "123456";

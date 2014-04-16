@@ -36,30 +36,30 @@ public class FinishTest extends FrameworkServiceTests {
 	protected boolean processedsetpayment = false;
 	protected boolean processedfinish = false;
 
-//	public void testFinishIC() throws Throwable {
-//		test("https://www.jumia.ci", RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_IC, "DigitalDelivery");
-//	}
-//
-//	public void testFinishKE() throws Throwable {
-////		test("https://alice-staging.jumia.co.ke", "DigitalDelivery");
-//	}
-//	
-//	public void testFinishMA() throws Throwable {
-//		test("https://www.jumia.ma", RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_MA, "DigitalDelivery");
-//	}
+	public void testFinishIC() throws Throwable {
+		test("https://www.jumia.ci", RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_IC, "DigitalDelivery");
+	}
+
+	public void testFinishKE() throws Throwable {
+//		test("https://alice-staging.jumia.co.ke", "DigitalDelivery");
+	}
+	
+	public void testFinishMA() throws Throwable {
+		test("https://www.jumia.ma", RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_MA, "DigitalDelivery");
+	}
 	
 	public void testFinishNG() throws Throwable {
 		test("https://www.jumia.com.ng", RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_NG, "DigitalDelivery");
 	}
 
-//	public void testFinishEG() throws Throwable {
-//		test("https://www.jumia.com.eg", RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_EG, "DigitalDelivery");
-//	}
-//
-//	public void testFinishUG() throws Throwable {
-////		test("https://alice-staging.jumia.ug","DigitalDelivery");
-//	}
-	
+	public void testFinishEG() throws Throwable {
+		test("https://www.jumia.com.eg", RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_EG, "DigitalDelivery");
+	}
+
+	public void testFinishUG() throws Throwable {
+//		test("https://alice-staging.jumia.ug","DigitalDelivery");
+	}
+//	
 //	public void testFinishStaging_NG() throws Throwable {
 //		test("https://alice-staging.jumia.com.ng", RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_NG, "DigitalDelivery");
 //	}
