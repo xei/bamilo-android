@@ -88,6 +88,10 @@ public class Catalog extends BaseFragment implements OnClickListener{
     
     private boolean wasReceivedErrorEvent = false;
 
+    private String[] mSavedOldCatalogData;
+
+    private ContentValues mOldCatalogFilterValues;
+
     public Catalog() {
         super(EnumSet.noneOf(EventType.class), 
                 EnumSet.noneOf(EventType.class), 
@@ -150,6 +154,8 @@ public class Catalog extends BaseFragment implements OnClickListener{
         
         navigationPath = getArguments().getString(ConstantsIntentExtra.NAVIGATION_PATH);
         
+        // Save the current catalog data, used as a fall back
+        saveCurrentCatalogDataForFilters();
         
 //        Log.i(TAG, "code1 title is : " + title);
         Log.i(TAG, "ON RESUME");
@@ -229,7 +235,7 @@ public class Catalog extends BaseFragment implements OnClickListener{
      * @param filters
      * @author sergiopereira
      */
-    public void setFilter(ArrayList<CatalogFilter> filters){
+    public void onSuccesLoadingFilteredCatalog(ArrayList<CatalogFilter> filters){
         // Validate the view
         if(mFilterButton == null) { Log.w(TAG, "FILTER VIEW IS NULL"); return; }
         // Validate the current filter object
@@ -241,7 +247,9 @@ public class Catalog extends BaseFragment implements OnClickListener{
         // Save filters
         mCatalogFilter = filters;
         // Restore the old state
-        restoreOldState();
+        matchFilterStateWithOldState();
+        // Save the current catalog data
+        saveCurrentCatalogDataForFilters();
         // Set the button behavior
         setFilterAction();
         Log.i(TAG, "SAVED THE FILTER");
@@ -255,17 +263,73 @@ public class Catalog extends BaseFragment implements OnClickListener{
     public synchronized void onErrorLoadingFilteredCatalog(){
         // Process only one error event
         if(wasReceivedErrorEvent) {
-            Log.i(TAG, "DISCARTED OTHER ERROR EVENT");
+            Log.w(TAG, "DISCARTED OTHER ERROR EVENT");
             return;
         }
         // Set the flag
         wasReceivedErrorEvent = true;
+        // Restore the filter values for request
+        if(mOldCatalogFilterValues != null)
+            mCatalogFilterValues = mOldCatalogFilterValues;
         // Show the old filter
-        mCatalogFilter = mOldCatalogFilterState; 
+        if(mOldCatalogFilterState != null)
+            mCatalogFilter = mOldCatalogFilterState;
+        // Set listener
         mFilterButton.setOnClickListener(this);
-        // Warning user
-        Toast.makeText(getBaseActivity(), getString(R.string.search_no_items), Toast.LENGTH_LONG).show();
         Log.d(TAG, "RECEIVED ERROR ON LOAD CATALOG WITH FILTERS");
+    }
+    
+    /**
+     * Process the filter values
+     * @param filterValues
+     * @author sergiopereira
+     */
+    public void onSubmitFilterValues(ContentValues filterValues) {
+        Log.d(TAG, "FILTER VALUES: " + filterValues.toString());
+        // Save the old data to restore in case of error event
+        mOldCatalogFilterValues = mCatalogFilterValues;
+        // Save the current filter values
+        mCatalogFilterValues = filterValues;
+        // Contains the new product URL (Category filter)
+        if(filterValues.containsKey(GetProductsHelper.PRODUCT_URL)) {
+            // Get product URL and remove it
+            productsURL = filterValues.getAsString(GetProductsHelper.PRODUCT_URL);
+            mCatalogFilterValues.put(GetProductsHelper.PRODUCT_URL, "");
+            // Save the new filters to restore
+            mOldCatalogFilterState = mCatalogFilter;
+            // Clean the current category values
+            mCatalogFilter = null;
+            searchQuery = null;
+            title = null;
+            mFilterButton.setOnClickListener(null);
+        // Send the last saved catalog data that works
+        } else if(mSavedOldCatalogData != null){
+            productsURL = mSavedOldCatalogData[0];
+            searchQuery = mSavedOldCatalogData[1];
+            navigationPath = mSavedOldCatalogData[2];
+            title = mSavedOldCatalogData[3];
+        }
+        // Set the filter button selected or not
+        setFilterButtonState();
+        // Error flag
+        wasReceivedErrorEvent = false;
+        // Send new request with new filters
+        // Update the current view pages
+        getCurrentCatalogPageModel(mSelectedPageIndex).setVariables(productsURL, searchQuery, navigationPath, title, navigationSource, mCatalogFilterValues);
+        getCurrentCatalogPageModel(mSelectedPageIndex-1).setVariables(productsURL, searchQuery, navigationPath, title, navigationSource, mCatalogFilterValues);
+        getCurrentCatalogPageModel(mSelectedPageIndex+1).setVariables(productsURL, searchQuery, navigationPath, title, navigationSource, mCatalogFilterValues);
+    }
+    
+    /**
+     * Save the current data to create a fall back point in case some request filtered return error
+     * @author sergiopereira
+     */
+    private void saveCurrentCatalogDataForFilters(){
+        mSavedOldCatalogData = new String[4];
+        mSavedOldCatalogData[0] = productsURL;
+        mSavedOldCatalogData[1] = searchQuery;
+        mSavedOldCatalogData[2] = navigationPath;
+        mSavedOldCatalogData[3] = title;
     }
     
     /**
@@ -273,7 +337,7 @@ public class Catalog extends BaseFragment implements OnClickListener{
      * Match the old selection with the new filter option.
      * @author sergiopereira
      */
-    private void restoreOldState(){
+    private void matchFilterStateWithOldState(){
         Log.i(TAG, "RESTORE THE OLD SELECTED STATE");
         // Validate the old filter state
         if(mOldCatalogFilterState != null)
@@ -352,39 +416,6 @@ public class Catalog extends BaseFragment implements OnClickListener{
         mFilterButton.setOnClickListener(null);
         mFilterButton.setOnClickListener(this);
         pagerTabStrip.setPadding(0, 0, getBaseActivity().getResources().getDimensionPixelSize(R.dimen.catalog_button_filter_width), 0);
-    }
-    
-    /**
-     * Process the filter values
-     * @param filterValues
-     * @author sergiopereira
-     */
-    public void onSubmitFilterValues(ContentValues filterValues) {
-        Log.d(TAG, "FILTER VALUES: " + filterValues.toString());
-        // Save the current filter values
-        mCatalogFilterValues = filterValues;
-        // Contains the new product URL (Category filter)
-        if(filterValues.containsKey(GetProductsHelper.PRODUCT_URL)) {
-            // Get product URL and remove it
-            productsURL = filterValues.getAsString(GetProductsHelper.PRODUCT_URL);
-            mCatalogFilterValues.remove(GetProductsHelper.PRODUCT_URL);
-            // Save the new filters to restore
-            mOldCatalogFilterState = mCatalogFilter;
-            // Clean the current category values
-            mCatalogFilter = null;
-            searchQuery = null;
-            title = null;
-            mFilterButton.setOnClickListener(null);
-        }
-        // Set the filter button selected or not
-        setFilterButtonState();
-        // Error flag
-        wasReceivedErrorEvent = false;
-        // Send new request with new filters
-        // Update the current view pages
-        getCurrentCatalogPageModel(mSelectedPageIndex).setVariables(productsURL, searchQuery, navigationPath, title, navigationSource, mCatalogFilterValues);
-        getCurrentCatalogPageModel(mSelectedPageIndex-1).setVariables(productsURL, searchQuery, navigationPath, title, navigationSource, mCatalogFilterValues);
-        getCurrentCatalogPageModel(mSelectedPageIndex+1).setVariables(productsURL, searchQuery, navigationPath, title, navigationSource, mCatalogFilterValues);
     }
     
     /**

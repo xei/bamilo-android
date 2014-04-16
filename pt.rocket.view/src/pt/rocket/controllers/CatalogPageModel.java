@@ -127,9 +127,8 @@ public class CatalogPageModel {
     private boolean receivedError = false;
 
     private CharSequence totalItemsLable = "";
+    
     private Fragment mFragment;
-
-    private ProductsListAdapter mSaveAdapter;
     
 
     public CatalogPageModel(int index, BaseActivity activity, Fragment mFragment) {
@@ -444,8 +443,6 @@ public class CatalogPageModel {
         
         Log.d(TAG, "FILTER EXECUTE REQ");
         
-        mSaveAdapter = productsAdapter;
-        
         productsAdapter = new ProductsListAdapter(mActivity);
         pageNumber = 1;
         showProductsContent();
@@ -733,8 +730,7 @@ public class CatalogPageModel {
         }
         
         // Validate the request was performed by Filter
-        if(isRequestFromFilter())
-            return;
+        if(isRequestFromFilter());
         
         // Log.i(TAG, "code1 product list on error event");
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
@@ -762,11 +758,8 @@ public class CatalogPageModel {
      * @author sergiopereira
      */
     private boolean isRequestFromFilter(){
-        if(filters != null && mSaveAdapter != null && mFragment != null) {
+        if(filters != null && mFragment != null) {
             Log.d(TAG, "FILTERS: ON ERROR EVENT");
-            productsAdapter = mSaveAdapter;
-            //showCatalogContent();
-            showProductsContent();
             // Sent to Parent that was received an error on load catalog
             ((Catalog) mFragment).onErrorLoadingFilteredCatalog();
             return true;
@@ -871,7 +864,7 @@ public class CatalogPageModel {
 
         // Updated filter
         if(mFragment.isVisible())
-            ((Catalog) mFragment).setFilter(productsPage.getFilters());
+            ((Catalog) mFragment).onSuccesLoadingFilteredCatalog(productsPage.getFilters());
 
     }
 

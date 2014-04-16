@@ -354,7 +354,7 @@ public class DialogFilterFragment extends DialogFragment {
                     Log.d(TAG, "SELECTED A NEW CATEGORY: " + url );
                     if(url != null) {
                         contentValues.put(GetProductsHelper.PRODUCT_URL, url);
-                        filter.cleanSelectedOption();
+                        //filter.cleanSelectedOption();
                     }
                 }
                 // Case generic filter
