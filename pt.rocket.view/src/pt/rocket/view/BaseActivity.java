@@ -906,8 +906,10 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             cartCount.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
             int cartCountWidth = cartCount.getMeasuredWidth() + cartCount.getPaddingRight();
             Log.d(TAG, "CART WIDTH SIZE: " + cartCountWidth);
-            // Calculate the search width\
-            int searchComponentWidth = mainContentWidth - cartCountWidth - (logoViewWidth*2);
+            // Set a value for ?, where the default is 2
+            int value = (menuItems.contains(MyMenuItem.SHARE)) ? 3 : 2;
+            // Calculate the search width
+            int searchComponentWidth = mainContentWidth - cartCountWidth - (logoViewWidth * value);
             Log.d(TAG, "SEARCH WIDTH SIZE: " + searchComponentWidth);
 
             // Set width on search component
