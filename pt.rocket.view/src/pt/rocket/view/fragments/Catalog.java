@@ -32,18 +32,17 @@ import android.support.v4.view.ViewPager;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import de.akquinet.android.androlog.Log;
 
-public class Catalog extends BaseFragment implements OnClickListener{
+public class Catalog extends BaseFragment implements OnClickListener {
     
     private static final String TAG = LogTagHelper.create(Catalog.class);
 
@@ -91,6 +90,8 @@ public class Catalog extends BaseFragment implements OnClickListener{
     private String[] mSavedOldCatalogData;
 
     private ContentValues mOldCatalogFilterValues;
+    
+    public static boolean isNotShowing = true;
 
     public Catalog() {
         super(EnumSet.noneOf(EventType.class), 
@@ -430,7 +431,7 @@ public class Catalog extends BaseFragment implements OnClickListener{
             Log.w(TAG, "BUTTON OR VALUE IS NULL", e);
         }
     }
-
+    
     /*
      * (non-Javadoc)
      * @see android.view.View.OnClickListener#onClick(android.view.View)
@@ -440,15 +441,15 @@ public class Catalog extends BaseFragment implements OnClickListener{
         // Get the view id
         int id = v.getId();
         // Validate the click
-        if(id == R.id.products_list_filter_button) {
+        if(id == R.id.products_list_filter_button && isNotShowing) {
             Log.d(TAG, "ON CLICK: FILTER BUTTON");
+            isNotShowing = false;
             Bundle bundle = new Bundle();
             bundle.putParcelableArrayList(DialogFilterFragment.FILTER_TAG, mCatalogFilter);
             DialogFilterFragment newFragment = DialogFilterFragment.newInstance(bundle, this);
             newFragment.show(getBaseActivity().getSupportFragmentManager(), "dialog");
         }
     }
-    
     
     /*
      * ######### LAYOUT ######### 

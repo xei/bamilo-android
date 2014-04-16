@@ -14,6 +14,7 @@ import pt.rocket.view.R;
 import pt.rocket.view.fragments.Catalog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -205,6 +206,16 @@ public class DialogFilterFragment extends DialogFragment {
     public void onPause() {
         super.onPause();
         dismiss();
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see android.support.v4.app.DialogFragment#onDismiss(android.content.DialogInterface)
+     */
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+        Catalog.isNotShowing = true;
     }
     
     /**
