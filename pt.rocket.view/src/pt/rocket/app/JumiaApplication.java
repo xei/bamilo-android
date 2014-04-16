@@ -11,6 +11,7 @@ import pt.rocket.forms.FormData;
 import pt.rocket.forms.PaymentMethodForm;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.components.NavigationListComponent;
+import pt.rocket.framework.database.DarwinDatabaseHelper;
 import pt.rocket.framework.objects.Address;
 import pt.rocket.framework.objects.Category;
 import pt.rocket.framework.objects.CompleteProduct;
@@ -165,6 +166,9 @@ public class JumiaApplication extends Application implements ExceptionCallback {
         RocketImageLoader.init(this);
         Log.d(TAG, "onCreate");
         INSTANCE = this;
+        
+        // Init darwin database, set the context
+        DarwinDatabaseHelper.init(getApplicationContext());
         
         /**
          * AQuery Configurations

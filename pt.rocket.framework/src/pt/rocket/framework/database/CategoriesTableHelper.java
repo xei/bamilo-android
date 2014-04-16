@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import pt.rocket.framework.Darwin;
 import pt.rocket.framework.objects.Category;
 import pt.rocket.framework.rest.RestContract;
 import android.content.ContentValues;
@@ -154,8 +155,18 @@ public class CategoriesTableHelper {
 	 * @return
 	 */
 	public static ArrayList<Category> loadCategories(long parentRowId, Category parent) {
-    	SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getReadableDatabase();
-
+		
+		/**
+		 * Fix the crash report caused by NullPointerException at SQLiteOpenHelper.getDatabaseLocked
+		 * The Context passed to sqlite helper is null.
+		 */
+		SQLiteDatabase db = null;
+    	try {
+    		db = DarwinDatabaseHelper.getInstance().getReadableDatabase();
+		} catch (NullPointerException e) {
+			db = DarwinDatabaseHelper.getInstance(Darwin.context).getReadableDatabase();
+		}
+		
 		Cursor cursor = db.query(TABLE, new String[] {
 				Columns.ID,
 				Columns.ID_CATALOG,
