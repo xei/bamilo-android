@@ -39,6 +39,7 @@ import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.androidquery.AQuery;
 
@@ -85,6 +86,8 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
     private TextView mSubTotal;
     
     private TextView mExtraCosts;
+    
+    private LinearLayout mExtraCostsContainer;
     
     private OrderSummary mOrderFinish;
 
@@ -170,7 +173,8 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
         mProductsNum = (TextView) view.findViewById(R.id.checkout_my_order_products_text_n_items);
         mSubTotal = (TextView) view.findViewById(R.id.checkout_my_order_products_text_total_items);
         mExtraCosts = (TextView) view.findViewById(R.id.checkout_my_order_extra_costs);
-        
+        mExtraCostsContainer = (LinearLayout) view.findViewById(R.id.checkout_my_order_products_extracosts_container);
+      
         mVatValue = (TextView) view.findViewById(R.id.checkout_my_order_products_text_vat_value);
         //mShipFeeView = (ViewGroup) view.findViewById(R.id.checkout_my_order_products_shippingfee_container);
         mShipFeeValue = (TextView) view.findViewById(R.id.checkout_my_order_products_text_shippingfee);
@@ -342,11 +346,11 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
         
         if(!cart.isSumCosts()){
             mExtraCosts.setText(CurrencyFormatter.formatCurrency(cart.getExtraCosts()));
-            mExtraCosts.setVisibility(View.VISIBLE);
+            mExtraCostsContainer.setVisibility(View.VISIBLE);
             // Shipping fee
             mShipFeeValue.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getShippingAmount()));
         } else {
-            mExtraCosts.setVisibility(View.GONE);
+            mExtraCostsContainer.setVisibility(View.GONE);
             // Shipping fee
             mShipFeeValue.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getShippingAmount()));
         }

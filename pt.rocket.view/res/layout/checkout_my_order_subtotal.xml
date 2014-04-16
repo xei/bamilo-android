@@ -52,15 +52,6 @@
             android:gravity="left"
             android:textColor="@color/grey_divider_light_text"
             android:textSize="@dimen/text_m" />
-        <org.holoeverywhere.widget.TextView
-            android:id="@+id/checkout_my_order_extra_costs"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="roboto_regular"
-            android:gravity="left"
-            android:textColor="@color/grey_divider_light_text"
-            android:textSize="@dimen/text_m"
-            android:visibility="gone" />
     </LinearLayout>
 
     <!-- VAT -->
@@ -116,6 +107,37 @@
 
         <org.holoeverywhere.widget.TextView
             android:id="@+id/checkout_my_order_products_text_shippingfee"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="roboto_regular"
+            android:gravity="left"
+            android:textColor="@color/grey_divider_light_text"
+            android:textSize="@dimen/text_m" />
+    </LinearLayout>
+
+    <!-- Extra Costs -->
+
+    <LinearLayout
+        android:id="@+id/checkout_my_order_products_extracosts_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/checkout_order_inner_margin_left"
+        android:layout_marginRight="@dimen/checkout_order_inner_margin_right"
+        android:layout_marginTop="@dimen/margin_mid"
+        android:orientation="horizontal" >
+
+        <org.holoeverywhere.widget.TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="roboto_regular"
+            android:gravity="left"
+            android:text="@string/extra_costs"
+            android:textColor="@color/grey_divider_light_text"
+            android:textSize="@dimen/text_m" />
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/checkout_my_order_extra_costs"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="roboto_regular"
