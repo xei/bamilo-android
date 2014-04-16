@@ -342,6 +342,22 @@ public class DynamicForm implements Iterable<DynamicFormItem>{
 
         return model;
     }
+    
+    public int getSelectedValueIndex(){
+        ContentValues model = new ContentValues();
+        DynamicFormItem control;
+
+        Iterator<DynamicFormItem> it = iterator();
+        while (it.hasNext()) {
+
+            control = it.next();
+            if (null != control && control.getType() == InputType.radioGroup && control.isRadioGroupLayoutVertical()) {
+                return control.getSubFormsSelectedIndex();
+            }
+        }
+
+        return -1;
+    }
 
 //    /**
 //     * Fills the hashmap with the data model, matching each key from the hash map with the keys from

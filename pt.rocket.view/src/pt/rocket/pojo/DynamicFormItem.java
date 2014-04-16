@@ -229,6 +229,10 @@ public class DynamicFormItem {
         return ((RadioGroupLayoutVertical) this.dataControl).getSubFieldParameters();
     }
 
+    public int getSubFormsSelectedIndex() {
+        return ((RadioGroupLayoutVertical) this.dataControl).getSelectedIndex();
+    }
+    
     public String getRadioGroupLayoutVerticalSelectedFieldName(){
         return ((RadioGroupLayoutVertical) this.dataControl).getSelectedFieldName();
     }
@@ -413,6 +417,10 @@ public class DynamicFormItem {
 
     }
 
+    public void setSelectedPaymentMethod(int index){
+        ((RadioGroupLayoutVertical) this.dataControl).setPaymentSelection(index);
+    }
+    
     /**
      * Loads a previously saved state of the control. This is useful in an orientation changed
      * scenario, for example.
@@ -421,6 +429,7 @@ public class DynamicFormItem {
      *            the Bundle that contains the stored information of the control
      */
     public void loadState(ContentValues inStat) {
+        Log.i(TAG, "code1load : "+inStat.toString());
         switch (this.entry.getInputType()) {
         case meta:
             break;

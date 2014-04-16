@@ -262,7 +262,7 @@ public class RadioGroupLayoutVertical extends RadioGroup {
     }
 
     public void setSelection(int idx) {
-        if (idx > 0) {
+        if (idx >= 0) {
             if (mGroup.getChildAt(idx) instanceof RadioButton) {
                 RadioButton button = (RadioButton) mGroup.getChildAt(idx);
                 button.setChecked(true);
@@ -270,6 +270,23 @@ public class RadioGroupLayoutVertical extends RadioGroup {
                 RadioButton button = (RadioButton) mGroup.getChildAt(idx)
                         .findViewById(R.id.radio_container).findViewById(idx);
                 button.setChecked(true);
+            }
+        }
+    }
+    
+    public void setPaymentSelection(int idx) {
+        if (idx >= 0) {
+            if (mGroup.getChildAt(idx) instanceof RadioButton) {
+                RadioButton button = (RadioButton) mGroup.getChildAt(idx);
+                button.setChecked(true);
+                setSelection(idx);
+                mGroup.check(idx);
+            } else if (mGroup.getChildAt(idx).findViewById(R.id.radio_container).findViewById(idx) instanceof RadioButton) {
+                RadioButton button = (RadioButton) mGroup.getChildAt(idx)
+                        .findViewById(R.id.radio_container).findViewById(idx);
+                button.setChecked(true);
+                setSelection(idx);
+                mGroup.check(idx);
             }
         }
     }

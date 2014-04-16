@@ -209,6 +209,10 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
     public void onPause() {
         super.onPause();
         Log.i(TAG, "ON PAUSE");
+        if(formGenerator != null){
+            JumiaApplication.INSTANCE.lastPaymentSelected = formGenerator.getSelectedValueIndex();    
+        }
+        
     }
 
     /*
@@ -278,6 +282,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
         if (savedValues != null){
             while (iter.hasNext()){
                 try {
+                    ((DynamicFormItem) iter.next()).setSelectedPaymentMethod(JumiaApplication.INSTANCE.lastPaymentSelected);
                     ((DynamicFormItem) iter.next()).loadState(mSavedState);
                 } catch (Exception e) {
                     Log.w(TAG, "CAN'T LOAD THE SAVED STATE");
@@ -296,46 +301,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
         paymentMethodsContainer.refreshDrawableState();
         getBaseActivity().showContentContainer();
     }
-    
-    @SuppressWarnings("unused")
-    private View generateCouponView(){
-        LayoutInflater mLayoutInflater = LayoutInflater.from(getBaseActivity());
-        View view = mLayoutInflater.inflate(R.layout.voucher_insert_layout, null);
-        voucherValue = (EditText) view.findViewById(R.id.voucher_name);
-        if(mVoucher != null && mVoucher.length() > 0){
-            voucherValue.setText(mVoucher);
-        }
         
-        voucherDivider = view.findViewById(R.id.voucher_divider);
-        voucherError = (TextView) view.findViewById(R.id.voucher_error_message);
-        couponButton = (Button) view.findViewById(R.id.voucher_btn); 
-        if(removeVoucher){
-            couponButton.setText(getString(R.string.voucher_remove));
-        }
-        couponButton.setOnClickListener(new OnClickListener() {
-            
-            @Override
-            public void onClick(View v) {
-                mVoucher = voucherValue.getText().toString();
-                getBaseActivity().hideKeyboard();
-                if(mVoucher != null && mVoucher.length() > 0){
-                    ContentValues mContentValues = new ContentValues();
-                    mContentValues.put(SetVoucherHelper.VOUCHER_PARAM, mVoucher);
-                    Log.i(TAG, "code1coupon : "+mVoucher);
-                    if(couponButton.getText().toString().equalsIgnoreCase("use")){
-                        triggerSubmitVoucher(mContentValues);    
-                    } else {
-                        triggerRemoveVoucher(mContentValues);
-                    }
-                    
-                } else {
-                    Toast.makeText(getBaseActivity(), getString(R.string.voucher_error_message), Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-        return view;
-    }
-    
     private void prepareCouponView() {
 
         voucherValue = (EditText) getView().findViewById(R.id.voucher_name);

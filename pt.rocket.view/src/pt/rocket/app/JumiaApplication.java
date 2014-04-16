@@ -142,6 +142,8 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     
     public Bundle registerSavedInstanceState;
     
+    public int lastPaymentSelected = -1;
+    
     /**
      * ADX Global Values
      */
