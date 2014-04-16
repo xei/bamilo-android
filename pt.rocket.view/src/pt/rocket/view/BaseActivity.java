@@ -2330,14 +2330,14 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                 }
             }
         });
-        ImageView mapBg = (ImageView) findViewById(R.id.fallback_country_map);
+        
+        ImageView mapImageView = (ImageView) findViewById(R.id.fallback_country_map);
         
         int position = JumiaApplication.INSTANCE.SHOP_ID;
 
         Log.i(TAG, "code1image : "+position);
         
-        mapBg.setImageResource(this.getResources().obtainTypedArray(R.array.country_fallback_map)
-                .getResourceId(position, -1));
+        mapImageView.setImageDrawable(getApplicationContext().getResources().obtainTypedArray(R.array.country_fallback_map).getDrawable(position));
         
         String country = this.getResources().obtainTypedArray(R.array.country_names)
                 .getString(position);

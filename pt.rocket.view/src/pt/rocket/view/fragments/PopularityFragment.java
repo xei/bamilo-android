@@ -164,7 +164,6 @@ public class PopularityFragment extends BaseFragment {
          * @author sergiopereira
          */
         triggerReviews(selectedProduct.getUrl(), pageNumber);
-        //triggerContentEvent(new GetProductReviewsEvent(selectedProduct.getUrl(), pageNumber));
         
         setAppContentLayout();
         setContextualLoading();

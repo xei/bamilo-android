@@ -8,7 +8,7 @@
     <!-- <string name="jumia_ng_server">alice-staging.dev0.jumia.com</string> -->
     <string name="jumia_ng_user">rocket</string>
     <string name="jumia_ng_password">rock4me</string>
-    <string name="jumia_ng_restbase_path">mobapi/v1</string>
+    <string name="jumia_ng_restbase_path">mobapi/v1.1</string>
     <string name="jumia_ng_country_name">@string/country_name_nigera</string>
 
     <!-- Jumia Kenya Configuration -->
@@ -18,7 +18,7 @@
     <!-- <string name="jumia_ke_server">mobile.jumia.com</string> -->
     <string name="jumia_ke_user">rocket</string>
     <string name="jumia_ke_password">rock4me</string>
-    <string name="jumia_ke_restbase_path">mobapi</string>
+    <string name="jumia_ke_restbase_path">mobapi/v1.1</string>
     <string name="jumia_ke_country_name">@string/country_name_kenya</string>
 
     <!-- Jumia Morocco	 Configuration -->
@@ -28,7 +28,7 @@
     <!-- <string name="jumia_ma_server">mobile.jumia.com</string> -->
     <string name="jumia_ma_user">rocket</string>
     <string name="jumia_ma_password">rock4me</string>
-    <string name="jumia_ma_restbase_path">mobapi/v1</string>
+    <string name="jumia_ma_restbase_path">mobapi/v1.1</string>
     <string name="jumia_ma_country_name">@string/country_name_morocco</string>
 
     <!-- Jumia Egypt Configuration -->
@@ -38,7 +38,7 @@
     <!-- <string name="jumia_eg_server">mobile.jumia.com</string> -->
     <string name="jumia_eg_user">rocket</string>
     <string name="jumia_eg_password">rock4me</string>
-    <string name="jumia_eg_restbase_path">mobapi/v1</string>
+    <string name="jumia_eg_restbase_path">mobapi/v1.1</string>
     <string name="jumia_eg_country_name">@string/country_name_egypt</string>
 
     <!-- Jumia Ivory Coast Configuration -->
@@ -48,7 +48,7 @@
     <!-- <string name="jumia_ci_server">mobile.jumia.com</string> -->
     <string name="jumia_ci_user">rocket</string>
     <string name="jumia_ci_password">rock4me</string>
-    <string name="jumia_ci_restbase_path">mobapi/v1</string>
+    <string name="jumia_ci_restbase_path">mobapi/v1.1</string>
     <string name="jumia_ci_country_name">@string/country_name_ivorycoast</string>
 
     <!-- Uganda Configuration -->
@@ -56,7 +56,7 @@
     <string name="jumia_ug_server">www.jumia.ug</string>
     <string name="jumia_ug_user">rocket</string>
     <string name="jumia_ug_password">rock4me</string>
-    <string name="jumia_ug_restbase_path">mobapi</string>
+    <string name="jumia_ug_restbase_path">mobapi/v1.1</string>
     <string name="jumia_ug_country_name">@string/country_name_uganda</string>
 
     <!-- Staging versions -->
@@ -75,7 +75,7 @@
     <string name="jumia_ke_server_dev">alice-staging.jumia.co.ke</string>
     <string name="jumia_ke_user_dev">rocket</string>
     <string name="jumia_ke_password_dev">rock4me</string>
-    <string name="jumia_ke_restbase_path_dev">mobapi</string>
+    <string name="jumia_ke_restbase_path_dev">mobapi/v1.1</string>
     <string name="jumia_ke_country_name_dev">Kenya Staging</string>
 
     <!-- Jumia Morocco	 Configuration -->
@@ -83,7 +83,7 @@
     <string name="jumia_ma_server_dev">alice-staging.jumia.ma</string>
     <string name="jumia_ma_user_dev">rocket</string>
     <string name="jumia_ma_password_dev">rock4me</string>
-    <string name="jumia_ma_restbase_path_dev">mobapi/v1</string>
+    <string name="jumia_ma_restbase_path_dev">mobapi/v1.1</string>
     <string name="jumia_ma_country_name_dev">Morocco Staging</string>
 
     <!-- Jumia Egypt Configuration -->
@@ -91,7 +91,7 @@
     <string name="jumia_eg_server_dev">alice-staging.jumia.com.eg</string>
     <string name="jumia_eg_user_dev">rocket</string>
     <string name="jumia_eg_password_dev">rock4me</string>
-    <string name="jumia_eg_restbase_path_dev">mobapi/v1</string>
+    <string name="jumia_eg_restbase_path_dev">mobapi/v1.1</string>
     <string name="jumia_eg_country_name_dev">Egypt Staging</string>
 
     <!-- Jumia Ivory Coast Configuration -->
@@ -99,7 +99,7 @@
     <string name="jumia_ci_server_dev">alice-staging.jumia.ci</string>
     <string name="jumia_ci_user_dev">rocket</string>
     <string name="jumia_ci_password_dev">rock4me</string>
-    <string name="jumia_ci_restbase_path_dev">mobapi/v1</string>
+    <string name="jumia_ci_restbase_path_dev">mobapi/v1.1</string>
     <string name="jumia_ci_country_name_dev">Ivory Coast Staging</string>
 
     <!-- Uganda Configuration -->
@@ -107,7 +107,7 @@
     <string name="jumia_ug_server_dev">alice-staging.jumia.ug</string>
     <string name="jumia_ug_user_dev">rocket</string>
     <string name="jumia_ug_password_dev">rock4me</string>
-    <string name="jumia_ug_restbase_path_dev">mobapi</string>
+    <string name="jumia_ug_restbase_path_dev">mobapi/v1.1</string>
     <string name="jumia_ug_country_name_dev">Uganda Staging</string>
 
     <!-- Dev versions -->
