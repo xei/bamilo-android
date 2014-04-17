@@ -38,9 +38,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -357,13 +357,7 @@ public class PopularityFragment extends BaseFragment {
         if (selectedProduct.getUrl() != null) {
             Log.d(TAG, "getMoreRevies: pageNumber = " + pageNumber);
             pageNumber++;
-            
-            /**
-             * TRIGGERS
-             * @author sergiopereira
-             */
-            triggerReviews(selectedProduct.getUrl(), pageNumber);            
-            //EventManager.getSingleton().triggerRequestEvent(new GetProductReviewsEvent(selectedProduct.getUrl(), pageNumber));
+            triggerReviews(selectedProduct.getUrl(), pageNumber);
         }
 
     }

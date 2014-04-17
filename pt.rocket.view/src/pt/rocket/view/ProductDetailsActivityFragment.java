@@ -65,9 +65,9 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -431,16 +431,13 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
 
         mDetailsContainer = (ViewGroup) mainView.findViewById(R.id.details_container);
 
-        mProductBasicInfoContainer = (ViewGroup) mainView.findViewById(
-                R.id.product_basicinfo_container);
+        mProductBasicInfoContainer = (ViewGroup) mainView.findViewById(R.id.product_basicinfo_container);
         mProductBasicInfoContainer.setOnClickListener(this);
 
         mProductRatingContainer = (ViewGroup) mainView.findViewById(R.id.product_rating_container);
         mProductRatingContainer.setOnClickListener(this);
         mProductRating = (RatingBar) mProductRatingContainer.findViewById(R.id.product_rating);
-        mProductRating.setEnabled(false);
-        mProductRatingCount = (TextView) mProductRatingContainer
-                .findViewById(R.id.product_rating_count);
+        mProductRatingCount = (TextView) mProductRatingContainer.findViewById(R.id.product_rating_count);
         loadingRating = (RelativeLayout) mProductRatingContainer.findViewById(R.id.loading_rating);
 
         mVarianceContainer = (ViewGroup) mainView.findViewById(R.id.product_variant_container);
