@@ -1521,7 +1521,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     public void setTitle(CharSequence title) {
         TextView titleView = (TextView) findViewById(R.id.title);
         TextView subtitleView = (TextView) findViewById(R.id.totalProducts);
-        RelativeLayout header_title = (RelativeLayout) findViewById(R.id.header_title);
+        View header_title = findViewById(R.id.header_title);
         subtitleView.setVisibility(View.GONE);
         if (header_title == null)
             return;
@@ -1542,21 +1542,15 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     public void setTitleAndSubTitle(CharSequence title, CharSequence subtitle) {
         TextView titleView = (TextView) findViewById(R.id.title);
         TextView subtitleView = (TextView) findViewById(R.id.totalProducts);
-        RelativeLayout header_title = (RelativeLayout) findViewById(R.id.header_title);
+        View header_title = findViewById(R.id.header_title);
 
         if (titleView == null)
             return;
         if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(subtitle)) {
             // Set text and force measure
-            subtitleView.setText((String) subtitle);
-            subtitleView.measure(0, 0);
-            // Get the subtitle width
-            int subWidth = subtitleView.getMeasuredWidth();
-            int midPadding = getResources().getDimensionPixelSize(R.dimen.margin_mid);
-            Log.i(TAG, "SUB WITH: " + subWidth + " PAD MID:" + midPadding);
+            subtitleView.setText(subtitle);
             // Set title
             titleView.setText(title);
-            titleView.setPadding(midPadding, midPadding, subWidth, 0);
             // Set visibility
             header_title.setVisibility(View.VISIBLE);
             subtitleView.setVisibility(View.VISIBLE);
@@ -2476,19 +2470,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         if (isTabletInLandscape(getApplicationContext())) {
             // Update with for main content
             findViewById(R.id.main_layout).getLayoutParams().width = LayoutParams.MATCH_PARENT;
-            // Set slide in portrait mode
-            // getSlidingMenu().postDelayed(new Runnable() {
-            // @Override
-            // public void run() {
-            // slideMenuInPortraitMode(getSlidingMenu());
-            // try {
-            // // Disable click on custom view
-            // getSupportActionBar().getCustomView().findViewById(R.id.ic_logo).setOnClickListener(null);
-            // } catch (NullPointerException e) {
-            // Log.w(TAG, "ACTION BAR CUSTOM VIEW IS NOT PRESENT");
-            // }
-            // }
-            // }, 0);
         }
     }
 

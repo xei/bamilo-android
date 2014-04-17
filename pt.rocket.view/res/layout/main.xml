@@ -9,36 +9,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
-        <RelativeLayout
+        <!-- HEADER TITLE AND TOTAL -->
+
+        <include
             android:id="@+id/header_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/titlebar"
-            android:gravity="center_vertical"
-            android:visibility="visible" >
-
-            <!-- The right padding is calculated by code -->
-
-            <org.holoeverywhere.widget.TextView
-                android:id="@+id/title"
-                style="@style/headline_title"
-                android:layout_width="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:ellipsize="end"
-                android:fontFamily="roboto_bold"
-                android:maxLines="1"
-                android:paddingRight="100dp"
-                android:singleLine="true" />
-
-            <org.holoeverywhere.widget.TextView
-                android:id="@+id/totalProducts"
-                style="@style/headline_totalItems"
-                android:layout_width="wrap_content"
-                android:layout_alignRight="@id/title"
-                android:fontFamily="roboto_regular"
-                android:gravity="left"
-                android:textColor="@color/orange_basic" />
-        </RelativeLayout>
+            layout="@layout/header_title" />
 
         <!-- NATIVE CHECKOUT HEADER -->
 
@@ -97,7 +72,8 @@
         <include
             layout="@layout/promotion_layout"
             android:visibility="gone" />
-		<!-- Fallback content -->
+        <!-- Fallback content -->
+
         <RelativeLayout
             android:id="@+id/fallback_content"
             android:layout_width="match_parent"
@@ -233,8 +209,7 @@
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/fallback_options_container"
                 android:layout_below="@id/fallback_choice_container"
-                android:layout_centerHorizontal="true"
-                />
+                android:layout_centerHorizontal="true" />
 
             <org.holoeverywhere.widget.Button
                 android:id="@+id/fallback_retry"

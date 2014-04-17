@@ -96,11 +96,10 @@
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textSize">12dp</item>
     </style>
-    
-    
+
     <!-- This style is used for the white text with 16sp -->
-    
-     <style name="white_text_16sp_normal">
+
+    <style name="white_text_16sp_normal">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginLeft">16dp</item>
@@ -490,39 +489,32 @@
         <!-- <item name="android:paddingRight">8dp</item> -->
         <item name="android:textStyle">bold</item>
     </style>
-    
+
     <style name="headline_title" parent="@style/white_text_12sp_normal">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginLeft">0dp</item>
         <item name="android:ellipsize">end</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:maxLines">1</item>
-        <item name="android:paddingLeft">8dp</item>
-        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingLeft">2dp</item>
+        <item name="android:paddingTop">0dp</item>
         <item name="android:textStyle">bold</item>
     </style>
-    
+
     <style name="headline_totalItems" parent="@style/white_text_12sp_normal">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginLeft">0dp</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:maxLines">1</item>
-		 <item name="android:paddingRight">8dp</item>
-		 <item name="android:paddingTop">8dp</item>
-        
+        <item name="android:paddingRight">8dp</item>
+        <item name="android:paddingTop">0dp</item>
     </style>
-    
-    
-    
-    
 
     <style name="Widget.TeaserIconPageIndicator" parent="Widget">
         <item name="android:paddingLeft">3dp</item>
         <item name="android:paddingRight">3dp</item>
     </style>
-    
+
     <style name="PromotionDialog" parent="@android:style/Theme.Black.NoTitleBar">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowBackground">@color/promotion_dialog_bkg</item>
