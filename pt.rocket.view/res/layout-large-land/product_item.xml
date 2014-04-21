@@ -10,8 +10,7 @@
 
         <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical" >
+            android:layout_height="match_parent" >
 
             <include
                 android:id="@+id/image_loadable"
@@ -20,6 +19,7 @@
                 android:layout_marginBottom="13.2dp"
                 android:layout_marginLeft="@dimen/margin_small"
                 android:layout_marginRight="13.2dp"
+                android:layout_centerVertical="true"
                 android:layout_marginTop="@dimen/margin_small"
                 layout="@layout/image_loadable" />
 
@@ -124,7 +124,7 @@
                 android:layout_width="45dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_below="@id/item_name"
+                android:layout_below="@id/item_regprice"
                 android:layout_marginRight="@dimen/margin_large"
                 android:layout_marginTop="@dimen/margin_small"
                 android:background="@drawable/discount_badge"
