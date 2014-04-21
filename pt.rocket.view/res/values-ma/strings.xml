@@ -330,4 +330,6 @@
 	<string name="category_label">Catégorie</string>
     <string name="top_brands_toplevel_title">Toutes les Marques</string>
     <string name="extra_costs">Frais Supplémentaires:</string>
+    <string name="extra_costs_label">Frais Supplémentaires</string>
+	<string name="free_label">Gratuit</string>
 </resources>

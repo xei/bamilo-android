@@ -45,6 +45,7 @@ import android.content.ContentValues;
 import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -81,7 +82,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
 
     private LinearLayout noItems;
 
-    private LinearLayout container;
+    private View container;
 
     private MinOrderAmount minAmount;
 
@@ -341,7 +342,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         }
         checkoutButton = (Button) getView().findViewById(R.id.checkout_button);
         noItems = (LinearLayout) getView().findViewById(R.id.no_items_container);
-        container = (LinearLayout) getView().findViewById(R.id.container1);
+        container = getView().findViewById(R.id.shopping_cart_container);
         prepareCouponView();
     }
 
@@ -472,23 +473,20 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         Log.d(TAG, "displayShoppingCart");
         TextView priceTotal = (TextView) getView().findViewById(R.id.price_total);
         TextView articlesCount = (TextView) getView().findViewById(R.id.articles_count);
-        TextView extraCosts = (TextView) getView().findViewById(R.id.extra_costs);
         TextView extraCostsValue = (TextView) getView().findViewById(R.id.extra_costs_value);
+        View extraCostsMain = getView().findViewById(R.id.extra_costs_container);
+        TextView voucherValue = (TextView) getView().findViewById(R.id.text_voucher);
+        View voucherContainer = getView().findViewById(R.id.voucher_info_container);
+        // Get and set the cart value
+        setTotal(cart);
+        // Set voucher
         if(cart.getCouponDiscount() != null && !cart.getCouponDiscount().equalsIgnoreCase("") && Double.parseDouble(cart.getCouponDiscount()) > 0){
-            
-            TextView voucherValue = (TextView) getView().findViewById(R.id.text_voucher);
-            TextView voucherTitle = (TextView) getView().findViewById(R.id.title_voucher);
             voucherValue.setText("- "+CurrencyFormatter.formatCurrency(Double.parseDouble(cart.getCouponDiscount())));
-            voucherValue.setVisibility(View.VISIBLE);
-            voucherTitle.setVisibility(View.VISIBLE);
+            voucherContainer.setVisibility(View.VISIBLE);
         } else {
-            TextView voucherValue = (TextView) getView().findViewById(R.id.text_voucher);
-            TextView voucherTitle = (TextView) getView().findViewById(R.id.title_voucher);
-            voucherValue.setVisibility(View.GONE);
-            voucherTitle.setVisibility(View.GONE);
+            voucherContainer.setVisibility(View.GONE);
         }
-        
-        
+
         items = new ArrayList<ShoppingCartItem>(cart.getCartItems().values());
         double cleanValue = 0;
         try {
@@ -502,27 +500,33 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         } else {
             priceTotal.setText(cart.getCartCleanValue());
         }
+        
         TextView shippingValue = (TextView) getView().findViewById(R.id.shipping_value);
+        View shippingMain = getView().findViewById(R.id.shipping_container);
         if(!cart.isSumCosts()){
-            extraCosts.setVisibility(View.VISIBLE);
-            extraCostsValue.setVisibility(View.VISIBLE);
+            extraCostsMain.setVisibility(View.VISIBLE);
             extraCostsValue.setText(CurrencyFormatter.formatCurrency(Double.parseDouble(cart.getExtraCosts())));
             if (cart.getShippingValue() != null
                     && !cart.getShippingValue().equalsIgnoreCase("null")
                     && !cart.getShippingValue().equalsIgnoreCase("")) {
-                
-                shippingValue
-                        .setText(getString(R.string.shipping) + ": " + CurrencyFormatter.formatCurrency(Double.parseDouble(cart.getShippingValue())));
-                shippingValue.setVisibility(View.VISIBLE);
+                // Validate the shipping value
+                if(!cart.getShippingValue().equals("0"))
+                    shippingValue.setText(CurrencyFormatter.formatCurrency(Double.parseDouble(cart.getShippingValue())));
+                else 
+                    shippingValue.setText(getString(R.string.free_label));
+                shippingMain.setVisibility(View.VISIBLE);
             }
         } else {
-            extraCosts.setVisibility(View.GONE);
-            extraCostsValue.setVisibility(View.GONE);
+            extraCostsMain.setVisibility(View.GONE);
             if (cart.getSumCostsValue() != null
                     && !cart.getSumCostsValue().equalsIgnoreCase("null")
                     && !cart.getSumCostsValue().equalsIgnoreCase("")) {
-                shippingValue.setText(getString(R.string.shipping) + ": " + CurrencyFormatter.formatCurrency(Double.parseDouble(cart.getSumCostsValue())));
-                shippingValue.setVisibility(View.VISIBLE);
+                // Validate the shipping value
+                if(!cart.getShippingValue().equals("0"))
+                    shippingValue.setText(CurrencyFormatter.formatCurrency(Double.parseDouble(cart.getSumCostsValue())));
+                else 
+                    shippingValue.setText(getString(R.string.free_label));
+                shippingMain.setVisibility(View.VISIBLE);
             }
         }
         
@@ -582,9 +586,9 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
             } else {
                 priceUnreduced.setVisibility(View.INVISIBLE);
             }
-            if (cart.getVatValue() != null && !cart.getVatValue().equalsIgnoreCase("null")
-                    && !cart.getShippingValue().equalsIgnoreCase("")) {
+            if (cart.getVatValue() != null && !cart.getVatValue().equalsIgnoreCase("null") && !cart.getShippingValue().equalsIgnoreCase("")) {
                 TextView vatValue = (TextView) getView().findViewById(R.id.vat_value);
+                View vatMain = getView().findViewById(R.id.vat_container);
                 double cleanVatValue = 0;
                 try {
                     cleanVatValue = Double.parseDouble(cart.getVatValue());
@@ -593,11 +597,11 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
                     cleanVatValue = -1;
                 }
                 if(cleanVatValue > 0){
-                    vatValue.setText(getString(R.string.vat_string) + ": " + CurrencyFormatter.formatCurrency(cleanVatValue));
+                    vatValue.setText(CurrencyFormatter.formatCurrency(cleanVatValue));
                 } else {
-                    vatValue.setText(getString(R.string.vat_string) + ": " + cart.getVatValue());
+                    vatValue.setText(cart.getVatValue());
                 }
-                vatValue.setVisibility(View.VISIBLE);
+                vatMain.setVisibility(View.VISIBLE);
             }
            
 
@@ -605,6 +609,24 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
             AnalyticsGoogle.get().trackPage(R.string.gcartwithitems);
 
         }
+    }
+    
+    /**
+     * Set the total value
+     * @param cart
+     * @author sergiopereira
+     */
+    private void setTotal(ShoppingCart cart) {
+        Log.d(TAG, "SET THE TOTAL VALUE");
+        // Get views
+        TextView totalValue = (TextView) getView().findViewById(R.id.total_value);
+        View totalMain = getView().findViewById(R.id.total_container);
+        // Set value
+        if(!TextUtils.isEmpty(cart.getCartValue())) {
+            totalValue.setText(CurrencyFormatter.formatCurrency(Double.parseDouble(cart.getCartValue())));
+            totalMain.setVisibility(View.VISIBLE);
+        } else 
+            Log.w(TAG, "CART VALUES IS EMPTY");
     }
 
     /**

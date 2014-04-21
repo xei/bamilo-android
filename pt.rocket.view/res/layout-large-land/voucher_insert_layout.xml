@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/voucher_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <org.holoeverywhere.widget.TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_mid"
+        android:layout_marginTop="@dimen/margin_large"
+        android:fontFamily="roboto_regular"
+        android:gravity="left"
+        android:text="@string/my_order_coupon_label"
+        android:textColor="@color/orange_basic"
+        android:textSize="@dimen/text_l" />
+
+    <View
+        android:id="@+id/voucher_divider"
+        style="@style/activity_sectionheader_divider"
+        android:layout_width="wrap_content"
+        android:layout_below="@id/title"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp" />
+
+    <RelativeLayout
+        android:id="@+id/voucher_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/voucher_divider"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="@dimen/margin_mid"
+        android:layout_marginRight="@dimen/margin_mid"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal" >
+
+        <org.holoeverywhere.widget.Button
+            android:id="@+id/voucher_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:ellipsize="marquee"
+            android:paddingLeft="16.6dp"
+            android:singleLine="true"
+            android:text="@string/voucher_use"
+            android:textColor="@color/grey_dark"
+            android:textSize="@dimen/text_xs" />
+
+        <org.holoeverywhere.widget.EditText
+            android:id="@+id/voucher_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/voucher_btn"
+            android:layout_toLeftOf="@id/voucher_btn"
+            android:background="@drawable/selector_edittext_bottomline"
+            android:cursorVisible="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:hint="@string/voucher_message_hint"
+            android:textColor="@color/form_text"
+            android:textColorHint="@color/form_text_hint"
+            android:textCursorDrawable="@null"
+            android:textSize="@dimen/text_s" />
+    </RelativeLayout>
+
+    <org.holoeverywhere.widget.TextView
+        android:id="@+id/voucher_error_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/voucher_container"
+        android:layout_marginBottom="@dimen/margin_large"
+        android:layout_marginLeft="@dimen/margin_mid"
+        android:layout_marginTop="@dimen/margin_x_small"
+        android:fontFamily="roboto_regular"
+        android:gravity="left"
+        android:text="@string/voucher_error_message"
+        android:textColor="@color/red_middle"
+        android:textSize="@dimen/text_xs"
+        android:visibility="gone" />
+
+</RelativeLayout>
