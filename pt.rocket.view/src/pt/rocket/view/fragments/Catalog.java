@@ -43,7 +43,7 @@ import android.widget.TextView;
 import de.akquinet.android.androlog.Log;
 
 public class Catalog extends BaseFragment implements OnClickListener {
-    
+
     private static final String TAG = LogTagHelper.create(Catalog.class);
 
     private static Catalog mCatalogFragment;
@@ -59,9 +59,7 @@ public class Catalog extends BaseFragment implements OnClickListener {
     private final int TAB_UNDERLINE_HEIGHT = 1;
     private final int TAB_STRIP_COLOR = android.R.color.transparent;
 
-    
     private static final int PAGE_MIDDLE = 1;
-    
 
     private LayoutInflater mInflater;
     private int mSelectedPageIndex = 1;
@@ -76,32 +74,33 @@ public class Catalog extends BaseFragment implements OnClickListener {
     public static String title;
     public static int navigationSource;
     private int currentPosition = 1;
-    
+
     private View mFilterButton;
-    
+
     private ArrayList<CatalogFilter> mCatalogFilter;
-    
+
     private ArrayList<CatalogFilter> mOldCatalogFilterState;
-    
+
     private ContentValues mCatalogFilterValues;
-    
+
     private boolean wasReceivedErrorEvent = false;
 
     private String[] mSavedOldCatalogData;
 
     private ContentValues mOldCatalogFilterValues;
-    
+
     public static boolean isNotShowing = true;
 
     public Catalog() {
-        super(EnumSet.noneOf(EventType.class), 
-                EnumSet.noneOf(EventType.class), 
-                EnumSet.of(MyMenuItem.SEARCH, MyMenuItem.SEARCH_BAR), 
-                NavigationAction.Products, 
+        super(EnumSet.noneOf(EventType.class),
+                EnumSet.noneOf(EventType.class),
+                EnumSet.of(MyMenuItem.SEARCH, MyMenuItem.SEARCH_BAR),
+                NavigationAction.Products,
                 R.string.products, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
 
     public static Catalog getInstance() {
+        Log.i(TAG, "getInstance");
         // if (mProductsViewFragment == null) {
         mCatalogFragment = new Catalog();
         // }
@@ -111,16 +110,22 @@ public class Catalog extends BaseFragment implements OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mSortOptions = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.products_picker)));
+        mSortOptions = new ArrayList<String>(Arrays.asList(getResources().getStringArray(
+                R.array.products_picker)));
         mCatalogPageModel = new CatalogPageModel[mSortOptions.size()];
+        Log.i(TAG, "onCreate");
+        setRetainInstance(true);
     }
 
     /*
      * (non-Javadoc)
-     * @see pt.rocket.view.fragments.BaseFragment#onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle)
+     * 
+     * @see pt.rocket.view.fragments.BaseFragment#onCreateView(android.view.LayoutInflater,
+     * android.view.ViewGroup, android.os.Bundle)
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.i(TAG, "onCreateView");
         mInflater = inflater;
         View view = inflater.inflate(R.layout.products_frame, container, false);
         mViewPager = (JumiaCatalogViewPager) view.findViewById(R.id.viewpager_products_list);
@@ -134,31 +139,28 @@ public class Catalog extends BaseFragment implements OnClickListener {
         return view;
     }
 
-    
-    
     @Override
     public void onResume() {
         super.onResume();
         Log.d(TAG, "FILTER ON RESUME");
-        
+
         // http://www.jumia.co.ke:80/mobapi/womens-casual-shoes/
-        
+
         title = getArguments().getString(ConstantsIntentExtra.CONTENT_TITLE);
-        
+
         ((BaseActivity) getActivity()).setTitle(title);
-        
+
         productsURL = getArguments().getString(ConstantsIntentExtra.CONTENT_URL);
-        
+
         searchQuery = getArguments().getString(ConstantsIntentExtra.SEARCH_QUERY);
-        
+
         navigationSource = getArguments().getInt(ConstantsIntentExtra.NAVIGATION_SOURCE, -1);
-        
+
         navigationPath = getArguments().getString(ConstantsIntentExtra.NAVIGATION_PATH);
-        
+
         // Save the current catalog data, used as a fall back
         saveCurrentCatalogDataForFilters();
-        
-//        Log.i(TAG, "code1 title is : " + title);
+
         Log.i(TAG, "ON RESUME");
         AnalyticsGoogle.get().trackPage(R.string.gproductlist);
 
@@ -177,21 +179,25 @@ public class Catalog extends BaseFragment implements OnClickListener {
             public void onPageScrollStateChanged(int state) {
                 if (state == ViewPager.SCROLL_STATE_IDLE) {
 
-                    if(mSelectedPageIndex < 1 ){
-                        Log.i(TAG, "getCurrentCatalogPageModel lower :  mSelectedPageIndex is : "+mSelectedPageIndex+" mLastSelectedPageIndex id : "+mLastSelectedPageIndex);
-                     // moving each page content one page to the right
+                    if (mSelectedPageIndex < 1) {
+                        Log.i(TAG, "getCurrentCatalogPageModel lower :  mSelectedPageIndex is : "
+                                + mSelectedPageIndex + " mLastSelectedPageIndex id : "
+                                + mLastSelectedPageIndex);
+                        // moving each page content one page to the right
                         updateCatalogPageModelIdexes(1);
-                        
-                    } else if(mSelectedPageIndex > 1){
-                        Log.i(TAG, "getCurrentCatalogPageModel higher :  mSelectedPageIndex is : "+mSelectedPageIndex+" mLastSelectedPageIndex id : "+mLastSelectedPageIndex);
+
+                    } else if (mSelectedPageIndex > 1) {
+                        Log.i(TAG, "getCurrentCatalogPageModel higher :  mSelectedPageIndex is : "
+                                + mSelectedPageIndex + " mLastSelectedPageIndex id : "
+                                + mLastSelectedPageIndex);
                         updateCatalogPageModelIdexes(-1);
                     }
-                    
-                } else if(state == ViewPager.SCROLL_STATE_DRAGGING){
-                   
+
+                } else if (state == ViewPager.SCROLL_STATE_DRAGGING) {
+
                 }
             }
-            
+
         });
 
         if (mCatalogPagerAdapter == null) {
@@ -199,13 +205,12 @@ public class Catalog extends BaseFragment implements OnClickListener {
             mCatalogPagerAdapter = new CatalogPagerAdaper();
 
         } else {
-           mCatalogPagerAdapter.notifyDataSetChanged();
-           mCatalogPageModel[0].setTotalItemLable();
-           mCatalogPageModel[0].notifyContentDataSetChanged();
-           mCatalogPagerAdapter.notifyDataSetChanged();
+            Log.d(TAG, "FILTER: ADAPTER IS NOT NULL");
+            mCatalogPageModel[0].setTotalItemLable();
+            mCatalogPageModel[0].notifyContentDataSetChanged();
         }
-        
-        mViewPager.setAdapter(mCatalogPagerAdapter);    
+
+        mViewPager.setAdapter(mCatalogPagerAdapter);
         mViewPager.setCurrentItem(1);
         try {
             setLayoutSpec();
@@ -216,35 +221,61 @@ public class Catalog extends BaseFragment implements OnClickListener {
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
-        
+
         // Set catalog filters
-        if(mCatalogFilter != null)
+        if (mCatalogFilter != null) {
+            Log.i(TAG, "setFilterAction");
             setFilterAction();
-        
+        }
+
         AnalyticsGoogle.get().trackPage(R.string.gproductlist);
         getBaseActivity().setProcessShow(true);
         getBaseActivity().showContentContainer();
-        
+
+    }
+    
+    @Override
+    public void onPause() {     
+        super.onPause();
+        Log.i(TAG, "onPause");
+    }
+    
+    @Override
+    public void onDestroy() {     
+        super.onDestroy();
+        Log.i(TAG, "onDestroy");
     }
 
     /*
-     * ######## CATALOG FILTER ########
-     * TODO : Add here more filter methods 
+     * ######## CATALOG FILTER ######## TODO : Add here more filter methods
      */
     /**
      * Method used to set the filter button.
+     * 
      * @param filters
      * @author sergiopereira
      */
-    public void onSuccesLoadingFilteredCatalog(ArrayList<CatalogFilter> filters){
+    public void onSuccesLoadingFilteredCatalog(ArrayList<CatalogFilter> filters) {
         // Validate the view
-        if(mFilterButton == null) { Log.w(TAG, "FILTER VIEW IS NULL"); return; }
+        if (mFilterButton == null) {
+            Log.w(TAG, "FILTER VIEW IS NULL");
+            return;
+        }
         // Validate the current filter object
-        if(mCatalogFilter != null) { Log.w(TAG, "DISCARTED: CURRENT FILTER IS NOT NULL"); return; }
+        if (mCatalogFilter != null) {
+            Log.w(TAG, "DISCARTED: CURRENT FILTER IS NOT NULL");
+            return;
+        }
         // Validate the received data
-        if(filters == null) { Log.w(TAG, "HIDE FILTERS: DATA IS NULL"); return; }
+        if (filters == null) {
+            Log.w(TAG, "HIDE FILTERS: DATA IS NULL");
+            return;
+        }
         // Validate the received data
-        if(filters.size() == 0) { Log.w(TAG, "HIDE FILTERS: DATA IS EMPTY"); return; }
+        if (filters.size() == 0) {
+            Log.w(TAG, "HIDE FILTERS: DATA IS EMPTY");
+            return;
+        }
         // Save filters
         mCatalogFilter = filters;
         // Restore the old state
@@ -257,31 +288,32 @@ public class Catalog extends BaseFragment implements OnClickListener {
     }
 
     /**
-     * Method used to process the error event
-     * Show the old filter
+     * Method used to process the error event Show the old filter
+     * 
      * @author sergiopereira
      */
-    public synchronized void onErrorLoadingFilteredCatalog(){
+    public synchronized void onErrorLoadingFilteredCatalog() {
         // Process only one error event
-        if(wasReceivedErrorEvent) {
+        if (wasReceivedErrorEvent) {
             Log.w(TAG, "DISCARTED OTHER ERROR EVENT");
             return;
         }
         // Set the flag
         wasReceivedErrorEvent = true;
         // Restore the filter values for request
-        if(mOldCatalogFilterValues != null)
+        if (mOldCatalogFilterValues != null)
             mCatalogFilterValues = mOldCatalogFilterValues;
         // Show the old filter
-        if(mOldCatalogFilterState != null)
+        if (mOldCatalogFilterState != null)
             mCatalogFilter = mOldCatalogFilterState;
         // Set listener
         mFilterButton.setOnClickListener(this);
         Log.d(TAG, "RECEIVED ERROR ON LOAD CATALOG WITH FILTERS");
     }
-    
+
     /**
      * Process the filter values
+     * 
      * @param filterValues
      * @author sergiopereira
      */
@@ -292,7 +324,7 @@ public class Catalog extends BaseFragment implements OnClickListener {
         // Save the current filter values
         mCatalogFilterValues = filterValues;
         // Contains the new product URL (Category filter)
-        if(filterValues.containsKey(GetProductsHelper.PRODUCT_URL)) {
+        if (filterValues.containsKey(GetProductsHelper.PRODUCT_URL)) {
             // Get product URL and remove it
             productsURL = filterValues.getAsString(GetProductsHelper.PRODUCT_URL);
             mCatalogFilterValues.put(GetProductsHelper.PRODUCT_URL, "");
@@ -303,8 +335,8 @@ public class Catalog extends BaseFragment implements OnClickListener {
             searchQuery = null;
             title = null;
             mFilterButton.setOnClickListener(null);
-        // Send the last saved catalog data that works
-        } else if(mSavedOldCatalogData != null){
+            // Send the last saved catalog data that works
+        } else if (mSavedOldCatalogData != null) {
             productsURL = mSavedOldCatalogData[0];
             searchQuery = mSavedOldCatalogData[1];
             navigationPath = mSavedOldCatalogData[2];
@@ -316,73 +348,82 @@ public class Catalog extends BaseFragment implements OnClickListener {
         wasReceivedErrorEvent = false;
         // Send new request with new filters
         // Update the current view pages
-        getCurrentCatalogPageModel(mSelectedPageIndex).setVariables(productsURL, searchQuery, navigationPath, title, navigationSource, mCatalogFilterValues);
-        getCurrentCatalogPageModel(mSelectedPageIndex-1).setVariables(productsURL, searchQuery, navigationPath, title, navigationSource, mCatalogFilterValues);
-        getCurrentCatalogPageModel(mSelectedPageIndex+1).setVariables(productsURL, searchQuery, navigationPath, title, navigationSource, mCatalogFilterValues);
+        getCurrentCatalogPageModel(mSelectedPageIndex).setVariables(productsURL, searchQuery,
+                navigationPath, title, navigationSource, mCatalogFilterValues);
+        getCurrentCatalogPageModel(mSelectedPageIndex - 1).setVariables(productsURL, searchQuery,
+                navigationPath, title, navigationSource, mCatalogFilterValues);
+        getCurrentCatalogPageModel(mSelectedPageIndex + 1).setVariables(productsURL, searchQuery,
+                navigationPath, title, navigationSource, mCatalogFilterValues);
     }
-    
+
     /**
      * Save the current data to create a fall back point in case some request filtered return error
+     * 
      * @author sergiopereira
      */
-    private void saveCurrentCatalogDataForFilters(){
+    private void saveCurrentCatalogDataForFilters() {
         mSavedOldCatalogData = new String[4];
         mSavedOldCatalogData[0] = productsURL;
         mSavedOldCatalogData[1] = searchQuery;
         mSavedOldCatalogData[2] = navigationPath;
         mSavedOldCatalogData[3] = title;
     }
-    
+
     /**
-     * Method used to restore the old filter state when is performed a query filtered by a new category.
-     * Match the old selection with the new filter option.
+     * Method used to restore the old filter state when is performed a query filtered by a new
+     * category. Match the old selection with the new filter option.
+     * 
      * @author sergiopereira
      */
-    private void matchFilterStateWithOldState(){
+    private void matchFilterStateWithOldState() {
         Log.i(TAG, "RESTORE THE OLD SELECTED STATE");
         // Validate the old filter state
-        if(mOldCatalogFilterState != null)
+        if (mOldCatalogFilterState != null)
             // Restore the filter if match with the old
-            for ( CatalogFilter newFilter : mCatalogFilter) {
+            for (CatalogFilter newFilter : mCatalogFilter) {
                 Log.i(TAG, "RESTORE FILTER: " + newFilter.getName());
                 // Locate the old filter
                 CatalogFilter oldFilter = locateFilter(mOldCatalogFilterState, newFilter.getId());
                 Log.i(TAG, "OLD FILTER: " + oldFilter.getName());
                 // Validate old filter
-                if(oldFilter != null)  {
+                if (oldFilter != null) {
                     // Case generic filter
-                    if(oldFilter.hasOptionSelected())
+                    if (oldFilter.hasOptionSelected())
                         // Locate selected options and save
-                        newFilter.setSelectedOption(locateOption(newFilter.getFilterOptions(), oldFilter.getSelectedOption()));
+                        newFilter.setSelectedOption(locateOption(newFilter.getFilterOptions(),
+                                oldFilter.getSelectedOption()));
                     // Case price filter
                     else if (oldFilter.hasRangeValues()) {
                         // Save the range
-                        newFilter.setRangeValues(oldFilter.getMinRangeValue(), oldFilter.getMaxRangeValue());
+                        newFilter.setRangeValues(oldFilter.getMinRangeValue(),
+                                oldFilter.getMaxRangeValue());
                     }
                 }
             }
         else
             Log.i(TAG, "OLD SELECTED STATE IS NULL");
     }
-    
+
     /**
      * Locate the current options in the old selected options and save the old value.
+     * 
      * @param newOptions
      * @param oldOptions
      * @return The match of the selected options
      * @author sergiopereira
      */
-    private SparseArray<CatalogFilterOption> locateOption(ArrayList<CatalogFilterOption> newOptions, SparseArray<CatalogFilterOption> oldOptions){
+    private SparseArray<CatalogFilterOption> locateOption(
+            ArrayList<CatalogFilterOption> newOptions, SparseArray<CatalogFilterOption> oldOptions) {
         // Array to save the selected options
         SparseArray<CatalogFilterOption> selectedOptions = new SparseArray<CatalogFilterOption>();
         // Loop filter options
         for (int i = 0; i < newOptions.size(); i++) {
-            CatalogFilterOption curOption = newOptions.get(i); 
+            CatalogFilterOption curOption = newOptions.get(i);
             // Loop old selected options
             for (int j = 0; j < oldOptions.size(); j++) {
                 CatalogFilterOption selectedOption = oldOptions.valueAt(j);
                 // If has the same value
-                if(curOption.getLabel().equals(selectedOption.getLabel())) {
+                if (curOption.getLabel().equals(selectedOption.getLabel())) {
                     // Set option as selected and save it
                     curOption.setSelected(true);
                     selectedOptions.put(i, curOption);
@@ -392,38 +433,45 @@ public class Catalog extends BaseFragment implements OnClickListener {
         }
         return selectedOptions;
     }
-    
+
     /**
      * Locate the current filter.
+     * 
      * @param array
      * @param id
      * @return The old filter with saved state
      * @author sergiopereira
      */
-    private CatalogFilter locateFilter(ArrayList<CatalogFilter> array, String id){
-        for ( CatalogFilter item : array)
-            if(item.getId().equals(id))
+    private CatalogFilter locateFilter(ArrayList<CatalogFilter> array, String id) {
+        for (CatalogFilter item : array)
+            if (item.getId().equals(id))
                 return item;
         return null;
     }
-    
+
     /**
      * Set the behavior for filter button
+     * 
      * @author sergiopereira
      */
-    private void setFilterAction(){
+    private void setFilterAction() {
         // Set listener
         mFilterButton.setVisibility(View.VISIBLE);
         mFilterButton.setOnClickListener(null);
         mFilterButton.setOnClickListener(this);
-        pagerTabStrip.setPadding(0, 0, getBaseActivity().getResources().getDimensionPixelSize(R.dimen.catalog_button_filter_width), 0);
+        pagerTabStrip.setPadding(
+                0,
+                0,
+                getBaseActivity().getResources().getDimensionPixelSize(
+                        R.dimen.catalog_button_filter_width), 0);
     }
-    
+
     /**
      * Set the filter button state, to show as selected or not
+     * 
      * @author sergiopereira
      */
-    private void setFilterButtonState(){
+    private void setFilterButtonState() {
         try {
             mFilterButton.setSelected((mCatalogFilterValues.size() == 0) ? false : true);
             Log.d(TAG, "SET FILTER BUTTON STATE: " + mFilterButton.isSelected());
@@ -431,9 +479,10 @@ public class Catalog extends BaseFragment implements OnClickListener {
             Log.w(TAG, "BUTTON OR VALUE IS NULL", e);
         }
     }
-    
+
     /*
      * (non-Javadoc)
+     * 
      * @see android.view.View.OnClickListener#onClick(android.view.View)
      */
     @Override
@@ -441,7 +490,7 @@ public class Catalog extends BaseFragment implements OnClickListener {
         // Get the view id
         int id = v.getId();
         // Validate the click
-        if(id == R.id.products_list_filter_button && isNotShowing) {
+        if (id == R.id.products_list_filter_button && isNotShowing) {
             Log.d(TAG, "ON CLICK: FILTER BUTTON");
             isNotShowing = false;
             Bundle bundle = new Bundle();
@@ -450,11 +499,11 @@ public class Catalog extends BaseFragment implements OnClickListener {
             newFragment.show(getBaseActivity().getSupportFragmentManager(), "dialog");
         }
     }
-    
+
     /*
-     * ######### LAYOUT ######### 
+     * ######### LAYOUT #########
      */
-    
+
     /**
      * Set some layout parameters that aren't possible by xml
      * 
@@ -462,7 +511,8 @@ public class Catalog extends BaseFragment implements OnClickListener {
      * @throws IllegalArgumentException
      * @throws IllegalAccessException
      */
-    private void setLayoutSpec() throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+    private void setLayoutSpec() throws NoSuchFieldException, IllegalArgumentException,
+            IllegalAccessException {
         // Get text
         final TextView currTextView = (TextView) pagerTabStrip.getChildAt(TAB_CURR_ID);
         final TextView nextTextView = (TextView) pagerTabStrip.getChildAt(TAB_NEXT_ID);
@@ -505,43 +555,44 @@ public class Catalog extends BaseFragment implements OnClickListener {
         for (int i = 0; i < mCatalogPageModel.length; i++) {
             mCatalogPageModel[i] = new CatalogPageModel(i, getBaseActivity(), this);
             mCatalogPageModel[i].setTitle(mSortOptions.get(i));
-            
+
         }
     }
-    
-    private CatalogPageModel getCurrentCatalogPageModel(int position){
-        for(int i = 0; i<mCatalogPageModel.length; i++){
-            if(mCatalogPageModel[i].getIndex() == position){
+
+    private CatalogPageModel getCurrentCatalogPageModel(int position) {
+        for (int i = 0; i < mCatalogPageModel.length; i++) {
+            if (mCatalogPageModel[i].getIndex() == position) {
                 return mCatalogPageModel[i];
             }
-           
+
         }
-        
+
         return mCatalogPageModel[position];
     }
-    
-    private void updateCatalogPageModelIdexes(int val){
+
+    private void updateCatalogPageModelIdexes(int val) {
         for (int i = 0; i < mCatalogPageModel.length; i++) {
             int index = mCatalogPageModel[i].getIndex();
-            if(index+val < 0){
+            if (index + val < 0) {
                 mCatalogPageModel[i].setIndex(6);
-            } else if(index+val == 7){
-                mCatalogPageModel[i].setIndex(0);    
-            } else{
+            } else if (index + val == 7) {
+                mCatalogPageModel[i].setIndex(0);
+            } else {
                 mCatalogPageModel[i].setIndex(index + val);
             }
 
-            Log.i(TAG, "updateCatalogPageModelIdexes "+mCatalogPageModel[i].getTitle()+" "+mCatalogPageModel[i].getIndex());
+            Log.i(TAG, "updateCatalogPageModelIdexes " + mCatalogPageModel[i].getTitle() + " "
+                    + mCatalogPageModel[i].getIndex());
         }
-//        setContent(PAGE_LEFT);
-//        setContent(PAGE_MIDDLE);
-//        setContent(PAGE_RIGHT);
+        // setContent(PAGE_LEFT);
+        // setContent(PAGE_MIDDLE);
+        // setContent(PAGE_RIGHT);
         mCatalogPagerAdapter.notifyDataSetChanged();
         mViewPager.setCurrentItem(PAGE_MIDDLE, false);
     }
 
     private class CatalogPagerAdaper extends PagerAdapter {
-        
+
         @Override
         public int getItemPosition(Object object) {
             return POSITION_NONE;
@@ -558,61 +609,77 @@ public class Catalog extends BaseFragment implements OnClickListener {
             return 3;
         }
 
-
         @Override
         public CharSequence getPageTitle(int position) {
             return getCurrentCatalogPageModel(position).getTitle().toUpperCase();
         }
-     
-        
-        private CatalogPageModel getCurrentCatalogPageModel(int position){
-            for(int i = 0; i<mCatalogPageModel.length; i++){
-                if(mCatalogPageModel[i].getIndex() == position){
+
+        private CatalogPageModel getCurrentCatalogPageModel(int position) {
+            for (int i = 0; i < mCatalogPageModel.length; i++) {
+                if (mCatalogPageModel[i].getIndex() == position) {
                     return mCatalogPageModel[i];
                 }
             }
-            
+
             return mCatalogPageModel[position];
         }
-        
+
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             final CatalogPageModel currentPage = getCurrentCatalogPageModel(position);
             new Thread(new Runnable() {
-                
+
                 @Override
                 public void run() {
-                    if(currentPage.getRelativeLayout() == null || ((BaseActivity) getActivity()).isTabletInLandscape(getBaseActivity()) != currentPage.isLandScape() ){
-                        RelativeLayout mRelativeLayout = (RelativeLayout) mInflater.inflate(R.layout.products,
-                            null);
+                    Log.i(TAG, "instantiateItem");
+                    if (currentPage.getRelativeLayout() == null
+                            || ((BaseActivity) getActivity())
+                                    .isTabletInLandscape(getBaseActivity()) != currentPage
+                                    .isLandScape()) {
+                        RelativeLayout mRelativeLayout = (RelativeLayout) mInflater.inflate(
+                                R.layout.products,
+                                null);
                         currentPage.setRelativeLayout(mRelativeLayout);
-                        currentPage.setTextViewSpnf((org.holoeverywhere.widget.TextView) currentPage.getRelativeLayout().findViewById(R.id.search_products_not_found));
-                        currentPage.setButtonRavb((Button) currentPage.getRelativeLayout().findViewById(R.id.retry_alert_view_button));
-                        currentPage.setRelativeLayoutPc((RelativeLayout) currentPage.getRelativeLayout().findViewById(R.id.products_content));
-                        currentPage.setLinearLayoutLm((LinearLayout) currentPage.getRelativeLayout().findViewById(R.id.loadmore));
-                        if(getBaseActivity().isTabletInLandscape(getBaseActivity())){
+                        currentPage
+                                .setTextViewSpnf((org.holoeverywhere.widget.TextView) currentPage
+                                        .getRelativeLayout().findViewById(
+                                                R.id.search_products_not_found));
+                        currentPage.setButtonRavb((Button) currentPage.getRelativeLayout()
+                                .findViewById(R.id.retry_alert_view_button));
+                        currentPage.setRelativeLayoutPc((RelativeLayout) currentPage
+                                .getRelativeLayout().findViewById(R.id.products_content));
+                        currentPage.setLinearLayoutLm((LinearLayout) currentPage
+                                .getRelativeLayout().findViewById(R.id.loadmore));
+                        if (getBaseActivity().isTabletInLandscape(getBaseActivity())) {
                             try {
-                                currentPage.setGridView((GridView) currentPage.getRelativeLayout().findViewById(R.id.middle_productslist_list));    
+                                currentPage.setGridView((GridView) currentPage.getRelativeLayout()
+                                        .findViewById(R.id.middle_productslist_list));
                             } catch (ClassCastException e) {
-                                currentPage.setListView((ListView) currentPage.getRelativeLayout().findViewById(R.id.middle_productslist_list));    
+                                currentPage.setListView((ListView) currentPage.getRelativeLayout()
+                                        .findViewById(R.id.middle_productslist_list));
                             }
-                                
+
                         } else {
                             try {
-                                currentPage.setListView((ListView) currentPage.getRelativeLayout().findViewById(R.id.middle_productslist_list));    
+                                currentPage.setListView((ListView) currentPage.getRelativeLayout()
+                                        .findViewById(R.id.middle_productslist_list));
                             } catch (ClassCastException e) {
-                                currentPage.setGridView((GridView) currentPage.getRelativeLayout().findViewById(R.id.middle_productslist_list));
+                                currentPage.setGridView((GridView) currentPage.getRelativeLayout()
+                                        .findViewById(R.id.middle_productslist_list));
                             }
                         }
-                        
-                        currentPage.setLinearLayoutLb((LinearLayout) currentPage.getRelativeLayout().findViewById(R.id.loading_view_pager));
-                        currentPage.setRelativeLayoutPt((RelativeLayout) currentPage.getRelativeLayout().findViewById(R.id.products_tip));
-                        currentPage.setVariables(productsURL, searchQuery, navigationPath, title, navigationSource, mCatalogFilterValues);
+
+                        currentPage.setLinearLayoutLb((LinearLayout) currentPage
+                                .getRelativeLayout().findViewById(R.id.loading_view_pager));
+                        currentPage.setRelativeLayoutPt((RelativeLayout) currentPage
+                                .getRelativeLayout().findViewById(R.id.products_tip));
+                        currentPage.setVariables(productsURL, searchQuery, navigationPath, title,
+                                navigationSource, mCatalogFilterValues);
                     }
-                    
+
                 }
             }).run();
-            
+
             container.addView(currentPage.getRelativeLayout());
             return currentPage.getRelativeLayout();
         }

@@ -148,7 +148,7 @@ public class RocketImageLoader {
         
 
         if (!imageUrl.equals("") && null != imageView) {
-            Log.i("TAG"," LOADING IMAGE");
+//            Log.i("TAG"," LOADING IMAGE");
             ImageContainer imgContainer = (ImageContainer) imageView.getTag();
             if (null != imgContainer && !imgContainer.getRequestUrl().equals(imageUrl)) {
                 imgContainer.cancelRequest();
@@ -162,7 +162,7 @@ public class RocketImageLoader {
             }
 
             // clear any previous image
-            imageView.setImageBitmap(null);
+            imageView.setImageResource(placeHolderImageId);
 
             imgContainer = volleyImageLoader.get(imageUrl, new ImageListener() {
 
@@ -175,7 +175,7 @@ public class RocketImageLoader {
                         listener.onLoadedError();
                     }
                     
-                    Log.i("TAG"," ERROR GETTING IMAGEVIEW");
+//                    Log.i("TAG"," ERROR GETTING IMAGEVIEW");
                 }
 
                 @Override
@@ -194,7 +194,7 @@ public class RocketImageLoader {
                             listener.onLoadedSuccess(response.getBitmap());
                         }
                         
-                        Log.i("TAG"," SETTING IMAGEVIEW "+imageView+" "+imageView.getVisibility());
+//                        Log.i("TAG"," SETTING IMAGEVIEW "+imageView+" "+imageView.getVisibility());
                         
                         imageView.setVisibility(View.VISIBLE);
                     }
@@ -203,7 +203,7 @@ public class RocketImageLoader {
             imageView.setTag(imgContainer);
 
         }else{
-            Log.i("TAG"," NOT LOADING");
+//            Log.i("TAG"," NOT LOADING");
         }
     }
 

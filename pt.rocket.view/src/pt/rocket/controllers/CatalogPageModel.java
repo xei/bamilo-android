@@ -193,7 +193,7 @@ public class CatalogPageModel {
 
     public void notifyContentDataSetChanged(){
         if(productsAdapter != null){
-            productsAdapter.notifyDataSetChanged();    
+            this.productsAdapter.notifyDataSetChanged();    
         }
     }
     
@@ -348,6 +348,7 @@ public class CatalogPageModel {
     }
 
     public void setListView(ListView listView) {
+        Log.i(TAG, "setListView ");
         this.listView = listView;
         this.setLandScape(false);
         this.listView.setOnItemClickListener(new OnItemClickListener() {

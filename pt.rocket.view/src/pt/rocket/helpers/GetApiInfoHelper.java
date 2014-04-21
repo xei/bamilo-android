@@ -77,7 +77,6 @@ public class GetApiInfoHelper extends BaseHelper {
         try {
             info.initialize(jsonObject);
         } catch (JSONException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         

@@ -9,13 +9,11 @@ import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.framework.objects.Product;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.RocketImageLoader;
-import pt.rocket.utils.RocketImageLoader.RocketImageLoaderListener;
 import pt.rocket.view.ChangeCountryFragmentActivity;
 import pt.rocket.view.R;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.DataSetObserver;
-import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
@@ -231,7 +229,7 @@ public class ProductsListAdapter extends BaseAdapter {
             imageURL = product.getImages().get(0).getUrl();
         }
 //        prodItem.progress.setVisibility(View.VISIBLE);
-        RocketImageLoader.instance.loadImage(imageURL, prodItem.image,  prodItem.progress, 0);
+        RocketImageLoader.instance.loadImage(imageURL, prodItem.image,  prodItem.progress, R.drawable.no_image_small);
 //        (imageURL, prodItem.image, new RocketImageLoaderListener() {
 //            
 //            @Override

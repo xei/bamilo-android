@@ -429,7 +429,6 @@ public class DynamicFormItem {
      *            the Bundle that contains the stored information of the control
      */
     public void loadState(ContentValues inStat) {
-        Log.i(TAG, "code1load : "+inStat.toString());
         switch (this.entry.getInputType()) {
         case meta:
             break;
