@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/title"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/margin_x_small"
+        android:layout_marginRight="@dimen/margin_large"
         android:text="@string/shoppingcart_quantity"
         android:textColor="@color/grey_middlelight"
         android:textSize="@dimen/text_smid"
