@@ -816,24 +816,25 @@ public class CatalogPageModel {
 
         AnalyticsGoogle.get().trackLoadTiming(R.string.gproductlist, mBeginRequestMillis);
 
-        if (searchQuery != null && !TextUtils.isEmpty(searchQuery)) {
+        if (!TextUtils.isEmpty(searchQuery)) {
+            String query = searchQuery.replaceAll("--", ", ");
             if (mFragment.isVisible()) {
                 if (getTotalProducts() > 0)
                     mActivity.setTitleAndSubTitle(
-                            searchQuery,
+                            query,
                             " (" + productsPage.getTotalProducts() + " "
                                     + mActivity.getString(R.string.shoppingcart_items) + ")");
                 else
-                    mActivity.setTitle(searchQuery);
+                    mActivity.setTitle(query);
             }
             if (pageNumber == 1) {
                 TrackerDelegator.trackSearchViewSortMade(mActivity.getApplicationContext(),
-                        searchQuery,
+                        query,
                         productsPage.getTotalProducts(), sort.name());
 
-                TrackerDelegator.trackSearchMade(mActivity.getApplicationContext(), searchQuery,
+                TrackerDelegator.trackSearchMade(mActivity.getApplicationContext(), query,
                         productsPage.getTotalProducts());
-                AnalyticsGoogle.get().trackSearch(searchQuery, productsPage.getTotalProducts());
+                AnalyticsGoogle.get().trackSearch(query, productsPage.getTotalProducts());
             }
 
         } else {

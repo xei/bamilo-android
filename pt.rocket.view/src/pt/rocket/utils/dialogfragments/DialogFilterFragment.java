@@ -357,34 +357,81 @@ public class DialogFilterFragment extends DialogFragment {
             for (CatalogFilter filter : mFilters) {
                 // Get filter id and values
                 String filterId = filter.getId();
-                String filterValue = "";
                 // Case category filter
-                if(filter.hasOptionSelected() && filterId.equals(CATEGORY_ID)) {
-                    CatalogFilterOption selectedOption = filter.getSelectedOption().valueAt(0);
-                    String url = ((CategoryFilterOption) selectedOption).getUrl();
-                    Log.d(TAG, "SELECTED A NEW CATEGORY: " + url );
-                    if(url != null) {
-                        contentValues.put(GetProductsHelper.PRODUCT_URL, url);
-                        //filter.cleanSelectedOption();
-                    }
-                }
+                if(filter.hasOptionSelected() && filterId.equals(CATEGORY_ID))
+                    addCategoryFilter(filter, contentValues);
+                // Case brand filter
+                else if(filter.hasOptionSelected() && filterId.equals(BRAND_ID))
+                    addBrandFilter(filter, contentValues);
                 // Case generic filter
-                else if(filter.hasOptionSelected()) {
-                    int size = filter.getSelectedOption().size();
-                    for(int i = 0; i < size; i++)
-                        filterValue += filter.getSelectedOption().valueAt(i).getLabel() + ((i + 1 < size) ? "--" : "");
-                    contentValues.put(filterId, filterValue);
-                }
+                else if(filter.hasOptionSelected())
+                    addGenericFilter(filter, contentValues);
                 // Case price filter, get range value 
-                else if(filter.hasRangeValues()) {
-                    // String filterId = filter.getId();
-                    int min = filter.getMinRangeValue();
-                    int max = filter.getMaxRangeValue();
-                    //boolean discount = filter.isRangeWithDiscount();
-                    contentValues.put(filterId, min + "-" + max);
-                }
+                else if(filter.hasRangeValues())
+                    addPriceFilter(filter, contentValues);
             }
             return contentValues;
+        }
+        
+        /**
+         * Add to content values the selected category into the PRODUCT_URL tag
+         * @param filter
+         * @param contentValues
+         * @author sergiopereira
+         */
+        private void addCategoryFilter(CatalogFilter filter, ContentValues contentValues){
+            CatalogFilterOption selectedOption = filter.getSelectedOption().valueAt(0);
+            String url = ((CategoryFilterOption) selectedOption).getUrl();
+            Log.d(TAG, "SELECTED A NEW CATEGORY: " + url );
+            if(url != null)
+                contentValues.put(GetProductsHelper.PRODUCT_URL, url);
+        }
+        
+        /**
+         * Add to content values all selected brands into the SEARCH_QUERY tag
+         * @param filter
+         * @param contentValues
+         * @author sergiopereira
+         */
+        private void addBrandFilter(CatalogFilter filter, ContentValues contentValues){
+            String query = "";
+            int size = filter.getSelectedOption().size();
+            for(int i = 0; i < size; i++)
+                query += filter.getSelectedOption().valueAt(i).getLabel() + ((i + 1 < size) ? "--" : "");
+            contentValues.put(GetProductsHelper.SEARCH_QUERY, query);
+        }
+        
+        /**
+         * Add to the content values selected filter
+         * @param filter
+         * @param contentValues
+         * @author sergiopereira
+         */
+        private void addGenericFilter(CatalogFilter filter, ContentValues contentValues){
+            // Get filter id and values
+            String filterId = filter.getId();
+            String filterValue = "";
+            // Get 
+            int size = filter.getSelectedOption().size();
+            for(int i = 0; i < size; i++)
+                filterValue += filter.getSelectedOption().valueAt(i).getLabel() + ((i + 1 < size) ? "--" : "");
+            contentValues.put(filterId, filterValue);
+        }
+        
+        /**
+         * Add to the content values selected price filter
+         * @param filter
+         * @param contentValues
+         * @author sergiopereira
+         */
+        private void addPriceFilter(CatalogFilter filter, ContentValues contentValues){
+            // Get filter id and values
+            String filterId = filter.getId();
+            // String filterId = filter.getId();
+            int min = filter.getMinRangeValue();
+            int max = filter.getMaxRangeValue();
+            //boolean discount = filter.isRangeWithDiscount();
+            contentValues.put(filterId, min + "-" + max);
         }
         
         /**
@@ -406,8 +453,6 @@ public class DialogFilterFragment extends DialogFragment {
             // Update adapter
             ((FiltersArrayAdapter) mFilterListView.getAdapter()).notifyDataSetChanged();
         }
-        
-        
     }
 
     /*

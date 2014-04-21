@@ -335,13 +335,21 @@ public class Catalog extends BaseFragment implements OnClickListener {
             searchQuery = null;
             title = null;
             mFilterButton.setOnClickListener(null);
-            // Send the last saved catalog data that works
-        } else if (mSavedOldCatalogData != null) {
+        }
+        // Send the last saved catalog data that works
+        else if (mSavedOldCatalogData != null) {
             productsURL = mSavedOldCatalogData[0];
             searchQuery = mSavedOldCatalogData[1];
             navigationPath = mSavedOldCatalogData[2];
             title = mSavedOldCatalogData[3];
         }
+        
+        // Contains the new search query (Brand filter)
+        if (filterValues.containsKey(GetProductsHelper.SEARCH_QUERY)){
+            searchQuery = filterValues.getAsString(GetProductsHelper.SEARCH_QUERY);
+            mCatalogFilterValues.put(GetProductsHelper.SEARCH_QUERY, "");
+        }
+        
         // Set the filter button selected or not
         setFilterButtonState();
         // Error flag
