@@ -2333,8 +2333,10 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         
         mapImageView.setImageDrawable(getApplicationContext().getResources().obtainTypedArray(R.array.country_fallback_map).getDrawable(position));
         
-        String country = this.getResources().obtainTypedArray(R.array.country_names)
+        String country = getApplicationContext().getResources().obtainTypedArray(R.array.country_names)
                 .getString(position);
+        TextView fallbackBest = (TextView) findViewById(R.id.fallback_best);
+        fallbackBest.setText(R.string.fallback_best);
         if (country.split(" ").length == 1) {
             TextView tView = (TextView) findViewById(R.id.fallback_country);
             tView.setVisibility(View.VISIBLE);
@@ -2348,7 +2350,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             tView.setText(country.split(" ")[0].toUpperCase());
             TextView tViewBottom = (TextView) findViewById(R.id.fallback_country_bottom);
             tViewBottom.setText(country.split(" ")[1].toUpperCase());
-            ((TextView) findViewById(R.id.fallback_best)).setTextSize(11.88f);
+            fallbackBest.setTextSize(11.88f);
             TextView txView = (TextView) findViewById(R.id.fallback_options_bottom);
             txView.setVisibility(View.VISIBLE);
             txView.setText(country.toUpperCase());
@@ -2356,7 +2358,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             findViewById(R.id.fallback_country).setVisibility(View.GONE);
 
         }
-        findViewById(R.id.fallback_best).setSelected(true);
+        fallbackBest.setSelected(true);
 
     }
 

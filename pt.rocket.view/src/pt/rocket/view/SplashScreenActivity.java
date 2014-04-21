@@ -462,11 +462,13 @@ public class SplashScreenActivity extends FragmentActivity {
                 ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         int position = sharedPrefs.getInt(ChangeCountryFragmentActivity.KEY_COUNTRY, 0);
 
-        mapBg.setImageDrawable(this.getResources().obtainTypedArray(R.array.country_fallback_map)
+        mapBg.setImageDrawable(getApplicationContext().getResources().obtainTypedArray(R.array.country_fallback_map)
                 .getDrawable(position));
 
-        String country = this.getResources().obtainTypedArray(R.array.country_names)
+        String country = getApplicationContext().getResources().obtainTypedArray(R.array.country_names)
                 .getString(position);
+        TextView fallbackBest = (TextView) findViewById(R.id.fallback_best);
+        fallbackBest.setText(R.string.fallback_best);
         if (country.split(" ").length == 1) {
             TextView tView = (TextView) findViewById(R.id.fallback_country);
             tView.setVisibility(View.VISIBLE);
@@ -480,7 +482,7 @@ public class SplashScreenActivity extends FragmentActivity {
             tView.setText(country.split(" ")[0].toUpperCase());
             TextView tViewBottom = (TextView) findViewById(R.id.fallback_country_bottom);
             tViewBottom.setText(country.split(" ")[1].toUpperCase());
-            ((TextView) findViewById(R.id.fallback_best)).setTextSize(11.88f);
+            fallbackBest.setTextSize(11.88f);
             TextView txView = (TextView) findViewById(R.id.fallback_options_bottom);
             txView.setVisibility(View.VISIBLE);
             txView.setText(country.toUpperCase());
@@ -488,7 +490,7 @@ public class SplashScreenActivity extends FragmentActivity {
             findViewById(R.id.fallback_country).setVisibility(View.GONE);
 
         }
-        findViewById(R.id.fallback_best).setSelected(true);
+        fallbackBest.setSelected(true);
        
     }
     

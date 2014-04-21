@@ -108,7 +108,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/fallback_coutry_container"
+                android:id="@+id/fallback_country_container"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/fallback_title_container"
@@ -167,7 +167,7 @@
                 android:id="@+id/fallback_best"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/fallback_coutry_container"
+                android:layout_below="@id/fallback_country_container"
                 android:layout_marginTop="10.56dp"
                 android:ellipsize="marquee"
                 android:gravity="center_horizontal"
