@@ -1,12 +1,8 @@
 package pt.rocket.forms;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -18,7 +14,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.view.View;
 import android.view.ViewGroup;
 import de.akquinet.android.androlog.Log;
 

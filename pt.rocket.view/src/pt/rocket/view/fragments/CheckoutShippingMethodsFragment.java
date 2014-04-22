@@ -42,6 +42,8 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
     private static final String TAG = LogTagHelper.create(CheckoutShippingMethodsFragment.class);
 
     private static final String SELECTION_STATE = "selection";
+
+    private static final String SUB_SELECTION_STATE = "sub_selection";
     
     private static CheckoutShippingMethodsFragment shippingMethodsFragment;
 
@@ -52,6 +54,8 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
     private View nFormContainer;
 
     private int mSelectionSaved = -1;
+
+    private int mSubSelectionSaved = -1;
     
     /**
      * Get instance
@@ -95,9 +99,10 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
         Log.i(TAG, "ON CREATE");
         //setRetainInstance(true);
         // Validate the saved values 
-        if(savedInstanceState != null)
-            // Get the ship content values
-            mSelectionSaved = savedInstanceState.getInt(SELECTION_STATE);
+        if(savedInstanceState != null) {
+            mSelectionSaved = savedInstanceState.getInt(SELECTION_STATE, -1);
+            mSubSelectionSaved = savedInstanceState.getInt(SUB_SELECTION_STATE, -1);
+        }
         else
             Log.i(TAG, "SAVED CONTENT VALUES IS NULL");
         TrackerDelegator.trackCheckoutStep(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), R.string.gcheckoutShippingMethods, R.string.xcheckoutshippingmethods, R.string.mixprop_checkout_shipping_methods);
@@ -160,7 +165,12 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt(SELECTION_STATE, mFormResponse.getSelectionId(0));
+        int itemId = mFormResponse.getSelectionId(0);
+        if (itemId != -1)
+            outState.putInt(SELECTION_STATE, itemId);
+        int subItemId = mFormResponse.getSubSelectionId(0, itemId);
+        if (itemId != -1 && subItemId != -1)
+            outState.putInt(SUB_SELECTION_STATE, subItemId);
     }
 
     /*
@@ -231,7 +241,7 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
         getBaseActivity().showContentContainer();
         // Set the saved selection
         if(mSelectionSaved != -1)
-            mFormResponse.setSelection(0, mSelectionSaved);
+            mFormResponse.setSelections(0, mSelectionSaved, mSubSelectionSaved);
     }
     
     /**

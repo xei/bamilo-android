@@ -159,12 +159,22 @@ public class ShippingMethodFormBuilder implements IJSONSerializable, Parcelable 
         }
     }
     
-    public void setSelection(int groupId, int itemId){
+    public int getSubSelectionId(int groupId, int itemId){
         try {
-            if (groupList.get(groupId).findViewById(R.id.radio_container).findViewById(itemId) instanceof RadioButton)
-                ((RadioButton) groupList.get(groupId).findViewById(R.id.radio_container).findViewById(itemId)).performClick();
+            return groupList.get(groupId).getSubSelection(itemId);
         } catch (Exception e) {
-            // TODO: handle exception
+            return -1;
+        }
+    }
+    
+    public void setSelections(int groupId, int itemId, int subItemId){
+        try {
+            if (groupList.get(groupId).findViewById(R.id.radio_container).findViewById(itemId) instanceof RadioButton) {
+                ((RadioButton) groupList.get(groupId).findViewById(R.id.radio_container).findViewById(itemId)).performClick();
+                if(subItemId != -1)
+                    ((ShippingRadioGroupList) groupList.get(groupId)).setSubSelection(itemId, subItemId);
+            }
+        } catch (Exception e) {
         }
     }
     

@@ -215,6 +215,28 @@ public class ShippingRadioGroupList extends RadioGroup {
             cleanOtherSelections(idx);
         }
     }
+    
+    
+    public void setSubSelection(int groupId, int subId) throws NullPointerException, IndexOutOfBoundsException {
+        if (subForms.containsKey(mItems.get(groupId)) && subForms.get(mItems.get(groupId)).size() > 0) {
+            for (ShippingMethodSubForm element : subForms.get(mItems.get(groupId))) {
+                if (element.options != null && element.options.size() > 0) {
+                    ((IcsSpinner) element.dataControl).setSelection(subId);
+                }
+            }
+        }
+    }
+    
+    public int getSubSelection(int groupId) throws NullPointerException, IndexOutOfBoundsException {
+        if (subForms.containsKey(mItems.get(groupId)) && subForms.get(mItems.get(groupId)).size() > 0) {
+            for (ShippingMethodSubForm element : subForms.get(mItems.get(groupId))) {
+                if (element.options != null && element.options.size() > 0) {
+                    return ((IcsSpinner) element.dataControl).getSelectedItemPosition();
+                }
+            }
+        }
+        return -1;
+    }
 
     private void cleanOtherSelections(int idx) {
         Log.i(TAG, "code1selection : id is : " + idx + " cleaning");
