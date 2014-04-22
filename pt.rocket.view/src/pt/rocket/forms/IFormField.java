@@ -18,6 +18,8 @@ public interface IFormField {
 	public abstract InputType getInputType();
 
 	public abstract String getLabel();
+	
+	public abstract String getLinkText();
 
 	public abstract Map<String, String> getDataSet();
 

@@ -138,6 +138,13 @@ public class FormFieldMeta implements IFormField {
         // TODO Auto-generated method stub
         return metaFormField.getScenario();
     }
+
+
+    @Override
+    public String getLinkText() {
+        // TODO Auto-generated method stub
+        return metaFormField.getLinkText();
+    }
 	
 	
 

@@ -55,11 +55,10 @@ import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.actionbarsherlock.internal.widget.IcsAdapterView;
-
-
 
 /**
  * @author sergiopereira
@@ -71,8 +70,6 @@ public class SessionRegisterFragment extends BaseFragment {
 
     private static SessionRegisterFragment registerFragment;
 
-    private TextView termsRequiredText;
-
     private boolean termsAreRequired = false;
 
     private Button registerButton;
@@ -81,9 +78,14 @@ public class SessionRegisterFragment extends BaseFragment {
 
     private CheckBox checkTerms;
 
+    private TextView linkText;
+
+    private TextView mandatory;
+
     private TextView registerRequiredText;
 
     private static DynamicForm serverForm;
+    private DynamicFormItem termsLink;
 
     private String terms;
 
@@ -101,13 +103,14 @@ public class SessionRegisterFragment extends BaseFragment {
     public static SessionRegisterFragment getInstance(Bundle bundle) {
         if (registerFragment == null)
             registerFragment = new SessionRegisterFragment();
-        
-        if(bundle != null){
+
+        if (bundle != null) {
             // Force load form if comes from deep link
             String path = bundle.getString(ConstantsIntentExtra.DEEP_LINK_TAG);
-            if(path != null && path.equals(DeepLinkManager.TAG)) JumiaApplication.INSTANCE.registerForm = null;
+            if (path != null && path.equals(DeepLinkManager.TAG))
+                JumiaApplication.INSTANCE.registerForm = null;
         }
-        
+
         return registerFragment;
     }
 
@@ -116,7 +119,7 @@ public class SessionRegisterFragment extends BaseFragment {
      */
     public SessionRegisterFragment() {
         super(EnumSet.of(EventType.GET_REGISTRATION_FORM_EVENT, EventType.GET_TERMS_EVENT),
-                EnumSet.of(EventType.REGISTER_ACCOUNT_EVENT), 
+                EnumSet.of(EventType.REGISTER_ACCOUNT_EVENT),
                 EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.MyAccount,
                 R.string.register_title, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
@@ -181,7 +184,7 @@ public class SessionRegisterFragment extends BaseFragment {
         mLocale = Locale.getDefault();
         Locale.setDefault(Locale.US);
         registerLocation = getString(R.string.mixprop_loginlocation);
-        if (JumiaApplication.INSTANCE.registerForm != null){
+        if (JumiaApplication.INSTANCE.registerForm != null) {
             loadForm(JumiaApplication.INSTANCE.registerForm);
         } else {
 
@@ -208,9 +211,9 @@ public class SessionRegisterFragment extends BaseFragment {
     public void onPause() {
         super.onPause();
         Log.i(TAG, "ON PAUSE");
-        
-        //restore locale
-        if(mLocale != null){
+
+        // restore locale
+        if (mLocale != null) {
             Locale.setDefault(mLocale);
         }
     }
@@ -225,7 +228,7 @@ public class SessionRegisterFragment extends BaseFragment {
         super.onStop();
         Log.i(TAG, "ON STOP");
 
-        if (container != null){
+        if (container != null) {
             try {
                 container.removeAllViews();
             } catch (IllegalArgumentException e) {
@@ -244,18 +247,15 @@ public class SessionRegisterFragment extends BaseFragment {
                 DynamicFormItem item = iterator.next();
                 item.saveState(outState);
             }
-            if (getView() != null) {
-                checkTerms = (CheckBox) getView().findViewById(R.id.checkTerms);
-                outState.putBoolean("" + R.id.checkTerms, checkTerms.isChecked());
-            }
+
             JumiaApplication.INSTANCE.registerSavedInstanceState = outState;
         }
         super.onSaveInstanceState(outState);
     }
-    
-    public void saveFormState(){
+
+    public void saveFormState() {
         if (null != serverForm) {
-            if(JumiaApplication.INSTANCE.registerSavedInstanceState == null){
+            if (JumiaApplication.INSTANCE.registerSavedInstanceState == null) {
                 JumiaApplication.INSTANCE.registerSavedInstanceState = new Bundle();
             }
             Iterator<DynamicFormItem> iterator = serverForm.iterator();
@@ -263,10 +263,6 @@ public class SessionRegisterFragment extends BaseFragment {
             while (iterator.hasNext()) {
                 DynamicFormItem item = iterator.next();
                 item.saveState(JumiaApplication.INSTANCE.registerSavedInstanceState);
-            }
-            if (getView() != null) {
-                checkTerms = (CheckBox) getView().findViewById(R.id.checkTerms);
-                JumiaApplication.INSTANCE.registerSavedInstanceState.putBoolean("" + R.id.checkTerms, checkTerms.isChecked());
             }
         }
     }
@@ -280,24 +276,25 @@ public class SessionRegisterFragment extends BaseFragment {
      */
     public void setAppContentLayout() {
 
-        checkTerms = (CheckBox) getView().findViewById(R.id.checkTerms);
-        checkTerms.setPadding(checkTerms.getPaddingLeft(), checkTerms.getPaddingTop(), checkTerms.getPaddingRight(),
-                checkTerms.getPaddingBottom());
-        termsRequiredText = (TextView) getView().findViewById(R.id.termsRequired);
+        // checkTerms = (CheckBox) getView().findViewById(R.id.checkTerms);
+        // checkTerms.setPadding(checkTerms.getPaddingLeft(), checkTerms.getPaddingTop(),
+        // checkTerms.getPaddingRight(),
+        // checkTerms.getPaddingBottom());
+        // termsRequiredText = (TextView) getView().findViewById(R.id.termsRequired);
+        //
+        // if (!termsAreRequired) {
 
-        if (!termsAreRequired) {
+        /**
+         * TRIGGERS
+         * 
+         * @author sergiopereira
+         */
+        triggerTerms();
 
-            /**
-             * TRIGGERS
-             * 
-             * @author sergiopereira
-             */
-            triggerTerms();
-
-        } else {
-            View termsContainer = getView().findViewById(R.id.termsContainer);
-            termsContainer.setVisibility(View.GONE);
-        }
+        // } else {
+        // View termsContainer = getView().findViewById(R.id.termsContainer);
+        // termsContainer.setVisibility(View.GONE);
+        // }
 
     }
 
@@ -307,31 +304,13 @@ public class SessionRegisterFragment extends BaseFragment {
     private void getFormComponents() {
         registerButton = (Button) getView().findViewById(R.id.register_button_submit);
         loginRedirect = getView().findViewById(R.id.orLoginContainer);
-        checkTerms = (CheckBox) getView().findViewById(R.id.checkTerms);
+        // checkTerms = (CheckBox) getView().findViewById(R.id.checkTerms);
         registerRequiredText = (TextView) getView().findViewById(R.id.register_required_text);
 
         registerButton.setTextAppearance(getActivity(), R.style.text_normal);
         FontLoader.apply(registerButton, FontLoader.ROBOTO_REGULAR);
 
-        OnClickListener click = new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                int id = v.getId();
-                if (id == R.id.checkTerms) {
-                    if (serverForm != null && serverForm.checkRequired() && checkTerms.isChecked()) {
-                        termsRequiredText.setVisibility(View.GONE);
-                        registerButton.setTextAppearance(getActivity(), R.style.text_bold);
-                        FontLoader.apply(registerButton, FontLoader.ROBOTO_BOLD);
-                    } else {
-                        registerButton.setTextAppearance(getActivity(), R.style.text_normal);
-                        FontLoader.apply(registerButton, FontLoader.ROBOTO_REGULAR);
-                    }
-                }
-            }
-        };
-
-        checkTerms.setOnClickListener(click);
+        // checkTerms.setOnClickListener(click);
     }
 
     /**
@@ -365,10 +344,9 @@ public class SessionRegisterFragment extends BaseFragment {
                 if (checkPasswords() && serverForm.validate() && checkTermsIfRequired()) {
                     getBaseActivity().hideKeyboard();
                     registerRequiredText.setVisibility(View.GONE);
-                    termsRequiredText.setVisibility(View.GONE);
                     requestRegister();
                 } else if (!checkTermsIfRequired()) {
-                    termsRequiredText.setVisibility(View.VISIBLE);
+                    mandatory.setVisibility(View.VISIBLE);
                     getBaseActivity().hideKeyboard();
                 } else {
                     getBaseActivity().hideKeyboard();
@@ -450,35 +428,6 @@ public class SessionRegisterFragment extends BaseFragment {
     };
 
     /**
-     * Sets the listener to handle the expand and colapse of the terms and conditions
-     */
-    private void detailsListener() {
-        if (getView() != null) {
-            View termsContainer = getView().findViewById(R.id.termsContainerClick);
-            if (termsContainer == null)
-                return;
-
-            termsContainer.setOnClickListener(new OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    int id = v.getId();
-                    if (id == R.id.termsContainerClick) {
-                        Log.d(TAG, "terms click");
-                        saveFormState();
-                        Bundle bundle = new Bundle();
-                        bundle.putString(ConstantsIntentExtra.TERMS_CONDITIONS, terms);
-                        ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.TERMS, bundle,
-                                FragmentController.ADD_TO_BACK_STACK);
-                    }
-
-                }
-            });
-        }
-
-    }
-
-    /**
      * #### CHECKS ####
      */
 
@@ -487,7 +436,11 @@ public class SessionRegisterFragment extends BaseFragment {
      * @return
      */
     private boolean checkTermsIfRequired() {
-        return !termsAreRequired || checkTerms.isChecked();
+        if (termsLink != null && checkTerms != null) {
+            return !termsLink.getMandatory() || checkTerms.isChecked();
+        }
+
+        return true;
     }
 
     /**
@@ -577,9 +530,8 @@ public class SessionRegisterFragment extends BaseFragment {
      * #### EVENTS ####
      */
 
-
     protected boolean onSuccessEvent(Bundle bundle) {
-        if(getBaseActivity() != null){
+        if (getBaseActivity() != null) {
             getBaseActivity().handleSuccessEvent(bundle);
         } else {
             return true;
@@ -615,7 +567,7 @@ public class SessionRegisterFragment extends BaseFragment {
         case GET_TERMS_EVENT:
             terms = (String) bundle.getString(Constants.BUNDLE_RESPONSE_KEY);
             // Remove the listener
-            detailsListener();
+            // detailsListener();
             break;
         }
         return true;
@@ -639,7 +591,7 @@ public class SessionRegisterFragment extends BaseFragment {
          * @author sergiopereira
          */
         triggerStoreLogin(values);
-     
+
     }
 
     /**
@@ -647,34 +599,81 @@ public class SessionRegisterFragment extends BaseFragment {
      * @param form
      */
     private void loadForm(Form form) {
-            serverForm = FormFactory.getSingleton().CreateForm(FormConstants.REGISTRATION_FORM,
-                    getActivity(), form);
-            serverForm.setOnFocusChangeListener(focus_listener);
-            serverForm.setOnItemSelectedListener(selected_listener);
-            serverForm.setTextWatcher(text_watcher);
-            
-            container = (LinearLayout) getView().findViewById(R.id.registerform_container);
-            try {
-                container.removeAllViews();
-            } catch (IllegalArgumentException e) {
-                e.printStackTrace();
+        serverForm = FormFactory.getSingleton().CreateForm(FormConstants.REGISTRATION_FORM,
+                getActivity(), form);
+        serverForm.setOnFocusChangeListener(focus_listener);
+        serverForm.setOnItemSelectedListener(selected_listener);
+        serverForm.setTextWatcher(text_watcher);
+
+        container = (LinearLayout) getView().findViewById(R.id.registerform_container);
+        try {
+            container.removeAllViews();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+        container.addView(serverForm.getContainer());
+        setTermsListener();
+        if (null != JumiaApplication.INSTANCE.registerSavedInstanceState && null != serverForm) {
+            Iterator<DynamicFormItem> iter = serverForm.getIterator();
+            while (iter.hasNext()) {
+                DynamicFormItem item = iter.next();
+                item.loadState(JumiaApplication.INSTANCE.registerSavedInstanceState);
             }
-            container.addView(serverForm.getContainer());
-            if (null != JumiaApplication.INSTANCE.registerSavedInstanceState && null != serverForm) {
-                Iterator<DynamicFormItem> iter = serverForm.getIterator();
-                while (iter.hasNext()) {
-                    DynamicFormItem item = iter.next();
-                    item.loadState(JumiaApplication.INSTANCE.registerSavedInstanceState);
+        }
+    }
+
+    private void setTermsListener() {
+
+        termsLink = serverForm.getItemByKey(RestConstants.JSON_TERMS_TAG);
+        if (termsLink == null) {
+            return;
+        }
+
+        mandatory = (TextView) termsLink.getMandatoryControl();
+
+        linkText = (TextView) termsLink.getEditControl().findViewWithTag(
+                RestConstants.JSON_TERMS_TAG);
+        linkText.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                saveFormState();
+                Bundle bundle = new Bundle();
+                bundle.putString(ConstantsIntentExtra.TERMS_CONDITIONS, terms);
+                ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.TERMS, bundle,
+                        FragmentController.ADD_TO_BACK_STACK);
+
+            }
+        });
+
+        checkTerms = (CheckBox) termsLink.getEditControl().findViewWithTag("checkbox");
+        checkTerms.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                int id = v.getId();
+                if(((CheckBox) v).isChecked()){
+                    mandatory.setVisibility(View.GONE);
+                } else {
+                    mandatory.setVisibility(View.VISIBLE);
                 }
-                CheckBox check = (CheckBox) getView().findViewById(R.id.checkTerms);
-                check.setChecked(JumiaApplication.INSTANCE.registerSavedInstanceState.getBoolean("" + R.id.checkTerms));
+                
+                if (serverForm != null && serverForm.checkRequired()) {
+                    registerButton.setTextAppearance(getActivity(), R.style.text_bold);
+                    FontLoader.apply(registerButton, FontLoader.ROBOTO_BOLD);
+                } else {
+                    registerButton.setTextAppearance(getActivity(), R.style.text_normal);
+                    FontLoader.apply(registerButton, FontLoader.ROBOTO_REGULAR);
+                }
             }
+        });
+
     }
 
     protected boolean onErrorEvent(Bundle bundle) {
         Log.d(TAG, "ON ERROR EVENT");
-        
-        if(getBaseActivity().handleErrorEvent(bundle)){
+
+        if (getBaseActivity().handleErrorEvent(bundle)) {
             return true;
         }
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
@@ -685,9 +684,9 @@ public class SessionRegisterFragment extends BaseFragment {
             if (errorCode == ErrorCode.REQUEST_ERROR) {
                 HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle
                         .getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
-//                Log.i(TAG, "code1exists : errorMessages : "+errorMessages);
+                // Log.i(TAG, "code1exists : errorMessages : "+errorMessages);
                 List<String> validateMessages = errorMessages.get(RestConstants.JSON_ERROR_TAG);
-//                Log.i(TAG, "code1exists : validateMessages : "+validateMessages);
+                // Log.i(TAG, "code1exists : validateMessages : "+validateMessages);
                 if (validateMessages != null
                         && validateMessages.contains(Errors.CODE_REGISTER_CUSTOMEREXISTS)) {
                     ((BaseActivity) getActivity()).showContentContainer();
@@ -803,7 +802,7 @@ public class SessionRegisterFragment extends BaseFragment {
 
         @Override
         public void onRequestComplete(Bundle bundle) {
-           onSuccessEvent(bundle);
+            onSuccessEvent(bundle);
         }
     };
 

@@ -130,15 +130,28 @@ public class DialogDatePickerFragment extends DialogFragment implements OnClickL
         titleView.setText(this.mTitle);
 
         this.mDatePicker = (DatePicker) view.findViewById(R.id.datePicker);
-        Log.d(TAG, "show: year = " + mYear + " month = " + mMonth + " day = " + mDay);
-        if (this.mYear != 0)
+        if (this.mYear != 0){
             mDatePicker.updateDate(this.mYear, this.mMonth, this.mDay);
+            Calendar mCal =Calendar.getInstance();
+
+            int currentYear = mCal.get(Calendar.YEAR) - 1;
+            int currentMonth = mCal.get(Calendar.MONTH);
+            int currentDay = mCal.get(Calendar.DAY_OF_MONTH);
+
+            mDatePicker.setMaxDate(new GregorianCalendar(currentYear, currentMonth, currentDay).getTimeInMillis());
+        } else {
+            Calendar cal=Calendar.getInstance();
+
+            this.mYear = cal.get(Calendar.YEAR) - 1;
+            this.mMonth = cal.get(Calendar.MONTH);
+            this.mDay = cal.get(Calendar.DAY_OF_MONTH);
+
+            mDatePicker.updateDate(this.mYear, this.mMonth, this.mDay);
+            mDatePicker.setMaxDate(new GregorianCalendar(this.mYear, this.mMonth, this.mDay).getTimeInMillis());
+        }
 
         view.findViewById(R.id.button1).setOnClickListener(this);
         view.findViewById(R.id.button2).setOnClickListener(this);
-
-//        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1)
-//            resizeDialog(this);
         
         return view;
     }
@@ -206,6 +219,13 @@ public class DialogDatePickerFragment extends DialogFragment implements OnClickL
 
         if (mDatePicker != null){
             mDatePicker.updateDate(mYear, mMonth, mDay);
+            Calendar mCal =Calendar.getInstance();
+
+            int currentYear = mCal.get(Calendar.YEAR) - 1;
+            int currentMonth = mCal.get(Calendar.MONTH);
+            int currentDay = mCal.get(Calendar.DAY_OF_MONTH);
+
+            mDatePicker.setMaxDate(new GregorianCalendar(currentYear, currentMonth, currentDay).getTimeInMillis());
         }
        isSetOnce = true;
     }
@@ -215,8 +235,16 @@ public class DialogDatePickerFragment extends DialogFragment implements OnClickL
         mMonth = month;
         mDay = day;
 
-        if (mDatePicker != null)
+        if (mDatePicker != null){
             mDatePicker.updateDate(mYear, mMonth, mDay);
+            Calendar mCal =Calendar.getInstance();
+
+            int currentYear = mCal.get(Calendar.YEAR) - 1;
+            int currentMonth = mCal.get(Calendar.MONTH);
+            int currentDay = mCal.get(Calendar.DAY_OF_MONTH);
+
+            mDatePicker.setMaxDate(new GregorianCalendar(currentYear, currentMonth, currentDay).getTimeInMillis());
+        }
     }
 
     public String getDate() {

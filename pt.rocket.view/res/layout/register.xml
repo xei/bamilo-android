@@ -53,53 +53,53 @@
 
             <!-- FORM -->
 
-            <LinearLayout
-                android:id="@+id/termsContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_mid"
-                android:layout_marginRight="@dimen/margin_mid"
-                android:layout_marginTop="14dp"
-                android:orientation="horizontal" >
+<!--             <LinearLayout -->
+<!--                 android:id="@+id/termsContainer" -->
+<!--                 android:layout_width="match_parent" -->
+<!--                 android:layout_height="wrap_content" -->
+<!--                 android:layout_marginBottom="@dimen/margin_mid" -->
+<!--                 android:layout_marginRight="@dimen/margin_mid" -->
+<!--                 android:layout_marginTop="14dp" -->
+<!--                 android:orientation="horizontal" > -->
 
-                <org.holoeverywhere.widget.CheckBox
-                    android:id="@+id/checkTerms"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/terms_and_conditions_description"
-                    android:button="@drawable/btn_check_holo_light"
-                    android:text="@string/register_text_terms_a"
-                    android:textColor="@color/grey_middle"
-                    android:textSize="@dimen/text_small" />
+<!--                 <org.holoeverywhere.widget.CheckBox -->
+<!--                     android:id="@+id/checkTerms" -->
+<!--                     android:layout_width="wrap_content" -->
+<!--                     android:layout_height="wrap_content" -->
+<!--                     android:contentDescription="@string/terms_and_conditions_description" -->
+<!--                     android:button="@drawable/btn_check_holo_light" -->
+<!--                     android:text="@string/register_text_terms_a" -->
+<!--                     android:textColor="@color/grey_middle" -->
+<!--                     android:textSize="@dimen/text_small" /> -->
 
-                <LinearLayout
-                    android:id="@+id/termsContainerClick"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_vertical"
-                    android:paddingLeft="2dp" >
+<!--                 <LinearLayout -->
+<!--                     android:id="@+id/termsContainerClick" -->
+<!--                     android:layout_width="wrap_content" -->
+<!--                     android:layout_height="match_parent" -->
+<!--                     android:layout_gravity="center_vertical" -->
+<!--                     android:paddingLeft="2dp" > -->
 
-                    <org.holoeverywhere.widget.TextView
-                        android:id="@+id/termsLink"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:gravity="left|center_vertical"
-                        android:text="@string/register_text_terms_b"
-                        android:textColor="@color/blue_basic"
-                        android:textSize="@dimen/text_small" />
-                </LinearLayout>
+<!--                     <org.holoeverywhere.widget.TextView -->
+<!--                         android:id="@+id/termsLink" -->
+<!--                         android:layout_width="match_parent" -->
+<!--                         android:layout_height="wrap_content" -->
+<!--                         android:layout_gravity="center_vertical" -->
+<!--                         android:gravity="left|center_vertical" -->
+<!--                         android:text="@string/register_text_terms_b" -->
+<!--                         android:textColor="@color/blue_basic" -->
+<!--                         android:textSize="@dimen/text_small" /> -->
+<!--                 </LinearLayout> -->
 
-                <org.holoeverywhere.widget.TextView
-                    android:id="@+id/termsRequired"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_mid"
-                    android:text="@string/register_terms_required"
-                    android:textColor="@color/red_basic"
-                    android:textSize="@dimen/text_small"
-                    android:visibility="gone" />
-            </LinearLayout>
+<!--                 <org.holoeverywhere.widget.TextView -->
+<!--                     android:id="@+id/termsRequired" -->
+<!--                     android:layout_width="wrap_content" -->
+<!--                     android:layout_height="wrap_content" -->
+<!--                     android:layout_marginLeft="@dimen/margin_mid" -->
+<!--                     android:text="@string/register_terms_required" -->
+<!--                     android:textColor="@color/red_basic" -->
+<!--                     android:textSize="@dimen/text_small" -->
+<!--                     android:visibility="gone" /> -->
+<!--             </LinearLayout> -->
 
             <!-- Register Button -->
 

@@ -80,7 +80,7 @@ public class FormFactory {
         DynamicForm parent = null;
         if(context != null && context.getResources() != null && context.getResources().getDisplayMetrics() != null)
             scale = context.getResources().getDisplayMetrics().density;
-        
+        Log.i(TAG, "code1register CREATING FORM : "+formType);
         switch (formType) {
         case FormConstants.ADDRESS_FORM:
             parent = createAddressForm(context, form);
@@ -211,6 +211,7 @@ public class FormFactory {
      * @return An instance of a DynamicForm with the form representation implemented
      */
     private DynamicForm createRegistrationForm(Context context, Form form) {
+        Log.i(TAG, "code1register createRegistrationForm");
         final int CTRLMARGIN_LEFT = 0;
         final int CTRLMARGIN_TOP = (int) (5 * scale);
         final int CTRLMARGIN_RIGHT = 0;

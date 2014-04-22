@@ -848,7 +848,11 @@ public class HomeFragment extends BaseFragment {
             }
             
             ViewPager mViewPager = (ViewPager) lastViewedView.findViewById(R.id.last_viewed_viewpager);
-            LastViewedAdapter mLastViewedAdapter = new LastViewedAdapter(getActivity(), lastViewed, mInflater);
+            int partialSize = 3;
+            if(((BaseActivity) getActivity()).isTabletInLandscape(getActivity())){
+                partialSize = 5;
+            }
+            LastViewedAdapter mLastViewedAdapter = new LastViewedAdapter(getActivity(), lastViewed, mInflater, partialSize);
             mViewPager.setAdapter(mLastViewedAdapter);
             return lastViewedView;
         }

@@ -83,6 +83,12 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     private String label;
 
     /**
+     * Value used to show as the clickable text
+     * (e.g. for terms and conditions)
+     */
+    private String linkText;
+    
+    /**
      * Value that defines for each scenario the Form Field should appear
      */
     private String scenario;
@@ -138,6 +144,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         this.dataset_Listener = null;
         this.extrasValues = new LinkedHashMap<Object, Object>();
         this.scenario = null;
+        this.linkText = "";
     }
 
     /**
@@ -156,7 +163,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
      * @param maxSize
      *            . Max size of the characters.
      * @param regEx
-     *            . Reguslar expression used to validate the form field.
+     *            . Regular expression used to validate the form field.
      */
     public FormField(Form parent, String name, String id, boolean obligatory, InputType inputType, int maxSize, String regEx) {
         this.id = id;
@@ -209,7 +216,9 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             	inputType = InputType.meta;
             } else if (formFieldString.equals("hidden")) {
                 inputType = InputType.hide;
-            } else {
+            } else if (formFieldString.equals("checkbox_link")) {
+                inputType = InputType.checkBoxList;
+            }  else {
             	return false;
             }
 
@@ -221,9 +230,8 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                 label = jsonObject.optString(RestConstants.JSON_LABEL_TAG);
                 value = !jsonObject.isNull(RestConstants.JSON_VALUE_TAG) ? jsonObject.optString(RestConstants.JSON_VALUE_TAG) : "";
                 scenario = jsonObject.optString(RestConstants.JSON_SCENARIO_TAG);
-                
+                linkText = jsonObject.optString(RestConstants.JSON_LINK_TEXT_TAG);
                 Log.d(TAG, "FORM FIELD: " + key + " " + name + " " + " " + label + " " + value);
-
                 
                 JSONObject validationObject = jsonObject.optJSONObject(RestConstants.JSON_VALIDATION_TAG);
 
@@ -441,6 +449,9 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             case text:
                 jsonObject.put(RestConstants.JSON_TYPE_TAG, "string");
                 break;
+            case checkBoxList:
+                jsonObject.put(RestConstants.JSON_TYPE_TAG, "boolean");
+                break;
             default:
                 jsonObject.put(RestConstants.JSON_TYPE_TAG, "string");
                 break;
@@ -452,7 +463,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             jsonObject.put(RestConstants.JSON_FIELD_NAME_TAG, name);
             jsonObject.put(RestConstants.JSON_LABEL_TAG, label);
             jsonObject.put(RestConstants.JSON_VALUE_TAG, value);
-
+            jsonObject.put(RestConstants.JSON_TERMS_TAG, linkText);
             // validation
             jsonObject.put(RestConstants.JSON_VALIDATION_TAG, validation.toJSON());
 
@@ -735,6 +746,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         dest.writeValue(parent);
         dest.writeValue(dataset_Listener);
         dest.writeMap(extrasValues);
+        dest.writeString(linkText);
     }
     
     /**
@@ -753,6 +765,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         parent = (Form) in.readValue(Form.class.getClassLoader());
         dataset_Listener = in.readParcelable(null);
         extrasValues = (LinkedHashMap<Object, Object>) in.readHashMap(null);
+        linkText = in.readString();
     }
     
     /**
@@ -784,4 +797,10 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             return new FormField[size];
         }
     };
+
+    @Override
+    public String getLinkText() {
+        // TODO Auto-generated method stub
+        return this.linkText;
+    }
 }
