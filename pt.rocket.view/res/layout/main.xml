@@ -75,14 +75,14 @@
         <!-- Fallback content -->
 
         <RelativeLayout
-            android:id="@+id/fallback_content"
+            android:id="@+id/main_fallback_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/bckgrndfallback"
             android:visibility="gone" >
 
             <LinearLayout
-                android:id="@+id/fallback_title_container"
+                android:id="@+id/main_fallback_title_container"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
@@ -90,7 +90,7 @@
                 android:orientation="vertical" >
 
                 <org.holoeverywhere.widget.TextView
-                    android:id="@+id/fallback_title"
+                    android:id="@+id/main_fallback_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -108,10 +108,10 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/fallback_country_container"
+                android:id="@+id/main_fallback_country_container"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/fallback_title_container"
+                android:layout_below="@id/main_fallback_title_container"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="13.2dp"
                 android:orientation="horizontal" >
@@ -122,7 +122,7 @@
                     android:src="@drawable/logo_jumiafallback" />
 
                 <org.holoeverywhere.widget.TextView
-                    android:id="@+id/fallback_country"
+                    android:id="@+id/main_fallback_country"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="13.2dp"
@@ -134,7 +134,7 @@
                     android:visibility="gone" />
 
                 <LinearLayout
-                    android:id="@+id/fallback_country_double"
+                    android:id="@+id/main_fallback_country_double"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="13.2dp"
@@ -143,7 +143,7 @@
                     android:visibility="gone" >
 
                     <org.holoeverywhere.widget.TextView
-                        android:id="@+id/fallback_country_top"
+                        android:id="@+id/main_fallback_country_top"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="roboto-bold"
@@ -152,7 +152,7 @@
                         android:textSize="@dimen/text_l" />
 
                     <org.holoeverywhere.widget.TextView
-                        android:id="@+id/fallback_country_bottom"
+                        android:id="@+id/main_fallback_country_bottom"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="-10dp"
@@ -164,10 +164,10 @@
             </LinearLayout>
 
             <org.holoeverywhere.widget.TextView
-                android:id="@+id/fallback_best"
+                android:id="@+id/main_fallback_best"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/fallback_country_container"
+                android:layout_below="@id/main_fallback_country_container"
                 android:layout_marginTop="10.56dp"
                 android:ellipsize="marquee"
                 android:gravity="center_horizontal"
@@ -177,15 +177,15 @@
                 android:textSize="@dimen/text_m" />
 
             <LinearLayout
-                android:id="@+id/fallback_choice_container"
+                android:id="@+id/main_fallback_choice_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/fallback_best"
+                android:layout_below="@id/main_fallback_best"
                 android:gravity="center_horizontal"
                 android:orientation="horizontal" >
 
                 <org.holoeverywhere.widget.TextView
-                    android:id="@+id/fallback_choice"
+                    android:id="@+id/main_fallback_choice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="roboto-bold"
@@ -194,7 +194,7 @@
                     android:textSize="9.9sp" />
 
                 <org.holoeverywhere.widget.TextView
-                    android:id="@+id/fallback_doorstep"
+                    android:id="@+id/main_fallback_doorstep"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
@@ -203,16 +203,8 @@
                     android:textSize="9.9sp" />
             </LinearLayout>
 
-            <ImageView
-                android:id="@+id/fallback_country_map"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_above="@+id/fallback_options_container"
-                android:layout_below="@id/fallback_choice_container"
-                android:layout_centerHorizontal="true" />
-
             <org.holoeverywhere.widget.Button
-                android:id="@+id/fallback_retry"
+                android:id="@+id/main_fallback_retry"
                 style="@style/button_orange_style"
                 android:layout_alignParentBottom="true"
                 android:layout_marginLeft="@dimen/margin_huge"
@@ -221,17 +213,17 @@
                 android:text="@string/try_again" />
 
             <LinearLayout
-                android:id="@+id/fallback_options_bottom_container"
+                android:id="@+id/main_fallback_options_bottom_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_above="@id/fallback_retry"
+                android:layout_above="@id/main_fallback_retry"
                 android:layout_marginBottom="26.4dp"
                 android:layout_marginLeft="26.4dp"
                 android:orientation="horizontal"
                 android:weightSum="2" >
 
                 <org.holoeverywhere.widget.TextView
-                    android:id="@+id/fallback_country_bottom_text2"
+                    android:id="@+id/main_fallback_country_bottom_text2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="6.6dp"
@@ -241,16 +233,16 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/fallback_options_container"
+                android:id="@+id/main_fallback_options_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_above="@id/fallback_options_bottom_container"
+                android:layout_above="@id/main_fallback_options_bottom_container"
                 android:layout_marginLeft="26.4dp"
                 android:orientation="horizontal"
                 android:weightSum="2" >
 
                 <org.holoeverywhere.widget.TextView
-                    android:id="@+id/fallback_options_bottom"
+                    android:id="@+id/main_fallback_options_bottom"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="6.6dp"
@@ -260,7 +252,7 @@
                     android:textSize="13.2sp" />
 
                 <org.holoeverywhere.widget.TextView
-                    android:id="@+id/fallback_country_bottom_text"
+                    android:id="@+id/main_fallback_country_bottom_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="6.6dp"
@@ -268,6 +260,14 @@
                     android:textColor="#000000"
                     android:textSize="13.2sp" />
             </LinearLayout>
+
+            <ImageView
+                android:id="@+id/main_fallback_country_map"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/main_fallback_options_container"
+                android:layout_below="@id/main_fallback_choice_container"
+                android:layout_centerHorizontal="true" />
         </RelativeLayout>
     </RelativeLayout>
 

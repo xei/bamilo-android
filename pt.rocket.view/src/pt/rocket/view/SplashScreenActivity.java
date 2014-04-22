@@ -408,6 +408,7 @@ public class SplashScreenActivity extends FragmentActivity {
             return;
         }
         
+        
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         if (dialog != null && dialog.isVisible()) {
@@ -457,11 +458,16 @@ public class SplashScreenActivity extends FragmentActivity {
                        JumiaApplication.INSTANCE.getRequestsRetryBundleList().get(eventType), JumiaApplication.INSTANCE.getRequestsResponseList().get(eventType)); 
             }
         });
-        ImageView mapBg = (ImageView) findViewById(R.id.home_fallback_country_map);
+        
+        ImageView mapBg = (ImageView) findViewById(R.id.fallback_country_map);
+        
         SharedPreferences sharedPrefs = getSharedPreferences(
                 ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        
         int position = sharedPrefs.getInt(ChangeCountryFragmentActivity.KEY_COUNTRY, 0);
 
+        Log.i(TAG, "code1position : "+position);
+        
         mapBg.setImageDrawable(getApplicationContext().getResources().obtainTypedArray(R.array.country_fallback_map)
                 .getDrawable(position));
 
@@ -490,6 +496,19 @@ public class SplashScreenActivity extends FragmentActivity {
             findViewById(R.id.fallback_country).setVisibility(View.GONE);
 
         }
+        
+        TextView mTextViewBT = (TextView) findViewById(R.id.fallback_country_bottom_text);
+        mTextViewBT.setText(R.string.fallback_maintenance_text);
+        
+        TextView mTextViewBT2 = (TextView) findViewById(R.id.fallback_country_bottom_text2);
+        mTextViewBT2.setText(R.string.fallback_maintenance_text_bottom);
+        
+        TextView mFallbackChoice = (TextView) findViewById(R.id.fallback_choice);
+        mFallbackChoice.setText(R.string.fallback_choice);
+        
+        TextView mFallbackDoorstep = (TextView) findViewById(R.id.fallback_doorstep);
+        mFallbackDoorstep.setText(R.string.fallback_doorstep);
+        
         fallbackBest.setSelected(true);
        
     }

@@ -303,7 +303,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     public void onResume() {
         super.onResume();
         Log.d(TAG, "ON RESUME");
-
+        
         if (!isRegistered) {
             // OLD FRAMEWORK
             /**
@@ -1819,33 +1819,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     }
 
     /**
-     * ADAPTNEWFRAMEWORK
-     */
-    // public final void handleEvent(final ResponseEvent event) {
-    // if (event.getSuccess()) {
-    // if (contentEvents.contains(event.type) || userEvents.contains(event.type)) {
-    // boolean showContent = onSuccessEvent((ResponseResultEvent<?>) event);
-    // if (showContent) {
-    // showContentContainer(false);
-    // }
-    // showWarning(event.warning != null);
-    // }
-    // handleSuccessEvent(event);
-    //
-    // } else {
-    // boolean needsErrorHandling = true;
-    // if (contentEvents.contains(event.type) || userEvents.contains(event.type)) {
-    // needsErrorHandling = !onErrorEvent(event);
-    // }
-    // if (needsErrorHandling) {
-    // handleErrorEvent(event);
-    // }
-    // }
-    // }
-    /**
-     * ADAPTNEWFRAMEWORK
-     */
-    /**
      * Handles a successful event and reflects necessary changes on the UI.
      * 
      * @param event
@@ -2306,8 +2279,8 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      */
     private void setLayoutMaintenance(final EventType eventType) {
 
-        findViewById(R.id.fallback_content).setVisibility(View.VISIBLE);
-        Button retry = (Button) findViewById(R.id.fallback_retry);
+        findViewById(R.id.main_fallback_content).setVisibility(View.VISIBLE);
+        Button retry = (Button) findViewById(R.id.main_fallback_retry);
         retry.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -2325,39 +2298,52 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             }
         });
         
-        ImageView mapImageView = (ImageView) findViewById(R.id.fallback_country_map);
+        ImageView mapImageView = (ImageView) findViewById(R.id.main_fallback_country_map);
         
         int position = JumiaApplication.INSTANCE.SHOP_ID;
-
-        Log.i(TAG, "code1image : "+position);
         
         mapImageView.setImageDrawable(getApplicationContext().getResources().obtainTypedArray(R.array.country_fallback_map).getDrawable(position));
         
         String country = getApplicationContext().getResources().obtainTypedArray(R.array.country_names)
                 .getString(position);
-        TextView fallbackBest = (TextView) findViewById(R.id.fallback_best);
+        
+       
+        TextView fallbackBest = (TextView) findViewById(R.id.main_fallback_best);
         fallbackBest.setText(R.string.fallback_best);
         if (country.split(" ").length == 1) {
-            TextView tView = (TextView) findViewById(R.id.fallback_country);
+            TextView tView = (TextView) findViewById(R.id.main_fallback_country);
             tView.setVisibility(View.VISIBLE);
-            TextView txView = (TextView) findViewById(R.id.fallback_options_bottom);
+            tView.setText(country.toUpperCase());
+            TextView txView = (TextView) findViewById(R.id.main_fallback_options_bottom);
             txView.setVisibility(View.VISIBLE);
             txView.setText(country.toUpperCase());
-            findViewById(R.id.fallback_country_double).setVisibility(View.GONE);
-            tView.setText(country.toUpperCase());
+            findViewById(R.id.main_fallback_country_double).setVisibility(View.GONE);
         } else {
-            TextView tView = (TextView) findViewById(R.id.fallback_country_top);
+            TextView tView = (TextView) findViewById(R.id.main_fallback_country_top);
             tView.setText(country.split(" ")[0].toUpperCase());
-            TextView tViewBottom = (TextView) findViewById(R.id.fallback_country_bottom);
+            TextView tViewBottom = (TextView) findViewById(R.id.main_fallback_country_bottom);
             tViewBottom.setText(country.split(" ")[1].toUpperCase());
             fallbackBest.setTextSize(11.88f);
-            TextView txView = (TextView) findViewById(R.id.fallback_options_bottom);
+            TextView txView = (TextView) findViewById(R.id.main_fallback_options_bottom);
             txView.setVisibility(View.VISIBLE);
             txView.setText(country.toUpperCase());
-            findViewById(R.id.fallback_country_double).setVisibility(View.VISIBLE);
-            findViewById(R.id.fallback_country).setVisibility(View.GONE);
+            findViewById(R.id.main_fallback_country_double).setVisibility(View.VISIBLE);
+            findViewById(R.id.main_fallback_country).setVisibility(View.GONE);
 
         }
+        
+        TextView mTextViewBT = (TextView) findViewById(R.id.main_fallback_country_bottom_text);
+        mTextViewBT.setText(R.string.fallback_maintenance_text);
+        
+        TextView mTextViewBT2 = (TextView) findViewById(R.id.main_fallback_country_bottom_text2);
+        mTextViewBT2.setText(R.string.fallback_maintenance_text_bottom);
+        
+        TextView mFallbackChoice = (TextView) findViewById(R.id.main_fallback_choice);
+        mFallbackChoice.setText(R.string.fallback_choice);
+        
+        TextView mFallbackDoorstep = (TextView) findViewById(R.id.main_fallback_doorstep);
+        mFallbackDoorstep.setText(R.string.fallback_doorstep);
+        
         fallbackBest.setSelected(true);
 
     }
