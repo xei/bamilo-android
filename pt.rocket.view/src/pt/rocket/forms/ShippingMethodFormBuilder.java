@@ -8,17 +8,15 @@ import org.json.JSONObject;
 
 import pt.rocket.framework.objects.IJSONSerializable;
 import pt.rocket.framework.rest.RestConstants;
-import pt.rocket.pojo.DynamicForm;
-import pt.rocket.pojo.DynamicFormItem;
-import pt.rocket.pojo.MetaFormExtractor;
 import pt.rocket.utils.ShippingRadioGroupList;
+import pt.rocket.view.R;
 import android.content.ContentValues;
 import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import de.akquinet.android.androlog.Log;
 
 public class ShippingMethodFormBuilder implements IJSONSerializable, Parcelable  {
@@ -151,6 +149,23 @@ public class ShippingMethodFormBuilder implements IJSONSerializable, Parcelable 
         
                 
         return parent;
+    }
+    
+    public int getSelectionId(int groupId){
+        try {
+            return groupList.get(groupId).getSelectedIndex();
+        } catch (Exception e) {
+            return -1;
+        }
+    }
+    
+    public void setSelection(int groupId, int itemId){
+        try {
+            if (groupList.get(groupId).findViewById(R.id.radio_container).findViewById(itemId) instanceof RadioButton)
+                ((RadioButton) groupList.get(groupId).findViewById(R.id.radio_container).findViewById(itemId)).performClick();
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
     }
     
     public ContentValues getValues(){

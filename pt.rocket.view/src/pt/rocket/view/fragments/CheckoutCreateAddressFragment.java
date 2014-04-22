@@ -187,7 +187,7 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
             //Log.d(TAG, "SAVED CONTENT VALUES: " + mShippingSavedValues.toString());
             //Log.d(TAG, "SAVED CONTENT VALUES: " + ((mBillingSavedValues!= null) ? mBillingSavedValues.toString() : "IS NULL") );
         } else {
-            Log.d(TAG, "SAVED CONTENT VALUES IS NULL");
+            Log.i(TAG, "SAVED CONTENT VALUES IS NULL");
         }
         TrackerDelegator.trackCheckoutStep(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), R.string.gcheckoutCreateAddress, R.string.xcheckoutcreateaddress, R.string.mixprop_checkout_create_address);
     }

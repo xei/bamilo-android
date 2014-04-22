@@ -28,9 +28,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -40,6 +40,8 @@ import de.akquinet.android.androlog.Log;
 public class CheckoutShippingMethodsFragment extends BaseFragment implements OnClickListener, IResponseCallback {
 
     private static final String TAG = LogTagHelper.create(CheckoutShippingMethodsFragment.class);
+
+    private static final String SELECTION_STATE = "selection";
     
     private static CheckoutShippingMethodsFragment shippingMethodsFragment;
 
@@ -48,6 +50,8 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
     private ShippingMethodFormBuilder mFormResponse;
 
     private View nFormContainer;
+
+    private int mSelectionSaved = -1;
     
     /**
      * Get instance
@@ -89,11 +93,15 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-        setRetainInstance(true);
+        //setRetainInstance(true);
+        // Validate the saved values 
+        if(savedInstanceState != null)
+            // Get the ship content values
+            mSelectionSaved = savedInstanceState.getInt(SELECTION_STATE);
+        else
+            Log.i(TAG, "SAVED CONTENT VALUES IS NULL");
         TrackerDelegator.trackCheckoutStep(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), R.string.gcheckoutShippingMethods, R.string.xcheckoutshippingmethods, R.string.mixprop_checkout_shipping_methods);
     }
-    
-
     
     /*
      * (non-Javadoc)
@@ -124,7 +132,6 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
         triggerGetShippingMethods();
     }
     
-    
     /*
      * (non-Javadoc)
      * @see pt.rocket.view.fragments.BaseFragment#onStart()
@@ -144,6 +151,16 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see android.support.v4.app.Fragment#onSaveInstanceState(android.os.Bundle)
+     */
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(SELECTION_STATE, mFormResponse.getSelectionId(0));
     }
 
     /*
@@ -209,9 +226,12 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
         mFormResponse = form;
         mShippingMethodsContainer.removeAllViews();
         nFormContainer = mFormResponse.generateForm(getBaseActivity());
-        mShippingMethodsContainer.addView(nFormContainer);        
+        mShippingMethodsContainer.addView(nFormContainer);
         mShippingMethodsContainer.refreshDrawableState();
         getBaseActivity().showContentContainer();
+        // Set the saved selection
+        if(mSelectionSaved != -1)
+            mFormResponse.setSelection(0, mSelectionSaved);
     }
     
     /**
@@ -292,9 +312,11 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
         return true;
     }
 
-
-
-
+    /**
+     * Process the error response
+     * @param bundle
+     * @return boolean
+     */
     protected boolean onErrorEvent(Bundle bundle) {
         
         // Validate fragment visibility

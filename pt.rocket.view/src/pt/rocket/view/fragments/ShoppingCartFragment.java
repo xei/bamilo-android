@@ -622,7 +622,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         TextView totalValue = (TextView) getView().findViewById(R.id.total_value);
         View totalMain = getView().findViewById(R.id.total_container);
         // Set value
-        if(!TextUtils.isEmpty(cart.getCartValue())) {
+        if(!TextUtils.isEmpty(cart.getCartValue()) && !cart.getCartValue().equals("null")) {
             totalValue.setText(CurrencyFormatter.formatCurrency(Double.parseDouble(cart.getCartValue())));
             totalMain.setVisibility(View.VISIBLE);
         } else 
