@@ -21,7 +21,7 @@ public class LastViewedTableHelper {
 	// Table Name
 	public static final String TABLE = "last_viewed";
 	
-	private static final int MAX_SAVED_PRODUCTS = 9;
+	private static final int MAX_SAVED_PRODUCTS = 15;
 	
 	// Table Rows
 	public static final String _ID = "id";

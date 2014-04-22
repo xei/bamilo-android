@@ -66,6 +66,8 @@ public class RestConstants {
 	public static final String JSON_VALUES_TAG = "values";
 	public static final String JSON_DATASET_SOURCE_TAG = "dataset_source";
 	public static final String JSON_SCENARIO_TAG = "scenario";
+	public static final String JSON_TERMS_TAG = "terms";
+	public static final String JSON_LINK_TEXT_TAG = "link_text";
 
 	// FieldValidation Tags
 	public static final String JSON_REQUIRED_TAG = "required";
