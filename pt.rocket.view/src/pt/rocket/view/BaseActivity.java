@@ -1022,6 +1022,9 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                if(findViewById(R.id.main_fallback_content) != null && findViewById(R.id.main_fallback_content).getVisibility() == View.VISIBLE){
+                    return true;
+                }
                 Log.d(TAG, "SEARCH: ON TOUCH: " + event.getAction());
                 // Close navigation menu
                 if (mDrawerLayout != null  && mDrawerLayout.isDrawerOpen(mDrawerNavigation)) 
@@ -1187,6 +1190,9 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      * @author sergiopereira
      */
     private void showSearchComponent(){
+        if(findViewById(R.id.main_fallback_content) != null && findViewById(R.id.main_fallback_content).getVisibility() == View.VISIBLE){
+            return;
+        }
         Log.d(TAG, "SEARCH COMPONENT: SHOW");
         // Validate if exist search icon and bar
         if(menuItems.contains(MyMenuItem.SEARCH) && menuItems.contains(MyMenuItem.SEARCH_BAR)) {
@@ -1827,6 +1833,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
     public void handleSuccessEvent(Bundle bundle) {
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        
         switch (eventType) {
         case GET_SHOPPING_CART_ITEMS_EVENT:
         case ADD_ITEM_TO_SHOPPING_CART_EVENT:
@@ -2285,7 +2292,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
             @Override
             public void onClick(View v) {
-                findViewById(R.id.fallback_content).setVisibility(View.GONE);
+                findViewById(R.id.main_fallback_content).setVisibility(View.GONE);
                 String result = JumiaApplication.INSTANCE.sendRequest(JumiaApplication.INSTANCE
                         .getRequestsRetryHelperList().get(eventType),
                         JumiaApplication.INSTANCE.getRequestsRetryBundleList().get(eventType),

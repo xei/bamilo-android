@@ -526,53 +526,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     /**
      * #### HANDLE EVENT ####
      */
-//    /*
-//     * (non-Javadoc)
-//     * 
-//     * @see pt.rocket.framework.event.EventListener#handleEvent(pt.rocket.framework.event.IEvent)
-//     */
-//    @Override
-//    public final void handleEvent(final ResponseEvent event) {
-//
-//        // Validate fragment visibility
-//        if (!isOnTheScreen() && event.getType() != EventType.FACEBOOK_LOGIN_EVENT) {
-//            Log.w(TAG, "RECEIVED EVENT IN BACKGROUND WAS DISCARDED: " + event.getType().name());
-//            return;
-//        }
-//
-//        if (event.getSuccess()) {
-//            Log.i(TAG, "HANDLE EVENT: SUCCESS");
-//            if (contentEvents.contains(event.type) || userEvents.contains(event.type)) {
-//                boolean showContent = onSuccessEvent((ResponseResultEvent<?>) event);
-//                try {
-//                    if (showContent) {
-//                        ((BaseActivity) getActivity()).showContentContainer(false);
-//                    }
-//                    ((BaseActivity) getActivity()).showWarning(event.warning != null);
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//                
-//                if(getActivity() != null){
-//                    ((BaseActivity) getActivity()).showWarning(event.warning != null);                    
-//                } else {
-//                   return;
-//                }
-//                
-//
-//            }
-//            handleSuccessEvent(event);
-//
-//        } else {
-//            boolean needsErrorHandling = true;
-//            if (contentEvents.contains(event.type) || userEvents.contains(event.type)) {
-//                needsErrorHandling = !onErrorEvent(event);
-//            }
-//            if (needsErrorHandling) {
-//                handleErrorEvent(event);
-//            }
-//        }
-//    }
 
     /**
      * Handles a successful event and reflects necessary changes on the UI.

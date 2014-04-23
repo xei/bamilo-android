@@ -34,7 +34,11 @@ public class GetForgotPasswordFormHelper extends BaseHelper {
     @Override
     public Bundle generateRequestBundle(Bundle args) {
         FormData formData = JumiaApplication.INSTANCE.getFormDataRegistry().get(EventType.GET_FORGET_PASSWORD_FORM_EVENT.action);
-        String url = formData.getUrl();
+        String url =  EventType.GET_FORGET_PASSWORD_FORM_FALLBACK_EVENT.action;
+        if(formData != null){
+           url = formData.getUrl();
+        }
+        
         Bundle bundle = new Bundle();
         bundle.putString(Constants.BUNDLE_URL_KEY, url);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);

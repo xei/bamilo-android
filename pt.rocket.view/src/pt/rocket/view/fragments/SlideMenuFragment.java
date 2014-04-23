@@ -636,6 +636,9 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
                 getBaseActivity().toggle();
                 break;
             case Search:
+                if(getBaseActivity().findViewById(R.id.main_fallback_content) != null && getBaseActivity().findViewById(R.id.main_fallback_content).getVisibility() == View.VISIBLE){
+                    return;
+                }
                 // Show or hide the search component
                 getBaseActivity().showOrHideSearchComponent();
                 // Toggle the navigation menu
