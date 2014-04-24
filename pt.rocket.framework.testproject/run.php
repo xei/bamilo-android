@@ -18,7 +18,7 @@ RegisterFormTest($countries);
 ApiInfoTest($countries);
 CategoriesTests($countries);
 ProductDetailsTests($countries);
-ProductListTests($countries_nc);
+ProductListTests($countries);
 ImageResolutionsTest($countries);
 InitFormTest($countries);
 LoginFormTests($countries);
@@ -40,21 +40,21 @@ ShoppingCartAddItemTest($countries);
 ShoppingCartChangeItemTest($countries);
 ShoppingCartItemTest($countries);
 ShoppingCartRemoveItemTest($countries);
-CallToOrder($countries_nc);
+CallToOrder($countries);
 
-GetSignup($countries_nc);
-GetCostumerAddress($countries_nc);
-#GetBillingAddress($countries_nc);
-#SetBillingAddress($countries_nc);
-CreateAddress($countries_nc);
-GetRegions($countries_nc);
-GetCities($countries_nc);
-#GetShippingMethods($countries_nc);
-#SetShippingMethods($countries_nc);
-#GetPaymentMethods($countries_nc);
-#SetPaymentMethods($countries_nc);
-#GetMyOrder($countries_nc);
-CheckoutFinish($countries_nc);
+GetSignup($countries);
+GetCostumerAddress($countries);
+#GetBillingAddress($countries);
+#SetBillingAddress($countries);
+CreateAddress($countries);
+GetRegions($countries);
+GetCities($countries);
+#GetShippingMethods($countries);
+#SetShippingMethods($countries);
+#GetPaymentMethods($countries);
+#SetPaymentMethods($countries);
+#GetMyOrder($countries);
+CheckoutFinish($countries);
 #**/
 
 /** Will change
