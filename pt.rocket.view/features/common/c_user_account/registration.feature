@@ -83,7 +83,7 @@ Feature: Registration feature
     And I press male
     And I check Terms and Conditions
     And I press the register button
-	And I wait for 5 seconds
+	And I wait for 10 seconds
 	Then I open the navigation menu
 	And I wait for 5 seconds
 	And I should see sign out button

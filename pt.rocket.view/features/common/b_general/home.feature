@@ -4,7 +4,7 @@ Feature: Initial app features
 	Background: 
 	Given I call the variables
 	
-	@country_check @Calabash_Tests
+	@country_check @Calabash_Tests @teste123
 	Scenario: Initial country checker
 	* I wait for 5 seconds
 	Given I should see the countries
@@ -20,20 +20,20 @@ Feature: Initial app features
 	When I open the navigation menu
 	And I should see the login button
 	
-	@splash_check @Calabash_Tests
+	@splash_check @Calabash_Tests @teste123
 	Scenario: Check the splash screen
 	#Given I start the app 
 	Then I sould see the splash screen
 	
-	@home_check @Calabash_Tests
+	@home_check @Calabash_Tests @teste123
 	Scenario: Home should appear when i open the app
 	When I select the country
 	* I wait for 5 seconds
 	Then I should see the home
 	
-	@sidebar_check @Calabash_Tests
+	@sidebar_check @Calabash_Tests @teste123
 	Scenario: Check the sidebar layout
-	When I select the country
+	#When I select the country
 	* I wait for 5 seconds
 	Given I open the navigation menu
 	Then I should see the sidebar

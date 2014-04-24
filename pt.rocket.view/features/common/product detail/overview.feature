@@ -1,4 +1,4 @@
-@Calabash_Tests
+@Calabash_Tests @teste1
 Feature: Check the product detail view
 
 	Background: 
@@ -13,7 +13,7 @@ Feature: Check the product detail view
 	And I enter a valid Category
 	And I press list item number 1
 	And I press list item number 2
-	* I wait for 3 seconds
+	* I wait for 5 seconds
 	And I press Got it
 	When I click in the image
 	Then I should not see the currency

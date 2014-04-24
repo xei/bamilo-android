@@ -51,7 +51,7 @@ Feature: See personal data
     And I enter My Account
     * I wait for progress
 	And I enter My User Data
-	* I wait for 4 seconds
+	* I wait for 10 seconds
 	When I enter the new password
 	And I enter the new repeated password
 	And I press Save

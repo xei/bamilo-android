@@ -3,11 +3,12 @@ Feature: Navigation Drawer
 
 Background: 
 Given I call the variables
-And I select the country
-And I wait for 10 seconds
+
 
 @navigation_drawer_a
 Scenario: Swipe to open/close
+And I select the country
+And I wait for 10 seconds
 When I swipe right moving with 15 steps
 Then I should see the sidebar
 When I swipe left moving with 15 steps

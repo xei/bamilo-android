@@ -1,4 +1,4 @@
-@Calabash_Tests
+@Calabash_Tests 
 Feature: Country switch
 
 	Background: 
@@ -6,7 +6,18 @@ Feature: Country switch
 	And I select the country
 	And I wait for 5 seconds
 	And I Login
-	And I add a product
+	When I open the navigation menu
+	And I enter Categories
+	And I enter a valid Category
+	And I press list item number 1
+	* I wait for 3 seconds
+	And I press list item number 1
+	* I wait for 3 seconds
+	Then I press Got it
+	And I add product to cart
+	* I wait for 5 seconds
+	Then I should see the item was added to shopping cart message
+ 	When I go to cart
 	When I open the navigation menu
 	
 	@country_switch

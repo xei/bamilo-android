@@ -1,5 +1,5 @@
 @logout @Calabash_Tests
-Feature: Login feature
+Feature: Logout feature
 	
 	Background:
 	Given I call the variables

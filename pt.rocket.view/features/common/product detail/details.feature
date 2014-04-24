@@ -1,4 +1,4 @@
-@Calabash_Tests
+@Calabash_Tests @teste3
 Feature: Navigate to a product with different variations
 
 Background: 
@@ -38,6 +38,7 @@ Background:
    	* I wait for 5 seconds 
    	And I press list item number 1
    	When I press Rating
+   	* I wait for 5 seconds 
    	Then I should see the write a review button
    	
    	@review_detail

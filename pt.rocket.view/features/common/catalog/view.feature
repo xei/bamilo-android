@@ -1,4 +1,4 @@
-@Calabash_Tests
+@Calabash_Tests @teste2
 Feature: Catalog
 
 	Background: 
@@ -25,7 +25,7 @@ Feature: Catalog
 	And I enter a valid Category
 	And I press list item number 1
 	* I wait for 3 seconds
-	When I swipe up moving with 10 steps
+	When I swipe up moving with 2 steps
 	Then I should see the loading items message
 	
 	
