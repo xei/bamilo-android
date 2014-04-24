@@ -188,9 +188,11 @@ public class RequestConstants {
 	public static final String BILLING_METHOD_DIFFERENT = "1";
 	
 	public static final String KEY_BILLING_METHOD_SHIPPING_ADDRESS_ID = "billingForm[shippingAddressId]";
-	public static final String BILLING_METHOD_SHIPPING_ADDRESS_ID_EG = "116953";
 	
+	public static final String BILLING_METHOD_SHIPPING_ADDRESS_ID_EG = "116953";
 	public static final String BILLING_METHOD_SHIPPING_ADDRESS_ID_IC = "11977";
 	public static final String BILLING_METHOD_SHIPPING_ADDRESS_ID_MA = "58028";
 	public static final String BILLING_METHOD_SHIPPING_ADDRESS_ID_NG = "311198";
+	public static final String BILLING_METHOD_SHIPPING_ADDRESS_ID_KE = "0";
+	public static final String BILLING_METHOD_SHIPPING_ADDRESS_ID_UG = "0";
 }
