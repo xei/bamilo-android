@@ -40,11 +40,11 @@ public void testGetShippingMethodsEG() throws Throwable {
 //UG and KE don't have NC yet
 
 public void testGetShippingMethodsKE() throws Throwable {
-//  test("https://www.jumia.co.ke");
+  test("https://www.jumia.co.ke");
 }
 
 public void testGetShippingMethodsUG() throws Throwable {
-//  test("https://www.jumia.ug");
+  test("https://www.jumia.ug");
 }
 
 public void test(String url){

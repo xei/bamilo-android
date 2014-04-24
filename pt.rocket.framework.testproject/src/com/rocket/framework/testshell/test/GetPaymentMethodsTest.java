@@ -23,9 +23,9 @@ public void testGetPaymentMethodsIC() throws Throwable {
     test("https://www.jumia.ci");
 }
 
-//public void testGetPaymentMethodsKE() throws Throwable {
-//  test("https://alice-staging.jumia.co.ke");
-//}
+public void testGetPaymentMethodsKE() throws Throwable {
+  test("https://alice-staging.jumia.co.ke");
+}
 
 public void testGetPaymentMethodsMA() throws Throwable {
     test("https://www.jumia.ma");
@@ -39,9 +39,9 @@ public void testGetPaymentMethodsEG() throws Throwable {
     test("https://www.jumia.com.eg");
 }
 
-//public void testGetPaymentMethodsUG() throws Throwable {
-//  test("https://alice-staging.jumia.ug");
-//}
+public void testGetPaymentMethodsUG() throws Throwable {
+  test("https://alice-staging.jumia.ug");
+}
 
 public void test(String url){
     /**

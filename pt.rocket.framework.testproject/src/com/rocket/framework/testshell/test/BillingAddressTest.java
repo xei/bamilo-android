@@ -22,9 +22,9 @@ public void testBillingAdressIC() throws Throwable {
     test("https://www.jumia.ci");
 }
 
-//public void testBillingAdressKE() throws Throwable {
-//  test("https://alice-staging.jumia.co.ke");
-//}
+public void testBillingAdressKE() throws Throwable {
+  test("https://alice-staging.jumia.co.ke");
+}
 
 public void testBillingAdressMA() throws Throwable {
     test("https://www.jumia.ma");
@@ -38,9 +38,9 @@ public void testBillingAdressEG() throws Throwable {
     test("https://www.jumia.com.eg");
 }
 
-//public void testBillingAdressUG() throws Throwable {
-//  test("https://alice-staging.jumia.co.ke");
-//}
+public void testBillingAdressUG() throws Throwable {
+  test("https://alice-staging.jumia.co.ke");
+}
 
 public void test(String url){
     /**

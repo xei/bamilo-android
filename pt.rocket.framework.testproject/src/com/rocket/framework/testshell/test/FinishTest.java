@@ -41,7 +41,7 @@ public class FinishTest extends FrameworkServiceTests {
 	}
 
 	public void testFinishKE() throws Throwable {
-//		test("https://alice-staging.jumia.co.ke", "DigitalDelivery");
+		test("https://www.jumia.co.ke", RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_KE, "DigitalDelivery");
 	}
 	
 	public void testFinishMA() throws Throwable {
@@ -57,7 +57,7 @@ public class FinishTest extends FrameworkServiceTests {
 	}
 
 	public void testFinishUG() throws Throwable {
-//		test("https://alice-staging.jumia.ug","DigitalDelivery");
+		test("https://www.jumia.ug", RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_UG, "DigitalDelivery");
 	}
 //	
 //	public void testFinishStaging_NG() throws Throwable {

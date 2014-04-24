@@ -25,7 +25,7 @@ public void testCitiesIC() throws Throwable {
 }
 
 public void testCitiesKE() throws Throwable {
-//    test("https://www.jumia.co.ke");
+    test("https://www.jumia.co.ke", 0);
 }
 
 public void testCitiesMA() throws Throwable {
@@ -41,7 +41,7 @@ public void testCitiesEG() throws Throwable {
 }
 
 public void testCitiesUG() throws Throwable {
-//  test("https://www.jumia.ug");
+  test("https://www.jumia.ug", 0);
 }
 
 public void test(String url, int region_id){

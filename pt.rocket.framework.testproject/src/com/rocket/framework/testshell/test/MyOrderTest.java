@@ -31,9 +31,9 @@ public class MyOrderTest extends FrameworkServiceTests {
         test("https://www.jumia.ci");
     }
 
-//  public void testMyOrderTestKE() throws Throwable {
-//      test("https://alice-staging.jumia.co.ke");
-//  }
+  public void testMyOrderTestKE() throws Throwable {
+      test("https://alice-staging.jumia.co.ke");
+  }
     
     public void testMyOrderTestMA() throws Throwable {
         test("https://www.jumia.ma");
@@ -47,9 +47,9 @@ public class MyOrderTest extends FrameworkServiceTests {
         test("https://www.jumia.com.eg");
     }
 
-//  public void testMyOrderTestUG() throws Throwable {
-//      test("https://alice-staging.jumia.ug");
-//  }
+  public void testMyOrderTestUG() throws Throwable {
+      test("https://alice-staging.jumia.ug");
+  }
 
     private void test(String url) {
         /**

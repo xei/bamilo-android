@@ -23,7 +23,7 @@ public class SignupTest extends FrameworkServiceTests {
 
 	@SmallTest
 	public void testGetSignupKE() throws Throwable {
-//		executeLogout("https://www.jumia.co.ke");
+		executeLogout("https://www.jumia.co.ke");
 	}
 
 	@SmallTest
@@ -43,7 +43,7 @@ public class SignupTest extends FrameworkServiceTests {
 
 	@SmallTest
 	public void testGetSignupUG() throws Throwable {
-//		executeLogout("https://www.jumia.ug");
+		executeLogout("https://www.jumia.ug");
 	}
 
 	private void executeLogout(String url) {

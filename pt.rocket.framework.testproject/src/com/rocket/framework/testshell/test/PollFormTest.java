@@ -22,9 +22,9 @@ public void testPollFormIC() throws Throwable {
     test("http://www.jumia.ci");
 }
 
-//public void testPollFormKE() throws Throwable {
-//  test("http://alice-staging.jumia.co.ke/");
-//}
+public void testPollFormKE() throws Throwable {
+  test("http://alice-staging.jumia.co.ke/");
+}
 
 public void testPollFormMA() throws Throwable {
     test("http://www.jumia.ma");
@@ -38,9 +38,9 @@ public void testPollFormEG() throws Throwable {
     test("https://www.jumia.com.eg");
 }
 
-//public void testPollFormUG() throws Throwable {
-//  test("https://alice-staging.jumia.co.ke");
-//}
+public void testPollFormUG() throws Throwable {
+  test("https://alice-staging.jumia.co.ke");
+}
 
 public void test(String url){
     /**

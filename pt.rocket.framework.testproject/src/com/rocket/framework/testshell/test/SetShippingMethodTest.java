@@ -29,7 +29,7 @@ public class SetShippingMethodTest extends FrameworkServiceTests {
 	}
 
 	public void testSetShippingMethodKE() throws Throwable {
-//		test("https://www.jumia.co.ke", "teste");
+		test("https://www.jumia.co.ke", "teste");
 	}
 	
 	public void testSetShippingMethodMA() throws Throwable {
@@ -45,7 +45,7 @@ public class SetShippingMethodTest extends FrameworkServiceTests {
 	}
 
 	public void testSetShippingMethodUG() throws Throwable {
-//		test("https://www.jumia.ug", "teste");
+		test("https://www.jumia.ug", "teste");
 	}
 
 	private void test(String url, String shippinng_method) {

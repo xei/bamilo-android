@@ -27,9 +27,9 @@ public class SetBillingMethodTest extends FrameworkServiceTests {
         test("https://www.jumia.ci");
     }
 
-//  public void testSetBillingMethodKE() throws Throwable {
-//      test("https://alice-staging.jumia.co.ke");
-//  }
+  public void testSetBillingMethodKE() throws Throwable {
+      test("https://alice-staging.jumia.co.ke");
+  }
     
     public void testSetBillingMethodMA() throws Throwable {
         test("https://www.jumia.ma");
@@ -43,9 +43,9 @@ public class SetBillingMethodTest extends FrameworkServiceTests {
         test("https://www.jumia.com.eg");
     }
 
-//  public void testSetBillingMethodUG() throws Throwable {
-//      test("https://alice-staging.jumia.ug");
-//  }
+  public void testSetBillingMethodUG() throws Throwable {
+      test("https://alice-staging.jumia.ug");
+  }
 
     private void test(String url) {
         /**
