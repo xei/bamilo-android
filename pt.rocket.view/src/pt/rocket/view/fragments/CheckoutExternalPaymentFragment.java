@@ -310,7 +310,12 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
             webview.loadUrl("about:blank");
         }
-        paymentUrl = JumiaApplication.INSTANCE.getPaymentMethodForm().getAction();
+        if(JumiaApplication.INSTANCE.getPaymentMethodForm() != null){
+            paymentUrl = JumiaApplication.INSTANCE.getPaymentMethodForm().getAction();    
+        } else {
+            super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "NO PAYMENT METHOD DEFINED");
+            return;
+        }
         
         Log.i(TAG, "trackPaymentMethod : payment method : "+JumiaApplication.INSTANCE.getPaymentMethodForm().getName() + " email : "+JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
         TrackerDelegator.trackPaymentMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), JumiaApplication.INSTANCE.getPaymentMethodForm().getName());

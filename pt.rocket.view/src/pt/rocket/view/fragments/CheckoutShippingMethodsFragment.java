@@ -165,6 +165,8 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        if(mFormResponse == null) 
+            return;
         int itemId = mFormResponse.getSelectionId(0);
         if (itemId != -1)
             outState.putInt(SELECTION_STATE, itemId);

@@ -392,7 +392,6 @@ public class Catalog extends BaseFragment implements OnClickListener {
                 Log.i(TAG, "RESTORE FILTER: " + newFilter.getName());
                 // Locate the old filter
                 CatalogFilter oldFilter = locateFilter(mOldCatalogFilterState, newFilter.getId());
-                Log.i(TAG, "OLD FILTER: " + oldFilter.getName());
                 // Validate old filter
                 if (oldFilter != null) {
                     // Case generic filter

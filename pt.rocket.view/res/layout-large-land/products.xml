@@ -52,7 +52,7 @@
             android:layout_above="@id/loadmore"
             android:layout_alignParentTop="true"
             android:listSelector="@android:color/transparent"
-            android:numColumns="2" />
+            android:numColumns="3" />
 
         <!-- <include -->
         <!-- android:id="@+id/container_btn_sort" -->

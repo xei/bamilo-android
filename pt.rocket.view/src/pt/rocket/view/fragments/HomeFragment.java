@@ -557,8 +557,12 @@ public class HomeFragment extends BaseFragment {
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         switch (eventType) {
         case GET_TEASERS_EVENT:
-            proccessResult((Collection<Parcelable>) bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY));
-            configureLayout();
+            Collection<Parcelable> collection = (Collection<Parcelable>) bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
+            if(collection != null) {
+                proccessResult(collection);
+                configureLayout();
+            } else
+                setLayoutFallback();
             break;
         case GET_CALL_TO_ORDER_PHONE:
             SharedPreferences sharedPrefs = getActivity().getSharedPreferences(
