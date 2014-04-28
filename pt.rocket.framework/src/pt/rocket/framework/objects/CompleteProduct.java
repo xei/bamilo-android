@@ -205,8 +205,9 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 				imageList.add(getImageUrl(imageJsonObject.getString("url")));
 			}
 
-			if(dataObject.has(RestConstants.JSON_PROD_UNIQUES_TAG) &&  dataObject.optJSONObject(
-					RestConstants.JSON_PROD_UNIQUES_TAG) != null){
+			if(	dataObject.has(RestConstants.JSON_PROD_UNIQUES_TAG) &&  
+					dataObject.optJSONObject(RestConstants.JSON_PROD_UNIQUES_TAG) != null &&
+					dataObject.optJSONObject(RestConstants.JSON_PROD_UNIQUES_TAG).optJSONObject(RestConstants.JSON_ATTRIBUTES_TAG) != null){
 				
 				JSONObject uniquesObject = dataObject.optJSONObject(
 						RestConstants.JSON_PROD_UNIQUES_TAG).optJSONObject(
