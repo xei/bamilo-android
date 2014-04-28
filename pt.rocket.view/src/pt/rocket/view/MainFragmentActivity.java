@@ -16,6 +16,7 @@ import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.PreferenceListFragment.OnPreferenceAttachedListener;
 import pt.rocket.view.fragments.BaseFragment;
+import pt.rocket.view.fragments.CampaignsFragment;
 import pt.rocket.view.fragments.Catalog;
 import pt.rocket.view.fragments.CategoriesContainerFragment;
 import pt.rocket.view.fragments.ChangeCountryFragment;
@@ -328,6 +329,9 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             break;
         case CHECKOUT_EXTERNAL_PAYMENT:
             fragment = CheckoutExternalPaymentFragment.getInstance();
+            break;
+        case CAMPAIGNS:
+            fragment = CampaignsFragment.getInstance(bundle);
             break;
             
         default:

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/margin_mid"
+    android:background="@android:color/transparent"
+    android:orientation="vertical" >
+
+    <!-- DIVIDER TOP -->
+
+    <View style="@style/divider_horizontal_campaign" />
+
+    <!-- TITLE -->
+
+    <include layout="@layout/campaign_fragment_list_item_title" />
+
+    <!-- IMAGE AND SIZE -->
+
+    <include layout="@layout/campaign_fragment_list_item_middle" />
+
+    <!-- INFO AND BUTTON -->
+
+    <include layout="@layout/campaign_fragment_list_item_info" />
+
+    <!-- DIVIDER BOTTOM -->
+
+    <View style="@style/divider_horizontal_campaign" />
+
+</LinearLayout>

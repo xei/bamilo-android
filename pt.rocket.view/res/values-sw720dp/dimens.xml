@@ -79,5 +79,8 @@
     <dimen name="checkout_header_step_icon">15dp</dimen>
     <dimen name="checkout_header_step_s_icon">20dp</dimen>
     <dimen name="checkout_header_divider_height">1.5dp</dimen>
+    
+	<!-- CAMPAIGN PAGE -->
+    <integer name="campaign_num_columns">2</integer>
 
 </resources>

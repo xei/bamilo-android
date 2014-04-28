@@ -13,6 +13,8 @@ import pt.rocket.framework.objects.ITargeting;
 import pt.rocket.framework.objects.ProductTeaserGroup;
 import pt.rocket.framework.objects.ProductTeaserGroup.TeaserProduct;
 import pt.rocket.framework.objects.TeaserBrand;
+import pt.rocket.framework.objects.TeaserCampaign;
+import pt.rocket.framework.objects.TeaserGroupCampaigns;
 import pt.rocket.framework.objects.TeaserGroupTopBrands;
 import pt.rocket.framework.objects.TeaserGroupTopBrands.TeaserTopBrand;
 import pt.rocket.framework.objects.TeaserImage;
@@ -99,6 +101,8 @@ public class TeasersFactory {
         case TOP_BRANDS_LIST:
             mView = getTeaserTopBrands(mLayoutInflater, (TeaserGroupTopBrands) teaserSpecification);
             break;
+        case CAMPAIGNS_LIST: // XXX
+        	mView = getTeaserCampaigns(mLayoutInflater, (TeaserGroupCampaigns) teaserSpecification);
         default:
             break;
         }
@@ -379,6 +383,46 @@ public class TeasersFactory {
         view.setTag(R.id.target_type, ITargeting.TargetType.BRAND);
         return view;
     }  
+    
+    /*
+     * ################## XXX CAMPAIGNS ##################
+     */
+    
+    /**
+     * Create the view to list the top brands
+     * @param mInflater
+     * @param teaserGroupTopBrands
+     * @return View
+     * @author sergiopereira
+     */
+    private View getTeaserCampaigns(LayoutInflater mInflater, TeaserGroupCampaigns teaserGroupCampaigns) {
+        View rootView = mInflater.inflate(R.layout.teaser_top_brands_group, mainView, false);
+        ViewGroup container = (ViewGroup) rootView.findViewById(R.id.teaser_group_container);
+        if (teaserGroupCampaigns != null) {
+            ((TextView) rootView.findViewById(R.id.teaser_group_title)).setText(teaserGroupCampaigns.getTitle());
+            for (TeaserCampaign teaser : teaserGroupCampaigns.getTeasers()) {
+                container.addView(createCampaignTeaserView(teaser, container, mInflater));
+            }
+        }
+        return rootView;
+    }
+    
+    /**
+     * Create the top brand teaser view
+     * @param teaser
+     * @param vg
+     * @param mInflater
+     * @return the brand view
+     * @author sergiopereira
+     */
+    private View createCampaignTeaserView(TeaserCampaign teaser, ViewGroup vg, LayoutInflater mInflater) {
+    	View campaignTeaserView = mInflater.inflate(R.layout.category_inner_childcat, vg, false);
+        TextView textView = (TextView) campaignTeaserView.findViewById(R.id.text);
+        textView.setText(teaser.getTargetTitle());
+        attachTeaserListener(teaser, campaignTeaserView);
+        return campaignTeaserView;
+    }
+    
     
     /*
      * ################## IMAGE ##################

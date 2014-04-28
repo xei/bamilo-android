@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/campaign_info_background"
+    android:orientation="horizontal"
+    android:padding="@dimen/margin_large" >
+
+    <!-- INFO -->
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_mid"
+        android:layout_weight="1"
+        android:gravity="left|center_vertical" >
+
+        <!-- DISCOUNT -->
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/campaign_item_discount"
+            style="@style/product_price_current_single_item"
+            android:layout_marginRight="@dimen/margin_small"
+            android:layout_toRightOf="@+id/image_loadable"
+            android:ellipsize="marquee"
+            android:fontFamily="roboto_bold"
+            android:gravity="bottom"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:text="X 3,195"
+            android:textSize="@dimen/text_s" />
+
+        <!-- PRICE -->
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/campaign_item_price"
+            style="@style/product_price_old_single_item"
+            android:layout_alignBottom="@id/campaign_item_discount"
+            android:layout_toRightOf="@id/campaign_item_discount"
+            android:ellipsize="marquee"
+            android:fontFamily="roboto_regular"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:text="X 4,495"
+            android:textColor="@color/grey_middlelight"
+            android:textSize="@dimen/text_xs" />
+
+        <!-- SAVE LABEL -->
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/campaign_item_save_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/campaign_item_discount"
+            android:layout_marginRight="@dimen/margin_small"
+            android:layout_marginTop="@dimen/margin_mid"
+            android:fontFamily="roboto_regular"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:text="You Save"
+            android:textColor="@color/grey_middle"
+            android:textSize="@dimen/text_xs" />
+
+        <!-- SAVE VALUE -->
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/campaign_item_save_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/campaign_item_save_label"
+            android:layout_toRightOf="@id/campaign_item_save_label"
+            android:fontFamily="roboto_regular"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:text="X 1,300"
+            android:textColor="@color/green_basic"
+            android:textSize="@dimen/text_xs" />
+
+        <!-- STOCK BAR -->
+
+        <ProgressBar
+            android:id="@+id/campaign_item_stock_bar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:layout_below="@id/campaign_item_save_label"
+            android:layout_marginTop="@dimen/margin_mid"
+            android:background="@color/grey_campaign_bar"
+            android:clickable="false"
+            android:indeterminate="false"
+            android:max="100"
+            android:progress="0"
+            android:progressDrawable="@android:color/transparent" />
+
+        <!-- STOCK LABEL -->
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/campaign_item_stock_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/campaign_item_stock_bar"
+            android:layout_marginRight="@dimen/margin_small"
+            android:layout_marginTop="@dimen/margin_small"
+            android:fontFamily="roboto_regular"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:text="Remaining Stock:"
+            android:textColor="@color/grey_middle"
+            android:textSize="@dimen/text_xs" />
+
+        <!-- STOCK VALUE -->
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/campaign_item_stock_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/campaign_item_stock_label"
+            android:layout_toRightOf="@id/campaign_item_stock_label"
+            android:fontFamily="roboto_bold"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:text="100%"
+            android:textColor="@color/grey_middle"
+            android:textSize="@dimen/text_xs" />
+    </RelativeLayout>
+
+    <!-- BUTTON -->
+
+    <org.holoeverywhere.widget.Button
+        android:id="@+id/campaign_item_button_buy"
+        style="@style/button_orange_style"
+        android:layout_width="0dp"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/margin_veryhuge"
+        android:layout_marginRight="@dimen/margin_mid"
+        android:layout_weight="1"
+        android:fontFamily="roboto_bold"
+        android:text="Buy Now" />
+
+</LinearLayout>

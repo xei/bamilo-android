@@ -145,16 +145,21 @@
 
     <item name="checkout_main_container" format="float" type="dimen">0.70</item>
     <item name="checkout_order_summary" format="float" type="dimen">0.30</item>
-    
+
     <!-- MY ORDER -->
     <dimen name="checkout_order_inner_margin_left">@dimen/margin_mid</dimen>
     <dimen name="checkout_order_inner_margin_right">@dimen/margin_mid</dimen>
-    
+
     <!-- DIALOG CATALOG FILTER -->
     <dimen name="catalog_button_filter_width">80dp</dimen>
     <dimen name="dialog_catalog_filter_width">@dimen/match_parent</dimen>
     <dimen name="dialog_catalog_filter_height">400.00dp</dimen>
-    
-    
+
+    <!-- CAMPAIGN PAGE -->
+    <integer name="campaign_num_columns">1</integer>
+    <dimen name="campaign_banner_height">146.67dp</dimen>
+    <dimen name="campaign_title_height">53.33dp</dimen>
+    <dimen name="campaign_title_margin_left">@dimen/margin_midhuge</dimen>
+    <dimen name="campaign_image_height">173.33dp</dimen>
 
 </resources>

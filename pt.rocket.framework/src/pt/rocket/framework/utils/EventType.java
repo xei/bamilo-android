@@ -176,7 +176,9 @@ public enum EventType {
 	
 	REMOVE_VOUCHER("http:/order/removevoucher/", RestContract.NO_CACHE),
 	
-	SEARCH_PRODUCT("http:/product.html", RestContract.NO_CACHE)
+	SEARCH_PRODUCT("http:/product.html", RestContract.NO_CACHE),
+	
+	GET_CAMPAIGN_EVENT("http:/campaign/get/", RestContract.MAX_CACHE_TIME)
 	
 	;
     

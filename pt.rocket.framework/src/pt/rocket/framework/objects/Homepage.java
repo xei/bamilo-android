@@ -88,9 +88,9 @@ public class Homepage implements IJSONSerializable, Parcelable{
 		JSONArray dataArray = jsonObject.getJSONArray(RestConstants.JSON_DATA_TAG);
 		int dataArrayLenght = dataArray.length();
 //		ArrayList<TeaserSpecification<?>> teaserSpecifications = new ArrayList<TeaserSpecification<?>>();
-		for (int i = 0; i < dataArrayLenght; ++i) {
-			teaserSpecifications.add(TeaserSpecification.parse(dataArray
-					.getJSONObject(i)));
+		
+		for (int i = 0; i < dataArrayLenght; ++i) { // XXX
+			teaserSpecifications.add(TeaserSpecification.parse(dataArray.getJSONObject(i)));
 		}
 		return true;
 	}

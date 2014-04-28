@@ -9,7 +9,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import pt.rocket.app.JumiaApplication;
 import pt.rocket.framework.enums.RequestType;
 import pt.rocket.framework.objects.Homepage;
 import pt.rocket.framework.rest.RestConstants;
@@ -40,7 +39,6 @@ public class GetTeasersHelper extends BaseHelper {
 
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
-        // TODO Auto-generated method stub
     	Log.d(TAG, "parseResponseBundle GetTeasersHelper");
     	
     	
@@ -59,7 +57,6 @@ public class GetTeasersHelper extends BaseHelper {
            
                      
        } catch (JSONException e) {
-           // TODO Auto-generated catch block
            e.printStackTrace();
        }
 

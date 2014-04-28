@@ -209,6 +209,12 @@
         <item name="android:background">@color/grey_dividerlight</item>
     </style>
 
+    <style name="divider_horizontal_campaign">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1.33dp</item>
+        <item name="android:background">@color/grey_highlight</item>
+    </style>
+
     <!-- //////// Layouts Defenitions //////// -->
 
     <style name="ShoppingCartCount">

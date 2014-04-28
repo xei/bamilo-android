@@ -90,5 +90,12 @@
     <dimen name="checkout_header_step_icon">15dp</dimen>
     <dimen name="checkout_header_step_s_icon">20dp</dimen>
     <dimen name="checkout_header_divider_height">1.5dp</dimen>
+    
+	<!-- CAMPAIGN PAGE -->
+    <integer name="campaign_num_columns">3</integer>
+    <dimen name="campaign_banner_height">253.33dp</dimen>
+    <dimen name="campaign_title_height">72.33dp</dimen>
+    <dimen name="campaign_title_margin_left">@dimen/margin_mid</dimen>
+    <dimen name="campaign_image_height">226.67dp</dimen>
 
 </resources>

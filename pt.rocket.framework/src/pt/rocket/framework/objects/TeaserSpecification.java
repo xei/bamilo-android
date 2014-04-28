@@ -47,6 +47,9 @@ public abstract class TeaserSpecification<T extends ITargeting> implements IJSON
 		case TOP_BRANDS_LIST:
 			teaserSpecification = new TeaserGroupTopBrands();
 			break;
+		case CAMPAIGNS_LIST:// XXX
+			teaserSpecification = new TeaserGroupCampaigns();
+			break;
 		}
 		teaserSpecification.initialize(jsonObject);
 		return teaserSpecification;

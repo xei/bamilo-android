@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/campaign_title_height"
+    android:orientation="horizontal"
+    android:paddingLeft="@dimen/campaign_title_margin_left"
+    android:paddingRight="@dimen/margin_large" >
+
+    <!-- STOCK OFF -->
+
+    <org.holoeverywhere.widget.TextView
+        android:id="@+id/campaign_item_stock_off"
+        android:layout_width="45dp"
+        android:layout_height="match_parent"
+        android:background="@drawable/campaign_promobadge"
+        android:fontFamily="roboto_bold"
+        android:gravity="center_horizontal"
+        android:lines="2"
+        android:maxLines="2"
+        android:paddingTop="@dimen/margin_small"
+        android:text="29%\nOFF"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/text_s" />
+
+    <!-- NAME -->
+
+    <org.holoeverywhere.widget.TextView
+        android:id="@+id/campaign_item_name"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/margin_large"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:fontFamily="roboto_regular"
+        android:gravity="center"
+        android:lines="2"
+        android:maxLines="2"
+        android:text="Ambimmac Round Shape Costume Set - Gold"
+        android:textColor="@color/grey_middle"
+        android:textSize="@dimen/text_l" />
+
+</LinearLayout>

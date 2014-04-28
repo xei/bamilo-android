@@ -38,5 +38,14 @@
     <color name="dialog_title_background">@color/grey_highlight</color>
     <color name="form_text">@color/grey_middle</color>
     <color name="form_text_hint">@color/grey_highlight</color>
+    
+    <color name="campaign_info_background">#fff7e6</color>
+    
+    <color name="grey_campaign_bar">#dadada</color>
+    <color name="green_campaign_bar">#0a9f2a</color>
+    <color name="yellow_campaign_bar">#ffc64a</color>
+    <color name="orange_campaign_bar">#ee7822</color>
+    
+    
 
 </resources>

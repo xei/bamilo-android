@@ -215,6 +215,10 @@ public class RestConstants {
 	// private static final String JSON_WIDTH_TAG = "width";
 	// private static final String JSON_HEIGHT_TAG = "height";
 	// private static final String JSON_FORMAT_TAG = "format";
+	
+	// Teaser Campaign Tags
+	public static final String JSON_CAMPAIGN_NAME_TAG = "campaign_name";
+	public static final String JSON_CAMPAIGN_URL_TAG = "campaign_url";
 
 	// TeaserBrandElement Tags
 	public static final String JSON_BRAND_DESCRIPTION_TAG = JSON_DESCRIPTION_TAG;
