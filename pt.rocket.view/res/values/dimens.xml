@@ -25,6 +25,7 @@
     <dimen name="margin_midhuge">24dp</dimen>
     <dimen name="margin_veryhuge">32dp</dimen>
     <dimen name="divider_height">1dp</dimen>
+    <dimen name="divider_width">0.5dp</dimen>
     <dimen name="distance_item_small">24dp</dimen>
     <dimen name="distance_item_mid">36dp</dimen>
     <dimen name="navigation_title_height">48dp</dimen>
