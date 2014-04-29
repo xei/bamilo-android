@@ -91,6 +91,7 @@ public class DarwinDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(SectionsTablesHelper.CREATE);
         db.execSQL(CategoriesTableHelper.CREATE);
         db.execSQL(LastViewedTableHelper.CREATE);
+        db.execSQL(RelatedItemsTableHelper.CREATE);
         db.execSQL(SearchRecentQueriesTableHelper.CREATE);
     }
 
@@ -104,6 +105,7 @@ public class DarwinDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_DROP_TABLE + CategoriesTableHelper.TABLE);
         db.execSQL(SQL_DROP_TABLE + SectionsTablesHelper.TABLE);
         db.execSQL(SQL_DROP_TABLE + LastViewedTableHelper.TABLE);
+        db.execSQL(SQL_DROP_TABLE + RelatedItemsTableHelper.TABLE_RELATED);
         db.execSQL(SearchRecentQueriesTableHelper.DROP);
         // Create tables again
         onCreate(db);
