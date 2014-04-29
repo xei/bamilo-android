@@ -44,6 +44,7 @@ import pt.rocket.view.fragments.BaseFragment;
 import pt.rocket.view.fragments.ProductBasicInfoFragment;
 import pt.rocket.view.fragments.ProductDetailsDescriptionFragment;
 import pt.rocket.view.fragments.ProductImageGalleryFragment;
+import pt.rocket.view.fragments.ProductRelatedItemsFragment;
 import pt.rocket.view.fragments.ProductSpecificationsFragment;
 import pt.rocket.view.fragments.ProductVariationsFragment;
 import android.content.ContentValues;
@@ -164,6 +165,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
     private Fragment productImagesViewPagerFragment;
     private Fragment productSpecificationFragment;
     private Fragment productBasicInfoFragment;
+    private Fragment relatedItemsFragment;
 
     public static String VARIATION_LIST_POSITION = "variation_list_position";
     private int mVariationsListPosition = -1;
@@ -419,7 +421,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
         productImagesViewPagerFragment = null;
         productSpecificationFragment = null;
         productBasicInfoFragment = null;
-
+        relatedItemsFragment = null;
     }
 
     /**
@@ -951,6 +953,11 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
                     productSpecificationFragment, false, true);
             fragmentManagerTransition(R.id.product_basicinfo_container, productBasicInfoFragment,
                     false, true);
+            if(JumiaApplication.INSTANCE.showRelatedItemsGlobal){
+                relatedItemsFragment = ProductRelatedItemsFragment.getInstance();
+                fragmentManagerTransition(R.id.product_related_container, relatedItemsFragment,
+                        false, true);
+            }
 
             FragmentCommunicatorForProduct.getInstance().updateCurrentProduct(mCompleteProduct);
             Bundle bundle = new Bundle();

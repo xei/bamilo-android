@@ -711,6 +711,7 @@ public class HomeFragment extends BaseFragment {
                         break;
                     case PRODUCT:
                         if (targetUrl != null) {
+                            JumiaApplication.INSTANCE.showRelatedItemsGlobal = false;
                             bundle.putString(ConstantsIntentExtra.CONTENT_URL, targetUrl);
                             bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaserprod_prefix);
                             bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");

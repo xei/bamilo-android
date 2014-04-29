@@ -215,6 +215,11 @@
                 android:id="@+id/product_specifications_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+            
+            <FrameLayout
+                android:id="@+id/product_related_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
         </LinearLayout>
     </pt.rocket.utils.ScrollViewWithHorizontal>
 

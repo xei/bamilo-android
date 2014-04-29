@@ -181,9 +181,9 @@
             android:id="@+id/viewpager_tips"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingTop="55dp"
             android:layout_above="@id/viewpager_tips_btn_indicator"
             android:background="#90000000"
+            android:paddingTop="55dp"
             android:visibility="gone" />
     </RelativeLayout>
     <!-- Left Container -->
@@ -199,8 +199,8 @@
     <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="0.95" 
-        android:layout_marginRight="@dimen/margin_small">
+        android:layout_marginRight="@dimen/margin_small"
+        android:layout_weight="0.95" >
 
         <LinearLayout
             android:id="@+id/shop_buttons"
@@ -214,9 +214,9 @@
                 android:layout_marginLeft="0dp"
                 android:layout_marginRight="0dp"
                 android:layout_weight="1"
+                android:contentDescription="@string/productdetail_addcart_description"
                 android:marqueeRepeatLimit="marquee_forever"
                 android:singleLine="true"
-                android:contentDescription="@string/productdetail_addcart_description"
                 android:text="@string/add_to_shopping_cart" />
 
             <org.holoeverywhere.widget.Button
@@ -304,6 +304,11 @@
 
                 <FrameLayout
                     android:id="@+id/product_specifications_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <FrameLayout
+                    android:id="@+id/product_related_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </LinearLayout>

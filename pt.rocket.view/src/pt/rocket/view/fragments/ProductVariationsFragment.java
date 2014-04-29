@@ -206,8 +206,6 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
             bundle.putInt(ProductDetailsActivityFragment.LOADING_PRODUCT_KEY, position);
             bundle.putInt(ConstantsIntentExtra.VARIATION_LISTPOSITION, mVariationsListPosition);
             FragmentCommunicatorForProduct.getInstance().notifyTarget(this, bundle, 0);
-
-            // mCallback.onFragmentElementSelected(position);
             mList.setSelectedItem(position, HorizontalListView.MOVE_TO_DIRECTLY);
         }
     }

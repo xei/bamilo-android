@@ -14,6 +14,7 @@ import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.ErrorCode;
+import pt.rocket.framework.database.RelatedItemsTableHelper;
 import pt.rocket.framework.interfaces.IMetaData;
 import pt.rocket.framework.objects.CatalogFilter;
 import pt.rocket.framework.objects.Product;
@@ -330,7 +331,7 @@ public class CatalogPageModel {
                     // // Call Product Details
 
                     Log.i("TAG", "DIR=======>" + dir + " sort =====> " + sort);
-
+                    JumiaApplication.INSTANCE.showRelatedItemsGlobal = true;
                     Bundle bundle = new Bundle();
                     bundle.putString(ConstantsIntentExtra.CONTENT_URL,
                             ((Product) productsAdapter.getItem(activePosition)).getUrl());
@@ -362,7 +363,7 @@ public class CatalogPageModel {
                     // // Call Product Details
 
                     Log.i("TAG", "DIR=======>" + dir + " sort =====> " + sort);
-
+                    JumiaApplication.INSTANCE.showRelatedItemsGlobal = true;
                     Bundle bundle = new Bundle();
                     bundle.putString(ConstantsIntentExtra.CONTENT_URL,
                             ((Product) productsAdapter.getItem(activePosition)).getUrl());
@@ -797,6 +798,13 @@ public class CatalogPageModel {
         // Valdiate products
         if (productsPage != null && productsPage.getTotalProducts() > 0) {
             Log.d(TAG, "onSuccessEvent: products on page = " + productsPage.getProducts().size() + " total products = " + productsPage.getTotalProducts());
+            
+            if(this.index == 1 && pageNumber == 1){
+                RelatedItemsTableHelper.insertRelatedItemsAndClear(mActivity, productsPage.getProducts());
+            } else if (this.index == 1 && pageNumber == 2){
+                RelatedItemsTableHelper.insertRelatedItems(mActivity, productsPage.getProducts());
+            }
+            
             totalProducts = productsPage.getTotalProducts();
             if (mFragment.isVisible()) {
                 // set total items lable

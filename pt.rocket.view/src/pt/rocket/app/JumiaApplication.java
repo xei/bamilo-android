@@ -25,8 +25,10 @@ import pt.rocket.framework.service.RemoteService;
 import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CustomerUtils;
+import pt.rocket.framework.utils.Direction;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.ImageResolutionHelper;
+import pt.rocket.framework.utils.ProductSort;
 import pt.rocket.framework.utils.SingletonMap;
 import pt.rocket.helpers.BaseHelper;
 import pt.rocket.interfaces.IResponseCallback;
@@ -150,6 +152,12 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     public String ADX_VERSION_NAME = "";
     public String ADX_DISPLAY_SIZE = "";
     
+    
+    /**
+     * Related Items Variables
+     */
+    public boolean showRelatedItemsGlobal = false;
+
     /**
      * Tracking Request performance
      */
@@ -730,6 +738,10 @@ public class JumiaApplication extends Application implements ExceptionCallback {
         registerSavedInstanceState = null;
         cleanCategoriesState();
         getCustomerUtils().clearCredentials();
+    }
+    
+    public void cleanRelatedItemsVariables(){
+        showRelatedItemsGlobal = false;
     }
     
     /**
