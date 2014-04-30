@@ -42,6 +42,7 @@
     <!-- Event Categories -->
     <string name="gcatalog">Catalog</string>
     <string name="gcheckout">Checkout</string>
+    <string name="gcampaign">Campaign</string>
 
     <!-- Action -->
     <string name="gpdv">pdv</string>

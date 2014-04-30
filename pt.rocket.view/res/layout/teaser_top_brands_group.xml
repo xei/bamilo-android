@@ -12,6 +12,7 @@
         android:text="Categories" />
 
     <View
+        android:id="@+id/teaser_group_title_divider"
         style="@style/line_grey_style"
         android:layout_marginBottom="0dp" />
 

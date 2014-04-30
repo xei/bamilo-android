@@ -11,7 +11,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
- * 
+ * Class that represents a teaser campaign
  * @author sergiopereira
  *
  */
@@ -37,9 +37,17 @@ public class TeaserCampaign implements ITargeting, IJSONSerializable, Parcelable
 	}
 	
 	/**
-	 * TODO TEMP
+	 * Set the campaign title
+	 * @param title
+	 * @author sergiopereira
 	 */
 	public void setTitle(String title) { this.name = title; }
+	
+	/**
+	 * Set the campaign url/id 
+	 * @param url
+	 * @author sergiopereira
+	 */
 	public void setUrl(String url) { this.url = url; }
 	
 	/*

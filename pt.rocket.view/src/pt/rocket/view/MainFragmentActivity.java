@@ -331,7 +331,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             fragment = CheckoutExternalPaymentFragment.getInstance();
             break;
         case CAMPAIGNS:
-            fragment = CampaignsFragment.getInstance(bundle);
+            fragment = CampaignsFragment.newInstance(bundle);
             break;
             
         default:

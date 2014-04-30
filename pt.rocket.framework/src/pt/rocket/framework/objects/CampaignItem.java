@@ -8,20 +8,21 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import pt.rocket.framework.rest.RestConstants;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
 /**
- * 
+ * Class used to represent an item associated a campaign
  * @author sergiopereira
- *
  */
 public class CampaignItem implements IJSONSerializable, Parcelable {
 	
 	private static final String TAG = CampaignItem.class.getSimpleName();
 
-	private Double mSavePrice;
+	private double mSavePrice;
 	
 	private double mSpecialPrice;
 
@@ -48,6 +49,10 @@ public class CampaignItem implements IJSONSerializable, Parcelable {
 	private boolean hasUniqueSize;
 
 	private ArrayList<String> mSizes;
+	
+	private String mSelectedSize;
+	
+	private int mSelectedSizePosition;
 
 	/**
 	 * Empty constructor
@@ -70,19 +75,19 @@ public class CampaignItem implements IJSONSerializable, Parcelable {
 	public boolean initialize(JSONObject jsonObject) {
 		Log.d(TAG, "ON INITIALIZE");
 		
-		mSavePrice = jsonObject.optDouble("save_price");
-		mSpecialPrice = jsonObject.optDouble("special_price");
-		mMaxSpecialPrice = jsonObject.optDouble("max_special_price");
-		mPrice = jsonObject.optDouble("price");
-		mMaxPrice = jsonObject.optDouble("max_price");
-		mSku = jsonObject.optString("sku");
-		mBrand = jsonObject.optString("brand");
-		mName = jsonObject.optString("name");
-		mStockPercentage = jsonObject.optInt("stock_percentage");
-		mMaxSavingPercentage = jsonObject.optString("max_saving_percentage");
-		hasUniqueSize = jsonObject.optBoolean("has_unique_size");
+		mSavePrice = jsonObject.optDouble(RestConstants.JSON_SAVE_PRICE_TAG);
+		mSpecialPrice = jsonObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_TAG);
+		mMaxSpecialPrice = jsonObject.optDouble(RestConstants.JSON_MAX_SPECIAL_PRICE_TAG);
+		mPrice = jsonObject.optDouble(RestConstants.JSON_PRICE_TAG);
+		mMaxPrice = jsonObject.optDouble(RestConstants.JSON_MAX_PRICE_TAG);
+		mSku = jsonObject.optString(RestConstants.JSON_SKU_TAG);
+		mBrand = jsonObject.optString(RestConstants.JSON_BRAND_TAG);
+		mName = jsonObject.optString(RestConstants.JSON_NAME_TAG);
+		mStockPercentage = jsonObject.optInt(RestConstants.JSON_STOCK_PERCENTAGE_TAG);
+		mMaxSavingPercentage = jsonObject.optString(RestConstants.JSON_MAX_SAVING_PERCENTAGE_TAG);
+		hasUniqueSize = jsonObject.optBoolean(RestConstants.JSON_HAS_UNIQUE_SIZE_TAG);
 		
-		JSONArray imagesA = jsonObject.optJSONArray("images");
+		JSONArray imagesA = jsonObject.optJSONArray(RestConstants.JSON_IMAGES_TAG);
 		if(imagesA != null && imagesA.length() > 0) {
 			mImage = imagesA.optString(0);
 			mImages = new ArrayList<String>();
@@ -91,16 +96,14 @@ public class CampaignItem implements IJSONSerializable, Parcelable {
 			}
 		}
  
-		JSONArray sizesA = jsonObject.optJSONArray("sizes");
+		JSONArray sizesA = jsonObject.optJSONArray(RestConstants.JSON_SIZES_TAG);
 		if(sizesA != null && sizesA.length() > 0) {
 			mSizes = new ArrayList<String>();
 			for (int i = 0; i < sizesA.length(); i++) {
 				mSizes.add(sizesA.optString(i));
 			}
 		}
-		
-		Log.d(TAG, "ON INITIALIZE: " + toString());
-		
+
 		return true;
 	}
 	
@@ -210,18 +213,56 @@ public class CampaignItem implements IJSONSerializable, Parcelable {
 	}
 
 	/**
-	 * @return the hasUniqueSize
-	 */
-	public boolean hasUniqueSize() {
-		return hasUniqueSize;
-	}
-
-	/**
 	 * @return the mSizes
 	 */
 	public ArrayList<String> getSizes() {
 		return mSizes;
 	}
+	
+	/**
+	 * @return the mSelectedSize
+	 */
+	public String getSelectedSize() {
+		return mSelectedSize;
+	}
+
+	/**
+	 * @return the mSelectedSizePosition
+	 */
+	public int getSelectedSizePosition() {
+		return mSelectedSizePosition;
+	}
+
+	/*
+     * ########### Validators ###########
+     */
+	/**
+	 * @return the hasUniqueSize
+	 */
+	public boolean hasUniqueSize() {
+		return hasUniqueSize;
+	}
+	
+	/**
+	 * @return the hasSizes
+	 */
+	public boolean hasSizes() {
+		return (mSizes != null && mSizes.size() > 0) ? true : false;
+	}
+	
+	/**
+	 * @return the hasSizes
+	 */
+	public boolean hasSelectedSize() {
+		return (hasSizes() && mSelectedSizePosition >= 0  && mSelectedSizePosition < mSizes.size()) ? true : false;
+	}
+	
+	/**
+	 * @return the hasSizes
+	 */
+	public boolean hasStock() {
+		return (mStockPercentage > 0) ? true : false;
+	}	
 	
 	/*
      * ########### Setters ###########
@@ -323,6 +364,20 @@ public class CampaignItem implements IJSONSerializable, Parcelable {
 	public void setSizes(ArrayList<String> mSizes) {
 		this.mSizes = mSizes;
 	}
+	
+	/**
+	 * @param mSelectedSize the mSelectedSize to set
+	 */
+	public void setSelectedSize(String mSelectedSize) {
+		this.mSelectedSize = mSelectedSize;
+	}
+
+	/**
+	 * @param mSelectedSizePosition the mSelectedSizePosition to set
+	 */
+	public void setSelectedSizePosition(int mSelectedSizePosition) {
+		this.mSelectedSizePosition = mSelectedSizePosition;
+	}
 
 	/**
      * ########### Parcelable ###########
@@ -342,8 +397,22 @@ public class CampaignItem implements IJSONSerializable, Parcelable {
 	 */
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
-		//dest.writeString(mSavePrice);
-		//dest.writeString(url);
+		dest.writeDouble(mSavePrice);
+		dest.writeDouble(mSpecialPrice);
+		dest.writeDouble(mMaxSpecialPrice);
+		dest.writeDouble(mPrice);
+		dest.writeDouble(mMaxPrice);
+		dest.writeString(mSku);
+		dest.writeString(mBrand);
+		dest.writeString(mName);
+		dest.writeString(mImage);
+		dest.writeList(mImages);
+		dest.writeInt(mStockPercentage);
+		dest.writeString(mMaxSavingPercentage);
+		dest.writeBooleanArray(new boolean[] {hasUniqueSize});
+		dest.writeList(mSizes);
+		dest.writeString(mSelectedSize);
+		dest.writeInt(mSelectedSizePosition);
 	}
 	
 	/**
@@ -351,8 +420,22 @@ public class CampaignItem implements IJSONSerializable, Parcelable {
 	 * @param in
 	 */
 	public CampaignItem(Parcel in) {
-        //mSavePrice = in.readString();
-        //url = in.readString();
+		mSavePrice = in.readDouble();
+		mSpecialPrice = in.readDouble();
+		mMaxSpecialPrice = in.readDouble();
+		mPrice = in.readDouble();
+		mMaxPrice = in.readDouble();
+		mSku = in.readString();
+		mBrand = in.readString();
+		mName = in.readString();
+		mImage = in.readString();
+		in.readList(mImages, String.class.getClassLoader());
+		mStockPercentage = in.readInt();
+		mMaxSavingPercentage = in.readString();
+		in.readBooleanArray(new boolean[] {hasUniqueSize});
+		in.readList(mSizes, String.class.getClassLoader());
+		mSelectedSize = in.readString();
+		mSelectedSizePosition = in.readInt();
 	}
 	
 	/**

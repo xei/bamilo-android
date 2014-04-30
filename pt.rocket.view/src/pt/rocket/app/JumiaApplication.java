@@ -18,6 +18,7 @@ import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.objects.PaymentInfo;
 import pt.rocket.framework.objects.ShoppingCart;
+import pt.rocket.framework.objects.TeaserCampaign;
 import pt.rocket.framework.objects.VersionInfo;
 import pt.rocket.framework.service.IRemoteService;
 import pt.rocket.framework.service.IRemoteServiceCallback;
@@ -743,6 +744,40 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     public void cleanRelatedItemsVariables(){
         showRelatedItemsGlobal = false;
     }
+
+    
+    private static ArrayList<TeaserCampaign> sTeaserCampaigns;
+    
+    /**
+     * 
+     * @param campaigns
+     * @author sergiopereira
+     */
+    public static void saveTeaserCampaigns(ArrayList<TeaserCampaign> campaigns) {
+        sTeaserCampaigns = campaigns;
+    }
+    
+    /**
+     * 
+     * @return
+     * @author sergiopereira
+     */
+    public static ArrayList<TeaserCampaign> getSavedTeaserCampaigns() {
+        return sTeaserCampaigns;
+    }
+    
+    /**
+     * 
+     * @return
+     * @author sergiopereira
+     */
+    public static boolean hasSavedTeaserCampaigns() {
+        return (sTeaserCampaigns != null) ? true : false;
+    }
+
+
+    
+    
     
     /**
      * Save tracking values to the file

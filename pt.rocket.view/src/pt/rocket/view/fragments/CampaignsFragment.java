@@ -18,14 +18,11 @@ import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Shader;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,17 +31,18 @@ import android.widget.TextView;
 import de.akquinet.android.androlog.Log;
 
 /**
- * 
+ * Class used to show all campaigns
  * @author sergiopereira
- * 
  */
-public class CampaignsFragment extends BaseFragment implements OnPageChangeListener {
+public class CampaignsFragment extends BaseFragment {
 
     private static final String TAG = LogTagHelper.create(CampaignsFragment.class);
     
     public static final String CAMPAIGNS_TAG = "campaigns";
     
-    private static CampaignsFragment sCampaignFragment;
+    public static final String CAMPAIGN_POSITION_TAG = "campaign_position";
+    
+    private static CampaignsFragment sCampaignsFragment;
 
     private ViewPager mCampaignPager;
 
@@ -55,16 +53,14 @@ public class CampaignsFragment extends BaseFragment implements OnPageChangeListe
     private PagerTabStrip mCampaignPagerTabStrip;
     
     /**
-     * 
-     * @return
+     * Constructor via bundle
+     * @return CampaignsFragment
+     * @author sergiopereira
      */
-    public static CampaignsFragment getInstance(Bundle bundle) {
-        if(sCampaignFragment == null)
-            sCampaignFragment = new CampaignsFragment();
-        return sCampaignFragment;
+    public static CampaignsFragment newInstance(Bundle bundle) {
+        sCampaignsFragment = new CampaignsFragment();
+        return sCampaignsFragment;
     }
-
-
 
     /**
      * Empty constructor
@@ -97,8 +93,7 @@ public class CampaignsFragment extends BaseFragment implements OnPageChangeListe
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "ON CREATE");
-        //setRetainInstance(true);
+        Log.i(TAG, "ON CREATE"); 
     }
     
     /*
@@ -122,33 +117,27 @@ public class CampaignsFragment extends BaseFragment implements OnPageChangeListe
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
-
         // Get campaigns from arguments
         mCampaigns = getArguments().getParcelableArrayList(CAMPAIGNS_TAG);
-        
-        // Create campaigns
-        // Get view pager
-        // Create adapter
-        // Show
-        
-        // Get campaign from extras
-        String id = "deals-of-the-day";// "http://www.jumia.com.ng/mobapi/v1.0/campaign/get/?campaign_slug=deals-of-the-day";
-        
+        // Get pre selection 
+        int selectedPosition = getArguments().getInt(CAMPAIGN_POSITION_TAG);
         // Instantiate a ViewPager and a PagerAdapter.
-        
+        // Get view pager 
         mCampaignPager = (ViewPager) view.findViewById(R.id.campaign_pager);
+        // Get tab pager
         mCampaignPagerTabStrip = (PagerTabStrip) view.findViewById(R.id.campaign_pager_tab);
+        // Set tab pager
         setTabStripLayoutSpec();
-        
+        // Validate the current view
         mCampaignPagerAdapter = (CampaignPagerAdapter) mCampaignPager.getAdapter();
         if(mCampaignPagerAdapter == null) {
+            //Log.d(TAG, "CAMPAIGNS ADAPTER IS NULL");
             mCampaignPagerAdapter = new CampaignPagerAdapter(getChildFragmentManager(), mCampaigns);
             mCampaignPager.setAdapter(mCampaignPagerAdapter);
         }
-        mCampaignPager.setOnPageChangeListener(this);
-        //mViewPager.setCurrentItem(selectedPage, true);
+        // Show the pre selection
+        mCampaignPager.setCurrentItem(selectedPosition, true);
     }
-    
     
     /*
      * (non-Javadoc)
@@ -169,7 +158,6 @@ public class CampaignsFragment extends BaseFragment implements OnPageChangeListe
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        
     }
 
     /*
@@ -200,8 +188,8 @@ public class CampaignsFragment extends BaseFragment implements OnPageChangeListe
      */
     @Override
     public void onDestroyView() {
-        Log.i(TAG, "ON DESTROY VIEW");
         super.onDestroyView();
+        Log.i(TAG, "ON DESTROY VIEW");
     }
     
     /*
@@ -221,70 +209,67 @@ public class CampaignsFragment extends BaseFragment implements OnPageChangeListe
 
     
     /**
-     * A simple pager adapter that represents 5 ScreenSlidePageFragment objects, in
-     * sequence.
+     * Class used as an simple pager adapter that represents each campaign fragment
+     * @author sergiopereira
      */
     private class CampaignPagerAdapter extends FragmentPagerAdapter {
         
         private ArrayList<TeaserCampaign> mCampaigns;
-
+        
+        /**
+         * Constructor
+         * @param fm
+         * @param campaigns
+         * @author sergiopereira
+         */
         public CampaignPagerAdapter(FragmentManager fm, ArrayList<TeaserCampaign> campaigns) {
             super(fm);
             this.mCampaigns = campaigns;
         }
 
+        /*
+         * (non-Javadoc)
+         * @see android.support.v4.app.FragmentPagerAdapter#getItem(int)
+         */
         @Override
         public Fragment getItem(int position) {
-            //return CampaignFragment2.getInstance(this.mCampaigns.get(position));
-            return CampaignFragment.getInstance(this.mCampaigns.get(position));
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(CampaignFragment.TAG, this.mCampaigns.get(position)); 
+            return CampaignFragment.getInstance(bundle);
         }
 
+        /*
+         * (non-Javadoc)
+         * @see android.support.v4.view.PagerAdapter#getCount()
+         */
         @Override
         public int getCount() {
             return (mCampaigns != null) ? mCampaigns.size() : 0;
         }
         
+        /*
+         * (non-Javadoc)
+         * @see android.support.v4.view.PagerAdapter#getPageTitle(int)
+         */
         @Override
         public CharSequence getPageTitle(int position) {
             return mCampaigns.get(position).getTargetTitle().toUpperCase();
         }
         
-        // FIXME
-        @Override
-        public void restoreState(Parcelable state, ClassLoader loader) {
-            Log.d(TAG, "ON RESTORE STATE");
-            
-            if(state == null) Log.d(TAG, "STATE IS NULL");
-            if(loader == null) Log.d(TAG, "LOADER IS NULL");
-            
-            if(state != null && loader != null)
-                super.restoreState(state, loader);
-        }
+        //@Override
+        //public void restoreState(Parcelable state, ClassLoader loader) {
+        //    Log.d(TAG, "ON RESTORE STATE");
+        //    if(state == null) Log.d(TAG, "STATE IS NULL");
+        //    if(loader == null) Log.d(TAG, "LOADER IS NULL");
+        //    if(state != null && loader != null) super.restoreState(state, loader);
+        //}
     }
 
-
-    @Override
-    public void onPageScrollStateChanged(int state) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void onPageScrolled(int arg0, float arg1, int arg2) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void onPageSelected(int position) {
-        // TODO Auto-generated method stub
-        
-    }
     
     
-    private final int TAB_PREV_ID = 0;
+    //private final int TAB_PREV_ID = 0;
     private final int TAB_CURR_ID = 1;
-    private final int TAB_NEXT_ID = 2;
+    //private final int TAB_NEXT_ID = 2;
 
     private final int TAB_INDICATOR_HEIGHT = 0;
     private final int TAB_UNDERLINE_HEIGHT = 1;
@@ -302,8 +287,8 @@ public class CampaignsFragment extends BaseFragment implements OnPageChangeListe
            
             // Get text
             final TextView currTextView = (TextView) mCampaignPagerTabStrip.getChildAt(TAB_CURR_ID);
-            final TextView nextTextView = (TextView) mCampaignPagerTabStrip.getChildAt(TAB_NEXT_ID);
-            final TextView prevTextView = (TextView) mCampaignPagerTabStrip.getChildAt(TAB_PREV_ID);
+            //final TextView nextTextView = (TextView) mCampaignPagerTabStrip.getChildAt(TAB_NEXT_ID);
+            //final TextView prevTextView = (TextView) mCampaignPagerTabStrip.getChildAt(TAB_PREV_ID);
     
             // Set Color
             currTextView.setPadding(0, 0, 0, 1);
@@ -324,9 +309,10 @@ public class CampaignsFragment extends BaseFragment implements OnPageChangeListe
             field.set(mCampaignPagerTabStrip, mFullUnderlineHeight);
             // Set the color of indicator
             Paint paint = new Paint();
-            paint.setShader(new LinearGradient(0, 0, 0, mIndicatorHeight, getResources().getColor(
-                    TAB_STRIP_COLOR), getResources().getColor(
-                    TAB_STRIP_COLOR), Shader.TileMode.CLAMP));
+            paint.setShader(new LinearGradient(0, 0, 0, mIndicatorHeight, 
+                    getResources().getColor(TAB_STRIP_COLOR), 
+                    getResources().getColor(TAB_STRIP_COLOR), 
+                    Shader.TileMode.CLAMP));
             field = mCampaignPagerTabStrip.getClass().getDeclaredField("mTabPaint");
             field.setAccessible(true);
             field.set(mCampaignPagerTabStrip, paint);

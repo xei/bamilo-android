@@ -186,7 +186,6 @@ public class RestConstants {
 	public static final String JSON_TAX_AMOUNT_TAG = "tax_amount";
 	public static final String JSON_MAX_QUANTITY = "max_quantity";
 	public static final String JSON_VARIATION = "variation";
-	// TODO: implement these tags
 	public static final String JSON_CART_RULE_DISPLAY_NAMES = "cart_rule_display_names";
 	public static final String JSON_SALES_ORDER_ITEM = "salesOrderItem";
 	public static final String JSON_CART_RULE_DISCOUNT = "cart_rule_discount";
@@ -216,9 +215,19 @@ public class RestConstants {
 	// private static final String JSON_HEIGHT_TAG = "height";
 	// private static final String JSON_FORMAT_TAG = "format";
 	
-	// Teaser Campaign Tags
+	// Teaser Campaign Tags XXX
+	public static final String JSON_CAMPAIGN_TAG = "campaign";
 	public static final String JSON_CAMPAIGN_NAME_TAG = "campaign_name";
 	public static final String JSON_CAMPAIGN_URL_TAG = "campaign_url";
+	public static final String JSON_CMS_TAG = "cms";
+	public static final String JSON_MOBILE_BANNER_TAG = "mobile_banner";
+	public static final String JSON_START_TIME_TAG = "start_time";
+	public static final String JSON_END_TIME_TAG = "end_time";
+	public static final String JSON_SAVE_PRICE_TAG = "save_price";
+	public static final String JSON_STOCK_PERCENTAGE_TAG = "stock_percentage";
+	public static final String JSON_HAS_UNIQUE_SIZE_TAG = "has_unique_size";
+	public static final String JSON_SIZES_TAG = "sizes";
+	
 
 	// TeaserBrandElement Tags
 	public static final String JSON_BRAND_DESCRIPTION_TAG = JSON_DESCRIPTION_TAG;
@@ -393,5 +402,9 @@ public class RestConstants {
 	public static final String JSON_BILLING_FORM_TAG = "billingForm";
 	public static final String JSON_CUSTOMER_TAG = "customer";
 	public static final String JSON_ADDRESS_LIST_TAG = "address_list";
+	
+	
+
+	
 
 }

@@ -8,9 +8,11 @@ import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.fragments.FragmentType;
+import pt.rocket.framework.objects.TeaserCampaign;
 import pt.rocket.helpers.GetSearchProductHelper;
 import pt.rocket.view.ChangeCountryFragmentActivity;
 import pt.rocket.view.R;
+import pt.rocket.view.fragments.CampaignsFragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -44,6 +46,8 @@ public class DeepLinkManager {
     private static final String SEARCH_TERM_TAG = "s";
     
     private static final String ORDER_OVERVIEW_TAG = "o";
+    
+    private static final String CAMPAIGN_TAG = "cp";
     
     private static final String LOGIN_TAG = "l";
     
@@ -158,6 +162,9 @@ public class DeepLinkManager {
                 // Order overview
                 else if(tag.equalsIgnoreCase(ORDER_OVERVIEW_TAG))
                     bundle = processTrackOrderLink(segments.get(PATH_DATA_POS));
+                // Campaign
+                else if(tag.equalsIgnoreCase(CAMPAIGN_TAG))
+                    bundle = processCampaignLink(segments.get(PATH_DATA_POS));
             } else {
                 // Home
                 bundle = processHomeLink();
@@ -169,6 +176,29 @@ public class DeepLinkManager {
         }
         return bundle;
     }
+    
+    
+    /**
+     * Method used to create a bundle for campaign view with the respective campaign id.
+     * JUMIA://com.jumia.android/ng/cp/deals-of-the-day?ADXID=SOMEADXID
+     * @param campaign id
+     * @return {@link Bundle}
+     * @author sergiopereira
+     */
+    private static Bundle processCampaignLink(String campaignId) {
+        Log.i(TAG, "DEEP LINK TO CAMPAIGN: " + campaignId);
+        // Create bundle
+        Bundle bundle = new Bundle();
+        ArrayList<TeaserCampaign> teaserCampaigns = new ArrayList<TeaserCampaign>();
+        TeaserCampaign campaign = new TeaserCampaign();
+        campaign.setTitle(campaignId);
+        campaign.setUrl(campaignId);
+        teaserCampaigns.add(campaign);
+        bundle.putParcelableArrayList(CampaignsFragment.CAMPAIGNS_TAG, teaserCampaigns);
+        bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.CAMPAIGNS);
+        return bundle;
+    }
+    
     
     /**
      * Method used to create a bundle for category view with the respective category id.

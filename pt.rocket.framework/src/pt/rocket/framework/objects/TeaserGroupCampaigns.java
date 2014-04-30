@@ -10,7 +10,7 @@ import android.os.Parcelable;
 import android.util.Log;
 
 /**
- * Class used to represent a group of top brands
+ * Class used to represent a group of teaser campaigns
  * @author sergiopereira
  *
  */
@@ -35,6 +35,7 @@ public class TeaserGroupCampaigns extends TeaserSpecification<TeaserCampaign> {
 	@Override
 	protected TeaserCampaign parseData(JSONObject object) {
 		Log.d(TAG, "ON PARSE CAMPAIGN: " + object.toString());
+		// Get campaigns
 		TeaserCampaign campaign = new TeaserCampaign();
 		campaign.initialize(object);
 		return campaign;

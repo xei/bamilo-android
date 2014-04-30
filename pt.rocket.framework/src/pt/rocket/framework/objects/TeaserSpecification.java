@@ -3,6 +3,7 @@ package pt.rocket.framework.objects;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import pt.rocket.framework.rest.RestConstants;
@@ -48,7 +49,19 @@ public abstract class TeaserSpecification<T extends ITargeting> implements IJSON
 			teaserSpecification = new TeaserGroupTopBrands();
 			break;
 		case CAMPAIGNS_LIST:// XXX
-			teaserSpecification = new TeaserGroupCampaigns();
+			Log.d(TAG, "ON PARSE CAMPAIGNS_LIST");
+            String json = "{ 'group_type': '6', 'group_title': 'DEALS OF THE DAY', 'data': [ ";
+            int size = 6;
+            for (int i = 0; i < size; i++)
+                json += "{ 'campaign_name': 'Deals of the day " + i + "', 'campaign_url': 'deals-of-the-day' }" + ((i+1<size)?",":"");
+            json += " ] }";
+			try {
+				jsonObject = new JSONObject(json);
+				teaserSpecification = new TeaserGroupCampaigns();
+			} catch (JSONException e) {
+				Log.d(TAG, "#################### 2 ", e);
+			}			
+			
 			break;
 		}
 		teaserSpecification.initialize(jsonObject);

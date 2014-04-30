@@ -221,6 +221,12 @@
         <item name="android:background">@color/grey_highlight</item>
     </style>
 
+    <style name="divider_vertival_campaign">
+        <item name="android:layout_width">1.33dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/grey_highlight</item>
+    </style>
+
     <!-- //////// Layouts Defenitions //////// -->
 
     <style name="ShoppingCartCount">

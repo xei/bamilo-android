@@ -35,11 +35,13 @@
         <org.holoeverywhere.widget.TextView
             android:id="@+id/campaign_item_price"
             style="@style/product_price_old_single_item"
+            android:layout_alignTop="@id/campaign_item_discount"
             android:layout_alignBottom="@id/campaign_item_discount"
             android:layout_toRightOf="@id/campaign_item_discount"
             android:ellipsize="marquee"
             android:fontFamily="roboto_regular"
             android:maxLines="1"
+            android:gravity="center"
             android:singleLine="true"
             android:text="X 4,495"
             android:textColor="@color/grey_middlelight"

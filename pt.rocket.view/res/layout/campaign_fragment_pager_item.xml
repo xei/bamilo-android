@@ -1,7 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<pt.rocket.framework.components.HeaderGridView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/campaign_grid"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:listSelector="@null"
-    android:numColumns="@integer/campaign_num_columns" />
+    android:layout_height="match_parent" >
+
+    <!-- CONTENT VIEW -->
+
+    <pt.rocket.framework.components.HeaderGridView
+        android:id="@+id/campaign_grid"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:listSelector="@null"
+        android:numColumns="@integer/campaign_num_columns"
+        android:visibility="gone" />
+
+    <!-- LOADING VIEW -->
+
+    <include
+        android:id="@+id/loading_bar"
+        layout="@layout/loading_bar"
+        android:visibility="visible" />
+
+    <!-- RETRY VIEW -->
+
+    <include
+        android:id="@+id/campaign_retry"
+        layout="@layout/campaign_fragment_retry"
+        android:visibility="gone" />
+
+</RelativeLayout>

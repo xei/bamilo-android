@@ -25,6 +25,12 @@ public class GetShoppingCartAddItemHelper extends BaseHelper {
     
     private static String TAG = GetShoppingCartAddItemHelper.class.getSimpleName();
     
+    public static final String PRODUCT_TAG = "p";
+    
+    public static final String PRODUCT_SKU_TAG = "sku";
+    
+    public static final String PRODUCT_QT_TAG = "quantity";
+    
     public static final String ADD_ITEM = "add_item";
  
     @Override

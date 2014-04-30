@@ -5,11 +5,14 @@ package pt.rocket.view.fragments;
 
 import java.util.ArrayList;
 
+import org.holoeverywhere.widget.AdapterView;
+import org.holoeverywhere.widget.AdapterView.OnItemSelectedListener;
+import org.holoeverywhere.widget.Spinner;
 import org.holoeverywhere.widget.TextView;
 
-import com.actionbarsherlock.internal.widget.IcsSpinner;
-import com.androidquery.AQuery;
-
+import pt.rocket.constants.ConstantsIntentExtra;
+import pt.rocket.controllers.fragments.FragmentController;
+import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.components.HeaderGridView;
 import pt.rocket.framework.objects.Campaign;
@@ -19,17 +22,20 @@ import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CurrencyFormatter;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.helpers.GetSearchProductHelper;
+import pt.rocket.helpers.GetShoppingCartAddItemHelper;
 import pt.rocket.helpers.campaign.GetCampaignHelper;
 import pt.rocket.interfaces.IResponseCallback;
+import pt.rocket.utils.DeepLinkManager;
+import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.view.R;
-import pt.rocket.view.R.drawable;
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -37,31 +43,32 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
+
+import com.androidquery.AQuery;
+
 import de.akquinet.android.androlog.Log;
 
 /**
- * 
+ * Class used to show campaign page
  * @author sergiopereira
- * 
  */
 public class CampaignFragment extends BaseFragment implements OnClickListener, IResponseCallback {
 
-    private static final String TAG = LogTagHelper.create(CampaignFragment.class);
+    public static final String TAG = LogTagHelper.create(CampaignFragment.class);
     
     private static CampaignFragment sCampaignFragment;
 
     private TeaserCampaign mTeaserCampaign;
     
-    /**
-     * 
-     * @return
-     */
-    public static CampaignFragment getInstance(TeaserCampaign teaserCampaign) {
-        sCampaignFragment = new CampaignFragment();
-        sCampaignFragment.mTeaserCampaign = teaserCampaign;
-        return sCampaignFragment;
-    }
-
+    public int PROD = R.id.product;
+    
+    public int SKU = R.id.sku;
+    
+    public int SIZE = R.id.size;
+    
+    public int STOCK = R.id.stock;
+    
     private Campaign mCampaign;
 
     private HeaderGridView mGridView;
@@ -69,6 +76,39 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
     private CampaignAdapter mArrayAdapter;
 
     private View mBannerView;
+
+    private DialogGenericFragment mDialogAddedToCart;
+
+    private boolean isAddingProductToCart;
+
+    private View mLoadingView;
+
+    private View mRetryView;
+
+    private DialogGenericFragment mDialogErrorToCart;
+    
+    
+    /**
+     * Constructor via object
+     * @return CampaignFragment
+     * @author sergiopereira
+     */
+    public static CampaignFragment getInstance(TeaserCampaign teaserCampaign) {
+        sCampaignFragment = new CampaignFragment();
+        sCampaignFragment.mTeaserCampaign = teaserCampaign;
+        return sCampaignFragment;
+    }
+    
+    /**
+     * Constructor via bundle
+     * @return CampaignFragment
+     * @author sergiopereira
+     */
+    public static CampaignFragment getInstance(Bundle bundle) {
+        sCampaignFragment = new CampaignFragment();
+        sCampaignFragment.setArguments(bundle);
+        return sCampaignFragment;
+    }
 
     /**
      * Empty constructor
@@ -97,6 +137,13 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
+        // Get campaigns from arguments
+        mTeaserCampaign = getArguments().getParcelable(TAG);
+        // Validate the saved state
+        if(savedInstanceState != null && savedInstanceState.containsKey(TAG)){
+            Log.i(TAG, "ON GET SAVED STATE");
+            mCampaign = savedInstanceState.getParcelable(TAG);
+        }
     }
     
     /*
@@ -119,25 +166,20 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.i(TAG, "ON VIEW CREATED");
-                
-        // Get campaign from extras
-        //String id = "deals-of-the-day";// "http://www.jumia.com.ng/mobapi/v1.0/campaign/get/?campaign_slug=deals-of-the-day";
-        
+        Log.i(TAG, "ON VIEW CREATED");        
         Log.d(TAG, "TEASER CAMPAIGN: " + mTeaserCampaign.getTargetTitle() + " " + mTeaserCampaign.getTargetUrl());
-        
-        String id = mTeaserCampaign.getTargetUrl();
-        
+        // Get grid view
         mGridView = (HeaderGridView) view.findViewById(R.id.campaign_grid);
-        
-        if(mCampaign == null)
-            triggerGetCampaign(id);
-        else
-            loadCampaign();         
-            
+        // Get loading view
+        mLoadingView = view.findViewById(R.id.loading_bar);
+        // Get retry view
+        mRetryView = view.findViewById(R.id.campaign_retry);
+        // Get the retry button
+        view.findViewById(R.id.campaign_retry_button).setOnClickListener(this);
+        // Validate the current state
+        getAndShowCampaign();
     }
-    
-    
+        
     /*
      * (non-Javadoc)
      * @see pt.rocket.view.fragments.BaseFragment#onStart()
@@ -158,6 +200,17 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
         super.onResume();
         Log.i(TAG, "ON RESUME");
         
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see android.support.v4.app.Fragment#onSaveInstanceState(android.os.Bundle)
+     */
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.i(TAG, "ON SAVE INSTANCE STATE: CAMPAIGN");
+        outState.putParcelable(TAG, mCampaign);
     }
 
     /*
@@ -202,39 +255,88 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
         Log.i(TAG, "ON DESTROY");
     }
     
+    /**
+     * Get and show the campaign 
+     * @author sergiopereira
+     */
+    private void getAndShowCampaign() {
+        // Get the campaign id
+        String id = (mTeaserCampaign != null) ? mTeaserCampaign.getTargetUrl() : null;
+        // Validate the current state
+        if(mCampaign == null)
+            triggerGetCampaign(id);
+        else
+            loadCampaign();
+    }
     
     /**
      * Load the dynamic form
      * @param form
+     * @author sergiopereira
      */
     private void loadCampaign() {
         Log.i(TAG, "LOAD CAMPAIGN");
-
-        // Set banner        
-        mBannerView = LayoutInflater.from(getActivity()).inflate(R.layout.campaign_fragment_banner, mGridView, false);
-        
-        ImageView imageView = (ImageView) mBannerView.findViewById(R.id.campaign_banner);
-        //String imageUrl = "http://static.jumia.com.ng/cms/images/mobile_site/Mobile_dealofday_18022014_480x330.jpg";
-        String imageUrl = mCampaign.getBanner();
-        
-        //RocketImageLoader.instance.loadImage(imageUrl, imageView);
-        new AQuery(getBaseActivity()).id(imageView).image(imageUrl);
-        
-        //if(mGridView.getHeaderViewCount() == 0)
+        // Get banner
+        mBannerView = getBannerView();
+        // Add banner to header
         mGridView.addHeaderView(mBannerView);
-        
+        // Validate the current data
         mArrayAdapter = (CampaignAdapter) mGridView.getAdapter();
         if(mArrayAdapter == null){
             // Set adapter
-            mArrayAdapter = new CampaignAdapter(getActivity(), mCampaign.getItems());
+            mArrayAdapter = new CampaignAdapter(getBaseActivity(), mCampaign.getItems(), (OnClickListener) this);
             mGridView.setAdapter(mArrayAdapter);
         }
-
-        // 
-        // Show
-        //getBaseActivity().showContentContainer();
+        // Show content
+        showContent();
     }
     
+    /**
+     * Get the banner view to add the header view
+     * @return View
+     * @author sergiopereira
+     */
+    private View getBannerView(){
+        // Inflate the banner layout
+        View bannerView = LayoutInflater.from(getActivity()).inflate(R.layout.campaign_fragment_banner, mGridView, false);
+        // Get the image view
+        ImageView imageView = (ImageView) bannerView.findViewById(R.id.campaign_banner);
+        // Load the bitmap
+        new AQuery(getBaseActivity()).id(imageView).image(mCampaign.getBanner());
+        // Return the banner
+        return bannerView;
+    }
+    
+    /**
+     * Show only the loading view
+     * @author sergiopereira
+     */
+    private void showLoading(){
+        mGridView.setVisibility(View.GONE);
+        mLoadingView.setVisibility(View.VISIBLE);
+        mRetryView.setVisibility(View.GONE);
+        // loadingBarView.startRendering();
+    }
+    
+    /**
+     * Show only the content view
+     * @author sergiopereira
+     */
+    private void showContent() {
+        mGridView.setVisibility(View.VISIBLE);
+        mLoadingView.setVisibility(View.GONE);
+        mRetryView.setVisibility(View.GONE);
+    }
+    
+    /**
+     * Show only the retry view
+     * @author sergiopereira
+     */
+    private void showRetry() {
+        mGridView.setVisibility(View.GONE);
+        mLoadingView.setVisibility(View.GONE);
+        mRetryView.setVisibility(View.VISIBLE);
+    }
     
     /**
      * ############# CLICK LISTENER #############
@@ -247,31 +349,97 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
     public void onClick(View view) {
         // Get view id
         int id = view.getId();
-        // Next button
-        if(id == R.id.checkout_poll_button_enter) onClickPollAnswerButton();
+        // Buy button
+        if(id == R.id.campaign_item_button_buy) onClickBuyButton(view);
+        // Product name and image
+        else if (id == R.id.image_view || id == R.id.campaign_item_name) onClickProduct(view);
+        // Retry button
+        else if(id == R.id.campaign_retry_button) onClickRetryButton();
         // Unknown view
         else Log.i(TAG, "ON CLICK: UNKNOWN VIEW");
     }
     
     /**
-     * Process the click on the next step button
+     * Process the click on the retry button
+     * @author sergiopereira
      */
-    private void onClickPollAnswerButton() {
-        Log.i(TAG, "ON CLICK: POLL ANSWER");
+    private void onClickRetryButton(){
+        getAndShowCampaign();
+    }
+    
+    /**
+     * Process the click on the buy button
+     * @param view 
+     * @author sergiopereira
+     */
+    private void onClickBuyButton(View view) {
+        //String prod = (String) view.getTag(PROD);
+        String sku = (String) view.getTag(SKU);
+        String size = (String) view.getTag(SIZE);
+        Boolean hasStock = (Boolean) view.getTag(STOCK);
+        Log.i(TAG, "ON CLICK BUY " + sku + " " + size + " " + hasStock);
+        // Validate the remain stock
+        if(!hasStock)
+            Toast.makeText(getBaseActivity(), getString(R.string.campaign_stock_alert), Toast.LENGTH_LONG).show();
+        // Validate click
+        else if(!isAddingProductToCart) {
+            // Create values to add to cart
+            ContentValues values = new ContentValues();
+            values.put(GetShoppingCartAddItemHelper.PRODUCT_TAG, sku);
+            values.put(GetShoppingCartAddItemHelper.PRODUCT_SKU_TAG, sku);
+            values.put(GetShoppingCartAddItemHelper.PRODUCT_QT_TAG, "1");
+            triggerAddToCart(values);
+        } 
+    }
+    
+    /**
+     * Process the click on the item
+     * @param view
+     * @author sergiopereira
+     */
+    private void onClickProduct(View view){
+        //String prod = (String) view.getTag(PROD);
+        String sku = (String) view.getTag(SKU);
+        String size = (String) view.getTag(SIZE);
+        Log.d(TAG, "ON CLICK PRODUCT " + sku + " " + size);
+        // Create bundle
+        Bundle bundle = new Bundle();
+        bundle.putString(GetSearchProductHelper.SKU_TAG, sku);
+        bundle.putString(DeepLinkManager.PDV_SIZE_TAG, size);
+        bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcampaign);
+        bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
+        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
     
     /**
      * ############# REQUESTS #############
      */
     /**
-     * Trigger to get the address form
-     * @param id 
+     * Trigger to get the campaign via id
+     * @param id
+     * @author sergiopereira
      */
     private void triggerGetCampaign(String id){
         Log.i(TAG, "TRIGGER TO GET CAMPAIGN: " + id);
+        // Show loading 
+        showLoading();
+        // Create request
         Bundle bundle = new Bundle();
         bundle.putString(GetCampaignHelper.CAMPAIGN_ID, id);
-        sendRequest(new GetCampaignHelper(), bundle, this);
+        triggerContentEventWithNoLoading(new GetCampaignHelper(), bundle, this);
+    }
+    
+    /**
+     * Trigger to add item to cart
+     * @param values
+     * @author sergiopereira
+     */
+    private void triggerAddToCart(ContentValues values){
+        Log.i(TAG, "TRIGGER ADD TO CART");
+        getBaseActivity().showProgress();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(GetShoppingCartAddItemHelper.ADD_ITEM, values);
+        triggerContentEventWithNoLoading(new GetShoppingCartAddItemHelper(), bundle, this);
     }
    
     /**
@@ -297,10 +465,16 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
         switch (eventType) {
         case GET_CAMPAIGN_EVENT:
             Log.d(TAG, "RECEIVED GET_CAMPAIGN_EVENT");
-            // Get campaign
+            // Get and show campaign
             mCampaign = (Campaign) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-            // Show campaign
             loadCampaign();
+            break;
+        case ADD_ITEM_TO_SHOPPING_CART_EVENT:
+            Log.d(TAG, "RECEIVED ADD_ITEM_TO_SHOPPING_CART_EVENT");
+            isAddingProductToCart = false;
+            getBaseActivity().updateCartInfo();
+            getBaseActivity().dismissProgress();
+            showSuccessCartDialog();
             break;
         default:
             break;
@@ -321,14 +495,6 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
             return true;
         }
         
-        // Generic error
-        if (getBaseActivity() != null && getBaseActivity().handleErrorEvent(bundle)) {
-            Log.d(TAG, "BASE ACTIVITY HANDLE ERROR EVENT");
-            return true;
-        }
-        
-        getBaseActivity().showContentContainer();
-        
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         Log.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
@@ -336,6 +502,14 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
         switch (eventType) {
         case GET_CAMPAIGN_EVENT:
             Log.d(TAG, "RECEIVED GET_CAMPAIGN_EVENT");
+            // Show retry
+            showRetry();
+            break;
+        case ADD_ITEM_TO_SHOPPING_CART_EVENT:
+            isAddingProductToCart = false;
+            getBaseActivity().dismissProgress();
+            showErrorCartDialog();
+            break;
         default:
             break;
         }
@@ -371,18 +545,93 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
      */    
 
     
+    private void showSuccessCartDialog() {
+
+        String msgText = "1 " + getResources().getString(R.string.added_to_shop_cart_dialog_text);
+
+        mDialogAddedToCart = DialogGenericFragment.newInstance(
+                false,
+                false,
+                true,
+                getString(R.string.your_cart),
+                msgText,
+                getString(R.string.go_to_cart), getString(R.string.continue_shopping),
+                new OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        int id = v.getId();
+                        if (id == R.id.button1) {
+                            if(getBaseActivity() != null){
+                                getBaseActivity().onSwitchFragment(
+                                        FragmentType.SHOPPING_CART, FragmentController.NO_BUNDLE,
+                                        FragmentController.ADD_TO_BACK_STACK);    
+                            }
+                            if(mDialogAddedToCart != null){
+                                mDialogAddedToCart.dismiss();    
+                            }
+                            
+                        } else if (id == R.id.button2) {
+                            mDialogAddedToCart.dismiss();
+                        }
+                    }
+                });
+
+        mDialogAddedToCart.show(getFragmentManager(), null);
+    }
     
-    public class CampaignAdapter extends ArrayAdapter<CampaignItem> {
+    
+    private void showErrorCartDialog (){
+        FragmentManager fm = getFragmentManager();
+        mDialogErrorToCart = DialogGenericFragment.newInstance(true, true, false,
+                getString(R.string.error_add_to_cart_failed),
+                getString(R.string.error_add_to_cart_failed),
+                getString(R.string.ok_label), "", new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int id = v.getId();
+                        if (id == R.id.button1) {
+                            mDialogErrorToCart.dismiss();
+                        }
+                    }
+                });
+        mDialogErrorToCart.show(fm, null);
+        return;
+    }
+    
+    /**
+     * ########### ADAPTER ###########  
+     */    
+    
+    public class CampaignAdapter extends ArrayAdapter<CampaignItem> implements OnClickListener, OnItemSelectedListener{
+        
+        // private static final int YELLOW_PERCENTAGE = 34 < X < 64
+        
+        private static final int GREEN_PERCENTAGE = 64;
+        
+        private static final int ORANGE_PERCENTAGE = 34;
+        
+        public int PROD = R.id.product;
+        
+        public int SKU = R.id.sku;
+        
+        public int SIZE = R.id.size;
+        
+        public int STOCK = R.id.stock;
+        
+        private LayoutInflater mInflater;
+        
+        private OnClickListener mOnClickParentListener;
         
         /**
          * A representation of each item on the list
          */
-        private class Item {
+        private class ItemView {
             private TextView mStockOff;
             private TextView mName;
             private ImageView mImage;
             private View mSizeContainer;
-            private IcsSpinner mSizeSpinner;
+            private Spinner mSizeSpinner;
             private TextView mPrice;
             private TextView mDiscount;
             private TextView mSave;
@@ -391,12 +640,16 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
             private View mButtonBuy;
         }
         
-        
-        private LayoutInflater mInflater;
-
-        public CampaignAdapter(Context context, ArrayList<CampaignItem> items) {
+        /**
+         * 
+         * @param context
+         * @param items
+         * @param parentListener
+         */
+        public CampaignAdapter(Context context, ArrayList<CampaignItem> items, OnClickListener parentListener) {
             super(context, R.layout.campaign_fragment_list_item, items);
             mInflater = LayoutInflater.from(context);
+            mOnClickParentListener = parentListener;
         }
         
         /*
@@ -419,63 +672,25 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
             if (convertView == null) view = mInflater.inflate(R.layout.campaign_fragment_list_item, parent, false);
             else view = convertView;
             // Get the class associated to the view
-            Item itemView = getItem(view);
+            ItemView itemView = getItemView(view);
             // Get current campaign item
             CampaignItem item = getItem(position);
             // Set data
-            setData(itemView, item);
+            setData(itemView, item, position);
             // Return the filled view
             return view;
         }
         
-        
-        private void setData(Item view, CampaignItem item){
-            Log.d(TAG, "SET DATA");
-            view.mStockOff.setText(item.getMaxSavingPercentage() + "%\nOFF");
-            view.mName.setText(item.getName());
-            //RocketImageLoader.instance.loadImage(item.getImage(), view.mImage);
-            new AQuery(getBaseActivity()).id(view.mImage).image(item.getImage());
-            //view.sizeContainer;
-            //view.sizeSpinner;
-            view.mPrice.setText(CurrencyFormatter.formatCurrency(""+item.getPrice()));
-            view.mPrice.setPaintFlags(view.mPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            view.mDiscount.setText(CurrencyFormatter.formatCurrency(""+item.getSpecialPrice()));
-            view.mSave.setText(CurrencyFormatter.formatCurrency(""+item.getSavePrice()));
-            setStockBar(view.mStockBar, item.getStockPercentage());
-            view.mStockPercentage.setText(item.getStockPercentage() + "%");
-            //view.buttonBuy;
-        }
-        
-        
-        private void setSizeContainer(){
-            // TODO
-        }
-        
-        
-        // private static final int YELLOW_PERCENTAGE = 34 < X < 64
-        private static final int GREEN_PERCENTAGE = 64;
-        private static final int ORANGE_PERCENTAGE = 34;
-        
-        
-        private void setStockBar(ProgressBar view, int stock) {
-            Rect bounds = view.getProgressDrawable().getBounds();
-            // Case GREEN:
-            if(stock >= GREEN_PERCENTAGE)
-                view.setProgressDrawable(getResources().getDrawable(R.drawable.campaign_green_bar));
-            // Case YELLOW:
-            else if(ORANGE_PERCENTAGE < stock && stock < GREEN_PERCENTAGE)
-                view.setProgressDrawable(getResources().getDrawable(R.drawable.campaign_yellow_bar));
-            // Case ORANGE:
-            else  view.setProgressDrawable(getResources().getDrawable(R.drawable.campaign_orange_bar));
-            // Set value
-            view.getProgressDrawable().setBounds(bounds);
-            view.setProgress(stock);
-        }
-        
-        private Item getItem(View view){
-            Item item;
-            if ((Item) view.getTag() == null) {
-                item = new Item();
+        /**
+         * Get the recycled view
+         * @param view
+         * @return ItemView
+         * @author sergiopereira
+         */
+        private ItemView getItemView(View view){
+            ItemView item;
+            if ((ItemView) view.getTag() == null) {
+                item = new ItemView();
                 // Get stock off
                 item.mStockOff = (TextView) view.findViewById(R.id.campaign_item_stock_off);
                 // Get name
@@ -485,7 +700,7 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
                 // Get size container
                 item.mSizeContainer = view.findViewById(R.id.campaign_item_size_container);
                 // Get size spinner
-                item.mSizeSpinner = (IcsSpinner) view.findViewById(R.id.campaign_item_size_spinner);
+                item.mSizeSpinner = (Spinner) view.findViewById(R.id.campaign_item_size_spinner);
                 // Get price
                 item.mPrice = (TextView) view.findViewById(R.id.campaign_item_price);
                 // Get discount
@@ -501,12 +716,155 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
                 // Stores the item representation on the tag of the view for later retrieval
                 view.setTag(item);
             } else {
-                item = (Item) view.getTag();
+                item = (ItemView) view.getTag();
             }
             return item;
         }
         
+        /**
+         * Set the campaign data 
+         * @param view
+         * @param item
+         * @author sergiopereira
+         */
+        private void setData(ItemView view, CampaignItem item, int position){
+            Log.d(TAG, "SET DATA");
+            // Set stock off
+            view.mStockOff.setText(item.getMaxSavingPercentage() + "%\n" + getString(R.string.off_label));
+            // Set name
+            view.mName.setText(item.getName());
+            setClickableView(view.mName, position);
+            // Set image
+            new AQuery(getBaseActivity()).id(view.mImage).image(item.getImage());
+            setClickableView(view.mImage, position);
+            // Set size
+            setSizeContainer(view, item, position);
+            // Set price
+            view.mPrice.setText(CurrencyFormatter.formatCurrency(""+item.getPrice()));
+            view.mPrice.setPaintFlags(view.mPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            // Set discount
+            view.mDiscount.setText(CurrencyFormatter.formatCurrency(""+item.getSpecialPrice()));
+            // Set save
+            view.mSave.setText(CurrencyFormatter.formatCurrency(""+item.getSavePrice()));
+            // Set stock bar
+            setStockBar(view.mStockBar, item.getStockPercentage());
+            // Set stock percentage
+            view.mStockPercentage.setText(item.getStockPercentage() + "%");
+            // Set buy button
+            setClickableView(view.mButtonBuy, position);
+        }
+        
+        /**
+         * Set a view as clickable saving the position
+         * @param view
+         * @param item
+         * @author sergiopereira
+         */
+        private void setClickableView(View view, int position) {
+            // Save position and add the listener
+            view.setTag(position);
+            view.setOnClickListener(this);
+        }
+ 
+        /**
+         * Hide or show the size container
+         * @param container
+         * @param spinner
+         * @param item
+         * @author sergiopereira
+         */
+        private void setSizeContainer(ItemView view, CampaignItem item, int position){
+            // Campaign has sizes
+            if(item.hasSizes()) {
+                // Show container
+                view.mSizeContainer.setVisibility(View.VISIBLE);
+                // Get sizes
+                ArrayList<String> sizes = item.getSizes();
+                // Create an ArrayAdapter using the sizes values
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), R.layout.campaign_spinner_item, sizes);
+                // Specify the layout to use when the list of choices appears
+                adapter.setDropDownViewResource(R.layout.campaign_spinner_dropdown_item);
+                // Apply the adapter to the spinner
+                view.mSizeSpinner.setAdapter(adapter);
+                // Save position in spinner
+                view.mSizeSpinner.setTag(position);
+                // Check pre selection
+                if(item.hasSelectedSize())
+                    view.mSizeSpinner.setSelection(item.getSelectedSizePosition());
+                // Apply the select listener
+                view.mSizeSpinner.setOnItemSelectedListener(this);
+            } else
+                // Hide the size container
+                view.mSizeContainer.setVisibility(View.GONE);
+        }
+                
+        /**
+         * Set the stock bar color
+         * @param view
+         * @param stock
+         * @author sergiopereira
+         */
+        private void setStockBar(ProgressBar view, int stock) {
+            Rect bounds = view.getProgressDrawable().getBounds();
+            // Case GREEN:
+            if(stock >= GREEN_PERCENTAGE)
+                view.setProgressDrawable(getResources().getDrawable(R.drawable.campaign_green_bar));
+            // Case YELLOW:
+            else if(ORANGE_PERCENTAGE < stock && stock < GREEN_PERCENTAGE)
+                view.setProgressDrawable(getResources().getDrawable(R.drawable.campaign_yellow_bar));
+            // Case ORANGE:
+            else  view.setProgressDrawable(getResources().getDrawable(R.drawable.campaign_orange_bar));
+            // Set value
+            view.getProgressDrawable().setBounds(bounds);
+            view.setProgress(stock);
+        }
+        
+        /**
+         * ######### LISTENERS #########
+         */
+        /*
+         * (non-Javadoc)
+         * @see org.holoeverywhere.widget.AdapterView.OnItemSelectedListener#onItemSelected(org.holoeverywhere.widget.AdapterView, android.view.View, int, long)
+         */
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            String parentPosition = parent.getTag().toString();
+            String size = (String) parent.getItemAtPosition(position);
+            //Log.d(TAG, "ON ITEM SELECTED: " + size + " " +  position + " " + parentPosition);
+            CampaignItem campaignItem = getItem(Integer.valueOf(parentPosition));
+            campaignItem.setSelectedSizePosition(position);
+            campaignItem.setSelectedSize(size);
+        }
+        
+        /*
+         * (non-Javadoc)
+         * @see org.holoeverywhere.widget.AdapterView.OnItemSelectedListener#onNothingSelected(org.holoeverywhere.widget.AdapterView)
+         */
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+            // ...
+        }
+
+        /*
+         * (non-Javadoc)
+         * @see android.view.View.OnClickListener#onClick(android.view.View)
+         */
+        @Override
+        public void onClick(View view) {
+            // Get the position from tag
+            String position = view.getTag().toString();
+            // Get the campaign
+            CampaignItem item = getItem(Integer.valueOf(position));
+            // Add new tags
+            view.setTag(PROD, item.getSku());
+            view.setTag(SKU, item.getSku());
+            view.setTag(SIZE, item.getSelectedSize());
+            view.setTag(STOCK, item.hasStock());
+            // Send to listener
+            if(mOnClickParentListener != null)
+                mOnClickParentListener.onClick(view);
+        }
+        
     }
-    
     
 }

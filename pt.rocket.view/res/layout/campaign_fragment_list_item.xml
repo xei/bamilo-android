@@ -1,29 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/margin_mid"
     android:background="@android:color/transparent"
-    android:orientation="vertical" >
+    android:paddingBottom="@dimen/margin_mid" >
 
-    <!-- DIVIDER TOP -->
+    <LinearLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:orientation="vertical" >
 
-    <View style="@style/divider_horizontal_campaign" />
+        <!-- DIVIDER TOP -->
 
-    <!-- TITLE -->
+        <View style="@style/divider_horizontal_campaign" />
 
-    <include layout="@layout/campaign_fragment_list_item_title" />
+        <!-- TITLE -->
 
-    <!-- IMAGE AND SIZE -->
+        <include layout="@layout/campaign_fragment_list_item_title" />
 
-    <include layout="@layout/campaign_fragment_list_item_middle" />
+        <!-- IMAGE AND SIZE -->
 
-    <!-- INFO AND BUTTON -->
+        <include layout="@layout/campaign_fragment_list_item_middle" />
 
-    <include layout="@layout/campaign_fragment_list_item_info" />
+        <!-- INFO AND BUTTON -->
+
+        <include layout="@layout/campaign_fragment_list_item_info" />
+
+        <!-- DIVIDER BOTTOM -->
+
+        <View style="@style/divider_horizontal_campaign" />
+    </LinearLayout>
 
     <!-- DIVIDER BOTTOM -->
 
-    <View style="@style/divider_horizontal_campaign" />
+    <View
+        style="@style/divider_vertival_campaign"
+        android:layout_alignBottom="@id/container"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@id/container" />
 
-</LinearLayout>
+</RelativeLayout>

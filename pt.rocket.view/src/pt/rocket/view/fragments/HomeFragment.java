@@ -10,6 +10,8 @@ import java.util.EnumSet;
 import java.util.Iterator;
 
 import org.holoeverywhere.widget.TextView;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
@@ -23,6 +25,8 @@ import pt.rocket.framework.objects.Homepage;
 import pt.rocket.framework.objects.ITargeting.TargetType;
 import pt.rocket.framework.objects.LastViewed;
 import pt.rocket.framework.objects.Promotion;
+import pt.rocket.framework.objects.TeaserCampaign;
+import pt.rocket.framework.objects.TeaserGroupCampaigns;
 import pt.rocket.framework.objects.TeaserSpecification;
 import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.Constants;
@@ -511,10 +515,6 @@ public class HomeFragment extends BaseFragment {
         pagesTitles.add(firstHomePage.getHomepageTitle());
         requestResponse.add(firstHomePage.getTeaserSpecification());
 
-        /**
-         * FIXME: Incomprehensible validation
-         * @author sergiopereira
-         */
         if (requestResponse != null) {
             // if (mPagerAdapter == null) {
             mPagerAdapter = new HomeCollectionPagerAdapter(getChildFragmentManager());
@@ -726,6 +726,30 @@ public class HomeFragment extends BaseFragment {
                             bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gsearch);
                             bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
                             ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.PRODUCT_LIST, bundle, FragmentController.ADD_TO_BACK_STACK);
+                            
+//                            // TODO TEMP
+//                            ArrayList<TeaserCampaign> teaserCampaigns = new ArrayList<TeaserCampaign>();
+//                            for (int i = 0; i < 6; i++) {
+//                                TeaserCampaign campaign = new TeaserCampaign();
+//                                campaign.setTitle("Deals of the day " + 0);
+//                                campaign.setUrl("deals-of-the-day");
+//                                teaserCampaigns.add(campaign);
+//                            }
+//                            bundle.putParcelableArrayList(CampaignsFragment.CAMPAIGNS_TAG, teaserCampaigns);
+//                            ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.CAMPAIGNS, bundle, FragmentController.ADD_TO_BACK_STACK);
+                            
+                        }
+                        break;
+                    case CAMPAIGN: // XXX
+                        String targetPosition = v.getTag(R.id.position).toString();
+                        if (targetUrl != null && targetPosition != null && JumiaApplication.hasSavedTeaserCampaigns()) {
+                            bundle.putString(ConstantsIntentExtra.CONTENT_URL, targetUrl);
+                            bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, targetTitle);
+                            // Selected campaign position
+                            Log.d(TAG, "ON CLICK CAMPAIGN: " + targetTitle + " " + targetUrl + " " + targetPosition);
+                            bundle.putParcelableArrayList(CampaignsFragment.CAMPAIGNS_TAG, JumiaApplication.getSavedTeaserCampaigns());
+                            bundle.putInt(CampaignsFragment.CAMPAIGN_POSITION_TAG, Integer.valueOf(targetPosition));
+                            ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.CAMPAIGNS, bundle, FragmentController.ADD_TO_BACK_STACK);
                         }
                         break;
                     default:
@@ -838,8 +862,29 @@ public class HomeFragment extends BaseFragment {
                                 mainView.addView(mView);            
                             }
                 }
-                
             }
+
+            // XXX
+            String json = "{ 'group_type': '6', 'group_title': 'DEALS OF THE DAY', 'data': [ ";
+            int size = 6;
+            for (int i = 0; i < size; i++)
+                json += "{ 'campaign_name': 'Deals of the day " + i + "', 'campaign_url': 'deals-of-the-day' }" + ((i+1<size)?",":"");
+            json += " ] }";
+            
+            try {
+                Log.d(TAG, "ON ADD CAMPAIGNS_LIST");
+                JSONObject jsonObject = new JSONObject(json);
+                TeaserGroupCampaigns tearGroupCampaigns = new TeaserGroupCampaigns();
+                tearGroupCampaigns.initialize(jsonObject);
+                View mView = mTeasersFactory.getSpecificTeaser(getActivity(), mainView, tearGroupCampaigns, mInflater, teaserClickListener);
+                if(mView != null){
+                    mainView.addView(mView);            
+                }
+            } catch (JSONException e) {
+                Log.d(TAG, "#################### 1 ", e);
+            }       
+            
+
             if(lastViewed != null && lastViewed.size() > 0){
                 mainView.addView(generateLastViewedLayout(mainView));
             }

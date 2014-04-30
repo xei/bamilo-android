@@ -9,12 +9,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pt.rocket.framework.rest.RestConstants;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
 /**
- * 
+ * Class that represent a campaign page
  * @author sergiopereira
  *
  */
@@ -58,26 +60,23 @@ public class Campaign implements IJSONSerializable, Parcelable {
 	public boolean initialize(JSONObject jsonObject) throws JSONException {
 		Log.d(TAG, "ON INITIALIZE");
 		// Get banner
-		JSONObject cmsO = jsonObject.optJSONObject("cms");
-		JSONArray bannerA = (cmsO != null) ? cmsO.optJSONArray("mobile_banner") : null;
+		JSONObject cmsO = jsonObject.optJSONObject(RestConstants.JSON_CMS_TAG);
+		JSONArray bannerA = (cmsO != null) ? cmsO.optJSONArray(RestConstants.JSON_MOBILE_BANNER_TAG) : null;
 		mBanner = (bannerA != null && bannerA.length() > 0) ? bannerA.get(0).toString() : null;
 	    // Get campaign
-		JSONObject campaignO = jsonObject.getJSONObject("campaign");
+		JSONObject campaignO = jsonObject.getJSONObject(RestConstants.JSON_CAMPAIGN_TAG);
 		// Get name
-		mName = campaignO.optString("name");
+		mName = campaignO.optString(RestConstants.JSON_NAME_TAG);
 		// Get start time
-		mStartTime = campaignO.optString("start_time");
+		mStartTime = campaignO.optString(RestConstants.JSON_START_TIME_TAG);
 		// Get end time
-		mEndTime = campaignO.optString("end_time");
+		mEndTime = campaignO.optString(RestConstants.JSON_END_TIME_TAG);
 		// Get product count
-		mCount = campaignO.optInt("product_count");
+		mCount = campaignO.optInt(RestConstants.JSON_PRODUCT_COUNT_TAG);
 		// Get data
-		JSONArray itemsA = campaignO.getJSONArray("data");
+		JSONArray itemsA = campaignO.getJSONArray(RestConstants.JSON_DATA_TAG);
 		for (int i = 0; i < itemsA.length(); i++)
 			mItems.add(new CampaignItem(itemsA.getJSONObject(i)));
-	    
-		Log.d(TAG, "ON INITIALIZE: " + toString());
-		
 		return true;
 	}
 
@@ -208,8 +207,12 @@ public class Campaign implements IJSONSerializable, Parcelable {
 	 */
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
-		//dest.writeString(name);
-//		dest.writeString(url);
+		dest.writeString(mBanner);
+		dest.writeString(mName);
+		dest.writeString(mStartTime);
+		dest.writeString(mEndTime);
+		dest.writeInt(mCount);
+		dest.writeList(mItems);
 	}
 	
 	/**
@@ -217,8 +220,12 @@ public class Campaign implements IJSONSerializable, Parcelable {
 	 * @param in
 	 */
 	public Campaign(Parcel in) {
-//        name = in.readString();
-//        url = in.readString();
+		mBanner = in.readString();
+		mName = in.readString();
+		mStartTime = in.readString();
+		mEndTime = in.readString();
+		mCount = in.readInt();
+		in.readList(mItems, CampaignItem.class.getClassLoader());
 	}
 	
 	/**

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.holoeverywhere.widget.TextView;
 
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.controllers.NormalizingViewPagerWrapper.IPagerAdapter;
 import pt.rocket.framework.objects.BrandsTeaserGroup;
 import pt.rocket.framework.objects.CategoryTeaserGroup;
@@ -101,7 +102,7 @@ public class TeasersFactory {
         case TOP_BRANDS_LIST:
             mView = getTeaserTopBrands(mLayoutInflater, (TeaserGroupTopBrands) teaserSpecification);
             break;
-        case CAMPAIGNS_LIST: // XXX
+        case CAMPAIGNS_LIST:
         	mView = getTeaserCampaigns(mLayoutInflater, (TeaserGroupCampaigns) teaserSpecification);
         default:
             break;
@@ -385,7 +386,7 @@ public class TeasersFactory {
     }  
     
     /*
-     * ################## XXX CAMPAIGNS ##################
+     * ################## CAMPAIGNS ##################
      */
     
     /**
@@ -399,9 +400,23 @@ public class TeasersFactory {
         View rootView = mInflater.inflate(R.layout.teaser_top_brands_group, mainView, false);
         ViewGroup container = (ViewGroup) rootView.findViewById(R.id.teaser_group_container);
         if (teaserGroupCampaigns != null) {
-            ((TextView) rootView.findViewById(R.id.teaser_group_title)).setText(teaserGroupCampaigns.getTitle());
-            for (TeaserCampaign teaser : teaserGroupCampaigns.getTeasers()) {
-                container.addView(createCampaignTeaserView(teaser, container, mInflater));
+            // Get teaser campaigns
+            ArrayList<TeaserCampaign> campaigns = teaserGroupCampaigns.getTeasers();
+            // Get size
+            int size = campaigns.size();
+            // Set the title
+            if(size <= 1) {
+                rootView.findViewById(R.id.teaser_group_title).setVisibility(View.GONE);
+                rootView.findViewById(R.id.teaser_group_title_divider).setVisibility(View.GONE);
+            } else 
+                ((TextView) rootView.findViewById(R.id.teaser_group_title)).setText(teaserGroupCampaigns.getTitle());
+            // Save teaser campaigns
+            JumiaApplication.saveTeaserCampaigns(campaigns);
+            // Create views
+            for (int i = 0; i < campaigns.size(); i++) {
+                View view = createCampaignTeaserView(campaigns.get(i), container, mInflater);
+                view.setTag(R.id.position, i);
+                container.addView(view);
             }
         }
         return rootView;
