@@ -18,7 +18,6 @@
         android:lines="2"
         android:maxLines="2"
         android:paddingTop="@dimen/margin_small"
-        android:text="29%\nOFF"
         android:textColor="@android:color/white"
         android:textSize="@dimen/text_s" />
 
@@ -35,7 +34,6 @@
         android:gravity="center"
         android:lines="2"
         android:maxLines="2"
-        android:text="Ambimmac Round Shape Costume Set - Gold"
         android:textColor="@color/grey_middle"
         android:textSize="@dimen/text_l" />
 

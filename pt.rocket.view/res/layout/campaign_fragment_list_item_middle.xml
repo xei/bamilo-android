@@ -23,7 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/campaign_size_container_height"
         android:orientation="vertical"
-        android:visibility="visible" >
+        android:visibility="gone" >
 
         <!-- DIVIDER -->
 
@@ -46,7 +46,7 @@
             android:maxLines="1"
             android:paddingLeft="@dimen/margin_mid"
             android:singleLine="true"
-            android:text="Choose your Size"
+            android:text="@string/campaign_choose_size"
             android:textColor="@color/grey_middle"
             android:textSize="@dimen/text_xs" />
 
