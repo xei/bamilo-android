@@ -52,6 +52,7 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.RemoteException;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.DialogFragment;
@@ -1702,11 +1703,19 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     }
 
     public final void showProgress() {
+        
         if (progressDialog != null) {
             return;
         }
-        progressDialog = DialogProgressFragment.newInstance();
-        progressDialog.show(getSupportFragmentManager(), null);
+        
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.post(new Runnable() {
+            public void run() {
+                progressDialog = DialogProgressFragment.newInstance();
+                progressDialog.show(getSupportFragmentManager(), null);
+            }
+        });        
+        
     }
 
     public final void dismissProgress() {

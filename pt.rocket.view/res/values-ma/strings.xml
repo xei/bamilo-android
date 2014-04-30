@@ -332,4 +332,5 @@
     <string name="extra_costs">Frais Supplémentaires:</string>
     <string name="extra_costs_label">Frais Supplémentaires</string>
 	<string name="free_label">Gratuit</string>
+	<string name="related_items">Produits Similaires</string>
 </resources>
