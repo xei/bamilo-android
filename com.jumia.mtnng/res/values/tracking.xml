@@ -7,7 +7,7 @@
 
 
     <!-- Begin of Adx Tracking Parameters -->
-    <string name="x_store">MTN</string>
+    <string name="x_store">SELFHOST</string>
     <!-- End of Adx Tracking Parameters -->
 
 </resources>
