@@ -88,21 +88,15 @@ public class FormFactory {
         case FormConstants.ADDRESS_EDIT_FORM:
             parent = createEditAddressForm(context, form);
             break;
- 
-
         case FormConstants.LOGIN_FORM:
             parent = createLoginForm(context, form);
             break;
-            
         case FormConstants.REGISTRATION_FORM:
             parent = createRegistrationForm(context, form);
             break;
-            
         case FormConstants.FORGET_PASSWORD_FORM:
             parent = createForgetPasswordForm(context, form);
             break;
-            
-        // TODO: Validate this method for poll
         case FormConstants.POLL_FORM:
             parent = createPollForm(context, form);
             break;
@@ -115,7 +109,6 @@ public class FormFactory {
         case FormConstants.PAYMENT_DETAILS_FORM:
             parent = createPaymentMethodsForm(context, form);
             break;
-            
         }
         
 //        FontLoader.applyDefaultFont( parent.getContainer());
@@ -249,7 +242,7 @@ public class FormFactory {
      * @param form The definition provided by the framework
      * @return An instance of a DynamicForm with the form representation implemented
      */
-    // TODO: Validate this method for poll
+    // Validate this method for poll
     private DynamicForm createPollForm(Context context, Form form) {
         final int CTRLMARGIN_LEFT = 0;
         final int CTRLMARGIN_TOP = (int) (5 * scale);
@@ -270,7 +263,7 @@ public class FormFactory {
      * @param form The definition provided by the framework
      * @return An instance of a DynamicForm with the form representation implemented
      */
-    // TODO: Validate this method for signup
+    // Validate this method for signup
     private DynamicForm createSignupForm(Context context, Form form) {
         final int CTRLMARGIN_LEFT = 0;
         final int CTRLMARGIN_TOP = (int) (5 * scale);
@@ -342,7 +335,7 @@ public class FormFactory {
 
             for (IFormField frmEntry : transformedFields) {
             	Log.d( TAG, "createGenericForm: " + frmEntry.getKey() + " inputType = " + frmEntry.getInputType() );
-                ctrl = new DynamicFormItem(userForm, context, frmEntry); 
+                ctrl = new DynamicFormItem(userForm, context, frmEntry);
                 userForm.addControl(ctrl, ctrlParams);
             }
         } else {
@@ -382,7 +375,6 @@ public class FormFactory {
             
             DynamicFormItem ctrl;
             
-            // XXX
             ArrayList<IFormField> transformedFields = MetaFormExtractor.generateMetaFields( form.fields );
             MetaFormExtractor.dumpIFormField(transformedFields);
 

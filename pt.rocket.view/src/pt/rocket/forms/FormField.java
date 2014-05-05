@@ -12,7 +12,6 @@
  */
 package pt.rocket.forms;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -210,7 +209,9 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                 inputType = InputType.radioGroup;
             } else if (formFieldString.equals("list") || formFieldString.equals("select")) {
                 inputType = InputType.list;
-            } else if (formFieldString.equals("boolean") || formFieldString.equals("checkbox")) {
+            } else if (formFieldString.equals("boolean") || formFieldString.equals("checkbox") || 
+                    // FIXME: Newsletter subscription NAFAMZ-6146
+                    jsonObject.optString(RestConstants.JSON_KEY_TAG).equals("newsletter_categories_subscribed")) {
                 inputType = InputType.checkBox;
             } else if (formFieldString.equals("")) {
             	inputType = InputType.meta;
@@ -292,7 +293,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                 }
                 
                 /**
-                 * TODO: Validate this method to get the poll values
+                 * Validate this method to get the poll values
                  */
                 dataValues.clear();
                 JSONArray dataValuesArray = null;
@@ -729,7 +730,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
 
     @Override
     public int describeContents() {
-        // TODO Auto-generated method stub
+        // Auto-generated method stub
         return 0;
     }
 
@@ -800,7 +801,6 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
 
     @Override
     public String getLinkText() {
-        // TODO Auto-generated method stub
         return this.linkText;
     }
 }

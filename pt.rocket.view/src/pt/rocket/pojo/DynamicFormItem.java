@@ -849,23 +849,19 @@ public class DynamicFormItem {
         textWatcher = watcher;
     }
 
-    private void buildCheckBox(RelativeLayout dataContainer, RelativeLayout.LayoutParams params,
-            int controlWidth) {
+    private void buildCheckBox(RelativeLayout dataContainer, RelativeLayout.LayoutParams params, int controlWidth) {
 
         this.control.setLayoutParams(params);
 
         // data controls
-        params = new RelativeLayout.LayoutParams(controlWidth,
-                RelativeLayout.LayoutParams.WRAP_CONTENT);
+        params = new RelativeLayout.LayoutParams(controlWidth,RelativeLayout.LayoutParams.WRAP_CONTENT);
         dataContainer = new RelativeLayout(this.context);
         dataContainer.setId(parent.getNextId());
         dataContainer.setLayoutParams(params);
 
-        params = new RelativeLayout.LayoutParams(controlWidth,
-                RelativeLayout.LayoutParams.WRAP_CONTENT);
+        params = new RelativeLayout.LayoutParams(controlWidth,RelativeLayout.LayoutParams.WRAP_CONTENT);
         this.dataControl = new CheckBox(this.context);
-        ((CheckBox) this.dataControl).setTextColor(context.getResources().getColor(
-                R.color.form_text));
+        ((CheckBox) this.dataControl).setTextColor(context.getResources().getColor(R.color.form_text));
         this.dataControl.setId(parent.getNextId());
 
         params.addRule(RelativeLayout.CENTER_VERTICAL);
@@ -875,12 +871,11 @@ public class DynamicFormItem {
         ((CheckBox) this.dataControl).setButtonDrawable(R.drawable.selector_checkbox);
         ((CheckBox) this.dataControl).setFocusable(false);
         ((CheckBox) this.dataControl).setFocusableInTouchMode(false);
-        ((CheckBox) this.dataControl).setTextColor(context.getResources().getColor(
-                android.R.color.black));
+        ((CheckBox) this.dataControl).setTextColor(context.getResources().getColor(R.color.grey_middle));
         ((CheckBox) this.dataControl).setTextSize(14);
-        ((CheckBox) this.dataControl).setText(this.entry.getLabel().length() > 0 ? this.entry
-                .getLabel() : this.context.getString(R.string.register_text_terms_a) + " "
-                + this.context.getString(R.string.register_text_terms_b));
+        ((CheckBox) this.dataControl).setText(this.entry.getLabel().length() > 0
+                ? this.entry.getLabel()
+                : this.context.getString(R.string.register_text_terms_a) + " " + this.context.getString(R.string.register_text_terms_b));
         ((CheckBox) this.dataControl).setPadding((int) (25 * scale),
                 this.dataControl.getPaddingTop(), this.dataControl.getPaddingRight(),
                 this.dataControl.getPaddingBottom());
@@ -889,10 +884,13 @@ public class DynamicFormItem {
             ((CheckBox) this.dataControl).setChecked(true);
         }
 
+        // FIXME: Newsletter subscription NAFAMZ-6146
+        if(this.entry.getKey().contains("newsletter"))
+            loadNewsLetterLayoutValues(params, ((CheckBox) this.dataControl));
+        
         this.dataControl.setVisibility(View.VISIBLE);
-
-        params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.MATCH_PARENT);
+        
+        params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         params.addRule(RelativeLayout.CENTER_VERTICAL);
         params.rightMargin = 10;
@@ -911,6 +909,23 @@ public class DynamicFormItem {
 
         ((ViewGroup) this.control).addView(dataContainer);
 
+    }
+    
+    /**
+     * Method used to load some layout values for newsletter
+     * @param params
+     * @param checkbox
+     * @author sergiopereira
+     */
+    private void loadNewsLetterLayoutValues(RelativeLayout.LayoutParams params, CheckBox checkbox){
+    	params.setMargins((int) (3 * this.scale), context.getResources().getDimensionPixelSize(R.dimen.margin_midhuge), 0, 0);
+    	checkbox.setTextSize(context.getResources().getDimension(R.dimen.text_xs));
+    	checkbox.setPadding(
+                checkbox.getPaddingLeft() + context.getResources().getDimensionPixelSize(R.dimen.margin_mid), 
+                checkbox.getPaddingTop(), 
+                checkbox.getPaddingRight(), 
+                checkbox.getPaddingBottom());
+    	checkbox.setButtonDrawable(context.getResources().getDrawable(R.drawable.btn_check_holo_light));
     }
 
     private void buildCheckBoxForTerms(RelativeLayout dataContainer,
@@ -1045,7 +1060,7 @@ public class DynamicFormItem {
         params = new RelativeLayout.LayoutParams(controlWidth,
                 RelativeLayout.LayoutParams.WRAP_CONTENT);
 
-        // TODO: Validate this method for poll
+        // Validate this method for poll
         Log.d("Poll", "Type: Radio Group");
         if (entry.getKey().contains("poll")) {
             Log.d("Poll", "Key: Poll");
@@ -1400,7 +1415,7 @@ public class DynamicFormItem {
         });
     }
 
-    // TODO: Validate this method for poll
+    // Validate this method for poll
     private void createPollRadioGroup(final int MANDATORYSIGNALSIZE,
             RelativeLayout.LayoutParams params, RelativeLayout dataContainer) {
 

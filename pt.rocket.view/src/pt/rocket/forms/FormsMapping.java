@@ -55,6 +55,7 @@ public class FormsMapping {
         currMapping.put("gender", 7);
         currMapping.put("password", 2);
         currMapping.put("password2", 3);
+        currMapping.put("newsletter_categories_subscribed", 8);
         
         registrationForm = Collections.unmodifiableMap(currMapping);
     }    

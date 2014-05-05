@@ -17,8 +17,6 @@ import android.widget.LinearLayout;
 
 import com.actionbarsherlock.internal.widget.IcsAdapterView;
 
-import de.akquinet.android.androlog.Log;
-
 /**
  * This Class defines the representation of a dynamic form
  * <p/>

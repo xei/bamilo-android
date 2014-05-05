@@ -16,6 +16,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Locale;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -330,6 +331,18 @@ public class Customer implements IJSONSerializable, Parcelable{
             	while (iterator.hasNext()) {
 					String key = (String) iterator.next();
 					addresses.add(key);
+				}
+            }
+            
+            // FIXME: Newsletter subscription NAFAMZ-6146
+            JSONArray newsletterArray = jsonObject.optJSONArray("customer_newsletter_subscription");
+            if(newsletterArray != null) {
+            	for (int i = 0; i < newsletterArray.length(); i++) {
+            		JSONObject object = newsletterArray.optJSONObject(i);
+            		if(object != null) {
+                		int newsletterCategoryId = object.optInt("id_newsletter_category");
+                		String newsletterCategoryName = object.optString("name");
+            		}
 				}
             }
             

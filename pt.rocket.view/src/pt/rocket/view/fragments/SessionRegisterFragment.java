@@ -49,13 +49,12 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.actionbarsherlock.internal.widget.IcsAdapterView;
@@ -187,16 +186,8 @@ public class SessionRegisterFragment extends BaseFragment {
         if (JumiaApplication.INSTANCE.registerForm != null) {
             loadForm(JumiaApplication.INSTANCE.registerForm);
         } else {
-
-            /**
-             * TRIGGERS
-             * 
-             * @author sergiopereira
-             */
             triggerRegisterForm();
         }
-        // triggerContentEvent(EventType.GET_REGISTRATION_FORM_EVENT);
-
         setAppContentLayout();
         getFormComponents();
         setFormComponents();
@@ -504,14 +495,8 @@ public class SessionRegisterFragment extends BaseFragment {
     void requestRegister() {
         // Create Event Manager
         ContentValues values = serverForm.save();
-
-        /**
-         * TRIGGERS
-         * 
-         * @author sergiopereira
-         */
+        Log.d(TAG, "REGISTER VALUES: " + values.toString());
         triggerRegister(values);
-        // triggerContentEvent(new RegisterAccountEvent(values));
     }
 
     /**
@@ -599,8 +584,7 @@ public class SessionRegisterFragment extends BaseFragment {
      * @param form
      */
     private void loadForm(Form form) {
-        serverForm = FormFactory.getSingleton().CreateForm(FormConstants.REGISTRATION_FORM,
-                getActivity(), form);
+        serverForm = FormFactory.getSingleton().CreateForm(FormConstants.REGISTRATION_FORM, getActivity(), form);
         serverForm.setOnFocusChangeListener(focus_listener);
         serverForm.setOnItemSelectedListener(selected_listener);
         serverForm.setTextWatcher(text_watcher);
