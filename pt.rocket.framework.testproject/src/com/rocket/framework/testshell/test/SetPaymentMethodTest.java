@@ -23,27 +23,27 @@ public class SetPaymentMethodTest extends FrameworkServiceTests {
 	protected boolean processed2 = false;
 
 	public void testSetPaymentMethodIC() throws Throwable {
-		test("https://www.jumia.ci");
+		test(BaseHelper.BASE_URL_CI);
 	}
 
 	public void testSetPaymentMethodKE() throws Throwable {
-		test("https://www.jumia.co.ke");
+		test(BaseHelper.BASE_URL_KE);
 	}
 	
 	public void testSetPaymentMethodMA() throws Throwable {
-		test("https://www.jumia.ma");
+		test(BaseHelper.BASE_URL_MA);
 	}
 	
 	public void testSetPaymentMethodNG() throws Throwable {
-		test("https://www.jumia.com.ng");
+		test(BaseHelper.BASE_URL_NG);
 	}
 
 	public void testSetPaymentMethodEG() throws Throwable {
-		test("https://www.jumia.com.eg");
+		test(BaseHelper.BASE_URL_EG);
 	}
 
 	public void testSetPaymentMethodUG() throws Throwable {
-		test("https://www.jumia.ug");
+		test(BaseHelper.BASE_URL_UG);
 	}
 
 	private void test(String url) {
@@ -56,7 +56,7 @@ public class SetPaymentMethodTest extends FrameworkServiceTests {
 	    contentValues.put(RequestConstants.KEY_LOGIN_EMAIL, RequestConstants.CUSTOMER_EMAIL);
 	    contentValues.put(RequestConstants.KEY_LOGIN_PASSWORD, RequestConstants.CUSTOMER_PASSWORD);
 	    args1.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, contentValues);
-	    args1.putString(BaseHelper.KEY_COUNTRY, url + "/mobapi/customer/login/");
+	    args1.putString(BaseHelper.KEY_COUNTRY, url + "/customer/login/");
 	    sendRequest(args1, new GetLoginHelper(), new IResponseCallback() {
 
 	        @Override
@@ -93,18 +93,18 @@ public class SetPaymentMethodTest extends FrameworkServiceTests {
 		Bundle args = new Bundle();
 		ContentValues contentValues1 = new ContentValues();
 		
-		if(url.equals("https://www.jumia.ma")){
+		if(url.equals(BaseHelper.BASE_URL_MA)){
 			contentValues1.put(RequestConstants.KEY_SET_PAYMENT_METHOD,RequestConstants.SET_PAYMENT_METHOD_MA);
-		}else if(url.equals("https://www.jumia.com.ng")){
+		}else if(url.equals(BaseHelper.BASE_URL_NG)){
 			contentValues1.put(RequestConstants.KEY_SET_PAYMENT_METHOD,RequestConstants.SET_PAYMENT_METHOD_NG);
-		}else if(url.equals("https://www.jumia.ci")){
+		}else if(url.equals(BaseHelper.BASE_URL_CI)){
 			contentValues1.put(RequestConstants.KEY_SET_PAYMENT_METHOD,RequestConstants.SET_PAYMENT_METHOD_IC);
 		}else{
 			contentValues1.put(RequestConstants.KEY_SET_PAYMENT_METHOD,RequestConstants.SET_PAYMENT_METHOD_EG);
 		}
 
 		args.putParcelable(GetSignupHelper.CONTENT_VALUES, contentValues1);
-		args.putString(BaseHelper.KEY_COUNTRY, url + "/mobapi/v1/multistep/paymentmethod/");
+		args.putString(BaseHelper.KEY_COUNTRY, url + "/multistep/paymentmethod/");
 		sendRequest(args, new SetPaymentMethodHelper(), new IResponseCallback() {
 
 			@Override

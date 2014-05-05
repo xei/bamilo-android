@@ -17,7 +17,7 @@ public class InitFormTest extends FrameworkServiceTests {
     public void testInitFormIC() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "http://www.jumia.ci/mobapi/forms/index/");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_CI+"/forms/index/");
         sendRequest(args, new GetInitFormHelper(), new IResponseCallback() {
 
             @Override
@@ -52,7 +52,7 @@ public class InitFormTest extends FrameworkServiceTests {
     public void testInitFormKE() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "http://www.jumia.co.ke/mobapi/forms/index/");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_KE+"/forms/index/");
         sendRequest(args, new GetInitFormHelper(), new IResponseCallback() {
 
             @Override
@@ -87,7 +87,7 @@ public class InitFormTest extends FrameworkServiceTests {
     public void testInitFormMA() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "http://www.jumia.ma/mobapi/forms/index/");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_MA+"/forms/index/");
         sendRequest(args, new GetInitFormHelper(), new IResponseCallback() {
 
             @Override
@@ -122,7 +122,7 @@ public class InitFormTest extends FrameworkServiceTests {
     public void testInitFormNG() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "http://www.jumia.com.ng/mobapi/forms/index/");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_NG+"/forms/index/");
         sendRequest(args, new GetInitFormHelper(), new IResponseCallback() {
 
             @Override
@@ -157,7 +157,7 @@ public class InitFormTest extends FrameworkServiceTests {
     public void testInitFormEG() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.com.eg/mobapi/forms/index/");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_EG+"/forms/index/");
         
         sendRequest(args, new GetInitFormHelper(), new IResponseCallback() {
 
@@ -193,7 +193,7 @@ public class InitFormTest extends FrameworkServiceTests {
     public void testInitFormUG() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.ug/mobapi/forms/index/");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_UG+"/forms/index/");
         
         sendRequest(args, new GetInitFormHelper(), new IResponseCallback() {
 

@@ -17,7 +17,7 @@ public class ProductReviewsTest extends FrameworkServiceTests {
     public void testProductReviewsIC() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "http://www.jumia.ci:80/mobapi/Chemise-Crepon-a-Manches-Courtes---Bleu-53325.html?rating=1&page=1");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_CI+"/Chemise-Crepon-a-Manches-Courtes---Bleu-53325.html?rating=1&page=1");
         sendRequest(args, new GetProductReviewsHelper(), new IResponseCallback() {
 
             @Override
@@ -52,7 +52,7 @@ public class ProductReviewsTest extends FrameworkServiceTests {
     public void testProductReviewsKE() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "http://www.jumia.co.ke/mobapi/Brown-Strap-Sandals-14350.html?rating=1&page=1");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_KE+"/Brown-Strap-Sandals-14350.html?rating=1&page=1");
         sendRequest(args, new GetProductReviewsHelper(), new IResponseCallback() {
 
             @Override
@@ -87,7 +87,7 @@ public class ProductReviewsTest extends FrameworkServiceTests {
     public void testProductReviewsMA() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "http://www.jumia.ma/mobapi/iPad-2---Blanc---16-Go---Wifi-9636.html?rating=1&page=1");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_MA+"/iPad-2---Blanc---16-Go---Wifi-9636.html?rating=1&page=1");
         sendRequest(args, new GetProductReviewsHelper(), new IResponseCallback() {
 
             @Override
@@ -122,7 +122,7 @@ public class ProductReviewsTest extends FrameworkServiceTests {
     public void testProductReviewsNG() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "http://www.jumia.com.ng/mobapi/Asha-302---Black-7546.html?rating=1&page=1");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_NG+"/Asha-302---Black-7546.html?rating=1&page=1");
         sendRequest(args, new GetProductReviewsHelper(), new IResponseCallback() {
 
             @Override
@@ -157,7 +157,7 @@ public class ProductReviewsTest extends FrameworkServiceTests {
     public void testProductReviewsEG() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "http://www.jumia.com.eg/mobapi/Grey-%26-Burgundy-Two-tone-Canvas-Classic-Sneakers-149512.html?rating=1&page=1");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_EG+"/Grey-%26-Burgundy-Two-tone-Canvas-Classic-Sneakers-149512.html?rating=1&page=1");
         sendRequest(args, new GetProductReviewsHelper(), new IResponseCallback() {
 
             @Override
@@ -191,7 +191,7 @@ public class ProductReviewsTest extends FrameworkServiceTests {
     public void testProductReviewsUG() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "http://www.jumia.ug/mobapi/Silver-Open-Toe-Heels-With-Strass-14259.html?rating=1&page=1");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_UG+"/Silver-Open-Toe-Heels-With-Strass-14259.html?rating=1&page=1");
         sendRequest(args, new GetProductReviewsHelper(), new IResponseCallback() {
 
             @Override

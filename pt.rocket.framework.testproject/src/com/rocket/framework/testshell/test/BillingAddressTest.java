@@ -19,27 +19,27 @@ public class BillingAddressTest extends FrameworkServiceTests {
     protected boolean processed1 = false;
     
 public void testBillingAdressIC() throws Throwable {
-    test("https://www.jumia.ci");
+    test(BaseHelper.BASE_URL_CI);
 }
 
 public void testBillingAdressKE() throws Throwable {
-  test("https://alice-staging.jumia.co.ke");
+  test(BaseHelper.BASE_URL_KE);
 }
 
 public void testBillingAdressMA() throws Throwable {
-    test("https://www.jumia.ma");
+    test(BaseHelper.BASE_URL_MA);
 }
 
 public void testBillingAdressNG() throws Throwable {
-    test("https://www.jumia.com.ng");
+    test(BaseHelper.BASE_URL_NG);
 }
 
 public void testBillingAdressEG() throws Throwable {
-    test("https://www.jumia.com.eg");
+    test(BaseHelper.BASE_URL_EG);
 }
 
 public void testBillingAdressUG() throws Throwable {
-  test("https://alice-staging.jumia.co.ke");
+  test(BaseHelper.BASE_URL_UG);
 }
 
 public void test(String url){
@@ -52,7 +52,7 @@ public void test(String url){
     contentValues.put(RequestConstants.KEY_LOGIN_EMAIL, RequestConstants.CUSTOMER_EMAIL);
     contentValues.put(RequestConstants.KEY_LOGIN_PASSWORD, RequestConstants.CUSTOMER_PASSWORD);
     args1.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, contentValues);
-    args1.putString(BaseHelper.KEY_COUNTRY, url + "/mobapi/customer/login/");
+    args1.putString(BaseHelper.KEY_COUNTRY, url + "/customer/login/");
     sendRequest(args1, new GetLoginHelper(), new IResponseCallback() {
 
         @Override
@@ -87,7 +87,7 @@ public void test(String url){
      */
     Log.i(TAG, "mService => " + mService);
     Bundle args = new Bundle();
-    args.putString(BaseHelper.KEY_COUNTRY, url + "/mobapi/v1/customer/billingaddress/");
+    args.putString(BaseHelper.KEY_COUNTRY, url + "/customer/billingaddress/");
     sendRequest(args, new GetBillingAddressHelper(), new IResponseCallback() {
 
         @Override

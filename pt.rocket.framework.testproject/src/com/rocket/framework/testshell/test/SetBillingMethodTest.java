@@ -24,27 +24,27 @@ public class SetBillingMethodTest extends FrameworkServiceTests {
     protected boolean processed2 = false;
 
     public void testSetBillingMethodIC() throws Throwable {
-        test("https://www.jumia.ci");
+        test(BaseHelper.BASE_URL_CI);
     }
 
   public void testSetBillingMethodKE() throws Throwable {
-      test("https://alice-staging.jumia.co.ke");
+      test(BaseHelper.BASE_URL_KE);
   }
     
     public void testSetBillingMethodMA() throws Throwable {
-        test("https://www.jumia.ma");
+        test(BaseHelper.BASE_URL_MA);
     }
     
     public void testSetBillingMethodNG() throws Throwable {
-        test("https://www.jumia.com.ng");
+        test(BaseHelper.BASE_URL_NG);
     }
 
     public void testSetBillingMethodEG() throws Throwable {
-        test("https://www.jumia.com.eg");
+        test(BaseHelper.BASE_URL_EG);
     }
 
   public void testSetBillingMethodUG() throws Throwable {
-      test("https://alice-staging.jumia.ug");
+      test(BaseHelper.BASE_URL_UG);
   }
 
     private void test(String url) {
@@ -57,7 +57,7 @@ public class SetBillingMethodTest extends FrameworkServiceTests {
         contentValues.put(RequestConstants.KEY_LOGIN_EMAIL, RequestConstants.CUSTOMER_EMAIL);
         contentValues.put(RequestConstants.KEY_LOGIN_PASSWORD, RequestConstants.CUSTOMER_PASSWORD);
         args1.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, contentValues);
-        args1.putString(BaseHelper.KEY_COUNTRY, url + "/mobapi/customer/login/");
+        args1.putString(BaseHelper.KEY_COUNTRY, url + "/customer/login/");
         sendRequest(args1, new GetLoginHelper(), new IResponseCallback() {
 
             @Override
@@ -95,23 +95,23 @@ public class SetBillingMethodTest extends FrameworkServiceTests {
         ContentValues contentValues1 = new ContentValues();
         contentValues1.put(RequestConstants.KEY_BILLING_METHOD_DIFFERENT,RequestConstants.BILLING_METHOD_DIFFERENT);
         
-        if(url.equals("https://www.jumia.ci")){
+        if(url.equals(BaseHelper.BASE_URL_CI)){
             contentValues1.put(RequestConstants.KEY_BILLING_METHOD_BILLING_ADDRESS_ID,RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_IC);
             contentValues1.put(RequestConstants.KEY_BILLING_METHOD_SHIPPING_ADDRESS_ID,RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_IC);
-        }else if(url.equals("https://www.jumia.com.eg")){
+        }else if(url.equals(BaseHelper.BASE_URL_EG)){
             contentValues1.put(RequestConstants.KEY_BILLING_METHOD_BILLING_ADDRESS_ID,RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_EG);
             contentValues1.put(RequestConstants.KEY_BILLING_METHOD_SHIPPING_ADDRESS_ID,RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_EG);
-        }else if(url.equals("https://www.jumia.ma")){
+        }else if(url.equals(BaseHelper.BASE_URL_MA)){
             contentValues1.put(RequestConstants.KEY_BILLING_METHOD_BILLING_ADDRESS_ID,RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_MA);
             contentValues1.put(RequestConstants.KEY_BILLING_METHOD_SHIPPING_ADDRESS_ID,RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_MA);
-        }else if(url.equals("https://www.jumia.com.ng")){
+        }else if(url.equals(BaseHelper.BASE_URL_NG)){
             contentValues1.put(RequestConstants.KEY_BILLING_METHOD_BILLING_ADDRESS_ID,RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_NG);
             contentValues1.put(RequestConstants.KEY_BILLING_METHOD_SHIPPING_ADDRESS_ID,RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_NG);
         }
         
 
         args.putParcelable(GetSignupHelper.CONTENT_VALUES, contentValues1);
-        args.putString(BaseHelper.KEY_COUNTRY, url + "/mobapi/v1/multistep/billing/");
+        args.putString(BaseHelper.KEY_COUNTRY, url + "/multistep/billing/");
         sendRequest(args, new SetBillingMethodHelper(), new IResponseCallback() {
 
             @Override

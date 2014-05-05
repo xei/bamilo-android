@@ -17,7 +17,7 @@ public class CategoriesTests extends FrameworkServiceTests {
     public void testGetCategoriesIC() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.ci/mobapi/catalog/categories/");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_CI+"/catalog/categories/");
         sendRequest(args, new GetCategoriesHelper(), new IResponseCallback() {
 
             @Override
@@ -52,7 +52,7 @@ public class CategoriesTests extends FrameworkServiceTests {
     public void testGetCategoriesKE() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.co.ke/mobapi/catalog/categories/");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_KE+"/catalog/categories/");
         sendRequest(args, new GetCategoriesHelper(), new IResponseCallback() {
 
             @Override
@@ -87,7 +87,7 @@ public class CategoriesTests extends FrameworkServiceTests {
     public void testGetCategoriesMA() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.ma/mobapi/catalog/categories/");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_MA+"/catalog/categories/");
         sendRequest(args, new GetCategoriesHelper(), new IResponseCallback() {
 
             @Override
@@ -122,7 +122,7 @@ public class CategoriesTests extends FrameworkServiceTests {
     public void testGetCategoriesNG() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.com.ng/mobapi/catalog/categories/");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_NG+"/catalog/categories/");
         sendRequest(args, new GetCategoriesHelper(), new IResponseCallback() {
 
             @Override
@@ -157,7 +157,7 @@ public class CategoriesTests extends FrameworkServiceTests {
     public void testGetCategoriesEG() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.com.eg/mobapi/catalog/categories/");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_EG+"/catalog/categories/");
         
         sendRequest(args, new GetCategoriesHelper(), new IResponseCallback() {
 
@@ -192,7 +192,7 @@ public class CategoriesTests extends FrameworkServiceTests {
     public void testGetCategoriesUG() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.ug/mobapi/catalog/categories/");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_UG+"/catalog/categories/");
         
         sendRequest(args, new GetCategoriesHelper(), new IResponseCallback() {
 

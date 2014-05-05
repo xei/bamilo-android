@@ -29,7 +29,7 @@ public class CostumerTest extends FrameworkServiceTests {
         contentValues.put(RequestConstants.KEY_LOGIN_EMAIL, RequestConstants.CUSTOMER_EMAIL);
         contentValues.put(RequestConstants.KEY_LOGIN_PASSWORD, RequestConstants.CUSTOMER_PASSWORD);
         args1.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, contentValues);
-        args1.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.ci/mobapi/customer/login/");
+        args1.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_CI+"/customer/login/");
         sendRequest(args1, new GetLoginHelper(), new IResponseCallback() {
 
             @Override
@@ -61,7 +61,7 @@ public class CostumerTest extends FrameworkServiceTests {
     	
     	Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.ci/mobapi/customer/getdetails?setDevice=mobileApi");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_CI+"/customer/getdetails?setDevice=mobileApi");
         sendRequest(args, new GetCustomerHelper(), new IResponseCallback() {
 
             @Override
@@ -102,7 +102,7 @@ public class CostumerTest extends FrameworkServiceTests {
         contentValues.put(RequestConstants.KEY_LOGIN_EMAIL, RequestConstants.CUSTOMER_EMAIL);
         contentValues.put(RequestConstants.KEY_LOGIN_PASSWORD, RequestConstants.CUSTOMER_PASSWORD);
         args1.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, contentValues);
-        args1.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.co.ke/mobapi/customer/login/");
+        args1.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_KE+"/customer/login/");
         sendRequest(args1, new GetLoginHelper(), new IResponseCallback() {
 
             @Override
@@ -134,7 +134,7 @@ public class CostumerTest extends FrameworkServiceTests {
     	
     	Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.co.ke/mobapi/customer/getdetails?setDevice=mobileApi");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_KE+"/customer/getdetails?setDevice=mobileApi");
         sendRequest(args, new GetCustomerHelper(), new IResponseCallback() {
 
             @Override
@@ -175,7 +175,7 @@ public class CostumerTest extends FrameworkServiceTests {
         contentValues.put(RequestConstants.KEY_LOGIN_EMAIL, RequestConstants.CUSTOMER_EMAIL);
         contentValues.put(RequestConstants.KEY_LOGIN_PASSWORD, RequestConstants.CUSTOMER_PASSWORD);
         args1.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, contentValues);
-        args1.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.ma/mobapi/customer/login/");
+        args1.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_MA+"/customer/login/");
         sendRequest(args1, new GetLoginHelper(), new IResponseCallback() {
 
             @Override
@@ -207,7 +207,7 @@ public class CostumerTest extends FrameworkServiceTests {
     	
     	Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.ma/mobapi/customer/getdetails?setDevice=mobileApi");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_MA+"/customer/getdetails?setDevice=mobileApi");
         sendRequest(args, new GetCustomerHelper(), new IResponseCallback() {
 
             @Override
@@ -248,7 +248,7 @@ public class CostumerTest extends FrameworkServiceTests {
         contentValues.put(RequestConstants.KEY_LOGIN_EMAIL, RequestConstants.CUSTOMER_EMAIL);
         contentValues.put(RequestConstants.KEY_LOGIN_PASSWORD, RequestConstants.CUSTOMER_PASSWORD);
         args1.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, contentValues);
-        args1.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.com.ng/mobapi/customer/login/");
+        args1.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_NG+"/customer/login/");
         sendRequest(args1, new GetLoginHelper(), new IResponseCallback() {
 
             @Override
@@ -280,7 +280,7 @@ public class CostumerTest extends FrameworkServiceTests {
     	
     	Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.com.ng/mobapi/customer/getdetails?setDevice=mobileApi");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_NG+"/customer/getdetails?setDevice=mobileApi");
         sendRequest(args, new GetCustomerHelper(), new IResponseCallback() {
 
             @Override
@@ -321,7 +321,7 @@ public class CostumerTest extends FrameworkServiceTests {
         contentValues.put(RequestConstants.KEY_LOGIN_EMAIL, RequestConstants.CUSTOMER_EMAIL);
         contentValues.put(RequestConstants.KEY_LOGIN_PASSWORD, RequestConstants.CUSTOMER_PASSWORD);
         args1.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, contentValues);
-        args1.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.com.eg/mobapi/customer/login/");
+        args1.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_EG+"/customer/login/");
         sendRequest(args1, new GetLoginHelper(), new IResponseCallback() {
 
             @Override
@@ -353,7 +353,7 @@ public class CostumerTest extends FrameworkServiceTests {
     	
     	Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.com.eg/mobapi/customer/getdetails?setDevice=mobileApi");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_EG+"/customer/getdetails?setDevice=mobileApi");
         sendRequest(args, new GetCustomerHelper(), new IResponseCallback() {
 
             @Override
@@ -394,7 +394,7 @@ public class CostumerTest extends FrameworkServiceTests {
         contentValues.put(RequestConstants.KEY_LOGIN_EMAIL, RequestConstants.CUSTOMER_EMAIL);
         contentValues.put(RequestConstants.KEY_LOGIN_PASSWORD, RequestConstants.CUSTOMER_PASSWORD);
         args1.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, contentValues);
-        args1.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.ug/mobapi/customer/login/");
+        args1.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_UG+"/customer/login/");
         sendRequest(args1, new GetLoginHelper(), new IResponseCallback() {
 
             @Override
@@ -426,7 +426,7 @@ public class CostumerTest extends FrameworkServiceTests {
     	
     	Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.ug/mobapi/customer/getdetails?setDevice=mobileApi");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_UG+"/customer/getdetails?setDevice=mobileApi");
         sendRequest(args, new GetCustomerHelper(), new IResponseCallback() {
 
             @Override

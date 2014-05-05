@@ -17,7 +17,7 @@ public class ForgotPasswordFormTest extends FrameworkServiceTests {
     public void testForgotPasswordFormIC() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "http://www.jumia.ci/mobapi/forms/forgotpassword/");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_CI+"/forms/forgotpassword/");
         sendRequest(args, new GetForgotPasswordFormHelper(), new IResponseCallback() {
 
             @Override
@@ -52,7 +52,7 @@ public class ForgotPasswordFormTest extends FrameworkServiceTests {
     public void testForgotPasswordFormKE() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "http://www.jumia.co.ke/mobapi/forms/forgotpassword/");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_KE+"/forms/forgotpassword/");
         sendRequest(args, new GetForgotPasswordFormHelper(), new IResponseCallback() {
 
             @Override
@@ -87,7 +87,7 @@ public class ForgotPasswordFormTest extends FrameworkServiceTests {
     public void testForgotPasswordFormMA() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "http://www.jumia.ma/mobapi/forms/forgotpassword/");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_MA+"/forms/forgotpassword/");
         sendRequest(args, new GetForgotPasswordFormHelper(), new IResponseCallback() {
 
             @Override
@@ -122,7 +122,7 @@ public class ForgotPasswordFormTest extends FrameworkServiceTests {
     public void testForgotPasswordFormNG() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "http://www.jumia.com.ng/mobapi/forms/forgotpassword/");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_NG+"/forms/forgotpassword/");
         sendRequest(args, new GetForgotPasswordFormHelper(), new IResponseCallback() {
 
             @Override
@@ -157,7 +157,7 @@ public class ForgotPasswordFormTest extends FrameworkServiceTests {
     public void testForgotPasswordFormEG() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.com.eg/mobapi/forms/forgotpassword/");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_EG+"/forms/forgotpassword/");
         
         sendRequest(args, new GetForgotPasswordFormHelper(), new IResponseCallback() {
 
@@ -192,7 +192,7 @@ public class ForgotPasswordFormTest extends FrameworkServiceTests {
     public void testForgotPasswordFormUG() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.ug/mobapi/forms/forgotpassword/");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_UG+"/forms/forgotpassword/");
         
         sendRequest(args, new GetForgotPasswordFormHelper(), new IResponseCallback() {
 

@@ -34,7 +34,7 @@ public class RegisterTests extends FrameworkServiceTests {
 		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_PASSWORD2, RequestConstants.CUSTOMER_PASSWORD);
 		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_YEAR, RequestConstants.CUSTOMER_YEAR);
 		args.putParcelable(GetRegisterHelper.REGISTER_CONTENT_VALUES, contentValues);
-		args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.ci/mobapi/customer/create/");
+		args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_CI+"/customer/create/");
 		args.putString(BaseHelper.KEY_COUNTRY_TAG, "IC");
 		sendRequest(args, new GetRegisterHelper(), new IResponseCallback() {
 
@@ -100,7 +100,7 @@ public class RegisterTests extends FrameworkServiceTests {
 		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_PASSWORD2, RequestConstants.CUSTOMER_PASSWORD);
 		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_YEAR, RequestConstants.CUSTOMER_YEAR);
 		args.putParcelable(GetRegisterHelper.REGISTER_CONTENT_VALUES, contentValues);
-		args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.co.ke/mobapi/customer/create/");
+		args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_KE+"/customer/create/");
 		args.putString(BaseHelper.KEY_COUNTRY_TAG, "KE");
 		sendRequest(args, new GetRegisterHelper(), new IResponseCallback() {
 
@@ -166,7 +166,7 @@ public class RegisterTests extends FrameworkServiceTests {
 		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_PASSWORD2, RequestConstants.CUSTOMER_PASSWORD);
 		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_YEAR, RequestConstants.CUSTOMER_YEAR);
 		args.putParcelable(GetRegisterHelper.REGISTER_CONTENT_VALUES, contentValues);
-		args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.ma/mobapi/customer/create/");
+		args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_MA+"/customer/create/");
 		args.putString(BaseHelper.KEY_COUNTRY_TAG, "MA");
 		sendRequest(args, new GetRegisterHelper(), new IResponseCallback() {
 
@@ -225,7 +225,7 @@ public class RegisterTests extends FrameworkServiceTests {
 		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_PASSWORD2, RequestConstants.CUSTOMER_PASSWORD);
 		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_YEAR, RequestConstants.CUSTOMER_YEAR);
 		args.putParcelable(GetRegisterHelper.REGISTER_CONTENT_VALUES, contentValues);
-		args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.com.ng/mobapi/customer/create/");
+		args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_NG+"/customer/create/");
 		args.putString(BaseHelper.KEY_COUNTRY_TAG, "NG");
 		sendRequest(args, new GetRegisterHelper(), new IResponseCallback() {
 
@@ -283,7 +283,7 @@ public class RegisterTests extends FrameworkServiceTests {
 		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_PASSWORD2, RequestConstants.CUSTOMER_PASSWORD);
 		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_YEAR, RequestConstants.CUSTOMER_YEAR);
 		args.putParcelable(GetRegisterHelper.REGISTER_CONTENT_VALUES, contentValues);
-		args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.com.eg/mobapi/customer/create/");
+		args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_EG+"/customer/create/");
 		args.putString(BaseHelper.KEY_COUNTRY_TAG, "EG");
 		sendRequest(args, new GetRegisterHelper(), new IResponseCallback() {
 
@@ -341,7 +341,7 @@ public class RegisterTests extends FrameworkServiceTests {
 		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_PASSWORD2, RequestConstants.CUSTOMER_PASSWORD);
 		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_YEAR, RequestConstants.CUSTOMER_YEAR);
 		args.putParcelable(GetRegisterHelper.REGISTER_CONTENT_VALUES, contentValues);
-		args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.ug/mobapi/customer/create/");
+		args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_UG+"/customer/create/");
 		args.putString(BaseHelper.KEY_COUNTRY_TAG, "UG");
 		sendRequest(args, new GetRegisterHelper(), new IResponseCallback() {
 

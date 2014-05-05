@@ -22,29 +22,29 @@ public class GetShippingMethodsTest extends FrameworkServiceTests {
     protected boolean processed2 = false;
     
 public void testGetShippingMethodsIC() throws Throwable {
-    test("https://www.jumia.ci");
+    test(BaseHelper.BASE_URL_CI);
 }
 
 public void testGetShippingMethodsMA() throws Throwable {
-    test("https://www.jumia.ma");
+    test(BaseHelper.BASE_URL_MA);
 }
 
 public void testGetShippingMethodsNG() throws Throwable {
-    test("https://www.jumia.com.ng");
+    test(BaseHelper.BASE_URL_NG);
 }
 
 public void testGetShippingMethodsEG() throws Throwable {
-    test("https://www.jumia.com.eg");
+    test(BaseHelper.BASE_URL_EG);
 }
 
 //UG and KE don't have NC yet
 
 public void testGetShippingMethodsKE() throws Throwable {
-  test("https://www.jumia.co.ke");
+  test(BaseHelper.BASE_URL_KE);
 }
 
 public void testGetShippingMethodsUG() throws Throwable {
-  test("https://www.jumia.ug");
+  test(BaseHelper.BASE_URL_UG);
 }
 
 public void test(String url){
@@ -57,7 +57,7 @@ public void test(String url){
     contentValues.put(RequestConstants.KEY_LOGIN_EMAIL, RequestConstants.CUSTOMER_EMAIL);
     contentValues.put(RequestConstants.KEY_LOGIN_PASSWORD, RequestConstants.CUSTOMER_PASSWORD);
     args.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, contentValues);
-    args.putString(BaseHelper.KEY_COUNTRY, url + "/mobapi/customer/login/");
+    args.putString(BaseHelper.KEY_COUNTRY, url + "/customer/login/");
     sendRequest(args, new GetLoginHelper(), new IResponseCallback() {
 
         @Override
@@ -94,23 +94,23 @@ public void test(String url){
     ContentValues contentValues1 = new ContentValues();
     contentValues1.put(RequestConstants.KEY_BILLING_METHOD_DIFFERENT,RequestConstants.BILLING_METHOD_DIFFERENT);
     
-    if(url.equals("https://www.jumia.ci")){
+    if(url.equals(BaseHelper.BASE_URL_CI)){
         contentValues1.put(RequestConstants.KEY_BILLING_METHOD_BILLING_ADDRESS_ID,RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_IC);
         contentValues1.put(RequestConstants.KEY_BILLING_METHOD_SHIPPING_ADDRESS_ID,RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_IC);
-    }else if(url.equals("https://www.jumia.com.eg")){
+    }else if(url.equals(BaseHelper.BASE_URL_EG)){
         contentValues1.put(RequestConstants.KEY_BILLING_METHOD_BILLING_ADDRESS_ID,RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_EG);
         contentValues1.put(RequestConstants.KEY_BILLING_METHOD_SHIPPING_ADDRESS_ID,RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_EG);
-    }else if(url.equals("https://www.jumia.ma")){
+    }else if(url.equals(BaseHelper.BASE_URL_MA)){
         contentValues1.put(RequestConstants.KEY_BILLING_METHOD_BILLING_ADDRESS_ID,RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_MA);
         contentValues1.put(RequestConstants.KEY_BILLING_METHOD_SHIPPING_ADDRESS_ID,RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_MA);
-    }else if(url.equals("https://www.jumia.com.ng")){
+    }else if(url.equals(BaseHelper.BASE_URL_NG)){
         contentValues1.put(RequestConstants.KEY_BILLING_METHOD_BILLING_ADDRESS_ID,RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_NG);
         contentValues1.put(RequestConstants.KEY_BILLING_METHOD_SHIPPING_ADDRESS_ID,RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_NG);
     }
     
 
     argsSetBilling.putParcelable(GetSignupHelper.CONTENT_VALUES, contentValues1);
-    argsSetBilling.putString(BaseHelper.KEY_COUNTRY, url + "/mobapi/v1/multistep/billing/");
+    argsSetBilling.putString(BaseHelper.KEY_COUNTRY, url + "/multistep/billing/");
     sendRequest(argsSetBilling, new SetBillingMethodHelper(), new IResponseCallback() {
 
         @Override
@@ -152,7 +152,7 @@ public void test(String url){
      */
     Log.i(TAG, "mService => " + mService);
     Bundle args1 = new Bundle();
-    args1.putString(BaseHelper.KEY_COUNTRY, url + "/mobapi/v1/multistep/shippingmethod/");
+    args1.putString(BaseHelper.KEY_COUNTRY, url + "/multistep/shippingmethod/");
     sendRequest(args1, new GetShippingMethodsHelper(), new IResponseCallback() {
 
         @Override

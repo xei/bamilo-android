@@ -27,7 +27,7 @@ public void testShoppingCartRemoveItemIC() throws Throwable {
         contentValues.put(RequestConstants.KEY_LOGIN_EMAIL, RequestConstants.CUSTOMER_EMAIL);
         contentValues.put(RequestConstants.KEY_LOGIN_PASSWORD, RequestConstants.CUSTOMER_PASSWORD);
         args1.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, contentValues);
-        args1.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.ci/mobapi/customer/login/");
+        args1.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_CI+"/customer/login/");
         sendRequest(args1, new GetLoginHelper(), new IResponseCallback() {
 
             @Override
@@ -62,7 +62,7 @@ public void testShoppingCartRemoveItemIC() throws Throwable {
          */
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.ci/mobapi/order/remove?setDevice=mobileApi");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_CI+"/order/remove?setDevice=mobileApi");
         ContentValues contentValues2 = new ContentValues();
         //contentValues2.put(RequestConstants.KEY_ADD_CART_SKU, RequestConstants.PRODUCT_SKU_CI);
         contentValues2.put(RequestConstants.KEY_ADD_CART_SKU_SIMPLE, RequestConstants.PRODUCT_SKU_SIMPLE_CI);
@@ -110,7 +110,7 @@ public void testShoppingCartRemoveItemKE() throws Throwable {
     contentValues.put(RequestConstants.KEY_LOGIN_EMAIL, RequestConstants.CUSTOMER_EMAIL);
     contentValues.put(RequestConstants.KEY_LOGIN_PASSWORD, RequestConstants.CUSTOMER_PASSWORD);
     args1.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, contentValues);
-    args1.putString(BaseHelper.KEY_COUNTRY, "http://www.jumia.co.ke/mobapi/customer/login/");
+    args1.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_KE+"/customer/login/");
     sendRequest(args1, new GetLoginHelper(), new IResponseCallback() {
 
         @Override
@@ -145,7 +145,7 @@ public void testShoppingCartRemoveItemKE() throws Throwable {
      */
     Log.i(TAG, "mService => " + mService);
     Bundle args = new Bundle();
-    args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.co.ke/mobapi/order/remove?setDevice=mobileApi");
+    args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_KE+"/order/remove?setDevice=mobileApi");
     ContentValues contentValues2 = new ContentValues();
     //contentValues2.put(RequestConstants.KEY_ADD_CART_SKU, RequestConstants.PRODUCT_SKU_KE);
     contentValues2.put(RequestConstants.KEY_ADD_CART_SKU_SIMPLE, RequestConstants.PRODUCT_SKU_SIMPLE_KE);
@@ -193,7 +193,7 @@ public void testShoppingCartRemoveItemMA() throws Throwable {
     contentValues.put(RequestConstants.KEY_LOGIN_EMAIL, RequestConstants.CUSTOMER_EMAIL);
     contentValues.put(RequestConstants.KEY_LOGIN_PASSWORD, RequestConstants.CUSTOMER_PASSWORD);
     args1.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, contentValues);
-    args1.putString(BaseHelper.KEY_COUNTRY, "http://www.jumia.ma/mobapi/customer/login/");
+    args1.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_MA+"/customer/login/");
     sendRequest(args1, new GetLoginHelper(), new IResponseCallback() {
 
         @Override
@@ -228,7 +228,7 @@ public void testShoppingCartRemoveItemMA() throws Throwable {
      */
     Log.i(TAG, "mService => " + mService);
     Bundle args = new Bundle();
-    args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.ma/mobapi/order/remove?setDevice=mobileApi");
+    args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_MA+"/order/remove?setDevice=mobileApi");
     ContentValues contentValues2 = new ContentValues();
     //contentValues2.put(RequestConstants.KEY_ADD_CART_SKU, RequestConstants.PRODUCT_SKU_MA);
     contentValues2.put(RequestConstants.KEY_ADD_CART_SKU_SIMPLE, RequestConstants.PRODUCT_SKU_SIMPLE_MA);
@@ -276,7 +276,7 @@ public void testShoppingCartRemoveItemNG() throws Throwable {
     contentValues.put(RequestConstants.KEY_LOGIN_EMAIL, RequestConstants.CUSTOMER_EMAIL);
     contentValues.put(RequestConstants.KEY_LOGIN_PASSWORD, RequestConstants.CUSTOMER_PASSWORD);
     args1.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, contentValues);
-    args1.putString(BaseHelper.KEY_COUNTRY, "http://www.jumia.com.ng/mobapi/customer/login/");
+    args1.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_NG+"/customer/login/");
     sendRequest(args1, new GetLoginHelper(), new IResponseCallback() {
 
         @Override
@@ -311,7 +311,7 @@ public void testShoppingCartRemoveItemNG() throws Throwable {
      */
     Log.i(TAG, "mService => " + mService);
     Bundle args = new Bundle();
-    args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.com.ng/mobapi/order/remove?setDevice=mobileApi");
+    args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_NG+"/order/remove?setDevice=mobileApi");
     ContentValues contentValues2 = new ContentValues();
     //contentValues2.put(RequestConstants.KEY_ADD_CART_SKU, RequestConstants.PRODUCT_SKU_NG);
     contentValues2.put(RequestConstants.KEY_ADD_CART_SKU_SIMPLE, RequestConstants.PRODUCT_SKU_SIMPLE_NG);
@@ -359,7 +359,7 @@ public void testShoppingCartRemoveItemEG() throws Throwable {
     contentValues.put(RequestConstants.KEY_LOGIN_EMAIL, RequestConstants.CUSTOMER_EMAIL);
     contentValues.put(RequestConstants.KEY_LOGIN_PASSWORD, RequestConstants.CUSTOMER_PASSWORD);
     args1.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, contentValues);
-    args1.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.com.eg/mobapi/customer/login/");
+    args1.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_EG+"/customer/login/");
     sendRequest(args1, new GetLoginHelper(), new IResponseCallback() {
 
         @Override
@@ -394,7 +394,7 @@ public void testShoppingCartRemoveItemEG() throws Throwable {
      */
     Log.i(TAG, "mService => " + mService);
     Bundle args = new Bundle();
-    args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.com.eg/mobapi/order/remove?setDevice=mobileApi");
+    args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_EG+"/order/remove?setDevice=mobileApi");
     ContentValues contentValues2 = new ContentValues();
     //contentValues2.put(RequestConstants.KEY_ADD_CART_SKU, RequestConstants.PRODUCT_SKU_EG);
     contentValues2.put(RequestConstants.KEY_ADD_CART_SKU_SIMPLE, RequestConstants.PRODUCT_SKU_SIMPLE_EG);
@@ -442,7 +442,7 @@ public void testShoppingCartRemoveItemUG() throws Throwable {
     contentValues.put(RequestConstants.KEY_LOGIN_EMAIL, RequestConstants.CUSTOMER_EMAIL);
     contentValues.put(RequestConstants.KEY_LOGIN_PASSWORD, RequestConstants.CUSTOMER_PASSWORD);
     args1.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, contentValues);
-    args1.putString(BaseHelper.KEY_COUNTRY, "http://www.jumia.ug/mobapi/customer/login/");
+    args1.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_UG+"/customer/login/");
     sendRequest(args1, new GetLoginHelper(), new IResponseCallback() {
 
         @Override
@@ -477,7 +477,7 @@ public void testShoppingCartRemoveItemUG() throws Throwable {
      */
     Log.i(TAG, "mService => " + mService);
     Bundle args = new Bundle();
-    args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.ug/mobapi/order/remove?setDevice=mobileApi");
+    args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_UG+"/order/remove?setDevice=mobileApi");
     ContentValues contentValues2 = new ContentValues();
     //contentValues2.put(RequestConstants.KEY_ADD_CART_SKU, RequestConstants.PRODUCT_SKU_UG);
     contentValues2.put(RequestConstants.KEY_ADD_CART_SKU_SIMPLE, RequestConstants.PRODUCT_SKU_SIMPLE_UG);

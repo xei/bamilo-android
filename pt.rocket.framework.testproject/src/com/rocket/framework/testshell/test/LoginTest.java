@@ -19,32 +19,32 @@ public class LoginTest extends FrameworkServiceTests {
     
     @SmallTest
     public void testGetLoginIC() throws Throwable {
-    	executeLogin("https://www.jumia.ci");
+    	executeLogin(BaseHelper.BASE_URL_CI);
     }
     
     @SmallTest
     public void testGetLoginKE() throws Throwable {
-    	executeLogin("https://www.jumia.co.ke");
+    	executeLogin(BaseHelper.BASE_URL_KE);
     }
     
     @SmallTest
     public void testGetLoginMA() throws Throwable {
-    	executeLogin("https://www.jumia.ma");
+    	executeLogin(BaseHelper.BASE_URL_MA);
     }
     
     @SmallTest
     public void testGetLoginEG() throws Throwable {
-    	executeLogin("https://www.jumia.com.eg");
+    	executeLogin(BaseHelper.BASE_URL_EG);
     }
     
     @SmallTest
     public void testGetLoginNG() throws Throwable {
-    	executeLogin("https://www.jumia.com.ng");
+    	executeLogin(BaseHelper.BASE_URL_NG);
     }
     
     @SmallTest
     public void testGetLoginUG() throws Throwable {
-    	executeLogin("https://www.jumia.ug");
+    	executeLogin(BaseHelper.BASE_URL_UG);
     }
     
     private void executeLogin(String url){
@@ -57,7 +57,7 @@ public class LoginTest extends FrameworkServiceTests {
         contentValues.put(RequestConstants.KEY_LOGIN_EMAIL, RequestConstants.CUSTOMER_EMAIL);
         contentValues.put(RequestConstants.KEY_LOGIN_PASSWORD, RequestConstants.CUSTOMER_PASSWORD);
         args1.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, contentValues);
-        args1.putString(BaseHelper.KEY_COUNTRY, url+"/mobapi/customer/login/");
+        args1.putString(BaseHelper.KEY_COUNTRY, url+"/customer/login/");
         sendRequest(args1, new GetLoginHelper(), new IResponseCallback() {
 
             @Override

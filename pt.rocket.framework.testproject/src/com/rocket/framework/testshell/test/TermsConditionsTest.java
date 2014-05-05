@@ -17,7 +17,7 @@ public class TermsConditionsTest extends FrameworkServiceTests {
     public void testGetTermsConditionsIC() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.ci/mobapi/main/getstatic?key=terms_mobile");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_CI+"/main/getstatic?key=terms_mobile");
         sendRequest(args, new GetTermsConditionsHelper(), new IResponseCallback() {
 
             @Override
@@ -52,7 +52,7 @@ public class TermsConditionsTest extends FrameworkServiceTests {
     public void testGetTermsConditionsKE() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "http://www.jumia.co.ke/mobapi/main/getstatic?key=terms_mobile");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_KE+"/main/getstatic?key=terms_mobile");
         sendRequest(args, new GetTermsConditionsHelper(), new IResponseCallback() {
 
             @Override
@@ -87,7 +87,7 @@ public class TermsConditionsTest extends FrameworkServiceTests {
     public void testGetTermsConditionsMA() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "http://www.jumia.ma/mobapi/main/getstatic?key=terms_mobile");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_MA+"/main/getstatic?key=terms_mobile");
         sendRequest(args, new GetTermsConditionsHelper(), new IResponseCallback() {
 
             @Override
@@ -122,7 +122,7 @@ public class TermsConditionsTest extends FrameworkServiceTests {
     public void testGetTermsConditionsNG() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "http://www.jumia.com.ng/mobapi/main/getstatic?key=terms_mobile");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_NG+"/main/getstatic?key=terms_mobile");
         sendRequest(args, new GetTermsConditionsHelper(), new IResponseCallback() {
 
             @Override
@@ -157,7 +157,7 @@ public class TermsConditionsTest extends FrameworkServiceTests {
     public void testGetTermsConditionsEG() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.com.eg/mobapi/main/getstatic?key=terms_mobile");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_EG+"/main/getstatic?key=terms_mobile");
         
         sendRequest(args, new GetTermsConditionsHelper(), new IResponseCallback() {
 
@@ -193,7 +193,7 @@ public class TermsConditionsTest extends FrameworkServiceTests {
     public void testGetTermsConditionsUG() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.ug/mobapi/main/getstatic?key=terms_mobile");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_UG+"/main/getstatic?key=terms_mobile");
         
         sendRequest(args, new GetTermsConditionsHelper(), new IResponseCallback() {
 

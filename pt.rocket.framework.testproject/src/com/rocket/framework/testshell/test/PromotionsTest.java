@@ -18,7 +18,7 @@ public class PromotionsTest extends FrameworkServiceTests {
     public void testGetPromotionsIC() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "http://www.jumia.ci/mobapi/main/getstatic?key=mobile_promotions");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_CI+"/main/getstatic?key=mobile_promotions");
         sendRequest(args, new GetPromotionsHelper(), new IResponseCallback() {
 
             @Override
@@ -53,7 +53,7 @@ public class PromotionsTest extends FrameworkServiceTests {
     public void testGetPromotionsKE() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "http://www.jumia.co.ke/mobapi/main/getstatic?key=mobile_promotions");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_KE+"/main/getstatic?key=mobile_promotions");
         sendRequest(args, new GetPromotionsHelper(), new IResponseCallback() {
 
             @Override
@@ -87,7 +87,7 @@ public class PromotionsTest extends FrameworkServiceTests {
     public void testGetPromotionsMA() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "http://www.jumia.ma/mobapi/main/getstatic?key=mobile_promotions");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_MA+"/main/getstatic?key=mobile_promotions");
         sendRequest(args, new GetPromotionsHelper(), new IResponseCallback() {
 
             @Override
@@ -122,7 +122,7 @@ public class PromotionsTest extends FrameworkServiceTests {
     public void testGetPromotionsNG() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "http://www.jumia.com.ng/mobapi/main/getstatic?key=mobile_promotions");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_NG+"/main/getstatic?key=mobile_promotions");
         sendRequest(args, new GetPromotionsHelper(), new IResponseCallback() {
 
             @Override
@@ -157,7 +157,7 @@ public class PromotionsTest extends FrameworkServiceTests {
     public void testGetPromotionsEG() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "http://www.jumia.com.eg/mobapi/main/getstatic?key=mobile_promotions");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_EG+"/main/getstatic?key=mobile_promotions");
         sendRequest(args, new GetPromotionsHelper(), new IResponseCallback() {
 
             @Override
@@ -192,7 +192,7 @@ public class PromotionsTest extends FrameworkServiceTests {
     public void testGetPromotionsUG() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "http://www.jumia.ug/mobapi/main/getstatic?key=mobile_promotions");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_UG+"/main/getstatic?key=mobile_promotions");
         sendRequest(args, new GetPromotionsHelper(), new IResponseCallback() {
 
             @Override

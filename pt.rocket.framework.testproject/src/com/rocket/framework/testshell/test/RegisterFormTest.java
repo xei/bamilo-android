@@ -17,7 +17,7 @@ public class RegisterFormTest extends FrameworkServiceTests {
     public void testRegisterFormIC() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "http://www.jumia.ci/mobapi/forms/register/");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_CI+"/forms/register/");
         sendRequest(args, new GetRegisterFormHelper(), new IResponseCallback() {
 
             @Override
@@ -52,7 +52,7 @@ public class RegisterFormTest extends FrameworkServiceTests {
     public void testRegisterFormKE() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "http://www.jumia.co.ke/mobapi/forms/register/");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_KE+"/forms/register/");
         sendRequest(args, new GetRegisterFormHelper(), new IResponseCallback() {
 
             @Override
@@ -87,7 +87,7 @@ public class RegisterFormTest extends FrameworkServiceTests {
     public void testRegisterFormMA() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "http://www.jumia.ma/mobapi/forms/register/");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_MA+"/forms/register/");
         sendRequest(args, new GetRegisterFormHelper(), new IResponseCallback() {
 
             @Override
@@ -122,7 +122,7 @@ public class RegisterFormTest extends FrameworkServiceTests {
     public void testRegisterFormNG() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "http://www.jumia.com.ng/mobapi/forms/register/");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_NG+"/forms/register/");
         sendRequest(args, new GetRegisterFormHelper(), new IResponseCallback() {
 
             @Override
@@ -157,7 +157,7 @@ public class RegisterFormTest extends FrameworkServiceTests {
     public void testRegisterFormEG() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.com.eg/mobapi/forms/register/");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_EG+"/forms/register/");
         
         sendRequest(args, new GetRegisterFormHelper(), new IResponseCallback() {
 
@@ -192,7 +192,7 @@ public class RegisterFormTest extends FrameworkServiceTests {
     public void testRegisterFormUG() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "http://www.jumia.ug/mobapi/forms/register/");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_UG+"/forms/register/");
         sendRequest(args, new GetRegisterFormHelper(), new IResponseCallback() {
 
             @Override

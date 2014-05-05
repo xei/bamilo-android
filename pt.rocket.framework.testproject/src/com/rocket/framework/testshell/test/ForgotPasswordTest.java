@@ -22,7 +22,7 @@ public class ForgotPasswordTest extends FrameworkServiceTests {
         ContentValues contentValues = new ContentValues();
         contentValues.put(RequestConstants.KEY_FORGOT_PASSWORD_EMAIL, RequestConstants.CUSTOMER_EMAIL);
         args.putParcelable(GetForgotPasswordHelper.CONTENT_VALUES, contentValues);
-        args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.ug/mobapi/customer/forgotpassword?setDevice=mobileApi");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_UG+"/customer/forgotpassword?setDevice=mobileApi");
         
         sendRequest(args, new GetForgotPasswordHelper(), new IResponseCallback() {
 
@@ -60,7 +60,7 @@ public class ForgotPasswordTest extends FrameworkServiceTests {
         ContentValues contentValues = new ContentValues();
         contentValues.put(RequestConstants.KEY_FORGOT_PASSWORD_EMAIL, RequestConstants.CUSTOMER_EMAIL);
         args.putParcelable(GetForgotPasswordHelper.CONTENT_VALUES, contentValues);
-        args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.ci/mobapi/customer/forgotpassword?setDevice=mobileApi");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_CI+"/customer/forgotpassword?setDevice=mobileApi");
         
         sendRequest(args, new GetForgotPasswordHelper(), new IResponseCallback() {
 
@@ -98,7 +98,7 @@ public class ForgotPasswordTest extends FrameworkServiceTests {
         ContentValues contentValues = new ContentValues();
         contentValues.put(RequestConstants.KEY_FORGOT_PASSWORD_EMAIL, RequestConstants.CUSTOMER_EMAIL);
         args.putParcelable(GetForgotPasswordHelper.CONTENT_VALUES, contentValues);
-        args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.co.ke/mobapi/customer/forgotpassword?setDevice=mobileApi");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_KE+"/customer/forgotpassword?setDevice=mobileApi");
         
         sendRequest(args, new GetForgotPasswordHelper(), new IResponseCallback() {
 
@@ -136,7 +136,7 @@ public class ForgotPasswordTest extends FrameworkServiceTests {
         ContentValues contentValues = new ContentValues();
         contentValues.put(RequestConstants.KEY_FORGOT_PASSWORD_EMAIL, RequestConstants.CUSTOMER_EMAIL);
         args.putParcelable(GetForgotPasswordHelper.CONTENT_VALUES, contentValues);
-        args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.com.ng/mobapi/customer/forgotpassword?setDevice=mobileApi");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_NG+"/customer/forgotpassword?setDevice=mobileApi");
         
         sendRequest(args, new GetForgotPasswordHelper(), new IResponseCallback() {
 
@@ -174,7 +174,7 @@ public class ForgotPasswordTest extends FrameworkServiceTests {
         ContentValues contentValues = new ContentValues();
         contentValues.put(RequestConstants.KEY_FORGOT_PASSWORD_EMAIL, RequestConstants.CUSTOMER_EMAIL);
         args.putParcelable(GetForgotPasswordHelper.CONTENT_VALUES, contentValues);
-        args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.com.eg/mobapi/customer/forgotpassword?setDevice=mobileApi");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_EG+"/customer/forgotpassword?setDevice=mobileApi");
         
         sendRequest(args, new GetForgotPasswordHelper(), new IResponseCallback() {
 
@@ -212,7 +212,7 @@ public class ForgotPasswordTest extends FrameworkServiceTests {
         ContentValues contentValues = new ContentValues();
         contentValues.put(RequestConstants.KEY_FORGOT_PASSWORD_EMAIL, RequestConstants.CUSTOMER_EMAIL);
         args.putParcelable(GetForgotPasswordHelper.CONTENT_VALUES, contentValues);
-        args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.ma/mobapi/customer/forgotpassword?setDevice=mobileApi");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_MA+"/customer/forgotpassword?setDevice=mobileApi");
         
         sendRequest(args, new GetForgotPasswordHelper(), new IResponseCallback() {
 

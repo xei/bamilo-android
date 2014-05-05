@@ -26,7 +26,7 @@ public class FacebookLoginTest extends FrameworkServiceTests {
         values.put("birthday", RequestConstants.FACEBOOK_CUSTOMER_BIRTHDAY);
         values.put("gender", RequestConstants.FACEBOOK_CUSTOMER_GENDER);
         args.putParcelable(GetFacebookLoginHelper.LOGIN_CONTENT_VALUES, values);
-        args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.ci/mobapi/customer/facebooklogin?setDevice=mobileApi&facebook=true");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_CI+"/customer/facebooklogin?setDevice=mobileApi&facebook=true");
         sendRequest(args, new GetFacebookLoginHelper(), new IResponseCallback() {
 
             @Override
@@ -68,7 +68,7 @@ public class FacebookLoginTest extends FrameworkServiceTests {
         values.put("birthday", RequestConstants.FACEBOOK_CUSTOMER_BIRTHDAY);
         values.put("gender", RequestConstants.FACEBOOK_CUSTOMER_GENDER);
         args.putParcelable(GetFacebookLoginHelper.LOGIN_CONTENT_VALUES, values);
-        args.putString(BaseHelper.KEY_COUNTRY, "http://www.jumia.co.ke/mobapi/customer/facebooklogin?setDevice=mobileApi&facebook=true");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_KE+"/customer/facebooklogin?setDevice=mobileApi&facebook=true");
         sendRequest(args, new GetFacebookLoginHelper(), new IResponseCallback() {
 
             @Override
@@ -110,7 +110,7 @@ public class FacebookLoginTest extends FrameworkServiceTests {
         values.put("birthday", RequestConstants.FACEBOOK_CUSTOMER_BIRTHDAY);
         values.put("gender", RequestConstants.FACEBOOK_CUSTOMER_GENDER);
         args.putParcelable(GetFacebookLoginHelper.LOGIN_CONTENT_VALUES, values);
-        args.putString(BaseHelper.KEY_COUNTRY, "http://www.jumia.ma/mobapi/customer/facebooklogin?setDevice=mobileApi&facebook=true");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_MA+"/customer/facebooklogin?setDevice=mobileApi&facebook=true");
         sendRequest(args, new GetFacebookLoginHelper(), new IResponseCallback() {
 
             @Override
@@ -152,7 +152,7 @@ public class FacebookLoginTest extends FrameworkServiceTests {
         values.put("birthday", RequestConstants.FACEBOOK_CUSTOMER_BIRTHDAY);
         values.put("gender", RequestConstants.FACEBOOK_CUSTOMER_GENDER);
         args.putParcelable(GetFacebookLoginHelper.LOGIN_CONTENT_VALUES, values);
-        args.putString(BaseHelper.KEY_COUNTRY, "http://www.jumia.com.ng/mobapi/customer/facebooklogin?setDevice=mobileApi&facebook=true");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_NG+"/customer/facebooklogin?setDevice=mobileApi&facebook=true");
         sendRequest(args, new GetFacebookLoginHelper(), new IResponseCallback() {
 
             @Override
@@ -194,7 +194,7 @@ public class FacebookLoginTest extends FrameworkServiceTests {
         values.put("birthday", RequestConstants.FACEBOOK_CUSTOMER_BIRTHDAY);
         values.put("gender", RequestConstants.FACEBOOK_CUSTOMER_GENDER);
         args.putParcelable(GetFacebookLoginHelper.LOGIN_CONTENT_VALUES, values);
-        args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.com.eg/mobapi/customer/facebooklogin?setDevice=mobileApi&facebook=true");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_EG+"/customer/facebooklogin?setDevice=mobileApi&facebook=true");
         
         sendRequest(args, new GetFacebookLoginHelper(), new IResponseCallback() {
 
@@ -237,7 +237,7 @@ public class FacebookLoginTest extends FrameworkServiceTests {
         values.put("birthday", RequestConstants.FACEBOOK_CUSTOMER_BIRTHDAY);
         values.put("gender", RequestConstants.FACEBOOK_CUSTOMER_GENDER);
         args.putParcelable(GetFacebookLoginHelper.LOGIN_CONTENT_VALUES, values);
-        args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.ug/mobapi/customer/facebooklogin?setDevice=mobileApi&facebook=true");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_UG+"/customer/facebooklogin?setDevice=mobileApi&facebook=true");
         
         sendRequest(args, new GetFacebookLoginHelper(), new IResponseCallback() {
 

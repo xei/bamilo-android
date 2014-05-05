@@ -21,27 +21,27 @@ public class CitiesTest extends FrameworkServiceTests {
     protected boolean processed1 = false;
     
 public void testCitiesIC() throws Throwable {
-  test("https://www.jumia.ci",319);
+  test(BaseHelper.BASE_URL_CI,319);
 }
 
 public void testCitiesKE() throws Throwable {
-    test("https://www.jumia.co.ke", 0);
+    test(BaseHelper.BASE_URL_KE, 0);
 }
 
 public void testCitiesMA() throws Throwable {
-  test("https://www.jumia.ma",94);
+  test(BaseHelper.BASE_URL_MA,94);
 }
 
 public void testCitiesNG() throws Throwable {
-  test("https://www.jumia.com.ng",25);
+  test(BaseHelper.BASE_URL_NG,25);
 }
 
 public void testCitiesEG() throws Throwable {
-  test("https://www.jumia.com.eg",182);
+  test(BaseHelper.BASE_URL_EG,182);
 }
 
 public void testCitiesUG() throws Throwable {
-  test("https://www.jumia.ug", 0);
+  test(BaseHelper.BASE_URL_UG, 0);
 }
 
 public void test(String url, int region_id){
@@ -55,7 +55,7 @@ public void test(String url, int region_id){
     contentValues.put(RequestConstants.KEY_LOGIN_PASSWORD, RequestConstants.CUSTOMER_PASSWORD);
     args1.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, contentValues);
     
-    args1.putString(BaseHelper.KEY_COUNTRY, url + "/mobapi/customer/login/");
+    args1.putString(BaseHelper.KEY_COUNTRY, url + "/customer/login/");
     sendRequest(args1, new GetLoginHelper(), new IResponseCallback() {
 
         @Override
@@ -90,7 +90,7 @@ public void test(String url, int region_id){
      */
     Log.i(TAG, "mService => " + mService);
     Bundle args = new Bundle();
-    args.putString(BaseHelper.KEY_COUNTRY, url + "/mobapi/v1/customer/address/cities/?region="+region_id);
+    args.putString(BaseHelper.KEY_COUNTRY, url + "/customer/address/cities/?region="+region_id);
     sendRequest(args, new GetCitiesHelper(), new IResponseCallback() {
 
         @Override

@@ -17,7 +17,7 @@ public class ImageResolutionsTest extends FrameworkServiceTests {
     public void testImageResolutionsIC() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "http://www.jumia.ci/mobapi/main/imageresolutions/");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_CI+"/main/imageresolutions/");
         sendRequest(args, new GetImageResolutionsHelper(), new IResponseCallback() {
 
             @Override
@@ -52,7 +52,7 @@ public class ImageResolutionsTest extends FrameworkServiceTests {
     public void testImageResolutionsKE() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "http://www.jumia.co.ke/mobapi/main/imageresolutions/");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_KE+"/main/imageresolutions/");
         sendRequest(args, new GetImageResolutionsHelper(), new IResponseCallback() {
 
             @Override
@@ -87,7 +87,7 @@ public class ImageResolutionsTest extends FrameworkServiceTests {
     public void testImageResolutionsMA() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "http://www.jumia.ma/mobapi/main/imageresolutions/");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_MA+"/main/imageresolutions/");
         sendRequest(args, new GetImageResolutionsHelper(), new IResponseCallback() {
 
             @Override
@@ -122,7 +122,7 @@ public class ImageResolutionsTest extends FrameworkServiceTests {
     public void testImageResolutionsNG() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "http://www.jumia.com.ng/mobapi/main/imageresolutions/");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_NG+"/main/imageresolutions/");
         sendRequest(args, new GetImageResolutionsHelper(), new IResponseCallback() {
 
             @Override
@@ -157,7 +157,7 @@ public class ImageResolutionsTest extends FrameworkServiceTests {
     public void testImageResolutionsEG() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.com.eg/mobapi/main/imageresolutions/");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_EG+"/main/imageresolutions/");
         
         sendRequest(args, new GetImageResolutionsHelper(), new IResponseCallback() {
 
@@ -192,7 +192,7 @@ public class ImageResolutionsTest extends FrameworkServiceTests {
     public void testImageResolutionsUG() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.ug/mobapi/main/imageresolutions/");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_UG+"/main/imageresolutions/");
         
         sendRequest(args, new GetImageResolutionsHelper(), new IResponseCallback() {
 

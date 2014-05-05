@@ -17,7 +17,7 @@ public class LoginFormTests extends FrameworkServiceTests {
     public void testGetLoginFormIC() throws Throwable {
         Log.i(TAG,"STARTING LOGIN TEST ");
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY,"http://www.jumia.ci/mobapi/forms/login/" );
+        args.putString(BaseHelper.KEY_COUNTRY,BaseHelper.BASE_URL_CI+"/forms/login/" );
         sendRequest(args, new GetLoginFormHelper(), new IResponseCallback() {
             
             @Override
@@ -51,7 +51,7 @@ public class LoginFormTests extends FrameworkServiceTests {
     public void testGetLoginFormKE() throws Throwable {
         Log.i(TAG,"STARTING LOGIN TEST ");
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY,"http://www.jumia.co.ke/mobapi/forms/login/" );
+        args.putString(BaseHelper.KEY_COUNTRY,BaseHelper.BASE_URL_KE+"/forms/login/" );
         sendRequest(args, new GetLoginFormHelper(), new IResponseCallback() {
             
             @Override
@@ -85,7 +85,7 @@ public class LoginFormTests extends FrameworkServiceTests {
     public void testGetLoginFormMA() throws Throwable {
         Log.i(TAG,"STARTING LOGIN TEST ");
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY,"http://www.jumia.ma/mobapi/forms/login/" );
+        args.putString(BaseHelper.KEY_COUNTRY,BaseHelper.BASE_URL_MA+"/forms/login/" );
         sendRequest(args, new GetLoginFormHelper(), new IResponseCallback() {
             
             @Override
@@ -119,7 +119,7 @@ public class LoginFormTests extends FrameworkServiceTests {
     public void testGetLoginFormNG() throws Throwable {
         Log.i(TAG,"STARTING LOGIN TEST ");
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY,"http://www.jumia.com.ng/mobapi/forms/login/" );
+        args.putString(BaseHelper.KEY_COUNTRY,BaseHelper.BASE_URL_NG+"/forms/login/" );
         sendRequest(args, new GetLoginFormHelper(), new IResponseCallback() {
             
             @Override
@@ -153,7 +153,7 @@ public class LoginFormTests extends FrameworkServiceTests {
     public void testGetLoginFormEG() throws Throwable {
         Log.i(TAG,"STARTING LOGIN TEST ");
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY,"http://www.jumia.com.eg/mobapi/forms/login/" );
+        args.putString(BaseHelper.KEY_COUNTRY,BaseHelper.BASE_URL_EG+"/forms/login/" );
         sendRequest(args, new GetLoginFormHelper(), new IResponseCallback() {
             
             @Override
@@ -186,7 +186,7 @@ public class LoginFormTests extends FrameworkServiceTests {
     public void testGetLoginFormUG() throws Throwable {
         Log.i(TAG,"STARTING LOGIN TEST ");
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY,"http://www.jumia.ug/mobapi/forms/login/" );
+        args.putString(BaseHelper.KEY_COUNTRY,BaseHelper.BASE_URL_UG+"/forms/login/" );
         sendRequest(args, new GetLoginFormHelper(), new IResponseCallback() {
             
             @Override

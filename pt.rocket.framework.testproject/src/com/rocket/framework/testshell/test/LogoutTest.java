@@ -19,32 +19,32 @@ public class LogoutTest extends FrameworkServiceTests {
 
 	@SmallTest
 	public void testGetLogoutIC() throws Throwable {
-		executeLogout("https://www.jumia.ci");
+		executeLogout(BaseHelper.BASE_URL_CI);
 	}
 
 	@SmallTest
 	public void testGetLogoutKE() throws Throwable {
-		executeLogout("https://www.jumia.co.ke");
+		executeLogout(BaseHelper.BASE_URL_KE);
 	}
 
 	@SmallTest
 	public void testGetLogoutMA() throws Throwable {
-		executeLogout("https://www.jumia.ma");
+		executeLogout(BaseHelper.BASE_URL_MA);
 	}
 
 	@SmallTest
 	public void testGetLogoutEG() throws Throwable {
-		executeLogout("https://www.jumia.com.eg");
+		executeLogout(BaseHelper.BASE_URL_EG);
 	}
 
 	@SmallTest
 	public void testGetLogoutNG() throws Throwable {
-		executeLogout("https://www.jumia.com.ng");
+		executeLogout(BaseHelper.BASE_URL_NG);
 	}
 
 	@SmallTest
 	public void testGetLogoutUG() throws Throwable {
-		executeLogout("https://www.jumia.ug");
+		executeLogout(BaseHelper.BASE_URL_UG);
 	}
 
 	private void executeLogout(String url) {
@@ -59,7 +59,7 @@ public class LogoutTest extends FrameworkServiceTests {
 		contentValues.put(RequestConstants.KEY_LOGIN_PASSWORD,
 				RequestConstants.CUSTOMER_PASSWORD);
 		args1.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, contentValues);
-		args1.putString(BaseHelper.KEY_COUNTRY, url + "/mobapi/customer/login/");
+		args1.putString(BaseHelper.KEY_COUNTRY, url + "/customer/login/");
 		sendRequest(args1, new GetLoginHelper(), new IResponseCallback() {
 
 			@Override
@@ -107,7 +107,7 @@ public class LogoutTest extends FrameworkServiceTests {
 		contentValues1.put(RequestConstants.KEY_LOGIN_PASSWORD,
 				RequestConstants.CUSTOMER_PASSWORD);
 		args.putParcelable(GetLogoutHelper.LOGOUT_CONTENT_VALUES, contentValues1);
-		args.putString(BaseHelper.KEY_COUNTRY, url + "/mobapi/customer/logout/");
+		args.putString(BaseHelper.KEY_COUNTRY, url + "/customer/logout/");
 		sendRequest(args, new GetLogoutHelper(), new IResponseCallback() {
 
 			@Override

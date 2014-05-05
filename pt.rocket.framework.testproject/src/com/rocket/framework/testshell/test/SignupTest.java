@@ -18,32 +18,32 @@ public class SignupTest extends FrameworkServiceTests {
 
 	@SmallTest
 	public void testGetSignupIC() throws Throwable {
-		executeLogout("https://www.jumia.ci");
+		executeLogout(BaseHelper.BASE_URL_CI);
 	}
 
 	@SmallTest
 	public void testGetSignupKE() throws Throwable {
-		executeLogout("https://www.jumia.co.ke");
+		executeLogout(BaseHelper.BASE_URL_KE);
 	}
 
 	@SmallTest
 	public void testGetSignupMA() throws Throwable {
-		executeLogout("https://www.jumia.ma");
+		executeLogout(BaseHelper.BASE_URL_MA);
 	}
 
 	@SmallTest
 	public void testGetSignupEG() throws Throwable {
-		executeLogout("https://www.jumia.com.eg");
+		executeLogout(BaseHelper.BASE_URL_EG);
 	}
 
 	@SmallTest
 	public void testGetSignupNG() throws Throwable {
-		executeLogout("https://www.jumia.com.ng");
+		executeLogout(BaseHelper.BASE_URL_NG);
 	}
 
 	@SmallTest
 	public void testGetSignupUG() throws Throwable {
-		executeLogout("https://www.jumia.ug");
+		executeLogout(BaseHelper.BASE_URL_UG);
 	}
 
 	private void executeLogout(String url) {
@@ -54,7 +54,7 @@ public class SignupTest extends FrameworkServiceTests {
 		contentValues1.put(RequestConstants.KEY_CUSTOMER_SIGNUP_EMAIL,RequestConstants.CUSTOMER_SIGNUP_EMAIL);
 		contentValues1.put(RequestConstants.KEY_CUSTOMER_SIGNUP_SCENARIO,RequestConstants.CUSTOMER_SIGNUP_SCENARIO);
 		args.putParcelable(GetSignupHelper.CONTENT_VALUES, contentValues1);
-		args.putString(BaseHelper.KEY_COUNTRY, url + "/mobapi/v1/customer/create/");
+		args.putString(BaseHelper.KEY_COUNTRY, url + "/customer/create/");
 		args.putBoolean(Constants.BUNDLE_METADATA_REQUIRED_KEY, false);
 		sendRequest(args, new GetSignupHelper(), new IResponseCallback() {
 

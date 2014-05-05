@@ -37,27 +37,27 @@ public class FinishTest extends FrameworkServiceTests {
 	protected boolean processedfinish = false;
 
 	public void testFinishIC() throws Throwable {
-		test("https://www.jumia.ci", RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_IC, "DigitalDelivery");
+		test(BaseHelper.BASE_URL_CI, RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_IC, "DigitalDelivery");
 	}
 
 	public void testFinishKE() throws Throwable {
-		test("https://www.jumia.co.ke", RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_KE, "DigitalDelivery");
+		test(BaseHelper.BASE_URL_KE, RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_KE, "DigitalDelivery");
 	}
 	
 	public void testFinishMA() throws Throwable {
-		test("https://www.jumia.ma", RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_MA, "DigitalDelivery");
+		test(BaseHelper.BASE_URL_MA, RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_MA, "DigitalDelivery");
 	}
 	
 	public void testFinishNG() throws Throwable {
-		test("https://www.jumia.com.ng", RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_NG, "DigitalDelivery");
+		test(BaseHelper.BASE_URL_NG, RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_NG, "DigitalDelivery");
 	}
 
 	public void testFinishEG() throws Throwable {
-		test("https://www.jumia.com.eg", RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_EG, "DigitalDelivery");
+		test(BaseHelper.BASE_URL_EG, RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_EG, "DigitalDelivery");
 	}
 
 	public void testFinishUG() throws Throwable {
-		test("https://www.jumia.ug", RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_UG, "DigitalDelivery");
+		test(BaseHelper.BASE_URL_UG, RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_UG, "DigitalDelivery");
 	}
 //	
 //	public void testFinishStaging_NG() throws Throwable {
@@ -74,7 +74,7 @@ public class FinishTest extends FrameworkServiceTests {
 	    contentValueslogin.put(RequestConstants.KEY_LOGIN_EMAIL, RequestConstants.CUSTOMER_EMAIL);
 	    contentValueslogin.put(RequestConstants.KEY_LOGIN_PASSWORD, RequestConstants.CUSTOMER_PASSWORD);
 	    argslogin.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, contentValueslogin);
-	    argslogin.putString(BaseHelper.KEY_COUNTRY, url + "/mobapi/customer/login/");
+	    argslogin.putString(BaseHelper.KEY_COUNTRY, url + "/customer/login/");
 	    sendRequest(argslogin, new GetLoginHelper(), new IResponseCallback() {
 
 	        @Override
@@ -156,7 +156,7 @@ public class FinishTest extends FrameworkServiceTests {
 //    	contentValuesgetbilling.put(RequestConstants.KEY_BILLING_METHOD_SHIPPING_ADDRESS_ID,billing_address);
 //    	
 //	    argsGetBilling.putParcelable(GetSignupHelper.CONTENT_VALUES, contentValuesgetbilling);
-	    argsGetBilling.putString(BaseHelper.KEY_COUNTRY, url + "/mobapi/v1/multistep/billing/");
+	    argsGetBilling.putString(BaseHelper.KEY_COUNTRY, url + "/multistep/billing/");
 	    sendRequest(argsGetBilling, new GetBillingAddressHelper(), new IResponseCallback() {
 
 	        @Override
@@ -205,7 +205,7 @@ public class FinishTest extends FrameworkServiceTests {
     	contentValuessetbilling.put(RequestConstants.KEY_BILLING_METHOD_SHIPPING_ADDRESS_ID,billing_address);
     	
 	    argsSetBilling.putParcelable(GetSignupHelper.CONTENT_VALUES, contentValuessetbilling);
-	    argsSetBilling.putString(BaseHelper.KEY_COUNTRY, url + "/mobapi/v1/multistep/billing/");
+	    argsSetBilling.putString(BaseHelper.KEY_COUNTRY, url + "/multistep/billing/");
 	    sendRequest(argsSetBilling, new SetBillingMethodHelper(), new IResponseCallback() {
 
 	        @Override
@@ -247,7 +247,7 @@ public class FinishTest extends FrameworkServiceTests {
 	     */
 	    Log.i(TAG, "mService => " + mService);
 	    Bundle argsgetshipping = new Bundle();
-	    argsgetshipping.putString(BaseHelper.KEY_COUNTRY, url + "/mobapi/v1/multistep/shippingmethod/");
+	    argsgetshipping.putString(BaseHelper.KEY_COUNTRY, url + "/multistep/shippingmethod/");
 	    sendRequest(argsgetshipping, new GetShippingMethodsHelper(), new IResponseCallback() {
 
 	        @Override
@@ -294,7 +294,7 @@ public class FinishTest extends FrameworkServiceTests {
 		
 
 		argssetshipping.putParcelable(GetSignupHelper.CONTENT_VALUES, contentValuessetshipping);
-		argssetshipping.putString(BaseHelper.KEY_COUNTRY, url + "/mobapi/v1/multistep/shippingmethod/");
+		argssetshipping.putString(BaseHelper.KEY_COUNTRY, url + "/multistep/shippingmethod/");
 		sendRequest(argssetshipping, new SetShippingMethodHelper(), new IResponseCallback() {
 
 			@Override
@@ -336,7 +336,7 @@ public class FinishTest extends FrameworkServiceTests {
 	     */
 	    Log.i(TAG, "mService => " + mService);
 	    Bundle argsgetpayment = new Bundle();
-	    argsgetpayment.putString(BaseHelper.KEY_COUNTRY, url + "/mobapi/v1/multistep/paymentmethod/");
+	    argsgetpayment.putString(BaseHelper.KEY_COUNTRY, url + "/multistep/paymentmethod/");
 	    sendRequest(argsgetpayment, new GetPaymentMethodsHelper(), new IResponseCallback() {
 
 	        @Override
@@ -373,18 +373,18 @@ public class FinishTest extends FrameworkServiceTests {
 		Bundle argssetpayment = new Bundle();
 		ContentValues contentValuessetpayment = new ContentValues();
 		
-		if(url.equals("https://www.jumia.ma")){
+		if(url.equals(BaseHelper.BASE_URL_MA)){
 			contentValuessetpayment.put(RequestConstants.KEY_SET_PAYMENT_METHOD,RequestConstants.SET_PAYMENT_METHOD_MA);
-		}else if(url.equals("https://www.jumia.com.ng")){
+		}else if(url.equals(BaseHelper.BASE_URL_NG)){
 			contentValuessetpayment.put(RequestConstants.KEY_SET_PAYMENT_METHOD,RequestConstants.SET_PAYMENT_METHOD_NG);
-		}else if(url.equals("https://www.jumia.ci")){
+		}else if(url.equals(BaseHelper.BASE_URL_CI)){
 			contentValuessetpayment.put(RequestConstants.KEY_SET_PAYMENT_METHOD,RequestConstants.SET_PAYMENT_METHOD_IC);
 		}else{
 			contentValuessetpayment.put(RequestConstants.KEY_SET_PAYMENT_METHOD,RequestConstants.SET_PAYMENT_METHOD_EG);
 		}
 
 		argssetpayment.putParcelable(GetSignupHelper.CONTENT_VALUES, contentValuessetpayment);
-		argssetpayment.putString(BaseHelper.KEY_COUNTRY, url + "/mobapi/v1/multistep/paymentmethod/");
+		argssetpayment.putString(BaseHelper.KEY_COUNTRY, url + "/multistep/paymentmethod/");
 		sendRequest(argssetpayment, new SetPaymentMethodHelper(), new IResponseCallback() {
 
 			@Override
@@ -431,7 +431,7 @@ public class FinishTest extends FrameworkServiceTests {
 //		contentValues1.put(RequestConstants.KEY_BILLING_METHOD_DIFFERENT,RequestConstants.BILLING_METHOD_DIFFERENT);
 //		contentValues1.put(RequestConstants.KEY_BILLING_METHOD_SHIPPING_ADDRESS_ID,RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID);
 //		args2.putParcelable(GetSignupHelper.CONTENT_VALUES, contentValues1);
-		argsfinish.putString(BaseHelper.KEY_COUNTRY, url + "/mobapi/v1/multistep/finish/");
+		argsfinish.putString(BaseHelper.KEY_COUNTRY, url + "/multistep/finish/");
 		sendRequest(argsfinish, new GetFinishHelper(), new IResponseCallback() {
 
 			@Override

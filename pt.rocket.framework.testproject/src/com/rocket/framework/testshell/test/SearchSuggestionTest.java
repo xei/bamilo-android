@@ -17,7 +17,7 @@ public class SearchSuggestionTest extends FrameworkServiceTests {
     public void testSearchSuggestionIC() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "http://www.jumia.ci/mobapi/search/suggest/?q=chemise");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_CI+"/search/suggest/?q=chemise");
         sendRequest(args, new GetSearchSuggestionHelper(), new IResponseCallback() {
 
             @Override
@@ -52,7 +52,7 @@ public class SearchSuggestionTest extends FrameworkServiceTests {
     public void testSearchSuggestionKE() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "http://www.jumia.co.ke/mobapi/search/suggest/?q=sandal");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_KE+"/search/suggest/?q=sandal");
         sendRequest(args, new GetSearchSuggestionHelper(), new IResponseCallback() {
 
             @Override
@@ -87,7 +87,7 @@ public class SearchSuggestionTest extends FrameworkServiceTests {
     public void testSearchSuggestionMA() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "http://www.jumia.ma/mobapi/search/suggest/?q=ipad");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_MA+"/search/suggest/?q=ipad");
         sendRequest(args, new GetSearchSuggestionHelper(), new IResponseCallback() {
 
             @Override
@@ -122,7 +122,7 @@ public class SearchSuggestionTest extends FrameworkServiceTests {
     public void testSearchSuggestionNG() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "http://www.jumia.com.ng/mobapi/search/suggest/?q=asha");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_NG+"/search/suggest/?q=asha");
         sendRequest(args, new GetSearchSuggestionHelper(), new IResponseCallback() {
 
             @Override
@@ -157,7 +157,7 @@ public class SearchSuggestionTest extends FrameworkServiceTests {
     public void testSearchSuggestionEG() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "http://www.jumia.com.eg/mobapi/search/suggest/?q=sneaker");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_EG+"/search/suggest/?q=sneaker");
         sendRequest(args, new GetSearchSuggestionHelper(), new IResponseCallback() {
 
             @Override
@@ -191,7 +191,7 @@ public class SearchSuggestionTest extends FrameworkServiceTests {
     public void testSearchSuggestionUG() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "http://www.jumia.ug/mobapi/search/suggest/?q=sneaker");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_UG+"/search/suggest/?q=sneaker");
         sendRequest(args, new GetSearchSuggestionHelper(), new IResponseCallback() {
 
             @Override

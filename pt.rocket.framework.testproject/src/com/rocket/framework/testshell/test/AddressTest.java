@@ -18,27 +18,27 @@ public class AddressTest extends FrameworkServiceTests {
     protected boolean processed1 = false;
     
 public void testAddressIC() throws Throwable {
-    test("https://www.jumia.ci");
+    test(BaseHelper.BASE_URL_CI);
 }
 
 public void testAddressKE() throws Throwable {
-	test("https://www.jumia.co.ke");
+	test(BaseHelper.BASE_URL_KE);
 }
 
 public void testAddressMA() throws Throwable {
-    test("https://www.jumia.ma");
+    test(BaseHelper.BASE_URL_MA);
 }
 
 public void testAddressNG() throws Throwable {
-    test("https://www.jumia.com.ng");
+    test(BaseHelper.BASE_URL_NG);
 }
 
 public void testAddressEG() throws Throwable {
-    test("https://www.jumia.com.eg");
+    test(BaseHelper.BASE_URL_EG);
 }
 
 public void testAddressUG() throws Throwable {
-	test("https://www.jumia.co.ke");
+	test(BaseHelper.BASE_URL_UG);
 }
 
 public void test(String url){
@@ -51,7 +51,7 @@ public void test(String url){
     contentValues.put(RequestConstants.KEY_LOGIN_EMAIL, RequestConstants.CUSTOMER_EMAIL);
     contentValues.put(RequestConstants.KEY_LOGIN_PASSWORD, RequestConstants.CUSTOMER_PASSWORD);
     args1.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, contentValues);
-    args1.putString(BaseHelper.KEY_COUNTRY, url + "/mobapi/customer/login/");
+    args1.putString(BaseHelper.KEY_COUNTRY, url + "/customer/login/");
     sendRequest(args1, new GetLoginHelper(), new IResponseCallback() {
 
         @Override
@@ -86,7 +86,7 @@ public void test(String url){
      */
     Log.i(TAG, "mService => " + mService);
     Bundle args = new Bundle();
-    args.putString(BaseHelper.KEY_COUNTRY, url + "/mobapi/customer/address/list/");
+    args.putString(BaseHelper.KEY_COUNTRY, url + "/customer/address/list/");
     sendRequest(args, new GetAddressHelper(), new IResponseCallback() {
 
         @Override

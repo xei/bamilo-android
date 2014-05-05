@@ -21,27 +21,27 @@ public class CreateAdressTest extends FrameworkServiceTests {
     protected boolean processed2 = false;
 
     public void testCreateAddressIC() throws Throwable {
-        test("https://www.jumia.ci");
+        test(BaseHelper.BASE_URL_CI);
     }
 
     public void testCreateAddressKE() throws Throwable {
-        test("https://www.jumia.co.ke");
+        test(BaseHelper.BASE_URL_KE);
     }
     
     public void testCreateAddressMA() throws Throwable {
-        test("https://www.jumia.ma");
+        test(BaseHelper.BASE_URL_MA);
     }
     
     public void testCreateAddressNG() throws Throwable {
-        test("https://www.jumia.com.ng");
+        test(BaseHelper.BASE_URL_NG);
     }
 
     public void testCreateAddressEG() throws Throwable {
-        test("https://www.jumia.com.eg");
+        test(BaseHelper.BASE_URL_EG);
     }
 
     public void testCreateAddressUG() throws Throwable {
-        test("https://www.jumia.ug");
+        test(BaseHelper.BASE_URL_UG);
     }
 
     private void test(String url) {
@@ -54,7 +54,7 @@ public class CreateAdressTest extends FrameworkServiceTests {
         contentValues.put(RequestConstants.KEY_LOGIN_EMAIL, RequestConstants.CUSTOMER_EMAIL);
         contentValues.put(RequestConstants.KEY_LOGIN_PASSWORD, RequestConstants.CUSTOMER_PASSWORD);
         args1.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, contentValues);
-        args1.putString(BaseHelper.KEY_COUNTRY, url + "/mobapi/customer/login/");
+        args1.putString(BaseHelper.KEY_COUNTRY, url + "/customer/login/");
         sendRequest(args1, new GetLoginHelper(), new IResponseCallback() {
 
             @Override
@@ -101,7 +101,7 @@ public class CreateAdressTest extends FrameworkServiceTests {
         contentValues1.put(RequestConstants.KEY_CREATE_ADDRESS_COUNTRY,RequestConstants.CREATE_ADDRESS_COUNTRY);
         
         args.putParcelable(GetSignupHelper.CONTENT_VALUES, contentValues1);
-        args.putString(BaseHelper.KEY_COUNTRY, url + "/mobapi/v1/customer/address/create/");
+        args.putString(BaseHelper.KEY_COUNTRY, url + "/customer/address/create/");
         sendRequest(args, new CreateAddressHelper(), new IResponseCallback() {
 
             @Override

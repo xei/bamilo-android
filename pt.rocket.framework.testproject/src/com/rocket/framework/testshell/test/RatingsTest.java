@@ -17,7 +17,7 @@ public class RatingsTest extends FrameworkServiceTests {
     public void testGetRatingsIC() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "http://www.jumia.ci/mobapi/rating/options/");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_CI+"/rating/options/");
         sendRequest(args, new GetRatingsHelper(), new IResponseCallback() {
 
             @Override
@@ -52,7 +52,7 @@ public class RatingsTest extends FrameworkServiceTests {
     public void testGetRatingsKE() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "http://www.jumia.co.ke/mobapi/rating/options/");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_KE+"/rating/options/");
         sendRequest(args, new GetRatingsHelper(), new IResponseCallback() {
 
             @Override
@@ -87,7 +87,7 @@ public class RatingsTest extends FrameworkServiceTests {
     public void testGetRatingsMA() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "http://www.jumia.ma/mobapi/rating/options/");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_MA+"/rating/options/");
         sendRequest(args, new GetRatingsHelper(), new IResponseCallback() {
 
             @Override
@@ -122,7 +122,7 @@ public class RatingsTest extends FrameworkServiceTests {
     public void testGetRatingsNG() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "http://www.jumia.com.ng/mobapi/rating/options/");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_NG+"/rating/options/");
         sendRequest(args, new GetRatingsHelper(), new IResponseCallback() {
 
             @Override
@@ -157,7 +157,7 @@ public class RatingsTest extends FrameworkServiceTests {
     public void testGetRatingsEG() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.com.eg/mobapi/rating/options/");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_EG+"/rating/options/");
         
         sendRequest(args, new GetRatingsHelper(), new IResponseCallback() {
 
@@ -192,7 +192,7 @@ public class RatingsTest extends FrameworkServiceTests {
     public void testGetRatingsUG() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.ug/mobapi/rating/options/");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_UG+"/rating/options/");
         
         sendRequest(args, new GetRatingsHelper(), new IResponseCallback() {
 

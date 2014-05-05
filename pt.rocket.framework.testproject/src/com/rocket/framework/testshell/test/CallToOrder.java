@@ -17,7 +17,7 @@ public class CallToOrder extends FrameworkServiceTests {
     public void testCallToOrderIC() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         final Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "http://www.jumia.ci/mobapi/main/getconfig/module/configurationml/key/phone_number/");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_CI+"/main/getconfig/module/configurationml/key/phone_number/");
         sendRequest(args, new GetCallToOrderHelper(), new IResponseCallback() {
 
             @Override
@@ -94,7 +94,7 @@ public class CallToOrder extends FrameworkServiceTests {
     public void testCallToOrderMA() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         final Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "http://www.jumia.ma/mobapi/main/getconfig/module/configurationml/key/phone_number/");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_MA+"/main/getconfig/module/configurationml/key/phone_number/");
         sendRequest(args, new GetCallToOrderHelper(), new IResponseCallback() {
 
             @Override
@@ -136,7 +136,7 @@ public class CallToOrder extends FrameworkServiceTests {
     public void testCallToOrderNG() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "http://www.jumia.com.ng/mobapi/main/getconfig/module/configurationml/key/phone_number/");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_NG+"/main/getconfig/module/configurationml/key/phone_number/");
         sendRequest(args, new GetCallToOrderHelper(), new IResponseCallback() {
 
             @Override
@@ -171,7 +171,7 @@ public class CallToOrder extends FrameworkServiceTests {
     public void testCallToOrderEG() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.com.eg/mobapi/main/getconfig/module/configurationml/key/phone_number/");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_EG+"/main/getconfig/module/configurationml/key/phone_number/");
         
         sendRequest(args, new GetCallToOrderHelper(), new IResponseCallback() {
 

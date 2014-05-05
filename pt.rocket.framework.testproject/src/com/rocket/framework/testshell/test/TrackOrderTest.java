@@ -17,7 +17,7 @@ public class TrackOrderTest extends FrameworkServiceTests {
     public void testGetTrackOrderIC() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.ci/mobapi/order/trackingorder/?setDevice=mobileApi&ordernr=300044656");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_CI+"/order/trackingorder/?setDevice=mobileApi&ordernr=300044656");
         sendRequest(args, new GetTrackOrderHelper(), new IResponseCallback() {
 
             @Override
@@ -52,7 +52,7 @@ public class TrackOrderTest extends FrameworkServiceTests {
     public void testGetTrackOrderKE() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.co.ke/mobapi/order/trackingorder/?setDevice=mobileApi&ordernr=300093356");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_KE+"/order/trackingorder/?setDevice=mobileApi&ordernr=300093356");
         sendRequest(args, new GetTrackOrderHelper(), new IResponseCallback() {
 
             @Override
@@ -87,7 +87,7 @@ public class TrackOrderTest extends FrameworkServiceTests {
     public void testGetTrackOrderMA() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.ma/mobapi/order/trackingorder/?setDevice=mobileApi&ordernr=300799592");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_MA+"/order/trackingorder/?setDevice=mobileApi&ordernr=300799592");
         sendRequest(args, new GetTrackOrderHelper(), new IResponseCallback() {
 
             @Override
@@ -122,7 +122,7 @@ public class TrackOrderTest extends FrameworkServiceTests {
     public void testGetTrackOrderNG() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.com.ng/mobapi/order/trackingorder/?setDevice=mobileApi&ordernr=300726581");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_NG+"/order/trackingorder/?setDevice=mobileApi&ordernr=300726581");
         sendRequest(args, new GetTrackOrderHelper(), new IResponseCallback() {
 
             @Override
@@ -157,7 +157,7 @@ public class TrackOrderTest extends FrameworkServiceTests {
     public void testGetTrackOrderEG() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.com.eg/mobapi/order/trackingorder/?setDevice=mobileApi&ordernr=300873796");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_EG+"/order/trackingorder/?setDevice=mobileApi&ordernr=300873796");
         
         sendRequest(args, new GetTrackOrderHelper(), new IResponseCallback() {
 
@@ -192,7 +192,7 @@ public class TrackOrderTest extends FrameworkServiceTests {
     public void testGetTrackOrderUG() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.ug/mobapi/order/trackingorder/?setDevice=mobileApi&ordernr=400033556");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_UG+"/order/trackingorder/?setDevice=mobileApi&ordernr=400033556");
         
         sendRequest(args, new GetTrackOrderHelper(), new IResponseCallback() {
 

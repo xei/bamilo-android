@@ -18,7 +18,7 @@ public class HomeTeasersTests extends FrameworkServiceTests {
     public void testGetHomeTeasersIC() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.ci/mobapi/main/getteasers/");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_CI+"/main/getteasers/");
         sendRequest(args, new GetTeasersHelper(), new IResponseCallback() {
 
             @Override
@@ -53,7 +53,7 @@ public class HomeTeasersTests extends FrameworkServiceTests {
     public void testGetHomeTeasersKE() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.co.ke/mobapi/main/getteasers/");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_KE+"/main/getteasers/");
         sendRequest(args, new GetTeasersHelper(), new IResponseCallback() {
 
             @Override
@@ -88,7 +88,7 @@ public class HomeTeasersTests extends FrameworkServiceTests {
     public void testGetHomeTeasersMA() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.com.ng/mobapi/main/getteasers/");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_MA+"/main/getteasers/");
         sendRequest(args, new GetTeasersHelper(), new IResponseCallback() {
 
             @Override
@@ -123,7 +123,7 @@ public class HomeTeasersTests extends FrameworkServiceTests {
     public void testGetHomeTeasersNG() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.com.ng/mobapi/main/getteasers/");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_NG+"/main/getteasers/");
         sendRequest(args, new GetTeasersHelper(), new IResponseCallback() {
 
             @Override
@@ -158,7 +158,7 @@ public class HomeTeasersTests extends FrameworkServiceTests {
     public void testGetHomeTeasersEG() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.com.eg/mobapi/main/getteasers/");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_EG+"/main/getteasers/");
         sendRequest(args, new GetTeasersHelper(), new IResponseCallback() {
 
             @Override
@@ -192,7 +192,7 @@ public class HomeTeasersTests extends FrameworkServiceTests {
     public void testGetHomeTeasersUG() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.ug/mobapi/main/getteasers/");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_UG+"/main/getteasers/");
         sendRequest(args, new GetTeasersHelper(), new IResponseCallback() {
 
             @Override

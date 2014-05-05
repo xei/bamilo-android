@@ -20,32 +20,32 @@ public class ChangePasswordTest extends FrameworkServiceTests {
     
     @SmallTest
     public void testGetChangePasswordIC() throws Throwable {
-    	executeChangePassword("https://www.jumia.ci");
+    	executeChangePassword(BaseHelper.BASE_URL_CI);
     }
     
     @SmallTest
     public void testGetChangePasswordKE() throws Throwable {
-    	executeChangePassword("https://www.jumia.co.ke");
+    	executeChangePassword(BaseHelper.BASE_URL_KE);
     }
     
     @SmallTest
     public void testGetChangePasswordMA() throws Throwable {
-    	executeChangePassword("https://www.jumia.ma");
+    	executeChangePassword(BaseHelper.BASE_URL_MA);
     }
     
     @SmallTest
     public void testGetChangePasswordEG() throws Throwable {
-    	executeChangePassword("https://www.jumia.com.eg");
+    	executeChangePassword(BaseHelper.BASE_URL_EG);
     }
     
     @SmallTest
     public void testGetChangePasswordNG() throws Throwable {
-    	executeChangePassword("https://www.jumia.com.ng");
+    	executeChangePassword(BaseHelper.BASE_URL_NG);
     }
     
     @SmallTest
     public void testGetChangePasswordUG() throws Throwable {
-    	executeChangePassword("https://www.jumia.ug");
+    	executeChangePassword(BaseHelper.BASE_URL_UG);
     }
     
     private void executeChangePassword(String url){
@@ -58,7 +58,7 @@ public class ChangePasswordTest extends FrameworkServiceTests {
         contentValues.put(RequestConstants.KEY_LOGIN_EMAIL, RequestConstants.CUSTOMER_EMAIL);
         contentValues.put(RequestConstants.KEY_LOGIN_PASSWORD, RequestConstants.CUSTOMER_PASSWORD);
         args1.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, contentValues);
-        args1.putString(BaseHelper.KEY_COUNTRY, url+"/mobapi/customer/login/");
+        args1.putString(BaseHelper.KEY_COUNTRY, url+"/customer/login/");
         sendRequest(args1, new GetLoginHelper(), new IResponseCallback() {
 
             @Override
@@ -93,7 +93,7 @@ public class ChangePasswordTest extends FrameworkServiceTests {
          */
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, url+"/mobapi/customer/changepass/");
+        args.putString(BaseHelper.KEY_COUNTRY, url+"/customer/changepass/");
         ContentValues contentValues2 = new ContentValues();
         contentValues2.put(RequestConstants.KEY_CHANGE_PASSWORD_EMAIL, RequestConstants.CUSTOMER_EMAIL);
         contentValues2.put(RequestConstants.KEY_CHANGE_PASSWORD_PASSWORD, RequestConstants.CUSTOMER_PASSWORD_2);
@@ -136,7 +136,7 @@ public class ChangePasswordTest extends FrameworkServiceTests {
          */
         Log.i(TAG, "mService => " + mService);
         Bundle args2 = new Bundle();
-        args2.putString(BaseHelper.KEY_COUNTRY, url+"/mobapi/customer/changepass/");
+        args2.putString(BaseHelper.KEY_COUNTRY, url+"/customer/changepass/");
         ContentValues contentValues1 = new ContentValues();
         contentValues1.put(RequestConstants.KEY_CHANGE_PASSWORD_EMAIL, RequestConstants.CUSTOMER_EMAIL);
         contentValues1.put(RequestConstants.KEY_CHANGE_PASSWORD_PASSWORD, RequestConstants.CUSTOMER_PASSWORD);

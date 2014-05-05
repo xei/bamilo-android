@@ -25,27 +25,27 @@ public class SetShippingMethodTest extends FrameworkServiceTests {
 	protected boolean processedsetshipping = false;
 	
 	public void testSetShippingMethodIC() throws Throwable {
-		test("https://www.jumia.ci", "DigitalDelivery");
+		test(BaseHelper.BASE_URL_CI, "DigitalDelivery");
 	}
 
 	public void testSetShippingMethodKE() throws Throwable {
-		test("https://www.jumia.co.ke", "teste");
+		test(BaseHelper.BASE_URL_KE, "teste");
 	}
 	
 	public void testSetShippingMethodMA() throws Throwable {
-		test("https://www.jumia.ma", "teste");
+		test(BaseHelper.BASE_URL_MA, "teste");
 	}
 	
 	public void testSetShippingMethodNG() throws Throwable {
-		test("https://www.jumia.com.ng", "teste");
+		test(BaseHelper.BASE_URL_NG, "teste");
 	}
 
 	public void testSetShippingMethodEG() throws Throwable {
-		test("https://www.jumia.com.eg", "DigitalDelivery");
+		test(BaseHelper.BASE_URL_EG, "DigitalDelivery");
 	}
 
 	public void testSetShippingMethodUG() throws Throwable {
-		test("https://www.jumia.ug", "teste");
+		test(BaseHelper.BASE_URL_UG, "teste");
 	}
 
 	private void test(String url, String shippinng_method) {
@@ -58,7 +58,7 @@ public class SetShippingMethodTest extends FrameworkServiceTests {
 	    contentValueslogin.put(RequestConstants.KEY_LOGIN_EMAIL, RequestConstants.CUSTOMER_EMAIL);
 	    contentValueslogin.put(RequestConstants.KEY_LOGIN_PASSWORD, RequestConstants.CUSTOMER_PASSWORD);
 	    argslogin.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, contentValueslogin);
-	    argslogin.putString(BaseHelper.KEY_COUNTRY, url + "/mobapi/customer/login/");
+	    argslogin.putString(BaseHelper.KEY_COUNTRY, url + "/customer/login/");
 	    sendRequest(argslogin, new GetLoginHelper(), new IResponseCallback() {
 
 	        @Override
@@ -95,23 +95,23 @@ public class SetShippingMethodTest extends FrameworkServiceTests {
 	    ContentValues contentValuessetbilling = new ContentValues();
 	    contentValuessetbilling.put(RequestConstants.KEY_BILLING_METHOD_DIFFERENT,RequestConstants.BILLING_METHOD_DIFFERENT);
 	    
-	    if(url.equals("https://www.jumia.ci")){
+	    if(url.equals(BaseHelper.BASE_URL_CI)){
 	    	contentValuessetbilling.put(RequestConstants.KEY_BILLING_METHOD_BILLING_ADDRESS_ID,RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_IC);
 	    	contentValuessetbilling.put(RequestConstants.KEY_BILLING_METHOD_SHIPPING_ADDRESS_ID,RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_IC);
-	    }else if(url.equals("https://www.jumia.com.eg")){
+	    }else if(url.equals(BaseHelper.BASE_URL_EG)){
 	    	contentValuessetbilling.put(RequestConstants.KEY_BILLING_METHOD_BILLING_ADDRESS_ID,RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_EG);
 	    	contentValuessetbilling.put(RequestConstants.KEY_BILLING_METHOD_SHIPPING_ADDRESS_ID,RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_EG);
-	    }else if(url.equals("https://www.jumia.ma")){
+	    }else if(url.equals(BaseHelper.BASE_URL_MA)){
 	    	contentValuessetbilling.put(RequestConstants.KEY_BILLING_METHOD_BILLING_ADDRESS_ID,RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_MA);
 	    	contentValuessetbilling.put(RequestConstants.KEY_BILLING_METHOD_SHIPPING_ADDRESS_ID,RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_MA);
-	    }else if(url.equals("https://www.jumia.com.ng")){
+	    }else if(url.equals(BaseHelper.BASE_URL_NG)){
 	    	contentValuessetbilling.put(RequestConstants.KEY_BILLING_METHOD_BILLING_ADDRESS_ID,RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_NG);
 	    	contentValuessetbilling.put(RequestConstants.KEY_BILLING_METHOD_SHIPPING_ADDRESS_ID,RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_NG);
 	    }
 	    
 
 	    argsSetBilling.putParcelable(GetSignupHelper.CONTENT_VALUES, contentValuessetbilling);
-	    argsSetBilling.putString(BaseHelper.KEY_COUNTRY, url + "/mobapi/v1/multistep/billing/");
+	    argsSetBilling.putString(BaseHelper.KEY_COUNTRY, url + "/multistep/billing/");
 	    sendRequest(argsSetBilling, new SetBillingMethodHelper(), new IResponseCallback() {
 
 	        @Override
@@ -153,7 +153,7 @@ public class SetShippingMethodTest extends FrameworkServiceTests {
 	     */
 	    Log.i(TAG, "mService => " + mService);
 	    Bundle argsgetshipping = new Bundle();
-	    argsgetshipping.putString(BaseHelper.KEY_COUNTRY, url + "/mobapi/v1/multistep/shippingmethod/");
+	    argsgetshipping.putString(BaseHelper.KEY_COUNTRY, url + "/multistep/shippingmethod/");
 	    sendRequest(argsgetshipping, new GetShippingMethodsHelper(), new IResponseCallback() {
 
 	        @Override
@@ -200,7 +200,7 @@ public class SetShippingMethodTest extends FrameworkServiceTests {
 		
 
 		argssetshipping.putParcelable(GetSignupHelper.CONTENT_VALUES, contentValuessetshipping);
-		argssetshipping.putString(BaseHelper.KEY_COUNTRY, url + "/mobapi/v1/multistep/shippingmethod/");
+		argssetshipping.putString(BaseHelper.KEY_COUNTRY, url + "/multistep/shippingmethod/");
 		sendRequest(argssetshipping, new SetShippingMethodHelper(), new IResponseCallback() {
 
 			@Override
