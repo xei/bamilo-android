@@ -52,6 +52,8 @@ public class Customer implements IJSONSerializable, Parcelable{
     private boolean guest;
     
 	private ArrayList<String> addresses;
+
+	private ArrayList<CustomerNewsletterSubscription> mNewsletterSubscriptions;
     
     
     /**
@@ -292,6 +294,33 @@ public class Customer implements IJSONSerializable, Parcelable{
 	public boolean hasAddresses(){
 		return (this.addresses != null && this.addresses.size() > 0 ) ? true : false;
 	}
+	
+    /**
+     * Get newsletter subscriptions
+     * @return a list of {@link CustomerNewsletterSubscription}
+     * @author sergiopereira
+     */
+    public ArrayList<CustomerNewsletterSubscription> getNewsletterSubscriptions(){
+    	return mNewsletterSubscriptions;
+    }
+    
+    /**
+     * Save newsletter subscriptions
+     * @param a list of {@link CustomerNewsletterSubscription}
+     * @author sergiopereira
+     */
+    public void setNewsletterSubscriptions(ArrayList<CustomerNewsletterSubscription> subscriptions){
+    	this.mNewsletterSubscriptions = subscriptions;
+    }
+    
+    /**
+     * Validate if exist newsletter subscription
+     * @return boolean
+     * @author sergiopereira
+     */
+    public boolean hasNewsletterSubscriptions(){
+    	return (mNewsletterSubscriptions != null && mNewsletterSubscriptions.size() > 0) ? true : false;
+    }
 
 	/* (non-Javadoc)
      * @see pt.rocket.framework.objects.IJSONSerializable#initialize(org.json.JSONObject)
@@ -334,14 +363,21 @@ public class Customer implements IJSONSerializable, Parcelable{
 				}
             }
             
+            mNewsletterSubscriptions = new ArrayList<CustomerNewsletterSubscription>();
+            
             // FIXME: Newsletter subscription NAFAMZ-6146
+//            "newsletter_categories": {
+//                "5": {},
+//                "6": {}
+//            }
             JSONArray newsletterArray = jsonObject.optJSONArray("customer_newsletter_subscription");
             if(newsletterArray != null) {
             	for (int i = 0; i < newsletterArray.length(); i++) {
             		JSONObject object = newsletterArray.optJSONObject(i);
             		if(object != null) {
-                		int newsletterCategoryId = object.optInt("id_newsletter_category");
-                		String newsletterCategoryName = object.optString("name");
+            			CustomerNewsletterSubscription newsletter = new CustomerNewsletterSubscription();
+            			newsletter.initialize(object);
+                		mNewsletterSubscriptions.add(newsletter);
             		}
 				}
             }

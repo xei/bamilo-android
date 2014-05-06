@@ -55,7 +55,7 @@
     <string name="new_password_label">Nouveau mot de passe </string>
     <string name="contact_personal">Problème? Contactez votre soutien personnel maintenant.</string>
     <string name="option2_description">Changez votre mot de passe, gérez votre courrier électronique</string>
-    <string name="option3_description">Modifiez ou gérez vos options</string>
+    <string name="option4_description">Modifiez ou gérez vos options</string>
     <string name="new_password_hint">Nouveau mot de passe</string>
     <string name="retype_new_password_hint">Confirmez votre mot de passe</string>
     <string name="product_review">Evaluation du produit </string>
@@ -332,4 +332,9 @@
     <string name="extra_costs_label">Frais Supplémentaires</string>
 	<string name="free_label">Gratuit</string>
 	<string name="related_items">Produits Similaires</string>
+	<string name="campaign_stock_alert">Désolé, l\'article sélectionné n\'est plus en stock.</string>
+    <string name="off_label">-</string>
+    <string name="campaign_choose_size">Sélectionnez votre taille</string>
+    <string name="campaign_save">Vous économisez</string>
+    <string name="campaign_ramaining_stock">Stock Restant:</string>
 </resources>

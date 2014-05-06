@@ -1,6 +1,7 @@
 package pt.rocket.controllers;
 
 import pt.rocket.view.R;
+import pt.rocket.view.fragments.MyAccountFragment;
 import android.content.Context;
 import android.database.DataSetObserver;
 import android.view.LayoutInflater;
@@ -29,8 +30,9 @@ import org.holoeverywhere.widget.TextView;
  */
 public class MyAccountAdapter extends BaseAdapter {
 
-    String[] options;
-    Context context;
+    String[] mOptions;
+    Context mContext;
+    private LayoutInflater mInflater;
 
     /**
      * The constructor for this adapter
@@ -41,18 +43,19 @@ public class MyAccountAdapter extends BaseAdapter {
      *            The array containing the categories to display
      */
     public MyAccountAdapter(Context context, String[] options) {
-        this.options = options;
-        this.context = context;
+        this.mOptions = options;
+        this.mContext = context;
+        this.mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
     public int getCount() {
-        return this.options.length;
+        return this.mOptions.length;
     }
 
     @Override
     public Object getItem(int position) {
-        return options[position];
+        return mOptions[position];
     }
 
     @Override
@@ -62,33 +65,30 @@ public class MyAccountAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        // Get the Inflate Service
-        LayoutInflater inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = null;
-
-        if (convertView != null) {
-            v = convertView;
-        } else {
-            v = inflater.inflate(R.layout.my_account_list_item, parent, false);
-        }
+        // Recycle the convert view
+        View view = null;
+        if (convertView != null)
+            view = convertView;
+        else
+            view = mInflater.inflate(R.layout.my_account_list_item, parent, false);
 
         // Get the Category Name
-        TextView optionsName = (TextView) v.findViewById(R.id.option_name);
-        TextView optionsDescripton = (TextView) v.findViewById(R.id.option_info);
-        optionsName.setText(this.options[position]);
+        TextView optionsName = (TextView) view.findViewById(R.id.option_name);
+        TextView optionsDescripton = (TextView) view.findViewById(R.id.option_info);
+        optionsName.setText(this.mOptions[position]);
 
+        // Validate the current position
         switch (position) {
-        case 0:
-            optionsDescripton.setText(context.getResources().getString(R.string.option2_description));
+        case MyAccountFragment.POSITION_USER_DATA:
+            optionsDescripton.setText(mContext.getResources().getString(R.string.option2_description));
             break;
-
-        case 1:
-            optionsDescripton.setText(context.getResources().getString(R.string.option3_description));
+        case MyAccountFragment.POSITION_EMAIL:
+            optionsDescripton.setText(mContext.getResources().getString(R.string.option3_description));
             break;
         }
 
         // Return the Category Item View
-        return v;
+        return view;
     }
 
     /**

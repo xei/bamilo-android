@@ -29,11 +29,13 @@ import de.akquinet.android.androlog.Log;
  * @author sergiopereira
  * 
  */
-public class MyAccountFragment extends BaseFragment {
+public class MyAccountFragment extends BaseFragment implements OnItemClickListener{
 
     private static final String TAG = LogTagHelper.create(MyAccountFragment.class);
 
-    private final static int POSITION_USER_DATA = 0;
+    public final static int POSITION_USER_DATA = 0;
+    
+    public final static int POSITION_EMAIL = 1;
     
     private static MyAccountFragment myAccountFragment;
     
@@ -178,19 +180,47 @@ public class MyAccountFragment extends BaseFragment {
         // Set adapter
         optionsList.setAdapter(myAccountAdpater);
         // Set Listener for all items
-        optionsList.setOnItemClickListener(new OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // Validate item
-                if (position == POSITION_USER_DATA) {
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.MY_USER_DATA);
-                    bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationmyaccount));
-                    getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
-                }
-
-            }
-        });
-        
+        optionsList.setOnItemClickListener((OnItemClickListener) this);
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget.AdapterView, android.view.View, int, long)
+     */
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        // Validate item
+        switch (position) {
+        case POSITION_USER_DATA:
+            processOnClickUserData();
+            break;
+        case POSITION_EMAIL:
+            processOnClickEmailNotification();
+            break;
+        default:
+            break;
+        }
     }
 
+    /**
+     * Process the click on the user data
+     * @author sergiopereira
+     */
+    private void processOnClickUserData(){
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.MY_USER_DATA);
+        bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationmyaccount));
+        getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+    }
+    
+    /**
+     * Process the click on the email notification
+     * @author sergiopereira
+     */
+    private void processOnClickEmailNotification(){
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.EMAIL_NOTIFICATION);
+        bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationmyaccount));
+        getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+    }
+    
 }

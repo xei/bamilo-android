@@ -50,5 +50,6 @@ public enum FragmentType {
     POLL,
     CHECKOUT_EXTERNAL_PAYMENT, 
     HEADLESS_CART, 
-    CAMPAIGNS
+    CAMPAIGNS, 
+    EMAIL_NOTIFICATION
 }

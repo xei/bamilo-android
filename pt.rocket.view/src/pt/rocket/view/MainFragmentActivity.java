@@ -33,6 +33,7 @@ import pt.rocket.view.fragments.CheckoutThanksFragment;
 import pt.rocket.view.fragments.CheckoutWebFragment;
 import pt.rocket.view.fragments.HeadlessAddToCartFragment;
 import pt.rocket.view.fragments.HomeFragment;
+import pt.rocket.view.fragments.MyAccountEmailNotificationFragment;
 import pt.rocket.view.fragments.MyAccountFragment;
 import pt.rocket.view.fragments.MyAccountUserDataFragment;
 import pt.rocket.view.fragments.PopularityFragment;
@@ -54,7 +55,6 @@ import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.preference.PreferenceScreen;
 import android.support.v4.widget.DrawerLayout;
-import android.view.WindowManager;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -332,6 +332,9 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             break;
         case CAMPAIGNS:
             fragment = CampaignsFragment.newInstance(bundle);
+            break;
+        case EMAIL_NOTIFICATION:
+            fragment = MyAccountEmailNotificationFragment.newInstance(bundle);
             break;
             
         default:

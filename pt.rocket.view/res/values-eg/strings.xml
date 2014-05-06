@@ -53,7 +53,7 @@
 	<string name="new_password_label">New Password</string>
 	<string name="contact_personal">Anything wrong? Contact your personal support now.</string>
 	<string name="option2_description">Change Password, manage email</string>
-	<string name="option3_description">Change or manage your options</string>
+	<string name="option4_description">Change or manage your options</string>
 	<string name="new_password_hint">New password</string>
 	<string name="retype_new_password_hint">Confirm password</string>
 	<string name="product_review">PRODUCT RATING</string>

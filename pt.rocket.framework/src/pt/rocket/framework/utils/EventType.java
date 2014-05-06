@@ -178,7 +178,13 @@ public enum EventType {
 	
 	SEARCH_PRODUCT("http:/product.html", RestContract.NO_CACHE),
 	
-	GET_CAMPAIGN_EVENT("http:/campaign/get/", RestContract.MAX_CACHE_TIME)
+	GET_CAMPAIGN_EVENT("http:/campaign/get/", RestContract.MAX_CACHE_TIME),
+	
+	GET_NEWSLETTERS_FORM_EVENT("managenewsletters", RestContract.MAX_CACHE_TIME),
+	
+	GET_NEWSLETTERS_FORM_FALLBACK_EVENT("http:/forms/managenewsletters/", RestContract.MAX_CACHE_TIME),
+	
+	SUBSCRIBE_NEWSLETTERS_EVENT("https:/customer/managenewsletters/", RestContract.NO_CACHE),
 	
 	;
     

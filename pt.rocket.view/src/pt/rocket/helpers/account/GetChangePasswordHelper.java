@@ -1,7 +1,7 @@
 /**
  * 
  */
-package pt.rocket.helpers;
+package pt.rocket.helpers.account;
 
 import org.json.JSONObject;
 
@@ -10,6 +10,8 @@ import pt.rocket.framework.enums.RequestType;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
+import pt.rocket.helpers.BaseHelper;
+import pt.rocket.helpers.HelperPriorityConfiguration;
 import android.content.ContentValues;
 import android.os.Bundle;
 import de.akquinet.android.androlog.Log;

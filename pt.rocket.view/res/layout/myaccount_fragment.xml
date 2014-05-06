@@ -14,14 +14,14 @@
 
     <ListView
         android:id="@+id/middle_myaccount_list"
-        android:layout_width="fill_parent"
+        android:layout_width="@dimen/inner_container_width"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:dividerHeight="1dp"
-        android:footerDividersEnabled="true" >
+        android:dividerHeight="0dp"
+        android:footerDividersEnabled="false" >
     </ListView>
-    
-    <View style="@style/activity_sectionheader_divider" />
+
+    <View style="@style/activity_sectionheader_divider" android:visibility="gone"/>
 
     <org.holoeverywhere.widget.TextView
         style="@style/activity_sectionheader_text"
@@ -31,7 +31,8 @@
 
     <fragment
         android:name="pt.rocket.view.PushPreferences"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_width="@dimen/inner_container_width"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
 
 </LinearLayout>
