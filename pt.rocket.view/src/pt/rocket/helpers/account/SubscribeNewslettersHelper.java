@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.framework.enums.RequestType;
 import pt.rocket.framework.objects.CustomerNewsletterSubscription;
+import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
@@ -53,17 +54,6 @@ public class SubscribeNewslettersHelper extends BaseHelper {
         return bundle;
     }
    
-    //  "subscribed_categories": [
-    //  {
-    //      "id": 6,
-    //      "description": "Newsletter Male"
-    //  },
-    //  {
-    //      "id": 5,
-    //      "description": "Newsletter Female"
-    //  }
-    //]
-    
     /*
      * (non-Javadoc)
      * @see pt.rocket.helpers.BaseHelper#parseResponseBundle(android.os.Bundle, org.json.JSONObject)
@@ -74,7 +64,7 @@ public class SubscribeNewslettersHelper extends BaseHelper {
         try {
             ArrayList<CustomerNewsletterSubscription> subscriptions = new ArrayList<CustomerNewsletterSubscription>();
             // Get subscribed newsletters
-            JSONArray jsonArray = jsonObject.optJSONArray("subscribed_categories");
+            JSONArray jsonArray = jsonObject.optJSONArray(RestConstants.JSON_SUBSCRIBED_CATEGORIES_TAG);
             if(jsonArray != null && jsonArray.length() > 0) {
                 for (int i = 0; i < jsonArray.length(); i++) {
                      JSONObject object = jsonArray.getJSONObject(i);

@@ -252,10 +252,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
         if(mNewslettersForm != null && mNewslettersForm.fields != null && mNewslettersForm.fields.size() > 0){
             String fieldName = mNewslettersForm.fields.get(0).getName();
             ContentValues values = new ContentValues();
-            
-            // FIXME
-            fieldName = "NewsletterForm[newsletter_categories_subscribed]";
-            
+            // Add to values with different tags
             values.put(fieldName + "[" + NEWSLETTER_MALE_ID + "]", (mNewsletterMale.isChecked()) ? NEWSLETTER_MALE_ID : NEWSLETTER_UNKNOWN_ID );
             values.put(fieldName + "[" + NEWSLETTER_FEMALE_ID + "]", (mNewsletterFemale.isChecked()) ? NEWSLETTER_FEMALE_ID : NEWSLETTER_UNKNOWN_ID);
             Log.d(TAG, "VALUES: " + values.toString());

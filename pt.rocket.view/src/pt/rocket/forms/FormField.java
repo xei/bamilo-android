@@ -209,9 +209,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                 inputType = InputType.radioGroup;
             } else if (formFieldString.equals("list") || formFieldString.equals("select")) {
                 inputType = InputType.list;
-            } else if (formFieldString.equals("boolean") || formFieldString.equals("checkbox") || 
-                    // FIXME: Newsletter subscription NAFAMZ-6146
-                    jsonObject.optString(RestConstants.JSON_KEY_TAG).equals("newsletter_categories_subscribed")) {
+            } else if (formFieldString.equals("boolean") || formFieldString.equals("checkbox")) {
                 inputType = InputType.checkBox;
             } else if (formFieldString.equals("")) {
             	inputType = InputType.meta;

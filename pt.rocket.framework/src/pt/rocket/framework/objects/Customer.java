@@ -1,12 +1,3 @@
-/**
- * @author Guilherme Silva
- * 
- * @version 1.01
- * 
- * 2012/06/18
- * 
- * Copyright (c) Rocket Internet All Rights Reserved
- */
 package pt.rocket.framework.objects;
 
 import java.text.ParseException;
@@ -366,10 +357,7 @@ public class Customer implements IJSONSerializable, Parcelable{
             mNewsletterSubscriptions = new ArrayList<CustomerNewsletterSubscription>();
             
             // FIXME: Newsletter subscription NAFAMZ-6146
-//            "newsletter_categories": {
-//                "5": {},
-//                "6": {}
-//            }
+            // FIXME: NAFAMZ-6518
             JSONArray newsletterArray = jsonObject.optJSONArray("customer_newsletter_subscription");
             if(newsletterArray != null) {
             	for (int i = 0; i < newsletterArray.length(); i++) {

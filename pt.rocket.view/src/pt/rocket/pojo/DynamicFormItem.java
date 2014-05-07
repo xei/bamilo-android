@@ -634,7 +634,8 @@ public class DynamicFormItem {
         boolean result = true;
         switch (this.entry.getInputType()) {
         case checkBox:
-            result = ((CheckBox) this.dataControl).isChecked();
+            if (this.entry.getValidation().isRequired())
+                result = ((CheckBox) this.dataControl).isChecked();
             break;
         case checkBoxList:
             result = ((CheckBox) this.dataControl.findViewWithTag("checkbox")).isChecked();
@@ -681,8 +682,7 @@ public class DynamicFormItem {
 
             if (!valid) {
                 result = !this.entry.getValidation().isRequired();
-                setErrorText(context.getString(R.string.error_ismandatory) + " "
-                        + this.entry.getLabel());
+                setErrorText(context.getString(R.string.error_ismandatory) + " " + this.entry.getLabel());
             }
             break;
 
@@ -764,7 +764,8 @@ public class DynamicFormItem {
 
         switch (this.entry.getInputType()) {
         case checkBox:
-
+            if (this.entry.getValidation().isRequired())
+                result = ((CheckBox) this.dataControl).isChecked();
             break;
         case checkBoxList:
             
@@ -884,7 +885,7 @@ public class DynamicFormItem {
             ((CheckBox) this.dataControl).setChecked(true);
         }
 
-        // FIXME: Newsletter subscription NAFAMZ-6146
+        // Newsletter subscription
         if(this.entry.getKey().contains("newsletter"))
             loadNewsLetterLayoutValues(params, ((CheckBox) this.dataControl));
         

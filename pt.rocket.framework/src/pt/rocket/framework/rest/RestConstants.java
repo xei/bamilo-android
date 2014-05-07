@@ -404,8 +404,9 @@ public class RestConstants {
 	public static final String JSON_CUSTOMER_TAG = "customer";
 	public static final String JSON_ADDRESS_LIST_TAG = "address_list";
 	
+	public static final String JSON_SUBSCRIBED_CATEGORIES_TAG = "subscribed_categories";
+	public static final String JSON_NEWSLETTER_CATEGORY_ID_TAG = "id_newsletter_category";
 	
-
 	
 
 }

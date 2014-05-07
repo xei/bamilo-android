@@ -142,7 +142,6 @@ private static final String TAG = FieldValidation.class.getName();
 
     @Override
     public int describeContents() {
-        // TODO Auto-generated method stub
         return 0;
     }
 

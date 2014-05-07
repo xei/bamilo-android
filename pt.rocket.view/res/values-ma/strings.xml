@@ -338,5 +338,12 @@
     <string name="campaign_choose_size">Sélectionnez votre taille</string>
     <string name="campaign_save">Vous économisez</string>
     <string name="campaign_ramaining_stock">Stock Restant:</string>
+    
+	<string name="myaccount_email_notifications">Préférence eMails</string>
+	<string name="option3_description">S\'inscrire ou Se désinscrire</string>
+	<string name="newsletters_label">Newsletters</string>
+	<string name="newsletter_male_label">Newsletter Homme</string>
+	<string name="newsletter_female_label">Newsletter Femme</string>
+	<string name="newsletter_saved_message">Vos préférences eMails ont été enregistrées</string>
 
 </resources>

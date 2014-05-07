@@ -1,16 +1,9 @@
-/**
- * @author Guilherme Silva
- * 
- * @version 1.01
- * 
- * 2012/06/18
- * 
- * Copyright (c) Rocket Internet All Rights Reserved
- */
 package pt.rocket.framework.objects;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import pt.rocket.framework.rest.RestConstants;
 
 import android.util.Log;
 
@@ -41,16 +34,15 @@ public class CustomerNewsletterSubscription implements IJSONSerializable {
 	public boolean initialize(JSONObject jsonObject) throws JSONException {
 		Log.d(TAG, "INITIALIZE: " + jsonObject);
 		
-		// FIXME : standardize
-		
-		if(jsonObject.has("id_newsletter_category"))
-			mId = jsonObject.optInt("id_newsletter_category");
-		if(jsonObject.has("id"))
-			mId = jsonObject.optInt("id_newsletter_category");
-		if(jsonObject.has("name"))
-			mName = jsonObject.optString("name");
-		if(jsonObject.has("description"))
-			mName = jsonObject.optString("description");
+		// FIXME: NAFAMZ-6518
+		if(jsonObject.has(RestConstants.JSON_NEWSLETTER_CATEGORY_ID_TAG))
+			mId = jsonObject.optInt(RestConstants.JSON_NEWSLETTER_CATEGORY_ID_TAG);
+		if(jsonObject.has(RestConstants.JSON_ID_TAG))
+			mId = jsonObject.optInt(RestConstants.JSON_ID_TAG);
+		if(jsonObject.has(RestConstants.JSON_NAME_TAG))
+			mName = jsonObject.optString(RestConstants.JSON_NAME_TAG);
+		if(jsonObject.has(RestConstants.JSON_DESCRIPTION_TAG))
+			mName = jsonObject.optString(RestConstants.JSON_DESCRIPTION_TAG);
 		return true;
 	}
 
