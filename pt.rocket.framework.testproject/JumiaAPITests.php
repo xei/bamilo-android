@@ -19,7 +19,7 @@ $emulator_jenkins = "emulator-5554";
 $device_boston = "FA6MA000002520";
 $device_s4 = "9b9a8c25";
 $device_Nexus_5 = "02c4f6c4d0240c12";
-$emulator= $device_s4;
+$emulator= $emulator_bruno;
 $content  = "";
 #echo $color->getColoredString("##############################################", "white", "blue"). "\n";
 #echo $color->getColoredString("########## Running Jumia API Tests ###########", "white", "blue"). "\n";
@@ -329,15 +329,16 @@ function restartApp(){
 function Test($countries, $test, $function){
 	global $adb_path;
 	global $emulator;
-	foreach($countries as $country){
-		$cmd = "~".$adb_path." -s  ".$emulator." shell am instrument -w -e class com.rocket.framework.testshell.test.".$test."#".$function.$country." com.rocket.framework.testshell.test/android.test.InstrumentationTestRunner";
+	#foreach($countries as $country){
+		$cmd = "~".$adb_path." -s  ".$emulator." shell am instrument -w -e class com.rocket.framework.testshell.test.".$test."#".$function.$countries." com.rocket.framework.testshell.test/android.test.InstrumentationTestRunner";
 		#echo $cmd;
 		exec($cmd, $result);
 		print_r($result);
-		echo $test.$country." finished - ";
-		echo checkErrors($test, $result, $country);
+		#echo $test.$country." finished - ";
+		echo $test.$countries." finished - ";
+		echo checkErrors($test, $result, $countries);
 		$result = array();
-	}
+	#}
 }
 
 function checkErrors($test, $result, $country){

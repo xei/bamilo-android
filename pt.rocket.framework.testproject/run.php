@@ -1,6 +1,8 @@
 <?php
 include 'JumiaAPITests.php';
 
+$country_test = $argv[1];
+
 ## startEmulator();
 
 ## Install App
@@ -13,59 +15,59 @@ $begin = new DateTime(date("Y-m-d H:i:s"), new DateTimeZone('Europe/London'));
 
 #/** Pass
 
-RegisterTests($countries);
-RegisterFormTest($countries);
-ApiInfoTest($countries);
-CategoriesTests($countries);
-ProductDetailsTests($countries);
-ProductListTests($countries);
-ImageResolutionsTest($countries);
-InitFormTest($countries);
-LoginFormTests($countries);
-RatingsFormTest($countries);
-RatingsTest($countries);
-TermsConditionsTest($countries);
-ChangePasswordTest($countries);
-FacebookLoginTest($countries);
-ForgotPasswordFormTest($countries);
-LoginTest($countries);
-LogoutTest($countries);
-ProductReviewsTest($countries);
-SearchSuggestionTest($countries);
-TeasersTest($countries);
-TrackOrderTest($countries);
-ForgotPasswordTest($countries);
-CostumerTest($countries);
-ShoppingCartAddItemTest($countries);
-ShoppingCartChangeItemTest($countries);
-ShoppingCartItemTest($countries);
-ShoppingCartRemoveItemTest($countries);
-CallToOrder($countries);
+RegisterTests($country_test);
+RegisterFormTest($country_test);
+ApiInfoTest($country_test);
+CategoriesTests($country_test);
+ProductDetailsTests($country_test);
+ProductListTests($country_test);
+ImageResolutionsTest($country_test);
+InitFormTest($country_test);
+LoginFormTests($country_test);
+RatingsFormTest($country_test);
+RatingsTest($country_test);
+TermsConditionsTest($country_test);
+ChangePasswordTest($country_test);
+FacebookLoginTest($country_test);
+ForgotPasswordFormTest($country_test);
+LoginTest($country_test);
+LogoutTest($country_test);
+ProductReviewsTest($country_test);
+SearchSuggestionTest($country_test);
+TeasersTest($country_test);
+TrackOrderTest($country_test);
+ForgotPasswordTest($country_test);
+CostumerTest($country_test);
+ShoppingCartAddItemTest($country_test);
+ShoppingCartChangeItemTest($country_test);
+ShoppingCartItemTest($country_test);
+ShoppingCartRemoveItemTest($country_test);
+CallToOrder($country_test);
 
-GetSignup($countries);
-GetCostumerAddress($countries);
-#GetBillingAddress($countries);
-#SetBillingAddress($countries);
-CreateAddress($countries);
-GetRegions($countries);
-GetCities($countries);
-#GetShippingMethods($countries);
-#SetShippingMethods($countries);
-#GetPaymentMethods($countries);
-#SetPaymentMethods($countries);
-#GetMyOrder($countries);
-CheckoutFinish($countries);
+GetSignup($country_test);
+GetCostumerAddress($country_test);
+#GetBillingAddress($country_test);
+#SetBillingAddress($country_test);
+CreateAddress($country_test);
+GetRegions($country_test);
+GetCities($country_test);
+#GetShippingMethods($country_test);
+#SetShippingMethods($country_test);
+#GetPaymentMethods($country_test);
+#SetPaymentMethods($country_test);
+#GetMyOrder($country_test);
+CheckoutFinish($country_test);
 #**/
 
 /** Will change
 
-FormsDatasetList($countries);	
+FormsDatasetList($country_test);	
 
 **/
 
 /** Optional
 
-PromotionsTest($countries);
+PromotionsTest($country_test);
 
 **/
 
