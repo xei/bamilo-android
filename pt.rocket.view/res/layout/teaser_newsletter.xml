@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/margin_mid"
+    android:layout_marginRight="@dimen/margin_mid" >
+
+    <org.holoeverywhere.widget.TextView
+        android:id="@+id/newsletter_subscription"
+        style="@style/activity_sectionheader_text"
+        android:layout_marginBottom="@dimen/margin_mid"
+        android:text="@string/newsletter_subscription" />
+
+    <org.holoeverywhere.widget.EditText
+        android:id="@+id/newsletter_subscription_value"
+        style="@style/form_edittext_style"
+        android:layout_below="@id/newsletter_subscription"
+        android:layout_marginTop="13.2dp"
+        android:cursorVisible="true"
+        android:drawableRight="@drawable/ic_star_formular"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:hint="@string/newsletter_subscription_hint"
+        android:inputType="textAutoComplete"
+        android:textCursorDrawable="@null" />
+
+    <RelativeLayout
+        android:id="@+id/buttons_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/newsletter_subscription_value"
+        android:paddingBottom="13.2dp" >
+
+        <View
+            android:id="@+id/reference_view"
+            android:layout_width="@dimen/margin_mid"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true" />
+
+        <org.holoeverywhere.widget.Button
+            android:id="@+id/newsletter_male_btn"
+            style="@style/button_grey_style"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/reference_view"
+            android:contentDescription="@string/newsletter_male"
+            android:ellipsize="marquee"
+            android:singleLine="true"
+            android:text="@string/newsletter_male" />
+
+        <org.holoeverywhere.widget.Button
+            android:id="@+id/newsletter_female_btn"
+            style="@style/button_grey_style"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/reference_view"
+            android:contentDescription="@string/newsletter_female"
+            android:ellipsize="marquee"
+            android:singleLine="true"
+            android:text="@string/newsletter_female" />
+    </RelativeLayout>
+
+</RelativeLayout>
