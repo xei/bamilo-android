@@ -54,7 +54,10 @@ public abstract class TeaserSpecification<T extends ITargeting> implements IJSON
             int size = 3;
             for (int i = 0; i < size; i++) {
                 json += "{ 'campaign_name': 'Soldes Electromenager " + i + "', 'campaign_url': 'soldes-electromenager' }, " +
+                		"{ 'campaign_name': 'Make Up Semaine " + i + "', 'campaign_url': 'make-up-semaine' }, " +
                 		"{ 'campaign_name': 'Soldes Campomatic " + i + "', 'campaign_url': 'soldes-campomatic' }" + ((i+1<size)?",":"");
+                
+                
             }
             json += " ] }";
 			try {
