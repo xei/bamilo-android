@@ -99,7 +99,7 @@
     <string name="jumia_ci_server_dev">alice-staging.jumia.ci</string>
     <string name="jumia_ci_user_dev">rocket</string>
     <string name="jumia_ci_password_dev">rock4me</string>
-    <string name="jumia_ci_restbase_path_dev">mobapi/v1.1</string>
+    <string name="jumia_ci_restbase_path_dev">mobapi/v1.3</string>
     <string name="jumia_ci_country_name_dev">Ivory Coast Staging</string>
 
     <!-- Uganda Configuration -->

@@ -9,6 +9,8 @@ import java.util.Collection;
 import java.util.EnumSet;
 import java.util.Iterator;
 
+import org.holoeverywhere.widget.Button;
+import org.holoeverywhere.widget.EditText;
 import org.holoeverywhere.widget.TextView;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -884,12 +886,49 @@ public class HomeFragment extends BaseFragment {
                 Log.d(TAG, "#################### 1 ", e);
             }       
             
-
+            
+            mainView.addView(generateNewsletterSubscribe(mainView));
+            
             if(lastViewed != null && lastViewed.size() > 0){
+               
                 mainView.addView(generateLastViewedLayout(mainView));
             }
         }
         
+        private View generateNewsletterSubscribe(ViewGroup parent) {
+            View newsletterView = mInflater.inflate(R.layout.teaser_newsletter, parent, false);
+            Button maleBtn = (Button) newsletterView.findViewById(R.id.newsletter_male_btn);
+            Button femaleBtn = (Button) newsletterView.findViewById(R.id.newsletter_female_btn);
+            final EditText newsletterEmail = (EditText) newsletterView
+                    .findViewById(R.id.newsletter_subscription_value);
+
+            maleBtn.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    if (newsletterEmail.getText().toString().length() > 0) {
+
+                    } else {
+
+                    }
+
+                }
+            });
+
+            femaleBtn.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    if (newsletterEmail.getText().toString().length() > 0) {
+
+                    } else {
+
+                    }
+                }
+            });
+            return newsletterView;
+        }
+
         private View generateLastViewedLayout(ViewGroup parent){
             View lastViewedView = mInflater.inflate(R.layout.teaser_last_viewed, parent, false);
             mPopArrows = (RelativeLayout) lastViewedView.findViewById(R.id.pop_arrows_container);

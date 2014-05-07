@@ -118,6 +118,8 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
     
     private boolean cameFromSignUp = false;
     
+    private int retryForms = 0;
+    
     /**
      * Get the instance of CheckoutAboutYouFragment
      * @return {@link BaseFragment}
@@ -258,6 +260,8 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
     @Override
     public void onResume() {
         super.onResume();
+        
+        retryForms = 0;
         Log.i(TAG, "ON RESUME");
         // Resume helper
         String appId = getBaseActivity().getResources().getString(R.string.app_id);
@@ -946,10 +950,14 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
                 showErrorDialog(errors, R.string.error_signup_title);
                 getBaseActivity().showContentContainer();
             }
-            break;
+            break; 
         case GET_SIGNUP_FORM_EVENT:
             Log.w(TAG, "ON ERRER RECEIVED: GET_SIGNUP_FORM_EVENT");
-            triggerInitForm();
+            if(retryForms <3){
+                triggerInitForm();
+                retryForms++;
+            }
+            
             break;
         case GET_SHOPPING_CART_ITEMS_EVENT:
             Log.w(TAG, "ON ERRER RECEIVED: GET_SHOPPING_CART_ITEMS_EVENT");

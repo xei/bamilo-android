@@ -385,16 +385,17 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
         inflater.inflate(R.layout.navigation_scrollable_container, navigationContainer, true);
         LinearLayout scrollableContainer = (LinearLayout) navigationContainer
                 .findViewById(R.id.slide_menu_scrollable_container);
-
-        for (NavigationListComponent component : components) {
-
-            // Basket
-            ViewGroup viewGroup = scrollableContainer;
-
-            // Others
-            View actionElementLayout = getActionElementLayout(component, viewGroup);
-            if (actionElementLayout != null)
-                viewGroup.addView(actionElementLayout);
+        if(components != null){
+            for (NavigationListComponent component : components) {
+    
+                // Basket
+                ViewGroup viewGroup = scrollableContainer;
+    
+                // Others
+                View actionElementLayout = getActionElementLayout(component, viewGroup);
+                if (actionElementLayout != null)
+                    viewGroup.addView(actionElementLayout);
+            }
         }
     }
 
@@ -410,7 +411,6 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
                     setActionSelected(view);
                 }
             }
-
         }
     }
 

@@ -54,6 +54,19 @@
             android:textSize="@dimen/text_m" />
     </LinearLayout>
 
+    <!-- Price Rules -->
+
+    <LinearLayout
+        android:id="@+id/price_rules_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_huge"
+        android:layout_marginRight="@dimen/margin_huge"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
+        android:visibility="gone" >
+    </LinearLayout>
+    
     <!-- VAT -->
 
     <LinearLayout

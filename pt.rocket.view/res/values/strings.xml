@@ -335,7 +335,13 @@
     <string name="campaign_choose_size">Choose your Size</string>
     <string name="campaign_save">You Save</string>
     <string name="campaign_ramaining_stock">Remaining Stock:</string>
-    
+    <string name="newsletter_subscription">Newsletter Subscription</string>
+    <string name="newsletter_subscription_hint">Your e-mail</string>
+    <string name="newsletter_male">Male</string>
+    <string name="newsletter_female">Female</string>
+    <string name="newsletter_success_message">Congratulations! you have successfully subscribed to our newsletter.</string>
+    <string name="newsletter_invalid_message">Invalid email address</string>
+    <string name="newsletter_already_subscribed_message">You are already subscribed to the newsletter with entered email</string>
     
     <string name="myaccount_email_notifications">Email Notifications</string>
     <string name="option3_description">Subscribe or Unsubscribe</string>

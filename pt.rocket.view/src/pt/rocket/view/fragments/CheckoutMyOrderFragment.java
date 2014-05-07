@@ -3,6 +3,7 @@ package pt.rocket.view.fragments;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import org.holoeverywhere.widget.TextView;
 
@@ -363,6 +364,21 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
         else mVoucherView.setVisibility(View.GONE);
         // Total
         mTotalValue.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getTotal()));
+        
+        if(cart.getPriceRules() != null && cart.getPriceRules().size() > 0){
+            Log.i(TAG, "code1rules : pass");
+            LinearLayout priceRulesContainer = (LinearLayout) getView().findViewById(R.id.price_rules_container);
+            priceRulesContainer.setVisibility(View.VISIBLE);
+            LayoutInflater mLayoutInflater = LayoutInflater.from(getBaseActivity());
+            Set<String> priceRulesKeys = cart.getPriceRules().keySet();
+            for (String key : priceRulesKeys) {
+                View priceRuleElement = mLayoutInflater.inflate(R.layout.price_rules_element, null);
+                ((TextView) priceRuleElement.findViewById(R.id.price_rules_label)).setText(key);
+                ((TextView) priceRuleElement.findViewById(R.id.price_rules_value)).setText("-"+CurrencyFormatter.formatCurrency(cart.getPriceRules().get(key)));
+                priceRulesContainer.addView(priceRuleElement);
+            }
+            
+        }
     }
     
     /**
