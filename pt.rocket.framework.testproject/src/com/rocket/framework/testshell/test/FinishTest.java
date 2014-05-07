@@ -3,6 +3,7 @@ package com.rocket.framework.testshell.test;
 import pt.rocket.framework.testproject.constants.RequestConstants;
 import pt.rocket.framework.testproject.helper.BaseHelper;
 import pt.rocket.framework.testproject.helper.CreateAddressHelper;
+import pt.rocket.framework.testproject.helper.GetAddressHelper;
 import pt.rocket.framework.testproject.helper.GetBillingAddressHelper;
 import pt.rocket.framework.testproject.helper.GetChangePasswordHelper;
 import pt.rocket.framework.testproject.helper.GetFinishHelper;
@@ -27,7 +28,8 @@ import android.test.suitebuilder.annotation.SmallTest;
 public class FinishTest extends FrameworkServiceTests {
 	private static String TAG = FinishTest.class.getSimpleName();
 	protected boolean processedlogin = false;
-	protected boolean processed_add_item= false;
+	protected boolean processed_add= false;
+	protected boolean processedaddress = false;
 	protected boolean processedgetbilling = false;
 	protected boolean processedsetbilling = false;
 	protected boolean processedgetshipping = false;
@@ -37,34 +39,34 @@ public class FinishTest extends FrameworkServiceTests {
 	protected boolean processedfinish = false;
 
 	public void testFinishIC() throws Throwable {
-		test(BaseHelper.BASE_URL_CI, RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_IC, "DigitalDelivery");
+		test(BaseHelper.BASE_URL_CI, RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_IC, RequestConstants.SHIPPING_METHOD_IC, RequestConstants.SET_PAYMENT_METHOD_IC,RequestConstants.PRODUCT_SKU_CI, RequestConstants.PRODUCT_SKU_SIMPLE_CI);
 	}
 
 	public void testFinishKE() throws Throwable {
-		test(BaseHelper.BASE_URL_KE, RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_KE, "DigitalDelivery");
+		test(BaseHelper.BASE_URL_KE, RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_KE, RequestConstants.SHIPPING_METHOD_KE, RequestConstants.SET_PAYMENT_METHOD_KE,RequestConstants.PRODUCT_SKU_KE, RequestConstants.PRODUCT_SKU_SIMPLE_KE);
 	}
 	
 	public void testFinishMA() throws Throwable {
-		test(BaseHelper.BASE_URL_MA, RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_MA, "DigitalDelivery");
+		test(BaseHelper.BASE_URL_MA, RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_MA, RequestConstants.SHIPPING_METHOD_MA, RequestConstants.SET_PAYMENT_METHOD_MA,RequestConstants.PRODUCT_SKU_MA, RequestConstants.PRODUCT_SKU_SIMPLE_MA);
 	}
 	
 	public void testFinishNG() throws Throwable {
-		test(BaseHelper.BASE_URL_NG, RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_NG, "DigitalDelivery");
+		test(BaseHelper.BASE_URL_NG, RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_NG, RequestConstants.SHIPPING_METHOD_NG, RequestConstants.SET_PAYMENT_METHOD_NG,RequestConstants.PRODUCT_SKU_NG, RequestConstants.PRODUCT_SKU_SIMPLE_NG);
 	}
 
 	public void testFinishEG() throws Throwable {
-		test(BaseHelper.BASE_URL_EG, RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_EG, "DigitalDelivery");
+		test(BaseHelper.BASE_URL_EG, RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_EG, RequestConstants.SHIPPING_METHOD_EG, RequestConstants.SET_PAYMENT_METHOD_EG,RequestConstants.PRODUCT_SKU_EG, RequestConstants.PRODUCT_SKU_SIMPLE_EG);
 	}
 
 	public void testFinishUG() throws Throwable {
-		test(BaseHelper.BASE_URL_UG, RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_UG, "DigitalDelivery");
+		test(BaseHelper.BASE_URL_UG, RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_UG, RequestConstants.SHIPPING_METHOD_UG, RequestConstants.SET_PAYMENT_METHOD_UG,RequestConstants.PRODUCT_SKU_UG, RequestConstants.PRODUCT_SKU_SIMPLE_UG);
 	}
 //	
 //	public void testFinishStaging_NG() throws Throwable {
 //		test("https://alice-staging.jumia.com.ng", RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_NG, "DigitalDelivery");
 //	}
 
-	private void test(String url, String billing_address, String shippinng_method) {
+	private void test(String url, String billing_address, String shippinng_method, String payment_method, String sku, String simple) {
 		/**
 	     * Login 
 	     */
@@ -104,46 +106,82 @@ public class FinishTest extends FrameworkServiceTests {
 	        }
 	    }
 	    
-//	    /**
-//	     * Add to Cart
-//	     */
-//	    Log.i(TAG, "mService => " + mService);
-//	    Bundle args_add_item = new Bundle();
-//	    args_add_item.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.com.ng/mobapi/order/add?setDevice=mobileApi");
-//	    ContentValues contentValues_add_item = new ContentValues();
-//	    contentValues_add_item.put(RequestConstants.KEY_ADD_CART_SKU, RequestConstants.PRODUCT_SKU_NG);
-//	    contentValues_add_item.put(RequestConstants.KEY_ADD_CART_SKU_SIMPLE, RequestConstants.PRODUCT_SKU_SIMPLE_NG);
-//	    contentValues_add_item.put(RequestConstants.KEY_ADD_CART_QUANTITY, 1);
-//	    args_add_item.putParcelable(GetChangePasswordHelper.CONTENT_VALUES, contentValues_add_item);
-//	    sendRequest(args_add_item, new GetShoppingCartAddItemHelper(), new IResponseCallback() {
-//
-//	        @Override
-//	        public void onRequestError(Bundle bundle) {
-//	            // TODO Auto-generated method stub
-//	            Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-//	            assertTrue("Failed onRequestError - The base of the json is wrongly constructed, something is missing : "+bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY), jsonValidation);
-//	            processed_add_item = true;
-//	        }
-//
-//	        @Override
-//	        public void onRequestComplete(Bundle bundle) {
-//	            // TODO Auto-generated method stub
-//	            Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-//	            assertTrue("Failed onRequestComplete - The base of the json is wrongly constructed, something is missing", jsonValidation);
-//	            processed_add_item = true;
-//
-//	        }
-//	    });
-//	    //necessary in order to make the test wait for the server response
-//	    while (!processed_add_item) {
-//	        try {
-//	            Thread.sleep(1000);
-//	        } catch (InterruptedException e) {
-//	            // TODO Auto-generated catch block
-//	            e.printStackTrace();
-//	        }
-//	    }
-//	    
+	    /**
+	     * Add to Cart
+	     */
+	    Log.i(TAG, "mService => " + mService);
+	    Bundle args_add = new Bundle();
+	    args_add.putString(BaseHelper.KEY_COUNTRY, url+"/order/add?setDevice=mobileApi");
+	    
+	    ContentValues contentValues_add = new ContentValues();
+	    contentValues_add.put(RequestConstants.KEY_ADD_CART_SKU, sku);
+	    contentValues_add.put(RequestConstants.KEY_ADD_CART_SKU_SIMPLE, simple);
+	    contentValues_add.put(RequestConstants.KEY_ADD_CART_QUANTITY, 1);
+	    args_add.putParcelable(GetShoppingCartAddItemHelper.ADD_ITEM, contentValues_add);
+	    sendRequest(args_add, new GetShoppingCartAddItemHelper(), new IResponseCallback() {
+
+	        @Override
+	        public void onRequestError(Bundle bundle) {
+	            // TODO Auto-generated method stub
+	            Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
+	            assertTrue("Failed onRequestError - The base of the json is wrongly constructed, something is missing : "+bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY), jsonValidation);
+	            processed_add = true;
+	        }
+
+	        @Override
+	        public void onRequestComplete(Bundle bundle) {
+	            // TODO Auto-generated method stub
+	            Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
+	            assertTrue("Failed onRequestComplete - The base of the json is wrongly constructed, something is missing", jsonValidation);
+	            processed_add = true;
+
+	        }
+	    });
+	    //necessary in order to make the test wait for the server response
+	    while (!processed_add) {
+	        try {
+	            Thread.sleep(1000);
+	        } catch (InterruptedException e) {
+	            // TODO Auto-generated catch block
+	            e.printStackTrace();
+	        }
+	    }
+	    
+	    /**
+	     * Address
+	     */
+	    Log.i(TAG, "mService => " + mService);
+	    Bundle args_address = new Bundle();
+	    args_address.putString(BaseHelper.KEY_COUNTRY, url + "/customer/address/list/");
+	    sendRequest(args_address, new GetAddressHelper(), new IResponseCallback() {
+
+	        @Override
+	        public void onRequestError(Bundle bundle) {
+	            // TODO Auto-generated method stub
+	            Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
+	            assertTrue("Failed onRequestError - The base of the json is wrongly constructed, something is missing : "+bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY), jsonValidation);
+	            processedaddress = true;
+	        }
+
+	        @Override
+	        public void onRequestComplete(Bundle bundle) {
+	            // TODO Auto-generated method stub
+	            Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
+	            assertTrue("Failed onRequestComplete - The base of the json is wrongly constructed, something is missing", jsonValidation);
+	            processedaddress = true;
+
+	        }
+	    });
+	    //necessary in order to make the test wait for the server response
+	    while (!processedaddress) {
+	        try {
+	            Thread.sleep(1000);
+	        } catch (InterruptedException e) {
+	            // TODO Auto-generated catch block
+	            e.printStackTrace();
+	        }
+	    }
+	    
 	    /**
 	     * GetBilling
 	     */
@@ -373,16 +411,7 @@ public class FinishTest extends FrameworkServiceTests {
 		Bundle argssetpayment = new Bundle();
 		ContentValues contentValuessetpayment = new ContentValues();
 		
-		if(url.equals(BaseHelper.BASE_URL_MA)){
-			contentValuessetpayment.put(RequestConstants.KEY_SET_PAYMENT_METHOD,RequestConstants.SET_PAYMENT_METHOD_MA);
-		}else if(url.equals(BaseHelper.BASE_URL_NG)){
-			contentValuessetpayment.put(RequestConstants.KEY_SET_PAYMENT_METHOD,RequestConstants.SET_PAYMENT_METHOD_NG);
-		}else if(url.equals(BaseHelper.BASE_URL_CI)){
-			contentValuessetpayment.put(RequestConstants.KEY_SET_PAYMENT_METHOD,RequestConstants.SET_PAYMENT_METHOD_IC);
-		}else{
-			contentValuessetpayment.put(RequestConstants.KEY_SET_PAYMENT_METHOD,RequestConstants.SET_PAYMENT_METHOD_EG);
-		}
-
+		contentValuessetpayment.put(RequestConstants.KEY_SET_PAYMENT_METHOD,payment_method);
 		argssetpayment.putParcelable(GetSignupHelper.CONTENT_VALUES, contentValuessetpayment);
 		argssetpayment.putString(BaseHelper.KEY_COUNTRY, url + "/multistep/paymentmethod/");
 		sendRequest(argssetpayment, new SetPaymentMethodHelper(), new IResponseCallback() {

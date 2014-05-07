@@ -10,11 +10,13 @@ import org.json.JSONObject;
 import org.xmlpull.v1.XmlPullParserException;
 
 import pt.rocket.framework.enums.RequestType;
+import pt.rocket.framework.testproject.constants.RequestConstants;
 import pt.rocket.framework.testproject.objects.XMLObject;
 import pt.rocket.framework.testproject.utils.XMLUtils;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
+import android.content.ContentValues;
 import android.os.Bundle;
 import android.util.Log;
 

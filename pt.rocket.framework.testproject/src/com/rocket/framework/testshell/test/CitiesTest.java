@@ -25,7 +25,7 @@ public void testCitiesIC() throws Throwable {
 }
 
 public void testCitiesKE() throws Throwable {
-    test(BaseHelper.BASE_URL_KE, 0);
+    test(BaseHelper.BASE_URL_KE, 233);
 }
 
 public void testCitiesMA() throws Throwable {

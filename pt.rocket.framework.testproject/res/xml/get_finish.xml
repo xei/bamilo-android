@@ -4,5 +4,6 @@
     <order_nr type="string" method="getString" optional="false" children="false"/>
     <customer_first_name type="string" method="getString" optional="false" children="false"/>
     <customer_last_name type="string" method="getString" optional="false" children="false"/>
+    <payment type="jsonarray" method="getJSONArray" optional="true" children="false"/>
     
 </resources>

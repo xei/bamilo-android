@@ -15,7 +15,7 @@ public class ProductListTests extends FrameworkServiceTests {
 
     @SmallTest
     public void testProductListIC() throws Throwable {
-        test(BaseHelper.BASE_URL_CI+"/debardeurs-femme?page=1&maxitems=14&sort=price&dir=asc");
+        test(BaseHelper.BASE_URL_CI+"/telephonie?page=1&maxitems=14&sort=price&dir=asc");
     }
     
     @SmallTest
@@ -43,10 +43,10 @@ public class ProductListTests extends FrameworkServiceTests {
         
     }
     
-    public void testProductList_Staging_NG() throws Throwable {
-        test(BaseHelper.BASE_URL_STAGING_NG+"/womens-dresses?page=1&maxitems=14&sort=price&dir=asc");
-        
-    }
+//    public void testProductList_Staging_NG() throws Throwable {
+//        test(BaseHelper.BASE_URL_STAGING_NG+"/womens-dresses?page=1&maxitems=14&sort=price&dir=asc");
+//        
+//    }
     
     public void test(String url) throws Throwable {
         Log.i(TAG, "mService => " + mService);

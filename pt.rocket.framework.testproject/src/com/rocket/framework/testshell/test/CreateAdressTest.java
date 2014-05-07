@@ -18,33 +18,32 @@ public class CreateAdressTest extends FrameworkServiceTests {
     private static String TAG = CreateAdressTest.class.getSimpleName();
     protected boolean processed = false;
     protected boolean processed1 = false;
-    protected boolean processed2 = false;
 
     public void testCreateAddressIC() throws Throwable {
-        test(BaseHelper.BASE_URL_CI);
+        test(BaseHelper.BASE_URL_CI, RequestConstants.CREATE_ADDRESS_FK_REGION_IC, RequestConstants.CREATE_ADDRESS_FK_CITY_IC);
     }
 
     public void testCreateAddressKE() throws Throwable {
-        test(BaseHelper.BASE_URL_KE);
+        test(BaseHelper.BASE_URL_KE, RequestConstants.CREATE_ADDRESS_FK_REGION, RequestConstants.CREATE_ADDRESS_FK_CITY);
     }
     
     public void testCreateAddressMA() throws Throwable {
-        test(BaseHelper.BASE_URL_MA);
+        test(BaseHelper.BASE_URL_MA, RequestConstants.CREATE_ADDRESS_FK_REGION, RequestConstants.CREATE_ADDRESS_FK_CITY);
     }
     
     public void testCreateAddressNG() throws Throwable {
-        test(BaseHelper.BASE_URL_NG);
+        test(BaseHelper.BASE_URL_NG, RequestConstants.CREATE_ADDRESS_FK_REGION, RequestConstants.CREATE_ADDRESS_FK_CITY);
     }
 
     public void testCreateAddressEG() throws Throwable {
-        test(BaseHelper.BASE_URL_EG);
+        test(BaseHelper.BASE_URL_EG, RequestConstants.CREATE_ADDRESS_FK_REGION, RequestConstants.CREATE_ADDRESS_FK_CITY);
     }
 
     public void testCreateAddressUG() throws Throwable {
-        test(BaseHelper.BASE_URL_UG);
+        test(BaseHelper.BASE_URL_UG, RequestConstants.CREATE_ADDRESS_FK_REGION, RequestConstants.CREATE_ADDRESS_FK_CITY);
     }
 
-    private void test(String url) {
+    private void test(String url, String region, String city) {
         /**
          * Login
          */
@@ -96,8 +95,8 @@ public class CreateAdressTest extends FrameworkServiceTests {
         contentValues1.put(RequestConstants.KEY_CREATE_ADDRESS_ADDRESS2,RequestConstants.CREATE_ADDRESS_ADDRESS2);
         contentValues1.put(RequestConstants.KEY_CREATE_ADDRESS_CITY,RequestConstants.CREATE_ADDRESS_CITY);
         contentValues1.put(RequestConstants.KEY_CREATE_ADDRESS_PHONE,RequestConstants.CREATE_ADDRESS_PHONE);
-        contentValues1.put(RequestConstants.KEY_CREATE_ADDRESS_FK_REGION,RequestConstants.CREATE_ADDRESS_FK_REGION);
-        contentValues1.put(RequestConstants.KEY_CREATE_ADDRESS_FK_CITY,RequestConstants.CREATE_ADDRESS_FK_CITY);
+        contentValues1.put(RequestConstants.KEY_CREATE_ADDRESS_FK_REGION,region);
+        contentValues1.put(RequestConstants.KEY_CREATE_ADDRESS_FK_CITY,city);
         contentValues1.put(RequestConstants.KEY_CREATE_ADDRESS_COUNTRY,RequestConstants.CREATE_ADDRESS_COUNTRY);
         
         args.putParcelable(GetSignupHelper.CONTENT_VALUES, contentValues1);
