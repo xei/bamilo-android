@@ -50,10 +50,12 @@ public abstract class TeaserSpecification<T extends ITargeting> implements IJSON
 			break;
 		case CAMPAIGNS_LIST:// XXX
 			Log.d(TAG, "ON PARSE CAMPAIGNS_LIST");
-            String json = "{ 'group_type': '6', 'group_title': 'DEALS OF THE DAY', 'data': [ ";
-            int size = 6;
-            for (int i = 0; i < size; i++)
-                json += "{ 'campaign_name': 'Deals of the day " + i + "', 'campaign_url': 'deals-of-the-day' }" + ((i+1<size)?",":"");
+            String json = "{ 'group_type': '6', 'group_title': 'Le make up de la semaine', 'data': [ ";
+            int size = 3;
+            for (int i = 0; i < size; i++) {
+                json += "{ 'campaign_name': 'Soldes Electromenager " + i + "', 'campaign_url': 'soldes-electromenager' }, " +
+                		"{ 'campaign_name': 'Soldes Campomatic " + i + "', 'campaign_url': 'soldes-campomatic' }" + ((i+1<size)?",":"");
+            }
             json += " ] }";
 			try {
 				jsonObject = new JSONObject(json);

@@ -920,7 +920,7 @@ public class DynamicFormItem {
      */
     private void loadNewsLetterLayoutValues(RelativeLayout.LayoutParams params, CheckBox checkbox){
     	params.setMargins((int) (3 * this.scale), context.getResources().getDimensionPixelSize(R.dimen.margin_midhuge), 0, 0);
-    	checkbox.setTextSize(context.getResources().getDimension(R.dimen.text_xs));
+    	// checkbox.setTextSize(context.getResources().getDimension(R.dimen.text_xs));
     	checkbox.setPadding(
                 checkbox.getPaddingLeft() + context.getResources().getDimensionPixelSize(R.dimen.margin_mid), 
                 checkbox.getPaddingTop(), 

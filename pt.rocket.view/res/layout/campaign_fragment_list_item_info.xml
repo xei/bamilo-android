@@ -71,6 +71,7 @@
             android:layout_toRightOf="@id/campaign_item_save_label"
             android:fontFamily="roboto_regular"
             android:maxLines="1"
+            android:ellipsize="marquee"
             android:singleLine="true"
             android:textColor="@color/green_basic"
             android:textSize="@dimen/text_xs" />
@@ -117,6 +118,7 @@
             android:layout_toRightOf="@id/campaign_item_stock_label"
             android:fontFamily="roboto_bold"
             android:maxLines="1"
+            android:ellipsize="marquee"
             android:singleLine="true"
             android:textColor="@color/grey_middle"
             android:textSize="@dimen/text_xs" />

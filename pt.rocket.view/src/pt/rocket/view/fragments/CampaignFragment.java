@@ -730,7 +730,10 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
         private void setData(ItemView view, CampaignItem item, int position){
             Log.d(TAG, "SET DATA");
             // Set stock off
-            view.mStockOff.setText(item.getMaxSavingPercentage() + "%\n" + getString(R.string.off_label));
+            if(getString(R.string.off_label).equals("-"))
+                view.mStockOff.setText(getString(R.string.off_label) + item.getMaxSavingPercentage() + "%");
+            else
+                view.mStockOff.setText(item.getMaxSavingPercentage() + "%\n" + getString(R.string.off_label));
             // Set name
             view.mName.setText(item.getName());
             setClickableView(view.mName, position);
@@ -742,14 +745,17 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
             // Set price
             view.mPrice.setText(CurrencyFormatter.formatCurrency(""+item.getPrice()));
             view.mPrice.setPaintFlags(view.mPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            view.mPrice.setSelected(true);
             // Set discount
             view.mDiscount.setText(CurrencyFormatter.formatCurrency(""+item.getSpecialPrice()));
             // Set save
             view.mSave.setText(CurrencyFormatter.formatCurrency(""+item.getSavePrice()));
+            view.mSave.setSelected(true);
             // Set stock bar
             setStockBar(view.mStockBar, item.getStockPercentage());
             // Set stock percentage
             view.mStockPercentage.setText(item.getStockPercentage() + "%");
+            view.mStockPercentage.setSelected(true);
             // Set buy button
             setClickableView(view.mButtonBuy, position);
         }
