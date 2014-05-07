@@ -434,7 +434,18 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         // Create adapter
         ArrayAdapter<AddressRegion> adapter = new ArrayAdapter<AddressRegion>( getBaseActivity(), R.layout.form_spinner_item, regions);
         spinner.setAdapter(adapter);
-        setSavedSelectedRegionPos(spinner, tag);
+        int defaultPosition = 0;
+        if(mFormResponse.getFieldKeyMap().get(RestConstants.JSON_REGION_ID_TAG).getValue() != null && Integer.parseInt(mFormResponse.getFieldKeyMap().get(RestConstants.JSON_REGION_ID_TAG).getValue()) > 0){
+            int defaultId = Integer.parseInt(mFormResponse.getFieldKeyMap().get(RestConstants.JSON_REGION_ID_TAG).getValue());
+            for (int i = 0; i<regions.size(); i++) {
+                if(regions.get(i).getId() == defaultId){
+                    defaultPosition = i;
+                    break;
+                }
+            } 
+        }
+        
+        setSavedSelectedRegionPos(spinner, tag, defaultPosition);
         spinner.setTag(tag);
         spinner.setOnItemSelectedListener(this);
         group.addView(spinner);
@@ -446,17 +457,25 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
      * @param tag
      * @author sergiopereira
      */
-    private void setSavedSelectedRegionPos(IcsSpinner spinner, String tag){
+    private void setSavedSelectedRegionPos(IcsSpinner spinner, String tag, int defaultPosition){
         // Get saved value
         if( tag.equals(SHIPPING_FORM_TAG) && mShippingSavedValues != null && mShippingSavedValues.containsKey(SHIPPING_REGION_POS)) {
             int pos = mShippingSavedValues.getAsInteger(SHIPPING_REGION_POS);
-            //Log.d(TAG, "SAVED SHIPPING REGION VALUE: " + pos);
-            if( pos > 0 && pos < regions.size()) spinner.setSelection(pos);
-        } 
-        else if( tag.equals(BILLING_FORM_TAG) && mBillingSavedValues != null && mBillingSavedValues.containsKey(BILLING_REGION_POS)) {
+            if( pos > 0 && pos < regions.size()){
+                spinner.setSelection(pos);
+            } else {
+                spinner.setSelection(defaultPosition);
+            }
+        } else if( tag.equals(BILLING_FORM_TAG) && mBillingSavedValues != null && mBillingSavedValues.containsKey(BILLING_REGION_POS)) {
             int pos = mBillingSavedValues.getAsInteger(BILLING_REGION_POS);
             //Log.d(TAG, "SAVED BILLING REGION VALUE: " + pos);
-            if( pos > 0 && pos < regions.size()) spinner.setSelection(pos);
+            if( pos > 0 && pos < regions.size()){
+                spinner.setSelection(pos);
+            } else {
+                spinner.setSelection(defaultPosition);                
+            }
+        } else {
+            spinner.setSelection(defaultPosition);
         }
     }
         

@@ -866,7 +866,7 @@ public class HomeFragment extends BaseFragment {
                 }
             }
 
-            // XXX
+            // XXX - Remove after API fix
             String json = "{ 'group_type': '6', 'group_title': 'Le make up de la semaine', 'data': [ ";
             int size = 3;
             for (int i = 0; i < size; i++) {
