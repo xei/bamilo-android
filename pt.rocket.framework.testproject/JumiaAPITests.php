@@ -19,7 +19,7 @@ $emulator_jenkins = "emulator-5554";
 $device_boston = "FA6MA000002520";
 $device_s4 = "9b9a8c25";
 $device_Nexus_5 = "02c4f6c4d0240c12";
-$emulator= $emulator_bruno;
+$emulator= $device_s4;
 $content  = "";
 #echo $color->getColoredString("##############################################", "white", "blue"). "\n";
 #echo $color->getColoredString("########## Running Jumia API Tests ###########", "white", "blue"). "\n";
