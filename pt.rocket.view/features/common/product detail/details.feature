@@ -58,12 +58,14 @@ Background:
    	Scenario: I write a review
 	When I click on the search bar
 	When I enter a variation search
+	* I wait for 3 seconds
    	And I press list item number 1
 #   	And I press list item number 1
    	* I wait for 5 seconds 
    	And I press list item number 1
+   	* I wait for 3 seconds
    	When I press Rating
-	* I wait for 2 seconds 	
+	* I wait for 5 seconds 	
    	And I press Write a Review
    	* I wait for 2 seconds
   	And I fill the review information

@@ -80,7 +80,7 @@ def initvars
     @myaccount="My Account"
     @myinfo="User Data"
     @categories="Categories"
-    @categoryfashion="Books"
+    @categoryfashion="Mobile Phones"
     @choose_country="Choose Country"
     @order_status="Order Status"
     
@@ -145,7 +145,7 @@ def initvars
     #native checkout
     @proceed_to_checkout="Proceed to Checkout"
     @next="Next"
-    @pay_on_delivery="Pay On Delivery"
+    @pay_on_delivery="Cash On Delivery"
     @confirm_order="Confirm Order"
     
     @popular_categories="Popular Categories"

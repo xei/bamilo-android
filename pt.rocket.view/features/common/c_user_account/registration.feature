@@ -22,7 +22,7 @@ Feature: Registration feature
     And I choose the Sign In option
     * I wait for 1 seconds
     And I press the create account button
-    * I wait for 1 seconds
+    * I wait for 5 seconds
     When I press Terms and Conditions
     Then I should see the Terms and Conditions
     And I go back

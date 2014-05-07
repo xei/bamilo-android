@@ -10,7 +10,9 @@ And I select the country
 And I wait for 5 seconds
 When I open the navigation menu
 And I enter Categories
+* I wait for 3 seconds
 And I enter a valid Category
+* I wait for 3 seconds
 And I press list item number 1
 * I wait for 3 seconds
 When I click in Filter
@@ -20,7 +22,9 @@ Then I should see the filters
 Scenario: Apply filters
 When I open the navigation menu
 And I enter Categories
+* I wait for 3 seconds
 And I enter a valid Category
+* I wait for 3 seconds
 And I press list item number 1
 * I wait for 3 seconds
 When I click in Filter
@@ -33,13 +37,16 @@ And I press Done
 Scenario: Remove All Filters
 When I open the navigation menu
 And I enter Categories
+* I wait for 3 seconds
 And I enter a valid Category
+* I wait for 3 seconds
 And I press list item number 1
 * I wait for 3 seconds
 When I click in Filter
 And I press list item number 1
 And I press list item number 2
 And I press Done
+* I wait for 3 seconds
 And I press Done
 And I click in Filter
 And I press on clear all
@@ -49,25 +56,31 @@ And I press Done
 Scenario: Remove a filter
 When I open the navigation menu
 And I enter Categories
+* I wait for 3 seconds
 And I enter a valid Category
+* I wait for 3 seconds
 And I press list item number 1
 * I wait for 3 seconds
 When I click in Filter
 And I press list item number 1
 And I press list item number 2
 And I press Done
+* I wait for 3 seconds
 And I press Done
 When I click in Filter
 And I press list item number 1
 And I press list item number 2
 And I press Done
+* I wait for 3 seconds
 And I press Done
 
 @filters_e
 Scenario: Close the filter screen
 When I open the navigation menu
 And I enter Categories
+* I wait for 3 seconds
 And I enter a valid Category
+* I wait for 3 seconds
 And I press list item number 1
 * I wait for 3 seconds
 When I click in Filter
