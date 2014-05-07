@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -21,7 +22,7 @@ import de.akquinet.android.androlog.Log;
 
 /**
  * @author nutzer2
- * 
+ * @modified Manuel Silva
  */
 public class ShoppingCart implements IJSONSerializable, Parcelable {
 
@@ -39,6 +40,8 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 
 	private String cartCleanValue;
 	private String couponDiscount;
+	
+	private HashMap<String, String> price_rules;
 	/**
 	 * 
 	 */
@@ -135,6 +138,18 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 		if (cartCount > 0 && jsonObject.has(RestConstants.JSON_CART_ITEMS_TAG)) {
 			fillCartHashMap(jsonObject.getJSONObject(RestConstants.JSON_CART_ITEMS_TAG));
 		}
+		
+		JSONArray priceRules = jsonObject.optJSONArray(RestConstants.JSON_CART_PRICE_RULES_TAG);
+		if(priceRules != null && priceRules.length() > 0){
+			price_rules = new HashMap<String, String>();
+			for (int i = 0; i < priceRules.length(); i++) {
+				JSONObject pRulesElement = priceRules.optJSONObject(i);
+				if(pRulesElement != null){
+					Log.i(TAG, "code1rules : "+pRulesElement.getString(RestConstants.JSON_LABEL_TAG)+ " value : "+ pRulesElement.getString(RestConstants.JSON_VALUE_TAG));
+					price_rules.put(pRulesElement.getString(RestConstants.JSON_LABEL_TAG), pRulesElement.getString(RestConstants.JSON_VALUE_TAG));
+				}
+			}
+		}
 		return true;
 	}
 	
@@ -208,6 +223,7 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 	    dest.writeString(extra_costs);
 	    dest.writeString(sum_costs_value);
 	    dest.writeString(couponDiscount);
+	    dest.writeMap(price_rules);
 	}
 	
 	/**
@@ -226,6 +242,7 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 	    extra_costs = in.readString();
 	    sum_costs_value = in.readString();
 	    couponDiscount = in.readString();
+	    in.readMap(price_rules, null);
     }
 		
 	/**
@@ -275,6 +292,20 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 	 */
 	public void setCouponDiscount(String couponDiscount) {
 		this.couponDiscount = couponDiscount;
+	}
+
+	/**
+	 * @return the price_rules
+	 */
+	public HashMap<String, String> getPriceRules() {
+		return price_rules;
+	}
+
+	/**
+	 * @param price_rules the price_rules to set
+	 */
+	public void setPriceRules(HashMap<String, String> price_rules) {
+		this.price_rules = price_rules;
 	}
 
 	/**

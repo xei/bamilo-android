@@ -138,7 +138,7 @@ public enum EventType {
 	
 	GET_CUSTOMER_ADDRESSES_EVENT("https:/customer/address/list/", RestContract.MIN_CACHE_TIME),
 	
-	GET_BILLING_FORM_EVENT("https:/multistep/billing/", RestContract.MIN_CACHE_TIME),
+	GET_BILLING_FORM_EVENT("https:/multistep/billing/", RestContract.NO_CACHE),
 	
 	GET_DEFAULT_BILLING_ADDRESS_EVENT("https:/customer/billingaddress/", RestContract.NO_CACHE),
 	

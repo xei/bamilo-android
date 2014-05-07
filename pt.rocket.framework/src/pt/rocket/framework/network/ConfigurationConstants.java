@@ -5,7 +5,7 @@ public class ConfigurationConstants {
     /**
      * Configuration variables
      */
-	public static Boolean LOG_DEBUG_ENABLED = false;
+	public static Boolean LOG_DEBUG_ENABLED = true;
 
 	/**
 	 * ---- Cache defining variables ----
