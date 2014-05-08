@@ -27,7 +27,6 @@ import pt.rocket.framework.objects.Homepage;
 import pt.rocket.framework.objects.ITargeting.TargetType;
 import pt.rocket.framework.objects.LastViewed;
 import pt.rocket.framework.objects.Promotion;
-import pt.rocket.framework.objects.TeaserCampaign;
 import pt.rocket.framework.objects.TeaserGroupCampaigns;
 import pt.rocket.framework.objects.TeaserSpecification;
 import pt.rocket.framework.utils.AnalyticsGoogle;
@@ -38,6 +37,7 @@ import pt.rocket.framework.utils.MixpanelTracker;
 import pt.rocket.helpers.GetCallToOrderHelper;
 import pt.rocket.helpers.GetPromotionsHelper;
 import pt.rocket.helpers.GetTeasersHelper;
+import pt.rocket.helpers.account.SubscribeNewslettersHelper;
 import pt.rocket.helpers.session.GetLoginHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.CheckVersion;
@@ -46,11 +46,13 @@ import pt.rocket.utils.JumiaViewPager;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.ScrollViewWithHorizontal;
+import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.utils.dialogfragments.DialogPromotionFragment;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.ChangeCountryFragmentActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.LinearGradient;
@@ -60,6 +62,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -69,10 +72,10 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -109,6 +112,8 @@ public class HomeFragment extends BaseFragment {
     private static HomeFragment mHomeFragment;
 
     public static ArrayList<LastViewed> lastViewed = null;
+    
+    private static DialogFragment mDialogNewsletter;
     
     /**
      * Get instance
@@ -905,33 +910,52 @@ public class HomeFragment extends BaseFragment {
             View newsletterView = mInflater.inflate(R.layout.teaser_newsletter, parent, false);
             Button maleBtn = (Button) newsletterView.findViewById(R.id.newsletter_male_btn);
             Button femaleBtn = (Button) newsletterView.findViewById(R.id.newsletter_female_btn);
-            final EditText newsletterEmail = (EditText) newsletterView
-                    .findViewById(R.id.newsletter_subscription_value);
+            final EditText newsletterEmail = (EditText) newsletterView.findViewById(R.id.newsletter_subscription_value);
 
-            maleBtn.setOnClickListener(new OnClickListener() {
+            // fill with customer's email address if he is logged in
+            if (JumiaApplication.INSTANCE.CUSTOMER != null) {
+                String customerEmail = JumiaApplication.INSTANCE.CUSTOMER.getEmail();
+                if (customerEmail != null && !customerEmail.isEmpty()) {
+                    newsletterEmail.setText(customerEmail);
+                }
+            }
+
+            OnClickListener newsletterGenderClickListener = new OnClickListener() {
+                String emailRegex = "[-0-9a-zA-Z.+_]+@[-0-9a-zA-Z.+_]+\\.[a-zA-Z]{2,4}";
 
                 @Override
                 public void onClick(View v) {
-                    if (newsletterEmail.getText().toString().length() > 0) {
+                    String email = newsletterEmail.getText().toString();
 
+                    if (!email.isEmpty() && email.matches(emailRegex)) {
+
+                        boolean isSubscriberMale = true;
+                        if (v.getId() == R.id.newsletter_female_btn) {
+                            isSubscriberMale = false;
+                        }
+
+                        //show progress until process response
+                        ((BaseActivity) getActivity()).showProgress();
+
+                        triggerSubscribeNewsletter(email, isSubscriberMale);
                     } else {
-
-                    }
-
-                }
-            });
-
-            femaleBtn.setOnClickListener(new OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    if (newsletterEmail.getText().toString().length() > 0) {
-
-                    } else {
-
+                        mDialogNewsletter = DialogGenericFragment.newInstance(null, true, false,
+                                null, getString(R.string.newsletter_invalid_message),
+                                getString(R.string.ok_label), null,
+                                new OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        mDialogNewsletter.dismiss();
+                                    }
+                                });
+                        mDialogNewsletter.show(getFragmentManager(), null);
                     }
                 }
-            });
+            };
+
+            maleBtn.setOnClickListener(newsletterGenderClickListener);
+            femaleBtn.setOnClickListener(newsletterGenderClickListener);
+
             return newsletterView;
         }
 
@@ -965,9 +989,114 @@ public class HomeFragment extends BaseFragment {
             public void handleMessage(android.os.Message msg) {
                 mPopArrows.setVisibility(View.GONE);
             }
-        }; 
+        };
+
+        /**
+         * HOME TRIGGERS
+         * @author Andre Lopes
+         */
+        public void triggerSubscribeNewsletter(String email, boolean isSubscriberMale) {
+            Bundle bundle = new Bundle();
+
+            ContentValues contentValues = new ContentValues();
+
+            //TODO HARDCODED!!!
+            contentValues.put("Alice_Model_NewsletterSignupForm[email]", email);
+
+            //TODO HARDCODED!!!
+            int newsletterCategoriesSubscribed = isSubscriberMale ? 6 : 5;
+            //TODO HARDCODED!!!
+            contentValues.put("Alice_Model_NewsletterSignupForm[newsletter_categories_subscribed]", newsletterCategoriesSubscribed);
+
+            bundle.putParcelable(SubscribeNewslettersHelper.FORM_CONTENT_VALUES, contentValues);
+            JumiaApplication.INSTANCE.sendRequest(new SubscribeNewslettersHelper(), bundle, homeResponseCallback);
+        }
+
+        private void onHomeErrorEvent(Bundle bundle) {
+            Log.i(TAG, "ON onHomeErrorEvent");
+
+            // Validate fragment visibility
+            if (!isVisible()) {
+                Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+                return;
+            }
+
+            BaseActivity baseActivity = (BaseActivity) getActivity();
+            baseActivity.dismissProgress();
+
+            if (baseActivity != null && baseActivity.handleErrorEvent(bundle)) {
+                return;
+            }
+
+            if (baseActivity == null) {
+                return;
+            }
+
+            EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+            switch (eventType) {
+            case SUBSCRIBE_NEWSLETTERS_EVENT:
+                mDialogNewsletter = DialogGenericFragment.newInstance(null, true, false, null,
+                        getString(R.string.newsletter_already_subscribed_message),
+                        getString(R.string.ok_label), null, new OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                mDialogNewsletter.dismiss();
+                            }
+                        });
+                mDialogNewsletter.show(getFragmentManager(), null);
+
+                break;
+            }
+        }
+
+        private boolean onHomeSuccessEvent(Bundle bundle) {
+            Log.i(TAG, "ON onHomeSuccessEvent");
+
+            // Validate fragment visibility
+            if (!isVisible()) {
+                Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+                return false;
+            }
+
+            BaseActivity baseActivity = (BaseActivity) getActivity();
+            baseActivity.dismissProgress();
+
+            EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+            switch (eventType) {
+            case SUBSCRIBE_NEWSLETTERS_EVENT:
+                mDialogNewsletter = DialogGenericFragment.newInstance(null, true, false, null,
+                        getString(R.string.newsletter_success_message),
+                        getString(R.string.ok_label), null, new OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                mDialogNewsletter.dismiss();
+                            }
+                        });
+                mDialogNewsletter.show(getFragmentManager(), null);
+
+                break;
+            }
+
+            return false;
+        }
+
+        /**
+         * HOME CALLBACK
+         */
+        IResponseCallback homeResponseCallback = new IResponseCallback() {
+
+            @Override
+            public void onRequestError(Bundle bundle) {
+                onHomeErrorEvent(bundle);
+            }
+
+            @Override
+            public void onRequestComplete(Bundle bundle) {
+                onHomeSuccessEvent(bundle);
+            }
+        };
     }
-    
+
     /**
      * TRIGGERS
      * @author sergiopereira
