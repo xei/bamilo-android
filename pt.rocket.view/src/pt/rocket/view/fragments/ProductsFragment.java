@@ -64,7 +64,10 @@ import de.akquinet.android.androlog.Log;
 /**
  * @author sergiopereira
  * @modified manuelsilva
+ * 
+ * Fragment deprecated, Use Catalog instead.
  */
+@Deprecated
 public class ProductsFragment extends BaseFragment implements
         OnDialogListListener, OnScrollListener{
 
