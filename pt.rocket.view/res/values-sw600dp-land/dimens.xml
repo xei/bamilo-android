@@ -108,6 +108,7 @@
     
 	<!-- CAMPAIGN PAGE -->
     <integer name="campaign_num_columns">3</integer>
+    <dimen name="campaign_discount_flag_width">60dp</dimen>
     <dimen name="campaign_banner_height">273.33dp</dimen>
     <dimen name="campaign_title_height">72.33dp</dimen>
     <dimen name="campaign_title_margin_left">@dimen/margin_mid</dimen>

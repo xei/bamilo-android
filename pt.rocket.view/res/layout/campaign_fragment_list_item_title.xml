@@ -10,7 +10,7 @@
 
     <org.holoeverywhere.widget.TextView
         android:id="@+id/campaign_item_stock_off"
-        android:layout_width="45dp"
+        android:layout_width="@dimen/campaign_discount_flag_width"
         android:layout_height="match_parent"
         android:background="@drawable/campaign_promobadge"
         android:fontFamily="roboto_bold"
