@@ -52,7 +52,18 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_large"
         android:orientation="vertical" />
+    
+    <!-- Price Rules -->
 
+    <LinearLayout
+        android:id="@+id/checkout_summary_price_rules_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_large"
+        android:orientation="vertical"
+        android:visibility="gone" >
+    </LinearLayout>
+    
     <!-- VAT -->
 
     <LinearLayout

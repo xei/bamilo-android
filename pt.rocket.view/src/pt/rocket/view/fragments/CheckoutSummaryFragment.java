@@ -5,6 +5,7 @@ package pt.rocket.view.fragments;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Set;
 
 import org.holoeverywhere.widget.TextView;
 
@@ -278,7 +279,6 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
             // Validate shipping method
             if(mOrderSummary != null && mOrderSummary.hasShippingMethod()) showShippingMethod(mOrderSummary.getShippingMethod());
             // continue
-            
         case ConstantsCheckout.CHECKOUT_SHIPPING:
             // Shipping fees
             if(mOrderSummary != null) showShippingFees();
@@ -287,7 +287,6 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
             // Validate total
             if(mOrderSummary != null) showTotal(mOrderSummary.getTotal());
             // continue
-            
         case ConstantsCheckout.CHECKOUT_BILLING:
             // VAT
             if(mOrderSummary != null) showVat();
@@ -298,6 +297,7 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
         default:
             // Show cart
             showCart();
+            if(mCart != null) showPriceRules();
             break;
         }
         
@@ -398,6 +398,26 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
         if(mOrderSummary.hasCouponDiscount()) {
             mVoucherValue.setText("- " + CurrencyFormatter.formatCurrency(mOrderSummary.getDiscountCouponValue()));
             mVoucherView.setVisibility(View.VISIBLE);
+        }
+    }
+    
+    /**
+     * Show Cart Price Rules
+     */
+    private void showPriceRules(){
+        if(mCart.getPriceRules() != null && mCart.getPriceRules().size() > 0){
+            Log.i(TAG, "code1rules : pass");
+            LinearLayout priceRulesContainer = (LinearLayout) getView().findViewById(R.id.checkout_summary_price_rules_container);
+            priceRulesContainer.setVisibility(View.VISIBLE);
+            LayoutInflater mLayoutInflater = LayoutInflater.from(getBaseActivity());
+            Set<String> priceRulesKeys = mCart.getPriceRules().keySet();
+            for (String key : priceRulesKeys) {
+                View priceRuleElement = mLayoutInflater.inflate(R.layout.price_rules_element, null);
+                ((TextView) priceRuleElement.findViewById(R.id.price_rules_label)).setText(key);
+                ((TextView) priceRuleElement.findViewById(R.id.price_rules_value)).setText("-"+CurrencyFormatter.formatCurrency(mCart.getPriceRules().get(key)));
+                priceRulesContainer.addView(priceRuleElement);
+            }
+            
         }
     }
     

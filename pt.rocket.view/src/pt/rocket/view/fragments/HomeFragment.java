@@ -915,7 +915,7 @@ public class HomeFragment extends BaseFragment {
             // fill with customer's email address if he is logged in
             if (JumiaApplication.INSTANCE.CUSTOMER != null) {
                 String customerEmail = JumiaApplication.INSTANCE.CUSTOMER.getEmail();
-                if (customerEmail != null && !customerEmail.isEmpty()) {
+                if (customerEmail != null && customerEmail.length()>0) {
                     newsletterEmail.setText(customerEmail);
                 }
             }

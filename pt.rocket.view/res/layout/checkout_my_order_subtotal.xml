@@ -60,8 +60,8 @@
         android:id="@+id/price_rules_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/margin_huge"
-        android:layout_marginRight="@dimen/margin_huge"
+        android:layout_marginLeft="@dimen/checkout_order_inner_margin_left"
+        android:layout_marginRight="@dimen/checkout_order_inner_margin_right"
         android:layout_marginTop="10dp"
         android:orientation="vertical"
         android:visibility="gone" >
