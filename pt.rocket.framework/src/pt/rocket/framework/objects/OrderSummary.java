@@ -28,8 +28,6 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
 
 	private String mExtraCost;
 
-	private String mDiscountAmount;
-
 	private String mInstallmentFees;
 
 	private String mTaxAmount;
@@ -87,7 +85,6 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
     		mGrandTotal = jsonOrder.optString(RestConstants.JSON_ORDER_GRAND_TOTAL_TAG);
     		mShippingAmount = jsonOrder.optString(RestConstants.JSON_ORDER_SHIP_AMOUNT_TAG);
     		mExtraCost = jsonOrder.optString(RestConstants.JSON_ORDER_EXTRA_PAYMENTS_TAG);
-    		mDiscountAmount = jsonOrder.optString(RestConstants.JSON_ORDER_BNP_DISCOUNT_TAG);
     		mInstallmentFees = jsonOrder.optString(RestConstants.JSON_ORDER_INSTALLMENT_FEES_TAG);
     		mTaxAmount = jsonOrder.optString(RestConstants.JSON_TAX_AMOUNT_TAG);				// VAT
     		mCustomerDevice = jsonOrder.optString(RestConstants.JSON_ORDER_USER_DEVICE_TAG);
@@ -168,7 +165,6 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
 		return mGrandTotal + " " + 
 				mShippingAmount + " " + 
 				mExtraCost + " " + 
-				mDiscountAmount + " " + 
 				mInstallmentFees + " " + 
 				mTaxAmount + " " + 
 				mCustomerDevice + " " +
@@ -197,13 +193,6 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
 	 */
 	public String getExtraCost() {
 		return mExtraCost;
-	}
-
-	/**
-	 * @return the discountAmount
-	 */
-	public String getDiscountAmount() {
-		return mDiscountAmount;
 	}
 
 	/**
@@ -284,14 +273,6 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
 	 */
 	public void setExtraCost(String extraCost) {
 		this.mExtraCost = extraCost;
-	}
-
-	/**
-	 * @param discountAmount
-	 *            the discountAmount to set
-	 */
-	public void setDiscountAmount(String discountAmount) {
-		this.mDiscountAmount = discountAmount;
 	}
 
 	/**
@@ -442,7 +423,6 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
 		 dest.writeString(mGrandTotal);
 		 dest.writeString(mShippingAmount);
 		 dest.writeString(mExtraCost);
-		 dest.writeString(mDiscountAmount);
 		 dest.writeString(mInstallmentFees);
 		 dest.writeString(mTaxAmount);
 		 dest.writeString(mCustomerDevice);
@@ -462,7 +442,6 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
 		 mGrandTotal = in.readString();
 		 mShippingAmount = in.readString();
 		 mExtraCost = in.readString();
-		 mDiscountAmount = in.readString();
 		 mInstallmentFees = in.readString();
 		 mTaxAmount = in.readString();
 		 mCustomerDevice = in.readString();

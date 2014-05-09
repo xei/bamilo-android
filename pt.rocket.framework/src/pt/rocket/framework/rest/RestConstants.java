@@ -346,7 +346,6 @@ public class RestConstants {
 	public static final String JSON_ORDER_GRAND_TOTAL_TAG = "grand_total";
 	public static final String JSON_ORDER_SHIP_AMOUNT_TAG = "shipping_amount";
 	public static final String JSON_ORDER_EXTRA_PAYMENTS_TAG = "extra_payment_cost";
-	public static final String JSON_ORDER_BNP_DISCOUNT_TAG = "bnp_discount_amount";
 	public static final String JSON_ORDER_INSTALLMENT_FEES_TAG = "installment_fees";
 	public static final String JSON_ORDER_USER_DEVICE_TAG = "customer_device";
 	public static final String JSON_ORDER_SHIP_MET_TAG = "shipping_method";
