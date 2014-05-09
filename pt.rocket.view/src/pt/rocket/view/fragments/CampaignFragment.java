@@ -17,6 +17,7 @@ import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.components.HeaderGridView;
 import pt.rocket.framework.objects.Campaign;
 import pt.rocket.framework.objects.CampaignItem;
+import pt.rocket.framework.objects.CampaignItem.CampaignItemSize;
 import pt.rocket.framework.objects.TeaserCampaign;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CurrencyFormatter;
@@ -266,7 +267,7 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
         if(mCampaign == null)
             triggerGetCampaign(id);
         else
-            loadCampaign();
+            showCampaign();
     }
     
     /**
@@ -274,7 +275,7 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
      * @param form
      * @author sergiopereira
      */
-    private void loadCampaign() {
+    private void showCampaign() {
         Log.i(TAG, "LOAD CAMPAIGN");
         // Get banner
         mBannerView = getBannerView();
@@ -373,7 +374,7 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
      * @author sergiopereira
      */
     private void onClickBuyButton(View view) {
-        //String prod = (String) view.getTag(PROD);
+        String prod = (String) view.getTag(PROD);
         String sku = (String) view.getTag(SKU);
         String size = (String) view.getTag(SIZE);
         Boolean hasStock = (Boolean) view.getTag(STOCK);
@@ -385,7 +386,7 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
         else if(!isAddingProductToCart) {
             // Create values to add to cart
             ContentValues values = new ContentValues();
-            values.put(GetShoppingCartAddItemHelper.PRODUCT_TAG, sku);
+            values.put(GetShoppingCartAddItemHelper.PRODUCT_TAG, prod);
             values.put(GetShoppingCartAddItemHelper.PRODUCT_SKU_TAG, sku);
             values.put(GetShoppingCartAddItemHelper.PRODUCT_QT_TAG, "1");
             triggerAddToCart(values);
@@ -398,13 +399,13 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
      * @author sergiopereira
      */
     private void onClickProduct(View view){
-        //String prod = (String) view.getTag(PROD);
-        String sku = (String) view.getTag(SKU);
+        String prod = (String) view.getTag(PROD);
+        // String sku = (String) view.getTag(SKU);
         String size = (String) view.getTag(SIZE);
-        Log.d(TAG, "ON CLICK PRODUCT " + sku + " " + size);
+        Log.d(TAG, "ON CLICK PRODUCT " + prod + " " + size);
         // Create bundle
         Bundle bundle = new Bundle();
-        bundle.putString(GetSearchProductHelper.SKU_TAG, sku);
+        bundle.putString(GetSearchProductHelper.SKU_TAG, prod);
         bundle.putString(DeepLinkManager.PDV_SIZE_TAG, size);
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcampaign);
         bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
@@ -467,7 +468,7 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
             Log.d(TAG, "RECEIVED GET_CAMPAIGN_EVENT");
             // Get and show campaign
             mCampaign = (Campaign) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-            loadCampaign();
+            showCampaign();
             break;
         case ADD_ITEM_TO_SHOPPING_CART_EVENT:
             Log.d(TAG, "RECEIVED ADD_ITEM_TO_SHOPPING_CART_EVENT");
@@ -728,7 +729,7 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
          * @author sergiopereira
          */
         private void setData(ItemView view, CampaignItem item, int position){
-            Log.d(TAG, "SET DATA");
+            //Log.d(TAG, "SET DATA");
             // Set stock off
             if(getString(R.string.off_label).equals("-"))
                 view.mStockOff.setText(getString(R.string.off_label) + item.getMaxSavingPercentage() + "%");
@@ -773,6 +774,9 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
         }
  
         /**
+         * 
+         * FIXME: WAITING FOR NEW JSON STRUCTURE FOR SIZES TO TEST - NAFAMZ-6478
+         *  
          * Hide or show the size container
          * @param container
          * @param spinner
@@ -785,9 +789,9 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
                 // Show container
                 view.mSizeContainer.setVisibility(View.VISIBLE);
                 // Get sizes
-                ArrayList<String> sizes = item.getSizes();
+                ArrayList<CampaignItemSize> sizes = item.getSizes();
                 // Create an ArrayAdapter using the sizes values
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), R.layout.campaign_spinner_item, sizes);
+                ArrayAdapter<CampaignItemSize> adapter = new ArrayAdapter<CampaignItemSize>(getContext(), R.layout.campaign_spinner_item, sizes);
                 // Specify the layout to use when the list of choices appears
                 adapter.setDropDownViewResource(R.layout.campaign_spinner_dropdown_item);
                 // Apply the adapter to the spinner
@@ -835,8 +839,8 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             String parentPosition = parent.getTag().toString();
-            String size = (String) parent.getItemAtPosition(position);
-            //Log.d(TAG, "ON ITEM SELECTED: " + size + " " +  position + " " + parentPosition);
+            CampaignItemSize size = (CampaignItemSize) parent.getItemAtPosition(position);
+            //Log.d(TAG, "CAMPAIGN ON ITEM SELECTED: " + size.simpleSku + " " +  position + " " + parentPosition);
             CampaignItem campaignItem = getItem(Integer.valueOf(parentPosition));
             campaignItem.setSelectedSizePosition(position);
             campaignItem.setSelectedSize(size);
@@ -861,11 +865,14 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
             String position = view.getTag().toString();
             // Get the campaign
             CampaignItem item = getItem(Integer.valueOf(position));
+            // Get selected size
+            CampaignItemSize selectedSize = item.getSelectedSize(); 
             // Add new tags
             view.setTag(PROD, item.getSku());
-            view.setTag(SKU, item.getSku());
-            view.setTag(SIZE, item.getSelectedSize());
+            view.setTag(SKU, selectedSize.simpleSku);
+            view.setTag(SIZE, selectedSize.size);
             view.setTag(STOCK, item.hasStock());
+            //Log.d(TAG, "CAMPAIGN ON CLICK: " + item.getSku() + " " + selectedSize.simpleSku + " " +  selectedSize.size);
             // Send to listener
             if(mOnClickParentListener != null)
                 mOnClickParentListener.onClick(view);

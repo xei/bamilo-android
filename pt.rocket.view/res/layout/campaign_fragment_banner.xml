@@ -3,4 +3,4 @@
     android:id="@+id/campaign_banner"
     android:layout_width="match_parent"
     android:layout_height="@dimen/campaign_banner_height"
-    android:scaleType="centerCrop" />
+    android:scaleType="fitCenter" />

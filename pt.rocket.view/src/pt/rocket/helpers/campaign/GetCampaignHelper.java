@@ -15,7 +15,6 @@ import pt.rocket.framework.utils.Utils;
 import pt.rocket.helpers.BaseHelper;
 import pt.rocket.helpers.HelperPriorityConfiguration;
 import pt.rocket.utils.CheckoutStepManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -40,13 +39,9 @@ public class GetCampaignHelper extends BaseHelper {
     @Override
     public Bundle generateRequestBundle(Bundle args) {
         Log.d(TAG, "ON REQUEST");
-        // Get the campaign id
-        String campaign = args.getString(CAMPAIGN_ID);
-        // Create the request with parameters
-        Uri uri = Uri.parse(type.action).buildUpon().appendQueryParameter(CAMPAIGN_TAG, campaign).build();
         // Create bundle to send
         Bundle bundle = new Bundle();
-        bundle.putString(Constants.BUNDLE_URL_KEY, uri.toString());
+        bundle.putString(Constants.BUNDLE_URL_KEY, args.getString(CAMPAIGN_ID));
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);

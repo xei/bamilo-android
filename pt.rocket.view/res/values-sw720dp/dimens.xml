@@ -88,5 +88,6 @@
     <dimen name="campaign_title_margin_left">@dimen/margin_mid</dimen>
     <dimen name="campaign_image_height">226.67dp</dimen>
     <dimen name="campaign_size_container_height">53.33dp</dimen>
+    <dimen name="campaign_size_spinner_width">70dp</dimen>
 
 </resources>
