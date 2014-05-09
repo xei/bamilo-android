@@ -12,8 +12,6 @@ import java.util.Iterator;
 import org.holoeverywhere.widget.Button;
 import org.holoeverywhere.widget.EditText;
 import org.holoeverywhere.widget.TextView;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
@@ -27,7 +25,6 @@ import pt.rocket.framework.objects.Homepage;
 import pt.rocket.framework.objects.ITargeting.TargetType;
 import pt.rocket.framework.objects.LastViewed;
 import pt.rocket.framework.objects.Promotion;
-import pt.rocket.framework.objects.TeaserGroupCampaigns;
 import pt.rocket.framework.objects.TeaserSpecification;
 import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.Constants;
@@ -732,22 +729,10 @@ public class HomeFragment extends BaseFragment {
                             bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, targetUrl);
                             bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gsearch);
                             bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
-                            ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.PRODUCT_LIST, bundle, FragmentController.ADD_TO_BACK_STACK);
-                            
-//                            // TODO TEMP
-//                            ArrayList<TeaserCampaign> teaserCampaigns = new ArrayList<TeaserCampaign>();
-//                            for (int i = 0; i < 6; i++) {
-//                                TeaserCampaign campaign = new TeaserCampaign();
-//                                campaign.setTitle("Deals of the day " + 0);
-//                                campaign.setUrl("deals-of-the-day");
-//                                teaserCampaigns.add(campaign);
-//                            }
-//                            bundle.putParcelableArrayList(CampaignsFragment.CAMPAIGNS_TAG, teaserCampaigns);
-//                            ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.CAMPAIGNS, bundle, FragmentController.ADD_TO_BACK_STACK);
-                            
+                            ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.PRODUCT_LIST, bundle, FragmentController.ADD_TO_BACK_STACK);                            
                         }
                         break;
-                    case CAMPAIGN: // XXX
+                    case CAMPAIGN:
                         String targetPosition = v.getTag(R.id.position).toString();
                         if (targetUrl != null && targetPosition != null && JumiaApplication.hasSavedTeaserCampaigns()) {
                             bundle.putString(ConstantsIntentExtra.CONTENT_URL, targetUrl);
@@ -871,33 +856,6 @@ public class HomeFragment extends BaseFragment {
                 }
             }
 
-            // XXX - Remove after API fix
-            String json = "{ 'group_type': '6', 'group_title': 'Le make up de la semaine', 'data': [ ";
-            int size = 3;
-            for (int i = 0; i < size; i++) {
-                json += "{ 'campaign_name': 'Soldes Electromenager " + i + "', 'campaign_url': 'soldes-electromenager' }, " +
-                        "{ 'campaign_name': 'Make Up Semaine " + i + "', 'campaign_url': 'make-up-semaine' }, " +
-                        "{ 'campaign_name': 'Soldes Campomatic " + i + "', 'campaign_url': 'soldes-campomatic' }" + ((i+1<size)?",":"");
-            }
-            json += " ] }";
-            
-            // soldes-campomatic
-
-            
-            try {
-                Log.d(TAG, "ON ADD CAMPAIGNS_LIST");
-                JSONObject jsonObject = new JSONObject(json);
-                TeaserGroupCampaigns tearGroupCampaigns = new TeaserGroupCampaigns();
-                tearGroupCampaigns.initialize(jsonObject);
-                View mView = mTeasersFactory.getSpecificTeaser(getActivity(), mainView, tearGroupCampaigns, mInflater, teaserClickListener);
-                if(mView != null){
-                    mainView.addView(mView);            
-                }
-            } catch (JSONException e) {
-                Log.d(TAG, "#################### 1 ", e);
-            }       
-            
-            
             mainView.addView(generateNewsletterSubscribe(mainView));
             
             if(lastViewed != null && lastViewed.size() > 0){
