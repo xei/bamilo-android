@@ -12,6 +12,7 @@
  */
 package pt.rocket.forms;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -119,7 +120,9 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     
     private HashMap<String, Form>  paymentFields;
     
-    private LinkedHashMap<Object,Object> extrasValues; 
+    private LinkedHashMap<Object,Object> extrasValues;
+
+    public ArrayList<NewsletterOption> newsletterOptions; 
 
     /**
      * FormField param constructor
@@ -230,7 +233,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                 value = !jsonObject.isNull(RestConstants.JSON_VALUE_TAG) ? jsonObject.optString(RestConstants.JSON_VALUE_TAG) : "";
                 scenario = jsonObject.optString(RestConstants.JSON_SCENARIO_TAG);
                 linkText = jsonObject.optString(RestConstants.JSON_LINK_TEXT_TAG);
-                Log.d(TAG, "FORM FIELD: " + key + " " + name + " " + " " + label + " " + value);
+                Log.d(TAG, "FORM FIELD: " + key + " " + name + " " + " " + label + " " + value + " " + scenario);
                 
                 JSONObject validationObject = jsonObject.optJSONObject(RestConstants.JSON_VALIDATION_TAG);
 
@@ -318,6 +321,17 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                         Log.i(TAG, "code1options : array : "+dataOptionsArray.toString());
                     if(dataOptionsObject != null)
                         Log.i(TAG,"code1options json "+dataOptionsObject.toString());
+                }
+                
+                /**
+                 * Method to save the newsletter options
+                 */
+                if(key.equals("newsletter_categories_subscribed") && dataOptionsArray != null) {
+                    newsletterOptions = new ArrayList<NewsletterOption>();
+                    for (int i = 0; i < dataOptionsArray.length(); i++)
+                        newsletterOptions.add(new NewsletterOption(dataOptionsArray.getJSONObject(i), name.toString()));
+                    dataOptionsArray = null;
+                    dataOptionsObject = null;
                 }
 
                 dataOptions.clear();

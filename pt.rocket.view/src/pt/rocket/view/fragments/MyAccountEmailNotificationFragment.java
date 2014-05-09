@@ -3,15 +3,15 @@
  */
 package pt.rocket.view.fragments;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
 
 import org.holoeverywhere.widget.CheckBox;
 
-import pt.rocket.app.JumiaApplication;
 import pt.rocket.forms.Form;
+import pt.rocket.forms.FormField;
+import pt.rocket.forms.NewsletterOption;
 import pt.rocket.framework.ErrorCode;
-import pt.rocket.framework.objects.Customer;
-import pt.rocket.framework.objects.CustomerNewsletterSubscription;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -23,12 +23,17 @@ import pt.rocket.utils.NavigationAction;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.ListView;
 import android.widget.Toast;
 import de.akquinet.android.androlog.Log;
 
@@ -40,19 +45,13 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
 
     private static final String TAG = LogTagHelper.create(MyAccountEmailNotificationFragment.class);
     
-    public static final int NEWSLETTER_MALE_ID = 6;
-    
-    public static final int NEWSLETTER_FEMALE_ID = 5;
-    
-    public static final int NEWSLETTER_UNKNOWN_ID = 0;
-    
     private static MyAccountEmailNotificationFragment sEmailNotificationFragment;
 
     private Form mNewslettersForm;
 
-    private CheckBox mNewsletterMale;
+    private ListView mNewsletterList;
 
-    private CheckBox mNewsletterFemale;
+    private ArrayList<NewsletterOption> mNewsletterOptions;
 
     /**
      * Create new instance
@@ -119,10 +118,8 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
-        // Get check box male
-        mNewsletterMale = (CheckBox) view.findViewById(R.id.myaccount_newsletter_checkbox_male);
-        // Get check box female
-        mNewsletterFemale = (CheckBox) view.findViewById(R.id.myaccount_newsletter_checkbox_female);
+        // Get list view
+        mNewsletterList = (ListView) view.findViewById(R.id.myaccount_newsletter_list);
         // Get save button
         view.findViewById(R.id.myaccount_newsletter_save).setOnClickListener((OnClickListener) this);
         // Get cancel button
@@ -153,7 +150,6 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        
     }
 
     /*
@@ -203,25 +199,23 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
      * @author sergiopereira
      */
     private void showNewslettersForm() {
-        // Load customer state
-        loadCustomerNewsletterState();
-        // Show form
-        getBaseActivity().showContentContainer();
-    }
-    
-    /**
-     * Load the customer newsletters subscription
-     * @author sergiopereira
-     */
-    private void loadCustomerNewsletterState(){
-        Customer customer = JumiaApplication.CUSTOMER;
-        if(customer.hasNewsletterSubscriptions()) {
-            for (CustomerNewsletterSubscription subscription : customer.getNewsletterSubscriptions()) {
-                mNewsletterMale.setChecked((subscription.getId() == 6) ? true : false);
-                mNewsletterFemale.setChecked((subscription.getId() == 5) ? true : false);
-            }
+        try {
+            FormField formField = mNewslettersForm.fields.get(0);
+            Context context = getBaseActivity();
+            mNewsletterOptions = formField.newsletterOptions;
+            NewsletterAdapter arrayAdapter = new NewsletterAdapter(context, mNewsletterOptions);
+            mNewsletterList.setAdapter(arrayAdapter);
+            // Show form
+            getBaseActivity().showContentContainer();
+        } catch (IndexOutOfBoundsException e) {
+            Log.w(TAG, "IBE ON SHOW NEWSLETTER FORM", e);
+            goBackWarningUser();
+        } catch (NullPointerException e) {
+            Log.w(TAG, "NPE ON SHOW NEWSLETTER FORM", e);
+            goBackWarningUser();
         }
     }
+
     
     /**
      * ############# CLICK LISTENER #############
@@ -248,16 +242,16 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
      */
     private void onClickSaveButton() {
         Log.i(TAG, "ON CLICK: SAVE");
-        // Validate the current newsletter form
-        if(mNewslettersForm != null && mNewslettersForm.fields != null && mNewslettersForm.fields.size() > 0){
-            String fieldName = mNewslettersForm.fields.get(0).getName();
+        try {
+            // Validate the current newsletter form
             ContentValues values = new ContentValues();
-            // Add to values with different tags
-            values.put(fieldName + "[" + NEWSLETTER_MALE_ID + "]", (mNewsletterMale.isChecked()) ? NEWSLETTER_MALE_ID : NEWSLETTER_UNKNOWN_ID );
-            values.put(fieldName + "[" + NEWSLETTER_FEMALE_ID + "]", (mNewsletterFemale.isChecked()) ? NEWSLETTER_FEMALE_ID : NEWSLETTER_UNKNOWN_ID);
+            for (NewsletterOption option : mNewsletterOptions)
+                if(option.isSubscrided)
+                    values.put(option.name, option.value);
             Log.d(TAG, "VALUES: " + values.toString());
-            // Subscribe or unsubscribe newsletters
             triggerSubscribeNewsletters(values);
+        } catch (NullPointerException e) {
+            Log.w(TAG, "NPE ON SUBSCRIBE NEWSLETTERS", e);
         }
     }
     
@@ -276,9 +270,10 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
     /**
      * Trigger to subscribe newsletters
      * @param values
+     * @author sergiopereira
      */
     private void triggerSubscribeNewsletters(ContentValues values) {
-        Log.i(TAG, "TRIGGER: POLL SUBSCRIBE");
+        Log.i(TAG, "TRIGGER: SUBSCRIBE");
         Bundle bundle = new Bundle();
         bundle.putParcelable(SubscribeNewslettersHelper.FORM_CONTENT_VALUES, values);
         triggerContentEvent(new SubscribeNewslettersHelper(), bundle, (IResponseCallback) this);
@@ -286,6 +281,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
     
     /**
      * Trigger to get the newsletters form
+     * @author sergiopereira
      */
     private void triggerGetNewslettersForm(){
         Log.i(TAG, "TRIGGER: GET NEWSLETTER FORM");
@@ -365,8 +361,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
         switch (eventType) {
         case GET_NEWSLETTERS_FORM_EVENT:
             Log.d(TAG, "RECEIVED GET_NEWSLETTERS_FORM_EVENT");
-            getBaseActivity().onBackPressed();
-            Toast.makeText(getBaseActivity(), getString(R.string.error_please_try_again), Toast.LENGTH_LONG).show();
+            goBackWarningUser();
             break;
         case SUBSCRIBE_NEWSLETTERS_EVENT:
             Log.d(TAG, "RECEIVED SUBSCRIBE_NEWSLETTERS_EVENT");
@@ -379,6 +374,14 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
         return false;
     }
     
+    /**
+     * Go to back and warning user through toast
+     * @author sergiopereira
+     */
+    private void goBackWarningUser(){
+        getBaseActivity().onBackPressed();
+        Toast.makeText(getBaseActivity(), getString(R.string.error_please_try_again), Toast.LENGTH_LONG).show();
+    }
    
     
     /**
@@ -402,8 +405,53 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
         onSuccessEvent(bundle);
     }
     
+
+
+    /**
+     * ########### ADAPTER ###########  
+     */
+    private class NewsletterAdapter extends ArrayAdapter<NewsletterOption> implements OnCheckedChangeListener {
+
+        /**
+         * 
+         * @author sergiopereira
+         * @param context
+         * @param options
+         */
+        public NewsletterAdapter(Context context, ArrayList<NewsletterOption> options ) {
+            super(context, R.layout.simple_email_notification_option, options);
+        }
+        
+        /*
+         * (non-Javadoc)
+         * @see android.widget.ArrayAdapter#getView(int, android.view.View, android.view.ViewGroup)
+         */
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View view = convertView;
+            if(view == null)
+                view = LayoutInflater.from(getContext()).inflate(R.layout.simple_email_notification_option, parent, false);
+            CheckBox check = (CheckBox) view.findViewById(R.id.myaccount_newsletter_checkbox);
+            check.setText(getItem(position).toString());
+            check.setChecked(getItem(position).isSubscrided);            
+            check.setTag("" + position);
+            check.setOnCheckedChangeListener(this);
+            return view;
+        }
+        
+        /*
+         * (non-Javadoc)
+         * @see android.widget.CompoundButton.OnCheckedChangeListener#onCheckedChanged(android.widget.CompoundButton, boolean)
+         */
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            int position = Integer.parseInt((String)buttonView.getTag());
+            getItem(position).isSubscrided = isChecked;
+        }
+    }
+    
     /**
      * ########### DIALOGS ###########  
      */    
-
+    
 }
