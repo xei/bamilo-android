@@ -38,7 +38,7 @@
         <grand_total type="integer" method="getInt" children="false" optional="false"/>
         <shipping_amount type="integer" method="getInt" children="false" optional="false"/>
         <extra_payment_cost type="integer" method="getInt" children="false" optional="false"/>
-        <bnp_discount_amount type="integer" method="getInt" children="false" optional="false"/>
+        <bnp_discount_amount type="integer" method="getInt" children="false" optional="true"/>
         <tax_amount type="integer" method="getInt" children="false" optional="false"/>
         
         <shipping_method type="jsonobject" method="getJSONObject" children="true" optional="false">

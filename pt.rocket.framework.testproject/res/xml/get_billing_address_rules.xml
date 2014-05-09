@@ -69,7 +69,7 @@
         <grand_total type="integer" method="getInt" children="false" optional="false"/>
         <shipping_amount type="integer" method="getInt" children="false" optional="false"/>
         <extra_payment_cost type="integer" method="getInt" children="false" optional="false"/>
-        <bnp_discount_amount type="integer" method="getInt" children="false" optional="false"/>
+        <bnp_discount_amount type="integer" method="getInt" children="false" optional="true"/>
         <tax_amount type="integer" method="getInt" children="false" optional="false"/>
         <_locale type="string" method="getString" children="false" optional="false"/>
         <sum_costs type="string" method="getString" children="false" optional="false"/>
