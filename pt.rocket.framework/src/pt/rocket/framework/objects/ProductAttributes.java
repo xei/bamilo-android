@@ -183,7 +183,7 @@ public class ProductAttributes implements IJSONSerializable, Parcelable {
             brand = jsonObject.optString(RestConstants.JSON_BRAND_TAG);
 
             String priceString = jsonObject.optString(RestConstants.JSON_PRICE_TAG);
-            //XXX
+            
             double priceDouble = -1;
             try {
             	 priceDouble = Double.parseDouble(priceString);

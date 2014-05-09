@@ -9,7 +9,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import pt.rocket.framework.rest.RestConstants;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
@@ -47,10 +46,10 @@ public class CampaignItem implements IJSONSerializable, Parcelable {
 	private String mMaxSavingPercentage;
 
 	private boolean hasUniqueSize;
-
-	private ArrayList<String> mSizes;
 	
-	private String mSelectedSize;
+	private ArrayList<CampaignItemSize> mSizes;
+	
+	private CampaignItemSize mSelectedSize;
 	
 	private int mSelectedSizePosition;
 
@@ -96,12 +95,33 @@ public class CampaignItem implements IJSONSerializable, Parcelable {
 			}
 		}
  
+		/**
+		 * FIXME: WAITING FOR NEW JSON STRUCTURE FOR SIZES TO TEST - NAFAMZ-6478
+		 */
 		JSONArray sizesA = jsonObject.optJSONArray(RestConstants.JSON_SIZES_TAG);
 		if(sizesA != null && sizesA.length() > 0) {
-			mSizes = new ArrayList<String>();
+			mSizes = new ArrayList<CampaignItemSize>();
 			for (int i = 0; i < sizesA.length(); i++) {
-				mSizes.add(sizesA.optString(i));
+				JSONObject sizeO = sizesA.optJSONObject(i);
+				if(sizeO != null)
+					mSizes.add(new CampaignItemSize(sizeO));
 			}
+		}
+		
+		/**
+		 * TODO: REMOVE, ONLY FOR TESTS 
+		 */
+		String[] sizes = new String[] {"S", "M", "L", "XL" , "XXL", "XXXL"};
+		mSizes = new ArrayList<CampaignItemSize>();
+		for (int i = 0; i < sizes.length; i++) {
+			CampaignItemSize size = new CampaignItemSize(new JSONObject());
+			size.size = sizes[i];
+			size.savePrice = 1000 + i;
+			size.specialPrice = 2600 + i;
+			size.price = 3600 + i;
+			size.simpleSku = "NO891ELAC52QNGAMZ-" + i;
+			Log.d(TAG, "CAMPAIGN SIMPLE SKU: " + size.simpleSku);
+			mSizes.add(size);
 		}
 
 		return true;
@@ -215,14 +235,14 @@ public class CampaignItem implements IJSONSerializable, Parcelable {
 	/**
 	 * @return the mSizes
 	 */
-	public ArrayList<String> getSizes() {
+	public ArrayList<CampaignItemSize> getSizes() {
 		return mSizes;
 	}
 	
 	/**
 	 * @return the mSelectedSize
 	 */
-	public String getSelectedSize() {
+	public CampaignItemSize getSelectedSize() {
 		return mSelectedSize;
 	}
 
@@ -361,14 +381,14 @@ public class CampaignItem implements IJSONSerializable, Parcelable {
 	/**
 	 * @param mSizes the mSizes to set
 	 */
-	public void setSizes(ArrayList<String> mSizes) {
+	public void setSizes(ArrayList<CampaignItemSize> mSizes) {
 		this.mSizes = mSizes;
 	}
 	
 	/**
 	 * @param mSelectedSize the mSelectedSize to set
 	 */
-	public void setSelectedSize(String mSelectedSize) {
+	public void setSelectedSize(CampaignItemSize mSelectedSize) {
 		this.mSelectedSize = mSelectedSize;
 	}
 
@@ -411,7 +431,7 @@ public class CampaignItem implements IJSONSerializable, Parcelable {
 		dest.writeString(mMaxSavingPercentage);
 		dest.writeBooleanArray(new boolean[] {hasUniqueSize});
 		dest.writeList(mSizes);
-		dest.writeString(mSelectedSize);
+		dest.writeParcelable(mSelectedSize, 0);
 		dest.writeInt(mSelectedSizePosition);
 	}
 	
@@ -433,8 +453,8 @@ public class CampaignItem implements IJSONSerializable, Parcelable {
 		mStockPercentage = in.readInt();
 		mMaxSavingPercentage = in.readString();
 		in.readBooleanArray(new boolean[] {hasUniqueSize});
-		in.readList(mSizes, String.class.getClassLoader());
-		mSelectedSize = in.readString();
+		in.readList(mSizes, CampaignItemSize.class.getClassLoader());
+		mSelectedSize = in.readParcelable(CampaignItemSize.class.getClassLoader());
 		mSelectedSizePosition = in.readInt();
 	}
 	
@@ -451,4 +471,94 @@ public class CampaignItem implements IJSONSerializable, Parcelable {
         }
     };
 
+    /* ################## CAMPAIGN ITEM SIZE ################## */
+    
+    /**
+     * 
+     * @author sergiopereira
+     */
+    public class CampaignItemSize implements IJSONSerializable, Parcelable {
+    	
+    	public String size;
+    	public double savePrice;
+    	public double specialPrice;
+    	public double price;
+    	public String simpleSku;
+
+		/**
+		 * 
+		 */
+		public CampaignItemSize(JSONObject jsonObject) {
+			initialize(jsonObject);
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * @see pt.rocket.framework.objects.IJSONSerializable#initialize(org.json.JSONObject)
+		 */
+		@Override
+		public boolean initialize(JSONObject jsonObject) {
+			size = jsonObject.optString(RestConstants.JSON_SIZE_TAG);
+			savePrice = jsonObject.optDouble(RestConstants.JSON_SAVE_PRICE_TAG);
+			specialPrice = jsonObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_TAG);
+			price = jsonObject.optDouble(RestConstants.JSON_PRICE_TAG);
+			simpleSku = jsonObject.optString(RestConstants.JSON_SIMPLE_SKU_TAG);
+			return false;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * @see pt.rocket.framework.objects.IJSONSerializable#toJSON()
+		 */
+		@Override
+		public JSONObject toJSON() {
+			return null;
+		}
+		
+		/*
+		 * (non-Javadoc)
+		 * @see java.lang.Object#toString()
+		 */
+		@Override
+		public String toString() {
+			return size;
+		}
+
+		@Override
+		public int describeContents() {
+			return 0;
+		}
+
+		@Override
+		public void writeToParcel(Parcel dest, int flags) {
+			dest.writeString(size);
+			dest.writeDouble(savePrice);
+			dest.writeDouble(specialPrice);
+			dest.writeDouble(price);
+			dest.writeString(simpleSku);
+		}
+		
+		public CampaignItemSize(Parcel in) {
+			size = in.readString();
+			savePrice = in.readDouble();
+			specialPrice = in.readDouble();
+			price = in.readDouble();
+			simpleSku = in.readString();
+		}
+		
+		/**
+		 * Create parcelable 
+		 */
+		public final Parcelable.Creator<CampaignItemSize> CREATOR = new Parcelable.Creator<CampaignItemSize>() {
+	        public CampaignItemSize createFromParcel(Parcel in) {
+	            return new CampaignItemSize(in);
+	        }
+
+	        public CampaignItemSize[] newArray(int size) {
+	            return new CampaignItemSize[size];
+	        }
+	    };
+    	
+    }
+    
 }

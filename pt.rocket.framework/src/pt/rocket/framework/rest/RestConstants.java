@@ -228,6 +228,8 @@ public class RestConstants {
 	public static final String JSON_STOCK_PERCENTAGE_TAG = "stock_percentage";
 	public static final String JSON_HAS_UNIQUE_SIZE_TAG = "has_unique_size";
 	public static final String JSON_SIZES_TAG = "sizes";
+	public static final String JSON_SIZE_TAG = "size";
+	public static final String JSON_SIMPLE_SKU_TAG = "simple_sku";
 	
 
 	// TeaserBrandElement Tags
