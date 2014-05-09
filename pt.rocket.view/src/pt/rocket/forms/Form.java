@@ -24,6 +24,7 @@ import org.json.JSONObject;
 
 import pt.rocket.framework.objects.IJSONSerializable;
 import pt.rocket.framework.rest.RestConstants;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -49,6 +50,8 @@ public class Form implements IJSONSerializable, Parcelable {
     public Map<String, Integer> fieldMapping;
     
     public Map<String, FormField> mFieldKeyMap;
+
+    private EventType eventType;
     /**
      * Form empty constructor.
      */
@@ -63,6 +66,7 @@ public class Form implements IJSONSerializable, Parcelable {
         this.subForms = new HashMap<String, Form>();
         this.mFieldKeyMap = new HashMap<String, FormField>();
         this.fieldMapping = null;
+        this.setEventType(null);
     }
 
     /**
@@ -106,7 +110,10 @@ public class Form implements IJSONSerializable, Parcelable {
 
             fields.clear();
             subForms.clear();
-            if (FormsMapping.genericMapping.containsKey(id)) {
+            
+            if (eventType != null && FormsMapping.genericMapping.containsKey(eventType.toString())) {
+                fieldMapping = FormsMapping.genericMapping.get(eventType.toString());
+            } else if (FormsMapping.genericMapping.containsKey(id)) {
                 fieldMapping = FormsMapping.genericMapping.get(id);
             }
 
@@ -217,7 +224,7 @@ public class Form implements IJSONSerializable, Parcelable {
         dest.writeString(submit);
         dest.writeList(fields);
         dest.writeMap(fieldMapping);
-        
+        dest.writeSerializable(eventType);
     }
     
     /**
@@ -233,10 +240,17 @@ public class Form implements IJSONSerializable, Parcelable {
         fields = new ArrayList<FormField>();
         in.readArrayList(FormField.class.getClassLoader());
         in.readMap(fieldMapping, null);
-        
-        
+        eventType = (EventType) in.readSerializable();
     }
     
+    public EventType getEventType() {
+        return eventType;
+    }
+
+    public void setEventType(EventType eventType) {
+        this.eventType = eventType;
+    }
+
     /**
      * Create parcelable 
      */

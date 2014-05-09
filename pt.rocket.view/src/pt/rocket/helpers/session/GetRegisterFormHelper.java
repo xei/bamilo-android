@@ -59,6 +59,7 @@ public class GetRegisterFormHelper extends BaseHelper {
 
             for (int i = 0; i < dataObject.length(); ++i) {
                 Form form = new Form();
+                form.setEventType(EventType.GET_REGISTRATION_FORM_EVENT);
                 JSONObject formObject = dataObject.getJSONObject(i);
                 if (!form.initialize(formObject)) {
                     Log.e(TAG,

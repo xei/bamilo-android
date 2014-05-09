@@ -70,6 +70,7 @@ public class GetFormAddAddressHelper extends BaseHelper {
 
             for (int i = 0; i < dataObject.length(); ++i) {
                 Form form = new Form();
+                form.setEventType(EventType.GET_CREATE_ADDRESS_FORM_EVENT);
                 JSONObject formObject = dataObject.getJSONObject(i);
                 
                 if (!form.initialize(formObject)) Log.e(TAG, "Error initializing the form using the data");

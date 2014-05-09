@@ -3,13 +3,10 @@ package pt.rocket.forms;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import pt.rocket.framework.objects.Brand;
-import pt.rocket.framework.objects.BrandImage;
 import pt.rocket.framework.objects.IJSONSerializable;
 import pt.rocket.framework.rest.RestConstants;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 /**
  * Defines the data from the form.

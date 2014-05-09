@@ -10,6 +10,7 @@ import java.util.Map;
 
 import de.akquinet.android.androlog.Log;
 
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.InputType;
 
@@ -93,9 +94,12 @@ public class FormsMapping {
     public static final Map<String, Map<String, Integer>> genericMapping;
     static {
         Map<String,  Map<String, Integer>> currMapping = new HashMap<String, Map<String, Integer>>();
-        currMapping.put("form-account-login", loginForm);
-        currMapping.put("form-account-create", registrationForm);
-        currMapping.put("address-form", addressForm);
+        //currMapping.put("form-account-login", loginForm);
+        //currMapping.put("form-account-create", registrationForm);
+        //currMapping.put("address-form", addressForm);
+        currMapping.put(EventType.LOGIN_EVENT.toString(), loginForm);
+        currMapping.put(EventType.GET_REGISTRATION_FORM_EVENT.toString(), registrationForm);
+        currMapping.put(EventType.GET_CREATE_ADDRESS_FORM_EVENT.toString(), registrationForm);
         genericMapping = Collections.unmodifiableMap(currMapping);
     }    
     
