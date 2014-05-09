@@ -152,7 +152,7 @@ public class GetProductsHelper extends BaseHelper {
     }
 
     @Override
-    public Bundle parseResponseErrorBundle(Bundle bundle) {
+    public Bundle parseResponseErrorBundle(Bundle bundle, JSONObject jsonObject) {
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_PRODUCTS_EVENT);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;

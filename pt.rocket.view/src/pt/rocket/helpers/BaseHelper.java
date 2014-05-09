@@ -1,5 +1,6 @@
 package pt.rocket.helpers;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 
@@ -73,8 +74,16 @@ public abstract class BaseHelper {
             // removing unnecessary information from bundle
             bundle.remove(Constants.BUNDLE_RESPONSE_KEY);
             if (success) {
-//                Log.i(TAG, "code1 success response checkResponseForStatus");
                 return parseResponseBundle(bundle, metaData);
+            } else if(eventType == EventType.GET_PRODUCTS_EVENT){
+                JSONObject messagesObject = jsonObject
+                        .optJSONObject(JSONConstants.JSON_MESSAGES_TAG);
+                HashMap<String, List<String>> errors = Errors
+                        .createErrorMessageMap(messagesObject);
+                bundle.putSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY, errors);
+                bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, ErrorCode.REQUEST_ERROR);
+                bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
+                return parseResponseErrorBundle(bundle,metaData);
             } else {
                 JSONObject messagesObject = jsonObject
                         .optJSONObject(JSONConstants.JSON_MESSAGES_TAG);
@@ -83,12 +92,10 @@ public abstract class BaseHelper {
                 bundle.putSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY, errors);
                 bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, ErrorCode.REQUEST_ERROR);
                 bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
-//                Log.i(TAG, "code1 error response checkResponseForStatus : " + errors.toString());
                 return parseResponseErrorBundle(bundle);
             }
         } catch (JSONException e) {
             e.printStackTrace();
-//            Log.i(TAG, "code1 error response checkResponseForStatus : json error " + eventType);
             bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
             return parseResponseErrorBundle(bundle);
         }
@@ -101,6 +108,16 @@ public abstract class BaseHelper {
      * @return
      */
     public Bundle parseResponseErrorBundle(Bundle bundle) {
+        return bundle;
+    }
+    
+    /**
+     * In case there as a valid json response, but that contains an error indication, be it due to
+     * wrong parameters or something else this is the method used to parse that error
+     * 
+     * @return
+     */
+    public Bundle parseResponseErrorBundle(Bundle bundle, JSONObject jsonObject) {
         return bundle;
     }
 
