@@ -733,7 +733,11 @@ public class HomeFragment extends BaseFragment {
                         }
                         break;
                     case CAMPAIGN:
-                        String targetPosition = v.getTag(R.id.position).toString();
+                        String targetPosition = "0";
+                        if(v.getTag(R.id.position) != null){
+                            targetPosition = v.getTag(R.id.position).toString();
+                        }
+                        Log.i(TAG, "code1campaign position : "+targetPosition);
                         if (targetUrl != null && targetPosition != null && JumiaApplication.hasSavedTeaserCampaigns()) {
                             bundle.putString(ConstantsIntentExtra.CONTENT_URL, targetUrl);
                             bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, targetTitle);

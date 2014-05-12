@@ -68,6 +68,14 @@
         <item name="android:layout_marginTop">@dimen/margin_large</item>
     </style>
 
+    <style name="activity_sectionheader_clickable">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/orange_basic</item>
+        <item name="android:textSize">@dimen/text_mid</item>
+        <item name="android:layout_marginTop">@dimen/margin_large</item>
+    </style>
+
     <style name="activity_sectionheader_divider">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/divider_height</item>
@@ -209,12 +217,12 @@
         <item name="android:background">@color/grey_dividerlight</item>
     </style>
 
-        <style name="divider_vertical_grid">
+    <style name="divider_vertical_grid">
         <item name="android:layout_width">@dimen/divider_width</item>
         <item name="android:layout_height">@dimen/product_item_vertical_divider_height</item>
         <item name="android:background">@color/grey_dividerlight</item>
     </style>
-    
+
     <style name="divider_horizontal_campaign">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1.33dp</item>

@@ -408,16 +408,26 @@ public class TeasersFactory {
             if(size <= 1) {
                 rootView.findViewById(R.id.teaser_group_title).setVisibility(View.GONE);
                 rootView.findViewById(R.id.teaser_group_title_divider).setVisibility(View.GONE);
-            } else 
+            } else {
                 ((TextView) rootView.findViewById(R.id.teaser_group_title)).setText(teaserGroupCampaigns.getTitle());
+            }
+                
             // Save teaser campaigns
             JumiaApplication.saveTeaserCampaigns(campaigns);
-            // Create views
-            for (int i = 0; i < campaigns.size(); i++) {
-                View view = createCampaignTeaserView(campaigns.get(i), container, mInflater);
-                view.setTag(R.id.position, i);
-                container.addView(view);
+            
+            if(size == 1){
+                rootView.findViewById(R.id.teaser_group_title_clickable).setVisibility(View.VISIBLE);
+                ((TextView) rootView.findViewById(R.id.teaser_group_title_clickable_title)).setText(campaigns.get(0).getTargetTitle());
+                createCampaignSingleTeaserView(campaigns.get(0), rootView.findViewById(R.id.teaser_group_title_clickable), mInflater);
+            } else {
+                // Create views
+                for (int i = 0; i < campaigns.size(); i++) {
+                    View view = createCampaignTeaserView(campaigns.get(i), container, mInflater);
+                    view.setTag(R.id.position, i);
+                    container.addView(view);
+                }                
             }
+
         }
         return rootView;
     }
@@ -438,6 +448,18 @@ public class TeasersFactory {
         return campaignTeaserView;
     }
     
+
+    /**
+     * Create the top brand teaser view
+     * @param teaser
+     * @param vg
+     * @param mInflater
+     * @return the brand view
+     * @author sergiopereira
+     */
+    private void createCampaignSingleTeaserView(TeaserCampaign teaser, View campaignTeaserView, LayoutInflater mInflater) {
+        attachTeaserListener(teaser, campaignTeaserView);
+    }
     
     /*
      * ################## IMAGE ##################

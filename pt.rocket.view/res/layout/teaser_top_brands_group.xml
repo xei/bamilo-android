@@ -3,13 +3,32 @@
     android:id="@+id/fragment_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical" >
 
     <org.holoeverywhere.widget.TextView
         android:id="@+id/teaser_group_title"
         style="@style/activity_sectionheader_text"
         android:layout_marginLeft="@dimen/margin_huge"
         android:text="Categories" />
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/teaser_group_title_clickable"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_height_normal"
+        android:background="@drawable/selector_listitem_highlight"
+        android:visibility="gone" >
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/teaser_group_title_clickable_title"
+            style="@style/activity_sectionheader_clickable"
+            android:layout_centerVertical="true"
+            android:drawableRight="@drawable/selector_next"
+            android:layout_marginLeft="@dimen/margin_huge"
+            android:gravity="center_vertical"
+            android:text="Categories"
+             />
+    </RelativeLayout>
 
     <View
         android:id="@+id/teaser_group_title_divider"
