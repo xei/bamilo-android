@@ -111,18 +111,18 @@ public class CampaignItem implements IJSONSerializable, Parcelable {
 		/**
 		 * TODO: REMOVE, ONLY FOR TESTS 
 		 */
-		String[] sizes = new String[] {"S", "M", "L", "XL" , "XXL", "XXXL"};
-		mSizes = new ArrayList<CampaignItemSize>();
-		for (int i = 0; i < sizes.length; i++) {
-			CampaignItemSize size = new CampaignItemSize(new JSONObject());
-			size.size = sizes[i];
-			size.savePrice = 1000 + i;
-			size.specialPrice = 2600 + i;
-			size.price = 3600 + i;
-			size.simpleSku = "NO891ELAC52QNGAMZ-" + i;
-			Log.d(TAG, "CAMPAIGN SIMPLE SKU: " + size.simpleSku);
-			mSizes.add(size);
-		}
+//		String[] sizes = new String[] {"S", "M", "L", "XL" , "XXL", "XXXL"};
+//		mSizes = new ArrayList<CampaignItemSize>();
+//		for (int i = 0; i < sizes.length; i++) {
+//			CampaignItemSize size = new CampaignItemSize(new JSONObject());
+//			size.size = sizes[i];
+//			size.savePrice = 1000 + i;
+//			size.specialPrice = 2600 + i;
+//			size.price = 3600 + i;
+//			size.simpleSku = "NO891ELAC52QNGAMZ-" + i;
+//			Log.d(TAG, "CAMPAIGN SIMPLE SKU: " + size.simpleSku);
+//			mSizes.add(size);
+//		}
 
 		return true;
 	}
