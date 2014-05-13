@@ -9,8 +9,11 @@ import org.holoeverywhere.widget.Button;
 
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.CatalogPageModel;
+import pt.rocket.controllers.FeaturedItemsAdapter;
 import pt.rocket.framework.objects.CatalogFilter;
 import pt.rocket.framework.objects.CatalogFilterOption;
+import pt.rocket.framework.objects.FeaturedBox;
+import pt.rocket.framework.objects.FeaturedItem;
 import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -29,6 +32,7 @@ import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,6 +54,9 @@ public class Catalog extends BaseFragment implements OnClickListener {
     private CatalogPagerAdaper mCatalogPagerAdapter;
     private JumiaCatalogViewPager mViewPager;
     private PagerTabStrip pagerTabStrip;
+
+    private ViewPager mFeaturedProductsViewPager;
+    private ViewPager mFeaturedBrandsViewPager;
 
     private final int TAB_PREV_ID = 0;
     private final int TAB_CURR_ID = 1;
@@ -309,6 +316,86 @@ public class Catalog extends BaseFragment implements OnClickListener {
         // Set listener
         mFilterButton.setOnClickListener(this);
         Log.d(TAG, "RECEIVED ERROR ON LOAD CATALOG WITH FILTERS");
+    }
+
+    /**
+     * Show suggestion page when no results are found
+     * 
+     * @param featuredBox contains a list of featured products, a list of featured brands and error messages
+     */
+    public synchronized void onErrorSearchResult(FeaturedBox featuredBox){
+        getView().findViewById(R.id.catalog_viewpager_container).setVisibility(View.GONE);
+
+        if (featuredBox != null) {
+            getView().findViewById(R.id.no_results_search_terms).setVisibility(View.VISIBLE);
+            String errorMessage = featuredBox.getErrorMessage();
+            if (!TextUtils.isEmpty(errorMessage)) {
+                ((TextView) getView().findViewById(R.id.no_results_search_error_message)).setText(errorMessage);
+            }
+
+            String searchTips = featuredBox.getSearchTips();
+            if (!TextUtils.isEmpty(searchTips)) {
+                ((TextView) getView().findViewById(R.id.no_results_search_tips_text)).setText(searchTips);
+            }
+
+            // define how many items will be displayed on the viewPager
+            int partialSize = 3;
+            if (BaseActivity.isTabletInLandscape(getActivity())) {
+                partialSize = 5;
+            }
+
+            String productsTitle = featuredBox.getProductsTitle();
+            if (!TextUtils.isEmpty(productsTitle)) {
+                ((TextView) getView().findViewById(R.id.featured_products_title)).setText(productsTitle);
+            }
+
+            getView().findViewById(R.id.featured_products).setVisibility(View.VISIBLE);
+            generateFeaturedProductsLayout(featuredBox.getProducts(), partialSize);
+
+            String brandsTitle = featuredBox.getBrandsTitle();
+            if (!TextUtils.isEmpty(brandsTitle)) {
+                ((TextView) getView().findViewById(R.id.featured_brands_title)).setText(brandsTitle);
+            }
+
+            getView().findViewById(R.id.featured_brands).setVisibility(View.VISIBLE);
+            generateFeaturedBrandsLayout(featuredBox.getBrands(), partialSize);
+
+            String noticeMessage = featuredBox.getNoticeMessage();
+            if (!TextUtils.isEmpty(noticeMessage)) {
+                ((TextView) getView().findViewById(R.id.no_results_search_notice_message)).setText(noticeMessage);
+            }
+        } else {
+            Log.e(TAG, "No featureBox!");
+        }
+    }
+    
+
+    /**
+     * Fill adapter with featured products
+     * 
+     * @param featuredProducts
+     */
+    private void generateFeaturedProductsLayout(ArrayList<FeaturedItem> featuredProducts, int partialSize){
+        View mLoadingFeaturedProducts = getView().findViewById(R.id.loading_featured_products);
+        mFeaturedProductsViewPager = (ViewPager) getView().findViewById(R.id.featured_products_viewpager);
+        FeaturedItemsAdapter mFeaturedProductsAdapter = new FeaturedItemsAdapter(getBaseActivity(), featuredProducts, LayoutInflater.from(getActivity()), partialSize);
+        mFeaturedProductsViewPager.setAdapter(mFeaturedProductsAdapter);
+        mFeaturedProductsViewPager.setVisibility(View.VISIBLE);
+        mLoadingFeaturedProducts.setVisibility(View.GONE);
+    }
+
+    /**
+     * Fill adapter with featured brands
+     * 
+     * @param featuredBrandsList
+     */
+    private void generateFeaturedBrandsLayout(ArrayList<FeaturedItem> featuredBrandsList, int partialSize){
+        View mLoadingFeaturedBrands = getView().findViewById(R.id.loading_featured_brands);
+        mFeaturedBrandsViewPager = (ViewPager) getView().findViewById(R.id.featured_brands_viewpager);
+        FeaturedItemsAdapter mFeaturedBrandsAdapter = new FeaturedItemsAdapter(getBaseActivity(), featuredBrandsList, LayoutInflater.from(getActivity()), partialSize);
+        mFeaturedBrandsViewPager.setAdapter(mFeaturedBrandsAdapter);
+        mFeaturedBrandsViewPager.setVisibility(View.VISIBLE);
+        mLoadingFeaturedBrands.setVisibility(View.GONE);
     }
 
     /**

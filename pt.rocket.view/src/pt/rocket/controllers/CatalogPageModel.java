@@ -17,13 +17,13 @@ import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.database.RelatedItemsTableHelper;
 import pt.rocket.framework.interfaces.IMetaData;
 import pt.rocket.framework.objects.CatalogFilter;
+import pt.rocket.framework.objects.FeaturedBox;
 import pt.rocket.framework.objects.Product;
 import pt.rocket.framework.objects.ProductsPage;
 import pt.rocket.framework.rest.RestContract;
 import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.Direction;
-import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LoadingBarView;
 import pt.rocket.framework.utils.ProductSort;
 import pt.rocket.helpers.GetProductsHelper;
@@ -730,15 +730,24 @@ public class CatalogPageModel {
         if (mActivity.handleErrorEvent(bundle)) {
             return;
         }
-        
+
         // Validate the request was performed by Filter
-        if(isRequestFromFilter());
-        
+        if (isRequestFromFilter());
+
         // Log.i(TAG, "code1 product list on error event");
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        //EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-        
+
         if (errorCode != null && pageNumber == 1) {
+            FeaturedBox featuredBox = null;
+
+            Object featureBoxObject = bundle.get(Constants.BUNDLE_RESPONSE_KEY);
+            if (featureBoxObject != null && featureBoxObject instanceof FeaturedBox) {
+                featuredBox = (FeaturedBox) featureBoxObject;
+            }
+            // hide pageviewer and show new page
+            ((Catalog) mFragment).onErrorSearchResult(featuredBox);
+
             showProductsNotfound();
             mActivity.showContentContainer();
         } else {

@@ -5,6 +5,7 @@
     android:paddingBottom="0dp" >
 
     <RelativeLayout
+        android:id="@+id/catalog_viewpager_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:duplicateParentState="true" >
@@ -48,5 +49,152 @@
             android:layout_toLeftOf="@id/products_list_filter_button"
             android:background="@drawable/filter_header" />
     </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/catalog_viewpager_container"
+        android:fillViewport="true" >
+
+        <LinearLayout
+            android:id="@+id/no_results_search_terms"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone" >
+
+            <org.holoeverywhere.widget.TextView
+                android:id="@+id/no_results_search_error_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerInParent="true"
+                android:layout_marginBottom="@dimen/margin_veryhuge"
+                android:layout_marginLeft="@dimen/margin_veryhuge"
+                android:layout_marginRight="@dimen/margin_veryhuge"
+                android:layout_marginTop="@dimen/no_results_top_margin"
+                android:drawablePadding="@dimen/no_results_bottom_margin"
+                android:drawableTop="@drawable/ico_nosearchresults"
+                android:fontFamily="roboto"
+                android:gravity="center"
+                android:textColor="@color/grey_middle"
+                android:textSize="@dimen/text_l"
+                android:visibility="visible" />
+
+            <View style="@style/divider_horizontal" />
+
+            <RelativeLayout
+                android:id="@+id/no_results_search_terms"
+                android:layout_width="@dimen/no_results_search_tips_width"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:paddingBottom="@dimen/margin_veryhuge"
+                android:paddingLeft="@dimen/margin_midhuge"
+                android:paddingRight="@dimen/margin_midhuge"
+                android:paddingTop="@dimen/margin_veryhuge" >
+
+                <org.holoeverywhere.widget.TextView
+                    android:id="@+id/no_results_search_tips_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="roboto_bold"
+                    android:textColor="@color/grey_middle"
+                    android:textSize="@dimen/text_m"
+                    android:textStyle="bold" />
+
+                <org.holoeverywhere.widget.TextView
+                    android:id="@+id/no_results_search_tips_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/no_results_search_tips_title"
+                    android:fontFamily="roboto"
+                    android:textColor="@color/grey_middle"
+                    android:textSize="@dimen/text_s" />
+            </RelativeLayout>
+
+            <View style="@style/divider_horizontal" />
+
+            <RelativeLayout
+                android:id="@+id/featured_products"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_mid"
+                android:visibility="gone" >
+
+                <LinearLayout
+                    android:id="@+id/featured_products_title_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_huge" >
+
+                    <org.holoeverywhere.widget.TextView
+                        android:id="@+id/featured_products_title"
+                        style="@style/activity_sectionheader_text" />
+                </LinearLayout>
+
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/featured_products_viewpager"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/teaser_banners_group_height"
+                    android:layout_below="@id/featured_products_title_layout"
+                    android:visibility="gone" />
+
+                <RelativeLayout
+                    android:id="@+id/loading_featured_products"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true" >
+
+                    <include layout="@layout/loading_bar_simple" />
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <View style="@style/divider_horizontal" />
+
+            <RelativeLayout
+                android:id="@+id/featured_brands"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone" >
+
+                <org.holoeverywhere.widget.TextView
+                    android:id="@+id/featured_brands_title"
+                    style="@style/activity_sectionheader_text"
+                    android:layout_marginBottom="@dimen/margin_mid"
+                    android:layout_marginLeft="@dimen/margin_mid" />
+
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/featured_brands_viewpager"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/teaser_banners_group_height"
+                    android:layout_below="@id/featured_brands_title"
+                    android:visibility="gone" />
+
+                <RelativeLayout
+                    android:id="@+id/loading_featured_brands"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/teaser_banners_group_height"
+                    android:layout_centerInParent="true" >
+
+                    <include layout="@layout/loading_bar_simple" />
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <View style="@style/divider_horizontal" />
+
+            <org.holoeverywhere.widget.TextView
+                android:id="@+id/no_results_search_notice_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerInParent="true"
+                android:layout_margin="@dimen/margin_veryhuge"
+                android:fontFamily="roboto"
+                android:gravity="center"
+                android:textColor="@color/grey_middle"
+                android:textSize="@dimen/text_s"
+                android:visibility="visible" />
+        </LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>

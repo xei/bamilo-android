@@ -166,4 +166,9 @@
     <dimen name="campaign_size_container_height">33.33dp</dimen>
     <dimen name="campaign_size_spinner_width">50dp</dimen>
 
+    <!-- NO RESULTS PAGE -->
+    <dimen name="no_results_top_margin">60dp</dimen>
+    <dimen name="no_results_bottom_margin">50dp</dimen>
+    <dimen name="no_results_search_tips_width">@dimen/match_parent</dimen>
+
 </resources>

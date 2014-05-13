@@ -3,13 +3,16 @@
  */
 package pt.rocket.helpers;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map.Entry;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import pt.rocket.app.JumiaApplication;
+import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.enums.RequestType;
+import pt.rocket.framework.objects.FeaturedBox;
 import pt.rocket.framework.objects.ProductsPage;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
@@ -18,7 +21,6 @@ import android.content.ContentValues;
 import android.net.Uri;
 import android.net.Uri.Builder;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -124,7 +126,7 @@ public class GetProductsHelper extends BaseHelper {
         
         return uriBuilder.build().toString();
     }
-    
+
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
         try {
@@ -153,6 +155,29 @@ public class GetProductsHelper extends BaseHelper {
 
     @Override
     public Bundle parseResponseErrorBundle(Bundle bundle, JSONObject jsonObject) {
+        try {
+            android.util.Log.d("TRACK", "parseResponseErrorBundle GetProductsHelper");
+            ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+            if (errorCode == ErrorCode.REQUEST_ERROR) {
+                Log.i(TAG, "REQUEST_ERROR");
+                HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+                if (errors != null) {
+                    List<String> errorMessages = (List<String>) errors
+                            .get(Constants.BUNDLE_ERROR_KEY);
+                    if (errorMessages.size() > 0) {
+                        String specificErrorMessage = errorMessages.get(0);
+                        if ("SEARCH_NO_RESULTS".equals(specificErrorMessage)) {
+                            FeaturedBox featuredBox = new FeaturedBox();
+                            featuredBox.initialize(jsonObject);
+                            bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, featuredBox);
+                        }
+                    }
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return parseErrorBundle(bundle);
+        }
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_PRODUCTS_EVENT);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;

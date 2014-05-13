@@ -407,7 +407,17 @@ public class RestConstants {
 	
 	public static final String JSON_SUBSCRIBED_CATEGORIES_TAG = "subscribed_categories";
 	public static final String JSON_NEWSLETTER_CATEGORY_ID_TAG = "id_newsletter_category";
-	
-	
+
+	public static final String JSON_PRODUCTS_TAG = "products";
+	public static final String JSON_BRANDS_TAG = "brands";
+	public static final String JSON_ERROR_MESSAGE_TAG = "error_message";
+	public static final String JSON_NOTICE_MESSAGE_TAG = "notice_message";
+
+	/**
+	 * Featured Items
+	 */
+	public static final String JSON_FEATURED_BOX_TAG = "featured_box";
+	public static final String JSON_FEATURED_BRANDBOX_TAG = "featured_brandbox";
+	public static final String JSON_FEATURED_SEARCH_TIPS_TAG = "search_tips";
 
 }
