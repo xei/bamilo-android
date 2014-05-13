@@ -408,11 +408,11 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
      */
     private void hideSomeFields(DynamicForm dynamicForm){
         DynamicFormItem item = dynamicForm.getItemByKey(RestConstants.JSON_IS_DEFAULT_SHIPPING_TAG);
-        item.getEditControl().setVisibility(View.GONE);
+        if(item != null) item.getEditControl().setVisibility(View.GONE);
         item = dynamicForm.getItemByKey(RestConstants.JSON_IS_DEFAULT_BILLING_TAG);
-        item.getEditControl().setVisibility(View.GONE);
+        if(item != null) item.getEditControl().setVisibility(View.GONE);
         item = dynamicForm.getItemByKey(RestConstants.JSON_CITY_TAG);
-        item.getControl().setVisibility(View.GONE);
+        if(item != null) item.getControl().setVisibility(View.GONE);
     }
     
     /**
