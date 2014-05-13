@@ -324,9 +324,10 @@ public class Catalog extends BaseFragment implements OnClickListener {
      * @param featuredBox contains a list of featured products, a list of featured brands and error messages
      */
     public synchronized void onErrorSearchResult(FeaturedBox featuredBox){
-        getView().findViewById(R.id.catalog_viewpager_container).setVisibility(View.GONE);
-
         if (featuredBox != null) {
+            // hide default products list
+            getView().findViewById(R.id.catalog_viewpager_container).setVisibility(View.GONE);
+
             getView().findViewById(R.id.no_results_search_terms).setVisibility(View.VISIBLE);
             String errorMessage = featuredBox.getErrorMessage();
             if (!TextUtils.isEmpty(errorMessage)) {

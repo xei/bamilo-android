@@ -41,6 +41,7 @@ public class GetProductsHelper extends BaseHelper {
     public static final String SORT = "sort";
     public static final String DIRECTION = "direction";
     public static final String FILTERS = "filters";
+    public static final String SEARCH_NO_RESULTS = "SEARCH_NO_RESULTS";
     
     ProductsPage mProductsPage= new ProductsPage();
 
@@ -162,11 +163,10 @@ public class GetProductsHelper extends BaseHelper {
                 Log.i(TAG, "REQUEST_ERROR");
                 HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
                 if (errors != null) {
-                    List<String> errorMessages = (List<String>) errors
-                            .get(Constants.BUNDLE_ERROR_KEY);
+                    List<String> errorMessages = (List<String>) errors.get(Constants.BUNDLE_ERROR_KEY);
                     if (errorMessages.size() > 0) {
                         String specificErrorMessage = errorMessages.get(0);
-                        if ("SEARCH_NO_RESULTS".equals(specificErrorMessage)) {
+                        if (SEARCH_NO_RESULTS.equals(specificErrorMessage)) {
                             FeaturedBox featuredBox = new FeaturedBox();
                             featuredBox.initialize(jsonObject);
                             bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, featuredBox);

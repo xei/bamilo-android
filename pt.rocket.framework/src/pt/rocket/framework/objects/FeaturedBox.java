@@ -4,7 +4,6 @@
 package pt.rocket.framework.objects;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,9 +22,6 @@ import android.util.Log;
  * 
  */
 public class FeaturedBox implements IJSONSerializable, Parcelable {
-
-	// define if results will be displayed on a random order
-	private boolean mShuffleResults = false;
 
 	private static final String TAG = FeaturedBox.class.getSimpleName();
 
@@ -82,11 +78,6 @@ public class FeaturedBox implements IJSONSerializable, Parcelable {
 						}
 					}
 				}
-
-				// randomize products order
-				if (mShuffleResults && products.size() > 0) {
-					Collections.shuffle(products);
-				}
 			}
 
 			// one list for all brands
@@ -116,11 +107,6 @@ public class FeaturedBox implements IJSONSerializable, Parcelable {
 							}
 						}
 					}
-				}
-
-				// randomize brands order
-				if (mShuffleResults && brands.size() > 0) {
-					Collections.shuffle(brands);
 				}
 			}
 

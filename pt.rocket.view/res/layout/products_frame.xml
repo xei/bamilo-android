@@ -117,26 +117,20 @@
             <RelativeLayout
                 android:id="@+id/featured_products"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_mid"
+                android:layout_height="@dimen/teaser_recently_viewed_height"
                 android:visibility="gone" >
 
-                <LinearLayout
-                    android:id="@+id/featured_products_title_layout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_huge" >
-
-                    <org.holoeverywhere.widget.TextView
-                        android:id="@+id/featured_products_title"
-                        style="@style/activity_sectionheader_text" />
-                </LinearLayout>
+                <org.holoeverywhere.widget.TextView
+                    android:id="@+id/featured_products_title"
+                    style="@style/activity_sectionheader_text"
+                    android:layout_marginBottom="@dimen/margin_mid"
+                    android:layout_marginLeft="@dimen/margin_mid" />
 
                 <android.support.v4.view.ViewPager
                     android:id="@+id/featured_products_viewpager"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/teaser_banners_group_height"
-                    android:layout_below="@id/featured_products_title_layout"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/featured_products_title"
                     android:visibility="gone" />
 
                 <RelativeLayout
@@ -154,7 +148,7 @@
             <RelativeLayout
                 android:id="@+id/featured_brands"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/teaser_recently_viewed_height"
                 android:visibility="gone" >
 
                 <org.holoeverywhere.widget.TextView
@@ -166,14 +160,14 @@
                 <android.support.v4.view.ViewPager
                     android:id="@+id/featured_brands_viewpager"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/teaser_banners_group_height"
+                    android:layout_height="wrap_content"
                     android:layout_below="@id/featured_brands_title"
                     android:visibility="gone" />
 
                 <RelativeLayout
                     android:id="@+id/loading_featured_brands"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/teaser_banners_group_height"
+                    android:layout_height="wrap_content"
                     android:layout_centerInParent="true" >
 
                     <include layout="@layout/loading_bar_simple" />

@@ -135,28 +135,26 @@ public class FeaturedItemsAdapter extends PagerAdapter {
      * 
      */
     class ElementOnClickListener implements OnClickListener {
-        String featuredItemClassName = FeaturedItem.class.getSimpleName();
-        String url;
+        FeaturedItem featuredItem;
 
         public ElementOnClickListener(FeaturedItem featuredItem) {
-            this.featuredItemClassName = featuredItem.getClass().getSimpleName();
-            this.url = featuredItem.getUrl();
+            this.featuredItem = featuredItem;
         }
 
         @Override
         public void onClick(View v) {
             Bundle bundle = new Bundle();
-            bundle.putString(ConstantsIntentExtra.CONTENT_URL, url);
+            bundle.putString(ConstantsIntentExtra.CONTENT_URL, featuredItem.getUrl());
 
             // default settings from FeaturedProduct
             int navigationSourceId = R.string.gteaserprod_prefix;
             FragmentType search = FragmentType.PRODUCT_DETAILS;
 
             // change behaviour depending on type of FeaturedItem
-            if (FeaturedProduct.class.getSimpleName().equals(featuredItemClassName)) {
+            if (featuredItem instanceof FeaturedProduct) {
                 navigationSourceId = R.string.gsearch;
                 search = FragmentType.PRODUCT_DETAILS;
-            } else if (FeaturedBrand.class.getSimpleName().equals(featuredItemClassName)) {
+            } else if (featuredItem instanceof FeaturedBrand) {
                 navigationSourceId = R.string.gsearch;
                 search = FragmentType.PRODUCT_LIST;
             }
