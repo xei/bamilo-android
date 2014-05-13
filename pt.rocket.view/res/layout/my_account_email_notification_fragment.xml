@@ -33,14 +33,13 @@
             
         <!-- NEWSLETTERS -->
         
-        <ListView
+        <LinearLayout
             android:id="@+id/myaccount_newsletter_list"
             android:layout_width="@dimen/inner_container_width"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:divider="@color/grey_dividerlight"
-            android:dividerHeight="@dimen/divider_height"
-            android:footerDividersEnabled="true" />
+            android:orientation="vertical"
+            />
 
 
         <!-- BUTTONS -->

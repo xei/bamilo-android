@@ -1,16 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<org.holoeverywhere.widget.CheckBox xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/myaccount_newsletter_checkbox"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:paddingBottom="@dimen/margin_large"
-    android:paddingTop="@dimen/margin_large"
-    android:button="@null"
-    android:drawableRight="@drawable/btn_check_holo_light"
-    android:fontFamily="roboto_regular"
-    android:gravity="left|center"
-    android:text="@string/newsletter_male_label"
-    android:textColor="@color/grey_dark"
-    android:textSize="@dimen/text_l"
-    android:background="@android:color/white" />
+    android:layout_height="wrap_content" >
+
+    <org.holoeverywhere.widget.CheckBox
+        android:id="@+id/myaccount_newsletter_checkbox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@android:color/white"
+        android:button="@null"
+        android:drawableRight="@drawable/btn_check_holo_light"
+        android:fontFamily="roboto_regular"
+        android:gravity="left|center"
+        android:paddingBottom="@dimen/margin_large"
+        android:paddingTop="@dimen/margin_large"
+        android:text="@string/newsletter_male_label"
+        android:textColor="@color/grey_dark"
+        android:textSize="@dimen/text_l" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/grey_dividerlight" />
+
+</RelativeLayout>

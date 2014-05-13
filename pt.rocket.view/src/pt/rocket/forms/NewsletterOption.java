@@ -53,6 +53,4 @@ public class NewsletterOption implements IJSONSerializable {
         return label;
     }
 
-    
-    
 }

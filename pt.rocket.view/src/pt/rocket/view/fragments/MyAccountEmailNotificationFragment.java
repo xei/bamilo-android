@@ -30,10 +30,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AbsListView.LayoutParams;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.ListView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 import de.akquinet.android.androlog.Log;
 
@@ -41,7 +42,7 @@ import de.akquinet.android.androlog.Log;
  * Class used to show the newsletter form 
  * @author sergiopereira
  */
-public class MyAccountEmailNotificationFragment extends BaseFragment implements OnClickListener, IResponseCallback {
+public class MyAccountEmailNotificationFragment extends BaseFragment implements OnClickListener, IResponseCallback, OnCheckedChangeListener {
 
     private static final String TAG = LogTagHelper.create(MyAccountEmailNotificationFragment.class);
     
@@ -49,7 +50,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
 
     private Form mNewslettersForm;
 
-    private ListView mNewsletterList;
+    private LinearLayout mNewsletterList;
 
     private ArrayList<NewsletterOption> mNewsletterOptions;
 
@@ -119,7 +120,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
         // Get list view
-        mNewsletterList = (ListView) view.findViewById(R.id.myaccount_newsletter_list);
+        mNewsletterList = (LinearLayout) view.findViewById(R.id.myaccount_newsletter_list);
         // Get save button
         view.findViewById(R.id.myaccount_newsletter_save).setOnClickListener((OnClickListener) this);
         // Get cancel button
@@ -202,9 +203,14 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
         try {
             FormField formField = mNewslettersForm.fields.get(0);
             Context context = getBaseActivity();
-            mNewsletterOptions = formField.newsletterOptions;
-            NewsletterAdapter arrayAdapter = new NewsletterAdapter(context, mNewsletterOptions);
-            mNewsletterList.setAdapter(arrayAdapter);
+            if(mNewsletterOptions == null){
+                mNewsletterOptions = formField.newsletterOptions;
+            }
+            Log.i(TAG, "code1news : size : "+mNewsletterOptions.size());
+            
+//            NewsletterAdapter arrayAdapter = new NewsletterAdapter(context, mNewsletterOptions);
+//            mNewsletterList.setAdapter(arrayAdapter);
+            generateNewsletterOptions(LayoutInflater.from(getBaseActivity()));
             // Show form
             getBaseActivity().showContentContainer();
         } catch (IndexOutOfBoundsException e) {
@@ -216,6 +222,18 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
         }
     }
 
+    
+    private void generateNewsletterOptions(LayoutInflater mLayoutInflater){
+        for (int i = 0; i < mNewsletterOptions.size(); i++) {
+            View view = mLayoutInflater.inflate(R.layout.simple_email_notification_option, null);
+            CheckBox mCheckBox = (CheckBox) view.findViewById(R.id.myaccount_newsletter_checkbox);
+            mCheckBox.setTag(""+i);
+            mCheckBox.setText(mNewsletterOptions.get(i).label);
+            mCheckBox.setChecked(mNewsletterOptions.get(i).isSubscrided);
+            mCheckBox.setOnCheckedChangeListener(this);
+            mNewsletterList.addView(view);
+        }
+    }
     
     /**
      * ############# CLICK LISTENER #############
@@ -316,6 +334,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
             Form form = (Form) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             // Save the form
             mNewslettersForm = form;
+            mNewsletterOptions = null;
             // Show the form
             showNewslettersForm();
             break;
@@ -404,51 +423,62 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
     public void onRequestComplete(Bundle bundle) {
         onSuccessEvent(bundle);
     }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        Log.i(TAG, "code1news : "+Integer.parseInt((String)buttonView.getTag())+" isChecked? "+isChecked);
+        mNewsletterOptions.get(Integer.parseInt((String)buttonView.getTag())).isSubscrided = isChecked;
+    }
     
 
 
-    /**
-     * ########### ADAPTER ###########  
-     */
-    private class NewsletterAdapter extends ArrayAdapter<NewsletterOption> implements OnCheckedChangeListener {
-
-        /**
-         * 
-         * @author sergiopereira
-         * @param context
-         * @param options
-         */
-        public NewsletterAdapter(Context context, ArrayList<NewsletterOption> options ) {
-            super(context, R.layout.simple_email_notification_option, options);
-        }
-        
-        /*
-         * (non-Javadoc)
-         * @see android.widget.ArrayAdapter#getView(int, android.view.View, android.view.ViewGroup)
-         */
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            View view = convertView;
-            if(view == null)
-                view = LayoutInflater.from(getContext()).inflate(R.layout.simple_email_notification_option, parent, false);
-            CheckBox check = (CheckBox) view.findViewById(R.id.myaccount_newsletter_checkbox);
-            check.setText(getItem(position).toString());
-            check.setChecked(getItem(position).isSubscrided);            
-            check.setTag("" + position);
-            check.setOnCheckedChangeListener(this);
-            return view;
-        }
-        
-        /*
-         * (non-Javadoc)
-         * @see android.widget.CompoundButton.OnCheckedChangeListener#onCheckedChanged(android.widget.CompoundButton, boolean)
-         */
-        @Override
-        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            int position = Integer.parseInt((String)buttonView.getTag());
-            getItem(position).isSubscrided = isChecked;
-        }
-    }
+//    /**
+//     * ########### ADAPTER ###########  
+//     */
+//    private class NewsletterAdapter extends ArrayAdapter<NewsletterOption> implements OnCheckedChangeListener {
+//
+//        /**
+//         * 
+//         * @author sergiopereira
+//         * @param context
+//         * @param options
+//         */
+//        public NewsletterAdapter(Context context, ArrayList<NewsletterOption> options ) {
+//            super(context, R.layout.simple_email_notification_option, options);
+//        }
+//
+//        /*
+//         * (non-Javadoc)
+//         * @see android.widget.ArrayAdapter#getView(int, android.view.View, android.view.ViewGroup)
+//         */
+//        @Override
+//        public View getView(int position, View convertView, ViewGroup parent) {
+//            View view = convertView;
+//
+//            if(view == null){
+//                view = LayoutInflater.from(getContext()).inflate(R.layout.simple_email_notification_option, parent, false);
+//            } 
+//            
+//            CheckBox check = (CheckBox) view.findViewById(R.id.myaccount_newsletter_checkbox);
+//            check.setText(getItem(position).toString());
+//            Log.i(TAG, "code1news :  "+getItem(position)+" : "+getItem(position).isSubscrided);
+//            
+//            check.setChecked(getItem(position).isSubscrided);            
+//            check.setTag("" + position);
+//            check.setOnCheckedChangeListener(this);
+//            return view;
+//        }
+//        
+//        /*
+//         * (non-Javadoc)
+//         * @see android.widget.CompoundButton.OnCheckedChangeListener#onCheckedChanged(android.widget.CompoundButton, boolean)
+//         */
+//        @Override
+//        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//            int position = Integer.parseInt((String)buttonView.getTag());
+//            getItem(position).isSubscrided = isChecked;
+//        }
+//    }
     
     /**
      * ########### DIALOGS ###########  
