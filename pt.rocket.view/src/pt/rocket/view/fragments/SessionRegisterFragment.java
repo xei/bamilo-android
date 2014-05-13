@@ -3,6 +3,7 @@
  */
 package pt.rocket.view.fragments;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -19,6 +20,7 @@ import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.factories.FormFactory;
 import pt.rocket.forms.Form;
+import pt.rocket.forms.NewsletterOption;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.objects.Errors;
@@ -85,7 +87,8 @@ public class SessionRegisterFragment extends BaseFragment {
 
     private static DynamicForm serverForm;
     private DynamicFormItem termsLink;
-
+    private DynamicFormItem newsletterSubscribe;
+    
     private String terms;
 
     private LinearLayout container;
@@ -324,7 +327,7 @@ public class SessionRegisterFragment extends BaseFragment {
             @Override
             public void onClick(View arg0) {
                 Log.d(TAG, "registerButton onClick");
-
+                
                 if (serverForm != null && !serverForm.checkRequired()) {
                     registerRequiredText.setVisibility(View.VISIBLE);
                     return;
@@ -495,7 +498,12 @@ public class SessionRegisterFragment extends BaseFragment {
     void requestRegister() {
         // Create Event Manager
         ContentValues values = serverForm.save();
-        Log.d(TAG, "REGISTER VALUES: " + values.toString());
+        String newsletterType = getSubscribeType();
+        if(newsletterType != null && values.containsKey(newsletterSubscribe.getName())){
+            values.remove(newsletterSubscribe.getName());
+            values.put(newsletterSubscribe.getName(), newsletterType);
+
+        }
         triggerRegister(values);
     }
 
@@ -606,6 +614,29 @@ public class SessionRegisterFragment extends BaseFragment {
         }
     }
 
+    private String getSubscribeType(){
+        String result = null;
+        newsletterSubscribe = serverForm.getItemByKey(RestConstants.JSON_NEWSLETTER_CATEGORIES_SUBSCRIBED_TAG);
+        if(newsletterSubscribe == null){
+            return result;
+        }
+        
+        ArrayList<NewsletterOption> newsletterOptions = serverForm.getForm().getFieldKeyMap().get(RestConstants.JSON_NEWSLETTER_CATEGORIES_SUBSCRIBED_TAG).newsletterOptions;
+        
+        if(((CheckBox) newsletterSubscribe.getEditControl()).isChecked()){
+            DynamicFormItem genderForm = serverForm.getItemByKey(RestConstants.JSON_GENDER_TAG);
+            if(newsletterOptions!=null){
+                for (NewsletterOption newsletterOption : newsletterOptions) {
+                    if(newsletterOption.label.toLowerCase().contains(genderForm.getValue().toLowerCase())){
+                        result = newsletterOption.value;
+                        return result;
+                    }
+                }
+            }
+        }
+        return result;
+    }
+    
     private void setTermsListener() {
 
         termsLink = serverForm.getItemByKey(RestConstants.JSON_TERMS_TAG);

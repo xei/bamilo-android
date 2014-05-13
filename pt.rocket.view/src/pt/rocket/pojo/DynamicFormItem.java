@@ -922,7 +922,7 @@ public class DynamicFormItem {
     	params.setMargins((int) (3 * this.scale), context.getResources().getDimensionPixelSize(R.dimen.margin_midhuge), 0, 0);
     	// checkbox.setTextSize(context.getResources().getDimension(R.dimen.text_xs));
     	checkbox.setPadding(
-                checkbox.getPaddingLeft() + context.getResources().getDimensionPixelSize(R.dimen.margin_mid), 
+    	        scale > 1 ? 0 : checkbox.getPaddingLeft() + context.getResources().getDimensionPixelSize(R.dimen.margin_mid), // if scale greater then 1 dont use padding
                 checkbox.getPaddingTop(), 
                 checkbox.getPaddingRight(), 
                 checkbox.getPaddingBottom());
