@@ -372,7 +372,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
             LayoutInflater mLayoutInflater = LayoutInflater.from(getBaseActivity());
             Set<String> priceRulesKeys = cart.getPriceRules().keySet();
             for (String key : priceRulesKeys) {
-                View priceRuleElement = mLayoutInflater.inflate(R.layout.price_rules_element, null);
+                View priceRuleElement = mLayoutInflater.inflate(R.layout.price_rules_summary_element, null);
                 ((TextView) priceRuleElement.findViewById(R.id.price_rules_label)).setText(key);
                 ((TextView) priceRuleElement.findViewById(R.id.price_rules_value)).setText("-"+CurrencyFormatter.formatCurrency(cart.getPriceRules().get(key)));
                 priceRulesContainer.addView(priceRuleElement);
