@@ -412,6 +412,8 @@ public class RestConstants {
 	public static final String JSON_BRANDS_TAG = "brands";
 	public static final String JSON_ERROR_MESSAGE_TAG = "error_message";
 	public static final String JSON_NOTICE_MESSAGE_TAG = "notice_message";
+	public static final String JSON_IS_DEFAULT_TAG = "is_default";
+	public static final String JSON_RULES_TAG = "rules";
 
 	/**
 	 * Featured Items

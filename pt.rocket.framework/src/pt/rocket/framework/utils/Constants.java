@@ -31,6 +31,7 @@ public class Constants {
 	public static final String BUNDLE_NEXT_STEP_KEY = "next_step";
 	public static final String BUNDLE_METADATA_REQUIRED_KEY = "metadata_required";
 	public static final String BUNDLE_ORDER_SUMMARY_KEY = "order_summary";
+	public static final String BUNDLE_RESPONSE_SUCCESS_MESSAGE_KEY = "responsesuccessmessage";
 	/**
 	 * Test bundle information - key used to pass the result of the assertion made for the generic rules
 	 */

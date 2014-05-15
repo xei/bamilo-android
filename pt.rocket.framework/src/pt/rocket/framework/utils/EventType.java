@@ -186,8 +186,14 @@ public enum EventType {
 	
 	SUBSCRIBE_NEWSLETTERS_EVENT("https:/customer/managenewsletters/", RestContract.NO_CACHE),
 	
-	;
-    
+	GET_HOME_NEWSLETTERS_SIGNUP_FORM_EVENT("newslettersignup", RestContract.MAX_CACHE_TIME),
+	
+	GET_HOME_NEWSLETTERS_SIGNUP_FORM_FALLBACK_EVENT("http:/forms/newslettersignup/", RestContract.MAX_CACHE_TIME),
+	
+	HOME_NEWSLETTERS_SIGNUP_FORM_EVENT,
+	
+	HOME_NEWSLETTERS_SIGNUP_FORM_FALLBACK_EVENT("https:/newsletter/signup/", RestContract.MAX_CACHE_TIME);
+
     public final String action;
     public final Integer cacheTime;
 

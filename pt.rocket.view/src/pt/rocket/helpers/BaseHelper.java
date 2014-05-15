@@ -1,17 +1,18 @@
 package pt.rocket.helpers;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.Errors;
+import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.utils.JSONConstants;
-
 import android.os.Bundle;
 import android.util.Log;
 
@@ -74,21 +75,25 @@ public abstract class BaseHelper {
             // removing unnecessary information from bundle
             bundle.remove(Constants.BUNDLE_RESPONSE_KEY);
             if (success) {
+                JSONObject messagesObject = jsonObject.optJSONObject(JSONConstants.JSON_MESSAGES_TAG);
+                if (messagesObject != null) {
+                    JSONArray messages = messagesObject.getJSONArray(RestConstants.JSON_SUCCESS_TAG);
+                    if (messages != null && messages.length() > 0) {
+                        bundle.putString(Constants.BUNDLE_RESPONSE_SUCCESS_MESSAGE_KEY, messages.getString(0));
+                    }
+                }
                 return parseResponseBundle(bundle, metaData);
             } else if(eventType == EventType.GET_PRODUCTS_EVENT){
                 JSONObject messagesObject = jsonObject
                         .optJSONObject(JSONConstants.JSON_MESSAGES_TAG);
-                HashMap<String, List<String>> errors = Errors
-                        .createErrorMessageMap(messagesObject);
+                HashMap<String, List<String>> errors = Errors.createErrorMessageMap(messagesObject);
                 bundle.putSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY, errors);
                 bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, ErrorCode.REQUEST_ERROR);
                 bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
                 return parseResponseErrorBundle(bundle,metaData);
             } else {
-                JSONObject messagesObject = jsonObject
-                        .optJSONObject(JSONConstants.JSON_MESSAGES_TAG);
-                HashMap<String, List<String>> errors = Errors
-                        .createErrorMessageMap(messagesObject);
+                JSONObject messagesObject = jsonObject.optJSONObject(JSONConstants.JSON_MESSAGES_TAG);
+                HashMap<String, List<String>> errors = Errors.createErrorMessageMap(messagesObject);
                 bundle.putSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY, errors);
                 bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, ErrorCode.REQUEST_ERROR);
                 bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
