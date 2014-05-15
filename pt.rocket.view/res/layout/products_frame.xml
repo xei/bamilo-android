@@ -50,7 +50,7 @@
             android:background="@drawable/filter_header" />
     </RelativeLayout>
 
-    <ScrollView
+    <pt.rocket.utils.ScrollViewWithHorizontal
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/catalog_viewpager_container"
@@ -189,6 +189,6 @@
                 android:textSize="@dimen/text_s"
                 android:visibility="visible" />
         </LinearLayout>
-    </ScrollView>
+    </pt.rocket.utils.ScrollViewWithHorizontal>
 
 </RelativeLayout>
