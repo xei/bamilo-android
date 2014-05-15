@@ -50,30 +50,29 @@ public class FeaturedBox implements IJSONSerializable, Parcelable {
 
 		JSONObject data = metadataObject.getJSONObject(RestConstants.JSON_DATA_TAG);
 		if (data != null) {
-			//one List for all products from all categories
+			//one List for all products
 			products = new ArrayList<FeaturedItem>();
 
 			JSONArray featuredBoxObject = data.getJSONArray(RestConstants.JSON_FEATURED_BOX_TAG);
 			if (featuredBoxObject != null && featuredBoxObject.length() > 0) {
-				for (int i = 0; i < featuredBoxObject.length(); i++) {
-					JSONObject productsCategoryObject = featuredBoxObject.getJSONObject(i);
-					if (productsCategoryObject != null) {
-						// get title from fist list of products
-						if (TextUtils.isEmpty(productsTitle)) {
-							productsTitle = productsCategoryObject.optString(RestConstants.JSON_TITLE_TAG);
-						}
+				// get products only from the first list
+				JSONObject productsCategoryObject = featuredBoxObject.getJSONObject(0);
+				if (productsCategoryObject != null) {
+					// get title
+					if (TextUtils.isEmpty(productsTitle)) {
+						productsTitle = productsCategoryObject.optString(RestConstants.JSON_TITLE_TAG);
+					}
 
-						JSONArray productsObject = productsCategoryObject.getJSONArray(RestConstants.JSON_PRODUCTS_TAG);
-						if (productsObject != null && productsObject.length() > 0) {
-							// get products
-							for (int j = 0; j < productsObject.length(); j++) {
-								JSONObject productObject = productsObject.getJSONObject(j);
-								FeaturedProduct product = new FeaturedProduct();
+					JSONArray productsObject = productsCategoryObject.getJSONArray(RestConstants.JSON_PRODUCTS_TAG);
+					if (productsObject != null && productsObject.length() > 0) {
+						// get products
+						for (int j = 0; j < productsObject.length(); j++) {
+							JSONObject productObject = productsObject.getJSONObject(j);
+							FeaturedProduct product = new FeaturedProduct();
 
-								// only use products properly initialized
-								if (product.initialize(productObject)) {
-									products.add(product);
-								}
+							// only use products properly initialized
+							if (product.initialize(productObject)) {
+								products.add(product);
 							}
 						}
 					}
@@ -85,25 +84,24 @@ public class FeaturedBox implements IJSONSerializable, Parcelable {
 
 			JSONArray featuredBrandboxObject = data.getJSONArray(RestConstants.JSON_FEATURED_BRANDBOX_TAG);
 			if (featuredBrandboxObject != null && featuredBrandboxObject.length() > 0) {
-				for (int i = 0; i < featuredBrandboxObject.length(); i++) {
-					JSONObject brandsCategoryObject = featuredBrandboxObject.getJSONObject(i);
-					if (brandsCategoryObject != null) {
-						// get title from fist list of brands
-						if (TextUtils.isEmpty(brandsTitle)) {
-							brandsTitle = brandsCategoryObject.optString(RestConstants.JSON_TITLE_TAG);
-						}
+				// get brands only from the first list
+				JSONObject brandsCategoryObject = featuredBrandboxObject.getJSONObject(0);
+				if (brandsCategoryObject != null) {
+					// get title from fist list of brands
+					if (TextUtils.isEmpty(brandsTitle)) {
+						brandsTitle = brandsCategoryObject.optString(RestConstants.JSON_TITLE_TAG);
+					}
 
-						JSONArray brandsObject = brandsCategoryObject.getJSONArray(RestConstants.JSON_BRANDS_TAG);
-						if (brandsObject != null && brandsObject.length() > 0) {
-							// get brands
-							for (int j = 0; j < brandsObject.length(); j++) {
-								JSONObject brandObject = brandsObject.getJSONObject(j);
-								FeaturedBrand brand = new FeaturedBrand();
+					JSONArray brandsObject = brandsCategoryObject.getJSONArray(RestConstants.JSON_BRANDS_TAG);
+					if (brandsObject != null && brandsObject.length() > 0) {
+						// get brands
+						for (int j = 0; j < brandsObject.length(); j++) {
+							JSONObject brandObject = brandsObject.getJSONObject(j);
+							FeaturedBrand brand = new FeaturedBrand();
 
-								// only use brands properly initialized
-								if (brand.initialize(brandObject)) {
-									brands.add(brand);
-								}
+							// only use brands properly initialized
+							if (brand.initialize(brandObject)) {
+								brands.add(brand);
 							}
 						}
 					}
