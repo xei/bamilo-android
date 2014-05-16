@@ -990,6 +990,7 @@ public class HomeFragment extends BaseFragment {
             // add maxLength validation
             if (emailValidation.max > 0) {
                 InputFilter[] inputFilters = new InputFilter[] { new InputFilter.LengthFilter(emailValidation.max) };
+                newsletterEmail.setFilters(inputFilters);
             }
 
             class NewsletterGenderClickListener implements OnClickListener {

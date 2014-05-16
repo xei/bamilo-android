@@ -114,9 +114,47 @@ public class HomeNewslettersSignupForm implements IJSONSerializable, Parcelable 
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(action);
         dest.writeString(emailField);
         dest.writeString(categoryField);
         dest.writeParcelable(emailValidation, flags);
         dest.writeMap(categories);
+        dest.writeValue(isValid);
     }
+
+    /**
+     * Parcel constructor
+     * 
+     * @param in
+     */
+    private HomeNewslettersSignupForm(Parcel in) {
+        
+        action = in.readString();
+        emailField = in.readString();
+        categoryField = in.readString();
+        emailValidation = in.readParcelable(FieldValidation.class.getClassLoader());
+        // read Hashmap
+        categories = new LinkedHashMap<String, String>();
+        int numberCategories = in.readInt();
+        for (int i = 0; i< numberCategories ; i++){
+            String key = in.readString();
+            String value = in.readString();
+            categories.put(key, value);
+        }
+        // read boolean
+        in.readBooleanArray(new boolean[] {isValid});
+    }
+
+    /**
+     * Create parcelable
+     */
+    public static final Parcelable.Creator<HomeNewslettersSignupForm> CREATOR = new Parcelable.Creator<HomeNewslettersSignupForm>() {
+        public HomeNewslettersSignupForm createFromParcel(Parcel in) {
+            return new HomeNewslettersSignupForm(in);
+        }
+
+        public HomeNewslettersSignupForm[] newArray(int size) {
+            return new HomeNewslettersSignupForm[size];
+        }
+    };
 }
