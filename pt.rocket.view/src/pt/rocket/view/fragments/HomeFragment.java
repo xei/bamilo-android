@@ -1226,28 +1226,26 @@ public class HomeFragment extends BaseFragment {
         }
 
         /**
-         * Get success message from bundle
+         * Get success message from resources depending on eventType
          * 
          * @param bundle
          * 
-         * @return the message, or <code>null</code> if success messsage on <code>bundle</code>
+         * @return the respective message or "ok"
          */
         String getSuccessMessage(Bundle bundle, EventType eventType) {
             String successMessage = null;
 
-            successMessage = bundle.getString(Constants.BUNDLE_RESPONSE_SUCCESS_MESSAGE_KEY);
+            // successMessage = bundle.getString(Constants.BUNDLE_RESPONSE_SUCCESS_MESSAGE_KEY);
 
-            if (TextUtils.isEmpty(successMessage)) {
-                switch (eventType) {
-                case HOME_NEWSLETTERS_SIGNUP_FORM_EVENT:
-                    // newsletter success message
-                    successMessage = getString(R.string.newsletter_success_message);
+            switch (eventType) {
+            case HOME_NEWSLETTERS_SIGNUP_FORM_EVENT:
+                // newsletter success message
+                successMessage = getString(R.string.newsletter_success_message);
 
-                    break;
-                default:
-                    // default error message
-                    successMessage = getString(R.string.ok_label);
-                }
+                break;
+            default:
+                // default "success" message
+                successMessage = getString(R.string.ok_label);
             }
 
             return successMessage;
