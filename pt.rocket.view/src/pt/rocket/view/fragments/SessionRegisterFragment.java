@@ -623,7 +623,8 @@ public class SessionRegisterFragment extends BaseFragment {
         
         ArrayList<NewsletterOption> newsletterOptions = serverForm.getForm().getFieldKeyMap().get(RestConstants.JSON_NEWSLETTER_CATEGORIES_SUBSCRIBED_TAG).newsletterOptions;
         
-        if(((CheckBox) newsletterSubscribe.getEditControl()).isChecked()){
+
+        if(newsletterSubscribe.getEditControl() != null && ((CheckBox) newsletterSubscribe.getEditControl()).isChecked()){
             DynamicFormItem genderForm = serverForm.getItemByKey(RestConstants.JSON_GENDER_TAG);
             if(newsletterOptions!=null){
                 for (NewsletterOption newsletterOption : newsletterOptions) {
