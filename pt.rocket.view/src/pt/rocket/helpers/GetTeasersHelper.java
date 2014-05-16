@@ -39,26 +39,25 @@ public class GetTeasersHelper extends BaseHelper {
 
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
-    	Log.d(TAG, "parseResponseBundle GetTeasersHelper");
-    	
-    	
+        Log.d(TAG, "parseResponseBundle GetTeasersHelper");
         try {
             JSONArray dataArray = jsonObject.getJSONArray(RestConstants.JSON_DATA_TAG);
-            int dataArrayLenght = dataArray.length();
-            ArrayList<Homepage> homepageSpecifications = new ArrayList<Homepage>();
-            for (int i = 0; i < dataArrayLenght; ++i) {
-                Homepage homepage = new Homepage();
-                homepage.initialize(dataArray.getJSONObject(i));
-                homepageSpecifications.add(homepage);
+            int dataArrayLength = dataArray.length();
+            if (dataArrayLength > 0) {
+                ArrayList<Homepage> homepageSpecifications = new ArrayList<Homepage>();
+                for (int i = 0; i < dataArrayLength; ++i) {
+                    Homepage homepage = new Homepage();
+                    homepage.initialize(dataArray.getJSONObject(i));
+                    homepageSpecifications.add(homepage);
+                }
+                bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, homepageSpecifications);
+                Log.i(TAG, "Teasers size: " + homepageSpecifications.size());
+            } else {
+                Log.e(TAG, "Teasers size: 0");
             }
-           bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, homepageSpecifications);
-           
-           Log.i(TAG,"Teasers size "+homepageSpecifications.size());
-           
-                     
-       } catch (JSONException e) {
-           e.printStackTrace();
-       }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
     	bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_TEASERS_EVENT);
         return bundle;
