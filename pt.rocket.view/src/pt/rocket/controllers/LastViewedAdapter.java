@@ -68,16 +68,14 @@ public class LastViewedAdapter extends PagerAdapter {
         return count;
     }
 
-    private View generateElement(int position) {
-        View view = mLayoutInflater.inflate(R.layout.element_last_viewed, null, false);
-
-        return view;
-    }
-
     @Override
     public Object instantiateItem(ViewGroup container, final int position) {
-        // Log.i(TAG, "code1last positions is : "+position);
-        View view = mLayoutInflater.inflate(R.layout.element_last_viewed, container, false);
+    	// only use the landscape layout when partialSize > 3
+        int viewId = R.layout.element_last_viewed;
+        if (this.partialSize > 3) {
+            viewId = R.layout.element_last_viewed_landscape;
+        }
+        View view = mLayoutInflater.inflate(viewId, container, false);
         if (position * this.partialSize < this.mLastViewedList.size()) {
             RelativeLayout mElement1 = (RelativeLayout) view.findViewById(R.id.element_1);
             mElement1.setOnClickListener(new OnClickListener() {

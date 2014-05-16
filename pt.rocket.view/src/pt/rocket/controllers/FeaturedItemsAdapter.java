@@ -78,8 +78,12 @@ public class FeaturedItemsAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, final int position) {
-        // Log.i(TAG, "positions is : "+position);
-        View view = mLayoutInflater.inflate(R.layout.element_last_viewed, container, false);
+        int viewId =  R.layout.element_last_viewed;
+        // only use the landscape layout when partialSize > 3
+        if (this.partialSize > 3) {
+            viewId = R.layout.element_last_viewed_landscape;
+        }
+        View view = mLayoutInflater.inflate(viewId, container, false);
 
         int featureListSize = this.mFeaturedList.size();
 

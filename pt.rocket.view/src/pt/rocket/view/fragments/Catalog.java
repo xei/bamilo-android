@@ -32,6 +32,8 @@ import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -331,12 +333,44 @@ public class Catalog extends BaseFragment implements OnClickListener {
             getView().findViewById(R.id.no_results_search_terms).setVisibility(View.VISIBLE);
             String errorMessage = featuredBox.getErrorMessage();
             if (!TextUtils.isEmpty(errorMessage)) {
-                ((TextView) getView().findViewById(R.id.no_results_search_error_message)).setText(errorMessage);
+                TextView textViewErrorMessage = (TextView) getView().findViewById(R.id.no_results_search_error_message);
+
+                // set search term in bold, if it exits on errorMessage
+                boolean isSearchQueryInErrorMessage = false;
+                if (errorMessage.contains(searchQuery)) {
+                    int startIndex = errorMessage.indexOf(searchQuery);
+                    if (startIndex > 0) {
+                        SpannableStringBuilder spannableErrorMessage = new SpannableStringBuilder(errorMessage);
+                        spannableErrorMessage.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD), startIndex, startIndex + searchQuery.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        textViewErrorMessage.setText(spannableErrorMessage);
+
+                        isSearchQueryInErrorMessage = true;
+                    }
+                }
+                if (!isSearchQueryInErrorMessage) {
+                    textViewErrorMessage.setText(errorMessage);
+                }
             }
 
             String searchTips = featuredBox.getSearchTips();
             if (!TextUtils.isEmpty(searchTips)) {
-                ((TextView) getView().findViewById(R.id.no_results_search_tips_text)).setText(searchTips);
+                TextView textViewSearchTips= (TextView) getView().findViewById(R.id.no_results_search_tips_text);
+
+             // set first line bold, if searchTips has multiple lines
+                boolean isSearchTipsMultiline = false;
+                if (searchTips.contains("\n")) {
+                    int endIndex = searchTips.indexOf("\n");
+                    if (endIndex > 0) {
+                        SpannableStringBuilder spannableSearchTips = new SpannableStringBuilder(searchTips);
+                        spannableSearchTips.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD), 0, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        textViewSearchTips.setText(spannableSearchTips);
+
+                        isSearchTipsMultiline = true;
+                    }
+                }
+                if (!isSearchTipsMultiline) {
+                    textViewSearchTips.setText(searchTips);
+                }
             }
 
             // define how many items will be displayed on the viewPager
@@ -379,6 +413,10 @@ public class Catalog extends BaseFragment implements OnClickListener {
     private void generateFeaturedProductsLayout(ArrayList<FeaturedItem> featuredProducts, int partialSize){
         View mLoadingFeaturedProducts = getView().findViewById(R.id.loading_featured_products);
         mFeaturedProductsViewPager = (ViewPager) getView().findViewById(R.id.featured_products_viewpager);
+        // try to use portrait layout if there are less products than what the default layout would present
+        if (featuredProducts.size() < partialSize) {
+            partialSize = 3;
+        }
         FeaturedItemsAdapter mFeaturedProductsAdapter = new FeaturedItemsAdapter(getBaseActivity(), featuredProducts, LayoutInflater.from(getActivity()), partialSize);
         mFeaturedProductsViewPager.setAdapter(mFeaturedProductsAdapter);
         mFeaturedProductsViewPager.setVisibility(View.VISIBLE);
@@ -393,6 +431,10 @@ public class Catalog extends BaseFragment implements OnClickListener {
     private void generateFeaturedBrandsLayout(ArrayList<FeaturedItem> featuredBrandsList, int partialSize){
         View mLoadingFeaturedBrands = getView().findViewById(R.id.loading_featured_brands);
         mFeaturedBrandsViewPager = (ViewPager) getView().findViewById(R.id.featured_brands_viewpager);
+        // try to use portrait layout if there are less brands than what the default layout would present
+        if (featuredBrandsList.size() < partialSize) {
+            partialSize = 3;
+        }
         FeaturedItemsAdapter mFeaturedBrandsAdapter = new FeaturedItemsAdapter(getBaseActivity(), featuredBrandsList, LayoutInflater.from(getActivity()), partialSize);
         mFeaturedBrandsViewPager.setAdapter(mFeaturedBrandsAdapter);
         mFeaturedBrandsViewPager.setVisibility(View.VISIBLE);

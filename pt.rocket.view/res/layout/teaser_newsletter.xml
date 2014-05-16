@@ -42,7 +42,7 @@
                 android:layout_centerHorizontal="true" />
 
             <org.holoeverywhere.widget.Button
-                android:id="@+id/newsletter_first_button"
+                android:id="@+id/newsletter_first_btn"
                 style="@style/button_grey_style"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

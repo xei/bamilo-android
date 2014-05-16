@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:weightSum="3" >
+    android:weightSum="5" >
 
     <RelativeLayout
         android:id="@+id/element_1"
@@ -105,6 +105,76 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/name_3"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="6.6dp"
+            android:textColor="@color/red_middle"
+            android:textSize="@dimen/text_xs" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/element_4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" >
+
+        <ImageView
+            android:id="@+id/img_4"
+            android:layout_width="97.02dp"
+            android:layout_height="69dp"
+            android:layout_centerHorizontal="true" />
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/name_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/img_4"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="6.6dp"
+            android:lines="2"
+            android:maxLines="2"
+            android:textColor="@color/grey_middle"
+            android:textSize="@dimen/text_xs" />
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/price_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/name_4"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="6.6dp"
+            android:textColor="@color/red_middle"
+            android:textSize="@dimen/text_xs" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/element_5"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" >
+
+        <ImageView
+            android:id="@+id/img_5"
+            android:layout_width="97.02dp"
+            android:layout_height="69dp"
+            android:layout_centerHorizontal="true" />
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/name_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/img_5"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="6.6dp"
+            android:lines="2"
+            android:maxLines="2"
+            android:textColor="@color/grey_middle"
+            android:textSize="@dimen/text_xs" />
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/price_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/name_5"
             android:layout_centerHorizontal="true"
             android:layout_margin="6.6dp"
             android:textColor="@color/red_middle"
