@@ -563,7 +563,9 @@ public class HomeFragment extends BaseFragment {
     /**
      * This method will invalidate the HomeNewsletterSignupForm handler avoiding an infinite loop-
      */
-    private void invalidateHomeNewsletterSignupForm() {
+    private static void invalidateHomeNewsletterSignupForm() {
+        Log.i(TAG, "invalidateHomeNewsletterSignupForm");
+
         mHomeNewsletterSignupForm = new HomeNewslettersSignupForm();
         mHomeNewsletterSignupForm.isValid = false;
     }
@@ -625,18 +627,16 @@ public class HomeFragment extends BaseFragment {
 
     public void onErrorEvent(Bundle bundle) {
         if (!isVisible()) {
+            return;
+        }
+
+        if (getBaseActivity() != null && getBaseActivity().handleErrorEvent(bundle)) {
             invalidateHomeNewsletterSignupForm();
 
             return;
         }
-        
-        if(getBaseActivity()!= null && getBaseActivity().handleErrorEvent(bundle)){
-            invalidateHomeNewsletterSignupForm();
 
-            return;
-        }
-        
-        if(getBaseActivity() == null){
+        if (getBaseActivity() == null) {
             return;
         }
 
@@ -946,18 +946,21 @@ public class HomeFragment extends BaseFragment {
             newsletterView.findViewById(R.id.loading_newsletter).setVisibility(View.VISIBLE);
 
             // check if mHomeNewsletterSignupForm is already set with response
-            if (HomeFragment.mHomeNewsletterSignupForm == null){
+            if (HomeFragment.mHomeNewsletterSignupForm == null) {
+                Log.i(TAG, "newsLetterSubscribe is null");
+
                 // pass View newsletterView to handler
                 Message msg = new Message();
                 msg.obj = newsletterView;
 
                 handlerProccessNewsletterSubscribe.sendMessageDelayed(msg, DELAY_FOR_NEWSLETTER_RETRY);
-            }else if (HomeFragment.mHomeNewsletterSignupForm.isValid) {
+            } else if (HomeFragment.mHomeNewsletterSignupForm.isValid) {
                 Log.i(TAG, "newsLetterSubscribe visible");
 
                 showNewsletterSubscribe(newsletterView);
             } else {
-                //is not valid
+                Log.i(TAG, "newsLetterSubscribe invalid");
+                // is not valid
                 newsletterView.setVisibility(View.GONE);
             }
 
@@ -1135,10 +1138,14 @@ public class HomeFragment extends BaseFragment {
             baseActivity.dismissProgress();
 
             if (baseActivity != null && baseActivity.handleErrorEvent(bundle)) {
+                invalidateHomeNewsletterSignupForm();
+
                 return;
             }
 
             if (baseActivity == null) {
+                invalidateHomeNewsletterSignupForm();
+
                 return;
             }
 

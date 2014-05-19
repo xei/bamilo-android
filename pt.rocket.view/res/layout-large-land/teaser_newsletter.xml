@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" >
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/margin_midhuge" >
 
     <org.holoeverywhere.widget.TextView
         android:id="@+id/newsletter_subscription"
@@ -13,9 +14,11 @@
         android:id="@+id/newsletter_form_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/newsletter_subscription" >
+        android:layout_below="@id/newsletter_subscription"
+        android:layout_marginLeft="@dimen/margin_huge"
+        android:layout_marginRight="@dimen/margin_huge" >
 
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/buttons_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -23,29 +26,29 @@
             android:layout_below="@id/newsletter_subscription" >
 
             <View
-                android:id="@+id/reference_view"
-                android:layout_width="@dimen/margin_mid"
-                android:layout_height="match_parent"
-                android:layout_centerHorizontal="true" />
+                android:layout_width="60dp"
+                android:layout_height="match_parent" />
 
             <org.holoeverywhere.widget.Button
                 android:id="@+id/newsletter_first_btn"
                 style="@style/button_grey_style"
-                android:layout_width="240dp"
+                android:layout_width="@dimen/newsletter_homepage_button_width"
                 android:layout_height="wrap_content"
-                android:layout_toLeftOf="@id/reference_view"
                 android:ellipsize="marquee"
                 android:singleLine="true" />
+
+            <View
+                android:layout_width="@dimen/margin_huge"
+                android:layout_height="match_parent" />
 
             <org.holoeverywhere.widget.Button
                 android:id="@+id/newsletter_second_btn"
                 style="@style/button_grey_style"
-                android:layout_width="240dp"
+                android:layout_width="@dimen/newsletter_homepage_button_width"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/reference_view"
                 android:ellipsize="marquee"
                 android:singleLine="true" />
-        </RelativeLayout>
+        </LinearLayout>
 
         <org.holoeverywhere.widget.EditText
             android:id="@+id/newsletter_subscription_value"
@@ -71,5 +74,17 @@
 
         <include layout="@layout/loading_bar_simple" />
     </RelativeLayout>
+
+    <View
+        android:id="@+id/newsletter_spacer"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/newsletter_homepage_bottom_margin"
+        android:layout_below="@id/newsletter_form_container" />
+
+    <View
+        android:id="@+id/teaser_group_title_divider"
+        style="@style/line_grey_style"
+        android:layout_below="@id/newsletter_spacer"
+        android:layout_marginBottom="0dp" />
 
 </RelativeLayout>
