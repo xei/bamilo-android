@@ -77,7 +77,7 @@ public abstract class BaseHelper {
             if (success) {
                 JSONObject messagesObject = jsonObject.optJSONObject(JSONConstants.JSON_MESSAGES_TAG);
                 if (messagesObject != null) {
-                    JSONArray messages = messagesObject.getJSONArray(RestConstants.JSON_SUCCESS_TAG);
+                    JSONArray messages = messagesObject.optJSONArray(RestConstants.JSON_SUCCESS_TAG);
                     if (messages != null && messages.length() > 0) {
                         bundle.putString(Constants.BUNDLE_RESPONSE_SUCCESS_MESSAGE_KEY, messages.getString(0));
                     }
