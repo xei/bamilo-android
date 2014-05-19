@@ -24,8 +24,8 @@
     <dimen name="campaign_size_spinner_width">70dp</dimen>
 
     <!-- NO RESULTS PAGE -->
-    <dimen name="no_results_top_margin">80dp</dimen>
-    <dimen name="no_results_bottom_margin">70dp</dimen>
+    <dimen name="no_results_top_margin">60dp</dimen>
+    <dimen name="no_results_bottom_margin">50dp</dimen>
     <dimen name="no_results_search_tips_width">@dimen/match_parent</dimen>
 	<dimen name="no_results_brands_height">177dp</dimen>
 	
