@@ -422,4 +422,6 @@ public class RestConstants {
 	public static final String JSON_FEATURED_BRANDBOX_TAG = "featured_brandbox";
 	public static final String JSON_FEATURED_SEARCH_TIPS_TAG = "search_tips";
 
+	public static final String JSON_ITEM_TAG = "item";
+	public static final String JSON_RELEVANCE_TAG = "relevance";
 }

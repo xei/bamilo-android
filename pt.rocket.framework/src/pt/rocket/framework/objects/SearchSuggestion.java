@@ -1,13 +1,12 @@
 package pt.rocket.framework.objects;
 
-import java.util.Iterator;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pt.rocket.framework.rest.RestConstants;
 import android.os.Parcel;
 import android.os.Parcelable;
-
+import android.text.TextUtils;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -37,16 +36,20 @@ public class SearchSuggestion implements IJSONSerializable, Parcelable {
 	@Override
 	public boolean initialize(JSONObject jsonObject) throws JSONException {
 		try {
-			@SuppressWarnings("unchecked")
-			Iterator<String> keys = (Iterator<String>)jsonObject.keys();
-			result = (String) keys.next();
-			value = jsonObject.getInt(result);
-		
-		} catch ( JSONException e ) {
-			Log.d( TAG, "error parsing json: ", e);
-			return false;
+			if (jsonObject != null) {
+				String item = jsonObject.getString(RestConstants.JSON_ITEM_TAG);
+				if (!TextUtils.isEmpty(item)) {
+					result = item;
+
+					value = jsonObject.getInt(RestConstants.JSON_RELEVANCE_TAG);
+
+					return true;
+				}
+			}
+		} catch (JSONException e) {
+			Log.d(TAG, "error parsing json: ", e);
 		}
-		return true;
+		return false;
 	}
 
 	/*
