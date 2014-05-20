@@ -29,7 +29,11 @@ public class Constants {
 	public static final String BUNDLE_WRONG_PARAMETER_MESSAGE_KEY = "parametererrormessage";
 	public static final String BUNDLE_ERROR_OCURRED_KEY = "errorocurred";
 	public static final String BUNDLE_NEXT_STEP_KEY = "next_step";
-	public static final String BUNDLE_METADATA_REQUIRED_KEY = "metadata_required";
+	
+	public static final String BUNDLE_METADATA_REQUIRED_KEY = "no_metada";
+	public static final String BUNDLE_GENERAL_RULES_FALSE_KEY = "general_rules_false";
+	public static final String BUNDLE_GENERAL_RULES_GET_COUNTRIES_KEY = "general_rules_get_countries_key";
+	
 	public static final String BUNDLE_ORDER_SUMMARY_KEY = "order_summary";
 	public static final String BUNDLE_RESPONSE_SUCCESS_MESSAGE_KEY = "responsesuccessmessage";
 	/**
