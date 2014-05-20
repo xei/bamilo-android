@@ -9,23 +9,13 @@ Feature: Registration feature
   	And I select the country
 	And I wait for 5 seconds
     Then I open the navigation menu
+    * I wait for 1 seconds
     And I choose the Sign In option
     * I wait for 1 seconds
     And I press the create account button
-    * I wait for 1 seconds
+    * I wait for 3 seconds
     When I press the register button
     Then I should see the mandatory fields error message
-    
-    @register_t
-    Scenario: I check the Terms and Conditions page.
-    Then I open the navigation menu
-    And I choose the Sign In option
-    * I wait for 1 seconds
-    And I press the create account button
-    * I wait for 5 seconds
-    When I press Terms and Conditions
-    Then I should see the Terms and Conditions
-    And I go back
     
     @register_r
     Scenario: I try to register with an email that already exists
@@ -33,7 +23,7 @@ Feature: Registration feature
     And I choose the Sign In option
     * I wait for 1 seconds
     And I press the create account button
-    * I wait for 1 seconds
+    * I wait for 3 seconds
     When I enter a valid username
     And I enter the password
     And I enter the repeated password
@@ -42,7 +32,8 @@ Feature: Registration feature
     And I press birthday
     And I press Ok
     And I press male
-    And I check Terms and Conditions
+    #And I check Terms and Conditions
+    * I wait for 1 seconds
     And I press the register button
 	Then I should see the email exists error message
 	And I press Ok
@@ -53,7 +44,7 @@ Feature: Registration feature
     And I choose the Sign In option
     * I wait for 1 seconds
     And I press the create account button
-    * I wait for 1 seconds
+    * I wait for 3 seconds
 	When I enter a valid username
     And I enter the password
     And I enter the wrong repeated password
@@ -72,7 +63,7 @@ Feature: Registration feature
     And I choose the Sign In option
     * I wait for 1 seconds
     And I press the create account button
-    * I wait for 1 seconds
+    * I wait for 3 seconds
     When I enter a random email
     And I enter the password
     And I enter the repeated password

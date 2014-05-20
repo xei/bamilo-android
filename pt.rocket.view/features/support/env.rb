@@ -2,11 +2,16 @@
 require 'calabash-android/cucumber'
 
 $country = ENV['country']
+$branch = ENV['branch']
   
 def initvars
   
-  #@dev=" Dev"
-  @dev=""
+  case $branch.to_s
+  when "staging"
+    @dev=" Staging"
+  else
+    @dev=""
+  end
   
   @username="testcalabash@mailinator.com"
   @password="password1"
@@ -49,7 +54,7 @@ def initvars
   @termsandconditionscheck="Terms and Conditions"
   @termsandconditions="Terms and Conditions"
   @password_changed_message="Password changed with success"
-  @save="Save"
+  
   @differentpassword="Passwords do not match"
   
   #password recovery
@@ -166,6 +171,32 @@ def initvars
     @valid_order="300095859"
     @no_track_results="No results found"
     
+    #related items
+    @related_items="Related Items"
+    
+    @newsletter_checkbox="testesteste"
+    
+    @email_notifications="Email Notifications"
+    
+    @newsletter="Newsletters"
+    @newsletter_male="Newsletter Male"
+    @newsletter_female="Newsletter Female"
+    
+    @login="Login"
+    
+    @register="Register"
+    
+    @notification_newsletter_changes="Vos préférences eMails ont été enregistrées"
+    
+    @no_result_found="n'a donné aucun résultat"
+    @search_tips="Conseils d'utilisation de la barre de recherche"
+    
+    @newsletter_subscription="Newsletter Subscription"
+    
+    @invalid_email_message="Email non valide"
+    
+    @save="Save"
+    
     ##### Ivory Coast ####################################### IC ##############################################################################          
     when "ic"
     @venture_name="Ivory Coast"
@@ -185,7 +216,7 @@ def initvars
     @checkout1="TestPayment"
     @checkout3="Confirm Order"
       
-    @emailerrormessage="dans le Email";
+    @emailerrormessage="dans le E-mail";
     @passerrormessage="dans le Mot de passe";
      
     @loginerror="L'authentification a échoué"
@@ -207,7 +238,7 @@ def initvars
     #password recovery
     @forgot_password="Mot de passe oublié ?"
     @password_recovery="Récupération de mot de passe"
-    @pass_rec_empty_email="S'il vous plait écrire dans le Email"
+    @pass_rec_empty_email="S'il vous plait écrire dans le"
     @pass_rec_failed="Le renouvellement du mot de passe a échoué"
     @pass_rec_sent="Email envoyé"
     
@@ -227,7 +258,7 @@ def initvars
     @brand="MARQUE"
     
     #product detail
-    @first_tip="Balayez vers la gauche ou la droite pour"
+    @first_tip="vers la gauche ou la droite pour"
     @second_tip="Cliquez pour voir l'ensemble"
     @specification="Caractéristiques"
     @please_choose="Choisissez"
@@ -266,6 +297,31 @@ def initvars
     
     @valid_order="300028219"
     @no_track_results="Aucun résultat pour le numéro"
+    
+    @related_items="Produits Similaires"
+    
+    @newsletter_checkbox="Je m'inscris à la newsletter"
+    
+    @email_notifications="Préférence eMails"
+    
+    @login="Connectez-vous"
+    
+    @newsletter="Newsletters"
+    @newsletter_male="Newsletter Male"
+    @newsletter_female="Newsletter Female"
+    
+    @register="Enregistrer"
+    
+    @notification_newsletter_changes="Vos préférences eMails ont été enregistrées"
+    
+    @no_result_found="n'a donné aucun résultat"
+    @search_tips="Conseils d'utilisation de la barre de recherche"
+    
+    @newsletter_subscription="Newsletter Subscription"
+    
+    @invalid_email_message="Email non valide"
+    
+    @save="Enregistrer"
       
     ##### Morocco ########################################### MA ##############################################################################
     when "ma"
@@ -278,7 +334,7 @@ def initvars
     @myaccount="Mon compte"
     @myinfo="Les données de"
     @categories="Catégories"
-    @categoryfashion="Informatique"
+    @categoryfashion="Téléphonie"
     @choose_country="Choisir le pays"
     @order_status="Suivre la commande"
     
@@ -286,7 +342,7 @@ def initvars
     @checkout1="TestPayment"
     @checkout3="Confirm Order"
     
-    @emailerrormessage="dans le Email";
+    @emailerrormessage="dans le E-mail";
     @passerrormessage="dans le Mot de passe";
     
     @loginerror="L'authentification a échoué"
@@ -308,7 +364,7 @@ def initvars
     #password recovery
     @forgot_password="Mot de passe oublié ?"
     @password_recovery="Récupération de mot de passe"
-    @pass_rec_empty_email="S'il vous plait écrire dans le Email"
+    @pass_rec_empty_email="S'il vous plait écrire dans le"
     @pass_rec_failed="Le renouvellement du mot de passe a échoué"
     @pass_rec_sent="Email envoyé"
     
@@ -328,11 +384,11 @@ def initvars
     @brand="MARQUE"
     
     #product detail
-    @first_tip="Balayez vers la gauche ou la droite pour"
+    @first_tip="vers la gauche ou la droite pour"
     @second_tip="Cliquez pour voir l'ensemble"
     @specification="Caractéristiques"
     @please_choose="Choisissez"
-    @search_v="bottes en daim"
+    @search_v="bottes à talons"
     @product_features="Spécificités du produit"
     @product_description="Description du produit"
     @write_review="Donnez-nous notre avis"
@@ -348,25 +404,50 @@ def initvars
     #native checkout
     @proceed_to_checkout="Valider la commande"
     @next="Suivant"
-    @pay_on_delivery="Payer cash à la livraison"
+    @pay_on_delivery="Paiement à la livraison"
     @confirm_order="Confirmer la commande"
     
     @popular_categories="Nos Meilleures Catégories"
-    @filter="Filter"
+    @filter="Filtre"
     @filter_brand="Brand"
     @filter_size="Size"
     @filter_color_family="Color family"
     @filter_price="Price"
     
-    @done="Done"
-    @clear_all="CLEAR ALL"
-    @new_in="NEW IN"
-    @best_rating="BEST RATING"
+    @done="Valider"
+    @clear_all="TOUT EFFACER"
+    @new_in="NOUVEAUTÉS"
+    @best_rating="MIEUX NOTÉS"
     @back="Appuyez de nouveau sur retour si vous souhaitez quitter l'app"
     @search_r="dane elec"
     
     @valid_order="300452452"
     @no_track_results="Aucun résultat pour le numéro"
+    
+    @related_items="Produits Similaires"
+    
+    @newsletter_checkbox="testestesteste"
+    
+    @email_notifications="Préférence eMails"
+    
+    @login="Connectez-vous"
+    
+    @newsletter="Newsletters"
+    @newsletter_male="Newsletter Male"
+    @newsletter_female="Newsletter Female"
+    
+    @register="Enregistrer"
+    
+    @notification_newsletter_changes="Vos préférences eMails ont été enregistrées"
+    
+    @no_result_found="n'a donné aucun résultat"
+    @search_tips="Conseils d'utilisation de la barre de recherche"
+    
+    @newsletter_subscription="Newsletter Subscription"
+    
+    @invalid_email_message="Email non valide"
+    
+    @save="Enregistrer"
         
     ##### Nigeria ########################################### NG ##############################################################################
     when "ng"
@@ -464,6 +545,31 @@ def initvars
     @valid_order="304442242"
     @no_track_results="No results found"
     
+    @related_items="Produits Similaires"
+    
+    @newsletter_checkbox="testestesteste"
+    
+    @email_notifications="Email Notifications"
+    
+    @login="Connectez-vous"
+    
+    @newsletter="Newsletters"
+    @newsletter_male="Newsletter Male"
+    @newsletter_female="Newsletter Female"
+    
+    @register="Enregistrer"
+    
+    @notification_newsletter_changes="Vos préférences eMails ont été enregistrées"
+    
+    @no_result_found="n'a donné aucun résultat"
+    @search_tips="Conseils d'utilisation de la barre de recherche"
+    
+    @newsletter_subscription="Newsletter Subscription"
+    
+    @invalid_email_message="Email non valide"
+    
+    @save="Save"
+    
     ##### Egypt ############################################# EG ##############################################################################
     when "eg"
     @venture_name="Egypt"
@@ -560,6 +666,31 @@ def initvars
     @valid_order="300573169"
     @no_track_results="No results found"
     
+    @related_items="Produits Similaires"
+    
+    @newsletter_checkbox="testestesteste"
+    
+    @email_notifications="Email Notifications"
+    
+    @login="Connectez-vous"
+    
+    @newsletter="Newsletters"
+    @newsletter_male="Newsletter Male"
+    @newsletter_female="Newsletter Female"
+    
+    @register="Enregistrer"
+    
+    @notification_newsletter_changes="Vos préférences eMails ont été enregistrées"
+    
+    @no_result_found="n'a donné aucun résultat"
+    @search_tips="Conseils d'utilisation de la barre de recherche"
+    
+    @newsletter_subscription="Newsletter Subscription"
+    
+    @invalid_email_message="Email non valide"
+    
+    @save="Save"
+    
     ##### Uganda  ############################################ UG ##############################################################################
     when "ug"
     @venture_name="Uganda"
@@ -655,5 +786,30 @@ def initvars
     
     @valid_order="400093859"
     @no_track_results="No results found"
+    
+    @related_items="Produits Similaires"
+    
+    @newsletter_checkbox="testestesteste"
+    
+    @email_notifications="Email Notifications"
+    
+    @login="Connectez-vous"
+    
+    @newsletter="Newsletters"
+    @newsletter_male="Newsletter Male"
+    @newsletter_female="Newsletter Female"
+    
+    @register="Enregistrer"
+    
+    @notification_newsletter_changes="Vos préférences eMails ont été enregistrées"
+    
+    @no_result_found="n'a donné aucun résultat"
+    @search_tips="Conseils d'utilisation de la barre de recherche"
+    
+    @newsletter_subscription="Newsletter Subscription"
+    
+    @invalid_email_message="Email non valide"
+    
+    @save="Save"
   end
 end

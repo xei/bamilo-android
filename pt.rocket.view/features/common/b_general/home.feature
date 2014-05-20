@@ -28,12 +28,13 @@ Feature: Initial app features
 	@home_check @Calabash_Tests @teste123
 	Scenario: Home should appear when i open the app
 	When I select the country
-	* I wait for 5 seconds
+	* I wait for 8 seconds
 	Then I should see the home
 	
 	@sidebar_check @Calabash_Tests @teste123
 	Scenario: Check the sidebar layout
 	#When I select the country
-	* I wait for 5 seconds
+	* I wait for 8 seconds
 	Given I open the navigation menu
+	* I wait for 2 seconds
 	Then I should see the sidebar

@@ -31,7 +31,7 @@ When I click in Filter
 And I press list item number 1
 And I press list item number 2
 And I press Done
-And I press Done
+#And I press Done
 
 @filters_c
 Scenario: Remove All Filters
@@ -72,7 +72,7 @@ And I press list item number 1
 And I press list item number 2
 And I press Done
 * I wait for 3 seconds
-And I press Done
+#And I press Done
 
 @filters_e
 Scenario: Close the filter screen

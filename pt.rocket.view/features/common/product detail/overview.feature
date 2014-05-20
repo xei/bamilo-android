@@ -12,6 +12,7 @@ Feature: Check the product detail view
     And I enter Categories
 	And I enter a valid Category
 	And I press list item number 1
+	* I wait for 2 seconds
 	And I press list item number 2
 	* I wait for 5 seconds
 	And I press Got it

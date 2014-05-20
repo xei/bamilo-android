@@ -138,3 +138,13 @@ Then /^I write a valid result on the search bar$/ do
   performAction('clear_id_field', "search_component")
   performAction('enter_text_into_id_field',"surf", "search_component")
 end
+
+Then /^I write a invalid result on the search bar$/ do
+  performAction('clear_id_field', "search_component")
+  performAction('enter_text_into_id_field',"testeasdasdasdifgasldjkhalsjkdhalksjdh", "search_component")
+end
+
+Then /^I write a valid email on the newsletter subscription field$/ do
+  performAction('clear_id_field', "newsletter_subscription_value")
+  performAction('enter_text_into_id_field',"testeasdasdasdifgasldjkhalsjkdhalksjdh", "newsletter_subscription_value")
+end

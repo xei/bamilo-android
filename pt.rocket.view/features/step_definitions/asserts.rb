@@ -60,7 +60,12 @@ Then /^I should see the login button$/ do
 end
 
 Then /^I should see the Terms and Conditions$/ do
-  performAction('assert_text', @termsandconditions.to_s, true)
+  case $country.to_s
+  when "teste"
+    performAction('assert_text', @termsandconditionscheck.to_s, true)
+  else
+    
+  end
 end
 
 Then /^I should see the password changed with success message$/ do
@@ -274,4 +279,61 @@ end
 
 Then /^I should see the thank you screen$/ do
   performAction('click_on_view_by_id', "btn_checkout_continue", true)
+end
+
+Then /^I (should|should not) see the related items$/ do |related|
+  case related.to_s
+  when "should"
+    performAction('assert_text', @related_items.to_s, true)
+  when "should not"
+    performAction('assert_text', @related_items.to_s, false)
+  end
+  
+end
+
+Then /^I should see the price$/ do
+  performAction('assert_text', @currency.to_s, true)
+end
+
+Then /^I should see the newsletter checkbox$/ do
+  performAction('assert_text', @newsletter_checkbox.to_s, true)
+end
+
+Then /^I should see the email notifications section$/ do
+  performAction('assert_text', @email_notifications.to_s, true)
+end
+
+Then /^I should see login screen$/ do
+  performAction('assert_text', @login.to_s, true)
+end
+
+Then /^I should see newsletter (title|header|options)$/ do |newsletter|
+  case newsletter.to_s
+  when "title"
+    performAction('assert_text', @email_notifications.to_s, true)
+  when "header"
+    performAction('assert_text', @newsletter.to_s, true)
+  when "options"
+    
+  end
+end
+
+Then /^I should see the notification newsletter changes$/ do
+  performAction('assert_text', @notification_newsletter_changes.to_s, true)
+end
+
+Then /^I should see the no results text$/ do
+  performAction('assert_text', @no_result_found.to_s, true)
+end
+
+Then /^I should see the search tips$/ do
+  performAction('assert_text', @search_tips.to_s, true)
+end
+
+Then /^I should see newsletter subscription section$/ do
+  performAction('assert_text', @newsletter_subscription.to_s, true)
+end
+
+Then /^I should see the newsletter message error$/ do
+  performAction('assert_text', @invalid_email_message.to_s, true)
 end

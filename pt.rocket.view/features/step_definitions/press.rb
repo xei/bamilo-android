@@ -26,7 +26,7 @@ Then /^I press the create account button$/ do
 end
 
 Then /^I press the register button$/ do
-  performAction('click_on_view_by_id', @registerbutton_id.to_s)
+  performAction('click_on_text', @register.to_s)
 end
 
 Then /^I press Submit$/ do
@@ -120,7 +120,14 @@ Then /^I press birthday$/ do
 end
 
 Then /^I check Terms and Conditions$/ do
-  performAction('press',@termsandconditionscheck.to_s)
+  case $country.to_s
+  when "teste"
+    performAction('press',@termsandconditionscheck.to_s)
+  else
+    
+  end
+  
+  
 end
 
 Then /^I press Save$/ do
@@ -288,3 +295,30 @@ end
     system("adb shell input keyevent 26");
   end
   
+  Then /^I press on a related item$/ do
+    performAction('click_on_screen',20, 80)
+  end
+  
+  Then /^I check newsletter$/ do
+    performAction('click_on_text', @newsletter_checkbox.to_s)
+  end
+  
+  Then /^I enter email notifications$/ do
+      performAction('click_on_text', @email_notifications.to_s)
+  end
+  
+  Then /^I enter save$/ do
+        performAction('click_on_text', @register.to_s)
+  end
+  
+  Then /^I check newsletter male$/ do
+          performAction('click_on_text', @newsletter_male.to_s)
+  end
+
+  Then /^I press the newsletter Male$/ do
+    performAction('click_on_view_by_id', "newsletter_male_btn")
+  end
+  
+  Then /^I click on register$/ do
+    performAction('click_on_screen', 50, 90)
+  end

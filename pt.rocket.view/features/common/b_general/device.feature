@@ -6,6 +6,7 @@ Given I call the variables
 
 @back
 Scenario: Warning Close Pop-up
+* I wait for 5 seconds
 And I select the country
 And I wait for 5 seconds
 When I go back

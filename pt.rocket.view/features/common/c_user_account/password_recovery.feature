@@ -20,6 +20,7 @@ Feature: Recover the password
 	
 	@password_rec_w
 	Scenario: Request a link with a non registered email
+	* I wait for 5 seconds
 	When I open the navigation menu
 	And I choose the Sign In option
 	Then I should see the forgot password link

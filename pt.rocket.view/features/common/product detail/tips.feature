@@ -11,7 +11,9 @@ Feature: Tips
     And I enter Categories
 	* I wait for 3 seconds
 	And I enter a valid Category
+	* I wait for 2 seconds
 	And I press list item number 1
+	* I wait for 5 seconds
 	And I press list item number 2
 	* I wait for 3 seconds
 	Then I should see the first tip
@@ -21,7 +23,9 @@ Feature: Tips
 	
 	Scenario: Close the tips
     When I open the navigation menu
+    * I wait for 1 seconds
     And I enter Categories
+    * I wait for 1 seconds
 	And I enter a valid Category
 	And I press list item number 1
 	* I wait for 3 seconds

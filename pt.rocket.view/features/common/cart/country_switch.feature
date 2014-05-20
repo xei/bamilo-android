@@ -23,7 +23,9 @@ Feature: Country switch
 	@country_switch
 	Scenario: Country switch
 	And I press Choose Country
+	* I wait for 2 seconds
 	And I press list item number 7
+	* I wait for 1 seconds
 	Then I should see the clear the cart message
 	And I press Yes
 	* I wait for 5 seconds

@@ -26,6 +26,7 @@ Background:
    	* I wait for 5 seconds 
    	And I press list item number 1
    	When I press product specifications
+   	* I wait for 5 seconds
    	Then I should see the product features
    	And I should see the product description
   	
@@ -37,8 +38,9 @@ Background:
 #   	And I press list item number 1
    	* I wait for 5 seconds 
    	And I press list item number 1
+   	* I wait for 2 seconds 
    	When I press Rating
-   	* I wait for 5 seconds 
+   	* I wait for 10 seconds 
    	Then I should see the write a review button
    	
    	@review_detail
@@ -65,7 +67,7 @@ Background:
    	And I press list item number 1
    	* I wait for 3 seconds
    	When I press Rating
-	* I wait for 5 seconds 	
+	* I wait for 10 seconds 	
    	And I press Write a Review
    	* I wait for 2 seconds
   	And I fill the review information
