@@ -286,6 +286,54 @@ function CheckoutFinish($countries){
 	Test($countries, $test, $function);
 }
 
+function GetCampaign($countries){
+	$test = "CampaignTest";
+	$function = "testCampaign";
+	Test($countries, $test, $function);
+}
+
+function GetSearchUndefined($countries){
+	$test = "SearchUndefinedTest";
+	$function = "testSearchUndefined";
+	Test($countries, $test, $function);
+}
+
+function SignupNewsletter($countries){
+	$test = "SignupNewsletterTest";
+	$function = "testSignupNewsletter";
+	Test($countries, $test, $function);
+}
+
+function ManageNewsletter($countries){
+	$test = "ManageNewsletterTest";
+	$function = "testManageNewsletter";
+	Test($countries, $test, $function);
+}
+
+function CartDataTest($countries){
+	$test = "CartDataTest";
+	$function = "testCartData";
+	Test($countries, $test, $function);
+}
+
+function OrderSummaryTest($countries){
+	$test = "OrderSummaryTest";
+	$function = "testOrderSummary";
+	Test($countries, $test, $function);
+}
+
+function GetCountriesTest($countries){
+	$test = "GetCountriesTest";
+	$function = "testCountries";
+	Test($countries, $test, $function);
+}
+
+function GetCountryConfigsTest($countries){
+	$test = "GetCountryConfigsTest";
+	$function = "testCountryConfigs";
+	Test($countries, $test, $function);
+}
+
 ## Functions #### Functions #### Functions #### Functions #### Functions #### Functions #### Functions #### Functions #### Functions #### Functions #### Functions #### Functions ##
 
 function startEmulator(){

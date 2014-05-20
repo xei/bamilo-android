@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <md5 type="string" method="getString" children="false" optional="false"/>
+    <data type="jsonobject" method="getJSONObject" children="true" optional="false">
+        <featured_box type="jsonarray" method="getJSONArray" children="true" optional="false">
+            <title type="string" method="getString" children="false" optional="false"/>
+            <label type="string" method="getString" children="false" optional="false"/>
+            <url type="string" method="getString" children="false" optional="false"/>
+            <products type="jsonarray" method="getJSONArray" children="true" optional="false">
+                <sku type="string" method="getString" children="false" optional="false"/>
+                <name type="string" method="getString" children="false" optional="false"/>
+                <max_price type="string" method="getString" children="false" optional="false"/>
+                <price type="string" method="getString" children="false" optional="false"/>
+                <max_savings_percentage type="string" method="getString" children="false" optional="false"/>
+                <brand type="string" method="getString" children="false" optional="false"/>
+                <url type="string" method="getString" children="false" optional="false"/>
+                <image type="jsonarray" method="getJSONArray" children="true" optional="false">
+                    <url type="string" method="getString" children="false" optional="false"/>
+                </image>
+            </products>
+        </featured_box>
+        <featured_brandbox type="jsonarray" method="getJSONArray" children="true" optional="false">
+            <title type="string" method="getString" children="false" optional="false"/>
+            <label type="string" method="getString" children="false" optional="false"/>
+            <url type="string" method="getString" children="false" optional="false"/>
+            <brands type="jsonarray" method="getJSONArray" children="true" optional="false">
+                <name type="string" method="getString" children="false" optional="false"/>
+                <image type="string" method="getString" children="false" optional="false"/>
+                <id type="string" method="getString" children="false" optional="false"/>
+                <url type="string" method="getString" children="false" optional="false"/>
+            </brands>
+        </featured_brandbox>
+        <search_tips type="jsonobject" method="getJSONObject" children="true" optional="false">
+            <text type="string" method="getString" children="false" optional="false"/>
+        </search_tips>
+        <error_message type="string" method="getString" children="false" optional="false"/>
+        <notice_message type="string" method="getString" children="false" optional="false"/>
+    </data>
+
+</resources>

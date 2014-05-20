@@ -57,6 +57,17 @@ GetCities($country_test);
 #SetPaymentMethods($country_test);
 #GetMyOrder($country_test);
 CheckoutFinish($country_test);
+
+#1.9
+GetCampaign($country_test);
+GetSearchUndefined($country_test);
+SignupNewsletter($country_test);
+ManageNewsletter($country_test);
+CartDataTest($country_test);
+OrderSummaryTest($country_test);
+GetCountriesTest($country_test);
+GetCountryConfigsTest($country_test);
+
 #**/
 
 /** Will change

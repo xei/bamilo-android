@@ -163,6 +163,8 @@ public class FrameworkServiceTests extends ServiceTestCase<RemoteService> {
      */
     public String sendRequest(final Bundle args, final BaseHelper helper, final pt.rocket.framework.testproject.interfaces.IResponseCallback iResponseCallback) {
     	final boolean metadataRequired = args.getBoolean(Constants.BUNDLE_METADATA_REQUIRED_KEY, true);
+    	final boolean generalFalse= args.getBoolean(Constants.BUNDLE_GENERAL_RULES_FALSE_KEY, true);
+    	final boolean generalCountries= args.getBoolean(Constants.BUNDLE_GENERAL_RULES_GET_COUNTRIES_KEY, true);
     	Bundle bundle = helper.generateRequestBundle(args);
         String md5 = Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY);
         bundle.putString(Constants.BUNDLE_MD5_KEY, md5);
@@ -173,6 +175,8 @@ public class FrameworkServiceTests extends ServiceTestCase<RemoteService> {
             public void onRequestComplete(Bundle bundle) {
                 // We have to parse this bundle to the final one
             	bundle.putBoolean(Constants.BUNDLE_METADATA_REQUIRED_KEY, metadataRequired);
+            	bundle.putBoolean(Constants.BUNDLE_GENERAL_RULES_FALSE_KEY, generalFalse);
+            	bundle.putBoolean(Constants.BUNDLE_GENERAL_RULES_GET_COUNTRIES_KEY, generalCountries);
                 Bundle formatedBundle = (Bundle) helper.checkResponseForStatus(bundle, mContext);
                 
             	if (iResponseCallback != null) {

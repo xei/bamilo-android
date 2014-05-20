@@ -207,4 +207,12 @@ public class RequestConstants {
 	public static final String SHIPPING_METHOD_NG = "UniversalShippingMatrix";
 	public static final String SHIPPING_METHOD_KE = "UniversalShippingMatrix";
 	public static final String SHIPPING_METHOD_UG = "DigitalDelivery";
+	
+	/**
+	 * Newsletter
+	 */
+	
+	public static final String SIGNUP_NEWSLETTER_CATEGORIE = "Alice_Module_Mobapi_Form_Ext1m3_Customer_NewsletterHomepageForm[newsletter_categories_subscribed]";
+	public static final String SIGNUP_NEWSLETTER_CATEGORIE_VALUE = "6";
+	public static final String SIGNUP_NEWSLETTER_EMAIL = "Alice_Module_Mobapi_Form_Ext1m3_Customer_NewsletterHomepageForm[email]";
 }
