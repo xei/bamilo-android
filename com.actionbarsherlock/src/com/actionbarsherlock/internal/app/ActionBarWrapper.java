@@ -482,6 +482,5 @@ public class ActionBarWrapper extends ActionBar implements android.app.ActionBar
 
 	@Override
 	public void updateUpState(boolean state) {
-		updateUpState(state);
 	}
 }
