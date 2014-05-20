@@ -37,6 +37,9 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -750,7 +753,13 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
             // Set discount
             view.mDiscount.setText(CurrencyFormatter.formatCurrency(""+item.getSpecialPrice()));
             // Set save
-            view.mSave.setText(CurrencyFormatter.formatCurrency(""+item.getSavePrice()));
+            String label = getString(R.string.campaign_save);
+            String value = CurrencyFormatter.formatCurrency( "" + item.getSavePrice());
+            String mainText = label + " " + value;
+            SpannableString greenValue = new SpannableString(mainText);
+            greenValue.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.grey_middle)), 0, label.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            greenValue.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.green_campaign_bar)), label.length() + 1, mainText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            view.mSave.setText(greenValue);
             view.mSave.setSelected(true);
             // Set stock bar
             setStockBar(view.mStockBar, item.getStockPercentage());
@@ -784,7 +793,7 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
          * @author sergiopereira
          */
         private void setSizeContainer(ItemView view, CampaignItem item, int position){
-            // Campaign has sizes
+            // Campaign has sizes except itself (>1)
             if(item.hasSizes()) {
                 // Show container
                 view.mSizeContainer.setVisibility(View.VISIBLE);
@@ -803,9 +812,21 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
                     view.mSizeSpinner.setSelection(item.getSelectedSizePosition());
                 // Apply the select listener
                 view.mSizeSpinner.setOnItemSelectedListener(this);
-            } else
+            } else {
                 // Hide the size container
                 view.mSizeContainer.setVisibility(View.GONE);
+                // Set itself as selected size
+                CampaignItemSize size = null;
+                try {
+                    size = item.getSizes().get(0);
+                } catch (IndexOutOfBoundsException e) {
+                    Log.w(TAG, "WARNING: IOBE ON SET SIZE SELECTION: 0");
+                } catch (NullPointerException e) {
+                    Log.w(TAG, "WARNING: NPE ON SET SELECTED SIZE: 0");
+                }
+                item.setSelectedSizePosition(0);
+                item.setSelectedSize(size);
+            }
         }
                 
         /**
@@ -866,11 +887,11 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
             // Get the campaign
             CampaignItem item = getItem(Integer.valueOf(position));
             // Get selected size
-            CampaignItemSize selectedSize = item.getSelectedSize(); 
+            CampaignItemSize selectedSize = item.getSelectedSize();
             // Add new tags
             view.setTag(PROD, item.getSku());
-            view.setTag(SKU, selectedSize.simpleSku);
-            view.setTag(SIZE, selectedSize.size);
+            view.setTag(SKU, (selectedSize != null) ? selectedSize.simpleSku : item.getSku());
+            view.setTag(SIZE, (selectedSize != null) ? selectedSize.size : "");
             view.setTag(STOCK, item.hasStock());
             //Log.d(TAG, "CAMPAIGN ON CLICK: " + item.getSku() + " " + selectedSize.simpleSku + " " +  selectedSize.size);
             // Send to listener

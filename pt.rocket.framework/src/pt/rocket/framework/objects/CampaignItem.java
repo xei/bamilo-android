@@ -264,10 +264,10 @@ public class CampaignItem implements IJSONSerializable, Parcelable {
 	}
 	
 	/**
-	 * @return the hasSizes
+	 * @return the hasSizes except itself
 	 */
 	public boolean hasSizes() {
-		return (mSizes != null && mSizes.size() > 0) ? true : false;
+		return (mSizes != null && mSizes.size() > 1) ? true : false;
 	}
 	
 	/**
@@ -502,7 +502,7 @@ public class CampaignItem implements IJSONSerializable, Parcelable {
 			savePrice = jsonObject.optDouble(RestConstants.JSON_SAVE_PRICE_TAG);
 			specialPrice = jsonObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_TAG);
 			price = jsonObject.optDouble(RestConstants.JSON_PRICE_TAG);
-			simpleSku = jsonObject.optString(RestConstants.JSON_SIMPLE_SKU_TAG);
+			simpleSku = jsonObject.optString(RestConstants.JSON_SKU_TAG);
 			return false;
 		}
 

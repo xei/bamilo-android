@@ -74,6 +74,7 @@ public enum EventType {
 	GET_CHANGE_PASSWORD_FORM_EVENT("changepassword", RestContract.MAX_CACHE_TIME),
 	
 	GET_FORGET_PASSWORD_FORM_EVENT("forgotpassword", RestContract.MAX_CACHE_TIME),
+	
 	GET_FORGET_PASSWORD_FORM_FALLBACK_EVENT("http:/forms/forgotpassword/", RestContract.MAX_CACHE_TIME),
 
     FORGET_PASSWORD_EVENT("https:/customer/forgotpassword?setDevice=mobileApi", null),
@@ -180,9 +181,9 @@ public enum EventType {
 	
 	GET_CAMPAIGN_EVENT("http:/campaign/get/", RestContract.MAX_CACHE_TIME),
 	
-	GET_NEWSLETTERS_FORM_EVENT("managenewsletters", RestContract.MAX_CACHE_TIME),
+	GET_NEWSLETTERS_FORM_EVENT("managenewsletters", RestContract.NO_CACHE),
 	
-	GET_NEWSLETTERS_FORM_FALLBACK_EVENT("http:/forms/managenewsletters/", RestContract.MAX_CACHE_TIME),
+	GET_NEWSLETTERS_FORM_FALLBACK_EVENT("http:/forms/managenewsletters/", RestContract.NO_CACHE),
 	
 	SUBSCRIBE_NEWSLETTERS_EVENT("https:/customer/managenewsletters/", RestContract.NO_CACHE),
 	

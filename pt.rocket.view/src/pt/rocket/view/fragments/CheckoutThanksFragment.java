@@ -4,7 +4,9 @@
 package pt.rocket.view.fragments;
 
 import java.util.EnumSet;
+
 import org.holoeverywhere.widget.TextView;
+
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.controllers.ActivitiesWorkFlow;
@@ -18,7 +20,6 @@ import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.ClearShoppingCartHelper;
 import pt.rocket.helpers.SetVoucherHelper;
-import pt.rocket.helpers.account.GetCustomerHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
@@ -36,9 +37,9 @@ import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.TextView.BufferType;
 import android.widget.Toast;
 import de.akquinet.android.androlog.Log;

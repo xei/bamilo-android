@@ -23,15 +23,12 @@ import pt.rocket.utils.NavigationAction;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.AbsListView.LayoutParams;
-import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
@@ -45,6 +42,8 @@ import de.akquinet.android.androlog.Log;
 public class MyAccountEmailNotificationFragment extends BaseFragment implements OnClickListener, IResponseCallback, OnCheckedChangeListener {
 
     private static final String TAG = LogTagHelper.create(MyAccountEmailNotificationFragment.class);
+    
+    private final static int UNSUBSCRIBE_VALUE = -1;
     
     private static MyAccountEmailNotificationFragment sEmailNotificationFragment;
 
@@ -202,14 +201,10 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
     private void showNewslettersForm() {
         try {
             FormField formField = mNewslettersForm.fields.get(0);
-            Context context = getBaseActivity();
-            if(mNewsletterOptions == null){
+            //if(mNewsletterOptions == null){
                 mNewsletterOptions = formField.newsletterOptions;
-            }
-            Log.i(TAG, "code1news : size : "+mNewsletterOptions.size());
-            
-//            NewsletterAdapter arrayAdapter = new NewsletterAdapter(context, mNewsletterOptions);
-//            mNewsletterList.setAdapter(arrayAdapter);
+            //}
+            //Log.i(TAG, "code1news : size : "+mNewsletterOptions.size());
             generateNewsletterOptions(LayoutInflater.from(getBaseActivity()));
             // Show form
             getBaseActivity().showContentContainer();
@@ -222,12 +217,16 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
         }
     }
 
-    
+    /**
+     * Gemerate the newsletter option and add it to container
+     * @param mLayoutInflater
+     * @author msilva
+     */
     private void generateNewsletterOptions(LayoutInflater mLayoutInflater){
         for (int i = 0; i < mNewsletterOptions.size(); i++) {
             View view = mLayoutInflater.inflate(R.layout.simple_email_notification_option, null);
             CheckBox mCheckBox = (CheckBox) view.findViewById(R.id.myaccount_newsletter_checkbox);
-            mCheckBox.setTag(""+i);
+            mCheckBox.setTag("" + i);
             mCheckBox.setText(mNewsletterOptions.get(i).label);
             mCheckBox.setChecked(mNewsletterOptions.get(i).isSubscrided);
             mCheckBox.setOnCheckedChangeListener(this);
@@ -266,6 +265,8 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
             for (NewsletterOption option : mNewsletterOptions)
                 if(option.isSubscrided)
                     values.put(option.name, option.value);
+                else 
+                    values.put(option.name, UNSUBSCRIBE_VALUE);
             Log.d(TAG, "VALUES: " + values.toString());
             triggerSubscribeNewsletters(values);
         } catch (NullPointerException e) {
