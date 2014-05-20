@@ -17,6 +17,8 @@ import android.widget.LinearLayout;
 
 import com.actionbarsherlock.internal.widget.IcsAdapterView;
 
+import de.akquinet.android.androlog.Log;
+
 /**
  * This Class defines the representation of a dynamic form
  * <p/>
@@ -333,8 +335,10 @@ public class DynamicForm implements Iterable<DynamicFormItem>{
                 model.put(control.getName().toString(), control.getValue().toString());
             } else if (null != control && null != control.getValue()) {
                 model.put(control.getName().toString(), control.getValue().toString());
-            } else {
+            } else if (null != control) {
                 model.put(control.getName().toString(), "");
+            } else {
+                Log.e(TAG, "control is null");
             }
         }
 
@@ -395,8 +399,10 @@ public class DynamicForm implements Iterable<DynamicFormItem>{
             control = it.next();
             if (null != control && null != control.getValue()) {
                 control.storeValueInField();
-            } else {
+            } else if (null != control) {
                 control.storeValueInField("");
+            } else {
+                Log.e(TAG, "control is null");
             }
         }
 

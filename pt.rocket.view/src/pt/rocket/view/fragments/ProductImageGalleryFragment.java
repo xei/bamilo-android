@@ -315,14 +315,12 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
             return;
         }
         if (galleryAdapter != null) {
-            if (imagesList != null){
-                imagesList = (ArrayList<String>) mCompleteProduct.getImageList().clone();
-            }
+            imagesList = (ArrayList<String>) mCompleteProduct.getImageList().clone();
+
             imagesList.add(0, imagesList.get(imagesList.size() - 1));
             imagesList.add(imagesList.get(1));
 
             galleryAdapter.replaceAll(imagesList);
-
         } else {
             imagesList = (ArrayList<String>) mCompleteProduct.getImageList().clone();
             imagesList.add(0, imagesList.get(imagesList.size() - 1));

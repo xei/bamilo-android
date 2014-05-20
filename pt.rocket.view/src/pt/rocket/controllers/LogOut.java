@@ -44,38 +44,42 @@ public class LogOut {
     public static void performLogOut(final WeakReference<Activity> activityRef) {
 //        final DialogProgressFragment dialog = DialogProgressFragment.newInstance();
 //        dialog.show(((FragmentActivity) activityRef.get()).getSupportFragmentManager(), null);
-        
-        ((BaseActivity) activityRef.get()).showProgress();
-        
+
+        BaseActivity baseActivity = (BaseActivity) activityRef.get();
+        if (baseActivity != null) {
+            baseActivity.showProgress();
+        }
+
         JumiaApplication.INSTANCE.sendRequest(new GetLogoutHelper(), null, new IResponseCallback() {
 
             @Override
             public void onRequestError(Bundle bundle) {
-                // 
-                ((BaseActivity) activityRef.get()).dismissProgress();
-                // 
-                if (((BaseActivity) activityRef.get()) != null) {
-                    RestClientSingleton.getSingleton(((BaseActivity) activityRef.get())).getCookieStore().clear();
+                BaseActivity baseActivity = (BaseActivity) activityRef.get();
+
+                if (baseActivity != null) {
+                    baseActivity.dismissProgress();
+
+                    RestClientSingleton.getSingleton(baseActivity).getCookieStore().clear();
                     JumiaApplication.INSTANCE.setLoggedIn(false);
                     JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
-                    TrackerDelegator.trackLogoutSuccessful(((BaseActivity) activityRef.get()));
-                    ((BaseActivity) activityRef.get()).updateSlidingMenuCompletly();
-                    ((BaseActivity) activityRef.get()).handleSuccessEvent(bundle);
+                    TrackerDelegator.trackLogoutSuccessful(baseActivity);
+                    baseActivity.updateSlidingMenuCompletly();
+                    baseActivity.handleSuccessEvent(bundle);
                 }
             }
 
             @Override
             public void onRequestComplete(Bundle bundle) {
-                // 
-                ((BaseActivity) activityRef.get()).dismissProgress();
-                // 
-                
-                if (((BaseActivity) activityRef.get()) != null) {
+                BaseActivity baseActivity = (BaseActivity) activityRef.get();
+
+                if (baseActivity != null) {
+                    baseActivity.dismissProgress();
+
                     JumiaApplication.INSTANCE.setLoggedIn(false);
-                    TrackerDelegator.trackLogoutSuccessful(((BaseActivity) activityRef.get()));
+                    TrackerDelegator.trackLogoutSuccessful(baseActivity);
                     JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
-                    ((BaseActivity) activityRef.get()).updateSlidingMenuCompletly();
-                    ((BaseActivity) activityRef.get()).handleSuccessEvent(bundle);
+                    baseActivity.updateSlidingMenuCompletly();
+                    baseActivity.handleSuccessEvent(bundle);
                 }
                 
                 //dialog.dismiss();

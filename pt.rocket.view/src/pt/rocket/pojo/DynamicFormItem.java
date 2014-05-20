@@ -538,7 +538,7 @@ public class DynamicFormItem {
 
                 while (iter.hasNext()) {
                     pair = iter.next();
-                    if (pair.getValue() == value) {
+                    if (pair.getValue().equals(value)) {
                         result = pair.getKey();
                         break;
                     }
@@ -1250,9 +1250,8 @@ public class DynamicFormItem {
                 RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         int controlWidth = RelativeLayout.LayoutParams.MATCH_PARENT;
 
-        Log.i("CONTROL", " => " + this.entry.getLabel() + " " + this.entry.getInputType());
-
         if (null != this.entry) {
+            Log.i("CONTROL", " => " + this.entry.getLabel() + " " + this.entry.getInputType());
 
             RelativeLayout dataContainer = null;
 

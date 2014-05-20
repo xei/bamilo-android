@@ -900,11 +900,12 @@ public class HomeFragment extends BaseFragment {
                 }
             }
 
-            mainView.addView(generateNewsletterSubscribe(mainView));
-            
-            if(lastViewed != null && lastViewed.size() > 0){
-               
-                mainView.addView(generateLastViewedLayout(mainView));
+            if (mainView != null) {
+                mainView.addView(generateNewsletterSubscribe(mainView));
+
+                if (lastViewed != null && lastViewed.size() > 0) {
+                    mainView.addView(generateLastViewedLayout(mainView));
+                }
             }
         }
 
@@ -1135,8 +1136,6 @@ public class HomeFragment extends BaseFragment {
             }
 
             BaseActivity baseActivity = (BaseActivity) getActivity();
-            baseActivity.dismissProgress();
-
             if (baseActivity != null && baseActivity.handleErrorEvent(bundle)) {
                 invalidateHomeNewsletterSignupForm();
 
@@ -1148,6 +1147,8 @@ public class HomeFragment extends BaseFragment {
 
                 return;
             }
+
+            baseActivity.dismissProgress();
 
             EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
 

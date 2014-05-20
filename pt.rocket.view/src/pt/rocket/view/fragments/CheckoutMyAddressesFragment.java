@@ -390,7 +390,10 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
             // Get addresses id
             String shippingAddressId = mTopRadioGroup.getCheckedTag().toString();
             String billingAddressId = mBottomRadioGroup.getCheckedTag().toString();
-            String isSameAddress = (shippingAddressId == billingAddressId) ? IS_SAME_ADDRESS : ISNT_SAME_ADDRESS;
+            String isSameAddress = ISNT_SAME_ADDRESS;
+            if (shippingAddressId != null) {
+                isSameAddress = (shippingAddressId.equals(billingAddressId)) ? IS_SAME_ADDRESS : ISNT_SAME_ADDRESS;
+            }
             // Submit values
             submitForm(shippingAddressId, billingAddressId, isSameAddress);
         } else {
