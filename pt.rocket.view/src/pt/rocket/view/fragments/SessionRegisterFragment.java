@@ -541,7 +541,7 @@ public class SessionRegisterFragment extends BaseFragment {
             // Intent resultData = new Intent();
             // resultData.putExtras(saveFormToBundle());
             // getActivity().setResult(Activity.RESULT_OK, resultData);
-            requestStore(saveFormToBundle());
+            // requestStore(saveFormToBundle());
             JumiaApplication.INSTANCE.registerForm = null;
             JumiaApplication.INSTANCE.registerSavedInstanceState = null;
             // Finish

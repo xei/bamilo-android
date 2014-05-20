@@ -11,6 +11,7 @@ import org.json.JSONObject;
 
 import pt.rocket.forms.Form;
 import pt.rocket.framework.enums.RequestType;
+import pt.rocket.framework.interfaces.IMetaData;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
@@ -51,6 +52,7 @@ public class GetNewslettersFormHelper extends BaseHelper {
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
         bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
+        bundle.putBoolean(IMetaData.MD_IGNORE_CACHE, true);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
         return bundle;
     }

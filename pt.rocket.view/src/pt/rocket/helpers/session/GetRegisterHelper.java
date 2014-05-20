@@ -31,6 +31,7 @@ public class GetRegisterHelper extends BaseHelper {
     public static final String REGISTER_CONTENT_VALUES = "contentValues";
     boolean saveCredentials = true;
     ContentValues contentValues;
+    
     @Override
     public Bundle generateRequestBundle(Bundle args) {
         Bundle bundle = new Bundle();
@@ -48,6 +49,7 @@ public class GetRegisterHelper extends BaseHelper {
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
         if (saveCredentials) {
             Log.i(TAG, "code1 saving credentials : ");
+            contentValues.remove("Alice_Module_Mobapi_Form_Ext1m3_Customer_RegistrationForm[newsletter_categories_subscribed][]");
             JumiaApplication.INSTANCE.getCustomerUtils().storeCredentials(contentValues);
             Log.i(TAG, "code1 hasCredentials : "+JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials());
         }
@@ -63,10 +65,6 @@ public class GetRegisterHelper extends BaseHelper {
         JumiaApplication.INSTANCE.CUSTOMER = new Customer(jsonObject);
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, JumiaApplication.INSTANCE.CUSTOMER);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.REGISTER_ACCOUNT_EVENT);
-//        long elapsed = System.currentTimeMillis() - JumiaApplication.INSTANCE.timeTrackerMap.get(EventType.REGISTER_ACCOUNT_EVENT);
-//        Log.i("REQUEST", "event type response : "+bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY)+" time spent : "+elapsed);
-//        String trackValue = bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY) + " : "+elapsed;
-//        JumiaApplication.INSTANCE.writeToTrackerFile(trackValue);
         return bundle;
     }
     
