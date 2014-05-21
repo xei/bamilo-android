@@ -319,7 +319,6 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
         mGridView.setVisibility(View.GONE);
         mLoadingView.setVisibility(View.VISIBLE);
         mRetryView.setVisibility(View.GONE);
-        // loadingBarView.startRendering();
     }
     
     /**
@@ -783,9 +782,6 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
         }
  
         /**
-         * 
-         * FIXME: WAITING FOR NEW JSON STRUCTURE FOR SIZES TO TEST - NAFAMZ-6478
-         *  
          * Hide or show the size container
          * @param container
          * @param spinner
@@ -794,7 +790,7 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
          */
         private void setSizeContainer(ItemView view, CampaignItem item, int position){
             // Campaign has sizes except itself (>1)
-            if(item.hasSizes()) {
+            if(!item.hasUniqueSize() && item.hasSizes()) {
                 // Show container
                 view.mSizeContainer.setVisibility(View.VISIBLE);
                 // Get sizes

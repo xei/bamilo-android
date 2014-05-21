@@ -86,6 +86,7 @@ public class CampaignItem implements IJSONSerializable, Parcelable {
 		mMaxSavingPercentage = jsonObject.optString(RestConstants.JSON_MAX_SAVING_PERCENTAGE_TAG);
 		hasUniqueSize = jsonObject.optBoolean(RestConstants.JSON_HAS_UNIQUE_SIZE_TAG);
 		
+		// Save images
 		JSONArray imagesA = jsonObject.optJSONArray(RestConstants.JSON_IMAGES_TAG);
 		if(imagesA != null && imagesA.length() > 0) {
 			mImage = imagesA.optString(0);
@@ -95,9 +96,7 @@ public class CampaignItem implements IJSONSerializable, Parcelable {
 			}
 		}
  
-		/**
-		 * FIXME: WAITING FOR NEW JSON STRUCTURE FOR SIZES TO TEST - NAFAMZ-6478
-		 */
+		// Save sizes
 		JSONArray sizesA = jsonObject.optJSONArray(RestConstants.JSON_SIZES_TAG);
 		if(sizesA != null && sizesA.length() > 0) {
 			mSizes = new ArrayList<CampaignItemSize>();
@@ -107,22 +106,6 @@ public class CampaignItem implements IJSONSerializable, Parcelable {
 					mSizes.add(new CampaignItemSize(sizeO));
 			}
 		}
-		
-		/**
-		 * TODO: REMOVE, ONLY FOR TESTS 
-		 */
-//		String[] sizes = new String[] {"S", "M", "L", "XL" , "XXL", "XXXL"};
-//		mSizes = new ArrayList<CampaignItemSize>();
-//		for (int i = 0; i < sizes.length; i++) {
-//			CampaignItemSize size = new CampaignItemSize(new JSONObject());
-//			size.size = sizes[i];
-//			size.savePrice = 1000 + i;
-//			size.specialPrice = 2600 + i;
-//			size.price = 3600 + i;
-//			size.simpleSku = "NO891ELAC52QNGAMZ-" + i;
-//			Log.d(TAG, "CAMPAIGN SIMPLE SKU: " + size.simpleSku);
-//			mSizes.add(size);
-//		}
 
 		return true;
 	}
@@ -267,7 +250,7 @@ public class CampaignItem implements IJSONSerializable, Parcelable {
 	 * @return the hasSizes except itself
 	 */
 	public boolean hasSizes() {
-		return (mSizes != null && mSizes.size() > 1) ? true : false;
+		return (mSizes != null && mSizes.size() > 0) ? true : false;
 	}
 	
 	/**
