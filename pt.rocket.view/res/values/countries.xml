@@ -91,7 +91,7 @@
     <string name="jumia_eg_server_dev">alice-staging.jumia.com.eg</string>
     <string name="jumia_eg_user_dev">rocket</string>
     <string name="jumia_eg_password_dev">rock4me</string>
-    <string name="jumia_eg_restbase_path_dev">mobapi/v1.1</string>
+    <string name="jumia_eg_restbase_path_dev">mobapi/v1.3</string>
     <string name="jumia_eg_country_name_dev">Egypt Staging</string>
 
     <!-- Jumia Ivory Coast Configuration -->

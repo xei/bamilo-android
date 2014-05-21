@@ -53,6 +53,10 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
 
     private ArrayList<NewsletterOption> mNewsletterOptions;
 
+    private LayoutInflater mInflater;
+
+    private Form mNewslettersFormSaved;
+
     /**
      * Create new instance
      * @return MyAccountEmailNotificationFragment
@@ -95,6 +99,13 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
+        // Get inflater
+        mInflater = LayoutInflater.from(getBaseActivity());
+        // Validate the saved state
+        if(savedInstanceState != null && savedInstanceState.containsKey(TAG)){
+            Log.i(TAG, "ON GET SAVED STATE");
+            mNewslettersFormSaved = savedInstanceState.getParcelable(TAG);
+        }
     }
     
     /*
@@ -151,6 +162,17 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
         super.onResume();
         Log.i(TAG, "ON RESUME");
     }
+    
+    /*
+     * (non-Javadoc)
+     * @see android.support.v4.app.Fragment#onSaveInstanceState(android.os.Bundle)
+     */
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.i(TAG, "ON SAVE INSTANCE STATE: NEWSLETTER FORM");
+        outState.putParcelable(TAG, mNewslettersForm);
+    }
 
     /*
      * (non-Javadoc)
@@ -201,11 +223,8 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
     private void showNewslettersForm() {
         try {
             FormField formField = mNewslettersForm.fields.get(0);
-            //if(mNewsletterOptions == null){
-                mNewsletterOptions = formField.newsletterOptions;
-            //}
-            //Log.i(TAG, "code1news : size : "+mNewsletterOptions.size());
-            generateNewsletterOptions(LayoutInflater.from(getBaseActivity()));
+            mNewsletterOptions = formField.newsletterOptions;
+            generateNewsletterOptions(mNewsletterOptions, mNewsletterList);
             // Show form
             getBaseActivity().showContentContainer();
         } catch (IndexOutOfBoundsException e) {
@@ -219,18 +238,20 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
 
     /**
      * Gemerate the newsletter option and add it to container
-     * @param mLayoutInflater
+     * @param layoutInflater
      * @author msilva
+     * @param newsletterOptions 
+     * @param newsletterList 
      */
-    private void generateNewsletterOptions(LayoutInflater mLayoutInflater){
-        for (int i = 0; i < mNewsletterOptions.size(); i++) {
-            View view = mLayoutInflater.inflate(R.layout.simple_email_notification_option, null);
-            CheckBox mCheckBox = (CheckBox) view.findViewById(R.id.myaccount_newsletter_checkbox);
-            mCheckBox.setTag("" + i);
-            mCheckBox.setText(mNewsletterOptions.get(i).label);
-            mCheckBox.setChecked(mNewsletterOptions.get(i).isSubscrided);
-            mCheckBox.setOnCheckedChangeListener(this);
-            mNewsletterList.addView(view);
+    private void generateNewsletterOptions(ArrayList<NewsletterOption> newsletterOptions, LinearLayout newsletterList){
+        for (int i = 0; i < newsletterOptions.size(); i++) {
+            View view = mInflater.inflate(R.layout.simple_email_notification_option, null);
+            CheckBox checkBox = (CheckBox) view.findViewById(R.id.myaccount_newsletter_checkbox);
+            checkBox.setTag("" + i);
+            checkBox.setText(newsletterOptions.get(i).label);
+            checkBox.setChecked(newsletterOptions.get(i).isSubscrided);
+            checkBox.setOnCheckedChangeListener(this);
+            newsletterList.addView(view);
         }
     }
     
@@ -335,6 +356,10 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
             Form form = (Form) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             // Save the form
             mNewslettersForm = form;
+            // Validate saved form on rotation
+            if(mNewslettersFormSaved != null)
+                mNewslettersForm = mNewslettersFormSaved;
+            // Clean options
             mNewsletterOptions = null;
             // Show the form
             showNewslettersForm();
@@ -425,10 +450,14 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
         onSuccessEvent(bundle);
     }
 
+    /*
+     * (non-Javadoc)
+     * @see android.widget.CompoundButton.OnCheckedChangeListener#onCheckedChanged(android.widget.CompoundButton, boolean)
+     */
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        Log.i(TAG, "code1news : "+Integer.parseInt((String)buttonView.getTag())+" isChecked? "+isChecked);
-        mNewsletterOptions.get(Integer.parseInt((String)buttonView.getTag())).isSubscrided = isChecked;
+        int position = Integer.parseInt((String)buttonView.getTag());
+        mNewsletterOptions.get(position).isSubscrided = isChecked;
     }
     
 

@@ -8,6 +8,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:paddingLeft="@dimen/margin_huge"
+        android:paddingRight="@dimen/margin_mid"
         android:background="@android:color/white"
         android:button="@null"
         android:drawableRight="@drawable/btn_check_holo_light"
@@ -15,7 +17,6 @@
         android:gravity="left|center"
         android:paddingBottom="@dimen/margin_large"
         android:paddingTop="@dimen/margin_large"
-        android:text="@string/newsletter_male_label"
         android:textColor="@color/grey_dark"
         android:textSize="@dimen/text_l" />
 
