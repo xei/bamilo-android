@@ -54,8 +54,8 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
     private ArrayList<NewsletterOption> mNewsletterOptions;
 
     private LayoutInflater mInflater;
-
-    private Form mNewslettersFormSaved;
+    
+    private ArrayList<NewsletterOption> mNewsletterOptionsSaved;
 
     /**
      * Create new instance
@@ -104,7 +104,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
         // Validate the saved state
         if(savedInstanceState != null && savedInstanceState.containsKey(TAG)){
             Log.i(TAG, "ON GET SAVED STATE");
-            mNewslettersFormSaved = savedInstanceState.getParcelable(TAG);
+            mNewsletterOptionsSaved = savedInstanceState.getParcelableArrayList(TAG);
         }
     }
     
@@ -171,7 +171,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Log.i(TAG, "ON SAVE INSTANCE STATE: NEWSLETTER FORM");
-        outState.putParcelable(TAG, mNewslettersForm);
+        outState.putParcelableArrayList(TAG, mNewsletterOptions);
     }
 
     /*
@@ -223,7 +223,10 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
     private void showNewslettersForm() {
         try {
             FormField formField = mNewslettersForm.fields.get(0);
-            mNewsletterOptions = formField.newsletterOptions;
+            if(mNewsletterOptionsSaved != null)
+                mNewsletterOptions = mNewsletterOptionsSaved;
+            else
+                mNewsletterOptions = formField.newsletterOptions;
             generateNewsletterOptions(mNewsletterOptions, mNewsletterList);
             // Show form
             getBaseActivity().showContentContainer();
@@ -356,9 +359,6 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
             Form form = (Form) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             // Save the form
             mNewslettersForm = form;
-            // Validate saved form on rotation
-            if(mNewslettersFormSaved != null)
-                mNewslettersForm = mNewslettersFormSaved;
             // Clean options
             mNewsletterOptions = null;
             // Show the form
