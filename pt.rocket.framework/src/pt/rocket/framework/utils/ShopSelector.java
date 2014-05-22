@@ -53,7 +53,7 @@ public final class ShopSelector {
 		RestContract.init(context, shopId);
 		RestClientSingleton.init(context);
 
-		String currencyCode = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ISO, null);
+		String currencyCode = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_ISO, null);
 //		Log.i(TAG, "code1 currency code is :_ "+currencyCode);
 		CurrencyFormatter.initialize(context, currencyCode);
 		AnalyticsGoogle.startup(context, shopId);
