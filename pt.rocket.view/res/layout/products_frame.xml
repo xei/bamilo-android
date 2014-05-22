@@ -91,10 +91,10 @@
                 android:layout_width="@dimen/no_results_search_tips_width"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:paddingBottom="@dimen/margin_veryhuge"
+                android:paddingBottom="@dimen/margin_huge"
                 android:paddingLeft="@dimen/margin_midhuge"
                 android:paddingRight="@dimen/margin_midhuge"
-                android:paddingTop="@dimen/margin_veryhuge" >
+                android:paddingTop="@dimen/margin_huge" >
 
                 <org.holoeverywhere.widget.TextView
                     android:id="@+id/no_results_search_tips_title"
@@ -130,7 +130,7 @@
                     android:id="@+id/featured_products_title"
                     style="@style/activity_sectionheader_text"
                     android:layout_marginBottom="@dimen/margin_mid"
-                    android:layout_marginLeft="@dimen/margin_mid" />
+                    android:layout_marginLeft="@dimen/margin_huge" />
 
                 <android.support.v4.view.ViewPager
                     android:id="@+id/featured_products_viewpager"
@@ -164,7 +164,7 @@
                     android:id="@+id/featured_brands_title"
                     style="@style/activity_sectionheader_text"
                     android:layout_marginBottom="@dimen/margin_mid"
-                    android:layout_marginLeft="@dimen/margin_mid" />
+                    android:layout_marginLeft="@dimen/margin_huge" />
 
                 <android.support.v4.view.ViewPager
                     android:id="@+id/featured_brands_viewpager"

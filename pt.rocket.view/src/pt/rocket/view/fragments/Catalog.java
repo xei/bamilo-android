@@ -337,11 +337,16 @@ public class Catalog extends BaseFragment implements OnClickListener {
 
                 // set search term in bold, if it exits on errorMessage
                 boolean isSearchQueryInErrorMessage = false;
+
+                errorMessage = getErrorMessageWithOriginalSearchQuery(errorMessage, searchQuery);
+
+                // set seachQuery in bold if is contained in errorMessage
                 if (errorMessage.contains(searchQuery)) {
-                    int startIndex = errorMessage.indexOf(searchQuery);
+                    String newSearchQuery = "\"" + searchQuery + "\"";
+                    int startIndex = errorMessage.indexOf(newSearchQuery);
                     if (startIndex > 0) {
                         SpannableStringBuilder spannableErrorMessage = new SpannableStringBuilder(errorMessage);
-                        spannableErrorMessage.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD), startIndex, startIndex + searchQuery.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        spannableErrorMessage.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD), startIndex, startIndex + newSearchQuery.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                         textViewErrorMessage.setText(spannableErrorMessage);
 
                         isSearchQueryInErrorMessage = true;
@@ -403,7 +408,37 @@ public class Catalog extends BaseFragment implements OnClickListener {
             Log.e(TAG, "No featureBox!");
         }
     }
-    
+
+    /**
+     * get errorMessage with <code>searchQuery</code> (text between " ") replaced by original
+     * <code>searchQuery</code>
+     * 
+     * @param errorMessage
+     * @param searchQuery
+     * @return <code>errorMessage</code> with original searchQuery, or original
+     *         <code>errorMessage</code> if processing wasn't successful
+     */
+    private String getErrorMessageWithOriginalSearchQuery(String errorMessage, String searchQuery) {
+        int startIndex = errorMessage.indexOf("\"");
+        if (startIndex > 0) {
+            int lastEndIndex = 0;
+            int endIndex = errorMessage.indexOf("\"", startIndex + 1);
+            // get last index of "
+            while (endIndex > 0) {
+                lastEndIndex = endIndex;
+                endIndex = errorMessage.indexOf("\"", lastEndIndex + 1);
+            }
+            if (lastEndIndex > 0) {
+                StringBuilder newErrorMessage = new StringBuilder();
+                newErrorMessage.append(errorMessage.substring(0, startIndex + 1));
+                newErrorMessage.append(searchQuery);
+                newErrorMessage.append(errorMessage.substring(lastEndIndex, errorMessage.length()));
+
+                return newErrorMessage.toString();
+            }
+        }
+        return errorMessage;
+    }
 
     /**
      * Fill adapter with featured products
