@@ -9,10 +9,10 @@
     <string-array name="users"></string-array>
     <string-array name="passwords"></string-array>
     <string-array name="restbase_paths"></string-array>
-    <string-array name="currency_codes"></string-array>
-    <string-array name="shop_names"></string-array>
-    <string-array name="country_names"></string-array>
-    <string-array name="language_codes"></string-array>
+<!--     <string-array name="currency_codes"></string-array> -->
+<!--     <string-array name="shop_names"></string-array> -->
+<!--     <string-array name="country_names"></string-array> -->
+<!--     <string-array name="language_codes"></string-array> -->
 	<string-array name="country_protocol"></string-array>
     
     <integer-array name="icons"></integer-array>
