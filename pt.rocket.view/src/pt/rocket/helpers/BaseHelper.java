@@ -49,8 +49,12 @@ public abstract class BaseHelper {
         try {// TODO maintain generic information here, no need to pass on the
              // full object in order
             JSONObject jsonObject = new JSONObject(response);
-
             Boolean success = jsonObject.optBoolean(JSONConstants.JSON_SUCCESS_TAG, false);
+            if(eventType == EventType.GET_GLOBAL_CONFIGURATIONS){
+                success = true;
+                return parseResponseBundle(bundle, jsonObject);
+            }
+            
             JSONObject metaData;
             if (eventType == EventType.GET_CALL_TO_ORDER_PHONE || eventType == EventType.REVIEW_PRODUCT_EVENT) {
                 metaData = jsonObject;

@@ -17,6 +17,8 @@ import org.holoeverywhere.widget.Button;
 import org.holoeverywhere.widget.EditText;
 import org.holoeverywhere.widget.TextView;
 
+import com.androidquery.AQuery;
+
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.ConstantsSharedPrefs;
@@ -26,6 +28,7 @@ import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.factories.TeasersFactory;
 import pt.rocket.forms.FieldValidation;
 import pt.rocket.forms.HomeNewslettersSignupForm;
+import pt.rocket.framework.Darwin;
 import pt.rocket.framework.database.LastViewedTableHelper;
 import pt.rocket.framework.objects.Homepage;
 import pt.rocket.framework.objects.ITargeting.TargetType;
@@ -53,7 +56,6 @@ import pt.rocket.utils.ScrollViewWithHorizontal;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.utils.dialogfragments.DialogPromotionFragment;
 import pt.rocket.view.BaseActivity;
-import pt.rocket.view.ChangeCountryFragmentActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
@@ -484,9 +486,10 @@ public class HomeFragment extends BaseFragment {
         ImageView mapBg = (ImageView) getView().findViewById(R.id.home_fallback_country_map);
         SharedPreferences sharedPrefs = getActivity().getSharedPreferences(
                 ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        int position = sharedPrefs.getInt(ChangeCountryFragmentActivity.KEY_COUNTRY, 0);
-
-        mapBg.setImageDrawable(getActivity().getResources().obtainTypedArray(R.array.country_fallback_map).getDrawable(position));
+        int position = sharedPrefs.getInt(Darwin.KEY_SELECTED_COUNTRY_ID, 0);
+        AQuery aq = new AQuery(getBaseActivity());
+        aq.id(mapBg).image(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_MAP_FLAG, ""));
+//        mapBg.setImageDrawable(getActivity().getResources().obtainTypedArray(R.array.country_fallback_map).getDrawable(position));
 
         String country = getActivity().getResources().obtainTypedArray(R.array.country_names)
                 .getString(position);
@@ -923,8 +926,9 @@ public class HomeFragment extends BaseFragment {
                 // check if mHomeNewsletterSignupForm is already set with response
                 if (HomeFragment.mHomeNewsletterSignupForm == null) {
                     Log.i(TAG, "handlerProccessNewsletterSubscribe -  mHomeNewsletterSignupForm not initialized");
-                    
-                    handlerProccessNewsletterSubscribe.sendMessageDelayed(msg, DELAY_FOR_NEWSLETTER_RETRY);
+                    Message mMessage = new Message();
+                    mMessage.obj = msg.obj;
+                    handlerProccessNewsletterSubscribe.sendMessageDelayed(mMessage, DELAY_FOR_NEWSLETTER_RETRY);
                 } else if (HomeFragment.mHomeNewsletterSignupForm.isValid) {
                     Log.i(TAG, "handlerProccessNewsletterSubscribe -  mHomeNewsletterSignupForm correctly initialized");
 
@@ -994,7 +998,7 @@ public class HomeFragment extends BaseFragment {
                 public void onFocusChange(View v, boolean hasFocus) {
                     if (!hasFocus) {
                         String email = newsletterEmail.getText().toString();
-                        if (!email.isEmpty()) {
+                        if (!TextUtils.isEmpty(email)) {
                             lastEmail = email;
                         } else {
                             lastEmail = null;
@@ -1163,7 +1167,6 @@ public class HomeFragment extends BaseFragment {
             BaseActivity baseActivity = (BaseActivity) getActivity();
             if (baseActivity != null && baseActivity.handleErrorEvent(bundle)) {
                 invalidateHomeNewsletterSignupForm();
-
                 return;
             }
 

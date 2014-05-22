@@ -5,10 +5,11 @@ import java.util.Locale;
 
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsSharedPrefs;
+import pt.rocket.framework.Darwin;
 import pt.rocket.framework.ErrorCode;
+import pt.rocket.framework.objects.CountryObject;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
-import pt.rocket.view.ChangeCountryFragmentActivity;
 import pt.rocket.view.R;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -261,7 +262,12 @@ public class LocationHelper implements LocationListener {
         if(countryCode == null || countryCode.length() != 2)
             return false;
         
-        String[] supportedCountries = context.getResources().getStringArray(R.array.language_codes);
+        String[] supportedCountries = new String[JumiaApplication.INSTANCE.countriesAvailable.size()];
+        int count = 0;
+        for (CountryObject country : JumiaApplication.INSTANCE.countriesAvailable) {
+            supportedCountries[count] = country.getCountryIso();
+            count++;
+        }
         for (int i = 0; i < supportedCountries.length; i++) {
             String supportedCountry = supportedCountries[i];
             //Log.d(TAG, "SUPPORTED COUNTRY: " + supportedCountry);
@@ -269,8 +275,8 @@ public class LocationHelper implements LocationListener {
                 Log.d(TAG, "MATCH: SHOP ID " + i);
                 SharedPreferences sharedPrefs = context.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPrefs.edit();
-                editor.putInt(ChangeCountryFragmentActivity.KEY_COUNTRY, i);
-                editor.putBoolean(ChangeCountryFragmentActivity.KEY_COUNTRY_CHANGED, true);
+                editor.putInt(Darwin.KEY_SELECTED_COUNTRY_ID, i);
+                editor.putBoolean(Darwin.KEY_COUNTRY_CHANGED, true);
                 editor.putBoolean(ConstantsSharedPrefs.KEY_SHOW_PROMOTIONS, true);
                 editor.commit();
                 return SELECTED;

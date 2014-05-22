@@ -14,10 +14,12 @@ import org.holoeverywhere.widget.TextView;
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.constants.ConstantsIntentExtra;
+import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.controllers.SearchDropDownAdapter;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
+import pt.rocket.framework.Darwin;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.SearchSuggestion;
@@ -33,6 +35,7 @@ import pt.rocket.framework.utils.WindowHelper;
 import pt.rocket.helpers.BaseHelper;
 import pt.rocket.helpers.GetSearchSuggestionHelper;
 import pt.rocket.helpers.GetShoppingCartItemsHelper;
+import pt.rocket.helpers.HelperPriorityConfiguration;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.CheckVersion;
 import pt.rocket.utils.MyMenuItem;
@@ -48,6 +51,7 @@ import pt.rocket.view.fragments.SlideMenuFragment;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -87,6 +91,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.ShareActionProvider;
 import com.actionbarsherlock.widget.ShareActionProvider.OnShareTargetSelectedListener;
+import com.androidquery.AQuery;
 import com.bugsense.trace.BugSenseHandler;
 import com.urbanairship.UAirship;
 
@@ -335,7 +340,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 //         showContent();
 
         if (!contentEvents.contains(EventType.GET_SHOPPING_CART_ITEMS_EVENT)
-                && JumiaApplication.SHOP_ID >= 0
+                && JumiaApplication.SHOP_ID != null
                 && JumiaApplication.INSTANCE.getCart() == null) {
             triggerContentEvent(new GetShoppingCartItemsHelper(), null, mIResponseCallback);
         }
@@ -1191,6 +1196,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      * @author sergiopereira
      */
     private void showSearchComponent(){
+        // If API is on Maintenance, disable search component
         if(findViewById(R.id.main_fallback_content) != null && findViewById(R.id.main_fallback_content).getVisibility() == View.VISIBLE){
             return;
         }
@@ -1883,6 +1889,11 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
             updateSlidingMenu();
         }
+        
+        if( !bundle.getBoolean(Constants.BUNDLE_PRIORITY_KEY) ){
+            return false;
+        }
+        
         HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
         if (errorCode == null) {
             return false;
@@ -2315,13 +2326,14 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         });
         
         ImageView mapImageView = (ImageView) findViewById(R.id.main_fallback_country_map);
+        SharedPreferences sharedPrefs = this.getSharedPreferences(
+                ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+//        int position = JumiaApplication.INSTANCE.SHOP_ID;
+        AQuery aq = new AQuery(this);
+        aq.id(mapImageView).image(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_MAP_FLAG, ""));
+//        mapImageView.setImageDrawable(getApplicationContext().getResources().obtainTypedArray(R.array.country_fallback_map).getDrawable(position));
         
-        int position = JumiaApplication.INSTANCE.SHOP_ID;
-        
-        mapImageView.setImageDrawable(getApplicationContext().getResources().obtainTypedArray(R.array.country_fallback_map).getDrawable(position));
-        
-        String country = getApplicationContext().getResources().obtainTypedArray(R.array.country_names)
-                .getString(position);
+        String country = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, "");
         
        
         TextView fallbackBest = (TextView) findViewById(R.id.main_fallback_best);

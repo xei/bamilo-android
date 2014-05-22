@@ -9,12 +9,14 @@ import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.forms.Form;
 import pt.rocket.forms.FormData;
 import pt.rocket.forms.PaymentMethodForm;
+import pt.rocket.framework.Darwin;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.components.NavigationListComponent;
 import pt.rocket.framework.database.DarwinDatabaseHelper;
 import pt.rocket.framework.objects.Address;
 import pt.rocket.framework.objects.Category;
 import pt.rocket.framework.objects.CompleteProduct;
+import pt.rocket.framework.objects.CountryObject;
 import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.objects.PaymentInfo;
 import pt.rocket.framework.objects.ShoppingCart;
@@ -66,10 +68,12 @@ public class JumiaApplication extends Application implements ExceptionCallback {
 
     private static final String TAG = JumiaApplication.class.getSimpleName();
     
-    public static int SHOP_ID = -1;
+    public boolean generateStagingServers = true;
+    
+    public static String SHOP_ID = null;
     public static String SHOP_NAME = "";
     public static Customer CUSTOMER;
-    public static int SHOP_ID_FOR_ADX = -1;
+    public static String SHOP_ID_FOR_ADX = null;
 
     public static JumiaApplication INSTANCE;
     public static boolean mIsBound = false;
@@ -159,6 +163,8 @@ public class JumiaApplication extends Application implements ExceptionCallback {
      */
     public boolean showRelatedItemsGlobal = false;
 
+    public ArrayList<CountryObject> countriesAvailable = null;
+    
     /**
      * Tracking Request performance
      */
@@ -167,6 +173,9 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     
     @Override
     public void onCreate() {
+        
+        SharedPreferences sharedPrefs = this.getSharedPreferences(
+                ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         /**
          * Force UA clean the previous configurations.
          */
@@ -188,11 +197,13 @@ public class JumiaApplication extends Application implements ExceptionCallback {
         //set the max number of concurrent network connections, default is 4
         AjaxCallback.setNetworkLimit(2);
         
+        countriesAvailable = new ArrayList<CountryObject>();
+        
         responseCallbacks = new HashMap<String, IResponseCallback>();
         // Get the current shop id
         SHOP_ID = ShopPreferences.getShopId(getApplicationContext());
-        if(SHOP_ID>-1){
-            SHOP_NAME = getResources().getStringArray(R.array.language_codes)[SHOP_ID];
+        if(SHOP_ID != null){
+            SHOP_NAME = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, null);
         }
         setItemSimpleDataRegistry(new HashMap<String, Map<String, String>>());
         setCart(null);
@@ -221,22 +232,21 @@ public class JumiaApplication extends Application implements ExceptionCallback {
         AnalyticsGoogle.clearCheckoutStarted();
         for (ApplicationComponent component : COMPONENTS.values()) {
             ErrorCode result = component.init(JumiaApplication.this);
-//            Log.i(TAG, "code1 initializing component : "+component.getClass().getName());
             if (result != ErrorCode.NO_ERROR) {
-//                Log.i(TAG, "code1 component : "+component.getClass().getName()+" error code : "+result);
+                Log.i(TAG, "code1configs : "+result);
                 handleEvent(result, null, initializationHandler);
                 return;
             }
         }
+        
+        SharedPreferences sharedPrefs = this.getSharedPreferences(
+                ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         SHOP_ID = ShopPreferences.getShopId(getApplicationContext());
-        SHOP_NAME = getResources().getStringArray(R.array.language_codes)[SHOP_ID];
+        SHOP_NAME = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, null);
+        Log.i(TAG, "code1configs : SHOP_ID : "+SHOP_ID+" SHOP_NAME : "+SHOP_NAME);
         CheckVersion.clearDialogSeenInLaunch(getApplicationContext());
         handleEvent(ErrorCode.NO_ERROR, EventType.INITIALIZE, initializationHandler);
-        // InitializeEvent event = new InitializeEvent(EnumSet.noneOf(EventType.class));
-        // if ( isReInit ) {
-        // event.metaData.putBoolean( IMetaData.MD_IGNORE_CACHE, true);
-        // }
-        // EventManager.getSingleton().triggerRequestEvent( event );
+
         CheckVersion.init(getApplicationContext());
     }
 
@@ -248,7 +258,7 @@ public class JumiaApplication extends Application implements ExceptionCallback {
         Log.d(TAG, "Handle initialization result: " + errorType);
         Message msg = new Message();
         msg.obj = bundle;
-        if(eventType == EventType.INITIALIZE && errorType == ErrorCode.NO_ERROR && ServiceSingleton.getInstance().getService() == null ){
+        if((eventType == EventType.INITIALIZE || errorType == ErrorCode.NO_COUNTRIES_CONFIGS) && ServiceSingleton.getInstance().getService() == null ){
             resendInitializationSignal = true;
             resendHandler = initializationHandler;
             resendMsg = msg;

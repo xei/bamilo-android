@@ -15,9 +15,11 @@ import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
+import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
+import pt.rocket.framework.Darwin;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.MinOrderAmount;
 import pt.rocket.framework.objects.ShoppingCart;
@@ -44,6 +46,8 @@ import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -879,12 +883,15 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         // dialog.show( getActivity().getSupportFragmentManager(), null);
         // } else {
         TrackerDelegator.trackCheckout(getActivity().getApplicationContext(), items);
-
-        if (getBaseActivity().getResources().getStringArray(R.array.restbase_paths)[JumiaApplication.SHOP_ID]
-                .contains("mobapi/v1")) {
-            triggerIsNativeCheckoutAvailable();
-        } else {
-            goToWebCheckout();
+        SharedPreferences sharedPrefs = getBaseActivity().getSharedPreferences(
+                ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        String restbase = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_REST_BASE, null);
+        if(restbase != null){
+            if (restbase.contains("mobapi/v1")) {
+                triggerIsNativeCheckoutAvailable();
+            } else {
+                goToWebCheckout();
+            }
         }
 
         // }

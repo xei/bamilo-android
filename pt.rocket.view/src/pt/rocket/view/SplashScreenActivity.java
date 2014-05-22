@@ -14,6 +14,7 @@ import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.fragments.FragmentType;
+import pt.rocket.framework.Darwin;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.rest.RestContract;
@@ -24,6 +25,8 @@ import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.GetApiInfoHelper;
+import pt.rocket.helpers.configs.GetCountriesConfigsHelper;
+import pt.rocket.helpers.configs.GetCountriesGeneralConfigsHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.preferences.ShopPreferences;
 import pt.rocket.utils.DeepLinkManager;
@@ -49,6 +52,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 
+import com.androidquery.AQuery;
 import com.bugsense.trace.BugSenseHandler;
 import com.shouldit.proxy.lib.ProxyConfiguration;
 import com.shouldit.proxy.lib.ProxySettings;
@@ -76,6 +80,7 @@ import com.urbanairship.push.PushManager;
  * @version 1.01
  * 
  * @author Michael Kröz
+ * @modified Manuel Silva
  * 
  * @date 25/04/2013
  * 
@@ -103,6 +108,7 @@ public class SplashScreenActivity extends FragmentActivity {
 
     private boolean isDeepLinkLaunch = false;
 
+    SharedPreferences sharedPrefs;
     /*
      * (non-Javadoc)
      * 
@@ -111,6 +117,9 @@ public class SplashScreenActivity extends FragmentActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sharedPrefs = getSharedPreferences(
+                ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        
         // Keep launch time to compare with newer timestamp later
         launchTime = System.currentTimeMillis();
         Log.i(TAG, "onCreate");
@@ -148,8 +157,7 @@ public class SplashScreenActivity extends FragmentActivity {
     protected void onStop() {
         super.onStop();
         UAirship.shared().getAnalytics().activityStopped(this);
-        SharedPreferences sP = this.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        SharedPreferences.Editor eD = sP.edit();
+        SharedPreferences.Editor eD = sharedPrefs.edit();
         eD.putBoolean(ConstantsSharedPrefs.KEY_SHOW_PROMOTIONS, true);
         eD.commit();
     }
@@ -178,7 +186,8 @@ public class SplashScreenActivity extends FragmentActivity {
            Bundle bundle = (Bundle) msg.obj;
            ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
            EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-           Log.i(TAG, "received response : "+errorCode + " event type : "+eventType);
+           
+           Log.i(TAG, "code1configs received response : "+errorCode + " event type : "+eventType);
            if(eventType == EventType.INITIALIZE){
                initBugSense();
                showDevInfo();
@@ -410,7 +419,11 @@ public class SplashScreenActivity extends FragmentActivity {
         
         
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        
+        Log.i(TAG, "code1configs : handleSuccessResponse : "+eventType+" errorcode : "+errorCode);
+        
         if (dialog != null && dialog.isVisible()) {
             try {
                 dialog.dismiss();
@@ -420,20 +433,52 @@ public class SplashScreenActivity extends FragmentActivity {
         }
         if (eventType == EventType.INITIALIZE) {
             Log.d(TAG, "HANDLE EVENT: " + eventType.toString());
+        
             /**
              * Get Api info
              */
             JumiaApplication.INSTANCE.registerFragmentCallback(mCallback);
             JumiaApplication.INSTANCE.sendRequest(new GetApiInfoHelper(), null, responseCallback);
+            
         } else if (eventType == EventType.GET_API_INFO) {
             Log.d(TAG, "HANDLE EVENT: " + eventType.toString());
             // Show activity
             selectActivity(); 
             finish();
+        } else if(eventType == EventType.GET_COUNTRY_CONFIGURATIONS){
+            
+            // Initialize application
+            JumiaApplication.INSTANCE.init(false, initializationHandler);
+        } else if(eventType == EventType.GET_GLOBAL_CONFIGURATIONS && sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ID, null) == null){
+            if(JumiaApplication.INSTANCE.countriesAvailable != null && JumiaApplication.INSTANCE.countriesAvailable.size() > 0){
+                Log.i(TAG, "code1configs received response correctly!!!");
+                // Auto country selection
+                LocationHelper.getInstance().autoCountrySelection(getApplicationContext(), initializationHandler);
+            } else {
+                handleErrorResponse(bundle);
+            }
+        } else if(eventType == EventType.GET_GLOBAL_CONFIGURATIONS){
+            if(JumiaApplication.INSTANCE.countriesAvailable != null && JumiaApplication.INSTANCE.countriesAvailable.size() > 0){
+                JumiaApplication.INSTANCE.init(false, initializationHandler);
+            } else {
+                handleErrorResponse(bundle);
+            }
+        } else if (errorCode == ErrorCode.NO_COUNTRY_CONFIGS_AVAILABLE){
+            /**
+             * Get Country Specific Configs
+             */
+            JumiaApplication.INSTANCE.registerFragmentCallback(mCallback);
+            JumiaApplication.INSTANCE.sendRequest(new GetCountriesConfigsHelper(), null, responseCallback);
+        } else if (errorCode == ErrorCode.NO_COUNTRIES_CONFIGS){
+            Log.i(TAG, "code1configs calling GetCountriesGeneralConfigsHelper -- NO_COUNTRIES_CONFIGS");
+            JumiaApplication.INSTANCE.registerFragmentCallback(mCallback);
+            JumiaApplication.INSTANCE.sendRequest(new GetCountriesGeneralConfigsHelper() , null, responseCallback);
         }  else if (errorCode == ErrorCode.AUTO_COUNTRY_SELECTION) {
+            Log.i(TAG, "code1configs calling autoCountrySelection -- AUTO_COUNTRY_SELECTION");
             // Auto country selection
             LocationHelper.getInstance().autoCountrySelection(getApplicationContext(), initializationHandler);
         }  else if (errorCode == ErrorCode.REQUIRES_USER_INTERACTION) {
+            Log.i(TAG, "code1configs calling REQUIRES_USER_INTERACTION -- REQUIRES_USER_INTERACTION");
             // Show Change country
             Intent intent = new Intent(this, MainFragmentActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -460,19 +505,12 @@ public class SplashScreenActivity extends FragmentActivity {
         });
         
         ImageView mapBg = (ImageView) findViewById(R.id.fallback_country_map);
-        
-        SharedPreferences sharedPrefs = getSharedPreferences(
-                ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        
-        int position = sharedPrefs.getInt(ChangeCountryFragmentActivity.KEY_COUNTRY, 0);
+        AQuery aq = new AQuery(this);
+        aq.id(mapBg).image(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_MAP_FLAG, ""));
+//        mapBg.setImageDrawable(getApplicationContext().getResources().obtainTypedArray(R.array.country_fallback_map)
+//                .getDrawable(position));
 
-        Log.i(TAG, "code1position : "+position);
-        
-        mapBg.setImageDrawable(getApplicationContext().getResources().obtainTypedArray(R.array.country_fallback_map)
-                .getDrawable(position));
-
-        String country = getApplicationContext().getResources().obtainTypedArray(R.array.country_names)
-                .getString(position);
+        String country = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME,"");
         TextView fallbackBest = (TextView) findViewById(R.id.fallback_best);
         fallbackBest.setText(R.string.fallback_best);
         if (country.split(" ").length == 1) {
@@ -615,6 +653,8 @@ public class SplashScreenActivity extends FragmentActivity {
 
                 dialog.show(getSupportFragmentManager(), null);
             }
+        } else if(eventType == EventType.GET_GLOBAL_CONFIGURATIONS){
+            setLayoutMaintenance(eventType);
         }
     }
     
@@ -673,16 +713,17 @@ public class SplashScreenActivity extends FragmentActivity {
      * @author sergiopereira
      */
     private void launchEvent(){
-       
+        SharedPreferences sharedPrefs = this.getSharedPreferences(
+                ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         // Get the current shop id
-        int shopId = ShopPreferences.getShopId(getApplicationContext());
+        String shopId = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ID, null);
         // Validate shop id and launch the Adx event if is the same country on start app
         // First time
-        if(JumiaApplication.SHOP_ID_FOR_ADX == -1 && shopId > JumiaApplication.SHOP_ID_FOR_ADX) {
+        if(JumiaApplication.SHOP_ID_FOR_ADX == null && shopId != JumiaApplication.SHOP_ID_FOR_ADX) {
             sendAdxLaunchEvent = true;
         }
         // Current shop is the same
-        if(JumiaApplication.SHOP_ID_FOR_ADX == shopId) {
+        if(JumiaApplication.SHOP_ID_FOR_ADX != null && JumiaApplication.SHOP_ID_FOR_ADX.equalsIgnoreCase(shopId)) {
             sendAdxLaunchEvent = true;
         }
         // Save current shop id

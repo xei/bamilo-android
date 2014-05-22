@@ -11,6 +11,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import org.holoeverywhere.widget.TextView;
+
+import com.androidquery.AQuery;
+
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -36,13 +39,13 @@ public class CountryAdapter extends ArrayAdapter<String> {
 
 	private final Context context;
 	private String[] values;
-	private final TypedArray flags;
+	private final String[] flagsList;
 	private LayoutInflater mInflater;
-	public CountryAdapter(Context context, String[] values, TypedArray flags) {
+	public CountryAdapter(Context context, String[] values, String[] flagsList) {
 		super(context, R.layout.change_country_row, values);
 		this.context = context;
 		this.values = values;
-		this.flags = flags;
+		this.flagsList = flagsList;
 		mInflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
@@ -67,10 +70,12 @@ public class CountryAdapter extends ArrayAdapter<String> {
         TextView textView = (TextView) rowView.findViewById(R.id.country_name);
         ImageView imageView = (ImageView) rowView.findViewById(R.id.flag);
         textView.setText(values[position]);
-        Drawable flag = flags.getDrawable(position);
-        Drawable border = context.getResources().getDrawable(R.drawable.shape_border_flag);
-        LayerDrawable layerDrawable = new LayerDrawable(new Drawable[] { flag, border });
-        imageView.setImageDrawable(layerDrawable);
+        if(flagsList != null && flagsList.length > 0){
+            AQuery aq = new AQuery(context);
+            aq.id(imageView).image(flagsList[position]);    
+        }
+        
+        
         return rowView;
     }
 }

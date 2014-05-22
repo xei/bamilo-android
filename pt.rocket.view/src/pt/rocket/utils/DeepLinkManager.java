@@ -8,9 +8,9 @@ import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.fragments.FragmentType;
+import pt.rocket.framework.Darwin;
 import pt.rocket.framework.objects.TeaserCampaign;
 import pt.rocket.helpers.GetSearchProductHelper;
-import pt.rocket.view.ChangeCountryFragmentActivity;
 import pt.rocket.view.R;
 import pt.rocket.view.fragments.CampaignsFragment;
 import android.content.Context;
@@ -412,7 +412,7 @@ public class DeepLinkManager {
      */
     private static int loadSavedShopId(Context context) {
         SharedPreferences sharedPrefs = context.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        return sharedPrefs.getInt(ChangeCountryFragmentActivity.KEY_COUNTRY, -1);
+        return sharedPrefs.getInt(Darwin.KEY_SELECTED_COUNTRY_ID, -1);
     }
 
     /**
@@ -456,8 +456,8 @@ public class DeepLinkManager {
      */
     private static void saveShopId(Context context, int shopId){
         Editor editor = context.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE).edit();
-        editor.putInt(ChangeCountryFragmentActivity.KEY_COUNTRY, shopId);
-        editor.putBoolean(ChangeCountryFragmentActivity.KEY_COUNTRY_CHANGED, true);
+        editor.putInt(Darwin.KEY_SELECTED_COUNTRY_ID, shopId);
+        editor.putBoolean(Darwin.KEY_COUNTRY_CHANGED, true);
         editor.putBoolean(ConstantsSharedPrefs.KEY_SHOW_PROMOTIONS, true);
         editor.commit();
     }

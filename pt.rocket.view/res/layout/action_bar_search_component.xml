@@ -41,5 +41,14 @@
         android:layout_gravity="fill_vertical"
         android:contentDescription="@string/search_field_description" >
     </View>
+    
+    <!-- View that allows cucumber to find the search click position -->
+
+    <View
+        android:id="@+id/cucumber_click_search"
+        android:layout_width="50dp"
+        android:layout_height="30dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="10dp" />
 
 </RelativeLayout>

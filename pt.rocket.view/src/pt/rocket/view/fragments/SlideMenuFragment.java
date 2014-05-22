@@ -182,7 +182,7 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
              * @author sergiopereira
              */
             Log.i(TAG, "slidemenu trigger");
-            if (JumiaApplication.SHOP_ID >= 0)
+            if (JumiaApplication.SHOP_ID != null)
                 trigger();
         }
     }
@@ -601,6 +601,7 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
         View navComponent = inflater.inflate(R.layout.navigation_generic_component, parent, false);
         TextView tVSearch = (TextView) navComponent.findViewById(R.id.component_text);
         tVSearch.setText(text);
+        tVSearch.setContentDescription("calabash_"+text);
         tVSearch.setCompoundDrawablesWithIntrinsicBounds(iconRes, 0, 0, 0);
         navComponent.setOnClickListener(listener);
         return navComponent;

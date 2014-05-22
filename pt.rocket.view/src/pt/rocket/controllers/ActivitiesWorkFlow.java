@@ -3,7 +3,6 @@ package pt.rocket.controllers;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.view.ChangeCountryFragmentActivity;
 import pt.rocket.view.MainFragmentActivity;
 import pt.rocket.view.R;
 import pt.rocket.view.SplashScreenActivity;
@@ -55,13 +54,13 @@ public class ActivitiesWorkFlow {
      * 
      * @param activity
      */
-    public static void changeCountryActivity(Activity activity) {
-        Log.i(TAG, "START ACTIVITY: changeCountryActivity");
-        Intent intent = new Intent(activity.getApplicationContext(), ChangeCountryFragmentActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        activity.startActivity(intent);
-        addStandardTransition(activity);
-    }
+//    public static void changeCountryActivity(Activity activity) {
+//        Log.i(TAG, "START ACTIVITY: changeCountryActivity");
+//        Intent intent = new Intent(activity.getApplicationContext(), ChangeCountryFragmentActivity.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+//        activity.startActivity(intent);
+//        addStandardTransition(activity);
+//    }
     
     
     /**

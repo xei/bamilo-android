@@ -6,10 +6,10 @@ import java.util.Collection;
 import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.constants.ConstantsSharedPrefs;
+import pt.rocket.framework.Darwin;
 import pt.rocket.framework.objects.Product;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.RocketImageLoader;
-import pt.rocket.view.ChangeCountryFragmentActivity;
 import pt.rocket.view.R;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -119,8 +119,10 @@ public class ProductsListAdapter extends BaseAdapter {
         
         // Get is new image for respective country
         SharedPreferences sharedPrefs = context.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        int position = sharedPrefs.getInt(ChangeCountryFragmentActivity.KEY_COUNTRY, 0);
-        this.isNewDrawable = context.getResources().obtainTypedArray(R.array.catalog_new_item).getDrawable(position);
+        this.isNewDrawable = context.getResources().getDrawable(R.drawable.img_newarrival_en);
+        if(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_LANG_CODE, "en").contains("fr")){
+            this.isNewDrawable = context.getResources().getDrawable(R.drawable.img_newarrival_fr);
+        }
 
     }
 
