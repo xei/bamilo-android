@@ -7,9 +7,10 @@ import java.text.ParseException;
 import java.util.Currency;
 import java.util.Locale;
 import java.util.StringTokenizer;
-
+import pt.rocket.framework.Darwin;
 import pt.rocket.framework.R;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.text.TextUtils;
 import de.akquinet.android.androlog.Log;
@@ -29,9 +30,9 @@ public class CurrencyFormatter {
     private static String currencyUnitPattern;
     private static Currency currency;
     private static NumberFormat formatter;
-    private static Character currencyThousandsDelim;
+    private static String currencyThousandsDelim;
     private static Integer currencyFractionCount;
-    private static Character currencyFractionDelim;
+    private static String currencyFractionDelim;
     
     /**
      * Placement of the server 
@@ -60,28 +61,14 @@ public class CurrencyFormatter {
     }
     
     public static void loadCurrencyInformation( Context context, String currCode ) {
-    	String codes[] = context.getResources().getStringArray( R.array.formatter_currency_codes );
-    	int i;
-    	for( i = 0; i < codes.length; i++ ) {
-    		if ( codes[i].equals( currCode))
-    			break;
-    	}
+    	SharedPreferences sharedPrefs = context.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+    	
 
-    	currencyThousandsDelim = context.getResources().getStringArray(R.array.formatter_currency_thousands_delim )[i].charAt(0);
-    	currencyFractionCount = Integer.parseInt( context.getResources().getStringArray(R.array.formatter_currency_fraction_count)[i]);
+    	currencyThousandsDelim = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_THOUSANDS_SEP, ",");
+    	currencyFractionCount = sharedPrefs.getInt(Darwin.KEY_SELECTED_COUNTRY_NO_DECIMALS, 0);
+    	currencyFractionDelim = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_DECIMALS_SEP, ".");
     	
-    	String fractionDelim = context.getResources().getStringArray(R.array.formatter_currency_fraction_delim)[i];
-    	if ( !TextUtils.isEmpty(fractionDelim)) {
-    		currencyFractionDelim = fractionDelim.charAt(0);
-    	} else {
-    		currencyFractionDelim = null;
-    	}
-    	
-    	if ( i > codes.length ) {
-    		throw new RuntimeException( "No currency information with corresponding unit pattern for this currency code found - fix this" );
-    	}
-    	
-    	currencyUnitPattern = context.getResources().getStringArray(R.array.formatter_currency_unit_pattern)[i];
+    	currencyUnitPattern = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_SYMBOL, ".");
     }
     
     
@@ -238,10 +225,10 @@ public class CurrencyFormatter {
         currencyFormat.setGroupingUsed(true);
         DecimalFormatSymbols dfs = ((DecimalFormat) currencyFormat).getDecimalFormatSymbols();
         dfs.setCurrencySymbol( "" );
-        dfs.setGroupingSeparator(currencyThousandsDelim);
+        dfs.setGroupingSeparator(currencyThousandsDelim.charAt(0));
         // dfs.setGroupingSeparator(',');
         if ( currencyFractionDelim != null) {
-        	dfs.setMonetaryDecimalSeparator(currencyFractionDelim);
+        	dfs.setMonetaryDecimalSeparator(currencyFractionDelim.charAt(0));
         }
         ((DecimalFormat)currencyFormat).setDecimalFormatSymbols( dfs );
     	        

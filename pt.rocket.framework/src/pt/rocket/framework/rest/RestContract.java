@@ -1,7 +1,9 @@
 package pt.rocket.framework.rest;
 
+import pt.rocket.framework.Darwin;
 import pt.rocket.framework.R;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.text.TextUtils;
 import de.akquinet.android.androlog.Log;
 
@@ -59,12 +61,13 @@ public class RestContract {
 	
 	private static Context context;
 
-	public static void init(Context context, int selectedId) {
-		Log.i(TAG, "initializing RestContract");
+	public static void init(Context context, String selectedId) {
+		Log.i(TAG, "code1configs initializing RestContract : "+selectedId);
+		SharedPreferences sharedPrefs = context.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
 		RestContract.context = context;
-		REQUEST_HOST = context.getResources().getStringArray(R.array.servers)[selectedId];
-		
-		if(context.getResources().getStringArray(R.array.country_protocol)[selectedId].equalsIgnoreCase("true"))		
+		REQUEST_HOST = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_URL, null);
+		Log.i(TAG, "code1configs REQUEST_HOST : "+REQUEST_HOST);
+		if(sharedPrefs.getBoolean(Darwin.KEY_SELECTED_COUNTRY_FORCE_HTTP, false))		
 			USE_ONLY_HTTPS = true;
 		else
 			USE_ONLY_HTTPS = false;
@@ -72,14 +75,55 @@ public class RestContract {
 			throw new RuntimeException("The rest host has to be set and not beeing empty!");
 		}
 
-		REST_BASE_PATH = context.getResources().getStringArray(R.array.restbase_paths)[selectedId];
+		REST_BASE_PATH = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_REST_BASE, null);
 		if (TextUtils.isEmpty(REST_BASE_PATH)) {
 			throw new RuntimeException("The rest base path has to be set and not beeing empty!");
 		}
 		Log.d(TAG, "Initilizing RestContract with " +  REQUEST_HOST + "/" + REST_BASE_PATH);
-		AUTHENTICATION_USER = context.getResources().getStringArray(R.array.users)[selectedId];
-		AUTHENTICATION_PASS = context.getResources().getStringArray(R.array.passwords)[selectedId];
+		AUTHENTICATION_USER = context.getResources().getString(R.string.global_server_user);
+		AUTHENTICATION_PASS = context.getResources().getString(R.string.global_server_password);
 		USE_AUTHENTICATION = context.getResources().getBoolean(R.bool.rest_host_auth_use_it);
 	}
 	
+	
+	public static void init(Context context) {
+		Log.i(TAG, "initializing RestContract");
+		RestContract.context = context;
+		REQUEST_HOST = context.getResources().getString(R.string.global_server_host);
+		
+		
+		if (TextUtils.isEmpty(REQUEST_HOST)) {
+			throw new RuntimeException("The rest host has to be set and not beeing empty!");
+		}
+
+		REST_BASE_PATH = context.getResources().getString(R.string.global_server_restbase_path);
+		if (TextUtils.isEmpty(REST_BASE_PATH)) {
+			throw new RuntimeException("The rest base path has to be set and not beeing empty!");
+		}
+		Log.d(TAG, "Initilizing RestContract with " +  REQUEST_HOST + "/" + REST_BASE_PATH);
+		AUTHENTICATION_USER = context.getResources().getString(R.string.global_server_user);
+		AUTHENTICATION_PASS = context.getResources().getString(R.string.global_server_password);
+		USE_AUTHENTICATION = context.getResources().getBoolean(R.bool.rest_host_auth_use_it);
+	}
+	
+	
+	public static void init(Context context, String requestHost, String basePath) {
+		Log.i(TAG, "initializing RestContract");
+		RestContract.context = context;
+		REQUEST_HOST = requestHost;
+		
+		
+		if (TextUtils.isEmpty(REQUEST_HOST)) {
+			throw new RuntimeException("The rest host has to be set and not beeing empty!");
+		}
+
+		REST_BASE_PATH = basePath;
+		if (TextUtils.isEmpty(REST_BASE_PATH)) {
+			throw new RuntimeException("The rest base path has to be set and not beeing empty!");
+		}
+		Log.d(TAG, "Initilizing RestContract with " +  REQUEST_HOST + "/" + REST_BASE_PATH);
+		AUTHENTICATION_USER = context.getResources().getString(R.string.global_server_user);
+		AUTHENTICATION_PASS = context.getResources().getString(R.string.global_server_password);
+		USE_AUTHENTICATION = context.getResources().getBoolean(R.bool.rest_host_auth_use_it);
+	}
 }

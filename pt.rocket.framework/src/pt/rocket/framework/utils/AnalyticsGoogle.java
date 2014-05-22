@@ -2,11 +2,13 @@ package pt.rocket.framework.utils;
 
 import java.util.List;
 
+import pt.rocket.framework.Darwin;
 import pt.rocket.framework.R;
 import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.objects.PurchaseItem;
 import pt.rocket.framework.objects.ShoppingCartItem;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.text.TextUtils;
 
@@ -44,11 +46,12 @@ public class AnalyticsGoogle {
 	private String mLiveKey;
 	private String mCurrentKey;
 	private boolean isEnabled;
-	private int mShopId;
+	private String mShopId;
+	SharedPreferences mSharedPreferences;
 
 	private static boolean isCheckoutStarted;
 
-	public static void startup(Context context, int shopId) {
+	public static void startup(Context context, String shopId) {
 		sInstance = new AnalyticsGoogle(context, shopId);
 	}
 
@@ -73,7 +76,8 @@ public class AnalyticsGoogle {
 	 * @param context
 	 *            the base context for the analytics to run
 	 */
-	private AnalyticsGoogle(Context context, int shopId) {
+	private AnalyticsGoogle(Context context, String shopId) {
+		mSharedPreferences = context.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
 		mContext = context;
 		mShopId = shopId;
 		isCheckoutStarted = false;
@@ -101,8 +105,12 @@ public class AnalyticsGoogle {
 	}
 
 	private void loadKeys() {
-		mTestKey = mContext.getResources().getStringArray(R.array.ga_testkeys)[mShopId];
-		mLiveKey = mContext.getResources().getStringArray(R.array.ga_livekeys)[mShopId];
+		
+		mSharedPreferences = mContext.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+		
+		mTestKey = mSharedPreferences.getString(Darwin.KEY_SELECTED_COUNTRY_GA_ID, null);
+		mLiveKey = mSharedPreferences.getString(Darwin.KEY_SELECTED_COUNTRY_GA_TEST_ID, null);
+		Log.i(TAG, "code1keys : mTestKey : "+mTestKey+" mLiveKey : "+mLiveKey);
 	}
 
 	public void switchMode(boolean testing) {

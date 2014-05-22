@@ -51,7 +51,7 @@ public class MixpanelTracker {
 	private static PackageInfo pInfo = null;
 	private static boolean isEnabled;
 	private static boolean isStarted;
-	private static int mShopId;
+	private static String mShopId;
 	
 	private static JSONObject props;
 	
@@ -63,7 +63,7 @@ public class MixpanelTracker {
 	}
 
 	@SuppressLint("NewApi")
-	public static void startup(Context context, int shopId) {
+	public static void startup(Context context, String shopId) {
 		isEnabled = context.getResources().getBoolean(R.bool.mixpanel_enable);
 		if (!isEnabled){
 			Log.d(TAG, "startup: MixPanel is disabled!");
@@ -105,7 +105,7 @@ public class MixpanelTracker {
 			
 		}		
 		mixpanel.unregisterSuperProperty(context.getString(R.string.mixprop_shopcountry));
-		setProperty(context.getString(R.string.mixprop_shopcountry), context.getResources().getStringArray(R.array.language_codes)[mShopId]);
+		setProperty(context.getString(R.string.mixprop_shopcountry), mShopId);
 		
 		mixpanel.registerSuperProperties(props);
 		Log.d(TAG, "launch Props: " + props.toString() );
@@ -206,7 +206,7 @@ public class MixpanelTracker {
 		}
 		setProperty(context.getString(R.string.mixprop_gender), "" + customer.getGender());
 		setProperty(context.getString(R.string.mixprop_email), "" + customer.getEmail());
-		setProperty(context.getString(R.string.mixprop_country), context.getResources().getStringArray(R.array.language_codes)[mShopId]);
+		setProperty(context.getString(R.string.mixprop_country), mShopId);
 		mixpanel.registerSuperProperties(props);
 		Log.d(TAG, "signup super props: " + props.toString() );
 		
@@ -225,8 +225,8 @@ public class MixpanelTracker {
 			people.set(context.getString(R.string.mixproppeople_age), calendar.get(Calendar.YEAR));
 			people.set(context.getString(R.string.mixproppeople_gender), customer.getGender());
 			people.set(context.getString(R.string.mixproppeople_email), customer.getEmail());
-			people.set(context.getString(R.string.mixproppeople_country), context.getResources().getStringArray(R.array.language_codes)[mShopId]);
-			people.set(context.getString(R.string.mixproppeople_shopcountry), context.getResources().getStringArray(R.array.language_codes)[mShopId]);
+			people.set(context.getString(R.string.mixproppeople_country), mShopId);
+			people.set(context.getString(R.string.mixproppeople_shopcountry), mShopId);
 		}
 		
 		props = null;
@@ -310,7 +310,7 @@ public class MixpanelTracker {
 		
 	}
 	
-	public static void changeShop(Context context, int shopId) {
+	public static void changeShop(Context context, String shopId) {
 		if (!isEnabled) {
 			Log.d(TAG, "mixpanel seems to be disabled - ignoring");
 			return;
@@ -321,7 +321,7 @@ public class MixpanelTracker {
 		props = null;
 		mixpanel.unregisterSuperProperty(context.getString(R.string.mixprop_shopcountry));
 		
-		setProperty(context.getString(R.string.mixprop_shopcountry), context.getResources().getStringArray(R.array.language_codes)[mShopId]);
+		setProperty(context.getString(R.string.mixprop_shopcountry), mShopId);
 		mixpanel.registerSuperProperties(props);
 		
 		Log.d(TAG, "Shop changed tracked: event = " + context.getString(R.string.mixshop));		

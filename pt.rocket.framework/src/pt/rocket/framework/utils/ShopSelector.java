@@ -1,11 +1,12 @@
 package pt.rocket.framework.utils;
 
 import java.util.Locale;
-
+import pt.rocket.framework.Darwin;
 import pt.rocket.framework.R;
 import pt.rocket.framework.rest.RestClientSingleton;
 import pt.rocket.framework.rest.RestContract;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import de.akquinet.android.androlog.Log;
 
@@ -31,7 +32,7 @@ public final class ShopSelector {
 	
 	private static Locale sLocale;
 
-	private static int sShopId = -1;
+	private static String sShopId = null;
 	
 	private static String sCountryName;
 
@@ -44,15 +45,15 @@ public final class ShopSelector {
 	 * @param context
 	 * @param shopId
 	 */
-	public static void init(Context context, int shopId, boolean isChangeShop) {
+	public static void init(Context context, String shopId, boolean isChangeShop) {
+		SharedPreferences sharedPrefs = context.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
 		setLocale(
 				context,
-				context.getResources().getStringArray(R.array.language_codes)[shopId]);
+				sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ID, null));
 		RestContract.init(context, shopId);
 		RestClientSingleton.init(context);
 
-		String currencyCode = context.getResources().getStringArray(
-				R.array.currency_codes)[shopId];
+		String currencyCode = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ISO, null);
 //		Log.i(TAG, "code1 currency code is :_ "+currencyCode);
 		CurrencyFormatter.initialize(context, currencyCode);
 		AnalyticsGoogle.startup(context, shopId);
@@ -61,10 +62,36 @@ public final class ShopSelector {
 		AdXTracker.startup(context);
 		
 		sShopId = shopId;
-		sShopName = context.getResources().getStringArray( R.array.shop_names)[sShopId];
-		sCountryName = context.getResources().getStringArray( R.array.country_names)[sShopId];
+		sShopName = context.getResources().getString( R.string.global_server_shop_name);
+		sCountryName = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, null);
+	}
+	
+	/**
+	 * Initializing To General Requests
+	 * 
+	 * @param context
+	 * @param shopId
+	 */
+	public static void init(Context context) {
+		
+		RestContract.init(context);
+		RestClientSingleton.init(context);
+
 	}
 
+	/**
+	 * Initializing the country selector to a certain Country host.
+	 * 
+	 * @param context
+	 * @param shopId
+	 */
+	public static void init(Context context, String requestHost, String basePath) {
+		
+		RestContract.init(context, requestHost, basePath);
+		RestClientSingleton.init(context);
+
+	}
+	
 	/**
 	 * Sets the locale for the app by using the language code.
 	 * 
@@ -101,22 +128,16 @@ public final class ShopSelector {
         Log.i(TAG, "resetConfiguration: new config = " + res.getConfiguration().toString());
 	}
 	
-	public static int getShopId() {
+	public static String getShopId() {
 		return sShopId;
 	}
 	
 	public static String getShopName() {
-		if ( sShopId == -1) {
-			return null;
-		}
 		
 		return sShopName;		
 	}
 	
 	public static String getCountryName() {
-		if ( sShopId == -1) {
-			return null;
-		}
 		
 		return sCountryName;
 	}

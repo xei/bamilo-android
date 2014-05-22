@@ -26,4 +26,9 @@
     
     <string name="mixpanel_token"></string>
     
+     <string name="global_server_shop_name"></string>
+    <string name="global_server_host"></string>
+    <string name="global_server_restbase_path"></string>
+    <string name="global_server_user"></string>
+    <string name="global_server_password"></string>
 </resources>

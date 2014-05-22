@@ -186,7 +186,11 @@ public enum EventType {
 	GET_NEWSLETTERS_FORM_FALLBACK_EVENT("http:/forms/managenewsletters/", RestContract.NO_CACHE),
 	
 	SUBSCRIBE_NEWSLETTERS_EVENT("https:/customer/managenewsletters/", RestContract.NO_CACHE),
+
+	GET_GLOBAL_CONFIGURATIONS("https:/ventures.json", RestContract.NO_CACHE),
 	
+	GET_COUNTRY_CONFIGURATIONS("https:/main/getcountryconfs/", RestContract.NO_CACHE),
+
 	GET_HOME_NEWSLETTERS_SIGNUP_FORM_EVENT("newslettersignup", RestContract.MAX_CACHE_TIME),
 	
 	GET_HOME_NEWSLETTERS_SIGNUP_FORM_FALLBACK_EVENT("http:/forms/newslettersignup/", RestContract.MAX_CACHE_TIME),

@@ -421,7 +421,37 @@ public class RestConstants {
 	public static final String JSON_FEATURED_BOX_TAG = "featured_box";
 	public static final String JSON_FEATURED_BRANDBOX_TAG = "featured_brandbox";
 	public static final String JSON_FEATURED_SEARCH_TIPS_TAG = "search_tips";
+	
+	/**
+	 * Countries Configs Keys
+	 */
+	public static final String JSON_FLAG_TAG = "flag";
+	public static final String JSON_MAP_IMAGES_TAG = "map_images";
+	public static final String JSON_MDPI_TAG = "mdpi";
+	public static final String JSON_HDPI_TAG = "hdpi";
+	public static final String JSON_XHDPI_TAG = "xhdpi";
+	public static final String JSON_COUNTRY_ISO = "country_iso";
+	public static final String JSON_FORCE_HTTPS = "force_https";
+	public static final String JSON_IS_LIVE = "is_live";
+	
+	public static final String JSON_COUNTRY_CURRENCY_ISO = "currency_iso";
+	public static final String JSON_COUNTRY_CURRENCY_SYMBOL = "currency_symbol";
+	public static final String JSON_COUNTRY_CURRENCY_POSITION = "currency_position";
+	public static final String JSON_COUNTRY_NO_DECIMALS = "no_decimals";
+	public static final String JSON_COUNTRY_THOUSANDS_SEP = "thousands_sep";
+	public static final String JSON_COUNTRY_DECIMALS_SEP = "decimals_sep";
+	public static final String JSON_COUNTRY_LANGUAGES = "languages";
+	public static final String JSON_COUNTRY_LANG_CODE = "lang_code";
+	public static final String JSON_COUNTRY_LANG_NAME = "lang_name";
+	public static final String JSON_COUNTRY_LANG_DEFAULT = "lang_default";
+	public static final String JSON_COUNTRY_GA_ID = "ga_id";
+	public static final String JSON_COUNTRY_CS_EMAIL = "cs_email";
+	
+	
+	
+	
 
 	public static final String JSON_ITEM_TAG = "item";
 	public static final String JSON_RELEVANCE_TAG = "relevance";
+
 }

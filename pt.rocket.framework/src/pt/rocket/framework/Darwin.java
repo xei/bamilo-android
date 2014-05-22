@@ -54,7 +54,7 @@ public class Darwin {
 
 	private static final String TAG = Darwin.class.getSimpleName();
 	private static DarwinMode mode = DarwinMode.DEBUG;
-	private static int SHOP_ID = -1;
+	private static String SHOP_ID = null;
 
 	public static Context context = null;
 	
@@ -66,7 +66,34 @@ public class Darwin {
 	private static final String KEY_INITSUCCESSFUL = "init_successful";
 	
 	public final static String SHARED_PREFERENCES = "whitelabel_prefs";
-	public static String KEY_COUNTRY = "country";
+	
+	/**
+	 * Countries Configs
+	 */
+	public static String KEY_COUNTRY_CHANGED= "country_changed";
+	public static String KEY_COUNTRIES_CONFIGS_LOADED = "countries_configs_loaded";
+	public static String KEY_SELECTED_COUNTRY_ID = "selected_country_id";
+	public static String KEY_SELECTED_COUNTRY_NAME = "selected_country_name";
+	public static String KEY_SELECTED_COUNTRY_URL = "selected_country_url";
+	public static String KEY_SELECTED_COUNTRY_FLAG = "selected_country_flag";
+	public static String KEY_SELECTED_COUNTRY_MAP_FLAG = "selected_country_map_flag";
+	public static String KEY_SELECTED_COUNTRY_ISO = "selected_country_iso";
+	public static String KEY_SELECTED_COUNTRY_FORCE_HTTP = "selected_country_force_http";
+	public static String KEY_SELECTED_COUNTRY_IS_LIVE = "selected_country_is_live";
+	public static String KEY_SELECTED_COUNTRY_REST_BASE = "selected_country_rest_base";
+	
+	public static String KEY_SELECTED_COUNTRY_CURRENCY_ISO = "selected_country_currency_iso";
+	public static String KEY_SELECTED_COUNTRY_CURRENCY_SYMBOL = "selected_country_currency_symbol";
+	public static String KEY_SELECTED_COUNTRY_CURRENCY_POSITION = "selected_country_currency_position";
+	public static String KEY_SELECTED_COUNTRY_NO_DECIMALS = "selected_country_no_decimals";
+	public static String KEY_SELECTED_COUNTRY_THOUSANDS_SEP = "selected_country_thousands_sep";
+	public static String KEY_SELECTED_COUNTRY_DECIMALS_SEP = "selected_country_decimals_sep";
+	public static String KEY_SELECTED_COUNTRY_LANG_CODE = "selected_country_lang_code";
+	public static String KEY_SELECTED_COUNTRY_LANG_NAME = "selected_country_lang_name";
+	public static String KEY_SELECTED_COUNTRY_GA_ID = "selected_country_ga_id";
+	public static String KEY_SELECTED_COUNTRY_GA_TEST_ID = "selected_country_ga_test_id";
+	public static String KEY_SELECTED_COUNTRY_PHONE_NUMBER = "selected_country_phone_number";
+	public static String KEY_SELECTED_COUNTRY_CS_EMAIL = "selected_country_cs_email";
 	/**
 	 * Prevent this class from being instantiated. Make this class into a
 	 * singleton
@@ -88,10 +115,10 @@ public class Darwin {
 	 * @return return true is Darwin is initializes and false if it is already
 	 *         intialized
 	 */
-	public static boolean initialize(DarwinMode mode, Context ctx, int shopId, boolean isChangeShop) {
+	public static boolean initialize(DarwinMode mode, Context ctx, String shopId, boolean isChangeShop) {
 		Log.d(TAG, "Initializing Darwin with id " + shopId);
 		context = ctx.getApplicationContext();
-		if (SHOP_ID == shopId) {
+		if (SHOP_ID != null && SHOP_ID.equalsIgnoreCase(shopId)) {
 			Log.d(TAG, "Allready initialized for id " + shopId);
 			return true;
 		}
@@ -115,7 +142,29 @@ public class Darwin {
 		return true;
 	}
 	
-	public static int getShopId(){
+	public static boolean initialize(DarwinMode mode, Context ctx) {
+		Log.d(TAG, "Initializing Darwin to get global ");
+		context = ctx.getApplicationContext();
+		// Init darwin database
+		DarwinDatabaseHelper.init(context);
+		
+		ShopSelector.init(context);
+		
+		return true;
+	}
+	
+	public static boolean initialize(DarwinMode mode, Context ctx, String requestHost, String basePath) {
+		Log.d(TAG, "Initializing Darwin to get global ");
+		context = ctx.getApplicationContext();
+		// Init darwin database
+		DarwinDatabaseHelper.init(context);
+		
+		ShopSelector.init(ctx, requestHost, basePath);
+		
+		return true;
+	}
+	
+	public static String getShopId(){
 		return SHOP_ID;
 	}
 	
@@ -136,7 +185,7 @@ public class Darwin {
 	 * @return true, if the class was already initialized, otherwise false
 	 */
 	public synchronized static boolean isInitialized() {
-		return SHOP_ID > -1;
+		return SHOP_ID != null;
 	}
 
 	public synchronized static Context getContext() {
