@@ -297,7 +297,7 @@ public class ChangeCountryFragment extends BaseFragment {
         editor.putString(Darwin.KEY_SELECTED_COUNTRY_ISO, JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryIso().toLowerCase());
         editor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_FORCE_HTTP, JumiaApplication.INSTANCE.countriesAvailable.get(position).isCountryForceHttps());
         editor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_IS_LIVE, JumiaApplication.INSTANCE.countriesAvailable.get(position).isCountryIsLive());
-        editor.putString(Darwin.KEY_SELECTED_COUNTRY_REST_BASE, "mobapi/v1.3");
+        editor.putString(Darwin.KEY_SELECTED_COUNTRY_REST_BASE, context.getString(R.string.jumia_global_api_version));
         editor.putBoolean(ConstantsSharedPrefs.KEY_COUNTRY_CONFIGS_AVAILABLE, false);
         editor.commit();
         

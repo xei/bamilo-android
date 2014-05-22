@@ -6,18 +6,15 @@ import java.util.List;
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.constants.ConstantsIntentExtra;
-import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.fragments.FragmentType;
-import pt.rocket.framework.Darwin;
 import pt.rocket.framework.database.CountriesConfigsTableHelper;
 import pt.rocket.framework.objects.CountryObject;
 import pt.rocket.framework.objects.TeaserCampaign;
 import pt.rocket.helpers.GetSearchProductHelper;
+import pt.rocket.preferences.ShopPreferences;
 import pt.rocket.view.R;
 import pt.rocket.view.fragments.CampaignsFragment;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -396,26 +393,13 @@ public class DeepLinkManager {
      */
     private static void loadCountryCode(Context context, String countryCode){
         Log.d(TAG, "DEEP LINK URI PATH: " + countryCode);
-        SharedPreferences sharedPrefs = context.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        String selectedCountryCode = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_ISO, null);
-
+        // Get current country code
+        String selectedCountryCode = ShopPreferences.getShopId(context);
         // Validate saved shop id
-        if(selectedCountryCode == null)
-            locateCountryCode(context, countryCode);
-        else if(!selectedCountryCode.equalsIgnoreCase(countryCode))
+        if(selectedCountryCode == ShopPreferences.SHOP_NOT_SELECTED || !selectedCountryCode.equalsIgnoreCase(countryCode))
             locateCountryCode(context, countryCode);
         else
             Log.i(TAG, "DEEP LINK CC IS THE SAME");
-    }
-    
-    /**
-     * Load the current saved shop id
-     * @return int - the country code or -1
-     * @author sergiopereira
-     */
-    private static int loadSavedShopId(Context context) {
-        SharedPreferences sharedPrefs = context.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        return sharedPrefs.getInt(Darwin.KEY_SELECTED_COUNTRY_ID, -1);
     }
 
     /**
@@ -424,24 +408,22 @@ public class DeepLinkManager {
      * @author sergiopereira
      */
     private static void locateCountryCode(Context context, String countryCode) {
-        if(JumiaApplication.INSTANCE.countriesAvailable == null || JumiaApplication.INSTANCE.countriesAvailable.size() == 0 ){
+        // Valdiate countries available
+        if(JumiaApplication.INSTANCE.countriesAvailable == null || JumiaApplication.INSTANCE.countriesAvailable.size() == 0 )
             JumiaApplication.INSTANCE.countriesAvailable = CountriesConfigsTableHelper.getCountriesList();
-        }
         // Get the supported countries
         if(JumiaApplication.INSTANCE.countriesAvailable != null && JumiaApplication.INSTANCE.countriesAvailable.size() > 0 ){
          // Get the shop id for the country code 
-            for (int i = 0; i < JumiaApplication.INSTANCE.countriesAvailable.size(); i++) {
+            for (int i = 0; i < JumiaApplication.INSTANCE.countriesAvailable.size(); i++) { 
                 String supportedCountry = JumiaApplication.INSTANCE.countriesAvailable.get(i).getCountryIso();
                 Log.d(TAG, "SUPPORTED COUNTRY: " + supportedCountry);
                 if (supportedCountry.equalsIgnoreCase(countryCode)){
                     Log.d(TAG, "MATCH SUPPORTED COUNTRY: SHOP ID " + i + " " + countryCode);
-                    JumiaApplication.INSTANCE.cleanAllPreviousCountryValues();
-                    saveShopId(context, i);
+                    ShopPreferences.setShopId(context, i);
                     break;
                 }
             }
         }
-        
     }
     
     /**
@@ -459,19 +441,6 @@ public class DeepLinkManager {
         }
 
         return false;
-    }
-    
-    /**
-     * Save the shop id on the shared preferences
-     * @param shopId
-     * @author sergiopereira
-     */
-    private static void saveShopId(Context context, int shopId){
-        Editor editor = context.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE).edit();
-        editor.putInt(Darwin.KEY_SELECTED_COUNTRY_ID, shopId);
-        editor.putBoolean(Darwin.KEY_COUNTRY_CHANGED, true);
-        editor.putBoolean(ConstantsSharedPrefs.KEY_SHOW_PROMOTIONS, true);
-        editor.commit();
     }
 
 }

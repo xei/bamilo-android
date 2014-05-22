@@ -28,7 +28,6 @@ import pt.rocket.helpers.GetApiInfoHelper;
 import pt.rocket.helpers.configs.GetCountriesConfigsHelper;
 import pt.rocket.helpers.configs.GetCountriesGeneralConfigsHelper;
 import pt.rocket.interfaces.IResponseCallback;
-import pt.rocket.preferences.ShopPreferences;
 import pt.rocket.utils.DeepLinkManager;
 import pt.rocket.utils.HockeyStartup;
 import pt.rocket.utils.LocationHelper;

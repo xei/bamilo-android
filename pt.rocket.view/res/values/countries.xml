@@ -7,6 +7,7 @@
     <string name="jumia_global_user">rocket</string>
     <string name="jumia_global_password">rock4me</string>
     <string name="jumia_global_restbase_path">mobapi</string>
+    <string name="jumia_global_api_version">mobapi/v1.3</string>
     
 <!--     Jumia Nigeria Configuration -->
 <!--     <string name="jumia_ng_shopname">Jumia</string> -->

@@ -28,10 +28,8 @@ import pt.rocket.framework.service.RemoteService;
 import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CustomerUtils;
-import pt.rocket.framework.utils.Direction;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.ImageResolutionHelper;
-import pt.rocket.framework.utils.ProductSort;
 import pt.rocket.framework.utils.SingletonMap;
 import pt.rocket.helpers.BaseHelper;
 import pt.rocket.interfaces.IResponseCallback;
@@ -39,7 +37,6 @@ import pt.rocket.preferences.ShopPreferences;
 import pt.rocket.utils.CheckVersion;
 import pt.rocket.utils.RocketImageLoader;
 import pt.rocket.utils.ServiceSingleton;
-import pt.rocket.view.R;
 import pt.rocket.view.fragments.HomeFragment;
 import android.app.Activity;
 import android.app.Application;
@@ -258,7 +255,10 @@ public class JumiaApplication extends Application implements ExceptionCallback {
         Log.d(TAG, "Handle initialization result: " + errorType);
         Message msg = new Message();
         msg.obj = bundle;
-        if((eventType == EventType.INITIALIZE || errorType == ErrorCode.NO_COUNTRIES_CONFIGS) && ServiceSingleton.getInstance().getService() == null ){
+        if((eventType == EventType.INITIALIZE || 
+                errorType == ErrorCode.NO_COUNTRIES_CONFIGS || 
+                errorType == ErrorCode.NO_COUNTRY_CONFIGS_AVAILABLE)
+                && ServiceSingleton.getInstance().getService() == null ){
             resendInitializationSignal = true;
             resendHandler = initializationHandler;
             resendMsg = msg;
