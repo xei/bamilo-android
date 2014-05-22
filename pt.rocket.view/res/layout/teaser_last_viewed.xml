@@ -7,36 +7,37 @@
         android:id="@+id/recently"
         style="@style/activity_sectionheader_text"
         android:layout_marginBottom="@dimen/margin_mid"
-        android:layout_marginLeft="@dimen/margin_mid"
+        android:layout_marginLeft="@dimen/margin_huge"
         android:text="@string/recently_viewed" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/last_viewed_viewpager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" 
-        android:layout_below="@id/recently"/>
+        android:layout_height="match_parent"
+        android:layout_below="@id/recently" />
 
-    <RelativeLayout 
+    <RelativeLayout
         android:id="@+id/pop_arrows_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/recently"
-        android:visibility="gone"
-        >
-        <ImageView 
+        android:visibility="gone" >
+
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="6.6dp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/arrow_recently_viewed_left"/>
-        
-        <ImageView 
+            android:layout_marginLeft="6.6dp"
+            android:src="@drawable/arrow_recently_viewed_left" />
+
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="6.6dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/arrow_recently_viewed_right"/>
+            android:layout_marginRight="6.6dp"
+            android:src="@drawable/arrow_recently_viewed_right" />
     </RelativeLayout>
+
 </RelativeLayout>
