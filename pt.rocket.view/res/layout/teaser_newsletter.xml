@@ -2,22 +2,22 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="@dimen/margin_huge"
-    android:layout_marginRight="@dimen/margin_huge"
-    android:layout_marginTop="@dimen/margin_midhuge" >
+    android:layout_marginTop="@dimen/newsletter_homepage_margin" >
 
     <org.holoeverywhere.widget.TextView
         android:id="@+id/newsletter_subscription"
         style="@style/activity_sectionheader_text"
         android:layout_marginBottom="@dimen/margin_mid"
-        android:layout_marginLeft="0dp"
+        android:layout_marginLeft="@dimen/margin_huge"
         android:text="@string/newsletter_subscription" />
 
     <RelativeLayout
         android:id="@+id/newsletter_form_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/newsletter_subscription" >
+        android:layout_below="@id/newsletter_subscription"
+        android:layout_marginLeft="@dimen/margin_huge"
+        android:layout_marginRight="@dimen/margin_huge" >
 
         <org.holoeverywhere.widget.EditText
             android:id="@+id/newsletter_subscription_value"
@@ -79,7 +79,7 @@
     <View
         android:id="@+id/newsletter_spacer"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/margin_huge"
+        android:layout_height="@dimen/newsletter_homepage_margin"
         android:layout_below="@id/newsletter_form_container" />
 
     <View

@@ -172,7 +172,8 @@
     <dimen name="no_results_search_tips_width">@dimen/match_parent</dimen>
     <dimen name="no_results_brands_height">147dp</dimen>
 
-    <dimen name="newsletter_homepage_bottom_margin">50dp</dimen>
+    <dimen name="newsletter_homepage_margin">10dp</dimen>
+    <dimen name="newsletter_homepage_bottom_margin">30dp</dimen>
     <dimen name="newsletter_homepage_button_width">210dp</dimen>
 
 </resources>

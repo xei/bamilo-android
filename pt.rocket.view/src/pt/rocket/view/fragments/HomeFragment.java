@@ -126,6 +126,8 @@ public class HomeFragment extends BaseFragment {
 
     private final static int DELAY_FOR_NEWSLETTER_RETRY = 1000; // 1 seconds
 
+    private static String lastEmail;
+
     /**
      * Get instance
      * 
@@ -298,6 +300,9 @@ public class HomeFragment extends BaseFragment {
         mPager = null;
         pagerTabStrip = null;
     
+        // clean lastEmail
+        lastEmail = null;
+
         super.onDestroy();
         System.gc();
     }
@@ -983,12 +988,32 @@ public class HomeFragment extends BaseFragment {
 
             final EditText newsletterEmail = (EditText) newsletterView.findViewById(R.id.newsletter_subscription_value);
 
-            // fill with customer's email address if he is logged in
-            if (JumiaApplication.INSTANCE.CUSTOMER != null) {
-                String customerEmail = JumiaApplication.INSTANCE.CUSTOMER.getEmail();
-                if (customerEmail != null && customerEmail.length() > 0) {
-                    newsletterEmail.setText(customerEmail);
+            // save email after EditText lose focus, to be reused after rotations or coming back to Home
+            newsletterEmail.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (!hasFocus) {
+                        String email = newsletterEmail.getText().toString();
+                        if (!email.isEmpty()) {
+                            lastEmail = email;
+                        } else {
+                            lastEmail = null;
+                        }
+                    }
                 }
+            });
+
+            // get last email saved before rotation
+            String customerEmail = lastEmail;
+            if (customerEmail == null) {
+                // fill with customer's email address if he is logged in
+                if (JumiaApplication.INSTANCE.CUSTOMER != null) {
+                    customerEmail = JumiaApplication.INSTANCE.CUSTOMER.getEmail();
+                }
+            }
+            // show customerEmail on EditText
+            if (!TextUtils.isEmpty(customerEmail)) {
+                newsletterEmail.setText(customerEmail);
             }
 
             // add maxLength validation
