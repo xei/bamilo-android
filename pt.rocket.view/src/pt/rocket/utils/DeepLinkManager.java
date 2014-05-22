@@ -9,6 +9,8 @@ import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.Darwin;
+import pt.rocket.framework.database.CountriesConfigsTableHelper;
+import pt.rocket.framework.objects.CountryObject;
 import pt.rocket.framework.objects.TeaserCampaign;
 import pt.rocket.helpers.GetSearchProductHelper;
 import pt.rocket.view.R;
@@ -394,12 +396,13 @@ public class DeepLinkManager {
      */
     private static void loadCountryCode(Context context, String countryCode){
         Log.d(TAG, "DEEP LINK URI PATH: " + countryCode);
-        // Get the current country code
-        int shopId = loadSavedShopId(context);
+        SharedPreferences sharedPrefs = context.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        String selectedCountryCode = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_ISO, null);
+
         // Validate saved shop id
-        if(shopId == -1)
+        if(selectedCountryCode == null)
             locateCountryCode(context, countryCode);
-        else if(!context.getResources().getStringArray(R.array.language_codes)[shopId].equalsIgnoreCase(countryCode))
+        else if(!selectedCountryCode.equalsIgnoreCase(countryCode))
             locateCountryCode(context, countryCode);
         else
             Log.i(TAG, "DEEP LINK CC IS THE SAME");
@@ -421,19 +424,24 @@ public class DeepLinkManager {
      * @author sergiopereira
      */
     private static void locateCountryCode(Context context, String countryCode) {
+        if(JumiaApplication.INSTANCE.countriesAvailable == null || JumiaApplication.INSTANCE.countriesAvailable.size() == 0 ){
+            JumiaApplication.INSTANCE.countriesAvailable = CountriesConfigsTableHelper.getCountriesList();
+        }
         // Get the supported countries
-        String[] supportedCountries = context.getResources().getStringArray(R.array.language_codes);
-        // Get the shop id for the country code 
-        for (int i = 0; i < supportedCountries.length; i++) {
-            String supportedCountry = supportedCountries[i];
-            Log.d(TAG, "SUPPORTED COUNTRY: " + supportedCountry);
-            if (supportedCountry.equalsIgnoreCase(countryCode)){
-                Log.d(TAG, "MATCH SUPPORTED COUNTRY: SHOP ID " + i + " " + countryCode);
-                JumiaApplication.INSTANCE.cleanAllPreviousCountryValues();
-                saveShopId(context, i);
-                break;
+        if(JumiaApplication.INSTANCE.countriesAvailable != null && JumiaApplication.INSTANCE.countriesAvailable.size() > 0 ){
+         // Get the shop id for the country code 
+            for (int i = 0; i < JumiaApplication.INSTANCE.countriesAvailable.size(); i++) {
+                String supportedCountry = JumiaApplication.INSTANCE.countriesAvailable.get(i).getCountryIso();
+                Log.d(TAG, "SUPPORTED COUNTRY: " + supportedCountry);
+                if (supportedCountry.equalsIgnoreCase(countryCode)){
+                    Log.d(TAG, "MATCH SUPPORTED COUNTRY: SHOP ID " + i + " " + countryCode);
+                    JumiaApplication.INSTANCE.cleanAllPreviousCountryValues();
+                    saveShopId(context, i);
+                    break;
+                }
             }
         }
+        
     }
     
     /**
@@ -442,10 +450,14 @@ public class DeepLinkManager {
      * @author sergiopereira
      */
     private static boolean isSupporedCountryCode(Context context, String countryCode) {
-        // Get the supported countries
-        String[] supportedCountries = context.getResources().getStringArray(R.array.language_codes);
-        // Get the shop id for the country code 
-        for (String supportedCountry : supportedCountries) if (supportedCountry.equalsIgnoreCase(countryCode)) return true;
+        if(JumiaApplication.INSTANCE.countriesAvailable == null || JumiaApplication.INSTANCE.countriesAvailable.size() == 0 ){
+            JumiaApplication.INSTANCE.countriesAvailable = CountriesConfigsTableHelper.getCountriesList();
+        }
+        if(JumiaApplication.INSTANCE.countriesAvailable != null && JumiaApplication.INSTANCE.countriesAvailable.size() > 0 ){
+            // Get the shop id for the country code 
+            for (CountryObject supportedCountry : JumiaApplication.INSTANCE.countriesAvailable) if (supportedCountry.getCountryIso().equalsIgnoreCase(countryCode)) return true;            
+        }
+
         return false;
     }
     

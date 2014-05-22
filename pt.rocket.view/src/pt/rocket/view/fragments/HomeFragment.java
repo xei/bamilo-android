@@ -491,8 +491,7 @@ public class HomeFragment extends BaseFragment {
         aq.id(mapBg).image(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_MAP_FLAG, ""));
 //        mapBg.setImageDrawable(getActivity().getResources().obtainTypedArray(R.array.country_fallback_map).getDrawable(position));
 
-        String country = getActivity().getResources().obtainTypedArray(R.array.country_names)
-                .getString(position);
+        String country = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, "Jumia");
         TextView fallbackBest = (TextView) getView().findViewById(R.id.fallback_best);
         fallbackBest.setText(R.string.fallback_best);
         if (country.split(" ").length == 1) {
