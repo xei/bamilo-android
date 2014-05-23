@@ -1103,15 +1103,18 @@ public class HomeFragment extends BaseFragment {
         private View generateLastViewedLayout(ViewGroup parent){
             View lastViewedView = mInflater.inflate(R.layout.teaser_last_viewed, parent, false);
             mPopArrows = (RelativeLayout) lastViewedView.findViewById(R.id.pop_arrows_container);
-            if(lastViewed.size() >3){
-                mScrollViewWithHorizontal.sendListenerAndView(receiveIsVisible, lastViewedView);    
-            }
+            
             
             ViewPager mViewPager = (ViewPager) lastViewedView.findViewById(R.id.last_viewed_viewpager);
             int partialSize = 3;
             if(((BaseActivity) getActivity()).isTabletInLandscape(getActivity())){
                 partialSize = 5;
             }
+            
+            if(lastViewed.size() > partialSize){
+                mScrollViewWithHorizontal.sendListenerAndView(receiveIsVisible, lastViewedView);    
+            }
+            
             LastViewedAdapter mLastViewedAdapter = new LastViewedAdapter(getActivity(), lastViewed, mInflater, partialSize);
             mViewPager.setAdapter(mLastViewedAdapter);
             return lastViewedView;
