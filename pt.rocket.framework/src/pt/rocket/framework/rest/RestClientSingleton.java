@@ -362,11 +362,14 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 		}
 
 		metaData.putString(IMetaData.URI, httpRequest.getURI().toString());
-		if (metaData.getBoolean(IMetaData.MD_IGNORE_CACHE)) {
-			Log.d(TAG,
-					"executeHttpRequest: receveid ignore cache flag - bypassing cache");
-			String value = HeaderConstants.CACHE_CONTROL_MAX_AGE + "=0; "
-					+ HeaderConstants.CACHE_CONTROL_MUST_REVALIDATE;
+		
+		// Validate cache
+		if (metaData.getBoolean(IMetaData.MD_IGNORE_CACHE) || eventType.cacheTime == RestContract.NO_CACHE) {
+			Log.d(TAG, "executeHttpRequest: received ignore cache flag - bypassing cache");
+			httpRequest.addHeader(HeaderConstants.CACHE_CONTROL, HeaderConstants.CACHE_CONTROL_NO_CACHE);
+		} else {			
+			Log.d(TAG, "executeHttpRequest: received cache flag - cache time " + eventType.cacheTime);
+			String value = HeaderConstants.CACHE_CONTROL_MAX_AGE + "=" + eventType.cacheTime + "; " + HeaderConstants.CACHE_CONTROL_MUST_REVALIDATE;
 			httpRequest.addHeader(HeaderConstants.CACHE_CONTROL, value);
 		}
 
@@ -403,27 +406,22 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 				return null;
 			}
 
-			CacheResponseStatus responseStatus = (CacheResponseStatus) httpContext
-					.getAttribute(CachingHttpClient.CACHE_RESPONSE_STATUS);
+			CacheResponseStatus responseStatus = (CacheResponseStatus) httpContext.getAttribute(CachingHttpClient.CACHE_RESPONSE_STATUS);
 			switch (responseStatus) {
 			case CACHE_HIT:
-				Log.d(TAG,
-						"A response was generated from the cache with no requests "
-								+ "sent upstream");
+				Log.d(TAG, "CACHE RESPONSE STATUS: A response came from the cache with no requests sent upstream");
 				break;
 			case CACHE_MODULE_RESPONSE:
-				Log.d(TAG,
-						"The response was generated directly by the caching module");
+				Log.d(TAG, "CACHE RESPONSE STATUS: The response came directly by the caching module");
 				break;
 			case CACHE_MISS:
-				Log.d(TAG, "The response came from an upstream server");
+				Log.d(TAG, "CACHE RESPONSE STATUS: The response came from an upstream server");
 				break;
 			case VALIDATED:
-				Log.d(TAG,
-						"The response was generated from the cache after validating "
-								+ "the entry with the origin server");
+				Log.d(TAG, "CACHE RESPONSE STATUS: The response came from the cache after validating the entry with the origin server");
 				break;
 			}
+			
 			String cacheWarning = null;
 			if (ConfigurationConstants.LOG_DEBUG_ENABLED) {
 				Header[] headers = response.getAllHeaders();
@@ -467,6 +465,7 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 				EntityUtils.consumeQuietly(entity);
 				return null;
 			}
+			
 			// FIXME - OutOfMemoryError
 			result = EntityUtils.toString(entity);
 			Log.i(TAG, "code1response : "+result.toString());

@@ -51,7 +51,7 @@ public enum EventType {
 
 	REMOVE_ITEM_FROM_WISHLIST_EVENT, 
 
-	GET_TEASERS_EVENT("http:/main/getteasers/", RestContract.MAX_CACHE_TIME),
+	GET_TEASERS_EVENT("http:/main/getteasers/", RestContract.MAX_CACHE_TIME), // XXX
 	
 	GET_PRODUCT_EVENT,
 	
@@ -179,7 +179,7 @@ public enum EventType {
 	
 	SEARCH_PRODUCT("http:/product.html", RestContract.NO_CACHE),
 	
-	GET_CAMPAIGN_EVENT("http:/campaign/get/", RestContract.MAX_CACHE_TIME),
+	GET_CAMPAIGN_EVENT("http:/campaign/get/", RestContract.NO_CACHE),
 	
 	GET_NEWSLETTERS_FORM_EVENT("managenewsletters", RestContract.NO_CACHE),
 	

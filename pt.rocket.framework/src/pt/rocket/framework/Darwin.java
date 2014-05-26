@@ -120,6 +120,7 @@ public class Darwin {
 		context = ctx.getApplicationContext();
 		if (SHOP_ID != null && SHOP_ID.equalsIgnoreCase(shopId)) {
 			Log.d(TAG, "Allready initialized for id " + shopId);
+			ShopSelector.update(ctx, shopId);
 			return true;
 		}
 		
@@ -130,10 +131,7 @@ public class Darwin {
 		
 		retrieveVersionCode();
 		ShopSelector.init(context, shopId, isChangeShop);
-//		RestServiceHelper.init(context);
-		
-		// Clear Login Data
-//		ServiceManager.init(context, shopId);
+
 		Log.d(TAG, "Darwin is initialized with id " + shopId);
 		SHOP_ID = shopId;
 		

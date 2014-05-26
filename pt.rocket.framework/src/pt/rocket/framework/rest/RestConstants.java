@@ -216,12 +216,13 @@ public class RestConstants {
 	// private static final String JSON_HEIGHT_TAG = "height";
 	// private static final String JSON_FORMAT_TAG = "format";
 	
-	// Teaser Campaign Tags XXX
+	// Teaser Campaign Tags
 	public static final String JSON_CAMPAIGN_TAG = "campaign";
 	public static final String JSON_CAMPAIGN_NAME_TAG = "campaign_name";
 	public static final String JSON_CAMPAIGN_URL_TAG = "campaign_url";
 	public static final String JSON_CMS_TAG = "cms";
 	public static final String JSON_MOBILE_BANNER_TAG = "mobile_banner";
+	public static final String JSON_DESKTOP_BANNER_TAG = "desktop_banner";
 	public static final String JSON_START_TIME_TAG = "start_time";
 	public static final String JSON_END_TIME_TAG = "end_time";
 	public static final String JSON_SAVE_PRICE_TAG = "save_price";

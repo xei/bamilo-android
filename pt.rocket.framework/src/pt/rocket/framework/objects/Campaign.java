@@ -24,7 +24,9 @@ public class Campaign implements IJSONSerializable, Parcelable {
 
 	private static final String TAG = Campaign.class.getSimpleName();
 
-	private String mBanner;
+	private String mMobileBanner;
+	
+	private String mTabletBanner;
 
 	private String mName;
 
@@ -61,8 +63,12 @@ public class Campaign implements IJSONSerializable, Parcelable {
 		Log.d(TAG, "ON INITIALIZE");
 		// Get banner
 		JSONObject cmsO = jsonObject.optJSONObject(RestConstants.JSON_CMS_TAG);
-		JSONArray bannerA = (cmsO != null) ? cmsO.optJSONArray(RestConstants.JSON_MOBILE_BANNER_TAG) : null;
-		mBanner = (bannerA != null && bannerA.length() > 0) ? bannerA.get(0).toString() : null;
+		// Get mobile and tablet banners
+		JSONArray bannerMobileA = (cmsO != null) ? cmsO.optJSONArray(RestConstants.JSON_MOBILE_BANNER_TAG) : null;
+		mMobileBanner = (bannerMobileA != null && bannerMobileA.length() > 0) ? bannerMobileA.get(0).toString() : null;
+		JSONArray bannerDesktopA = (cmsO != null) ? cmsO.optJSONArray(RestConstants.JSON_DESKTOP_BANNER_TAG) : null;
+		mTabletBanner = (bannerDesktopA != null && bannerDesktopA.length() > 0) ? bannerDesktopA.get(0).toString() : null;
+		mTabletBanner = ((mTabletBanner == null) ? mMobileBanner : mTabletBanner);
 	    // Get campaign
 		JSONObject campaignO = jsonObject.getJSONObject(RestConstants.JSON_CAMPAIGN_TAG);
 		// Get name
@@ -86,7 +92,7 @@ public class Campaign implements IJSONSerializable, Parcelable {
 	 */
 	@Override
 	public String toString() {
-		return mName + " " + mBanner + " " + mStartTime + " " + mEndTime + " " + mCount;
+		return mName + " " + mMobileBanner + " " + mStartTime + " " + mEndTime + " " + mCount;
 	}
 	
 	/*
@@ -104,8 +110,15 @@ public class Campaign implements IJSONSerializable, Parcelable {
     /**
 	 * @return the mBanner
 	 */
-	public String getBanner() {
-		return mBanner;
+	public String getMobileBanner() {
+		return mMobileBanner;
+	}
+	
+    /**
+	 * @return the mBanner
+	 */
+	public String getTabletBanner() {
+		return mTabletBanner;
 	}
 
 	/**
@@ -150,8 +163,15 @@ public class Campaign implements IJSONSerializable, Parcelable {
 	/**
 	 * @param mBanner the mBanner to set
 	 */
-	public void setBanner(String mBanner) {
-		this.mBanner = mBanner;
+	public void setMobileBanner(String mBanner) {
+		this.mMobileBanner = mBanner;
+	}
+	
+	/**
+	 * @param mBanner the mBanner to set
+	 */
+	public void setTabletBanner(String mBanner) {
+		this.mTabletBanner = mBanner;
 	}
 
 	/**
@@ -207,7 +227,8 @@ public class Campaign implements IJSONSerializable, Parcelable {
 	 */
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeString(mBanner);
+		dest.writeString(mMobileBanner);
+		dest.writeString(mTabletBanner);
 		dest.writeString(mName);
 		dest.writeString(mStartTime);
 		dest.writeString(mEndTime);
@@ -220,7 +241,8 @@ public class Campaign implements IJSONSerializable, Parcelable {
 	 * @param in
 	 */
 	public Campaign(Parcel in) {
-		mBanner = in.readString();
+		mMobileBanner = in.readString();
+		mTabletBanner = in.readString();
 		mName = in.readString();
 		mStartTime = in.readString();
 		mEndTime = in.readString();

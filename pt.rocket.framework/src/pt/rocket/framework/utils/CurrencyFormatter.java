@@ -54,7 +54,9 @@ public class CurrencyFormatter {
         
         if ( TextUtils.isEmpty( currCode ))
         	throw new RuntimeException( "Currency code is empty or null - fix this" );
-        
+        if(currCode.equalsIgnoreCase("USH")){
+        	currCode = "UGX";
+        }
         currency = Currency.getInstance(currCode);
         Log.d( TAG, "currency: currency code = " + currency.getCurrencyCode() + " fraction dicits = " + currency.getDefaultFractionDigits());
         formatter = getNumberFormatter();

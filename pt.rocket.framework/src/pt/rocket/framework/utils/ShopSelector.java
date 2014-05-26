@@ -93,6 +93,29 @@ public final class ShopSelector {
 	}
 	
 	/**
+	 * Update the country selector to a certain country code. This also
+	 * updates the currency formatter to the related currency code.
+	 * 
+	 * @param context
+	 * @param shopId
+	 */
+	public static void update(Context context, String shopId) {
+		SharedPreferences sharedPrefs = context.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+		setLocale(
+				context,
+				sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ID, null));
+		RestContract.init(context, shopId);
+		RestClientSingleton.init(context);
+
+		String currencyCode = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_ISO, null);
+		CurrencyFormatter.initialize(context, currencyCode);
+		
+		sShopId = shopId;
+		sShopName = context.getResources().getString( R.string.global_server_shop_name);
+		sCountryName = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, null);
+	}
+	
+	/**
 	 * Sets the locale for the app by using the language code.
 	 * 
 	 * @param context
