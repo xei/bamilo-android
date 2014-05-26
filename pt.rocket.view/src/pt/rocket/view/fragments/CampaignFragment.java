@@ -306,7 +306,8 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
         // Get the image view
         ImageView imageView = (ImageView) bannerView.findViewById(R.id.campaign_banner);
         // Load the bitmap
-        new AQuery(getBaseActivity()).id(imageView).image(mCampaign.getBanner());
+        String url = (getResources().getBoolean(R.bool.isTablet)) ? mCampaign.getTabletBanner() : mCampaign.getMobileBanner();
+        new AQuery(getBaseActivity()).id(imageView).image(url);
         // Return the banner
         return bannerView;
     }

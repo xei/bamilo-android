@@ -43,13 +43,13 @@ public class DarwinComponent extends ApplicationComponent {
         boolean countriesConfigs = sharedPrefs.getBoolean(Darwin.KEY_COUNTRIES_CONFIGS_LOADED, false);
         boolean countryConfigsAvailable = sharedPrefs.getBoolean(ConstantsSharedPrefs.KEY_COUNTRY_CONFIGS_AVAILABLE, false);
         boolean isChangeShop = sharedPrefs.getBoolean(Darwin.KEY_COUNTRY_CHANGED, false);
-        Log.i(TAG, "DarwinComponent shopId :  "+shopId+ " countriesConfigs : "+countriesConfigs);
+        Log.i(TAG, "DarwinComponent shopId :  "+shopId+ " countriesConfigs : "+countriesConfigs + " " + isChangeShop);
         if (shopId == null && countriesConfigs && !isChangeShop) {
             Log.i(TAG, "DarwinComponent AUTO_COUNTRY_SELECTION");
             return ErrorCode.AUTO_COUNTRY_SELECTION;
         }
         
-        if(!countriesConfigs && !isChangeShop) {
+        if(!countriesConfigs && !countryConfigsAvailable) {
             Log.i(TAG, "DarwinComponent NO_COUNTRIES_CONFIGS");
             if(Darwin.initialize(DarwinMode.DEBUG, app.getApplicationContext())){
                 return ErrorCode.NO_COUNTRIES_CONFIGS;    
@@ -60,7 +60,7 @@ public class DarwinComponent extends ApplicationComponent {
         
         if(!countryConfigsAvailable){
             Log.i(TAG, "DarwinComponent NO_COUNTRY_CONFIGS_AVAILABLE");
-            if(Darwin.initialize(DarwinMode.DEBUG, app.getApplicationContext(), sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_URL, null),sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_REST_BASE, null))){
+            if(Darwin.initialize(DarwinMode.DEBUG, app.getApplicationContext(), sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_URL, null), sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_REST_BASE, null))){
                 return ErrorCode.NO_COUNTRY_CONFIGS_AVAILABLE;   
             }
             Log.i(TAG, "DarwinComponent NO_COUNTRY_CONFIGS_AVAILABLE UNKNOWN_ERROR");
