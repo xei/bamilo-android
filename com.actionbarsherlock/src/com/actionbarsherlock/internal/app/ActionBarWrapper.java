@@ -11,7 +11,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.SpinnerAdapter;
 
+import com.actionbarsherlock.R;
 import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.internal.widget.ActionBarView;
 
 public class ActionBarWrapper extends ActionBar implements android.app.ActionBar.OnNavigationListener, android.app.ActionBar.OnMenuVisibilityListener {
     private final Activity mActivity;
@@ -479,9 +481,13 @@ public class ActionBarWrapper extends ActionBar implements android.app.ActionBar
         }
     }
 
-
+    /*
+     * (non-Javadoc)
+     * @see com.actionbarsherlock.app.ActionBar#updateUpState(boolean)
+     */
 	@Override
 	public void updateUpState(boolean state) {
-		updateUpState(state);
+		ActionBarView mActionView = (ActionBarView) mActivity.findViewById(R.id.abs__action_bar);
+		mActionView.animateUpButton(state);
 	}
 }

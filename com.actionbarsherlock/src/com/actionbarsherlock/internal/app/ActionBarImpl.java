@@ -1033,9 +1033,12 @@ public class ActionBarImpl extends ActionBar {
         mActionView.setLogo(logo);
     }
     
+    /*
+     * (non-Javadoc)
+     * @see com.actionbarsherlock.app.ActionBar#updateUpState(boolean)
+     */
     @Override
     public void updateUpState(boolean state){
-        Log.i(TAG, "code1updateUpState: ");
     	mActionView.animateUpButton(state);
     }
 }
