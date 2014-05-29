@@ -48,9 +48,6 @@
     <!-- PRODUCT LIST ITEM -->
     <dimen name="product_list_item_image_width">320dp</dimen>
     <dimen name="product_list_item_image_height">190dp</dimen>
-    <dimen name="product_list_item_discount_percentage_image_width">90dp</dimen>
-    <dimen name="product_list_item_discount_percentage_image_height">60dp</dimen>
-    <dimen name="product_list_item_discount_percentage_text_width">90dp</dimen>
     <dimen name="product_list_item_discount_percentage_text_margin">10dp</dimen>
     <dimen name="product_list_item_star_rating_bar_min_height">17dp</dimen>
     <dimen name="product_list_item_star_rating_bar_max_height">17dp</dimen>

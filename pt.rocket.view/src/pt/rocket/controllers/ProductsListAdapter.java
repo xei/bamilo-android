@@ -65,6 +65,8 @@ public class ProductsListAdapter extends BaseAdapter {
 
     private Drawable isNewDrawable;
 
+    private boolean showList;
+
     /**
      * A representation of each item on the list
      */
@@ -108,11 +110,13 @@ public class ProductsListAdapter extends BaseAdapter {
      * the constructor for this adapter
      * 
      * @param activity
+     * @param showList show list (or grid)
      */
-    public ProductsListAdapter(Context context) {
+    public ProductsListAdapter(Context context, boolean showList) {
 
         this.context = context.getApplicationContext();
         this.products = new ArrayList<Product>();
+        this.showList = showList;
 
         this.inflater = LayoutInflater.from(context);
         reviewLabel = context.getString(R.string.reviews);
@@ -194,7 +198,9 @@ public class ProductsListAdapter extends BaseAdapter {
             // if the view already exists there is no need to inflate it again
             itemView = convertView;
         } else {
-            itemView = inflater.inflate(R.layout.product_item, parent, false);
+            int layoutId = showList ? R.layout.product_item : R.layout.product_item_grid;
+
+            itemView = inflater.inflate(layoutId, parent, false);
         }
 
         if ((Item) itemView.getTag() == null) {
@@ -203,13 +209,17 @@ public class ProductsListAdapter extends BaseAdapter {
             prodItem.promotion = (ImageView) itemView.findViewById(R.id.item_promotion);
             prodItem.progress = itemView.findViewById(R.id.image_loading_progress);
             prodItem.name = (TextView) itemView.findViewById(R.id.item_name);
-            prodItem.rating = (RatingBar) itemView.findViewById(R.id.item_rating);
+            if (showList) {
+                prodItem.rating = (RatingBar) itemView.findViewById(R.id.item_rating);
+            }
             prodItem.price = (TextView) itemView.findViewById(R.id.item_regprice);
             prodItem.discount = (TextView) itemView.findViewById(R.id.item_discount);
             prodItem.discountPercentage = (TextView) itemView.findViewById(R.id.discount_percentage);
             // prodItem.vertSeperator = itemView.findViewById(R.id.prod_right_seperator);
             // prodItem.multiselect = itemView.findViewById(R.id.products_multiselect);
-            prodItem.reviews = (TextView) itemView.findViewById(R.id.item_reviews);
+            if (showList) {
+                prodItem.reviews = (TextView) itemView.findViewById(R.id.item_reviews);
+            }
 
             // Get brand
             prodItem.brand = (TextView) itemView.findViewById(R.id.item_brand);
@@ -277,18 +287,20 @@ public class ProductsListAdapter extends BaseAdapter {
         
         aq.id(prodItem.name).text(product.getName());
         aq.id(prodItem.price).text(product.getSuggestedPrice());
-        if (product.getRating() != null && product.getRating() > 0) {
-            aq.id(prodItem.rating).rating(product.getRating().floatValue());
-            aq.id(prodItem.rating).visibility(View.VISIBLE);
-            if (product.getReviews() != null) {
-                aq.id(prodItem.reviews).text(product.getReviews() + " " + reviewLabel);
-                aq.id(prodItem.reviews).visibility(View.VISIBLE);
+        if (showList) {
+            if (product.getRating() != null && product.getRating() > 0) {
+                aq.id(prodItem.rating).rating(product.getRating().floatValue());
+                aq.id(prodItem.rating).visibility(View.VISIBLE);
+                if (product.getReviews() != null) {
+                    aq.id(prodItem.reviews).text(product.getReviews() + " " + reviewLabel);
+                    aq.id(prodItem.reviews).visibility(View.VISIBLE);
+                } else {
+                    aq.id(prodItem.reviews).visibility(View.GONE);
+                }
             } else {
+                aq.id(prodItem.rating).visibility(View.GONE);
                 aq.id(prodItem.reviews).visibility(View.GONE);
             }
-        } else {
-            aq.id(prodItem.rating).visibility(View.GONE);
-            aq.id(prodItem.reviews).visibility(View.GONE);
         }
 
         if (null != product.getSpecialPrice()

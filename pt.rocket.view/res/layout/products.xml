@@ -45,14 +45,14 @@
             android:layout_alignParentBottom="true"
             layout="@layout/loading_more" />
 
-        <ListView
+        <GridView
             android:id="@+id/middle_productslist_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@id/loadmore"
             android:layout_alignParentTop="true"
             android:listSelector="@android:color/transparent"
-            android:numColumns="1" />
+            android:numColumns="3" />
 
     </RelativeLayout>
 

@@ -27,6 +27,8 @@ public class ConstantsSharedPrefs {
 	
 	public static String KEY_SHOW_PROMOTIONS = "show_promotions";
 	
+	public static String KEY_SHOW_LIST_LAYOUT = "showList";
+	
 	public static String KEY_COUNTRY = "country";
 	
 	/**

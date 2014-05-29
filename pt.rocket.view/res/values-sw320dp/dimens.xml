@@ -7,7 +7,7 @@
     
     <dimen name="button_sort_line_distance_horizontal">@dimen/button_sort_line_distance_horizontal_sw320dp</dimen>
 	<dimen name="button_sort_height">@dimen/button_sort_height_sw320dp</dimen>
-	
-    <dimen name="product_item_height">160dp</dimen>
+
+    <dimen name="product_item_height">130dp</dimen>
     <dimen name="product_item_vertical_divider_height">165dp</dimen>
 </resources>

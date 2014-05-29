@@ -8,8 +8,10 @@ import java.util.EnumSet;
 import org.holoeverywhere.widget.Button;
 
 import pt.rocket.constants.ConstantsIntentExtra;
+import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.CatalogPageModel;
 import pt.rocket.controllers.FeaturedItemsAdapter;
+import pt.rocket.framework.Darwin;
 import pt.rocket.framework.objects.CatalogFilter;
 import pt.rocket.framework.objects.CatalogFilterOption;
 import pt.rocket.framework.objects.FeaturedBox;
@@ -25,9 +27,12 @@ import pt.rocket.utils.dialogfragments.DialogFilterFragment;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.content.ContentValues;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Shader;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.PagerTabStrip;
@@ -42,8 +47,8 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import de.akquinet.android.androlog.Log;
@@ -84,7 +89,11 @@ public class Catalog extends BaseFragment implements OnClickListener {
     public static int navigationSource;
     private int currentPosition = 1;
 
+    private View mProductsButtonsContainer;
+
     private View mFilterButton;
+
+    private ImageView mSwitchLayoutButton;
 
     private ArrayList<CatalogFilter> mCatalogFilter;
 
@@ -99,6 +108,14 @@ public class Catalog extends BaseFragment implements OnClickListener {
     private ContentValues mOldCatalogFilterValues;
 
     public static boolean isNotShowing = true;
+
+    private boolean showList = true;
+    private Drawable mShowListDrawable;
+    private Drawable mShowGridDrawable;
+
+    private int totalUpdates = 0;
+    
+    private SharedPreferences sharedPreferences;
 
     public Catalog() {
         super(EnumSet.noneOf(EventType.class),
@@ -122,6 +139,13 @@ public class Catalog extends BaseFragment implements OnClickListener {
         mSortOptions = new ArrayList<String>(Arrays.asList(getResources().getStringArray(
                 R.array.products_picker)));
         mCatalogPageModel = new CatalogPageModel[mSortOptions.size()];
+
+        mShowListDrawable = getResources().getDrawable(R.drawable.selector_catalog_listview);
+        mShowGridDrawable = getResources().getDrawable(R.drawable.selector_catalog_gridview);
+
+        sharedPreferences = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        showList = sharedPreferences.getBoolean(ConstantsSharedPrefs.KEY_SHOW_LIST_LAYOUT, true);
+
         Log.i(TAG, "onCreate");
         setRetainInstance(true);
     }
@@ -139,6 +163,13 @@ public class Catalog extends BaseFragment implements OnClickListener {
         View view = inflater.inflate(R.layout.products_frame, container, false);
         mViewPager = (JumiaCatalogViewPager) view.findViewById(R.id.viewpager_products_list);
         pagerTabStrip = (PagerTabStrip) view.findViewById(R.id.products_list_titles);
+        // Get buttons container
+        mProductsButtonsContainer = view.findViewById(R.id.products_buttons_container);
+        // Get switch layout button
+        mSwitchLayoutButton = (ImageView) view.findViewById(R.id.products_switch_layout_button);
+        mSwitchLayoutButton.setOnClickListener(this);
+        // Set the switch layout button icon
+        setSwitchLayoutButtonIcon();
         // Get filter button
         mFilterButton = view.findViewById(R.id.products_list_filter_button);
         // Set the button state if is selected or not
@@ -325,56 +356,37 @@ public class Catalog extends BaseFragment implements OnClickListener {
      * 
      * @param featuredBox contains a list of featured products, a list of featured brands and error messages
      */
-    public synchronized void onErrorSearchResult(FeaturedBox featuredBox){
+    public synchronized void onErrorSearchResult(FeaturedBox featuredBox) {
         if (featuredBox != null) {
             // hide default products list
             getView().findViewById(R.id.catalog_viewpager_container).setVisibility(View.GONE);
-
             getView().findViewById(R.id.no_results_search_terms).setVisibility(View.VISIBLE);
+
             String errorMessage = featuredBox.getErrorMessage();
+            // only process errorMessage if is available
             if (!TextUtils.isEmpty(errorMessage)) {
                 TextView textViewErrorMessage = (TextView) getView().findViewById(R.id.no_results_search_error_message);
 
-                // set search term in bold, if it exits on errorMessage
-                boolean isSearchQueryInErrorMessage = false;
-
-                errorMessage = getErrorMessageWithOriginalSearchQuery(errorMessage, searchQuery);
-
-                // set seachQuery in bold if is contained in errorMessage
-                if (errorMessage.contains(searchQuery)) {
-                    String newSearchQuery = "\"" + searchQuery + "\"";
-                    int startIndex = errorMessage.indexOf(newSearchQuery);
-                    if (startIndex > 0) {
-                        SpannableStringBuilder spannableErrorMessage = new SpannableStringBuilder(errorMessage);
-                        spannableErrorMessage.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD), startIndex, startIndex + newSearchQuery.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                        textViewErrorMessage.setText(spannableErrorMessage);
-
-                        isSearchQueryInErrorMessage = true;
-                    }
-                }
-                if (!isSearchQueryInErrorMessage) {
+                // set seachQuery in bold if it is converted
+                SpannableStringBuilder spannableErrorMessage = getSpannableErrorMessageWithOriginalSearchQuery(errorMessage, searchQuery);
+                if (spannableErrorMessage != null) {
+                    textViewErrorMessage.setText(spannableErrorMessage);
+                } else {
                     textViewErrorMessage.setText(errorMessage);
                 }
             }
 
             String searchTips = featuredBox.getSearchTips();
+            // only process searchTips if is available
             if (!TextUtils.isEmpty(searchTips)) {
                 TextView textViewSearchTips= (TextView) getView().findViewById(R.id.no_results_search_tips_text);
 
-             // set first line bold, if searchTips has multiple lines
-                boolean isSearchTipsMultiline = false;
-                if (searchTips.contains("\n")) {
-                    int endIndex = searchTips.indexOf("\n");
-                    if (endIndex > 0) {
-                        SpannableStringBuilder spannableSearchTips = new SpannableStringBuilder(searchTips);
-                        spannableSearchTips.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD), 0, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                        textViewSearchTips.setText(spannableSearchTips);
-
-                        isSearchTipsMultiline = true;
-                    }
-                }
-                if (!isSearchTipsMultiline) {
-                    textViewSearchTips.setText(searchTips);
+                // set searchTips in bold if is converted
+                SpannableStringBuilder spannableSearchTips = getSpannableSearchTips(searchTips);
+                if (spannableSearchTips != null) {
+                    textViewSearchTips.setText(spannableSearchTips);
+                } else {
+                    textViewSearchTips.setText(errorMessage);
                 }
             }
 
@@ -410,34 +422,89 @@ public class Catalog extends BaseFragment implements OnClickListener {
     }
 
     /**
-     * get errorMessage with <code>searchQuery</code> (text between " ") replaced by original
-     * <code>searchQuery</code>
+     * get spannableErrorMessage with <code>searchQuery</code> (text between " ") replaced by
+     * original <code>searchQuery</code> and set in bold
      * 
      * @param errorMessage
      * @param searchQuery
-     * @return <code>errorMessage</code> with original searchQuery, or original
-     *         <code>errorMessage</code> if processing wasn't successful
+     * @return <code>spannableErrorMessage</code> with original searchQuery set in bold, or
+     *         <code>null</code> if processing wasn't successful
      */
-    private String getErrorMessageWithOriginalSearchQuery(String errorMessage, String searchQuery) {
-        int startIndex = errorMessage.indexOf("\"");
+    private SpannableStringBuilder getSpannableErrorMessageWithOriginalSearchQuery(String errorMessage, String searchQuery) {
+        String startDelimiter = "\"";
+        String endDelimiter = "\"";
+        int startIndex = errorMessage.indexOf(startDelimiter);
+
+        // some countries use others delimiters. try alternative
+        if (startIndex == -1) {
+            startDelimiter = "« ";
+            endDelimiter = " »";
+            startIndex = errorMessage.indexOf(startDelimiter);
+        }
+        // if finds delimiter process errorMessage
         if (startIndex > 0) {
+            int startDelimiterLength = startDelimiter.length();
+            int endDelimiterLength = endDelimiter.length();
             int lastEndIndex = 0;
-            int endIndex = errorMessage.indexOf("\"", startIndex + 1);
-            // get last index of "
+
+            int endIndex = errorMessage.indexOf(endDelimiter, startIndex + startDelimiterLength);
+            // get last index of delimitier
             while (endIndex > 0) {
                 lastEndIndex = endIndex;
-                endIndex = errorMessage.indexOf("\"", lastEndIndex + 1);
+                endIndex = errorMessage.indexOf(endDelimiter, lastEndIndex + endDelimiterLength);
             }
             if (lastEndIndex > 0) {
-                StringBuilder newErrorMessage = new StringBuilder();
-                newErrorMessage.append(errorMessage.substring(0, startIndex + 1));
-                newErrorMessage.append(searchQuery);
-                newErrorMessage.append(errorMessage.substring(lastEndIndex, errorMessage.length()));
+                // Validate search value
+                if(TextUtils.isEmpty(searchQuery)) searchQuery = "";
+                
+                // create SpannableStringBuilder with searchQuery replaced by original
+                SpannableStringBuilder spannableErrorMessage = new SpannableStringBuilder();
+                spannableErrorMessage.append(errorMessage.substring(0, startIndex + startDelimiterLength));
+                spannableErrorMessage.append(searchQuery);
+                spannableErrorMessage.append(errorMessage.substring(lastEndIndex, errorMessage.length()));
 
-                return newErrorMessage.toString();
+                // set searchQuery on bold
+                String newSearchQuery = startDelimiter + searchQuery + endDelimiter;
+                startIndex = spannableErrorMessage.toString().indexOf(newSearchQuery);
+                spannableErrorMessage.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD), startIndex + startDelimiterLength, startIndex + searchQuery.length() + endDelimiterLength, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                return spannableErrorMessage;
             }
         }
-        return errorMessage;
+        return null;
+    }
+
+    /**
+     * get spannableSearchtips with first line set in bold
+     * 
+     * @param searchTips
+     * @return <code>spannableSearchtips</code> with first line set in bold, or <code>null</code> if
+     *         processing wasn't successful
+     */
+    private SpannableStringBuilder getSpannableSearchTips(String searchTips) { 
+        // set first line bold, if searchTips has multiple lines
+        if (searchTips.contains("\n")) {
+            int endIndex = searchTips.indexOf("\n");
+            if (endIndex > 0) {
+                // check if Country is Nigeria
+                SharedPreferences sharedPrefs = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+                if(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_LANG_CODE, "en").contains("en_NG")){
+                    // get next 2 paragraphs
+                    int newEndIndex = searchTips.indexOf("\n", endIndex + 1);
+                    if (newEndIndex > 0) {
+                        newEndIndex = searchTips.indexOf("\n", newEndIndex + 1);
+                        if (newEndIndex > 0) {
+                            endIndex = newEndIndex;
+                        }
+                    }
+                }
+                SpannableStringBuilder spannableSearchTips = new SpannableStringBuilder(searchTips);
+                spannableSearchTips.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD), 0, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                return spannableSearchTips;
+            }
+        }
+        return null;
     }
 
     /**
@@ -474,6 +541,10 @@ public class Catalog extends BaseFragment implements OnClickListener {
         mFeaturedBrandsViewPager.setAdapter(mFeaturedBrandsAdapter);
         mFeaturedBrandsViewPager.setVisibility(View.VISIBLE);
         mLoadingFeaturedBrands.setVisibility(View.GONE);
+    }
+
+    private void showButtonsContainer() {
+        mProductsButtonsContainer.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -519,14 +590,19 @@ public class Catalog extends BaseFragment implements OnClickListener {
         setFilterButtonState();
         // Error flag
         wasReceivedErrorEvent = false;
+        
+        // update totalUpdates
+        totalUpdates++;
+        Log.i(TAG, "Updating totalUpdates: " + totalUpdates);
+        
         // Send new request with new filters
         // Update the current view pages
         getCurrentCatalogPageModel(mSelectedPageIndex).setVariables(productsURL, searchQuery,
-                navigationPath, title, navigationSource, mCatalogFilterValues);
+                navigationPath, title, navigationSource, mCatalogFilterValues, showList, totalUpdates);
         getCurrentCatalogPageModel(mSelectedPageIndex - 1).setVariables(productsURL, searchQuery,
-                navigationPath, title, navigationSource, mCatalogFilterValues);
+                navigationPath, title, navigationSource, mCatalogFilterValues, showList, totalUpdates);
         getCurrentCatalogPageModel(mSelectedPageIndex + 1).setVariables(productsURL, searchQuery,
-                navigationPath, title, navigationSource, mCatalogFilterValues);
+                navigationPath, title, navigationSource, mCatalogFilterValues, showList, totalUpdates);
     }
 
     /**
@@ -627,8 +703,9 @@ public class Catalog extends BaseFragment implements OnClickListener {
      * @author sergiopereira
      */
     private void setFilterAction() {
+        // Show buttons container
+        showButtonsContainer();
         // Set listener
-        mFilterButton.setVisibility(View.VISIBLE);
         mFilterButton.setOnClickListener(null);
         mFilterButton.setOnClickListener(this);
         pagerTabStrip.setPadding(
@@ -652,6 +729,22 @@ public class Catalog extends BaseFragment implements OnClickListener {
         }
     }
 
+    /**
+     * Set the switch layout button icon (show the opposite icon)
+     */
+    private void setSwitchLayoutButtonIcon() {
+        try {
+            if (showList) {
+                mSwitchLayoutButton.setImageDrawable(mShowGridDrawable);
+            } else {
+                mSwitchLayoutButton.setImageDrawable(mShowListDrawable);
+            }
+            Log.i(TAG, "SET SWITCH LAYOUT BUTTON STATE: " + mSwitchLayoutButton.isSelected());
+        } catch (NullPointerException e) {
+            Log.w(TAG, "BUTTON OR VALUE IS NULL", e);
+        }
+    }
+
     /*
      * (non-Javadoc)
      * 
@@ -669,6 +762,25 @@ public class Catalog extends BaseFragment implements OnClickListener {
             bundle.putParcelableArrayList(DialogFilterFragment.FILTER_TAG, mCatalogFilter);
             DialogFilterFragment newFragment = DialogFilterFragment.newInstance(bundle, this);
             newFragment.show(getBaseActivity().getSupportFragmentManager(), "dialog");
+        } else if (id == R.id.products_switch_layout_button) {
+        	Log.d(TAG, "ON CLICK: SWITCH LAYOUT BUTTON");
+
+            showList = !showList;
+
+            // Save current layout used
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean(ConstantsSharedPrefs.KEY_SHOW_LIST_LAYOUT, showList);
+            editor.apply();
+
+            setSwitchLayoutButtonIcon();
+
+            // update totalUpdates
+            totalUpdates++;
+            Log.i(TAG, "Updating totalUpdates: " + totalUpdates);
+
+            // Update the current view page with the current list of products rendered on a
+            // different layout without calling a new request
+            getCurrentCatalogPageModel(mSelectedPageIndex).switchLayout(showList, totalUpdates);
         }
     }
 
@@ -789,7 +901,18 @@ public class Catalog extends BaseFragment implements OnClickListener {
         private CatalogPageModel getCurrentCatalogPageModel(int position) {
             for (int i = 0; i < mCatalogPageModel.length; i++) {
                 if (mCatalogPageModel[i].getIndex() == position) {
-                    return mCatalogPageModel[i];
+                    // check if new page to display has same settings as this
+                    CatalogPageModel currentCatalogPageModel = mCatalogPageModel[i];
+                    int currentCatalogPageModelTotalUpdates = currentCatalogPageModel.getTotalUpdates();
+                    if (totalUpdates > currentCatalogPageModelTotalUpdates) {
+                        // verify if currentCatalogPageModel is initialized
+                        if (currentCatalogPageModel.getGridView() != null) {
+                            Log.i(TAG, "Updating variables! " + totalUpdates + " > " + currentCatalogPageModelTotalUpdates + " updates; page title: " + currentCatalogPageModel.getTitle());
+                            currentCatalogPageModel.setVariables(productsURL, searchQuery, navigationPath, 
+                                    title, navigationSource, mCatalogFilterValues, showList, totalUpdates);
+                        }
+                    }
+                    return currentCatalogPageModel;
                 }
             }
 
@@ -804,49 +927,22 @@ public class Catalog extends BaseFragment implements OnClickListener {
                 @Override
                 public void run() {
                     Log.i(TAG, "instantiateItem");
-                    if (currentPage.getRelativeLayout() == null
-                            || ((BaseActivity) getActivity())
-                                    .isTabletInLandscape(getBaseActivity()) != currentPage
-                                    .isLandScape()) {
-                        RelativeLayout mRelativeLayout = (RelativeLayout) mInflater.inflate(
-                                R.layout.products,
-                                null);
+                    boolean isTabletInLandscape = BaseActivity.isTabletInLandscape(getBaseActivity()); 
+                    if (currentPage.getRelativeLayout() == null || isTabletInLandscape != currentPage.isLandScape()) {
+                        RelativeLayout mRelativeLayout = (RelativeLayout) mInflater.inflate(R.layout.products, null);
                         currentPage.setRelativeLayout(mRelativeLayout);
-                        currentPage
-                                .setTextViewSpnf((org.holoeverywhere.widget.TextView) currentPage
-                                        .getRelativeLayout().findViewById(
-                                                R.id.search_products_not_found));
-                        currentPage.setButtonRavb((Button) currentPage.getRelativeLayout()
-                                .findViewById(R.id.retry_alert_view_button));
-                        currentPage.setRelativeLayoutPc((RelativeLayout) currentPage
-                                .getRelativeLayout().findViewById(R.id.products_content));
-                        currentPage.setLinearLayoutLm((LinearLayout) currentPage
-                                .getRelativeLayout().findViewById(R.id.loadmore));
-                        if (getBaseActivity().isTabletInLandscape(getBaseActivity())) {
-                            try {
-                                currentPage.setGridView((GridView) currentPage.getRelativeLayout()
-                                        .findViewById(R.id.middle_productslist_list));
-                            } catch (ClassCastException e) {
-                                currentPage.setListView((ListView) currentPage.getRelativeLayout()
-                                        .findViewById(R.id.middle_productslist_list));
-                            }
+                        currentPage.setTextViewSpnf((org.holoeverywhere.widget.TextView) currentPage.getRelativeLayout().findViewById(R.id.search_products_not_found));
+                        currentPage.setButtonRavb((Button) currentPage.getRelativeLayout().findViewById(R.id.retry_alert_view_button));
+                        currentPage.setRelativeLayoutPc((RelativeLayout) currentPage.getRelativeLayout().findViewById(R.id.products_content));
+                        currentPage.setLinearLayoutLm((LinearLayout) currentPage.getRelativeLayout().findViewById(R.id.loadmore));
 
-                        } else {
-                            try {
-                                currentPage.setListView((ListView) currentPage.getRelativeLayout()
-                                        .findViewById(R.id.middle_productslist_list));
-                            } catch (ClassCastException e) {
-                                currentPage.setGridView((GridView) currentPage.getRelativeLayout()
-                                        .findViewById(R.id.middle_productslist_list));
-                            }
-                        }
+                        currentPage.setGridView((GridView) currentPage.getRelativeLayout().findViewById(R.id.middle_productslist_list), isTabletInLandscape);
 
-                        currentPage.setLinearLayoutLb((LinearLayout) currentPage
-                                .getRelativeLayout().findViewById(R.id.loading_view_pager));
-                        currentPage.setRelativeLayoutPt((RelativeLayout) currentPage
-                                .getRelativeLayout().findViewById(R.id.products_tip));
+                        currentPage.setLinearLayoutLb((LinearLayout) currentPage.getRelativeLayout().findViewById(R.id.loading_view_pager));
+                        currentPage.setRelativeLayoutPt((RelativeLayout) currentPage.getRelativeLayout().findViewById(R.id.products_tip));
+                        // initialize view, setting variables to adjust the layout and filtering details
                         currentPage.setVariables(productsURL, searchQuery, navigationPath, title,
-                                navigationSource, mCatalogFilterValues);
+                                navigationSource, mCatalogFilterValues, showList, totalUpdates);
                     }
 
                 }

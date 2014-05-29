@@ -4,6 +4,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import org.holoeverywhere.widget.Button;
 import org.holoeverywhere.widget.TextView;
@@ -51,7 +52,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -80,6 +80,8 @@ public class CatalogPageModel {
     private static String title;
     private static int navigationSource;
 
+    private boolean showList;
+
     private static ContentValues filters;
 
     private ProductsListAdapter productsAdapter;
@@ -104,7 +106,6 @@ public class CatalogPageModel {
     private LinearLayout linearLayoutLm;
     private ProgressBar progressBarLm;
     private TextView textViewLm;
-    private ListView listView;
     private GridView gridView;
     // Lb - loading_bar
     private LinearLayout linearLayoutLb;
@@ -131,6 +132,7 @@ public class CatalogPageModel {
     
     private Fragment mFragment;
     
+    private int totalUpdates;
 
     public CatalogPageModel(int index, BaseActivity activity, Fragment mFragment) {
         this.index = index;
@@ -197,8 +199,23 @@ public class CatalogPageModel {
             this.productsAdapter.notifyDataSetChanged();    
         }
     }
-    
-    public void setVariables(String p, String s, String n, String t, int navSource, ContentValues filterValues) {
+
+    /**
+     * set CatalogPageModel's static variables</br>
+     * adjust the layout</br>
+     * create a new ProductsListAdapter</br>
+     * 
+     * @param p productsURL
+     * @param s searchQuery
+     * @param n navigationPath
+     * @param t title
+     * @param navSource navigationSource
+     * @param filterValues filters
+     * @param showList show list (or grid)
+     * @param totalUpdates number of global calls to setVariables
+     */
+    public void setVariables(String p, String s, String n, String t, int navSource,
+            ContentValues filterValues, boolean showList, int totalUpdates) {
         
         Log.d(TAG, "FILTER SET VARIABLES" );
         
@@ -208,6 +225,9 @@ public class CatalogPageModel {
         CatalogPageModel.title = t;
         CatalogPageModel.navigationSource = navSource;
         CatalogPageModel.filters = filterValues;
+
+        this.showList = showList;
+        this.totalUpdates = totalUpdates;
 
         if (index == 1) {
             showTips();
@@ -219,6 +239,56 @@ public class CatalogPageModel {
                 executeRequest();
             }
         }).run();
+    }
+
+    /**
+     * adjust the layout</br>
+     * create a new ProductsListAdapter</br>
+     * 
+     * @param showList show list (or grid)
+     * @param totalUpdates number of global calls to setVariables
+     */
+    public void switchLayout(boolean showList, int totalUpdates) {
+        // save products from current productsAdapter to add to new Adapter
+        List<Product> products = productsAdapter.products;
+
+        Log.d(TAG, "SWITCHING LAYOUT" );
+
+        this.showList = showList;
+        this.totalUpdates = totalUpdates;
+
+        // set numColumns based on view chosen
+        if (isLandScape) {
+            // Tablet uses 3 columns for both Grid and List
+            gridView.setNumColumns(3);
+            // gridView.setPadding(10, 0, 10, 0);
+        } else {
+            if (showList) {
+                // Phone uses 1 column for List
+                gridView.setNumColumns(1);
+                // gridView.setPadding(0, 0, 0, 0);
+            } else {
+                // Phone uses 2 columns for Grid
+                gridView.setNumColumns(2);
+                // gridView.setPadding(10, 0, 10, 0);
+            }
+        }
+
+        // initialize new adapter depending on view choosen
+        if (showList) {
+            productsAdapter = new ProductsListAdapter(mActivity, true);
+        } else {
+            productsAdapter = new ProductsListAdapter(mActivity, false);
+        }
+
+        pageNumber = 1;
+        showProductsContent();
+        productsAdapter.clearProducts();
+
+        productsAdapter.appendProducts(products);
+
+        showCatalogContent();
+        isLoadingMore = false;
     }
 
     public int getIndex() {
@@ -252,6 +322,14 @@ public class CatalogPageModel {
 
     public void setTitle(String title) {
         this.sortTitle = title;
+    }
+
+    public Boolean getShowList() {
+        return showList;
+    }
+
+    public int getTotalUpdates() {
+        return totalUpdates;
     }
 
     public TextView getTextViewSpnf() {
@@ -302,10 +380,6 @@ public class CatalogPageModel {
         this.textViewLm = textViewLm;
     }
 
-    public ListView getListView() {
-        return listView;
-    }
-
     /**
      * @return the gridView
      */
@@ -317,9 +391,9 @@ public class CatalogPageModel {
      * @param gridView
      *            the gridView to set
      */
-    public void setGridView(GridView gridView) {
+    public void setGridView(GridView gridView, boolean isLandscape) {
         this.gridView = gridView;
-        this.setLandScape(true);
+        this.setLandScape(isLandscape);
         this.gridView.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                     int position, long id) {
@@ -346,36 +420,6 @@ public class CatalogPageModel {
             }
         });
 
-    }
-
-    public void setListView(ListView listView) {
-        Log.i(TAG, "setListView ");
-        this.listView = listView;
-        this.setLandScape(false);
-        this.listView.setOnItemClickListener(new OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view,
-                    int position, long id) {
-
-                int activePosition = position; // -
-                                               // productsAdapter.getJumpConstant();
-
-                if (activePosition > -1) {
-                    // // Call Product Details
-
-                    Log.i("TAG", "DIR=======>" + dir + " sort =====> " + sort);
-                    JumiaApplication.INSTANCE.showRelatedItemsGlobal = true;
-                    Bundle bundle = new Bundle();
-                    bundle.putString(ConstantsIntentExtra.CONTENT_URL,
-                            ((Product) productsAdapter.getItem(activePosition)).getUrl());
-                    bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, navigationSource);
-                    bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, navigationPath);
-                    if (title != null)
-                        bundle.putString(ProductDetailsActivityFragment.PRODUCT_CATEGORY, title);
-                    mActivity.onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle,
-                            FragmentController.ADD_TO_BACK_STACK);
-                }
-            }
-        });
     }
 
     public LinearLayout getLinearLayoutLb() {
@@ -445,7 +489,30 @@ public class CatalogPageModel {
         
         Log.d(TAG, "FILTER EXECUTE REQ");
         
-        productsAdapter = new ProductsListAdapter(mActivity);
+        // set numColumns based on view chosen
+        if (isLandScape) {
+            // Tablet uses 3 columns for both Grid and List
+            gridView.setNumColumns(3);
+            // gridView.setPadding(10, 0, 10, 0);
+        } else {
+            if (showList) {
+                // Phone uses 1 column for List
+                gridView.setNumColumns(1);
+                // gridView.setPadding(0, 0, 0, 0);
+            } else {
+                // Phone uses 2 columns for Grid
+                gridView.setNumColumns(2);
+                // gridView.setPadding(10, 0, 10, 0);
+            }
+        }
+
+        // initialize new adapter depending on view choosen
+        if (showList) {
+            productsAdapter = new ProductsListAdapter(mActivity, true);
+        } else {
+            productsAdapter = new ProductsListAdapter(mActivity, false);
+        }
+
         pageNumber = 1;
         showProductsContent();
         productsAdapter.clearProducts();
@@ -491,30 +558,18 @@ public class CatalogPageModel {
     
     private void showProductsContent() {
         Log.d(TAG, "showProductsContent");
-        if (this.isLandScape) {
-            if (pageNumber == 1) {
-                Log.i(TAG, "scrolling to position 0");
-                gridView.setSelection(0);
-            }
-            gridView.setOnScrollListener(scrollListener);
-        } else {
-            if (pageNumber == 1) {
-                Log.i(TAG, "scrolling to position 0");
-                listView.setSelection(0);
-            }
-            listView.setOnScrollListener(scrollListener);
+        if (pageNumber == 1) {
+            Log.i(TAG, "scrolling to position 0");
+            gridView.setSelection(0);
         }
+        gridView.setOnScrollListener(scrollListener);
 
         relativeLayoutPc.setVisibility(View.VISIBLE);
         textViewSpnf.setVisibility(View.GONE);
         linearLayoutLm.setVisibility(View.GONE);
         linearLayoutLm.refreshDrawableState();
 
-        if (this.isLandScape) {
-            gridView.setAdapter(productsAdapter);
-        } else {
-            listView.setAdapter(productsAdapter);
-        }
+        gridView.setAdapter(productsAdapter);
         
         productsAdapter.notifyDataSetChanged();
         
@@ -732,7 +787,7 @@ public class CatalogPageModel {
         }
 
         // Validate the request was performed by Filter
-        if (isRequestFromFilter());
+        boolean hasFilter = isRequestFromFilter();
 
         // Log.i(TAG, "code1 product list on error event");
         //EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
@@ -745,10 +800,16 @@ public class CatalogPageModel {
             if (featureBoxObject != null && featureBoxObject instanceof FeaturedBox) {
                 featuredBox = (FeaturedBox) featureBoxObject;
             }
-            // hide pageviewer and show new page
-            ((Catalog) mFragment).onErrorSearchResult(featuredBox);
 
-            showProductsNotfound();
+            // Show respective error layout
+            if (!TextUtils.isEmpty(searchQuery) & !hasFilter) {
+                // For search query
+                ((Catalog) mFragment).onErrorSearchResult(featuredBox);
+            } else {
+                // For category and filter
+                showProductsNotfound();
+            }
+
             mActivity.showContentContainer();
         } else {
             Log.d(TAG, "onErrorEvent: loading more products failed");

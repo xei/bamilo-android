@@ -101,10 +101,10 @@
     <!-- PRODUCT LIST ITEM -->
     <dimen name="product_list_item_image_width">116dp</dimen>
     <dimen name="product_list_item_image_height">84dp</dimen>
-    <dimen name="product_list_item_discount_percentage_image_width">45dp</dimen>
-    <dimen name="product_list_item_discount_percentage_image_height">30dp</dimen>
-    <dimen name="product_list_item_discount_percentage_text_width">45dp</dimen>
-    <dimen name="product_list_item_discount_percentage_text_margin">4dp</dimen>
+    <dimen name="product_list_item_discount_percentage_image_width">35dp</dimen>
+    <dimen name="product_list_item_discount_percentage_image_height">20dp</dimen>
+    <dimen name="product_list_item_discount_percentage_text_margin">10dp</dimen>
+    <dimen name="product_list_item_discount_percentage_text_size">10sp</dimen>
     <dimen name="product_list_item_star_rating_bar_min_height">11dp</dimen>
     <dimen name="product_list_item_star_rating_bar_max_height">11dp</dimen>
 
@@ -156,6 +156,9 @@
     <dimen name="dialog_catalog_filter_width">@dimen/match_parent</dimen>
     <dimen name="dialog_catalog_filter_height">400.00dp</dimen>
 
+    <!-- PRODUCT LIST ITEM -->
+    <dimen name="product_item_height">125dp</dimen>
+
     <!-- CAMPAIGN PAGE -->
     <integer name="campaign_num_columns">1</integer>
     <dimen name="campaign_discount_flag_width">45dp</dimen>
@@ -175,5 +178,12 @@
     <dimen name="newsletter_homepage_margin">10dp</dimen>
     <dimen name="newsletter_homepage_bottom_margin">30dp</dimen>
     <dimen name="newsletter_homepage_button_width">210dp</dimen>
+
+    <!-- GRID PRODUCTS -->
+    <dimen name="product_item_grid_width">117.33dp</dimen>
+    <dimen name="product_item_grid_height">146.67dp</dimen>
+    <dimen name="product_item_description_height">60dp</dimen>
+    <dimen name="product_grid_width">146.67dp</dimen>
+    <dimen name="product_item_grid_divider_height">206.67dp</dimen>
 
 </resources>
