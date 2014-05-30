@@ -11,6 +11,7 @@ Feature: Recover the password
 	And I select the country
 	And I wait for 10 seconds
 	When I open the navigation menu
+	* I wait for 5 seconds
 	And I choose the Sign In option
 	Then I should see the forgot password link
 	When I click forgot password
@@ -20,8 +21,9 @@ Feature: Recover the password
 	
 	@password_rec_w
 	Scenario: Request a link with a non registered email
-	* I wait for 5 seconds
+	* I wait for 10 seconds
 	When I open the navigation menu
+	* I wait for 5 seconds
 	And I choose the Sign In option
 	Then I should see the forgot password link
 	When I click forgot password
@@ -33,7 +35,9 @@ Feature: Recover the password
 	
 	@password_rec_s
 	Scenario: Request a link successfully
+	* I wait for 10 seconds
 	When I open the navigation menu
+	* I wait for 5 seconds
 	And I choose the Sign In option
 	Then I should see the forgot password link
 	When I click forgot password

@@ -18,7 +18,9 @@ Then I should see the order
 
 
 Scenario: Track Invalid
+And I wait for 3 seconds
 When I open the navigation menu
+And I wait for 5 seconds
 And I press Order Status
 And I wait for 1 seconds
 And I enter a invalid track order number
@@ -27,7 +29,9 @@ And I wait for 3 seconds
 Then I should not see the order
 
 Scenario: Track Valid after Valid
+And I wait for 3 seconds
 When I open the navigation menu
+And I wait for 5 seconds
 And I press Order Status
 And I wait for 1 seconds
 And I enter a valid track order number
@@ -41,7 +45,9 @@ And I wait for 3 seconds
 Then I should see the order
 
 Scenario: Track Valid after Invalid
+And I wait for 3 seconds
 When I open the navigation menu
+And I wait for 5 seconds
 And I press Order Status
 And I wait for 1 seconds
 And I enter a invalid track order number
@@ -55,7 +61,9 @@ And I wait for 3 seconds
 Then I should see the order
 
 Scenario: Track Invalid after Valid
+And I wait for 3 seconds
 When I open the navigation menu
+And I wait for 5 seconds
 And I press Order Status
 And I wait for 1 seconds
 And I enter a invalid track order number

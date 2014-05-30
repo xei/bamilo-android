@@ -6,12 +6,23 @@ Feature: Native Checkout
     And I select the country
     And I wait for 5 seconds
     
-    #Login
-    And I Login
+#Login
+	And I open the navigation menu
+	* I wait for 2 seconds
+	Then I choose the Sign In option
+	* I wait for 5 seconds
+    When I enter a valid username
+  	And I enter the password
+  	And I press Login Button
+  	* I wait for 10 seconds
+    Then I open the navigation menu
+    * I wait for 10 seconds
+	And I should see sign out button
     
    	#Add product to cart
-   	When I open the navigation menu
+   	#When I open the navigation menu
 	And I enter Categories
+	* I wait for 2 seconds
 	And I enter a valid Category
 	And I press list item number 1
 	* I wait for 3 seconds

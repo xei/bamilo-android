@@ -10,7 +10,7 @@ Feature: Login feature
 	And I select the country
 	And I wait for 5 seconds
 	And I open the navigation menu
-	* I wait for 2 seconds
+	And I wait for 5 seconds
 	Then I choose the Sign In option
 	* I wait for 5 seconds
   	When I press Login Button
@@ -21,7 +21,7 @@ Feature: Login feature
     Scenario: Try to login with wrong username
 	And I wait for 5 seconds
 	And I open the navigation menu
-	* I wait for 2 seconds
+	And I wait for 5 seconds
 	Then I choose the Sign In option
 	* I wait for 5 seconds
     When I enter a wrong username
@@ -34,7 +34,7 @@ Feature: Login feature
   	Scenario: Try to login with wrong pasword
 	And I wait for 5 seconds
 	And I open the navigation menu
-	* I wait for 2 seconds
+	And I wait for 5 seconds
 	Then I choose the Sign In option
 	* I wait for 5 seconds
   	When I enter a valid username
@@ -48,7 +48,7 @@ Feature: Login feature
  	Scenario: Login successful
 	And I wait for 5 seconds
 	And I open the navigation menu
-	* I wait for 2 seconds
+	And I wait for 5 seconds
 	Then I choose the Sign In option
 	* I wait for 5 seconds
     When I enter a valid username

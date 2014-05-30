@@ -34,7 +34,7 @@ Feature: Initial app features
 	@sidebar_check @Calabash_Tests @teste123
 	Scenario: Check the sidebar layout
 	#When I select the country
-	* I wait for 8 seconds
+	* I wait for 10 seconds
 	Given I open the navigation menu
-	* I wait for 2 seconds
+	* I wait for 5 seconds
 	Then I should see the sidebar

@@ -11,13 +11,15 @@ Feature: Logout feature
 	When I enter a valid username
   	And I enter the password
   	And I press Login Button
-  	* I wait for 5 seconds
+  	* I wait for 10 seconds
     Then I open the navigation menu
-    * I wait for 5 seconds
+    * I wait for 10 seconds
 	And I should see sign out button
 	
 	@logout
 	Scenario: Logout successful
-	When I press Logout Button
+	* I wait for 5 seconds
+	And I press Logout Button
+	And I press Yes
   	And I open the navigation menu
   	Then I should see the login button 

@@ -1,4 +1,4 @@
-@Calabash_Tests @teste3
+@Calabash_Tests @teste5
 Feature: Navigate to a product with different variations
 
 Background: 
@@ -10,8 +10,7 @@ Background:
 	And I wait for 5 seconds
 	When I click on the search bar
 	When I enter a variation search
-#   	And I press list item number 1
-   	And I press list item number 1
+	And I click on search icon
    	* I wait for 5 seconds 
    	And I press list item number 1
    	And I press Got it
@@ -21,12 +20,11 @@ Background:
   	Scenario: I See the product details
 	When I click on the search bar
 	When I enter a variation search
-  	And I press list item number 1
-#   	And I press list item number 1
+	And I click on search icon
    	* I wait for 5 seconds 
    	And I press list item number 1
    	When I press product specifications
-   	* I wait for 5 seconds
+   	* I wait for 10 seconds
    	Then I should see the product features
    	And I should see the product description
   	
@@ -34,8 +32,7 @@ Background:
    	Scenario: I see the product rating overview
 	When I click on the search bar
 	When I enter a variation search
-   	And I press list item number 1
-#   	And I press list item number 1
+	And I click on search icon
    	* I wait for 5 seconds 
    	And I press list item number 1
    	* I wait for 2 seconds 
@@ -48,8 +45,7 @@ Background:
 	When I click on the search bar
 	When I enter a rated search
 	* I wait for 5 seconds 
-   	And I press list item number 1
-#   	And I press list item number 1
+	And I click on search icon
    	* I wait for 5 seconds 
    	And I press list item number 1
 #   	And I press Got it
@@ -61,8 +57,7 @@ Background:
 	When I click on the search bar
 	When I enter a variation search
 	* I wait for 3 seconds
-   	And I press list item number 1
-#   	And I press list item number 1
+	And I click on search icon
    	* I wait for 5 seconds 
    	And I press list item number 1
    	* I wait for 3 seconds
@@ -71,17 +66,19 @@ Background:
    	And I press Write a Review
    	* I wait for 2 seconds
   	And I fill the review information
+  	* I wait for 2 seconds
   	And I press rating
+  	* I wait for 2 seconds
    	And I press Send Review
-   	And I press to reviews
+   	* I wait for 2 seconds
+   	#And I press to reviews
    	
    	@sharing
    	Scenario: I share a product by sms
 	When I click on the search bar
 	When I enter a variation search
    	* I wait for 5 seconds 
-   	And I press list item number 1
-#   	And I press list item number 1
+	And I click on search icon
    	* I wait for 5 seconds 
    	And I press list item number 1
    	When I press share 

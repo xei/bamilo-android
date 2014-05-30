@@ -1,4 +1,4 @@
-@Calabash_Tests
+@Calabash_Tests @teste_newsletter
 Feature: Newsletter
 
   	Background: 
@@ -18,7 +18,7 @@ Feature: Newsletter
     
 	@newsletter_register
     Scenario: I register with newsletter on
-    When I select the country
+    #When I select the country
 	* I wait for 5 seconds
     
     Then I open the navigation menu

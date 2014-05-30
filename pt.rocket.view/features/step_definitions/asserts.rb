@@ -96,12 +96,13 @@ Then /^I should see the password recovery (empty email|email not correct|email s
 end
 
 Then /^I should see the countries$/ do
-  performAction('assert_text', "Nigeria", true)
-  performAction('assert_text', "Kenya", true)
-  performAction('assert_text', "Morocco", true)
-  performAction('assert_text', "Egypt", true)
-  performAction('assert_text', "Ivory Coast", true)
-  performAction('assert_text', "Uganda", true)
+  performAction('assert_text', @venture_maroc, true)
+  performAction('assert_text', @venture_cotedivoire, true)
+  performAction('assert_text', @venture_nigeria, true)
+  performAction('assert_text', @venture_egypt, true)
+  performAction('assert_text', @venture_kenya, true)
+  performAction('assert_text', @venture_uganda, true)
+
 end
 
 Then /^I should see the corresponding server$/ do

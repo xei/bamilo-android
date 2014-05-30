@@ -9,7 +9,9 @@ Feature: Check the product detail view
 	And I select the country
 	And I wait for 5 seconds
     When I open the navigation menu
+    * I wait for 5 seconds
     And I enter Categories
+    * I wait for 3 seconds
 	And I enter a valid Category
 	And I press list item number 1
 	* I wait for 2 seconds
@@ -22,8 +24,11 @@ Feature: Check the product detail view
 	
 	@product_zoom
 	Scenario: Zoom Image
+	* I wait for 5 seconds
     When I open the navigation menu
+    * I wait for 5 seconds
     And I enter Categories
+    * I wait for 3 seconds
 	And I enter a valid Category
 	And I press list item number 1
 	And I press list item number 2
@@ -36,8 +41,11 @@ Feature: Check the product detail view
 	
 	@product_details
 	Scenario: Details
+	* I wait for 5 seconds
     When I open the navigation menu
+    * I wait for 5 seconds
     And I enter Categories
+    * I wait for 3 seconds
 	And I enter a valid Category
 	And I press list item number 1
 	And I press list item number 2

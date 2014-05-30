@@ -24,8 +24,19 @@ Then I should see login screen
 
 @account_newsletter_page
 Scenario: Email notification page
-When I Login
-And I open the navigation menu
+#Login
+	And I open the navigation menu
+	* I wait for 2 seconds
+	Then I choose the Sign In option
+	* I wait for 5 seconds
+    When I enter a valid username
+  	And I enter the password
+  	And I press Login Button
+  	* I wait for 10 seconds
+    Then I open the navigation menu
+    * I wait for 10 seconds
+	And I should see sign out button
+	
 And I wait for 1 seconds
 And I enter My Account
 And I enter email notifications

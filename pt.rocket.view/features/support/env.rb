@@ -13,6 +13,14 @@ def initvars
     @dev=""
   end
   
+  #ventures names
+  @venture_maroc= "Maroc"
+  @venture_cotedivoire= "Côte d'Ivoire"
+  @venture_nigeria= "Nigeria"
+  @venture_egypt= "Egypt"
+  @venture_kenya= "Kenya"
+  @venture_uganda= "Uganda"
+  
   @username="testcalabash@mailinator.com"
   @password="password1"
   @firstname="tester"
@@ -76,7 +84,8 @@ def initvars
   case $country.to_s
     ##### Kenya  ############################################ KE ##############################################################################
     when "ke"
-    @venture_name="Kenya"
+    @venture_name= @venture_kenya
+
     @sign_in="Sign In"
     @wrong_username="faketester@tester.tt"
     @invalidsearch= "addddd" 
@@ -174,32 +183,33 @@ def initvars
     #related items
     @related_items="Related Items"
     
-    @newsletter_checkbox="testesteste"
+    @newsletter_checkbox="Newsletter"
     
     @email_notifications="Email Notifications"
     
     @newsletter="Newsletters"
-    @newsletter_male="Newsletter Male"
+    @newsletter_male="Male"
     @newsletter_female="Newsletter Female"
     
     @login="Login"
     
     @register="Register"
     
-    @notification_newsletter_changes="Vos préférences eMails ont été enregistrées"
+    @notification_newsletter_changes="Your email notifications settings have been saved"
     
-    @no_result_found="n'a donné aucun résultat"
-    @search_tips="Conseils d'utilisation de la barre de recherche"
+    @no_result_found="Unfortunately there was no match found"
+    @search_tips="Search Tips"
     
     @newsletter_subscription="Newsletter Subscription"
     
-    @invalid_email_message="Email non valide"
+    @invalid_email_message="Invalid email address"
     
     @save="Save"
     
     ##### Ivory Coast ####################################### IC ##############################################################################          
     when "ic"
-    @venture_name="Ivory Coast"
+    @venture_name= @venture_cotedivoire
+    
     @sign_in="Accéder au compte"
     @wrong_username="faketester@tester.tt"
     @invalidsearch= "addddd" 
@@ -208,7 +218,7 @@ def initvars
     @myaccount="Mon compte"
     @myinfo="Les données de"
     @categories="Catégories"
-    @categoryfashion="Informatique"
+    @categoryfashion="PC & informatique"
     @choose_country="Choisir le pays"
     @order_status="Suivi de commande"
      
@@ -216,7 +226,7 @@ def initvars
     @checkout1="TestPayment"
     @checkout3="Confirm Order"
       
-    @emailerrormessage="dans le E-mail";
+    @emailerrormessage="dans le Email";
     @passerrormessage="dans le Mot de passe";
      
     @loginerror="L'authentification a échoué"
@@ -263,7 +273,7 @@ def initvars
     @specification="Caractéristiques"
     @please_choose="Choisissez"
     @search_v="sandales à Clous - argent"
-    @product_features="Spécificités du produit"
+    @product_features="du produit"
     @product_description="Description du produit"
     @write_review="Donnez-nous notre avis"
     @posted_by="Posté"
@@ -281,17 +291,18 @@ def initvars
     @pay_on_delivery="Payer cash à la livraison"
     @confirm_order="Confirmer la commande"
     
-    @popular_categories="Nos Meilleures Catégories"
-    @filter="Filter"
+    #@popular_categories="Nos Meilleures Catégories"
+    @popular_categories="Popular Categories"
+    @filter="Filtre"
     @filter_brand="Brand"
     @filter_size="Size"
     @filter_color_family="Color family"
     @filter_price="Price"
     
-    @done="Done"
-    @clear_all="CLEAR ALL"
-    @new_in="NEW IN"
-    @best_rating="BEST RATING"
+    @done="Valider"
+    @clear_all="TOUT EFFACER"
+    @new_in="NOUVEAUTÉS"
+    @best_rating="MIEUX NOTÉS"
     @back="Appuyez de nouveau sur retour si vous souhaitez quitter l'app"
     @search_r="nokia lumia 920 noir"
     
@@ -325,7 +336,8 @@ def initvars
       
     ##### Morocco ########################################### MA ##############################################################################
     when "ma"
-    @venture_name="Morocco"
+    @venture_name= @venture_maroc
+    
     @sign_in="Accéder au compte"
     @wrong_username="faketester@tester.tt"
     @invalidsearch= "addddf" 
@@ -426,7 +438,7 @@ def initvars
     
     @related_items="Produits Similaires"
     
-    @newsletter_checkbox="testestesteste"
+    @newsletter_checkbox="Je m'inscris à la newsletter"
     
     @email_notifications="Préférence eMails"
     
@@ -451,7 +463,8 @@ def initvars
         
     ##### Nigeria ########################################### NG ##############################################################################
     when "ng"
-    @venture_name="Nigeria"
+    @venture_name= @venture_nigeria
+    
     @sign_in="Sign In"
     @wrong_username="faketester@tester.tt"
     @invalidsearch= "adddddf" 
@@ -545,34 +558,35 @@ def initvars
     @valid_order="304442242"
     @no_track_results="No results found"
     
-    @related_items="Produits Similaires"
+    @related_items="Related Items"
     
-    @newsletter_checkbox="testestesteste"
+    @newsletter_checkbox="Newsletter"
     
     @email_notifications="Email Notifications"
     
-    @login="Connectez-vous"
+    @login="Login"
     
     @newsletter="Newsletters"
-    @newsletter_male="Newsletter Male"
+    @newsletter_male="Male"
     @newsletter_female="Newsletter Female"
     
-    @register="Enregistrer"
+    @register="Register"
     
-    @notification_newsletter_changes="Vos préférences eMails ont été enregistrées"
+    @notification_newsletter_changes="Your email notifications settings have been saved"
     
-    @no_result_found="n'a donné aucun résultat"
-    @search_tips="Conseils d'utilisation de la barre de recherche"
+    @no_result_found="Unfortunately there was no match found"
+    @search_tips="Search Tips"
     
     @newsletter_subscription="Newsletter Subscription"
     
-    @invalid_email_message="Email non valide"
+    @invalid_email_message="Invalid email address"
     
     @save="Save"
     
     ##### Egypt ############################################# EG ##############################################################################
     when "eg"
-    @venture_name="Egypt"
+    @venture_name= @venture_egypt
+    
     @sign_in="Sign In"
     @wrong_username="faketester@tester.tt"
     @invalidsearch= "adddddf" 
@@ -646,7 +660,7 @@ def initvars
     #native checkout
     @proceed_to_checkout="Proceed to Checkout"
     @next="Next"
-    @pay_on_delivery="Pay On Delivery"
+    @pay_on_delivery="Cash On Delivery"
     @confirm_order="Confirm Order"
     
     @popular_categories="Popular Categories"
@@ -666,34 +680,35 @@ def initvars
     @valid_order="300573169"
     @no_track_results="No results found"
     
-    @related_items="Produits Similaires"
+    @related_items="Related Items"
     
-    @newsletter_checkbox="testestesteste"
+    @newsletter_checkbox="Newsletter"
     
     @email_notifications="Email Notifications"
     
-    @login="Connectez-vous"
+    @login="Login"
     
     @newsletter="Newsletters"
-    @newsletter_male="Newsletter Male"
+    @newsletter_male="Male"
     @newsletter_female="Newsletter Female"
     
-    @register="Enregistrer"
+    @register="Register"
     
-    @notification_newsletter_changes="Vos préférences eMails ont été enregistrées"
+    @notification_newsletter_changes="Your email notifications settings have been saved"
     
-    @no_result_found="n'a donné aucun résultat"
-    @search_tips="Conseils d'utilisation de la barre de recherche"
+    @no_result_found="Unfortunately there was no match found"
+    @search_tips="Search Tips"
     
     @newsletter_subscription="Newsletter Subscription"
     
-    @invalid_email_message="Email non valide"
+    @invalid_email_message="Invalid email address"
     
     @save="Save"
     
     ##### Uganda  ############################################ UG ##############################################################################
     when "ug"
-    @venture_name="Uganda"
+    @venture_name= @venture_uganda
+    
     @sign_in="Sign In"
     @wrong_username="faketester@tester.tt"
     @invalidsearch= "addddd" 
@@ -787,28 +802,28 @@ def initvars
     @valid_order="400093859"
     @no_track_results="No results found"
     
-    @related_items="Produits Similaires"
+    @related_items="Related Items"
     
-    @newsletter_checkbox="testestesteste"
+    @newsletter_checkbox="Newsletter"
     
     @email_notifications="Email Notifications"
     
-    @login="Connectez-vous"
+    @login="Login"
     
     @newsletter="Newsletters"
-    @newsletter_male="Newsletter Male"
+    @newsletter_male="Male"
     @newsletter_female="Newsletter Female"
     
     @register="Enregistrer"
     
-    @notification_newsletter_changes="Vos préférences eMails ont été enregistrées"
+    @notification_newsletter_changes="Your email notifications settings have been saved"
     
-    @no_result_found="n'a donné aucun résultat"
-    @search_tips="Conseils d'utilisation de la barre de recherche"
+    @no_result_found="Unfortunately there was no match found"
+    @search_tips="Search Tips"
     
     @newsletter_subscription="Newsletter Subscription"
     
-    @invalid_email_message="Email non valide"
+    @invalid_email_message="Invalid email address"
     
     @save="Save"
   end

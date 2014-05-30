@@ -8,10 +8,22 @@ Feature: See personal data
 	Scenario: See the user details
 	And I select the country
 	And I wait for 5 seconds
-	* I Login
-    When I open the navigation menu
+#Login
+	And I open the navigation menu
+	* I wait for 2 seconds
+	Then I choose the Sign In option
+	* I wait for 5 seconds
+    When I enter a valid username
+  	And I enter the password
+  	And I press Login Button
+  	* I wait for 10 seconds
+    Then I open the navigation menu
+    * I wait for 10 seconds
+	And I should see sign out button
+
+#    When I open the navigation menu
     And I enter My Account
-    * I wait for progress
+    * I wait for 5 seconds
 	And I enter My User Data
 	* I wait for 4 seconds
 	Then I should see my email
@@ -21,9 +33,11 @@ Feature: See personal data
 	
 	@user_details_e
 	Scenario: Try with empty fields
+    * I wait for 10 seconds
     When I open the navigation menu
+    And I wait for 5 seconds
     And I enter My Account
-    * I wait for progress
+    * I wait for 5 seconds
 	And I enter My User Data
 	* I wait for 4 seconds
 	When I press Save
@@ -33,9 +47,11 @@ Feature: See personal data
 	
 	@user_details_dp
 	Scenario: Try different passwords
+	* I wait for 10 seconds
     When I open the navigation menu
+    And I wait for 5 seconds
     And I enter My Account
-    * I wait for progress
+    * I wait for 5 seconds
 	And I enter My User Data
 	* I wait for 4 seconds
 	When I enter the new password
@@ -47,14 +63,17 @@ Feature: See personal data
 	
 	@user_details_s
 	Scenario: Change password success
+	* I wait for 10 seconds
     When I open the navigation menu
+    And I wait for 5 seconds
     And I enter My Account
-    * I wait for progress
+    * I wait for 5 seconds
 	And I enter My User Data
 	* I wait for 10 seconds
 	When I enter the new password
 	And I enter the new repeated password
 	And I press Save
+	* I wait for 1 seconds
 	Then I should see the password changed with success message
 	When I open the navigation menu
   	Then I should see sign out button

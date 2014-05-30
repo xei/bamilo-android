@@ -51,7 +51,7 @@ end
 
 Then /^I press Logout Button$/ do
   performAction('click_on_text',@signout.to_s)
-  performAction('click_on_text',@yes.to_s)
+  
 end
 
 Then /^I press Ok$/ do
@@ -67,7 +67,7 @@ Then /^I enter My User Data$/ do
 end
 
 Then /^I enter Categories$/ do 
-  performAction('click_on_text',@categories.to_s)
+  performAction('press', "calabash_"+@categories.to_s)
 end
 
 Then /^I enter a valid Category$/ do 
@@ -275,8 +275,14 @@ end
     performAction('click_on_view_by_id', "search_component")
   end
   
+  Then /^I click on search icon$/ do
+    performAction('click_on_view_by_id', "cucumber_click_search")
+    #performAction('press_button_with_text', "ic_search_bar_normal")
+    #query("button index:1")
+  end
+    
   Then /^I click in Filter$/ do
-    performAction('click_on_text', @filter.to_s)
+    performAction('click_on_view_by_id', "products_list_filter_button")
   end
   
   Then /^I press Done$/ do
@@ -308,7 +314,7 @@ end
   end
   
   Then /^I enter save$/ do
-        performAction('click_on_text', @register.to_s)
+        performAction('click_on_text', @save.to_s)
   end
   
   Then /^I check newsletter male$/ do
@@ -316,7 +322,7 @@ end
   end
 
   Then /^I press the newsletter Male$/ do
-    performAction('click_on_view_by_id', "newsletter_male_btn")
+    performAction('click_on_view_by_id', "newsletter_first_btn")
   end
   
   Then /^I click on register$/ do

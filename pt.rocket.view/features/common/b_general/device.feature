@@ -8,7 +8,7 @@ Given I call the variables
 Scenario: Warning Close Pop-up
 * I wait for 5 seconds
 And I select the country
-And I wait for 5 seconds
+And I wait for 10 seconds
 When I go back
 Then I should see the warning pop up message
 

@@ -17,15 +17,20 @@ Then I should not see the sidebar
 @navigation_drawer_b
 Scenario: Click on the drawer icon
 When I open the navigation menu
+And I wait for 3 seconds
 Then I should see the sidebar
+And I wait for 3 seconds
 When I open the navigation menu
+And I wait for 5 seconds
 Then I should not see the sidebar
 
 @navigation_drawer_c
 Scenario: Click on the Jumia logo
 When I press the Jumia logo
+And I wait for 3 seconds
 Then I should not see the sidebar
 When I open the navigation menu
+And I wait for 5 seconds
 Then I should see the sidebar
 When I press the Jumia logo
 Then I should not see the sidebar

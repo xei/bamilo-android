@@ -10,7 +10,7 @@ Scenario: Test sorting filters
 When I click on the search bar
 And I enter a valid search
 * I wait for 2 seconds 
-And I press list item number 1
+And I click on search icon
 Then I should see the filter popularity
 When I swipe left moving with 10 steps
 Then I should see the filter new in

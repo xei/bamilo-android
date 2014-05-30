@@ -9,9 +9,9 @@ Feature: Registration feature
   	And I select the country
 	And I wait for 5 seconds
     Then I open the navigation menu
-    * I wait for 1 seconds
+    * I wait for 5 seconds
     And I choose the Sign In option
-    * I wait for 1 seconds
+    And I wait for 3 seconds
     And I press the create account button
     * I wait for 3 seconds
     When I press the register button
@@ -19,9 +19,11 @@ Feature: Registration feature
     
     @register_r
     Scenario: I try to register with an email that already exists
+    * I wait for 5 seconds
     Then I open the navigation menu
+    * I wait for 5 seconds
     And I choose the Sign In option
-    * I wait for 1 seconds
+    And I wait for 3 seconds
     And I press the create account button
     * I wait for 3 seconds
     When I enter a valid username
@@ -40,9 +42,11 @@ Feature: Registration feature
     
 	@register_dp
 	Scenario: I try to register with a password that is not equal
+	* I wait for 5 seconds
     Then I open the navigation menu
+    * I wait for 5 seconds
     And I choose the Sign In option
-    * I wait for 1 seconds
+    And I wait for 3 seconds
     And I press the create account button
     * I wait for 3 seconds
 	When I enter a valid username
@@ -59,9 +63,11 @@ Feature: Registration feature
     
     @register_s
     Scenario: I register an account successfully
+    * I wait for 5 seconds
     Then I open the navigation menu
+    * I wait for 5 seconds
     And I choose the Sign In option
-    * I wait for 1 seconds
+    And I wait for 3 seconds
     And I press the create account button
     * I wait for 3 seconds
     When I enter a random email
@@ -74,7 +80,7 @@ Feature: Registration feature
     And I press male
     And I check Terms and Conditions
     And I press the register button
-	And I wait for 10 seconds
+	And I wait for 15 seconds
 	Then I open the navigation menu
 	And I wait for 5 seconds
 	And I should see sign out button
