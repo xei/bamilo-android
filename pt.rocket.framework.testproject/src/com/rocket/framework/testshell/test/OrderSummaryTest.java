@@ -25,28 +25,28 @@ public class OrderSummaryTest extends FrameworkServiceTests {
     protected boolean processed_test = false;
     
 public void testOrderSummaryIC() throws Throwable {
-    test(BaseHelper.BASE_URL_STAGING_CI, RequestConstants.PRODUCT_SKU_CI, RequestConstants.PRODUCT_SKU_SIMPLE_CI);
+    test(BaseHelper.BASE_URL_CI, RequestConstants.PRODUCT_SKU_CI, RequestConstants.PRODUCT_SKU_SIMPLE_CI);
 }
 
-//public void testOrderSummaryKE() throws Throwable {
-//	test(BaseHelper.BASE_URL_KE);
-//}
-//
-//public void testOrderSummaryMA() throws Throwable {
-//    test(BaseHelper.BASE_URL_MA, RequestConstants.PRODUCT_SKU_MA, RequestConstants.PRODUCT_SKU_SIMPLE_MA);
-//}
-//
-//public void testOrderSummaryNG() throws Throwable {
-//    test(BaseHelper.BASE_URL_NG);
-//}
-//
-//public void testOrderSummaryEG() throws Throwable {
-//    test(BaseHelper.BASE_URL_EG);
-//}
-//
-//public void testOrderSummaryUG() throws Throwable {
-//	test(BaseHelper.BASE_URL_UG);
-//}
+public void testOrderSummaryKE() throws Throwable {
+	test(BaseHelper.BASE_URL_KE, RequestConstants.PRODUCT_SKU_KE, RequestConstants.PRODUCT_SKU_SIMPLE_KE);
+}
+
+public void testOrderSummaryMA() throws Throwable {
+    test(BaseHelper.BASE_URL_MA, RequestConstants.PRODUCT_SKU_MA, RequestConstants.PRODUCT_SKU_SIMPLE_MA);
+}
+
+public void testOrderSummaryNG() throws Throwable {
+    test(BaseHelper.BASE_URL_NG, RequestConstants.PRODUCT_SKU_NG, RequestConstants.PRODUCT_SKU_SIMPLE_NG);
+}
+
+public void testOrderSummaryEG() throws Throwable {
+    test(BaseHelper.BASE_URL_EG, RequestConstants.PRODUCT_SKU_EG, RequestConstants.PRODUCT_SKU_SIMPLE_EG);
+}
+
+public void testOrderSummaryUG() throws Throwable {
+	test(BaseHelper.BASE_URL_UG, RequestConstants.PRODUCT_SKU_UG, RequestConstants.PRODUCT_SKU_SIMPLE_UG);
+}
 
 public void test(String url, String sku, String simple){
 	/**

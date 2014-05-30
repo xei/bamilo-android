@@ -16,7 +16,35 @@ public class RegisterTests extends FrameworkServiceTests {
 	protected boolean processed = false;
 
 	@SmallTest
+	public void testRegisterKE() throws Throwable {
+		test(BaseHelper.BASE_URL_KE);
+	}
+
+	@SmallTest
+	public void testRegisterMA() throws Throwable {
+		test(BaseHelper.BASE_URL_MA);
+	}
+
+	@SmallTest
+	public void testRegisterNG() throws Throwable {
+		test(BaseHelper.BASE_URL_NG);
+	}
+
+	@SmallTest
+	public void testRegisterEG() throws Throwable {
+		test(BaseHelper.BASE_URL_EG);
+	}
+	
+	@SmallTest
+	public void testRegisterUG() throws Throwable {
+		test(BaseHelper.BASE_URL_UG);
+	}
+	
+	@SmallTest
 	public void testRegisterIC() throws Throwable {
+		test(BaseHelper.BASE_URL_CI);
+	}
+	public void test(String url){
 		/**
 		 * Login before changing password
 		 */
@@ -33,8 +61,9 @@ public class RegisterTests extends FrameworkServiceTests {
 		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_PASSWORD, RequestConstants.CUSTOMER_PASSWORD);
 		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_PASSWORD2, RequestConstants.CUSTOMER_PASSWORD);
 		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_YEAR, RequestConstants.CUSTOMER_YEAR);
+		//contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_NEWSLETTER, RequestConstants.CUSTOMER_NEWSLETTER);
 		args.putParcelable(GetRegisterHelper.REGISTER_CONTENT_VALUES, contentValues);
-		args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_CI+"/customer/create/");
+		args.putString(BaseHelper.KEY_COUNTRY, url + "/customer/create/");
 		args.putString(BaseHelper.KEY_COUNTRY_TAG, "IC");
 		sendRequest(args, new GetRegisterHelper(), new IResponseCallback() {
 
@@ -81,305 +110,4 @@ public class RegisterTests extends FrameworkServiceTests {
 
 	}
 
-	@SmallTest
-	public void testRegisterKE() throws Throwable {
-		/**
-		 * Login before changing password
-		 */
-		Log.i(TAG, "mService => " + mService);
-		final Bundle args = new Bundle();
-		ContentValues contentValues = new ContentValues();
-		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_BIRTHDAY, RequestConstants.CUSTOMER_BIRTHDAY);
-		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_DAY, RequestConstants.CUSTOMER_DAY);
-		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_EMAIL, RequestConstants.CUSTOMER_NEW_EMAIL);
-		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_FIRST_NAME, RequestConstants.CUSTOMER_FIRST_NAME);
-		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_GENDER, RequestConstants.CUSTOMER_GENDER);
-		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_LAST_NAME, RequestConstants.CUSTOMER_LAST_NAME);
-		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_MONTH, RequestConstants.CUSTOMER_MONTH);
-		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_PASSWORD, RequestConstants.CUSTOMER_PASSWORD);
-		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_PASSWORD2, RequestConstants.CUSTOMER_PASSWORD);
-		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_YEAR, RequestConstants.CUSTOMER_YEAR);
-		args.putParcelable(GetRegisterHelper.REGISTER_CONTENT_VALUES, contentValues);
-		args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_KE+"/customer/create/");
-		args.putString(BaseHelper.KEY_COUNTRY_TAG, "KE");
-		sendRequest(args, new GetRegisterHelper(), new IResponseCallback() {
-
-			@Override
-			public void onRequestError(Bundle bundle) {
-				Boolean jsonValidation = false;
-
-				if (bundle != null && bundle.containsKey(Constants.BUNDLE_JSON_VALIDATION_KEY)) {
-					jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-				}
-				if (bundle != null) {
-					assertTrue(
-							"<<"
-									+ args.getString(BaseHelper.KEY_COUNTRY_TAG)
-									+ "<< Failed onRequestError - The base of the json is wrongly constructed, something is missing : "
-									+ bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY), jsonValidation);
-				} else {
-					assertTrue("<<" + args.getString(BaseHelper.KEY_COUNTRY_TAG)
-							+ "<< Failed onRequestError - Bundle is null! ", jsonValidation);
-				}
-				processed = true;
-			}
-
-			@Override
-			public void onRequestComplete(Bundle bundle) {
-				// TODO Auto-generated method stub
-				Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-				assertTrue(
-						"Failed onRequestComplete - The base of the json is wrongly constructed, something is missing",
-						jsonValidation);
-				processed = true;
-
-			}
-		});
-		// necessary in order to make the test wait for the server response
-		while (!processed) {
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-
-	}
-
-	@SmallTest
-	public void testRegisterMA() throws Throwable {
-		/**
-		 * Login before changing password
-		 */
-		Log.i(TAG, "mService => " + mService);
-		final Bundle args = new Bundle();
-		ContentValues contentValues = new ContentValues();
-		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_BIRTHDAY, RequestConstants.CUSTOMER_BIRTHDAY);
-		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_DAY, RequestConstants.CUSTOMER_DAY);
-		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_EMAIL, RequestConstants.CUSTOMER_NEW_EMAIL);
-		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_FIRST_NAME, RequestConstants.CUSTOMER_FIRST_NAME);
-		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_GENDER, RequestConstants.CUSTOMER_GENDER);
-		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_LAST_NAME, RequestConstants.CUSTOMER_LAST_NAME);
-		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_MONTH, RequestConstants.CUSTOMER_MONTH);
-		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_PASSWORD, RequestConstants.CUSTOMER_PASSWORD);
-		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_PASSWORD2, RequestConstants.CUSTOMER_PASSWORD);
-		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_YEAR, RequestConstants.CUSTOMER_YEAR);
-		args.putParcelable(GetRegisterHelper.REGISTER_CONTENT_VALUES, contentValues);
-		args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_MA+"/customer/create/");
-		args.putString(BaseHelper.KEY_COUNTRY_TAG, "MA");
-		sendRequest(args, new GetRegisterHelper(), new IResponseCallback() {
-
-			@Override
-			public void onRequestError(Bundle bundle) {
-				Boolean jsonValidation = false;
-            	
-            	if(bundle != null && bundle.containsKey(Constants.BUNDLE_JSON_VALIDATION_KEY)){
-            		jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-            	}
-            	if(bundle != null){
-            		assertTrue("<<"+args.getString(BaseHelper.KEY_COUNTRY_TAG)+"<< Failed onRequestError - The base of the json is wrongly constructed, something is missing : "+bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY), jsonValidation);
-            	} else {
-            		assertTrue("<<"+args.getString(BaseHelper.KEY_COUNTRY_TAG)+"<< Failed onRequestError - Bundle is null! ", jsonValidation);
-            	}
-                processed = true;
-			}
-
-			@Override
-			public void onRequestComplete(Bundle bundle) {
-				// TODO Auto-generated method stub
-				Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-				assertTrue(
-						"Failed onRequestComplete - The base of the json is wrongly constructed, something is missing",
-						jsonValidation);
-				processed = true;
-
-			}
-		});
-		// necessary in order to make the test wait for the server response
-		while (!processed) {
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-
-	}
-
-	@SmallTest
-	public void testRegisterNG() throws Throwable {
-
-		Log.i(TAG, "mService => " + mService);
-		final Bundle args = new Bundle();
-		ContentValues contentValues = new ContentValues();
-		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_BIRTHDAY, RequestConstants.CUSTOMER_BIRTHDAY);
-		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_DAY, RequestConstants.CUSTOMER_DAY);
-		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_EMAIL, RequestConstants.CUSTOMER_NEW_EMAIL);
-		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_FIRST_NAME, RequestConstants.CUSTOMER_FIRST_NAME);
-		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_GENDER, RequestConstants.CUSTOMER_GENDER);
-		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_LAST_NAME, RequestConstants.CUSTOMER_LAST_NAME);
-		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_MONTH, RequestConstants.CUSTOMER_MONTH);
-		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_PASSWORD, RequestConstants.CUSTOMER_PASSWORD);
-		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_PASSWORD2, RequestConstants.CUSTOMER_PASSWORD);
-		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_YEAR, RequestConstants.CUSTOMER_YEAR);
-		args.putParcelable(GetRegisterHelper.REGISTER_CONTENT_VALUES, contentValues);
-		args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_NG+"/customer/create/");
-		args.putString(BaseHelper.KEY_COUNTRY_TAG, "NG");
-		sendRequest(args, new GetRegisterHelper(), new IResponseCallback() {
-
-			@Override
-			public void onRequestError(Bundle bundle) {
-				Boolean jsonValidation = false;
-            	
-            	if(bundle != null && bundle.containsKey(Constants.BUNDLE_JSON_VALIDATION_KEY)){
-            		jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-            	}
-            	if(bundle != null){
-            		assertTrue("<<"+args.getString(BaseHelper.KEY_COUNTRY_TAG)+"<< Failed onRequestError - The base of the json is wrongly constructed, something is missing : "+bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY), jsonValidation);
-            	} else {
-            		assertTrue("<<"+args.getString(BaseHelper.KEY_COUNTRY_TAG)+"<< Failed onRequestError - Bundle is null! ", jsonValidation);
-            	}
-                processed = true;
-			}
-
-			@Override
-			public void onRequestComplete(Bundle bundle) {
-				// TODO Auto-generated method stub
-				Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-				assertTrue(
-						"Failed onRequestComplete - The base of the json is wrongly constructed, something is missing",
-						jsonValidation);
-				processed = true;
-
-			}
-		});
-		// necessary in order to make the test wait for the server response
-		while (!processed) {
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-
-	}
-
-	@SmallTest
-	public void testRegisterEG() throws Throwable {
-		Log.i(TAG, "mService => " + mService);
-		final Bundle args = new Bundle();
-		ContentValues contentValues = new ContentValues();
-		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_BIRTHDAY, RequestConstants.CUSTOMER_BIRTHDAY);
-		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_DAY, RequestConstants.CUSTOMER_DAY);
-		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_EMAIL, RequestConstants.CUSTOMER_NEW_EMAIL);
-		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_FIRST_NAME, RequestConstants.CUSTOMER_FIRST_NAME);
-		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_GENDER, RequestConstants.CUSTOMER_GENDER);
-		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_LAST_NAME, RequestConstants.CUSTOMER_LAST_NAME);
-		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_MONTH, RequestConstants.CUSTOMER_MONTH);
-		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_PASSWORD, RequestConstants.CUSTOMER_PASSWORD);
-		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_PASSWORD2, RequestConstants.CUSTOMER_PASSWORD);
-		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_YEAR, RequestConstants.CUSTOMER_YEAR);
-		args.putParcelable(GetRegisterHelper.REGISTER_CONTENT_VALUES, contentValues);
-		args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_EG+"/customer/create/");
-		args.putString(BaseHelper.KEY_COUNTRY_TAG, "EG");
-		sendRequest(args, new GetRegisterHelper(), new IResponseCallback() {
-
-			@Override
-			public void onRequestError(Bundle bundle) {
-				Boolean jsonValidation = false;
-            	
-            	if(bundle != null && bundle.containsKey(Constants.BUNDLE_JSON_VALIDATION_KEY)){
-            		jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-            	}
-            	if(bundle != null){
-            		assertTrue("<<"+args.getString(BaseHelper.KEY_COUNTRY_TAG)+"<< Failed onRequestError - The base of the json is wrongly constructed, something is missing : "+bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY), jsonValidation);
-            	} else {
-            		assertTrue("<<"+args.getString(BaseHelper.KEY_COUNTRY_TAG)+"<< Failed onRequestError - Bundle is null! ", jsonValidation);
-            	}
-                processed = true;
-			}
-
-			@Override
-			public void onRequestComplete(Bundle bundle) {
-				// TODO Auto-generated method stub
-				Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-				assertTrue(
-						"Failed onRequestComplete - The base of the json is wrongly constructed, something is missing",
-						jsonValidation);
-				processed = true;
-
-			}
-		});
-		// necessary in order to make the test wait for the server response
-		while (!processed) {
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-
-	}
-	
-	@SmallTest
-	public void testRegisterUG() throws Throwable {
-		Log.i(TAG, "mService => " + mService);
-		final Bundle args = new Bundle();
-		ContentValues contentValues = new ContentValues();
-		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_BIRTHDAY, RequestConstants.CUSTOMER_BIRTHDAY);
-		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_DAY, RequestConstants.CUSTOMER_DAY);
-		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_EMAIL, RequestConstants.CUSTOMER_NEW_EMAIL);
-		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_FIRST_NAME, RequestConstants.CUSTOMER_FIRST_NAME);
-		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_GENDER, RequestConstants.CUSTOMER_GENDER);
-		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_LAST_NAME, RequestConstants.CUSTOMER_LAST_NAME);
-		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_MONTH, RequestConstants.CUSTOMER_MONTH);
-		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_PASSWORD, RequestConstants.CUSTOMER_PASSWORD);
-		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_PASSWORD2, RequestConstants.CUSTOMER_PASSWORD);
-		contentValues.put(RequestConstants.KEY_CREATE_CUSTOMER_YEAR, RequestConstants.CUSTOMER_YEAR);
-		args.putParcelable(GetRegisterHelper.REGISTER_CONTENT_VALUES, contentValues);
-		args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_UG+"/customer/create/");
-		args.putString(BaseHelper.KEY_COUNTRY_TAG, "UG");
-		sendRequest(args, new GetRegisterHelper(), new IResponseCallback() {
-
-			@Override
-			public void onRequestError(Bundle bundle) {
-				Boolean jsonValidation = false;
-            	
-            	if(bundle != null && bundle.containsKey(Constants.BUNDLE_JSON_VALIDATION_KEY)){
-            		jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-            	}
-            	if(bundle != null){
-            		assertTrue("<<"+args.getString(BaseHelper.KEY_COUNTRY_TAG)+"<< Failed onRequestError - The base of the json is wrongly constructed, something is missing : "+bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY), jsonValidation);
-            	} else {
-            		assertTrue("<<"+args.getString(BaseHelper.KEY_COUNTRY_TAG)+"<< Failed onRequestError - Bundle is null! ", jsonValidation);
-            	}
-                processed = true;
-			}
-
-			@Override
-			public void onRequestComplete(Bundle bundle) {
-				// TODO Auto-generated method stub
-				Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-				assertTrue(
-						"Failed onRequestComplete - The base of the json is wrongly constructed, something is missing",
-						jsonValidation);
-				processed = true;
-
-			}
-		});
-		// necessary in order to make the test wait for the server response
-		while (!processed) {
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-
-	}
 }

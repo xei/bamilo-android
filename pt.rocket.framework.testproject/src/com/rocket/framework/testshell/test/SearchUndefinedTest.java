@@ -20,28 +20,28 @@ public class SearchUndefinedTest extends FrameworkServiceTests {
     protected boolean processed1 = false;
     
 public void testSearchUndefinedIC() throws Throwable {
-    test(BaseHelper.BASE_URL_STAGING_CI);
+    test(BaseHelper.BASE_URL_CI);
 }
 
-//public void testSearchUndefinedKE() throws Throwable {
-//	test(BaseHelper.BASE_URL_KE);
-//}
-//
-//public void testSearchUndefinedMA() throws Throwable {
-//    test(BaseHelper.BASE_URL_MA);
-//}
-//
-//public void testSearchUndefinedNG() throws Throwable {
-//    test(BaseHelper.BASE_URL_NG);
-//}
-//
-//public void testSearchUndefinedEG() throws Throwable {
-//    test(BaseHelper.BASE_URL_EG);
-//}
-//
-//public void testSearchUndefinedUG() throws Throwable {
-//	test(BaseHelper.BASE_URL_UG);
-//}
+public void testSearchUndefinedKE() throws Throwable {
+	test(BaseHelper.BASE_URL_KE);
+}
+
+public void testSearchUndefinedMA() throws Throwable {
+    test(BaseHelper.BASE_URL_MA);
+}
+
+public void testSearchUndefinedNG() throws Throwable {
+    test(BaseHelper.BASE_URL_NG);
+}
+
+public void testSearchUndefinedEG() throws Throwable {
+    test(BaseHelper.BASE_URL_EG);
+}
+
+public void testSearchUndefinedUG() throws Throwable {
+	test(BaseHelper.BASE_URL_UG);
+}
 
 public void test(String url){
     /**
@@ -49,14 +49,18 @@ public void test(String url){
      */
     Log.i(TAG, "mService => " + mService);
     Bundle args = new Bundle();
-    args.putString(BaseHelper.KEY_COUNTRY, url + "/search?q=teste123456");
+    args.putString(BaseHelper.KEY_COUNTRY, url + "/search?setDevice=mobileApi&q=teste123456");
     args.putBoolean(Constants.BUNDLE_GENERAL_RULES_FALSE_KEY, false);
     sendRequest(args, new GetSearchUndefinedHelper(), new IResponseCallback() {
 
         @Override
         public void onRequestError(Bundle bundle) {
             // TODO Auto-generated method stub
-            Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
+        	Boolean jsonValidation = false;
+        	if(bundle.containsKey(Constants.BUNDLE_JSON_VALIDATION_KEY))
+              bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
+        	
+        		
             assertTrue("Failed onRequestError - The base of the json is wrongly constructed, something is missing : "+bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY), jsonValidation);
             processed1 = true;
         }

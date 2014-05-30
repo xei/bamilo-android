@@ -22,28 +22,28 @@ public class SignupNewsletterTest extends FrameworkServiceTests {
     protected boolean processed_test = false;
     
 public void testSignupNewsletterIC() throws Throwable {
-    test(BaseHelper.BASE_URL_STAGING_CI);
+    test(BaseHelper.BASE_URL_CI);
 }
 
-//public void testSignupNewsletterKE() throws Throwable {
-//	test(BaseHelper.BASE_URL_KE);
-//}
-//
-//public void testSignupNewsletterMA() throws Throwable {
-//    test(BaseHelper.BASE_URL_MA);
-//}
-//
-//public void testSignupNewsletterNG() throws Throwable {
-//    test(BaseHelper.BASE_URL_NG);
-//}
-//
-//public void testSignupNewsletterEG() throws Throwable {
-//    test(BaseHelper.BASE_URL_EG);
-//}
-//
-//public void testSignupNewsletterUG() throws Throwable {
-//	test(BaseHelper.BASE_URL_UG);
-//}
+public void testSignupNewsletterKE() throws Throwable {
+	test(BaseHelper.BASE_URL_KE);
+}
+
+public void testSignupNewsletterMA() throws Throwable {
+    test(BaseHelper.BASE_URL_MA);
+}
+
+public void testSignupNewsletterNG() throws Throwable {
+    test(BaseHelper.BASE_URL_NG);
+}
+
+public void testSignupNewsletterEG() throws Throwable {
+    test(BaseHelper.BASE_URL_EG);
+}
+
+public void testSignupNewsletterUG() throws Throwable {
+	test(BaseHelper.BASE_URL_UG);
+}
 
 public void test(String url){
 //	/**

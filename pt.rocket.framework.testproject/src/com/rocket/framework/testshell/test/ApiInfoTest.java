@@ -64,7 +64,7 @@ public class ApiInfoTest extends FrameworkServiceTests {
     public void testGetApiInfoKE() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         final Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "http://www.jumia.co.ke/mobapi/v1.1/main/md5?setDevice=mobileApi");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_CI+"/main/md5?setDevice=mobileApi");
         args.putString(BaseHelper.KEY_COUNTRY_TAG, "KE");
         sendRequest(args, new GetApiInfoHelper(), new IResponseCallback() {
 
@@ -111,7 +111,7 @@ public class ApiInfoTest extends FrameworkServiceTests {
     public void testGetApiInfoMA() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         final Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "http://www.jumia.ma/mobapi/v1.1/main/md5?setDevice=mobileApi");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_CI+"/main/md5?setDevice=mobileApi");
         args.putString(BaseHelper.KEY_COUNTRY_TAG, "MA");
         sendRequest(args, new GetApiInfoHelper(), new IResponseCallback() {
 
@@ -158,7 +158,7 @@ public class ApiInfoTest extends FrameworkServiceTests {
     public void testGetApiInfoNG() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         final Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "http://www.jumia.com.ng/mobapi/v1.1/main/md5?setDevice=mobileApi");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_CI+"/main/md5?setDevice=mobileApi");
         args.putString(BaseHelper.KEY_COUNTRY_TAG, "NG");
         sendRequest(args, new GetApiInfoHelper(), new IResponseCallback() {
 
@@ -205,7 +205,7 @@ public class ApiInfoTest extends FrameworkServiceTests {
     public void testGetApiInfoEG() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         final Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.com.eg/mobapi/v1.1/main/md5?setDevice=mobileApi");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_CI+"/main/md5?setDevice=mobileApi");
         args.putString(BaseHelper.KEY_COUNTRY_TAG, "EG");
         
         sendRequest(args, new GetApiInfoHelper(), new IResponseCallback() {
@@ -253,7 +253,7 @@ public class ApiInfoTest extends FrameworkServiceTests {
     public void testGetApiInfoUG() throws Throwable {
         Log.i(TAG, "mService => " + mService);
         final Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, "https://www.jumia.ug/mobapi/v1.1/main/md5?setDevice=mobileApi");
+        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_CI+"/main/md5?setDevice=mobileApi");
         args.putString(BaseHelper.KEY_COUNTRY_TAG, "UG");
         
         sendRequest(args, new GetApiInfoHelper(), new IResponseCallback() {

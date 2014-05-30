@@ -38,13 +38,15 @@ public abstract class BaseHelper {
     public static String BASE_URL_STAGING_CI = "https://alice-staging.jumia.ci/mobapi/v1.3";
     public static String BASE_URL_STAGING_UG = "https://alice-staging.jumia.ug/mobapi/v1.3";
     
-    public static String BASE_URL_NG = "https://www.jumia.com.ng/mobapi/v1.1";
-    public static String BASE_URL_KE = "https://www.jumia.co.ke/mobapi/v1.1";
-    public static String BASE_URL_MA = "https://www.jumia.ma/mobapi/v1.1";
-    public static String BASE_URL_EG = "https://www.jumia.com.eg/mobapi/v1.1";
-    public static String BASE_URL_CI = "https://www.jumia.ci/mobapi/v1.1";//BASE_URL_STAGING_CI;//
-    public static String BASE_URL_UG = "https://www.jumia.ug/mobapi/v1.1";
+    public static String BASE_URL_NG = "https://www.jumia.com.ng/mobapi/v1.3";
+    public static String BASE_URL_KE = "https://www.jumia.co.ke/mobapi/v1.3";
+    public static String BASE_URL_MA = "https://www.jumia.ma/mobapi/v1.3";
+    public static String BASE_URL_EG = "https://www.jumia.com.eg/mobapi/v1.3";
+    public static String BASE_URL_CI = "https://www.jumia.ci/mobapi/v1.3";
+    public static String BASE_URL_UG = "https://www.jumia.ug/mobapi/v1.3";
 
+    //public static String BASE_URL_NG = BASE_URL_STAGING_NG;
+    //public static String BASE_URL_EG = BASE_URL_STAGING_EG;
     
     /**
      * Creates the bundle for the request
@@ -67,7 +69,7 @@ public abstract class BaseHelper {
         try {
             JSONObject jsonObject = new JSONObject(response);
             boolean validation = true;
-//            Log.i(TAG, "code1: "+bundle.getBoolean(Constants.BUNDLE_METADATA_REQUIRED_KEY)+" _ "+bundle.getBoolean(Constants.BUNDLE_GENERAL_RULES_FALSE_KEY));
+//           Log.i(TAG, "code1: "+bundle.getBoolean(Constants.BUNDLE_METADATA_REQUIRED_KEY)+" _ "+bundle.getBoolean(Constants.BUNDLE_GENERAL_RULES_FALSE_KEY));
             try {
             	XMLObject generalRules;
             	if(!bundle.getBoolean(Constants.BUNDLE_METADATA_REQUIRED_KEY)){

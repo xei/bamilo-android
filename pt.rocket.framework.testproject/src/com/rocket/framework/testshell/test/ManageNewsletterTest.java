@@ -21,28 +21,28 @@ public class ManageNewsletterTest extends FrameworkServiceTests {
     protected boolean processed_test = false;
     
 public void testManageNewsletterIC() throws Throwable {
-    test(BaseHelper.BASE_URL_STAGING_CI);
+    test(BaseHelper.BASE_URL_CI);
 }
 
-//public void testManageNewsletterKE() throws Throwable {
-//	test(BaseHelper.BASE_URL_KE);
-//}
-//
-//public void testManageNewsletterMA() throws Throwable {
-//    test(BaseHelper.BASE_URL_MA);
-//}
-//
-//public void testManageNewsletterNG() throws Throwable {
-//    test(BaseHelper.BASE_URL_NG);
-//}
-//
-//public void testManageNewsletterEG() throws Throwable {
-//    test(BaseHelper.BASE_URL_EG);
-//}
-//
-//public void testManageNewsletterUG() throws Throwable {
-//	test(BaseHelper.BASE_URL_UG);
-//}
+public void testManageNewsletterKE() throws Throwable {
+	test(BaseHelper.BASE_URL_KE);
+}
+
+public void testManageNewsletterMA() throws Throwable {
+    test(BaseHelper.BASE_URL_MA);
+}
+
+public void testManageNewsletterNG() throws Throwable {
+    test(BaseHelper.BASE_URL_NG);
+}
+
+public void testManageNewsletterEG() throws Throwable {
+    test(BaseHelper.BASE_URL_EG);
+}
+
+public void testManageNewsletterUG() throws Throwable {
+	test(BaseHelper.BASE_URL_UG);
+}
 
 public void test(String url){
 	/**

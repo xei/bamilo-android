@@ -17,202 +17,37 @@ public class ForgotPasswordTest extends FrameworkServiceTests {
     protected boolean processed = false;
 
     public void testGetForgotPasswordUG() throws Throwable {
-        Log.i(TAG, "mService => " + mService);
-        Bundle args = new Bundle();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(RequestConstants.KEY_FORGOT_PASSWORD_EMAIL, RequestConstants.CUSTOMER_EMAIL);
-        args.putParcelable(GetForgotPasswordHelper.CONTENT_VALUES, contentValues);
-        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_UG+"/customer/forgotpassword?setDevice=mobileApi");
-        
-        sendRequest(args, new GetForgotPasswordHelper(), new IResponseCallback() {
-
-            @Override
-            public void onRequestError(Bundle bundle) {
-                // TODO Auto-generated method stub
-                Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-                assertTrue("Failed onRequestError - The base of the json is wrongly constructed, something is missing : "+bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY), jsonValidation);
-                processed = true;
-            }
-
-            @Override
-            public void onRequestComplete(Bundle bundle) {
-                // TODO Auto-generated method stub
-                Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-                assertTrue("Failed onRequestComplete - The base of the json is wrongly constructed, something is missing", jsonValidation);
-                processed = true;
-
-            }
-        });
-        //necessary in order to make the test wait for the server response
-        while (!processed) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
+    	test(BaseHelper.BASE_URL_UG);
     }
 
     public void testGetForgotPasswordIC() throws Throwable {
-        Log.i(TAG, "mService => " + mService);
-        Bundle args = new Bundle();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(RequestConstants.KEY_FORGOT_PASSWORD_EMAIL, RequestConstants.CUSTOMER_EMAIL);
-        args.putParcelable(GetForgotPasswordHelper.CONTENT_VALUES, contentValues);
-        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_CI+"/customer/forgotpassword?setDevice=mobileApi");
-        
-        sendRequest(args, new GetForgotPasswordHelper(), new IResponseCallback() {
-
-            @Override
-            public void onRequestError(Bundle bundle) {
-                // TODO Auto-generated method stub
-                Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-                assertTrue("Failed onRequestError - The base of the json is wrongly constructed, something is missing : "+bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY), jsonValidation);
-                processed = true;
-            }
-
-            @Override
-            public void onRequestComplete(Bundle bundle) {
-                // TODO Auto-generated method stub
-                Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-                assertTrue("Failed onRequestComplete - The base of the json is wrongly constructed, something is missing", jsonValidation);
-                processed = true;
-
-            }
-        });
-        //necessary in order to make the test wait for the server response
-        while (!processed) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
+    	test(BaseHelper.BASE_URL_CI);
     }
 
     public void testGetForgotPasswordKE() throws Throwable {
-        Log.i(TAG, "mService => " + mService);
-        Bundle args = new Bundle();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(RequestConstants.KEY_FORGOT_PASSWORD_EMAIL, RequestConstants.CUSTOMER_EMAIL);
-        args.putParcelable(GetForgotPasswordHelper.CONTENT_VALUES, contentValues);
-        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_KE+"/customer/forgotpassword?setDevice=mobileApi");
-        
-        sendRequest(args, new GetForgotPasswordHelper(), new IResponseCallback() {
-
-            @Override
-            public void onRequestError(Bundle bundle) {
-                // TODO Auto-generated method stub
-                Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-                assertTrue("Failed onRequestError - The base of the json is wrongly constructed, something is missing : "+bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY), jsonValidation);
-                processed = true;
-            }
-
-            @Override
-            public void onRequestComplete(Bundle bundle) {
-                // TODO Auto-generated method stub
-                Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-                assertTrue("Failed onRequestComplete - The base of the json is wrongly constructed, something is missing", jsonValidation);
-                processed = true;
-
-            }
-        });
-        //necessary in order to make the test wait for the server response
-        while (!processed) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
+    	test(BaseHelper.BASE_URL_KE);
     }
 
     public void testGetForgotPasswordNG() throws Throwable {
-        Log.i(TAG, "mService => " + mService);
-        Bundle args = new Bundle();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(RequestConstants.KEY_FORGOT_PASSWORD_EMAIL, RequestConstants.CUSTOMER_EMAIL);
-        args.putParcelable(GetForgotPasswordHelper.CONTENT_VALUES, contentValues);
-        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_NG+"/customer/forgotpassword?setDevice=mobileApi");
-        
-        sendRequest(args, new GetForgotPasswordHelper(), new IResponseCallback() {
-
-            @Override
-            public void onRequestError(Bundle bundle) {
-                // TODO Auto-generated method stub
-                Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-                assertTrue("Failed onRequestError - The base of the json is wrongly constructed, something is missing : "+bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY), jsonValidation);
-                processed = true;
-            }
-
-            @Override
-            public void onRequestComplete(Bundle bundle) {
-                // TODO Auto-generated method stub
-                Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-                assertTrue("Failed onRequestComplete - The base of the json is wrongly constructed, something is missing", jsonValidation);
-                processed = true;
-
-            }
-        });
-        //necessary in order to make the test wait for the server response
-        while (!processed) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
+    	test(BaseHelper.BASE_URL_NG);
     }
 
     public void testGetForgotPasswordEG() throws Throwable {
-        Log.i(TAG, "mService => " + mService);
-        Bundle args = new Bundle();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(RequestConstants.KEY_FORGOT_PASSWORD_EMAIL, RequestConstants.CUSTOMER_EMAIL);
-        args.putParcelable(GetForgotPasswordHelper.CONTENT_VALUES, contentValues);
-        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_EG+"/customer/forgotpassword?setDevice=mobileApi");
-        
-        sendRequest(args, new GetForgotPasswordHelper(), new IResponseCallback() {
-
-            @Override
-            public void onRequestError(Bundle bundle) {
-                // TODO Auto-generated method stub
-                Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-                assertTrue("Failed onRequestError - The base of the json is wrongly constructed, something is missing : "+bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY), jsonValidation);
-                processed = true;
-            }
-
-            @Override
-            public void onRequestComplete(Bundle bundle) {
-                // TODO Auto-generated method stub
-                Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-                assertTrue("Failed onRequestComplete - The base of the json is wrongly constructed, something is missing", jsonValidation);
-                processed = true;
-
-            }
-        });
-        //necessary in order to make the test wait for the server response
-        while (!processed) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
+    	test(BaseHelper.BASE_URL_EG);
     }
 
     public void testGetForgotPasswordMA() throws Throwable {
+    	test(BaseHelper.BASE_URL_MA);
+    }
+    	
+	public void test(String url)  {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
         ContentValues contentValues = new ContentValues();
         contentValues.put(RequestConstants.KEY_FORGOT_PASSWORD_EMAIL, RequestConstants.CUSTOMER_EMAIL);
         args.putParcelable(GetForgotPasswordHelper.CONTENT_VALUES, contentValues);
-        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_MA+"/customer/forgotpassword?setDevice=mobileApi");
+        args.putString(BaseHelper.KEY_COUNTRY, url+"/customer/forgotpassword?setDevice=mobileApi");
+        args.putBoolean(Constants.BUNDLE_METADATA_REQUIRED_KEY, false);
         
         sendRequest(args, new GetForgotPasswordHelper(), new IResponseCallback() {
 

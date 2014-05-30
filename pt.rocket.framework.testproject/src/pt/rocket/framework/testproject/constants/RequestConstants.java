@@ -26,6 +26,7 @@ public class RequestConstants {
 	public static final String CUSTOMER_FIRST_NAME = "tester";
 	public static final String CUSTOMER_LAST_NAME = "tester";
 	public static final String CUSTOMER_BIRTHDAY = "01-01-1995";
+	public static final String CUSTOMER_NEWSLETTER = "5";
 	
 	/**
 	 * Facebook Login
@@ -65,16 +66,17 @@ public class RequestConstants {
 	/**
 	 * Register
 	 */
-	public static final String KEY_CREATE_CUSTOMER_DAY = "Alice_Module_Mobapi_Form_Customer_RegistrationForm[day]";
-	public static final String KEY_CREATE_CUSTOMER_MONTH = "Alice_Module_Mobapi_Form_Customer_RegistrationForm[month]";
-	public static final String KEY_CREATE_CUSTOMER_YEAR = "Alice_Module_Mobapi_Form_Customer_RegistrationForm[year]";
-	public static final String KEY_CREATE_CUSTOMER_GENDER = "Alice_Module_Mobapi_Form_Customer_RegistrationForm[gender]";
-	public static final String KEY_CREATE_CUSTOMER_EMAIL = "Alice_Module_Mobapi_Form_Customer_RegistrationForm[email]";
-	public static final String KEY_CREATE_CUSTOMER_FIRST_NAME = "Alice_Module_Mobapi_Form_Customer_RegistrationForm[first_name]";
-	public static final String KEY_CREATE_CUSTOMER_LAST_NAME = "Alice_Module_Mobapi_Form_Customer_RegistrationForm[last_name]";
-	public static final String KEY_CREATE_CUSTOMER_PASSWORD = "Alice_Module_Mobapi_Form_Customer_RegistrationForm[password]";
-	public static final String KEY_CREATE_CUSTOMER_PASSWORD2 = "Alice_Module_Mobapi_Form_Customer_RegistrationForm[password2]";
-	public static final String KEY_CREATE_CUSTOMER_BIRTHDAY = "Alice_Module_Mobapi_Form_Customer_RegistrationForm[birthday]";
+	public static final String KEY_CREATE_CUSTOMER_DAY = "Alice_Module_Mobapi_Form_Ext1m3_Customer_RegistrationForm[day]";
+	public static final String KEY_CREATE_CUSTOMER_MONTH = "Alice_Module_Mobapi_Form_Ext1m3_Customer_RegistrationForm[month]";
+	public static final String KEY_CREATE_CUSTOMER_YEAR = "Alice_Module_Mobapi_Form_Ext1m3_Customer_RegistrationForm[year]";
+	public static final String KEY_CREATE_CUSTOMER_GENDER = "Alice_Module_Mobapi_Form_Ext1m3_Customer_RegistrationForm[gender]";
+	public static final String KEY_CREATE_CUSTOMER_EMAIL = "Alice_Module_Mobapi_Form_Ext1m3_Customer_RegistrationForm[email]";
+	public static final String KEY_CREATE_CUSTOMER_FIRST_NAME = "Alice_Module_Mobapi_Form_Ext1m3_Customer_RegistrationForm[first_name]";
+	public static final String KEY_CREATE_CUSTOMER_LAST_NAME = "Alice_Module_Mobapi_Form_Ext1m3_Customer_RegistrationForm[last_name]";
+	public static final String KEY_CREATE_CUSTOMER_PASSWORD = "Alice_Module_Mobapi_Form_Ext1m3_Customer_RegistrationForm[password]";
+	public static final String KEY_CREATE_CUSTOMER_PASSWORD2 = "Alice_Module_Mobapi_Form_Ext1m3_Customer_RegistrationForm[password2]";
+	public static final String KEY_CREATE_CUSTOMER_BIRTHDAY = "Alice_Module_Mobapi_Form_Ext1m3_Customer_RegistrationForm[birthday]";
+	public static final String KEY_CREATE_CUSTOMER_NEWSLETTER = "Alice_Module_Mobapi_Form_Ext1m3_Customer_RegistrationForm[newsletter_categories_subscribed]";
 	
 	/**
 	 * Add To Cart
@@ -90,8 +92,8 @@ public class RequestConstants {
 	public static final String PRODUCT_SKU_CI = "RO828BOAB8MOAFRAMZ";
 	public static final String PRODUCT_SKU_SIMPLE_CI = "RO828BOAB8MOAFRAMZ-99274";
 	
-	public static final String PRODUCT_SKU_KE = "CO668SH84GVNNAFAMZ";
-	public static final String PRODUCT_SKU_SIMPLE_KE = "CO668SH84GVNNAFAMZ-23604";
+	public static final String PRODUCT_SKU_KE = "SA949ELAA79UNAFAMZ";
+	public static final String PRODUCT_SKU_SIMPLE_KE = "SA949ELAA79UNAFAMZ-13791";
 	
 	public static final String PRODUCT_SKU_MA = "SA024ELAB8P5NAFAMZ";
 	public static final String PRODUCT_SKU_SIMPLE_MA = "SA024ELAB8P5NAFAMZ-94391";
@@ -109,8 +111,8 @@ public class RequestConstants {
 	 * About you
 	 */
 	
-	public static final String KEY_CUSTOMER_SIGNUP_EMAIL = "Alice_Module_Mobapi_Form_Customer_RegistrationForm[email]";
-	public static final String KEY_CUSTOMER_SIGNUP_SCENARIO = "Alice_Module_Mobapi_Form_Customer_RegistrationForm[scenario]";
+	public static final String KEY_CUSTOMER_SIGNUP_EMAIL = "Alice_Module_Mobapi_Form_Ext1m1_Customer_RegisterSignupForm[email]";
+	public static final String KEY_CUSTOMER_SIGNUP_SCENARIO = "Alice_Module_Mobapi_Form_Ext1m1_Customer_RegisterSignupForm[scenario]";
 	
 	static Random rand2 = new Random();
 	static int n2 = rand2.nextInt(10000) + 1;

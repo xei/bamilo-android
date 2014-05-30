@@ -20,30 +20,28 @@ public class GetCountryConfigsTest extends FrameworkServiceTests {
     protected boolean processed1 = false;
     
 public void testCountryConfigsIC() throws Throwable {
-//    test(BaseHelper.BASE_URL_CI);
-	test("https://alice-staging.jumia.ci/mobapi/v1.3/main/getcountryconfs/");
+    test(BaseHelper.BASE_URL_CI);
 }
 
-//public void testCountryConfigsKE() throws Throwable {
-//	test(BaseHelper.BASE_URL_KE);
-//}
-//
-//public void testCountryConfigsMA() throws Throwable {
-//    test(BaseHelper.BASE_URL_MA);
-//}
-//
-//public void testCountryConfigsNG() throws Throwable {
-//    test(BaseHelper.BASE_URL_NG);
-//    test("http://www.jumia.com.ng/mobapi/v1.0/campaign/get/?campaign_slug=deals-of-the-day");
-//}
+public void testCountryConfigsKE() throws Throwable {
+	test(BaseHelper.BASE_URL_KE);
+}
 
-//public void testCountryConfigsEG() throws Throwable {
-//    test(BaseHelper.BASE_URL_EG);
-//}
-//
-//public void testCountryConfigsUG() throws Throwable {
-//	test(BaseHelper.BASE_URL_UG);
-//}
+public void testCountryConfigsMA() throws Throwable {
+    test(BaseHelper.BASE_URL_MA);
+}
+
+public void testCountryConfigsNG() throws Throwable {
+    test(BaseHelper.BASE_URL_NG);
+}
+
+public void testCountryConfigsEG() throws Throwable {
+    test(BaseHelper.BASE_URL_EG);
+}
+
+public void testCountryConfigsUG() throws Throwable {
+	test(BaseHelper.BASE_URL_UG);
+}
 
 public void test(String url){
     /**
@@ -51,7 +49,7 @@ public void test(String url){
      */
     Log.i(TAG, "mService => " + mService);
     Bundle args = new Bundle();
-    args.putString(BaseHelper.KEY_COUNTRY, url);
+    args.putString(BaseHelper.KEY_COUNTRY, url+"/main/getcountryconfs/");
     sendRequest(args, new GetCountryConfigsHelper(), new IResponseCallback() {
 
         @Override

@@ -14,12 +14,6 @@ $adb_path_bruno = "/android/sdk/platform-tools/adb";
 $adb_path_jenkins = "/android-sdk-macosx/platform-tools/adb";
 $adb_path = $adb_path_bruno;
 $emulator_executable_path = "android/sdk/tools";
-$emulator_bruno = "192.168.56.101:5555";
-$emulator_jenkins = "emulator-5554";
-$device_boston = "FA6MA000002520";
-$device_s4 = "9b9a8c25";
-$device_Nexus_5 = "02c4f6c4d0240c12";
-$emulator= $device_s4;
 $content  = "";
 #echo $color->getColoredString("##############################################", "white", "blue"). "\n";
 #echo $color->getColoredString("########## Running Jumia API Tests ###########", "white", "blue"). "\n";
@@ -352,31 +346,34 @@ function startEmulator(){
 
 function restartApp(){
 	global $adb_path;
-	global $emulator;
+	$emulator = $_SESSION['chosen_device'];
 	
-	echo($adb_path." - ".$emulator);
+	echo("\n> ADB Directory:\n".$adb_path."\n");
+	echo("\n> Chosen Emulator:\n".$emulator."\n");
+	
 	$currentPath = getcwd();
-	echo "\nCurrent Directory:\n";
-	echo $currentPath . "\n";
-	echo "----------\n";
+	echo("\n> Current Directory:\n".$currentPath."\n");
+	#echo "----------\n";
 	
 	$adb_devices = "~".$adb_path." devices";
 	
-	exec($adb_devices);
+	#exec($adb_devices);
 	
-	echo("$adb_devices\n");
+	#echo("Available Emulators: \n$adb_devices\n");
 	
-	$install ="~".$adb_path." -s ".$emulator." install -r ".$currentPath."/pt.rocket.framework.testproject/bin/pt.rocket.framework.testproject-debug.apk";
+	echo("\n> Installing Testproject:\n");
+	$install ="~".$adb_path." -s ".$emulator." install -r ".$currentPath."/AutomatedTests/pt.rocket.framework.testproject/bin/pt.rocket.framework.testproject-debug.apk";
 	exec($install);
-	$install ="~".$adb_path." -s ".$emulator." install -r ".$currentPath."/pt.rocket.framework.testproject/Shell.apk";
+	echo("\n> Installing Shell:\n");
+	$install ="~".$adb_path." -s ".$emulator." install -r ".$currentPath."/TESTEAutomatedTests/Shell/bin/Shell-debug.apk";
 	exec($install);
 
-	echo "Installing the apps now.";
+	echo("\n> Starting Test\n\n");
 }
 
 function Test($countries, $test, $function){
 	global $adb_path;
-	global $emulator;
+	$emulator = $_SESSION['chosen_device'];
 	#foreach($countries as $country){
 		$cmd = "~".$adb_path." -s  ".$emulator." shell am instrument -w -e class com.rocket.framework.testshell.test.".$test."#".$function.$countries." com.rocket.framework.testshell.test/android.test.InstrumentationTestRunner";
 		#echo $cmd;

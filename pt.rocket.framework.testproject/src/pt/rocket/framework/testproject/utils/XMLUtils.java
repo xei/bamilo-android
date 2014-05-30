@@ -51,7 +51,7 @@ public class XMLUtils {
                 // Advances "resources" tag
                 if (xpp.getName().equals("resources")) {
 //                    Log.i("TAG","1");
-                    // if last element is "/resources" breaks the cycle
+                    // if last element is "/resources" breaks the cycle The base of the json is wrongly constructed, something is missing 
                     if (eventType == XmlPullParser.END_TAG) {
                         break;
                     }
@@ -242,18 +242,22 @@ public class XMLUtils {
 					
 					//e1.printStackTrace(); NOTE: Only necessary to evaluate this if something is wrong with the test results, otherwise no need to be printed
 				}
+	                if (method.invoke(jsonObject, rules.get(i).getTag()) == null && rules.get(i).isOptional() == false) {
+	                    jsonIsValid = false;
+	                    failedParameterMessage = "'" + rules.get(i).getTag() + "'" + " doesn't exist";
+	                    Log.i(TAG, " failedParameterMessage => " + failedParameterMessage);
+	                    break;
+	                }
+	            
 
-                if (method.invoke(jsonObject, rules.get(i).getTag()) == null && rules.get(i).isOptional() == false) {
-                    jsonIsValid = false;
-                    failedParameterMessage = "'" + rules.get(i).getTag() + "'" + " doesn't exist";
-                    break;
-                }
-                if (!method.invoke(jsonObject, rules.get(i).getTag()).getClass().getSimpleName().toLowerCase().equals(rules.get(i).getType())) {
-                    jsonIsValid = false;
-                    failedParameterMessage = "'" + rules.get(i).getTag() + "'" + " doesn't match the expected type";
-                    Log.i(TAG, " failedParameterMessage " + failedParameterMessage);
-                    break;
-                }
+
+	                if (!method.invoke(jsonObject, rules.get(i).getTag()).getClass().getSimpleName().toLowerCase().equals(rules.get(i).getType())) {
+	                    jsonIsValid = false;
+	                    failedParameterMessage = "'" + rules.get(i).getTag() + "'" + " doesn't match the expected type";
+	                    Log.i(TAG, " failedParameterMessage " + failedParameterMessage);
+	                    break;
+	                }
+
                 if(expectedResult!=null && rules.get(i).getExpectedResult() != null){
                 	if(!rules.get(i).getExpectedResult().equals(String.valueOf(expectedResult))){
                 		jsonIsValid = false;
@@ -313,9 +317,11 @@ public class XMLUtils {
                 if (rules.get(i).isOptional() == false) {
                     e.printStackTrace();
                     jsonIsValid = false;
+                    failedParameterMessage = "'" + rules.get(i).getTag() + "'" + " doesn't exist or doesn't match the expected type";
+                    Log.i(TAG, " failedParameterMessage => " + failedParameterMessage);
                     break;
                 }
-            }
+            } 
 
         }
 

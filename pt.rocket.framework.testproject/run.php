@@ -1,7 +1,32 @@
 <?php
 include 'JumiaAPITests.php';
+session_start();
 
 $country_test = $argv[1];
+$chosen_device = $argv[2];
+
+switch ($chosen_device) {
+	    case "ONE":
+	        #echo "\ni equals ONE\n";
+	        $device_one = "HT019P801493";
+	        $_SESSION['chosen_device'] = $device_one;
+	        break;
+	    case "NEXUS":
+	        #echo "\ni equals NEXUS\n";
+	        $device_Nexus_5 = "02c4f6c4d0240c12";
+	        $_SESSION['chosen_device'] = $device_Nexus_5;
+	        break;
+	    case "S4":
+	        #echo "\ni equals S4\n";
+	        $device_s4 = "9b9a8c25";
+	        $_SESSION['chosen_device'] = $device_s4;
+	        break;
+	    case "EMU":
+	        #echo "\ni equals EMU\n";
+	        $emulator_bruno = "192.168.56.101:5555";
+	        $_SESSION['chosen_device'] = $emulator_bruno;
+	        break;
+}
 
 ## startEmulator();
 
@@ -59,7 +84,7 @@ GetCities($country_test);
 CheckoutFinish($country_test);
 
 #1.9
-GetCampaign($country_test);
+#GetCampaign($country_test);
 GetSearchUndefined($country_test);
 SignupNewsletter($country_test);
 ManageNewsletter($country_test);

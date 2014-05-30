@@ -99,6 +99,7 @@ public class ChangePasswordTest extends FrameworkServiceTests {
         contentValues2.put(RequestConstants.KEY_CHANGE_PASSWORD_PASSWORD, RequestConstants.CUSTOMER_PASSWORD_2);
         contentValues2.put(RequestConstants.KEY_CHANGE_PASSWORD_PASSWORD2, RequestConstants.CUSTOMER_PASSWORD_2);
         args.putParcelable(GetChangePasswordHelper.CONTENT_VALUES, contentValues2);
+        args.putBoolean(Constants.BUNDLE_METADATA_REQUIRED_KEY, false);
         sendRequest(args, new GetChangePasswordHelper(), new IResponseCallback() {
 
             @Override
@@ -142,6 +143,7 @@ public class ChangePasswordTest extends FrameworkServiceTests {
         contentValues1.put(RequestConstants.KEY_CHANGE_PASSWORD_PASSWORD, RequestConstants.CUSTOMER_PASSWORD);
         contentValues1.put(RequestConstants.KEY_CHANGE_PASSWORD_PASSWORD2, RequestConstants.CUSTOMER_PASSWORD);
         args2.putParcelable(GetChangePasswordHelper.CONTENT_VALUES, contentValues1);
+        args2.putBoolean(Constants.BUNDLE_METADATA_REQUIRED_KEY, false);
         sendRequest(args2, new GetChangePasswordHelper(), new IResponseCallback() {
 
             @Override
