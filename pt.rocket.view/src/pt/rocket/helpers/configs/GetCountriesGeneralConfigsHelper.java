@@ -102,6 +102,20 @@ public class GetCountriesGeneralConfigsHelper extends BaseHelper {
                         stagingCountryObject.setCountryIsLive(countryObject.isCountryIsLive());
                         stagingServers.add(stagingCountryObject);
                     }
+                    
+                    // Add the MA SERVER CORE 4.6
+                    CountryObject stagingCountryObject = new CountryObject();
+                    stagingCountryObject.setCountryName("Maroc Dev 04 Core 4.6");
+                    stagingCountryObject.setCountryUrl("http://www-dev04.jumia.com/");
+                    stagingCountryObject.setCountryFlag(stagingServers.get(0).getCountryFlag());
+                    stagingCountryObject.setCountryMapMdpi(stagingServers.get(0).getCountryMapMdpi());
+                    stagingCountryObject.setCountryMapHdpi(stagingServers.get(0).getCountryMapHdpi());
+                    stagingCountryObject.setCountryMapXhdpi(stagingServers.get(0).getCountryMapXhdpi());
+                    stagingCountryObject.setCountryIso(stagingServers.get(0).getCountryIso());
+                    stagingCountryObject.setCountryForceHttps(stagingServers.get(0).isCountryForceHttps());
+                    stagingCountryObject.setCountryIsLive(stagingServers.get(0).isCountryIsLive());
+                    stagingServers.add(stagingCountryObject);
+                    
                     mCountries.addAll(stagingServers);
                     
                 }
