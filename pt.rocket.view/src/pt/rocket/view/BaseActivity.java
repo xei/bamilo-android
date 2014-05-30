@@ -319,6 +319,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             isRegistered = true;
         }
 
+        // TODO : Comment for Samsung store
         CheckVersion.run(getApplicationContext());
 
         /**

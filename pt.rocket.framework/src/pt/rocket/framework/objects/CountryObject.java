@@ -314,12 +314,9 @@ public class CountryObject implements IJSONSerializable, Parcelable {
 		country_name = jsonObject.optString(RestConstants.JSON_NAME_TAG);
 		country_url = jsonObject.optString(RestConstants.JSON_URL_TAG);
 		if(country_url != null ){
-			Log.i(TAG, "code1replace : country_url : "+country_url);
 			country_url = country_url.replace("http://www", "www");
-			Log.i(TAG, "code1replace :after http country_url : "+country_url);
 			country_url = country_url.replace("https://www", "www");
 			country_url = country_url.replace("/mobapi/", "");
-			Log.i(TAG, "code1replace :after https country_url : "+country_url);
 		}
 		country_flag = jsonObject.optString(RestConstants.JSON_FLAG_TAG);
 		JSONObject mapImages = jsonObject.optJSONObject(RestConstants.JSON_MAP_IMAGES_TAG);

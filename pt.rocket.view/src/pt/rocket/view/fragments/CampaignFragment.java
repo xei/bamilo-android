@@ -746,13 +746,47 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
             setClickableView(view.mImage, position);
             // Set size
             setSizeContainer(view, item, position);
+            // Set price and special price
+            setPriceContainer(view, item);
+            // Set save value
+            setSaveContainer(view, item);
+            // Set stock bar
+            setStockBar(view.mStockBar, item.getStockPercentage());
+            // Set stock percentage
+            view.mStockPercentage.setText(item.getStockPercentage() + "%");
+            view.mStockPercentage.setSelected(true);
+            // Set buy button
+            setClickableView(view.mButtonBuy, position);
+        }
+        
+        /**
+         * Set the price and special price view
+         * @param view
+         * @param item
+         * @author sergiopereira
+         */
+        private void setPriceContainer(ItemView view, CampaignItem item){
             // Set price
             view.mPrice.setText(CurrencyFormatter.formatCurrency(""+item.getPrice()));
             view.mPrice.setPaintFlags(view.mPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             view.mPrice.setSelected(true);
-            // Set discount
-            view.mDiscount.setText(CurrencyFormatter.formatCurrency(""+item.getSpecialPrice()));
-            // Set save
+            // Validate special price
+            if(item.getSpecialPrice() != 0) {
+                // Set discount
+                view.mDiscount.setText(CurrencyFormatter.formatCurrency(""+item.getSpecialPrice()));
+            } else {
+                // Set discount
+                view.mDiscount.setText(CurrencyFormatter.formatCurrency(""+item.getPrice()));
+            }
+        }
+        
+        /**
+         * Set the save value
+         * @param view
+         * @param item
+         * @author sergiopereira
+         */
+        private void setSaveContainer(ItemView view, CampaignItem item){
             String label = getString(R.string.campaign_save);
             String value = CurrencyFormatter.formatCurrency( "" + item.getSavePrice());
             String mainText = label + " " + value;
@@ -761,13 +795,6 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
             greenValue.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.green_campaign_bar)), label.length() + 1, mainText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             view.mSave.setText(greenValue);
             view.mSave.setSelected(true);
-            // Set stock bar
-            setStockBar(view.mStockBar, item.getStockPercentage());
-            // Set stock percentage
-            view.mStockPercentage.setText(item.getStockPercentage() + "%");
-            view.mStockPercentage.setSelected(true);
-            // Set buy button
-            setClickableView(view.mButtonBuy, position);
         }
         
         /**

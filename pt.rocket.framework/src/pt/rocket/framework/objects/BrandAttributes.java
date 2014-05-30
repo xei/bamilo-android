@@ -119,40 +119,31 @@ public class BrandAttributes implements IJSONSerializable, Parcelable {
 
 		try {
 
-			name = jsonObject
-					.getString(RestConstants.JSON_BRAND_DESCRIPTION_TAG);
-			target_type = jsonObject.optString(
-					RestConstants.JSON_TARGET_TYPE_TAG, "");
-			description = jsonObject.optString(
-					RestConstants.JSON_DESCRIPTION_TAG, "");
+			name = jsonObject.getString(RestConstants.JSON_BRAND_DESCRIPTION_TAG);
+			target_type = jsonObject.optString(RestConstants.JSON_TARGET_TYPE_TAG, "");
+			description = jsonObject.optString(RestConstants.JSON_DESCRIPTION_TAG, "");
 
 			try {
 				/**
 				 * The new method, returns an array
 				 */
 				// Get image list
-				JSONArray imageList = jsonObject
-						.optJSONArray(RestConstants.JSON_IMAGE_LIST_TAG);
+				JSONArray imageList = jsonObject.optJSONArray(RestConstants.JSON_IMAGE_LIST_TAG);
 				// Validate image structure
 				int size = imageList.length();
 				for (int i = 0; i < size; i++) {
 					// Validate device type
 					JSONObject jsonImage = imageList.optJSONObject(i);
-					String device = jsonImage
-							.optString(RestConstants.JSON_IMAGE_DEVICE_TYPE_TAG);
+					String device = jsonImage.optString(RestConstants.JSON_IMAGE_DEVICE_TYPE_TAG, RestConstants.JSON_PHONE_TAG);
 					Log.d("IMAGE TEASER", "BRAND DEVICE: " + device);
 					if (device.equalsIgnoreCase(RestConstants.JSON_PHONE_TAG)) {
-						image_url = jsonImage
-								.optString(RestConstants.JSON_TEASER_IMAGE_URL_TAG);
-					} else if (device
-							.equalsIgnoreCase(RestConstants.JSON_TABLET_TAG)) {
-						imageTableUrl = jsonImage
-								.optString(RestConstants.JSON_TEASER_IMAGE_URL_TAG);
+						image_url = jsonImage.optString(RestConstants.JSON_TEASER_IMAGE_URL_TAG);
+					} else if (device.equalsIgnoreCase(RestConstants.JSON_TABLET_TAG)) {
+						imageTableUrl = jsonImage.optString(RestConstants.JSON_TEASER_IMAGE_URL_TAG);
 					}
 
 					// Save brand
-					brand_url = jsonImage
-							.getString(RestConstants.JSON_BRAND_URL_TAG);
+					brand_url = jsonImage.getString(RestConstants.JSON_BRAND_URL_TAG);
 				}
 			} catch (Exception e) {
 				/**

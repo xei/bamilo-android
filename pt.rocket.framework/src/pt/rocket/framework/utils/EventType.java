@@ -51,7 +51,9 @@ public enum EventType {
 
 	REMOVE_ITEM_FROM_WISHLIST_EVENT, 
 
-	GET_TEASERS_EVENT("http:/main/getteasers/", RestContract.MAX_CACHE_TIME), // XXX
+	GET_TEASERS_EVENT("http:/main/getteasers/", RestContract.MAX_CACHE_TIME), // Normal request
+	
+	GET_UPDATED_TEASERS_EVENT("http:/main/getteasers/", RestContract.NO_CACHE), // Used to updated teaser collection
 	
 	GET_PRODUCT_EVENT,
 	

@@ -3,8 +3,6 @@
  */
 package pt.rocket.framework.network;
 
-import de.akquinet.android.androlog.Log;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.pm.PackageManager.NameNotFoundException;

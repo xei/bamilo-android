@@ -121,14 +121,7 @@ public class ChangeCountryFragment extends BaseFragment {
     @Override
     public void onStart() {
         super.onStart();
-        Log.i(TAG, "ON START");
-        
-        isChangeCountry = true;
-        if(selected == SHOP_NOT_SELECTED){
-            isChangeCountry = false;
-            ((BaseActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(false);
-        }
-//        setList();
+        Log.i(TAG, "ON START");  
     }
 
     /*
@@ -140,13 +133,22 @@ public class ChangeCountryFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
+        
+        setList();
+        
+        isChangeCountry = true;
+        if(selected == SHOP_NOT_SELECTED)
+            isChangeCountry = false;
+        
         ((BaseActivity) getActivity()).setProcessShow(true);
         if(selected != SHOP_NOT_SELECTED){
             ((BaseActivity) getActivity()).showContentContainer();
             ((BaseActivity) getActivity()).hideTitle();
             ((BaseActivity) getActivity()).setCheckoutHeader(R.string.nav_country);
         }
-        setList();
+        
+        if(selected == SHOP_NOT_SELECTED)
+            ((BaseActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(false);
     }
 
     /*
@@ -242,6 +244,7 @@ public class ChangeCountryFragment extends BaseFragment {
                 } else if (selected == SHOP_NOT_SELECTED) {
                     setCountry(position);
                 } else if (position != selected) {
+                    isChangeCountry = true;
                     showWarningDialog(position);
                 }
             }
@@ -276,8 +279,6 @@ public class ChangeCountryFragment extends BaseFragment {
             LastViewedTableHelper.deleteAllLastViewed();
         }
         
-        
-        
         System.gc();
         SharedPreferences sharedPrefs = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPrefs.edit();
@@ -293,7 +294,7 @@ public class ChangeCountryFragment extends BaseFragment {
         editor.putString(Darwin.KEY_SELECTED_COUNTRY_URL, JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryUrl());
         editor.putString(Darwin.KEY_SELECTED_COUNTRY_FLAG, JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryFlag());
         Log.i(TAG, "code1flag : "+calculateMapImageResolution(JumiaApplication.INSTANCE.countriesAvailable.get(position)));
-        editor.putString(Darwin.KEY_SELECTED_COUNTRY_MAP_FLAG, calculateMapImageResolution(JumiaApplication.INSTANCE.countriesAvailable.get(position)).replace("http://", "http://www."));
+        editor.putString(Darwin.KEY_SELECTED_COUNTRY_MAP_FLAG, calculateMapImageResolution(JumiaApplication.INSTANCE.countriesAvailable.get(position)));
         editor.putString(Darwin.KEY_SELECTED_COUNTRY_ISO, JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryIso().toLowerCase());
         editor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_FORCE_HTTP, JumiaApplication.INSTANCE.countriesAvailable.get(position).isCountryForceHttps());
         editor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_IS_LIVE, JumiaApplication.INSTANCE.countriesAvailable.get(position).isCountryIsLive());
@@ -315,12 +316,16 @@ public class ChangeCountryFragment extends BaseFragment {
         int dpiClassification = dm.densityDpi;
         switch (dpiClassification) {
         case DisplayMetrics.DENSITY_HIGH:
+        	Log.i(TAG, "code1desnsity  DENSITY_HIGH");
             mapImage =  mCountryObject.getCountryMapHdpi();
             break;
         case DisplayMetrics.DENSITY_XHIGH:
+        	Log.i(TAG, "code1desnsity  DENSITY_XHIGH");
             mapImage =  mCountryObject.getCountryMapXhdpi();
             break;
         default:
+        	Log.i(TAG, "code1desnsity  DENSITY_MEDIUM");
+        	mapImage =  mCountryObject.getCountryMapMdpi();
             break;
         }
         return mapImage;

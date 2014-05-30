@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -282,7 +283,11 @@ public class FragmentController {
         popLastEntry();
         // Get the new last fragment
         String lastTag = getLastEntry();
-        if ( !lastTag.equals("") ) {
+        // Case invisible fragment
+        if (TextUtils.isEmpty(lastTag) && lastTag.equals(FragmentType.UNKNOWN.toString()) && getBackStackSize() > 0) // XXX
+            popBackStack(activity);
+        // Case visible fragment
+        else if ( !TextUtils.isEmpty(lastTag)) { // !lastTag.equals("")
             Log.i(TAG, "code1 lastTag is : "+lastTag);
             // Pop stack until fragment tag
             activity.getSupportFragmentManager().popBackStackImmediate(lastTag, POP_BACK_STACK_NO_INCLUSIVE);
@@ -353,7 +358,7 @@ public class FragmentController {
      * @author sergiopereira
      */
     private void startTransition(BaseActivity activity, int container, Fragment fragment, String tag, Boolean addToBackStack, Boolean animation) {
-        Log.d(TAG, "TRANSITION");
+        Log.d(TAG, "START TRANSITION: " + tag + " " + addToBackStack);
         FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
         // Animations
         if (animation == ANIMATION_IN)
@@ -361,18 +366,27 @@ public class FragmentController {
             //fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left);
         if (animation == ANIMATION_OUT)
             fragmentTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
+        
+        if(!addToBackStack) // XXX
+            tag = FragmentType.UNKNOWN.toString();
+            
         // Replace
         fragmentTransaction.replace(container, fragment, tag);
         // BackStack
-        if (addToBackStack) {
+        //if (addToBackStack) {
             // Add the fragment to back stack
             fragmentTransaction.addToBackStack(tag);
             // Add the fragment to our back stack
             addEntryToBackStack(tag);
-        }
+        // }
         // Commit
         //fragmentTransaction.commit();
         fragmentTransaction.commitAllowingStateLoss();
+        
+        // XXX
+        // FragmentManager.enableDebugLogging(true);
+        // Log.d(TAG, "START TRANSITION: " + getBackStackSize() + " " + activity.getSupportFragmentManager().getBackStackEntryCount());
+        // printAllEntries();
     }
     
     

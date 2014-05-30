@@ -2,6 +2,7 @@ package pt.rocket.framework.database;
 
 import android.content.Context;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -113,4 +114,31 @@ public class DarwinDatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
     
+    public boolean exists(String table) {
+        try {
+             db.getReadableDatabase().execSQL("SELECT * FROM " + table);
+             return true;
+        } catch (SQLException e) {
+             return false;
+        }
+    }
+    
+    public void forceDatabaseUpdate(){
+    	//Drop tables
+    	db.getWritableDatabase().execSQL(SQL_DROP_MAIN);
+        db.getWritableDatabase().execSQL(SQL_DROP_TABLE + CategoriesTableHelper.TABLE);
+        db.getWritableDatabase().execSQL(SQL_DROP_TABLE + SectionsTablesHelper.TABLE);
+        db.getWritableDatabase().execSQL(SQL_DROP_TABLE + LastViewedTableHelper.TABLE);
+        db.getWritableDatabase().execSQL(SQL_DROP_TABLE + RelatedItemsTableHelper.TABLE_RELATED);
+        db.getWritableDatabase().execSQL(SearchRecentQueriesTableHelper.DROP);
+        db.getWritableDatabase().execSQL(CountriesConfigsTableHelper.DROP);
+        // Create
+    	db.getWritableDatabase().execSQL(SQL_CREATE_MAIN);
+        db.getWritableDatabase().execSQL(SectionsTablesHelper.CREATE);
+        db.getWritableDatabase().execSQL(CategoriesTableHelper.CREATE);
+        db.getWritableDatabase().execSQL(LastViewedTableHelper.CREATE);
+        db.getWritableDatabase().execSQL(RelatedItemsTableHelper.CREATE);
+        db.getWritableDatabase().execSQL(SearchRecentQueriesTableHelper.CREATE);
+        db.getWritableDatabase().execSQL(CountriesConfigsTableHelper.CREATE);
+    }
 }

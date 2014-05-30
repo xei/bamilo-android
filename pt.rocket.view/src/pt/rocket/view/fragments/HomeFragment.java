@@ -43,6 +43,7 @@ import pt.rocket.framework.utils.MixpanelTracker;
 import pt.rocket.helpers.GetCallToOrderHelper;
 import pt.rocket.helpers.GetPromotionsHelper;
 import pt.rocket.helpers.GetTeasersHelper;
+import pt.rocket.helpers.GetUpdatedTeasersHelper;
 import pt.rocket.helpers.account.GetHomeNewslettersSignupFormHelper;
 import pt.rocket.helpers.account.HomeNewslettersSignupHelper;
 import pt.rocket.helpers.session.GetLoginHelper;
@@ -96,6 +97,7 @@ import de.akquinet.android.androlog.Log;
  * @author manuelsilva
  */
 public class HomeFragment extends BaseFragment {
+
     private final static String TAG = HomeFragment.class.getSimpleName();
 
     private JumiaViewPager mPager;
@@ -129,6 +131,8 @@ public class HomeFragment extends BaseFragment {
     private final static int DELAY_FOR_NEWSLETTER_RETRY = 1000; // 1 seconds
 
     private static String lastEmail;
+    
+    private String mCurrentMd5Collection;
 
     /**
      * Get instance
@@ -145,11 +149,11 @@ public class HomeFragment extends BaseFragment {
     /**
 	 */
     public HomeFragment() {
-        super(EnumSet.of(EventType.GET_API_INFO, 
+        super(EnumSet.of(EventType.GET_API_INFO,
                 EventType.GET_TEASERS_EVENT,
-                EventType.GET_CALL_TO_ORDER_PHONE, 
+                EventType.GET_CALL_TO_ORDER_PHONE,
                 EventType.GET_PROMOTIONS),
-                EnumSet.noneOf(EventType.class), 
+                EnumSet.noneOf(EventType.class),
                 EnumSet.of(MyMenuItem.SEARCH_BAR),
                 NavigationAction.Home, 0, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
@@ -173,25 +177,25 @@ public class HomeFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+
         this.setRetainInstance(true);
-        
+
         HockeyStartup.register(getActivity());
-        if(JumiaApplication.mIsBound){
-            onCreateExecution();    
+        if (JumiaApplication.mIsBound) {
+            onCreateExecution();
         } else {
             JumiaApplication.INSTANCE.setResendHander(serviceConnectedHandler);
         }
         Log.i(TAG, "onCreate");
     }
 
-    Handler serviceConnectedHandler = new Handler(){
+    Handler serviceConnectedHandler = new Handler() {
         public void handleMessage(android.os.Message msg) {
-           onCreateExecution();
-           onResumeExecution();
-        }; 
-     };
-    
+            onCreateExecution();
+            onResumeExecution();
+        };
+    };
+
     /*
      * (non-Javadoc)
      * 
@@ -204,7 +208,7 @@ public class HomeFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.teasers_fragments_viewpager, null, false);
 
         Log.i(TAG, "onCreateView");
-        
+
         return view;
     }
 
@@ -212,23 +216,25 @@ public class HomeFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "onResume");
-        
-        if(JumiaApplication.mIsBound){
-            onResumeExecution();    
+
+        if (JumiaApplication.mIsBound) {
+            onResumeExecution();
         } else {
             JumiaApplication.INSTANCE.setResendHander(serviceConnectedHandler);
         }
-        
-    }
-    
-    private void onCreateExecution(){
 
-        if(JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials() && !JumiaApplication.INSTANCE.isLoggedIn()){
+    }
+
+    private void onCreateExecution() {
+
+        if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials() && !JumiaApplication.INSTANCE.isLoggedIn()) {
             triggerAutoLogin();
         }
     }
-    
-    private void onResumeExecution(){
+
+    private void onResumeExecution() {
+    	
+    	// TODO : Comment for Samsung store
         if (CheckVersion.needsToShowDialog()) {
             CheckVersion.showDialog(getActivity());
         }
@@ -236,39 +242,28 @@ public class HomeFragment extends BaseFragment {
         SharedPreferences sP = getActivity().getSharedPreferences(
                 ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         if (sP.getBoolean(ConstantsSharedPrefs.KEY_SHOW_PROMOTIONS, true)) {
-            
-            /**
-             * TRIGGERS
-             * @author sergiopereira
-             */
             triggerPromotions();
-            
         }
 
         if (requestResponse == null) {
             ((BaseActivity) getActivity()).setProcessShow(false);
-
-            /**
-             * TRIGGERS
-             * @author sergiopereira
-             */
             triggerTeasers();
             triggerCallToOrder();
             triggerHomeNewsletterSignupForm();
-            
+
         } else {
             restoreLayout();
         }
 
         AnalyticsGoogle.get().trackPage(R.string.ghomepage);
-       
-        if(LastViewedTableHelper.getLastViewedEntriesCount() > 0){
+
+        if (LastViewedTableHelper.getLastViewedEntriesCount() > 0) {
             lastViewed = LastViewedTableHelper.getLastViewedList();
         } else {
             lastViewed = null;
         }
     }
-    
+
     @Override
     public void onStart() {
         super.onStart();
@@ -282,10 +277,11 @@ public class HomeFragment extends BaseFragment {
         mPagerAdapter = null;
         mPager = null;
         pagerTabStrip = null;
-    
+
         super.onPause();
 
     }
+
     @Override
     public void onStop() {
         Log.i(TAG, "onStop");
@@ -301,7 +297,7 @@ public class HomeFragment extends BaseFragment {
         mPagerAdapter = null;
         mPager = null;
         pagerTabStrip = null;
-    
+
         // clean lastEmail
         lastEmail = null;
 
@@ -312,7 +308,7 @@ public class HomeFragment extends BaseFragment {
     private void setLayout(int currentPositionPager) {
         Log.i(TAG, "setLayout");
         if (mPager == null) {
-            if(getView() == null){
+            if (getView() == null) {
                 return;
             }
             Log.i(TAG, "setLayout -> mPager NULL");
@@ -322,7 +318,7 @@ public class HomeFragment extends BaseFragment {
                 @Override
                 public void onPageSelected(int arg0) {
                     currentPosition = arg0;
-                   
+
                 }
 
                 @Override
@@ -333,7 +329,6 @@ public class HomeFragment extends BaseFragment {
                 @Override
                 public void onPageScrollStateChanged(int arg0) {
                     int pageCount = pagesTitles.size();
-                   
 
                     if (arg0 == JumiaViewPager.SCROLL_STATE_SETTLING) {
                         if (mPager != null)
@@ -346,7 +341,7 @@ public class HomeFragment extends BaseFragment {
 
                 }
             });
-        } 
+        }
 
         // if(mPager.getAdapter() == null){
         pagerTabStrip = (PagerTabStrip) getView().findViewById(R.id.home_titles);
@@ -356,9 +351,11 @@ public class HomeFragment extends BaseFragment {
         mPager.setCurrentItem(currentPositionPager);
         configureLayout();
         // }
-        ((BaseActivity) getActivity()).setProcessShow(true);
-        ((BaseActivity) getActivity()).showContentContainer();
         
+        
+        // ((BaseActivity) getActivity()).setProcessShow(true);
+        // ((BaseActivity) getActivity()).showContentContainer();
+
     }
 
     private class ChangePageTask extends AsyncTask<Integer, String, Boolean> {
@@ -366,31 +363,31 @@ public class HomeFragment extends BaseFragment {
         @Override
         protected Boolean doInBackground(Integer... params) {
 
-            if (null != mPager ) {
+            if (null != mPager) {
                 mPager.setPagingEnabled(true);
                 mPager.toggleJumiaScroller(true);
-              
-                
+
                 getActivity().runOnUiThread(new Runnable() {
                     public void run() {
                         int pageCount = pagesTitles.size();
-                        if (null != mPager ) {
-                        // change event of first(last) fragment to jump for original fragment
-                        if (mPager.getCurrentItem() == 0) {
-                            mPager.toggleJumiaScroller(false);                    
-                            mPager.setCurrentItem(pageCount - 2);
+                        if (null != mPager) {
+                            // change event of first(last) fragment to jump for original fragment
+                            if (mPager.getCurrentItem() == 0) {
+                                mPager.toggleJumiaScroller(false);
+                                mPager.setCurrentItem(pageCount - 2);
 
-                            // change event of last(first) fragment to jump for original fragment
-                        } else if (mPager.getCurrentItem() == pageCount - 1) {
-                            mPager.toggleJumiaScroller(false);
-                            mPager.setCurrentItem(1);
+                                // change event of last(first) fragment to jump for original
+                                // fragment
+                            } else if (mPager.getCurrentItem() == pageCount - 1) {
+                                mPager.toggleJumiaScroller(false);
+                                mPager.setCurrentItem(1);
 
-                        }
+                            }
                         }
                     }
-                });                
+                });
             }
-                
+
             return true;
 
         }
@@ -399,11 +396,11 @@ public class HomeFragment extends BaseFragment {
          * The system calls this to perform work in the UI thread and delivers the result from
          * doInBackground()
          */
-        protected void onPostExecute(Boolean result) {            
+        protected void onPostExecute(Boolean result) {
         }
 
-    }    
-    
+    }
+
     private void restoreLayout() {
         Log.i(TAG, "restoreLayout");
         if (requestResponse != null) {
@@ -421,13 +418,7 @@ public class HomeFragment extends BaseFragment {
         } else {
             Log.i(TAG, "restoreLayout -> NULL");
             ((BaseActivity) getActivity()).setProcessShow(false);
-            
-            /**
-             * TRIGGERS
-             * @author sergiopereira
-             */
             triggerTeasers();
-            //triggerContentEvent(new RequestEvent(EventType.GET_TEASERS_EVENT));
         }
     }
 
@@ -441,10 +432,10 @@ public class HomeFragment extends BaseFragment {
     private void setLayoutSpec() throws NoSuchFieldException, IllegalArgumentException,
             IllegalAccessException {
         Log.i(TAG, "setLayoutSpec");
-        if(pagerTabStrip == null){
+        if (pagerTabStrip == null) {
             return;
         }
-        
+
         // Get text
         final android.widget.TextView currTextView = (android.widget.TextView) pagerTabStrip
                 .getChildAt(TAB_CURR_ID);
@@ -486,10 +477,10 @@ public class HomeFragment extends BaseFragment {
         ImageView mapBg = (ImageView) getView().findViewById(R.id.home_fallback_country_map);
         SharedPreferences sharedPrefs = getActivity().getSharedPreferences(
                 ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        int position = sharedPrefs.getInt(Darwin.KEY_SELECTED_COUNTRY_ID, 0);
+        
         AQuery aq = new AQuery(getBaseActivity());
         aq.id(mapBg).image(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_MAP_FLAG, ""));
-//        mapBg.setImageDrawable(getActivity().getResources().obtainTypedArray(R.array.country_fallback_map).getDrawable(position));
+        // mapBg.setImageDrawable(getActivity().getResources().obtainTypedArray(R.array.country_fallback_map).getDrawable(position));
 
         String country = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, "Jumia");
         TextView fallbackBest = (TextView) getView().findViewById(R.id.fallback_best);
@@ -509,14 +500,14 @@ public class HomeFragment extends BaseFragment {
             getView().findViewById(R.id.fallback_country).setVisibility(View.GONE);
 
         }
-        
+
         fallbackBest.setSelected(true);
         ((BaseActivity) getActivity()).setProcessShow(true);
         ((BaseActivity) getActivity()).showContentContainer();
     }
 
     private void proccessResult(Collection<Parcelable> result) {
-        Log.i(TAG,"ON proccessResult");
+        Log.i(TAG, "ON proccessResult");
         requestResponse = new ArrayList<Collection<? extends TeaserSpecification<?>>>();
         pagesTitles = new ArrayList<String>();
 
@@ -552,8 +543,9 @@ public class HomeFragment extends BaseFragment {
         }
         configureLayout();
     }
-    private void configureLayout(){
-      Log.i(TAG,"configureLayout");
+
+    private void configureLayout() {
+        Log.i(TAG, "configureLayout");
         try {
             setLayoutSpec();
         } catch (IllegalArgumentException e) {
@@ -563,7 +555,7 @@ public class HomeFragment extends BaseFragment {
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
-        
+
         ((BaseActivity) getActivity()).showContentContainer();
     }
 
@@ -578,23 +570,44 @@ public class HomeFragment extends BaseFragment {
     }
 
     protected boolean onSuccessEvent(Bundle bundle) {
-        Log.i(TAG,"ON onSuccessEvent");
-        
+        Log.i(TAG, "ON onSuccessEvent");
+
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
-        
-        if(getBaseActivity() == null){
+
+        if (getBaseActivity() == null) {
             return true;
         }
-        
+
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         switch (eventType) {
+        case GET_UPDATED_TEASERS_EVENT:
+            Log.d(TAG, "RECEIVED GET_UPDATED_TEASERS_EVENT");
+            // Get current md5 response
+            mCurrentMd5Collection = bundle.getString(GetUpdatedTeasersHelper.MD5_KEY);
+            // Get updated teaser collection
+            Collection<Parcelable> updatedCollection = (Collection<Parcelable>) bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
+            if (updatedCollection != null) {
+                requestResponse = null;
+                mPagerAdapter = null;
+                if(mPager != null)
+                    mPager.setAdapter(null);
+                proccessResult(updatedCollection);
+                configureLayout();
+            }
+            getBaseActivity().setProcessShow(true);
+            getBaseActivity().showContentContainer();
+            break;
         case GET_TEASERS_EVENT:
+            Log.d(TAG, "RECEIVED GET_TEASERS_EVENT");
+            // Get current md5 response
+            mCurrentMd5Collection = bundle.getString(GetTeasersHelper.MD5_KEY);
+            // Get collection
             Collection<Parcelable> collection = (Collection<Parcelable>) bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
-            if(collection != null) {
+            if (collection != null) {
                 proccessResult(collection);
                 configureLayout();
             } else
@@ -607,7 +620,6 @@ public class HomeFragment extends BaseFragment {
             editor.putString(KEY_CALL_TO_ORDER,
                     (String) bundle.getString(Constants.BUNDLE_RESPONSE_KEY));
             editor.commit();
-
             break;
         case GET_PROMOTIONS:
             if (((Promotion) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getIsStillValid()) {
@@ -649,6 +661,12 @@ public class HomeFragment extends BaseFragment {
 
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         switch (eventType) {
+        case GET_UPDATED_TEASERS_EVENT:
+            Log.d(TAG, "ON ERROR: DISCARDED RECEIVED GET_UPDATED_TEASERS_EVENT");
+            // Discarded the error response
+            getBaseActivity().setProcessShow(true);
+            getBaseActivity().showContentContainer();
+            break;
         case GET_TEASERS_EVENT:
             setLayoutFallback();
             break;
@@ -703,27 +721,21 @@ public class HomeFragment extends BaseFragment {
     }
 
     public void triggerContentEventFromHomeObjectFragment() {
-        
-        /**
-         * TRIGGERS
-         * @author sergiopereira
-         */
         triggerTeasers();
-        
     }
 
     // Instances of this class are fragments representing a single
     // object in our collection.
     public static class HomeObjectFragment extends Fragment {
-       
+
         private LayoutInflater mInflater;
 
         private int position;
 
         private ScrollViewWithHorizontal mScrollViewWithHorizontal;
-        
+
         private RelativeLayout mPopArrows;
-        
+
         public HomeObjectFragment() {
         }
 
@@ -781,10 +793,10 @@ public class HomeFragment extends BaseFragment {
                         break;
                     case CAMPAIGN:
                         String targetPosition = "0";
-                        if(v.getTag(R.id.position) != null){
+                        if (v.getTag(R.id.position) != null) {
                             targetPosition = v.getTag(R.id.position).toString();
                         }
-                        Log.i(TAG, "code1campaign position : "+targetPosition);
+                        Log.i(TAG, "code1campaign position : " + targetPosition);
                         if (targetUrl != null && targetPosition != null && JumiaApplication.hasSavedTeaserCampaigns()) {
                             bundle.putString(ConstantsIntentExtra.CONTENT_URL, targetUrl);
                             bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, targetTitle);
@@ -811,7 +823,7 @@ public class HomeFragment extends BaseFragment {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            
+
         }
 
         @Override
@@ -894,16 +906,16 @@ public class HomeFragment extends BaseFragment {
             try {
                 mainView.removeAllViews();
             } catch (IllegalArgumentException e) {
-               e.printStackTrace();
+                e.printStackTrace();
             }
-            
+
             for (Iterator iterator = result.iterator(); iterator.hasNext();) {
                 TeaserSpecification<?> teaserSpecification = (TeaserSpecification<?>) iterator.next();
-                if(mainView != null && mTeasersFactory != null && teaserSpecification != null){
+                if (mainView != null && mTeasersFactory != null && teaserSpecification != null) {
                     View mView = mTeasersFactory.getSpecificTeaser(getActivity(), mainView, teaserSpecification, mInflater, teaserClickListener);
-                            if(mView != null){
-                                mainView.addView(mView);            
-                            }
+                    if (mView != null) {
+                        mainView.addView(mView);
+                    }
                 }
             }
 
@@ -1100,36 +1112,35 @@ public class HomeFragment extends BaseFragment {
             }
         }
 
-        private View generateLastViewedLayout(ViewGroup parent){
+        private View generateLastViewedLayout(ViewGroup parent) {
             View lastViewedView = mInflater.inflate(R.layout.teaser_last_viewed, parent, false);
             mPopArrows = (RelativeLayout) lastViewedView.findViewById(R.id.pop_arrows_container);
-            
-            
+
             ViewPager mViewPager = (ViewPager) lastViewedView.findViewById(R.id.last_viewed_viewpager);
             int partialSize = 3;
-            if(((BaseActivity) getActivity()).isTabletInLandscape(getActivity())){
+            if (((BaseActivity) getActivity()).isTabletInLandscape(getActivity())) {
                 partialSize = 5;
             }
-            
-            if(lastViewed.size() > partialSize){
-                mScrollViewWithHorizontal.sendListenerAndView(receiveIsVisible, lastViewedView);    
+
+            if (lastViewed.size() > partialSize) {
+                mScrollViewWithHorizontal.sendListenerAndView(receiveIsVisible, lastViewedView);
             }
-            
+
             LastViewedAdapter mLastViewedAdapter = new LastViewedAdapter(getActivity(), lastViewed, mInflater, partialSize);
             mViewPager.setAdapter(mLastViewedAdapter);
             return lastViewedView;
         }
-        
-        private Handler receiveIsVisible = new Handler(){
-            
+
+        private Handler receiveIsVisible = new Handler() {
+
             public void handleMessage(android.os.Message msg) {
                 mPopArrows.setVisibility(View.VISIBLE);
                 hideArrows.sendEmptyMessageDelayed(0, 1000);
             }
-        }; 
-        
-        private Handler hideArrows = new Handler(){
-            
+        };
+
+        private Handler hideArrows = new Handler() {
+
             public void handleMessage(android.os.Message msg) {
                 mPopArrows.setVisibility(View.GONE);
             }
@@ -1308,18 +1319,26 @@ public class HomeFragment extends BaseFragment {
 
     /**
      * TRIGGERS
+     * 
      * @author sergiopereira
      */
-    private void triggerPromotions(){
+    private void triggerPromotions() {
         Bundle bundle = new Bundle();
         triggerContentEventWithNoLoading(new GetPromotionsHelper(), bundle, responseCallback);
     }
-    
-    private void triggerTeasers(){
+
+    private void triggerTeasers() {
+        Log.d(TAG, "ON TRIGGER: GET TEASERS");
+        // Get teaser collection
         triggerContentEvent(new GetTeasersHelper(), null, responseCallback);
+        // Validate the current md5 to check updated teaser collection
+        Log.d(TAG, "ON TRIGGER: GET UPDATED TEASERS " + mCurrentMd5Collection);
+        Bundle bundle = new Bundle();
+        bundle.putString(GetUpdatedTeasersHelper.OLD_MD5_KEY, mCurrentMd5Collection);
+        triggerContentEvent(new GetUpdatedTeasersHelper(), bundle, responseCallback);
     }
-    
-    private void triggerCallToOrder(){
+
+    private void triggerCallToOrder() {
         Bundle bundle = new Bundle();
         triggerContentEventWithNoLoading(new GetCallToOrderHelper(), bundle, responseCallback);
     }
@@ -1330,26 +1349,28 @@ public class HomeFragment extends BaseFragment {
 
     /**
      * TRIGGERS
+     * 
      * @author Manuel Silva
      */
-    private void triggerAutoLogin(){
+    private void triggerAutoLogin() {
         Bundle bundle = new Bundle();
         bundle.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
         bundle.putBoolean(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, true);
         triggerContentEventWithNoLoading(new GetLoginHelper(), bundle, responseCallback);
     }
-    
+
     /**
      * CALLBACK
+     * 
      * @author sergiopereira
      */
     IResponseCallback responseCallback = new IResponseCallback() {
-        
+
         @Override
         public void onRequestError(Bundle bundle) {
             onErrorEvent(bundle);
         }
-        
+
         @Override
         public void onRequestComplete(Bundle bundle) {
             onSuccessEvent(bundle);

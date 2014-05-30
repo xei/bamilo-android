@@ -85,6 +85,11 @@ public class GetCountriesConfigsHelper extends BaseHelper {
             
             currency_iso = jsonObject.getString(RestConstants.JSON_COUNTRY_CURRENCY_ISO);
             currency_symbol = jsonObject.getString(RestConstants.JSON_COUNTRY_CURRENCY_SYMBOL);
+			
+			// Fallback for currency
+            if(currency_symbol.equalsIgnoreCase("")){
+                currency_symbol = currency_iso;
+            }
             currency_position = jsonObject.optString(RestConstants.JSON_COUNTRY_CURRENCY_POSITION);
             no_decimals = jsonObject.getInt(RestConstants.JSON_COUNTRY_NO_DECIMALS);
             thousands_sep = jsonObject.getString(RestConstants.JSON_COUNTRY_THOUSANDS_SEP);

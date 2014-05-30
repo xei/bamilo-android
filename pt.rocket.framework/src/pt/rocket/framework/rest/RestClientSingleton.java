@@ -1,7 +1,6 @@
 package pt.rocket.framework.rest;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.Proxy.Type;
 import java.net.SocketTimeoutException;
 import java.net.URI;
@@ -34,6 +33,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
+import ch.boye.httpclientandroidlib.Consts;
 import ch.boye.httpclientandroidlib.Header;
 import ch.boye.httpclientandroidlib.HttpEntity;
 import ch.boye.httpclientandroidlib.HttpException;
@@ -49,6 +49,7 @@ import ch.boye.httpclientandroidlib.client.CookieStore;
 import ch.boye.httpclientandroidlib.client.HttpClient;
 import ch.boye.httpclientandroidlib.client.cache.CacheResponseStatus;
 import ch.boye.httpclientandroidlib.client.cache.HeaderConstants;
+import ch.boye.httpclientandroidlib.client.cache.HttpCacheEntry;
 import ch.boye.httpclientandroidlib.client.cache.HttpCacheStorage;
 import ch.boye.httpclientandroidlib.client.entity.UrlEncodedFormEntity;
 import ch.boye.httpclientandroidlib.client.methods.HttpGet;
@@ -73,7 +74,6 @@ import ch.boye.httpclientandroidlib.params.HttpConnectionParams;
 import ch.boye.httpclientandroidlib.params.HttpParams;
 import ch.boye.httpclientandroidlib.protocol.BasicHttpContext;
 import ch.boye.httpclientandroidlib.protocol.ExecutionContext;
-import ch.boye.httpclientandroidlib.protocol.HTTP;
 import ch.boye.httpclientandroidlib.protocol.HttpContext;
 import ch.boye.httpclientandroidlib.util.EntityUtils;
 
@@ -193,19 +193,15 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 	 *            the URL to send the HTTP request
 	 * @return the response as String e.g. a json string
 	 */
-	public String executeGetRestUrlString(Uri uri, Handler mHandler,
-			Bundle metaData) {
+	public String executeGetRestUrlString(Uri uri, Handler mHandler, Bundle metaData) {
 		// databaseHelper.getReadableDatabase().quer
-		android.util.Log.d("TRACK",
-				"executeGetRestUrlString : " + uri.toString() + " complete: "
-						+ RemoteService.completeUri(uri).toString());
+		android.util.Log.d("TRACK", "executeGetRestUrlString : " + uri.toString() + " complete: " + RemoteService.completeUri(uri).toString());
 
 		if (ConfigurationConstants.LOG_DEBUG_ENABLED) {
 			Log.d(TAG, "get: " + uri.toString());
 		}
 		
-		String url = RemoteService.completeUri(uri)
-				.toString();
+		String url = RemoteService.completeUri(uri).toString();
 		
 		if (ConfigurationConstants.LOG_DEBUG_ENABLED) {
 			Log.d(TAG, "get: " + url.toString());
@@ -261,11 +257,12 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 				}
 			}
 		}
-		try {
-			httpRequest.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
+		
+//		try {
+			httpRequest.setEntity(new UrlEncodedFormEntity(params, Consts.UTF_8));
+//		} catch (UnsupportedEncodingException e) {
+//			e.printStackTrace();
+//		}
 
 		return executeHttpRequest(httpRequest, mHandler, metaData);
 	}
@@ -342,19 +339,17 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 	 *            the logger which stores and updates the state in the database
 	 * @return the response as String e.g. json string
 	 */
-	private String executeHttpRequest(HttpUriRequest httpRequest,
-			Handler mHandler, Bundle metaData) {
+	private String executeHttpRequest(HttpUriRequest httpRequest, Handler mHandler, Bundle metaData) {
 		count++;
 
 		android.util.Log.d("TRACK", "executeHttpRequest count:" + count);
 		String result = "";
 		String md5 = metaData.getString(Constants.BUNDLE_MD5_KEY);
 		
-		EventType eventType = (EventType) metaData
-				.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+		EventType eventType = (EventType) metaData.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
 		
-		Boolean priority = metaData.getBoolean(Constants.BUNDLE_PRIORITY_KEY,
-				false);
+		Boolean priority = metaData.getBoolean(Constants.BUNDLE_PRIORITY_KEY, false);
+		
 		if(!checkConnection()){
 			mHandler.sendMessage(buildResponseMessage(eventType,
 					Constants.FAILURE, ErrorCode.NO_NETWORK, result, md5,
@@ -467,7 +462,7 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 			}
 			
 			// FIXME - OutOfMemoryError
-			result = EntityUtils.toString(entity);
+			result = EntityUtils.toString(entity, Consts.UTF_8);
 			Log.i(TAG, "code1response : "+result.toString());
 //			Log.i(TAG, "code1 request response is: " + result.toString());
 			// result =
@@ -625,15 +620,9 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 		}
 
 		Uri uri = RemoteService.completeUri(Uri.parse(url));
-		SchemeRegistry sr = darwinHttpClient.getConnectionManager()
-				.getSchemeRegistry();
+		SchemeRegistry sr = darwinHttpClient.getConnectionManager().getSchemeRegistry();
 		Scheme s = sr.getScheme(uri.getScheme());
-		uri = uri
-				.buildUpon()
-				.authority(
-						uri.getAuthority() + ":"
-								+ String.valueOf(s.getDefaultPort())).build();
-
+		uri = uri.buildUpon().authority(uri.getAuthority() + ":" + String.valueOf(s.getDefaultPort())).build();
 		String newUrl = Uri.decode(uri.toString());
 		if (ConfigurationConstants.LOG_DEBUG_ENABLED) {
 			Log.d(TAG, "Removing entry from cache: " + newUrl);
@@ -645,6 +634,31 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 		}
 	}
 
+	
+	/**
+	 * Method used to move an entry for other key
+	 * @param url1
+	 * @param url2
+	 * @author sergiopereira
+	 */
+	public void moveEntryInCache(String url1, String url2) {
+		try {
+			// Create complete uri
+			String uri1 = RemoteService.completeUri(Uri.parse(url1)).toString();
+			String uri2 = RemoteService.completeUri(Uri.parse(url2)).toString();
+			// Get entry from url1
+			HttpCacheEntry entry = cache.getEntry(uri1);
+			// Copy entry for url2
+			cache.putEntry(uri2, entry);
+			// Remove entry for url1
+			cache.removeEntry(uri1);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	@Override
 	public HttpRoute determineRoute(HttpHost target, HttpRequest request,
 			HttpContext httpContext) throws HttpException {

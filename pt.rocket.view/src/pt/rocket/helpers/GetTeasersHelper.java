@@ -27,6 +27,8 @@ import de.akquinet.android.androlog.Log;
 public class GetTeasersHelper extends BaseHelper {
     private static String TAG = GetTeasersHelper.class.getSimpleName();
     
+    public static final String MD5_KEY = "md5";
+    
     @Override
     public Bundle generateRequestBundle(Bundle args) {
         Bundle bundle = new Bundle();
@@ -39,6 +41,11 @@ public class GetTeasersHelper extends BaseHelper {
 
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
+        
+        // Get MD5
+        String md5 = jsonObject.optString(RestConstants.JSON_MD5_TAG);
+        bundle.putString(MD5_KEY, md5);
+        
         Log.d(TAG, "parseResponseBundle GetTeasersHelper");
         try {
             JSONArray dataArray = jsonObject.getJSONArray(RestConstants.JSON_DATA_TAG);

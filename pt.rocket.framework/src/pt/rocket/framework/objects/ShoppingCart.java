@@ -155,7 +155,7 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 	
 	private void fillCartHashMap(JSONObject cartObject) {
 		JSONObject itemObject;
-		Log.d(TAG, "fillCartHashMap: Filling the shopping cart.");
+		Log.d(TAG, "ON SAVE CART ITEM");
 
 		@SuppressWarnings("rawtypes")
 		Iterator iter = cartObject.keys();
@@ -168,11 +168,8 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 				ShoppingCartItem item = new ShoppingCartItem(key, null);
 				item.initialize(itemObject);
 
-				if (itemSimpleDataRegistry.containsKey(item
-								.getConfigSKU())) {
-					item.setSimpleData(itemSimpleDataRegistry.get(item
-							.getConfigSKU()));
-				}
+				if (itemSimpleDataRegistry.containsKey(item.getConfigSKU()))
+					item.setSimpleData(itemSimpleDataRegistry.get(item.getConfigSKU()));
 
 				cartItems.put(key, item);
 

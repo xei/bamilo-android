@@ -706,6 +706,7 @@ public class Catalog extends BaseFragment implements OnClickListener {
         // Show buttons container
         showButtonsContainer();
         // Set listener
+        mFilterButton.setVisibility(View.VISIBLE);
         mFilterButton.setOnClickListener(null);
         mFilterButton.setOnClickListener(this);
         pagerTabStrip.setPadding(

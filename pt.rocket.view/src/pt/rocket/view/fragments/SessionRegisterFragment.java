@@ -71,8 +71,6 @@ public class SessionRegisterFragment extends BaseFragment {
 
     private static SessionRegisterFragment registerFragment;
 
-    private boolean termsAreRequired = false;
-
     private Button registerButton;
 
     private View loginRedirect;

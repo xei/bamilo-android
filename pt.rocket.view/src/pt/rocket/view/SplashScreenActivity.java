@@ -653,7 +653,13 @@ public class SplashScreenActivity extends FragmentActivity {
                 dialog.show(getSupportFragmentManager(), null);
             }
         } else if(eventType == EventType.GET_GLOBAL_CONFIGURATIONS){
-            setLayoutMaintenance(eventType);
+            if(JumiaApplication.INSTANCE.countriesAvailable != null && JumiaApplication.INSTANCE.countriesAvailable.size() > 0){
+                Log.i(TAG, "code1configs received response correctly!!!");
+                // Auto country selection
+                LocationHelper.getInstance().autoCountrySelection(getApplicationContext(), initializationHandler);
+            } else {
+                setLayoutMaintenance(eventType);    
+            }
         }
     }
     

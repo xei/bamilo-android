@@ -294,6 +294,8 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
             return;
                 
         mCompleteProductUrl = bundle.getString(ConstantsIntentExtra.CONTENT_URL);
+        // Log.d(TAG, "PDV COMPLETE PRODUCT URL: " + mCompleteProductUrl);
+        
         if (mCompleteProductUrl == null) {
             getActivity().onBackPressed();
             return;

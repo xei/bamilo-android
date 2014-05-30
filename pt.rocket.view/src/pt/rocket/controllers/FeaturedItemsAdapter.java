@@ -161,6 +161,8 @@ public class FeaturedItemsAdapter extends PagerAdapter {
             } else if (featuredItem instanceof FeaturedBrand) {
                 navigationSourceId = R.string.gsearch;
                 search = FragmentType.PRODUCT_LIST;
+                // add title for Brands
+                bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, featuredItem.getName());
             }
 
             bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, navigationSourceId);

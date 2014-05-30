@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import pt.rocket.framework.rest.RestConstants;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -72,6 +73,12 @@ public class FeaturedItem implements IJSONSerializable, Parcelable {
 		url = jsonObject.optString(RestConstants.JSON_URL_TAG);
 
 		name = jsonObject.optString(RestConstants.JSON_NAME_TAG);
+
+		// concat brand and name instead of using only name
+		String brand = jsonObject.optString(RestConstants.JSON_BRAND_TAG);
+		if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(brand)) {
+			name = brand + " " + name;
+		}
 
 		if (name.trim().equals("") || url.trim().equals("")) {
 			Log.d("Featured Items", "Item name = " + name + "\r\nItem url = " + url);

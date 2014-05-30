@@ -65,6 +65,7 @@ public class JumiaApplication extends Application implements ExceptionCallback {
 
     private static final String TAG = JumiaApplication.class.getSimpleName();
     
+    // TODO : Updated this value for each live release
     public boolean generateStagingServers = true;
     
     public static String SHOP_ID = null;
@@ -241,9 +242,13 @@ public class JumiaApplication extends Application implements ExceptionCallback {
         SHOP_ID = ShopPreferences.getShopId(getApplicationContext());
         SHOP_NAME = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, null);
         Log.i(TAG, "code1configs : SHOP_ID : "+SHOP_ID+" SHOP_NAME : "+SHOP_NAME);
+        
+        // TODO : Comment for Samsung store
         CheckVersion.clearDialogSeenInLaunch(getApplicationContext());
+        
         handleEvent(ErrorCode.NO_ERROR, EventType.INITIALIZE, initializationHandler);
 
+        // TODO : Comment for Samsung store
         CheckVersion.init(getApplicationContext());
     }
 

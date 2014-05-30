@@ -278,7 +278,8 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="@dimen/margin_huge"
-                        android:numStars="5" />
+                        android:numStars="5"
+                        android:isIndicator="true" />
 
                     <org.holoeverywhere.widget.TextView
                         android:id="@+id/product_rating_count"

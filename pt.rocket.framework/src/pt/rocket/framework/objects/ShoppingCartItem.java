@@ -3,6 +3,8 @@ package pt.rocket.framework.objects;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import de.akquinet.android.androlog.Log;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -21,7 +23,9 @@ import java.util.Map;
  */
 public class ShoppingCartItem implements IJSONSerializable, Parcelable {
    
-    private String imageUrl;
+    private static final String TAG = ShoppingCartItem.class.getSimpleName();
+    
+	private String imageUrl;
     private String productUrl;
     private String configSKU;
     private String configSimpleSKU;
@@ -63,6 +67,8 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
      */
     @Override
     public boolean initialize(JSONObject jsonObject) {
+    	Log.d(TAG, "ON INITIALIZE");
+    	
         priceVal = 0;
         specialPriceVal = 0;
         
@@ -75,7 +81,7 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
             configId = jsonObject.getString(RestConstants.JSON_CONFIG_ID);
             name = jsonObject.getString(RestConstants.JSON_ITEM_NAME_TAG);            
             stock = Long.parseLong(jsonObject.getString(RestConstants.JSON_STOCK_TAG));
-
+            variation =  jsonObject.optString(RestConstants.JSON_VARIATION);
             
             if (!jsonObject.isNull(RestConstants.JSON_ITEM_PRICE_TAG)) {
                 priceVal = jsonObject.getDouble(RestConstants.JSON_ITEM_PRICE_TAG);                
@@ -95,7 +101,7 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
             savingPercentage = 100 - specialPriceVal / priceVal * 100;
             
             cartRuleDiscount = jsonObject.getDouble(RestConstants.JSON_CART_RULE_DISCOUNT );
-            variation =  jsonObject.getString(RestConstants.JSON_VARIATION);
+
         } catch (JSONException e) {
             e.printStackTrace();
             return false;

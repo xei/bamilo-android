@@ -5,7 +5,6 @@ package pt.rocket.view.fragments;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -13,15 +12,12 @@ import java.util.Set;
 import org.holoeverywhere.widget.EditText;
 import org.holoeverywhere.widget.TextView;
 
-import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.Darwin;
-import pt.rocket.framework.ErrorCode;
-import pt.rocket.framework.objects.MinOrderAmount;
 import pt.rocket.framework.objects.ShoppingCart;
 import pt.rocket.framework.objects.ShoppingCartItem;
 import pt.rocket.framework.utils.AnalyticsGoogle;
@@ -59,8 +55,6 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -76,7 +70,7 @@ import de.akquinet.android.androlog.Log;
  * @author sergiopereira
  * 
  */
-public class ShoppingCartFragment extends BaseFragment implements OnItemClickListener {
+public class ShoppingCartFragment extends BaseFragment {
 
     private static final String TAG = LogTagHelper.create(ShoppingCartFragment.class);
 
@@ -90,7 +84,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
 
     private View container;
 
-    private MinOrderAmount minAmount;
+    //private MinOrderAmount minAmount;
 
     private List<ShoppingCartItem> items;
 
@@ -98,7 +92,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
 
     private double unreduced_cart_price;
 
-    private double reduced_cart_price;
+    //private double reduced_cart_price;
 
     /**
      * Boolean to the define the activities type: false - ShoppingBasket | true . Checkout
@@ -128,11 +122,16 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
 
     // Voucher
     private Button couponButton;
-    private View voucherDivider;
+    
+    //private View voucherDivider;
+    
     private TextView voucherError;
+    
     EditText voucherValue;
+    
     private String mVoucher = null;
-    private boolean noPaymentNeeded = false;
+    
+    //private boolean noPaymentNeeded = false;
 
     private boolean removeVoucher = false;
 
@@ -328,7 +327,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
 
         container = null;
 
-        minAmount = null;
+        //minAmount = null;
 
         itemsValues = null;
 
@@ -390,7 +389,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
             return true;
         }
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        //ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
 
         Log.d(TAG, "onSuccessEvent: eventType = " + eventType);
         switch (eventType) {
@@ -399,12 +398,12 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
             voucherError.setVisibility(View.GONE);
 //            voucherDivider.setBackgroundColor(R.color.grey_dividerlight);
             getBaseActivity().showContentContainer();
-            noPaymentNeeded = false;
+            //noPaymentNeeded = false;
             removeVoucher = true;
             triggerGetShoppingCart();
             return true;
         case REMOVE_VOUCHER:
-            noPaymentNeeded = false;
+            //noPaymentNeeded = false;
             couponButton.setText(getString(R.string.voucher_use));
             voucherError.setVisibility(View.GONE);
 //            voucherDivider.setBackgroundColor(R.color.grey_dividerlight);
@@ -547,7 +546,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
             lView.removeAllViewsInLayout();
             itemsValues = new ArrayList<CartItemValues>();
             unreduced_cart_price = 0;
-            reduced_cart_price = 0;
+            //reduced_cart_price = 0;
             boolean cartHasReducedItem = false;
             for (int i = 0; i < items.size(); i++) {
                 ShoppingCartItem item = items.get(i);
@@ -566,20 +565,23 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
                 values.max_delivery_time = 99;
                 values.simpleData = item.getSimpleData();
                 values.variation = item.getVariation();
+                
+                Log.d(TAG, "HAS VARIATION: " + values.variation + " " + item.getVariation());
+                
                 itemsValues.add(values);
                 lView.addView(getView(i, lView, LayoutInflater.from(getBaseActivity()), values));
                 if (!item.getPrice().equals(item.getSpecialPrice())) {
                     cartHasReducedItem = true;
                 }
 
-                Double actItemPrice;
-                if (item.getPrice().equals(item.getSpecialPrice())) {
-                    actItemPrice = item.getPriceVal();
-                } else {
-                    actItemPrice = item.getSpecialPriceVal();
-                }
-
-                reduced_cart_price += actItemPrice * item.getQuantity();
+                //Double actItemPrice;
+                //if (item.getPrice().equals(item.getSpecialPrice())) {
+                //    actItemPrice = item.getPriceVal();
+                //} else {
+                //    actItemPrice = item.getSpecialPriceVal();
+                //}
+                //reduced_cart_price += actItemPrice * item.getQuantity();
+                
                 unreduced_cart_price += item.getPriceVal() * item.getQuantity();
             }
 
@@ -666,7 +668,6 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
 //        public TextView stockInfo;
         public Button deleteBtn;
         public CartItemValues itemValues;
-        public int position;
 
         /*
          * (non-Javadoc)
@@ -692,10 +693,9 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         }
     }
 
-    public View getView(final int position, ViewGroup parent, LayoutInflater mInflater,
-            CartItemValues item) {
-        View view = mInflater.inflate(R.layout.shopping_basket_product_element_container, parent,
-                false);
+    public View getView(final int position, ViewGroup parent, LayoutInflater mInflater, CartItemValues item) {
+        
+        View view = mInflater.inflate(R.layout.shopping_basket_product_element_container, parent, false);
 
         final Item prodItem = new Item();
         prodItem.itemValues = item;
@@ -711,8 +711,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         prodItem.discountPercentage = (TextView) view.findViewById(R.id.discount_percentage);
         prodItem.priceDisc = (TextView) view.findViewById(R.id.item_discount);
         prodItem.promoImg = (ImageView) view.findViewById(R.id.item_promotion);
-        prodItem.variancesContainer = (TextView) view
-                .findViewById(R.id.variances_container);
+        prodItem.variancesContainer = (TextView) view.findViewById(R.id.variances_container);
 //        prodItem.stockInfo = (TextView) view.findViewById(R.id.item_stock);
         prodItem.deleteBtn = (Button) view.findViewById(R.id.delete_button);
         view.setTag(prodItem);
@@ -738,12 +737,10 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
 
             prodItem.priceView.setText(prodItem.itemValues.price);
             prodItem.priceView.setVisibility(View.VISIBLE);
-            prodItem.priceView.setPaintFlags(prodItem.priceView.getPaintFlags()
-                    | Paint.STRIKE_THRU_TEXT_FLAG);
+            prodItem.priceView.setPaintFlags(prodItem.priceView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             prodItem.priceView.setTextColor(getResources().getColor(R.color.grey_middlelight));
 
-            prodItem.discountPercentage.setText("-" + prodItem.itemValues.discount_value.intValue()
-                    + "%");
+            prodItem.discountPercentage.setText("-" + prodItem.itemValues.discount_value.intValue() + "%");
             prodItem.discountPercentage.setVisibility(View.VISIBLE);
             prodItem.promoImg.setVisibility(View.VISIBLE);
         } else {
@@ -755,9 +752,10 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         prodItem.variancesContainer.setVisibility(View.GONE);
         if (prodItem.itemValues.variation != null) {
 
-            Map<String, String> simpleData = prodItem.itemValues.simpleData;
+            //Map<String, String> simpleData = prodItem.itemValues.simpleData;
 
             if (prodItem.itemValues.variation != null && prodItem.itemValues.variation.length() > 0
+                    && !prodItem.itemValues.variation.equalsIgnoreCase("1")
                     && !prodItem.itemValues.variation.equalsIgnoreCase(",")
                     && !prodItem.itemValues.variation.equalsIgnoreCase("...")
                     && !prodItem.itemValues.variation.equalsIgnoreCase(".")) {
@@ -793,11 +791,19 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
             }
         });
         
+        // Save the position to process the click on item
+        view.setTag(position);
         view.setOnClickListener(new OnClickListener() {
-            
             @Override
             public void onClick(View v) {
-                goToProducDetails(prodItem.position);
+                try {
+                    int position = Integer.parseInt(v.getTag().toString());
+                    goToProducDetails(position);
+                } catch (NumberFormatException e) {
+                    Log.w(TAG, "WARNING: NFE ON GET CLICKED POSITION FROM TAG: " + v.getTag().toString());
+                } catch (NullPointerException e) {
+                    Log.w(TAG, "WARNING: NPE ON GET CLICKED TAG");
+                }
             }
         });
 
@@ -831,17 +837,15 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         AnalyticsGoogle.get().trackPage(R.string.gcartempty);
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-        goToProducDetails(position);
-    }
 
     /**
      * Function to redirect to the selected product details.
      * 
      * @param position
      */
-    private void goToProducDetails(int position) {
+    private void goToProducDetails(int position) {        
+        // Log.d(TAG, "CART COMPLETE PRODUCT URL: " + items.get(position).getProductUrl());
+        
         if (items.get(position).getProductUrl().equals(""))
             return;
 
@@ -849,8 +853,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
         bundle.putString(ConstantsIntentExtra.CONTENT_URL, items.get(position).getProductUrl());
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcart_prefix);
         bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
-        ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle,
-                FragmentController.ADD_TO_BACK_STACK);
+        ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
     private void goToWebCheckout() {
@@ -1001,7 +1004,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnItemClickLis
             voucherValue.setText(mVoucher);
         }
 
-        voucherDivider = getView().findViewById(R.id.voucher_divider);
+        //voucherDivider = getView().findViewById(R.id.voucher_divider);
         voucherError = (TextView) getView().findViewById(R.id.voucher_error_message);
         couponButton = (Button) getView().findViewById(R.id.voucher_btn);
         if (removeVoucher) {
