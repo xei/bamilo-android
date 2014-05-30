@@ -357,15 +357,18 @@ public class Catalog extends BaseFragment implements OnClickListener {
      * @param featuredBox contains a list of featured products, a list of featured brands and error messages
      */
     public synchronized void onErrorSearchResult(FeaturedBox featuredBox) {
-        if (featuredBox != null) {
+        // Get current view
+        View view = getView();
+        // Validate 
+        if (featuredBox != null && view != null) {
             // hide default products list
-            getView().findViewById(R.id.catalog_viewpager_container).setVisibility(View.GONE);
-            getView().findViewById(R.id.no_results_search_terms).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.catalog_viewpager_container).setVisibility(View.GONE);
+            view.findViewById(R.id.no_results_search_terms).setVisibility(View.VISIBLE);
 
             String errorMessage = featuredBox.getErrorMessage();
             // only process errorMessage if is available
             if (!TextUtils.isEmpty(errorMessage)) {
-                TextView textViewErrorMessage = (TextView) getView().findViewById(R.id.no_results_search_error_message);
+                TextView textViewErrorMessage = (TextView) view.findViewById(R.id.no_results_search_error_message);
 
                 // set seachQuery in bold if it is converted
                 SpannableStringBuilder spannableErrorMessage = getSpannableErrorMessageWithOriginalSearchQuery(errorMessage, searchQuery);
@@ -379,7 +382,7 @@ public class Catalog extends BaseFragment implements OnClickListener {
             String searchTips = featuredBox.getSearchTips();
             // only process searchTips if is available
             if (!TextUtils.isEmpty(searchTips)) {
-                TextView textViewSearchTips= (TextView) getView().findViewById(R.id.no_results_search_tips_text);
+                TextView textViewSearchTips= (TextView) view.findViewById(R.id.no_results_search_tips_text);
 
                 // set searchTips in bold if is converted
                 SpannableStringBuilder spannableSearchTips = getSpannableSearchTips(searchTips);
@@ -398,23 +401,23 @@ public class Catalog extends BaseFragment implements OnClickListener {
 
             String productsTitle = featuredBox.getProductsTitle();
             if (!TextUtils.isEmpty(productsTitle)) {
-                ((TextView) getView().findViewById(R.id.featured_products_title)).setText(productsTitle);
+                ((TextView) view.findViewById(R.id.featured_products_title)).setText(productsTitle);
             }
 
-            getView().findViewById(R.id.featured_products).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.featured_products).setVisibility(View.VISIBLE);
             generateFeaturedProductsLayout(featuredBox.getProducts(), partialSize);
 
             String brandsTitle = featuredBox.getBrandsTitle();
             if (!TextUtils.isEmpty(brandsTitle)) {
-                ((TextView) getView().findViewById(R.id.featured_brands_title)).setText(brandsTitle);
+                ((TextView) view.findViewById(R.id.featured_brands_title)).setText(brandsTitle);
             }
 
-            getView().findViewById(R.id.featured_brands).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.featured_brands).setVisibility(View.VISIBLE);
             generateFeaturedBrandsLayout(featuredBox.getBrands(), partialSize);
 
             String noticeMessage = featuredBox.getNoticeMessage();
             if (!TextUtils.isEmpty(noticeMessage)) {
-                ((TextView) getView().findViewById(R.id.no_results_search_notice_message)).setText(noticeMessage);
+                ((TextView) view.findViewById(R.id.no_results_search_notice_message)).setText(noticeMessage);
             }
         } else {
             Log.e(TAG, "No featureBox!");
