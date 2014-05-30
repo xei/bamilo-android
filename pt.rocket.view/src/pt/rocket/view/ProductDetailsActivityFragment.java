@@ -947,18 +947,14 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
             productBasicInfoFragment = ProductBasicInfoFragment.getInstance();
             startFragmentCallbacks();
 
-            fragmentManagerTransition(R.id.variations_container, productVariationsFragment, false,
-                    true);
-            fragmentManagerTransition(R.id.image_gallery_container, productImagesViewPagerFragment,
-                    false, true);
-            fragmentManagerTransition(R.id.product_specifications_container,
-                    productSpecificationFragment, false, true);
-            fragmentManagerTransition(R.id.product_basicinfo_container, productBasicInfoFragment,
-                    false, true);
+            fragmentManagerTransition(R.id.variations_container, productVariationsFragment, false, true);
+            fragmentManagerTransition(R.id.image_gallery_container, productImagesViewPagerFragment, false, true);
+            fragmentManagerTransition(R.id.product_specifications_container, productSpecificationFragment, false, true);
+            fragmentManagerTransition(R.id.product_basicinfo_container, productBasicInfoFragment, false, true);
+            
             if(JumiaApplication.INSTANCE.showRelatedItemsGlobal){
-                relatedItemsFragment = ProductRelatedItemsFragment.getInstance();
-                fragmentManagerTransition(R.id.product_related_container, relatedItemsFragment,
-                        false, true);
+                relatedItemsFragment = ProductRelatedItemsFragment.getInstance(product.getSku());
+                fragmentManagerTransition(R.id.product_related_container, relatedItemsFragment, false, true);
             }
 
             FragmentCommunicatorForProduct.getInstance().updateCurrentProduct(mCompleteProduct);

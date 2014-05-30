@@ -9,6 +9,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.text.TextUtils;
 import android.util.Log;
 
 /**
@@ -53,20 +54,29 @@ public class RelatedItemsTableHelper {
      * @param image_url
      */
     public static void insertRelatedItem(SQLiteDatabase db, String product_sku, String product_name, String product_price, String product_url, String image_url){
+    	// Validate sku
+    	if(TextUtils.isEmpty(product_sku)) {
+    		Log.w(TAG, "WARNING ON INSERT RELATED ITEM: SKU IS EMPTY");
+    		return;
+    	}
+    	// Insert
 		ContentValues values = new ContentValues();
 		values.put(RelatedItemsTableHelper._PRODUCT_SKU, product_sku);
 		values.put(RelatedItemsTableHelper._PRODUCT_NAME, product_name);
 		values.put(RelatedItemsTableHelper._PRODUCT_PRICE, product_price);
 		values.put(RelatedItemsTableHelper._PRODUCT_URL, product_url);
 		values.put(RelatedItemsTableHelper._IMAGE_URL, image_url);
-		long id = db.insertWithOnConflict(RelatedItemsTableHelper.TABLE_RELATED, null, values, SQLiteDatabase.CONFLICT_IGNORE);
+		db.insertWithOnConflict(RelatedItemsTableHelper.TABLE_RELATED, null, values, SQLiteDatabase.CONFLICT_IGNORE);
     }
     
-	public static void insertRelatedItems(Context ctx,
-			ArrayList<Product> mProducts) {
+    /**
+     * TODO
+     * @param ctx
+     * @param mProducts
+     */
+	public static void insertRelatedItems(Context ctx, ArrayList<Product> mProducts) {
 
-		SQLiteDatabase db = DarwinDatabaseHelper.getInstance()
-				.getWritableDatabase();
+		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
 		
 		try {
 			db.beginTransaction();
@@ -78,7 +88,7 @@ public class RelatedItemsTableHelper {
 						product.getUrl(),
 						(product.getImages().size() == 0) ? "" : product
 								.getImages().get(0).getUrl());
-				if(count == 20)
+				if(count == MAX_SAVED_PRODUCTS)
 					break;
 				count++;
 			}
@@ -92,6 +102,11 @@ public class RelatedItemsTableHelper {
 
 	}
 
+	/**
+	 * TODO
+	 * @param ctx
+	 * @param mProducts
+	 */
 	public static void insertRelatedItemsAndClear(Context ctx,
 			ArrayList<Product> mProducts) {
 
@@ -108,7 +123,7 @@ public class RelatedItemsTableHelper {
 						product.getUrl(),
 						(product.getImages().size() == 0) ? "" : product
 								.getImages().get(0).getUrl());
-				if(count == 20)
+				if(count == MAX_SAVED_PRODUCTS)
 					break;
 				count++;
 			}

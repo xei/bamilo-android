@@ -1,37 +1,27 @@
 package pt.rocket.view.fragments;
 
 import java.util.ArrayList;
-import java.util.EnumSet;
 
-import de.akquinet.android.androlog.Log;
-import pt.rocket.app.JumiaApplication;
-import pt.rocket.controllers.LastViewedAdapter;
 import pt.rocket.controllers.RelatedItemsAdapter;
 import pt.rocket.framework.database.RelatedItemsTableHelper;
 import pt.rocket.framework.objects.LastViewed;
-import pt.rocket.framework.objects.ProductsPage;
-import pt.rocket.framework.utils.Constants;
-import pt.rocket.framework.utils.EventType;
-import pt.rocket.helpers.GetProductsHelper;
-import pt.rocket.interfaces.IResponseCallback;
-import pt.rocket.utils.MyMenuItem;
-import pt.rocket.utils.NavigationAction;
-import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.RelativeLayout;
+import de.akquinet.android.androlog.Log;
 
+/**
+ * Class used to show the related products 
+ * @author sergiopereira
+ *
+ */
 public class ProductRelatedItemsFragment extends BaseFragment {
-    private final static String TAG = ProductRelatedItemsFragment.class.getName();
     
-    private final int PAGE_NUMBER = 0;
-    private final int MAX_PAGE_ITEMS = 20;
+    private final static String TAG = ProductRelatedItemsFragment.class.getName();
     
     /**
      * List of Related Items
@@ -41,45 +31,75 @@ public class ProductRelatedItemsFragment extends BaseFragment {
     private ArrayList<LastViewed> relatedItemsList;
     
     private ViewPager mViewPager;
+
+    private String mCurrentSku;
     
-    public static ProductRelatedItemsFragment getInstance() {
+    /**
+     * Get new instance of this fragment
+     * @param currentSku 
+     * @return ProductRelatedItemsFragment
+     */
+    public static ProductRelatedItemsFragment getInstance(String currentSku) {
         ProductRelatedItemsFragment relatedItemsFragment = new ProductRelatedItemsFragment();
+        relatedItemsFragment.mCurrentSku = (TextUtils.isEmpty(currentSku)) ? "" : currentSku;
         return relatedItemsFragment;
     }
     
+    /**
+     * Constructor
+     */
     public ProductRelatedItemsFragment() {
         super(true);
         this.setRetainInstance(true);
     }
-    
+   
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.view.fragments.BaseFragment#onCreate(android.os.Bundle)
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
     
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.view.fragments.BaseFragment#onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle)
+     */
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.related_items_view, null, false);
+    }
+   
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.view.fragments.BaseFragment#onResume()
+     */
     @Override
     public void onResume() {
         super.onResume();
         getRelatedItems();
     }
    
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.related_items_view, null, false);
-    }
-    
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.view.fragments.BaseFragment#onPause()
+     */
     @Override
     public void onPause() {
         super.onPause();
     }
    
-    
+    /**
+     * Method used to get the related products
+     */
     private void getRelatedItems(){
-        
+        Log.d(TAG, "ON GET RELATED ITEMS FOR: " + mCurrentSku);
         relatedItemsList = RelatedItemsTableHelper.getRelatedItemsList();
         if(relatedItemsList != null && relatedItemsList.size() > 0){
             for(int i = 0; i< relatedItemsList.size(); i++){
-                if(relatedItemsList.get(i).getProductSku().equalsIgnoreCase(JumiaApplication.INSTANCE.getCurrentProduct().getSku())){
+                String itemSku = relatedItemsList.get(i).getProductSku();
+                if(!TextUtils.isEmpty(itemSku) && itemSku.equalsIgnoreCase(mCurrentSku)){
                     relatedItemsList.remove(i);
                     break;
                 }
@@ -88,6 +108,9 @@ public class ProductRelatedItemsFragment extends BaseFragment {
         }
     }
     
+    /**
+     * Method used to create the view
+     */
     private void generateLastViewedLayout(){
         View mLoading = getView().findViewById(R.id.loading_related);
         mViewPager = (ViewPager) getView().findViewById(R.id.last_viewed_viewpager);
