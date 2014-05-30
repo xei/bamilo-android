@@ -359,14 +359,20 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 		metaData.putString(IMetaData.URI, httpRequest.getURI().toString());
 		
 		// Validate cache
-		if (metaData.getBoolean(IMetaData.MD_IGNORE_CACHE) || eventType.cacheTime == RestContract.NO_CACHE) {
-			Log.d(TAG, "executeHttpRequest: received ignore cache flag - bypassing cache");
-			httpRequest.addHeader(HeaderConstants.CACHE_CONTROL, HeaderConstants.CACHE_CONTROL_NO_CACHE);
-		} else {			
-			Log.d(TAG, "executeHttpRequest: received cache flag - cache time " + eventType.cacheTime);
-			String value = HeaderConstants.CACHE_CONTROL_MAX_AGE + "=" + eventType.cacheTime + "; " + HeaderConstants.CACHE_CONTROL_MUST_REVALIDATE;
-			httpRequest.addHeader(HeaderConstants.CACHE_CONTROL, value);
+		if(RestContract.RUNNING_TESTS){
+			
+			httpRequest.addHeader(HeaderConstants.CACHE_CONTROL,HeaderConstants.CACHE_CONTROL_NO_CACHE);
+		}else{
+			if (metaData.getBoolean(IMetaData.MD_IGNORE_CACHE) || eventType.cacheTime == RestContract.NO_CACHE) {
+				Log.d(TAG, "executeHttpRequest: received ignore cache flag - bypassing cache");
+				httpRequest.addHeader(HeaderConstants.CACHE_CONTROL, HeaderConstants.CACHE_CONTROL_NO_CACHE);
+			} else {			
+				Log.d(TAG, "executeHttpRequest: received cache flag - cache time " + eventType.cacheTime);
+				String value = HeaderConstants.CACHE_CONTROL_MAX_AGE + "=" + eventType.cacheTime + "; " + HeaderConstants.CACHE_CONTROL_MUST_REVALIDATE;
+				httpRequest.addHeader(HeaderConstants.CACHE_CONTROL, value);
+			}
 		}
+		
 
 		metaData = new Bundle();
 		HttpResponse response = null;
