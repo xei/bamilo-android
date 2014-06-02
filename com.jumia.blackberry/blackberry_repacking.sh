@@ -11,7 +11,7 @@
 DEV=false
 
 ##### Environment
-if [ $DEV ]; 
+if [ $DEV ]
 then
 	echo "> Dev environment"
 	APK_PATH="com.jumia.blackberry/bin/com.jumia.blackberry.apk"
