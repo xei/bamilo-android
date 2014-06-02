@@ -14,7 +14,7 @@ CNF_PATH="com.jumia.blackberry/assets/blackberry/android.cfg"
 MNF_PATH="com.jumia.blackberry/assets/blackberry/MANIFEST.MF"
 BAR_FOLDER="com.jumia.blackberry/dist/blackberry"
 CERT_FILE="com.jumia.blackberry/assets/blackberry/author.p12"
-MAC_CRT_PATH="/Users/rocket/Library/Research In Motion"
+MAC_CRT_PATH="/Users/rocket/Library/Research\ In\ Motion"
 BAR_NAME="Jumia-release.bar"
 
 # Reload PATH
