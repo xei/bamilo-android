@@ -257,33 +257,7 @@ public class CatalogPageModel {
         this.showList = showList;
         this.totalUpdates = totalUpdates;
 
-        // set numColumns based on view chosen
-        if (isLandScape) {
-            // Tablet uses 3 columns for both Grid and List
-            gridView.setNumColumns(3);
-            // gridView.setPadding(10, 0, 10, 0);
-        } else {
-            if (showList) {
-                // Phone uses 1 column for List
-                gridView.setNumColumns(1);
-                // gridView.setPadding(0, 0, 0, 0);
-            } else {
-                // Phone uses 2 columns for Grid
-                gridView.setNumColumns(2);
-                // gridView.setPadding(10, 0, 10, 0);
-            }
-        }
-
-        // initialize new adapter depending on view choosen
-        if (showList) {
-            productsAdapter = new ProductsListAdapter(mActivity, true);
-        } else {
-            productsAdapter = new ProductsListAdapter(mActivity, false);
-        }
-
-        pageNumber = 1;
-        showProductsContent();
-        productsAdapter.clearProducts();
+        generateProductsListAdapter();
 
         productsAdapter.appendProducts(products);
 
@@ -486,39 +460,54 @@ public class CatalogPageModel {
      */
 
     private void executeRequest() {
-        
         Log.d(TAG, "FILTER EXECUTE REQ");
-        
-        // set numColumns based on view chosen
-        if (isLandScape) {
-            // Tablet uses 3 columns for both Grid and List
-            gridView.setNumColumns(3);
-            // gridView.setPadding(10, 0, 10, 0);
-        } else {
-            if (showList) {
+
+        generateProductsListAdapter();
+
+        getMoreProducts();
+    }
+
+    private void generateProductsListAdapter() {
+        RelativeLayout.LayoutParams gridViewLayoutParams = (RelativeLayout.LayoutParams)gridView.getLayoutParams();
+
+        int numColumns = 1;
+        if (showList) {
+            // remove margins
+            gridViewLayoutParams.leftMargin = 0;
+            gridViewLayoutParams.rightMargin = 0;
+
+            if (isLandScape) {
+                // Tablet uses 3 columns for both Grid and List
+                numColumns = 3;
+            } else {
                 // Phone uses 1 column for List
-                gridView.setNumColumns(1);
-                // gridView.setPadding(0, 0, 0, 0);
+                numColumns = 1;
+            }
+        } else {
+            // add margins
+            gridViewLayoutParams.leftMargin = 10;
+            gridViewLayoutParams.rightMargin = 10;
+
+            if (isLandScape) {
+                // Tablet uses 3 columns for both Grid and List
+                numColumns = 3;
             } else {
                 // Phone uses 2 columns for Grid
-                gridView.setNumColumns(2);
-                // gridView.setPadding(10, 0, 10, 0);
+                numColumns = 2;
             }
         }
+        gridView.setNumColumns(numColumns);
 
         // initialize new adapter depending on view choosen
         if (showList) {
-            productsAdapter = new ProductsListAdapter(mActivity, true);
+            productsAdapter = new ProductsListAdapter(mActivity, true, numColumns);
         } else {
-            productsAdapter = new ProductsListAdapter(mActivity, false);
+            productsAdapter = new ProductsListAdapter(mActivity, false, numColumns);
         }
 
         pageNumber = 1;
         showProductsContent();
         productsAdapter.clearProducts();
-
-        getMoreProducts();
-
     }
 
     /**

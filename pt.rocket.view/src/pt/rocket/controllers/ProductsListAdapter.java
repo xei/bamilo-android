@@ -67,6 +67,8 @@ public class ProductsListAdapter extends BaseAdapter {
 
     private boolean showList;
 
+    private int numColumns = 1;
+
     /**
      * A representation of each item on the list
      */
@@ -111,12 +113,14 @@ public class ProductsListAdapter extends BaseAdapter {
      * 
      * @param activity
      * @param showList show list (or grid)
+     * @param numColumns 
      */
-    public ProductsListAdapter(Context context, boolean showList) {
+    public ProductsListAdapter(Context context, boolean showList, int numColumns) {
 
         this.context = context.getApplicationContext();
         this.products = new ArrayList<Product>();
         this.showList = showList;
+        this.numColumns = numColumns;
 
         this.inflater = LayoutInflater.from(context);
         reviewLabel = context.getString(R.string.reviews);
@@ -201,6 +205,17 @@ public class ProductsListAdapter extends BaseAdapter {
             int layoutId = showList ? R.layout.product_item : R.layout.product_item_grid;
 
             itemView = inflater.inflate(layoutId, parent, false);
+        }
+
+        // remove left and right divider on each line when showing grid
+        if (!showList) {
+            if (position % numColumns == 0) {
+                View dividerLeft = itemView.findViewById(R.id.dividerLeft);
+                dividerLeft.setVisibility(View.GONE);
+            } else if ((position % numColumns) == (numColumns - 1)) {
+                View dividerRight = itemView.findViewById(R.id.dividerRight);
+                dividerRight.setVisibility(View.GONE);
+            }
         }
 
         if ((Item) itemView.getTag() == null) {
