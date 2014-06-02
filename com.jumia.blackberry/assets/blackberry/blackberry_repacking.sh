@@ -8,8 +8,10 @@
 #echo Create apk
 #ant debug
 
-STOREPASS="sfp.1n.blackberry"
+# Reload PATH
+. ~/.bash_profile
 
+STOREPASS="sfp.1n.blackberry"
 APK_PATH="./com.jumia.blackberry/bin/com.jumia.blackberry.apk"
 CNF_PATH="./com.jumia.blackberry/assets/blackberry/android.cfg"
 MNF_PATH="./com.jumia.blackberry/assets/blackberry/MANIFEST.MF"
