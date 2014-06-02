@@ -468,14 +468,8 @@ public class CatalogPageModel {
     }
 
     private void generateProductsListAdapter() {
-        RelativeLayout.LayoutParams gridViewLayoutParams = (RelativeLayout.LayoutParams)gridView.getLayoutParams();
-
         int numColumns = 1;
         if (showList) {
-            // remove margins
-            gridViewLayoutParams.leftMargin = 0;
-            gridViewLayoutParams.rightMargin = 0;
-
             if (isLandScape) {
                 // Tablet uses 3 columns for both Grid and List
                 numColumns = 3;
@@ -484,10 +478,6 @@ public class CatalogPageModel {
                 numColumns = 1;
             }
         } else {
-            // add margins
-            gridViewLayoutParams.leftMargin = 10;
-            gridViewLayoutParams.rightMargin = 10;
-
             if (isLandScape) {
                 // Tablet uses 3 columns for both Grid and List
                 numColumns = 3;
@@ -499,11 +489,7 @@ public class CatalogPageModel {
         gridView.setNumColumns(numColumns);
 
         // initialize new adapter depending on view choosen
-        if (showList) {
-            productsAdapter = new ProductsListAdapter(mActivity, true, numColumns);
-        } else {
-            productsAdapter = new ProductsListAdapter(mActivity, false, numColumns);
-        }
+        productsAdapter = new ProductsListAdapter(mActivity, showList, numColumns);
 
         pageNumber = 1;
         showProductsContent();

@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 
 import com.androidquery.AQuery;
 
@@ -207,14 +208,17 @@ public class ProductsListAdapter extends BaseAdapter {
             itemView = inflater.inflate(layoutId, parent, false);
         }
 
-        // remove left and right divider on each line when showing grid
+        // when showing grid add margins to dividers on the first and last columns
         if (!showList) {
-            if (position % numColumns == 0) {
+            int column = position % numColumns;
+            if (column == 0) {
                 View dividerLeft = itemView.findViewById(R.id.dividerLeft);
-                dividerLeft.setVisibility(View.GONE);
-            } else if ((position % numColumns) == (numColumns - 1)) {
+                int margin = context.getResources().getDimensionPixelOffset(R.dimen.margin_mid);
+                ((RelativeLayout.LayoutParams) dividerLeft.getLayoutParams()).rightMargin = margin;
+            } else if (column == (numColumns - 1)) {
                 View dividerRight = itemView.findViewById(R.id.dividerRight);
-                dividerRight.setVisibility(View.GONE);
+                int margin = context.getResources().getDimensionPixelOffset(R.dimen.margin_mid);
+                ((RelativeLayout.LayoutParams) dividerRight.getLayoutParams()).leftMargin = margin;
             }
         }
 
