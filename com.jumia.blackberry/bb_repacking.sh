@@ -41,7 +41,7 @@ echo "1 - Find apk"
 ##### CERTIFICATE #####
 #######################
 echo "2 - Copy Token and Certificate"
-cp $CERT_FOLDER/* "$MAC_CRT_PATH"
+cp -R $CERT_FOLDER/* "$MAC_CRT_PATH"
 
 #####################
 ##### REPACKING #####
