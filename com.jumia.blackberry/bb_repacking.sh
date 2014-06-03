@@ -13,7 +13,6 @@ CNF_PATH="com.jumia.blackberry/assets/blackberry/android.cfg"
 MNF_PATH="com.jumia.blackberry/assets/blackberry/MANIFEST.MF"
 BAR_FOLDER="com.jumia.blackberry/dist/blackberry"
 CERT_FOLDER="com.jumia.blackberry/assets/blackberry/certificate"
-MAC_CRT_PATH="/Users/rocket/Library/Research\ In\ Motion/"
 
 ########################
 ##### VALIDATE ENV #####
@@ -21,33 +20,36 @@ MAC_CRT_PATH="/Users/rocket/Library/Research\ In\ Motion/"
 if $DEV
 then
 	echo "> Dev environment"
-	APK_PATH="com.jumia.blackberry/bin/com.jumia.blackberry.apk"
+	APK_FILE="com.jumia.blackberry/bin/com.jumia.blackberry.apk"
 	BAR_NAME="com.jumia.blackberry.bar"
+	STORE_CRT_FOLDER=~/.rim/
 else
 	echo "> Release environment"
-	APK_PATH="com.jumia.blackberry/bin/Jumia-release.apk"
+	APK_FILE="com.jumia.blackberry/bin/Jumia-release.apk"
 	BAR_NAME="Jumia-release.bar"
+	STORE_CRT_FOLDER=~/Library/Research\ In\ Motion/
 	#### Reload PATH (MAC OS)
-	echo "> Reload PATH"
 	. ~/.bash_profile
 fi
 
 ##### 
-echo "1 - Find apk"
-#echo Create apk
-#ant debug
+echo -n "1 - Find apk: "
+if [ -f $APK_FILE ]
+then echo "SUCCESS"
+else echo "FAIL, File not found!"
+fi
 
 #######################
 ##### CERTIFICATE #####
 #######################
 echo "2 - Copy Token and Certificate"
-cp -R $CERT_FOLDER/* "$MAC_CRT_PATH"
+cp $CERT_FOLDER/* $STORE_CRT_FOLDER
 
 #####################
 ##### REPACKING #####
 #####################
 echo "3 - Repacking apk to bar"
-blackberry-apkpackager $APK_PATH $CNF_PATH -m $MNF_PATH -t $BAR_FOLDER -r
+blackberry-apkpackager $APK_FILE $CNF_PATH -m $MNF_PATH -t $BAR_FOLDER -r
 
 ################
 ##### SIGN #####
