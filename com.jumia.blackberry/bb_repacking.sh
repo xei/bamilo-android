@@ -1,16 +1,13 @@
 #!/bin/bash
 
-##### Create BlackBerry Account
-# user: laurent.detapol@jumia.com
-# pass: RocketInternet2014
-
-##### Create apk
-#echo Create apk
-#ant debug
-
-##### Environment
+#######################
+##### Environment #####
+#######################
 DEV=false
 
+#########################
+##### DEF CONSTANTS #####
+#########################
 STOREPASS="sfp.1n.blackberry"
 CNF_PATH="com.jumia.blackberry/assets/blackberry/android.cfg"
 MNF_PATH="com.jumia.blackberry/assets/blackberry/MANIFEST.MF"
@@ -18,8 +15,9 @@ BAR_FOLDER="com.jumia.blackberry/dist/blackberry"
 CERT_FOLDER="com.jumia.blackberry/assets/blackberry/certificate"
 MAC_CRT_PATH="/Users/rocket/Library/Research\ In\ Motion"
 
-
-##### Environment
+########################
+##### VALIDATE ENV #####
+########################
 if $DEV
 then
 	echo "> Dev environment"
@@ -34,17 +32,32 @@ else
 	. ~/.bash_profile
 fi
 
-#### Generate certificate (TO CREATE A KEY)
-# blackberry-keytool -genkeypair -storepass $STOREPASS -dname "cn=Jumia"
+##### 
+echo "1 - Find apk"
+#echo Create apk
+#ant debug
 
-#### Copy Certicate
-echo "> Copy certificate"
+#######################
+##### CERTIFICATE #####
+#######################
+echo "2 - Copy Token and Certificate"
 cp $CERT_FOLDER/* "$MAC_CRT_PATH"
 
-#### Repacking apk to bar
-echo "> Repacking apk to bar"
+#####################
+##### REPACKING #####
+#####################
+echo "3 - Repacking apk to bar"
 blackberry-apkpackager $APK_PATH $CNF_PATH -m $MNF_PATH -t $BAR_FOLDER -r
 
-#### Sign Blackberry App
-echo "> Sign Blackberry App"
+################
+##### SIGN #####
+################
+echo "4 - Sign Blackberry App"
 blackberry-signer -storepass $STOREPASS $BAR_FOLDER/$BAR_NAME
+
+###################
+##### OTHERS ######
+###################
+
+#### Generate certificate (TO CREATE A KEY)
+# blackberry-keytool -genkeypair -storepass $STOREPASS -dname "cn=Jumia"
