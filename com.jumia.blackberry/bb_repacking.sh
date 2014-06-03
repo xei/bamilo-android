@@ -13,7 +13,7 @@ CNF_PATH="com.jumia.blackberry/assets/blackberry/android.cfg"
 MNF_PATH="com.jumia.blackberry/assets/blackberry/MANIFEST.MF"
 BAR_FOLDER="com.jumia.blackberry/dist/blackberry"
 CERT_FOLDER="com.jumia.blackberry/assets/blackberry/certificate"
-MAC_CRT_PATH="/Users/rocket/Library/Research\ In\ Motion"
+MAC_CRT_PATH="/Users/rocket/Library/Research\ In\ Motion/"
 
 ########################
 ##### VALIDATE ENV #####
