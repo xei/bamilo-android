@@ -3,7 +3,7 @@
 #######################
 ##### Environment #####
 #######################
-DEV=false
+DEV=true
 
 #########################
 ##### DEF CONSTANTS #####
@@ -32,18 +32,20 @@ else
 	. ~/.bash_profile
 fi
 
-##### 
+####################
+##### FIND APK #####
+#################### 
 echo -n "1 - Find apk: "
 if [ -f $APK_FILE ]
 then echo "SUCCESS"
-else echo "FAIL, File not found!"
+else echo "FAIL, File not found!"; exit 1;
 fi
 
 #######################
 ##### CERTIFICATE #####
 #######################
 echo "2 - Copy Token and Certificate"
-cp -R $CERT_FOLDER $STORE_CRT_FOLDER
+cp $CERT_FOLDER/* $STORE_CRT_FOLDER
 
 #####################
 ##### REPACKING #####
