@@ -40,7 +40,6 @@ import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CustomerUtils;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.MixpanelTracker;
-import pt.rocket.helpers.GetCallToOrderHelper;
 import pt.rocket.helpers.GetPromotionsHelper;
 import pt.rocket.helpers.GetTeasersHelper;
 import pt.rocket.helpers.GetUpdatedTeasersHelper;
@@ -110,12 +109,10 @@ public class HomeFragment extends BaseFragment {
     private final int TAB_INDICATOR_HEIGHT = 0;
     private final int TAB_UNDERLINE_HEIGHT = 1;
     private final int TAB_STRIP_COLOR = android.R.color.transparent;
-    public static String KEY_CALL_TO_ORDER = "call_to_order";
+    
     private HomeCollectionPagerAdapter mPagerAdapter;
     private static ArrayList<String> pagesTitles;
     public static ArrayList<Collection<? extends TeaserSpecification<?>>> requestResponse;
-
-    // private int defaultPosition=Math.abs(requestResponse.size() / 2);
 
     private int currentPosition = -1;
     public static int initialPosition = 3;
@@ -151,7 +148,6 @@ public class HomeFragment extends BaseFragment {
     public HomeFragment() {
         super(EnumSet.of(EventType.GET_API_INFO,
                 EventType.GET_TEASERS_EVENT,
-                EventType.GET_CALL_TO_ORDER_PHONE,
                 EventType.GET_PROMOTIONS),
                 EnumSet.noneOf(EventType.class),
                 EnumSet.of(MyMenuItem.SEARCH_BAR),
@@ -248,7 +244,6 @@ public class HomeFragment extends BaseFragment {
         if (requestResponse == null) {
             ((BaseActivity) getActivity()).setProcessShow(false);
             triggerTeasers();
-            triggerCallToOrder();
             triggerHomeNewsletterSignupForm();
 
         } else {
@@ -612,14 +607,6 @@ public class HomeFragment extends BaseFragment {
                 configureLayout();
             } else
                 setLayoutFallback();
-            break;
-        case GET_CALL_TO_ORDER_PHONE:
-            SharedPreferences sharedPrefs = getActivity().getSharedPreferences(
-                    ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPrefs.edit();
-            editor.putString(KEY_CALL_TO_ORDER,
-                    (String) bundle.getString(Constants.BUNDLE_RESPONSE_KEY));
-            editor.commit();
             break;
         case GET_PROMOTIONS:
             if (((Promotion) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getIsStillValid()) {
@@ -1336,11 +1323,6 @@ public class HomeFragment extends BaseFragment {
         Bundle bundle = new Bundle();
         bundle.putString(GetUpdatedTeasersHelper.OLD_MD5_KEY, mCurrentMd5Collection);
         triggerContentEvent(new GetUpdatedTeasersHelper(), bundle, responseCallback);
-    }
-
-    private void triggerCallToOrder() {
-        Bundle bundle = new Bundle();
-        triggerContentEventWithNoLoading(new GetCallToOrderHelper(), bundle, responseCallback);
     }
 
     private void triggerHomeNewsletterSignupForm() {

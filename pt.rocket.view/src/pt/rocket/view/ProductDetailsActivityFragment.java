@@ -14,6 +14,7 @@ import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
+import pt.rocket.framework.Darwin;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.database.LastViewedTableHelper;
 import pt.rocket.framework.objects.CompleteProduct;
@@ -267,7 +268,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
         setAppContentLayout();
         init();
         SharedPreferences sharedPrefs = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        mPhone2Call = sharedPrefs.getString(ProductDetailsActivityFragment.KEY_CALL_TO_ORDER, "");
+        mPhone2Call = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_PHONE_NUMBER, "");
         if (mPhone2Call.equalsIgnoreCase("")) {
             mPhone2Call = getString(R.string.call_to_order_number);
         }

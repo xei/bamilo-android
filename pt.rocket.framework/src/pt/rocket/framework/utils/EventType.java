@@ -109,8 +109,6 @@ public enum EventType {
 	
 	GET_RESOLUTIONS("http:/main/imageresolutions/", RestContract.MAX_CACHE_TIME),
 	
-	GET_CALL_TO_ORDER_PHONE("http:/main/getconfig/module/configurationml/key/phone_number/", RestContract.DEFAULT_CACHE_TIME),
-	
 	GET_PROMOTIONS("http:/main/getstatic?key=mobile_promotions", null),
 	
 	TRACK_ORDER_EVENT("http:/order/trackingorder/?setDevice=mobileApi", null),

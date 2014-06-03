@@ -56,7 +56,7 @@ public abstract class BaseHelper {
             }
             
             JSONObject metaData;
-            if (eventType == EventType.GET_CALL_TO_ORDER_PHONE || eventType == EventType.REVIEW_PRODUCT_EVENT) {
+            if ( eventType == EventType.REVIEW_PRODUCT_EVENT) {
                 metaData = jsonObject;
             } else {
                 if (jsonObject.has(JSONConstants.JSON_METADATA_TAG)) {
