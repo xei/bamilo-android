@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 
@@ -208,17 +209,20 @@ public class ProductsListAdapter extends BaseAdapter {
             itemView = inflater.inflate(layoutId, parent, false);
         }
 
-        // when showing grid add margins to dividers on the first and last columns
+        // when showing grid add margins to container on the first and last columns
         if (!showList) {
-            int column = position % numColumns;
-            if (column == 0) {
-                View dividerLeft = itemView.findViewById(R.id.dividerLeft);
-                int margin = context.getResources().getDimensionPixelOffset(R.dimen.margin_mid);
-                ((RelativeLayout.LayoutParams) dividerLeft.getLayoutParams()).rightMargin = margin;
-            } else if (column == (numColumns - 1)) {
-                View dividerRight = itemView.findViewById(R.id.dividerRight);
-                int margin = context.getResources().getDimensionPixelOffset(R.dimen.margin_mid);
-                ((RelativeLayout.LayoutParams) dividerRight.getLayoutParams()).leftMargin = margin;
+            LinearLayout container = (LinearLayout) itemView.findViewById(R.id.container);
+            // guarantee this layout has this view
+            if (container != null) {
+                RelativeLayout.LayoutParams containerLayoutParams = (RelativeLayout.LayoutParams) container.getLayoutParams();
+                int column = position % numColumns;
+                if (column == 0) {
+                    int margin = context.getResources().getDimensionPixelOffset(R.dimen.margin_mid);
+                    containerLayoutParams.leftMargin = margin;
+                } else if (column == (numColumns - 1)) {
+                    int margin = context.getResources().getDimensionPixelOffset(R.dimen.margin_mid);
+                    containerLayoutParams.rightMargin = margin;
+                }
             }
         }
 
