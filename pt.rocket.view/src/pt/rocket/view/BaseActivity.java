@@ -867,6 +867,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         mSearchView.setMaxWidth(searchComponentWidth);
         mSearchAutoComplete.setDropDownWidth(searchComponentWidth);
         mSearchView.setQueryHint(getString(R.string.action_label_search_hint));
+        mSearchAutoComplete.setHintTextColor(getResources().getColor(R.color.grey_middlelight));
 
         // Set search
         setActionBarSearchBehavior();
