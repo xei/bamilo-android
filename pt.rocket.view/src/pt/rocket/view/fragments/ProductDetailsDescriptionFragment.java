@@ -70,7 +70,7 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
     public ProductDetailsDescriptionFragment() {
         super(EnumSet.noneOf(EventType.class), 
                 EnumSet.noneOf(EventType.class),
-                EnumSet.of(MyMenuItem.SHARE, MyMenuItem.SEARCH, MyMenuItem.SEARCH_BAR), 
+                EnumSet.of(MyMenuItem.SHARE, MyMenuItem.SEARCH_VIEW), 
                 NavigationAction.Products, 
                 R.string.product_details_title, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         this.mCompleteProduct = JumiaApplication.INSTANCE.getCurrentProduct();

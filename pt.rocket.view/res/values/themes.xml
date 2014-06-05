@@ -61,6 +61,8 @@
         <item name="vpiIconPageIndicatorStyle">@style/Widget.TeaserIconPageIndicator</item>
         <item name="android:checkboxStyle">@style/Widget.Jumia.CheckBox</item>
         <item name="android:listViewStyle">@style/Widget.Jumia.ListView</item>
+        <item name="searchViewTextField">@drawable/selector_textfield_orange</item>
+        <item name="searchViewSearchIcon">@drawable/selector_search_edit_icon</item>
     </style>
 
     <style name="Widget.Jumia.ActionBar" parent="Widget.Sherlock.ActionBar">

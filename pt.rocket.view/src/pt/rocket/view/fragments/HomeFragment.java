@@ -150,7 +150,7 @@ public class HomeFragment extends BaseFragment {
                 EventType.GET_TEASERS_EVENT,
                 EventType.GET_PROMOTIONS),
                 EnumSet.noneOf(EventType.class),
-                EnumSet.of(MyMenuItem.SEARCH_BAR),
+                EnumSet.of(MyMenuItem.SEARCH_VIEW),
                 NavigationAction.Home, 0, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
 

@@ -66,6 +66,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import com.actionbarsherlock.R;
+import com.actionbarsherlock.interfaces.SearchViewImeBackListener;
 import com.actionbarsherlock.view.CollapsibleActionView;
 
 import java.lang.reflect.Method;
@@ -142,6 +143,8 @@ public class SearchView extends LinearLayout implements CollapsibleActionView {
 
     private SearchableInfo mSearchable;
     private Bundle mAppSearchData;
+
+    private SearchViewImeBackListener mOnImeBack;
 
     /*
     * SearchView can be set expanded before the IME is ready to be shown during
@@ -1656,6 +1659,16 @@ public class SearchView extends LinearLayout implements CollapsibleActionView {
     };
 
     /**
+     * Set a listener to be used when KEYCODE_BACK is intercepted on the
+     * SearchView
+     * 
+     * @param listener
+     */
+    public void setOnImeBackListener(SearchViewImeBackListener listener) {
+        mOnImeBack = listener;
+    }
+
+    /**
      * Local subclass for AutoCompleteTextView.
      * @hide
      */
@@ -1768,6 +1781,12 @@ public class SearchView extends LinearLayout implements CollapsibleActionView {
                     if (event.isTracking() && !event.isCanceled()) {
                         mSearchView.clearFocus();
                         mSearchView.setImeVisibility(false);
+
+                        // call this method before finalizing the KEYCODE_BACK event
+                        if (mSearchView.mOnImeBack != null){
+                            mSearchView.mOnImeBack.onImeBackPressed();
+                        }
+
                         return true;
                     }
                 }

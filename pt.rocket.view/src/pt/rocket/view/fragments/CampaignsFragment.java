@@ -68,7 +68,7 @@ public class CampaignsFragment extends BaseFragment {
     public CampaignsFragment() {
         super(EnumSet.of(EventType.GET_CAMPAIGN_EVENT), 
                 EnumSet.noneOf(EventType.class),
-                EnumSet.of(MyMenuItem.SEARCH, MyMenuItem.SEARCH_BAR),
+                EnumSet.of(MyMenuItem.SEARCH_VIEW),
                 NavigationAction.Unknown, 
                 0, 
                 WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);

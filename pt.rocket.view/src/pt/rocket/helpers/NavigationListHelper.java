@@ -22,6 +22,7 @@ import android.os.Bundle;
 public class NavigationListHelper extends BaseHelper {
 
     private static final String TAG = NavigationListHelper.class.getSimpleName();
+    private boolean ignoreSearch = true;
     
     @Override
     public Bundle generateRequestBundle(Bundle args) {
@@ -47,6 +48,14 @@ public class NavigationListHelper extends BaseHelper {
 //                Log.i(TAG, "code1 parsing components ...");
                 component = new NavigationListComponent();
                 component.initialize(dataArray.getJSONObject(i));
+
+                // don't add "Search" to the Navigation List
+                if (ignoreSearch && component != null) {
+                    if ("Search".equalsIgnoreCase(component.getElementText())) {
+                        continue;
+                    }
+                }
+
                 components.add(component);
 //                Log.i(TAG, "code1 parsing component : "+component.getElementText());
             } 

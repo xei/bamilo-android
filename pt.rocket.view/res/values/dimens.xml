@@ -186,4 +186,7 @@
     <dimen name="product_grid_width">146.67dp</dimen>
     <dimen name="product_item_grid_divider_height">206.67dp</dimen>
 
+    <!-- ACTIONBAR SHERLOCK SEARCH adjustDropDownSizeAndPosition@SearchView -->
+    <dimen name="abs__dropdownitem_icon_width">0dp</dimen>
+
 </resources>

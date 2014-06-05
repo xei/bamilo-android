@@ -40,7 +40,6 @@ import pt.rocket.view.fragments.PopularityFragment;
 import pt.rocket.view.fragments.ProductDetailsDescriptionFragment;
 import pt.rocket.view.fragments.ProductImageGalleryFragment;
 import pt.rocket.view.fragments.ReviewFragment;
-import pt.rocket.view.fragments.SearchFragment;
 import pt.rocket.view.fragments.SessionForgotPasswordFragment;
 import pt.rocket.view.fragments.SessionLoginFragment;
 import pt.rocket.view.fragments.SessionRegisterFragment;
@@ -237,9 +236,6 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             break;
         case CATEGORIES_LEVEL_3:
             fragment = CategoriesContainerFragment.getInstance(bundle);
-            break;
-        case SEARCH:
-            fragment = SearchFragment.getInstance();
             break;
         case PRODUCT_LIST:
             fragment = Catalog.getInstance();

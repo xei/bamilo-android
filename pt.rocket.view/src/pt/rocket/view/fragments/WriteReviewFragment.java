@@ -109,7 +109,7 @@ public class WriteReviewFragment extends BaseFragment {
                 EventType.GET_RATING_OPTIONS_EVENT,
                 EventType.GET_CUSTOMER), 
                 EnumSet.of(EventType.REVIEW_PRODUCT_EVENT), 
-                EnumSet.of(MyMenuItem.SEARCH, MyMenuItem.SEARCH_BAR),
+                EnumSet.of(MyMenuItem.SEARCH_VIEW),
                 NavigationAction.Products,  
                 R.string.writereview_page_title, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
     }

@@ -6,7 +6,6 @@ package pt.rocket.view.fragments;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.Set;
 
 import org.holoeverywhere.widget.TextView;
 
@@ -40,7 +39,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -351,9 +349,6 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
         // case Wishlist:
         // setWishlistCount(view);
         // break;
-        case Search:
-            setSearchItem(view);
-            break;
         case Home:
         case Categories:
         case MyAccount:
@@ -441,11 +436,6 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
                     R.drawable.selector_navigation_home, R.string.home,
                     this);
             break;
-        case Search:
-            layout = createGenericComponent(parent, component,
-                    R.drawable.selector_navigation_search,
-                    R.string.search_label, this);
-            break;
 
         case Categories:
             layout = createGenericComponent(parent, component,
@@ -509,52 +499,6 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
         } else {
             view.setSelected(false);
         }
-    }
-    
-    
-    /**
-     * Set the search item
-     * @param view
-     * @author sergiopereira
-     */
-    private void setSearchItem(View view) {
-        // Get the current menu options
-        Set<MyMenuItem> currentMenuOptions = getBaseActivity().getCurrentMenuOptions();
-        // Validate current menu
-        if(currentMenuOptions != null && !currentMenuOptions.contains(MyMenuItem.SEARCH) && !currentMenuOptions.contains(MyMenuItem.SEARCH_BAR))
-            // Disable
-            disableSearchItem(view);
-        else
-            // Enable
-            enableSearchItem(view);
-    }
-    
-    /**
-     * Disable the search item
-     * @param view
-     * @author sergiopereira
-     */
-    private void disableSearchItem(View view) {
-        //Log.i(TAG, "SEARCH: DISABLED");
-        view.setEnabled(false);
-        view.setOnClickListener(null);
-        TextView text = (TextView) view.findViewById(R.id.component_text);
-        text.setTextColor(text.getTextColors().withAlpha(128));
-        text.getCompoundDrawables()[0].setAlpha(128);
-    }
-    
-    /**
-     * Enable the search item
-     * @param view
-     * @author sergiopereira
-     */
-    private void enableSearchItem(View view) {
-        //Log.i(TAG, "SEARCH: ENABLED");
-        view.setEnabled(true);
-        view.setOnClickListener(this);
-        TextView text = (TextView) view.findViewById(R.id.component_text);
-        text.setTextColor(text.getTextColors().withAlpha(255));
-        text.getCompoundDrawables()[0].setAlpha(255);
     }
     
 
@@ -634,15 +578,6 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
                         FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
 //                if (slidingMenu.isSlidingEnabled())
 //                    slidingMenu.toggle(true);
-                getBaseActivity().toggle();
-                break;
-            case Search:
-                if(getBaseActivity().findViewById(R.id.main_fallback_content) != null && getBaseActivity().findViewById(R.id.main_fallback_content).getVisibility() == View.VISIBLE){
-                    return;
-                }
-                // Show or hide the search component
-                getBaseActivity().showOrHideSearchComponent();
-                // Toggle the navigation menu
                 getBaseActivity().toggle();
                 break;
             case Categories:

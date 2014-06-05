@@ -158,7 +158,7 @@ public class CategoriesContainerFragment extends BaseFragment {
     public CategoriesContainerFragment() {
         super(EnumSet.of(EventType.GET_CATEGORIES_EVENT), 
                 EnumSet.noneOf(EventType.class),
-                EnumSet.of(MyMenuItem.SEARCH, MyMenuItem.SEARCH_BAR), 
+                EnumSet.of(MyMenuItem.SEARCH_VIEW), 
                 NavigationAction.Categories, 
                 0, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
