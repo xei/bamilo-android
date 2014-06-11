@@ -3,6 +3,7 @@
     android:id="@+id/root_subcategories"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     android:fillViewport="true" >
 
     <ListView
@@ -11,6 +12,5 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:listSelector="@android:color/transparent" />
-
 
 </LinearLayout>

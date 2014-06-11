@@ -45,6 +45,7 @@ import de.akquinet.android.androlog.Log;
  * @author sergiopereira
  * 
  */
+@Deprecated
 public class SlideMenuFragment extends BaseFragment implements OnClickListener {
 
     private static final String TAG = LogTagHelper.create(SlideMenuFragment.class);
@@ -124,7 +125,7 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
         super.onCreateView(inflater, container, savedInstanceState);
         Log.i(TAG, "ON CREATE VIEW");
         View view = inflater.inflate(R.layout.navigation_container, container, false);
-        navigationContainer = (ViewGroup) view.findViewById(R.id.slide_menu_container);
+        navigationContainer = (ViewGroup) view.findViewById(R.id.slide_menu_scrollable_container);
         loadingBarContainer = navigationContainer.findViewById(R.id.loading_slide_menu_container);
         loadingBarView = (LoadingBarView) loadingBarContainer.findViewById(R.id.loading_bar_view);
         if (loadingBarView != null) {
@@ -377,7 +378,7 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
         //  inflater.inflate(R.layout.navigation_header_component, navigationContainer, true);
 
         // Scrollable container
-        inflater.inflate(R.layout.navigation_scrollable_container, navigationContainer, true);
+        //inflater.inflate(R.layout.slide_menu_scrollable_container, navigationContainer, true);
         LinearLayout scrollableContainer = (LinearLayout) navigationContainer
                 .findViewById(R.id.slide_menu_scrollable_container);
         if(components != null){

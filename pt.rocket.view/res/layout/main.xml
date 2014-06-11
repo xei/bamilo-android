@@ -271,32 +271,14 @@
         </RelativeLayout>
     </RelativeLayout>
 
-    <ScrollView
-        android:id="@+id/menu_layout"
+    <!-- NAVIGATION -->
+
+    <fragment
+        android:id="@+id/fragment_navigation"
+        android:name="pt.rocket.view.fragments.NavigationFragment"
         android:layout_width="280dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@android:color/white" >
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical" >
-
-            <fragment
-                android:id="@+id/fragment_slide_menu"
-                android:name="pt.rocket.view.fragments.SlideMenuFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-            <!--
-         <FrameLayout
-        android:id="@+id/fragment_slide_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-            -->
-
-        </LinearLayout>
-    </ScrollView>
+        android:background="@android:color/white" />
 
 </org.holoeverywhere.widget.DrawerLayout>

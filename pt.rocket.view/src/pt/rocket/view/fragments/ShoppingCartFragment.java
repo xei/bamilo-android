@@ -384,10 +384,10 @@ public class ShoppingCartFragment extends BaseFragment {
         if (!isVisible()) {
             return true;
         }
-        if (getBaseActivity() == null) {
-            getBaseActivity().handleSuccessEvent(bundle);
-            return true;
-        }
+        
+        // Update cart info
+        getBaseActivity().handleSuccessEvent(bundle);
+        
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         //ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
 
@@ -415,10 +415,8 @@ public class ShoppingCartFragment extends BaseFragment {
             boolean isAvailable = bundle.getBoolean(Constants.BUNDLE_RESPONSE_KEY);
             if (isAvailable) {
                 Bundle mBundle = new Bundle();
-                mBundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN,
-                        getString(R.string.mixprop_loginlocationcart));
-                getBaseActivity().onSwitchFragment(FragmentType.ABOUT_YOU, mBundle,
-                        FragmentController.ADD_TO_BACK_STACK);
+                mBundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationcart));
+                getBaseActivity().onSwitchFragment(FragmentType.ABOUT_YOU, mBundle, FragmentController.ADD_TO_BACK_STACK);
             } else {
                 goToWebCheckout();
             }
@@ -429,7 +427,6 @@ public class ShoppingCartFragment extends BaseFragment {
             getBaseActivity().showContentContainer();
             AnalyticsGoogle.get().trackLoadTiming(R.string.gshoppingcart, mBeginRequestMillis);
             displayShoppingCart((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY));
-            getBaseActivity().updateSlidingMenu();
             return true;
         case GET_SHOPPING_CART_ITEMS_EVENT:
             if (((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getCartItems() != null
@@ -444,7 +441,6 @@ public class ShoppingCartFragment extends BaseFragment {
             getBaseActivity().showContentContainer();
             AnalyticsGoogle.get().trackLoadTiming(R.string.gshoppingcart, mBeginRequestMillis);
             displayShoppingCart((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY));
-            getBaseActivity().updateSlidingMenu();
         }
         return true;
     }

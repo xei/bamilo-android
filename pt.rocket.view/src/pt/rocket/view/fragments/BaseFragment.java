@@ -527,26 +527,26 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * #### HANDLE EVENT ####
      */
 
-    /**
-     * Handles a successful event and reflects necessary changes on the UI.
-     * 
-     * @param event
-     *            The successful event with {@link ResponseEvent#getSuccess()} == <code>true</code>
-     */
-    private void handleSuccessEvent(Bundle bundle) {
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        Log.i(TAG, "ON HANDLE SUCCESS EVENT: " + eventType);
-        switch (eventType) {
-        case GET_SHOPPING_CART_ITEMS_EVENT:
-        case ADD_ITEM_TO_SHOPPING_CART_EVENT:
-        case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
-        case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
-            getBaseActivity().updateCartInfo();
-            break;
-        case LOGOUT_EVENT:
-            break;
-        }
-    }
+//    /**
+//     * Handles a successful event and reflects necessary changes on the UI.
+//     * 
+//     * @param event
+//     *            The successful event with {@link ResponseEvent#getSuccess()} == <code>true</code>
+//     */
+//    private void handleSuccessEvent(Bundle bundle) {
+//        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+//        Log.i(TAG, "ON HANDLE SUCCESS EVENT: " + eventType);
+//        switch (eventType) {
+//        case GET_SHOPPING_CART_ITEMS_EVENT:
+//        case ADD_ITEM_TO_SHOPPING_CART_EVENT:
+//        case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
+//        case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
+//            getBaseActivity().updateCartInfo();
+//            break;
+//        case LOGOUT_EVENT:
+//            break;
+//        }
+//    }
 
     /**
      * Handles a failed event and shows dialogs to the user.

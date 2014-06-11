@@ -23,9 +23,12 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/margin_huge"
         android:layout_toLeftOf="@id/category_logo_right"
+        android:ellipsize="end"
+        android:fontFamily="roboto-bold"
+        android:maxLines="1"
+        android:singleLine="true"
         android:textColor="@color/grey_dark"
-        android:textSize="@dimen/text_mid"
-        android:fontFamily="roboto-bold" />
+        android:textSize="@dimen/text_mid" />
 
     <View
         android:id="@+id/divider"

@@ -108,8 +108,8 @@ public class AnalyticsGoogle {
 		
 		mSharedPreferences = mContext.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
 		
-		mTestKey = mSharedPreferences.getString(Darwin.KEY_SELECTED_COUNTRY_GA_ID, null);
-		mLiveKey = mSharedPreferences.getString(Darwin.KEY_SELECTED_COUNTRY_GA_TEST_ID, null);
+		 mLiveKey = mSharedPreferences.getString(Darwin.KEY_SELECTED_COUNTRY_GA_ID, null);
+		 mTestKey = mSharedPreferences.getString(Darwin.KEY_SELECTED_COUNTRY_GA_TEST_ID, null);
 		Log.i(TAG, "code1keys : mTestKey : "+mTestKey+" mLiveKey : "+mLiveKey);
 	}
 

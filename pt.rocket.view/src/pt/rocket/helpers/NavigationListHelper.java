@@ -6,27 +6,36 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import de.akquinet.android.androlog.Log;
-
-import pt.rocket.app.JumiaApplication;
 import pt.rocket.framework.components.NavigationListComponent;
 import pt.rocket.framework.enums.RequestType;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
-
-
 import android.os.Bundle;
 
 public class NavigationListHelper extends BaseHelper {
 
     private static final String TAG = NavigationListHelper.class.getSimpleName();
-    private boolean ignoreSearch = true;
     
+    private static final String SEARCH_TAG = "Search";
+    
+    private static final String BASKET_TAG = "Basket";
+    
+    private static final String CATEGORIES_TAG = "Categories";
+
+    private boolean isToIgnoreSearch = true;
+    
+    private boolean isToIgnoreBasket = true;
+    
+    private boolean isToIgnoreCategories = true;
+    
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.helpers.BaseHelper#generateRequestBundle(android.os.Bundle)
+     */
     @Override
     public Bundle generateRequestBundle(Bundle args) {
-        // TODO Auto-generated method stub
         Bundle bundle = new Bundle();
         bundle.putString(Constants.BUNDLE_URL_KEY, EventType.GET_NAVIGATION_LIST_COMPONENTS_EVENT.action);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
@@ -36,28 +45,45 @@ public class NavigationListHelper extends BaseHelper {
         return bundle;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.helpers.BaseHelper#parseResponseBundle(android.os.Bundle, org.json.JSONObject)
+     */
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
         try {
             ArrayList<NavigationListComponent> components = new ArrayList<NavigationListComponent>();
-            JSONArray dataArray = jsonObject
-                    .getJSONArray(RestConstants.JSON_DATA_TAG);
+            JSONArray dataArray = jsonObject.getJSONArray(RestConstants.JSON_DATA_TAG);
             NavigationListComponent component;
             int dataArrayLenght = dataArray.length();
+            
             for (int i = 0; i < dataArrayLenght; ++i) {
-//                Log.i(TAG, "code1 parsing components ...");
+                
                 component = new NavigationListComponent();
                 component.initialize(dataArray.getJSONObject(i));
 
-                // don't add "Search" to the Navigation List
-                if (ignoreSearch && component != null) {
-                    if ("Search".equalsIgnoreCase(component.getElementText())) {
+                // Don't add "Search" to the Navigation List
+                if (isToIgnoreSearch && component != null) {
+                    if (SEARCH_TAG.equalsIgnoreCase(component.getElementText())) {
                         continue;
                     }
                 }
-
+                
+                // Don't add "Basket" to the Navigation List
+                if (isToIgnoreBasket && component != null) {
+                    if (BASKET_TAG.equalsIgnoreCase(component.getElementText())) {
+                        continue;
+                    }
+                }
+                
+                // Don't add "Categories" to the Navigation List
+                if (isToIgnoreCategories && component != null) {
+                    if (CATEGORIES_TAG.equalsIgnoreCase(component.getElementText())) {
+                        continue;
+                    }
+                }
+                
                 components.add(component);
-//                Log.i(TAG, "code1 parsing component : "+component.getElementText());
             } 
 
             components.add(new NavigationListComponent(0, null, "loginout", null));
@@ -68,14 +94,13 @@ public class NavigationListHelper extends BaseHelper {
             e.printStackTrace();
         }
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_NAVIGATION_LIST_COMPONENTS_EVENT);
-//        long elapsed = System.currentTimeMillis() - JumiaApplication.INSTANCE.timeTrackerMap.get( EventType.GET_NAVIGATION_LIST_COMPONENTS_EVENT);
-//        Log.i("REQUEST", "event type response : "+bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY)+" time spent : "+elapsed);
-//        String trackValue = bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY) + " : "+elapsed;
-//        JumiaApplication.INSTANCE.writeToTrackerFile(trackValue);
         return bundle;
     }
 
-    
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.helpers.BaseHelper#parseErrorBundle(android.os.Bundle)
+     */
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
         android.util.Log.d(TAG, "parseErrorBundle GetNAvListHelper");
@@ -84,6 +109,10 @@ public class NavigationListHelper extends BaseHelper {
         return bundle;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.helpers.BaseHelper#parseResponseErrorBundle(android.os.Bundle)
+     */
     @Override
     public Bundle parseResponseErrorBundle(Bundle bundle) {
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_NAVIGATION_LIST_COMPONENTS_EVENT);

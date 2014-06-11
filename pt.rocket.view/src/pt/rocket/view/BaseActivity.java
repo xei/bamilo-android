@@ -42,7 +42,7 @@ import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.CustomToastView;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.utils.dialogfragments.DialogProgressFragment;
-import pt.rocket.view.fragments.SlideMenuFragment;
+import pt.rocket.view.fragments.NavigationFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -204,7 +204,9 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     private long beginInMillis;
     
     protected SearchView mSearchView;
+    
     protected SearchAutoComplete mSearchAutoComplete;
+    
     protected View mSearchButton;
 
     /**
@@ -271,9 +273,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         } else {
             mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         }
-
-        // Set sliding menu
-        setupNavigationMenu(initialCountry);
 
         isRegistered = true;
         setAppContentLayout();
@@ -415,7 +414,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         invalidateOptionsMenu();
         // Update the sliding menu
         this.action = action != null ? action : NavigationAction.Unknown;
-        updateSlidingMenu();
+        updateNavigationMenu();
         // Update the title of fragment
 
         if (setCheckoutHeader(titleResId));
@@ -430,7 +429,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
     public void updateActionForCountry(NavigationAction action) {
         this.action = action != null ? action : NavigationAction.Unknown;
-        updateSlidingMenu();
+        updateNavigationMenu();
     }
 
     public void setupActionBar() {
@@ -448,7 +447,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     private void setupContentViews() {
         setContentView(activityLayoutId);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerNavigation = findViewById(R.id.menu_layout);
+        mDrawerNavigation = findViewById(R.id.fragment_navigation);
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer,
                 R.string.app_name, R.string.app_name) {
             public void onDrawerClosed(View view) {
@@ -580,107 +579,23 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      */
 
     /**
-     * Method used to set the sliding menu with support for tablet
-     * 
-     * @author sergiopereira
+     * Update the sliding menu XXX
      */
-    private void setupNavigationMenu(boolean onChangeCountry) {
-
-        // Set Behind Content View
-        // setBehindContentView(R.layout.navigation_container_fragments);
-        // Customize sliding menu
-        // SlidingMenu sm = getSlidingMenu();
-        // Set the SlidingMenu width with a percentage of the display width
-        // sm.setBehindWidth((int) (WindowHelper.getWidth(getApplicationContext()) *
-        // getResources().getFraction(R.dimen.navigation_menu_width, 1, 1)));
-        // sm.setShadowWidthRes(R.dimen.navigation_shadow_width);
-        // sm.setShadowDrawable(R.drawable.gradient_sidemenu);
-        // sm.setFadeDegree(0.35f);
-        // sm.setBackgroundColor(getResources().getColor(R.color.sidemenu_background));
-        // sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
-        // Log.i(TAG, "codeW : " + onChangeCountry);
-        // // Validate current orientation and device
-        // if (isTabletInLandscape(this) && !onChangeCountry) {
-        // // Landscape mode
-        // slideMenuInLandscapeMode(sm);
-        // } else {
-        // // Portrait mode
-        // slideMenuInPortraitMode(sm);
-        // }
-    }
-
-    /**
-     * Customize slide menu and action bar for landscape in tablet
-     * 
-     * @param sm
-     * @author sergiopereira
-     */
-    // private void slideMenuInLandscapeMode() {
-    // Log.i(TAG, "SET SLIDE MENU: LANDSCAPE MODE");
-    // // sm.setSlidingEnabled(false);
-    // // sm.setOnOpenedListener(this);
-    // // sm.setOnClosedListener(this);
-    //
-    // getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-    // getSupportActionBar().setHomeButtonEnabled(false);
-    // getSupportActionBar().setLogo(R.drawable.logo_ic);
-    // getSupportActionBar().setDisplayShowCustomEnabled(false);
-    //
-    // // Get the width of main content
-    // int mainContentWidth = (int) (WindowHelper.getWidth(getApplicationContext()) *
-    // getResources().getFraction(R.dimen.navigation_menu_offset, 1, 1));
-    // findViewById(R.id.main_layout).getLayoutParams().width = mainContentWidth;
-    //
-    // // Show Menu
-    // // sm.postDelayed(new Runnable() {
-    // // @Override
-    // // public void run() {
-    // // showMenu();
-    // // }
-    // // }, 0);
-    // }
-    //
-    // /**
-    // * Customize slide menu and action bar for portrait The same for phone or tablet
-    // *
-    // * @param sm
-    // * @author sergiopereira
-    // */
-    // private void slideMenuInPortraitMode() {
-    // Log.i(TAG, "SET SLIDE MENU: PORTRAIT MODE");
-    // // Update with for main content
-    // findViewById(R.id.main_layout).getLayoutParams().width = LayoutParams.MATCH_PARENT;
-    // // Set action bar
-    // setActionBarInPortraitMode();
-    //
-    // // Show content
-    // // sm.postDelayed(new Runnable() {
-    // // @Override
-    // // public void run() {
-    // // showContent();
-    // // }
-    // // }, 0);
-    // }
-
-    /**
-     * Update the sliding menu
-     */
-    public void updateSlidingMenu() {
+    public void updateNavigationMenu() {
         Log.d(TAG, "UPDATE SLIDE MENU");
-        SlideMenuFragment slideMenuFragment = (SlideMenuFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.fragment_slide_menu);
-        if (slideMenuFragment != null)
-            slideMenuFragment.onUpdate();
+        NavigationFragment slideMenuFragment = (NavigationFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_navigation);
+        if (slideMenuFragment != null) slideMenuFragment.onUpdateMenu();
     }
 
     /**
      * Update the sliding menu
      */
-    public void updateSlidingMenuCompletly() {
-        SlideMenuFragment slideMenuFragment = (SlideMenuFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.fragment_slide_menu);
-        if (slideMenuFragment != null)
-            slideMenuFragment.onUpdate();
+    public void updateSlidingMenuCompletly() { 
+        NavigationFragment slideMenuFragment = (NavigationFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_navigation);
+        if (slideMenuFragment != null) {
+            slideMenuFragment.onUpdateCart();
+            slideMenuFragment.onUpdateMenu();
+        }
     }
 
     /**
@@ -829,6 +744,8 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                     menu.performIdentifierAction(R.id.menu_basket, 0);
                 }
             });
+            updateCartInfoInActionBar();
+            
         } else {
             menu.findItem(R.id.menu_basket).setVisible(false);
         }
@@ -935,7 +852,9 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         
         /*
          * Clear and add text listener
+         * TODO : Validate if is necessary remove old listeners
          */
+        // mSearchAutoComplete.clearTextChangedListeners();
         mSearchAutoComplete.addTextChangedListener(new TextWatcher() {
             private Handler handle = new Handler();
             @Override
@@ -1103,6 +1022,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      */
     public void hideActionBarItemsForChangeCountry(EnumSet<MyMenuItem> enumSet){
         // Validate if the current menu options contains the search bar item
+    	// TODO : Validate if is necessary the setIconified
         if (menuItems.contains(MyMenuItem.SEARCH_VIEW)) {
             // Hide search bar
             mSearchView.setIconified(true);
@@ -1246,9 +1166,9 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      *            The number of items that currently the shopping cart holds
      */
     public void updateCartInfo() {
+        Log.d(TAG, "ON UPDATE CART INFO");
         if (JumiaApplication.INSTANCE.getCart() != null) {
-            Log.d(getTag(),
-                    "updateCartInfo value = " + JumiaApplication.INSTANCE.getCart().getCartValue()
+            Log.d(TAG, "updateCartInfo value = " + JumiaApplication.INSTANCE.getCart().getCartValue()
                             + " quantity = "
                             + JumiaApplication.INSTANCE.getCart().getCartCount());
         }
@@ -1257,14 +1177,18 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     }
 
     public void updateCartInfoInActionBar() {
+        Log.d(TAG, "ON UPDATE CART IN ACTION BAR");
         if (tvActionCartCount == null) {
-            Log.w(getTag(), "updateCartInfoInActionBar: cant find quantity in actionbar");
+            Log.w(TAG, "updateCartInfoInActionBar: cant find quantity in actionbar");
             return;
         }
 
-        final String quantity = JumiaApplication.INSTANCE.getCart() == null ? "?"
-                : JumiaApplication.INSTANCE.getCart().getCartCount() > 0 ? String
-                        .valueOf(JumiaApplication.INSTANCE.getCart().getCartCount()) : "";
+        final String quantity = JumiaApplication.INSTANCE.getCart() == null 
+                                ? "?"
+                                : JumiaApplication.INSTANCE.getCart().getCartCount() > 0 
+                                    ? String.valueOf(JumiaApplication.INSTANCE.getCart().getCartCount()) 
+                                    : "";
+           
         tvActionCartCount.post(new Runnable() {
             @Override
             public void run() {
@@ -1275,16 +1199,10 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     }
 
     private void updateCartInfoInNavigation() {
-        Log.d(getTag(), "updateCartInfoInNavigation");
-        SlideMenuFragment slideMenu = (SlideMenuFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.fragment_slide_menu);
-        if (slideMenu == null) {
-            Log.w(getTag(),
-                    "updateCartInfoInNavigation: navigation container empty - doing nothing");
-            return;
-        } else {
-            slideMenu.updateCartInfo();
-        }
+        Log.d(TAG, "ON UPDATE CART IN NAVIGATION");
+        NavigationFragment navigation = (NavigationFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_navigation);
+        if (navigation != null) navigation.onUpdateCart();
+        else Log.w(getTag(), "updateCartInfoInNavigation: navigation container empty - doing nothing");
     }
 
     /**
@@ -1532,7 +1450,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         hideKeyboard();
         // Update cart
         AnalyticsGoogle.get().trackPage(R.string.gnavigation);
-        updateCartInfoInActionBar();
     }
 
     public void onClosed() {
@@ -1634,17 +1551,14 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             break;
         case LOGOUT_EVENT:
             Log.i(TAG, "LOGOUT EVENT");
-            onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE,
-                    FragmentController.ADD_TO_BACK_STACK);
+            onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
             JumiaApplication.INSTANCE.setCart(null);
-            updateSlidingMenu();
+            updateNavigationMenu();
             dismissProgress();
-            
             break;
         case LOGIN_EVENT:
             JumiaApplication.INSTANCE.setLoggedIn(true);
-            triggerContentEventWithNoLoading(new GetShoppingCartItemsHelper(), null,
-                    mIResponseCallback);
+            triggerContentEventWithNoLoading(new GetShoppingCartItemsHelper(), null, mIResponseCallback);
             break;
         }
     }
@@ -1657,13 +1571,13 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      */
     @SuppressWarnings("unchecked")
     public boolean handleErrorEvent(final Bundle bundle) {
-        final EventType eventType = (EventType) bundle
-                .getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        final EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        
         if (eventType == EventType.LOGIN_EVENT){
             JumiaApplication.INSTANCE.setLoggedIn(false);
             JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
-            updateSlidingMenu();
+            updateNavigationMenu();
         }
         
         if( !bundle.getBoolean(Constants.BUNDLE_PRIORITY_KEY) ){

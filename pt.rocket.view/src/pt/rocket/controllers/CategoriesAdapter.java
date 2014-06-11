@@ -37,7 +37,7 @@ public class CategoriesAdapter extends BaseAdapter {
 	private List<Category> categories;
 	private LayoutInflater inflater;
 	private final int CATEGORIES_LAYOUT = R.layout.category;
-	private Activity activity;
+	protected Activity activity;
 
     /**
      * A representation of each item on the list

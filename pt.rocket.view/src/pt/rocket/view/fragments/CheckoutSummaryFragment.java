@@ -603,7 +603,7 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
             Log.d(TAG, "RECEIVED REMOVE_ITEM_FROM_SHOPPING_CART_EVENT");
             mCart = (ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             showOrderSummary();
-            getBaseActivity().updateSlidingMenu();
+            getBaseActivity().updateNavigationMenu();
             getBaseActivity().showContentContainer();
             break;
         default:

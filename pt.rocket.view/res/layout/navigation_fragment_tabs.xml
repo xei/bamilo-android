@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/item_height_normal"
+    android:background="@color/grey_tab_background"
+    android:orientation="horizontal" >
+
+    <org.holoeverywhere.widget.TextView
+        android:id="@+id/navigation_tabs_button_menu"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@drawable/selector_tab_indicator"
+        android:fontFamily="roboto_bold"
+        android:gravity="center"
+        android:text="@string/menu_label_uppercase"
+        android:textColor="@color/grey_middle"
+        android:textSize="@dimen/text_m" />
+
+    <View
+        style="@style/divider_vertical"
+        android:layout_marginBottom="@dimen/margin_small"
+        android:layout_marginTop="@dimen/margin_small"
+        android:background="@color/grey_div_background" />
+
+    <org.holoeverywhere.widget.TextView
+        android:id="@+id/navigation_tabs_button_categories"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@drawable/selector_tab_indicator"
+        android:fontFamily="roboto_bold"
+        android:gravity="center"
+        android:text="@string/categories_label_uppercase"
+        android:textColor="@color/grey_middle"
+        android:textSize="@dimen/text_m" />
+
+</LinearLayout>

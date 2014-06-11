@@ -350,4 +350,8 @@
     <string name="newsletter_female_label">Newsletter Female</string>
     <string name="newsletter_saved_message">Your email notifications settings have been saved.</string>
     
+    <string name="menu_label_uppercase">MENU</string>
+    <string name="categories_label_uppercase">CATEGORIES</string>
+    
+    
 </resources>

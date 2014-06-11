@@ -374,11 +374,11 @@ public class CategoriesContainerFragment extends BaseFragment {
         if(!bundle.getBoolean(USED_CACHED_CATEGORIES, false)){
             AnalyticsGoogle.get().trackLoadTiming(R.string.gcategories, mBeginRequestMillis);
         } else {
-            Log.i(TAG, "code1 received categories from database "+JumiaApplication.INSTANCE.currentCategories.size());
+            Log.i(TAG, "code1 received categories from database "+JumiaApplication.currentCategories.size());
         }
-        JumiaApplication.INSTANCE.currentCategories = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
+        JumiaApplication.currentCategories = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
         
-        if(JumiaApplication.INSTANCE.currentCategories != null && getView() != null){
+        if(JumiaApplication.currentCategories != null && getView() != null){
 //            Log.d(TAG, "code1 received categories size = " + JumiaApplication.INSTANCE.currentCategories.size());
             if(getBaseActivity().isTabletInLandscape(getBaseActivity())){
 //                Log.d(TAG, "code1 going to create fragment createFragmentsForLandscape");
@@ -701,11 +701,14 @@ public class CategoriesContainerFragment extends BaseFragment {
     private void trigger(String categoryUrl){
         Bundle bundle = new Bundle();
         bundle.putString(GetCategoriesHelper.CATEGORY_URL, categoryUrl);
-        JumiaApplication.INSTANCE.currentCategories = CategoriesTableHelper.getCategories();
-        if(JumiaApplication.INSTANCE.currentCategories != null && JumiaApplication.INSTANCE.currentCategories.size() > 0){
+        
+        // TODO : Validate this
+        //JumiaApplication.currentCategories = CategoriesTableHelper.getCategories();
+        
+        if(JumiaApplication.currentCategories != null && JumiaApplication.currentCategories.size() > 0){
             bundle.putBoolean(USED_CACHED_CATEGORIES, true);
             bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_CATEGORIES_EVENT);
-            bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, JumiaApplication.INSTANCE.currentCategories); 
+            bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, JumiaApplication.currentCategories); 
             onSuccessEvent(bundle);
         } else {
             triggerContentEvent(new GetCategoriesHelper(), bundle, mCallBack);    

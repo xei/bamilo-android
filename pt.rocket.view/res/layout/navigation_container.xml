@@ -1,20 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/slide_menu_container"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:background="@android:color/white" >
 
-    <RelativeLayout 
-        android:id="@+id/loading_slide_menu_container"
+    <LinearLayout
+        android:id="@+id/slide_menu_scrollable_container"
         android:layout_width="match_parent"
-        android:layout_height="500dp">
-    	<include
-        	layout="@layout/loading_bar"
-        	android:layout_marginTop="200dp"
-        	android:background="@android:color/transparent"
-        	 />    
-    </RelativeLayout>
-    
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
 
-</LinearLayout>
+        <RelativeLayout
+            android:id="@+id/loading_slide_menu_container"
+            android:layout_width="match_parent"
+            android:layout_height="500dp" >
+
+            <include
+                android:layout_marginTop="200dp"
+                layout="@layout/loading_bar"
+                android:background="@android:color/transparent" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</ScrollView>

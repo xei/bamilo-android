@@ -829,7 +829,10 @@ public class CatalogPageModel {
     }
 
     private void onSuccessEvent(Bundle bundle) {
-        mActivity.handleSuccessEvent(bundle);
+        
+        // TODO : Validate
+        // mActivity.handleSuccessEvent(bundle);
+        
         Log.d(TAG, "ON SUCCESS EVENT");
 
         // Get Products Event

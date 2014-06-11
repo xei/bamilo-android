@@ -66,9 +66,8 @@ public class SubCategoriesAdapter extends BaseAdapter {
      */
     public SubCategoriesAdapter(Activity activity, ArrayList<Category> categories, String categoryName) {
         this.categories = categories;
-
         this.inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        context = activity.getApplicationContext();
+        this.context = activity.getApplicationContext();
         this.categoryName = categoryName;
     }
 

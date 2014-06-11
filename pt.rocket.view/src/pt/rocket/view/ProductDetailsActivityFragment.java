@@ -1208,14 +1208,13 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
             
             return;
         }
-        if(getBaseActivity() == null)
-            return;
-        getBaseActivity().handleSuccessEvent(bundle);
+        
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         Log.d(TAG, "onSuccessEvent: type = " + eventType);
         switch (eventType) {
         case ADD_ITEM_TO_SHOPPING_CART_EVENT:
             isAddingProductToCart = false;
+            // Update cart info
             getBaseActivity().updateCartInfo();
             ((BaseActivity) getActivity()).dismissProgress();
             mAddToCartButton.setEnabled(true);
@@ -1224,8 +1223,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
         case SEARCH_PRODUCT:
         case GET_PRODUCT_EVENT:
             if (((CompleteProduct) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getName() == null) {
-                Toast.makeText(getActivity(), getString(R.string.product_could_not_retrieved),
-                        Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
                 getActivity().onBackPressed();
                 return;
             } else {
