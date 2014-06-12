@@ -42,6 +42,8 @@ import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.CustomToastView;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.utils.dialogfragments.DialogProgressFragment;
+import pt.rocket.utils.dialogfragments.WizardFactory;
+import pt.rocket.utils.dialogfragments.WizardPreferences.WizardType;
 import pt.rocket.view.fragments.NavigationFragment;
 import android.content.Context;
 import android.content.Intent;
@@ -263,8 +265,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
          *           -this-action-after-onsaveinstancestate-h
          */
         if (getIntent().getExtras() != null) {
-            initialCountry = getIntent().getExtras().getBoolean(
-                    ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, false);
+            initialCountry = getIntent().getExtras().getBoolean(ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, false);
             mOnActivityResultIntent = null;
         }
 
@@ -302,6 +303,9 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     public void onResume() {
         super.onResume();
         Log.d(TAG, "ON RESUME");
+        
+        // Validate if navigation is open (on orientation change)
+        if(mDrawerLayout != null && mDrawerNavigation != null && mDrawerLayout.isDrawerOpen(mDrawerNavigation)) showWizardNavigation();
         
         if (!isRegistered) {
             // OLD FRAMEWORK
@@ -579,7 +583,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      */
 
     /**
-     * Update the sliding menu XXX
+     * Update the sliding menu
      */
     public void updateNavigationMenu() {
         Log.d(TAG, "UPDATE SLIDE MENU");
@@ -1450,6 +1454,8 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         hideKeyboard();
         // Update cart
         AnalyticsGoogle.get().trackPage(R.string.gnavigation);
+        // Validate
+        showWizardNavigation();
     }
 
     public void onClosed() {
@@ -2330,6 +2336,13 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      */
     public Set<MyMenuItem> getCurrentMenuOptions() {
         return menuItems;
+    }
+    
+    /**
+     * ##### WIZARDS #####
+     */
+    private void showWizardNavigation() {
+        WizardFactory.show(WizardType.NAVIGATION, getApplicationContext(), getSupportFragmentManager(), null);
     }
     
 }

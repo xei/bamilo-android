@@ -305,7 +305,7 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
             TrackerDelegator.trackCategoryView(getActivity(), categoryTitle, 1);
         }
             
-        subCatAdapter = new SubCategoriesAdapter(getActivity(), child, categoryTitle);
+        subCatAdapter = new SubCategoriesAdapter(getActivity(), child, getString(R.string.categories_name_all) + " " + categoryTitle);
         categoriesList.setAdapter(subCatAdapter);
         categoriesList.setOnItemClickListener(this);
         getBaseActivity().showContentContainer();
@@ -331,7 +331,7 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
         if(isParent){
             TrackerDelegator.trackCategoryView(getActivity(), categoryTitle, 1);
         }
-        subCatAdapter = new SubCategoriesAdapter(getActivity(), child, categoryTitle);
+        subCatAdapter = new SubCategoriesAdapter(getActivity(), child, getString(R.string.categories_name_all) + " " + categoryTitle);
         categoriesList.setAdapter(subCatAdapter);
         categoriesList.setOnItemClickListener(this);
         getBaseActivity().showContentContainer();

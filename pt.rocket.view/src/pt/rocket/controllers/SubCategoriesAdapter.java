@@ -145,7 +145,7 @@ public class SubCategoriesAdapter extends BaseAdapter {
         	
        
         if ( position == 0 )
-        	item.textView.setText( context.getString( R.string.categories_name_all) + " " + categoryName);
+        	item.textView.setText(categoryName);
         else
         	item.textView.setText( categories.get(position - 1).getName());
     	

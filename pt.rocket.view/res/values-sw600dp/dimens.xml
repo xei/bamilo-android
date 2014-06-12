@@ -38,5 +38,9 @@
     <dimen name="product_item_description_height">90dp</dimen>
     <dimen name="product_grid_width">266.67dp</dimen>
     <dimen name="product_item_grid_divider_height">356.67dp</dimen>
+    
+	<!-- WIZARD -->
+	<dimen name="wizard_nav_img_margin_left">80dp</dimen>
+	<dimen name="wizard_nav_img_margin_top">165dp</dimen>
 	
 </resources>

@@ -34,6 +34,10 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
     
     private static NavigationFragment sNavigationFragment;
     
+    private static final int TAB_MENU = 0;
+    
+    private static final int TAB_CATEGORIES = 1;
+    
     private View mTabMenu;
 
     private View mTabCategories;
@@ -127,35 +131,39 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
         mTabCategories.setOnClickListener(this);
         // Set cart
         onUpdateCart();
-        // Show default content
-        mTabMenu.callOnClick();
-        // Validate pre selected tab (onSaveInstanceState)
-        onLoadSavedState(mSavedStateType);
+        // Validate saved state
+        if(mSavedStateType == null) {
+            Log.d(TAG, "SAVED IS NULL");
+            // Show default content
+            onClick(mTabMenu);
+        } else {
+            Log.d(TAG, "SAVED STACK SIZE: " + getChildFragmentManager().getBackStackEntryCount());
+            // Validate pre selected tab (onSaveInstanceState)
+            onLoadSavedState(mSavedStateType);
+        }
     }
-    
     
     /**
      * Load and show the saved state
      * @param mPreSelectedTab
+     * @author sergiopereira
      */
     private void onLoadSavedState(FragmentType mPreSelectedTab) {
-        if(mSavedStateType == null) return;
         // Validate type
         switch (mPreSelectedTab) {
         case NAVIGATION_MENU:
             Log.i(TAG, "ON LOAD SAVED STATE: NAVIGATION_MENU");
-            mTabMenu.callOnClick();
+            setSelectedTab(TAB_MENU);
             break;
         case NAVIGATION_CATEGORIES_LEVEL_1:
             Log.i(TAG, "ON LOAD SAVED STATE: NAVIGATION_CATEGORIES_LEVEL_1");
-            mTabCategories.callOnClick();
+            setSelectedTab(TAB_CATEGORIES);
             break;
         default:
             Log.w(TAG, "WARNING ON LOAD UNKNOWN SAVED STATE");
             break;
         }
     }
-    
     
     /*
      * (non-Javadoc)
@@ -297,6 +305,29 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
             mCartEmpty.setVisibility(View.VISIBLE);
         }
     }
+    
+    /**
+     * Set selected tag with respective tag
+     * @param tab
+     * @author sergiopereira
+     */
+    private void setSelectedTab(int tab) {
+        switch (tab) {
+        case TAB_MENU:
+            Log.i(TAG, "ON SELECT TAB: TAB_MENU");
+            mTabMenu.setSelected(true);
+            mTabCategories.setSelected(false);
+            break;
+        case TAB_CATEGORIES:
+            Log.i(TAG, "ON SELECT TAB: TAB_CATEGORIES");
+            mTabMenu.setSelected(false);
+            mTabCategories.setSelected(true);
+            break;
+        default:
+            Log.w(TAG, "WARINING: ON SELECT UNKNOWN TAB");
+            break;
+        }
+    }
 
     /**
      * Method used to switch between the filter fragments
@@ -337,9 +368,6 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
      * @author sergiopereira
      */
     public void fragmentChildManagerTransition(int container, FragmentType filterType, Fragment fragment, boolean animated, boolean addToBackStack) {
-        
-        //FragmentManager.enableDebugLogging(true);
-        
         FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
         // Fragment tag
         String tag = filterType != null ? filterType.toString() : null;
@@ -410,8 +438,7 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
         // Validate state
         if(mTabMenu.isSelected()) return;
         // Update state
-        mTabMenu.setSelected(true);
-        mTabCategories.setSelected(false);
+        setSelectedTab(TAB_MENU);
         // Switch content
         onSwitchChildFragment(FragmentType.NAVIGATION_MENU, null);
     }
@@ -426,9 +453,7 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
         // Validate state
         if(mTabCategories.isSelected()) return;
         // Update state
-        mTabCategories.setSelected(true);
-        mTabCategories.setPressed(true);
-        mTabMenu.setSelected(false);
+        setSelectedTab(TAB_CATEGORIES);
         // Switch content
         Bundle args = new Bundle();
         args.putSerializable(ConstantsIntentExtra.CATEGORY_LEVEL, FragmentType.NAVIGATION_CATEGORIES_LEVEL_1);

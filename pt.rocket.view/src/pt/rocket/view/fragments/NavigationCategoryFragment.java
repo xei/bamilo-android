@@ -117,6 +117,12 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
+        // Validate saved state
+        if(savedInstanceState != null) {
+            mCurrentCategoryLevel = (FragmentType) savedInstanceState.getSerializable(ConstantsIntentExtra.CATEGORY_LEVEL);
+            mCategoryIndex = savedInstanceState.getInt(ConstantsIntentExtra.SELECTED_CATEGORY_INDEX);
+            mSubCategoryIndex = savedInstanceState.getInt(ConstantsIntentExtra.SELECTED_SUB_CATEGORY_INDEX);
+        }
     }
 
     /*
@@ -151,12 +157,13 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
         // Validate categories on cache
         if (JumiaApplication.currentCategories != null){
             showCategoryList();
-        } else if (mCurrentCategoryLevel == FragmentType.NAVIGATION_CATEGORIES_LEVEL_1) {
+        } else { // if (mCurrentCategoryLevel == FragmentType.NAVIGATION_CATEGORIES_LEVEL_1) {
             triggerGetCategories();
-        } else {
-            Log.w(TAG, "WARNING CATEGORIES IS EMPTY IN : " + mCurrentCategoryLevel.toString());
-            goToParentCategoryFromType(FragmentType.NAVIGATION_CATEGORIES_LEVEL_1);
-        }
+        } 
+//        else {
+//            Log.w(TAG, "WARNING CATEGORIES IS EMPTY IN : " + mCurrentCategoryLevel.toString());
+//            goToParentCategoryFromType(FragmentType.NAVIGATION_CATEGORIES_LEVEL_1);
+//        }
     }
 
     /*
@@ -179,6 +186,19 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");            
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see android.support.v4.app.Fragment#onSaveInstanceState(android.os.Bundle)
+     */
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.i(TAG, "ON SAVE INSTANCE");
+        outState.putSerializable(ConstantsIntentExtra.CATEGORY_LEVEL, mCurrentCategoryLevel);
+        outState.putInt(ConstantsIntentExtra.SELECTED_CATEGORY_INDEX, mCategoryIndex);
+        outState.putInt(ConstantsIntentExtra.SELECTED_SUB_CATEGORY_INDEX, mSubCategoryIndex);
     }
 
     /*
@@ -275,7 +295,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
         String categoryName = currentCategory.getName();
         //Log.i(TAG, "CATEGORY: " + " " + categoryName);
         // Get header layout
-        View headerForBack = createHeader(R.layout.category_inner_back, getString(R.string.all_label) + " " + getString(R.string.categories)); 
+        View headerForBack = createHeader(R.layout.category_inner_back, getString(R.string.categories)); 
         mCategoryList.addHeaderView(headerForBack);
         // Create and set adapter
         mSubCategoryAdapter = new SubCategoriesAdapter(getActivity(), child, categoryName);
@@ -300,7 +320,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
         String categoryName = currentCategory.getName();
         //Log.i(TAG, "CATEGORY: " + " " + categoryName);
         // Create and add the header for back
-        View headerForBack = createHeader(R.layout.category_inner_back, getString(R.string.all_label) + " " + mCategories.get(mCategoryIndex).getName()); 
+        View headerForBack = createHeader(R.layout.category_inner_back, mCategories.get(mCategoryIndex).getName()); 
         mCategoryList.addHeaderView(headerForBack);
         // Set Adapter
         mSubCategoryAdapter = new SubCategoriesAdapter(getActivity(), child, categoryName);

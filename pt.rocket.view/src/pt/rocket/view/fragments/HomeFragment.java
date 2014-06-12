@@ -831,10 +831,8 @@ public class HomeFragment extends BaseFragment {
             super.onStart();
 
             Bundle args = getArguments();
-            LinearLayout view = (LinearLayout) getView()
-                    .findViewById(R.id.view_pager_element_frame);
-            sharedPrefs = getActivity().getSharedPreferences(
-                    ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+            LinearLayout view = (LinearLayout) getView().findViewById(R.id.view_pager_element_frame);
+            sharedPrefs = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
 
             if (args.getInt(ARG_OBJECT) == HomeFragment.initialPosition) {
                 showTips();
@@ -869,8 +867,7 @@ public class HomeFragment extends BaseFragment {
         private void showTips() {
 
             if (sharedPrefs.getBoolean(ConstantsSharedPrefs.KEY_SHOW_TIPS, true)) {
-                RelativeLayout homeTip = (RelativeLayout) getView()
-                        .findViewById(R.id.home_tip);
+                RelativeLayout homeTip = (RelativeLayout) getView().findViewById(R.id.home_tip);
                 homeTip.setVisibility(View.VISIBLE);
                 homeTip.setOnTouchListener(new OnTouchListener() {
 
@@ -878,8 +875,7 @@ public class HomeFragment extends BaseFragment {
                     public boolean onTouch(View v, MotionEvent event) {
                         v.setVisibility(View.GONE);
                         SharedPreferences.Editor editor = sharedPrefs.edit();
-                        editor.putBoolean(ConstantsSharedPrefs.KEY_SHOW_TIPS,
-                                false);
+                        editor.putBoolean(ConstantsSharedPrefs.KEY_SHOW_TIPS,false);
                         editor.commit();
                         return false;
                     }

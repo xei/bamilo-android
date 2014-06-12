@@ -352,6 +352,8 @@
     
     <string name="menu_label_uppercase">MENU</string>
     <string name="categories_label_uppercase">CATEGORIES</string>
+    <string name="wizard_navigation">Quick access to all your favourite categories</string>
+    
     
     
 </resources>

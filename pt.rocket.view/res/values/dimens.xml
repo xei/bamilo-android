@@ -188,5 +188,9 @@
 
     <!-- ACTIONBAR SHERLOCK SEARCH adjustDropDownSizeAndPosition@SearchView -->
     <dimen name="abs__dropdownitem_icon_width">0dp</dimen>
+    
+	<!-- WIZARD -->
+	<dimen name="wizard_nav_img_margin_left">80dp</dimen>
+	<dimen name="wizard_nav_img_margin_top">140dp</dimen>
 
 </resources>
