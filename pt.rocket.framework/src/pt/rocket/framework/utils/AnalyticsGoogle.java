@@ -4,7 +4,6 @@ import java.util.List;
 
 import pt.rocket.framework.Darwin;
 import pt.rocket.framework.R;
-import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.objects.PurchaseItem;
 import pt.rocket.framework.objects.ShoppingCartItem;
 import android.content.Context;
@@ -130,7 +129,8 @@ public class AnalyticsGoogle {
 	private void updateTracker() {
 
 		if (TextUtils.isEmpty(mCurrentKey)) {
-			Log.w("No trackingId for shopId " + mShopId + ". Cant enable tracking.");
+			isEnabled = false;
+			Log.e("WARNING: NO TRACKING ID FOR SHOP ID " + mShopId + " KEY " + mCurrentKey);
 			return;
 		}
 		mTracker = mAnalytics.getTracker(mCurrentKey);
@@ -138,19 +138,19 @@ public class AnalyticsGoogle {
 		Log.i(TAG, "tracking switched");
 	}
 
-	public void setDefaultTracker() {
-		if (!isEnabled) {
-			return;
-		}
-
-		String trackerKey = mContext.getString(R.string.ga_trackingId);
-		if (TextUtils.isEmpty(trackerKey)) {
-			Log.w("No trackingId with resource ga_trackingId found. Cant enable tracking. Sorry.");
-			return;
-		}
-		mCurrentKey = trackerKey;
-		updateTracker();
-	}
+//	public void setDefaultTracker() {
+//		if (!isEnabled) {
+//			return;
+//		}
+//
+//		String trackerKey = mContext.getString(R.string.ga_trackingId);
+//		if (TextUtils.isEmpty(trackerKey)) {
+//			Log.w("No trackingId with resource ga_trackingId found. Cant enable tracking. Sorry.");
+//			return;
+//		}
+//		mCurrentKey = trackerKey;
+//		updateTracker();
+//	}
 
 	public void trackPage(int pageRes) {
 		if (!isEnabled) {
@@ -441,6 +441,7 @@ public class AnalyticsGoogle {
 	}
 	
 	public void sendException(String msg, Exception e, boolean nonFatal) {
+		if (!isEnabled) return;
 		mTracker.sendException(msg, e, nonFatal);
 	}
 
@@ -471,6 +472,8 @@ public class AnalyticsGoogle {
 	 * 
 	 */
 	public void setCampaign(String campaignString) {
+		if (!isEnabled) return;
+		
 		if (campaignString != null) {
             Log.d(TAG, "Google Analytics, Campaign: " + campaignString);
 			mTracker.setCampaign(campaignString);
