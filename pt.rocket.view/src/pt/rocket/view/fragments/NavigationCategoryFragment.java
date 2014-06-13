@@ -4,7 +4,6 @@
 package pt.rocket.view.fragments;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.holoeverywhere.widget.TextView;
 
@@ -44,30 +43,26 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
     private static final int HEADER_FOR_ALL_POSITION = 1;
     
     private static final int NUMBER_OF_HEADERS = 2;
+    
+    private static final int ROOT_CATEGORIES_LEVEL = 0;
 
     private ListView mCategoryList;
-
-    private int mCategoryIndex;
-
-    private int mSubCategoryIndex;
-
-    private List<Category> parent;
-
-    private ArrayList<Category> child;
 
     private Category currentCategory;
     
     private CategoriesAdapter mCategoryAdapter;
 
     private SubCategoriesAdapter mSubCategoryAdapter;
-    
-    private FragmentType mCurrentCategoryLevel = FragmentType.NAVIGATION_CATEGORIES_LEVEL_1;
 
     private LayoutInflater mInflater;
 
     private View mLoadingView;
 
     private View mRetryView;
+
+    private ArrayList<Integer> mTreePath;
+
+    private String mParentCategoryName;
     
     /**
      * Create a new instance and save the bundle data
@@ -80,12 +75,10 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
         // Get data
         if(bundle != null) {
             Log.i(TAG, "ON GET INSTANCE: SAVE DATA");
-            // Get and validate level
-            categoriesFragment.mCurrentCategoryLevel = (FragmentType) bundle.getSerializable(ConstantsIntentExtra.CATEGORY_LEVEL);
-            if(categoriesFragment.mCurrentCategoryLevel == null) categoriesFragment.mCurrentCategoryLevel = FragmentType.NAVIGATION_CATEGORIES_LEVEL_1;
-            // Get cat id and sub cat id
-            categoriesFragment.mCategoryIndex = bundle.getInt(ConstantsIntentExtra.SELECTED_CATEGORY_INDEX);
-            categoriesFragment.mSubCategoryIndex = bundle.getInt(ConstantsIntentExtra.SELECTED_SUB_CATEGORY_INDEX);
+            categoriesFragment.mTreePath = bundle.getIntegerArrayList(ConstantsIntentExtra.CATEGORY_TREE_PATH);
+            categoriesFragment.mParentCategoryName = bundle.getString(ConstantsIntentExtra.CATEGORY_PARENT_NAME);
+            // Validate path
+            if(categoriesFragment.mTreePath == null) categoriesFragment.mTreePath = new ArrayList<Integer>();
         }
         return categoriesFragment;
     }
@@ -119,9 +112,9 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
         Log.i(TAG, "ON CREATE");
         // Validate saved state
         if(savedInstanceState != null) {
-            mCurrentCategoryLevel = (FragmentType) savedInstanceState.getSerializable(ConstantsIntentExtra.CATEGORY_LEVEL);
-            mCategoryIndex = savedInstanceState.getInt(ConstantsIntentExtra.SELECTED_CATEGORY_INDEX);
-            mSubCategoryIndex = savedInstanceState.getInt(ConstantsIntentExtra.SELECTED_SUB_CATEGORY_INDEX);
+            Log.i(TAG, "ON LOAD SAVED STATE");
+            mTreePath = savedInstanceState.getIntegerArrayList(ConstantsIntentExtra.CATEGORY_TREE_PATH);
+            mParentCategoryName = savedInstanceState.getString(ConstantsIntentExtra.CATEGORY_PARENT_NAME);
         }
     }
 
@@ -154,16 +147,9 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
         // Get retry view
         mRetryView = view.findViewById(R.id.campaign_retry);
         view.findViewById(R.id.campaign_retry_button).setOnClickListener(this);
-        // Validate categories on cache
-        if (JumiaApplication.currentCategories != null){
-            showCategoryList();
-        } else { // if (mCurrentCategoryLevel == FragmentType.NAVIGATION_CATEGORIES_LEVEL_1) {
-            triggerGetCategories();
-        } 
-//        else {
-//            Log.w(TAG, "WARNING CATEGORIES IS EMPTY IN : " + mCurrentCategoryLevel.toString());
-//            goToParentCategoryFromType(FragmentType.NAVIGATION_CATEGORIES_LEVEL_1);
-//        }
+        // Validate the cache
+        if (JumiaApplication.currentCategories != null) showCategoryList();
+        else triggerGetCategories(); 
     }
 
     /*
@@ -196,9 +182,8 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Log.i(TAG, "ON SAVE INSTANCE");
-        outState.putSerializable(ConstantsIntentExtra.CATEGORY_LEVEL, mCurrentCategoryLevel);
-        outState.putInt(ConstantsIntentExtra.SELECTED_CATEGORY_INDEX, mCategoryIndex);
-        outState.putInt(ConstantsIntentExtra.SELECTED_SUB_CATEGORY_INDEX, mSubCategoryIndex);
+        outState.putIntegerArrayList(ConstantsIntentExtra.CATEGORY_TREE_PATH, mTreePath);
+        outState.putString(ConstantsIntentExtra.CATEGORY_PARENT_NAME, mParentCategoryName);
     }
 
     /*
@@ -238,95 +223,82 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
     /**
      * ######## LAYOUT ########
      */
-  
+    
     /**
      * Show the category list for current level
      * @author sergiopereira
      */
     private void showCategoryList() {
-        Log.i(TAG, "SHOW CATEGORIES");
-        // Validate the current level
-        switch (mCurrentCategoryLevel) {
-        case NAVIGATION_CATEGORIES_LEVEL_1:
-            Log.d(TAG, "CATEGORIES LEVEL 1");
-            showCategoryLevel1();
-            break;
-        case NAVIGATION_CATEGORIES_LEVEL_2:
-            Log.d(TAG, "CATEGORIES LEVEL 2");
-            showCategoryLevel2();
-            break;
-        case NAVIGATION_CATEGORIES_LEVEL_3:
-            Log.d(TAG, "CATEGORIES LEVEL 3");
-            showCategoryLevel3();
-            break;
-        default:
-            Log.w(TAG, "WARNING ON SHOW CATEGORY UNKNOWN LEVEL");
-            // Show retry
-            showRetry();
-            break;
-        }
+        // Get level
+        int mTreeLevel = mTreePath.size();
+        Log.i(TAG, "SHOW CATEGORY IN LEVEL: " + mTreeLevel);
+        
+        // Case root
+        if(mTreeLevel == ROOT_CATEGORIES_LEVEL) showRootCategories();
+        // Case branch
+        else if(mTreeLevel > ROOT_CATEGORIES_LEVEL) showSubCategory();
+        // Case unknown
+        else showRetry();
+        
         // Show content
         showContent();
     }
-    
+        
     /**
-     * Show category level 1
+     * Show the root categories without headers
      * @author sergiopereira
      */
-    private void showCategoryLevel1() {
+    private void showRootCategories() {
+        Log.i(TAG, "ON SHOW ROOT CATEGORIES");
         mCategoryAdapter = new CategoriesAdapter(getActivity(), JumiaApplication.currentCategories);
         mCategoryList.setAdapter(mCategoryAdapter);
         mCategoryList.setOnItemClickListener(this);
     }
     
     /**
-     * Show category level 2
+     * Show the nested categories with respective headers
      * @author sergiopereira
      */
-    private void showCategoryLevel2() {
-        Log.i(TAG, "ON SHOW CAT LEVEL 2");
-        //  Validate categories
-        ArrayList<Category> mCategories = JumiaApplication.currentCategories;
-        if( mCategories == null || mCategories.size() <= 0 || mCategoryIndex >= mCategories.size()) return;
-        // Get data
-        parent = mCategories;
-        child = mCategories.get(mCategoryIndex).getChildren();
-        currentCategory = parent.get(mCategoryIndex);
-        String categoryName = currentCategory.getName();
-        //Log.i(TAG, "CATEGORY: " + " " + categoryName);
-        // Get header layout
-        View headerForBack = createHeader(R.layout.category_inner_back, getString(R.string.categories)); 
-        mCategoryList.addHeaderView(headerForBack);
-        // Create and set adapter
-        mSubCategoryAdapter = new SubCategoriesAdapter(getActivity(), child, categoryName);
-        mCategoryList.setAdapter(mSubCategoryAdapter);
-        // Set listener
-        mCategoryList.setOnItemClickListener(this);
+    private void showSubCategory() {
+        Log.i(TAG, "ON SHOW NESTED CATEGORIES");
+        try {
+            // Get data
+            currentCategory = findCategoryByPath();
+            ArrayList<Category> child = currentCategory.getChildren();
+            String categoryName = currentCategory.getName();
+            // Create and add the header for back
+            View headerForBack = createHeader(R.layout.category_inner_back, mParentCategoryName); 
+            mCategoryList.addHeaderView(headerForBack);
+            // Set Adapter
+            mSubCategoryAdapter = new SubCategoriesAdapter(getActivity(), child, categoryName);
+            mCategoryList.setAdapter(mSubCategoryAdapter);
+            // Set listener
+            mCategoryList.setOnItemClickListener(this);
+        } catch (NullPointerException e) {
+            Log.w(TAG, "WARNING NPE ON SHOW NESTED CATEGORIES: GOTO ROOT CATEGORIES");
+            goToParentCategoryFromType(FragmentType.NAVIGATION_CATEGORIES_ROOT_LEVEL);
+        }
     }
     
     /**
-     * Show category level 3
+     * Method used to find the current category with respective path
+     * @return Category or null
      * @author sergiopereira
      */
-    private void showCategoryLevel3() {
-        Log.i(TAG, "ON SHOW CAT LEVEL 3");
-        // Valdiate categories
-        ArrayList<Category> mCategories = JumiaApplication.currentCategories;
-        if( mCategories == null || mCategories.size() <= 0 || mCategoryIndex >= mCategories.size()) return;
-        // Get data
-        parent = mCategories.get(mCategoryIndex).getChildren();
-        child = mCategories.get(mCategoryIndex).getChildren().get(mSubCategoryIndex).getChildren();
-        currentCategory = parent.get(mSubCategoryIndex);
-        String categoryName = currentCategory.getName();
-        //Log.i(TAG, "CATEGORY: " + " " + categoryName);
-        // Create and add the header for back
-        View headerForBack = createHeader(R.layout.category_inner_back, mCategories.get(mCategoryIndex).getName()); 
-        mCategoryList.addHeaderView(headerForBack);
-        // Set Adapter
-        mSubCategoryAdapter = new SubCategoriesAdapter(getActivity(), child, categoryName);
-        mCategoryList.setAdapter(mSubCategoryAdapter);
-        // Set listener
-        mCategoryList.setOnItemClickListener(this);
+    private Category findCategoryByPath() {
+        Log.i(TAG, "ON FIND CURRENT CATEGORY");
+        // Get root categories
+        ArrayList<Category> subCategories = JumiaApplication.currentCategories;
+        // Current category
+        Category category =  null;
+        // For each parent position
+        for (Integer nodePosition : mTreePath) {
+            // Get category to return
+            category = subCategories.get(nodePosition);
+            // Get childs to find
+            subCategories = category.getChildren();
+        }
+        return category;
     }
     
     /**
@@ -415,42 +387,84 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Log.d(TAG, "ON ITEM CLICKED: " + position);
-        switch (mCurrentCategoryLevel) {
-        case NAVIGATION_CATEGORIES_LEVEL_1:
-            // Validate item
-            Category category = JumiaApplication.currentCategories.get(position);
-            // Show product list
-            if (!category.getHasChildren()) showProductList(category);
-            // Show level 2
-            else switchToCategoryLevel2(position);
-            break;
-        case NAVIGATION_CATEGORIES_LEVEL_2:
-        case NAVIGATION_CATEGORIES_LEVEL_3:
-            // First header goes to parent
-            if (position == HEADER_FOR_BACK_POSITION) goToParentCategoryFromType(mCurrentCategoryLevel);
-            // Second header goes to all
-            else if (position == HEADER_FOR_ALL_POSITION) showProductList(currentCategory);
-            // Validate item goes to product list or level 3
-            else switchToSubCategoryOrShowProd(position - NUMBER_OF_HEADERS);
+        // Validate tree level
+        int mTreeLevel = mTreePath.size();
+        Log.d(TAG, "TREE LEVEL: " + mTreeLevel);
+        // Validate the level
+        switch (mTreeLevel) {
+        case ROOT_CATEGORIES_LEVEL:
+            onClickRootCategory(position);
             break;
         default:
-            Log.w(TAG, "WARNING: ITEM CLICKED ON UNKNOWN LEVEL");
+            onClickNestedCategory(position);
             break;
         }
     }
     
     /**
-     * Switch to categories level 2
+     * Process the click on a root category
      * @param position
      * @author sergiopereira
      */
-    private void switchToCategoryLevel2(int position){
+    private void onClickRootCategory(int position) {
+        try {
+            // Validate item
+            Category category = JumiaApplication.currentCategories.get(position);
+            // Show product list
+            if (!category.getHasChildren()) showProductList(category);
+            // Show sub level
+            else showNestedCategories(getString(R.string.categories), position);
+        } catch (NullPointerException e) {
+            Log.w(TAG, "WARNING NPE ON CLICK ROOT CATEGORY POS: " + position);   
+        }
+    }
+    
+    /**
+     * Process the click on a nested category
+     * @param position
+     * @author sergiopereira
+     */
+    private void onClickNestedCategory(int position) {
+        try {
+            switch (position) {
+            case HEADER_FOR_BACK_POSITION:
+                // First header goes to parent
+                goToParentCategoryFromType(FragmentType.NAVIGATION_CATEGORIES_SUB_LEVEL);
+                break;
+            case HEADER_FOR_ALL_POSITION:
+                // Second header goes to all
+                showProductList(currentCategory);
+                break;
+            default:
+                // Get real position
+                int pos = position - NUMBER_OF_HEADERS;
+                // Validate item goes to product list or a sub level
+                Category selectedCategory = currentCategory.getChildren().get(pos);
+                // Show product list
+                if (!selectedCategory.getHasChildren()) showProductList(selectedCategory);
+                // Show sub level
+                else showNestedCategories(currentCategory.getName(), pos);
+                break;
+            }
+        } catch (Exception e) {
+            Log.w(TAG, "WARNING NPE ON CLICK NESTED CATEGORY POS: " + position);
+        }
+    }
+    
+    /**
+     * Show nested categories with title name
+     * @param name
+     * @param position
+     * @author sergiopereira
+     */
+    @SuppressWarnings("unchecked")
+    private void showNestedCategories(String name, int position){
+        ArrayList<Integer> newTreePath = (ArrayList<Integer>) mTreePath.clone();
+        newTreePath.add(position);
         Bundle bundle = new Bundle();
-        bundle.putBoolean(CategoriesContainerFragment.UPDATE_CHILD, true);
-        bundle.putInt(ConstantsIntentExtra.SELECTED_CATEGORY_INDEX, position);
-        bundle.putInt(ConstantsIntentExtra.SELECTED_SUB_CATEGORY_INDEX, 0);
-        bundle.putSerializable(ConstantsIntentExtra.CATEGORY_LEVEL, FragmentType.NAVIGATION_CATEGORIES_LEVEL_2);
-        ((NavigationFragment) getParentFragment()).onSwitchChildFragment(FragmentType.NAVIGATION_CATEGORIES_LEVEL_2, bundle);
+        bundle.putIntegerArrayList(ConstantsIntentExtra.CATEGORY_TREE_PATH, newTreePath);
+        bundle.putString(ConstantsIntentExtra.CATEGORY_PARENT_NAME, name);
+        ((NavigationFragment) getParentFragment()).onSwitchChildFragment(FragmentType.NAVIGATION_CATEGORIES_SUB_LEVEL, bundle);
     }
     
     /**
@@ -470,31 +484,6 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
     }
     
     /**
-     * Switch to sub category or product list
-     * @param pos
-     * @author sergiopereira
-     */
-    private void switchToSubCategoryOrShowProd(int pos) {
-        // This condition verifies if we are in the root of the category chosen
-        Category selectedCategory = currentCategory.getChildren().get(pos);
-        Log.d(TAG, "SELECTED CATEGORY: " + selectedCategory.getName());
-        // Validate if exist level 3
-        if (mCurrentCategoryLevel == FragmentType.NAVIGATION_CATEGORIES_LEVEL_2 && selectedCategory.getHasChildren()) {
-            Log.d(TAG, "SELECTED CATEGORY HAS CHILDS: " + selectedCategory.getChildren().size());
-            // Switch to level 3 
-            Bundle bundle = new Bundle();
-            bundle.putInt(ConstantsIntentExtra.SELECTED_CATEGORY_INDEX, mCategoryIndex);
-            bundle.putInt(ConstantsIntentExtra.SELECTED_SUB_CATEGORY_INDEX, pos);
-            bundle.putSerializable(ConstantsIntentExtra.CATEGORY_LEVEL, FragmentType.NAVIGATION_CATEGORIES_LEVEL_3);
-            bundle.putBoolean(CategoriesContainerFragment.UPDATE_CHILD, true);
-            ((NavigationFragment) getParentFragment()).onSwitchChildFragment(FragmentType.NAVIGATION_CATEGORIES_LEVEL_3, bundle);
-        } else {
-            Log.v(TAG, "SELECTED CATEGORY IS EMPTY: SHOW PRODUCTS");
-            showProductList(selectedCategory);
-        }
-    }
-    
-    /**
      * Pop the back stack until the parent from current level type
      * @param type
      * @author sergiopereira
@@ -502,12 +491,11 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
     private void goToParentCategoryFromType(FragmentType type){
         Log.i(TAG, "GOTO PARENT LEVEL FROM: " + type.toString());
         switch (type) {
-        case NAVIGATION_CATEGORIES_LEVEL_1:
-        case NAVIGATION_CATEGORIES_LEVEL_2:
-            ((NavigationFragment) getParentFragment()).goToBackUntil(FragmentType.NAVIGATION_CATEGORIES_LEVEL_1);
+        case NAVIGATION_CATEGORIES_ROOT_LEVEL:
+            ((NavigationFragment) getParentFragment()).goToBackUntil(FragmentType.NAVIGATION_CATEGORIES_ROOT_LEVEL);
             break;
-        case NAVIGATION_CATEGORIES_LEVEL_3:
-            ((NavigationFragment) getParentFragment()).goToBackUntil(FragmentType.NAVIGATION_CATEGORIES_LEVEL_2);
+        case NAVIGATION_CATEGORIES_SUB_LEVEL:
+            ((NavigationFragment) getParentFragment()).goToParentCategory();
             break;
         default:
             Log.w(TAG, "WARNING: ON GOTO PARENT UNKNOWN LEVEL");

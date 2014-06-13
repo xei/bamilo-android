@@ -64,6 +64,8 @@ public class ConstantsIntentExtra {
     public static final String CATEGORY_ID                  = mPackage + "Category";
     public static final String SELECTED_CATEGORY_INDEX      = mPackage + "CategoryIdx";
     public static final String SELECTED_SUB_CATEGORY_INDEX  = mPackage + "SubCategoryIdx";
+    public static final String CATEGORY_TREE_PATH           = mPackage + "CategoryTreePath";
+    public static final String CATEGORY_PARENT_NAME         = mPackage + "CategoryParentName";
 
     // ########### Home ##############
     public static final String FRAGMENT_TYPE                = mPackage + "FragmentType";

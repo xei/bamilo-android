@@ -155,8 +155,8 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
             Log.i(TAG, "ON LOAD SAVED STATE: NAVIGATION_MENU");
             setSelectedTab(TAB_MENU);
             break;
-        case NAVIGATION_CATEGORIES_LEVEL_1:
-            Log.i(TAG, "ON LOAD SAVED STATE: NAVIGATION_CATEGORIES_LEVEL_1");
+        case NAVIGATION_CATEGORIES_ROOT_LEVEL:
+            Log.i(TAG, "ON LOAD SAVED STATE: NAVIGATION_CATEGORIES_ROOT_LEVEL");
             setSelectedTab(TAB_CATEGORIES);
             break;
         default:
@@ -197,7 +197,7 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
         // Case Menu
         if(mTabMenu.isSelected()) outState.putSerializable(TAG, FragmentType.NAVIGATION_MENU);
         // Case Categories
-        else if (mTabCategories.isSelected()) outState.putSerializable(TAG, FragmentType.NAVIGATION_CATEGORIES_LEVEL_1);
+        else if (mTabCategories.isSelected()) outState.putSerializable(TAG, FragmentType.NAVIGATION_CATEGORIES_ROOT_LEVEL);
         // Case Unknown
         else Log.w(TAG, "WARNING UNKNOWN TAB SELECTED");
     }
@@ -347,9 +347,10 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
                 fragmentChildManagerTransition(R.id.navigation_container, filterType, slideMenuFragment, false, true);
             }
             break;
-        case NAVIGATION_CATEGORIES_LEVEL_1:
-        case NAVIGATION_CATEGORIES_LEVEL_2:
-        case NAVIGATION_CATEGORIES_LEVEL_3:
+        case NAVIGATION_CATEGORIES_SUB_LEVEL:
+            // No tag fragment on back stack
+            filterType = null; 
+        case NAVIGATION_CATEGORIES_ROOT_LEVEL:
             NavigationCategoryFragment fragment = NavigationCategoryFragment.getInstance(bundle);
             fragmentChildManagerTransition(R.id.navigation_container, filterType, fragment, true, true);
             break;
@@ -391,6 +392,14 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
      */
     public void goToBackUntil(FragmentType type){
         getChildFragmentManager().popBackStackImmediate(type.toString(), 0);
+    }
+    
+    /**
+     * Pop the back stack
+     * @author sergiopereira
+     */
+    public void goToParentCategory(){
+        getChildFragmentManager().popBackStack();
     }
     
     /**
@@ -456,8 +465,8 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
         setSelectedTab(TAB_CATEGORIES);
         // Switch content
         Bundle args = new Bundle();
-        args.putSerializable(ConstantsIntentExtra.CATEGORY_LEVEL, FragmentType.NAVIGATION_CATEGORIES_LEVEL_1);
-        onSwitchChildFragment(FragmentType.NAVIGATION_CATEGORIES_LEVEL_1, args);
+        args.putSerializable(ConstantsIntentExtra.CATEGORY_LEVEL, FragmentType.NAVIGATION_CATEGORIES_ROOT_LEVEL);
+        onSwitchChildFragment(FragmentType.NAVIGATION_CATEGORIES_ROOT_LEVEL, args);
     }
     
     
