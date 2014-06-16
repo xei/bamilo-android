@@ -12,10 +12,12 @@ import org.holoeverywhere.widget.TextView;
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.ConstantsSharedPrefs;
+import pt.rocket.controllers.TipsPagerAdapter;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.Darwin;
 import pt.rocket.framework.ErrorCode;
+import pt.rocket.framework.database.FavouriteTableHelper;
 import pt.rocket.framework.database.LastViewedTableHelper;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.Errors;
@@ -37,6 +39,7 @@ import pt.rocket.utils.FragmentCommunicatorForProduct;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.ScrollViewWithHorizontal;
+import pt.rocket.utils.TipsOnPageChangeListener;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.utils.dialogfragments.DialogListFragment;
@@ -55,15 +58,14 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageManager;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -150,6 +152,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
     private boolean mHideVariationSelection;
     private TextView mVarianceText;
     private ViewGroup mProductBasicInfoContainer;
+    private ImageView imageIsFavourite;
 
     private long mBeginRequestMillis;
     private ArrayList<String> mSimpleVariants;
@@ -193,6 +196,11 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
     private ArrayList<String> variations;
 
     private String mDeepLinkSimpleSize;
+
+    private TipsPagerAdapter mTipsPagerAdapter;
+
+    private Drawable isFavouriteDrawable;
+    private Drawable isNotFavouriteDrawable;
     
     public ProductDetailsActivityFragment() {
         super(EnumSet.of(EventType.GET_PRODUCT_EVENT), 
@@ -276,11 +284,18 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
         if (showProductDetailsTips) {
             ViewPager viewPagerTips = (ViewPager) mainView.findViewById(R.id.viewpager_tips);
             viewPagerTips.setVisibility(View.VISIBLE);
-            viewPagerTips.setAdapter(new TipsPagerAdapter(getActivity().getLayoutInflater()));
-            viewPagerTips.setOnPageChangeListener(tipsPageChangeListener);
+            int[] tips_pages = { R.layout.tip_swipe_layout, R.layout.tip_tap_layout,
+                    R.layout.tip_favourite_layout, R.layout.tip_share_layout };
+            mTipsPagerAdapter = new TipsPagerAdapter(getActivity().getLayoutInflater(), mainView,
+                    tips_pages, ProductDetailsActivityFragment.this);
+            viewPagerTips.setAdapter(mTipsPagerAdapter);
+            viewPagerTips.setOnPageChangeListener(new TipsOnPageChangeListener(mainView, tips_pages));
             ((LinearLayout) mainView.findViewById(R.id.viewpager_tips_btn_indicator)).setVisibility(View.VISIBLE);
             ((LinearLayout) mainView.findViewById(R.id.viewpager_tips_btn_indicator)).setOnClickListener(this);
         }
+
+        isFavouriteDrawable = mContext.getResources().getDrawable(R.drawable.btn_fav_selected);
+        isNotFavouriteDrawable = mContext.getResources().getDrawable(R.drawable.btn_fav);
 
         return mainView;
     }
@@ -438,6 +453,9 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
 
         mProductBasicInfoContainer = (ViewGroup) mainView.findViewById(R.id.product_basicinfo_container);
         mProductBasicInfoContainer.setOnClickListener(this);
+        
+        imageIsFavourite = (ImageView) mainView.findViewById(R.id.image_is_favourite);
+        imageIsFavourite.setOnClickListener(this);
 
         mProductRatingContainer = (ViewGroup) mainView.findViewById(R.id.product_rating_container);
         mProductRatingContainer.setOnClickListener(this);
@@ -931,7 +949,16 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
         mCompleteProduct = product;
         mCompleteProductUrl = product.getUrl();
         ((BaseActivity) getActivity()).setTitle(mCompleteProduct.getBrand() + " " + mCompleteProduct.getName());
-        
+
+        // Set is favourite image
+        if (FavouriteTableHelper.verifyIfFavourite(mCompleteProduct.getSku())) {
+            mCompleteProduct.getAttributes().put(RestConstants.JSON_IS_FAVOURITE_TAG, Boolean.TRUE.toString());
+            imageIsFavourite.setImageDrawable(isFavouriteDrawable);
+        } else {
+            mCompleteProduct.getAttributes().put(RestConstants.JSON_IS_FAVOURITE_TAG, Boolean.FALSE.toString());
+            imageIsFavourite.setImageDrawable(isNotFavouriteDrawable);
+        }
+
         if (productVariationsFragment == null) {
             productVariationsFragment = ProductVariationsFragment.getInstance();
             Bundle args = new Bundle();
@@ -1104,16 +1131,44 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
             makeCall();
 
         } else if (id == R.id.viewpager_tips_btn_indicator) {
-            SharedPreferences sharedPrefs = getActivity().getSharedPreferences(
-                    ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+            SharedPreferences sharedPrefs = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
             Editor eD = sharedPrefs.edit();
             eD.putBoolean(ConstantsSharedPrefs.KEY_SHOW_PRODUCT_DETAILS_TIPS, false);
             eD.commit();
             getView().findViewById(R.id.viewpager_tips).setVisibility(View.GONE);
-            ((LinearLayout) getView().findViewById(R.id.viewpager_tips_btn_indicator))
-                    .setVisibility(View.GONE);
-        }
+            ((LinearLayout) getView().findViewById(R.id.viewpager_tips_btn_indicator)).setVisibility(View.GONE);
+        } else if (id == R.id.image_is_favourite) {
+            boolean isFavourite = false;
+            Object isFavoriteObject = mCompleteProduct.getAttributes().get(RestConstants.JSON_IS_FAVOURITE_TAG);
+            if (isFavoriteObject != null && isFavoriteObject instanceof String) {
+                isFavourite = Boolean.parseBoolean((String) isFavoriteObject);
+            }
+            if (!isFavourite) {
+                FavouriteTableHelper.insertFavouriteProduct(
+                        mCompleteProduct.getSku(), 
+                        mCompleteProduct.getBrand(), 
+                        mCompleteProduct.getName(), 
+                        mCompleteProduct.getPrice(),
+                        mCompleteProduct.getSpecialPrice(),
+                        mCompleteProduct.getMaxSavingPercentage(),
+                        mCompleteProduct.getUrl(), 
+                        (mCompleteProduct.getImageList().size() == 0) ? "" : mCompleteProduct.getImageList().get(0),
+                        Boolean.getBoolean(mCompleteProduct.getAttributes().get(RestConstants.JSON_IS_NEW_TAG)),
+                        mCompleteProduct.getSimples(),
+                        mCompleteProduct.getVariations(),
+                        mCompleteProduct.getKnownVariations());
+                mCompleteProduct.getAttributes().put(RestConstants.JSON_IS_FAVOURITE_TAG, Boolean.TRUE.toString());
+                imageIsFavourite.setImageDrawable(isFavouriteDrawable);
 
+                Toast.makeText(mContext, "Item added to My Favourites", Toast.LENGTH_SHORT).show();
+            } else {
+                FavouriteTableHelper.removeFavouriteProduct(mCompleteProduct.getSku());
+                mCompleteProduct.getAttributes().put(RestConstants.JSON_IS_FAVOURITE_TAG, Boolean.FALSE.toString());
+                imageIsFavourite.setImageDrawable(isNotFavouriteDrawable);
+
+                Toast.makeText(mContext, "Item removed from My Favourites", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     private void makeCall() {
@@ -1142,35 +1197,6 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
         
         dialogListFragment.show(getFragmentManager(), null);
     }
-
-    OnPageChangeListener tipsPageChangeListener = new OnPageChangeListener() {
-
-        @Override
-        public void onPageSelected(int position) {
-            ImageView indicator1 = (ImageView) getView().findViewById(R.id.indicator1);
-            ImageView indicator2 = (ImageView) getView().findViewById(R.id.indicator2);
-
-            switch (position) {
-            case 0:
-                indicator1.setImageResource(R.drawable.bullit_showing);
-                indicator2.setImageResource(R.drawable.bullit);
-                break;
-            case 1:
-                indicator1.setImageResource(R.drawable.bullit);
-                indicator2.setImageResource(R.drawable.bullit_showing);
-                break;
-
-            default:
-                break;
-            }
-        }
-
-        @Override
-        public void onPageScrolled(int arg0, float arg1, int arg2) { }
-
-        @Override
-        public void onPageScrollStateChanged(int arg0) { }
-    };
 
     /*
      * (non-Javadoc)
@@ -1208,13 +1234,14 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
             
             return;
         }
-        
+        if(getBaseActivity() == null)
+            return;
+        getBaseActivity().handleSuccessEvent(bundle);
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         Log.d(TAG, "onSuccessEvent: type = " + eventType);
         switch (eventType) {
         case ADD_ITEM_TO_SHOPPING_CART_EVENT:
             isAddingProductToCart = false;
-            // Update cart info
             getBaseActivity().updateCartInfo();
             ((BaseActivity) getActivity()).dismissProgress();
             mAddToCartButton.setEnabled(true);
@@ -1223,7 +1250,8 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
         case SEARCH_PRODUCT:
         case GET_PRODUCT_EVENT:
             if (((CompleteProduct) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getName() == null) {
-                Toast.makeText(getActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), getString(R.string.product_could_not_retrieved),
+                        Toast.LENGTH_LONG).show();
                 getActivity().onBackPressed();
                 return;
             } else {
@@ -1334,47 +1362,6 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
                 return;
             }
         }
-    }
-
-    private class TipsPagerAdapter extends PagerAdapter {
-
-        private int[] tips_pages = { R.layout.tip_swipe_layout, R.layout.tip_tap_layout };
-
-        private LayoutInflater mLayoutInflater;
-
-        public TipsPagerAdapter(LayoutInflater layoutInflater) {
-            mLayoutInflater = layoutInflater;
-        }
-
-        @Override
-        public int getCount() {
-            return tips_pages.length;
-        }
-
-        @Override
-        public boolean isViewFromObject(View view, Object arg1) {
-            return view == ((View) arg1);
-        }
-
-        @Override
-        public Object instantiateItem(ViewGroup container, int position) {
-            
-            if (position != 0 && container.getChildCount() <= 0) {
-                View view = mLayoutInflater.inflate(tips_pages[0], container, false);
-                ((ViewPager) container).addView(view, 0);    
-            }
-            
-            View view = mLayoutInflater.inflate(tips_pages[position], container, false);
-            ((ViewPager) container).addView(view, position);    
-
-            return view;
-        }
-
-        @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
-            ((ViewPager) container).removeView(getView().findViewById(tips_pages[position]));
-        }
-
     }
 
     @Override
