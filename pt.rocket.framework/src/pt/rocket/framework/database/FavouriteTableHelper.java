@@ -30,6 +30,8 @@ public class FavouriteTableHelper {
 	// Table Name
 	public static final String TABLE = "favourite";
 
+	// TODO : CONSTANTS
+	
 	// Table Rows
 	public static final String _ID = "id";
 	public static final String _FAVOURITE_SKU = "favourite_sku";
@@ -281,6 +283,17 @@ public class FavouriteTableHelper {
 		db.close();
 		return result;
 	}
+	
+	public static ArrayList<String> getIncompleteFavouriteList() { // XXX
+		ArrayList<String> incomplete = new ArrayList<String>();
+		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getReadableDatabase();
+		String query = "SELECT " + _FAVOURITE_URL + " FROM " + TABLE + " WHERE " + _FAVOURITE_IS_COMPLETE + " == 1";
+		Cursor cursor = db.rawQuery(query, null);
+		if (cursor != null && cursor.getCount() > 0) {
+			incomplete.add(cursor.getString(0));
+		}
+		return incomplete;
+	}
 
 	/**
 	 * Get the favourite list of entries
@@ -290,9 +303,8 @@ public class FavouriteTableHelper {
 	 */
 	public static ArrayList<Favourite> getFavouriteList() {
 		ArrayList<Favourite> favourites = new ArrayList<Favourite>();
-		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
-		String query = new StringBuilder("select * from ").append(TABLE)
-				.append(" order by ").append(_ID).append(" desc").toString();
+		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getReadableDatabase();
+		String query = new StringBuilder("select * from ").append(TABLE).append(" order by ").append(_ID).append(" desc").toString();
 		Log.i(TAG, "SQL RESULT query :  " + query);
 		Cursor cursor = db.rawQuery(query, null);
 		if (cursor != null && cursor.getCount() > 0) {
