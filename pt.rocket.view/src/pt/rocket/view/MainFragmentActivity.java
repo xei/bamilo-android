@@ -31,6 +31,7 @@ import pt.rocket.view.fragments.CheckoutPollAnswerFragment;
 import pt.rocket.view.fragments.CheckoutShippingMethodsFragment;
 import pt.rocket.view.fragments.CheckoutThanksFragment;
 import pt.rocket.view.fragments.CheckoutWebFragment;
+import pt.rocket.view.fragments.FavouritesFragment;
 import pt.rocket.view.fragments.HeadlessAddToCartFragment;
 import pt.rocket.view.fragments.HomeFragment;
 import pt.rocket.view.fragments.MyAccountEmailNotificationFragment;
@@ -331,6 +332,9 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             break;
         case EMAIL_NOTIFICATION:
             fragment = MyAccountEmailNotificationFragment.newInstance(bundle);
+            break;
+        case FAVOURITE_LIST:
+            fragment = FavouritesFragment.newInstance(bundle);
             break;
             
         default:
