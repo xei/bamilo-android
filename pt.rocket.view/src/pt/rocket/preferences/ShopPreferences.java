@@ -5,6 +5,7 @@ package pt.rocket.preferences;
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.framework.Darwin;
+import pt.rocket.framework.database.FavouriteTableHelper;
 import pt.rocket.framework.database.LastViewedTableHelper;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.view.R;
@@ -43,6 +44,7 @@ public class ShopPreferences {
     public static void setShopId(Context context, int shopPosition) {
         JumiaApplication.INSTANCE.cleanAllPreviousCountryValues();
         LastViewedTableHelper.deleteAllLastViewed();
+        FavouriteTableHelper.deleteAllFavourite();
         
         System.gc();
         SharedPreferences sharedPrefs = context.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
