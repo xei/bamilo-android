@@ -66,11 +66,38 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <FrameLayout
-                android:id="@+id/image_gallery_container"
+            <RelativeLayout
+                android:id="@+id/image_container"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:layout_below="@+id/variations_container" />
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/variations_container" >
+
+                <FrameLayout
+                    android:id="@+id/image_gallery_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp" />
+
+                <ImageView
+                    android:id="@+id/image_share"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="@dimen/margin_small"
+                    android:layout_marginTop="@dimen/margin_small"
+                    android:src="@drawable/selector_share" />
+
+                <ImageView
+                    android:id="@+id/image_is_favourite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerInParent="false"
+                    android:layout_marginRight="@dimen/margin_mid"
+                    android:layout_marginTop="@dimen/margin_mid"
+                    android:src="@drawable/btn_fav" />
+            </RelativeLayout>
 
             <View
                 style="@style/divider_horizontal"
@@ -215,7 +242,7 @@
                 android:id="@+id/product_specifications_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-            
+
             <FrameLayout
                 android:id="@+id/product_related_container"
                 android:layout_width="match_parent"
@@ -223,72 +250,10 @@
         </LinearLayout>
     </pt.rocket.utils.ScrollViewWithHorizontal>
 
-    <LinearLayout
-        android:id="@+id/viewpager_tips_btn_indicator"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="#90000000"
-        android:orientation="vertical"
-        android:paddingBottom="26.4dp"
-        android:visibility="gone" >
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:gravity="center_horizontal" >
-
-            <ImageView
-                android:id="@+id/indicator1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="13.2dp"
-                android:src="@drawable/bullit_showing" />
-
-            <ImageView
-                android:id="@+id/indicator2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/bullit" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/tips_got_it"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:gravity="center_horizontal" >
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
-
-                <ImageView
-                    android:id="@+id/tips_got_it_img"
-                    android:layout_width="200dp"
-                    android:layout_height="50dp"
-                    android:background="@color/orange_basic" />
-
-                <org.holoeverywhere.widget.TextView
-                    android:id="@+id/tips_got_it_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:text="@string/got_it"
-                    android:textColor="#fff"
-                    android:textSize="@dimen/text_large"
-                    android:textStyle="bold" />
-            </RelativeLayout>
-        </LinearLayout>
-    </LinearLayout>
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewpager_tips"
+    <include
+        android:id="@+id/tips_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/viewpager_tips_btn_indicator"
-        android:background="#90000000"
-        android:visibility="gone" />
+        layout="@layout/tips" />
 
 </RelativeLayout>

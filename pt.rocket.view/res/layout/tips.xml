@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tips_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:id="@+id/viewpager_tips_btn_indicator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#90000000"
+        android:orientation="vertical"
+        android:paddingBottom="26.4dp"
+        android:visibility="gone" >
+
+        <LinearLayout
+            android:id="@+id/indicators_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:gravity="center_horizontal" />
+
+        <!--com.viewpagerindicator.CirclePageIndicator
+            android:id="@+id/tips_indicator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/viewpager"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp" /-->
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/tips_got_it_img"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/orange_basic"
+            android:gravity="center"
+            android:text="@string/got_it"
+            android:textColor="#fff"
+            android:textSize="@dimen/text_large"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager_tips"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/viewpager_tips_btn_indicator"
+        android:background="#90000000"
+        android:visibility="gone" />
+
+</RelativeLayout>

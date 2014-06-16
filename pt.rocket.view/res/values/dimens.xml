@@ -193,4 +193,19 @@
 	<dimen name="wizard_nav_img_margin_left">80dp</dimen>
 	<dimen name="wizard_nav_img_margin_top">140dp</dimen>
 
+    <!--  FAVOURITE WIZARD -->
+    <dimen name="product_tip_top_margin">0dp</dimen>
+    <dimen name="product_tip_side_margin">5dp</dimen>
+    <dimen name="product_tip_variations_top_margin">65dp</dimen>
+    <dimen name="product_tip_padding">52.8dp</dimen>
+    <dimen name="product_tip_padding_side">15dp</dimen>
+    
+    <!-- MY PROFILE LISTS -->
+    <dimen name="my_profile_lists_top_margin">33dp</dimen>
+    <dimen name="my_profile_lists_drawable_padding">26.67dp</dimen>
+    
+    <!--  FAVOURITES -->
+    <dimen name="favourite_item_top_margin">13.33dp</dimen>
+    <dimen name="favourite_item_height">146.67dp</dimen>
+
 </resources>

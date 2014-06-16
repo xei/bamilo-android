@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.holoeverywhere.widget.TextView;
+import org.holoeverywhere.widget.Toast;
 
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.framework.Darwin;
+import pt.rocket.framework.database.FavouriteTableHelper;
 import pt.rocket.framework.objects.Product;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.RocketImageLoader;
@@ -18,6 +20,7 @@ import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -67,6 +70,9 @@ public class ProductsListAdapter extends BaseAdapter {
 
     private Drawable isNewDrawable;
 
+    private Drawable isFavouriteDrawable;
+    private Drawable isNotFavouriteDrawable;
+
     private boolean showList;
 
     private int numColumns = 1;
@@ -87,6 +93,7 @@ public class ProductsListAdapter extends BaseAdapter {
         public TextView reviews;
         public TextView brand;
         public ImageView isNew;
+        public ImageView isFavourite;
 
         // /*
         // * (non-Javadoc)
@@ -133,6 +140,8 @@ public class ProductsListAdapter extends BaseAdapter {
         if(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_LANG_CODE, "en").contains("fr")){
             this.isNewDrawable = context.getResources().getDrawable(R.drawable.img_newarrival_fr);
         }
+        this.isFavouriteDrawable = context.getResources().getDrawable(R.drawable.btn_fav_selected);
+        this.isNotFavouriteDrawable = context.getResources().getDrawable(R.drawable.btn_fav);
 
     }
 
@@ -248,6 +257,8 @@ public class ProductsListAdapter extends BaseAdapter {
             prodItem.brand = (TextView) itemView.findViewById(R.id.item_brand);
             // Get is new
             prodItem.isNew= (ImageView) itemView.findViewById(R.id.image_is_new);
+            // Get is favourite
+            prodItem.isFavourite = (ImageView) itemView.findViewById(R.id.image_is_favourite);
             
             // stores the item representation on the tag of the view for later
             // retrieval
@@ -259,7 +270,7 @@ public class ProductsListAdapter extends BaseAdapter {
         AQuery aq = new AQuery(itemView);
         
         String imageURL = "";
-        Product product = products.get(position);
+        final Product product = products.get(position);
         if (product.getImages().size() > 0) {
             imageURL = product.getImages().get(0).getUrl();
         }
@@ -304,6 +315,53 @@ public class ProductsListAdapter extends BaseAdapter {
         } else {
             prodItem.isNew.setVisibility(View.GONE);
         }
+        
+        if (FavouriteTableHelper.verifyIfFavourite(product.getSKU())) {
+            product.getAttributes().setFavourite(true);
+        } else {
+            product.getAttributes().setFavourite(false);
+        }
+        
+        // Set is favourite image
+        if (product.getAttributes().isFavourite()) {
+            prodItem.isFavourite.setImageDrawable(isFavouriteDrawable);
+        } else {
+            prodItem.isFavourite.setImageDrawable(isNotFavouriteDrawable);
+        }
+        prodItem.isFavourite.setOnClickListener(new OnClickListener() {
+            Toast toast = Toast.makeText(context, "Toast", Toast.LENGTH_SHORT);
+
+            @Override
+            public void onClick(View v) {
+                boolean isFavourite = product.getAttributes().isFavourite();
+                if (!isFavourite) {
+                    FavouriteTableHelper.insertPartialFavouriteProduct(
+                            product.getSKU(), 
+                            product.getBrand(),
+                            product.getName(), 
+                            product.getPrice(),
+                            product.getSpecialPrice(), 
+                            product.getMaxSavingPercentage(),
+                            product.getUrl(),
+                            (product.getImages().size() == 0) ? "" : product.getImages().get(0).getUrl(), 
+                            product.getAttributes().isNew());
+                    product.getAttributes().setFavourite(true);
+                    prodItem.isFavourite.setImageDrawable(isFavouriteDrawable);
+
+                    toast.cancel();
+                    toast.setText("Item added to My Favourites");
+                    toast.show();
+                } else {
+                    FavouriteTableHelper.removeFavouriteProduct(product.getSKU());
+                    product.getAttributes().setFavourite(false);
+                    prodItem.isFavourite.setImageDrawable(isNotFavouriteDrawable);
+
+                    toast.cancel();
+                    toast.setText("Item removed from My Favourites");
+                    toast.show();
+                }
+            }
+        });
         
         // Set brand
         prodItem.brand.setText(product.getBrand().toUpperCase());

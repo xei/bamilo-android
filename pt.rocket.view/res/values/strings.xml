@@ -16,7 +16,7 @@
     <string name="home">Home</string>
     <string name="products">Products</string>
     <string name="brands">Brands</string>
-    <string name="my_account">My Account</string>
+    <string name="my_account">Settings</string>
     <string name="sign_in">Sign In</string>
     <string name="sign_out">Sign Out</string>
     <string name="categories">Categories</string>
@@ -47,7 +47,6 @@
     <string name="categories_title">Search Categories</string>
     <string name="categories_name_all">All for</string>
     <string name="categories_toplevel_title">All Categories</string>
-    <string name="account_title">My Account</string>
     <string name="account_name">My Account</string>
     <string name="myaccount_userdata">User Data</string>
     <string name="personal_data_title">Account Data</string>
@@ -224,7 +223,7 @@
     <string name="tip_tap_text">Tap to open the product gallery</string>
     <string name="tip_swipe_text">Swipe left or right to\nview different images </string>
     <string name="tip_pinch_text">Pinch to zoom</string>
-    <string name="products_tip_text">Swipe left or right to change the Sort type</string>
+    <string name="products_tip_swipe_text">Swipe left or right to change the Sort type</string>
     <string name="go_shop_text">Shop Now</string>
     <string name="promotion_tip_tap_text">Tap the box above to copy the code to the clipboard and keep it handy for checkout</string>
     <string name="copied_to_clipboard">Copied to clipboard</string>
@@ -354,6 +353,12 @@
     <string name="categories_label_uppercase">CATEGORIES</string>
     <string name="wizard_navigation">Quick access to all your favourite categories</string>
     
+    <string name="my_profile">My Profile</string>
+    <string name="my_favourites">My Favourites</string>
+    <string name="recent_searches">Recent Searches</string>
     
+    <string name="tip_share_text">Click to share this product!</string>
+    <string name="tip_favourite_text">Click to favourite this product \nand view the full list  in My Profile!</string>
+    <string name="products_tip_favourite_text">Swipe left or right to change the Sort type</string>
     
 </resources>
