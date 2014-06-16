@@ -43,6 +43,7 @@ public class ProductAttributes implements IJSONSerializable, Parcelable {
     private Integer reviews;
     private Double rating;
 	private boolean isNew;
+	private boolean isFavourite;
 
     /**
      * ProductAttributes empty constructor
@@ -167,6 +168,24 @@ public class ProductAttributes implements IJSONSerializable, Parcelable {
 		this.isNew = isNew;
 	}
 
+	/**
+	 * Is favourite flag
+	 * 
+	 * @return true/false
+	 */
+	public boolean isFavourite() {
+		return isFavourite;
+	}
+
+	/**
+	 * Set the is favourite flag
+	 * 
+	 * @param isFavourite
+	 */
+	public void setFavourite(boolean isFavourite) {
+		this.isFavourite = isFavourite;
+	}
+
 	/*
      * (non-Javadoc)
      * 
@@ -258,6 +277,9 @@ public class ProductAttributes implements IJSONSerializable, Parcelable {
             
             // Get the is new JSON tag
             isNew = jsonObject.optBoolean(RestConstants.JSON_IS_NEW_TAG, false);
+
+            // Get the is favourite JSON tag
+            isFavourite = jsonObject.optBoolean(RestConstants.JSON_IS_FAVOURITE_TAG, false);
 
         } catch (JSONException e) {
             Log.e(TAG, "Error Parsing the product json", e);

@@ -3,14 +3,12 @@ package pt.rocket.framework.objects;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import de.akquinet.android.androlog.Log;
-
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.ImageResolutionHelper;
 import pt.rocket.framework.utils.LogTagHelper;
+import android.os.Parcel;
+import android.os.Parcelable;
+import de.akquinet.android.androlog.Log;
 
 public class Variation implements IJSONSerializable, Parcelable {
 	private static final String TAG = LogTagHelper.create(Variation.class);
@@ -58,9 +56,17 @@ public class Variation implements IJSONSerializable, Parcelable {
      * @see pt.rocket.framework.objects.IJSONSerializable#toJSON()
      */
     @Override
-    public JSONObject toJSON() {
-        return null;
-    }
+	public JSONObject toJSON() {
+		JSONObject jsonObject = new JSONObject();
+		try {
+			jsonObject.put(RestConstants.JSON_SKU_TAG, sku);
+			jsonObject.put(RestConstants.JSON_LINK_TAG, link);
+			jsonObject.put(RestConstants.JSON_IMAGE_TAG, image);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return jsonObject;
+	}
 	
 	public String getSKU() {
 		return sku;

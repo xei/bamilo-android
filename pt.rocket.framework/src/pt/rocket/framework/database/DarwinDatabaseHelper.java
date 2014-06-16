@@ -95,6 +95,7 @@ public class DarwinDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(RelatedItemsTableHelper.CREATE);
         db.execSQL(SearchRecentQueriesTableHelper.CREATE);
         db.execSQL(CountriesConfigsTableHelper.CREATE);
+        db.execSQL(FavouriteTableHelper.CREATE);
     }
 
     /* (non-Javadoc)
@@ -110,6 +111,7 @@ public class DarwinDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_DROP_TABLE + RelatedItemsTableHelper.TABLE_RELATED);
         db.execSQL(SearchRecentQueriesTableHelper.DROP);
         db.execSQL(CountriesConfigsTableHelper.DROP);
+        db.execSQL(SQL_DROP_TABLE + FavouriteTableHelper.TABLE);
         // Create tables again
         onCreate(db);
     }
@@ -132,6 +134,7 @@ public class DarwinDatabaseHelper extends SQLiteOpenHelper {
         db.getWritableDatabase().execSQL(SQL_DROP_TABLE + RelatedItemsTableHelper.TABLE_RELATED);
         db.getWritableDatabase().execSQL(SearchRecentQueriesTableHelper.DROP);
         db.getWritableDatabase().execSQL(CountriesConfigsTableHelper.DROP);
+        db.getWritableDatabase().execSQL(SQL_DROP_TABLE + FavouriteTableHelper.TABLE);
         // Create
     	db.getWritableDatabase().execSQL(SQL_CREATE_MAIN);
         db.getWritableDatabase().execSQL(SectionsTablesHelper.CREATE);
@@ -140,5 +143,6 @@ public class DarwinDatabaseHelper extends SQLiteOpenHelper {
         db.getWritableDatabase().execSQL(RelatedItemsTableHelper.CREATE);
         db.getWritableDatabase().execSQL(SearchRecentQueriesTableHelper.CREATE);
         db.getWritableDatabase().execSQL(CountriesConfigsTableHelper.CREATE);
+        db.getWritableDatabase().execSQL(FavouriteTableHelper.CREATE);
     }
 }
