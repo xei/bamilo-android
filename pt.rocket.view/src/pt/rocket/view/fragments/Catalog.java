@@ -285,6 +285,12 @@ public class Catalog extends BaseFragment implements OnClickListener {
         super.onDestroy();
         Log.i(TAG, "onDestroy");
     }
+    
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.e(TAG, "onDestroyView");
+    }
 
     /*
      * ######## CATALOG FILTER ######## TODO : Add here more filter methods
@@ -785,6 +791,8 @@ public class Catalog extends BaseFragment implements OnClickListener {
             // Update the current view page with the current list of products rendered on a
             // different layout without calling a new request
             getCurrentCatalogPageModel(mSelectedPageIndex).switchLayout(showList, totalUpdates);
+            getCurrentCatalogPageModel(mSelectedPageIndex - 1).switchLayout(showList, totalUpdates);
+            getCurrentCatalogPageModel(mSelectedPageIndex + 1).switchLayout(showList, totalUpdates);
         }
     }
 
@@ -943,7 +951,6 @@ public class Catalog extends BaseFragment implements OnClickListener {
                         currentPage.setGridView((GridView) currentPage.getRelativeLayout().findViewById(R.id.middle_productslist_list), isTabletInLandscape);
 
                         currentPage.setLinearLayoutLb((LinearLayout) currentPage.getRelativeLayout().findViewById(R.id.loading_view_pager));
-                        currentPage.setRelativeLayoutPt((RelativeLayout) currentPage.getRelativeLayout().findViewById(R.id.products_tip));
                         // initialize view, setting variables to adjust the layout and filtering details
                         currentPage.setVariables(productsURL, searchQuery, navigationPath, title,
                                 navigationSource, mCatalogFilterValues, showList, totalUpdates);
