@@ -13,7 +13,9 @@ import pt.rocket.framework.objects.ShoppingCart;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
+import android.content.ContentValues;
 import android.os.Bundle;
+import android.text.TextUtils;
 
 /**
  * Get Shopping Cart Items helper
@@ -32,6 +34,8 @@ public class GetShoppingCartAddItemHelper extends BaseHelper {
     public static final String PRODUCT_QT_TAG = "quantity";
     
     public static final String ADD_ITEM = "add_item";
+    
+    private String skuAddedItem = "";
  
     @Override
     public Bundle generateRequestBundle(Bundle args) {
@@ -39,7 +43,15 @@ public class GetShoppingCartAddItemHelper extends BaseHelper {
         bundle.putString(Constants.BUNDLE_URL_KEY, EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT.action);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.POST);
-        bundle.putParcelable(Constants.BUNDLE_FORM_DATA_KEY, args.getParcelable(ADD_ITEM));
+        // save PRODUCT_TAG on skuAddedItem
+        ContentValues data = args.getParcelable(ADD_ITEM);
+        if (data != null) {
+            String sku = data.getAsString(PRODUCT_TAG);
+            if (!TextUtils.isEmpty(sku)) {
+                skuAddedItem = (String) sku;
+            }
+        }
+        bundle.putParcelable(Constants.BUNDLE_FORM_DATA_KEY, data);
         bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT);
         return bundle;
@@ -63,6 +75,10 @@ public class GetShoppingCartAddItemHelper extends BaseHelper {
 //        Log.i("REQUEST", "event type response : "+bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY)+" time spent : "+elapsed);
 //        String trackValue = bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY) + " : "+elapsed;
 //        JumiaApplication.INSTANCE.writeToTrackerFile(trackValue);
+        // get saved PRODUCT_TAG
+        if (!TextUtils.isEmpty(skuAddedItem)) {
+            bundle.putSerializable(Constants.BUNDLE_METADATA_KEY, skuAddedItem);
+        }
         return bundle;
     }
 

@@ -25,6 +25,39 @@
         android:title="@string/search_label"
         android:visible="false"/>
     <item
+        android:id="@+id/menu_myprofile"
+        android:icon="@drawable/selector_navigation_profile"
+        android:showAsAction="always"
+        android:title="@string/my_profile">
+        <menu>
+            <item
+                android:id="@+id/menu_signin"
+                android:icon="@drawable/ico_dropdown_signin"
+                android:showAsAction="always"
+                android:title="@string/sign_in"/>
+            <item
+                android:id="@+id/menu_favourites"
+                android:icon="@drawable/ico_dropdown_favourites"
+                android:showAsAction="always"
+                android:title="Favourites"/>
+            <!--
+            android:actionLayout="@layout/menu_favourites_button"
+            android:icon="@drawable/ico_dropdown_favourites"
+            -->
+
+            <item
+                android:id="@+id/menu_recentsearch"
+                android:icon="@drawable/ico_dropdown_recentsearch"
+                android:showAsAction="always"
+                android:title="Recent Searches"/>
+            <item
+                android:id="@+id/menu_recentlyview"
+                android:icon="@drawable/ico_dropdown_recentlyview"
+                android:showAsAction="always"
+                android:title="@string/recently_viewed"/>
+        </menu>
+    </item>
+    <item
         android:id="@+id/menu_share"
         android:actionProviderClass="com.actionbarsherlock.widget.ShareActionProvider"
         android:icon="@drawable/ic_share_highlight"
@@ -35,23 +68,11 @@
     <!-- android:icon="@drawable/ic_action_share" -->
 
     <item
-        android:id="@+id/menu_search"
-        android:icon="@drawable/jumia_selector_header_search"
-        android:showAsAction="ifRoom"
-        android:title="@string/action_label_search"
-        android:visible="false"/>
-    <item
         android:id="@+id/menu_basket"
         android:actionLayout="@layout/menu_basket_button"
         android:showAsAction="always"
         android:title="@string/action_label_basket"/>
-    <!-- Buy All item -->
 
-    <item
-        android:id="@+id/menu_buyall"
-        android:showAsAction="never"
-        android:title="@string/action_label_buyall"
-        android:visible="false"/>
     <!-- icon -->
     <item
         android:id="@+id/menu_wishlist"
