@@ -344,12 +344,14 @@
     <string name="newsletter_success_message">Félicitations! Vous êtes bien inscrit à la Newsletter Jumia.</string>
     <string name="newsletter_invalid_message">Email non valide</string>
     <string name="newsletter_already_subscribed_message">Vous êtes déjà inscrit à la Newsletter avec cet email</string>
-    
 	<string name="myaccount_email_notifications">Préférence eMails</string>
 	<string name="option3_description">S\'inscrire ou Se désinscrire</string>
 	<string name="newsletters_label">Newsletters</string>
 	<string name="newsletter_male_label">Newsletter Homme</string>
 	<string name="newsletter_female_label">Newsletter Femme</string>
 	<string name="newsletter_saved_message">Vos préférences eMails ont été enregistrées</string>
+	<string name="menu_label_uppercase">MENU</string>
+    <string name="categories_label_uppercase">CATÉGORIES</string>
+    <string name="wizard_navigation">Accès rapide à toutes vos catégories préférées</string>
 
 </resources>
