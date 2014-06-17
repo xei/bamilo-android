@@ -67,7 +67,7 @@ fi
 ##### CERTIFICATE #####
 #######################
 echo "2 - Copy Token and Certificate"
-cp $CERT_FOLDER/* $STORE_CRT_FOLDER
+cp $CERT_FOLDER/* '$STORE_CRT_FOLDER'
 
 #####################
 ##### REPACKING #####
