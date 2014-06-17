@@ -209,5 +209,8 @@
     <dimen name="favourite_item_top_margin">13.33dp</dimen>
     <dimen name="favourite_item_height">146.67dp</dimen>
     
+    <!--  RECENT SEARCHES -->
+    <dimen name="recentsearch_list_margin">6.67dp</dimen>
+    <dimen name="recentsearch_clear_all_width">@dimen/match_parent</dimen>
 
 </resources>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="0dp" >
+
+    <org.holoeverywhere.widget.TextView
+        android:id="@+id/recentsearch_not_found"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/my_profile_lists_top_margin"
+        android:drawablePadding="@dimen/my_profile_lists_drawable_padding"
+        android:drawableTop="@drawable/img_norecentsearch"
+        android:gravity="center"
+        android:text="@string/recentsearch_no_searches"
+        android:textColor="@color/strip_title"
+        android:textSize="@dimen/text_xxl"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:id="@+id/recentsearch_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <GridView
+            android:id="@+id/middle_recentsearch_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:listSelector="@android:color/transparent"
+            android:paddingBottom="80dp" />
+
+        <org.holoeverywhere.widget.Button
+            android:id="@+id/recentsearch_clear_all"
+            style="@style/button_grey_style"
+            android:layout_width="@dimen/recentsearch_clear_all_width"
+            android:layout_alignBottom="@id/middle_recentsearch_list"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="@dimen/margin_large"
+            android:layout_marginRight="@dimen/margin_large"
+            android:gravity="center"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:singleLine="true"
+            android:text="@string/recentsearch_clear_searches"
+            android:textColor="#333"
+            android:textSize="@dimen/text_s" />
+    </RelativeLayout>
+    <!-- /ScrollView -->
+
+    <include
+        android:id="@+id/loading_view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/loading_bar"
+        android:visibility="gone" />
+
+    <include
+        android:id="@+id/tips_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/tips" />
+
+</RelativeLayout>

@@ -202,5 +202,14 @@ public class SearchRecentQueriesTableHelper {
 	    Log.d(TAG, "COUNT: " + count);
 	    return count;
 	}
+    
+    /**
+     * Delete all Recent Queries
+     */
+    public static void deleteAllRecentQueries() { 
+    	SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
+        db.delete(_NAME, null, null);
+        db.close();
+    }
  
 }

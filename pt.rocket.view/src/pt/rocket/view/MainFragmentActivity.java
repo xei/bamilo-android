@@ -40,6 +40,7 @@ import pt.rocket.view.fragments.MyAccountUserDataFragment;
 import pt.rocket.view.fragments.PopularityFragment;
 import pt.rocket.view.fragments.ProductDetailsDescriptionFragment;
 import pt.rocket.view.fragments.ProductImageGalleryFragment;
+import pt.rocket.view.fragments.RecentSearchFragment;
 import pt.rocket.view.fragments.ReviewFragment;
 import pt.rocket.view.fragments.SessionForgotPasswordFragment;
 import pt.rocket.view.fragments.SessionLoginFragment;
@@ -336,7 +337,9 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         case FAVOURITE_LIST:
             fragment = FavouritesFragment.getInstance();
             break;
-            
+        case RECENTSEARCHES_LIST:
+            fragment = RecentSearchFragment.getInstance();
+            break;
         default:
             Log.w(TAG, "INVALIDE FRAGMENT TYPE");
             return;

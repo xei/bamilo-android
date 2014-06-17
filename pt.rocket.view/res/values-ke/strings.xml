@@ -223,5 +223,20 @@
 	<string name="app_id">319581271497227</string>
 	<string name="exit_press_back_again">Please press back again if you wish to leave the app</string>
 	<string name="recently_viewed">Recently Viewed</string>
-	
+	<string name="my_profile">My Profile</string>
+	<string name="my_favourites">My Favourites</string>
+	<string name="recent_searches">Recent Searches</string>
+	<string name="tip_share_text">Click to share this product!</string>
+	<string name="tip_favourite_text">Click to favourite this product \nand view the full list  in My Profile!</string>
+	<string name="products_tip_favourite_text">Click to Favourite products!</string>
+	<string name="products_added_favourite">Item added to My Favourites</string>
+	<string name="products_removed_favourite">Item removed from My Favourites</string>
+	<string name="favourite_addalltocart">Add All Items to Cart</string>
+	<string name="favourite_variance_choose_error">Please, choose a variation</string>
+	<string name="favourite_no_favourites">You have no favourite items at the moment</string>
+	<string name="recentsearch_no_searches">No Recent Searches</string>
+	<string name="recentsearch_clear_searches">Clear Recent Searches</string>
+	<string name="recentlyview_no_searches">No Recently Viewed Products Here</string>
+	<string name="recentlyview_clear_viewed">Clear Recently Viewed</string>
+	<string name="error_occured">An error occured.</string>
 </resources>

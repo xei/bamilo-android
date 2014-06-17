@@ -16,6 +16,7 @@ import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
+import pt.rocket.interfaces.IResponseCallback;
 import android.database.sqlite.SQLiteException;
 import android.net.Uri;
 import android.os.Bundle;
@@ -32,11 +33,16 @@ import android.util.Log;
 public class GetSearchSuggestionHelper extends BaseHelper {
     
     private static final String TAG = GetSearchSuggestionHelper.class.getSimpleName();
+
+    private static final EventType type = EventType.GET_SEARCH_SUGGESTIONS_EVENT;
     
     public static final String SEACH_PARAM = "searchParam";
 
     private String mQuery;
 
+    public GetSearchSuggestionHelper(){
+        super();
+    }
     /*
      * (non-Javadoc)
      * @see pt.rocket.helpers.BaseHelper#generateRequestBundle(android.os.Bundle)
@@ -55,7 +61,33 @@ public class GetSearchSuggestionHelper extends BaseHelper {
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_SEARCH_SUGGESTIONS_EVENT);
         return bundle;
     }
-    
+
+    /**
+     * Constructor used to get only the recent queries
+     * 
+     * @param requester
+     */
+    public GetSearchSuggestionHelper(IResponseCallback requester) {
+        Log.d(TAG, "ON CONSTRUCTOR");
+        // Get all items on database
+        getSearchSuggestionList(requester);
+    }
+
+    /**
+     * Get all recent queries and deliver them to the <code>requester</code>
+     * 
+     * @param requester
+     */
+    private void getSearchSuggestionList(IResponseCallback requester) {
+        Log.d(TAG, "ON GET_SEARCH_SUGGESTIONS_EVENT");
+        ArrayList<SearchSuggestion> suggestions = SearchRecentQueriesTableHelper.getAllRecentQueries();
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
+        bundle.putSerializable(Constants.BUNDLE_RESPONSE_KEY, suggestions);
+        requester.onRequestComplete(bundle);
+    }
+
     /**
      * Save the recent query on the database
      * @param query

@@ -594,14 +594,12 @@ public class CatalogPageModel {
         if (sharedPrefs.getBoolean(ConstantsSharedPrefs.KEY_SHOW_PRODUCTS_TIPS, true)) {
             ViewPager viewPagerTips = (ViewPager) relativeLayout.findViewById(R.id.viewpager_tips);
             viewPagerTips.setVisibility(View.VISIBLE);
-            int[] tipsPages = { R.layout.products_tip_swipe_layout, R.layout.tip_favourite_layout };
-            mTipsPagerAdapter = new TipsPagerAdapter(mActivity.getLayoutInflater(), relativeLayout,
-                    tipsPages, mFragment);
+            int[] tipsPages = { R.layout.products_tip_swipe_layout, R.layout.products_tip_favourite_layout };
+            mTipsPagerAdapter = new TipsPagerAdapter(mActivity.getLayoutInflater(), relativeLayout, tipsPages, mFragment);
             viewPagerTips.setAdapter(mTipsPagerAdapter);
             viewPagerTips.setOnPageChangeListener(new TipsOnPageChangeListener(relativeLayout, tipsPages));
             ((LinearLayout) relativeLayout.findViewById(R.id.viewpager_tips_btn_indicator)).setVisibility(View.VISIBLE);
             ((LinearLayout) relativeLayout.findViewById(R.id.viewpager_tips_btn_indicator)).setOnClickListener(new OnClickListener() {
-                
                 @Override
                 public void onClick(View v) {
                     SharedPreferences sharedPrefs = mActivity.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);

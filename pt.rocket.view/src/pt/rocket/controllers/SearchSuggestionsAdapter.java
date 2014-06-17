@@ -9,30 +9,37 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+
 import org.holoeverywhere.widget.TextView;
 
+import de.akquinet.android.androlog.Log;
+
+/**
+ * Adapter used on RecentSearchFragment
+ * 
+ */
 public class SearchSuggestionsAdapter extends ArrayAdapter<SearchSuggestion> {
-    
+
     private LayoutInflater mInflater;
 
     public SearchSuggestionsAdapter(Context context, List<SearchSuggestion> objects) {
         super(context, 0, 0, objects);
-        mInflater = LayoutInflater.from( context );
+        mInflater = LayoutInflater.from(context);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view;
-        if ( convertView == null) {
-            view = mInflater.inflate(R.layout.search_suggestion_list_item, parent, false);
+        if (convertView == null) {
+            view = mInflater.inflate(R.layout.recentsearch_suggestion_list_item, parent, false);
         } else {
             view = convertView;
         }
-        
-        TextView tV = (TextView) view.findViewById(R.id.item_text);
-        tV.setText( getItem(position).getResult());
-        
+        Log.d("ITEM on position " + position);
+
+        TextView tV = (TextView) view.findViewById(R.id.item_text_suggestion);
+        tV.setText(getItem(position).getResult());
+
         return view;
     }
-
 }

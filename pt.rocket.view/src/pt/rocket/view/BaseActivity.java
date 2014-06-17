@@ -19,7 +19,6 @@ import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.Darwin;
 import pt.rocket.framework.ErrorCode;
-import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.SearchSuggestion;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.service.IRemoteServiceCallback;
@@ -45,6 +44,7 @@ import pt.rocket.utils.dialogfragments.WizardFactory;
 import pt.rocket.utils.dialogfragments.WizardPreferences.WizardType;
 import pt.rocket.view.fragments.FavouritesFragment;
 import pt.rocket.view.fragments.NavigationFragment;
+import pt.rocket.view.fragments.RecentSearchFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -754,6 +754,16 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             menu.findItem(R.id.menu_basket).setVisible(false);
         }
 
+        MenuItem myProfile = menu.findItem(R.id.menu_myprofile);
+        myProfile.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                closeDrawerIfOpen();
+
+                return true;
+            }
+        });
+
         MenuItem favourites = menu.findItem(R.id.menu_favourites);
         //TextView textViewFavouritesCount = (TextView) favourites.getActionView().findViewById(R.id.favourites_count);
         //textViewFavouritesCount.setText("5");
@@ -762,6 +772,17 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 Fragment fragment = FavouritesFragment.getInstance();
                 fragmentManagerTransition(R.id.main_fragment_container, fragment, FragmentType.FAVOURITE_LIST.toString(), true);
+
+                return true;
+            }
+        });
+
+        MenuItem recentSearches = menu.findItem(R.id.menu_recentsearch);
+        recentSearches.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Fragment fragment = RecentSearchFragment.getInstance();
+                fragmentManagerTransition(R.id.main_fragment_container, fragment, FragmentType.RECENTSEARCHES_LIST.toString(), true);
 
                 return true;
             }

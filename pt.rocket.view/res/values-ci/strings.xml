@@ -352,5 +352,21 @@
 	<string name="menu_label_uppercase">MENU</string>
     <string name="categories_label_uppercase">CATÉGORIES</string>
     <string name="wizard_navigation">Accès rapide à toutes vos catégories préférées</string>
+    <string name="my_profile">Mon Profil</string>
+    <string name="my_favourites">Mes Favoris</string>
+    <string name="recent_searches">Recherches Récentes</string>
+    <string name="tip_share_text">Cliquez pour Partager ce Produit!</string>
+    <string name="tip_favourite_text">Cliquez pour ajouter ce produit aux Favoris, \net voir la liste complète dans Mon Profil!</string>
+    <string name="products_tip_favourite_text">Cliquez pour ajouter aux Favoris!</string>
+    <string name="products_added_favourite">Produit ajouté aux Favoris</string>
+    <string name="products_removed_favourite">Produit supprimé de Mes Favoris</string>
+    <string name="favourite_addalltocart">Tout ajouter au Panier</string>
+    <string name="favourite_variance_choose_error">Veuillez sélectionner une variation</string>
+    <string name="favourite_no_favourites">Vous n\'avez pas de favoris pour le moment</string>
+    <string name="recentsearch_no_searches">Aucune Recherche Récente</string>
+    <string name="recentsearch_clear_searches">Effacer les Recherches Récentes</string>
+    <string name="recentlyview_no_searches">Aucun Dernier Produit Vu</string>
+    <string name="recentlyview_clear_viewed">Effacer les Derniers Produits Vus</string>
+    <string name="error_occured">Une erreur est produite</string>
 	
 </resources>
