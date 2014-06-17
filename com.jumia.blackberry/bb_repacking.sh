@@ -1,19 +1,19 @@
 #!/bin/bash
 
-############################################################################################
-# BlackBerry repacking script.
-# Date: 17/06/2014
-# Author: sergiopereira
-# Description: 
-#		- This script supports Dev enviroment to run in local machine.
-#		- Copy the content of certicate folder for RIM HOME
-#		- Repacking the apk to bar
-#		- Sign the bar with respective certicate
-#		- Upload the apk to HockeyApp with the bar inside 
-# Requirements:
-#		- Machine must have the Blackberry command line tools for Android
-#		- The PATH must contain the bin folder 
-############################################################################################
+#############################################################################
+# BlackBerry repacking script.												#
+# Date: 17/06/2014															#
+# Author: sergiopereira														#
+# Description: 																#
+#		- This script supports Dev enviroment to run in local machine.		#
+#		- Copy the content of certicate folder for RIM HOME					#
+#		- Repacking the apk to bar											#
+#		- Sign the bar with respective certicate							#
+#		- Upload the apk to HockeyApp with the bar inside 					#
+# Requirements:																#
+#		- Machine must have the Blackberry command line tools for Android	#
+#		- The PATH must contain the bin folder 								#
+#############################################################################
 
 
 #######################
