@@ -1,14 +1,18 @@
 #!/bin/bash
 
-#######################
+############################################################################################
 # BlackBerry repacking script.
 # Date: 17/06/2014
 # Author: sergiopereira
 # Description: 
 #		- This script supports Dev enviroment to run in local machine.
-#		- 
+#		- Copy the content of certicate folder for RIM HOME
+#		- Repacking the apk to bar
+#		- Sign the bar with respective certicate
+#		- Upload the apk to HockeyApp with the bar inside 
 # Requirements:
-#######################
+#		- 
+############################################################################################
 
 
 #######################
@@ -27,8 +31,6 @@ CERT_FOLDER="$PCK_NAME/assets/blackberry/certificate"
 #####################
 ##### DEF FILES #####
 #####################
-APK_FILE="$PCK_NAME/bin/com.jumia.blackberry.apk"
-BAR_FILE="$BAR_FOLDER/com.jumia.blackberry.bar"
 CNF_PATH="$PCK_NAME/assets/blackberry/android.cfg"
 MNF_PATH="$PCK_NAME/assets/blackberry/MANIFEST.MF"
 # HOCKEY_FILE="$BAR_FOLDER/com.jumia.blackberry.zip"
@@ -39,13 +41,13 @@ MNF_PATH="$PCK_NAME/assets/blackberry/MANIFEST.MF"
 if $DEV
 then
 	echo "> Dev environment"
-	#APK_FILE="$PCK_NAME/bin/com.jumia.blackberry.apk"
-	#BAR_FILE="$BAR_FOLDER/com.jumia.blackberry.bar"
+	APK_FILE="$PCK_NAME/bin/com.jumia.blackberry.apk"
+	BAR_FILE="$BAR_FOLDER/com.jumia.blackberry.bar"
 	STORE_CRT_FOLDER=~/.rim/
 else
 	echo "> Release environment"
-	#APK_FILE="$PCK_NAME/bin/Jumia-release.apk"
-	#BAR_FILE="$BAR_FOLDER/Jumia-release.bar"
+	APK_FILE="$PCK_NAME/bin/Jumia-release.apk"
+	BAR_FILE="$BAR_FOLDER/Jumia-release.bar"
 	STORE_CRT_FOLDER=~/Library/Research\ In\ Motion/
 	#### Reload PATH (MAC OS)
 	. ~/.bash_profile
