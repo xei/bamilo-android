@@ -137,6 +137,29 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
 	    dialogListFragment.mInitialPosition = initialPosition;
 	    return dialogListFragment;   
 	}
+    
+    /**
+     * 
+     * @param activity
+     * @param listener
+     * @param id
+     * @param title
+     * @param items
+     * @param initialPosition
+     * @return
+     */
+    public static DialogListFragment newInstance(Activity activity, OnDialogListListener listener, String id, String title, ArrayList<String> items, ArrayList<String> itemsAvailable, long initialPosition) {
+        Log.d(TAG, "NEW INSTANCE");
+        DialogListFragment dialogListFragment = new DialogListFragment();  
+        dialogListFragment.mActivity = activity;
+        dialogListFragment.mListener = listener;
+        dialogListFragment.mId = id;
+        dialogListFragment.mTitle = title;
+        dialogListFragment.mItems = items;
+        dialogListFragment.mItemsAvailable = itemsAvailable;
+        dialogListFragment.mInitialPosition = initialPosition;
+        return dialogListFragment;   
+    }
 	
 	/*
 	 * (non-Javadoc)

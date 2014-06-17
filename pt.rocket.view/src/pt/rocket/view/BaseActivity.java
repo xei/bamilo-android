@@ -44,6 +44,7 @@ import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.utils.dialogfragments.DialogProgressFragment;
 import pt.rocket.utils.dialogfragments.WizardFactory;
 import pt.rocket.utils.dialogfragments.WizardPreferences.WizardType;
+import pt.rocket.view.fragments.FavouritesFragment;
 import pt.rocket.view.fragments.NavigationFragment;
 import android.content.Context;
 import android.content.Intent;
@@ -85,6 +86,7 @@ import com.actionbarsherlock.interfaces.SearchViewImeBackListener;
 import com.actionbarsherlock.internal.ActionBarSherlockNative;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.MenuItem.OnMenuItemClickListener;
 import com.actionbarsherlock.widget.SearchView;
 import com.actionbarsherlock.widget.SearchView.OnCloseListener;
 import com.actionbarsherlock.widget.SearchView.SearchAutoComplete;
@@ -193,6 +195,8 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     private final int contentLayoutId;
 
     private TextView tvActionCartCount;
+    
+    //private TextView textViewFavouritesCount;
 
     private FragmentController fragmentController;
 
@@ -734,7 +738,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                         });
                 setShareIntent(createShareIntent());
                 break;
-            case BUY_ALL:
             default:
                 menu.findItem(item.resId).setVisible(true);
                 break;
@@ -753,6 +756,19 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         } else {
             menu.findItem(R.id.menu_basket).setVisible(false);
         }
+
+        MenuItem favourites = menu.findItem(R.id.menu_favourites);
+        //TextView textViewFavouritesCount = (TextView) favourites.getActionView().findViewById(R.id.favourites_count);
+        //textViewFavouritesCount.setText("5");
+        favourites.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Fragment fragment = FavouritesFragment.getInstance();
+                fragmentManagerTransition(R.id.main_fragment_container, fragment, FragmentType.FAVOURITE_LIST.toString(), true);
+
+                return true;
+            }
+        });
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -991,6 +1007,9 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
         // set visibility for menu_basket
         currentMenu.findItem(R.id.menu_basket).setVisible(visible);
+
+        // set visibility for my profile
+        currentMenu.findItem(R.id.menu_myprofile).setVisible(visible);
     }
 
     /**
@@ -1207,6 +1226,20 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         NavigationFragment navigation = (NavigationFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_navigation);
         if (navigation != null) navigation.onUpdateCart();
         else Log.w(getTag(), "updateCartInfoInNavigation: navigation container empty - doing nothing");
+    }
+
+    private void updateTotalFavourites() {
+        /*-if (textViewFavouritesCount == null) {
+            Log.w(getTag(), "updateFavouritesCountInActionBar: cant find FavouritesCount in actionbar");
+            return;
+        }
+
+        textViewFavouritesCount.post(new Runnable() {
+            @Override
+            public void run() {
+                textViewFavouritesCount.setText("5");
+            }
+        });*/
     }
 
     /**
@@ -1456,6 +1489,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         AnalyticsGoogle.get().trackPage(R.string.gnavigation);
         // Validate
         showWizardNavigation();
+        //updateTotalFavourites();
     }
 
     public void onClosed() {

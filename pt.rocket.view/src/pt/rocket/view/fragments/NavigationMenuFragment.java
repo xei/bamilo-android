@@ -5,6 +5,7 @@ package pt.rocket.view.fragments;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.holoeverywhere.widget.TextView;
 
@@ -26,6 +27,7 @@ import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -59,6 +61,10 @@ public class NavigationMenuFragment extends BaseFragment implements OnClickListe
     private int mRecoveryCount = 0;
 
     private static DialogGenericFragment dialogLogout;
+    
+    private List<View> myProfileSubItems;
+    private boolean myProfileSubItemsVisible;
+    int myprofileMenuMargin;
 
     /**
      * Get instance
@@ -344,6 +350,18 @@ public class NavigationMenuFragment extends BaseFragment implements OnClickListe
             e.printStackTrace();
         }
 
+        // Initialize list
+        myProfileSubItems = new ArrayList<View>();
+        // get dimensions for margin
+
+        // TODO calculate correct margin
+        Drawable navigationHome = getResources().getDrawable(R.drawable.selector_navigation_home);
+        int navigationWidth = navigationHome.getIntrinsicWidth();
+        int marginHuge = getResources().getDimensionPixelSize(R.dimen.margin_huge);
+
+        Log.d(TAG, "navigationWidth: " + navigationWidth + " ; marginHuge: " + marginHuge);
+        myprofileMenuMargin = 32;
+
         // Scrollable container
         if (components != null) {
             for (NavigationListComponent component : components) {
@@ -400,8 +418,23 @@ public class NavigationMenuFragment extends BaseFragment implements OnClickListe
         case Categories:
             layout = createGenericComponent(parent, component, R.drawable.selector_navigation_categories, R.string.categories, this);
             break;
+        case MyProfile:
+            layout = createGenericComponent(parent, component, R.drawable.selector_navigation_account, R.string.my_profile, this);
+            break;
+        case Favourite:
+            layout = createMyProfileSubComponent(parent, component, R.drawable.selector_navigation_favourites, R.string.my_favourites, this);
+            layout.setVisibility(View.GONE);
+            break;
+        case RecentSearch:
+            layout = createMyProfileSubComponent(parent, component, R.drawable.selector_navigation_recent_searches, R.string.recent_searches, this);
+            layout.setVisibility(View.GONE);
+            break;
+        case RecentlyView:
+            layout = createMyProfileSubComponent(parent, component, R.drawable.selector_navigation_recently_viewed, R.string.recently_viewed, this);
+            layout.setVisibility(View.GONE);
+            break;
         case MyAccount:
-            layout = createGenericComponent(parent, component, R.drawable.selector_navigation_account, R.string.my_account, this);
+            layout = createGenericComponent(parent, component, R.drawable.selector_navigation_settings, R.string.my_account, this);
             break;
         case LoginOut:
             int text = JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials() ? R.string.sign_out : R.string.sign_in;
@@ -460,6 +493,26 @@ public class NavigationMenuFragment extends BaseFragment implements OnClickListe
      * @param parent
      * @param component
      * @param iconRes
+     * @param text
+     * @param listener
+     * @return
+     */
+    private View createMyProfileSubComponent(ViewGroup parent, NavigationListComponent component, int iconRes, int textRes, OnClickListener listener) {
+        View navComponent = createGenericComponent(parent, component, iconRes, getString(textRes), listener);
+        TextView tVSearch = (TextView) navComponent.findViewById(R.id.component_text);
+        tVSearch.setPadding(myprofileMenuMargin, 0, 0, 0);
+
+        // Add subComponent to list of  myProfile sub items
+        myProfileSubItems.add(navComponent);
+
+        return navComponent;
+    }
+
+    /**
+     * 
+     * @param parent
+     * @param component
+     * @param iconRes
      * @param textRes
      * @param listener
      * @return
@@ -497,6 +550,7 @@ public class NavigationMenuFragment extends BaseFragment implements OnClickListe
         NavigationAction navAction = (NavigationAction) v.getTag(R.id.nav_action);
         Log.d(TAG, "Clicked on " + navAction + " while in " + ((BaseActivity) getActivity()).getAction());
 
+        boolean toogle = true;
         if (navAction != null && ((BaseActivity) getActivity()).getAction() != navAction) {
             switch (navAction) {
             case Basket:
@@ -514,6 +568,15 @@ public class NavigationMenuFragment extends BaseFragment implements OnClickListe
                 bundle.putSerializable(ConstantsIntentExtra.CATEGORY_LEVEL, FragmentType.CATEGORIES_LEVEL_1);
                 getBaseActivity().onSwitchFragment(FragmentType.CATEGORIES_LEVEL_1, bundle, FragmentController.ADD_TO_BACK_STACK);
                 break;
+            case MyProfile:
+                toogle = false;
+
+                setMyProfileSubItemsVisibility(!myProfileSubItemsVisible);
+                break;
+            case Favourite:
+                ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.FAVOURITE_LIST, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                setMyProfileSubItemsVisibility(false);
+                break;
             case MyAccount:
                 getBaseActivity().onSwitchFragment(FragmentType.MY_ACCOUNT, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                 break;
@@ -529,11 +592,27 @@ public class NavigationMenuFragment extends BaseFragment implements OnClickListe
             }
             
             // Toggle
-            getBaseActivity().toggle();
+            if (toogle) {
+                getBaseActivity().toggle();
+                setMyProfileSubItemsVisibility(false);
+            }
 
         } else {
             Log.d(TAG, "Did not handle: " + navAction);
         }
+    }
+
+    /**
+     * change visibility for all Views in list of myProfile sub items to <code>visible</code>
+     * 
+     * @param visible
+     */
+    private void setMyProfileSubItemsVisibility(boolean visible){
+        int visibility = visible ? View.VISIBLE : View.GONE;
+        for (View subItem : myProfileSubItems) {
+            subItem.setVisibility(visibility);
+        }
+        myProfileSubItemsVisible = visible;
     }
 
     public static void loginOut(final BaseActivity activity) {

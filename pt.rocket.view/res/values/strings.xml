@@ -361,4 +361,9 @@
     <string name="tip_favourite_text">Click to favourite this product \nand view the full list  in My Profile!</string>
     <string name="products_tip_favourite_text">Swipe left or right to change the Sort type</string>
     
+    <string name="favourite_addalltocart">Add All Items to Cart</string>
+    <string name="favourite_variance_choose_error">Please, choose a variation.</string>
+    
+    <string name="error_occured">An error occured.</string>
+    
 </resources>

@@ -29,6 +29,7 @@ import pt.rocket.framework.utils.LoadingBarView;
 import pt.rocket.framework.utils.ProductSort;
 import pt.rocket.helpers.GetProductsHelper;
 import pt.rocket.interfaces.IResponseCallback;
+import pt.rocket.utils.TipsOnPageChangeListener;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.ProductDetailsActivityFragment;
@@ -37,20 +38,19 @@ import pt.rocket.view.fragments.Catalog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -112,11 +112,6 @@ public class CatalogPageModel {
     private LoadingBarView loadingBarView;
     private TextView textViewLb;
 
-    // Pt - products_tip
-    private RelativeLayout relativeLayoutPt;
-    private ImageView imageViewPt;
-    private TextView textViewPt;
-
     private BaseActivity mActivity;
 
     private long mBeginRequestMillis;
@@ -133,6 +128,8 @@ public class CatalogPageModel {
     private Fragment mFragment;
     
     private int totalUpdates;
+
+    private TipsPagerAdapter mTipsPagerAdapter;
 
     public CatalogPageModel(int index, BaseActivity activity, Fragment mFragment) {
         this.index = index;
@@ -420,37 +417,6 @@ public class CatalogPageModel {
         this.textViewLb = textViewLb;
     }
 
-    public RelativeLayout getRelativeLayoutPt() {
-        return relativeLayoutPt;
-    }
-
-    public void setRelativeLayoutPt(RelativeLayout relativeLayoutPt) {
-        this.relativeLayoutPt = relativeLayoutPt;
-    }
-
-    public ImageView getImageViewPt() {
-        return imageViewPt;
-    }
-
-    public void setImageViewPt(ImageView imageViewPt) {
-        this.imageViewPt = imageViewPt;
-    }
-
-    /**
-     * @return the textViewPt
-     */
-    public TextView getTextViewPt() {
-        return textViewPt;
-    }
-
-    /**
-     * @param textViewPt
-     *            the textViewPt to set
-     */
-    public void setTextViewPt(TextView textViewPt) {
-        this.textViewPt = textViewPt;
-    }
-
     /**
      * End of Layout Stuff
      */
@@ -623,25 +589,27 @@ public class CatalogPageModel {
      * Show tips if is the first time the user uses the app.
      */
     private void showTips() {
-        final SharedPreferences sharedPrefs =
-                mActivity.getSharedPreferences(
-                        ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        final SharedPreferences sharedPrefs = mActivity.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
 
         if (sharedPrefs.getBoolean(ConstantsSharedPrefs.KEY_SHOW_PRODUCTS_TIPS, true)) {
-            RelativeLayout productsTip = (RelativeLayout) relativeLayout
-                    .findViewById(R.id.products_tip);
-            productsTip.setVisibility(View.VISIBLE);
-            productsTip.setOnTouchListener(new OnTouchListener() {
-
+            ViewPager viewPagerTips = (ViewPager) relativeLayout.findViewById(R.id.viewpager_tips);
+            viewPagerTips.setVisibility(View.VISIBLE);
+            int[] tipsPages = { R.layout.products_tip_swipe_layout, R.layout.tip_favourite_layout };
+            mTipsPagerAdapter = new TipsPagerAdapter(mActivity.getLayoutInflater(), relativeLayout,
+                    tipsPages, mFragment);
+            viewPagerTips.setAdapter(mTipsPagerAdapter);
+            viewPagerTips.setOnPageChangeListener(new TipsOnPageChangeListener(relativeLayout, tipsPages));
+            ((LinearLayout) relativeLayout.findViewById(R.id.viewpager_tips_btn_indicator)).setVisibility(View.VISIBLE);
+            ((LinearLayout) relativeLayout.findViewById(R.id.viewpager_tips_btn_indicator)).setOnClickListener(new OnClickListener() {
+                
                 @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.setVisibility(View.GONE);
-
-                    SharedPreferences.Editor editor = sharedPrefs.edit();
-                    editor.putBoolean(ConstantsSharedPrefs.KEY_SHOW_PRODUCTS_TIPS,
-                            false);
+                public void onClick(View v) {
+                    SharedPreferences sharedPrefs = mActivity.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+                    Editor editor = sharedPrefs.edit();
+                    editor.putBoolean(ConstantsSharedPrefs.KEY_SHOW_PRODUCTS_TIPS, false);
                     editor.commit();
-                    return false;
+                    relativeLayout.findViewById(R.id.viewpager_tips).setVisibility(View.GONE);
+                    ((LinearLayout) relativeLayout.findViewById(R.id.viewpager_tips_btn_indicator)).setVisibility(View.GONE);
                 }
             });
         }
@@ -901,7 +869,7 @@ public class CatalogPageModel {
         }
 
         try {
-            productsAdapter.appendProducts(productsPage.getProducts());
+        	productsAdapter.appendProducts(productsPage.getProducts());
         } catch (NullPointerException e) {
             Log.w(TAG, "NPE ON APPEND PRODUCTS: ");
             e.printStackTrace();

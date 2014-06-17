@@ -40,6 +40,7 @@
         android:layout_height="match_parent" >
 
         <include
+            android:id="@+id/loadmore"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -53,7 +54,6 @@
             android:layout_alignParentTop="true"
             android:listSelector="@android:color/transparent"
             android:numColumns="3" />
-
     </RelativeLayout>
 
     <include
@@ -63,33 +63,10 @@
         layout="@layout/loading_bar"
         android:visibility="gone" />
 
-    <RelativeLayout
-        android:id="@+id/products_tip"
+    <include
+        android:id="@+id/tips_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#90000000"
-        android:visibility="gone" >
-
-        <ImageView
-            android:id="@+id/products_tip_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="52.8dp"
-            android:src="@drawable/img_instructions_swipe" />
-
-        <org.holoeverywhere.widget.TextView
-            android:id="@+id/products_tip_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/products_tip_img"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="33dp"
-            android:gravity="center"
-            android:shadowColor="#000000"
-            android:text="@string/products_tip_text"
-            android:textColor="#c3c3c3"
-            android:textSize="19.8sp" />
-    </RelativeLayout>
+        layout="@layout/tips" />
 
 </RelativeLayout>

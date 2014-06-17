@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="0dp" >
+
+    <org.holoeverywhere.widget.TextView
+        android:id="@+id/favourites_not_found"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/my_profile_lists_top_margin"
+        android:drawablePadding="@dimen/my_profile_lists_drawable_padding"
+        android:drawableTop="@drawable/img_nofavourites"
+        android:gravity="center"
+        android:text="You have no favourite items\nat the moment"
+        android:textColor="@color/strip_title"
+        android:textSize="@dimen/text_xxl"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:id="@+id/favourites_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <GridView
+            android:id="@+id/middle_favouriteslist_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:listSelector="@android:color/transparent"
+            android:numColumns="2"
+            android:paddingBottom="80dp" />
+
+        <org.holoeverywhere.widget.Button
+            android:id="@+id/favourites_shop_all"
+            style="@style/button_orange_style"
+            android:layout_width="wrap_content"
+            android:layout_alignBottom="@id/middle_favouriteslist_list"
+            android:layout_centerHorizontal="true"
+            android:contentDescription="@string/productdetail_addcart_description"
+            android:gravity="center"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:paddingLeft="@dimen/margin_veryhuge"
+            android:paddingRight="@dimen/margin_veryhuge"
+            android:singleLine="true"
+            android:text="@string/favourite_addalltocart"
+            android:textColor="#333"
+            android:textSize="@dimen/text_s" />
+    </RelativeLayout>
+    <!-- /ScrollView -->
+
+    <include
+        android:id="@+id/loading_view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/loading_bar"
+        android:visibility="gone" />
+
+    <include
+        android:id="@+id/tips_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/tips" />
+
+</RelativeLayout>

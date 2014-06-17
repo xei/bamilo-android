@@ -129,7 +129,7 @@
     
     <!--  FAVOURITES -->
     <dimen name="favourite_item_top_margin">26.67dp</dimen>
-    <dimen name="favourite_item_height">181.67dp</dimen>
+    <dimen name="favourite_item_height">185.67dp</dimen>
 
 
 </resources>

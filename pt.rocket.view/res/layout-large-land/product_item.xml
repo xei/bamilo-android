@@ -148,6 +148,16 @@
                     android:textSize="12sp" />
             </RelativeLayout>
 
+            <ImageView
+                android:id="@+id/image_is_favourite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="@dimen/margin_mid"
+                android:layout_marginTop="@dimen/margin_mid"
+                android:src="@drawable/btn_fav" />
+
             <org.holoeverywhere.widget.TextView
                 android:id="@+id/discount_percentage"
                 android:layout_width="@dimen/product_list_item_discount_percentage_image_width"

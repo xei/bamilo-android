@@ -9,7 +9,6 @@ import pt.rocket.framework.objects.Favourite;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.interfaces.IResponseCallback;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import de.akquinet.android.androlog.Log;
 
@@ -114,6 +113,8 @@ public class GetFavouriteHelper implements IResponseCallback {
             Log.d(TAG, "ON RESPONSE ERROR: GET_PRODUCT_EVENT");
             // Inc counter
             counter++;
+            // in case the last response was an error
+            if (counter == mNumberOfIncomplete) getFavouriteList();
             break;
         default:
             Log.d(TAG, "ON RESPONSE ERROR: UNKNOWN TYPE");

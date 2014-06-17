@@ -15,7 +15,7 @@
     <string name="home">Home</string>
     <string name="products">Products</string>
     <string name="brands">Brands</string>
-    <string name="my_account">My Account</string>
+    <string name="my_account">Settings</string>
     <string name="sign_in">Sign In</string>
     <string name="sign_out">Sign Out</string>
     <string name="categories">Categories</string>
@@ -45,7 +45,6 @@
     <string name="categories_title">Search Categories</string>
     <string name="categories_name_all">All for</string>
     <string name="categories_toplevel_title">All Categories</string>
-    <string name="account_title">My Account</string>
     <string name="account_name">My Account</string>
     <string name="myaccount_userdata">User Data</string>
     <string name="personal_data_title">Account Data</string>

@@ -16,7 +16,7 @@
     <string name="home">Accueil </string>
     <string name="products">Produits </string>
     <string name="brands">Marques</string>
-    <string name="my_account">Mon compte</string>
+    <string name="my_account">Settings</string>
     <string name="sign_in">Accéder au compte</string>
     <string name="sign_out">se déconnecter</string>
     <string name="categories">Catégories </string>
@@ -47,7 +47,6 @@
     <string name="categories_title">Recherchez les Catégories</string>
     <string name="categories_name_all">Tout pour</string>
     <string name="categories_toplevel_title">Toutes les catégories</string>
-    <string name="account_title">Mon compte </string>
     <string name="account_name">Mon compte </string>
     <string name="myaccount_userdata">Les données de l\'utilisateur </string>
     <string name="personal_data_title">Les données du compte </string>

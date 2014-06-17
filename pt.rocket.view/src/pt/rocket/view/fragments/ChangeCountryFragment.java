@@ -11,6 +11,7 @@ import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.controllers.CountryAdapter;
 import pt.rocket.framework.Darwin;
 import pt.rocket.framework.database.CountriesConfigsTableHelper;
+import pt.rocket.framework.database.FavouriteTableHelper;
 import pt.rocket.framework.database.LastViewedTableHelper;
 import pt.rocket.framework.objects.CountryObject;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -277,6 +278,7 @@ public class ChangeCountryFragment extends BaseFragment {
         getBaseActivity().updateCartInfo();
         if(isChangeCountry){
             LastViewedTableHelper.deleteAllLastViewed();
+            FavouriteTableHelper.deleteAllFavourite();
         }
         
         System.gc();

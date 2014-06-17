@@ -258,40 +258,23 @@ public class FavouriteTableHelper {
 		return result;
 	}
 
-	/**
-	 * Get number of entries
-	 * 
-	 * @return
-	 */
-	public static int getFavouriteEntriesCount() {
-		int result = 0;
-		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
-		String query = "select count(*) from " + TABLE;
-		Log.i(TAG, "SQL RESULT query :  " + query);
+	public static ArrayList<String> getIncompleteFavouriteList() { // XXX
+		ArrayList<String> incomplete = new ArrayList<String>();
+		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getReadableDatabase();
+		String query = "SELECT " + _FAVOURITE_URL + " FROM " + TABLE + " WHERE " + _FAVOURITE_IS_COMPLETE + " == '0'";
 		Cursor cursor = db.rawQuery(query, null);
 		if (cursor != null && cursor.getCount() > 0) {
-			cursor.moveToFirst();
-			result = cursor.getInt(0);
-			// Log result
-			Log.i(TAG, "SQL RESULT: " + result);
+			while (cursor.moveToNext()) {
+				incomplete.add(cursor.getString(0));
+			}
 		}
+
 		// Validate cursor
 		if (cursor != null) {
 			cursor.close();
 		}
 
 		db.close();
-		return result;
-	}
-	
-	public static ArrayList<String> getIncompleteFavouriteList() { // XXX
-		ArrayList<String> incomplete = new ArrayList<String>();
-		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getReadableDatabase();
-		String query = "SELECT " + _FAVOURITE_URL + " FROM " + TABLE + " WHERE " + _FAVOURITE_IS_COMPLETE + " == 1";
-		Cursor cursor = db.rawQuery(query, null);
-		if (cursor != null && cursor.getCount() > 0) {
-			incomplete.add(cursor.getString(0));
-		}
 		return incomplete;
 	}
 
@@ -409,38 +392,6 @@ public class FavouriteTableHelper {
 		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
 		db.delete(TABLE, null, null);
 		db.close();
-	}
-
-	/**
-	 * Get list of skus that match list of <code>SKUs</code> as favourite
-	 * 
-	 * @param SKUs
-	 * @return
-	 */
-	public static List<String> getListSKUsIdentifiedAsFavourite(List<String> SKUs) {
-		List<String> favourites = new ArrayList<String>();
-		if (SKUs != null && !SKUs.isEmpty()) {
-			SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
-			String listSKUs = SKUs.toString();
-			listSKUs = listSKUs.substring(1, listSKUs.length() - 1);
-			String query = new StringBuilder("select ").append(_FAVOURITE_SKU).append(" from ").append(TABLE)
-					.append(" where ").append(_FAVOURITE_SKU).append(" in ( ").append(listSKUs).append(" )").toString();
-			Log.i(TAG, "SQL RESULT query :  " + query);
-			Cursor cursor = db.rawQuery(query, null);
-			if (cursor != null && cursor.getCount() > 0) {
-				while (cursor.moveToNext()) {
-					favourites.add(cursor.getString(0));
-				}
-			}
-
-			// Validate cursor
-			if (cursor != null) {
-				cursor.close();
-			}
-
-			db.close();
-		}
-		return favourites;
 	}
 
 	/**

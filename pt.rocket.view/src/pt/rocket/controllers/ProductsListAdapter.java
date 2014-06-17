@@ -77,6 +77,8 @@ public class ProductsListAdapter extends BaseAdapter {
 
     private int numColumns = 1;
 
+    private Toast mToast;
+
     /**
      * A representation of each item on the list
      */
@@ -143,6 +145,7 @@ public class ProductsListAdapter extends BaseAdapter {
         this.isFavouriteDrawable = context.getResources().getDrawable(R.drawable.btn_fav_selected);
         this.isNotFavouriteDrawable = context.getResources().getDrawable(R.drawable.btn_fav);
 
+        mToast = Toast.makeText(context, "Toast", Toast.LENGTH_SHORT);
     }
 
     // /*
@@ -329,7 +332,6 @@ public class ProductsListAdapter extends BaseAdapter {
             prodItem.isFavourite.setImageDrawable(isNotFavouriteDrawable);
         }
         prodItem.isFavourite.setOnClickListener(new OnClickListener() {
-            Toast toast = Toast.makeText(context, "Toast", Toast.LENGTH_SHORT);
 
             @Override
             public void onClick(View v) {
@@ -348,17 +350,15 @@ public class ProductsListAdapter extends BaseAdapter {
                     product.getAttributes().setFavourite(true);
                     prodItem.isFavourite.setImageDrawable(isFavouriteDrawable);
 
-                    toast.cancel();
-                    toast.setText("Item added to My Favourites");
-                    toast.show();
+                    mToast.setText("Item added to My Favourites");
+                    mToast.show();
                 } else {
                     FavouriteTableHelper.removeFavouriteProduct(product.getSKU());
                     product.getAttributes().setFavourite(false);
                     prodItem.isFavourite.setImageDrawable(isNotFavouriteDrawable);
 
-                    toast.cancel();
-                    toast.setText("Item removed from My Favourites");
-                    toast.show();
+                    mToast.setText("Item removed from My Favourites");
+                    mToast.show();
                 }
             }
         });

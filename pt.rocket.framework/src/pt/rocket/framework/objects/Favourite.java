@@ -25,6 +25,9 @@ import pt.rocket.framework.utils.CurrencyFormatter;
  * 
  */
 public class Favourite {
+	
+	private final static int NO_SIMPLE_SELECTED = -1;
+
 	private String sku;
 	private String brand;
 	private String name;
@@ -43,6 +46,10 @@ public class Favourite {
 	private ArrayList<Variation> variations;
 
 	private ArrayList<String> knownVariations;
+	
+	private int favoriteSelected;
+	
+	public Boolean hasVariations;
 
 	/**
 	 * Complete favourite empty constructor.
@@ -58,6 +65,9 @@ public class Favourite {
 		maxSavingPercentage = 0.0;
 
 		url = "";
+
+		favoriteSelected = NO_SIMPLE_SELECTED;
+		hasVariations = null;
 	}
 
 	public Favourite(CompleteProduct completeProduct) {
@@ -75,6 +85,9 @@ public class Favourite {
 		simples = completeProduct.getSimples();
 		variations = completeProduct.getVariations();
 		knownVariations = completeProduct.getKnownVariations();
+
+		favoriteSelected = NO_SIMPLE_SELECTED;
+		hasVariations = null;
 	}
 
 	/**
@@ -285,5 +298,19 @@ public class Favourite {
 	 */
 	public void setKnownVariations(ArrayList<String> knownVariations) {
 		this.knownVariations = knownVariations;
+	}
+
+	/**
+	 * @return the favoriteSelected
+	 */
+	public int getFavoriteSelected() {
+		return favoriteSelected;
+	}
+
+	/**
+	 * @param favoriteSelected the favoriteSelected to set
+	 */
+	public void setFavoriteSelected(int favoriteSelected) {
+		this.favoriteSelected = favoriteSelected;
 	}
 }

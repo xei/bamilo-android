@@ -25,9 +25,9 @@ import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import de.akquinet.android.androlog.Log;
@@ -173,6 +173,15 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
 
             return;
         }
+        
+        /*--
+         * TODO
+         * 
+         *
+        // update TipsPagerAdapter to adjust tips height
+        if (mTipsPagerAdapter != null) {
+            mTipsPagerAdapter.setAddVariationsPadding(mHideVariationSelection);
+        }*/
         
         mVariationsContainer.setVisibility(View.VISIBLE);
         mList = (HorizontalListView) mainView.findViewById(R.id.variations_list);
