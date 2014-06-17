@@ -19,7 +19,7 @@
 #######################
 ##### ENVIRONMENT #####
 #######################
-DEV=false
+HOSTNAME_JENKINS="Mobiles-Mac-mini"
 
 #########################
 ##### DEF CONSTANTS #####
@@ -39,7 +39,7 @@ MNF_PATH="$PCK_NAME/assets/blackberry/MANIFEST.MF"
 ########################
 ##### VALIDATE ENV #####
 ########################
-if $DEV
+if [ ! `hostname -s` == $HOSTNAME_JENKINS ]
 then
 	echo "> WARNING: Dev environment"
 	APK_FILE="$PCK_NAME/bin/com.jumia.blackberry.apk"
