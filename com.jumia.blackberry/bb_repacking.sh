@@ -18,7 +18,7 @@
 #######################
 ##### ENVIRONMENT #####
 #######################
-DEV=true
+DEV=false
 
 #########################
 ##### DEF CONSTANTS #####
@@ -40,7 +40,7 @@ MNF_PATH="$PCK_NAME/assets/blackberry/MANIFEST.MF"
 ########################
 if $DEV
 then
-	echo "> Dev environment"
+	echo "> WARNING: Dev environment"
 	APK_FILE="$PCK_NAME/bin/com.jumia.blackberry.apk"
 	BAR_FILE="$BAR_FOLDER/com.jumia.blackberry.bar"
 	STORE_CRT_FOLDER=~/.rim/
