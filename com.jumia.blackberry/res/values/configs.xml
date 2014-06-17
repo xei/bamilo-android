@@ -3,7 +3,7 @@
     <string name="app_name">Jumia</string>
     <string name="adx_app_name">com.jumia.blackberry</string>
     <string name="urban_airship_category">com.jumia.blackberry</string>
-    <string name="hockeyapp_token">53cd6b0fa3c881475e0b31e9a9102bbc</string>
+    <string name="hockeyapp_token">40d442de8b92541d5a07b991d8942eb4</string>
     <string name="bugsense_apikey">753c3181</string>
     <string name="mixpanel_token">473cfc6baf3055f4bb818b229b95edbf</string>
 
@@ -15,6 +15,6 @@
     <string name="dp_package_id">com.jumia.blackberry</string>
     <string name="dp_app_name_uppercase">JUMIA</string>
     <string name="dp_app_name_lowercase">jumia</string>
-    <string name="dp_intent_label">Jumia</string>
+    <string name="dp_intent_label">Jumia BlackBerry</string>
 
 </resources>
