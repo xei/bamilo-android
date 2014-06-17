@@ -34,7 +34,7 @@ import pt.rocket.view.R;
  */
 public enum MyMenuItem {
 
-	SHARE(R.id.menu_share), SEARCH_VIEW(R.id.action_search);
+	/*SHARE(R.id.menu_share), */SEARCH_VIEW(R.id.action_search);
 
 	public final int resId;
 

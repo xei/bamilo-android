@@ -54,9 +54,9 @@ import android.text.TextUtils;
 import android.text.style.MetricAffectingSpan;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -180,7 +180,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
     public ProductDetailsFragment() {
         super(EnumSet.of(EventType.GET_PRODUCT_EVENT), 
                 EnumSet.of(EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT),
-                EnumSet.of(MyMenuItem.SHARE), 
+                EnumSet.noneOf(MyMenuItem.class), 
                 NavigationAction.Products, 
                 0, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
@@ -854,7 +854,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         
         mCompleteProduct = product;
         mCompleteProductUrl = product.getUrl();
-        ((BaseActivity) getActivity()).setShareIntent(((BaseActivity) getActivity()).createShareIntent());
         
         setContentInformation();
 

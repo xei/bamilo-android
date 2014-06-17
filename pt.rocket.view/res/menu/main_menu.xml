@@ -57,15 +57,13 @@
                 android:title="@string/recently_viewed"/>
         </menu>
     </item>
-    <item
+    <!--item
         android:id="@+id/menu_share"
         android:actionProviderClass="com.actionbarsherlock.widget.ShareActionProvider"
         android:icon="@drawable/ic_share_highlight"
         android:showAsAction="always"
         android:title="@string/action_label_share"
-        android:visible="false"/>
-
-    <!-- android:icon="@drawable/ic_action_share" -->
+        android:visible="false"/-->
 
     <item
         android:id="@+id/menu_basket"

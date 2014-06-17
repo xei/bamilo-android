@@ -153,6 +153,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
     private TextView mVarianceText;
     private ViewGroup mProductBasicInfoContainer;
     private ImageView imageIsFavourite;
+    private ImageView imageShare;
 
     private long mBeginRequestMillis;
     private ArrayList<String> mSimpleVariants;
@@ -205,7 +206,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
     public ProductDetailsActivityFragment() {
         super(EnumSet.of(EventType.GET_PRODUCT_EVENT), 
                 EnumSet.of(EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT), 
-                EnumSet.of(MyMenuItem.SHARE),
+                EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.Products, 0, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
     }
 
@@ -456,6 +457,9 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
         
         imageIsFavourite = (ImageView) mainView.findViewById(R.id.image_is_favourite);
         imageIsFavourite.setOnClickListener(this);
+
+        imageShare = (ImageView) mainView.findViewById(R.id.image_share);
+        imageShare.setOnClickListener(this);
 
         mProductRatingContainer = (ViewGroup) mainView.findViewById(R.id.product_rating_container);
         mProductRatingContainer.setOnClickListener(this);
@@ -1005,7 +1009,6 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
 
             displayPriceInfoOverallOrForSimple();
         }
-        ((BaseActivity) getActivity()).setShareIntent(((BaseActivity) getActivity()).createShareIntent());
 
         setContentInformation();
 
@@ -1036,8 +1039,6 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
 
     private void displayGallery(CompleteProduct product) {
         mCompleteProduct = product;
-        ((BaseActivity) getActivity()).setShareIntent(((BaseActivity) getActivity())
-                .createShareIntent());
         ((BaseActivity) getActivity()).setTitle(mCompleteProduct.getBrand() + " "
                 + mCompleteProduct.getName());
 
@@ -1168,8 +1169,42 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
 
                 Toast.makeText(mContext, "Item removed from My Favourites", Toast.LENGTH_SHORT).show();
             }
+        } else if (id == R.id.image_share){
+            Intent shareIntent = createShareIntent();
+            startActivity(shareIntent);
+            TrackerDelegator.trackItemShared(mContext, shareIntent);
         }
     }
+
+    /**
+     * Create the share intent to be used to store the needed information
+     * 
+     * @return The created intent
+     */
+    public Intent createShareIntent() {
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        sharingIntent.setType("text/plain");
+        sharingIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_subject));
+
+        CompleteProduct prod = JumiaApplication.INSTANCE.getCurrentProduct();
+
+        if (null != prod) {
+            // For tracking when sharing
+            sharingIntent.putExtra(getString(R.string.mixprop_sharelocation), getString(R.string.mixprop_sharelocationproduct));
+            sharingIntent.putExtra(getString(R.string.mixprop_sharecategory), prod.getCategories().size() > 0 ? prod.getCategories().get(0) : "");
+            sharingIntent.putExtra(getString(R.string.mixprop_sharename), prod.getName());
+            sharingIntent.putExtra(getString(R.string.mixprop_sharebrand), prod.getBrand());
+            sharingIntent.putExtra(getString(R.string.mixprop_shareprice), prod.getPrice());
+            sharingIntent.putExtra(RestConstants.JSON_SKU_TAG, prod.getSku());
+
+            String msg = getString(R.string.share_checkout_this_product) + "\n" + prod.getUrl().replace("/mobapi", "");
+            sharingIntent.putExtra(Intent.EXTRA_TEXT, msg);
+        }
+
+        return sharingIntent;
+    }
+
 
     private void makeCall() {
         Intent callIntent = new Intent(Intent.ACTION_CALL);

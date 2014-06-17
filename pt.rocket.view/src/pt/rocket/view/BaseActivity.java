@@ -38,7 +38,6 @@ import pt.rocket.utils.CheckVersion;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.RightDrawableOnTouchListener;
-import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.CustomToastView;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.utils.dialogfragments.DialogProgressFragment;
@@ -90,8 +89,6 @@ import com.actionbarsherlock.view.MenuItem.OnMenuItemClickListener;
 import com.actionbarsherlock.widget.SearchView;
 import com.actionbarsherlock.widget.SearchView.OnCloseListener;
 import com.actionbarsherlock.widget.SearchView.SearchAutoComplete;
-import com.actionbarsherlock.widget.ShareActionProvider;
-import com.actionbarsherlock.widget.ShareActionProvider.OnShareTargetSelectedListener;
 import com.androidquery.AQuery;
 import com.bugsense.trace.BugSenseHandler;
 import com.urbanairship.UAirship;
@@ -123,7 +120,7 @@ import de.akquinet.android.androlog.Log;
  */
 public abstract class BaseActivity extends SherlockFragmentActivity {
 
-    private ShareActionProvider mShareActionProvider;
+    //private ShareActionProvider mShareActionProvider;
     
     private static final int SEARCH_EDIT_DELAY = 150;
     
@@ -724,7 +721,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                 Log.i(TAG, "ON OPTIONS MENU: CREATE SEARCH VIEW");
                 setActionBarSearch(menu);
                 break;
-            case SHARE:
+            /*-case SHARE:
                 menu.findItem(item.resId).setVisible(true);
                 menu.findItem(item.resId).setEnabled(true);
                 mShareActionProvider = (ShareActionProvider) menu.findItem(item.resId).getActionProvider();
@@ -737,7 +734,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                             }
                         });
                 setShareIntent(createShareIntent());
-                break;
+                break;*/
             default:
                 menu.findItem(item.resId).setVisible(true);
                 break;
@@ -1168,12 +1165,12 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      * @param shareIntent
      *            the intent to be stored
      */
-    public void setShareIntent(Intent shareIntent) {
+    /*-public void setShareIntent(Intent shareIntent) {
         if (mShareActionProvider != null) {
             mShareActionProvider.setShareHistoryFileName(null);
             mShareActionProvider.setShareIntent(shareIntent);
         }
-    }
+    }*/
 
     public static int maskRequestCodeId(int code) {
         return code & 0x0000FFFF;
@@ -1247,7 +1244,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      * 
      * @return The created intent
      */
-    public Intent createShareIntent() {
+    /*-public Intent createShareIntent() {
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
         sharingIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         sharingIntent.setType("text/plain");
@@ -1272,7 +1269,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         }
 
         return sharingIntent;
-    }
+    }*/
 
     /*
      * (non-Javadoc)
