@@ -1,18 +1,37 @@
 #!/bin/bash
 
 #######################
-##### Environment #####
+# BlackBerry repacking script.
+# Date: 17/06/2014
+# Author: sergiopereira
+# Description: 
+#		- This script supports Dev enviroment to run in local machine.
+#		- 
+# Requirements:
 #######################
-DEV=false
+
+
+#######################
+##### ENVIRONMENT #####
+#######################
+DEV=true
 
 #########################
 ##### DEF CONSTANTS #####
 #########################
-STOREPASS="sfp.1n.blackberry"
-CNF_PATH="com.jumia.blackberry/assets/blackberry/android.cfg"
-MNF_PATH="com.jumia.blackberry/assets/blackberry/MANIFEST.MF"
-BAR_FOLDER="com.jumia.blackberry/dist/blackberry"
-CERT_FOLDER="com.jumia.blackberry/assets/blackberry/certificate"
+STOREPASS="jumiablackberry"
+PCK_NAME="com.jumia.blackberry"
+BAR_FOLDER="$PCK_NAME/dist/blackberry"
+CERT_FOLDER="$PCK_NAME/assets/blackberry/certificate"
+
+#####################
+##### DEF FILES #####
+#####################
+APK_FILE="$PCK_NAME/bin/com.jumia.blackberry.apk"
+BAR_FILE="$BAR_FOLDER/com.jumia.blackberry.bar"
+CNF_PATH="$PCK_NAME/assets/blackberry/android.cfg"
+MNF_PATH="$PCK_NAME/assets/blackberry/MANIFEST.MF"
+# HOCKEY_FILE="$BAR_FOLDER/com.jumia.blackberry.zip"
 
 ########################
 ##### VALIDATE ENV #####
@@ -20,13 +39,13 @@ CERT_FOLDER="com.jumia.blackberry/assets/blackberry/certificate"
 if $DEV
 then
 	echo "> Dev environment"
-	APK_FILE="com.jumia.blackberry/bin/com.jumia.blackberry.apk"
-	BAR_NAME="com.jumia.blackberry.bar"
+	#APK_FILE="$PCK_NAME/bin/com.jumia.blackberry.apk"
+	#BAR_FILE="$BAR_FOLDER/com.jumia.blackberry.bar"
 	STORE_CRT_FOLDER=~/.rim/
 else
 	echo "> Release environment"
-	APK_FILE="com.jumia.blackberry/bin/Jumia-release.apk"
-	BAR_NAME="Jumia-release.bar"
+	#APK_FILE="$PCK_NAME/bin/Jumia-release.apk"
+	#BAR_FILE="$BAR_FOLDER/Jumia-release.bar"
 	STORE_CRT_FOLDER=~/Library/Research\ In\ Motion/
 	#### Reload PATH (MAC OS)
 	. ~/.bash_profile
@@ -57,7 +76,14 @@ blackberry-apkpackager $APK_FILE $CNF_PATH -m $MNF_PATH -t $BAR_FOLDER -r
 ##### SIGN #####
 ################
 echo "4 - Sign Blackberry App"
-blackberry-signer -storepass $STOREPASS $BAR_FOLDER/$BAR_NAME
+blackberry-signer -storepass $STOREPASS $BAR_FILE
+
+#######################
+##### HOCKEY APP ######
+#######################
+echo "5 - Create HockeyApp file, add bar into apk file"
+#zip -j $HOCKEY_FILE $APK_FILE $BAR_FILE
+zip -g -j $APK_FILE $BAR_FILE
 
 ###################
 ##### OTHERS ######
