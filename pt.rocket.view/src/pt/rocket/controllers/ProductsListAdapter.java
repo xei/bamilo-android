@@ -376,11 +376,11 @@ public class ProductsListAdapter extends BaseAdapter {
                     aq.id(prodItem.reviews).text(product.getReviews() + " " + reviewLabel);
                     aq.id(prodItem.reviews).visibility(View.VISIBLE);
                 } else {
-                    aq.id(prodItem.reviews).visibility(View.GONE);
+                    aq.id(prodItem.reviews).visibility(View.INVISIBLE);
                 }
             } else {
-                aq.id(prodItem.rating).visibility(View.GONE);
-                aq.id(prodItem.reviews).visibility(View.GONE);
+                aq.id(prodItem.rating).visibility(View.INVISIBLE);
+                aq.id(prodItem.reviews).visibility(View.INVISIBLE);
             }
         }
 

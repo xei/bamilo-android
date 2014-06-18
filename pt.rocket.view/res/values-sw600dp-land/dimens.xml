@@ -22,8 +22,8 @@
     <dimen name="teaser_banners_group_height">200dp</dimen>
     <dimen name="teaser_banners_brands_list_height">88dp</dimen>
 
-    <dimen name="product_item_height">160dp</dimen>
-    <dimen name="product_item_vertical_divider_height">165dp</dimen>
+    <dimen name="product_item_height">135dp</dimen>
+    <dimen name="product_item_vertical_divider_height">140dp</dimen>
     <!-- SLIDING MENU -->
     <!-- <dimen name="navigation_menu_offset">750dp</dimen> -->
     <!-- ATTENTION: These percentages must be the same defined on the main layout-large-land -->
@@ -116,6 +116,11 @@
     <dimen name="no_results_top_margin">50dp</dimen>
     <dimen name="no_results_bottom_margin">40dp</dimen>
     <dimen name="no_results_search_tips_width">600dp</dimen>
+
+    <!-- GRID PRODUCTS -->
+    <dimen name="product_item_grid_height">266.67dp</dimen>
+    <dimen name="product_item_description_height">75dp</dimen>
+    <dimen name="product_item_grid_divider_height">351.67dp</dimen>
 
     <!--  FAVOURITE WIZARD -->
     <dimen name="product_tip_variations_top_margin">12dp</dimen>

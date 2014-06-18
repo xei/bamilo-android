@@ -6,17 +6,16 @@
     <View
         android:id="@+id/divider"
         style="@style/divider_horizontal"
-        android:layout_below="@+id/container"
-        android:layout_marginTop="5dp" />
+        android:layout_below="@+id/container" />
 
     <View
         android:id="@+id/dividerLeft"
-        style="@style/divider_vertical_grid"
+        style="@style/divider_vertical_product"
         android:layout_alignParentLeft="true" />
 
     <View
         android:id="@+id/dividerRight"
-        style="@style/divider_vertical_grid"
+        style="@style/divider_vertical_product"
         android:layout_alignParentRight="true" />
 
     <LinearLayout
@@ -64,9 +63,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:layout_gravity="center_vertical"
-                android:layout_marginBottom="@dimen/margin_mid"
-                android:layout_marginTop="@dimen/margin_mid" >
+                android:layout_gravity="center_vertical" >
 
                 <org.holoeverywhere.widget.TextView
                     android:id="@+id/item_brand"
@@ -74,7 +71,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/margin_huge"
-                    android:layout_marginTop="6dp"
                     android:layout_toRightOf="@+id/image_loadable"
                     android:ellipsize="end"
                     android:fontFamily="roboto_bold"
@@ -88,7 +84,6 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/item_brand"
                     android:layout_marginRight="@dimen/margin_huge"
-                    android:layout_marginTop="4dp"
                     android:layout_toRightOf="@+id/image_loadable"
                     android:ellipsize="end"
                     android:gravity="left"
@@ -104,7 +99,6 @@
                     android:layout_alignLeft="@id/item_name"
                     android:layout_below="@id/item_name"
                     android:layout_marginRight="4dp"
-                    android:layout_marginTop="4dp"
                     android:layout_toRightOf="@+id/image_loadable"
                     android:ellipsize="marquee"
                     android:maxLines="1"
@@ -129,7 +123,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignLeft="@id/item_name"
                     android:layout_below="@id/item_regprice"
-                    android:layout_marginTop="6dp"
+                    android:layout_marginTop="4dp"
                     android:numStars="5"
                     android:rating="3.5" />
 
@@ -154,8 +148,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginRight="@dimen/margin_mid"
-                android:layout_marginTop="@dimen/margin_mid"
+                android:layout_marginRight="@dimen/product_list_item_image_margin"
+                android:layout_marginTop="@dimen/product_list_item_image_margin"
                 android:src="@drawable/btn_fav" />
 
             <org.holoeverywhere.widget.TextView
@@ -165,8 +159,8 @@
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
                 android:layout_below="@id/item_regprice"
-                android:layout_marginBottom="@dimen/product_list_item_discount_percentage_text_margin"
-                android:layout_marginRight="@dimen/product_list_item_discount_percentage_text_margin"
+                android:layout_marginBottom="@dimen/product_list_item_image_margin"
+                android:layout_marginRight="@dimen/product_list_item_image_margin"
                 android:background="@drawable/discount_badge"
                 android:fontFamily="roboto_bold"
                 android:gravity="center"

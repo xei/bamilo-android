@@ -10,14 +10,12 @@
 
     <View
         android:id="@+id/dividerLeft"
-        style="@style/divider_vertical_grid"
-        android:layout_height="@dimen/favourite_item_height"
+        style="@style/divider_vertical_favourite"
         android:layout_alignParentLeft="true" />
 
     <View
         android:id="@+id/dividerRight"
-        style="@style/divider_vertical_grid"
-        android:layout_height="@dimen/favourite_item_height"
+        style="@style/divider_vertical_favourite"
         android:layout_alignParentRight="true" />
 
     <RelativeLayout
@@ -61,7 +59,7 @@
                 android:layout_height="@dimen/product_list_item_discount_percentage_image_height"
                 android:layout_alignParentBottom="true"
                 android:layout_alignRight="@+id/image_loadable"
-                android:layout_marginBottom="@dimen/margin_mid"
+                android:layout_marginBottom="@dimen/product_list_item_image_margin"
                 android:background="@drawable/discount_badge"
                 android:fontFamily="roboto_bold"
                 android:gravity="center"
@@ -218,7 +216,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginRight="@dimen/margin_huge"
+                android:layout_marginRight="@dimen/favourite_list_item_image_margin"
                 android:layout_marginTop="@dimen/favourite_item_top_margin"
                 android:background="@android:color/transparent"
                 android:marqueeRepeatLimit="marquee_forever"
@@ -237,8 +235,8 @@
                 android:layout_width="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
-                android:layout_marginBottom="@dimen/margin_mid"
-                android:layout_marginRight="@dimen/margin_huge"
+                android:layout_marginBottom="@dimen/product_list_item_image_margin"
+                android:layout_marginRight="@dimen/favourite_list_item_image_margin"
                 android:contentDescription="@string/productdetail_addcart_description"
                 android:marqueeRepeatLimit="marquee_forever"
                 android:paddingLeft="@dimen/margin_mid"

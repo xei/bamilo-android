@@ -11,13 +11,11 @@
     <View
         android:id="@+id/dividerLeft"
         style="@style/divider_vertical_grid"
-        android:layout_height="@dimen/product_item_grid_divider_height"
         android:layout_alignParentLeft="true" />
 
     <View
         android:id="@+id/dividerRight"
         style="@style/divider_vertical_grid"
-        android:layout_height="@dimen/product_item_grid_divider_height"
         android:layout_alignParentRight="true" />
 
     <RelativeLayout
@@ -30,6 +28,8 @@
             android:layout_width="@dimen/product_item_grid_width"
             android:layout_height="@dimen/product_item_grid_height"
             android:layout_centerInParent="true"
+            android:layout_marginBottom="13.2dp"
+            android:layout_marginTop="@dimen/margin_small"
             layout="@layout/image_loadable" />
 
         <ImageView
@@ -49,8 +49,8 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:layout_centerInParent="false"
-            android:layout_marginRight="@dimen/margin_mid"
-            android:layout_marginTop="@dimen/margin_mid"
+            android:layout_marginRight="@dimen/product_list_item_image_margin"
+            android:layout_marginTop="@dimen/product_list_item_image_margin"
             android:src="@drawable/btn_fav" />
 
         <org.holoeverywhere.widget.TextView
@@ -97,7 +97,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/item_brand"
             android:layout_marginRight="16dp"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="4dp"
             android:ellipsize="end"
             android:gravity="center|left"
             android:maxLines="1"
@@ -127,33 +127,6 @@
             android:maxLines="1"
             android:singleLine="true"
             android:text="Price" />
-
-        <!--
-            RatingBar
-                android:id="@+id/item_rating"
-                style="@style/starRatingBarSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@id/item_name"
-                android:layout_below="@id/item_regprice"
-                android:layout_marginTop="6dp"
-                android:numStars="5"
-                android:rating="3.5" />
-
-            <org.holoeverywhere.widget.TextView
-                android:id="@+id/item_reviews"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_alignBottom="@+id/item_rating"
-                android:layout_alignTop="@+id/item_rating"
-                android:layout_marginLeft="4dp"
-                android:layout_toRightOf="@+id/item_rating"
-                android:gravity="center_vertical"
-                android:includeFontPadding="false"
-                android:text="Reviews"
-                android:textColor="@color/grey_light"
-                android:textSize="12sp" /
-        -->
     </RelativeLayout>
 
 </RelativeLayout>

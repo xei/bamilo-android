@@ -146,6 +146,8 @@ public class Catalog extends BaseFragment implements OnClickListener {
         sharedPreferences = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         showList = sharedPreferences.getBoolean(ConstantsSharedPrefs.KEY_SHOW_LIST_LAYOUT, true);
 
+        Log.d(TAG, "showList is " + Boolean.toString(showList));
+
         Log.i(TAG, "onCreate");
         setRetainInstance(true);
     }

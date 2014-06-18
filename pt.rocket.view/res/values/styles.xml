@@ -217,9 +217,21 @@
         <item name="android:background">@color/grey_dividerlight</item>
     </style>
 
-    <style name="divider_vertical_grid">
+    <style name="divider_vertical_product">
         <item name="android:layout_width">@dimen/divider_width</item>
         <item name="android:layout_height">@dimen/product_item_vertical_divider_height</item>
+        <item name="android:background">@color/grey_dividerlight</item>
+    </style>
+
+    <style name="divider_vertical_grid">
+        <item name="android:layout_width">@dimen/divider_width</item>
+        <item name="android:layout_height">@dimen/product_item_grid_divider_height</item>
+        <item name="android:background">@color/grey_dividerlight</item>
+    </style>
+
+    <style name="divider_vertical_favourite">
+        <item name="android:layout_width">@dimen/divider_width</item>
+        <item name="android:layout_height">@dimen/favourite_item_height</item>
         <item name="android:background">@color/grey_dividerlight</item>
     </style>
 

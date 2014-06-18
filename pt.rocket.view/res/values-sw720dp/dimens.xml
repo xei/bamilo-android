@@ -42,10 +42,11 @@
     <dimen name="product_list_item_image_height">200dp</dimen>
     <dimen name="product_list_item_discount_percentage_image_width">45dp</dimen>
     <dimen name="product_list_item_discount_percentage_image_height">25dp</dimen>
-    <dimen name="product_list_item_discount_percentage_text_margin">10dp</dimen>
     <dimen name="product_list_item_discount_percentage_text_size">14sp</dimen>
     <dimen name="product_list_item_star_rating_bar_min_height">17dp</dimen>
     <dimen name="product_list_item_star_rating_bar_max_height">17dp</dimen>
+
+    <dimen name="product_item_height">140dp</dimen>
 
     <drawable name="product_list_item_star_rating_bar_drawable">@drawable/star_ratingbar_big</drawable>
 
@@ -98,6 +99,6 @@
     <dimen name="product_item_grid_height">266.67dp</dimen>
     <dimen name="product_item_description_height">90dp</dimen>
     <dimen name="product_grid_width">266.67dp</dimen>
-    <dimen name="product_item_grid_divider_height">356.67dp</dimen>
+    <dimen name="product_item_grid_divider_height">361.67dp</dimen>
 
 </resources>
