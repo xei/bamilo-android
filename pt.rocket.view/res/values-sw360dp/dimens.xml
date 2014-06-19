@@ -13,4 +13,7 @@
     <dimen name="dialog_catalog_filter_height">450.00dp</dimen>
     
     <dimen name="product_item_vertical_divider_height">165dp</dimen>
+
+    <!--  RECENT SEARCHES -->
+    <dimen name="recentsearch_clear_all_fix_padding">60dp</dimen>
 </resources>

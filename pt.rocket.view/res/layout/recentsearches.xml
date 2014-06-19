@@ -28,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:listSelector="@android:color/transparent"
-            android:paddingBottom="80dp" />
+            android:paddingBottom="85dp" />
 
         <org.holoeverywhere.widget.Button
             android:id="@+id/recentsearch_clear_all"
@@ -36,9 +36,11 @@
             android:layout_width="@dimen/recentsearch_clear_all_width"
             android:layout_alignBottom="@id/middle_recentsearch_list"
             android:layout_centerHorizontal="true"
-            android:layout_marginLeft="@dimen/margin_large"
-            android:layout_marginRight="@dimen/margin_large"
+            android:layout_marginLeft="@dimen/recentsearch_button_margin"
+            android:layout_marginRight="@dimen/recentsearch_button_margin"
             android:gravity="center"
+            android:paddingLeft="@dimen/recentsearch_clear_all_fix_padding"
+            android:paddingRight="@dimen/recentsearch_clear_all_fix_padding"
             android:marqueeRepeatLimit="marquee_forever"
             android:singleLine="true"
             android:text="@string/recentsearch_clear_searches"

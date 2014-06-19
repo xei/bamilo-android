@@ -46,4 +46,7 @@
     <!--  FAVOURITE WIZARD -->
     <dimen name="product_tip_side_margin">10dp</dimen>
 
+    <!--  RECENT SEARCHES -->
+    <dimen name="recentsearch_clear_all_fix_padding">0dp</dimen>
+
 </resources>

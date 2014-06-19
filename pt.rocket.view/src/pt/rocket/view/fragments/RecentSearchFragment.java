@@ -106,8 +106,8 @@ public class RecentSearchFragment extends BaseFragment {
 
                 SearchRecentQueriesTableHelper.deleteAllRecentQueries();
                 // needed to update mRecentSearchesAdapter
-                for(SearchSuggestion searchSuggestion : mRecentSearches){
-                    mRecentSearches.remove(searchSuggestion);
+                for (int i = mRecentSearches.size() - 1; i >= 0; i--) {
+                    mRecentSearches.remove(i);
                 }
 
                 mRecentSearchesAdapter.notifyDataSetChanged();

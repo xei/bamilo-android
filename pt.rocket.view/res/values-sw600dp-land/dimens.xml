@@ -138,6 +138,7 @@
 
     <!--  RECENT SEARCHES -->
     <dimen name="recentsearch_list_margin">13.33dp</dimen>
-    <dimen name="recentsearch_clear_all_width">293.33dp</dimen>
+    <dimen name="recentsearch_button_margin">0dp</dimen>
+    <dimen name="recentsearch_clear_all_width">440dp</dimen>
 
 </resources>
