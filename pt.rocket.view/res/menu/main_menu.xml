@@ -18,7 +18,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/action_search"
+        android:id="@+id/menu_search"
         android:actionViewClass="com.actionbarsherlock.widget.SearchView"
         android:icon="@drawable/selector_search_edit_icon"
         android:showAsAction="always"

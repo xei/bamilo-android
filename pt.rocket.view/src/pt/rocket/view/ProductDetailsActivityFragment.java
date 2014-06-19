@@ -1183,7 +1183,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
      */
     public Intent createShareIntent() {
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-        sharingIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        sharingIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         sharingIntent.setType("text/plain");
         sharingIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_subject));
 

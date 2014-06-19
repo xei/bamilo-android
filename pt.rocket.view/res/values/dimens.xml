@@ -108,6 +108,7 @@
     <dimen name="product_list_item_star_rating_bar_max_height">11dp</dimen>
 
     <dimen name="product_list_item_image_margin">6.67dp</dimen>
+    <dimen name="product_list_item_image_side_margin">13.33dp</dimen>
 
     <drawable name="product_list_item_star_rating_bar_drawable">@drawable/star_ratingbar_small</drawable>
 

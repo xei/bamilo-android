@@ -128,9 +128,9 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginLeft="@dimen/margin_small"
-                android:layout_marginTop="@dimen/margin_small"
-                android:src="@drawable/selector_share" />
+                android:layout_marginLeft="@dimen/product_list_item_image_side_margin"
+                android:layout_marginTop="@dimen/product_list_item_image_margin"
+                android:src="@drawable/selector_productdetails_share" />
 
             <ImageView
                 android:id="@+id/image_is_favourite"
@@ -139,8 +139,8 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
                 android:layout_centerInParent="false"
-                android:layout_marginRight="@dimen/margin_mid"
-                android:layout_marginTop="@dimen/margin_mid"
+                android:layout_marginRight="@dimen/product_list_item_image_side_margin"
+                android:layout_marginTop="@dimen/product_list_item_image_margin"
                 android:src="@drawable/btn_fav" />
         </RelativeLayout>
 
