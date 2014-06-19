@@ -321,7 +321,8 @@ public class FavouriteTableHelper {
 						}
 						favourite.setSimples(simples);
 						// NO_SIMPLE_SELECTED @ FavouritesListAdapter
-						favourite.setSelectedSimple(-1); // NO_SIMPLE_SELECTED
+						favourite.setSelectedSimple((simples.size() == 1) ? 0 : -1); // NO_SIMPLE_SELECTED
+						
 					} catch (JSONException e) {
 						Log.e(TAG, "JSONException on sku: " + favourite.getSku() + "\nsimplesJSON = " + simplesJSON);
 					}

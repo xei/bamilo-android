@@ -26,7 +26,7 @@ import pt.rocket.framework.utils.CurrencyFormatter;
  */
 public class Favourite {
 	
-	private final static int NO_SIMPLE_SELECTED = -1;
+	public final static int NO_SIMPLE_SELECTED = -1;
 
 	private String sku;
 	private String brand;
@@ -51,6 +51,12 @@ public class Favourite {
 	
 	public Boolean hasVariations;
 
+	private String mSelectedSimpleValue;
+	
+	private Boolean mChooseVariationWarning = false;
+
+	private boolean mStockVariationWarning = false;
+
 	/**
 	 * Complete favourite empty constructor.
 	 */
@@ -68,6 +74,11 @@ public class Favourite {
 
 		favoriteSelected = NO_SIMPLE_SELECTED;
 		hasVariations = null;
+		
+		mSelectedSimpleValue = "...";
+		
+		selectedSimple = NO_SIMPLE_SELECTED;
+		
 	}
 
 	public Favourite(CompleteProduct completeProduct) {
@@ -79,7 +90,7 @@ public class Favourite {
 		maxSavingPercentage = completeProduct.getMaxSavingPercentage();
 		url = completeProduct.getUrl();
 		isNew = Boolean.getBoolean(completeProduct.getAttributes().get(RestConstants.JSON_IS_NEW_TAG));
-		selectedSimple = -1; // NO_SIMPLE_SELECTED
+		selectedSimple = NO_SIMPLE_SELECTED;
 		isComplete = true;
 		imageList = completeProduct.getImageList();
 		simples = completeProduct.getSimples();
@@ -88,6 +99,11 @@ public class Favourite {
 
 		favoriteSelected = NO_SIMPLE_SELECTED;
 		hasVariations = null;
+		
+		mSelectedSimpleValue = "...";
+		
+		// Validate if has only one simple
+		selectedSimple = (simples != null && simples.size() == 1) ? 0 : NO_SIMPLE_SELECTED; 
 	}
 
 	/**
@@ -312,5 +328,35 @@ public class Favourite {
 	 */
 	public void setFavoriteSelected(int favoriteSelected) {
 		this.favoriteSelected = favoriteSelected;
+	}
+	
+	public boolean hasSimples() {
+		return (simples != null && simples.size() > 1) ? true : false; 
+	}
+	
+	
+	
+	public void setSelectedSimpleValue(String value) {
+		mSelectedSimpleValue = value; 
+	}
+	
+	public String getSelectedSimpleValue() {
+		return mSelectedSimpleValue; 
+	}
+	
+	public void setChooseVariationWarning(boolean bool) {
+		mChooseVariationWarning = bool;
+	}
+	
+	public boolean showChooseVariationWarning() {
+		return mChooseVariationWarning; 
+	}
+	
+	public void setVariationStockWarning(boolean bool) {
+		mStockVariationWarning  = bool;
+	}
+	
+	public boolean showStockVariationWarning() {
+		return mStockVariationWarning; 
 	}
 }
