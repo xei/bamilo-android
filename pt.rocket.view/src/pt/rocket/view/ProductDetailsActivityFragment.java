@@ -1170,41 +1170,15 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
                 Toast.makeText(mContext, "Item removed from My Favourites", Toast.LENGTH_SHORT).show();
             }
         } else if (id == R.id.image_share){
-            Intent shareIntent = createShareIntent();
-            startActivity(shareIntent);
-            TrackerDelegator.trackItemShared(mContext, shareIntent);
+            try {
+                Intent shareIntent = getBaseActivity().createShareIntent();
+                startActivity(shareIntent);
+                TrackerDelegator.trackItemShared(mContext, shareIntent);
+            } catch (NullPointerException e) {
+                Log.w(TAG, "WARNING: NPE ON CLICK SHARE");
+            }
         }
     }
-
-    /**
-     * Create the share intent to be used to store the needed information
-     * 
-     * @return The created intent
-     */
-    public Intent createShareIntent() {
-        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-        sharingIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        sharingIntent.setType("text/plain");
-        sharingIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_subject));
-
-        CompleteProduct prod = JumiaApplication.INSTANCE.getCurrentProduct();
-
-        if (null != prod) {
-            // For tracking when sharing
-            sharingIntent.putExtra(getString(R.string.mixprop_sharelocation), getString(R.string.mixprop_sharelocationproduct));
-            sharingIntent.putExtra(getString(R.string.mixprop_sharecategory), prod.getCategories().size() > 0 ? prod.getCategories().get(0) : "");
-            sharingIntent.putExtra(getString(R.string.mixprop_sharename), prod.getName());
-            sharingIntent.putExtra(getString(R.string.mixprop_sharebrand), prod.getBrand());
-            sharingIntent.putExtra(getString(R.string.mixprop_shareprice), prod.getPrice());
-            sharingIntent.putExtra(RestConstants.JSON_SKU_TAG, prod.getSku());
-
-            String msg = getString(R.string.share_checkout_this_product) + "\n" + prod.getUrl().replace("/mobapi", "");
-            sharingIntent.putExtra(Intent.EXTRA_TEXT, msg);
-        }
-
-        return sharingIntent;
-    }
-
 
     private void makeCall() {
         Intent callIntent = new Intent(Intent.ACTION_CALL);

@@ -19,6 +19,7 @@ import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.Darwin;
 import pt.rocket.framework.ErrorCode;
+import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.SearchSuggestion;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.service.IRemoteServiceCallback;
@@ -1259,35 +1260,30 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
     /**
      * Create the share intent to be used to store the needed information
-     * XXX 
      * @return The created intent
      */
-    /*-public Intent createShareIntent() {
+    public Intent createShareIntent() {
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-        sharingIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        //sharingIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        sharingIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         sharingIntent.setType("text/plain");
         sharingIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_subject));
-
+        // Get product
         CompleteProduct prod = JumiaApplication.INSTANCE.getCurrentProduct();
-
+        // Validate
         if (null != prod) {
             // For tracking when sharing
-            sharingIntent.putExtra(getString(R.string.mixprop_sharelocation),
-                    getString(R.string.mixprop_sharelocationproduct));
-            sharingIntent.putExtra(getString(R.string.mixprop_sharecategory), prod.getCategories()
-                    .size() > 0 ? prod.getCategories().get(0) : "");
+            sharingIntent.putExtra(getString(R.string.mixprop_sharelocation), getString(R.string.mixprop_sharelocationproduct));
+            sharingIntent.putExtra(getString(R.string.mixprop_sharecategory), prod.getCategories().size() > 0 ? prod.getCategories().get(0) : "");
             sharingIntent.putExtra(getString(R.string.mixprop_sharename), prod.getName());
             sharingIntent.putExtra(getString(R.string.mixprop_sharebrand), prod.getBrand());
             sharingIntent.putExtra(getString(R.string.mixprop_shareprice), prod.getPrice());
             sharingIntent.putExtra(RestConstants.JSON_SKU_TAG, prod.getSku());
-
-            String msg = getString(R.string.share_checkout_this_product) + "\n"
-                    + prod.getUrl().replace("/mobapi", "");
+            String msg = getString(R.string.share_checkout_this_product) + "\n" + prod.getUrl().replace("/mobapi", "");
             sharingIntent.putExtra(Intent.EXTRA_TEXT, msg);
         }
-
         return sharingIntent;
-    }*/
+    }
 
     /*
      * (non-Javadoc)
