@@ -192,8 +192,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     private final int contentLayoutId;
 
     private TextView tvActionCartCount;
-    
-    //private TextView textViewFavouritesCount;
 
     private FragmentController fragmentController;
 
@@ -772,7 +770,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 Fragment fragment = FavouritesFragment.getInstance();
                 fragmentManagerTransition(R.id.main_fragment_container, fragment, FragmentType.FAVOURITE_LIST.toString(), true);
-
                 return true;
             }
         });
@@ -802,7 +799,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      * @author Andre Lopes
      */
     private void setActionBarSearch(Menu menu) {
-        MenuItem mSearchMenuItem = menu.findItem(R.id.action_search);
+        MenuItem mSearchMenuItem = menu.findItem(R.id.menu_search);
 
         mSearchView = (SearchView) mSearchMenuItem.getActionView();
         mSearchAutoComplete = (SearchAutoComplete) mSearchView.findViewById(R.id.abs__search_src_text);
@@ -1026,9 +1023,9 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         // set visibility for menu_basket
         currentMenu.findItem(R.id.menu_basket).setVisible(visible);
 
-        // set visibility for my profile
+        // XXX set visibility for my profile
         currentMenu.findItem(R.id.menu_myprofile).setVisible(visible);
-    }
+    } 
 
     /**
      * Hide the search component
@@ -1247,7 +1244,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     }
 
     private void updateTotalFavourites() {
-        /*-if (textViewFavouritesCount == null) {
+        /*XXX -if (textViewFavouritesCount == null) {
             Log.w(getTag(), "updateFavouritesCountInActionBar: cant find FavouritesCount in actionbar");
             return;
         }
@@ -1262,7 +1259,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
     /**
      * Create the share intent to be used to store the needed information
-     * 
+     * XXX 
      * @return The created intent
      */
     /*-public Intent createShareIntent() {
@@ -1507,7 +1504,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         AnalyticsGoogle.get().trackPage(R.string.gnavigation);
         // Validate
         showWizardNavigation();
-        //updateTotalFavourites();
+        //XXX updateTotalFavourites();
     }
 
     public void onClosed() {
