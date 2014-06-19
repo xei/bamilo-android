@@ -570,15 +570,14 @@ public class NavigationMenuFragment extends BaseFragment implements OnClickListe
                 break;
             case MyProfile:
                 toogle = false;
-
                 setMyProfileSubItemsVisibility(!myProfileSubItemsVisible);
                 break;
             case Favourite:
-                ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.FAVOURITE_LIST, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            	getBaseActivity().onSwitchFragment(FragmentType.FAVOURITE_LIST, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                 setMyProfileSubItemsVisibility(false);
                 break;
             case RecentSearch:
-                ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.RECENTSEARCHES_LIST, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            	getBaseActivity().onSwitchFragment(FragmentType.RECENTSEARCHES_LIST, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                 setMyProfileSubItemsVisibility(false);
                 break;
             case MyAccount:

@@ -71,7 +71,7 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/favourite_item_height"
             android:layout_centerInParent="true"
             android:layout_toRightOf="@id/image_container" >
@@ -132,6 +132,16 @@
                 android:singleLine="true"
                 android:text="Price" />
 
+            <org.holoeverywhere.widget.TextView
+                android:id="@+id/favorite_error_stock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/item_regprice"
+                android:text="@string/product_outof_stock"
+                android:textColor="@color/blue_basic"
+                android:textSize="@dimen/text_s"
+                android:visibility="gone" />
+
             <LinearLayout
                 android:id="@+id/product_variant_container"
                 android:layout_width="match_parent"
@@ -161,14 +171,6 @@
                         android:layout_below="@+id/product_variant_choose_error"
                         android:orientation="horizontal" >
 
-                        <org.holoeverywhere.widget.TextView
-                            android:id="@+id/product_variant_text"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/product_variance_choose"
-                            android:textColor="@color/grey_middle"
-                            android:textSize="@dimen/text_s" />
-
                         <org.holoeverywhere.widget.Button
                             android:id="@+id/product_variant_button"
                             android:layout_width="wrap_content"
@@ -180,31 +182,6 @@
                             android:singleLine="true"
                             android:text="@string/product_variant_placeholder"
                             android:textColor="@color/grey_middle"
-                            android:textSize="@dimen/text_s" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/product_variant_price_container"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/product_variant_choose"
-                        android:layout_marginTop="@dimen/margin_mid"
-                        android:orientation="horizontal"
-                        android:paddingBottom="@dimen/margin_mid"
-                        android:visibility="gone" >
-
-                        <org.holoeverywhere.widget.TextView
-                            android:id="@+id/product_variant_specprice"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="@dimen/margin_mid"
-                            android:textColor="@color/red_basic"
-                            android:textSize="@dimen/text_s" />
-
-                        <org.holoeverywhere.widget.TextView
-                            android:id="@+id/product_variant_normprice"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
                             android:textSize="@dimen/text_s" />
                     </LinearLayout>
                 </RelativeLayout>

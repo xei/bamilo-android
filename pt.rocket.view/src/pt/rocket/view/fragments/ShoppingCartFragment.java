@@ -47,6 +47,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -75,6 +76,10 @@ public class ShoppingCartFragment extends BaseFragment {
     private static final String TAG = LogTagHelper.create(ShoppingCartFragment.class);
 
     private final static String ID_CHANGE_QUANTITY = "id_change_quantity";
+    
+    private final static int FAVOURITE_DELAY = 2000;
+    
+    private Handler triggerHander;
 
     private static ShoppingCartFragment reviewFragment;
 
@@ -250,9 +255,37 @@ public class ShoppingCartFragment extends BaseFragment {
         AnalyticsGoogle.get().trackPage(R.string.gshoppingcart);
     }
 
+    /**
+     * Trigger to get cart items validating FavouritesFragment state is completed
+     * @author sergiopereira
+     */
     private void triggerGetShoppingCart() {
-        triggerContentEvent(new GetShoppingCartItemsHelper(), null, responseCallback);
+        // Show loading
+        getBaseActivity().showLoading(false);
+        // Check if FavouritesFragment is complete
+        if(!FavouritesFragment.isOnAddingAllItemsToCart)
+            // Get items
+            triggerContentEvent(new GetShoppingCartItemsHelper(), null, responseCallback);
+        else {
+            // Singleton for handler
+            if(triggerHander == null) triggerHander = new Handler();
+            // Remove peding posts
+            else triggerHander.removeCallbacks(triggerRunnable);
+            // Remove trigger
+            triggerHander.postDelayed(triggerRunnable, FAVOURITE_DELAY);
+        }
     }
+    
+    /**
+     * Runnable used to get the cart items after FavouritesFragment is complete action
+     * @author sergiopereira
+     */
+    Runnable triggerRunnable = new Runnable() {
+        @Override
+        public void run() {
+            triggerGetShoppingCart();
+        }
+    };
 
     private void triggerRemoveItem(ShoppingCartItem item) {
         ContentValues values = new ContentValues();

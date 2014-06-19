@@ -366,6 +366,7 @@
     <string name="favourite_addalltocart">Add All Items to Cart</string>
     <string name="favourite_variance_choose_error">Please, choose a variation</string>
     <string name="favourite_no_favourites">You have no favourite items at the moment</string>
+    
 
     <string name="recentsearch_no_searches">No Recent Searches</string>
     <string name="recentsearch_clear_searches">Clear Recent Searches</string>

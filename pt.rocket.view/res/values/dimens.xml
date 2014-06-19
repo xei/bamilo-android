@@ -210,7 +210,8 @@
     <!--  FAVOURITES -->
     <dimen name="favourite_item_top_margin">13.33dp</dimen>
     <dimen name="favourite_item_height">146.67dp</dimen>
-    <dimen name="favourite_list_item_image_margin">6.67dp</dimen>
+	<dimen name="favourite_list_item_image_margin">6.67dp</dimen>
+    <integer name="favourite_num_columns">1</integer>
     
     <!--  RECENT SEARCHES -->
     <dimen name="recentsearch_button_top_margin">26.67dp</dimen>
