@@ -134,7 +134,7 @@
 
     <!--  FAVOURITES -->
     <dimen name="favourite_item_top_margin">26.67dp</dimen>
-    <dimen name="favourite_item_height">185.67dp</dimen>
+	<dimen name="favourite_item_height">190dp</dimen>
     <integer name="favourite_num_columns">2</integer>
 
     <!--  RECENT SEARCHES -->

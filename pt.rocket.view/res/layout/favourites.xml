@@ -31,19 +31,18 @@
             android:id="@+id/favourites_grid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:listSelector="@null"
+            android:listSelector="@drawable/selector_listitem_highlight"
             android:numColumns="@integer/favourite_num_columns"
             android:paddingBottom="80dp" />
 
         <org.holoeverywhere.widget.Button
-            android:id="@+id/favourites_shop_all"
+            android:id="@+id/favourite_button_shop_all"
             style="@style/button_orange_style"
             android:layout_width="wrap_content"
             android:layout_alignBottom="@id/favourites_grid"
             android:layout_centerHorizontal="true"
             android:contentDescription="@string/productdetail_addcart_description"
             android:gravity="center"
-            android:marqueeRepeatLimit="marquee_forever"
             android:paddingLeft="@dimen/margin_veryhuge"
             android:paddingRight="@dimen/margin_veryhuge"
             android:singleLine="true"
@@ -60,16 +59,5 @@
         android:layout_height="match_parent"
         layout="@layout/loading_bar"
         android:visibility="visible" />
-
-    <!-- TIPS -->
-
-
-    <!--
-         <include
-        android:id="@+id/tips_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        layout="@layout/tips" />
-    -->
 
 </RelativeLayout>

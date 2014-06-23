@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import pt.rocket.framework.objects.Favourite;
+import pt.rocket.framework.objects.Product;
 import pt.rocket.framework.objects.ProductSimple;
 import pt.rocket.framework.objects.Variation;
 import android.content.ContentValues;
@@ -151,25 +152,23 @@ public class FavouriteTableHelper {
 	 * @param image_url
 	 * @param isNew
 	 */
-	public static void insertPartialFavouriteProduct(String sku, String brand, String name, String price,
-			String special_price, Double discount_percentage, String url, String image_url, boolean isNew) {
-		if (!verifyIfFavourite(sku)) {
+	public static void insertPartialFavouriteProduct(Product product) {
+		if (product != null) {
 			SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
 			ContentValues values = new ContentValues();
-			values.put(FavouriteTableHelper._FAVOURITE_SKU, sku);
-			values.put(FavouriteTableHelper._FAVOURITE_BRAND, brand);
-			values.put(FavouriteTableHelper._FAVOURITE_NAME, name);
-			values.put(FavouriteTableHelper._FAVOURITE_PRICE, price);
-			values.put(FavouriteTableHelper._FAVOURITE_SPECIAL_PRICE, special_price);
-			values.put(FavouriteTableHelper._FAVOURITE_DISCOUNT_PERCENTAGE, discount_percentage);
-			values.put(FavouriteTableHelper._FAVOURITE_URL, url);
-			values.put(FavouriteTableHelper._FAVOURITE_IMAGE_URL, image_url);
-			values.put(FavouriteTableHelper._FAVOURITE_IS_NEW, isNew);
+			values.put(FavouriteTableHelper._FAVOURITE_SKU, product.getSKU());
+			values.put(FavouriteTableHelper._FAVOURITE_BRAND, product.getBrand());
+			values.put(FavouriteTableHelper._FAVOURITE_NAME, product.getName());
+			values.put(FavouriteTableHelper._FAVOURITE_PRICE, product.getPrice());
+			values.put(FavouriteTableHelper._FAVOURITE_SPECIAL_PRICE, product.getSpecialPrice());
+			values.put(FavouriteTableHelper._FAVOURITE_DISCOUNT_PERCENTAGE, product.getMaxSavingPercentage());
+			values.put(FavouriteTableHelper._FAVOURITE_URL, product.getUrl());
+			values.put(FavouriteTableHelper._FAVOURITE_IMAGE_URL, (product.getImages().size() == 0) ? "" : product.getImages().get(0).getUrl());
+			values.put(FavouriteTableHelper._FAVOURITE_IS_NEW, product.getAttributes().isNew());
 			values.put(FavouriteTableHelper._FAVOURITE_SIMPLES_JSON, "");
 			values.put(FavouriteTableHelper._FAVOURITE_VARIATIONS_JSON, "");
 			values.put(FavouriteTableHelper._FAVOURITE_KNOWN_VARIATIONS_LIST, "");
 			values.put(FavouriteTableHelper._FAVOURITE_IS_COMPLETE, false);
-
 			db.insert(FavouriteTableHelper.TABLE, null, values);
 			db.close();
 		}
@@ -268,12 +267,9 @@ public class FavouriteTableHelper {
 				incomplete.add(cursor.getString(0));
 			}
 		}
-
 		// Validate cursor
-		if (cursor != null) {
-			cursor.close();
-		}
-
+		if (cursor != null) cursor.close();
+		// Close access
 		db.close();
 		return incomplete;
 	}

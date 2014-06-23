@@ -48,5 +48,8 @@
 
     <!--  RECENT SEARCHES -->
     <dimen name="recentsearch_clear_all_fix_padding">0dp</dimen>
+    
+    <!--  FAVOURITE -->
+    <dimen name="favourite_item_height">190dp</dimen>
 
 </resources>
