@@ -38,9 +38,11 @@ public class HockeyStartup {
     private static final String TAG = HockeyStartup.class.getSimpleName();
     private static final String MESSAGEDIGEST = "SHA1";
     private static final int HOCKEY_APP_TOKEN_RES = R.string.hockeyapp_token;
+    
+    private static final int HOCKEY_APP_DEV_BOOL = R.bool.hockeyapp_enable_dev;
+    
     private static final int SPLASH_DISPLAY_TIME = 5000;
-    private static final X500Principal KEY_PRINCIPAL_DEBUG = new X500Principal(
-            "CN=Android Debug, O=Android, C=US");
+    private static final X500Principal KEY_PRINCIPAL_DEBUG = new X500Principal("CN=Android Debug, O=Android, C=US");
     private static final String KEY_FINGERPRINT_HOCKEY = "CA:2B:59:48:72:0E:1F:8F:36:38:20:D8:B0:94:37:82:6F:23:0E:B6";
 
     private static final int RESULT_KEY_OTHER = 0;
@@ -68,11 +70,16 @@ public class HockeyStartup {
     public static void register(Activity activity) {
         int resultCheckSignature = checkSignatureForUpdate(activity);
         Log.d(TAG, "resultCheckSignature = " + resultCheckSignature);
-
+        
         String hockeyTocken = activity.getString(HOCKEY_APP_TOKEN_RES);
+
+        /**
+         * ###### HOCKEY APP: ENABLED DEV ######
+         */
+        Boolean enableDevVersion = activity.getResources().getBoolean(HOCKEY_APP_DEV_BOOL);
         
         Log.d(TAG, "HOCKEY_TOKEN = " + hockeyTocken);
-        if (resultCheckSignature == RESULT_KEY_OTHER || resultCheckSignature == RESULT_KEY_HOCKEY) {
+        if (resultCheckSignature == RESULT_KEY_OTHER || resultCheckSignature == RESULT_KEY_HOCKEY || enableDevVersion) {
             Log.d(TAG, "start: starting CrashManager" );
             CrashManager.register(activity, hockeyTocken, sCml);
         }

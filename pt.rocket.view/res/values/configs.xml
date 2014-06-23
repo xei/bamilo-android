@@ -2,13 +2,16 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
 
     <string name="enable_multi_selection">false</string>
-    <string name="hockeyapp_token"></string>
     <string name="bugsense_apikey"></string>
 
     <item name="default_vibrate" type="bool">false</item>
     <item name="default_notification" type="bool">true</item>
     <item name="default_led" type="bool">true</item>
     <item name="default_sound" type="bool">true</item>
+
+    <!-- HOCKEY APP -->
+    <string name="hockeyapp_token"></string>
+    <item name="hockeyapp_enable_dev" type="bool">false</item>
 
     <string name="global_server_shop_name">@string/jumia_global_shopname</string>
     <string name="global_server_host">@string/jumia_global_server</string>
