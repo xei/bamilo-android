@@ -302,9 +302,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         super.onResume();
         Log.d(TAG, "ON RESUME");
         
-        // Validate if navigation is open (on orientation change)
-        if(mDrawerLayout != null && mDrawerNavigation != null && mDrawerLayout.isDrawerOpen(mDrawerNavigation)) showWizardNavigation();
-        
         if (!isRegistered) {
             // OLD FRAMEWORK
             /**
@@ -447,6 +444,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     }
 
     private void setupContentViews() {
+        Log.d(TAG, "DRAWER: SETUP CONTENT VIEWS");
         setContentView(activityLayoutId);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerNavigation = findViewById(R.id.fragment_navigation);
@@ -564,14 +562,17 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
+        Log.d(TAG, "ON POST CREATE: DRAWER");
         // Sync the toggle state after onRestoreInstanceState has occurred.
         mDrawerToggle.syncState();
+        // Validate if navigation is open (on orientation change)
+        if(mDrawerLayout.isDrawerOpen(mDrawerNavigation)) showWizardNavigation();
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-
+        Log.d(TAG, "ON ORIENTATION CHANGED: DRAWER");
         // Pass any configuration change to the drawer toggls
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
