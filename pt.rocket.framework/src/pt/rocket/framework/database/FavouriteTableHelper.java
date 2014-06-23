@@ -8,10 +8,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.Favourite;
 import pt.rocket.framework.objects.Product;
 import pt.rocket.framework.objects.ProductSimple;
 import pt.rocket.framework.objects.Variation;
+import pt.rocket.framework.rest.RestConstants;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -85,23 +87,22 @@ public class FavouriteTableHelper {
 	 * @param simples
 	 * @param known_variations
 	 */
-	public static void insertFavouriteProduct(String sku, String brand, String name, String price,
-			String special_price, Double discount_percentage, String url, String image_url, boolean isNew,
-			ArrayList<ProductSimple> simples, List<Variation> variations, ArrayList<String> knownVariations) {
-		if (!verifyIfFavourite(sku)) {
+	public static void insertFavouriteProduct(CompleteProduct completeProduct) {
+		if (completeProduct != null) {
 			SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
 			ContentValues values = new ContentValues();
-			values.put(FavouriteTableHelper._FAVOURITE_SKU, sku);
-			values.put(FavouriteTableHelper._FAVOURITE_BRAND, brand);
-			values.put(FavouriteTableHelper._FAVOURITE_NAME, name);
-			values.put(FavouriteTableHelper._FAVOURITE_PRICE, price);
-			values.put(FavouriteTableHelper._FAVOURITE_SPECIAL_PRICE, special_price);
-			values.put(FavouriteTableHelper._FAVOURITE_DISCOUNT_PERCENTAGE, discount_percentage);
-			values.put(FavouriteTableHelper._FAVOURITE_URL, url);
-			values.put(FavouriteTableHelper._FAVOURITE_IMAGE_URL, image_url);
-			values.put(FavouriteTableHelper._FAVOURITE_IS_NEW, isNew);
+			values.put(FavouriteTableHelper._FAVOURITE_SKU, completeProduct.getSku());
+			values.put(FavouriteTableHelper._FAVOURITE_BRAND, completeProduct.getBrand());
+			values.put(FavouriteTableHelper._FAVOURITE_NAME, completeProduct.getName());
+			values.put(FavouriteTableHelper._FAVOURITE_PRICE, completeProduct.getPrice());
+			values.put(FavouriteTableHelper._FAVOURITE_SPECIAL_PRICE, completeProduct.getSpecialPrice());
+			values.put(FavouriteTableHelper._FAVOURITE_DISCOUNT_PERCENTAGE, completeProduct.getMaxSavingPercentage());
+			values.put(FavouriteTableHelper._FAVOURITE_URL, completeProduct.getUrl());
+			values.put(FavouriteTableHelper._FAVOURITE_IMAGE_URL, completeProduct.getImageList().size() == 0 ? "" : completeProduct.getImageList().get(0));
+			values.put(FavouriteTableHelper._FAVOURITE_IS_NEW, Boolean.getBoolean(completeProduct.getAttributes().get(RestConstants.JSON_IS_NEW_TAG)));
 
 			String simplesJSON = "";
+			ArrayList<ProductSimple> simples = completeProduct.getSimples();
 			if (simples != null && !simples.isEmpty()) {
 				JSONArray simplesJSONArray = new JSONArray();
 				for (ProductSimple productSimple : simples) {
@@ -112,6 +113,7 @@ public class FavouriteTableHelper {
 			values.put(FavouriteTableHelper._FAVOURITE_SIMPLES_JSON, simplesJSON);
 
 			String variationsJSON = "";
+			ArrayList<Variation> variations = completeProduct.getVariations();
 			if (variations != null && !variations.isEmpty()) {
 				JSONArray variationsJSONArray = new JSONArray();
 				for (Variation variation : variations) {
@@ -122,6 +124,7 @@ public class FavouriteTableHelper {
 			values.put(FavouriteTableHelper._FAVOURITE_VARIATIONS_JSON, variationsJSON);
 
 			String knownVariationsString = "";
+			ArrayList<String> knownVariations = completeProduct.getKnownVariations();
 			if (knownVariations != null && !knownVariations.isEmpty()) {
 				StringBuilder knownVariationsStringBuilder = new StringBuilder();
 				for (String knownVariation : knownVariations) {

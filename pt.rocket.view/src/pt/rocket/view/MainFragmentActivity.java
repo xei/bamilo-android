@@ -243,8 +243,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             fragment = Catalog.getInstance();
             break;
         case PRODUCT_DETAILS:
-            SharedPreferences sP = getSharedPreferences(
-                    ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+            SharedPreferences sP = getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
             Editor eD = sP.edit();
             eD.putBoolean(ProductDetailsActivityFragment.LOAD_FROM_SCRATCH, true);
             eD.commit();

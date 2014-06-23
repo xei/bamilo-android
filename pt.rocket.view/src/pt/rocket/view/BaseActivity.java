@@ -43,9 +43,7 @@ import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.utils.dialogfragments.DialogProgressFragment;
 import pt.rocket.utils.dialogfragments.WizardFactory;
 import pt.rocket.utils.dialogfragments.WizardPreferences.WizardType;
-import pt.rocket.view.fragments.FavouritesFragment;
 import pt.rocket.view.fragments.NavigationFragment;
-import pt.rocket.view.fragments.RecentSearchFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -769,8 +767,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         favourites.setOnMenuItemClickListener(new OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                Fragment fragment = FavouritesFragment.getInstance();
-                fragmentManagerTransition(R.id.main_fragment_container, fragment, FragmentType.FAVOURITE_LIST.toString(), true);
+                onSwitchFragment(FragmentType.FAVOURITE_LIST, null, FragmentController.ADD_TO_BACK_STACK);
                 return true;
             }
         });
@@ -779,9 +776,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         recentSearches.setOnMenuItemClickListener(new OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                Fragment fragment = RecentSearchFragment.getInstance();
-                fragmentManagerTransition(R.id.main_fragment_container, fragment, FragmentType.RECENTSEARCHES_LIST.toString(), true);
-
+                onSwitchFragment(FragmentType.RECENTSEARCHES_LIST, null, FragmentController.ADD_TO_BACK_STACK);
                 return true;
             }
         });

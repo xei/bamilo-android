@@ -16,9 +16,24 @@
         <RelativeLayout
             android:id="@+id/image_container"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent" >
+            android:layout_height="wrap_content" >
 
-            <include
+            <ImageView
+                android:id="@+id/image_view"
+                android:layout_width="99dp"
+                android:layout_height="99dp"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:layout_marginBottom="13.2dp"
+                android:layout_marginLeft="@dimen/margin_small"
+                android:layout_marginRight="13.2dp"
+                android:layout_marginTop="@dimen/margin_small"
+                android:adjustViewBounds="false"
+                android:scaleType="fitCenter"
+                android:src="@drawable/no_image_small" />
+
+            <!--
+                 <include
                 android:id="@+id/image_loadable"
                 android:layout_width="99dp"
                 android:layout_height="99dp"
@@ -29,6 +44,7 @@
                 android:layout_marginTop="@dimen/margin_small"
                 layout="@layout/catalog_image_item"
                 android:background="@color/orange_basic" />
+            -->
 
             <ImageView
                 android:id="@+id/image_is_new"
@@ -136,8 +152,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginRight="@dimen/product_list_item_image_margin"
-                android:layout_marginTop="@dimen/product_list_item_image_margin"
+                android:padding="@dimen/margin_mid"
                 android:src="@drawable/btn_fav" />
 
             <org.holoeverywhere.widget.TextView

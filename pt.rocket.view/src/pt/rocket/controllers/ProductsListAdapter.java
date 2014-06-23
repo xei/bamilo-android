@@ -27,9 +27,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
-
-import com.androidquery.AQuery;
-
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -77,15 +74,11 @@ public class ProductsListAdapter extends BaseAdapter {
 
     private int numColumns = 1;
 
-    private Toast mToast;
-
     /**
      * A representation of each item on the list
      */
     static class Item {
-
         public ImageView image;
-        public ImageView promotion;
         public View progress;
         public TextView name;
         public RatingBar rating;
@@ -96,27 +89,6 @@ public class ProductsListAdapter extends BaseAdapter {
         public TextView brand;
         public ImageView isNew;
         public ImageView isFavourite;
-
-        // /*
-        // * (non-Javadoc)
-        // *
-        // * @see java.lang.Object#finalize()
-        // */
-        // @Override
-        // protected void finalize() throws Throwable {
-        //
-        // image = null;
-        // promotion = null;
-        // progress = null;
-        // name = null;
-        // rating = null;
-        // discount = null;
-        // price = null;
-        // discountPercentage = null;
-        // reviews = null;
-        //
-        // super.finalize();
-        // }
     }
 
     /**
@@ -144,24 +116,8 @@ public class ProductsListAdapter extends BaseAdapter {
         }
         this.isFavouriteDrawable = context.getResources().getDrawable(R.drawable.btn_fav_selected);
         this.isNotFavouriteDrawable = context.getResources().getDrawable(R.drawable.btn_fav);
-
-        mToast = Toast.makeText(context, "Toast", Toast.LENGTH_SHORT);
     }
 
-    // /*
-    // * (non-Javadoc)
-    // *
-    // * @see java.lang.Object#finalize()
-    // */
-    // @Override
-    // protected void finalize() throws Throwable {
-    // this.products = null;
-    // this.selectedItems = null;
-    // context = null;
-    // this.onSelectedItemsChange = null;
-    // System.gc();
-    // super.finalize();
-    // }
 
     /*
      * (non-Javadoc)
@@ -170,7 +126,7 @@ public class ProductsListAdapter extends BaseAdapter {
      */
     @Override
     public int getCount() {
-        return this.products.size();
+        return products == null && products.isEmpty() ? 0 : products.size();
     }
 
     /*
@@ -180,13 +136,7 @@ public class ProductsListAdapter extends BaseAdapter {
      */
     @Override
     public Object getItem(int position) {
-        // int activePosition = position - jumpConstant;
-        Product prod = null;
-
-        // if (activePosition > -1 && activePosition < this.products.size()) {
-        prod = this.products.get(position);
-        // }
-        return prod;
+        return products.get(position);
     }
 
     /*
@@ -241,75 +191,27 @@ public class ProductsListAdapter extends BaseAdapter {
         if ((Item) itemView.getTag() == null) {
             prodItem = new Item();
             prodItem.image = (ImageView) itemView.findViewById(R.id.image_view);
-            prodItem.promotion = (ImageView) itemView.findViewById(R.id.item_promotion);
-            prodItem.progress = itemView.findViewById(R.id.image_loading_progress);
             prodItem.name = (TextView) itemView.findViewById(R.id.item_name);
-            if (showList) {
-                prodItem.rating = (RatingBar) itemView.findViewById(R.id.item_rating);
-            }
+            if (showList) prodItem.rating = (RatingBar) itemView.findViewById(R.id.item_rating);
             prodItem.price = (TextView) itemView.findViewById(R.id.item_regprice);
             prodItem.discount = (TextView) itemView.findViewById(R.id.item_discount);
             prodItem.discountPercentage = (TextView) itemView.findViewById(R.id.discount_percentage);
-            // prodItem.vertSeperator = itemView.findViewById(R.id.prod_right_seperator);
-            // prodItem.multiselect = itemView.findViewById(R.id.products_multiselect);
-            if (showList) {
-                prodItem.reviews = (TextView) itemView.findViewById(R.id.item_reviews);
-            }
-
-            // Get brand
+            if (showList) prodItem.reviews = (TextView) itemView.findViewById(R.id.item_reviews);
             prodItem.brand = (TextView) itemView.findViewById(R.id.item_brand);
-            // Get is new
             prodItem.isNew= (ImageView) itemView.findViewById(R.id.image_is_new);
-            // Get is favourite
             prodItem.isFavourite = (ImageView) itemView.findViewById(R.id.image_is_favourite);
-            
-            // stores the item representation on the tag of the view for later
-            // retrieval
             itemView.setTag(prodItem);
         } else {
             prodItem = (Item) itemView.getTag();
         }
-
-        AQuery aq = new AQuery(itemView);
         
         String imageURL = "";
         final Product product = products.get(position);
         if (product.getImages().size() > 0) {
             imageURL = product.getImages().get(0).getUrl();
         }
-//        prodItem.progress.setVisibility(View.VISIBLE);
-        RocketImageLoader.instance.loadImage(imageURL, prodItem.image,  prodItem.progress, R.drawable.no_image_small);
-//        (imageURL, prodItem.image, new RocketImageLoaderListener() {
-//            
-//            @Override
-//            public void onLoadedSuccess(Bitmap bitmap) {
-//                prodItem.image.setImageBitmap(bitmap);
-//                prodItem.progress.setVisibility(View.GONE);
-//            }
-//            
-//            @Override
-//            public void onLoadedError() {
-//                // TODO Auto-generated method stub
-//                
-//            }
-//            
-//            @Override
-//            public void onLoadedCancel(String imageUrl) {
-//                // TODO Auto-generated method stub
-//                
-//            }
-//        });
-//        aq.id(prodItem.image).image(imageURL, true, true, 0, 0, new BitmapAjaxCallback() {
-//
-//            @Override
-//            public void callback(String url, ImageView iv, Bitmap bm,
-//                    AjaxStatus status) {
-//
-//                iv.setImageBitmap(bm);
-//                prodItem.progress.setVisibility(View.GONE);
-//
-//            }
-//        });
+
+        RocketImageLoader.instance.loadImage(imageURL, prodItem.image,  null, R.drawable.no_image_small);
 
         // Set is new image
         if(product.getAttributes().isNew()) {
@@ -337,28 +239,15 @@ public class ProductsListAdapter extends BaseAdapter {
             public void onClick(View v) {
                 boolean isFavourite = product.getAttributes().isFavourite();
                 if (!isFavourite) {
-                    FavouriteTableHelper.insertPartialFavouriteProduct(
-                            product.getSKU(), 
-                            product.getBrand(),
-                            product.getName(), 
-                            product.getPrice(),
-                            product.getSpecialPrice(), 
-                            product.getMaxSavingPercentage(),
-                            product.getUrl(),
-                            (product.getImages().size() == 0) ? "" : product.getImages().get(0).getUrl(), 
-                            product.getAttributes().isNew());
+                    FavouriteTableHelper.insertPartialFavouriteProduct(product);
                     product.getAttributes().setFavourite(true);
                     prodItem.isFavourite.setImageDrawable(isFavouriteDrawable);
-
-                    mToast.setText("Item added to My Favourites");
-                    mToast.show();
+                    Toast.makeText(context, context.getString(R.string.products_added_favourite), Toast.LENGTH_SHORT).show();
                 } else {
                     FavouriteTableHelper.removeFavouriteProduct(product.getSKU());
                     product.getAttributes().setFavourite(false);
                     prodItem.isFavourite.setImageDrawable(isNotFavouriteDrawable);
-
-                    mToast.setText("Item removed from My Favourites");
-                    mToast.show();
+                    Toast.makeText(context, context.getString(R.string.products_removed_favourite), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -366,47 +255,39 @@ public class ProductsListAdapter extends BaseAdapter {
         // Set brand
         prodItem.brand.setText(product.getBrand().toUpperCase());
         
-        aq.id(prodItem.name).text(product.getName());
-        aq.id(prodItem.price).text(product.getSuggestedPrice());
+        prodItem.name.setText(product.getName());
+        prodItem.price.setText(product.getSuggestedPrice());
         if (showList) {
             if (product.getRating() != null && product.getRating() > 0) {
-                aq.id(prodItem.rating).rating(product.getRating().floatValue());
-                aq.id(prodItem.rating).visibility(View.VISIBLE);
+                prodItem.rating.setRating(product.getRating().floatValue());
+                prodItem.rating.setVisibility(View.VISIBLE);
                 if (product.getReviews() != null) {
-                    aq.id(prodItem.reviews).text(product.getReviews() + " " + reviewLabel);
-                    aq.id(prodItem.reviews).visibility(View.VISIBLE);
+                    prodItem.reviews.setText(product.getReviews() + " " + reviewLabel);
+                    prodItem.reviews.setVisibility(View.VISIBLE);
                 } else {
-                    aq.id(prodItem.reviews).visibility(View.INVISIBLE);
+                    prodItem.reviews.setVisibility(View.INVISIBLE);
                 }
             } else {
-                aq.id(prodItem.rating).visibility(View.INVISIBLE);
-                aq.id(prodItem.reviews).visibility(View.INVISIBLE);
+                prodItem.rating.setVisibility(View.INVISIBLE);
+                prodItem.reviews.setVisibility(View.INVISIBLE);
             }
         }
 
-        if (null != product.getSpecialPrice()
-                && !product.getSpecialPrice().equals(product.getPrice())) {
-            aq.id(prodItem.discount).text(product.getSpecialPrice());
-            aq.id(prodItem.discountPercentage).text("-"
-                    + product.getMaxSavingPercentage().intValue() + "%");
-            aq.id(prodItem.discount).visibility(View.VISIBLE);
-            aq.id(prodItem.promotion).visibility(View.VISIBLE);
-            aq.id(prodItem.discountPercentage).visibility(View.VISIBLE);
-            prodItem.price.setPaintFlags(prodItem.price.getPaintFlags()
-                    | Paint.STRIKE_THRU_TEXT_FLAG);
+        if (null != product.getSpecialPrice() && !product.getSpecialPrice().equals(product.getPrice())) {
+            prodItem.discount.setText(product.getSpecialPrice());
+            prodItem.discountPercentage.setText("-" + product.getMaxSavingPercentage().intValue() + "%");
+            prodItem.discount.setVisibility(View.VISIBLE);
+            prodItem.discountPercentage.setVisibility(View.VISIBLE);
+            prodItem.price.setPaintFlags(prodItem.price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             prodItem.price.setSelected(true);
-            aq.id(prodItem.price).textColor(context.getResources().getColor(
-                    R.color.grey_light));
+            prodItem.price.setTextColor(context.getResources().getColor(R.color.grey_light));
             prodItem.price.setTextAppearance(context.getApplicationContext(), R.style.text_normal);
         } else {
-            aq.id(prodItem.discount).visibility(View.GONE);
-            aq.id(prodItem.promotion).visibility(View.GONE);
-            aq.id(prodItem.discountPercentage).visibility(View.GONE);
-            prodItem.price.setPaintFlags(prodItem.price.getPaintFlags()
-                    & (~Paint.STRIKE_THRU_TEXT_FLAG));
+            prodItem.discount.setVisibility(View.GONE);
+            prodItem.discountPercentage.setVisibility(View.GONE);
+            prodItem.price.setPaintFlags(prodItem.price.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
             prodItem.price.setTextAppearance(context.getApplicationContext(), R.style.text_bold);
-            aq.id(prodItem.price).textColor(context.getResources().getColor(
-                    R.color.red_basic));
+            prodItem.price.setTextColor(context.getResources().getColor(R.color.red_basic));
         }
         return itemView;
     }

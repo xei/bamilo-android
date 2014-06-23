@@ -19,12 +19,12 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_margin="@dimen/margin_huge"
-        android:fontFamily="roboto-bold"
+        android:fontFamily="roboto_light"
         android:gravity="center"
         android:shadowColor="#000000"
         android:text="@string/wizard_navigation"
         android:textColor="#c3c3c3"
-        android:textSize="19.8sp" />
+        android:textSize="@dimen/text_xl" />
 
     <Button
         android:id="@+id/wizard_nav_button"

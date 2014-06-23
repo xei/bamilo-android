@@ -1145,29 +1145,15 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
                 isFavourite = Boolean.parseBoolean((String) isFavoriteObject);
             }
             if (!isFavourite) {
-                FavouriteTableHelper.insertFavouriteProduct(
-                        mCompleteProduct.getSku(), 
-                        mCompleteProduct.getBrand(), 
-                        mCompleteProduct.getName(), 
-                        mCompleteProduct.getPrice(),
-                        mCompleteProduct.getSpecialPrice(),
-                        mCompleteProduct.getMaxSavingPercentage(),
-                        mCompleteProduct.getUrl(), 
-                        (mCompleteProduct.getImageList().size() == 0) ? "" : mCompleteProduct.getImageList().get(0),
-                        Boolean.getBoolean(mCompleteProduct.getAttributes().get(RestConstants.JSON_IS_NEW_TAG)),
-                        mCompleteProduct.getSimples(),
-                        mCompleteProduct.getVariations(),
-                        mCompleteProduct.getKnownVariations());
+                FavouriteTableHelper.insertFavouriteProduct(mCompleteProduct);
                 mCompleteProduct.getAttributes().put(RestConstants.JSON_IS_FAVOURITE_TAG, Boolean.TRUE.toString());
                 imageIsFavourite.setImageDrawable(isFavouriteDrawable);
-
-                Toast.makeText(mContext, "Item added to My Favourites", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, getString(R.string.products_added_favourite), Toast.LENGTH_SHORT).show();
             } else {
                 FavouriteTableHelper.removeFavouriteProduct(mCompleteProduct.getSku());
                 mCompleteProduct.getAttributes().put(RestConstants.JSON_IS_FAVOURITE_TAG, Boolean.FALSE.toString());
                 imageIsFavourite.setImageDrawable(isNotFavouriteDrawable);
-
-                Toast.makeText(mContext, "Item removed from My Favourites", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, getString(R.string.products_removed_favourite), Toast.LENGTH_SHORT).show();
             }
         } else if (id == R.id.image_share){
             try {

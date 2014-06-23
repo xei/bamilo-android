@@ -84,6 +84,8 @@ public class CatalogPageModel {
 
     private static ContentValues filters;
 
+    private int mFilterMD5 = -1;
+
     private ProductsListAdapter productsAdapter;
 
     private int lastItem;
@@ -127,7 +129,7 @@ public class CatalogPageModel {
     
     private Fragment mFragment;
     
-    private int totalUpdates;
+    private int mSwitchMD5;
 
     private TipsPagerAdapter mTipsPagerAdapter;
 
@@ -221,14 +223,41 @@ public class CatalogPageModel {
         CatalogPageModel.navigationPath = n;
         CatalogPageModel.title = t;
         CatalogPageModel.navigationSource = navSource;
-        CatalogPageModel.filters = filterValues;
+        
 
         this.showList = showList;
-        this.totalUpdates = totalUpdates;
 
         if (index == 1) {
             showTips();
         }
+        
+        Log.i(TAG, "FILTER IS DIFF: " + ((filterValues != null) ? filterValues.getAsInteger("md5") : ""));
+        
+        // Case no content
+        if(!hasContent()) {
+            Log.i(TAG, "IS EMPTY");
+            threadRequest();
+        }
+        // Case new filter
+        else if(filterValues != null && filterValues.getAsInteger("md5") != this.mFilterMD5) {
+            Log.i(TAG, "FILTER IS DIFF: " + filterValues.getAsInteger("md5") + " " + this.mFilterMD5);
+            this.mFilterMD5 = filterValues.getAsInteger("md5");
+            CatalogPageModel.filters = filterValues;
+            threadRequest();
+        // Case update layout 
+        } else if(this.mSwitchMD5 != totalUpdates) {
+            Log.i(TAG, "SWITCH LAYOUT");
+            switchLayout(showList, 0);
+            this.mSwitchMD5 = totalUpdates;
+        } else {
+            Log.i(TAG, "SHOW");
+        }
+            
+        
+        
+    }
+    
+    private void threadRequest(){
         new Thread(new Runnable() {
 
             @Override
@@ -247,16 +276,13 @@ public class CatalogPageModel {
      */
     public void switchLayout(boolean showList, int totalUpdates) {
         // save products from current productsAdapter to add to new Adapter
-        List<Product> products = productsAdapter.products;
-
-        Log.d(TAG, "SWITCHING LAYOUT" );
-
-        this.showList = showList;
-        this.totalUpdates = totalUpdates;
-
-        generateProductsListAdapter();
-
-        productsAdapter.appendProducts(products);
+        //List<Product> products = productsAdapter.products;
+        Log.d(TAG, "SWITCHING LAYOUT: " + showList + " " + totalUpdates + " " + isLandScape);
+        //this.showList = showList;
+        //this.totalUpdates = totalUpdates;
+        //generateProductsListAdapter();
+        onSwitchLayout();
+        //productsAdapter.appendProducts(products);
 
         showCatalogContent();
         isLoadingMore = false;
@@ -300,7 +326,7 @@ public class CatalogPageModel {
     }
 
     public int getTotalUpdates() {
-        return totalUpdates;
+        return mSwitchMD5;
     }
 
     public TextView getTextViewSpnf() {
@@ -378,14 +404,12 @@ public class CatalogPageModel {
                     Log.i("TAG", "DIR=======>" + dir + " sort =====> " + sort);
                     JumiaApplication.INSTANCE.showRelatedItemsGlobal = true;
                     Bundle bundle = new Bundle();
-                    bundle.putString(ConstantsIntentExtra.CONTENT_URL,
-                            ((Product) productsAdapter.getItem(activePosition)).getUrl());
+                    bundle.putString(ConstantsIntentExtra.CONTENT_URL, ((Product) productsAdapter.getItem(activePosition)).getUrl());
                     bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, navigationSource);
                     bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, navigationPath);
                     if (title != null)
                         bundle.putString(ProductDetailsActivityFragment.PRODUCT_CATEGORY, title);
-                    mActivity.onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle,
-                            FragmentController.ADD_TO_BACK_STACK);
+                    mActivity.onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle,FragmentController.ADD_TO_BACK_STACK);
                 }
 
             }
@@ -460,6 +484,44 @@ public class CatalogPageModel {
         pageNumber = 1;
         showProductsContent();
         productsAdapter.clearProducts();
+    }
+    
+    
+    /**
+     * Update the layout
+     */
+    private void onSwitchLayout() {
+        int numColumns = 1;
+        if (showList) {
+            if (isLandScape) {
+                // Tablet uses 3 columns for both Grid and List
+                numColumns = 3;
+            } else {
+                // Phone uses 1 column for List
+                numColumns = 1;
+            }
+        } else {
+            if (isLandScape) {
+                // Tablet uses 3 columns for both Grid and List
+                numColumns = 3;
+            } else {
+                // Phone uses 2 columns for Grid
+                numColumns = 2;
+            }
+        }
+        gridView.setNumColumns(numColumns);
+        
+        if (productsAdapter != null) {
+            List<Product> products = productsAdapter.products;
+            productsAdapter = new ProductsListAdapter(mActivity, showList, numColumns);
+            productsAdapter.appendProducts(products);
+            gridView.setAdapter(productsAdapter);
+            gridView.setSelection(0);
+            gridView.setOnScrollListener(scrollListener);
+        } else {
+            executeRequest();
+        }
+        
     }
 
     /**
@@ -793,6 +855,15 @@ public class CatalogPageModel {
             // mActivity).getString(R.string.shoppingcart_items)+")";
         }
     }
+    
+    /**
+     * Validate if has content
+     * @return boolean
+     * @author sergiopereira
+     */
+    public boolean hasContent(){
+        return productsAdapter != null;
+    }
 
     private void onSuccessEvent(Bundle bundle) {
         
@@ -889,6 +960,8 @@ public class CatalogPageModel {
         // Updated filter
         if(mFragment.isVisible())
             ((Catalog) mFragment).onSuccesLoadingFilteredCatalog(productsPage.getFilters());
+        
+        mActivity.showContentContainer();
 
     }
 

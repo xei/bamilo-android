@@ -35,14 +35,14 @@
             android:layout_alignParentTop="true"
             android:background="@android:color/white"
             android:gravity="center"
-            android:visibility="gone" >
+            android:visibility="visible" >
 
             <ImageView
                 android:id="@+id/products_list_filter_button"
                 android:layout_width="33.75dp"
-                android:layout_height="wrap_content"
+                android:layout_height="30.72dp"
                 android:layout_centerInParent="false"
-                android:background="@android:color/white"
+                android:scaleType="centerInside"
                 android:src="@drawable/selector_catalog_filter" />
 
             <View
@@ -55,9 +55,9 @@
             <ImageView
                 android:id="@+id/products_switch_layout_button"
                 android:layout_width="33.75dp"
-                android:layout_height="wrap_content"
+                android:layout_height="30.72dp"
                 android:layout_centerInParent="false"
-                android:background="@android:color/white"
+                android:scaleType="centerInside"
                 android:src="@drawable/selector_catalog_gridview" />
         </LinearLayout>
 

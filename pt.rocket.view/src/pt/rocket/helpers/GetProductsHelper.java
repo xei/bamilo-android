@@ -121,6 +121,8 @@ public class GetProductsHelper extends BaseHelper {
         if(filters != null) {
             for (Entry<String, Object> entry : filters.valueSet()) {
                 //Log.d(TAG, "ADD FILTER ENTRY: " + entry.getKey() + " " + entry.getValue());
+                if(entry.getKey().equalsIgnoreCase("md5")) 
+                    continue;
                 uriBuilder.appendQueryParameter(entry.getKey(), (String) entry.getValue());
             }
         }
