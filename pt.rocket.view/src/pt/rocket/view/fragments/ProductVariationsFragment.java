@@ -25,9 +25,9 @@ import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import de.akquinet.android.androlog.Log;
@@ -68,7 +68,7 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
     public ProductVariationsFragment() {
         super(EnumSet.of(EventType.GET_PRODUCT_EVENT), 
                 EnumSet.noneOf(EventType.class), 
-                EnumSet.of(MyMenuItem.SEARCH_VIEW),
+                EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.Products,
                 R.string.product_details_title, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         this.setRetainInstance(true);

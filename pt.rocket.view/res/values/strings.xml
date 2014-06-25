@@ -354,7 +354,7 @@
     <string name="wizard_navigation">Quick access to all your favourite categories</string>
     
     <string name="my_profile">My Profile</string>
-    <string name="my_favourites">My Favourites</string>
+    <string name="favourites">My Favourites</string>
     <string name="recent_searches">Recent Searches</string>
     
     <string name="tip_share_text">Click to share this product!</string>

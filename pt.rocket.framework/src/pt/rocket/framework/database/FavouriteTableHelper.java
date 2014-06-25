@@ -75,17 +75,7 @@ public class FavouriteTableHelper {
 	/**
 	 * Insert favourite into database
 	 * 
-	 * @param sku
-	 * @param brand
-	 * @param name
-	 * @param price
-	 * @param special_price
-	 * @param discount_percentage
-	 * @param url
-	 * @param isNew
-	 * @param image_url
-	 * @param simples
-	 * @param known_variations
+	 * @param completeProduct
 	 */
 	public static void insertFavouriteProduct(CompleteProduct completeProduct) {
 		if (completeProduct != null) {
@@ -145,15 +135,7 @@ public class FavouriteTableHelper {
 	/**
 	 * Insert favourite into database without variations values
 	 * 
-	 * @param sku
-	 * @param brand
-	 * @param name
-	 * @param price
-	 * @param special_price
-	 * @param discount_percentage
-	 * @param url
-	 * @param image_url
-	 * @param isNew
+	 * @param product
 	 */
 	public static void insertPartialFavouriteProduct(Product product) {
 		if (product != null) {
@@ -383,6 +365,32 @@ public class FavouriteTableHelper {
 		Log.i(TAG, "SQL RESULT query :  " + query);
 		db.execSQL(query);
 		db.close();
+	}
+
+	/**
+	 * Get number of entries
+	 * 
+	 * @return number of favourites
+	 */
+	public static int getTotalFavourites() {
+		int result = 0;
+		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getReadableDatabase();
+		String query = "select count(*) from " + TABLE;
+		Log.i(TAG, "SQL RESULT query :  " + query);
+		Cursor cursor = db.rawQuery(query, null);
+		if (cursor != null && cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			result = cursor.getInt(0);
+			// Log result
+			Log.i(TAG, "SQL RESULT: " + result);
+		}
+		// Validate cursor
+		if (cursor != null) {
+			cursor.close();
+		}
+
+		db.close();
+		return result;
 	}
 
 	/**

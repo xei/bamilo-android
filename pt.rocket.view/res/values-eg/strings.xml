@@ -224,7 +224,7 @@
 	<string name="exit_press_back_again">Please press back again if you wish to leave the app</string>
 	<string name="recently_viewed">Recently Viewed</string>
     <string name="my_profile">My Profile</string>
-    <string name="my_favourites">My Favourites</string>
+    <string name="favourites">My Favourites</string>
     <string name="recent_searches">Recent Searches</string>
     <string name="tip_share_text">Click to share this product!</string>
     <string name="tip_favourite_text">Click to favourite this product \nand view the full list  in My Profile!</string>

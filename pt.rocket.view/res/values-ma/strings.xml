@@ -18,7 +18,7 @@
     <string name="brands">Marques</string>
     <string name="my_account">Settings</string>
     <string name="sign_in">Accéder au compte</string>
-    <string name="sign_out">se déconnecter</string>
+    <string name="sign_out">Se déconnecter</string>
     <string name="categories">Catégories </string>
     <string name="sales">PROMO</string>
     <string name="nav_products">Produits</string>
@@ -354,7 +354,7 @@
     <string name="categories_label_uppercase">CATÉGORIES</string>
     <string name="wizard_navigation">Accès rapide à toutes vos catégories préférées</string>
     <string name="my_profile">Mon Profil</string>
-    <string name="my_favourites">Mes Favoris</string>
+    <string name="favourites">Mes Favoris</string>
     <string name="recent_searches">Recherches Récentes</string>
     <string name="tip_share_text">Cliquez pour Partager ce Produit!</string>
     <string name="tip_favourite_text">Cliquez pour ajouter ce produit aux Favoris, \net voir la liste complète dans Mon Profil!</string>

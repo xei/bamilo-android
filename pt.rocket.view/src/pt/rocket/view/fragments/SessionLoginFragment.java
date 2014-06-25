@@ -134,7 +134,7 @@ public class SessionLoginFragment extends BaseFragment {
         super(EnumSet.of(EventType.GET_LOGIN_FORM_EVENT), 
                 EnumSet.of(EventType.LOGIN_EVENT,
                 EventType.FACEBOOK_LOGIN_EVENT),
-                EnumSet.of(MyMenuItem.SEARCH_VIEW), 
+                EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE), 
                 NavigationAction.LoginOut, 
                 R.string.login_title, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
     }

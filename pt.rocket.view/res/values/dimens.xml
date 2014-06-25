@@ -202,10 +202,17 @@
     <dimen name="product_tip_padding">52.8dp</dimen>
     <dimen name="product_tip_padding_side">15dp</dimen>
     
-    <!-- MY PROFILE LISTS -->
-    <dimen name="my_profile_lists_top_margin">33dp</dimen>
-    <dimen name="my_profile_lists_drawable_padding">26.67dp</dimen>
-    <dimen name="my_profile_menu_margin">32dp</dimen>
+    <!-- MY PROFILE -->
+    <dimen name="myprofile_lists_top_margin">33dp</dimen>
+    <dimen name="myprofile_lists_drawable_padding">26.67dp</dimen>
+    <dimen name="myprofile_menu_margin">32dp</dimen>
+	<dimen name="myprofile_button_left_padding">5dp</dimen>
+	<dimen name="myprofile_button_right_padding">5dp</dimen>
+	<dimen name="myprofile_item_size">42.67dp</dimen>
+	<dimen name="myprofile_item_icon_container_size">27dp</dimen>
+	<dimen name="myprofile_item_icon_size">21.33dp</dimen>
+	<dimen name="myprofile_icon_counter_size">12dp</dimen>
+	<dimen name="myprofile_icon_counter_text_size">6sp</dimen>
     
     <!--  FAVOURITES -->
     <dimen name="favourite_item_top_margin">13.33dp</dimen>

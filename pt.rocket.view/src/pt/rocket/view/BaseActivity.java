@@ -1,5 +1,6 @@
 package pt.rocket.view;
 
+import java.lang.ref.WeakReference;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
@@ -7,18 +8,19 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.holoeverywhere.widget.Button;
-import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.ActivitiesWorkFlow;
+import pt.rocket.controllers.LogOut;
 import pt.rocket.controllers.SearchDropDownAdapter;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.Darwin;
 import pt.rocket.framework.ErrorCode;
+import pt.rocket.framework.database.FavouriteTableHelper;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.SearchSuggestion;
 import pt.rocket.framework.rest.RestConstants;
@@ -36,6 +38,7 @@ import pt.rocket.helpers.GetShoppingCartItemsHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.CheckVersion;
 import pt.rocket.utils.MyMenuItem;
+import pt.rocket.utils.MyProfileActionProvider;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.RightDrawableOnTouchListener;
 import pt.rocket.utils.dialogfragments.CustomToastView;
@@ -44,6 +47,7 @@ import pt.rocket.utils.dialogfragments.DialogProgressFragment;
 import pt.rocket.utils.dialogfragments.WizardFactory;
 import pt.rocket.utils.dialogfragments.WizardPreferences.WizardType;
 import pt.rocket.view.fragments.NavigationFragment;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -56,6 +60,7 @@ import android.os.RemoteException;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -75,6 +80,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
@@ -84,7 +90,6 @@ import com.actionbarsherlock.interfaces.SearchViewImeBackListener;
 import com.actionbarsherlock.internal.ActionBarSherlockNative;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.view.MenuItem.OnMenuItemClickListener;
 import com.actionbarsherlock.widget.SearchView;
 import com.actionbarsherlock.widget.SearchView.OnCloseListener;
 import com.actionbarsherlock.widget.SearchView.SearchAutoComplete;
@@ -143,7 +148,9 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     protected DialogFragment dialog;
 
     private DialogProgressFragment progressDialog;
-    
+
+    private DialogGenericFragment dialogLogout;
+
     private boolean backPressedOnce = false;
 
     private View logoView = null;
@@ -191,6 +198,8 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     private final int contentLayoutId;
 
     private TextView tvActionCartCount;
+
+    private MyProfileActionProvider myProfileActionProvider;
 
     private FragmentController fragmentController;
 
@@ -733,6 +742,12 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                         });
                 setShareIntent(createShareIntent());
                 break;*/
+            case MY_PROFILE:
+                MenuItem myProfile = menu.findItem(item.resId); //menu.findItem(item.resId);
+                myProfile.setVisible(true);
+                myProfile.setEnabled(true);
+
+                setMyProfile(myProfile);
             default:
                 menu.findItem(item.resId).setVisible(true);
                 break;
@@ -751,36 +766,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         } else {
             menu.findItem(R.id.menu_basket).setVisible(false);
         }
-
-        MenuItem myProfile = menu.findItem(R.id.menu_myprofile);
-        myProfile.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                closeDrawerIfOpen();
-
-                return true;
-            }
-        });
-
-        MenuItem favourites = menu.findItem(R.id.menu_favourites);
-        //TextView textViewFavouritesCount = (TextView) favourites.getActionView().findViewById(R.id.favourites_count);
-        //textViewFavouritesCount.setText("5");
-        favourites.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                onSwitchFragment(FragmentType.FAVOURITE_LIST, null, FragmentController.ADD_TO_BACK_STACK);
-                return true;
-            }
-        });
-
-        MenuItem recentSearches = menu.findItem(R.id.menu_recentsearch);
-        recentSearches.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                onSwitchFragment(FragmentType.RECENTSEARCHES_LIST, null, FragmentController.ADD_TO_BACK_STACK);
-                return true;
-            }
-        });
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -1019,10 +1004,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
         // set visibility for menu_basket
         currentMenu.findItem(R.id.menu_basket).setVisible(visible);
-
-        // XXX set visibility for my profile
-        currentMenu.findItem(R.id.menu_myprofile).setVisible(visible);
-    } 
+    }
 
     /**
      * Hide the search component
@@ -1280,6 +1262,94 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         }
         return sharingIntent;
     }
+
+    /**
+     * ################# MY PROFILE #################
+     */
+
+    /**
+     * Method used to set the myProfile Menu
+     * 
+     * @author Andre Lopes
+     */
+    private void setMyProfile(MenuItem myProfile) {
+        if (myProfile != null) {
+            myProfileActionProvider = (MyProfileActionProvider) myProfile.getActionProvider();
+            myProfileActionProvider.setAdapterOnClickListener(myProfileClickListener);
+        }
+    }
+
+    OnClickListener myProfileClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            boolean hideMyProfile = true;
+
+            NavigationAction navAction = (NavigationAction) v.getTag(R.id.nav_action);
+            if (navAction != null && getAction() != navAction) {
+                switch (navAction) {
+                case MyProfile:
+                    // MY PROFILE
+                    hideMyProfile = false;
+
+                    closeDrawerIfOpen();
+
+                    if (myProfileActionProvider != null) {
+                        myProfileActionProvider.showSpinner();
+
+                        int totalFavourites = FavouriteTableHelper.getTotalFavourites();
+                        myProfileActionProvider.setTotalFavourites(totalFavourites);
+                    }
+                    break;
+                case LoginOut:
+                    // SIGN IN
+                    if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials()) {
+                        FragmentManager fm = getSupportFragmentManager();
+
+                        dialogLogout = DialogGenericFragment.newInstance(false, true, false,
+                                getString(R.string.logout_title),
+                                getString(R.string.logout_text_question),
+                                getString(R.string.no_label), getString(R.string.yes_label),
+                                new OnClickListener() {
+
+                                    @Override
+                                    public void onClick(View v) {
+                                        if (v.getId() == R.id.button2) {
+                                            LogOut.performLogOut(new WeakReference<Activity>(BaseActivity.this));
+                                        }
+                                        dialogLogout.dismiss();
+                                    }
+                                });
+                        dialogLogout.show(fm, null);
+                    } else {
+                        onSwitchFragment(FragmentType.LOGIN, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                    }
+                    break;
+                case Favourite:
+                    // FAVOURITES
+                    onSwitchFragment(FragmentType.FAVOURITE_LIST, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                    break;
+                case RecentSearch:
+                    // RECENT SEARCHES
+                    onSwitchFragment(FragmentType.RECENTSEARCHES_LIST, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                    break;
+                case RecentlyView:
+                    // RECENTLY VIEWED
+                    // TODO
+                    break;
+                default:
+                    Log.w(TAG, "WARNING ON CLICK UNKNOWN VIEW");
+                    break;
+                }
+            } else {
+                Log.d(TAG, "selected navAction is already being shown");
+            }
+
+            // only hide dropdown for Spinner if hideMyProfile flag is activated
+            if (hideMyProfile && myProfileActionProvider != null) {
+                myProfileActionProvider.dismissSpinner();
+            }
+        }
+    };
 
     /*
      * (non-Javadoc)

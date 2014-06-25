@@ -60,7 +60,7 @@ public class RecentSearchFragment extends BaseFragment {
 
         super(EnumSet.noneOf(EventType.class),
                 EnumSet.noneOf(EventType.class),
-                EnumSet.of(MyMenuItem.SEARCH_VIEW),
+                EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.RecentSearch,
                 R.string.recent_searches, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/myprofile_item_size"
+    android:orientation="horizontal" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/myprofile_item_size"
+        android:layout_weight="1"
+        android:background="@android:color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
+
+        <RelativeLayout
+            android:layout_width="@dimen/myprofile_item_size"
+            android:layout_height="@dimen/myprofile_item_size" >
+
+            <LinearLayout
+                android:id="@+id/icon_container"
+                android:layout_width="@dimen/myprofile_item_icon_container_size"
+                android:layout_height="@dimen/myprofile_item_icon_container_size"
+                android:layout_centerInParent="true"
+                android:gravity="center" >
+
+                <ImageView
+                    android:id="@+id/icon"
+                    android:layout_width="@dimen/myprofile_item_icon_size"
+                    android:layout_height="@dimen/myprofile_item_icon_size"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/ico_dropdown_favourites" />
+            </LinearLayout>
+
+            <org.holoeverywhere.widget.TextView
+                android:id="@+id/icon_counter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignRight="@+id/icon_container"
+                android:layout_alignTop="@+id/icon_container"
+                android:background="@drawable/favourite_counter_shape"
+                android:gravity="center"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/myprofile_icon_counter_text_size"
+                android:visibility="invisible" />
+        </RelativeLayout>
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/title"
+            style="@style/myprofile_item_text" />
+    </LinearLayout>
+
+</LinearLayout>

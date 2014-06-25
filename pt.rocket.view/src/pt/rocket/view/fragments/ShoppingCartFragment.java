@@ -181,7 +181,7 @@ public class ShoppingCartFragment extends BaseFragment {
         super(EnumSet.of(EventType.GET_SHOPPING_CART_ITEMS_EVENT),
                 EnumSet.of(EventType.REMOVE_ITEM_FROM_SHOPPING_CART_EVENT,
                         EventType.CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT), 
-                EnumSet.of(MyMenuItem.SEARCH_VIEW),
+                EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.Basket,
                 R.string.shoppingcart_title, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
         this.setRetainInstance(true);

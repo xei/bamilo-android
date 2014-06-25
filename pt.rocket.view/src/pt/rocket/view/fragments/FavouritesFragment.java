@@ -86,9 +86,9 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
     public FavouritesFragment() {
         super(EnumSet.noneOf(EventType.class),
                 EnumSet.noneOf(EventType.class),
-                EnumSet.of(MyMenuItem.SEARCH_VIEW),
+                EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.Favourite,
-                R.string.my_favourites, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+                R.string.favourites, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
     
     /**

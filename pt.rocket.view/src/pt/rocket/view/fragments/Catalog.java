@@ -120,7 +120,7 @@ public class Catalog extends BaseFragment implements OnClickListener {
     public Catalog() {
         super(EnumSet.noneOf(EventType.class),
                 EnumSet.noneOf(EventType.class),
-                EnumSet.of(MyMenuItem.SEARCH_VIEW),
+                EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.Products,
                 R.string.products, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }

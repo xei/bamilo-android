@@ -81,7 +81,7 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
     public ProductBasicInfoFragment() {
         super(EnumSet.of(EventType.GET_PRODUCT_EVENT), 
                 EnumSet.noneOf(EventType.class), 
-                EnumSet.of(MyMenuItem.SEARCH_VIEW),
+                EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.Products,
                 R.string.product_details_title, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
