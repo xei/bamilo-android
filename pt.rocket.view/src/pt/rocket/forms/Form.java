@@ -134,7 +134,6 @@ public class Form implements IJSONSerializable, Parcelable {
                             mFieldKeyMap.put(field.getKey(), field);
                         }
                     } else {
-                        
                         Form subForm = new Form();
                         subForm.initialize(fieldsArray.getJSONObject(i));
                         Log.i(TAG, "code1subForms : subForm :  "+subForm.name+" "+subForm.toString());

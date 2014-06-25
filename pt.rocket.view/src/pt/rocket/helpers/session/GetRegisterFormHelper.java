@@ -52,18 +52,16 @@ public class GetRegisterFormHelper extends BaseHelper {
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
         final ArrayList<Form> forms = new ArrayList<Form>();
         JSONArray dataObject;
-        HashMap<String, FormData> formDataRegistry = new HashMap<String, FormData>();
+        //HashMap<String, FormData> formDataRegistry = new HashMap<String, FormData>();
         try {
-            dataObject = jsonObject
-                    .getJSONArray(RestConstants.JSON_DATA_TAG);
+            dataObject = jsonObject.getJSONArray(RestConstants.JSON_DATA_TAG);
 
             for (int i = 0; i < dataObject.length(); ++i) {
                 Form form = new Form();
                 form.setEventType(EventType.GET_REGISTRATION_FORM_EVENT);
                 JSONObject formObject = dataObject.getJSONObject(i);
                 if (!form.initialize(formObject)) {
-                    Log.e(TAG,
-                            "Error initializing the form using the data");
+                    Log.e(TAG, "Error initializing the form using the data");
                 }
                 forms.add(form);
             }
@@ -72,14 +70,9 @@ public class GetRegisterFormHelper extends BaseHelper {
                 bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, forms.get(0));
             }
         } catch (JSONException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_REGISTRATION_FORM_EVENT);
-//        long elapsed = System.currentTimeMillis() - JumiaApplication.INSTANCE.timeTrackerMap.get(EventType.GET_REGISTRATION_FORM_EVENT);
-//        Log.i("REQUEST", "event type response : "+bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY)+" time spent : "+elapsed);
-//        String trackValue = bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY) + " : "+elapsed;
-//        JumiaApplication.INSTANCE.writeToTrackerFile(trackValue);
         return bundle;
     }
     

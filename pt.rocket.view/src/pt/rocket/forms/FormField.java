@@ -235,6 +235,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                 linkText = jsonObject.optString(RestConstants.JSON_LINK_TEXT_TAG);
                 Log.d(TAG, "FORM FIELD: " + key + " " + name + " " + " " + label + " " + value + " " + scenario);
                 
+                // Get rules
                 JSONObject validationObject = jsonObject.optJSONObject(RestConstants.JSON_VALIDATION_TAG);
 
                 if (validationObject != null) {

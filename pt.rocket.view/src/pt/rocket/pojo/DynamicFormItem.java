@@ -1072,25 +1072,21 @@ public class DynamicFormItem {
         }
     }
 
-    private void buildDate(RelativeLayout dataContainer, RelativeLayout.LayoutParams params,
-            int controlWidth) {
-        params = new RelativeLayout.LayoutParams(controlWidth,
-                RelativeLayout.LayoutParams.WRAP_CONTENT);
+    private void buildDate(RelativeLayout dataContainer, RelativeLayout.LayoutParams params, int controlWidth) {
+        params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
         params.topMargin = 6;
         dataContainer = new RelativeLayout(this.context);
         dataContainer.setId(parent.getNextId());
         dataContainer.setLayoutParams(params);
 
-        params = new RelativeLayout.LayoutParams(controlWidth,
-                RelativeLayout.LayoutParams.WRAP_CONTENT);
+        params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
         this.dataControl = View.inflate(this.context, R.layout.form_button, null);
         this.dataControl.setId(parent.getNextId());
         this.dataControl.setLayoutParams(params);
 
         ((View) this.dataControl).setContentDescription(this.entry.getKey());
 
-        params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.MATCH_PARENT);
+        params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         params.addRule(RelativeLayout.CENTER_VERTICAL);
         params.rightMargin = 10;
@@ -1100,8 +1096,7 @@ public class DynamicFormItem {
         this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_basic));
         this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
 
-        this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE
-                : View.GONE);
+        this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE : View.GONE);
         dataContainer.addView(this.dataControl);
         dataContainer.addView(this.mandatoryControl);
 
@@ -1110,16 +1105,13 @@ public class DynamicFormItem {
         if (null != this.entry.getLabel() && this.entry.getLabel().trim().length() > 0) {
             text = this.entry.getLabel();
             ((Button) this.dataControl).setText(text);
-            ((Button) this.dataControl).setTextColor(context.getResources().getColor(
-                    R.color.form_text));
+            ((Button) this.dataControl).setTextColor(context.getResources().getColor(R.color.form_text));
         } else if (this.entry.getKey().equals("birthday")) {
             Log.i("ENTERED BIRTHDAY", " HERE ");
             text = context.getString(R.string.register_birthday);
             ((Button) this.dataControl).setHint(text);
-            ((Button) this.dataControl).setHintTextColor(context.getResources().getColor(
-                    R.color.form_text_hint));
-            ((Button) this.dataControl).setTextColor(context.getResources().getColor(
-                    R.color.form_text));
+            ((Button) this.dataControl).setHintTextColor(context.getResources().getColor(R.color.form_text_hint));
+            ((Button) this.dataControl).setTextColor(context.getResources().getColor(R.color.form_text));
             this.dataControl.setPadding(UIUtils.dpToPx(13, screenDensity), 0, 0, 10);
             // ((Button)
             // this.dataControl).setTextColor(context.getResources().getColor(R.color.form_text));

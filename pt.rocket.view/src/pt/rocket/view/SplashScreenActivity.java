@@ -16,6 +16,7 @@ import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.Darwin;
 import pt.rocket.framework.ErrorCode;
+import pt.rocket.framework.objects.Section;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.rest.RestContract;
 import pt.rocket.framework.service.IRemoteServiceCallback;
@@ -415,10 +416,8 @@ public class SplashScreenActivity extends FragmentActivity {
         if (!shouldHandleEvent) {
             return;
         }
-        
-        
+
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         
         Log.i(TAG, "code1configs : handleSuccessResponse : "+eventType+" errorcode : "+errorCode);
@@ -430,65 +429,135 @@ public class SplashScreenActivity extends FragmentActivity {
                 e.printStackTrace();
             }
         }
-        if (eventType == EventType.INITIALIZE) {
-            Log.d(TAG, "HANDLE EVENT: " + eventType.toString());
         
-            /**
-             * Get Api info
-             */
-            JumiaApplication.INSTANCE.registerFragmentCallback(mCallback);
-            JumiaApplication.INSTANCE.sendRequest(new GetApiInfoHelper(), null, responseCallback);
-            
-        } else if (eventType == EventType.GET_API_INFO) {
-            Log.d(TAG, "HANDLE EVENT: " + eventType.toString());
-            // Show activity
-            selectActivity(); 
-            finish();
-        } else if(eventType == EventType.GET_COUNTRY_CONFIGURATIONS){
-            
-            // Initialize application
-            JumiaApplication.INSTANCE.init(false, initializationHandler);
-        } else if(eventType == EventType.GET_GLOBAL_CONFIGURATIONS && sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ID, null) == null){
+        // Case event
+        if (eventType == EventType.INITIALIZE) onProcessInitialize();
+        else if (eventType == EventType.GET_API_INFO) onProcessApiEvent(bundle);
+        else if(eventType == EventType.GET_COUNTRY_CONFIGURATIONS) onProcessCountryConfigsEvent();
+        else if(eventType == EventType.GET_GLOBAL_CONFIGURATIONS) onProcessGlobalConfigsEvent(bundle);
+        // Case error
+        else if (errorCode == ErrorCode.NO_COUNTRY_CONFIGS_AVAILABLE) onProcessNoCountryConfigsError();
+        else if (errorCode == ErrorCode.NO_COUNTRIES_CONFIGS) onProcessNoCountriesConfigsError();
+        else if (errorCode == ErrorCode.AUTO_COUNTRY_SELECTION) onProcessAutoCountrySelection();
+        else if (errorCode == ErrorCode.REQUIRES_USER_INTERACTION) onProcessRequiresUserError();
+    }
+    
+    /**
+     * Proccess the initialize event
+     * @author sergiopereira
+     */
+    private void onProcessInitialize(){
+        Log.i(TAG, "ON PROCESS: INITIALIZE");
+        JumiaApplication.INSTANCE.registerFragmentCallback(mCallback);
+        JumiaApplication.INSTANCE.sendRequest(new GetApiInfoHelper(), null, responseCallback);
+    }
+    
+    /**
+     * Proccess the global configs event
+     * @param bundle
+     * @author sergiopereira
+     */
+    private void onProcessGlobalConfigsEvent(Bundle bundle){
+        Log.i(TAG, "ON PROCESS: GLOBAL CONFIGS");
+        
+        if(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ID, null) == null) {
+            Log.i(TAG, "SELECETD COUNTRY ID IS NULL");
             if(JumiaApplication.INSTANCE.countriesAvailable != null && JumiaApplication.INSTANCE.countriesAvailable.size() > 0){
-                Log.i(TAG, "code1configs received response correctly!!!");
-                // Auto country selection
                 LocationHelper.getInstance().autoCountrySelection(getApplicationContext(), initializationHandler);
             } else {
                 handleErrorResponse(bundle);
             }
-        } else if(eventType == EventType.GET_GLOBAL_CONFIGURATIONS){
+            
+        } else {
+            Log.i(TAG, "SELECETD COUNTRY ID IS NOT NULL");
             if(JumiaApplication.INSTANCE.countriesAvailable != null && JumiaApplication.INSTANCE.countriesAvailable.size() > 0){
                 JumiaApplication.INSTANCE.init(false, initializationHandler);
             } else {
                 handleErrorResponse(bundle);
             }
-        } else if (errorCode == ErrorCode.NO_COUNTRY_CONFIGS_AVAILABLE){
-            /**
-             * Get Country Specific Configs
-             */
+        }
+    }
+    
+    /**
+     * Proccess the country configs event
+     * @param bundle
+     */
+    private void onProcessCountryConfigsEvent(){
+        Log.i(TAG, "ON PROCESS COUNTRY CONFIGS");
+        JumiaApplication.INSTANCE.init(false, initializationHandler);
+    }
+    
+    /**
+     * Proccess the no country configs error
+     * @param bundle
+     * @author sergiopereira
+     */
+    private void onProcessNoCountryConfigsError(){
+        Log.i(TAG, "ON PROCESS NO COUNTRY CONFIGS");
+        JumiaApplication.INSTANCE.registerFragmentCallback(mCallback);
+        JumiaApplication.INSTANCE.sendRequest(new GetCountriesConfigsHelper(), null, responseCallback);
+    }
+    
+    /**
+     * Proccess the no countries configs error
+     * @author sergiopereira
+     */
+    private void onProcessNoCountriesConfigsError(){
+        Log.i(TAG, "ON PROCESS NO COUNTRIES CONFIGS");
+        JumiaApplication.INSTANCE.registerFragmentCallback(mCallback);
+        JumiaApplication.INSTANCE.sendRequest(new GetCountriesGeneralConfigsHelper() , null, responseCallback);
+    }
+    
+    /**
+     * Proccess the auto country selection
+     * @author sergiopereira
+     */
+    private void onProcessAutoCountrySelection(){
+        Log.i(TAG, "ON PROCESS AUTO_COUNTRY_SELECTION");
+        LocationHelper.getInstance().autoCountrySelection(getApplicationContext(), initializationHandler);
+    }
+    
+    /**
+     * Proccess the requires user interaction
+     * @author sergiopereira
+     */
+    private void onProcessRequiresUserError(){
+        Log.i(TAG, "ON PROCESS REQUIRES USER INTERACTION");
+        // Show Change country
+        Intent intent = new Intent(this, MainFragmentActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.CHANGE_COUNTRY);
+        intent.putExtra(ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, true);
+        // Start activity
+        startActivity(intent);
+        finish();
+    }
+    
+    /**
+     * Proccess the api md5 event
+     * @param bundle
+     */
+    private void onProcessApiEvent(Bundle bundle) {
+        Log.d(TAG, "ON PROCESS API EVENT");
+        //bundle.getParcelableArrayList(GetApiInfoHelper.API_INFO_OUTDATEDSECTIONS);
+        // Validate out dated sections
+        if(bundle.getBoolean(Section.SECTION_NAME_COUNTRY_CONFIGS, false)) {
+            Log.d(TAG, "THE COUNTRY CONFIGS IS OUT DATED");
             JumiaApplication.INSTANCE.registerFragmentCallback(mCallback);
             JumiaApplication.INSTANCE.sendRequest(new GetCountriesConfigsHelper(), null, responseCallback);
-        } else if (errorCode == ErrorCode.NO_COUNTRIES_CONFIGS){
-            Log.i(TAG, "code1configs calling GetCountriesGeneralConfigsHelper -- NO_COUNTRIES_CONFIGS");
-            JumiaApplication.INSTANCE.registerFragmentCallback(mCallback);
-            JumiaApplication.INSTANCE.sendRequest(new GetCountriesGeneralConfigsHelper() , null, responseCallback);
-        }  else if (errorCode == ErrorCode.AUTO_COUNTRY_SELECTION) {
-            Log.i(TAG, "code1configs calling autoCountrySelection -- AUTO_COUNTRY_SELECTION");
-            // Auto country selection
-            LocationHelper.getInstance().autoCountrySelection(getApplicationContext(), initializationHandler);
-        }  else if (errorCode == ErrorCode.REQUIRES_USER_INTERACTION) {
-            Log.i(TAG, "code1configs calling REQUIRES_USER_INTERACTION -- REQUIRES_USER_INTERACTION");
-            // Show Change country
-            Intent intent = new Intent(this, MainFragmentActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.putExtra(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.CHANGE_COUNTRY);
-            intent.putExtra(ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, true);
-            // Start activity
-            startActivity(intent);
+              
+        } else {
+            Log.d(TAG, "START MAIN ACTIVITY");
+            // Show activity
+            selectActivity();
             finish();
         }
     }
-
+    
+    /**
+     * ########### MAINTENANCE ###########
+     */
+    
     private void setLayoutMaintenance(final EventType eventType) {
         
         findViewById(R.id.fallback_content).setVisibility(View.VISIBLE);

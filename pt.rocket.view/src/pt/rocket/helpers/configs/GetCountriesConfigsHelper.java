@@ -52,7 +52,7 @@ public class GetCountriesConfigsHelper extends BaseHelper {
 
     private static String TAG = GetCountriesConfigsHelper.class.getSimpleName();
     private final String POSITION_LEFT = "1";
-    private final String POSITION_RIGHT = "2";
+    //private final String POSITION_RIGHT = "2";
 
     @Override
     public Bundle generateRequestBundle(Bundle args) {
@@ -107,17 +107,16 @@ public class GetCountriesConfigsHelper extends BaseHelper {
             }
             
             ga_id = jsonObject.getString(RestConstants.JSON_COUNTRY_GA_ID);
-            Log.i(TAG, "code1keys : ga_id : "+ga_id);
+            Log.i(TAG, "COUNTRY GA ID:" + ga_id);
             phone_number = jsonObject.getString(RestConstants.JSON_CALL_PHONE_TAG);
+            Log.i(TAG, "COUNTRY PHONE:" + phone_number);
             cs_email = jsonObject.getString(RestConstants.JSON_COUNTRY_CS_EMAIL);
         } catch (JSONException e) {
             e.printStackTrace();
             bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         }
         
-        SharedPreferences sharedPrefs = JumiaApplication.INSTANCE
-                .getApplicationContext()
-                .getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences sharedPrefs = JumiaApplication.INSTANCE.getApplicationContext().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         Editor mEditor = sharedPrefs.edit();
         mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_ISO, currency_iso);
         if(currency_position != null && currency_position.equalsIgnoreCase(POSITION_LEFT)){
@@ -137,8 +136,7 @@ public class GetCountriesConfigsHelper extends BaseHelper {
         
         mEditor.putBoolean(ConstantsSharedPrefs.KEY_COUNTRY_CONFIGS_AVAILABLE, true);
         mEditor.commit();
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY,
-                EventType.GET_COUNTRY_CONFIGURATIONS);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_COUNTRY_CONFIGURATIONS);
 
         return bundle;
     }
@@ -146,7 +144,6 @@ public class GetCountriesConfigsHelper extends BaseHelper {
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
         Log.d(TAG, "parseErrorBundle GetCountriesConfigsHelper");
-
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_COUNTRY_CONFIGURATIONS);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;

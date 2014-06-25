@@ -204,7 +204,6 @@ public class TrackerDelegator {
         }
         
         AdXTracker.signup(context, JumiaApplication.INSTANCE.SHOP_NAME, customer.getIdAsString(), JumiaApplication.INSTANCE.ADX_VERSION_NAME, JumiaApplication.INSTANCE.ADX_DISPLAY_SIZE);
-        MixpanelTracker.signup(context, customer, location); 
         PushManager.shared().setAlias(customer.getIdAsString());
         storeSignupProcess(context, customer);
     }

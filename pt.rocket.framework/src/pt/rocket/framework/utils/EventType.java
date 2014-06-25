@@ -99,7 +99,7 @@ public enum EventType {
     
     GET_FORMS_DATASET_LIST_EVENT,
     
-    GET_API_INFO("http:/main/md5?setDevice=mobileApi", RestContract.MIN_CACHE_TIME),
+    GET_API_INFO("http:/main/md5?setDevice=mobileApi", RestContract.NO_CACHE),
         
 	GET_CUSTOMER("https:/customer/getdetails?setDevice=mobileApi", RestContract.MIN_CACHE_TIME),
 	
