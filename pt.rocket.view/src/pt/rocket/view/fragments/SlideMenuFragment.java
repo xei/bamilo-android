@@ -458,7 +458,7 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
         case Favourite:
             layout = createSubComponent(parent, component,
                     R.drawable.selector_navigation_favourites,
-                    R.string.my_favourites, this);
+                    R.string.favourites, this);
             break;
 
         case RecentSearch:
