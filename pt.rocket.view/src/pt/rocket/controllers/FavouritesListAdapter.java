@@ -150,7 +150,7 @@ public class FavouritesListAdapter extends ArrayAdapter<Favourite> {
         if(!isComplete) {
             view.setOnClickListener(null);
             view.setEnabled(false);
-            view.setAlpha((float) .5);
+            view.setBackgroundResource(R.drawable.btn_grey);
         }
     }
     
