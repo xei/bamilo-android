@@ -353,13 +353,16 @@
     <style name="navigation_generic_component_text">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:layout_gravity">center</item>
         <item name="android:marqueeRepeatLimit">marquee_forever</item>
         <item name="android:singleLine">true</item>
         <item name="android:text">Component</item>
         <item name="android:textColor">@color/grey_middle</item>
         <item name="android:textSize">@dimen/text_mid</item>
-        <item name="android:layout_marginRight">@dimen/margin_huge</item>
+        <item name="android:paddingBottom">@dimen/margin_mid</item>
+        <item name="android:paddingLeft">@dimen/margin_huge</item>
+        <item name="android:paddingTop">@dimen/margin_mid</item>
+        <item name="android:paddingRight">@dimen/margin_huge</item>
     </style>
 
     <!-- This style is used in the inner categories layout for the categories sub_list -->

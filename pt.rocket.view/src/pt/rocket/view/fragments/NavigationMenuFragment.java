@@ -63,8 +63,8 @@ public class NavigationMenuFragment extends BaseFragment implements OnClickListe
     private static DialogGenericFragment dialogLogout;
     
     private List<View> myProfileSubItems;
+    
     private boolean myProfileSubItemsVisible;
-    int myprofileMenuMargin;
 
     /**
      * Get instance
@@ -360,7 +360,6 @@ public class NavigationMenuFragment extends BaseFragment implements OnClickListe
         int marginHuge = getResources().getDimensionPixelSize(R.dimen.margin_huge);
 
         Log.d(TAG, "navigationWidth: " + navigationWidth + " ; marginHuge: " + marginHuge);
-        myprofileMenuMargin = 32;
 
         // Scrollable container
         if (components != null) {
@@ -411,41 +410,52 @@ public class NavigationMenuFragment extends BaseFragment implements OnClickListe
             break;
         case Home:
             layout = createGenericComponent(parent, component, R.drawable.selector_navigation_home, R.string.home, this);
+            layout.findViewById(R.id.component_text).setTag(R.id.nav_action, action);
             break;
         case Search:
             layout = createGenericComponent(parent, component, R.drawable.selector_navigation_search, R.string.search_label, this);
+            layout.findViewById(R.id.component_text).setTag(R.id.nav_action, action);
             break;
         case Categories:
             layout = createGenericComponent(parent, component, R.drawable.selector_navigation_categories, R.string.categories, this);
+            layout.findViewById(R.id.component_text).setTag(R.id.nav_action, action);
             break;
         case MyProfile:
             layout = createGenericComponent(parent, component, R.drawable.selector_navigation_account, R.string.my_profile, this);
+            layout.findViewById(R.id.component_text).setTag(R.id.nav_action, action);
             break;
         case Favourite:
             layout = createMyProfileSubComponent(parent, component, R.drawable.selector_navigation_favourites, R.string.favourites, this);
+            layout.findViewById(R.id.component_text).setTag(R.id.nav_action, action);
             layout.setVisibility(View.GONE);
             break;
         case RecentSearch:
             layout = createMyProfileSubComponent(parent, component, R.drawable.selector_navigation_recent_searches, R.string.recent_searches, this);
+            layout.findViewById(R.id.component_text).setTag(R.id.nav_action, action);
             layout.setVisibility(View.GONE);
             break;
         case RecentlyView:
             layout = createMyProfileSubComponent(parent, component, R.drawable.selector_navigation_recently_viewed, R.string.recently_viewed, this);
+            layout.findViewById(R.id.component_text).setTag(R.id.nav_action, action);
             layout.setVisibility(View.GONE);
             break;
         case MyAccount:
             layout = createGenericComponent(parent, component, R.drawable.selector_navigation_settings, R.string.my_account, this);
+            layout.findViewById(R.id.component_text).setTag(R.id.nav_action, action);
             break;
         case LoginOut:
             int text = JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials() ? R.string.sign_out : R.string.sign_in;
             layout = createGenericComponent(parent, component, R.drawable.selector_navigation_loginout, getString(text), this);
+            layout.findViewById(R.id.component_text).setTag(R.id.nav_action, action);
             layout.setId(R.id.loginout_view);
             break;
         case Country:
             layout = createGenericComponent(parent, component, R.drawable.selector_navigation_countrychange, R.string.nav_country, this);
+            layout.findViewById(R.id.component_text).setTag(R.id.nav_action, action);
             break;
         case TrackOrder:
             layout = createGenericComponent(parent, component, R.drawable.selector_navigation_trackorder, R.string.nav_track_order, this);
+            layout.findViewById(R.id.component_text).setTag(R.id.nav_action, action);
             break;
         default:
             layout = mInflater.inflate(R.layout.navigation_generic_component, parent, false);
@@ -500,8 +510,10 @@ public class NavigationMenuFragment extends BaseFragment implements OnClickListe
     private View createMyProfileSubComponent(ViewGroup parent, NavigationListComponent component, int iconRes, int textRes, OnClickListener listener) {
         View navComponent = createGenericComponent(parent, component, iconRes, getString(textRes), listener);
         TextView tVSearch = (TextView) navComponent.findViewById(R.id.component_text);
-        tVSearch.setPadding(myprofileMenuMargin, 0, 0, 0);
-
+        tVSearch.setPadding(getResources().getDimensionPixelSize(R.dimen.margin_veryhuge),
+                            getResources().getDimensionPixelSize(R.dimen.margin_mid), 
+                            getResources().getDimensionPixelSize(R.dimen.margin_huge), 
+                            getResources().getDimensionPixelSize(R.dimen.margin_mid));
         // Add subComponent to list of  myProfile sub items
         myProfileSubItems.add(navComponent);
 
@@ -536,7 +548,7 @@ public class NavigationMenuFragment extends BaseFragment implements OnClickListe
         tVSearch.setText(text);
         tVSearch.setContentDescription("calabash_" + text);
         tVSearch.setCompoundDrawablesWithIntrinsicBounds(iconRes, 0, 0, 0);
-        navComponent.setOnClickListener(listener);
+        tVSearch.setOnClickListener(listener);
         return navComponent;
     }
 
