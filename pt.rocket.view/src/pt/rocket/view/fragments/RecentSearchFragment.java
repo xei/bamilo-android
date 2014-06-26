@@ -62,7 +62,7 @@ public class RecentSearchFragment extends BaseFragment {
                 EnumSet.noneOf(EventType.class),
                 EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.RecentSearch,
-                R.string.recent_searches, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+                R.string.recent_searches, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
     }
     
     @Override
@@ -180,6 +180,7 @@ public class RecentSearchFragment extends BaseFragment {
                     });
 
                     mClearAllButton.setVisibility(View.VISIBLE);
+                    mClearAllButton.setSelected(true);
                 } else {
                     showNoRecentSearches();
                 }

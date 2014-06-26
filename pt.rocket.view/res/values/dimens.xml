@@ -203,7 +203,7 @@
     <dimen name="product_tip_padding_side">15dp</dimen>
     
     <!-- MY PROFILE -->
-    <dimen name="myprofile_lists_top_margin">33dp</dimen>
+    <dimen name="myprofile_lists_top_margin">40dp</dimen>
     <dimen name="myprofile_lists_drawable_padding">26.67dp</dimen>
     <dimen name="myprofile_menu_margin">32dp</dimen>
 	<dimen name="myprofile_button_left_padding">5dp</dimen>

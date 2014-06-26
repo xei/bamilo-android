@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="0dp" >
+    android:layout_height="match_parent" >
+
+    <!-- NOT FOUND VIEW -->
 
     <org.holoeverywhere.widget.TextView
         android:id="@+id/recentsearch_not_found"
@@ -18,19 +19,22 @@
         android:textSize="@dimen/text_xxl"
         android:visibility="gone" />
 
+    <!-- CONTENT -->
+
     <RelativeLayout
         android:id="@+id/recentsearch_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:visibility="visible" >
 
         <GridView
             android:id="@+id/middle_recentsearch_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:listSelector="@android:color/transparent"
-            android:paddingBottom="85dp" />
+            android:listSelector="@drawable/selector_listitem_highlight"
+            android:paddingBottom="80dp" />
 
-        <org.holoeverywhere.widget.Button
+        <Button
             android:id="@+id/recentsearch_clear_all"
             style="@style/button_grey_style"
             android:layout_width="@dimen/recentsearch_clear_all_width"
@@ -38,10 +42,12 @@
             android:layout_centerHorizontal="true"
             android:layout_marginLeft="@dimen/recentsearch_button_margin"
             android:layout_marginRight="@dimen/recentsearch_button_margin"
+            android:ellipsize="marquee"
+            android:focusable="true"
             android:gravity="center"
+            android:marqueeRepeatLimit="marquee_forever"
             android:paddingLeft="@dimen/recentsearch_clear_all_fix_padding"
             android:paddingRight="@dimen/recentsearch_clear_all_fix_padding"
-            android:marqueeRepeatLimit="marquee_forever"
             android:singleLine="true"
             android:text="@string/recentsearch_clear_searches"
             android:textColor="#333"
@@ -55,11 +61,5 @@
         android:layout_height="match_parent"
         layout="@layout/loading_bar"
         android:visibility="gone" />
-
-    <include
-        android:id="@+id/tips_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        layout="@layout/tips" />
 
 </RelativeLayout>

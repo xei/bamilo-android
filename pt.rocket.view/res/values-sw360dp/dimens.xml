@@ -15,5 +15,5 @@
     <dimen name="product_item_vertical_divider_height">165dp</dimen>
 
     <!--  RECENT SEARCHES -->
-    <dimen name="recentsearch_clear_all_fix_padding">60dp</dimen>
+    <dimen name="recentsearch_clear_all_fix_padding">85dp</dimen>
 </resources>

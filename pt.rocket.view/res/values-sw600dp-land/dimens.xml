@@ -129,7 +129,7 @@
     <dimen name="product_tip_padding_side">15dp</dimen>
 
     <!-- MY PROFILE -->
-    <dimen name="myprofile_lists_top_margin">33dp</dimen>
+    <dimen name="myprofile_lists_top_margin">40dp</dimen>
     <dimen name="myprofile_lists_drawable_padding">26.67dp</dimen>
 
     <!--  FAVOURITES -->
