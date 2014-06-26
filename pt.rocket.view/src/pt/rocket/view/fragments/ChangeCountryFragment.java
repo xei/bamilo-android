@@ -138,8 +138,12 @@ public class ChangeCountryFragment extends BaseFragment {
         setList();
         
         isChangeCountry = true;
-        if(selected == SHOP_NOT_SELECTED)
+        
+        if(selected == SHOP_NOT_SELECTED) {
             isChangeCountry = false;
+            ((BaseActivity) getActivity()).hideTitle();
+            ((BaseActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(false);
+        }
         
         ((BaseActivity) getActivity()).setProcessShow(true);
         if(selected != SHOP_NOT_SELECTED){
@@ -148,8 +152,6 @@ public class ChangeCountryFragment extends BaseFragment {
             ((BaseActivity) getActivity()).setCheckoutHeader(R.string.nav_country);
         }
         
-        if(selected == SHOP_NOT_SELECTED)
-            ((BaseActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(false);
     }
 
     /*
