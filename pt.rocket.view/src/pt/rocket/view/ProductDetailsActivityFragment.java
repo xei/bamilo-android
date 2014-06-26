@@ -944,12 +944,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
             locateSimplePosition(mDeepLinkSimpleSize, product);
         
         JumiaApplication.INSTANCE.setCurrentProduct(product);
-        LastViewedTableHelper.insertViewedProduct(JumiaApplication.INSTANCE.getApplicationContext(), 
-                product.getSku(), 
-                product.getBrand() + " " + product.getName(), 
-                product.getSpecialPrice(), 
-                product.getUrl(), 
-                (product.getImageList().size() == 0) ? "" : product.getImageList().get(0));
+        LastViewedTableHelper.insertLastViewedProduct(product);
         mCompleteProduct = product;
         mCompleteProductUrl = product.getUrl();
         ((BaseActivity) getActivity()).setTitle(mCompleteProduct.getBrand() + " " + mCompleteProduct.getName());

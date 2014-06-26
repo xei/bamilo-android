@@ -6,7 +6,7 @@
     <!-- NOT FOUND VIEW -->
 
     <org.holoeverywhere.widget.TextView
-        android:id="@+id/favourites_empty"
+        android:id="@+id/recentlyviewed_empty"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -14,9 +14,9 @@
         android:layout_marginRight="@dimen/margin_mid"
         android:layout_marginTop="@dimen/myprofile_lists_top_margin"
         android:drawablePadding="@dimen/myprofile_lists_drawable_padding"
-        android:drawableTop="@drawable/img_nofavourites"
+        android:drawableTop="@drawable/img_norecentview"
         android:gravity="center"
-        android:text="@string/favourite_no_favourites"
+        android:text="@string/recentlyview_no_searches"
         android:textColor="@color/strip_title"
         android:textSize="@dimen/text_xxl"
         android:visibility="gone" />
@@ -24,13 +24,13 @@
     <!-- CONTENT -->
 
     <RelativeLayout
-        android:id="@+id/favourites_content"
+        android:id="@+id/recentlyviewed_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone" >
 
         <GridView
-            android:id="@+id/favourites_grid"
+            android:id="@+id/recentlyviewed_grid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:listSelector="@drawable/selector_listitem_highlight"
@@ -40,21 +40,25 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/favourites_grid"
+            android:layout_alignBottom="@id/recentlyviewed_grid"
             android:layout_centerHorizontal="true"
             android:background="@android:color/white"
             android:gravity="center" >
 
-            <org.holoeverywhere.widget.Button
-                android:id="@+id/favourite_button_shop_all"
-                style="@style/button_orange_style"
-                android:layout_width="wrap_content"
-                android:contentDescription="@string/productdetail_addcart_description"
+            <Button
+                android:id="@+id/recentlyviewed_button_clear_all"
+                style="@style/button_grey_style"
+                android:layout_width="@dimen/recentsearch_clear_all_width"
+                android:layout_marginLeft="@dimen/recentsearch_button_margin"
+                android:layout_marginRight="@dimen/recentsearch_button_margin"
+                android:ellipsize="marquee"
+                android:focusable="true"
                 android:gravity="center"
-                android:paddingLeft="@dimen/margin_veryhuge"
-                android:paddingRight="@dimen/margin_veryhuge"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:paddingLeft="@dimen/recentsearch_clear_all_fix_padding"
+                android:paddingRight="@dimen/recentsearch_clear_all_fix_padding"
                 android:singleLine="true"
-                android:text="@string/favourite_addalltocart"
+                android:text="@string/recentlyview_clear_viewed"
                 android:textColor="#333"
                 android:textSize="@dimen/text_s" />
         </LinearLayout>

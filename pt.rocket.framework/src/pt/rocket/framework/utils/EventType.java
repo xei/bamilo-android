@@ -199,7 +199,9 @@ public enum EventType {
 	
 	HOME_NEWSLETTERS_SIGNUP_FORM_FALLBACK_EVENT("https:/newsletter/signup/", RestContract.MAX_CACHE_TIME),
 	
-	GET_FAVOURITE_LIST;
+	GET_FAVOURITE_LIST,
+	
+	GET_RECENLTLYVIEWED_LIST;
 
     public final String action;
     public final Integer cacheTime;

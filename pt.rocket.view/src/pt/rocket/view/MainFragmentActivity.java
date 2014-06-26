@@ -34,6 +34,7 @@ import pt.rocket.view.fragments.CheckoutWebFragment;
 import pt.rocket.view.fragments.FavouritesFragment;
 import pt.rocket.view.fragments.HeadlessAddToCartFragment;
 import pt.rocket.view.fragments.HomeFragment;
+import pt.rocket.view.fragments.RecentlyViewedFragment;
 import pt.rocket.view.fragments.MyAccountEmailNotificationFragment;
 import pt.rocket.view.fragments.MyAccountFragment;
 import pt.rocket.view.fragments.MyAccountUserDataFragment;
@@ -338,6 +339,9 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             break;
         case RECENTSEARCHES_LIST:
             fragment = RecentSearchFragment.getInstance();
+            break;
+        case RECENTLYVIEWED_LIST:
+            fragment = RecentlyViewedFragment.getInstance();
             break;
         default:
             Log.w(TAG, "INVALIDE FRAGMENT TYPE");

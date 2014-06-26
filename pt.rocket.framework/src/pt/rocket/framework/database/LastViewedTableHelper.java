@@ -1,17 +1,29 @@
 package pt.rocket.framework.database;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.LastViewed;
+import pt.rocket.framework.objects.LastViewedAddableToCart;
+import pt.rocket.framework.objects.ProductSimple;
+import pt.rocket.framework.objects.Variation;
+import pt.rocket.framework.rest.RestConstants;
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.text.TextUtils;
 import android.util.Log;
 
 /**
  * This class is a helper to manage the Last Viewed products on database.
+ * 
  * @author Manuel Silva
+ * @modified Andre Lopes
  *
  */
 public class LastViewedTableHelper {
@@ -29,168 +41,335 @@ public class LastViewedTableHelper {
 	public static final String _PRODUCT_NAME = "product_name";
 	public static final String _PRODUCT_PRICE = "product_price";
 	public static final String _PRODUCT_URL = "product_url";
-	public static final String _IMAGE_URL = "image_url";
+	public static final String _PRODUCT_IMAGE_URL = "image_url";
+	public static final String _PRODUCT_BRAND = "product_brand";
+	public static final String _PRODUCT_SPECIAL_PRICE = "product_special_price";
+	public static final String _PRODUCT_DISCOUNT_PERCENTAGE = "product_discount_percentage";
+	public static final String _PRODUCT_IS_NEW = "product_is_new";
+	public static final String _PRODUCT_SIMPLES_JSON = "product_simples_json";
+	public static final String _PRODUCT_VARIATIONS_JSON = "product_variations_json";
+	public static final String _PRODUCT_KNOWN_VARIATIONS_LIST = "product_known_variations_list";
+	public static final String _PRODUCT_IS_COMPLETE = "product_is_complete";
+
+	private static String DELIMITER = ":::::";
 	
 	// Create table
-    public static final String CREATE = 
-    		"CREATE TABLE " + TABLE + " (" + 
-    				_ID +			" INTEGER PRIMARY KEY, " +
-    				_PRODUCT_SKU +		" TEXT," + 
-    				_PRODUCT_NAME +		" TEXT," + 
-    				_PRODUCT_PRICE +		" TEXT," + 
-    				_PRODUCT_URL +		" TEXT," + 
-    				_IMAGE_URL +	" TEXT" + 
-    				 ")";
+	public static final String CREATE =
+			new StringBuilder("CREATE TABLE ").append(TABLE)
+				.append(" (")
+				.append(_ID).append(" INTEGER PRIMARY KEY, ")
+				.append(_PRODUCT_SKU).append(" TEXT, ")
+				.append(_PRODUCT_NAME).append(" TEXT, ")
+				.append(_PRODUCT_PRICE).append(" TEXT ,")
+				.append(_PRODUCT_URL).append(" TEXT, ")
+				.append(_PRODUCT_IMAGE_URL).append(" TEXT, ")
+				.append(_PRODUCT_BRAND).append(" TEXT, ")
+				.append(_PRODUCT_SPECIAL_PRICE).append(" TEXT, ")
+				.append(_PRODUCT_DISCOUNT_PERCENTAGE).append(" DOUBLE, ")
+				.append(_PRODUCT_IS_NEW).append(" TEXT, ")
+				.append(_PRODUCT_SIMPLES_JSON).append(" TEXT, ")
+				.append(_PRODUCT_VARIATIONS_JSON).append(" TEXT, ")
+				.append(_PRODUCT_KNOWN_VARIATIONS_LIST).append(" TEXT, ")
+				.append(_PRODUCT_IS_COMPLETE).append(" TEXT ")
+				.append(")").toString();
 
-    /**
-     * Insert viewed product into database
-     * @param product_sku
-     * @param product_name
-     * @param product_price
-     * @param product_url
-     * @param image_url
-     */
-    public static void insertViewedProduct(Context ctx, String product_sku, String product_name, String product_price, String product_url, String image_url){
-        
-        if(!verifyIfExist(product_sku)){
-        	if(getLastViewedEntriesCount() == MAX_SAVED_PRODUCTS){
-        		removeOldestEntry();
-        	}
-        	SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
-        	ContentValues values = new ContentValues();
-            values.put(LastViewedTableHelper._PRODUCT_SKU, product_sku);
-            values.put(LastViewedTableHelper._PRODUCT_NAME, product_name);
-            values.put(LastViewedTableHelper._PRODUCT_PRICE, product_price);
-            values.put(LastViewedTableHelper._PRODUCT_URL, product_url);
-            values.put(LastViewedTableHelper._IMAGE_URL, image_url);
-            db.insert(LastViewedTableHelper.TABLE, null, values);	
-            db.close();
-        }
-    }
-    
-    /**
-     * Insert viewed product into database
-     * @param values
-     */
-    public static void insertViewedProduct(ContentValues values){
-        SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
-        db.insert(LastViewedTableHelper.TABLE, null, values);
-        db.close();
-    }
+	/**
+	 * Insert viewed product into database
+	 * 
+	 * @param completeProduct
+	 */
+	public static void insertLastViewedProduct(CompleteProduct completeProduct) {
+		if (completeProduct != null) {
+			String sku = completeProduct.getSku();
+			if (!verifyIfExist(sku)) {
+				if (getLastViewedEntriesCount() == MAX_SAVED_PRODUCTS) {
+					removeOldestEntry();
+				}
+				SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
+				ContentValues values = new ContentValues();
+				values.put(LastViewedTableHelper._PRODUCT_SKU, sku);
+				values.put(LastViewedTableHelper._PRODUCT_BRAND, completeProduct.getBrand());
+				values.put(LastViewedTableHelper._PRODUCT_NAME, completeProduct.getName());
+				values.put(LastViewedTableHelper._PRODUCT_PRICE, completeProduct.getPrice());
+				values.put(LastViewedTableHelper._PRODUCT_SPECIAL_PRICE, completeProduct.getSpecialPrice());
+				values.put(LastViewedTableHelper._PRODUCT_DISCOUNT_PERCENTAGE, completeProduct.getMaxSavingPercentage());
+				values.put(LastViewedTableHelper._PRODUCT_URL, completeProduct.getUrl());
+				values.put(LastViewedTableHelper._PRODUCT_IMAGE_URL, completeProduct.getImageList().size() == 0 ? "" : completeProduct.getImageList().get(0));
+				values.put(LastViewedTableHelper._PRODUCT_IS_NEW, Boolean.getBoolean(completeProduct.getAttributes().get(RestConstants.JSON_IS_NEW_TAG)));
 
-    /**
-     * Verifies if the product is already on the last viewed list
-     * @param product_sku
-     * @return
-     */
-    public static boolean verifyIfExist(String product_sku){
-    	boolean result = false;
-    	SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
-    	String query = "select count(*) from "+TABLE+" where "+_PRODUCT_SKU + " = '"+product_sku+"'";
-    	Log.i(TAG, "SQL RESULT query :  "+query);
+				String simplesJSON = "";
+				ArrayList<ProductSimple> simples = completeProduct.getSimples();
+				if (simples != null && !simples.isEmpty()) {
+					JSONArray simplesJSONArray = new JSONArray();
+					for (ProductSimple productSimple : simples) {
+						simplesJSONArray.put(productSimple.toJSON());
+					}
+					simplesJSON = simplesJSONArray.toString();
+				}
+				values.put(LastViewedTableHelper._PRODUCT_SIMPLES_JSON, simplesJSON);
 
+				String variationsJSON = "";
+				ArrayList<Variation> variations = completeProduct.getVariations();
+				if (variations != null && !variations.isEmpty()) {
+					JSONArray variationsJSONArray = new JSONArray();
+					for (Variation variation : variations) {
+						variationsJSONArray.put(variation.toJSON());
+					}
+					variationsJSON = variationsJSONArray.toString();
+				}
+				values.put(LastViewedTableHelper._PRODUCT_VARIATIONS_JSON, variationsJSON);
+
+				String knownVariationsString = "";
+				ArrayList<String> knownVariations = completeProduct.getKnownVariations();
+				if (knownVariations != null && !knownVariations.isEmpty()) {
+					StringBuilder knownVariationsStringBuilder = new StringBuilder();
+					for (String knownVariation : knownVariations) {
+						knownVariationsStringBuilder.append(knownVariation);
+						knownVariationsStringBuilder.append(DELIMITER);
+					}
+					knownVariationsString = knownVariationsStringBuilder.toString();
+				}
+				values.put(LastViewedTableHelper._PRODUCT_KNOWN_VARIATIONS_LIST, knownVariationsString);
+
+				values.put(LastViewedTableHelper._PRODUCT_IS_COMPLETE, true);
+
+				db.insert(LastViewedTableHelper.TABLE, null, values);
+				db.close();
+			}
+		}
+	}
+
+	/**
+	 * Verifies if the product is already on the last viewed list
+	 * 
+	 * @param sku
+	 * @return
+	 */
+	public static boolean verifyIfExist(String sku) {
+		boolean result = false;
+		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
+		String query = new StringBuilder("select count(*) from ").append(TABLE)
+				.append(" where ").append(_PRODUCT_SKU).append(" = '").append(sku).append("'").toString();
+		Log.i(TAG, "SQL RESULT query :  " + query);
 		Cursor cursor = db.rawQuery(query, null);
-    	if (cursor != null && cursor.getCount() >0 ) {
+		if (cursor != null && cursor.getCount() > 0) {
 			cursor.moveToFirst();
-			if(cursor.getInt(0)>= 1){
+			if (cursor.getInt(0) >= 1) {
 				result = true;
 			} else {
 				result = false;
 			}
 			// Log result
-			Log.i(TAG, "SQL RESULT: " + cursor.getInt(0)+ " result is : "+result );
+			Log.i(TAG, "SQL RESULT: " + cursor.getInt(0) + " result is : " + result);
 		}
-    	
+
 		// Validate cursor
-		if(cursor != null){
+		if (cursor != null) {
 			cursor.close();
 		}
-		
+
 		db.close();
-    	
+
 		return result;
-    }
-    
-    /**
-     * Get number of entries
-     * @return
-     */
-    public static int getLastViewedEntriesCount(){
-    	int result = 0;
-    	SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
-    	String query = "select count(*) from "+TABLE;
-    	Cursor cursor = db.rawQuery(query, null);
-    	if (cursor != null && cursor.getCount() >0 ) {
+	}
+
+	/**
+	 * Get number of entries
+	 * 
+	 * @return
+	 */
+	public static int getLastViewedEntriesCount() {
+		int result = 0;
+		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
+		String query = "select count(*) from " + TABLE;
+		Cursor cursor = db.rawQuery(query, null);
+		if (cursor != null && cursor.getCount() > 0) {
 			cursor.moveToFirst();
 			result = cursor.getInt(0);
 			// Log result
 			Log.i(TAG, "SQL RESULT: " + result);
 		}
 		// Validate cursor
-		if(cursor != null){
+		if (cursor != null) {
 			cursor.close();
 		}
-		
+
 		db.close();
 		return result;
-    }
+	}
 
-    /**
-     * Get the last viewed list of entries
-     * @return
-     */
-    public static ArrayList<LastViewed> getLastViewedList(){
-    	ArrayList<LastViewed> lastViewed = new ArrayList<LastViewed>();
-    	SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
-    	String query = "select * from "+TABLE+" order by "+_ID+" desc";
-    	Cursor cursor = db.rawQuery(query, null);
-    	if (cursor != null && cursor.getCount() >0 ) {
-    		while (cursor.moveToNext()) {
-    			LastViewed lViewed = new LastViewed();
-    			lViewed.setProductSku(cursor.getString(1));
-    			lViewed.setProductName(cursor.getString(2));
-    			lViewed.setProductPrice(cursor.getString(3));
-    			lViewed.setProductUrl(cursor.getString(4));
-    			lViewed.setImageUrl(cursor.getString(5));
-    			lastViewed.add(lViewed);
-    		}
+	/**
+	 * Get the last viewed list of entries
+	 * 
+	 * @return
+	 */
+	public static ArrayList<LastViewed> getLastViewedList() {
+		ArrayList<LastViewed> listLastViewed = new ArrayList<LastViewed>();
+		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
+		String query = new StringBuilder("select ")
+				.append(_PRODUCT_SKU).append(", ")
+				.append(_PRODUCT_NAME).append(", ")
+				.append(_PRODUCT_PRICE).append(", ")
+				.append(_PRODUCT_URL).append(", ")
+				.append(_PRODUCT_IMAGE_URL)
+				.append(" from ").append(TABLE)
+				.append(" order by ").append(_ID).append(" desc").toString();
+		Log.i(TAG, "SQL RESULT query :  " + query);
+		Cursor cursor = db.rawQuery(query, null);
+		if (cursor != null && cursor.getCount() > 0) {
+			while (cursor.moveToNext()) {
+				int index = 0; // columnIndex is zero-based index
+				LastViewed lastViewed = new LastViewed();
+				lastViewed.setProductSku(cursor.getString(index++));
+				lastViewed.setProductName(cursor.getString(index++));
+				lastViewed.setProductPrice(cursor.getString(index++));
+				lastViewed.setProductUrl(cursor.getString(index++));
+				lastViewed.setImageUrl(cursor.getString(index++));
+				listLastViewed.add(lastViewed);
+			}
 		}
-    	
+
 		// Validate cursor
-		if(cursor != null){
+		if (cursor != null) {
 			cursor.close();
 		}
-		
-		db.close();
-		return lastViewed;
-    }
-    
-    /**
-     * Remove oldest entry from database
-     */
-    public static void removeOldestEntry(){
-    	SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
-    	String query = "delete from "+TABLE+" where id in (select id FROM "+TABLE+" order by id asc limit 1)";
-    	db.execSQL(query);
-    	db.close();
-    }
-    
-    /**
-     * Delete all LastViewes
-     */
-    public static void deleteAllLastViewed() { 
-    	SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
-        db.delete(TABLE, null, null);
-        db.close();
-    }
 
-	 /**
-	  * Clears the Last Viewed table
-	  * 
-	  * @param db
-	  */
-	 public static void clearLastViewed(SQLiteDatabase db) {
-		 db.delete(TABLE, null, null);
-	 }
-    
+		db.close();
+		return listLastViewed;
+	}
+
+	/**
+	 * Get the last viewed list of entries for list of addable Last Viewed
+	 * 
+	 * @return
+	 */
+	public static ArrayList<LastViewedAddableToCart> getLastViewedAddableToCartList() {
+		ArrayList<LastViewedAddableToCart> listLastViewed = new ArrayList<LastViewedAddableToCart>();
+		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getReadableDatabase();
+		String query = new StringBuilder("select * from ").append(TABLE).append(" order by ").append(_ID).append(" desc").toString();
+		Log.i(TAG, "SQL RESULT query :  " + query);
+		Cursor cursor = db.rawQuery(query, null);
+		if (cursor != null && cursor.getCount() > 0) {
+			while (cursor.moveToNext()) {
+				int index = 1;
+				LastViewedAddableToCart lastViewed = new LastViewedAddableToCart();
+				lastViewed.setSku(cursor.getString(index++));
+				lastViewed.setName(cursor.getString(index++));
+				lastViewed.setPrice(cursor.getString(index++));
+				lastViewed.setUrl(cursor.getString(index++));
+				lastViewed.getImageList().add(cursor.getString(index++));
+				lastViewed.setBrand(cursor.getString(index++));
+				lastViewed.setSpecialPrice(cursor.getString(index++));
+				lastViewed.setMaxSavingPercentage(cursor.getDouble(index++));
+				lastViewed.setNew(cursor.getInt(index++) == 1);
+
+				// convert simples from JSON to ArrayList
+				String simplesJSON = cursor.getString(index++);
+				if (!TextUtils.isEmpty(simplesJSON)) {
+					try {
+						ArrayList<ProductSimple> simples = new ArrayList<ProductSimple>();
+						JSONArray simpleArray;
+						simpleArray = new JSONArray(simplesJSON);
+						for (int i = 0; i < simpleArray.length(); ++i) {
+							ProductSimple simple = new ProductSimple();
+							JSONObject simpleObject = simpleArray.getJSONObject(i);
+							simple.initialize(simpleObject);
+
+							// String simpleSKU = simple.getAttributes().get(RestConstants.JSON_SKU_TAG);
+							simples.add(simple);
+						}
+						lastViewed.setSimples(simples);
+						// NO_SIMPLE_SELECTED @ LastViewedListAdapter
+						lastViewed.setSelectedSimple((simples.size() == 1) ? 0 : -1); // NO_SIMPLE_SELECTED
+
+					} catch (JSONException e) {
+						Log.e(TAG, "JSONException on sku: " + lastViewed.getSku() + "\nsimplesJSON = " + simplesJSON);
+					}
+				}
+
+				// convert variations from JSON to ArrayList
+				String variationsJSON = cursor.getString(index++);
+				if (!TextUtils.isEmpty(variationsJSON)) {
+					try {
+						ArrayList<Variation> variations = new ArrayList<Variation>();
+						JSONArray variationArray = new JSONArray(variationsJSON);
+						for (int i = 0; i < variationArray.length(); ++i) {
+							Variation variation = new Variation();
+							JSONObject variationObject = variationArray.getJSONObject(i);
+							variation.initialize(variationObject);
+
+							variations.add(variation);
+						}
+						lastViewed.setVariations(variations);
+					} catch (JSONException e) {
+						Log.e(TAG, "JSONException on sku: " + lastViewed.getSku() + "\nvariationsJSON = " + variationsJSON);
+					}
+				}
+
+				// convert knownVariations from Joined String to ArrayList
+				String knownVariationsString = cursor.getString(index++);
+				if (!TextUtils.isEmpty(knownVariationsString)) {
+					String[] knownVariationsSplit = knownVariationsString.split(DELIMITER);
+					if (knownVariationsSplit != null && knownVariationsSplit.length > 0) {
+						lastViewed.setKnownVariations(new ArrayList<String>(Arrays.asList(knownVariationsSplit)));
+					}
+				}
+
+				lastViewed.setComplete(true);
+
+				listLastViewed.add(lastViewed);
+			}
+		}
+
+		// Validate cursor
+		if (cursor != null) {
+			cursor.close();
+		}
+
+		db.close();
+		return listLastViewed;
+	}
+
+	/**
+	 * Remove lastViewed from database
+	 * 
+	 * @param sku
+	 */
+	public static void removeLastViewed(String sku) {
+		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
+		String query = new StringBuilder("delete from ").append(TABLE)
+				.append(" where ").append(_PRODUCT_SKU).append(" = '").append(sku).append("'").toString();
+		Log.i(TAG, "SQL RESULT query :  " + query);
+		db.execSQL(query);
+		db.close();
+	}
+
+	/**
+	 * Remove oldest entry from database
+	 */
+	public static void removeOldestEntry() {
+		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
+		String query = new StringBuilder("delete from ").append(TABLE).append(" where id in ")
+				.append("(select id FROM ").append(TABLE).append(" order by id asc limit 1)").toString();
+		db.execSQL(query);
+		db.close();
+	}
+
+	/**
+	 * Delete all LastViewes
+	 */
+	public static void deleteAllLastViewed() {
+		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
+		db.delete(TABLE, null, null);
+		db.close();
+	}
+
+	/**
+	 * Clears the Last Viewed table
+	 * 
+	 * @param db
+	 */
+	public static void clearLastViewed(SQLiteDatabase db) {
+		db.delete(TABLE, null, null);
+	}
 }

@@ -1338,7 +1338,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                     break;
                 case RecentlyView:
                     // RECENTLY VIEWED
-                    // TODO
+                    onSwitchFragment(FragmentType.RECENTLYVIEWED_LIST, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                     break;
                 default:
                     Log.w(TAG, "WARNING ON CLICK UNKNOWN VIEW");

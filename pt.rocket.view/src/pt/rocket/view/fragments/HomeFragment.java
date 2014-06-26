@@ -17,22 +17,17 @@ import org.holoeverywhere.widget.Button;
 import org.holoeverywhere.widget.EditText;
 import org.holoeverywhere.widget.TextView;
 
-import com.androidquery.AQuery;
-
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.ConstantsSharedPrefs;
-import pt.rocket.controllers.LastViewedAdapter;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.factories.TeasersFactory;
 import pt.rocket.forms.FieldValidation;
 import pt.rocket.forms.HomeNewslettersSignupForm;
 import pt.rocket.framework.Darwin;
-import pt.rocket.framework.database.LastViewedTableHelper;
 import pt.rocket.framework.objects.Homepage;
 import pt.rocket.framework.objects.ITargeting.TargetType;
-import pt.rocket.framework.objects.LastViewed;
 import pt.rocket.framework.objects.Promotion;
 import pt.rocket.framework.objects.TeaserSpecification;
 import pt.rocket.framework.utils.AnalyticsGoogle;
@@ -74,7 +69,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerTabStrip;
-import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.InputFilter;
 import android.text.TextUtils;
@@ -89,6 +83,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+
+import com.androidquery.AQuery;
+
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -119,7 +116,7 @@ public class HomeFragment extends BaseFragment {
 
     private static HomeFragment mHomeFragment;
 
-    public static ArrayList<LastViewed> lastViewed = null;
+    // public static ArrayList<LastViewed> lastViewed = null;
 
     private static DialogFragment mDialogNewsletter;
 
@@ -252,11 +249,11 @@ public class HomeFragment extends BaseFragment {
 
         AnalyticsGoogle.get().trackPage(R.string.ghomepage);
 
-        if (LastViewedTableHelper.getLastViewedEntriesCount() > 0) {
+        /*if (LastViewedTableHelper.getLastViewedEntriesCount() > 0) {
             lastViewed = LastViewedTableHelper.getLastViewedList();
         } else {
             lastViewed = null;
-        }
+        }*/
     }
 
     @Override
@@ -905,9 +902,9 @@ public class HomeFragment extends BaseFragment {
             if (mainView != null) {
                 mainView.addView(generateNewsletterSubscribe(mainView));
 
-                if (lastViewed != null && lastViewed.size() > 0) {
+                /*if (lastViewed != null && lastViewed.size() > 0) {
                     mainView.addView(generateLastViewedLayout(mainView));
-                }
+                }*/
             }
         }
 
@@ -1095,7 +1092,7 @@ public class HomeFragment extends BaseFragment {
             }
         }
 
-        private View generateLastViewedLayout(ViewGroup parent) {
+        /*private View generateLastViewedLayout(ViewGroup parent) {
             View lastViewedView = mInflater.inflate(R.layout.teaser_last_viewed, parent, false);
             mPopArrows = (RelativeLayout) lastViewedView.findViewById(R.id.pop_arrows_container);
 
@@ -1112,7 +1109,7 @@ public class HomeFragment extends BaseFragment {
             LastViewedAdapter mLastViewedAdapter = new LastViewedAdapter(getActivity(), lastViewed, mInflater, partialSize);
             mViewPager.setAdapter(mLastViewedAdapter);
             return lastViewedView;
-        }
+        }*/
 
         private Handler receiveIsVisible = new Handler() {
 

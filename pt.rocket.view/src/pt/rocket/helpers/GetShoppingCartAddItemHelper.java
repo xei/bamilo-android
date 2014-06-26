@@ -9,6 +9,7 @@ import org.json.JSONObject;
 
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.framework.database.FavouriteTableHelper;
+import pt.rocket.framework.database.LastViewedTableHelper;
 import pt.rocket.framework.enums.RequestType;
 import pt.rocket.framework.objects.ShoppingCart;
 import pt.rocket.framework.utils.Constants;
@@ -39,11 +40,15 @@ public class GetShoppingCartAddItemHelper extends BaseHelper {
     
     public static final String REMOVE_FAVOURITE_TAG = "rmv_fv";
     
+    public static final String REMOVE_RECENTLYVIEWED_TAG = "rmv_rv";
+    
     private String mCurrentSku;
     
     private int mCurrentPos = -1;
 
     private boolean isToRemoveFromFavourite;
+
+    private boolean isToRemoveFromLastViewed;
  
     /*
      * (non-Javadoc)
@@ -55,6 +60,7 @@ public class GetShoppingCartAddItemHelper extends BaseHelper {
         mCurrentPos = args.getInt(PRODUCT_POS_TAG, -1);
         mCurrentSku = args.getString(PRODUCT_SKU_TAG);
         isToRemoveFromFavourite = args.getBoolean(REMOVE_FAVOURITE_TAG, false);
+        isToRemoveFromLastViewed = args.getBoolean(REMOVE_RECENTLYVIEWED_TAG, false);
         // Create request
         Bundle bundle = new Bundle();
         bundle.putString(Constants.BUNDLE_URL_KEY, EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT.action);
@@ -92,8 +98,14 @@ public class GetShoppingCartAddItemHelper extends BaseHelper {
         bundle.putInt(PRODUCT_POS_TAG, mCurrentPos);
         bundle.putString(PRODUCT_SKU_TAG, mCurrentSku);
         // Validate if is to remove from favourite
-        if(isToRemoveFromFavourite && !TextUtils.isEmpty(mCurrentSku)) FavouriteTableHelper.removeFavouriteProduct(mCurrentSku);
-        
+        if (isToRemoveFromFavourite && !TextUtils.isEmpty(mCurrentSku)) FavouriteTableHelper.removeFavouriteProduct(mCurrentSku);
+
+        /**
+         * LastViewed
+         */
+        // Validate if is to remove from LastViewed
+        if (isToRemoveFromLastViewed && !TextUtils.isEmpty(mCurrentSku)) LastViewedTableHelper.removeLastViewed(mCurrentSku);
+
         return bundle;
     }
 
