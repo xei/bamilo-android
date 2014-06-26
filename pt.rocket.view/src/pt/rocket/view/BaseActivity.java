@@ -40,7 +40,6 @@ import pt.rocket.utils.CheckVersion;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.MyProfileActionProvider;
 import pt.rocket.utils.NavigationAction;
-import pt.rocket.utils.RightDrawableOnTouchListener;
 import pt.rocket.utils.dialogfragments.CustomToastView;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.utils.dialogfragments.DialogProgressFragment;
@@ -67,11 +66,9 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.MeasureSpec;
 import android.view.View.OnClickListener;
-import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.view.inputmethod.EditorInfo;
@@ -126,9 +123,9 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
     //private ShareActionProvider mShareActionProvider;
     
-    private static final int SEARCH_EDIT_DELAY = 150;
+    private static final int SEARCH_EDIT_DELAY = 500;
     
-    private static final int SEARCH_EDIT_SIZE = 0;
+    private static final int SEARCH_EDIT_SIZE = 2;
     
     private static final int TOAST_LENGTH_SHORT = 2000; // 2 seconds
 
@@ -217,6 +214,8 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     protected SearchAutoComplete mSearchAutoComplete;
     
     protected View mSearchButton;
+    
+    protected boolean isSearchComponentOpened = false;
 
     /**
      * Constructor used to initialize the navigation list component and the autocomplete handler
@@ -627,7 +626,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             }
         }
     };
-
     
 
     /**
@@ -782,13 +780,15 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      */
     private void setActionBarSearch(Menu menu) {
         MenuItem mSearchMenuItem = menu.findItem(R.id.menu_search);
-
+        // Get search views
         mSearchView = (SearchView) mSearchMenuItem.getActionView();
         mSearchAutoComplete = (SearchAutoComplete) mSearchView.findViewById(R.id.abs__search_src_text);
         mSearchButton = mSearchView.findViewById(R.id.abs__search_button);
-
+        // Set the ime options
+        mSearchView.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+        mSearchAutoComplete.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+        // 
         mSearchMenuItem.setVisible(true);
-
         // Get the width of main content
         logoView.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
         int logoViewWidth = logoView.getMeasuredWidth() + logoView.getPaddingRight();
@@ -797,16 +797,19 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         // Calculate the search width
         int searchComponentWidth = mainContentWidth - logoViewWidth - genericIconWidth;
         Log.d(TAG, "SEARCH WIDTH SIZE: " + searchComponentWidth);
-
+        // Set measures
         mSearchView.setMaxWidth(searchComponentWidth);
         mSearchAutoComplete.setDropDownWidth(searchComponentWidth);
+        // Set hint
         mSearchView.setQueryHint(getString(R.string.action_label_search_hint));
         mSearchAutoComplete.setHintTextColor(getResources().getColor(R.color.grey_middlelight));
-
         // Set search
         setActionBarSearchBehavior();
     }
     
+    /**
+     * Set the search component
+     */
     public void setActionBarSearchBehavior() {
         Log.d(TAG, "SEARCH MODE: NEW BEHAVIOUR");
         if(mSearchAutoComplete == null) {
@@ -828,48 +831,47 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                 Log.d(TAG, "SEARCH: CLICKED ITEM " + position);
                 SearchSuggestion selectedSuggestion = (SearchSuggestion) adapter.getItemAtPosition(position);
                 String text = selectedSuggestion.getResult();
-                mSearchAutoComplete.setText(text);
+                mSearchAutoComplete.setText("");
                 mSearchAutoComplete.dismissDropDown();
                 GetSearchSuggestionHelper.saveSearchQuery(text);
-                executeSearchRequest(text);
+                showSearchCategory(text);
             }
         });
         
-        /*
-         * Listener for right drawable
-         */
-        mSearchAutoComplete.setOnTouchListener(new RightDrawableOnTouchListener(mSearchAutoComplete) {
-            @Override
-            public boolean onDrawableTouch(final MotionEvent event) {
-                String searchTerm = mSearchAutoComplete.getText().toString();
-                Log.d(TAG, "SEARCH: ON RIGHT DRAWABLE TOUCH: " + searchTerm);
-                if ( TextUtils.isEmpty( searchTerm )) return false;
-                GetSearchSuggestionHelper.saveSearchQuery(searchTerm);
-                executeSearchRequest(searchTerm);
-                return true;
-            }
-            
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if(findViewById(R.id.main_fallback_content) != null && findViewById(R.id.main_fallback_content).getVisibility() == View.VISIBLE){
-                    return true;
-                }
-                Log.d(TAG, "SEARCH: ON TOUCH: " + event.getAction());
-                // Close navigation menu
-                if (mDrawerLayout != null  && mDrawerLayout.isDrawerOpen(mDrawerNavigation)) 
-                    mDrawerLayout.closeDrawer(mDrawerNavigation);
-                // Force show drop down
-                if (TextUtils.isEmpty(mSearchAutoComplete.getText()) && event.getAction() == MotionEvent.ACTION_DOWN)
-                    mSearchAutoComplete.showDropDown();
-                // Sent to supper
-                return super.onTouch(v, event);
-            }
-            
-        });
+//        /*
+//         * Listener for right drawable
+//         */
+//        mSearchAutoComplete.setOnTouchListener(new RightDrawableOnTouchListener(mSearchAutoComplete) {
+//            @Override
+//            public boolean onDrawableTouch(final MotionEvent event) {
+//                String searchTerm = mSearchAutoComplete.getText().toString();
+//                Log.d(TAG, "SEARCH: ON RIGHT DRAWABLE TOUCH: " + searchTerm);
+//                if ( TextUtils.isEmpty( searchTerm )) return false;
+//                GetSearchSuggestionHelper.saveSearchQuery(searchTerm);
+//                executeSearchRequest(searchTerm);
+//                return true;
+//            }
+//            
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                if(findViewById(R.id.main_fallback_content) != null && findViewById(R.id.main_fallback_content).getVisibility() == View.VISIBLE){
+//                    return true;
+//                }
+//                Log.d(TAG, "SEARCH: ON TOUCH: " + event.getAction());
+//                // Close navigation menu
+//                if (mDrawerLayout != null  && mDrawerLayout.isDrawerOpen(mDrawerNavigation)) 
+//                    mDrawerLayout.closeDrawer(mDrawerNavigation);
+//                // Force show drop down
+//                if (TextUtils.isEmpty(mSearchAutoComplete.getText()) && event.getAction() == MotionEvent.ACTION_DOWN)
+//                    mSearchAutoComplete.showDropDown();
+//                // Sent to supper
+//                return super.onTouch(v, event);
+//            }
+//            
+//        });
         
         /*
          * Clear and add text listener
-         * TODO : Validate if is necessary remove old listeners
          */
         // mSearchAutoComplete.clearTextChangedListeners();
         mSearchAutoComplete.addTextChangedListener(new TextWatcher() {
@@ -880,9 +882,8 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
             @Override
             public void afterTextChanged(Editable s) {
-                Log.d(TAG, "SEARCH: AFTER TEXT CHANGED");
                 handle.removeCallbacks(run);
-                if (s.length() >= SEARCH_EDIT_SIZE && mSearchAutoComplete.hasFocus()) handle.postDelayed(run, SEARCH_EDIT_DELAY);
+                if (s.length() >= SEARCH_EDIT_SIZE && isSearchComponentOpened) handle.postDelayed(run, SEARCH_EDIT_DELAY);
             }
         });
         
@@ -904,8 +905,8 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             @Override
             public boolean onClose() {
                 Log.d(TAG, "SEARCH ON CLOSE PRESSED");
+                isSearchComponentOpened = false;
                 hideSearchComponent();
-
                 return true;
             }
         });
@@ -916,10 +917,10 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         mSearchView.setOnSearchClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d(TAG, "SEARCH ON CLICK VIEW");
                 // Validate menu state
-                if(drawable_state == DrawerLayout.STATE_IDLE){
-                    closeDrawerIfOpen();
-                }
+                if(drawable_state == DrawerLayout.STATE_IDLE) closeDrawerIfOpen();
+                isSearchComponentOpened = true;
                 setItemsVisibility(false);
             }
         });
@@ -933,30 +934,31 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                 if(actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_GO){
                     String searchTerm = mSearchAutoComplete.getText().toString();
                     Log.d(TAG, "SEARCH COMPONENT: ON IME ACTION " + searchTerm);
-                    if ( TextUtils.isEmpty( searchTerm )) return false;
+                    if (TextUtils.isEmpty(searchTerm)) return false;
+                    mSearchAutoComplete.setText("");
                     GetSearchSuggestionHelper.saveSearchQuery(searchTerm);
-                    executeSearchRequest(searchTerm);
+                    showSearchCategory(searchTerm);
                     return true;
                 }
                 return false;
             }
         });
         
-        /*
-         * On focus to show the last recent searches
-         */
-        mSearchAutoComplete.setOnFocusChangeListener(new OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                Log.d(TAG, "SEARCH: ON FOCUS " + hasFocus);
-                // Get the recent searches
-                String searchTerm = ((SearchAutoComplete) v).getText().toString();
-                if(hasFocus && TextUtils.isEmpty(searchTerm)) {
-                    Log.d(TAG, "GET AUTO SUGGESTION FOR FOCUS");
-                    new Handler().postDelayed(run, SEARCH_EDIT_DELAY);
-                }
-            }
-        });
+//        /*
+//         * On focus to show the last recent searches
+//         */
+//        mSearchAutoComplete.setOnFocusChangeListener(new OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                Log.d(TAG, "SEARCH: ON FOCUS " + hasFocus);
+//                // Get the recent searches
+//                String searchTerm = ((SearchAutoComplete) v).getText().toString();
+//                if(hasFocus && TextUtils.isEmpty(searchTerm) && searchTerm.length() >= SEARCH_EDIT_SIZE) {
+//                    Log.d(TAG, "GET AUTO SUGGESTION FOR FOCUS");
+//                    new Handler().postDelayed(run, SEARCH_EDIT_DELAY);
+//                }
+//            }
+//        });
     }
     
     /**
@@ -964,7 +966,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      * @param searchText
      * @author sergiopereira
      */
-    protected void executeSearchRequest(String searchText) {
+    protected void showSearchCategory(String searchText) {
         Log.d(TAG, "SEARCH COMPONENT: GOTO PROD LIST");
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_URL, null);
@@ -973,18 +975,20 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gsearch);
         bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
         onSwitchFragment(FragmentType.PRODUCT_LIST, bundle, FragmentController.ADD_TO_BACK_STACK);
-        // Clean the search component
-        cleanSearchConponent();
     }
     
-    /**
-     * Clean search component
-     * @author sergiopereira
-     */
-    public void cleanSearchConponent() {
-        Log.d(TAG, "CLEAN SEARCH COMPONENT");
-        if(mSearchAutoComplete != null) mSearchAutoComplete.setText("");
-    }
+//    /**
+//     * Clean search component
+//     * @author sergiopereira
+//     */
+//    public void cleanSearchConponent() {
+//        Log.d(TAG, "CLEAN SEARCH COMPONENT");
+//        //mSearchAutoComplete.removeTextChangedListener(listener);
+//        //mSearchHandle.removeCallbacks(run);
+//        
+//        if(mSearchAutoComplete != null) mSearchAutoComplete.setText("");
+//        
+//    }
 
     /**
      * set all menu items visibility to <code>visible</code>
@@ -1001,7 +1005,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                 break;
             }
         }
-
         // set visibility for menu_basket
         currentMenu.findItem(R.id.menu_basket).setVisible(visible);
     }
@@ -1013,22 +1016,21 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      */
     protected void hideSearchComponent(){
         Log.d(TAG, "SEARCH COMPONENT: HIDE");
-        // Validate if exist search icon and bar
-        if(menuItems.contains(MyMenuItem.SEARCH_VIEW)) {
-            // Hide search bar
-            mSearchView.onActionViewCollapsed();
-            // Clean autocomplete
-            mSearchAutoComplete.setText("");
-            // show hidden items
-            setItemsVisibility(true);
-        } 
-        
         try {
-            searchComponentDismissFocus();
-            mSearchAutoComplete.dismissDropDown();
-            cleanSearchConponent();
-        } catch (Exception e) {
-            Log.w(TAG, "Hidding search component", e);
+            // Validate if exist search icon and bar
+            if(menuItems.contains(MyMenuItem.SEARCH_VIEW)) {
+                // Hide search bar
+                mSearchView.onActionViewCollapsed();
+                // Clean autocomplete
+                mSearchAutoComplete.setText("");
+                // show hidden items
+                setItemsVisibility(true);
+                // Forced the ime option on collapse
+                mSearchView.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+                mSearchAutoComplete.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+            }
+        } catch (NullPointerException e) {
+            Log.w(TAG, "WARNING NPE ON HIDE SEARCH COMPONENT", e);
         }
     }
     
@@ -1050,13 +1052,13 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         invalidateOptionsMenu();
     }
     
-    /**
-     * Remove search focus
-     * @author sergiopereira
-     */
-    private void searchComponentDismissFocus(){
-        Log.d(TAG, "SEARCH: DISMISS FOCUS");
-    }
+//    /**
+//     * Remove search focus
+//     * @author sergiopereira
+//     */
+//    private void searchComponentDismissFocus(){
+//        Log.d(TAG, "SEARCH: DISMISS FOCUS");
+//    }
     
     /**
      * ############### SEARCH TRIGGER #################
@@ -1069,6 +1071,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     private Runnable run = new Runnable() {
         @Override
         public void run() {
+            Log.i(TAG, "SEARCH: RUN GET SUGGESTIONS: " + mSearchAutoComplete.getText().toString());
             getSuggestions();
         }
     };
@@ -1146,6 +1149,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
              return;
          }
          // Show suggestions
+         Log.i(TAG, "SEARCH: SHOW DATA FOR QUERY " + requestQuery);
          AnalyticsGoogle.get().trackLoadTiming(R.string.gsearchsuggestions, beginInMillis);
          SearchDropDownAdapter searchSuggestionsAdapter = new SearchDropDownAdapter(getApplicationContext(), sug, requestQuery);
          mSearchAutoComplete.setAdapter(searchSuggestionsAdapter);
@@ -1222,19 +1226,19 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         else Log.w(getTag(), "updateCartInfoInNavigation: navigation container empty - doing nothing");
     }
 
-    private void updateTotalFavourites() {
-        /*XXX -if (textViewFavouritesCount == null) {
-            Log.w(getTag(), "updateFavouritesCountInActionBar: cant find FavouritesCount in actionbar");
-            return;
-        }
-
-        textViewFavouritesCount.post(new Runnable() {
-            @Override
-            public void run() {
-                textViewFavouritesCount.setText("5");
-            }
-        });*/
-    }
+//    private void updateTotalFavourites() {
+//        /* -if (textViewFavouritesCount == null) {
+//            Log.w(getTag(), "updateFavouritesCountInActionBar: cant find FavouritesCount in actionbar");
+//            return;
+//        }
+//
+//        textViewFavouritesCount.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                textViewFavouritesCount.setText("5");
+//            }
+//        });*/
+//    }
 
     /**
      * Create the share intent to be used to store the needed information
@@ -1566,7 +1570,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         AnalyticsGoogle.get().trackPage(R.string.gnavigation);
         // Validate
         showWizardNavigation();
-        //XXX updateTotalFavourites();
     }
 
     public void onClosed() {

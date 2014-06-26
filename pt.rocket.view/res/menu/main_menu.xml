@@ -17,6 +17,10 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
+    <!--
+     SEARCH VIEW
+     NOTE: icon setted on themes.xml - searchViewSearchIcon
+    -->
     <item
         android:id="@+id/menu_search"
         android:actionViewClass="com.actionbarsherlock.widget.SearchView"
@@ -24,6 +28,8 @@
         android:showAsAction="always"
         android:title="@string/search_label"
         android:visible="false"/>
+
+    <!-- MY PROFILE PROVIDER -->
     <item
         android:id="@+id/menu_myprofile"
         android:actionProviderClass="pt.rocket.utils.MyProfileActionProvider"

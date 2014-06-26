@@ -2,8 +2,8 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- Pressed -->
-    <item android:drawable="@drawable/ic_search_bar_highlight" android:state_pressed="true"/>
+    <item android:drawable="@drawable/ic_search_actionbar_highnlight" android:state_pressed="true"/>
     <!-- Default -->
-    <item android:drawable="@drawable/ic_search_bar_normal"/>
+    <item android:drawable="@drawable/ic_search_actionbar"/>
 
 </selector>
