@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragment_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="-1dp"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/teaser_group_title_container"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_height_normal"
+        android:background="@drawable/btn_campaign" >
+
+        <LinearLayout
+            android:layout_width="62.67dp"
+            android:layout_height="@dimen/item_height_normal"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="-3dp"
+                android:fontFamily="roboto_bold"
+                android:text="@string/teaser_campaign_button_first_line"
+                android:textColor="#ac1716"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-4dp"
+                android:fontFamily="roboto_bold"
+                android:text="@string/teaser_campaign_button_second_line"
+                android:textColor="#000"
+                android:textSize="10sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/teaser_group_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="93.33dp"
+            android:fontFamily="roboto_bold"
+            android:text="Categories"
+            android:textColor="#fff"
+            android:textSize="@dimen/text_m" />
+
+        <org.holoeverywhere.widget.TextView
+            style="@style/category_inner_child_text"
+            android:layout_centerVertical="true"
+            android:drawableRight="@drawable/arrow_campaignbtn" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/teaser_group_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+    </LinearLayout>
+
+</LinearLayout>

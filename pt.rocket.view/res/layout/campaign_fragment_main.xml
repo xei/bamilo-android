@@ -12,7 +12,7 @@
         <android.support.v4.view.PagerTabStrip
             android:id="@+id/campaign_pager_tab"
             android:layout_width="match_parent"
-            android:layout_height="31.72dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="top"
             android:background="@color/strip_title_background"
             android:textColor="@color/strip_title"

@@ -375,5 +375,8 @@
     <string name="recentlyview_clear_viewed">Clear Recently Viewed</string>
 
     <string name="error_occured">An error occured.</string>
+    
+    <string name="teaser_campaign_button_first_line">HOT</string>
+    <string name="teaser_campaign_button_second_line">OFFERS</string>
 
 </resources>

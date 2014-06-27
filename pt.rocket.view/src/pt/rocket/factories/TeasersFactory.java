@@ -397,29 +397,31 @@ public class TeasersFactory {
      * @author sergiopereira
      */
     private View getTeaserCampaigns(LayoutInflater mInflater, TeaserGroupCampaigns teaserGroupCampaigns) {
-        View rootView = mInflater.inflate(R.layout.teaser_top_brands_group, mainView, false);
+        View rootView = mInflater.inflate(R.layout.teaser_campaigns_group, mainView, false);
         ViewGroup container = (ViewGroup) rootView.findViewById(R.id.teaser_group_container);
         if (teaserGroupCampaigns != null) {
             // Get teaser campaigns
             ArrayList<TeaserCampaign> campaigns = teaserGroupCampaigns.getTeasers();
             // Get size
             int size = campaigns.size();
-            // Set the title
-            if(size <= 1) {
-                rootView.findViewById(R.id.teaser_group_title).setVisibility(View.GONE);
-                rootView.findViewById(R.id.teaser_group_title_divider).setVisibility(View.GONE);
-            } else {
-                ((TextView) rootView.findViewById(R.id.teaser_group_title)).setText(teaserGroupCampaigns.getTitle());
+            // Set visibility
+            if (size == 0) {
+                rootView.findViewById(R.id.teaser_group_title_container).setVisibility(View.GONE);
             }
                 
             // Save teaser campaigns
             JumiaApplication.saveTeaserCampaigns(campaigns);
-            
-            if(size == 1){
-                rootView.findViewById(R.id.teaser_group_title_clickable).setVisibility(View.VISIBLE);
-                ((TextView) rootView.findViewById(R.id.teaser_group_title_clickable_title)).setText(campaigns.get(0).getTargetTitle());
-                createCampaignSingleTeaserView(campaigns.get(0), rootView.findViewById(R.id.teaser_group_title_clickable), mInflater);
-            } else {
+
+            // Set Title 
+            if (size > 0) {
+                createCampaignSingleTeaserView(campaigns.get(0), rootView.findViewById(R.id.teaser_group_title), mInflater);
+            }
+            if (size == 1) {
+                ((TextView) rootView.findViewById(R.id.teaser_group_title)).setText(campaigns.get(0).getTargetTitle());
+            }
+            // add views for each Campaign
+            if (size > 1) {
+            	((TextView) rootView.findViewById(R.id.teaser_group_title)).setText(teaserGroupCampaigns.getTitle());
                 // Create views
                 for (int i = 0; i < campaigns.size(); i++) {
                     View view = createCampaignTeaserView(campaigns.get(i), container, mInflater);
