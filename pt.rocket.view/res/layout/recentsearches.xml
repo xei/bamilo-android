@@ -34,24 +34,7 @@
             android:listSelector="@drawable/selector_listitem_highlight"
             android:paddingBottom="80dp" />
 
-        <Button
-            android:id="@+id/recentsearch_clear_all"
-            style="@style/button_grey_style"
-            android:layout_width="@dimen/recentsearch_clear_all_width"
-            android:layout_alignBottom="@id/middle_recentsearch_list"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="@dimen/recentsearch_button_margin"
-            android:layout_marginRight="@dimen/recentsearch_button_margin"
-            android:ellipsize="marquee"
-            android:focusable="true"
-            android:gravity="center"
-            android:marqueeRepeatLimit="marquee_forever"
-            android:paddingLeft="@dimen/recentsearch_clear_all_fix_padding"
-            android:paddingRight="@dimen/recentsearch_clear_all_fix_padding"
-            android:singleLine="true"
-            android:text="@string/recentsearch_clear_searches"
-            android:textColor="#333"
-            android:textSize="@dimen/text_s" />
+        <include layout="@layout/recentsearches_button_layout" />
     </RelativeLayout>
     <!-- /ScrollView -->
 

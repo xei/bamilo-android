@@ -143,7 +143,6 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
         mRecentlyViewedGridView = (GridView) view.findViewById(R.id.recentlyviewed_grid);
         // Get clear all button
         mClearAllButton = (Button) view.findViewById(R.id.recentlyviewed_button_clear_all);
-        mClearAllButton.setSelected(true);
         mClearAllButton.setOnClickListener((OnClickListener) this);
 
         // Get RecentlyViewed
