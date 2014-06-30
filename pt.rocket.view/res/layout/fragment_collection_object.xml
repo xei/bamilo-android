@@ -33,16 +33,16 @@
 
         <org.holoeverywhere.widget.TextView
             android:id="@+id/home_tip_text"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/home_tip_img"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="33dp"
+            android:layout_centerInParent="true"
+            android:layout_margin="@dimen/margin_huge"
+            android:fontFamily="roboto_light"
             android:gravity="center"
             android:shadowColor="#000000"
             android:text="@string/home_tip_text"
             android:textColor="#c3c3c3"
-            android:textSize="19.8sp" />
+            android:textSize="@dimen/text_xl" />
     </RelativeLayout>
 
 </RelativeLayout>

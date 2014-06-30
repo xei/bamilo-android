@@ -4,10 +4,11 @@
 package pt.rocket.controllers;
 
 import pt.rocket.view.R;
+import android.content.Context;
 import android.content.res.Resources;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,19 +30,20 @@ public class TipsPagerAdapter extends PagerAdapter implements IconPagerAdapter {
     private int[] mTipsPages;
 
     private int mTopMargin = 0;
+    
     private int mPadding = 0;
 
     private boolean mAddVariationsPadding = false;
 
     private LayoutInflater mLayoutInflater;
 
-    public TipsPagerAdapter(LayoutInflater layoutInflater, View view, int[] tipsPages, Fragment fragment/*, boolean addVariationsPadding*/) {
+    public TipsPagerAdapter(Context context, LayoutInflater layoutInflater, View view, int[] tipsPages/*, boolean addVariationsPadding*/) {
         mLayoutInflater = layoutInflater;
         mView = view;
         mTipsPages = tipsPages;
 
-        if (fragment != null) {
-            Resources resources = fragment.getResources();
+        if (context != null) {
+            Resources resources = context.getResources();
             mTopMargin = resources.getDimensionPixelSize(R.dimen.product_tip_variations_top_margin);
             mPadding = resources.getDimensionPixelSize(R.dimen.product_tip_padding);
 
@@ -52,7 +54,7 @@ public class TipsPagerAdapter extends PagerAdapter implements IconPagerAdapter {
             if (indicatorsContainer != null) {
                 int mTipsPagesLength = mTipsPages.length;
                 for (int i = 1; i <= mTipsPagesLength; i++) {
-                    ImageView imageView = new ImageView(fragment.getActivity());
+                    ImageView imageView = new ImageView(context);
                     imageView.setTag("indicator" + i);
                     int idImageResource = R.drawable.bullit;
                     // change first item to bullit selected

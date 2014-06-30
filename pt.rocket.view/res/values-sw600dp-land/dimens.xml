@@ -123,9 +123,9 @@
     <dimen name="product_item_grid_divider_height">351.67dp</dimen>
 
     <!--  FAVOURITE WIZARD -->
-    <dimen name="product_tip_variations_top_margin">12dp</dimen>
+    <!-- <dimen name="product_tip_variations_top_margin">12dp</dimen> -->
     <dimen name="product_tip_side_margin">2dp</dimen>
-    <dimen name="product_tip_padding">52.8dp</dimen>
+    <!-- <dimen name="product_tip_padding">52.8dp</dimen> -->
     <dimen name="product_tip_padding_side">15dp</dimen>
 
     <!-- MY PROFILE -->

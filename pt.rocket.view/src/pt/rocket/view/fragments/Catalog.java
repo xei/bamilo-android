@@ -11,6 +11,7 @@ import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.CatalogPageModel;
 import pt.rocket.controllers.FeaturedItemsAdapter;
+import pt.rocket.controllers.TipsPagerAdapter;
 import pt.rocket.framework.Darwin;
 import pt.rocket.framework.objects.CatalogFilter;
 import pt.rocket.framework.objects.CatalogFilterOption;
@@ -23,12 +24,16 @@ import pt.rocket.helpers.GetProductsHelper;
 import pt.rocket.utils.JumiaCatalogViewPager;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.utils.TipsOnPageChangeListener;
 import pt.rocket.utils.dialogfragments.DialogFilterFragment;
+import pt.rocket.utils.dialogfragments.WizardPreferences;
+import pt.rocket.utils.dialogfragments.WizardPreferences.WizardType;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Shader;
@@ -117,6 +122,8 @@ public class Catalog extends BaseFragment implements OnClickListener {
     
     private SharedPreferences sharedPreferences;
 
+    private View mWizardContainer;
+
     public Catalog() {
         super(EnumSet.noneOf(EventType.class),
                 EnumSet.noneOf(EventType.class),
@@ -162,6 +169,8 @@ public class Catalog extends BaseFragment implements OnClickListener {
         View view = inflater.inflate(R.layout.products_frame, container, false);
         mViewPager = (JumiaCatalogViewPager) view.findViewById(R.id.viewpager_products_list);
         pagerTabStrip = (PagerTabStrip) view.findViewById(R.id.products_list_titles);
+        // Get wizard container
+        mWizardContainer = view.findViewById(R.id.tips_container);
         // Get buttons container
         mProductsButtonsContainer = view.findViewById(R.id.products_buttons_container);
         // Get switch layout button
@@ -267,6 +276,10 @@ public class Catalog extends BaseFragment implements OnClickListener {
         }
 
         AnalyticsGoogle.get().trackPage(R.string.gproductlist);
+        
+        // Show tips
+        isToShowWizard();
+        
         getBaseActivity().setProcessShow(true);
         getBaseActivity().showContentContainer();
 
@@ -565,6 +578,24 @@ public class Catalog extends BaseFragment implements OnClickListener {
     private void showButtonsContainer() {
         mProductsButtonsContainer.setVisibility(View.VISIBLE);
     }
+    
+    
+    /**
+     * Show tips if is the first time the user uses the app.
+     */
+    private void isToShowWizard() {
+        if (WizardPreferences.isFirstTime(getBaseActivity(), WizardType.CATALOG)) {
+            ViewPager viewPagerTips = (ViewPager) mWizardContainer.findViewById(R.id.viewpager_tips);
+            viewPagerTips.setVisibility(View.VISIBLE);
+            int[] tipsPages = { R.layout.products_tip_swipe_layout, R.layout.products_tip_favourite_layout };
+            TipsPagerAdapter mTipsPagerAdapter = new TipsPagerAdapter(getBaseActivity(), getBaseActivity().getLayoutInflater(), mWizardContainer, tipsPages);
+            viewPagerTips.setAdapter(mTipsPagerAdapter);
+            viewPagerTips.setOnPageChangeListener(new TipsOnPageChangeListener(mWizardContainer, tipsPages));
+            ((LinearLayout) mWizardContainer.findViewById(R.id.viewpager_tips_btn_indicator)).setVisibility(View.VISIBLE);
+            ((LinearLayout) mWizardContainer.findViewById(R.id.viewpager_tips_btn_indicator)).setOnClickListener(this);
+        }
+    }
+
 
     private int mFilterMD5 = 0;
     
@@ -782,6 +813,12 @@ public class Catalog extends BaseFragment implements OnClickListener {
             bundle.putParcelableArrayList(DialogFilterFragment.FILTER_TAG, mCatalogFilter);
             DialogFilterFragment newFragment = DialogFilterFragment.newInstance(bundle, this);
             newFragment.show(getBaseActivity().getSupportFragmentManager(), "dialog");
+            
+        } else if (id == R.id.viewpager_tips_btn_indicator) {
+          WizardPreferences.changeState(getBaseActivity(), WizardType.CATALOG);
+          mWizardContainer.findViewById(R.id.viewpager_tips).setVisibility(View.GONE);
+          ((LinearLayout) mWizardContainer.findViewById(R.id.viewpager_tips_btn_indicator)).setVisibility(View.GONE);
+            
         } else if (id == R.id.products_switch_layout_button) {
         	Log.d(TAG, "ON CLICK: SWITCH LAYOUT BUTTON");
 

@@ -77,4 +77,13 @@
         android:layout_below="@id/catalog_viewpager_container"
         layout="@layout/products_no_results" />
 
+    <!-- WIZARD CONTAINER -->
+
+    <include
+        android:id="@+id/tips_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/tips"
+        android:duplicateParentState="false" />
+
 </RelativeLayout>

@@ -363,6 +363,7 @@
     <string name="products_added_favourite">Item added to My Favourites</string>
     <string name="products_removed_favourite">Item removed from My Favourites</string>
 
+    <string name="favourite_add_to_cart">Item Added to Cart</string>
     <string name="favourite_addalltocart">Add All Items to Cart</string>
     <string name="favourite_variance_choose_error">Please, choose a variation</string>
     <string name="favourite_no_favourites">You have no favourite items at the moment</string>

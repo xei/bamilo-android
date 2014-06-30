@@ -50,6 +50,8 @@ import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.ScrollViewWithHorizontal;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.utils.dialogfragments.DialogPromotionFragment;
+import pt.rocket.utils.dialogfragments.WizardPreferences;
+import pt.rocket.utils.dialogfragments.WizardPreferences.WizardType;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
@@ -863,17 +865,14 @@ public class HomeFragment extends BaseFragment {
          */
         private void showTips() {
 
-            if (sharedPrefs.getBoolean(ConstantsSharedPrefs.KEY_SHOW_TIPS, true)) {
+            if (WizardPreferences.isFirstTime(getActivity(), WizardType.HOME)) {
                 RelativeLayout homeTip = (RelativeLayout) getView().findViewById(R.id.home_tip);
                 homeTip.setVisibility(View.VISIBLE);
                 homeTip.setOnTouchListener(new OnTouchListener() {
-
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
+                        WizardPreferences.changeState(getActivity(), WizardType.HOME);
                         v.setVisibility(View.GONE);
-                        SharedPreferences.Editor editor = sharedPrefs.edit();
-                        editor.putBoolean(ConstantsSharedPrefs.KEY_SHOW_TIPS,false);
-                        editor.commit();
                         return false;
                     }
                 });

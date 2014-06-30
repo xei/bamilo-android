@@ -199,7 +199,8 @@
     <dimen name="product_tip_top_margin">0dp</dimen>
     <dimen name="product_tip_side_margin">5dp</dimen>
     <dimen name="product_tip_variations_top_margin">65dp</dimen>
-    <dimen name="product_tip_padding">52.8dp</dimen>
+    <!-- <dimen name="product_tip_padding">52.8dp</dimen> -->
+    <dimen name="product_tip_padding">@dimen/margin_large</dimen>
     <dimen name="product_tip_padding_side">15dp</dimen>
     
     <!-- MY PROFILE -->

@@ -1,33 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/products_tip_swipe"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <RelativeLayout
-        android:id="@+id/products_tip_swipe"
+    <ImageView
+        android:id="@+id/products_tip_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="52.8dp"
+        android:src="@drawable/img_instructions_swipe" />
+
+    <org.holoeverywhere.widget.TextView
+        android:id="@+id/products_tip_text"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-
-        <ImageView
-            android:id="@+id/products_tip_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="52.8dp"
-            android:src="@drawable/img_instructions_swipe" />
-
-        <org.holoeverywhere.widget.TextView
-            android:id="@+id/products_tip_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/products_tip_img"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="33dp"
-            android:gravity="center"
-            android:shadowColor="#000000"
-            android:text="@string/products_tip_swipe_text"
-            android:textColor="#c3c3c3"
-            android:textSize="19.8sp" />
-    </RelativeLayout>
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="@dimen/margin_huge"
+        android:fontFamily="roboto_light"
+        android:gravity="center"
+        android:shadowColor="#000000"
+        android:text="@string/products_tip_swipe_text"
+        android:textColor="#c3c3c3"
+        android:textSize="@dimen/text_xl" />
 
 </RelativeLayout>

@@ -44,6 +44,8 @@ import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.utils.dialogfragments.DialogListFragment;
 import pt.rocket.utils.dialogfragments.DialogListFragment.OnDialogListListener;
+import pt.rocket.utils.dialogfragments.WizardPreferences;
+import pt.rocket.utils.dialogfragments.WizardPreferences.WizardType;
 import pt.rocket.view.fragments.BaseFragment;
 import pt.rocket.view.fragments.ProductBasicInfoFragment;
 import pt.rocket.view.fragments.ProductDetailsDescriptionFragment;
@@ -281,26 +283,14 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
         if (mPhone2Call.equalsIgnoreCase("")) {
             mPhone2Call = getString(R.string.call_to_order_number);
         }
-        boolean showProductDetailsTips = sharedPrefs.getBoolean(ConstantsSharedPrefs.KEY_SHOW_PRODUCT_DETAILS_TIPS, true);
-        if (showProductDetailsTips) {
-            ViewPager viewPagerTips = (ViewPager) mainView.findViewById(R.id.viewpager_tips);
-            viewPagerTips.setVisibility(View.VISIBLE);
-            int[] tips_pages = { R.layout.tip_swipe_layout, R.layout.tip_tap_layout,
-                    R.layout.tip_favourite_layout, R.layout.tip_share_layout };
-            mTipsPagerAdapter = new TipsPagerAdapter(getActivity().getLayoutInflater(), mainView,
-                    tips_pages, ProductDetailsActivityFragment.this);
-            viewPagerTips.setAdapter(mTipsPagerAdapter);
-            viewPagerTips.setOnPageChangeListener(new TipsOnPageChangeListener(mainView, tips_pages));
-            ((LinearLayout) mainView.findViewById(R.id.viewpager_tips_btn_indicator)).setVisibility(View.VISIBLE);
-            ((LinearLayout) mainView.findViewById(R.id.viewpager_tips_btn_indicator)).setOnClickListener(this);
-        }
 
         isFavouriteDrawable = mContext.getResources().getDrawable(R.drawable.btn_fav_selected);
         isNotFavouriteDrawable = mContext.getResources().getDrawable(R.drawable.btn_fav);
 
         return mainView;
     }
-
+    
+    
     private void init() {
         Log.d(TAG, "INIT");
         mContext = getActivity();
@@ -329,6 +319,24 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
             displayProduct(mCompleteProduct);
         }
 
+    }
+    
+    /**
+     * Validate if is to show the pager wizard
+     */
+    private void isToShowWizard(){
+        if (WizardPreferences.isFirstTime(getBaseActivity(), WizardType.PRODUCT_DETAIL)) {
+            boolean hasVariations = (mCompleteProduct != null && mCompleteProduct.getVariations() != null && mCompleteProduct.getVariations().size() > 0) ? true : false;
+            ViewPager viewPagerTips = (ViewPager) mainView.findViewById(R.id.viewpager_tips);
+            viewPagerTips.setVisibility(View.VISIBLE);
+            int[] tips_pages = { R.layout.tip_swipe_layout, R.layout.tip_tap_layout, R.layout.tip_favourite_layout, R.layout.tip_share_layout };
+            mTipsPagerAdapter = new TipsPagerAdapter(getActivity().getApplicationContext(), getActivity().getLayoutInflater(), mainView, tips_pages);
+            mTipsPagerAdapter.setAddVariationsPadding(hasVariations);
+            viewPagerTips.setAdapter(mTipsPagerAdapter);
+            viewPagerTips.setOnPageChangeListener(new TipsOnPageChangeListener(mainView, tips_pages));
+            ((LinearLayout) mainView.findViewById(R.id.viewpager_tips_btn_indicator)).setVisibility(View.VISIBLE);
+            ((LinearLayout) mainView.findViewById(R.id.viewpager_tips_btn_indicator)).setOnClickListener(this);
+        }
     }
 
     @Override
@@ -941,6 +949,9 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
     private void displayProduct(CompleteProduct product) {
         Log.d(TAG, "SHOW PRODUCT");
         
+        // Show wizard
+        isToShowWizard();
+        
         // Get simple position from deep link value
         if(mDeepLinkSimpleSize != null)
             locateSimplePosition(mDeepLinkSimpleSize, product);
@@ -1129,12 +1140,10 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
             makeCall();
 
         } else if (id == R.id.viewpager_tips_btn_indicator) {
-            SharedPreferences sharedPrefs = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-            Editor eD = sharedPrefs.edit();
-            eD.putBoolean(ConstantsSharedPrefs.KEY_SHOW_PRODUCT_DETAILS_TIPS, false);
-            eD.commit();
+            WizardPreferences.changeState(getBaseActivity(), WizardType.PRODUCT_DETAIL);
             getView().findViewById(R.id.viewpager_tips).setVisibility(View.GONE);
             ((LinearLayout) getView().findViewById(R.id.viewpager_tips_btn_indicator)).setVisibility(View.GONE);
+
         } else if (id == R.id.image_is_favourite) {
             boolean isFavourite = false;
             Object isFavoriteObject = mCompleteProduct.getAttributes().get(RestConstants.JSON_IS_FAVOURITE_TAG);

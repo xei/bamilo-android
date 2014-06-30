@@ -16,7 +16,7 @@
         <include
             android:id="@+id/favourite_item_image_container"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
             layout="@layout/favourite_item_image" />
 

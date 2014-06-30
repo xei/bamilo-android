@@ -53,6 +53,10 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
     
     public final static String TAG = LogTagHelper.create(FavouritesFragment.class);
     
+    private final static int SINGLE_ITEM = 1;
+    
+    private final static int NO_ERROR = -1;
+    
     public static boolean isOnAddingAllItemsToCart = false;
 
     private static FavouritesFragment mFavouritesFragment;
@@ -72,8 +76,6 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
     private View mFavouritesView;
 
     private int mNumberOfItemsForCart = Favourite.NO_SIMPLE_SELECTED;
-    
-    private final static int SINGLE_ITEM = 1; 
     
     private int mAddedItemsCounter = 0 ;
     
@@ -562,7 +564,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
             String sku = bundle.getString(GetShoppingCartAddItemHelper.PRODUCT_SKU_TAG);
             Log.i(TAG, "ON RESPONSE COMPLETE: ADD_ITEM_TO_SHOPPING_CART_EVENT: " + pos + " " + sku + " " + mAddedItemsCounter + " " + mNumberOfItemsForCart );    
             // Validate current counter
-            validateResponseCounter(true, pos, -1);
+            validateResponseCounter(true, pos, NO_ERROR);
             break;
         default:
             Log.d(TAG, "ON RESPONSE COMPLETE: UNKNOWN TYPE");
@@ -683,7 +685,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
      */
     private void validateItemWasAddedToCart(boolean success, int pos, int error) {
         // Assumed that was added to cart
-        String message = getString(R.string.added_to_shop_cart_dialog_text);
+        String message = getString(R.string.favourite_add_to_cart);
         // Case added to cart
         if(success) mFavourites.remove(pos);
         // Case not added to cart
@@ -743,11 +745,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         // Update adapter
         mFavouritesAdapter.notifyDataSetChanged();
         // Validate current state
-        if (mFavourites.isEmpty()) {
-            mFavouritesEmptyView.setVisibility(View.VISIBLE);
-            mAddAllToCartButton.setVisibility(View.GONE);
-            mLoadingView.setVisibility(View.GONE);
-        }
+        if (mFavourites.isEmpty()) showEmpty();
         // Dismiss
         getBaseActivity().dismissProgress();
     }
