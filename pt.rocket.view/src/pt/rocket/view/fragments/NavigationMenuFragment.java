@@ -423,6 +423,7 @@ public class NavigationMenuFragment extends BaseFragment implements OnClickListe
         case MyProfile:
             layout = createGenericComponent(parent, component, R.drawable.selector_navigation_account, R.string.my_profile, this);
             layout.findViewById(R.id.component_text).setTag(R.id.nav_action, action);
+            layout.setVisibility(View.GONE);
             break;
         case Favourite:
             layout = createMyProfileSubComponent(parent, component, R.drawable.selector_navigation_favourites, R.string.favourites, this);
