@@ -67,9 +67,7 @@ public class CheckVersion {
         if (runEvents(context))
             return false;
 
-        sSharedPrefs = context.getSharedPreferences(
-                ConstantsSharedPrefs.SHARED_PREFERENCES,
-                Context.MODE_PRIVATE);
+        sSharedPrefs = context.getSharedPreferences( ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
 
         updateUnwantedVersionFromPrefs();
         if (!checkVersionInfo())

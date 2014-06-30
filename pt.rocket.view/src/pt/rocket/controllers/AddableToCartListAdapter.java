@@ -222,12 +222,12 @@ public class AddableToCartListAdapter extends ArrayAdapter<AddableToCart> {
      * @author sergiopereira
      */
     private void setImage(Item prodItem, AddableToCart addableToCart){
-        // Set image
-        String imageURL = (addableToCart.getImageList().size() > 0) ? imageURL = addableToCart.getImageList().get(0) : "";
-        RocketImageLoader.instance.loadImage(imageURL, prodItem.image);
         // Set is new image
         if (addableToCart.isNew()) prodItem.isNew.setVisibility(View.VISIBLE);
         else prodItem.isNew.setVisibility(View.GONE);
+        // Set image
+        String imageURL = (addableToCart.getImageList().size() > 0) ? imageURL = addableToCart.getImageList().get(0) : "";
+        RocketImageLoader.instance.loadImage(imageURL, prodItem.image,  null, R.drawable.no_image_small);
     }
 
     /**

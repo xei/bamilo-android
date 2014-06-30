@@ -5,7 +5,7 @@
 
     <!-- CONTAINER -->
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/favourite_item_container"
         style="@style/list_row_style"
         android:layout_height="match_parent"
@@ -14,20 +14,22 @@
         <!-- IMAGE CONTAINER -->
 
         <include
+            android:id="@+id/favourite_item_image_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
             layout="@layout/favourite_item_image" />
 
         <!-- INFO CONTAINER -->
 
         <include
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/margin_mid"
             android:layout_marginRight="@dimen/margin_mid"
-            android:layout_weight="1"
+            android:layout_toRightOf="@id/favourite_item_image_container"
             layout="@layout/favourite_item_info" />
-    </LinearLayout>
+    </RelativeLayout>
 
     <!-- DIV -->
 

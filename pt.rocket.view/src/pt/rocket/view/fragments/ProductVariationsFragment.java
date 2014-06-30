@@ -43,10 +43,10 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
     private View mVariationsContainer;
 
     private CompleteProduct mCompleteProduct;
+    
     private HorizontalListView mList;
-    private ProductImagesAdapter mAdapter;
+
     private int mVariationsListPosition = -1;
-    private View mainView;
 
     private SharedPreferences sharedPreferences;
 
@@ -71,7 +71,6 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
                 EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.Products,
                 R.string.product_details_title, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-        this.setRetainInstance(true);
     }
 
     @Override
@@ -88,8 +87,8 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-        sharedPreferences = getActivity().getSharedPreferences(
-                ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        sharedPreferences = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        //this.setRetainInstance(true);
     }
 
     /*
@@ -99,16 +98,22 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
      * android.view.ViewGroup, android.os.Bundle)
      */
     @Override
-    public View onCreateView(LayoutInflater mInflater, ViewGroup viewGroup,
-            Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater mInflater, ViewGroup viewGroup, Bundle savedInstanceState) {
         super.onCreateView(mInflater, viewGroup, savedInstanceState);
         Log.i(TAG, "ON CREATE VIEW");
-
-        mainView = mInflater.inflate(R.layout.variations_fragment, viewGroup, false);
-
-        mVariationsContainer = mainView.findViewById(R.id.variations_container);
-
-        return mainView;
+        return mInflater.inflate(R.layout.variations_fragment, viewGroup, false);
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.view.fragments.BaseFragment#onViewCreated(android.view.View, android.os.Bundle)
+     */
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Log.i(TAG, "ON VIEW CREATED");
+        mVariationsContainer = view.findViewById(R.id.variations_container);
+        mList = (HorizontalListView) view.findViewById(R.id.variations_list);
     }
 
     /*
@@ -158,45 +163,73 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
         super.onStop();
         Log.i(TAG, "ON STOP");
     }
+    
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.view.fragments.BaseFragment#onDestroyView()
+     */
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.i(TAG, "ON DESTROY VIEW");
+    }
 
+    /**
+     * Show the variations
+     * @author sergiopereira
+     */
     private void displayVariations() {
-        mCompleteProduct = FragmentCommunicatorForProduct.getInstance().getCurrentProduct();
-        if (mCompleteProduct == null) {
+        Log.i(TAG, "ON DISPLAY VARIATIONS");
+        
+        // Validate complete product
+        CompleteProduct completeProduct = FragmentCommunicatorForProduct.getInstance().getCurrentProduct();
+        if (completeProduct == null) {
             Log.i(TAG, "mCompleteProduct is null -- XXX verify and fix!!!");
             return;
         }
-
+        
+        // Save complete product
+        mCompleteProduct = completeProduct;
+        // Validate variations
         if (isNotValidVariation(mCompleteProduct.getVariations())) {
-            if (mVariationsContainer != null) {
-                mVariationsContainer.setVisibility(View.GONE);
-            }
-
+            if (mVariationsContainer != null) mVariationsContainer.setVisibility(View.GONE);
             return;
         }
         
-        mVariationsContainer.setVisibility(View.VISIBLE);
-        mList = (HorizontalListView) mainView.findViewById(R.id.variations_list);
-        if (mAdapter == null) {
-            mAdapter = new ProductImagesAdapter(this.getActivity(),
-                    ProductImagesAdapter.createImageList(mCompleteProduct.getVariations()));
-            
-        } else {
-            Log.i(TAG, "replacing adapter");
-            mAdapter.replaceAll(ProductImagesAdapter.createImageList(mCompleteProduct
-                    .getVariations()));
+        // Validate adapter
+        if (mList.getAdapter() == null) {
+            Log.i(TAG, "NEW ADAPTER");
+            ProductImagesAdapter mAdapter = new ProductImagesAdapter(this.getActivity(), ProductImagesAdapter.createImageList(mCompleteProduct.getVariations()));
+            mList.setAdapter(mAdapter);
         }
-        
-        mList.setAdapter(mAdapter);
-        int indexOfSelectionVariation = findIndexOfSelectedVariation();
-
+        // Set and force measure to set selected item
+        mList.measure(0, 0);
         mList.setOnItemClickListener(this);
-        mList.setSelectedItem(indexOfSelectionVariation, HorizontalListView.MOVE_TO_DIRECTLY);
-        Log.d(TAG, "displayVariations: list position = " + mVariationsListPosition);
-        mList.setPosition(mVariationsListPosition);
+        mList.post(new Runnable() {
+            @Override
+            public void run() {
+                //mList.setSelectedItem(0, HorizontalListView.MOVE_TO_DIRECTLY);
+                //mList.setSelectedItem(findIndexOfSelectedVariation(), HorizontalListView.MOVE_TO_SCROLLED);
+                mList.setSelectedItem(findIndexOfSelectedVariation(), HorizontalListView.MOVE_TO_DIRECTLY);
+                //mList.refreshDrawableState();
+                //mList.requestLayout();
+            }
+        });
+            
+        // Show container
+        mVariationsContainer.setVisibility(View.VISIBLE);
+        //Log.d(TAG, "displayVariations: list position = " + mVariationsListPosition);
+        //mList.setPosition(mVariationsListPosition);
     }
 
+    /*
+     * (non-Javadoc)
+     * @see android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget.AdapterView, android.view.View, int, long)
+     */
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+        Log.i(TAG, "ON ITEM CLICKED: " + position);
+
         if (mVariationsListPosition != position) {
             mVariationsListPosition = position;
             Editor eD = sharedPreferences.edit();
@@ -205,8 +238,8 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
             Bundle bundle = new Bundle();
             bundle.putInt(ProductDetailsActivityFragment.LOADING_PRODUCT_KEY, position);
             bundle.putInt(ConstantsIntentExtra.VARIATION_LISTPOSITION, mVariationsListPosition);
+            mList.setSelectedItem(position, HorizontalListView.MOVE_TO_SCROLLED);
             FragmentCommunicatorForProduct.getInstance().notifyTarget(this, bundle, 0);
-            mList.setSelectedItem(position, HorizontalListView.MOVE_TO_DIRECTLY);
         }
     }
 
@@ -231,21 +264,28 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
         return -1;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.view.fragments.BaseFragment#notifyFragment(android.os.Bundle)
+     */
     @Override
     public void notifyFragment(Bundle bundle) {
-
-        this.mCompleteProduct = FragmentCommunicatorForProduct.getInstance().getCurrentProduct();
-
+        Log.i(TAG, "ON NOTIFY FRAGMENT");
+//      this.mCompleteProduct = FragmentCommunicatorForProduct.getInstance().getCurrentProduct();
         // Validate if fragment is on the screen
         if (!isVisible()) {
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
-        if(bundle.containsKey(ConstantsIntentExtra.VARIATION_LISTPOSITION)){
-            mVariationsListPosition = bundle.getInt(ConstantsIntentExtra.VARIATION_LISTPOSITION);
-        }
-        Log.i(TAG, "on notifyFragment : " + mCompleteProduct != null ? "not null" : "null");
-        displayVariations();
+//      if(bundle.containsKey(ConstantsIntentExtra.VARIATION_LISTPOSITION)){
+//          mVariationsListPosition = bundle.getInt(ConstantsIntentExtra.VARIATION_LISTPOSITION);
+//      }
+//      Log.i(TAG, "on notifyFragment : " + mCompleteProduct != null ? "not null" : "null");
+//      displayVariations();
+//      if(mList != null) {
+//          int indexOfSelectionVariation = findIndexOfSelectedVariation();
+//          mList.setSelectedItem(indexOfSelectionVariation, HorizontalListView.MOVE_TO_SCROLLED);
+//      }
     }
 
 }

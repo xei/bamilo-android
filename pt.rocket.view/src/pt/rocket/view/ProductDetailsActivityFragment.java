@@ -356,6 +356,8 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
     public void onPause() {
         super.onPause();
         dialogListFragment = null;
+        // Destroy variations
+        productVariationsFragment = null;
     }
 
     @Override

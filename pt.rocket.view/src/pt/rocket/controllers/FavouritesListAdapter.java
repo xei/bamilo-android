@@ -211,12 +211,12 @@ public class FavouritesListAdapter extends ArrayAdapter<Favourite> {
      * @author sergiopereira
      */
     private void setImage(Item prodItem, Favourite favourite){
-        // Set image
-        String imageURL = (favourite.getImageList().size() > 0) ? imageURL = favourite.getImageList().get(0) : "";
-        RocketImageLoader.instance.loadImage(imageURL, prodItem.image);
         // Set is new image
         if (favourite.isNew()) prodItem.isNew.setVisibility(View.VISIBLE);
         else prodItem.isNew.setVisibility(View.GONE);
+        // Set image
+        String imageURL = (favourite.getImageList().size() > 0) ? imageURL = favourite.getImageList().get(0) : "";
+        RocketImageLoader.instance.loadImage(imageURL, prodItem.image,  null, R.drawable.no_image_small);
     }
 
     /**

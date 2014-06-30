@@ -111,12 +111,9 @@ public class ProductImagesAdapter extends BaseAdapter {
         mAQuery.id(h.itemImage).image(imageUrl, true, true, 0, 0, new BitmapAjaxCallback() {
 
             @Override
-            public void callback(String url, ImageView iv, Bitmap bm,
-                    AjaxStatus status) {
-
+            public void callback(String url, ImageView iv, Bitmap bm, AjaxStatus status) {
                 iv.setImageBitmap(bm);
                 h.itemProgress.setVisibility(View.GONE);
-
             }
         });
 //		ImageLoader.getInstance().displayImage(imageUrl, h.itemImage, new SimpleImageLoadingListener() {

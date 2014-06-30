@@ -149,7 +149,6 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
 
     @Override
     public View getSelectedView() {
-        // TODO: implement
         return null;
     }
 
@@ -159,7 +158,8 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
             mAdapter.unregisterDataSetObserver(mDataObserver);
         }
         mAdapter = adapter;
-        mAdapter.registerDataSetObserver(mDataObserver);
+        if(mAdapter != null)
+            mAdapter.registerDataSetObserver(mDataObserver);
         reset();
     }
 
@@ -187,12 +187,12 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
     private void addAndMeasureChild(final View child, int viewPos) {
         LayoutParams params = child.getLayoutParams();
         if (params == null) {
-            params = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+            params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         }
 
         addViewInLayout(child, viewPos, params, true);
         child.measure(MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.AT_MOST),
-                MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.AT_MOST));
+                      MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.AT_MOST));
     }
 
     @Override
@@ -384,21 +384,23 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
     }
 
     private void scrollToInt(int x) {
-        mScroller.startScroll(mNextX, 0, x - mNextX, 0);
+        Log.d(TAG, "SCROLL TO INT: " + mNextX + " " + 0 + " " + (x - mNextX) + " " + 0);
+        // Case position zero
+        if(x == 0) mScroller.startScroll(0, 0, 0, 0);
+        // Default
+        else mScroller.startScroll(mNextX, 0, x - mNextX, 0);
     }
 
     public void setPosition(int x) {
-        if (x < 0)
-            return;
+        if (x < 0) return;
         setPositionInt(x);
         requestLayout();
     }
 
     private void setPositionInt(int x) {
-        if (mDataChanged)
-            mCurrentX = x;
-        else
-            mNextX = x;
+        Log.d(TAG, "POSITION INT : " + x);
+        if (mDataChanged) mCurrentX = x;
+        else mNextX = x;
     }
 
     public synchronized int getPosition() {
@@ -522,7 +524,7 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
         // TODO: make this calculation of the target position more precise
         // The problem is that the list width might be slightly different
         // than the related childwith with the itemMultiplier
-        float itemMultiplier = item + 0.6f;
+        float itemMultiplier = item + 0.0f; //0.6f;
         float itemOffset = mChildWidth * itemMultiplier;
         int targetPosition = (int) (itemOffset - getWidth() / 2);
         // Log.d( TAG, "targetPosition = " + targetPosition + " itemOffset = " + itemOffset +
@@ -536,19 +538,24 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
     }
 
     public synchronized void setSelectedItem(int selected, int moveToSelectedItem) {
-        // Log.d( TAG, "setSelectedItem: selected = " + selected + " adapter count = " +
-        // mAdapter.getCount() );
+        Log.d( TAG, "setSelectedItem: selected = " + selected + " count: " + mAdapter.getCount() + " move: " + moveToSelectedItem );
         boolean selectedChanged = setSelectItemInt(selected);
         int targetPosition = computeTargetPosition(selected);
-        // Log.d( TAG, "setSelectedItem: targetPosition = " + targetPosition);
+        //Log.d( TAG, "setSelectedItem: targetPosition = " + targetPosition);
         if (moveToSelectedItem == MOVE_TO_NO || targetPosition == NO_SCROLL_FOR_ITEM) {
-            if (!selectedChanged)
-                return;
-
-        } else if (moveToSelectedItem == MOVE_TO_SCROLLED)
-            scrollToInt(targetPosition);
-        else
-            setPositionInt(targetPosition);
+            Log.d( TAG, "NO SCROLL " + moveToSelectedItem + " " + targetPosition);
+            if (!selectedChanged) return;
+        }
+        //    
+        else if (moveToSelectedItem == MOVE_TO_SCROLLED) {
+            Log.d( TAG, "SCROLL " + moveToSelectedItem + " " + targetPosition);
+            if (selectedChanged) scrollToInt(targetPosition);
+        }
+        // 
+        else {
+            Log.d( TAG, "DIRECT " + targetPosition);
+            if (selectedChanged) setPositionInt(targetPosition);
+        }
 
         requestLayout();
     }

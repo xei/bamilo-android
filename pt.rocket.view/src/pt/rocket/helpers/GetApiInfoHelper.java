@@ -75,6 +75,7 @@ public class GetApiInfoHelper extends BaseHelper {
             SectionsTablesHelper.saveSections(sections);
         }
         
+        // VERSION
         VersionInfo info = new VersionInfo();
         try {
             info.initialize(jsonObject);
