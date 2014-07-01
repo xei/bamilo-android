@@ -1173,9 +1173,17 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
     }
 
     private void makeCall() {
-        Intent callIntent = new Intent(Intent.ACTION_CALL);
+        // Call automatically
+        /*-Intent callIntent = new Intent(Intent.ACTION_CALL);
         callIntent.setData(Uri.parse("tel:" + mPhone2Call));
-        startActivity(callIntent);
+        startActivity(callIntent);*/
+
+        // Displays the phone number but the user must press the Call button to begin the phone call
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:" + mPhone2Call));
+        if (intent.resolveActivity(mContext.getPackageManager()) != null) {
+            startActivity(intent);
+        }
     }
 
     private void showGallery() {
