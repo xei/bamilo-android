@@ -47,6 +47,8 @@ public class CampaignItem implements IJSONSerializable, Parcelable {
 
 	private boolean hasUniqueSize;
 	
+	private int mRemainingTime;
+
 	private ArrayList<CampaignItemSize> mSizes;
 	
 	private CampaignItemSize mSelectedSize;
@@ -85,6 +87,7 @@ public class CampaignItem implements IJSONSerializable, Parcelable {
 		mStockPercentage = jsonObject.optInt(RestConstants.JSON_STOCK_PERCENTAGE_TAG);
 		mMaxSavingPercentage = jsonObject.optString(RestConstants.JSON_MAX_SAVING_PERCENTAGE_TAG);
 		hasUniqueSize = jsonObject.optBoolean(RestConstants.JSON_HAS_UNIQUE_SIZE_TAG);
+		mRemainingTime = jsonObject.optInt(RestConstants.JSON_REMAINING_TIME_TAG, -1);
 		
 		// Save images
 		JSONArray imagesA = jsonObject.optJSONArray(RestConstants.JSON_IMAGES_TAG);
@@ -236,6 +239,13 @@ public class CampaignItem implements IJSONSerializable, Parcelable {
 		return mSelectedSizePosition;
 	}
 
+	/***
+	 * @return the mRemainingTime
+	 */
+	public int getRemainingTime() {
+		return mRemainingTime;
+	}
+
 	/*
      * ########### Validators ###########
      */
@@ -383,6 +393,13 @@ public class CampaignItem implements IJSONSerializable, Parcelable {
 	}
 
 	/**
+	 * @param mRemainingTime the mRemainingTime to set
+	 */
+	public void setRemainingTime(int mRemainingTime) {
+		this.mRemainingTime = mRemainingTime;
+	}
+
+	/**
      * ########### Parcelable ###########
      */
 	/*
@@ -416,6 +433,7 @@ public class CampaignItem implements IJSONSerializable, Parcelable {
 		dest.writeList(mSizes);
 		dest.writeParcelable(mSelectedSize, 0);
 		dest.writeInt(mSelectedSizePosition);
+		dest.writeInt(mRemainingTime);
 	}
 	
 	/**
@@ -439,6 +457,7 @@ public class CampaignItem implements IJSONSerializable, Parcelable {
 		in.readList(mSizes, CampaignItemSize.class.getClassLoader());
 		mSelectedSize = in.readParcelable(CampaignItemSize.class.getClassLoader());
 		mSelectedSizePosition = in.readInt();
+		mRemainingTime = in.readInt();
 	}
 	
 	/**

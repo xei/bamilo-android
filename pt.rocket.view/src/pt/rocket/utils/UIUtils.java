@@ -2,8 +2,10 @@ package pt.rocket.utils;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.widget.TextView;
 
 /**
@@ -15,6 +17,7 @@ import android.widget.TextView;
  * Proprietary and confidential.
  * 
  * @author Manuel Silva
+ * @modified Andre Lopes
  *
  */
 public class UIUtils {
@@ -45,5 +48,23 @@ public class UIUtils {
     public static int spToPx(float dp, Context context)
     {
         return Math.round(dp * context.getResources().getDisplayMetrics().scaledDensity );
-    } 
+    }
+
+    /**
+     * Set transparency to view
+     * 
+     * @param view
+     * @param alpha
+     */
+    public static void setAlpha(View view, float alpha) {
+        if (Build.VERSION.SDK_INT < 11) {
+            final AlphaAnimation animation = new AlphaAnimation(alpha, alpha);
+            animation.setDuration(0);
+            animation.setFillAfter(true);
+            view.startAnimation(animation);
+        }
+        else {
+            view.setAlpha(alpha);
+        }
+    }
 }

@@ -28,6 +28,7 @@ import pt.rocket.helpers.GetShoppingCartAddItemHelper;
 import pt.rocket.helpers.campaign.GetCampaignHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.DeepLinkManager;
+import pt.rocket.utils.UIUtils;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.view.R;
 import android.app.Activity;
@@ -36,6 +37,8 @@ import android.content.Context;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.support.v4.app.FragmentManager;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -44,6 +47,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -91,6 +96,11 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
 
     private DialogGenericFragment mDialogErrorToCart;
     
+    private String START_TIME = "start_time";
+    
+    private long mStartTimeInMilliseconds;
+
+    private boolean isScrolling;
     
     /**
      * Constructor via object
@@ -147,6 +157,17 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
         if(savedInstanceState != null && savedInstanceState.containsKey(TAG)){
             Log.i(TAG, "ON GET SAVED STATE");
             mCampaign = savedInstanceState.getParcelable(TAG);
+
+            // Restore startTime
+            if (savedInstanceState.containsKey(START_TIME)) {
+                Bundle bundle = savedInstanceState.getParcelable(START_TIME);
+                if (bundle != null) {
+                    long currentTime = SystemClock.elapsedRealtime();
+                    // if all fails, set startTime to now. Timer will be late relatively to last
+                    // Request, but there is no alternative
+                    mStartTimeInMilliseconds = bundle.getLong(START_TIME, currentTime);
+                }
+            }
         }
     }
     
@@ -174,6 +195,8 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
         Log.d(TAG, "TEASER CAMPAIGN: " + mTeaserCampaign.getTargetTitle() + " " + mTeaserCampaign.getTargetUrl());
         // Get grid view
         mGridView = (HeaderGridView) view.findViewById(R.id.campaign_grid);
+        // Set onScrollListener to signal adapter's Handler when user is scrolling
+        mGridView.setOnScrollListener(scrollingListener);
         // Get loading view
         mLoadingView = view.findViewById(R.id.loading_bar);
         // Get retry view
@@ -183,6 +206,23 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
         // Validate the current state
         getAndShowCampaign();
     }
+    
+    /**
+     * OnScrollListener used by mArrayAdapter's views handler to update Timer
+     */
+    private OnScrollListener scrollingListener = new OnScrollListener() {
+    	@Override
+        public void onScrollStateChanged(AbsListView view, int scrollState) {
+            if (scrollState == OnScrollListener.SCROLL_STATE_FLING) {
+                isScrolling = true;
+            } else {
+                isScrolling = false;
+            }
+        }
+        @Override
+        public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+        }
+    };
         
     /*
      * (non-Javadoc)
@@ -203,7 +243,7 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        
+        isScrolling = false;
     }
     
     /*
@@ -215,6 +255,11 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
         super.onSaveInstanceState(outState);
         Log.i(TAG, "ON SAVE INSTANCE STATE: CAMPAIGN");
         outState.putParcelable(TAG, mCampaign);
+
+        // Save startTime
+        Bundle startTime = new Bundle();
+        startTime.putLong(START_TIME, mStartTimeInMilliseconds);
+        outState.putParcelable(START_TIME, startTime);
     }
 
     /*
@@ -226,6 +271,7 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
     public void onPause() {
         super.onPause();
         Log.i(TAG, "ON PAUSE");
+        isScrolling = true;
     }
 
     /*
@@ -471,6 +517,11 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
             Log.d(TAG, "RECEIVED GET_CAMPAIGN_EVENT");
             // Get and show campaign
             mCampaign = (Campaign) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            /*--TODO
+             * Don't apply Timer if there are no products with remainingTime defined
+             */
+            // Set startTime after getting request
+            mStartTimeInMilliseconds = SystemClock.elapsedRealtime();
             showCampaign();
             break;
         case ADD_ITEM_TO_SHOPPING_CART_EVENT:
@@ -642,6 +693,25 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
             private ProgressBar mStockBar;
             private TextView mStockPercentage;
             private View mButtonBuy;
+            private TextView mOfferEnded;
+            private View mTimerContainer;
+            private TextView mTimer;
+
+            private int remaingTime;
+
+            /**
+             * Handler used to update Timer every second, when user is not scrolling
+             */
+            private Handler mHandler = new Handler() {
+                public void handleMessage(android.os.Message msg) {
+                    // only update if is not detected a fling (fast scrolling) on gridview
+                    if (!isScrolling) {
+                        updateTimer(mTimer, mTimerContainer, mButtonBuy, mOfferEnded, mName, mImage, remaingTime);
+                    }
+
+                    this.sendEmptyMessageDelayed(0, 1000);
+                };
+            };
         }
         
         /**
@@ -717,8 +787,17 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
                 item.mStockPercentage = (TextView) view.findViewById(R.id.campaign_item_stock_value);
                 // Get button
                 item.mButtonBuy = view.findViewById(R.id.campaign_item_button_buy);
+                // Get Offer Ender image
+                item.mOfferEnded = (TextView) view.findViewById(R.id.campaign_item_offer_ended);
+                // Get timer container
+                item.mTimerContainer = view.findViewById(R.id.campaign_item_stock_timer_container);
+                // Get timer
+                item.mTimer = (TextView) view.findViewById(R.id.campaign_item_stock_timer);
                 // Stores the item representation on the tag of the view for later retrieval
                 view.setTag(item);
+
+                // start handler processing
+                item.mHandler.sendEmptyMessageDelayed(0, 1000);
             } else {
                 item = (ItemView) view.getTag();
             }
@@ -757,8 +836,130 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
             view.mStockPercentage.setSelected(true);
             // Set buy button
             setClickableView(view.mButtonBuy, position);
+            // Set timer
+            int remainingTime = item.getRemainingTime();
+            // Set itemView's remainingTime to be used by handler
+            view.remaingTime = remainingTime;
+
+            // update Timer
+            updateTimer(view.mTimer, view.mTimerContainer, view.mButtonBuy, view.mOfferEnded, view.mName, view.mImage, remainingTime);
         }
-        
+
+        /**
+         * Update Timer with remaining Time or show "Offer Ended" when time remaining reaches 0
+         * 
+         * @param timer
+         * @param timerContainer
+         * @param buttonBuy
+         * @param offerEnded
+         * @param name
+         * @param image
+         * @param remainingTime
+         */
+        private void updateTimer(TextView timer, View timerContainer,View buttonBuy, View offerEnded, View name, View image, int remainingTime) {
+            Log.d(TAG, "updateTimer");
+            if (remainingTime > 0) {
+                Log.d(TAG, "Product with remainingTime");
+                // calculate remaining time relatively to mStartTime
+                String remaingTimeString = getRemainingTime(remainingTime);
+                // Set remaing time on Timer
+                if (remaingTimeString != null) {
+                    if (remainingTime < 100000) {
+                        showOfferEnded(timerContainer, buttonBuy, offerEnded, timer, name, image);
+                    } else {
+                        timer.setText(remaingTimeString);
+
+                        timerContainer.setVisibility(View.VISIBLE);
+                        buttonBuy.setEnabled(true);
+                        offerEnded.setVisibility(View.INVISIBLE);   
+                    }
+                // show "Offer Ended" and disable product
+                } else {
+                    Log.d(TAG, "Product expired!");
+                    showOfferEnded(timerContainer, buttonBuy, offerEnded, timer, name, image);
+                }
+            // show product normally without timers
+            } else {
+                timerContainer.setVisibility(View.INVISIBLE);
+                buttonBuy.setEnabled(true);
+                offerEnded.setVisibility(View.INVISIBLE);
+            }
+        }
+
+        /**
+         * calculate remainingTime based on <code>mStartTimeInMilliseconds</code>(time of the API
+         * request) and return it with the format "hh:mm:ss"
+         * 
+         * @param remainingTime
+         * @return <code>String</code> with remaining time properly formatted or null if product
+         *         reached the remaining time
+         */
+        private String getRemainingTime(int remainingTime) {
+            long currentTimeInMilliseconds = SystemClock.elapsedRealtime();
+            int remainingSeconds = (int) (remainingTime - ((currentTimeInMilliseconds - mStartTimeInMilliseconds) / 1000));
+            Log.e(TAG, "Remaining seconds: " + remainingSeconds);
+
+            if (remainingSeconds > 0) {
+                // Format remaingSeconds to "hh:mm:ss"
+                int hours = remainingSeconds / 3600;
+                int minutes = (remainingSeconds % 3600) / 60;
+                int seconds = remainingSeconds % 60;
+
+                StringBuilder time = new StringBuilder();
+                time.append(twoDigitString(hours));
+                time.append(":");
+                time.append(twoDigitString(minutes));
+                time.append(":");
+                time.append(twoDigitString(seconds));
+
+                return time.toString();
+            } else {
+                return null;
+            }
+        }
+
+        /**
+         * convert value of time in a two digit <code>String</code>
+         * 
+         * @param number
+         * @return
+         */
+        private String twoDigitString(int number) {
+            if (number == 0) {
+                return "00";
+            }
+            if (number / 10 == 0) {
+                return "0" + number;
+            }
+            return String.valueOf(number);
+        }
+
+        /**
+         * Show Timer with text "00:00:00" and disable buttons and redirects to PDV
+         * 
+         * @param timerContainer
+         * @param buttonBuy
+         * @param offerEnded
+         * @param timer
+         * @param name
+         * @param image
+         */
+        private void showOfferEnded(View timerContainer,View buttonBuy, View offerEnded, TextView timer, View name, View image) {
+            timerContainer.setVisibility(View.VISIBLE);
+            buttonBuy.setEnabled(false);
+            offerEnded.setVisibility(View.VISIBLE);
+
+            timer.setText("00:00:00");
+
+            // Disable onClickListeners
+            name.setOnClickListener(null);
+            image.setOnClickListener(null);
+            buttonBuy.setOnClickListener(null);
+
+            // Set product image as defocused
+            UIUtils.setAlpha(image, 0.5F);
+        }
+
         /**
          * Set the price and special price view
          * @param view

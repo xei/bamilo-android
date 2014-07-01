@@ -47,9 +47,7 @@ public class TipsPagerAdapter extends PagerAdapter implements IconPagerAdapter {
             mTopMargin = resources.getDimensionPixelSize(R.dimen.product_tip_variations_top_margin);
             mPadding = resources.getDimensionPixelSize(R.dimen.product_tip_padding);
 
-            /*--
-             * Generate dynamically the indicators for each tip page
-             */
+            // Generate dynamically the indicators for each tip page
             LinearLayout indicatorsContainer = (LinearLayout) view.findViewById(R.id.indicators_container);
             if (indicatorsContainer != null) {
                 int mTipsPagesLength = mTipsPages.length;

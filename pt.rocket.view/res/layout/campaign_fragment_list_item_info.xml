@@ -113,12 +113,13 @@
 
     <org.holoeverywhere.widget.Button
         android:id="@+id/campaign_item_button_buy"
-        style="@style/button_orange_style"
+        style="@style/button"
         android:layout_width="0dp"
         android:layout_gravity="center"
         android:layout_marginLeft="@dimen/margin_veryhuge"
         android:layout_marginRight="@dimen/margin_mid"
         android:layout_weight="1"
+        android:background="@drawable/btn_campaign_orange"
         android:fontFamily="roboto_bold"
         android:text="@string/buy_now" />
 

@@ -20,6 +20,10 @@
 
         <include layout="@layout/campaign_fragment_list_item_title" />
 
+        <!-- COUNTDOWN -->
+
+        <include layout="@layout/campaign_fragment_list_item_timer" />
+
         <!-- IMAGE AND SIZE -->
 
         <include layout="@layout/campaign_fragment_list_item_middle" />
