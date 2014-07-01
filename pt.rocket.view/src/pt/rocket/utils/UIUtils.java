@@ -52,12 +52,12 @@ public class UIUtils {
 
     /**
      * Set transparency to view
-     * 
+     * @see https://source.android.com/source/build-numbers.html
      * @param view
      * @param alpha
      */
     public static void setAlpha(View view, float alpha) {
-        if (Build.VERSION.SDK_INT < 11) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
             final AlphaAnimation animation = new AlphaAnimation(alpha, alpha);
             animation.setDuration(0);
             animation.setFillAfter(true);

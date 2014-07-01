@@ -50,6 +50,7 @@ public class TipsPagerAdapter extends PagerAdapter implements IconPagerAdapter {
             // Generate dynamically the indicators for each tip page
             LinearLayout indicatorsContainer = (LinearLayout) view.findViewById(R.id.indicators_container);
             if (indicatorsContainer != null) {
+                indicatorsContainer.removeAllViews();
                 int mTipsPagesLength = mTipsPages.length;
                 for (int i = 1; i <= mTipsPagesLength; i++) {
                     ImageView imageView = new ImageView(context);

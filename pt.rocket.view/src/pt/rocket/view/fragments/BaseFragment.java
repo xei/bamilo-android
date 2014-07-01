@@ -626,8 +626,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      */
     protected void hideKeyboard() {
         Log.d(TAG, "DYNAMIC FORMS: HIDE KEYBOARD");
-        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(
-                Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getView().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
 

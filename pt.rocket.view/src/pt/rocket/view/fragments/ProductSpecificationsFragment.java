@@ -76,7 +76,7 @@ public class ProductSpecificationsFragment extends BaseFragment implements OnCli
                 EnumSet.noneOf(EventType.class), 
                 EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE), 
                 NavigationAction.Products, 
-                R.string.product_details_title, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+                R.string.product_details_title, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
         this.setRetainInstance(true);
     }
 

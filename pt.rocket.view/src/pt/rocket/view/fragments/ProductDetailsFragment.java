@@ -180,9 +180,9 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
     public ProductDetailsFragment() {
         super(EnumSet.of(EventType.GET_PRODUCT_EVENT), 
                 EnumSet.of(EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT),
-                EnumSet.noneOf(MyMenuItem.class), 
+                EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE), 
                 NavigationAction.Products, 
-                0, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+                0, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
     }
 
     /*

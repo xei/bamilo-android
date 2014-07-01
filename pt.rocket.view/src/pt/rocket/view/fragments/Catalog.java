@@ -128,7 +128,7 @@ public class Catalog extends BaseFragment implements OnClickListener {
                 EnumSet.noneOf(EventType.class),
                 EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.Products,
-                R.string.products, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+                R.string.products, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
     }
 
     public static Catalog getInstance() {
@@ -209,7 +209,6 @@ public class Catalog extends BaseFragment implements OnClickListener {
         
         ((BaseActivity) getActivity()).setTitle(title);
         
-        
         Log.i(TAG, "DATA :  " + productsURL + " " + searchQuery + " " + navigationSource + " " + navigationPath) ; 
         
         // Set catalog filters
@@ -260,13 +259,16 @@ public class Catalog extends BaseFragment implements OnClickListener {
             Log.d(TAG, "FILTER: ADAPTER IS NULL");
             mCatalogPagerAdapter = new CatalogPagerAdaper();
 
-        } else {
+        } 
+        else {
             Log.d(TAG, "FILTER: ADAPTER IS NOT NULL");
             mCatalogPageModel[0].setTotalItemLable();
             mCatalogPageModel[0].notifyContentDataSetChanged();
         }
 
         mViewPager.setAdapter(mCatalogPagerAdapter);
+        // TODO: Validate if fix the "Call removeView() on the child's parent first"
+        mViewPager.setOffscreenPageLimit(3);  
         mViewPager.setCurrentItem(1);
         try {
             setLayoutSpec();
@@ -594,6 +596,7 @@ public class Catalog extends BaseFragment implements OnClickListener {
             TipsPagerAdapter mTipsPagerAdapter = new TipsPagerAdapter(getBaseActivity(), getBaseActivity().getLayoutInflater(), mWizardContainer, tipsPages);
             viewPagerTips.setAdapter(mTipsPagerAdapter);
             viewPagerTips.setOnPageChangeListener(new TipsOnPageChangeListener(mWizardContainer, tipsPages));
+            viewPagerTips.setCurrentItem(0);
             ((LinearLayout) mWizardContainer.findViewById(R.id.viewpager_tips_btn_indicator)).setVisibility(View.VISIBLE);
             ((LinearLayout) mWizardContainer.findViewById(R.id.viewpager_tips_btn_indicator)).setOnClickListener(this);
         }

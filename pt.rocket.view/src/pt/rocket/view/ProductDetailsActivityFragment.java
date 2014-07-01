@@ -200,15 +200,13 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
 
     private String mDeepLinkSimpleSize;
 
-    private TipsPagerAdapter mTipsPagerAdapter;
-
     private Drawable isFavouriteDrawable;
     private Drawable isNotFavouriteDrawable;
     
     public ProductDetailsActivityFragment() {
         super(EnumSet.of(EventType.GET_PRODUCT_EVENT), 
                 EnumSet.of(EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT), 
-                EnumSet.noneOf(MyMenuItem.class),
+                EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.Products, 0, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
     }
 
@@ -330,10 +328,11 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
             ViewPager viewPagerTips = (ViewPager) mainView.findViewById(R.id.viewpager_tips);
             viewPagerTips.setVisibility(View.VISIBLE);
             int[] tips_pages = { R.layout.tip_swipe_layout, R.layout.tip_tap_layout, R.layout.tip_favourite_layout, R.layout.tip_share_layout };
-            mTipsPagerAdapter = new TipsPagerAdapter(getActivity().getApplicationContext(), getActivity().getLayoutInflater(), mainView, tips_pages);
+            TipsPagerAdapter mTipsPagerAdapter = new TipsPagerAdapter(getActivity().getApplicationContext(), getActivity().getLayoutInflater(), mainView, tips_pages);
             mTipsPagerAdapter.setAddVariationsPadding(hasVariations);
             viewPagerTips.setAdapter(mTipsPagerAdapter);
             viewPagerTips.setOnPageChangeListener(new TipsOnPageChangeListener(mainView, tips_pages));
+            viewPagerTips.setCurrentItem(0);
             ((LinearLayout) mainView.findViewById(R.id.viewpager_tips_btn_indicator)).setVisibility(View.VISIBLE);
             ((LinearLayout) mainView.findViewById(R.id.viewpager_tips_btn_indicator)).setOnClickListener(this);
         }
@@ -1047,8 +1046,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
 
     private void displayGallery(CompleteProduct product) {
         mCompleteProduct = product;
-        ((BaseActivity) getActivity()).setTitle(mCompleteProduct.getBrand() + " "
-                + mCompleteProduct.getName());
+        ((BaseActivity) getActivity()).setTitle(mCompleteProduct.getBrand() + " " + mCompleteProduct.getName());
 
     }
 
@@ -1200,10 +1198,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
     private void showVariantsDialog() {
         ((BaseActivity) getActivity()).showWarningVariation(false);
         String title = getString(R.string.product_variance_choose);
-        dialogListFragment = DialogListFragment.newInstance(this, VARIATION_PICKER_ID,
-                title, mSimpleVariants, mSimpleVariantsAvailable,
-                mSelectedSimple);
-        
+        dialogListFragment = DialogListFragment.newInstance(this, VARIATION_PICKER_ID, title, mSimpleVariants, mSimpleVariantsAvailable, mSelectedSimple);
         dialogListFragment.show(getFragmentManager(), null);
     }
 

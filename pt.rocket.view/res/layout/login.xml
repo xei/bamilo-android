@@ -31,6 +31,7 @@
             android:layout_marginRight="@dimen/margin_huge"
             android:layout_marginTop="@dimen/margin_huge"
             android:orientation="vertical" >
+
             <com.facebook.widget.LoginButton
                 xmlns:fb="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/authButton"
@@ -38,10 +39,11 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="15dp"
                 android:layout_marginBottom="20dp"
+                android:layout_marginTop="15dp"
                 android:text="@string/facebook_signup_button_text"
-            	fb:login_text="@string/facebook_signup_button_text"/>
+                fb:login_text="@string/facebook_signup_button_text" />
+
             <LinearLayout
                 android:id="@+id/form_container"
                 android:layout_width="fill_parent"
@@ -87,7 +89,6 @@
                 android:layout_marginTop="@dimen/distance_item_mid"
                 android:contentDescription="@string/register_button_description"
                 android:text="@string/register_button" />
-
         </LinearLayout>
     </RelativeLayout>
 

@@ -62,9 +62,11 @@ import de.akquinet.android.androlog.Log;
  * Class used to show campaign page
  * @author sergiopereira
  */
-public class CampaignFragment extends BaseFragment implements OnClickListener, IResponseCallback {
+public class CampaignFragment extends BaseFragment implements OnClickListener, OnScrollListener, IResponseCallback {
 
     public static final String TAG = LogTagHelper.create(CampaignFragment.class);
+    
+    private final static String COUNTER_START_TIME = "start_time";
     
     private static CampaignFragment sCampaignFragment;
 
@@ -95,8 +97,6 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
     private View mRetryView;
 
     private DialogGenericFragment mDialogErrorToCart;
-    
-    private String START_TIME = "start_time";
     
     private long mStartTimeInMilliseconds;
 
@@ -157,17 +157,9 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
         if(savedInstanceState != null && savedInstanceState.containsKey(TAG)){
             Log.i(TAG, "ON GET SAVED STATE");
             mCampaign = savedInstanceState.getParcelable(TAG);
-
             // Restore startTime
-            if (savedInstanceState.containsKey(START_TIME)) {
-                Bundle bundle = savedInstanceState.getParcelable(START_TIME);
-                if (bundle != null) {
-                    long currentTime = SystemClock.elapsedRealtime();
-                    // if all fails, set startTime to now. Timer will be late relatively to last
-                    // Request, but there is no alternative
-                    mStartTimeInMilliseconds = bundle.getLong(START_TIME, currentTime);
-                }
-            }
+            if(savedInstanceState.containsKey(COUNTER_START_TIME)) 
+                mStartTimeInMilliseconds = savedInstanceState.getLong(COUNTER_START_TIME, SystemClock.elapsedRealtime());
         }
     }
     
@@ -196,7 +188,7 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
         // Get grid view
         mGridView = (HeaderGridView) view.findViewById(R.id.campaign_grid);
         // Set onScrollListener to signal adapter's Handler when user is scrolling
-        mGridView.setOnScrollListener(scrollingListener);
+        mGridView.setOnScrollListener(this);
         // Get loading view
         mLoadingView = view.findViewById(R.id.loading_bar);
         // Get retry view
@@ -206,23 +198,6 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
         // Validate the current state
         getAndShowCampaign();
     }
-    
-    /**
-     * OnScrollListener used by mArrayAdapter's views handler to update Timer
-     */
-    private OnScrollListener scrollingListener = new OnScrollListener() {
-    	@Override
-        public void onScrollStateChanged(AbsListView view, int scrollState) {
-            if (scrollState == OnScrollListener.SCROLL_STATE_FLING) {
-                isScrolling = true;
-            } else {
-                isScrolling = false;
-            }
-        }
-        @Override
-        public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-        }
-    };
         
     /*
      * (non-Javadoc)
@@ -255,11 +230,7 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
         super.onSaveInstanceState(outState);
         Log.i(TAG, "ON SAVE INSTANCE STATE: CAMPAIGN");
         outState.putParcelable(TAG, mCampaign);
-
-        // Save startTime
-        Bundle startTime = new Bundle();
-        startTime.putLong(START_TIME, mStartTimeInMilliseconds);
-        outState.putParcelable(START_TIME, startTime);
+        outState.putLong(COUNTER_START_TIME, mStartTimeInMilliseconds);
     }
 
     /*
@@ -389,8 +360,28 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
     }
     
     /**
-     * ############# CLICK LISTENER #############
+     * ############# LISTENERS #############
      */
+    
+    /*
+     * (non-Javadoc)
+     * @see android.widget.AbsListView.OnScrollListener#onScrollStateChanged(android.widget.AbsListView, int)
+     */
+    @Override
+    public void onScrollStateChanged(AbsListView view, int scrollState) {
+        if (scrollState == OnScrollListener.SCROLL_STATE_FLING) isScrolling = true;
+        else isScrolling = false;
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see android.widget.AbsListView.OnScrollListener#onScroll(android.widget.AbsListView, int, int, int)
+     */
+    @Override
+    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+        // ...
+    }
+    
     /*
      * (non-Javadoc)
      * @see android.view.View.OnClickListener#onClick(android.view.View)
@@ -696,8 +687,7 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
             private TextView mOfferEnded;
             private View mTimerContainer;
             private TextView mTimer;
-
-            private int remaingTime;
+            private int mRemaingTime;
 
             /**
              * Handler used to update Timer every second, when user is not scrolling
@@ -706,9 +696,8 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
                 public void handleMessage(android.os.Message msg) {
                     // only update if is not detected a fling (fast scrolling) on gridview
                     if (!isScrolling) {
-                        updateTimer(mTimer, mTimerContainer, mButtonBuy, mOfferEnded, mName, mImage, remaingTime);
+                        updateTimer(mTimer, mTimerContainer, mButtonBuy, mOfferEnded, mName, mImage, mRemaingTime);
                     }
-
                     this.sendEmptyMessageDelayed(0, 1000);
                 };
             };
@@ -839,13 +828,16 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
             // Set timer
             int remainingTime = item.getRemainingTime();
             // Set itemView's remainingTime to be used by handler
-            view.remaingTime = remainingTime;
+            view.mRemaingTime = remainingTime;
 
             // update Timer
             updateTimer(view.mTimer, view.mTimerContainer, view.mButtonBuy, view.mOfferEnded, view.mName, view.mImage, remainingTime);
         }
 
         /**
+         * 
+         * TODO: Try use a SimpleDateFormat
+         * 
          * Update Timer with remaining Time or show "Offer Ended" when time remaining reaches 0
          * 
          * @param timer
