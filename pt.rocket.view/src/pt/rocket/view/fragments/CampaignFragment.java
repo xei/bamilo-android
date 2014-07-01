@@ -810,7 +810,7 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
          * @param item
          * @author sergiopereira
          */
-        private void setData(ItemView view, CampaignItem item, int position){
+        private void setData(ItemView view, CampaignItem item, int position) {
             //Log.d(TAG, "SET DATA");
             // Set stock off
             if(getString(R.string.off_label).equals("-"))
@@ -856,7 +856,7 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
          * @param image
          * @param remainingTime
          */
-        private void updateTimer(TextView timer, View timerContainer,View buttonBuy, View offerEnded, View name, View image, int remainingTime) {
+        private void updateTimer(TextView timer, View timerContainer, View buttonBuy, View offerEnded, View name, View image, int remainingTime) {
             Log.d(TAG, "updateTimer");
             if (remainingTime > 0) {
                 Log.d(TAG, "Product with remainingTime");
@@ -864,15 +864,14 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
                 String remaingTimeString = getRemainingTime(remainingTime);
                 // Set remaing time on Timer
                 if (remaingTimeString != null) {
-                    if (remainingTime < 100000) {
-                        showOfferEnded(timerContainer, buttonBuy, offerEnded, timer, name, image);
-                    } else {
-                        timer.setText(remaingTimeString);
+                    timer.setText(remaingTimeString);
 
-                        timerContainer.setVisibility(View.VISIBLE);
-                        buttonBuy.setEnabled(true);
-                        offerEnded.setVisibility(View.INVISIBLE);   
-                    }
+                    timerContainer.setVisibility(View.VISIBLE);
+                    buttonBuy.setEnabled(true);
+                    offerEnded.setVisibility(View.INVISIBLE);
+
+                    // Set full opacity to image
+                    UIUtils.setAlpha(image, 1F);
                 // show "Offer Ended" and disable product
                 } else {
                     Log.d(TAG, "Product expired!");
@@ -883,6 +882,9 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
                 timerContainer.setVisibility(View.INVISIBLE);
                 buttonBuy.setEnabled(true);
                 offerEnded.setVisibility(View.INVISIBLE);
+
+                // Set full opacity to image
+                UIUtils.setAlpha(image, 1F);
             }
         }
 
@@ -944,7 +946,7 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, I
          * @param name
          * @param image
          */
-        private void showOfferEnded(View timerContainer,View buttonBuy, View offerEnded, TextView timer, View name, View image) {
+        private void showOfferEnded(View timerContainer, View buttonBuy, View offerEnded, TextView timer, View name, View image) {
             timerContainer.setVisibility(View.VISIBLE);
             buttonBuy.setEnabled(false);
             offerEnded.setVisibility(View.VISIBLE);
