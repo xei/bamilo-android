@@ -82,26 +82,7 @@ public class NavigationListHelper extends BaseHelper {
                         continue;
                     }
                 }
-                
-                // add "My Profile" and submenus before adding "My Account"
-                if (component != null) {
-                    if ("My Account".equalsIgnoreCase(component.getElementText())) {
-                        // #NAFAMZ-6651
-                        // add "My Favourites", "Recent Searches", "Recent Viewed"
-                        NavigationListComponent myProfile = new NavigationListComponent(200, "My Profile", "profile", null);
-                        components.add(myProfile);
 
-                        NavigationListComponent myFavourites = new NavigationListComponent(201, "My Favourites", "favourite", null);
-                        components.add(myFavourites);
-
-                        NavigationListComponent recentSearches = new NavigationListComponent(202, "Recent Searches", "recentsearch", null);
-                        components.add(recentSearches);
-
-                        NavigationListComponent recentViewed = new NavigationListComponent(203, "Recent Viewed", "recentlyview", null);
-                        components.add(recentViewed);
-                    }
-                }
-                
                 components.add(component);
             } 
 

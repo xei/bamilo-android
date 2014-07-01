@@ -449,29 +449,7 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
                     R.drawable.selector_navigation_account,
                     R.string.my_account, this);
             break;
-        case MyProfile:
-            layout = createGenericComponent(parent, component,
-                    R.drawable.selector_navigation_account,
-                    R.string.my_profile, this);
-            break;
 
-        case Favourite:
-            layout = createSubComponent(parent, component,
-                    R.drawable.selector_navigation_favourites,
-                    R.string.favourites, this);
-            break;
-
-        case RecentSearch:
-            layout = createSubComponent(parent, component,
-                    R.drawable.selector_navigation_recent_searches,
-                    R.string.recent_searches, this);
-            break;
-
-        case RecentlyView:
-            layout = createSubComponent(parent, component,
-                    R.drawable.selector_navigation_recently_viewed,
-                    R.string.recently_viewed, this);
-            break;
         case LoginOut:
             int text = JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials() ?
                     R.string.sign_out : R.string.sign_in;
@@ -550,42 +528,6 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
      * @param listener
      * @return
      */
-    private View createSubComponent(ViewGroup parent, NavigationListComponent component,
-            int iconRes, int textRes, OnClickListener listener) {
-        return createSubComponent(parent, component, iconRes, getString(textRes), listener);
-    }
-
-    /**
-     * 
-     * @param parent
-     * @param component
-     * @param iconRes
-     * @param text
-     * @param listener
-     * @return
-     */
-    private View createSubComponent(ViewGroup parent, NavigationListComponent component,
-            int iconRes, String text, OnClickListener listener) {
-        View navComponent = createGenericComponent(parent, component, iconRes, text, listener);
-        navComponent.setTag("submenu_" + text);
-
-        LinearLayout.LayoutParams navComponentLayoutParams = (LinearLayout.LayoutParams)navComponent.getLayoutParams();
-        /*TextView tVSearch = (TextView) navComponent.findViewById(R.id.component_text);
-        LinearLayout.LayoutParams tVSearchLayoutParams = (LinearLayout.LayoutParams) tVSearch.getLayoutParams();*/
-        navComponentLayoutParams.leftMargin = 64;
-
-        return navComponent;
-    }
-
-    /**
-     * 
-     * @param parent
-     * @param component
-     * @param iconRes
-     * @param textRes
-     * @param listener
-     * @return
-     */
     private View createGenericComponent(ViewGroup parent, NavigationListComponent component,
             int iconRes, int textRes, OnClickListener listener) {
         return createGenericComponent(parent, component, iconRes, getString(textRes), listener);
@@ -652,17 +594,6 @@ public class SlideMenuFragment extends BaseFragment implements OnClickListener {
                         FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
 //                if (slidingMenu.isSlidingEnabled())
 //                    slidingMenu.toggle(true);
-                getBaseActivity().toggle();
-                break;
-            case MyProfile:
-                View favourites = getView().findViewWithTag("submenu_My favourites");
-                if (favourites != null) {
-                    favourites.setVisibility(View.GONE);
-                }
-                break;
-            case Favourite:
-                ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.FAVOURITE_LIST,
-                        FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                 getBaseActivity().toggle();
                 break;
             case LoginOut:
