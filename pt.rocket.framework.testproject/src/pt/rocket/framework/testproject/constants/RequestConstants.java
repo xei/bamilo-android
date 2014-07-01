@@ -181,7 +181,7 @@ public class RequestConstants {
 	public static final String SET_PAYMENT_METHOD_MA = "2";
 	public static final String SET_PAYMENT_METHOD_NG = "1";
 	public static final String SET_PAYMENT_METHOD_KE = "3";
-	public static final String SET_PAYMENT_METHOD_UG = "3";
+	public static final String SET_PAYMENT_METHOD_UG = "7";
 	
 	
 	/**
@@ -201,14 +201,14 @@ public class RequestConstants {
 	public static final String BILLING_METHOD_SHIPPING_ADDRESS_ID_MA = "58028";
 	public static final String BILLING_METHOD_SHIPPING_ADDRESS_ID_NG = "311198";
 	public static final String BILLING_METHOD_SHIPPING_ADDRESS_ID_KE = "15253";
-	public static final String BILLING_METHOD_SHIPPING_ADDRESS_ID_UG = "0";
+	public static final String BILLING_METHOD_SHIPPING_ADDRESS_ID_UG = "17404";
 	
 	public static final String SHIPPING_METHOD_EG = "UniversalShippingMatrix";
 	public static final String SHIPPING_METHOD_IC = "UniversalShippingMatrix";
 	public static final String SHIPPING_METHOD_MA = "FlatRate";
 	public static final String SHIPPING_METHOD_NG = "UniversalShippingMatrix";
 	public static final String SHIPPING_METHOD_KE = "UniversalShippingMatrix";
-	public static final String SHIPPING_METHOD_UG = "DigitalDelivery";
+	public static final String SHIPPING_METHOD_UG = "UniversalShippingMatrix";
 	
 	/**
 	 * Newsletter

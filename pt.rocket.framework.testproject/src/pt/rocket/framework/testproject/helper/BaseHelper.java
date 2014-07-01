@@ -38,16 +38,21 @@ public abstract class BaseHelper {
     public static String BASE_URL_STAGING_CI = "https://alice-staging.jumia.ci/mobapi/v1.3";
     public static String BASE_URL_STAGING_UG = "https://alice-staging.jumia.ug/mobapi/v1.3";
     
-    public static String BASE_URL_NG = "https://www.jumia.com.ng/mobapi/v1.3";
-    public static String BASE_URL_KE = "https://www.jumia.co.ke/mobapi/v1.3";
-    public static String BASE_URL_MA = "https://www.jumia.ma/mobapi/v1.3";
-    public static String BASE_URL_EG = "https://www.jumia.com.eg/mobapi/v1.3";
-    public static String BASE_URL_CI = "https://www.jumia.ci/mobapi/v1.3";
-    public static String BASE_URL_UG = "https://www.jumia.ug/mobapi/v1.3";
-
-    //public static String BASE_URL_NG = BASE_URL_STAGING_NG;
-    //public static String BASE_URL_EG = BASE_URL_STAGING_EG;
+    //public static String BASE_URL_NG = "https://www.jumia.com.ng/mobapi/v1.3";
+    //public static String BASE_URL_KE = "https://www.jumia.co.ke/mobapi/v1.3";
+    //public static String BASE_URL_MA = "https://www.jumia.ma/mobapi/v1.3";
+    //public static String BASE_URL_EG = "https://www.jumia.com.eg/mobapi/v1.3";
+    //public static String BASE_URL_CI = "https://www.jumia.ci/mobapi/v1.3";
+    //public static String BASE_URL_UG = "https://www.jumia.ug/mobapi/v1.3";
     
+    public static String BASE_URL_NG = BASE_URL_STAGING_NG;
+    public static String BASE_URL_KE = BASE_URL_STAGING_KE;
+    public static String BASE_URL_MA = "http://integration-www.jumia.ma/mobapi/1.3";
+    //public static String BASE_URL_MA = BASE_URL_STAGING_MA;
+    public static String BASE_URL_EG = BASE_URL_STAGING_EG;
+    public static String BASE_URL_CI = BASE_URL_STAGING_CI;
+    public static String BASE_URL_UG = BASE_URL_STAGING_UG;
+
     /**
      * Creates the bundle for the request
      * 

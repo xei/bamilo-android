@@ -41,7 +41,7 @@ public void testCitiesEG() throws Throwable {
 }
 
 public void testCitiesUG() throws Throwable {
-  test(BaseHelper.BASE_URL_UG, 0);
+  test(BaseHelper.BASE_URL_UG, 229);
 }
 
 public void test(String url, int region_id){
