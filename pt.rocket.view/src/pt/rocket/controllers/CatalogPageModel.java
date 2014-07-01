@@ -82,7 +82,7 @@ public class CatalogPageModel {
 
     private boolean showList;
 
-    private static ContentValues filters;
+    private ContentValues filters;
 
     private int mFilterMD5 = -1;
 
@@ -213,10 +213,9 @@ public class CatalogPageModel {
      * @param showList show list (or grid)
      * @param totalUpdates number of global calls to setVariables
      */
-    public void setVariables(String p, String s, String n, String t, int navSource,
-            ContentValues filterValues, boolean showList, int totalUpdates) {
+    public void setVariables(String p, String s, String n, String t, int navSource, ContentValues filterValues, boolean showList, int totalUpdates) {
         
-        Log.d(TAG, "FILTER SET VARIABLES" );
+        Log.d(TAG, "FILTER SET VARIABLES: " + p + " " + s + " " + n + " " + t + " " + navSource);
         
         CatalogPageModel.productsURL = p;
         CatalogPageModel.searchQuery = s;
@@ -227,18 +226,19 @@ public class CatalogPageModel {
 
         this.showList = showList;
         
-        Log.i(TAG, "FILTER IS DIFF: " + ((filterValues != null) ? filterValues.getAsInteger("md5") : ""));
+        Log.i(TAG, "FILTER IS DIFF: " + ((filterValues != null) ? filterValues.getAsInteger("md5") : "IS NULL"));
         
         // Case no content
         if(!hasContent()) {
-            Log.i(TAG, "IS EMPTY");
+            Log.i(TAG, "CONTENT IS EMPTY GET CATALOG");
+            this.filters = filterValues;
             threadRequest();
         }
         // Case new filter
         else if(filterValues != null && filterValues.getAsInteger("md5") != this.mFilterMD5) {
             Log.i(TAG, "FILTER IS DIFF: " + filterValues.getAsInteger("md5") + " " + this.mFilterMD5);
             this.mFilterMD5 = filterValues.getAsInteger("md5");
-            CatalogPageModel.filters = filterValues;
+            this.filters = filterValues;
             threadRequest();
         // Case update layout 
         } else if(this.mSwitchMD5 != totalUpdates) {

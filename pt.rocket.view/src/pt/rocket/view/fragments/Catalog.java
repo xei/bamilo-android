@@ -33,7 +33,6 @@ import pt.rocket.view.R;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Shader;
@@ -154,6 +153,20 @@ public class Catalog extends BaseFragment implements OnClickListener {
         showList = sharedPreferences.getBoolean(ConstantsSharedPrefs.KEY_SHOW_LIST_LAYOUT, true);
 
         setRetainInstance(true);
+        
+        title = getArguments().getString(ConstantsIntentExtra.CONTENT_TITLE);
+
+        productsURL = getArguments().getString(ConstantsIntentExtra.CONTENT_URL);
+
+        searchQuery = getArguments().getString(ConstantsIntentExtra.SEARCH_QUERY);
+
+        navigationSource = getArguments().getInt(ConstantsIntentExtra.NAVIGATION_SOURCE, -1);
+
+        navigationPath = getArguments().getString(ConstantsIntentExtra.NAVIGATION_PATH);
+        
+        // Save the current catalog data, used as a fall back
+        saveCurrentCatalogDataForFilters();
+        
     }
 
     /*
@@ -193,21 +206,17 @@ public class Catalog extends BaseFragment implements OnClickListener {
         Log.d(TAG, "ON RESUME");
 
         // http://www.jumia.co.ke:80/mobapi/womens-casual-shoes/
-
-        title = getArguments().getString(ConstantsIntentExtra.CONTENT_TITLE);
-
+        
         ((BaseActivity) getActivity()).setTitle(title);
-
-        productsURL = getArguments().getString(ConstantsIntentExtra.CONTENT_URL);
-
-        searchQuery = getArguments().getString(ConstantsIntentExtra.SEARCH_QUERY);
-
-        navigationSource = getArguments().getInt(ConstantsIntentExtra.NAVIGATION_SOURCE, -1);
-
-        navigationPath = getArguments().getString(ConstantsIntentExtra.NAVIGATION_PATH);
-
-        // Save the current catalog data, used as a fall back
-        saveCurrentCatalogDataForFilters();
+        
+        
+        Log.i(TAG, "DATA :  " + productsURL + " " + searchQuery + " " + navigationSource + " " + navigationPath) ; 
+        
+        // Set catalog filters
+        if (mCatalogFilter != null) {
+            Log.i(TAG, "setFilterAction");
+            setFilterAction();
+        }
 
         AnalyticsGoogle.get().trackPage(R.string.gproductlist);
 
@@ -267,12 +276,6 @@ public class Catalog extends BaseFragment implements OnClickListener {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
             e.printStackTrace();
-        }
-
-        // Set catalog filters
-        if (mCatalogFilter != null) {
-            Log.i(TAG, "setFilterAction");
-            setFilterAction();
         }
 
         AnalyticsGoogle.get().trackPage(R.string.gproductlist);
@@ -635,17 +638,18 @@ public class Catalog extends BaseFragment implements OnClickListener {
         // Contains the new search query (Brand filter)
         if (filterValues.containsKey(GetProductsHelper.SEARCH_QUERY)){
             searchQuery = filterValues.getAsString(GetProductsHelper.SEARCH_QUERY);
+            // Used to indicate that has filter q=<BRAND>
             mCatalogFilterValues.put(GetProductsHelper.SEARCH_QUERY, "");
         }
-        
-        // Set the filter button selected or not
-        setFilterButtonState();
-        // Error flag
-        wasReceivedErrorEvent = false;
-        
+
         Log.i(TAG, "Updating totalUpdates: " + mSwitchMD5);
         mFilterMD5++;
         mCatalogFilterValues.put("md5", mFilterMD5);
+        
+        // Set the filter button selected or not
+        setFilterButtonState(); // size
+        // Error flag
+        wasReceivedErrorEvent = false;
         
         // TODO: Validate this
         // Send new request with new filters 
@@ -773,7 +777,8 @@ public class Catalog extends BaseFragment implements OnClickListener {
      */
     private void setFilterButtonState() {
         try {
-            mFilterButton.setSelected((mCatalogFilterValues.size() == 0) ? false : true);
+            // Contains md5
+            mFilterButton.setSelected((mCatalogFilterValues.size() == 1) ? false : true);
             Log.d(TAG, "SET FILTER BUTTON STATE: " + mFilterButton.isSelected());
         } catch (NullPointerException e) {
             Log.w(TAG, "BUTTON OR VALUE IS NULL", e);
