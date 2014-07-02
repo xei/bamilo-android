@@ -47,7 +47,7 @@ public abstract class BaseHelper {
     
     public static String BASE_URL_NG = BASE_URL_STAGING_NG;
     public static String BASE_URL_KE = BASE_URL_STAGING_KE;
-    public static String BASE_URL_MA = "http://integration-www.jumia.ma/mobapi/1.3";
+    public static String BASE_URL_MA = "https://integration-www.jumia.ma/mobapi/1.3";
     //public static String BASE_URL_MA = BASE_URL_STAGING_MA;
     public static String BASE_URL_EG = BASE_URL_STAGING_EG;
     public static String BASE_URL_CI = BASE_URL_STAGING_CI;
