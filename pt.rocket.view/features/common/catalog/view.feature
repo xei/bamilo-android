@@ -30,6 +30,6 @@ Feature: Catalog
 	When I swipe up moving with 1 steps
 	When I swipe up moving with 1 steps
 	When I swipe up moving with 1 steps
-	Then I should see the loading items message
+	#Then I should see the loading items message
 	
 	

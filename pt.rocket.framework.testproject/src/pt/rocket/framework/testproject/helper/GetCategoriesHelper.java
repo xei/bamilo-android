@@ -22,6 +22,7 @@ import pt.rocket.framework.testproject.objects.JSONConstants;
 import pt.rocket.framework.testproject.objects.XMLObject;
 import pt.rocket.framework.testproject.utils.XMLUtils;
 import pt.rocket.framework.utils.Constants;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
 
 
@@ -46,6 +47,7 @@ public class GetCategoriesHelper extends BaseHelper {
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.CATEGORIES_PRIORITY);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
         bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_UPDATED_TEASERS_EVENT);
         return bundle;
     }
 

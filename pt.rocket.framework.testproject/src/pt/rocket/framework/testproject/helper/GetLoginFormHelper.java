@@ -14,6 +14,7 @@ import pt.rocket.framework.enums.RequestType;
 import pt.rocket.framework.testproject.objects.XMLObject;
 import pt.rocket.framework.testproject.utils.XMLUtils;
 import pt.rocket.framework.utils.Constants;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
 
 import android.os.Bundle;
@@ -34,6 +35,7 @@ public class GetLoginFormHelper extends BaseHelper {
         bundle.putString(Constants.BUNDLE_URL_KEY, args.getString(BaseHelper.KEY_COUNTRY));
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
         bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_UPDATED_TEASERS_EVENT);
         return bundle;
     }
 

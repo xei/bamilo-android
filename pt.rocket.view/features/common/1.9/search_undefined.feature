@@ -1,5 +1,5 @@
 @Calabash_Tests @search_undefined
-Feature: Search Undefined
+Feature: 1.9 Features - Search Undefined
 
 Background: 
 Given I call the variables

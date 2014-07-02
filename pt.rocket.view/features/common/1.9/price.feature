@@ -1,5 +1,5 @@
 @Calabash_Tests @price
-Feature: Price parses
+Feature: 1.9 Features - Price parses
 
   	Background: 
     Given I call the variables

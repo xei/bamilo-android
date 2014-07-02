@@ -13,9 +13,8 @@ import android.test.suitebuilder.annotation.SmallTest;
 
 public class LogoutTest extends FrameworkServiceTests {
 	private static String TAG = LogoutTest.class.getSimpleName();
-	protected boolean processed = false;
-	protected boolean processed1 = false;
-	protected boolean processed2 = false;
+	protected boolean processed_login = false;
+	protected boolean processed_logout = false;
 
 	@SmallTest
 	public void testGetLogoutIC() throws Throwable {
@@ -52,15 +51,13 @@ public class LogoutTest extends FrameworkServiceTests {
 		 * Login before changing password
 		 */
 		Log.i(TAG, "mService => " + mService);
-		Bundle args1 = new Bundle();
-		ContentValues contentValues = new ContentValues();
-		contentValues.put(RequestConstants.KEY_LOGIN_EMAIL,
-				RequestConstants.CUSTOMER_EMAIL);
-		contentValues.put(RequestConstants.KEY_LOGIN_PASSWORD,
-				RequestConstants.CUSTOMER_PASSWORD);
-		args1.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, contentValues);
-		args1.putString(BaseHelper.KEY_COUNTRY, url + "/customer/login/");
-		sendRequest(args1, new GetLoginHelper(), new IResponseCallback() {
+		Bundle args_login = new Bundle();
+		ContentValues contentValues_login = new ContentValues();
+		contentValues_login.put(RequestConstants.KEY_LOGIN_EMAIL, RequestConstants.CUSTOMER_EMAIL);
+		contentValues_login.put(RequestConstants.KEY_LOGIN_PASSWORD, RequestConstants.CUSTOMER_PASSWORD);
+		args_login.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, contentValues_login);
+		args_login.putString(BaseHelper.KEY_COUNTRY, url + "/customer/login/");
+		sendRequest(args_login, new GetLoginHelper(), new IResponseCallback() {
 
 			@Override
 			public void onRequestError(Bundle bundle) {
@@ -71,7 +68,7 @@ public class LogoutTest extends FrameworkServiceTests {
 						"Failed onRequestError - The base of the json is wrongly constructed, something is missing : "
 								+ bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY),
 						jsonValidation);
-				processed = true;
+				processed_login = true;
 			}
 
 			@Override
@@ -82,12 +79,12 @@ public class LogoutTest extends FrameworkServiceTests {
 				assertTrue(
 						"Failed onRequestComplete - The base of the json is wrongly constructed, something is missing",
 						jsonValidation);
-				processed = true;
+				processed_login = true;
 
 			}
 		});
 		// necessary in order to make the test wait for the server response
-		while (!processed) {
+		while (!processed_login) {
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
@@ -100,15 +97,14 @@ public class LogoutTest extends FrameworkServiceTests {
 		 * Logout
 		 */
 		Log.i(TAG, "mService => " + mService);
-		Bundle args = new Bundle();
-		ContentValues contentValues1 = new ContentValues();
-		contentValues1.put(RequestConstants.KEY_LOGIN_EMAIL,
-				RequestConstants.CUSTOMER_EMAIL);
-		contentValues1.put(RequestConstants.KEY_LOGIN_PASSWORD,
-				RequestConstants.CUSTOMER_PASSWORD);
-		args.putParcelable(GetLogoutHelper.LOGOUT_CONTENT_VALUES, contentValues1);
-		args.putString(BaseHelper.KEY_COUNTRY, url + "/customer/logout/");
-		sendRequest(args, new GetLogoutHelper(), new IResponseCallback() {
+		Bundle args_logout = new Bundle();
+		ContentValues contentValues_logout = new ContentValues();
+		contentValues_logout.put(RequestConstants.KEY_LOGIN_EMAIL,RequestConstants.CUSTOMER_EMAIL);
+		contentValues_logout.put(RequestConstants.KEY_LOGIN_PASSWORD,RequestConstants.CUSTOMER_PASSWORD);
+		args_logout.putParcelable(GetLogoutHelper.LOGOUT_CONTENT_VALUES, contentValues_logout);
+		args_logout.putString(BaseHelper.KEY_COUNTRY, url + "/customer/logout/");
+		args_logout.putBoolean(Constants.BUNDLE_METADATA_REQUIRED_KEY, false);
+		sendRequest(args_logout, new GetLogoutHelper(), new IResponseCallback() {
 
 			@Override
 			public void onRequestError(Bundle bundle) {
@@ -119,7 +115,7 @@ public class LogoutTest extends FrameworkServiceTests {
 						"Failed onRequestError - The base of the json is wrongly constructed, something is missing : "
 								+ bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY),
 						jsonValidation);
-				processed = true;
+				processed_logout = true;
 			}
 
 			@Override
@@ -130,12 +126,12 @@ public class LogoutTest extends FrameworkServiceTests {
 				assertTrue(
 						"Failed onRequestComplete - The base of the json is wrongly constructed, something is missing",
 						jsonValidation);
-				processed = true;
+				processed_logout = true;
 
 			}
 		});
 		// necessary in order to make the test wait for the server response
-		while (!processed) {
+		while (!processed_logout) {
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {

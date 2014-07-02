@@ -30,22 +30,18 @@ import com.rocket.framework.testshell.test.R;
 public class GetSignupNewsletterHelper extends BaseHelper {
 
     private static String TAG = GetSignupNewsletterHelper.class.getSimpleName();
-    public static final String VALUES = "contentValues";
+    public static final String CONTENT_VALUES = "contentValues";
     ContentValues contentValues;
-
-    public static final String ADD_ITEM = "add_item";
 
     @Override
     public Bundle generateRequestBundle(Bundle args) {
         Bundle bundle = new Bundle();
-        contentValues = args.getParcelable(VALUES);
+        
+        bundle.putParcelable(Constants.BUNDLE_FORM_DATA_KEY, args.getParcelable(CONTENT_VALUES));
         bundle.putString(Constants.BUNDLE_URL_KEY, args.getString(BaseHelper.KEY_COUNTRY));
-        bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.POST);
-        bundle.putParcelable(Constants.BUNDLE_FORM_DATA_KEY, args.getParcelable(ADD_ITEM));
-        bundle.putParcelable(Constants.BUNDLE_FORM_DATA_KEY, contentValues);
         bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_CUSTOMER_ADDRESSES_EVENT);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_BILLING_FORM_EVENT);
         return bundle;
     }
 

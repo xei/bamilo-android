@@ -66,10 +66,6 @@ Then /^I enter My User Data$/ do
   performAction('click_on_text',@myinfo.to_s)
 end
 
-Then /^I enter Categories$/ do 
-  performAction('press', "calabash_"+@categories.to_s)
-end
-
 Then /^I enter a valid Category$/ do 
   performAction('click_on_text',@categoryfashion.to_s)
 end
@@ -247,84 +243,125 @@ Then /^I add multiple products$/ do
   end
 end
 
-  Then /^I press Proceed to Checkout$/ do
-    performAction('click_on_text', @proceed_to_checkout.to_s)
-  end
-  
-  Then /^I press Next$/ do
-    performAction('click_on_text', @next.to_s)
-  end
-  
-  Then /^I press Pay on Delivery$/ do
-    performAction('click_on_text', @pay_on_delivery.to_s)
-  end
-  
-  Then /^I press Confirm Order$/ do
-    performAction('click_on_text', @confirm_order.to_s)
-  end
-  
-  Then /^I press Order Status$/ do
-    performAction('click_on_text', @order_status.to_s)
-  end
-  
-  Then /^I press Track Order$/ do
-    performAction('click_on_view_by_id', "btn_track_order")
-  end 
-   
-  Then /^I click on the search bar$/ do
-    performAction('click_on_view_by_id', "search_component")
-  end
-  
-  Then /^I click on search icon$/ do
-    performAction('click_on_view_by_id', "cucumber_click_search")
-    #performAction('press_button_with_text', "ic_search_bar_normal")
-    #query("button index:1")
-  end
-    
-  Then /^I click in Filter$/ do
-    performAction('click_on_view_by_id', "products_list_filter_button")
-  end
-  
-  Then /^I press Done$/ do
-    performAction('click_on_text', @done.to_s)
-  end
-  
-  Then /^I press on clear all$/ do
-    performAction('click_on_text', @clear_all.to_s)
-  end
-  
-  Then /^I press the Jumia logo$/ do
-    performAction('click_on_view_by_id', "ic_logo")
-  end
-  
-  Then /^I lock the device$/ do
-    system("adb shell input keyevent 26");
-  end
-  
-  Then /^I press on a related item$/ do
-    performAction('click_on_screen',20, 80)
-  end
-  
-  Then /^I check newsletter$/ do
-    performAction('click_on_text', @newsletter_checkbox.to_s)
-  end
-  
-  Then /^I enter email notifications$/ do
-      performAction('click_on_text', @email_notifications.to_s)
-  end
-  
-  Then /^I enter save$/ do
-        performAction('click_on_text', @save.to_s)
-  end
-  
-  Then /^I check newsletter male$/ do
-          performAction('click_on_text', @newsletter_male.to_s)
-  end
+Then /^I press Proceed to Checkout$/ do
+  performAction('click_on_text', @proceed_to_checkout.to_s)
+end
 
-  Then /^I press the newsletter Male$/ do
-    performAction('click_on_view_by_id', "newsletter_first_btn")
-  end
+Then /^I press Next$/ do
+  performAction('click_on_text', @next.to_s)
+end
+
+Then /^I press Pay on Delivery$/ do
+  performAction('click_on_text', @pay_on_delivery.to_s)
+end
+
+Then /^I press Confirm Order$/ do
+  performAction('click_on_text', @confirm_order.to_s)
+end
+
+Then /^I press Order Status$/ do
+  performAction('click_on_text', @order_status.to_s)
+end
+
+Then /^I press Track Order$/ do
+  performAction('click_on_view_by_id', "btn_track_order")
+end 
+ 
+Then /^I click on the search bar$/ do
+  performAction('click_on_view_by_id', "search_component")
+end
+
+Then /^I click on search icon$/ do
+  performAction('click_on_view_by_id', "cucumber_click_search")
+  #performAction('press_button_with_text', "ic_search_bar_normal")
+  #query("button index:1")
+end
   
-  Then /^I click on register$/ do
-    performAction('click_on_screen', 50, 90)
-  end
+Then /^I click in Filter$/ do
+  performAction('click_on_view_by_id', "products_list_filter_button")
+end
+
+Then /^I press Done$/ do
+  performAction('click_on_text', @done.to_s)
+end
+
+Then /^I press on clear all$/ do
+  performAction('click_on_text', @clear_all.to_s)
+end
+
+Then /^I press the Jumia logo$/ do
+  performAction('click_on_view_by_id', "ic_logo")
+end
+
+Then /^I lock the device$/ do
+  system("adb shell input keyevent 26");
+end
+
+Then /^I press on a related item$/ do
+  performAction('click_on_screen',20, 80)
+end
+
+Then /^I check newsletter$/ do
+  performAction('click_on_text', @newsletter_checkbox.to_s)
+end
+
+Then /^I enter email notifications$/ do
+    performAction('click_on_text', @email_notifications.to_s)
+end
+
+Then /^I enter save$/ do
+      performAction('click_on_text', @save.to_s)
+end
+
+Then /^I check newsletter male$/ do
+        performAction('click_on_text', @newsletter_male.to_s)
+end
+
+Then /^I press the newsletter Male$/ do
+  performAction('click_on_view_by_id', "newsletter_first_btn")
+end
+
+Then /^I click on register$/ do
+  performAction('click_on_screen', 50, 90)
+end
+
+Then /^I click on my profile tab$/ do
+  performAction('click_on_text', @myprofile.to_s)
+end
+
+Then /^I click on menu$/ do
+  performAction('click_on_text', @menu.to_s)
+end
+
+Then /^I enter Categories$/ do 
+  performAction('click_on_text', @categories.to_s)
+end
+
+Then /^I press the button to change the view$/ do
+  performAction('click_on_view_by_id', "products_switch_layout_button")
+end
+
+Then /^I click on the favorite icon$/ do
+  performAction('click_on_view_by_id', "image_is_favourite")
+end
+
+Then /^I click on search$/ do
+  performAction('click_on_view_by_id', "menu_search")
+end
+
+Then /^I enter recent searches$/ do
+  performAction('click_on_text', @recente_searches.to_s)
+end
+
+Then /^I enter my favorites$/ do
+  performAction('click_on_text', @my_favourites.to_s)
+end
+
+Then /^I press on other country$/ do
+	case $country
+	when "ug"
+	  step "I press list item number 1"
+	else
+	  step "I press list item number 6"
+	end
+end

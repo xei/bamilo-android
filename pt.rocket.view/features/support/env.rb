@@ -93,7 +93,7 @@ def initvars
     @search="Search"
     @myaccount="My Account"
     @myinfo="User Data"
-    @categories="Categories"
+    @categories="CATEGORIES"
     @categoryfashion="Mobile Phones"
     @choose_country="Choose Country"
     @order_status="Order Status"
@@ -205,6 +205,14 @@ def initvars
     @invalid_email_message="Invalid email address"
     
     @save="Save"
+    @settings = "Settings"
+    @myprofile = "My Profile"
+    @my_favourites = "My Favourites"
+    @recente_searches = "Recent Searches"
+    @recently_viewed = "Recently Viewed"
+    @menu = "MENU"
+    @item_added = "Item added"
+    @item_removed = "Item removed"
     
     ##### Ivory Coast ####################################### IC ##############################################################################          
     when "ic"
@@ -217,7 +225,7 @@ def initvars
     @search="Rechercher"
     @myaccount="Mon compte"
     @myinfo="Les données de"
-    @categories="Catégories"
+    @categories="CATÉGORIES"
     @categoryfashion="PC & informatique"
     @choose_country="Choisir le pays"
     @order_status="Suivi de commande"
@@ -333,6 +341,15 @@ def initvars
     @invalid_email_message="Email non valide"
     
     @save="Enregistrer"
+    @settings = "Settings"
+    @myprofile = "Mon Profil"
+    @my_favourites = "Mes Favoris"
+    @recente_searches = "Recherches Récentes"
+    @recently_viewed = "Derniers Produits Vus"
+    @menu = "MENU"
+    
+    @item_added = "Produit ajouté"
+    @item_removed = "Produit supprimé"
       
     ##### Morocco ########################################### MA ##############################################################################
     when "ma"
@@ -345,7 +362,7 @@ def initvars
     @search="Rechercher"
     @myaccount="Mon compte"
     @myinfo="Les données de"
-    @categories="Catégories"
+    @categories="CATÉGORIES"
     @categoryfashion="Téléphonie"
     @choose_country="Choisir le pays"
     @order_status="Suivre la commande"
@@ -460,6 +477,14 @@ def initvars
     @invalid_email_message="Email non valide"
     
     @save="Enregistrer"
+    @settings = "Settings"
+    @myprofile = "Mon Profil"
+    @my_favourites = "Mes Favoris"
+    @recente_searches = "Recherches Récentes"
+    @recently_viewed = "Derniers Produits Vus"
+    @menu = "MENU"
+    @item_added = "Produit ajouté"
+    @item_removed = "Produit supprimé"
         
     ##### Nigeria ########################################### NG ##############################################################################
     when "ng"
@@ -472,7 +497,7 @@ def initvars
     @search="Search"
     @myaccount="My Account"
     @myinfo="User Data"
-    @categories="Categories"
+    @categories="CATEGORIES"
     @categoryfashion="Computing"
     @choose_country="Choose Country"
     @order_status="Order Status"
@@ -582,6 +607,14 @@ def initvars
     @invalid_email_message="Invalid email address"
     
     @save="Save"
+    @settings = "Settings"
+    @myprofile = "My Profile"
+    @my_favourites = "My Favourites"
+    @recente_searches = "Recent Searches"
+    @recently_viewed = "Recently Viewed"
+    @menu = "MENU"
+    @item_added = "Item added"
+    @item_removed = "Item removed"
     
     ##### Egypt ############################################# EG ##############################################################################
     when "eg"
@@ -594,7 +627,7 @@ def initvars
     @search="Search" 
     @myaccount="My Account"
     @myinfo="User Data"
-    @categories="Categories"
+    @categories="CATEGORIES"
     @categoryfashion="Books"
     @choose_country="Choose Country"
     @order_status="Order Status"
@@ -704,6 +737,14 @@ def initvars
     @invalid_email_message="Invalid email address"
     
     @save="Save"
+    @settings = "Settings"
+    @myprofile = "My Profile"
+    @my_favourites = "My Favourites"
+    @recente_searches = "Recent Searches"
+    @recently_viewed = "Recently Viewed"
+    @menu = "MENU"
+    @item_added = "Item added"
+    @item_removed = "Item removed"
     
     ##### Uganda  ############################################ UG ##############################################################################
     when "ug"
@@ -716,7 +757,7 @@ def initvars
     @search="Search"
     @myaccount="My Account"
     @myinfo="User Data"
-    @categories="Categories"
+    @categories="CATEGORIES"
     @categoryfashion="Books"
     @choose_country="Choose Country"
     @order_status="Order Status"
@@ -826,5 +867,13 @@ def initvars
     @invalid_email_message="Invalid email address"
     
     @save="Save"
+    @settings = "Settings"
+    @myprofile = "My Profile"
+    @my_favourites = "My Favourites"
+    @recente_searches = "Recent Searches"
+    @recently_viewed = "Recently Viewed"
+    @menu = "MENU"
+    @item_added = "Item added"
+    @item_removed = "Item removed"
   end
 end

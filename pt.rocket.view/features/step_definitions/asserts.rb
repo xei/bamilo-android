@@ -338,3 +338,52 @@ end
 Then /^I should see the newsletter message error$/ do
   performAction('assert_text', @invalid_email_message.to_s, true)
 end
+
+Then /^I should see the settings tab$/ do
+  performAction('assert_text', @settings.to_s, true)
+end
+
+Then /^I should see the my profile tab$/ do
+  performAction('assert_text', @myprofile.to_s, true)
+end
+
+Then /^I should see the my profile sub tabs$/ do
+  performAction('assert_text', @my_favourites.to_s, true)
+  performAction('assert_text', @recente_searches.to_s, true)
+  performAction('assert_text', @recently_viewed.to_s, true)
+end
+
+Then /^I should see the menu and categories tabs$/ do
+  performAction('assert_text', @categories.to_s, true)
+  performAction('assert_text', @menu.to_s, true)
+end
+
+Then /^I should see the menu sections$/ do
+  performAction('assert_text', @home.to_s, true)
+  performAction('assert_text', @myprofile.to_s, true)
+  performAction('assert_text', @settings.to_s, true)
+  performAction('assert_text', @choose_country.to_s, true)
+  performAction('assert_text', @order_status.to_s, true)
+  performAction('assert_text', @sign_in.to_s, true)
+end
+
+Then /^I should see the item (added|removed) message$/ do |item|
+  case item.to_s
+  when "added"
+    performAction('assert_text', @item_added.to_s, true)
+  when "removed"
+    performAction('assert_text', @item_removed.to_s, true)
+  end
+end
+
+Then /^I should see the search icon$/ do
+  performAction('click_on_view_by_id', "menu_search")
+end
+
+Then /^I should see the recent searches$/ do
+  performAction('assert_text', @recente_searches.to_s, true)
+end
+
+Then /^I should see the my favorites$/ do
+  performAction('assert_text', @my_favourites.to_s, true)
+end

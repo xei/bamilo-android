@@ -59,8 +59,11 @@ And I press list item number 2
 And I press Done
 * I wait for 3 seconds
 And I press Done
+* I wait for 1 seconds
 And I click in Filter
+* I wait for 1 seconds
 And I press on clear all
+* I wait for 1 seconds
 And I press Done
 
 @filters_d

@@ -47,10 +47,13 @@ Feature: Check the product detail view
     And I enter Categories
     * I wait for 3 seconds
 	And I enter a valid Category
+    * I wait for 2 seconds
 	And I press list item number 1
+	* I wait for 2 seconds
 	And I press list item number 2
 	* I wait for 3 seconds
 	Then I should see the currency
+	* I wait for 2 seconds
 	And I should see the specifications
 	
 	

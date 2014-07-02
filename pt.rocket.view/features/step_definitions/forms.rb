@@ -148,3 +148,7 @@ Then /^I write a valid email on the newsletter subscription field$/ do
   performAction('clear_id_field', "newsletter_subscription_value")
   performAction('enter_text_into_id_field',"testeasdasdasdifgasldjkhalsjkdhalksjdh", "newsletter_subscription_value")
 end
+
+Then /^I enter a valid search on the text field$/ do
+  performAction('enter_text_into_id_field', @search_p, "abs__search_src_text")
+end

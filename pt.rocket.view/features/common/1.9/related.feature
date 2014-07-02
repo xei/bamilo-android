@@ -1,5 +1,5 @@
 @Calabash_Tests @related
-Feature: PDV features - Realted Items
+Feature: 1.9 Features - Realted Items
 
   	Background: 
     Given I call the variables

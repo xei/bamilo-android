@@ -1,5 +1,5 @@
 @Calabash_Tests @account
-Feature: My Accounts features
+Feature: 1.9 Features - My Account
 
 Background: 
 Given I call the variables
@@ -25,17 +25,17 @@ Then I should see login screen
 @account_newsletter_page
 Scenario: Email notification page
 #Login
-	And I open the navigation menu
-	* I wait for 2 seconds
-	Then I choose the Sign In option
-	* I wait for 5 seconds
-    When I enter a valid username
-  	And I enter the password
-  	And I press Login Button
-  	* I wait for 10 seconds
-    Then I open the navigation menu
-    * I wait for 10 seconds
-	And I should see sign out button
+And I open the navigation menu
+* I wait for 2 seconds
+Then I choose the Sign In option
+* I wait for 5 seconds
+When I enter a valid username
+And I enter the password
+And I press Login Button
+* I wait for 10 seconds
+Then I open the navigation menu
+* I wait for 10 seconds
+And I should see sign out button
 	
 And I wait for 1 seconds
 And I enter My Account
@@ -47,10 +47,13 @@ And I should see newsletter options
 
 @account_newsletter_save
 Scenario: Save newsletter changes
+* I wait for 5 seconds
 When I open the navigation menu
 And I wait for 1 seconds
 And I enter My Account
+And I wait for 10 seconds
 And I enter email notifications
+And I wait for 1 seconds
 And I check newsletter male
 And I enter save
 Then I should see the notification newsletter changes

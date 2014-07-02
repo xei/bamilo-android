@@ -1,5 +1,5 @@
 @Calabash_Tests @home_newsletter
-Feature: Home Screen features
+Feature: 1.9 Features - Home Newsletter
 
 Background: 
 Given I call the variables
@@ -16,6 +16,7 @@ Then I should see newsletter subscription section
 
 @home_newsletter_no_email
 Scenario: Subscribe with no email
+* I wait for 5 seconds
 When I press the newsletter Male
 Then I should see the newsletter message error
 
