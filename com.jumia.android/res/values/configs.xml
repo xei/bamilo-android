@@ -17,6 +17,8 @@
     <bool name="rest_host_auth_use_it">true</bool>
     <bool name="ga_testmode">false</bool>
     <bool name="f_testmode">false</bool>
+    
+    <!-- GA : ON CONFIGS REQUEST -->
 
     <!-- DEEP LINK -->
     <string name="dp_package_id">com.jumia.android</string>

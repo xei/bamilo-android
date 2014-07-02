@@ -9,14 +9,6 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-<!--     <uses-permission
-        android:name="android.permission.CALL_PHONE"
-        android:required="false" />
-
-    <uses-feature
-        android:name="android.hardware.telephony"
-        android:required="false" >
-    </uses-feature> -->
 
     <!-- Urban Airship. -->
     <uses-permission android:name="android.permission.VIBRATE" />
@@ -104,6 +96,9 @@
         <meta-data
             android:name="ADX_CLIENT_ID"
             android:value="@string/xid" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
 
         <!-- Urban Airship GCM -->
         <receiver android:name="pt.rocket.utils.PushNotificationIntentReceiver" />
