@@ -207,8 +207,6 @@
     <dimen name="myprofile_lists_top_margin">40dp</dimen>
     <dimen name="myprofile_lists_drawable_padding">26.67dp</dimen>
     <dimen name="myprofile_menu_margin">32dp</dimen>
-	<dimen name="myprofile_button_left_padding">10dp</dimen>
-	<dimen name="myprofile_button_right_padding">0dp</dimen>
 	<dimen name="myprofile_item_size">42.67dp</dimen>
 	<dimen name="myprofile_item_icon_container_size">27dp</dimen>
 	<dimen name="myprofile_item_icon_size">21.33dp</dimen>

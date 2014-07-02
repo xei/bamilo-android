@@ -9,8 +9,4 @@
 	<dimen name="button_sort_height">@dimen/button_sort_height_sw320dp</dimen>
 
     <dimen name="product_item_vertical_divider_height">120dp</dimen>
-
-	<!-- MY PROFILE -->
-	<dimen name="myprofile_button_left_padding">0dp</dimen>
-	<dimen name="myprofile_button_right_padding">0dp</dimen>
 </resources>

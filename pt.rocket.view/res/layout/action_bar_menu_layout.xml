@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:paddingLeft="@dimen/myprofile_button_left_padding"
-    android:paddingRight="@dimen/myprofile_button_right_padding" >
+    android:layout_height="wrap_content" >
 
     <RelativeLayout
         android:layout_width="42.67dp"
@@ -13,7 +11,6 @@
             android:id="@+id/spinner_myprofile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:popupBackground="@drawable/menu_dropdown_panel_with_spacer"
             android:spinnerMode="dropdown"
             android:visibility="invisible" />
 
@@ -22,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="42.67dp"
             android:clickable="true"
-            android:src="@drawable/selector_navigation_myprofile" />
+            android:src="@drawable/abs__ic_menu_moreoverflow_holo_light" />
     </RelativeLayout>
 
 </LinearLayout>
