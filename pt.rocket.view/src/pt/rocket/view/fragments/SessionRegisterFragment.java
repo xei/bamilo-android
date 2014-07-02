@@ -533,7 +533,7 @@ public class SessionRegisterFragment extends BaseFragment {
             getBaseActivity().showContentContainer();
             // Get Register Completed Event
             Customer customer = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-            JumiaApplication.INSTANCE.CUSTOMER = customer;
+            JumiaApplication.CUSTOMER = customer;
             TrackerDelegator.trackSignupSuccessful(getActivity(), customer, registerLocation);
             // Finish this activity
             // Intent resultData = new Intent();

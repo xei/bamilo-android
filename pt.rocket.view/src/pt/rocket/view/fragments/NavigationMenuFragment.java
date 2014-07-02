@@ -528,9 +528,11 @@ public class NavigationMenuFragment extends BaseFragment implements OnClickListe
                 loginOut(getBaseActivity());
                 break;
             case Country:
+                FragmentController.getInstance().removeEntriesUntilTag(FragmentType.HOME.toString());
                 getBaseActivity().onSwitchFragment(FragmentType.CHANGE_COUNTRY, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                 break;
             case TrackOrder:
+                FragmentController.getInstance().removeEntriesUntilTag(FragmentType.HOME.toString());
                 getBaseActivity().onSwitchFragment(FragmentType.TRACK_ORDER, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                 break;
             }
@@ -563,8 +565,7 @@ public class NavigationMenuFragment extends BaseFragment implements OnClickListe
                     });
             dialogLogout.show(fm, null);
         } else {
-            activity.onSwitchFragment(FragmentType.LOGIN, FragmentController.NO_BUNDLE,
-                    FragmentController.ADD_TO_BACK_STACK);
+            activity.onSwitchFragment(FragmentType.LOGIN, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         }
     }
 

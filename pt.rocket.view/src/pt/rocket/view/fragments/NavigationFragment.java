@@ -431,8 +431,9 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
      */
     private void onClickCart(){
         try {
+            FragmentController.getInstance().removeEntriesUntilTag(FragmentType.HOME.toString());
             getBaseActivity().onSwitchFragment(FragmentType.SHOPPING_CART, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-            getBaseActivity().toggle();   
+            getBaseActivity().toggle();
         } catch (NullPointerException e) {
             Log.w(TAG, "WARNING NPE ON CLICK CART");
         }

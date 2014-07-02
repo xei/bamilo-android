@@ -2,6 +2,7 @@ package pt.rocket.controllers.fragments;
 
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
 import pt.rocket.framework.utils.LogTagHelper;
@@ -183,7 +184,7 @@ public class FragmentController {
      * @param tag
      * @return
      */
-    private String removeEntriesUntilTag(final String tag) {
+    public synchronized String removeEntriesUntilTag(final String tag) {
         Log.i(TAG, "POP ENTRIES UNTIL: " + tag);
         /**
          * The idea is use a thread to run in parallel with the FragmentManager not blocking the main thread
@@ -191,14 +192,24 @@ public class FragmentController {
          * @author sergiopereira
          * TODO - Threads have costs, find a workaround
          */
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                // Remove tag if not equal
-                while (!getLastEntry().equals(tag) && !getLastEntry().equals(""))
-                    popLastEntry();
-            }
-        }).start();
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+                // Create reverse iterator
+                ListIterator<String> iterator = backStack.listIterator(backStack.size());
+                while (iterator.hasPrevious()) {
+                    String currentTag = iterator.previous();
+                    Log.i(TAG, "POP TAG: " + currentTag + " UNTIL TAG: " + tag + " STACK SIZE: " + backStack.size());
+                    // Case HOME
+                    if (currentTag.equals(FragmentType.HOME.toString())) break;
+                    // Case TAG
+                    else if (currentTag.equals(tag)) break;
+                    // Case Remove
+                    else iterator.remove();
+                }
+                Log.i(TAG, "AFTER POP UNTIL TAG: " + tag + " STACK SIZE: " + backStack.size());
+            //}
+//        }).start();
         return null;
     }
 
@@ -284,14 +295,18 @@ public class FragmentController {
         // Get the new last fragment
         String lastTag = getLastEntry();
         // Case invisible fragment
-        if (TextUtils.isEmpty(lastTag) && lastTag.equals(FragmentType.UNKNOWN.toString()) && getBackStackSize() > 0) // XXX
+        if (!TextUtils.isEmpty(lastTag) && lastTag.equals(FragmentType.UNKNOWN.toString()) && getBackStackSize() > 0) {
+            Log.i(TAG, "ON POP BACK STACK: INVISIBLE TAG " + lastTag);
             popBackStack(activity);
+        }
         // Case visible fragment
-        else if ( !TextUtils.isEmpty(lastTag)) { // !lastTag.equals("")
-            Log.i(TAG, "code1 lastTag is : "+lastTag);
+        else if (!TextUtils.isEmpty(lastTag)) {
+            Log.i(TAG, "ON POP BACK STACK: TAG " + lastTag);
             // Pop stack until fragment tag
             activity.getSupportFragmentManager().popBackStackImmediate(lastTag, POP_BACK_STACK_NO_INCLUSIVE);
-        }
+        } 
+        // Case visible fragment
+        else Log.w(TAG, "WARNING ON POP BACK STACK: TAG IS EMPTY " + getBackStackSize());
         // Find fragment on Fragment Manager
         //Fragment fragment = activity.getSupportFragmentManager().findFragmentByTag(lastTag);
         // Replace the current fragment
@@ -363,22 +378,22 @@ public class FragmentController {
         // Animations
         if (animation == ANIMATION_IN)
             fragmentTransaction.setCustomAnimations(R.anim.pop_in, R.anim.pop_out, R.anim.pop_in, R.anim.pop_out);
-            //fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left);
         if (animation == ANIMATION_OUT)
             fragmentTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
         
-        if(!addToBackStack) // XXX
-            tag = FragmentType.UNKNOWN.toString();
+        /**
+         * Case isn't add to back stack
+         * Then add with an UNKNOWN tag
+         */
+        if(!addToBackStack) tag = FragmentType.UNKNOWN.toString();
             
         // Replace
         fragmentTransaction.replace(container, fragment, tag);
-        // BackStack
-        //if (addToBackStack) {
-            // Add the fragment to back stack
-            fragmentTransaction.addToBackStack(tag);
-            // Add the fragment to our back stack
-            addEntryToBackStack(tag);
-        // }
+        // Add the fragment to back stack
+        fragmentTransaction.addToBackStack(tag);
+        // Add the fragment to our back stack
+        addEntryToBackStack(tag);
+        
         // Commit
         //fragmentTransaction.commit();
         fragmentTransaction.commitAllowingStateLoss();

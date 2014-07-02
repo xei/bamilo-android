@@ -16,9 +16,10 @@
 
         <ImageView
             android:id="@+id/image_myprofile"
-            android:layout_width="wrap_content"
-            android:layout_height="42.67dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:clickable="true"
+            android:scaleType="centerInside"
             android:src="@drawable/abs__ic_menu_moreoverflow_holo_light" />
     </RelativeLayout>
 

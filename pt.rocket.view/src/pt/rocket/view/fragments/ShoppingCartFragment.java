@@ -887,12 +887,9 @@ public class ShoppingCartFragment extends BaseFragment {
 
     private void goToWebCheckout() {
         Bundle bundle = new Bundle();
-        bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE,
-                FragmentType.CHECKOUT_BASKET);
-        bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN,
-                getString(R.string.mixprop_loginlocationcart));
-        ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.LOGIN, bundle,
-                FragmentController.ADD_TO_BACK_STACK);
+        bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.CHECKOUT_BASKET);
+        bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationcart));
+        ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
     private void checkMinOrderAmount() {
