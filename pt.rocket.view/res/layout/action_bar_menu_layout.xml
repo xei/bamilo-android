@@ -20,7 +20,7 @@
             android:layout_height="match_parent"
             android:clickable="true"
             android:scaleType="centerInside"
-            android:src="@drawable/abs__ic_menu_moreoverflow_holo_light" />
+            android:src="@drawable/selector_navigation_overflow" />
     </RelativeLayout>
 
 </LinearLayout>
