@@ -16,14 +16,6 @@
 
 package com.facebook;
 
-import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.os.Bundle;
-import android.text.TextUtils;
-import com.facebook.internal.NativeProtocol;
-import com.facebook.internal.Utility;
-import com.facebook.internal.Validate;
-
 import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
@@ -31,6 +23,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.os.Bundle;
+import android.text.TextUtils;
+
+import com.facebook.internal.NativeProtocol;
+import com.facebook.internal.Utility;
+import com.facebook.internal.Validate;
 
 /**
  * This class represents an access token returned by the Facebook Login service, along with associated

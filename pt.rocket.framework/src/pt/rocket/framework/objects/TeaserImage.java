@@ -6,12 +6,10 @@ package pt.rocket.framework.objects;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import de.akquinet.android.androlog.Log;
-
+import pt.rocket.framework.rest.RestConstants;
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import pt.rocket.framework.rest.RestConstants;
+import de.akquinet.android.androlog.Log;
 
 /**
  * Defines an images of a given teaser.

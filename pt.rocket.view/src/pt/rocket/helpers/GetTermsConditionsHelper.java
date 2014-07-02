@@ -4,24 +4,16 @@
  */
 package pt.rocket.helpers;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import pt.rocket.app.JumiaApplication;
-import pt.rocket.framework.database.SectionsTablesHelper;
 import pt.rocket.framework.enums.RequestType;
-import pt.rocket.framework.objects.Section;
-import pt.rocket.framework.objects.VersionInfo;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
 import android.os.Bundle;
-import android.util.Log;
 
 /**
  * Get Product Information helper

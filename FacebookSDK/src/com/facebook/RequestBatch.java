@@ -16,10 +16,14 @@
 
 package com.facebook;
 
-import android.os.Handler;
-
-import java.util.*;
+import java.util.AbstractList;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import android.os.Handler;
 
 /**
  * RequestBatch contains a list of Request objects that can be sent to Facebook in a single round-trip.

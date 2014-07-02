@@ -15,12 +15,11 @@ package pt.rocket.forms;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import de.akquinet.android.androlog.Log;
-
 import pt.rocket.framework.objects.IJSONSerializable;
 import pt.rocket.framework.rest.RestConstants;
 import android.os.Parcel;
 import android.os.Parcelable;
+import de.akquinet.android.androlog.Log;
 
 /**
  * Class that represents the form fiel validation parameters.

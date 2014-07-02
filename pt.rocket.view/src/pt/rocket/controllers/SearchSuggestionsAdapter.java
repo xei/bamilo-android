@@ -2,6 +2,8 @@ package pt.rocket.controllers;
 
 import java.util.List;
 
+import org.holoeverywhere.widget.TextView;
+
 import pt.rocket.framework.objects.SearchSuggestion;
 import pt.rocket.view.R;
 import android.content.Context;
@@ -9,9 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-
-import org.holoeverywhere.widget.TextView;
-
 import de.akquinet.android.androlog.Log;
 
 /**

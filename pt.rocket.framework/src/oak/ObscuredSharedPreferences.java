@@ -5,9 +5,9 @@ package oak;
  */
 
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.provider.Settings;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -15,9 +15,9 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.provider.Settings;
 
 /**
  * Warning, this gives a false sense of security.  If an attacker has enough access to acquire your

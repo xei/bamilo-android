@@ -15,7 +15,6 @@ import pt.rocket.framework.utils.CustomerUtils;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
 import pt.rocket.helpers.BaseHelper;
-
 import android.content.ContentValues;
 import android.os.Bundle;
 import android.util.Log;

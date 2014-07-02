@@ -1,7 +1,5 @@
 package pt.rocket.framework.objects;
 
-import java.util.ArrayList;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 

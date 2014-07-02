@@ -7,12 +7,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import de.akquinet.android.androlog.Log;
-
 import pt.rocket.framework.rest.RestConstants;
-
 import android.os.Parcel;
 import android.os.Parcelable;
+import de.akquinet.android.androlog.Log;
 /**
  * Class that Represents a Pickup station
  * 

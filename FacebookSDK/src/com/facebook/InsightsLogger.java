@@ -16,12 +16,13 @@
 
 package com.facebook;
 
-import android.content.Context;
-import android.os.Bundle;
-import com.facebook.internal.Logger;
-
 import java.math.BigDecimal;
 import java.util.Currency;
+
+import android.content.Context;
+import android.os.Bundle;
+
+import com.facebook.internal.Logger;
 
 /**
  * This class is deprecated. Please use {@link AppEventsLogger} instead.

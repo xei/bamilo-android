@@ -11,7 +11,6 @@ import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
 import pt.rocket.helpers.BaseHelper;
-import pt.rocket.utils.TrackerDelegator;
 import android.os.Bundle;
 import android.util.Log;
 

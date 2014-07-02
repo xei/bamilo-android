@@ -1,7 +1,7 @@
 package pt.rocket.framework.utils;
 
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import oak.ObscuredSharedPreferences;
 import android.content.ContentValues;

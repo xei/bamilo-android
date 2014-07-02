@@ -16,19 +16,30 @@
 
 package com.facebook.internal;
 
-import android.content.Context;
-import android.util.Log;
-import com.facebook.LoggingBehavior;
-import com.facebook.Settings;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.JSONTokener;
-
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.security.InvalidParameterException;
 import java.util.Date;
 import java.util.PriorityQueue;
 import java.util.concurrent.atomic.AtomicLong;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+
+import android.content.Context;
+import android.util.Log;
+
+import com.facebook.LoggingBehavior;
+import com.facebook.Settings;
 
 // This class is intended to be thread-safe.
 //

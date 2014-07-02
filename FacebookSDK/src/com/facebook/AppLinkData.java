@@ -16,6 +16,9 @@
 
 package com.facebook;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -24,12 +27,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+
 import com.facebook.internal.NativeProtocol;
 import com.facebook.internal.PlatformServiceClient;
 import com.facebook.internal.Utility;
 import com.facebook.internal.Validate;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * Class to encapsulate an app link, and provide methods for constructing the data from various sources

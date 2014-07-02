@@ -3,10 +3,7 @@ package pt.rocket.framework.database;
 import java.util.ArrayList;
 
 import pt.rocket.framework.objects.CountryObject;
-import pt.rocket.framework.objects.LastViewed;
-import pt.rocket.framework.objects.Product;
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;

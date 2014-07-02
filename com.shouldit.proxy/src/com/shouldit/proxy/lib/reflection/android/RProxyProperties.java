@@ -1,8 +1,9 @@
 package com.shouldit.proxy.lib.reflection.android;
 
+import java.net.InetSocketAddress;
+
 import android.net.Uri;
 import android.text.TextUtils;
-import java.net.InetSocketAddress;
 
 /**
  * A container class for the http proxy info 

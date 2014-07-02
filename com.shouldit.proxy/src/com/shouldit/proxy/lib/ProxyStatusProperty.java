@@ -2,8 +2,8 @@ package com.shouldit.proxy.lib;
 
 import java.io.Serializable;
 
-import com.shouldit.proxy.lib.APLConstants.ProxyStatusProperties;
 import com.shouldit.proxy.lib.APLConstants.CheckStatusValues;
+import com.shouldit.proxy.lib.APLConstants.ProxyStatusProperties;
 
 public class ProxyStatusProperty implements Serializable
 {

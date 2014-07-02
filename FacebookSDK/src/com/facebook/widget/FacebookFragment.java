@@ -16,17 +16,18 @@
 
 package com.facebook.widget;
 
+import java.util.Date;
+import java.util.List;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+
 import com.facebook.Session;
 import com.facebook.SessionLoginBehavior;
 import com.facebook.SessionState;
 import com.facebook.internal.SessionAuthorizationType;
 import com.facebook.internal.SessionTracker;
-
-import java.util.Date;
-import java.util.List;
 
 /**
  * <p>Basic implementation of a Fragment that uses a Session to perform 

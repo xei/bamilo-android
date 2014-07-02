@@ -16,16 +16,17 @@
 
 package com.facebook.internal;
 
-import android.content.Context;
-import android.util.Log;
-import com.facebook.LoggingBehavior;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+
+import android.content.Context;
+import android.util.Log;
+
+import com.facebook.LoggingBehavior;
 
 class UrlRedirectCache {
     static final String TAG = UrlRedirectCache.class.getSimpleName();

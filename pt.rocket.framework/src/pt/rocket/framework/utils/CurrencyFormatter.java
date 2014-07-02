@@ -7,8 +7,8 @@ import java.text.ParseException;
 import java.util.Currency;
 import java.util.Locale;
 import java.util.StringTokenizer;
+
 import pt.rocket.framework.Darwin;
-import pt.rocket.framework.R;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;

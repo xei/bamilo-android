@@ -16,12 +16,13 @@
 
 package com.facebook;
 
-import com.facebook.android.R;
-import com.facebook.internal.Utility;
+import java.net.HttpURLConnection;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.HttpURLConnection;
+import com.facebook.android.R;
+import com.facebook.internal.Utility;
 
 /**
  * This class represents an error that occurred during a Facebook request.

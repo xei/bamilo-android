@@ -3,11 +3,9 @@ package pt.rocket.framework.objects;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pt.rocket.framework.rest.RestConstants;
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import pt.rocket.framework.rest.RestConstants;
-
 import de.akquinet.android.androlog.Log;
 
 public class Version implements IJSONSerializable, Parcelable {

@@ -3,7 +3,6 @@ package pt.rocket.utils;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
-
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.Context;

@@ -16,11 +16,17 @@
 
 package com.facebook.model;
 
-import android.annotation.SuppressLint;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.*;
+import android.annotation.SuppressLint;
 
 class JsonUtil {
     static void jsonObjectClear(JSONObject jsonObject) {

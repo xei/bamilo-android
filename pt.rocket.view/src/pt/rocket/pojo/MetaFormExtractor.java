@@ -6,13 +6,12 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import de.akquinet.android.androlog.Log;
-
 import pt.rocket.forms.FormField;
 import pt.rocket.forms.FormFieldMeta;
 import pt.rocket.forms.IFormField;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.InputType;
+import de.akquinet.android.androlog.Log;
 
 public class MetaFormExtractor {
 	private final static String TAG = LogTagHelper.create( MetaFormExtractor.class );

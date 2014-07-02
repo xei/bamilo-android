@@ -14,7 +14,6 @@ import java.util.TreeMap;
 
 import org.apache.http.conn.util.InetAddressUtils;
 
-//import pt.rocket.framework.Darwin;
 import pt.rocket.framework.ErrorCode;
 import android.content.Context;
 import android.content.pm.PackageInfo;

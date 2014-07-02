@@ -10,8 +10,6 @@ import java.util.List;
 
 import com.shouldit.proxy.lib.LogWrapper;
 
-import android.util.Log;
-
 public class ReflectionUtils
 {
 	public static final String TAG = "ReflectionUtils";

@@ -2,10 +2,9 @@ package pt.rocket.framework.utils;
 
 import java.util.Set;
 
+import oak.ObscuredSharedPreferences;
 import android.content.Context;
 import android.content.SharedPreferences;
-
-import oak.ObscuredSharedPreferences;
 
 public class JumiaPrefs extends ObscuredSharedPreferences {
 

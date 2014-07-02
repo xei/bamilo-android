@@ -1,12 +1,10 @@
 package com.shouldit.proxy.lib;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.Proxy.Type;
 import java.net.ProxySelector;
-import java.net.Socket;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;

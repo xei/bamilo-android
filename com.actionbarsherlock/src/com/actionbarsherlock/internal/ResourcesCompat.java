@@ -1,5 +1,7 @@
 package com.actionbarsherlock.internal;
 
+import org.xmlpull.v1.XmlPullParser;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.AssetManager;
@@ -7,9 +9,9 @@ import android.content.res.XmlResourceParser;
 import android.os.Build;
 import android.util.DisplayMetrics;
 import android.util.Log;
+
 import com.actionbarsherlock.BuildConfig;
 import com.actionbarsherlock.R;
-import org.xmlpull.v1.XmlPullParser;
 
 public final class ResourcesCompat {
     private static final String TAG = "ResourcesCompat";

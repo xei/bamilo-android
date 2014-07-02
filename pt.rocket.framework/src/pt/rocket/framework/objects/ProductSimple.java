@@ -1,15 +1,15 @@
 package pt.rocket.framework.objects;
 
+import java.util.HashMap;
+import java.util.Map.Entry;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pt.rocket.framework.rest.RestConstants;
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import pt.rocket.framework.rest.RestConstants;
-import java.util.HashMap;
-import java.util.Map.Entry;
 
 /**
  * Defines a simple (variation) of a give product.

@@ -11,7 +11,6 @@ import java.util.UUID;
 
 import net.hockeyapp.android.Constants;
 import net.hockeyapp.android.CrashManagerListener;
-
 import android.util.Log;
 
 /**

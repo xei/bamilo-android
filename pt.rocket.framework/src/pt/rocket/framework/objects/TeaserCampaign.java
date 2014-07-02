@@ -6,7 +6,6 @@ package pt.rocket.framework.objects;
 import org.json.JSONObject;
 
 import pt.rocket.framework.rest.RestConstants;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 

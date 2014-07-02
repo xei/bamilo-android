@@ -9,18 +9,17 @@
  */
 package pt.rocket.framework.objects;
 
+import java.util.ArrayList;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pt.rocket.framework.rest.RestConstants;
+import pt.rocket.framework.utils.LogTagHelper;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
-
-import pt.rocket.framework.rest.RestConstants;
-import pt.rocket.framework.utils.LogTagHelper;
-
-import java.util.ArrayList;
 
 /**
  * Class that represents an Category. Composed by id, name and

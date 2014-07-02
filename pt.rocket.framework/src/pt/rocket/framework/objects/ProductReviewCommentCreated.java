@@ -1,6 +1,7 @@
 package pt.rocket.framework.objects;
 
 import java.util.HashMap;
+
 import android.content.ContentValues;
 import android.os.Parcel;
 import android.os.Parcelable;

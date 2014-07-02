@@ -1,5 +1,11 @@
 package net.hockeyapp.android.internal;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+
 import net.hockeyapp.android.Constants;
 import net.hockeyapp.android.UpdateInfoListener;
 
@@ -18,12 +24,6 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
 
 /**
  * <h4>Description</h4>

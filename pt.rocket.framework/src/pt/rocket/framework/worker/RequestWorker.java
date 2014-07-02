@@ -1,6 +1,5 @@
 package pt.rocket.framework.worker;
 
-import de.akquinet.android.androlog.Log;
 import pt.rocket.framework.enums.RequestType;
 import pt.rocket.framework.rest.RestClientSingleton;
 import pt.rocket.framework.utils.Constants;
@@ -9,6 +8,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import de.akquinet.android.androlog.Log;
 /**
  * Worker class that deals with the request call of the RestClientSingleton
  * @author josedourado

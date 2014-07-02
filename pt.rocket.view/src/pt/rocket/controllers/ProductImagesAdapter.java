@@ -2,9 +2,6 @@ package pt.rocket.controllers;
 
 import java.util.ArrayList;
 
-import com.androidquery.AQuery;
-import com.androidquery.callback.AjaxStatus;
-import com.androidquery.callback.BitmapAjaxCallback;
 import pt.rocket.framework.objects.Variation;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.view.R;
@@ -17,6 +14,11 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+
+import com.androidquery.AQuery;
+import com.androidquery.callback.AjaxStatus;
+import com.androidquery.callback.BitmapAjaxCallback;
+
 import de.akquinet.android.androlog.Log;
 
 public class ProductImagesAdapter extends BaseAdapter {

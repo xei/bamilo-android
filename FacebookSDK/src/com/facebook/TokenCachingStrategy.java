@@ -16,12 +16,13 @@
 
 package com.facebook;
 
-import android.os.Bundle;
-import com.facebook.internal.Validate;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import android.os.Bundle;
+
+import com.facebook.internal.Validate;
 
 /**
  * <p>

@@ -26,8 +26,6 @@ import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.ImageLoader.ImageContainer;
 import com.android.volley.toolbox.ImageLoader.ImageListener;
 
-import de.akquinet.android.androlog.Log;
-
 public class RocketImageLoader {
 
     public static RocketImageLoader instance;

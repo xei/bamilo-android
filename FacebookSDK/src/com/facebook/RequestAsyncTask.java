@@ -16,17 +16,17 @@
 
 package com.facebook;
 
-import android.annotation.TargetApi;
-import android.os.AsyncTask;
-import android.os.Handler;
-import android.util.Log;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.Executor;
+
+import android.annotation.TargetApi;
+import android.os.AsyncTask;
+import android.os.Handler;
+import android.util.Log;
 
 /**
  * Defines an AsyncTask suitable for executing a Request in the background. May be subclassed

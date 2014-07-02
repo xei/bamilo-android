@@ -4,7 +4,6 @@ import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.framework.objects.Promotion;
-import pt.rocket.framework.utils.LoadingBarView;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.view.R;
 import android.content.ClipData;
@@ -17,8 +16,8 @@ import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 /**

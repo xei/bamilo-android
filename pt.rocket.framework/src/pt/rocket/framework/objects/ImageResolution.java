@@ -1,8 +1,8 @@
 package pt.rocket.framework.objects;
 
+import pt.rocket.framework.utils.LogTagHelper;
 import android.os.Parcel;
 import android.os.Parcelable;
-import pt.rocket.framework.utils.LogTagHelper;
 
 /**
  * 

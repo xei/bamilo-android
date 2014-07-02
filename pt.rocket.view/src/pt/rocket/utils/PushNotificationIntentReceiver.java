@@ -8,7 +8,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.google.analytics.tracking.android.Log;
 import com.urbanairship.UAirship;
 import com.urbanairship.push.PushManager;
 

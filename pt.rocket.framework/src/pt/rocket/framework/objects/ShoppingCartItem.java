@@ -1,19 +1,17 @@
 package pt.rocket.framework.objects;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import de.akquinet.android.androlog.Log;
-
-import android.os.Parcel;
-import android.os.Parcelable;
 
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.CurrencyFormatter;
 import pt.rocket.framework.utils.ImageResolutionHelper;
-
-import java.util.HashMap;
-import java.util.Map;
+import android.os.Parcel;
+import android.os.Parcelable;
+import de.akquinet.android.androlog.Log;
 
 /**
  * Shopping Cart Item used when an item is added to the shopping cart

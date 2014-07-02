@@ -1,32 +1,27 @@
 package pt.rocket.forms;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 import org.holoeverywhere.FontLoader;
-import org.holoeverywhere.widget.Spinner;
-import org.holoeverywhere.widget.TextView;
-import org.holoeverywhere.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import com.actionbarsherlock.internal.widget.IcsAdapterView;
-import com.actionbarsherlock.internal.widget.IcsSpinner;
 
 import pt.rocket.framework.objects.IJSONSerializable;
 import pt.rocket.framework.objects.PickUpStationObject;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.utils.ShippingRadioGroupList;
 import pt.rocket.view.R;
 import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
+
+import com.actionbarsherlock.internal.widget.IcsAdapterView;
+import com.actionbarsherlock.internal.widget.IcsSpinner;
+
 import de.akquinet.android.androlog.Log;
 
 /**

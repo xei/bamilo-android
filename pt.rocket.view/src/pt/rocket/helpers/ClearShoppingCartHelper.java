@@ -4,7 +4,6 @@
  */
 package pt.rocket.helpers;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import pt.rocket.app.JumiaApplication;

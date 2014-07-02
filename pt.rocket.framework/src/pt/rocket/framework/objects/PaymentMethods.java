@@ -3,19 +3,11 @@
  */
 package pt.rocket.framework.objects;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import pt.rocket.framework.rest.RestConstants;
-
-import de.akquinet.android.androlog.Log;
 
 /**
  * @author nutzer2

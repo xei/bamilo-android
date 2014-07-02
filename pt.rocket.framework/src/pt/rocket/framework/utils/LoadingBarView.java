@@ -2,16 +2,14 @@ package pt.rocket.framework.utils;
 
 import java.io.InputStream;
 
-import de.akquinet.android.androlog.Log;
-
 import pt.rocket.framework.R;
-
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.widget.ImageView;
+import de.akquinet.android.androlog.Log;
 
 /**
  * Class used to render the loading_bar animation.

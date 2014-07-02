@@ -16,10 +16,9 @@
 
 package com.facebook.internal;
 
-import com.facebook.Settings;
-import com.facebook.internal.Utility;
-
 import java.util.Collection;
+
+import com.facebook.Settings;
 
 /**
  * com.facebook.internal is solely for the use of other packages within the Facebook SDK for Android. Use of

@@ -11,13 +11,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pt.rocket.framework.rest.RestConstants;
+import pt.rocket.framework.utils.DarwinRegex;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
-
-import pt.rocket.framework.rest.RestConstants;
-import pt.rocket.framework.utils.DarwinRegex;
-
 import de.akquinet.android.androlog.Log;
 
 /**

@@ -16,10 +16,6 @@
 
 package com.facebook.internal;
 
-import android.content.Context;
-import android.util.Log;
-import com.facebook.LoggingBehavior;
-
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,6 +23,11 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+
+import android.content.Context;
+import android.util.Log;
+
+import com.facebook.LoggingBehavior;
 
 class ImageResponseCache {
     static final String TAG = ImageResponseCache.class.getSimpleName();

@@ -7,11 +7,9 @@ import pt.rocket.framework.rest.RestClientSingleton;
 import pt.rocket.helpers.session.GetLogoutHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.TrackerDelegator;
-import pt.rocket.utils.dialogfragments.DialogProgressFragment;
 import pt.rocket.view.BaseActivity;
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 
 /**
  * This Class is responsible to show the log out dialog.

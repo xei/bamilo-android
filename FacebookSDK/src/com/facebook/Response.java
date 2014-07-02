@@ -16,15 +16,6 @@
 
 package com.facebook;
 
-import android.content.Context;
-import com.facebook.internal.*;
-import com.facebook.model.GraphObject;
-import com.facebook.model.GraphObjectList;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.JSONTokener;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -32,6 +23,20 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+
+import android.content.Context;
+
+import com.facebook.internal.CacheableRequestBatch;
+import com.facebook.internal.FileLruCache;
+import com.facebook.internal.Logger;
+import com.facebook.internal.Utility;
+import com.facebook.model.GraphObject;
+import com.facebook.model.GraphObjectList;
 
 /**
  * Encapsulates the response, successful or otherwise, of a call to the Facebook platform.

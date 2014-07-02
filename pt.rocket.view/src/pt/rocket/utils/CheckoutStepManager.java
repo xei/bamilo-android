@@ -1,9 +1,10 @@
 package pt.rocket.utils;
 
 import org.json.JSONObject;
-import android.util.Log;
+
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.rest.RestConstants;
+import android.util.Log;
 
 /**
  * Class used to manage the checkout steps

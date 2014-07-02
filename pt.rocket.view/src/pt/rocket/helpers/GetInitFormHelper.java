@@ -15,7 +15,6 @@ import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
 import android.os.Bundle;
-import android.util.Log;
 
 /**
  * Example helper

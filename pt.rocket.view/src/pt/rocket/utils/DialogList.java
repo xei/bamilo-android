@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.view.R;
-
 import android.app.Activity;
 import android.app.Dialog;
 import android.database.DataSetObserver;

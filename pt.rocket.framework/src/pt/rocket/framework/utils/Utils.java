@@ -14,8 +14,6 @@ import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import android.util.Base64;
-
-
 import de.akquinet.android.androlog.Log;
 
 /**

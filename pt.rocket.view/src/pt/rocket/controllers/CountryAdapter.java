@@ -1,16 +1,14 @@
 package pt.rocket.controllers;
 
+import org.holoeverywhere.widget.TextView;
+
 import pt.rocket.view.R;
 import android.content.Context;
-import android.content.res.TypedArray;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.LayerDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import org.holoeverywhere.widget.TextView;
 
 import com.androidquery.AQuery;
 

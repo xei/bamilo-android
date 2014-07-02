@@ -16,9 +16,9 @@
 
 package com.facebook.internal;
 
-import com.facebook.Settings;
-
 import java.util.concurrent.Executor;
+
+import com.facebook.Settings;
 
 class WorkQueue {
     public static final int DEFAULT_MAX_CONCURRENT = 8;

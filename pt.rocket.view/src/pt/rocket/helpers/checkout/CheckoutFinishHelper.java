@@ -11,7 +11,6 @@ import pt.rocket.forms.Form;
 import pt.rocket.forms.PaymentMethodForm;
 import pt.rocket.framework.enums.RequestType;
 import pt.rocket.framework.interfaces.IMetaData;
-import pt.rocket.framework.objects.Order;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;

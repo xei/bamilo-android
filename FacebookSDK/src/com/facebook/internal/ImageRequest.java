@@ -16,11 +16,11 @@
 
 package com.facebook.internal;
 
-import android.content.Context;
-import android.net.Uri;
-
 import java.net.URI;
 import java.net.URISyntaxException;
+
+import android.content.Context;
+import android.net.Uri;
 
 public class ImageRequest {
 

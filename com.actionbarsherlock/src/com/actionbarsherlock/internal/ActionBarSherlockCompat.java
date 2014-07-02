@@ -1,5 +1,14 @@
 package com.actionbarsherlock.internal;
 
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+import static com.actionbarsherlock.internal.ResourcesCompat.getResources_getBoolean;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import org.xmlpull.v1.XmlPullParser;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
@@ -22,6 +31,7 @@ import android.view.Window;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+
 import com.actionbarsherlock.ActionBarSherlock;
 import com.actionbarsherlock.BuildConfig;
 import com.actionbarsherlock.R;
@@ -39,13 +49,6 @@ import com.actionbarsherlock.internal.widget.IcsProgressBar;
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import org.xmlpull.v1.XmlPullParser;
-
-import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
-import static com.actionbarsherlock.internal.ResourcesCompat.getResources_getBoolean;
 
 @ActionBarSherlock.Implementation(api = 7)
 public class ActionBarSherlockCompat extends ActionBarSherlock implements MenuBuilder.Callback, com.actionbarsherlock.view.Window.Callback, MenuPresenter.Callback, android.view.MenuItem.OnMenuItemClickListener {

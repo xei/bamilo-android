@@ -1,13 +1,13 @@
 package pt.rocket.controllers;
 
-import com.viewpagerindicator.IconPagerAdapter;
-
 import pt.rocket.framework.utils.LogTagHelper;
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
+
+import com.viewpagerindicator.IconPagerAdapter;
 
 public class NormalizingViewPagerWrapper extends ViewPager implements IconPagerAdapter {
     private final static String TAG = LogTagHelper.create(NormalizingViewPagerWrapper.class);

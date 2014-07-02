@@ -17,7 +17,6 @@ import pt.rocket.framework.utils.Utils;
 import pt.rocket.helpers.BaseHelper;
 import pt.rocket.helpers.HelperPriorityConfiguration;
 import pt.rocket.utils.CheckoutStepManager;
-
 import android.content.ContentValues;
 import android.os.Bundle;
 import android.util.Log;

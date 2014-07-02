@@ -23,10 +23,8 @@ import org.apache.http.HttpHost;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.net.NetworkInfo;
 import android.os.Build;
 import android.provider.Settings;
-import android.util.Log;
 
 public class ProxyUtils
 {

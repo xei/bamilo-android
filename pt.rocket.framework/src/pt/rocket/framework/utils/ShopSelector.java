@@ -1,6 +1,7 @@
 package pt.rocket.framework.utils;
 
 import java.util.Locale;
+
 import pt.rocket.framework.Darwin;
 import pt.rocket.framework.R;
 import pt.rocket.framework.rest.RestClientSingleton;

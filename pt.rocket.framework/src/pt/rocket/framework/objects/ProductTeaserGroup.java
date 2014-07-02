@@ -5,10 +5,9 @@ package pt.rocket.framework.objects;
 
 import org.json.JSONObject;
 
+import pt.rocket.framework.objects.ProductTeaserGroup.TeaserProduct;
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import pt.rocket.framework.objects.ProductTeaserGroup.TeaserProduct;
 
 /**
  * @author nutzer2

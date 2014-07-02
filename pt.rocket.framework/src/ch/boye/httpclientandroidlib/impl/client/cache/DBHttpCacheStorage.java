@@ -4,17 +4,11 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-
 import pt.rocket.framework.network.HttpCacheDatabaseHelper;
-
 import android.content.Context;
-
 import ch.boye.httpclientandroidlib.client.cache.HttpCacheEntry;
 import ch.boye.httpclientandroidlib.client.cache.HttpCacheStorage;
 import ch.boye.httpclientandroidlib.client.cache.HttpCacheUpdateCallback;
-import ch.boye.httpclientandroidlib.impl.client.cache.CacheConfig;
-import ch.boye.httpclientandroidlib.impl.client.cache.DefaultHttpCacheEntrySerializer;
-import ch.boye.httpclientandroidlib.impl.client.cache.ManagedHttpCacheStorage;
 import de.akquinet.android.androlog.Log;
 
 /**
