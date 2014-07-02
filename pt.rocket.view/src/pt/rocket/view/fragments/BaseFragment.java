@@ -835,20 +835,22 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         return (array != null && !array.isEmpty()) ? true : false;
     }
     
+    
+    // TODO: Validate if this is necessary
     private void updateAdjustState(int newAdjustState){
-        if(getBaseActivity() != null){
-            if(getBaseActivity().currentAdjustState != newAdjustState){
-                getBaseActivity().currentAdjustState = newAdjustState;
-                switch (newAdjustState) {
-                case WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN:
-                    getBaseActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-                    break;
-                case WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED:
-                    getBaseActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-                    break;
-                }    
-            }
-        }
+//        if(getBaseActivity() != null){
+//            if(getBaseActivity().currentAdjustState != newAdjustState){
+//                getBaseActivity().currentAdjustState = newAdjustState;
+//                switch (newAdjustState) {
+//                case WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN:
+//                    getBaseActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+//                    break;
+//                case WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED:
+//                    getBaseActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+//                    break;
+//                }    
+//            }
+//        }
     }
     
 }
