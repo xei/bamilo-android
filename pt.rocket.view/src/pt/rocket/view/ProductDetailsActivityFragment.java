@@ -661,12 +661,18 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
     }
 
     private ProductSimple getSelectedSimple() {
-        if (mSelectedSimple >= mCompleteProduct.getSimples().size())
-            return null;
-        if (mSelectedSimple == NO_SIMPLE_SELECTED)
-            return null;
-//        Log.i(TAG, "code1tag : "+mLastSelectedVariance+ " "+mCompleteProduct.getSimples().get(mSelectedSimple).getAttributes().get(mSelectedSimple));
-        return mCompleteProduct.getSimples().get(mSelectedSimple);
+        ProductSimple simple = null;
+        try {
+            // Case invalid selection
+            if (mSelectedSimple >= mCompleteProduct.getSimples().size());
+            // Case no selected
+            else if (mSelectedSimple == NO_SIMPLE_SELECTED);
+            // Case success
+            else simple = mCompleteProduct.getSimples().get(mSelectedSimple);
+        } catch (NullPointerException e) {
+            Log.w(TAG, "WARNING: NPE ON GET SELECTED SIMPLE");
+        }
+        return simple;
     }
 
     private void displayPriceInfoOverallOrForSimple() {
