@@ -43,8 +43,6 @@ import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.dialogfragments.CustomToastView;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.utils.dialogfragments.DialogProgressFragment;
-import pt.rocket.utils.dialogfragments.WizardFactory;
-import pt.rocket.utils.dialogfragments.WizardPreferences.WizardType;
 import pt.rocket.view.fragments.NavigationFragment;
 import android.app.Activity;
 import android.content.Context;
@@ -573,8 +571,9 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         Log.d(TAG, "ON POST CREATE: DRAWER");
         // Sync the toggle state after onRestoreInstanceState has occurred.
         mDrawerToggle.syncState();
-        // Validate if navigation is open (on orientation change)
-        if(mDrawerLayout.isDrawerOpen(mDrawerNavigation)) showWizardNavigation();
+        // Removed Categories TAB
+        /*-// Validate if navigation is open (on orientation change)
+        if(mDrawerLayout.isDrawerOpen(mDrawerNavigation)) showWizardNavigation();*/
     }
 
     @Override
@@ -1340,6 +1339,14 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                     // RECENTLY VIEWED
                     onSwitchFragment(FragmentType.RECENTLYVIEWED_LIST, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                     break;
+                case MyAccount:
+                    // MY ACCOUNT
+                    onSwitchFragment(FragmentType.MY_ACCOUNT, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                    break;
+                case TrackOrder:
+                    // TRACK ORDER
+                    onSwitchFragment(FragmentType.TRACK_ORDER, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                    break;
                 default:
                     Log.w(TAG, "WARNING ON CLICK UNKNOWN VIEW");
                     break;
@@ -1568,8 +1575,9 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         hideKeyboard();
         // Update cart
         AnalyticsGoogle.get().trackPage(R.string.gnavigation);
-        // Validate
-        showWizardNavigation();
+        // Removed Categories TAB
+        /*-// Validate
+        showWizardNavigation();*/
     }
 
     public void onClosed() {
@@ -2447,12 +2455,13 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     public Set<MyMenuItem> getCurrentMenuOptions() {
         return menuItems;
     }
-    
+
     /**
      * ##### WIZARDS #####
      */
-    private void showWizardNavigation() {
+    // Removed Categories TAB
+    /*-private void showWizardNavigation() {
         WizardFactory.show(WizardType.NAVIGATION, getApplicationContext(), getSupportFragmentManager(), null);
-    }
+    }*/
     
 }

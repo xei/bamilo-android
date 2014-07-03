@@ -16,14 +16,14 @@
     <string name="home">Home</string>
     <string name="products">Products</string>
     <string name="brands">Brands</string>
-    <string name="my_account">Settings</string>
+    <string name="my_account">My Account</string>
     <string name="sign_in">Sign In</string>
     <string name="sign_out">Sign Out</string>
     <string name="categories">Categories</string>
     <string name="sales">Sales</string>
     <string name="nav_products">Products</string>
     <string name="nav_country">Choose Country</string>
-    <string name="nav_track_order">Order Status</string>
+    <string name="nav_track_order">Track My Order</string>
     <string name="nav_country_warning">You are about to change the country. This clears the cart and you will be logged out. Are you sure?</string>
     <string name="navigation_cart_empty">Your cart is empty</string>
     <string name="login_title">Log In</string>
@@ -367,7 +367,6 @@
     <string name="favourite_addalltocart">Add All Items to Cart</string>
     <string name="favourite_variance_choose_error">Please, choose a variation</string>
     <string name="favourite_no_favourites">You have no favourite items at the moment</string>
-    
 
     <string name="recentsearch_no_searches">No Recent Searches</string>
     <string name="recentsearch_clear_searches">Clear Recent Searches</string>
@@ -376,8 +375,11 @@
     <string name="recentlyview_clear_viewed">Clear Recently Viewed</string>
 
     <string name="error_occured">An error occured.</string>
-    
+
+    <!-- Campaing button title: HOT OFFERS -->
     <string name="teaser_campaign_button_first_line">HOT</string>
     <string name="teaser_campaign_button_second_line">OFFERS</string>
+    
+    <string name="back">BACK</string>
 
 </resources>

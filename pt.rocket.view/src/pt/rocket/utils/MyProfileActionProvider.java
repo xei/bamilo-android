@@ -39,7 +39,9 @@ public class MyProfileActionProvider extends ActionProvider {
             NavigationAction.LoginOut,
             NavigationAction.Favourite,
             NavigationAction.RecentSearch,
-            NavigationAction.RecentlyView
+            NavigationAction.RecentlyView,
+            NavigationAction.MyAccount,
+            NavigationAction.TrackOrder
             );
 
     private Context mContext;
@@ -221,6 +223,14 @@ public class MyProfileActionProvider extends ActionProvider {
             case RecentlyView:
                 title.setText(R.string.recently_viewed);
                 icon.setImageResource(R.drawable.ico_dropdown_recentlyview);
+                break;
+            case MyAccount:
+                title.setText(R.string.my_account);
+                icon.setImageResource(R.drawable.ic_settings_highlighted);
+                break;
+            case TrackOrder:
+                title.setText(R.string.nav_track_order);
+                icon.setImageResource(R.drawable.ic_orderstatuts_highlighted);
                 break;
             default:
                 Log.w(TAG, "WARNING GETDROPDOWNVIEW UNKNOWN VIEW");

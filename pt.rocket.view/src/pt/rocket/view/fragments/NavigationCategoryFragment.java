@@ -62,8 +62,8 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
 
     private ArrayList<Integer> mTreePath;
 
-    private String mParentCategoryName;
-    
+    // private String mParentCategoryName;
+
     /**
      * Create a new instance and save the bundle data
      * @param bundle
@@ -76,7 +76,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
         if(bundle != null) {
             Log.i(TAG, "ON GET INSTANCE: SAVE DATA");
             categoriesFragment.mTreePath = bundle.getIntegerArrayList(ConstantsIntentExtra.CATEGORY_TREE_PATH);
-            categoriesFragment.mParentCategoryName = bundle.getString(ConstantsIntentExtra.CATEGORY_PARENT_NAME);
+            // categoriesFragment.mParentCategoryName = bundle.getString(ConstantsIntentExtra.CATEGORY_PARENT_NAME);
             // Validate path
             if(categoriesFragment.mTreePath == null) categoriesFragment.mTreePath = new ArrayList<Integer>();
         }
@@ -114,7 +114,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
         if(savedInstanceState != null) {
             Log.i(TAG, "ON LOAD SAVED STATE");
             mTreePath = savedInstanceState.getIntegerArrayList(ConstantsIntentExtra.CATEGORY_TREE_PATH);
-            mParentCategoryName = savedInstanceState.getString(ConstantsIntentExtra.CATEGORY_PARENT_NAME);
+            // mParentCategoryName = savedInstanceState.getString(ConstantsIntentExtra.CATEGORY_PARENT_NAME);
         }
     }
 
@@ -183,7 +183,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
         super.onSaveInstanceState(outState);
         Log.i(TAG, "ON SAVE INSTANCE");
         outState.putIntegerArrayList(ConstantsIntentExtra.CATEGORY_TREE_PATH, mTreePath);
-        outState.putString(ConstantsIntentExtra.CATEGORY_PARENT_NAME, mParentCategoryName);
+        // outState.putString(ConstantsIntentExtra.CATEGORY_PARENT_NAME, mParentCategoryName);
     }
 
     /*
@@ -267,7 +267,8 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
             ArrayList<Category> child = currentCategory.getChildren();
             String categoryName = currentCategory.getName();
             // Create and add the header for back
-            View headerForBack = createHeader(R.layout.category_inner_back, mParentCategoryName); 
+            // Use always word BACK
+            View headerForBack = createHeader(R.layout.category_inner_top_back, getString(R.string.back)); 
             mCategoryList.addHeaderView(headerForBack);
             // Set Adapter
             mSubCategoryAdapter = new SubCategoriesAdapter(getActivity(), child, categoryName);

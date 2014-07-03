@@ -11,6 +11,7 @@
             android:id="@+id/spinner_myprofile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:popupBackground="@drawable/menu_dropdown_panel_without_margin"
             android:spinnerMode="dropdown"
             android:visibility="invisible" />
 

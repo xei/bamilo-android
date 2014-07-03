@@ -6,7 +6,6 @@
     <item type="id" name="target_type"/>
     <item type="id" name="target_title"/>
     <item type="id" name="item_id"/>
-    <item name="loginout_view" type="id"/>
     <item name="nav_action" type="id"/>
     <string name="pref_vibrate">pref_vibrate</string>
     <string name="pref_notification">pref_notification</string>

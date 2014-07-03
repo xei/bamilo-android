@@ -12,7 +12,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginRight="@dimen/margin_huge"
         android:src="@drawable/selector_next"
         tools:ignore="ContentDescription" />
 
@@ -24,11 +23,11 @@
         android:layout_marginLeft="@dimen/margin_huge"
         android:layout_toLeftOf="@id/category_logo_right"
         android:ellipsize="end"
-        android:fontFamily="roboto-bold"
+        android:fontFamily="roboto"
         android:maxLines="1"
         android:singleLine="true"
-        android:textColor="@color/grey_dark"
-        android:textSize="@dimen/text_mid" />
+        android:textColor="@color/grey_middle"
+        android:textSize="@dimen/text_smid" />
 
     <View
         android:id="@+id/divider"

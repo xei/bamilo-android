@@ -8,9 +8,15 @@
 
     <include layout="@layout/navigation_basket_component" />
 
+    <!-- MENU -->
+
+    <include layout="@layout/navigation_menu_component" />
+
     <!-- TABS -->
 
-    <include layout="@layout/navigation_fragment_tabs" />
+    <include
+        layout="@layout/navigation_fragment_tabs"
+        android:visibility="gone" />
 
     <!-- CONTENT -->
 

@@ -3,14 +3,12 @@
  */
 package pt.rocket.view.fragments;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
-import pt.rocket.controllers.LogOut;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.ErrorCode;
@@ -22,14 +20,12 @@ import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.NavigationListHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.NavigationAction;
-import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -57,8 +53,6 @@ public class NavigationMenuFragment extends BaseFragment implements OnClickListe
     private View mLoadingBarContainer;
 
     private int mRecoveryCount = 0;
-
-    private static DialogGenericFragment dialogLogout;
 
     /**
      * Get instance
@@ -258,16 +252,6 @@ public class NavigationMenuFragment extends BaseFragment implements OnClickListe
     }
 
     /**
-     * 
-     * @param view
-     */
-    private void setLogInOutText(View view) {
-        int text = JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials() ? R.string.sign_out : R.string.sign_in;
-        ((TextView) view.findViewById(R.id.component_text)).setText(text);
-        view.setId(R.id.loginout_view);
-    }
-
-    /**
      * Updated generic items
      * 
      * @author sergiopereira
@@ -315,15 +299,11 @@ public class NavigationMenuFragment extends BaseFragment implements OnClickListe
         NavigationAction navAction = (NavigationAction) view.getTag(R.id.nav_action);
         Log.d(TAG, "UPDATE NAV: " + navAction.toString());
         switch (navAction) {
-        case LoginOut:
-            setLogInOutText(view);
-            break;
         case Search:
             // ...
             break;
         case Home:
         case Categories:
-        case MyAccount:
         case Country:
         default:
             break;
@@ -404,22 +384,17 @@ public class NavigationMenuFragment extends BaseFragment implements OnClickListe
             layout.findViewById(R.id.component_text).setTag(R.id.nav_action, action);
             break;
         case MyAccount:
-            layout = createGenericComponent(parent, component, R.drawable.selector_navigation_settings, R.string.my_account, this);
-            layout.findViewById(R.id.component_text).setTag(R.id.nav_action, action);
+            // Don't render MyAccount navigation element
             break;
         case LoginOut:
-            int text = JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials() ? R.string.sign_out : R.string.sign_in;
-            layout = createGenericComponent(parent, component, R.drawable.selector_navigation_loginout, getString(text), this);
-            layout.findViewById(R.id.component_text).setTag(R.id.nav_action, action);
-            layout.setId(R.id.loginout_view);
+            // Don't render LoginOut navigation element
             break;
         case Country:
             layout = createGenericComponent(parent, component, R.drawable.selector_navigation_countrychange, R.string.nav_country, this);
             layout.findViewById(R.id.component_text).setTag(R.id.nav_action, action);
             break;
         case TrackOrder:
-            layout = createGenericComponent(parent, component, R.drawable.selector_navigation_trackorder, R.string.nav_track_order, this);
-            layout.findViewById(R.id.component_text).setTag(R.id.nav_action, action);
+            // Don't render TrackOrder navigation element
             break;
         default:
             layout = mInflater.inflate(R.layout.navigation_generic_component, parent, false);
@@ -521,19 +496,9 @@ public class NavigationMenuFragment extends BaseFragment implements OnClickListe
                 bundle.putSerializable(ConstantsIntentExtra.CATEGORY_LEVEL, FragmentType.CATEGORIES_LEVEL_1);
                 getBaseActivity().onSwitchFragment(FragmentType.CATEGORIES_LEVEL_1, bundle, FragmentController.ADD_TO_BACK_STACK);
                 break;
-            case MyAccount:
-                getBaseActivity().onSwitchFragment(FragmentType.MY_ACCOUNT, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-                break;
-            case LoginOut:
-                loginOut(getBaseActivity());
-                break;
             case Country:
                 FragmentController.getInstance().removeEntriesUntilTag(FragmentType.HOME.toString());
                 getBaseActivity().onSwitchFragment(FragmentType.CHANGE_COUNTRY, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-                break;
-            case TrackOrder:
-                FragmentController.getInstance().removeEntriesUntilTag(FragmentType.HOME.toString());
-                getBaseActivity().onSwitchFragment(FragmentType.TRACK_ORDER, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                 break;
             }
 
@@ -541,31 +506,6 @@ public class NavigationMenuFragment extends BaseFragment implements OnClickListe
             getBaseActivity().toggle();
         } else {
             Log.d(TAG, "Did not handle: " + navAction);
-        }
-    }
-
-    public static void loginOut(final BaseActivity activity) {
-        if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials()) {
-            FragmentManager fm = activity.getSupportFragmentManager();
-            dialogLogout = DialogGenericFragment.newInstance(false, true, false,
-                    activity.getString(R.string.logout_title),
-                    activity.getString(R.string.logout_text_question),
-                    activity.getString(R.string.no_label), activity.getString(R.string.yes_label),
-                    new OnClickListener() {
-
-                        @Override
-                        public void onClick(View v) {
-                            if (v.getId() == R.id.button2) {
-                                LogOut.performLogOut(new WeakReference<Activity>(activity));
-                            }
-                            dialogLogout.dismiss();
-
-                        }
-
-                    });
-            dialogLogout.show(fm, null);
-        } else {
-            activity.onSwitchFragment(FragmentType.LOGIN, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         }
     }
 

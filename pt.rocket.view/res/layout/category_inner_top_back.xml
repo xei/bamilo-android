@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/item_height_normal"
+    android:background="@drawable/selector_listitem_highlight" >
+
+    <org.holoeverywhere.widget.TextView
+        android:id="@+id/text"
+        style="@style/category_inner_current_text"
+        android:layout_height="@dimen/item_height_normal"
+        android:layout_centerVertical="true"
+        android:drawableLeft="@drawable/arrow_categ_back"
+        android:drawablePadding="@dimen/margin_mid"
+        android:fontFamily="roboto"
+        android:gravity="center_vertical"
+        android:text="Inner category"
+        android:textColor="@color/grey_light"
+        android:textSize="@dimen/text_smid"
+        android:textStyle="normal" />
+
+    <View
+        android:id="@+id/divider"
+        style="@style/divider_horizontal"
+        android:layout_alignParentBottom="true" />
+
+</RelativeLayout>

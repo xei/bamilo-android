@@ -3,15 +3,20 @@
  */
 package pt.rocket.view.fragments;
 
+import java.util.ArrayList;
+
 import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
+import pt.rocket.framework.components.NavigationListComponent;
 import pt.rocket.framework.objects.ShoppingCart;
 import pt.rocket.framework.utils.CurrencyFormatter;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.utils.NavigationAction;
+import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.os.Bundle;
@@ -53,6 +58,10 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
     private View mCartEmpty;
 
     private FragmentType mSavedStateType;
+
+    private ViewGroup mNavigationContainer;
+
+    private LayoutInflater mInflater;
     
     /**
      * Constructor via bundle
@@ -105,6 +114,7 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
     public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState) {
         super.onCreateView(inflater, viewGroup, savedInstanceState);
         Log.i(TAG, "ON CREATE VIEW");
+        mInflater = inflater;
         return inflater.inflate(R.layout.navigation_fragment_main, viewGroup, false);
     }
     
@@ -129,20 +139,181 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
         mCartView.setOnClickListener(this);
         mTabMenu.setOnClickListener(this);
         mTabCategories.setOnClickListener(this);
+
+        // Get container
+        mNavigationContainer = (ViewGroup) view.findViewById(R.id.slide_menu_scrollable_container);
+
         // Set cart
         onUpdateCart();
         // Validate saved state
-        if(mSavedStateType == null) {
+        if (mSavedStateType == null) {
             Log.d(TAG, "SAVED IS NULL");
-            // Show default content
-            onClick(mTabMenu);
+
+            addMenuItems();
+
+            onClick(mTabCategories);
         } else {
             Log.d(TAG, "SAVED STACK SIZE: " + getChildFragmentManager().getBackStackEntryCount());
             // Validate pre selected tab (onSaveInstanceState)
             onLoadSavedState(mSavedStateType);
+
+            // Check if mNavigationContainer is being reconstructed
+            if (mNavigationContainer == null || mNavigationContainer.getChildCount() <= 1) {
+                addMenuItems();
+            }
         }
     }
-    
+
+    /**
+     * Create an Option for each item on array <code>navigation_items</code> and add it to Menu</br>
+     * Add Categories header to Menu
+     */
+    private void addMenuItems() {
+        ArrayList<NavigationListComponent> components = new ArrayList<NavigationListComponent>();
+
+        // Get Navigation items from arrays.xml
+        String[] natigationItems = getResources().getStringArray(R.array.navigation_items);
+        if (natigationItems != null && natigationItems.length > 0) {
+            for (String item : natigationItems) {
+                NavigationListComponent component = new NavigationListComponent();
+                component.setElementUrl(item);
+
+                components.add(component);
+            }
+        }
+
+        fillNavigationContainer(components);
+
+        // Add Categories Header
+        mNavigationContainer.addView(createCategoriesHeader());
+    }
+
+    /**
+     * 
+     * @param components
+     */
+    private void fillNavigationContainer(ArrayList<NavigationListComponent> components) {
+        Log.d(TAG, "FILL NAVIGATION CONTAINER");
+        try {
+            mNavigationContainer.removeAllViews();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+
+        // Scrollable container
+        if (components != null) {
+            for (NavigationListComponent component : components) {
+
+                // Others
+                View actionElementLayout = getActionElementLayout(component, mNavigationContainer);
+                if (actionElementLayout != null)
+                    mNavigationContainer.addView(actionElementLayout);
+            }
+        }
+    }
+
+    /**
+     * Retrieves the layout element associated with a given action of the navigation list
+     * 
+     * @param action
+     *            The action we want to retrieve the layout for
+     * @param id
+     *            The id
+     * @return The layout of the navigation list element
+     */
+    public View getActionElementLayout(NavigationListComponent component, ViewGroup parent) {
+        View layout = null;
+        String elementUrl = component.getElementUrl();
+        if (elementUrl == null) {
+            elementUrl = "";
+        }
+        String[] nav = elementUrl.split("/");
+        NavigationAction action = NavigationAction.byAction(nav[nav.length - 1].trim());
+
+        switch (action) {
+        case Home:
+            layout = createGenericComponent(parent, component, R.drawable.selector_navigation_home, R.string.home, this);
+            layout.findViewById(R.id.component_text).setTag(R.id.nav_action, action);
+            break;
+        case Categories:
+            layout = createCategoriesHeader();
+            break;
+        case Country:
+            layout = createGenericComponent(parent, component, R.drawable.selector_navigation_countrychange, R.string.nav_country, this);
+            layout.findViewById(R.id.component_text).setTag(R.id.nav_action, action);
+            break;
+        default:
+            layout = mInflater.inflate(R.layout.navigation_generic_component, parent, false);
+            TextView tVd = (TextView) layout.findViewById(R.id.component_text);
+            tVd.setText(component.getElementText());
+            break;
+        }
+        if (layout != null) {
+            layout.setTag(R.id.nav_action, action);
+            setActionSelected(layout);
+        }
+        return layout;
+    }
+
+    /**
+     * 
+     * @param view
+     */
+    private void setActionSelected(View view) {
+        if (view.getTag(R.id.nav_action) == getBaseActivity().getAction()) {
+            Log.i(TAG, "SELECTED ACTION: " + getBaseActivity().getAction());
+            if (!view.isSelected())
+                view.setSelected(true);
+        } else {
+            view.setSelected(false);
+        }
+    }
+
+    /**
+     * 
+     * @return
+     */
+    private View createCategoriesHeader() {
+        View navComponent = mInflater.inflate(R.layout.navigation_categories_component, mNavigationContainer, false);
+        TextView tVSearch = (TextView) navComponent.findViewById(R.id.component_text);
+        String text = getString(R.string.categories);
+        tVSearch.setText(text.toUpperCase());
+        tVSearch.setContentDescription("calabash_" + text);
+        navComponent.setOnClickListener(null);
+        return navComponent;
+    }
+
+    /**
+     * 
+     * @param parent
+     * @param component
+     * @param iconRes
+     * @param textRes
+     * @param listener
+     * @return
+     */
+    private View createGenericComponent(ViewGroup parent, NavigationListComponent component, int iconRes, int textRes, OnClickListener listener) {
+        return createGenericComponent(parent, component, iconRes, getString(textRes), listener);
+    }
+
+    /* 
+     * @param parent
+     * @param component
+     * @param iconRes
+     * @param text
+     * @param listener
+     * @return
+     */
+    private View createGenericComponent(ViewGroup parent, NavigationListComponent component, int iconRes, String text, OnClickListener listener) {
+        View navComponent = mInflater.inflate(R.layout.navigation_generic_component, parent, false);
+        TextView tVSearch = (TextView) navComponent.findViewById(R.id.component_text);
+        tVSearch.setText(text);
+        tVSearch.setContentDescription("calabash_" + text);
+        tVSearch.setCompoundDrawablesWithIntrinsicBounds(iconRes, 0, 0, 0);
+        tVSearch.setOnClickListener(listener);
+        return navComponent;
+    }
+
     /**
      * Load and show the saved state
      * @param mPreSelectedTab
@@ -256,7 +427,7 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
         Log.i(TAG, "ON UPDATE NAVIGATION MENU");
         try {
             Fragment navMenu = getChildFragmentManager().getFragments().get(0);
-            if(navMenu instanceof NavigationMenuFragment) ((NavigationMenuFragment) navMenu).onUpdate();
+            if (navMenu instanceof NavigationMenuFragment) ((NavigationMenuFragment) navMenu).onUpdate();
         } catch (NullPointerException e) {
             Log.w(TAG, "WARNING: NPE ON UPDATE NAVIGATION MENU");
         } catch (IndexOutOfBoundsException e) {
@@ -417,14 +588,51 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
         int id = view.getId();
         // Case button menu
         if (id == R.id.nav_basket) onClickCart();
-        // Case button menu
-        else if (id == R.id.navigation_tabs_button_menu) onClickMenu();
+        /*-// Case button menu
+        else if (id == R.id.navigation_tabs_button_menu) onClickMenu();*/
         // Case button categories
         else if (id == R.id.navigation_tabs_button_categories) onClickCategories();
-        // Case unknown
-        else Log.d(TAG, "ON CLICK: UNKNOWN VIEW");
+        // Case NavigationAction
+        else {
+            if (!onClickNavigationAction(view)) {
+                // Case unknown
+                Log.d(TAG, "ON CLICK: UNKNOWN VIEW");
+            }
+        }
     }
-    
+
+    /**
+     * OnClick to process NavigationAction items
+     * 
+     * @param v
+     * @return
+     */
+    public boolean onClickNavigationAction(View v) {
+        NavigationAction navAction = (NavigationAction) v.getTag(R.id.nav_action);
+        Log.d(TAG, "Clicked on " + navAction + " while in " + ((BaseActivity) getActivity()).getAction());
+
+        if (navAction != null && ((BaseActivity) getActivity()).getAction() != navAction) {
+            switch (navAction) {
+            case Home:
+                getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE,FragmentController.ADD_TO_BACK_STACK);
+                break;
+            case Country:
+                FragmentController.getInstance().removeEntriesUntilTag(FragmentType.HOME.toString());
+                getBaseActivity().onSwitchFragment(FragmentType.CHANGE_COUNTRY,FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                break;
+            default:
+                return false;
+            }
+
+            // Toggle
+            getBaseActivity().toggle();
+        } else {
+            Log.d(TAG, "Did not handle: " + navAction);
+            return false;
+        }
+        return true;
+    }
+
     /**
      * Process the click on cart
      * @author sergiopereira
@@ -443,7 +651,7 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
      * Process the click on menu tab
      * @author sergiopereira
      */
-    private void onClickMenu() {
+    /*-private void onClickMenu() {
         Log.d(TAG, "ON CLICK: TAB MENU");
         // Validate state
         if(mTabMenu.isSelected()) return;
@@ -451,7 +659,7 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
         setSelectedTab(TAB_MENU);
         // Switch content
         onSwitchChildFragment(FragmentType.NAVIGATION_MENU, null);
-    }
+    }*/
     
     /**
      * Process the click on categories menu

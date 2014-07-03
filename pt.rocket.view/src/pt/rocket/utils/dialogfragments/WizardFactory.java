@@ -34,8 +34,9 @@ public class WizardFactory {
         case PRODUCT_DETAIL:
             break;
         case NAVIGATION:
-            Log.i(TAG, "ON SHOW NAVIGATION WIZARD");
-            WizardGenericFragment.getInstance(type, R.layout.wizard_navigation_categories, R.id.wizard_nav_button).show(fragmentManager, tag);
+            // Removed Categories TAB
+            /*Log.i(TAG, "ON SHOW NAVIGATION WIZARD");
+            WizardGenericFragment.getInstance(type, R.layout.wizard_navigation_categories, R.id.wizard_nav_button).show(fragmentManager, tag);*/
             break;
         default:
             Log.w(TAG, "WARNING ON SHOW WIZARD: UNKNOWN TYPE");
