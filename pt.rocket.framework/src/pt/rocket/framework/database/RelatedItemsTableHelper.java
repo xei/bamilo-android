@@ -59,6 +59,7 @@ public class RelatedItemsTableHelper {
     		Log.w(TAG, "WARNING ON INSERT RELATED ITEM: SKU IS EMPTY");
     		return;
     	}
+    	Log.i(TAG, "ON INSERT ITEM: " + product_sku);
     	// Insert
 		ContentValues values = new ContentValues();
 		values.put(RelatedItemsTableHelper._PRODUCT_SKU, product_sku);
@@ -107,34 +108,44 @@ public class RelatedItemsTableHelper {
 	 * @param ctx
 	 * @param mProducts
 	 */
-	public static void insertRelatedItemsAndClear(Context ctx,
-			ArrayList<Product> mProducts) {
-
-		SQLiteDatabase db = DarwinDatabaseHelper.getInstance()
-				.getWritableDatabase();
-		
+	public static void insertRelatedItemsAndClear(Context ctx, ArrayList<Product> mProducts) {
+		Log.d(TAG, "ON CLEAN AND INSERT: START");
+		SQLiteDatabase db = null;
 		try {
+			db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
+			// Begin
 			db.beginTransaction();
-			clearRelatedItems(db);
-			int count = 1;
-			for (Product product : mProducts) {
-				insertRelatedItem(db, product.getSKU(), product.getBrand()
-						+ " " + product.getName(), product.getSpecialPrice(),
-						product.getUrl(),
-						(product.getImages().size() == 0) ? "" : product
-								.getImages().get(0).getUrl());
-				if(count == MAX_SAVED_PRODUCTS)
-					break;
-				count++;
-			}
-			
+			// Sync accesses
+			synchronized (db) { cleanAndInsert(db, mProducts); }
+			// Success
 			db.setTransactionSuccessful();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			db.endTransaction();
+			Log.d(TAG, "ON CLEAN AND INSERT: FINISH");
+			// Validate helper
+			if (db != null) {
+				db.endTransaction();
+				db.close();
+			} 
 		}
-
+	}
+	
+	private static void cleanAndInsert(SQLiteDatabase db, ArrayList<Product> mProducts) {
+		clearRelatedItems(db);
+		int count = 1;
+		for (Product product : mProducts) {
+			insertRelatedItem(db, 
+							product.getSKU(), 
+							product.getBrand() + " " + product.getName(), 
+							product.getSpecialPrice(),
+							product.getUrl(),
+							(product.getImages().size() == 0) ? "" : product.getImages().get(0).getUrl());
+			// Validate counter
+			if(count == MAX_SAVED_PRODUCTS) break;
+			// Inc counter
+			count++;
+		}
 	}
 	
     /**
@@ -183,6 +194,7 @@ public class RelatedItemsTableHelper {
 	  * @param db
 	  */
 	 public static void clearRelatedItems(SQLiteDatabase db) {
+		 Log.d(TAG, "ON CLEAN TABLE");
 		 db.delete(TABLE_RELATED, null, null);
 	 }
     

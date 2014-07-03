@@ -847,7 +847,8 @@ public class CatalogPageModel {
         // Valdiate products
         if (productsPage != null && productsPage.getTotalProducts() > 0) {
             Log.d(TAG, "onSuccessEvent: products on page = " + productsPage.getProducts().size() + " total products = " + productsPage.getTotalProducts());
-            
+
+            // TODO: Improve this behavior 
             if(this.index == 1 && pageNumber == 1){
                 RelatedItemsTableHelper.insertRelatedItemsAndClear(mActivity, productsPage.getProducts());
             } else if (this.index == 1 && pageNumber == 2){
