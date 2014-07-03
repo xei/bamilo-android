@@ -10,54 +10,71 @@ import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
 import pt.rocket.helpers.BaseHelper;
-import android.content.ContentValues;
 import android.os.Bundle;
 import de.akquinet.android.androlog.Log;
 
 /**
- * Example helper
+ * FPHelper
  * 
  * @author Guilherme Silva
- * @modified Manuel Silva
+ * @modified sergiopereira
  */
 public class GetForgotPasswordHelper extends BaseHelper {
     
     private static String TAG = GetForgotPasswordHelper.class.getSimpleName();
     
-    public static final String CONTENT_VALUES = "contentValues";
-    private ContentValues savedValues;
+    private static final EventType type = EventType.FORGET_PASSWORD_EVENT;
     
+    public static final String CONTENT_VALUES = "contentValues";
+
+    
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.helpers.BaseHelper#generateRequestBundle(android.os.Bundle)
+     */
     @Override
     public Bundle generateRequestBundle(Bundle args) {
-        savedValues = args.getParcelable(CONTENT_VALUES);
+        Log.d(TAG, "ON REQUEST");
         Bundle bundle = new Bundle();
         bundle.putString(Constants.BUNDLE_URL_KEY, EventType.FORGET_PASSWORD_EVENT.action);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.POST);
-        bundle.putParcelable(Constants.BUNDLE_FORM_DATA_KEY, savedValues);
+        bundle.putParcelable(Constants.BUNDLE_FORM_DATA_KEY, args.getParcelable(CONTENT_VALUES));
         bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.FORGET_PASSWORD_EVENT);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
         return bundle;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.helpers.BaseHelper#parseResponseBundle(android.os.Bundle, org.json.JSONObject)
+     */
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
-        // TODO Auto-generated method stub
-    	Log.d(TAG, "parseResponseBundle GetForgotPasswordHelper");
+    	Log.d(TAG, "ON PARSE RESPONSE");
     	bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.FORGET_PASSWORD_EVENT);
         return bundle;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.helpers.BaseHelper#parseErrorBundle(android.os.Bundle)
+     */
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
-        android.util.Log.d(TAG, "parseErrorBundle GetForgotPasswordHelper");
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.FORGET_PASSWORD_EVENT);
+        Log.d(TAG, "ON PARSE ERROR");
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.helpers.BaseHelper#parseResponseErrorBundle(android.os.Bundle)
+     */
     @Override
     public Bundle parseResponseErrorBundle(Bundle bundle) {
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.FORGET_PASSWORD_EVENT);
+        Log.d(TAG, "ON PARSE RESPONSE ERROR");
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }

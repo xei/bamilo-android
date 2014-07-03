@@ -615,12 +615,16 @@ public class SessionLoginFragment extends BaseFragment {
     }
 
     protected boolean onErrorEvent(Bundle bundle) {
-    	if(!isVisible()){
-    		return true;
-    	}
+        // Validate fragment visibility
+        if(isOnStoppingProcess){
+            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return true;
+        }
+        
         if(getBaseActivity().handleErrorEvent(bundle)){
             return true;
         }
+        
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         Log.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);

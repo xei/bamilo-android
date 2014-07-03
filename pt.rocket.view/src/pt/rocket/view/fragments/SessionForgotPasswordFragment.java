@@ -232,13 +232,7 @@ public class SessionForgotPasswordFragment extends BaseFragment {
      */
     private void requestPassword() {
         ContentValues values = dynamicForm.save();
-        
-        /**
-         * TRIGGERS
-         * @author sergiopereira
-         */
         triggerForgot(values);
-        //triggerContentEvent(new ForgetPasswordEvent(values));
     }
 
     
@@ -273,9 +267,17 @@ public class SessionForgotPasswordFragment extends BaseFragment {
     
     protected boolean onSuccessEvent(Bundle bundle) {
         Log.d(TAG, "ON SUCCESS EVENT");
+        
+        // Validate fragment visibility
+        if(isOnStoppingProcess){
+            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return true;
+        }
+        
         getBaseActivity().showContentContainer();
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        //ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        
         switch (eventType) {
         case INIT_FORMS:
         case GET_FORGET_PASSWORD_FORM_EVENT:
@@ -311,15 +313,20 @@ public class SessionForgotPasswordFragment extends BaseFragment {
     }
 
     protected boolean onErrorEvent(Bundle bundle) {
+        Log.d(TAG, "ON ERROR EVENT");
+        
+        // Validate fragment visibility
+        if(isOnStoppingProcess){
+            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return true;
+        }
         
         if(getBaseActivity().handleErrorEvent(bundle)){
             return true;
         }
         
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-        
-        Log.d(TAG, "ON ERROR EVENT: " + eventType.toString());
+        //ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         
         if (eventType == EventType.FORGET_PASSWORD_EVENT) {
             Log.d(TAG, "FORGET_PASSWORD_EVENT");

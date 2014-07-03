@@ -787,8 +787,7 @@ public class SplashScreenActivity extends FragmentActivity {
      * @author sergiopereira
      */
     private void launchEvent(){
-        SharedPreferences sharedPrefs = this.getSharedPreferences(
-                ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences sharedPrefs = this.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         // Get the current shop id
         String shopId = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ID, null);
         // Validate shop id and launch the Adx event if is the same country on start app

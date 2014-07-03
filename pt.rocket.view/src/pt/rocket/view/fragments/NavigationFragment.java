@@ -255,8 +255,8 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
     public void onUpdateMenu() {
         Log.i(TAG, "ON UPDATE NAVIGATION MENU");
         try {
-            NavigationMenuFragment navMenu = (NavigationMenuFragment) getChildFragmentManager().getFragments().get(0);
-            navMenu.onUpdate();
+            Fragment navMenu = getChildFragmentManager().getFragments().get(0);
+            if(navMenu instanceof NavigationMenuFragment) ((NavigationMenuFragment) navMenu).onUpdate();
         } catch (NullPointerException e) {
             Log.w(TAG, "WARNING: NPE ON UPDATE NAVIGATION MENU");
         } catch (IndexOutOfBoundsException e) {
