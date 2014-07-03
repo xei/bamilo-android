@@ -898,13 +898,14 @@ public class HomeFragment extends BaseFragment {
                 }
             }
 
-            if (mainView != null) {
-                mainView.addView(generateNewsletterSubscribe(mainView));
-
-                /*if (lastViewed != null && lastViewed.size() > 0) {
-                    mainView.addView(generateLastViewedLayout(mainView));
-                }*/
-            }
+            // TODO : Remove Newsletter Subscribe
+//            if (mainView != null) {
+//                mainView.addView(generateNewsletterSubscribe(mainView));
+//
+//                /*if (lastViewed != null && lastViewed.size() > 0) {
+//                    mainView.addView(generateLastViewedLayout(mainView));
+//                }*/
+//            }
         }
 
         /**
