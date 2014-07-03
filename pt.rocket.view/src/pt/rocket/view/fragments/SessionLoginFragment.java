@@ -47,9 +47,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 
 import com.facebook.Request;
@@ -272,16 +272,18 @@ public class SessionLoginFragment extends BaseFragment {
      */
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        if (null != dynamicForm) {
-            Iterator<DynamicFormItem> iterator = dynamicForm.iterator();
-            while (iterator.hasNext()) {
-                DynamicFormItem item = iterator.next();
-                item.saveState(outState);
+        if(!JumiaApplication.INSTANCE.isLoggedIn()) {
+            if (null != dynamicForm) {
+                Iterator<DynamicFormItem> iterator = dynamicForm.iterator();
+                while (iterator.hasNext()) {
+                    DynamicFormItem item = iterator.next();
+                    item.saveState(outState);
+                }
+                savedInstanceState = outState;
             }
-            savedInstanceState = outState;
+            //super.onSaveInstanceState(outState);
+            uiHelper.onSaveInstanceState(outState);
         }
-        super.onSaveInstanceState(outState);
-        uiHelper.onSaveInstanceState(outState);
     }
 
     /**
@@ -496,12 +498,13 @@ public class SessionLoginFragment extends BaseFragment {
          
         Log.d(TAG, "ON SUCCESS EVENT");
         // Validate fragment visibility
-        if(!isVisible()){
+        if(isOnStoppingProcess){
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        //ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        
         switch (eventType) {
         case INIT_FORMS:
             triggerLoginForm();
@@ -510,45 +513,53 @@ public class SessionLoginFragment extends BaseFragment {
             JumiaApplication.INSTANCE.setLoggedIn(true);
             Log.d(TAG, "facebookloginCompletedEvent : success");
             // Get Customer
-            ((BaseActivity) getActivity()).hideKeyboard();
-            ((BaseActivity) getActivity()).updateSlidingMenuCompletly();
+            getBaseActivity().hideKeyboard();
+            getBaseActivity().updateSlidingMenuCompletly();
             
-            ((BaseActivity) getActivity()).onBackPressed();
-            if(nextFragmentType != null && getActivity() != null){
-                ((BaseActivity) getActivity()).onSwitchFragment(nextFragmentType, null, true);
-            }
             // NullPointerException on orientation change
             if(getActivity() != null){
                 Customer customer = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-                JumiaApplication.INSTANCE.CUSTOMER = customer;
-                TrackerDelegator.trackLoginSuccessful(getActivity(), customer,
-                    wasAutologin, loginOrigin, true);
+                JumiaApplication.CUSTOMER = customer;
+                TrackerDelegator.trackLoginSuccessful(getActivity(), customer, wasAutologin, loginOrigin, true);
             }
-                
             
             wasAutologin = false;
+            
+            // Validate the next step
+            if(nextFragmentType != null && getBaseActivity() != null) {
+                FragmentController.getInstance().popLastEntry(FragmentType.LOGIN.toString());
+                getBaseActivity().onSwitchFragment(nextFragmentType, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            } else {
+                getBaseActivity().onBackPressed();  
+            }
+            
             return true;
         
         case LOGIN_EVENT:
             JumiaApplication.INSTANCE.setLoggedIn(true);
             Log.d(TAG, "loginCompletedEvent : success");
             // Get Customer
-            ((BaseActivity) getActivity()).hideKeyboard();
-            ((BaseActivity) getActivity()).updateSlidingMenuCompletly();
-            // Switch to next fragment
-            getActivity().onBackPressed();
-            if(nextFragmentType != null && getActivity() != null){
-                ((BaseActivity) getActivity()).onSwitchFragment(nextFragmentType, null, true);
-            }
+            getBaseActivity().hideKeyboard();
+            getBaseActivity().updateSlidingMenuCompletly();
+            
             // NullPointerException on orientation change
             if(getActivity() != null && !cameFromRegister){
                 Customer customer = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-                JumiaApplication.INSTANCE.CUSTOMER = customer;
+                JumiaApplication.CUSTOMER = customer;
                 TrackerDelegator.trackLoginSuccessful(getActivity(), customer, wasAutologin, loginOrigin, false);
             }
                 
             cameFromRegister = false;
             wasAutologin = false;
+            
+            // Validate the next step
+            if(nextFragmentType != null && getBaseActivity()  != null) {
+                FragmentController.getInstance().popLastEntry(FragmentType.LOGIN.toString());
+                getBaseActivity().onSwitchFragment(nextFragmentType, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            } else {
+                getBaseActivity().onBackPressed();  
+            }
+            
             return true;
         case GET_LOGIN_FORM_EVENT:
             Form form = (Form) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
@@ -559,14 +570,7 @@ public class SessionLoginFragment extends BaseFragment {
                             @Override
                             public void onClick(View v) {
                                 ((BaseActivity) getActivity()).showLoading(false);
-                                
-                                /**
-                                 * TRIGGERS
-                                 * @author sergiopereira
-                                 */
                                 triggerLoginForm();
-                                //EventManager.getSingleton().triggerRequestEvent(event.request);
-                                
                                 dialog.dismiss();
                             }
                         }, false);
@@ -642,16 +646,8 @@ public class SessionLoginFragment extends BaseFragment {
                     autoLogin = false;
                     if (formResponse == null) {
                         // Sometimes formDataRegistry is null, so init forms
-                        
-                        /**
-                         * TRIGGERS
-                         * @author sergiopereira
-                         */
                         triggerInitForm();
                         triggerLoginForm();
-                        //triggerContentEvent(EventType.INIT_FORMS);
-                        //triggerContentEvent(EventType.GET_LOGIN_FORM_EVENT);
-                        
                     } else {
                         LogOut.performLogOut(new WeakReference<Activity>(getBaseActivity()));
                     }
