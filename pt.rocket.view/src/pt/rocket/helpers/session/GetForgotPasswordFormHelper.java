@@ -25,45 +25,60 @@ import de.akquinet.android.androlog.Log;
  * Example helper
  * 
  * @author Guilherme Silva
- * @modified Manuel Silva
+ * @modified sergiopereira
  */
 public class GetForgotPasswordFormHelper extends BaseHelper {
 
     private static String TAG = GetForgotPasswordFormHelper.class.getSimpleName();
+    
+    private static final EventType sType = EventType.GET_FORGET_PASSWORD_FORM_EVENT;
+    
+    private static final EventType sFallBackType = EventType.GET_FORGET_PASSWORD_FORM_FALLBACK_EVENT;
 
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.helpers.BaseHelper#generateRequestBundle(android.os.Bundle)
+     */
     @Override
     public Bundle generateRequestBundle(Bundle args) {
-        FormData formData = JumiaApplication.INSTANCE.getFormDataRegistry().get(EventType.GET_FORGET_PASSWORD_FORM_EVENT.action);
-        String url =  EventType.GET_FORGET_PASSWORD_FORM_FALLBACK_EVENT.action;
-        if(formData != null){
-           url = formData.getUrl();
+        Log.d(TAG, "ON REQUEST");
+        
+        // Fall back
+        String url = sFallBackType.action;
+        try {
+            // Get form
+            FormData formData = JumiaApplication.INSTANCE.getFormDataRegistry().get(sType.action);
+            url = formData.getUrl();
+        } catch (NullPointerException e) {
+            Log.w(TAG, "FORM DATA IS NULL THEN FORGET_PASSWORD_FORM FALLBACK", e);
         }
         
         Bundle bundle = new Bundle();
         bundle.putString(Constants.BUNDLE_URL_KEY, url);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
         bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_FORGET_PASSWORD_FORM_EVENT);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, sType);
         return bundle;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.helpers.BaseHelper#parseResponseBundle(android.os.Bundle, org.json.JSONObject)
+     */
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
-        // TODO Auto-generated method stub
-        Log.d(TAG, "parseResponseBundle GetTeasersHelper");
+        Log.d(TAG, "ON PARSE RESPONSE");
 
         final ArrayList<Form> forms = new ArrayList<Form>();
         JSONArray dataObject;
         try {
-            dataObject = jsonObject
-                    .getJSONArray(RestConstants.JSON_DATA_TAG);
+            dataObject = jsonObject.getJSONArray(RestConstants.JSON_DATA_TAG);
 
             for (int i = 0; i < dataObject.length(); ++i) {
                 Form form = new Form();
                 JSONObject formObject = dataObject.getJSONObject(i);
                 if (!form.initialize(formObject)) {
-                    Log.e(TAG,
-                            "Error initializing the form using the data");
+                    Log.e(TAG, "Error initializing the form using the data");
                 }
                 forms.add(form);
             }
@@ -79,17 +94,26 @@ public class GetForgotPasswordFormHelper extends BaseHelper {
         return bundle;
     }
     
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.helpers.BaseHelper#parseErrorBundle(android.os.Bundle)
+     */
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
-        android.util.Log.d(TAG, "parseErrorBundle GetForgotPasswordFormHelper");
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_FORGET_PASSWORD_FORM_EVENT);
+        Log.d(TAG, "ON PARSE ERROR");
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, sType);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.helpers.BaseHelper#parseResponseErrorBundle(android.os.Bundle)
+     */
     @Override
     public Bundle parseResponseErrorBundle(Bundle bundle) {
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_FORGET_PASSWORD_FORM_EVENT);
+        Log.d(TAG, "ON PARSE RESPONSE ERROR");
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, sType);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }

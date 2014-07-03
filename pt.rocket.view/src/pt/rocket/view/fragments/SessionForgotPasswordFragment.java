@@ -143,12 +143,7 @@ public class SessionForgotPasswordFragment extends BaseFragment {
         if (formResponse != null)
             displayForm(formResponse);
         else
-            /**
-             * TRIGGERS
-             * @author sergiopereira
-             */
             triggerForgotForm();
-            //triggerContentEvent(EventType.GET_FORGET_PASSWORD_FORM_EVENT);
         
         setAppContentLayout();
     }
@@ -364,14 +359,7 @@ public class SessionForgotPasswordFragment extends BaseFragment {
      * @author sergiopereira
      */
     private void triggerForgotForm(){
-        Bundle bundle = new Bundle();
-        if(JumiaApplication.INSTANCE.getFormDataRegistry() != null && JumiaApplication.INSTANCE.getFormDataRegistry().size() > 0){
-            triggerContentEvent(new GetForgotPasswordFormHelper(), bundle, mCallBack);
-        } else {
-            bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, ErrorCode.UNKNOWN_ERROR);
-            mCallBack.onRequestError(bundle);
-        }
-        
+        triggerContentEvent(new GetForgotPasswordFormHelper(), null, mCallBack);
     }
     
     private void triggerForgot(ContentValues values){
