@@ -31,7 +31,7 @@ public class CurrencyFormatter {
     private static Currency currency;
     private static NumberFormat formatter;
     private static String currencyThousandsDelim;
-    private static Integer currencyFractionCount;
+    private static int currencyFractionCount;
     private static String currencyFractionDelim;
     
     /**
