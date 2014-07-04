@@ -835,7 +835,7 @@ public class Catalog extends BaseFragment implements OnClickListener {
             // Save current layout used
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putBoolean(ConstantsSharedPrefs.KEY_SHOW_LIST_LAYOUT, showList);
-            editor.apply();
+            editor.commit();
 
             setSwitchLayoutButtonIcon();
 
