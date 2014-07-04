@@ -24,6 +24,7 @@
         <item>@string/myaccount_email_notifications</item>
     </string-array>
 
+    <!-- NAVIGATION MENU ITEMS -->
     <string-array name="navigation_items">
         <item>/shop/</item>
         <item>/customer/language/</item>

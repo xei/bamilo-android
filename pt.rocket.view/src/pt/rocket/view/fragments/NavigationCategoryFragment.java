@@ -481,6 +481,9 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
         bundle2.putString(ConstantsIntentExtra.SEARCH_QUERY, null);
         bundle2.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcategory_prefix);
         bundle2.putString(ConstantsIntentExtra.NAVIGATION_PATH, category.getCategoryPath());
+        // Remove entries until Home
+        FragmentController.getInstance().removeEntriesUntilTag(FragmentType.HOME.toString());
+        // Goto Catalog
         getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_LIST, bundle2, FragmentController.ADD_TO_BACK_STACK);
     }
     

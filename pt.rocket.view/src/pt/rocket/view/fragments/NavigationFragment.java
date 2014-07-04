@@ -139,179 +139,21 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
         mCartView.setOnClickListener(this);
         mTabMenu.setOnClickListener(this);
         mTabCategories.setOnClickListener(this);
-
         // Get container
         mNavigationContainer = (ViewGroup) view.findViewById(R.id.slide_menu_scrollable_container);
-
         // Set cart
         onUpdateCart();
+        // Check if mNavigationContainer is being reconstructed
+        if (mNavigationContainer.getChildCount() <= 1) addMenuItems();
         // Validate saved state
         if (mSavedStateType == null) {
             Log.d(TAG, "SAVED IS NULL");
-
-            addMenuItems();
-
             onClick(mTabCategories);
         } else {
             Log.d(TAG, "SAVED STACK SIZE: " + getChildFragmentManager().getBackStackEntryCount());
             // Validate pre selected tab (onSaveInstanceState)
             onLoadSavedState(mSavedStateType);
-
-            // Check if mNavigationContainer is being reconstructed
-            if (mNavigationContainer == null || mNavigationContainer.getChildCount() <= 1) {
-                addMenuItems();
-            }
         }
-    }
-
-    /**
-     * Create an Option for each item on array <code>navigation_items</code> and add it to Menu</br>
-     * Add Categories header to Menu
-     */
-    private void addMenuItems() {
-        ArrayList<NavigationListComponent> components = new ArrayList<NavigationListComponent>();
-
-        // Get Navigation items from arrays.xml
-        String[] natigationItems = getResources().getStringArray(R.array.navigation_items);
-        if (natigationItems != null && natigationItems.length > 0) {
-            for (String item : natigationItems) {
-                NavigationListComponent component = new NavigationListComponent();
-                component.setElementUrl(item);
-
-                components.add(component);
-            }
-        }
-
-        fillNavigationContainer(components);
-
-        // Add Categories Header
-        mNavigationContainer.addView(createCategoriesHeader());
-    }
-
-    /**
-     * 
-     * @param components
-     */
-    private void fillNavigationContainer(ArrayList<NavigationListComponent> components) {
-        Log.d(TAG, "FILL NAVIGATION CONTAINER");
-        try {
-            mNavigationContainer.removeAllViews();
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        }
-
-        // Scrollable container
-        if (components != null) {
-            for (NavigationListComponent component : components) {
-
-                // Others
-                View actionElementLayout = getActionElementLayout(component, mNavigationContainer);
-                if (actionElementLayout != null)
-                    mNavigationContainer.addView(actionElementLayout);
-            }
-        }
-    }
-
-    /**
-     * Retrieves the layout element associated with a given action of the navigation list
-     * 
-     * @param action
-     *            The action we want to retrieve the layout for
-     * @param id
-     *            The id
-     * @return The layout of the navigation list element
-     */
-    public View getActionElementLayout(NavigationListComponent component, ViewGroup parent) {
-        View layout = null;
-        String elementUrl = component.getElementUrl();
-        if (elementUrl == null) {
-            elementUrl = "";
-        }
-        String[] nav = elementUrl.split("/");
-        NavigationAction action = NavigationAction.byAction(nav[nav.length - 1].trim());
-
-        switch (action) {
-        case Home:
-            layout = createGenericComponent(parent, component, R.drawable.selector_navigation_home, R.string.home, this);
-            layout.findViewById(R.id.component_text).setTag(R.id.nav_action, action);
-            break;
-        case Categories:
-            layout = createCategoriesHeader();
-            break;
-        case Country:
-            layout = createGenericComponent(parent, component, R.drawable.selector_navigation_countrychange, R.string.nav_country, this);
-            layout.findViewById(R.id.component_text).setTag(R.id.nav_action, action);
-            break;
-        default:
-            layout = mInflater.inflate(R.layout.navigation_generic_component, parent, false);
-            TextView tVd = (TextView) layout.findViewById(R.id.component_text);
-            tVd.setText(component.getElementText());
-            break;
-        }
-        if (layout != null) {
-            layout.setTag(R.id.nav_action, action);
-            setActionSelected(layout);
-        }
-        return layout;
-    }
-
-    /**
-     * 
-     * @param view
-     */
-    private void setActionSelected(View view) {
-        if (view.getTag(R.id.nav_action) == getBaseActivity().getAction()) {
-            Log.i(TAG, "SELECTED ACTION: " + getBaseActivity().getAction());
-            if (!view.isSelected())
-                view.setSelected(true);
-        } else {
-            view.setSelected(false);
-        }
-    }
-
-    /**
-     * 
-     * @return
-     */
-    private View createCategoriesHeader() {
-        View navComponent = mInflater.inflate(R.layout.navigation_categories_component, mNavigationContainer, false);
-        TextView tVSearch = (TextView) navComponent.findViewById(R.id.component_text);
-        String text = getString(R.string.categories);
-        tVSearch.setText(text.toUpperCase());
-        tVSearch.setContentDescription("calabash_" + text);
-        navComponent.setOnClickListener(null);
-        return navComponent;
-    }
-
-    /**
-     * 
-     * @param parent
-     * @param component
-     * @param iconRes
-     * @param textRes
-     * @param listener
-     * @return
-     */
-    private View createGenericComponent(ViewGroup parent, NavigationListComponent component, int iconRes, int textRes, OnClickListener listener) {
-        return createGenericComponent(parent, component, iconRes, getString(textRes), listener);
-    }
-
-    /* 
-     * @param parent
-     * @param component
-     * @param iconRes
-     * @param text
-     * @param listener
-     * @return
-     */
-    private View createGenericComponent(ViewGroup parent, NavigationListComponent component, int iconRes, String text, OnClickListener listener) {
-        View navComponent = mInflater.inflate(R.layout.navigation_generic_component, parent, false);
-        TextView tVSearch = (TextView) navComponent.findViewById(R.id.component_text);
-        tVSearch.setText(text);
-        tVSearch.setContentDescription("calabash_" + text);
-        tVSearch.setCompoundDrawablesWithIntrinsicBounds(iconRes, 0, 0, 0);
-        tVSearch.setOnClickListener(listener);
-        return navComponent;
     }
 
     /**
@@ -324,7 +166,7 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
         switch (mPreSelectedTab) {
         case NAVIGATION_MENU:
             Log.i(TAG, "ON LOAD SAVED STATE: NAVIGATION_MENU");
-            setSelectedTab(TAB_MENU);
+            //setSelectedTab(TAB_MENU);
             break;
         case NAVIGATION_CATEGORIES_ROOT_LEVEL:
             Log.i(TAG, "ON LOAD SAVED STATE: NAVIGATION_CATEGORIES_ROOT_LEVEL");
@@ -420,20 +262,193 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
      */
     
     /**
+     * Create an Option for each item on array <code>navigation_items</code> and add it to Menu</br>
+     * Add Categories header to Menu
+     */
+    private void addMenuItems() {
+        ArrayList<NavigationListComponent> components = new ArrayList<NavigationListComponent>();
+        // Get Navigation items from arrays.xml
+        String[] natigationItems = getResources().getStringArray(R.array.navigation_items);
+        for (String item : natigationItems) {
+            NavigationListComponent component = new NavigationListComponent();
+            component.setElementUrl(item);
+            components.add(component);
+        }
+        // Fill container
+        fillNavigationContainer(components);
+        // Add Categories Header
+        mNavigationContainer.addView(createCategoriesHeader());
+    }
+
+    /**
+     * 
+     * @param components
+     */
+    private void fillNavigationContainer(ArrayList<NavigationListComponent> components) {
+        Log.d(TAG, "FILL NAVIGATION CONTAINER");
+        try {
+            mNavigationContainer.removeAllViews();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+
+        // Scrollable container
+        if (components != null) {
+            for (NavigationListComponent component : components) {
+                // Others
+                View actionElementLayout = getActionElementLayout(component, mNavigationContainer);
+                if (actionElementLayout != null)
+                    mNavigationContainer.addView(actionElementLayout);
+            }
+        }
+    }
+
+    /**
+     * Retrieves the layout element associated with a given action of the navigation list
+     * 
+     * @param action
+     *            The action we want to retrieve the layout for
+     * @param id
+     *            The id
+     * @return The layout of the navigation list element
+     */
+    public View getActionElementLayout(NavigationListComponent component, ViewGroup parent) {
+        View layout = null;
+        String elementUrl = component.getElementUrl();
+        if (elementUrl == null) {
+            elementUrl = "";
+        }
+        String[] nav = elementUrl.split("/");
+        NavigationAction action = NavigationAction.byAction(nav[nav.length - 1].trim());
+
+        switch (action) {
+        case Home:
+            layout = createGenericComponent(parent, component, R.drawable.selector_navigation_home, R.string.home, this);
+            layout.findViewById(R.id.component_text).setTag(R.id.nav_action, action);
+            break;
+        case Categories:
+            layout = createCategoriesHeader();
+            break;
+        case Country:
+            layout = createGenericComponent(parent, component, R.drawable.selector_navigation_countrychange, R.string.nav_country, this);
+            layout.findViewById(R.id.component_text).setTag(R.id.nav_action, action);
+            break;
+        default:
+            layout = mInflater.inflate(R.layout.navigation_generic_component, parent, false);
+            TextView tVd = (TextView) layout.findViewById(R.id.component_text);
+            tVd.setText(component.getElementText());
+            break;
+        }
+        if (layout != null) {
+            layout.setTag(R.id.nav_action, action);
+            setActionSelected(layout);
+        }
+        return layout;
+    }
+
+    /**
+     * 
+     * @param view
+     */
+    private void setActionSelected(View view) {
+        Log.i(TAG, "SELECTED ACTION: " + getBaseActivity().getAction());
+        if (view.getTag(R.id.nav_action) == getBaseActivity().getAction() && !view.isSelected()) view.setSelected(true);
+        else view.setSelected(false);
+    }
+
+    /**
+     * 
+     * @return
+     */
+    private View createCategoriesHeader() {
+        View navComponent = mInflater.inflate(R.layout.navigation_categories_component, mNavigationContainer, false);
+        TextView tVSearch = (TextView) navComponent.findViewById(R.id.component_text);
+        String text = getString(R.string.categories);
+        tVSearch.setText(text.toUpperCase());
+        tVSearch.setContentDescription("calabash_" + text);
+        navComponent.setOnClickListener(null);
+        return navComponent;
+    }
+
+    /* 
+     * @param parent
+     * @param component
+     * @param iconRes
+     * @param text
+     * @param listener
+     * @return
+     */
+    private View createGenericComponent(ViewGroup parent, NavigationListComponent component, int iconRes, int stringId, OnClickListener listener) {
+        View navComponent = mInflater.inflate(R.layout.navigation_generic_component, parent, false);
+        TextView tVSearch = (TextView) navComponent.findViewById(R.id.component_text);
+        String text = getString(stringId);
+        tVSearch.setText(text);
+        tVSearch.setContentDescription("calabash_" + text);
+        tVSearch.setCompoundDrawablesWithIntrinsicBounds(iconRes, 0, 0, 0);
+        tVSearch.setOnClickListener(listener);
+        return navComponent;
+    }
+
+    /**
      * Method used to update the navigation menu
      * @author sergiopereira
      */
     public void onUpdateMenu() {
         Log.i(TAG, "ON UPDATE NAVIGATION MENU");
+//        try {
+//            Fragment navMenu = getChildFragmentManager().getFragments().get(0);
+//            if (navMenu instanceof NavigationMenuFragment) ((NavigationMenuFragment) navMenu).onUpdate();
+//        } catch (NullPointerException e) {
+//            Log.w(TAG, "WARNING: NPE ON UPDATE NAVIGATION MENU");
+//        } catch (IndexOutOfBoundsException e) {
+//            Log.w(TAG, "WARNING: IOE ON UPDATE NAVIGATION MENU");
+//        }
+
+        // Update items
+        if (!isOnStoppingProcess)
+            updateNavigationItems();
+    }
+    
+    
+    /**
+     * Updated generic items
+     * 
+     * @author sergiopereira
+     */
+    private void updateNavigationItems() {
         try {
-            Fragment navMenu = getChildFragmentManager().getFragments().get(0);
-            if (navMenu instanceof NavigationMenuFragment) ((NavigationMenuFragment) navMenu).onUpdate();
+            // For each child validate the selected item
+            int count = mNavigationContainer.getChildCount();
+            for (int i = 0; i < count; i++) updateItem(mNavigationContainer.getChildAt(i));
         } catch (NullPointerException e) {
-            Log.w(TAG, "WARNING: NPE ON UPDATE NAVIGATION MENU");
+            Log.w(TAG, "ON UPDATE NAVIGATION: NULL POINTER EXCEPTION");
+            e.printStackTrace();
         } catch (IndexOutOfBoundsException e) {
-            Log.w(TAG, "WARNING: IOE ON UPDATE NAVIGATION MENU");
+            Log.w(TAG, "ON UPDATE NAVIGATION: INDEX OUT OF BOUNDS EXCEPTION");
+            e.printStackTrace();
         }
     }
+    
+    /**
+     * Update item
+     * 
+     * @param view
+     */
+    private void updateItem(View view) {
+        NavigationAction navAction = (NavigationAction) view.getTag(R.id.nav_action);
+        Log.d(TAG, "UPDATE NAV: " + navAction.toString());
+        switch (navAction) {
+        case Home:
+            // ...
+        case Country:
+            // ...
+        default:
+            break;
+        }
+        // Set selected
+        setActionSelected(view);
+    }
+    
   
     /**
      * Method used to update the cart info
@@ -510,20 +525,20 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
         Log.i(TAG, "ON SWITCH CHILD FRAG: " + filterType);
         switch (filterType) {
         case NAVIGATION_MENU:
-            // Check back stack
-            if(getChildFragmentManager().findFragmentByTag(FragmentType.NAVIGATION_MENU.toString()) != null)
-                goToBackUntil(FragmentType.NAVIGATION_MENU);
-            else {
-                NavigationMenuFragment slideMenuFragment = NavigationMenuFragment.getInstance();
-                fragmentChildManagerTransition(R.id.navigation_container, filterType, slideMenuFragment, false, true);
-            }
+//            // Check back stack
+//            if(getChildFragmentManager().findFragmentByTag(FragmentType.NAVIGATION_MENU.toString()) != null)
+//                goToBackUntil(FragmentType.NAVIGATION_MENU);
+//            else {
+//                NavigationMenuFragment slideMenuFragment = NavigationMenuFragment.getInstance();
+//                fragmentChildManagerTransition(R.id.navigation_container, filterType, slideMenuFragment, false, true);
+//            }
             break;
         case NAVIGATION_CATEGORIES_SUB_LEVEL:
             // No tag fragment on back stack
             filterType = null; 
         case NAVIGATION_CATEGORIES_ROOT_LEVEL:
             NavigationCategoryFragment fragment = NavigationCategoryFragment.getInstance(bundle);
-            fragmentChildManagerTransition(R.id.navigation_container, filterType, fragment, true, true);
+            fragmentChildManagerTransition(R.id.navigation_container, filterType, fragment, false, true);
             break;
         default:
             Log.w(TAG, "ON SWITCH FILTER: UNKNOWN TYPE");
@@ -593,12 +608,9 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
         // Case button categories
         else if (id == R.id.navigation_tabs_button_categories) onClickCategories();
         // Case NavigationAction
-        else {
-            if (!onClickNavigationAction(view)) {
-                // Case unknown
-                Log.d(TAG, "ON CLICK: UNKNOWN VIEW");
-            }
-        }
+        else if (onClickNavigationAction(view));
+        // Case unknown
+        else Log.d(TAG, "ON CLICK: UNKNOWN VIEW");
     }
 
     /**
@@ -609,25 +621,28 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
      */
     public boolean onClickNavigationAction(View v) {
         NavigationAction navAction = (NavigationAction) v.getTag(R.id.nav_action);
-        Log.d(TAG, "Clicked on " + navAction + " while in " + ((BaseActivity) getActivity()).getAction());
-
-        if (navAction != null && ((BaseActivity) getActivity()).getAction() != navAction) {
+        if (navAction != null && getBaseActivity().getAction() != navAction) {
             switch (navAction) {
+            // Case Home
             case Home:
+                Log.d(TAG, "ON CLICK NAVIGATION MENU ITEM: HOME");
                 getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE,FragmentController.ADD_TO_BACK_STACK);
                 break;
+            // Case Change Country
             case Country:
+                Log.d(TAG, "ON CLICK NAVIGATION MENU ITEM: COUNTRY");
                 FragmentController.getInstance().removeEntriesUntilTag(FragmentType.HOME.toString());
                 getBaseActivity().onSwitchFragment(FragmentType.CHANGE_COUNTRY,FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                 break;
+            // Case unknown
             default:
+                Log.d(TAG, "ON CLICK NAVIGATION MENU ITEM: UNKNOWN");
                 return false;
             }
-
             // Toggle
             getBaseActivity().toggle();
         } else {
-            Log.d(TAG, "Did not handle: " + navAction);
+            Log.d(TAG, "ON CLICK NAVIGATION MENU ITEM: NOT HANDLE " + navAction);
             return false;
         }
         return true;

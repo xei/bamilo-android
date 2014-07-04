@@ -72,7 +72,9 @@ public class GetRatingsHelper extends BaseHelper {
                             optionObject.getString(RestConstants.JSON_ID_RATING_OPTION_TAG));
                 }
 
+                // Get rating code
                 ratingOptions.put(ratingOption.getString(RestConstants.JSON_CODE_TAG), option);
+                
             } catch (JSONException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
