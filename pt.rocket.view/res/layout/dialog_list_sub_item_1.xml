@@ -31,14 +31,6 @@
         android:textColor="@color/grey_divider_light_text"
         android:textSize="@dimen/text_xl" />
 
-    <ImageView
-        android:id="@+id/arrow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:background="@drawable/arrow_side" />
-
     <!--
          <org.holoeverywhere.widget.CheckBox
         android:id="@+id/dialog_item_checkbox"

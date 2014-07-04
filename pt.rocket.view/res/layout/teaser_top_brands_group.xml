@@ -23,7 +23,6 @@
             android:id="@+id/teaser_group_title_clickable_title"
             style="@style/activity_sectionheader_clickable"
             android:layout_centerVertical="true"
-            android:drawableRight="@drawable/selector_next"
             android:layout_marginLeft="@dimen/margin_huge"
             android:gravity="center_vertical"
             android:text="Categories"

@@ -70,12 +70,4 @@
         </RelativeLayout>
     </RelativeLayout>
 
-    <ImageView
-        android:id="@+id/product_basicinfo_next"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:src="@drawable/selector_next" />
-
 </RelativeLayout>

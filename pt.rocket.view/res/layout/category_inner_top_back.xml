@@ -9,7 +9,6 @@
         style="@style/category_inner_current_text"
         android:layout_height="@dimen/item_height_normal"
         android:layout_centerVertical="true"
-        android:drawableLeft="@drawable/arrow_categ_back"
         android:drawablePadding="@dimen/margin_mid"
         android:fontFamily="roboto"
         android:gravity="center_vertical"

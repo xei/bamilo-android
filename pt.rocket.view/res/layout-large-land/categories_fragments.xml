@@ -24,19 +24,12 @@
             android:gravity="center_vertical"
             android:visibility="gone" >
 
-            <ImageView 
-                android:id="@+id/img_back_level"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/back_arrow_category"/>
-            
             <org.holoeverywhere.widget.TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="6dp"
                 android:text="@string/back_level"
-                android:textColor="#cccccc" 
-                android:layout_toRightOf="@id/img_back_level"/>
+                android:textColor="#cccccc" />
         </RelativeLayout>
 
         <FrameLayout

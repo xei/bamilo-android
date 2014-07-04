@@ -166,14 +166,4 @@
         android:textColor="@color/grey_middle"
         android:textSize="12dp" />
 
-    <ImageView
-        android:id="@+id/arrow_right"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/posted_by"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@id/quality_rating"
-        android:layout_centerVertical="true"
-        android:src="@drawable/ic_next" />
-
 </RelativeLayout>

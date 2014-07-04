@@ -228,13 +228,6 @@
                     android:paddingBottom="@dimen/margin_mid"
                     android:paddingTop="@dimen/margin_mid" >
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:src="@drawable/selector_next" />
-
                     <RatingBar
                         android:id="@+id/product_rating"
                         style="@style/starRatingBarBig"

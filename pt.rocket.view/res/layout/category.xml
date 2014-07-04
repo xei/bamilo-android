@@ -6,22 +6,12 @@
     android:background="@drawable/selector_listitem_highlight"
     android:paddingTop="6dp" >
 
-    <ImageView
-        android:id="@+id/category_logo_right"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:src="@drawable/selector_next"
-        tools:ignore="ContentDescription" />
-
     <org.holoeverywhere.widget.TextView
         android:id="@+id/category_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/margin_huge"
-        android:layout_toLeftOf="@id/category_logo_right"
         android:ellipsize="end"
         android:fontFamily="roboto"
         android:maxLines="1"

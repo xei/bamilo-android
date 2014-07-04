@@ -98,14 +98,6 @@
                     <include layout="@layout/loading_bar_simple" />
                 </RelativeLayout>
             </RelativeLayout>
-
-            <ImageView
-                android:id="@+id/product_basicinfo_next"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:src="@drawable/selector_next" />
         </RelativeLayout>
 
         <View
@@ -120,13 +112,6 @@
             android:paddingLeft="@dimen/margin_huge"
             android:paddingTop="@dimen/margin_large"
             android:background="@drawable/selector_clickableitem_highlight" >
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:src="@drawable/selector_next" />
 
             <org.holoeverywhere.widget.TextView
                 android:id="@+id/product_name"
@@ -294,13 +279,6 @@
             android:paddingTop="@dimen/margin_mid"
             android:background="@drawable/selector_clickableitem_highlight" >
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:src="@drawable/selector_next" />
-
             <RatingBar
                 android:id="@+id/product_rating"
                 style="@style/starRatingBarBig"
@@ -330,14 +308,6 @@
             android:paddingBottom="@dimen/margin_mid"
             android:paddingTop="@dimen/margin_mid"
             android:background="@drawable/selector_clickableitem_highlight" >
-
-            <ImageView
-                android:id="@+id/product_spec_next"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:src="@drawable/selector_next" />
 
             <org.holoeverywhere.widget.TextView
                 android:id="@+id/product_specifications_title"

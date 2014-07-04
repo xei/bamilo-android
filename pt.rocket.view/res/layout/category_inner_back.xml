@@ -10,7 +10,6 @@
         android:layout_height="@dimen/item_height_normal"
         android:layout_centerVertical="true"
         android:drawablePadding="@dimen/margin_mid"
-        android:drawableLeft="@drawable/arrow_categ_back"
         android:fontFamily="roboto-bold"
         android:gravity="center_vertical"
         android:text="Inner category" />

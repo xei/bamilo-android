@@ -7,7 +7,6 @@
     <org.holoeverywhere.widget.TextView
         android:id="@+id/text"
         style="@style/category_inner_child_text"
-        android:drawableRight="@drawable/selector_next"
         android:layout_centerVertical="true"
         android:gravity="center_vertical"
         android:text="Category" />
