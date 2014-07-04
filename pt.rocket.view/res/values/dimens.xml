@@ -170,6 +170,8 @@
     <dimen name="campaign_image_height">173.33dp</dimen>
     <dimen name="campaign_size_container_height">33.33dp</dimen>
     <dimen name="campaign_size_spinner_width">50dp</dimen>
+    <dimen name="campaign_title_button_height">48dp</dimen>
+    <dimen name="campaign_title_button_text_vertical_alignment">7dp</dimen>
 
     <!-- NO RESULTS PAGE -->
     <dimen name="no_results_top_margin">40dp</dimen>

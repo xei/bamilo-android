@@ -891,7 +891,7 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, O
         private String getRemainingTime(int remainingTime) {
             long currentTimeInMilliseconds = SystemClock.elapsedRealtime();
             int remainingSeconds = (int) (remainingTime - ((currentTimeInMilliseconds - mStartTimeInMilliseconds) / 1000));
-            Log.e(TAG, "Remaining seconds: " + remainingSeconds);
+            Log.d(TAG, "Remaining seconds: " + remainingSeconds);
 
             if (remainingSeconds > 0) {
                 // Format remaingSeconds to "hh:mm:ss"

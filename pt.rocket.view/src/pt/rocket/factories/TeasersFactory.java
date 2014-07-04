@@ -414,7 +414,7 @@ public class TeasersFactory {
 
             // Set Title 
             if (size > 0) {
-                createCampaignSingleTeaserView(campaigns.get(0), rootView.findViewById(R.id.teaser_group_title), mInflater);
+                createCampaignSingleTeaserView(campaigns.get(0), rootView.findViewById(R.id.teaser_group_title_container), mInflater);
             }
             if (size == 1) {
                 ((TextView) rootView.findViewById(R.id.teaser_group_title)).setText(campaigns.get(0).getTargetTitle());
