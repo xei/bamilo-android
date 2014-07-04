@@ -191,10 +191,6 @@ public enum EventType {
 	
 	GET_COUNTRY_CONFIGURATIONS("https:/main/getcountryconfs/", RestContract.NO_CACHE),
 
-	GET_HOME_NEWSLETTERS_SIGNUP_FORM_EVENT("newslettersignup", RestContract.MAX_CACHE_TIME),
-	
-	GET_HOME_NEWSLETTERS_SIGNUP_FORM_FALLBACK_EVENT("http:/forms/newslettersignup/", RestContract.MAX_CACHE_TIME),
-	
 	HOME_NEWSLETTERS_SIGNUP_FORM_EVENT,
 	
 	HOME_NEWSLETTERS_SIGNUP_FORM_FALLBACK_EVENT("https:/newsletter/signup/", RestContract.MAX_CACHE_TIME),
