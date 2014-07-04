@@ -297,8 +297,9 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
             for (NavigationListComponent component : components) {
                 // Others
                 View actionElementLayout = getActionElementLayout(component, mNavigationContainer);
-                if (actionElementLayout != null)
+                if (actionElementLayout != null) {
                     mNavigationContainer.addView(actionElementLayout);
+                }
             }
         }
     }
@@ -351,9 +352,16 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
      * @param view
      */
     private void setActionSelected(View view) {
-        Log.i(TAG, "SELECTED ACTION: " + getBaseActivity().getAction());
-        if (view.getTag(R.id.nav_action) == getBaseActivity().getAction() && !view.isSelected()) view.setSelected(true);
-        else view.setSelected(false);
+        try {
+            NavigationAction action = getBaseActivity().getAction();
+            Log.i(TAG, "SELECTED ACTION: " + action);
+            if (!view.isSelected() && action == view.getTag(R.id.nav_action)) view.setSelected(true);
+            else view.setSelected(false);
+        } catch (NullPointerException e) {
+            Log.w(TAG, "ON SET ACTION SELECTED: NULL POINTER EXCEPTION");
+            e.printStackTrace();
+            view.setSelected(false);
+        }
     }
 
     /**
