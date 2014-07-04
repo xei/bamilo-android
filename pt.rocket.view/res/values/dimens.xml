@@ -177,10 +177,6 @@
     <dimen name="no_results_search_tips_width">@dimen/match_parent</dimen>
     <dimen name="no_results_brands_height">147dp</dimen>
 
-    <dimen name="newsletter_homepage_margin">10dp</dimen>
-    <dimen name="newsletter_homepage_bottom_margin">30dp</dimen>
-    <dimen name="newsletter_homepage_button_width">210dp</dimen>
-
     <!-- GRID PRODUCTS -->
     <dimen name="product_item_grid_width">117.33dp</dimen>
     <dimen name="product_item_grid_height">146.67dp</dimen>

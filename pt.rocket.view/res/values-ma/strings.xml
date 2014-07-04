@@ -337,13 +337,6 @@
     <string name="campaign_choose_size">Sélectionnez votre taille</string>
     <string name="campaign_save">Vous économisez</string>
     <string name="campaign_ramaining_stock">Stock Restant:</string>
-    <string name="newsletter_subscription">Inscription à la Newsletter</string>
-    <string name="newsletter_subscription_hint">Votre email</string>
-    <string name="newsletter_male">Homme</string>
-    <string name="newsletter_female">Femme</string>
-    <string name="newsletter_success_message">Félicitations! Vous êtes bien inscrit à la Newsletter Jumia.</string>
-    <string name="newsletter_invalid_message">Email non valide</string>
-    <string name="newsletter_already_subscribed_message">Vous êtes déjà inscrit à la Newsletter avec cet email</string>
 	<string name="myaccount_email_notifications">Préférence eMails</string>
 	<string name="option3_description">S\'inscrire ou Se désinscrire</string>
 	<string name="newsletters_label">Newsletters</string>

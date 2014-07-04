@@ -7,14 +7,8 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map.Entry;
 
-import org.holoeverywhere.widget.Button;
-import org.holoeverywhere.widget.EditText;
 import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.app.JumiaApplication;
@@ -23,8 +17,6 @@ import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.factories.TeasersFactory;
-import pt.rocket.forms.FieldValidation;
-import pt.rocket.forms.HomeNewslettersSignupForm;
 import pt.rocket.framework.Darwin;
 import pt.rocket.framework.objects.Homepage;
 import pt.rocket.framework.objects.ITargeting.TargetType;
@@ -38,8 +30,6 @@ import pt.rocket.framework.utils.MixpanelTracker;
 import pt.rocket.helpers.GetPromotionsHelper;
 import pt.rocket.helpers.GetTeasersHelper;
 import pt.rocket.helpers.GetUpdatedTeasersHelper;
-import pt.rocket.helpers.account.GetHomeNewslettersSignupFormHelper;
-import pt.rocket.helpers.account.HomeNewslettersSignupHelper;
 import pt.rocket.helpers.session.GetLoginHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.CheckVersion;
@@ -48,14 +38,12 @@ import pt.rocket.utils.JumiaViewPager;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.ScrollViewWithHorizontal;
-import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.utils.dialogfragments.DialogPromotionFragment;
 import pt.rocket.utils.dialogfragments.WizardPreferences;
 import pt.rocket.utils.dialogfragments.WizardPreferences.WizardType;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.LinearGradient;
@@ -64,16 +52,12 @@ import android.graphics.Shader;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.os.Parcelable;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.text.InputFilter;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -118,16 +102,6 @@ public class HomeFragment extends BaseFragment {
 
     private static HomeFragment mHomeFragment;
 
-    // public static ArrayList<LastViewed> lastViewed = null;
-
-    private static DialogFragment mDialogNewsletter;
-
-    private static HomeNewslettersSignupForm mHomeNewsletterSignupForm;
-
-    private final static int DELAY_FOR_NEWSLETTER_RETRY = 1000; // 1 seconds
-
-    private static String lastEmail;
-    
     private String mCurrentMd5Collection;
 
     /**
@@ -243,19 +217,11 @@ public class HomeFragment extends BaseFragment {
         if (requestResponse == null) {
             ((BaseActivity) getActivity()).setProcessShow(false);
             triggerTeasers();
-            triggerHomeNewsletterSignupForm();
-
         } else {
             restoreLayout();
         }
 
         AnalyticsGoogle.get().trackPage(R.string.ghomepage);
-
-        /*if (LastViewedTableHelper.getLastViewedEntriesCount() > 0) {
-            lastViewed = LastViewedTableHelper.getLastViewedList();
-        } else {
-            lastViewed = null;
-        }*/
     }
 
     @Override
@@ -291,9 +257,6 @@ public class HomeFragment extends BaseFragment {
         mPagerAdapter = null;
         mPager = null;
         pagerTabStrip = null;
-
-        // clean lastEmail
-        lastEmail = null;
 
         super.onDestroy();
         System.gc();
@@ -553,16 +516,6 @@ public class HomeFragment extends BaseFragment {
         ((BaseActivity) getActivity()).showContentContainer();
     }
 
-    /**
-     * This method will invalidate the HomeNewsletterSignupForm handler avoiding an infinite loop-
-     */
-    private static void invalidateHomeNewsletterSignupForm() {
-        Log.i(TAG, "invalidateHomeNewsletterSignupForm");
-
-        mHomeNewsletterSignupForm = new HomeNewslettersSignupForm();
-        mHomeNewsletterSignupForm.isValid = false;
-    }
-
     protected boolean onSuccessEvent(Bundle bundle) {
         Log.i(TAG, "ON onSuccessEvent");
 
@@ -616,15 +569,6 @@ public class HomeFragment extends BaseFragment {
             }
 
             break;
-        case GET_HOME_NEWSLETTERS_SIGNUP_FORM_EVENT:
-            mHomeNewsletterSignupForm = (HomeNewslettersSignupForm) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-
-            // if response doesn't bring the info, invalidate newsletter form
-            if (mHomeNewsletterSignupForm == null) {
-                invalidateHomeNewsletterSignupForm();
-            }
-
-            break;
         }
 
         return false;
@@ -636,8 +580,6 @@ public class HomeFragment extends BaseFragment {
         }
 
         if (getBaseActivity() != null && getBaseActivity().handleErrorEvent(bundle)) {
-            invalidateHomeNewsletterSignupForm();
-
             return;
         }
 
@@ -657,10 +599,6 @@ public class HomeFragment extends BaseFragment {
             setLayoutFallback();
             break;
         case GET_PROMOTIONS:
-            break;
-        case GET_HOME_NEWSLETTERS_SIGNUP_FORM_EVENT:
-            invalidateHomeNewsletterSignupForm();
-
             break;
         }
     }
@@ -897,404 +835,7 @@ public class HomeFragment extends BaseFragment {
                     }
                 }
             }
-
-            // TODO : Remove Newsletter Subscribe
-//            if (mainView != null) {
-//                mainView.addView(generateNewsletterSubscribe(mainView));
-//
-//                /*if (lastViewed != null && lastViewed.size() > 0) {
-//                    mainView.addView(generateLastViewedLayout(mainView));
-//                }*/
-//            }
         }
-
-        /**
-         * Handler used to managed newsletter subscription form visibility depending on response
-         */
-        Handler handlerProccessNewsletterSubscribe = new Handler() {
-            public void handleMessage(android.os.Message msg) {
-                View newsletterView = (View) msg.obj;
-                // check if mHomeNewsletterSignupForm is already set with response
-                if (HomeFragment.mHomeNewsletterSignupForm == null) {
-                    Log.i(TAG, "handlerProccessNewsletterSubscribe -  mHomeNewsletterSignupForm not initialized");
-                    Message mMessage = new Message();
-                    mMessage.obj = msg.obj;
-                    handlerProccessNewsletterSubscribe.sendMessageDelayed(mMessage, DELAY_FOR_NEWSLETTER_RETRY);
-                } else if (HomeFragment.mHomeNewsletterSignupForm.isValid) {
-                    Log.i(TAG, "handlerProccessNewsletterSubscribe -  mHomeNewsletterSignupForm correctly initialized");
-
-                    showNewsletterSubscribe(newsletterView);
-                } else {
-                    // mHomeNewsletterSignupForm is not valid
-                    Log.i(TAG, "handlerProccessNewsletterSubscribe -  mHomeNewsletterSignupForm is not valid");
-
-                    newsletterView.setVisibility(View.GONE);
-                }
-            };
-        };
-
-        /**
-         * Generate View for newsletter subscription form
-         * 
-         * @param parent
-         * @return
-         */
-        private View generateNewsletterSubscribe(ViewGroup parent) {
-            View newsletterView = mInflater.inflate(R.layout.teaser_newsletter, parent, false);
-
-            // hide newsletter subscription form and show loading
-            newsletterView.findViewById(R.id.newsletter_form_container).setVisibility(View.GONE);
-            newsletterView.findViewById(R.id.loading_newsletter).setVisibility(View.VISIBLE);
-
-            // check if mHomeNewsletterSignupForm is already set with response
-            if (HomeFragment.mHomeNewsletterSignupForm == null) {
-                Log.i(TAG, "newsLetterSubscribe is null");
-
-                // pass View newsletterView to handler
-                Message msg = new Message();
-                msg.obj = newsletterView;
-
-                handlerProccessNewsletterSubscribe.sendMessageDelayed(msg, DELAY_FOR_NEWSLETTER_RETRY);
-            } else if (HomeFragment.mHomeNewsletterSignupForm.isValid) {
-                Log.i(TAG, "newsLetterSubscribe visible");
-
-                showNewsletterSubscribe(newsletterView);
-            } else {
-                Log.i(TAG, "newsLetterSubscribe invalid");
-                // is not valid
-                newsletterView.setVisibility(View.GONE);
-            }
-
-            return newsletterView;
-        }
-
-        /**
-         * Set newsletter subscription form visible
-         * 
-         * @param newsletterView
-         */
-        private void showNewsletterSubscribe(View newsletterView) {
-            FieldValidation emailValidation = HomeFragment.mHomeNewsletterSignupForm.emailValidation;
-            LinkedHashMap<String, String> categories = HomeFragment.mHomeNewsletterSignupForm.categories;
-
-            // show newsletter form again and hide loading
-            newsletterView.findViewById(R.id.newsletter_form_container).setVisibility(View.VISIBLE);
-            newsletterView.findViewById(R.id.loading_newsletter).setVisibility(View.GONE);
-
-            final EditText newsletterEmail = (EditText) newsletterView.findViewById(R.id.newsletter_subscription_value);
-
-            // save email after EditText lose focus, to be reused after rotations or coming back to Home
-            newsletterEmail.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                @Override
-                public void onFocusChange(View v, boolean hasFocus) {
-                    if (!hasFocus) {
-                        String email = newsletterEmail.getText().toString();
-                        if (!TextUtils.isEmpty(email)) {
-                            lastEmail = email;
-                        } else {
-                            lastEmail = null;
-                        }
-                    }
-                }
-            });
-
-            // get last email saved before rotation
-            String customerEmail = lastEmail;
-            if (customerEmail == null) {
-                // fill with customer's email address if he is logged in
-                if (JumiaApplication.INSTANCE.CUSTOMER != null) {
-                    customerEmail = JumiaApplication.INSTANCE.CUSTOMER.getEmail();
-                }
-            }
-            // show customerEmail on EditText
-            if (!TextUtils.isEmpty(customerEmail)) {
-                newsletterEmail.setText(customerEmail);
-            }
-
-            // add maxLength validation
-            if (emailValidation.max > 0) {
-                InputFilter[] inputFilters = new InputFilter[] { new InputFilter.LengthFilter(emailValidation.max) };
-                newsletterEmail.setFilters(inputFilters);
-            }
-
-            class NewsletterGenderClickListener implements OnClickListener {
-                String emailRegex = "[-0-9a-zA-Z.+_]+@[-0-9a-zA-Z.+_]+\\.[a-zA-Z]{2,4}";
-
-                public NewsletterGenderClickListener(String emailRegex) {
-                    this.emailRegex = emailRegex;
-                }
-
-                @Override
-                public void onClick(View v) {
-                    String email = newsletterEmail.getText().toString();
-                    if (!email.isEmpty() && email.matches(emailRegex)) {
-                        // show progress until process response
-                        ((BaseActivity) getActivity()).showProgress();
-
-                        // category to use on request
-                        int category = 0;
-                        Object tagObject = v.getTag();
-                        if (tagObject != null && tagObject instanceof String) {
-                            try {
-                                category = Integer.valueOf(tagObject.toString());
-                            } catch (NumberFormatException e) {
-                                // TODO default first category
-                                category = 6;
-                            }
-                        }
-                        triggerSubscribeNewsletter(email, category);
-                    } else {
-                        String message = getString(R.string.newsletter_invalid_message);
-                        String ok = getString(R.string.ok_label);
-                        mDialogNewsletter = DialogGenericFragment.newInstance(null, true, false, null, message, ok, null, new OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                mDialogNewsletter.dismiss();
-                            }
-                        });
-                        mDialogNewsletter.show(getFragmentManager(), null);
-                    }
-                }
-            }
-
-            Button firstBtn = (Button) newsletterView.findViewById(R.id.newsletter_first_btn);
-            Button secondBtn = (Button) newsletterView.findViewById(R.id.newsletter_second_btn);
-
-            // get regex from FieldValidation from response
-            NewsletterGenderClickListener newsletterGenderClickListener = new NewsletterGenderClickListener(emailValidation.regex);
-
-            // set buttons' labels
-            Iterator categoriesIterator = categories.entrySet().iterator();
-            Entry<String, String> firstItem = (Entry<String, String>) categoriesIterator.next();
-            if (firstItem != null) {
-                // set tag
-                String firstTag = firstItem.getKey();
-                firstBtn.setTag(firstTag);
-
-                // set label
-                String firstLabel = firstItem.getValue();
-                firstBtn.setText(firstLabel);
-                firstBtn.setContentDescription(firstLabel);
-                firstBtn.setOnClickListener(newsletterGenderClickListener);
-
-                Entry<String, String> secondItem = (Entry<String, String>) categoriesIterator.next();
-                if (secondItem != null) {
-                    // set tag
-                    String secondTag = secondItem.getKey();
-                    secondBtn.setTag(secondTag);
-
-                    // set label
-                    String secondLabel = secondItem.getValue();
-                    secondBtn.setText(secondLabel);
-                    secondBtn.setContentDescription(secondLabel);
-                    secondBtn.setOnClickListener(newsletterGenderClickListener);
-                }
-            }
-        }
-
-        /*private View generateLastViewedLayout(ViewGroup parent) {
-            View lastViewedView = mInflater.inflate(R.layout.teaser_last_viewed, parent, false);
-            mPopArrows = (RelativeLayout) lastViewedView.findViewById(R.id.pop_arrows_container);
-
-            ViewPager mViewPager = (ViewPager) lastViewedView.findViewById(R.id.last_viewed_viewpager);
-            int partialSize = 3;
-            if (((BaseActivity) getActivity()).isTabletInLandscape(getActivity())) {
-                partialSize = 5;
-            }
-
-            if (lastViewed.size() > partialSize) {
-                mScrollViewWithHorizontal.sendListenerAndView(receiveIsVisible, lastViewedView);
-            }
-
-            LastViewedAdapter mLastViewedAdapter = new LastViewedAdapter(getActivity(), lastViewed, mInflater, partialSize);
-            mViewPager.setAdapter(mLastViewedAdapter);
-            return lastViewedView;
-        }*/
-
-        private Handler receiveIsVisible = new Handler() {
-
-            public void handleMessage(android.os.Message msg) {
-                mPopArrows.setVisibility(View.VISIBLE);
-                hideArrows.sendEmptyMessageDelayed(0, 1000);
-            }
-        };
-
-        private Handler hideArrows = new Handler() {
-
-            public void handleMessage(android.os.Message msg) {
-                mPopArrows.setVisibility(View.GONE);
-            }
-        };
-
-        /**
-         * HOME TRIGGERS
-         * 
-         * @author Andre Lopes
-         */
-
-        /**
-         * request to subscribe user to newsletter chosen
-         */
-        public void triggerSubscribeNewsletter(String email, int category) {
-            Bundle bundle = new Bundle();
-
-            ContentValues contentValues = new ContentValues();
-            contentValues.put(mHomeNewsletterSignupForm.emailField, email);
-            contentValues.put(mHomeNewsletterSignupForm.categoryField, category);
-
-            // set dynamic url to be used on HomeNewslettersSignupHelper request
-            bundle.putString(HomeNewslettersSignupHelper.NEWSLETTER_SIGNUP_URL, mHomeNewsletterSignupForm.action);
-            bundle.putParcelable(HomeNewslettersSignupHelper.FORM_CONTENT_VALUES, contentValues);
-            JumiaApplication.INSTANCE.sendRequest(new HomeNewslettersSignupHelper(), bundle, homeResponseCallback);
-        }
-
-        private void onHomeErrorEvent(Bundle bundle) {
-            Log.i(TAG, "ON onHomeErrorEvent");
-
-            // Validate fragment visibility
-            if (!isVisible()) {
-                Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-                return;
-            }
-
-            BaseActivity baseActivity = (BaseActivity) getActivity();
-            if (baseActivity != null && baseActivity.handleErrorEvent(bundle)) {
-                invalidateHomeNewsletterSignupForm();
-                return;
-            }
-
-            if (baseActivity == null) {
-                invalidateHomeNewsletterSignupForm();
-
-                return;
-            }
-
-            baseActivity.dismissProgress();
-
-            EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-
-            switch (eventType) {
-            case HOME_NEWSLETTERS_SIGNUP_FORM_EVENT:
-                Log.d(TAG, "RECEIVED HOME_NEWSLETTERS_SIGNUP_FORM_EVENT");
-
-                mDialogNewsletter = DialogGenericFragment.newInstance(null, true, false, null,
-                        getErrorMessage(bundle),
-                        getString(R.string.ok_label), null, new OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                mDialogNewsletter.dismiss();
-                            }
-                        });
-                mDialogNewsletter.show(getFragmentManager(), null);
-                break;
-            }
-        }
-
-        private boolean onHomeSuccessEvent(Bundle bundle) {
-            Log.i(TAG, "ON onHomeSuccessEvent");
-
-            // Validate fragment visibility
-            if (!isVisible()) {
-                Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-                return false;
-            }
-
-            BaseActivity baseActivity = (BaseActivity) getActivity();
-            baseActivity.dismissProgress();
-
-            EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-            switch (eventType) {
-            case HOME_NEWSLETTERS_SIGNUP_FORM_EVENT:
-                mDialogNewsletter = DialogGenericFragment.newInstance(null, true, false, null,
-                        getSuccessMessage(bundle, eventType),
-                        getString(R.string.ok_label), null, new OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                mDialogNewsletter.dismiss();
-                            }
-                        });
-                mDialogNewsletter.show(getFragmentManager(), null);
-
-                break;
-            }
-
-            return false;
-        }
-
-        /**
-         * Get error message from responseerrormessage on bundle
-         * 
-         * @param bundle
-         * 
-         * @return the error, or <code>null</code> if no error on <code>responseerrormessage</code>
-         */
-        String getErrorMessage(Bundle bundle) {
-            String errorMessage = null;
-
-            Object errorObject = bundle.get(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
-            if (errorObject != null && errorObject instanceof HashMap) {
-                Object errorMessagesObject = ((HashMap) errorObject).get(Constants.BUNDLE_ERROR_KEY);
-                if (errorMessagesObject != null && errorMessagesObject instanceof List) {
-                    List errorMessages = (List) errorMessagesObject;
-                    if (errorMessages != null && errorMessages.size() > 0) {
-                        // get first error message
-                        Object errorMessageObject = errorMessages.get(0);
-                        if (errorMessageObject != null && errorMessageObject instanceof String) {
-                            errorMessage = (String) errorMessageObject;
-                        }
-                    }
-                }
-            }
-
-            if (TextUtils.isEmpty(errorMessage)) {
-                // default error message
-                errorMessage = getString(R.string.server_error_title);
-            }
-
-            return errorMessage;
-        }
-
-        /**
-         * Get success message from resources depending on eventType
-         * 
-         * @param bundle
-         * 
-         * @return the respective message or "ok"
-         */
-        String getSuccessMessage(Bundle bundle, EventType eventType) {
-            String successMessage = null;
-
-            // successMessage = bundle.getString(Constants.BUNDLE_RESPONSE_SUCCESS_MESSAGE_KEY);
-
-            switch (eventType) {
-            case HOME_NEWSLETTERS_SIGNUP_FORM_EVENT:
-                // newsletter success message
-                successMessage = getString(R.string.newsletter_success_message);
-
-                break;
-            default:
-                // default "success" message
-                successMessage = getString(R.string.ok_label);
-            }
-
-            return successMessage;
-        }
-
-        /**
-         * HOME CALLBACK
-         */
-        IResponseCallback homeResponseCallback = new IResponseCallback() {
-
-            @Override
-            public void onRequestError(Bundle bundle) {
-                onHomeErrorEvent(bundle);
-            }
-
-            @Override
-            public void onRequestComplete(Bundle bundle) {
-                onHomeSuccessEvent(bundle);
-            }
-        };
     }
 
     /**
@@ -1316,10 +857,6 @@ public class HomeFragment extends BaseFragment {
         Bundle bundle = new Bundle();
         bundle.putString(GetUpdatedTeasersHelper.OLD_MD5_KEY, mCurrentMd5Collection);
         triggerContentEvent(new GetUpdatedTeasersHelper(), bundle, responseCallback);
-    }
-
-    private void triggerHomeNewsletterSignupForm() {
-        triggerContentEventWithNoLoading(new GetHomeNewslettersSignupFormHelper(), null, responseCallback);
     }
 
     /**
