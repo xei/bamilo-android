@@ -50,11 +50,6 @@
             android:text="Categories"
             android:textColor="#fff"
             android:textSize="@dimen/text_m" />
-
-        <org.holoeverywhere.widget.TextView
-            style="@style/category_inner_child_text"
-            android:layout_centerVertical="true"
-            android:drawableRight="@drawable/arrow_campaignbtn" />
     </RelativeLayout>
 
     <LinearLayout
