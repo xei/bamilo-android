@@ -30,8 +30,6 @@ public class GetShoppingCartChangeItemQuantityHelper extends BaseHelper {
     @Override
     public Bundle generateRequestBundle(Bundle args) {
         Bundle bundle = new Bundle();
-        
-        
         bundle.putString(Constants.BUNDLE_URL_KEY, EventType.CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT.action);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.POST);

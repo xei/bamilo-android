@@ -171,20 +171,23 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     
     @Override
     public void onCreate() {
+        Log.d(TAG, "ON CREATE");
         
-        SharedPreferences sharedPrefs = this.getSharedPreferences(
-                ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        Log.init(getApplicationContext());
+        
+        INSTANCE = this;
+        
+        SharedPreferences sharedPrefs = this.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        
         /**
          * Force UA clean the previous configurations.
          */
 //        trackerFile = new AndroidFileFunctions();
         doBindService();
         
-        Log.init(getApplicationContext());
+        // Init image loader
         RocketImageLoader.init(this);
-        Log.d(TAG, "onCreate");
-        INSTANCE = this;
-        
+
         // Init darwin database, set the context
         DarwinDatabaseHelper.init(getApplicationContext());
         
@@ -218,16 +221,17 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     @Override
     public void onLowMemory() {     
         super.onLowMemory();
-        
+        Log.d(TAG, "ON LOW MEMORY");
         //clear all memory cached images when system is in low memory
         //note that you can configure the max image cache count, see CONFIGURATION
         BitmapAjaxCallback.clearCache();
     }
     
     public synchronized void init(boolean isReInit, Handler initializationHandler) {
+        Log.d(TAG, "ON INIT");
         isInitializing = true;
-        Log.d(TAG, "Starting initialisation phase");
         AnalyticsGoogle.clearCheckoutStarted();
+        
         for (ApplicationComponent component : COMPONENTS.values()) {
             ErrorCode result = component.init(JumiaApplication.this);
             if (result != ErrorCode.NO_ERROR) {
@@ -237,8 +241,7 @@ public class JumiaApplication extends Application implements ExceptionCallback {
             }
         }
         
-        SharedPreferences sharedPrefs = this.getSharedPreferences(
-                ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences sharedPrefs = this.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         SHOP_ID = ShopPreferences.getShopId(getApplicationContext());
         SHOP_NAME = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, null);
         Log.i(TAG, "code1configs : SHOP_ID : "+SHOP_ID+" SHOP_NAME : "+SHOP_NAME);
@@ -253,6 +256,7 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     }
 
     public synchronized void handleEvent(ErrorCode errorType, EventType eventType, Handler initializationHandler) {
+        Log.d(TAG, "ON HANDLE");
         isInitializing = false;
         Bundle bundle = new Bundle();
         bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, errorType);
@@ -264,16 +268,19 @@ public class JumiaApplication extends Application implements ExceptionCallback {
                 errorType == ErrorCode.NO_COUNTRIES_CONFIGS || 
                 errorType == ErrorCode.NO_COUNTRY_CONFIGS_AVAILABLE)
                 && ServiceSingleton.getInstance().getService() == null ){
+            Log.d(TAG, "ON HANDLE WITH ERROR");
             resendInitializationSignal = true;
             resendHandler = initializationHandler;
             resendMsg = msg;
             doBindService();
         } else {
+            Log.d(TAG, "ON INIT HANDLE");
             initializationHandler.sendMessage(msg);    
         }
     }
 
     public void registerFragmentCallback(IRemoteServiceCallback mCallback) {
+        Log.d(TAG, "ON REGISTER CALL BACK FRAGMENT");
         if (mCallback == null) {
             Log.i(TAG, "mCallback is null");
         }
@@ -331,8 +338,7 @@ public class JumiaApplication extends Application implements ExceptionCallback {
      * @param responseCallback
      * @return the md5 of the reponse
      */
-    public String sendRequest(final BaseHelper helper, final Bundle args,
-            final IResponseCallback responseCallback) {
+    public String sendRequest(final BaseHelper helper, final Bundle args, final IResponseCallback responseCallback) {
         if(helper == null){
             return "";
         }

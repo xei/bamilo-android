@@ -258,6 +258,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
      * @author sergiopereira
      */
     private void showEmpty() {
+        getBaseActivity().showWarningVariation(false);
         mFavouritesView.setVisibility(View.GONE);
         mFavouritesEmptyView.setVisibility(View.VISIBLE);
         mLoadingView.setVisibility(View.GONE);

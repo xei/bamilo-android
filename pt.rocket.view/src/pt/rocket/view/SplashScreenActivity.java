@@ -88,7 +88,7 @@ import com.urbanairship.push.PushManager;
  * 
  */
 
-public class SplashScreenActivity extends FragmentActivity {
+public class SplashScreenActivity extends FragmentActivity implements IResponseCallback {
     
     private final static String TAG = LogTagHelper.create(SplashScreenActivity.class);
     
@@ -117,69 +117,85 @@ public class SplashScreenActivity extends FragmentActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sharedPrefs = getSharedPreferences(
-                ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        
+        Log.i(TAG, "ON CREATE");
+        // Set view
+        setContentView(R.layout.splash_screen);
+        // Get prefs
+        sharedPrefs = getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         // Keep launch time to compare with newer timestamp later
         launchTime = System.currentTimeMillis();
-        Log.i(TAG, "onCreate");
-        setContentView(R.layout.splash_screen);
         // Get values from intent
         getPushNotifications();
         // Initialize application
         JumiaApplication.INSTANCE.init(false, initializationHandler);
     }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        Log.i(TAG, "onResume");
-        shouldHandleEvent = true; 
-        
-        // Adx launch event
-        launchEvent();
-
-        
-    }
-     
+    
+    /*
+     * (non-Javadoc)
+     * @see android.support.v4.app.FragmentActivity#onStart()
+     */
     @Override
     protected void onStart() {
         super.onStart();
-        Log.i(TAG, "onStart");
-//        if(isUrbainAirshipInitialized){
-//            isUrbainAirshipInitialized = false;
-            UAirship.shared().getAnalytics().activityStarted(this);
-//        }
+        Log.i(TAG, "ON START");
+        UAirship.shared().getAnalytics().activityStarted(this);
     }
 
+    /*
+     * (non-Javadoc)
+     * @see android.support.v4.app.FragmentActivity#onResume()
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.i(TAG, "ON RESUME");
+        // 
+        shouldHandleEvent = true; 
+        // Adx launch event
+        launchEvent();
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see android.support.v4.app.FragmentActivity#onPause()
+     */
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.i(TAG, "ON PAUSE");
+        // Validate dialog
+        if (dialog != null) dialog.dismiss();
+        // Adx launch event
+        sendAdxLaunchEvent = false;
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see android.support.v4.app.FragmentActivity#onStop()
+     */
     @Override
     protected void onStop() {
         super.onStop();
+        Log.i(TAG, "ON STOP");
         UAirship.shared().getAnalytics().activityStopped(this);
         SharedPreferences.Editor eD = sharedPrefs.edit();
         eD.putBoolean(ConstantsSharedPrefs.KEY_SHOW_PROMOTIONS, true);
         eD.commit();
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if (dialog != null) {
-            dialog.dismiss();
-        }
-        
-        // Adx launch event
-        sendAdxLaunchEvent = false;
-    }
-
+    /*
+     * (non-Javadoc)
+     * @see android.support.v4.app.FragmentActivity#onDestroy()
+     */
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Log.i(TAG, "ON DESTROY");
         JumiaApplication.INSTANCE.unRegisterFragmentCallback(mCallback);
         // Clean push notifications
         cleanIntent(getIntent());
     }
+    
 
     Handler initializationHandler = new Handler(){
        public void handleMessage(android.os.Message msg) {
@@ -193,7 +209,7 @@ public class SplashScreenActivity extends FragmentActivity {
                showDevInfo();
            }
           
-           handleSuccessResponse(bundle);
+           onRequestComplete(bundle);
        }; 
     };
 
@@ -406,13 +422,16 @@ public class SplashScreenActivity extends FragmentActivity {
     }
 
     /**
-     * Handles correct response
-     * 
-     * @param bundle
+     * ######## RESPONSES ######## 
      */
     
-    private void handleSuccessResponse(Bundle bundle) {
-        Log.i(TAG,"on handleSuccessResponse");
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.interfaces.IResponseCallback#onRequestComplete(android.os.Bundle)
+     */
+    @Override
+    public void onRequestComplete(Bundle bundle) {
+        Log.i(TAG,"ON SUCCESS RESPONSE");
         if (!shouldHandleEvent) {
             return;
         }
@@ -449,7 +468,7 @@ public class SplashScreenActivity extends FragmentActivity {
     private void onProcessInitialize(){
         Log.i(TAG, "ON PROCESS: INITIALIZE");
         JumiaApplication.INSTANCE.registerFragmentCallback(mCallback);
-        JumiaApplication.INSTANCE.sendRequest(new GetApiInfoHelper(), null, responseCallback);
+        JumiaApplication.INSTANCE.sendRequest(new GetApiInfoHelper(), null, (IResponseCallback) this);
     }
     
     /**
@@ -465,7 +484,7 @@ public class SplashScreenActivity extends FragmentActivity {
             if(JumiaApplication.INSTANCE.countriesAvailable != null && JumiaApplication.INSTANCE.countriesAvailable.size() > 0){
                 LocationHelper.getInstance().autoCountrySelection(getApplicationContext(), initializationHandler);
             } else {
-                handleErrorResponse(bundle);
+                onRequestError(bundle);
             }
             
         } else {
@@ -473,7 +492,7 @@ public class SplashScreenActivity extends FragmentActivity {
             if(JumiaApplication.INSTANCE.countriesAvailable != null && JumiaApplication.INSTANCE.countriesAvailable.size() > 0){
                 JumiaApplication.INSTANCE.init(false, initializationHandler);
             } else {
-                handleErrorResponse(bundle);
+                onRequestError(bundle);
             }
         }
     }
@@ -495,7 +514,7 @@ public class SplashScreenActivity extends FragmentActivity {
     private void onProcessNoCountryConfigsError(){
         Log.i(TAG, "ON PROCESS NO COUNTRY CONFIGS");
         JumiaApplication.INSTANCE.registerFragmentCallback(mCallback);
-        JumiaApplication.INSTANCE.sendRequest(new GetCountriesConfigsHelper(), null, responseCallback);
+        JumiaApplication.INSTANCE.sendRequest(new GetCountriesConfigsHelper(), null, (IResponseCallback) this);
     }
     
     /**
@@ -505,7 +524,7 @@ public class SplashScreenActivity extends FragmentActivity {
     private void onProcessNoCountriesConfigsError(){
         Log.i(TAG, "ON PROCESS NO COUNTRIES CONFIGS");
         JumiaApplication.INSTANCE.registerFragmentCallback(mCallback);
-        JumiaApplication.INSTANCE.sendRequest(new GetCountriesGeneralConfigsHelper() , null, responseCallback);
+        JumiaApplication.INSTANCE.sendRequest(new GetCountriesGeneralConfigsHelper() , null, (IResponseCallback) this);
     }
     
     /**
@@ -544,8 +563,7 @@ public class SplashScreenActivity extends FragmentActivity {
         if(bundle.getBoolean(Section.SECTION_NAME_COUNTRY_CONFIGS, false)) {
             Log.d(TAG, "THE COUNTRY CONFIGS IS OUT DATED");
             JumiaApplication.INSTANCE.registerFragmentCallback(mCallback);
-            JumiaApplication.INSTANCE.sendRequest(new GetCountriesConfigsHelper(), null, responseCallback);
-              
+            JumiaApplication.INSTANCE.sendRequest(new GetCountriesConfigsHelper(), null, (IResponseCallback) this);
         } else {
             Log.d(TAG, "START MAIN ACTIVITY");
             // Show activity
@@ -554,108 +572,32 @@ public class SplashScreenActivity extends FragmentActivity {
         }
     }
     
-    /**
-     * ########### MAINTENANCE ###########
-     */
-    
-    private void setLayoutMaintenance(final EventType eventType) {
-        
-        findViewById(R.id.fallback_content).setVisibility(View.VISIBLE);
-        Button retry = (Button) findViewById(R.id.fallback_retry);
-        retry.setOnClickListener(new OnClickListener() {
-            
-            @Override
-            public void onClick(View v) {
-                findViewById(R.id.fallback_content).setVisibility(View.GONE);
-               JumiaApplication.INSTANCE.sendRequest(JumiaApplication.INSTANCE.getRequestsRetryHelperList().get(eventType), 
-                       JumiaApplication.INSTANCE.getRequestsRetryBundleList().get(eventType), JumiaApplication.INSTANCE.getRequestsResponseList().get(eventType)); 
-            }
-        });
-        
-        ImageView mapBg = (ImageView) findViewById(R.id.fallback_country_map);
-        AQuery aq = new AQuery(this);
-        aq.id(mapBg).image(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_MAP_FLAG, ""));
-//        mapBg.setImageDrawable(getApplicationContext().getResources().obtainTypedArray(R.array.country_fallback_map)
-//                .getDrawable(position));
-
-        String country = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME,"");
-        TextView fallbackBest = (TextView) findViewById(R.id.fallback_best);
-        fallbackBest.setText(R.string.fallback_best);
-        if (country.split(" ").length == 1) {
-            TextView tView = (TextView) findViewById(R.id.fallback_country);
-            tView.setVisibility(View.VISIBLE);
-            TextView txView = (TextView) findViewById(R.id.fallback_options_bottom);
-            txView.setVisibility(View.VISIBLE);
-            txView.setText(country.toUpperCase());
-            findViewById(R.id.fallback_country_double).setVisibility(View.GONE);
-            tView.setText(country.toUpperCase());
-        } else {
-            TextView tView = (TextView) findViewById(R.id.fallback_country_top);
-            tView.setText(country.split(" ")[0].toUpperCase());
-            TextView tViewBottom = (TextView) findViewById(R.id.fallback_country_bottom);
-            tViewBottom.setText(country.split(" ")[1].toUpperCase());
-            fallbackBest.setTextSize(11.88f);
-            TextView txView = (TextView) findViewById(R.id.fallback_options_bottom);
-            txView.setVisibility(View.VISIBLE);
-            txView.setText(country.toUpperCase());
-            findViewById(R.id.fallback_country_double).setVisibility(View.VISIBLE);
-            findViewById(R.id.fallback_country).setVisibility(View.GONE);
-
-        }
-        
-        TextView mTextViewBT = (TextView) findViewById(R.id.fallback_country_bottom_text);
-        mTextViewBT.setText(R.string.fallback_maintenance_text);
-        
-        TextView mTextViewBT2 = (TextView) findViewById(R.id.fallback_country_bottom_text2);
-        mTextViewBT2.setText(R.string.fallback_maintenance_text_bottom);
-        
-        TextView mFallbackChoice = (TextView) findViewById(R.id.fallback_choice);
-        mFallbackChoice.setText(R.string.fallback_choice);
-        
-        TextView mFallbackDoorstep = (TextView) findViewById(R.id.fallback_doorstep);
-        mFallbackDoorstep.setText(R.string.fallback_doorstep);
-        
-        fallbackBest.setSelected(true);
-       
-    }
-    
-    IResponseCallback responseCallback = new IResponseCallback() {
-
-        @Override
-        public void onRequestError(Bundle bundle) {
-            handleErrorResponse(bundle);
-        }
-
-        @Override
-        public void onRequestComplete(Bundle bundle) {
-            handleSuccessResponse(bundle);
-        }
-    };
-    
-
-    /**
-     * Handles error responses
+    /*
+     * (non-Javadoc)
      * 
-     * @param bundle
+     * @see pt.rocket.interfaces.IResponseCallback#onRequestError(android.os.Bundle)
      */
-    private void handleErrorResponse(Bundle bundle) {
-        Log.i(TAG, "codeerror");
+    @Override
+    public void onRequestError(Bundle bundle) {
+        Log.i(TAG,"ON ERROR RESPONSE");
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+
         @SuppressWarnings("unchecked")
         HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
-        Log.i(TAG, "codeerror "+errorCode);
+        Log.i(TAG, "codeerror " + errorCode);
+
         if (errorCode.isNetworkError()) {
             switch (errorCode) {
+            case CONNECT_ERROR:
+            case TIME_OUT:
             case HTTP_STATUS:
             case NO_NETWORK:
-//                Log.i(TAG, "code1 no network "+eventType);
+                // Log.i(TAG, "code1 no network "+eventType);
                 // Remove dialog if exist
-                if (dialog != null){
+                if (dialog != null) {
                     try {
-                        
-                        
-                        dialog.dismiss();    
+                        dialog.dismiss();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -671,7 +613,7 @@ public class SplashScreenActivity extends FragmentActivity {
                                  */
                                 Bundle args = new Bundle();
                                 args.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.INITIALIZE);
-                                handleSuccessResponse(args);
+                                onRequestComplete(args);
                                 dialog.dismiss();
                             }
                         }, true);
@@ -721,17 +663,86 @@ public class SplashScreenActivity extends FragmentActivity {
 
                 dialog.show(getSupportFragmentManager(), null);
             }
-        } else if(eventType == EventType.GET_GLOBAL_CONFIGURATIONS){
-            if(JumiaApplication.INSTANCE.countriesAvailable != null && JumiaApplication.INSTANCE.countriesAvailable.size() > 0){
+        } else if (eventType == EventType.GET_GLOBAL_CONFIGURATIONS) {
+            if (JumiaApplication.INSTANCE.countriesAvailable != null && JumiaApplication.INSTANCE.countriesAvailable.size() > 0) {
                 Log.i(TAG, "code1configs received response correctly!!!");
                 // Auto country selection
                 LocationHelper.getInstance().autoCountrySelection(getApplicationContext(), initializationHandler);
             } else {
-                setLayoutMaintenance(eventType);    
+                setLayoutMaintenance(eventType);
             }
         }
     }
     
+     
+     
+     /**
+      * ########### MAINTENANCE ###########
+      */
+     
+     private void setLayoutMaintenance(final EventType eventType) {
+         
+         findViewById(R.id.fallback_content).setVisibility(View.VISIBLE);
+         Button retry = (Button) findViewById(R.id.fallback_retry);
+         retry.setOnClickListener(new OnClickListener() {
+             
+             @Override
+             public void onClick(View v) {
+                 findViewById(R.id.fallback_content).setVisibility(View.GONE);
+                JumiaApplication.INSTANCE.sendRequest(JumiaApplication.INSTANCE.getRequestsRetryHelperList().get(eventType), 
+                        JumiaApplication.INSTANCE.getRequestsRetryBundleList().get(eventType), JumiaApplication.INSTANCE.getRequestsResponseList().get(eventType)); 
+             }
+         });
+         
+         ImageView mapBg = (ImageView) findViewById(R.id.fallback_country_map);
+         AQuery aq = new AQuery(this);
+         aq.id(mapBg).image(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_MAP_FLAG, ""));
+//         mapBg.setImageDrawable(getApplicationContext().getResources().obtainTypedArray(R.array.country_fallback_map)
+//                 .getDrawable(position));
+
+         String country = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME,"");
+         TextView fallbackBest = (TextView) findViewById(R.id.fallback_best);
+         fallbackBest.setText(R.string.fallback_best);
+         if (country.split(" ").length == 1) {
+             TextView tView = (TextView) findViewById(R.id.fallback_country);
+             tView.setVisibility(View.VISIBLE);
+             TextView txView = (TextView) findViewById(R.id.fallback_options_bottom);
+             txView.setVisibility(View.VISIBLE);
+             txView.setText(country.toUpperCase());
+             findViewById(R.id.fallback_country_double).setVisibility(View.GONE);
+             tView.setText(country.toUpperCase());
+         } else {
+             TextView tView = (TextView) findViewById(R.id.fallback_country_top);
+             tView.setText(country.split(" ")[0].toUpperCase());
+             TextView tViewBottom = (TextView) findViewById(R.id.fallback_country_bottom);
+             tViewBottom.setText(country.split(" ")[1].toUpperCase());
+             fallbackBest.setTextSize(11.88f);
+             TextView txView = (TextView) findViewById(R.id.fallback_options_bottom);
+             txView.setVisibility(View.VISIBLE);
+             txView.setText(country.toUpperCase());
+             findViewById(R.id.fallback_country_double).setVisibility(View.VISIBLE);
+             findViewById(R.id.fallback_country).setVisibility(View.GONE);
+
+         }
+         
+         TextView mTextViewBT = (TextView) findViewById(R.id.fallback_country_bottom_text);
+         mTextViewBT.setText(R.string.fallback_maintenance_text);
+         
+         TextView mTextViewBT2 = (TextView) findViewById(R.id.fallback_country_bottom_text2);
+         mTextViewBT2.setText(R.string.fallback_maintenance_text_bottom);
+         
+         TextView mFallbackChoice = (TextView) findViewById(R.id.fallback_choice);
+         mFallbackChoice.setText(R.string.fallback_choice);
+         
+         TextView mFallbackDoorstep = (TextView) findViewById(R.id.fallback_doorstep);
+         mFallbackDoorstep.setText(R.string.fallback_doorstep);
+         
+         fallbackBest.setSelected(true);
+        
+     }
+     
+     
+     
 
     /**
      * Requests and Callbacks methods

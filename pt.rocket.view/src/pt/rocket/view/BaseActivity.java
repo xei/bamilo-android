@@ -247,9 +247,9 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        JumiaApplication.INSTANCE.doBindService();
-
         Log.d(TAG, "ON CREATE");
+        
+        JumiaApplication.INSTANCE.doBindService();
 
         // Validate if is phone and force orientaion
         setOrientationForHandsetDevices();

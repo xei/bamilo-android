@@ -48,9 +48,7 @@ public final class ShopSelector {
 	 */
 	public static void init(Context context, String shopId, boolean isChangeShop) {
 		SharedPreferences sharedPrefs = context.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-		setLocale(
-				context,
-				sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ID, null));
+		setLocale( context, sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ID, null));
 		RestContract.init(context, shopId);
 		RestClientSingleton.init(context);
 

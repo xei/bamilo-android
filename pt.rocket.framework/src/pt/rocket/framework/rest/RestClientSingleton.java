@@ -586,17 +586,21 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 			SharedPreferences sharedPrefs = mContext.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
 	        
 	        /**
+	         * TODO: Validate
 	         * Fixed crash.
 	         * If shop id isn't present in this point something is wrong, return 0 as default value
 	         * @author sergiopereira 
 	         */
-			String shopId = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ID, null);
+	        //int shopId = sharedPrefs.getInt(Darwin.KEY_SELECTED_COUNTRY_ID, 0);
+	        //if(shopId == -1) shopId = 0;
+			// Old
+	        String shopId = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ID, null);
 	        if(shopId == null){
 	        	throw new NullPointerException(RestClientSingleton.class.getName() + " Shop Id is null!! Cannot initialize!");
 	        }
 	        
-			RestContract.init(mContext,shopId);
-			Darwin.initialize(DarwinMode.DEBUG, mContext, shopId, false);
+			RestContract.init(mContext, "" + shopId);
+			Darwin.initialize(DarwinMode.DEBUG, mContext, "" + shopId, false);
 		}
 		if (RestContract.USE_AUTHENTICATION) {
 			httpClient.getCredentialsProvider()
