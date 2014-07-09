@@ -27,7 +27,7 @@
             android:id="@+id/checkout_summary_shipping_method_btn_edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/btn_edit" />
+            android:src="@drawable/selector_btn_edit" />
     </LinearLayout>
 
     <View

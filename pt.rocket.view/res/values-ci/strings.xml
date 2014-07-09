@@ -236,7 +236,6 @@
     <string name="order_success">Votre commande a été enregistré avec succès,\nsous le numéro suivant:</string>
     <string name="track_order_status">Statut actuel:</string>
     <string name="track_other_order">Consultez une autre commande</string>
-    <string name="order_status">Suivi de commande</string>
     <string name="creation_date">Date de création:</string>
     <string name="payment_method">Méthode de Paiement:</string>
     <string name="order_track_products">Produits:</string>

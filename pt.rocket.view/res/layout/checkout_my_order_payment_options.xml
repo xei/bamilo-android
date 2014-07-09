@@ -29,7 +29,7 @@
             android:id="@+id/checkout_my_order_payment_options_btn_edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/btn_edit" />
+            android:src="@drawable/selector_btn_edit" />
     </LinearLayout>
 
     <View

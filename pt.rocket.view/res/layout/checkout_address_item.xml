@@ -102,7 +102,7 @@
                 android:layout_gravity="bottom"
                 android:paddingLeft="@dimen/margin_mid"
                 android:paddingRight="@dimen/margin_mid"
-                android:src="@drawable/btn_edit" />
+                android:src="@drawable/selector_btn_edit" />
         </LinearLayout>
     </LinearLayout>
 

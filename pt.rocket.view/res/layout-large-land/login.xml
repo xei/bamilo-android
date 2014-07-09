@@ -85,7 +85,7 @@
                     android:gravity="center"
                     android:paddingLeft="3dp"
                     android:text="@string/fgt_pass"
-                    android:textColor="@color/blue_basic"
+                    android:textColor="@drawable/selector_link_blue"
                     android:textSize="@dimen/text_small" />
             </RelativeLayout>
 

@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/white"
+    android:background="@drawable/selector_clickableitem_highlight"
     android:paddingBottom="@dimen/margin_mid"
     android:paddingLeft="@dimen/margin_large"
     android:paddingRight="@dimen/margin_large"
@@ -22,12 +22,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/dialog_item_title"
+        android:layout_toLeftOf="@+id/arrow"
+        android:ellipsize="marquee"
         android:fontFamily="roboto_regular"
         android:maxLines="1"
         android:singleLine="true"
-        android:ellipsize="marquee"
         android:text="subtitle"
-        android:layout_toLeftOf="@+id/arrow"
         android:textColor="@color/grey_divider_light_text"
         android:textSize="@dimen/text_xl" />
 

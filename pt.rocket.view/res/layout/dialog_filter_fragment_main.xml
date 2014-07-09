@@ -36,7 +36,7 @@
             android:fontFamily="roboto_regular"
             android:gravity="right"
             android:text="@string/clear_all_uppercase_label"
-            android:textColor="@color/orange_basic"
+            android:textColor="@drawable/selector_clearall"
             android:textSize="@dimen/text_l" />
     </LinearLayout>
 

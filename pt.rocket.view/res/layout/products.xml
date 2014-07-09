@@ -52,7 +52,7 @@
             android:layout_height="wrap_content"
             android:layout_above="@id/loadmore"
             android:layout_alignParentTop="true"
-            android:listSelector="@android:color/transparent"
+            android:listSelector="@drawable/selector_listitem_highlight"
             android:numColumns="3" />
     </RelativeLayout>
 

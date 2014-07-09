@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:background="@android:color/white" >
+    android:background="@android:color/white"
+    android:orientation="vertical" >
 
     <!-- BOTTOM ADDRESSES -->
 
@@ -13,7 +13,6 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/margin_large"
         android:layout_marginTop="@dimen/margin_huge"
-        android:drawableEnd="@drawable/btn_addaddress_orange"
         android:fontFamily="roboto_regular"
         android:gravity="left"
         android:textColor="@color/orange_basic"
@@ -44,7 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_mid"
             android:background="@android:color/transparent"
-            android:drawableEnd="@drawable/ico_addaddress_grey"
+            android:drawableRight="@drawable/selector_btn_addaddress"
             android:fontFamily="roboto_regular"
             android:gravity="left|center"
             android:text="@string/billing_add_label"

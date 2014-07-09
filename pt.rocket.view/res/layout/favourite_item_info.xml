@@ -18,7 +18,7 @@
             android:layout_alignParentRight="true"
             android:fontFamily="roboto_regular"
             android:text="@string/shoppingcart_item_btn_delete"
-            android:textColor="@color/blue_basic"
+            android:textColor="@drawable/selector_link_blue"
             android:textSize="@dimen/text_xs" />
 
         <!-- BRAND -->
