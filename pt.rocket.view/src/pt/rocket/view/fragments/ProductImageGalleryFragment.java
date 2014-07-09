@@ -78,8 +78,6 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
     
     private ArrayList<String> imagesList;
     
-
-
     /**
      * 
      * @param dynamicForm
@@ -338,11 +336,20 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
         mViewPager.setCurrentItem(currentPosition);
 
         if (!showHorizontalListView) {
-            final GestureDetector tapGestureDetector = new GestureDetector(getActivity(),
-                    new TapGestureListener());
+            final GestureDetector tapGestureDetector = new GestureDetector(getActivity(), new TapGestureListener(mViewPager));
             mViewPager.setOnTouchListener(new OnTouchListener() {
+                /**
+                 * Handle on touch and when user lifts finger from viewPager show normal asset
+                 */
                 public boolean onTouch(View v, MotionEvent event) {
-                    tapGestureDetector.onTouchEvent(event);
+                    if (tapGestureDetector.onTouchEvent(event)) {
+                        return true;
+                    }
+
+                    if (event.getAction() == MotionEvent.ACTION_UP) {
+                        mViewPager.setSelected(false);
+                    }
+
                     return false;
                 }
             });
@@ -378,12 +385,50 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
         // mViewPager.setCurrentItem(position, true);
     }
 
+    /**
+     * GestureListener to respond to tap on viewPager<br>
+     * Added setSelected(true) when viewPager is being pressed in order to trigger selector<br>
+     * <br>
+     * http://stackoverflow.com/questions/2089552/android-how-to-detect-when-a-scroll-has-ended/
+     * 3818124#3818124
+     * 
+     * @modified Andre Lopes
+     */
     class TapGestureListener extends GestureDetector.SimpleOnGestureListener {
+        View mViewPager;
+
+        public TapGestureListener(View mViewPager) {
+            this.mViewPager = mViewPager;
+        }
+
+        /**
+         * show selected asset
+         */
+        @Override
+        public boolean onDown(MotionEvent e) {
+            Log.i(TAG, "onShowPress");
+            mViewPager.setSelected(true);
+
+            return false;
+        }
+
+        /**
+         * show normal asset
+         */
+        @Override
+        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+            Log.i(TAG, "onScroll");
+            // i'm only scrolling along the X axis
+            mViewPager.setSelected(false);
+
+            return super.onScroll(e1, e2, distanceX, distanceY);
+        }
 
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
 
             if (!isZoomAvailable) {
+                Log.i(TAG, "onSingleTapConfirmed");
                 Bundle bundle = new Bundle();
                 bundle.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProduct.getUrl());
                 bundle.putInt(ConstantsIntentExtra.CURRENT_LISTPOSITION,

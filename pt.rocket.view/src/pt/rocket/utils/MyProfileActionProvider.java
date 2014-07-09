@@ -114,15 +114,18 @@ public class MyProfileActionProvider extends ActionProvider {
      * Show spinner dropdown
      */
     public void showSpinner() {
+        Log.i(TAG, "showSpinner");
         mSpinner.performClick();
+        // mIcon.setImageResource(R.drawable.btn_overflow_pressed);
     }
 
     /**
      * Change selection on Spinner to force a dismiss
      */
     public void dismissSpinner() {
-        Log.d(TAG, "dismissSpinner");
+        Log.i(TAG, "dismissSpinner");
         mSpinner.dismiss();
+        // mIcon.setImageResource(R.drawable.selector_navigation_overflow);
     }
 
     /**

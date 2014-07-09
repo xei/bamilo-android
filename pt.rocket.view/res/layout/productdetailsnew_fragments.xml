@@ -68,6 +68,7 @@
 
             <RelativeLayout
                 android:id="@+id/image_container"
+                style="@style/list_row_style"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/variations_container" >

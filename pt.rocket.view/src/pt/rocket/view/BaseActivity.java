@@ -1357,6 +1357,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
             // only hide dropdown for Spinner if hideMyProfile flag is activated
             if (hideMyProfile && myProfileActionProvider != null) {
+                Log.i(TAG, "hideMyProfile");
                 myProfileActionProvider.dismissSpinner();
             }
         }
