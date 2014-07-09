@@ -2,7 +2,7 @@
  * @author Manuel Silva
  * 
  */
-package pt.rocket.helpers;
+package pt.rocket.helpers.cart;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,6 +13,8 @@ import pt.rocket.framework.objects.ShoppingCart;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
+import pt.rocket.helpers.BaseHelper;
+import pt.rocket.helpers.HelperPriorityConfiguration;
 import android.os.Bundle;
 
 /**
@@ -47,16 +49,11 @@ public class GetShoppingCartChangeItemQuantityHelper extends BaseHelper {
         try {
             cart.initialize(jsonObject);
         } catch (JSONException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         JumiaApplication.INSTANCE.setCart(cart);
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, cart);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT);
-//        long elapsed = System.currentTimeMillis() - JumiaApplication.INSTANCE.timeTrackerMap.get(EventType.CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT);
-//        Log.i("REQUEST", "event type response : "+bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY)+" time spent : "+elapsed);
-//        String trackValue = bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY) + " : "+elapsed;
-//        JumiaApplication.INSTANCE.writeToTrackerFile(trackValue);
         return bundle;
     }
 

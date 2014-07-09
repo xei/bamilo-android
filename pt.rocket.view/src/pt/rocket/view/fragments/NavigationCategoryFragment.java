@@ -16,11 +16,13 @@ import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.objects.Category;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.framework.utils.ShopSelector;
 import pt.rocket.helpers.GetCategoriesHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -149,7 +151,8 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
         view.findViewById(R.id.campaign_retry_button).setOnClickListener(this);
         // Validate the cache
         if (JumiaApplication.currentCategories != null) showCategoryList();
-        else triggerGetCategories(); 
+        else if(!TextUtils.isEmpty(ShopSelector.getShopId())) triggerGetCategories();
+        else Log.w(TAG, "APPLICATION IS ON BIND PROCESS");
     }
 
     /*

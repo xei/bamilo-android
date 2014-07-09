@@ -97,6 +97,9 @@
 
     <!-- MAIN LAYOUT -->
     <dimen name="main_layout_width">@dimen/match_parent</dimen>
+    <dimen name="sliding_tab_height">38dp</dimen>
+    <dimen name="sliding_tab_inidicator_thickness">3dip</dimen>
+    <dimen name="sliding_tab_text_size">14sp</dimen>
 
     <!-- PRODUCT LIST ITEM -->
     <dimen name="product_list_item_image_width">116dp</dimen>
@@ -172,7 +175,6 @@
     <dimen name="campaign_size_spinner_width">50dp</dimen>
     <dimen name="campaign_title_button_height">48dp</dimen>
     <dimen name="campaign_title_button_text_vertical_alignment">7dp</dimen>
-    <dimen name="campaign_tab_inidicator_height">3.33dp</dimen>
 
     <!-- NO RESULTS PAGE -->
     <dimen name="no_results_top_margin">40dp</dimen>

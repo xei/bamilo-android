@@ -140,8 +140,7 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 
 	private RestClientSingleton(Context context) {
 		this.context = context;
-		connManager = (ConnectivityManager) context
-				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		connManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
 		CacheConfig cacheConfig = new CacheConfig();
 		cacheConfig.setMaxCacheEntries(100);
@@ -152,8 +151,7 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 		setAuthentication(context, darwinHttpClient);
 		darwinHttpClient.setRoutePlanner(this);
 
-		CachingHttpClient cachingClient = new CachingHttpClient(
-				darwinHttpClient, cache, cacheConfig);
+		CachingHttpClient cachingClient = new CachingHttpClient(darwinHttpClient, cache, cacheConfig);
 		cachingClient.log = new LazHttpClientAndroidLog("CachingHttpClient");
 		if (ConfigurationConstants.LOG_DEBUG_ENABLED) {
 			cachingClient.log.enableWarn(true);
@@ -466,6 +464,9 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 				EntityUtils.consumeQuietly(entity);
 				return null;
 			}
+			
+
+			// Log.i(TAG, "USER AGENT : " + System.getProperty("http.agent"));
 			
 			// FIXME - OutOfMemoryError
 			result = EntityUtils.toString(entity, Consts.UTF_8);

@@ -1,0 +1,406 @@
+/**
+ * 
+ */
+package pt.rocket.view.fragments;
+
+import pt.rocket.app.JumiaApplication;
+import pt.rocket.constants.ConstantsIntentExtra;
+import pt.rocket.controllers.fragments.FragmentController;
+import pt.rocket.controllers.fragments.FragmentType;
+import pt.rocket.factories.TeasersFactory;
+import pt.rocket.framework.objects.Homepage;
+import pt.rocket.framework.objects.ITargeting.TargetType;
+import pt.rocket.framework.objects.TeaserSpecification;
+import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.utils.ScrollViewWithHorizontal;
+import pt.rocket.view.BaseActivity;
+import pt.rocket.view.R;
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import de.akquinet.android.androlog.Log;
+
+/**
+ * Class used to show an home page
+ * @author sergiopereira
+ */
+public class HomePageFragment extends BaseFragment implements OnClickListener {
+
+    public static final String TAG = LogTagHelper.create(HomePageFragment.class);
+    
+    public static final String HOME_PAGE_KEY = "homepage";
+    
+    public static final String SCROLL_STATE_KEY = "scroll";
+
+    private static HomePageFragment sHomePageFragment;
+    
+    private LayoutInflater mInflater;
+
+    private ScrollViewWithHorizontal mScrollViewWithHorizontal;
+
+    private Homepage mHomePage;
+
+    private int[] mScrollSavedPosition;
+    
+    /**
+     * Constructor via bundle
+     * @return CampaignFragment
+     * @author sergiopereira
+     */
+    public static HomePageFragment getInstance(Bundle bundle) {
+        sHomePageFragment = new HomePageFragment();
+        sHomePageFragment.setArguments(bundle);
+        return sHomePageFragment;
+    }
+
+    /**
+     * Empty constructor
+     */
+    public HomePageFragment() {
+        super(IS_NESTED_FRAGMENT);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see android.support.v4.app.Fragment#onAttach(android.app.Activity)
+     */
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        Log.i(TAG, "ON ATTACH");
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see android.support.v4.app.Fragment#onCreate(android.os.Bundle)
+     */
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.i(TAG, "ON CREATE");
+        // Get home page from arguments
+        mHomePage = getArguments().getParcelable(HOME_PAGE_KEY);
+        
+        // Validate the saved state
+        if(savedInstanceState != null && savedInstanceState.containsKey(HOME_PAGE_KEY)){
+            Log.i(TAG, "ON GET SAVED STATE");
+            mHomePage = savedInstanceState.getParcelable(HOME_PAGE_KEY);
+        }
+        
+        // Get saved scroll position
+        if(savedInstanceState != null && savedInstanceState.containsKey(SCROLL_STATE_KEY)) {
+            mScrollSavedPosition = savedInstanceState.getIntArray(SCROLL_STATE_KEY);
+            Log.d(TAG, "SCROLL POS: " + mScrollSavedPosition[0] + " " + mScrollSavedPosition[1]);
+        }
+       
+    }
+    
+    /*
+     * (non-Javadoc)
+     * 
+     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
+     * android.view.ViewGroup, android.os.Bundle)
+     */
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState) {
+        super.onCreateView(inflater, viewGroup, savedInstanceState);
+        Log.i(TAG, "ON CREATE VIEW");
+        mInflater = inflater;
+        return inflater.inflate(R.layout.home_page_fragment, viewGroup, false);
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see android.support.v4.app.Fragment#onViewCreated(android.view.View, android.os.Bundle)
+     */
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Log.i(TAG, "ON VIEW CREATED");
+        // Get scroll view
+        mScrollViewWithHorizontal = (ScrollViewWithHorizontal) view.findViewById(R.id.view_pager_element_scrollview);
+        // Get container
+        LinearLayout container = (LinearLayout) view.findViewById(R.id.view_pager_element_frame);
+        // Validate current home
+        if (mHomePage != null) showHomePage(mHomePage, container);
+        else Log.w(TAG, "WARNING: HOME PAGE IS NULL");
+    }
+        
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.view.fragments.BaseFragment#onStart()
+     */
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.i(TAG, "ON START");
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see android.support.v4.app.Fragment#onResume()
+     */
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.i(TAG, "ON RESUME");
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see android.support.v4.app.Fragment#onPause()
+     */
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.i(TAG, "ON PAUSE");
+        // Save the scroll state for background
+        savedScrollState();
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see android.support.v4.app.Fragment#onSaveInstanceState(android.os.Bundle)
+     */
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.i(TAG, "ON SAVE INSTANCE STATE: HOME PAGE");
+        // Save home page
+        outState.putParcelable(HOME_PAGE_KEY, mHomePage);
+        // Save the scroll state for rotation
+        if(savedScrollState() && mScrollSavedPosition != null) outState.putIntArray(SCROLL_STATE_KEY, mScrollSavedPosition);
+    }
+    
+    /**
+     * Method to save the current scroll state
+     * @return int[]
+     * @author sergiopereira
+     */
+    private boolean savedScrollState(){
+        Log.i(TAG, "ON SAVE SCROLL STATE");
+        // Validate view
+        if(mScrollViewWithHorizontal == null) return false;
+        // Save state
+        mScrollSavedPosition = new int[]{ mScrollViewWithHorizontal.getScrollX(), mScrollViewWithHorizontal.getScrollY()};
+        return true;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see android.support.v4.app.Fragment#onStop()
+     */
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.i(TAG, "ON STOP");
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.view.fragments.BaseFragment#onDestroyView()
+     */
+    @Override
+    public void onDestroyView() {
+        Log.i(TAG, "ON DESTROY VIEW");
+        super.onDestroyView();
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.view.fragments.BaseFragment#onDestroy()
+     */
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.i(TAG, "ON DESTROY");
+    }
+    
+    
+    /**
+     * Show the current home page
+     * @param homePage
+     * @param mainView
+     * @author sergiopereira
+     */
+    private void showHomePage(Homepage homePage, LinearLayout mainView) {
+        Log.i(TAG, "SHOW HOME WITH TEASERS");
+        // Create and show each teaser
+        createAndShowTeasers(homePage, mainView);
+        // Restore the scroll state
+        restoreScrollState();
+    }
+    
+    /**
+     * Create and add the each teaser to main container
+     * @param homePage
+     * @param mainView
+     * @author sergiopereira
+     */
+    private void createAndShowTeasers(Homepage homePage, LinearLayout mainView){
+        // Create the teaser factory
+        TeasersFactory mTeasersFactory = new TeasersFactory();
+        // For each teaser create a view and add to container
+        for ( TeaserSpecification<?> teaser : homePage.getTeaserSpecification())
+            mainView.addView(mTeasersFactory.getSpecificTeaser(getActivity(), mainView, teaser, mInflater, this));
+    }
+    
+    /**
+     * Restore the saved scroll position
+     * @author sergiopereira
+     */
+    private void restoreScrollState() {
+        Log.i(TAG, "ON RESTORE SCROLL SAVED STATE");
+        // Validate state 
+        if(mScrollSavedPosition != null) {
+            // Scroll to saved position
+            mScrollViewWithHorizontal.post(new Runnable() {
+                public void run() {
+                    Log.d(TAG, "SCROLL TO POS: " + mScrollSavedPosition[0] + " " + mScrollSavedPosition[1]);
+                    mScrollViewWithHorizontal.scrollTo(mScrollSavedPosition[0], mScrollSavedPosition[1]);
+                }
+            });
+        }
+    }
+    
+    /**
+     * ############# LISTENERS #############
+     */
+    
+    /*
+     * (non-Javadoc)
+     * @see android.view.View.OnClickListener#onClick(android.view.View)
+     */
+    @Override
+    public void onClick(View view) {
+        // Get url
+        String targetUrl = (String) view.getTag(R.id.target_url);
+        // Get type
+        TargetType targetType = (TargetType) view.getTag(R.id.target_type);
+        // Get title
+        String targetTitle = (String) view.getTag(R.id.target_title);
+        // Validate type
+        if (targetType != null) {
+            Bundle bundle = new Bundle();
+            Log.d(TAG, "targetType = " + targetType.name() + " targetUrl = " + targetUrl);
+            switch (targetType) {
+            case CATEGORY:
+                onClickCategory(targetUrl, bundle);
+                break;
+            case PRODUCT_LIST:
+                onClickCatalog(targetUrl, targetTitle, bundle);
+                break;
+            case PRODUCT:
+                onClickProduct(targetUrl, bundle);
+                break;
+            case BRAND:
+                onClickBrand(targetUrl, bundle);
+                break;
+            case CAMPAIGN:
+                onClickCampaign(view, targetUrl, targetTitle, bundle);
+                break;
+            default:
+                Log.w(TAG, "WARNING ON CLICK: UNKNOWN VIEW");
+                break;
+            }
+        }
+    }
+    
+    /**
+     * Process the category click
+     * @param targetUrl
+     * @param bundle
+     * @author sergiopereira
+     */
+    private void onClickCategory(String targetUrl, Bundle bundle) {
+        Log.i(TAG, "ON CLICK CATEGORY");
+        bundle.putString(ConstantsIntentExtra.CATEGORY_URL, targetUrl);
+        bundle.putSerializable(ConstantsIntentExtra.CATEGORY_LEVEL, FragmentType.CATEGORIES_LEVEL_1);
+        ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.CATEGORIES_LEVEL_1, bundle, FragmentController.ADD_TO_BACK_STACK);
+    }
+    
+    /**
+     * Process the catalog click
+     * @param targetUrl
+     * @param targetTitle
+     * @param bundle
+     */
+    private void onClickCatalog(String targetUrl, String targetTitle, Bundle bundle) {
+        Log.i(TAG, "ON CLICK CATALOG");
+        if (targetUrl != null) {
+            bundle.putString(ConstantsIntentExtra.CONTENT_URL, targetUrl);
+            bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, targetTitle);
+            bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, null);
+            bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaser_prefix);
+            bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, targetUrl);
+            ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.PRODUCT_LIST, bundle, true);
+        } else Log.w(TAG, "WARNING: URL IS NULL"); 
+    }
+    
+    /**
+     * Process the product click
+     * @param targetUrl
+     * @param bundle
+     * @author sergiopereira
+     */
+    private void onClickProduct(String targetUrl, Bundle bundle) {
+        Log.i(TAG, "ON CLICK PRODUCT");
+        if (targetUrl != null) {
+            JumiaApplication.INSTANCE.showRelatedItemsGlobal = false;
+            bundle.putString(ConstantsIntentExtra.CONTENT_URL, targetUrl);
+            bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaserprod_prefix);
+            bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
+            ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
+        } else Log.i(TAG, "WARNING: URL IS NULL");
+    }
+    
+    /**
+     * Process the brand click
+     * @param targetUrl
+     * @param bundle
+     */
+    private void onClickBrand(String targetUrl, Bundle bundle) {
+        Log.i(TAG, "ON CLICK BRAND");
+        if (targetUrl != null) {
+            bundle.putString(ConstantsIntentExtra.CONTENT_URL, null);
+            bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, targetUrl);
+            bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, targetUrl);
+            bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gsearch);
+            bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
+            ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.PRODUCT_LIST, bundle, FragmentController.ADD_TO_BACK_STACK);                            
+        } else Log.i(TAG, "WARNING: URL IS NULL");
+    }
+    
+    /**
+     * Process the campaignclick
+     * @param view
+     * @param targetUrl
+     * @param targetTitle
+     * @param bundle
+     */
+    private void onClickCampaign(View view, String targetUrl, String targetTitle, Bundle bundle) {
+        String targetPosition = "0";
+        if (view.getTag(R.id.position) != null) {
+            targetPosition = view.getTag(R.id.position).toString();
+        }
+        if (targetUrl != null && targetPosition != null && JumiaApplication.hasSavedTeaserCampaigns()) {
+            bundle.putString(ConstantsIntentExtra.CONTENT_URL, targetUrl);
+            bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, targetTitle);
+            // Selected campaign position
+            Log.d(TAG, "ON CLICK CAMPAIGN: " + targetTitle + " " + targetUrl + " " + targetPosition);
+            bundle.putParcelableArrayList(CampaignsFragment.CAMPAIGNS_TAG, JumiaApplication.getSavedTeaserCampaigns());
+            bundle.putInt(CampaignsFragment.CAMPAIGN_POSITION_TAG, Integer.valueOf(targetPosition));
+            ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.CAMPAIGNS, bundle, FragmentController.ADD_TO_BACK_STACK);
+        }
+    }
+    
+}

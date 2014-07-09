@@ -2,7 +2,7 @@
 <org.holoeverywhere.widget.TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/tab"
     android:layout_width="wrap_content"
-    android:layout_height="48dp"
+    android:layout_height="@dimen/sliding_tab_height"
     android:clickable="true"
     android:fontFamily="roboto_bold"
     android:gravity="center"
@@ -10,4 +10,4 @@
     android:paddingRight="@dimen/margin_midhuge"
     android:text="@string/menu_label_uppercase"
     android:textColor="@drawable/selector_campaign_tab_text"
-    android:textSize="@dimen/text_m" />
+    android:textSize="@dimen/sliding_tab_text_size" />

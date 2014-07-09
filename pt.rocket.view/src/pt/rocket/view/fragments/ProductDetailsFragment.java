@@ -30,7 +30,7 @@ import pt.rocket.framework.utils.CurrencyFormatter;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.GetProductHelper;
-import pt.rocket.helpers.GetShoppingCartAddItemHelper;
+import pt.rocket.helpers.cart.GetShoppingCartAddItemHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.HorizontalListView;
 import pt.rocket.utils.MyMenuItem;

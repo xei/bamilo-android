@@ -37,7 +37,6 @@ import pt.rocket.preferences.ShopPreferences;
 import pt.rocket.utils.CheckVersion;
 import pt.rocket.utils.RocketImageLoader;
 import pt.rocket.utils.ServiceSingleton;
-import pt.rocket.view.fragments.HomeFragment;
 import android.app.Activity;
 import android.app.Application;
 import android.content.ComponentName;
@@ -752,7 +751,6 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     }
     
     public void cleanAllPreviousCountryValues(){
-        HomeFragment.requestResponse = null;
         currentCategories = null;
         setCart(null);
         setFormDataRegistry(new HashMap<String, FormData>());

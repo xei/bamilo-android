@@ -24,8 +24,8 @@ import pt.rocket.framework.utils.CurrencyFormatter;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.GetSearchProductHelper;
-import pt.rocket.helpers.GetShoppingCartAddItemHelper;
 import pt.rocket.helpers.campaign.GetCampaignHelper;
+import pt.rocket.helpers.cart.GetShoppingCartAddItemHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.DeepLinkManager;
 import pt.rocket.utils.UIUtils;
@@ -784,9 +784,6 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, O
                 item.mTimer = (TextView) view.findViewById(R.id.campaign_item_stock_timer);
                 // Stores the item representation on the tag of the view for later retrieval
                 view.setTag(item);
-
-                // start handler processing
-                item.mHandler.sendEmptyMessageDelayed(0, 1000);
             } else {
                 item = (ItemView) view.getTag();
             }
@@ -830,6 +827,10 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, O
             // Set itemView's remainingTime to be used by handler
             view.mRemaingTime = remainingTime;
 
+            // start handler processing
+            if(remainingTime > 0)
+                view.mHandler.sendEmptyMessageDelayed(0, 1000);
+            
             // update Timer
             updateTimer(view.mTimer, view.mTimerContainer, view.mButtonBuy, view.mOfferEnded, view.mName, view.mImage, remainingTime);
         }

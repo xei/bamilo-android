@@ -32,6 +32,8 @@
             android:layout_height="31.72dp"
             android:background="@drawable/filter_header" />
     </RelativeLayout>
+    
+    <!-- FALL BACK -->
 
     <RelativeLayout
         android:id="@+id/home_fallback_content"

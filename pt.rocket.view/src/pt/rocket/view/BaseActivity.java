@@ -34,7 +34,7 @@ import pt.rocket.framework.utils.ShopSelector;
 import pt.rocket.framework.utils.WindowHelper;
 import pt.rocket.helpers.BaseHelper;
 import pt.rocket.helpers.GetSearchSuggestionHelper;
-import pt.rocket.helpers.GetShoppingCartItemsHelper;
+import pt.rocket.helpers.cart.GetShoppingCartItemsHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.CheckVersion;
 import pt.rocket.utils.MyMenuItem;
@@ -1357,7 +1357,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
             // only hide dropdown for Spinner if hideMyProfile flag is activated
             if (hideMyProfile && myProfileActionProvider != null) {
-                Log.i(TAG, "hideMyProfile");
                 myProfileActionProvider.dismissSpinner();
             }
         }

@@ -15,7 +15,7 @@
         android:background="@drawable/background_tabs"
         app:stsBottomBorderThickness="0dp"
         app:stsIndicatorColor="@color/orange_tab_bar"
-        app:stsIndicatorThickness="@dimen/campaign_tab_inidicator_height" />
+        app:stsIndicatorThickness="@dimen/sliding_tab_inidicator_thickness" />
 
     <!-- CONTENT -->
 
