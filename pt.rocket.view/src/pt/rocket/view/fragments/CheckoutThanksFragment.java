@@ -31,11 +31,16 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Layout;
+import android.text.Selection;
+import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
-import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -241,18 +246,16 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
         }
         // Create link
         SpannableString link = new SpannableString(mainText);
-        link.setSpan(clickableSpan, index, index + text.length(), 0);
-        link.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.yellow_dark)), index,
-                index + text.length(), 0);
+        link.setSpan(new TouchableSpan(R.color.yellow_dark, R.color.grey_middle), index, index + text.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         // Set text for order status
-        TextView textView = (TextView) getView().findViewById(R.id.order_status_text);
+        android.widget.TextView textView = (android.widget.TextView) getView().findViewById(R.id.order_status_text);
         textView.setTag(orderNumber);
         // Make ClickableSpans and URLSpans work
-        textView.setMovementMethod(LinkMovementMethod.getInstance());
+        textView.setMovementMethod(new LinkTouchMovementMethod());
         // Set text with span style
         textView.setText(link, BufferType.SPANNABLE);
     }
-    
+
     private void triggerClearCart() {
         Log.i(TAG, "TRIGGER: CHECKOUT FINISH");
         triggerContentEventWithNoLoading(new ClearShoppingCartHelper(), null, this);
@@ -260,19 +263,96 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
     }
 
     private void trackPurchase() {
-        if (JumiaApplication.INSTANCE.getCart() != null)
-            TrackerDelegator.trackPurchaseNativeCheckout(getActivity().getApplicationContext(), order_number, JumiaApplication.INSTANCE.getCart().getCartValue(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), JumiaApplication.INSTANCE.getCart().getCartItems(), JumiaApplication.INSTANCE.CUSTOMER);
-            
+        if (JumiaApplication.INSTANCE.getCart() != null) {
+            TrackerDelegator.trackPurchaseNativeCheckout(
+                    getActivity().getApplicationContext(),
+                    order_number, 
+                    JumiaApplication.INSTANCE.getCart().getCartValue(),
+                    JumiaApplication.INSTANCE.getCustomerUtils().getEmail(),
+                    JumiaApplication.INSTANCE.getCart().getCartItems(),
+                    JumiaApplication.INSTANCE.CUSTOMER);
+        }
+
         triggerClearCart();
         JumiaApplication.INSTANCE.setCart(null);
     }
 
-    /**
-     * Click span listener
-     * 
-     * @author sergiopereira
+    /*--
+     * http://stackoverflow.com/questions/20856105/change-the-text-color-of-a-clickablespan-when-pressed/20905824#20905824
      */
-    ClickableSpan clickableSpan = new ClickableSpan() {
+    private class LinkTouchMovementMethod extends LinkMovementMethod {
+        private TouchableSpan mPressedSpan;
+
+        @Override
+        public boolean onTouchEvent(android.widget.TextView textView, Spannable spannable, MotionEvent event) {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                mPressedSpan = getPressedSpan(textView, spannable, event);
+                if (mPressedSpan != null) {
+                    mPressedSpan.setPressed(true);
+                    Selection.setSelection(spannable, spannable.getSpanStart(mPressedSpan), spannable.getSpanEnd(mPressedSpan));
+                }
+            } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
+                TouchableSpan touchedSpan = getPressedSpan(textView, spannable, event);
+                if (mPressedSpan != null && touchedSpan != mPressedSpan) {
+                    mPressedSpan.setPressed(false);
+                    mPressedSpan = null;
+                    Selection.removeSelection(spannable);
+                }
+            } else {
+                if (mPressedSpan != null) {
+                    mPressedSpan.setPressed(false);
+                    super.onTouchEvent(textView, spannable, event);
+                }
+                mPressedSpan = null;
+                Selection.removeSelection(spannable);
+            }
+            return true;
+        }
+
+        private TouchableSpan getPressedSpan(android.widget.TextView textView, Spannable spannable, MotionEvent event) {
+            int x = (int) event.getX();
+            int y = (int) event.getY();
+
+            x -= textView.getTotalPaddingLeft();
+            y -= textView.getTotalPaddingTop();
+
+            x += textView.getScrollX();
+            y += textView.getScrollY();
+
+            Layout layout = textView.getLayout();
+            int line = layout.getLineForVertical(y);
+            int off = layout.getOffsetForHorizontal(line, x);
+
+            TouchableSpan[] link = spannable.getSpans(off, off, TouchableSpan.class);
+            TouchableSpan touchedSpan = null;
+            if (link.length > 0) {
+                touchedSpan = link[0];
+            }
+            return touchedSpan;
+        }
+    }
+
+    class TouchableSpan extends ClickableSpan {
+        private boolean mIsPressed;
+        private int mNormalTextColor;
+        private int mPressedTextColor;
+
+        public TouchableSpan(int normalTextColorRes, int pressedTextColorRes) {
+            mNormalTextColor = getResources().getColor(normalTextColorRes);
+            mPressedTextColor = getResources().getColor(pressedTextColorRes);
+        }
+
+        public void setPressed(boolean isSelected) {
+            mIsPressed = isSelected;
+        }
+
+        @Override
+        public void updateDrawState(TextPaint ds) {
+            super.updateDrawState(ds);
+            ds.setColor(mIsPressed ? mPressedTextColor : mNormalTextColor);
+            ds.setUnderlineText(true);
+        }
+
         @Override
         public void onClick(View view) {
             int viewId = view.getId();
@@ -281,7 +361,7 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
                 onClickSpannableString(view);
             }
         }
-    };
+    }
 
     /**
      * Process the click on the spannable string

@@ -12,7 +12,7 @@
         android:paddingRight="@dimen/margin_mid"
         android:background="@android:color/white"
         android:button="@null"
-        android:drawableRight="@drawable/btn_check_holo_light"
+        android:drawableRight="@drawable/selector_btn_check_holo_orange"
         android:fontFamily="roboto_regular"
         android:gravity="left|center"
         android:paddingBottom="@dimen/margin_large"

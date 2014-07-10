@@ -869,7 +869,7 @@ public class DynamicFormItem {
         params.setMargins((int) (3 * this.scale), 0, 0, 0);
         this.dataControl.setLayoutParams(params);
         ((View) this.dataControl).setContentDescription(this.entry.getKey());
-        ((CheckBox) this.dataControl).setButtonDrawable(R.drawable.selector_checkbox);
+        ((CheckBox) this.dataControl).setButtonDrawable(R.drawable.selector_btn_check_holo_orange);
         ((CheckBox) this.dataControl).setFocusable(false);
         ((CheckBox) this.dataControl).setFocusableInTouchMode(false);
         ((CheckBox) this.dataControl).setTextColor(context.getResources().getColor(R.color.grey_middle));
@@ -926,7 +926,7 @@ public class DynamicFormItem {
                 checkbox.getPaddingTop(), 
                 checkbox.getPaddingRight(), 
                 checkbox.getPaddingBottom());
-    	checkbox.setButtonDrawable(context.getResources().getDrawable(R.drawable.btn_check_holo_light));
+    	checkbox.setButtonDrawable(context.getResources().getDrawable(R.drawable.selector_btn_check_holo_orange));
     }
 
     private void buildCheckBoxForTerms(RelativeLayout dataContainer,
@@ -957,7 +957,7 @@ public class DynamicFormItem {
         this.dataControl.setLayoutParams(lParams);
         mCheckBox.setTag("checkbox");
         mCheckBox.setContentDescription(this.entry.getKey());
-        mCheckBox.setButtonDrawable(R.drawable.selector_checkbox);
+        mCheckBox.setButtonDrawable(R.drawable.selector_btn_check_holo_orange);
         mCheckBox.setFocusable(false);
         mCheckBox.setFocusableInTouchMode(false);
         mCheckBox.setTextColor(this.context.getResources().getColor(

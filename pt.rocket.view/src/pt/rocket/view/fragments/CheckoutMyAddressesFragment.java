@@ -480,7 +480,7 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
         }else{
             // Set top container
             mTopTitle.setText(getString(R.string.billing_shipping_label));
-            mTopTitle.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.btn_addaddress_orange, 0);
+            // mTopTitle.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.btn_addaddress_orange, 0);
             // Set Shipping Address (checked) and others
             mTopRadioGroup.setCheckedItem(0);
             addAddress(mTopRadioGroup, addresses.getShippingAddress());

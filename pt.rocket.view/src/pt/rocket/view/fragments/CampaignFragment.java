@@ -392,8 +392,8 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, O
         int id = view.getId();
         // Buy button
         if(id == R.id.campaign_item_button_buy) onClickBuyButton(view);
-        // Product name and image
-        else if (id == R.id.image_view || id == R.id.campaign_item_name) onClickProduct(view);
+        // Product name and image container
+        else if (id == R.id.image_container || id == R.id.campaign_item_name) onClickProduct(view);
         // Retry button
         else if(id == R.id.campaign_retry_button) onClickRetryButton();
         // Unknown view
@@ -675,6 +675,7 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, O
         private class ItemView {
             private TextView mStockOff;
             private TextView mName;
+            private View mImageContainer;
             private ImageView mImage;
             private View mSizeContainer;
             private Spinner mSizeSpinner;
@@ -758,6 +759,8 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, O
                 item.mStockOff = (TextView) view.findViewById(R.id.campaign_item_stock_off);
                 // Get name
                 item.mName = (TextView) view.findViewById(R.id.campaign_item_name);
+                // Get image container
+                item.mImageContainer = view.findViewById(R.id.image_container);
                 // Get image
                 item.mImage = (ImageView) view.findViewById(R.id.image_view);
                 // Get size container
@@ -806,9 +809,11 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, O
             // Set name
             view.mName.setText(item.getName());
             setClickableView(view.mName, position);
+            // Set image container
+            setClickableView(view.mImageContainer, position);
             // Set image
             new AQuery(getBaseActivity()).id(view.mImage).image(item.getImage());
-            setClickableView(view.mImage, position);
+            // setClickableView(view.mImage, position);
             // Set size
             setSizeContainer(view, item, position);
             // Set price and special price
@@ -828,9 +833,8 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, O
             view.mRemaingTime = remainingTime;
 
             // start handler processing
-            if(remainingTime > 0)
-                view.mHandler.sendEmptyMessageDelayed(0, 1000);
-            
+            if(remainingTime > 0) view.mHandler.sendEmptyMessageDelayed(0, 1000);
+
             // update Timer
             updateTimer(view.mTimer, view.mTimerContainer, view.mButtonBuy, view.mOfferEnded, view.mName, view.mImage, remainingTime);
         }

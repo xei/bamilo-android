@@ -29,6 +29,7 @@
         android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/margin_large"
         android:layout_weight="1"
+        android:background="@drawable/selector_listitem_highlight"
         android:ellipsize="end"
         android:fontFamily="roboto_regular"
         android:gravity="center"

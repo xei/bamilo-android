@@ -4,5 +4,4 @@
     android:layout_height="wrap_content"
     android:textColor="@color/grey_middle"
     android:textSize="18dp"
-    android:button="@drawable/btn_radio_holo_light"
-    android:paddingRight="10dp" />
+    android:button="@drawable/btn_radio_holo_orange" />

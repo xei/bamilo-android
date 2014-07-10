@@ -27,6 +27,7 @@
             android:id="@+id/checkout_summary_products_btn_edit"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:paddingRight="7dp"
             android:src="@drawable/selector_btn_edit" />
     </LinearLayout>
 
@@ -52,7 +53,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_large"
         android:orientation="vertical" />
-    
     <!-- Price Rules -->
 
     <LinearLayout
@@ -63,7 +63,7 @@
         android:orientation="vertical"
         android:visibility="gone" >
     </LinearLayout>
-    
+
     <!-- VAT -->
 
     <LinearLayout
@@ -183,8 +183,9 @@
             android:textColor="@color/grey_divider_light_text"
             android:textSize="@dimen/text_m" />
     </LinearLayout>
-    
-	<!-- Extra Costs -->
+
+    <!-- Extra Costs -->
+
     <LinearLayout
         android:id="@+id/checkout_summary_extra_costs_container"
         android:layout_width="match_parent"
@@ -198,21 +199,20 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="left"
             android:fontFamily="roboto_regular"
+            android:gravity="left"
+            android:text="@string/extra_costs"
             android:textColor="@color/grey_divider_light_text"
-            android:textSize="@dimen/text_m" 
-            android:text="@string/extra_costs"/>
+            android:textSize="@dimen/text_m" />
 
         <org.holoeverywhere.widget.TextView
             android:id="@+id/checkout_summary_extra_costs_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="left"
             android:fontFamily="roboto_regular"
+            android:gravity="left"
             android:textColor="@color/grey_divider_light_text"
-            android:textSize="@dimen/text_m" 
-            />
+            android:textSize="@dimen/text_m" />
     </LinearLayout>
 
 </LinearLayout>

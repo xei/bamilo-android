@@ -54,7 +54,7 @@
             android:textColor="@color/grey_dark"
             android:textSize="@dimen/text_s" />
 
-        <org.holoeverywhere.widget.TextView
+        <TextView
             android:id="@+id/order_status_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

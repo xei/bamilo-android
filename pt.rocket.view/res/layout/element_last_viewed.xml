@@ -9,7 +9,8 @@
         android:id="@+id/element_1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1" >
+        android:layout_weight="1"
+        android:background="@drawable/selector_listitem_highlight" >
 
         <ImageView
             android:id="@+id/img_1"
@@ -24,8 +25,8 @@
             android:layout_below="@id/img_1"
             android:layout_centerHorizontal="true"
             android:layout_margin="6.6dp"
-            android:maxLines="2"
             android:lines="2"
+            android:maxLines="2"
             android:textColor="@color/grey_middle"
             android:textSize="@dimen/text_xs" />
 
@@ -45,7 +46,8 @@
         android:id="@+id/element_2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1" >
+        android:layout_weight="1"
+        android:background="@drawable/selector_listitem_highlight" >
 
         <ImageView
             android:id="@+id/img_2"
@@ -60,8 +62,8 @@
             android:layout_below="@id/img_2"
             android:layout_centerHorizontal="true"
             android:layout_margin="6.6dp"
-            android:maxLines="2"
             android:lines="2"
+            android:maxLines="2"
             android:textColor="@color/grey_middle"
             android:textSize="@dimen/text_xs" />
 
@@ -80,7 +82,8 @@
         android:id="@+id/element_3"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1" >
+        android:layout_weight="1"
+        android:background="@drawable/selector_listitem_highlight" >
 
         <ImageView
             android:id="@+id/img_3"
@@ -95,8 +98,8 @@
             android:layout_below="@id/img_3"
             android:layout_centerHorizontal="true"
             android:layout_margin="6.6dp"
-            android:maxLines="2"
             android:lines="2"
+            android:maxLines="2"
             android:textColor="@color/grey_middle"
             android:textSize="@dimen/text_xs" />
 

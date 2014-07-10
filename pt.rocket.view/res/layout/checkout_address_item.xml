@@ -75,7 +75,7 @@
             android:layout_gravity="bottom"
             android:paddingLeft="@dimen/margin_mid"
             android:paddingRight="@dimen/margin_mid"
-            android:src="@drawable/btn_remove"
+            android:src="@drawable/selector_btn_remove"
             android:visibility="invisible" />
 
         <LinearLayout
@@ -90,18 +90,17 @@
                 android:id="@+id/checkout_address_item_btn_radio"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                android:layout_weight="1"
                 android:layout_gravity="center"
-                android:gravity="center"
-                android:button="@drawable/selector_address_radio" />
+                android:layout_weight="1"
+                android:button="@drawable/btn_radio_holo_orange"
+                android:gravity="center" />
 
             <ImageView
                 android:id="@+id/checkout_address_item_btn_edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:paddingLeft="@dimen/margin_mid"
-                android:paddingRight="@dimen/margin_mid"
+                android:paddingLeft="7dp"
                 android:src="@drawable/selector_btn_edit" />
         </LinearLayout>
     </LinearLayout>
