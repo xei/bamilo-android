@@ -192,9 +192,9 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, O
         // Get loading view
         mLoadingView = view.findViewById(R.id.loading_bar);
         // Get retry view
-        mRetryView = view.findViewById(R.id.campaign_retry);
+        mRetryView = view.findViewById(R.id.fragment_retry);
         // Get the retry button
-        view.findViewById(R.id.campaign_retry_button).setOnClickListener(this);
+        view.findViewById(R.id.fragment_retry_button).setOnClickListener(this);
         // Validate the current state
         getAndShowCampaign();
     }
@@ -395,7 +395,7 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, O
         // Product name and image container
         else if (id == R.id.image_container || id == R.id.campaign_item_name) onClickProduct(view);
         // Retry button
-        else if(id == R.id.campaign_retry_button) onClickRetryButton();
+        else if(id == R.id.fragment_retry_button) onClickRetryButton();
         // Unknown view
         else Log.i(TAG, "ON CLICK: UNKNOWN VIEW");
     }

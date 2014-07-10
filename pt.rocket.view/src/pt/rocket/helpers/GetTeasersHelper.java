@@ -51,13 +51,17 @@ public class GetTeasersHelper extends BaseHelper {
             JSONArray dataArray = jsonObject.getJSONArray(RestConstants.JSON_DATA_TAG);
             int dataArrayLength = dataArray.length();
             if (dataArrayLength > 0) {
+                int defaultHomePage = 0;
                 ArrayList<Homepage> homepageSpecifications = new ArrayList<Homepage>();
                 for (int i = 0; i < dataArrayLength; ++i) {
                     Homepage homepage = new Homepage();
                     homepage.initialize(dataArray.getJSONObject(i));
+                    // Validate if is the default home page
+                    if(homepage != null &&  homepage.isDefaultHomepage()) defaultHomePage = i;
                     homepageSpecifications.add(homepage);
                 }
                 bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, homepageSpecifications);
+                bundle.putInt(RestConstants.JSON_HOMEPAGE_DEFAULT_TAG, defaultHomePage);
                 Log.i(TAG, "Teasers size: " + homepageSpecifications.size());
             } else {
                 Log.e(TAG, "Teasers size: 0");

@@ -29,8 +29,6 @@ import android.widget.LinearLayout;
 
 /**
  * @see http://developer.android.com/downloads/samples/SlidingTabsBasic.zip
- * @author sergiopereira
- *
  */
 class SlidingTabStrip extends LinearLayout {
 

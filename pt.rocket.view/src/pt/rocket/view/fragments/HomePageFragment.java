@@ -17,6 +17,7 @@ import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -45,6 +46,8 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
     private Homepage mHomePage;
 
     private int[] mScrollSavedPosition;
+
+    private View mRetryView;
     
     /**
      * Constructor via bundle
@@ -90,7 +93,7 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
         // Validate the saved state
         if(savedInstanceState != null && savedInstanceState.containsKey(HOME_PAGE_KEY)){
             Log.i(TAG, "ON GET SAVED STATE");
-            mHomePage = savedInstanceState.getParcelable(HOME_PAGE_KEY);
+            if(mHomePage == null) mHomePage = savedInstanceState.getParcelable(HOME_PAGE_KEY);
         }
         
         // Get saved scroll position
@@ -125,11 +128,15 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
         Log.i(TAG, "ON VIEW CREATED");
         // Get scroll view
         mScrollViewWithHorizontal = (ScrollViewWithHorizontal) view.findViewById(R.id.view_pager_element_scrollview);
+        // Get retry view
+        mRetryView = view.findViewById(R.id.fragment_retry);
+        // Get the retry button
+        view.findViewById(R.id.fragment_retry_button).setOnClickListener(this);
         // Get container
         LinearLayout container = (LinearLayout) view.findViewById(R.id.view_pager_element_frame);
-        // Validate current home
+        // Validate current home 
         if (mHomePage != null) showHomePage(mHomePage, container);
-        else Log.w(TAG, "WARNING: HOME PAGE IS NULL");
+        else { Log.w(TAG, "WARNING: HOME PAGE IS NULL"); showRetry(); }
     }
         
     /*
@@ -225,7 +232,6 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
         Log.i(TAG, "ON DESTROY");
     }
     
-    
     /**
      * Show the current home page
      * @param homePage
@@ -238,6 +244,8 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
         createAndShowTeasers(homePage, mainView);
         // Restore the scroll state
         restoreScrollState();
+        // Force to show content
+        showContent();
     }
     
     /**
@@ -273,6 +281,26 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
     }
     
     /**
+     * Show only the content view
+     * @author sergiopereira
+     */
+    private void showContent() {
+        mScrollViewWithHorizontal.setVisibility(View.VISIBLE);
+        //mLoadingView.setVisibility(View.GONE);
+        mRetryView.setVisibility(View.GONE);
+    }
+    
+    /**
+     * Show only the retry view
+     * @author sergiopereira
+     */
+    private void showRetry() {
+        mScrollViewWithHorizontal.setVisibility(View.GONE);
+        //mLoadingView.setVisibility(View.GONE);
+        mRetryView.setVisibility(View.VISIBLE);
+    }
+    
+    /**
      * ############# LISTENERS #############
      */
     
@@ -282,6 +310,32 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
      */
     @Override
     public void onClick(View view) {
+        // Get view id
+        int id = view.getId();
+        // Retry button
+        if(id == R.id.fragment_retry_button) onClickRetryButton();
+        // Teaser item
+        else onClickTeaserItem(view);
+    }
+    
+    /**
+     * Process the click on retry button
+     */
+    private void onClickRetryButton() {
+        // Send to parent reload content
+        Log.i(TAG, "ON CLICK RETRY");
+        Fragment parent = getParentFragment();
+        // Validate parent
+        if (parent != null && parent instanceof HomeFragment) ((HomeFragment) parent).onReloadContent();
+    }
+    
+    /**
+     * Process the click on teaser
+     * @param view
+     * @author sergiopereira
+     */
+    private void onClickTeaserItem(View view) {
+        Log.i(TAG, "ON CLICK TEASER ITEM");
         // Get url
         String targetUrl = (String) view.getTag(R.id.target_url);
         // Get type

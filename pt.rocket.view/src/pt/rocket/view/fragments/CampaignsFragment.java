@@ -124,14 +124,15 @@ public class CampaignsFragment extends BaseFragment {
         mCampaignPagerTabStrip.setCustomTabView(R.layout.tab_simple_item, R.id.tab);
         // Validate the current view
         mCampaignPagerAdapter = (CampaignPagerAdapter) mCampaignPager.getAdapter();
-        if(mCampaignPagerAdapter == null) {
+        if(mCampaignPagerAdapter != null && mCampaignPagerAdapter.getCount() > 0) {
+            // Show the pre selection
+            mCampaignPager.setCurrentItem(selectedPosition, true);
+        } else {
             //Log.d(TAG, "CAMPAIGNS ADAPTER IS NULL");
             mCampaignPagerAdapter = new CampaignPagerAdapter(getChildFragmentManager(), mCampaigns);
             mCampaignPager.setAdapter(mCampaignPagerAdapter);
             mCampaignPagerTabStrip.setViewPager(mCampaignPager);
         }
-        // Show the pre selection
-        mCampaignPager.setCurrentItem(selectedPosition, true);
     }
     
     /*

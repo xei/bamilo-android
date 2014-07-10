@@ -8,9 +8,11 @@
     <!-- HOME -->
 
     <LinearLayout
+        android:id="@+id/home_pager_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:visibility="gone" >
 
         <!-- TABS -->
 
@@ -31,6 +33,13 @@
             android:layout_weight="1"
             android:background="@android:color/white" />
     </LinearLayout>
+
+    <!-- LOADING VIEW -->
+
+    <include
+        android:id="@+id/loading_bar"
+        layout="@layout/loading_bar"
+        android:visibility="visible" />
 
     <!-- FALL BACK -->
 

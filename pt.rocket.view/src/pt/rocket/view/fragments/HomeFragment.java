@@ -14,6 +14,7 @@ import pt.rocket.framework.Darwin;
 import pt.rocket.framework.components.androidslidingtabstrip.SlidingTabLayout;
 import pt.rocket.framework.objects.Homepage;
 import pt.rocket.framework.objects.Promotion;
+import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CustomerUtils;
@@ -65,9 +66,7 @@ public class HomeFragment extends BaseFragment implements IResponseCallback {
 
     private static final String TAG = LogTagHelper.create(HomeFragment.class);
     
-    public static final String CAMPAIGNS_TAG = "campaigns";
-    
-    public static final String CAMPAIGN_POSITION_TAG = "campaign_position";
+    private static final String PAGER_POSITION_KEY = "current_position";
     
     private static HomeFragment sHomeFragment;
 
@@ -78,6 +77,14 @@ public class HomeFragment extends BaseFragment implements IResponseCallback {
     private SlidingTabLayout mHomePagerTabStrip;
     
     private String mCurrentMd5Collection;
+
+    private View mLoadingView;
+
+    private View mFallBackView;
+
+    private View mMainContent;
+    
+    private int mPagerSavedPosition = 0;
     
     /**
      * Constructor via bundle
@@ -121,11 +128,10 @@ public class HomeFragment extends BaseFragment implements IResponseCallback {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-        //
+        // Register Hockey
         HockeyStartup.register(getBaseActivity());
-//        //
-//        if (JumiaApplication.mIsBound) onCreateExecution();
-//        else JumiaApplication.INSTANCE.setResendHander(serviceConnectedHandler);
+        // Get saved state
+        if(savedInstanceState != null) mPagerSavedPosition = savedInstanceState.getInt(PAGER_POSITION_KEY);
     }
     
     /*
@@ -149,25 +155,30 @@ public class HomeFragment extends BaseFragment implements IResponseCallback {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
+        // Get main content
+        mMainContent = view.findViewById(R.id.home_pager_content);
         // Get view pager 
         mHomePager = (ViewPager) view.findViewById(R.id.home_pager);
         // Get tab pager
         mHomePagerTabStrip = (SlidingTabLayout) view.findViewById(R.id.home_pager_tab);
         mHomePagerTabStrip.setCustomTabView(R.layout.tab_simple_item, R.id.tab);
+        // Get loading view
+        mLoadingView = view.findViewById(R.id.loading_bar);
+        // Get fall back
+        mFallBackView = view.findViewById(R.id.home_fallback_content);
         
-        // XXX
+        /**
+         * TODO: Validate this method is necessary to recover the app from strange behavior
+         * In case Application is connected and has shop id show HomePage
+         * Otherwise, waiting for connection and shop id
+         * WARNING: THIS FRAGMENT CAN BE EXECUTED WITHOUT SHOP ID( HOME -> CCOUNTRY)
+         * @author sergiopereira
+         */
         if (JumiaApplication.mIsBound && !TextUtils.isEmpty(ShopSelector.getShopId())) onResumeExecution();
-        else JumiaApplication.INSTANCE.setResendHander(serviceConnectedHandler);
-        
-//        // Validate if is bound
+        else JumiaApplication.INSTANCE.setResendHander(mServiceConnectedHandler);
 //        // Valdiate the shop id in this point
-//        if(!TextUtils.isEmpty(ShopSelector.getShopId())) {
-//            Log.i(TAG, "WARNING SHOP ID IS NULL");
-//            onResumeExecution();
-//        } else {
-//            Log.w(TAG, "WARNING SHOP ID IS NULL"); 
-//            ActivitiesWorkFlow.splashActivityNewTask(getBaseActivity());
-//        }
+//        if(!TextUtils.isEmpty(ShopSelector.getShopId())) onResumeExecution();
+//        else ActivitiesWorkFlow.splashActivityNewTask(getBaseActivity());
         
     }
     
@@ -190,35 +201,36 @@ public class HomeFragment extends BaseFragment implements IResponseCallback {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-//        // XXX
-//        if (JumiaApplication.mIsBound) onResumeExecution();
-//        else JumiaApplication.INSTANCE.setResendHander(serviceConnectedHandler);
-        
     }
     
     /**
-     * XXX
+     * Handler used to receive a message from application
      */
-    Handler serviceConnectedHandler = new Handler() {
+    Handler mServiceConnectedHandler = new Handler() {
         public void handleMessage(android.os.Message msg) { 
             mHomePagerAdapter = null;
-            //onCreateExecution();
             onResumeExecution();
         };
     };
+
     
-//    /**
-//     * XXX
-//     */
-//    private void onCreateExecution() {
-//        if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials() && !JumiaApplication.INSTANCE.isLoggedIn())
-//            triggerAutoLogin();
-//    }
+    
+    /**
+     * Method used to reload the collection in case some child is null
+     * @author sergiopereira
+     */
+    public void onReloadContent(){
+        Log.i(TAG, "ON RELOAD CONTENT");
+        mHomePagerAdapter = null;
+        onResumeExecution();
+    }
 
     /**
-     * XXX
+     * Method used to resume the content for Home Frament
+     * @author sergiopereira
      */
-    private void onResumeExecution() {
+    public void onResumeExecution() {
+        Log.i(TAG, "ON RESUME EXECUTION");
         
         // TODO : Comment for Samsung store
         if (CheckVersion.needsToShowDialog()) CheckVersion.showDialog(getActivity());
@@ -234,20 +246,15 @@ public class HomeFragment extends BaseFragment implements IResponseCallback {
         }
 
         // Validate current state
-        
-        //mHomePagerAdapter = (HomePagerAdapter) mHomePager.getAdapter();
-        if(mHomePagerAdapter == null) {
-            Log.i(TAG, "ADAPTER IS NULL");
-            getBaseActivity().setProcessShow(false);
-            triggerTeasers();
-            
-        } else {
+        if(mHomePagerAdapter != null &&  mHomePagerAdapter.getCount() > 0) {
             Log.i(TAG, "ADAPTER IS NOT NULL");
             mHomePager.setAdapter(mHomePagerAdapter);
-            //mHomePager.setOffscreenPageLimit(1);
             mHomePagerTabStrip.setViewPager(mHomePager);
-            getBaseActivity().setProcessShow(true);
-            getBaseActivity().showContentContainer();
+            // Show container
+            showContent();
+        } else {
+            Log.i(TAG, "ADAPTER IS NULL");
+            triggerTeasers();
         }
         
         AnalyticsGoogle.get().trackPage(R.string.ghomepage);
@@ -262,7 +269,9 @@ public class HomeFragment extends BaseFragment implements IResponseCallback {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Log.i(TAG, "ON SAVE INSTANCE");
-    }
+         // Save the current position
+        if(mHomePager != null) outState.putInt(PAGER_POSITION_KEY, mHomePager.getCurrentItem());
+    } 
 
     /*
      * (non-Javadoc)
@@ -316,14 +325,18 @@ public class HomeFragment extends BaseFragment implements IResponseCallback {
     /**
      * 
      * @param collection
+     * @param mPagerSavedPosition 
      */
-    private void onShow(ArrayList<Homepage> collection) {
+    private void onShowCollection(ArrayList<Homepage> collection, int defaultPosition) {
         Log.i(TAG, "ON SHOW");
         if(mHomePagerAdapter == null) {
             Log.i(TAG, "ADAPTER IS NULL");
             mHomePagerAdapter = new HomePagerAdapter(getChildFragmentManager(), collection);
             mHomePager.setAdapter(mHomePagerAdapter);
             mHomePagerTabStrip.setViewPager(mHomePager);
+            // Valdiate the saved position
+            if(mPagerSavedPosition != 0 && mPagerSavedPosition < mHomePagerAdapter.getCount()) mHomePager.setCurrentItem(mPagerSavedPosition);
+            else mHomePager.setCurrentItem(defaultPosition);
         } else {
             Log.i(TAG, "UPDATE ADAPTER");
             mHomePagerAdapter.updateCollection(collection);
@@ -331,7 +344,33 @@ public class HomeFragment extends BaseFragment implements IResponseCallback {
         // Validate if is to show home wizard
         showHomeWizard();
         // Show container
-        getBaseActivity().setProcessShow(true);
+        showContent();
+    }
+    
+    
+    /**
+     * Show only the loading view
+     * @author sergiopereira
+     */
+    private void showLoading(){
+        mMainContent.setVisibility(View.GONE);
+        mHomePager.setVisibility(View.GONE);
+        mHomePagerTabStrip.setVisibility(View.GONE);
+        mFallBackView.setVisibility(View.GONE);
+        mLoadingView.setVisibility(View.VISIBLE);
+    }
+    
+    /**
+     * Show only the content view
+     * @author sergiopereira
+     */
+    private void showContent() {
+        mMainContent.setVisibility(View.VISIBLE);
+        mHomePager.setVisibility(View.VISIBLE);
+        mHomePagerTabStrip.setVisibility(View.VISIBLE);
+        mLoadingView.setVisibility(View.GONE);
+        mFallBackView.setVisibility(View.GONE);
+        //getBaseActivity().setProcessShow(true);
         getBaseActivity().showContentContainer();
     }
     
@@ -362,10 +401,13 @@ public class HomeFragment extends BaseFragment implements IResponseCallback {
      */
     private void showLayoutFallback() {
         Log.i(TAG, "ON SHOW FALLBACK");
-        getView().findViewById(R.id.home_pager_tab).setVisibility(View.GONE);
-        getView().findViewById(R.id.home_pager).setVisibility(View.GONE);
         
-        getView().findViewById(R.id.home_fallback_content).setVisibility(View.VISIBLE);
+        mMainContent.setVisibility(View.GONE);
+        mHomePager.setVisibility(View.GONE);
+        mHomePagerTabStrip.setVisibility(View.GONE);
+        mLoadingView.setVisibility(View.GONE);
+        mFallBackView.setVisibility(View.VISIBLE);
+        
         ImageView mapBg = (ImageView) getView().findViewById(R.id.home_fallback_country_map);
         SharedPreferences sharedPrefs = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         
@@ -406,13 +448,16 @@ public class HomeFragment extends BaseFragment implements IResponseCallback {
      */
     private void triggerTeasers() {
         Log.d(TAG, "ON TRIGGER: GET TEASERS");
+        // Show loading
+        //getBaseActivity().setProcessShow(false);
+        showLoading();
         // Get teaser collection
-        triggerContentEvent(new GetTeasersHelper(), null, (IResponseCallback) this);
+        triggerContentEventWithNoLoading(new GetTeasersHelper(), null, (IResponseCallback) this);
         // Validate the current md5 to check updated teaser collection
         Log.d(TAG, "ON TRIGGER: GET UPDATED TEASERS " + mCurrentMd5Collection);
         Bundle bundle = new Bundle();
         bundle.putString(GetUpdatedTeasersHelper.OLD_MD5_KEY, mCurrentMd5Collection);
-        triggerContentEvent(new GetUpdatedTeasersHelper(), bundle, (IResponseCallback) this);
+        triggerContentEventWithNoLoading(new GetUpdatedTeasersHelper(), bundle, (IResponseCallback) this);
     }
     
     /**
@@ -459,7 +504,7 @@ public class HomeFragment extends BaseFragment implements IResponseCallback {
             mCurrentMd5Collection = bundle.getString(GetUpdatedTeasersHelper.MD5_KEY);
             // Get updated teaser collection
             ArrayList<Homepage> updatedCollection = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
-            if (updatedCollection != null) onShow(updatedCollection);
+            if (updatedCollection != null) onShowCollection(updatedCollection, 0);
             break;
         case GET_TEASERS_EVENT:
             Log.i(TAG, "ON SUCCESS RESPONSE: GET_TEASERS_EVENT");
@@ -467,7 +512,10 @@ public class HomeFragment extends BaseFragment implements IResponseCallback {
             mCurrentMd5Collection = bundle.getString(GetTeasersHelper.MD5_KEY);
             // Get collection
             ArrayList<Homepage> collection = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
-            if (collection != null) onShow(collection);
+            // Get default home
+            int defaultPosition  = bundle.getInt(RestConstants.JSON_HOMEPAGE_DEFAULT_TAG, 0);
+            // Show collection
+            if (collection != null) onShowCollection(collection, defaultPosition);
             else showLayoutFallback();
             break;
         case GET_PROMOTIONS:
@@ -478,7 +526,10 @@ public class HomeFragment extends BaseFragment implements IResponseCallback {
 
     }
 
-    
+    /**
+     * 
+     * @param bundle
+     */
     private void onGetPromotions(Bundle bundle){
         if (((Promotion) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getIsStillValid()) {
             DialogPromotionFragment.newInstance((Promotion) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).show(getChildFragmentManager(), null);
@@ -487,8 +538,10 @@ public class HomeFragment extends BaseFragment implements IResponseCallback {
         }
     }
     
-
-
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.interfaces.IResponseCallback#onRequestError(android.os.Bundle)
+     */
     @Override
     public void onRequestError(Bundle bundle) {
     
@@ -583,14 +636,14 @@ public class HomeFragment extends BaseFragment implements IResponseCallback {
             return mHomePages.get(position).getHomepageTitle().toUpperCase();
         }
         
-        /*
-         * (non-Javadoc)
-         * @see android.support.v4.app.FragmentPagerAdapter#destroyItem(android.view.ViewGroup, int, java.lang.Object)
-         */
-        @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
-            super.destroyItem(container, position, object);
-        }
+//        /*
+//         * (non-Javadoc)
+//         * @see android.support.v4.app.FragmentPagerAdapter#destroyItem(android.view.ViewGroup, int, java.lang.Object)
+//         */
+//        @Override
+//        public void destroyItem(ViewGroup container, int position, Object object) {
+//            super.destroyItem(container, position, object);
+//        }
         
     }
 

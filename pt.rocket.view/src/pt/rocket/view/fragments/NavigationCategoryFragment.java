@@ -147,8 +147,8 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
         // Get loading view
         mLoadingView = view.findViewById(R.id.loading_bar);
         // Get retry view
-        mRetryView = view.findViewById(R.id.campaign_retry);
-        view.findViewById(R.id.campaign_retry_button).setOnClickListener(this);
+        mRetryView = view.findViewById(R.id.fragment_retry);
+        view.findViewById(R.id.fragment_retry_button).setOnClickListener(this);
         // Validate the cache
         if (JumiaApplication.currentCategories != null) showCategoryList();
         else if(!TextUtils.isEmpty(ShopSelector.getShopId())) triggerGetCategories();
@@ -377,7 +377,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
         // Get view id
         int id = view.getId();
         // Case retry
-        if (id == R.id.campaign_retry_button) onClickRetryButton();
+        if (id == R.id.fragment_retry_button) onClickRetryButton();
         // Case Unknown
         else Log.w(TAG, "WARNING: UNKNOWN BUTTON");
     }

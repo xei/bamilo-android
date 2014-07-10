@@ -44,6 +44,10 @@ import android.widget.TextView;
  * <p>
  * The views used as tabs can be customized by calling {@link #setCustomTabView(int, int)},
  * providing the layout ID of your custom layout.
+ * 
+ * @see http://stackoverflow.com/questions/16544162/android-google-play-like-tabs?answertab=votes#tab-top
+ * @see http://developer.android.com/downloads/samples/SlidingTabsBasic.zip
+ * 
  */
 public class SlidingTabLayout extends HorizontalScrollView {
 
