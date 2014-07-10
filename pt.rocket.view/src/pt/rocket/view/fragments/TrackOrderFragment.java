@@ -67,7 +67,7 @@ public class TrackOrderFragment extends BaseFragment {
      */
     public TrackOrderFragment() {
         super(EnumSet.of(EventType.TRACK_ORDER_EVENT),
-        EnumSet.noneOf(EventType.class), EnumSet.noneOf(MyMenuItem.class), 
+        EnumSet.noneOf(EventType.class), EnumSet.of(MyMenuItem.MY_PROFILE), 
         NavigationAction.TrackOrder, 
         R.string.nav_track_order, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
         this.setRetainInstance(true);
