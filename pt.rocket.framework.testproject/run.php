@@ -75,7 +75,12 @@ GetCostumerAddress($country_test);
 #SetBillingAddress($country_test);
 CreateAddress($country_test);
 GetRegions($country_test);
+
+if ($country_test !== "UG")
+{
 GetCities($country_test);
+}
+
 #GetShippingMethods($country_test);
 #SetShippingMethods($country_test);
 #GetPaymentMethods($country_test);

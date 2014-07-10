@@ -21,37 +21,37 @@ public class SignupNewsletterTest extends FrameworkServiceTests {
     protected boolean processed_signup_newsletter = false;
     
 public void testSignupNewsletterIC() throws Throwable {
-    test(BaseHelper.BASE_URL_CI);
+    test(BaseHelper.BASE_URL_CI, RequestConstants.SIGNUP_NEWSLETTER_CATEGORIE_VALUE);
 }
 
 public void testSignupNewsletterKE() throws Throwable {
-	test(BaseHelper.BASE_URL_KE);
+	test(BaseHelper.BASE_URL_KE, RequestConstants.SIGNUP_NEWSLETTER_CATEGORIE_VALUE);
 }
 
 public void testSignupNewsletterMA() throws Throwable {
-    test(BaseHelper.BASE_URL_MA);
+    test(BaseHelper.BASE_URL_MA, RequestConstants.SIGNUP_NEWSLETTER_CATEGORIE_VALUE);
 }
 
 public void testSignupNewsletterNG() throws Throwable {
-    test(BaseHelper.BASE_URL_NG);
+    test(BaseHelper.BASE_URL_NG, RequestConstants.SIGNUP_NEWSLETTER_CATEGORIE_VALUE);
 }
 
 public void testSignupNewsletterEG() throws Throwable {
-    test(BaseHelper.BASE_URL_EG);
+    test(BaseHelper.BASE_URL_EG, RequestConstants.SIGNUP_NEWSLETTER_CATEGORIE_VALUE_EG);
 }
 
 public void testSignupNewsletterUG() throws Throwable {
-	test(BaseHelper.BASE_URL_UG);
+	test(BaseHelper.BASE_URL_UG, RequestConstants.SIGNUP_NEWSLETTER_CATEGORIE_VALUE_UG);
 }
 
-public void test(String url){
+public void test(String url, String categorie_value){
 	/**
      * Signup Newsletter
      */
     Log.i(TAG, "mService => " + mService);
     Bundle args_signup_nesletter = new Bundle();
     ContentValues contentValues_signup_newsletter = new ContentValues();
-    contentValues_signup_newsletter.put(RequestConstants.SIGNUP_NEWSLETTER_CATEGORIE, RequestConstants.SIGNUP_NEWSLETTER_CATEGORIE_VALUE);
+    contentValues_signup_newsletter.put(RequestConstants.SIGNUP_NEWSLETTER_CATEGORIE, categorie_value);
     contentValues_signup_newsletter.put(RequestConstants.SIGNUP_NEWSLETTER_EMAIL, RequestConstants.CUSTOMER_NEW_EMAIL);
     args_signup_nesletter.putParcelable(GetSignupNewsletterHelper.CONTENT_VALUES, contentValues_signup_newsletter);
     args_signup_nesletter.putString(BaseHelper.KEY_COUNTRY, url + "/newsletter/signup/");

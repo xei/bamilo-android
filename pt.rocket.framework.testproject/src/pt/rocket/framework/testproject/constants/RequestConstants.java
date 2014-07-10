@@ -95,8 +95,8 @@ public class RequestConstants {
 	public static final String PRODUCT_SKU_KE = "SA949ELAA79UNAFAMZ";
 	public static final String PRODUCT_SKU_SIMPLE_KE = "SA949ELAA79UNAFAMZ-13791";
 	
-	public static final String PRODUCT_SKU_MA = "SA024ELAB8P5NAFAMZ";
-	public static final String PRODUCT_SKU_SIMPLE_MA = "SA024ELAB8P5NAFAMZ-94391";
+	public static final String PRODUCT_SKU_MA = "SA024ELADVY4MAAMZ";
+	public static final String PRODUCT_SKU_SIMPLE_MA = "SA024ELADVY4MAAMZ-267947";
 	
 	public static final String PRODUCT_SKU_NG = "SA948ELAC2WFNGAMZ";
 	public static final String PRODUCT_SKU_SIMPLE_NG = "SA948ELAC2WFNGAMZ-181086";
@@ -216,5 +216,7 @@ public class RequestConstants {
 	
 	public static final String SIGNUP_NEWSLETTER_CATEGORIE = "Alice_Module_Mobapi_Form_Ext1m3_Customer_NewsletterHomepageForm[newsletter_categories_subscribed]";
 	public static final String SIGNUP_NEWSLETTER_CATEGORIE_VALUE = "6";
+	public static final String SIGNUP_NEWSLETTER_CATEGORIE_VALUE_UG = "7";
+	public static final String SIGNUP_NEWSLETTER_CATEGORIE_VALUE_EG = "5";
 	public static final String SIGNUP_NEWSLETTER_EMAIL = "Alice_Module_Mobapi_Form_Ext1m3_Customer_NewsletterHomepageForm[email]";
 }
