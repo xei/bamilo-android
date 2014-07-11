@@ -45,7 +45,7 @@ public class RequestConstants {
 	/**
 	 * Forgot Password
 	 */
-	public final static String KEY_FORGOT_PASSWORD_EMAIL = "Alice_Module_Customer_Model_ForgotPasswordForm[email]";
+	public final static String KEY_FORGOT_PASSWORD_EMAIL = "Alice_Module_Mobapi_Form_Customer_ForgotPasswordForm[email]";
 	
 	/**
 	 * Facebook Login
