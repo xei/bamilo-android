@@ -45,13 +45,12 @@ public abstract class BaseHelper {
     //public static String BASE_URL_CI = "https://www.jumia.ci/mobapi/v1.3";
     //public static String BASE_URL_UG = "https://www.jumia.ug/mobapi/v1.3";
     
-    public static String BASE_URL_NG = BASE_URL_STAGING_NG;
-    public static String BASE_URL_KE = BASE_URL_STAGING_KE;
+    public static String BASE_URL_NG = "http://integration-www.jumia.com.ng/mobapi/1.3";
+    public static String BASE_URL_KE = "http://integration-www.jumia.co.ke/mobapi/1.3";
     public static String BASE_URL_MA = "https://integration-www.jumia.ma/mobapi/1.3";
-    //public static String BASE_URL_MA = BASE_URL_STAGING_MA;
-    public static String BASE_URL_EG = BASE_URL_STAGING_EG;
-    public static String BASE_URL_CI = BASE_URL_STAGING_CI;
-    public static String BASE_URL_UG = BASE_URL_STAGING_UG;
+    public static String BASE_URL_EG = "https://integration-www.jumia.com.eg/mobapi/1.3";
+    public static String BASE_URL_CI = "https://integration-www.jumia.ci/mobapi/1.3";
+    public static String BASE_URL_UG = "http://integration-www.jumia.ug/mobapi/1.3";
 
     /**
      * Creates the bundle for the request
