@@ -605,15 +605,10 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
                 dialog = DialogGenericFragment.createNoNetworkDialog(SplashScreenActivity.this,
                         new OnClickListener() {
-
                             @Override
                             public void onClick(View v) {
-                                /**
-                                 * Re-send initialize event result to get Api Info
-                                 */
-                                Bundle args = new Bundle();
-                                args.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.INITIALIZE);
-                                onRequestComplete(args);
+                                // Re-send initialize event
+                                JumiaApplication.INSTANCE.init(false, initializationHandler);
                                 dialog.dismiss();
                             }
                         }, true);
