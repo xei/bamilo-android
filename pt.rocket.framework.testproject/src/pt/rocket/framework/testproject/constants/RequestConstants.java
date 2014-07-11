@@ -104,8 +104,8 @@ public class RequestConstants {
 	public static final String PRODUCT_SKU_EG = "AC452FAADFISEGAMZ";
 	public static final String PRODUCT_SKU_SIMPLE_EG = "AC452FAADFISEGAMZ-254608";
 	
-	public static final String PRODUCT_SKU_UG = "SA948ELAAEAUNAFAMZ";
-	public static final String PRODUCT_SKU_SIMPLE_UG = "SA948ELAAEAUNAFAMZ-35467";
+	public static final String PRODUCT_SKU_UG = "SA948ELAA9T5NAFAMZ";
+	public static final String PRODUCT_SKU_SIMPLE_UG = "SA948ELAA9T5NAFAMZ-21695";
 	
 	/**
 	 * About you
