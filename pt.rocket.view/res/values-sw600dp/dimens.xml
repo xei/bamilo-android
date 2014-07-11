@@ -24,6 +24,7 @@
 	<!-- DIALOG CATALOG FILTER -->
     <dimen name="dialog_catalog_filter_width">@dimen/match_parent</dimen>
     <dimen name="dialog_catalog_filter_height">450.00dp</dimen>
+    <dimen name="catalog_buttons_container_height">46.5dp</dimen>
     
 	<!-- CAMPAIGN PAGE -->
     <integer name="campaign_num_columns">2</integer>

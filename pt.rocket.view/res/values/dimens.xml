@@ -157,6 +157,7 @@
     <dimen name="checkout_order_inner_margin_right">@dimen/margin_mid</dimen>
 
     <!-- DIALOG CATALOG FILTER -->
+    <dimen name="catalog_buttons_container_height">36.5dp</dimen>
     <dimen name="catalog_button_filter_width">80dp</dimen>
     <dimen name="dialog_catalog_filter_width">@dimen/match_parent</dimen>
     <dimen name="dialog_catalog_filter_height">400.00dp</dimen>

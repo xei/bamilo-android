@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         layout="@layout/loading_bar"
         android:visibility="visible" />
-
+    
     <!-- NOT FOUND VIEW -->
 
     <org.holoeverywhere.widget.TextView

@@ -1,6 +1,5 @@
 package pt.rocket.view.fragments;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
@@ -13,6 +12,7 @@ import pt.rocket.controllers.CatalogPageModel;
 import pt.rocket.controllers.FeaturedItemsAdapter;
 import pt.rocket.controllers.TipsPagerAdapter;
 import pt.rocket.framework.Darwin;
+import pt.rocket.framework.components.androidslidingtabstrip.SlidingTabLayout;
 import pt.rocket.framework.objects.CatalogFilter;
 import pt.rocket.framework.objects.CatalogFilterOption;
 import pt.rocket.framework.objects.FeaturedBox;
@@ -21,7 +21,6 @@ import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.GetProductsHelper;
-import pt.rocket.utils.JumiaCatalogViewPager;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.TipsOnPageChangeListener;
@@ -33,13 +32,9 @@ import pt.rocket.view.R;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.LinearGradient;
-import android.graphics.Paint;
-import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
@@ -63,25 +58,12 @@ public class Catalog extends BaseFragment implements OnClickListener {
 
     private static Catalog mCatalogFragment;
     private CatalogPagerAdaper mCatalogPagerAdapter;
-    private JumiaCatalogViewPager mViewPager;
-    private PagerTabStrip pagerTabStrip;
-
+    private ViewPager mViewPager;
     private ViewPager mFeaturedProductsViewPager;
     private ViewPager mFeaturedBrandsViewPager;
 
-    private final int TAB_PREV_ID = 0;
-    private final int TAB_CURR_ID = 1;
-    private final int TAB_NEXT_ID = 2;
-
-    private final int TAB_INDICATOR_HEIGHT = 0;
-    private final int TAB_UNDERLINE_HEIGHT = 1;
-    private final int TAB_STRIP_COLOR = android.R.color.transparent;
-
-    private static final int PAGE_MIDDLE = 1;
-
     private LayoutInflater mInflater;
-    private int mSelectedPageIndex = 1;
-    private int mLastSelectedPageIndex = 1;
+    
     // we save each page in a model
     private ArrayList<String> mSortOptions;
     private CatalogPageModel[] mCatalogPageModel;
@@ -91,7 +73,6 @@ public class Catalog extends BaseFragment implements OnClickListener {
     public static String navigationPath;
     public static String title;
     public static int navigationSource;
-    private int currentPosition = 1;
 
     private View mProductsButtonsContainer;
 
@@ -122,6 +103,10 @@ public class Catalog extends BaseFragment implements OnClickListener {
     private SharedPreferences sharedPreferences;
 
     private View mWizardContainer;
+
+    private SlidingTabLayout mPagerTabStrip;
+
+    private int mSavedPagerPosition = 0;
 
     public Catalog() {
         super(EnumSet.noneOf(EventType.class),
@@ -180,8 +165,11 @@ public class Catalog extends BaseFragment implements OnClickListener {
         Log.i(TAG, "ON CREATE VIEW");
         mInflater = inflater;
         View view = inflater.inflate(R.layout.products_frame, container, false);
-        mViewPager = (JumiaCatalogViewPager) view.findViewById(R.id.viewpager_products_list);
-        pagerTabStrip = (PagerTabStrip) view.findViewById(R.id.products_list_titles);
+        mViewPager = (ViewPager) view.findViewById(R.id.viewpager_products_list);
+
+        mPagerTabStrip = (SlidingTabLayout) view.findViewById(R.id.catalog_pager_tag); // XXX
+        mPagerTabStrip.setCustomTabView(R.layout.tab_simple_item, R.id.tab);        
+        
         // Get wizard container
         mWizardContainer = view.findViewById(R.id.tips_container);
         // Get buttons container
@@ -219,42 +207,6 @@ public class Catalog extends BaseFragment implements OnClickListener {
 
         AnalyticsGoogle.get().trackPage(R.string.gproductlist);
 
-        mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-
-            @Override
-            public void onPageSelected(int position) {
-                mSelectedPageIndex = position;
-            }
-
-            @Override
-            public void onPageScrolled(int arg0, float arg1, int arg2) {
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-                if (state == ViewPager.SCROLL_STATE_IDLE) {
-
-                    if (mSelectedPageIndex < 1) {
-                        Log.i(TAG, "getCurrentCatalogPageModel lower :  mSelectedPageIndex is : "
-                                + mSelectedPageIndex + " mLastSelectedPageIndex id : "
-                                + mLastSelectedPageIndex);
-                        // moving each page content one page to the right
-                        updateCatalogPageModelIdexes(1);
-
-                    } else if (mSelectedPageIndex > 1) {
-                        Log.i(TAG, "getCurrentCatalogPageModel higher :  mSelectedPageIndex is : "
-                                + mSelectedPageIndex + " mLastSelectedPageIndex id : "
-                                + mLastSelectedPageIndex);
-                        updateCatalogPageModelIdexes(-1);
-                    }
-
-                } else if (state == ViewPager.SCROLL_STATE_DRAGGING) {
-
-                }
-            }
-
-        });
-
         if (mCatalogPagerAdapter == null) {
             Log.d(TAG, "FILTER: ADAPTER IS NULL");
             mCatalogPagerAdapter = new CatalogPagerAdaper();
@@ -267,18 +219,10 @@ public class Catalog extends BaseFragment implements OnClickListener {
         }
 
         mViewPager.setAdapter(mCatalogPagerAdapter);
+        mPagerTabStrip.setViewPager(mViewPager); // XXX
         // TODO: Validate if fix the "Call removeView() on the child's parent first"
-        mViewPager.setOffscreenPageLimit(3);  
-        mViewPager.setCurrentItem(1);
-        try {
-            setLayoutSpec();
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
+        mViewPager.setOffscreenPageLimit(3);
+        mViewPager.setCurrentItem(mSavedPagerPosition);
 
         AnalyticsGoogle.get().trackPage(R.string.gproductlist);
         
@@ -298,6 +242,7 @@ public class Catalog extends BaseFragment implements OnClickListener {
     public void onPause() {     
         super.onPause();
         Log.i(TAG, "ON PAUSE");
+        if(mViewPager != null) mSavedPagerPosition  = mViewPager.getCurrentItem();
     }
     
     /*
@@ -766,11 +711,6 @@ public class Catalog extends BaseFragment implements OnClickListener {
         mFilterButton.setVisibility(View.VISIBLE);
         mFilterButton.setOnClickListener(null);
         mFilterButton.setOnClickListener(this);
-        pagerTabStrip.setPadding(
-                0,
-                0,
-                getBaseActivity().getResources().getDimensionPixelSize(
-                        R.dimen.catalog_button_filter_width), 0);
     }
 
     /**
@@ -857,89 +797,12 @@ public class Catalog extends BaseFragment implements OnClickListener {
      * ######### LAYOUT #########
      */
 
-    /**
-     * Set some layout parameters that aren't possible by xml
-     * 
-     * @throws NoSuchFieldException
-     * @throws IllegalArgumentException
-     * @throws IllegalAccessException
-     */
-    private void setLayoutSpec() throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
-        // Get text
-        final TextView currTextView = (TextView) pagerTabStrip.getChildAt(TAB_CURR_ID);
-        final TextView nextTextView = (TextView) pagerTabStrip.getChildAt(TAB_NEXT_ID);
-        final TextView prevTextView = (TextView) pagerTabStrip.getChildAt(TAB_PREV_ID);
-
-        // Set Color
-        currTextView.setPadding(0, 0, 0, 1);
-
-        // Calculate the measures
-        final float density = this.getResources().getDisplayMetrics().density;
-        int mIndicatorHeight = (int) (TAB_INDICATOR_HEIGHT * density + 0.5f);
-        int mFullUnderlineHeight = (int) (TAB_UNDERLINE_HEIGHT * density + 0.5f);
-
-        // Set the indicator height
-        Field field;
-        field = pagerTabStrip.getClass().getDeclaredField("mIndicatorHeight");
-        field.setAccessible(true);
-        field.set(pagerTabStrip, mIndicatorHeight);
-        // Set the underline height
-        field = pagerTabStrip.getClass().getDeclaredField("mFullUnderlineHeight");
-        field.setAccessible(true);
-        field.set(pagerTabStrip, mFullUnderlineHeight);
-        // Set the color of indicator
-        Paint paint = new Paint();
-        paint.setShader(new LinearGradient(0, 0, 0, mIndicatorHeight, getResources().getColor(
-                TAB_STRIP_COLOR), getResources().getColor(
-                TAB_STRIP_COLOR), Shader.TileMode.CLAMP));
-        field = pagerTabStrip.getClass().getDeclaredField("mTabPaint");
-        field.setAccessible(true);
-        field.set(pagerTabStrip, paint);
-
-    }
-
-    private void setContent(int index) {
-        final CatalogPageModel model = getCurrentCatalogPageModel(index);
-        model.setRelativeLayout(model.getRelativeLayout());
-    }
-
     private void initPageModel() {
         for (int i = 0; i < mCatalogPageModel.length; i++) {
             mCatalogPageModel[i] = new CatalogPageModel(i, getBaseActivity(), this);
             mCatalogPageModel[i].setTitle(mSortOptions.get(i));
 
         }
-    }
-
-    private CatalogPageModel getCurrentCatalogPageModel(int position) {
-        for (int i = 0; i < mCatalogPageModel.length; i++) {
-            if (mCatalogPageModel[i].getIndex() == position) {
-                return mCatalogPageModel[i];
-            }
-
-        }
-
-        return mCatalogPageModel[position];
-    }
-
-    private void updateCatalogPageModelIdexes(int val) {
-        for (int i = 0; i < mCatalogPageModel.length; i++) {
-            int index = mCatalogPageModel[i].getIndex();
-            if (index + val < 0) {
-                mCatalogPageModel[i].setIndex(6);
-            } else if (index + val == 7) {
-                mCatalogPageModel[i].setIndex(0);
-            } else {
-                mCatalogPageModel[i].setIndex(index + val);
-            }
-
-            Log.i(TAG, "updateCatalogPageModelIdexes " + mCatalogPageModel[i].getTitle() + " " + mCatalogPageModel[i].getIndex());
-        }
-        // setContent(PAGE_LEFT);
-        // setContent(PAGE_MIDDLE);
-        // setContent(PAGE_RIGHT);
-        mCatalogPagerAdapter.notifyDataSetChanged();
-        mViewPager.setCurrentItem(PAGE_MIDDLE, false);
     }
 
     /**
@@ -960,8 +823,8 @@ public class Catalog extends BaseFragment implements OnClickListener {
 
         @Override
         public int getCount() {
-            // we only need three pages
-            return 3;
+            return (mCatalogPageModel != null) ? mCatalogPageModel.length : 0;
+            
         }
 
         @Override
@@ -970,13 +833,7 @@ public class Catalog extends BaseFragment implements OnClickListener {
         }
 
         private CatalogPageModel getCurrentCatalogPageModel(int position) {
-            CatalogPageModel page = mCatalogPageModel[position];
-            for (int i = 0; i < mCatalogPageModel.length; i++) {
-                if (mCatalogPageModel[i].getIndex() == position) {
-                    page = mCatalogPageModel[i];
-                }
-            }
-            return page;
+            return mCatalogPageModel[position];
         }
 
         @Override
