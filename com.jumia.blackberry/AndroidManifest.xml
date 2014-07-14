@@ -107,10 +107,10 @@
 
         <!--
         REMEMBER TO REMOVE THIS META DATA LINE BEFORE SUBMITTING TO THE APP STORE
-        -->       
         <meta-data
             android:name="USEQASERVER"
             android:value="ON" />
+		-->
         
 
         <!-- Urban Airship GCM -->
