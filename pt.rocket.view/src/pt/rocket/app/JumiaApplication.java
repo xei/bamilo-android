@@ -148,12 +148,6 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     
     public int lastPaymentSelected = -1;
     
-    /**
-     * ADX Global Values
-     */
-    public String ADX_VERSION_NAME = "";
-    public String ADX_DISPLAY_SIZE = "";
-    
     
     /**
      * Related Items Variables
@@ -741,14 +735,6 @@ public class JumiaApplication extends Application implements ExceptionCallback {
         return pInfo.versionName;
     }
 
-    public float getScreenSizeInches(Activity mActivity) {
-        DisplayMetrics dm = new DisplayMetrics();
-        mActivity.getWindowManager().getDefaultDisplay().getMetrics(dm);
-        double x = Math.pow(dm.widthPixels/dm.xdpi,2);
-        double y = Math.pow(dm.heightPixels/dm.ydpi,2);
-        double screenInches = Math.sqrt(x+y);
-        return (float)Math.round(screenInches * 10) / 10;
-    }
     
     public void cleanAllPreviousCountryValues(){
         currentCategories = null;

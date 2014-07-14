@@ -400,7 +400,7 @@ public class AnalyticsGoogle {
 		mTracker.sendEvent(category, action, orderNr, valueDouble.longValue());
 	}
 
-	public void trackShare(Context context, String sku, String user_id, String app_version, String display_size, String shop_country ){
+	public void trackShare(Context context, String sku, String user_id, String shop_country ){
 		if (!isEnabled) {
 			return;
 		}

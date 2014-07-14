@@ -102,7 +102,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     
     private boolean sendAdxLaunchEvent = false;
 
-    private long launchTime;
+    private long mLaunchTime;
 
     private Bundle mDeepLinkBundle;
 
@@ -123,7 +123,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         // Get prefs
         sharedPrefs = getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         // Keep launch time to compare with newer timestamp later
-        launchTime = System.currentTimeMillis();
+        mLaunchTime = System.currentTimeMillis();
         // Get values from intent
         getPushNotifications();
         // Initialize application
@@ -819,41 +819,18 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         }
     }
 
+    /**
+     * Generate and trigget the adx tracker for splash screen
+     * @author sergiopereira
+     */
     private void generateAndPerformAdxTrack(){
-    	    
-    	    String appVersion = "";
-    	    String displaySize = "";
-    	    String duration = "";
-            try {
-              
-                displaySize = ""+JumiaApplication.INSTANCE.getScreenSizeInches(this);
-                if(launchTime == 0){
-                    duration = "";
-                } else {
-                    duration = "" + (System.currentTimeMillis()-launchTime);    
-                }
-                
-                // Reset the launch time to identify the launch was handled
-                launchTime = 0;
-                
-                try {
-                    appVersion = JumiaApplication.INSTANCE.getAppVersion();
-                    if (null == appVersion) {
-                        Log.d("Rocket", "Unexpected empty app version");
-                        appVersion = "";
-                    }
-                } catch (Exception e) {
-                    appVersion = "";
-                    Log.d("Rocket", "Unexpected exception when accessing package version: ", e);
-                }
-             
-                
-            } catch (Exception e) {
-                Log.d("Rocket", "Unexpected exception when adding information to JSON object: " + e);
-            }
-            JumiaApplication.INSTANCE.ADX_DISPLAY_SIZE = displaySize;
-            JumiaApplication.INSTANCE.ADX_VERSION_NAME = appVersion;
-            AdXTracker.launch(this, appVersion, displaySize, duration);
+	    String duration = "";
+        // Validate launch time
+        if(mLaunchTime != 0) duration = "" + (System.currentTimeMillis() - mLaunchTime);
+        // Reset the launch time to identify the launch was handled
+        mLaunchTime = 0;
+        // Trigger
+        AdXTracker.launch(this, duration);
     }
 
 }

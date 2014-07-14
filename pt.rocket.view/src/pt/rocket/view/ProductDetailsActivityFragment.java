@@ -1137,10 +1137,10 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
             }
         } else if (id == R.id.call_to_order) {
             String user_id = "";
-            if(JumiaApplication.INSTANCE.CUSTOMER != null && JumiaApplication.INSTANCE.CUSTOMER.getIdAsString() != null){
-                user_id = JumiaApplication.INSTANCE.CUSTOMER.getIdAsString();
+            if(JumiaApplication.CUSTOMER != null && JumiaApplication.CUSTOMER.getIdAsString() != null){
+                user_id = JumiaApplication.CUSTOMER.getIdAsString();
             }
-            AdXTracker.trackCall(getActivity().getApplicationContext(), user_id, JumiaApplication.INSTANCE.ADX_VERSION_NAME, JumiaApplication.INSTANCE.ADX_DISPLAY_SIZE, JumiaApplication.INSTANCE.SHOP_NAME);
+            AdXTracker.trackCall(getActivity().getApplicationContext(), user_id, JumiaApplication.SHOP_NAME);
             makeCall();
 
         } else if (id == R.id.viewpager_tips_btn_indicator) {

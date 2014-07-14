@@ -62,16 +62,16 @@ public class AdXTracker {
 		isStarted = true;
 	}
 	
-	public static void trackSale(Context context, String cartValue, String user_id, String transaction_id, ArrayList<String> skus, String app_version, String display_size, boolean isFirstCustomer, String shop_country, boolean guest ) {
+	public static void trackSale(Context context, String cartValue, String user_id, String transaction_id, ArrayList<String> skus, boolean isFirstCustomer, String shop_country, boolean guest ) {
 		if (!isEnabled)
 			return;
 		String jsonEncoded = "";
 		LinkedHashMap<String, Object> values = new LinkedHashMap<String, Object>();
 		values.put("shop_country", shop_country);
 		values.put("user_id", user_id);
-		values.put("app_version", app_version);
 		values.put("transaction_id", transaction_id);
-		values.put("display_size", display_size);
+		
+		appendExtraDataForEvent(context, values);
 		
 		JSONArray mJSONArray = new JSONArray();
 		for (String sku : skus) {
@@ -100,7 +100,7 @@ public class AdXTracker {
 	}
 	
 
-	public static void trackAddToCart(Context context, String cartValue, String user_id, String sku, String app_version, String display_size, String shop_country ) {
+	public static void trackAddToCart(Context context, String cartValue, String user_id, String sku, String shop_country ) {
 		if (!isEnabled) {
 			Log.d(TAG, "adx seems to be disabled - ignoring");
 			return;
@@ -110,9 +110,9 @@ public class AdXTracker {
 		LinkedHashMap<String, Object> values = new LinkedHashMap<String, Object>();
 		values.put("shop_country", shop_country);
 		values.put("user_id", user_id);
-		values.put("app_version", app_version);
 		values.put("sku", sku);
-		values.put("display_size", display_size);
+		
+		appendExtraDataForEvent(context, values);
 	
 		try {
 			jsonEncoded = URLEncoder.encode(generateJSONObject(values).toString(), "UTF-8");
@@ -125,7 +125,7 @@ public class AdXTracker {
 		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xaddtocart), cartValue, currency,jsonEncoded);
 	}
 	
-	public static void trackRemoveFromCart(Context context, String cartValue, String user_id, String sku, String app_version, String display_size, String shop_country ) {
+	public static void trackRemoveFromCart(Context context, String cartValue, String user_id, String sku, String shop_country ) {
 		if (!isEnabled) {
 			Log.d(TAG, "adx seems to be disabled - ignoring");
 			return;
@@ -135,9 +135,9 @@ public class AdXTracker {
 		LinkedHashMap<String, Object> values = new LinkedHashMap<String, Object>();
 		values.put("shop_country", shop_country);
 		values.put("user_id", user_id);
-		values.put("app_version", app_version);
 		values.put("sku", sku);
-		values.put("display_size", display_size);
+		
+		appendExtraDataForEvent(context, values);
 	
 		try {
 			jsonEncoded = URLEncoder.encode(generateJSONObject(values).toString(), "UTF-8");
@@ -151,7 +151,7 @@ public class AdXTracker {
 		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xremovefromcart), cartValue, currency,jsonEncoded);
 	}
 	
-	public static void trackCheckoutStep(Context context, String shop_country, String user_id, String app_version, String display_size, int step) {
+	public static void trackCheckoutStep(Context context, String shop_country, String user_id, int step) {
 		if (!isEnabled)
 			return;
 
@@ -159,9 +159,9 @@ public class AdXTracker {
 		LinkedHashMap<String, Object> values = new LinkedHashMap<String, Object>();
 		values.put("shop_country", shop_country);
 		values.put("user_id", user_id);
-		values.put("app_version", app_version);
-		values.put("display_size", display_size);
 		values.put("checkout_step", context.getString(step));
+		
+		appendExtraDataForEvent(context, values);
 		
 		try {
 			jsonEncoded = URLEncoder.encode(generateJSONObject(values).toString(), "UTF-8");
@@ -175,7 +175,7 @@ public class AdXTracker {
 		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xnativecheckout), "","", jsonEncoded);
 	}
 	
-	public static void trackSignUp(Context context, String shop_country, String user_id, String app_version, String display_size) {
+	public static void trackSignUp(Context context, String shop_country, String user_id) {
 		if (!isEnabled)
 			return;
 
@@ -183,8 +183,8 @@ public class AdXTracker {
 		LinkedHashMap<String, Object> values = new LinkedHashMap<String, Object>();
 		values.put("shop_country", shop_country);
 		values.put("user_id", user_id);
-		values.put("app_version", app_version);
-		values.put("display_size", display_size);
+		
+		appendExtraDataForEvent(context, values);
 		
 		try {
 			jsonEncoded = URLEncoder.encode(generateJSONObject(values).toString(), "UTF-8");
@@ -197,7 +197,7 @@ public class AdXTracker {
 		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xcustomersignup), "", "", jsonEncoded);
 	}
 
-	public static void trackPaymentMethod(Context context, String shop_country, String user_id, String app_version, String display_size, String payment) {
+	public static void trackPaymentMethod(Context context, String shop_country, String user_id, String payment) {
 		if (!isEnabled)
 			return;
 
@@ -205,9 +205,9 @@ public class AdXTracker {
 		LinkedHashMap<String, Object> values = new LinkedHashMap<String, Object>();
 		values.put("shop_country", shop_country);
 		values.put("user_id", user_id);
-		values.put("app_version", app_version);
-		values.put("display_size", display_size);
 		values.put("payment_method", payment);
+		
+		appendExtraDataForEvent(context, values);
 		
 		try {
 			jsonEncoded = URLEncoder.encode(generateJSONObject(values).toString(), "UTF-8");
@@ -220,7 +220,7 @@ public class AdXTracker {
 		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xpaymentmethod), "","", jsonEncoded);
 	}
 	
-	public static void trackNativeCheckoutError(Context context, String shop_country, String user_id, String app_version, String display_size, String error) {
+	public static void trackNativeCheckoutError(Context context, String shop_country, String user_id, String error) {
 		if (!isEnabled)
 			return;
 		
@@ -228,9 +228,9 @@ public class AdXTracker {
 		LinkedHashMap<String, Object> values = new LinkedHashMap<String, Object>();
 		values.put("shop_country", shop_country);
 		values.put("user_id", user_id);
-		values.put("app_version", app_version);
-		values.put("display_size", display_size);
 		values.put("error", error);
+		
+		appendExtraDataForEvent(context, values);		
 		
 		try {
 			jsonEncoded = URLEncoder.encode(generateJSONObject(values).toString(), "UTF-8");
@@ -258,14 +258,15 @@ public class AdXTracker {
 		
 	}
 	
-	public static void launch(Context context, String app_version, String display_size, String duration) {
+	public static void launch(Context context, String duration) {
 		if (!isEnabled)
 			return;
 		Log.d(TAG, "ADX: launch tracked event = " + context.getString(R.string.xlaunch));
 		LinkedHashMap<String, Object> values = new LinkedHashMap<String, Object>();
-		values.put("app_version", app_version);
-		values.put("display_size", display_size);
 		values.put("duration", duration);
+		
+		appendExtraDataForEvent(context, values);
+		
 		String jsonEncoded = "";
 		try {
 			jsonEncoded = URLEncoder.encode(generateJSONObject(values).toString(), "UTF-8");
@@ -277,7 +278,7 @@ public class AdXTracker {
 		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xlaunch), "", "", jsonEncoded);
 	}
 
-	public static void login(Context context, String shop_country, String user_id, String app_version, String display_size) {
+	public static void login(Context context, String shop_country, String user_id) {
 		if (!isEnabled) {
 			Log.d(TAG, "adx seems to be disabled - ignoring");
 			return;
@@ -286,19 +287,20 @@ public class AdXTracker {
 		LinkedHashMap<String, Object> values = new LinkedHashMap<String, Object>();
 		values.put("shop_country", shop_country);
 		values.put("user_id", user_id);
-		values.put("app_version", app_version);
-		values.put("display_size", display_size);
+		
+		appendExtraDataForEvent(context, values);
+		
 		try {
 			jsonEncoded = URLEncoder.encode(generateJSONObject(values).toString(), "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			jsonEncoded = "";
 			e.printStackTrace();
 		}
-		Log.d(TAG, "login tracked: event = " + context.getString(R.string.xlogin) + " customerId = " + user_id+" app_version = "+app_version+" display_size: "+display_size);
+		Log.d(TAG, "login tracked: event = " + context.getString(R.string.xlogin) + " customerId = " + user_id);
 		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xlogin), "", "", jsonEncoded);
 	}
 	
-	public static void logout(Context context, String shop_country, String user_id, String app_version, String display_size) {
+	public static void logout(Context context, String shop_country, String user_id) {
 		if (!isEnabled) {
 			Log.d(TAG, "adx seems to be disabled - ignoring");
 			return;
@@ -308,8 +310,8 @@ public class AdXTracker {
 		LinkedHashMap<String, Object> values = new LinkedHashMap<String, Object>();
 		values.put("shop_country", shop_country);
 		values.put("user_id", user_id);
-		values.put("app_version", app_version);
-		values.put("display_size", display_size);
+		
+		appendExtraDataForEvent(context, values);
 		
 		try {
 			jsonEncoded = URLEncoder.encode(generateJSONObject(values).toString(), "UTF-8");
@@ -318,11 +320,11 @@ public class AdXTracker {
 			e.printStackTrace();
 		}
 		
-		Log.d(TAG, "logout tracked: event = " + context.getString(R.string.xlogout) + " customerId = " + user_id+" app_version = "+app_version+" display_size: "+display_size);
+		Log.d(TAG, "logout tracked: event = " + context.getString(R.string.xlogout) + " customerId = " + user_id);
 		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xlogout), "", "", jsonEncoded);
 	}
 	
-	public static void facebookLogin(Context context, String shop_country, String user_id, String app_version, String display_size) {
+	public static void facebookLogin(Context context, String shop_country, String user_id) {
 		if (!isEnabled) {
 			Log.d(TAG, "adx seems to be disabled - ignoring");
 			return;
@@ -331,8 +333,9 @@ public class AdXTracker {
 		LinkedHashMap<String, Object> values = new LinkedHashMap<String, Object>();
 		values.put("shop_country", shop_country);
 		values.put("user_id", user_id);
-		values.put("app_version", app_version);
-		values.put("display_size", display_size);
+		
+		appendExtraDataForEvent(context, values);
+		
 		try {
 			jsonEncoded = URLEncoder.encode(generateJSONObject(values).toString(), "UTF-8");
 		} catch (UnsupportedEncodingException e) {
@@ -340,11 +343,11 @@ public class AdXTracker {
 			e.printStackTrace();
 		}
 		
-		Log.d(TAG, "facebook login tracked: event = " + context.getString(R.string.xFBlogin) + " customerId = " + user_id+" app_version = "+app_version+" display_size: "+display_size);
+		Log.d(TAG, "facebook login tracked: event = " + context.getString(R.string.xFBlogin) + " customerId = " + user_id);
 		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xFBlogin), "", "", jsonEncoded);
 	}
 
-	public static void signup(Context context, String shop_country, String user_id, String app_version, String display_size) {
+	public static void signup(Context context, String shop_country, String user_id) {
 		if (!isEnabled)
 			return;
 
@@ -352,8 +355,8 @@ public class AdXTracker {
 		LinkedHashMap<String, Object> values = new LinkedHashMap<String, Object>();
 		values.put("shop_country", shop_country);
 		values.put("user_id", user_id);
-		values.put("app_version", app_version);
-		values.put("display_size", display_size);
+		
+		appendExtraDataForEvent(context, values);
 		
 		try {
 			jsonEncoded = URLEncoder.encode(generateJSONObject(values).toString(), "UTF-8");
@@ -362,12 +365,12 @@ public class AdXTracker {
 			e.printStackTrace();
 		}
 		
-		Log.d(TAG, "signup tracked: event = " + context.getString(R.string.xsignup) + " customerId = " + user_id+" app_version = "+app_version+" display_size: "+display_size);
+		Log.d(TAG, "signup tracked: event = " + context.getString(R.string.xsignup) + " customerId = " + user_id);
 		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xsignup), "", "", jsonEncoded);
 	}
 	
 	
-	public static void trackCall(Context context, String user_id, String app_version, String display_size, String shop_country ) {
+	public static void trackCall(Context context, String user_id, String shop_country ) {
 		if (!isEnabled) {
 			Log.d(TAG, "adx seems to be disabled - ignoring");
 			return;
@@ -377,8 +380,8 @@ public class AdXTracker {
 		LinkedHashMap<String, Object> values = new LinkedHashMap<String, Object>();
 		values.put("shop_country", shop_country);
 		values.put("user_id", user_id);
-		values.put("app_version", app_version);
-		values.put("display_size", display_size);
+		
+		appendExtraDataForEvent(context, values);
 	
 		try {
 			jsonEncoded = URLEncoder.encode(generateJSONObject(values).toString(), "UTF-8");
@@ -386,13 +389,13 @@ public class AdXTracker {
 			jsonEncoded = "";
 			e.printStackTrace();
 		}
-		String currency = CurrencyFormatter.getCurrencyCode();
+		//String currency = CurrencyFormatter.getCurrencyCode();
 		
 		Log.d(TAG, "xcall tracked: event = " + context.getString(R.string.xcall) + " jsonEncoded = " + jsonEncoded);
 		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xcall), "", "",jsonEncoded);
 	}
 	
-	public static void trackShare(Context context, String sku, String user_id, String app_version, String display_size, String shop_country ) {
+	public static void trackShare(Context context, String sku, String user_id, String shop_country ) {
 		if (!isEnabled) {
 			Log.d(TAG, "adx seems to be disabled - ignoring");
 			return;
@@ -403,8 +406,8 @@ public class AdXTracker {
 		values.put("sku", sku);
 		values.put("shop_country", shop_country);
 		values.put("user_id", user_id);
-		values.put("app_version", app_version);
-		values.put("display_size", display_size);
+		
+		appendExtraDataForEvent(context, values);
 	
 		try {
 			jsonEncoded = URLEncoder.encode(generateJSONObject(values).toString(), "UTF-8");
@@ -412,13 +415,13 @@ public class AdXTracker {
 			jsonEncoded = "";
 			e.printStackTrace();
 		}
-		String currency = CurrencyFormatter.getCurrencyCode();
+		//String currency = CurrencyFormatter.getCurrencyCode();
 		
 		Log.d(TAG, "xsocialshare tracked: event = " + context.getString(R.string.xsocialshare) + " jsonEncoded = " + jsonEncoded);
 		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xsocialshare), "", "",jsonEncoded);
 	}
 	
-	public static void trackProductRate(Context context, String sku, ProductReviewCommentCreated review, String user_id, String app_version, String display_size, String shop_country ) {
+	public static void trackProductRate(Context context, String sku, ProductReviewCommentCreated review, String user_id, String shop_country ) {
 		if (!isEnabled) {
 			Log.d(TAG, "adx seems to be disabled - ignoring");
 			return;
@@ -434,8 +437,9 @@ public class AdXTracker {
 		
 		values.put("shop_country", shop_country);
 		values.put("user_id", user_id);
-		values.put("app_version", app_version);
-		values.put("display_size", display_size);
+		
+		
+		appendExtraDataForEvent(context, values);
 	
 		try {
 			jsonEncoded = URLEncoder.encode(generateJSONObject(values).toString(), "UTF-8");
@@ -443,7 +447,8 @@ public class AdXTracker {
 			jsonEncoded = "";
 			e.printStackTrace();
 		}
-		String currency = CurrencyFormatter.getCurrencyCode();
+		
+		//String currency = CurrencyFormatter.getCurrencyCode();
 		
 		Log.d(TAG, "xproductrate tracked: event = " + context.getString(R.string.xproductrate) + " jsonEncoded = " + jsonEncoded);
 		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xproductrate), "", "",jsonEncoded);
@@ -491,5 +496,33 @@ public class AdXTracker {
 		Log.i(TAG, "DEEP LINK ADX TRACKING: " + context.getString(R.string.xdeeplinklaunch) + " " + value);
 		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xdeeplinklaunch), value, "");
 	}
+	
+	
+	
+	/**
+	 * Append extra data for respective event
+	 * {"app_version":"2.0","user_id":"12345","sku":"FE109AA68YMTNGAMZ-38529","display_size":"4.3","shop_country":"Nigeria"}
+	 * @author sergiopereira
+	 */
+	private static void appendExtraDataForEvent(Context context, LinkedHashMap<String, Object> values){
+		values.put("app_version", getAppVersion(context));
+		values.put("display_size", WindowHelper.getScreenSizeInches(context).toString());
+	}
+
+	
+	/**
+	 * Get the app version
+	 * @return version or n.a.
+	 * @author sergiopereira
+	 */
+    private static String getAppVersion(Context context) {
+        PackageInfo pInfo = null;
+        try {
+            pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+        } catch (NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return (pInfo == null) ? "n.a." : pInfo.versionName;
+    }
 	
 }

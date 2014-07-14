@@ -224,6 +224,10 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
             return;
         }
 
+        /**
+         * FIXME: CREATE A TICKET TO FIX THIS METHOD
+         * @author sergiopereira
+         */
         ContentValues values = new ContentValues();
         values.put("Alice_Module_Customer_Model_PasswordForm[password]",
                 newPassword);
