@@ -105,6 +105,14 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
+        <!--
+        REMEMBER TO REMOVE THIS META DATA LINE BEFORE SUBMITTING TO THE APP STORE
+        -->       
+        <meta-data
+            android:name="USEQASERVER"
+            android:value="ON" />
+        
+
         <!-- Urban Airship GCM -->
         <receiver android:name="pt.rocket.utils.PushNotificationIntentReceiver" />
         <receiver android:name="com.urbanairship.CoreReceiver" />
