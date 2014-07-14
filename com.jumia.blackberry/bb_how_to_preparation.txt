@@ -6,9 +6,13 @@ https://developer.blackberry.com/android/
 ########################
 
 ##### 
-# 1 - Create BlackBerry Dev Account
+# 1 - Create Accounts
+> BlackBerry Dev Account
 laurent.detapol@jumia.com
 RocketInternet2014
+> BlackBerry World Account
+laurent.detapol@jumia.com
+Jumia2014
 
 ##### 
 # 2 - Create Ventore Account to publish

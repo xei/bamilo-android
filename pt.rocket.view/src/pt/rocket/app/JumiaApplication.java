@@ -37,7 +37,6 @@ import pt.rocket.preferences.ShopPreferences;
 import pt.rocket.utils.CheckVersion;
 import pt.rocket.utils.RocketImageLoader;
 import pt.rocket.utils.ServiceSingleton;
-import android.app.Activity;
 import android.app.Application;
 import android.content.ComponentName;
 import android.content.ContentValues;
@@ -52,7 +51,6 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.RemoteException;
-import android.util.DisplayMetrics;
 
 import com.androidquery.callback.AjaxCallback;
 import com.androidquery.callback.BitmapAjaxCallback;

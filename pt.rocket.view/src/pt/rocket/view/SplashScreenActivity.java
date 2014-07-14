@@ -374,20 +374,15 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         devText.append("\nVersion Name: " + pInfo.versionName);
         devText.append("\nVersion Code: " + pInfo.versionCode);
         if (Build.VERSION.SDK_INT >= 9) {
-            devText.append("\nInstallation: "
-                    + SimpleDateFormat.getInstance().format(
-                            new java.util.Date(pInfo.firstInstallTime)));
-            devText.append("\nUpdate: "
-                    + SimpleDateFormat.getInstance().format(
-                            new java.util.Date(pInfo.lastUpdateTime)));
+            devText.append("\nInstallation: " + SimpleDateFormat.getInstance().format(new java.util.Date(pInfo.firstInstallTime)));
+            devText.append("\nUpdate: " + SimpleDateFormat.getInstance().format(new java.util.Date(pInfo.lastUpdateTime)));
         }
 
         try {
             ZipFile zf = new ZipFile(getApplicationInfo().sourceDir);
             ZipEntry ze = zf.getEntry("classes.dex");
             zf.close();
-            devText.append("\nBuild: "
-                    + SimpleDateFormat.getInstance().format(new java.util.Date(ze.getTime())));
+            devText.append("\nBuild: " + SimpleDateFormat.getInstance().format(new java.util.Date(ze.getTime())));
             ze = null;
             zf = null;
         } catch (Exception e) {
@@ -396,7 +391,9 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         devText.append("\nServer: " + RestContract.REQUEST_HOST);
         devText.append("\nUrban AirShip Device APID: \n" + PushManager.shared().getAPID());
         Log.i(TAG, "UrbanAirShip appid : " + PushManager.shared().getAPID());
-
+        // Device info
+        devText.append("\nDevice Model: " + android.os.Build.MODEL);
+        devText.append("\nDevice Manufacturer: " + android.os.Build.MANUFACTURER);
     }
 
     private void initBugSense() {
@@ -799,21 +796,28 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         // Validate shop id and launch the Adx event if is the same country on start app
         // First time
         if(JumiaApplication.SHOP_ID_FOR_ADX == null && shopId != JumiaApplication.SHOP_ID_FOR_ADX) {
+            //Log.i(TAG, "ON LAUNCH EVENT: FIRST TIME");
             sendAdxLaunchEvent = true;
         }
         // Current shop is the same
         if(JumiaApplication.SHOP_ID_FOR_ADX != null && JumiaApplication.SHOP_ID_FOR_ADX.equalsIgnoreCase(shopId)) {
+            //Log.i(TAG, "ON LAUNCH EVENT: SHOP IS SAME");
             sendAdxLaunchEvent = true;
         }
+        
+        //Log.i(TAG, "ON LAUNCH EVENT: " + JumiaApplication.SHOP_ID_FOR_ADX + " " + shopId);
+        
         // Save current shop id
         JumiaApplication.SHOP_ID_FOR_ADX = shopId;
         
-        if(!isDeepLinkLaunch){
+        // Validate deep link launch
+        if(isDeepLinkLaunch){
             isDeepLinkLaunch = false;
-            sendAdxLaunchEvent = false;
+            sendAdxLaunchEvent = true;
         }
+        
         // Send launch
-        if(sendAdxLaunchEvent ) {
+        if(sendAdxLaunchEvent) {
             generateAndPerformAdxTrack();
             sendAdxLaunchEvent = false;
         }

@@ -259,9 +259,8 @@ public class AdXTracker {
 	}
 	
 	public static void launch(Context context, String duration) {
-		if (!isEnabled)
-			return;
-		Log.d(TAG, "ADX: launch tracked event = " + context.getString(R.string.xlaunch));
+		Log.d(TAG, "ADX: ON LAUNCH EVENT");
+		
 		LinkedHashMap<String, Object> values = new LinkedHashMap<String, Object>();
 		values.put("duration", duration);
 		
