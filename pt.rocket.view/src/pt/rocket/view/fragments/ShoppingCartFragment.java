@@ -643,6 +643,7 @@ public class ShoppingCartFragment extends BaseFragment {
            
             if(cart.getPriceRules() != null && cart.getPriceRules().size() > 0){
                 LinearLayout priceRulesContainer = (LinearLayout) getView().findViewById(R.id.price_rules_container);
+                priceRulesContainer.removeAllViews();
                 priceRulesContainer.setVisibility(View.VISIBLE);
                 LayoutInflater mLayoutInflater = LayoutInflater.from(getBaseActivity());
                 Set<String> priceRulesKeys = cart.getPriceRules().keySet();
