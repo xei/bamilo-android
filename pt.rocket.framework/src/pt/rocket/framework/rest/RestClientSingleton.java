@@ -12,6 +12,8 @@ import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.http.params.CoreProtocolPNames;
+
 import pt.rocket.framework.Darwin;
 import pt.rocket.framework.DarwinMode;
 import pt.rocket.framework.ErrorCode;
@@ -163,6 +165,9 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 		httpContext = new BasicHttpContext();
 		cookieStore = new BasicCookieStore();
 		httpContext.setAttribute(ClientContext.COOKIE_STORE, cookieStore);
+		
+		// Set the default or custom user agent
+		setHttpUserAgent();
 
 	}
 
@@ -178,6 +183,23 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 		}
 		INSTANCE.context = context;
 		return INSTANCE;
+	}
+	
+	/**
+	 * Method used to set the user agent
+	 * @author sergiopereira
+	 */
+	private void setHttpUserAgent(){
+		// CASE Default user agent
+		String defaultUserAgent = System.getProperty("http.agent");
+		if(!TextUtils.isEmpty(defaultUserAgent)) {
+			httpClient.getParams().setParameter(CoreProtocolPNames.USER_AGENT, defaultUserAgent);
+		}
+		//// CASE Custom user agent
+		//else {
+		//	String device = (context.getResources().getBoolean(R.bool.isTablet)) ? "tablet" : "phone";		
+		//	httpClient.getParams().setParameter(CoreProtocolPNames.USER_AGENT, "app=android&customer_device=" + device);
+		//}
 	}
 
 	/**

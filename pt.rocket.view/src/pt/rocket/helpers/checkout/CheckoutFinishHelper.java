@@ -27,7 +27,11 @@ import android.util.Log;
 public class CheckoutFinishHelper extends BaseHelper {
     
     private static String TAG = CheckoutFinishHelper.class.getSimpleName();
+    
     private static final String PAYMENT_FORM = "payment_form";
+    
+    public static final String USER_AGENT = "user_agent";
+    
     private static final EventType type = EventType.CHECKOUT_FINISH_EVENT;
             
     /*
@@ -37,8 +41,13 @@ public class CheckoutFinishHelper extends BaseHelper {
     @Override
     public Bundle generateRequestBundle(Bundle args) {
         Log.d(TAG, "REQUEST");
+        // Validate bundle
+        String userAgentData = "";
+        // Get the user agent value
+        if(args != null && args.containsKey(USER_AGENT)) userAgentData = "?" + args.getString(USER_AGENT);
+        // Create bundle
         Bundle bundle = new Bundle();
-        bundle.putString(Constants.BUNDLE_URL_KEY, type.action);
+        bundle.putString(Constants.BUNDLE_URL_KEY, type.action + userAgentData);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.POST);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);

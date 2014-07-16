@@ -539,7 +539,19 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
      */
     private void triggerCheckoutFinish() {
         Log.i(TAG, "TRIGGER: CHECKOUT FINISH");
-        triggerContentEvent(new CheckoutFinishHelper(), null, this);
+        Bundle bundle = new Bundle();
+        bundle.putString(CheckoutFinishHelper.USER_AGENT, getUserAgentAsExtraData());
+        triggerContentEvent(new CheckoutFinishHelper(), bundle, this);
+    }
+    
+    /**
+     * Creates a custom user agent just in case the http user agent be empty.
+     * @return Stirng
+     * @author sergiopereira
+     */
+    private String getUserAgentAsExtraData(){
+        String device = (getResources().getBoolean(R.bool.isTablet)) ? "tablet" : "phone";      
+        return "app=android&customer_device=" + device;
     }
 
     private void triggerClearCart() {
