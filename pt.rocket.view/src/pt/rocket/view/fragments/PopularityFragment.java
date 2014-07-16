@@ -20,7 +20,6 @@ import pt.rocket.framework.objects.ProductReviewComment;
 import pt.rocket.framework.objects.RatingOption;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
-import pt.rocket.framework.utils.LoadingBarView;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.GetProductReviewsHelper;
 import pt.rocket.interfaces.IResponseCallback;
@@ -30,7 +29,6 @@ import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -39,7 +37,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -59,8 +56,6 @@ public class PopularityFragment extends BaseFragment {
 
     private static PopularityFragment popularityFragment;
 
-    private Context context;
-
     private CompleteProduct selectedProduct;
 
     private LayoutInflater inflater;
@@ -74,12 +69,6 @@ public class PopularityFragment extends BaseFragment {
     public static final String CAME_FROM_POPULARITY = "came_from_popularity";
     
     private Fragment mWriteReviewFragment;
-
-    private LoadingBarView contextualLoadingBarView;
-
-    private LinearLayout contextualLoadingBar;
-
-    private RelativeLayout popularityContainer;
 
     /**
      * Get instance
@@ -96,11 +85,14 @@ public class PopularityFragment extends BaseFragment {
      * Empty constructor
      */
     public PopularityFragment() {
-        super(EnumSet.of(EventType.GET_PRODUCT_REVIEWS_EVENT), 
+        super(EnumSet.of(EventType.GET_PRODUCT_REVIEWS_EVENT),
                 EnumSet.noneOf(EventType.class),
                 EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
-                NavigationAction.Products, 
-                R.string.reviews, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+                NavigationAction.Products,
+                R.layout.popularity,
+                false,
+                R.string.reviews,
+                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         this.setRetainInstance(true);
     }
 
@@ -124,22 +116,6 @@ public class PopularityFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-        context = getActivity().getApplicationContext();
-
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-     * android.view.ViewGroup, android.os.Bundle)
-     */
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-        Log.i(TAG, "ON CREATE VIEW");
-        View view = inflater.inflate(R.layout.popularity, null, false);
-        return view;
     }
 
     /*
@@ -166,10 +142,8 @@ public class PopularityFragment extends BaseFragment {
         triggerReviews(selectedProduct.getUrl(), pageNumber);
         
         setAppContentLayout();
-        setContextualLoading();
-        showContextualLoading();
         
-        if(((BaseActivity) getActivity()).isTabletInLandscape(getBaseActivity())){
+        if (BaseActivity.isTabletInLandscape(getBaseActivity())) {
             Log.i(TAG, "startWriteReviewFragment : ");
             startWriteReviewFragment();
         }
@@ -223,51 +197,16 @@ public class PopularityFragment extends BaseFragment {
         Log.i(TAG, "ON DESTROY");
     }
     
-    private void setContextualLoading(){
-        if(getView() != null){
-            contextualLoadingBar = (LinearLayout) getView().findViewById(R.id.contextual_loading);
-            
-            contextualLoadingBarView = (LoadingBarView) contextualLoadingBar.findViewById(R.id.loading_bar_view);
-            
-            popularityContainer = (RelativeLayout) getView().findViewById(R.id.product_info);
-        }
-    }
-    
-    private void showContextualLoading(){
-        Log.i(TAG,"showing loader");
-        if(contextualLoadingBar != null){
-            Log.i(TAG,"showing loader : true");
-            contextualLoadingBar.setVisibility(View.VISIBLE);        
-        }
-        
-        if( popularityContainer != null){
-            popularityContainer.setVisibility(View.GONE);
-        }
-        if(contextualLoadingBarView != null){
-            contextualLoadingBarView.startRendering();    
-        }
-        
-    }
-    
-    private void hideContextualLoading(){
-        contextualLoadingBar.setVisibility(View.GONE);
-        if(contextualLoadingBarView != null){
-            contextualLoadingBarView.stopRendering();
-        }
-        popularityContainer.setVisibility(View.VISIBLE);
-    }
-    
     /**
      * This method inflates the current activity layout into the main template.
      */
     private void setAppContentLayout() {
-        setContextualLoading();
-        showContextualLoading();
         setViewContent();
         setPopularity();
-        if(mProductRatingPage != null)
+        if (mProductRatingPage != null) {
             displayReviews();
-        if(!((BaseActivity) getActivity()).isTabletInLandscape(getBaseActivity())){
+        }
+        if (!BaseActivity.isTabletInLandscape(getBaseActivity())) {
             setCommentListener();    
         }
         
@@ -381,7 +320,7 @@ public class PopularityFragment extends BaseFragment {
      * This method is invoked when the user wants to create a review.
      */
     private void writeReview() {
-        ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.WRITE_REVIEW, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        getBaseActivity().onSwitchFragment(FragmentType.WRITE_REVIEW, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
     }
     
 
@@ -390,7 +329,7 @@ public class PopularityFragment extends BaseFragment {
             return true;
         }
         mProductRatingPage =  bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);;
-        getBaseActivity().showContentContainer();
+        showFragmentContentContainer();
         displayReviews();
         return true;
     }
@@ -399,7 +338,9 @@ public class PopularityFragment extends BaseFragment {
         if(!isVisible()){
             return;
         }
-         
+        
+        showFragmentContentContainer();
+        
         if(getBaseActivity().handleErrorEvent(bundle)){
             return;
         }    
@@ -496,10 +437,6 @@ public class PopularityFragment extends BaseFragment {
         loadingLayout.refreshDrawableState();
         if (reviews.size() < MAX_REVIEW_COUNT) {
             isLoadingMore = true;
-        }
-        
-        if(contextualLoadingBar != null && contextualLoadingBar.getVisibility() == View.VISIBLE){
-            hideContextualLoading();
         }
     }
     

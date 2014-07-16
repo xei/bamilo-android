@@ -45,11 +45,10 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
 
 //    private TextView mStockInfo;
 
-    private RelativeLayout mLoading;
+    // private RelativeLayout mLoading;
 
     private CompleteProduct mCompleteProduct;
 
-    private int CURRENT_IMAGE_INDEX = 0;
     private View mainView;
 
     private OnFragmentActivityInteraction mCallback;
@@ -80,11 +79,14 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
      * @param arrayList
      */
     public ProductBasicInfoFragment() {
-        super(EnumSet.of(EventType.GET_PRODUCT_EVENT), 
-                EnumSet.noneOf(EventType.class), 
+        super(EnumSet.of(EventType.GET_PRODUCT_EVENT),
+                EnumSet.noneOf(EventType.class),
                 EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.Products,
-                R.string.product_details_title, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
+                /*R.layout.productdetails_basic_info_fragment,
+                false,*/
+                R.string.product_details_title,
+                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
     }
 
     @Override
@@ -145,11 +147,9 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
         mProductName = (TextView) mainView.findViewById(R.id.product_name);
         mProductResultPrice = (TextView) mainView.findViewById(R.id.product_price_result);
         mProductNormalPrice = (TextView) mainView.findViewById(R.id.product_price_normal);
-        mProductNormalPrice.setPaintFlags(mProductNormalPrice.getPaintFlags()
-                | Paint.STRIKE_THRU_TEXT_FLAG);
-//        mStockInfo = (TextView) mainView.findViewById(R.id.product_instock);
-        mLoading = (RelativeLayout) mainView
-                .findViewById(R.id.loading_specifications);
+        mProductNormalPrice.setPaintFlags(mProductNormalPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        // mStockInfo = (TextView) mainView.findViewById(R.id.product_instock);
+        // mLoading = (RelativeLayout) mainView.findViewById(R.id.loading_specifications);
 
         return mainView;
     }
@@ -206,7 +206,7 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
     }
 
     private void showContentLoading() {
-        mLoading.setVisibility(View.VISIBLE);
+        // mLoading.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -234,7 +234,7 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
 //    }
 
     private void hideContentLoading() {
-        mLoading.setVisibility(View.GONE);
+        // mLoading.setVisibility(View.GONE);
     }
 
     private void setBasicInfo() {

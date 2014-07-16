@@ -34,7 +34,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -105,13 +104,14 @@ public class WriteReviewFragment extends BaseFragment {
      * Empty constructor
      */
     public WriteReviewFragment() {
-        super(EnumSet.of(EventType.LOGIN_EVENT, 
-                EventType.GET_RATING_OPTIONS_EVENT,
-                EventType.GET_CUSTOMER), 
-                EnumSet.of(EventType.REVIEW_PRODUCT_EVENT), 
+        super(EnumSet.of(EventType.LOGIN_EVENT, EventType.GET_RATING_OPTIONS_EVENT, EventType.GET_CUSTOMER),
+                EnumSet.of(EventType.REVIEW_PRODUCT_EVENT),
                 EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
-                NavigationAction.Products,  
-                R.string.writereview_page_title, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
+                NavigationAction.Products,
+                R.layout.writereview,
+                false,
+                R.string.writereview_page_title,
+                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
     }
 
     /*
@@ -150,20 +150,18 @@ public class WriteReviewFragment extends BaseFragment {
     /*
      * (non-Javadoc)
      * 
-     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-     * android.view.ViewGroup, android.os.Bundle)
+     * @see pt.rocket.view.fragments.BaseFragment#onViewCreated(android.view.View,
+     * android.os.Bundle)
      */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-        Log.i(TAG, "ON CREATE VIEW");
-        View view = inflater.inflate(R.layout.writereview, container, false);
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Log.i(TAG, "ON VIEW CREATED");
         
         
         labelsContainer = (LinearLayout) view.findViewById(R.id.label_container);
         
         ratingBarContainer = (LinearLayout) view.findViewById(R.id.ratingbar_container);
-        return view;
     }
 
     /*
@@ -437,7 +435,7 @@ public class WriteReviewFragment extends BaseFragment {
         case GET_RATING_OPTIONS_EVENT:
             ratingOptions = (HashMap<String, HashMap<String, String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_KEY);
             JumiaApplication.INSTANCE.setRatingOptions(ratingOptions);
-            getBaseActivity().showContentContainer();
+            showFragmentContentContainer();
             setLayout();
             
             return true;

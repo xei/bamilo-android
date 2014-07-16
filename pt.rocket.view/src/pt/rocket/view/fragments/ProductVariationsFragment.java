@@ -23,10 +23,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -66,11 +64,14 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
      * @param arrayList
      */
     public ProductVariationsFragment() {
-        super(EnumSet.of(EventType.GET_PRODUCT_EVENT), 
-                EnumSet.noneOf(EventType.class), 
+        super(EnumSet.of(EventType.GET_PRODUCT_EVENT),
+                EnumSet.noneOf(EventType.class),
                 EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.Products,
-                R.string.product_details_title, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
+                R.layout.variations_fragment,
+                false,
+                R.string.product_details_title,
+                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
     }
 
     @Override
@@ -94,19 +95,8 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
     /*
      * (non-Javadoc)
      * 
-     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-     * android.view.ViewGroup, android.os.Bundle)
-     */
-    @Override
-    public View onCreateView(LayoutInflater mInflater, ViewGroup viewGroup, Bundle savedInstanceState) {
-        super.onCreateView(mInflater, viewGroup, savedInstanceState);
-        Log.i(TAG, "ON CREATE VIEW");
-        return mInflater.inflate(R.layout.variations_fragment, viewGroup, false);
-    }
-    
-    /*
-     * (non-Javadoc)
-     * @see pt.rocket.view.fragments.BaseFragment#onViewCreated(android.view.View, android.os.Bundle)
+     * @see pt.rocket.view.fragments.BaseFragment#onViewCreated(android.view.View,
+     * android.os.Bundle)
      */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {

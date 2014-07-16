@@ -28,11 +28,9 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.GestureDetector;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -123,7 +121,11 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
         super(EnumSet.noneOf(EventType.class),
                 EnumSet.noneOf(EventType.class),
                 EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
-                NavigationAction.Products, 0, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
+                NavigationAction.Products,
+                R.layout.product_showoff_viewpager_frame,
+                false,
+                0,
+                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
         this.setRetainInstance(true);
     }
 
@@ -155,16 +157,15 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
     /*
      * (non-Javadoc)
      * 
-     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-     * android.view.ViewGroup, android.os.Bundle)
+     * @see pt.rocket.view.fragments.BaseFragment#onViewCreated(android.view.View,
+     * android.os.Bundle)
      */
     @Override
-    public View onCreateView(LayoutInflater mInflater, ViewGroup viewGroup,
-            Bundle savedInstanceState) {
-        super.onCreateView(mInflater, viewGroup, savedInstanceState);
-        Log.i(TAG, "ON CREATE VIEW");
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Log.i(TAG, "ON VIEW CREATED");
         
-        mainView = mInflater.inflate(R.layout.product_showoff_viewpager_frame, viewGroup, false);
+        mainView = view;
         mImagesList = (HorizontalListView) mainView.findViewById(R.id.images_list);
         mProductImageLoading = (RelativeLayout) mainView.findViewById(R.id.loading_gallery);
         mViewPager = (JumiaViewPagerWithZoom) mainView.findViewById(R.id.viewpager);
@@ -208,7 +209,6 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
 
             }
         });
-        return mainView;
     }
 
     private class ChangePageTask extends AsyncTask<Integer, String, Boolean> {
@@ -462,7 +462,8 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
             else
                 listPosition = 0;
 
-            ProductDetailsFragment.updateVariantionListPosition(mCompleteProduct.getUrl(), listPosition);
+            // TODO verify why this is still here
+            // ProductDetailsFragment.updateVariantionListPosition(mCompleteProduct.getUrl(), listPosition);
         }
 
         return super.allowBackPressed();

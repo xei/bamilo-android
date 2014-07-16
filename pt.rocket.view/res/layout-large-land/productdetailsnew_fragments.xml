@@ -115,7 +115,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@id/product_variantion_container"
-            android:layout_below="@+id/variations_container" >
+            android:layout_below="@id/variations_container" >
 
             <FrameLayout
                 android:id="@+id/image_gallery_container"
@@ -144,11 +144,14 @@
                 android:src="@drawable/btn_fav" />
         </RelativeLayout>
 
+        <!-- TIPS -->
+
         <include
             android:id="@+id/tips_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             layout="@layout/tips" />
+
     </RelativeLayout>
     <!-- Left Container -->
 
@@ -272,6 +275,5 @@
             </LinearLayout>
         </pt.rocket.utils.ScrollViewWithHorizontal>
     </RelativeLayout>
-    <!-- TIPS -->
 
 </LinearLayout>

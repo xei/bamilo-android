@@ -14,17 +14,6 @@
         android:id="@+id/last_viewed_viewpager"
         android:layout_width="match_parent"
         android:layout_height="@dimen/teaser_banners_group_height"
-        android:layout_below="@id/related"
-        android:visibility="gone" />
-
-    <RelativeLayout
-        android:id="@+id/loading_related"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/teaser_banners_group_height"
-        android:layout_centerInParent="true"
-         >
-
-        <include layout="@layout/loading_bar_simple" />
-    </RelativeLayout>
+        android:layout_below="@id/related" />
 
 </RelativeLayout>

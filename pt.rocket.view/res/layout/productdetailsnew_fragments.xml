@@ -243,6 +243,8 @@
         </LinearLayout>
     </pt.rocket.utils.ScrollViewWithHorizontal>
 
+    <!-- TIPS -->
+
     <include
         android:id="@+id/tips_container"
         android:layout_width="match_parent"
