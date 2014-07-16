@@ -49,19 +49,19 @@ import de.akquinet.android.androlog.Log;
  */
 public class TeasersFactory {
 
+    private static final String TAG = TeasersFactory.class.getSimpleName();
+    
     private Context mContext;
-    private TeaserSpecification<?> mTeaserSpecification;
+    
     private OnClickListener onTeaserClickListener;
+    
     private static final int MAX_IMAGES_ON_SCREEN = 2;
-    private static final String TAG = TeasersFactory.class.getName();
-    private ViewGroup mainView;
+    
     private boolean isToResize = false;
-    /**
-     * Empty Constructor
-     */
-
-    public TeasersFactory() {
-    }
+    
+    private LayoutInflater mInflater;
+    
+    private int mContentWidth;
 
     /**
      * Constructor with parameters
@@ -69,41 +69,56 @@ public class TeasersFactory {
      * @param context
      * @param teaserSpecification
      */
-    public TeasersFactory(Context context) {
+    public TeasersFactory(Context context, LayoutInflater layoutInflater, OnClickListener onClickListener) {
         this.mContext = context;
+        this.mInflater = layoutInflater;
+        this.onTeaserClickListener = onClickListener;
+        this.mContentWidth = WindowHelper.getWidth(mContext);
+    }
+    
+    /**
+     * Set the container width to fill the product list
+     * @param width
+     * @author sergiopereira
+     */
+    public void setContainerWidthToLoadImage(int width){
+        this.mContentWidth = width;
     }
 
-    public View getSpecificTeaser(Context context, ViewGroup main, TeaserSpecification<?> teaserSpecification, LayoutInflater mLayoutInflater, OnClickListener mOnClickListener) {
-        mContext = context;
-        mainView = main;
-        onTeaserClickListener = mOnClickListener;
+    /**
+     * 
+     * @param main
+     * @param teaserSpecification
+     * @return
+     */
+    public View getSpecificTeaser(ViewGroup main, TeaserSpecification<?> teaserSpecification) {
         View mView = null;
         Log.i(TAG, "generating teaser : "+teaserSpecification.getType());
         isToResize = false;
         switch (teaserSpecification.getType()) {
         case MAIN_ONE_SLIDE:
             isToResize = true;
-            mView = getMainOneSlide(mLayoutInflater, (ArrayList<TeaserImage>) teaserSpecification.getTeasers());
+            mView = getMainOneSlide(main, (ArrayList<TeaserImage>) teaserSpecification.getTeasers());
             break;
         case STATIC_BANNER:
             isToResize = true;
-            mView = getStaticBanner(mLayoutInflater, (ArrayList<TeaserImage>) teaserSpecification.getTeasers());
+            mView = getStaticBanner(main, (ArrayList<TeaserImage>) teaserSpecification.getTeasers());
             break;
         case CATEGORIES:
-            mView = getCategoriesTeaser(mLayoutInflater, (CategoryTeaserGroup) teaserSpecification);
+            mView = getCategoriesTeaser(main, (CategoryTeaserGroup) teaserSpecification);
             break;
         case PRODUCT_LIST:
-            mView = getProductsListTeaser(mLayoutInflater, (ProductTeaserGroup) teaserSpecification);
+            mView = getProductsListTeaser(main, (ProductTeaserGroup) teaserSpecification);
             break;
         case BRANDS_LIST:
             isToResize = true;
-            mView = getBrandsListTeaser(mLayoutInflater, (BrandsTeaserGroup) teaserSpecification);
+            mView = getBrandsListTeaser(main, (BrandsTeaserGroup) teaserSpecification);
             break;
         case TOP_BRANDS_LIST:
-            mView = getTeaserTopBrands(mLayoutInflater, (TeaserGroupTopBrands) teaserSpecification);
+            mView = getTeaserTopBrands(main, (TeaserGroupTopBrands) teaserSpecification);
             break;
         case CAMPAIGNS_LIST:
-        	mView = getTeaserCampaigns(mLayoutInflater, (TeaserGroupCampaigns) teaserSpecification);
+        	mView = getTeaserCampaigns(main, (TeaserGroupCampaigns) teaserSpecification);
         default:
             break;
         }
@@ -111,9 +126,9 @@ public class TeasersFactory {
         return mView;
     }
 
-    private View getMainOneSlide(LayoutInflater mInflater, ArrayList<TeaserImage> teaserImageArrayList) {
+    private View getMainOneSlide(ViewGroup mainView, ArrayList<TeaserImage> teaserImageArrayList) {
         View rootView = mInflater.inflate(R.layout.teaser_big_banner, mainView, false);
-        final ViewPager pager = (ViewPager) rootView.findViewById(R.id.viewpager );
+        final ViewPager pager = (ViewPager) rootView.findViewById(R.id.viewpager);
         pager.setSaveEnabled(false);
         final View imageContainer = rootView.findViewById(R.id.banner_view);
         if (pager.getAdapter() == null && teaserImageArrayList!=null && teaserImageArrayList.size()>1) {
@@ -139,10 +154,9 @@ public class TeasersFactory {
         return rootView;
     }
 
-    private View getStaticBanner(LayoutInflater mInflater, ArrayList<TeaserImage> teaserImageArrayList) {
+    private View getStaticBanner(ViewGroup mainView, ArrayList<TeaserImage> teaserImageArrayList) {
         View rootView = mInflater.inflate(R.layout.teaser_banners_group, mainView, false);
-        ViewGroup container = (ViewGroup) rootView
-                .findViewById(R.id.teaser_group_container);
+        ViewGroup container = (ViewGroup) rootView.findViewById(R.id.teaser_group_container);
 
         if (teaserImageArrayList != null) {
             int maxItems = MAX_IMAGES_ON_SCREEN;
@@ -153,8 +167,7 @@ public class TeasersFactory {
             int i;
             for (i = 0; i < maxItems; i++) {
                 TeaserImage image = teaserImageArrayList.get(i);
-                if (i > 0)
-                    mInflater.inflate(R.layout.vertical_divider, container);
+                if (i > 0) mInflater.inflate(R.layout.vertical_divider, container);
                 container.addView(createImageTeaserView(image, container, mInflater, maxItems));
             }
 
@@ -162,18 +175,14 @@ public class TeasersFactory {
         return rootView;
     }
 
-    private View getCategoriesTeaser(LayoutInflater mInflater, CategoryTeaserGroup teaserCategoryGroup) {
+    private View getCategoriesTeaser(ViewGroup mainView, CategoryTeaserGroup teaserCategoryGroup) {
         View rootView = mInflater.inflate(R.layout.teaser_categories_group, mainView, false);
-        ViewGroup container = (ViewGroup) rootView
-                .findViewById(R.id.teaser_group_container);
+        ViewGroup container = (ViewGroup) rootView.findViewById(R.id.teaser_group_container);
         if (teaserCategoryGroup != null) {
-            ((TextView) rootView.findViewById(R.id.teaser_group_title))
-                    .setText(teaserCategoryGroup.getTitle());
+            ((TextView) rootView.findViewById(R.id.teaser_group_title)).setText(teaserCategoryGroup.getTitle());
             container.addView(createCategoryAllTeaserView(container, mInflater));
-            for (TeaserCategory category : teaserCategoryGroup.getTeasers()) {
-                container
-                        .addView(createCategoryTeaserView(category, container, mInflater));
-            }
+            for (TeaserCategory category : teaserCategoryGroup.getTeasers())
+                container.addView(createCategoryTeaserView(category, container, mInflater));
         }
         return rootView;
     }
@@ -181,22 +190,19 @@ public class TeasersFactory {
 
     
     
-    private View getProductsListTeaser(LayoutInflater mInflater, ProductTeaserGroup productTeaserGroup) {
+    private View getProductsListTeaser(ViewGroup mainView, ProductTeaserGroup productTeaserGroup) {
         View rootView = mInflater.inflate(R.layout.teaser_products_group, mainView, false);
-        ViewGroup container = (ViewGroup) rootView
-                .findViewById(R.id.teaser_group_container);
+        ViewGroup container = (ViewGroup) rootView.findViewById(R.id.teaser_group_container);
 
         if (productTeaserGroup != null) {
-            ((TextView) rootView.findViewById(R.id.teaser_group_title))
-                    .setText(productTeaserGroup.getTitle());
-            for (TeaserProduct product : productTeaserGroup.getTeasers()) {
+            ((TextView) rootView.findViewById(R.id.teaser_group_title)).setText(productTeaserGroup.getTitle());
+            for (TeaserProduct product : productTeaserGroup.getTeasers())
                 container.addView(createProductTeaserView(product, container, mInflater, productTeaserGroup.getTeasers().size()));
-            }
         }
         return rootView;
     }
 
-    private View getBrandsListTeaser(LayoutInflater mInflater, BrandsTeaserGroup brandsTeaserGroup) {
+    private View getBrandsListTeaser(ViewGroup mainView, BrandsTeaserGroup brandsTeaserGroup) {
         View rootView = mInflater.inflate(R.layout.teaser_brands_group, mainView, false);
         ViewGroup container = (ViewGroup) rootView.findViewById(R.id.teaser_group_container);
         if(brandsTeaserGroup!=null){
@@ -252,6 +258,7 @@ public class TeasersFactory {
     private View createCategoryTeaserView(TeaserCategory cat, ViewGroup vg, LayoutInflater mInflater) {
         View categoryTeaserView;
         categoryTeaserView = mInflater.inflate(R.layout.category_inner_childcat, vg, false);
+        categoryTeaserView.findViewById(R.id.divider).setVisibility(View.GONE);
         TextView textView = (TextView) categoryTeaserView.findViewById(R.id.text);
         textView.setText(cat.getName());
         attachTeaserListener(cat, categoryTeaserView);
@@ -266,6 +273,7 @@ public class TeasersFactory {
      */
     private View createCategoryAllTeaserView(ViewGroup container, LayoutInflater mInflater) {
         View view = mInflater.inflate(R.layout.category_inner_currentcat, container, false);
+        view.findViewById(R.id.divider).setVisibility(View.GONE);
         TextView textView = (TextView) view.findViewById(R.id.text);
         textView.setText(mContext.getString(R.string.categories_toplevel_title));
         view.setOnClickListener(onTeaserClickListener);
@@ -335,13 +343,11 @@ public class TeasersFactory {
      * @return View
      * @author sergiopereira
      */
-    private View getTeaserTopBrands(LayoutInflater mInflater, TeaserGroupTopBrands teaserGroupTopBrands) {
+    private View getTeaserTopBrands(ViewGroup mainView, TeaserGroupTopBrands teaserGroupTopBrands) {
         View rootView = mInflater.inflate(R.layout.teaser_top_brands_group, mainView, false);
         ViewGroup container = (ViewGroup) rootView.findViewById(R.id.teaser_group_container);
         if (teaserGroupTopBrands != null) {
             ((TextView) rootView.findViewById(R.id.teaser_group_title)).setText(teaserGroupTopBrands.getTitle().replace("_", " "));
-            // Add the item all brands
-            //container.addView(createItemAllBrandsView(container, mInflater));
             // Add each brand
             for (TeaserTopBrand teaser : teaserGroupTopBrands.getTeasers()) {
                 container.addView(createTopBrandTeaserView(teaser, container, mInflater));
@@ -361,6 +367,7 @@ public class TeasersFactory {
     private View createTopBrandTeaserView(TeaserTopBrand teaser, ViewGroup vg, LayoutInflater mInflater) {
         View mTopBrandTeaserView;
         mTopBrandTeaserView = mInflater.inflate(R.layout.category_inner_childcat, vg, false);
+        mTopBrandTeaserView.findViewById(R.id.divider).setVisibility(View.GONE);
         TextView textView = (TextView) mTopBrandTeaserView.findViewById(R.id.text);
         textView.setText(teaser.getName());
         attachTeaserListener(teaser, mTopBrandTeaserView);
@@ -396,7 +403,7 @@ public class TeasersFactory {
      * @return View
      * @author sergiopereira
      */
-    private View getTeaserCampaigns(LayoutInflater mInflater, TeaserGroupCampaigns teaserGroupCampaigns) {
+    private View getTeaserCampaigns(ViewGroup mainView, TeaserGroupCampaigns teaserGroupCampaigns) {
         View rootView = mInflater.inflate(R.layout.teaser_campaigns_group, mainView, false);
         ViewGroup container = (ViewGroup) rootView.findViewById(R.id.teaser_group_container);
         if (teaserGroupCampaigns != null) {
@@ -477,10 +484,11 @@ public class TeasersFactory {
         final ImageView imageView = (ImageView) imageTeaserView.findViewById(R.id.image_view);
         final View progressBar = imageTeaserView.findViewById(R.id.image_loading_progress);
         // Adapts the Image size if needed
-        if(size > 0 && imageTeaserView.getLayoutParams() != null){
-            int mainContentWidth = WindowHelper.getWidth(mContext);
-            imageTeaserView.getLayoutParams().width = mainContentWidth / size;
+        if(size > 0 && imageTeaserView.getLayoutParams() != null) {
+            if(mContentWidth == 0) mContentWidth = WindowHelper.getWidth(mContext);
+            imageTeaserView.getLayoutParams().width = mContentWidth / size;
         }
+            
         
         if (!TextUtils.isEmpty(imageUrl)) {
             AQuery aq = new AQuery(mContext);

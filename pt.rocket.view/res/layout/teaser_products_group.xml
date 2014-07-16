@@ -4,26 +4,21 @@
     android:layout_height="wrap_content"
     android:orientation="vertical" >
 
-    <View
-        style="@style/divider_horizontal" />
-
     <org.holoeverywhere.widget.TextView
         android:id="@+id/teaser_group_title"
         style="@style/activity_sectionheader_text"
-        android:layout_marginBottom="@dimen/margin_mid"
+        android:layout_marginBottom="@dimen/margin_large"
         android:layout_marginLeft="@dimen/margin_mid"
         android:text="Product list" />
 
-<!--     <HorizontalScrollView -->
-<!--         android:layout_width="match_parent" -->
-<!--         android:layout_height="match_parent" > -->
+    <View style="@style/divider_horizontal" />
 
-        <LinearLayout
-            android:id="@+id/teaser_group_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingBottom="@dimen/margin_large" >
-        </LinearLayout>
-<!--     </HorizontalScrollView> -->
+    <LinearLayout
+        android:id="@+id/teaser_group_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/margin_mid"
+        android:paddingBottom="@dimen/margin_large" >
+    </LinearLayout>
 
 </LinearLayout>

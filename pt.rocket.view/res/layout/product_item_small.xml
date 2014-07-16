@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!-- NOTE: The "teaser_product_item_width" is not used, is calculated from Window width.   -->
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/teaser_product_item_width"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingLeft="@dimen/margin_mid"
-    android:paddingRight="@dimen/margin_mid"> 
+    android:paddingRight="@dimen/margin_mid" >
 
     <include
         android:layout_width="match_parent"

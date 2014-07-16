@@ -12,6 +12,7 @@ import pt.rocket.framework.objects.Homepage;
 import pt.rocket.framework.objects.ITargeting.TargetType;
 import pt.rocket.framework.objects.TeaserSpecification;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.framework.utils.WindowHelper;
 import pt.rocket.utils.ScrollViewWithHorizontal;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
@@ -126,17 +127,33 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
-        // Get scroll view
-        mScrollViewWithHorizontal = (ScrollViewWithHorizontal) view.findViewById(R.id.view_pager_element_scrollview);
         // Get retry view
         mRetryView = view.findViewById(R.id.fragment_retry);
         // Get the retry button
         view.findViewById(R.id.fragment_retry_button).setOnClickListener(this);
-        // Get container
-        LinearLayout container = (LinearLayout) view.findViewById(R.id.view_pager_element_frame);
+        
+        // Get portrait container
+        LinearLayout singleContainer = (LinearLayout) view.findViewById(R.id.home_page_single_container);
+        // Get scroll view
+        mScrollViewWithHorizontal = (ScrollViewWithHorizontal) view.findViewById(R.id.home_page_single_scrollview);
+        
+        // Get landscape containers
+        LinearLayout leftContainer = (LinearLayout) view.findViewById(R.id.home_page_left_container);
+        LinearLayout rightContainer = (LinearLayout) view.findViewById(R.id.home_page_right_container);
+        LinearLayout rightContainerCategories = (LinearLayout) view.findViewById(R.id.home_page_right_container_categpries);
+        LinearLayout rightContainerBrands = (LinearLayout) view.findViewById(R.id.home_page_right_container_brands);
+        
         // Validate current home 
-        if (mHomePage != null) showHomePage(mHomePage, container);
-        else { Log.w(TAG, "WARNING: HOME PAGE IS NULL"); showRetry(); }
+        if (mHomePage != null) {
+            // CASE portrait
+            if(singleContainer != null) showHomePage(mHomePage, singleContainer);
+            // CASE landscape
+            else showHomePage(mHomePage, leftContainer, rightContainer, rightContainerCategories, rightContainerBrands);
+        } else {
+            // CASE homepage null
+            Log.w(TAG, "WARNING: HOME PAGE IS NULL"); 
+            showRetry(); 
+        }
     }
         
     /*
@@ -248,6 +265,50 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
         showContent();
     }
     
+    
+    /**
+     * Show the current home page for landscape
+     * @param homePage
+     * @param mainView
+     * @author sergiopereira
+     * @param rightViewBrands 
+     * @param rightViewCategories 
+     * @author sergiopereira
+     */
+    private void showHomePage(Homepage homePage, LinearLayout leftView, LinearLayout rightView, LinearLayout rightViewCategories, LinearLayout rightViewBrands) {
+        Log.i(TAG, "SHOW HOME WITH TEASERS");
+        // Create the teaser factory
+        TeasersFactory mTeasersFactory = new TeasersFactory(getBaseActivity(), mInflater, (OnClickListener) this);
+        mTeasersFactory.setContainerWidthToLoadImage(WindowHelper.getWidth(getBaseActivity()) / 2); // For product list
+        // For each teaser create a view and add to container
+        for ( TeaserSpecification<?> teaser : homePage.getTeaserSpecification()) {
+            switch (teaser.getType()) {
+            // CASE LEFT SIDE
+            case MAIN_ONE_SLIDE:
+            case STATIC_BANNER:
+            case CAMPAIGNS_LIST:
+                leftView.addView(mTeasersFactory.getSpecificTeaser(leftView, teaser));
+                break;
+            // CASE RIGHT SIDE
+            case PRODUCT_LIST:
+            case BRANDS_LIST:
+                rightView.addView(mTeasersFactory.getSpecificTeaser(rightView, teaser));
+                break;
+            case CATEGORIES:
+                rightViewCategories.addView(mTeasersFactory.getSpecificTeaser(rightViewCategories, teaser));
+                rightViewCategories.setVisibility(View.VISIBLE);
+                break;
+            case TOP_BRANDS_LIST:
+                rightViewBrands.addView(mTeasersFactory.getSpecificTeaser(rightViewBrands, teaser));
+                rightViewBrands.setVisibility(View.VISIBLE);
+                break;
+            }
+        }
+        
+        // Force to show content
+        showContent();
+    }
+    
     /**
      * Create and add the each teaser to main container
      * @param homePage
@@ -256,10 +317,10 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
      */
     private void createAndShowTeasers(Homepage homePage, LinearLayout mainView){
         // Create the teaser factory
-        TeasersFactory mTeasersFactory = new TeasersFactory();
+        TeasersFactory mTeasersFactory = new TeasersFactory(getBaseActivity(), mInflater, (OnClickListener) this);
         // For each teaser create a view and add to container
         for ( TeaserSpecification<?> teaser : homePage.getTeaserSpecification())
-            mainView.addView(mTeasersFactory.getSpecificTeaser(getActivity(), mainView, teaser, mInflater, this));
+            mainView.addView(mTeasersFactory.getSpecificTeaser(mainView, teaser));
     }
     
     /**

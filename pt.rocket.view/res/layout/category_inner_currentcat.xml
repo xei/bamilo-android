@@ -8,10 +8,9 @@
         android:id="@+id/text"
         style="@style/category_inner_current_text"
         android:layout_centerVertical="true"
+        android:fontFamily="roboto_bold"
         android:gravity="center_vertical"
-        android:text="Inner category"
-        android:fontFamily="roboto-bold" />
-
+        android:text="Inner category" />
 
     <View
         android:id="@+id/divider"
