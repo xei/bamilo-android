@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <ViewStub
+        android:id="@+id/loading_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <org.holoeverywhere.widget.TextView
+        android:id="@+id/empty_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/myprofile_lists_top_margin"
+        android:drawablePadding="@dimen/myprofile_lists_drawable_padding"
+        android:gravity="center"
+        android:textColor="@color/strip_title"
+        android:textSize="@dimen/text_xxl"
+        android:visibility="gone" />
+
+    <ViewStub
+        android:id="@+id/content_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</RelativeLayout>

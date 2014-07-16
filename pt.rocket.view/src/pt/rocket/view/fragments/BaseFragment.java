@@ -20,6 +20,7 @@ import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.service.IRemoteServiceCallback;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
+import pt.rocket.framework.utils.LoadingBarView;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.framework.utils.Utils;
 import pt.rocket.helpers.BaseHelper;
@@ -41,6 +42,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -72,6 +74,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     protected View contentContainer;
 
+    protected View loadingView;
+
     private NavigationAction action;
 
     private Set<EventType> contentEvents;
@@ -84,8 +88,10 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     protected Set<MyMenuItem> enabledMenuItems;
 
+    private int layoutResId = -1;
+    
     private int titleResId;
-   
+
     private Boolean isNestedFragment = false;
 
     private boolean isVisible = false;
@@ -101,7 +107,24 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     public BaseFragment() {
     }
     protected static BaseActivity mainActivity;
-    
+
+    private View loadingBarContainer;
+
+    private LoadingBarView loadingBarView;
+
+    private org.holoeverywhere.widget.TextView emptyView;
+
+    private View errorView;
+
+    private int emptyStringResid = -1;
+
+    private int emptyDrawableResId = -1;
+
+    /**
+     * Use this variable to have a more precise control on when to show the content container.
+     */
+    private boolean processFragmentShow = true;
+
     /**
      * Constructor
      */
@@ -115,6 +138,32 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         this.action = action;
         this.titleResId = titleResId;
         this.adjustState = adjust_state;
+    }
+
+    /**
+     * Constructor
+     */
+    public BaseFragment(Set<EventType> contentEvents, Set<EventType> userEvents,
+            Set<MyMenuItem> enabledMenuItems, NavigationAction action, int layoutResId, boolean showLoading,
+            int titleResId, int adjust_state) {
+        this.contentEvents = contentEvents;
+        this.userEvents = userEvents;
+        this.allHandledEvents.addAll(contentEvents);
+        this.allHandledEvents.addAll(userEvents);
+        this.enabledMenuItems = enabledMenuItems;
+        this.action = action;
+        this.layoutResId = layoutResId;
+        this.titleResId = titleResId;
+        this.adjustState = adjust_state;
+    }
+
+    protected void setLayoutId(int layoutResId, boolean showLoading) {
+        this.layoutResId = layoutResId;
+    }
+    
+    protected void setEmptyView(int emptyStringResid, int emptyDrawableResId) {
+        this.emptyStringResid = emptyStringResid;
+        this.emptyDrawableResId = emptyDrawableResId;
     }
 
     /**
@@ -172,15 +221,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         super.onCreate(savedInstanceState);       
         md5Hash = null;
     }
-    
-    /*
-     * (non-Javadoc)
-     * @see android.support.v4.app.Fragment#onActivityCreated(android.os.Bundle)
-     */
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
 
     /*
      * (non-Javadoc)
@@ -190,7 +230,29 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
+        Log.i(TAG, "ON CREATE VIEW");
+
+        if (layoutResId > 0) {
+            View view = inflater.inflate(R.layout.root_layout, container, false);
+            ViewStub contentContainer = (ViewStub) view.findViewById(R.id.content_container);
+            contentContainer.setLayoutResource(layoutResId);
+            this.contentContainer = contentContainer.inflate();
+
+            ViewStub loadingView = (ViewStub) view.findViewById(R.id.loading_bar);
+            loadingView.setLayoutResource(R.layout.fragment_loading_bar);
+            this.loadingView = loadingView.inflate();
+            this.loadingView.setVisibility(View.GONE);
+
+            if (emptyStringResid > -1 && emptyDrawableResId > -1) {
+                emptyView = (org.holoeverywhere.widget.TextView) view.findViewById(R.id.empty_view);
+                emptyView.setText(getString(emptyStringResid));
+                emptyView.setCompoundDrawablesWithIntrinsicBounds(0, emptyDrawableResId, 0, 0);
+            }
+
+            return view;
+        } else {
+            return super.onCreateView(inflater, container, savedInstanceState);
+        }
     }
     
     /*
@@ -205,6 +267,10 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         isOnStoppingProcess = false;
         // Exist order summary
         isOrderSummaryPresent = (view.findViewById(ORDER_SUMMARY_CONTAINER) != null) ? true : false;
+
+        loadingBarContainer = view.findViewById(R.id.loading_bar);
+        loadingBarView = (LoadingBarView) view.findViewById(R.id.loading_bar_view);
+        errorView = view.findViewById(R.id.alert_view);
     }
     
     /**
@@ -288,9 +354,9 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
          */
         JumiaApplication.INSTANCE.registerFragmentCallback(mCallback);
         
-        if(((BaseActivity) getActivity()) != null){
-            ((BaseActivity) getActivity()).showWarning(false);
-            ((BaseActivity) getActivity()).showWarningVariation(false);
+        if (getBaseActivity() != null) {
+            getBaseActivity().showWarning(false);
+            getBaseActivity().showWarningVariation(false);
         }
         Log.d(getTag(), "onResume");
     }
@@ -445,24 +511,13 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     }
 
     protected final void triggerContentEvent(final BaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
-        if(getBaseActivity() != null){
-        	getBaseActivity().showLoading(false);
-        }
+        showFragmentLoading(false);
         sendRequest(helper, args, responseCallback);
     }
-
-//    protected final void triggerContentEvent(RequestEvent event) {
-//        ((BaseActivity) getActivity()).showLoading(false);
-//        EventManager.getSingleton().triggerRequestEvent(event);
-//    }
 
     protected final void triggerContentEventProgress(final BaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
-        ((BaseActivity) getActivity()).showProgress();
+        showActivityProgress();
         sendRequest(helper, args, responseCallback);
-    }
-
-    private String getFragmentTag() {
-        return this.getClass().getSimpleName();
     }
     
     
@@ -852,5 +907,82 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 //            }
 //        }
     }
+
+    /*-public void delayShowContent(Runnable runnable) {
+        Handler handler = new Handler();
+        handler.postDelayed(runnable, 2000);
+    }*/
+
+    protected void showFragmentContentContainer() {
+        if (processFragmentShow) {
+            Log.d(getTag(), "Showing the content container");
+            // setVisibility(errorView, false);
+            setVisibility(emptyView, false);
+            hideLoadingInfo();
+            setVisibility(contentContainer, true);
+        }
+    }
+
+    protected void showFragmentLoading(boolean fromCheckout) {
+        // setVisibility(errorView, false);
+        setVisibility(emptyView, false);
+        showLoadingInfo();
+        if (!fromCheckout) {
+            setVisibility(contentContainer, false);
+        }
+    }
     
+    protected void showFragmentEmpty() {
+        setVisibility(emptyView, true);
+        if (processFragmentShow) {
+            hideLoadingInfo();
+        }
+        setVisibility(contentContainer, false);
+    }
+
+    /**
+     * Hides the loading screen that appears on the front of the activity while it waits for the
+     * data to arrive from the server
+     */
+    private void hideLoadingInfo() {
+        Log.d(getTag(), "Hiding loading info");
+        if (loadingBarView != null) {
+            loadingBarView.stopRendering();
+        }
+        if (loadingBarContainer != null) {
+            loadingBarContainer.setVisibility(View.GONE);
+        }
+    }
+
+    /**
+     * Show BaseActivity progress loading
+     */
+    protected void showActivityProgress() {
+        getBaseActivity().showProgress();
+    }
+
+    /**
+     * Hide BaseActivity progress loading
+     */
+    protected void hideActivityProgress() {
+        getBaseActivity().dismissProgress();
+    }
+
+    private static void setVisibility(View view, boolean show) {
+        if (view != null) {
+            view.setVisibility(show ? View.VISIBLE : View.GONE);
+        }
+    }
+
+    private final void showLoadingInfo() {
+        Log.d(getTag(), "Showing loading info");
+        if (loadingBarContainer != null) {
+            loadingBarContainer.setVisibility(View.VISIBLE);
+        } else {
+            Log.w(getTag(), "Did not find loading bar container, check layout!");
+        }
+        if (loadingBarView != null) {
+            loadingBarView.startRendering();
+        }
+    }
 }

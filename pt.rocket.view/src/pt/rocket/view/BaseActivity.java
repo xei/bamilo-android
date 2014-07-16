@@ -142,7 +142,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
     protected DialogFragment dialog;
 
-    private DialogProgressFragment progressDialog;
+    private DialogProgressFragment baseActivityProgressDialog;
 
     private DialogGenericFragment dialogLogout;
 
@@ -1431,24 +1431,24 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      * @param event
      */
 
-    protected final void triggerContentEventWithNoLoading(final BaseHelper helper, Bundle args,
+    /*private*/ protected final void triggerContentEventWithNoLoading(final BaseHelper helper, Bundle args,
             final IResponseCallback responseCallback) {
         sendRequest(helper, args, responseCallback);
     }
 
-    protected final void triggerContentEvent(final BaseHelper helper, Bundle args,
+    /*private*/ protected final void triggerContentEvent(final BaseHelper helper, Bundle args,
             final IResponseCallback responseCallback) {
         showLoading(false);
         sendRequest(helper, args, responseCallback);
     }
 
-    protected final void triggerContentEventProgress(final BaseHelper helper, Bundle args,
+    /*-*/protected final void triggerContentEventProgress(final BaseHelper helper, Bundle args,
             final IResponseCallback responseCallback) {
         showProgress();
         sendRequest(helper, args, responseCallback);
-    }
+    }/*-*/
 
-    public final void showLoadingInfo() {
+    /*private*/public final void showLoadingInfo() {
         Log.d(getTag(), "Showing loading info");
         if (loadingBarContainer != null) {
             loadingBarContainer.setVisibility(View.VISIBLE);
@@ -1464,7 +1464,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      * Hides the loading screen that appears on the front of the activity while it waits for the
      * data to arrive from the server
      */
-    public void hideLoadingInfo() {
+    /*private*/public void hideLoadingInfo() {
         Log.d(getTag(), "Hiding loading info");
         if (loadingBarView != null) {
             loadingBarView.stopRendering();
@@ -1480,7 +1480,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         }
     }
 
-    public void showError(final BaseHelper helper, final Bundle bundle,
+    /*-*/public void showError(final BaseHelper helper, final Bundle bundle,
             final IResponseCallback responseCallback) {
         showError(new OnClickListener() {
 
@@ -1490,7 +1490,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                 triggerContentEvent(helper, bundle, responseCallback);
             }
         }, false);
-    }
+    }/*-*/
 
     public void showLoading(boolean fromCheckout) {
         setVisibility(errorView, false);
@@ -1501,7 +1501,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         showLoadingInfo();
     }
 
-    protected void showError(OnClickListener clickListener, boolean fromCheckout) {
+    /*-*/protected void showError(OnClickListener clickListener, boolean fromCheckout) {
         Log.d(getTag(), "Showing error view");
         hideLoadingInfo();
         if (!fromCheckout) {
@@ -1509,7 +1509,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         }
         setVisibility(errorView, true);
         errorView.setOnClickListener(clickListener);
-    }
+    }/*-*/
 
     public final void showContentContainer() {
         if (processShow) {
@@ -1547,24 +1547,24 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
     public final void showProgress() {
         
-        if (progressDialog != null) {
+        if (baseActivityProgressDialog != null) {
             return;
         }
         
         Handler handler = new Handler(Looper.getMainLooper());
         handler.post(new Runnable() {
             public void run() {
-                progressDialog = DialogProgressFragment.newInstance();
-                progressDialog.show(getSupportFragmentManager(), null);
+                baseActivityProgressDialog = DialogProgressFragment.newInstance();
+                baseActivityProgressDialog.show(getSupportFragmentManager(), null);
             }
         });        
         
     }
 
     public final void dismissProgress() {
-        if (progressDialog != null) {
-            progressDialog.dismiss();
-            progressDialog = null;
+        if (baseActivityProgressDialog != null) {
+            baseActivityProgressDialog.dismiss();
+            baseActivityProgressDialog = null;
         }
     }
 
