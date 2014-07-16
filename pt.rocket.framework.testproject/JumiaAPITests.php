@@ -363,9 +363,13 @@ function restartApp(){
 	
 	echo("\n> Installing Testproject:\n");
 	$install ="~".$adb_path." -s ".$emulator." install -r ".$currentPath."/AutomatedTests/pt.rocket.framework.testproject/bin/pt.rocket.framework.testproject-debug.apk";
+	#$install ="~".$adb_path." -s ".$emulator." install -r ".$currentPath."/bin/pt.rocket.framework.testproject.apk";
+	exec($install);
+	echo("Uninstalling previous Shell");
+	$install ="~".$adb_path." -s ".$emulator." uninstall com.rocket.framework.testshell";
 	exec($install);
 	echo("\n> Installing Shell:\n");
-	$install ="~".$adb_path." -s ".$emulator." install -r ".$currentPath."/TESTEAutomatedTests/Shell/bin/Shell-debug.apk";
+	$install ="~".$adb_path." -s ".$emulator." install -r ".$currentPath."/AutomatedTests/Shell/Shell.apk";
 	exec($install);
 
 	echo("\n> Starting Test\n\n");
