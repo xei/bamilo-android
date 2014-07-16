@@ -29,7 +29,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import de.akquinet.android.androlog.Log;
@@ -43,8 +42,6 @@ public class TrackOrderFragment extends BaseFragment {
     private static final String TAG = LogTagHelper.create(TrackOrderFragment.class);
     
     private static TrackOrderFragment mTrackOrderFragment;
-    
-    private LoadingBarView loadingTrackBarView;
     
     private EditText mEditText;
     
@@ -67,9 +64,13 @@ public class TrackOrderFragment extends BaseFragment {
      */
     public TrackOrderFragment() {
         super(EnumSet.of(EventType.TRACK_ORDER_EVENT),
-        EnumSet.noneOf(EventType.class), EnumSet.of(MyMenuItem.MY_PROFILE), 
-        NavigationAction.TrackOrder, 
-        R.string.nav_track_order, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
+                EnumSet.noneOf(EventType.class), 
+                EnumSet.of(MyMenuItem.MY_PROFILE),
+                NavigationAction.TrackOrder,
+                R.layout.track_order_fragment,
+                false,
+                R.string.nav_track_order,
+                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
         this.setRetainInstance(true);
     }
 
@@ -97,20 +98,6 @@ public class TrackOrderFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-     * android.view.ViewGroup, android.os.Bundle)
-     */
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-        Log.i(TAG, "ON CREATE VIEW");
-        View view = inflater.inflate(R.layout.track_order_fragment, container, false);
-        return view;
     }
 
     /*
@@ -185,8 +172,6 @@ public class TrackOrderFragment extends BaseFragment {
         } else if(mEditText.getText() != null && mEditText.getText().length() > 0 && mOrderTrackerError){
             proccessError();
         }
-        
-        getBaseActivity().showContentContainer();
     }
     
     OnClickListener trackOrderClickListener = new OnClickListener() {
@@ -222,14 +207,10 @@ public class TrackOrderFragment extends BaseFragment {
         getView().findViewById(R.id.order_status_container).setVisibility(View.GONE);
         getView().findViewById(R.id.title_status_container).setVisibility(View.GONE); 
         getView().findViewById(R.id.error_trakcing_order).setVisibility(View.GONE);
-        getView().findViewById(R.id.loading_status).setVisibility(View.VISIBLE); 
-        loadingTrackBarView = (LoadingBarView) getView().findViewById(R.id.loading_bar_view);
-        if(loadingTrackBarView != null){
-            loadingTrackBarView.startRendering();
-        }
+        showActivityProgress();
         ((Button) getView().findViewById(R.id.btn_track_order)).setText(R.string.track_order);
         ((TextView) getView().findViewById(R.id.title_text)).setText(getActivity().getString(R.string.track_your_order));
-        ((BaseActivity) getActivity()).showContentContainer();
+        showFragmentContentContainer();
     }
     
     private void inflateItemsList(ArrayList<OrderTrackerItem> items){
@@ -259,10 +240,7 @@ public class TrackOrderFragment extends BaseFragment {
         ((TextView) getView().findViewById(R.id.order_payment_method_text)).setText(mOrderTracker.getPaymentMethod());
         
         inflateItemsList(mOrderTracker.getOrderTrackerItems());
-        if(loadingTrackBarView != null){
-            loadingTrackBarView.stopRendering();
-        }
-        getView().findViewById(R.id.loading_status).setVisibility(View.GONE);
+        hideActivityProgress();
         getView().findViewById(R.id.title_status_container).setVisibility(View.VISIBLE); 
         getView().findViewById(R.id.order_status_container).setVisibility(View.VISIBLE);
         getView().findViewById(R.id.error_trakcing_order).setVisibility(View.GONE);
@@ -272,10 +250,7 @@ public class TrackOrderFragment extends BaseFragment {
         mOrderTracker = null;
         String orderNumber = mEditText.getText().toString();
         ((TextView) getView().findViewById(R.id.title_status_text)).setText("# "+orderNumber);
-        if(loadingTrackBarView != null){
-            loadingTrackBarView.stopRendering();
-        }
-        getView().findViewById(R.id.loading_status).setVisibility(View.GONE);
+        hideActivityProgress();
         getView().findViewById(R.id.title_status_container).setVisibility(View.VISIBLE); 
         getView().findViewById(R.id.error_trakcing_order).setVisibility(View.VISIBLE);
     }

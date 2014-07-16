@@ -58,10 +58,11 @@ public class SessionTermsFragment extends BaseFragment {
      */
     public SessionTermsFragment() {
         super(EnumSet.noneOf(EventType.class),
-        EnumSet.noneOf(EventType.class),
-        EnumSet.noneOf(MyMenuItem.class), 
-        NavigationAction.Unknown, 
-        0, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+                EnumSet.noneOf(EventType.class),
+                EnumSet.noneOf(MyMenuItem.class),
+                NavigationAction.Unknown,
+                0,
+                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
 
     @Override
@@ -97,7 +98,7 @@ public class SessionTermsFragment extends BaseFragment {
     /*
      * (non-Javadoc)
      * 
-     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
+     * @see pt.rocket.view.fragments.BaseFragment#onCreateView(android.view.LayoutInflater,
      * android.view.ViewGroup, android.os.Bundle)
      */
     @Override

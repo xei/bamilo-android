@@ -1,48 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/recentsearch_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <!-- NOT FOUND VIEW -->
-
-    <org.holoeverywhere.widget.TextView
-        android:id="@+id/recentsearch_not_found"
+    <GridView
+        android:id="@+id/middle_recentsearch_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/myprofile_lists_top_margin"
-        android:drawablePadding="@dimen/myprofile_lists_drawable_padding"
-        android:drawableTop="@drawable/img_norecentsearch"
-        android:gravity="center"
-        android:text="@string/recentsearch_no_searches"
-        android:textColor="@color/strip_title"
-        android:textSize="@dimen/text_xxl"
-        android:visibility="gone" />
+        android:listSelector="@drawable/selector_listitem_highlight"
+        android:paddingBottom="80dp" />
 
-    <!-- CONTENT -->
-
-    <RelativeLayout
-        android:id="@+id/recentsearch_content"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="visible" >
-
-        <GridView
-            android:id="@+id/middle_recentsearch_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:listSelector="@drawable/selector_listitem_highlight"
-            android:paddingBottom="80dp" />
-
-        <include layout="@layout/recentsearches_button_layout" />
-    </RelativeLayout>
-    <!-- /ScrollView -->
-
-    <include
-        android:id="@+id/loading_view_pager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        layout="@layout/loading_bar"
-        android:visibility="gone" />
+    <include layout="@layout/recentsearches_button_layout" />
 
 </RelativeLayout>

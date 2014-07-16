@@ -45,7 +45,6 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -131,12 +130,14 @@ public class SessionLoginFragment extends BaseFragment {
      * Empty constructor
      */
     public SessionLoginFragment() {
-        super(EnumSet.of(EventType.GET_LOGIN_FORM_EVENT), 
-                EnumSet.of(EventType.LOGIN_EVENT,
-                EventType.FACEBOOK_LOGIN_EVENT),
-                EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE), 
-                NavigationAction.LoginOut, 
-                R.string.login_title, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
+        super(EnumSet.of(EventType.GET_LOGIN_FORM_EVENT),
+                EnumSet.of(EventType.LOGIN_EVENT, EventType.FACEBOOK_LOGIN_EVENT),
+                EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
+                NavigationAction.LoginOut,
+                R.layout.login,
+                false,
+                R.string.login_title, 
+                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
     }
 
     /*
@@ -172,14 +173,14 @@ public class SessionLoginFragment extends BaseFragment {
     /*
      * (non-Javadoc)
      * 
-     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-     * android.view.ViewGroup, android.os.Bundle)
+     * @see pt.rocket.view.fragments.BaseFragment#onViewCreated(android.view.View,
+     * android.os.Bundle)
      */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState) {
-        super.onCreateView(inflater, viewGroup, savedInstanceState);
-        Log.i(TAG, "ON CREATE VIEW");
-        View view = inflater.inflate(R.layout.login, viewGroup, false);
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Log.i(TAG, "ON VIEW CREATED");
+
         signinButton = view.findViewById(R.id.middle_login_button_signin);
         forgetPass = view.findViewById(R.id.middle_login_link_fgtpassword);
         register = view.findViewById(R.id.middle_login_link_register);
@@ -188,7 +189,6 @@ public class SessionLoginFragment extends BaseFragment {
         authButton.setFragment(this);
         authButton.setLoginBehavior(SessionLoginBehavior.SUPPRESS_SSO);
         authButton.setReadPermissions(Arrays.asList("email"));
-        return view;
     }
 
     /*
@@ -299,7 +299,7 @@ public class SessionLoginFragment extends BaseFragment {
      */
     private void onSessionStateChange(Session session, SessionState state, Exception exception) {
         if (state.isOpened()) {
-            getBaseActivity().showLoading(false);
+            showFragmentLoading(false);
             // make request to the /me API
             Request request = Request.newMeRequest(
                     session,
@@ -569,7 +569,7 @@ public class SessionLoginFragment extends BaseFragment {
 
                             @Override
                             public void onClick(View v) {
-                                ((BaseActivity) getActivity()).showLoading(false);
+                                showFragmentLoading(false);
                                 triggerLoginForm();
                                 dialog.dismiss();
                             }
@@ -580,7 +580,7 @@ public class SessionLoginFragment extends BaseFragment {
 
             Log.d(TAG, "Form Loaded");
             loadForm(form);
-            this.formResponse = form;
+            formResponse = form;
         }
         return true;
     }
@@ -611,7 +611,7 @@ public class SessionLoginFragment extends BaseFragment {
             }
         }
         container.refreshDrawableState();
-        getBaseActivity().showContentContainer();
+        showFragmentContentContainer();
     }
 
     protected boolean onErrorEvent(Bundle bundle) {
@@ -664,8 +664,7 @@ public class SessionLoginFragment extends BaseFragment {
 
                     if (errors != null && errorMessages.size() > 0) {
                         
-                        if(getActivity() != null)
-                            ((BaseActivity) getActivity()).showContentContainer();
+                        showFragmentContentContainer();
                         
                         dialog = DialogGenericFragment.newInstance(true, true, false,
                                 getString(R.string.error_login_title),

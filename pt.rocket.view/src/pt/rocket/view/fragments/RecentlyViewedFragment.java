@@ -36,10 +36,8 @@ import pt.rocket.utils.dialogfragments.DialogListFragment.OnDialogListListener;
 import pt.rocket.view.R;
 import android.content.ContentValues;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.GridView;
@@ -61,15 +59,9 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
 
     private ArrayList<AddableToCart> mRecentlyViewed;
 
-    private View mRecentlyViewedEmptyView;
-
     private GridView mRecentlyViewedGridView;
 
     private Button mClearAllButton;
-
-    private View mLoadingView;
-
-    private View mRecentlyViewedView;
 
     private int mNumberOfItemsForCart = LastViewedAddableToCart.NO_SIMPLE_SELECTED;
 
@@ -87,7 +79,11 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
                 EnumSet.noneOf(EventType.class),
                 EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.RecentlyView,
-                R.string.recently_viewed, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+                R.layout.recentlyviewed,
+                true,
+                R.string.recently_viewed,
+                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        setEmptyView(R.string.recentlyview_no_searches, R.drawable.img_norecentview);
     }
 
     /**
@@ -116,29 +112,13 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
     /*
      * (non-Javadoc)
      * 
-     * @see pt.rocket.view.fragments.BaseFragment#onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle)
-     */
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.i(TAG, "ON CREATE VIEW");
-        return inflater.inflate(R.layout.recentlyviewed, container, false);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see pt.rocket.view.fragments.BaseFragment#onViewCreated(android.view.View, android.os.Bundle)
+     * @see pt.rocket.view.fragments.BaseFragment#onViewCreated(android.view.View,
+     * android.os.Bundle)
      */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
-        // Get loading view
-        mLoadingView = view.findViewById(R.id.loading_view_pager);
-        // Get not found layout
-        mRecentlyViewedEmptyView = view.findViewById(R.id.recentlyviewed_empty);
-        // Get favourite container
-        mRecentlyViewedView = view.findViewById(R.id.recentlyviewed_content);
         // Get grid view
         mRecentlyViewedGridView = (GridView) view.findViewById(R.id.recentlyviewed_grid);
         // Get clear all button
@@ -147,6 +127,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
 
         // Get RecentlyViewed
         Log.i(TAG, "LOAD LAST VIEWED ITEMS");
+        showFragmentLoading(false);
         new GetRecentlyViewedHelper((IResponseCallback) this);
     }
 
@@ -215,51 +196,16 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
      * @author sergiopereira
      */
     private void showContent() {
-        // Hide loading
-        mLoadingView.setVisibility(View.GONE);
         // Validate favourites
         if (mRecentlyViewed != null && !mRecentlyViewed.isEmpty()) {
             Log.i(TAG, "ON SHOW CONTENT");
             mRecentlyViewedAdapter = new AddableToCartListAdapter(getBaseActivity(), mRecentlyViewed, (OnClickListener) this);
             mRecentlyViewedGridView.setAdapter(mRecentlyViewedAdapter);
-            showContainer();
+            showFragmentContentContainer();
         } else {
             Log.i(TAG, "ON SHOW IS EMPTY");
-            showEmpty();
+            showFragmentEmpty();
         }
-    }
-
-    /**
-     * Show container
-     * 
-     * @author sergiopereira
-     */
-    private void showContainer() {
-        mRecentlyViewedView.setVisibility(View.VISIBLE);
-        mRecentlyViewedEmptyView.setVisibility(View.GONE);
-        mLoadingView.setVisibility(View.GONE);
-    }
-
-    /**
-     * Show loading
-     * 
-     * @author sergiopereira
-     */
-    private void showLoading() {
-        mRecentlyViewedView.setVisibility(View.GONE);
-        mRecentlyViewedEmptyView.setVisibility(View.GONE);
-        mLoadingView.setVisibility(View.VISIBLE);
-    }
-
-    /**
-     * Show empty
-     * 
-     * @author sergiopereira
-     */
-    private void showEmpty() {
-        mRecentlyViewedView.setVisibility(View.GONE);
-        mRecentlyViewedEmptyView.setVisibility(View.VISIBLE);
-        mLoadingView.setVisibility(View.GONE);
     }
 
     /**
@@ -336,7 +282,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
     private void onClickClearAll() {
         Log.i(TAG, "ON CLICK CLEAR ALL ITEMS");
         // Show progress
-        showLoading();
+        showFragmentLoading(false);
 
         LastViewedTableHelper.deleteAllLastViewed();
         // needed to update mRecentSearchesAdapter
@@ -397,7 +343,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
     private void onAddItemToCart(LastViewedAddableToCart recentlyViewed, int position) {
         Log.i(TAG, "ON EXECUTE ADD TO CART");
         // Show progress
-        getBaseActivity().showProgress();
+        showActivityProgress();
         // Initialize cart vars
         mAddedItemsCounter = 0;
         mNumberOfItemsForCart = SINGLE_ITEM;
@@ -516,7 +462,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
         switch (eventType) {
         case GET_RECENLTLYVIEWED_LIST:
             Log.d(TAG, "ON RESPONSE ERROR: GET_RECENLTLYVIEWED_LIST");
-            mLoadingView.setVisibility(View.GONE);
+            showFragmentContentContainer();
             break;
         case ADD_ITEM_TO_SHOPPING_CART_EVENT:
             Log.d(TAG, "ON RESPONSE ERROR: ADD_ITEM_TO_SHOPPING_CART_EVENT");
@@ -632,12 +578,11 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
         mRecentlyViewedAdapter.notifyDataSetChanged();
         // Validate current state
         if (mRecentlyViewed.isEmpty()) {
-            mRecentlyViewedEmptyView.setVisibility(View.VISIBLE);
+            showFragmentEmpty();
             mClearAllButton.setVisibility(View.GONE);
-            mLoadingView.setVisibility(View.GONE);
         }
         // Dismiss
-        getBaseActivity().dismissProgress();
+        hideActivityProgress();
     }
 
     /**

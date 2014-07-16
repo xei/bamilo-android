@@ -19,14 +19,11 @@ import pt.rocket.helpers.GetSearchSuggestionHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
-import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.content.Context;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -50,7 +47,6 @@ public class RecentSearchFragment extends BaseFragment {
     
     private ArrayList<SearchSuggestion> mRecentSearches;
     
-    private View mRecentSearchesNotFound;
     private GridView mRecentSearchesGrid;
     private Button mClearAllButton;
 
@@ -62,22 +58,27 @@ public class RecentSearchFragment extends BaseFragment {
                 EnumSet.noneOf(EventType.class),
                 EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.RecentSearch,
-                R.string.recent_searches, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+                R.layout.recentsearches,
+                true,
+                R.string.recent_searches,
+                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        setEmptyView(R.string.recentsearch_no_searches, R.drawable.img_norecentsearch);
     }
     
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.i(TAG, "onCreateView");
-        mainView = inflater.inflate(R.layout.recentsearches, container, false);
-
-        setAppContentLayout();
-
-        return mainView;
-    }
-    
+    /*
+     * (non-Javadoc)
+     * 
+     * @see pt.rocket.view.fragments.BaseFragment#onViewCreated(android.view.View,
+     * android.os.Bundle)
+     */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Log.i(TAG, "ON VIEW CREATED");
+
+        mainView = view;
+
+        setAppContentLayout();
 
         init();
     }
@@ -91,18 +92,14 @@ public class RecentSearchFragment extends BaseFragment {
             mainView = getView();
         }
 
-        mRecentSearchesNotFound = mainView.findViewById(R.id.recentsearch_not_found);
         mRecentSearchesGrid = (GridView) mainView.findViewById(R.id.middle_recentsearch_list);
-
-        // mLoadingView = mainView.findViewById(R.id.loading_view_pager);
 
         mClearAllButton = (Button) mainView.findViewById(R.id.recentsearch_clear_all);
         mClearAllButton.setVisibility(View.GONE);
         mClearAllButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                getBaseActivity().showLoadingInfo();
-                /*-mLoadingView.setVisibility(View.VISIBLE);*/
+                showActivityProgress();
 
                 SearchRecentQueriesTableHelper.deleteAllRecentQueries();
                 // needed to update mRecentSearchesAdapter
@@ -112,12 +109,11 @@ public class RecentSearchFragment extends BaseFragment {
 
                 mRecentSearchesAdapter.notifyDataSetChanged();
 
-                mRecentSearchesNotFound.setVisibility(View.VISIBLE);
+                showFragmentEmpty();
                 mClearAllButton.setVisibility(View.GONE);
                 Log.d(TAG, "RECENT SEARCHES: " + mRecentSearches.size());
 
-                getBaseActivity().hideLoadingInfo();
-                /*-mLoadingView.setVisibility(View.GONE);*/
+                hideActivityProgress();
             }
         });
     }
@@ -126,15 +122,10 @@ public class RecentSearchFragment extends BaseFragment {
         Log.d(TAG, "INIT");
         mContext = getActivity();
 
-        getBaseActivity().showLoadingInfo();
-        /*-mLoadingView.setVisibility(View.VISIBLE);*/
+        // Get Recent Searches
+        Log.i(TAG, "LOAD RECENT SEARCHES");
+        showFragmentLoading(false);
         new GetSearchSuggestionHelper(responseCallback);
-    }
-
-    private void showNoRecentSearches() {
-        Log.d(TAG, "showNoRecentSearches");
-
-        mRecentSearchesNotFound.setVisibility(View.VISIBLE);
     }
 
     IResponseCallback responseCallback = new IResponseCallback() {
@@ -180,16 +171,14 @@ public class RecentSearchFragment extends BaseFragment {
                     });
 
                     mClearAllButton.setVisibility(View.VISIBLE);
+                    showFragmentContentContainer();
                 } else {
-                    showNoRecentSearches();
+                    showFragmentEmpty();
                 }
             } else {
                 mRecentSearches = null;
-                showNoRecentSearches();
+                showFragmentEmpty();
             }
-
-            getBaseActivity().hideLoadingInfo();
-            /*-mLoadingView.setVisibility(View.GONE);*/
 
             Log.d(TAG, "RECENT SEARCHES: " + mRecentSearches.size());
 
@@ -215,12 +204,6 @@ public class RecentSearchFragment extends BaseFragment {
         getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_LIST, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
-    @Override
-    public boolean allowBackPressed() {
-        ((BaseActivity) getActivity()).setProcessShow(true);
-        return super.allowBackPressed();
-    }
-
     public void onErrorEvent(Bundle bundle) {
         Log.d(TAG, "ON RESPONSE ERROR:");
 
@@ -231,8 +214,7 @@ public class RecentSearchFragment extends BaseFragment {
         switch (eventType) {
         case GET_SEARCH_SUGGESTIONS_EVENT:
             Log.d(TAG, "ON RESPONSE ERROR: GET_SEARCH_SUGGESTIONS_EVENT");
-            getBaseActivity().hideLoadingInfo();
-            /*-mLoadingView.setVisibility(View.GONE);*/
+            showFragmentContentContainer();
             break;
         default:
             Log.d(TAG, "ON RESPONSE ERROR: UNKNOWN TYPE");

@@ -20,7 +20,9 @@
         android:dividerHeight="0dp"
         android:footerDividersEnabled="false" />
 
-    <View style="@style/activity_sectionheader_divider" android:visibility="gone"/>
+    <View
+        style="@style/activity_sectionheader_divider"
+        android:visibility="gone" />
 
     <org.holoeverywhere.widget.TextView
         style="@style/activity_sectionheader_text"

@@ -27,10 +27,8 @@ import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
@@ -75,11 +73,14 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
      * Empty constructor
      */
     public MyAccountUserDataFragment() {
-        super(EnumSet.of(EventType.GET_CUSTOMER), 
-                EnumSet.of(EventType.CHANGE_PASSWORD_EVENT), 
+        super(EnumSet.of(EventType.GET_CUSTOMER),
+                EnumSet.of(EventType.CHANGE_PASSWORD_EVENT),
                 EnumSet.noneOf(MyMenuItem.class),
-                NavigationAction.MyAccount, 
-                R.string.personal_data_title, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
+                NavigationAction.MyAccount,
+                R.layout.my_account_user_data_fragment,
+                false,
+                R.string.personal_data_title,
+                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
     }    
     /*
      * (non-Javadoc)
@@ -108,18 +109,17 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
     /*
      * (non-Javadoc)
      * 
-     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-     * android.view.ViewGroup, android.os.Bundle)
+     * @see pt.rocket.view.fragments.BaseFragment#onViewCreated(android.view.View,
+     * android.os.Bundle)
      */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-        Log.i(TAG, "ON CREATE VIEW");
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Log.i(TAG, "ON VIEW CREATED");
         
-        mainView = inflater.inflate(R.layout.my_account_user_data_fragment, container, false);
+        mainView = view;
         setAppContentLayout();
         init();
-        return mainView;
     }
 
     private void init() {
@@ -282,7 +282,7 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
                 lastNameText.setText(customer.getLastName());
                 firstNameText.setText(customer.getFirstName());
                 emailText.setText(customer.getEmail());
-                getBaseActivity().showContentContainer();
+                showFragmentContentContainer();
             } else {
                 restartAllFragments();
                 finish();
@@ -314,7 +314,7 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
                 if (errorMessages == null) {
                     return false;
                 }
-                ((BaseActivity) getActivity()).showContentContainer();
+                showFragmentContentContainer();
 
                 List<String> validateMessages = errorMessages.get(RestConstants.JSON_VALIDATE_TAG);
                 if (validateMessages == null || validateMessages.isEmpty()) {
@@ -328,7 +328,7 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
 
                 errorMessage = validateMessages.get(0);
                 displayErrorHint(errorMessage);
-                ((BaseActivity) getActivity()).showContentContainer();
+                showFragmentContentContainer();
                 return true;
 
             }

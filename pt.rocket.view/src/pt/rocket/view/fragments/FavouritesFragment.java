@@ -35,10 +35,8 @@ import pt.rocket.utils.dialogfragments.DialogListFragment.OnDialogListListener;
 import pt.rocket.view.R;
 import android.content.ContentValues;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.GridView;
@@ -65,15 +63,9 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
     
     private ArrayList<Favourite> mFavourites;
 
-    private View mFavouritesEmptyView;
-    
     private GridView mFavouritesGridView;
     
     private Button mAddAllToCartButton;
-
-    private View mLoadingView;
-
-    private View mFavouritesView;
 
     private int mNumberOfItemsForCart = Favourite.NO_SIMPLE_SELECTED;
     
@@ -90,7 +82,11 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
                 EnumSet.noneOf(EventType.class),
                 EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.Favourite,
-                R.string.favourites, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+                R.layout.favourites,
+                true,
+                R.string.favourites,
+                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        setEmptyView(R.string.favourite_no_favourites, R.drawable.img_nofavourites);
     }
     
     /**
@@ -118,28 +114,14 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
 
     /*
      * (non-Javadoc)
-     * @see pt.rocket.view.fragments.BaseFragment#onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle)
-     */
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.i(TAG, "ON CREATE VIEW");
-        return inflater.inflate(R.layout.favourites, container, false);
-    }
-    
-    /*
-     * (non-Javadoc)
-     * @see pt.rocket.view.fragments.BaseFragment#onViewCreated(android.view.View, android.os.Bundle)
+     * 
+     * @see pt.rocket.view.fragments.BaseFragment#onViewCreated(android.view.View,
+     * android.os.Bundle)
      */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
-        // Get loading view
-        mLoadingView = view.findViewById(R.id.loading_view_pager);
-        // Get not found layout
-        mFavouritesEmptyView = view.findViewById(R.id.favourites_empty);
-        // Get favourite container
-        mFavouritesView = view.findViewById(R.id.favourites_content);
         // Get grid view
         mFavouritesGridView = (GridView) view.findViewById(R.id.favourites_grid);
         // Get add to cart button
@@ -150,9 +132,11 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         if(isOnAddingAllItemsToCart) {
             // Show progress 
             Log.i(TAG, "IS ON ADDING ALL ITEMS");
-            getBaseActivity().showProgress();
+            showActivityProgress();
         } else {
-         // Get favourites
+            // show Loading View
+            showFragmentLoading(false);
+            // Get favourites
             Log.i(TAG, "LOAD FAVOURITE ITEMS");
             new GetFavouriteHelper((IResponseCallback) this);
         }
@@ -219,49 +203,22 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
      * @author sergiopereira
      */
     private void showContent(){
-        // Hide loading
-        mLoadingView.setVisibility(View.GONE);
         // Validate favourites
         if (mFavourites != null && !mFavourites.isEmpty()) {
             Log.i(TAG, "ON SHOW CONTENT");
             mFavouritesAdapter = new FavouritesListAdapter(getBaseActivity(), mFavourites, (OnClickListener) this);
             mFavouritesGridView.setAdapter(mFavouritesAdapter);
-            showContainer();
+            showFragmentContentContainer();
         } else {
             Log.i(TAG, "ON SHOW IS EMPTY");
             showEmpty();
         }
     }
     
-    /**
-     * Show container
-     * @author sergiopereira
-     */
-    private void showContainer() {
-        mFavouritesView.setVisibility(View.VISIBLE);
-        mFavouritesEmptyView.setVisibility(View.GONE);
-        mLoadingView.setVisibility(View.GONE);
-    }
-    
-//    /**
-//     * Show loading
-//     * @author sergiopereira
-//     */
-//    private void showLoading() {
-//        mFavouritesView.setVisibility(View.GONE);
-//        mFavouritesEmptyView.setVisibility(View.GONE);
-//        mLoadingView.setVisibility(View.VISIBLE);
-//    }
-    
-    /**
-     * Show empty 
-     * @author sergiopereira
-     */
     private void showEmpty() {
         getBaseActivity().showWarningVariation(false);
-        mFavouritesView.setVisibility(View.GONE);
-        mFavouritesEmptyView.setVisibility(View.VISIBLE);
-        mLoadingView.setVisibility(View.GONE);
+        mAddAllToCartButton.setVisibility(View.GONE);
+        showFragmentEmpty();
     }
     
 
@@ -438,7 +395,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
     private void onAddItemToCart(Favourite favourite, int position){
         Log.i(TAG, "ON EXECUTE ADD TO CART");
         // Show progress
-        getBaseActivity().showProgress();
+        showActivityProgress();
         // Initialize cart vars
         isOnAddingAllItemsToCart = false;
         mAddedItemsCounter = 0;
@@ -458,7 +415,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
     private void onAddAllItemsToCart() {
         Log.i(TAG, "ON EXECUTE ADD ALL TO CART");
         // Show progress
-        getBaseActivity().showProgress();
+        showActivityProgress();
         // Initialize cart vars
         isOnAddingAllItemsToCart = true;
         mAddedItemsCounter = 0;
@@ -480,7 +437,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
                     // Show toast
                     Toast.makeText(getBaseActivity(), getString(R.string.error_please_try_again), Toast.LENGTH_SHORT).show();
                     // Dismiss
-                    getBaseActivity().dismissProgress();
+                    hideActivityProgress();
                 }
             }
         }
@@ -591,7 +548,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         switch (eventType) {
         case GET_FAVOURITE_LIST:
             Log.d(TAG, "ON RESPONSE ERROR: GET_FAVOURITE_LIST");
-            mLoadingView.setVisibility(View.GONE);
+            showFragmentContentContainer();
             break;
         case ADD_ITEM_TO_SHOPPING_CART_EVENT:
             Log.d(TAG, "ON RESPONSE ERROR: ADD_ITEM_TO_SHOPPING_CART_EVENT");
@@ -746,9 +703,11 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         // Update adapter
         mFavouritesAdapter.notifyDataSetChanged();
         // Validate current state
-        if (mFavourites.isEmpty()) showEmpty();
+        if (mFavourites.isEmpty()) {
+            showFragmentEmpty();
+        }
         // Dismiss
-        getBaseActivity().dismissProgress();
+        hideActivityProgress();
     }
     
     

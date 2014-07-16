@@ -8,11 +8,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.FormConstants;
 import pt.rocket.factories.FormFactory;
 import pt.rocket.forms.Form;
-import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
@@ -25,15 +23,12 @@ import pt.rocket.pojo.DynamicFormItem;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
-import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -73,11 +68,14 @@ public class SessionForgotPasswordFragment extends BaseFragment {
      * Empty constructor
      */
     public SessionForgotPasswordFragment() {
-        super(EnumSet.of(EventType.GET_FORGET_PASSWORD_FORM_EVENT), 
+        super(EnumSet.of(EventType.GET_FORGET_PASSWORD_FORM_EVENT),
                 EnumSet.of(EventType.FORGET_PASSWORD_EVENT),
                 EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.MyAccount,
-                R.string.forgotpass_header, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
+                R.layout.forgtopassword,
+                false,
+                R.string.forgotpass_header,
+                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
         this.setRetainInstance(true);
     }
 
@@ -102,20 +100,6 @@ public class SessionForgotPasswordFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
         dynamicForm = null;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-     * android.view.ViewGroup, android.os.Bundle)
-     */
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-        Log.i(TAG, "ON CREATE VIEW");
-        View view = inflater.inflate(R.layout.forgtopassword, container, false);
-        return view;
     }
 
     /*
@@ -269,7 +253,7 @@ public class SessionForgotPasswordFragment extends BaseFragment {
             return true;
         }
         
-        getBaseActivity().showContentContainer();
+        showFragmentContentContainer();
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         //ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         
@@ -330,7 +314,7 @@ public class SessionForgotPasswordFragment extends BaseFragment {
             List<String> errorMessages = (List<String>) errors.get(RestConstants.JSON_VALIDATE_TAG);
 
             if (errors != null && errorMessages != null && errorMessages.size() > 0) {
-                ((BaseActivity) getActivity()).showContentContainer();
+                showFragmentContentContainer();
                 dialog = DialogGenericFragment.newInstance(true, true, false,
                         getString(R.string.error_forgotpassword_title),
                         errorMessages.get(0),

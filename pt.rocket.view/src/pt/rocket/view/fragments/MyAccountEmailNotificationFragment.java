@@ -27,7 +27,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -72,11 +71,14 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
      * @author sergiopereira
      */
     public MyAccountEmailNotificationFragment() {
-        super(EnumSet.noneOf(EventType.class), 
+        super(EnumSet.noneOf(EventType.class),
                 EnumSet.noneOf(EventType.class),
-                EnumSet.noneOf(MyMenuItem.class), 
-                NavigationAction.MyAccount, 
-                R.string.myaccount_email_notifications, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+                EnumSet.noneOf(MyMenuItem.class),
+                NavigationAction.MyAccount,
+                R.layout.my_account_email_notification_fragment,
+                false,
+                R.string.myaccount_email_notifications,
+                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
 
     /*
@@ -111,19 +113,8 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
     /*
      * (non-Javadoc)
      * 
-     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-     * android.view.ViewGroup, android.os.Bundle)
-     */
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState) {
-        super.onCreateView(inflater, viewGroup, savedInstanceState);
-        Log.i(TAG, "ON CREATE VIEW");
-        return inflater.inflate(R.layout.my_account_email_notification_fragment, viewGroup, false);
-    }
-    
-    /*
-     * (non-Javadoc)
-     * @see android.support.v4.app.Fragment#onViewCreated(android.view.View, android.os.Bundle)
+     * @see pt.rocket.view.fragments.BaseFragment#onViewCreated(android.view.View,
+     * android.os.Bundle)
      */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -229,7 +220,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
                 mNewsletterOptions = formField.newsletterOptions;
             generateNewsletterOptions(mNewsletterOptions, mNewsletterList);
             // Show form
-            getBaseActivity().showContentContainer();
+            showFragmentContentContainer();
         } catch (IndexOutOfBoundsException e) {
             Log.w(TAG, "IBE ON SHOW NEWSLETTER FORM", e);
             goBackWarningUser();
@@ -328,7 +319,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
      */
     private void triggerGetNewslettersForm(){
         Log.i(TAG, "TRIGGER: GET NEWSLETTER FORM");
-        getBaseActivity().showLoadingInfo();
+        showFragmentLoading(false);
         triggerContentEvent(new GetNewslettersFormHelper(), null, (IResponseCallback) this);
     }
    
@@ -397,7 +388,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
             return true;
         }
         
-        getBaseActivity().showContentContainer();
+        showFragmentContentContainer();
         
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);

@@ -1,61 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/recentlyviewed_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <!-- NOT FOUND VIEW -->
-
-    <org.holoeverywhere.widget.TextView
-        android:id="@+id/recentlyviewed_empty"
+    <GridView
+        android:id="@+id/recentlyviewed_grid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:listSelector="@drawable/selector_listitem_highlight"
+        android:numColumns="@integer/favourite_num_columns"
+        android:paddingBottom="85dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="85dp"
+        android:layout_alignBottom="@id/recentlyviewed_grid"
         android:layout_centerHorizontal="true"
-        android:layout_marginLeft="@dimen/margin_mid"
-        android:layout_marginRight="@dimen/margin_mid"
-        android:layout_marginTop="@dimen/myprofile_lists_top_margin"
-        android:drawablePadding="@dimen/myprofile_lists_drawable_padding"
-        android:drawableTop="@drawable/img_norecentview"
-        android:gravity="center"
-        android:text="@string/recentlyview_no_searches"
-        android:textColor="@color/strip_title"
-        android:textSize="@dimen/text_xxl"
-        android:visibility="gone" />
+        android:background="@android:color/white"
+        android:gravity="center_horizontal" >
 
-    <!-- CONTENT -->
-
-    <RelativeLayout
-        android:id="@+id/recentlyviewed_content"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone" >
-
-        <GridView
-            android:id="@+id/recentlyviewed_grid"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:listSelector="@drawable/selector_listitem_highlight"
-            android:numColumns="@integer/favourite_num_columns"
-            android:paddingBottom="85dp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="85dp"
-            android:layout_alignBottom="@id/recentlyviewed_grid"
-            android:layout_centerHorizontal="true"
-            android:background="@android:color/white"
-            android:gravity="center_horizontal" >
-
-            <include layout="@layout/recentlyviewed_button_layout" />
-        </LinearLayout>
-    </RelativeLayout>
-
-    <!-- LOADING -->
-
-    <include
-        android:id="@+id/loading_view_pager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        layout="@layout/loading_bar"
-        android:visibility="gone" />
+        <include layout="@layout/recentlyviewed_button_layout" />
+    </LinearLayout>
 
 </RelativeLayout>

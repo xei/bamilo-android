@@ -49,11 +49,9 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -122,7 +120,10 @@ public class SessionRegisterFragment extends BaseFragment {
                 EnumSet.of(EventType.REGISTER_ACCOUNT_EVENT),
                 EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.MyAccount,
-                R.string.register_title, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
+                R.layout.register,
+                false,
+                R.string.register_title,
+                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
     }
 
     /*
@@ -145,20 +146,6 @@ public class SessionRegisterFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-     * android.view.ViewGroup, android.os.Bundle)
-     */
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-        Log.i(TAG, "ON CREATE VIEW");
-        View view = inflater.inflate(R.layout.register, container, false);
-        return view;
     }
 
     /*
@@ -530,7 +517,7 @@ public class SessionRegisterFragment extends BaseFragment {
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         switch (eventType) {
         case REGISTER_ACCOUNT_EVENT:
-            getBaseActivity().showContentContainer();
+            showFragmentContentContainer();
             // Get Register Completed Event
             Customer customer = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             JumiaApplication.CUSTOMER = customer;
@@ -547,7 +534,7 @@ public class SessionRegisterFragment extends BaseFragment {
             Log.d(TAG, "event done - REGISTER_ACCOUNT_EVENT");
             return false;
         case GET_REGISTRATION_FORM_EVENT:
-            getBaseActivity().showContentContainer();
+            showFragmentContentContainer();
             Form form = (Form) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             Log.d(TAG, "getRegistrationFormCompleted: form = " + form.toJSON());
             if (null != form) {
@@ -610,6 +597,8 @@ public class SessionRegisterFragment extends BaseFragment {
                 item.loadState(JumiaApplication.INSTANCE.registerSavedInstanceState);
             }
         }
+
+        showFragmentContentContainer();
     }
 
     private String getSubscribeType(){
@@ -690,6 +679,9 @@ public class SessionRegisterFragment extends BaseFragment {
         if (getBaseActivity().handleErrorEvent(bundle)) {
             return true;
         }
+
+        // showFragmentContentContainer();
+
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
 
@@ -701,9 +693,8 @@ public class SessionRegisterFragment extends BaseFragment {
                 // Log.i(TAG, "code1exists : errorMessages : "+errorMessages);
                 List<String> validateMessages = errorMessages.get(RestConstants.JSON_ERROR_TAG);
                 // Log.i(TAG, "code1exists : validateMessages : "+validateMessages);
-                if (validateMessages != null
-                        && validateMessages.contains(Errors.CODE_REGISTER_CUSTOMEREXISTS)) {
-                    ((BaseActivity) getActivity()).showContentContainer();
+                if (validateMessages != null && validateMessages.contains(Errors.CODE_REGISTER_CUSTOMEREXISTS)) {
+                    showFragmentContentContainer();
                     dialog = DialogGenericFragment.newInstance(true, true, false,
                             getString(R.string.error_register_title),
                             getString(R.string.error_register_alreadyexists),
@@ -722,7 +713,7 @@ public class SessionRegisterFragment extends BaseFragment {
                     dialog.show(getActivity().getSupportFragmentManager(), null);
                     return true;
                 } else {
-                    ((BaseActivity) getActivity()).showContentContainer();
+                    showFragmentContentContainer();
                     dialog = DialogGenericFragment.newInstance(true, true, false,
                             getString(R.string.error_register_title),
                             getString(R.string.incomplete_alert),
