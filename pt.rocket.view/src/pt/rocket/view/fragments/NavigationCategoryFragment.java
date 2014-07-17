@@ -26,7 +26,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -58,10 +57,6 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
 
     private LayoutInflater mInflater;
 
-    private View mLoadingView;
-
-    private View mRetryView;
-
     private ArrayList<Integer> mTreePath;
 
     // private String mParentCategoryName;
@@ -89,7 +84,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
      * Empty constructor
      */
     public NavigationCategoryFragment() {
-        super(IS_NESTED_FRAGMENT);
+        super(IS_NESTED_FRAGMENT, R.layout.navigation_fragment_categories);
     }
 
     /*
@@ -119,20 +114,6 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
             // mParentCategoryName = savedInstanceState.getString(ConstantsIntentExtra.CATEGORY_PARENT_NAME);
         }
     }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-     * android.view.ViewGroup, android.os.Bundle)
-     */
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-        Log.i(TAG, "ON CREATE VIEW");
-        this.mInflater = inflater;
-        return inflater.inflate(R.layout.navigation_fragment_categories, container, false);
-    }
     
     /*
      * (non-Javadoc)
@@ -142,17 +123,14 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
+        // Get inflater
+        mInflater = LayoutInflater.from(getBaseActivity());
         // Get category list view
         mCategoryList = (ListView) getView().findViewById(R.id.sub_categories_grid);
-        // Get loading view
-        mLoadingView = view.findViewById(R.id.loading_bar);
-        // Get retry view
-        mRetryView = view.findViewById(R.id.fragment_retry);
-        view.findViewById(R.id.fragment_retry_button).setOnClickListener(this);
         // Validate the cache
         if (JumiaApplication.currentCategories != null) showCategoryList();
         else if(!TextUtils.isEmpty(ShopSelector.getShopId())) triggerGetCategories();
-        else Log.w(TAG, "APPLICATION IS ON BIND PROCESS");
+        else { Log.w(TAG, "APPLICATION IS ON BIND PROCESS"); showRetry(); }
     }
 
     /*
@@ -302,6 +280,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
             // Get childs to find
             subCategories = category.getChildren();
         }
+        if(category == null) Log.i(TAG, "NOT FOUND CURRENT CATEGORY");
         return category;
     }
     
@@ -319,23 +298,11 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
     }
     
     /**
-     * Show only the loading view
-     * @author sergiopereira
-     */
-    private void showLoading(){
-        mCategoryList.setVisibility(View.GONE);
-        mLoadingView.setVisibility(View.VISIBLE);
-        mRetryView.setVisibility(View.GONE);
-    }
-    
-    /**
      * Show only the content view
      * @author sergiopereira
      */
     private void showContent() {
-        mCategoryList.setVisibility(View.VISIBLE);
-        mLoadingView.setVisibility(View.GONE);
-        mRetryView.setVisibility(View.GONE);
+        showFragmentContentContainer();
     }
     
     /**
@@ -343,9 +310,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
      * @author sergiopereira
      */
     private void showRetry() {
-        mCategoryList.setVisibility(View.GONE);
-        mLoadingView.setVisibility(View.GONE);
-        mRetryView.setVisibility(View.VISIBLE);
+        showFragmentRetry((OnClickListener) this);
     }
     
     /**
@@ -357,12 +322,10 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
      */
     private void triggerGetCategories(){
         Log.i(TAG, "TRIGGER: GET CATEGORIES");
-        // Show loading 
-        showLoading();
         // Get categories
         Bundle bundle = new Bundle();
         bundle.putString(GetCategoriesHelper.CATEGORY_URL, null);
-        triggerContentEventWithNoLoading(new GetCategoriesHelper(), bundle, this);    
+        triggerContentEvent(new GetCategoriesHelper(), bundle, this);    
     }
     
     /**
@@ -377,7 +340,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
         // Get view id
         int id = view.getId();
         // Case retry
-        if (id == R.id.fragment_retry_button) onClickRetryButton();
+        if (id == R.id.fragment_root_retry_button) onClickRetryButton();
         // Case Unknown
         else Log.w(TAG, "WARNING: UNKNOWN BUTTON");
     }

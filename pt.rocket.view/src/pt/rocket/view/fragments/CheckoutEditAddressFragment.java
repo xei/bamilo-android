@@ -763,9 +763,8 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
             errorMessages = (List<String>) errors.get(RestConstants.JSON_VALIDATE_TAG);
         }
         if (errors != null && errorMessages != null && errorMessages.size() > 0) {
-            if (getBaseActivity() != null){
-                showFragmentContentContainer();
-            }
+            
+            showFragmentContentContainer();
             
             dialog = DialogGenericFragment.newInstance(true, true, false,
                     getString(R.string.error_login_title),

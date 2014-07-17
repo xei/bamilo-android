@@ -45,11 +45,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -130,19 +128,6 @@ public class HomeFragment extends BaseFragment implements IResponseCallback {
         // Get saved state
         if(savedInstanceState != null) mPagerSavedPosition = savedInstanceState.getInt(PAGER_POSITION_KEY);
     }
-    
-//    /*
-//     * (non-Javadoc)
-//     * 
-//     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-//     * android.view.ViewGroup, android.os.Bundle)
-//     */
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState) {
-//        super.onCreateView(inflater, viewGroup, savedInstanceState);
-//        Log.i(TAG, "ON CREATE VIEW");
-//        return inflater.inflate(R.layout.home_fragment_main, viewGroup, false);
-//    }
     
     /*
      * (non-Javadoc)
@@ -340,15 +325,6 @@ public class HomeFragment extends BaseFragment implements IResponseCallback {
         showContent();
     }
     
-    
-    /**
-     * Show only the loading view
-     * @author sergiopereira
-     */
-    private void showLoading(){
-        showFragmentLoading();
-    }
-    
     /**
      * Show only the content view
      * @author sergiopereira
@@ -428,11 +404,8 @@ public class HomeFragment extends BaseFragment implements IResponseCallback {
      */
     private void triggerTeasers() {
         Log.d(TAG, "ON TRIGGER: GET TEASERS");
-        // Show loading
-        //getBaseActivity().setProcessShow(false);
-        showLoading();
         // Get teaser collection
-        triggerContentEventWithNoLoading(new GetTeasersHelper(), null, (IResponseCallback) this);
+        triggerContentEvent(new GetTeasersHelper(), null, (IResponseCallback) this);
         // Validate the current md5 to check updated teaser collection
         Log.d(TAG, "ON TRIGGER: GET UPDATED TEASERS " + mCurrentMd5Collection);
         Bundle bundle = new Bundle();
@@ -535,8 +508,6 @@ public class HomeFragment extends BaseFragment implements IResponseCallback {
         switch (eventType) {
         case GET_UPDATED_TEASERS_EVENT:
             Log.d(TAG, "ON ERROR RESPONSE: DISCARDED RECEIVED GET_UPDATED_TEASERS_EVENT");
-            // Discarded the error response
-            showFragmentContentContainer();
             break;
         case GET_TEASERS_EVENT:
             Log.i(TAG, "ON ERROR RESPONSE: GET_TEASERS_EVENT");

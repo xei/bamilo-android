@@ -62,7 +62,7 @@ public class GetTeasersHelper extends BaseHelper {
                 }
                 bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, homepageSpecifications);
                 bundle.putInt(RestConstants.JSON_HOMEPAGE_DEFAULT_TAG, defaultHomePage);
-                Log.i(TAG, "Teasers size: " + homepageSpecifications.size());
+                //Log.i(TAG, "Teasers size: " + homepageSpecifications.size());
             } else {
                 Log.e(TAG, "Teasers size: 0");
             }

@@ -743,7 +743,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                 MenuItem myProfile = menu.findItem(item.resId); //menu.findItem(item.resId);
                 myProfile.setVisible(true);
                 myProfile.setEnabled(true);
-
                 setMyProfile(myProfile);
                 break;
             default:

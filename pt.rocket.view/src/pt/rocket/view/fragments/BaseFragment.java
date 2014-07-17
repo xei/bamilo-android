@@ -241,7 +241,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (hasLayoutToInflate()) {
             Log.i(TAG, "ON CREATE VIEW: HAS LAYOUT TO INFLATE");
-            View view = inflater.inflate(R.layout.root_layout, container, false);
+            View view = inflater.inflate(R.layout.fragment_root_layout, container, false);
             ViewStub contentContainer = (ViewStub) view.findViewById(R.id.content_container);
             contentContainer.setLayoutResource(mInflateLayoutResId);
             this.mContentView = contentContainer.inflate();
@@ -989,11 +989,11 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * Show the fall back view from the root layout
      */
     protected void showFragmentFallBack() {
+        setVisibility(mFallBackView, true);
         setVisibility(mContentView, false);
         setVisibility(mEmptyView, false);
         hideLoadingInfo(mLoadingView);
         setVisibility(mRetryView, false);
-        setVisibility(mFallBackView, true);
     }
 
     /**

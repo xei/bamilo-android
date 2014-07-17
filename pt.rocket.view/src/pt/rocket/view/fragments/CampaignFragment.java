@@ -92,10 +92,6 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, O
 
     private boolean isAddingProductToCart;
 
-//    private View mLoadingView;
-
-//    private View mRetryView;
-
     private DialogGenericFragment mDialogErrorToCart;
     
     private long mStartTimeInMilliseconds;
@@ -163,19 +159,6 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, O
         }
     }
     
-//    /*
-//     * (non-Javadoc)
-//     * 
-//     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-//     * android.view.ViewGroup, android.os.Bundle)
-//     */
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState) {
-//        super.onCreateView(inflater, viewGroup, savedInstanceState);
-//        Log.i(TAG, "ON CREATE VIEW");
-//        return inflater.inflate(R.layout.campaign_fragment_pager_item, viewGroup, false);
-//    }
-    
     /*
      * (non-Javadoc)
      * @see android.support.v4.app.Fragment#onViewCreated(android.view.View, android.os.Bundle)
@@ -189,12 +172,6 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, O
         mGridView = (HeaderGridView) view.findViewById(R.id.campaign_grid);
         // Set onScrollListener to signal adapter's Handler when user is scrolling
         mGridView.setOnScrollListener(this);
-        // Get loading view
-        //mLoadingView = view.findViewById(R.id.loading_bar);
-        // Get retry view
-        //mRetryView = view.findViewById(R.id.fragment_retry);
-        // Get the retry button
-        //view.findViewById(R.id.fragment_retry_button).setOnClickListener(this);
         // Validate the current state
         getAndShowCampaign();
     }
@@ -284,11 +261,8 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, O
         // Get the campaign id
         String id = (mTeaserCampaign != null) ? mTeaserCampaign.getTargetUrl() : null;
         // Validate the current state
-        if (mCampaign == null) {
-            triggerGetCampaign(id);
-        } else {
-            showCampaign();
-        }
+        if(mCampaign == null) triggerGetCampaign(id);
+        else showCampaign();
     }
     
     /**
@@ -331,25 +305,11 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, O
     }
     
     /**
-     * Show only the loading view
-     * @author sergiopereira
-     */
-    private void showLoading(){
-        showFragmentLoading();
-        //mGridView.setVisibility(View.GONE);
-        //mLoadingView.setVisibility(View.VISIBLE);
-        //mRetryView.setVisibility(View.GONE);
-    }
-    
-    /**
      * Show only the content view
      * @author sergiopereira
      */
     private void showContent() {
-        //mGridView.setVisibility(View.VISIBLE);
         showFragmentContentContainer();
-        //mLoadingView.setVisibility(View.GONE);
-        //mRetryView.setVisibility(View.GONE);
     }
     
     /**
@@ -358,9 +318,6 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, O
      */
     private void showRetry() {
         showFragmentRetry((OnClickListener) this);
-//        mGridView.setVisibility(View.GONE);
-//        mLoadingView.setVisibility(View.GONE);
-//        mRetryView.setVisibility(View.VISIBLE);
     }
     
     /**
@@ -466,12 +423,10 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, O
      */
     private void triggerGetCampaign(String id){
         Log.i(TAG, "TRIGGER TO GET CAMPAIGN: " + id);
-        // Show loading 
-        showLoading();
         // Create request
         Bundle bundle = new Bundle();
         bundle.putString(GetCampaignHelper.CAMPAIGN_ID, id);
-        triggerContentEventWithNoLoading(new GetCampaignHelper(), bundle, this);
+        triggerContentEvent(new GetCampaignHelper(), bundle, this);
     }
     
     /**
@@ -481,10 +436,9 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, O
      */
     private void triggerAddToCart(ContentValues values){
         Log.i(TAG, "TRIGGER ADD TO CART");
-        showActivityProgress();
         Bundle bundle = new Bundle();
         bundle.putParcelable(GetShoppingCartAddItemHelper.ADD_ITEM, values);
-        triggerContentEventWithNoLoading(new GetShoppingCartAddItemHelper(), bundle, this);
+        triggerContentEventProgress(new GetShoppingCartAddItemHelper(), bundle, this);
     }
    
     /**
