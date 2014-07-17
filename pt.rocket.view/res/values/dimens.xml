@@ -66,6 +66,7 @@
     <dimen name="teaser_swipe_banner_height">196dp</dimen>
     <dimen name="teaser_product_item_width">120dp</dimen>
     <dimen name="teaser_banners_group_height">96dp</dimen>
+    <dimen name="teaser_banners_group_margin">0dp</dimen>
     <dimen name="teaser_recently_viewed_height">196dp</dimen>
 
     <!-- actual values for hdpi - are referenced as aliases -->

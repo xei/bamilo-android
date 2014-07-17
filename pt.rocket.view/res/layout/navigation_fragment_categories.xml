@@ -1,32 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ListView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/sub_categories_grid"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
-
-    <!-- CONTENT VIEW -->
-
-    <ListView
-        android:id="@+id/sub_categories_grid"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/white"
-        android:gravity="center"
-        android:headerDividersEnabled="true"
-        android:listSelector="@android:color/transparent"
-        android:visibility="gone" />
-
-    <!-- LOADING VIEW -->
-
-    <include
-        android:id="@+id/loading_bar"
-        layout="@layout/loading_bar"
-        android:visibility="visible" />
-
-    <!-- RETRY VIEW -->
-
-    <include
-        android:id="@+id/fragment_retry"
-        layout="@layout/fragment_retry"
-        android:visibility="gone" />
-
-</RelativeLayout>
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:gravity="center"
+    android:headerDividersEnabled="true"
+    android:listSelector="@android:color/transparent" />

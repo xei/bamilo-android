@@ -451,6 +451,7 @@ public class TeasersFactory {
      */
     private View createCampaignTeaserView(TeaserCampaign teaser, ViewGroup vg, LayoutInflater mInflater) {
     	View campaignTeaserView = mInflater.inflate(R.layout.category_inner_childcat, vg, false);
+    	campaignTeaserView.findViewById(R.id.divider).setVisibility(View.GONE);
         TextView textView = (TextView) campaignTeaserView.findViewById(R.id.text);
         textView.setText(teaser.getTargetTitle());
         attachTeaserListener(teaser, campaignTeaserView);

@@ -28,7 +28,8 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:inflatedId="@+id/fragment_retry_stub_inflate"
-        android:layout="@layout/fragment_root_retry" />
+        android:layout="@layout/fragment_root_retry"
+        android:layout_margin="@dimen/margin_large" />
 
     <!-- EMPTY LAYOUT -->
 
@@ -48,6 +49,6 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:inflatedId="@+id/fragment_fall_back_stub_inflate"
-        android:layout="@layout/home_fragment_fallback" />
+        android:layout="@layout/fragment_root_fallback" />
 
 </RelativeLayout>

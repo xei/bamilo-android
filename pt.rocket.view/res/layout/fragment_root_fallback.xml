@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<!-- FALL BACK -->
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/home_fallback_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bckgrndfallback"
-    android:descendantFocusability="afterDescendants"
-    android:visibility="gone" >
+    android:descendantFocusability="afterDescendants" >
 
     <LinearLayout
         android:id="@+id/fallback_title_container"

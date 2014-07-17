@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/teaser_banners_group_height" >
+    android:layout_height="@dimen/teaser_banners_group_height"
+    android:layout_marginTop="@dimen/teaser_banners_group_margin" >
 
     <LinearLayout
         android:id="@+id/teaser_group_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentRight="true"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
         android:orientation="horizontal" >
     </LinearLayout>
 

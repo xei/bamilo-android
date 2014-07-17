@@ -10,21 +10,17 @@
     <dimen name="text_xxl">24sp</dimen>
 
     <!-- HOME -->
-    <!-- <dimen name="teaser_swipe_banner_height">460dp</dimen> -->
-    <!-- <dimen name="teaser_swipe_banner_height">338dp</dimen> 720x390-->
     <dimen name="teaser_swipe_banner_height">260dp</dimen>  <!-- 1440x600 -->
     
     <dimen name="teaser_product_item_width">50dp</dimen>
-    <!-- <dimen name="teaser_product_item_width">208dp</dimen> -->
-    <!-- <dimen name="teaser_product_item_height">290dp</dimen> -->
     
     <dimen name="teaser_product_item_height">@dimen/wrap_content</dimen>
     <dimen name="teaser_product_item_image_width">190dp</dimen>
     <dimen name="teaser_product_item_image_height">160dp</dimen>
     <dimen name="teaser_product_item_image_margin">15dp</dimen>
     
-    <!-- <dimen name="teaser_banners_group_height">265dp</dimen> -->
     <dimen name="teaser_banners_group_height">166dp</dimen> <!-- 359x189 -->
+    <dimen name="teaser_banners_group_margin">@dimen/margin_large</dimen>
     
     <dimen name="teaser_banners_brands_list_height">100dp</dimen>
     <dimen name="teaser_banners_brands_list_margin">@dimen/margin_huge</dimen>
