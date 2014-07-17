@@ -36,6 +36,7 @@ import pt.rocket.utils.dialogfragments.DialogListFragment.OnDialogListListener;
 import pt.rocket.view.R;
 import android.content.ContentValues;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
@@ -282,7 +283,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
     private void onClickClearAll() {
         Log.i(TAG, "ON CLICK CLEAR ALL ITEMS");
         // Show progress
-        showFragmentLoading(false);
+        showActivityProgress();
 
         LastViewedTableHelper.deleteAllLastViewed();
         // needed to update mRecentSearchesAdapter
@@ -582,7 +583,13 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
             mClearAllButton.setVisibility(View.GONE);
         }
         // Dismiss
-        hideActivityProgress();
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                hideActivityProgress();
+            }
+        }, 300);
     }
 
     /**

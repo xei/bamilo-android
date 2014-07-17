@@ -22,6 +22,7 @@ import pt.rocket.utils.NavigationAction;
 import pt.rocket.view.R;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
@@ -113,7 +114,13 @@ public class RecentSearchFragment extends BaseFragment {
                 mClearAllButton.setVisibility(View.GONE);
                 Log.d(TAG, "RECENT SEARCHES: " + mRecentSearches.size());
 
-                hideActivityProgress();
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        hideActivityProgress();
+                    }
+                }, 300);
             }
         });
     }
