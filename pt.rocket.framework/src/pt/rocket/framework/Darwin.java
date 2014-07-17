@@ -67,6 +67,8 @@ public class Darwin {
 	
 	public final static String SHARED_PREFERENCES = "whitelabel_prefs";
 	
+	public final static String INSTALL_TIME_PREFERENCE = "install_time";
+	
 	/**
 	 * Countries Configs
 	 */

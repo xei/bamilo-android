@@ -3,14 +3,18 @@ package pt.rocket.framework.utils;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TimeZone;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pt.rocket.framework.Darwin;
 import pt.rocket.framework.R;
 import pt.rocket.framework.objects.ProductReviewCommentCreated;
 import android.annotation.SuppressLint;
@@ -40,25 +44,17 @@ public class AdXTracker {
 			Log.d(TAG, "startup: is already started - ignoring");
 			return;
 		}
-
-		PackageInfo pInfo;
-		boolean isUpdate = false;
-		try {
-			pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-				if (pInfo.firstInstallTime != pInfo.lastUpdateTime)
-					isUpdate = true;
-			} else {
-				isUpdate = true;
-			}
-		} catch (NameNotFoundException e) {
-			isUpdate = true;
-		}
+		
+		// Used for instal event (Internal trigger)
+        boolean isUpdate = isFreshInstall(context) ? false : true;
 		
 		AdXConnect.LOGLEVEL = 0;
 		AdXConnect.DEBUG = false;
 		Log.d(TAG, "startup: connect instance isUpdate = " + isUpdate);
+		
+		// Connect
 		AdXConnect.getAdXConnectInstance(context, isUpdate, 0);
+		
 		isStarted = true;
 	}
 	
@@ -524,4 +520,34 @@ public class AdXTracker {
         return (pInfo == null) ? "n.a." : pInfo.versionName;
     }
 	
+    /**
+     * Method used to check if is the first install
+     * @param context
+     * @return true/false
+     */
+    private static boolean isFreshInstall(Context context) {
+        boolean freshInstall = false;
+        SharedPreferences sharedPrefs = context.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        long installTime = sharedPrefs.getLong(Darwin.INSTALL_TIME_PREFERENCE, 0l);
+        freshInstall = installTime == 0;
+        Calendar cal = Calendar.getInstance(TimeZone.getDefault());
+        Date currentLocalTime = cal.getTime();
+        long installtime;
+        try {
+            PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+                Log.i(TAG, " GTM TRACKING -> Install Time -> " + pInfo.firstInstallTime);
+                Log.i(TAG, " GTM TRACKING ->  update Time -> " + pInfo.lastUpdateTime);
+                installtime = pInfo.firstInstallTime;
+            } else {
+                installtime = currentLocalTime.getTime();
+            }
+        } catch (NameNotFoundException e) {
+            installtime = currentLocalTime.getTime();
+        }
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+        editor.putLong(Darwin.INSTALL_TIME_PREFERENCE, installtime);
+        editor.commit();
+        return freshInstall;
+    }
 }
