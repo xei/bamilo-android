@@ -49,7 +49,6 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
 
     private CompleteProduct mCompleteProduct;
 
-    private int CURRENT_IMAGE_INDEX = 0;
     private View mainView;
 
     private OnFragmentActivityInteraction mCallback;
@@ -80,11 +79,12 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
      * @param arrayList
      */
     public ProductBasicInfoFragment() {
-        super(EnumSet.of(EventType.GET_PRODUCT_EVENT), 
-                EnumSet.noneOf(EventType.class), 
+        super(EnumSet.of(EventType.GET_PRODUCT_EVENT),
+                EnumSet.noneOf(EventType.class),
                 EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.Products,
-                R.string.product_details_title, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
+                R.string.product_details_title,
+                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
     }
 
     @Override

@@ -41,7 +41,6 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
-import android.widget.RelativeLayout;
 import de.akquinet.android.androlog.Log;
 
 /**

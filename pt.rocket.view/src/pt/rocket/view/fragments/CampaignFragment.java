@@ -183,7 +183,7 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, O
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.i(TAG, "ON VIEW CREATED");        
+        Log.i(TAG, "ON VIEW CREATED");
         Log.d(TAG, "TEASER CAMPAIGN: " + mTeaserCampaign.getTargetTitle() + " " + mTeaserCampaign.getTargetUrl());
         // Get grid view
         mGridView = (HeaderGridView) view.findViewById(R.id.campaign_grid);
@@ -284,10 +284,11 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, O
         // Get the campaign id
         String id = (mTeaserCampaign != null) ? mTeaserCampaign.getTargetUrl() : null;
         // Validate the current state
-        if(mCampaign == null)
+        if (mCampaign == null) {
             triggerGetCampaign(id);
-        else
+        } else {
             showCampaign();
+        }
     }
     
     /**
@@ -480,7 +481,7 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, O
      */
     private void triggerAddToCart(ContentValues values){
         Log.i(TAG, "TRIGGER ADD TO CART");
-        getBaseActivity().showProgress();
+        showActivityProgress();
         Bundle bundle = new Bundle();
         bundle.putParcelable(GetShoppingCartAddItemHelper.ADD_ITEM, values);
         triggerContentEventWithNoLoading(new GetShoppingCartAddItemHelper(), bundle, this);
@@ -522,7 +523,7 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, O
             Log.d(TAG, "RECEIVED ADD_ITEM_TO_SHOPPING_CART_EVENT");
             isAddingProductToCart = false;
             getBaseActivity().updateCartInfo();
-            getBaseActivity().dismissProgress();
+            hideActivityProgress();
             showSuccessCartDialog();
             break;
         default:
@@ -556,7 +557,7 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, O
             break;
         case ADD_ITEM_TO_SHOPPING_CART_EVENT:
             isAddingProductToCart = false;
-            getBaseActivity().dismissProgress();
+            hideActivityProgress();
             showErrorCartDialog();
             break;
         default:

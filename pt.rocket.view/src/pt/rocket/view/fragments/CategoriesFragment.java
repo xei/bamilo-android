@@ -409,7 +409,7 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
         
         Log.i(TAG, "subCategoryIndex : "+subCategoryIndex + " categoryIndex : "+categoryIndex);
         
-        categories = JumiaApplication.INSTANCE.currentCategories;
+        categories = JumiaApplication.currentCategories;
         
         if(categories != null && getView() != null){
             createList();

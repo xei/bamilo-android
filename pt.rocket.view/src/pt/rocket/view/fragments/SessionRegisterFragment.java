@@ -26,7 +26,6 @@ import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.objects.Errors;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.Constants;
-import pt.rocket.framework.utils.CustomerUtils;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.GetTermsConditionsHelper;
@@ -505,17 +504,17 @@ public class SessionRegisterFragment extends BaseFragment {
         triggerRegister(values);
     }
 
-    /**
-     * 
-     * @return
-     */
-    private Bundle saveFormToBundle() {
-        Bundle bundle = new Bundle();
-        for (DynamicFormItem entry : serverForm) {
-            bundle.putString(entry.getKey(), entry.getValue());
-        }
-        return bundle;
-    }
+//    /**
+//     * 
+//     * @return
+//     */
+//    private Bundle saveFormToBundle() {
+//        Bundle bundle = new Bundle();
+//        for (DynamicFormItem entry : serverForm) {
+//            bundle.putString(entry.getKey(), entry.getValue());
+//        }
+//        return bundle;
+//    }
 
     /**
      * #### EVENTS ####
@@ -560,30 +559,32 @@ public class SessionRegisterFragment extends BaseFragment {
             // Remove the listener
             // detailsListener();
             break;
+        default:
+            break;
         }
         return true;
     }
 
-    private void requestStore(Bundle bundle) {
-        Log.d(TAG, "requestLogin: trigger LogInEvent for store only");
-        if (serverForm == null) {
-            return;
-        }
-        ContentValues values = new ContentValues();
-        for (DynamicFormItem item : serverForm) {
-            String value = bundle.getString(item.getKey());
-            values.put(item.getName(), value);
-        }
-        values.put(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, true);
-
-        /**
-         * TRIGGERS
-         * 
-         * @author sergiopereira
-         */
-        triggerStoreLogin(values);
-
-    }
+//    private void requestStore(Bundle bundle) {
+//        Log.d(TAG, "requestLogin: trigger LogInEvent for store only");
+//        if (serverForm == null) {
+//            return;
+//        }
+//        ContentValues values = new ContentValues();
+//        for (DynamicFormItem item : serverForm) {
+//            String value = bundle.getString(item.getKey());
+//            values.put(item.getName(), value);
+//        }
+//        values.put(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, true);
+//
+//        /**
+//         * TRIGGERS
+//         * 
+//         * @author sergiopereira
+//         */
+//        triggerStoreLogin(values);
+//
+//    }
 
     /**
      * 
@@ -667,7 +668,6 @@ public class SessionRegisterFragment extends BaseFragment {
 
             @Override
             public void onClick(View v) {
-                int id = v.getId();
                 if(((CheckBox) v).isChecked()){
                     mandatory.setVisibility(View.GONE);
                 } else {
@@ -799,9 +799,9 @@ public class SessionRegisterFragment extends BaseFragment {
         triggerContentEventWithNoLoading(new GetTermsConditionsHelper(), null, mCallBack);
     }
 
-    private void triggerStoreLogin(ContentValues values) {
-        JumiaApplication.INSTANCE.getCustomerUtils().storeLogin(values);
-    }
+//    private void triggerStoreLogin(ContentValues values) {
+//        JumiaApplication.INSTANCE.getCustomerUtils().storeLogin(values);
+//    }
 
     /**
      * CALLBACK

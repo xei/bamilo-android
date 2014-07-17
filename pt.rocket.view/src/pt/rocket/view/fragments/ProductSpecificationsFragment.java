@@ -72,11 +72,12 @@ public class ProductSpecificationsFragment extends BaseFragment implements OnCli
      * @param arrayList
      */
     public ProductSpecificationsFragment() {
-        super(EnumSet.noneOf(EventType.class), 
-                EnumSet.noneOf(EventType.class), 
-                EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE), 
-                NavigationAction.Products, 
-                R.string.product_details_title, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
+        super(EnumSet.noneOf(EventType.class),
+                EnumSet.noneOf(EventType.class),
+                EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
+                NavigationAction.Products,
+                R.string.product_details_title,
+                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
         this.setRetainInstance(true);
     }
 
@@ -151,8 +152,7 @@ public class ProductSpecificationsFragment extends BaseFragment implements OnCli
         mProductSpecContainer.setOnClickListener(this);
         mProductSpecText = (TextView) mainView.findViewById(R.id.product_specifications_text);
         mProductSpecSku = (TextView) mainView.findViewById(R.id.product_sku_text);
-        mLoading = (RelativeLayout) mProductSpecContainer
-                .findViewById(R.id.loading_specifications);
+        mLoading = (RelativeLayout) mProductSpecContainer.findViewById(R.id.loading_specifications);
         displaySpecification();
         return mainView;
     }

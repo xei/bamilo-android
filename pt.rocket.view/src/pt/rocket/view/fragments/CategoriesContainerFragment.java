@@ -8,7 +8,6 @@ import java.util.EnumSet;
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.ConstantsSharedPrefs;
-import pt.rocket.controllers.CategoriesAdapter;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.Constants;
@@ -30,12 +29,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import de.akquinet.android.androlog.Log;
 
@@ -49,10 +45,6 @@ public class CategoriesContainerFragment extends BaseFragment {
 
     private static final String USED_CACHED_CATEGORIES = "used_cached";
     
-    private CategoriesAdapter mainCatAdapter;
-
-    private ListView categoriesList;
-
     private long mBeginRequestMillis;
 
     private String categoryUrl;

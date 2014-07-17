@@ -214,8 +214,8 @@ public class CheckoutWebFragment extends BaseFragment {
         // webview = new WebView(getActivity());
         // mWebContainer.addView(webview);
         String user_id = "";
-        if (JumiaApplication.INSTANCE.CUSTOMER != null && JumiaApplication.INSTANCE.CUSTOMER.getIdAsString() != null) {
-            user_id = JumiaApplication.INSTANCE.CUSTOMER.getIdAsString();
+        if (JumiaApplication.CUSTOMER != null && JumiaApplication.CUSTOMER.getIdAsString() != null) {
+            user_id = JumiaApplication.CUSTOMER.getIdAsString();
         }
         AnalyticsGoogle.get().trackCheckoutStart(getBaseActivity(), user_id);
     }
@@ -588,9 +588,11 @@ public class CheckoutWebFragment extends BaseFragment {
         switch (eventType) {
         case GET_CUSTOMER:
             customer = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-            JumiaApplication.INSTANCE.CUSTOMER = customer;
+            JumiaApplication.CUSTOMER = customer;
             break;
         case GET_SHOPPING_CART_ITEMS_EVENT:
+            break;
+        default:
             break;
         }
         return false;

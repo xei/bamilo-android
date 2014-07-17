@@ -782,8 +782,8 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         Log.d(TAG, "RECEIVED SET_SIGNUP_EVENT");
         JumiaApplication.INSTANCE.setLoggedIn(true);
         
-        if(JumiaApplication.INSTANCE.CUSTOMER != null){
-            JumiaApplication.INSTANCE.CUSTOMER.setGuest(true);    
+        if(JumiaApplication.CUSTOMER != null){
+            JumiaApplication.CUSTOMER.setGuest(true);    
         }
         
         TrackerDelegator.trackSignUp(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
@@ -823,7 +823,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             JumiaApplication.INSTANCE.setLoggedIn(true);
             // Get customer
             Customer customerFb = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-            JumiaApplication.INSTANCE.CUSTOMER = customerFb;
+            JumiaApplication.CUSTOMER = customerFb;
             // Get next step
             mNextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
 
@@ -888,6 +888,8 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
                 goToNextStepAfterSignUp();
             }
             
+            break;
+        default:
             break;
         }
         return true;

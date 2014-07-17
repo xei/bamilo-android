@@ -28,11 +28,11 @@
             android:layout_marginRight="13.2dp"
             android:layout_marginTop="13.2dp"
             android:cursorVisible="true"
+            android:drawableRight="@drawable/ic_star_formular"
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:hint="@string/track_order_hint"
             android:inputType="textAutoComplete"
-            android:drawableRight="@drawable/ic_star_formular"
             android:textCursorDrawable="@null" />
 
         <org.holoeverywhere.widget.Button

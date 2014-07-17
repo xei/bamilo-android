@@ -36,6 +36,7 @@ import pt.rocket.view.fragments.Catalog;
 import android.content.ContentValues;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -272,8 +273,14 @@ public class CatalogPageModel {
         showCatalogContent();
         isLoadingMore = false;
 
-        // hide progress called on switch layout
-        mActivity.dismissProgress();
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // hide progress called on switch layout
+                mActivity.dismissProgress();
+            }
+        }, 300);
     }
 
     public int getIndex() {
@@ -527,6 +534,7 @@ public class CatalogPageModel {
                 if (relativeLayout != null) {
                     hideProductsNotFound();
                     linearLayoutLb.setVisibility(View.VISIBLE);
+                    showLoadingInfo();
                 }
             }
 
@@ -543,7 +551,7 @@ public class CatalogPageModel {
             bundle.putInt(GetProductsHelper.DIRECTION, dir.id);
             bundle.putParcelable(GetProductsHelper.FILTERS, filters);
             
-            mActivity.showLoading(false);
+            // mActivity.showLoading(false);
             JumiaApplication.INSTANCE.sendRequest(new GetProductsHelper(), bundle, responseCallback);
 
         } else {
@@ -568,10 +576,11 @@ public class CatalogPageModel {
         
         productsAdapter.notifyDataSetChanged();
         
-        if (relativeLayout != null) {
+        // Loading is being hidden on getMoreProducts previously called on executeRequest()
+        /*-if (relativeLayout != null) {
             linearLayoutLb.setVisibility(View.GONE);
             hideLoadingInfo();
-        }
+        }*/
     }
 
     private OnScrollListener scrollListener = new OnScrollListener() {

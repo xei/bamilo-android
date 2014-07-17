@@ -758,11 +758,14 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
      */
     private void showErrorDialog(HashMap<String, List<String>> errors){
         Log.d(TAG, "SHOW LOGIN ERROR DIALOG");
-        List<String> errorMessages = (List<String>) errors.get(RestConstants.JSON_VALIDATE_TAG);
-
+        List<String> errorMessages = null;
+        if (errors != null) {
+            errorMessages = (List<String>) errors.get(RestConstants.JSON_VALIDATE_TAG);
+        }
         if (errors != null && errorMessages != null && errorMessages.size() > 0) {
-            
-            showFragmentContentContainer();
+            if (getBaseActivity() != null){
+                showFragmentContentContainer();
+            }
             
             dialog = DialogGenericFragment.newInstance(true, true, false,
                     getString(R.string.error_login_title),

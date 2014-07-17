@@ -507,6 +507,8 @@ public class ShoppingCartFragment extends BaseFragment {
         case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
             hideActivityProgress();
             break;
+        default:
+            break;
         }
         if (getBaseActivity().handleErrorEvent(bundle)) {
             return true;

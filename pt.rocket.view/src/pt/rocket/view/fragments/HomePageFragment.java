@@ -301,6 +301,8 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
                 rightViewBrands.addView(mTeasersFactory.getSpecificTeaser(rightViewBrands, teaser));
                 rightViewBrands.setVisibility(View.VISIBLE);
                 break;
+            default:
+                break;
             }
         }
         

@@ -123,7 +123,9 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
         super(EnumSet.noneOf(EventType.class),
                 EnumSet.noneOf(EventType.class),
                 EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
-                NavigationAction.Products, 0, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
+                NavigationAction.Products,
+                0,
+                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
         this.setRetainInstance(true);
     }
 
@@ -462,7 +464,8 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
             else
                 listPosition = 0;
 
-            // ProductDetailsFragment.updateVariantionListPosition(mCompleteProduct.getUrl(), listPosition); XXX
+            // TODO
+            // ProductDetailsFragment.updateVariantionListPosition(mCompleteProduct.getUrl(), listPosition);
         }
 
         return super.allowBackPressed();

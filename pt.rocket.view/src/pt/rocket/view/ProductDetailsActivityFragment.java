@@ -1289,7 +1289,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
                 public void run() {
                     showFragmentContentContainer();
                 }
-            }, 350);
+            }, 300);
             
             break;
         }

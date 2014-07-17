@@ -188,7 +188,7 @@ public class ChangeCountryFragment extends BaseFragment {
     @Override
     public boolean allowBackPressed() {
         if( selected == SHOP_NOT_SELECTED ){
-            ((BaseActivity) getActivity()).finish();
+            getBaseActivity().finish();
         }
         return super.allowBackPressed();
     }
