@@ -90,11 +90,14 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
      * Empty constructor
      */
     public CheckoutPaymentMethodsFragment() {
-        super(EnumSet.of(EventType.GET_PAYMENT_METHODS_EVENT), 
+        super(EnumSet.of(EventType.GET_PAYMENT_METHODS_EVENT),
                 EnumSet.noneOf(EventType.class),
                 EnumSet.noneOf(MyMenuItem.class),
-                NavigationAction.Checkout, 
-                ConstantsCheckout.CHECKOUT_PAYMENT, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
+                NavigationAction.Checkout,
+                R.layout.checkout_payment_methods,
+                false,
+                ConstantsCheckout.CHECKOUT_PAYMENT,
+                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
     }
 
     /*
@@ -127,26 +130,12 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
         
         TrackerDelegator.trackCheckoutStep(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), R.string.gcheckoutPaymentMethods, R.string.xcheckoutpaymentmethods, R.string.mixprop_checkout_payment_methods);
     }
-    
 
-    
     /*
      * (non-Javadoc)
      * 
-     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-     * android.view.ViewGroup, android.os.Bundle)
-     */
-    
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState) {
-        super.onCreateView(inflater, viewGroup, savedInstanceState);
-        Log.i(TAG, "ON CREATE VIEW");
-        return inflater.inflate(R.layout.checkout_payment_methods, viewGroup, false);
-    }
-    
-    /*
-     * (non-Javadoc)
-     * @see android.support.v4.app.Fragment#onViewCreated(android.view.View, android.os.Bundle)
+     * @see pt.rocket.view.fragments.BaseFragment#onViewCreated(android.view.View,
+     * android.os.Bundle)
      */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -268,7 +257,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
         loadSavedValues(mSavedState, formGenerator.getIterator());
         paymentMethodsContainer.refreshDrawableState();
         prepareCouponView();
-        getBaseActivity().showContentContainer();
+        showFragmentContentContainer();
     }
     
     /**
@@ -299,7 +288,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
         paymentMethodsContainer.addView(view);
         prepareCouponView();
         paymentMethodsContainer.refreshDrawableState();
-        getBaseActivity().showContentContainer();
+        showFragmentContentContainer();
     }
         
     private void prepareCouponView() {
@@ -426,7 +415,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
             couponButton.setText(getString(R.string.voucher_remove));
             voucherError.setVisibility(View.GONE);
             voucherDivider.setBackgroundColor(R.color.grey_dividerlight);
-            getBaseActivity().showContentContainer();
+            hideActivityProgress();
             noPaymentNeeded = false;
             removeVoucher = true;
             triggerGetPaymentMethods();
@@ -436,7 +425,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
             couponButton.setText(getString(R.string.voucher_use));
             voucherError.setVisibility(View.GONE);
             voucherDivider.setBackgroundColor(R.color.grey_dividerlight);
-            getBaseActivity().showContentContainer();
+            hideActivityProgress();
             triggerGetPaymentMethods();
             removeVoucher = false;
             break;
@@ -478,7 +467,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
             voucherValue.setText("");
             voucherError.setVisibility(View.VISIBLE);
             voucherDivider.setBackgroundColor(R.color.red_middle);
-            getBaseActivity().showContentContainer();
+            hideActivityProgress();
             break;
         default:
             break;
@@ -501,13 +490,13 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
     private void triggerSubmitVoucher(ContentValues values) {
         Bundle bundle = new Bundle();
         bundle.putParcelable(SetVoucherHelper.VOUCHER_PARAM, values);
-        triggerContentEvent(new SetVoucherHelper(), bundle, this);
+        triggerContentEventProgress(new SetVoucherHelper(), bundle, this);
     }
     
     private void triggerRemoveVoucher(ContentValues values) {
         Bundle bundle = new Bundle();
         bundle.putParcelable(RemoveVoucherHelper.VOUCHER_PARAM, values);
-        triggerContentEvent(new RemoveVoucherHelper(), bundle, this);
+        triggerContentEventProgress(new RemoveVoucherHelper(), bundle, this);
     }
     
     private void triggerGetPaymentMethods(){

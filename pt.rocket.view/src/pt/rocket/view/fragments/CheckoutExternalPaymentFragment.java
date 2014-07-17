@@ -45,9 +45,7 @@ import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
@@ -113,15 +111,25 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
      * Empty constructor
      */
     public CheckoutExternalPaymentFragment() {
-        super(EnumSet.of(EventType.GET_SHOPPING_CART_ITEMS_EVENT, EventType.GET_CUSTOMER),
-        EnumSet.noneOf(EventType.class),EnumSet.noneOf(MyMenuItem.class),NavigationAction.Checkout,0, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        super(EnumSet.of(EventType.GET_SHOPPING_CART_ITEMS_EVENT,
+                EventType.GET_CUSTOMER),
+                EnumSet.noneOf(EventType.class),
+                EnumSet.noneOf(MyMenuItem.class),
+                NavigationAction.Checkout,
+                R.layout.checkoutweb,
+                false,
+                0,
+                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         this.setRetainInstance(true);
     }
 
     @Override
     public boolean allowBackPressed() {
-        Log.d(TAG, "onBackPressed: webview.canGoBackup = " + webview.canGoBack()
-                + " webview.hasFocus() = " + webview.hasFocus());
+        if (webview == null) {
+            Log.d(TAG, "onBackPressed");
+        } else {
+            Log.d(TAG, "onBackPressed: webview.canGoBackup = " + webview.canGoBack() + " webview.hasFocus() = " + webview.hasFocus());
+        }
         if (webview != null && webview.canGoBack() && webview.hasFocus()) {
             webview.goBack();
             return true;
@@ -183,18 +191,15 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
     /*
      * (non-Javadoc)
      * 
-     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-     * android.view.ViewGroup, android.os.Bundle)
+     * @see pt.rocket.view.fragments.BaseFragment#onViewCreated(android.view.View,
+     * android.os.Bundle)
      */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-        Log.i(TAG, "ON CREATE VIEW");
-        View view = inflater.inflate(R.layout.checkoutweb, container, false);
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        // TODO Auto-generated method stub
+        super.onViewCreated(view, savedInstanceState);
 
         webview = (WebView) view.findViewById(R.id.webview);
-
-        return view;
     }
 
     /*
@@ -305,7 +310,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
     }
 
     private void startCheckout() {
-        ((BaseActivity) getActivity()).showLoading(true);
+        showFragmentLoading(false);
         webview.clearView();
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
             webview.loadUrl("about:blank");
@@ -483,11 +488,12 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
                 Log.d(TAG, "onPageFinished: page was saved failed page");
                 wasLoadingErrorPage = true;
             } else if (isRequestedPage) {
-                if (getActivity() != null)
-                    ((BaseActivity) getActivity()).showContentContainer();
+                if (getActivity() != null) {
+                    showFragmentContentContainer();
+                }
                 isRequestedPage = false;
             } else if (getActivity() != null) {
-                ((BaseActivity) getActivity()).showContentContainer();
+                showFragmentContentContainer();
             }
 
             if (url.contains(SUCCESS_URL_TAG)) {
@@ -536,7 +542,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
             }
 
             if (getActivity() != null)
-                ((BaseActivity) getActivity()).showLoading(true);
+                showFragmentLoading(false);
 
             if (url.contains("checkout/success")) {
                 view.getSettings().setBlockNetworkImage(true);

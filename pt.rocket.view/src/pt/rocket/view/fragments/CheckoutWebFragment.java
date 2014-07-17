@@ -40,9 +40,7 @@ import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
@@ -108,7 +106,9 @@ public class CheckoutWebFragment extends BaseFragment {
         super(EnumSet.of(EventType.GET_SHOPPING_CART_ITEMS_EVENT, EventType.GET_CUSTOMER),
                 EnumSet.noneOf(EventType.class),
                 EnumSet.noneOf(MyMenuItem.class),
-                NavigationAction.Unknown, 
+                NavigationAction.Unknown,
+                R.layout.checkoutweb,
+                false,
                 0, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         this.setRetainInstance(true);
     }
@@ -179,24 +179,22 @@ public class CheckoutWebFragment extends BaseFragment {
     /*
      * (non-Javadoc)
      * 
-     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-     * android.view.ViewGroup, android.os.Bundle)
+     * @see pt.rocket.view.fragments.BaseFragment#onViewCreated(android.view.View,
+     * android.os.Bundle)
      */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-        Log.i(TAG, "ON CREATE VIEW");
-        View view = inflater.inflate(R.layout.checkoutweb, container, false);
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Log.i(TAG, "ON VIEW CREATED");
         
         webview = (WebView) view.findViewById(R.id.webview);
-//        webview = new WebView(getActivity());
-//        mWebContainer.addView(webview);
+        // webview = new WebView(getActivity());
+        // mWebContainer.addView(webview);
         String user_id = "";
-        if(JumiaApplication.INSTANCE.CUSTOMER != null && JumiaApplication.INSTANCE.CUSTOMER.getIdAsString() != null){
+        if (JumiaApplication.INSTANCE.CUSTOMER != null && JumiaApplication.INSTANCE.CUSTOMER.getIdAsString() != null) {
             user_id = JumiaApplication.INSTANCE.CUSTOMER.getIdAsString();
         }
         AnalyticsGoogle.get().trackCheckoutStart(getBaseActivity(), user_id);
-        return view;    
     }
 
     /*
@@ -310,7 +308,7 @@ public class CheckoutWebFragment extends BaseFragment {
     }
     
     private void startCheckout() {
-        ((BaseActivity) getActivity()).showLoading(true);
+        showFragmentLoading(true);
         webview.clearView();
         if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1){
             webview.loadUrl("about:blank");
@@ -440,11 +438,12 @@ public class CheckoutWebFragment extends BaseFragment {
                 Log.d( TAG ,"onPageFinished: page was saved failed page" );
                 wasLoadingErrorPage = true;
             } else if ( isRequestedPage ) {
-                if(getActivity() != null)
-                    ((BaseActivity) getActivity()).showContentContainer();
+                if (getActivity() != null) {
+                    showFragmentContentContainer();
+                }
                 isRequestedPage = false;
             } else if (getActivity() != null) {
-                ((BaseActivity) getActivity()).showContentContainer();
+                showFragmentContentContainer();
             }
             
             if (url.contains(SUCCESS_URL_TAG)) {
@@ -484,8 +483,9 @@ public class CheckoutWebFragment extends BaseFragment {
                 return;
             }
             
-            if (getActivity() != null)
-                ((BaseActivity) getActivity()).showLoading(true);
+            if (getActivity() != null) {
+                showFragmentLoading(true);
+            }
             
             if (url.contains("checkout/success")) {
                 view.getSettings().setBlockNetworkImage(true);

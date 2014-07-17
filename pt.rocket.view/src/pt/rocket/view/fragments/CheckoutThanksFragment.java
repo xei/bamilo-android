@@ -39,11 +39,9 @@ import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.TextView.BufferType;
 import android.widget.Toast;
@@ -83,7 +81,10 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
                 EnumSet.noneOf(EventType.class),
                 EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.Checkout,
-                ConstantsCheckout.CHECKOUT_THANKS, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+                R.layout.checkout_thanks,
+                false,
+                ConstantsCheckout.CHECKOUT_THANKS,
+                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         this.setRetainInstance(true);
     }
 
@@ -107,20 +108,6 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-     * android.view.ViewGroup, android.os.Bundle)
-     */
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-        Log.i(TAG, "ON CREATE VIEW");
-        View view = inflater.inflate(R.layout.checkout_thanks, container, false);
-        return view;
     }
 
     /*
@@ -220,8 +207,6 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
         getView().findViewById(R.id.btn_checkout_continue).setOnClickListener(this);
         // Add a link to order status
         setOrderStatusLink(order_number);
-        // Show the container
-        getBaseActivity().showContentContainer();
         JumiaApplication.INSTANCE.setPaymentMethodForm(null);
         JumiaApplication.INSTANCE.setCart(null);
         getBaseActivity().updateCartInfo();

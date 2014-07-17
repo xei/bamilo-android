@@ -45,7 +45,6 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -136,14 +135,15 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
      * Empty constructor
      */
     public CheckoutAboutYouFragment() {
-        super(EnumSet.of(EventType.GET_LOGIN_FORM_EVENT, 
-                EventType.GET_SIGNUP_FORM_EVENT), 
-                EnumSet.of(EventType.LOGIN_EVENT, 
-                EventType.FACEBOOK_LOGIN_EVENT, 
-                EventType.SET_SIGNUP_EVENT),
-                EnumSet.noneOf(MyMenuItem.class), 
-                NavigationAction.Checkout, 
-                ConstantsCheckout.CHECKOUT_ABOUT_YOU, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
+        super(EnumSet.of(EventType.GET_LOGIN_FORM_EVENT,
+                EventType.GET_SIGNUP_FORM_EVENT),
+                EnumSet.of(EventType.LOGIN_EVENT, EventType.FACEBOOK_LOGIN_EVENT, EventType.SET_SIGNUP_EVENT),
+                EnumSet.noneOf(MyMenuItem.class),
+                NavigationAction.Checkout,
+                R.layout.checkout_about_you,
+                true,
+                ConstantsCheckout.CHECKOUT_ABOUT_YOU,
+                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
     }
     
     /*
@@ -179,25 +179,13 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
     /*
      * (non-Javadoc)
      * 
-     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-     * android.view.ViewGroup, android.os.Bundle)
-     */
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState) {
-        super.onCreateView(inflater, viewGroup, savedInstanceState);
-        Log.i(TAG, "ON CREATE VIEW");
-        return inflater.inflate(R.layout.checkout_about_you, viewGroup, false);
-    }
-    
-    /*
-     * (non-Javadoc)
-     * @see android.support.v4.app.Fragment#onViewCreated(android.view.View, android.os.Bundle)
+     * @see pt.rocket.view.fragments.BaseFragment#onViewCreated(android.view.View,
+     * android.os.Bundle)
      */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
-        
         // Login toggle
         loginToogle = view.findViewById(R.id.checkout_login_toogle);
         loginToogle.setOnClickListener(this);
@@ -494,7 +482,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         // Validate the FACEBOOK session state
         if (state.isOpened()) {
             Log.i(TAG, "SESSION IS OPENED");
-            getBaseActivity().showLoading(false);
+            showFragmentLoading(false);
             Request request = Request.newMeRequest(session, this);
             Request.executeBatchAsync(request);
         } else
@@ -551,7 +539,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             }
         }
         loginFormContainer.refreshDrawableState();
-        getBaseActivity().showContentContainer();
+        showFragmentContentContainer();
         Log.i(TAG, "code1 loading form completed : "+loginForm.getControlsCount());
         
 
@@ -574,7 +562,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         // Show order summary
         super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_ABOUT_YOU, mOrderSummary);
         // Show container
-        getBaseActivity().showContentContainer();
+        showFragmentContentContainer();
         return true;
     }
     
@@ -639,7 +627,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             // Facebook flag
             if(values.getAsBoolean(CustomerUtils.INTERNAL_FACEBOOK_FLAG)) {
                 Log.i(TAG, "USER HAS FACEBOOK CREDENTIALS");
-                getBaseActivity().showLoading(false);
+                showFragmentLoading(false);
                 triggerFacebookLogin(values, onAutoLogin);
                 return;
             }
@@ -651,7 +639,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         try {
             if(values.getAsBoolean(CustomerUtils.INTERNAL_SIGNUP_FLAG)){
                 Log.i(TAG, "USER HAS SIGNUP CREDENTIALS");
-                getBaseActivity().showLoading(false);
+                showFragmentLoading(false);
                 triggerSignup(values, onAutoLogin);
                 return;
             }
@@ -743,7 +731,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
      */
     private void triggerGetShoppingCart(){
         Log.i(TAG, "TRIGGER: GET CART AFTER LOGGED IN");
-        getBaseActivity().showLoading(false);
+        showFragmentLoading(false);
         triggerContentEvent(new GetShoppingCartItemsHelper(), null, this);
     }
     
@@ -938,7 +926,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
                     @SuppressWarnings("unchecked")
                     HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
                     showErrorDialog(errors, R.string.error_login_title);
-                    getBaseActivity().showContentContainer();
+                    showFragmentContentContainer();
                 }
             }
             break;
@@ -948,7 +936,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
                 @SuppressWarnings("unchecked")
                 HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY); 
                 showErrorDialog(errors, R.string.error_signup_title);
-                getBaseActivity().showContentContainer();
+                showFragmentContentContainer();
             }
             break; 
         case GET_SIGNUP_FORM_EVENT:
@@ -1010,7 +998,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
 
         if (errors != null && errorMessages != null && errorMessages.size() > 0) {
             
-            if(getBaseActivity() != null) getBaseActivity().showContentContainer();
+            if(getBaseActivity() != null) showFragmentContentContainer();
             
             dialog = DialogGenericFragment.newInstance(true, true, false,
                     getString(titleId),
@@ -1039,7 +1027,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
                 new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        getBaseActivity().showLoading(false);
+                        showFragmentLoading(false);
                         triggerLoginForm();
                         dialog.dismiss();
                     }

@@ -46,7 +46,6 @@ import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -149,11 +148,14 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
      * @author sergiopereira
      */
     public CheckoutCreateAddressFragment() {
-        super(EnumSet.of(EventType.GET_CREATE_ADDRESS_FORM_EVENT, EventType.CREATE_ADDRESS_EVENT), 
+        super(EnumSet.of(EventType.GET_CREATE_ADDRESS_FORM_EVENT, EventType.CREATE_ADDRESS_EVENT),
                 EnumSet.noneOf(EventType.class),
                 EnumSet.noneOf(MyMenuItem.class),
-                NavigationAction.Checkout, 
-                ConstantsCheckout.CHECKOUT_BILLING, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
+                NavigationAction.Checkout,
+                R.layout.checkout_create_address_main,
+                true,
+                ConstantsCheckout.CHECKOUT_BILLING,
+                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
     }
 
     /*
@@ -195,19 +197,8 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
     /*
      * (non-Javadoc)
      * 
-     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-     * android.view.ViewGroup, android.os.Bundle)
-     */
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState) {
-        super.onCreateView(inflater, viewGroup, savedInstanceState);
-        Log.i(TAG, "ON CREATE VIEW");
-        return inflater.inflate(R.layout.checkout_create_address_main, viewGroup, false);
-    }
-    
-    /*
-     * (non-Javadoc)
-     * @see android.support.v4.app.Fragment#onViewCreated(android.view.View, android.os.Bundle)
+     * @see pt.rocket.view.fragments.BaseFragment#onViewCreated(android.view.View,
+     * android.os.Bundle)
      */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -375,7 +366,7 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         loadSavedValues(mBillingSavedValues, billingFormGenerator);
         
         // Show
-        getBaseActivity().showContentContainer();
+        showFragmentContentContainer();
     }
     
     /**
@@ -937,7 +928,7 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
                 @SuppressWarnings("unchecked")
                 HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY); 
                 showErrorDialog(errors);
-                getBaseActivity().showContentContainer();
+                showFragmentContentContainer();
             } else {
                 Log.w(TAG, "RECEIVED CREATE_ADDRESS_EVENT: " + errorCode.name());
                 super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED CREATE_ADDRESS_EVENT" + errorCode.name());
@@ -984,9 +975,11 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         List<String> errorMessages = (List<String>) errors.get(RestConstants.JSON_VALIDATE_TAG);
 
         if (errors != null && errorMessages != null && errorMessages.size() > 0) {
-            
-            if(getBaseActivity() != null) getBaseActivity().showContentContainer();
-            
+
+            if (getBaseActivity() != null) {
+                showFragmentContentContainer();
+            }
+
             dialog = DialogGenericFragment.newInstance(true, true, false,
                     getString(R.string.error_login_title),
                     errorMessages.get(0),

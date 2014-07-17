@@ -42,7 +42,6 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
@@ -102,11 +101,14 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
      * Empty constructor
      */
     public CheckoutMyAddressesFragment() {
-        super(EnumSet.of(EventType.GET_BILLING_FORM_EVENT), 
+        super(EnumSet.of(EventType.GET_BILLING_FORM_EVENT),
                 EnumSet.noneOf(EventType.class),
                 EnumSet.noneOf(MyMenuItem.class),
-                NavigationAction.Checkout, 
-                ConstantsCheckout.CHECKOUT_BILLING, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
+                NavigationAction.Checkout,
+                R.layout.checkout_my_addresses,
+                false,
+                ConstantsCheckout.CHECKOUT_BILLING,
+                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
     }
 
     /*
@@ -136,19 +138,8 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
     /*
      * (non-Javadoc)
      * 
-     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-     * android.view.ViewGroup, android.os.Bundle)
-     */
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState) {
-        super.onCreateView(inflater, viewGroup, savedInstanceState);
-        Log.i(TAG, "ON CREATE VIEW");
-        return inflater.inflate(R.layout.checkout_my_addresses, viewGroup, false);
-    }
-    
-    /*
-     * (non-Javadoc)
-     * @see android.support.v4.app.Fragment#onViewCreated(android.view.View, android.os.Bundle)
+     * @see pt.rocket.view.fragments.BaseFragment#onViewCreated(android.view.View,
+     * android.os.Bundle)
      */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -283,7 +274,7 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
     private void onClickCheckBox(final CheckBox view){
         Log.d(TAG, "SAME ADDRESS: " + view.isChecked());
         // Show loading
-        getBaseActivity().showLoading(false);
+        showFragmentLoading(false);
         // Validate the current selection
         validateCurrentShippingSelection();
         // Clean containers
@@ -497,7 +488,7 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
             addAddresses(mBottomRadioGroup, addresses.getAddresses());
         }
         // Show content
-        getBaseActivity().showContentContainer();
+        showFragmentContentContainer();
     }
     
     /**
@@ -663,7 +654,7 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
             break;
         case SET_BILLING_ADDRESS_EVENT:
             Log.d(TAG, "RECEIVED SET_BILLING_ADDRESS_EVENT");
-            getBaseActivity().showContentContainer();
+            showFragmentContentContainer();
             if (errorCode == ErrorCode.REQUEST_ERROR) {
                 @SuppressWarnings("unchecked")
                 HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY); 
@@ -729,7 +720,9 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
 
         if (errors != null && errorMessages != null && errorMessages.size() > 0) {
             
-            if(getBaseActivity() != null) getBaseActivity().showContentContainer();
+            if (getBaseActivity() != null) {
+                showFragmentContentContainer();
+            }
             
             dialog = DialogGenericFragment.newInstance(true, true, false,
                     getString(titleId),

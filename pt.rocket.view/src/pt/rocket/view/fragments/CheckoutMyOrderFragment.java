@@ -119,7 +119,10 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
                 EnumSet.noneOf(EventType.class),
                 EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.Checkout,
-                ConstantsCheckout.CHECKOUT_ORDER, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+                R.layout.checkout_my_order_main,
+                false,
+                ConstantsCheckout.CHECKOUT_ORDER, 
+                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
 
     /*
@@ -149,20 +152,8 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
     /*
      * (non-Javadoc)
      * 
-     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-     * android.view.ViewGroup, android.os.Bundle)
-     */
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState) {
-        super.onCreateView(inflater, viewGroup, savedInstanceState);
-        Log.i(TAG, "ON CREATE VIEW");
-        return inflater.inflate(R.layout.checkout_my_order_main, viewGroup, false);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onViewCreated(android.view.View, android.os.Bundle)
+     * @see pt.rocket.view.fragments.BaseFragment#onViewCreated(android.view.View,
+     * android.os.Bundle)
      */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -296,7 +287,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
         payMethod = mOrderFinish.getPaymentMethod();
         if(payMethod != null) showPaymentOptions();
         // Show container
-        getBaseActivity().showContentContainer();
+        showFragmentContentContainer();
     }
     
     /**
@@ -632,7 +623,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
                 @SuppressWarnings("unchecked")
                 HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY); 
                 showErrorDialog(errors);
-                getBaseActivity().showContentContainer();
+                showFragmentContentContainer();
             } else {
                 Log.w(TAG, "RECEIVED CHECKOUT_FINISH_EVENT: " + errorCode.name());
                 super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED CHECKOUT_FINISH_EVENT: " + errorCode.name());
@@ -679,7 +670,9 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
 
         if (errors != null && errorMessages != null && errorMessages.size() > 0) {
             
-            if(getBaseActivity() != null) getBaseActivity().showContentContainer();
+            if (getBaseActivity() != null) {
+                showFragmentContentContainer();
+            }
             
             dialog = DialogGenericFragment.newInstance(true, true, false,
                     getString(R.string.error_login_title),

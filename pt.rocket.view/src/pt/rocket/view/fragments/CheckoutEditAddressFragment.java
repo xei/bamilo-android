@@ -40,7 +40,6 @@ import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -97,11 +96,14 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
      * Empty constructor
      */
     public CheckoutEditAddressFragment() {
-        super(EnumSet.of(EventType.GET_EDIT_ADDRESS_FORM_EVENT, EventType.EDIT_ADDRESS_EVENT), 
+        super(EnumSet.of(EventType.GET_EDIT_ADDRESS_FORM_EVENT, EventType.EDIT_ADDRESS_EVENT),
                 EnumSet.noneOf(EventType.class),
                 EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.Checkout,
-                ConstantsCheckout.CHECKOUT_BILLING, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
+                R.layout.checkout_edit_address_main,
+                false,
+                ConstantsCheckout.CHECKOUT_BILLING,
+                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
     }
 
     /*
@@ -131,19 +133,8 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
     /*
      * (non-Javadoc)
      * 
-     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-     * android.view.ViewGroup, android.os.Bundle)
-     */
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState) {
-        super.onCreateView(inflater, viewGroup, savedInstanceState);
-        Log.i(TAG, "ON CREATE VIEW");
-        return inflater.inflate(R.layout.checkout_edit_address_main, viewGroup, false);
-    }
-    
-    /*
-     * (non-Javadoc)
-     * @see android.support.v4.app.Fragment#onViewCreated(android.view.View, android.os.Bundle)
+     * @see pt.rocket.view.fragments.BaseFragment#onViewCreated(android.view.View,
+     * android.os.Bundle)
      */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -293,7 +284,7 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
         // Show
         super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_BILLING, orderSummary);
         // Show
-        getBaseActivity().showContentContainer();
+        showFragmentContentContainer();
         
         mEditFormContainer.refreshDrawableState();
     }
@@ -712,7 +703,7 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
                 @SuppressWarnings("unchecked")
                 HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY); 
                 showErrorDialog(errors);
-                getBaseActivity().showContentContainer();
+                showFragmentContentContainer();
             } else {
                 Log.w(TAG, "RECEIVED GET_CITIES_EVENT: " + errorCode.name());
                 super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_CITIES_EVENT: " + errorCode.name());
@@ -761,7 +752,9 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
 
         if (errors != null && errorMessages != null && errorMessages.size() > 0) {
             
-            if(getBaseActivity() != null) getBaseActivity().showContentContainer();
+            if (getBaseActivity() != null){
+                showFragmentContentContainer();
+            }
             
             dialog = DialogGenericFragment.newInstance(true, true, false,
                     getString(R.string.error_login_title),

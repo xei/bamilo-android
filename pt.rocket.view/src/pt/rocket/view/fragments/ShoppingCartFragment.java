@@ -179,11 +179,13 @@ public class ShoppingCartFragment extends BaseFragment {
      */
     public ShoppingCartFragment() {
         super(EnumSet.of(EventType.GET_SHOPPING_CART_ITEMS_EVENT),
-                EnumSet.of(EventType.REMOVE_ITEM_FROM_SHOPPING_CART_EVENT,
-                        EventType.CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT), 
+                EnumSet.of(EventType.REMOVE_ITEM_FROM_SHOPPING_CART_EVENT, EventType.CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT),
                 EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.Basket,
-                R.string.shoppingcart_title, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
+                R.layout.shopping_basket,
+                false,
+                R.string.shoppingcart_title,
+                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
         this.setRetainInstance(true);
     }
 
@@ -207,20 +209,6 @@ public class ShoppingCartFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-     * android.view.ViewGroup, android.os.Bundle)
-     */
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-        Log.i(TAG, "ON CREATE VIEW");
-        View view = inflater.inflate(R.layout.shopping_basket, container, false);
-        return view;
     }
 
     /*
@@ -260,8 +248,6 @@ public class ShoppingCartFragment extends BaseFragment {
      * @author sergiopereira
      */
     private void triggerGetShoppingCart() {
-        // Show loading
-        getBaseActivity().showLoading(false);
         // Check if FavouritesFragment is complete
         if(!FavouritesFragment.isOnAddingAllItemsToCart)
             // Get items
@@ -308,13 +294,13 @@ public class ShoppingCartFragment extends BaseFragment {
     private void triggerSubmitVoucher(ContentValues values) {
         Bundle bundle = new Bundle();
         bundle.putParcelable(SetVoucherHelper.VOUCHER_PARAM, values);
-        triggerContentEvent(new SetVoucherHelper(), bundle, responseCallback);
+        triggerContentEventProgress(new SetVoucherHelper(), bundle, responseCallback);
     }
 
     private void triggerRemoveVoucher(ContentValues values) {
         Bundle bundle = new Bundle();
         bundle.putParcelable(RemoveVoucherHelper.VOUCHER_PARAM, values);
-        triggerContentEvent(new RemoveVoucherHelper(), bundle, responseCallback);
+        triggerContentEventProgress(new RemoveVoucherHelper(), bundle, responseCallback);
     }
 
     /*
@@ -430,7 +416,7 @@ public class ShoppingCartFragment extends BaseFragment {
             couponButton.setText(getString(R.string.voucher_remove));
             voucherError.setVisibility(View.GONE);
 //            voucherDivider.setBackgroundColor(R.color.grey_dividerlight);
-            getBaseActivity().showContentContainer();
+            hideActivityProgress();
             //noPaymentNeeded = false;
             removeVoucher = true;
             triggerGetShoppingCart();
@@ -440,7 +426,7 @@ public class ShoppingCartFragment extends BaseFragment {
             couponButton.setText(getString(R.string.voucher_use));
             voucherError.setVisibility(View.GONE);
 //            voucherDivider.setBackgroundColor(R.color.grey_dividerlight);
-            getBaseActivity().showContentContainer();
+            hideActivityProgress();
             triggerGetShoppingCart();
             removeVoucher = false;
             return true;
@@ -457,7 +443,13 @@ public class ShoppingCartFragment extends BaseFragment {
         case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
             Log.i(TAG, "code1removing and tracking"+itemRemoved_price);
             TrackerDelegator.trackProductRemoveFromCart(getActivity().getApplicationContext(), itemRemoved_sku, itemRemoved_price);
-            getBaseActivity().showContentContainer();
+            showFragmentContentContainer();
+            AnalyticsGoogle.get().trackLoadTiming(R.string.gshoppingcart, mBeginRequestMillis);
+            displayShoppingCart((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY));
+            return true;
+        case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
+            hideActivityProgress();
+            showFragmentContentContainer();
             AnalyticsGoogle.get().trackLoadTiming(R.string.gshoppingcart, mBeginRequestMillis);
             displayShoppingCart((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY));
             return true;
@@ -469,9 +461,12 @@ public class ShoppingCartFragment extends BaseFragment {
                         ((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY))
                                 .getCartItems().values().size());
             }
-        
+            showFragmentContentContainer();
+            AnalyticsGoogle.get().trackLoadTiming(R.string.gshoppingcart, mBeginRequestMillis);
+            displayShoppingCart((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY));
+            return true;
         default:
-            getBaseActivity().showContentContainer();
+            showFragmentContentContainer();
             AnalyticsGoogle.get().trackLoadTiming(R.string.gshoppingcart, mBeginRequestMillis);
             displayShoppingCart((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY));
         }
@@ -492,8 +487,10 @@ public class ShoppingCartFragment extends BaseFragment {
             voucherValue.setText("");
             voucherError.setVisibility(View.VISIBLE);
 //            voucherDivider.setBackgroundColor(R.color.red_middle);
-            getBaseActivity().showContentContainer();
+            hideActivityProgress();
             break;
+        case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
+            hideActivityProgress();
         }
         if (getBaseActivity().handleErrorEvent(bundle)) {
             return true;

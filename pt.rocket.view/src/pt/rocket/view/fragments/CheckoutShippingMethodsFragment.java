@@ -26,7 +26,6 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -70,11 +69,14 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
      * Empty constructor
      */
     public CheckoutShippingMethodsFragment() {
-        super(EnumSet.of(EventType.GET_SHIPPING_METHODS_EVENT), 
+        super(EnumSet.of(EventType.GET_SHIPPING_METHODS_EVENT),
                 EnumSet.noneOf(EventType.class),
                 EnumSet.noneOf(MyMenuItem.class),
-                NavigationAction.Checkout, 
-                ConstantsCheckout.CHECKOUT_SHIPPING, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+                NavigationAction.Checkout,
+                R.layout.checkout_shipping_methods,
+                false,
+                ConstantsCheckout.CHECKOUT_SHIPPING,
+                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
 
     /*
@@ -111,19 +113,8 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
     /*
      * (non-Javadoc)
      * 
-     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-     * android.view.ViewGroup, android.os.Bundle)
-     */
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState) {
-        super.onCreateView(inflater, viewGroup, savedInstanceState);
-        Log.i(TAG, "ON CREATE VIEW");
-        return inflater.inflate(R.layout.checkout_shipping_methods, viewGroup, false);
-    }
-    
-    /*
-     * (non-Javadoc)
-     * @see android.support.v4.app.Fragment#onViewCreated(android.view.View, android.os.Bundle)
+     * @see pt.rocket.view.fragments.BaseFragment#onViewCreated(android.view.View,
+     * android.os.Bundle)
      */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -240,7 +231,7 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
         nFormContainer = mFormResponse.generateForm(getBaseActivity());
         mShippingMethodsContainer.addView(nFormContainer);
         mShippingMethodsContainer.refreshDrawableState();
-        getBaseActivity().showContentContainer();
+        showFragmentContentContainer();
         // Set the saved selection
         if(mSelectionSaved != -1)
             mFormResponse.setSelections(0, mSelectionSaved, mSubSelectionSaved);

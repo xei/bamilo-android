@@ -111,6 +111,7 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
      */
     public CheckoutSummaryFragment() {
         super(IS_NESTED_FRAGMENT);
+        setLayoutId(R.layout.checkout_summary_main, false);
     }
 
     /*
@@ -138,20 +139,8 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
     /*
      * (non-Javadoc)
      * 
-     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-     * android.view.ViewGroup, android.os.Bundle)
-     */
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState) {
-        super.onCreateView(inflater, viewGroup, savedInstanceState);
-        Log.i(TAG, "ON CREATE VIEW");
-        return inflater.inflate(R.layout.checkout_summary_main, viewGroup, false);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onViewCreated(android.view.View, android.os.Bundle)
+     * @see pt.rocket.view.fragments.BaseFragment#onViewCreated(android.view.View,
+     * android.os.Bundle)
      */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -597,14 +586,15 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
             Log.d(TAG, "RECEIVED GET_SHOPPING_CART_ITEMS_EVENT");
             mCart = (ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             showOrderSummary();
-            getBaseActivity().showContentContainer();
+            showFragmentContentContainer();
             break;
         case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
             Log.d(TAG, "RECEIVED REMOVE_ITEM_FROM_SHOPPING_CART_EVENT");
             mCart = (ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             showOrderSummary();
             getBaseActivity().updateNavigationMenu();
-            getBaseActivity().showContentContainer();
+            hideActivityProgress();
+            showFragmentContentContainer();
             break;
         default:
             Log.d(TAG, "RECEIVED UNKNOWN EVENT");
@@ -643,6 +633,7 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
             Log.d(TAG, "RECEIVED GET_SHOPPING_CART_ITEMS_EVENT");
             break;
         case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
+            hideActivityProgress();
             Log.d(TAG, "RECEIVED REMOVE_ITEM_FROM_SHOPPING_CART_EVENT");
             break;
         default:
