@@ -121,9 +121,7 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-        sharedPrefs = getBaseActivity().getSharedPreferences(
-                ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        
+        sharedPrefs = getBaseActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
     }
 
     /*
@@ -245,7 +243,7 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
     private void createList() {
         if(categories == null){
 //            Log.i(TAG, "code1 creating list "+JumiaApplication.INSTANCE.currentCategories.size());
-            categories = JumiaApplication.INSTANCE.currentCategories;
+            categories = JumiaApplication.currentCategories;
         }
         
         if(categories == null)
@@ -263,6 +261,8 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
         case CATEGORIES_LEVEL_3:
             Log.d(TAG, "CATEGORIES LEVEL 3");
             categoryLevel3();
+            break;
+        default:
             break;
         }
     }

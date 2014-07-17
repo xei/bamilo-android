@@ -155,11 +155,14 @@ public class CategoriesContainerFragment extends BaseFragment {
      * Empty constructor
      */
     public CategoriesContainerFragment() {
-        super(EnumSet.of(EventType.GET_CATEGORIES_EVENT), 
+        super(EnumSet.of(EventType.GET_CATEGORIES_EVENT),
                 EnumSet.noneOf(EventType.class),
-                EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE), 
-                NavigationAction.Categories, 
-                0, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+                EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
+                NavigationAction.Categories,
+                R.layout.categories_fragments,
+                true,
+                0,
+                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
 
     /*
@@ -184,24 +187,7 @@ public class CategoriesContainerFragment extends BaseFragment {
         Log.i(TAG, "ON CREATE");
         // Retain this fragment across configuration changes.
         setRetainInstance(true);
-        sharedPrefs = getBaseActivity().getSharedPreferences(
-                ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-     * android.view.ViewGroup, android.os.Bundle)
-     */
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-        Log.i(TAG, "ON CREATE VIEW");
-        View view;
-        view = inflater.inflate(R.layout.categories_fragments, container, false);
-        
-        return view;
+        sharedPrefs = getBaseActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
     }
 
     /*
@@ -226,7 +212,7 @@ public class CategoriesContainerFragment extends BaseFragment {
         Log.i(TAG, "ON RESUME");
         if(JumiaApplication.INSTANCE.currentCategories != null && getView() != null){
 //            Log.i(TAG, "ON currentCategories != null");
-            if(((BaseActivity) getActivity()).isTabletInLandscape(getBaseActivity())){
+            if (BaseActivity.isTabletInLandscape(getBaseActivity())) {
 //                Log.i(TAG, "ON createFragmentsForLandscape != null");
                 createFragmentsForLandscape();
             } else { 
@@ -246,7 +232,7 @@ public class CategoriesContainerFragment extends BaseFragment {
             
         } else {
 //            Log.i(TAG, "ON tonBackPressed");
-            ((BaseActivity) getActivity()).onBackPressed();
+            getBaseActivity().onBackPressed();
         }
             
     }
@@ -322,7 +308,7 @@ public class CategoriesContainerFragment extends BaseFragment {
         if(getActivity() == null){
             return false;
         }
-        if(!((BaseActivity) getActivity()).isTabletInLandscape(getBaseActivity())){
+        if (!BaseActivity.isTabletInLandscape(getBaseActivity())) {
             if(currentFragment == FragmentType.CATEGORIES_LEVEL_3){
                 currentFragment = FragmentType.CATEGORIES_LEVEL_2;
                 childCurrentFragment = FragmentType.UNKNOWN;
@@ -379,7 +365,7 @@ public class CategoriesContainerFragment extends BaseFragment {
         
         if(JumiaApplication.currentCategories != null && getView() != null){
 //            Log.d(TAG, "code1 received categories size = " + JumiaApplication.INSTANCE.currentCategories.size());
-            if(getBaseActivity().isTabletInLandscape(getBaseActivity())){
+            if (BaseActivity.isTabletInLandscape(getBaseActivity())) {
 //                Log.d(TAG, "code1 going to create fragment createFragmentsForLandscape");
                 createFragmentsForLandscape();
             } else {
@@ -436,7 +422,7 @@ public class CategoriesContainerFragment extends BaseFragment {
         ft.commit();
         FragmentCommunicator.getInstance().startFragmentsCallBacks(this, mCategoriesFragment);
         
-        getBaseActivity().showContentContainer();
+        showFragmentContentContainer();
         saveState();
     }
     
@@ -500,7 +486,7 @@ public class CategoriesContainerFragment extends BaseFragment {
         
         FragmentCommunicator.getInstance().startFragmentsCallBacks(this, mCategoriesFragment, mChildCategoriesFragment);
         
-        getBaseActivity().showContentContainer();
+        showFragmentContentContainer();
         saveState();
     }
     
@@ -576,7 +562,7 @@ public class CategoriesContainerFragment extends BaseFragment {
         fm = null;
         ft = null;
         
-        BaseActivity activity = (BaseActivity) getActivity();
+        BaseActivity activity = getBaseActivity();
         if ( null == activity ) {
             activity = mainActivity;
         }
@@ -683,7 +669,7 @@ public class CategoriesContainerFragment extends BaseFragment {
         
 //        Log.i(TAG, "CATEGORY_LEVEL : "+(FragmentType) bundle.getSerializable(ConstantsIntentExtra.CATEGORY_LEVEL));
 //        Log.i(TAG, "SELECTED_SUB_CATEGORY_INDEX : "+bundle.getInt(ConstantsIntentExtra.SELECTED_SUB_CATEGORY_INDEX));
-        if(!((BaseActivity) getActivity()).isTabletInLandscape(getBaseActivity())){
+        if (!BaseActivity.isTabletInLandscape(getBaseActivity())) {
             updateFragment(bundle);
         } else if(bundle.containsKey(UPDATE_CHILD)){
             updateChild(bundle);
