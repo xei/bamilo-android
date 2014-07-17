@@ -16,7 +16,6 @@ import pt.rocket.framework.objects.ShoppingCart;
 import pt.rocket.framework.utils.CurrencyFormatter;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.NavigationAction;
-import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.os.Bundle;
@@ -78,6 +77,7 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
      */
     public NavigationFragment() {
         super(IS_NESTED_FRAGMENT);
+        setLayoutId(R.layout.navigation_fragment_main, false);
     }
 
     /*
@@ -100,6 +100,8 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
+        // Get inflater
+        mInflater = LayoutInflater.from(getBaseActivity());
         // Get the pre selected tab
         mSavedStateType = savedInstanceState != null ? (FragmentType) savedInstanceState.getSerializable(TAG) : null;
     }
@@ -107,20 +109,8 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
     /*
      * (non-Javadoc)
      * 
-     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-     * android.view.ViewGroup, android.os.Bundle)
-     */
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState) {
-        super.onCreateView(inflater, viewGroup, savedInstanceState);
-        Log.i(TAG, "ON CREATE VIEW");
-        mInflater = inflater;
-        return inflater.inflate(R.layout.navigation_fragment_main, viewGroup, false);
-    }
-    
-    /*
-     * (non-Javadoc)
-     * @see android.support.v4.app.Fragment#onViewCreated(android.view.View, android.os.Bundle)
+     * @see pt.rocket.view.fragments.BaseFragment#onViewCreated(android.view.View,
+     * android.os.Bundle)
      */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -375,6 +365,7 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
         tVSearch.setText(text.toUpperCase());
         tVSearch.setContentDescription("calabash_" + text);
         navComponent.setOnClickListener(null);
+        navComponent.setTag(R.id.nav_action, NavigationAction.Categories);
         return navComponent;
     }
 

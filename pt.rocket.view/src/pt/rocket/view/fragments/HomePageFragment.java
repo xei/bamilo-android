@@ -14,7 +14,6 @@ import pt.rocket.framework.objects.TeaserSpecification;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.framework.utils.WindowHelper;
 import pt.rocket.utils.ScrollViewWithHorizontal;
-import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.os.Bundle;
@@ -440,7 +439,7 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
         Log.i(TAG, "ON CLICK CATEGORY");
         bundle.putString(ConstantsIntentExtra.CATEGORY_URL, targetUrl);
         bundle.putSerializable(ConstantsIntentExtra.CATEGORY_LEVEL, FragmentType.CATEGORIES_LEVEL_1);
-        ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.CATEGORIES_LEVEL_1, bundle, FragmentController.ADD_TO_BACK_STACK);
+        getBaseActivity().onSwitchFragment(FragmentType.CATEGORIES_LEVEL_1, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
     
     /**
@@ -457,7 +456,7 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
             bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, null);
             bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaser_prefix);
             bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, targetUrl);
-            ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.PRODUCT_LIST, bundle, true);
+            getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_LIST, bundle, true);
         } else Log.w(TAG, "WARNING: URL IS NULL"); 
     }
     
@@ -474,7 +473,7 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
             bundle.putString(ConstantsIntentExtra.CONTENT_URL, targetUrl);
             bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaserprod_prefix);
             bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
-            ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
+            getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else Log.i(TAG, "WARNING: URL IS NULL");
     }
     
@@ -491,7 +490,7 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
             bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, targetUrl);
             bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gsearch);
             bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
-            ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.PRODUCT_LIST, bundle, FragmentController.ADD_TO_BACK_STACK);                            
+            getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_LIST, bundle, FragmentController.ADD_TO_BACK_STACK);                            
         } else Log.i(TAG, "WARNING: URL IS NULL");
     }
     
@@ -514,7 +513,7 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
             Log.d(TAG, "ON CLICK CAMPAIGN: " + targetTitle + " " + targetUrl + " " + targetPosition);
             bundle.putParcelableArrayList(CampaignsFragment.CAMPAIGNS_TAG, JumiaApplication.getSavedTeaserCampaigns());
             bundle.putInt(CampaignsFragment.CAMPAIGN_POSITION_TAG, Integer.valueOf(targetPosition));
-            ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.CAMPAIGNS, bundle, FragmentController.ADD_TO_BACK_STACK);
+            getBaseActivity().onSwitchFragment(FragmentType.CAMPAIGNS, bundle, FragmentController.ADD_TO_BACK_STACK);
         }
     }
     

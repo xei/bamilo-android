@@ -80,7 +80,7 @@
 
         <View
             style="@style/divider_horizontal"
-            android:layout_alignStart="@id/products_buttons_container"
+            android:layout_width="@dimen/catalog_button_filter_width"
             android:layout_below="@id/products_buttons_container"
             android:background="@color/grey_middlelight" />
 

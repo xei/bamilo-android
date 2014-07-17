@@ -136,7 +136,9 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
     
     /*
      * (non-Javadoc)
-     * @see pt.rocket.view.fragments.BaseFragment#onViewCreated(android.view.View, android.os.Bundle)
+     * 
+     * @see pt.rocket.view.fragments.BaseFragment#onViewCreated(android.view.View,
+     * android.os.Bundle)
      */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -478,7 +480,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
      */
     private void showProductList(Category category) {
         Bundle bundle2 = new Bundle();
-        bundle2.putBoolean(CategoriesContainerFragment.REMOVE_FRAGMENTS, true);
+        //bundle2.putBoolean(CategoriesContainerFragment.REMOVE_FRAGMENTS, true);
         bundle2.putString(ConstantsIntentExtra.CONTENT_URL, category.getApiUrl());
         bundle2.putString(ConstantsIntentExtra.CONTENT_TITLE, category.getName());
         bundle2.putString(ConstantsIntentExtra.SEARCH_QUERY, null);

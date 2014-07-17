@@ -36,7 +36,6 @@ import pt.rocket.view.fragments.Catalog;
 import android.content.ContentValues;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -119,15 +118,11 @@ public class CatalogPageModel {
     // Flag used to stop the loading more when an error occurs
     private boolean receivedError = false;
 
-    private CharSequence totalItemsLable = "";
-    
-    private Fragment mFragment;
+    private Catalog mFragment;
     
     private int mSwitchMD5;
-
-    private TipsPagerAdapter mTipsPagerAdapter;
-
-    public CatalogPageModel(int index, BaseActivity activity, Fragment mFragment) {
+    
+    public CatalogPageModel(int index, BaseActivity activity, Catalog mFragment) {
         this.index = index;
         this.mActivity = activity;
         setIndex(index);
@@ -276,6 +271,9 @@ public class CatalogPageModel {
 
         showCatalogContent();
         isLoadingMore = false;
+
+        // hide progress called on switch layout
+        mActivity.dismissProgress();
     }
 
     public int getIndex() {
@@ -393,10 +391,12 @@ public class CatalogPageModel {
 
                     Log.i("TAG", "DIR=======>" + dir + " sort =====> " + sort);
                     JumiaApplication.INSTANCE.showRelatedItemsGlobal = true;
+                    Product product = (Product) productsAdapter.getItem(activePosition);
                     Bundle bundle = new Bundle();
-                    bundle.putString(ConstantsIntentExtra.CONTENT_URL, ((Product) productsAdapter.getItem(activePosition)).getUrl());
+                    bundle.putString(ConstantsIntentExtra.CONTENT_URL, product.getUrl());
                     bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, navigationSource);
                     bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, navigationPath);
+                    bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, product.getBrand() + " " + product.getName());
                     if (title != null)
                         bundle.putString(ProductDetailsActivityFragment.PRODUCT_CATEGORY, title);
                     mActivity.onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle,FragmentController.ADD_TO_BACK_STACK);
@@ -542,6 +542,8 @@ public class CatalogPageModel {
             bundle.putInt(GetProductsHelper.SORT, sort.id);
             bundle.putInt(GetProductsHelper.DIRECTION, dir.id);
             bundle.putParcelable(GetProductsHelper.FILTERS, filters);
+            
+            mActivity.showLoading(false);
             JumiaApplication.INSTANCE.sendRequest(new GetProductsHelper(), bundle, responseCallback);
 
         } else {
@@ -568,6 +570,7 @@ public class CatalogPageModel {
         
         if (relativeLayout != null) {
             linearLayoutLb.setVisibility(View.GONE);
+            hideLoadingInfo();
         }
     }
 
@@ -616,6 +619,7 @@ public class CatalogPageModel {
         linearLayoutLm.refreshDrawableState();
         if (relativeLayout != null) {
             linearLayoutLb.setVisibility(View.GONE);
+            hideLoadingInfo();
         }
     }
 
@@ -744,7 +748,8 @@ public class CatalogPageModel {
             }
         });
         if (relativeLayout != null) {
-            relativeLayout.findViewById(R.id.loading_view_pager).setVisibility(View.GONE);
+            linearLayoutLb.setVisibility(View.GONE);
+            hideLoadingInfo();
         }
     }
 
@@ -771,7 +776,7 @@ public class CatalogPageModel {
             // Show respective error layout
             if (!TextUtils.isEmpty(searchQuery) & !hasFilter) {
                 // For search query
-                ((Catalog) mFragment).onErrorSearchResult(featuredBox);
+                mFragment.onErrorSearchResult(featuredBox);
             } else {
                 // For category and filter
                 showProductsNotfound();
@@ -800,7 +805,7 @@ public class CatalogPageModel {
         if(filters != null && mFragment != null) {
             Log.d(TAG, "FILTERS: ON ERROR EVENT");
             // Sent to Parent that was received an error on load catalog
-            ((Catalog) mFragment).onErrorLoadingFilteredCatalog();
+            mFragment.onErrorLoadingFilteredCatalog();
             return true;
         } else {
             Log.d(TAG, "FILTERS IS NULL");
@@ -812,11 +817,10 @@ public class CatalogPageModel {
     public void setTotalItemLable() {
         TextView totalItems = (TextView) mActivity.findViewById(R.id.totalProducts);
         if (getTotalProducts() > 0) {
-            totalItems.setText(" (" + String.valueOf(getTotalProducts()) + " "
-                    + mActivity.getString(R.string.shoppingcart_items) + ")");
+            StringBuilder total = new StringBuilder(" (").append(getTotalProducts()).append(" ")
+                    .append(mActivity.getString(R.string.shoppingcart_items)).append(")");
+            totalItems.setText(total.toString());
             totalItems.setVisibility(View.VISIBLE);
-            // totalItemsLable = " ("+String.valueOf(getTotalProducts())+" "+((BaseActivity)
-            // mActivity).getString(R.string.shoppingcart_items)+")";
         }
     }
     
@@ -839,6 +843,10 @@ public class CatalogPageModel {
         // Get Products Event
         ProductsPage productsPage = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
 
+        // Get Location
+        String location = bundle.getString(IMetaData.LOCATION);
+        Log.d(TAG, "Location = " + location);
+
         // Validate title
         if (TextUtils.isEmpty(title)) {
             title = productsPage.getName();
@@ -849,9 +857,9 @@ public class CatalogPageModel {
             Log.d(TAG, "onSuccessEvent: products on page = " + productsPage.getProducts().size() + " total products = " + productsPage.getTotalProducts());
 
             // TODO: Improve this behavior 
-            if(this.index == 1 && pageNumber == 1){
+            if (index == 1 && pageNumber == 1) {
                 RelatedItemsTableHelper.insertRelatedItemsAndClear(mActivity, productsPage.getProducts());
-            } else if (this.index == 1 && pageNumber == 2){
+            } else if (index == 1 && pageNumber == 2) {
                 RelatedItemsTableHelper.insertRelatedItems(mActivity, productsPage.getProducts());
             }
             
@@ -863,11 +871,8 @@ public class CatalogPageModel {
                 else
                     mActivity.setTitle(title);
             }
-            // setTotalItemLable();
         }
 
-        String location = bundle.getString(IMetaData.LOCATION);
-        Log.d(TAG, "Location = " + location);
         if (location != null) {
             checkRedirectFromSearch(location);
         }
@@ -923,8 +928,9 @@ public class CatalogPageModel {
         }
 
         // Updated filter
-        if(mFragment.isVisible())
-            ((Catalog) mFragment).onSuccesLoadingFilteredCatalog(productsPage.getFilters());
+        if (mFragment.isVisible()) {
+            mFragment.onSuccesLoadingFilteredCatalog(productsPage.getFilters());
+        }
         
         mActivity.showContentContainer();
 
@@ -943,5 +949,23 @@ public class CatalogPageModel {
      */
     public void setLandScape(boolean isLandScape) {
         this.isLandScape = isLandScape;
+    }
+    
+    private final void showLoadingInfo() {
+        Log.d(TAG, "Showing loading info");
+        if (loadingBarView != null) {
+            loadingBarView.startRendering();
+        }
+    }
+
+    /**
+     * Hides the loading screen that appears on the front of the activity while it waits for the
+     * data to arrive from the server
+     */
+    private void hideLoadingInfo() {
+        Log.d(TAG, "Hiding loading info");
+        if (loadingBarView != null) {
+            loadingBarView.stopRendering();
+        }
     }
 }
