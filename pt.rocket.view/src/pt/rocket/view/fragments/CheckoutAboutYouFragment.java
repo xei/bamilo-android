@@ -141,7 +141,6 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
                 EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.Checkout,
                 R.layout.checkout_about_you,
-                true,
                 ConstantsCheckout.CHECKOUT_ABOUT_YOU,
                 WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
     }
@@ -176,11 +175,22 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         TrackerDelegator.trackCheckoutStep(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), R.string.gcheckoutAboutYou, R.string.xcheckoutaboutyou, R.string.mixprop_checkout_about_you);
     }
     
+//    /*
+//     * (non-Javadoc)
+//     * 
+//     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
+//     * android.view.ViewGroup, android.os.Bundle)
+//     */
+//    @Override
+//    public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState) {
+//        super.onCreateView(inflater, viewGroup, savedInstanceState);
+//        Log.i(TAG, "ON CREATE VIEW");
+//        return inflater.inflate(R.layout.checkout_about_you, viewGroup, false);
+//    }
+    
     /*
      * (non-Javadoc)
-     * 
-     * @see pt.rocket.view.fragments.BaseFragment#onViewCreated(android.view.View,
-     * android.os.Bundle)
+     * @see android.support.v4.app.Fragment#onViewCreated(android.view.View, android.os.Bundle)
      */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -482,7 +492,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         // Validate the FACEBOOK session state
         if (state.isOpened()) {
             Log.i(TAG, "SESSION IS OPENED");
-            showFragmentLoading(false);
+            showFragmentLoading();
             Request request = Request.newMeRequest(session, this);
             Request.executeBatchAsync(request);
         } else
@@ -627,7 +637,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             // Facebook flag
             if(values.getAsBoolean(CustomerUtils.INTERNAL_FACEBOOK_FLAG)) {
                 Log.i(TAG, "USER HAS FACEBOOK CREDENTIALS");
-                showFragmentLoading(false);
+                showFragmentLoading();
                 triggerFacebookLogin(values, onAutoLogin);
                 return;
             }
@@ -639,7 +649,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         try {
             if(values.getAsBoolean(CustomerUtils.INTERNAL_SIGNUP_FLAG)){
                 Log.i(TAG, "USER HAS SIGNUP CREDENTIALS");
-                showFragmentLoading(false);
+                showFragmentLoading();
                 triggerSignup(values, onAutoLogin);
                 return;
             }
@@ -731,7 +741,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
      */
     private void triggerGetShoppingCart(){
         Log.i(TAG, "TRIGGER: GET CART AFTER LOGGED IN");
-        showFragmentLoading(false);
+        showFragmentLoading();
         triggerContentEvent(new GetShoppingCartItemsHelper(), null, this);
     }
     
@@ -998,7 +1008,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
 
         if (errors != null && errorMessages != null && errorMessages.size() > 0) {
             
-            if(getBaseActivity() != null) showFragmentContentContainer();
+            showFragmentContentContainer();
             
             dialog = DialogGenericFragment.newInstance(true, true, false,
                     getString(titleId),
@@ -1027,7 +1037,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
                 new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        showFragmentLoading(false);
+                        showFragmentLoading();
                         triggerLoginForm();
                         dialog.dismiss();
                     }

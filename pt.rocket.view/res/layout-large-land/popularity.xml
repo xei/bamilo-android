@@ -100,6 +100,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical" >
 
+
                 <LinearLayout
                     android:id="@+id/linear_reviews"
                     android:layout_width="match_parent"
@@ -111,15 +112,19 @@
 
         <include layout="@layout/loading_more" />
     </RelativeLayout>
-
-    <View
-        android:layout_width="33dp"
-        android:layout_height="match_parent" />
-
+	<View 
+	    android:layout_width="33dp"
+	    android:layout_height="match_parent"/>
+       
     <FrameLayout
         android:id="@+id/fragment_writereview"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1" />
-
+    <include
+        android:id="@+id/contextual_loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/loading_bar"
+        android:visibility="gone" />
 </LinearLayout>

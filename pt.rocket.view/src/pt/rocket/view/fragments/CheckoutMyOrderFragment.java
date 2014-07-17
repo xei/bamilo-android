@@ -120,7 +120,6 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
                 EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.Checkout,
                 R.layout.checkout_my_order_main,
-                false,
                 ConstantsCheckout.CHECKOUT_ORDER, 
                 WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
@@ -149,11 +148,23 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
         TrackerDelegator.trackCheckoutStep(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), R.string.gcheckoutMyOrder, R.string.xcheckoutmyorder, R.string.mixprop_checkout_my_order);
     }
 
+//    /*
+//     * (non-Javadoc)
+//     * 
+//     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
+//     * android.view.ViewGroup, android.os.Bundle)
+//     */
+//    @Override
+//    public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState) {
+//        super.onCreateView(inflater, viewGroup, savedInstanceState);
+//        Log.i(TAG, "ON CREATE VIEW");
+//        return inflater.inflate(R.layout.checkout_my_order_main, viewGroup, false);
+//    }
+
     /*
      * (non-Javadoc)
      * 
-     * @see pt.rocket.view.fragments.BaseFragment#onViewCreated(android.view.View,
-     * android.os.Bundle)
+     * @see android.support.v4.app.Fragment#onViewCreated(android.view.View, android.os.Bundle)
      */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {

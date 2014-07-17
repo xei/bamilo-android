@@ -76,7 +76,6 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
                 EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.MyAccount,
                 R.layout.my_account_email_notification_fragment,
-                false,
                 R.string.myaccount_email_notifications,
                 WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
@@ -110,11 +109,22 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
         }
     }
     
+//    /*
+//     * (non-Javadoc)
+//     * 
+//     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
+//     * android.view.ViewGroup, android.os.Bundle)
+//     */
+//    @Override
+//    public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState) {
+//        super.onCreateView(inflater, viewGroup, savedInstanceState);
+//        Log.i(TAG, "ON CREATE VIEW");
+//        return inflater.inflate(R.layout.my_account_email_notification_fragment, viewGroup, false);
+//    }
+    
     /*
      * (non-Javadoc)
-     * 
-     * @see pt.rocket.view.fragments.BaseFragment#onViewCreated(android.view.View,
-     * android.os.Bundle)
+     * @see android.support.v4.app.Fragment#onViewCreated(android.view.View, android.os.Bundle)
      */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -319,7 +329,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
      */
     private void triggerGetNewslettersForm(){
         Log.i(TAG, "TRIGGER: GET NEWSLETTER FORM");
-        showFragmentLoading(false);
+        showFragmentLoading();
         triggerContentEvent(new GetNewslettersFormHelper(), null, (IResponseCallback) this);
     }
    

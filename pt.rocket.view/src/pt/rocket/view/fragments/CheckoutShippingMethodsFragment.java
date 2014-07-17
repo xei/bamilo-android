@@ -74,7 +74,6 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
                 EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.Checkout,
                 R.layout.checkout_shipping_methods,
-                false,
                 ConstantsCheckout.CHECKOUT_SHIPPING,
                 WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
@@ -110,11 +109,22 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
         TrackerDelegator.trackCheckoutStep(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), R.string.gcheckoutShippingMethods, R.string.xcheckoutshippingmethods, R.string.mixprop_checkout_shipping_methods);
     }
     
+//    /*
+//     * (non-Javadoc)
+//     * 
+//     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
+//     * android.view.ViewGroup, android.os.Bundle)
+//     */
+//    @Override
+//    public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState) {
+//        super.onCreateView(inflater, viewGroup, savedInstanceState);
+//        Log.i(TAG, "ON CREATE VIEW");
+//        return inflater.inflate(R.layout.checkout_shipping_methods, viewGroup, false);
+//    }
+    
     /*
      * (non-Javadoc)
-     * 
-     * @see pt.rocket.view.fragments.BaseFragment#onViewCreated(android.view.View,
-     * android.os.Bundle)
+     * @see android.support.v4.app.Fragment#onViewCreated(android.view.View, android.os.Bundle)
      */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -231,10 +241,11 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
         nFormContainer = mFormResponse.generateForm(getBaseActivity());
         mShippingMethodsContainer.addView(nFormContainer);
         mShippingMethodsContainer.refreshDrawableState();
-        showFragmentContentContainer();
+        
         // Set the saved selection
-        if(mSelectionSaved != -1)
-            mFormResponse.setSelections(0, mSelectionSaved, mSubSelectionSaved);
+        if(mSelectionSaved != -1) mFormResponse.setSelections(0, mSelectionSaved, mSubSelectionSaved);
+        
+        showFragmentContentContainer();
     }
     
     /**

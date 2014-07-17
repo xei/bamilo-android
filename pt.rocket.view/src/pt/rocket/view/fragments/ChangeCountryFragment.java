@@ -27,8 +27,10 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.util.DisplayMetrics;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -72,7 +74,6 @@ public class ChangeCountryFragment extends BaseFragment {
      */
     public ChangeCountryFragment() {
         super(IS_NESTED_FRAGMENT, NavigationAction.Country, EnumSet.noneOf(MyMenuItem.class));
-        setLayoutId(R.layout.change_country, false);
     }
 
     /*
@@ -102,6 +103,20 @@ public class ChangeCountryFragment extends BaseFragment {
     /*
      * (non-Javadoc)
      * 
+     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
+     * android.view.ViewGroup, android.os.Bundle)
+     */
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+        Log.i(TAG, "ON CREATE VIEW");
+        View view = inflater.inflate(R.layout.change_country, container, false);
+        return view;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
      * @see android.support.v4.app.Fragment#onStart()
      */
     @Override
@@ -126,14 +141,13 @@ public class ChangeCountryFragment extends BaseFragment {
         
         if(selected == SHOP_NOT_SELECTED) {
             isChangeCountry = false;
-            ((BaseActivity) getActivity()).hideTitle();
-            ((BaseActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(false);
+            getBaseActivity().hideTitle();
+            getBaseActivity().getSupportActionBar().setHomeButtonEnabled(false);
         }
         
-        // getBaseActivity().setProcessShow(true);
         if(selected != SHOP_NOT_SELECTED){
-            ((BaseActivity) getActivity()).hideTitle();
-            ((BaseActivity) getActivity()).setCheckoutHeader(R.string.nav_country);
+            getBaseActivity().hideTitle();
+            getBaseActivity().setCheckoutHeader(R.string.nav_country);
         }
         
     }

@@ -109,7 +109,6 @@ public class WriteReviewFragment extends BaseFragment {
                 EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.Products,
                 R.layout.writereview,
-                false,
                 R.string.writereview_page_title,
                 WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
     }
@@ -147,6 +146,26 @@ public class WriteReviewFragment extends BaseFragment {
 
 
 
+//    /*
+//     * (non-Javadoc)
+//     * 
+//     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
+//     * android.view.ViewGroup, android.os.Bundle)
+//     */
+//    @Override
+//    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+//        super.onCreateView(inflater, container, savedInstanceState);
+//        Log.i(TAG, "ON CREATE VIEW");
+//        View view = inflater.inflate(R.layout.writereview, container, false);
+//        
+//        
+//        labelsContainer = (LinearLayout) view.findViewById(R.id.label_container);
+//        
+//        ratingBarContainer = (LinearLayout) view.findViewById(R.id.ratingbar_container);
+//        return view;
+//    }
+
+    
     /*
      * (non-Javadoc)
      * 
@@ -163,7 +182,7 @@ public class WriteReviewFragment extends BaseFragment {
         
         ratingBarContainer = (LinearLayout) view.findViewById(R.id.ratingbar_container);
     }
-
+    
     /*
      * (non-Javadoc)
      * 

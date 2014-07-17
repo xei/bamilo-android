@@ -90,7 +90,6 @@ public class PopularityFragment extends BaseFragment {
                 EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.Products,
                 R.layout.popularity,
-                false,
                 R.string.reviews,
                 WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         this.setRetainInstance(true);
@@ -118,6 +117,20 @@ public class PopularityFragment extends BaseFragment {
         Log.i(TAG, "ON CREATE");
     }
 
+//    /*
+//     * (non-Javadoc)
+//     * 
+//     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
+//     * android.view.ViewGroup, android.os.Bundle)
+//     */
+//    @Override
+//    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+//        super.onCreateView(inflater, container, savedInstanceState);
+//        Log.i(TAG, "ON CREATE VIEW");
+//        View view = inflater.inflate(R.layout.popularity, null, false);
+//        return view;
+//    }
+//
     /*
      * (non-Javadoc)
      * 
@@ -135,10 +148,7 @@ public class PopularityFragment extends BaseFragment {
             return;
         }
         pageNumber = 1;
-        /**
-         * TRIGGERS
-         * @author sergiopereira
-         */
+        
         triggerReviews(selectedProduct.getUrl(), pageNumber);
         
         setAppContentLayout();

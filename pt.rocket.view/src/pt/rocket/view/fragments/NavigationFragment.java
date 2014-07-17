@@ -76,8 +76,7 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
      * Empty constructor
      */
     public NavigationFragment() {
-        super(IS_NESTED_FRAGMENT);
-        setLayoutId(R.layout.navigation_fragment_main, false);
+        super(IS_NESTED_FRAGMENT, R.layout.navigation_fragment_main);
     }
 
     /*
@@ -106,11 +105,23 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
         mSavedStateType = savedInstanceState != null ? (FragmentType) savedInstanceState.getSerializable(TAG) : null;
     }
     
+//    /*
+//     * (non-Javadoc)
+//     * 
+//     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
+//     * android.view.ViewGroup, android.os.Bundle)
+//     */
+//    @Override
+//    public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState) {
+//        super.onCreateView(inflater, viewGroup, savedInstanceState);
+//        Log.i(TAG, "ON CREATE VIEW");
+//        mInflater = inflater;
+//        return inflater.inflate(R.layout.navigation_fragment_main, viewGroup, false);
+//    }
+    
     /*
      * (non-Javadoc)
-     * 
-     * @see pt.rocket.view.fragments.BaseFragment#onViewCreated(android.view.View,
-     * android.os.Bundle)
+     * @see android.support.v4.app.Fragment#onViewCreated(android.view.View, android.os.Bundle)
      */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {

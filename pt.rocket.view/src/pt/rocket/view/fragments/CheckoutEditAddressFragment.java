@@ -101,7 +101,6 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
                 EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.Checkout,
                 R.layout.checkout_edit_address_main,
-                false,
                 ConstantsCheckout.CHECKOUT_BILLING,
                 WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
     }
@@ -130,11 +129,22 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
         TrackerDelegator.trackCheckoutStep(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), R.string.gcheckoutEditAddress, R.string.xcheckouteditaddress, R.string.mixprop_checkout_edit_address);
     }
     
+//    /*
+//     * (non-Javadoc)
+//     * 
+//     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
+//     * android.view.ViewGroup, android.os.Bundle)
+//     */
+//    @Override
+//    public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState) {
+//        super.onCreateView(inflater, viewGroup, savedInstanceState);
+//        Log.i(TAG, "ON CREATE VIEW");
+//        return inflater.inflate(R.layout.checkout_edit_address_main, viewGroup, false);
+//    }
+    
     /*
      * (non-Javadoc)
-     * 
-     * @see pt.rocket.view.fragments.BaseFragment#onViewCreated(android.view.View,
-     * android.os.Bundle)
+     * @see android.support.v4.app.Fragment#onViewCreated(android.view.View, android.os.Bundle)
      */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -752,9 +762,7 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
 
         if (errors != null && errorMessages != null && errorMessages.size() > 0) {
             
-            if (getBaseActivity() != null){
-                showFragmentContentContainer();
-            }
+            showFragmentContentContainer();
             
             dialog = DialogGenericFragment.newInstance(true, true, false,
                     getString(R.string.error_login_title),

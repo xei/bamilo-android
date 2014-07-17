@@ -34,20 +34,6 @@
             android:background="@android:color/white" />
     </LinearLayout>
 
-    <!-- LOADING VIEW -->
-
-    <include
-        android:id="@+id/loading_bar"
-        layout="@layout/loading_bar"
-        android:visibility="visible" />
-
-    <!-- FALL BACK -->
-
-    <include
-        android:id="@+id/home_fallback_content"
-        layout="@layout/home_fragment_fallback"
-        android:visibility="gone" />
-
     <!-- WIZARD -->
 
     <include

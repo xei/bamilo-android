@@ -92,9 +92,9 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, O
 
     private boolean isAddingProductToCart;
 
-    private View mLoadingView;
+//    private View mLoadingView;
 
-    private View mRetryView;
+//    private View mRetryView;
 
     private DialogGenericFragment mDialogErrorToCart;
     
@@ -128,7 +128,7 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, O
      * Empty constructor
      */
     public CampaignFragment() {
-        super(IS_NESTED_FRAGMENT);
+        super(IS_NESTED_FRAGMENT, R.layout.campaign_fragment_pager_item);
     }
 
     /*
@@ -163,18 +163,18 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, O
         }
     }
     
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-     * android.view.ViewGroup, android.os.Bundle)
-     */
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState) {
-        super.onCreateView(inflater, viewGroup, savedInstanceState);
-        Log.i(TAG, "ON CREATE VIEW");
-        return inflater.inflate(R.layout.campaign_fragment_pager_item, viewGroup, false);
-    }
+//    /*
+//     * (non-Javadoc)
+//     * 
+//     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
+//     * android.view.ViewGroup, android.os.Bundle)
+//     */
+//    @Override
+//    public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState) {
+//        super.onCreateView(inflater, viewGroup, savedInstanceState);
+//        Log.i(TAG, "ON CREATE VIEW");
+//        return inflater.inflate(R.layout.campaign_fragment_pager_item, viewGroup, false);
+//    }
     
     /*
      * (non-Javadoc)
@@ -190,11 +190,11 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, O
         // Set onScrollListener to signal adapter's Handler when user is scrolling
         mGridView.setOnScrollListener(this);
         // Get loading view
-        mLoadingView = view.findViewById(R.id.loading_bar);
+        //mLoadingView = view.findViewById(R.id.loading_bar);
         // Get retry view
-        mRetryView = view.findViewById(R.id.fragment_retry);
+        //mRetryView = view.findViewById(R.id.fragment_retry);
         // Get the retry button
-        view.findViewById(R.id.fragment_retry_button).setOnClickListener(this);
+        //view.findViewById(R.id.fragment_retry_button).setOnClickListener(this);
         // Validate the current state
         getAndShowCampaign();
     }
@@ -334,9 +334,10 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, O
      * @author sergiopereira
      */
     private void showLoading(){
-        mGridView.setVisibility(View.GONE);
-        mLoadingView.setVisibility(View.VISIBLE);
-        mRetryView.setVisibility(View.GONE);
+        showFragmentLoading();
+        //mGridView.setVisibility(View.GONE);
+        //mLoadingView.setVisibility(View.VISIBLE);
+        //mRetryView.setVisibility(View.GONE);
     }
     
     /**
@@ -344,9 +345,10 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, O
      * @author sergiopereira
      */
     private void showContent() {
-        mGridView.setVisibility(View.VISIBLE);
-        mLoadingView.setVisibility(View.GONE);
-        mRetryView.setVisibility(View.GONE);
+        //mGridView.setVisibility(View.VISIBLE);
+        showFragmentContentContainer();
+        //mLoadingView.setVisibility(View.GONE);
+        //mRetryView.setVisibility(View.GONE);
     }
     
     /**
@@ -354,9 +356,10 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, O
      * @author sergiopereira
      */
     private void showRetry() {
-        mGridView.setVisibility(View.GONE);
-        mLoadingView.setVisibility(View.GONE);
-        mRetryView.setVisibility(View.VISIBLE);
+        showFragmentRetry((OnClickListener) this);
+//        mGridView.setVisibility(View.GONE);
+//        mLoadingView.setVisibility(View.GONE);
+//        mRetryView.setVisibility(View.VISIBLE);
     }
     
     /**
@@ -395,7 +398,7 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, O
         // Product name and image container
         else if (id == R.id.image_container || id == R.id.campaign_item_name) onClickProduct(view);
         // Retry button
-        else if(id == R.id.fragment_retry_button) onClickRetryButton();
+        else if(id == R.id.fragment_root_retry_button) onClickRetryButton();
         // Unknown view
         else Log.i(TAG, "ON CLICK: UNKNOWN VIEW");
     }

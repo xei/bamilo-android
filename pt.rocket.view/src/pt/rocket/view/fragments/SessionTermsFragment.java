@@ -98,7 +98,7 @@ public class SessionTermsFragment extends BaseFragment {
     /*
      * (non-Javadoc)
      * 
-     * @see pt.rocket.view.fragments.BaseFragment#onCreateView(android.view.LayoutInflater,
+     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
      * android.view.ViewGroup, android.os.Bundle)
      */
     @Override

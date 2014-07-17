@@ -28,11 +28,11 @@
             android:layout_marginRight="13.2dp"
             android:layout_marginTop="13.2dp"
             android:cursorVisible="true"
-            android:drawableRight="@drawable/ic_star_formular"
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:hint="@string/track_order_hint"
             android:inputType="textAutoComplete"
+            android:drawableRight="@drawable/ic_star_formular"
             android:textCursorDrawable="@null" />
 
         <org.holoeverywhere.widget.Button
@@ -43,6 +43,20 @@
             android:layout_marginTop="26.4dp"
             android:contentDescription="@string/track_order"
             android:text="@string/track_order" />
+
+        <RelativeLayout
+            android:id="@+id/loading_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16.4dp"
+            android:visibility="gone" >
+
+            <include
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                layout="@layout/loading_bar" />
+        </RelativeLayout>
 
         <LinearLayout
             android:id="@+id/title_status_container"

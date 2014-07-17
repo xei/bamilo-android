@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragment_root_empty_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="17dp"
+    android:paddingRight="17dp"
+    android:visibility="visible" >
+
+    <ImageView
+        android:id="@+id/fragment_root_empty_image"
+        android:layout_width="120dp"
+        android:layout_height="158dp"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_marginTop="55dp"
+        android:src="@drawable/no_image_small" />
+
+    <org.holoeverywhere.widget.TextView
+        android:id="@+id/fragment_root_empty_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="50dp"
+        android:gravity="center_horizontal"
+        android:text="You have no items at the moment"
+        android:textColor="@color/grey_middlelight"
+        android:textSize="17dp" />
+
+    <org.holoeverywhere.widget.Button
+        android:id="@+id/fragment_root_empty_continue_button"
+        style="@style/button_orange_style"
+        android:text="@string/continue_shopping"
+        android:visibility="gone" />
+
+</LinearLayout>

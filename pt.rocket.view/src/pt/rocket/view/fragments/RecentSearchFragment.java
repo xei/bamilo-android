@@ -60,11 +60,19 @@ public class RecentSearchFragment extends BaseFragment {
                 EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.RecentSearch,
                 R.layout.recentsearches,
-                true,
                 R.string.recent_searches,
                 WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        setEmptyView(R.string.recentsearch_no_searches, R.drawable.img_norecentsearch);
     }
+    
+//    @Override
+//    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+//        Log.i(TAG, "onCreateView");
+//        mainView = inflater.inflate(R.layout.recentsearches, container, false);
+//
+//        setAppContentLayout();
+//
+//        return mainView;
+//    }
     
     /*
      * (non-Javadoc)
@@ -110,7 +118,7 @@ public class RecentSearchFragment extends BaseFragment {
 
                 mRecentSearchesAdapter.notifyDataSetChanged();
 
-                showFragmentEmpty();
+                showFragmentEmpty(R.string.recentsearch_no_searches, R.drawable.img_norecentsearch);
                 mClearAllButton.setVisibility(View.GONE);
                 Log.d(TAG, "RECENT SEARCHES: " + mRecentSearches.size());
 
@@ -131,7 +139,7 @@ public class RecentSearchFragment extends BaseFragment {
 
         // Get Recent Searches
         Log.i(TAG, "LOAD RECENT SEARCHES");
-        showFragmentLoading(false);
+        showFragmentLoading();
         new GetSearchSuggestionHelper(responseCallback);
     }
 
@@ -180,11 +188,11 @@ public class RecentSearchFragment extends BaseFragment {
                     mClearAllButton.setVisibility(View.VISIBLE);
                     showFragmentContentContainer();
                 } else {
-                    showFragmentEmpty();
+                    showFragmentEmpty(R.string.recentsearch_no_searches, R.drawable.img_norecentsearch);
                 }
             } else {
                 mRecentSearches = null;
-                showFragmentEmpty();
+                showFragmentEmpty(R.string.recentsearch_no_searches, R.drawable.img_norecentsearch);
             }
 
             Log.d(TAG, "RECENT SEARCHES: " + mRecentSearches.size());

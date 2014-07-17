@@ -135,7 +135,6 @@ public class SessionLoginFragment extends BaseFragment {
                 EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.LoginOut,
                 R.layout.login,
-                false,
                 R.string.login_title, 
                 WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
     }
@@ -169,6 +168,28 @@ public class SessionLoginFragment extends BaseFragment {
         uiHelper = new UiLifecycleHelper(getActivity(), callback, appId);
         uiHelper.onCreate(savedInstanceState);
     }
+
+//    /*
+//     * (non-Javadoc)
+//     * 
+//     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
+//     * android.view.ViewGroup, android.os.Bundle)
+//     */
+//    @Override
+//    public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState) {
+//        super.onCreateView(inflater, viewGroup, savedInstanceState);
+//        Log.i(TAG, "ON CREATE VIEW");
+//        View view = inflater.inflate(R.layout.login, viewGroup, false);
+//        signinButton = view.findViewById(R.id.middle_login_button_signin);
+//        forgetPass = view.findViewById(R.id.middle_login_link_fgtpassword);
+//        register = view.findViewById(R.id.middle_login_link_register);
+//        container = (ViewGroup) view.findViewById(R.id.form_container);
+//        LoginButton authButton = (LoginButton) view.findViewById(R.id.authButton);
+//        authButton.setFragment(this);
+//        authButton.setLoginBehavior(SessionLoginBehavior.SUPPRESS_SSO);
+//        authButton.setReadPermissions(Arrays.asList("email"));
+//        return view;
+//    }
 
     /*
      * (non-Javadoc)
@@ -299,7 +320,7 @@ public class SessionLoginFragment extends BaseFragment {
      */
     private void onSessionStateChange(Session session, SessionState state, Exception exception) {
         if (state.isOpened()) {
-            showFragmentLoading(false);
+            showFragmentLoading();
             // make request to the /me API
             Request request = Request.newMeRequest(
                     session,
@@ -536,8 +557,8 @@ public class SessionLoginFragment extends BaseFragment {
             return true;
         
         case LOGIN_EVENT:
+            Log.d(TAG, "ON SUCCESS EVENT: LOGIN_EVENT");
             JumiaApplication.INSTANCE.setLoggedIn(true);
-            Log.d(TAG, "loginCompletedEvent : success");
             // Get Customer
             getBaseActivity().hideKeyboard();
             getBaseActivity().updateSlidingMenuCompletly();
@@ -554,9 +575,11 @@ public class SessionLoginFragment extends BaseFragment {
             
             // Validate the next step
             if(nextFragmentType != null && getBaseActivity()  != null) {
+                Log.d(TAG, "NEXT STEP: " + nextFragmentType.toString());
                 FragmentController.getInstance().popLastEntry(FragmentType.LOGIN.toString());
                 getBaseActivity().onSwitchFragment(nextFragmentType, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
             } else {
+                Log.d(TAG, "NEXT STEP: BACK");
                 getBaseActivity().onBackPressed();  
             }
             
@@ -569,7 +592,7 @@ public class SessionLoginFragment extends BaseFragment {
 
                             @Override
                             public void onClick(View v) {
-                                showFragmentLoading(false);
+                                showFragmentLoading();
                                 triggerLoginForm();
                                 dialog.dismiss();
                             }

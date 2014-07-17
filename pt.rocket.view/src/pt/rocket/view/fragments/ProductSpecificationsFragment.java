@@ -26,8 +26,10 @@ import android.text.Html;
 import android.text.Spannable;
 import android.text.TextUtils;
 import android.text.style.MetricAffectingSpan;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import de.akquinet.android.androlog.Log;
@@ -70,14 +72,11 @@ public class ProductSpecificationsFragment extends BaseFragment implements OnCli
      * @param arrayList
      */
     public ProductSpecificationsFragment() {
-        super(EnumSet.noneOf(EventType.class),
-                EnumSet.noneOf(EventType.class),
-                EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
-                NavigationAction.Products,
-                R.layout.productdetails_specification_fragment,
-                false,
-                R.string.product_details_title,
-                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
+        super(EnumSet.noneOf(EventType.class), 
+                EnumSet.noneOf(EventType.class), 
+                EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE), 
+                NavigationAction.Products, 
+                R.string.product_details_title, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
         this.setRetainInstance(true);
     }
 
@@ -138,21 +137,24 @@ public class ProductSpecificationsFragment extends BaseFragment implements OnCli
     /*
      * (non-Javadoc)
      * 
-     * @see pt.rocket.view.fragments.BaseFragment#onViewCreated(android.view.View,
-     * android.os.Bundle)
+     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
+     * android.view.ViewGroup, android.os.Bundle)
      */
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        Log.i(TAG, "ON VIEW CREATED");
+    public View onCreateView(LayoutInflater mInflater, ViewGroup viewGroup,
+            Bundle savedInstanceState) {
+        super.onCreateView(mInflater, viewGroup, savedInstanceState);
+        Log.i(TAG, "ON CREATE VIEW");
 
-        mainView = view;
+        mainView = mInflater.inflate(R.layout.productdetails_specification_fragment, viewGroup, false);
         mProductSpecContainer = mainView.findViewById(R.id.product_specifications_frame);
         mProductSpecContainer.setOnClickListener(this);
         mProductSpecText = (TextView) mainView.findViewById(R.id.product_specifications_text);
         mProductSpecSku = (TextView) mainView.findViewById(R.id.product_sku_text);
-        mLoading = (RelativeLayout) mProductSpecContainer.findViewById(R.id.loading_specifications);
+        mLoading = (RelativeLayout) mProductSpecContainer
+                .findViewById(R.id.loading_specifications);
         displaySpecification();
+        return mainView;
     }
 
     /*

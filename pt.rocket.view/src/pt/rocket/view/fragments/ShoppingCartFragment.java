@@ -183,7 +183,6 @@ public class ShoppingCartFragment extends BaseFragment {
                 EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.Basket,
                 R.layout.shopping_basket,
-                false,
                 R.string.shoppingcart_title,
                 WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
         this.setRetainInstance(true);
@@ -210,6 +209,20 @@ public class ShoppingCartFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
     }
+
+//    /*
+//     * (non-Javadoc)
+//     * 
+//     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
+//     * android.view.ViewGroup, android.os.Bundle)
+//     */
+//    @Override
+//    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+//        super.onCreateView(inflater, container, savedInstanceState);
+//        Log.i(TAG, "ON CREATE VIEW");
+//        View view = inflater.inflate(R.layout.shopping_basket, container, false);
+//        return view;
+//    }
 
     /*
      * (non-Javadoc)
@@ -287,8 +300,7 @@ public class ShoppingCartFragment extends BaseFragment {
     }
 
     private void triggerIsNativeCheckoutAvailable() {
-        triggerContentEventWithNoLoading(new GetNativeCheckoutAvailableHelper(), null,
-                responseCallback);
+        triggerContentEventWithNoLoading(new GetNativeCheckoutAvailableHelper(), null, responseCallback);
     }
 
     private void triggerSubmitVoucher(ContentValues values) {
@@ -433,10 +445,12 @@ public class ShoppingCartFragment extends BaseFragment {
         case NATIVE_CHECKOUT_AVAILABLE:
             boolean isAvailable = bundle.getBoolean(Constants.BUNDLE_RESPONSE_KEY);
             if (isAvailable) {
+                Log.d(TAG, "ON SUCCESS EVENT: NATIVE_CHECKOUT_AVAILABLE");
                 Bundle mBundle = new Bundle();
                 mBundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationcart));
                 getBaseActivity().onSwitchFragment(FragmentType.ABOUT_YOU, mBundle, FragmentController.ADD_TO_BACK_STACK);
             } else {
+                Log.d(TAG, "ON SUCCESS EVENT: NOT NATIVE_CHECKOUT_AVAILABLE");
                 goToWebCheckout();
             }
             return true;
@@ -480,6 +494,7 @@ public class ShoppingCartFragment extends BaseFragment {
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         switch (eventType) {
         case NATIVE_CHECKOUT_AVAILABLE:
+            Log.d(TAG, "ON ERROR EVENT: NATIVE_CHECKOUT_AVAILABLE");
             goToWebCheckout();
             break;
         case ADD_VOUCHER:
@@ -491,6 +506,7 @@ public class ShoppingCartFragment extends BaseFragment {
             break;
         case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
             hideActivityProgress();
+            break;
         }
         if (getBaseActivity().handleErrorEvent(bundle)) {
             return true;
@@ -884,6 +900,7 @@ public class ShoppingCartFragment extends BaseFragment {
     }
 
     private void goToWebCheckout() {
+        Log.d(TAG, "GOTO WEB CHECKOUT");
         Bundle bundle = new Bundle();
         bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.CHECKOUT_BASKET);
         bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationcart));

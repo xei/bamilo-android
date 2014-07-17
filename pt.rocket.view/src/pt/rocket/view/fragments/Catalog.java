@@ -19,7 +19,6 @@ import pt.rocket.framework.objects.FeaturedBox;
 import pt.rocket.framework.objects.FeaturedItem;
 import pt.rocket.framework.utils.AnalyticsGoogle;
 import pt.rocket.framework.utils.EventType;
-import pt.rocket.framework.utils.LoadingBarView;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.GetProductsHelper;
 import pt.rocket.utils.MyMenuItem;
@@ -35,7 +34,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.Spannable;
@@ -115,8 +113,7 @@ public class Catalog extends BaseFragment implements OnClickListener {
                 EnumSet.noneOf(EventType.class),
                 EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.Products,
-                R.string.products, 
-                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+                R.string.products, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
 
     public static Catalog getInstance() {
@@ -196,21 +193,9 @@ public class Catalog extends BaseFragment implements OnClickListener {
         super.onResume();
         Log.d(TAG, "ON RESUME");
 
-        ViewPager viewPager = new ViewPager(mainActivity);
-        viewPager.setAdapter(new CatalogPagerAdaper());
-        mPagerTabStrip.setViewPager(viewPager);
-
-        // getBaseActivity().showLoading(false);
-
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-        // getBaseActivity().showLoading(false);
-        
         // http://www.jumia.co.ke:80/mobapi/womens-casual-shoes/
         
-        getBaseActivity().setTitle(title);
+        ((BaseActivity) getActivity()).setTitle(title);
         
         Log.i(TAG, "DATA :  " + productsURL + " " + searchQuery + " " + navigationSource + " " + navigationPath) ; 
         
@@ -246,8 +231,6 @@ public class Catalog extends BaseFragment implements OnClickListener {
         
         getBaseActivity().setProcessShow(true);
         getBaseActivity().showContentContainer();
-            }
-        }, 300);
 
     }
     
@@ -787,8 +770,6 @@ public class Catalog extends BaseFragment implements OnClickListener {
         } else if (id == R.id.products_switch_layout_button) {
         	Log.d(TAG, "ON CLICK: SWITCH LAYOUT BUTTON");
 
-            getBaseActivity().showProgress();
-
             showList = !showList;
 
             // Save current layout used
@@ -803,18 +784,12 @@ public class Catalog extends BaseFragment implements OnClickListener {
             mSwitchMD5++;
             Log.i(TAG, "Updating totalUpdates: " + mSwitchMD5);
 
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
             // Update the current view page with the current list of products rendered on a
             // different layout without calling a new request
             //getCurrentCatalogPageModel(mSelectedPageIndex).switchLayout(showList, totalUpdates);
             //getCurrentCatalogPageModel(mSelectedPageIndex - 1).switchLayout(showList, totalUpdates);
             //getCurrentCatalogPageModel(mSelectedPageIndex + 1).switchLayout(showList, totalUpdates);
             mCatalogPagerAdapter.notifyDataSetChanged();
-               }
-            }, 50);
         }
     }
 
@@ -882,16 +857,14 @@ public class Catalog extends BaseFragment implements OnClickListener {
                     
                         RelativeLayout mRelativeLayout = (RelativeLayout) mInflater.inflate(R.layout.products, null);
                         currentPage.setRelativeLayout(mRelativeLayout);
-                        currentPage.setTextViewSpnf((org.holoeverywhere.widget.TextView) mRelativeLayout.findViewById(R.id.search_products_not_found));
-                        currentPage.setButtonRavb((Button) mRelativeLayout.findViewById(R.id.retry_alert_view_button));
-                        currentPage.setRelativeLayoutPc((RelativeLayout) mRelativeLayout.findViewById(R.id.products_content));
-                        currentPage.setLinearLayoutLm((LinearLayout) mRelativeLayout.findViewById(R.id.loadmore));
+                        currentPage.setTextViewSpnf((org.holoeverywhere.widget.TextView) currentPage.getRelativeLayout().findViewById(R.id.search_products_not_found));
+                        currentPage.setButtonRavb((Button) currentPage.getRelativeLayout().findViewById(R.id.retry_alert_view_button));
+                        currentPage.setRelativeLayoutPc((RelativeLayout) currentPage.getRelativeLayout().findViewById(R.id.products_content));
+                        currentPage.setLinearLayoutLm((LinearLayout) currentPage.getRelativeLayout().findViewById(R.id.loadmore));
 
-                        currentPage.setGridView((GridView) mRelativeLayout.findViewById(R.id.middle_productslist_list), isTabletInLandscape);
+                        currentPage.setGridView((GridView) currentPage.getRelativeLayout().findViewById(R.id.middle_productslist_list), isTabletInLandscape);
 
-                        LinearLayout loadingViewPager = (LinearLayout) mRelativeLayout.findViewById(R.id.loading_view_pager);
-                        currentPage.setLinearLayoutLb(loadingViewPager);
-                        currentPage.setLoadingBarView((LoadingBarView) loadingViewPager.findViewById(R.id.loading_bar_view));
+                        currentPage.setLinearLayoutLb((LinearLayout) currentPage.getRelativeLayout().findViewById(R.id.loading_view_pager));
                         // initialize view, setting variables to adjust the layout and filtering details
                         currentPage.setVariables(productsURL, searchQuery, navigationPath, title, navigationSource, mCatalogFilterValues, showList, mSwitchMD5);
 //                }

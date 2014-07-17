@@ -160,7 +160,6 @@ public class CategoriesContainerFragment extends BaseFragment {
                 EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.Categories,
                 R.layout.categories_fragments,
-                true,
                 0,
                 WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
@@ -190,6 +189,22 @@ public class CategoriesContainerFragment extends BaseFragment {
         sharedPrefs = getBaseActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
     }
 
+//    /*
+//     * (non-Javadoc)
+//     * 
+//     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
+//     * android.view.ViewGroup, android.os.Bundle)
+//     */
+//    @Override
+//    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+//        super.onCreateView(inflater, container, savedInstanceState);
+//        Log.i(TAG, "ON CREATE VIEW");
+//        View view;
+//        view = inflater.inflate(R.layout.categories_fragments, container, false);
+//        
+//        return view;
+//    }
+
     /*
      * (non-Javadoc)
      * 
@@ -210,7 +225,7 @@ public class CategoriesContainerFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        if(JumiaApplication.INSTANCE.currentCategories != null && getView() != null){
+        if(JumiaApplication.currentCategories != null && getView() != null){
 //            Log.i(TAG, "ON currentCategories != null");
             if (BaseActivity.isTabletInLandscape(getBaseActivity())) {
 //                Log.i(TAG, "ON createFragmentsForLandscape != null");

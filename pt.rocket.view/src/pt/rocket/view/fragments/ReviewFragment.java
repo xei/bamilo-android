@@ -15,6 +15,9 @@ import pt.rocket.utils.NavigationAction;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.RatingBar;
 import de.akquinet.android.androlog.Log;
@@ -44,14 +47,11 @@ public class ReviewFragment extends BaseFragment {
      * Empty constructor
      */
     public ReviewFragment() {
-        super(EnumSet.noneOf(EventType.class),
-                EnumSet.noneOf(EventType.class),
-                EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
-                NavigationAction.Products,
-                R.layout.reviews,
-                false,
-                R.string.review,
-                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        super(EnumSet.noneOf(EventType.class), 
+                EnumSet.noneOf(EventType.class), 
+                EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE), 
+                NavigationAction.Products,  
+                R.string.review, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         this.setRetainInstance(true);
     }
 
@@ -75,6 +75,20 @@ public class ReviewFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
+     * android.view.ViewGroup, android.os.Bundle)
+     */
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+        Log.i(TAG, "ON CREATE VIEW");
+        View view = inflater.inflate(R.layout.reviews, container, false);
+        return view;
     }
 
     /*

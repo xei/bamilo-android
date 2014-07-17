@@ -10,6 +10,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
+import org.holoeverywhere.widget.Button;
+import org.holoeverywhere.widget.TextView;
+
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.fragments.FragmentController;
@@ -46,6 +49,7 @@ import android.view.ViewStub;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.Toast;
 import de.akquinet.android.androlog.Log;
 
@@ -69,26 +73,28 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     private static final boolean VISIBLE = true;
 
     private static final boolean NOT_VISIBLE = false;
+    
+    public static final int NO_INFLATE_LAYOUT = 0;
 	
 	protected String md5Hash = null;
 
-    protected View contentContainer;
+    //protected View contentContainer;
 
     protected View loadingView;
 
     private NavigationAction action;
 
-    private Set<EventType> contentEvents;
+    //private Set<EventType> contentEvents;
 
     protected DialogFragment dialog;
 
     private final Set<EventType> allHandledEvents = EnumSet.copyOf(HANDLED_EVENTS);
 
-    private Set<EventType> userEvents;
+    //private Set<EventType> userEvents;
 
     protected Set<MyMenuItem> enabledMenuItems;
 
-    private int layoutResId = -1;
+    private int mInflateLayoutResId = NO_INFLATE_LAYOUT;
     
     private int titleResId;
 
@@ -108,30 +114,28 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     }
     protected static BaseActivity mainActivity;
 
-    private View loadingBarContainer;
+    private View mLoadingView;
 
-    private LoadingBarView loadingBarView;
+//    /**
+//     * Use this variable to have a more precise control on when to show the content container.
+//     */
+//    private boolean processFragmentShow = true;
 
-    private org.holoeverywhere.widget.TextView emptyView;
+    private View mEmptyView;
 
-    private View errorView;
+    private View mRetryView;
 
-    private int emptyStringResid = -1;
+    private View mContentView;
 
-    private int emptyDrawableResId = -1;
-
-    /**
-     * Use this variable to have a more precise control on when to show the content container.
-     */
-    private boolean processFragmentShow = true;
+    private View mFallBackView;
 
     /**
      * Constructor
      */
     public BaseFragment(Set<EventType> contentEvents, Set<EventType> userEvents,
             Set<MyMenuItem> enabledMenuItems, NavigationAction action, int titleResId, int adjust_state) {
-        this.contentEvents = contentEvents;
-        this.userEvents = userEvents;
+        //this.contentEvents = contentEvents;
+        //this.userEvents = userEvents;
         this.allHandledEvents.addAll(contentEvents);
         this.allHandledEvents.addAll(userEvents);
         this.enabledMenuItems = enabledMenuItems;
@@ -141,29 +145,20 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     }
 
     /**
-     * Constructor
+     * Constructor with layout to inflate
      */
     public BaseFragment(Set<EventType> contentEvents, Set<EventType> userEvents,
-            Set<MyMenuItem> enabledMenuItems, NavigationAction action, int layoutResId, boolean showLoading,
+            Set<MyMenuItem> enabledMenuItems, NavigationAction action, int layoutResId,
             int titleResId, int adjust_state) {
-        this.contentEvents = contentEvents;
-        this.userEvents = userEvents;
+        //this.contentEvents = contentEvents;
+        //this.userEvents = userEvents;
         this.allHandledEvents.addAll(contentEvents);
         this.allHandledEvents.addAll(userEvents);
         this.enabledMenuItems = enabledMenuItems;
         this.action = action;
-        this.layoutResId = layoutResId;
+        this.mInflateLayoutResId = layoutResId;
         this.titleResId = titleResId;
         this.adjustState = adjust_state;
-    }
-
-    protected void setLayoutId(int layoutResId, boolean showLoading) {
-        this.layoutResId = layoutResId;
-    }
-    
-    protected void setEmptyView(int emptyStringResid, int emptyDrawableResId) {
-        this.emptyStringResid = emptyStringResid;
-        this.emptyDrawableResId = emptyDrawableResId;
     }
 
     /**
@@ -173,6 +168,16 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      */
     public BaseFragment(Boolean isNestedFragment) {
         this.isNestedFragment = isNestedFragment;
+    }
+    
+    /**
+     * Constructor used only by nested fragments
+     * 
+     * @param isNestedFragment
+     */
+    public BaseFragment(Boolean isNestedFragment, int inflateLayout) {
+        this.isNestedFragment = isNestedFragment;
+        this.mInflateLayoutResId = inflateLayout;
     }
     
     /**
@@ -205,6 +210,10 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * #### LIFE CICLE ####
      */
     
+    /*
+     * (non-Javadoc)
+     * @see android.support.v4.app.Fragment#onAttach(android.app.Activity)
+     */
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -230,27 +239,15 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.i(TAG, "ON CREATE VIEW");
-
-        if (layoutResId > 0) {
+        if (hasLayoutToInflate()) {
+            Log.i(TAG, "ON CREATE VIEW: HAS LAYOUT TO INFLATE");
             View view = inflater.inflate(R.layout.root_layout, container, false);
             ViewStub contentContainer = (ViewStub) view.findViewById(R.id.content_container);
-            contentContainer.setLayoutResource(layoutResId);
-            this.contentContainer = contentContainer.inflate();
-
-            ViewStub loadingView = (ViewStub) view.findViewById(R.id.loading_bar);
-            loadingView.setLayoutResource(R.layout.fragment_loading_bar);
-            this.loadingView = loadingView.inflate();
-            this.loadingView.setVisibility(View.GONE);
-
-            if (emptyStringResid > -1 && emptyDrawableResId > -1) {
-                emptyView = (org.holoeverywhere.widget.TextView) view.findViewById(R.id.empty_view);
-                emptyView.setText(getString(emptyStringResid));
-                emptyView.setCompoundDrawablesWithIntrinsicBounds(0, emptyDrawableResId, 0, 0);
-            }
-
+            contentContainer.setLayoutResource(mInflateLayoutResId);
+            this.mContentView = contentContainer.inflate();
             return view;
         } else {
+            Log.i(TAG, "ON CREATE VIEW: NO HAS LAYOUT TO INFLATE");
             return super.onCreateView(inflater, container, savedInstanceState);
         }
     }
@@ -267,10 +264,20 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         isOnStoppingProcess = false;
         // Exist order summary
         isOrderSummaryPresent = (view.findViewById(ORDER_SUMMARY_CONTAINER) != null) ? true : false;
-
-        loadingBarContainer = view.findViewById(R.id.loading_bar);
-        loadingBarView = (LoadingBarView) view.findViewById(R.id.loading_bar_view);
-        errorView = view.findViewById(R.id.alert_view);
+        
+        /**
+         * Get all root views
+         */
+        // Get content layout
+        mContentView = view.findViewById(R.id.content_container);
+        // Get loading layout
+        mLoadingView = view.findViewById(R.id.fragment_loading_stub);
+        // Get empty layout
+        mEmptyView = view.findViewById(R.id.fragment_empty_stub); 
+        // Get retry layout
+        mRetryView = view.findViewById(R.id.fragment_retry_stub);
+        // Get fall back layout
+        mFallBackView = view.findViewById(R.id.fragment_fall_back_stub);
     }
     
     /**
@@ -425,7 +432,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         //    activity = mainActivity;
         
         if ( null != activity) {
-            activity.showLoading(false);
             activity.onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         } else {
             Log.w(TAG, "RESTART ALL FRAGMENTS - ERROR : Activity is NULL");
@@ -511,7 +517,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     }
 
     protected final void triggerContentEvent(final BaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
-        showFragmentLoading(false);
+        showFragmentLoading();
         sendRequest(helper, args, responseCallback);
     }
 
@@ -621,21 +627,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         } catch (NullPointerException e) {
             Log.w(TAG, "ON HANDLE ERROR: The Message is null: " + e.getMessage());
         }
-
-
-        /*
-         * TODO: finish to distinguish between errors else if (event.errorCode.isServerError()) {
-         * dialog = DialogGeneric.createServerErrorDialog(MyActivity.this, new OnClickListener() {
-         * 
-         * @Override public void onClick(View v) { showLoadingInfo();
-         * EventManager.getSingleton().triggerRequestEvent(event.request); dialog.dismiss(); } },
-         * false); dialog.show(); return; } else if (event.errorCode.isClientError()) { dialog =
-         * DialogGeneric.createClientErrorDialog( MyActivity.this, new OnClickListener() {
-         * 
-         * @Override public void onClick(View v) { showLoadingInfo();
-         * EventManager.getSingleton().triggerRequestEvent(event.request); dialog.dismiss(); } },
-         * false); dialog.show(); return; }
-         */
     }
 
 
@@ -737,7 +728,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     }
 
     public void setActivity(BaseActivity activity) {
-        this.mainActivity = activity;
+        mainActivity = activity;
     }   
     
     /**
@@ -852,6 +843,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * @author sergiopereira
      */
     public void gotoOldCheckoutMethod(BaseActivity activity, String email, String error){
+        Log.w(TAG, "WARNING: GOTO WEB CHECKOUT");
         TrackerDelegator.trackNativeCheckoutError(activity, email, error);
         // Warning user
         Toast.makeText(getBaseActivity(), getString(R.string.error_please_try_again), Toast.LENGTH_LONG).show();
@@ -867,7 +859,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     
     /**
      * Method used to remove all native checkout entries from the back stack on the Fragment Controller
-     * TODO: Updated this method if you add a new native checkout step
+     * Note: Updated this method if you add a new native checkout step
      * @author sergiopereira 
      */
     protected void removeNativeCheckoutFromBackStack(){
@@ -907,50 +899,130 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 //            }
 //        }
     }
-
-    /*-public void delayShowContent(Runnable runnable) {
-        Handler handler = new Handler();
-        handler.postDelayed(runnable, 2000);
-    }*/
-
-    protected void showFragmentContentContainer() {
-        if (processFragmentShow) {
-            Log.d(getTag(), "Showing the content container");
-            // setVisibility(errorView, false);
-            setVisibility(emptyView, false);
-            hideLoadingInfo();
-            setVisibility(contentContainer, true);
-        }
-    }
-
-    protected void showFragmentLoading(boolean fromCheckout) {
-        // setVisibility(errorView, false);
-        setVisibility(emptyView, false);
-        showLoadingInfo();
-        if (!fromCheckout) {
-            setVisibility(contentContainer, false);
-        }
-    }
     
-    protected void showFragmentEmpty() {
-        setVisibility(emptyView, true);
-        if (processFragmentShow) {
-            hideLoadingInfo();
-        }
-        setVisibility(contentContainer, false);
+    /**
+     * ########### ROOT LAYOUT ########### 
+     */
+    
+    /**
+     * Validate if is to inflate a fragment layout into root layout
+     * @return true/false
+     * @author sergiopereira
+     */
+    private boolean hasLayoutToInflate(){
+        return (mInflateLayoutResId > NO_INFLATE_LAYOUT) ? true : false;
     }
 
     /**
-     * Hides the loading screen that appears on the front of the activity while it waits for the
+     * Show the content fragment from the root layout
+     */
+    protected void showFragmentContentContainer() {
+        setVisibility(mContentView, true);
+        setVisibility(mEmptyView, false);
+        setVisibility(mRetryView, false);
+        setVisibility(mFallBackView, false);
+        hideLoadingInfo(mLoadingView);
+    }
+
+    /**
+     * Show the retry view from the root layout
+     * @param listener button
+     * @author sergiopereira
+     */
+    protected void showFragmentRetry(OnClickListener listener) {
+        setVisibility(mContentView, false);
+        setVisibility(mEmptyView, false);
+        hideLoadingInfo(mLoadingView);
+        setVisibility(mFallBackView, false);
+        setVisibility(mRetryView, true);
+        // Set view
+        try {
+            ((Button) getView().findViewById(R.id.fragment_root_retry_button)).setOnClickListener(listener);
+        } catch (NullPointerException e) {
+            Log.w(TAG, "WARNING NPE ON SHOW RETRY LAYOUT");
+        }
+    }
+    
+    /**
+     * Show the loading view from the root layout
+     */
+    protected void showFragmentLoading() {
+        setVisibility(mContentView, false);
+        setVisibility(mEmptyView, false);
+        setVisibility(mRetryView, false);
+        setVisibility(mFallBackView, false);
+        showLoadingInfo(mLoadingView);
+    }
+    
+    /**
+     * Show the empty view from the root layout
+     * @param string id
+     * @param drawable id
+     */
+    protected void showFragmentEmpty(int emptyStringResId, int emptyDrawableResId) {
+        setVisibility(mContentView, false);
+        setVisibility(mRetryView, false);
+        hideLoadingInfo(mLoadingView);
+        setVisibility(mFallBackView, false);
+        setVisibility(mEmptyView, true);
+        // Set view
+        try {
+            ((ImageView) getView().findViewById(R.id.fragment_root_empty_image)).setImageResource(emptyDrawableResId);
+            ((TextView) getView().findViewById(R.id.fragment_root_empty_text)).setText(getString(emptyStringResId));
+        } catch (NullPointerException e) {
+            Log.w(TAG, "WARNING NPE ON SHOW EMPTY LAYOUT");
+        }
+    }
+    
+    /**
+     * Hide all root views
+     */
+    protected void hideFragmentRootViews() {
+        setVisibility(mContentView, false);
+        setVisibility(mEmptyView, false);
+        hideLoadingInfo(mLoadingView);
+        setVisibility(mRetryView, false);
+        setVisibility(mFallBackView, false);
+    }
+
+    /**
+     * Show the fall back view from the root layout
+     */
+    protected void showFragmentFallBack() {
+        setVisibility(mContentView, false);
+        setVisibility(mEmptyView, false);
+        hideLoadingInfo(mLoadingView);
+        setVisibility(mRetryView, false);
+        setVisibility(mFallBackView, true);
+    }
+
+    /**
+     * Hides the loading screen that appears on the front of the fragmetn while it waits for the
      * data to arrive from the server
      */
-    private void hideLoadingInfo() {
-        Log.d(getTag(), "Hiding loading info");
-        if (loadingBarView != null) {
-            loadingBarView.stopRendering();
+    private void hideLoadingInfo(View mLoadingView) {
+        Log.w(TAG, "HIDDING LAODING LAYOUT");
+        // Set view
+        try {
+            ((LoadingBarView) getView().findViewById(R.id.fragment_root_loading_gif)).stopRendering();
+        } catch (NullPointerException e) {
+            Log.w(TAG, "WARNING NPE ON SHOW LOADING LAYOUT");
         }
-        if (loadingBarContainer != null) {
-            loadingBarContainer.setVisibility(View.GONE);
+        setVisibility(mLoadingView, false);
+    }
+    
+    /**
+     * Shows the loading screen that appears on the front of the fragmetn while it waits for the
+     * data to arrive from the server
+     */
+    private final void showLoadingInfo(View mLoadingView) {
+        Log.w(TAG, "SHOWING LAODING LAYOUT");
+        setVisibility(mLoadingView, true);
+        // Set view
+        try {
+            ((LoadingBarView) getView().findViewById(R.id.fragment_root_loading_gif)).startRendering();
+        } catch (NullPointerException e) {
+            Log.w(TAG, "WARNING NPE ON SHOW LOADING LAYOUT");
         }
     }
 
@@ -968,21 +1040,17 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         getBaseActivity().dismissProgress();
     }
 
+    /**
+     * Set the visibility
+     * @param view
+     * @param show
+     */
     private static void setVisibility(View view, boolean show) {
-        if (view != null) {
-            view.setVisibility(show ? View.VISIBLE : View.GONE);
-        }
+        if (view != null) view.setVisibility(show ? View.VISIBLE : View.GONE);
     }
+    
+    /**
+     * ########### NEXT ########### 
+     */
 
-    private final void showLoadingInfo() {
-        Log.d(getTag(), "Showing loading info");
-        if (loadingBarContainer != null) {
-            loadingBarContainer.setVisibility(View.VISIBLE);
-        } else {
-            Log.w(getTag(), "Did not find loading bar container, check layout!");
-        }
-        if (loadingBarView != null) {
-            loadingBarView.startRendering();
-        }
-    }
 }

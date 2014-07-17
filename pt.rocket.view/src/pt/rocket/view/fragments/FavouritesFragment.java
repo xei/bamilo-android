@@ -83,10 +83,8 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
                 EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.Favourite,
                 R.layout.favourites,
-                true,
                 R.string.favourites,
                 WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-        setEmptyView(R.string.favourite_no_favourites, R.drawable.img_nofavourites);
     }
     
     /**
@@ -112,11 +110,19 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         setRetainInstance(true);
     }
 
+//    /*
+//     * (non-Javadoc)
+//     * @see pt.rocket.view.fragments.BaseFragment#onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle)
+//     */
+//    @Override
+//    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+//        Log.i(TAG, "ON CREATE VIEW");
+//        return inflater.inflate(R.layout.favourites, container, false);
+//    }
+    
     /*
      * (non-Javadoc)
-     * 
-     * @see pt.rocket.view.fragments.BaseFragment#onViewCreated(android.view.View,
-     * android.os.Bundle)
+     * @see pt.rocket.view.fragments.BaseFragment#onViewCreated(android.view.View, android.os.Bundle)
      */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -135,7 +141,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
             showActivityProgress();
         } else {
             // show Loading View
-            showFragmentLoading(false);
+            showFragmentLoading();
             // Get favourites
             Log.i(TAG, "LOAD FAVOURITE ITEMS");
             new GetFavouriteHelper((IResponseCallback) this);
@@ -218,7 +224,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
     private void showEmpty() {
         getBaseActivity().showWarningVariation(false);
         mAddAllToCartButton.setVisibility(View.GONE);
-        showFragmentEmpty();
+        showFragmentEmpty(R.string.favourite_no_favourites, R.drawable.img_nofavourites);
     }
     
 
@@ -703,9 +709,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         // Update adapter
         mFavouritesAdapter.notifyDataSetChanged();
         // Validate current state
-        if (mFavourites.isEmpty()) {
-            showFragmentEmpty();
-        }
+        if (mFavourites.isEmpty()) showFragmentEmpty(R.string.favourite_no_favourites, R.drawable.img_nofavourites);
         // Dismiss
         hideActivityProgress();
     }

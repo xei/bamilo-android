@@ -63,13 +63,13 @@ import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -127,7 +127,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
 
     private Button mAddToCartButton;
 
-    private ViewGroup mDetailsContainer;
+    //private ViewGroup mDetailsContainer;
 
     private ViewGroup mVarianceContainer;
 
@@ -195,7 +195,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
     private static ProductDetailsActivityFragment mProductDetailsActivityFragment;
 
     boolean isAddingProductToCart = false;
-    private String mLastSelectedVariance;
+    //private String mLastSelectedVariance;
     private ArrayList<String> variations;
 
     private String mDeepLinkSimpleSize;
@@ -209,7 +209,6 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
                 EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.Products,
                 R.layout.productdetailsnew_fragments,
-                true,
                 0,
                 WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
     }
@@ -317,12 +316,12 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
         mNavigationSource = bundle.getInt(ConstantsIntentExtra.NAVIGATION_SOURCE, -1);
         mNavigationPath = bundle.getString(ConstantsIntentExtra.NAVIGATION_PATH);
 
-        // Title was set on Catalog
-        String title = bundle.getString(ConstantsIntentExtra.CONTENT_TITLE);
-        if (!TextUtils.isEmpty(title)) {
-            Log.e(TAG, "setting title");
-            getBaseActivity().setTitle(title);
-        }
+//        // Title was set on Catalog
+//        String title = bundle.getString(ConstantsIntentExtra.CONTENT_TITLE);
+//        if (!TextUtils.isEmpty(title)) {
+//            Log.e(TAG, "setting title");
+//            getBaseActivity().setTitle(title);
+//        }
 
         // Validate the current product
         mCompleteProduct = JumiaApplication.INSTANCE.getCurrentProduct();
@@ -411,61 +410,61 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
             mNavigationPath = bundle.getString(ConstantsIntentExtra.NAVIGATION_PATH);
             mBeginRequestMillis = System.currentTimeMillis();
             triggerContentEvent(new GetSearchProductHelper(), bundle, responseCallback);
-            // ((BaseActivity) getActivity()).setProcessShow(false); 
+            // ((BaseActivity) getActivity()).setProcessShow(false);
             return true;
         }
         return false;
     }
 
-    private void releaseVars() {
-        mContext = null;
-        mDialogAddedToCart = null;
-        dialogListFragment = null;
-        mCompleteProduct = null;
+//    private void releaseVars() {
+//        mContext = null;
+//        mDialogAddedToCart = null;
+//        dialogListFragment = null;
+//        mCompleteProduct = null;
+//
+//        mAddToCartButton = null;
+//
+//        //mDetailsContainer = null;
+//
+//        mVarianceContainer = null;
+//
+//        mCompleteProductUrl = null;
+//
+//        mProductRatingContainer = null;
+//
+//        mProductRating = null;
+//
+//        mProductRatingCount = null;
+//
+//        mCallToOrderButton = null;
+//
+//        mVarianceButton = null;
+//
+//        mVariantNormPrice = null;
+//
+//        mVariantSpecPrice = null;
+//
+//        mVarianceText = null;
+//        mProductBasicInfoContainer = null;
+//
+//        mSimpleVariants = null;
+//        mSimpleVariantsAvailable = null;
+//        mVariantChooseError = null;
+//
+//        mVariantPriceContainer = null;
+//        mNavigationPath = null;
+//
+//        loadingRating = null;
+//
+//    }
 
-        mAddToCartButton = null;
-
-        mDetailsContainer = null;
-
-        mVarianceContainer = null;
-
-        mCompleteProductUrl = null;
-
-        mProductRatingContainer = null;
-
-        mProductRating = null;
-
-        mProductRatingCount = null;
-
-        mCallToOrderButton = null;
-
-        mVarianceButton = null;
-
-        mVariantNormPrice = null;
-
-        mVariantSpecPrice = null;
-
-        mVarianceText = null;
-        mProductBasicInfoContainer = null;
-
-        mSimpleVariants = null;
-        mSimpleVariantsAvailable = null;
-        mVariantChooseError = null;
-
-        mVariantPriceContainer = null;
-        mNavigationPath = null;
-
-        loadingRating = null;
-
-    }
-
-    private void releaseFragments() {
-        productVariationsFragment = null;
-        productImagesViewPagerFragment = null;
-        productSpecificationFragment = null;
-        productBasicInfoFragment = null;
-        relatedItemsFragment = null;
-    }
+//    private void releaseFragments() {
+//        productVariationsFragment = null;
+//        productImagesViewPagerFragment = null;
+//        productSpecificationFragment = null;
+//        productBasicInfoFragment = null;
+//        relatedItemsFragment = null;
+//    }
 
     /**
      * Set the Products layout using inflate
@@ -474,7 +473,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
         if (mainView == null)
             mainView = getView();
 
-        mDetailsContainer = (ViewGroup) mainView.findViewById(R.id.details_container);
+        //mDetailsContainer = (ViewGroup) mainView.findViewById(R.id.details_container);
 
         mProductBasicInfoContainer = (ViewGroup) mainView.findViewById(R.id.product_basicinfo_container);
         mProductBasicInfoContainer.setOnClickListener(this);
@@ -535,7 +534,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
 
     private void setContentInformation() {
         Log.d(TAG, "SET DATA");
-        ((BaseActivity) getActivity()).setTitle(mCompleteProduct.getBrand() + " " + mCompleteProduct.getName());
+        // ((BaseActivity) getActivity()).setTitle(mCompleteProduct.getBrand() + " " + mCompleteProduct.getName());
         updateVariants();
         updateStockInfo();
         preselectASimpleItem();
@@ -871,7 +870,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
 //                mSelectedSimple = NO_SIMPLE_SELECTED;
 //                mLastSelectedVariance = null;
 //            } else {
-                mLastSelectedVariance = mSimpleVariants.get(mSelectedSimple);
+                //mLastSelectedVariance = mSimpleVariants.get(mSelectedSimple);
                 mVarianceButton.setText(mSimpleVariants.get(mSelectedSimple));    
 //            }
             
@@ -981,7 +980,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
         LastViewedTableHelper.insertLastViewedProduct(product);
         mCompleteProduct = product;
         mCompleteProductUrl = product.getUrl();
-        ((BaseActivity) getActivity()).setTitle(mCompleteProduct.getBrand() + " " + mCompleteProduct.getName());
+        //((BaseActivity) getActivity()).setTitle(mCompleteProduct.getBrand() + " " + mCompleteProduct.getName());
 
         // Set is favourite image
         if (FavouriteTableHelper.verifyIfFavourite(mCompleteProduct.getSku())) {
@@ -1068,7 +1067,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
 
     private void displayGallery(CompleteProduct product) {
         mCompleteProduct = product;
-        getBaseActivity().setTitle(mCompleteProduct.getBrand() + " " + mCompleteProduct.getName());
+        // getBaseActivity().setTitle(mCompleteProduct.getBrand() + " " + mCompleteProduct.getName());
 
     }
 
@@ -1251,14 +1250,13 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
     };
 
     public void onSuccessEvent(Bundle bundle) {
+       
         if(!isVisible()){
-            if(getBaseActivity() != null){
-                // getBaseActivity().setProcessShow(true);    
-            }
-            
             return;
         }
-        if (getBaseActivity() == null) return;
+        
+        if(getBaseActivity() == null) return;
+        
         getBaseActivity().handleSuccessEvent(bundle);
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         Log.d(TAG, "onSuccessEvent: type = " + eventType);
@@ -1273,14 +1271,11 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
         case SEARCH_PRODUCT:
         case GET_PRODUCT_EVENT:
             if (((CompleteProduct) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getName() == null) {
-                Toast.makeText(getActivity(), getString(R.string.product_could_not_retrieved),
-                        Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
                 getActivity().onBackPressed();
                 return;
             } else {
-                mCompleteProduct = (CompleteProduct) bundle
-                        .getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-
+                mCompleteProduct = (CompleteProduct) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
                 FragmentCommunicatorForProduct.getInstance().updateCurrentProduct(mCompleteProduct);
                 // ((BaseActivity) getActivity()).setProcessShow(true);
                 AnalyticsGoogle.get().trackLoadTiming(R.string.gproductdetail, mBeginRequestMillis);
@@ -1288,7 +1283,14 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
                 displayGallery(mCompleteProduct);
             }
 
-            showFragmentContentContainer();
+            // Waiting for the fragment comunication
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    showFragmentContentContainer();
+                }
+            }, 350);
+            
             break;
         }
     }
@@ -1395,19 +1397,16 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
 //        Log.i(TAG,
 //                "code1 loading product on position : "
 //                        + bundle.getInt(ProductDetailsActivityFragment.LOADING_PRODUCT_KEY));
-        onVariationElementSelected(bundle
-                .getInt(ProductDetailsActivityFragment.LOADING_PRODUCT_KEY));
+        onVariationElementSelected(bundle.getInt(ProductDetailsActivityFragment.LOADING_PRODUCT_KEY));
         bundle.putBoolean(LOADING_PRODUCT, true);
         FragmentCommunicatorForProduct.getInstance().notifyOthers(0, bundle);
     }
 
-    protected void fragmentManagerTransition(int container, Fragment fragment,
-            Boolean addToBackStack, Boolean animated) {
+    protected void fragmentManagerTransition(int container, Fragment fragment, Boolean addToBackStack, Boolean animated) {
         FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
         // Animations
         if (animated)
-            fragmentTransaction.setCustomAnimations(R.anim.pop_in, R.anim.pop_out, R.anim.pop_in,
-                    R.anim.pop_out);
+            fragmentTransaction.setCustomAnimations(R.anim.pop_in, R.anim.pop_out, R.anim.pop_in, R.anim.pop_out);
         // fragmentTransaction.setCustomAnimations(R.anim.slide_in_right,
         // R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
         // Replace

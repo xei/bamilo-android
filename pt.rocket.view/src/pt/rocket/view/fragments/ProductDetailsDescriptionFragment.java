@@ -23,7 +23,9 @@ import android.text.Html;
 import android.text.Spannable;
 import android.text.TextUtils;
 import android.text.style.MetricAffectingSpan;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -65,14 +67,11 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
      * Empty constructor
      */
     public ProductDetailsDescriptionFragment() {
-        super(EnumSet.noneOf(EventType.class),
+        super(EnumSet.noneOf(EventType.class), 
                 EnumSet.noneOf(EventType.class),
-                EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
-                NavigationAction.Products,
-                R.layout.product_details_description_frame,
-                false,
-                R.string.product_details_title,
-                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+                EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE), 
+                NavigationAction.Products, 
+                R.string.product_details_title, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         this.mCompleteProduct = JumiaApplication.INSTANCE.getCurrentProduct();
     }
     
@@ -102,14 +101,14 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
     /*
      * (non-Javadoc)
      * 
-     * @see pt.rocket.view.fragments.BaseFragment#onViewCreated(android.view.View,
-     * android.os.Bundle)
+     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
+     * android.view.ViewGroup, android.os.Bundle)
      */
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        Log.i(TAG, "ON VIEW CREATED");
-        mainView = view;
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+        Log.i(TAG, "ON CREATE VIEW");
+        mainView = inflater.inflate(R.layout.product_details_description_frame, container, false);
         
         mProductName = (TextView) mainView.findViewById( R.id.product_name );
         mProductResultPrice = (TextView) mainView.findViewById( R.id.product_price_result );
@@ -120,6 +119,7 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
         mProductDescriptionText = (TextView) mainView.findViewById( R.id.product_description_text );
         mProductDetailsText = (TextView) mainView.findViewById( R.id.product_details_text );
         mLoading = (RelativeLayout) mainView.findViewById(R.id.loading_specifications);
+        return mainView;
     }
 
     /*
@@ -226,7 +226,6 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
     }
     
     private void displayProductInformation(View view ) {
-        showFragmentContentContainer();
         mProductName.setText( mCompleteProduct.getBrand() + " " + mCompleteProduct.getName());
         displayPriceInformation();
         displaySpecification();

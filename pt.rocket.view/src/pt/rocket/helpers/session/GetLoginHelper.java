@@ -68,8 +68,8 @@ public class GetLoginHelper extends BaseHelper {
             e.printStackTrace();
         }
         
-        JumiaApplication.INSTANCE.CUSTOMER = new Customer(jsonUser); 
-        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, JumiaApplication.INSTANCE.CUSTOMER );
+        JumiaApplication.CUSTOMER = new Customer(jsonUser); 
+        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, JumiaApplication.CUSTOMER );
         bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextCheckoutStep(jsonObject));
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.LOGIN_EVENT);
         return bundle;

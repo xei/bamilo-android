@@ -335,7 +335,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         if (!contentEvents.contains(EventType.GET_SHOPPING_CART_ITEMS_EVENT)
                 && JumiaApplication.SHOP_ID != null
                 && JumiaApplication.INSTANCE.getCart() == null) {
-            triggerContentEvent(new GetShoppingCartItemsHelper(), null, mIResponseCallback);
+            triggerContentEventWithNoLoading(new GetShoppingCartItemsHelper(), null, mIResponseCallback);
         }
 
     }
@@ -1431,24 +1431,22 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      * @param event
      */
 
-    /*private*/ protected final void triggerContentEventWithNoLoading(final BaseHelper helper, Bundle args,
-            final IResponseCallback responseCallback) {
+    private final void triggerContentEventWithNoLoading(final BaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
         sendRequest(helper, args, responseCallback);
     }
+//
+//    private final void triggerContentEvent(final BaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
+//        showLoading(false);
+//        sendRequest(helper, args, responseCallback);
+//    }
 
-    /*private*/ protected final void triggerContentEvent(final BaseHelper helper, Bundle args,
-            final IResponseCallback responseCallback) {
-        showLoading(false);
-        sendRequest(helper, args, responseCallback);
-    }
+//    protected final void triggerContentEventProgress(final BaseHelper helper, Bundle args,
+//            final IResponseCallback responseCallback) {
+//        showProgress();
+//        sendRequest(helper, args, responseCallback);
+//    }
 
-    /*-*/protected final void triggerContentEventProgress(final BaseHelper helper, Bundle args,
-            final IResponseCallback responseCallback) {
-        showProgress();
-        sendRequest(helper, args, responseCallback);
-    }/*-*/
-
-    /*private*/public final void showLoadingInfo() {
+    private final void showLoadingInfo() {
         Log.d(getTag(), "Showing loading info");
         if (loadingBarContainer != null) {
             loadingBarContainer.setVisibility(View.VISIBLE);
@@ -1464,7 +1462,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      * Hides the loading screen that appears on the front of the activity while it waits for the
      * data to arrive from the server
      */
-    /*private*/public void hideLoadingInfo() {
+    private void hideLoadingInfo() {
         Log.d(getTag(), "Hiding loading info");
         if (loadingBarView != null) {
             loadingBarView.stopRendering();
@@ -1480,17 +1478,17 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         }
     }
 
-    /*-*/public void showError(final BaseHelper helper, final Bundle bundle,
-            final IResponseCallback responseCallback) {
-        showError(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                showWarning(false);
-                triggerContentEvent(helper, bundle, responseCallback);
-            }
-        }, false);
-    }/*-*/
+//    public void showError(final BaseHelper helper, final Bundle bundle,
+//            final IResponseCallback responseCallback) {
+//        showError(new OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//                showWarning(false);
+//                triggerContentEvent(helper, bundle, responseCallback);
+//            }
+//        }, false);
+//    }
 
     public void showLoading(boolean fromCheckout) {
         setVisibility(errorView, false);
@@ -1501,15 +1499,15 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         showLoadingInfo();
     }
 
-    /*-*/protected void showError(OnClickListener clickListener, boolean fromCheckout) {
-        Log.d(getTag(), "Showing error view");
-        hideLoadingInfo();
-        if (!fromCheckout) {
-            setVisibility(contentContainer, false);
-        }
-        setVisibility(errorView, true);
-        errorView.setOnClickListener(clickListener);
-    }/*-*/
+//    protected void showError(OnClickListener clickListener, boolean fromCheckout) {
+//        Log.d(getTag(), "Showing error view");
+//        hideLoadingInfo();
+//        if (!fromCheckout) {
+//            setVisibility(contentContainer, false);
+//        }
+//        setVisibility(errorView, true);
+//        errorView.setOnClickListener(clickListener);
+//    }
 
     public final void showContentContainer() {
         if (processShow) {

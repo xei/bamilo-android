@@ -110,8 +110,7 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
      * Empty constructor for nested fragment
      */
     public CheckoutSummaryFragment() {
-        super(IS_NESTED_FRAGMENT);
-        setLayoutId(R.layout.checkout_summary_main, false);
+        super(IS_NESTED_FRAGMENT, R.layout.checkout_summary_main);
     }
 
     /*
@@ -136,11 +135,23 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
         Log.i(TAG, "ON CREATE");
     }
 
+//    /*
+//     * (non-Javadoc)
+//     * 
+//     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
+//     * android.view.ViewGroup, android.os.Bundle)
+//     */
+//    @Override
+//    public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState) {
+//        super.onCreateView(inflater, viewGroup, savedInstanceState);
+//        Log.i(TAG, "ON CREATE VIEW");
+//        return inflater.inflate(R.layout.checkout_summary_main, viewGroup, false);
+//    }
+
     /*
      * (non-Javadoc)
      * 
-     * @see pt.rocket.view.fragments.BaseFragment#onViewCreated(android.view.View,
-     * android.os.Bundle)
+     * @see android.support.v4.app.Fragment#onViewCreated(android.view.View, android.os.Bundle)
      */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {

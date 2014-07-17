@@ -121,7 +121,6 @@ public class SessionRegisterFragment extends BaseFragment {
                 EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.MyAccount,
                 R.layout.register,
-                false,
                 R.string.register_title,
                 WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
     }
@@ -147,6 +146,20 @@ public class SessionRegisterFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
     }
+
+//    /*
+//     * (non-Javadoc)
+//     * 
+//     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
+//     * android.view.ViewGroup, android.os.Bundle)
+//     */
+//    @Override
+//    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+//        super.onCreateView(inflater, container, savedInstanceState);
+//        Log.i(TAG, "ON CREATE VIEW");
+//        View view = inflater.inflate(R.layout.register, container, false);
+//        return view;
+//    }
 
     /*
      * (non-Javadoc)
@@ -679,9 +692,6 @@ public class SessionRegisterFragment extends BaseFragment {
         if (getBaseActivity().handleErrorEvent(bundle)) {
             return true;
         }
-
-        // showFragmentContentContainer();
-
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
 

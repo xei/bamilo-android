@@ -78,10 +78,6 @@ public class HomeFragment extends BaseFragment implements IResponseCallback {
     
     private String mCurrentMd5Collection;
 
-    private View mLoadingView;
-
-    private View mFallBackView;
-
     private View mMainContent;
     
     private int mPagerSavedPosition = 0;
@@ -104,6 +100,7 @@ public class HomeFragment extends BaseFragment implements IResponseCallback {
                 EnumSet.noneOf(EventType.class),
                 EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.Home, 
+                R.layout.home_fragment_main, 
                 0, 
                 WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
@@ -134,18 +131,18 @@ public class HomeFragment extends BaseFragment implements IResponseCallback {
         if(savedInstanceState != null) mPagerSavedPosition = savedInstanceState.getInt(PAGER_POSITION_KEY);
     }
     
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-     * android.view.ViewGroup, android.os.Bundle)
-     */
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState) {
-        super.onCreateView(inflater, viewGroup, savedInstanceState);
-        Log.i(TAG, "ON CREATE VIEW");
-        return inflater.inflate(R.layout.home_fragment_main, viewGroup, false);
-    }
+//    /*
+//     * (non-Javadoc)
+//     * 
+//     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
+//     * android.view.ViewGroup, android.os.Bundle)
+//     */
+//    @Override
+//    public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState) {
+//        super.onCreateView(inflater, viewGroup, savedInstanceState);
+//        Log.i(TAG, "ON CREATE VIEW");
+//        return inflater.inflate(R.layout.home_fragment_main, viewGroup, false);
+//    }
     
     /*
      * (non-Javadoc)
@@ -162,10 +159,6 @@ public class HomeFragment extends BaseFragment implements IResponseCallback {
         // Get tab pager
         mHomePagerTabStrip = (SlidingTabLayout) view.findViewById(R.id.home_pager_tab);
         mHomePagerTabStrip.setCustomTabView(R.layout.tab_simple_item, R.id.tab);
-        // Get loading view
-        mLoadingView = view.findViewById(R.id.loading_bar);
-        // Get fall back
-        mFallBackView = view.findViewById(R.id.home_fallback_content);
         
         /**
          * TODO: Validate this method is necessary to recover the app from strange behavior
@@ -353,11 +346,7 @@ public class HomeFragment extends BaseFragment implements IResponseCallback {
      * @author sergiopereira
      */
     private void showLoading(){
-        mMainContent.setVisibility(View.GONE);
-        mHomePager.setVisibility(View.GONE);
-        mHomePagerTabStrip.setVisibility(View.GONE);
-        mFallBackView.setVisibility(View.GONE);
-        mLoadingView.setVisibility(View.VISIBLE);
+        showFragmentLoading();
     }
     
     /**
@@ -368,10 +357,7 @@ public class HomeFragment extends BaseFragment implements IResponseCallback {
         mMainContent.setVisibility(View.VISIBLE);
         mHomePager.setVisibility(View.VISIBLE);
         mHomePagerTabStrip.setVisibility(View.VISIBLE);
-        mLoadingView.setVisibility(View.GONE);
-        mFallBackView.setVisibility(View.GONE);
-        //getBaseActivity().setProcessShow(true);
-        getBaseActivity().showContentContainer();
+        showFragmentContentContainer();
     }
     
     
@@ -402,11 +388,7 @@ public class HomeFragment extends BaseFragment implements IResponseCallback {
     private void showLayoutFallback() {
         Log.i(TAG, "ON SHOW FALLBACK");
         
-        mMainContent.setVisibility(View.GONE);
-        mHomePager.setVisibility(View.GONE);
-        mHomePagerTabStrip.setVisibility(View.GONE);
-        mLoadingView.setVisibility(View.GONE);
-        mFallBackView.setVisibility(View.VISIBLE);
+        showFragmentFallBack();
         
         ImageView mapBg = (ImageView) getView().findViewById(R.id.home_fallback_country_map);
         SharedPreferences sharedPrefs = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
@@ -433,8 +415,6 @@ public class HomeFragment extends BaseFragment implements IResponseCallback {
         }
 
         fallbackBest.setSelected(true);
-        getBaseActivity().setProcessShow(true);
-        getBaseActivity().showContentContainer();
     }
     
     
@@ -556,8 +536,7 @@ public class HomeFragment extends BaseFragment implements IResponseCallback {
         case GET_UPDATED_TEASERS_EVENT:
             Log.d(TAG, "ON ERROR RESPONSE: DISCARDED RECEIVED GET_UPDATED_TEASERS_EVENT");
             // Discarded the error response
-            getBaseActivity().setProcessShow(true);
-            getBaseActivity().showContentContainer();
+            showFragmentContentContainer();
             break;
         case GET_TEASERS_EVENT:
             Log.i(TAG, "ON ERROR RESPONSE: GET_TEASERS_EVENT");

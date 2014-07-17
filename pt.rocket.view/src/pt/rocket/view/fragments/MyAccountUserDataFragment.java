@@ -78,7 +78,6 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
                 EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.MyAccount,
                 R.layout.my_account_user_data_fragment,
-                false,
                 R.string.personal_data_title,
                 WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
     }    
@@ -106,6 +105,23 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
         setRetainInstance(true);
     }
 
+//    /*
+//     * (non-Javadoc)
+//     * 
+//     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
+//     * android.view.ViewGroup, android.os.Bundle)
+//     */
+//    @Override
+//    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+//        super.onCreateView(inflater, container, savedInstanceState);
+//        Log.i(TAG, "ON CREATE VIEW");
+//        
+//        mainView = inflater.inflate(R.layout.my_account_user_data_fragment, container, false);
+//        setAppContentLayout();
+//        init();
+//        return mainView;
+//    }
+
     /*
      * (non-Javadoc)
      * 
@@ -123,13 +139,7 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
     }
 
     private void init() {
-        
-        /**
-         * TRIGGERS
-         * @author sergiopereira
-         */
         triggerCustomer();
-        //triggerContentEvent(EventType.GET_CUSTOMER);
     }
 
     /*
@@ -236,16 +246,11 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
         values.put("Alice_Module_Customer_Model_PasswordForm[email]", emailText.getText()
                 .toString());
         
-        /**
-         * TRIGGERS
-         * @author sergiopereira
-         */
+
         triggerChangePass(values);
-        //triggerContentEvent(new ChangePasswordEvent(values));
         
         displayErrorHint(null);
-        
-//        mCallbackMyAccountUserDataFragment.sendValuesToActivity(0, values);
+
     }
 
     private void displayErrorHint( String hint ) {
@@ -276,7 +281,7 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
             return true;
         case GET_CUSTOMER:
             Customer customer = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-            JumiaApplication.INSTANCE.CUSTOMER = customer;
+            JumiaApplication.CUSTOMER = customer;
             Log.d(TAG, "CUSTOMER: " + customer.getLastName() + " " + customer.getFirstName() + " " + customer.getEmail());
             if ( null != lastNameText ) {
                 lastNameText.setText(customer.getLastName());

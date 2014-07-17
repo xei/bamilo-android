@@ -108,7 +108,6 @@ public class CheckoutWebFragment extends BaseFragment {
                 EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.Unknown,
                 R.layout.checkoutweb,
-                false,
                 0, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         this.setRetainInstance(true);
     }
@@ -176,6 +175,30 @@ public class CheckoutWebFragment extends BaseFragment {
         }
     };
 
+//    /*
+//     * (non-Javadoc)
+//     * 
+//     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
+//     * android.view.ViewGroup, android.os.Bundle)
+//     */
+//    @Override
+//    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+//        super.onCreateView(inflater, container, savedInstanceState);
+//        Log.i(TAG, "ON CREATE VIEW");
+//        View view = inflater.inflate(R.layout.checkoutweb, container, false);
+//        
+//        webview = (WebView) view.findViewById(R.id.webview);
+////        webview = new WebView(getActivity());
+////        mWebContainer.addView(webview);
+//        String user_id = "";
+//        if(JumiaApplication.INSTANCE.CUSTOMER != null && JumiaApplication.INSTANCE.CUSTOMER.getIdAsString() != null){
+//            user_id = JumiaApplication.INSTANCE.CUSTOMER.getIdAsString();
+//        }
+//        AnalyticsGoogle.get().trackCheckoutStart(getBaseActivity(), user_id);
+//        return view;    
+//    }
+
+    
     /*
      * (non-Javadoc)
      * 
@@ -308,7 +331,7 @@ public class CheckoutWebFragment extends BaseFragment {
     }
     
     private void startCheckout() {
-        showFragmentLoading(true);
+        showFragmentLoading();
         webview.clearView();
         if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1){
             webview.loadUrl("about:blank");
@@ -438,11 +461,9 @@ public class CheckoutWebFragment extends BaseFragment {
                 Log.d( TAG ,"onPageFinished: page was saved failed page" );
                 wasLoadingErrorPage = true;
             } else if ( isRequestedPage ) {
-                if (getActivity() != null) {
-                    showFragmentContentContainer();
-                }
+                showFragmentContentContainer();
                 isRequestedPage = false;
-            } else if (getActivity() != null) {
+            } else {
                 showFragmentContentContainer();
             }
             
@@ -483,9 +504,7 @@ public class CheckoutWebFragment extends BaseFragment {
                 return;
             }
             
-            if (getActivity() != null) {
-                showFragmentLoading(true);
-            }
+            showFragmentLoading();
             
             if (url.contains("checkout/success")) {
                 view.getSettings().setBlockNetworkImage(true);

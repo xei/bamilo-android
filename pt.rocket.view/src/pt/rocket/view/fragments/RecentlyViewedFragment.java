@@ -81,10 +81,8 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
                 EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.RecentlyView,
                 R.layout.recentlyviewed,
-                true,
                 R.string.recently_viewed,
                 WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-        setEmptyView(R.string.recentlyview_no_searches, R.drawable.img_norecentview);
     }
 
     /**
@@ -110,11 +108,21 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
         setRetainInstance(true);
     }
 
+//    /*
+//     * (non-Javadoc)
+//     * 
+//     * @see pt.rocket.view.fragments.BaseFragment#onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle)
+//     */
+//    @Override
+//    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+//        Log.i(TAG, "ON CREATE VIEW");
+//        return inflater.inflate(R.layout.recentlyviewed, container, false);
+//    }
+
     /*
      * (non-Javadoc)
      * 
-     * @see pt.rocket.view.fragments.BaseFragment#onViewCreated(android.view.View,
-     * android.os.Bundle)
+     * @see pt.rocket.view.fragments.BaseFragment#onViewCreated(android.view.View, android.os.Bundle)
      */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -128,7 +136,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
 
         // Get RecentlyViewed
         Log.i(TAG, "LOAD LAST VIEWED ITEMS");
-        showFragmentLoading(false);
+        showFragmentLoading();
         new GetRecentlyViewedHelper((IResponseCallback) this);
     }
 
@@ -205,7 +213,8 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
             showFragmentContentContainer();
         } else {
             Log.i(TAG, "ON SHOW IS EMPTY");
-            showFragmentEmpty();
+            showFragmentEmpty(R.string.recentlyview_no_searches, R.drawable.img_norecentview); // XXX
+            mClearAllButton.setVisibility(View.GONE);
         }
     }
 
@@ -579,7 +588,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
         mRecentlyViewedAdapter.notifyDataSetChanged();
         // Validate current state
         if (mRecentlyViewed.isEmpty()) {
-            showFragmentEmpty();
+            showFragmentEmpty(R.string.recentlyview_no_searches, R.drawable.img_norecentview);
             mClearAllButton.setVisibility(View.GONE);
         }
         // Dismiss

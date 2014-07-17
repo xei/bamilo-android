@@ -82,7 +82,6 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
                 EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.Checkout,
                 R.layout.checkout_thanks,
-                false,
                 ConstantsCheckout.CHECKOUT_THANKS,
                 WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         this.setRetainInstance(true);
@@ -109,6 +108,20 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
     }
+
+//    /*
+//     * (non-Javadoc)
+//     * 
+//     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
+//     * android.view.ViewGroup, android.os.Bundle)
+//     */
+//    @Override
+//    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+//        super.onCreateView(inflater, container, savedInstanceState);
+//        Log.i(TAG, "ON CREATE VIEW");
+//        View view = inflater.inflate(R.layout.checkout_thanks, container, false);
+//        return view;
+//    }
 
     /*
      * (non-Javadoc)

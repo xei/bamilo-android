@@ -73,7 +73,6 @@ public class SessionForgotPasswordFragment extends BaseFragment {
                 EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.MyAccount,
                 R.layout.forgtopassword,
-                false,
                 R.string.forgotpass_header,
                 WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
         this.setRetainInstance(true);
@@ -101,6 +100,20 @@ public class SessionForgotPasswordFragment extends BaseFragment {
         Log.i(TAG, "ON CREATE");
         dynamicForm = null;
     }
+
+//    /*
+//     * (non-Javadoc)
+//     * 
+//     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
+//     * android.view.ViewGroup, android.os.Bundle)
+//     */
+//    @Override
+//    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+//        super.onCreateView(inflater, container, savedInstanceState);
+//        Log.i(TAG, "ON CREATE VIEW");
+//        View view = inflater.inflate(R.layout.forgtopassword, container, false);
+//        return view;
+//    }
 
     /*
      * (non-Javadoc)

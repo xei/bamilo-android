@@ -16,7 +16,9 @@ import pt.rocket.utils.NavigationAction;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -54,14 +56,11 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
      * Empty constructor
      */
     public MyAccountFragment() {
-        super(EnumSet.noneOf(EventType.class),
+        super(EnumSet.noneOf(EventType.class), 
                 EnumSet.noneOf(EventType.class),
-                EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
-                NavigationAction.MyAccount,
-                R.layout.myaccount_fragment,
-                false,
-                R.string.account_name,
-                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+                EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE), 
+                NavigationAction.MyAccount, 
+                R.string.account_name, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
     
     /*
@@ -92,15 +91,16 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
     /*
      * (non-Javadoc)
      * 
-     * @see pt.rocket.view.fragments.BaseFragment#onViewCreated(android.view.View,
-     * android.os.Bundle)
+     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
+     * android.view.ViewGroup, android.os.Bundle)
      */
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        Log.i(TAG, "ON VIEW CREATED");
-        
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+        Log.i(TAG, "ON CREATE VIEW");
+        View view = inflater.inflate(R.layout.myaccount_fragment, container, false);
         showMyAccount(view);
+        return view;
     }
 
     /*
