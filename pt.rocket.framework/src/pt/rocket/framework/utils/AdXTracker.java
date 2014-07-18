@@ -492,14 +492,12 @@ public class AdXTracker {
 		AdXConnect.getAdXConnectEventInstance(context, context.getString(R.string.xdeeplinklaunch), value, "");
 	}
 	
-	
-	
 	/**
 	 * Append extra data for respective event
 	 * {"app_version":"2.0","user_id":"12345","sku":"FE109AA68YMTNGAMZ-38529","display_size":"4.3","shop_country":"Nigeria"}
 	 * @author sergiopereira
 	 */
-	private static void appendExtraDataForEvent(Context context, LinkedHashMap<String, Object> values){
+	private static void appendExtraDataForEvent(Context context, LinkedHashMap<String, Object> values) {
 		values.put("app_version", getAppVersion(context));
 		values.put("display_size", WindowHelper.getScreenSizeInches(context).toString());
 	}
@@ -524,6 +522,24 @@ public class AdXTracker {
      * Method used to check if is the first install
      * @param context
      * @return true/false
+     * 
+     * ##### Example #####
+     * // # First install
+     * // Connection from Device 1364028d54fbcd32g7r2o5he38kpthbp / Android ID 1364028d54fbcd32 62.28.165.146 for client ID Jma390Sq104mxe741ksJ0	
+     * // Event received from device with no download record	
+     * // Google Advertising ID not supplied - Google Play Services may not be linked correctly in your App62.28.165.146	
+     * // Connection from Device 1364028d54fbcd32 (GAID= IMEI=1364028d54fbcd32g7r2o5he38kpthbp) 62.28.165.146 for client ID Jma390Sq104mxe741ksJ0	
+     * // Found record of App	
+     * // Tracked device as Mob :: Brand - New install
+     * 	
+     * // # Second install	
+     * // Google Advertising ID not supplied - Google Play Services may not be linked correctly in your App62.28.165.146	
+     * // Connection from Device 1364028d54fbcd32 (GAID= IMEI=1364028d54fbcd32g7r2o5he38kpthbp) 62.28.165.146 for client ID Jma390Sq104mxe741ksJ0	
+     * // Found record of App	
+     * // Install connection count for device is 1	
+     * // Tracked device as Mob :: Brand - Not first install so not counted as download	
+     * // Connection from Device 1364028d54fbcd32g7r2o5he38kpthbp / Android ID 1364028d54fbcd32 62.28.165.146 for client ID Jma390Sq104mxe741ksJ0
+     * #################
      */
     private static boolean isFreshInstall(Context context) {
         boolean freshInstall = false;
@@ -548,6 +564,8 @@ public class AdXTracker {
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putLong(Darwin.INSTALL_TIME_PREFERENCE, installtime);
         editor.commit();
+        Log.i(TAG, "ADX FIRST INSTALL: " + freshInstall);
         return freshInstall;
     }
+
 }
