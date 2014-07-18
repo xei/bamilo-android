@@ -655,7 +655,7 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, O
                 public void handleMessage(android.os.Message msg) {
                     // only update if is not detected a fling (fast scrolling) on gridview
                     if (!isScrolling) {
-                        updateTimer(mTimer, mTimerContainer, mButtonBuy, mOfferEnded, mName, mImage, mRemaingTime);
+                        updateTimer(mTimer, mTimerContainer, mButtonBuy, mOfferEnded, mName, mImage, mRemaingTime, mImageContainer);
                     }
                     this.sendEmptyMessageDelayed(0, 1000);
                 };
@@ -794,7 +794,7 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, O
             if(remainingTime > 0) view.mHandler.sendEmptyMessageDelayed(0, 1000);
 
             // update Timer
-            updateTimer(view.mTimer, view.mTimerContainer, view.mButtonBuy, view.mOfferEnded, view.mName, view.mImage, remainingTime);
+            updateTimer(view.mTimer, view.mTimerContainer, view.mButtonBuy, view.mOfferEnded, view.mName, view.mImage, remainingTime, view.mImageContainer);
         }
 
         /**
@@ -811,7 +811,7 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, O
          * @param image
          * @param remainingTime
          */
-        private void updateTimer(TextView timer, View timerContainer, View buttonBuy, View offerEnded, View name, View image, int remainingTime) {
+        private void updateTimer(TextView timer, View timerContainer, View buttonBuy, View offerEnded, View name, View image, int remainingTime, View imageContainer) {
             Log.d(TAG, "updateTimer");
             if (remainingTime > 0) {
                 Log.d(TAG, "Product with remainingTime");
@@ -830,7 +830,7 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, O
                 // show "Offer Ended" and disable product
                 } else {
                     Log.d(TAG, "Product expired!");
-                    showOfferEnded(timerContainer, buttonBuy, offerEnded, timer, name, image);
+                    showOfferEnded(timerContainer, buttonBuy, offerEnded, timer, name, image, imageContainer);
                 }
             // show product normally without timers
             } else {
@@ -857,12 +857,27 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, O
             Log.d(TAG, "Remaining seconds: " + remainingSeconds);
 
             if (remainingSeconds > 0) {
-                // Format remaingSeconds to "hh:mm:ss"
+                // Format remaingSeconds to "dd:hh:mm:ss"
+                int days = remainingSeconds / (24 * 3600);
+                remainingSeconds %= (24 * 3600);
                 int hours = remainingSeconds / 3600;
-                int minutes = (remainingSeconds % 3600) / 60;
-                int seconds = remainingSeconds % 60;
+                remainingSeconds %= 3600;
+                int minutes = remainingSeconds / 60;
+                remainingSeconds %= 60;
+                int seconds = remainingSeconds;
 
                 StringBuilder time = new StringBuilder();
+
+                // Only add days if more than 1 day
+                // Format days with 2 or more digits
+                if (days > 0) {
+                    if (days < 10) {
+                        time.append(twoDigitString(days));
+                    } else {
+                        time.append(days);
+                    }
+                    time.append(":");
+                }
                 time.append(twoDigitString(hours));
                 time.append(":");
                 time.append(twoDigitString(minutes));
@@ -901,7 +916,7 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, O
          * @param name
          * @param image
          */
-        private void showOfferEnded(View timerContainer, View buttonBuy, View offerEnded, TextView timer, View name, View image) {
+        private void showOfferEnded(View timerContainer, View buttonBuy, View offerEnded, TextView timer, View name, View image, View imageContainer) {
             timerContainer.setVisibility(View.VISIBLE);
             buttonBuy.setEnabled(false);
             offerEnded.setVisibility(View.VISIBLE);
@@ -912,6 +927,7 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, O
             name.setOnClickListener(null);
             image.setOnClickListener(null);
             buttonBuy.setOnClickListener(null);
+            imageContainer.setOnClickListener(null);
 
             // Set product image as defocused
             UIUtils.setAlpha(image, 0.5F);

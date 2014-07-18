@@ -32,6 +32,7 @@
             android:drawableLeft="@drawable/ico_clock"
             android:drawablePadding="6.67dp"
             android:fontFamily="roboto_reg"
+            android:includeFontPadding="false"
             android:text="Ends in:  "
             android:textColor="#666"
             android:textSize="@dimen/text_xs" />
@@ -43,6 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="roboto_reg"
+            android:includeFontPadding="false"
             android:textColor="#cc0000"
             android:textSize="@dimen/text_xs" />
     </LinearLayout>
