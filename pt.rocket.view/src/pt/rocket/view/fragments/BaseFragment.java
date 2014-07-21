@@ -513,77 +513,19 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      */
 
     protected final void triggerContentEventWithNoLoading(final BaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
-        sendRequest(helper, args, responseCallback);
+        JumiaApplication.INSTANCE.sendRequest(helper, args, responseCallback);
     }
 
     protected final void triggerContentEvent(final BaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
         showFragmentLoading();
-        sendRequest(helper, args, responseCallback);
+        JumiaApplication.INSTANCE.sendRequest(helper, args, responseCallback);
     }
 
     protected final void triggerContentEventProgress(final BaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
         showActivityProgress();
-        sendRequest(helper, args, responseCallback);
+        JumiaApplication.INSTANCE.sendRequest(helper, args, responseCallback);
     }
     
-    
-    /**
-     * Triggers the request for a new api call
-     * 
-     * @param helper
-     *            of the api call
-     * @param responseCallback
-     * @return the md5 of the reponse
-     */
-    public String sendRequest(final BaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
-        Bundle bundle = helper.generateRequestBundle(args);
-        if(bundle.containsKey(Constants.BUNDLE_EVENT_TYPE_KEY)){
-            Log.i(TAG, "codesave saving : "+(EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
-            JumiaApplication.INSTANCE.getRequestsRetryHelperList().put((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY), helper);
-            JumiaApplication.INSTANCE.getRequestsRetryBundleList().put((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY), args);
-            JumiaApplication.INSTANCE.getRequestsResponseList().put((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY), responseCallback);
-        } else {
-            Log.w(TAG, " MISSING EVENT TYPE from "+helper.toString());
-        }
-        String md5 = Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY);
-        bundle.putString(Constants.BUNDLE_MD5_KEY, md5);
-        Log.d("TRACK", "sendRequest");
-        
-        JumiaApplication.INSTANCE.responseCallbacks.put(md5, new IResponseCallback() {
-
-            @Override
-            public void onRequestComplete(Bundle bundle) {
-                Log.d("TRACK", "onRequestComplete BaseActivity");
-                // We have to parse this bundle to the final one
-                Bundle formatedBundle = (Bundle) helper.checkResponseForStatus(bundle);
-                
-                if (responseCallback != null) {
-                    if(formatedBundle.getBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY)){
-                        responseCallback.onRequestError(formatedBundle);
-                    } else {
-                        responseCallback.onRequestComplete(formatedBundle);    
-                    }
-                    
-                }
-            }
-
-            @Override
-            public void onRequestError(Bundle bundle) {
-                Log.d("TRACK", "onRequestError  BaseActivity");
-                // We have to parse this bundle to the final one
-                Bundle formatedBundle = (Bundle) helper.parseErrorBundle(bundle);
-                if (responseCallback != null) {
-                    responseCallback.onRequestError(formatedBundle);
-                }
-            }
-        });
-
-        
-        JumiaApplication.INSTANCE.sendRequest(bundle);
-        
-
-        return md5;
-    }
     /**
      * #### HANDLE EVENT ####
      */

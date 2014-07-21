@@ -25,7 +25,7 @@ import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.SearchSuggestion;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.service.IRemoteServiceCallback;
-import pt.rocket.framework.utils.AnalyticsGoogle;
+import pt.rocket.framework.tracking.AnalyticsGoogle;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LoadingBarView;
@@ -1432,7 +1432,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      */
 
     private final void triggerContentEventWithNoLoading(final BaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
-        sendRequest(helper, args, responseCallback);
+        JumiaApplication.INSTANCE.sendRequest(helper, args, responseCallback);
     }
 //
 //    private final void triggerContentEvent(final BaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
@@ -1987,75 +1987,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                 backPressedOnce = false;
             }
         }, TOAST_LENGTH_SHORT);
-    }
-
-    /**
-     * Triggers the request for a new api call
-     * 
-     * @param helper
-     *            of the api call
-     * @param responseCallback
-     * @return the md5 of the reponse
-     */
-    public String sendRequest(final BaseHelper helper, Bundle args,
-            final IResponseCallback responseCallback) {
-        Bundle bundle = helper.generateRequestBundle(args);
-        if (bundle.containsKey(Constants.BUNDLE_EVENT_TYPE_KEY)) {
-            Log.i(TAG,
-                    "codesave saving : "
-                            + (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
-            JumiaApplication.INSTANCE.getRequestsRetryHelperList().put(
-                    (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY), helper);
-            JumiaApplication.INSTANCE.getRequestsRetryBundleList().put(
-                    (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY), args);
-            JumiaApplication.INSTANCE.getRequestsResponseList().put(
-                    (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY),
-                    responseCallback);
-        } else {
-            Log.w(TAG, " MISSING EVENT TYPE from " + helper.toString());
-        }
-        String md5 = bundle.getString(Constants.BUNDLE_MD5_KEY);
-        Log.d("TRACK", "sendRequest");
-
-        JumiaApplication.INSTANCE.responseCallbacks.put(md5, new IResponseCallback() {
-
-            @Override
-            public void onRequestComplete(Bundle bundle) {
-                Log.d("TRACK", "onRequestComplete BaseActivity");
-                // We have to parse this bundle to the final one
-                Bundle formatedBundle = (Bundle) helper.checkResponseForStatus(bundle);
-                if (responseCallback != null) {
-                    if (formatedBundle.getBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY)) {
-                        responseCallback.onRequestError(formatedBundle);
-                    } else {
-                        JumiaApplication.INSTANCE.getRequestsRetryHelperList().remove(
-                                (EventType) formatedBundle
-                                        .getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
-                        JumiaApplication.INSTANCE.getRequestsRetryBundleList().remove(
-                                (EventType) formatedBundle
-                                        .getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
-                        JumiaApplication.INSTANCE.getRequestsResponseList().remove(
-                                (EventType) formatedBundle
-                                        .getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
-                        responseCallback.onRequestComplete(formatedBundle);
-                    }
-                }
-            }
-
-            @Override
-            public void onRequestError(Bundle bundle) {
-                Log.d("TRACK", "onRequestError  BaseActivity");
-                // We have to parse this bundle to the final one
-                Bundle formatedBundle = (Bundle) helper.parseErrorBundle(bundle);
-                if (responseCallback != null) {
-                    responseCallback.onRequestError(formatedBundle);
-                }
-            }
-        });
-
-        JumiaApplication.INSTANCE.sendRequest(bundle);
-
-        return md5;
     }
 
     /**
