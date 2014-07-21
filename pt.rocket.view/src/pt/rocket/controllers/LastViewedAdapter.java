@@ -8,10 +8,10 @@ import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.objects.LastViewed;
+import pt.rocket.utils.RocketImageLoader;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
@@ -20,11 +20,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-
-import com.androidquery.AQuery;
-import com.androidquery.callback.AjaxStatus;
-import com.androidquery.callback.BitmapAjaxCallback;
-
 import de.akquinet.android.androlog.Log;
 
 public class LastViewedAdapter extends PagerAdapter {
@@ -100,16 +95,8 @@ public class LastViewedAdapter extends PagerAdapter {
             // Log.i(TAG, "code1last generating : "+mLastViewedList.get(position).getProductName());
             name_1.setText(mLastViewedList.get(position * this.partialSize).getProductName());
             price_1.setText(mLastViewedList.get(position * this.partialSize).getProductPrice());
-            AQuery aq = new AQuery(mContext);
-
-            aq.id(img_1).image(mLastViewedList.get(position * this.partialSize).getImageUrl(), true, true, 0, 0,
-                    new BitmapAjaxCallback() {
-
-                        @Override
-                        public void callback(String url, ImageView iv, Bitmap bm, AjaxStatus status) {
-                            iv.setImageBitmap(bm);
-                        }
-                    });
+            
+            RocketImageLoader.getInstance().loadImage(mLastViewedList.get(position * this.partialSize).getImageUrl(), img_1);
         }
         if ((position * this.partialSize + 1) < this.mLastViewedList.size()) {
             RelativeLayout mElement2 = (RelativeLayout) view.findViewById(R.id.element_2);
@@ -135,16 +122,9 @@ public class LastViewedAdapter extends PagerAdapter {
             // Log.i(TAG, "code1last generating : "+mLastViewedList.get(position).getProductName());
             name_2.setText(mLastViewedList.get(position * this.partialSize + 1).getProductName());
             price_2.setText(mLastViewedList.get(position * this.partialSize + 1).getProductPrice());
-            AQuery aq = new AQuery(mContext);
-
-            aq.id(img_2).image(mLastViewedList.get(position * this.partialSize + 1).getImageUrl(), true, true, 0,
-                    0, new BitmapAjaxCallback() {
-
-                        @Override
-                        public void callback(String url, ImageView iv, Bitmap bm, AjaxStatus status) {
-                            iv.setImageBitmap(bm);
-                        }
-                    });
+            
+            RocketImageLoader.getInstance().loadImage(mLastViewedList.get(position * this.partialSize + 1).getImageUrl(), img_2);
+            
         }
         if ((position * this.partialSize + 2) < this.mLastViewedList.size()) {
             RelativeLayout mElement3 = (RelativeLayout) view.findViewById(R.id.element_3);
@@ -170,16 +150,9 @@ public class LastViewedAdapter extends PagerAdapter {
             // Log.i(TAG, "code1last generating : "+mLastViewedList.get(position).getProductName());
             name_3.setText(mLastViewedList.get(position * this.partialSize + 2).getProductName());
             price_3.setText(mLastViewedList.get(position * this.partialSize + 2).getProductPrice());
-            AQuery aq = new AQuery(mContext);
-
-            aq.id(img_3).image(mLastViewedList.get(position * this.partialSize + 2).getImageUrl(), true, true, 0,
-                    0, new BitmapAjaxCallback() {
-
-                        @Override
-                        public void callback(String url, ImageView iv, Bitmap bm, AjaxStatus status) {
-                            iv.setImageBitmap(bm);
-                        }
-                    });
+            
+            RocketImageLoader.getInstance().loadImage(mLastViewedList.get(position * this.partialSize + 2).getImageUrl(), img_3);
+            
         }
         if (partialSize > 3) {
             if ((position * this.partialSize + 3) < this.mLastViewedList.size()) {
@@ -207,17 +180,9 @@ public class LastViewedAdapter extends PagerAdapter {
                 // "code1last generating : "+mLastViewedList.get(position).getProductName());
                 name_4.setText(mLastViewedList.get(position * this.partialSize + 3).getProductName());
                 price_4.setText(mLastViewedList.get(position * this.partialSize + 3).getProductPrice());
-                AQuery aq = new AQuery(mContext);
-
-                aq.id(img_4).image(mLastViewedList.get(position * this.partialSize + 3).getImageUrl(), true, true,
-                        0, 0, new BitmapAjaxCallback() {
-
-                            @Override
-                            public void callback(String url, ImageView iv, Bitmap bm,
-                                    AjaxStatus status) {
-                                iv.setImageBitmap(bm);
-                            }
-                        });
+                
+                RocketImageLoader.getInstance().loadImage(mLastViewedList.get(position * this.partialSize + 3).getImageUrl(), img_4);
+                
             }
             if ((position * this.partialSize + 4) < this.mLastViewedList.size()) {
                 RelativeLayout mElement5 = (RelativeLayout) view.findViewById(R.id.element_5);
@@ -244,17 +209,9 @@ public class LastViewedAdapter extends PagerAdapter {
                 // "code1last generating : "+mLastViewedList.get(position).getProductName());
                 name_5.setText(mLastViewedList.get(position * this.partialSize + 4).getProductName());
                 price_5.setText(mLastViewedList.get(position * this.partialSize + 4).getProductPrice());
-                AQuery aq = new AQuery(mContext);
-
-                aq.id(img_5).image(mLastViewedList.get(position * this.partialSize + 4).getImageUrl(), true, true,
-                        0, 0, new BitmapAjaxCallback() {
-
-                            @Override
-                            public void callback(String url, ImageView iv, Bitmap bm,
-                                    AjaxStatus status) {
-                                iv.setImageBitmap(bm);
-                            }
-                        });
+                
+                RocketImageLoader.getInstance().loadImage(mLastViewedList.get(position * this.partialSize + 4).getImageUrl(), img_5);
+                
             }
 
         }

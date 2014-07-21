@@ -10,10 +10,10 @@ import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.objects.FeaturedBrand;
 import pt.rocket.framework.objects.FeaturedItem;
 import pt.rocket.framework.objects.FeaturedProduct;
+import pt.rocket.utils.RocketImageLoader;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
@@ -22,11 +22,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-
-import com.androidquery.AQuery;
-import com.androidquery.callback.AjaxStatus;
-import com.androidquery.callback.BitmapAjaxCallback;
-
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -203,14 +198,9 @@ public class FeaturedItemsAdapter extends PagerAdapter {
                 TextView price = (TextView) mElement.findViewById(idPrice);
                 price.setText(((FeaturedProduct) featuredItem).getPrice());
             }
-            AQuery aq = new AQuery(mContext);
-
-            aq.id(img).image(featuredItem.getImageUrl(), true, true, 0, 0, new BitmapAjaxCallback() {
-                @Override
-                public void callback(String url, ImageView iv, Bitmap bm, AjaxStatus status) {
-                    iv.setImageBitmap(bm);
-                }
-            });
+            
+            RocketImageLoader.instance.loadImage(featuredItem.getImageUrl(), img);
+            
         } else {
             Log.e(TAG, "setViewForFeaturedItem for index: " + index + " with no layout available!");
         }

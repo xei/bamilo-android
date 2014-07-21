@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 import pt.rocket.controllers.NormalizingViewPagerWrapper.IPagerAdapter;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.utils.RocketImageLoader;
 import pt.rocket.view.R;
 import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.support.v4.view.PagerAdapter;
 import android.text.TextUtils;
 import android.view.InflateException;
@@ -17,11 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
-
-import com.androidquery.AQuery;
-import com.androidquery.callback.AjaxStatus;
-import com.androidquery.callback.BitmapAjaxCallback;
-
 import de.akquinet.android.androlog.Log;
 
 public class GalleryPagerAdapter extends PagerAdapter implements IPagerAdapter {
@@ -119,83 +114,14 @@ public class GalleryPagerAdapter extends PagerAdapter implements IPagerAdapter {
             imageView.setImageResource(R.drawable.no_image_small);
             Log.i(TAG, "LOAD PHOTO: " + imageView.getId() + " " + imageUrl);
             if (!TextUtils.isEmpty(imageUrl)) {
-                AQuery aq = new AQuery(mContext);
-                aq.id(imageView).image(imageUrl, true, true, 0, 0, new BitmapAjaxCallback() {
-
-                            @Override
-                            public void callback(String url, ImageView iv, Bitmap bm, AjaxStatus status) {
-                                iv.setImageBitmap(bm);
-                                progressBar.setVisibility(View.GONE);
-                            }
-                        });
-                
-                
-                // ImageLoader
-                // .getInstance()
-                // .displayImage(
-                // imageUrl,
-                // imageView,
-                // JumiaApplication.COMPONENTS.
-                // get(ImageLoaderComponent.class).largeLoaderOptions,
-                // new SimpleImageLoadingListener() {
-                //
-                // /*
-                // * (non-Javadoc)
-                // *
-                // * @see com.nostra13.universalimageloader.core.assist.
-                // * SimpleImageLoadingListener#onLoadingComplete(java.lang.String,
-                // * android.view.View, android.graphics.Bitmap)
-                // */
-                // @Override
-                // public void onLoadingComplete(String imageUri, View view,
-                // Bitmap loadedImage) {
-                // progressBar.setVisibility(View.GONE);
-                // imageView.setVisibility(View.VISIBLE);
-                // }
-                //
-                // });
+                RocketImageLoader.instance.loadImage(imageUrl, imageView, progressBar, R.drawable.no_image_large);
             }
         } else {
             final ImageView imageView = (ImageView) imageTeaserView.findViewById(R.id.image_view);
             imageView.setImageResource(R.drawable.no_image_small);
              
             if (!TextUtils.isEmpty(imageUrl)) {
-                AQuery aq = new AQuery(mContext);
-                aq.id(imageView).image(imageUrl, true, true, 0, 0, new BitmapAjaxCallback() {
-
-                            @Override
-                            public void callback(String url, ImageView iv, Bitmap bm,
-                                    AjaxStatus status) {
-
-                                iv.setImageBitmap(bm);
-                                progressBar.setVisibility(View.GONE);
-
-                            }
-                        });
-                // ImageLoader
-                // .getInstance()
-                // .displayImage(
-                // imageUrl,
-                // imageView,
-                // JumiaApplication.COMPONENTS.
-                // get(ImageLoaderComponent.class).largeLoaderOptions,
-                // new SimpleImageLoadingListener() {
-                //
-                // /*
-                // * (non-Javadoc)
-                // *
-                // * @see com.nostra13.universalimageloader.core.assist.
-                // * SimpleImageLoadingListener#onLoadingComplete(java.lang.String,
-                // * android.view.View, android.graphics.Bitmap)
-                // */
-                // @Override
-                // public void onLoadingComplete(String imageUri, View view,
-                // Bitmap loadedImage) {
-                // progressBar.setVisibility(View.GONE);
-                // imageView.setVisibility(View.VISIBLE);
-                // }
-                //
-                // });
+                RocketImageLoader.instance.loadImage(imageUrl, imageView, progressBar, R.drawable.no_image_large);
             }
         }
 

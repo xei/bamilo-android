@@ -3,79 +3,80 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <!-- ALL CONTAINER -->
+    <!-- MIDDLE POINT TO DIVIDE THE SCREEN -->
 
     <LinearLayout
-        android:id="@+id/home_page_content"
+        android:id="@+id/center_point"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerInParent="true" />
+
+    <!-- LEFT CONTAINER -->
+
+    <pt.rocket.utils.ScrollViewWithHorizontal
+        android:id="@+id/home_page_single_scrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal" >
+        android:layout_alignParentLeft="true"
+        android:layout_alignRight="@+id/center_point"
+        android:layout_marginRight="@dimen/margin_x_small"
+        android:scrollbars="none" >
 
-        <!-- LEFT CONTAINER -->
+        <!-- MAIN_ONE_SLIDE, STATIC_BANNER AND CAMPAIGNS_LIST -->
 
-        <pt.rocket.utils.ScrollViewWithHorizontal
-            android:id="@+id/home_page_single_scrollview"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:id="@+id/home_page_left_container"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/margin_x_small"
-            android:layout_weight="1"
-            android:scrollbars="none" >
+            android:orientation="vertical" />
+    </pt.rocket.utils.ScrollViewWithHorizontal>
 
-            <!-- MAIN_ONE_SLIDE, STATIC_BANNER AND CAMPAIGNS_LIST -->
+    <!-- RIGHT SCROLABLE CONTAINER -->
+
+    <pt.rocket.utils.ScrollViewWithHorizontal
+        android:id="@+id/home_page_right_scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignLeft="@+id/center_point"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="@dimen/margin_x_small"
+        android:scrollbars="none" >
+
+        <LinearLayout
+            android:id="@+id/home_page_right_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <!-- POPULAR CATEGORIES AND BRAND LIST -->
 
             <LinearLayout
-                android:id="@+id/home_page_left_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" />
-        </pt.rocket.utils.ScrollViewWithHorizontal>
-
-        <!-- RIGHT SCROLABLE CONTAINER -->
-
-        <pt.rocket.utils.ScrollViewWithHorizontal
-            android:id="@+id/home_page_right_scrollview"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_x_small"
-            android:layout_weight="1"
-            android:scrollbars="none" >
-
-            <LinearLayout
-                android:id="@+id/home_page_right_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" >
-
-                <!-- POPULAR CATEGORIES AND BRAND LIST -->
+                android:background="@color/grey_highlight"
+                android:orientation="horizontal"
+                android:paddingBottom="1dp"
+                android:paddingLeft="1dp" >
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/grey_highlight"
-                    android:orientation="horizontal"
-                    android:paddingBottom="1dp"
-                    android:paddingLeft="1dp" >
+                    android:id="@+id/home_page_right_container_categpries"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:visibility="gone" />
 
-                    <LinearLayout
-                        android:id="@+id/home_page_right_container_categpries"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:visibility="gone" />
-
-                    <LinearLayout
-                        android:id="@+id/home_page_right_container_brands"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:visibility="gone" />
-                </LinearLayout>
-
-                <!-- OTHERS: TOP SELLERS AND TOP BRANDS -->
-
+                <LinearLayout
+                    android:id="@+id/home_page_right_container_brands"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:visibility="gone" />
             </LinearLayout>
-        </pt.rocket.utils.ScrollViewWithHorizontal>
-    </LinearLayout>
+
+            <!-- OTHERS: TOP SELLERS AND TOP BRANDS -->
+
+        </LinearLayout>
+    </pt.rocket.utils.ScrollViewWithHorizontal>
 
     <!-- RETRY VIEW -->
 

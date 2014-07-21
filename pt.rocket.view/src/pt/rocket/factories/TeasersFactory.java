@@ -21,9 +21,9 @@ import pt.rocket.framework.objects.TeaserGroupTopBrands.TeaserTopBrand;
 import pt.rocket.framework.objects.TeaserImage;
 import pt.rocket.framework.objects.TeaserSpecification;
 import pt.rocket.framework.utils.WindowHelper;
+import pt.rocket.utils.RocketImageLoader;
 import pt.rocket.view.R;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
@@ -34,9 +34,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 
-import com.androidquery.AQuery;
-import com.androidquery.callback.AjaxStatus;
-import com.androidquery.callback.BitmapAjaxCallback;
 import com.viewpagerindicator.IconPagerAdapter;
 
 import de.akquinet.android.androlog.Log;
@@ -492,22 +489,12 @@ public class TeasersFactory {
             
         
         if (!TextUtils.isEmpty(imageUrl)) {
-            AQuery aq = new AQuery(mContext);
             final boolean resize = isToResize;
-            aq.id(imageView).image(imageUrl, true, true, 0, 0, new BitmapAjaxCallback() {
-
-                        @Override
-                        public void callback(String url, ImageView iv, Bitmap bm,
-                                AjaxStatus status) {
-                            if(resize){
-                                iv.setScaleType(ScaleType.FIT_XY);    
-                            }
-                            
-                            iv.setImageBitmap(bm);
-                            progressBar.setVisibility(View.GONE);
-
-                        }
-                    });
+            
+            if(resize){
+                imageView.setScaleType(ScaleType.FIT_XY);
+            }
+            RocketImageLoader.instance.loadImage(imageUrl, imageView, progressBar, R.drawable.no_image_large);
 
         }
 

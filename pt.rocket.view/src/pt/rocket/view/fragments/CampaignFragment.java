@@ -28,6 +28,7 @@ import pt.rocket.helpers.campaign.GetCampaignHelper;
 import pt.rocket.helpers.cart.GetShoppingCartAddItemHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.DeepLinkManager;
+import pt.rocket.utils.RocketImageLoader;
 import pt.rocket.utils.UIUtils;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.view.R;
@@ -53,9 +54,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-
-import com.androidquery.AQuery;
-
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -299,7 +297,7 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, O
         ImageView imageView = (ImageView) bannerView.findViewById(R.id.campaign_banner);
         // Load the bitmap
         String url = (getResources().getBoolean(R.bool.isTablet)) ? mCampaign.getTabletBanner() : mCampaign.getMobileBanner();
-        new AQuery(getBaseActivity()).id(imageView).image(url);
+        RocketImageLoader.instance.loadImage(url, imageView);
         // Return the banner
         return bannerView;
     }
@@ -770,7 +768,7 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, O
             // Set image container
             setClickableView(view.mImageContainer, position);
             // Set image
-            new AQuery(getBaseActivity()).id(view.mImage).image(item.getImage());
+            RocketImageLoader.instance.loadImage(item.getImage(), view.mImage);
             // setClickableView(view.mImage, position);
             // Set size
             setSizeContainer(view, item, position);

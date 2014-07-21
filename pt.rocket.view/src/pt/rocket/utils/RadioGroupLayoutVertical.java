@@ -15,7 +15,6 @@ import pt.rocket.pojo.DynamicFormItem;
 import pt.rocket.view.R;
 import android.content.ContentValues;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,11 +22,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-
-import com.androidquery.AQuery;
-import com.androidquery.callback.AjaxStatus;
-import com.androidquery.callback.BitmapAjaxCallback;
-
 import de.akquinet.android.androlog.Log;
 
 public class RadioGroupLayoutVertical extends RadioGroup {
@@ -117,15 +111,7 @@ public class RadioGroupLayoutVertical extends RadioGroup {
                     
                     if(JumiaApplication.INSTANCE.getPaymentsInfoList().get(mItems.get(idx)).getImages() != null && JumiaApplication.INSTANCE.getPaymentsInfoList().get(mItems.get(idx)).getImages().size() > 0){
                         ImageView mImageView = (ImageView) extras.findViewById(R.id.payment_img);
-                        AQuery aq = new AQuery(mContext);
-                        aq.id(mImageView).image(JumiaApplication.INSTANCE.getPaymentsInfoList().get(mItems.get(idx)).getImages().get(0), true, true, 0, 0, new BitmapAjaxCallback() {
-
-                                    @Override
-                                    public void callback(String url, ImageView iv, Bitmap bm, AjaxStatus status) {
-                                        iv.setImageBitmap(bm);
-                                        iv.setVisibility(View.VISIBLE); 
-                                    }
-                                });
+                        RocketImageLoader.instance.loadImage(JumiaApplication.INSTANCE.getPaymentsInfoList().get(mItems.get(idx)).getImages().get(0), mImageView);
                     }
                 }
 
@@ -187,15 +173,8 @@ public class RadioGroupLayoutVertical extends RadioGroup {
                     
                     if(JumiaApplication.INSTANCE.getPaymentsInfoList().get(mItems.get(idx)).getImages() != null && JumiaApplication.INSTANCE.getPaymentsInfoList().get(mItems.get(idx)).getImages().size() > 0){
                         ImageView mImageView = (ImageView) extras.findViewById(R.id.payment_img);
-                        AQuery aq = new AQuery(mContext);
-                        aq.id(mImageView).image(JumiaApplication.INSTANCE.getPaymentsInfoList().get(mItems.get(idx)).getImages().get(0), true, true, 0, 0, new BitmapAjaxCallback() {
-
-                                    @Override
-                                    public void callback(String url, ImageView iv, Bitmap bm, AjaxStatus status) {
-                                        iv.setImageBitmap(bm);
-                                        iv.setVisibility(View.VISIBLE); 
-                                    }
-                                });
+                        
+                        RocketImageLoader.instance.loadImage(JumiaApplication.INSTANCE.getPaymentsInfoList().get(mItems.get(idx)).getImages().get(0), mImageView);
                     }
                 }
 

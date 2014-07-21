@@ -34,6 +34,7 @@ import pt.rocket.helpers.checkout.GetNativeCheckoutAvailableHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.utils.RocketImageLoader;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.utils.dialogfragments.DialogListFragment;
@@ -44,7 +45,6 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
@@ -60,11 +60,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-
-import com.androidquery.AQuery;
-import com.androidquery.callback.AjaxStatus;
-import com.androidquery.callback.BitmapAjaxCallback;
-
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -765,17 +760,9 @@ public class ShoppingCartFragment extends BaseFragment {
         prodItem.itemName.setSelected(true);
 
         String url = prodItem.itemValues.image;
-        AQuery aq = new AQuery(getBaseActivity());
-        aq.id(prodItem.productView).image(url, true, true, 0, 0, new BitmapAjaxCallback() {
-
-            @Override
-            public void callback(String url, ImageView iv, Bitmap bm, AjaxStatus status) {
-                prodItem.productView.setImageBitmap(bm);
-                prodItem.productView.setVisibility(View.VISIBLE);
-                prodItem.pBar.setVisibility(View.GONE);
-            }
-        });
-
+        
+        RocketImageLoader.instance.loadImage(url, prodItem.productView, prodItem.pBar, R.drawable.no_image_small);
+        
         if (!prodItem.itemValues.price.equals(prodItem.itemValues.price_disc)) {
             prodItem.priceDisc.setText(prodItem.itemValues.price_disc);
             prodItem.priceDisc.setVisibility(View.VISIBLE);

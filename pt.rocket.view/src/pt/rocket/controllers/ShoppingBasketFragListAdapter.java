@@ -8,12 +8,12 @@ import java.util.Map;
 import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.utils.RocketImageLoader;
 import pt.rocket.view.R;
 import pt.rocket.view.fragments.ShoppingCartFragment;
 import pt.rocket.view.fragments.ShoppingCartFragment.CartItemValues;
 import android.content.Context;
 import android.database.DataSetObserver;
-import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,9 +24,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.actionbarsherlock.view.ActionMode;
-import com.androidquery.AQuery;
-import com.androidquery.callback.AjaxStatus;
-import com.androidquery.callback.BitmapAjaxCallback;
 
 /**
  * This Class implements the Basket Adapter
@@ -148,16 +145,9 @@ public class ShoppingBasketFragListAdapter extends BaseAdapter {
 
         
         String url = prodItem.itemValues.image;
-        AQuery aq = new AQuery(this.activity.getBaseActivity());
-        aq.id(prodItem.productView).image(url, true, true, 0, 0, new BitmapAjaxCallback() {
-
-                    @Override
-                    public void callback(String url, ImageView iv, Bitmap bm, AjaxStatus status) {
-                        prodItem.productView.setImageBitmap(bm);
-                        prodItem.productView.setVisibility(View.VISIBLE);
-                        prodItem.pBar.setVisibility(View.GONE);
-                    }
-                });
+        
+        RocketImageLoader.instance.loadImage(url, prodItem.productView, prodItem.pBar, R.drawable.no_image_small);
+        
 
         if (!prodItem.itemValues.price.equals(prodItem.itemValues.price_disc)) {
             prodItem.priceDisc.setText(prodItem.itemValues.price_disc);

@@ -2,6 +2,7 @@ package pt.rocket.controllers;
 
 import org.holoeverywhere.widget.TextView;
 
+import pt.rocket.utils.RocketImageLoader;
 import pt.rocket.view.R;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,9 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-
-import com.androidquery.AQuery;
-
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -68,11 +66,7 @@ public class CountryAdapter extends ArrayAdapter<String> {
         TextView textView = (TextView) rowView.findViewById(R.id.country_name);
         ImageView imageView = (ImageView) rowView.findViewById(R.id.flag);
         textView.setText(values[position]);
-        if(flagsList != null && flagsList.length > 0){
-            AQuery aq = new AQuery(context);
-            aq.id(imageView).image(flagsList[position]);    
-        }
-        
+        if(flagsList != null && flagsList.length > 0) RocketImageLoader.instance.loadImage(flagsList[position], imageView);
         
         return rowView;
     }

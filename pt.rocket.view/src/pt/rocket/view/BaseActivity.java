@@ -40,6 +40,7 @@ import pt.rocket.utils.CheckVersion;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.MyProfileActionProvider;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.utils.RocketImageLoader;
 import pt.rocket.utils.dialogfragments.CustomToastView;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.utils.dialogfragments.DialogProgressFragment;
@@ -88,7 +89,6 @@ import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.SearchView;
 import com.actionbarsherlock.widget.SearchView.OnCloseListener;
 import com.actionbarsherlock.widget.SearchView.SearchAutoComplete;
-import com.androidquery.AQuery;
 import com.bugsense.trace.BugSenseHandler;
 import com.urbanairship.UAirship;
 
@@ -2073,15 +2073,10 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         });
         
         ImageView mapImageView = (ImageView) findViewById(R.id.main_fallback_country_map);
-        SharedPreferences sharedPrefs = this.getSharedPreferences(
-                ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-//        int position = JumiaApplication.INSTANCE.SHOP_ID;
-        AQuery aq = new AQuery(this);
-        aq.id(mapImageView).image(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_MAP_FLAG, ""));
-//        mapImageView.setImageDrawable(getApplicationContext().getResources().obtainTypedArray(R.array.country_fallback_map).getDrawable(position));
+        SharedPreferences sharedPrefs = this.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        RocketImageLoader.instance.loadImage(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_MAP_FLAG, ""), mapImageView); 
         
         String country = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, "");
-        
        
         TextView fallbackBest = (TextView) findViewById(R.id.main_fallback_best);
         fallbackBest.setText(R.string.fallback_best);

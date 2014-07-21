@@ -6,8 +6,6 @@ import java.util.Collection;
 import org.holoeverywhere.widget.TextView;
 import org.holoeverywhere.widget.Toast;
 
-import com.android.volley.toolbox.NetworkImageView;
-
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.framework.Darwin;
 import pt.rocket.framework.database.FavouriteTableHelper;
@@ -27,9 +25,10 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RatingBar;
-import android.widget.RelativeLayout;
+
+import com.android.volley.toolbox.NetworkImageView;
+
 import de.akquinet.android.androlog.Log;
 
 /**

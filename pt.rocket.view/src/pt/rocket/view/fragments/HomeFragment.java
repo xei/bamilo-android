@@ -31,6 +31,7 @@ import pt.rocket.utils.CheckVersion;
 import pt.rocket.utils.HockeyStartup;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.utils.RocketImageLoader;
 import pt.rocket.utils.dialogfragments.DialogPromotionFragment;
 import pt.rocket.utils.dialogfragments.WizardPreferences;
 import pt.rocket.utils.dialogfragments.WizardPreferences.WizardType;
@@ -51,9 +52,6 @@ import android.view.View.OnTouchListener;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-
-import com.androidquery.AQuery;
-
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -369,8 +367,7 @@ public class HomeFragment extends BaseFragment implements IResponseCallback {
         ImageView mapBg = (ImageView) getView().findViewById(R.id.home_fallback_country_map);
         SharedPreferences sharedPrefs = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         
-        AQuery aq = new AQuery(getBaseActivity());
-        aq.id(mapBg).image(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_MAP_FLAG, ""));
+        RocketImageLoader.instance.loadImage(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_MAP_FLAG, ""), mapBg);
 
         String country = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, "Jumia");
         TextView fallbackBest = (TextView) getView().findViewById(R.id.fallback_best);

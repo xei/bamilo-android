@@ -29,6 +29,7 @@ import pt.rocket.helpers.checkout.CheckoutFinishHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.utils.RocketImageLoader;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.view.R;
@@ -41,9 +42,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-
-import com.androidquery.AQuery;
-
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -311,8 +309,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
             View prodInflateView = LayoutInflater.from(getBaseActivity()).inflate(R.layout.checkout_my_order_product_item, mProductsContainer, false);
             // Image
             ImageView imageView = (ImageView) prodInflateView.findViewById(R.id.image_view);
-            AQuery aq = new AQuery(getBaseActivity());
-            aq.id(imageView).image(item.getImageUrl());
+            RocketImageLoader.instance.loadImage(item.getImageUrl(), imageView);
             // Name
             ((TextView) prodInflateView.findViewById(R.id.my_order_item_name)).setText(item.getName());
             // Quantity

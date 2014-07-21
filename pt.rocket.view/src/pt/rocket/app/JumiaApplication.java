@@ -52,8 +52,6 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.RemoteException;
 
-import com.androidquery.callback.AjaxCallback;
-import com.androidquery.callback.BitmapAjaxCallback;
 import com.bugsense.trace.ExceptionCallback;
 
 import de.akquinet.android.androlog.Log;
@@ -182,12 +180,12 @@ public class JumiaApplication extends Application implements ExceptionCallback {
         // Init darwin database, set the context
         DarwinDatabaseHelper.init(getApplicationContext());
         
-        /**
-         * AQuery Configurations
-         */
-        BitmapAjaxCallback.setCacheLimit(50);
-        //set the max number of concurrent network connections, default is 4
-        AjaxCallback.setNetworkLimit(2);
+//        /**
+//         * AQuery Configurations
+//         */
+//        BitmapAjaxCallback.setCacheLimit(50);
+//        //set the max number of concurrent network connections, default is 4
+//        AjaxCallback.setNetworkLimit(2);
         
         countriesAvailable = new ArrayList<CountryObject>();
         
@@ -213,9 +211,9 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     public void onLowMemory() {     
         super.onLowMemory();
         Log.d(TAG, "ON LOW MEMORY");
-        //clear all memory cached images when system is in low memory
-        //note that you can configure the max image cache count, see CONFIGURATION
-        BitmapAjaxCallback.clearCache();
+//        //clear all memory cached images when system is in low memory
+//        //note that you can configure the max image cache count, see CONFIGURATION
+//        BitmapAjaxCallback.clearCache();
     }
     
     public synchronized void init(boolean isReInit, Handler initializationHandler) {

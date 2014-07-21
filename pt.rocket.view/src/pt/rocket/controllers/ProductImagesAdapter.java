@@ -4,21 +4,16 @@ import java.util.ArrayList;
 
 import pt.rocket.framework.objects.Variation;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.utils.RocketImageLoader;
 import pt.rocket.view.R;
 import android.content.Context;
 import android.database.DataSetObserver;
-import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-
-import com.androidquery.AQuery;
-import com.androidquery.callback.AjaxStatus;
-import com.androidquery.callback.BitmapAjaxCallback;
-
 import de.akquinet.android.androlog.Log;
 
 public class ProductImagesAdapter extends BaseAdapter {
@@ -100,36 +95,13 @@ public class ProductImagesAdapter extends BaseAdapter {
 			view.setTag(h);
 		} else
 			h = (Holder) view.getTag();
-
-		AQuery mAQuery = new AQuery(view);
 		
 		String imageUrl = images.get(position);
 		Log.d(TAG, "getView: loading imageUrl = " + imageUrl);
 		h.itemProgress.setVisibility(View.VISIBLE);
 		h.itemImage.setImageResource(R.drawable.no_image_small);
-
-		final Holder fh = h;
 		
-        mAQuery.id(h.itemImage).image(imageUrl, true, true, 0, 0, new BitmapAjaxCallback() {
-
-            @Override
-            public void callback(String url, ImageView iv, Bitmap bm, AjaxStatus status) {
-                iv.setImageBitmap(bm);
-                h.itemProgress.setVisibility(View.GONE);
-            }
-        });
-//		ImageLoader.getInstance().displayImage(imageUrl, h.itemImage, new SimpleImageLoadingListener() {
-//
-//		    /* (non-Javadoc)
-//		     * @see com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener#onLoadingComplete(java.lang.String, android.view.View, android.graphics.Bitmap)
-//		     */
-//		    @Override
-//		    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-//		        Log.d(TAG, "getView: onLoadingComplete");
-//                fh.itemProgress.setVisibility(View.GONE);
-//		    }
-//		    
-//		});
+		RocketImageLoader.instance.loadImage(imageUrl, h.itemImage, h.itemProgress, R.drawable.no_image_small);
 
 		return view;
 	}

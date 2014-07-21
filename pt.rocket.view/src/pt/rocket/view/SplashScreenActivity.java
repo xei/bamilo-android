@@ -32,6 +32,7 @@ import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.DeepLinkManager;
 import pt.rocket.utils.HockeyStartup;
 import pt.rocket.utils.LocationHelper;
+import pt.rocket.utils.RocketImageLoader;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import android.annotation.SuppressLint;
@@ -52,7 +53,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 
-import com.androidquery.AQuery;
 import com.bugsense.trace.BugSenseHandler;
 import com.shouldit.proxy.lib.ProxyConfiguration;
 import com.shouldit.proxy.lib.ProxySettings;
@@ -687,10 +687,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
          });
          
          ImageView mapBg = (ImageView) findViewById(R.id.fallback_country_map);
-         AQuery aq = new AQuery(this);
-         aq.id(mapBg).image(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_MAP_FLAG, ""));
-//         mapBg.setImageDrawable(getApplicationContext().getResources().obtainTypedArray(R.array.country_fallback_map)
-//                 .getDrawable(position));
+         RocketImageLoader.instance.loadImage(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_MAP_FLAG, ""), mapBg);
 
          String country = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME,"");
          TextView fallbackBest = (TextView) findViewById(R.id.fallback_best);
