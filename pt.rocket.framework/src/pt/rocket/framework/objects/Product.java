@@ -38,6 +38,7 @@ public class Product implements IJSONSerializable, Parcelable {
     private ProductAttributes attributes;
     
     private ArrayList<Image> images;
+    private String firstImageURL;
 
 	private ArrayList<Image> imagesTablet;
 
@@ -70,6 +71,10 @@ public class Product implements IJSONSerializable, Parcelable {
      */
     public ArrayList<Image> getImages() {
         return images;
+    }
+    
+    public String getFirstImageURL() {
+    	return firstImageURL;
     }
     
     public ArrayList<Image> getImagesTablet() {
@@ -133,7 +138,10 @@ public class Product implements IJSONSerializable, Parcelable {
                 }
             }
             
-            
+            firstImageURL = "";
+            if (0 < images.size()) {
+            	firstImageURL = images.get(0).getUrl();
+            }
             
         } catch (JSONException e) {
             e.printStackTrace();

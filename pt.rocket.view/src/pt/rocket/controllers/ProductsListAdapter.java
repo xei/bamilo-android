@@ -6,6 +6,8 @@ import java.util.Collection;
 import org.holoeverywhere.widget.TextView;
 import org.holoeverywhere.widget.Toast;
 
+import com.android.volley.toolbox.NetworkImageView;
+
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.framework.Darwin;
 import pt.rocket.framework.database.FavouriteTableHelper;
@@ -13,6 +15,7 @@ import pt.rocket.framework.objects.Product;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.RocketImageLoader;
 import pt.rocket.view.R;
+import pt.rocket.view.fragments.Catalog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.DataSetObserver;
@@ -55,7 +58,7 @@ public class ProductsListAdapter extends BaseAdapter {
         public void SelectedItemsChange(int numSelectedItems);
     }
 
-    ArrayList<Product> products;
+    ArrayList<String> products;
 
     int counter = 1;
 
@@ -74,6 +77,8 @@ public class ProductsListAdapter extends BaseAdapter {
 
     private int numColumns = 1;
 
+    private Catalog parentCatalog;
+    
     /**
      * A representation of each item on the list
      */
@@ -98,10 +103,10 @@ public class ProductsListAdapter extends BaseAdapter {
      * @param showList show list (or grid)
      * @param numColumns 
      */
-    public ProductsListAdapter(Context context, boolean showList, int numColumns) {
+    public ProductsListAdapter(Context context, Catalog parent, boolean showList, int numColumns) {
 
         this.context = context.getApplicationContext();
-        this.products = new ArrayList<Product>();
+        this.products = new ArrayList<String>();
         this.showList = showList;
         this.numColumns = numColumns;
 
@@ -116,6 +121,8 @@ public class ProductsListAdapter extends BaseAdapter {
         }
         this.isFavouriteDrawable = context.getResources().getDrawable(R.drawable.btn_fav_selected);
         this.isNotFavouriteDrawable = context.getResources().getDrawable(R.drawable.btn_fav);
+        
+        this.parentCatalog = parent;
     }
 
 
@@ -166,27 +173,27 @@ public class ProductsListAdapter extends BaseAdapter {
             // if the view already exists there is no need to inflate it again
             itemView = convertView;
         } else {
-            int layoutId = showList ? R.layout.product_item : R.layout.product_item_grid;
+            int layoutId = showList ? R.layout.product_item_test : R.layout.product_item_grid_test;
 
             itemView = inflater.inflate(layoutId, parent, false);
         }
 
-        // when showing grid add margins to container on the first and last columns
-        if (!showList) {
-            LinearLayout container = (LinearLayout) itemView.findViewById(R.id.container);
-            // guarantee this layout has this view
-            if (container != null) {
-                RelativeLayout.LayoutParams containerLayoutParams = (RelativeLayout.LayoutParams) container.getLayoutParams();
-                int column = position % numColumns;
-                if (column == 0) {
-                    int margin = context.getResources().getDimensionPixelOffset(R.dimen.margin_mid);
-                    containerLayoutParams.leftMargin = margin;
-                } else if (column == (numColumns - 1)) {
-                    int margin = context.getResources().getDimensionPixelOffset(R.dimen.margin_mid);
-                    containerLayoutParams.rightMargin = margin;
-                }
-            }
-        }
+//        // when showing grid add margins to container on the first and last columns
+//        if (!showList) {
+//            LinearLayout container = (LinearLayout) itemView.findViewById(R.id.container);
+//            // guarantee this layout has this view
+//            if (container != null) {
+//                RelativeLayout.LayoutParams containerLayoutParams = (RelativeLayout.LayoutParams) container.getLayoutParams();
+//                int column = position % numColumns;
+//                if (column == 0) {
+//                    int margin = context.getResources().getDimensionPixelOffset(R.dimen.margin_mid);
+//                    containerLayoutParams.leftMargin = margin;
+//                } else if (column == (numColumns - 1)) {
+//                    int margin = context.getResources().getDimensionPixelOffset(R.dimen.margin_mid);
+//                    containerLayoutParams.rightMargin = margin;
+//                }
+//            }
+//        }
 
         if ((Item) itemView.getTag() == null) {
             prodItem = new Item();
@@ -199,56 +206,61 @@ public class ProductsListAdapter extends BaseAdapter {
             if (showList) prodItem.reviews = (TextView) itemView.findViewById(R.id.item_reviews);
             prodItem.brand = (TextView) itemView.findViewById(R.id.item_brand);
             prodItem.isNew= (ImageView) itemView.findViewById(R.id.image_is_new);
+            prodItem.isNew.setImageDrawable(isNewDrawable);
             prodItem.isFavourite = (ImageView) itemView.findViewById(R.id.image_is_favourite);
             itemView.setTag(prodItem);
         } else {
             prodItem = (Item) itemView.getTag();
         }
         
-        String imageURL = "";
-        final Product product = products.get(position);
-        if (product.getImages().size() > 0) {
-            imageURL = product.getImages().get(0).getUrl();
-        }
-
-        RocketImageLoader.instance.loadImage(imageURL, prodItem.image,  null, R.drawable.no_image_small);
+//        String imageURL = "";
+        Product product = parentCatalog.getProduct(products.get(position));
+//        if (product.getImages().size() > 0) {
+//            imageURL = product.getImages(). get(0).getUrl();
+//        }
+        //RocketImageLoader.instance.loadImage(imageURL, prodItem.image,  null, R.drawable.no_image_small);
+        ((NetworkImageView) prodItem.image).setImageUrl(product.getFirstImageURL(), RocketImageLoader.instance.getImageLoader());
 
         // Set is new image
-        if(product.getAttributes().isNew()) {
-            prodItem.isNew.setImageDrawable(isNewDrawable);
+        if(product.getAttributes().isNew()) {            
             prodItem.isNew.setVisibility(View.VISIBLE);
         } else {
             prodItem.isNew.setVisibility(View.GONE);
         }
+
         
-        if (FavouriteTableHelper.verifyIfFavourite(product.getSKU())) {
-            product.getAttributes().setFavourite(true);
-        } else {
-            product.getAttributes().setFavourite(false);
-        }
+//        if (FavouriteTableHelper.verifyIfFavourite(product.getSKU())) {
+//            product.getAttributes().setFavourite(true);
+//        } else {
+//            product.getAttributes().setFavourite(false);
+//        }
         
         // Set is favourite image
-        if (product.getAttributes().isFavourite()) {
-            prodItem.isFavourite.setImageDrawable(isFavouriteDrawable);
-        } else {
-            prodItem.isFavourite.setImageDrawable(isNotFavouriteDrawable);
-        }
+//        if (product.getAttributes().isFavourite()) {
+//            prodItem.isFavourite.setImageDrawable(isFavouriteDrawable);
+//        } else {
+//            prodItem.isFavourite.setImageDrawable(isNotFavouriteDrawable);
+//        }
+        prodItem.isFavourite.setSelected(product.getAttributes().isFavourite());
+        
         prodItem.isFavourite.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                boolean isFavourite = product.getAttributes().isFavourite();
+                Product favProduct = parentCatalog.getProduct(products.get(position));
+                boolean isFavourite = favProduct.getAttributes().isFavourite();
                 if (!isFavourite) {
-                    FavouriteTableHelper.insertPartialFavouriteProduct(product);
-                    product.getAttributes().setFavourite(true);
-                    prodItem.isFavourite.setImageDrawable(isFavouriteDrawable);
+                    FavouriteTableHelper.insertPartialFavouriteProduct(favProduct);
+                    favProduct.getAttributes().setFavourite(true);
+                    //prodItem.isFavourite.setImageDrawable(isFavouriteDrawable);
                     Toast.makeText(context, context.getString(R.string.products_added_favourite), Toast.LENGTH_SHORT).show();
                 } else {
-                    FavouriteTableHelper.removeFavouriteProduct(product.getSKU());
-                    product.getAttributes().setFavourite(false);
-                    prodItem.isFavourite.setImageDrawable(isNotFavouriteDrawable);
+                    FavouriteTableHelper.removeFavouriteProduct(favProduct.getSKU());
+                    favProduct.getAttributes().setFavourite(false);
+                    //prodItem.isFavourite.setImageDrawable(isNotFavouriteDrawable);
                     Toast.makeText(context, context.getString(R.string.products_removed_favourite), Toast.LENGTH_SHORT).show();
                 }
+                parentCatalog.invalidatePages();
             }
         });
         
@@ -298,7 +310,7 @@ public class ProductsListAdapter extends BaseAdapter {
      * @param products
      *            The array list containing the products
      */
-    public void updateProducts(ArrayList<Product> products) {
+    public void updateProducts(ArrayList<String> products) {
         Log.d(TAG, "updateProducts: size = " + products.size());
         this.products = products;
         this.notifyDataSetChanged();
@@ -309,7 +321,7 @@ public class ProductsListAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    public void appendProducts(Collection<? extends Product> newProducts) {
+    public void appendProducts(Collection<? extends String> newProducts) {
         products.addAll(newProducts);
         notifyDataSetChanged();
     }
@@ -325,4 +337,6 @@ public class ProductsListAdapter extends BaseAdapter {
         }
     }
 
+    
+    
 }

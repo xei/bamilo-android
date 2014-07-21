@@ -11,6 +11,7 @@ package pt.rocket.framework.objects;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pt.rocket.framework.database.FavouriteTableHelper;
 import pt.rocket.framework.interfaces.IJSONSerializable;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.CurrencyFormatter;
@@ -279,7 +280,8 @@ public class ProductAttributes implements IJSONSerializable, Parcelable {
 
             // Get the is favourite JSON tag
             isFavourite = jsonObject.optBoolean(RestConstants.JSON_IS_FAVOURITE_TAG, false);
-
+            isFavourite = FavouriteTableHelper.verifyIfFavourite(sku);
+            
         } catch (JSONException e) {
             Log.e(TAG, "Error Parsing the product json", e);
             return false;

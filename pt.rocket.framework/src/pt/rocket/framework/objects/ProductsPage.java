@@ -4,6 +4,7 @@
 package pt.rocket.framework.objects;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,7 +28,8 @@ public class ProductsPage implements IJSONSerializable, Parcelable {
 		
 	private int totalProducts;
 	
-	private ArrayList<Product> products;
+	private ArrayList<String> products;
+	private HashMap<String, Product> productsMap;
 	
 	private ArrayList<CatalogFilter> mFilters;
 
@@ -44,8 +46,9 @@ public class ProductsPage implements IJSONSerializable, Parcelable {
 	public boolean initialize(JSONObject metadataObject) throws JSONException {
 		Log.d(TAG, "FILTER: PRODUCT PAGE");
 		
-		products = new ArrayList<Product>();
+		products = new ArrayList<String>();
 		mFilters = new ArrayList<CatalogFilter>();
+		productsMap = new HashMap<String, Product>();
 		totalProducts = metadataObject.optInt(RestConstants.JSON_PRODUCT_COUNT_TAG, 0);
 		mPageName = metadataObject.optString(RestConstants.JSON_CATALOG_NAME_TAG, "");
 
@@ -56,7 +59,8 @@ public class ProductsPage implements IJSONSerializable, Parcelable {
 			JSONObject productObject = productObjectArray.getJSONObject(i);
 			Product product = new Product();
 			product.initialize(productObject);
-			products.add(product);
+			products.add(product.getSKU());
+			productsMap.put(product.getSKU(), product);
 		}
 		
 		// Get category filter
@@ -130,10 +134,22 @@ public class ProductsPage implements IJSONSerializable, Parcelable {
 		return null;
 	}
 	
-	public ArrayList<Product> getProducts() {
+	public ArrayList<String> getProducts() {
 		return products;
 	}
 
+	public HashMap<String, Product> getProductsMap() {
+		return productsMap;
+	}
+
+	public ArrayList<Product> getProductsList() {
+		ArrayList<Product> prodList = new ArrayList<Product>();
+		for(String sku : products) {
+			prodList.add(productsMap.get(sku));
+		}
+		return prodList;
+	}
+	
 	/**
 	 * @return the totalProducts
 	 */
@@ -161,13 +177,29 @@ public class ProductsPage implements IJSONSerializable, Parcelable {
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeValue(totalProducts);
 		dest.writeList(products);
+
+		dest.writeInt(productsMap.size());
+		for(String key : productsMap.keySet()){
+			dest.writeString(key);
+			dest.writeParcelable(productsMap.get(key), 0);
+		}
+		
 		dest.writeList(mFilters);
 	}
 	
 	private ProductsPage(Parcel in){
 		totalProducts = in.readInt();
-		products = new ArrayList<Product>();
-		in.readList(products, Product.class.getClassLoader());
+		products = new ArrayList<String>();
+//		in.readList(products, Product.class.getClassLoader());
+		in.readList(products, String.class.getClassLoader());
+		
+		int size = in.readInt();
+		for(int i = 0; i < size; i++){
+			String key = in.readString();
+			Product value = in.readParcelable(Product.class.getClassLoader());
+			productsMap.put(key,value);
+		}		
+		
 		mFilters = new ArrayList<CatalogFilter>();
 		in.readList(mFilters, CatalogFilter.class.getClassLoader());
 	}
