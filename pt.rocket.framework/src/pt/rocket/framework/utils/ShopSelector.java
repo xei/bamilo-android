@@ -63,7 +63,6 @@ public final class ShopSelector {
 		MixpanelTracker.startup(context, shopId);
 		MixpanelTracker.launch(context);
 		AdXTracker.startup(context);
-		NewRelicTracker.init(context);
 		
 		sShopId = shopId;
 		sShopName = context.getResources().getString( R.string.global_server_shop_name);

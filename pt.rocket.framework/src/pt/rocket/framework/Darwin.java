@@ -6,6 +6,7 @@ import java.util.Set;
 import java.util.TimeZone;
 
 import pt.rocket.framework.database.DarwinDatabaseHelper;
+import pt.rocket.framework.tracking.NewRelicTracker;
 import pt.rocket.framework.utils.PreInstallController;
 import pt.rocket.framework.utils.ShopSelector;
 import android.content.Context;
@@ -133,6 +134,8 @@ public class Darwin {
 		
 		retrieveVersionCode();
 		ShopSelector.init(context, shopId, isChangeShop);
+		
+		NewRelicTracker.init(context);
 
 		Log.d(TAG, "Darwin is initialized with id " + shopId);
 		SHOP_ID = shopId;
