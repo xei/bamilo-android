@@ -1,4 +1,4 @@
-package pt.rocket.framework.utils;
+package pt.rocket.framework.tracking;
 
 import java.util.List;
 
@@ -6,6 +6,8 @@ import pt.rocket.framework.Darwin;
 import pt.rocket.framework.R;
 import pt.rocket.framework.objects.PurchaseItem;
 import pt.rocket.framework.objects.ShoppingCartItem;
+import pt.rocket.framework.utils.CurrencyFormatter;
+import pt.rocket.framework.utils.LogTagHelper;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;

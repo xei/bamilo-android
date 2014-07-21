@@ -17,7 +17,7 @@ import pt.rocket.framework.objects.CatalogFilter;
 import pt.rocket.framework.objects.CatalogFilterOption;
 import pt.rocket.framework.objects.FeaturedBox;
 import pt.rocket.framework.objects.FeaturedItem;
-import pt.rocket.framework.utils.AnalyticsGoogle;
+import pt.rocket.framework.tracking.AnalyticsGoogle;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LoadingBarView;
 import pt.rocket.framework.utils.LogTagHelper;

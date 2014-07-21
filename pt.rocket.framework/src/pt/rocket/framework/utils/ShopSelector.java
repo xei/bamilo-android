@@ -6,6 +6,10 @@ import pt.rocket.framework.Darwin;
 import pt.rocket.framework.R;
 import pt.rocket.framework.rest.RestClientSingleton;
 import pt.rocket.framework.rest.RestContract;
+import pt.rocket.framework.tracking.AdXTracker;
+import pt.rocket.framework.tracking.AnalyticsGoogle;
+import pt.rocket.framework.tracking.MixpanelTracker;
+import pt.rocket.framework.tracking.NewRelicTracker;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -59,6 +63,7 @@ public final class ShopSelector {
 		MixpanelTracker.startup(context, shopId);
 		MixpanelTracker.launch(context);
 		AdXTracker.startup(context);
+		NewRelicTracker.init(context);
 		
 		sShopId = shopId;
 		sShopName = context.getResources().getString( R.string.global_server_shop_name);

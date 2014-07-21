@@ -61,9 +61,9 @@ public class Darwin {
 	public final static boolean logDebugEnabled = true;
 	private static int sVersionCode;
 	
-	private static final String FRAMEWORK_PREFS = "framework";
+	//private static final String FRAMEWORK_PREFS = "framework";
 	
-	private static final String KEY_INITSUCCESSFUL = "init_successful";
+	//private static final String KEY_INITSUCCESSFUL = "init_successful";
 	
 	public final static String SHARED_PREFERENCES = "whitelabel_prefs";
 	

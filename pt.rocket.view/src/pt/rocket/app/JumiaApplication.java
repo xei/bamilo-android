@@ -25,7 +25,7 @@ import pt.rocket.framework.objects.VersionInfo;
 import pt.rocket.framework.service.IRemoteService;
 import pt.rocket.framework.service.IRemoteServiceCallback;
 import pt.rocket.framework.service.RemoteService;
-import pt.rocket.framework.utils.AnalyticsGoogle;
+import pt.rocket.framework.tracking.AnalyticsGoogle;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CustomerUtils;
 import pt.rocket.framework.utils.EventType;
@@ -77,7 +77,7 @@ public class JumiaApplication extends Application implements ExceptionCallback {
      */
     private CustomerUtils mCustomerUtils;
     private boolean loggedIn = false;
-    private Integer shopId = null;
+    //private Integer shopId = null;
 
     /**
      * General Persistent Variables
@@ -113,7 +113,7 @@ public class JumiaApplication extends Application implements ExceptionCallback {
      */
     public HashMap<String, IResponseCallback> responseCallbacks;
 
-    private boolean isInitializing = false;
+    //private boolean isInitializing = false;
 //    public boolean isUAInitialized = false;
     private Handler resendHandler;
     private Handler resendMenuHandler;
@@ -220,7 +220,7 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     
     public synchronized void init(boolean isReInit, Handler initializationHandler) {
         Log.d(TAG, "ON INIT");
-        isInitializing = true;
+        //isInitializing = true;
         AnalyticsGoogle.clearCheckoutStarted();
         
         for (ApplicationComponent component : COMPONENTS.values()) {
@@ -248,7 +248,7 @@ public class JumiaApplication extends Application implements ExceptionCallback {
 
     public synchronized void handleEvent(ErrorCode errorType, EventType eventType, Handler initializationHandler) {
         Log.d(TAG, "ON HANDLE");
-        isInitializing = false;
+        //isInitializing = false;
         Bundle bundle = new Bundle();
         bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, errorType);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, eventType);
@@ -387,7 +387,7 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     }
 
     public void sendRequest(Bundle bundle) {
-        long timeMillis = System.currentTimeMillis();
+        //long timeMillis = System.currentTimeMillis();
 //        Log.i("REQUEST", "performing event type request : "+bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY)+" url : "+bundle.getString(Constants.BUNDLE_URL_KEY));
 //        timeTrackerMap.put((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY), timeMillis);
         if(ServiceSingleton.getInstance().getService() != null){

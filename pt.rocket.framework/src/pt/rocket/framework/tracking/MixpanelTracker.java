@@ -1,7 +1,7 @@
 /**
  * 
  */
-package pt.rocket.framework.utils;
+package pt.rocket.framework.tracking;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -20,6 +20,8 @@ import pt.rocket.framework.objects.ProductReviewCommentCreated;
 import pt.rocket.framework.objects.ProductSimple;
 import pt.rocket.framework.objects.PurchaseItem;
 import pt.rocket.framework.objects.ShoppingCartItem;
+import pt.rocket.framework.utils.CurrencyFormatter;
+import pt.rocket.framework.utils.PreInstallController;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;

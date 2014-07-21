@@ -1,4 +1,4 @@
-package pt.rocket.framework.utils;
+package pt.rocket.framework.tracking;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -17,6 +17,8 @@ import org.json.JSONObject;
 import pt.rocket.framework.Darwin;
 import pt.rocket.framework.R;
 import pt.rocket.framework.objects.ProductReviewCommentCreated;
+import pt.rocket.framework.utils.CurrencyFormatter;
+import pt.rocket.framework.utils.WindowHelper;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;

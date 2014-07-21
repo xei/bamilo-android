@@ -9,7 +9,7 @@ import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.fragments.FragmentType;
-import pt.rocket.framework.utils.AnalyticsGoogle;
+import pt.rocket.framework.tracking.AnalyticsGoogle;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;

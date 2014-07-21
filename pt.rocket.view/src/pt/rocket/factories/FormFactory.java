@@ -321,12 +321,6 @@ public class FormFactory {
 
             userForm = new DynamicForm(parent);
             userForm.setForm( form );
-
-//            LinearLayout groupLayout = new LinearLayout(context);
-//            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-//            groupLayout.setId( userForm.getNextId() );
-//            groupLayout.setOrientation(LinearLayout.HORIZONTAL);   
-//            groupLayout.setLayoutParams(params);
             
             DynamicFormItem ctrl;
             

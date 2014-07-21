@@ -21,7 +21,7 @@ import pt.rocket.framework.objects.FeaturedBox;
 import pt.rocket.framework.objects.Product;
 import pt.rocket.framework.objects.ProductsPage;
 import pt.rocket.framework.rest.RestContract;
-import pt.rocket.framework.utils.AnalyticsGoogle;
+import pt.rocket.framework.tracking.AnalyticsGoogle;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.Direction;
 import pt.rocket.framework.utils.LoadingBarView;

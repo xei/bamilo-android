@@ -60,7 +60,7 @@
                 android:scaleType="centerInside"
                 android:src="@drawable/selector_catalog_filter" />
 
-            <!-- FILTER -->
+            <!-- SWITCH -->
 
             <View
                 android:id="@+id/teaser_group_title_divider"

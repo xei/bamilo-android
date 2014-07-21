@@ -14,7 +14,7 @@ import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.Customer;
-import pt.rocket.framework.utils.AnalyticsGoogle;
+import pt.rocket.framework.tracking.AnalyticsGoogle;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;

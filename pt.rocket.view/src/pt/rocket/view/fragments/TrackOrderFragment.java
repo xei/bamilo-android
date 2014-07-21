@@ -10,6 +10,7 @@ import org.holoeverywhere.widget.Button;
 import org.holoeverywhere.widget.EditText;
 import org.holoeverywhere.widget.TextView;
 
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.framework.objects.OrderTracker;
 import pt.rocket.framework.objects.OrderTrackerItem;
@@ -197,7 +198,7 @@ public class TrackOrderFragment extends BaseFragment {
                 showLoading();
                 Bundle args = new Bundle();
                 args.putString(GetTrackOrderHelper.ORDER_NR, orderNumber);
-                sendRequest(new GetTrackOrderHelper(), args, new IResponseCallback() {
+                JumiaApplication.INSTANCE.sendRequest(new GetTrackOrderHelper(), args, new IResponseCallback() {
                     
                     @Override
                     public void onRequestError(Bundle bundle) {

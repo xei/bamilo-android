@@ -20,7 +20,7 @@ import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.Darwin;
 import pt.rocket.framework.objects.ShoppingCart;
 import pt.rocket.framework.objects.ShoppingCartItem;
-import pt.rocket.framework.utils.AnalyticsGoogle;
+import pt.rocket.framework.tracking.AnalyticsGoogle;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CurrencyFormatter;
 import pt.rocket.framework.utils.EventType;

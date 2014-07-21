@@ -1,5 +1,6 @@
 package pt.rocket.framework.utils;
 
+import pt.rocket.framework.tracking.AdXTracker;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.os.Build;

@@ -21,7 +21,7 @@ import pt.rocket.forms.PaymentMethodForm;
 import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.rest.RestClientSingleton;
 import pt.rocket.framework.rest.RestContract;
-import pt.rocket.framework.utils.AnalyticsGoogle;
+import pt.rocket.framework.tracking.AnalyticsGoogle;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
