@@ -168,9 +168,27 @@ public class ImageLoader {
      * @param defaultImage Optional default image to return until the actual image is loaded.
      */
     public ImageContainer get(String requestUrl, final ImageListener listener) {
-        return get(requestUrl, listener, 0, 0);
+        return get(requestUrl, listener, 0, 0, null);
     }
 
+    /**
+     * Returns an ImageContainer for the requested URL.
+     *
+     * The ImageContainer will contain either the specified default bitmap or the loaded bitmap.
+     * If the default was returned, the {@link ImageLoader} will be invoked when the
+     * request is fulfilled.
+     * 
+     * @param requestUrl The url of the remote image
+     * @param imageListener The listener to call when the remote image is loaded
+     * @param maxWidth The maximum width of the returned image.
+     * @param maxHeight The maximum height of the returned image.
+     */
+    public ImageContainer get(String requestUrl, ImageListener imageListener,
+            int maxWidth, int maxHeight) {
+    	return get(requestUrl, imageListener, maxWidth, maxHeight, null);
+    }
+    
+    
     /**
      * Issues a bitmap request with the given URL if that image is not available
      * in the cache, and returns a bitmap container that contains all of the data
@@ -180,11 +198,12 @@ public class ImageLoader {
      * @param imageListener The listener to call when the remote image is loaded
      * @param maxWidth The maximum width of the returned image.
      * @param maxHeight The maximum height of the returned image.
+     * @param tag The tag to be added to the request to enable canceling.
      * @return A container object that contains all of the properties of the request, as well as
      *     the currently available image (default if remote is not loaded).
      */
     public ImageContainer get(String requestUrl, ImageListener imageListener,
-            int maxWidth, int maxHeight) {
+            int maxWidth, int maxHeight, String tag) {
         // only fulfill requests that were initiated from the main thread.
         throwIfNotOnMainThread();
 
@@ -230,6 +249,9 @@ public class ImageLoader {
                 }
             });
 
+        if (null != tag) 
+        	newRequest.setTag(tag);
+        
         mRequestQueue.add(newRequest);
         mInFlightRequests.put(cacheKey,
                 new BatchedImageRequest(newRequest, imageContainer));
