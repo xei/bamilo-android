@@ -42,7 +42,7 @@ public class RatingOption implements IJSONSerializable, Parcelable {
 	@Override
 	public boolean initialize(JSONObject jsonObject) throws JSONException {
 		// TODO Auto-generated method stub
-		rating = jsonObject.getInt(RestConstants.JSON_SIZE_STARS_FORE_TAG) / 20;
+		rating = jsonObject.getInt(RestConstants.JSON_SIZE_STARS_FORE_TAG) / 20; // 5 stars (100/20)
 		optionTitle = jsonObject.getString(RestConstants.JSON_TYPE_TITLE_TAG);
 
 		return true;

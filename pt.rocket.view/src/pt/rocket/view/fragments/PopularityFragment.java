@@ -53,7 +53,9 @@ public class PopularityFragment extends BaseFragment {
     
     private static final int MAX_REVIEW_COUNT = 10;
 
-    private static PopularityFragment popularityFragment;
+    private static PopularityFragment sPopularityFragment;
+    
+    public static final String CAME_FROM_POPULARITY = "came_from_popularity";
 
     private CompleteProduct selectedProduct;
 
@@ -63,9 +65,7 @@ public class PopularityFragment extends BaseFragment {
     
     private Boolean isLoadingMore = false;
     
-    private static ProductRatingPage mProductRatingPage;
-    
-    public static final String CAME_FROM_POPULARITY = "came_from_popularity";
+    private ProductRatingPage mProductRatingPage;
     
     private Fragment mWriteReviewFragment;
 
@@ -75,9 +75,10 @@ public class PopularityFragment extends BaseFragment {
      * @return
      */
     public static PopularityFragment getInstance() {
-        popularityFragment = new PopularityFragment();
-        popularityFragment.pageNumber = 1;
-        return popularityFragment;
+        sPopularityFragment = new PopularityFragment();
+        sPopularityFragment.pageNumber = 1;
+        sPopularityFragment.mProductRatingPage = null;
+        return sPopularityFragment;
     }
 
     /**
@@ -139,7 +140,7 @@ public class PopularityFragment extends BaseFragment {
     public void onStart() {
         super.onStart();
         Log.i(TAG, "ON START");
-//        ((BaseActivity) getActivity()).updateActivityHeader(NavigationAction.Products, R.string.reviews);
+        
         selectedProduct = JumiaApplication.INSTANCE.getCurrentProduct();
         inflater = LayoutInflater.from(getActivity());
         if(selectedProduct == null){
