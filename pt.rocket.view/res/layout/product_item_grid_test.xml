@@ -40,7 +40,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerInParent="false"
         android:padding="@dimen/margin_mid"
-        android:src="@drawable/btn_fav" />
+        android:src="@drawable/selector_favorite" />
 
     <org.holoeverywhere.widget.TextView
         android:id="@+id/discount_percentage"
