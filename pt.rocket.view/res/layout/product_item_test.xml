@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/general_container"
     style="@style/list_row_style"
     android:layout_height="@dimen/product_item_height" >
 
     <!-- IMAGE -->
 
-    <com.android.volley.toolbox.NetworkImageView
+    <ImageView
         android:id="@+id/image_view"
         android:layout_width="99dp"
         android:layout_height="99dp"
@@ -28,8 +29,10 @@
         android:layout_centerInParent="false"
         android:layout_marginLeft="@dimen/margin_small"
         android:layout_marginTop="@dimen/margin_small"
-        android:src="@drawable/img_newarrival_en" />
+        android:background="@drawable/selector_is_new_en" />
 
+    
+    
     <!-- INFORMATION -->
 
     <RelativeLayout

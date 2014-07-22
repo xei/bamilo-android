@@ -60,6 +60,8 @@ import de.akquinet.android.androlog.Log;
 public class Catalog extends BaseFragment implements OnClickListener {
 
     private static final String TAG = LogTagHelper.create(Catalog.class);
+    
+    public static String requestTag = "CTLG_REQUEST";
 
     private static Catalog mCatalogFragment;
     private CatalogPagerAdaper mCatalogPagerAdapter;

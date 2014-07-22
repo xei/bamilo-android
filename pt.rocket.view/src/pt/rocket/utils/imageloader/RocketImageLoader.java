@@ -28,6 +28,8 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.ImageLoader.ImageContainer;
 import com.android.volley.toolbox.ImageLoader.ImageListener;
 
+import de.akquinet.android.androlog.Log;
+
 public class RocketImageLoader {
 
     public static RocketImageLoader instance;
@@ -48,6 +50,8 @@ public class RocketImageLoader {
                                                                 // only volley
                                                                 // and universal
     private RequestQueue volleyRequestQueue;
+    private boolean isVolleyRequestQueueRunning = true;
+    private Context context;
 
     public static interface RocketImageLoaderListener {
         void onLoadedSuccess(Bitmap bitmap);
@@ -109,7 +113,20 @@ public class RocketImageLoader {
      * @param listener
      */
     public void loadImage(String imageUrl, ImageView imageView, boolean hideView, RocketImageLoaderListener listener) {
-        loadImage(imageUrl, false, imageView, null, NO_VALUE_INTEGER, NO_VALUE_INTEGER, hideView, listener, false);
+        loadImage(imageUrl, false, imageView, null, NO_VALUE_INTEGER, NO_VALUE_INTEGER, hideView, listener, false, null);
+    }
+
+    /**
+     * Convenience method
+     * 
+     * @param imageUrl
+     * @param imageView
+     * @param progressView
+     * @param placeHolderImageId
+     * @param tag
+     */
+    public void loadImage(String imageUrl, ImageView imageView, View progressView, int placeHolderImageId, String tag) {
+        loadImage(imageUrl, false, imageView, progressView, NO_VALUE_INTEGER, placeHolderImageId, false, null, false, tag);
     }
 
     /**
@@ -121,9 +138,10 @@ public class RocketImageLoader {
      * @param placeHolderImageId
      */
     public void loadImage(String imageUrl, ImageView imageView, View progressView, int placeHolderImageId) {
-        loadImage(imageUrl, false, imageView, progressView, NO_VALUE_INTEGER, placeHolderImageId, false, null, false);
+        loadImage(imageUrl, false, imageView, progressView, NO_VALUE_INTEGER, placeHolderImageId, false, null, false, null);
     }
-
+    
+    
     
     /**
      * Convenience method
@@ -134,7 +152,7 @@ public class RocketImageLoader {
      * @param placeHolderImageId
      */
     public void loadImage(String imageUrl, boolean isFilePathList, ImageView imageView, View progressView, int placeHolderImageId) {
-        loadImage(imageUrl, isFilePathList, imageView, progressView, NO_VALUE_INTEGER, placeHolderImageId, false, null, false);
+        loadImage(imageUrl, isFilePathList, imageView, progressView, NO_VALUE_INTEGER, placeHolderImageId, false, null, false, null);
     }
     
     /**
@@ -146,7 +164,7 @@ public class RocketImageLoader {
      * @param placeHolderImageId
      */
     public void loadImage(String imageUrl, boolean isFilePathList, ImageView imageView, View progressView, int placeHolderImageId, boolean isDraftImage) {
-        loadImage(imageUrl, isFilePathList, imageView, progressView, NO_VALUE_INTEGER, placeHolderImageId, false, null,isDraftImage);
+        loadImage(imageUrl, isFilePathList, imageView, progressView, NO_VALUE_INTEGER, placeHolderImageId, false, null,isDraftImage, null);
     }
 
     /**
@@ -159,7 +177,7 @@ public class RocketImageLoader {
      * @param listener
      */
     public void loadImage(String imageUrl, ImageView imageView, View progressView, int placeHolderImageId, RocketImageLoaderListener listener) {
-        loadImage(imageUrl, false, imageView, progressView, NO_VALUE_INTEGER, placeHolderImageId, false, listener, false);
+        loadImage(imageUrl, false, imageView, progressView, NO_VALUE_INTEGER, placeHolderImageId, false, listener, false, null);
     }
 
     /**
@@ -179,7 +197,7 @@ public class RocketImageLoader {
      * @param listener
      */
     public void loadImage(final String imageUrl, boolean isFilePathList, final ImageView imageView, final View progressView, int targetWidth,
-            final int placeHolderImageId, final boolean hideImageView, final RocketImageLoaderListener listener, boolean isDraftImage) {
+            final int placeHolderImageId, final boolean hideImageView, final RocketImageLoaderListener listener, boolean isDraftImage, String tag) {
 
         if (null != imageUrl && !imageUrl.equals("") && null != imageView) {
             if(isDraftImage) {
@@ -230,7 +248,7 @@ public class RocketImageLoader {
                     }
 
                     @Override
-                    public void onResponse(ImageContainer response, boolean isImmediate) {
+                    public void onResponse(final ImageContainer response, boolean isImmediate) {
                         // only when the bitmap is fully downloaded do we update
                         // the
                         // imageview and fire the events
@@ -239,21 +257,26 @@ public class RocketImageLoader {
                             if (progressView != null) {
                                 progressView.setVisibility(View.GONE);
                             }
-
+                            
                             imageView.setImageBitmap(response.getBitmap());
 
                             if (listener != null) {
                                 listener.onLoadedSuccess(response.getBitmap());
                             }
 
-                            imageView.setVisibility(View.VISIBLE);
+                            if (hideImageView)
+                                imageView.setVisibility(View.VISIBLE);
                         } else {
-                        	imageView.setImageBitmap(null);
+                        	//imageView.setImageBitmap(null);
+                        	imageView.setImageResource(placeHolderImageId);
                         }
                     }
-                }, 0, 0);
+                }, 0, 0, tag);
                 imageView.setTag(imgContainer);
             }
+        } else {
+            // clear any previous image
+            imageView.setImageResource(placeHolderImageId);
         }
     }
 
@@ -320,9 +343,37 @@ public class RocketImageLoader {
         });
 
     }
+    
+    public void stopProcessingQueue() {
+        stopProcessingQueue(null);
+    }
+
+    public void stopProcessingQueue(String tag) {        
+        if (isVolleyRequestQueueRunning) {
+            Log.i("RocketImageLoader", " --- > STOP ProcessingQueue");
+            isVolleyRequestQueueRunning = false;
+            if (null != tag)
+                volleyRequestQueue.cancelAll(tag);
+            volleyRequestQueue.stop();
+        }
+    }
+    
+    
+    public void startProcessingQueue() {
+        if (!isVolleyRequestQueueRunning) {
+            isVolleyRequestQueueRunning = true;
+            Log.i("RocketImageLoader", " --- > START ProcessingQueue");        
+            volleyRequestQueue.start();
+        }
+    }
 
     private void initVolley(Application application) {
-        volleyRequestQueue = newRequestQueue(application.getApplicationContext(), null);
+        context = application.getApplicationContext();
+        initVolley(context);
+    }
+    
+    private void initVolley(Context appContext) {
+        volleyRequestQueue = newRequestQueue(context, null);
         volleyImageLoader = new ImageLoader(volleyRequestQueue, new BitmapLruCache());
     }
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/general_container"
     style="@style/list_row_style" >
 
@@ -13,14 +14,14 @@
         style="@style/divider_vertical_grid"
         android:layout_alignParentRight="true" />
 
-    <com.android.volley.toolbox.NetworkImageView
+    <ImageView
         android:id="@+id/image_view"
         android:layout_width="@dimen/product_item_grid_width"
         android:layout_height="@dimen/product_item_grid_height"
         android:layout_centerHorizontal="true"
         android:scaleType="fitCenter"
         android:src="@drawable/no_image_small" />
-
+    
     <ImageView
         android:id="@+id/image_is_new"
         android:layout_width="wrap_content"
@@ -29,7 +30,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginLeft="@dimen/margin_small"
         android:layout_marginTop="@dimen/margin_small"
-        android:src="@drawable/img_newarrival_en" />
+        android:background="@drawable/selector_is_new_en" />
 
     <ImageView
         android:id="@+id/image_is_favourite"

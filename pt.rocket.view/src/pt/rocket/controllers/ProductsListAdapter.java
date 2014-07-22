@@ -68,6 +68,7 @@ public class ProductsListAdapter extends BaseAdapter {
     private Context context;
 
     private Drawable isNewDrawable;
+    private int isNewResource;
 
     private Drawable isFavouriteDrawable;
     private Drawable isNotFavouriteDrawable;
@@ -114,9 +115,11 @@ public class ProductsListAdapter extends BaseAdapter {
         
         // Get is new image for respective country
         SharedPreferences sharedPrefs = context.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        this.isNewDrawable = context.getResources().getDrawable(R.drawable.img_newarrival_en);
+//        this.isNewDrawable = context.getResources().getDrawable(R.drawable.img_newarrival_en);
+        this.isNewResource = R.drawable.selector_is_new_en;
         if(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_LANG_CODE, "en").contains("fr")){
-            this.isNewDrawable = context.getResources().getDrawable(R.drawable.img_newarrival_fr);
+//            this.isNewDrawable = context.getResources().getDrawable(R.drawable.img_newarrival_fr);
+            this.isNewResource = R.drawable.selector_is_new_fr;
         }
         this.isFavouriteDrawable = context.getResources().getDrawable(R.drawable.btn_fav_selected);
         this.isNotFavouriteDrawable = context.getResources().getDrawable(R.drawable.btn_fav);
@@ -197,6 +200,7 @@ public class ProductsListAdapter extends BaseAdapter {
         if ((Item) itemView.getTag() == null) {
             prodItem = new Item();
             prodItem.image = (ImageView) itemView.findViewById(R.id.image_view);
+            //prodItem.image.setDefaultImageResId(R.drawable.no_image_small);
             prodItem.name = (TextView) itemView.findViewById(R.id.item_name);
             if (showList) prodItem.rating = (RatingBar) itemView.findViewById(R.id.item_rating);
             prodItem.price = (TextView) itemView.findViewById(R.id.item_regprice);
@@ -205,7 +209,7 @@ public class ProductsListAdapter extends BaseAdapter {
             if (showList) prodItem.reviews = (TextView) itemView.findViewById(R.id.item_reviews);
             prodItem.brand = (TextView) itemView.findViewById(R.id.item_brand);
             prodItem.isNew= (ImageView) itemView.findViewById(R.id.image_is_new);
-            prodItem.isNew.setImageDrawable(isNewDrawable);
+            prodItem.isNew.setBackgroundResource(isNewResource);
             prodItem.isFavourite = (ImageView) itemView.findViewById(R.id.image_is_favourite);
             itemView.setTag(prodItem);
         } else {
@@ -217,16 +221,16 @@ public class ProductsListAdapter extends BaseAdapter {
 //        if (product.getImages().size() > 0) {
 //            imageURL = product.getImages(). get(0).getUrl();
 //        }
-        //RocketImageLoader.instance.loadImage(imageURL, prodItem.image,  null, R.drawable.no_image_small);
-        ((NetworkImageView) prodItem.image).setImageUrl(product.getFirstImageURL(), RocketImageLoader.instance.getImageLoader());
+        RocketImageLoader.instance.loadImage(product.getFirstImageURL(), prodItem.image,  null, R.drawable.no_image_small, Catalog.requestTag);        
+//        prodItem.image.setImageUrl(product.getFirstImageURL(), RocketImageLoader.instance.getImageLoader());
 
         // Set is new image
-        if(product.getAttributes().isNew()) {            
-            prodItem.isNew.setVisibility(View.VISIBLE);
-        } else {
-            prodItem.isNew.setVisibility(View.GONE);
-        }
-
+//        if(product.getAttributes().isNew()) {            
+//            prodItem.isNew.setVisibility(View.VISIBLE);
+//        } else {
+//            prodItem.isNew.setVisibility(View.GONE);
+//        }
+        prodItem.isNew.setSelected(product.getAttributes().isNew());
         
 //        if (FavouriteTableHelper.verifyIfFavourite(product.getSKU())) {
 //            product.getAttributes().setFavourite(true);
@@ -268,6 +272,7 @@ public class ProductsListAdapter extends BaseAdapter {
         
         prodItem.name.setText(product.getName());
         prodItem.price.setText(product.getSuggestedPrice());
+        
         if (showList) {
             if (product.getRating() != null && product.getRating() > 0) {
                 prodItem.rating.setRating(product.getRating().floatValue());
@@ -296,6 +301,8 @@ public class ProductsListAdapter extends BaseAdapter {
         } else {
             prodItem.discount.setVisibility(View.GONE);
             prodItem.discountPercentage.setVisibility(View.GONE);
+//            prodItem.discount.setText("");
+//            prodItem.discountPercentage.setText("");
             prodItem.price.setPaintFlags(prodItem.price.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
             prodItem.price.setTextAppearance(context.getApplicationContext(), R.style.text_bold);
             prodItem.price.setTextColor(context.getResources().getColor(R.color.red_basic));

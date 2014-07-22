@@ -28,6 +28,7 @@ import pt.rocket.framework.utils.LoadingBarView;
 import pt.rocket.framework.utils.ProductSort;
 import pt.rocket.helpers.GetProductsHelper;
 import pt.rocket.interfaces.IResponseCallback;
+import pt.rocket.utils.imageloader.RocketImageLoader;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.ProductDetailsActivityFragment;
@@ -120,9 +121,9 @@ public class CatalogPageModel {
     private boolean receivedError = false;
 
     private Catalog mFragment;
-    
+
     private int mSwitchMD5;
-    
+
     public CatalogPageModel(int index, BaseActivity activity, Catalog mFragment) {
         this.index = index;
         this.mActivity = activity;
@@ -171,7 +172,6 @@ public class CatalogPageModel {
             dir = Direction.DESCENDENT;
             break;
 
-
         }
     }
 
@@ -183,100 +183,101 @@ public class CatalogPageModel {
         return totalProducts;
     }
 
-    public void notifyContentDataSetChanged(){
-        if(productsAdapter != null){
-            this.productsAdapter.notifyDataSetChanged();    
+    public void notifyContentDataSetChanged() {
+        if (productsAdapter != null) {
+            this.productsAdapter.notifyDataSetChanged();
         }
     }
 
     /**
-     * set CatalogPageModel's static variables</br>
-     * adjust the layout</br>
-     * create a new ProductsListAdapter</br>
+     * set CatalogPageModel's static variables</br> adjust the layout</br> create a new
+     * ProductsListAdapter</br>
      * 
-     * @param p productsURL
-     * @param s searchQuery
-     * @param n navigationPath
-     * @param t title
-     * @param navSource navigationSource
-     * @param filterValues filters
-     * @param showList show list (or grid)
-     * @param totalUpdates number of global calls to setVariables
+     * @param p
+     *            productsURL
+     * @param s
+     *            searchQuery
+     * @param n
+     *            navigationPath
+     * @param t
+     *            title
+     * @param navSource
+     *            navigationSource
+     * @param filterValues
+     *            filters
+     * @param showList
+     *            show list (or grid)
+     * @param totalUpdates
+     *            number of global calls to setVariables
      */
-    public void setVariables(String p, String s, String n, String t, int navSource, ContentValues filterValues, boolean showList, int totalUpdates) {
-        
+    public void setVariables(String p, String s, String n, String t, int navSource,
+            ContentValues filterValues, boolean showList, int totalUpdates) {
+
         Log.d(TAG, "FILTER SET VARIABLES: " + p + " " + s + " " + n + " " + t + " " + navSource);
-        
+
         CatalogPageModel.productsURL = p;
         CatalogPageModel.searchQuery = s;
         CatalogPageModel.navigationPath = n;
         CatalogPageModel.title = t;
         CatalogPageModel.navigationSource = navSource;
-        
 
         this.showList = showList;
-        
-        Log.i(TAG, "FILTER IS DIFF: " + ((filterValues != null) ? filterValues.getAsInteger("md5") : "IS NULL"));
-        
+
+        Log.i(TAG, "FILTER IS DIFF: "
+                + ((filterValues != null) ? filterValues.getAsInteger("md5") : "IS NULL"));
+
         // Case no content
-        if(!hasContent()) {
+        if (!hasContent()) {
             Log.i(TAG, "CONTENT IS EMPTY GET CATALOG");
             this.filters = filterValues;
             threadRequest();
         }
         // Case new filter
-        else if(filterValues != null && filterValues.getAsInteger("md5") != this.mFilterMD5) {
-            Log.i(TAG, "FILTER IS DIFF: " + filterValues.getAsInteger("md5") + " " + this.mFilterMD5);
+        else if (filterValues != null && filterValues.getAsInteger("md5") != this.mFilterMD5) {
+            Log.i(TAG, "FILTER IS DIFF: " + filterValues.getAsInteger("md5") + " "
+                    + this.mFilterMD5);
             this.mFilterMD5 = filterValues.getAsInteger("md5");
             this.filters = filterValues;
             threadRequest();
-        // Case update layout 
-        } else if(this.mSwitchMD5 != totalUpdates) {
+            // Case update layout
+        } else if (this.mSwitchMD5 != totalUpdates) {
             Log.i(TAG, "SWITCH LAYOUT");
             switchLayout(showList, 0);
             this.mSwitchMD5 = totalUpdates;
         } else {
             Log.i(TAG, "SHOW");
         }
-            
-        
-        
+
     }
-    
-    private void threadRequest(){
-        new Handler().postDelayed(new Runnable() {
-            
-            @Override
-            public void run() {
-                executeRequest();
-            }
-        }, 200);
-        
-//        new Thread(new Runnable() {
-//
-//            @Override
-//            public void run() {
-//                executeRequest();
-//            }
-//        }).run();
+
+    private void threadRequest() {
+        executeRequest();
+        // new Thread(new Runnable() {
+        //
+        // @Override
+        // public void run() {
+        // executeRequest();
+        // }
+        // }).run();
     }
 
     /**
-     * adjust the layout</br>
-     * create a new ProductsListAdapter</br>
+     * adjust the layout</br> create a new ProductsListAdapter</br>
      * 
-     * @param showList show list (or grid)
-     * @param totalUpdates number of global calls to setVariables
+     * @param showList
+     *            show list (or grid)
+     * @param totalUpdates
+     *            number of global calls to setVariables
      */
     public void switchLayout(boolean showList, int totalUpdates) {
         // save products from current productsAdapter to add to new Adapter
-        //List<Product> products = productsAdapter.products;
+        // List<Product> products = productsAdapter.products;
         Log.d(TAG, "SWITCHING LAYOUT: " + showList + " " + totalUpdates + " " + isLandScape);
-        //this.showList = showList;
-        //this.totalUpdates = totalUpdates;
-        //generateProductsListAdapter();
+        // this.showList = showList;
+        // this.totalUpdates = totalUpdates;
+        // generateProductsListAdapter();
         onSwitchLayout();
-        //productsAdapter.appendProducts(products);
+        // productsAdapter.appendProducts(products);
 
         showCatalogContent();
         isLoadingMore = false;
@@ -406,15 +407,18 @@ public class CatalogPageModel {
 
                     Log.i("TAG", "DIR=======>" + dir + " sort =====> " + sort);
                     JumiaApplication.INSTANCE.showRelatedItemsGlobal = true;
-                    Product product = mFragment.getProduct((String)productsAdapter.getItem(activePosition));
+                    Product product = mFragment.getProduct((String) productsAdapter
+                            .getItem(activePosition));
                     Bundle bundle = new Bundle();
                     bundle.putString(ConstantsIntentExtra.CONTENT_URL, product.getUrl());
                     bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, navigationSource);
                     bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, navigationPath);
-                    bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, product.getBrand() + " " + product.getName());
+                    bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, product.getBrand() + " "
+                            + product.getName());
                     if (title != null)
                         bundle.putString(ProductDetailsActivityFragment.PRODUCT_CATEGORY, title);
-                    mActivity.onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle,FragmentController.ADD_TO_BACK_STACK);
+                    mActivity.onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle,
+                            FragmentController.ADD_TO_BACK_STACK);
                 }
 
             }
@@ -490,8 +494,7 @@ public class CatalogPageModel {
         showProductsContent();
         productsAdapter.clearProducts();
     }
-    
-    
+
     /**
      * Update the layout
      */
@@ -515,7 +518,7 @@ public class CatalogPageModel {
             }
         }
         gridView.setNumColumns(numColumns);
-        
+
         if (productsAdapter != null) {
             List<String> products = productsAdapter.products;
             productsAdapter = new ProductsListAdapter(mActivity, mFragment, showList, numColumns);
@@ -526,7 +529,7 @@ public class CatalogPageModel {
         } else {
             executeRequest();
         }
-        
+
     }
 
     /**
@@ -549,7 +552,7 @@ public class CatalogPageModel {
             mBeginRequestMillis = System.currentTimeMillis();
 
             Log.d(TAG, "FILTER CREATE BUNDLE");
-            
+
             Bundle bundle = new Bundle();
             bundle.putString(GetProductsHelper.PRODUCT_URL, productsURL);
             bundle.putString(GetProductsHelper.SEARCH_QUERY, searchQuery);
@@ -558,15 +561,16 @@ public class CatalogPageModel {
             bundle.putInt(GetProductsHelper.SORT, sort.id);
             bundle.putInt(GetProductsHelper.DIRECTION, dir.id);
             bundle.putParcelable(GetProductsHelper.FILTERS, filters);
-            
+
             // mActivity.showLoading(false);
-            JumiaApplication.INSTANCE.sendRequest(new GetProductsHelper(), bundle, responseCallback);
+            JumiaApplication.INSTANCE
+                    .sendRequest(new GetProductsHelper(), bundle, responseCallback);
 
         } else {
             hideProductsLoading();
         }
     }
-    
+
     private void showProductsContent() {
         Log.d(TAG, "showProductsContent");
         if (pageNumber == 1) {
@@ -581,9 +585,9 @@ public class CatalogPageModel {
         linearLayoutLm.refreshDrawableState();
 
         gridView.setAdapter(productsAdapter);
-        
+
         productsAdapter.notifyDataSetChanged();
-        
+
         // Loading is being hidden on getMoreProducts previously called on executeRequest()
         /*-if (relativeLayout != null) {
             linearLayoutLb.setVisibility(View.GONE);
@@ -593,9 +597,19 @@ public class CatalogPageModel {
 
     private OnScrollListener scrollListener = new OnScrollListener() {
 
+        private int previousFirstVisibleItem = 0;
+        private long previousEventTime = 0;
+        private double speed = 0;
+
         @Override
         public void onScrollStateChanged(AbsListView view, int scrollState) {
-
+            if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
+                Log.d(TAG, "  ---- > Scroll: Fling");
+                RocketImageLoader.getInstance().stopProcessingQueue(Catalog.requestTag);
+            } else {
+                Log.d(TAG, "  ---- > Scroll: Idle");
+                RocketImageLoader.getInstance().startProcessingQueue();
+            }
         }
 
         @Override
@@ -608,23 +622,77 @@ public class CatalogPageModel {
             // item is fully visible.
             lastItem = firstVisibleItem + visibleItemCount;
             if (totalItemCount != 0 && lastItem == totalItemCount) {
-//                Log.i(TAG, "onScroll: last item visible ");
+                // Log.i(TAG, "onScroll: last item visible ");
                 if (!isLoadingMore && !receivedError) {
-//                    Log.i(TAG, "onScroll: last item visible and start loading" + pageNumber);
+                    // Log.i(TAG, "onScroll: last item visible and start loading" + pageNumber);
                     isLoadingMore = true;
                     showProductsLoading();
-                    new Thread(new Runnable() {
+                    new Handler().postDelayed(new Runnable() {
                         
                         @Override
                         public void run() {
                             getMoreProducts();
+                            
                         }
-                    }).run(); 
-                    
+                    }, 300);
+                    // new Thread(new Runnable() {
+                    //
+                    // @Override
+                    // public void run() {
+                    // getMoreProducts();
+                    // }
+                    // }).run();
+
                 }
             } else {
                 receivedError = false;
             }
+
+            if (previousFirstVisibleItem != firstVisibleItem) {
+                long currTime = System.currentTimeMillis();
+                long timeToScrollOneElement = currTime - previousEventTime;
+                speed = ((double) 1 / timeToScrollOneElement) * 1000;
+
+                previousFirstVisibleItem = firstVisibleItem;
+                previousEventTime = currTime;
+
+                Log.d(TAG, "  ---- > Speed: " + speed + " elements/second");
+
+                if (speed < 15) {
+                    RocketImageLoader.getInstance().startProcessingQueue();
+                } 
+//                else {
+//                    RocketImageLoader.getInstance().stopProcessingQueue();
+//                }
+            }
+
+            // int lastVisibleItem = firstVisibleItem + visibleItemCount;
+            //
+            // if (totalItemCount != 0) {
+            // int halfTotalItemCount = totalItemCount / 2;
+            // if (halfTotalItemCount % 2 != 0)
+            // halfTotalItemCount = halfTotalItemCount + 1;
+            //
+            // if (lastVisibleItem >= halfTotalItemCount) {
+            // if (!isLoadingMore) {
+            // isLoadingMore = true;
+            // showProductsLoading();
+            // getMoreProducts();
+            // }
+            //
+            // } else if (lastVisibleItem == totalItemCount) {
+            // if (!isLoadingMore) {
+            // isLoadingMore = true;
+            // showProductsLoading();
+            // getMoreProducts();
+            // }
+            //
+            // }
+            //
+            // } else {
+            // isLoadingMore = false;
+            // receivedError = false;
+            // }
 
         }
     };
@@ -642,8 +710,14 @@ public class CatalogPageModel {
 
     private void showProductsLoading() {
         Log.d(TAG, "showProductsLoading");
-        linearLayoutLm.setVisibility(View.VISIBLE);
-        linearLayoutLm.refreshDrawableState();
+        new Handler().postDelayed(new Runnable() {
+            
+            @Override
+            public void run() {
+                linearLayoutLm.setVisibility(View.VISIBLE);
+                linearLayoutLm.refreshDrawableState();   
+            }
+        }, 200);
     }
 
     private void hideProductsNotFound() {
@@ -653,12 +727,16 @@ public class CatalogPageModel {
 
     private void hideProductsLoading() {
         Log.d(TAG, "hideProductsLoading");
-        linearLayoutLm.setVisibility(View.GONE);
-        linearLayoutLm.refreshDrawableState();
-        textViewSpnf.setVisibility(View.GONE);
+        new Handler().postDelayed(new Runnable() {
+            
+            @Override
+            public void run() {
+                linearLayoutLm.setVisibility(View.GONE);
+                linearLayoutLm.refreshDrawableState();
+                textViewSpnf.setVisibility(View.GONE);
+            }
+        }, 200);
     }
-
-
 
     /**
      * This method generates a unique and always diferent MD5 hash based on a given key
@@ -707,15 +785,13 @@ public class CatalogPageModel {
         }
     };
 
-    
-    public ArrayList<CatalogFilter> getFilters(){
+    public ArrayList<CatalogFilter> getFilters() {
         return mFilters;
     }
-    
-    
+
     public ArrayList<CatalogFilter> mFilters;
 
-    //private ArrayList<CatalogFilter> mCatalogFilters;
+    // private ArrayList<CatalogFilter> mCatalogFilters;
 
     // @Override
     // public void handleEvent(ResponseEvent event) {
@@ -779,7 +855,8 @@ public class CatalogPageModel {
         boolean hasFilter = isRequestFromFilter();
 
         // Log.i(TAG, "code1 product list on error event");
-        //EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        // EventType eventType = (EventType)
+        // bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
 
         if (errorCode != null && pageNumber == 1) {
@@ -804,7 +881,8 @@ public class CatalogPageModel {
             Log.d(TAG, "onErrorEvent: loading more products failed");
             hideProductsLoading();
             if (totalProducts != -1 && totalProducts > ((pageNumber - 1) * MAX_PAGE_ITEMS)) {
-                Toast.makeText(mActivity, R.string.products_could_notloaded, Toast.LENGTH_SHORT).show();
+                Toast.makeText(mActivity, R.string.products_could_notloaded, Toast.LENGTH_SHORT)
+                        .show();
             }
         }
         mBeginRequestMillis = System.currentTimeMillis();
@@ -813,13 +891,14 @@ public class CatalogPageModel {
     }
 
     /**
-     * Validate if the request was triggered by filter.
-     * Show the old catalog and warning the parent fragment 
+     * Validate if the request was triggered by filter. Show the old catalog and warning the parent
+     * fragment
+     * 
      * @return boolean
      * @author sergiopereira
      */
-    private boolean isRequestFromFilter(){
-        if(filters != null && mFragment != null) {
+    private boolean isRequestFromFilter() {
+        if (filters != null && mFragment != null) {
             Log.d(TAG, "FILTERS: ON ERROR EVENT");
             // Sent to Parent that was received an error on load catalog
             mFragment.onErrorLoadingFilteredCatalog();
@@ -829,8 +908,7 @@ public class CatalogPageModel {
             return false;
         }
     }
-    
-    
+
     public void setTotalItemLable() {
         TextView totalItems = (TextView) mActivity.findViewById(R.id.totalProducts);
         if (getTotalProducts() > 0) {
@@ -840,21 +918,22 @@ public class CatalogPageModel {
             totalItems.setVisibility(View.VISIBLE);
         }
     }
-    
+
     /**
      * Validate if has content
+     * 
      * @return boolean
      * @author sergiopereira
      */
-    public boolean hasContent(){
+    public boolean hasContent() {
         return productsAdapter != null;
     }
 
     private void onSuccessEvent(Bundle bundle) {
-        
+
         // TODO : Validate
         // mActivity.handleSuccessEvent(bundle);
-        
+
         Log.d(TAG, "ON SUCCESS EVENT");
 
         // Get Products Event
@@ -870,27 +949,35 @@ public class CatalogPageModel {
         }
 
         new Handler().postDelayed(new Runnable() {
-            
+
             @Override
             public void run() {
                 // Valdiate products
                 if (productsPage != null && productsPage.getTotalProducts() > 0) {
-                    Log.d(TAG, "onSuccessEvent: products on page = " + productsPage.getProducts().size() + " total products = " + productsPage.getTotalProducts());
+                    Log.d(TAG, "onSuccessEvent: products on page = "
+                            + productsPage.getProducts().size() + " total products = "
+                            + productsPage.getTotalProducts());
 
-                    // TODO: Improve this behavior 
+                    // TODO: Improve this behavior
                     if (index == 1 && pageNumber == 1) {
-                        RelatedItemsTableHelper.insertRelatedItemsAndClear(mActivity, productsPage.getProductsList());
+                        RelatedItemsTableHelper.insertRelatedItemsAndClear(mActivity,
+                                productsPage.getProductsList());
                     } else if (index == 1 && pageNumber == 2) {
-                        RelatedItemsTableHelper.insertRelatedItems(mActivity, productsPage.getProductsList());
+                        RelatedItemsTableHelper.insertRelatedItems(mActivity,
+                                productsPage.getProductsList());
                     }
-                    
+
                     mFragment.addProductsCollection(productsPage.getProductsMap());
-                    
+
                     totalProducts = productsPage.getTotalProducts();
                     if (mFragment.isVisible()) {
                         // set total items lable
                         if (getTotalProducts() > 0)
-                            mActivity.setTitleAndSubTitle(title, " (" + String.valueOf(getTotalProducts()) + " " + mActivity.getString(R.string.shoppingcart_items) + ")");
+                            mActivity.setTitleAndSubTitle(
+                                    title,
+                                    " (" + String.valueOf(getTotalProducts()) + " "
+                                            + mActivity.getString(R.string.shoppingcart_items)
+                                            + ")");
                         else
                             mActivity.setTitle(title);
                     }
@@ -909,7 +996,8 @@ public class CatalogPageModel {
                             mActivity.setTitleAndSubTitle(
                                     query,
                                     " (" + productsPage.getTotalProducts() + " "
-                                            + mActivity.getString(R.string.shoppingcart_items) + ")");
+                                            + mActivity.getString(R.string.shoppingcart_items)
+                                            + ")");
                         else
                             mActivity.setTitle(query);
                     }
@@ -925,7 +1013,8 @@ public class CatalogPageModel {
 
                 } else {
                     if (pageNumber == 1) {
-                        TrackerDelegator.trackCategoryView(mActivity.getApplicationContext(), title,
+                        TrackerDelegator.trackCategoryView(mActivity.getApplicationContext(),
+                                title,
                                 pageNumber);
                     }
                 }
@@ -940,7 +1029,8 @@ public class CatalogPageModel {
                 // Log.i(TAG, "code1 " + productsPage.getProducts().size() + " pageNumber is : " +
                 // pageNumber);
 
-                pageNumber = productsPage.getProducts().size() >= productsPage.getTotalProducts() ? NO_MORE_PAGES : pageNumber + 1;
+                pageNumber = productsPage.getProducts().size() >= productsPage.getTotalProducts() ? NO_MORE_PAGES
+                        : pageNumber + 1;
                 showCatalogContent();
                 if (totalProducts < ((pageNumber - 1) * MAX_PAGE_ITEMS)) {
                     pageNumber = NO_MORE_PAGES;
@@ -954,9 +1044,9 @@ public class CatalogPageModel {
                 if (mFragment.isVisible()) {
                     mFragment.onSuccesLoadingFilteredCatalog(productsPage.getFilters());
                 }
-                
+
                 mActivity.showContentContainer();
-                
+
             }
         }, 200);
     }
@@ -975,7 +1065,7 @@ public class CatalogPageModel {
     public void setLandScape(boolean isLandScape) {
         this.isLandScape = isLandScape;
     }
-    
+
     private final void showLoadingInfo() {
         Log.d(TAG, "Showing loading info");
         if (loadingBarView != null) {
@@ -993,7 +1083,7 @@ public class CatalogPageModel {
             loadingBarView.stopRendering();
         }
     }
-    
+
     public void invalidatePage() {
         if (null != productsAdapter)
             productsAdapter.notifyDataSetChanged();
