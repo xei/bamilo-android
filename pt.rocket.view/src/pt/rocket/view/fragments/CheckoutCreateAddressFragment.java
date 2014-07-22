@@ -37,6 +37,7 @@ import pt.rocket.helpers.address.SetNewAddressHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.pojo.DynamicForm;
 import pt.rocket.pojo.DynamicFormItem;
+import pt.rocket.utils.InputType;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.TrackerDelegator;
@@ -55,6 +56,7 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.actionbarsherlock.internal.widget.IcsAdapterView;
@@ -132,6 +134,7 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
     
     private ContentValues mBillingSavedValues;
     
+    private boolean mSavedCityLoaded = true;
     
     /**
      * Fragment used to create an address
@@ -187,6 +190,7 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
             mBillingSavedValues = savedInstanceState.getParcelable(BILLING_STATE);
             //Log.d(TAG, "SAVED CONTENT VALUES: " + mShippingSavedValues.toString());
             //Log.d(TAG, "SAVED CONTENT VALUES: " + ((mBillingSavedValues!= null) ? mBillingSavedValues.toString() : "IS NULL") );
+            mSavedCityLoaded = false;
         } else {
             Log.i(TAG, "SAVED CONTENT VALUES IS NULL");
         }
@@ -374,6 +378,9 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         // Load the saved shipping values
         loadSavedValues(mShippingSavedValues, shippingFormGenerator);
         loadSavedValues(mBillingSavedValues, billingFormGenerator);
+        
+        // load city if in EditText
+        loadCityEditText(null);
         
         // Show
         showFragmentContentContainer();
@@ -629,28 +636,35 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         String mCityName = "";
         
         // Get from spinner
-        View mCityView = dynamicForm.getItemByKey(RestConstants.JSON_CITY_ID_TAG).getControl();
-        if(((ViewGroup) mCityView).getChildAt(0) instanceof IcsSpinner) {
-            IcsSpinner mCitySpinner = (IcsSpinner) ((ViewGroup) mCityView).getChildAt(0);            
+        View mControl = dynamicForm.getItemByKey(RestConstants.JSON_CITY_ID_TAG).getControl();
+        View mCityView = ((ViewGroup) mControl).getChildAt(0);
+        if (mCityView instanceof IcsSpinner) {
+            IcsSpinner mCitySpinner = (IcsSpinner) mCityView;
             // Get selected city
-            AddressCity mSelectedCity = (AddressCity) mCitySpinner.getSelectedItem(); 
-            Log.d(TAG, "SELECTED CITY: " + mSelectedCity.getValue() + " " + mSelectedCity.getId() );
+            AddressCity mSelectedCity = (AddressCity) mCitySpinner.getSelectedItem();
+            Log.d(TAG, "SELECTED CITY: " + mSelectedCity.getValue() + " " + mSelectedCity.getId());
             mCityId = "" + mSelectedCity.getId();
             mCityName = mSelectedCity.getValue();
             
             // Used to save state
             int mCitySelectedPosition = mCitySpinner.getSelectedItemPosition();
-            if(isDefaultShipping == IS_DEFAULT_SHIPPING_ADDRESS) mContentValues.put(SHIPPING_CITY_POS, mCitySelectedPosition);
-            else if(isDefaultBilling == IS_DEFAULT_BILLING_ADDRESS) mContentValues.put(BILLING_CITY_POS, mCitySelectedPosition);
-            
-        } 
-        // Get from edit text
-        else if(mCityView instanceof EditText) {
-            EditText mCityEdit = (EditText) dynamicForm.getItemByKey(RestConstants.JSON_CITY_ID_TAG).getEditControl();
-            mCityName = mCityEdit.getText().toString();
-            Log.d(TAG, "SELECTED CITY: " + mCityName );
+            if (isDefaultShipping == IS_DEFAULT_SHIPPING_ADDRESS) mContentValues.put(SHIPPING_CITY_POS, mCitySelectedPosition);
+            else if (isDefaultBilling == IS_DEFAULT_BILLING_ADDRESS) mContentValues.put(BILLING_CITY_POS, mCitySelectedPosition);
         }
-       
+        // Get from edit text
+        else if (mCityView instanceof RelativeLayout) {
+            mCityView = ((RelativeLayout) mCityView).getChildAt(0);
+            if (mCityView instanceof EditText) {
+                EditText mCityEdit = (EditText) dynamicForm.getItemByKey(RestConstants.JSON_CITY_ID_TAG).getEditControl();
+                mCityName = mCityEdit.getText().toString();
+                Log.d(TAG, "SELECTED CITY: " + mCityName);
+            }
+        }
+        // Unexpected
+        else {
+            Log.e(TAG, RestConstants.JSON_CITY_ID_TAG + " IS AN UNEXPECTED VIEW: " + mCityView.getClass().getName());
+        }
+        
         // Put values
         for (Entry<String, Object> value : mContentValues.valueSet()) {
             String key = value.getKey();
@@ -683,23 +697,76 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
     public void onItemSelected(IcsAdapterView<?> parent, View view, int position, long id) {
         Log.d(TAG, "CURRENT TAG: " + parent.getTag());
         Object object = parent.getItemAtPosition(position);
-        if(object instanceof AddressRegion) {
+        if (object instanceof AddressRegion) {
             FormField field = mFormResponse.getFieldKeyMap().get(RestConstants.JSON_CITY_ID_TAG);
-            // Validate API call
-            if(field.getDataCalls() ==  null) { Log.w(TAG, "GET CITY: API CALL IS NULL"); return; }
-            // Get API call
-            String url = field.getDataCalls().get(RestConstants.JSON_API_CALL_TAG);
-            Log.d(TAG, "API CALL: " + url);
-            // Request the cities for this region id 
-            int regionId = ((AddressRegion) object).getId();
-            // Save the selected region on the respective variable
-            String tag = (parent.getTag() != null) ? parent.getTag().toString() : "";
-            if (tag.equals(SHIPPING_FORM_TAG)) {
-                selectedRegionOnShipping = SHIPPING_FORM_TAG + "_" + regionId;
-                triggerGetCities(url, regionId, selectedRegionOnShipping);
-            } else if (tag.equals(BILLING_FORM_TAG)) {
-                selectedRegionOnBilling = BILLING_FORM_TAG + "_" + regionId;
-                triggerGetCities(url, regionId, selectedRegionOnBilling);
+//            // Validate API call
+//            if (field.getDataCalls() == null) {
+//                Log.w(TAG, "GET CITY: API CALL IS NULL");
+//                return;
+//            }
+            if (InputType.list == field.getInputType()) {
+                // Get API call
+                String url = field.getDataCalls().get(RestConstants.JSON_API_CALL_TAG);
+                Log.d(TAG, "API CALL: " + url);
+                if (url != null) {
+                    // Request the cities for this region id
+                    int regionId = ((AddressRegion) object).getId();
+                    // Save the selected region on the respective variable
+                    String tag = (parent.getTag() != null) ? parent.getTag().toString() : "";
+                    if (tag.equals(SHIPPING_FORM_TAG)) {
+                        selectedRegionOnShipping = SHIPPING_FORM_TAG + "_" + regionId;
+                        triggerGetCities(url, regionId, selectedRegionOnShipping);
+                    } else if (tag.equals(BILLING_FORM_TAG)) {
+                        selectedRegionOnBilling = BILLING_FORM_TAG + "_" + regionId;
+                        triggerGetCities(url, regionId, selectedRegionOnBilling);
+                    }
+                } else {
+                    Log.e(TAG, "No " + RestConstants.JSON_API_CALL_TAG + " on "+ RestConstants.JSON_CITY_ID_TAG);
+                }
+            } else if (InputType.text == field.getInputType()) {
+                // City
+                // loadCityEditText(field.getInputType());
+            } else {
+                Log.i(TAG, RestConstants.JSON_CITY_ID_TAG + " with an expected inputType");
+            }
+        }
+    }
+
+    /**
+     * Fill EditText with city name<br>
+     * <br>
+     * if city was not yet loaded and there are saved values<br>
+     * get city name and set it on EditText
+     * 
+     * @param inputType
+     * @author Andre Lopes
+     */
+    private void loadCityEditText(InputType inputType) {
+        if (inputType == null) {
+            FormField field = mFormResponse.getFieldKeyMap().get(RestConstants.JSON_CITY_ID_TAG);
+            inputType = field.getInputType();
+        }
+        if (InputType.text == inputType) {
+            if (!mSavedCityLoaded) {
+                if (mShippingSavedValues != null) {
+                    for (Entry<String, Object> value : mShippingSavedValues.valueSet()) {
+                        String key = value.getKey();
+                        if (key.contains(RestConstants.JSON_CITY_ID_TAG)) {
+                            continue;
+                        }
+                        else if (key.contains(RestConstants.JSON_CITY_TAG)) {
+                            String cityName = (String) mShippingSavedValues.get(key);
+                            if (cityName != null) {
+                                DynamicFormItem cityEditText = shippingFormGenerator.getItemByKey(RestConstants.JSON_CITY_ID_TAG);
+                                if (cityEditText != null) {
+                                    ((EditText) cityEditText.getEditControl()).setText(cityName);
+                                }
+                            }
+                            break;
+                        }
+                    }
+                }
+                mSavedCityLoaded = true;
             }
         }
     }
@@ -982,8 +1049,10 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
      */
     private void showErrorDialog(HashMap<String, List<String>> errors){
         Log.d(TAG, "SHOW LOGIN ERROR DIALOG");
-        List<String> errorMessages = (List<String>) errors.get(RestConstants.JSON_VALIDATE_TAG);
-
+        List<String> errorMessages = null;
+        if (errors != null) {
+            errorMessages = (List<String>) errors.get(RestConstants.JSON_VALIDATE_TAG);
+        }
         if (errors != null && errorMessages != null && errorMessages.size() > 0) {
 
             showFragmentContentContainer();

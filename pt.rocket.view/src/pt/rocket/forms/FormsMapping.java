@@ -29,7 +29,7 @@ public class FormsMapping {
     /**
      * The mapping for the login form. This mapping is based on the key form field returned by the API 
      */
-    public static final Map<String, Integer> loginForm;
+    private static final Map<String, Integer> loginForm;
     static {
         Map<String, Integer> currMapping = new HashMap<String, Integer>();
         currMapping.put("email", 1);
@@ -40,7 +40,7 @@ public class FormsMapping {
     /**
      * The mapping for the registration form. This mapping is based on the key form field returned by the API 
      */
-    public static final Map<String, Integer> registrationForm;
+    private static final Map<String, Integer> registrationForm;
     static {
         Map<String, Integer> currMapping = new HashMap<String, Integer>();
         currMapping.put("email", 1);
@@ -63,14 +63,14 @@ public class FormsMapping {
     /**
      * The mapping for the create address form. This mapping is based on the key form field returned by the API 
      */
-    public static final Map<String, Integer> addressForm;
+    private static final Map<String, Integer> addressForm;
     static {
         Map<String, Integer> currMapping = new HashMap<String, Integer>();
         currMapping.put("first_name", 1);
         currMapping.put("last_name", 2);
         currMapping.put("company", 3);
         currMapping.put("address1", 4);
-        currMapping.put("address2", 5);        
+        // currMapping.put("address2", 5);        
         currMapping.put("postcode", 6);
         currMapping.put("phone", 7);
         currMapping.put("fk_customer_address_region", 8);
@@ -84,8 +84,7 @@ public class FormsMapping {
         
         addressForm = Collections.unmodifiableMap(currMapping);
     }
-    
-    
+
     /**
      * This map contains the information of which map order to use on which form. This assignment is done based on the id 
      * of the form returned by the API
@@ -95,10 +94,10 @@ public class FormsMapping {
         Map<String,  Map<String, Integer>> currMapping = new HashMap<String, Map<String, Integer>>();
         //currMapping.put("form-account-login", loginForm);
         //currMapping.put("form-account-create", registrationForm);
-        //currMapping.put("address-form", addressForm);
+        currMapping.put(EventType.GET_EDIT_ADDRESS_FORM_EVENT.toString(), addressForm);
         currMapping.put(EventType.LOGIN_EVENT.toString(), loginForm);
         currMapping.put(EventType.GET_REGISTRATION_FORM_EVENT.toString(), registrationForm);
-        currMapping.put(EventType.GET_CREATE_ADDRESS_FORM_EVENT.toString(), registrationForm);
+        currMapping.put(EventType.GET_CREATE_ADDRESS_FORM_EVENT.toString(), addressForm);
         genericMapping = Collections.unmodifiableMap(currMapping);
     }    
     

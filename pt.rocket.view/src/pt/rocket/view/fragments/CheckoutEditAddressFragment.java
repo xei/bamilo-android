@@ -32,6 +32,7 @@ import pt.rocket.helpers.address.SetEditedAddressHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.pojo.DynamicForm;
 import pt.rocket.pojo.DynamicFormItem;
+import pt.rocket.utils.InputType;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.TrackerDelegator;
@@ -46,6 +47,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.actionbarsherlock.internal.widget.IcsAdapterView;
@@ -173,7 +175,6 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
         }
     }
     
-    
     /*
      * (non-Javadoc)
      * @see pt.rocket.view.fragments.BaseFragment#onStart()
@@ -216,6 +217,7 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
                      else if(entry.getKey().contains(RestConstants.JSON_PHONE_TAG)) mCurrentAddress.setPhone((String) entry.getValue());
                      else if(entry.getKey().contains(RestConstants.JSON_REGION_ID_TAG)) mCurrentAddress.setFkCustomerAddressRegion((Integer) entry.getValue());
                      else if(entry.getKey().contains(RestConstants.JSON_CITY_ID_TAG)) mCurrentAddress.setFkCustomerAddressCity(Integer.valueOf((String) entry.getValue()));
+                     else if (entry.getKey().contains(RestConstants.JSON_CITY_TAG)) mCurrentAddress.setCity((String) entry.getValue());
                 } catch (NumberFormatException e) {
                     Log.w(TAG, "INVALID FORMAT FOR REGION OR CITY", e);
                 }
@@ -315,6 +317,16 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
         ((EditText) dynamicForm.getItemByKey(RestConstants.JSON_ADDRESS2_TAG).getEditControl()).setText(selectedAddress.getAddress2());
         // Phone            
         ((EditText) dynamicForm.getItemByKey(RestConstants.JSON_PHONE_TAG).getEditControl()).setText(selectedAddress.getPhone());
+        // City
+        View mControl = dynamicForm.getItemByKey(RestConstants.JSON_CITY_ID_TAG).getControl();
+        View mCityView = ((ViewGroup) mControl).getChildAt(0);
+        if (mCityView instanceof RelativeLayout) {
+            mCityView = ((RelativeLayout) mCityView).getChildAt(0);
+            if (mCityView instanceof EditText) {
+                EditText mCityEdit = (EditText) dynamicForm.getItemByKey(RestConstants.JSON_CITY_ID_TAG).getEditControl();
+                mCityEdit.setText(selectedAddress.getCity());
+            }
+        }
     }
     
     /**
@@ -484,20 +496,28 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
         String mCityId = "";
         String mCityName = "";
         // Get from spinner
-        View mCityView = dynamicForm.getItemByKey(RestConstants.JSON_CITY_ID_TAG).getControl();
-        if(((ViewGroup) mCityView).getChildAt(0) instanceof IcsSpinner) {
-            // Get the city
-            IcsSpinner mCitySpinner = (IcsSpinner) ((ViewGroup) mCityView).getChildAt(0);
-            AddressCity mSelectedCity = (AddressCity) mCitySpinner.getSelectedItem(); 
-            Log.d(TAG, "SELECTED CITY: " + mSelectedCity.getValue() + " " + mSelectedCity.getId() );
+        View mControl = dynamicForm.getItemByKey(RestConstants.JSON_CITY_ID_TAG).getControl();
+        View mCityView = ((ViewGroup) mControl).getChildAt(0);
+        if (mCityView instanceof IcsSpinner) {
+            IcsSpinner mCitySpinner = (IcsSpinner) mCityView;
+            // Get selected city
+            AddressCity mSelectedCity = (AddressCity) mCitySpinner.getSelectedItem();
+            Log.d(TAG, "SELECTED CITY: " + mSelectedCity.getValue() + " " + mSelectedCity.getId());
             mCityId = "" + mSelectedCity.getId();
             mCityName = mSelectedCity.getValue();
         }
         // Get from edit text
-        else if(mCityView instanceof EditText) {
-            EditText mCityEdit = (EditText) dynamicForm.getItemByKey(RestConstants.JSON_CITY_ID_TAG).getEditControl();
-            mCityName = mCityEdit.getText().toString();
-            Log.d(TAG, "SELECTED CITY: " + mCityName );
+        else if (mCityView instanceof RelativeLayout) {
+            mCityView = ((RelativeLayout) mCityView).getChildAt(0);
+            if (mCityView instanceof EditText) {
+                EditText mCityEdit = (EditText) dynamicForm.getItemByKey(RestConstants.JSON_CITY_ID_TAG).getEditControl();
+                mCityName = mCityEdit.getText().toString();
+                Log.d(TAG, "SELECTED CITY: " + mCityName);
+            }
+        }
+        // Unexpected
+        else {
+            Log.e(TAG, RestConstants.JSON_CITY_ID_TAG + " IS AN UNEXPECTED VIEW: " + mCityView.getClass().getName());
         }
         
         // Get some values
@@ -539,14 +559,26 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
     public void onItemSelected(IcsAdapterView<?> parent, View view, int position, long id) {
         Log.d(TAG, "CURRENT TAG: " + parent.getTag());
         Object object = parent.getItemAtPosition(position);
-        if(object instanceof AddressRegion) {
+        if (object instanceof AddressRegion) {
             FormField field = mFormResponse.getFieldKeyMap().get(RestConstants.JSON_CITY_ID_TAG);
-            String url = field.getDataCalls().get(RestConstants.JSON_API_CALL_TAG);
-            Log.d(TAG, "API CALL: " + url);
-            // Request the cities for this region id 
-            int regionId = ((AddressRegion) object).getId();
-            // Get cities
-            triggerGetCities(url, regionId);
+            if (InputType.list == field.getInputType()) {
+                // Get API call
+                String url = field.getDataCalls().get(RestConstants.JSON_API_CALL_TAG);
+                Log.d(TAG, "API CALL: " + url);
+                if (url != null) {
+                    // Request the cities for this region id
+                    int regionId = ((AddressRegion) object).getId();
+                    // Get cities
+                    triggerGetCities(url, regionId);
+                } else {
+                    Log.e(TAG, "No " + RestConstants.JSON_API_CALL_TAG + " on "+ RestConstants.JSON_CITY_ID_TAG);
+                }
+            } else if (InputType.text == field.getInputType()) {
+                // City
+                // ((EditText) mEditFormGenerator.getItemByKey(RestConstants.JSON_CITY_ID_TAG).getEditControl()).setText(mCurrentAddress.getCity());
+            } else {
+                Log.e(TAG, RestConstants.JSON_API_CALL_TAG + " with an expected inputType");
+            }
         }
     }
     
