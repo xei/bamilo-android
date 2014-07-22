@@ -134,8 +134,6 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
     
     private ContentValues mBillingSavedValues;
     
-    private boolean mSavedCityLoaded = true;
-    
     /**
      * Fragment used to create an address
      * @return CheckoutCreateAddressFragment
@@ -190,7 +188,6 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
             mBillingSavedValues = savedInstanceState.getParcelable(BILLING_STATE);
             //Log.d(TAG, "SAVED CONTENT VALUES: " + mShippingSavedValues.toString());
             //Log.d(TAG, "SAVED CONTENT VALUES: " + ((mBillingSavedValues!= null) ? mBillingSavedValues.toString() : "IS NULL") );
-            mSavedCityLoaded = false;
         } else {
             Log.i(TAG, "SAVED CONTENT VALUES IS NULL");
         }
@@ -378,9 +375,6 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         // Load the saved shipping values
         loadSavedValues(mShippingSavedValues, shippingFormGenerator);
         loadSavedValues(mBillingSavedValues, billingFormGenerator);
-        
-        // load city if in EditText
-        loadCityEditText(null);
         
         // Show
         showFragmentContentContainer();
@@ -656,7 +650,10 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
             mCityView = ((RelativeLayout) mCityView).getChildAt(0);
             if (mCityView instanceof EditText) {
                 EditText mCityEdit = (EditText) dynamicForm.getItemByKey(RestConstants.JSON_CITY_ID_TAG).getEditControl();
-                mCityName = mCityEdit.getText().toString();
+                String city = mCityEdit.getText().toString(); 
+                // use this to load this into EditText after rotations. This value will be submitted to API
+                mCityId = city;
+                mCityName = city;
                 Log.d(TAG, "SELECTED CITY: " + mCityName);
             }
         }
@@ -729,45 +726,6 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
             } else {
                 Log.e(TAG, RestConstants.JSON_API_CALL_TAG + " with an expected inputType");
                 super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "GET CITIES EVENT: IS EMPTY");
-            }
-        }
-    }
-
-    /**
-     * Fill EditText with city name<br>
-     * <br>
-     * if city was not yet loaded and there are saved values<br>
-     * get city name and set it on EditText
-     * 
-     * @param inputType
-     * @author Andre Lopes
-     */
-    private void loadCityEditText(InputType inputType) {
-        if (inputType == null) {
-            FormField field = mFormResponse.getFieldKeyMap().get(RestConstants.JSON_CITY_ID_TAG);
-            inputType = field.getInputType();
-        }
-        if (InputType.text == inputType) {
-            if (!mSavedCityLoaded) {
-                if (mShippingSavedValues != null) {
-                    for (Entry<String, Object> value : mShippingSavedValues.valueSet()) {
-                        String key = value.getKey();
-                        if (key.contains(RestConstants.JSON_CITY_ID_TAG)) {
-                            continue;
-                        }
-                        else if (key.contains(RestConstants.JSON_CITY_TAG)) {
-                            String cityName = (String) mShippingSavedValues.get(key);
-                            if (cityName != null) {
-                                DynamicFormItem cityEditText = shippingFormGenerator.getItemByKey(RestConstants.JSON_CITY_ID_TAG);
-                                if (cityEditText != null) {
-                                    ((EditText) cityEditText.getEditControl()).setText(cityName);
-                                }
-                            }
-                            break;
-                        }
-                    }
-                }
-                mSavedCityLoaded = true;
             }
         }
     }
