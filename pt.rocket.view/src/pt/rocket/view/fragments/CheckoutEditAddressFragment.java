@@ -578,6 +578,7 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
                 // ((EditText) mEditFormGenerator.getItemByKey(RestConstants.JSON_CITY_ID_TAG).getEditControl()).setText(mCurrentAddress.getCity());
             } else {
                 Log.e(TAG, RestConstants.JSON_API_CALL_TAG + " with an expected inputType");
+                super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "GET CITIES EVENT: IS EMPTY");
             }
         }
     }

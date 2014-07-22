@@ -727,7 +727,8 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
                 // City
                 // loadCityEditText(field.getInputType());
             } else {
-                Log.i(TAG, RestConstants.JSON_CITY_ID_TAG + " with an expected inputType");
+                Log.e(TAG, RestConstants.JSON_API_CALL_TAG + " with an expected inputType");
+                super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "GET CITIES EVENT: IS EMPTY");
             }
         }
     }
