@@ -57,13 +57,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import de.akquinet.android.androlog.Log;
 
-public class Catalog extends BaseFragment implements OnClickListener {
+public class CatalogFragment extends BaseFragment implements OnClickListener {
 
-    private static final String TAG = LogTagHelper.create(Catalog.class);
+    private static final String TAG = LogTagHelper.create(CatalogFragment.class);
     
     public static String requestTag = "CTLG_REQUEST";
 
-    private static Catalog mCatalogFragment;
+    private static CatalogFragment mCatalogFragment;
     private CatalogPagerAdaper mCatalogPagerAdapter;
     private ViewPager mViewPager;
     private ViewPager mFeaturedProductsViewPager;
@@ -117,7 +117,7 @@ public class Catalog extends BaseFragment implements OnClickListener {
 
     private int mSavedPagerPosition = 0;
 
-    public Catalog() {
+    public CatalogFragment() {
         super(EnumSet.noneOf(EventType.class),
                 EnumSet.noneOf(EventType.class),
                 EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
@@ -127,10 +127,10 @@ public class Catalog extends BaseFragment implements OnClickListener {
         mProductsMap = new HashMap<String, Product>();
     }
 
-    public static Catalog getInstance() {
+    public static CatalogFragment getInstance() {
         Log.i(TAG, "getInstance");
         // if (mProductsViewFragment == null) {
-        mCatalogFragment = new Catalog();
+        mCatalogFragment = new CatalogFragment();
         // }
         return mCatalogFragment;
     }
@@ -255,6 +255,8 @@ public class Catalog extends BaseFragment implements OnClickListener {
                 // Show tips
                 isToShowWizard();
 
+//                getBaseActivity().setProcessShow(true);
+//                getBaseActivity().showContentContainer();
             }
         }, 300);
 
@@ -666,7 +668,7 @@ public class Catalog extends BaseFragment implements OnClickListener {
         // navigationPath, title, navigationSource, mCatalogFilterValues, showList, totalUpdates);
         // getCurrentCatalogPageModel(mSelectedPageIndex + 1).setVariables(productsURL, searchQuery,
         // navigationPath, title, navigationSource, mCatalogFilterValues, showList, totalUpdates);
-
+//        getBaseActivity().showLoading(false);
         mCatalogPagerAdapter.notifyDataSetChanged();
     }
 

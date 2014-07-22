@@ -32,7 +32,7 @@ import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.imageloader.RocketImageLoader;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
-import pt.rocket.view.fragments.Catalog;
+import pt.rocket.view.fragments.CatalogFragment;
 import pt.rocket.view.fragments.ProductDetailsFragment;
 import android.content.ContentValues;
 import android.net.Uri;
@@ -120,11 +120,11 @@ public class CatalogPageModel {
     // Flag used to stop the loading more when an error occurs
     private boolean receivedError = false;
 
-    private Catalog mFragment;
+    private CatalogFragment mFragment;
 
     private int mSwitchMD5;
 
-    public CatalogPageModel(int index, BaseActivity activity, Catalog mFragment) {
+    public CatalogPageModel(int index, BaseActivity activity, CatalogFragment mFragment) {
         this.index = index;
         this.mActivity = activity;
         setIndex(index);
@@ -605,7 +605,7 @@ public class CatalogPageModel {
         public void onScrollStateChanged(AbsListView view, int scrollState) {
             if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
                 Log.d(TAG, "  ---- > Scroll: Fling");
-                RocketImageLoader.getInstance().stopProcessingQueue(Catalog.requestTag);
+                RocketImageLoader.getInstance().stopProcessingQueue(CatalogFragment.requestTag);
             } else {
                 Log.d(TAG, "  ---- > Scroll: Idle");
                 RocketImageLoader.getInstance().startProcessingQueue();

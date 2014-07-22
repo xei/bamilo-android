@@ -13,7 +13,7 @@ import pt.rocket.framework.objects.Product;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.imageloader.RocketImageLoader;
 import pt.rocket.view.R;
-import pt.rocket.view.fragments.Catalog;
+import pt.rocket.view.fragments.CatalogFragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.DataSetObserver;
@@ -77,7 +77,7 @@ public class ProductsListAdapter extends BaseAdapter {
 
     private int numColumns = 1;
 
-    private Catalog parentCatalog;
+    private CatalogFragment parentCatalog;
     
     /**
      * A representation of each item on the list
@@ -103,7 +103,7 @@ public class ProductsListAdapter extends BaseAdapter {
      * @param showList show list (or grid)
      * @param numColumns 
      */
-    public ProductsListAdapter(Context context, Catalog parent, boolean showList, int numColumns) {
+    public ProductsListAdapter(Context context, CatalogFragment parent, boolean showList, int numColumns) {
 
         this.context = context.getApplicationContext();
         this.products = new ArrayList<String>();
@@ -203,7 +203,11 @@ public class ProductsListAdapter extends BaseAdapter {
             //prodItem.image.setDefaultImageResId(R.drawable.no_image_small);
             prodItem.name = (TextView) itemView.findViewById(R.id.item_name);
             if (showList) prodItem.rating = (RatingBar) itemView.findViewById(R.id.item_rating);
+            
             prodItem.price = (TextView) itemView.findViewById(R.id.item_regprice);
+            prodItem.price.setPaintFlags(prodItem.price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            prodItem.price.setTextColor(context.getResources().getColor(R.color.grey_light));
+            
             prodItem.discount = (TextView) itemView.findViewById(R.id.item_discount);
             prodItem.discountPercentage = (TextView) itemView.findViewById(R.id.discount_percentage);
             if (showList) prodItem.reviews = (TextView) itemView.findViewById(R.id.item_reviews);
@@ -221,7 +225,7 @@ public class ProductsListAdapter extends BaseAdapter {
 //        if (product.getImages().size() > 0) {
 //            imageURL = product.getImages(). get(0).getUrl();
 //        }
-        RocketImageLoader.instance.loadImage(product.getFirstImageURL(), prodItem.image,  null, R.drawable.no_image_small, Catalog.requestTag);        
+        RocketImageLoader.instance.loadImage(product.getFirstImageURL(), prodItem.image,  null, R.drawable.no_image_small, CatalogFragment.requestTag);        
 //        prodItem.image.setImageUrl(product.getFirstImageURL(), RocketImageLoader.instance.getImageLoader());
 
         // Set is new image
@@ -289,24 +293,36 @@ public class ProductsListAdapter extends BaseAdapter {
             }
         }
 
+//        if (null != product.getSpecialPrice() && !product.getSpecialPrice().equals(product.getPrice())) {
+//            prodItem.discount.setText(product.getSpecialPrice());
+//            prodItem.discountPercentage.setText("-" + product.getMaxSavingPercentage().intValue() + "%");
+//            prodItem.discount.setVisibility(View.VISIBLE);
+//            prodItem.discountPercentage.setVisibility(View.VISIBLE);
+//            prodItem.price.setPaintFlags(prodItem.price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+//            prodItem.price.setSelected(true);
+//            prodItem.price.setTextColor(context.getResources().getColor(R.color.grey_light));
+//            prodItem.price.setTextAppearance(context.getApplicationContext(), R.style.text_normal);
+//        } else {
+//            prodItem.discount.setVisibility(View.GONE);
+//            prodItem.discountPercentage.setVisibility(View.GONE);
+//            prodItem.price.setPaintFlags(prodItem.price.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+//            prodItem.price.setTextAppearance(context.getApplicationContext(), R.style.text_bold);
+//            prodItem.price.setTextColor(context.getResources().getColor(R.color.red_basic));
+//        }
+
+        
         if (null != product.getSpecialPrice() && !product.getSpecialPrice().equals(product.getPrice())) {
             prodItem.discount.setText(product.getSpecialPrice());
-            prodItem.discountPercentage.setText("-" + product.getMaxSavingPercentage().intValue() + "%");
-            prodItem.discount.setVisibility(View.VISIBLE);
-            prodItem.discountPercentage.setVisibility(View.VISIBLE);
-            prodItem.price.setPaintFlags(prodItem.price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            prodItem.price.setText(product.getSuggestedPrice());            
             prodItem.price.setSelected(true);
-            prodItem.price.setTextColor(context.getResources().getColor(R.color.grey_light));
-            prodItem.price.setTextAppearance(context.getApplicationContext(), R.style.text_normal);
+            prodItem.discountPercentage.setText("-" + product.getMaxSavingPercentage().intValue() + "%");
+            prodItem.discountPercentage.setVisibility(View.VISIBLE);
         } else {
-            prodItem.discount.setVisibility(View.GONE);
+            prodItem.discount.setText(product.getSuggestedPrice());
+            prodItem.price.setText("");
             prodItem.discountPercentage.setVisibility(View.GONE);
-//            prodItem.discount.setText("");
-//            prodItem.discountPercentage.setText("");
-            prodItem.price.setPaintFlags(prodItem.price.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-            prodItem.price.setTextAppearance(context.getApplicationContext(), R.style.text_bold);
-            prodItem.price.setTextColor(context.getResources().getColor(R.color.red_basic));
-        }
+        }        
+        
         return itemView;
     }
 

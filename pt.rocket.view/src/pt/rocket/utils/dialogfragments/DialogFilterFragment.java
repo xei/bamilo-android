@@ -11,7 +11,7 @@ import pt.rocket.framework.objects.CategoryFilterOption;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.GetProductsHelper;
 import pt.rocket.view.R;
-import pt.rocket.view.fragments.Catalog;
+import pt.rocket.view.fragments.CatalogFragment;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -66,7 +66,7 @@ public class DialogFilterFragment extends DialogFragment {
 
     private static ArrayList<CatalogFilter> mFilters;
 
-    private Catalog mParentFrament;
+    private CatalogFragment mParentFrament;
 
     /**
      * Empty constructor
@@ -79,7 +79,7 @@ public class DialogFilterFragment extends DialogFragment {
      * @param onClickListener 
      * @return
      */
-    public static DialogFilterFragment newInstance(Bundle bundle, Catalog mParentFrament) {
+    public static DialogFilterFragment newInstance(Bundle bundle, CatalogFragment mParentFrament) {
         Log.d(TAG, "NEW INSTANCE");
         DialogFilterFragment dialogListFragment = new DialogFilterFragment();
         dialogListFragment.setArguments(bundle);
@@ -215,7 +215,7 @@ public class DialogFilterFragment extends DialogFragment {
     @Override
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
-        Catalog.isNotShowing = true;
+        CatalogFragment.isNotShowing = true;
     }
     
     /**

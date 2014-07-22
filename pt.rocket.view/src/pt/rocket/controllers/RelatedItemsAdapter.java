@@ -108,7 +108,7 @@ public class RelatedItemsAdapter extends PagerAdapter {
             name_1.setText(mRelatedItems.get(position * 3).getProductName());
             price_1.setText(mRelatedItems.get(position * 3).getProductPrice());
             
-            RocketImageLoader.instance.loadImage(mRelatedItems.get(position * 3).getImageUrl(), img_1);
+            RocketImageLoader.instance.loadImage(mRelatedItems.get(position * 3).getImageUrl(), img_1, null, R.drawable.no_image_small);
             
         }
         if ((position * 3 + 1) < this.mRelatedItems.size()) {
@@ -136,7 +136,7 @@ public class RelatedItemsAdapter extends PagerAdapter {
             name_2.setText(mRelatedItems.get(position * 3 + 1).getProductName());
             price_2.setText(mRelatedItems.get(position * 3 + 1).getProductPrice());
             
-            RocketImageLoader.instance.loadImage(mRelatedItems.get(position * 3 + 1).getImageUrl(), img_2);
+            RocketImageLoader.instance.loadImage(mRelatedItems.get(position * 3 + 1).getImageUrl(), img_2, null, R.drawable.no_image_small);
             
         }
         if ((position * 3 + 2) < this.mRelatedItems.size()) {
@@ -164,7 +164,7 @@ public class RelatedItemsAdapter extends PagerAdapter {
             name_3.setText(mRelatedItems.get(position * 3 + 2).getProductName());
             price_3.setText(mRelatedItems.get(position * 3 + 2).getProductPrice());
             
-            RocketImageLoader.instance.loadImage(mRelatedItems.get(position * 3 + 2).getImageUrl(), img_3);
+            RocketImageLoader.instance.loadImage(mRelatedItems.get(position * 3 + 2).getImageUrl(), img_3, null, R.drawable.no_image_small);
             
         }
 
