@@ -277,12 +277,12 @@ public class CategoriesTableHelper {
     	ContentValues contentValues = new ContentValues();
     	contentValues.put(Columns.NAME, category.getName());
     	contentValues.put(Columns.ID_CATALOG, category.getId());
-    	String firstSegment = category.getSegments();
-    	contentValues.put(Columns.SEGMENTS, firstSegment);
+//    	String firstSegment = category.getSegments();
+//    	contentValues.put(Columns.SEGMENTS, firstSegment);
     	contentValues.put(Columns.API_URL, getCategoryUrlForDB(category.getApiUrl()));
     	contentValues.put(Columns.PARENT_ID_CATALOG, parentId);
     	contentValues.put(Columns.API_URL_KEY, category.getUrlKey());
-    	contentValues.put(Columns.INFO_URL_KEY, category.getInfoUrl());
+//    	contentValues.put(Columns.INFO_URL_KEY, category.getInfoUrl());
     	
     	return contentValues;
     }

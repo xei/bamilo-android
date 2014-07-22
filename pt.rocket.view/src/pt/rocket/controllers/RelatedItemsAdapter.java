@@ -8,7 +8,7 @@ import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.objects.LastViewed;
-import pt.rocket.utils.RocketImageLoader;
+import pt.rocket.utils.imageloader.RocketImageLoader;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.content.Context;

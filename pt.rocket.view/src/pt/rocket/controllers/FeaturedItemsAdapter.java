@@ -10,7 +10,7 @@ import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.objects.FeaturedBrand;
 import pt.rocket.framework.objects.FeaturedItem;
 import pt.rocket.framework.objects.FeaturedProduct;
-import pt.rocket.utils.RocketImageLoader;
+import pt.rocket.utils.imageloader.RocketImageLoader;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.content.Context;

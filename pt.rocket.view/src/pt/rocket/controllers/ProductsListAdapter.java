@@ -11,7 +11,7 @@ import pt.rocket.framework.Darwin;
 import pt.rocket.framework.database.FavouriteTableHelper;
 import pt.rocket.framework.objects.Product;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.utils.RocketImageLoader;
+import pt.rocket.utils.imageloader.RocketImageLoader;
 import pt.rocket.view.R;
 import pt.rocket.view.fragments.Catalog;
 import android.content.Context;

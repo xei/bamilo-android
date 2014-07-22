@@ -8,7 +8,7 @@ import java.util.Map;
 import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.utils.RocketImageLoader;
+import pt.rocket.utils.imageloader.RocketImageLoader;
 import pt.rocket.view.R;
 import pt.rocket.view.fragments.ShoppingCartFragment;
 import pt.rocket.view.fragments.ShoppingCartFragment.CartItemValues;

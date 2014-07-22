@@ -243,12 +243,7 @@ public class SessionLoginFragment extends BaseFragment {
         if(JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials()) {
             Log.d(TAG, "FORM: TRY AUTO LOGIN");
 
-            /**
-             * TRIGGERS
-             * @author sergiopereira
-             */
             triggerAutoLogin();
-            //triggerContentEvent(LogInEvent.TRY_AUTO_LOGIN);
             
         } else if (formResponse != null) {
             Log.d(TAG, "FORM ISN'T NULL");
@@ -257,22 +252,16 @@ public class SessionLoginFragment extends BaseFragment {
         } else {
             
             Log.d(TAG, "FORM IS NULL");
-            // triggerContentEvent(LogInEvent.TRY_AUTO_LOGIN);
             
             Session s = Session.getActiveSession();
             s.closeAndClearTokenInformation();
-            /**
-             * TRIGGERS
-             * @author sergiopereira
-             */
+            
             if(JumiaApplication.INSTANCE.getFormDataRegistry() == null || JumiaApplication.INSTANCE.getFormDataRegistry().size() == 0){
                triggerInitForm(); 
             } else {
                 triggerLoginForm();    
             }
             cameFromRegister = false;
-            
-            //triggerContentEvent(EventType.GET_LOGIN_FORM_EVENT);
         }
 
         setLoginBottomLayout();
@@ -429,13 +418,7 @@ public class SessionLoginFragment extends BaseFragment {
                     if (dynamicForm.validate())
                         requestLogin();
                 } else {
-                    
-                    /**
-                     * TRIGGERS
-                     * @author sergiopereira
-                     */
-                    triggerLoginForm();
-                    //triggerContentEvent(EventType.GET_LOGIN_FORM_EVENT);                    
+                    triggerLoginForm();                    
                 }
 
             }
@@ -463,12 +446,7 @@ public class SessionLoginFragment extends BaseFragment {
         values.put(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, true);
         // }
 
-        /**
-         * TRIGGERS
-         * @author sergiopereira
-         */
         triggerLogin(values, true);
-        //triggerContentEvent(new LogInEvent(values));
         
         wasAutologin = false;
 		autoLogin = false;

@@ -1,4 +1,4 @@
-package pt.rocket.utils;
+package pt.rocket.utils.imageloader;
 
 import java.io.File;
 import java.util.List;

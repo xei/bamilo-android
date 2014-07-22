@@ -35,12 +35,11 @@ public class Category implements IJSONSerializable, Parcelable {
     private String id;
     private String name;
     private String path;
-    private String lft;
-    private String rgt;
+    //private String lft;
+    //private String rgt;
     private String urlKey;
-    private String segments;
-
-    private String infoUrl;
+    //private String segments;
+    //private String infoUrl;
     private String apiUrl;
 
     private Category parent;
@@ -52,16 +51,13 @@ public class Category implements IJSONSerializable, Parcelable {
     public Category() {
         id = "-1";
         name = "defaultName";
-        lft = "0";
-        rgt = "0";
+        //lft = "0";
+        //rgt = "0";
         urlKey = "-1";
-        segments = "";
-
-        infoUrl = "";
+        //segments = "";
+        //infoUrl = "";
         apiUrl = "";
-
         children = new ArrayList<Category>();
-
         parent = null;
     }
 
@@ -81,11 +77,11 @@ public class Category implements IJSONSerializable, Parcelable {
     public Category(String id, String name, String lft, String rgt, String urlKey, String segments, String infoUrl, String apiUrl, ArrayList<Category> children, Category parent) {
         this.id = id;
         this.name = name;
-        this.lft = lft;
-        this.rgt = rgt;
+        //this.lft = lft;
+        //this.rgt = rgt;
         this.urlKey = urlKey;
-        this.segments = segments;
-        this.infoUrl = infoUrl;
+        //this.segments = segments;
+        //this.infoUrl = infoUrl;
         this.apiUrl = apiUrl;
         this.children = children;
         this.parent = parent;
@@ -102,11 +98,10 @@ public class Category implements IJSONSerializable, Parcelable {
     public Category(String id, String name) {
         this.id = id;
         this.name = name;
-        lft = "0";
-        rgt = "0";
+        //lft = "0";
+        //rgt = "0";
         urlKey = "-1";
-        segments = "";
-
+        //segments = "";
         children = new ArrayList<Category>();
         parent = null;
     }
@@ -126,10 +121,10 @@ public class Category implements IJSONSerializable, Parcelable {
     public Category(int id, String name) {
         this.id = "" + id;
         this.name = name;
-        lft = "0";
-        rgt = "0";
+        //lft = "0";
+        //rgt = "0";
         urlKey = "-1";
-        segments = "";
+        //segments = "";
         children = new ArrayList<Category>();
         parent = null;
     }
@@ -165,20 +160,20 @@ public class Category implements IJSONSerializable, Parcelable {
     public String getCategoryPath() {
     	return path;
     }
-
-    /**
-     * @return the lft
-     */
-    public String getLft() {
-        return lft;
-    }
-
-    /**
-     * @return the rgt
-     */
-    public String getRgt() {
-        return rgt;
-    }
+//
+//    /**
+//     * @return the lft
+//     */
+//    public String getLft() {
+//        return lft;
+//    }
+//
+//    /**
+//     * @return the rgt
+//     */
+//    public String getRgt() {
+//        return rgt;
+//    }
 
     /**
      * @return the urlKey
@@ -186,13 +181,13 @@ public class Category implements IJSONSerializable, Parcelable {
     public String getUrlKey() {
         return urlKey;
     }
-
-    /**
-     * @return the segments
-     */
-    public String getSegments() {
-        return segments;
-    }
+//
+//    /**
+//     * @return the segments
+//     */
+//    public String getSegments() {
+//        return segments;
+//    }
 
     /**
      * @return the children
@@ -201,12 +196,12 @@ public class Category implements IJSONSerializable, Parcelable {
         return children;
     }
 
-    /**
-     * @return the infoUrl
-     */
-    public String getInfoUrl() {
-        return infoUrl;
-    }
+//    /**
+//     * @return the infoUrl
+//     */
+//    public String getInfoUrl() {
+//        return infoUrl;
+//    }
 
     /**
      * @return the apiUrl
@@ -241,16 +236,16 @@ public class Category implements IJSONSerializable, Parcelable {
         	
             id = jsonObject.optString(RestConstants.JSON_CATEGORY_ID_TAG);
             name = jsonObject.optString(RestConstants.JSON_CATEGORY_NAME_TAG);
-            lft = jsonObject.optString(RestConstants.JSON_LEFT_TAG);
-            rgt = jsonObject.optString(RestConstants.JSON_RIGHT_TAG);
+//            lft = jsonObject.optString(RestConstants.JSON_LEFT_TAG);
+//            rgt = jsonObject.optString(RestConstants.JSON_RIGHT_TAG);
             urlKey = jsonObject.optString(RestConstants.JSON_URL_KEY_TAG);
-            segments = jsonObject.optString(RestConstants.JSON_SEGMENTS_TAG);
-
+//            segments = jsonObject.optString(RestConstants.JSON_SEGMENTS_TAG);
+//
             path = jsonObject.optString(RestConstants.JSON_CATEGORY_URL_TAG);
             if ( TextUtils.isEmpty( path ))
                 path = calcCategoryPath();
-
-            infoUrl = jsonObject.getString(RestConstants.JSON_INFO_URL_TAG);
+//
+//            infoUrl = jsonObject.getString(RestConstants.JSON_INFO_URL_TAG);
             apiUrl = jsonObject.getString(RestConstants.JSON_API_URL_TAG);
             
             
@@ -328,10 +323,10 @@ public class Category implements IJSONSerializable, Parcelable {
         	
             jsonObject.put(RestConstants.JSON_CATEGORY_ID_TAG, id);
             jsonObject.put(RestConstants.JSON_CATEGORY_NAME_TAG, name);
-            jsonObject.put(RestConstants.JSON_LEFT_TAG, lft);
-            jsonObject.put(RestConstants.JSON_RIGHT_TAG, rgt);
+//            jsonObject.put(RestConstants.JSON_LEFT_TAG, lft);
+//            jsonObject.put(RestConstants.JSON_RIGHT_TAG, rgt);
             jsonObject.put(RestConstants.JSON_URL_KEY_TAG, urlKey);
-            jsonObject.put(RestConstants.JSON_SEGMENTS_TAG, segments);
+//            jsonObject.put(RestConstants.JSON_SEGMENTS_TAG, segments);
 
             JSONArray childrenArray = new JSONArray();
 
@@ -370,11 +365,11 @@ public class Category implements IJSONSerializable, Parcelable {
 	public void writeToParcel(Parcel dest, int flags) {        
 	    dest.writeString(id);
 	    dest.writeString(name);
-	    dest.writeString(lft);
-	    dest.writeString(rgt);
+//	    dest.writeString(lft);
+//	    dest.writeString(rgt);
 	    dest.writeString(urlKey);
-	    dest.writeString(segments);
-	    dest.writeString(infoUrl);
+//	    dest.writeString(segments);
+//	    dest.writeString(infoUrl);
 	    dest.writeString(apiUrl);
 	    dest.writeList(children);
 	    dest.writeValue(parent);
@@ -387,11 +382,11 @@ public class Category implements IJSONSerializable, Parcelable {
 	private Category(Parcel in) {
         id = in.readString();
         name = in.readString();
-        lft = in.readString();
-        rgt = in.readString();
+//        lft = in.readString();
+//        rgt = in.readString();
         urlKey = in.readString();
-        segments = in.readString();
-        infoUrl = in.readString();
+//        segments = in.readString();
+//        infoUrl = in.readString();
         apiUrl = in.readString();
         in.readList(children, Category.class.getClassLoader());
         parent = (Category) in.readValue(Category.class.getClassLoader());

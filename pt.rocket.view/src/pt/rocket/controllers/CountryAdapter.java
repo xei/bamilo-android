@@ -2,7 +2,7 @@ package pt.rocket.controllers;
 
 import org.holoeverywhere.widget.TextView;
 
-import pt.rocket.utils.RocketImageLoader;
+import pt.rocket.utils.imageloader.RocketImageLoader;
 import pt.rocket.view.R;
 import android.content.Context;
 import android.view.LayoutInflater;

@@ -606,8 +606,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
 
     private ArrayList<String> createSimpleVariants() {
         Log.i(TAG, "scanSimpleForKnownVariations : createSimpleVariants" + mCompleteProduct.getName());
-        ArrayList<ProductSimple> simples = (ArrayList<ProductSimple>) mCompleteProduct.getSimples()
-                .clone();
+        ArrayList<ProductSimple> simples = (ArrayList<ProductSimple>) mCompleteProduct.getSimples().clone();
         variations = mCompleteProduct.getKnownVariations();
         if(variations == null || variations.size() == 0){
             variations = new ArrayList<String>();
@@ -926,8 +925,6 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
                 mCompleteProduct.getBrand() + " " + mCompleteProduct.getName(), quantity,
                 mCompleteProduct.getSpecialPrice(), mCompleteProduct.getPrice(), 1);
 
-        showActivityProgress();
-
         triggerAddItemToCart(item);
 
         Log.i(TAG, "code1price : "+price);
@@ -953,8 +950,7 @@ public class ProductDetailsActivityFragment extends BaseFragment implements OnCl
         values.put("quantity", "" + item.getQuantity());
         Bundle bundle = new Bundle();
         bundle.putParcelable(GetShoppingCartAddItemHelper.ADD_ITEM, values);
-        triggerContentEventWithNoLoading(new GetShoppingCartAddItemHelper(), bundle,
-                responseCallback);
+        triggerContentEventProgress(new GetShoppingCartAddItemHelper(), bundle, responseCallback);
     }
 
     private void showChooseReminder() {

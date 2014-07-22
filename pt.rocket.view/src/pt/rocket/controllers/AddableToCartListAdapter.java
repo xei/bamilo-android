@@ -7,7 +7,7 @@ import org.holoeverywhere.widget.TextView;
 import pt.rocket.framework.objects.AddableToCart;
 import pt.rocket.framework.objects.LastViewedAddableToCart;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.utils.RocketImageLoader;
+import pt.rocket.utils.imageloader.RocketImageLoader;
 import pt.rocket.view.R;
 import android.content.Context;
 import android.graphics.Paint;

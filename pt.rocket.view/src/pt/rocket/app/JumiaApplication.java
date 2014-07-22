@@ -35,8 +35,8 @@ import pt.rocket.helpers.BaseHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.preferences.ShopPreferences;
 import pt.rocket.utils.CheckVersion;
-import pt.rocket.utils.RocketImageLoader;
 import pt.rocket.utils.ServiceSingleton;
+import pt.rocket.utils.imageloader.RocketImageLoader;
 import android.app.Application;
 import android.content.ComponentName;
 import android.content.ContentValues;
@@ -180,13 +180,6 @@ public class JumiaApplication extends Application implements ExceptionCallback {
         // Init darwin database, set the context
         DarwinDatabaseHelper.init(getApplicationContext());
         
-//        /**
-//         * AQuery Configurations
-//         */
-//        BitmapAjaxCallback.setCacheLimit(50);
-//        //set the max number of concurrent network connections, default is 4
-//        AjaxCallback.setNetworkLimit(2);
-        
         countriesAvailable = new ArrayList<CountryObject>();
         
         responseCallbacks = new HashMap<String, IResponseCallback>();
@@ -211,9 +204,6 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     public void onLowMemory() {     
         super.onLowMemory();
         Log.d(TAG, "ON LOW MEMORY");
-//        //clear all memory cached images when system is in low memory
-//        //note that you can configure the max image cache count, see CONFIGURATION
-//        BitmapAjaxCallback.clearCache();
     }
     
     public synchronized void init(boolean isReInit, Handler initializationHandler) {

@@ -21,7 +21,7 @@ import pt.rocket.framework.objects.TeaserGroupTopBrands.TeaserTopBrand;
 import pt.rocket.framework.objects.TeaserImage;
 import pt.rocket.framework.objects.TeaserSpecification;
 import pt.rocket.framework.utils.WindowHelper;
-import pt.rocket.utils.RocketImageLoader;
+import pt.rocket.utils.imageloader.RocketImageLoader;
 import pt.rocket.view.R;
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;

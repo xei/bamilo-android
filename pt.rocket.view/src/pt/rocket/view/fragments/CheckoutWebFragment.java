@@ -68,20 +68,21 @@ public class CheckoutWebFragment extends BaseFragment {
     private static final String TAG = LogTagHelper.create(CheckoutWebFragment.class);
 
     private static final String CHECKOUT_URL_WITH_PARAM = "/checkout/multistep/?setDevice=mobileApi&iosApp=1";
-
-//    private FrameLayout mWebContainer;
+    
+    private static CheckoutWebFragment checkoutWebFragment;
+    
     private WebView webview;
     
     private String checkoutUrl;
 
     private String failedPageRequest;
+    
     private boolean isRequestedPage;
 
     private Customer customer;
             
     private Handler handler = new Handler();
     
-    private static CheckoutWebFragment checkoutWebFragment;
 
     /**
      * Get instance
@@ -250,7 +251,6 @@ public class CheckoutWebFragment extends BaseFragment {
 //        webview.setHttpAuthUsernamePassword("https://" + RestContract.REQUEST_HOST, "", "rocket", "rock4me");
         prepareCookieStore();
         setupWebView();
-        // XXX
         startCheckout();
     }
 
@@ -411,17 +411,6 @@ public class CheckoutWebFragment extends BaseFragment {
             failedPageRequest = failingUrl;
             webview.stopLoading();
             webview.clearView();
-//            mCallbackCheckoutWebFragment.sendClickListenerToActivity(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Log.d( TAG, "showError: onClick:");
-//                    ((BaseActivity) getActivity()).showLoading();
-//                    isRequestedPage = true;
-//                    webview.requestFocus();
-//                    webview.loadUrl( failingUrl );
-//                }
-//            });
-           
         }
 
         @Override
@@ -463,7 +452,7 @@ public class CheckoutWebFragment extends BaseFragment {
             } else if ( isRequestedPage ) {
                 showFragmentContentContainer();
                 isRequestedPage = false;
-            } else {
+            } else if(!url.contains(SUCCESS_URL_TAG)){
                 showFragmentContentContainer();
             }
             
@@ -570,7 +559,8 @@ public class CheckoutWebFragment extends BaseFragment {
                     JumiaApplication.INSTANCE.getPaymentMethodForm().setCameFromWebCheckout(true);
                     JumiaApplication.INSTANCE.getPaymentMethodForm().setCustomerFirstName((customer != null ) ? customer.getFirstName() : "");
                     JumiaApplication.INSTANCE.getPaymentMethodForm().setCustomerFirstName((customer != null ) ? customer.getLastName() : "");
-					bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR, order_number);                   
+					bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR, order_number);
+					FragmentController.getInstance().popLastEntry(FragmentType.CHECKOUT_BASKET.toString());
 					((BaseActivity) getActivity()).onSwitchFragment(FragmentType.CHECKOUT_THANKS, bundle, FragmentController.ADD_TO_BACK_STACK);
                 }
             } catch (ParseException e) {
