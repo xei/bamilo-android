@@ -8,7 +8,6 @@ import java.util.EnumSet;
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.app.UrbanAirshipComponent;
 import pt.rocket.constants.ConstantsIntentExtra;
-import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.utils.EventType;
@@ -39,6 +38,7 @@ import pt.rocket.view.fragments.MyAccountFragment;
 import pt.rocket.view.fragments.MyAccountUserDataFragment;
 import pt.rocket.view.fragments.PopularityFragment;
 import pt.rocket.view.fragments.ProductDetailsDescriptionFragment;
+import pt.rocket.view.fragments.ProductDetailsFragment;
 import pt.rocket.view.fragments.ProductImageGalleryFragment;
 import pt.rocket.view.fragments.RecentSearchFragment;
 import pt.rocket.view.fragments.RecentlyViewedFragment;
@@ -50,10 +50,7 @@ import pt.rocket.view.fragments.SessionTermsFragment;
 import pt.rocket.view.fragments.ShoppingCartFragment;
 import pt.rocket.view.fragments.TrackOrderFragment;
 import pt.rocket.view.fragments.WriteReviewFragment;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.preference.PreferenceScreen;
 import android.support.v4.widget.DrawerLayout;
@@ -220,7 +217,8 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         showWarningVariation(false);
         Log.i(TAG, "code1adjust : "+getWindow().getAttributes().softInputMode);
 
-        setProcessShow(true);
+        //setProcessShow(true);
+        
         // Validate fragment type
         switch (type) {
         case HOME:
@@ -244,11 +242,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             fragment = Catalog.getInstance();
             break;
         case PRODUCT_DETAILS:
-            SharedPreferences sP = getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-            Editor eD = sP.edit();
-            eD.putBoolean(ProductDetailsActivityFragment.LOAD_FROM_SCRATCH, true);
-            eD.commit();
-            fragment = ProductDetailsActivityFragment.getInstance(bundle);
+            fragment = ProductDetailsFragment.getInstance(bundle);
             break;
         case PRODUCT_DESCRIPTION:
             fragment = ProductDetailsDescriptionFragment.getInstance();

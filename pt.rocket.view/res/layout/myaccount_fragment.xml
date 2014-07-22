@@ -31,7 +31,7 @@
     <View style="@style/activity_sectionheader_divider" />
 
     <fragment
-        android:name="pt.rocket.view.PushPreferences"
+        android:name="pt.rocket.view.fragments.MyAccountPushPreferences"
         android:layout_width="@dimen/inner_container_width"
         android:layout_height="wrap_content"
         android:layout_gravity="center" />

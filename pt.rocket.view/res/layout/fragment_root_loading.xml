@@ -15,27 +15,13 @@
         android:layout_height="wrap_content"
         app:gifResource="@drawable/loading_bar_big" />
 
-    <LinearLayout
+    <org.holoeverywhere.widget.TextView
+        android:id="@+id/fragment_root_loading_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
-
-        <org.holoeverywhere.widget.TextView
-            android:id="@+id/fragment_root_loading_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="8dp"
-            android:text="@string/loading_message"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/grey_light" />
-
-        <org.holoeverywhere.widget.TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="fragment"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/grey_light" />
-    </LinearLayout>
+        android:paddingLeft="8dp"
+        android:text="@string/loading_message"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/grey_light" />
 
 </LinearLayout>

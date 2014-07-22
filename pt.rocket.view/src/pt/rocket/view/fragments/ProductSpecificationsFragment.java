@@ -17,7 +17,6 @@ import pt.rocket.utils.FragmentCommunicatorForProduct;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.view.BaseActivity;
-import pt.rocket.view.ProductDetailsActivityFragment;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.os.Build;
@@ -179,7 +178,7 @@ public class ProductSpecificationsFragment extends BaseFragment implements OnCli
         super.onResume();
         Log.i(TAG, "ON RESUME");
         Bundle bundle = getArguments();
-        if(bundle != null && bundle.containsKey(ProductDetailsActivityFragment.PRODUCT_COMPLETE))
+        if(bundle != null && bundle.containsKey(ProductDetailsFragment.PRODUCT_COMPLETE))
             mCompleteProduct = FragmentCommunicatorForProduct.getInstance().getCurrentProduct();
     }
 
@@ -267,7 +266,7 @@ public class ProductSpecificationsFragment extends BaseFragment implements OnCli
             return;
         }
         
-        if(bundle.containsKey(ProductDetailsActivityFragment.LOADING_PRODUCT)){
+        if(bundle.containsKey(ProductDetailsFragment.LOADING_PRODUCT)){
             showContentLoading();
         }
         

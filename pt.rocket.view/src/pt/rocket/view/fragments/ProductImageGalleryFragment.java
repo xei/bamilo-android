@@ -20,7 +20,6 @@ import pt.rocket.utils.JumiaViewPagerWithZoom;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.view.BaseActivity;
-import pt.rocket.view.ProductDetailsActivityFragment;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.os.AsyncTask;
@@ -499,7 +498,7 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
             return;
         }
 
-        if (bundle.containsKey(ProductDetailsActivityFragment.LOADING_PRODUCT)) {
+        if (bundle.containsKey(ProductDetailsFragment.LOADING_PRODUCT)) {
             showImageLoading();
             return;
         }

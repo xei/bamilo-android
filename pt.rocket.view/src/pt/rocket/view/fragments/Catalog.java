@@ -255,8 +255,6 @@ public class Catalog extends BaseFragment implements OnClickListener {
                 // Show tips
                 isToShowWizard();
 
-                getBaseActivity().setProcessShow(true);
-                getBaseActivity().showContentContainer();
             }
         }, 300);
 
@@ -668,7 +666,7 @@ public class Catalog extends BaseFragment implements OnClickListener {
         // navigationPath, title, navigationSource, mCatalogFilterValues, showList, totalUpdates);
         // getCurrentCatalogPageModel(mSelectedPageIndex + 1).setVariables(productsURL, searchQuery,
         // navigationPath, title, navigationSource, mCatalogFilterValues, showList, totalUpdates);
-        getBaseActivity().showLoading(false);
+
         mCatalogPagerAdapter.notifyDataSetChanged();
     }
 

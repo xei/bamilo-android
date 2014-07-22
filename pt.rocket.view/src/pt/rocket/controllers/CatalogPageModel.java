@@ -28,12 +28,12 @@ import pt.rocket.framework.utils.LoadingBarView;
 import pt.rocket.framework.utils.ProductSort;
 import pt.rocket.helpers.GetProductsHelper;
 import pt.rocket.interfaces.IResponseCallback;
-import pt.rocket.utils.imageloader.RocketImageLoader;
 import pt.rocket.utils.TrackerDelegator;
+import pt.rocket.utils.imageloader.RocketImageLoader;
 import pt.rocket.view.BaseActivity;
-import pt.rocket.view.ProductDetailsActivityFragment;
 import pt.rocket.view.R;
 import pt.rocket.view.fragments.Catalog;
+import pt.rocket.view.fragments.ProductDetailsFragment;
 import android.content.ContentValues;
 import android.net.Uri;
 import android.os.Bundle;
@@ -416,7 +416,7 @@ public class CatalogPageModel {
                     bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, product.getBrand() + " "
                             + product.getName());
                     if (title != null)
-                        bundle.putString(ProductDetailsActivityFragment.PRODUCT_CATEGORY, title);
+                        bundle.putString(ProductDetailsFragment.PRODUCT_CATEGORY, title);
                     mActivity.onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle,
                             FragmentController.ADD_TO_BACK_STACK);
                 }
@@ -876,7 +876,6 @@ public class CatalogPageModel {
                 showProductsNotfound();
             }
 
-            mActivity.showContentContainer();
         } else {
             Log.d(TAG, "onErrorEvent: loading more products failed");
             hideProductsLoading();
@@ -1044,8 +1043,6 @@ public class CatalogPageModel {
                 if (mFragment.isVisible()) {
                     mFragment.onSuccesLoadingFilteredCatalog(productsPage.getFilters());
                 }
-
-                mActivity.showContentContainer();
 
             }
         }, 200);

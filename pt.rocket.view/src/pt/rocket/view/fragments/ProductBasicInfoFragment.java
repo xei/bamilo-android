@@ -15,7 +15,6 @@ import pt.rocket.utils.FragmentCommunicatorForProduct;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.view.BaseActivity;
-import pt.rocket.view.ProductDetailsActivityFragment;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.graphics.Paint;
@@ -271,15 +270,15 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
             return;
         }
 
-        if (bundle.containsKey(ProductDetailsActivityFragment.PRODUCT_COMPLETE)) {
+        if (bundle.containsKey(ProductDetailsFragment.PRODUCT_COMPLETE)) {
             mCompleteProduct = FragmentCommunicatorForProduct.getInstance().getCurrentProduct();
         }
 
-        if (bundle.containsKey(ProductDetailsActivityFragment.LOADING_PRODUCT_KEY)) {
+        if (bundle.containsKey(ProductDetailsFragment.LOADING_PRODUCT_KEY)) {
             /**
              * if still loading the product info, show image loading.
              */
-            if (bundle.getInt(ProductDetailsActivityFragment.LOADING_PRODUCT_KEY) < 0) {
+            if (bundle.getInt(ProductDetailsFragment.LOADING_PRODUCT_KEY) < 0) {
                 showContentLoading();
             }
         }

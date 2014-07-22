@@ -121,8 +121,8 @@ public class HeadlessAddToCartFragment extends BaseFragment implements IResponse
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState) {
         Log.i(TAG, "ON CREATE VIEW");
-        getBaseActivity().showLoading(false);
-        return super.onCreateView(inflater, viewGroup, savedInstanceState); 
+        // Inflate the root layout that contains the laoding view
+        return inflater.inflate(R.layout.fragment_root_layout, viewGroup, false); 
     }
 
     /*
@@ -134,6 +134,8 @@ public class HeadlessAddToCartFragment extends BaseFragment implements IResponse
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
+        // Show loading
+        showFragmentLoading();
     }
 
     /*

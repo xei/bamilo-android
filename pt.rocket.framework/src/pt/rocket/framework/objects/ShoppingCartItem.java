@@ -37,7 +37,7 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
     private String price;
     private double taxAmount;
     private Map<String, String> simpleData;
-    private double cartRuleDiscount;
+    //private double cartRuleDiscount;
     private String variation;
 
     private double priceVal = 0;
@@ -98,7 +98,7 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
             taxAmount = jsonObject.optDouble(RestConstants.JSON_TAX_AMOUNT_TAG, 0);
             savingPercentage = 100 - specialPriceVal / priceVal * 100;
             
-            cartRuleDiscount = jsonObject.getDouble(RestConstants.JSON_CART_RULE_DISCOUNT );
+            //cartRuleDiscount = jsonObject.getDouble(RestConstants.JSON_CART_RULE_DISCOUNT );
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -262,13 +262,13 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
         return savingPercentage;
     }
     
-    public double getCartRuleDiscount() {
-    	return cartRuleDiscount;
-    }
-    
-    public void setCartRuleDiscount( double cartRuleDiscount ) {
-    	this.cartRuleDiscount = cartRuleDiscount;
-    }
+//    public double getCartRuleDiscount() {
+//    	return cartRuleDiscount;
+//    }
+//    
+//    public void setCartRuleDiscount( double cartRuleDiscount ) {
+//    	this.cartRuleDiscount = cartRuleDiscount;
+//    }
 
     /**
      * @return the simpleData
@@ -333,7 +333,7 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
 	    dest.writeString(price);
 	    dest.writeDouble(taxAmount);
 	    dest.writeMap(simpleData);
-	    dest.writeDouble(cartRuleDiscount);
+	    //dest.writeDouble(cartRuleDiscount);
 	    dest.writeString(variation);
 	    dest.writeDouble(priceVal);
 	    dest.writeDouble(specialPriceVal);
@@ -358,7 +358,7 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
 	    price = in.readString();
 	    taxAmount = in.readDouble();
 	    in.readMap(simpleData, String.class.getClassLoader());
-	    cartRuleDiscount = in.readDouble();
+	    //cartRuleDiscount = in.readDouble();
 	    variation = in.readString();
 	    priceVal = in.readDouble();
 	    specialPriceVal = in.readDouble();

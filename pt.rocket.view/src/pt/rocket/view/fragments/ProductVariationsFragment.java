@@ -17,7 +17,6 @@ import pt.rocket.utils.FragmentCommunicatorForProduct;
 import pt.rocket.utils.HorizontalListView;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
-import pt.rocket.view.ProductDetailsActivityFragment;
 import pt.rocket.view.R;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -233,10 +232,10 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
         if (mVariationsListPosition != position) {
             mVariationsListPosition = position;
             Editor eD = sharedPreferences.edit();
-            eD.putInt(ProductDetailsActivityFragment.VARIATION_LIST_POSITION, mVariationsListPosition);
+            eD.putInt(ProductDetailsFragment.VARIATION_LIST_POSITION, mVariationsListPosition);
             eD.commit();
             Bundle bundle = new Bundle();
-            bundle.putInt(ProductDetailsActivityFragment.LOADING_PRODUCT_KEY, position);
+            bundle.putInt(ProductDetailsFragment.LOADING_PRODUCT_KEY, position);
             bundle.putInt(ConstantsIntentExtra.VARIATION_LISTPOSITION, mVariationsListPosition);
             mList.setSelectedItem(position, HorizontalListView.MOVE_TO_SCROLLED);
             FragmentCommunicatorForProduct.getInstance().notifyTarget(this, bundle, 0);

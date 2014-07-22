@@ -663,14 +663,7 @@ public class CategoriesContainerFragment extends BaseFragment {
         
         if(bundle.containsKey(GET_CATEGORIES)){
             mBeginRequestMillis = System.currentTimeMillis();
-            
-            /**
-             * TRIGGERS
-             * @author sergiopereira
-             */
             trigger(categoryUrl);
-            //triggerContentEvent(new GetCategoriesEvent(categoryUrl));
-            
             return;
         }
         

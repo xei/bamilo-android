@@ -28,7 +28,6 @@ import pt.rocket.framework.service.IRemoteServiceCallback;
 import pt.rocket.framework.tracking.AnalyticsGoogle;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
-import pt.rocket.framework.utils.LoadingBarView;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.framework.utils.ShopSelector;
 import pt.rocket.framework.utils.WindowHelper;
@@ -136,9 +135,9 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
     private final int activityLayoutId;
 
-    private View loadingBarContainer;
-
-    private LoadingBarView loadingBarView;
+//    private View loadingBarContainer;
+//
+//    private LoadingBarView loadingBarView;
 
     protected DialogFragment dialog;
 
@@ -159,10 +158,10 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      */
     private Intent mOnActivityResultIntent = null;
 
-    /**
-     * Use this variable to have a more precise control on when to show the content container.
-     */
-    private boolean processShow = true;
+//    /**
+//     * Use this variable to have a more precise control on when to show the content container.
+//     */
+//    private boolean processShow = true;
 
     public DrawerLayout mDrawerLayout;
     public ActionBarDrawerToggle mDrawerToggle;
@@ -186,7 +185,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     private View warningView;
     private View warningVariationView;
 
-    private View errorView;
+    //private View errorView;
 
     private final int titleResId;
 
@@ -214,6 +213,8 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     protected View mSearchButton;
     
     protected boolean isSearchComponentOpened = false;
+
+    private ViewStub mMainFallBackStub;
 
     /**
      * Constructor used to initialize the navigation list component and the autocomplete handler
@@ -278,6 +279,9 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         } else {
             mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         }
+        
+        // Get the fallback stub
+        mMainFallBackStub = (ViewStub) findViewById(R.id.main_fall_back_stub);
 
         isRegistered = true;
         setAppContentLayout();
@@ -480,8 +484,8 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
         contentContainer = (ViewGroup) findViewById(R.id.rocket_app_content);
-        loadingBarContainer = findViewById(R.id.loading_bar);
-        loadingBarView = (LoadingBarView) findViewById(R.id.loading_bar_view);
+        //loadingBarContainer = findViewById(R.id.loading_bar);
+        //loadingBarView = (LoadingBarView) findViewById(R.id.loading_bar_view);
         warningView = findViewById(R.id.warning);
         warningVariationView = findViewById(R.id.warning_variations);
         warningView.setOnClickListener(new OnClickListener() {
@@ -500,7 +504,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
             }
         });
-        errorView = findViewById(R.id.alert_view);
+        //errorView = findViewById(R.id.alert_view);
     }
 
     private String getTag() {
@@ -1446,37 +1450,37 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 //        sendRequest(helper, args, responseCallback);
 //    }
 
-    private final void showLoadingInfo() {
-        Log.d(getTag(), "Showing loading info");
-        if (loadingBarContainer != null) {
-            loadingBarContainer.setVisibility(View.VISIBLE);
-        } else {
-            Log.w(getTag(), "Did not find loading bar container, check layout!");
-        }
-        if (loadingBarView != null) {
-            loadingBarView.startRendering();
-        }
-    }
+//    private final void showLoadingInfo() {
+//        Log.d(getTag(), "Showing loading info");
+//        if (loadingBarContainer != null) {
+//            loadingBarContainer.setVisibility(View.VISIBLE);
+//        } else {
+//            Log.w(getTag(), "Did not find loading bar container, check layout!");
+//        }
+//        if (loadingBarView != null) {
+//            loadingBarView.startRendering();
+//        }
+//    }
 
-    /**
-     * Hides the loading screen that appears on the front of the activity while it waits for the
-     * data to arrive from the server
-     */
-    private void hideLoadingInfo() {
-        Log.d(getTag(), "Hiding loading info");
-        if (loadingBarView != null) {
-            loadingBarView.stopRendering();
-        }
-        if (loadingBarContainer != null) {
-            loadingBarContainer.setVisibility(View.GONE);
-        }
-    }
-
-    private static void setVisibility(View view, boolean show) {
-        if (view != null) {
-            view.setVisibility(show ? View.VISIBLE : View.GONE);
-        }
-    }
+//    /**
+//     * Hides the loading screen that appears on the front of the activity while it waits for the
+//     * data to arrive from the server
+//     */
+//    private void hideLoadingInfo() {
+//        Log.d(getTag(), "Hiding loading info");
+//        if (loadingBarView != null) {
+//            loadingBarView.stopRendering();
+//        }
+//        if (loadingBarContainer != null) {
+//            loadingBarContainer.setVisibility(View.GONE);
+//        }
+//    }
+//
+//    private static void setVisibility(View view, boolean show) {
+//        if (view != null) {
+//            view.setVisibility(show ? View.VISIBLE : View.GONE);
+//        }
+//    }
 
 //    public void showError(final BaseHelper helper, final Bundle bundle,
 //            final IResponseCallback responseCallback) {
@@ -1490,14 +1494,14 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 //        }, false);
 //    }
 
-    public void showLoading(boolean fromCheckout) {
-        setVisibility(errorView, false);
-        if (!fromCheckout) {
-            setVisibility(contentContainer, false);
-        }
-
-        showLoadingInfo();
-    }
+//    public void showLoading(boolean fromCheckout) {
+//        setVisibility(errorView, false);
+//        if (!fromCheckout) {
+//            setVisibility(contentContainer, false);
+//        }
+//
+//        showLoadingInfo();
+//    }
 
 //    protected void showError(OnClickListener clickListener, boolean fromCheckout) {
 //        Log.d(getTag(), "Showing error view");
@@ -1509,29 +1513,23 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 //        errorView.setOnClickListener(clickListener);
 //    }
 
-    public final void showContentContainer() {
-        if (processShow) {
-            Log.d(getTag(), "Showing the content container");
-            hideLoadingInfo();
-            dismissProgress();
-            setVisibility(errorView, false);
-            setVisibility(contentContainer, true);
-        }
-    }
+//    public final void showContentContainer() { // XXX
+//        if (processShow) {
+//            Log.d(getTag(), "Showing the content container");
+//            hideLoadingInfo();
+//            dismissProgress();
+//            setVisibility(errorView, false);
+//            setVisibility(contentContainer, true);
+//        }
+//    }
 
     public final void showWarning(boolean show) {
         Log.d(getTag(), "Showing warning: " + show);
-        if (warningView != null) {
-            warningView.setVisibility(show ? View.VISIBLE : View.GONE);
-        }
+        if (warningView != null) warningView.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
     public void showWarningVariation(boolean show) {
-        if (warningVariationView != null) {
-
-            warningVariationView.setVisibility(show ? View.VISIBLE : View.GONE);
-
-        }
+        if (warningVariationView != null) warningVariationView.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
     private void setAppContentLayout() {
@@ -1637,15 +1635,15 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         // imm.showSoftInput(getSlidingMenu().getCurrentFocus(), InputMethodManager.SHOW_IMPLICIT);
     }
 
-    /**
-     * Use this variable to have a more precise control on when to show the content container. The
-     * content will show by default after finishing the event request.
-     * 
-     * @param b
-     */
-    public void setProcessShow(boolean b) {
-        processShow = b;
-    }
+//    /**
+//     * Use this variable to have a more precise control on when to show the content container. The
+//     * content will show by default after finishing the event request.
+//     * 
+//     * @param b
+//     */
+//    public void setProcessShow(boolean b) {
+//        processShow = b;
+//    }
 
     public void finishFromAdapter() {
         finish();
@@ -1717,7 +1715,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         if (errorCode.isNetworkError()) {
             switch (errorCode) {
             case NO_NETWORK:
-                showContentContainer();
+                //showContentContainer();
 
                 // Remove dialog if exist
                 if (dialog != null) {
@@ -1769,7 +1767,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                 if (dialogMsg.equals("")) {
                     dialogMsg = getString(R.string.validation_errortext);
                 }
-                showContentContainer();
+                //showContentContainer();
                 dialog = DialogGenericFragment.newInstance(
                         true, true, false, getString(R.string.validation_title),
                         dialogMsg, getResources().getString(R.string.ok_label), "",
@@ -1789,7 +1787,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                 dialog.show(getSupportFragmentManager(), null);
                 return true;
             default:
-                showContentContainer();
+                //showContentContainer();
 
                 // Remove dialog if exist
                 if (dialog != null) {
@@ -1877,7 +1875,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      * @author sergiopereira
      */
     public void fragmentManagerBackPressed() {
-        showContentContainer();
+        //showContentContainer();
         fragmentController.fragmentBackPressed(this);
     }
 
@@ -2052,22 +2050,21 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      * Sets Maintenance page
      */
     private void setLayoutMaintenance(final EventType eventType) {
-
-        findViewById(R.id.main_fallback_content).setVisibility(View.VISIBLE);
+        // Inflate maintenance
+        mMainFallBackStub.setVisibility(View.VISIBLE);
+        // Get retry button
         Button retry = (Button) findViewById(R.id.main_fallback_retry);
         retry.setOnClickListener(new OnClickListener() {
-
             @Override
-            public void onClick(View v) {
-                findViewById(R.id.main_fallback_content).setVisibility(View.GONE);
-                String result = JumiaApplication.INSTANCE.sendRequest(JumiaApplication.INSTANCE
-                        .getRequestsRetryHelperList().get(eventType),
+            public void onClick(View v) {;
+                mMainFallBackStub.setVisibility(View.GONE);
+                String result = JumiaApplication.INSTANCE.sendRequest(
+                        JumiaApplication.INSTANCE.getRequestsRetryHelperList().get(eventType),
                         JumiaApplication.INSTANCE.getRequestsRetryBundleList().get(eventType),
                         JumiaApplication.INSTANCE.getRequestsResponseList().get(eventType));
 
                 if (result.equalsIgnoreCase("") || result == null) {
-                    onSwitchFragment(FragmentType.HOME,
-                            FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                    onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                 }
             }
         });

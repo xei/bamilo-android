@@ -281,7 +281,7 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
         mainCatAdapter = new CategoriesAdapter(getActivity(), categories);
         categoriesList.setAdapter(mainCatAdapter);
         categoriesList.setOnItemClickListener(this);
-        getBaseActivity().showContentContainer();
+        //getBaseActivity().showContentContainer();
     }
     
     /**
@@ -308,7 +308,7 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
         subCatAdapter = new SubCategoriesAdapter(getActivity(), child, getString(R.string.categories_name_all) + " " + categoryTitle);
         categoriesList.setAdapter(subCatAdapter);
         categoriesList.setOnItemClickListener(this);
-        getBaseActivity().showContentContainer();
+        //getBaseActivity().showContentContainer();
     }
     
     /**
@@ -334,7 +334,7 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
         subCatAdapter = new SubCategoriesAdapter(getActivity(), child, getString(R.string.categories_name_all) + " " + categoryTitle);
         categoriesList.setAdapter(subCatAdapter);
         categoriesList.setOnItemClickListener(this);
-        getBaseActivity().showContentContainer();
+        //getBaseActivity().showContentContainer();
     }
     
     /**
