@@ -1,14 +1,11 @@
 package pt.rocket.controllers;
 
-import pt.rocket.constants.ConstantsIntentExtra;
-import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.view.MainFragmentActivity;
 import pt.rocket.view.R;
 import pt.rocket.view.SplashScreenActivity;
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Bundle;
 import android.util.Log;
 
 /**
@@ -77,21 +74,21 @@ public class ActivitiesWorkFlow {
     }
     
     
-    public static void homePageActivity(Activity activity, String productUrl, int navigationSource, String navigationPath) {
-        // Create bundle for fragment
-        Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.CONTENT_URL, productUrl);
-        bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, navigationSource);
-        bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, navigationPath);
-        // Create intent with fragment type and bundle
-        Intent intent = new Intent(activity.getApplicationContext(), MainFragmentActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); 
-        intent.putExtra(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.PRODUCT_DETAILS);
-        intent.putExtra(ConstantsIntentExtra.FRAGMENT_BUNDLE, bundle);
-        // Start activity
-        activity.startActivity(intent);
-        //addStandardTransition(activity);
-    }
+//    public static void homePageActivity(Activity activity, String productUrl, int navigationSource, String navigationPath) {
+//        // Create bundle for fragment
+//        Bundle bundle = new Bundle();
+//        bundle.putString(ConstantsIntentExtra.CONTENT_URL, productUrl);
+//        bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, navigationSource);
+//        bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, navigationPath);
+//        // Create intent with fragment type and bundle
+//        Intent intent = new Intent(activity.getApplicationContext(), MainFragmentActivity.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); 
+//        intent.putExtra(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.PRODUCT_DETAILS);
+//        intent.putExtra(ConstantsIntentExtra.FRAGMENT_BUNDLE, bundle);
+//        // Start activity
+//        activity.startActivity(intent);
+//        //addStandardTransition(activity);
+//    }
 
     
     public static void addStandardTransition(Activity activity) {

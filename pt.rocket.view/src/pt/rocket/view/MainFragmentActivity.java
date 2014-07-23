@@ -92,7 +92,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "ON CREATE");
-
+        
         // ON ORIENTATION CHANGE
         if(savedInstanceState == null) {
             Log.d(TAG, "################### SAVED INSTANCE IS NULL");

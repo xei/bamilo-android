@@ -400,6 +400,8 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         JumiaApplication.INSTANCE.unRegisterFragmentCallback(mCallback);
         JumiaApplication.INSTANCE.setLoggedIn(false);
         isRegistered = false;
+        
+        // getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
 
     /**

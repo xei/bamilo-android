@@ -45,7 +45,6 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
 
     private TextView mProductNormalPrice;
     
-
 //    private TextView mStockInfo;
 
     private RelativeLayout mLoading;
@@ -56,8 +55,9 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
 
     private String unitPrice;
     private String specialPrice;
-    private int discountPercentage;
-    private long stockQuantity;
+    
+    //private int discountPercentage;
+    //private long stockQuantity;
 
     public static final String DEFINE_UNIT_PRICE = "unit_price";
     public static final String DEFINE_SPECIAL_PRICE = "special_price";
@@ -204,11 +204,7 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
     public void onClick(View v) {
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProduct.getUrl());
-        BaseActivity activity = ((BaseActivity) getActivity());
-        if (null == activity) {
-            activity = mainActivity;
-        }
-        activity.onSwitchFragment(FragmentType.PRODUCT_DESCRIPTION, bundle, FragmentController.ADD_TO_BACK_STACK);
+        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DESCRIPTION, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
     private void showContentLoading() {
@@ -293,14 +289,14 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
             }
         }
 
-        if (bundle.containsKey(ProductBasicInfoFragment.DEFINE_STOCK)) {
-            stockQuantity = bundle.getLong(ProductBasicInfoFragment.DEFINE_STOCK);
-//            updateStockInfo();
-        }
+//        if (bundle.containsKey(ProductBasicInfoFragment.DEFINE_STOCK)) {
+//            stockQuantity = bundle.getLong(ProductBasicInfoFragment.DEFINE_STOCK);
+////            updateStockInfo();
+//        }
         if (bundle.containsKey(ProductBasicInfoFragment.DEFINE_UNIT_PRICE)) {
             unitPrice = bundle.getString(ProductBasicInfoFragment.DEFINE_UNIT_PRICE);
             specialPrice = bundle.getString(ProductBasicInfoFragment.DEFINE_SPECIAL_PRICE);
-            discountPercentage = bundle.getInt(ProductBasicInfoFragment.DEFINE_DISCOUNT_PERCENTAGE);
+            //discountPercentage = bundle.getInt(ProductBasicInfoFragment.DEFINE_DISCOUNT_PERCENTAGE);
         }
 
         // Validate if fragment is on the screen

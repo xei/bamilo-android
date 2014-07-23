@@ -132,6 +132,8 @@ public class CampaignsFragment extends BaseFragment {
             mCampaignPagerAdapter = new CampaignPagerAdapter(getChildFragmentManager(), mCampaigns);
             mCampaignPager.setAdapter(mCampaignPagerAdapter);
             mCampaignPagerTabStrip.setViewPager(mCampaignPager);
+            // Show the pre selection
+            mCampaignPager.setCurrentItem(selectedPosition, true);
         }
     }
     
