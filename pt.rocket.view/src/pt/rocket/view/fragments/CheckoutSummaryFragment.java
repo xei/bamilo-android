@@ -11,7 +11,6 @@ import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsCheckout;
-import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.ErrorCode;
@@ -445,7 +444,7 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
      * @author sergiopereira
      */
     public void showNoItems() {
-        //setAppContentLayout();
+        // setAppContentLayout();
         mNoItemsView.setVisibility(View.VISIBLE);
         mProductListView.setVisibility(View.GONE);
         mShippingAddressView.setVisibility(View.GONE);
@@ -455,18 +454,22 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
         dialog = DialogGenericFragment.newInstance(true, true, false,
                 getString(R.string.order_summary_label),
                 getString(R.string.wishlist_notiems),
-                getString(R.string.ok_label), "", new OnClickListener() {
-
+                getString(R.string.ok_label),
+                "",
+                new OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         int id = v.getId();
                         if (id == R.id.button1) {
-                          ActivitiesWorkFlow.homePageActivity(getBaseActivity());
-                          getBaseActivity().finish();
+                            dialog.dismiss();
+                            getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                            // ActivitiesWorkFlow.homePageActivity(getBaseActivity());
+                            // getBaseActivity().finish();
                         }
                     }
-
                 });
+        // Fixed back bug
+        dialog.setCancelable(false);
         dialog.show(getBaseActivity().getSupportFragmentManager(), null);
     }
     

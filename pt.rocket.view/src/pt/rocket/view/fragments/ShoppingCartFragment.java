@@ -859,8 +859,9 @@ public class ShoppingCartFragment extends BaseFragment {
             public void onClick(View v) {
                 int id = v.getId();
                 if (id == R.id.continue_shopping_button) {
-                    ActivitiesWorkFlow.homePageActivity(getActivity());
-                    getActivity().finish();
+                    getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                    // ActivitiesWorkFlow.homePageActivity(getActivity());
+                    // getActivity().finish();
                 }
 
             }

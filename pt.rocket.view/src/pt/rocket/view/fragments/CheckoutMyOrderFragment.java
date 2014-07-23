@@ -723,12 +723,12 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
         if (JumiaApplication.INSTANCE.getPaymentMethodForm() == null) {
             return false;
         } else {
-           
             dialog = DialogGenericFragment.newInstance(true, true, false,
                     getString(R.string.confirm_order_loosing_order_title),
-                    getString(R.string.confirm_order_loosing_order)+" \n"+JumiaApplication.INSTANCE.getPaymentMethodForm().getOrderNumber(),
-                    getString(R.string.ok_label), getString(R.string.cancel_label), new OnClickListener() {
-
+                    getString(R.string.confirm_order_loosing_order) + " \n" + JumiaApplication.INSTANCE.getPaymentMethodForm().getOrderNumber(),
+                    getString(R.string.ok_label), 
+                    getString(R.string.cancel_label),
+                    new OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             int id = v.getId();
@@ -738,13 +738,11 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
                                 JumiaApplication.INSTANCE.setCart(null);
                                 triggerClearCart();
                                 getBaseActivity().updateCartInfo();
-                                getBaseActivity().onSwitchFragment(FragmentType.HOME, null, FragmentController.ADD_TO_BACK_STACK);
-                            } else if(id == R.id.button2){
+                                getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                            } else if (id == R.id.button2) {
                                 dialog.dismiss();
                             }
-
                         }
-
                     });
             dialog.show(getBaseActivity().getSupportFragmentManager(), null);
             return true;

@@ -274,8 +274,11 @@ public class WriteReviewFragment extends BaseFragment {
      * Set the Products layout using inflate
      */
     private void setLayout() {
-        if(completeProduct == null){
-            getActivity().finish();
+        if (completeProduct == null) {
+            Log.e(TAG, "NO COMPLETE PRODUCT - SWITCHING TO HOME");
+            restartAllFragments();
+            // getActivity().onBackPressed();
+            // getActivity().finish();
             return;
         }
             

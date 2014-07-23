@@ -9,7 +9,6 @@ import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsCheckout;
-import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.ErrorCode;
@@ -24,7 +23,6 @@ import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.TrackerDelegator;
-import pt.rocket.view.MainFragmentActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ClipData;
@@ -268,7 +266,7 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
                     JumiaApplication.INSTANCE.getCart().getCartValue(),
                     JumiaApplication.INSTANCE.getCustomerUtils().getEmail(),
                     JumiaApplication.INSTANCE.getCart().getCartItems(),
-                    JumiaApplication.INSTANCE.CUSTOMER);
+                    JumiaApplication.CUSTOMER);
         }
 
         triggerClearCart();
@@ -385,20 +383,16 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
     @Override
     public void onClick(View v) {
         Log.d(TAG, "VIEW ID: " + v.getId() + " " + R.id.order_status_text);
-        if (v.getId() == R.id.btn_checkout_continue){
+        if (v.getId() == R.id.btn_checkout_continue) {
             String user_id = "";
-            if(JumiaApplication.INSTANCE.CUSTOMER != null && JumiaApplication.INSTANCE.CUSTOMER.getIdAsString() != null){
-                user_id = JumiaApplication.INSTANCE.CUSTOMER.getIdAsString();
+            if (JumiaApplication.CUSTOMER != null && JumiaApplication.CUSTOMER.getIdAsString() != null) {
+                user_id = JumiaApplication.CUSTOMER.getIdAsString();
             }
             AnalyticsGoogle.get().trackCheckoutContinueShopping(getBaseActivity(), user_id);
-            ActivitiesWorkFlow.homePageActivity(getActivity());
-        }
-            
-        // getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE,
-        // FragmentController.ADD_TO_BACK_STACK);
-        else {
-            getBaseActivity().onSwitchFragment(FragmentType.TRACK_ORDER,
-                    FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            // ActivitiesWorkFlow.homePageActivity(getActivity());
+        } else {
+            getBaseActivity().onSwitchFragment(FragmentType.TRACK_ORDER, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         }
     }
 
@@ -409,7 +403,8 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
      */
     @Override
     public boolean allowBackPressed() {
-        ((MainFragmentActivity) getBaseActivity()).popBackStack(FragmentType.HOME.toString());
+        getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        // ((MainFragmentActivity) getBaseActivity()).popBackStack(FragmentType.HOME.toString());
         return true;
     }
 

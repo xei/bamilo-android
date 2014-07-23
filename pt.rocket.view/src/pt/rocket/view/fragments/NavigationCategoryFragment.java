@@ -493,7 +493,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
     public void onRequestComplete(Bundle bundle) {
         Log.i(TAG, "ON SUCCESS EVENT");
         // Save categories
-        JumiaApplication.currentCategories = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);; 
+        JumiaApplication.currentCategories = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
         // Validate fragment state
         if(isOnStoppingProcess) return;
         // Validate saved categories

@@ -552,12 +552,7 @@ public class CategoriesContainerFragment extends BaseFragment {
         fm = null;
         ft = null;
         
-        BaseActivity activity = getBaseActivity();
-        if ( null == activity ) {
-            activity = mainActivity;
-        }
-        
-        activity.onSwitchFragment(FragmentType.PRODUCT_LIST, bundle, true);
+        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_LIST, bundle, true);
     }
     
     

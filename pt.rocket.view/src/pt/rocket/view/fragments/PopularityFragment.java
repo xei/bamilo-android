@@ -143,8 +143,10 @@ public class PopularityFragment extends BaseFragment {
         
         selectedProduct = JumiaApplication.INSTANCE.getCurrentProduct();
         inflater = LayoutInflater.from(getActivity());
-        if(selectedProduct == null){
-            getActivity().finish();
+        if (selectedProduct == null) {
+            Log.e(TAG, "NO CURRENT PRODUCT - SWITCHING TO HOME");
+            restartAllFragments();
+            // getActivity().finish();
             return;
         }
         pageNumber = 1;
@@ -158,8 +160,6 @@ public class PopularityFragment extends BaseFragment {
             startWriteReviewFragment();
         }
     }
-
-
 
     /*
      * (non-Javadoc)

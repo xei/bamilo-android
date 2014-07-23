@@ -36,6 +36,7 @@ import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.RemoteException;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -425,13 +426,17 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      */
     public void restartAllFragments() {
         Log.w(TAG, "IMPORTANT DATA IS NULL - GOTO HOME -> " + mainActivity.toString());
-        
-        BaseActivity activity = getBaseActivity();
-        //if ( null == activity )
-        //    activity = mainActivity;
-        
-        if ( null != activity) {
-            activity.onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+
+        final BaseActivity activity = getBaseActivity();
+
+        // wait 500ms before switching to HOME, to be sure all fragments ended any visual processing pending
+        if (activity != null) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    activity.onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                }
+            }, 500);
         } else {
             Log.w(TAG, "RESTART ALL FRAGMENTS - ERROR : Activity is NULL");
         }

@@ -289,7 +289,8 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
                 showFragmentContentContainer();
             } else {
                 restartAllFragments();
-                finish();
+                // finish();
+                return true;
             }
             return true;
         default:

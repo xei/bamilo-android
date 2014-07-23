@@ -208,12 +208,7 @@ public class ProductSpecificationsFragment extends BaseFragment implements OnCli
     public void onClick(View v) {
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProduct.getUrl());
-        BaseActivity activity = ((BaseActivity) getActivity());
-        if (null == activity) {
-            activity = mainActivity;
-        }
-        activity.onSwitchFragment(FragmentType.PRODUCT_DESCRIPTION, bundle,
-                FragmentController.ADD_TO_BACK_STACK);
+        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DESCRIPTION, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
     
     private void showContentLoading(){

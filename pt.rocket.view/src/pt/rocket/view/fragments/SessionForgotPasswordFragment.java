@@ -240,8 +240,10 @@ public class SessionForgotPasswordFragment extends BaseFragment {
         if(item.getEditControl()!=null){
             ((EditText) item.getEditControl()).setHint(getString(R.string.forgotten_password_examplemail));
         }
-        if(getView() == null){
-            getActivity().finish();
+        if (getView() == null) {
+            Log.e(TAG, "NO VIEW - SWITCHING TO HOME");
+            restartAllFragments();
+            // getActivity().finish();
             return;
         }
         container = (LinearLayout) getView().findViewById(R.id.form_container);

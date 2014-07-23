@@ -375,8 +375,9 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
     }
 
     private void updateImage(int index) {
-        if(mViewPager != null && mViewPager.getAdapter() != null && mViewPager.getAdapter().getCount() > 0)
+        if (mViewPager != null && mViewPager.getAdapter() != null && mViewPager.getAdapter().getCount() > 0) {
             mViewPager.setCurrentItem(index, true);
+        }
     }
 
     @Override
@@ -516,7 +517,9 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
                 .getCurrentProduct();
         // displayGallery(mCompleteProduct);
         if (mCompleteProduct == null) {
-            getActivity().finish();
+            Log.e(TAG, "NO COMPLETE PRODUCT - SWITCHING TO HOME");
+            restartAllFragments();
+            // getActivity().finish();
             return;
         }
 

@@ -923,6 +923,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             Log.w(TAG, "ON ERRER RECEIVED: GET_LOGIN_FORM_EVENT");
             if (errorCode == ErrorCode.UNKNOWN_ERROR && null == loginForm) {
                 restartAllFragments();
+                return true;
             }
             break;
         case FACEBOOK_LOGIN_EVENT:

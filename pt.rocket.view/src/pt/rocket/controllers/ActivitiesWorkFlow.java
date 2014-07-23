@@ -65,13 +65,13 @@ public class ActivitiesWorkFlow {
      * 
      * @param activity
      */
-    public static void homePageActivity(Activity activity) {
-        // Intent intent = new Intent(activity.getApplicationContext(), TeaserFragmentActivity.class);
-        Intent intent = new Intent(activity.getApplicationContext(), MainFragmentActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        activity.startActivity(intent);
-        addStandardTransition(activity);
-    }
+//    public static void homePageActivity(Activity activity) {
+//        // Intent intent = new Intent(activity.getApplicationContext(), TeaserFragmentActivity.class);
+//        Intent intent = new Intent(activity.getApplicationContext(), MainFragmentActivity.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        activity.startActivity(intent);
+//        addStandardTransition(activity);
+//    }
     
     
 //    public static void homePageActivity(Activity activity, String productUrl, int navigationSource, String navigationPath) {
