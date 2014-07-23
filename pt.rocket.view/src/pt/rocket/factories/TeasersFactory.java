@@ -22,8 +22,10 @@ import pt.rocket.framework.objects.TeaserImage;
 import pt.rocket.framework.objects.TeaserSpecification;
 import pt.rocket.framework.utils.WindowHelper;
 import pt.rocket.utils.imageloader.RocketImageLoader;
+import pt.rocket.utils.imageloader.RocketImageLoader.RocketImageLoaderListener;
 import pt.rocket.view.R;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
@@ -489,12 +491,20 @@ public class TeasersFactory {
             
         
         if (!TextUtils.isEmpty(imageUrl)) {
+            // Flag for FIT_XY
             final boolean resize = isToResize;
-            
-            if(resize){
-                imageView.setScaleType(ScaleType.FIT_XY);
-            }
-            RocketImageLoader.instance.loadImage(imageUrl, imageView, progressBar, R.drawable.no_image_large);
+            // Load image
+            RocketImageLoader.instance.loadImage(imageUrl, imageView, progressBar, R.drawable.no_image_large, new RocketImageLoaderListener() {
+                
+                @Override
+                public void onLoadedSuccess(Bitmap bitmap) { if(resize) imageView.setScaleType(ScaleType.FIT_XY); }
+                
+                @Override
+                public void onLoadedError() { }
+                
+                @Override
+                public void onLoadedCancel(String imageUrl) { }
+            });
 
         }
 
