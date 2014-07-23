@@ -327,9 +327,7 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
 
         if (mViewPager == null) {
             mViewPager = (JumiaViewPagerWithZoom) mainView.findViewById(R.id.viewpager);
-            mViewPager.setPageMargin((int) getActivity().getResources().getDimension(
-                    R.dimen.margin_large));
-
+            mViewPager.setPageMargin((int) getActivity().getResources().getDimension(R.dimen.margin_large));
         }
 
         mViewPager.setAdapter(galleryAdapter);
@@ -377,7 +375,8 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
     }
 
     private void updateImage(int index) {
-        mViewPager.setCurrentItem(index, true);
+        if(mViewPager != null && mViewPager.getAdapter() != null && mViewPager.getAdapter().getCount() > 0)
+            mViewPager.setCurrentItem(index, true);
     }
 
     @Override
