@@ -34,21 +34,13 @@ public class ErrorMonitoring {
 	
 	private static  void buildErrorMap(Context mContext, String uri, ErrorCode errorCode, Exception exception, String msg ) {
 		
-		/**
-		 * Try fix the Hockey report:
-		 * https://rink.hockeyapp.net/manage/apps/33641/app_versions/97/crash_reasons/11084528?type=overview
-		 * 
-		 * Log:
-		 * java.lang.NullPointerException
-		 * 		at java.util.TreeMap.find(TreeMap.java:277)
-		 * 		at java.util.TreeMap.putInternal(TreeMap.java:240)
-		 * 		at java.util.TreeMap.put(TreeMap.java:186)
-		 */
-		//map.clear();
+	    if(null == map) map = new TreeMap<String, String>();
+	    
+		map.clear();
 		
 		map.put( "Country", ShopSelector.getCountryName());
 		map.put( "Uri", uri);
-		if (errorCode != null && errorCode.name() != null) {
+		if (errorCode != null && !TextUtils.isEmpty(errorCode.name())) {
 			map.put( "ErrorCode", errorCode.name());
 		}
 		map.put( "IPv4-Address",  getIPAddress(true));
@@ -58,7 +50,7 @@ public class ErrorMonitoring {
 		}		
 		
 		map.put( "Timestamp", SimpleDateFormat.getInstance().format(new Date()));
-		map.put( "VersionCode", String.valueOf(getVersionCode(mContext)));
+		map.put( "VersionCode", getVersionCode(mContext));
 		map.put( "Exception Message", exception.getMessage());
 	}
 
@@ -112,23 +104,21 @@ public class ErrorMonitoring {
 		} // for now eat exceptions
 		return "unknown";
 	}
-	
-    private static void retrieveVersionCode() {
-        
-    }
     
-    private static int getVersionCode(Context mContext) {
+    private static String getVersionCode(Context mContext) {
     	PackageInfo pinfo;
         int versionCode = -1;
         try {
             pinfo = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0);
             versionCode = pinfo.versionCode;
         } catch (NameNotFoundException e) {
-            // ignore
-        }
+            // ignored
+        } catch (NullPointerException e) {
+			// ignred
+		}
         
         sVersionCode = versionCode;        
-    	return sVersionCode;
+    	return "" + sVersionCode;
     }
 	
 }
