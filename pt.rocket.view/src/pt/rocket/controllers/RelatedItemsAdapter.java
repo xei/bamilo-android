@@ -82,24 +82,19 @@ public class RelatedItemsAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, final int position) {
-        
         View view = mLayoutInflater.inflate(R.layout.element_related_items, container, false);
         if (position * 3 < this.mRelatedItems.size()) {
             RelativeLayout mElement1 = (RelativeLayout) view.findViewById(R.id.element_1);
             mElement1.setOnClickListener(new OnClickListener() {
-
                 @Override
                 public void onClick(View v) {
-
                     Bundle bundle = new Bundle();
-                    bundle.putString(ConstantsIntentExtra.CONTENT_URL,
-                            mRelatedItems.get(position * 3).getProductUrl());
-                    bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE,
-                            R.string.gteaserrecentlyviewed_prefix);
+                    bundle.putString(ConstantsIntentExtra.CONTENT_URL, mRelatedItems.get(position * 3).getProductUrl());
+                    bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaserrecentlyviewed_prefix);
                     bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
-                    ((BaseActivity) mContext).onSwitchFragment(
-                            FragmentType.PRODUCT_DETAILS, bundle,
-                            FragmentController.ADD_TO_BACK_STACK);
+                    // inform PDV that Related Items should be shown
+                    bundle.putBoolean(ConstantsIntentExtra.SHOW_RELATED_ITEMS, true);
+                    ((BaseActivity) mContext).onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
                 }
             });
             ImageView img_1 = (ImageView) mElement1.findViewById(R.id.img_1);
@@ -109,24 +104,19 @@ public class RelatedItemsAdapter extends PagerAdapter {
             price_1.setText(mRelatedItems.get(position * 3).getProductPrice());
             
             RocketImageLoader.instance.loadImage(mRelatedItems.get(position * 3).getImageUrl(), img_1, null, R.drawable.no_image_small);
-            
         }
         if ((position * 3 + 1) < this.mRelatedItems.size()) {
             RelativeLayout mElement2 = (RelativeLayout) view.findViewById(R.id.element_2);
             mElement2.setOnClickListener(new OnClickListener() {
-
                 @Override
                 public void onClick(View v) {
                     Bundle bundle = new Bundle();
-                    bundle.putString(ConstantsIntentExtra.CONTENT_URL,
-                            mRelatedItems.get(position * 3 + 1).getProductUrl());
-                    bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE,
-                            R.string.gteaserprod_prefix);
+                    bundle.putString(ConstantsIntentExtra.CONTENT_URL, mRelatedItems.get(position * 3 + 1).getProductUrl());
+                    bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaserprod_prefix);
                     bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
-                    ((BaseActivity) mContext).onSwitchFragment(
-                            FragmentType.PRODUCT_DETAILS, bundle,
-                            FragmentController.ADD_TO_BACK_STACK);
-
+                    // inform PDV that Related Items should be shown
+                    bundle.putBoolean(ConstantsIntentExtra.SHOW_RELATED_ITEMS, true);
+                    ((BaseActivity) mContext).onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
                 }
             });
             ImageView img_2 = (ImageView) mElement2.findViewById(R.id.img_2);
@@ -137,24 +127,19 @@ public class RelatedItemsAdapter extends PagerAdapter {
             price_2.setText(mRelatedItems.get(position * 3 + 1).getProductPrice());
             
             RocketImageLoader.instance.loadImage(mRelatedItems.get(position * 3 + 1).getImageUrl(), img_2, null, R.drawable.no_image_small);
-            
         }
         if ((position * 3 + 2) < this.mRelatedItems.size()) {
             RelativeLayout mElement3 = (RelativeLayout) view.findViewById(R.id.element_3);
             mElement3.setOnClickListener(new OnClickListener() {
-
                 @Override
                 public void onClick(View v) {
                     Bundle bundle = new Bundle();
-                    bundle.putString(ConstantsIntentExtra.CONTENT_URL,
-                            mRelatedItems.get(position * 3 + 2).getProductUrl());
-                    bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE,
-                            R.string.gteaserprod_prefix);
+                    bundle.putString(ConstantsIntentExtra.CONTENT_URL, mRelatedItems.get(position * 3 + 2).getProductUrl());
+                    bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaserprod_prefix);
                     bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
-                    ((BaseActivity) mContext).onSwitchFragment(
-                            FragmentType.PRODUCT_DETAILS, bundle,
-                            FragmentController.ADD_TO_BACK_STACK);
-
+                    // inform PDV that Related Items should be shown
+                    bundle.putBoolean(ConstantsIntentExtra.SHOW_RELATED_ITEMS, true);
+                    ((BaseActivity) mContext).onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
                 }
             });
             ImageView img_3 = (ImageView) mElement3.findViewById(R.id.img_3);
@@ -165,7 +150,6 @@ public class RelatedItemsAdapter extends PagerAdapter {
             price_3.setText(mRelatedItems.get(position * 3 + 2).getProductPrice());
             
             RocketImageLoader.instance.loadImage(mRelatedItems.get(position * 3 + 2).getImageUrl(), img_3, null, R.drawable.no_image_small);
-            
         }
 
         container.addView(view);
