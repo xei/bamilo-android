@@ -8,7 +8,6 @@ import java.util.EnumSet;
 
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.GalleryPagerAdapter;
-import pt.rocket.controllers.ProductImagesAdapter;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.objects.CompleteProduct;
@@ -49,7 +48,7 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
 
     private static ProductImageGalleryFragment productImageGalleryFragment;
 
-    private ProductImagesAdapter mImageListAdapter;
+    //private ProductImagesAdapter mImageListAdapter;
 
     // private NormalizingViewPagerWrapper mPagerWrapper;
 
@@ -61,7 +60,7 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
 
     private CompleteProduct mCompleteProduct;
 
-    private String mCompleteProductUrl;
+    //private String mCompleteProductUrl;
 
     private View mainView;
 
@@ -96,20 +95,18 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
 
         productImageGalleryFragment = new ProductImageGalleryFragment();
 
-        productImageGalleryFragment.mCompleteProductUrl = bundle
-                .getString(ConstantsIntentExtra.CONTENT_URL);
-        productImageGalleryFragment.mVariationsListPosition = bundle.getInt(
-                ConstantsIntentExtra.VARIATION_LISTPOSITION, 1);
-        productImageGalleryFragment.currentPosition = bundle.getInt(
-                ConstantsIntentExtra.CURRENT_LISTPOSITION, 1);
+        //productImageGalleryFragment.mCompleteProductUrl = bundle.getString(ConstantsIntentExtra.CONTENT_URL);
+        productImageGalleryFragment.mVariationsListPosition = bundle.getInt(ConstantsIntentExtra.VARIATION_LISTPOSITION, 1);
+        productImageGalleryFragment.currentPosition = bundle.getInt(ConstantsIntentExtra.CURRENT_LISTPOSITION, 1);
 
         if (productImageGalleryFragment.currentPosition <= 0)
             productImageGalleryFragment.currentPosition = 1;
-        productImageGalleryFragment.isZoomAvailable = bundle.getBoolean(
-                ConstantsIntentExtra.IS_ZOOM_AVAILABLE, false);
+        
+        productImageGalleryFragment.isZoomAvailable = bundle.getBoolean(ConstantsIntentExtra.IS_ZOOM_AVAILABLE, false);
 
         if (!productImageGalleryFragment.isZoomAvailable)
             productImageGalleryFragment.showHorizontalListView = false;
+        
         return productImageGalleryFragment;
     }
 
@@ -187,7 +184,7 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
             @Override
             public void onPageScrollStateChanged(int arg0) {
 
-                int pageCount = galleryAdapter.getCount();
+                //int pageCount = galleryAdapter.getCount();
 
                 if (arg0 == ViewPager.SCROLL_STATE_SETTLING) {
                     if (mViewPager != null)
@@ -221,19 +218,24 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
                 public void run() {
                     int pageCount = galleryAdapter.getCount();
 
-                    mViewPager.setPagingEnabled(true);
-                    mViewPager.toggleJumiaScroller(true);
-
-                    //
-                    if (currentPosition == 0) {
-                        mViewPager.toggleJumiaScroller(false);
-                        mViewPager.setCurrentItem(pageCount - 2);
+                    try {
+                        mViewPager.setPagingEnabled(true);
+                        mViewPager.toggleJumiaScroller(true);
 
                         //
-                    } else if (currentPosition == pageCount - 1) {
-                        mViewPager.toggleJumiaScroller(false);
-                        mViewPager.setCurrentItem(1);
+                        if (currentPosition == 0) {
+                            mViewPager.toggleJumiaScroller(false);
+                            mViewPager.setCurrentItem(pageCount - 2);
+
+                            //
+                        } else if (currentPosition == pageCount - 1) {
+                            mViewPager.toggleJumiaScroller(false);
+                            mViewPager.setCurrentItem(1);
+                        }
+                    } catch (NullPointerException e) {
+                        Log.w(TAG, "WARNING NPE IN CHANGE PAGE");
                     }
+                    
                 }
             });
 
@@ -457,11 +459,11 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
         Log.d(TAG, "ALLOW BACK PRESSED");
         if (mCompleteProduct != null) {
 
-            int listPosition;
-            if (mImagesList != null)
-                listPosition = mImagesList.getPosition();
-            else
-                listPosition = 0;
+            //int listPosition;
+            //if (mImagesList != null)
+            //    listPosition = mImagesList.getPosition();
+            //else
+            //    listPosition = 0;
 
             // TODO
             // ProductDetailsFragment.updateVariantionListPosition(mCompleteProduct.getUrl(), listPosition);
@@ -503,18 +505,13 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
             return;
         }
 
-        productImageGalleryFragment.mCompleteProductUrl = bundle
-                .getString(ConstantsIntentExtra.CONTENT_URL);
-        productImageGalleryFragment.mVariationsListPosition = bundle.getInt(
-                ConstantsIntentExtra.VARIATION_LISTPOSITION, 1);
+        //productImageGalleryFragment.mCompleteProductUrl = bundle.getString(ConstantsIntentExtra.CONTENT_URL);
+        productImageGalleryFragment.mVariationsListPosition = bundle.getInt(ConstantsIntentExtra.VARIATION_LISTPOSITION, 1);
 
-        productImageGalleryFragment.currentPosition = bundle.getInt(
-                ConstantsIntentExtra.CURRENT_LISTPOSITION, 1);
-        productImageGalleryFragment.isZoomAvailable = bundle.getBoolean(
-                ConstantsIntentExtra.IS_ZOOM_AVAILABLE, false);
+        productImageGalleryFragment.currentPosition = bundle.getInt(ConstantsIntentExtra.CURRENT_LISTPOSITION, 1);
+        productImageGalleryFragment.isZoomAvailable = bundle.getBoolean(ConstantsIntentExtra.IS_ZOOM_AVAILABLE, false);
 
-        mCompleteProduct = (CompleteProduct) FragmentCommunicatorForProduct.getInstance()
-                .getCurrentProduct();
+        mCompleteProduct = (CompleteProduct) FragmentCommunicatorForProduct.getInstance().getCurrentProduct();
         // displayGallery(mCompleteProduct);
         if (mCompleteProduct == null) {
             Log.e(TAG, "NO COMPLETE PRODUCT - SWITCHING TO HOME");
