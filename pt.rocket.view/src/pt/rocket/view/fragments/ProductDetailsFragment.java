@@ -340,7 +340,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
             viewPagerTips.setOnPageChangeListener(new TipsOnPageChangeListener(mainView, tips_pages));
             viewPagerTips.setCurrentItem(0);
             ((LinearLayout) mainView.findViewById(R.id.viewpager_tips_btn_indicator)).setVisibility(View.VISIBLE);
-            ((LinearLayout) mainView.findViewById(R.id.viewpager_tips_btn_indicator)).setOnClickListener(this);
             mainView.findViewById(R.id.tips_got_it_img).setOnClickListener(this);
         }
     }
