@@ -54,6 +54,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -165,6 +166,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
     private View mVariantPriceContainer;
     private String mNavigationPath;
     private int mNavigationSource;
+    private boolean mShowRelatedItems;
 
     private RelativeLayout loadingRating;
 
@@ -193,6 +195,9 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
     private ArrayList<String> variations;
 
     private String mDeepLinkSimpleSize;
+
+    private Drawable isFavouriteDrawable;
+    private Drawable isNotFavouriteDrawable;
     
     public ProductDetailsFragment() {
         super(EnumSet.of(EventType.GET_PRODUCT_EVENT),
@@ -288,6 +293,9 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         if (mPhone2Call.equalsIgnoreCase("")) {
             mPhone2Call = getString(R.string.call_to_order_number);
         }
+
+        isFavouriteDrawable = mContext.getResources().getDrawable(R.drawable.btn_fav_selected);
+        isNotFavouriteDrawable = mContext.getResources().getDrawable(R.drawable.btn_fav);
     }
 
     private void init() {
@@ -308,6 +316,9 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
 
         mNavigationSource = bundle.getInt(ConstantsIntentExtra.NAVIGATION_SOURCE, -1);
         mNavigationPath = bundle.getString(ConstantsIntentExtra.NAVIGATION_PATH);
+        
+        // determine if related items should be shown
+        mShowRelatedItems = bundle.getBoolean(ConstantsIntentExtra.SHOW_RELATED_ITEMS);
         
         loadProduct();
 
@@ -884,10 +895,10 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         // Set is favourite image
         if (FavouriteTableHelper.verifyIfFavourite(mCompleteProduct.getSku())) {
             mCompleteProduct.getAttributes().put(RestConstants.JSON_IS_FAVOURITE_TAG, Boolean.TRUE.toString());
-            imageIsFavourite.setImageDrawable(mContext.getResources().getDrawable(R.drawable.btn_fav_selected));
+            imageIsFavourite.setImageDrawable(isFavouriteDrawable);
         } else {
             mCompleteProduct.getAttributes().put(RestConstants.JSON_IS_FAVOURITE_TAG, Boolean.FALSE.toString());
-            imageIsFavourite.setImageDrawable(mContext.getResources().getDrawable(R.drawable.btn_fav));
+            imageIsFavourite.setImageDrawable(isNotFavouriteDrawable);
         }
 
         if (productVariationsFragment == null) {
@@ -911,7 +922,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
             fragmentManagerTransition(R.id.product_specifications_container, productSpecificationFragment, false, true);
             fragmentManagerTransition(R.id.product_basicinfo_container, productBasicInfoFragment, false, true);
             
-            if(JumiaApplication.INSTANCE.showRelatedItemsGlobal){
+            if (mShowRelatedItems) {
                 relatedItemsFragment = ProductRelatedItemsFragment.getInstance(product.getSku());
                 fragmentManagerTransition(R.id.product_related_container, relatedItemsFragment, false, true);
             }
@@ -1028,12 +1039,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
             if (null != mCompleteProduct) {
                 Bundle bundle = new Bundle();
                 bundle.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProduct.getUrl());
-                BaseActivity activity = getBaseActivity();
-                if (null == activity) {
-                    activity = mainActivity;
-                }
-                activity.onSwitchFragment(FragmentType.PRODUCT_DESCRIPTION, bundle,
-                        FragmentController.ADD_TO_BACK_STACK);
+                getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DESCRIPTION, bundle, FragmentController.ADD_TO_BACK_STACK);
             }
         } else if (id == R.id.product_variant_button) {
             showVariantsDialog();
@@ -1064,12 +1070,12 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
             if (!isFavourite) {
                 FavouriteTableHelper.insertFavouriteProduct(mCompleteProduct);
                 mCompleteProduct.getAttributes().put(RestConstants.JSON_IS_FAVOURITE_TAG, Boolean.TRUE.toString());
-                imageIsFavourite.setImageDrawable(mContext.getResources().getDrawable(R.drawable.btn_fav_selected));
+                imageIsFavourite.setImageDrawable(isFavouriteDrawable);
                 Toast.makeText(mContext, getString(R.string.products_added_favourite), Toast.LENGTH_SHORT).show();
             } else {
                 FavouriteTableHelper.removeFavouriteProduct(mCompleteProduct.getSku());
                 mCompleteProduct.getAttributes().put(RestConstants.JSON_IS_FAVOURITE_TAG, Boolean.FALSE.toString());
-                imageIsFavourite.setImageDrawable(mContext.getResources().getDrawable(R.drawable.btn_fav));
+                imageIsFavourite.setImageDrawable(isNotFavouriteDrawable);
                 Toast.makeText(mContext, getString(R.string.products_removed_favourite), Toast.LENGTH_SHORT).show();
             }
         } else if (id == R.id.image_share){

@@ -37,6 +37,7 @@ public class ConstantsIntentExtra {
     public static final String VARIATION_LISTPOSITION       = mPackage + "VariationListPosition";
     public static final String IS_ZOOM_AVAILABLE            = mPackage + "ZoomAvailable";
     public static final String SHOW_HORIZONTAL_LIST_VIEW    = mPackage + "ShowHorizontalListView";
+    public static final String SHOW_RELATED_ITEMS           = mPackage + "ShowRelatedItems";
     
     // ########### Checkout ###########
     //

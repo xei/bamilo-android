@@ -271,6 +271,7 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
      * Category level 1
      */
     private void categoryLevel1() {
+        // TODO fix call finish
         if(getView() == null){
             getActivity().finish();
             return;

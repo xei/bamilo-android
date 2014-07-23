@@ -274,7 +274,6 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
         try {
             int position = Integer.parseInt(view.getTag().toString());
             LastViewedAddableToCart recentlyViewed = (LastViewedAddableToCart) mRecentlyViewed.get(position);
-            recentlyViewed.setFavoriteSelected(position);
             Bundle bundle = new Bundle();
             bundle.putString(ConstantsIntentExtra.CONTENT_URL, recentlyViewed.getUrl());
             bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");

@@ -471,7 +471,6 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
     private void onClickProduct(String targetUrl, Bundle bundle) {
         Log.i(TAG, "ON CLICK PRODUCT");
         if (targetUrl != null) {
-            JumiaApplication.INSTANCE.showRelatedItemsGlobal = false;
             bundle.putString(ConstantsIntentExtra.CONTENT_URL, targetUrl);
             bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaserprod_prefix);
             bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");

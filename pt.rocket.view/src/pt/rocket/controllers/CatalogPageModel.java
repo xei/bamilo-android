@@ -406,19 +406,18 @@ public class CatalogPageModel {
                     // // Call Product Details
 
                     Log.i("TAG", "DIR=======>" + dir + " sort =====> " + sort);
-                    JumiaApplication.INSTANCE.showRelatedItemsGlobal = true;
-                    Product product = mFragment.getProduct((String) productsAdapter
-                            .getItem(activePosition));
+                    Product product = mFragment.getProduct((String) productsAdapter.getItem(activePosition));
                     Bundle bundle = new Bundle();
                     bundle.putString(ConstantsIntentExtra.CONTENT_URL, product.getUrl());
                     bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, navigationSource);
                     bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, navigationPath);
-                    bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, product.getBrand() + " "
-                            + product.getName());
-                    if (title != null)
+                    // inform PDV that Related Items should be shown
+                    bundle.putBoolean(ConstantsIntentExtra.SHOW_RELATED_ITEMS, true);
+                    bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, product.getBrand() + " " + product.getName());
+                    if (title != null) {
                         bundle.putString(ProductDetailsFragment.PRODUCT_CATEGORY, title);
-                    mActivity.onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle,
-                            FragmentController.ADD_TO_BACK_STACK);
+                    }
+                    mActivity.onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
                 }
 
             }

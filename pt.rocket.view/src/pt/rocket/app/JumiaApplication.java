@@ -144,12 +144,6 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     
     public int lastPaymentSelected = -1;
     
-    
-    /**
-     * Related Items Variables
-     */
-    public boolean showRelatedItemsGlobal = false;
-
     public ArrayList<CountryObject> countriesAvailable = null;
     
     /**
@@ -731,12 +725,7 @@ public class JumiaApplication extends Application implements ExceptionCallback {
         cleanCategoriesState();
         getCustomerUtils().clearCredentials();
     }
-    
-    public void cleanRelatedItemsVariables(){
-        showRelatedItemsGlobal = false;
-    }
 
-    
     private static ArrayList<TeaserCampaign> sTeaserCampaigns;
     
     /**
