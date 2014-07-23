@@ -4,9 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/margin_huge"
+    android:orientation="vertical"
     android:paddingLeft="@dimen/margin_mid"
-    android:paddingRight="@dimen/margin_mid"
-    android:orientation="vertical" >
+    android:paddingRight="@dimen/margin_mid" >
 
     <!-- TOGGLE -->
 
@@ -31,13 +31,13 @@
         android:id="@+id/checkout_login_form_main"
         android:layout_width="@dimen/inner_container_width"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_marginBottom="@dimen/margin_huge"
         android:layout_marginLeft="@dimen/margin_mid"
         android:layout_marginRight="@dimen/margin_mid"
+        android:gravity="center"
         android:orientation="vertical"
-        android:visibility="visible"
-        android:layout_gravity="center"
-        android:gravity="center" >
+        android:visibility="visible" >
 
         <!-- FORM -->
 
@@ -55,8 +55,8 @@
         <org.holoeverywhere.widget.Button
             android:id="@+id/checkout_login_form_button_enter"
             style="@style/button_orange_style"
-            android:contentDescription="@string/login_button_description"
             android:layout_below="@id/checkout_login_form_container"
+            android:contentDescription="@string/login_button_description"
             android:text="@string/login_label" />
 
         <!-- FORGOT -->
@@ -65,11 +65,11 @@
             android:id="@+id/checkout_login_form_button_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/checkout_login_form_button_enter"
             android:layout_marginTop="@dimen/margin_large"
             android:gravity="center"
-            android:layout_below="@id/checkout_login_form_button_enter"
             android:text="@string/fgt_pass"
-            android:textColor="@color/blue_basic"
+            android:textColor="@drawable/selector_link_blue"
             android:textSize="@dimen/text_small" />
 
         <!-- DIVIDER -->

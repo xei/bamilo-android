@@ -155,7 +155,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
     private TextView mVariantSpecPrice;
     private boolean mHideVariationSelection;
     private TextView mVarianceText;
-    private ViewGroup mProductBasicInfoContainer;
     private ImageView imageIsFavourite;
     private ImageView imageShare;
 
@@ -342,6 +341,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
             viewPagerTips.setCurrentItem(0);
             ((LinearLayout) mainView.findViewById(R.id.viewpager_tips_btn_indicator)).setVisibility(View.VISIBLE);
             ((LinearLayout) mainView.findViewById(R.id.viewpager_tips_btn_indicator)).setOnClickListener(this);
+            mainView.findViewById(R.id.tips_got_it_img).setOnClickListener(this);
         }
     }
 
@@ -418,9 +418,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
 
         //mDetailsContainer = (ViewGroup) mainView.findViewById(R.id.details_container);
 
-        mProductBasicInfoContainer = (ViewGroup) mainView.findViewById(R.id.product_basicinfo_container);
-        mProductBasicInfoContainer.setOnClickListener(this);
-        
         imageIsFavourite = (ImageView) mainView.findViewById(R.id.image_is_favourite);
         imageIsFavourite.setOnClickListener(this);
 
@@ -1095,7 +1092,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
             AdXTracker.trackCall(getActivity().getApplicationContext(), user_id, JumiaApplication.SHOP_NAME);
             makeCall();
 
-        } else if (id == R.id.viewpager_tips_btn_indicator) {
+        } else if (id == R.id.viewpager_tips_btn_indicator || id == R.id.tips_got_it_img) {
             WizardPreferences.changeState(getBaseActivity(), WizardType.PRODUCT_DETAIL);
             getView().findViewById(R.id.viewpager_tips).setVisibility(View.GONE);
             ((LinearLayout) getView().findViewById(R.id.viewpager_tips_btn_indicator)).setVisibility(View.GONE);

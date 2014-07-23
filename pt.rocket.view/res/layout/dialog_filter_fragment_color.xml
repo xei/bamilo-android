@@ -6,7 +6,7 @@
     android:layout_height="@dimen/dialog_catalog_filter_height"
     android:orientation="vertical" >
 
-     <!-- HEADER -->
+    <!-- HEADER -->
 
     <RelativeLayout
         android:id="@+id/dialog_filter_header_container"
@@ -36,7 +36,7 @@
             android:fontFamily="roboto_regular"
             android:gravity="right|center"
             android:text="@string/clear_uppercase_label"
-            android:textColor="@color/orange_basic"
+            android:textColor="@drawable/selector_clearall"
             android:textSize="@dimen/text_l" />
     </RelativeLayout>
 

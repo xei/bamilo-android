@@ -4,9 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/margin_huge"
+    android:orientation="vertical"
     android:paddingLeft="@dimen/margin_mid"
-    android:paddingRight="@dimen/margin_mid"
-    android:orientation="vertical" >
+    android:paddingRight="@dimen/margin_mid" >
 
     <!-- TOGGLE -->
 

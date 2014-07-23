@@ -135,7 +135,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:text="@string/login_label"
-                    android:textColor="@color/blue_basic"
+                    android:textColor="@drawable/selector_link_blue"
                     android:textSize="@dimen/text_small" />
             </RelativeLayout>
         </LinearLayout>

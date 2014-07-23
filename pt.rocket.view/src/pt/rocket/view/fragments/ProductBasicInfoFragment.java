@@ -7,6 +7,8 @@ import java.util.EnumSet;
 
 import org.holoeverywhere.widget.TextView;
 
+import pt.rocket.constants.ConstantsIntentExtra;
+import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.utils.EventType;
@@ -35,6 +37,8 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
 
     private static final String TAG = LogTagHelper.create(ProductBasicInfoFragment.class);
 
+    private View mProductBasicContainer;
+    
     private TextView mProductName;
 
     private TextView mProductResultPrice;
@@ -49,8 +53,6 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
     private CompleteProduct mCompleteProduct;
 
     private View mainView;
-
-    private OnFragmentActivityInteraction mCallback;
 
     private String unitPrice;
     private String specialPrice;
@@ -141,6 +143,8 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
         Log.i(TAG, "ON CREATE VIEW");
 
         mainView = mInflater.inflate(R.layout.productdetails_basic_info_fragment, viewGroup, false);
+        mProductBasicContainer = mainView.findViewById(R.id.product_basicinfo_frame);
+        mProductBasicContainer.setOnClickListener(this);
         mProductName = (TextView) mainView.findViewById(R.id.product_name);
         mProductResultPrice = (TextView) mainView.findViewById(R.id.product_price_result);
         mProductNormalPrice = (TextView) mainView.findViewById(R.id.product_price_normal);
@@ -198,7 +202,13 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
 
     @Override
     public void onClick(View v) {
-        mCallback.onFragmentSelected(FragmentType.PRODUCT_BASIC_INFO);
+        Bundle bundle = new Bundle();
+        bundle.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProduct.getUrl());
+        BaseActivity activity = ((BaseActivity) getActivity());
+        if (null == activity) {
+            activity = mainActivity;
+        }
+        activity.onSwitchFragment(FragmentType.PRODUCT_DESCRIPTION, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
     private void showContentLoading() {

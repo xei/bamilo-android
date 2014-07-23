@@ -33,11 +33,11 @@
 
         <org.holoeverywhere.widget.TextView
             android:id="@+id/tips_got_it_img"
+            style="@style/button_orange_style"
             android:layout_width="200dp"
             android:layout_height="50dp"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
-            android:background="@color/orange_basic"
             android:gravity="center"
             android:text="@string/got_it"
             android:textColor="#fff"
