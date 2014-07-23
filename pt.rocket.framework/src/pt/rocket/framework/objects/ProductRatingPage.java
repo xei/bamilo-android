@@ -100,6 +100,18 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
 	public int getCommentsCount() {
 		return commentsCount;
 	}
+	
+	/**
+	 * Methos used to copy the info from product rating page
+	 * @author sergiopereira
+	 */
+	public void appendPageRating(ProductRatingPage productRatingPage) {
+		if(productRatingPage != null) {
+			productRating = productRatingPage.getProductRating();
+			commentsCount = productRatingPage.getCommentsCount();
+			reviewComments.addAll(productRatingPage.getReviewComments());
+		}
+	}
 
 	@Override
 	public int describeContents() {

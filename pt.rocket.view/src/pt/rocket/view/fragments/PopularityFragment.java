@@ -34,6 +34,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -69,6 +70,12 @@ public class PopularityFragment extends BaseFragment {
     
     private Fragment mWriteReviewFragment;
 
+    private String mSavedUrl;
+
+    private int mSavedPageNumber;
+
+    private ProductRatingPage mSavedProductRatingPage;
+
     /**
      * Get instance
      * 
@@ -76,7 +83,6 @@ public class PopularityFragment extends BaseFragment {
      */
     public static PopularityFragment getInstance() {
         sPopularityFragment = new PopularityFragment();
-        sPopularityFragment.pageNumber = 1;
         sPopularityFragment.mProductRatingPage = null;
         return sPopularityFragment;
     }
@@ -92,7 +98,6 @@ public class PopularityFragment extends BaseFragment {
                 R.layout.popularity,
                 R.string.reviews,
                 WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-        this.setRetainInstance(true);
     }
 
     /*
@@ -115,22 +120,18 @@ public class PopularityFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
+        
+        // Load saved state
+        if(savedInstanceState != null) {
+            Log.i(TAG, "ON LOAD SAVED STATE");    
+            mSavedUrl = savedInstanceState.getString("url");
+            mSavedPageNumber = savedInstanceState.getInt("page", 1);
+            mSavedProductRatingPage = savedInstanceState.getParcelable("rate");
+            //Log.i(TAG, "ON LOAD SAVED STATE: " + mSavedUrl + " " + mSavedPageNumber);
+        }
+        
     }
 
-//    /*
-//     * (non-Javadoc)
-//     * 
-//     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-//     * android.view.ViewGroup, android.os.Bundle)
-//     */
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//        super.onCreateView(inflater, container, savedInstanceState);
-//        Log.i(TAG, "ON CREATE VIEW");
-//        View view = inflater.inflate(R.layout.popularity, null, false);
-//        return view;
-//    }
-//
     /*
      * (non-Javadoc)
      * 
@@ -146,13 +147,15 @@ public class PopularityFragment extends BaseFragment {
         if (selectedProduct == null) {
             Log.e(TAG, "NO CURRENT PRODUCT - SWITCHING TO HOME");
             restartAllFragments();
-            // getActivity().finish();
             return;
         }
-        pageNumber = 1;
         
-        triggerReviews(selectedProduct.getUrl(), pageNumber);
-        
+        // Valdiate saved state
+        if(!TextUtils.isEmpty(mSavedUrl) && !TextUtils.isEmpty(selectedProduct.getUrl()) && selectedProduct.getUrl().equals(mSavedUrl)) {
+            pageNumber = mSavedPageNumber;
+            mProductRatingPage = mSavedProductRatingPage;
+        }
+        // Set content
         setAppContentLayout();
         
         if (BaseActivity.isTabletInLandscape(getBaseActivity())) {
@@ -170,7 +173,23 @@ public class PopularityFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see android.support.v4.app.Fragment#onSaveInstanceState(android.os.Bundle)
+     */
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.i(TAG, "ON SAVED STATE: " + selectedProduct.getUrl() + " " + pageNumber);
+        // Validate the current product
+        if(selectedProduct != null && !TextUtils.isEmpty(selectedProduct.getUrl())) {
+            // Save the url, page number and rating
+            outState.putString("url", selectedProduct.getUrl());
+            outState.putInt("page", pageNumber);
+            outState.putParcelable("rate", mProductRatingPage);
+        }
     }
 
     /*
@@ -204,7 +223,7 @@ public class PopularityFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.i(TAG, "ON DESTROY");
+        Log.i(TAG, "ON DESTROY VIEW");
     }
     
     /**
@@ -213,9 +232,11 @@ public class PopularityFragment extends BaseFragment {
     private void setAppContentLayout() {
         setViewContent();
         setPopularity();
-        if (mProductRatingPage != null) {
-            displayReviews();
-        }
+        
+        // Validate current rating page 
+        if (mProductRatingPage != null) displayReviews(mProductRatingPage);
+        else triggerReviews(selectedProduct.getUrl(), pageNumber);
+        
         if (!BaseActivity.isTabletInLandscape(getBaseActivity())) {
             setCommentListener();    
         }
@@ -335,12 +356,22 @@ public class PopularityFragment extends BaseFragment {
     
 
     protected boolean onSuccessEvent(Bundle bundle) {
-        if(!isVisible()){
+        
+        // Validate fragment visibility
+        if (isOnStoppingProcess) {
+            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
-        mProductRatingPage =  bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);;
+        
+        ProductRatingPage productRatingPage = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+        
+        // Valdiate current rating page
+        if(mProductRatingPage == null) mProductRatingPage = productRatingPage;
+        // Append the new page to the current
+        else mProductRatingPage.appendPageRating(productRatingPage);
+            
         showFragmentContentContainer();
-        displayReviews();
+        displayReviews(productRatingPage);
         return true;
     }
     
@@ -357,8 +388,8 @@ public class PopularityFragment extends BaseFragment {
     }
     
     
-    private void displayReviews() {
-        ArrayList<ProductReviewComment> reviews = mProductRatingPage.getReviewComments();
+    private void displayReviews(ProductRatingPage productRatingPage) {
+        ArrayList<ProductReviewComment> reviews = productRatingPage.getReviewComments();
         LinearLayout reviewsLin = (LinearLayout) getView().findViewById(R.id.linear_reviews);
         if(pageNumber == 1){
             try {
@@ -369,13 +400,12 @@ public class PopularityFragment extends BaseFragment {
             
         }
         // Log.i("REVIEW COUNT", " IS " + review.size());
-        if (mProductRatingPage.getCommentsCount() >= 0) {
+        if (productRatingPage.getCommentsCount() >= 0) {
             TextView reviewsPop = (TextView) getView().findViewById(R.id.reviews);
-            reviewsPop.setText("" + mProductRatingPage.getCommentsCount());
+            reviewsPop.setText("" + productRatingPage.getCommentsCount());
         }
         for (final ProductReviewComment review : reviews) {
-            final View theInflatedView = inflater.inflate(R.layout.popularityreview, reviewsLin,
-                    false);
+            final View theInflatedView = inflater.inflate(R.layout.popularityreview, reviewsLin, false);
 
             final TextView userName = (TextView) theInflatedView.findViewById(R.id.user_review);
             final TextView userDate = (TextView) theInflatedView.findViewById(R.id.date_review);
@@ -445,9 +475,13 @@ public class PopularityFragment extends BaseFragment {
         View loadingLayout = getView().findViewById(R.id.loadmore);
         loadingLayout.setVisibility(View.GONE);
         loadingLayout.refreshDrawableState();
-        if (reviews.size() < MAX_REVIEW_COUNT) {
+        
+        // Validate if the current request size is < MAX_REVIEW_COUNT
+        // Or from saved values the current size == comments max count
+        if (reviews.size() < MAX_REVIEW_COUNT || (reviews.size() > MAX_REVIEW_COUNT && reviews.size() == mProductRatingPage.getCommentsCount())) {
             isLoadingMore = true;
         }
+
     }
     
     /**
@@ -458,7 +492,9 @@ public class PopularityFragment extends BaseFragment {
         Bundle bundle = new Bundle();
         bundle.putString(GetProductReviewsHelper.PRODUCT_URL, url);
         bundle.putInt(GetProductReviewsHelper.PAGE_NUMBER, pageNumber);
-        triggerContentEventWithNoLoading(new GetProductReviewsHelper(), bundle, mCallBack);
+        // Show laoding layout for first time
+        if(pageNumber == 1) triggerContentEvent(new GetProductReviewsHelper(), bundle, mCallBack);
+        else triggerContentEventWithNoLoading(new GetProductReviewsHelper(), bundle, mCallBack);
     }
     
     /**
