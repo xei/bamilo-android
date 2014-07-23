@@ -218,30 +218,19 @@ public class CategoriesContainerFragment extends BaseFragment {
         super.onResume();
         Log.i(TAG, "ON RESUME");
         if(JumiaApplication.currentCategories != null && getView() != null){
-//            Log.i(TAG, "ON currentCategories != null");
-            if (BaseActivity.isTabletInLandscape(getBaseActivity())) {
-//                Log.i(TAG, "ON createFragmentsForLandscape != null");
-                createFragmentsForLandscape();
-            } else { 
-//                Log.i(TAG, "ON createFragment != null");
-                createFragment();
-            }
+            // Validate the current layout for phone or tablet
+            if(getView().findViewById(R.id.categories_child_fragments_container) != null) createFragmentsForLandscape();
+            else createFragment();
             
         } else if(getView() != null) {
             mBeginRequestMillis = System.currentTimeMillis();
-//            Log.i(TAG, "ON trigger(categoryUrl); "+categoryUrl);
-            
             // Validate the received data
-            if(mDeepLinkCategoryId != null)
-                triggerSearchCategory(mDeepLinkCategoryId);
-            else 
-                trigger(categoryUrl);
+            if(mDeepLinkCategoryId != null) triggerSearchCategory(mDeepLinkCategoryId);
+            else trigger(categoryUrl);
             
         } else {
-//            Log.i(TAG, "ON tonBackPressed");
             getBaseActivity().onBackPressed();
         }
-            
     }
 
     /*
@@ -355,13 +344,12 @@ public class CategoriesContainerFragment extends BaseFragment {
 
     protected boolean onSuccessEvent(Bundle bundle) {
         Log.i(TAG, "onSuccessEvent");
-        if(getBaseActivity() != null){
-            getBaseActivity().handleSuccessEvent(bundle);
-        } else {
-            return true;
-        }
         
         // Validate if fragment is on the screen
+        if(isOnStoppingProcess){
+            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return true;
+        }
     
         if(!bundle.getBoolean(USED_CACHED_CATEGORIES, false)){
             AnalyticsGoogle.get().trackLoadTiming(R.string.gcategories, mBeginRequestMillis);
@@ -371,14 +359,9 @@ public class CategoriesContainerFragment extends BaseFragment {
         JumiaApplication.currentCategories = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
         
         if(JumiaApplication.currentCategories != null && getView() != null){
-//            Log.d(TAG, "code1 received categories size = " + JumiaApplication.INSTANCE.currentCategories.size());
-            if (BaseActivity.isTabletInLandscape(getBaseActivity())) {
-//                Log.d(TAG, "code1 going to create fragment createFragmentsForLandscape");
-                createFragmentsForLandscape();
-            } else {
-//                Log.d(TAG, "code1 going to create fragment");
-                createFragment();
-            }
+            // Validate the current layout for phone or tablet
+            if(getView().findViewById(R.id.categories_child_fragments_container) != null) createFragmentsForLandscape();
+            else createFragment();
         }
   
         return true;
@@ -686,9 +669,6 @@ public class CategoriesContainerFragment extends BaseFragment {
     private void trigger(String categoryUrl){
         Bundle bundle = new Bundle();
         bundle.putString(GetCategoriesHelper.CATEGORY_URL, categoryUrl);
-        
-        // TODO : Validate this
-        //JumiaApplication.currentCategories = CategoriesTableHelper.getCategories();
         
         if(JumiaApplication.currentCategories != null && JumiaApplication.currentCategories.size() > 0){
             bundle.putBoolean(USED_CACHED_CATEGORIES, true);
