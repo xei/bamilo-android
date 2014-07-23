@@ -70,7 +70,7 @@ public class SessionRegisterFragment extends BaseFragment {
 
     private Button registerButton;
 
-    private View loginRedirect;
+    private  TextView loginText;
 
     private CheckBox checkTerms;
 
@@ -294,7 +294,7 @@ public class SessionRegisterFragment extends BaseFragment {
      */
     private void getFormComponents() {
         registerButton = (Button) getView().findViewById(R.id.register_button_submit);
-        loginRedirect = getView().findViewById(R.id.orLoginContainer);
+        loginText = (TextView) getView().findViewById(R.id.loginText);
         // checkTerms = (CheckBox) getView().findViewById(R.id.checkTerms);
         registerRequiredText = (TextView) getView().findViewById(R.id.register_required_text);
 
@@ -350,20 +350,15 @@ public class SessionRegisterFragment extends BaseFragment {
      * Sets the listener to the login button
      */
     private void setLoginListener() {
-
-        loginRedirect.setOnClickListener(new OnClickListener() {
-
+        loginText.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                int id = v.getId();
-                if (id == R.id.orLoginContainer) {
-                    getActivity().onBackPressed();
-                    // getActivity().setResult( Activity.RESULT_CANCELED);
-                    // getActivity().finish();
-                    // getActivity().overridePendingTransition(R.anim.slide_in_left,
-                    // R.anim.slide_out_right);
-                    Log.d(TAG, "register canceled via login click");
-                }
+                getActivity().onBackPressed();
+                // getActivity().setResult( Activity.RESULT_CANCELED);
+                // getActivity().finish();
+                // getActivity().overridePendingTransition(R.anim.slide_in_left,
+                // R.anim.slide_out_right);
+                Log.d(TAG, "register canceled via login click");
             }
         });
     }
@@ -698,8 +693,7 @@ public class SessionRegisterFragment extends BaseFragment {
         if (eventType == EventType.REGISTER_ACCOUNT_EVENT) {
             TrackerDelegator.trackSignupFailed();
             if (errorCode == ErrorCode.REQUEST_ERROR) {
-                HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle
-                        .getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+                HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
                 // Log.i(TAG, "code1exists : errorMessages : "+errorMessages);
                 List<String> validateMessages = errorMessages.get(RestConstants.JSON_ERROR_TAG);
                 // Log.i(TAG, "code1exists : validateMessages : "+validateMessages);
