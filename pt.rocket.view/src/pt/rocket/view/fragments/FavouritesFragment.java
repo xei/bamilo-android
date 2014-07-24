@@ -57,7 +57,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
     
     public static boolean isOnAddingAllItemsToCart = false;
 
-    private static FavouritesFragment mFavouritesFragment;
+    private static FavouritesFragment sFavouritesFragment;
 
     private FavouritesListAdapter mFavouritesAdapter;
     
@@ -92,8 +92,8 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
      * @return FavouritesFragment
      */
     public static FavouritesFragment getInstance() {
-        mFavouritesFragment = new FavouritesFragment();
-        return mFavouritesFragment;
+        sFavouritesFragment = new FavouritesFragment();
+        return sFavouritesFragment;
     }
     
     /*
@@ -109,16 +109,6 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         // Retain the instance to receive callbacks from add all to cart
         setRetainInstance(true);
     }
-
-//    /*
-//     * (non-Javadoc)
-//     * @see pt.rocket.view.fragments.BaseFragment#onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle)
-//     */
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//        Log.i(TAG, "ON CREATE VIEW");
-//        return inflater.inflate(R.layout.favourites, container, false);
-//    }
     
     /*
      * (non-Javadoc)
@@ -691,15 +681,16 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
      * @author sergiopereira
      */
     private void getNotAddedItems(){
+        Log.i(TAG, "ON GET NOT ADDED ITEMS");
         // Create new array
         ArrayList<Favourite> array = new ArrayList<Favourite>();
         // Add items not added to cart
         for (Integer pos : mItemsNotAddedToCart) array.add(mFavourites.get(pos));
         // Show new items
         mFavourites = array;
-        mFavouritesAdapter.clear();
-        mFavouritesAdapter.addAll(mFavourites);
-
+        mFavouritesGridView.setAdapter(null);
+        mFavouritesAdapter = new FavouritesListAdapter(getBaseActivity(), mFavourites, (OnClickListener) this);
+        mFavouritesGridView.setAdapter(mFavouritesAdapter);
     }
     
     /**
@@ -707,12 +698,13 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
      * @author sergiopereira
      */
     private synchronized void updateLayoutAfterAction() {
+        Log.i(TAG, "ON UPDATE LAYOUT AFTER ACTION");
         // Dismiss
         hideActivityProgress();
         // Update adapter
         mFavouritesAdapter.notifyDataSetChanged();
         // Validate current state
-        if (mFavourites.isEmpty()) showEmpty(); //showFragmentEmpty(R.string.favourite_no_favourites, R.drawable.img_nofavourites);
+        if (mFavourites.isEmpty()) showEmpty();
     }
     
     
