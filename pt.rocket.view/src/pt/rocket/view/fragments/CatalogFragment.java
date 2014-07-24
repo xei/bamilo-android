@@ -63,11 +63,8 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
     private ViewPager mFeaturedProductsViewPager;
     private ViewPager mFeaturedBrandsViewPager;
 
-//    private LayoutInflater mInflater;
-
     // we save each page in a model
     private ArrayList<String> mSortOptions;
-//    private CatalogPageModel[] mCatalogPageModel;
 
     private HashMap<String, Product> mProductsMap;
 
@@ -122,9 +119,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
 
     public static CatalogFragment getInstance() {
         Log.i(TAG, "getInstance");
-        // if (mProductsViewFragment == null) {
         mCatalogFragment = new CatalogFragment();
-        // }
         return mCatalogFragment;
     }
 
@@ -133,7 +128,6 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
         mSortOptions = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.products_picker)));
-//        mCatalogPageModel = new CatalogPageModel[mSortOptions.size()];
 
         mShowListDrawable = getResources().getDrawable(R.drawable.selector_catalog_listview);
         mShowGridDrawable = getResources().getDrawable(R.drawable.selector_catalog_gridview);
@@ -167,7 +161,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.i(TAG, "ON CREATE VIEW");
-//        mInflater = inflater;
+
         View view = inflater.inflate(R.layout.products_frame, container, false);
         mViewPager = (ViewPager) view.findViewById(R.id.viewpager_products_list);
 
@@ -187,8 +181,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         mFilterButton = view.findViewById(R.id.products_list_filter_button);
         // Set the button state if is selected or not
         setFilterButtonState();
-        // Initialize the catalog model with fresh data
-//        initPageModel();
+        
         return view;
     }
 
@@ -199,27 +192,10 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
 
         getBaseActivity().setTitle(title);
 
-        //final ViewPager viewPager = new ViewPager(mainActivity);
-        
-//        Bundle params = new Bundle();        
-//        params.putString(ConstantsIntentExtra.CONTENT_TITLE, title);
-//        params.putString(ConstantsIntentExtra.CONTENT_URL, productsURL);
-//        params.putString(ConstantsIntentExtra.SEARCH_QUERY, searchQuery);            
-//        params.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, navigationSource);
-//        params.putString(ConstantsIntentExtra.NAVIGATION_PATH, navigationPath);
-//        params.putParcelable(CatalogPageFragment.PARAM_FILTERS, mCatalogFilterValues);
-//        
-//        viewPager.setAdapter(new CatalogPagerAdapter(getChildFragmentManager(), viewPager.getId(), mSortOptions, params));
-        //mPagerTabStrip.setViewPager(viewPager);        
-
-        // getBaseActivity().showLoading(false);
-
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                // getBaseActivity().showLoading(false);
-
                 // http://www.jumia.co.ke:80/mobapi/womens-casual-shoes/
 
                 Log.i(TAG, "DATA :  " + productsURL + " " + searchQuery + " " + navigationSource
@@ -260,9 +236,6 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
                         }                        
                         adapter.notifyDataSetChanged();
                     }
-                    
-//                    mCatalogPageModel[0].setTotalItemLable();
-//                    mCatalogPageModel[0].notifyContentDataSetChanged();
                 }
 
                 mViewPager.setAdapter(mCatalogPagerAdapter);
@@ -275,9 +248,6 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
 
                 // Show tips
                 isToShowWizard();
-
-//                getBaseActivity().setProcessShow(true);
-//                getBaseActivity().showContentContainer();
             }
         }, 300);
 
@@ -679,17 +649,8 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         setFilterButtonState(); // size
         // Error flag
         wasReceivedErrorEvent = false;
-
-        // TODO: Validate this
-        // Send new request with new filters
-        // Update the current view pages
-        // getCurrentCatalogPageModel(mSelectedPageIndex).setVariables(productsURL, searchQuery,
-        // navigationPath, title, navigationSource, mCatalogFilterValues, showList, totalUpdates);
-        // getCurrentCatalogPageModel(mSelectedPageIndex - 1).setVariables(productsURL, searchQuery,
-        // navigationPath, title, navigationSource, mCatalogFilterValues, showList, totalUpdates);
-        // getCurrentCatalogPageModel(mSelectedPageIndex + 1).setVariables(productsURL, searchQuery,
-        // navigationPath, title, navigationSource, mCatalogFilterValues, showList, totalUpdates);
-//        getBaseActivity().showLoading(false);
+        
+        mProductsMap = new HashMap<String, Product>();
         
         Bundle params = new Bundle();        
         params.putString(ConstantsIntentExtra.CONTENT_TITLE, title);
@@ -889,12 +850,6 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
                 public void run() {
                     // Update the current view page with the current list of products rendered on a
                     // different layout without calling a new request
-                    // getCurrentCatalogPageModel(mSelectedPageIndex).switchLayout(showList,
-                    // totalUpdates);
-                    // getCurrentCatalogPageModel(mSelectedPageIndex - 1).switchLayout(showList,
-                    // totalUpdates);
-                    // getCurrentCatalogPageModel(mSelectedPageIndex + 1).switchLayout(showList,
-                    // totalUpdates);
                     Bundle params = new Bundle();        
                     params.putString(ConstantsIntentExtra.CONTENT_TITLE, title);
                     params.putString(ConstantsIntentExtra.CONTENT_URL, productsURL);
@@ -909,115 +864,6 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
             }, 300);
         }
     }
-
-    /*
-     * ######### LAYOUT #########
-     */
-
-//    private void initPageModel() {
-//        for (int i = 0; i < mCatalogPageModel.length; i++) {
-//            mCatalogPageModel[i] = new CatalogPageModel(i, getBaseActivity(), this);
-//            mCatalogPageModel[i].setTitle(mSortOptions.get(i));
-//        }
-//    }
-
-    /**
-     * ######## PAGER ADAPTER ########
-     */
-//    private class CatalogPagerAdaper extends PagerAdapter {
-//
-//        @Override
-//        public int getItemPosition(Object object) {
-//            return POSITION_NONE;
-//        }
-//
-//        @Override
-//        public void destroyItem(ViewGroup container, int position, Object object) {
-//            container.removeView((View) object);
-//        }
-//
-//        @Override
-//        public int getCount() {
-//            return (mCatalogPageModel != null) ? mCatalogPageModel.length : 0;
-//
-//        }
-//
-//        @Override
-//        public CharSequence getPageTitle(int position) {
-//            return getCurrentCatalogPageModel(position).getTitle().toUpperCase();
-//        }
-//
-//        private CatalogPageModel getCurrentCatalogPageModel(int position) {
-//            return mCatalogPageModel[position];
-//        }
-//
-//        @Override
-//        public Object instantiateItem(ViewGroup container, int position) {
-//
-//            Log.d(TAG, " INSTANCIATE PAGE #" + position);
-//
-//            // final CatalogPageModel currentPage = getCurrentCatalogPageModel(position);
-//            CatalogPageModel currentPage = getCurrentCatalogPageModel(position);
-//
-//            boolean isTabletInLandscape = BaseActivity.isTabletInLandscape(getBaseActivity());
-//
-//            if (currentPage.getRelativeLayout() == null && !currentPage.hasContent()) {
-//
-//                // new Thread(new Runnable() {
-//                // @Override
-//                // public void run() {
-//                // Log.i(TAG, "instantiateItem");
-//
-//                // boolean isTabletInLandscape =
-//                // BaseActivity.isTabletInLandscape(getBaseActivity());
-//
-//                // if (currentPage.getRelativeLayout() == null || isTabletInLandscape !=
-//                // currentPage.isLandScape()) {
-//
-//                RelativeLayout mRelativeLayout = (RelativeLayout) mInflater.inflate(
-//                        R.layout.products, null);
-//                currentPage.setRelativeLayout(mRelativeLayout);
-//                currentPage.setTextViewSpnf((org.holoeverywhere.widget.TextView) mRelativeLayout
-//                        .findViewById(R.id.search_products_not_found));
-//                currentPage.setButtonRavb((Button) mRelativeLayout
-//                        .findViewById(R.id.retry_alert_view_button));
-//                currentPage.setRelativeLayoutPc((RelativeLayout) mRelativeLayout
-//                        .findViewById(R.id.products_content));
-//                currentPage.setLinearLayoutLm((LinearLayout) mRelativeLayout
-//                        .findViewById(R.id.loadmore));
-//
-//                currentPage.setGridView(
-//                        (GridView) mRelativeLayout.findViewById(R.id.middle_productslist_list),
-//                        isTabletInLandscape);
-//
-//                LinearLayout loadingViewPager = (LinearLayout) mRelativeLayout
-//                        .findViewById(R.id.loading_view_pager);
-//                currentPage.setLinearLayoutLb(loadingViewPager);
-//                currentPage.setLoadingBarView((LoadingBarView) loadingViewPager
-//                        .findViewById(R.id.loading_bar_view));
-//                // initialize view, setting variables to adjust the layout and filtering details
-//                currentPage.setVariables(productsURL, searchQuery, navigationPath, title,
-//                        navigationSource, mCatalogFilterValues, showList, mSwitchMD5);
-//                // }
-//                // }).run();
-//
-//            } else {
-//                currentPage.setGridView(
-//                        (GridView) currentPage.getRelativeLayout().findViewById(
-//                                R.id.middle_productslist_list), isTabletInLandscape);
-//                currentPage.setVariables(productsURL, searchQuery, navigationPath, title,
-//                        navigationSource, mCatalogFilterValues, showList, mSwitchMD5);
-//            }
-//
-//            container.addView(currentPage.getRelativeLayout());
-//            return currentPage.getRelativeLayout();
-//        }
-//
-//        @Override
-//        public boolean isViewFromObject(View view, Object obj) {
-//            return view == (View) obj;
-//        }
-//    }
 
     public boolean getShowList() {
         return showList;

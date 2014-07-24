@@ -15,8 +15,6 @@ import pt.rocket.view.fragments.CatalogFragment;
 import android.content.Context;
 import android.database.DataSetObserver;
 import android.graphics.Paint;
-import android.graphics.drawable.Drawable;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -61,16 +59,9 @@ public class ProductsListAdapter extends BaseAdapter {
     private LayoutInflater inflater;
 
     private Context context;
-
-    private Drawable isNewDrawable;
     private int isNewResource;
 
-    private Drawable isFavouriteDrawable;
-    private Drawable isNotFavouriteDrawable;
-
     private boolean showList;
-
-    private int numColumns = 1;
 
     private CatalogFragment parentCatalog;
     
@@ -103,16 +94,12 @@ public class ProductsListAdapter extends BaseAdapter {
         this.context = context.getApplicationContext();
         this.products = new ArrayList<String>();
         this.showList = showList;
-        this.numColumns = numColumns;
 
         this.inflater = LayoutInflater.from(context);
         reviewLabel = context.getString(R.string.reviews);
         
         // Get is new image for respective country
         this.isNewResource = !isFrench ? R.drawable.selector_is_new_en : R.drawable.selector_is_new_fr;
-        
-        this.isFavouriteDrawable = context.getResources().getDrawable(R.drawable.btn_fav_selected);
-        this.isNotFavouriteDrawable = context.getResources().getDrawable(R.drawable.btn_fav);
         
         this.parentCatalog = parent;
     }
@@ -170,37 +157,19 @@ public class ProductsListAdapter extends BaseAdapter {
             itemView = inflater.inflate(layoutId, parent, false);
         }
 
-//        // when showing grid add margins to container on the first and last columns
-//        if (!showList) {
-//            LinearLayout container = (LinearLayout) itemView.findViewById(R.id.container);
-//            // guarantee this layout has this view
-//            if (container != null) {
-//                RelativeLayout.LayoutParams containerLayoutParams = (RelativeLayout.LayoutParams) container.getLayoutParams();
-//                int column = position % numColumns;
-//                if (column == 0) {
-//                    int margin = context.getResources().getDimensionPixelOffset(R.dimen.margin_mid);
-//                    containerLayoutParams.leftMargin = margin;
-//                } else if (column == (numColumns - 1)) {
-//                    int margin = context.getResources().getDimensionPixelOffset(R.dimen.margin_mid);
-//                    containerLayoutParams.rightMargin = margin;
-//                }
-//            }
-//        }
-
         if ((Item) itemView.getTag() == null) {
             prodItem = new Item();
             prodItem.image = (ImageView) itemView.findViewById(R.id.image_view);
-            //prodItem.image.setDefaultImageResId(R.drawable.no_image_small);
             prodItem.name = (TextView) itemView.findViewById(R.id.item_name);
             if (showList) prodItem.rating = (RatingBar) itemView.findViewById(R.id.item_rating);
             
             prodItem.price = (TextView) itemView.findViewById(R.id.item_regprice);
             prodItem.price.setPaintFlags(prodItem.price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            //prodItem.price.setTextColor(context.getResources().getColor(R.color.grey_light));
             
             prodItem.discount = (TextView) itemView.findViewById(R.id.item_discount);
             prodItem.discountPercentage = (TextView) itemView.findViewById(R.id.discount_percentage);
             if (showList) prodItem.reviews = (TextView) itemView.findViewById(R.id.item_reviews);
+            
             prodItem.brand = (TextView) itemView.findViewById(R.id.item_brand);
             prodItem.isNew= (ImageView) itemView.findViewById(R.id.image_is_new);
             prodItem.isNew.setBackgroundResource(isNewResource);
@@ -210,39 +179,17 @@ public class ProductsListAdapter extends BaseAdapter {
             prodItem = (Item) itemView.getTag();
         }
         
-//        String imageURL = "";
+
         final Product product = parentCatalog.getProduct(products.get(position));
-//        if (product.getImages().size() > 0) {
-//            imageURL = product.getImages(). get(0).getUrl();
-//        }
         RocketImageLoader.instance.loadImage(product.getFirstImageURL(), prodItem.image,  null, R.drawable.no_image_small, CatalogFragment.requestTag);
-                
-//        prodItem.image.setImageUrl(product.getFirstImageURL(), RocketImageLoader.instance.getImageLoader());
 
         // Set is new image
-//        if(product.getAttributes().isNew()) {            
-//            prodItem.isNew.setVisibility(View.VISIBLE);
-//        } else {
-//            prodItem.isNew.setVisibility(View.GONE);
-//        }
         prodItem.isNew.setSelected(product.getAttributes().isNew());
         
-//        if (FavouriteTableHelper.verifyIfFavourite(product.getSKU())) {
-//            product.getAttributes().setFavourite(true);
-//        } else {
-//            product.getAttributes().setFavourite(false);
-//        }
-        
         // Set is favourite image
-//        if (product.getAttributes().isFavourite()) {
-//            prodItem.isFavourite.setImageDrawable(isFavouriteDrawable);
-//        } else {
-//            prodItem.isFavourite.setImageDrawable(isNotFavouriteDrawable);
-//        }
         prodItem.isFavourite.setSelected(product.getAttributes().isFavourite());
         
         prodItem.isFavourite.setOnClickListener(new OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 Product favProduct = parentCatalog.getProduct(products.get(position));
@@ -250,12 +197,10 @@ public class ProductsListAdapter extends BaseAdapter {
                 if (!isFavourite) {
                     FavouriteTableHelper.insertPartialFavouriteProduct(favProduct);
                     favProduct.getAttributes().setFavourite(true);
-                    //prodItem.isFavourite.setImageDrawable(isFavouriteDrawable);
                     Toast.makeText(context, context.getString(R.string.products_added_favourite), Toast.LENGTH_SHORT).show();
                 } else {
                     FavouriteTableHelper.removeFavouriteProduct(favProduct.getSKU());
                     favProduct.getAttributes().setFavourite(false);
-                    //prodItem.isFavourite.setImageDrawable(isNotFavouriteDrawable);
                     Toast.makeText(context, context.getString(R.string.products_removed_favourite), Toast.LENGTH_SHORT).show();
                 }
                 parentCatalog.invalidatePages();
@@ -272,37 +217,12 @@ public class ProductsListAdapter extends BaseAdapter {
             if (product.getRating() != null && product.getRating() > 0) {
                 prodItem.rating.setRating(product.getRating().floatValue());
                 prodItem.rating.setVisibility(View.VISIBLE);
-//                if (product.getReviews() != null) {
-                    prodItem.reviews.setText(product.getReviews() + " " + reviewLabel);
-//                    prodItem.reviews.setVisibility(View.VISIBLE);
-//                } else {
-//                    prodItem.reviews.setText("");
-//                    prodItem.reviews.setVisibility(View.INVISIBLE);
-//                }
+                prodItem.reviews.setText(product.getReviews() + " " + reviewLabel);
             } else {
                 prodItem.rating.setVisibility(View.INVISIBLE);
-//                prodItem.reviews.setVisibility(View.INVISIBLE);
                 prodItem.reviews.setText("");
             }
         }
-
-//        if (null != product.getSpecialPrice() && !product.getSpecialPrice().equals(product.getPrice())) {
-//            prodItem.discount.setText(product.getSpecialPrice());
-//            prodItem.discountPercentage.setText("-" + product.getMaxSavingPercentage().intValue() + "%");
-//            prodItem.discount.setVisibility(View.VISIBLE);
-//            prodItem.discountPercentage.setVisibility(View.VISIBLE);
-//            prodItem.price.setPaintFlags(prodItem.price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-//            prodItem.price.setSelected(true);
-//            prodItem.price.setTextColor(context.getResources().getColor(R.color.grey_light));
-//            prodItem.price.setTextAppearance(context.getApplicationContext(), R.style.text_normal);
-//        } else {
-//            prodItem.discount.setVisibility(View.GONE);
-//            prodItem.discountPercentage.setVisibility(View.GONE);
-//            prodItem.price.setPaintFlags(prodItem.price.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-//            prodItem.price.setTextAppearance(context.getApplicationContext(), R.style.text_bold);
-//            prodItem.price.setTextColor(context.getResources().getColor(R.color.red_basic));
-//        }
-
         
         if (null != product.getSpecialPrice() && !product.getSpecialPrice().equals(product.getPrice())) {
             prodItem.discount.setText(product.getSpecialPrice());
@@ -354,7 +274,5 @@ public class ProductsListAdapter extends BaseAdapter {
             super.unregisterDataSetObserver(observer);    
         }
     }
-
-    
     
 }

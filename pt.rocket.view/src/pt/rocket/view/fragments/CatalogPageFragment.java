@@ -111,7 +111,7 @@ public class CatalogPageFragment extends BaseFragment {
     // Lb - loading_bar
     private LinearLayout linearLayoutLb;
     private LoadingBarView loadingBarView;
-//    private TextView textViewLb;
+
 
     public static CatalogPageFragment newInstance(Bundle bundle) {
         CatalogPageFragment sCatalogPageFragment = new CatalogPageFragment();
@@ -138,7 +138,6 @@ public class CatalogPageFragment extends BaseFragment {
         
         SharedPreferences sharedPrefs = activity.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         isFrench = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_LANG_CODE, "en").contains("fr");
-        
     }
 
     /*
@@ -152,7 +151,6 @@ public class CatalogPageFragment extends BaseFragment {
         Log.i(TAG, "ON CREATE");
 
         parentFragment = (CatalogFragment)getBaseActivity().getSupportFragmentManager().findFragmentByTag(FragmentType.PRODUCT_LIST.toString());        
-//        mSortTitle = parentFragment.getSortTitle(mPageIndex);
         
         Bundle args = getArguments();
         if (null != args) {
@@ -268,13 +266,6 @@ public class CatalogPageFragment extends BaseFragment {
         super.onSaveInstanceState(outState);
     }
     
-//    public void notifyContentDataSetChanged() {
-//        ProductsListAdapter adapter = (ProductsListAdapter) this.gridView.getAdapter();
-//        if (null != adapter) {
-//            adapter.notifyDataSetChanged();
-//        }
-//    }
-    
     /*
      * Get total number of products
      */
@@ -372,9 +363,7 @@ public class CatalogPageFragment extends BaseFragment {
         this.gridView.setOnScrollListener(onScrollListener);
 
         relativeLayoutPc.setVisibility(View.VISIBLE);
-//        textViewSpnf.setVisibility(View.GONE);
-//        linearLayoutLm.setVisibility(View.GONE);
-//        linearLayoutLm.refreshDrawableState();
+        
         hideProductsLoading();
 
         gridView.setAdapter(adapter);
@@ -385,19 +374,8 @@ public class CatalogPageFragment extends BaseFragment {
             gridView.setSelection(mCurrentListPosition);            
         }
         
-        
     }
 
-//    private void switchLayout() {
-//        boolean showList = parentFragment.getShowList();
-//        int switchMD5 = parentFragment.getSwitchMD5();        
-//        
-//        if (this.mSwitchMD5 != switchMD5) {
-//            ProductsListAdapter adapter = (ProductsListAdapter)this.gridView.getAdapter();
-//            
-//        }        
-//    }
-    
     private void updateLocalArguments(Bundle args) {
         updateLocalArguments(args, false);
     }
@@ -449,9 +427,6 @@ public class CatalogPageFragment extends BaseFragment {
     
     private void showCatalogContent() {
         relativeLayoutPc.setVisibility(View.VISIBLE);
-//        textViewSpnf.setVisibility(View.GONE);
-//        linearLayoutLm.setVisibility(View.GONE);
-//        linearLayoutLm.refreshDrawableState();
         hideProductsLoading();        
         if (getView() != null) {
             linearLayoutLb.setVisibility(View.GONE);
@@ -474,8 +449,6 @@ public class CatalogPageFragment extends BaseFragment {
         hideProductsLoading(false);        
         relativeLayoutPc.setVisibility(View.GONE);
         textViewSpnf.setVisibility(View.VISIBLE);
-//        linearLayoutLm.setVisibility(View.GONE);
-//        linearLayoutLm.refreshDrawableState();
         buttonRavb.setVisibility(View.VISIBLE);
         buttonRavb.setOnClickListener(new OnClickListener() {
 
@@ -502,8 +475,7 @@ public class CatalogPageFragment extends BaseFragment {
             
             @Override
             public void run() {
-                linearLayoutLm.setVisibility(View.VISIBLE);
-//                linearLayoutLm.refreshDrawableState();   
+                linearLayoutLm.setVisibility(View.VISIBLE);   
             }
         }, 200);
     }    
@@ -518,7 +490,6 @@ public class CatalogPageFragment extends BaseFragment {
             @Override
             public void run() {
                 linearLayoutLm.setVisibility(View.GONE);
-//                linearLayoutLm.refreshDrawableState();
                 if (hideViewSpnf)
                     textViewSpnf.setVisibility(View.GONE);
             }
@@ -587,12 +558,9 @@ public class CatalogPageFragment extends BaseFragment {
         
         @Override
         public void onScrollStateChanged(AbsListView view, int scrollState) {
-            if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
-                Log.d(TAG, "  ---- > Scroll: Fling");
-                //RocketImageLoader.getInstance().stopProcessingQueue(CatalogFragment.requestTag);
+            if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {                
                 RocketImageLoader.getInstance().stopProcessingQueue(null);
             } else {
-                Log.d(TAG, "  ---- > Scroll: Idle");
                 ProductsListAdapter adapter = (ProductsListAdapter)gridView.getAdapter();
                 adapter.notifyDataSetChanged();
                 RocketImageLoader.getInstance().startProcessingQueue();
@@ -608,14 +576,6 @@ public class CatalogPageFragment extends BaseFragment {
                 if (!mIsLoadingMore && !mReceivedError) {
                     mIsLoadingMore = true;
                     showProductsLoading();        
-//                    new Thread(new Runnable() {
-//                        
-//                        @Override
-//                        public void run() {
-//                            getMoreProducts();
-//                            
-//                        }
-//                    }).start();
                     getMoreProducts();
                 }
             } else {
@@ -630,8 +590,6 @@ public class CatalogPageFragment extends BaseFragment {
 
                 previousFirstVisibleItem = firstVisibleItem;
                 previousEventTime = currTime;
-
-                //Log.d(TAG, "  ---- > Speed: " + speed + " elements/second");
 
                 if (speed < 15) {
                     RocketImageLoader.getInstance().startProcessingQueue();
@@ -660,10 +618,6 @@ public class CatalogPageFragment extends BaseFragment {
     };
     
     private void onSuccessEvent(Bundle bundle) {
-
-        // TODO : Validate
-        // mActivity.handleSuccessEvent(bundle);
-
         Log.d(TAG, "ON SUCCESS EVENT");
 
         // Get Products Event
@@ -681,13 +635,19 @@ public class CatalogPageFragment extends BaseFragment {
         // Validate products
         if (productsPage != null && productsPage.getTotalProducts() > 0) {
             Log.d(TAG, "onSuccessEvent: products on page = " + productsPage.getProducts().size() + " total products = " + productsPage.getTotalProducts());
-
-            // TODO: Improve this behavior
-            if (mPageIndex == 1 && mPageNumber == 1) {
-                RelatedItemsTableHelper.insertRelatedItemsAndClear(getBaseActivity(), productsPage.getProductsList());
-            } else if (mPageIndex == 1 && mPageNumber == 2) {
-                RelatedItemsTableHelper.insertRelatedItems(getBaseActivity(), productsPage.getProductsList());
-            }
+            
+            new Handler().postDelayed(new Runnable() {
+                
+                @Override
+                public void run() {
+                 // TODO: Improve this behavior
+                    if (mPageIndex == 1 && mPageNumber == 1) {
+                        RelatedItemsTableHelper.insertRelatedItemsAndClear(getBaseActivity(), productsPage.getProductsList());
+                    } else if (mPageIndex == 1 && mPageNumber == 2) {
+                        RelatedItemsTableHelper.insertRelatedItems(getBaseActivity(), productsPage.getProductsList());
+                    }
+                }
+            }, 250);
 
             parentFragment.addProductsCollection(productsPage.getProductsMap());
 
