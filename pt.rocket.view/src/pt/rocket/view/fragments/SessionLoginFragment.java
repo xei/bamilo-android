@@ -105,9 +105,6 @@ public class SessionLoginFragment extends BaseFragment {
     
     private boolean cameFromRegister = false;
     
-    // Reinforce locale to avoid RTL on UG
-    private Locale mLocale = null;
-    
     /**
      * 
      * @return
@@ -169,28 +166,6 @@ public class SessionLoginFragment extends BaseFragment {
         uiHelper.onCreate(savedInstanceState);
     }
 
-//    /*
-//     * (non-Javadoc)
-//     * 
-//     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-//     * android.view.ViewGroup, android.os.Bundle)
-//     */
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState) {
-//        super.onCreateView(inflater, viewGroup, savedInstanceState);
-//        Log.i(TAG, "ON CREATE VIEW");
-//        View view = inflater.inflate(R.layout.login, viewGroup, false);
-//        signinButton = view.findViewById(R.id.middle_login_button_signin);
-//        forgetPass = view.findViewById(R.id.middle_login_link_fgtpassword);
-//        register = view.findViewById(R.id.middle_login_link_register);
-//        container = (ViewGroup) view.findViewById(R.id.form_container);
-//        LoginButton authButton = (LoginButton) view.findViewById(R.id.authButton);
-//        authButton.setFragment(this);
-//        authButton.setLoginBehavior(SessionLoginBehavior.SUPPRESS_SSO);
-//        authButton.setReadPermissions(Arrays.asList("email"));
-//        return view;
-//    }
-
     /*
      * (non-Javadoc)
      * 
@@ -235,9 +210,12 @@ public class SessionLoginFragment extends BaseFragment {
         String appId = getActivity().getResources().getString(R.string.app_id);
         uiHelper.setJumiaAppId(appId);
         uiHelper.onResume();
-        mLocale = Locale.getDefault();
-        Locale.setDefault(Locale.US);
         
+        /**
+         * Force input form align to left
+         * Restore is performed on BaseFragment.onPause()
+         */
+        forceInputAlignToLeft();
         
         // Valdiate form
         if(JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials()) {
@@ -354,11 +332,6 @@ public class SessionLoginFragment extends BaseFragment {
         Log.i(TAG, "ON PAUSE");
         ((BaseActivity) getActivity()).hideKeyboard();
         uiHelper.onPause();
-        
-        //restore locale
-        if(mLocale != null){
-            Locale.setDefault(mLocale);
-        }
     }
 
     /*

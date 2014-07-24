@@ -266,6 +266,11 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         uiHelper.setJumiaAppId(appId);
         uiHelper.onResume();
         
+        /**
+         * Force input form align to left.
+         * The restore is performed on the step BaseFragment.onPause().
+         */
+        forceInputAlignToLeft();
     }
 
     /*

@@ -46,7 +46,7 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
 
     private static final String TAG = LogTagHelper.create(CheckoutSummaryFragment.class);
 
-    private static CheckoutSummaryFragment mOrderSummaryFragment;
+    private static CheckoutSummaryFragment sOrderSummaryFragment;
 
     private ViewGroup mProductList;
 
@@ -96,13 +96,13 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
      */
     public static CheckoutSummaryFragment getInstance(int checkoutStep, OrderSummary orderSummary) {
         //if (mOrderSummaryFragment == null) 
-        mOrderSummaryFragment = new CheckoutSummaryFragment();
+        sOrderSummaryFragment = new CheckoutSummaryFragment();
         // Save order summary
-        mOrderSummaryFragment.mCheckoutStep = checkoutStep;
+        sOrderSummaryFragment.mCheckoutStep = checkoutStep;
         // Save order summary
-        mOrderSummaryFragment.mOrderSummary = orderSummary;
+        sOrderSummaryFragment.mOrderSummary = orderSummary;
         // return instance
-        return mOrderSummaryFragment;
+        return sOrderSummaryFragment;
     }
 
     /**
@@ -133,19 +133,6 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
     }
-
-//    /*
-//     * (non-Javadoc)
-//     * 
-//     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-//     * android.view.ViewGroup, android.os.Bundle)
-//     */
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState) {
-//        super.onCreateView(inflater, viewGroup, savedInstanceState);
-//        Log.i(TAG, "ON CREATE VIEW");
-//        return inflater.inflate(R.layout.checkout_summary_main, viewGroup, false);
-//    }
 
     /*
      * (non-Javadoc)
@@ -463,8 +450,6 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
                         if (id == R.id.button1) {
                             dialog.dismiss();
                             getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-                            // ActivitiesWorkFlow.homePageActivity(getBaseActivity());
-                            // getBaseActivity().finish();
                         }
                     }
                 });

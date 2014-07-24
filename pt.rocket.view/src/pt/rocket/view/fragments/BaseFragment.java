@@ -8,6 +8,7 @@ import java.util.Calendar;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import org.holoeverywhere.widget.Button;
@@ -353,6 +354,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     @Override
     public void onResume() {
         super.onResume();
+        Log.d(TAG, "ON RESUME");
         
         isOnStoppingProcess = false;
         
@@ -365,7 +367,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
             getBaseActivity().showWarning(false);
             getBaseActivity().showWarningVariation(false);
         }
-        Log.d(getTag(), "onResume");
     }
 
     /*
@@ -378,6 +379,12 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         super.onPause();
         // Save the current state
         setVisiblility(NOT_VISIBLE);
+        
+        /**
+         * Restore locale if called the forceInputAlignToLeft(). 
+         * Fix the input text align to right 
+         */
+        restoreInputLocale();
     }
 
     /*
@@ -832,8 +839,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     // TODO: Validate if this is necessary
     private void updateAdjustState(int newAdjustState){
 //        if(getBaseActivity() != null){
-//            if(getBaseActivity().currentAdjustState != newAdjustState){
-//                getBaseActivity().currentAdjustState = newAdjustState;
+//            if(BaseActivity.currentAdjustState != newAdjustState){
+//                BaseActivity.currentAdjustState = newAdjustState;
 //                switch (newAdjustState) {
 //                case WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN:
 //                    getBaseActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
@@ -993,6 +1000,34 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      */
     private static void setVisibility(View view, boolean show) {
         if (view != null) view.setVisibility(show ? View.VISIBLE : View.GONE);
+    }
+    
+    /**
+     * ########### INPUT FORMS ########### 
+     */
+    
+    private Locale mLocale;
+    
+    /**
+     * Force input align to left
+     * @see 
+     * {@link CheckoutAboutYouFragment#onResume()} <br> 
+     * {@link SessionLoginFragment#onResume()}
+     * @author sergiopereira
+     */
+    protected void forceInputAlignToLeft(){
+        // Save the default locale
+        mLocale = Locale.getDefault();
+        // Force align to left
+        Locale.setDefault(Locale.US);
+    }
+    
+    /**
+     * Restore the saved locale {@link #onResume()} if not null.
+     * @author sergiopereira
+     */
+    protected void restoreInputLocale(){
+        if(mLocale != null) Locale.setDefault(mLocale);
     }
     
     /**
