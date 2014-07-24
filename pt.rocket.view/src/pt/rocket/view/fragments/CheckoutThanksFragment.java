@@ -13,6 +13,7 @@ import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.Customer;
+import pt.rocket.framework.objects.ShoppingCart;
 import pt.rocket.framework.tracking.AnalyticsGoogle;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
@@ -49,8 +50,7 @@ import de.akquinet.android.androlog.Log;
  * @author sergiopereira
  * 
  */
-public class CheckoutThanksFragment extends BaseFragment implements OnClickListener,
-        IResponseCallback {
+public class CheckoutThanksFragment extends BaseFragment implements OnClickListener, IResponseCallback {
 
     private static final String TAG = LogTagHelper.create(CheckoutThanksFragment.class);
 
@@ -107,20 +107,16 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
         Log.i(TAG, "ON CREATE");
     }
 
-//    /*
-//     * (non-Javadoc)
-//     * 
-//     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-//     * android.view.ViewGroup, android.os.Bundle)
-//     */
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//        super.onCreateView(inflater, container, savedInstanceState);
-//        Log.i(TAG, "ON CREATE VIEW");
-//        View view = inflater.inflate(R.layout.checkout_thanks, container, false);
-//        return view;
-//    }
-
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.view.fragments.BaseFragment#onViewCreated(android.view.View, android.os.Bundle)
+     */
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        prepareLayout();
+    }
+    
     /*
      * (non-Javadoc)
      * 
@@ -142,7 +138,6 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        prepareLayout();
     }
 
     /*
@@ -175,52 +170,34 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.i(TAG, "ON DESTROY");
+        Log.i(TAG, "ON DESTROY VIEW");
     }
 
     /**
      * Show content
      */
     private void prepareLayout() {
+        
         // String order_number = args.getString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR);
-        if (JumiaApplication.INSTANCE.getPaymentMethodForm() != null
-                && JumiaApplication.INSTANCE.getPaymentMethodForm().getOrderNumber() != null) {
+        if (JumiaApplication.INSTANCE.getPaymentMethodForm() != null && JumiaApplication.INSTANCE.getPaymentMethodForm().getOrderNumber() != null) {
             order_number = JumiaApplication.INSTANCE.getPaymentMethodForm().getOrderNumber();
-            if(!JumiaApplication.INSTANCE.getPaymentMethodForm().isCameFromWebCheckout()){
-                trackPurchase();
-            }
+            // Track purchase
+            if(!JumiaApplication.INSTANCE.getPaymentMethodForm().isCameFromWebCheckout()) trackPurchase();
         }
         
+        // Clean cart and payment
+        JumiaApplication.INSTANCE.setCart(new ShoppingCart(JumiaApplication.INSTANCE.getItemSimpleDataRegistry()));
+        JumiaApplication.INSTANCE.setPaymentMethodForm(null);
+        // Update cart info
+        getBaseActivity().updateCartInfo();
+        // Order number
         TextView tV = (TextView) getView().findViewById(R.id.order_number_id);
         tV.setText(order_number);
-        tV.setOnClickListener(new OnClickListener() {
-
-            @SuppressWarnings("deprecation")
-            @Override
-            public void onClick(View v) {
-
-                if (android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
-                    android.text.ClipboardManager ClipMan = (android.text.ClipboardManager) getActivity()
-                            .getSystemService(Context.CLIPBOARD_SERVICE);
-                    ClipMan.setText(((TextView) v).getText());
-                } else {
-                    ClipboardManager ClipMan = (ClipboardManager) getActivity().getSystemService(
-                            Context.CLIPBOARD_SERVICE);
-                    ClipMan.setPrimaryClip(ClipData.newPlainText("simple text",
-                            ((TextView) v).getText()));
-                }
-
-                Toast.makeText(getActivity(), getString(R.string.copied_to_clipboard),
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
-
+        tV.setOnClickListener(this);
+        // Continue button
         getView().findViewById(R.id.btn_checkout_continue).setOnClickListener(this);
         // Add a link to order status
         setOrderStatusLink(order_number);
-        JumiaApplication.INSTANCE.setPaymentMethodForm(null);
-        JumiaApplication.INSTANCE.setCart(null);
-        getBaseActivity().updateCartInfo();
     }
 
     /**
@@ -371,8 +348,7 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
         // Switch to track order
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR, view.getTag().toString());
-        getBaseActivity().onSwitchFragment(FragmentType.TRACK_ORDER, bundle,
-                FragmentController.ADD_TO_BACK_STACK);
+        getBaseActivity().onSwitchFragment(FragmentType.TRACK_ORDER, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
     /*
@@ -383,17 +359,43 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
     @Override
     public void onClick(View v) {
         Log.d(TAG, "VIEW ID: " + v.getId() + " " + R.id.order_status_text);
-        if (v.getId() == R.id.btn_checkout_continue) {
-            String user_id = "";
-            if (JumiaApplication.CUSTOMER != null && JumiaApplication.CUSTOMER.getIdAsString() != null) {
-                user_id = JumiaApplication.CUSTOMER.getIdAsString();
-            }
-            AnalyticsGoogle.get().trackCheckoutContinueShopping(getBaseActivity(), user_id);
-            getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-            // ActivitiesWorkFlow.homePageActivity(getActivity());
+        // CASE continue
+        if (v.getId() == R.id.btn_checkout_continue) onClickContinue();
+        // CASE order number
+        else if(v.getId() == R.id.order_number_id) onClickOrderNumber(v);
+        // CASE default
+        else getBaseActivity().onSwitchFragment(FragmentType.TRACK_ORDER, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        
+    }
+    
+    /**
+     * Process the click on order number
+     * @param v
+     * @author sergiopereira
+     */
+    @SuppressWarnings("deprecation")
+    private void onClickOrderNumber(View v){
+        if (android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
+            android.text.ClipboardManager ClipMan = (android.text.ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+            ClipMan.setText(((TextView) v).getText());
         } else {
-            getBaseActivity().onSwitchFragment(FragmentType.TRACK_ORDER, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            ClipboardManager ClipMan = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+            ClipMan.setPrimaryClip(ClipData.newPlainText("simple text",((TextView) v).getText()));
         }
+        Toast.makeText(getActivity(), getString(R.string.copied_to_clipboard),Toast.LENGTH_SHORT).show();
+    }
+    
+    /**
+     * Process the click on continue
+     * @author sergiopereira
+     */
+    private void onClickContinue(){
+        // Get user id
+        String user_id = "";
+        if (JumiaApplication.CUSTOMER != null && JumiaApplication.CUSTOMER.getIdAsString() != null) user_id = JumiaApplication.CUSTOMER.getIdAsString();
+        // Tracking and goto Home 
+        AnalyticsGoogle.get().trackCheckoutContinueShopping(getBaseActivity(), user_id);
+        getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
     }
 
     /*
@@ -427,18 +429,14 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
      * @return
      */
     protected boolean onSuccessEvent(Bundle bundle) {
-        Log.i(TAG, "ON SUCCESS EVENT");
 
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         Log.i(TAG, "ON SUCCESS EVENT: " + eventType);
 
         switch (eventType) {
         case GET_CUSTOMER:
-           
-
             trackPurchase();
             break;
-
         default:
             break;
         }
