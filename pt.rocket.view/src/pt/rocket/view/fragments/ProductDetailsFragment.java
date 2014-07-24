@@ -19,8 +19,10 @@ import pt.rocket.framework.Darwin;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.database.FavouriteTableHelper;
 import pt.rocket.framework.database.LastViewedTableHelper;
+import pt.rocket.framework.database.RelatedItemsTableHelper;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.Errors;
+import pt.rocket.framework.objects.LastViewed;
 import pt.rocket.framework.objects.ProductSimple;
 import pt.rocket.framework.objects.ShoppingCartItem;
 import pt.rocket.framework.rest.RestConstants;
@@ -921,10 +923,16 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
             fragmentManagerTransition(R.id.image_gallery_container, productImagesViewPagerFragment, false, true);
             fragmentManagerTransition(R.id.product_specifications_container, productSpecificationFragment, false, true);
             fragmentManagerTransition(R.id.product_basicinfo_container, productBasicInfoFragment, false, true);
-            
+
             if (mShowRelatedItems) {
-                relatedItemsFragment = ProductRelatedItemsFragment.getInstance(product.getSku());
-                fragmentManagerTransition(R.id.product_related_container, relatedItemsFragment, false, true);
+                Log.d(TAG, "ON GET RELATED ITEMS FOR: " + product.getSku());
+                ArrayList<LastViewed> relatedItemsList = RelatedItemsTableHelper.getRelatedItemsList();
+                if (relatedItemsList != null && relatedItemsList.size() > 1) {
+                    relatedItemsFragment = ProductRelatedItemsFragment.getInstance(product.getSku());
+                    fragmentManagerTransition(R.id.product_related_container, relatedItemsFragment, false, true);
+                } else {
+                    Log.w(TAG, "ONLY OWN PRODUCT ON RELATED ITEMS FOR: " + product.getSku());
+                }
             }
 
             FragmentCommunicatorForProduct.getInstance().updateCurrentProduct(mCompleteProduct);
