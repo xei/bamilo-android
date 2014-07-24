@@ -11,8 +11,10 @@ import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
+import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
+import pt.rocket.framework.Darwin;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.database.RelatedItemsTableHelper;
 import pt.rocket.framework.interfaces.IMetaData;
@@ -35,6 +37,8 @@ import pt.rocket.view.R;
 import pt.rocket.view.fragments.CatalogFragment;
 import pt.rocket.view.fragments.ProductDetailsFragment;
 import android.content.ContentValues;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -123,6 +127,8 @@ public class CatalogPageModel {
     private CatalogFragment mFragment;
 
     private int mSwitchMD5;
+    
+    private boolean isFrench;
 
     public CatalogPageModel(int index, BaseActivity activity, CatalogFragment mFragment) {
         this.index = index;
@@ -173,6 +179,9 @@ public class CatalogPageModel {
             break;
 
         }
+        
+        SharedPreferences sharedPrefs = activity.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        isFrench = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_LANG_CODE, "en").contains("fr");
     }
 
     /*
@@ -230,7 +239,8 @@ public class CatalogPageModel {
         if (!hasContent()) {
             Log.i(TAG, "CONTENT IS EMPTY GET CATALOG");
             this.filters = filterValues;
-            threadRequest();
+            //threadRequest();
+            executeRequest();
         }
         // Case new filter
         else if (filterValues != null && filterValues.getAsInteger("md5") != this.mFilterMD5) {
@@ -238,7 +248,8 @@ public class CatalogPageModel {
                     + this.mFilterMD5);
             this.mFilterMD5 = filterValues.getAsInteger("md5");
             this.filters = filterValues;
-            threadRequest();
+            //threadRequest();
+            executeRequest();
             // Case update layout
         } else if (this.mSwitchMD5 != totalUpdates) {
             Log.i(TAG, "SWITCH LAYOUT");
@@ -250,16 +261,16 @@ public class CatalogPageModel {
 
     }
 
-    private void threadRequest() {
-        executeRequest();
-        // new Thread(new Runnable() {
-        //
-        // @Override
-        // public void run() {
-        // executeRequest();
-        // }
-        // }).run();
-    }
+//    private void threadRequest() {
+//        executeRequest();
+//        // new Thread(new Runnable() {
+//        //
+//        // @Override
+//        // public void run() {
+//        // executeRequest();
+//        // }
+//        // }).run();
+//    }
 
     /**
      * adjust the layout</br> create a new ProductsListAdapter</br>
@@ -269,7 +280,7 @@ public class CatalogPageModel {
      * @param totalUpdates
      *            number of global calls to setVariables
      */
-    public void switchLayout(boolean showList, int totalUpdates) {
+    private void switchLayout(boolean showList, int totalUpdates) {
         // save products from current productsAdapter to add to new Adapter
         // List<Product> products = productsAdapter.products;
         Log.d(TAG, "SWITCHING LAYOUT: " + showList + " " + totalUpdates + " " + isLandScape);
@@ -487,7 +498,7 @@ public class CatalogPageModel {
         gridView.setNumColumns(numColumns);
 
         // initialize new adapter depending on view choosen
-        productsAdapter = new ProductsListAdapter(mActivity, mFragment, showList, numColumns);
+        productsAdapter = new ProductsListAdapter(mActivity, mFragment, showList, numColumns, isFrench);
 
         pageNumber = 1;
         showProductsContent();
@@ -519,8 +530,8 @@ public class CatalogPageModel {
         gridView.setNumColumns(numColumns);
 
         if (productsAdapter != null) {
-            List<String> products = productsAdapter.products;
-            productsAdapter = new ProductsListAdapter(mActivity, mFragment, showList, numColumns);
+            List<String> products = productsAdapter.getProductsList();
+            productsAdapter = new ProductsListAdapter(mActivity, mFragment, showList, numColumns, isFrench);
             productsAdapter.appendProducts(products);
             gridView.setAdapter(productsAdapter);
             gridView.setSelection(0);

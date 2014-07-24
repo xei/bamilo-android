@@ -6,8 +6,6 @@ import java.util.Collection;
 import org.holoeverywhere.widget.TextView;
 import org.holoeverywhere.widget.Toast;
 
-import pt.rocket.constants.ConstantsSharedPrefs;
-import pt.rocket.framework.Darwin;
 import pt.rocket.framework.database.FavouriteTableHelper;
 import pt.rocket.framework.objects.Product;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -15,10 +13,10 @@ import pt.rocket.utils.imageloader.RocketImageLoader;
 import pt.rocket.view.R;
 import pt.rocket.view.fragments.CatalogFragment;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.database.DataSetObserver;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -26,9 +24,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.RatingBar;
-
-import com.android.volley.toolbox.NetworkImageView;
-
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -57,7 +52,7 @@ public class ProductsListAdapter extends BaseAdapter {
         public void SelectedItemsChange(int numSelectedItems);
     }
 
-    ArrayList<String> products;
+    private ArrayList<String> products;
 
     int counter = 1;
 
@@ -103,7 +98,7 @@ public class ProductsListAdapter extends BaseAdapter {
      * @param showList show list (or grid)
      * @param numColumns 
      */
-    public ProductsListAdapter(Context context, CatalogFragment parent, boolean showList, int numColumns) {
+    public ProductsListAdapter(Context context, CatalogFragment parent, boolean showList, int numColumns, boolean isFrench) {
 
         this.context = context.getApplicationContext();
         this.products = new ArrayList<String>();
@@ -114,13 +109,8 @@ public class ProductsListAdapter extends BaseAdapter {
         reviewLabel = context.getString(R.string.reviews);
         
         // Get is new image for respective country
-        SharedPreferences sharedPrefs = context.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-//        this.isNewDrawable = context.getResources().getDrawable(R.drawable.img_newarrival_en);
-        this.isNewResource = R.drawable.selector_is_new_en;
-        if(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_LANG_CODE, "en").contains("fr")){
-//            this.isNewDrawable = context.getResources().getDrawable(R.drawable.img_newarrival_fr);
-            this.isNewResource = R.drawable.selector_is_new_fr;
-        }
+        this.isNewResource = !isFrench ? R.drawable.selector_is_new_en : R.drawable.selector_is_new_fr;
+        
         this.isFavouriteDrawable = context.getResources().getDrawable(R.drawable.btn_fav_selected);
         this.isNotFavouriteDrawable = context.getResources().getDrawable(R.drawable.btn_fav);
         
@@ -206,7 +196,7 @@ public class ProductsListAdapter extends BaseAdapter {
             
             prodItem.price = (TextView) itemView.findViewById(R.id.item_regprice);
             prodItem.price.setPaintFlags(prodItem.price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            prodItem.price.setTextColor(context.getResources().getColor(R.color.grey_light));
+            //prodItem.price.setTextColor(context.getResources().getColor(R.color.grey_light));
             
             prodItem.discount = (TextView) itemView.findViewById(R.id.item_discount);
             prodItem.discountPercentage = (TextView) itemView.findViewById(R.id.discount_percentage);
@@ -221,11 +211,12 @@ public class ProductsListAdapter extends BaseAdapter {
         }
         
 //        String imageURL = "";
-        Product product = parentCatalog.getProduct(products.get(position));
+        final Product product = parentCatalog.getProduct(products.get(position));
 //        if (product.getImages().size() > 0) {
 //            imageURL = product.getImages(). get(0).getUrl();
 //        }
-        RocketImageLoader.instance.loadImage(product.getFirstImageURL(), prodItem.image,  null, R.drawable.no_image_small, CatalogFragment.requestTag);        
+        RocketImageLoader.instance.loadImage(product.getFirstImageURL(), prodItem.image,  null, R.drawable.no_image_small, CatalogFragment.requestTag);
+                
 //        prodItem.image.setImageUrl(product.getFirstImageURL(), RocketImageLoader.instance.getImageLoader());
 
         // Set is new image
@@ -281,15 +272,17 @@ public class ProductsListAdapter extends BaseAdapter {
             if (product.getRating() != null && product.getRating() > 0) {
                 prodItem.rating.setRating(product.getRating().floatValue());
                 prodItem.rating.setVisibility(View.VISIBLE);
-                if (product.getReviews() != null) {
+//                if (product.getReviews() != null) {
                     prodItem.reviews.setText(product.getReviews() + " " + reviewLabel);
-                    prodItem.reviews.setVisibility(View.VISIBLE);
-                } else {
-                    prodItem.reviews.setVisibility(View.INVISIBLE);
-                }
+//                    prodItem.reviews.setVisibility(View.VISIBLE);
+//                } else {
+//                    prodItem.reviews.setText("");
+//                    prodItem.reviews.setVisibility(View.INVISIBLE);
+//                }
             } else {
                 prodItem.rating.setVisibility(View.INVISIBLE);
-                prodItem.reviews.setVisibility(View.INVISIBLE);
+//                prodItem.reviews.setVisibility(View.INVISIBLE);
+                prodItem.reviews.setText("");
             }
         }
 
@@ -313,8 +306,7 @@ public class ProductsListAdapter extends BaseAdapter {
         
         if (null != product.getSpecialPrice() && !product.getSpecialPrice().equals(product.getPrice())) {
             prodItem.discount.setText(product.getSpecialPrice());
-            prodItem.price.setText(product.getSuggestedPrice());            
-            prodItem.price.setSelected(true);
+            prodItem.price.setText(product.getSuggestedPrice());
             prodItem.discountPercentage.setText("-" + product.getMaxSavingPercentage().intValue() + "%");
             prodItem.discountPercentage.setVisibility(View.VISIBLE);
         } else {
@@ -346,6 +338,10 @@ public class ProductsListAdapter extends BaseAdapter {
     public void appendProducts(Collection<? extends String> newProducts) {
         products.addAll(newProducts);
         notifyDataSetChanged();
+    }
+    
+    public ArrayList<String> getProductsList() {
+        return products;
     }
     
     /**

@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.http.AndroidHttpClient;
 import android.os.Build;
+import android.os.Handler;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -253,13 +254,24 @@ public class RocketImageLoader {
                         // the
                         // imageview and fire the events
 
+//                        if (isImmediate ) {
+//                            new Handler().post(new Runnable() {
+//                                @Override
+//                                public void run() {
+//                                    onResponse(response, false);
+//                                }
+//                            });
+//                            return;
+//                        }                        
+                        
                         if (null != response.getBitmap() && response.getBitmap().getWidth() != -1) {
+                            
                             if (progressView != null) {
                                 progressView.setVisibility(View.GONE);
                             }
                             
                             imageView.setImageBitmap(response.getBitmap());
-
+                            
                             if (listener != null) {
                                 listener.onLoadedSuccess(response.getBitmap());
                             }
@@ -352,9 +364,9 @@ public class RocketImageLoader {
         if (isVolleyRequestQueueRunning) {
             Log.i("RocketImageLoader", " --- > STOP ProcessingQueue");
             isVolleyRequestQueueRunning = false;
+            volleyRequestQueue.stop();
             if (null != tag)
                 volleyRequestQueue.cancelAll(tag);
-            volleyRequestQueue.stop();
         }
     }
     
