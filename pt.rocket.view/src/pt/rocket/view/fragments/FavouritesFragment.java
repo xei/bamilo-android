@@ -224,6 +224,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
     private void showEmpty() {
         getBaseActivity().showWarningVariation(false);
         mAddAllToCartButton.setVisibility(View.GONE);
+        mAddAllToCartButton.setOnClickListener(null);
         showFragmentEmpty(R.string.favourite_no_favourites, R.drawable.img_nofavourites);
     }
     
@@ -706,12 +707,12 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
      * @author sergiopereira
      */
     private synchronized void updateLayoutAfterAction() {
+        // Dismiss
+        hideActivityProgress();
         // Update adapter
         mFavouritesAdapter.notifyDataSetChanged();
         // Validate current state
-        if (mFavourites.isEmpty()) showFragmentEmpty(R.string.favourite_no_favourites, R.drawable.img_nofavourites);
-        // Dismiss
-        hideActivityProgress();
+        if (mFavourites.isEmpty()) showEmpty(); //showFragmentEmpty(R.string.favourite_no_favourites, R.drawable.img_nofavourites);
     }
     
     
