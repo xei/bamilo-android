@@ -20,18 +20,20 @@ public class CatalogPagerAdapter extends FragmentPagerAdapter {
 
     private Bundle fragmentParameters;
     private int parentId;
+    private boolean isLandscape = false;
     private ArrayList<String> mSortOptions;
-    private FragmentManager fragmentManager;
+    private FragmentManager fragmentManager;    
     
     /**
      * @param fm
      */
-    public CatalogPagerAdapter(FragmentManager fm, int viewPagerId, ArrayList<String> sortOptions, Bundle parameters) {
+    public CatalogPagerAdapter(FragmentManager fm, int viewPagerId, ArrayList<String> sortOptions, Bundle parameters, boolean landscapeMode) {
         super(fm);
         this.fragmentManager = fm;
         this.parentId = viewPagerId;
         this.fragmentParameters = parameters;
         this.mSortOptions = sortOptions;
+        this.isLandscape = landscapeMode;
         Log.d("CatalogPagerAdaper", " ---> ViewPager ID ->" + viewPagerId);
     }
 
@@ -44,6 +46,7 @@ public class CatalogPagerAdapter extends FragmentPagerAdapter {
         
         Bundle params = (Bundle) fragmentParameters.clone();
         params.putInt(CatalogPageFragment.PARAM_PAGE_INDEX, position);
+        params.putBoolean(CatalogPageFragment.PARAM_IS_LANDSCAPE, isLandscape);
         
         return CatalogPageFragment.newInstance(params);
     }
@@ -64,13 +67,22 @@ public class CatalogPagerAdapter extends FragmentPagerAdapter {
     public void updateParametersBundle(Bundle params) {
         fragmentParameters = params;
     }
+    
+    public void setLandscapeMode(boolean isLandscape) {
+        this.isLandscape = isLandscape; 
+    }
 
     public void invalidateCatalogPages() {
+        Log.d("CatalogPagerAdaper", " ---> IS LANDSCAPE ? " + isLandscape);
         CatalogPageFragment pageFragment;
+        Bundle params = (Bundle) fragmentParameters.clone();
+        params.putBoolean(CatalogPageFragment.PARAM_IS_LANDSCAPE, isLandscape);
+        
         for (int index = 0; index < mSortOptions.size(); index++) {
             pageFragment = (CatalogPageFragment)fragmentManager.findFragmentByTag(getFragmentTag(index));
+            Log.d("CatalogPagerAdaper", " ---> INVALIDATE CATALOG PAGES -> " + pageFragment);
             if (null != pageFragment) {
-                pageFragment.invalidateData(fragmentParameters, true);
+                pageFragment.invalidateData(params, true);
             }
         }
     }

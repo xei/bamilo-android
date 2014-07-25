@@ -32,6 +32,7 @@ import pt.rocket.helpers.GetProductsHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.imageloader.RocketImageLoader;
+import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
@@ -64,6 +65,8 @@ public class CatalogPageFragment extends BaseFragment {
     public static final String PARAM_PAGE_INDEX = "param_page_index";
     public static final String PARAM_FILTERS = "param_filters";
     public static final String PARAM_TITLE = "param_title";
+    public static final String PARAM_IS_LANDSCAPE = "param_is_landscape";
+    
     private final String PRODUCT_LIST = "product_list";
     private final String PRODUCT_LIST_POSITION = "product_list_position";
 
@@ -122,7 +125,7 @@ public class CatalogPageFragment extends BaseFragment {
     /**
      * Empty constructor
      */
-    private CatalogPageFragment() {
+    public CatalogPageFragment() {
         super(IS_NESTED_FRAGMENT, R.layout.products);
     }
 
@@ -150,11 +153,11 @@ public class CatalogPageFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
 
-        parentFragment = (CatalogFragment)getBaseActivity().getSupportFragmentManager().findFragmentByTag(FragmentType.PRODUCT_LIST.toString());        
-        
+        parentFragment = (CatalogFragment)getBaseActivity().getSupportFragmentManager().findFragmentByTag(FragmentType.PRODUCT_LIST.toString());
+                
         Bundle args = getArguments();
         if (null != args) {
-            mPageIndex = args.getInt(PARAM_PAGE_INDEX, 0);            
+            mPageIndex = args.getInt(PARAM_PAGE_INDEX, 0);
             
             switch (mPageIndex) {
             case 0: // <item > Copy of Best Rating for infinite scroll</item>
@@ -258,10 +261,12 @@ public class CatalogPageFragment extends BaseFragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         Log.d(TAG, "ON SAVE INSTANCE STATE #" + mPageIndex);
-        ProductsListAdapter adapter = (ProductsListAdapter)this.gridView.getAdapter();
-        if (null != adapter) {
-            outState.putStringArrayList(PRODUCT_LIST, adapter.getProductsList());
-            outState.putInt(PRODUCT_LIST_POSITION, this.gridView.getFirstVisiblePosition());
+        if (null != this.gridView) {
+            ProductsListAdapter adapter = (ProductsListAdapter)this.gridView.getAdapter();
+            if (null != adapter) {
+                outState.putStringArrayList(PRODUCT_LIST, adapter.getProductsList());
+                outState.putInt(PRODUCT_LIST_POSITION, this.gridView.getFirstVisiblePosition());
+            }
         }
         super.onSaveInstanceState(outState);
     }
@@ -342,7 +347,7 @@ public class CatalogPageFragment extends BaseFragment {
     }
  
     private void initializeCatalogPage(boolean showList) {
-        Log.d(TAG, "FILTER EXECUTE REQ");
+        Log.d(TAG, "FILTER EXECUTE REQ -> Landscape ? " + mIsLandScape + "; Columns #" + updateGridColumns(showList));
         
         ProductsListAdapter adapter = (ProductsListAdapter)this.gridView.getAdapter();
         final boolean hasProducts = (null != mSavedProductsSKU);        
@@ -352,7 +357,14 @@ public class CatalogPageFragment extends BaseFragment {
         if (!hasProducts) {
             mPageNumber = 1;
         } else {
-            adapter.updateProducts(mSavedProductsSKU);            
+            adapter.updateProducts(mSavedProductsSKU);      
+            if (parentFragment.isVisible()) {
+                // set total items lable
+                if (mTotalProducts > 0)
+                    getBaseActivity().setTitleAndSubTitle(mTitle, " (" + String.valueOf(mTotalProducts) + " " + getBaseActivity().getString(R.string.shoppingcart_items) + ")");
+                else
+                    getBaseActivity().setTitle(mTitle);
+            }
         }
 
         Log.d(TAG, "showProductsContent");
@@ -386,6 +398,8 @@ public class CatalogPageFragment extends BaseFragment {
         mSearchQuery = args.getString(ConstantsIntentExtra.SEARCH_QUERY);            
         mNavigationSource = args.getInt(ConstantsIntentExtra.NAVIGATION_SOURCE, -1);
         mNavigationPath = args.getString(ConstantsIntentExtra.NAVIGATION_PATH);
+        //mIsLandScape = args.getBoolean(PARAM_IS_LANDSCAPE);
+        mIsLandScape = BaseActivity.isTabletInLandscape(getBaseActivity());
         if (updateFilters)
             mFilters = args.getParcelable(PARAM_FILTERS);
     }
@@ -402,12 +416,14 @@ public class CatalogPageFragment extends BaseFragment {
             if (mPageNumber == 1 && null != getView()) {
                 hideProductsNotFound();
                 linearLayoutLb.setVisibility(View.VISIBLE);
-                showLoadingInfo();
+//                showLoadingInfo();
             }
 
             mBeginRequestMillis = System.currentTimeMillis();
 
             Log.d(TAG, "FILTER CREATE BUNDLE");
+            
+            RocketImageLoader.getInstance().stopProcessingQueue();
 
             Bundle bundle = new Bundle();
             bundle.putString(GetProductsHelper.PRODUCT_URL, mProductsURL);
@@ -430,7 +446,7 @@ public class CatalogPageFragment extends BaseFragment {
         hideProductsLoading();        
         if (getView() != null) {
             linearLayoutLb.setVisibility(View.GONE);
-            hideLoadingInfo();
+//            hideLoadingInfo();
         }
     }    
 
@@ -460,7 +476,7 @@ public class CatalogPageFragment extends BaseFragment {
         });
         if (getView() != null) {
             linearLayoutLb.setVisibility(View.GONE);
-            hideLoadingInfo();
+//            hideLoadingInfo();
         }
     }
     
@@ -496,27 +512,27 @@ public class CatalogPageFragment extends BaseFragment {
         }, 200);
     }
     
-    /**
-     * Shows the loading screen that appears on the front of the activity while it waits for the
-     * data to arrive from the server
-     */
-    private final void showLoadingInfo() {
-        Log.d(TAG, "Showing loading info");
-        if (loadingBarView != null) {
-            loadingBarView.startRendering();
-        }
-    }
+//    /**
+//     * Shows the loading screen that appears on the front of the activity while it waits for the
+//     * data to arrive from the server
+//     */
+//    private final void showLoadingInfo() {
+//        Log.d(TAG, "Showing loading info");
+//        if (loadingBarView != null) {
+//            loadingBarView.startRendering();
+//        }
+//    }
 
-    /**
-     * Hides the loading screen that appears on the front of the activity while it waits for the
-     * data to arrive from the server
-     */
-    private void hideLoadingInfo() {
-        Log.d(TAG, "Hiding loading info");
-        if (loadingBarView != null) {
-            loadingBarView.stopRendering();
-        }
-    }
+//    /**
+//     * Hides the loading screen that appears on the front of the activity while it waits for the
+//     * data to arrive from the server
+//     */
+//    private void hideLoadingInfo() {
+//        Log.d(TAG, "Hiding loading info");
+//        if (loadingBarView != null) {
+//            loadingBarView.stopRendering();
+//        }
+//    }
     
     
     // ---------------------------------------------------------------
@@ -574,9 +590,14 @@ public class CatalogPageFragment extends BaseFragment {
             // Sample calculation to determine if the last item is fully visible.             
             if (totalItemCount != 0 && firstVisibleItem + visibleItemCount == totalItemCount) {
                 if (!mIsLoadingMore && !mReceivedError) {
-                    mIsLoadingMore = true;
-                    showProductsLoading();        
-                    getMoreProducts();
+                    new Handler().post(new Runnable() {
+                        @Override
+                        public void run() {
+                            mIsLoadingMore = true;
+                            showProductsLoading();        
+                            getMoreProducts();
+                        }
+                    });
                 }
             } else {
                 mReceivedError = false;
@@ -591,7 +612,7 @@ public class CatalogPageFragment extends BaseFragment {
                 previousFirstVisibleItem = firstVisibleItem;
                 previousEventTime = currTime;
 
-                if (speed < 15) {
+                if (speed < 10) {
                     RocketImageLoader.getInstance().startProcessingQueue();
                 } 
             }
@@ -719,9 +740,13 @@ public class CatalogPageFragment extends BaseFragment {
         if (parentFragment.isVisible()) {
             parentFragment.onSuccesLoadingFilteredCatalog(productsPage.getFilters());
         }
+        
+        RocketImageLoader.getInstance().startProcessingQueue();
     }
     
     private void onErrorEvent(Bundle bundle) {
+        RocketImageLoader.getInstance().startProcessingQueue();
+        
         if (getBaseActivity().handleErrorEvent(bundle)) {
             return;
         }

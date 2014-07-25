@@ -11,7 +11,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.http.AndroidHttpClient;
 import android.os.Build;
-import android.os.Handler;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -35,6 +34,8 @@ public class RocketImageLoader {
 
     public static RocketImageLoader instance;
 
+    private static final int NETWORK_THREAD_POOL_SIZE = 4; 
+    
     private ImageLoader volleyImageLoader;
 
     // Indicates no value. Will be "translated" to default library-dependent
@@ -437,7 +438,7 @@ public class RocketImageLoader {
 
         Network network = new BasicNetwork(stack);
 
-        RequestQueue queue = new RequestQueue(new DiskBasedCache(cacheDir, FILE_DISC_CACHE_SIZE), network);
+        RequestQueue queue = new RequestQueue(new DiskBasedCache(cacheDir, FILE_DISC_CACHE_SIZE), network, NETWORK_THREAD_POOL_SIZE);
         queue.start();
 
         return queue;

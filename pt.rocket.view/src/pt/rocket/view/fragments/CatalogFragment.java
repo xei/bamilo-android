@@ -27,6 +27,7 @@ import pt.rocket.utils.TipsOnPageChangeListener;
 import pt.rocket.utils.dialogfragments.DialogFilterFragment;
 import pt.rocket.utils.dialogfragments.WizardPreferences;
 import pt.rocket.utils.dialogfragments.WizardPreferences.WizardType;
+import pt.rocket.utils.imageloader.RocketImageLoader;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.content.ContentValues;
@@ -36,6 +37,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
@@ -54,6 +56,8 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
     private static final String TAG = LogTagHelper.create(CatalogFragment.class);
     
     public static String requestTag = "CTLG_REQUEST";
+    
+    private static String PRODUCTS_LIST = "CTLG_PRODUCTS";
 
     private static CatalogFragment mCatalogFragment;
     private CatalogPagerAdapter mCatalogPagerAdapter;
@@ -126,6 +130,14 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
+        
+        if (null != savedInstanceState && savedInstanceState.containsKey(PRODUCTS_LIST)) {
+            ArrayList<Product> products = savedInstanceState.getParcelableArrayList(PRODUCTS_LIST);
+            for (Product prod : products) {
+                mProductsMap.put(prod.getSKU(), prod);
+            }
+        }
+        
         mSortOptions = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.products_picker)));
 
         mShowListDrawable = getResources().getDrawable(R.drawable.selector_catalog_listview);
@@ -134,7 +146,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         sharedPreferences = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         showList = sharedPreferences.getBoolean(ConstantsSharedPrefs.KEY_SHOW_LIST_LAYOUT, true);
 
-        setRetainInstance(true);
+//        setRetainInstance(true);
 
         title = getArguments().getString(ConstantsIntentExtra.CONTENT_TITLE);
 
@@ -163,6 +175,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
 
         View view = inflater.inflate(R.layout.products_frame, container, false);
         mViewPager = (ViewPager) view.findViewById(R.id.viewpager_products_list);
+        mViewPager.setOnPageChangeListener(onPageChangeListener);
 
         mPagerTabStrip = (SlidingTabLayout) view.findViewById(R.id.catalog_pager_tag); // XXX
         mPagerTabStrip.setCustomTabView(R.layout.tab_simple_item, R.id.tab);
@@ -218,13 +231,15 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
                     params.putString(ConstantsIntentExtra.NAVIGATION_PATH, navigationPath);
                     params.putParcelable(CatalogPageFragment.PARAM_FILTERS, mCatalogFilterValues);
                     
-                    mCatalogPagerAdapter = new CatalogPagerAdapter(getChildFragmentManager(), mViewPager.getId(), mSortOptions, params);
+                    mCatalogPagerAdapter = new CatalogPagerAdapter(getChildFragmentManager(), mViewPager.getId(), mSortOptions, params, 
+                            BaseActivity.isTabletInLandscape(getBaseActivity()));
 
                 } else {
                     Log.d(TAG, "FILTER: ADAPTER IS NOT NULL");
-                    CatalogPagerAdapter adapter = (CatalogPagerAdapter)mViewPager.getAdapter();
-                    if (null != adapter) {
-                        int totalProducts = adapter.getCatalogPageTotalItems(mViewPager.getCurrentItem());
+//                    CatalogPagerAdapter adapter = (CatalogPagerAdapter)mViewPager.getAdapter();
+//                    if (null != adapter) {
+                    mCatalogPagerAdapter.setLandscapeMode(BaseActivity.isTabletInLandscape(getBaseActivity()));
+                        int totalProducts = mCatalogPagerAdapter.getCatalogPageTotalItems(mViewPager.getCurrentItem());
                         if (totalProducts > 0) {
                             TextView totalItems = (TextView) getView().findViewById(R.id.totalProducts);
                             StringBuilder total = new StringBuilder(" (").append(totalProducts).append(" ").append(getString(R.string.shoppingcart_items)).append(")");
@@ -233,14 +248,15 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
                                 totalItems.setVisibility(View.VISIBLE);
                             }
                         }                        
-                        adapter.notifyDataSetChanged();
-                    }
+//                        mCatalogPagerAdapter.notifyDataSetChanged();
+                        mCatalogPagerAdapter.invalidateCatalogPages();
+//                    }
                 }
 
                 mViewPager.setAdapter(mCatalogPagerAdapter);
                 mPagerTabStrip.setViewPager(mViewPager); // XXX
                 // TODO: Validate if fix the "Call removeView() on the child's parent first"
-                mViewPager.setOffscreenPageLimit(1);
+                mViewPager.setOffscreenPageLimit(2);
                 mViewPager.setCurrentItem(mSavedPagerPosition);
 
                 AnalyticsGoogle.get().trackPage(R.string.gproductlist);
@@ -285,6 +301,13 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
     public void onDestroy() {
         super.onDestroy();
         Log.i(TAG, "ON DESTROY");
+    }
+    
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        
+        outState.putParcelableArrayList(PRODUCTS_LIST, new ArrayList<Product>(mProductsMap.values()));
+        super.onSaveInstanceState(outState);
     }
 
     /*
@@ -579,22 +602,24 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
      * Show tips if is the first time the user uses the app.
      */
     private void isToShowWizard() {
+        ViewPager viewPagerTips = (ViewPager) mWizardContainer.findViewById(R.id.viewpager_tips);
+        Log.d(TAG, " --- TEST isToShowWizard -> " + WizardPreferences.isFirstTime(getBaseActivity(), WizardType.CATALOG));
         if (WizardPreferences.isFirstTime(getBaseActivity(), WizardType.CATALOG)) {
-            ViewPager viewPagerTips = (ViewPager) mWizardContainer
-                    .findViewById(R.id.viewpager_tips);
+            
+            
             viewPagerTips.setVisibility(View.VISIBLE);
-            int[] tipsPages = { R.layout.products_tip_swipe_layout,
-                    R.layout.products_tip_favourite_layout };
-            TipsPagerAdapter mTipsPagerAdapter = new TipsPagerAdapter(getBaseActivity(),
-                    getBaseActivity().getLayoutInflater(), mWizardContainer, tipsPages);
+            viewPagerTips.bringToFront();
+            
+            int[] tipsPages = { R.layout.products_tip_swipe_layout, R.layout.products_tip_favourite_layout };
+            TipsPagerAdapter mTipsPagerAdapter = new TipsPagerAdapter(getBaseActivity(), getBaseActivity().getLayoutInflater(), mWizardContainer, tipsPages);
             viewPagerTips.setAdapter(mTipsPagerAdapter);
-            viewPagerTips.setOnPageChangeListener(new TipsOnPageChangeListener(mWizardContainer,
-                    tipsPages));
+            viewPagerTips.setOnPageChangeListener(new TipsOnPageChangeListener(mWizardContainer, tipsPages));
             viewPagerTips.setCurrentItem(0);
-            ((LinearLayout) mWizardContainer.findViewById(R.id.viewpager_tips_btn_indicator))
-                    .setVisibility(View.VISIBLE);
-            ((LinearLayout) mWizardContainer.findViewById(R.id.viewpager_tips_btn_indicator))
-                    .setOnClickListener(this);
+            ((LinearLayout) mWizardContainer.findViewById(R.id.viewpager_tips_btn_indicator)).setVisibility(View.VISIBLE);
+            ((LinearLayout) mWizardContainer.findViewById(R.id.viewpager_tips_btn_indicator)).setOnClickListener(this);
+            Log.d(TAG, " --- TEST isToShowWizard -> Finished" );
+        } else {
+            viewPagerTips.setVisibility(View.GONE);
         }
     }
 
@@ -684,25 +709,24 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
      */
     private void matchFilterStateWithOldState() {
         Log.i(TAG, "RESTORE THE OLD SELECTED STATE");
+        CatalogFilter oldFilter;
         // Validate the old filter state
         if (mOldCatalogFilterState != null)
             // Restore the filter if match with the old
             for (CatalogFilter newFilter : mCatalogFilter) {
                 Log.i(TAG, "RESTORE FILTER: " + newFilter.getName());
                 // Locate the old filter
-                CatalogFilter oldFilter = locateFilter(mOldCatalogFilterState, newFilter.getId());
+                oldFilter = locateFilter(mOldCatalogFilterState, newFilter.getId());
                 // Validate old filter
                 if (oldFilter != null) {
                     // Case generic filter
                     if (oldFilter.hasOptionSelected())
                         // Locate selected options and save
-                        newFilter.setSelectedOption(locateOption(newFilter.getFilterOptions(),
-                                oldFilter.getSelectedOption()));
+                        newFilter.setSelectedOption(locateOption(newFilter.getFilterOptions(),oldFilter.getSelectedOption()));
                     // Case price filter
                     else if (oldFilter.hasRangeValues()) {
                         // Save the range
-                        newFilter.setRangeValues(oldFilter.getMinRangeValue(),
-                                oldFilter.getMaxRangeValue());
+                        newFilter.setRangeValues(oldFilter.getMinRangeValue(),oldFilter.getMaxRangeValue());
                     }
                 }
             }
@@ -891,4 +915,33 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
             adapter.notifyDataSetChanged();
         }
     }
+    
+    // ---------------------------------------------------------------
+    // ----- Listeners
+    // ---------------------------------------------------------------    
+    
+    private OnPageChangeListener onPageChangeListener = new OnPageChangeListener() {
+        
+        @Override
+        public void onPageSelected(int position) {
+            // TODO Auto-generated method stub
+            
+        }
+        
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            // TODO Auto-generated method stub
+            
+        }
+        
+        @Override
+        public void onPageScrollStateChanged(int state) {
+            if (state == ViewPager.SCROLL_STATE_IDLE) {
+                RocketImageLoader.getInstance().startProcessingQueue();                
+            } else {
+                RocketImageLoader.getInstance().stopProcessingQueue();
+            }
+            
+        }
+    };
 }
