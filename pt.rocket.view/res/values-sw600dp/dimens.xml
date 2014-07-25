@@ -37,6 +37,8 @@
     <dimen name="campaign_size_spinner_width">70dp</dimen>
     <dimen name="campaign_title_button_height">72dp</dimen>
     <dimen name="campaign_title_button_text_vertical_alignment">17dp</dimen>
+    <dimen name="campaign_item_offer_ended_width">180dp</dimen>
+    <dimen name="campaign_item_offer_ended_height">40dp</dimen>
 
     <!-- NO RESULTS PAGE -->
 	<dimen name="no_results_brands_height">177dp</dimen>

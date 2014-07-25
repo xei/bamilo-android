@@ -22,13 +22,13 @@
 
         <org.holoeverywhere.widget.TextView
             android:id="@+id/campaign_item_offer_ended"
-            android:layout_width="120dp"
-            android:layout_height="26.67dp"
+            android:layout_width="@dimen/campaign_item_offer_ended_width"
+            android:layout_height="@dimen/campaign_item_offer_ended_height"
             android:layout_centerInParent="true"
             android:background="@drawable/background_soldout"
             android:fontFamily="roboto_bold"
             android:gravity="center"
-            android:text="Offer Ended!"
+            android:text="@string/campaing_offer_ended"
             android:textColor="#333333"
             android:textSize="@dimen/text_m"
             android:visibility="gone" />

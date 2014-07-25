@@ -372,6 +372,8 @@
     <string name="teaser_campaign_button_first_line">HOT</string>
     <string name="teaser_campaign_button_second_line">OFFERS</string>
     
+    <string name="campaing_offer_ended">Offer Ended!</string>
+    
     <string name="back">BACK</string>
 
 </resources>
