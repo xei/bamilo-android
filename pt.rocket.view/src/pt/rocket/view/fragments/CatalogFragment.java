@@ -137,8 +137,6 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
                 mProductsMap.put(prod.getSKU(), prod);
             }
         }
-        
-        mSortOptions = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.products_picker)));
 
         mShowListDrawable = getResources().getDrawable(R.drawable.selector_catalog_listview);
         mShowGridDrawable = getResources().getDrawable(R.drawable.selector_catalog_gridview);
@@ -173,6 +171,8 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.i(TAG, "ON CREATE VIEW");
 
+        mSortOptions = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.products_picker)));
+        
         View view = inflater.inflate(R.layout.products_frame, container, false);
         mViewPager = (ViewPager) view.findViewById(R.id.viewpager_products_list);
         mViewPager.setOnPageChangeListener(onPageChangeListener);
