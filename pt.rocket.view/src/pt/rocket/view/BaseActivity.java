@@ -118,6 +118,8 @@ import de.akquinet.android.androlog.Log;
  * 
  */
 public abstract class BaseActivity extends SherlockFragmentActivity {
+    
+    private static final String TAG = LogTagHelper.create(BaseActivity.class);
 
     //private ShareActionProvider mShareActionProvider;
     
@@ -135,10 +137,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     private Set<MyMenuItem> menuItems;
 
     private final int activityLayoutId;
-
-//    private View loadingBarContainer;
-//
-//    private LoadingBarView loadingBarView;
 
     protected DialogFragment dialog;
 
@@ -159,11 +157,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      */
     private Intent mOnActivityResultIntent = null;
 
-//    /**
-//     * Use this variable to have a more precise control on when to show the content container.
-//     */
-//    private boolean processShow = true;
-
     public DrawerLayout mDrawerLayout;
     public ActionBarDrawerToggle mDrawerToggle;
     private int drawable_state = DrawerLayout.STATE_IDLE;
@@ -176,7 +169,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             EventType.INITIALIZE,
             EventType.LOGOUT_EVENT);
 
-    private static final String TAG = LogTagHelper.create(BaseActivity.class) + "Fragment";
+    
 
     private final Set<EventType> allHandledEvents = EnumSet.copyOf(HANDLED_EVENTS);
     private final Set<EventType> contentEvents;
@@ -185,8 +178,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
     private View warningView;
     private View warningVariationView;
-
-    //private View errorView;
 
     private final int titleResId;
 
@@ -261,42 +252,34 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
         ShopSelector.resetConfiguration(getBaseContext());
 
+        // Set action bar
         setupActionBar();
+        // Set content view
         setupContentViews();
-
-        /**
-         * @FIX: IllegalStateException: Can not perform this action after onSaveInstanceState
-         * @Solution :
-         *           http://stackoverflow.com/questions/7575921/illegalstateexception-can-not-perform
-         *           -this-action-after-onsaveinstancestate-h
-         */
-        if (getIntent().getExtras() != null) {
-            initialCountry = getIntent().getExtras().getBoolean(ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, false);
-            mOnActivityResultIntent = null;
-        }
-
-        if (initialCountry) {
-            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-        } else {
-            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-        }
-        
-        // Get the fallback stub
-        mMainFallBackStub = (ViewStub) findViewById(R.id.main_fall_back_stub);
+        // Update the content view if initial country selection 
+        updateContentViewsIfInitialCountrySelection();
 
         isRegistered = true;
         setAppContentLayout();
         setTitle(titleResId);
-        BugSenseHandler.leaveBreadcrumb(getTag() + " _onCreate");
+        BugSenseHandler.leaveBreadcrumb(TAG + " _onCreate");
     }
     
+    /*
+     * (non-Javadoc)
+     * @see android.support.v4.app.FragmentActivity#onNewIntent(android.content.Intent)
+     */
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        BugSenseHandler.leaveBreadcrumb(getTag() + " _onNewIntent");
+        BugSenseHandler.leaveBreadcrumb(TAG + " _onNewIntent");
         ActivitiesWorkFlow.addStandardTransition(this);
     }
 
+    /*
+     * (non-Javadoc)
+     * @see android.support.v4.app.FragmentActivity#onStart()
+     */
     @Override
     protected void onStart() {
         super.onStart();
@@ -508,11 +491,43 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             }
         });
         //errorView = findViewById(R.id.alert_view);
+                
+        // Get the fallback stub
+        mMainFallBackStub = (ViewStub) findViewById(R.id.main_fall_back_stub);
+        
+    }
+    
+    
+    /**
+     * Updated the action bar and the navigation for initial country selection
+     * @author sergiopereira
+     */
+    private void updateContentViewsIfInitialCountrySelection(){
+        /**
+         * @FIX: IllegalStateException: Can not perform this action after onSaveInstanceState
+         * @Solution :
+         *           http://stackoverflow.com/questions/7575921/illegalstateexception-can-not-perform
+         *           -this-action-after-onsaveinstancestate-h
+         */
+        if (getIntent().getExtras() != null) {
+            initialCountry = getIntent().getExtras().getBoolean(ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, false);
+            mOnActivityResultIntent = null;
+        }
+
+        /**
+         * Set the action bar and navigation drawer for initialCountry
+         * @author sergiopereira
+         */
+        if (initialCountry) {
+            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+            getSupportActionBar().setDisplayShowHomeEnabled(false);
+            getSupportActionBar().setCustomView(R.layout.action_bar_initial_logo_layout);
+        } else {
+            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
     }
 
-    private String getTag() {
-        return this.getClass().getSimpleName();
-    }
 
     /**
      * Toggle the navigation drawer
@@ -556,7 +571,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      */
     @Override
     public void onBackPressed() {
-        Log.i(getTag(), "onBackPressed");
+        Log.i(TAG, "ON BACK PRESSED");
         if (mDrawerLayout.isDrawerOpen(mDrawerNavigation)
                 && !(mDrawerLayout.getDrawerLockMode(mDrawerNavigation) == DrawerLayout.LOCK_MODE_LOCKED_OPEN)
                 ) {
@@ -686,8 +701,10 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d(TAG, "ON OPTION ITEM SELECTED: " + item.getTitle());
+        
+        // Get item id
         int itemId = item.getItemId();
-        Log.d(getTag(), "ON OPTION ITEM SELECTED: " + item.getTitle());
         
         // HOME
         if (itemId == android.R.id.home) {
@@ -1229,12 +1246,12 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         Log.d(TAG, "ON UPDATE CART IN NAVIGATION");
         NavigationFragment navigation = (NavigationFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_navigation);
         if (navigation != null) navigation.onUpdateCart();
-        else Log.w(getTag(), "updateCartInfoInNavigation: navigation container empty - doing nothing");
+        else Log.w(TAG, "updateCartInfoInNavigation: navigation container empty - doing nothing");
     }
 
 //    private void updateTotalFavourites() {
 //        /* -if (textViewFavouritesCount == null) {
-//            Log.w(getTag(), "updateFavouritesCountInActionBar: cant find FavouritesCount in actionbar");
+//            Log.w(TAG, "updateFavouritesCountInActionBar: cant find FavouritesCount in actionbar");
 //            return;
 //        }
 //
@@ -1454,11 +1471,11 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 //    }
 
 //    private final void showLoadingInfo() {
-//        Log.d(getTag(), "Showing loading info");
+//        Log.d(TAG, "Showing loading info");
 //        if (loadingBarContainer != null) {
 //            loadingBarContainer.setVisibility(View.VISIBLE);
 //        } else {
-//            Log.w(getTag(), "Did not find loading bar container, check layout!");
+//            Log.w(TAG, "Did not find loading bar container, check layout!");
 //        }
 //        if (loadingBarView != null) {
 //            loadingBarView.startRendering();
@@ -1470,7 +1487,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 //     * data to arrive from the server
 //     */
 //    private void hideLoadingInfo() {
-//        Log.d(getTag(), "Hiding loading info");
+//        Log.d(TAG, "Hiding loading info");
 //        if (loadingBarView != null) {
 //            loadingBarView.stopRendering();
 //        }
@@ -1507,7 +1524,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 //    }
 
 //    protected void showError(OnClickListener clickListener, boolean fromCheckout) {
-//        Log.d(getTag(), "Showing error view");
+//        Log.d(TAG, "Showing error view");
 //        hideLoadingInfo();
 //        if (!fromCheckout) {
 //            setVisibility(contentContainer, false);
@@ -1518,7 +1535,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
 //    public final void showContentContainer() { // XXX
 //        if (processShow) {
-//            Log.d(getTag(), "Showing the content container");
+//            Log.d(TAG, "Showing the content container");
 //            hideLoadingInfo();
 //            dismissProgress();
 //            setVisibility(errorView, false);
@@ -1527,7 +1544,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 //    }
 
     public final void showWarning(boolean show) {
-        Log.d(getTag(), "Showing warning: " + show);
+        Log.d(TAG, "Showing warning: " + show);
         if (warningView != null) warningView.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
@@ -1568,7 +1585,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     }
 
     public void onOpened() {
-        Log.d(getTag(), "onOpened");
+        Log.d(TAG, "onOpened");
         // Hide search component and hide keyboard
         hideSearchComponent();
         hideKeyboard();
@@ -1580,7 +1597,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     }
 
     public void onClosed() {
-        Log.d(getTag(), "onClosed");
+        Log.d(TAG, "onClosed");
     }
 
     /**
@@ -1607,7 +1624,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
             }
         } catch (RuntimeException e) {
-            Log.w(getTag(), "" + e);
+            Log.w(TAG, "" + e);
         }
 
     }
@@ -1615,12 +1632,12 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     @Override
     public void onLowMemory() {
         super.onLowMemory();
-        Log.e(getTag(), "LOW MEM");
+        Log.e(TAG, "LOW MEM");
         System.gc();
     }
 
     public void hideKeyboard() {
-        // Log.d( getTag() , "hideKeyboard" );
+        // Log.d( TAG , "hideKeyboard" );
         InputMethodManager imm = (InputMethodManager) getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         View v = mDrawerLayout;
         if (v == null)
@@ -1630,7 +1647,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     }
 
     public void showKeyboard() {
-        // Log.d( getTag(), "showKeyboard" );
+        // Log.d( TAG, "showKeyboard" );
         Log.i(TAG, "code1here showKeyboard");
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.RESULT_UNCHANGED_SHOWN, 0);

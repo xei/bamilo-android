@@ -57,8 +57,7 @@ public class GetCountriesGeneralConfigsHelper extends BaseHelper {
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
         ArrayList<CountryObject> mCountries = new ArrayList<CountryObject>();
-        JSONArray sessionJSONArray = jsonObject
-                .optJSONArray(RestConstants.JSON_DATA_TAG);
+        JSONArray sessionJSONArray = jsonObject.optJSONArray(RestConstants.JSON_DATA_TAG);
 
 		// TODO : Validate if it is necessary (Test with version code !=)
         if(!DarwinDatabaseHelper.getInstance().exists(CountriesConfigsTableHelper.TABLE)){
@@ -78,7 +77,7 @@ public class GetCountriesGeneralConfigsHelper extends BaseHelper {
                     mCountryObject.initialize(sessionJSONArray.getJSONObject(i));
                     mCountries.add(mCountryObject);
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    Log.w(TAG, "WARNING JSON EXCEPTION ON PARSE COUNTRIES", e);
                 }
             }
             if(mCountries != null && mCountries.size() > 0){

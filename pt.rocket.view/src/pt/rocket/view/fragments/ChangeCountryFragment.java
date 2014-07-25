@@ -110,8 +110,7 @@ public class ChangeCountryFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         Log.i(TAG, "ON CREATE VIEW");
-        View view = inflater.inflate(R.layout.change_country, container, false);
-        return view;
+        return inflater.inflate(R.layout.change_country, container, false);
     }
 
     /*
@@ -204,10 +203,12 @@ public class ChangeCountryFragment extends BaseFragment {
         String[] flagsList = null;
         SharedPreferences sharedPrefs = context.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         String selectedCountry = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ISO, null);
+        
         if(JumiaApplication.INSTANCE.countriesAvailable == null || JumiaApplication.INSTANCE.countriesAvailable.size() == 0){
             JumiaApplication.INSTANCE.countriesAvailable = CountriesConfigsTableHelper.getCountriesList();
         }
         
+        Log.d(TAG, "COUNTRIES SIZE: " + JumiaApplication.INSTANCE.countriesAvailable.size());
    
         int count = 0;
         countries = new String[JumiaApplication.INSTANCE.countriesAvailable.size()];

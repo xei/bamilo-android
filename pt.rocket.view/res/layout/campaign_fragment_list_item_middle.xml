@@ -11,16 +11,14 @@
         android:id="@+id/image_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/selector_listitem_highlight"
-        android:scaleType="fitCenter" >
+        android:background="@drawable/selector_listitem_highlight" >
 
         <ImageView
             android:id="@+id/image_view"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
-            android:scaleType="fitCenter"
-            android:src="@drawable/no_image_small" />
+            android:scaleType="fitCenter" />
 
         <org.holoeverywhere.widget.TextView
             android:id="@+id/campaign_item_offer_ended"

@@ -768,7 +768,7 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, O
             // Set image container
             setClickableView(view.mImageContainer, position);
             // Set image
-            RocketImageLoader.instance.loadImage(item.getImage(), view.mImage);
+            RocketImageLoader.instance.loadImage(item.getImage(), view.mImage, null, R.drawable.no_image_large);
             // setClickableView(view.mImage, position);
             // Set size
             setSizeContainer(view, item, position);
