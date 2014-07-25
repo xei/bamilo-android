@@ -376,7 +376,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
          * Adjust state for each fragment type.
          */
         if (!isNestedFragment || action == NavigationAction.Country) {
-            updateAdjustState(this.adjustState);
+            updateAdjustState(this.adjustState, true);
             if (getBaseActivity() != null) {
                 getBaseActivity().closeDrawerIfOpen();
             }
@@ -848,11 +848,16 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     protected boolean hasContent(ArrayList<?> array){
         return (array != null && !array.isEmpty()) ? true : false;
     }
-    
-    private void updateAdjustState(KeyboardState newAdjustState) {
-        updateAdjustState(newAdjustState, true);
-    }
-    
+
+    /**
+     * Set screen response to keyboard request
+     * 
+     * @param newAdjustState
+     *            <code>KeyboardState</code> indicating if the layout will suffer any adjustment
+     * @param force
+     *            if <code>true</code> the adjustState is replaced by <code>newAdjustState</code>
+     * @author Andre Lopes
+     */
     private void updateAdjustState(KeyboardState newAdjustState, boolean force) {
         if (getBaseActivity() != null) {
             // Let that the definition of the softInputMode can be forced if the flag force is true
@@ -869,11 +874,11 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                     getBaseActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
                     break;
                 }
-                Log.e(TAG, "UPDATEADJUSTSTATE: " + stateString);
+                Log.d(TAG, "UPDATE ADJUST STATE: " + stateString);
             }
         }
     }
-    
+
     /**
      * ########### ROOT LAYOUT ########### 
      */
