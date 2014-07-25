@@ -657,19 +657,21 @@ public class CatalogPageFragment extends BaseFragment {
         if (productsPage != null && productsPage.getTotalProducts() > 0) {
             Log.d(TAG, "onSuccessEvent: products on page = " + productsPage.getProducts().size() + " total products = " + productsPage.getTotalProducts());
             
-            new Handler().postDelayed(new Runnable() {
-                
-                @Override
-                public void run() {
-                 // TODO: Improve this behavior
-                    if (mPageIndex == 1 && mPageNumber == 1) {
-                        RelatedItemsTableHelper.insertRelatedItemsAndClear(getBaseActivity(), productsPage.getProductsList());
-                    } else if (mPageIndex == 1 && mPageNumber == 2) {
-                        RelatedItemsTableHelper.insertRelatedItems(getBaseActivity(), productsPage.getProductsList());
-                    }
-                }
-            }, 250);
+//            new Thread().start();
+//            new Handler().post(new Runnable() {
+//                @Override
+//                public void run() {
+//                }
+//            });
 
+            // TODO: Improve this behavior
+            if (mPageIndex == 1 && mPageNumber == 1) {
+                RelatedItemsTableHelper.insertRelatedItemsAndClear(getBaseActivity(), productsPage.getProductsList());
+            } else if (mPageIndex == 1 && mPageNumber == 2) {
+                RelatedItemsTableHelper.insertRelatedItems(getBaseActivity(), productsPage.getProductsList());
+            }
+            
+            
             parentFragment.addProductsCollection(productsPage.getProductsMap());
 
             mTotalProducts = productsPage.getTotalProducts();
