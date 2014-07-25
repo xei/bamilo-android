@@ -11,7 +11,6 @@ import pt.rocket.controllers.GalleryPagerAdapter;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.objects.CompleteProduct;
-import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.FragmentCommunicatorForProduct;
 import pt.rocket.utils.HorizontalListView;
@@ -31,7 +30,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.RelativeLayout;
@@ -99,29 +97,23 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
         productImageGalleryFragment.mVariationsListPosition = bundle.getInt(ConstantsIntentExtra.VARIATION_LISTPOSITION, 1);
         productImageGalleryFragment.currentPosition = bundle.getInt(ConstantsIntentExtra.CURRENT_LISTPOSITION, 1);
 
-        if (productImageGalleryFragment.currentPosition <= 0)
-            productImageGalleryFragment.currentPosition = 1;
+        if (productImageGalleryFragment.currentPosition <= 0) productImageGalleryFragment.currentPosition = 1;
         
         productImageGalleryFragment.isZoomAvailable = bundle.getBoolean(ConstantsIntentExtra.IS_ZOOM_AVAILABLE, false);
 
-        if (!productImageGalleryFragment.isZoomAvailable)
-            productImageGalleryFragment.showHorizontalListView = false;
+        if (!productImageGalleryFragment.isZoomAvailable) productImageGalleryFragment.showHorizontalListView = false;
         
         return productImageGalleryFragment;
     }
 
     /**
      * Empty constructor
-     * 
-     * @param arrayList
      */
     public ProductImageGalleryFragment() {
-        super(EnumSet.noneOf(EventType.class),
-                EnumSet.noneOf(EventType.class),
-                EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
+        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.Products,
                 0,
-                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
+                KeyboardState.NO_ADJUST_CONTENT);
         this.setRetainInstance(true);
     }
 
@@ -147,7 +139,6 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
         Log.i(TAG, "ON CREATE");
         // Retain this fragment across configuration changes.
         // setRetainInstance(true);
-        
     }
 
     /*

@@ -15,7 +15,6 @@ import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.framework.objects.OrderTracker;
 import pt.rocket.framework.objects.OrderTrackerItem;
 import pt.rocket.framework.utils.Constants;
-import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LoadingBarView;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.GetTrackOrderHelper;
@@ -31,7 +30,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.LinearLayout;
 import de.akquinet.android.androlog.Log;
 
@@ -67,10 +65,10 @@ public class TrackOrderFragment extends BaseFragment {
      * Empty constructor
      */
     public TrackOrderFragment() {
-        super(EnumSet.of(EventType.TRACK_ORDER_EVENT),
-        EnumSet.noneOf(EventType.class), EnumSet.of(MyMenuItem.MY_PROFILE), 
-        NavigationAction.TrackOrder, 
-        R.string.nav_track_order, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
+        super(EnumSet.of(MyMenuItem.MY_PROFILE),
+                NavigationAction.TrackOrder,
+                R.string.nav_track_order,
+                KeyboardState.ADJUST_CONTENT);
         this.setRetainInstance(true);
     }
 

@@ -37,7 +37,6 @@ import android.content.ContentValues;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.GridView;
 import de.akquinet.android.androlog.Log;
@@ -73,20 +72,17 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
     
     private ArrayList<Integer> mItemsNotAddedToCart = new ArrayList<Integer>();
 
-
     /**
      * Empty constructor
      */
     public FavouritesFragment() {
-        super(EnumSet.noneOf(EventType.class),
-                EnumSet.noneOf(EventType.class),
-                EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
+        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.Favourite,
                 R.layout.favourites,
                 R.string.favourites,
-                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+                KeyboardState.NO_ADJUST_CONTENT);
     }
-    
+
     /**
      * Get a new instance
      * @return FavouritesFragment

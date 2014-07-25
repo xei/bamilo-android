@@ -69,7 +69,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -200,15 +199,16 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
 
     private Drawable isFavouriteDrawable;
     private Drawable isNotFavouriteDrawable;
-    
+
+    /**
+     * Empty constructor
+     */
     public ProductDetailsFragment() {
-        super(EnumSet.of(EventType.GET_PRODUCT_EVENT),
-                EnumSet.of(EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT),
-                EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
+        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.Products,
                 R.layout.productdetailsnew_fragments,
                 0,
-                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
+                KeyboardState.NO_ADJUST_CONTENT);
     }
 
     public static ProductDetailsFragment getInstance(Bundle bundle) {
@@ -1192,6 +1192,8 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
             }, 300);
             
             break;
+        default:
+            break;
         }
     }
     
@@ -1281,6 +1283,8 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
                 }
                 return;
             }
+        default:
+            break;
         }
     }
 

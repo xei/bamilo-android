@@ -39,7 +39,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import de.akquinet.android.androlog.Log;
@@ -113,13 +112,11 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
      * Empty constructor
      */
     public CheckoutMyOrderFragment() {
-        super(EnumSet.of(EventType.CHECKOUT_FINISH_EVENT, EventType.GET_MY_ORDER_EVENT),
-                EnumSet.noneOf(EventType.class),
-                EnumSet.noneOf(MyMenuItem.class),
+        super(EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.Checkout,
                 R.layout.checkout_my_order_main,
-                ConstantsCheckout.CHECKOUT_ORDER, 
-                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+                ConstantsCheckout.CHECKOUT_ORDER,
+                KeyboardState.NO_ADJUST_CONTENT);
     }
 
     /*
@@ -672,21 +669,23 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
      * Dialog used to show an error
      * @param errors
      */
-    private void showErrorDialog(HashMap<String, List<String>> errors){
+    private void showErrorDialog(HashMap<String, List<String>> errors) {
         Log.d(TAG, "SHOW LOGIN ERROR DIALOG");
-        final List<String> errorMessages = (List<String>) errors.get(RestConstants.JSON_VALIDATE_TAG);
-
+        List<String> temp = null;
+        if (errors != null) {
+            temp = (List<String>) errors.get(RestConstants.JSON_VALIDATE_TAG);
+        }
+        final List<String> errorMessages = temp;
         if (errors != null && errorMessages != null && errorMessages.size() > 0) {
-            
             if (getBaseActivity() != null) {
                 showFragmentContentContainer();
             }
-            
             dialog = DialogGenericFragment.newInstance(true, true, false,
                     getString(R.string.error_login_title),
                     errorMessages.get(0),
-                    getString(R.string.ok_label), "", new OnClickListener() {
-
+                    getString(R.string.ok_label),
+                    "",
+                    new OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             int id = v.getId();
@@ -694,9 +693,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
                                 dialog.dismiss();
                                 gotoWebCheckout(errorMessages.get(0));
                             }
-
                         }
-
                     });
             dialog.show(getBaseActivity().getSupportFragmentManager(), null);
         } else {

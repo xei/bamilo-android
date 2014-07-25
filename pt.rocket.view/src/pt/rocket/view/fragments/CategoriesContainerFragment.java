@@ -31,7 +31,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import de.akquinet.android.androlog.Log;
 
@@ -147,13 +146,11 @@ public class CategoriesContainerFragment extends BaseFragment {
      * Empty constructor
      */
     public CategoriesContainerFragment() {
-        super(EnumSet.of(EventType.GET_CATEGORIES_EVENT),
-                EnumSet.noneOf(EventType.class),
-                EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
+        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.Categories,
                 R.layout.categories_fragments,
                 0,
-                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+                KeyboardState.NO_ADJUST_CONTENT);
     }
 
     /*

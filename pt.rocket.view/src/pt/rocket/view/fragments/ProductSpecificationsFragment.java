@@ -11,12 +11,10 @@ import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.objects.CompleteProduct;
-import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.FragmentCommunicatorForProduct;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
-import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.os.Build;
@@ -29,7 +27,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import de.akquinet.android.androlog.Log;
 
@@ -51,10 +48,10 @@ public class ProductSpecificationsFragment extends BaseFragment implements OnCli
 
     private CompleteProduct mCompleteProduct;
     
-    private int CURRENT_IMAGE_INDEX = 0;
+    // private int CURRENT_IMAGE_INDEX = 0;
     private View mainView;
     
-    private OnFragmentActivityInteraction mCallback;
+    // private OnFragmentActivityInteraction mCallback;
     /**
      * 
      * @param dynamicForm
@@ -67,16 +64,12 @@ public class ProductSpecificationsFragment extends BaseFragment implements OnCli
 
     /**
      * Empty constructor
-     * 
-     * @param arrayList
      */
     public ProductSpecificationsFragment() {
-        super(EnumSet.noneOf(EventType.class),
-                EnumSet.noneOf(EventType.class),
-                EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
+        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.Products,
                 R.string.product_details_title,
-                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
+                KeyboardState.NO_ADJUST_CONTENT);
         this.setRetainInstance(true);
     }
 

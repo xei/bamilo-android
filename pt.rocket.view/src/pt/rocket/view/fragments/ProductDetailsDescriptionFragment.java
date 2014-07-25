@@ -9,7 +9,6 @@ import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.framework.objects.CompleteProduct;
-import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.FragmentCommunicatorForProduct;
 import pt.rocket.utils.MyMenuItem;
@@ -26,7 +25,6 @@ import android.text.style.MetricAffectingSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -45,7 +43,7 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
     private TextView mProductNormalPrice;
     private TextView mProductFeaturesText;
     private TextView mProductDescriptionText;
-    private TextView mProductDetailsText;
+    // private TextView mProductDetailsText;
     private RelativeLayout mLoading;
     private LinearLayout mProductFeaturesContainer;
     private CompleteProduct mCompleteProduct;
@@ -67,14 +65,13 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
      * Empty constructor
      */
     public ProductDetailsDescriptionFragment() {
-        super(EnumSet.noneOf(EventType.class), 
-                EnumSet.noneOf(EventType.class),
-                EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE), 
-                NavigationAction.Products, 
-                R.string.product_details_title, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
+                NavigationAction.Products,
+                R.string.product_details_title,
+                KeyboardState.NO_ADJUST_CONTENT);
         this.mCompleteProduct = JumiaApplication.INSTANCE.getCurrentProduct();
     }
-    
+
     /*
      * (non-Javadoc)
      * 
@@ -117,7 +114,7 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
         mProductFeaturesContainer = (LinearLayout) mainView.findViewById(R.id.product_features_container);
         mProductFeaturesText = (TextView) mainView.findViewById( R.id.product_features_text );
         mProductDescriptionText = (TextView) mainView.findViewById( R.id.product_description_text );
-        mProductDetailsText = (TextView) mainView.findViewById( R.id.product_details_text );
+        // mProductDetailsText = (TextView) mainView.findViewById( R.id.product_details_text );
         mLoading = (RelativeLayout) mainView.findViewById(R.id.loading_specifications);
         return mainView;
     }
@@ -222,7 +219,7 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
 //        mProductFeaturesContainer = mainView.findViewById(R.id.product_features_container);
         mProductFeaturesText = (TextView) mainView.findViewById( R.id.product_features_text );
         mProductDescriptionText = (TextView) mainView.findViewById( R.id.product_description_text );
-        mProductDetailsText = (TextView) mainView.findViewById( R.id.product_details_text );
+        // mProductDetailsText = (TextView) mainView.findViewById( R.id.product_details_text );
     }
     
     private void displayProductInformation(View view ) {

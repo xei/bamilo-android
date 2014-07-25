@@ -41,7 +41,6 @@ import android.text.style.ClickableSpan;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.WindowManager;
 import android.widget.TextView.BufferType;
 import android.widget.Toast;
 import de.akquinet.android.androlog.Log;
@@ -75,13 +74,11 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
      * Empty constructor
      */
     public CheckoutThanksFragment() {
-        super(EnumSet.noneOf(EventType.class),
-                EnumSet.noneOf(EventType.class),
-                EnumSet.noneOf(MyMenuItem.class),
+        super(EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.Checkout,
                 R.layout.checkout_thanks,
                 ConstantsCheckout.CHECKOUT_THANKS,
-                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+                KeyboardState.NO_ADJUST_CONTENT);
         this.setRetainInstance(true);
     }
 

@@ -19,7 +19,6 @@ import pt.rocket.framework.objects.ProductRatingPage;
 import pt.rocket.framework.objects.ProductReviewComment;
 import pt.rocket.framework.objects.RatingOption;
 import pt.rocket.framework.utils.Constants;
-import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.GetProductReviewsHelper;
 import pt.rocket.interfaces.IResponseCallback;
@@ -38,7 +37,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -91,13 +89,11 @@ public class PopularityFragment extends BaseFragment {
      * Empty constructor
      */
     public PopularityFragment() {
-        super(EnumSet.of(EventType.GET_PRODUCT_REVIEWS_EVENT),
-                EnumSet.noneOf(EventType.class),
-                EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
+        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.Products,
                 R.layout.popularity,
                 R.string.reviews,
-                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+                KeyboardState.NO_ADJUST_CONTENT);
     }
 
     /*

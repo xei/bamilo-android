@@ -51,7 +51,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
@@ -112,16 +111,14 @@ public class SessionRegisterFragment extends BaseFragment {
     }
 
     /**
-     * 
+     * Empty Constructor
      */
     public SessionRegisterFragment() {
-        super(EnumSet.of(EventType.GET_REGISTRATION_FORM_EVENT, EventType.GET_TERMS_EVENT),
-                EnumSet.of(EventType.REGISTER_ACCOUNT_EVENT),
-                EnumSet.noneOf(MyMenuItem.class),
+        super(EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.MyAccount,
                 R.layout.register,
                 R.string.register_title,
-                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
+                KeyboardState.ADJUST_CONTENT);
     }
 
     /*

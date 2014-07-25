@@ -27,7 +27,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.WindowManager;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
@@ -71,13 +70,11 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
      * @author sergiopereira
      */
     public MyAccountEmailNotificationFragment() {
-        super(EnumSet.noneOf(EventType.class),
-                EnumSet.noneOf(EventType.class),
-                EnumSet.noneOf(MyMenuItem.class),
+        super(EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.MyAccount,
                 R.layout.my_account_email_notification_fragment,
                 R.string.myaccount_email_notifications,
-                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+                KeyboardState.NO_ADJUST_CONTENT);
     }
 
     /*

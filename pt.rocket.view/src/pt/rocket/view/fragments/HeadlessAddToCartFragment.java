@@ -28,7 +28,6 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Toast;
 import de.akquinet.android.androlog.Log;
 
@@ -76,12 +75,10 @@ public class HeadlessAddToCartFragment extends BaseFragment implements IResponse
      * Empty constructor
      */
     public HeadlessAddToCartFragment() {
-        super(EnumSet.of(
-                EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT),
-                EnumSet.noneOf(EventType.class),
-                EnumSet.noneOf(MyMenuItem.class),
+        super(EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.Unknown,
-                0, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+                0,
+                KeyboardState.NO_ADJUST_CONTENT);
     }
 
     /*

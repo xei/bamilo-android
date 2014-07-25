@@ -11,7 +11,6 @@ import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.ProductImagesAdapter;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.Variation;
-import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.FragmentCommunicatorForProduct;
 import pt.rocket.utils.HorizontalListView;
@@ -26,7 +25,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import de.akquinet.android.androlog.Log;
@@ -61,15 +59,12 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
 
     /**
      * Empty constructor
-     * 
-     * @param arrayList
      */
     public ProductVariationsFragment() {
-        super(EnumSet.of(EventType.GET_PRODUCT_EVENT), 
-                EnumSet.noneOf(EventType.class), 
-                EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
+        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.Products,
-                R.string.product_details_title, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
+                R.string.product_details_title,
+                KeyboardState.NO_ADJUST_CONTENT);
     }
 
     @Override

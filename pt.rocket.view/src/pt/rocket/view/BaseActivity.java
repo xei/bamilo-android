@@ -43,6 +43,7 @@ import pt.rocket.utils.dialogfragments.CustomToastView;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.utils.dialogfragments.DialogProgressFragment;
 import pt.rocket.utils.imageloader.RocketImageLoader;
+import pt.rocket.view.fragments.BaseFragment.KeyboardState;
 import pt.rocket.view.fragments.NavigationFragment;
 import android.app.Activity;
 import android.content.Context;
@@ -2010,7 +2011,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         }
     };
 
-    public static int currentAdjustState;
+    public static KeyboardState currentAdjustState;
 
     /**
      * Handles correct responses

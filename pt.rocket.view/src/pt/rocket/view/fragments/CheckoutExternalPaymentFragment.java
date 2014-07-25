@@ -46,7 +46,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
-import android.view.WindowManager;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.HttpAuthHandler;
@@ -111,14 +110,11 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
      * Empty constructor
      */
     public CheckoutExternalPaymentFragment() {
-        super(EnumSet.of(EventType.GET_SHOPPING_CART_ITEMS_EVENT,
-                EventType.GET_CUSTOMER),
-                EnumSet.noneOf(EventType.class),
-                EnumSet.noneOf(MyMenuItem.class),
+        super(EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.Checkout,
                 R.layout.checkoutweb,
                 0,
-                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+                KeyboardState.NO_ADJUST_CONTENT);
         this.setRetainInstance(true);
     }
 
@@ -168,10 +164,10 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
         triggerContentEventWithNoLoading(new GetCustomerHelper(), null, mCallback);
     }
 
-    private void triggerGetShoppingCartItems() {
-
-        triggerContentEventWithNoLoading(new GetShoppingCartItemsHelper(), null, mCallback);
-    }
+//    private void triggerGetShoppingCartItems() {
+//
+//        triggerContentEventWithNoLoading(new GetShoppingCartItemsHelper(), null, mCallback);
+//    }
 
     IResponseCallback mCallback = new IResponseCallback() {
 
@@ -653,9 +649,11 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
              * TODO: Verify if we need to fill customer
              */
              customer = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-             JumiaApplication.INSTANCE.CUSTOMER = customer;
+             JumiaApplication.CUSTOMER = customer;
             break;
         case GET_SHOPPING_CART_ITEMS_EVENT:
+            break;
+        default:
             break;
         }
         return false;

@@ -44,7 +44,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -98,13 +97,11 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
      * Empty constructor
      */
     public CheckoutEditAddressFragment() {
-        super(EnumSet.of(EventType.GET_EDIT_ADDRESS_FORM_EVENT, EventType.EDIT_ADDRESS_EVENT),
-                EnumSet.noneOf(EventType.class),
-                EnumSet.noneOf(MyMenuItem.class),
+        super(EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.Checkout,
                 R.layout.checkout_edit_address_main,
                 ConstantsCheckout.CHECKOUT_BILLING,
-                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
+                KeyboardState.ADJUST_CONTENT);
     }
 
     /*
@@ -789,37 +786,32 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
      * Dialog used to show an error
      * @param errors
      */
-    private void showErrorDialog(HashMap<String, List<String>> errors){
+    private void showErrorDialog(HashMap<String, List<String>> errors) {
         Log.d(TAG, "SHOW LOGIN ERROR DIALOG");
         List<String> errorMessages = null;
         if (errors != null) {
             errorMessages = (List<String>) errors.get(RestConstants.JSON_VALIDATE_TAG);
         }
         if (errors != null && errorMessages != null && errorMessages.size() > 0) {
-            
             showFragmentContentContainer();
-            
             dialog = DialogGenericFragment.newInstance(true, true, false,
                     getString(R.string.error_login_title),
                     errorMessages.get(0),
-                    getString(R.string.ok_label), "", new OnClickListener() {
-
+                    getString(R.string.ok_label),
+                    "",
+                    new OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             int id = v.getId();
                             if (id == R.id.button1) {
                                 dialog.dismiss();
                             }
-
                         }
-
                     });
             dialog.show(getBaseActivity().getSupportFragmentManager(), null);
         } else {
-            if(mMsgRequired!=null) mMsgRequired.setVisibility(View.VISIBLE);
+            if (mMsgRequired != null) mMsgRequired.setVisibility(View.VISIBLE);
             else Toast.makeText(getBaseActivity(), getString(R.string.register_required_text), Toast.LENGTH_SHORT).show();
         }
     }
-
-
 }

@@ -25,7 +25,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -53,15 +52,15 @@ public class RecentSearchFragment extends BaseFragment {
 
     // private View mLoadingView;
 
+    /**
+     * Empty constructor
+     */
     public RecentSearchFragment() {
-
-        super(EnumSet.noneOf(EventType.class),
-                EnumSet.noneOf(EventType.class),
-                EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
+        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.RecentSearch,
                 R.layout.recentsearches,
                 R.string.recent_searches,
-                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+                KeyboardState.NO_ADJUST_CONTENT);
     }
     
 //    @Override

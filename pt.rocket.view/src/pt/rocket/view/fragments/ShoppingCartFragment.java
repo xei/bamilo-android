@@ -14,7 +14,6 @@ import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.ConstantsSharedPrefs;
-import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.Darwin;
@@ -55,7 +54,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -173,13 +171,11 @@ public class ShoppingCartFragment extends BaseFragment {
      * Empty constructor
      */
     public ShoppingCartFragment() {
-        super(EnumSet.of(EventType.GET_SHOPPING_CART_ITEMS_EVENT),
-                EnumSet.of(EventType.REMOVE_ITEM_FROM_SHOPPING_CART_EVENT, EventType.CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT),
-                EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
+        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.Basket,
                 R.layout.shopping_basket,
                 R.string.shoppingcart_title,
-                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
+                KeyboardState.ADJUST_CONTENT);
         this.setRetainInstance(true);
     }
 

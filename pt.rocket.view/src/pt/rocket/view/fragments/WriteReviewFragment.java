@@ -8,7 +8,6 @@ import org.holoeverywhere.widget.EditText;
 import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.app.JumiaApplication;
-import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.objects.ProductReviewCommentCreated;
@@ -34,7 +33,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -104,13 +102,11 @@ public class WriteReviewFragment extends BaseFragment {
      * Empty constructor
      */
     public WriteReviewFragment() {
-        super(EnumSet.of(EventType.LOGIN_EVENT, EventType.GET_RATING_OPTIONS_EVENT, EventType.GET_CUSTOMER),
-                EnumSet.of(EventType.REVIEW_PRODUCT_EVENT),
-                EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
+        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.Products,
                 R.layout.writereview,
                 R.string.writereview_page_title,
-                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
+                KeyboardState.ADJUST_CONTENT);
     }
 
     /*
@@ -423,7 +419,7 @@ public class WriteReviewFragment extends BaseFragment {
 
     protected boolean onSuccessEvent(Bundle bundle) {
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        // ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         switch (eventType) {
         case REVIEW_PRODUCT_EVENT:
             
@@ -473,7 +469,7 @@ public class WriteReviewFragment extends BaseFragment {
         case GET_CUSTOMER:
             Log.i("GOT CUSTOMER", "HERE ");
             customerCred = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-            JumiaApplication.INSTANCE.CUSTOMER = customerCred;
+            JumiaApplication.CUSTOMER = customerCred;
             return true;
 
         default:

@@ -49,7 +49,6 @@ import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import de.akquinet.android.androlog.Log;
@@ -92,13 +91,11 @@ public class HomeFragment extends BaseFragment implements IResponseCallback {
      * Empty constructor
      */
     public HomeFragment() {
-        super(EnumSet.of(EventType.GET_TEASERS_EVENT),
-                EnumSet.noneOf(EventType.class),
-                EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
-                NavigationAction.Home, 
-                R.layout.home_fragment_main, 
-                0, 
-                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
+                NavigationAction.Home,
+                R.layout.home_fragment_main,
+                0,
+                KeyboardState.NO_ADJUST_CONTENT);
     }
 
     /*
@@ -472,6 +469,8 @@ public class HomeFragment extends BaseFragment implements IResponseCallback {
             Log.i(TAG, "ON SUCCESS RESPONSE: GET_TEASERS_EVENT");
             onGetPromotions(bundle);
             break;
+        default:
+            break;
         }
 
     }
@@ -511,6 +510,8 @@ public class HomeFragment extends BaseFragment implements IResponseCallback {
             showLayoutFallback();
             break;
         case GET_PROMOTIONS:
+            break;
+        default:
             break;
         }
     }

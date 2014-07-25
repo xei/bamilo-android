@@ -29,7 +29,6 @@ import android.content.ContentValues;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -68,13 +67,11 @@ public class SessionForgotPasswordFragment extends BaseFragment {
      * Empty constructor
      */
     public SessionForgotPasswordFragment() {
-        super(EnumSet.of(EventType.GET_FORGET_PASSWORD_FORM_EVENT),
-                EnumSet.of(EventType.FORGET_PASSWORD_EVENT),
-                EnumSet.noneOf(MyMenuItem.class),
+        super(EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.MyAccount,
                 R.layout.forgtopassword,
                 R.string.forgotpass_header,
-                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
+                KeyboardState.ADJUST_CONTENT);
         this.setRetainInstance(true);
     }
 
@@ -302,6 +299,8 @@ public class SessionForgotPasswordFragment extends BaseFragment {
                     });
             dialog.show(getActivity().getSupportFragmentManager(), null);
             break;
+        default:
+            break;
         }
         return true;
     }
@@ -326,32 +325,32 @@ public class SessionForgotPasswordFragment extends BaseFragment {
             Log.d(TAG, "FORGET_PASSWORD_EVENT");
             
             HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
-            List<String> errorMessages = (List<String>) errors.get(RestConstants.JSON_VALIDATE_TAG);
-
+            List<String> errorMessages = null;
+            if (errors != null) {
+                errorMessages = (List<String>) errors.get(RestConstants.JSON_VALIDATE_TAG);
+            }
             if (errors != null && errorMessages != null && errorMessages.size() > 0) {
                 showFragmentContentContainer();
                 dialog = DialogGenericFragment.newInstance(true, true, false,
                         getString(R.string.error_forgotpassword_title),
                         errorMessages.get(0),
-                        getString(R.string.ok_label), "", new OnClickListener() {
-
+                        getString(R.string.ok_label),
+                        "",
+                        new OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 int id = v.getId();
                                 if (id == R.id.button1) {
                                     dialog.dismiss();
                                 }
-
                             }
-
                         });
                 dialog.show(getActivity().getSupportFragmentManager(), null);
                 return true;
             }
         }
-        return false;  
+        return false;
     }
-    
     
     /**
      * TRIGGERS

@@ -9,7 +9,6 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
@@ -48,7 +47,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.EditText;
 
 import com.facebook.Request;
@@ -127,13 +125,11 @@ public class SessionLoginFragment extends BaseFragment {
      * Empty constructor
      */
     public SessionLoginFragment() {
-        super(EnumSet.of(EventType.GET_LOGIN_FORM_EVENT),
-                EnumSet.of(EventType.LOGIN_EVENT, EventType.FACEBOOK_LOGIN_EVENT),
-                EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
+        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.LoginOut,
                 R.layout.login,
-                R.string.login_title, 
-                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
+                R.string.login_title,
+                KeyboardState.ADJUST_CONTENT);
     }
 
     /*
@@ -555,6 +551,8 @@ public class SessionLoginFragment extends BaseFragment {
             Log.d(TAG, "Form Loaded");
             loadForm(form);
             formResponse = form;
+        default:
+            break;
         }
         return true;
     }
@@ -630,30 +628,25 @@ public class SessionLoginFragment extends BaseFragment {
                         LogOut.performLogOut(new WeakReference<Activity>(getBaseActivity()));
                     }
                 } else {
-                    
                     Log.d(TAG, "SHOW DIALOG");
-                    HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle
-                            .getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
-                    List<String> errorMessages = (List<String>) errors.get(RestConstants.JSON_VALIDATE_TAG);
-
-                    if (errors != null && errorMessages.size() > 0) {
-                        
+                    HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+                    List<String> errorMessages = null;
+                    if (errors != null) {
+                        errorMessages = (List<String>) errors.get(RestConstants.JSON_VALIDATE_TAG);
+                    }
+                    if (errors != null && errorMessages != null && errorMessages.size() > 0) {
                         showFragmentContentContainer();
-                        
                         dialog = DialogGenericFragment.newInstance(true, true, false,
                                 getString(R.string.error_login_title),
                                 errorMessages.get(0),
                                 getString(R.string.ok_label), "", new OnClickListener() {
-
                                     @Override
                                     public void onClick(View v) {
                                         int id = v.getId();
                                         if (id == R.id.button1) {
                                             dialog.dismiss();
                                         }
-
                                     }
-
                                 });
                         dialog.show(getActivity().getSupportFragmentManager(), null);
                     }
@@ -663,8 +656,6 @@ public class SessionLoginFragment extends BaseFragment {
         }
         return false;
     }
-    
-    
     
     /**
      * TRIGGERS

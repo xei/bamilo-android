@@ -8,7 +8,6 @@ import java.util.EnumSet;
 import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.constants.ConstantsIntentExtra;
-import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
@@ -18,7 +17,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.RatingBar;
 import de.akquinet.android.androlog.Log;
 
@@ -47,11 +45,10 @@ public class ReviewFragment extends BaseFragment {
      * Empty constructor
      */
     public ReviewFragment() {
-        super(EnumSet.noneOf(EventType.class), 
-                EnumSet.noneOf(EventType.class), 
-                EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE), 
-                NavigationAction.Products,  
-                R.string.review, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
+                NavigationAction.Products,
+                R.string.review,
+                KeyboardState.NO_ADJUST_CONTENT);
         this.setRetainInstance(true);
     }
 

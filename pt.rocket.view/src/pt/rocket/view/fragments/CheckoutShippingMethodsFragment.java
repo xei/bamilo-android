@@ -29,7 +29,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -69,13 +68,11 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
      * Empty constructor
      */
     public CheckoutShippingMethodsFragment() {
-        super(EnumSet.of(EventType.GET_SHIPPING_METHODS_EVENT),
-                EnumSet.noneOf(EventType.class),
-                EnumSet.noneOf(MyMenuItem.class),
+        super(EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.Checkout,
                 R.layout.checkout_shipping_methods,
                 ConstantsCheckout.CHECKOUT_SHIPPING,
-                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+                KeyboardState.NO_ADJUST_CONTENT);
     }
 
     /*

@@ -8,7 +8,6 @@ import java.util.EnumSet;
 import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.constants.ConstantsIntentExtra;
-import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
@@ -18,7 +17,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -57,12 +55,10 @@ public class SessionTermsFragment extends BaseFragment {
      * Empty constructor
      */
     public SessionTermsFragment() {
-        super(EnumSet.noneOf(EventType.class),
-                EnumSet.noneOf(EventType.class),
-                EnumSet.noneOf(MyMenuItem.class),
+        super(EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.Unknown,
                 0,
-                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+                KeyboardState.NO_ADJUST_CONTENT);
     }
 
     @Override

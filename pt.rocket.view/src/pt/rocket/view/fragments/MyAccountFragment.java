@@ -9,7 +9,6 @@ import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.MyAccountAdapter;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
-import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
@@ -19,7 +18,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -56,13 +54,12 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
      * Empty constructor
      */
     public MyAccountFragment() {
-        super(EnumSet.noneOf(EventType.class), 
-                EnumSet.noneOf(EventType.class),
-                EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE), 
-                NavigationAction.MyAccount, 
-                R.string.account_name, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
+                NavigationAction.MyAccount,
+                R.string.account_name,
+                KeyboardState.NO_ADJUST_CONTENT);
     }
-    
+
     /*
      * (non-Javadoc)
      * 

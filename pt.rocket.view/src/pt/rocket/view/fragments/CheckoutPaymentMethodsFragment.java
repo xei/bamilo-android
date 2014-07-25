@@ -43,7 +43,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -85,18 +84,16 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
         paymentMethodsFragment = new CheckoutPaymentMethodsFragment();
         return paymentMethodsFragment;
     }
-    
+
     /**
      * Empty constructor
      */
     public CheckoutPaymentMethodsFragment() {
-        super(EnumSet.of(EventType.GET_PAYMENT_METHODS_EVENT),
-                EnumSet.noneOf(EventType.class),
-                EnumSet.noneOf(MyMenuItem.class),
+        super(EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.Checkout,
                 R.layout.checkout_payment_methods,
                 ConstantsCheckout.CHECKOUT_PAYMENT,
-                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
+                KeyboardState.ADJUST_CONTENT);
     }
 
     /*

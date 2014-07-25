@@ -41,7 +41,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
-import android.view.WindowManager;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.HttpAuthHandler;
@@ -104,12 +103,11 @@ public class CheckoutWebFragment extends BaseFragment {
      * Empty constructor
      */
     public CheckoutWebFragment() {
-        super(EnumSet.of(EventType.GET_SHOPPING_CART_ITEMS_EVENT, EventType.GET_CUSTOMER),
-                EnumSet.noneOf(EventType.class),
-                EnumSet.noneOf(MyMenuItem.class),
+        super(EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.Unknown,
                 R.layout.checkoutweb,
-                0, WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+                0,
+                KeyboardState.NO_ADJUST_CONTENT);
         this.setRetainInstance(true);
     }
     

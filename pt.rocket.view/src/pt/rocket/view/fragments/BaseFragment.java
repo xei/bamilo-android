@@ -61,7 +61,7 @@ import de.akquinet.android.androlog.Log;
  */
 public abstract class BaseFragment extends Fragment implements OnActivityFragmentInteraction {
 
-    private static final Set<EventType> HANDLED_EVENTS = EnumSet.noneOf(EventType.class);
+    // private static final Set<EventType> HANDLED_EVENTS = EnumSet.noneOf(EventType.class);
     
     protected static final String TAG = LogTagHelper.create(BaseFragment.class);
     
@@ -70,6 +70,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 	public static final Boolean IS_NESTED_FRAGMENT = true;
 	
     public static final Boolean ISNT_NESTED_FRAGMENT = false;
+
+    public static enum KeyboardState { NO_ADJUST_CONTENT, ADJUST_CONTENT };
 
     private static final boolean VISIBLE = true;
 
@@ -85,13 +87,13 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     private NavigationAction action;
 
-    //private Set<EventType> contentEvents;
+    // private Set<EventType> contentEvents;
 
     protected DialogFragment dialog;
 
-    private final Set<EventType> allHandledEvents = EnumSet.copyOf(HANDLED_EVENTS);
+    // private final Set<EventType> allHandledEvents = EnumSet.copyOf(HANDLED_EVENTS);
 
-    //private Set<EventType> userEvents;
+    // private Set<EventType> userEvents;
 
     protected Set<MyMenuItem> enabledMenuItems;
 
@@ -109,7 +111,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     
     protected boolean isOnStoppingProcess = true;
 
-    private int adjustState = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED;
+    private KeyboardState adjustState = KeyboardState.ADJUST_CONTENT;
     
     public BaseFragment() {
     }
@@ -133,12 +135,12 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     /**
      * Constructor
      */
-    public BaseFragment(Set<EventType> contentEvents, Set<EventType> userEvents,
-            Set<MyMenuItem> enabledMenuItems, NavigationAction action, int titleResId, int adjust_state) {
-        //this.contentEvents = contentEvents;
-        //this.userEvents = userEvents;
-        this.allHandledEvents.addAll(contentEvents);
-        this.allHandledEvents.addAll(userEvents);
+    public BaseFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, int titleResId,
+            KeyboardState adjust_state) {
+        // this.contentEvents = contentEvents;
+        // this.userEvents = userEvents;
+        // this.allHandledEvents.addAll(contentEvents);
+        // this.allHandledEvents.addAll(userEvents);
         this.enabledMenuItems = enabledMenuItems;
         this.action = action;
         this.titleResId = titleResId;
@@ -148,13 +150,12 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     /**
      * Constructor with layout to inflate
      */
-    public BaseFragment(Set<EventType> contentEvents, Set<EventType> userEvents,
-            Set<MyMenuItem> enabledMenuItems, NavigationAction action, int layoutResId,
-            int titleResId, int adjust_state) {
-        //this.contentEvents = contentEvents;
-        //this.userEvents = userEvents;
-        this.allHandledEvents.addAll(contentEvents);
-        this.allHandledEvents.addAll(userEvents);
+    public BaseFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, int layoutResId,
+            int titleResId, KeyboardState adjust_state) {
+        // this.contentEvents = contentEvents;
+        // this.userEvents = userEvents;
+        // this.allHandledEvents.addAll(contentEvents);
+        // this.allHandledEvents.addAll(userEvents);
         this.enabledMenuItems = enabledMenuItems;
         this.action = action;
         this.mInflateLayoutResId = layoutResId;
@@ -198,8 +199,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * @param enumSet
      */
     public BaseFragment(Boolean isNestedFragment, NavigationAction action, EnumSet<MyMenuItem> enumSet) {
-        if(action == NavigationAction.Country){
-            this.adjustState = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN;
+        if (action == NavigationAction.Country) {
+            this.adjustState = KeyboardState.NO_ADJUST_CONTENT;
         }
         this.isNestedFragment = isNestedFragment;
         this.action = action;
@@ -305,15 +306,15 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     @Override
     public void onStart() {
         super.onStart();
-        /**
-         * Adjust state for each fragment type.
-         */
-        if(this.adjustState >= 0 && (!isNestedFragment|| action == NavigationAction.Country)){
-            updateAdjustState(this.adjustState);    
-            if(getBaseActivity() != null){
-                getBaseActivity().closeDrawerIfOpen();
-            }
-        }
+//        /**
+//         * Adjust state for each fragment type.
+//         */
+//        if (!isNestedFragment || action == NavigationAction.Country) {
+//            updateAdjustState(this.adjustState);
+//            if (getBaseActivity() != null) {
+//                getBaseActivity().closeDrawerIfOpen();
+//            }
+//        }
         
         setVisiblility(VISIBLE);
         
@@ -366,6 +367,16 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         if (getBaseActivity() != null) {
             getBaseActivity().showWarning(false);
             getBaseActivity().showWarningVariation(false);
+        }
+
+        /**
+         * Adjust state for each fragment type.
+         */
+        if (!isNestedFragment || action == NavigationAction.Country) {
+            updateAdjustState(this.adjustState);
+            if (getBaseActivity() != null) {
+                getBaseActivity().closeDrawerIfOpen();
+            }
         }
     }
 
@@ -835,22 +846,29 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         return (array != null && !array.isEmpty()) ? true : false;
     }
     
+    private void updateAdjustState(KeyboardState newAdjustState) {
+        updateAdjustState(newAdjustState, true);
+    }
     
-    // TODO: Validate if this is necessary
-    private void updateAdjustState(int newAdjustState){
-//        if(getBaseActivity() != null){
-//            if(BaseActivity.currentAdjustState != newAdjustState){
-//                BaseActivity.currentAdjustState = newAdjustState;
-//                switch (newAdjustState) {
-//                case WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN:
-//                    getBaseActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-//                    break;
-//                case WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED:
-//                    getBaseActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-//                    break;
-//                }    
-//            }
-//        }
+    private void updateAdjustState(KeyboardState newAdjustState, boolean force) {
+        if (getBaseActivity() != null) {
+            // Let that the definition of the softInputMode can be forced if the flag force is true
+            if (force || BaseActivity.currentAdjustState != newAdjustState) {
+                String stateString = "UNDEFINED";
+                BaseActivity.currentAdjustState = newAdjustState;
+                switch (newAdjustState) {
+                case NO_ADJUST_CONTENT:
+                    stateString = "NO_ADJUST_CONTENT";
+                    getBaseActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+                    break;
+                case ADJUST_CONTENT:
+                    stateString = "ADJUST_CONTENT";
+                    getBaseActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+                    break;
+                }
+                Log.e(TAG, "UPDATEADJUSTSTATE: " + stateString);
+            }
+        }
     }
     
     /**

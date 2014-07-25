@@ -8,7 +8,6 @@ import java.util.EnumSet;
 
 import pt.rocket.framework.components.androidslidingtabstrip.SlidingTabLayout;
 import pt.rocket.framework.objects.TeaserCampaign;
-import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
@@ -22,7 +21,6 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -61,12 +59,10 @@ public class CampaignsFragment extends BaseFragment {
      * Empty constructor
      */
     public CampaignsFragment() {
-        super(EnumSet.of(EventType.GET_CAMPAIGN_EVENT), 
-                EnumSet.noneOf(EventType.class),
-                EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
-                NavigationAction.Unknown, 
-                0, 
-                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
+                NavigationAction.Unknown,
+                0,
+                KeyboardState.NO_ADJUST_CONTENT);
     }
 
     /*

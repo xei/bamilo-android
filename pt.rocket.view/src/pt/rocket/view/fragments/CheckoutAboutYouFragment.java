@@ -48,7 +48,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.EditText;
 
 import com.facebook.Request;
@@ -135,14 +134,11 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
      * Empty constructor
      */
     public CheckoutAboutYouFragment() {
-        super(EnumSet.of(EventType.GET_LOGIN_FORM_EVENT,
-                EventType.GET_SIGNUP_FORM_EVENT),
-                EnumSet.of(EventType.LOGIN_EVENT, EventType.FACEBOOK_LOGIN_EVENT, EventType.SET_SIGNUP_EVENT),
-                EnumSet.noneOf(MyMenuItem.class),
+        super(EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.Checkout,
                 R.layout.checkout_about_you,
                 ConstantsCheckout.CHECKOUT_ABOUT_YOU,
-                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
+                KeyboardState.ADJUST_CONTENT);
     }
     
     /*
@@ -1010,28 +1006,27 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
      * Dialog used to show an error
      * @param errors
      */
-    private void showErrorDialog(HashMap<String, List<String>> errors, int titleId){
+    private void showErrorDialog(HashMap<String, List<String>> errors, int titleId) {
         Log.d(TAG, "SHOW ERROR DIALOG: " + errors.toString());
-        List<String> errorMessages = (List<String>) errors.get(RestConstants.JSON_VALIDATE_TAG);
-
+        List<String> errorMessages = null;
+        if (errors != null) {
+            errorMessages = (List<String>) errors.get(RestConstants.JSON_VALIDATE_TAG);
+        }
         if (errors != null && errorMessages != null && errorMessages.size() > 0) {
-            
             showFragmentContentContainer();
-            
             dialog = DialogGenericFragment.newInstance(true, true, false,
                     getString(titleId),
                     errorMessages.get(0),
-                    getString(R.string.ok_label), "", new OnClickListener() {
-
+                    getString(R.string.ok_label),
+                    "",
+                    new OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             int id = v.getId();
                             if (id == R.id.button1) {
                                 dialog.dismiss();
                             }
-
                         }
-
                     });
             dialog.show(getBaseActivity().getSupportFragmentManager(), null);
         }

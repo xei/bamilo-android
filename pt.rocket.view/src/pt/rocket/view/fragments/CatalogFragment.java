@@ -19,7 +19,6 @@ import pt.rocket.framework.objects.FeaturedBox;
 import pt.rocket.framework.objects.FeaturedItem;
 import pt.rocket.framework.objects.Product;
 import pt.rocket.framework.tracking.AnalyticsGoogle;
-import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.GetProductsHelper;
 import pt.rocket.utils.MyMenuItem;
@@ -45,7 +44,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -107,13 +105,14 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
 
     private int mSavedPagerPosition = 0;
 
+    /**
+     * Empty constructor
+     */
     public CatalogFragment() {
-        super(EnumSet.noneOf(EventType.class),
-                EnumSet.noneOf(EventType.class),
-                EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
+        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.Products,
                 R.string.products,
-                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+                KeyboardState.NO_ADJUST_CONTENT);
         mProductsMap = new HashMap<String, Product>();
     }
 
@@ -166,7 +165,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         mViewPager = (ViewPager) view.findViewById(R.id.viewpager_products_list);
 
         mPagerTabStrip = (SlidingTabLayout) view.findViewById(R.id.catalog_pager_tag); // XXX
-        mPagerTabStrip.setCustomTabView(R.layout.tab_simple_item, R.id.tab);        
+        mPagerTabStrip.setCustomTabView(R.layout.tab_simple_item, R.id.tab);
 
         // Get wizard container
         mWizardContainer = view.findViewById(R.id.tips_container);
@@ -211,10 +210,10 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
 
                 if (mCatalogPagerAdapter == null) {
                     Log.d(TAG, "FILTER: ADAPTER IS NULL");
-                    Bundle params = new Bundle();        
+                    Bundle params = new Bundle();
                     params.putString(ConstantsIntentExtra.CONTENT_TITLE, title);
                     params.putString(ConstantsIntentExtra.CONTENT_URL, productsURL);
-                    params.putString(ConstantsIntentExtra.SEARCH_QUERY, searchQuery);            
+                    params.putString(ConstantsIntentExtra.SEARCH_QUERY, searchQuery);
                     params.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, navigationSource);
                     params.putString(ConstantsIntentExtra.NAVIGATION_PATH, navigationPath);
                     params.putParcelable(CatalogPageFragment.PARAM_FILTERS, mCatalogFilterValues);
@@ -652,10 +651,10 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         
         mProductsMap = new HashMap<String, Product>();
         
-        Bundle params = new Bundle();        
+        Bundle params = new Bundle();
         params.putString(ConstantsIntentExtra.CONTENT_TITLE, title);
         params.putString(ConstantsIntentExtra.CONTENT_URL, productsURL);
-        params.putString(ConstantsIntentExtra.SEARCH_QUERY, searchQuery);            
+        params.putString(ConstantsIntentExtra.SEARCH_QUERY, searchQuery);
         params.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, navigationSource);
         params.putString(ConstantsIntentExtra.NAVIGATION_PATH, navigationPath);
         params.putParcelable(CatalogPageFragment.PARAM_FILTERS, mCatalogFilterValues);
@@ -850,10 +849,10 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
                 public void run() {
                     // Update the current view page with the current list of products rendered on a
                     // different layout without calling a new request
-                    Bundle params = new Bundle();        
+                    Bundle params = new Bundle();
                     params.putString(ConstantsIntentExtra.CONTENT_TITLE, title);
                     params.putString(ConstantsIntentExtra.CONTENT_URL, productsURL);
-                    params.putString(ConstantsIntentExtra.SEARCH_QUERY, searchQuery);            
+                    params.putString(ConstantsIntentExtra.SEARCH_QUERY, searchQuery);
                     params.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, navigationSource);
                     params.putString(ConstantsIntentExtra.NAVIGATION_PATH, navigationPath);
                     params.putParcelable(CatalogPageFragment.PARAM_FILTERS, mCatalogFilterValues);
@@ -890,6 +889,6 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         if (null != adapter) {
             adapter.invalidateCatalogPages();
             adapter.notifyDataSetChanged();
-        }        
+        }
     }
 }
