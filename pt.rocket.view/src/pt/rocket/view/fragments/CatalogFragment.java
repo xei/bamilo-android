@@ -310,6 +310,19 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         super.onSaveInstanceState(outState);
     }
 
+    @Override
+    public void sendValuesToFragment(int identifier, Object values) {
+        Product product = mProductsMap.get(values);
+        if (null != product) {
+            if (BaseFragment.FRAGMENT_VALUE_SET_FAVORITE == identifier ) {
+                product.getAttributes().setFavourite(true);
+            } else if (BaseFragment.FRAGMENT_VALUE_REMOVE_FAVORITE == identifier ) {
+                product.getAttributes().setFavourite(false);
+            }
+            mCatalogPagerAdapter.invalidateCatalogPages();
+        }
+    }
+    
     /*
      * ######## CATALOG FILTER ######## TODO : Add here more filter methods
      */

@@ -1075,17 +1075,27 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
             if (isFavoriteObject != null && isFavoriteObject instanceof String) {
                 isFavourite = Boolean.parseBoolean((String) isFavoriteObject);
             }
+            int fragmentMessage = 0;
             if (!isFavourite) {
+                fragmentMessage = BaseFragment.FRAGMENT_VALUE_SET_FAVORITE;
                 FavouriteTableHelper.insertFavouriteProduct(mCompleteProduct);
                 mCompleteProduct.getAttributes().put(RestConstants.JSON_IS_FAVOURITE_TAG, Boolean.TRUE.toString());
                 imageIsFavourite.setImageDrawable(isFavouriteDrawable);
                 Toast.makeText(mContext, getString(R.string.products_added_favourite), Toast.LENGTH_SHORT).show();
             } else {
+                fragmentMessage = BaseFragment.FRAGMENT_VALUE_REMOVE_FAVORITE;
                 FavouriteTableHelper.removeFavouriteProduct(mCompleteProduct.getSku());
                 mCompleteProduct.getAttributes().put(RestConstants.JSON_IS_FAVOURITE_TAG, Boolean.FALSE.toString());
                 imageIsFavourite.setImageDrawable(isNotFavouriteDrawable);
                 Toast.makeText(mContext, getString(R.string.products_removed_favourite), Toast.LENGTH_SHORT).show();
             }
+            
+            BaseFragment catalogFragment = (BaseFragment)getBaseActivity().getSupportFragmentManager().
+                    findFragmentByTag(FragmentType.PRODUCT_LIST.toString());            
+            if (null != catalogFragment) {
+                catalogFragment.sendValuesToFragment(fragmentMessage, mCompleteProduct.getSku());
+            }
+            
         } else if (id == R.id.image_share){
             try {
                 Intent shareIntent = getBaseActivity().createShareIntent();
