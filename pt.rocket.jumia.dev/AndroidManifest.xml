@@ -79,7 +79,6 @@
             android:name="pt.rocket.view.MainFragmentActivity"
             android:windowSoftInputMode="adjustPan"
             android:screenOrientation="unspecified" />
-        <!-- android:windowSoftInputMode="adjustPan" -->
 
         <activity android:name="net.hockeyapp.android.UpdateActivity" />
 
