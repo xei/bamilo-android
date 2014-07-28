@@ -249,7 +249,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
             String categoryName = currentCategory.getName();
             // Create and add the header for back
             // Use always word BACK
-            View headerForBack = createHeader(R.layout.category_inner_top_back, getString(R.string.back)); 
+            View headerForBack = createHeader(R.layout.category_inner_top_back, getString(R.string.back_label)); 
             mCategoryList.addHeaderView(headerForBack);
             // Set Adapter
             mSubCategoryAdapter = new SubCategoriesAdapter(getActivity(), child, categoryName);
