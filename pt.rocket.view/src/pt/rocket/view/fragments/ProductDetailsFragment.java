@@ -197,9 +197,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
 
     private String mDeepLinkSimpleSize;
 
-    private Drawable isFavouriteDrawable;
-    private Drawable isNotFavouriteDrawable;
-
     /**
      * Empty constructor
      */
@@ -277,6 +274,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
      */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        Log.d(TAG, "ON VIEW CREATED");
         super.onViewCreated(view, savedInstanceState);
         
         mContext = getBaseActivity();
@@ -295,9 +293,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         if (mPhone2Call.equalsIgnoreCase("")) {
             mPhone2Call = getString(R.string.call_to_order_number);
         }
-
-        isFavouriteDrawable = mContext.getResources().getDrawable(R.drawable.btn_fav_selected);
-        isNotFavouriteDrawable = mContext.getResources().getDrawable(R.drawable.btn_fav);
     }
 
     private void init() {
@@ -897,10 +892,10 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         // Set is favourite image
         if (FavouriteTableHelper.verifyIfFavourite(mCompleteProduct.getSku())) {
             mCompleteProduct.getAttributes().put(RestConstants.JSON_IS_FAVOURITE_TAG, Boolean.TRUE.toString());
-            imageIsFavourite.setImageDrawable(isFavouriteDrawable);
+            imageIsFavourite.setSelected(true);
         } else {
             mCompleteProduct.getAttributes().put(RestConstants.JSON_IS_FAVOURITE_TAG, Boolean.FALSE.toString());
-            imageIsFavourite.setImageDrawable(isNotFavouriteDrawable);
+            imageIsFavourite.setSelected(false);
         }
 
         if (productVariationsFragment == null) {
@@ -1080,13 +1075,13 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
                 fragmentMessage = BaseFragment.FRAGMENT_VALUE_SET_FAVORITE;
                 FavouriteTableHelper.insertFavouriteProduct(mCompleteProduct);
                 mCompleteProduct.getAttributes().put(RestConstants.JSON_IS_FAVOURITE_TAG, Boolean.TRUE.toString());
-                imageIsFavourite.setImageDrawable(isFavouriteDrawable);
+                imageIsFavourite.setSelected(true);
                 Toast.makeText(mContext, getString(R.string.products_added_favourite), Toast.LENGTH_SHORT).show();
             } else {
                 fragmentMessage = BaseFragment.FRAGMENT_VALUE_REMOVE_FAVORITE;
                 FavouriteTableHelper.removeFavouriteProduct(mCompleteProduct.getSku());
                 mCompleteProduct.getAttributes().put(RestConstants.JSON_IS_FAVOURITE_TAG, Boolean.FALSE.toString());
-                imageIsFavourite.setImageDrawable(isNotFavouriteDrawable);
+                imageIsFavourite.setSelected(false);
                 Toast.makeText(mContext, getString(R.string.products_removed_favourite), Toast.LENGTH_SHORT).show();
             }
             

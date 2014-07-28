@@ -141,7 +141,7 @@
                 android:layout_centerInParent="false"
                 android:layout_marginRight="@dimen/product_list_item_image_side_margin"
                 android:layout_marginTop="@dimen/product_list_item_image_margin"
-                android:src="@drawable/btn_fav" />
+                android:src="@drawable/selector_favorite" />
         </RelativeLayout>
 
         <!-- TIPS -->
