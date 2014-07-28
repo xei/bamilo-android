@@ -184,7 +184,7 @@ public class ProductsListAdapter extends BaseAdapter {
 
         final Product product = parentCatalog.getProduct(products.get(position));
         prodItem.image.setImageResource(R.drawable.no_image_small);
-//        RocketImageLoader.instance.loadImage(product.getFirstImageURL(), prodItem.image,  null, R.drawable.no_image_small, CatalogFragment.requestTag);
+        RocketImageLoader.instance.loadImage(product.getFirstImageURL(), prodItem.image,  null, R.drawable.no_image_small, CatalogFragment.requestTag);
 
         // Set is new image
         prodItem.isNew.setSelected(product.getAttributes().isNew());
