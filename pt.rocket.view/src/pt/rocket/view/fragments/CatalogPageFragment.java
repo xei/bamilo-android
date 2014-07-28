@@ -511,28 +511,6 @@ public class CatalogPageFragment extends BaseFragment {
         }, 200);
     }
     
-//    /**
-//     * Shows the loading screen that appears on the front of the activity while it waits for the
-//     * data to arrive from the server
-//     */
-//    private final void showLoadingInfo() {
-//        Log.d(TAG, "Showing loading info");
-//        if (loadingBarView != null) {
-//            loadingBarView.startRendering();
-//        }
-//    }
-
-//    /**
-//     * Hides the loading screen that appears on the front of the activity while it waits for the
-//     * data to arrive from the server
-//     */
-//    private void hideLoadingInfo() {
-//        Log.d(TAG, "Hiding loading info");
-//        if (loadingBarView != null) {
-//            loadingBarView.stopRendering();
-//        }
-//    }
-    
     
     // ---------------------------------------------------------------
     // ----- Listeners
@@ -655,26 +633,25 @@ public class CatalogPageFragment extends BaseFragment {
         // Validate products
         if (productsPage != null && productsPage.getTotalProducts() > 0) {
             Log.d(TAG, "onSuccessEvent: products on page = " + productsPage.getProducts().size() + " total products = " + productsPage.getTotalProducts());
-
             
-            new Thread(new Runnable() {
-                
-                @Override
-                public void run() {
-                    // TODO: Improve this behavior
-                    if (mPageIndex == 1 && mPageNumber == 1) {
-                        RelatedItemsTableHelper.insertRelatedItemsAndClear(getBaseActivity(), productsPage.getProductsList());
-                    } else if (mPageIndex == 1 && mPageNumber == 2) {
-                        RelatedItemsTableHelper.insertRelatedItems(getBaseActivity(), productsPage.getProductsList());
-                    }
-                }
-            }).start();
+//            new Thread(new Runnable() {
+//                
+//                @Override
+//                public void run() {
+//                    // TODO: Improve this behavior
+//                    if (mPageIndex == 1 && mPageNumber == 1) {
+//                        RelatedItemsTableHelper.insertRelatedItemsAndClear(getBaseActivity(), productsPage.getProductsList());
+//                    } else if (mPageIndex == 1 && mPageNumber == 2) {
+//                        RelatedItemsTableHelper.insertRelatedItems(getBaseActivity(), productsPage.getProductsList());
+//                    }
+//                }
+//            }).start();
 
-//            if (mPageIndex == 1 && mPageNumber == 1) {
-//                RelatedItemsTableHelper.insertRelatedItemsAndClear(getBaseActivity(), productsPage.getProductsList());
-//            } else if (mPageIndex == 1 && mPageNumber == 2) {
-//                RelatedItemsTableHelper.insertRelatedItems(getBaseActivity(), productsPage.getProductsList());
-//            }
+            if (mPageIndex == 1 && mPageNumber == 1) {
+                RelatedItemsTableHelper.insertRelatedItemsAndClear(getBaseActivity(), productsPage.getProductsList());
+            } else if (mPageIndex == 1 && mPageNumber == 2) {
+                RelatedItemsTableHelper.insertRelatedItems(getBaseActivity(), productsPage.getProductsList());
+            }
             
             
             parentFragment.addProductsCollection(productsPage.getProductsMap());

@@ -221,7 +221,7 @@ public class FavouriteTableHelper {
 				.append(" where ").append(_FAVOURITE_SKU).append(" = '").append(sku).append("'").toString();
 		Log.i(TAG, "SQL RESULT query :  " + query);
 		Cursor cursor = db.rawQuery(query, null);
-		if (cursor != null && cursor.getCount() > 0) {
+		if (db.isOpen() && cursor != null && cursor.getCount() > 0) {
 			cursor.moveToFirst();
 			if (cursor.getInt(0) >= 1) {
 				result = true;
@@ -237,7 +237,8 @@ public class FavouriteTableHelper {
 			cursor.close();
 		}
 
-		db.close();
+		if (db.isOpen())
+		    db.close();
 
 		return result;
 	}
