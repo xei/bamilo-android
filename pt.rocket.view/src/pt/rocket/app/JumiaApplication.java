@@ -13,7 +13,6 @@ import pt.rocket.framework.Darwin;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.components.NavigationListComponent;
 import pt.rocket.framework.database.DarwinDatabaseHelper;
-import pt.rocket.framework.objects.Address;
 import pt.rocket.framework.objects.Category;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.CountryObject;
@@ -629,53 +628,36 @@ public class JumiaApplication extends Application implements ExceptionCallback {
         }
     };
 
-    /**
-     * ######### TODO: REMOVE ######### 
-     */
-    private Address shippingAddress;
-    private Address billingAddress;
-    private ContentValues shippingMethod;
-    private ContentValues paymentMethod;
     private PaymentMethodForm paymentMethodForm;
+    private static ContentValues review;
 
-    public Address getShippingAddress() {
-        return shippingAddress;
-    }
-    
-    public void setShippingAddress(Address shippingAddress ) {
-        this.shippingAddress = shippingAddress;
-    }
-    
-    public Address getBillingAddress() {
-        return billingAddress;
-    }
-    
-    public void setBillingAddress(Address billingAddress ) {
-        this.billingAddress = billingAddress;
-    }
-    
-    public ContentValues getShippingMethod() {
-        return shippingMethod;
-    }
-    
-    public void setShippingMethod(ContentValues shippingMethod ) {
-        this.shippingMethod = shippingMethod;
-    }
-    
-    public ContentValues getPaymentMethod() {
-        return paymentMethod;
-    }
-    
-    public void setPaymentMethod(ContentValues paymentMethod ) {
-        this.paymentMethod = paymentMethod;
-    }
-    
-    public void setPaymentMethodForm(PaymentMethodForm paymentMethodForm ) {
+    public void setPaymentMethodForm(PaymentMethodForm paymentMethodForm) {
         this.paymentMethodForm = paymentMethodForm;
     }
-    
+
     public PaymentMethodForm getPaymentMethodForm() {
         return this.paymentMethodForm;
+    }
+
+    /**
+     * clean and return last saved review
+     * 
+     * @return last saved review
+     */
+    public static ContentValues getReview() {
+        ContentValues currentReview = JumiaApplication.review;
+        return currentReview;
+    }
+    
+    /**
+     * clean current review
+     */
+    public static void cleanReview() {
+        JumiaApplication.review = null;
+    }
+
+    public static void setReview(ContentValues review) {
+        JumiaApplication.review = review;
     }
 
     /**
@@ -697,8 +679,7 @@ public class JumiaApplication extends Application implements ExceptionCallback {
      */
     public void cleanCategoriesState(){
 
-        SharedPreferences sharedPrefs = this.getSharedPreferences(
-                ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences sharedPrefs = this.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         Editor eDitor = sharedPrefs.edit();
         eDitor.putInt(ConstantsSharedPrefs.KEY_CATEGORY_SELECTED, 0);
         eDitor.putInt(ConstantsSharedPrefs.KEY_SUB_CATEGORY_SELECTED, 0);

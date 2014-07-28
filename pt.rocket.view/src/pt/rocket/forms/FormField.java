@@ -375,7 +375,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                     Iterator<?> it = dataOptionsObject.keys();
                     //Clean payment method info
                     JumiaApplication.INSTANCE.setPaymentMethodForm(null);
-                    JumiaApplication.INSTANCE.setPaymentsInfoList(new HashMap<String,PaymentInfo>());
+                    JumiaApplication.setPaymentsInfoList(new HashMap<String,PaymentInfo>());
                     while (it.hasNext()) {
                         
                         String curKey = (String) it.next();
@@ -384,11 +384,10 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                         Log.d(TAG, "FORM FIELD: CURRENT KEY " + curKey + " VALUE: " + value);
                         dataSet.put(value, label);
                         
-                        
                         JSONObject paymentDescription = dataOptionsObject.optJSONObject(curKey).optJSONObject(RestConstants.JSON_DESCRIPTION_TAG);
                         PaymentInfo mPaymentInfo = new PaymentInfo();
                         mPaymentInfo.initialize(paymentDescription);
-                        JumiaApplication.INSTANCE.getPaymentsInfoList().put(label,mPaymentInfo);
+                        JumiaApplication.getPaymentsInfoList().put(label,mPaymentInfo);
                         
                         Log.i(TAG, "code1paymentDescription : saved : "+curKey);
                         JSONObject json = dataOptionsObject.getJSONObject(curKey);
@@ -730,6 +729,8 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             if (null != dataset_Listener) {
                 dataset_Listener.DataSetReceived(dataSet);
             }
+        default:
+            break;
         }
     }
 
@@ -738,6 +739,8 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         switch (eventType) {
         case GET_FORMS_DATASET_LIST_EVENT:
             Log.d(TAG, "Received GET_FORMS_DATASET_LIST_EVENT  ==> FAIL");
+        default:
+            break;
         }
     }
 

@@ -272,7 +272,7 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
         Log.i(TAG, "ON CLICK: SET SHIPPING METHOD");
         ContentValues values = mFormResponse.getValues();
         if(values != null && values.size() > 0){
-            JumiaApplication.INSTANCE.setShippingMethod(values);
+            // JumiaApplication.INSTANCE.setShippingMethod(values);
             triggerSubmitShippingMethod(values);
         }
     }

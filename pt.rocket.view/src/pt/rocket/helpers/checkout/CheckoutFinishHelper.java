@@ -92,14 +92,14 @@ public class CheckoutFinishHelper extends BaseHelper {
 
             // Get order number
             String mOrderNumber = jsonObject.getString("order_nr");
-            // Get first name
-            String mFirstName = jsonObject.optString("customer_first_name");
-            // Get last name
-            String mLastName = jsonObject.optString("customer_last_name");
-            // Get payment type
-            String mPaymentType = null;
-            // Get payment methos
-            String mPaymentMethod = null;
+            // // Get first name
+            // String mFirstName = jsonObject.optString("customer_first_name");
+            // // Get last name
+            // String mLastName = jsonObject.optString("customer_last_name");
+            // // Get payment type
+            // String mPaymentType = null;
+            // // Get payment methos
+            // String mPaymentMethod = null;
             // Get payment form
             Form mPaymentForm = null;
             // Get payment url
@@ -118,10 +118,10 @@ public class CheckoutFinishHelper extends BaseHelper {
                 }
                 if (jsonPayment != null && jsonPayment.length() > 0) {
                     Log.d(TAG, "PAYMENT DATA: " + jsonPayment.toString());
-                    // Get type
-                    String paymentType = jsonPayment.optString("type");
-                    // Get method
-                    String paymentMethod = jsonPayment.optString("method");
+                    // // Get type
+                    // String paymentType = jsonPayment.optString("type");
+                    // // Get method
+                    // String paymentMethod = jsonPayment.optString("method");
                     // Get form
                     JSONObject paymentForm = jsonPayment.optJSONObject("form");
                     if(paymentForm != null) {

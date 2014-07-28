@@ -119,13 +119,16 @@ public class PopularityFragment extends BaseFragment {
         
         // Load saved state
         if(savedInstanceState != null) {
-            Log.i(TAG, "ON LOAD SAVED STATE");    
+            Log.i(TAG, "ON LOAD SAVED STATE");
             mSavedUrl = savedInstanceState.getString("url");
             mSavedPageNumber = savedInstanceState.getInt("page", 1);
             mSavedProductRatingPage = savedInstanceState.getParcelable("rate");
             //Log.i(TAG, "ON LOAD SAVED STATE: " + mSavedUrl + " " + mSavedPageNumber);
+        } else {
+            // clean last saved review
+            JumiaApplication.cleanReview();
+            Log.e(TAG, "ERASE LAST REVIEW!");
         }
-        
     }
 
     /*
@@ -178,13 +181,20 @@ public class PopularityFragment extends BaseFragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.i(TAG, "ON SAVED STATE: " + selectedProduct.getUrl() + " " + pageNumber);
         // Validate the current product
-        if(selectedProduct != null && !TextUtils.isEmpty(selectedProduct.getUrl())) {
-            // Save the url, page number and rating
-            outState.putString("url", selectedProduct.getUrl());
-            outState.putInt("page", pageNumber);
-            outState.putParcelable("rate", mProductRatingPage);
+        if (selectedProduct != null) {
+            String url = selectedProduct.getUrl();
+            if (!TextUtils.isEmpty(url)) {
+                // Save the url, page number and rating
+                outState.putString("url", url);
+                outState.putInt("page", pageNumber);
+                outState.putParcelable("rate", mProductRatingPage);
+            } else {
+                url = "";
+            }
+            Log.i(TAG, "ON SAVE INSTANCE STATE: " + url + " " + pageNumber);
+        } else {
+            Log.i(TAG, "ON SAVE INSTANCE STATE: " + pageNumber);
         }
     }
 
@@ -234,30 +244,28 @@ public class PopularityFragment extends BaseFragment {
         else triggerReviews(selectedProduct.getUrl(), pageNumber);
         
         if (!BaseActivity.isTabletInLandscape(getBaseActivity())) {
-            setCommentListener();    
+            setCommentListener();
         }
-        
     }
-    
-    private void startWriteReviewFragment(){
+
+    private void startWriteReviewFragment() {
         mWriteReviewFragment = new WriteReviewFragment();
         Bundle args = new Bundle();
         args.putBoolean(CAME_FROM_POPULARITY, true);
         mWriteReviewFragment.setArguments(args);
-        FragmentManager     fm = getChildFragmentManager();
+        FragmentManager fm = getChildFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         ft.replace(R.id.fragment_writereview, mWriteReviewFragment);
         ft.commit();
     }
-    
-    private void removeWriteReviewFragment(){
-        if(mWriteReviewFragment != null){
-            FragmentManager     fm = getChildFragmentManager();
+
+    private void removeWriteReviewFragment() {
+        if (mWriteReviewFragment != null) {
+            FragmentManager fm = getChildFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
             ft.remove(mWriteReviewFragment);
             ft.commit();
         }
-
     }
     
     /**

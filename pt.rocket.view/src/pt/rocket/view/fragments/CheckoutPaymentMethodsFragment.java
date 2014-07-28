@@ -358,8 +358,8 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
         if(formGenerator != null){
             if(formGenerator.validate()){
                 ContentValues values = formGenerator.save();
-                JumiaApplication.INSTANCE.setPaymentMethod(values);
-                Log.i(TAG, "code1payment : "+values.toString());
+                // JumiaApplication.INSTANCE.setPaymentMethod(values);
+                // Log.i(TAG, "code1payment : "+values.toString());
                 triggerSubmitPaymentMethod(values);
             } else {
                 Toast.makeText(getActivity(), getString(R.string.please_fill_all_data),Toast.LENGTH_SHORT).show();

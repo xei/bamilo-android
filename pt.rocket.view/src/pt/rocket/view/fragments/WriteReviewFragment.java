@@ -23,12 +23,13 @@ import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
-import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -83,18 +84,15 @@ public class WriteReviewFragment extends BaseFragment {
     private boolean isExecutingSendReview = false;
     
     private HashMap<String, HashMap<String, String>> ratingOptions;
-    
-    private String lastProductSku = "";
 
-    private Bundle mSavedState;
     /**
      * Get instance
      * 
      * @return
      */
     public static WriteReviewFragment getInstance() {
-        if (writeReviewFragment == null)
-            writeReviewFragment = new WriteReviewFragment();
+        Log.i(TAG, "getInstance");
+        writeReviewFragment = new WriteReviewFragment();
         return writeReviewFragment;
     }
 
@@ -130,17 +128,12 @@ public class WriteReviewFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
         
-        // Save state
-        if(savedInstanceState != null) mSavedState = savedInstanceState;
-        
         completeProduct = JumiaApplication.INSTANCE.getCurrentProduct();
         isExecutingSendReview = false;
         
         triggerAutoLogin();
         triggerCustomer();
     }
-
-
 
 //    /*
 //     * (non-Javadoc)
@@ -161,7 +154,6 @@ public class WriteReviewFragment extends BaseFragment {
 //        return view;
 //    }
 
-    
     /*
      * (non-Javadoc)
      * 
@@ -172,7 +164,6 @@ public class WriteReviewFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
-        
         
         labelsContainer = (LinearLayout) view.findViewById(R.id.label_container);
         
@@ -201,36 +192,9 @@ public class WriteReviewFragment extends BaseFragment {
         super.onResume();
         Log.i(TAG, "ON RESUME");
         isExecutingSendReview = false;
-        if(getArguments() != null && getArguments().containsKey(PopularityFragment.CAME_FROM_POPULARITY)){
+        if (getArguments() != null && getArguments().containsKey(PopularityFragment.CAME_FROM_POPULARITY)) {
             getView().findViewById(R.id.product_basicinfo_container).setVisibility(View.GONE);
         }
-
-    }
-    
-    /*
-     * (non-Javadoc)
-     * @see android.support.v4.app.Fragment#onSaveInstanceState(android.os.Bundle)
-     * 
-     */
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        Log.i(TAG, "ON SAVE INSTANCE");
-        try {
-            // Get rating bars
-            for (int i = 0; i < ratingBarContainer.getChildCount(); i++)
-                outState.putFloat((String) ratingBarContainer.getChildAt(i).getTag(), ((RatingBar) ratingBarContainer.getChildAt(i)).getRating());
-            // Get name
-            outState.putString(NAME, (nameText != null) ? nameText.getText().toString() : "");
-            // Get title
-            outState.putString(TITLE, (titleText != null) ? titleText.getText().toString() : "");
-            // Get comment
-            outState.putString(COMMENT, (reviewText != null) ? reviewText.getText().toString() : "");
-            // Log.d(TAG, "VALUES: " + outState.toString());
-        } catch (NullPointerException e) {
-            Log.w(TAG, "SOME VIEW IS NULL", e);
-        }
-
     }
 
     /*
@@ -242,6 +206,9 @@ public class WriteReviewFragment extends BaseFragment {
     public void onPause() {
         super.onPause();
         Log.i(TAG, "ON PAUSE");
+        
+        // Save review before rotation, going to background or leaving to Popularity fragment
+        saveReview();
     }
 
     /*
@@ -282,16 +249,19 @@ public class WriteReviewFragment extends BaseFragment {
         
         LayoutInflater mInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         int id = 77;
-        for (Entry<String, HashMap<String, String>> option : ratingOptions.entrySet()) {
-            View viewRating = mInflater.inflate(R.layout.rating_bar_component, null, false);
-            View viewLabel = mInflater.inflate(R.layout.label_rating_component, null, false);
-            viewRating.setTag(option.getKey());
-            viewRating.setId(id);
-            id++;
-            viewLabel.setTag(option.getKey());
-            ((TextView) viewLabel).setText(option.getKey());
-            ratingBarContainer.addView(viewRating);
-            labelsContainer.addView(viewLabel);
+        // Only render ratings if available
+        if (ratingOptions != null && !ratingOptions.isEmpty()) {
+            for (Entry<String, HashMap<String, String>> option : ratingOptions.entrySet()) {
+                View viewRating = mInflater.inflate(R.layout.rating_bar_component, null, false);
+                View viewLabel = mInflater.inflate(R.layout.label_rating_component, null, false);
+                viewRating.setTag(option.getKey());
+                viewRating.setId(id);
+                id++;
+                viewLabel.setTag(option.getKey());
+                ((TextView) viewLabel).setText(option.getKey());
+                ratingBarContainer.addView(viewRating);
+                labelsContainer.addView(viewLabel);
+            }
         }
         productName = (TextView) getView().findViewById(R.id.product_name);
         productResultPrice = (TextView) getView().findViewById(R.id.product_price_result);
@@ -301,22 +271,13 @@ public class WriteReviewFragment extends BaseFragment {
         nameText = (EditText) getView().findViewById(R.id.name_box);
         reviewText = (EditText) getView().findViewById(R.id.review_box);
         
-        if(!lastProductSku.equalsIgnoreCase(completeProduct.getSku())){
-            titleText.setText("");
-            nameText.setText("");
-            reviewText.setText("");
-            lastProductSku = completeProduct.getSku();
-        }
-        ((Button) getView().findViewById(R.id.send_review))
-                .setOnClickListener(new OnClickListener() {
-
+        ((Button) getView().findViewById(R.id.send_review)).setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (checkReview() && !isExecutingSendReview){
+                        if (checkReview() && !isExecutingSendReview) {
                             isExecutingSendReview = true;
                             executeSendReview();
                         }
-                            
                     }
                 });
 
@@ -324,28 +285,86 @@ public class WriteReviewFragment extends BaseFragment {
         displayPriceInformation();
         
         // Load the saved values
-        loadSavedState();
+        ContentValues review = JumiaApplication.getReview();
+        if (review != null) {
+            loadReview(review);
+        }
     }
-    
-    /**
-     * Load the saved state values
-     * @author sergiopereira
-     */
-    private void loadSavedState(){
-        // Validate the current container
-        if(ratingBarContainer != null && mSavedState != null) {
-            // Load ratings
-            for (int i = 0; i < ratingBarContainer.getChildCount(); i++) {
-                RatingBar ratingBar = (RatingBar) ratingBarContainer.getChildAt(i);
-                String tag = ratingBar.getTag().toString();
-                if(mSavedState.containsKey(tag)) ratingBar.setRating(mSavedState.getFloat(tag));
+
+    private void saveReview() {
+        ContentValues values = new ContentValues();
+
+        // Get rating bars
+        if (ratingBarContainer != null) {
+            int numberRatingBars = ratingBarContainer.getChildCount();
+            if (numberRatingBars > 0) {
+                for (int i = 0; i < numberRatingBars; i++) {
+                    View ratingBar = ratingBarContainer.getChildAt(i);
+                    if (ratingBar != null && ratingBar instanceof RatingBar) {
+                        Object tag = ratingBar.getTag();
+                        if (tag != null && tag instanceof String) {
+                            values.put((String) tag, ((RatingBar) ratingBar).getRating());
+                        }
+                    }
+                }
             }
+        }
+
+        // Get name
+        values.put(NAME, (nameText != null) ? nameText.getText().toString() : "");
+        // Get title
+        values.put(TITLE, (titleText != null) ? titleText.getText().toString() : "");
+        // Get comment
+        values.put(COMMENT, (reviewText != null) ? reviewText.getText().toString() : "");
+
+        JumiaApplication.setReview(values);
+    }
+
+    private void loadReview(ContentValues review) {
+        if (review != null) {
+            if (titleText == null) {
+                titleText = (EditText) getView().findViewById(R.id.title_box);
+            }
+            if (nameText == null) {
+                nameText = (EditText) getView().findViewById(R.id.name_box);
+            }
+            if (reviewText == null) {
+                reviewText = (EditText) getView().findViewById(R.id.review_box);
+            }
+            if (ratingBarContainer != null) {
+                // Load ratings
+                int numberRatingBars = ratingBarContainer.getChildCount();
+                if (numberRatingBars > 0) {
+                    for (int i = 0; i < numberRatingBars; i++) {
+                        View ratingBar = ratingBarContainer.getChildAt(i);
+                        if (ratingBar != null && ratingBar instanceof RatingBar) {
+                            String tag = ratingBar.getTag().toString();
+                            if (review.containsKey(tag)) {
+                                Float rating = review.getAsFloat(tag);
+                                if (rating != null) {
+                                    ((RatingBar) ratingBar).setRating(rating);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
             // Load name
-            nameText.setText(mSavedState.getString(NAME, ""));
+            String name = review.getAsString(NAME);
+            if(!TextUtils.isEmpty(name)){
+                nameText.setText(name);
+            }
             // Load title
-            titleText.setText(mSavedState.getString(TITLE, ""));
+            String title = review.getAsString(TITLE);
+            if(!TextUtils.isEmpty(title)){
+                titleText.setText(title);
+            }
             // Load comment
-            reviewText.setText(mSavedState.getString(COMMENT, ""));
+            String comment = review.getAsString(COMMENT);
+            if(!TextUtils.isEmpty(comment)){
+                reviewText.setText(comment);
+            }
         }
     }
     
@@ -370,22 +389,39 @@ public class WriteReviewFragment extends BaseFragment {
             productResultPrice.setTextColor(getResources().getColor(R.color.red_basic));
             productNormalPrice.setText(unitPrice);
             productNormalPrice.setVisibility(View.VISIBLE);
-            productNormalPrice.setPaintFlags(productNormalPrice.getPaintFlags()
-                    | Paint.STRIKE_THRU_TEXT_FLAG);
+            productNormalPrice.setPaintFlags(productNormalPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         }
     }
 
     private boolean checkReview() {
         ratings = new HashMap<String, Double>();
         boolean result = checkEmpty(getResources().getColor(R.color.red_basic), titleText,nameText, reviewText);
-        for (int i = 0; i < labelsContainer.getChildCount(); i++) {
-            if( ((RatingBar) ratingBarContainer.getChildAt(i)).getRating() == 0){
-                ((TextView) labelsContainer.getChildAt(i)).setTextColor(getResources().getColor(R.color.red_basic));
-                result = false;
-            } else {
-                ratings.put((String) ratingBarContainer.getChildAt(i).getTag(), (double) ((RatingBar) ratingBarContainer.getChildAt(i)).getRating());
-                ((TextView) labelsContainer.getChildAt(i)).setTextColor(getResources().getColor(R.color.grey_middle));
+        int numberRatings = labelsContainer.getChildCount();
+        if (numberRatings > 0) {
+            for (int i = 0; i < numberRatings; i++) {
+                if( ((RatingBar) ratingBarContainer.getChildAt(i)).getRating() == 0){
+                    ((TextView) labelsContainer.getChildAt(i)).setTextColor(getResources().getColor(R.color.red_basic));
+                    result = false;
+                } else {
+                    ratings.put((String) ratingBarContainer.getChildAt(i).getTag(), (double) ((RatingBar) ratingBarContainer.getChildAt(i)).getRating());
+                    ((TextView) labelsContainer.getChildAt(i)).setTextColor(getResources().getColor(R.color.grey_middle));
+                }
             }
+        } else {
+            // Warn user that there are no ratings available. 
+            /*-String title = getString(R.string.server_error_title);
+            String message = "No Ratings available!";
+            String buttonText = getString(R.string.ok_label);
+            messageDialog = DialogGenericFragment.newInstance(false, true, false, title, message, buttonText, null, new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    messageDialog.dismiss();
+                }
+            });
+            messageDialog.show(getActivity().getSupportFragmentManager(), null);*/
+
+            // Don't allow user to submit data without ratings 
+            return false;
         }
 
         return result;
@@ -428,27 +464,27 @@ public class WriteReviewFragment extends BaseFragment {
            
             TrackerDelegator.trackItemReview(getBaseActivity(), completeProduct, productReviewCreated, ratings);
             dialog_review_submitted = DialogGenericFragment.newInstance(false, true, false,
-                    getString(R.string.submit_title), getResources().getString(
-                            R.string.submit_text), getResources().getString(
-                            R.string.dialog_to_reviews), "", new OnClickListener() {
-
+                    getString(R.string.submit_title),
+                    getResources().getString(R.string.submit_text),
+                    getResources().getString(R.string.dialog_to_reviews),
+                    "",
+                    new OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             dialog_review_submitted.dismiss();
                             isExecutingSendReview = false;
-                            if(((BaseActivity) getActivity()) != null){
-                                ((BaseActivity) getActivity()).onBackPressed();
+                            if (getBaseActivity() != null) {
+                                getBaseActivity().onBackPressed();
                             }
-                            
                         }
                     });
-
             // Fixed back bug
             dialog_review_submitted.setCancelable(false);
             titleText.setText("");
             nameText.setText("");
             reviewText.setText("");
             dialog_review_submitted.show(getActivity().getSupportFragmentManager(), null);
+            hideActivityProgress();
             return false;
         case GET_RATING_OPTIONS_EVENT:
             ratingOptions = (HashMap<String, HashMap<String, String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_KEY);
@@ -461,9 +497,17 @@ public class WriteReviewFragment extends BaseFragment {
         case LOGIN_EVENT:
             JumiaApplication.INSTANCE.setLoggedIn(true);
             Customer customer = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-//            TrackerDelegator.trackLoginSuccessful(getActivity(), customer, true, getActivity().getString(R.string.mixprop_loginlocationreview), false);
-            if(nameText != null && customer != null && customer.getFirstName() != null){
-                nameText.setText(customer.getFirstName());
+            // TrackerDelegator.trackLoginSuccessful(getActivity(), customer, true, getActivity().getString(R.string.mixprop_loginlocationreview), false);
+            // Make sure name field is available
+            if (nameText == null) {
+                nameText = (EditText) getView().findViewById(R.id.name_box);
+            }
+            if (nameText != null && customer != null && customer.getFirstName() != null) {
+                // Set Customer Name only if name field is not yet filled in
+                Editable name = nameText.getText();
+                if (name == null || TextUtils.isEmpty(name.toString())) {
+                    nameText.setText(customer.getFirstName());
+                }
             }
             return false;
         case GET_CUSTOMER:
@@ -477,11 +521,9 @@ public class WriteReviewFragment extends BaseFragment {
         }
     }
 
-    
     protected boolean onErrorEvent(Bundle bundle) {
-        
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        Log.i(TAG, "eventType : "+eventType);
+        Log.i(TAG, "eventType : " + eventType);
         isExecutingSendReview = false;
         switch (eventType) {
         // case GET_CUSTOMER:
@@ -496,9 +538,37 @@ public class WriteReviewFragment extends BaseFragment {
 
         case GET_CUSTOMER:
             // don't care
-//            customerCred = null;
-//            Log.i("DIDNT GET CUSTOMER"," HERE ");
+            // customerCred = null;
+            // Log.i("DIDNT GET CUSTOMER"," HERE ");
             return true;
+        case GET_RATING_OPTIONS_EVENT:
+            dialog = DialogGenericFragment.createServerErrorDialog(getBaseActivity(),
+                    new OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            triggerRatingOptions();
+                            dialog.dismiss();
+                        }
+                    }, false);
+            dialog.show(getBaseActivity().getSupportFragmentManager(), null);
+            return false;
+        case REVIEW_PRODUCT_EVENT:
+            dialog = DialogGenericFragment.createServerErrorDialog(getBaseActivity(),
+                    new OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (checkReview() && !isExecutingSendReview) {
+                                isExecutingSendReview = true;
+                                executeSendReview();
+                            }
+                            dialog.dismiss();
+                        }
+                    }, false);
+            dialog.setCancelable(false);
+            dialog.show(getBaseActivity().getSupportFragmentManager(), null);
+            hideActivityProgress();
+            isExecutingSendReview = false;
+            return false;
 
         default:
         }
@@ -506,13 +576,6 @@ public class WriteReviewFragment extends BaseFragment {
         return false;
     }
 
-    @Override
-    public void notifyFragment(Bundle bundle) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    
     /**
      * TRIGGERS
      * @author sergiopereira
@@ -522,41 +585,41 @@ public class WriteReviewFragment extends BaseFragment {
         bundle.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
         triggerContentEvent(new GetLoginHelper(), bundle, mCallBack);
     }
-    
-    private void triggerCustomer(){
+
+    private void triggerCustomer() {
         triggerContentEvent(new GetCustomerHelper(), null, mCallBack);
     }
-    
-    private void triggerRatingOptions(){
+
+    private void triggerRatingOptions() {
         triggerContentEvent(new GetRatingsHelper(), null, mCallBack);
     }
-    
-    private void triggerWriteReview(String sku, int id, ProductReviewCommentCreated productReviewCreated2){
+
+    private void triggerWriteReview(String sku, int id, ProductReviewCommentCreated productReviewCreated2) {
         Bundle bundle = new Bundle();
         bundle.putParcelable(ReviewProductHelper.COMMENT_CREATED, productReviewCreated2);
         bundle.putString(ReviewProductHelper.PRODUCT_SKU, sku);
         bundle.putInt(ReviewProductHelper.CUSTOMER_ID, id);
-        triggerContentEventWithNoLoading(new ReviewProductHelper(), bundle, mCallBack);
+        triggerContentEventProgress(new ReviewProductHelper(), bundle, mCallBack);
     }
-    
+
     private void triggerWriteReview(String sku, ProductReviewCommentCreated productReviewCreated2) {
         Bundle bundle = new Bundle();
         bundle.putParcelable(ReviewProductHelper.COMMENT_CREATED, productReviewCreated2);
         bundle.putString(ReviewProductHelper.PRODUCT_SKU, sku);
-        triggerContentEventWithNoLoading(new ReviewProductHelper(), bundle, mCallBack);
+        triggerContentEventProgress(new ReviewProductHelper(), bundle, mCallBack);
     }
-    
+
     /**
      * CALLBACK
      * @author sergiopereira
      */
     IResponseCallback mCallBack = new IResponseCallback() {
-        
+
         @Override
         public void onRequestError(Bundle bundle) {
             onErrorEvent(bundle);
         }
-        
+
         @Override
         public void onRequestComplete(Bundle bundle) {
             onSuccessEvent(bundle);
