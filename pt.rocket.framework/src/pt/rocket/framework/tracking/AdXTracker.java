@@ -25,6 +25,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Build;
+import android.text.TextUtils;
 
 import com.AdX.tag.AdXConnect;
 
@@ -107,7 +108,7 @@ public class AdXTracker {
 		String jsonEncoded = "";
 		LinkedHashMap<String, Object> values = new LinkedHashMap<String, Object>();
 		values.put("shop_country", shop_country);
-		values.put("user_id", user_id);
+		if(!TextUtils.isEmpty(user_id)) values.put("user_id", user_id);
 		values.put("sku", sku);
 		
 		appendExtraDataForEvent(context, values);
@@ -132,7 +133,7 @@ public class AdXTracker {
 		String jsonEncoded = "";
 		LinkedHashMap<String, Object> values = new LinkedHashMap<String, Object>();
 		values.put("shop_country", shop_country);
-		values.put("user_id", user_id);
+		if(!TextUtils.isEmpty(user_id)) values.put("user_id", user_id);
 		values.put("sku", sku);
 		
 		appendExtraDataForEvent(context, values);
@@ -402,7 +403,7 @@ public class AdXTracker {
 		LinkedHashMap<String, Object> values = new LinkedHashMap<String, Object>();
 		values.put("sku", sku);
 		values.put("shop_country", shop_country);
-		values.put("user_id", user_id);
+		if(!TextUtils.isEmpty(user_id)) values.put("user_id", user_id);
 		
 		appendExtraDataForEvent(context, values);
 	
