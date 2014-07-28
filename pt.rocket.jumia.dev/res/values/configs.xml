@@ -23,6 +23,6 @@
     <string name="dp_intent_label">Jumia Dev</string>
 
     <!-- NEW RELIC -->
-    <string name="newrelic_token"></string>
+    <string name="newrelic_token">AA98fd2d4afb23e22282c9bd32372183ce09bebec3</string>
 
 </resources>
