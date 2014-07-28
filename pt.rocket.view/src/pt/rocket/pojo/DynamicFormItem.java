@@ -35,6 +35,7 @@ import pt.rocket.view.R;
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -881,7 +882,9 @@ public class DynamicFormItem {
         params.setMargins((int) (3 * this.scale), 0, 0, 0);
         this.dataControl.setLayoutParams(params);
         ((View) this.dataControl).setContentDescription(this.entry.getKey());
-        ((CheckBox) this.dataControl).setButtonDrawable(R.drawable.selector_btn_check_holo_orange);
+        ((CheckBox) this.dataControl).setButtonDrawable(null);
+        Drawable check = context.getResources().getDrawable(R.drawable.selector_btn_check_holo_orange);
+        ((CheckBox) this.dataControl).setCompoundDrawables(check, null, null, null);
         ((CheckBox) this.dataControl).setFocusable(false);
         ((CheckBox) this.dataControl).setFocusableInTouchMode(false);
         ((CheckBox) this.dataControl).setTextColor(context.getResources().getColor(R.color.grey_middle));
@@ -889,7 +892,7 @@ public class DynamicFormItem {
         ((CheckBox) this.dataControl).setText(this.entry.getLabel().length() > 0
                 ? this.entry.getLabel()
                 : this.context.getString(R.string.register_text_terms_a) + " " + this.context.getString(R.string.register_text_terms_b));
-        ((CheckBox) this.dataControl).setPadding((int) (25 * scale),
+        ((CheckBox) this.dataControl).setPadding(this.dataControl.getPaddingLeft(),
                 this.dataControl.getPaddingTop(), this.dataControl.getPaddingRight(),
                 this.dataControl.getPaddingBottom());
 
@@ -897,10 +900,6 @@ public class DynamicFormItem {
             ((CheckBox) this.dataControl).setChecked(true);
         }
 
-        // Newsletter subscription
-        if(this.entry.getKey().contains("newsletter"))
-            loadNewsLetterLayoutValues(params, ((CheckBox) this.dataControl));
-        
         this.dataControl.setVisibility(View.VISIBLE);
         
         params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
@@ -922,23 +921,6 @@ public class DynamicFormItem {
 
         ((ViewGroup) this.control).addView(dataContainer);
 
-    }
-    
-    /**
-     * Method used to load some layout values for newsletter
-     * @param params
-     * @param checkbox
-     * @author sergiopereira
-     */
-    private void loadNewsLetterLayoutValues(RelativeLayout.LayoutParams params, CheckBox checkbox){
-    	params.setMargins((int) (3 * this.scale), context.getResources().getDimensionPixelSize(R.dimen.margin_midhuge), 0, 0);
-    	// checkbox.setTextSize(context.getResources().getDimension(R.dimen.text_xs));
-    	checkbox.setPadding(
-    	        scale > 1 ? 0 : checkbox.getPaddingLeft() + context.getResources().getDimensionPixelSize(R.dimen.margin_mid), // if scale greater then 1 dont use padding
-                checkbox.getPaddingTop(), 
-                checkbox.getPaddingRight(), 
-                checkbox.getPaddingBottom());
-    	checkbox.setButtonDrawable(context.getResources().getDrawable(R.drawable.selector_btn_check_holo_orange));
     }
 
     private void buildCheckBoxForTerms(RelativeLayout dataContainer,
