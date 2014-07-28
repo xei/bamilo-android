@@ -279,7 +279,7 @@ public class ProductAttributes implements IJSONSerializable, Parcelable {
             isNew = jsonObject.optBoolean(RestConstants.JSON_IS_NEW_TAG, false);
 
             // Get the is favourite JSON tag
-            isFavourite = jsonObject.optBoolean(RestConstants.JSON_IS_FAVOURITE_TAG, false);
+            //isFavourite = jsonObject.optBoolean(RestConstants.JSON_IS_FAVOURITE_TAG, false);
             isFavourite = FavouriteTableHelper.verifyIfFavourite(sku);
             
         } catch (JSONException e) {

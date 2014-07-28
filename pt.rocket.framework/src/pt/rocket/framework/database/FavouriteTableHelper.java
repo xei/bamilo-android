@@ -57,7 +57,7 @@ public class FavouriteTableHelper {
 	public static final String CREATE =
 			new StringBuilder("CREATE TABLE ").append(TABLE).append(" (")
 				.append(_ID).append(" INTEGER PRIMARY KEY, ")
-				.append(_FAVOURITE_SKU).append(" TEXT,")
+				.append(_FAVOURITE_SKU).append(" TEXT UNIQUE,")
 				.append(_FAVOURITE_BRAND).append(" TEXT,")
 				.append(_FAVOURITE_NAME).append(" TEXT,")
 				.append(_FAVOURITE_PRICE).append(" TEXT,")
@@ -77,7 +77,7 @@ public class FavouriteTableHelper {
 	 * 
 	 * @param completeProduct
 	 */
-	public static void insertFavouriteProduct(CompleteProduct completeProduct) {
+	public synchronized static void insertFavouriteProduct(CompleteProduct completeProduct) {
 		if (completeProduct != null) {
 			SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
 			ContentValues values = new ContentValues();
@@ -137,7 +137,7 @@ public class FavouriteTableHelper {
 	 * 
 	 * @param product
 	 */
-	public static void insertPartialFavouriteProduct(Product product) {
+	public synchronized static void insertPartialFavouriteProduct(Product product) {
 		if (product != null) {
 			SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
 			ContentValues values = new ContentValues();
@@ -214,9 +214,9 @@ public class FavouriteTableHelper {
 	 * @param sku
 	 * @return
 	 */
-	public static boolean verifyIfFavourite(String sku) {
+	public synchronized static boolean verifyIfFavourite(String sku) {
 		boolean result = false;
-		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
+		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getReadableDatabase();
 		String query = new StringBuilder("select count(*) from ").append(TABLE)
 				.append(" where ").append(_FAVOURITE_SKU).append(" = '").append(sku).append("'").toString();
 		Log.i(TAG, "SQL RESULT query :  " + query);
@@ -358,7 +358,7 @@ public class FavouriteTableHelper {
 	 * 
 	 * @param sku
 	 */
-	public static void removeFavouriteProduct(String sku) {
+	public synchronized static void removeFavouriteProduct(String sku) {
 		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
 		String query = new StringBuilder("delete from ").append(TABLE)
 				.append(" where ").append(_FAVOURITE_SKU).append(" = '").append(sku).append("'").toString();

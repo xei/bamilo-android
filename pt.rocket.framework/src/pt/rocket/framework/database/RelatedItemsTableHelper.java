@@ -75,7 +75,7 @@ public class RelatedItemsTableHelper {
      * @param ctx
      * @param mProducts
      */
-	public static void insertRelatedItems(Context ctx, ArrayList<Product> mProducts) {
+	public synchronized static void insertRelatedItems(Context ctx, ArrayList<Product> mProducts) {
 
 		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
 		
@@ -108,7 +108,7 @@ public class RelatedItemsTableHelper {
 	 * @param ctx
 	 * @param mProducts
 	 */
-	public static void insertRelatedItemsAndClear(Context ctx, ArrayList<Product> mProducts) {
+	public synchronized static void insertRelatedItemsAndClear(Context ctx, ArrayList<Product> mProducts) {
 		Log.d(TAG, "ON CLEAN AND INSERT: START");
 		SQLiteDatabase db = null;
 		try {
@@ -131,7 +131,7 @@ public class RelatedItemsTableHelper {
 		}
 	}
 	
-	private static void cleanAndInsert(SQLiteDatabase db, ArrayList<Product> mProducts) {
+	private synchronized static void cleanAndInsert(SQLiteDatabase db, ArrayList<Product> mProducts) {
 		clearRelatedItems(db);
 		int count = 1;
 		for (Product product : mProducts) {

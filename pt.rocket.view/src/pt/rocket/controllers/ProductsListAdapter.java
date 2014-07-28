@@ -195,8 +195,8 @@ public class ProductsListAdapter extends BaseAdapter {
         prodItem.isFavourite.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Product favProduct = parentCatalog.getProduct(products.get(position));
-                boolean isFavourite = favProduct.getAttributes().isFavourite();
+                final Product favProduct = parentCatalog.getProduct(products.get(position));
+                final boolean isFavourite = favProduct.getAttributes().isFavourite();
                 if (!isFavourite) {
                     FavouriteTableHelper.insertPartialFavouriteProduct(favProduct);
                     favProduct.getAttributes().setFavourite(true);
