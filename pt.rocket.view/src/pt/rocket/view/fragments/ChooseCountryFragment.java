@@ -107,7 +107,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
         // Hide or show title
-        validateShopSelected();
+        getBaseActivity().hideTitle();
         // Get countries
         triggerGetJumiaCountries();
     }
@@ -385,6 +385,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
             JumiaApplication.INSTANCE.countriesAvailable = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
             // Show countries
             setList();
+            validateShopSelected();
             showFragmentContentContainer();
             break;
         default:
