@@ -261,10 +261,9 @@
     <string name="app_id">472507709498904</string>
     <string name="exit_press_back_again">Appuyez de nouveau sur retour si vous souhaitez quitter l\'app</string>
     <string name="recently_viewed">Derniers Produits Vus</string>
-    
-    
+
     <!-- WARNING: The string order_track_success should contain the string order_track_link. -->
-	<string name="order_track_success">Vous pouvez suivre le statut de votre commande \nen allant dans la rubrique dédiée dans l\'application</string>
+    <string name="order_track_success">Vous pouvez suivre le statut de votre commande \nen allant dans la rubrique dédiée dans l\'application</string>
     <string name="order_track_link">statut de votre commande</string>
     <string name="error_signup_title">La création de compte a échoué</string>
     <string name="edit_address">Modifier l\'adresse</string>
@@ -319,29 +318,29 @@
     <string name="payment">Paiement</string>
     <string name="no_payment">Aucun paiement nécessaire</string>
     <string name="please_fill_all_data">Veuillez entrer toutes les données</string>
-	<string name="done_label">Valider</string>
+    <string name="done_label">Valider</string>
     <string name="clear_uppercase_label">EFFACER</string>
     <string name="clear_all_uppercase_label">TOUT EFFACER</string>
     <string name="filter_label">Filtre</string>
     <string name="all_label">Tout</string>
-	<string name="category_label">Catégorie</string>
+    <string name="category_label">Catégorie</string>
     <string name="top_brands_toplevel_title">Toutes les Marques</string>
     <string name="extra_costs">Frais Supplémentaires:</string>
     <string name="extra_costs_label">Frais Supplémentaires</string>
-	<string name="free_label">Gratuit</string>
-	<string name="related_items">Produits Similaires</string>
-	<string name="campaign_stock_alert">Désolé, l\'article sélectionné n\'est plus en stock.</string>
+    <string name="free_label">Gratuit</string>
+    <string name="related_items">Produits Similaires</string>
+    <string name="campaign_stock_alert">Désolé, l\'article sélectionné n\'est plus en stock.</string>
     <string name="off_label">-</string>
     <string name="campaign_choose_size">Sélectionnez votre taille</string>
     <string name="campaign_save">Vous économisez</string>
     <string name="campaign_ramaining_stock">Stock Restant:</string>
     <string name="myaccount_email_notifications">Préférence eMails</string>
-	<string name="option3_description">S\'inscrire ou Se désinscrire</string>
-	<string name="newsletters_label">Newsletters</string>
-	<string name="newsletter_male_label">Newsletter Homme</string>
-	<string name="newsletter_female_label">Newsletter Femme</string>
-	<string name="newsletter_saved_message">Vos préférences eMails ont été enregistrées</string>
-	<string name="menu_label_uppercase">MENU</string>
+    <string name="option3_description">S\'inscrire ou Se désinscrire</string>
+    <string name="newsletters_label">Newsletters</string>
+    <string name="newsletter_male_label">Newsletter Homme</string>
+    <string name="newsletter_female_label">Newsletter Femme</string>
+    <string name="newsletter_saved_message">Vos préférences eMails ont été enregistrées</string>
+    <string name="menu_label_uppercase">MENU</string>
     <string name="categories_label_uppercase">CATÉGORIES</string>
     <string name="wizard_navigation">Accès rapide à toutes vos catégories préférées</string>
     <string name="my_profile">Mon Profil</string>
@@ -360,5 +359,10 @@
     <string name="recentlyview_no_searches">Aucun Dernier Produit Vu</string>
     <string name="recentlyview_clear_viewed">Effacer les Derniers Produits Vus</string>
     <string name="error_occured">Une erreur est produite</string>
-	
+    <string name="campaing_offer_ended">Promotions!</string>
+    <string name="favourite_add_to_cart">Le produit a été ajouté à votre panier</string>
+    <string name="teaser_campaign_button_first_line">A SAISIR</string>
+    <string name="teaser_campaign_button_second_line"> PROMOTIONS TERMINÉ</string>
+    <string name="back_label">RETOUR</string>
+
 </resources>

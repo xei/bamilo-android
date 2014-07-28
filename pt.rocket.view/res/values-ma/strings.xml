@@ -336,13 +336,13 @@
     <string name="campaign_choose_size">Sélectionnez votre taille</string>
     <string name="campaign_save">Vous économisez</string>
     <string name="campaign_ramaining_stock">Stock Restant:</string>
-	<string name="myaccount_email_notifications">Préférence eMails</string>
-	<string name="option3_description">S\'inscrire ou Se désinscrire</string>
-	<string name="newsletters_label">Newsletters</string>
-	<string name="newsletter_male_label">Newsletter Homme</string>
-	<string name="newsletter_female_label">Newsletter Femme</string>
-	<string name="newsletter_saved_message">Vos préférences eMails ont été enregistrées</string>
-	<string name="menu_label_uppercase">MENU</string>
+    <string name="myaccount_email_notifications">Préférence eMails</string>
+    <string name="option3_description">S\'inscrire ou Se désinscrire</string>
+    <string name="newsletters_label">Newsletters</string>
+    <string name="newsletter_male_label">Newsletter Homme</string>
+    <string name="newsletter_female_label">Newsletter Femme</string>
+    <string name="newsletter_saved_message">Vos préférences eMails ont été enregistrées</string>
+    <string name="menu_label_uppercase">MENU</string>
     <string name="categories_label_uppercase">CATÉGORIES</string>
     <string name="wizard_navigation">Accès rapide à toutes vos catégories préférées</string>
     <string name="my_profile">Mon Profil</string>
@@ -361,5 +361,10 @@
     <string name="recentlyview_no_searches">Aucun Dernier Produit Vu</string>
     <string name="recentlyview_clear_viewed">Effacer les Derniers Produits Vus</string>
     <string name="error_occured">Une erreur est produite</string>
+    <string name="campaing_offer_ended">Promotions!</string>
+    <string name="favourite_add_to_cart">Le produit a été ajouté à votre panier</string>
+    <string name="teaser_campaign_button_first_line">A SAISIR</string>
+    <string name="teaser_campaign_button_second_line"> PROMOTIONS TERMINÉ</string>
+    <string name="back_label">RETOUR</string>
 
 </resources>
