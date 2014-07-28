@@ -125,24 +125,24 @@ public class DarwinDatabaseHelper extends SQLiteOpenHelper {
         }
     }
     
-    public void forceDatabaseUpdate(){
-    	//Drop tables
-    	db.getWritableDatabase().execSQL(SQL_DROP_MAIN);
-        db.getWritableDatabase().execSQL(SQL_DROP_TABLE + CategoriesTableHelper.TABLE);
-        db.getWritableDatabase().execSQL(SQL_DROP_TABLE + SectionsTablesHelper.TABLE);
-        db.getWritableDatabase().execSQL(SQL_DROP_TABLE + LastViewedTableHelper.TABLE);
-        db.getWritableDatabase().execSQL(SQL_DROP_TABLE + RelatedItemsTableHelper.TABLE_RELATED);
-        db.getWritableDatabase().execSQL(SearchRecentQueriesTableHelper.DROP);
-        db.getWritableDatabase().execSQL(CountriesConfigsTableHelper.DROP);
-        db.getWritableDatabase().execSQL(SQL_DROP_TABLE + FavouriteTableHelper.TABLE);
-        // Create
-    	db.getWritableDatabase().execSQL(SQL_CREATE_MAIN);
-        db.getWritableDatabase().execSQL(SectionsTablesHelper.CREATE);
-        db.getWritableDatabase().execSQL(CategoriesTableHelper.CREATE);
-        db.getWritableDatabase().execSQL(LastViewedTableHelper.CREATE);
-        db.getWritableDatabase().execSQL(RelatedItemsTableHelper.CREATE);
-        db.getWritableDatabase().execSQL(SearchRecentQueriesTableHelper.CREATE);
-        db.getWritableDatabase().execSQL(CountriesConfigsTableHelper.CREATE);
-        db.getWritableDatabase().execSQL(FavouriteTableHelper.CREATE);
-    }
+//    public void forceDatabaseUpdate(){
+//    	//Drop tables
+//    	db.getWritableDatabase().execSQL(SQL_DROP_MAIN);
+//        db.getWritableDatabase().execSQL(SQL_DROP_TABLE + CategoriesTableHelper.TABLE);
+//        db.getWritableDatabase().execSQL(SQL_DROP_TABLE + SectionsTablesHelper.TABLE);
+//        db.getWritableDatabase().execSQL(SQL_DROP_TABLE + LastViewedTableHelper.TABLE);
+//        db.getWritableDatabase().execSQL(SQL_DROP_TABLE + RelatedItemsTableHelper.TABLE_RELATED);
+//        db.getWritableDatabase().execSQL(SearchRecentQueriesTableHelper.DROP);
+//        db.getWritableDatabase().execSQL(CountriesConfigsTableHelper.DROP);
+//        db.getWritableDatabase().execSQL(SQL_DROP_TABLE + FavouriteTableHelper.TABLE);
+//        // Create
+//    	db.getWritableDatabase().execSQL(SQL_CREATE_MAIN);
+//        db.getWritableDatabase().execSQL(SectionsTablesHelper.CREATE);
+//        db.getWritableDatabase().execSQL(CategoriesTableHelper.CREATE);
+//        db.getWritableDatabase().execSQL(LastViewedTableHelper.CREATE);
+//        db.getWritableDatabase().execSQL(RelatedItemsTableHelper.CREATE);
+//        db.getWritableDatabase().execSQL(SearchRecentQueriesTableHelper.CREATE);
+//        db.getWritableDatabase().execSQL(CountriesConfigsTableHelper.CREATE);
+//        db.getWritableDatabase().execSQL(FavouriteTableHelper.CREATE);
+//    }
 }

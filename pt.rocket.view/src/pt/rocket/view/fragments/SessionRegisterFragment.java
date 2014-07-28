@@ -177,8 +177,10 @@ public class SessionRegisterFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        mLocale = Locale.getDefault();
-        Locale.setDefault(Locale.US);
+        
+        // Used for UG
+        forceInputAlignToLeft();
+        
         registerLocation = getString(R.string.mixprop_loginlocation);
         if (JumiaApplication.INSTANCE.registerForm != null) {
             loadForm(JumiaApplication.INSTANCE.registerForm);
@@ -199,11 +201,6 @@ public class SessionRegisterFragment extends BaseFragment {
     public void onPause() {
         super.onPause();
         Log.i(TAG, "ON PAUSE");
-
-        // restore locale
-        if (mLocale != null) {
-            Locale.setDefault(mLocale);
-        }
     }
 
     /*

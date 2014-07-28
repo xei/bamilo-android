@@ -628,7 +628,7 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
             case Country:
                 Log.d(TAG, "ON CLICK NAVIGATION MENU ITEM: COUNTRY");
                 FragmentController.getInstance().removeEntriesUntilTag(FragmentType.HOME.toString());
-                getBaseActivity().onSwitchFragment(FragmentType.CHANGE_COUNTRY,FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                getBaseActivity().onSwitchFragment(FragmentType.CHOOSE_COUNTRY,FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                 break;
             // Case unknown
             default:

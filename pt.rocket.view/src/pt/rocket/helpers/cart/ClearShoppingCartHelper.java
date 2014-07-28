@@ -2,7 +2,7 @@
  * @author Manuel Silva
  * 
  */
-package pt.rocket.helpers;
+package pt.rocket.helpers.cart;
 
 import org.json.JSONObject;
 
@@ -12,6 +12,8 @@ import pt.rocket.framework.objects.ShoppingCart;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
+import pt.rocket.helpers.BaseHelper;
+import pt.rocket.helpers.HelperPriorityConfiguration;
 import android.content.ContentValues;
 import android.os.Bundle;
 

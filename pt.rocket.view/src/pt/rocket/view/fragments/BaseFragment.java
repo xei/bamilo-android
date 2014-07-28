@@ -196,6 +196,16 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     }
     
     /**
+     * Constructor used only by choose country
+     * @author sergiopereira
+     */
+    public BaseFragment(Boolean isNestedFragment, NavigationAction action, int inflateLayout) {
+        this.isNestedFragment = isNestedFragment;
+        this.action = action;
+        this.mInflateLayoutResId = inflateLayout;
+    }
+    
+    /**
      * Constructor
      * @param isNestedFragment2
      * @param country

@@ -33,41 +33,38 @@ import de.akquinet.android.androlog.Log;
 
 public class CountryAdapter extends ArrayAdapter<String> {
 
-	private final Context context;
-	private String[] values;
-	private final String[] flagsList;
-	private LayoutInflater mInflater;
-	public CountryAdapter(Context context, String[] values, String[] flagsList) {
-		super(context, R.layout.change_country_row, values);
-		this.context = context;
-		this.values = values;
-		this.flagsList = flagsList;
-		mInflater = (LayoutInflater) context
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-	}
-	
-	public void updateValues(String[] values){
-	    this.values = values;
-	    this.notifyDataSetChanged();
-	}
-	
-	@Override
+    private String[] values;
+    private final String[] flagsList;
+    private LayoutInflater mInflater;
+
+    public CountryAdapter(Context context, String[] values, String[] flagsList) {
+        super(context, R.layout.change_country_row, values);
+        this.values = values;
+        this.flagsList = flagsList;
+        this.mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    }
+
+    public void updateValues(String[] values) {
+        this.values = values;
+        this.notifyDataSetChanged();
+    }
+
+    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Log.i("Country List", "Position: " + position);
-        if(mInflater == null){
-            mInflater = (LayoutInflater) context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        if (mInflater == null) {
+            mInflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
         View rowView = convertView;
-        if(rowView == null){
-            rowView = mInflater.inflate(R.layout.change_country_row, parent, false);    
+        if (rowView == null) {
+            rowView = mInflater.inflate(R.layout.change_country_row, parent, false);
         }
-        
+
         TextView textView = (TextView) rowView.findViewById(R.id.country_name);
         ImageView imageView = (ImageView) rowView.findViewById(R.id.flag);
         textView.setText(values[position]);
-        if(flagsList != null && flagsList.length > 0) RocketImageLoader.instance.loadImage(flagsList[position], imageView);
-        
+        if (flagsList != null && flagsList.length > 0) RocketImageLoader.instance.loadImage(flagsList[position], imageView, null, R.drawable.no_image_small);
+
         return rowView;
     }
 }

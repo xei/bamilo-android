@@ -76,9 +76,7 @@ public class GetPaymentMethodsHelper extends BaseHelper {
             // ShoppingCart(JumiaApplication.INSTANCE.getItemSimpleDataRegistry());
             // cart.initialize(cartJSON);
 
-            // XXX
-            OrderSummary orderSummary = new OrderSummary(jsonObject,
-                    JumiaApplication.INSTANCE.getItemSimpleDataRegistry());
+            OrderSummary orderSummary = new OrderSummary(jsonObject, JumiaApplication.INSTANCE.getItemSimpleDataRegistry());
             bundle.putParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY, orderSummary);
 
             bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, form);

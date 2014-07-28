@@ -187,7 +187,7 @@ public enum EventType {
 	
 	SUBSCRIBE_NEWSLETTERS_EVENT("https:/customer/managenewsletters/", RestContract.NO_CACHE),
 
-	GET_GLOBAL_CONFIGURATIONS("https:/ventures.json", RestContract.NO_CACHE),
+	GET_GLOBAL_CONFIGURATIONS("https://www.jumia.com/mobapi/ventures.json", RestContract.NO_CACHE),
 	
 	GET_COUNTRY_CONFIGURATIONS("https:/main/getcountryconfs/", RestContract.NO_CACHE),
 

@@ -16,7 +16,6 @@ import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.framework.Darwin;
 import pt.rocket.framework.database.CountriesConfigsTableHelper;
-import pt.rocket.framework.database.DarwinDatabaseHelper;
 import pt.rocket.framework.enums.RequestType;
 import pt.rocket.framework.interfaces.IMetaData;
 import pt.rocket.framework.objects.CountryObject;
@@ -56,19 +55,24 @@ public class GetCountriesGeneralConfigsHelper extends BaseHelper {
     
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
+        Log.i(TAG, "ON PARSE RESPONSE");
+        
         ArrayList<CountryObject> mCountries = new ArrayList<CountryObject>();
         JSONArray sessionJSONArray = jsonObject.optJSONArray(RestConstants.JSON_DATA_TAG);
 
-		// TODO : Validate if it is necessary (Test with version code !=)
-        if(!DarwinDatabaseHelper.getInstance().exists(CountriesConfigsTableHelper.TABLE)){
-            DarwinDatabaseHelper.getInstance().forceDatabaseUpdate();
-        }
-
+//		// TODO : Validate if it is necessary (Test with version code !=)
+//        if(!DarwinDatabaseHelper.getInstance().exists(CountriesConfigsTableHelper.TABLE)){
+//            Log.i(TAG, "FORCE UPDATE");
+//            DarwinDatabaseHelper.getInstance().forceDatabaseUpdate();
+//        }
+        
         // Gets the previous Countries list
         JumiaApplication.INSTANCE.countriesAvailable = CountriesConfigsTableHelper.getCountriesList();
+        Log.i(TAG, "COUNTRIES SIZE IN MEM: " + JumiaApplication.INSTANCE.countriesAvailable.size());
 
         // deletes the old entries
         CountriesConfigsTableHelper.deleteAllCountriesConfigs();
+        Log.i(TAG, "DELETE FROM DB");
         
         if(sessionJSONArray != null){
             for (int i = 0; i < sessionJSONArray.length(); i++) {
@@ -120,7 +124,9 @@ public class GetCountriesGeneralConfigsHelper extends BaseHelper {
                 }
                 JumiaApplication.INSTANCE.countriesAvailable = mCountries;
                 CountriesConfigsTableHelper.insertCountriesConfigs(mCountries);
+                Log.i(TAG, "INSERT INTO DB FROM JSON");
             } else if(JumiaApplication.INSTANCE.countriesAvailable != null && JumiaApplication.INSTANCE.countriesAvailable.size() > 0) {
+                Log.i(TAG, "INSERT INTO DB FROM MEM");
                 CountriesConfigsTableHelper.insertCountriesConfigs(JumiaApplication.INSTANCE.countriesAvailable);
             }
         }

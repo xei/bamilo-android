@@ -62,8 +62,7 @@ public class GetCountriesConfigsHelper extends BaseHelper {
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
         bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
         bundle.putBoolean(IMetaData.MD_IGNORE_CACHE, true);
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY,
-                EventType.GET_COUNTRY_CONFIGURATIONS);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_COUNTRY_CONFIGURATIONS);
         return bundle;
     }
 

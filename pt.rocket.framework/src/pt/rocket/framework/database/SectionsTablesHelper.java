@@ -15,7 +15,7 @@ import de.akquinet.android.androlog.Log;
  */
 public class SectionsTablesHelper {
 	
-	private static final String TAG = SectionsTablesHelper.class.getSimpleName();
+	protected static final String TAG = SectionsTablesHelper.class.getSimpleName();
 	
 	public static final String TABLE = "section";
 	
