@@ -144,8 +144,6 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         sharedPreferences = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         showList = sharedPreferences.getBoolean(ConstantsSharedPrefs.KEY_SHOW_LIST_LAYOUT, true);
 
-//        setRetainInstance(true);
-
         title = getArguments().getString(ConstantsIntentExtra.CONTENT_TITLE);
 
         productsURL = getArguments().getString(ConstantsIntentExtra.CONTENT_URL);
@@ -236,21 +234,17 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
 
                 } else {
                     Log.d(TAG, "FILTER: ADAPTER IS NOT NULL");
-//                    CatalogPagerAdapter adapter = (CatalogPagerAdapter)mViewPager.getAdapter();
-//                    if (null != adapter) {
                     mCatalogPagerAdapter.setLandscapeMode(BaseActivity.isTabletInLandscape(getBaseActivity()));
-                        int totalProducts = mCatalogPagerAdapter.getCatalogPageTotalItems(mViewPager.getCurrentItem());
-                        if (totalProducts > 0) {
-                            TextView totalItems = (TextView) getView().findViewById(R.id.totalProducts);
-                            StringBuilder total = new StringBuilder(" (").append(totalProducts).append(" ").append(getString(R.string.shoppingcart_items)).append(")");
-                            if (null != totalItems) {
-                                totalItems.setText(total.toString());
-                                totalItems.setVisibility(View.VISIBLE);
-                            }
-                        }                        
-//                        mCatalogPagerAdapter.notifyDataSetChanged();
-                        mCatalogPagerAdapter.invalidateCatalogPages();
-//                    }
+                    int totalProducts = mCatalogPagerAdapter.getCatalogPageTotalItems(mViewPager.getCurrentItem());
+                    if (totalProducts > 0) {
+                        TextView totalItems = (TextView) getView().findViewById(R.id.totalProducts);
+                        StringBuilder total = new StringBuilder(" (").append(totalProducts).append(" ").append(getString(R.string.shoppingcart_items)).append(")");
+                        if (null != totalItems) {
+                            totalItems.setText(total.toString());
+                            totalItems.setVisibility(View.VISIBLE);
+                        }
+                    }                        
+                    mCatalogPagerAdapter.invalidateCatalogPages();
                 }
 
                 mViewPager.setAdapter(mCatalogPagerAdapter);

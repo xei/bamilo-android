@@ -26,7 +26,6 @@ import pt.rocket.framework.rest.RestContract;
 import pt.rocket.framework.tracking.AnalyticsGoogle;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.Direction;
-import pt.rocket.framework.utils.LoadingBarView;
 import pt.rocket.framework.utils.ProductSort;
 import pt.rocket.helpers.GetProductsHelper;
 import pt.rocket.interfaces.IResponseCallback;
@@ -113,7 +112,7 @@ public class CatalogPageFragment extends BaseFragment {
     private GridView gridView;
     // Lb - loading_bar
     private LinearLayout linearLayoutLb;
-    private LoadingBarView loadingBarView;
+//    private LoadingBarView loadingBarView;
 
 
     public static CatalogPageFragment newInstance(Bundle bundle) {
@@ -232,7 +231,7 @@ public class CatalogPageFragment extends BaseFragment {
         this.gridView.setOnItemClickListener(onItemClickListener);
 
         this.linearLayoutLb = (LinearLayout) view.findViewById(R.id.loading_view_pager);
-        this.loadingBarView = ((LoadingBarView) this.linearLayoutLb.findViewById(R.id.loading_bar_view));
+//        this.loadingBarView = ((LoadingBarView) this.linearLayoutLb.findViewById(R.id.loading_bar_view));
         
         if (null != savedInstanceState) {
             mSavedProductsSKU = savedInstanceState.getStringArrayList(PRODUCT_LIST);
@@ -656,13 +655,6 @@ public class CatalogPageFragment extends BaseFragment {
         // Validate products
         if (productsPage != null && productsPage.getTotalProducts() > 0) {
             Log.d(TAG, "onSuccessEvent: products on page = " + productsPage.getProducts().size() + " total products = " + productsPage.getTotalProducts());
-            
-//            new Thread().start();
-//            new Handler().post(new Runnable() {
-//                @Override
-//                public void run() {
-//                }
-//            });
 
             // TODO: Improve this behavior
             if (mPageIndex == 1 && mPageNumber == 1) {
@@ -670,7 +662,6 @@ public class CatalogPageFragment extends BaseFragment {
             } else if (mPageIndex == 1 && mPageNumber == 2) {
                 RelatedItemsTableHelper.insertRelatedItems(getBaseActivity(), productsPage.getProductsList());
             }
-            
             
             parentFragment.addProductsCollection(productsPage.getProductsMap());
 

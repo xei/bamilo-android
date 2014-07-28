@@ -1,5 +1,6 @@
 package pt.rocket.controllers;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -15,6 +16,7 @@ import pt.rocket.view.fragments.CatalogFragment;
 import android.content.Context;
 import android.database.DataSetObserver;
 import android.graphics.Paint;
+import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -275,5 +277,6 @@ public class ProductsListAdapter extends BaseAdapter {
             super.unregisterDataSetObserver(observer);    
         }
     }
+    
     
 }
