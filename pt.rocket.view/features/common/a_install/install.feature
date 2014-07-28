@@ -12,8 +12,7 @@ Feature: Prepare the app
 	Scenario: I shutdown the app
 	Given I shutdown the app
 	
-	@country
+	@country @Calabash_Tests
 	Scenario: I choose the country
 	Given I call the variables
 	And I select the country
-	* I wait for 5 seconds

@@ -20,6 +20,7 @@ def initvars
   @venture_egypt= "Egypt"
   @venture_kenya= "Kenya"
   @venture_uganda= "Uganda"
+  @venture_ghana= "Ghana"
   
   @username="testcalabash@mailinator.com"
   @password="password1"
@@ -78,6 +79,8 @@ def initvars
   @review_comment_t="Arrived Fast"
   @share="share_button"
   
+  @country_choose="Choose Country"
+  
   
   
   #initializes the country variables
@@ -114,6 +117,7 @@ def initvars
      
     @addtocart="Add to Cart"
     @home="Home"
+    @home_c="HOME"
     @new_pass_short="The new password has to have at least 6 characters"
    
     #password recovery
@@ -124,7 +128,7 @@ def initvars
     @pass_rec_sent="Email sent"
     
     #cart
-    @item_added="was added to shopping cart"
+    @item_was_added="was added to shopping cart"
     @no_items="You have no items in the cart"
     @got_it="Got it"
     @clear_cart_message="This clears the cart"
@@ -162,7 +166,7 @@ def initvars
     @pay_on_delivery="Cash On Delivery"
     @confirm_order="Confirm Order"
     
-    @popular_categories="Popular Categories"
+    @popular_categories="Popular"
     @filter="Filter"
     @filter_brand="Brand"
     @filter_size="Size"
@@ -188,7 +192,7 @@ def initvars
     @email_notifications="Email Notifications"
     
     @newsletter="Newsletters"
-    @newsletter_male="Male"
+    @newsletter_male="Newsletter Male"
     @newsletter_female="Newsletter Female"
     
     @login="Login"
@@ -213,6 +217,11 @@ def initvars
     @menu = "MENU"
     @item_added = "Item added"
     @item_removed = "Item removed"
+    @shopping_cart = "Shopping Cart"
+    @my_cart = "My Cart"
+    @back_button= "BACK"
+    @track_my_order = "Track My Order"
+    @number_items="Items"
     
     ##### Ivory Coast ####################################### IC ##############################################################################          
     when "ic"
@@ -251,6 +260,7 @@ def initvars
     @termsandconditions="Termes et conditions"
     @password_changed_message="Le mot de passe a été modifié avec succès"
     @home="Accueil"
+    @home_c="ACCUEIL"
     @new_pass_short="Le nouveau mot de passe doit comprendre au moins 6 caractères"
     
     #password recovery
@@ -261,7 +271,7 @@ def initvars
     @pass_rec_sent="Email envoyé"
     
     #cart
-    @item_added="a été ajouté au panier"
+    @item_was_added="a été ajouté au panier"
     @no_items="Vous n'avez pas d'articles dans le panier"
     @got_it="J'ai Compris"
     @clear_cart_message="Ceci efface le panier"
@@ -300,7 +310,7 @@ def initvars
     @confirm_order="Confirmer la commande"
     
     #@popular_categories="Nos Meilleures Catégories"
-    @popular_categories="Popular Categories"
+    @popular_categories="Popular"
     @filter="Filtre"
     @filter_brand="Brand"
     @filter_size="Size"
@@ -326,8 +336,8 @@ def initvars
     @login="Connectez-vous"
     
     @newsletter="Newsletters"
-    @newsletter_male="Newsletter Male"
-    @newsletter_female="Newsletter Female"
+    @newsletter_male="Newsletter Homme"
+    @newsletter_female="Newsletter Femme"
     
     @register="Enregistrer"
     
@@ -336,7 +346,7 @@ def initvars
     @no_result_found="n'a donné aucun résultat"
     @search_tips="Conseils d'utilisation de la barre de recherche"
     
-    @newsletter_subscription="Newsletter Subscription"
+    @newsletter_subscription="Newsletter"
     
     @invalid_email_message="Email non valide"
     
@@ -350,6 +360,11 @@ def initvars
     
     @item_added = "Produit ajouté"
     @item_removed = "Produit supprimé"
+    @shopping_cart = "Panier d'achat"
+    @my_cart = "Mon panier" 
+    @back_button= "BACK"
+    @track_my_order = "Suivi de commande"
+    @number_items="Articles"
       
     ##### Morocco ########################################### MA ##############################################################################
     when "ma"
@@ -358,7 +373,7 @@ def initvars
     @sign_in="Accéder au compte"
     @wrong_username="faketester@tester.tt"
     @invalidsearch= "addddf" 
-    @search_p= "Pierre Pelot" 
+    @search_p= "surf" 
     @search="Rechercher"
     @myaccount="Mon compte"
     @myinfo="Les données de"
@@ -388,6 +403,7 @@ def initvars
     @password_changed_message="Le mot de passe a été modifié avec succès"
     @differentpassword="Le mot de passe ne correspond pas"
     @home="Accueil"
+    @home_c="ACCUEIL"
     @new_pass_short="Le nouveau mot de passe doit comprendre au moins 6 caractères"
     
     #password recovery
@@ -398,7 +414,7 @@ def initvars
     @pass_rec_sent="Email envoyé"
     
     #cart
-    @item_added="a été ajouté au panier"
+    @item_was_added="a été ajouté au panier"
     @no_items="Vous n'avez pas d'articles dans le panier"
     @got_it="J'ai Compris"
     @clear_cart_message="Ceci efface le panier"
@@ -462,17 +478,17 @@ def initvars
     @login="Connectez-vous"
     
     @newsletter="Newsletters"
-    @newsletter_male="Newsletter Male"
-    @newsletter_female="Newsletter Female"
+    @newsletter_male="Newsletter Homme"
+    @newsletter_female="Newsletter Femme"
     
     @register="Enregistrer"
     
     @notification_newsletter_changes="Vos préférences eMails ont été enregistrées"
     
-    @no_result_found="n'a donné aucun résultat"
+    @no_result_found="n'y a pas de résultat"
     @search_tips="Conseils d'utilisation de la barre de recherche"
     
-    @newsletter_subscription="Newsletter Subscription"
+    @newsletter_subscription="Newsletter"
     
     @invalid_email_message="Email non valide"
     
@@ -485,6 +501,11 @@ def initvars
     @menu = "MENU"
     @item_added = "Produit ajouté"
     @item_removed = "Produit supprimé"
+    @shopping_cart = "Panier d'achat"
+    @my_cart = "Mon panier" 
+    @back_button= "BACK"
+    @track_my_order = "Suivi de commande"
+    @number_items="Articles"
         
     ##### Nigeria ########################################### NG ##############################################################################
     when "ng"
@@ -518,6 +539,7 @@ def initvars
     
     @addtocart="Add to Cart"
     @home="Home"
+    @home_c="HOME"
     @new_pass_short="The new password has to have at least 6 characters"
         
     #password recovery
@@ -528,7 +550,7 @@ def initvars
     @pass_rec_sent="Email sent"
     
     #cart
-    @item_added="was added to shopping cart"
+    @item_was_added="was added to shopping cart"
     @no_items="You have no items in the cart"
     @got_it="Got it"
     @clear_cart_message="This clears the cart"
@@ -566,7 +588,7 @@ def initvars
     @pay_on_delivery="Pay On Delivery"
     @confirm_order="Confirm Order"
     
-    @popular_categories="Popular Categories"
+    @popular_categories="Popular"
     @filter="Filter"
     @filter_brand="Brand"
     @filter_size="Size"
@@ -615,6 +637,11 @@ def initvars
     @menu = "MENU"
     @item_added = "Item added"
     @item_removed = "Item removed"
+    @shopping_cart = "Shopping Cart"
+    @my_cart = "My Cart"
+    @back_button= "BACK"
+    @track_my_order = "Track My Order"
+    @number_items="Items"
     
     ##### Egypt ############################################# EG ##############################################################################
     when "eg"
@@ -628,7 +655,7 @@ def initvars
     @myaccount="My Account"
     @myinfo="User Data"
     @categories="CATEGORIES"
-    @categoryfashion="Books"
+    @categoryfashion="Mobiles"
     @choose_country="Choose Country"
     @order_status="Order Status"
     
@@ -648,6 +675,7 @@ def initvars
     
     @addtocart="Add to Cart"
     @home="Home"
+    @home_c="HOME"
     @new_pass_short="The new password has to have at least 6 characters"
     
     #password recovery
@@ -658,7 +686,7 @@ def initvars
     @pass_rec_sent="Email sent"
     
     #cart
-    @item_added="was added to shopping cart"
+    @item_was_added="was added to shopping cart"
     @no_items="You have no items in the cart"
     @got_it="Got it"
     @clear_cart_message="This clears the cart"
@@ -696,7 +724,7 @@ def initvars
     @pay_on_delivery="Cash On Delivery"
     @confirm_order="Confirm Order"
     
-    @popular_categories="Popular Categories"
+    @popular_categories="Popular"
     @filter="Filter"
     @filter_brand="Brand"
     @filter_size="Size"
@@ -745,6 +773,11 @@ def initvars
     @menu = "MENU"
     @item_added = "Item added"
     @item_removed = "Item removed"
+    @shopping_cart = "Shopping Cart"
+    @my_cart = "My Cart"
+    @back_button= "BACK"
+    @track_my_order = "Track My Order"
+    @number_items="Items"
     
     ##### Uganda  ############################################ UG ##############################################################################
     when "ug"
@@ -758,7 +791,7 @@ def initvars
     @myaccount="My Account"
     @myinfo="User Data"
     @categories="CATEGORIES"
-    @categoryfashion="Books"
+    @categoryfashion="Mobile"
     @choose_country="Choose Country"
     @order_status="Order Status"
     
@@ -778,6 +811,7 @@ def initvars
      
     @addtocart="Add to Cart"
     @home="Home"
+    @home_c="HOME"
     @new_pass_short="The new password has to have at least 6 characters"
    
     #password recovery
@@ -788,7 +822,7 @@ def initvars
     @pass_rec_sent="Email sent"
     
     #cart
-    @item_added="was added to shopping cart"
+    @item_was_added="was added to shopping cart"
     @no_items="You have no items in the cart"
     @got_it="Got it"
     @clear_cart_message="This clears the cart"
@@ -826,7 +860,7 @@ def initvars
     @pay_on_delivery="Pay On Delivery"
     @confirm_order="Confirm Order"
     
-    @popular_categories="Popular Categories"
+    @popular_categories="Popular"
     @filter="Filter"
     @filter_brand="Brand"
     @filter_size="Size"
@@ -852,10 +886,10 @@ def initvars
     @login="Login"
     
     @newsletter="Newsletters"
-    @newsletter_male="Male"
+    @newsletter_male="Newsletter Male"
     @newsletter_female="Newsletter Female"
     
-    @register="Enregistrer"
+    @register="Register"
     
     @notification_newsletter_changes="Your email notifications settings have been saved"
     
@@ -875,5 +909,146 @@ def initvars
     @menu = "MENU"
     @item_added = "Item added"
     @item_removed = "Item removed"
+    @shopping_cart = "Shopping Cart"
+    @my_cart = "My Cart"
+    @back_button= "BACK"
+    @track_my_order = "Track My Order"
+    @number_items="Items"
+    
+    ##### Ghana   ############################################ GH ##############################################################################
+    when "gh"
+    @venture_name= @venture_ghana
+    
+    @sign_in="Sign In"
+    @wrong_username="faketester@tester.tt"
+    @invalidsearch= "addddd" 
+    @search_p= "nikon" 
+    @search="Search"
+    @myaccount="My Account"
+    @myinfo="User Data"
+    @categories="CATEGORIES"
+    @categoryfashion="Mobile"
+    @choose_country="Choose Country"
+    @order_status="Order Status"
+    
+    @checkoutNext="Next"
+    @checkout1="TestPayment"
+    @checkout3="Confirm Order"
+    
+    @emailerrormessage="Please fill in";
+    @passerrormessage="Please fill in the Password";
+    
+    @loginerror="Login failed"
+    @signout="Sign Out"
+    @mandatory="Please fill in the required(*) fields"
+    @sameemail="This email already exists."
+    @searchdefault="Please enter a term for suggestions!"
+    @nosuggest="No suggestions for your search term!"
+     
+    @addtocart="Add to Cart"
+    @home="Home"
+    @home_c="HOME"
+    @new_pass_short="The new password has to have at least 6 characters"
+   
+    #password recovery
+    @forgot_password="Forgot Password?"
+    @password_recovery="Password Recovery"
+    @pass_rec_empty_email="Please fill in the E-Mail"
+    @pass_rec_failed="Password recovery failed"
+    @pass_rec_sent="Email sent"
+    
+    #cart
+    @item_was_added="was added to shopping cart"
+    @no_items="You have no items in the cart"
+    @got_it="Got it"
+    @clear_cart_message="This clears the cart"
+    
+    #catalog
+    @currency= "USH"
+    @loading_items="Loading more items"
+    @popularity="POPULARITY"
+    @price_up="PRICE UP"
+    @price_down="PRICE DOWN"
+    @name="NAME"
+    @brand="BRAND"
+    
+    #product detail
+    @first_tip="Swipe left or right to"
+    @second_tip="Tap to open the product gallery"
+    @specification="Specification"
+    @please_choose="Please choose"
+    @search_v="flip flops"
+    @product_features="Product Features"
+    @product_description="Product Description"
+    @write_review="Write a Review"
+    @rating_t="posted by"
+    @write_review="Write a Review"
+    @send_review="Send Review"
+    @to_reviews="To reviews"
+    @messaging="Messaging"
+    
+    #cart
+    @delete="Delete"
+    
+    #native checkout
+    @proceed_to_checkout="Proceed to Checkout"
+    @next="Next"
+    @pay_on_delivery="Pay On Delivery"
+    @confirm_order="Confirm Order"
+    
+    @popular_categories="Popular"
+    @filter="Filter"
+    @filter_brand="Brand"
+    @filter_size="Size"
+    @filter_color_family="Color family"
+    @filter_price="Price"
+    
+    @done="Done"
+    @clear_all="CLEAR ALL"
+    @new_in="NEW IN"
+    @best_rating="BEST RATING"
+    @back="Please press back again if you wish to leave the app"
+    @search_r="samsung"
+    
+    @valid_order="400093859"
+    @no_track_results="No results found"
+    
+    @related_items="Related Items"
+    
+    @newsletter_checkbox="Newsletter"
+    
+    @email_notifications="Email Notifications"
+    
+    @login="Login"
+    
+    @newsletter="Newsletters"
+    @newsletter_male="Newsletter Male"
+    @newsletter_female="Newsletter Female"
+    
+    @register="Register"
+    
+    @notification_newsletter_changes="Your email notifications settings have been saved"
+    
+    @no_result_found="Unfortunately there was no match found"
+    @search_tips="Search Tips"
+    
+    @newsletter_subscription="Newsletter Subscription"
+    
+    @invalid_email_message="Invalid email address"
+    
+    @save="Save"
+    @settings = "Settings"
+    @myprofile = "My Profile"
+    @my_favourites = "My Favourites"
+    @recente_searches = "Recent Searches"
+    @recently_viewed = "Recently Viewed"
+    @menu = "MENU"
+    @item_added = "Item added"
+    @item_removed = "Item removed"
+    @shopping_cart = "Shopping Cart"
+    @my_cart = "My Cart"
+    @back_button= "BACK"
+    @track_my_order = "Track My Order"
+    @number_items="Items"
   end
 end

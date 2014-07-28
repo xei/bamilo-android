@@ -4,13 +4,14 @@ Feature: Sorting Feature
 Background: 
 Given I call the variables
 And I select the country
-And I wait for 10 seconds
 
 Scenario: Test sorting filters
+Given I wait to see the home
 When I click on the search bar
-And I enter a valid search
+And I write a valid result on the search bar
+And I wait for 5 seconds
+And I press list item number 1
 * I wait for 2 seconds 
-And I click on search icon
 Then I should see the filter popularity
 When I swipe left moving with 10 steps
 Then I should see the filter new in

@@ -27,8 +27,18 @@ Then /^I should see the login error message$/ do
   performAction('assert_text', @loginerror.to_s, true) 
 end
 
-Then /^I should see sign out button$/ do 
-  performAction('assert_text', @signout.to_s, true) 
+Then /^I should see sign out button$/ do
+  wait_for_elements_exist(["* marked:'"+@signout.to_s+"'"],:timeout => 20) 
+  #performAction('assert_text', @signout.to_s, true) 
+end
+
+Then /^I wait for the next$/ do 
+  wait_for_elements_exist(["* marked:'"+@next.to_s+"'"],:timeout => 20)
+  wait_for_elements_exist(["* marked:'"+@next.to_s+"'"],:timeout => 20)
+end
+
+Then /^I wait for the confirm order$/ do 
+  wait_for_elements_exist(["* marked:'"+@confirm_order.to_s+"'"],:timeout => 20)
 end
 
 Then /^I should see the mandatory fields error message$/ do 
@@ -102,6 +112,7 @@ Then /^I should see the countries$/ do
   performAction('assert_text', @venture_egypt, true)
   performAction('assert_text', @venture_kenya, true)
   performAction('assert_text', @venture_uganda, true)
+  performAction('assert_text', @venture_ghana, true)
 
 end
 
@@ -136,11 +147,11 @@ end
 Then /^I should see the sidebar$/ do
   performAction('assert_text', @home.to_s, true)
   performAction('assert_text', @categories.to_s, true)
-  performAction('assert_text', @search.to_s, true)
-  performAction('assert_text', @myaccount.to_s, true)
+  #performAction('assert_text', @search.to_s, true)
+  #performAction('assert_text', @myaccount.to_s, true)
   performAction('assert_text', @choose_country.to_s, true)
-  performAction('assert_text', @order_status.to_s, true)
-  performAction('assert_text', @sign_in.to_s, true)
+  #performAction('assert_text', @order_status.to_s, true)
+  #performAction('assert_text', @sign_in.to_s, true)
 end
 
 Then /^I should not see the sidebar$/ do
@@ -148,7 +159,7 @@ Then /^I should not see the sidebar$/ do
 end
 
 Then /^I should see the item was added to shopping cart message$/ do
-  performAction('assert_text', @item_added.to_s, true)
+  performAction('assert_text', @item_was_added.to_s, true)
 end
 
 Then /^I should not see the no items message$/ do
@@ -279,7 +290,7 @@ Then /^I (should|should not) see the order$/ do |order|
 end
 
 Then /^I should see the thank you screen$/ do
-  performAction('click_on_view_by_id', "btn_checkout_continue", true)
+  wait_for_elements_exist(["* marked:'"+"btn_checkout_continue"+"'"],:timeout => 20)
 end
 
 Then /^I (should|should not) see the related items$/ do |related|
@@ -377,7 +388,7 @@ Then /^I should see the item (added|removed) message$/ do |item|
 end
 
 Then /^I should see the search icon$/ do
-  performAction('click_on_view_by_id', "menu_search")
+  performAction('click_on_view_by_id', "abs__search_button")
 end
 
 Then /^I should see the recent searches$/ do
@@ -386,4 +397,52 @@ end
 
 Then /^I should see the my favorites$/ do
   performAction('assert_text', @my_favourites.to_s, true)
+end
+
+Then /^I wait to see the home$/ do
+  wait_for_elements_exist(["* marked:'"+@home_c.to_s+"'"],:timeout => 20) 
+end
+
+Then /^I should see only one column$/ do
+  wait_for_elements_exist(["* marked:'"+@home.to_s+"'"],:timeout => 20)
+  wait_for_elements_exist(["* marked:'"+@choose_country.to_s+"'"],:timeout => 20)
+  wait_for_elements_exist(["* marked:'"+@categories.to_s+"'"],:timeout => 20)
+end
+
+Then /^I wait to see the cart$/ do
+  wait_for_elements_exist(["* marked:'"+@categories.to_s+"'"],:timeout => 20)
+end
+
+Then /^I should see the choose country page$/ do
+  wait_for_elements_exist(["* marked:'"+@choose_country.to_s+"'"],:timeout => 20)
+end
+
+Then /^I should see the back button$/ do
+  wait_for_elements_exist(["* marked:'"+@back_button.to_s+"'"],:timeout => 20)
+end
+
+Then /^I should see the overflow options$/ do
+  performAction('assert_text', @sign_in.to_s, true)
+  performAction('assert_text', @my_favourites.to_s, true)
+  performAction('assert_text', @recente_searches.to_s, true)
+  performAction('assert_text', @recently_viewed.to_s, true)
+  performAction('assert_text', @myaccount.to_s, true)
+  performAction('assert_text', @track_my_order.to_s, true)
+end
+
+Then /^I should see the recently viewed$/ do
+  performAction('assert_text', @recently_viewed.to_s, true)
+end
+
+
+Then /^I should see my account$/ do
+  performAction('assert_text', @myaccount.to_s, true)
+end
+
+Then /^I should see track my order page$/ do
+  performAction('assert_text', @track_my_order.to_s, true)
+end
+
+Then /^I should see the catalog number of items$/ do
+  performAction('assert_text', @number_items.to_s, true)
 end

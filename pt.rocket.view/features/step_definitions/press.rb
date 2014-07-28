@@ -79,6 +79,7 @@ Then /^I press Terms and Conditions$/ do
 end
 
 Then /^I select the country$/ do
+  wait_for_elements_exist(["* marked:'"+@country_choose.to_s+"'"],:timeout => 20)
   performAction('click_on_text',@venture_name.to_s+@dev.to_s )
   #puts @venture_name.to_s+@dev.to_s
 end
@@ -167,7 +168,7 @@ Then /^I press share$/ do
   #@share=query("ShareActionProvider")
   #puts @share
   #performAction('click_on_view_by_id', "menu_share")
-  performAction('press', "Share with")
+  performAction('click_on_view_by_id', "abs__search_button")
   
 end
 
@@ -268,7 +269,7 @@ Then /^I press Track Order$/ do
 end 
  
 Then /^I click on the search bar$/ do
-  performAction('click_on_view_by_id', "search_component")
+  performAction('click_on_view_by_id', "abs__search_button")
 end
 
 Then /^I click on search icon$/ do
@@ -364,4 +365,28 @@ Then /^I press on other country$/ do
 	else
 	  step "I press list item number 6"
 	end
+end
+
+Then /^I click on cart$/ do
+  performAction('click_on_text', @shopping_cart.to_s)
+end
+
+Then /^I click on home$/ do
+  performAction('click_on_text', @home.to_s)
+end
+
+Then /^I press the back button$/ do
+  performAction('click_on_text', @back_button.to_s)
+end
+
+Then /^I click on the overflow button$/ do
+  performAction('click_on_view_by_id', 'image_myprofile')
+end
+
+Then /^I enter recently viewed$/ do
+  performAction('click_on_text', @recently_viewed.to_s)
+end
+
+Then /^I enter track my order$/ do
+  performAction('click_on_text', @track_my_order.to_s)
 end

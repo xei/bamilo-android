@@ -73,8 +73,8 @@ Then /^I enter a valid search$/ do
 end
 
 Then /^I enter a invalid search$/ do 
-  performAction('enter_text_into_named_field',"", @search_input.to_s)
-  performAction('enter_text_into_named_field',@invalidsearch.to_s, @search_input.to_s)
+  performAction('clear_id_field', "abs__search_src_text" )
+  performAction('enter_text_into_id_field',@invalidsearch.to_s, "abs__search_src_text")
 end
 
 Then /^I enter the new password$/ do 
@@ -113,13 +113,13 @@ Then /^I enter a (valid|invalid) track order number$/ do |valid|
 end
 
 Then /^I enter a variation search$/ do 
-  performAction('enter_text_into_id_field',"", "search_component")
-  performAction('enter_text_into_id_field',@search_v.to_s, "search_component")
+  performAction('enter_text_into_id_field',"", "abs__search_src_text")
+  performAction('enter_text_into_id_field',@search_v.to_s, "abs__search_src_text")
 end
 
 Then /^I enter a rated search$/ do 
-  performAction('enter_text_into_id_field',"", "search_component")
-  performAction('enter_text_into_id_field',@search_r.to_s, "search_component")
+  performAction('enter_text_into_id_field',"", "abs__search_src_text")
+  performAction('enter_text_into_id_field',@search_r.to_s, "abs__search_src_text")
 end
 
 Then /^I fill the review information$/ do
@@ -135,13 +135,13 @@ Then /^I enter a color search$/ do
 end
 
 Then /^I write a valid result on the search bar$/ do
-  performAction('clear_id_field', "search_component")
-  performAction('enter_text_into_id_field',"surf", "search_component")
+  performAction('clear_id_field', "abs__search_src_text")
+  performAction('enter_text_into_id_field',"surf", "abs__search_src_text")
 end
 
 Then /^I write a invalid result on the search bar$/ do
-  performAction('clear_id_field', "search_component")
-  performAction('enter_text_into_id_field',"testeasdasdasdifgasldjkhalsjkdhalksjdh", "search_component")
+  performAction('clear_id_field', "abs__search_src_text")
+  performAction('enter_text_into_id_field',"testeasdasdasdifgasldjkhalsjkdhalksjdh", "abs__search_src_text")
 end
 
 Then /^I write a valid email on the newsletter subscription field$/ do

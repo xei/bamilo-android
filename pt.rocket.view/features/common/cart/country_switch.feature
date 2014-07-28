@@ -5,35 +5,27 @@ Background:
 Given I call the variables
 
 Scenario: Country Switch
-#Choose country
-And I select the country
-And I wait for 5 seconds
-
-#Login
-And I open the navigation menu
-* I wait for 2 seconds
-Then I choose the Sign In option
-* I wait for 5 seconds
+Given I select the country
+And I wait to see the home
+When I click on the overflow button
+And I choose the Sign In option
+Then I should see login screen
 When I enter a valid username
 And I enter the password
 And I press Login Button
-* I wait for 10 seconds
-Then I open the navigation menu
-* I wait for 10 seconds
-And I should see sign out button
-
-#When I open the navigation menu
-And I enter Categories
-* I wait for 3 seconds
+And I wait to see the home
+When I click on the overflow button
+Then I should see sign out button
+And I click on the overflow button
+When I open the navigation menu
 And I enter a valid Category
-* I wait for 3 seconds
-And I press list item number 1
+And I enter a valid Category
 * I wait for 3 seconds
 And I press list item number 1
 * I wait for 3 seconds
 Then I press Got it
 And I add product to cart
-* I wait for 5 seconds
+* I wait for 15 seconds
 Then I should see the item was added to shopping cart message
 When I go to cart
 When I open the navigation menu
@@ -44,7 +36,7 @@ And I press on other country
 Then I should see the clear the cart message
 And I press Yes
 * I wait for 5 seconds
-When I press the cart icon
-* I wait for 20 seconds
+#When I press the cart icon
+#* I wait for 20 seconds
 #	Then I should see the empty message
 	
