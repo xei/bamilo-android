@@ -364,7 +364,7 @@
     <string name="campaing_offer_ended">Promotions!</string>
     <string name="favourite_add_to_cart">Le produit a été ajouté à votre panier</string>
     <string name="teaser_campaign_button_first_line">HOT</string>
-    <string name="teaser_campaign_button_second_line">PROMOTIONS TERMINÉ</string>
+    <string name="teaser_campaign_button_second_line">OFFERS</string>
     <string name="back_label">RETOUR</string>
     <string name="campaing_timer_end">Se termine le:  </string>
     

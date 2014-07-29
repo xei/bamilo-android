@@ -115,35 +115,22 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 
 			sku = dataObject.getString(RestConstants.JSON_SKU_TAG);
 			name = dataObject.getString(RestConstants.JSON_PROD_NAME_TAG);
-			idCatalogConfig = dataObject
-					.getString(RestConstants.JSON_ID_CATALOG_CONFIG_TAG);
-			attributeSetId = dataObject
-					.getString(RestConstants.JSON_ATTRIBUTE_SET_ID_TAG);
-			activatedAt = dataObject
-					.getString(RestConstants.JSON_ACTIVATED_AT_TAG);
-
-			description = dataObject.optString(
-					RestConstants.JSON_DESCRIPTION_TAG, "");
+			idCatalogConfig = dataObject.getString(RestConstants.JSON_ID_CATALOG_CONFIG_TAG);
+			attributeSetId = dataObject.getString(RestConstants.JSON_ATTRIBUTE_SET_ID_TAG);
+			activatedAt = dataObject.getString(RestConstants.JSON_ACTIVATED_AT_TAG);
+			description = dataObject.optString(RestConstants.JSON_DESCRIPTION_TAG, "");
 			url = dataObject.optString(RestConstants.JSON_PROD_URL_TAG, "");
-
-			priceDouble = Double.parseDouble(dataObject
-					.getString(RestConstants.JSON_PRICE_TAG));
+			priceDouble = Double.parseDouble(dataObject.optString(RestConstants.JSON_PRICE_TAG, "0"));
 			price = CurrencyFormatter.formatCurrency(priceDouble);
-			maxPriceDouble = Double.parseDouble(dataObject
-					.getString(RestConstants.JSON_MAX_PRICE_TAG));
+			maxPriceDouble = Double.parseDouble(dataObject.optString(RestConstants.JSON_MAX_PRICE_TAG, "0"));
 			maxPrice = CurrencyFormatter.formatCurrency(maxPriceDouble);
 			brand = dataObject.getString(RestConstants.JSON_BRAND_TAG);
 
-			double specialPriceDouble = Double.parseDouble(dataObject
-					.optString(RestConstants.JSON_SPECIAL_PRICE_TAG, ""
-							+ priceDouble));
+			double specialPriceDouble = Double.parseDouble(dataObject.optString(RestConstants.JSON_SPECIAL_PRICE_TAG, "" + priceDouble));
 			specialPrice = CurrencyFormatter.formatCurrency(specialPriceDouble);
-			maxSpecialPrice = CurrencyFormatter.formatCurrency(Double
-					.parseDouble(dataObject.optString(
-							RestConstants.JSON_MAX_SPECIAL_PRICE_TAG, ""
-									+ maxPriceDouble)));
-			maxSavingPercentage = Double.parseDouble(dataObject.optString(
-					RestConstants.JSON_MAX_SAVING_PERCENTAGE_TAG, "0"));
+			maxSpecialPrice = CurrencyFormatter.formatCurrency(Double.parseDouble(dataObject.optString(
+							RestConstants.JSON_MAX_SPECIAL_PRICE_TAG, "" + maxPriceDouble)));
+			maxSavingPercentage = Double.parseDouble(dataObject.optString(RestConstants.JSON_MAX_SAVING_PERCENTAGE_TAG, "0"));
 
 			// TODO: ratings need to be completed
 			JSONObject ratingsTotalObject = dataObject
