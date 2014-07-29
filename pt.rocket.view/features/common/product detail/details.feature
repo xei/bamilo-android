@@ -1,5 +1,5 @@
-@Calabash_Tests @teste5
-Feature: Navigate to a product with different variations
+@Calabash_Tests @teste5 @f_pre_1.9
+Feature: PDV - Navigate to a product with different variations
 
 Background: 
 Given I call the variables
@@ -13,6 +13,7 @@ When I enter a variation search
 * I wait for 2 seconds
 And I press list item number 1
 * I wait for 5 seconds 
+And I press Got it
 And I press list item number 1
 * I wait for 2 seconds 
 And I press Got it

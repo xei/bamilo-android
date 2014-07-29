@@ -1,4 +1,4 @@
-@Calabash_Tests @tracking
+@Calabash_Tests @tracking @f_pre_1.9
 Feature: Tracking
 
 Background: 

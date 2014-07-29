@@ -1,5 +1,5 @@
-@Calabash_Tests @overview
-Feature: Check the product detail view
+@Calabash_Tests @overview @f_pre_1.9
+Feature: PDV - Check the product detail view
 
 Background: 
 Given I call the variables
@@ -13,6 +13,7 @@ When I open the navigation menu
 And I enter a valid Category
 And I enter a valid Category
 * I wait for 5 seconds
+And I press Got it
 And I press list item number 2
 * I wait for 5 seconds
 And I press Got it
