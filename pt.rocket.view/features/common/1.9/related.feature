@@ -11,7 +11,8 @@ And I wait to see the home
 When I open the navigation menu
 And I enter a valid Category
 And I enter a valid Category
-And I press list item number 1
+* I wait for 3 seconds
+And I press Got it
 * I wait for 3 seconds
 And I press list item number 2
 * I wait for 5 seconds
@@ -24,7 +25,6 @@ Given I wait to see the home
 When I open the navigation menu
 And I enter a valid Category
 And I enter a valid Category
-And I press list item number 1
 * I wait for 3 seconds
 And I press list item number 2
 * I wait for 5 seconds
@@ -42,7 +42,6 @@ Given I wait to see the home
 When I open the navigation menu
 And I enter a valid Category
 And I enter a valid Category
-And I press list item number 1
 * I wait for 3 seconds
 And I press list item number 2
 * I wait for 5 seconds
