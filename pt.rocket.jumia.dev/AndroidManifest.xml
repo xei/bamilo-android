@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="pt.rocket.jumia.dev"
     android:installLocation="auto"
-    android:versionCode="10124"
+    android:versionCode="10125"
     android:versionName="2.0" >
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
