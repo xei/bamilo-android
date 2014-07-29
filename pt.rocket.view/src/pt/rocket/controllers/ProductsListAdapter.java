@@ -269,7 +269,12 @@ public class ProductsListAdapter extends BaseAdapter {
     }
 
     public void appendProducts(Collection<? extends String> newProducts) {
-        products.addAll(newProducts);
+        for (String sku : newProducts) {
+            if (!products.contains(sku)) {
+                products.add(sku);
+            }
+        }
+        //products.addAll(newProducts);
         notifyDataSetChanged();
     }
     

@@ -201,7 +201,10 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         super.onResume();
         Log.d(TAG, "ON RESUME");
 
-        getBaseActivity().setTitle(title);
+        if (mTotalProducts > 0)
+            getBaseActivity().setTitleAndSubTitle(title, " (" + String.valueOf(mTotalProducts) + " " + getBaseActivity().getString(R.string.shoppingcart_items) + ")");
+        else
+            getBaseActivity().setTitle(title);
 
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
