@@ -7,7 +7,7 @@
     <ImageView
         android:id="@+id/tip_img"
         android:layout_width="wrap_content"
-        android:layout_height="100dp"
+        android:layout_height="@dimen/wizard_product_height"
         android:layout_marginLeft="@dimen/product_tip_padding_side"
         android:layout_marginTop="@dimen/margin_large"
         android:src="@drawable/img_instructions_tap" />

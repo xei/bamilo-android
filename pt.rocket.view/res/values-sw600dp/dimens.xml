@@ -52,6 +52,7 @@
 	<!-- WIZARD -->
 	<dimen name="wizard_nav_img_margin_left">80dp</dimen>
 	<dimen name="wizard_nav_img_margin_top">165dp</dimen>
+	<dimen name="wizard_product_height">150dp</dimen>
 
     <!--  FAVOURITE WIZARD -->
     <dimen name="product_tip_side_margin">10dp</dimen>
