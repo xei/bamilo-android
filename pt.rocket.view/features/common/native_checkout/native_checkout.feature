@@ -1,4 +1,4 @@
-@native_checkout @Calabash_Tests
+@native_checkout @Calabash_Tests @f_pre_1.9
 Feature: Native Checkout
 
 Background: 
@@ -23,6 +23,7 @@ When I open the navigation menu
 And I enter a valid Category
 And I enter a valid Category
 * I wait for 3 seconds
+And I press Got it
 And I press list item number 1
 * I wait for 3 seconds
 Then I press Got it

@@ -1,4 +1,4 @@
-@Calabash_Tests @navigation_drawer
+@Calabash_Tests @navigation_drawer @f_pre_1.9
 Feature: Navigation Drawer
 
 Background: 

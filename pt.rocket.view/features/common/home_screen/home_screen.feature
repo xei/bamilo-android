@@ -1,4 +1,4 @@
-@Calabash_Tests @home_screen
+@Calabash_Tests @home_screen @f_pre_1.9
 Feature: Check the popular brands
 
 Background: 
