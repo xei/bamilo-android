@@ -59,6 +59,8 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
     
     private static final String FILTER_STATE_KEY = "filter_state";
     
+    private static final String TOTAL_KEY = "total_products";
+    
     public static String requestTag = "CTLG_REQUEST";
     
     private static String PRODUCTS_LIST = "CTLG_PRODUCTS";
@@ -137,6 +139,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         Log.i(TAG, "ON CREATE");
         
         if (null != savedInstanceState && savedInstanceState.containsKey(PRODUCTS_LIST)) {
+            mTotalProducts = savedInstanceState.getInt(TOTAL_KEY);
             ArrayList<Product> products = savedInstanceState.getParcelableArrayList(PRODUCTS_LIST);
             for (Product prod : products) {
                 mProductsMap.put(prod.getSKU(), prod);
@@ -315,7 +318,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
     public void onSaveInstanceState(Bundle outState) {
         
         outState.putParcelableArrayList(PRODUCTS_LIST, new ArrayList<Product>(mProductsMap.values()));
-
+        outState.putInt(TOTAL_KEY, mTotalProducts);
         outState.putParcelable(FILTER_VALUES_KEY, mCatalogFilterValues);
         outState.putParcelableArrayList(FILTER_STATE_KEY, mCatalogFilter);
         
