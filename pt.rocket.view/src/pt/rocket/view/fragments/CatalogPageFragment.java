@@ -361,10 +361,11 @@ public class CatalogPageFragment extends BaseFragment {
             adapter.updateProducts(mSavedProductsSKU);      
             if (parentFragment.isVisible()) {
                 // set total items lable
-                if (mTotalProducts > 0)
-                    getBaseActivity().setTitleAndSubTitle(mTitle, " (" + String.valueOf(mTotalProducts) + " " + getBaseActivity().getString(R.string.shoppingcart_items) + ")");
-                else
+                if (mTotalProducts > 0) {
+                    getBaseActivity().setTitleAndSubTitle(mTitle, getSubtitle(mTotalProducts));
+                } else {
                     getBaseActivity().setTitle(mTitle);
+                }
             }
         }
 
@@ -632,9 +633,12 @@ public class CatalogPageFragment extends BaseFragment {
             mTitle = productsPage.getName();
         }
 
+        int totalProducts = productsPage == null ? 0 : productsPage.getTotalProducts();
+        int numberProducts = (productsPage == null || productsPage.getProducts() == null) ? 0 : productsPage.getProducts().size();
+
         // Validate products
-        if (productsPage != null && productsPage.getTotalProducts() > 0) {
-            Log.d(TAG, "onSuccessEvent: products on page = " + productsPage.getProducts().size() + " total products = " + productsPage.getTotalProducts());
+        if (productsPage != null && totalProducts > 0) {
+            Log.d(TAG, "onSuccessEvent: products on page = " + numberProducts + " total products = " + totalProducts);
             
 //            new Thread(new Runnable() {
 //                
@@ -658,13 +662,14 @@ public class CatalogPageFragment extends BaseFragment {
             
             parentFragment.addProductsCollection(productsPage.getProductsMap());
 
-            mTotalProducts = productsPage.getTotalProducts();
+            mTotalProducts = totalProducts;
             if (parentFragment.isVisible()) {
                 // set total items lable
-                if (mTotalProducts > 0)
-                    getBaseActivity().setTitleAndSubTitle(mTitle, " (" + String.valueOf(mTotalProducts) + " " + getBaseActivity().getString(R.string.shoppingcart_items) + ")");
-                else
+                if (mTotalProducts > 0) {
+                    getBaseActivity().setTitleAndSubTitle(mTitle, getSubtitle(mTotalProducts));
+                } else {
                     getBaseActivity().setTitle(mTitle);
+                }
             }
         }
 
@@ -683,16 +688,17 @@ public class CatalogPageFragment extends BaseFragment {
         if (!TextUtils.isEmpty(mSearchQuery)) {
             String query = mSearchQuery.replaceAll("--", ", ");
             if (parentFragment.isVisible()) {
-                if (mTotalProducts > 0)
-                    getBaseActivity().setTitleAndSubTitle(query, " (" + productsPage.getTotalProducts() + " " + getBaseActivity().getString(R.string.shoppingcart_items) + ")");
-                else
+                if (mTotalProducts > 0) {
+                    getBaseActivity().setTitleAndSubTitle(query, getSubtitle(totalProducts));
+                } else {
                     getBaseActivity().setTitle(query);
+                }
             }
             if (mPageNumber == 1) {
-                TrackerDelegator.trackSearchViewSortMade(getBaseActivity().getApplicationContext(), query, productsPage.getTotalProducts(), mSort.name());
+                TrackerDelegator.trackSearchViewSortMade(getBaseActivity().getApplicationContext(), query, totalProducts, mSort.name());
 
-                TrackerDelegator.trackSearchMade(getBaseActivity().getApplicationContext(), query, productsPage.getTotalProducts());
-                AnalyticsGoogle.get().trackSearch(query, productsPage.getTotalProducts());
+                TrackerDelegator.trackSearchMade(getBaseActivity().getApplicationContext(), query, totalProducts);
+                AnalyticsGoogle.get().trackSearch(query, totalProducts);
             }
 
         } else {
@@ -711,14 +717,14 @@ public class CatalogPageFragment extends BaseFragment {
             e.printStackTrace();
         }
 
-        mPageNumber = productsPage.getProducts().size() >= productsPage.getTotalProducts() ? NO_MORE_PAGES : mPageNumber + 1;
+        mPageNumber = numberProducts >= totalProducts ? NO_MORE_PAGES : mPageNumber + 1;
         showCatalogContent();
         if (mTotalProducts < ((mPageNumber - 1) * MAX_PAGE_ITEMS)) {
             mPageNumber = NO_MORE_PAGES;
         }
         
         mIsLoadingMore = false;
-        if (productsPage.getProducts().size() >= productsPage.getTotalProducts()) {
+        if (numberProducts >= totalProducts) {
             mIsLoadingMore = true;
         }
 
@@ -728,6 +734,15 @@ public class CatalogPageFragment extends BaseFragment {
         }
         
         RocketImageLoader.getInstance().startProcessingQueue();
+    }
+
+    private String getSubtitle(int total) {
+        StringBuilder label = new StringBuilder(" (");
+        label.append(total);
+        label.append(" ");
+        label.append(getBaseActivity().getString(R.string.shoppingcart_items));
+        label.append(")");
+        return label.toString();
     }
     
     private void onErrorEvent(Bundle bundle) {
