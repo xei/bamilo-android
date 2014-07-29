@@ -1,6 +1,5 @@
 package pt.rocket.controllers;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -16,7 +15,6 @@ import pt.rocket.view.fragments.CatalogFragment;
 import android.content.Context;
 import android.database.DataSetObserver;
 import android.graphics.Paint;
-import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -162,6 +160,8 @@ public class ProductsListAdapter extends BaseAdapter {
         if ((Item) itemView.getTag() == null) {
             prodItem = new Item();
             prodItem.image = (ImageView) itemView.findViewById(R.id.image_view);
+            prodItem.progress = itemView.findViewById(R.id.image_loading_progress);
+            
             prodItem.name = (TextView) itemView.findViewById(R.id.item_name);
             if (showList) prodItem.rating = (RatingBar) itemView.findViewById(R.id.item_rating);
             
@@ -174,7 +174,8 @@ public class ProductsListAdapter extends BaseAdapter {
             
             prodItem.brand = (TextView) itemView.findViewById(R.id.item_brand);
             prodItem.isNew= (ImageView) itemView.findViewById(R.id.image_is_new);
-            prodItem.isNew.setBackgroundResource(isNewResource);
+            prodItem.isNew.setBackgroundResource(isNewResource);            
+            
             prodItem.isFavourite = (ImageView) itemView.findViewById(R.id.image_is_favourite);
             itemView.setTag(prodItem);
         } else {
@@ -184,7 +185,7 @@ public class ProductsListAdapter extends BaseAdapter {
 
         final Product product = parentCatalog.getProduct(products.get(position));
         prodItem.image.setImageResource(R.drawable.no_image_small);
-        RocketImageLoader.instance.loadImage(product.getFirstImageURL(), prodItem.image,  null, R.drawable.no_image_small, CatalogFragment.requestTag);
+        RocketImageLoader.instance.loadImage(product.getFirstImageURL(), prodItem.image,  prodItem.progress, R.drawable.no_image_small, CatalogFragment.requestTag);
 
         // Set is new image
         prodItem.isNew.setSelected(product.getAttributes().isNew());

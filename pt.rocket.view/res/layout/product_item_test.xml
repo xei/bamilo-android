@@ -7,17 +7,30 @@
 
     <!-- IMAGE -->
 
-    <ImageView
-        android:id="@+id/image_view"
-        android:layout_width="99dp"
-        android:layout_height="99dp"
-        android:layout_gravity="center"
-        android:layout_marginLeft="@dimen/margin_small"
-        android:layout_marginRight="8.2dp"
-        android:layout_marginTop="2dp"
-        android:adjustViewBounds="false"
-        android:scaleType="fitCenter"
-        android:src="@drawable/no_image_small" />
+<!--     <ImageView -->
+<!--         android:id="@+id/image_view" -->
+<!--         android:layout_width="99dp" -->
+<!--         android:layout_height="99dp" -->
+<!--         android:layout_gravity="center" -->
+<!--         android:layout_marginLeft="@dimen/margin_small" -->
+<!--         android:layout_marginRight="8.2dp" -->
+<!--         android:layout_marginTop="2dp" -->
+<!--         android:adjustViewBounds="false" -->
+<!--         android:scaleType="fitCenter" -->
+<!--         android:src="@drawable/no_image_small" /> -->
+    
+	<include
+	    android:id="@+id/image_loadable"
+	    android:layout_width="99dp"
+	    android:layout_height="99dp"
+	    android:layout_centerVertical="true"
+	    android:layout_marginBottom="13.2dp"
+	    android:layout_marginLeft="@dimen/margin_small"
+	    android:layout_marginRight="13.2dp"
+	    android:layout_marginTop="@dimen/margin_small"
+	    layout="@layout/catalog_image_item"
+	    android:background="@color/orange_basic" />
+    
 
     <ImageView
         android:id="@+id/image_is_new"
@@ -37,7 +50,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/image_view" />
+        android:layout_toRightOf="@+id/image_loadable" />
 
     <org.holoeverywhere.widget.TextView
         android:id="@+id/item_brand"

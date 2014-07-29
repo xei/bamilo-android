@@ -14,13 +14,20 @@
         style="@style/divider_vertical_grid"
         android:layout_alignParentRight="true" />
 
-    <ImageView
-        android:id="@+id/image_view"
+<!--     <ImageView -->
+<!--         android:id="@+id/image_view" -->
+<!--         android:layout_width="@dimen/product_item_grid_width" -->
+<!--         android:layout_height="@dimen/product_item_grid_height" -->
+<!--         android:layout_centerHorizontal="true" -->
+<!--         android:scaleType="fitCenter" -->
+<!--         android:src="@drawable/no_image_small" /> -->
+
+	<include
+        android:id="@+id/image_loadable"
         android:layout_width="@dimen/product_item_grid_width"
         android:layout_height="@dimen/product_item_grid_height"
         android:layout_centerHorizontal="true"
-        android:scaleType="fitCenter"
-        android:src="@drawable/no_image_small" />
+        layout="@layout/image_loadable" />    
     
     <ImageView
         android:id="@+id/image_is_new"
@@ -73,7 +80,7 @@
         style="@style/product_name_list_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/image_view"
+        android:layout_below="@+id/image_loadable"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:ellipsize="end"
