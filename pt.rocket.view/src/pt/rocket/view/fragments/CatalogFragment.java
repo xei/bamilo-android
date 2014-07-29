@@ -55,6 +55,10 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
 
     private static final String TAG = LogTagHelper.create(CatalogFragment.class);
     
+    private static final String FILTER_VALUES_KEY = "filter_values";
+    
+    private static final String FILTER_STATE_KEY = "filter_state";
+    
     public static String requestTag = "CTLG_REQUEST";
     
     private static String PRODUCTS_LIST = "CTLG_PRODUCTS";
@@ -137,6 +141,12 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
             for (Product prod : products) {
                 mProductsMap.put(prod.getSKU(), prod);
             }
+        }
+        
+        // Get saved state for filter
+        if(savedInstanceState != null) {
+            mCatalogFilterValues = savedInstanceState.getParcelable(FILTER_VALUES_KEY);
+            mCatalogFilter = savedInstanceState.getParcelableArrayList(FILTER_STATE_KEY);
         }
 
         mShowListDrawable = getResources().getDrawable(R.drawable.selector_catalog_listview);
@@ -305,6 +315,10 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
     public void onSaveInstanceState(Bundle outState) {
         
         outState.putParcelableArrayList(PRODUCTS_LIST, new ArrayList<Product>(mProductsMap.values()));
+
+        outState.putParcelable(FILTER_VALUES_KEY, mCatalogFilterValues);
+        outState.putParcelableArrayList(FILTER_STATE_KEY, mCatalogFilter);
+        
         super.onSaveInstanceState(outState);
     }
 
