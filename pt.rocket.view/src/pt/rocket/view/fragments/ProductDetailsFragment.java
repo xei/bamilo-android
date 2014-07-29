@@ -56,7 +56,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Paint;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -326,7 +325,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
      */
     private void isToShowWizard(){
         if (WizardPreferences.isFirstTime(getBaseActivity(), WizardType.PRODUCT_DETAIL)) {
-            boolean hasVariations = (mCompleteProduct != null && mCompleteProduct.getVariations() != null && mCompleteProduct.getVariations().size() > 0) ? true : false;
+            boolean hasVariations = (mCompleteProduct != null && mCompleteProduct.getVariations() != null && mCompleteProduct.getVariations().size() > 1) ? true : false;
             ViewPager viewPagerTips = (ViewPager) mainView.findViewById(R.id.viewpager_tips);
             viewPagerTips.setVisibility(View.VISIBLE);
             int[] tips_pages = { R.layout.tip_swipe_layout, R.layout.tip_tap_layout, R.layout.tip_favourite_layout, R.layout.tip_share_layout };
