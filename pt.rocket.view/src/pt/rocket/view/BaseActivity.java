@@ -306,7 +306,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         }
 
         // TODO : Comment for Samsung store
-        CheckVersion.run(getApplicationContext());
+        //CheckVersion.run(getApplicationContext());
 
         /**
          * @FIX: IllegalStateException: Can not perform this action after onSaveInstanceState
