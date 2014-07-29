@@ -840,7 +840,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
      * @see android.view.View.OnClickListener#onClick(android.view.View)
      */
     @Override
-    public void onClick(View v) {
+    public void onClick(final View v) {
         // Get the view id
         int id = v.getId();
         // Validate the click
@@ -860,8 +860,9 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
 
         } else if (id == R.id.products_switch_layout_button) {
             Log.d(TAG, "ON CLICK: SWITCH LAYOUT BUTTON");
+            v.setEnabled(false);
 
-            getBaseActivity().showProgress();
+//            getBaseActivity().showProgress();
 
             showList = !showList;
 
@@ -893,6 +894,8 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
                     
                     mCatalogPagerAdapter.updateParametersBundle(params);
                     mCatalogPagerAdapter.invalidateCatalogPages();
+                    
+                    v.setEnabled(true);
                 }
             }, 300);
         }

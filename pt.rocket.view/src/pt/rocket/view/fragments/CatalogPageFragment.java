@@ -307,24 +307,26 @@ public class CatalogPageFragment extends BaseFragment {
         } else if (mSwitchMD5 != switchMD5) {
             Log.i(TAG, "ON RESUME -> SWITCH LAYOUT");
 
+            mCurrentListPosition = this.gridView.getFirstVisiblePosition();
+            
             List<String> products = adapter.getProductsList();
             adapter = new ProductsListAdapter(getBaseActivity(), parentFragment, showList, updateGridColumns(showList), isFrench);
             adapter.appendProducts(products);
             gridView.setAdapter(adapter);
-            gridView.setSelection(0);
+            gridView.setSelection(mCurrentListPosition);
             gridView.setOnScrollListener(onScrollListener);
 
             showCatalogContent();
             mIsLoadingMore = false;
 
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    // hide progress called on switch layout
-                    getBaseActivity().dismissProgress();
-                }
-            }, 300);
+//            Handler handler = new Handler();
+//            handler.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    // hide progress called on switch layout
+//                    getBaseActivity().dismissProgress();
+//                }
+//            }, 300);
             
             mSwitchMD5 = switchMD5;
         } 
