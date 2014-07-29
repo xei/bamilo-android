@@ -235,7 +235,7 @@ def initvars
     @myaccount="Mon compte"
     @myinfo="Les données de"
     @categories="CATÉGORIES"
-    @categoryfashion="PC & informatique"
+    @categoryfashion="Mobile"
     @choose_country="Choisir le pays"
     @order_status="Suivi de commande"
      
@@ -247,7 +247,7 @@ def initvars
     @passerrormessage="dans le Mot de passe";
      
     @loginerror="L'authentification a échoué"
-    @signout="se déconnecter"
+    @signout="Se déconnecter"
     @mandatory="Veillez remplir les champs obligatoires"
     @sameemail="Cet email existe déjà."
     @searchdefault="Entrer votre recherche ici!"
@@ -390,7 +390,7 @@ def initvars
     @passerrormessage="dans le Mot de passe";
     
     @loginerror="L'authentification a échoué"
-    @signout="se déconnecter"
+    @signout="Se déconnecter"
     @mandatory="Veillez remplir les champs obligatoires"
     @sameemail="Cet email existe déjà."
     @searchdefault="Entrer votre recherche ici!"
