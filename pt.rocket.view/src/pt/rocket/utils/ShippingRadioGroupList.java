@@ -12,6 +12,7 @@ import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.view.R;
 import android.content.ContentValues;
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -135,10 +136,10 @@ public class ShippingRadioGroupList extends RadioGroup {
                     null,
                     false);
             button.setId(idx);
-            button.setText(mItems.get(idx));
-            RadioGroup.LayoutParams layoutParams = new RadioGroup.LayoutParams(
-                    RadioGroup.LayoutParams.WRAP_CONTENT, RadioGroup.LayoutParams.WRAP_CONTENT);
-            button.setText(mItems.get(idx));
+            String optionLabel = mForm.optionsLabel.get(mItems.get(idx));
+            //Log.i(TAG, "options jsonobject label: " + optionLabel);
+            button.setText(!TextUtils.isEmpty(optionLabel) ? optionLabel : mItems.get(idx));
+            RadioGroup.LayoutParams layoutParams = new RadioGroup.LayoutParams(RadioGroup.LayoutParams.WRAP_CONTENT, RadioGroup.LayoutParams.WRAP_CONTENT);
             if (mItems.get(idx).equalsIgnoreCase(mDefaultSelected)) {
                 button.setChecked(true);
                 mDefaultSelectedId = idx;

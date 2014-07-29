@@ -223,7 +223,6 @@
     <string name="tip_tap_text">Tap to open the product gallery</string>
     <string name="tip_swipe_text">Swipe left or right to\nview different images </string>
     <string name="tip_pinch_text">Pinch to zoom</string>
-    <string name="products_tip_swipe_text">Swipe left or right to change the Sort type</string>
     <string name="go_shop_text">Shop Now</string>
     <string name="promotion_tip_tap_text">Tap the box above to copy the code to the clipboard and keep it handy for checkout</string>
     <string name="copied_to_clipboard">Copied to clipboard</string>
@@ -363,5 +362,6 @@
     <string name="teaser_campaign_button_second_line">OFFERS</string>
     <string name="campaing_offer_ended">Offer Ended!</string>
     <string name="back_label">BACK</string>
-
+	<string name="campaing_timer_end">Ends in:  </string>
+	<string name="products_tip_swipe_text">Swipe left or right to change the Sort type</string>
 </resources>

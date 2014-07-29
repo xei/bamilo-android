@@ -1,6 +1,7 @@
 package pt.rocket.forms;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 
 import org.json.JSONException;
@@ -34,6 +35,7 @@ public class ShippingMethodForm implements IJSONSerializable, Parcelable {
     public String type;
     public boolean required;
     public ArrayList<String> options;
+    public HashMap<String, String> optionsLabel;
     public ArrayList<ShippingMethodSubForm> subForms;
     private ShippingRadioGroupList mShippingRadioGroupList;
         /**
@@ -48,6 +50,7 @@ public class ShippingMethodForm implements IJSONSerializable, Parcelable {
         this.type = "";
         this.required = false;
         this.options = new ArrayList<String>();
+        this.optionsLabel = new HashMap<String, String>();
         this.subForms = new ArrayList<ShippingMethodSubForm>();
     }
 
@@ -73,9 +76,13 @@ public class ShippingMethodForm implements IJSONSerializable, Parcelable {
             }
             
             JSONObject optionsObject = jsonObject.getJSONObject(RestConstants.JSON_OPTIONS_TAG);
+            //Log.i(TAG, "options jsonobject: " +  optionsObject.toString());
+             
             Iterator opts = optionsObject.keys();
             while (opts.hasNext()) {
-               options.add(opts.next().toString());
+               String key = opts.next().toString();
+               options.add(key);
+               optionsLabel.put(key, optionsObject.optJSONObject(key).optString("label"));
             }
             
         } catch (JSONException e) {
@@ -125,8 +132,8 @@ public class ShippingMethodForm implements IJSONSerializable, Parcelable {
         dest.writeString(type);
         dest.writeBooleanArray(new boolean[] {required});
         dest.writeList(options);
+        dest.writeMap(optionsLabel);
         dest.writeList(subForms);
-        
     }
     
     /**
@@ -143,6 +150,8 @@ public class ShippingMethodForm implements IJSONSerializable, Parcelable {
         in.readBooleanArray(new boolean[] {required});
         options = new ArrayList<String>(); 
         in.readArrayList(null);
+        optionsLabel = new HashMap<String, String>();
+        in.readMap(optionsLabel, String.class.getClassLoader());
         subForms = new ArrayList<ShippingMethodSubForm>();
         in.readArrayList(ShippingMethodSubForm.class.getClassLoader()); 
     }
