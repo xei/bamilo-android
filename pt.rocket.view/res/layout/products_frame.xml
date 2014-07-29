@@ -19,8 +19,8 @@
             android:id="@+id/catalog_pager_tag"
             android:layout_width="match_parent"
             android:layout_height="@dimen/sliding_tab_height"
+            android:layout_marginRight="@dimen/catalog_button_filter_width"
             android:background="@drawable/background_tabs"
-            android:paddingRight="@dimen/catalog_button_filter_width"
             app:stsBottomBorderThickness="0dp"
             app:stsIndicatorColor="@color/orange_tab_bar"
             app:stsIndicatorThickness="@dimen/sliding_tab_inidicator_thickness" />
@@ -36,10 +36,10 @@
 
         <!-- BUTTONS CONTAINER -->
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/products_buttons_container"
             android:layout_width="@dimen/catalog_button_filter_width"
-            android:layout_height="@dimen/catalog_buttons_container_height"
+            android:layout_height="@dimen/sliding_tab_height"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:background="@android:color/white"
@@ -49,14 +49,16 @@
             <!-- FILTER -->
 
             <View
+                android:id="@+id/first_divider"
                 style="@style/divider_vertical"
+                android:layout_alignParentLeft="true"
                 android:background="@color/grey_middlelight" />
 
             <ImageView
                 android:id="@+id/products_list_filter_button"
                 android:layout_width="37dp"
                 android:layout_height="match_parent"
-                android:layout_centerInParent="false"
+                android:layout_toRightOf="@id/first_divider"
                 android:scaleType="centerInside"
                 android:src="@drawable/selector_catalog_filter" />
 
@@ -66,6 +68,7 @@
                 android:id="@+id/teaser_group_title_divider"
                 android:layout_width="1dp"
                 android:layout_height="25dp"
+                android:layout_centerInParent="true"
                 android:layout_marginBottom="0dp"
                 android:background="@color/grey_middlelight" />
 
@@ -73,25 +76,17 @@
                 android:id="@+id/products_switch_layout_button"
                 android:layout_width="37dp"
                 android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
                 android:layout_centerInParent="false"
                 android:scaleType="centerInside"
                 android:src="@drawable/selector_catalog_gridview" />
-        </LinearLayout>
 
-        <View
-            style="@style/divider_horizontal"
-            android:layout_width="@dimen/catalog_button_filter_width"
-            android:layout_below="@id/products_buttons_container"
-            android:background="@color/grey_middlelight" />
-
-        <!--
-             <View
-            android:id="@+id/products_list_filter_header"
-            android:layout_width="match_parent"
-            android:layout_height="31.72dp"
-            android:layout_toLeftOf="@id/products_buttons_container"
-            android:background="@drawable/filter_header" />
-        -->
+            <View
+                style="@style/divider_horizontal"
+                android:layout_height="0.75dp"
+                android:layout_alignParentBottom="true"
+                android:background="@color/grey_middlelight" />
+        </RelativeLayout>
     </RelativeLayout>
 
     <!-- NO RESULTS CONTAINER -->

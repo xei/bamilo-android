@@ -285,9 +285,6 @@ public class ProductAttributes implements IJSONSerializable, Parcelable {
         } catch (JSONException e) {
             Log.e(TAG, "Error Parsing the product json", e);
             return false;
-        } catch (InterruptedException e) {            
-            e.printStackTrace();
-            isFavourite = false;
         }
 
         return true;

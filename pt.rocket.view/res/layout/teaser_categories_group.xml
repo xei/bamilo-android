@@ -10,7 +10,10 @@
         android:id="@+id/teaser_group_title"
         style="@style/activity_sectionheader_text"
         android:layout_marginLeft="@dimen/margin_huge"
-        android:text="Categories" />
+        android:text="Categories"
+        android:singleLine="true"
+        android:maxLines="1"
+        android:ellipsize="end" />
 
     <View
         style="@style/line_grey_style"

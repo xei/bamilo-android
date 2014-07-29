@@ -10,6 +10,9 @@
         android:id="@+id/teaser_group_title"
         style="@style/activity_sectionheader_text"
         android:layout_marginLeft="@dimen/margin_huge"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:singleLine="true"
         android:text="Brands" />
 
     <RelativeLayout
