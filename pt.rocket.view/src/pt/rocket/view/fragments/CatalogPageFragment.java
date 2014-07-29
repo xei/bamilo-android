@@ -358,16 +358,16 @@ public class CatalogPageFragment extends BaseFragment {
         if (!hasProducts) {
             mPageNumber = 1;
         } else {
-            adapter.updateProducts(mSavedProductsSKU);      
-            if (parentFragment.isVisible()) {
-                // set total items lable
-                if (mTotalProducts > 0) {
-                    getBaseActivity().setTitleAndSubTitle(mTitle, getSubtitle(mTotalProducts));
-                } else {
-                    getBaseActivity().setTitle(mTitle);
-                }
-            }
+            adapter.updateProducts(mSavedProductsSKU);
         }
+        
+//        if (parentFragment.isVisible()) {
+//            // set total items lable
+//            if (mTotalProducts > 0)
+//                getBaseActivity().setTitleAndSubTitle(mTitle, " (" + String.valueOf(mTotalProducts) + " " + getBaseActivity().getString(R.string.shoppingcart_items) + ")");
+//            else
+//                getBaseActivity().setTitle(mTitle);
+//        }        
 
         Log.d(TAG, "showProductsContent");
         if (mPageNumber == 1) {
@@ -555,7 +555,7 @@ public class CatalogPageFragment extends BaseFragment {
         @Override
         public void onScrollStateChanged(AbsListView view, int scrollState) {
             if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {                
-                RocketImageLoader.getInstance().stopProcessingQueue(null);
+                RocketImageLoader.getInstance().stopProcessingQueue(); //CatalogFragment.requestTag
             } else {
                 ProductsListAdapter adapter = (ProductsListAdapter)gridView.getAdapter();
                 adapter.notifyDataSetChanged();
@@ -644,33 +644,41 @@ public class CatalogPageFragment extends BaseFragment {
 //                
 //                @Override
 //                public void run() {
-//                    // TODO: Improve this behavior
-//                    if (mPageIndex == 1 && mPageNumber == 1) {
-//                        RelatedItemsTableHelper.insertRelatedItemsAndClear(getBaseActivity(), productsPage.getProductsList());
-//                    } else if (mPageIndex == 1 && mPageNumber == 2) {
-//                        RelatedItemsTableHelper.insertRelatedItems(getBaseActivity(), productsPage.getProductsList());
+//                    try {
+//                        // TODO: Improve this behavior
+//                        if (mPageIndex == 1 && mPageNumber == 1) {
+//                            RelatedItemsTableHelper.insertRelatedItemsAndClear(getBaseActivity(), productsPage.getProductsList());
+//                        } else if (mPageIndex == 1 && mPageNumber == 2) {
+//                            RelatedItemsTableHelper.insertRelatedItems(getBaseActivity(), productsPage.getProductsList());
+//                        }
+//                    } catch (Exception e) {
+//                        // TODO Auto-generated catch block
+//                        e.printStackTrace();
 //                    }
 //                }
 //            }).start();
 
-            if (mPageIndex == 1 && mPageNumber == 1) {
-                RelatedItemsTableHelper.insertRelatedItemsAndClear(getBaseActivity(), productsPage.getProductsList());
-            } else if (mPageIndex == 1 && mPageNumber == 2) {
-                RelatedItemsTableHelper.insertRelatedItems(getBaseActivity(), productsPage.getProductsList());
+            try {
+                if (mPageIndex == 1 && mPageNumber == 1) {
+                    RelatedItemsTableHelper.insertRelatedItemsAndClear(getBaseActivity(), productsPage.getProductsList());
+                } else if (mPageIndex == 1 && mPageNumber == 2) {
+                    RelatedItemsTableHelper.insertRelatedItems(getBaseActivity(), productsPage.getProductsList());
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
             
             
-            parentFragment.addProductsCollection(productsPage.getProductsMap());
+            parentFragment.addProductsCollection(productsPage.getProductsMap(), mTitle, productsPage.getTotalProducts());
 
             mTotalProducts = totalProducts;
-            if (parentFragment.isVisible()) {
-                // set total items lable
-                if (mTotalProducts > 0) {
-                    getBaseActivity().setTitleAndSubTitle(mTitle, getSubtitle(mTotalProducts));
-                } else {
-                    getBaseActivity().setTitle(mTitle);
-                }
-            }
+//            if (parentFragment.isVisible()) {
+//                // set total items lable
+//                if (mTotalProducts > 0)
+//                    getBaseActivity().setTitleAndSubTitle(mTitle, " (" + String.valueOf(mTotalProducts) + " " + getBaseActivity().getString(R.string.shoppingcart_items) + ")");
+//                else
+//                    getBaseActivity().setTitle(mTitle);
+//            }
         }
 
         if (location != null) {
@@ -688,11 +696,10 @@ public class CatalogPageFragment extends BaseFragment {
         if (!TextUtils.isEmpty(mSearchQuery)) {
             String query = mSearchQuery.replaceAll("--", ", ");
             if (parentFragment.isVisible()) {
-                if (mTotalProducts > 0) {
-                    getBaseActivity().setTitleAndSubTitle(query, getSubtitle(totalProducts));
-                } else {
+                if (mTotalProducts > 0)
+                    getBaseActivity().setTitleAndSubTitle(query, " (" + productsPage.getTotalProducts() + " " + getBaseActivity().getString(R.string.shoppingcart_items) + ")");
+                else
                     getBaseActivity().setTitle(query);
-                }
             }
             if (mPageNumber == 1) {
                 TrackerDelegator.trackSearchViewSortMade(getBaseActivity().getApplicationContext(), query, totalProducts, mSort.name());
@@ -734,15 +741,6 @@ public class CatalogPageFragment extends BaseFragment {
         }
         
         RocketImageLoader.getInstance().startProcessingQueue();
-    }
-
-    private String getSubtitle(int total) {
-        StringBuilder label = new StringBuilder(" (");
-        label.append(total);
-        label.append(" ");
-        label.append(getBaseActivity().getString(R.string.shoppingcart_items));
-        label.append(")");
-        return label.toString();
     }
     
     private void onErrorEvent(Bundle bundle) {

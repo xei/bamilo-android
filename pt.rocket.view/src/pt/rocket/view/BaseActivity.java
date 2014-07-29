@@ -1393,15 +1393,16 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      */
     @Override
     public void setTitle(CharSequence title) {
-        TextView titleView = (TextView) findViewById(R.id.title);
+        TextView titleView = (TextView) findViewById(R.id.titleProducts);
         TextView subtitleView = (TextView) findViewById(R.id.totalProducts);
         View header_title = findViewById(R.id.header_title);
         subtitleView.setVisibility(View.GONE);
         if (header_title == null)
             return;
+
         if (!TextUtils.isEmpty(title)) {
             titleView.setText(title);
-            header_title.setVisibility(View.VISIBLE);
+            header_title.setVisibility(View.VISIBLE);            
         } else if (TextUtils.isEmpty(title)) {
             header_title.setVisibility(View.GONE);
         }
@@ -1414,13 +1415,14 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      * @param subtitle
      */
     public void setTitleAndSubTitle(CharSequence title, CharSequence subtitle) {
-        TextView titleView = (TextView) findViewById(R.id.title);
+        TextView titleView = (TextView) findViewById(R.id.titleProducts);
         TextView subtitleView = (TextView) findViewById(R.id.totalProducts);
         View header_title = findViewById(R.id.header_title);
 
         if (titleView == null)
             return;
         if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(subtitle)) {
+            Log.d(TAG, "------------->>>>>>>>>>>>>> SET TITLE ->" + title + "; " + subtitle);
             // Set text and force measure
             subtitleView.setText(subtitle);
             // Set title
@@ -2418,3 +2420,4 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     }*/
     
 }
+

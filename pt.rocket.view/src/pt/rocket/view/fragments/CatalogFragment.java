@@ -69,6 +69,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
     private ArrayList<String> mSortOptions;
 
     private HashMap<String, Product> mProductsMap;
+    private int mTotalProducts = 0;
 
     public static String productsURL;
     public static String searchQuery;
@@ -250,7 +251,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
                 mViewPager.setAdapter(mCatalogPagerAdapter);
                 mPagerTabStrip.setViewPager(mViewPager); // XXX
                 // TODO: Validate if fix the "Call removeView() on the child's parent first"
-                mViewPager.setOffscreenPageLimit(2);
+                mViewPager.setOffscreenPageLimit(1);
                 mViewPager.setCurrentItem(mSavedPagerPosition);
 
                 AnalyticsGoogle.get().trackPage(R.string.gproductlist);
@@ -694,6 +695,8 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         params.putString(ConstantsIntentExtra.NAVIGATION_PATH, navigationPath);
         params.putParcelable(CatalogPageFragment.PARAM_FILTERS, mCatalogFilterValues);
         
+        Log.d(TAG, " ----> FILTER TITLE :" + title);
+        
         mCatalogPagerAdapter.updateParametersBundle(params);
         mCatalogPagerAdapter.invalidateCatalogPages();
     }
@@ -917,8 +920,17 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         return mProductsMap.get(sku);
     }
 
-    public void addProductsCollection(Map<String, Product> products) {
+    public void addProductsCollection(Map<String, Product> products, String categoryTitle, int totalProductsCount) {
+        Log.d(TAG, "----------------------------- NEW TITLE -----> " + categoryTitle);
+        title = categoryTitle;
+        mTotalProducts = totalProductsCount;
         mProductsMap.putAll(products);
+
+        if (mTotalProducts > 0)
+            getBaseActivity().setTitleAndSubTitle(title, " (" + String.valueOf(mTotalProducts) + " " + getBaseActivity().getString(R.string.shoppingcart_items) + ")");
+        else
+            getBaseActivity().setTitle(title);
+        
     }
 
     public void invalidatePages() {

@@ -940,122 +940,128 @@ public class CatalogPageModel {
 
     private void onSuccessEvent(Bundle bundle) {
 
-        // TODO : Validate
-        // mActivity.handleSuccessEvent(bundle);
-
-        Log.d(TAG, "ON SUCCESS EVENT");
-
-        // Get Products Event
-        final ProductsPage productsPage = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-
-        // Get Location
-        final String location = bundle.getString(IMetaData.LOCATION);
-        Log.d(TAG, "Location = " + location);
-
-        // Validate title
-        if (TextUtils.isEmpty(title)) {
-            title = productsPage.getName();
-        }
-
-        new Handler().postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-                // Valdiate products
-                if (productsPage != null && productsPage.getTotalProducts() > 0) {
-                    Log.d(TAG, "onSuccessEvent: products on page = "
-                            + productsPage.getProducts().size() + " total products = "
-                            + productsPage.getTotalProducts());
-
-                    // TODO: Improve this behavior
-                    if (index == 1 && pageNumber == 1) {
-                        RelatedItemsTableHelper.insertRelatedItemsAndClear(mActivity,
-                                productsPage.getProductsList());
-                    } else if (index == 1 && pageNumber == 2) {
-                        RelatedItemsTableHelper.insertRelatedItems(mActivity,
-                                productsPage.getProductsList());
-                    }
-
-                    mFragment.addProductsCollection(productsPage.getProductsMap());
-
-                    totalProducts = productsPage.getTotalProducts();
-                    if (mFragment.isVisible()) {
-                        // set total items lable
-                        if (getTotalProducts() > 0)
-                            mActivity.setTitleAndSubTitle(
-                                    title,
-                                    " (" + String.valueOf(getTotalProducts()) + " "
-                                            + mActivity.getString(R.string.shoppingcart_items)
-                                            + ")");
-                        else
-                            mActivity.setTitle(title);
-                    }
-                }
-
-                if (location != null) {
-                    checkRedirectFromSearch(location);
-                }
-
-                AnalyticsGoogle.get().trackLoadTiming(R.string.gproductlist, mBeginRequestMillis);
-
-                if (!TextUtils.isEmpty(searchQuery)) {
-                    String query = searchQuery.replaceAll("--", ", ");
-                    if (mFragment.isVisible()) {
-                        if (getTotalProducts() > 0)
-                            mActivity.setTitleAndSubTitle(
-                                    query,
-                                    " (" + productsPage.getTotalProducts() + " "
-                                            + mActivity.getString(R.string.shoppingcart_items)
-                                            + ")");
-                        else
-                            mActivity.setTitle(query);
-                    }
-                    if (pageNumber == 1) {
-                        TrackerDelegator.trackSearchViewSortMade(mActivity.getApplicationContext(),
-                                query,
-                                productsPage.getTotalProducts(), sort.name());
-
-                        TrackerDelegator.trackSearchMade(mActivity.getApplicationContext(), query,
-                                productsPage.getTotalProducts());
-                        AnalyticsGoogle.get().trackSearch(query, productsPage.getTotalProducts());
-                    }
-
-                } else {
-                    if (pageNumber == 1) {
-                        TrackerDelegator.trackCategoryView(mActivity.getApplicationContext(),
-                                title,
-                                pageNumber);
-                    }
-                }
-
-                try {
-                    productsAdapter.appendProducts(productsPage.getProducts());
-                } catch (NullPointerException e) {
-                    Log.w(TAG, "NPE ON APPEND PRODUCTS: ");
-                    e.printStackTrace();
-                }
-
-                // Log.i(TAG, "code1 " + productsPage.getProducts().size() + " pageNumber is : " +
-                // pageNumber);
-
-                pageNumber = productsPage.getProducts().size() >= productsPage.getTotalProducts() ? NO_MORE_PAGES
-                        : pageNumber + 1;
-                showCatalogContent();
-                if (totalProducts < ((pageNumber - 1) * MAX_PAGE_ITEMS)) {
-                    pageNumber = NO_MORE_PAGES;
-                }
-                isLoadingMore = false;
-                if (productsPage.getProducts().size() >= productsPage.getTotalProducts()) {
-                    isLoadingMore = true;
-                }
-
-                // Updated filter
-                if (mFragment.isVisible()) {
-                    mFragment.onSuccesLoadingFilteredCatalog(productsPage.getFilters());
-                }
-
-            }
-        }, 200);
+//        // TODO : Validate
+//        // mActivity.handleSuccessEvent(bundle);
+//
+//        Log.d(TAG, "ON SUCCESS EVENT");
+//
+//        // Get Products Event
+//        final ProductsPage productsPage = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+//
+//        // Get Location
+//        final String location = bundle.getString(IMetaData.LOCATION);
+//        Log.d(TAG, "Location = " + location);
+//
+//        // Validate title
+//        if (TextUtils.isEmpty(title)) {
+//            title = productsPage.getName();
+//        }
+//
+//        new Handler().postDelayed(new Runnable() {
+//
+//            @Override
+//            public void run() {
+//                // Valdiate products
+//                if (productsPage != null && productsPage.getTotalProducts() > 0) {
+//                    Log.d(TAG, "onSuccessEvent: products on page = "
+//                            + productsPage.getProducts().size() + " total products = "
+//                            + productsPage.getTotalProducts());
+//
+//                    // TODO: Improve this behavior
+//                    try {
+//                        // TODO: Improve this behavior
+//                        if (index == 1 && pageNumber == 1) {
+//                            RelatedItemsTableHelper.insertRelatedItemsAndClear(mActivity,
+//                                    productsPage.getProductsList());
+//                        } else if (index == 1 && pageNumber == 2) {
+//                            RelatedItemsTableHelper.insertRelatedItems(mActivity,
+//                                    productsPage.getProductsList());
+//                        }
+//                    } catch (Exception e) {
+//                        // TODO Auto-generated catch block
+//                        e.printStackTrace();
+//                    }
+//
+//                    mFragment.addProductsCollection(productsPage.getProductsMap(), title, productsPage.getTotalProducts());
+//
+//                    totalProducts = productsPage.getTotalProducts();
+//                    if (mFragment.isVisible()) {
+//                        // set total items lable
+//                        if (getTotalProducts() > 0)
+//                            mActivity.setTitleAndSubTitle(
+//                                    title,
+//                                    " (" + String.valueOf(getTotalProducts()) + " "
+//                                            + mActivity.getString(R.string.shoppingcart_items)
+//                                            + ")");
+//                        else
+//                            mActivity.setTitle(title);
+//                    }
+//                }
+//
+//                if (location != null) {
+//                    checkRedirectFromSearch(location);
+//                }
+//
+//                AnalyticsGoogle.get().trackLoadTiming(R.string.gproductlist, mBeginRequestMillis);
+//
+//                if (!TextUtils.isEmpty(searchQuery)) {
+//                    String query = searchQuery.replaceAll("--", ", ");
+//                    if (mFragment.isVisible()) {
+//                        if (getTotalProducts() > 0)
+//                            mActivity.setTitleAndSubTitle(
+//                                    query,
+//                                    " (" + productsPage.getTotalProducts() + " "
+//                                            + mActivity.getString(R.string.shoppingcart_items)
+//                                            + ")");
+//                        else
+//                            mActivity.setTitle(query);
+//                    }
+//                    if (pageNumber == 1) {
+//                        TrackerDelegator.trackSearchViewSortMade(mActivity.getApplicationContext(),
+//                                query,
+//                                productsPage.getTotalProducts(), sort.name());
+//
+//                        TrackerDelegator.trackSearchMade(mActivity.getApplicationContext(), query,
+//                                productsPage.getTotalProducts());
+//                        AnalyticsGoogle.get().trackSearch(query, productsPage.getTotalProducts());
+//                    }
+//
+//                } else {
+//                    if (pageNumber == 1) {
+//                        TrackerDelegator.trackCategoryView(mActivity.getApplicationContext(),
+//                                title,
+//                                pageNumber);
+//                    }
+//                }
+//
+//                try {
+//                    productsAdapter.appendProducts(productsPage.getProducts());
+//                } catch (NullPointerException e) {
+//                    Log.w(TAG, "NPE ON APPEND PRODUCTS: ");
+//                    e.printStackTrace();
+//                }
+//
+//                // Log.i(TAG, "code1 " + productsPage.getProducts().size() + " pageNumber is : " +
+//                // pageNumber);
+//
+//                pageNumber = productsPage.getProducts().size() >= productsPage.getTotalProducts() ? NO_MORE_PAGES
+//                        : pageNumber + 1;
+//                showCatalogContent();
+//                if (totalProducts < ((pageNumber - 1) * MAX_PAGE_ITEMS)) {
+//                    pageNumber = NO_MORE_PAGES;
+//                }
+//                isLoadingMore = false;
+//                if (productsPage.getProducts().size() >= productsPage.getTotalProducts()) {
+//                    isLoadingMore = true;
+//                }
+//
+//                // Updated filter
+//                if (mFragment.isVisible()) {
+//                    mFragment.onSuccesLoadingFilteredCatalog(productsPage.getFilters());
+//                }
+//
+//            }
+//        }, 200);
     }
 
     /**
