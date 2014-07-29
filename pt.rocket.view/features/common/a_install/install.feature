@@ -12,7 +12,7 @@ Feature: Prepare the app
 	Scenario: I shutdown the app
 	Given I shutdown the app
 	
-	@country @Calabash_Tests
+	@country @Calabash_Tests @f_pre_1.9
 	Scenario: I choose the country
 	Given I call the variables
 	And I select the country
