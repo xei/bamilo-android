@@ -546,16 +546,29 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * 
      * @param type
      */
-
     protected final void triggerContentEventWithNoLoading(final BaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
         JumiaApplication.INSTANCE.sendRequest(helper, args, responseCallback);
     }
 
+    /**
+     * 
+     * @param helper
+     * @param args
+     * @param responseCallback
+     */
     protected final void triggerContentEvent(final BaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
         showFragmentLoading();
         JumiaApplication.INSTANCE.sendRequest(helper, args, responseCallback);
+        // Hide fall back for each fragment request
+        if(getBaseActivity() != null) getBaseActivity().hideMainFallBackView();
     }
 
+    /**
+     * 
+     * @param helper
+     * @param args
+     * @param responseCallback
+     */
     protected final void triggerContentEventProgress(final BaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
         showActivityProgress();
         JumiaApplication.INSTANCE.sendRequest(helper, args, responseCallback);

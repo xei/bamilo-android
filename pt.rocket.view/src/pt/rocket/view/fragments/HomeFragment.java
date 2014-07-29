@@ -499,6 +499,9 @@ public class HomeFragment extends BaseFragment implements IResponseCallback {
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
+        
+        // Check base errors
+        if (getBaseActivity() != null && getBaseActivity().handleErrorEvent(bundle)) return;
 
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         switch (eventType) {

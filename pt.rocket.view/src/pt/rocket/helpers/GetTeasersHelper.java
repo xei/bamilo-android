@@ -68,6 +68,7 @@ public class GetTeasersHelper extends BaseHelper {
             }
         } catch (JSONException e) {
             e.printStackTrace();
+            return parseErrorBundle(bundle);
         }
 
     	bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_TEASERS_EVENT);

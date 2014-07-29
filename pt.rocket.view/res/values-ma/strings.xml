@@ -367,7 +367,6 @@
     <string name="teaser_campaign_button_second_line">OFFERS</string>
     <string name="back_label">RETOUR</string>
     <string name="campaing_timer_end">Se termine le:  </string>
-    
-    <string name="products_tip_swipe_text">Swipe left or right to change the Sort type</string>
+    <string name="products_tip_swipe_text">Balayer à la gauche ou droite pour changer de classement</string>
 
 </resources>

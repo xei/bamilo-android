@@ -2065,6 +2065,18 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         }
         JumiaApplication.INSTANCE.responseCallbacks.remove(id);
     }
+    
+    /**
+     * ################ MAIN MAINTENANCE PAGE ################ 
+     */
+    
+    /**
+     * Hide the main fall back view with retry button
+     */
+    public void hideMainFallBackView(){
+        if(mMainFallBackStub != null) mMainFallBackStub.setVisibility(View.GONE);
+    }
+    
 
     /**
      * Sets Maintenance page
