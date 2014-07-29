@@ -22,7 +22,7 @@
         android:id="@+id/tip_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_below="@id/tip_spacer"
         android:layout_margin="@dimen/margin_huge"
         android:fontFamily="roboto_light"
         android:gravity="center"
