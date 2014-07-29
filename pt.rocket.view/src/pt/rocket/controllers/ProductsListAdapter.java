@@ -6,6 +6,8 @@ import java.util.Collection;
 import org.holoeverywhere.widget.TextView;
 import org.holoeverywhere.widget.Toast;
 
+import com.android.volley.toolbox.ImageLoader;
+
 import pt.rocket.framework.database.FavouriteTableHelper;
 import pt.rocket.framework.objects.Product;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -23,6 +25,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import de.akquinet.android.androlog.Log;
+
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.ImageLoader.ImageContainer;
 
 /**
  * This Class is used to create an adapter for the list of products. It is called by ProductsList
@@ -180,6 +185,10 @@ public class ProductsListAdapter extends BaseAdapter {
             itemView.setTag(prodItem);
         } else {
             prodItem = (Item) itemView.getTag();
+            ImageContainer imgContainer = (ImageContainer) prodItem.image.getTag();
+            if (null != imgContainer) {
+                imgContainer.cancelRequest();
+            }
         }
         
 

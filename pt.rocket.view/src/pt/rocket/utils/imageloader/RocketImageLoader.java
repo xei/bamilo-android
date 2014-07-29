@@ -266,19 +266,20 @@ public class RocketImageLoader {
 //                        }                        
                         
                         if (null != response.getBitmap() && response.getBitmap().getWidth() != -1) {
-                            
-                            if (progressView != null) {
-                                progressView.setVisibility(View.GONE);
-                            }
-                            
-                            imageView.setImageBitmap(response.getBitmap());
-                            
-                            if (listener != null) {
-                                listener.onLoadedSuccess(response.getBitmap());
-                            }
+                            if (response.getRequestUrl().equals(imageUrl)) {
+                                if (progressView != null) {
+                                    progressView.setVisibility(View.GONE);
+                                }
+                                
+                                imageView.setImageBitmap(response.getBitmap());
+                                
+                                if (listener != null) {
+                                    listener.onLoadedSuccess(response.getBitmap());
+                                }
 
-                            if (hideImageView)
-                                imageView.setVisibility(View.VISIBLE);
+                                if (hideImageView)
+                                    imageView.setVisibility(View.VISIBLE);
+                            }
                         } else {
                         	//imageView.setImageBitmap(null);
                         	imageView.setImageResource(placeHolderImageId);
