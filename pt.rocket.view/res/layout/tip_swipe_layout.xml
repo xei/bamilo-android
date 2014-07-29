@@ -6,8 +6,8 @@
 
     <ImageView
         android:id="@+id/tip_img"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="70dp"
+        android:layout_height="100dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/product_tip_top_margin"
         android:paddingTop="@dimen/product_tip_padding"
@@ -30,6 +30,6 @@
         android:shadowColor="#000000"
         android:text="@string/tip_swipe_text"
         android:textColor="#c3c3c3"
-        android:textSize="@dimen/text_xl" />
+        android:textSize="@dimen/text_l" />
 
 </RelativeLayout>
