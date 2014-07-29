@@ -11,7 +11,7 @@
         android:layout_alignParentBottom="true"
         android:background="#90000000"
         android:orientation="vertical"
-        android:paddingBottom="26.4dp"
+        android:paddingBottom="15dp"
         android:visibility="gone" >
 
         <LinearLayout
