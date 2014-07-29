@@ -19,5 +19,6 @@ And I write a valid result on the search bar
 And I wait for 5 seconds
 And I press list item number 1
 * I wait for 2 seconds 
+And I press Got it
 And I press list item number 1
 Then I should see the add to cart button
