@@ -1,4 +1,4 @@
-@Calabash_Tests @search_home
+@Calabash_Tests @search_home  @f_pre_1.9
 Feature: Search feature on home screen
 
 Background: 
