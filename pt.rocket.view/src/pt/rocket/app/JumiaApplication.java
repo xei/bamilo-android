@@ -60,7 +60,7 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     private static final String TAG = JumiaApplication.class.getSimpleName();
     
     // TODO : Updated this value for each live release
-    public boolean generateStagingServers = true;
+    public boolean generateStagingServers = false;
     
     public static String SHOP_ID = null;
     public static String SHOP_NAME = "";
