@@ -1,4 +1,4 @@
-@Calabash_Tests @terms
+@Calabash_Tests @terms @f_pre_1.9
 Feature: Terms and Conditions
 
 Background: 

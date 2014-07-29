@@ -1,4 +1,4 @@
-@Calabash_Tests @device
+@Calabash_Tests @device @f_pre_1.9
 Feature: Device Features
 
 Background: 

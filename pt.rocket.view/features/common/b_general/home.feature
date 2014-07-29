@@ -1,4 +1,4 @@
-Feature: Initial app features
+Feature: Initial app features @f_pre_1.9
 Install app, open, choose country
 
 Background: 

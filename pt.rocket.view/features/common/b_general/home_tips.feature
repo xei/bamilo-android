@@ -1,4 +1,4 @@
-@Calabash_Tests @home_tips
+@Calabash_Tests @home_tips @f_pre_1.9
 Feature: Home Tips
 
 Background: 

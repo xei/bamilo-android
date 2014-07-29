@@ -1,4 +1,4 @@
-@login @Calabash_Tests
+@login @Calabash_Tests @f_pre_1.9
 Feature: Login feature
 	
 Background:

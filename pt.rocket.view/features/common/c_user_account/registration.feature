@@ -1,4 +1,4 @@
-@Calabash_Tests @register
+@Calabash_Tests @register @f_pre_1.9
 Feature: Registration feature
 
 Background: 

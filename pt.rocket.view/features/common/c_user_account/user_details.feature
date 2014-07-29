@@ -1,4 +1,4 @@
-@user_details @Calabash_Tests
+@user_details @Calabash_Tests @f_pre_1.9
 Feature: See personal data
 
 Background: 

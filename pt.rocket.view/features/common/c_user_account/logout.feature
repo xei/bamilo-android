@@ -1,4 +1,4 @@
-@logout @Calabash_Tests
+@logout @Calabash_Tests @f_pre_1.9
 Feature: Logout feature
 	
 Background:
