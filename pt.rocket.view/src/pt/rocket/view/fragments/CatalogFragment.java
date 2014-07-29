@@ -254,11 +254,13 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
                     mCatalogPagerAdapter.setLandscapeMode(BaseActivity.isTabletInLandscape(getBaseActivity()));
                     int totalProducts = mCatalogPagerAdapter.getCatalogPageTotalItems(mViewPager.getCurrentItem());
                     if (totalProducts > 0) {
-                        TextView totalItems = (TextView) getView().findViewById(R.id.totalProducts);
-                        StringBuilder total = new StringBuilder(" (").append(totalProducts).append(" ").append(getString(R.string.shoppingcart_items)).append(")");
-                        if (null != totalItems) {
-                            totalItems.setText(total.toString());
-                            totalItems.setVisibility(View.VISIBLE);
+                        if (getView() != null) {
+                            TextView totalItems = (TextView) getView().findViewById(R.id.totalProducts);
+                            StringBuilder total = new StringBuilder(" (").append(totalProducts).append(" ").append(getString(R.string.shoppingcart_items)).append(")");
+                            if (null != totalItems) {
+                                totalItems.setText(total.toString());
+                                totalItems.setVisibility(View.VISIBLE);
+                            }
                         }
                     }                        
                     mCatalogPagerAdapter.invalidateCatalogPages();
