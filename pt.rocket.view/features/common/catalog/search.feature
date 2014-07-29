@@ -1,5 +1,5 @@
-@search
-Feature: Search feature
+@Calabash_Tests @search @f_pre_1.9
+Feature: Catalog - Search
 
 Background: 
 Given I call the variables

@@ -1,5 +1,5 @@
-@Calabash_Tests @catalog3
-Feature: Catalog
+@Calabash_Tests @catalog3 @f_pre_1.9
+Feature: Catalog - View
 
 Background: 
 Given I call the variables

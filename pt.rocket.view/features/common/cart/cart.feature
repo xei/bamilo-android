@@ -1,5 +1,5 @@
-@Calabash_Tests @cart
-Feature: Cart features
+@Calabash_Tests @cart @f_pre_1.9
+Feature: Cart
 
 Background: 
 Given I call the variables
@@ -23,6 +23,7 @@ When I open the navigation menu
 And I enter a valid Category
 And I enter a valid Category
 * I wait for 3 seconds
+And I press Got it
 And I press list item number 2
 * I wait for 5 seconds
 Then I press Got it

@@ -1,5 +1,5 @@
-@Calabash_Tests @filters
-Feature: Filters
+@Calabash_Tests @filters @f_pre_1.9
+Feature: Catalog - Filters
 
 Background: 
 Given I call the variables
@@ -12,6 +12,7 @@ When I open the navigation menu
 And I enter a valid Category
 And I enter a valid Category
 * I wait for 3 seconds
+Then I press Got it
 When I click in Filter
 Then I should see the filters
 
@@ -26,7 +27,7 @@ When I click in Filter
 * I wait for 2 seconds
 And I press list item number 1
 * I wait for 2 seconds
-And I press list item number 2
+And I press list item number 1
 * I wait for 2 seconds
 And I press Done
 #And I press Done
@@ -42,7 +43,7 @@ When I click in Filter
 * I wait for 1 seconds
 And I press list item number 1
 * I wait for 1 seconds
-And I press list item number 2
+And I press list item number 1
 * I wait for 1 seconds
 And I press Done
 * I wait for 3 seconds
@@ -64,7 +65,7 @@ And I enter a valid Category
 When I click in Filter
 And I press list item number 1
 * I wait for 2 seconds
-And I press list item number 2
+And I press list item number 1
 * I wait for 2 seconds
 And I press Done
 * I wait for 2 seconds
@@ -72,7 +73,7 @@ And I press Done
 * I wait for 2 seconds
 When I click in Filter
 And I press list item number 1
-And I press list item number 2
+And I press list item number 1
 And I press Done
 * I wait for 3 seconds
 #And I press Done

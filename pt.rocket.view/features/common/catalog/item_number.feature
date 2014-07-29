@@ -1,4 +1,4 @@
-@Calabash_Tests @item_number
+@Calabash_Tests @item_number @f_pre_1.9
 Feature: Catalog - Item number
 
 Background: 

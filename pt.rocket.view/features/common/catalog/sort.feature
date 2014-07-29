@@ -1,5 +1,5 @@
-@Calabash_Tests @sort
-Feature: Sorting Feature
+@Calabash_Tests @sort @f_pre_1.9
+Feature: Catalog - Sorting
 
 Background: 
 Given I call the variables

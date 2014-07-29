@@ -1,5 +1,5 @@
-@Calabash_Tests @country_switch
-Feature: Country switch
+@Calabash_Tests @country_switch @f_pre_1.9
+Feature: Cart - Country switch
 
 Background: 
 Given I call the variables
@@ -21,6 +21,7 @@ When I open the navigation menu
 And I enter a valid Category
 And I enter a valid Category
 * I wait for 3 seconds
+And I press Got it
 And I press list item number 1
 * I wait for 3 seconds
 Then I press Got it

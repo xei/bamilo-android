@@ -1,5 +1,5 @@
-@cart_empty @Calabash_Tests
-Feature: Test the empty cart
+@cart_empty @Calabash_Tests @f_pre_1.9
+Feature: Cart - Empty Cart
 
 Background: 
 Given I call the variables
