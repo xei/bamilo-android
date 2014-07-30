@@ -107,6 +107,10 @@ public abstract class BaseHelper {
             e.printStackTrace();
             bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
             return parseResponseErrorBundle(bundle);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
+            return parseResponseErrorBundle(bundle);
         }
     }
 
