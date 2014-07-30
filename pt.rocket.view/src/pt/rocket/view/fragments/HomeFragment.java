@@ -338,17 +338,21 @@ public class HomeFragment extends BaseFragment implements IResponseCallback {
      */
     private void showHomeWizard() {
         Log.i(TAG, "ON SHOW WIZARD");
-        if (WizardPreferences.isFirstTime(getActivity(), WizardType.HOME)) {
-            RelativeLayout homeTip = (RelativeLayout) getView().findViewById(R.id.home_tip);
-            homeTip.setVisibility(View.VISIBLE);
-            homeTip.setOnTouchListener(new OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    WizardPreferences.changeState(getActivity(), WizardType.HOME);
-                    v.setVisibility(View.GONE);
-                    return false;
-                }
-            });
+        try {
+            if (WizardPreferences.isFirstTime(getActivity(), WizardType.HOME)) {
+                RelativeLayout homeTip = (RelativeLayout) getView().findViewById(R.id.home_tip);
+                homeTip.setVisibility(View.VISIBLE);
+                homeTip.setOnTouchListener(new OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        WizardPreferences.changeState(getActivity(), WizardType.HOME);
+                        v.setVisibility(View.GONE);
+                        return false;
+                    }
+                });
+            }
+        } catch (NullPointerException e) {
+            Log.w(TAG, "WARNING: NPE ON SHOW HOME WIZARD", e);
         }
     }
     
