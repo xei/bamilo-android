@@ -282,6 +282,10 @@ public class CatalogPageFragment extends BaseFragment {
      */
     public void invalidateData(final Bundle arguments, final boolean forceRefresh ) {
 
+        if (null != getView() && null == gridView) {
+            this.gridView = (GridView) getView().findViewById(R.id.middle_productslist_list); 
+        }
+        
         ContentValues newFilters = null;
         if (null != arguments) {
             updateLocalArguments(arguments);
