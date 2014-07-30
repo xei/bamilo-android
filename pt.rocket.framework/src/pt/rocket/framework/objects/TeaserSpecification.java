@@ -153,11 +153,13 @@ public abstract class TeaserSpecification<T extends ITargeting> implements IJSON
 	 * Parcel constructor
 	 * @param in
 	 */
-	public TeaserSpecification(Parcel in) {
+	public TeaserSpecification(Parcel in) {	    
 		this(TeaserGroupType.UNKNOWN);
+		Log.d(TAG, " ---- < READ TEASER SPECIFICATION > -----");
 		title = in.readString();
 		type = (TeaserGroupType) in.readValue(TeaserGroupType.class.getClassLoader());
 		in.readList(teasers, ITargeting.class.getClassLoader());
 	}
 	
+
 }

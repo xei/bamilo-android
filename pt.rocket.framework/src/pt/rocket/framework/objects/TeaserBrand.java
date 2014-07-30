@@ -3,13 +3,16 @@
  */
 package pt.rocket.framework.objects;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 
 /**
  * @author Manuel Silva
  * 
  */
 
-public class TeaserBrand extends TeaserBrandElement implements ITargeting {
+public class TeaserBrand extends TeaserBrandElement implements ITargeting, Parcelable {
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -44,4 +47,29 @@ public class TeaserBrand extends TeaserBrandElement implements ITargeting {
 		return super.getImageTableUrl();
 	}
 
+	public TeaserBrand(){
+	    
+	}
+	
+    /**
+     * Parcel constructor
+     * @param in
+     */
+    private TeaserBrand(Parcel in) {
+        super(in);
+    }	
+	
+    /**
+     * Create parcelable 
+     */
+    public static final Parcelable.Creator<TeaserBrand> CREATOR = new Parcelable.Creator<TeaserBrand>() {
+        public TeaserBrand createFromParcel(Parcel in) {
+            return new TeaserBrand(in);
+        }
+
+        public TeaserBrand[] newArray(int size) {
+            return new TeaserBrand[size];
+        }
+    };	
+	
 }

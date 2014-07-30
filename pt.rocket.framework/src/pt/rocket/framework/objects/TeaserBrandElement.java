@@ -173,7 +173,7 @@ public class TeaserBrandElement implements IJSONSerializable, Parcelable{
 	 * Parcel constructor
 	 * @param in
 	 */
-	private TeaserBrandElement(Parcel in) {
+	protected TeaserBrandElement(Parcel in) {
         id = in.readString();
         attributes = (BrandAttributes) in.readValue(BrandAttributes.class.getClassLoader());
     }

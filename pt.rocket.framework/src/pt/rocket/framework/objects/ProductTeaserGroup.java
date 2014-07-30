@@ -36,7 +36,7 @@ public class ProductTeaserGroup extends TeaserSpecification<TeaserProduct> {
 		return teaserProduct;
 	}
 
-	public class TeaserProduct extends Product implements ITargeting {
+	public static class TeaserProduct extends Product implements ITargeting, Parcelable {
 
 		/*
 		 * (non-Javadoc)
@@ -65,7 +65,25 @@ public class ProductTeaserGroup extends TeaserSpecification<TeaserProduct> {
 		public String getTargetTitle() {
 			return getName();
 		}
+		
+		public TeaserProduct() {
+		    
+		}
+		
+		private TeaserProduct(Parcel in) {
+		    super(in);
+		}
 
+	    public static final Parcelable.Creator<TeaserProduct> CREATOR = new Parcelable.Creator<TeaserProduct>() {
+	        public TeaserProduct createFromParcel(Parcel in) {
+	            return new TeaserProduct(in);
+	        }
+
+	        public TeaserProduct[] newArray(int size) {
+	            return new TeaserProduct[size];
+	        }
+	    };		
+		
 	}
 	
     /**

@@ -319,7 +319,7 @@ public class Category implements IJSONSerializable, Parcelable {
 	 * Parcel constructor
 	 * @param in
 	 */
-	private Category(Parcel in) {
+	protected Category(Parcel in) {
         id = in.readString();
         name = in.readString();
         urlKey = in.readString();

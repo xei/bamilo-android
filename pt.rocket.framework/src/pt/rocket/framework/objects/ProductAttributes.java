@@ -280,7 +280,12 @@ public class ProductAttributes implements IJSONSerializable, Parcelable {
 
             // Get the is favourite JSON tag
             //isFavourite = jsonObject.optBoolean(RestConstants.JSON_IS_FAVOURITE_TAG, false);
-            isFavourite = FavouriteTableHelper.verifyIfFavourite(sku);
+            try {
+                isFavourite = FavouriteTableHelper.verifyIfFavourite(sku);
+            } catch (InterruptedException e) {
+                isFavourite = false;
+                e.printStackTrace();
+            }
             
         } catch (JSONException e) {
             Log.e(TAG, "Error Parsing the product json", e);

@@ -36,7 +36,7 @@ public class CategoryTeaserGroup extends TeaserSpecification<TeaserCategory> {
 		return cat;
 	}
 
-	public class TeaserCategory extends Category implements ITargeting {
+	public static class TeaserCategory extends Category implements ITargeting, Parcelable {
 
 		/*
 		 * (non-Javadoc)
@@ -65,6 +65,27 @@ public class CategoryTeaserGroup extends TeaserSpecification<TeaserCategory> {
 		public String getTargetTitle() {
 			return super.getName();
 		}
+		
+		public TeaserCategory() {
+		    
+		}
+		
+		private TeaserCategory(Parcel in) {
+		    super(in);
+		}
+		
+	    /**
+	     * Create parcelable 
+	     */
+	    public static final Parcelable.Creator<TeaserCategory> CREATOR = new Parcelable.Creator<TeaserCategory>() {
+	        public TeaserCategory createFromParcel(Parcel in) {
+	            return new TeaserCategory(in);
+	        }
+
+	        public TeaserCategory[] newArray(int size) {
+	            return new TeaserCategory[size];
+	        }
+	    };		
 
 	}
 	

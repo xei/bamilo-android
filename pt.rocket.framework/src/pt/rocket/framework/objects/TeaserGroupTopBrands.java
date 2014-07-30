@@ -42,7 +42,7 @@ public class TeaserGroupTopBrands extends TeaserSpecification<TeaserTopBrand> {
 	 * @author sergiopereira
 	 *
 	 */
-	public class TeaserTopBrand extends Category implements ITargeting {
+	public static class TeaserTopBrand extends Category implements ITargeting, Parcelable {
 		
 		/*
 		 * (non-Javadoc)
@@ -74,6 +74,27 @@ public class TeaserGroupTopBrands extends TeaserSpecification<TeaserTopBrand> {
 			// Return the name used to search for this brand
 			return super.getName();
 		}
+		
+		public TeaserTopBrand() {
+		    
+		}
+		
+		private TeaserTopBrand(Parcel in){
+		    super(in);
+		}
+		
+	    /**
+	     * Create parcelable 
+	     */
+	    public static final Parcelable.Creator<TeaserTopBrand> CREATOR = new Parcelable.Creator<TeaserTopBrand>() {
+	        public TeaserTopBrand createFromParcel(Parcel in) {
+	            return new TeaserTopBrand(in);
+	        }
+
+	        public TeaserTopBrand[] newArray(int size) {
+	            return new TeaserTopBrand[size];
+	        }
+	    };		
 		
 	}
 	

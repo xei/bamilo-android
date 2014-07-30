@@ -4,6 +4,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import pt.rocket.framework.rest.RestConstants;
+import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -13,17 +14,17 @@ import android.os.Parcelable;
 	 */
 	public class CatalogFilterOption implements IJSONSerializable, Parcelable {
 
-		private String mId;
+		private String mId = "";
 		
-		private String mLabel;
+		private String mLabel = "";
 		
-		private String mValue;
+		private String mValue = "";
 		
-		private String mCount;
+		private String mCount = "";
 		
-		private String mHex;
+		private String mHex = "";
 		
-		private String mImg;
+		private String mImg = "";
 		
 		private int mMax = -1;
 		
@@ -51,17 +52,17 @@ import android.os.Parcelable;
 		@Override
 		public boolean initialize(JSONObject jsonOption) throws JSONException {
 			// Get id
-			mId = jsonOption.optString(RestConstants.JSON_ID_TAG);
+			mId = jsonOption.optString(RestConstants.JSON_ID_TAG, "");
 			// Get label
-			mLabel = jsonOption.optString(RestConstants.JSON_LABEL_TAG);
+			mLabel = jsonOption.optString(RestConstants.JSON_LABEL_TAG, "");
 			// Get value
-			mValue = jsonOption.optString(RestConstants.JSON_VAL_TAG);
+			mValue = jsonOption.optString(RestConstants.JSON_VAL_TAG, "");
 			// Get products count
-			mCount = jsonOption.optString(RestConstants.JSON_PRODUCTS_COUNT_TAG);
+			mCount = jsonOption.optString(RestConstants.JSON_PRODUCTS_COUNT_TAG, "");
 			// Get hex value
-			mHex = jsonOption.optString(RestConstants.JSON_HEX_VALUE_TAG);
+			mHex = jsonOption.optString(RestConstants.JSON_HEX_VALUE_TAG, "");
 			// Get image url
-			mImg = jsonOption.optString(RestConstants.JSON_IMAGE_URL_TAG);
+			mImg = jsonOption.optString(RestConstants.JSON_IMAGE_URL_TAG, "");
 			// Get max
 			mMax = jsonOption.optInt(RestConstants.JSON_MAX_TAG);
 			// Get min
@@ -217,16 +218,32 @@ import android.os.Parcelable;
 		 */
 		@Override
 		public void writeToParcel(Parcel dest, int flags) {
-			dest.writeString(mId);
-			dest.writeString(mLabel);
-			dest.writeString(mValue);
-			dest.writeString(mCount);			
-			dest.writeString(mHex);
-			dest.writeString(mImg);
-			dest.writeInt(mMax);
-			dest.writeInt(mMin);
-			dest.writeInt(mInterval);
-			dest.writeBooleanArray(new boolean[] {isSelected, isSectionBrand});
+		    Bundle out = new Bundle();
+		    
+		    out.putString("1", mId);
+		    out.putString("2", mLabel);
+		    out.putString("3", mValue);
+		    out.putString("4", mCount);
+		    out.putString("5", mHex);
+		    out.putString("6", mImg);
+		    out.putInt("7", mMax);
+		    out.putInt("8", mMin);
+		    out.putInt("9", mInterval);
+		    out.putBoolean("10", isSelected);
+		    out.putBoolean("11", isSectionBrand);
+		    
+//			dest.writeString(mId);
+//			dest.writeString(mLabel);
+//            dest.writeString(mValue);
+//            dest.writeString(mCount);
+//            dest.writeString(mHex);
+//            dest.writeString(mImg);
+//			dest.writeInt(mMax);
+//			dest.writeInt(mMin);
+//			dest.writeInt(mInterval);
+//			dest.writeByte((byte)(isSelected ? 1 : 0));
+//			dest.writeByte((byte)(isSectionBrand ? 1 : 0));
+		    dest.writeBundle(out);
 		}
 
 		/**
@@ -235,19 +252,50 @@ import android.os.Parcelable;
 		 * @param in
 		 */
 		private CatalogFilterOption(Parcel in) {
-			mId = in.readString();
-			mLabel = in.readString();
-			mValue = in.readString();
-			mCount = in.readString();
-			mHex = in.readString();
-			mImg = in.readString();
-			mMax = in.readInt();
-			mMin = in.readInt();
-			mInterval = in.readInt();
-			in.readBooleanArray(new boolean[] {isSelected, isSectionBrand});
+		    Bundle inBundle = in.readBundle();
+
+            mId = inBundle.getString("1");
+            mLabel = inBundle.getString("2");
+            mValue = inBundle.getString("3");
+            mCount = inBundle.getString("4");
+            mHex = inBundle.getString("5");
+            mImg = inBundle.getString("6");
+            mMax = inBundle.getInt("7");
+            mMin = inBundle.getInt("8");
+            mInterval = inBundle.getInt("9");
+            isSelected = inBundle.getBoolean("10");
+            isSectionBrand = inBundle.getBoolean("11");
+		    		    
+//		    mId = in.readString();
+//			mLabel = in.readString();
+//			mValue = in.readString();
+//			mCount = in.readString();
+//			mHex = in.readString();
+//			mImg = in.readString();
+//			mMax = in.readInt();
+//			mMin = in.readInt();
+//			mInterval = in.readInt();
+//			isSelected = in.readByte() == 1;
+//			isSectionBrand = in.readByte() == 1;
 		}
 
-
+		@Override
+		public String toString() {
+		    return "" + 
+            mId + "; " + 
+            mLabel + "; " + 
+            mValue + "; " + 
+            mCount + "; " + 
+            mHex + "; " + 
+            mImg + "; " + 
+            mMax + "; " + 
+            mMin + "; " + 
+            mInterval + "; " + 
+            isSelected + "; " + 
+            isSectionBrand ;
+		};
+		
+		
 		/**
 		 * The creator
 		 */

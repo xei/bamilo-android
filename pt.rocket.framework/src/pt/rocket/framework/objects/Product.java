@@ -264,7 +264,7 @@ public class Product implements IJSONSerializable, Parcelable {
         dest.writeList(imagesTablet);
     }
     
-    private Product(Parcel in) {
+    protected Product(Parcel in) {
         id = in.readString();
         attributes = (ProductAttributes) in.readValue(ProductAttributes.class.getClassLoader());
         images = new ArrayList<Image>();

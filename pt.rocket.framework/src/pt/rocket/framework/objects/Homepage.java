@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import pt.rocket.framework.rest.RestConstants;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 /**
  * Object that deals with the parsing of a homepage
@@ -121,7 +122,8 @@ public class Homepage implements IJSONSerializable, Parcelable{
 	public void writeToParcel(Parcel dest, int flags) {
 	    dest.writeInt(homepageId);
 	    dest.writeString(homepageTitle);
-	    dest.writeBooleanArray(new boolean[] {defaultHomepage});
+//	    dest.writeBooleanArray(new boolean[] {defaultHomepage});
+	    dest.writeByte((byte) (defaultHomepage ? 1 : 0));
 	    dest.writeList(teaserSpecifications);
 	}
 	
@@ -132,7 +134,9 @@ public class Homepage implements IJSONSerializable, Parcelable{
 	private Homepage(Parcel in) {
 		homepageId = in.readInt();
 		homepageTitle = in.readString();
-		in.readBooleanArray(new boolean[] {defaultHomepage});
+		teaserSpecifications = new ArrayList<TeaserSpecification<?>>();
+//		in.readBooleanArray(new boolean[] {defaultHomepage});
+		defaultHomepage = in.readByte() == 1;
 		teaserSpecifications = new ArrayList<TeaserSpecification<?>>();
 		in.readList(teaserSpecifications, TeaserSpecification.class.getClassLoader());
     }
@@ -142,12 +146,13 @@ public class Homepage implements IJSONSerializable, Parcelable{
 	 */
 	public static final Parcelable.Creator<Homepage> CREATOR = new Parcelable.Creator<Homepage>() {
         public Homepage createFromParcel(Parcel in) {
-        	try {
-        		return new Homepage(in);
-			} catch (NullPointerException e) {
-				e.printStackTrace();
-			}
-            return null;
+//        	try {
+//        		return new Homepage(in);
+//			} catch (NullPointerException e) {
+//				e.printStackTrace();
+//			}
+//            return null;
+            return new Homepage(in);
         }
 
         public Homepage[] newArray(int size) {
