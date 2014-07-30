@@ -299,6 +299,7 @@ public class CatalogFilter implements IJSONSerializable, Parcelable {
 	 * @param in
 	 */
 	private CatalogFilter(Parcel in) {
+	    mFilterOptions = new ArrayList<CatalogFilterOption>();
 		in.readList(mFilterOptions, CatalogFilterOption.class.getClassLoader());
 		mFilterOption = in.readParcelable(CatalogFilterOption.class.getClassLoader());
 		mId = in.readString();
