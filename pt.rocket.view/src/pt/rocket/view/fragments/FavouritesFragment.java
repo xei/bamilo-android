@@ -296,6 +296,12 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
             mFavourites.remove(favourite);
             // Update layout
             updateLayoutAfterAction();
+            
+            BaseFragment catalogFragment = (BaseFragment)getBaseActivity().getSupportFragmentManager().
+                    findFragmentByTag(FragmentType.PRODUCT_LIST.toString());            
+            if (null != catalogFragment) {
+                catalogFragment.sendValuesToFragment(BaseFragment.FRAGMENT_VALUE_REMOVE_FAVORITE, favourite.getSku());
+            }
             // Show Toast
             Toast.makeText(getBaseActivity(), getString(R.string.products_removed_favourite), Toast.LENGTH_SHORT).show();
         } catch (NullPointerException e) {
