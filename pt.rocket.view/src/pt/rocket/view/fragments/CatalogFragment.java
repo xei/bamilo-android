@@ -149,7 +149,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         // Get saved state for filter
         if(savedInstanceState != null) {
             mCatalogFilterValues = savedInstanceState.getParcelable(FILTER_VALUES_KEY);
-            mCatalogFilter = savedInstanceState.getParcelableArrayList(FILTER_STATE_KEY);
+//            mCatalogFilter = savedInstanceState.getParcelableArrayList(FILTER_STATE_KEY);
         }
 
         mShowListDrawable = getResources().getDrawable(R.drawable.selector_catalog_listview);
@@ -316,13 +316,12 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
     
     @Override
     public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
         
         outState.putParcelableArrayList(PRODUCTS_LIST, new ArrayList<Product>(mProductsMap.values()));
         outState.putInt(TOTAL_KEY, mTotalProducts);
         outState.putParcelable(FILTER_VALUES_KEY, mCatalogFilterValues);
-        outState.putParcelableArrayList(FILTER_STATE_KEY, mCatalogFilter);
-        
-        super.onSaveInstanceState(outState);
+//        outState.putParcelableArrayList(FILTER_STATE_KEY, mCatalogFilter);
     }
 
     @Override

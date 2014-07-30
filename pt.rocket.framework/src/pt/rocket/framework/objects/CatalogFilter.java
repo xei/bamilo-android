@@ -288,41 +288,27 @@ public class CatalogFilter implements IJSONSerializable, Parcelable {
 	 */
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {	    
-//	    if (null != mFilterOptions && 0 < mFilterOptions.size()) {
-//	        dest.writeInt(mFilterOptions.size());
-////	        dest.writeTypedList(mFilterOptions);
-//	        for(int i = 0; i < mFilterOptions.size(); i++){
-//	            Log.d(TAG, " ------------ >[WRITE] Filter Option #" + i + " -> " + mFilterOptions.get(i).toString());
-//	            dest.writeParcelable(mFilterOptions.get(i), flags);
-//	        }
-//	    } else {
-//	        dest.writeInt(-1);
-//	    }
-//		dest.writeParcelable(mFilterOption, flags);		
-//		dest.writeString(mId);
-//		dest.writeString(mName);
-//		dest.writeByte((byte)(mMulti ? 1 : 0));
-//		dest.writeByte((byte)(isRangeWithDiscount ? 1 : 0));
-//
-//        if (null != mRangeValues) {
-//            Log.d(TAG, " ------------ >[WRITE] Range Values ARRAY SIZE ->" + mRangeValues.length);
-//            dest.writeInt(mRangeValues.length);
-//            dest.writeIntArray(mRangeValues);
-//        } else {
-//            Log.d(TAG, " ------------ >[WRITE] Range Values ARRAY SIZE ->" + -1);
-//            dest.writeInt(-1);
-//        }
+ 
+        dest.writeParcelable(mFilterOption, flags);
+        dest.writeString(mId);
+        dest.writeString(mName);
+        dest.writeByte((byte) (mMulti ? 1 : 0));
+        dest.writeByte((byte) (isRangeWithDiscount ? 1 : 0));
 
-        Bundle out = new Bundle();
-        out.putParcelableArrayList("1", mFilterOptions);
-        out.putParcelable("2", mFilterOption);
-        out.putString("3", mId);
-        out.putString("4", mName);
-        out.putBoolean("5", mMulti);
-        out.putBoolean("6", isRangeWithDiscount);
-        out.putIntArray("7", mRangeValues);
+        if (null != mRangeValues) {
+            Log.d(TAG, " ------------ >[WRITE] Range Values ARRAY SIZE ->" + mRangeValues.length);
+            dest.writeInt(mRangeValues.length);
+            dest.writeIntArray(mRangeValues);
+        } else {
+            Log.d(TAG, " ------------ >[WRITE] Range Values ARRAY SIZE ->" + -1);
+            dest.writeInt(-1);
+        }
+
+        dest.writeInt(mFilterOptions.size());
+        for (int i = 0; i < mFilterOptions.size(); i++) {
+            dest.writeParcelable(mFilterOptions.get(i), flags);
+        }        
         
-        dest.writeBundle(out);
 	}
 
 	/**
@@ -331,49 +317,30 @@ public class CatalogFilter implements IJSONSerializable, Parcelable {
 	 * @param in
 	 */
 	private CatalogFilter(Parcel in) {	    
-//	    mFilterOptions = new ArrayList<CatalogFilterOption>();
-//        	    
-////	    in.readTypedList(mFilterOptions, CatalogFilterOption.CREATOR);
-//	    int listSize = in.readInt();
-//	    Log.d(TAG, " ------------ >[READ] LIST SIZE ->" + listSize);
-//        for (int i = 0; i < listSize; i++) {
-//            Log.d(TAG, " ------------ >[READ] LIST ITEM #" + i);
-//            try {
-//                mFilterOptions.add((CatalogFilterOption) in.readParcelable(CatalogFilterOption.class.getClassLoader()));
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
-//	    
-////	    if (0 < listSize) {
-////	        in.readTypedList(mFilterOptions, CatalogFilterOption.CREATOR);
-////	    }
-//	    Log.d(TAG, " ------------ >[READ] ArrayList SIZE ->" + mFilterOptions.size());
-//	    
-//		mFilterOption = in.readParcelable(CatalogFilterOption.class.getClassLoader());
-//		mId = in.readString();
-//		mName = in.readString();		
-//		mMulti = in.readByte() == 1;
-//		isRangeWithDiscount = in.readByte() == 1;
-//		
-//        int arraySize = in.readInt();
-//        Log.d(TAG, " ------------ >[READ] Range Values ARRAY SIZE ->" + arraySize);
-//        if (0 < arraySize) {
-//            mRangeValues = new int[arraySize];
-//            in.readIntArray(mRangeValues);
-//        } else {
-//            mRangeValues = null;
-//        }
+        mFilterOptions = new ArrayList<CatalogFilterOption>();
+
+        mFilterOption = in.readParcelable(CatalogFilterOption.class.getClassLoader());
+        mId = in.readString();
+        mName = in.readString();
+        mMulti = in.readByte() == 1;
+        isRangeWithDiscount = in.readByte() == 1;
+
+        int arraySize = in.readInt();
+        Log.d(TAG, " ------------ >[READ] Range Values ARRAY SIZE ->" + arraySize);
+        if (0 < arraySize) {
+            mRangeValues = new int[arraySize];
+            in.readIntArray(mRangeValues);
+        } else {
+            mRangeValues = null;
+        }
+
+        int listSize = in.readInt();
+        Log.d(TAG, " ------------ >[READ] LIST SIZE ->" + listSize);
+        for (int i = 0; i < listSize; i++) {
+            Log.d(TAG, " ------------ >[READ] LIST ITEM #" + i);
+            mFilterOptions.add((CatalogFilterOption) in.readParcelable(CatalogFilterOption.class.getClassLoader()));
+        }        
         
-        Bundle inBundle = in.readBundle();
-        
-        mFilterOptions = inBundle.getParcelableArrayList("1");
-        mFilterOption = inBundle.getParcelable("2");
-        mId = inBundle.getString("3");
-        mName = inBundle.getString("4");
-        mMulti = inBundle.getBoolean("5");
-        isRangeWithDiscount = inBundle.getBoolean("6");
-        mRangeValues = inBundle.getIntArray("7");        
         
 	}
 
