@@ -183,7 +183,8 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
                 }
 
                 if (arg0 == ViewPager.SCROLL_STATE_IDLE) {
-                    new ChangePageTask().execute(arg0);
+                    //new ChangePageTask().execute(arg0);
+                    changePage();
                     /*
                      * mViewPager.setPagingEnabled(true); mViewPager.toggleJumiaScroller(true);
                      * 
@@ -200,15 +201,32 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
         return mainView;
     }
 
-    private class ChangePageTask extends AsyncTask<Integer, String, Boolean> {
-
-        @Override
-        protected Boolean doInBackground(Integer... params) {
-
-            getActivity().runOnUiThread(new Runnable() {
+//    private class ChangePageTask extends AsyncTask<Integer, String, Boolean> {
+//
+//        @Override
+//        protected Boolean doInBackground(Integer... params) {
+//
+//              changePage();
+//
+//            return true;
+//
+//        }
+//
+//        /**
+//         * The system calls this to perform work in the UI thread and delivers the result from
+//         * doInBackground()
+//         */
+//        protected void onPostExecute(Boolean result) {
+//        }
+//
+//    }
+    
+    
+    private void changePage() {
+        try {
+            getBaseActivity().runOnUiThread(new Runnable() {
                 public void run() {
                     int pageCount = galleryAdapter.getCount();
-
                     try {
                         mViewPager.setPagingEnabled(true);
                         mViewPager.toggleJumiaScroller(true);
@@ -226,23 +244,12 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
                     } catch (NullPointerException e) {
                         Log.w(TAG, "WARNING NPE IN CHANGE PAGE");
                     }
-                    
                 }
             });
-
-            return true;
-
+        } catch (NullPointerException e) {
+            Log.w(TAG, "WARNING NPE ON CHANGE PAGE", e);
         }
-
-        /**
-         * The system calls this to perform work in the UI thread and delivers the result from
-         * doInBackground()
-         */
-        protected void onPostExecute(Boolean result) {
-        }
-
     }
-
     /*
      * (non-Javadoc)
      * 
