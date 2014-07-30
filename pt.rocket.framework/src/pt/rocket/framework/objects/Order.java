@@ -16,8 +16,6 @@ public class Order implements IJSONSerializable, Parcelable {
 
 	public final static String TAG = LogTagHelper.create(Order.class);
 
-	private PaymentMethods mPaymentOptions;
-
 	private String mOrderNumber;
 
 	private String mFirstName;
@@ -37,21 +35,6 @@ public class Order implements IJSONSerializable, Parcelable {
 	 */
 	public Order(JSONObject jsonObject) throws JSONException {
 		initialize(jsonObject);
-	}
-
-	/**
-	 * @return the mPaymentOptions
-	 */
-	public PaymentMethods getPaymentOptions() {
-		return mPaymentOptions;
-	}
-
-	/**
-	 * @param mPaymentOptions
-	 *            the mPaymentOptions to set
-	 */
-	public void setPaymentOptions(PaymentMethods mPaymentOptions) {
-		this.mPaymentOptions = mPaymentOptions;
 	}
 
 	/**
@@ -180,8 +163,6 @@ public class Order implements IJSONSerializable, Parcelable {
 		dest.writeString(mOrderNumber);
 		dest.writeString(mFirstName);
 		dest.writeString(mLastName);
-		// dest.writeString(last_order_update);
-		// dest.writeList(orderTracketItems);
 	}
 
 	/**
@@ -193,8 +174,6 @@ public class Order implements IJSONSerializable, Parcelable {
 		mOrderNumber = in.readString();
 		mFirstName = in.readString();
 		mLastName = in.readString();
-		// in.readList(orderTracketItems,
-		// OrderTrackerItem.class.getClassLoader());
 	}
 
 	/**

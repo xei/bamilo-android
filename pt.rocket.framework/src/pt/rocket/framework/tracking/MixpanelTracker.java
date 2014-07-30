@@ -8,6 +8,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map.Entry;
 
 import org.json.JSONException;
@@ -194,12 +195,11 @@ public class MixpanelTracker {
 			return;
 
 		props = null;
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
 		String currentDateandTime = sdf.format(new Date());
-		PreInstallController ctrl = new PreInstallController();
 		
 		setProperty(context.getString(R.string.mixprop_createdate), currentDateandTime); 
-		setProperty(context.getString(R.string.mixprop_preinstall), "" + ctrl.init(context));
+		setProperty(context.getString(R.string.mixprop_preinstall), "" + PreInstallController.init(context));
 		setProperty(context.getString(R.string.mixprop_signupplatform), context.getString(R.string.mixprop_platformmobile));
 		Calendar calendar = Calendar.getInstance();
 		if(customer.getBirthday() != null){
@@ -218,7 +218,7 @@ public class MixpanelTracker {
 		
 		if ( null != people ) {			
 			people.set(context.getString(R.string.mixproppeople_created), currentDateandTime);
-			people.set(context.getString(R.string.mixproppeople_preinstall), "" + ctrl.init(context));
+			people.set(context.getString(R.string.mixproppeople_preinstall), "" + PreInstallController.init(context));
 			people.set(context.getString(R.string.mixproppeople_signupplatform), currentDateandTime);
 			people.set(context.getString(R.string.mixproppeople_source), location);
 			people.set(context.getString(R.string.mixproppeople_firstname), customer.getFirstName());

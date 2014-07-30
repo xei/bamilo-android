@@ -333,7 +333,6 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
 	    dest.writeString(price);
 	    dest.writeDouble(taxAmount);
 	    dest.writeMap(simpleData);
-	    //dest.writeDouble(cartRuleDiscount);
 	    dest.writeString(variation);
 	    dest.writeDouble(priceVal);
 	    dest.writeDouble(specialPriceVal);
@@ -357,8 +356,8 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
 	    savingPercentage = in.readDouble();
 	    price = in.readString();
 	    taxAmount = in.readDouble();
+	    simpleData = new HashMap<String, String>();
 	    in.readMap(simpleData, String.class.getClassLoader());
-	    //cartRuleDiscount = in.readDouble();
 	    variation = in.readString();
 	    priceVal = in.readDouble();
 	    specialPriceVal = in.readDouble();

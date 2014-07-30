@@ -331,7 +331,9 @@ public class Errors implements Parcelable {
 	 * @param in
 	 */
 	private Errors(Parcel in) {
+		errorMessages = new ArrayList<String>();
 		in.readStringList(errorMessages);
+		validateMessages = new ArrayList<String>();
 		in.readStringList(validateMessages);
     }
 		

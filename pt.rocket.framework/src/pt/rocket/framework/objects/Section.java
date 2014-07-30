@@ -140,7 +140,7 @@ public class Section implements IJSONSerializable, Parcelable {
     	url = in.readString();
 	}
 	
-    private static final Parcelable.Creator<Section> CREATOR = new Parcelable.Creator<Section>() {
+    public static final Parcelable.Creator<Section> CREATOR = new Parcelable.Creator<Section>() {
         public Section createFromParcel(Parcel in) {
             return new Section(in);
         }

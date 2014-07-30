@@ -75,7 +75,7 @@ public class Version implements IJSONSerializable, Parcelable {
 		currentVersion = in.readInt();
 	}
 
-	private static final Parcelable.Creator<Version> CREATOR = new Parcelable.Creator<Version>() {
+	public static final Parcelable.Creator<Version> CREATOR = new Parcelable.Creator<Version>() {
 		public Version createFromParcel(Parcel in) {
 			return new Version(in);
 		}

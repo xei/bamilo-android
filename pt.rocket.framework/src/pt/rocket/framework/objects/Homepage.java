@@ -133,6 +133,7 @@ public class Homepage implements IJSONSerializable, Parcelable{
 		homepageId = in.readInt();
 		homepageTitle = in.readString();
 		in.readBooleanArray(new boolean[] {defaultHomepage});
+		teaserSpecifications = new ArrayList<TeaserSpecification<?>>();
 		in.readList(teaserSpecifications, TeaserSpecification.class.getClassLoader());
     }
 		

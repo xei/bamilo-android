@@ -178,8 +178,8 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 				JSONObject simpleObject = simpleArray.getJSONObject(i);
 				simple.initialize(simpleObject);
 
-				String simpleSKU = simple.getAttributes().get(
-						RestConstants.JSON_SKU_TAG);
+				//String simpleSKU = simple.getAttributes().get(RestConstants.JSON_SKU_TAG);
+				
 				simples.add(simple);
 			}
 
@@ -587,7 +587,8 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 
 	private CompleteProduct(Parcel in) {
 
-		categories = (ArrayList<String>) in.readArrayList(null);
+		categories = new ArrayList<String>();
+		in.readList(categories, String.class.getClassLoader());
 
 		attributes = new HashMap<String, String>();
 		in.readMap(attributes, String.class.getClassLoader());
@@ -603,13 +604,12 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 
 		variations = new ArrayList<Variation>();
 		in.readList(variations, Variation.class.getClassLoader());
+		
 		url = in.readString();
 		description = in.readString();
-
 		specialPrice = in.readString();
 		maxSpecialPrice = in.readString();
 		maxSavingPercentage = in.readDouble();
-
 		ratingsAverage = in.readDouble();
 		ratingsCount = in.readInt();
 	}

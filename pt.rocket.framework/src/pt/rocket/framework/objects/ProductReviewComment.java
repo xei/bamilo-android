@@ -52,7 +52,7 @@ public class ProductReviewComment implements IJSONSerializable, Parcelable {
             date = jsonObject.getString(RestConstants.JSON_DATE_TAG);
 
             JSONArray options = jsonObject.getJSONArray(RestConstants.JSON_OPTIONS_TAG);
-            JSONObject ratingObject = null;
+            //JSONObject ratingObject = null;
             int size = options.length();
             Log.i("OPTIONS"," "+size);
             rating = 0 ;

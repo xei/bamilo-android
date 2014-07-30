@@ -450,10 +450,12 @@ public class CampaignItem implements IJSONSerializable, Parcelable {
 		mBrand = in.readString();
 		mName = in.readString();
 		mImage = in.readString();
+		mImages = new ArrayList<String>();
 		in.readList(mImages, String.class.getClassLoader());
 		mStockPercentage = in.readInt();
 		mMaxSavingPercentage = in.readString();
 		in.readBooleanArray(new boolean[] {hasUniqueSize});
+		mSizes = new ArrayList<CampaignItem.CampaignItemSize>();
 		in.readList(mSizes, CampaignItemSize.class.getClassLoader());
 		mSelectedSize = in.readParcelable(CampaignItemSize.class.getClassLoader());
 		mSelectedSizePosition = in.readInt();

@@ -76,7 +76,8 @@ public class PaymentInfo implements Parcelable{
 	 */
 	private PaymentInfo(Parcel in) {
 		this.text = in.readString();
-		in.readList(images, null);
+		images = new ArrayList<String>();
+		in.readList(images, String.class.getClassLoader());
 		this.tooltip_text = in.readString();
 		this.cvc_text = in.readString();
 		

@@ -232,12 +232,14 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 		cartCount = in.readInt();
 		vat_value = in.readString();
 		shipping_value = in.readString();
-		in.readMap(itemSimpleDataRegistry, null);
+		itemSimpleDataRegistry = new HashMap<String, Map<String,String>>();
+		in.readMap(itemSimpleDataRegistry, String.class.getClassLoader());
 		in.readBooleanArray(new boolean[]{sum_costs});
 	    extra_costs = in.readString();
 	    sum_costs_value = in.readString();
 	    couponDiscount = in.readString();
-	    in.readMap(price_rules, null);
+	    price_rules = new HashMap<String, String>();
+	    in.readMap(price_rules, String.class.getClassLoader());
     }
 		
 	/**

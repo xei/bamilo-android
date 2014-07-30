@@ -113,7 +113,8 @@ public class ProductSimple implements IJSONSerializable, Parcelable {
 	}
 	
 	private ProductSimple(Parcel in){
-		attributes = (HashMap<String, String>) in.readHashMap(null);
+		attributes = new HashMap<String, String>();
+		in.readMap(attributes, String.class.getClassLoader());
 	}
 	
     public static final Parcelable.Creator<ProductSimple> CREATOR = new Parcelable.Creator<ProductSimple>() {

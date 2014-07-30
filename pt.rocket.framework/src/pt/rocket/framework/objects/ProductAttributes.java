@@ -326,17 +326,13 @@ public class ProductAttributes implements IJSONSerializable, Parcelable {
         dest.writeString(url);
         dest.writeString(description);
         dest.writeString(brand);
-
         dest.writeString(maxPrice);
         dest.writeString(price);
-
         dest.writeString(specialPrice);
         dest.writeString(maxSpecialPrice);
         dest.writeDouble(maxSavingPercentage);
-
         dest.writeInt(reviews);
         dest.writeDouble(rating);
-
     }
     
     
@@ -346,14 +342,11 @@ public class ProductAttributes implements IJSONSerializable, Parcelable {
         url = in.readString();
         description = in.readString();
         brand = in.readString();
-
         maxPrice = in.readString();
         price = in.readString();
-
         specialPrice = in.readString();
         maxSpecialPrice = in.readString();
         maxSavingPercentage = in.readDouble();
-
         reviews = in.readInt();
         rating = in.readDouble();
     }

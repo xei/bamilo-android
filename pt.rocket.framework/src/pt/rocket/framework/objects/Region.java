@@ -78,7 +78,7 @@ public class Region implements Parcelable {
      */
     private Region(Parcel in) {
     	id = in.readString();
-    	name = in.readString();;
+    	name = in.readString();
 
     }
 	

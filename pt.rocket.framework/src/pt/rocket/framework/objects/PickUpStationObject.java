@@ -228,7 +228,7 @@ public class PickUpStationObject implements Parcelable {
 		JSONObject arrayRegions;
 		try {
 			arrayRegions = jsonObject.getJSONObject(RestConstants.JSON_PICKUP_REGIONS);
-			Iterator keys = arrayRegions.keys();
+			Iterator<?> keys = arrayRegions.keys();
 			while(keys.hasNext()) {
 				String key = keys.next().toString();
 				Log.i(TAG, "code1adding key : "+key);
@@ -271,8 +271,10 @@ public class PickUpStationObject implements Parcelable {
     	city = in.readString();
     	opening_hours = in.readString();
     	id_pickupstation_region = in.readString();
-    	payment_method = in.readArrayList(null);
-    	regions = in.readArrayList(Region.class.getClassLoader());
+    	payment_method = new ArrayList<String>();
+    	in.readList(payment_method, String.class.getClassLoader());
+    	regions = new ArrayList<Region>();
+    	in.readList(regions, Region.class.getClassLoader());
     }
 	
 	/**

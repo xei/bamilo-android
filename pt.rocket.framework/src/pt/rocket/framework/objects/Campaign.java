@@ -246,6 +246,7 @@ public class Campaign implements IJSONSerializable, Parcelable {
 		mStartTime = in.readString();
 		mEndTime = in.readString();
 		mCount = in.readInt();
+		mItems = new ArrayList<CampaignItem>();
 		in.readList(mItems, CampaignItem.class.getClassLoader());
 	}
 	

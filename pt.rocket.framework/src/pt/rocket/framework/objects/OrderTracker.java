@@ -105,7 +105,7 @@ public class OrderTracker implements IJSONSerializable, Parcelable {
         last_order_update = jsonObject.optString(RestConstants.JSON_ORDER_LAST_UPDATE_TAG);
 		JSONObject items = jsonObject.optJSONObject(RestConstants.JSON_ORDER_ITEM_COLLECTION_TAG);
 		
-		Iterator keys = items.keys();
+		Iterator<?> keys = items.keys();
 		
 		while(keys.hasNext()){	
 			OrderTrackerItem mOrderTrackerItem = new OrderTrackerItem();
@@ -180,6 +180,7 @@ public class OrderTracker implements IJSONSerializable, Parcelable {
     	creation_date = in.readString();
     	payment_method = in.readString();
     	last_order_update = in.readString();
+    	orderTracketItems = new ArrayList<OrderTrackerItem>();
     	in.readList(orderTracketItems, OrderTrackerItem.class.getClassLoader());
     }
 		

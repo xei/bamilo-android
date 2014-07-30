@@ -228,6 +228,7 @@ public class Addresses implements IJSONSerializable, Parcelable {
 		shippingAddress = in.readParcelable(Address.class.getClassLoader());
 		billingAddress = in.readParcelable(Address.class.getClassLoader());
 		fastline = in.readParcelable(Address.class.getClassLoader());
+		addresses = new HashMap<String, Address>();
         in.readMap(addresses, Address.class.getClassLoader());
     }
 		

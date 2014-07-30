@@ -32,7 +32,7 @@ import android.os.Parcelable;
  */
 public class CountryObject implements IJSONSerializable, Parcelable {
 
-	private static final String TAG = CountryObject.class.getName();
+	protected static final String TAG = CountryObject.class.getName();
 	
 	private String country_id;
 	private String country_name;
@@ -121,9 +121,7 @@ public class CountryObject implements IJSONSerializable, Parcelable {
 		dest.writeString(country_map_hdpi);
 		dest.writeString(country_map_xhdpi);
 		dest.writeString(country_iso);
-		dest.writeBooleanArray(new boolean[] { country_force_https,
-				country_is_live });
-
+		dest.writeBooleanArray(new boolean[] { country_force_https, country_is_live });
 	}
 
 	/**
@@ -140,8 +138,7 @@ public class CountryObject implements IJSONSerializable, Parcelable {
 		country_map_hdpi = in.readString();
 		country_map_xhdpi = in.readString();
 		country_iso = in.readString();
-		in.readBooleanArray(new boolean[] { country_force_https,
-				country_is_live });
+		in.readBooleanArray(new boolean[] { country_force_https, country_is_live });
 	}
 
 	/**

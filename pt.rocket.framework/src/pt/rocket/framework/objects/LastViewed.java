@@ -6,7 +6,7 @@ package pt.rocket.framework.objects;
  *
  */
 public class LastViewed {
-	private final static String TAG = LastViewed.class.getSimpleName();
+	protected final static String TAG = LastViewed.class.getSimpleName();
 
     private String product_sku;
     private String product_name;

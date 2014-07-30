@@ -83,9 +83,10 @@ public class Voucher implements Parcelable {
      * @param in
      */
     private Voucher(Parcel in) {
+    	messages = new HashMap<String, String>();
     	in.readMap(messages, null);
-    	cartValue = in.readString();;
-    	couponMoneyValue = in.readString();;
+    	cartValue = in.readString();
+    	couponMoneyValue = in.readString();
     }
 	
 	/**

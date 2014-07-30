@@ -190,10 +190,10 @@ public class ProductsPage implements IJSONSerializable, Parcelable {
 	private ProductsPage(Parcel in){
 		totalProducts = in.readInt();
 		products = new ArrayList<String>();
-//		in.readList(products, Product.class.getClassLoader());
 		in.readList(products, String.class.getClassLoader());
 		
 		int size = in.readInt();
+		productsMap = new HashMap<String, Product>();
 		for(int i = 0; i < size; i++){
 			String key = in.readString();
 			Product value = in.readParcelable(Product.class.getClassLoader());

@@ -14,7 +14,6 @@ public class ProductReviewCommentCreated implements Parcelable {
 	private static final String FORM_NAME_FIELD = "RatingForm[name]";
 	private static final String FORM_TITLE_FIELD = "RatingForm[title]";
 	private static final String FORM_COMMENT_FIELD = "RatingForm[comment]";
-	private static final String FORM_COSTUMER_ID_FIELD = "rating-customer";
 
 	private String title;
 	private String comments;

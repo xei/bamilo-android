@@ -78,7 +78,7 @@ public class VersionInfo implements IJSONSerializable, Parcelable {
 		in.readMap(mVersions, Version.class.getClassLoader());
 	}
 
-	private static final Parcelable.Creator<VersionInfo> CREATOR = new Parcelable.Creator<VersionInfo>() {
+	public static final Parcelable.Creator<VersionInfo> CREATOR = new Parcelable.Creator<VersionInfo>() {
 		public VersionInfo createFromParcel(Parcel in) {
 			return new VersionInfo(in);
 		}
