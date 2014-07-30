@@ -517,7 +517,9 @@ public class AdXTracker {
             pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
         } catch (NameNotFoundException e) {
             e.printStackTrace();
-        }
+        } catch (NullPointerException e) {
+        	e.printStackTrace();
+		}
         return (pInfo == null) ? "n.a." : pInfo.versionName;
     }
 	
