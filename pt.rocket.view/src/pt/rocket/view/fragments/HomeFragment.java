@@ -48,6 +48,7 @@ import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -57,7 +58,7 @@ import de.akquinet.android.androlog.Log;
  * Class used to show all campaigns
  * @author sergiopereira
  */
-public class HomeFragment extends BaseFragment implements IResponseCallback {
+public class HomeFragment extends BaseFragment implements IResponseCallback, OnClickListener{
 
     private static final String TAG = LogTagHelper.create(HomeFragment.class);
     
@@ -147,12 +148,12 @@ public class HomeFragment extends BaseFragment implements IResponseCallback {
          * WARNING: THIS FRAGMENT CAN BE EXECUTED WITHOUT SHOP ID( HOME -> CCOUNTRY)
          * @author sergiopereira
          */
-        if (JumiaApplication.mIsBound && !TextUtils.isEmpty(ShopSelector.getShopId())) onResumeExecution();
+        SharedPreferences sharedPrefs = getBaseActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        String shopId = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ID, null);
+        //ShopSelector.getShopId()
+        if (JumiaApplication.mIsBound && !TextUtils.isEmpty(shopId)) onResumeExecution();
+        else if(!JumiaApplication.mIsBound && !TextUtils.isEmpty(shopId)) showFragmentRetry(this);
         else JumiaApplication.INSTANCE.setResendHander(mServiceConnectedHandler);
-//        // Valdiate the shop id in this point
-//        if(!TextUtils.isEmpty(ShopSelector.getShopId())) onResumeExecution();
-//        else ActivitiesWorkFlow.splashActivityNewTask(getBaseActivity());
-        
     }
     
     /*
@@ -176,13 +177,14 @@ public class HomeFragment extends BaseFragment implements IResponseCallback {
         Log.i(TAG, "ON RESUME");
     }
     
+    
+    
     /**
      * Handler used to receive a message from application
      */
     Handler mServiceConnectedHandler = new Handler() {
-        public void handleMessage(android.os.Message msg) { 
-            mHomePagerAdapter = null;
-            onResumeExecution();
+        public void handleMessage(android.os.Message msg) {
+            onReloadContent();
         };
     };
 
@@ -391,7 +393,20 @@ public class HomeFragment extends BaseFragment implements IResponseCallback {
 
         fallbackBest.setSelected(true);
     }
+
+    /**
+     * ########### LISTENERS ###########  
+     */
     
+    /*
+     * (non-Javadoc)
+     * @see android.view.View.OnClickListener#onClick(android.view.View)
+     */
+    @Override
+    public void onClick(View v) {
+        Log.d(TAG, "ON CLICK RETRY");
+        onReloadContent();
+    }
     
     /**
      * ########### TRIGGERS ###########  
