@@ -11,10 +11,9 @@
         android:layout_height="99dp"
         android:layout_centerVertical="true"
         android:layout_gravity="center"
-        android:layout_marginBottom="13.2dp"
         android:layout_marginLeft="@dimen/margin_small"
-        android:layout_marginRight="13.2dp"
-        android:layout_marginTop="@dimen/margin_small"
+        android:layout_marginRight="8.2dp"
+        android:layout_marginTop="2dp"
         android:adjustViewBounds="false"
         android:scaleType="fitCenter"
         android:src="@drawable/no_image_small" />    
