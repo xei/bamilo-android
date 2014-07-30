@@ -458,18 +458,19 @@ public class SessionLoginFragment extends BaseFragment {
 
 
     protected boolean onSuccessEvent(Bundle bundle) {
-        if(getBaseActivity() != null){
-            getBaseActivity().handleSuccessEvent(bundle);
-        } else {
-            return true;
-        }
-         
         Log.d(TAG, "ON SUCCESS EVENT");
         // Validate fragment visibility
         if(isOnStoppingProcess){
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
+        
+        if(getBaseActivity() != null){
+            getBaseActivity().handleSuccessEvent(bundle);
+        } else {
+            return true;
+        }
+        
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         //ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         

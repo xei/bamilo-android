@@ -510,6 +510,12 @@ public class SessionRegisterFragment extends BaseFragment {
      */
 
     protected boolean onSuccessEvent(Bundle bundle) {
+        
+        if(isOnStoppingProcess){
+            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return true;
+        }
+        
         if (getBaseActivity() != null) {
             getBaseActivity().handleSuccessEvent(bundle);
         } else {
