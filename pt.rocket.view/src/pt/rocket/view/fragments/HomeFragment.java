@@ -208,7 +208,7 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
         Log.i(TAG, "ON RESUME EXECUTION");
         
         // TODO : Comment for Samsung store
-        if (CheckVersion.needsToShowDialog()) CheckVersion.showDialog(getActivity());
+        //if (CheckVersion.needsToShowDialog()) CheckVersion.showDialog(getActivity());
         
         // Validate the user credentials
         if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials() && !JumiaApplication.INSTANCE.isLoggedIn())
