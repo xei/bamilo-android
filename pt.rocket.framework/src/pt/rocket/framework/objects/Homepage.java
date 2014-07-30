@@ -146,12 +146,6 @@ public class Homepage implements IJSONSerializable, Parcelable{
 	 */
 	public static final Parcelable.Creator<Homepage> CREATOR = new Parcelable.Creator<Homepage>() {
         public Homepage createFromParcel(Parcel in) {
-//        	try {
-//        		return new Homepage(in);
-//			} catch (NullPointerException e) {
-//				e.printStackTrace();
-//			}
-//            return null;
             return new Homepage(in);
         }
 

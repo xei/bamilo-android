@@ -43,7 +43,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.MotionEvent;
@@ -305,6 +305,7 @@ public class HomeFragment extends BaseFragment implements IResponseCallback {
         if(mHomePagerAdapter == null) {
             Log.i(TAG, "ADAPTER IS NULL");
             mHomePagerAdapter = new HomePagerAdapter(getChildFragmentManager(), collection);
+            mHomePager.setAdapter(null);
             mHomePager.setAdapter(mHomePagerAdapter);
             mHomePagerTabStrip.setViewPager(mHomePager);
             // Valdiate the saved position
@@ -538,7 +539,7 @@ public class HomeFragment extends BaseFragment implements IResponseCallback {
      * Class used as an simple pager adapter that represents each campaign fragment
      * @author sergiopereira
      */
-    private class HomePagerAdapter extends FragmentStatePagerAdapter {
+    private class HomePagerAdapter extends FragmentPagerAdapter {
         
         private ArrayList<Homepage> mHomePages;
         
