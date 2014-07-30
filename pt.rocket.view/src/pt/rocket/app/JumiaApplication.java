@@ -26,6 +26,7 @@ import pt.rocket.framework.service.IRemoteServiceCallback;
 import pt.rocket.framework.service.RemoteService;
 import pt.rocket.framework.tracking.AnalyticsGoogle;
 import pt.rocket.framework.utils.Constants;
+import pt.rocket.framework.utils.CurrencyFormatter;
 import pt.rocket.framework.utils.CustomerUtils;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.ImageResolutionHelper;
@@ -188,6 +189,15 @@ public class JumiaApplication extends Application implements ExceptionCallback {
         navigationListComponents = null;
         
         COMPONENTS.get(UrbanAirshipComponent.class).init(this);
+        
+        /**
+         * Fix a crash report, when app try recover from brackground
+         * https://rink.hockeyapp.net/manage/apps/33641/app_versions/109/crash_reasons/17098450
+         * @author sergiopereira
+         */
+        Log.d(TAG, "INIT CURRENCY");
+        String currencyCode = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_ISO, null);
+        if(currencyCode != null) CurrencyFormatter.initialize(getApplicationContext(), currencyCode);
         
         cleanCategoriesState();
         
