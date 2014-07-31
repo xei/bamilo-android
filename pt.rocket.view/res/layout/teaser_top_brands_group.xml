@@ -13,7 +13,7 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:singleLine="true"
-        android:text="Brands" />
+        android:text="@string/brands" />
 
     <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -30,7 +30,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/margin_huge"
             android:gravity="center_vertical"
-            android:text="Categories" />
+            android:text="@string/categories" />
     </RelativeLayout>
 
     <View

@@ -87,13 +87,13 @@
 
     <!-- This style is used in all activities that require a small subtitle such as "Product Description" and "Your Choice" subtitles in the product details activity -->
 
-    <style name="activity_subtitle_small">
+    <!-- style name="activity_subtitle_small">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/orange_basic</item>
         <item name="android:textSize">18dp</item>
         <item name="android:layout_marginBottom">@dimen/margin_small</item>
-    </style>
+    </style -->
 
     <!-- This style is used for the tax string present in the shopping cart and checkout activities -->
 
@@ -217,11 +217,11 @@
         <item name="android:background">@color/grey_dividerlight</item>
     </style>
 
-    <style name="divider_vertical_product">
+    <!-- style name="divider_vertical_product">
         <item name="android:layout_width">@dimen/divider_width</item>
         <item name="android:layout_height">@dimen/product_item_vertical_divider_height</item>
         <item name="android:background">@color/grey_dividerlight</item>
-    </style>
+    </style -->
 
     <style name="divider_vertical_grid">
         <item name="android:layout_width">@dimen/divider_width</item>
@@ -262,17 +262,17 @@
 
     <!-- white blue lists // -->
 
-    <style name="lists_sel_text">
+    <!-- style name="lists_sel_text">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">left|center</item>
         <item name="android:padding">2dp</item>
         <item name="android:textSize">16dp</item>
-    </style>
+    </style -->
 
     <!-- To refactor after the decision regarding brands layout -->
 
-    <style name="brand_list_text">
+    <!-- style name="brand_list_text">
         <item name="android:layout_width">200dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_centerVertical">true</item>
@@ -281,15 +281,15 @@
         <item name="android:textColor">#bababa</item>
         <item name="android:textSize">16dp</item>
         <item name="android:ellipsize">end</item>
-    </style>
+    </style -->
 
-    <style name="lists_sel_arrow">
+    <!-- style name="lists_sel_arrow">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">fill_parent</item>
         <item name="android:layout_alignParentRight">true</item>
         <item name="android:padding">3dp</item>
         <item name="android:layout_centerVertical">true</item>
-    </style>
+    </style -->
 
     <!-- LIST SELECTORS -->
 
@@ -310,7 +310,7 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="navigation_cartnum_text">
+    <!-- style name="navigation_cartnum_text">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/orange_basic</item>
@@ -321,7 +321,7 @@
         <item name="android:paddingBottom">19.5dp</item>
         <item name="android:paddingLeft">5dp</item>
         <item name="android:gravity">center_horizontal</item>
-    </style>
+    </style -->
 
     <style name="navigation_cart_price">
         <item name="android:layout_width">wrap_content</item>
@@ -388,43 +388,44 @@
 
 
     <!-- TODO: product_sort_button style can be removed if sort button layout looks okay -->
-    <style name="product_sort_button">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
-        <!-- item name="android:background">@drawable/selector_productlist_sorter</item -->
-        <item name="android:textSize">16dp</item>
-        <item name="android:textColor">@color/grey_dark</item>
-        <item name="android:gravity">center</item>
-    </style>
+    <!-- <style name="product_sort_button"> -->
+    <!-- <item name="android:layout_width">match_parent</item> -->
+    <!-- <item name="android:layout_height">match_parent</item> -->
+    <!-- item name="android:background">@drawable/selector_productlist_sorter</item -->
+    <!-- <item name="android:textSize">16dp</item> -->
+    <!-- <item name="android:textColor">@color/grey_dark</item> -->
+    <!-- <item name="android:gravity">center</item> -->
+    <!-- </style> -->
 
-    <style name="product_sort_button_text">
+
+    <!-- style name="product_sort_button_text">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:textSize">16dp</item>
         <item name="android:textColor">@color/grey_dark</item>
         <item name="android:gravity">center</item>
         <item name="android:text">@string/product_sort_button</item>
-    </style>
+    </style -->
 
-    <style name="product_sort_shadow">
+    <!-- style name="product_sort_shadow">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:src">@drawable/btn_sort_shadow</item>
-    </style>
+    </style -->
 
-    <style name="product_sort_divider">
+    <!-- style name="product_sort_divider">
         <item name="android:layout_width">@dimen/divider_height</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:background">@color/grey_highlight</item>
-    </style>
+    </style -->
 
-    <style name="product_sort_line">
+    <!-- style name="product_sort_line">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">3dp</item>
         <item name="android:background">@color/orange_basic</item>
-    </style>
+    </style -->
 
-    <style name="search_suggestion_list_itemtext">
+    <!-- style name="search_suggestion_list_itemtext">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@android:color/black</item>
@@ -435,7 +436,8 @@
         <item name="android:layout_margin">@dimen/text_small</item>
         <item name="android:layout_alignParentLeft">true</item>
         <item name="android:layout_centerVertical">true</item>
-    </style>
+    </style -->
+
     <!-- DIALOGS -->
 
     <style name="dialog_title">
@@ -531,7 +533,7 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="headline_title" parent="@style/white_text_12sp_normal">
+    <!-- style name="headline_title" parent="@style/white_text_12sp_normal">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:ellipsize">end</item>
@@ -540,16 +542,16 @@
         <item name="android:paddingLeft">2dp</item>
         <item name="android:paddingTop">0dp</item>
         <item name="android:textStyle">bold</item>
-    </style>
+    </style -->
 
-    <style name="headline_totalItems" parent="@style/white_text_12sp_normal">
+    <!-- style name="headline_totalItems" parent="@style/white_text_12sp_normal">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:maxLines">1</item>
         <item name="android:paddingRight">8dp</item>
         <item name="android:paddingTop">0dp</item>
-    </style>
+    </style -->
 
     <style name="Widget.TeaserIconPageIndicator" parent="Widget">
         <item name="android:paddingLeft">3dp</item>
@@ -579,6 +581,15 @@
         <item name="android:singleLine">true</item>
         <item name="android:textColor">@color/grey_middle</item>
         <item name="android:textSize">@dimen/text_mid</item>
+    </style>
+
+    <style name="login_remember_user_email_checkbox">
+        <item name="android:textColor">@color/grey_middle</item>
+        <item name="android:textSize">14dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:button">@null</item>
+        <item name="android:drawableLeft">@drawable/selector_btn_check_holo_orange</item>
     </style>
 
 </resources>

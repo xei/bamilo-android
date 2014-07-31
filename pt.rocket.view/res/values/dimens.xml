@@ -31,11 +31,9 @@
     <dimen name="navigation_title_height">48dp</dimen>
     <dimen name="navigation_item_divider_height">1dp</dimen>
     <dimen name="navigation_cart_vertical_distance">17dp</dimen>
-    <dimen name="navigation_shadow_width">6dp</dimen>
 
     <!-- <dimen name="navigation_menu_offset">35dp</dimen> -->
     <item name="navigation_menu_offset" type="dimen">100%</item>
-    <item name="navigation_menu_width" type="dimen">90%</item>
 
     <dimen name="item_height_normal">48dp</dimen>
     <dimen name="dialog_list_margin_horizontal">40dp</dimen>
@@ -54,7 +52,6 @@
     <dimen name="text_l">18sp</dimen>
     <dimen name="text_xl">20sp</dimen>
     <dimen name="text_xxl">22sp</dimen>
-    <dimen name="text_xxxl">32sp</dimen>
 
     <item name="dialog_min_width_major" type="dimen">65%</item>
     <item name="dialog_min_width_minor" type="dimen">95%</item>
@@ -73,8 +70,6 @@
     <dimen name="teaser_product_item_width_sw320dp">108dp</dimen>
     <dimen name="teaser_swipe_banner_height_sw320dp">171dp</dimen>
     <dimen name="teaser_banners_group_height_sw320dp">171dp</dimen>
-    <dimen name="button_sort_line_distance_horizontal_sw320dp">90dp</dimen>
-    <dimen name="button_sort_height_sw320dp">48dp</dimen>
     <dimen name="teaser_banners_brands_list_height">88dp</dimen>
     <dimen name="teaser_banners_brands_list_margin">0dp</dimen>
 
@@ -84,57 +79,23 @@
 
     <!-- HOME -->
     <dimen name="teaser_product_item_width">120dp</dimen>
-    <dimen name="teaser_product_item_height">@dimen/wrap_content</dimen>
-    <dimen name="teaser_product_item_image_width">@dimen/match_parent</dimen>
-    <dimen name="teaser_product_item_image_height">84dp</dimen>
-    <dimen name="teaser_product_item_image_margin">@dimen/margin_mid</dimen>
     <dimen name="teaser_banners_group_height">100dp</dimen>
 
-    <!-- ACTION BAR TABLET -->
-    <dimen name="action_bar_search">50dp</dimen>
-    <dimen name="action_bar_title_bar">22dp</dimen>
-
-    <!-- WRITE REVIEW -->
-    <dimen name="text_stars_max_width">145dp</dimen>
-
     <!-- MAIN LAYOUT -->
-    <dimen name="main_layout_width">@dimen/match_parent</dimen>
     <dimen name="sliding_tab_height">38dp</dimen>
     <dimen name="sliding_tab_inidicator_thickness">3dip</dimen>
     <dimen name="sliding_tab_text_size">14sp</dimen>
 
     <!-- PRODUCT LIST ITEM -->
-    <dimen name="product_list_item_image_width">116dp</dimen>
-    <dimen name="product_list_item_image_height">84dp</dimen>
     <dimen name="product_list_item_discount_percentage_image_width">35dp</dimen>
     <dimen name="product_list_item_discount_percentage_image_height">20dp</dimen>
     <dimen name="product_list_item_discount_percentage_text_size">10sp</dimen>
-    <dimen name="product_list_item_star_rating_bar_min_height">11dp</dimen>
-    <dimen name="product_list_item_star_rating_bar_max_height">11dp</dimen>
 
     <dimen name="product_list_item_image_margin">6.67dp</dimen>
     <dimen name="product_list_item_image_side_margin">13.33dp</dimen>
 
-    <drawable name="product_list_item_star_rating_bar_drawable">@drawable/star_ratingbar_small</drawable>
-
     <!-- PRODUCT DETAIL ITEM -->
     <dimen name="product_detail_item_variation_list_height">63dp</dimen>
-    <dimen name="product_detail_item_variation_image_width">75dp</dimen>
-    <dimen name="product_detail_item_variation_image_height">50dp</dimen>
-    <dimen name="product_detail_item_image_width">250dp</dimen>
-    <dimen name="product_detail_item_image_height">250dp</dimen>
-    <dimen name="product_detail_item_discount_image_width">65dp</dimen>
-    <dimen name="product_detail_item_discount_image_height">40dp</dimen>
-    <dimen name="product_detail_item_discount_image_margin">@dimen/margin_small</dimen>
-    <dimen name="product_detail_item_discount_text_margin">4.5dp</dimen>
-
-    <!-- PRODUCT GALLERY ITEM -->
-    <dimen name="product_gallery_item_variation_list_height">@dimen/product_detail_item_variation_list_height</dimen>
-    <dimen name="product_gallery_item_image_list_height">@dimen/product_gallery_item_variation_list_height</dimen>
-
-    <!-- SHOPPING CART -->
-    <dimen name="shopping_cart_item_image_width">84dp</dimen>
-    <dimen name="shopping_cart_item_image_height">84dp</dimen>
 
     <!-- ABOUT YOU -->
     <dimen name="about_you_toogle_height">48dp</dimen>
@@ -159,7 +120,6 @@
     <dimen name="checkout_order_inner_margin_right">@dimen/margin_mid</dimen>
 
     <!-- DIALOG CATALOG FILTER -->
-    <dimen name="catalog_buttons_container_height">36.5dp</dimen>
     <dimen name="catalog_button_filter_width">80dp</dimen>
     <dimen name="dialog_catalog_filter_width">@dimen/match_parent</dimen>
     <dimen name="dialog_catalog_filter_height">400.00dp</dimen>
@@ -192,7 +152,6 @@
     <dimen name="product_item_grid_width">117.33dp</dimen>
     <dimen name="product_item_grid_height">146.67dp</dimen>
     <dimen name="product_item_description_height">60dp</dimen>
-    <dimen name="product_grid_width">146.67dp</dimen>
     <dimen name="product_item_grid_divider_height">211.67dp</dimen>
 
     <!-- ACTIONBAR SHERLOCK SEARCH adjustDropDownSizeAndPosition@SearchView -->
@@ -205,16 +164,12 @@
 
     <!--  FAVOURITE WIZARD -->
     <dimen name="product_tip_top_margin">0dp</dimen>
-    <dimen name="product_tip_side_margin">5dp</dimen>
     <dimen name="product_tip_variations_top_margin">65dp</dimen>
     <!-- <dimen name="product_tip_padding">52.8dp</dimen> -->
     <dimen name="product_tip_padding">@dimen/margin_large</dimen>
     <dimen name="product_tip_padding_side">15dp</dimen>
     
     <!-- MY PROFILE -->
-    <dimen name="myprofile_lists_top_margin">40dp</dimen>
-    <dimen name="myprofile_lists_drawable_padding">26.67dp</dimen>
-    <dimen name="myprofile_menu_margin">32dp</dimen>
 	<dimen name="myprofile_item_size">42.67dp</dimen>
 	<dimen name="myprofile_item_icon_container_size">27dp</dimen>
 	<dimen name="myprofile_item_icon_size">21.33dp</dimen>
@@ -222,15 +177,11 @@
 	<dimen name="myprofile_icon_counter_text_size">6sp</dimen>
     
     <!--  FAVOURITES -->
-    <dimen name="favourite_item_top_margin">13.33dp</dimen>
 	<dimen name="favourite_item_height">145dp</dimen>
-	<dimen name="favourite_list_item_image_margin">6.67dp</dimen>
     <integer name="favourite_num_columns">1</integer>
     
     <!--  RECENT SEARCHES -->
-    <dimen name="recentsearch_button_top_margin">26.67dp</dimen>
     <dimen name="recentsearch_list_margin">6.67dp</dimen>
     <dimen name="recentsearch_button_margin">13.33dp</dimen>
-    <dimen name="recentsearch_clear_all_fix_padding">0dp</dimen>
 
 </resources>

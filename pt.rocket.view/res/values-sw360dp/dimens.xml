@@ -5,19 +5,10 @@
     <dimen name="teaser_product_item_width">120dp</dimen>
 	<dimen name="teaser_banners_group_height">140dp</dimen>
     
-	<dimen name="button_sort_line_distance_horizontal">120dp</dimen>
-	<dimen name="button_sort_height">48dp</dimen>
-	
 	<!-- DIALOG CATALOG FILTER -->
     <dimen name="dialog_catalog_filter_width">@dimen/match_parent</dimen>
     <dimen name="dialog_catalog_filter_height">450.00dp</dimen>
-    <dimen name="catalog_buttons_container_height">46.5dp</dimen>
-    
-    <dimen name="product_item_vertical_divider_height">165dp</dimen>
 
-    <!--  RECENT SEARCHES -->
-    <dimen name="recentsearch_clear_all_fix_padding">85dp</dimen>
-    
     <!--  MAIN LAYOUT -->
 	<dimen name="sliding_tab_height">48dp</dimen>
     <dimen name="sliding_tab_inidicator_thickness">2dip</dimen>
