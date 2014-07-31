@@ -64,7 +64,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="50dp"
                 android:gravity="center_horizontal"
-                android:text="@string/wishlist_notiems"
+                android:text="@string/order_notiems"
                 android:textColor="@color/grey_middlelight"
                 android:textSize="17dp" />
 
