@@ -670,7 +670,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         } else if (errorsSize == 0) {
             Log.i(TAG, "ALL ITEMS ADDED TO CART: CLEAN ARRAY " + errorsSize + " " + favSize);
             mFavourites.clear();
-            Toast.makeText(getBaseActivity(), getString(R.string.wishlist_addalltocart), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getBaseActivity(), getString(R.string.favourite_addalltocart), Toast.LENGTH_SHORT).show();
         // Case zero items added
         } else {
             Log.i(TAG, "NO ITEMS ADDED TO CART: MANTAIN ARRAY " + errorsSize + " " + favSize);

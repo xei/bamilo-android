@@ -440,7 +440,7 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
         // Show dialog
         dialog = DialogGenericFragment.newInstance(true, true, false,
                 getString(R.string.order_summary_label),
-                getString(R.string.wishlist_notiems),
+                getString(R.string.order_notiems),
                 getString(R.string.ok_label),
                 "",
                 new OnClickListener() {
