@@ -271,6 +271,11 @@ public class Product implements IJSONSerializable, Parcelable {
         in.readList(images, Image.class.getClassLoader());
         imagesTablet = new ArrayList<Image>();
         in.readList(imagesTablet, Image.class.getClassLoader());
+        
+        firstImageURL = "";
+        if (0 < images.size()) {
+            firstImageURL = images.get(0).getUrl(); 
+        }
     }
     
     public static final Parcelable.Creator<Product> CREATOR = new Parcelable.Creator<Product>() {

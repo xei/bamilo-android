@@ -281,7 +281,12 @@ public class ProductAttributes implements IJSONSerializable, Parcelable {
             // Get the is favourite JSON tag
             //isFavourite = jsonObject.optBoolean(RestConstants.JSON_IS_FAVOURITE_TAG, false);
             
-            isFavourite = FavouriteTableHelper.verifyIfFavourite(sku);
+            try {
+                isFavourite = FavouriteTableHelper.verifyIfFavourite(sku);
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
             
         } catch (JSONException e) {
             Log.e(TAG, "Error Parsing the product json", e);
@@ -350,6 +355,14 @@ public class ProductAttributes implements IJSONSerializable, Parcelable {
         maxSavingPercentage = in.readDouble();
         reviews = in.readInt();
         rating = in.readDouble();
+        
+        try {
+            isFavourite = FavouriteTableHelper.verifyIfFavourite(sku);
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
     }
 
     public static final Parcelable.Creator<ProductAttributes> CREATOR = new Parcelable.Creator<ProductAttributes>() {

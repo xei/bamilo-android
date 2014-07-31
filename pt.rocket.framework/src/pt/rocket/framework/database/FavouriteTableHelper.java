@@ -213,9 +213,12 @@ public class FavouriteTableHelper {
 	 * 
 	 * @param sku
 	 * @return
+	 * @throws InterruptedException 
 	 */
-	public synchronized static boolean verifyIfFavourite(String sku) {
+	public synchronized static boolean verifyIfFavourite(String sku) throws InterruptedException {
 		boolean result = false;
+		DarwinDatabaseSemaphore.getInstance().getLock();
+		
 		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getReadableDatabase();
 		String query = new StringBuilder("select count(*) from ").append(TABLE)
 				.append(" where ").append(_FAVOURITE_SKU).append(" = '").append(sku).append("'").toString();
@@ -240,6 +243,8 @@ public class FavouriteTableHelper {
 		if (db.isOpen())
 		    db.close();
 
+		DarwinDatabaseSemaphore.getInstance().releaseLock();
+		
 		return result;
 	}
 

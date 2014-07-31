@@ -19,6 +19,7 @@ import pt.rocket.framework.Darwin;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.database.RelatedItemsTableHelper;
 import pt.rocket.framework.interfaces.IMetaData;
+import pt.rocket.framework.objects.CatalogFilter;
 import pt.rocket.framework.objects.FeaturedBox;
 import pt.rocket.framework.objects.Product;
 import pt.rocket.framework.objects.ProductsPage;
@@ -68,6 +69,7 @@ public class CatalogPageFragment extends BaseFragment {
     
     private final String PRODUCT_LIST = "product_list";
     private final String PRODUCT_LIST_POSITION = "product_list_position";
+    private final String LIST_TITLE = "list_title";
 
     private final int MAX_PAGE_ITEMS = 18;
     private final int NO_MORE_PAGES = -1;
@@ -153,7 +155,13 @@ public class CatalogPageFragment extends BaseFragment {
         Log.i(TAG, "ON CREATE");
 
         parentFragment = (CatalogFragment)getBaseActivity().getSupportFragmentManager().findFragmentByTag(FragmentType.PRODUCT_LIST.toString());
-                
+
+        if (null != savedInstanceState) {
+            mSavedProductsSKU = savedInstanceState.getStringArrayList(PRODUCT_LIST);
+            mCurrentListPosition = savedInstanceState.getInt(PRODUCT_LIST_POSITION);
+            mTitle = savedInstanceState.getString(LIST_TITLE);            
+        }
+        
         Bundle args = getArguments();
         if (null != args) {
             mPageIndex = args.getInt(PARAM_PAGE_INDEX, 0);
@@ -233,11 +241,6 @@ public class CatalogPageFragment extends BaseFragment {
         this.linearLayoutLb = (LinearLayout) view.findViewById(R.id.loading_view_pager);
 //        this.loadingBarView = ((LoadingBarView) this.linearLayoutLb.findViewById(R.id.loading_bar_view));
         
-        if (null != savedInstanceState) {
-            mSavedProductsSKU = savedInstanceState.getStringArrayList(PRODUCT_LIST);
-            mCurrentListPosition = savedInstanceState.getInt(PRODUCT_LIST_POSITION);
-        }
-        
     }
 
     @Override
@@ -264,8 +267,9 @@ public class CatalogPageFragment extends BaseFragment {
             ProductsListAdapter adapter = (ProductsListAdapter)this.gridView.getAdapter();
             if (null != adapter) {
                 outState.putStringArrayList(PRODUCT_LIST, adapter.getProductsList());
-                outState.putInt(PRODUCT_LIST_POSITION, this.gridView.getFirstVisiblePosition());
+                outState.putInt(PRODUCT_LIST_POSITION, this.gridView.getFirstVisiblePosition());                
             }
+            outState.putString(LIST_TITLE, mTitle);
         }
         super.onSaveInstanceState(outState);
     }
@@ -277,6 +281,11 @@ public class CatalogPageFragment extends BaseFragment {
         return mTotalProducts;
     }    
 
+    public void restoreFilters(ContentValues filters) {
+        mFilterMD5 = filters.getAsInteger("md5");
+        mFilters = filters;
+    }
+    
     /*
      * force the refresh of the list to update the status of each item
      */
@@ -322,15 +331,6 @@ public class CatalogPageFragment extends BaseFragment {
 
             showCatalogContent();
             mIsLoadingMore = false;
-
-//            Handler handler = new Handler();
-//            handler.postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    // hide progress called on switch layout
-//                    getBaseActivity().dismissProgress();
-//                }
-//            }, 300);
             
             mSwitchMD5 = switchMD5;
         } 
@@ -352,7 +352,7 @@ public class CatalogPageFragment extends BaseFragment {
     }
  
     private void initializeCatalogPage(boolean showList) {
-        Log.d(TAG, "FILTER EXECUTE REQ -> Landscape ? " + mIsLandScape + "; Columns #" + updateGridColumns(showList));
+        Log.d(TAG, "ON RESUME - REQ -> Landscape ? " + mIsLandScape + "; Columns #" + updateGridColumns(showList));
         
         ProductsListAdapter adapter = (ProductsListAdapter)this.gridView.getAdapter();
         final boolean hasProducts = (null != mSavedProductsSKU);        
@@ -362,16 +362,9 @@ public class CatalogPageFragment extends BaseFragment {
         if (!hasProducts) {
             mPageNumber = 1;
         } else {
+            Log.d(TAG, "ON RESUME - HAS PRODUCTS" );
             adapter.updateProducts(mSavedProductsSKU);
         }
-        
-//        if (parentFragment.isVisible()) {
-//            // set total items lable
-//            if (mTotalProducts > 0)
-//                getBaseActivity().setTitleAndSubTitle(mTitle, " (" + String.valueOf(mTotalProducts) + " " + getBaseActivity().getString(R.string.shoppingcart_items) + ")");
-//            else
-//                getBaseActivity().setTitle(mTitle);
-//        }        
 
         Log.d(TAG, "showProductsContent");
         if (mPageNumber == 1) {
@@ -389,7 +382,8 @@ public class CatalogPageFragment extends BaseFragment {
         if (!hasProducts) {
             getMoreProducts();
         } else {
-            gridView.setSelection(mCurrentListPosition);            
+            gridView.setSelection(mCurrentListPosition);    
+            adapter.notifyDataSetChanged();
         }
         
     }
@@ -676,13 +670,6 @@ public class CatalogPageFragment extends BaseFragment {
             parentFragment.addProductsCollection(productsPage.getProductsMap(), mTitle, productsPage.getTotalProducts());
 
             mTotalProducts = totalProducts;
-//            if (parentFragment.isVisible()) {
-//                // set total items lable
-//                if (mTotalProducts > 0)
-//                    getBaseActivity().setTitleAndSubTitle(mTitle, " (" + String.valueOf(mTotalProducts) + " " + getBaseActivity().getString(R.string.shoppingcart_items) + ")");
-//                else
-//                    getBaseActivity().setTitle(mTitle);
-//            }
         }
 
         if (location != null) {
@@ -738,7 +725,7 @@ public class CatalogPageFragment extends BaseFragment {
         if (numberProducts >= totalProducts) {
             mIsLoadingMore = true;
         }
-
+        
         // Updated filter
         if (parentFragment.isVisible()) {
             parentFragment.onSuccesLoadingFilteredCatalog(productsPage.getFilters());

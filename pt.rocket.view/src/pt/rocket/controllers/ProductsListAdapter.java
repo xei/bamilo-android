@@ -6,8 +6,6 @@ import java.util.Collection;
 import org.holoeverywhere.widget.TextView;
 import org.holoeverywhere.widget.Toast;
 
-import com.android.volley.toolbox.ImageLoader;
-
 import pt.rocket.framework.database.FavouriteTableHelper;
 import pt.rocket.framework.objects.Product;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -24,14 +22,14 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.RatingBar;
-import de.akquinet.android.androlog.Log;
 
-import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.ImageLoader.ImageContainer;
 
+import de.akquinet.android.androlog.Log;
+
 /**
- * This Class is used to create an adapter for the list of products. It is called by ProductsList
- * Activity.
+ * This Class is used to create an adapter for the list of products. It is
+ * called by ProductsList Activity.
  * <p/>
  * <br>
  * 
@@ -69,7 +67,7 @@ public class ProductsListAdapter extends BaseAdapter {
     private boolean showList;
 
     private CatalogFragment parentCatalog;
-    
+
     /**
      * A representation of each item on the list
      */
@@ -91,8 +89,9 @@ public class ProductsListAdapter extends BaseAdapter {
      * the constructor for this adapter
      * 
      * @param activity
-     * @param showList show list (or grid)
-     * @param numColumns 
+     * @param showList
+     *            show list (or grid)
+     * @param numColumns
      */
     public ProductsListAdapter(Context context, CatalogFragment parent, boolean showList, int numColumns, boolean isFrench) {
 
@@ -102,13 +101,12 @@ public class ProductsListAdapter extends BaseAdapter {
 
         this.inflater = LayoutInflater.from(context);
         reviewLabel = context.getString(R.string.reviews);
-        
+
         // Get is new image for respective country
         this.isNewResource = !isFrench ? R.drawable.selector_is_new_en : R.drawable.selector_is_new_fr;
-        
+
         this.parentCatalog = parent;
     }
-
 
     /*
      * (non-Javadoc)
@@ -144,7 +142,8 @@ public class ProductsListAdapter extends BaseAdapter {
     /*
      * (non-Javadoc)
      * 
-     * @see android.widget.Adapter#getView(int, android.view.View, android.view.ViewGroup)
+     * @see android.widget.Adapter#getView(int, android.view.View,
+     * android.view.ViewGroup)
      */
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
@@ -166,21 +165,23 @@ public class ProductsListAdapter extends BaseAdapter {
             prodItem = new Item();
             prodItem.image = (ImageView) itemView.findViewById(R.id.image_view);
             prodItem.progress = itemView.findViewById(R.id.image_loading_progress);
-            
+
             prodItem.name = (TextView) itemView.findViewById(R.id.item_name);
-            if (showList) prodItem.rating = (RatingBar) itemView.findViewById(R.id.item_rating);
-            
+            if (showList)
+                prodItem.rating = (RatingBar) itemView.findViewById(R.id.item_rating);
+
             prodItem.price = (TextView) itemView.findViewById(R.id.item_regprice);
             prodItem.price.setPaintFlags(prodItem.price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            
+
             prodItem.discount = (TextView) itemView.findViewById(R.id.item_discount);
             prodItem.discountPercentage = (TextView) itemView.findViewById(R.id.discount_percentage);
-            if (showList) prodItem.reviews = (TextView) itemView.findViewById(R.id.item_reviews);
-            
+            if (showList)
+                prodItem.reviews = (TextView) itemView.findViewById(R.id.item_reviews);
+
             prodItem.brand = (TextView) itemView.findViewById(R.id.item_brand);
-            prodItem.isNew= (ImageView) itemView.findViewById(R.id.image_is_new);
-            prodItem.isNew.setBackgroundResource(isNewResource);            
-            
+            prodItem.isNew = (ImageView) itemView.findViewById(R.id.image_is_new);
+            prodItem.isNew.setBackgroundResource(isNewResource);
+
             prodItem.isFavourite = (ImageView) itemView.findViewById(R.id.image_is_favourite);
             itemView.setTag(prodItem);
         } else {
@@ -190,18 +191,18 @@ public class ProductsListAdapter extends BaseAdapter {
                 imgContainer.cancelRequest();
             }
         }
-        
 
         final Product product = parentCatalog.getProduct(products.get(position));
         prodItem.image.setImageResource(R.drawable.no_image_small);
-        RocketImageLoader.instance.loadImage(product.getFirstImageURL(), prodItem.image,  prodItem.progress, R.drawable.no_image_small, CatalogFragment.requestTag);
+        RocketImageLoader.instance.loadImage(product.getFirstImageURL(), prodItem.image, prodItem.progress, R.drawable.no_image_small,
+                CatalogFragment.requestTag);
 
         // Set is new image
         prodItem.isNew.setSelected(product.getAttributes().isNew());
-        
+
         // Set is favourite image
         prodItem.isFavourite.setSelected(product.getAttributes().isFavourite());
-        
+
         prodItem.isFavourite.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -219,13 +220,13 @@ public class ProductsListAdapter extends BaseAdapter {
                 parentCatalog.invalidatePages();
             }
         });
-        
+
         // Set brand
         prodItem.brand.setText(product.getBrand().toUpperCase());
-        
+
         prodItem.name.setText(product.getName());
         prodItem.price.setText(product.getSuggestedPrice());
-        
+
         if (showList) {
             if (product.getRating() != null && product.getRating() > 0) {
                 prodItem.rating.setRating(product.getRating().floatValue());
@@ -236,7 +237,7 @@ public class ProductsListAdapter extends BaseAdapter {
                 prodItem.reviews.setText("");
             }
         }
-        
+
         if (null != product.getSpecialPrice() && !product.getSpecialPrice().equals(product.getPrice())) {
             prodItem.discount.setText(product.getSpecialPrice());
             prodItem.price.setText(product.getSuggestedPrice());
@@ -246,8 +247,8 @@ public class ProductsListAdapter extends BaseAdapter {
             prodItem.discount.setText(product.getSuggestedPrice());
             prodItem.price.setText("");
             prodItem.discountPercentage.setVisibility(View.GONE);
-        }        
-        
+        }
+
         return itemView;
     }
 
@@ -274,24 +275,23 @@ public class ProductsListAdapter extends BaseAdapter {
                 products.add(sku);
             }
         }
-        //products.addAll(newProducts);
         notifyDataSetChanged();
     }
-    
+
     public ArrayList<String> getProductsList() {
         return products;
     }
-    
+
     /**
      * #FIX: java.lang.IllegalArgumentException: The observer is null.
-     * @solution from : https://code.google.com/p/android/issues/detail?id=22946 
+     * 
+     * @solution from : https://code.google.com/p/android/issues/detail?id=22946
      */
     @Override
     public void unregisterDataSetObserver(DataSetObserver observer) {
-        if(observer !=null){
-            super.unregisterDataSetObserver(observer);    
+        if (observer != null) {
+            super.unregisterDataSetObserver(observer);
         }
     }
-    
-    
+
 }

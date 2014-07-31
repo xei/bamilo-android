@@ -44,6 +44,10 @@ public class RestConstants {
 	public static final String JSON_HEX_VALUE_TAG = "hex_value";
 	public static final String JSON_INTERVAL_TAG = "interval";
 	public static final String JSON_FILTERS_TAG = "filters";
+	
+	public static final String JSON_IS_SELECTED_TAG = "is_selected";
+	public static final String JSON_IS_SECTION_BRAND_TAG = "is_section_brand";
+	
 
 	// FormData Tags
 	public static final String JSON_ACTION_TAG = "action";

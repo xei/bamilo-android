@@ -890,10 +890,16 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
 
         // Set is favourite image
 
-        if (FavouriteTableHelper.verifyIfFavourite(mCompleteProduct.getSku())) {
-            mCompleteProduct.getAttributes().put(RestConstants.JSON_IS_FAVOURITE_TAG, Boolean.TRUE.toString());
-            imageIsFavourite.setSelected(true);
-        } else {
+        try {
+            if (FavouriteTableHelper.verifyIfFavourite(mCompleteProduct.getSku())) {
+                mCompleteProduct.getAttributes().put(RestConstants.JSON_IS_FAVOURITE_TAG, Boolean.TRUE.toString());
+                imageIsFavourite.setSelected(true);
+            } else {
+                mCompleteProduct.getAttributes().put(RestConstants.JSON_IS_FAVOURITE_TAG, Boolean.FALSE.toString());
+                imageIsFavourite.setSelected(false);
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
             mCompleteProduct.getAttributes().put(RestConstants.JSON_IS_FAVOURITE_TAG, Boolean.FALSE.toString());
             imageIsFavourite.setSelected(false);
         }

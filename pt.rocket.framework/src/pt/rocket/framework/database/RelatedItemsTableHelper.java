@@ -74,9 +74,11 @@ public class RelatedItemsTableHelper {
      * TODO
      * @param ctx
      * @param mProducts
+     * @throws InterruptedException 
      */
-	public synchronized static void insertRelatedItems(Context ctx, ArrayList<Product> mProducts) {
+	public synchronized static void insertRelatedItems(Context ctx, ArrayList<Product> mProducts) throws InterruptedException {
 
+	    DarwinDatabaseSemaphore.getInstance().getLock();
 		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
 		
 		try {
@@ -100,6 +102,7 @@ public class RelatedItemsTableHelper {
 		} finally {
 			db.endTransaction();
 		}
+		DarwinDatabaseSemaphore.getInstance().releaseLock();
 
 	}
 
@@ -107,10 +110,13 @@ public class RelatedItemsTableHelper {
 	 * TODO
 	 * @param ctx
 	 * @param mProducts
+	 * @throws InterruptedException 
 	 */
-	public synchronized static void insertRelatedItemsAndClear(Context ctx, ArrayList<Product> mProducts) {
+	public synchronized static void insertRelatedItemsAndClear(Context ctx, ArrayList<Product> mProducts) throws InterruptedException {
 		Log.d(TAG, "ON CLEAN AND INSERT: START");
 		SQLiteDatabase db = null;
+		
+		DarwinDatabaseSemaphore.getInstance().getLock();
 		try {
 			db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
 			// Begin
@@ -129,6 +135,7 @@ public class RelatedItemsTableHelper {
 				db.close();
 			} 
 		}
+		DarwinDatabaseSemaphore.getInstance().releaseLock();
 	}
 	
 	private synchronized static void cleanAndInsert(SQLiteDatabase db, ArrayList<Product> mProducts) {
