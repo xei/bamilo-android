@@ -3,50 +3,58 @@
     android:id="@+id/campaign_item_stock_timer_container"
     android:layout_width="match_parent"
     android:layout_height="20dp"
+    android:layout_marginLeft="@dimen/campaign_discount_flag_width"
+    android:gravity="center"
     android:orientation="horizontal"
     android:paddingLeft="@dimen/campaign_title_margin_left"
     android:paddingRight="@dimen/margin_large"
     android:visibility="visible" >
 
-    <!-- STOCK OFF SPACER -->
+    <!--
+         STOCK OFF SPACER
 
     <org.holoeverywhere.widget.TextView
         android:layout_width="@dimen/campaign_discount_flag_width"
         android:layout_height="match_parent"
         android:visibility="invisible" />
+    -->
 
-    <!-- TIMER LAYOUT -->
+
+    <!--
+         TIMER LAYOUT
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center" >
+    -->
 
-        <!-- TIMER TITLE -->
 
-        <org.holoeverywhere.widget.TextView
-            android:id="@+id/campaign_item_stock_timer_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/ico_clock"
-            android:drawablePadding="6.67dp"
-            android:fontFamily="roboto_reg"
-            android:includeFontPadding="false"
-            android:text="@string/campaing_timer_end"
-            android:textColor="#666"
-            android:textSize="@dimen/text_xs" />
+    <!-- TIMER TITLE -->
 
-        <!-- TIMER -->
+    <org.holoeverywhere.widget.TextView
+        android:id="@+id/campaign_item_stock_timer_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ico_clock"
+        android:drawablePadding="6.67dp"
+        android:fontFamily="roboto_reg"
+        android:includeFontPadding="false"
+        android:text="@string/campaing_timer_end"
+        android:textColor="#666"
+        android:textSize="@dimen/text_xs" />
 
-        <org.holoeverywhere.widget.TextView
-            android:id="@+id/campaign_item_stock_timer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="roboto_reg"
-            android:includeFontPadding="false"
-            android:textColor="#cc0000"
-            android:textSize="@dimen/text_xs" />
-    </LinearLayout>
+    <!-- TIMER -->
+
+    <org.holoeverywhere.widget.TextView
+        android:id="@+id/campaign_item_stock_timer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="roboto_reg"
+        android:includeFontPadding="false"
+        android:textColor="#cc0000"
+        android:textSize="@dimen/text_xs" />
+    <!-- </LinearLayout> -->
 
 </LinearLayout>
