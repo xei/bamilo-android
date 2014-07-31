@@ -3,6 +3,8 @@
  */
 package pt.rocket.view.fragments;
 
+import java.util.EnumSet;
+
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.ActivitiesWorkFlow;
@@ -18,6 +20,7 @@ import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.configs.GetCountriesGeneralConfigsHelper;
 import pt.rocket.interfaces.IResponseCallback;
+import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
@@ -72,7 +75,11 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
      * Empty constructor
      */
     public ChooseCountryFragment() {
-        super(IS_NESTED_FRAGMENT, NavigationAction.Country, R.layout.change_country);
+        super(EnumSet.noneOf(MyMenuItem.class),
+                NavigationAction.Country,
+                R.layout.change_country,
+                0,
+                KeyboardState.NO_ADJUST_CONTENT);
     }
 
     /*

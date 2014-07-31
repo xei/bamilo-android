@@ -21,7 +21,6 @@ import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CustomerUtils;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.framework.utils.ShopSelector;
 import pt.rocket.helpers.GetPromotionsHelper;
 import pt.rocket.helpers.GetTeasersHelper;
 import pt.rocket.helpers.GetUpdatedTeasersHelper;
@@ -208,7 +207,7 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
         Log.i(TAG, "ON RESUME EXECUTION");
         
         // TODO : Comment for Samsung store
-        //if (CheckVersion.needsToShowDialog()) CheckVersion.showDialog(getActivity());
+        if (CheckVersion.needsToShowDialog()) CheckVersion.showDialog(getActivity());
         
         // Validate the user credentials
         if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials() && !JumiaApplication.INSTANCE.isLoggedIn())

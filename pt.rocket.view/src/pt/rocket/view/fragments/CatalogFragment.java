@@ -45,7 +45,6 @@ import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -122,6 +121,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
     public CatalogFragment() {
         super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.Products,
+                R.layout.products_frame,
                 R.string.products,
                 KeyboardState.NO_ADJUST_CONTENT);
         mProductsMap = new HashMap<String, Product>();
@@ -175,17 +175,13 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
 
     /*
      * (non-Javadoc)
-     * 
-     * @see pt.rocket.view.fragments.BaseFragment#onCreateView(android.view.LayoutInflater,
-     * android.view.ViewGroup, android.os.Bundle)
+     * @see pt.rocket.view.fragments.BaseFragment#onViewCreated(android.view.View, android.os.Bundle)
      */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.i(TAG, "ON CREATE VIEW");
-
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         mSortOptions = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.products_picker)));
         
-        View view = inflater.inflate(R.layout.products_frame, container, false);
         mViewPager = (ViewPager) view.findViewById(R.id.viewpager_products_list);
         mViewPager.setOnPageChangeListener(onPageChangeListener);
 
@@ -205,10 +201,12 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         mFilterButton = view.findViewById(R.id.products_list_filter_button);
         // Set the button state if is selected or not
         setFilterButtonState();
-        
-        return view;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.view.fragments.BaseFragment#onResume()
+     */
     @Override
     public void onResume() {
         super.onResume();

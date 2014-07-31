@@ -11,7 +11,6 @@ import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -49,7 +48,7 @@ public class ProductRelatedItemsFragment extends BaseFragment {
      * Constructor
      */
     public ProductRelatedItemsFragment() {
-        super(true);
+        super(IS_NESTED_FRAGMENT, R.layout.related_items_view);
         this.setRetainInstance(true);
     }
    
@@ -64,11 +63,11 @@ public class ProductRelatedItemsFragment extends BaseFragment {
     
     /*
      * (non-Javadoc)
-     * @see pt.rocket.view.fragments.BaseFragment#onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle)
+     * @see pt.rocket.view.fragments.BaseFragment#onViewCreated(android.view.View, android.os.Bundle)
      */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.related_items_view, null, false);
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
     }
    
     /*

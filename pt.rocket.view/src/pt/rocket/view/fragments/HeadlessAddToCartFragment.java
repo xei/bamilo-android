@@ -25,9 +25,7 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
 import de.akquinet.android.androlog.Log;
 
@@ -77,6 +75,7 @@ public class HeadlessAddToCartFragment extends BaseFragment implements IResponse
     public HeadlessAddToCartFragment() {
         super(EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.Unknown,
+                R.layout.fragment_headless,
                 0,
                 KeyboardState.NO_ADJUST_CONTENT);
     }
@@ -107,19 +106,6 @@ public class HeadlessAddToCartFragment extends BaseFragment implements IResponse
         getItemsToCart();
         // Validate session to add items
         validateSession();
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-     * android.view.ViewGroup, android.os.Bundle)
-     */
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState) {
-        Log.i(TAG, "ON CREATE VIEW");
-        // Inflate the root layout that contains the laoding view
-        return inflater.inflate(R.layout.fragment_root_layout, viewGroup, false); 
     }
 
     /*

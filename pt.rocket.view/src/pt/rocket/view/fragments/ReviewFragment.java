@@ -14,9 +14,7 @@ import pt.rocket.utils.NavigationAction;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.RatingBar;
 import de.akquinet.android.androlog.Log;
 
@@ -47,6 +45,7 @@ public class ReviewFragment extends BaseFragment {
     public ReviewFragment() {
         super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.Products,
+                R.layout.reviews,
                 R.string.review,
                 KeyboardState.NO_ADJUST_CONTENT);
         this.setRetainInstance(true);
@@ -81,13 +80,11 @@ public class ReviewFragment extends BaseFragment {
      * android.view.ViewGroup, android.os.Bundle)
      */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-        Log.i(TAG, "ON CREATE VIEW");
-        View view = inflater.inflate(R.layout.reviews, container, false);
-        return view;
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Log.i(TAG, "ON VIEW CREATED");
     }
-
+    
     /*
      * (non-Javadoc)
      * 

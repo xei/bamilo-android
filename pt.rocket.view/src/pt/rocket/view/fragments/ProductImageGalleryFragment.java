@@ -20,16 +20,13 @@ import pt.rocket.utils.NavigationAction;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.GestureDetector;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.RelativeLayout;
@@ -112,6 +109,7 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
     public ProductImageGalleryFragment() {
         super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.Products,
+                R.layout.product_showoff_viewpager_frame,
                 0,
                 KeyboardState.NO_ADJUST_CONTENT);
         this.setRetainInstance(true);
@@ -137,23 +135,17 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-        // Retain this fragment across configuration changes.
-        // setRetainInstance(true);
     }
-
+    
     /*
      * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-     * android.view.ViewGroup, android.os.Bundle)
+     * @see pt.rocket.view.fragments.BaseFragment#onViewCreated(android.view.View, android.os.Bundle)
      */
     @Override
-    public View onCreateView(LayoutInflater mInflater, ViewGroup viewGroup,
-            Bundle savedInstanceState) {
-        super.onCreateView(mInflater, viewGroup, savedInstanceState);
-        Log.i(TAG, "ON CREATE VIEW");
-        
-        mainView = mInflater.inflate(R.layout.product_showoff_viewpager_frame, viewGroup, false);
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Log.i(TAG, "ON VIEW CREATED");
+        mainView = view;
         mImagesList = (HorizontalListView) mainView.findViewById(R.id.images_list);
         mProductImageLoading = (RelativeLayout) mainView.findViewById(R.id.loading_gallery);
         mViewPager = (JumiaViewPagerWithZoom) mainView.findViewById(R.id.viewpager);
@@ -185,42 +177,11 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
                 if (arg0 == ViewPager.SCROLL_STATE_IDLE) {
                     //new ChangePageTask().execute(arg0);
                     changePage();
-                    /*
-                     * mViewPager.setPagingEnabled(true); mViewPager.toggleJumiaScroller(true);
-                     * 
-                     * // if (currentPosition == 0) { mViewPager.toggleJumiaScroller(false);
-                     * mViewPager.setCurrentItem(pageCount - 2);
-                     * 
-                     * // } else if (currentPosition == pageCount - 1) {
-                     * mViewPager.toggleJumiaScroller(false); mViewPager.setCurrentItem(1); }
-                     */
                 }
 
             }
         });
-        return mainView;
     }
-
-//    private class ChangePageTask extends AsyncTask<Integer, String, Boolean> {
-//
-//        @Override
-//        protected Boolean doInBackground(Integer... params) {
-//
-//              changePage();
-//
-//            return true;
-//
-//        }
-//
-//        /**
-//         * The system calls this to perform work in the UI thread and delivers the result from
-//         * doInBackground()
-//         */
-//        protected void onPostExecute(Boolean result) {
-//        }
-//
-//    }
-    
     
     private void changePage() {
         try {

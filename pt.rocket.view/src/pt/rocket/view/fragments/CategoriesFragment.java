@@ -22,9 +22,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -98,7 +96,7 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
      * Empty constructor
      */
     public CategoriesFragment() {
-        super(IS_NESTED_FRAGMENT);
+        super(IS_NESTED_FRAGMENT, R.layout.categories_inner_container);
     }
 
     /*
@@ -123,21 +121,15 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
         Log.i(TAG, "ON CREATE");
         sharedPrefs = getBaseActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
     }
-
+    
     /*
      * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-     * android.view.ViewGroup, android.os.Bundle)
+     * @see pt.rocket.view.fragments.BaseFragment#onViewCreated(android.view.View, android.os.Bundle)
      */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-        Log.i(TAG, "ON CREATE VIEW");
-        View view;
-        view = inflater.inflate(R.layout.categories_inner_container, container, false);
-        
-        return view;
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Log.i(TAG, "ON VIEW CREATED");
     }
 
     /*

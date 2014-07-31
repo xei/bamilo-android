@@ -21,16 +21,15 @@ import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
+import pt.rocket.view.fragments.BaseFragment.KeyboardState;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.util.DisplayMetrics;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -73,7 +72,11 @@ public class ChangeCountryFragment extends BaseFragment {
      * Empty constructor
      */
     public ChangeCountryFragment() {
-        super(IS_NESTED_FRAGMENT, NavigationAction.Country, EnumSet.noneOf(MyMenuItem.class));
+        super(EnumSet.noneOf(MyMenuItem.class),
+                NavigationAction.Country,
+                R.layout.change_country,
+                0,
+                KeyboardState.NO_ADJUST_CONTENT);
     }
 
     /*
@@ -100,17 +103,10 @@ public class ChangeCountryFragment extends BaseFragment {
         context = getActivity().getApplicationContext();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-     * android.view.ViewGroup, android.os.Bundle)
-     */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-        Log.i(TAG, "ON CREATE VIEW");
-        return inflater.inflate(R.layout.change_country, container, false);
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Log.i(TAG, "ON VIEW CREATED");
     }
 
     /*

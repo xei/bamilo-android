@@ -60,12 +60,11 @@ import de.akquinet.android.androlog.Log;
  * 
  */
 public abstract class BaseFragment extends Fragment implements OnActivityFragmentInteraction {
-
-    // private static final Set<EventType> HANDLED_EVENTS = EnumSet.noneOf(EventType.class);
     
     protected static final String TAG = LogTagHelper.create(BaseFragment.class);
     
     public static int FRAGMENT_VALUE_SET_FAVORITE = 100;
+    
     public static int FRAGMENT_VALUE_REMOVE_FAVORITE = 101;
     
     private static Field sChildFragmentManagerField;
@@ -84,19 +83,11 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 	
 	protected String md5Hash = null;
 
-    //protected View contentContainer;
-
     protected View loadingView;
 
     private NavigationAction action;
 
-    // private Set<EventType> contentEvents;
-
     protected DialogFragment dialog;
-
-    // private final Set<EventType> allHandledEvents = EnumSet.copyOf(HANDLED_EVENTS);
-
-    // private Set<EventType> userEvents;
 
     protected Set<MyMenuItem> enabledMenuItems;
 
@@ -116,16 +107,9 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     private KeyboardState adjustState = KeyboardState.ADJUST_CONTENT;
     
-    public BaseFragment() {
-    }
     protected static BaseActivity mainActivity;
 
     private View mLoadingView;
-
-//    /**
-//     * Use this variable to have a more precise control on when to show the content container.
-//     */
-//    private boolean processFragmentShow = true;
 
     private View mEmptyView;
 
@@ -136,43 +120,14 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     private View mFallBackView;
 
     /**
-     * Constructor
-     */
-    public BaseFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, int titleResId,
-            KeyboardState adjust_state) {
-        // this.contentEvents = contentEvents;
-        // this.userEvents = userEvents;
-        // this.allHandledEvents.addAll(contentEvents);
-        // this.allHandledEvents.addAll(userEvents);
-        this.enabledMenuItems = enabledMenuItems;
-        this.action = action;
-        this.titleResId = titleResId;
-        this.adjustState = adjust_state;
-    }
-
-    /**
      * Constructor with layout to inflate
      */
-    public BaseFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, int layoutResId,
-            int titleResId, KeyboardState adjust_state) {
-        // this.contentEvents = contentEvents;
-        // this.userEvents = userEvents;
-        // this.allHandledEvents.addAll(contentEvents);
-        // this.allHandledEvents.addAll(userEvents);
+    public BaseFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, int layoutResId, int titleResId, KeyboardState adjust_state) {
         this.enabledMenuItems = enabledMenuItems;
         this.action = action;
         this.mInflateLayoutResId = layoutResId;
         this.titleResId = titleResId;
         this.adjustState = adjust_state;
-    }
-
-    /**
-     * Constructor used only by nested fragments
-     * 
-     * @param isNestedFragment
-     */
-    public BaseFragment(Boolean isNestedFragment) {
-        this.isNestedFragment = isNestedFragment;
     }
     
     /**
@@ -183,41 +138,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     public BaseFragment(Boolean isNestedFragment, int inflateLayout) {
         this.isNestedFragment = isNestedFragment;
         this.mInflateLayoutResId = inflateLayout;
-    }
-    
-    /**
-     * Constructor used only by nested fragments
-     * 
-     * @param isNestedFragment
-     */
-    public BaseFragment(Boolean isNestedFragment, NavigationAction action) {
-        this.isNestedFragment = isNestedFragment;
-        this.action = action;
-    }
-    
-    /**
-     * Constructor used only by choose country
-     * @author sergiopereira
-     */
-    public BaseFragment(Boolean isNestedFragment, NavigationAction action, int inflateLayout) {
-        this.isNestedFragment = isNestedFragment;
-        this.action = action;
-        this.mInflateLayoutResId = inflateLayout;
-    }
-    
-    /**
-     * Constructor
-     * @param isNestedFragment2
-     * @param country
-     * @param enumSet
-     */
-    public BaseFragment(Boolean isNestedFragment, NavigationAction action, EnumSet<MyMenuItem> enumSet) {
-        if (action == NavigationAction.Country) {
-            this.adjustState = KeyboardState.NO_ADJUST_CONTENT;
-        }
-        this.isNestedFragment = isNestedFragment;
-        this.action = action;
-        this.enabledMenuItems = enumSet;
     }
 
 
@@ -319,15 +239,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     @Override
     public void onStart() {
         super.onStart();
-//        /**
-//         * Adjust state for each fragment type.
-//         */
-//        if (!isNestedFragment || action == NavigationAction.Country) {
-//            updateAdjustState(this.adjustState);
-//            if (getBaseActivity() != null) {
-//                getBaseActivity().closeDrawerIfOpen();
-//            }
-//        }
         
         setVisiblility(VISIBLE);
         

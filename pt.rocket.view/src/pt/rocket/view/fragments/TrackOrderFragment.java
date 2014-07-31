@@ -56,8 +56,7 @@ public class TrackOrderFragment extends BaseFragment {
      * @return
      */
     public static TrackOrderFragment getInstance() {
-        //if (mTrackOrderFragment == null)
-            mTrackOrderFragment = new TrackOrderFragment();
+        mTrackOrderFragment = new TrackOrderFragment();
         return mTrackOrderFragment;
     }
 
@@ -67,6 +66,7 @@ public class TrackOrderFragment extends BaseFragment {
     public TrackOrderFragment() {
         super(EnumSet.of(MyMenuItem.MY_PROFILE),
                 NavigationAction.TrackOrder,
+                R.layout.track_order_fragment,
                 R.string.nav_track_order,
                 KeyboardState.ADJUST_CONTENT);
         this.setRetainInstance(true);
@@ -100,16 +100,12 @@ public class TrackOrderFragment extends BaseFragment {
 
     /*
      * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-     * android.view.ViewGroup, android.os.Bundle)
+     * @see pt.rocket.view.fragments.BaseFragment#onViewCreated(android.view.View, android.os.Bundle)
      */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-        Log.i(TAG, "ON CREATE VIEW");
-        View view = inflater.inflate(R.layout.track_order_fragment, container, false);
-        return view;
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Log.i(TAG, "ON VIEW CREATED");
     }
 
     /*

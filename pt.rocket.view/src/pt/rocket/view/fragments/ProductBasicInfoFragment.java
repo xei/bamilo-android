@@ -78,6 +78,7 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
     public ProductBasicInfoFragment() {
         super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.Products,
+                R.layout.productdetails_basic_info_fragment,
                 R.string.product_details_title,
                 KeyboardState.NO_ADJUST_CONTENT);
     }
@@ -124,19 +125,16 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
         Log.i(TAG, "ON CREATE");
     }
 
+    
     /*
      * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-     * android.view.ViewGroup, android.os.Bundle)
+     * @see pt.rocket.view.fragments.BaseFragment#onViewCreated(android.view.View, android.os.Bundle)
      */
     @Override
-    public View onCreateView(LayoutInflater mInflater, ViewGroup viewGroup,
-            Bundle savedInstanceState) {
-        super.onCreateView(mInflater, viewGroup, savedInstanceState);
-        Log.i(TAG, "ON CREATE VIEW");
-
-        mainView = mInflater.inflate(R.layout.productdetails_basic_info_fragment, viewGroup, false);
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Log.i(TAG, "ON VIEW CREATED");
+        mainView = view;
         mProductBasicContainer = mainView.findViewById(R.id.product_basicinfo_frame);
         mProductBasicContainer.setOnClickListener(this);
         mProductName = (TextView) mainView.findViewById(R.id.product_name);
@@ -144,8 +142,6 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
         mProductNormalPrice = (TextView) mainView.findViewById(R.id.product_price_normal);
         mProductNormalPrice.setPaintFlags(mProductNormalPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         mLoading = (RelativeLayout) mainView.findViewById(R.id.loading_specifications);
-
-        return mainView;
     }
 
     /*

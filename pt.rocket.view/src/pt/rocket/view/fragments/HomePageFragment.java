@@ -21,7 +21,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import de.akquinet.android.androlog.Log;
 
@@ -64,7 +63,7 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
      * Empty constructor
      */
     public HomePageFragment() {
-        super(IS_NESTED_FRAGMENT);
+        super(IS_NESTED_FRAGMENT, R.layout.home_page_fragment);
     }
 
     /*
@@ -106,26 +105,13 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
     
     /*
      * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-     * android.view.ViewGroup, android.os.Bundle)
-     */
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState) {
-        super.onCreateView(inflater, viewGroup, savedInstanceState);
-        Log.i(TAG, "ON CREATE VIEW");
-        mInflater = inflater;
-        return inflater.inflate(R.layout.home_page_fragment, viewGroup, false);
-    }
-    
-    /*
-     * (non-Javadoc)
      * @see android.support.v4.app.Fragment#onViewCreated(android.view.View, android.os.Bundle)
      */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
+        mInflater = LayoutInflater.from(getBaseActivity());
         // Get retry view
         mRetryView = view.findViewById(R.id.fragment_retry);
         // Get the retry button

@@ -14,9 +14,7 @@ import pt.rocket.utils.NavigationAction;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -57,6 +55,7 @@ public class SessionTermsFragment extends BaseFragment {
     public SessionTermsFragment() {
         super(EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.Unknown,
+                R.layout.terms_conditions_fragment,
                 0,
                 KeyboardState.NO_ADJUST_CONTENT);
     }
@@ -90,21 +89,17 @@ public class SessionTermsFragment extends BaseFragment {
         // Retain this fragment across configuration changes.
         setRetainInstance(true);
     }
-
+    
     /*
      * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-     * android.view.ViewGroup, android.os.Bundle)
+     * @see pt.rocket.view.fragments.BaseFragment#onViewCreated(android.view.View, android.os.Bundle)
      */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-        Log.i(TAG, "ON CREATE VIEW");
-        View view = inflater.inflate(R.layout.terms_conditions_fragment, container, false);
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Log.i(TAG, "ON VIEW CREATED");
         textView = (TextView) view.findViewById(R.id.terms_text);
         setupView();
-        return view;
     }
 
     /*

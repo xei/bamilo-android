@@ -15,9 +15,7 @@ import pt.rocket.utils.NavigationAction;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -56,6 +54,7 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
     public MyAccountFragment() {
         super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.MyAccount,
+                R.layout.myaccount_fragment,
                 R.string.account_name,
                 KeyboardState.NO_ADJUST_CONTENT);
     }
@@ -84,20 +83,16 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
         // Retain this fragment across configuration changes.
         setRetainInstance(true);
     }
-
+    
     /*
      * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-     * android.view.ViewGroup, android.os.Bundle)
+     * @see pt.rocket.view.fragments.BaseFragment#onViewCreated(android.view.View, android.os.Bundle)
      */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-        Log.i(TAG, "ON CREATE VIEW");
-        View view = inflater.inflate(R.layout.myaccount_fragment, container, false);
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Log.i(TAG, "ON VIEW CREATED");
         showMyAccount(view);
-        return view;
     }
 
     /*
