@@ -256,8 +256,10 @@ public class CatalogPageFragment extends BaseFragment {
     public void onPause() {     
         super.onPause();
         ProductsListAdapter adapter = (ProductsListAdapter)this.gridView.getAdapter();
-        mSavedProductsSKU = adapter.getProductsList();
-        mCurrentListPosition = this.gridView.getFirstVisiblePosition();
+        if (mTotalProducts > 0) {
+            mSavedProductsSKU = adapter.getProductsList();
+            mCurrentListPosition = this.gridView.getFirstVisiblePosition();
+        }
     }
     
     @Override
@@ -329,7 +331,12 @@ public class CatalogPageFragment extends BaseFragment {
             gridView.setSelection(mCurrentListPosition);
             gridView.setOnScrollListener(onScrollListener);
 
-            showCatalogContent();
+            if (products == null || products.isEmpty()) {
+                showProductsNotfound();
+            } else {
+                showCatalogContent();
+            }
+
             mIsLoadingMore = false;
             
             mSwitchMD5 = switchMD5;
@@ -384,6 +391,15 @@ public class CatalogPageFragment extends BaseFragment {
         } else {
             gridView.setSelection(mCurrentListPosition);    
             adapter.notifyDataSetChanged();
+
+            if (adapter.getProductsList() == null || adapter.getProductsList().isEmpty()) {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        showProductsNotfound();
+                    }
+                }, 200);
+            }
         }
         
     }
@@ -764,7 +780,13 @@ public class CatalogPageFragment extends BaseFragment {
                 parentFragment.onErrorSearchResult(featuredBox);
             } else {
                 // For category and filter
-                showProductsNotfound();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mSavedProductsSKU = null;
+                        showProductsNotfound();
+                    }
+                }, 200);
             }
 
         } else {
