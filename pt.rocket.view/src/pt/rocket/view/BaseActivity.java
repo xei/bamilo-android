@@ -25,7 +25,6 @@ import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.SearchSuggestion;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.service.IRemoteServiceCallback;
-import pt.rocket.framework.tracking.AnalyticsGoogle;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -2100,7 +2099,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                         JumiaApplication.INSTANCE.getRequestsRetryBundleList().get(eventType),
                         JumiaApplication.INSTANCE.getRequestsResponseList().get(eventType));
 
-                if (result.equalsIgnoreCase("") || result == null) {
+                if (result == null || result.equalsIgnoreCase("")) {
                     onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                 }
             }

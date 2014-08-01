@@ -55,7 +55,7 @@ public class GetRatingsHelper extends BaseHelper {
         JSONObject ratingOption = null;
         JSONObject optionObject = null;
         HashMap<String, String> option;
-        int size = dataArray.length();
+        int size = dataArray == null ? 0 : dataArray.length();
         int optionsSize = 0;
         for (int i = 0; i < size; i++) {
             JSONArray optionsArray = null;

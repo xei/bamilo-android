@@ -220,13 +220,13 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
     }
 
     private boolean isNotValidVariation(ArrayList<Variation> variations) {
-        if (variations.size() == 0)
+        if (variations == null || variations.size() == 0) {
             return true;
-        else if (variations.size() == 1
-                && variations.get(0).getSKU().equals(mCompleteProduct.getSku()))
+        } else if (variations.size() == 1 && variations.get(0).getSKU().equals(mCompleteProduct.getSku())) {
             return true;
-        else
+        } else {
             return false;
+        }
     }
 
     private int findIndexOfSelectedVariation() {

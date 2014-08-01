@@ -289,6 +289,10 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         Log.i(TAG, "ON CLICK DELETE ITEM");
         try {
             int position = Integer.parseInt(view.getTag().toString());
+            if (mFavourites == null || mFavourites.isEmpty()) {
+                Log.e(TAG, "NULLPOINTER");
+                throw new NullPointerException();
+            }
             Favourite favourite = mFavourites.get(position);
             // Remove item from database
             FavouriteTableHelper.removeFavouriteProduct(favourite.getSku());

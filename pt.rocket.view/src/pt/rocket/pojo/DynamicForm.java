@@ -346,7 +346,7 @@ public class DynamicForm implements Iterable<DynamicFormItem>{
     }
     
     public int getSelectedValueIndex(){
-        ContentValues model = new ContentValues();
+        // ContentValues model = new ContentValues();
         DynamicFormItem control;
 
         Iterator<DynamicFormItem> it = iterator();

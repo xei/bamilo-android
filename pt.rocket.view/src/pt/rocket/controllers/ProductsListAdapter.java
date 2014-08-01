@@ -115,7 +115,7 @@ public class ProductsListAdapter extends BaseAdapter {
      */
     @Override
     public int getCount() {
-        return products == null && products.isEmpty() ? 0 : products.size();
+        return products == null ? 0 : products.size();
     }
 
     /*
@@ -167,16 +167,14 @@ public class ProductsListAdapter extends BaseAdapter {
             prodItem.progress = itemView.findViewById(R.id.image_loading_progress);
 
             prodItem.name = (TextView) itemView.findViewById(R.id.item_name);
-            if (showList)
-                prodItem.rating = (RatingBar) itemView.findViewById(R.id.item_rating);
+            if (showList) prodItem.rating = (RatingBar) itemView.findViewById(R.id.item_rating);
 
             prodItem.price = (TextView) itemView.findViewById(R.id.item_regprice);
             prodItem.price.setPaintFlags(prodItem.price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
             prodItem.discount = (TextView) itemView.findViewById(R.id.item_discount);
             prodItem.discountPercentage = (TextView) itemView.findViewById(R.id.discount_percentage);
-            if (showList)
-                prodItem.reviews = (TextView) itemView.findViewById(R.id.item_reviews);
+            if (showList) prodItem.reviews = (TextView) itemView.findViewById(R.id.item_reviews);
 
             prodItem.brand = (TextView) itemView.findViewById(R.id.item_brand);
             prodItem.isNew = (ImageView) itemView.findViewById(R.id.image_is_new);

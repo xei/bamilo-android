@@ -735,10 +735,11 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 	 * @author sergiopereira
 	 */
 	private void trackError(Context mContext, Exception e, URI uri, ErrorCode errorCode, String msg, boolean nonFatal, long startTimeMillis) {
+		String uriString = (uri != null) ? uri.toString() : "n.a.";
+		NewRelicTracker.noticeFailureTransaction(uriString, startTimeMillis, System.currentTimeMillis());
 		// Track http failure
-		NewRelicTracker.noticeFailureTransaction((uri != null) ? uri.toString() : "n.a.", startTimeMillis, System.currentTimeMillis());
 		// Send exception
-		ErrorMonitoring.sendException(mContext, e, uri.toString(), errorCode, msg, null, nonFatal);
+		ErrorMonitoring.sendException(mContext, e, uriString, errorCode, msg, null, nonFatal);
 	}
 	
 }

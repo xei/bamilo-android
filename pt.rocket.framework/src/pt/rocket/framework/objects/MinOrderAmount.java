@@ -6,7 +6,6 @@ import org.json.JSONObject;
 import pt.rocket.framework.rest.RestConstants;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.text.TextUtils;
 
 /**
  * 
@@ -21,18 +20,12 @@ public class MinOrderAmount implements IJSONSerializable, Parcelable {
 	@Override
 	public boolean initialize(JSONObject jsonObject) throws JSONException {
 		JSONObject paymentSettings = jsonObject.optJSONObject(RestConstants.JSON_PAYMENT_SETTINGS_TAG);
-		if ( paymentSettings == null) {
+		try {
+			value = Double.parseDouble(paymentSettings.optString(RestConstants.JSON_CART_MIN_ORDER_TAG));
+		} catch (NullPointerException e) {
 			value = 0;
-		}
-		String valueString = paymentSettings.optString(RestConstants.JSON_CART_MIN_ORDER_TAG);
-		if (TextUtils.isEmpty(valueString)) {
+		} catch (NumberFormatException e) {
 			value = 0;
-		} else {
-			try {
-				value = Double.parseDouble(valueString);
-			} catch (NumberFormatException e) {
-				value = 0;
-			}
 		}
 		
 		return true;

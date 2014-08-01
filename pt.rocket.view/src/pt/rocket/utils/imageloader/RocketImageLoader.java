@@ -288,7 +288,7 @@ public class RocketImageLoader {
                 }, 0, 0, tag);
                 imageView.setTag(imgContainer);
             }
-        } else {
+        } else if (imageView != null) {
             // clear any previous image
             imageView.setImageResource(placeHolderImageId);
         }

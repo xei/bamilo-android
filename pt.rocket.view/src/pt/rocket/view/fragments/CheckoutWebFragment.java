@@ -21,7 +21,6 @@ import pt.rocket.forms.PaymentMethodForm;
 import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.rest.RestClientSingleton;
 import pt.rocket.framework.rest.RestContract;
-import pt.rocket.framework.tracking.AnalyticsGoogle;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -113,16 +112,23 @@ public class CheckoutWebFragment extends BaseFragment {
     
     @Override
     public boolean allowBackPressed() {
-        Log.d( TAG, "onBackPressed: webview.canGoBackup = " + webview.canGoBack() + " webview.hasFocus() = " + webview.hasFocus());
-        WebBackForwardList history = webview.copyBackForwardList();
-        if ( webview != null && webview.canGoBack() && webview.hasFocus() && !history.getItemAtIndex(history.getCurrentIndex() - 1).getUrl().equals("about:blank")) {
-            webview.goBack();
-            return true;
+        if (webview == null) {
+            Log.d(TAG, "onBackPressed");
+        } else {
+            Log.d(TAG, "onBackPressed: webview.canGoBackup = " + webview.canGoBack() + " webview.hasFocus() = " + webview.hasFocus());
+        }
+        if (webview != null) {
+            WebBackForwardList history = webview.copyBackForwardList();
+            if (webview.canGoBack() && webview.hasFocus() && !history.getItemAtIndex(history.getCurrentIndex() - 1).getUrl().equals("about:blank")) {
+                webview.goBack();
+                return true;
+            } else {
+                return false;
+            }
         } else {
             return false;
         }
     }
-    
     
     /*
      * (non-Javadoc)

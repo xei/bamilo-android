@@ -3,6 +3,7 @@ package pt.rocket.utils;
 
 import java.lang.reflect.Field;
 
+import pt.rocket.framework.utils.LogTagHelper;
 import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
@@ -14,7 +15,7 @@ import android.widget.Scroller;
 
 public class JumiaViewPagerWithZoom extends ViewPager {
     private boolean isPagingEnabled = true;
-    private String TAG;
+    private String TAG = LogTagHelper.create(JumiaViewPagerWithZoom.class);
     public JumiaViewPagerWithZoom(Context context) {
         super(context);
     }

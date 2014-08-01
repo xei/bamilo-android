@@ -213,10 +213,10 @@ public class MixpanelTracker {
 		Log.d(TAG, "signup super props: " + props.toString() );
 		
 		mixpanel.identify(customer.getIdAsString());
-		people = mixpanel.getPeople();		
-		people.identify(customer.getIdAsString());
+		people = mixpanel.getPeople();
 		
-		if ( null != people ) {			
+		if ( null != people ) {
+			people.identify(customer.getIdAsString());
 			people.set(context.getString(R.string.mixproppeople_created), currentDateandTime);
 			people.set(context.getString(R.string.mixproppeople_preinstall), "" + PreInstallController.init(context));
 			people.set(context.getString(R.string.mixproppeople_signupplatform), currentDateandTime);

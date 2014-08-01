@@ -157,6 +157,7 @@ public class ImageResolutionTableHelper {
      * @deprecated
      */
 	public static ImageResolution getBestImageResolution(int width, int heigth) {
+		ImageResolution imageResolution = null;
 		// Permission
 		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getReadableDatabase();
 		// Select the best resolution
@@ -171,15 +172,19 @@ public class ImageResolutionTableHelper {
 		// Perform query
 		Cursor cursor = db.rawQuery(query, new String[] { String.valueOf(width), String.valueOf(heigth) });
 		// Get result
-		if (cursor != null) cursor.moveToFirst();
-		// Save
-		ImageResolution imageResolution = new ImageResolution( cursor.getString(0), Integer.parseInt(cursor.getString(1)),
-																Integer.parseInt(cursor.getString(2)), cursor.getString(3));
-		// Log result
-		Log.i(TAG, "SQL RESULT: " + imageResolution.getIdentifier());
-		// Validate cursor
-		if(cursor != null)
+		if (cursor != null) {
+			cursor.moveToFirst();
+			// Save
+			imageResolution = new ImageResolution(
+					cursor.getString(0), Integer.parseInt(cursor.getString(1)),
+					Integer.parseInt(cursor.getString(2)), cursor.getString(3));
+			// Log result
+			Log.i(TAG, "SQL RESULT: " + imageResolution.getIdentifier());
+			// Validate cursor
 			cursor.close();
+		} else {
+			Log.i(TAG, "NO SQL RESULT");
+		}
 		// Return
 		return imageResolution;
 	}

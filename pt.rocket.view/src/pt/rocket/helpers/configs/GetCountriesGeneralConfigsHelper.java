@@ -131,7 +131,7 @@ public class GetCountriesGeneralConfigsHelper extends BaseHelper {
             }
         }
         
-        Log.i(TAG, "code1configs "+ sessionJSONArray.toString());
+        Log.i(TAG, "code1configs " + sessionJSONArray == null ? "null" : sessionJSONArray.toString());
         
         SharedPreferences sharedPrefs =  JumiaApplication.INSTANCE.getApplicationContext().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         Editor mEditor = sharedPrefs.edit();

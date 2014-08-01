@@ -18,7 +18,6 @@ import pt.rocket.framework.objects.CatalogFilterOption;
 import pt.rocket.framework.objects.FeaturedBox;
 import pt.rocket.framework.objects.FeaturedItem;
 import pt.rocket.framework.objects.Product;
-import pt.rocket.framework.tracking.AnalyticsGoogle;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.GetProductsHelper;
 import pt.rocket.utils.MyMenuItem;
@@ -118,7 +117,10 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
      * Empty constructor
      */
     public CatalogFragment() {
-        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE), NavigationAction.Products, R.layout.products_frame, R.string.products,
+        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE), 
+                NavigationAction.Products, 
+                R.layout.products_frame, 
+                R.string.products,
                 KeyboardState.NO_ADJUST_CONTENT);
         mProductsMap = new HashMap<String, Product>();
     }

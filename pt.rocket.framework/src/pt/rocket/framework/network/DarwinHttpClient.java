@@ -269,6 +269,7 @@ public class DarwinHttpClient extends DefaultHttpClient {
         }
     };
     
+    @Deprecated
     private SSLSocketFactory newSslSocketFactory(Context context) {
         try {
             // Get an instance of the Bouncy Castle KeyStore format

@@ -54,7 +54,7 @@ public class GetLoginFormHelper extends BaseHelper {
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
         final ArrayList<Form> forms = new ArrayList<Form>();
         JSONArray dataObject;
-        HashMap<String, FormData> formDataRegistry = new HashMap<String, FormData>();
+        // HashMap<String, FormData> formDataRegistry = new HashMap<String, FormData>();
         try {
             dataObject = jsonObject
                     .getJSONArray(RestConstants.JSON_DATA_TAG);

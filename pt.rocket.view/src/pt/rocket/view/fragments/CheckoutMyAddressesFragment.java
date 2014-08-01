@@ -722,6 +722,7 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
      * @param errors
      */
     private void showErrorDialog(HashMap<String, List<String>> errors, int titleId) {
+        Log.d(TAG, "SHOW LOGIN ERROR DIALOG");
         List<String> errorMessages = null;
         if (errors != null) {
             errorMessages = (List<String>) errors.get(RestConstants.JSON_VALIDATE_TAG);
