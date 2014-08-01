@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rocket_app_register"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent" >
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -107,12 +107,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" >
 
+                <org.holoeverywhere.widget.CheckBox
+                    android:id="@+id/login_remember_user_email"
+                    style="@style/login_remember_user_email_checkbox"
+                    android:checked="true"
+                    android:text="@string/login_remember_user_email" />
+
                 <org.holoeverywhere.widget.Button
                     android:id="@+id/register_button_submit"
                     style="@style/button_orange_style"
+                    android:layout_below="@id/login_remember_user_email"
                     android:contentDescription="@string/register_submit_description"
-                    android:text="@string/registration_text"
-                    android:fontFamily="roboto-bold" />
+                    android:fontFamily="roboto-bold"
+                    android:text="@string/registration_text" />
             </RelativeLayout>
 
             <RelativeLayout

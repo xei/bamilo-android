@@ -10,8 +10,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import org.holoeverywhere.widget.CheckBox;
+
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
+import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.constants.FormConstants;
 import pt.rocket.controllers.LogOut;
 import pt.rocket.controllers.fragments.FragmentController;
@@ -33,6 +36,7 @@ import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.pojo.DynamicForm;
 import pt.rocket.pojo.DynamicFormItem;
 import pt.rocket.utils.DeepLinkManager;
+import pt.rocket.utils.InputType;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.TrackerDelegator;
@@ -42,8 +46,11 @@ import pt.rocket.view.MainFragmentActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -70,6 +77,8 @@ public class SessionLoginFragment extends BaseFragment {
     private final static String FORM_ITEM_EMAIL = "email";
 
     private final static String FORM_ITEM_PASSWORD = "password";
+
+    private CheckBox rememberEmailCheck;
 
     private View signinButton;
 
@@ -173,6 +182,7 @@ public class SessionLoginFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
 
+        rememberEmailCheck = (CheckBox) view.findViewById(R.id.login_remember_user_email);
         signinButton = view.findViewById(R.id.middle_login_button_signin);
         forgetPass = view.findViewById(R.id.middle_login_link_fgtpassword);
         register = view.findViewById(R.id.middle_login_link_register);
@@ -516,6 +526,18 @@ public class SessionLoginFragment extends BaseFragment {
                 Customer customer = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
                 JumiaApplication.CUSTOMER = customer;
                 TrackerDelegator.trackLoginSuccessful(getActivity(), customer, wasAutologin, loginOrigin, false);
+
+                /**
+                 * Persist user email or empty that value after successfull login
+                 */
+                SharedPreferences sharedPrefs = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPrefs.edit();
+                if (rememberEmailCheck.isChecked()) {
+                    editor.putString(ConstantsSharedPrefs.KEY_REMEMBERED_EMAIL, customer.getEmail());
+                } else {
+                    editor.putString(ConstantsSharedPrefs.KEY_REMEMBERED_EMAIL, null);
+                }
+                editor.commit();
             }
                 
             cameFromRegister = false;
@@ -575,12 +597,32 @@ public class SessionLoginFragment extends BaseFragment {
         container.addView(dynamicForm.getContainer());
         setFormClickDetails();
 
+        boolean fillEmail = false;
+        SharedPreferences sharedPrefs = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        String rememberedEmail = sharedPrefs.getString(ConstantsSharedPrefs.KEY_REMEMBERED_EMAIL, null);
+        if (!TextUtils.isEmpty(rememberedEmail)) {
+            fillEmail = true;
+        }
+        
         // Show save state
         if (null != this.savedInstanceState && null != dynamicForm) {
             Iterator<DynamicFormItem> iter = dynamicForm.getIterator();
             while (iter.hasNext()) {
                 DynamicFormItem item = iter.next();
                 item.loadState(savedInstanceState);
+
+                if (fillEmail && InputType.email.equals(item.getType())) {
+                    ((EditText) item.getEditControl()).setText(rememberedEmail);
+                }
+            }
+        } else if (fillEmail) {
+            Iterator<DynamicFormItem> iter = dynamicForm.getIterator();
+            while (iter.hasNext()) {
+                DynamicFormItem item = iter.next();
+
+                if (InputType.email.equals(item.getType())) {
+                    ((EditText) item.getEditControl()).setText(rememberedEmail);
+                }
             }
         }
         container.refreshDrawableState();

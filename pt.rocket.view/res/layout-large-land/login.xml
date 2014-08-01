@@ -63,9 +63,16 @@
                 android:layout_marginRight="66dp"
                 android:layout_marginTop="@dimen/margin_huge" >
 
+                <org.holoeverywhere.widget.CheckBox
+                    android:id="@+id/login_remember_user_email"
+                    style="@style/login_remember_user_email_checkbox"
+                    android:checked="true"
+                    android:text="@string/login_remember_user_email" />
+
                 <org.holoeverywhere.widget.Button
                     android:id="@+id/middle_login_button_signin"
                     style="@style/button_orange_style"
+                    android:layout_below="@id/login_remember_user_email"
                     android:contentDescription="@string/login_button_description"
                     android:text="@string/login_label" />
             </RelativeLayout>

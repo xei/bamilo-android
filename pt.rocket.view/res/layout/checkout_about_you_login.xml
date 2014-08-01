@@ -49,13 +49,22 @@
             android:layout_marginTop="@dimen/margin_huge"
             android:orientation="vertical" >
         </LinearLayout>
+        
+        <!-- REMEMBER EMAIL -->
+
+        <org.holoeverywhere.widget.CheckBox
+            android:id="@+id/login_remember_user_email"
+            style="@style/login_remember_user_email_checkbox"
+            android:layout_below="@id/checkout_login_form_container"
+            android:checked="true"
+            android:text="@string/login_remember_user_email" />
 
         <!-- LOGIN -->
 
         <org.holoeverywhere.widget.Button
             android:id="@+id/checkout_login_form_button_enter"
             style="@style/button_orange_style"
-            android:layout_below="@id/checkout_login_form_container"
+            android:layout_below="@id/login_remember_user_email"
             android:contentDescription="@string/login_button_description"
             android:text="@string/login_label" />
 

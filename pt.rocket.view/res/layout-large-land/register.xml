@@ -115,9 +115,16 @@
                 android:layout_marginLeft="66dp"
                 android:layout_marginRight="66dp" >
 
+                <org.holoeverywhere.widget.CheckBox
+                    android:id="@+id/login_remember_user_email"
+                    style="@style/login_remember_user_email_checkbox"
+                    android:checked="true"
+                    android:text="@string/login_remember_user_email" />
+
                 <org.holoeverywhere.widget.Button
                     android:id="@+id/register_button_submit"
                     style="@style/button_orange_style"
+                    android:layout_below="@id/login_remember_user_email"
                     android:contentDescription="@string/register_submit_description"
                     android:fontFamily="roboto-bold"
                     android:text="@string/registration_text" />

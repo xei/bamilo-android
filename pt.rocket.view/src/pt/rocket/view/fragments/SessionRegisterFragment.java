@@ -15,6 +15,7 @@ import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
+import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.constants.FormConstants;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
@@ -44,6 +45,8 @@ import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -68,6 +71,8 @@ public class SessionRegisterFragment extends BaseFragment {
     private static SessionRegisterFragment registerFragment;
 
     private Button registerButton;
+
+    private org.holoeverywhere.widget.CheckBox rememberEmailCheck;
 
     private  TextView loginText;
 
@@ -288,6 +293,7 @@ public class SessionRegisterFragment extends BaseFragment {
      */
     private void getFormComponents() {
         registerButton = (Button) getView().findViewById(R.id.register_button_submit);
+        rememberEmailCheck = (org.holoeverywhere.widget.CheckBox) getView().findViewById(R.id.login_remember_user_email);
         loginText = (TextView) getView().findViewById(R.id.loginText);
         // checkTerms = (CheckBox) getView().findViewById(R.id.checkTerms);
         registerRequiredText = (TextView) getView().findViewById(R.id.register_required_text);
@@ -536,6 +542,19 @@ public class SessionRegisterFragment extends BaseFragment {
             // requestStore(saveFormToBundle());
             JumiaApplication.INSTANCE.registerForm = null;
             JumiaApplication.INSTANCE.registerSavedInstanceState = null;
+            
+            /**
+             * Persist user email or empty that value after successfull login
+             */
+            SharedPreferences sharedPrefs = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPrefs.edit();
+            if (rememberEmailCheck.isChecked()) {
+                editor.putString(ConstantsSharedPrefs.KEY_REMEMBERED_EMAIL, customer.getEmail());
+            } else {
+                editor.putString(ConstantsSharedPrefs.KEY_REMEMBERED_EMAIL, null);
+            }
+            editor.commit();
+            
             // Finish
             getActivity().onBackPressed();
             Log.d(TAG, "event done - REGISTER_ACCOUNT_EVENT");
@@ -543,7 +562,7 @@ public class SessionRegisterFragment extends BaseFragment {
         case GET_REGISTRATION_FORM_EVENT:
             showFragmentContentContainer();
             Form form = (Form) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-            Log.d(TAG, "getRegistrationFormCompleted: form = " + form.toJSON());
+            Log.d(TAG, "getRegistrationFormCompleted: form = " + (form == null ? "null" : form.toJSON()));
             if (null != form) {
                 JumiaApplication.INSTANCE.registerForm = form;
                 loadForm(form);

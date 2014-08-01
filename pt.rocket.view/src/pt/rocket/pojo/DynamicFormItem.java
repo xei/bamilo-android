@@ -879,7 +879,7 @@ public class DynamicFormItem {
         this.dataControl.setId(parent.getNextId());
 
         params.addRule(RelativeLayout.CENTER_VERTICAL);
-        params.setMargins((int) (3 * this.scale), 0, 0, 0);
+        //params.setMargins((int) (3 * this.scale), 0, 0, 0);
         this.dataControl.setLayoutParams(params);
         ((View) this.dataControl).setContentDescription(this.entry.getKey());
         ((CheckBox) this.dataControl).setButtonDrawable(null);

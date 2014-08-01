@@ -9,9 +9,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import org.holoeverywhere.widget.CheckBox;
+
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.constants.ConstantsIntentExtra;
+import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.constants.FormConstants;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
@@ -36,6 +39,7 @@ import pt.rocket.helpers.session.SetSignupHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.pojo.DynamicForm;
 import pt.rocket.pojo.DynamicFormItem;
+import pt.rocket.utils.InputType;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.TrackerDelegator;
@@ -43,8 +47,11 @@ import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -92,6 +99,8 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
     private View loginMainContainer;
 
     private ViewGroup loginFormContainer;
+    
+    private org.holoeverywhere.widget.CheckBox rememberEmailCheck;
 
     private View signupMainContainer;
 
@@ -200,6 +209,8 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         loginMainContainer = view.findViewById(R.id.checkout_login_form_main);
         // Login form
         loginFormContainer = (ViewGroup) view.findViewById(R.id.checkout_login_form_container);
+        // Remember login checkbox
+        rememberEmailCheck = (CheckBox) view.findViewById(R.id.login_remember_user_email);
         // Login button
         view.findViewById(R.id.checkout_login_form_button_enter).setOnClickListener(this);
         // Forget button
@@ -535,18 +546,32 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         loginFormContainer.addView(loginForm.getContainer());
         setFormClickDetails(loginForm);
         
-//        // Validate the credentials and add the email 
-//        if(JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials()) {
-//            EditText editText = (EditText) loginForm.getItemByKey("email").getEditControl();
-//            editText.setText(JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
-//        }
-                
+        boolean fillEmail = false;
+        SharedPreferences sharedPrefs = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        String rememberedEmail = sharedPrefs.getString(ConstantsSharedPrefs.KEY_REMEMBERED_EMAIL, null);
+        if (!TextUtils.isEmpty(rememberedEmail)) {
+            fillEmail = true;
+        }
+        
         // Show save state
         if (null != this.savedInstanceState && null != loginForm) {
             Iterator<DynamicFormItem> iter = loginForm.getIterator();
             while (iter.hasNext()) {
                 DynamicFormItem item = iter.next();
                 item.loadState(savedInstanceState);
+
+                if (fillEmail && InputType.email.equals(item.getType())) {
+                    ((EditText) item.getEditControl()).setText(rememberedEmail);
+                }
+            }
+        } else if (fillEmail) {
+            Iterator<DynamicFormItem> iter = loginForm.getIterator();
+            while (iter.hasNext()) {
+                DynamicFormItem item = iter.next();
+
+                if (InputType.email.equals(item.getType())) {
+                    ((EditText) item.getEditControl()).setText(rememberedEmail);
+                }
             }
         }
         loginFormContainer.refreshDrawableState();
@@ -845,6 +870,18 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             // Get next step
             mNextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
             
+            /**
+             * Persist user email or empty that value after successfull login
+             */
+            SharedPreferences sharedPrefs = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPrefs.edit();
+            if (rememberEmailCheck.isChecked()) {
+                editor.putString(ConstantsSharedPrefs.KEY_REMEMBERED_EMAIL, customer.getEmail());
+            } else {
+                editor.putString(ConstantsSharedPrefs.KEY_REMEMBERED_EMAIL, null);
+            }
+            editor.commit();
+            
             // Force update the cart and after goto next step
             if(!onAutoLogin){
                 // Tracking
@@ -1007,7 +1044,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
      * @param errors
      */
     private void showErrorDialog(HashMap<String, List<String>> errors, int titleId) {
-        Log.d(TAG, "SHOW ERROR DIALOG: " + errors.toString());
+        Log.d(TAG, "SHOW ERROR DIALOG");
         List<String> errorMessages = null;
         if (errors != null) {
             errorMessages = (List<String>) errors.get(RestConstants.JSON_VALIDATE_TAG);
