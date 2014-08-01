@@ -30,6 +30,7 @@ import pt.rocket.utils.CheckVersion;
 import pt.rocket.utils.HockeyStartup;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogPromotionFragment;
 import pt.rocket.utils.dialogfragments.WizardPreferences;
 import pt.rocket.utils.dialogfragments.WizardPreferences.WizardType;
@@ -231,7 +232,8 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
             triggerTeasers();
         }
         
-        AnalyticsGoogle.get().trackPage(R.string.ghomepage);
+        
+        TrackerDelegator.trackPage(R.string.ghomepage);
     }
     
 

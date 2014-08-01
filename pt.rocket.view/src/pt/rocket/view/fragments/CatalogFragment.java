@@ -24,6 +24,7 @@ import pt.rocket.helpers.GetProductsHelper;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.TipsOnPageChangeListener;
+import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogFilterFragment;
 import pt.rocket.utils.dialogfragments.WizardPreferences;
 import pt.rocket.utils.dialogfragments.WizardPreferences.WizardType;
@@ -236,7 +237,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
             setFilterAction();
         }
 
-        AnalyticsGoogle.get().trackPage(R.string.gproductlist);
+        TrackerDelegator.trackPage(R.string.gproductlist);
 
         if (mCatalogPagerAdapter == null) {
             Log.d(TAG, "ON RESUME: ADAPTER IS NULL");
@@ -277,7 +278,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
             mCatalogPagerAdapter.restoreFilters(mCatalogFilterValues);
         }
 
-        AnalyticsGoogle.get().trackPage(R.string.gproductlist);
+        TrackerDelegator.trackPage(R.string.gproductlist);
 
         // Show tips
         isToShowWizard();

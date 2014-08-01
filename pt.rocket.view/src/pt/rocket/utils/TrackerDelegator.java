@@ -26,6 +26,7 @@ import pt.rocket.view.R;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 
 import com.urbanairship.push.PushManager;
 
@@ -108,8 +109,9 @@ public class TrackerDelegator {
         JumiaApplication.CUSTOMER = null;
     }
 
-    public final static void trackSearchMade(Context context, String criteria, long results) {
+    public final static void trackSearch(Context context, String criteria, long results) {
         MixpanelTracker.search(context, criteria, results);
+        AnalyticsGoogle.get().trackSearch(criteria, results);
     }
     
     public final static void trackSearchViewSortMade(Context context, String criteria, long results, String sort) {
@@ -124,18 +126,14 @@ public class TrackerDelegator {
         MixpanelTracker.setPushNotification(context, enabled);
     }
 
-    public final static void trackProduct(Context context, CompleteProduct product, String category) {
-        MixpanelTracker.product(context, product, category);
-    }
-
-    public final static void trackProductAddedToCart(Context context, CompleteProduct product, ProductSimple simple, Double price, String priceAsString, String location) {
-        MixpanelTracker.productAddedToCart(context, product, simple, price, location);
-        String customer_id = "";
-        if(JumiaApplication.CUSTOMER != null){
-            customer_id = JumiaApplication.CUSTOMER.getIdAsString();
-        }
-        AdXTracker.trackAddToCart(context, priceAsString, customer_id, simple.getAttributeByKey(ProductSimple.SKU_TAG), JumiaApplication.SHOP_NAME);
-    }
+//    public final static void trackProductAddedToCart(Context context, CompleteProduct product, ProductSimple simple, Double price, String priceAsString, String location) {
+//        MixpanelTracker.productAddedToCart(context, product, simple, price, location);
+//        String customer_id = "";
+//        if(JumiaApplication.CUSTOMER != null){
+//            customer_id = JumiaApplication.CUSTOMER.getIdAsString();
+//        }
+//        AdXTracker.trackAddToCart(context, priceAsString, customer_id, simple.getAttributeByKey(ProductSimple.SKU_TAG), JumiaApplication.SHOP_NAME);
+//    }
 
     public final static void trackProductRemoveFromCart(Context context, String sku, String priceAsString) {
         String customer_id = "";
@@ -145,7 +143,7 @@ public class TrackerDelegator {
         AdXTracker.trackRemoveFromCart(context, priceAsString, customer_id, sku, JumiaApplication.SHOP_NAME);
     }
     
-    public final static void trackCheckout(Context context, List<ShoppingCartItem> items) {
+    public final static void trackCheckout(Context context, List<ShoppingCartItem> items) { // XXX
         MixpanelTracker.checkout(context, items);
     }
 
@@ -440,5 +438,110 @@ public class TrackerDelegator {
         prefs.edit().remove(key).commit();
         return true;
     }
+    
+    /**
+     * ################## NEW ##################
+     */
+    
+    public static final String SOURCE_KEY = "source";
+    public static final String PATH_KEY = "path";
+    public static final String NAME_KEY = "name";
+    public static final String SKU_KEY = "sku";
+    public static final String URL_KEY = "url";
+    public static final String PRODUCT_KEY = "product";
+    public static final String CATEGORY_KEY = "category";
+    public static final String PRICE_KEY = "price";
+    public static final String SIMPLE_KEY = "simple";
+    public static final String LOCATION_KEY = "location";
+    public static final String START_TIME_KEY = "start";
+    
+    /**
+     * XXX
+     * @param context
+     * @param userId
+     */
+    public static void trackCheckoutContinueShopping(Context context, String userId) { 
+        // GA
+        AnalyticsGoogle.get().trackCheckoutContinueShopping(context, userId);
+    }
+    
+    /**
+     * XXX
+     * @param context
+     * @param userId
+     */
+    public static void trackCheckoutStart(Context context, String userId) {
+        // GA
+        AnalyticsGoogle.get().trackCheckoutStart(context, userId);
+    }
+    
+    /**
+     * XXX
+     * @param location
+     * @param start
+     */
+    public static void trackLoadTiming(int location, long start) {
+        // GA
+        AnalyticsGoogle.get().trackLoadTiming(location, start);
+    }
+    
+    /**
+     * XXX
+     * @param bundle
+     */
+    public static void trackPage(int string) { 
+        AnalyticsGoogle.get().trackPage(string);
+    }
 
+    /**
+     * XXX
+     * @param context
+     * @param bundle
+     */
+    public static void trackProductAddedToCart(Context context, Bundle bundle) {
+        // User
+        String customerId = (JumiaApplication.CUSTOMER != null) ? JumiaApplication.CUSTOMER.getIdAsString() : "";
+        // Data
+        long price = bundle.getLong(PRICE_KEY);
+        String sku = bundle.getString(SKU_KEY); 
+        CompleteProduct product = bundle.getParcelable(PRODUCT_KEY);
+        ProductSimple simple = bundle.getParcelable(SIMPLE_KEY);
+        String location = bundle.getParcelable(LOCATION_KEY);
+        // GA
+        AnalyticsGoogle.get().trackAddToCart(sku, price);
+        // Mix
+        MixpanelTracker.productAddedToCart(context, product, simple, (double) price, location);
+        // Adx
+        AdXTracker.trackAddToCart(context, "" + price, customerId, simple.getAttributeByKey(ProductSimple.SKU_TAG), JumiaApplication.SHOP_NAME);
+    }
+
+    /**
+     * XXX
+     * @param context 
+     * @param bundle
+     */
+    public static void trackProduct(Context context, Bundle bundle) {
+        // Data
+        int prefix = bundle.getInt(SOURCE_KEY);
+        String path = bundle.getString(PATH_KEY);
+        String name = bundle.getString(NAME_KEY);
+        String sku = bundle.getString(SKU_KEY); 
+        String url = bundle.getString(URL_KEY);
+        CompleteProduct product = bundle.getParcelable(PRODUCT_KEY);
+        String category = bundle.getParcelable(CATEGORY_KEY);
+        // GA
+        AnalyticsGoogle.get().trackProduct(prefix, path, name, sku, url);
+        // MIX
+        MixpanelTracker.product(context, product, category);
+    }
+    
+    /**
+     * XXX
+     * @param utm
+     */
+    public static void trackCampaign(String utm) {
+        // GA
+        AnalyticsGoogle.get().setCampaign(utm);
+    }
+    
 }

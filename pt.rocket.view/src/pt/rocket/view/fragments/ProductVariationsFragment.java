@@ -116,9 +116,6 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
         super.onResume();
         Log.i(TAG, "ON RESUME");
         displayVariations();
-        //
-        // AnalyticsGoogle.get().trackPage(R.string.gteaser_prefix);
-        //
     }
 
     /*

@@ -173,30 +173,6 @@ public class CheckoutWebFragment extends BaseFragment {
             
         }
     };
-
-//    /*
-//     * (non-Javadoc)
-//     * 
-//     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-//     * android.view.ViewGroup, android.os.Bundle)
-//     */
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//        super.onCreateView(inflater, container, savedInstanceState);
-//        Log.i(TAG, "ON CREATE VIEW");
-//        View view = inflater.inflate(R.layout.checkoutweb, container, false);
-//        
-//        webview = (WebView) view.findViewById(R.id.webview);
-////        webview = new WebView(getActivity());
-////        mWebContainer.addView(webview);
-//        String user_id = "";
-//        if(JumiaApplication.INSTANCE.CUSTOMER != null && JumiaApplication.INSTANCE.CUSTOMER.getIdAsString() != null){
-//            user_id = JumiaApplication.INSTANCE.CUSTOMER.getIdAsString();
-//        }
-//        AnalyticsGoogle.get().trackCheckoutStart(getBaseActivity(), user_id);
-//        return view;    
-//    }
-
     
     /*
      * (non-Javadoc)
@@ -216,7 +192,7 @@ public class CheckoutWebFragment extends BaseFragment {
         if (JumiaApplication.CUSTOMER != null && JumiaApplication.CUSTOMER.getIdAsString() != null) {
             user_id = JumiaApplication.CUSTOMER.getIdAsString();
         }
-        AnalyticsGoogle.get().trackCheckoutStart(getBaseActivity(), user_id);
+        TrackerDelegator.trackCheckoutStart(getBaseActivity(), user_id);
     }
 
     /*

@@ -19,6 +19,7 @@ import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.FragmentCommunicator;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
@@ -349,7 +350,7 @@ public class CategoriesContainerFragment extends BaseFragment {
         }
     
         if(!bundle.getBoolean(USED_CACHED_CATEGORIES, false)){
-            AnalyticsGoogle.get().trackLoadTiming(R.string.gcategories, mBeginRequestMillis);
+            TrackerDelegator.trackLoadTiming(R.string.gcategories, mBeginRequestMillis);
         } else {
             Log.i(TAG, "code1 received categories from database "+JumiaApplication.currentCategories.size());
         }

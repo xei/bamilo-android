@@ -57,13 +57,6 @@ public class ErrorMonitoring {
 	public static void sendException(Context mContext, Exception e, String uri, ErrorCode errorCode, String msg, String msgTwo, boolean nonFatal) {
 		Log.d(TAG, "sendException: sending exception for uri = " + uri + " with errorCode = " + errorCode );
 		buildErrorMap(mContext, uri, errorCode, e, msg);
-		/*
-		StringBuilder sb = new StringBuilder();
-		for(Entry<String, String> entry: map.entrySet()) {
-			sb.append( entry.getKey()).append( ": ").append(entry.getValue()).append(" ");
-		}
-		AnalyticsGoogle.get().sendException(sb.toString(), e, nonFatal);
-		*/
 		
 		HashMap<String, String> hMap = new HashMap<String, String>( map );
 		if ( !TextUtils.isEmpty( msgTwo )) {

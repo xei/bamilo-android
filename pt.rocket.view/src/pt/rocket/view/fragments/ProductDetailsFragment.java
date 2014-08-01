@@ -9,6 +9,8 @@ import java.util.Set;
 
 import org.holoeverywhere.widget.TextView;
 
+import com.google.android.gms.internal.bu;
+
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.ConstantsSharedPrefs;
@@ -186,7 +188,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
 
     private static View mainView;
 
-    private static String category = "";
+    private static String mCategory = "";
 
     private static ProductDetailsFragment mProductDetailsActivityFragment;
 
@@ -210,7 +212,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
     public static ProductDetailsFragment getInstance(Bundle bundle) {
         ProductDetailsFragment.mProductDetailsActivityFragment = new ProductDetailsFragment();
         if (bundle.containsKey(PRODUCT_CATEGORY)) {
-            category = bundle.getString(PRODUCT_CATEGORY);
+            mCategory = bundle.getString(PRODUCT_CATEGORY);
         }
         
         // Clean current product
@@ -343,7 +345,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
     public void onResume() {
         super.onResume();
         isAddingProductToCart = false;
-        AnalyticsGoogle.get().trackPage(R.string.gproductdetail);
+        TrackerDelegator.trackPage(R.string.gproductdetail);
     }
     
     
@@ -839,10 +841,15 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         triggerAddItemToCart(item);
 
         Log.i(TAG, "code1price : "+price);
-        AnalyticsGoogle.get().trackAddToCart(sku, price);
-        TrackerDelegator.trackProductAddedToCart(getActivity(), mCompleteProduct, simple,
-                (double) price, priceAsString, getString(R.string.mixprop_itemlocationdetails));
-
+        
+        
+        Bundle bundle = new Bundle();
+        bundle.putString(TrackerDelegator.SKU_KEY, sku);
+        bundle.putLong(TrackerDelegator.PRICE_KEY, price);
+        bundle.putParcelable(TrackerDelegator.PRODUCT_KEY, mCompleteProduct);
+        bundle.putParcelable(TrackerDelegator.SIMPLE_KEY, simple);
+        bundle.putString(TrackerDelegator.LOCATION_KEY, getString(R.string.mixprop_itemlocationdetails));
+        TrackerDelegator.trackProductAddedToCart(getBaseActivity(), bundle);
     }
 
     private void triggerAddItemToCart(ShoppingCartItem item) {
@@ -960,12 +967,24 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
 
         setContentInformation();
 
-        AnalyticsGoogle.get().trackProduct(mNavigationSource, mNavigationPath,
-                mCompleteProduct.getBrand() + " " + mCompleteProduct.getName(),
-                mCompleteProduct.getSku(), mCompleteProduct.getUrl());
-        TrackerDelegator.trackProduct(getActivity(), mCompleteProduct, category);
+        // Tracking
+        TrackerDelegator.trackProduct(getBaseActivity(), createBundleProduct());
     }
     
+    /**
+     * XXX
+     */
+    private Bundle createBundleProduct(){
+        Bundle bundle = new Bundle();
+        bundle.putInt(TrackerDelegator.SOURCE_KEY, mNavigationSource);
+        bundle.putString(TrackerDelegator.PATH_KEY, mNavigationPath);
+        bundle.putString(TrackerDelegator.NAME_KEY, mCompleteProduct.getBrand() + " " + mCompleteProduct.getName());
+        bundle.putString(TrackerDelegator.SKU_KEY, mCompleteProduct.getSku());
+        bundle.putString(TrackerDelegator.URL_KEY, mCompleteProduct.getUrl());
+        bundle.putParcelable(TrackerDelegator.PRODUCT_KEY, mCompleteProduct);
+        bundle.putString(TrackerDelegator.CATEGORY_KEY, mCategory);
+        return bundle;
+    }
     
     /**
      * Locate the simple size from deep link and save that position
@@ -1164,7 +1183,9 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
 
     public void onSuccessEvent(Bundle bundle) {
        
-        if(!isVisible()){
+        // Validate fragment visibility
+        if (isOnStoppingProcess) {
+            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         
@@ -1191,7 +1212,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
                 mCompleteProduct = (CompleteProduct) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
                 FragmentCommunicatorForProduct.getInstance().updateCurrentProduct(mCompleteProduct);
                 // ((BaseActivity) getActivity()).setProcessShow(true);
-                AnalyticsGoogle.get().trackLoadTiming(R.string.gproductdetail, mBeginRequestMillis);
+                TrackerDelegator.trackLoadTiming(R.string.gproductdetail, mBeginRequestMillis);
                 displayProduct(mCompleteProduct);
             }
 
@@ -1323,7 +1344,8 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         if (addToBackStack)
             fragmentTransaction.addToBackStack(null);
         // Commit
-        fragmentTransaction.commit();
+        //fragmentTransaction.commit();
+        fragmentTransaction.commitAllowingStateLoss();
     }
 
 }

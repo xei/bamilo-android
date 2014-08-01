@@ -242,9 +242,8 @@ public class ShoppingCartFragment extends BaseFragment {
         Log.i(TAG, "ON RESUME");
         mBeginRequestMillis = System.currentTimeMillis();
         triggerGetShoppingCart();
-
         setListeners();
-        AnalyticsGoogle.get().trackPage(R.string.gshoppingcart);
+        TrackerDelegator.trackPage(R.string.gshoppingcart);
     }
 
     /**
@@ -449,13 +448,13 @@ public class ShoppingCartFragment extends BaseFragment {
             Log.i(TAG, "code1removing and tracking"+itemRemoved_price);
             TrackerDelegator.trackProductRemoveFromCart(getActivity().getApplicationContext(), itemRemoved_sku, itemRemoved_price);
             showFragmentContentContainer();
-            AnalyticsGoogle.get().trackLoadTiming(R.string.gshoppingcart, mBeginRequestMillis);
+            TrackerDelegator.trackLoadTiming(R.string.gshoppingcart, mBeginRequestMillis);
             displayShoppingCart((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY));
             return true;
         case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
             hideActivityProgress();
             showFragmentContentContainer();
-            AnalyticsGoogle.get().trackLoadTiming(R.string.gshoppingcart, mBeginRequestMillis);
+            TrackerDelegator.trackLoadTiming(R.string.gshoppingcart, mBeginRequestMillis);
             displayShoppingCart((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY));
             return true;
         case GET_SHOPPING_CART_ITEMS_EVENT:
@@ -467,12 +466,12 @@ public class ShoppingCartFragment extends BaseFragment {
                                 .getCartItems().values().size());
             }
             showFragmentContentContainer();
-            AnalyticsGoogle.get().trackLoadTiming(R.string.gshoppingcart, mBeginRequestMillis);
+            TrackerDelegator.trackLoadTiming(R.string.gshoppingcart, mBeginRequestMillis);
             displayShoppingCart((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY));
             return true;
         default:
             showFragmentContentContainer();
-            AnalyticsGoogle.get().trackLoadTiming(R.string.gshoppingcart, mBeginRequestMillis);
+            TrackerDelegator.trackLoadTiming(R.string.gshoppingcart, mBeginRequestMillis);
             displayShoppingCart((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY));
         }
         return true;
@@ -664,7 +663,7 @@ public class ShoppingCartFragment extends BaseFragment {
             
 
             hideNoItems();
-            AnalyticsGoogle.get().trackPage(R.string.gcartwithitems);
+            TrackerDelegator.trackPage(R.string.gcartwithitems);
 
         }
     }
@@ -863,7 +862,7 @@ public class ShoppingCartFragment extends BaseFragment {
             }
         });
 
-        AnalyticsGoogle.get().trackPage(R.string.gcartempty);
+        TrackerDelegator.trackPage(R.string.gcartempty);
     }
 
 
@@ -912,7 +911,10 @@ public class ShoppingCartFragment extends BaseFragment {
         // });
         // dialog.show( getActivity().getSupportFragmentManager(), null);
         // } else {
+
+        
         TrackerDelegator.trackCheckout(getActivity().getApplicationContext(), items);
+        
         SharedPreferences sharedPrefs = getBaseActivity().getSharedPreferences(
                 ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         String restbase = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_REST_BASE, null);
@@ -926,13 +928,6 @@ public class ShoppingCartFragment extends BaseFragment {
 
         // }
     }
-
-    // public void goToCheckout() {
-    // ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.CHECKOUT_BASKET,
-    // FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-    // AnalyticsGoogle.get().trackCheckout(items);
-    // TrackerDelegator.trackCheckout(getActivity().getApplicationContext(), items);
-    // }
 
     /**
      * This method manages the deletion of selected elements

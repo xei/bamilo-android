@@ -123,7 +123,7 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
     public void onStart() {
         super.onStart();
         Log.i(TAG, "ON START");
-        AnalyticsGoogle.get().trackPage(R.string.gcheckoutfinal);
+        TrackerDelegator.trackPage(R.string.gcheckoutfinal);
     }
 
     /*
@@ -391,7 +391,7 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
         String user_id = "";
         if (JumiaApplication.CUSTOMER != null && JumiaApplication.CUSTOMER.getIdAsString() != null) user_id = JumiaApplication.CUSTOMER.getIdAsString();
         // Tracking and goto Home 
-        AnalyticsGoogle.get().trackCheckoutContinueShopping(getBaseActivity(), user_id);
+        TrackerDelegator.trackCheckoutContinueShopping(getBaseActivity(), user_id);
         getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
     }
 
@@ -403,7 +403,6 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
     @Override
     public boolean allowBackPressed() {
         getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-        // ((MainFragmentActivity) getBaseActivity()).popBackStack(FragmentType.HOME.toString());
         return true;
     }
 

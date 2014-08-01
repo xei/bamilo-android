@@ -39,6 +39,7 @@ import pt.rocket.utils.CheckVersion;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.MyProfileActionProvider;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.CustomToastView;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.utils.dialogfragments.DialogProgressFragment;
@@ -1173,7 +1174,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
          }
          // Show suggestions
          Log.i(TAG, "SEARCH: SHOW DATA FOR QUERY " + requestQuery);
-         AnalyticsGoogle.get().trackLoadTiming(R.string.gsearchsuggestions, beginInMillis);
+         TrackerDelegator.trackLoadTiming(R.string.gsearchsuggestions, beginInMillis);
          SearchDropDownAdapter searchSuggestionsAdapter = new SearchDropDownAdapter(getApplicationContext(), sug, requestQuery);
          mSearchAutoComplete.setAdapter(searchSuggestionsAdapter);
          mSearchAutoComplete.showDropDown();
@@ -1592,7 +1593,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         hideSearchComponent();
         hideKeyboard();
         // Update cart
-        AnalyticsGoogle.get().trackPage(R.string.gnavigation);
+        TrackerDelegator.trackPage(R.string.gnavigation);
         // Removed Categories TAB
         /*-// Validate
         showWizardNavigation();*/
@@ -1717,6 +1718,9 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      */
     @SuppressWarnings("unchecked")
     public boolean handleErrorEvent(final Bundle bundle) {
+        
+        Log.i(TAG, "ON HANDLE ERROR EVENT");
+        
         final EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         
@@ -1736,6 +1740,9 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         }
         if (errorCode.isNetworkError()) {
             switch (errorCode) {
+            case CONNECT_ERROR:
+            case TIME_OUT:
+            case HTTP_STATUS:
             case NO_NETWORK:
                 //showContentContainer();
 
@@ -1754,11 +1761,9 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                             @Override
                             public void onClick(View v) {
                                 JumiaApplication.INSTANCE.sendRequest(
-                                        JumiaApplication.INSTANCE.getRequestsRetryHelperList().get(
-                                                eventType),
-                                        JumiaApplication.INSTANCE.getRequestsRetryBundleList().get(
-                                                eventType), JumiaApplication.INSTANCE
-                                                .getRequestsResponseList().get(eventType));
+                                        JumiaApplication.INSTANCE.getRequestsRetryHelperList().get(eventType),
+                                        JumiaApplication.INSTANCE.getRequestsRetryBundleList().get(eventType), 
+                                        JumiaApplication.INSTANCE.getRequestsResponseList().get(eventType));
                                 dialog.dismiss();
                             }
                         }, false);
@@ -1826,11 +1831,9 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                             @Override
                             public void onClick(View v) {
                                 JumiaApplication.INSTANCE.sendRequest(
-                                        JumiaApplication.INSTANCE.getRequestsRetryHelperList().get(
-                                                eventType),
-                                        JumiaApplication.INSTANCE.getRequestsRetryBundleList().get(
-                                                eventType), JumiaApplication.INSTANCE
-                                                .getRequestsResponseList().get(eventType));
+                                        JumiaApplication.INSTANCE.getRequestsRetryHelperList().get(eventType),
+                                        JumiaApplication.INSTANCE.getRequestsRetryBundleList().get(eventType), 
+                                        JumiaApplication.INSTANCE.getRequestsResponseList().get(eventType));
                                 dialog.dismiss();
                             }
                         }, false);

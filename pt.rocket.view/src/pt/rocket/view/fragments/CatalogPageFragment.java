@@ -682,7 +682,7 @@ public class CatalogPageFragment extends BaseFragment {
             }
         }
 
-        AnalyticsGoogle.get().trackLoadTiming(R.string.gproductlist, mBeginRequestMillis);
+        TrackerDelegator.trackLoadTiming(R.string.gproductlist, mBeginRequestMillis);
 
         if (!TextUtils.isEmpty(mSearchQuery)) {
             String query = mSearchQuery.replaceAll("--", ", ");
@@ -694,9 +694,7 @@ public class CatalogPageFragment extends BaseFragment {
             }
             if (mPageNumber == 1) {
                 TrackerDelegator.trackSearchViewSortMade(getBaseActivity().getApplicationContext(), query, totalProducts, mSort.name());
-
-                TrackerDelegator.trackSearchMade(getBaseActivity().getApplicationContext(), query, totalProducts);
-                AnalyticsGoogle.get().trackSearch(query, totalProducts);
+                TrackerDelegator.trackSearch(getBaseActivity().getApplicationContext(), query, totalProducts);
             }
 
         } else {
