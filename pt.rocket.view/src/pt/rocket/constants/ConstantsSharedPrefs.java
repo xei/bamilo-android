@@ -46,4 +46,6 @@ public class ConstantsSharedPrefs {
 
     public static String WIZARDS_SHARED_PREFERENCES = "wizards_prefs";
 
+    public static String KEY_REMEMBERED_EMAIL = "remembered_email";
+
 }
