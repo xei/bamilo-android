@@ -272,7 +272,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      */
     public void selectActivity() {
         // ## Google Analytics "General Campaign Measurement" ##
-        AnalyticsGoogle.get().setCampaign(utm);
+        TrackerDelegator.trackCampaign(utm);
         // ## Product URL ##
         if (!TextUtils.isEmpty(productUrl)) {
             // Start with deep link to product detail
@@ -283,7 +283,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         } else {
             // Default Start
             Intent intent = new Intent(this, MainFragmentActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
         }
         overridePendingTransition(R.animator.activityfadein, R.animator.splashfadeout);
