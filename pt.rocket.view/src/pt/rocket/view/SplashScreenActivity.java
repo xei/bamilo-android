@@ -272,7 +272,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      */
     public void selectActivity() {
         // ## Google Analytics "General Campaign Measurement" ##
-        TrackerDelegator.trackCampaign(utm);
+        //TrackerDelegator.trackCampaign(utm);
         // ## Product URL ##
         if (!TextUtils.isEmpty(productUrl)) {
             // Start with deep link to product detail
