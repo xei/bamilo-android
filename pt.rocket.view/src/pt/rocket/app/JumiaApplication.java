@@ -105,7 +105,8 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     public static ArrayList<NavigationListComponent> navigationListComponents;
     
 
-    
+    private static ArrayList<EventType> requestOrder = new ArrayList<EventType>();
+
     /**
      * The md5 registry
      */
@@ -311,7 +312,9 @@ public class JumiaApplication extends Application implements ExceptionCallback {
         }
     }
     
-    
+    public String sendRequest(final BaseHelper helper, final Bundle args, final IResponseCallback responseCallback) {
+        return sendRequest(helper, args, responseCallback, true);
+    }
     /**
      * Triggers the request for a new api call
      * 
@@ -320,7 +323,7 @@ public class JumiaApplication extends Application implements ExceptionCallback {
      * @param responseCallback
      * @return the md5 of the reponse
      */
-    public String sendRequest(final BaseHelper helper, final Bundle args, final IResponseCallback responseCallback) {
+    public String sendRequest(final BaseHelper helper, final Bundle args, final IResponseCallback responseCallback, boolean addToRequestOrder) {
         if(helper == null){
             return "";
         }
@@ -331,6 +334,9 @@ public class JumiaApplication extends Application implements ExceptionCallback {
             requestsRetryHelperList.put((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY), helper);
             requestsRetryBundleList.put((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY), args);
             requestsResponseList.put((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY), responseCallback);
+            if (addToRequestOrder) {
+                requestOrder.add((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
+            }
         } else {
             Log.w(TAG, " MISSING EVENT TYPE from "+helper.toString());
         }
@@ -367,8 +373,11 @@ public class JumiaApplication extends Application implements ExceptionCallback {
                     }
                 });
 
-                sendRequest(bundle);
-                
+                if (!sendRequest(bundle)) {
+                    Log.e(TAG, "SERVICE NOT AVAILABLE FOR EVENTTYPE " + bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
+                    /*-bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, ErrorCode.REQUEST_ERROR);
+                    responseCallback.onRequestError(bundle);*/
+                }
             }
         }).start();
         
@@ -377,16 +386,20 @@ public class JumiaApplication extends Application implements ExceptionCallback {
         return md5;
     }
 
-    public void sendRequest(Bundle bundle) {
+    public boolean sendRequest(Bundle bundle) {
         //long timeMillis = System.currentTimeMillis();
 //        Log.i("REQUEST", "performing event type request : "+bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY)+" url : "+bundle.getString(Constants.BUNDLE_URL_KEY));
 //        timeTrackerMap.put((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY), timeMillis);
         if(ServiceSingleton.getInstance().getService() != null){
             try {
                 ServiceSingleton.getInstance().getService().sendRequest(bundle);
+                return true;
             } catch (RemoteException e) {
                 e.printStackTrace();
+                return false;
             }    
+        } else {
+            return false;
         }
         
     }
@@ -583,6 +596,10 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     public HashMap<EventType, IResponseCallback> getRequestsResponseList() {
         return requestsResponseList;
     }
+    
+    public ArrayList<EventType> getRequestOrderList(){
+        return requestOrder;
+    }
 
     /**
      * @param requestsResponseList the requestsResponseList to set
@@ -623,6 +640,19 @@ public class JumiaApplication extends Application implements ExceptionCallback {
             Log.i(TAG, "onServiceConnected");
             mIsBound = true;
             ServiceSingleton.getInstance().setService(IRemoteService.Stub.asInterface(service));
+            
+            
+            // TODO uncomment this to re execute pending requests
+            
+            
+            /*-if (requestOrder != null && requestOrder.size() > 0) {
+                Log.i(TAG, " RE-EXECUTING PENDING REQUESTS " + requestOrder.size());
+                for (int i = 0; i < requestOrder.size(); i++) {
+                    Log.i(TAG, " RE-EXECUTING PENDING REQUESTS " + requestOrder.get(i).toString());
+                    sendRequest(requestsRetryHelperList.get(requestOrder.get(i)), requestsRetryBundleList.get(requestOrder.get(i)), requestsResponseList.get(requestOrder.get(i)), false);
+                }
+                requestOrder.clear();
+            } else {*/
             if(resendInitializationSignal){
                 resendHandler.sendMessage(resendMsg);
                 resendInitializationSignal = false;
@@ -631,8 +661,9 @@ public class JumiaApplication extends Application implements ExceptionCallback {
             if(resendMenuHandler != null){
                 resendMenuHandler.sendEmptyMessage(0);
                 resendMenuHandler = null;
-            }
+            /*}*/
             
+            }
             // Register the fragment callback
             registerCallBackIsWaiting();
         }

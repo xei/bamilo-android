@@ -719,6 +719,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         JumiaApplication.INSTANCE.getRequestsRetryBundleList().remove((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
         JumiaApplication.INSTANCE.getRequestsResponseList().remove((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
         JumiaApplication.INSTANCE.responseCallbacks.remove(id);
+        JumiaApplication.INSTANCE.getRequestOrderList().remove((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
     }
 
     /**
