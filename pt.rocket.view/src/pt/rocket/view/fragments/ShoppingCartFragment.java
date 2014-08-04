@@ -405,7 +405,8 @@ public class ShoppingCartFragment extends BaseFragment {
         if (!isVisible()) {
             return true;
         }
-        
+        Bundle params;
+
         // Update cart info
         getBaseActivity().handleSuccessEvent(bundle);
         
@@ -446,32 +447,49 @@ public class ShoppingCartFragment extends BaseFragment {
             return true;
         case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
             Log.i(TAG, "code1removing and tracking"+itemRemoved_price);
-            TrackerDelegator.trackProductRemoveFromCart(getActivity().getApplicationContext(), itemRemoved_sku, itemRemoved_price);
+            params = new Bundle();
+            params.putString(TrackerDelegator.SKU_KEY, itemRemoved_sku);
+            params.putString(TrackerDelegator.PRICE_KEY, itemRemoved_price);
+            params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gshoppingcart);
+            params.putLong(TrackerDelegator.START_TIME_KEY, mBeginRequestMillis);
+            
+            TrackerDelegator.trackProductRemoveFromCart(params);
             showFragmentContentContainer();
-            TrackerDelegator.trackLoadTiming(R.string.gshoppingcart, mBeginRequestMillis);
+            TrackerDelegator.trackLoadTiming(params);
             displayShoppingCart((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY));
             return true;
         case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
             hideActivityProgress();
             showFragmentContentContainer();
-            TrackerDelegator.trackLoadTiming(R.string.gshoppingcart, mBeginRequestMillis);
+            params = new Bundle();
+            params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gshoppingcart);
+            params.putLong(TrackerDelegator.START_TIME_KEY, mBeginRequestMillis);
+            
+            TrackerDelegator.trackLoadTiming(params);
             displayShoppingCart((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY));
             return true;
         case GET_SHOPPING_CART_ITEMS_EVENT:
             if (((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getCartItems() != null
                     && ((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY))
                             .getCartItems().values() != null) {
-                TrackerDelegator.trackViewCart(getActivity().getApplicationContext(),
-                        ((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY))
+                TrackerDelegator.trackViewCart(((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY))
                                 .getCartItems().values().size());
             }
             showFragmentContentContainer();
-            TrackerDelegator.trackLoadTiming(R.string.gshoppingcart, mBeginRequestMillis);
+            params = new Bundle();
+            params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gshoppingcart);
+            params.putLong(TrackerDelegator.START_TIME_KEY, mBeginRequestMillis);
+            
+            TrackerDelegator.trackLoadTiming(params);
             displayShoppingCart((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY));
             return true;
         default:
             showFragmentContentContainer();
-            TrackerDelegator.trackLoadTiming(R.string.gshoppingcart, mBeginRequestMillis);
+            params = new Bundle();
+            params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gshoppingcart);
+            params.putLong(TrackerDelegator.START_TIME_KEY, mBeginRequestMillis);
+            
+            TrackerDelegator.trackLoadTiming(params);
             displayShoppingCart((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY));
         }
         return true;
@@ -913,7 +931,7 @@ public class ShoppingCartFragment extends BaseFragment {
         // } else {
 
         
-        TrackerDelegator.trackCheckout(getActivity().getApplicationContext(), items);
+        TrackerDelegator.trackCheckout(items);
         
         SharedPreferences sharedPrefs = getBaseActivity().getSharedPreferences(
                 ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);

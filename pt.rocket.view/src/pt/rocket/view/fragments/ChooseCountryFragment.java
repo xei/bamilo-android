@@ -300,7 +300,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
         editor.commit();
         
         
-        TrackerDelegator.trackShopchanged(getActivity().getApplicationContext());
+        TrackerDelegator.trackShopchanged();
         ActivitiesWorkFlow.splashActivityNewTask(getActivity());
         getActivity().finish();
     }

@@ -9,8 +9,6 @@ import java.util.Set;
 
 import org.holoeverywhere.widget.TextView;
 
-import com.google.android.gms.internal.bu;
-
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.ConstantsSharedPrefs;
@@ -29,7 +27,6 @@ import pt.rocket.framework.objects.ProductSimple;
 import pt.rocket.framework.objects.ShoppingCartItem;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.tracking.AdXTracker;
-import pt.rocket.framework.tracking.AnalyticsGoogle;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CurrencyFormatter;
 import pt.rocket.framework.utils.EventType;
@@ -849,7 +846,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         bundle.putParcelable(TrackerDelegator.PRODUCT_KEY, mCompleteProduct);
         bundle.putParcelable(TrackerDelegator.SIMPLE_KEY, simple);
         bundle.putString(TrackerDelegator.LOCATION_KEY, getString(R.string.mixprop_itemlocationdetails));
-        TrackerDelegator.trackProductAddedToCart(getBaseActivity(), bundle);
+        TrackerDelegator.trackProductAddedToCart(bundle);
     }
 
     private void triggerAddItemToCart(ShoppingCartItem item) {
@@ -968,7 +965,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         setContentInformation();
 
         // Tracking
-        TrackerDelegator.trackProduct(getBaseActivity(), createBundleProduct());
+        TrackerDelegator.trackProduct(createBundleProduct());
     }
     
     /**
@@ -1121,7 +1118,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
             try {
                 Intent shareIntent = getBaseActivity().createShareIntent();
                 startActivity(shareIntent);
-                TrackerDelegator.trackItemShared(mContext, shareIntent);
+                TrackerDelegator.trackItemShared(shareIntent);
             } catch (NullPointerException e) {
                 Log.w(TAG, "WARNING: NPE ON CLICK SHARE");
             }
@@ -1211,8 +1208,10 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
             } else {
                 mCompleteProduct = (CompleteProduct) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
                 FragmentCommunicatorForProduct.getInstance().updateCurrentProduct(mCompleteProduct);
-                // ((BaseActivity) getActivity()).setProcessShow(true);
-                TrackerDelegator.trackLoadTiming(R.string.gproductdetail, mBeginRequestMillis);
+                Bundle params = new Bundle();
+                params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gproductdetail);
+                params.putLong(TrackerDelegator.START_TIME_KEY, mBeginRequestMillis);
+                TrackerDelegator.trackLoadTiming(params);
                 displayProduct(mCompleteProduct);
             }
 

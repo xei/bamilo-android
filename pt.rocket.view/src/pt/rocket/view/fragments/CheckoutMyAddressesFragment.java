@@ -128,7 +128,13 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
         setRetainInstance(true);
-        TrackerDelegator.trackCheckoutStep(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), R.string.gcheckoutMyAddresses, R.string.xcheckoutmyaddresses, R.string.mixprop_checkout_my_addresses);
+        Bundle params = new Bundle();        
+        params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
+        params.putInt(TrackerDelegator.GA_STEP_KEY, R.string.gcheckoutMyAddresses);
+        params.putInt(TrackerDelegator.ADX_STEP_KEY, R.string.xcheckoutmyaddresses);
+        params.putInt(TrackerDelegator.MIXPANEL_STEP_KEY, R.string.mixprop_checkout_my_addresses);        
+        
+        TrackerDelegator.trackCheckoutStep(params);
     }
     
 //    /*

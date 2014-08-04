@@ -103,7 +103,14 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
         }
         else
             Log.i(TAG, "SAVED CONTENT VALUES IS NULL");
-        TrackerDelegator.trackCheckoutStep(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), R.string.gcheckoutShippingMethods, R.string.xcheckoutshippingmethods, R.string.mixprop_checkout_shipping_methods);
+        
+        Bundle params = new Bundle();        
+        params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
+        params.putInt(TrackerDelegator.GA_STEP_KEY, R.string.gcheckoutShippingMethods);
+        params.putInt(TrackerDelegator.ADX_STEP_KEY, R.string.xcheckoutshippingmethods);
+        params.putInt(TrackerDelegator.MIXPANEL_STEP_KEY, R.string.mixprop_checkout_shipping_methods);        
+        
+        TrackerDelegator.trackCheckoutStep(params);
     }
     
 //    /*

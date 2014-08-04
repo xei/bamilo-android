@@ -156,7 +156,13 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
         Log.i(TAG, "ON CREATE");
 
          triggerGetCustomer();
-         TrackerDelegator.trackCheckoutStep(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), R.string.gcheckoutExternalPayment, R.string.xcheckoutexternalpayment, R.string.mixprop_checkout_external_payment);
+         Bundle params = new Bundle();        
+         params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
+         params.putInt(TrackerDelegator.GA_STEP_KEY, R.string.gcheckoutExternalPayment);
+         params.putInt(TrackerDelegator.ADX_STEP_KEY, R.string.xcheckoutexternalpayment);
+         params.putInt(TrackerDelegator.MIXPANEL_STEP_KEY, R.string.mixprop_checkout_external_payment);        
+         
+         TrackerDelegator.trackCheckoutStep(params);
     }
 
     private void triggerGetCustomer() {
@@ -334,7 +340,11 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
         }
         
         Log.i(TAG, "trackPaymentMethod : payment method : "+JumiaApplication.INSTANCE.getPaymentMethodForm().getName() + " email : "+JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
-        TrackerDelegator.trackPaymentMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), JumiaApplication.INSTANCE.getPaymentMethodForm().getName());
+        Bundle params = new Bundle();
+        params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
+        params.putString(TrackerDelegator.PAYMENT_METHOD_KEY,JumiaApplication.INSTANCE.getPaymentMethodForm().getName());    
+        
+        TrackerDelegator.trackPaymentMethod(params);
         
         Log.d(TAG, "Loading Url: " + paymentUrl);
 
@@ -437,8 +447,10 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
     }
     
     private void trackPurchase(final JSONObject result) {
-        
-         TrackerDelegator.trackPurchase(getActivity().getApplicationContext(), result, customer);
+        Bundle params = new Bundle();
+        params.putString(TrackerDelegator.PURCHASE_KEY, result.toString());
+        params.putParcelable(TrackerDelegator.CUSTOMER_KEY, customer);        
+        TrackerDelegator.trackPurchase(params);
     }
 
     private class CustomWebViewClient extends WebViewClient {

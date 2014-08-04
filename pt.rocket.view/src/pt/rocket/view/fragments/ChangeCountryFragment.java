@@ -302,7 +302,7 @@ public class ChangeCountryFragment extends BaseFragment {
         editor.commit();
         
         
-        TrackerDelegator.trackShopchanged(getActivity().getApplicationContext());
+        TrackerDelegator.trackShopchanged();
         ActivitiesWorkFlow.splashActivityNewTask(getActivity());
         getActivity().finish();
     }

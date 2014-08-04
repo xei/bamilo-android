@@ -320,7 +320,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         intent.putExtra(ConstantsIntentExtra.FRAGMENT_BUNDLE, bundle);
         // Start activity
         startActivity(intent);
-        TrackerDelegator.trackPushNotificationsEnabled(getApplicationContext(), true);
+        TrackerDelegator.trackPushNotificationsEnabled(true);
     }
     
     /**
@@ -346,7 +346,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         }
         // Start activity
         startActivity(intent);
-        TrackerDelegator.trackPushNotificationsEnabled(getApplicationContext(), true);
+        TrackerDelegator.trackPushNotificationsEnabled(true);
     }
     
     /**

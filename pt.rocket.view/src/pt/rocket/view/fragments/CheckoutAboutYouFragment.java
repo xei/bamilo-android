@@ -177,7 +177,13 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         uiHelper = new UiLifecycleHelper(getActivity(), (StatusCallback) this, appId);
         uiHelper.onCreate(savedInstanceState);
         
-        TrackerDelegator.trackCheckoutStep(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), R.string.gcheckoutAboutYou, R.string.xcheckoutaboutyou, R.string.mixprop_checkout_about_you);
+        Bundle params = new Bundle();        
+        params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
+        params.putInt(TrackerDelegator.GA_STEP_KEY, R.string.gcheckoutAboutYou);
+        params.putInt(TrackerDelegator.ADX_STEP_KEY, R.string.xcheckoutaboutyou);
+        params.putInt(TrackerDelegator.MIXPANEL_STEP_KEY, R.string.mixprop_checkout_about_you);        
+        
+        TrackerDelegator.trackCheckoutStep(params);
     }
     
 //    /*
@@ -812,7 +818,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             JumiaApplication.CUSTOMER.setGuest(true);    
         }
         
-        TrackerDelegator.trackSignUp(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
+        TrackerDelegator.trackSignUp(JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
         
         // Next step
         gotoNextStep();            
@@ -857,7 +863,13 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             if(!onAutoLogin){
                 triggerGetShoppingCart();
                 // Tracking
-                TrackerDelegator.trackLoginSuccessful(getBaseActivity(), customerFb, onAutoLogin, loginOrigin, true);
+                Bundle params = new Bundle();
+                params.putParcelable(TrackerDelegator.CUSTOMER_KEY, customerFb);
+                params.putBoolean(TrackerDelegator.AUTOLOGIN_KEY, onAutoLogin);
+                params.putString(TrackerDelegator.ORIGIN_KEY,loginOrigin);
+                params.putBoolean(TrackerDelegator.FACEBOOKLOGIN_KEY, true);
+
+                TrackerDelegator.trackLoginSuccessful(params);
             } else {
                 gotoNextStep();
             }
@@ -884,8 +896,14 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             
             // Force update the cart and after goto next step
             if(!onAutoLogin){
+                Bundle params = new Bundle();
+                params.putParcelable(TrackerDelegator.CUSTOMER_KEY, customer);
+                params.putBoolean(TrackerDelegator.AUTOLOGIN_KEY, onAutoLogin);
+                params.putString(TrackerDelegator.ORIGIN_KEY,loginOrigin);
+                params.putBoolean(TrackerDelegator.FACEBOOKLOGIN_KEY, false);
+                
                 // Tracking
-                TrackerDelegator.trackLoginSuccessful(getBaseActivity(), customer, onAutoLogin, loginOrigin, false);
+                TrackerDelegator.trackLoginSuccessful(params);
                 triggerGetShoppingCart();
             } else {
                 gotoNextStep();

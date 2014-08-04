@@ -295,7 +295,11 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
         Log.d( TAG, "setSubCategoryList: currentCategory name = " + categoryTitle );
         ((BaseActivity) getActivity()).setTitle(categoryTitle);
         if(isParent){
-            TrackerDelegator.trackCategoryView(getActivity(), categoryTitle, 1);
+            Bundle params = new Bundle();
+            params.putString(TrackerDelegator.CATEGORY_KEY, categoryTitle);
+            params.putInt(TrackerDelegator.PAGE_NUMBER_KEY, 1);
+            
+            TrackerDelegator.trackCategoryView(params);
         }
             
         subCatAdapter = new SubCategoriesAdapter(getActivity(), child, getString(R.string.categories_name_all) + " " + categoryTitle);
@@ -322,7 +326,11 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
         Log.d( TAG, "setSubCategoryList: currentCategory name = " + categoryTitle );
         getActivity().setTitle(categories.get(categoryIndex).getName() + " / "+categoryTitle);
         if(isParent){
-            TrackerDelegator.trackCategoryView(getActivity(), categoryTitle, 1);
+            Bundle params = new Bundle();
+            params.putString(TrackerDelegator.CATEGORY_KEY, categoryTitle);
+            params.putInt(TrackerDelegator.PAGE_NUMBER_KEY, 1);
+            
+            TrackerDelegator.trackCategoryView(params);
         }
         subCatAdapter = new SubCategoriesAdapter(getActivity(), child, getString(R.string.categories_name_all) + " " + categoryTitle);
         categoriesList.setAdapter(subCatAdapter);

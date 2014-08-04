@@ -67,7 +67,7 @@ public class ShopPreferences {
         editor.putBoolean(ConstantsSharedPrefs.KEY_COUNTRY_CONFIGS_AVAILABLE, false);
         editor.commit();
         
-        TrackerDelegator.trackShopchanged(context.getApplicationContext());
+        TrackerDelegator.trackShopchanged();
     }
 
 }

@@ -96,8 +96,8 @@ import de.akquinet.android.androlog.Log;
 
 /**
  * 
- * All activities extend this activity, in order to access methods that are shared and used in all
- * activities.
+ * All activities extend this activity, in order to access methods that are
+ * shared and used in all activities.
  * <p/>
  * <br>
  * 
@@ -118,15 +118,15 @@ import de.akquinet.android.androlog.Log;
  * 
  */
 public abstract class BaseActivity extends SherlockFragmentActivity {
-    
+
     private static final String TAG = LogTagHelper.create(BaseActivity.class);
 
-    //private ShareActionProvider mShareActionProvider;
-    
+    // private ShareActionProvider mShareActionProvider;
+
     private static final int SEARCH_EDIT_DELAY = 500;
-    
+
     private static final int SEARCH_EDIT_SIZE = 2;
-    
+
     private static final int TOAST_LENGTH_SHORT = 2000; // 2 seconds
 
     // REMOVED FINAL ATRIBUTE
@@ -147,13 +147,14 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     private boolean backPressedOnce = false;
 
     private View logoView = null;
-    
+
     public View mDrawerNavigation;
     /**
-     * @FIX: IllegalStateException: Can not perform this action after onSaveInstanceState
+     * @FIX: IllegalStateException: Can not perform this action after
+     *       onSaveInstanceState
      * @Solution :
-     *           http://stackoverflow.com/questions/7575921/illegalstateexception-can-not-perform-this
-     *           -action-after-onsaveinstancestate-h
+     *           http://stackoverflow.com/questions/7575921/illegalstateexception
+     *           -can-not-perform-this -action-after-onsaveinstancestate-h
      */
     private Intent mOnActivityResultIntent = null;
 
@@ -161,15 +162,9 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     public ActionBarDrawerToggle mDrawerToggle;
     private int drawable_state = DrawerLayout.STATE_IDLE;
 
-    private static final Set<EventType> HANDLED_EVENTS = EnumSet.of(
-            EventType.GET_SHOPPING_CART_ITEMS_EVENT,
-            EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT,
-            EventType.CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT,
-            EventType.REMOVE_ITEM_FROM_SHOPPING_CART_EVENT,
-            EventType.INITIALIZE,
-            EventType.LOGOUT_EVENT);
-
-    
+    private static final Set<EventType> HANDLED_EVENTS = EnumSet
+            .of(EventType.GET_SHOPPING_CART_ITEMS_EVENT, EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT, EventType.CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT,
+                    EventType.REMOVE_ITEM_FROM_SHOPPING_CART_EVENT, EventType.INITIALIZE, EventType.LOGOUT_EVENT);
 
     private final Set<EventType> allHandledEvents = EnumSet.copyOf(HANDLED_EVENTS);
     private final Set<EventType> contentEvents;
@@ -193,38 +188,35 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
     @SuppressWarnings("unused")
     private Set<EventType> userEvents;
-    
+
     private Menu currentMenu;
-    
+
     private long beginInMillis;
-    
+
     protected SearchView mSearchView;
-    
+
     protected SearchAutoComplete mSearchAutoComplete;
-    
+
     protected View mSearchButton;
-    
+
     protected boolean isSearchComponentOpened = false;
 
     private ViewStub mMainFallBackStub;
 
     /**
-     * Constructor used to initialize the navigation list component and the autocomplete handler
+     * Constructor used to initialize the navigation list component and the
+     * autocomplete handler
      * 
      * @param userEvents
      */
-    public BaseActivity(NavigationAction action, Set<MyMenuItem> enabledMenuItems,
-            Set<EventType> contentEvents, Set<EventType> userEvents, int titleResId,
+    public BaseActivity(NavigationAction action, Set<MyMenuItem> enabledMenuItems, Set<EventType> contentEvents, Set<EventType> userEvents, int titleResId,
             int contentLayoutId) {
-        this(R.layout.main, action, enabledMenuItems, contentEvents, userEvents, titleResId,
-                contentLayoutId);
+        this(R.layout.main, action, enabledMenuItems, contentEvents, userEvents, titleResId, contentLayoutId);
 
     }
 
-    public BaseActivity(int activityLayoutId, NavigationAction action,
-            Set<MyMenuItem> enabledMenuItems, Set<EventType> contentEvents,
-            Set<EventType> userEvents,
-            int titleResId, int contentLayoutId) {
+    public BaseActivity(int activityLayoutId, NavigationAction action, Set<MyMenuItem> enabledMenuItems, Set<EventType> contentEvents,
+            Set<EventType> userEvents, int titleResId, int contentLayoutId) {
         this.activityLayoutId = activityLayoutId;
         this.contentEvents = contentEvents;
         this.userEvents = userEvents;
@@ -241,7 +233,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "ON CREATE");
-        
+
         JumiaApplication.INSTANCE.doBindService();
 
         // Validate if is phone and force orientaion
@@ -256,7 +248,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         setupActionBar();
         // Set content view
         setupContentViews();
-        // Update the content view if initial country selection 
+        // Update the content view if initial country selection
         updateContentViewsIfInitialCountrySelection();
 
         isRegistered = true;
@@ -264,10 +256,13 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         setTitle(titleResId);
         BugSenseHandler.leaveBreadcrumb(TAG + " _onCreate");
     }
-    
+
     /*
      * (non-Javadoc)
-     * @see android.support.v4.app.FragmentActivity#onNewIntent(android.content.Intent)
+     * 
+     * @see
+     * android.support.v4.app.FragmentActivity#onNewIntent(android.content.Intent
+     * )
      */
     @Override
     protected void onNewIntent(Intent intent) {
@@ -278,6 +273,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
     /*
      * (non-Javadoc)
+     * 
      * @see android.support.v4.app.FragmentActivity#onStart()
      */
     @Override
@@ -295,7 +291,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     public void onResume() {
         super.onResume();
         Log.d(TAG, "ON RESUME");
-        
+
         if (!isRegistered) {
             // OLD FRAMEWORK
             /**
@@ -309,20 +305,18 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         CheckVersion.run(getApplicationContext());
 
         /**
-         * @FIX: IllegalStateException: Can not perform this action after onSaveInstanceState
+         * @FIX: IllegalStateException: Can not perform this action after
+         *       onSaveInstanceState
          * @Solution :
-         *           http://stackoverflow.com/questions/7575921/illegalstateexception-can-not-perform
-         *           -this-action-after-onsaveinstancestate-h
+         *           http://stackoverflow.com/questions/7575921/illegalstateexception
+         *           -can-not-perform -this-action-after-onsaveinstancestate-h
          */
         if (mOnActivityResultIntent != null && getIntent().getExtras() != null) {
-            initialCountry = getIntent().getExtras().getBoolean(
-                    ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, false);
+            initialCountry = getIntent().getExtras().getBoolean(ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, false);
             mOnActivityResultIntent = null;
         }
 
-        if (!contentEvents.contains(EventType.GET_SHOPPING_CART_ITEMS_EVENT)
-                && JumiaApplication.SHOP_ID != null
-                && JumiaApplication.INSTANCE.getCart() == null) {
+        if (!contentEvents.contains(EventType.GET_SHOPPING_CART_ITEMS_EVENT) && JumiaApplication.SHOP_ID != null && JumiaApplication.INSTANCE.getCart() == null) {
             triggerContentEventWithNoLoading(new GetShoppingCartItemsHelper(), null, mIResponseCallback);
         }
 
@@ -342,13 +336,12 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         }
     };
 
-   
-
     /**
-     * @FIX: IllegalStateException: Can not perform this action after onSaveInstanceState
+     * @FIX: IllegalStateException: Can not perform this action after
+     *       onSaveInstanceState
      * @Solution :
-     *           http://stackoverflow.com/questions/7575921/illegalstateexception-can-not-perform-this
-     *           -action-after-onsaveinstancestate-h
+     *           http://stackoverflow.com/questions/7575921/illegalstateexception
+     *           -can-not-perform-this -action-after-onsaveinstancestate-h
      */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -384,8 +377,9 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         JumiaApplication.INSTANCE.unRegisterFragmentCallback(mCallback);
         JumiaApplication.INSTANCE.setLoggedIn(false);
         isRegistered = false;
-        
-        // getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+        // getSupportFragmentManager().popBackStack(null,
+        // FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
 
     /**
@@ -393,7 +387,8 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      */
 
     /**
-     * Method used to update the sliding menu and items on action bar. Called from BaseFragment
+     * Method used to update the sliding menu and items on action bar. Called
+     * from BaseFragment
      * 
      * @param enabledMenuItems
      * @param action
@@ -402,7 +397,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      */
     public void updateBaseComponents(Set<MyMenuItem> enabledMenuItems, NavigationAction action, int titleResId) {
         Log.i(TAG, "ON UPDATE BASE COMPONENTS");
-        
+
         // Update options menu and search bar
         menuItems = enabledMenuItems;
         hideKeyboard();
@@ -412,7 +407,8 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         updateNavigationMenu();
         // Update the title of fragment
 
-        if (setCheckoutHeader(titleResId));
+        if (setCheckoutHeader(titleResId))
+            ;
         else if (titleResId == 0) {
             hideTitle();
             findViewById(R.id.totalProducts).setVisibility(View.GONE);
@@ -444,8 +440,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         setContentView(activityLayoutId);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerNavigation = findViewById(R.id.fragment_navigation);
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer,
-                R.string.app_name, R.string.app_name) {
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer, R.string.app_name, R.string.app_name) {
             public void onDrawerClosed(View view) {
                 //                 getActionBar().setTitle(mTitle);
                 // calling onPrepareOptionsMenu() to show action bar icons
@@ -459,10 +454,10 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                 onOpened();
                 getSupportActionBar().updateUpState(false);
             }
-            
+
             @Override
             public void onDrawerStateChanged(int newState) {
-              //Log.d(TAG, "SEARCH: ON STATE CHANGED " + newState);
+                // Log.d(TAG, "SEARCH: ON STATE CHANGED " + newState);
                 drawable_state = newState;
                 super.onDrawerStateChanged(newState);
             }
@@ -470,8 +465,9 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
         contentContainer = (ViewGroup) findViewById(R.id.rocket_app_content);
-        //loadingBarContainer = findViewById(R.id.loading_bar);
-        //loadingBarView = (LoadingBarView) findViewById(R.id.loading_bar_view);
+        // loadingBarContainer = findViewById(R.id.loading_bar);
+        // loadingBarView = (LoadingBarView)
+        // findViewById(R.id.loading_bar_view);
         warningView = findViewById(R.id.warning);
         warningVariationView = findViewById(R.id.warning_variations);
         warningView.setOnClickListener(new OnClickListener() {
@@ -490,24 +486,25 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
             }
         });
-        //errorView = findViewById(R.id.alert_view);
-                
+        // errorView = findViewById(R.id.alert_view);
+
         // Get the fallback stub
         mMainFallBackStub = (ViewStub) findViewById(R.id.main_fall_back_stub);
-        
+
     }
-    
-    
+
     /**
      * Updated the action bar and the navigation for initial country selection
+     * 
      * @author sergiopereira
      */
-    private void updateContentViewsIfInitialCountrySelection(){
+    private void updateContentViewsIfInitialCountrySelection() {
         /**
-         * @FIX: IllegalStateException: Can not perform this action after onSaveInstanceState
+         * @FIX: IllegalStateException: Can not perform this action after
+         *       onSaveInstanceState
          * @Solution :
-         *           http://stackoverflow.com/questions/7575921/illegalstateexception-can-not-perform
-         *           -this-action-after-onsaveinstancestate-h
+         *           http://stackoverflow.com/questions/7575921/illegalstateexception
+         *           -can-not-perform -this-action-after-onsaveinstancestate-h
          */
         if (getIntent().getExtras() != null) {
             initialCountry = getIntent().getExtras().getBoolean(ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, false);
@@ -516,6 +513,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
         /**
          * Set the action bar and navigation drawer for initialCountry
+         * 
          * @author sergiopereira
          */
         if (initialCountry) {
@@ -527,7 +525,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
     }
-
 
     /**
      * Toggle the navigation drawer
@@ -541,13 +538,13 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             }
         }
     }
-    
+
     public void closeDrawerIfOpen() {
         if (mDrawerLayout.isDrawerOpen(mDrawerNavigation)) {
             mDrawerLayout.closeDrawer(mDrawerNavigation);
         }
     }
-    
+
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         boolean result = super.dispatchKeyEvent(event);
@@ -555,8 +552,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             return result;
         }
 
-        if (event.getKeyCode() == KeyEvent.KEYCODE_MENU
-                && event.getAction() == KeyEvent.ACTION_DOWN) {
+        if (event.getKeyCode() == KeyEvent.KEYCODE_MENU && event.getAction() == KeyEvent.ACTION_DOWN) {
             toggle();
             return true;
         }
@@ -572,10 +568,8 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     @Override
     public void onBackPressed() {
         Log.i(TAG, "ON BACK PRESSED");
-        if (mDrawerLayout.isDrawerOpen(mDrawerNavigation)
-                && !(mDrawerLayout.getDrawerLockMode(mDrawerNavigation) == DrawerLayout.LOCK_MODE_LOCKED_OPEN)
-                ) {
-            
+        if (mDrawerLayout.isDrawerOpen(mDrawerNavigation) && !(mDrawerLayout.getDrawerLockMode(mDrawerNavigation) == DrawerLayout.LOCK_MODE_LOCKED_OPEN)) {
+
             mDrawerLayout.closeDrawer(mDrawerNavigation);
         } else {
             super.onBackPressed();
@@ -583,8 +577,8 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     }
 
     /**
-     * When using the ActionBarDrawerToggle, you must call it during onPostCreate() and
-     * onConfigurationChanged()...
+     * When using the ActionBarDrawerToggle, you must call it during
+     * onPostCreate() and onConfigurationChanged()...
      */
 
     @Override
@@ -616,13 +610,14 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     public void updateNavigationMenu() {
         Log.d(TAG, "UPDATE SLIDE MENU");
         NavigationFragment slideMenuFragment = (NavigationFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_navigation);
-        if (slideMenuFragment != null) slideMenuFragment.onUpdateMenu();
+        if (slideMenuFragment != null)
+            slideMenuFragment.onUpdateMenu();
     }
 
     /**
      * Update the sliding menu
      */
-    public void updateSlidingMenuCompletly() { 
+    public void updateSlidingMenuCompletly() {
         NavigationFragment slideMenuFragment = (NavigationFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_navigation);
         if (slideMenuFragment != null) {
             slideMenuFragment.onUpdateCart();
@@ -647,7 +642,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             }
         }
     };
-    
 
     /**
      * ############### ORIENTATION #################
@@ -670,8 +664,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         if (context == null) {
             return false;
         }
-        if (context.getResources().getBoolean(R.bool.isTablet)
-                && context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+        if (context.getResources().getBoolean(R.bool.isTablet) && context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
             return true;
         return false;
     }
@@ -686,8 +679,9 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      */
 
     /**
-     * When a user selects an option of the menu that is on the action bar. The centralization of
-     * this in this activity, prevents all the activities to have to handle this events
+     * When a user selects an option of the menu that is on the action bar. The
+     * centralization of this in this activity, prevents all the activities to
+     * have to handle this events
      * 
      * @param item
      *            The menu item that was pressed
@@ -696,31 +690,32 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      * (non-Javadoc)
      * 
      * @see
-     * com.actionbarsherlock.app.SherlockFragmentActivity#onOptionsItemSelected(android.view.MenuItem
-     * )
+     * com.actionbarsherlock.app.SherlockFragmentActivity#onOptionsItemSelected
+     * (android.view.MenuItem )
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Log.d(TAG, "ON OPTION ITEM SELECTED: " + item.getTitle());
-        
+
         // Get item id
         int itemId = item.getItemId();
-        
+
         // HOME
         if (itemId == android.R.id.home) {
             toggle();
             return true;
-        
-        // CART
+
+            // CART
         } else if (itemId == R.id.menu_basket) {
-            Log.i(TAG, "code1state : "+mDrawerLayout.getDrawableState()[0]+" : idle : "+ DrawerLayout.STATE_IDLE+" : dragging :  "+DrawerLayout.STATE_DRAGGING+"  : settling : "+DrawerLayout.STATE_SETTLING);
-            if(drawable_state == DrawerLayout.STATE_IDLE){
+            Log.i(TAG, "code1state : " + mDrawerLayout.getDrawableState()[0] + " : idle : " + DrawerLayout.STATE_IDLE + " : dragging :  "
+                    + DrawerLayout.STATE_DRAGGING + "  : settling : " + DrawerLayout.STATE_SETTLING);
+            if (drawable_state == DrawerLayout.STATE_IDLE) {
                 closeDrawerIfOpen();
                 onSwitchFragment(FragmentType.SHOPPING_CART, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
             }
             return false;
-            
-        // DEFAULT:    
+
+            // DEFAULT:
         } else {
             return super.onOptionsItemSelected(item);
         }
@@ -730,13 +725,14 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      * (non-Javadoc)
      * 
      * @see
-     * com.actionbarsherlock.app.SherlockFragmentActivity#onCreateOptionsMenu(android.view.Menu)
+     * com.actionbarsherlock.app.SherlockFragmentActivity#onCreateOptionsMenu
+     * (android.view.Menu)
      */
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
         Log.d(TAG, "ON OPTIONS MENU: CREATE");
         getSupportMenuInflater().inflate(R.menu.main_menu, menu);
-        
+
         // Save the current menu
         currentMenu = menu;
 
@@ -764,7 +760,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                 setShareIntent(createShareIntent());
                 break;*/
             case MY_PROFILE:
-                MenuItem myProfile = menu.findItem(item.resId); //menu.findItem(item.resId);
+                MenuItem myProfile = menu.findItem(item.resId); // menu.findItem(item.resId);
                 myProfile.setVisible(true);
                 myProfile.setEnabled(true);
                 setMyProfile(myProfile);
@@ -774,7 +770,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                 break;
             }
         }
-        if(!initialCountry){
+        if (!initialCountry) {
             tvActionCartCount = (TextView) menu.findItem(R.id.menu_basket).getActionView().findViewById(R.id.cart_count);
             tvActionCartCount.setOnClickListener(new OnClickListener() {
                 @Override
@@ -783,7 +779,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                 }
             });
             updateCartInfoInActionBar();
-            
+
         } else {
             menu.findItem(R.id.menu_basket).setVisible(false);
         }
@@ -810,7 +806,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         // Set the ime options
         mSearchView.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
         mSearchAutoComplete.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
-        // 
+        //
         mSearchMenuItem.setVisible(true);
         // Get the width of main content
         logoView.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
@@ -829,17 +825,17 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         // Set search
         setActionBarSearchBehavior();
     }
-    
+
     /**
      * Set the search component
      */
     public void setActionBarSearchBehavior() {
         Log.d(TAG, "SEARCH MODE: NEW BEHAVIOUR");
-        if(mSearchAutoComplete == null) {
+        if (mSearchAutoComplete == null) {
             Log.w(TAG, "SEARCH COMPONENT IS NULL");
             return;
         }
-        
+
         mSearchAutoComplete.dismissDropDown();
         mSearchAutoComplete.setFocusable(false);
         mSearchAutoComplete.setFocusableInTouchMode(true);
@@ -860,56 +856,67 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                 showSearchCategory(text);
             }
         });
-        
-//        /*
-//         * Listener for right drawable
-//         */
-//        mSearchAutoComplete.setOnTouchListener(new RightDrawableOnTouchListener(mSearchAutoComplete) {
-//            @Override
-//            public boolean onDrawableTouch(final MotionEvent event) {
-//                String searchTerm = mSearchAutoComplete.getText().toString();
-//                Log.d(TAG, "SEARCH: ON RIGHT DRAWABLE TOUCH: " + searchTerm);
-//                if ( TextUtils.isEmpty( searchTerm )) return false;
-//                GetSearchSuggestionHelper.saveSearchQuery(searchTerm);
-//                executeSearchRequest(searchTerm);
-//                return true;
-//            }
-//            
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                if(findViewById(R.id.main_fallback_content) != null && findViewById(R.id.main_fallback_content).getVisibility() == View.VISIBLE){
-//                    return true;
-//                }
-//                Log.d(TAG, "SEARCH: ON TOUCH: " + event.getAction());
-//                // Close navigation menu
-//                if (mDrawerLayout != null  && mDrawerLayout.isDrawerOpen(mDrawerNavigation)) 
-//                    mDrawerLayout.closeDrawer(mDrawerNavigation);
-//                // Force show drop down
-//                if (TextUtils.isEmpty(mSearchAutoComplete.getText()) && event.getAction() == MotionEvent.ACTION_DOWN)
-//                    mSearchAutoComplete.showDropDown();
-//                // Sent to supper
-//                return super.onTouch(v, event);
-//            }
-//            
-//        });
-        
+
+        // /*
+        // * Listener for right drawable
+        // */
+        // mSearchAutoComplete.setOnTouchListener(new
+        // RightDrawableOnTouchListener(mSearchAutoComplete) {
+        // @Override
+        // public boolean onDrawableTouch(final MotionEvent event) {
+        // String searchTerm = mSearchAutoComplete.getText().toString();
+        // Log.d(TAG, "SEARCH: ON RIGHT DRAWABLE TOUCH: " + searchTerm);
+        // if ( TextUtils.isEmpty( searchTerm )) return false;
+        // GetSearchSuggestionHelper.saveSearchQuery(searchTerm);
+        // executeSearchRequest(searchTerm);
+        // return true;
+        // }
+        //
+        // @Override
+        // public boolean onTouch(View v, MotionEvent event) {
+        // if(findViewById(R.id.main_fallback_content) != null &&
+        // findViewById(R.id.main_fallback_content).getVisibility() ==
+        // View.VISIBLE){
+        // return true;
+        // }
+        // Log.d(TAG, "SEARCH: ON TOUCH: " + event.getAction());
+        // // Close navigation menu
+        // if (mDrawerLayout != null &&
+        // mDrawerLayout.isDrawerOpen(mDrawerNavigation))
+        // mDrawerLayout.closeDrawer(mDrawerNavigation);
+        // // Force show drop down
+        // if (TextUtils.isEmpty(mSearchAutoComplete.getText()) &&
+        // event.getAction() == MotionEvent.ACTION_DOWN)
+        // mSearchAutoComplete.showDropDown();
+        // // Sent to supper
+        // return super.onTouch(v, event);
+        // }
+        //
+        // });
+
         /*
          * Clear and add text listener
          */
         // mSearchAutoComplete.clearTextChangedListeners();
         mSearchAutoComplete.addTextChangedListener(new TextWatcher() {
             private Handler handle = new Handler();
+
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
             @Override
             public void afterTextChanged(Editable s) {
                 handle.removeCallbacks(run);
-                if (s.length() >= SEARCH_EDIT_SIZE && isSearchComponentOpened) handle.postDelayed(run, SEARCH_EDIT_DELAY);
+                if (s.length() >= SEARCH_EDIT_SIZE && isSearchComponentOpened)
+                    handle.postDelayed(run, SEARCH_EDIT_DELAY);
             }
         });
-        
+
         /*
          * Hide the search component on back pressed
          */
@@ -920,7 +927,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                 hideSearchComponent();
             }
         });
-        
+
         /*
          * Hide the search component on click on close button
          */
@@ -933,7 +940,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                 return true;
             }
         });
-        
+
         /*
          * Show the search component on click on search button
          */
@@ -942,22 +949,24 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             public void onClick(View v) {
                 Log.d(TAG, "SEARCH ON CLICK VIEW");
                 // Validate menu state
-                if(drawable_state == DrawerLayout.STATE_IDLE) closeDrawerIfOpen();
+                if (drawable_state == DrawerLayout.STATE_IDLE)
+                    closeDrawerIfOpen();
                 isSearchComponentOpened = true;
                 setItemsVisibility(false);
             }
         });
-        
+
         /*
-         * Editor 
+         * Editor
          */
         mSearchAutoComplete.setOnEditorActionListener(new OnEditorActionListener() {
             @Override
             public boolean onEditorAction(android.widget.TextView v, int actionId, KeyEvent event) {
-                if(actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_GO){
+                if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_GO) {
                     String searchTerm = mSearchAutoComplete.getText().toString();
                     Log.d(TAG, "SEARCH COMPONENT: ON IME ACTION " + searchTerm);
-                    if (TextUtils.isEmpty(searchTerm)) return false;
+                    if (TextUtils.isEmpty(searchTerm))
+                        return false;
                     mSearchAutoComplete.setText("");
                     GetSearchSuggestionHelper.saveSearchQuery(searchTerm);
                     showSearchCategory(searchTerm);
@@ -966,26 +975,29 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                 return false;
             }
         });
-        
-//        /*
-//         * On focus to show the last recent searches
-//         */
-//        mSearchAutoComplete.setOnFocusChangeListener(new OnFocusChangeListener() {
-//            @Override
-//            public void onFocusChange(View v, boolean hasFocus) {
-//                Log.d(TAG, "SEARCH: ON FOCUS " + hasFocus);
-//                // Get the recent searches
-//                String searchTerm = ((SearchAutoComplete) v).getText().toString();
-//                if(hasFocus && TextUtils.isEmpty(searchTerm) && searchTerm.length() >= SEARCH_EDIT_SIZE) {
-//                    Log.d(TAG, "GET AUTO SUGGESTION FOR FOCUS");
-//                    new Handler().postDelayed(run, SEARCH_EDIT_DELAY);
-//                }
-//            }
-//        });
+
+        // /*
+        // * On focus to show the last recent searches
+        // */
+        // mSearchAutoComplete.setOnFocusChangeListener(new
+        // OnFocusChangeListener() {
+        // @Override
+        // public void onFocusChange(View v, boolean hasFocus) {
+        // Log.d(TAG, "SEARCH: ON FOCUS " + hasFocus);
+        // // Get the recent searches
+        // String searchTerm = ((SearchAutoComplete) v).getText().toString();
+        // if(hasFocus && TextUtils.isEmpty(searchTerm) && searchTerm.length()
+        // >= SEARCH_EDIT_SIZE) {
+        // Log.d(TAG, "GET AUTO SUGGESTION FOR FOCUS");
+        // new Handler().postDelayed(run, SEARCH_EDIT_DELAY);
+        // }
+        // }
+        // });
     }
-    
+
     /**
      * Execute search
+     * 
      * @param searchText
      * @author sergiopereira
      */
@@ -999,19 +1011,19 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
         onSwitchFragment(FragmentType.PRODUCT_LIST, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
-    
-//    /**
-//     * Clean search component
-//     * @author sergiopereira
-//     */
-//    public void cleanSearchConponent() {
-//        Log.d(TAG, "CLEAN SEARCH COMPONENT");
-//        //mSearchAutoComplete.removeTextChangedListener(listener);
-//        //mSearchHandle.removeCallbacks(run);
-//        
-//        if(mSearchAutoComplete != null) mSearchAutoComplete.setText("");
-//        
-//    }
+
+    // /**
+    // * Clean search component
+    // * @author sergiopereira
+    // */
+    // public void cleanSearchConponent() {
+    // Log.d(TAG, "CLEAN SEARCH COMPONENT");
+    // //mSearchAutoComplete.removeTextChangedListener(listener);
+    // //mSearchHandle.removeCallbacks(run);
+    //
+    // if(mSearchAutoComplete != null) mSearchAutoComplete.setText("");
+    //
+    // }
 
     /**
      * set all menu items visibility to <code>visible</code>
@@ -1034,14 +1046,15 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
     /**
      * Hide the search component
+     * 
      * @param menu
      * @author sergiopereira
      */
-    protected void hideSearchComponent(){
+    protected void hideSearchComponent() {
         Log.d(TAG, "SEARCH COMPONENT: HIDE");
         try {
             // Validate if exist search icon and bar
-            if(menuItems.contains(MyMenuItem.SEARCH_VIEW)) {
+            if (menuItems.contains(MyMenuItem.SEARCH_VIEW)) {
                 // Hide search bar
                 mSearchView.onActionViewCollapsed();
                 // Clean autocomplete
@@ -1056,15 +1069,16 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             Log.w(TAG, "WARNING NPE ON HIDE SEARCH COMPONENT", e);
         }
     }
-    
+
     /**
      * Hide only the search bar, used by ChangeCountryFragment
+     * 
      * @author sergiopereira
-     * @param enumSet 
+     * @param enumSet
      */
-    public void hideActionBarItemsForChangeCountry(EnumSet<MyMenuItem> enumSet){
+    public void hideActionBarItemsForChangeCountry(EnumSet<MyMenuItem> enumSet) {
         // Validate if the current menu options contains the search bar item
-    	// TODO : Validate if is necessary the setIconified
+        // TODO : Validate if is necessary the setIconified
         if (menuItems.contains(MyMenuItem.SEARCH_VIEW)) {
             // Hide search bar
             mSearchView.setIconified(true);
@@ -1074,21 +1088,22 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         updateActionForCountry(NavigationAction.Country);
         invalidateOptionsMenu();
     }
-    
-//    /**
-//     * Remove search focus
-//     * @author sergiopereira
-//     */
-//    private void searchComponentDismissFocus(){
-//        Log.d(TAG, "SEARCH: DISMISS FOCUS");
-//    }
-    
+
+    // /**
+    // * Remove search focus
+    // * @author sergiopereira
+    // */
+    // private void searchComponentDismissFocus(){
+    // Log.d(TAG, "SEARCH: DISMISS FOCUS");
+    // }
+
     /**
      * ############### SEARCH TRIGGER #################
-     */ 
-    
+     */
+
     /**
      * Runnable to get suggestions
+     * 
      * @author sergiopereira
      */
     private Runnable run = new Runnable() {
@@ -1101,84 +1116,94 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
     /**
      * Get suggestions and recent queries
+     * 
      * @author sergiopereira
      */
-    private void getSuggestions(){
+    private void getSuggestions() {
         beginInMillis = System.currentTimeMillis();
         String text = mSearchAutoComplete.getText().toString();
         Log.d(TAG, "SEARCH COMPONENT: GET SUG FOR " + text);
-        
+
         Bundle bundle = new Bundle();
         bundle.putString(GetSearchSuggestionHelper.SEACH_PARAM, text);
         JumiaApplication.INSTANCE.sendRequest(new GetSearchSuggestionHelper(), bundle, new IResponseCallback() {
-            
+
             @Override
             public void onRequestError(Bundle bundle) {
                 processErrorSearchEvent(bundle);
             }
-            
+
             @Override
             public void onRequestComplete(Bundle bundle) {
                 processSuccessSearchEvent(bundle);
             }
         });
-    }    
+    }
 
     /**
      * ############### SEARCH RESPONSES #################
-     */  
-     
-     /**
-      * Process the search error event
-      * @param event
-      * @author sergiopereira
-      */
-     private void processErrorSearchEvent(Bundle bundle){
-         Log.d(TAG, "SEARCH COMPONENT: ON ERROR");
-         // Get query
-         String requestQuery = bundle.getString(GetSearchSuggestionHelper.SEACH_PARAM);
-         Log.d(TAG, "RECEIVED SEARCH ERROR EVENT: " + requestQuery);
-         // Validate current search component
-         if (mSearchAutoComplete != null && !mSearchAutoComplete.getText().toString().equals(requestQuery)) {
-             Log.w(TAG, "SEARCH ERROR: WAS DISCARTED FOR QUERY " + requestQuery);
-             return;
-         }
-         if(!currentMenu.findItem(MyMenuItem.SEARCH_VIEW.resId).isVisible()) return;
-         // Hide dropdown
-         mSearchAutoComplete.dismissDropDown();
-     }
-     
-     /**
-      * Process success search event
-      * @param event
-      * @author sergiopereira
-      */
-     private void processSuccessSearchEvent(Bundle bundle){
-         Log.d(TAG, "SEARCH COMPONENT: ON SUCCESS");
-         // Get suggestions
-         List<SearchSuggestion> sug = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
-         // Get query
-         String requestQuery = bundle.getString(GetSearchSuggestionHelper.SEACH_PARAM);
-         Log.d(TAG, "RECEIVED SEARCH EVENT: " + sug.size() + " " + requestQuery );
-         
-         // Validate current objects
-         if(menuItems == null && currentMenu == null && mSearchAutoComplete == null) return;
-         // Validate current menu items
-         if(menuItems!= null && !menuItems.contains(MyMenuItem.SEARCH_VIEW)) return;
-         if(!currentMenu.findItem(MyMenuItem.SEARCH_VIEW.resId).isVisible()) return;
-         // Validate current search
-         if(mSearchAutoComplete.getText().length() < SEARCH_EDIT_SIZE || !mSearchAutoComplete.getText().toString().equals(requestQuery)){
-             Log.w(TAG, "SEARCH: DISCARTED DATA FOR QUERY " + requestQuery);
-             return;
-         }
-         // Show suggestions
-         Log.i(TAG, "SEARCH: SHOW DATA FOR QUERY " + requestQuery);
-         TrackerDelegator.trackLoadTiming(R.string.gsearchsuggestions, beginInMillis);
-         SearchDropDownAdapter searchSuggestionsAdapter = new SearchDropDownAdapter(getApplicationContext(), sug, requestQuery);
-         mSearchAutoComplete.setAdapter(searchSuggestionsAdapter);
-         mSearchAutoComplete.showDropDown();
-     }
-    
+     */
+
+    /**
+     * Process the search error event
+     * 
+     * @param event
+     * @author sergiopereira
+     */
+    private void processErrorSearchEvent(Bundle bundle) {
+        Log.d(TAG, "SEARCH COMPONENT: ON ERROR");
+        // Get query
+        String requestQuery = bundle.getString(GetSearchSuggestionHelper.SEACH_PARAM);
+        Log.d(TAG, "RECEIVED SEARCH ERROR EVENT: " + requestQuery);
+        // Validate current search component
+        if (mSearchAutoComplete != null && !mSearchAutoComplete.getText().toString().equals(requestQuery)) {
+            Log.w(TAG, "SEARCH ERROR: WAS DISCARTED FOR QUERY " + requestQuery);
+            return;
+        }
+        if (!currentMenu.findItem(MyMenuItem.SEARCH_VIEW.resId).isVisible())
+            return;
+        // Hide dropdown
+        mSearchAutoComplete.dismissDropDown();
+    }
+
+    /**
+     * Process success search event
+     * 
+     * @param event
+     * @author sergiopereira
+     */
+    private void processSuccessSearchEvent(Bundle bundle) {
+        Log.d(TAG, "SEARCH COMPONENT: ON SUCCESS");
+        // Get suggestions
+        List<SearchSuggestion> sug = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
+        // Get query
+        String requestQuery = bundle.getString(GetSearchSuggestionHelper.SEACH_PARAM);
+        Log.d(TAG, "RECEIVED SEARCH EVENT: " + sug.size() + " " + requestQuery);
+
+        // Validate current objects
+        if (menuItems == null && currentMenu == null && mSearchAutoComplete == null)
+            return;
+        // Validate current menu items
+        if (menuItems != null && !menuItems.contains(MyMenuItem.SEARCH_VIEW))
+            return;
+        if (!currentMenu.findItem(MyMenuItem.SEARCH_VIEW.resId).isVisible())
+            return;
+        // Validate current search
+        if (mSearchAutoComplete.getText().length() < SEARCH_EDIT_SIZE || !mSearchAutoComplete.getText().toString().equals(requestQuery)) {
+            Log.w(TAG, "SEARCH: DISCARTED DATA FOR QUERY " + requestQuery);
+            return;
+        }
+        // Show suggestions
+        Log.i(TAG, "SEARCH: SHOW DATA FOR QUERY " + requestQuery);
+        Bundle params = new Bundle();
+        params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gsearchsuggestions);
+        params.putLong(TrackerDelegator.START_TIME_KEY, beginInMillis);
+        TrackerDelegator.trackLoadTiming(params);
+        SearchDropDownAdapter searchSuggestionsAdapter = new SearchDropDownAdapter(getApplicationContext(), sug, requestQuery);
+        mSearchAutoComplete.setAdapter(searchSuggestionsAdapter);
+        mSearchAutoComplete.showDropDown();
+    }
+
     /**
      * #################### SHARE #####################
      */
@@ -1201,8 +1226,8 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     }
 
     /**
-     * Displays the number of items that are currently on the shopping cart as well as its value.
-     * This information is displayed on the navigation list
+     * Displays the number of items that are currently on the shopping cart as
+     * well as its value. This information is displayed on the navigation list
      * 
      * @param value
      *            The current value of the shopping cart
@@ -1212,9 +1237,8 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     public void updateCartInfo() {
         Log.d(TAG, "ON UPDATE CART INFO");
         if (JumiaApplication.INSTANCE.getCart() != null) {
-            Log.d(TAG, "updateCartInfo value = " + JumiaApplication.INSTANCE.getCart().getCartValue()
-                            + " quantity = "
-                            + JumiaApplication.INSTANCE.getCart().getCartCount());
+            Log.d(TAG, "updateCartInfo value = " + JumiaApplication.INSTANCE.getCart().getCartValue() + " quantity = "
+                    + JumiaApplication.INSTANCE.getCart().getCartCount());
         }
         updateCartInfoInActionBar();
         updateCartInfoInNavigation();
@@ -1227,12 +1251,9 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             return;
         }
 
-        final String quantity = JumiaApplication.INSTANCE.getCart() == null 
-                                ? "?"
-                                : JumiaApplication.INSTANCE.getCart().getCartCount() > 0 
-                                    ? String.valueOf(JumiaApplication.INSTANCE.getCart().getCartCount()) 
-                                    : "";
-           
+        final String quantity = JumiaApplication.INSTANCE.getCart() == null ? "?" : JumiaApplication.INSTANCE.getCart().getCartCount() > 0 ? String
+                .valueOf(JumiaApplication.INSTANCE.getCart().getCartCount()) : "";
+
         tvActionCartCount.post(new Runnable() {
             @Override
             public void run() {
@@ -1245,31 +1266,35 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     private void updateCartInfoInNavigation() {
         Log.d(TAG, "ON UPDATE CART IN NAVIGATION");
         NavigationFragment navigation = (NavigationFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_navigation);
-        if (navigation != null) navigation.onUpdateCart();
-        else Log.w(TAG, "updateCartInfoInNavigation: navigation container empty - doing nothing");
+        if (navigation != null)
+            navigation.onUpdateCart();
+        else
+            Log.w(TAG, "updateCartInfoInNavigation: navigation container empty - doing nothing");
     }
 
-//    private void updateTotalFavourites() {
-//        /* -if (textViewFavouritesCount == null) {
-//            Log.w(TAG, "updateFavouritesCountInActionBar: cant find FavouritesCount in actionbar");
-//            return;
-//        }
-//
-//        textViewFavouritesCount.post(new Runnable() {
-//            @Override
-//            public void run() {
-//                textViewFavouritesCount.setText("5");
-//            }
-//        });*/
-//    }
+    // private void updateTotalFavourites() {
+    // /* -if (textViewFavouritesCount == null) {
+    // Log.w(TAG,
+    // "updateFavouritesCountInActionBar: cant find FavouritesCount in actionbar");
+    // return;
+    // }
+    //
+    // textViewFavouritesCount.post(new Runnable() {
+    // @Override
+    // public void run() {
+    // textViewFavouritesCount.setText("5");
+    // }
+    // });*/
+    // }
 
     /**
      * Create the share intent to be used to store the needed information
+     * 
      * @return The created intent
      */
     public Intent createShareIntent() {
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-        //sharingIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        // sharingIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         sharingIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         sharingIntent.setType("text/plain");
         sharingIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_subject));
@@ -1332,11 +1357,8 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                     if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials()) {
                         FragmentManager fm = getSupportFragmentManager();
 
-                        dialogLogout = DialogGenericFragment.newInstance(false, true, false,
-                                getString(R.string.logout_title),
-                                getString(R.string.logout_text_question),
-                                getString(R.string.no_label), getString(R.string.yes_label),
-                                new OnClickListener() {
+                        dialogLogout = DialogGenericFragment.newInstance(false, true, false, getString(R.string.logout_title),
+                                getString(R.string.logout_text_question), getString(R.string.no_label), getString(R.string.yes_label), new OnClickListener() {
 
                                     @Override
                                     public void onClick(View v) {
@@ -1402,7 +1424,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
         if (!TextUtils.isEmpty(title)) {
             titleView.setText(title);
-            header_title.setVisibility(View.VISIBLE);            
+            header_title.setVisibility(View.VISIBLE);
         } else if (TextUtils.isEmpty(title)) {
             header_title.setVisibility(View.GONE);
         }
@@ -1452,7 +1474,8 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     }
 
     /**
-     * Don't show loading if we are using fragments, no need to redraw all the layout...
+     * Don't show loading if we are using fragments, no need to redraw all the
+     * layout...
      * 
      * @param event
      */
@@ -1460,98 +1483,105 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     private final void triggerContentEventWithNoLoading(final BaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
         JumiaApplication.INSTANCE.sendRequest(helper, args, responseCallback);
     }
-//
-//    private final void triggerContentEvent(final BaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
-//        showLoading(false);
-//        sendRequest(helper, args, responseCallback);
-//    }
 
-//    protected final void triggerContentEventProgress(final BaseHelper helper, Bundle args,
-//            final IResponseCallback responseCallback) {
-//        showProgress();
-//        sendRequest(helper, args, responseCallback);
-//    }
+    //
+    // private final void triggerContentEvent(final BaseHelper helper, Bundle
+    // args, final IResponseCallback responseCallback) {
+    // showLoading(false);
+    // sendRequest(helper, args, responseCallback);
+    // }
 
-//    private final void showLoadingInfo() {
-//        Log.d(TAG, "Showing loading info");
-//        if (loadingBarContainer != null) {
-//            loadingBarContainer.setVisibility(View.VISIBLE);
-//        } else {
-//            Log.w(TAG, "Did not find loading bar container, check layout!");
-//        }
-//        if (loadingBarView != null) {
-//            loadingBarView.startRendering();
-//        }
-//    }
+    // protected final void triggerContentEventProgress(final BaseHelper helper,
+    // Bundle args,
+    // final IResponseCallback responseCallback) {
+    // showProgress();
+    // sendRequest(helper, args, responseCallback);
+    // }
 
-//    /**
-//     * Hides the loading screen that appears on the front of the activity while it waits for the
-//     * data to arrive from the server
-//     */
-//    private void hideLoadingInfo() {
-//        Log.d(TAG, "Hiding loading info");
-//        if (loadingBarView != null) {
-//            loadingBarView.stopRendering();
-//        }
-//        if (loadingBarContainer != null) {
-//            loadingBarContainer.setVisibility(View.GONE);
-//        }
-//    }
-//
-//    private static void setVisibility(View view, boolean show) {
-//        if (view != null) {
-//            view.setVisibility(show ? View.VISIBLE : View.GONE);
-//        }
-//    }
+    // private final void showLoadingInfo() {
+    // Log.d(TAG, "Showing loading info");
+    // if (loadingBarContainer != null) {
+    // loadingBarContainer.setVisibility(View.VISIBLE);
+    // } else {
+    // Log.w(TAG, "Did not find loading bar container, check layout!");
+    // }
+    // if (loadingBarView != null) {
+    // loadingBarView.startRendering();
+    // }
+    // }
 
-//    public void showError(final BaseHelper helper, final Bundle bundle,
-//            final IResponseCallback responseCallback) {
-//        showError(new OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                showWarning(false);
-//                triggerContentEvent(helper, bundle, responseCallback);
-//            }
-//        }, false);
-//    }
+    // /**
+    // * Hides the loading screen that appears on the front of the activity
+    // while it waits for the
+    // * data to arrive from the server
+    // */
+    // private void hideLoadingInfo() {
+    // Log.d(TAG, "Hiding loading info");
+    // if (loadingBarView != null) {
+    // loadingBarView.stopRendering();
+    // }
+    // if (loadingBarContainer != null) {
+    // loadingBarContainer.setVisibility(View.GONE);
+    // }
+    // }
+    //
+    // private static void setVisibility(View view, boolean show) {
+    // if (view != null) {
+    // view.setVisibility(show ? View.VISIBLE : View.GONE);
+    // }
+    // }
 
-//    public void showLoading(boolean fromCheckout) {
-//        setVisibility(errorView, false);
-//        if (!fromCheckout) {
-//            setVisibility(contentContainer, false);
-//        }
-//
-//        showLoadingInfo();
-//    }
+    // public void showError(final BaseHelper helper, final Bundle bundle,
+    // final IResponseCallback responseCallback) {
+    // showError(new OnClickListener() {
+    //
+    // @Override
+    // public void onClick(View v) {
+    // showWarning(false);
+    // triggerContentEvent(helper, bundle, responseCallback);
+    // }
+    // }, false);
+    // }
 
-//    protected void showError(OnClickListener clickListener, boolean fromCheckout) {
-//        Log.d(TAG, "Showing error view");
-//        hideLoadingInfo();
-//        if (!fromCheckout) {
-//            setVisibility(contentContainer, false);
-//        }
-//        setVisibility(errorView, true);
-//        errorView.setOnClickListener(clickListener);
-//    }
+    // public void showLoading(boolean fromCheckout) {
+    // setVisibility(errorView, false);
+    // if (!fromCheckout) {
+    // setVisibility(contentContainer, false);
+    // }
+    //
+    // showLoadingInfo();
+    // }
 
-//    public final void showContentContainer() { // XXX
-//        if (processShow) {
-//            Log.d(TAG, "Showing the content container");
-//            hideLoadingInfo();
-//            dismissProgress();
-//            setVisibility(errorView, false);
-//            setVisibility(contentContainer, true);
-//        }
-//    }
+    // protected void showError(OnClickListener clickListener, boolean
+    // fromCheckout) {
+    // Log.d(TAG, "Showing error view");
+    // hideLoadingInfo();
+    // if (!fromCheckout) {
+    // setVisibility(contentContainer, false);
+    // }
+    // setVisibility(errorView, true);
+    // errorView.setOnClickListener(clickListener);
+    // }
+
+    // public final void showContentContainer() { // XXX
+    // if (processShow) {
+    // Log.d(TAG, "Showing the content container");
+    // hideLoadingInfo();
+    // dismissProgress();
+    // setVisibility(errorView, false);
+    // setVisibility(contentContainer, true);
+    // }
+    // }
 
     public final void showWarning(boolean show) {
         Log.d(TAG, "Showing warning: " + show);
-        if (warningView != null) warningView.setVisibility(show ? View.VISIBLE : View.GONE);
+        if (warningView != null)
+            warningView.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
     public void showWarningVariation(boolean show) {
-        if (warningVariationView != null) warningVariationView.setVisibility(show ? View.VISIBLE : View.GONE);
+        if (warningVariationView != null)
+            warningVariationView.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
     private void setAppContentLayout() {
@@ -1564,19 +1594,19 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     }
 
     public final void showProgress() {
-        
+
         if (baseActivityProgressDialog != null) {
             return;
         }
-        
+
         Handler handler = new Handler(Looper.getMainLooper());
         handler.post(new Runnable() {
             public void run() {
                 baseActivityProgressDialog = DialogProgressFragment.newInstance();
                 baseActivityProgressDialog.show(getSupportFragmentManager(), null);
             }
-        });        
-        
+        });
+
     }
 
     public final void dismissProgress() {
@@ -1611,8 +1641,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         try {
             if (view.getBackground() != null) {
                 view.getBackground().setCallback(null);
-            }
-            else if (view instanceof ViewGroup) {
+            } else if (view instanceof ViewGroup) {
                 for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
                     unbindDrawables(((ViewGroup) view).getChildAt(i));
                 }
@@ -1654,18 +1683,20 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.RESULT_UNCHANGED_SHOWN, 0);
         // use the above as the method below does not always work
-        // imm.showSoftInput(getSlidingMenu().getCurrentFocus(), InputMethodManager.SHOW_IMPLICIT);
+        // imm.showSoftInput(getSlidingMenu().getCurrentFocus(),
+        // InputMethodManager.SHOW_IMPLICIT);
     }
 
-//    /**
-//     * Use this variable to have a more precise control on when to show the content container. The
-//     * content will show by default after finishing the event request.
-//     * 
-//     * @param b
-//     */
-//    public void setProcessShow(boolean b) {
-//        processShow = b;
-//    }
+    // /**
+    // * Use this variable to have a more precise control on when to show the
+    // content container. The
+    // * content will show by default after finishing the event request.
+    // *
+    // * @param b
+    // */
+    // public void setProcessShow(boolean b) {
+    // processShow = b;
+    // }
 
     public void finishFromAdapter() {
         finish();
@@ -1682,12 +1713,13 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      * Handles a successful event and reflects necessary changes on the UI.
      * 
      * @param event
-     *            The successful event with {@link ResponseEvent#getSuccess()} == <code>true</code>
+     *            The successful event with {@link ResponseEvent#getSuccess()}
+     *            == <code>true</code>
      */
 
     public void handleSuccessEvent(Bundle bundle) {
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        
+
         switch (eventType) {
         case GET_SHOPPING_CART_ITEMS_EVENT:
         case ADD_ITEM_TO_SHOPPING_CART_EVENT:
@@ -1706,6 +1738,8 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             JumiaApplication.INSTANCE.setLoggedIn(true);
             triggerContentEventWithNoLoading(new GetShoppingCartItemsHelper(), null, mIResponseCallback);
             break;
+        default:
+            break;
         }
     }
 
@@ -1713,26 +1747,27 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      * Handles a failed event and shows dialogs to the user.
      * 
      * @param event
-     *            The failed event with {@link ResponseEvent#getSuccess()} == <code>false</code>
+     *            The failed event with {@link ResponseEvent#getSuccess()} ==
+     *            <code>false</code>
      */
     @SuppressWarnings("unchecked")
     public boolean handleErrorEvent(final Bundle bundle) {
-        
+
         Log.i(TAG, "ON HANDLE ERROR EVENT");
-        
+
         final EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-        
-        if (eventType == EventType.LOGIN_EVENT){
+
+        if (eventType == EventType.LOGIN_EVENT) {
             JumiaApplication.INSTANCE.setLoggedIn(false);
             JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
             updateNavigationMenu();
         }
-        
-        if( !bundle.getBoolean(Constants.BUNDLE_PRIORITY_KEY) ){
+
+        if (!bundle.getBoolean(Constants.BUNDLE_PRIORITY_KEY)) {
             return false;
         }
-        
+
         HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
         if (errorCode == null) {
             return false;
@@ -1743,7 +1778,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             case TIME_OUT:
             case HTTP_STATUS:
             case NO_NETWORK:
-                //showContentContainer();
+                // showContentContainer();
 
                 // Remove dialog if exist
                 if (dialog != null) {
@@ -1754,18 +1789,15 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                     }
                 }
 
-                dialog = DialogGenericFragment.createNoNetworkDialog(this,
-                        new OnClickListener() {
+                dialog = DialogGenericFragment.createNoNetworkDialog(this, new OnClickListener() {
 
-                            @Override
-                            public void onClick(View v) {
-                                JumiaApplication.INSTANCE.sendRequest(
-                                        JumiaApplication.INSTANCE.getRequestsRetryHelperList().get(eventType),
-                                        JumiaApplication.INSTANCE.getRequestsRetryBundleList().get(eventType), 
-                                        JumiaApplication.INSTANCE.getRequestsResponseList().get(eventType));
-                                dialog.dismiss();
-                            }
-                        }, false);
+                    @Override
+                    public void onClick(View v) {
+                        JumiaApplication.INSTANCE.sendRequest(JumiaApplication.INSTANCE.getRequestsRetryHelperList().get(eventType), JumiaApplication.INSTANCE
+                                .getRequestsRetryBundleList().get(eventType), JumiaApplication.INSTANCE.getRequestsResponseList().get(eventType));
+                        dialog.dismiss();
+                    }
+                }, false);
                 try {
                     dialog.show(getSupportFragmentManager(), null);
                 } catch (Exception e) {
@@ -1793,11 +1825,9 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                 if (dialogMsg.equals("")) {
                     dialogMsg = getString(R.string.validation_errortext);
                 }
-                //showContentContainer();
-                dialog = DialogGenericFragment.newInstance(
-                        true, true, false, getString(R.string.validation_title),
-                        dialogMsg, getResources().getString(R.string.ok_label), "",
-                        new OnClickListener() {
+                // showContentContainer();
+                dialog = DialogGenericFragment.newInstance(true, true, false, getString(R.string.validation_title), dialogMsg,
+                        getResources().getString(R.string.ok_label), "", new OnClickListener() {
 
                             @Override
                             public void onClick(View v) {
@@ -1813,7 +1843,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                 dialog.show(getSupportFragmentManager(), null);
                 return true;
             default:
-                //showContentContainer();
+                // showContentContainer();
 
                 // Remove dialog if exist
                 if (dialog != null) {
@@ -1824,18 +1854,15 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                     }
                 }
 
-                dialog = DialogGenericFragment.createNoNetworkDialog(this,
-                        new OnClickListener() {
+                dialog = DialogGenericFragment.createNoNetworkDialog(this, new OnClickListener() {
 
-                            @Override
-                            public void onClick(View v) {
-                                JumiaApplication.INSTANCE.sendRequest(
-                                        JumiaApplication.INSTANCE.getRequestsRetryHelperList().get(eventType),
-                                        JumiaApplication.INSTANCE.getRequestsRetryBundleList().get(eventType), 
-                                        JumiaApplication.INSTANCE.getRequestsResponseList().get(eventType));
-                                dialog.dismiss();
-                            }
-                        }, false);
+                    @Override
+                    public void onClick(View v) {
+                        JumiaApplication.INSTANCE.sendRequest(JumiaApplication.INSTANCE.getRequestsRetryHelperList().get(eventType), JumiaApplication.INSTANCE
+                                .getRequestsRetryBundleList().get(eventType), JumiaApplication.INSTANCE.getRequestsResponseList().get(eventType));
+                        dialog.dismiss();
+                    }
+                }, false);
                 try {
                     dialog.show(getSupportFragmentManager(), null);
                 } catch (Exception e) {
@@ -1848,7 +1875,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         return false;
 
     }
-
 
     /**
      * @return the action
@@ -1871,8 +1897,8 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      */
 
     /**
-     * This method should be implemented by fragment activity to manage the work flow for fragments.
-     * Each fragment should call this method.
+     * This method should be implemented by fragment activity to manage the work
+     * flow for fragments. Each fragment should call this method.
      * 
      * @param search
      * @param addToBackStack
@@ -1887,8 +1913,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      * @param addToBackStack
      * @author sergiopereira
      */
-    public void fragmentManagerTransition(int container, Fragment fragment, String tag,
-            Boolean addToBackStack) {
+    public void fragmentManagerTransition(int container, Fragment fragment, String tag, Boolean addToBackStack) {
         // showContentContainer(false);
         fragmentController.startTransition(this, container, fragment, tag, addToBackStack);
     }
@@ -1899,7 +1924,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      * @author sergiopereira
      */
     public void fragmentManagerBackPressed() {
-        //showContentContainer();
+        // showContentContainer();
         fragmentController.fragmentBackPressed(this);
     }
 
@@ -1925,7 +1950,8 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     }
 
     /**
-     * Constructor used to initialize the navigation list component and the autocomplete handler
+     * Constructor used to initialize the navigation list component and the
+     * autocomplete handler
      * 
      * @param userEvents
      * @author manuelsilva
@@ -1959,10 +1985,9 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      */
     public Boolean exitApplication(final FragmentController fragC) {
 
-        dialog = DialogGenericFragment.newInstance(false, false, true,
-                null, // no title
-                getString(R.string.logout_text_question), getString(R.string.no_label),
-                getString(R.string.yes_label), new OnClickListener() {
+        dialog = DialogGenericFragment.newInstance(false, false, true, null, // no
+                                                                             // title
+                getString(R.string.logout_text_question), getString(R.string.no_label), getString(R.string.yes_label), new OnClickListener() {
 
                     @Override
                     public void onClick(View v) {
@@ -2001,8 +2026,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         }
         // First time show toast
         this.backPressedOnce = true;
-        CustomToastView.makeText(this, getString(R.string.exit_press_back_again),
-                Toast.LENGTH_SHORT).show();
+        CustomToastView.makeText(this, getString(R.string.exit_press_back_again), Toast.LENGTH_SHORT).show();
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -2043,7 +2067,8 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
         String id = bundle.getString(Constants.BUNDLE_MD5_KEY);
         // Log.i(TAG, "code1removing callback from request type : "+
-        // bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY)+ " size is : "
+        // bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY)+
+        // " size is : "
         // +JumiaApplication.INSTANCE.responseCallbacks.size());
         // Log.i(TAG, "code1removing callback with id : "+ id);
         if (JumiaApplication.INSTANCE.responseCallbacks.containsKey(id)) {
@@ -2069,18 +2094,18 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         }
         JumiaApplication.INSTANCE.responseCallbacks.remove(id);
     }
-    
+
     /**
-     * ################ MAIN MAINTENANCE PAGE ################ 
+     * ################ MAIN MAINTENANCE PAGE ################
      */
-    
+
     /**
      * Hide the main fall back view with retry button
      */
-    public void hideMainFallBackView(){
-        if(mMainFallBackStub != null) mMainFallBackStub.setVisibility(View.GONE);
+    public void hideMainFallBackView() {
+        if (mMainFallBackStub != null)
+            mMainFallBackStub.setVisibility(View.GONE);
     }
-    
 
     /**
      * Sets Maintenance page
@@ -2092,10 +2117,10 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         Button retry = (Button) findViewById(R.id.main_fallback_retry);
         retry.setOnClickListener(new OnClickListener() {
             @Override
-            public void onClick(View v) {;
+            public void onClick(View v) {
+                ;
                 mMainFallBackStub.setVisibility(View.GONE);
-                String result = JumiaApplication.INSTANCE.sendRequest(
-                        JumiaApplication.INSTANCE.getRequestsRetryHelperList().get(eventType),
+                String result = JumiaApplication.INSTANCE.sendRequest(JumiaApplication.INSTANCE.getRequestsRetryHelperList().get(eventType),
                         JumiaApplication.INSTANCE.getRequestsRetryBundleList().get(eventType),
                         JumiaApplication.INSTANCE.getRequestsResponseList().get(eventType));
 
@@ -2104,13 +2129,13 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                 }
             }
         });
-        
+
         ImageView mapImageView = (ImageView) findViewById(R.id.main_fallback_country_map);
         SharedPreferences sharedPrefs = this.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        RocketImageLoader.instance.loadImage(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_MAP_FLAG, ""), mapImageView); 
-        
+        RocketImageLoader.instance.loadImage(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_MAP_FLAG, ""), mapImageView);
+
         String country = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, "");
-       
+
         TextView fallbackBest = (TextView) findViewById(R.id.main_fallback_best);
         fallbackBest.setText(R.string.fallback_best);
         if (country.split(" ").length == 1) {
@@ -2134,19 +2159,19 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             findViewById(R.id.main_fallback_country).setVisibility(View.GONE);
 
         }
-        
+
         TextView mTextViewBT = (TextView) findViewById(R.id.main_fallback_country_bottom_text);
         mTextViewBT.setText(R.string.fallback_maintenance_text);
-        
+
         TextView mTextViewBT2 = (TextView) findViewById(R.id.main_fallback_country_bottom_text2);
         mTextViewBT2.setText(R.string.fallback_maintenance_text_bottom);
-        
+
         TextView mFallbackChoice = (TextView) findViewById(R.id.main_fallback_choice);
         mFallbackChoice.setText(R.string.fallback_choice);
-        
+
         TextView mFallbackDoorstep = (TextView) findViewById(R.id.main_fallback_doorstep);
         mFallbackDoorstep.setText(R.string.fallback_doorstep);
-        
+
         fallbackBest.setSelected(true);
 
     }
@@ -2269,20 +2294,16 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     private void unSelectCheckoutStep(int step) {
         switch (step) {
         case ConstantsCheckout.CHECKOUT_ABOUT_YOU:
-            unSelectStep(R.id.checkout_header_step_1, R.id.checkout_header_step_1_icon,
-                    R.id.checkout_header_step_1_text);
+            unSelectStep(R.id.checkout_header_step_1, R.id.checkout_header_step_1_icon, R.id.checkout_header_step_1_text);
             break;
         case ConstantsCheckout.CHECKOUT_BILLING:
-            unSelectStep(R.id.checkout_header_step_2, R.id.checkout_header_step_2_icon,
-                    R.id.checkout_header_step_2_text);
+            unSelectStep(R.id.checkout_header_step_2, R.id.checkout_header_step_2_icon, R.id.checkout_header_step_2_text);
             break;
         case ConstantsCheckout.CHECKOUT_SHIPPING:
-            unSelectStep(R.id.checkout_header_step_3, R.id.checkout_header_step_3_icon,
-                    R.id.checkout_header_step_3_text);
+            unSelectStep(R.id.checkout_header_step_3, R.id.checkout_header_step_3_icon, R.id.checkout_header_step_3_text);
             break;
         case ConstantsCheckout.CHECKOUT_PAYMENT:
-            unSelectStep(R.id.checkout_header_step_4, R.id.checkout_header_step_4_icon,
-                    R.id.checkout_header_step_4_text);
+            unSelectStep(R.id.checkout_header_step_4, R.id.checkout_header_step_4_icon, R.id.checkout_header_step_4_text);
             break;
         default:
             break;
@@ -2298,20 +2319,16 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     private void selectCheckoutStep(int step) {
         switch (step) {
         case ConstantsCheckout.CHECKOUT_ABOUT_YOU:
-            selectStep(R.id.checkout_header_step_1, R.id.checkout_header_step_1_icon,
-                    R.id.checkout_header_step_1_text);
+            selectStep(R.id.checkout_header_step_1, R.id.checkout_header_step_1_icon, R.id.checkout_header_step_1_text);
             break;
         case ConstantsCheckout.CHECKOUT_BILLING:
-            selectStep(R.id.checkout_header_step_2, R.id.checkout_header_step_2_icon,
-                    R.id.checkout_header_step_2_text);
+            selectStep(R.id.checkout_header_step_2, R.id.checkout_header_step_2_icon, R.id.checkout_header_step_2_text);
             break;
         case ConstantsCheckout.CHECKOUT_SHIPPING:
-            selectStep(R.id.checkout_header_step_3, R.id.checkout_header_step_3_icon,
-                    R.id.checkout_header_step_3_text);
+            selectStep(R.id.checkout_header_step_3, R.id.checkout_header_step_3_icon, R.id.checkout_header_step_3_text);
             break;
         case ConstantsCheckout.CHECKOUT_PAYMENT:
-            selectStep(R.id.checkout_header_step_4, R.id.checkout_header_step_4_icon,
-                    R.id.checkout_header_step_4_text);
+            selectStep(R.id.checkout_header_step_4, R.id.checkout_header_step_4_icon, R.id.checkout_header_step_4_text);
             break;
         default:
             break;
@@ -2328,8 +2345,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      */
     private void selectStep(int main, int icon, int text) {
         findViewById(main).setSelected(true);
-        findViewById(main).getLayoutParams().width = getResources().getDimensionPixelSize(
-                R.dimen.checkout_header_step_selected_width);
+        findViewById(main).getLayoutParams().width = getResources().getDimensionPixelSize(R.dimen.checkout_header_step_selected_width);
         findViewById(icon).setSelected(true);
         findViewById(text).setVisibility(View.VISIBLE);
     }
@@ -2344,8 +2360,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      */
     private void unSelectStep(int main, int icon, int text) {
         findViewById(main).setSelected(false);
-        findViewById(main).getLayoutParams().width = getResources().getDimensionPixelSize(
-                R.dimen.checkout_header_step_width);
+        findViewById(main).getLayoutParams().width = getResources().getDimensionPixelSize(R.dimen.checkout_header_step_width);
         findViewById(icon).setSelected(false);
         findViewById(text).setVisibility(View.GONE);
     }
@@ -2363,7 +2378,8 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         if (id == R.id.checkout_header_step_1 && !view.isSelected()) {
             // Uncomment if you want click on about you step
             // removeAllCheckoutEntries();
-            // onSwitchFragment(FragmentType.ABOUT_YOU, FragmentController.NO_BUNDLE,
+            // onSwitchFragment(FragmentType.ABOUT_YOU,
+            // FragmentController.NO_BUNDLE,
             // FragmentController.ADD_TO_BACK_STACK);
         }
         // CHECKOUT_BILLING
@@ -2391,23 +2407,19 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      * @author sergiopereira
      */
     private void removeAllCheckoutEntries() {
-        FragmentController.getInstance().removeAllEntriesWithTag(
-                FragmentType.PAYMENT_METHODS.toString());
-        FragmentController.getInstance().removeAllEntriesWithTag(
-                FragmentType.SHIPPING_METHODS.toString());
-        FragmentController.getInstance().removeAllEntriesWithTag(
-                FragmentType.MY_ADDRESSES.toString());
-        FragmentController.getInstance().removeAllEntriesWithTag(
-                FragmentType.CREATE_ADDRESS.toString());
-        FragmentController.getInstance().removeAllEntriesWithTag(
-                FragmentType.EDIT_ADDRESS.toString());
+        FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.PAYMENT_METHODS.toString());
+        FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.SHIPPING_METHODS.toString());
+        FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.MY_ADDRESSES.toString());
+        FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.CREATE_ADDRESS.toString());
+        FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.EDIT_ADDRESS.toString());
         FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.POLL.toString());
     }
 
     /**
      * Get the current menu options specified by current fragment
+     * 
      * @return a set of menu items
-     * @author sergiopereira 
+     * @author sergiopereira
      */
     public Set<MyMenuItem> getCurrentMenuOptions() {
         return menuItems;
@@ -2420,6 +2432,5 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     /*-private void showWizardNavigation() {
         WizardFactory.show(WizardType.NAVIGATION, getApplicationContext(), getSupportFragmentManager(), null);
     }*/
-    
-}
 
+}

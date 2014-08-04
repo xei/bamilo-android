@@ -188,7 +188,13 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         } else {
             Log.i(TAG, "SAVED CONTENT VALUES IS NULL");
         }
-        TrackerDelegator.trackCheckoutStep(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), R.string.gcheckoutCreateAddress, R.string.xcheckoutcreateaddress, R.string.mixprop_checkout_create_address);
+        Bundle params = new Bundle();        
+        params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
+        params.putInt(TrackerDelegator.GA_STEP_KEY, R.string.gcheckoutCreateAddress);
+        params.putInt(TrackerDelegator.ADX_STEP_KEY, R.string.xcheckoutcreateaddress);
+        params.putInt(TrackerDelegator.MIXPANEL_STEP_KEY, R.string.mixprop_checkout_create_address);        
+        
+        TrackerDelegator.trackCheckoutStep(params);
     }
     
 //    /*

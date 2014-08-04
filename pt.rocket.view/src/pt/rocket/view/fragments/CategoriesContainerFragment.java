@@ -9,7 +9,6 @@ import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.fragments.FragmentType;
-import pt.rocket.framework.tracking.AnalyticsGoogle;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -350,7 +349,11 @@ public class CategoriesContainerFragment extends BaseFragment {
         }
     
         if(!bundle.getBoolean(USED_CACHED_CATEGORIES, false)){
-            TrackerDelegator.trackLoadTiming(R.string.gcategories, mBeginRequestMillis);
+            Bundle params = new Bundle();
+            params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gcategories);
+            params.putLong(TrackerDelegator.START_TIME_KEY, mBeginRequestMillis);
+            
+            TrackerDelegator.trackLoadTiming(params);
         } else {
             Log.i(TAG, "code1 received categories from database "+JumiaApplication.currentCategories.size());
         }

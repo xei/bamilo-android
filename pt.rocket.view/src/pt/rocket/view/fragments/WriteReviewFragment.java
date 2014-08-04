@@ -453,6 +453,7 @@ public class WriteReviewFragment extends BaseFragment {
         }
     }
 
+    @SuppressWarnings("unchecked")
     protected boolean onSuccessEvent(Bundle bundle) {
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         // ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
@@ -461,8 +462,11 @@ public class WriteReviewFragment extends BaseFragment {
             
             Log.d(TAG, "review product completed: success");
             // Clean options after success
-           
-            TrackerDelegator.trackItemReview(getBaseActivity(), completeProduct, productReviewCreated, ratings);
+            Bundle params = new Bundle();
+            params.putParcelable(TrackerDelegator.PRODUCT_KEY, completeProduct);
+            params.putParcelable(TrackerDelegator.REVIEW_KEY, productReviewCreated);            
+            params.putSerializable(TrackerDelegator.RATINGS_KEY, ratings);
+            TrackerDelegator.trackItemReview(params);
             dialog_review_submitted = DialogGenericFragment.newInstance(false, true, false,
                     getString(R.string.submit_title),
                     getResources().getString(R.string.submit_text),

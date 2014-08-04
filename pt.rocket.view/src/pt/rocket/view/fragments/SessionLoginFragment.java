@@ -499,7 +499,14 @@ public class SessionLoginFragment extends BaseFragment {
             if(getActivity() != null){
                 Customer customer = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
                 JumiaApplication.CUSTOMER = customer;
-                TrackerDelegator.trackLoginSuccessful(getActivity(), customer, wasAutologin, loginOrigin, true);
+                
+                Bundle params = new Bundle();
+                params.putParcelable(TrackerDelegator.CUSTOMER_KEY, customer);
+                params.putBoolean(TrackerDelegator.AUTOLOGIN_KEY, wasAutologin);
+                params.putString(TrackerDelegator.ORIGIN_KEY,loginOrigin);
+                params.putBoolean(TrackerDelegator.FACEBOOKLOGIN_KEY, true);
+                
+                TrackerDelegator.trackLoginSuccessful(params);
             }
             
             wasAutologin = false;
@@ -525,7 +532,14 @@ public class SessionLoginFragment extends BaseFragment {
             if(getActivity() != null && !cameFromRegister){
                 Customer customer = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
                 JumiaApplication.CUSTOMER = customer;
-                TrackerDelegator.trackLoginSuccessful(getActivity(), customer, wasAutologin, loginOrigin, false);
+                
+                Bundle params = new Bundle();
+                params.putParcelable(TrackerDelegator.CUSTOMER_KEY, customer);
+                params.putBoolean(TrackerDelegator.AUTOLOGIN_KEY, wasAutologin);
+                params.putString(TrackerDelegator.ORIGIN_KEY,loginOrigin);
+                params.putBoolean(TrackerDelegator.FACEBOOKLOGIN_KEY, false);
+                
+                TrackerDelegator.trackLoginSuccessful(params);
 
                 /**
                  * Persist user email or empty that value after successfull login

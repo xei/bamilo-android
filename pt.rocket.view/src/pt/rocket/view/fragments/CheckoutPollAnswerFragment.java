@@ -96,7 +96,12 @@ public class CheckoutPollAnswerFragment extends BaseFragment implements OnClickL
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
         setRetainInstance(true);
-        TrackerDelegator.trackCheckoutStep(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), R.string.gcheckoutPollQuestion, R.string.xcheckoutpollquestion, R.string.mixprop_checkout_poll_question);
+        Bundle params = new Bundle();        
+        params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
+        params.putInt(TrackerDelegator.GA_STEP_KEY, R.string.gcheckoutPollQuestion);
+        params.putInt(TrackerDelegator.ADX_STEP_KEY, R.string.xcheckoutpollquestion);
+        params.putInt(TrackerDelegator.MIXPANEL_STEP_KEY, R.string.mixprop_checkout_poll_question);        
+        TrackerDelegator.trackCheckoutStep(params);
     }
 
     /*

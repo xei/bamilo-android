@@ -289,8 +289,11 @@ public class PopularityFragment extends BaseFragment {
             pricePop.setText("" + selectedProduct.getPrice());
             discountPop.setVisibility(View.GONE);
         }
+        Bundle params = new Bundle();
+        params.putParcelable(TrackerDelegator.PRODUCT_KEY,selectedProduct);
+        params.putFloat(TrackerDelegator.RATING_KEY, selectedProduct.getRatingsAverage().floatValue());
         
-        TrackerDelegator.trackViewReview(getActivity().getApplicationContext(), selectedProduct, selectedProduct.getRatingsAverage().floatValue());
+        TrackerDelegator.trackViewReview(params);
     }
 
     /**

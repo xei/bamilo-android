@@ -746,7 +746,11 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      */
     public void gotoOldCheckoutMethod(BaseActivity activity, String email, String error){
         Log.w(TAG, "WARNING: GOTO WEB CHECKOUT");
-        TrackerDelegator.trackNativeCheckoutError(activity, email, error);
+        Bundle params = new Bundle();
+        params.putString(TrackerDelegator.EMAIL_KEY, email);
+        params.putString(TrackerDelegator.ERROR_KEY, error);        
+        TrackerDelegator.trackNativeCheckoutError(params);
+        
         // Warning user
         Toast.makeText(getBaseActivity(), getString(R.string.error_please_try_again), Toast.LENGTH_LONG).show();
         // Remove native checkout

@@ -14,7 +14,6 @@ import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.objects.ShoppingCart;
-import pt.rocket.framework.tracking.AnalyticsGoogle;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -234,13 +233,13 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
 
     private void trackPurchase() {
         if (JumiaApplication.INSTANCE.getCart() != null) {
-            TrackerDelegator.trackPurchaseNativeCheckout(
-                    getActivity().getApplicationContext(),
-                    order_number, 
-                    JumiaApplication.INSTANCE.getCart().getCartValue(),
-                    JumiaApplication.INSTANCE.getCustomerUtils().getEmail(),
-                    JumiaApplication.INSTANCE.getCart().getCartItems(),
-                    JumiaApplication.CUSTOMER);
+            Bundle params = new Bundle();
+            params.putString(TrackerDelegator.ORDER_NUMBER_KEY,order_number);
+            params.putString(TrackerDelegator.VALUE_KEY,JumiaApplication.INSTANCE.getCart().getCartValue());
+            params.putString(TrackerDelegator.EMAIL_KEY,JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
+            params.putParcelable(TrackerDelegator.CUSTOMER_KEY, JumiaApplication.CUSTOMER);         
+                        
+            TrackerDelegator.trackPurchaseNativeCheckout(params, JumiaApplication.INSTANCE.getCart().getCartItems());
         }
 
         triggerClearCart();
@@ -391,7 +390,7 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
         String user_id = "";
         if (JumiaApplication.CUSTOMER != null && JumiaApplication.CUSTOMER.getIdAsString() != null) user_id = JumiaApplication.CUSTOMER.getIdAsString();
         // Tracking and goto Home 
-        TrackerDelegator.trackCheckoutContinueShopping(getBaseActivity(), user_id);
+        TrackerDelegator.trackCheckoutContinueShopping(user_id);
         getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
     }
 

@@ -198,7 +198,7 @@ public class CheckoutWebFragment extends BaseFragment {
         if (JumiaApplication.CUSTOMER != null && JumiaApplication.CUSTOMER.getIdAsString() != null) {
             user_id = JumiaApplication.CUSTOMER.getIdAsString();
         }
-        TrackerDelegator.trackCheckoutStart(getBaseActivity(), user_id);
+        TrackerDelegator.trackCheckoutStart(user_id);
     }
 
     /*
@@ -371,7 +371,10 @@ public class CheckoutWebFragment extends BaseFragment {
     }
     
     private void trackPurchase( final JSONObject result ) {
-       TrackerDelegator.trackPurchase(getActivity().getApplicationContext(), result, customer);
+        Bundle params = new Bundle();
+        params.putString(TrackerDelegator.PURCHASE_KEY, result.toString());
+        params.putParcelable(TrackerDelegator.CUSTOMER_KEY, customer);           
+       TrackerDelegator.trackPurchase(params);
     }
     
     

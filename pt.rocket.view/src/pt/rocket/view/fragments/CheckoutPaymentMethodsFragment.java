@@ -123,8 +123,12 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
             // Get the ship content values
             mSavedState = savedInstanceState.getParcelable(SAVED_STATE);
         }
-        
-        TrackerDelegator.trackCheckoutStep(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), R.string.gcheckoutPaymentMethods, R.string.xcheckoutpaymentmethods, R.string.mixprop_checkout_payment_methods);
+        Bundle params = new Bundle();        
+        params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
+        params.putInt(TrackerDelegator.GA_STEP_KEY, R.string.gcheckoutPaymentMethods);
+        params.putInt(TrackerDelegator.ADX_STEP_KEY, R.string.xcheckoutpaymentmethods);
+        params.putInt(TrackerDelegator.MIXPANEL_STEP_KEY, R.string.mixprop_checkout_payment_methods);        
+        TrackerDelegator.trackCheckoutStep(params);
     }
 
 //    /*
