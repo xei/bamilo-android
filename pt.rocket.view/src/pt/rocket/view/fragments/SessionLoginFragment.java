@@ -102,7 +102,7 @@ public class SessionLoginFragment extends BaseFragment {
 
     private Bundle savedInstanceState;
 
-    private static SessionLoginFragment loginFragment = null;
+    private static SessionLoginFragment sLoginFragment = null;
 
     private FragmentType nextFragmentType;
     
@@ -117,17 +117,16 @@ public class SessionLoginFragment extends BaseFragment {
      * @return
      */
     public static SessionLoginFragment getInstance(Bundle bundle) {
-        //if (loginFragment == null)
-            loginFragment = new SessionLoginFragment();
-            
-            if(bundle != null){
-                loginFragment.nextFragmentType  = (FragmentType) bundle.getSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE);
-                loginFragment.loginOrigin = bundle.getString(ConstantsIntentExtra.LOGIN_ORIGIN);
-                // Force load form if comes from deep link
-                String path = bundle.getString(ConstantsIntentExtra.DEEP_LINK_TAG);
-                if(path != null && path.equals(DeepLinkManager.TAG)) loginFragment.formResponse = null;
-            }
-        return loginFragment;
+        sLoginFragment = new SessionLoginFragment();
+        
+        if(bundle != null){
+            sLoginFragment.nextFragmentType  = (FragmentType) bundle.getSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE);
+            sLoginFragment.loginOrigin = bundle.getString(ConstantsIntentExtra.LOGIN_ORIGIN);
+            // Force load form if comes from deep link
+            String path = bundle.getString(ConstantsIntentExtra.DEEP_LINK_TAG);
+            if(path != null && path.equals(DeepLinkManager.TAG)) sLoginFragment.formResponse = null;
+        }
+        return sLoginFragment;
     }
 
     /**
@@ -166,8 +165,8 @@ public class SessionLoginFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
         setRetainInstance(true);
-        String appId = getActivity().getResources().getString(R.string.app_id);
-        uiHelper = new UiLifecycleHelper(getActivity(), callback, appId);
+        String appId = getBaseActivity().getResources().getString(R.string.app_id);
+        uiHelper = new UiLifecycleHelper(getBaseActivity(), callback, appId);
         uiHelper.onCreate(savedInstanceState);
     }
 
@@ -213,7 +212,7 @@ public class SessionLoginFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        String appId = getActivity().getResources().getString(R.string.app_id);
+        String appId = getBaseActivity().getResources().getString(R.string.app_id);
         uiHelper.setJumiaAppId(appId);
         uiHelper.onResume();
         
@@ -336,7 +335,7 @@ public class SessionLoginFragment extends BaseFragment {
     public void onPause() {
         super.onPause();
         Log.i(TAG, "ON PAUSE");
-        ((BaseActivity) getActivity()).hideKeyboard();
+        getBaseActivity().hideKeyboard();
         uiHelper.onPause();
     }
 
@@ -402,11 +401,11 @@ public class SessionLoginFragment extends BaseFragment {
 
             }
             else if (id == R.id.middle_login_link_fgtpassword) {
-                ((MainFragmentActivity) getActivity()).onSwitchFragment(FragmentType.FORGOT_PASSWORD, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                ((MainFragmentActivity) getBaseActivity()).onSwitchFragment(FragmentType.FORGOT_PASSWORD, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
             }
             else if (id == R.id.middle_login_link_register) {
                 cameFromRegister = true;
-                ((MainFragmentActivity) getActivity()).onSwitchFragment(FragmentType.REGISTER, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                ((MainFragmentActivity) getBaseActivity()).onSwitchFragment(FragmentType.REGISTER, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                 
             }
         }
@@ -418,7 +417,7 @@ public class SessionLoginFragment extends BaseFragment {
     private void requestLogin() {
         Log.d(TAG, "requestLogin: triggerEvent LogInEvent");
         //
-        ((BaseActivity) getActivity()).hideKeyboard();
+        getBaseActivity().hideKeyboard();
         //
         ContentValues values = dynamicForm.save();
         // if ( autologinCheckBox.isChecked()) {
@@ -482,7 +481,6 @@ public class SessionLoginFragment extends BaseFragment {
         }
         
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        //ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         
         switch (eventType) {
         case INIT_FORMS:
@@ -496,7 +494,7 @@ public class SessionLoginFragment extends BaseFragment {
             getBaseActivity().updateSlidingMenuCompletly();
             
             // NullPointerException on orientation change
-            if(getActivity() != null){
+            if(getBaseActivity() != null){
                 Customer customer = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
                 JumiaApplication.CUSTOMER = customer;
                 
@@ -529,7 +527,7 @@ public class SessionLoginFragment extends BaseFragment {
             getBaseActivity().updateSlidingMenuCompletly();
             
             // NullPointerException on orientation change
-            if(getActivity() != null && !cameFromRegister){
+            if(getBaseActivity() != null && !cameFromRegister){
                 Customer customer = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
                 JumiaApplication.CUSTOMER = customer;
                 
@@ -544,7 +542,7 @@ public class SessionLoginFragment extends BaseFragment {
                 /**
                  * Persist user email or empty that value after successfull login
                  */
-                SharedPreferences sharedPrefs = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+                SharedPreferences sharedPrefs = getBaseActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPrefs.edit();
                 if (rememberEmailCheck.isChecked()) {
                     editor.putString(ConstantsSharedPrefs.KEY_REMEMBERED_EMAIL, customer.getEmail());
@@ -571,7 +569,7 @@ public class SessionLoginFragment extends BaseFragment {
         case GET_LOGIN_FORM_EVENT:
             Form form = (Form) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             if (form == null) {
-                dialog = DialogGenericFragment.createServerErrorDialog(getActivity(),
+                dialog = DialogGenericFragment.createServerErrorDialog(getBaseActivity(),
                         new OnClickListener() {
 
                             @Override
@@ -581,7 +579,7 @@ public class SessionLoginFragment extends BaseFragment {
                                 dialog.dismiss();
                             }
                         }, false);
-                dialog.show(getActivity().getSupportFragmentManager(), null);
+                dialog.show(getBaseActivity().getSupportFragmentManager(), null);
                 return false;
             }
 
@@ -602,7 +600,7 @@ public class SessionLoginFragment extends BaseFragment {
     private void loadForm(Form form) {
         
         dynamicForm = FormFactory.getSingleton().CreateForm(FormConstants.LOGIN_FORM,
-                getActivity(), form);
+                getBaseActivity(), form);
         try {
             container.removeAllViews();
         } catch (IllegalArgumentException e) {
@@ -612,7 +610,7 @@ public class SessionLoginFragment extends BaseFragment {
         setFormClickDetails();
 
         boolean fillEmail = false;
-        SharedPreferences sharedPrefs = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences sharedPrefs = getBaseActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         String rememberedEmail = sharedPrefs.getString(ConstantsSharedPrefs.KEY_REMEMBERED_EMAIL, null);
         if (!TextUtils.isEmpty(rememberedEmail)) {
             fillEmail = true;
@@ -665,12 +663,8 @@ public class SessionLoginFragment extends BaseFragment {
             }
         } else if (eventType == EventType.LOGIN_EVENT) {
             JumiaApplication.INSTANCE.setLoggedIn(false);
-            TrackerDelegator.trackLoginFailed(wasAutologin);
-            // Validate fragment visibility
-            if(!isVisible()){
-                Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-                return true;
-            }
+            
+            TrackerDelegator.trackLoginFailed(autoLogin);
             
             if (errorCode == ErrorCode.REQUEST_ERROR) {
                 
@@ -705,7 +699,7 @@ public class SessionLoginFragment extends BaseFragment {
                                         }
                                     }
                                 });
-                        dialog.show(getActivity().getSupportFragmentManager(), null);
+                        dialog.show(getBaseActivity().getSupportFragmentManager(), null);
                     }
                 }
                 return true;

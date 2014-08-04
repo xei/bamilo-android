@@ -52,8 +52,7 @@ public class ReviewProductHelper extends BaseHelper {
         Bundle bundle = new Bundle();
 
         bundle.putString(Constants.BUNDLE_URL_KEY, EventType.REVIEW_PRODUCT_EVENT.action);
-        bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY,
-                HelperPriorityConfiguration.IS_PRIORITARY);
+        bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.POST);
         bundle.putParcelable(Constants.BUNDLE_FORM_DATA_KEY, values);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.REVIEW_PRODUCT_EVENT);

@@ -969,7 +969,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
     }
     
     /**
-     * XXX
+     * Create a bundle for tracking
      */
     private Bundle createBundleProduct(){
         Bundle bundle = new Bundle();

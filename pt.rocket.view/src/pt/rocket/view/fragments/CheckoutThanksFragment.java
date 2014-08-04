@@ -387,10 +387,10 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
      */
     private void onClickContinue(){
         // Get user id
-        String user_id = "";
-        if (JumiaApplication.CUSTOMER != null && JumiaApplication.CUSTOMER.getIdAsString() != null) user_id = JumiaApplication.CUSTOMER.getIdAsString();
+        String userId = "";
+        if (JumiaApplication.CUSTOMER != null && JumiaApplication.CUSTOMER.getIdAsString() != null) userId = JumiaApplication.CUSTOMER.getIdAsString();
         // Tracking and goto Home 
-        TrackerDelegator.trackCheckoutContinueShopping(user_id);
+        TrackerDelegator.trackCheckoutContinueShopping(userId);
         getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
     }
 

@@ -92,9 +92,10 @@ public class ImageResolutionHelper {
     		imageResolution = ImageResolutionTableHelper.getBestImageResolution(width, height);
     		// Save resolution
     		resolutionMap.put(width + "x" + height, imageResolution);
-    		Log.i(TAG, "GET BEST RESOLUTION FROM DATABASE: " + imageResolution.getIdentifier() + " FOR: " + width + "x" + height);
+    		if(imageResolution != null) Log.i(TAG, "GET BEST RESOLUTION FROM DATABASE: " + imageResolution.getIdentifier() + " FOR: " + width + "x" + height);
+    		else Log.i(TAG, "GET BEST RESOLUTION FROM CACHE: IS NULL");
     	} else {
-    		Log.i(TAG, "GET BEST RESOLUTION FROM CACHE: " + imageResolution.getIdentifier() + " FOR: " + width + "x" + height);
+    		Log.i(TAG, "GET RESOLUTION MAP: IS NULL");
     	}
     	return imageResolution;
     }

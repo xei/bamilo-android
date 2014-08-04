@@ -6,8 +6,11 @@
     <bool name="ga_reportUncaughtExceptions">false</bool>
     <bool name="ga_testmode">false</bool>
     <bool name="ga_enable">false</bool>
-
     <string name="ga_trackingId"></string>
+    
+    <!-- GA : Dispatch each hit immediately (seconds), default is 30 minutes.
+    <integer name="ga_dispatchPeriod">0</integer>
+     -->
 
     <!-- PageView Names -->
     <string name="gnavigation">LeftMenu</string>
@@ -47,7 +50,7 @@
     <!-- Action -->
     <string name="gpdv">pdv</string>
     <string name="gsearch">Search</string>
-    <string name="gaddtocart">AddToCart</string>
+    <string name="gaddtocart">AddtoCart</string>
     <string name="gloginsuccess">LoginSuccess</string>
     <string name="gfacebookloginsuccess">FacebookLoginSuccess</string>
     <string name="gfacebooksignupsuccess">FacebookSignupSuccess</string>

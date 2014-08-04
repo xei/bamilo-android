@@ -135,25 +135,6 @@ public class WriteReviewFragment extends BaseFragment {
         triggerCustomer();
     }
 
-//    /*
-//     * (non-Javadoc)
-//     * 
-//     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-//     * android.view.ViewGroup, android.os.Bundle)
-//     */
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//        super.onCreateView(inflater, container, savedInstanceState);
-//        Log.i(TAG, "ON CREATE VIEW");
-//        View view = inflater.inflate(R.layout.writereview, container, false);
-//        
-//        
-//        labelsContainer = (LinearLayout) view.findViewById(R.id.label_container);
-//        
-//        ratingBarContainer = (LinearLayout) view.findViewById(R.id.ratingbar_container);
-//        return view;
-//    }
-
     /*
      * (non-Javadoc)
      * 
@@ -164,9 +145,7 @@ public class WriteReviewFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
-        
         labelsContainer = (LinearLayout) view.findViewById(R.id.label_container);
-        
         ratingBarContainer = (LinearLayout) view.findViewById(R.id.ratingbar_container);
     }
     
@@ -453,7 +432,6 @@ public class WriteReviewFragment extends BaseFragment {
         }
     }
 
-    @SuppressWarnings("unchecked")
     protected boolean onSuccessEvent(Bundle bundle) {
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         // ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);

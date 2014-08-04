@@ -51,13 +51,9 @@ public class GetCustomerHelper extends BaseHelper {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        JumiaApplication.INSTANCE.CUSTOMER = new Customer(jsonObject);
-        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, JumiaApplication.INSTANCE.CUSTOMER);
+        JumiaApplication.CUSTOMER = new Customer(jsonObject);
+        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, JumiaApplication.CUSTOMER);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_CUSTOMER);
-//        long elapsed = System.currentTimeMillis() - JumiaApplication.INSTANCE.timeTrackerMap.get(EventType.GET_CUSTOMER);
-//        Log.i("REQUEST", "event type response : "+bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY)+" time spent : "+elapsed);
-//        String trackValue = bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY) + " : "+elapsed;
-//        JumiaApplication.INSTANCE.writeToTrackerFile(trackValue);
         return bundle;
     }
     

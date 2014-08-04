@@ -1,6 +1,7 @@
 package pt.rocket.framework.tracking;
 
 import java.util.List;
+import java.util.Locale;
 
 import pt.rocket.framework.Darwin;
 import pt.rocket.framework.R;
@@ -89,7 +90,7 @@ public class AnalyticsGoogle {
 
 		loadKeys();
 		mAnalytics = GoogleAnalytics.getInstance(mContext);
-
+		
 		boolean testMode = context.getResources().getBoolean(R.bool.ga_testmode);
 		if (testMode) {
 			mCurrentKey = mTestKey;
@@ -196,33 +197,26 @@ public class AnalyticsGoogle {
 		mTracker.sendEvent(category, action, searchTerm, numberOfItems);
 	}
 
-	public void trackProduct(int navigationPrefix, String navigationPath, String name, String sku, String url) {
-		if (!isEnabled) {
-			return;
-		}
+	public void trackProduct(int navigationPrefix, String navigationPath, String name, String sku, String url, Double price) {
+		if (!isEnabled) return;
 
-		if (navigationPrefix == -1 || navigationPath == null || name == null) {
-			return;
+		if (navigationPath == null && navigationPrefix != -1 && name == null) {
+			// Log.d( TAG, "trackProduct: navigationPath = " + navigationPath + " name = " + name );
+			String pageView;
+			if(navigationPath != null && !navigationPath.equalsIgnoreCase("")){
+				pageView = mContext.getString(navigationPrefix) + "_" + navigationPath + "/" + name.replace(" ", "_");	
+			} else {
+				pageView = mContext.getString(navigationPrefix) + "_" + name.replace(" ", "_");
+			}
+			//Log.d(TAG, "trackProduct pageView = " + pageView);
+			mTracker.sendView(pageView);
 		}
-
-		// Log.d( TAG, "trackProduct: navigationPath = " + navigationPath +
-		// " name = " + name );
-		String pageView;
-		if(navigationPath != null && !navigationPath.equalsIgnoreCase("")){
-			pageView = mContext.getString(navigationPrefix) + "_" + navigationPath + "/" + name.replace(" ", "_");	
-		} else {
-			pageView = mContext.getString(navigationPrefix) + "_" + name.replace(" ", "_");
-		}
-		
-
-		Log.d(TAG, "trackProduct pageView = " + pageView);
-		mTracker.sendView(pageView);
 
 		String category = mContext.getString(R.string.gcatalog);
 		String action = mContext.getString(R.string.gpdv);
 
-		Log.d(TAG, "trackProduct: category = " + category + " action = " + action + " sku = " + sku);
-		mTracker.sendEvent(category, action, sku, 0l);
+		//Log.d(TAG, "trackProduct: category = " + category + " action = " + action + " sku = " + sku + " ptrice = " + price);
+		mTracker.sendEvent(category, action, sku, (price != null) ? price.longValue() : 0l);
 	}
 
 	public void trackAccount(int resAction, String user_id) {
@@ -244,15 +238,12 @@ public class AnalyticsGoogle {
 	}
 
 	public void trackAddToCart(String sku, Long price) {
-		if (!isEnabled) {
-			return;
-		}
-
+		// Validate
+		if (!isEnabled) return;
+		// Data
 		String category = mContext.getString(R.string.gcatalog);
 		String action = mContext.getString(R.string.gaddtocart);
-
-		Log.d(TAG, "trackProduct: category = " + category + " action = " + action + " sku = " + sku + " price = "
-				+ price);
+		//Log.d(TAG, "trackProduct: category = " + category + " action = " + action + " sku = " + sku + " price = " + price);
 		mTracker.sendEvent(category, action, sku, price);
 	}
 
@@ -403,42 +394,45 @@ public class AnalyticsGoogle {
 	}
 
 	public void trackShare(Context context, String sku, String user_id, String shop_country ){
-		if (!isEnabled) {
-			return;
-		}
-		
+		// Validate
+		if (!isEnabled) return;
+		// Get data
 		String category = mContext.getString(R.string.gcatalog);
 		String action = mContext.getString(R.string.gsocialshare);
+		//Log.i(TAG, "TRACK SHARE EVENT: Cat " + category + ", Action " + action + ", Sku " + sku);
 		mTracker.sendSocial(category, action, sku);
 	}
 	
-	public void trackCheckoutStart(Context context, String user_id){
-		if (!isEnabled) {
-			return;
-		}
-		
+	public void trackCheckoutStart(Context context, String userId){
+		// Validate
+		if (!isEnabled) return;
+		// Get data
 		String category = mContext.getString(R.string.gcheckout);
 		String action = mContext.getString(R.string.gcheckoutstart);
-		mTracker.sendSocial(category, action, user_id);
+		//Log.i(TAG, "TRACK START: Cat " + category + ", Action " + action + ", UserId " + userId);
+		mTracker.sendEvent(category, action, userId, (long) 0);
 	}
 	
-	public void trackCheckoutContinueShopping(Context context, String user_id){
-		if (!isEnabled) {
-			return;
-		}
-		
+	public void trackCheckoutContinueShopping(Context context, String userId){
+		// Validate
+		if (!isEnabled) return;
+		// Data
 		String category = mContext.getString(R.string.gcheckout);
 		String action = mContext.getString(R.string.gcheckoutcontinueshopping);
-		mTracker.sendSocial(category, action, user_id);
+		//Log.i(TAG, "TRACK CONT SHOP EVENT: Cat " + category + ", Action " + action + ", UserId " + userId);
+		mTracker.sendEvent(category, action, userId, (long) 0);
 	}
 	
-	public void trackRateProduct(Context context, String sku, Long value, String rating_type){
-		if (!isEnabled) {
-			return;
-		}
-		
+	public void trackRateProduct(Context context, String sku, Long value, String ratingType){
+		// Validate
+		if (!isEnabled) return;
+		// Data
 		String category = mContext.getString(R.string.gcatalog);
-		String action = mContext.getString(R.string.grateproduct)+rating_type;
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append(mContext.getString(R.string.grateproduct));
+		stringBuilder.append(ratingType.toUpperCase(Locale.getDefault()));
+		String action = stringBuilder.toString();
+		//Log.i(TAG, "TRACK RATING EVENT: Cat " + category + ", Action " + action + ", Sku " + sku + ", Value " + value);
 		mTracker.sendEvent(category, action, sku, value);
 	}
 	

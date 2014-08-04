@@ -236,13 +236,14 @@ public class TrackerDelegator {
         }
         AdXTracker.trackProductRate(context, product.getSku(), review, user_id, JumiaApplication.SHOP_NAME);
         for (Entry<String, Double> option : review.getRating().entrySet()) {
-            long priceLong;
+            Long priceLong;
             try {
-                priceLong = Long.parseLong(option.getValue().toString());
+                priceLong = option.getValue().longValue();
             } catch (NumberFormatException e) {
                 priceLong = 0l;
+            } catch (NullPointerException e) {
+                priceLong = 0l;
             }
-
             AnalyticsGoogle.get().trackRateProduct(context, product.getSku(), priceLong, option.getKey());
         }
 
@@ -528,12 +529,7 @@ public class TrackerDelegator {
     }
 
     /**
-     * ################## NEW ##################
-     */
-
-    /**
-     * XXX
-     * 
+     * Tracking the continue shopping
      * @param context
      * @param userId
      */
@@ -543,8 +539,7 @@ public class TrackerDelegator {
     }
 
     /**
-     * XXX
-     * 
+     * Tracking the start of checkout
      * @param context
      * @param userId
      */
@@ -554,8 +549,7 @@ public class TrackerDelegator {
     }
 
     /**
-     * XXX
-     * 
+     * Tracking a timing
      * @param location
      * @param start
      */
@@ -567,17 +561,16 @@ public class TrackerDelegator {
     }
 
     /**
-     * XXX
-     * 
+     * Tracking a page
      * @param bundle
      */
     public static void trackPage(int string) {
+        // GA
         AnalyticsGoogle.get().trackPage(string);
     }
 
     /**
-     * XXX
-     * 
+     * Tracking a product added to cart
      * @param context
      * @param bundle
      */
@@ -599,8 +592,7 @@ public class TrackerDelegator {
     }
 
     /**
-     * XXX
-     * 
+     * Tracking a complete product
      * @param context
      * @param bundle
      */
@@ -614,14 +606,13 @@ public class TrackerDelegator {
         CompleteProduct product = bundle.getParcelable(PRODUCT_KEY);
         String category = bundle.getParcelable(CATEGORY_KEY);
         // GA
-        AnalyticsGoogle.get().trackProduct(prefix, path, name, sku, url);
+        AnalyticsGoogle.get().trackProduct(prefix, path, name, sku, url, product.getPriceAsDouble());
         // MIX
         MixpanelTracker.product(context, product, category);
     }
 
     /**
-     * XXX
-     * 
+     * Tracking a campaign
      * @param utm
      */
     public static void trackCampaign(String utm) {
