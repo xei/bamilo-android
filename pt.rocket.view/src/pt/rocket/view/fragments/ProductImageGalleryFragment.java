@@ -24,9 +24,11 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.GestureDetector;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.RelativeLayout;
@@ -109,7 +111,6 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
     public ProductImageGalleryFragment() {
         super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.Products,
-                R.layout.product_showoff_viewpager_frame,
                 0,
                 KeyboardState.NO_ADJUST_CONTENT);
         this.setRetainInstance(true);
@@ -135,6 +136,20 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnItemC
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
+    }
+    
+    
+    /*
+     * (non-Javadoc)
+     * 
+     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
+     * android.view.ViewGroup, android.os.Bundle)
+     */
+    @Override
+    public View onCreateView(LayoutInflater mInflater, ViewGroup viewGroup, Bundle savedInstanceState) {
+        super.onCreateView(mInflater, viewGroup, savedInstanceState);
+        Log.i(TAG, "ON CREATE VIEW");
+        return mInflater.inflate(R.layout.product_showoff_viewpager_frame, viewGroup, false);
     }
     
     /*

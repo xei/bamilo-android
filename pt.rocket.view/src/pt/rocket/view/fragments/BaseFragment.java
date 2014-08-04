@@ -140,6 +140,15 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         this.mInflateLayoutResId = inflateLayout;
     }
 
+    /**
+     * Constructor used only by PDV fragments
+     */
+    public BaseFragment(EnumSet<MyMenuItem> enabledMenuItems, NavigationAction action, int titleResId, KeyboardState adjust_state) {
+        this.enabledMenuItems = enabledMenuItems;
+        this.action = action;
+        this.titleResId = titleResId;
+        this.adjustState = adjust_state;
+    }
 
     /**
      * #### LIFE CICLE ####
@@ -719,6 +728,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         JumiaApplication.INSTANCE.getRequestsRetryBundleList().remove((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
         JumiaApplication.INSTANCE.getRequestsResponseList().remove((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
         JumiaApplication.INSTANCE.responseCallbacks.remove(id);
+        
+        // TODO : Validate recover
         JumiaApplication.INSTANCE.getRequestOrderList().remove((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
     }
 
@@ -748,7 +759,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         Log.w(TAG, "WARNING: GOTO WEB CHECKOUT");
         Bundle params = new Bundle();
         params.putString(TrackerDelegator.EMAIL_KEY, email);
-        params.putString(TrackerDelegator.ERROR_KEY, error);        
+        params.putString(TrackerDelegator.ERROR_KEY, error);
         TrackerDelegator.trackNativeCheckoutError(params);
         
         // Warning user

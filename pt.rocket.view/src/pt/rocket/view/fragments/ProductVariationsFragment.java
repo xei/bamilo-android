@@ -21,8 +21,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import de.akquinet.android.androlog.Log;
@@ -61,14 +62,8 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
     public ProductVariationsFragment() {
         super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.Products,
-                R.layout.variations_fragment,
                 R.string.product_details_title,
                 KeyboardState.NO_ADJUST_CONTENT);
-    }
-
-    @Override
-    public void sendListener(int identifier, OnClickListener onTeaserClickListener) {
-
     }
 
     /*
@@ -81,6 +76,19 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
         sharedPreferences = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
+     * android.view.ViewGroup, android.os.Bundle)
+     */
+    @Override
+    public View onCreateView(LayoutInflater mInflater, ViewGroup viewGroup, Bundle savedInstanceState) {
+        super.onCreateView(mInflater, viewGroup, savedInstanceState);
+        Log.i(TAG, "ON CREATE VIEW");
+        return mInflater.inflate(R.layout.variations_fragment, viewGroup, false);
     }
     
     /*

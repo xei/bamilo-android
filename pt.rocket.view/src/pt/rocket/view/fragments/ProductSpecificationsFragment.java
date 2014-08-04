@@ -23,7 +23,9 @@ import android.text.Html;
 import android.text.Spannable;
 import android.text.TextUtils;
 import android.text.style.MetricAffectingSpan;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.RelativeLayout;
 import de.akquinet.android.androlog.Log;
@@ -66,7 +68,6 @@ public class ProductSpecificationsFragment extends BaseFragment implements OnCli
     public ProductSpecificationsFragment() {
         super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.Products,
-                R.layout.productdetails_specification_fragment,
                 R.string.product_details_title,
                 KeyboardState.NO_ADJUST_CONTENT);
         this.setRetainInstance(true);
@@ -105,14 +106,6 @@ public class ProductSpecificationsFragment extends BaseFragment implements OnCli
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         Log.i(TAG, "ON ATTACH");
-        // This makes sure that the container activity has implemented
-        // the callback interface. If not, it throws an exception
-//        try {
-//            mCallback = (OnFragmentActivityInteraction) getActivity();
-//        } catch (ClassCastException e) {
-//            throw new ClassCastException(getActivity().toString()
-//                    + " must implement OnActivityFragmentInteraction");
-//        }
     }
 
     /*
@@ -126,6 +119,19 @@ public class ProductSpecificationsFragment extends BaseFragment implements OnCli
         Log.i(TAG, "ON CREATE");
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
+     * android.view.ViewGroup, android.os.Bundle)
+     */
+    @Override
+    public View onCreateView(LayoutInflater mInflater, ViewGroup viewGroup, Bundle savedInstanceState) {
+        super.onCreateView(mInflater, viewGroup, savedInstanceState);
+        Log.i(TAG, "ON CREATE VIEW");
+        return mInflater.inflate(R.layout.productdetails_specification_fragment, viewGroup, false);
+    }
+    
     /*
      * (non-Javadoc)
      * @see pt.rocket.view.fragments.BaseFragment#onViewCreated(android.view.View, android.os.Bundle)

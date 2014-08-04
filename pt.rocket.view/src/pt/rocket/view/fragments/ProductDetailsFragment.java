@@ -411,7 +411,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         imageIsFavourite = (ImageView) mainView.findViewById(R.id.image_is_favourite);
         imageIsFavourite.setOnClickListener(this);
 
-        imageShare = (ImageView) mainView.findViewById(R.id.image_share);
+        imageShare = (ImageView) mainView.findViewById(R.id.product_image_share);
         imageShare.setOnClickListener(this);
 
         mProductRatingContainer = (ViewGroup) mainView.findViewById(R.id.product_rating_container);
@@ -1114,7 +1114,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
                 catalogFragment.sendValuesToFragment(fragmentMessage, mCompleteProduct.getSku());
             }
             
-        } else if (id == R.id.image_share){
+        } else if (id == R.id.product_image_share){
             try {
                 Intent shareIntent = getBaseActivity().createShareIntent();
                 startActivity(shareIntent);

@@ -78,7 +78,6 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
     public ProductBasicInfoFragment() {
         super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.Products,
-                R.layout.productdetails_basic_info_fragment,
                 R.string.product_details_title,
                 KeyboardState.NO_ADJUST_CONTENT);
     }
@@ -125,6 +124,19 @@ public class ProductBasicInfoFragment extends BaseFragment implements OnClickLis
         Log.i(TAG, "ON CREATE");
     }
 
+    
+    /*
+     * (non-Javadoc)
+     * 
+     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
+     * android.view.ViewGroup, android.os.Bundle)
+     */
+    @Override
+    public View onCreateView(LayoutInflater mInflater, ViewGroup viewGroup, Bundle savedInstanceState) {
+        super.onCreateView(mInflater, viewGroup, savedInstanceState);
+        Log.i(TAG, "ON CREATE VIEW");
+        return mInflater.inflate(R.layout.productdetails_basic_info_fragment, viewGroup, false);
+    }
     
     /*
      * (non-Javadoc)
