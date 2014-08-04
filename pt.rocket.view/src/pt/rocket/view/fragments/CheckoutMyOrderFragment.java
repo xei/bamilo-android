@@ -551,7 +551,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
      * @author sergiopereira
      */
     private String getUserAgentAsExtraData(){
-        String device = (getResources().getBoolean(R.bool.isTablet)) ? "tablet" : "phone";      
+        String device = (getResources().getBoolean(R.bool.isTablet)) ? "tablet" : "mobile";      
         return "app=android&customer_device=" + device;
     }
 
