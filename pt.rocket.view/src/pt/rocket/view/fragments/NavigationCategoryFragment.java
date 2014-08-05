@@ -19,6 +19,7 @@ import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.framework.utils.ShopSelector;
 import pt.rocket.helpers.GetCategoriesHelper;
 import pt.rocket.interfaces.IResponseCallback;
+import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.os.Bundle;
@@ -451,6 +452,21 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
         FragmentController.getInstance().removeEntriesUntilTag(FragmentType.HOME.toString());
         // Goto Catalog
         getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_LIST, bundle2, FragmentController.ADD_TO_BACK_STACK);
+        // Tracking category
+        trackCategory(category.getName());
+    }
+    
+    
+    /**
+     * Tracking category
+     * @param name
+     */
+    private void trackCategory(String name){
+        Bundle params = new Bundle();
+        params.putString(TrackerDelegator.CATEGORY_KEY, name);
+        params.putInt(TrackerDelegator.PAGE_NUMBER_KEY, 1);
+        params.putString(TrackerDelegator.LOCATION_KEY, getString(R.string.gnavigation));
+        TrackerDelegator.trackCategoryView(params);
     }
     
     /**

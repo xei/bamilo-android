@@ -44,6 +44,8 @@ public class ProductAttributes implements IJSONSerializable, Parcelable {
     private Double rating;
 	private boolean isNew;
 	private boolean isFavourite;
+	private double specialPriceDouble;
+	private double priceDouble;
 
     /**
      * ProductAttributes empty constructor
@@ -54,16 +56,15 @@ public class ProductAttributes implements IJSONSerializable, Parcelable {
         url = "";
         description = "";
         brand = "";
-
         maxPrice = "";
         price = "";
-
         specialPrice = "";
         maxSpecialPrice = "";
         maxSavingPercentage = 0.0;
-
         reviews = 0;
         rating = .0;
+    	specialPriceDouble = .0;
+    	priceDouble = .0;
     }
 
     /**
@@ -121,7 +122,21 @@ public class ProductAttributes implements IJSONSerializable, Parcelable {
     public String getPrice() {
         return price;
     }
-
+    
+    /**
+     * @return the price
+     */
+    public double getPriceAsDouble() {
+        return priceDouble;
+    }
+    
+    /**
+     * @return the price
+     */
+    public double getSpecialPriceAsDouble() {
+        return specialPriceDouble;
+    }
+    
     /**
      * @return the url
      */
@@ -203,7 +218,7 @@ public class ProductAttributes implements IJSONSerializable, Parcelable {
 
             String priceString = jsonObject.optString(RestConstants.JSON_PRICE_TAG);
             
-            double priceDouble = -1;
+            priceDouble = -1;
             try {
             	 priceDouble = Double.parseDouble(priceString);
                  price = CurrencyFormatter.formatCurrency(priceDouble);
@@ -231,7 +246,7 @@ public class ProductAttributes implements IJSONSerializable, Parcelable {
                 
             }
 
-            double specialPriceDouble = 0;
+            specialPriceDouble = 0;
             if (!jsonObject.isNull(RestConstants.JSON_SPECIAL_PRICE_TAG)) {
             	try {
             		 specialPriceDouble = Double.parseDouble(jsonObject
@@ -339,6 +354,8 @@ public class ProductAttributes implements IJSONSerializable, Parcelable {
         dest.writeDouble(maxSavingPercentage);
         dest.writeInt(reviews);
         dest.writeDouble(rating);
+        dest.writeDouble(priceDouble);
+        dest.writeDouble(specialPriceDouble);
     }
     
     
@@ -355,11 +372,12 @@ public class ProductAttributes implements IJSONSerializable, Parcelable {
         maxSavingPercentage = in.readDouble();
         reviews = in.readInt();
         rating = in.readDouble();
+        priceDouble = in.readDouble();
+        specialPriceDouble = in.readDouble();
         
         try {
             isFavourite = FavouriteTableHelper.verifyIfFavourite(sku);
         } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         

@@ -19,6 +19,7 @@ import pt.rocket.helpers.GetSearchSuggestionHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.view.R;
 import android.content.Context;
 import android.os.Bundle;
@@ -32,10 +33,11 @@ import android.widget.GridView;
 import de.akquinet.android.androlog.Log;
 
 /**
+ * Class used to show recent searches
  * @author Andre Lopes
- * 
+ * @modified sergiopereira
  */
-public class RecentSearchFragment extends BaseFragment {
+public class RecentSearchFragment extends BaseFragment implements OnClickListener, IResponseCallback {
     
     private final static String TAG = LogTagHelper.create(RecentSearchFragment.class);
 
@@ -48,9 +50,8 @@ public class RecentSearchFragment extends BaseFragment {
     private ArrayList<SearchSuggestion> mRecentSearches;
     
     private GridView mRecentSearchesGrid;
+    
     private Button mClearAllButton;
-
-    // private View mLoadingView;
 
     /**
      * Empty constructor
@@ -63,15 +64,13 @@ public class RecentSearchFragment extends BaseFragment {
                 KeyboardState.NO_ADJUST_CONTENT);
     }
     
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//        Log.i(TAG, "onCreateView");
-//        mainView = inflater.inflate(R.layout.recentsearches, container, false);
-//
-//        setAppContentLayout();
-//
-//        return mainView;
-//    }
+    /**
+     * Create new RecentSearchFragment instance
+     * @return RecentSearchFragment
+     */
+    public static RecentSearchFragment newInstance() {
+        return new RecentSearchFragment();
+    }
     
     /*
      * (non-Javadoc)
@@ -83,17 +82,36 @@ public class RecentSearchFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
-
         mainView = view;
-
         setAppContentLayout();
-
         init();
     }
-
-    public static RecentSearchFragment getInstance() {
-        return new RecentSearchFragment();
+    
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.view.fragments.BaseFragment#onResume()
+     */
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.i(TAG, "ON RESUME");
+        // Tracking page
+        TrackerDelegator.trackPage(R.string.grecentsearches);
     }
+
+    /**
+     * ########### LAYOUT ########### 
+     */
+    
+    private void init() {
+        Log.d(TAG, "INIT");
+        mContext = getBaseActivity();
+        // Get Recent Searches
+        Log.i(TAG, "LOAD RECENT SEARCHES");
+        showFragmentLoading();
+        new GetSearchSuggestionHelper((IResponseCallback) this);
+    }
+
 
     private void setAppContentLayout() {
         if (mainView == null) {
@@ -131,31 +149,50 @@ public class RecentSearchFragment extends BaseFragment {
             }
         });
     }
-
-    private void init() {
-        Log.d(TAG, "INIT");
-        mContext = getActivity();
-
-        // Get Recent Searches
-        Log.i(TAG, "LOAD RECENT SEARCHES");
-        showFragmentLoading();
-        new GetSearchSuggestionHelper(responseCallback);
+    
+    
+    /**
+     * ########### LISTENERS ########### 
+     */
+    
+    /*
+     * (non-Javadoc)
+     * @see android.view.View.OnClickListener#onClick(android.view.View)
+     */
+    @Override
+    public void onClick(View v) {
+        // TODO : Add all click listener here
+    }
+    
+    /**
+     * ########### TRIGGERS ########### 
+     */
+    
+    /**
+     * Execute search
+     * @param searchText
+     */
+    protected void executeSearchRequest(String searchText) {
+        Log.d(TAG, "SEARCH COMPONENT: GOTO PROD LIST");
+        Bundle bundle = new Bundle();
+        bundle.putString(ConstantsIntentExtra.CONTENT_URL, null);
+        bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, searchText);
+        bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, searchText);
+        bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gsearch);
+        bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
+        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_LIST, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
-    IResponseCallback responseCallback = new IResponseCallback() {
+    /**
+     * ########### RESPONSES ########### 
+     */
 
-        @Override
-        public void onRequestError(Bundle bundle) {
-            onErrorEvent(bundle);
-        }
-
-        @Override
-        public void onRequestComplete(Bundle bundle) {
-            onSuccessEvent(bundle);
-        }
-    };
-
-    public void onSuccessEvent(Bundle bundle) {
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.interfaces.IResponseCallback#onRequestComplete(android.os.Bundle)
+     */
+    @Override
+    public void onRequestComplete(Bundle bundle) {
         Log.d(TAG, "ON RESPONSE COMPLETE:");
 
         if (isOnStoppingProcess) return;
@@ -201,24 +238,14 @@ public class RecentSearchFragment extends BaseFragment {
             Log.d(TAG, "ON RESPONSE COMPLETE: UNKNOWN TYPE");
             break;
         }
-    }
-    
-    /**
-     * Execute search
-     * @param searchText
-     */
-    protected void executeSearchRequest(String searchText) {
-        Log.d(TAG, "SEARCH COMPONENT: GOTO PROD LIST");
-        Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.CONTENT_URL, null);
-        bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, searchText);
-        bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, searchText);
-        bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gsearch);
-        bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
-        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_LIST, bundle, FragmentController.ADD_TO_BACK_STACK);
-    }
+    }    
 
-    public void onErrorEvent(Bundle bundle) {
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.interfaces.IResponseCallback#onRequestError(android.os.Bundle)
+     */
+    @Override
+    public void onRequestError(Bundle bundle) {
         Log.d(TAG, "ON RESPONSE ERROR:");
 
         if (isOnStoppingProcess) return;
@@ -235,4 +262,5 @@ public class RecentSearchFragment extends BaseFragment {
             break;
         }
     }
+
 }

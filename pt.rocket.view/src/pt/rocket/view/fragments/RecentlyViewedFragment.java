@@ -31,6 +31,7 @@ import pt.rocket.helpers.cart.GetShoppingCartAddItemHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogListFragment;
 import pt.rocket.utils.dialogfragments.DialogListFragment.OnDialogListListener;
 import pt.rocket.view.R;
@@ -105,17 +106,6 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
         setRetainInstance(true);
     }
 
-//    /*
-//     * (non-Javadoc)
-//     * 
-//     * @see pt.rocket.view.fragments.BaseFragment#onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle)
-//     */
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//        Log.i(TAG, "ON CREATE VIEW");
-//        return inflater.inflate(R.layout.recentlyviewed, container, false);
-//    }
-
     /*
      * (non-Javadoc)
      * 
@@ -146,6 +136,8 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
+        // Tracking page
+        TrackerDelegator.trackPage(R.string.grecentlyviewed);
     }
 
     /*
@@ -389,6 +381,30 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
         bundle.putBoolean(GetShoppingCartAddItemHelper.REMOVE_RECENTLYVIEWED_TAG, true);
         // Trigger
         triggerContentEventWithNoLoading(new GetShoppingCartAddItemHelper(), bundle, (IResponseCallback) this);
+        // Tracking
+        trackAddtoCart(sku, recentlyViewed);
+    }
+    
+    /**
+     * Track add to cart
+     * @param sku
+     * @param recentlyViewed
+     * @author sergiopereira
+     */
+    private void trackAddtoCart(String sku, LastViewedAddableToCart recentlyViewed){
+        try {
+            // Tracking
+            Bundle bundle = new Bundle();
+            bundle.putString(TrackerDelegator.SKU_KEY, sku);
+            bundle.putLong(TrackerDelegator.PRICE_KEY, recentlyViewed.getSpecialPriceDouble() > 0 ? recentlyViewed.getSpecialPriceDouble().longValue() : recentlyViewed.getPriceAsDouble().longValue());
+            bundle.putString(TrackerDelegator.NAME_KEY, recentlyViewed.getName());
+            bundle.putString(TrackerDelegator.BRAND_KEY, recentlyViewed.getBrand());
+            bundle.putString(TrackerDelegator.CATEGORY_KEY, "");
+            bundle.putString(TrackerDelegator.LOCATION_KEY, getString(R.string.mixprop_itemlocationrecently));
+            TrackerDelegator.trackProductAddedToCart(bundle);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        } 
     }
 
     /**

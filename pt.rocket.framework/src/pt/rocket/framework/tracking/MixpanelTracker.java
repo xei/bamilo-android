@@ -364,21 +364,21 @@ public class MixpanelTracker {
 		mixpanel.track(context.getString(R.string.mixproduct), props);
 	}
 
-	public static void productAddedToCart(Context context, CompleteProduct product, ProductSimple simple, Double price, String location) {
+	public static void productAddedToCart(Context context, String sku, String name, String brand, String category, Double price, String location) {
 		if (!isEnabled)
 			return;
 		
 		props = null;
-		setProperty(context.getString(R.string.mixprop_itemid), simple.getAttributeByKey(ProductSimple.SKU_TAG));
-		setProperty(context.getString(R.string.mixprop_itemname), product.getName());
-		setProperty(context.getString(R.string.mixprop_itembrand), product.getBrand());
-		setProperty(context.getString(R.string.mixprop_itemcategory), product.getCategories().size() > 0 ? product.getCategories().get(0) : "" );
+		setProperty(context.getString(R.string.mixprop_itemid), sku);
+		setProperty(context.getString(R.string.mixprop_itemname), name);
+		setProperty(context.getString(R.string.mixprop_itembrand), brand);
+		setProperty(context.getString(R.string.mixprop_itemcategory), category);
 		setProperty(context.getString(R.string.mixprop_itemsubcategory), "");
 		setProperty(context.getString(R.string.mixprop_itemprice), getPriceRange(price) );
 		setProperty(context.getString(R.string.mixprop_itemquantity), "1" );
 		setProperty(context.getString(R.string.mixprop_itemlocation), location );
 		
-		Log.d( TAG, "cart tracking: productSKU = " + product.getSku() );
+		Log.d( TAG, "cart tracking: productSKU = " + sku );
 		mixpanel.track(context.getString(R.string.mixcart), props);
 	}
 

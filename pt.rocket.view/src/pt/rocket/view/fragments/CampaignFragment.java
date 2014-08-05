@@ -28,6 +28,7 @@ import pt.rocket.helpers.campaign.GetCampaignHelper;
 import pt.rocket.helpers.cart.GetShoppingCartAddItemHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.DeepLinkManager;
+import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.UIUtils;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.utils.imageloader.RocketImageLoader;
@@ -69,6 +70,12 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, O
     private static CampaignFragment sCampaignFragment;
 
     private TeaserCampaign mTeaserCampaign;
+    
+    public int NAME = R.id.name;
+
+    public int BRAND = R.id.brand;
+
+    public int PRICE = R.id.price;
     
     public int PROD = R.id.product;
     
@@ -194,6 +201,8 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, O
         super.onResume();
         Log.i(TAG, "ON RESUME");
         isScrolling = false;
+        // Track page
+        TrackerDelegator.trackPage(R.string.gcampaignpage);
     }
     
     /*
@@ -377,6 +386,10 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, O
         String sku = (String) view.getTag(SKU);
         String size = (String) view.getTag(SIZE);
         Boolean hasStock = (Boolean) view.getTag(STOCK);
+        String name = (String) view.getTag(NAME);
+        String brand = (String) view.getTag(BRAND);
+        Double price = (Double) view.getTag(PRICE);
+        
         Log.i(TAG, "ON CLICK BUY " + sku + " " + size + " " + hasStock);
         // Validate the remain stock
         if(!hasStock)
@@ -389,7 +402,29 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, O
             values.put(GetShoppingCartAddItemHelper.PRODUCT_SKU_TAG, sku);
             values.put(GetShoppingCartAddItemHelper.PRODUCT_QT_TAG, "1");
             triggerAddToCart(values);
+            // Tracking
+            trackAddtoCart(sku, name, brand, price);
         } 
+    }
+    
+    /**
+     * Track item added to cart
+     * @author sergiopereira
+     */
+    private void trackAddtoCart(String sku, String name, String brand, Double price){
+        try {
+            // Tracking
+            Bundle bundle = new Bundle();
+            bundle.putString(TrackerDelegator.SKU_KEY, sku);
+            bundle.putLong(TrackerDelegator.PRICE_KEY, (price != null) ? price.longValue() : 0l);
+            bundle.putString(TrackerDelegator.NAME_KEY, name);
+            bundle.putString(TrackerDelegator.BRAND_KEY, brand);
+            bundle.putString(TrackerDelegator.CATEGORY_KEY, "");
+            bundle.putString(TrackerDelegator.LOCATION_KEY, getString(R.string.mixprop_itemlocationcampaign));
+            TrackerDelegator.trackProductAddedToCart(bundle);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
     }
     
     /**
@@ -612,6 +647,12 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, O
         private static final int GREEN_PERCENTAGE = 64;
         
         private static final int ORANGE_PERCENTAGE = 34;
+
+        public int NAME = R.id.name;
+
+        public int BRAND = R.id.brand;
+
+        public int PRICE = R.id.price;
         
         public int PROD = R.id.product;
         
@@ -769,7 +810,6 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, O
             setClickableView(view.mImageContainer, position);
             // Set image
             RocketImageLoader.instance.loadImage(item.getImage(), view.mImage, null, R.drawable.no_image_large);
-            // setClickableView(view.mImage, position);
             // Set size
             setSizeContainer(view, item, position);
             // Set price and special price
@@ -1089,6 +1129,9 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, O
             view.setTag(SKU, (selectedSize != null) ? selectedSize.simpleSku : item.getSku());
             view.setTag(SIZE, (selectedSize != null) ? selectedSize.size : "");
             view.setTag(STOCK, item.hasStock());
+            view.setTag(NAME, item.getName());
+            view.setTag(BRAND, item.getBrand());
+            view.setTag(PRICE, (item.getSpecialPrice() != 0) ? item.getSpecialPrice() : item.getPrice());
             //Log.d(TAG, "CAMPAIGN ON CLICK: " + item.getSku() + " " + selectedSize.simpleSku + " " +  selectedSize.size);
             // Send to listener
             if(mOnClickParentListener != null)

@@ -31,7 +31,11 @@
     <string name="gregister">Register</string>
     <string name="gproductdetail">ShopProductDetail</string>
 	<string name="grateproduct">RateProduct</string>
-	
+	<string name="gcampaignpage">Campaign</string>
+	<string name="gnewslettersubscription">NewsletterSubscription</string>
+	<string name="gfavourites">Favourites</string>
+	<string name="grecentsearches">RecentSearches</string>
+	<string name="grecentlyviewed">RecentlyViewed</string>
     <!-- prefixes for page string encoding -->
     <string name="gbrand_prefix">brand</string>
     <string name="gcategory_prefix">cat</string>
@@ -69,6 +73,10 @@
 	<string name="gsocialshare">SocialShare</string>
 	<string name="gcheckoutstart">CheckoutStart</string>
 	<string name="gcheckoutcontinueshopping">ContinueShopping</string>
+	<string name="gfilters">Filters</string>
+	<string name="gsubscribenewsletter">SubscribeNewsletter</string>
+	<string name="gunsubscribenewsletter">UnsubscribeNewsletter</string>
+	<string name="gsearchsuggestions">SearchSuggestions</string>
     <!-- Checkout Steps -->
     <string name="gNativeCheckout">NativeCheckout</string>
     <string name="gNativeCheckoutError">NativeCheckoutError</string>
@@ -89,7 +97,7 @@
     <string name="gorderid">OrderID</string>
 
     <!-- For load timing only -->
-    <string name="gsearchsuggestions">SearchSuggestions</string>
+    
     <string name="gload">PageLoad</string>
     <!-- End of GA Tracking Parameters -->
 
@@ -224,6 +232,8 @@
     <string name="mixprop_itemlocation">Location</string>
     <string name="mixprop_itemlocationdetails">Product Detail screen</string>
     <string name="mixprop_itemlocationwishlist">Wishlist</string>
+    <string name="mixprop_itemlocationcampaign">Campaign</string>
+    <string name="mixprop_itemlocationrecently">Recently Viewed</string>
     <string name="mixprop_cartcategories">Item categories in cart</string>
     <string name="mixprop_cartnumber">Total items in cart</string>
     <string name="mixprop_carttotal">Total Cart Amount</string>

@@ -13,7 +13,6 @@ import pt.rocket.app.JumiaApplication;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.objects.ProductReviewCommentCreated;
-import pt.rocket.framework.objects.ProductSimple;
 import pt.rocket.framework.objects.PurchaseItem;
 import pt.rocket.framework.objects.ShoppingCartItem;
 import pt.rocket.framework.rest.RestConstants;
@@ -23,6 +22,7 @@ import pt.rocket.framework.tracking.MixpanelTracker;
 import pt.rocket.framework.utils.ShopSelector;
 import pt.rocket.framework.utils.Utils;
 import pt.rocket.view.R;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -67,6 +67,7 @@ public class TrackerDelegator {
     public static final String NAME_KEY = "name";
     public static final String URL_KEY = "url";
     public static final String SIMPLE_KEY = "simple";
+    public static final String BRAND_KEY = "brand";
 
     private static final String TRACKING_PREFS = "tracking_prefs";
     private static final String SIGNUP_KEY_FOR_LOGIN = "signup_for_login";
@@ -217,9 +218,14 @@ public class TrackerDelegator {
     }
 
     public final static void trackCategoryView(Bundle params) {
+        // Data
         String category = params.getString(CATEGORY_KEY);
         int page = params.getInt(PAGE_NUMBER_KEY);
+        String location = params.getString(LOCATION_KEY);
+        // MIX
         MixpanelTracker.listCategory(context, category, page);
+        // GA
+        AnalyticsGoogle.get().trackCategory(location, category);
     }
 
     public final static void trackItemReview(Bundle params) {
@@ -580,15 +586,16 @@ public class TrackerDelegator {
         // Data
         long price = bundle.getLong(PRICE_KEY);
         String sku = bundle.getString(SKU_KEY);
-        CompleteProduct product = bundle.getParcelable(PRODUCT_KEY);
-        ProductSimple simple = bundle.getParcelable(SIMPLE_KEY);
-        String location = bundle.getParcelable(LOCATION_KEY);
+        String name = bundle.getString(NAME_KEY);
+        String brand = bundle.getString(BRAND_KEY);
+        String category = bundle.getString(CATEGORY_KEY);
+        String location = bundle.getString(LOCATION_KEY);
         // GA
         AnalyticsGoogle.get().trackAddToCart(sku, price);
         // Mix
-        MixpanelTracker.productAddedToCart(context, product, simple, (double) price, location);
+        MixpanelTracker.productAddedToCart(context, sku, name, brand, category, (double) price, location);
         // Adx
-        AdXTracker.trackAddToCart(context, "" + price, customerId, simple.getAttributeByKey(ProductSimple.SKU_TAG), JumiaApplication.SHOP_NAME);
+        AdXTracker.trackAddToCart(context, "" + price, customerId, sku, JumiaApplication.SHOP_NAME);
     }
 
     /**
@@ -618,6 +625,37 @@ public class TrackerDelegator {
     public static void trackCampaign(String utm) {
         // GA
         AnalyticsGoogle.get().setCampaign(utm);
+    }
+
+    /**
+     * Tracking a catalog filter
+     * @param mCatalogFilterValues 
+     * @param searchQuery 
+     * @param searchQuery 
+     */
+    public static void trackCatalogFilter(ContentValues catalogFilterValues) {
+        // GA
+        AnalyticsGoogle.get().trackCatalogFilter(catalogFilterValues);
+    }
+    
+    /**
+     * Tracking newsletter subscription
+     * @param subscribe
+     */
+    public static void trackNewsletterSubscription(boolean subscribe) {
+        // User
+        String userId = JumiaApplication.CUSTOMER != null ? JumiaApplication.CUSTOMER.getIdAsString() : ""; 
+        // GA
+        AnalyticsGoogle.get().trackNewsletterSubscription(userId, subscribe);
+    }
+    
+    /**
+     * Tracking a search query
+     * @param query
+     */
+    public static void trackSearchSuggestions(String query) {
+        // GA
+        AnalyticsGoogle.get().trackSearchSuggestions(query);
     }
 
 }

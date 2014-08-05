@@ -9,11 +9,13 @@ import pt.rocket.framework.objects.PurchaseItem;
 import pt.rocket.framework.objects.ShoppingCartItem;
 import pt.rocket.framework.utils.CurrencyFormatter;
 import pt.rocket.framework.utils.LogTagHelper;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.text.TextUtils;
 
+import com.google.analytics.tracking.android.GAServiceManager;
 import com.google.analytics.tracking.android.GoogleAnalytics;
 import com.google.analytics.tracking.android.Tracker;
 import com.google.analytics.tracking.android.Transaction;
@@ -141,25 +143,10 @@ public class AnalyticsGoogle {
 		Log.i(TAG, "tracking switched");
 	}
 
-//	public void setDefaultTracker() {
-//		if (!isEnabled) {
-//			return;
-//		}
-//
-//		String trackerKey = mContext.getString(R.string.ga_trackingId);
-//		if (TextUtils.isEmpty(trackerKey)) {
-//			Log.w("No trackingId with resource ga_trackingId found. Cant enable tracking. Sorry.");
-//			return;
-//		}
-//		mCurrentKey = trackerKey;
-//		updateTracker();
-//	}
-
 	public void trackPage(int pageRes) {
-		if (!isEnabled) {
-			return;
-		}
-
+		// Validate
+		if (!isEnabled) return;
+		// Data
 		String pageName = mContext.getString(pageRes);
 		Log.d(TAG, "trackPage: " + pageName);
 		mTracker.sendView(pageName);
@@ -200,13 +187,14 @@ public class AnalyticsGoogle {
 	public void trackProduct(int navigationPrefix, String navigationPath, String name, String sku, String url, Double price) {
 		if (!isEnabled) return;
 
-		if (navigationPath == null && navigationPrefix != -1 && name == null) {
+		if (navigationPrefix != -1) {
 			// Log.d( TAG, "trackProduct: navigationPath = " + navigationPath + " name = " + name );
 			String pageView;
+			String n = !TextUtils.isEmpty(name) ? name.replace(" ", "_") : "n.a.";
 			if(navigationPath != null && !navigationPath.equalsIgnoreCase("")){
-				pageView = mContext.getString(navigationPrefix) + "_" + navigationPath + "/" + name.replace(" ", "_");	
+				pageView = mContext.getString(navigationPrefix) + "_" + navigationPath + "/" + n;	
 			} else {
-				pageView = mContext.getString(navigationPrefix) + "_" + name.replace(" ", "_");
+				pageView = mContext.getString(navigationPrefix) + "_" + n;
 			}
 			//Log.d(TAG, "trackProduct pageView = " + pageView);
 			mTracker.sendView(pageView);
@@ -243,7 +231,7 @@ public class AnalyticsGoogle {
 		// Data
 		String category = mContext.getString(R.string.gcatalog);
 		String action = mContext.getString(R.string.gaddtocart);
-		//Log.d(TAG, "trackProduct: category = " + category + " action = " + action + " sku = " + sku + " price = " + price);
+		Log.d(TAG, "trackProduct: category = " + category + " action = " + action + " sku = " + sku + " price = " + price);
 		mTracker.sendEvent(category, action, sku, price);
 	}
 
@@ -476,4 +464,44 @@ public class AnalyticsGoogle {
 		} 
 	}
 	
+	public void trackCatalogFilter(ContentValues mCatalogFilterValues) {
+		// Validate
+		if (!isEnabled) return;
+		// Data
+		String category = mContext.getString(R.string.gcatalog);
+		String action = mContext.getString(R.string.gfilters);
+		// Validate content
+		String filter = (mCatalogFilterValues != null) ? mCatalogFilterValues.toString() : "";  
+		Log.d(TAG, "trackFilter: category = " + category + " action = " + action + " filters = " + filter);
+		mTracker.sendEvent(category, action, filter, 0l);
+	}
+	
+	public void trackNewsletterSubscription(String userId, boolean subscribe) {
+		// Validate
+		if (!isEnabled) return;
+		// Data
+		String category = mContext.getString(R.string.gaccount);
+		String action = mContext.getString(subscribe ? R.string.gsubscribenewsletter : R.string.gunsubscribenewsletter);
+		Log.d(TAG, "trackNewsletter: category = " + category + " action = " + action + " userId = " + userId + " subscribe = " + subscribe);
+		mTracker.sendEvent(category, action, userId, 0l);
+	}
+	
+	public void trackSearchSuggestions(String query) {
+		// Validate
+		if (!isEnabled) return;
+		// Data
+		String category = mContext.getString(R.string.gaccount);
+		String action = mContext.getString(R.string.gsearchsuggestions);
+		Log.d(TAG, "trackNewsletter: category = " + category + " action = " + action + " search = " + query);
+		mTracker.sendEvent(category, action, query, 0l);
+	}
+	
+	public void trackCategory(String location, String title) {
+		// Validate
+		if (!isEnabled) return;
+		// Data
+		String category = mContext.getString(R.string.gcatalog);
+		Log.d(TAG, "trackCategory: category = " + category + " action = " + location + " category = " + title);
+		mTracker.sendEvent(category, location, title, 0l);
+	}
 }

@@ -731,7 +731,7 @@ public class CatalogPageFragment extends BaseFragment {
                 params = new Bundle();
                 params.putString(TrackerDelegator.CATEGORY_KEY, mTitle);
                 params.putInt(TrackerDelegator.PAGE_NUMBER_KEY, mPageNumber);
-                
+                params.putString(TrackerDelegator.LOCATION_KEY, getString(R.string.gcatalog));
                 TrackerDelegator.trackCategoryView(params);
             }
         }

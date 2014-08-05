@@ -377,9 +377,8 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         JumiaApplication.INSTANCE.unRegisterFragmentCallback(mCallback);
         JumiaApplication.INSTANCE.setLoggedIn(false);
         isRegistered = false;
-
-        // getSupportFragmentManager().popBackStack(null,
-        // FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        
+        //AnalyticsGoogle.dispatch();
     }
 
     /**
@@ -1003,6 +1002,9 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      */
     protected void showSearchCategory(String searchText) {
         Log.d(TAG, "SEARCH COMPONENT: GOTO PROD LIST");
+        // Tracking
+        TrackerDelegator.trackSearchSuggestions(searchText);
+        // Data
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_URL, null);
         bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, searchText);

@@ -20,6 +20,7 @@ import pt.rocket.helpers.account.SubscribeNewslettersHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
@@ -106,19 +107,6 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
         }
     }
     
-//    /*
-//     * (non-Javadoc)
-//     * 
-//     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-//     * android.view.ViewGroup, android.os.Bundle)
-//     */
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState) {
-//        super.onCreateView(inflater, viewGroup, savedInstanceState);
-//        Log.i(TAG, "ON CREATE VIEW");
-//        return inflater.inflate(R.layout.my_account_email_notification_fragment, viewGroup, false);
-//    }
-    
     /*
      * (non-Javadoc)
      * @see android.support.v4.app.Fragment#onViewCreated(android.view.View, android.os.Bundle)
@@ -159,6 +147,8 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
+        // Tracking page
+        TrackerDelegator.trackPage(R.string.gnewslettersubscription);
     }
     
     /*
@@ -246,7 +236,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
      */
     private void generateNewsletterOptions(ArrayList<NewsletterOption> newsletterOptions, LinearLayout newsletterList){
         for (int i = 0; i < newsletterOptions.size(); i++) {
-            View view = mInflater.inflate(R.layout.simple_email_notification_option, null);
+            View view = mInflater.inflate(R.layout.simple_email_notification_option, newsletterList, false);
             CheckBox checkBox = (CheckBox) view.findViewById(R.id.myaccount_newsletter_checkbox);
             checkBox.setTag("" + i);
             checkBox.setText(newsletterOptions.get(i).label);
@@ -284,13 +274,16 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
         try {
             // Validate the current newsletter form
             ContentValues values = new ContentValues();
-            for (NewsletterOption option : mNewsletterOptions)
-                if(option.isSubscrided)
-                    values.put(option.name, option.value);
-                else 
-                    values.put(option.name, UNSUBSCRIBE_VALUE);
+            boolean isSubscribed = false;
+            for (NewsletterOption option : mNewsletterOptions) {
+                if(option.isSubscrided) { values.put(option.name, option.value); isSubscribed = true; }
+                else values.put(option.name, UNSUBSCRIBE_VALUE);
+            }
+            // Trigger
             Log.d(TAG, "VALUES: " + values.toString());
             triggerSubscribeNewsletters(values);
+            // Tracking subscritption
+            TrackerDelegator.trackNewsletterSubscription(isSubscribed);
         } catch (NullPointerException e) {
             Log.w(TAG, "NPE ON SUBSCRIBE NEWSLETTERS", e);
         }

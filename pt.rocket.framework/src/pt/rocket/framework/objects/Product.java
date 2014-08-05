@@ -206,6 +206,20 @@ public class Product implements IJSONSerializable, Parcelable {
     public String getPrice() {
         return attributes.getPrice();
     }
+    
+    /**
+     * @return the price
+     */
+    public double getPriceAsDouble() {
+        return attributes.getPriceAsDouble();
+    }
+    
+    /**
+     * @return the price
+     */
+    public double getSpecialPriceAsDouble() {
+        return attributes.getSpecialPriceAsDouble();
+    }
 
     /**
      * @return the suggested price

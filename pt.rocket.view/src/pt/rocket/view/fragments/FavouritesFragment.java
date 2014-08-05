@@ -30,6 +30,7 @@ import pt.rocket.helpers.cart.GetShoppingCartAddItemHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogListFragment;
 import pt.rocket.utils.dialogfragments.DialogListFragment.OnDialogListListener;
 import pt.rocket.view.R;
@@ -142,6 +143,8 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
+        // Tracking page
+        TrackerDelegator.trackPage(R.string.gfavourites);
     }
     
     /*
@@ -473,6 +476,30 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         bundle.putBoolean(GetShoppingCartAddItemHelper.REMOVE_FAVOURITE_TAG, true);
         // Trigger
         triggerContentEventWithNoLoading( new GetShoppingCartAddItemHelper(), bundle, (IResponseCallback) this);
+        // Tracking
+        trackAddtoCart(sku, favourite);
+    }
+    
+    /**
+     * Track add to cart
+     * @param sku
+     * @param favourite
+     * @author sergiopereira
+     */
+    private void trackAddtoCart(String sku, Favourite favourite){
+        try {
+            // Tracking
+            Bundle bundle = new Bundle();
+            bundle.putString(TrackerDelegator.SKU_KEY, sku);
+            bundle.putLong(TrackerDelegator.PRICE_KEY, favourite.getSpecialPriceDouble() > 0 ? favourite.getSpecialPriceDouble().longValue() : favourite.getPriceAsDouble().longValue());
+            bundle.putString(TrackerDelegator.NAME_KEY, favourite.getName());
+            bundle.putString(TrackerDelegator.BRAND_KEY, favourite.getBrand());
+            bundle.putString(TrackerDelegator.CATEGORY_KEY, "");
+            bundle.putString(TrackerDelegator.LOCATION_KEY, getString(R.string.mixprop_itemlocationwishlist));
+            TrackerDelegator.trackProductAddedToCart(bundle);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
     }
     
     /**

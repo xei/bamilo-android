@@ -336,7 +336,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             fragment = FavouritesFragment.getInstance();
             break;
         case RECENTSEARCHES_LIST:
-            fragment = RecentSearchFragment.getInstance();
+            fragment = RecentSearchFragment.newInstance();
             break;
         case RECENTLYVIEWED_LIST:
             fragment = RecentlyViewedFragment.getInstance();

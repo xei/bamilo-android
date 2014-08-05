@@ -298,7 +298,7 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
             Bundle params = new Bundle();
             params.putString(TrackerDelegator.CATEGORY_KEY, categoryTitle);
             params.putInt(TrackerDelegator.PAGE_NUMBER_KEY, 1);
-            
+            params.putString(TrackerDelegator.LOCATION_KEY, getString(R.string.gcategories));
             TrackerDelegator.trackCategoryView(params);
         }
             
@@ -329,7 +329,7 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
             Bundle params = new Bundle();
             params.putString(TrackerDelegator.CATEGORY_KEY, categoryTitle);
             params.putInt(TrackerDelegator.PAGE_NUMBER_KEY, 1);
-            
+            params.putString(TrackerDelegator.LOCATION_KEY, getString(R.string.gcategories));
             TrackerDelegator.trackCategoryView(params);
         }
         subCatAdapter = new SubCategoriesAdapter(getActivity(), child, getString(R.string.categories_name_all) + " " + categoryTitle);

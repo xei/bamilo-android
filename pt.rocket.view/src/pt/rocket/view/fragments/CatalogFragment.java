@@ -661,6 +661,8 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
      */
     public void onSubmitFilterValues(ContentValues filterValues) {
         Log.d(TAG, "FILTER VALUES: " + filterValues.toString());
+        // Tracking
+        trackingCatalogFilters(filterValues);
         // Save the old data to restore in case of error event
         mOldCatalogFilterValues = mCatalogFilterValues;
         // Save the current filter values
@@ -716,6 +718,16 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
 
         mCatalogPagerAdapter.updateParametersBundle(params);
         mCatalogPagerAdapter.invalidateCatalogPages();
+        
+    }
+    
+    /**
+     * Tracking catalog filter values
+     * @param filterValues
+     */
+    private void trackingCatalogFilters(ContentValues filterValues) {
+        // Copy the content values for tracking
+        TrackerDelegator.trackCatalogFilter(new ContentValues(filterValues));
     }
 
     /**

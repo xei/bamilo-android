@@ -59,6 +59,10 @@ public class AddableToCart {
 
 	protected boolean mStockVariationWarning = false;
 
+	private Double priceDouble;
+
+	private Double specialPriceDouble;
+
 	/**
 	 * Complete favourite empty constructor.
 	 */
@@ -67,20 +71,16 @@ public class AddableToCart {
 		simples = new ArrayList<ProductSimple>();
 		variations = new ArrayList<Variation>();
 		knownVariations = new ArrayList<String>();
-
+		priceDouble = 0.0;
+		specialPriceDouble = 0.0;
 		price = CurrencyFormatter.formatCurrency(0.0);
 		specialPrice = CurrencyFormatter.formatCurrency(0.0);
 		maxSavingPercentage = 0.0;
-
 		url = "";
-
 		favoriteSelected = NO_SIMPLE_SELECTED;
 		hasVariations = null;
-
 		mSelectedSimpleValue = "...";
-
 		selectedSimple = NO_SIMPLE_SELECTED;
-
 	}
 
 	public AddableToCart(CompleteProduct completeProduct) {
@@ -88,6 +88,8 @@ public class AddableToCart {
 		brand = completeProduct.getBrand();
 		name = completeProduct.getName();
 		price = completeProduct.getPrice();
+		priceDouble = completeProduct.getPriceAsDouble();
+		specialPriceDouble = completeProduct.getMaxPriceAsDouble();
 		specialPrice = completeProduct.getSpecialPrice();
 		maxSavingPercentage = completeProduct.getMaxSavingPercentage();
 		url = completeProduct.getUrl();
@@ -98,10 +100,8 @@ public class AddableToCart {
 		simples = completeProduct.getSimples();
 		variations = completeProduct.getVariations();
 		knownVariations = completeProduct.getKnownVariations();
-
 		favoriteSelected = NO_SIMPLE_SELECTED;
 		hasVariations = null;
-
 		mSelectedSimpleValue = "...";
 
 		// Validate if has only one simple
@@ -166,6 +166,30 @@ public class AddableToCart {
 	 */
 	public void setPrice(String price) {
 		this.price = price;
+	}
+	
+	/**
+	 * @return the price as a Double
+	 */
+	public Double getPriceAsDouble() {
+		return priceDouble;
+	}
+	
+	/**
+	 * 
+	 * @param priceDouble
+	 */
+	public void setPriceAsDouble(double priceDouble) {
+		this.priceDouble = priceDouble;
+	}
+	
+	
+	public void setSpecialPriceDouble(Double priceDouble) {
+		this.specialPriceDouble = priceDouble;
+	}
+	
+	public Double getSpecialPriceDouble() {
+		return this.specialPriceDouble;
 	}
 
 	/**
