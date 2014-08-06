@@ -363,35 +363,33 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
      * Show the fall back
      * @author msilva
      */
-    private void showLayoutFallback() {
+    private void setLayoutFallback() {
         Log.i(TAG, "ON SHOW FALLBACK");
-        
-        showFragmentFallBack();
-        
-        ImageView mapBg = (ImageView) getView().findViewById(R.id.home_fallback_country_map);
-        SharedPreferences sharedPrefs = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        
-        RocketImageLoader.instance.loadImage(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_MAP_FLAG, ""), mapBg);
-
-        String country = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, "Jumia");
-        TextView fallbackBest = (TextView) getView().findViewById(R.id.fallback_best);
-        fallbackBest.setText(R.string.fallback_best);
-        if (country.split(" ").length == 1) {
-            TextView tView = (TextView) getView().findViewById(R.id.fallback_country);
-            tView.setVisibility(View.VISIBLE);
-            getView().findViewById(R.id.fallback_country_double).setVisibility(View.GONE);
-            tView.setText(country.toUpperCase());
-        } else {
-            TextView tView = (TextView) getView().findViewById(R.id.fallback_country_top);
-            tView.setText(country.split(" ")[0].toUpperCase());
-            TextView tViewBottom = (TextView) getView().findViewById(R.id.fallback_country_bottom);
-            tViewBottom.setText(country.split(" ")[1].toUpperCase());
-            fallbackBest.setTextSize(11.88f);
-            getView().findViewById(R.id.fallback_country_double).setVisibility(View.VISIBLE);
-            getView().findViewById(R.id.fallback_country).setVisibility(View.GONE);
+        try {
+            ImageView mapBg = (ImageView) getView().findViewById(R.id.home_fallback_country_map);
+            SharedPreferences sharedPrefs = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+            RocketImageLoader.instance.loadImage(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_MAP_FLAG, ""), mapBg);
+            String country = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, "Jumia");
+            TextView fallbackBest = (TextView) getView().findViewById(R.id.fallback_best);
+            fallbackBest.setText(R.string.fallback_best);
+            if (country.split(" ").length == 1) {
+                TextView tView = (TextView) getView().findViewById(R.id.fallback_country);
+                tView.setVisibility(View.VISIBLE);
+                getView().findViewById(R.id.fallback_country_double).setVisibility(View.GONE);
+                tView.setText(country.toUpperCase());
+            } else {
+                TextView tView = (TextView) getView().findViewById(R.id.fallback_country_top);
+                tView.setText(country.split(" ")[0].toUpperCase());
+                TextView tViewBottom = (TextView) getView().findViewById(R.id.fallback_country_bottom);
+                tViewBottom.setText(country.split(" ")[1].toUpperCase());
+                fallbackBest.setTextSize(11.88f);
+                getView().findViewById(R.id.fallback_country_double).setVisibility(View.VISIBLE);
+                getView().findViewById(R.id.fallback_country).setVisibility(View.GONE);
+            }
+            fallbackBest.setSelected(true);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
-
-        fallbackBest.setSelected(true);
     }
 
     /**
@@ -483,7 +481,7 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
             int defaultPosition  = bundle.getInt(RestConstants.JSON_HOMEPAGE_DEFAULT_TAG, 0);
             // Show collection
             if (collection != null) onShowCollection(collection, defaultPosition);
-            else showLayoutFallback();
+            else { showFragmentFallBack(); setLayoutFallback(); }
             break;
         case GET_PROMOTIONS:
             Log.i(TAG, "ON SUCCESS RESPONSE: GET_TEASERS_EVENT");
@@ -530,7 +528,8 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
             break;
         case GET_TEASERS_EVENT:
             Log.i(TAG, "ON ERROR RESPONSE: GET_TEASERS_EVENT");
-            showLayoutFallback();
+            showFragmentFallBack();
+            setLayoutFallback();
             break;
         case GET_PROMOTIONS:
             break;
