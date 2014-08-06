@@ -15,10 +15,10 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.text.TextUtils;
 
-import com.google.analytics.tracking.android.GAServiceManager;
 import com.google.analytics.tracking.android.GoogleAnalytics;
 import com.google.analytics.tracking.android.Tracker;
 import com.google.analytics.tracking.android.Transaction;
+import com.google.analytics.tracking.android.Transaction.Item;
 
 import de.akquinet.android.androlog.Log;
 
@@ -346,38 +346,34 @@ public class AnalyticsGoogle {
 	}
 
 	public void trackSales(String orderNr, String value, List<PurchaseItem> items) {
-		if (!isEnabled) {
-			return;
-		}
-
-		if (items == null || items.size() == 0) {
-			return;
-		}
-		
+		isCheckoutStarted = false;
+		// Validation
+		if (!isEnabled) return;
+		// Validation
+		if (items == null || items.size() == 0) return;
 		
 		Log.i(TAG, "code1track value "+value);
 		Double valueDouble = CurrencyFormatter.getValueDouble(value.trim());
 		long valueAsLongMicro = (long) (valueDouble * MICRO_MULTI);
 		String currencyCode = CurrencyFormatter.getCurrencyCode();
 
-		Transaction transaction = new Transaction.Builder(orderNr, valueAsLongMicro).setCurrencyCode(currencyCode)
-				.build();
-
+		// Transaction
+		Transaction transaction = new Transaction.Builder(orderNr, valueAsLongMicro).setCurrencyCode(currencyCode).build();
+		Log.i(TAG, "TRANSACTION TOTAL COST: " + transaction.getTotalCostInMicros());
 		for (PurchaseItem item : items) {
+			//Log.i(TAG, "transaction item event: " + item.name + " " + item.paidprice + " " + item.paidpriceAsDouble);
 			long itemValueAsLongMicro = (long) (item.paidpriceAsDouble * MICRO_MULTI);
 			long quantity = item.quantityAsInt;
-			transaction.addItem(new Transaction.Item.Builder(item.sku, item.name, itemValueAsLongMicro, quantity)
-					.setProductCategory(item.category).build());
+			Item transactionItem = new Transaction.Item.Builder(item.sku, item.name, itemValueAsLongMicro, quantity).setProductCategory(item.category).build();
+			Log.i(TAG, "TRANSACTION ITEM PRICE: " + transactionItem.getPriceInMicros());
+			transaction.addItem(transactionItem);
 		}
-
 		mTracker.sendTransaction(transaction);
-
+		
+		// Event
 		String category = mContext.getString(R.string.gcheckout);
 		String action = mContext.getString(R.string.gfinished);
-
-		isCheckoutStarted = false;
-		Log.d(TAG, "trackSales event: category = " + category + " action = " + action + " orderNr = " + orderNr
-				+ " value = " + valueDouble.longValue());
+		Log.d(TAG, "trackSales event: category = " + category + " action = " + action + " orderNr = " + orderNr + " value = " + valueDouble.longValue());
 		mTracker.sendEvent(category, action, orderNr, valueDouble.longValue());
 	}
 

@@ -15,7 +15,6 @@ import pt.rocket.framework.components.androidslidingtabstrip.SlidingTabLayout;
 import pt.rocket.framework.objects.Homepage;
 import pt.rocket.framework.objects.Promotion;
 import pt.rocket.framework.rest.RestConstants;
-import pt.rocket.framework.tracking.AnalyticsGoogle;
 import pt.rocket.framework.tracking.MixpanelTracker;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CustomerUtils;

@@ -234,9 +234,9 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
     private void trackPurchase() {
         if (JumiaApplication.INSTANCE.getCart() != null) {
             Bundle params = new Bundle();
-            params.putString(TrackerDelegator.ORDER_NUMBER_KEY,order_number);
-            params.putString(TrackerDelegator.VALUE_KEY,JumiaApplication.INSTANCE.getCart().getCartValue());
-            params.putString(TrackerDelegator.EMAIL_KEY,JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
+            params.putString(TrackerDelegator.ORDER_NUMBER_KEY, order_number);
+            params.putString(TrackerDelegator.VALUE_KEY, JumiaApplication.INSTANCE.getCart().getCartValue());
+            params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
             params.putParcelable(TrackerDelegator.CUSTOMER_KEY, JumiaApplication.CUSTOMER);         
                         
             TrackerDelegator.trackPurchaseNativeCheckout(params, JumiaApplication.INSTANCE.getCart().getCartItems());

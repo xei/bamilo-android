@@ -40,6 +40,9 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 	private String couponDiscount;
 	
 	private HashMap<String, String> price_rules;
+
+	public double cartValueAsDouble = 0d;
+	
 	/**
 	 * 
 	 */
@@ -119,6 +122,7 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 	@Override
 	public boolean initialize(JSONObject jsonObject) throws JSONException{
 		cartValue = jsonObject.getString(RestConstants.JSON_CART_VALUE_TAG);
+		cartValueAsDouble = jsonObject.getDouble(RestConstants.JSON_CART_VALUE_TAG);
 		cartCleanValue = jsonObject.optString(RestConstants.JSON_CART_CLEAN_VALUE_TAG);
 		cartCount = jsonObject.getInt(RestConstants.JSON_CART_COUNT_TAG);
 		vat_value = jsonObject.optString(RestConstants.JSON_CART_VAT_VALUE_TAG);
