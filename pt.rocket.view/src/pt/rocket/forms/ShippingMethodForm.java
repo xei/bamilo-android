@@ -78,7 +78,7 @@ public class ShippingMethodForm implements IJSONSerializable, Parcelable {
             JSONObject optionsObject = jsonObject.getJSONObject(RestConstants.JSON_OPTIONS_TAG);
             //Log.i(TAG, "options jsonobject: " +  optionsObject.toString());
              
-            Iterator opts = optionsObject.keys();
+            Iterator<?> opts = optionsObject.keys();
             while (opts.hasNext()) {
                String key = opts.next().toString();
                options.add(key);

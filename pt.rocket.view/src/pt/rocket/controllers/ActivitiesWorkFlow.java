@@ -1,7 +1,6 @@
 package pt.rocket.controllers;
 
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.view.MainFragmentActivity;
 import pt.rocket.view.R;
 import pt.rocket.view.SplashScreenActivity;
 import android.app.Activity;

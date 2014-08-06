@@ -21,7 +21,6 @@ import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
-import pt.rocket.view.fragments.BaseFragment.KeyboardState;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;

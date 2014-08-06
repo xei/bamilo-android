@@ -1,7 +1,7 @@
 /**
  * 
  */
-package pt.rocket.helpers;
+package pt.rocket.helpers.products;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,6 +17,8 @@ import pt.rocket.framework.objects.ProductsPage;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
+import pt.rocket.helpers.BaseHelper;
+import pt.rocket.helpers.HelperPriorityConfiguration;
 import android.content.ContentValues;
 import android.net.Uri;
 import android.net.Uri.Builder;

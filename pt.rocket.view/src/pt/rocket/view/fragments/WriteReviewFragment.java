@@ -14,9 +14,9 @@ import pt.rocket.framework.objects.ProductReviewCommentCreated;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.helpers.GetRatingsHelper;
-import pt.rocket.helpers.ReviewProductHelper;
 import pt.rocket.helpers.account.GetCustomerHelper;
+import pt.rocket.helpers.configs.GetRatingOptionsHelper;
+import pt.rocket.helpers.products.ReviewProductHelper;
 import pt.rocket.helpers.session.GetLoginHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.MyMenuItem;
@@ -573,7 +573,7 @@ public class WriteReviewFragment extends BaseFragment {
     }
 
     private void triggerRatingOptions() {
-        triggerContentEvent(new GetRatingsHelper(), null, mCallBack);
+        triggerContentEvent(new GetRatingOptionsHelper(), null, mCallBack);
     }
 
     private void triggerWriteReview(String sku, int id, ProductReviewCommentCreated productReviewCreated2) {

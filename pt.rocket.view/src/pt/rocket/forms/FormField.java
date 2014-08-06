@@ -31,7 +31,7 @@ import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.helpers.GetFormsDatasetListHelper;
+import pt.rocket.helpers.configs.GetFormsDatasetListHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.InputType;
 import android.os.Bundle;

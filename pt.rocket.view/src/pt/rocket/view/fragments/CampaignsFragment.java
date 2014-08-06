@@ -214,8 +214,8 @@ public class CampaignsFragment extends BaseFragment {
         @Override
         public Fragment getItem(int position) {
             Bundle bundle = new Bundle();
-            bundle.putParcelable(CampaignFragment.TAG, this.mCampaigns.get(position)); 
-            return CampaignFragment.getInstance(bundle);
+            bundle.putParcelable(CampaignPageFragment.TAG, this.mCampaigns.get(position)); 
+            return CampaignPageFragment.getInstance(bundle);
         }
 
         /*

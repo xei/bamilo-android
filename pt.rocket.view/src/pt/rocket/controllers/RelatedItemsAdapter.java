@@ -22,7 +22,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 public class RelatedItemsAdapter extends PagerAdapter {
-    private static final String TAG = RelatedItemsAdapter.class.getName();
+    public static final String TAG = RelatedItemsAdapter.class.getName();
     Context mContext;
     ArrayList<LastViewed> mRelatedItems;
     LayoutInflater mLayoutInflater;

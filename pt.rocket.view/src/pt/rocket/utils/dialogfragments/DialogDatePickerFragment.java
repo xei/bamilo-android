@@ -129,7 +129,7 @@ public class DialogDatePickerFragment extends DialogFragment implements OnClickL
         TextView titleView = (TextView) view.findViewById(R.id.title);
         titleView.setText(this.mTitle);
 
-        this.mDatePicker = (DatePicker) view.findViewById(R.id.datePicker);
+        mDatePicker = (DatePicker) view.findViewById(R.id.datePicker);
         if (this.mYear != 0){
             mDatePicker.updateDate(this.mYear, this.mMonth, this.mDay);
             Calendar mCal =Calendar.getInstance();

@@ -61,8 +61,8 @@ public class GetRegisterHelper extends BaseHelper {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        JumiaApplication.INSTANCE.CUSTOMER = new Customer(jsonObject);
-        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, JumiaApplication.INSTANCE.CUSTOMER);
+        JumiaApplication.CUSTOMER = new Customer(jsonObject);
+        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, JumiaApplication.CUSTOMER);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.REGISTER_ACCOUNT_EVENT);
         return bundle;
     }

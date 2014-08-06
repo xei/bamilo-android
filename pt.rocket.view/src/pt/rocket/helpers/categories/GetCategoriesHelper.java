@@ -1,7 +1,7 @@
 /**
  * 
  */
-package pt.rocket.helpers;
+package pt.rocket.helpers.categories;
 
 import java.util.ArrayList;
 
@@ -15,6 +15,8 @@ import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
+import pt.rocket.helpers.BaseHelper;
+import pt.rocket.helpers.HelperPriorityConfiguration;
 import android.os.Bundle;
 
 /**

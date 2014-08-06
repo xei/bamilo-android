@@ -1,7 +1,7 @@
 /**
  * 
  */
-package pt.rocket.helpers;
+package pt.rocket.helpers.configs;
 
 import java.util.HashMap;
 
@@ -15,6 +15,8 @@ import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
+import pt.rocket.helpers.BaseHelper;
+import pt.rocket.helpers.HelperPriorityConfiguration;
 import android.os.Bundle;
 
 /**
@@ -23,9 +25,9 @@ import android.os.Bundle;
  * @author Manuel Silva
  * 
  */
-public class GetRatingsHelper extends BaseHelper {
+public class GetRatingOptionsHelper extends BaseHelper {
 
-    private static String TAG = GetRatingsHelper.class.getSimpleName();
+    private static String TAG = GetRatingOptionsHelper.class.getSimpleName();
 
     public static final String PRODUCT_URL = "productUrl";
 

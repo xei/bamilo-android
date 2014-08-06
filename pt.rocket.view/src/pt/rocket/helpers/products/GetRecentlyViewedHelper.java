@@ -1,4 +1,4 @@
-package pt.rocket.helpers;
+package pt.rocket.helpers.products;
 
 import java.util.ArrayList;
 

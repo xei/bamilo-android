@@ -77,7 +77,7 @@ public class ProductImagesAdapter extends BaseAdapter {
 	private static class Holder {
 		ImageView itemImage;
 		ProgressBar itemProgress;
-		View itemMarker;
+		//View itemMarker;
 	}
 
 	@Override
@@ -91,7 +91,7 @@ public class ProductImagesAdapter extends BaseAdapter {
 			h = new Holder();
 			h.itemImage = (ImageView) view.findViewById(R.id.image);
 			h.itemProgress = (ProgressBar) view.findViewById(R.id.loading_progress);
-			h.itemMarker = view.findViewById(R.id.marker);
+			//h.itemMarker = view.findViewById(R.id.marker);
 			view.setTag(h);
 		} else
 			h = (Holder) view.getTag();

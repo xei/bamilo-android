@@ -17,7 +17,7 @@ import pt.rocket.framework.objects.Category;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.framework.utils.ShopSelector;
-import pt.rocket.helpers.GetCategoriesHelper;
+import pt.rocket.helpers.categories.GetCategoriesHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.view.R;

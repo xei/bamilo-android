@@ -19,7 +19,7 @@ import pt.rocket.framework.objects.FeaturedBox;
 import pt.rocket.framework.objects.FeaturedItem;
 import pt.rocket.framework.objects.Product;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.helpers.GetProductsHelper;
+import pt.rocket.helpers.products.GetProductsHelper;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.TipsOnPageChangeListener;

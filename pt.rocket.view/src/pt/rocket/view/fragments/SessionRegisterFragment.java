@@ -29,7 +29,7 @@ import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.helpers.GetTermsConditionsHelper;
+import pt.rocket.helpers.configs.GetTermsConditionsHelper;
 import pt.rocket.helpers.session.GetRegisterFormHelper;
 import pt.rocket.helpers.session.GetRegisterHelper;
 import pt.rocket.interfaces.IResponseCallback;

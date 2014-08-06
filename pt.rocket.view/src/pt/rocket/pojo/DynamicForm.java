@@ -3,7 +3,6 @@ package pt.rocket.pojo;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import pt.rocket.forms.Form;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -168,7 +167,7 @@ public class DynamicForm implements Iterable<DynamicFormItem>{
 
         // gets an iterator to the hashmap
         Iterator<DynamicFormItem> iterator = iterator();
-        Map.Entry<?, ?> pairs;
+        //Map.Entry<?, ?> pairs;
 
         while (iterator.hasNext() && !found) {
 

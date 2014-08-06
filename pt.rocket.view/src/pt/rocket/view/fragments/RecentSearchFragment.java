@@ -15,7 +15,7 @@ import pt.rocket.framework.objects.SearchSuggestion;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.helpers.GetSearchSuggestionHelper;
+import pt.rocket.helpers.search.GetSearchSuggestionHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;

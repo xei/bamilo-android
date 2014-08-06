@@ -10,7 +10,7 @@ import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.database.CountriesConfigsTableHelper;
 import pt.rocket.framework.objects.CountryObject;
 import pt.rocket.framework.objects.TeaserCampaign;
-import pt.rocket.helpers.GetSearchProductHelper;
+import pt.rocket.helpers.search.GetSearchProductHelper;
 import pt.rocket.preferences.ShopPreferences;
 import pt.rocket.view.R;
 import pt.rocket.view.fragments.CampaignsFragment;

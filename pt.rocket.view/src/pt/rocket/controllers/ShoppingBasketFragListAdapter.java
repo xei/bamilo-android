@@ -3,7 +3,6 @@ package pt.rocket.controllers;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.holoeverywhere.widget.TextView;
 
@@ -170,7 +169,7 @@ public class ShoppingBasketFragListAdapter extends BaseAdapter {
         prodItem.variancesContainer.setVisibility(View.GONE);
         if (prodItem.itemValues.variation != null) {
             
-            Map<String, String> simpleData = prodItem.itemValues.simpleData;
+            //Map<String, String> simpleData = prodItem.itemValues.simpleData;
 
                 if (prodItem.itemValues.variation != null && prodItem.itemValues.variation.length() > 0 && !prodItem.itemValues.variation.equalsIgnoreCase(",") && !prodItem.itemValues.variation.equalsIgnoreCase("...") && !prodItem.itemValues.variation.equalsIgnoreCase(".")) {
 //                    TextView variances = (TextView) inflater.inflate(

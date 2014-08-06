@@ -3,7 +3,6 @@ package pt.rocket.utils.dialogfragments;
 
 
 import pt.rocket.utils.dialogfragments.WizardPreferences.WizardType;
-import pt.rocket.view.R;
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;

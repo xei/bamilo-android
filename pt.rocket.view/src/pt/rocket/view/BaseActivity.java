@@ -31,8 +31,8 @@ import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.framework.utils.ShopSelector;
 import pt.rocket.framework.utils.WindowHelper;
 import pt.rocket.helpers.BaseHelper;
-import pt.rocket.helpers.GetSearchSuggestionHelper;
 import pt.rocket.helpers.cart.GetShoppingCartItemsHelper;
+import pt.rocket.helpers.search.GetSearchSuggestionHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.CheckVersion;
 import pt.rocket.utils.MyMenuItem;
@@ -378,7 +378,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         JumiaApplication.INSTANCE.setLoggedIn(false);
         isRegistered = false;
         
-        //AnalyticsGoogle.dispatch();
+        // AnalyticsGoogle.dispatch();
     }
 
     /**

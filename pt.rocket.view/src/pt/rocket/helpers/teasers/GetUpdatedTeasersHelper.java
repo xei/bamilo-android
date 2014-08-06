@@ -1,7 +1,7 @@
 /**
  * 
  */
-package pt.rocket.helpers;
+package pt.rocket.helpers.teasers;
 
 import java.util.ArrayList;
 
@@ -16,6 +16,7 @@ import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
+import pt.rocket.helpers.BaseHelper;
 import android.os.Bundle;
 import android.text.TextUtils;
 import de.akquinet.android.androlog.Log;

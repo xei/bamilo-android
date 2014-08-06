@@ -28,13 +28,13 @@ public class GalleryPagerAdapter extends PagerAdapter implements IPagerAdapter {
     private ArrayList<String> mImageUrls;
     private LayoutInflater mInflater;
     private boolean isZoomAvailable = false;
-    private Context mContext;
+    //private Context mContext;
     private View primaryView;
 
     public GalleryPagerAdapter(Context context, ArrayList<String> imageUrls, boolean isZoomAvailable) {
         mImageUrls = imageUrls;
         mInflater = LayoutInflater.from(context);
-        this.mContext = context;
+        //this.mContext = context;
         this.isZoomAvailable = isZoomAvailable;
     }
 

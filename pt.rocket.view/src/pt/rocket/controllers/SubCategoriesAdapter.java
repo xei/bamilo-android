@@ -42,7 +42,7 @@ public class SubCategoriesAdapter extends BaseAdapter {
 	private final static int TYPE_COUNT = 2;
     private List<Category> categories;
     private LayoutInflater inflater;
-    private Context context;
+    //private Context context;
     private final int CATEGORIES_LAYOUT = R.layout.category_inner_childcat;
     private final int CATEGORIES_ALL_LAYOUT = R.layout.category_inner_currentcat;
 	private String categoryName;
@@ -68,7 +68,7 @@ public class SubCategoriesAdapter extends BaseAdapter {
     public SubCategoriesAdapter(Activity activity, ArrayList<Category> categories, String categoryName) {
         this.categories = categories;
         this.inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        this.context = activity.getApplicationContext();
+        //this.context = activity.getApplicationContext();
         this.categoryName = categoryName;
     }
 

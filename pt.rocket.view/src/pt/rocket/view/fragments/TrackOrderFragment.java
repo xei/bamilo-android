@@ -17,7 +17,7 @@ import pt.rocket.framework.objects.OrderTrackerItem;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.LoadingBarView;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.helpers.GetTrackOrderHelper;
+import pt.rocket.helpers.checkout.GetTrackOrderHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
@@ -29,7 +29,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import de.akquinet.android.androlog.Log;
 

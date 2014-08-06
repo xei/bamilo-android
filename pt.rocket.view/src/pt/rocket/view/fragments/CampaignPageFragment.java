@@ -23,9 +23,9 @@ import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CurrencyFormatter;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.helpers.GetSearchProductHelper;
 import pt.rocket.helpers.campaign.GetCampaignHelper;
 import pt.rocket.helpers.cart.GetShoppingCartAddItemHelper;
+import pt.rocket.helpers.search.GetSearchProductHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.DeepLinkManager;
 import pt.rocket.utils.TrackerDelegator;
@@ -61,13 +61,13 @@ import de.akquinet.android.androlog.Log;
  * Class used to show campaign page
  * @author sergiopereira
  */
-public class CampaignFragment extends BaseFragment implements OnClickListener, OnScrollListener, IResponseCallback {
+public class CampaignPageFragment extends BaseFragment implements OnClickListener, OnScrollListener, IResponseCallback {
 
-    public static final String TAG = LogTagHelper.create(CampaignFragment.class);
+    public static final String TAG = LogTagHelper.create(CampaignPageFragment.class);
     
     private final static String COUNTER_START_TIME = "start_time";
     
-    private static CampaignFragment sCampaignFragment;
+    private static CampaignPageFragment sCampaignFragment;
 
     private TeaserCampaign mTeaserCampaign;
     
@@ -108,8 +108,8 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, O
      * @return CampaignFragment
      * @author sergiopereira
      */
-    public static CampaignFragment getInstance(TeaserCampaign teaserCampaign) {
-        sCampaignFragment = new CampaignFragment();
+    public static CampaignPageFragment getInstance(TeaserCampaign teaserCampaign) {
+        sCampaignFragment = new CampaignPageFragment();
         sCampaignFragment.mTeaserCampaign = teaserCampaign;
         return sCampaignFragment;
     }
@@ -119,8 +119,8 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, O
      * @return CampaignFragment
      * @author sergiopereira
      */
-    public static CampaignFragment getInstance(Bundle bundle) {
-        sCampaignFragment = new CampaignFragment();
+    public static CampaignPageFragment getInstance(Bundle bundle) {
+        sCampaignFragment = new CampaignPageFragment();
         sCampaignFragment.setArguments(bundle);
         return sCampaignFragment;
     }
@@ -128,7 +128,7 @@ public class CampaignFragment extends BaseFragment implements OnClickListener, O
     /**
      * Empty constructor
      */
-    public CampaignFragment() {
+    public CampaignPageFragment() {
         super(IS_NESTED_FRAGMENT, R.layout.campaign_fragment_pager_item);
     }
 

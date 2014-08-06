@@ -9,7 +9,7 @@ import pt.rocket.framework.objects.CatalogFilter;
 import pt.rocket.framework.objects.CatalogFilterOption;
 import pt.rocket.framework.objects.CategoryFilterOption;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.helpers.GetProductsHelper;
+import pt.rocket.helpers.products.GetProductsHelper;
 import pt.rocket.view.R;
 import pt.rocket.view.fragments.CatalogFragment;
 import android.content.ContentValues;

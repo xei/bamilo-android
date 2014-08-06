@@ -20,7 +20,7 @@ import pt.rocket.framework.objects.ProductReviewComment;
 import pt.rocket.framework.objects.RatingOption;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.helpers.GetProductReviewsHelper;
+import pt.rocket.helpers.products.GetProductReviewsHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;

@@ -26,7 +26,7 @@ import pt.rocket.framework.rest.RestContract;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.Direction;
 import pt.rocket.framework.utils.ProductSort;
-import pt.rocket.helpers.GetProductsHelper;
+import pt.rocket.helpers.products.GetProductsHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.imageloader.RocketImageLoader;

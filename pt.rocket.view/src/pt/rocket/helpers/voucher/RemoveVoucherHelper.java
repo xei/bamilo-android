@@ -1,7 +1,7 @@
 /**
  * 
  */
-package pt.rocket.helpers;
+package pt.rocket.helpers.voucher;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -15,6 +15,8 @@ import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
+import pt.rocket.helpers.BaseHelper;
+import pt.rocket.helpers.HelperPriorityConfiguration;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -54,7 +56,7 @@ public class RemoveVoucherHelper extends BaseHelper {
 
         JSONObject messageArray = jsonObject.optJSONObject(RestConstants.JSON_MESSAGES_TAG);
         if (messageArray != null && messageArray.length() > 0) {
-            Iterator keys = messageArray.keys();
+            Iterator<?> keys = messageArray.keys();
             if (messageArray != null && messageArray.length() > 0) {
                 HashMap<String, String> messages = new HashMap<String, String>();
                 while (keys.hasNext()) {
