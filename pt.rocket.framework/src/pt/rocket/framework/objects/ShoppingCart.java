@@ -31,7 +31,7 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 	private int cartCount;
 	private String vat_value;
 	private String shipping_value;
-	private String extra_costs;
+	private double extraCosts;
 	private String sum_costs_value;
 	private boolean sum_costs;
 	private Map<String, Map<String, String>> itemSimpleDataRegistry;
@@ -136,7 +136,7 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 			sum_costs_value = jsonObject.optString(RestConstants.JSON_CART_SUM_COSTS_VALUE_TAG);
 		}
 		
-		extra_costs = jsonObject.optString(RestConstants.JSON_CART_EXTRA_COSTS_TAG);
+		extraCosts = jsonObject.optDouble(RestConstants.JSON_CART_EXTRA_COSTS_TAG);
 		if (cartCount > 0 && jsonObject.has(RestConstants.JSON_CART_ITEMS_TAG)) {
 			fillCartHashMap(jsonObject.getJSONObject(RestConstants.JSON_CART_ITEMS_TAG));
 		}
@@ -219,7 +219,7 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 	    dest.writeString(shipping_value);
 	    dest.writeMap(itemSimpleDataRegistry);
 	    dest.writeBooleanArray(new boolean[]{sum_costs});
-	    dest.writeString(extra_costs);
+	    dest.writeDouble(extraCosts);
 	    dest.writeString(sum_costs_value);
 	    dest.writeString(couponDiscount);
 	    dest.writeMap(price_rules);
@@ -239,7 +239,7 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 		itemSimpleDataRegistry = new HashMap<String, Map<String,String>>();
 		in.readMap(itemSimpleDataRegistry, String.class.getClassLoader());
 		in.readBooleanArray(new boolean[]{sum_costs});
-	    extra_costs = in.readString();
+	    extraCosts = in.readDouble();
 	    sum_costs_value = in.readString();
 	    couponDiscount = in.readString();
 	    price_rules = new HashMap<String, String>();
@@ -249,8 +249,8 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 	/**
 	 * @return the extra_costs
 	 */
-	public String getExtraCosts() {
-		return extra_costs;
+	public double getExtraCosts() {
+		return extraCosts;
 	}
 	
 	/**
@@ -261,10 +261,10 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
     }
 
 	/**
-	 * @param extra_costs the extra_costs to set
+	 * @param extraCosts the extra_costs to set
 	 */
-	public void setExtraCosts(String extra_costs) {
-		this.extra_costs = extra_costs;
+	public void setExtraCosts(double extraCosts) {
+		this.extraCosts = extraCosts;
 	}
 
 	/**
