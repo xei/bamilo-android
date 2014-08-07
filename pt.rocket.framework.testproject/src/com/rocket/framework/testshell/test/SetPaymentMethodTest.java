@@ -45,6 +45,10 @@ public class SetPaymentMethodTest extends FrameworkServiceTests {
 	public void testSetPaymentMethodUG() throws Throwable {
 		test(BaseHelper.BASE_URL_UG);
 	}
+	
+	public void testSetPaymentMethodGH() throws Throwable {
+		test(BaseHelper.BASE_URL_GH);
+	}
 
 	private void test(String url) {
 		/**

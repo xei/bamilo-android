@@ -16,36 +16,35 @@ public class SignupTest extends FrameworkServiceTests {
 	protected boolean processed1 = false;
 	protected boolean processed2 = false;
 
-	@SmallTest
 	public void testGetSignupIC() throws Throwable {
 		executeLogout(BaseHelper.BASE_URL_CI);
 	}
 
-	@SmallTest
 	public void testGetSignupKE() throws Throwable {
 		executeLogout(BaseHelper.BASE_URL_KE);
 	}
 
-	@SmallTest
 	public void testGetSignupMA() throws Throwable {
 		executeLogout(BaseHelper.BASE_URL_MA);
 	}
 
-	@SmallTest
 	public void testGetSignupEG() throws Throwable {
 		executeLogout(BaseHelper.BASE_URL_EG);
 	}
 
-	@SmallTest
 	public void testGetSignupNG() throws Throwable {
 		executeLogout(BaseHelper.BASE_URL_NG);
 	}
 
-	@SmallTest
 	public void testGetSignupUG() throws Throwable {
 		executeLogout(BaseHelper.BASE_URL_UG);
 	}
 
+	public void testGetSignupGH() throws Throwable {
+		executeLogout(BaseHelper.BASE_URL_GH);
+	}
+
+	@SmallTest
 	private void executeLogout(String url) {
 
 		Log.i(TAG, "mService => " + mService);
@@ -66,7 +65,7 @@ public class SignupTest extends FrameworkServiceTests {
 				assertTrue(
 						"Failed onRequestError - The base of the json is wrongly constructed, something is missing : "
 								+ bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY),
-						jsonValidation);
+								jsonValidation);
 				processed = true;
 			}
 

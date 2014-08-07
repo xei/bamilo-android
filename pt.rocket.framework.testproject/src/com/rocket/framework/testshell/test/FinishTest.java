@@ -61,10 +61,10 @@ public class FinishTest extends FrameworkServiceTests {
 	public void testFinishUG() throws Throwable {
 		test(BaseHelper.BASE_URL_UG, RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_UG, RequestConstants.SHIPPING_METHOD_UG, RequestConstants.SET_PAYMENT_METHOD_UG,RequestConstants.PRODUCT_SKU_UG, RequestConstants.PRODUCT_SKU_SIMPLE_UG);
 	}
-//	
-//	public void testFinishStaging_NG() throws Throwable {
-//		test("https://alice-staging.jumia.com.ng", RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_NG, "DigitalDelivery");
-//	}
+	
+	public void testFinishGH() throws Throwable {
+		test(BaseHelper.BASE_URL_GH, RequestConstants.BILLING_METHOD_SHIPPING_ADDRESS_ID_GH, RequestConstants.SHIPPING_METHOD_GH, RequestConstants.SET_PAYMENT_METHOD_GH,RequestConstants.PRODUCT_SKU_GH, RequestConstants.PRODUCT_SKU_SIMPLE_GH);
+	}
 
 	private void test(String url, String billing_address, String shippinng_method, String payment_method, String sku, String simple) {
 		/**

@@ -14,505 +14,118 @@ import android.test.suitebuilder.annotation.SmallTest;
 
 
 public class ShoppingCartRemoveItemTest extends FrameworkServiceTests {
-    private static String TAG = ShoppingCartRemoveItemTest.class.getSimpleName();
-    protected boolean processed = false;
-    
-public void testShoppingCartRemoveItemIC() throws Throwable {
-    	/**
-    	 * Login before adding to cart
-    	 */
-    	Log.i(TAG, "mService => " + mService);
-        Bundle args1 = new Bundle();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(RequestConstants.KEY_LOGIN_EMAIL, RequestConstants.CUSTOMER_EMAIL);
-        contentValues.put(RequestConstants.KEY_LOGIN_PASSWORD, RequestConstants.CUSTOMER_PASSWORD);
-        args1.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, contentValues);
-        args1.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_CI+"/customer/login/");
-        sendRequest(args1, new GetLoginHelper(), new IResponseCallback() {
+	private static String TAG = ShoppingCartRemoveItemTest.class.getSimpleName();
+	protected boolean processed = false;
 
-            @Override
-            public void onRequestError(Bundle bundle) {
-                // TODO Auto-generated method stub
-                Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-                assertTrue("Failed onRequestError - The base of the json is wrongly constructed, something is missing : "+bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY), jsonValidation);
-                processed = true;
-            }
+	public void testShoppingCartRemoveItemIC() throws Throwable {
+		test(BaseHelper.BASE_URL_CI, RequestConstants.PRODUCT_SKU_SIMPLE_CI);
+	}
 
-            @Override
-            public void onRequestComplete(Bundle bundle) {
-                // TODO Auto-generated method stub
-                Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-                assertTrue("Failed onRequestComplete - The base of the json is wrongly constructed, something is missing", jsonValidation);
-                processed = true;
+	public void testShoppingCartRemoveItemKE() throws Throwable {
+		test(BaseHelper.BASE_URL_KE, RequestConstants.PRODUCT_SKU_SIMPLE_KE);
+	}
 
-            }
-        });
-        //necessary in order to make the test wait for the server response
-        while (!processed) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-    	
-        /**
-         * Add to Cart
-         */
-        Log.i(TAG, "mService => " + mService);
-        Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_CI+"/order/remove?setDevice=mobileApi");
-        ContentValues contentValues2 = new ContentValues();
-        //contentValues2.put(RequestConstants.KEY_ADD_CART_SKU, RequestConstants.PRODUCT_SKU_CI);
-        contentValues2.put(RequestConstants.KEY_ADD_CART_SKU_SIMPLE, RequestConstants.PRODUCT_SKU_SIMPLE_CI);
-        //contentValues2.put(RequestConstants.KEY_ADD_CART_QUANTITY, 1);
-        args.putParcelable(GetChangePasswordHelper.CONTENT_VALUES, contentValues2);
-        sendRequest(args, new GetShoppingCartRemoveItemHelper(), new IResponseCallback() {
+	public void testShoppingCartRemoveItemMA() throws Throwable {
+		test(BaseHelper.BASE_URL_MA, RequestConstants.PRODUCT_SKU_SIMPLE_MA);
+	}
 
-            @Override
-            public void onRequestError(Bundle bundle) {
-                // TODO Auto-generated method stub
-                Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-                assertTrue("Failed onRequestError - The base of the json is wrongly constructed, something is missing : "+bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY), jsonValidation);
-                processed = true;
-            }
+	public void testShoppingCartRemoveItemNG() throws Throwable {
+		test(BaseHelper.BASE_URL_NG, RequestConstants.PRODUCT_SKU_SIMPLE_NG);
+	}
 
-            @Override
-            public void onRequestComplete(Bundle bundle) {
-                // TODO Auto-generated method stub
-                Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-                assertTrue("Failed onRequestComplete - The base of the json is wrongly constructed, something is missing", jsonValidation);
-                processed = true;
+	public void testShoppingCartRemoveItemEG() throws Throwable {
+		test(BaseHelper.BASE_URL_EG, RequestConstants.PRODUCT_SKU_SIMPLE_EG);
+	}
 
-            }
-        });
-        //necessary in order to make the test wait for the server response
-        while (!processed) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-        
-     
-    }
-
-public void testShoppingCartRemoveItemKE() throws Throwable {
-	/**
-	 * Login before adding to cart
-	 */
-	Log.i(TAG, "mService => " + mService);
-    Bundle args1 = new Bundle();
-    ContentValues contentValues = new ContentValues();
-    contentValues.put(RequestConstants.KEY_LOGIN_EMAIL, RequestConstants.CUSTOMER_EMAIL);
-    contentValues.put(RequestConstants.KEY_LOGIN_PASSWORD, RequestConstants.CUSTOMER_PASSWORD);
-    args1.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, contentValues);
-    args1.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_KE+"/customer/login/");
-    sendRequest(args1, new GetLoginHelper(), new IResponseCallback() {
-
-        @Override
-        public void onRequestError(Bundle bundle) {
-            // TODO Auto-generated method stub
-            Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-            assertTrue("Failed onRequestError - The base of the json is wrongly constructed, something is missing : "+bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY), jsonValidation);
-            processed = true;
-        }
-
-        @Override
-        public void onRequestComplete(Bundle bundle) {
-            // TODO Auto-generated method stub
-            Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-            assertTrue("Failed onRequestComplete - The base of the json is wrongly constructed, something is missing", jsonValidation);
-            processed = true;
-
-        }
-    });
-    //necessary in order to make the test wait for the server response
-    while (!processed) {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
+	public void testShoppingCartRemoveItemUG() throws Throwable {
+		test(BaseHelper.BASE_URL_UG, RequestConstants.PRODUCT_SKU_SIMPLE_UG);
+	}
 	
-    /**
-     * Add to Cart
-     */
-    Log.i(TAG, "mService => " + mService);
-    Bundle args = new Bundle();
-    args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_KE+"/order/remove?setDevice=mobileApi");
-    ContentValues contentValues2 = new ContentValues();
-    //contentValues2.put(RequestConstants.KEY_ADD_CART_SKU, RequestConstants.PRODUCT_SKU_KE);
-    contentValues2.put(RequestConstants.KEY_ADD_CART_SKU_SIMPLE, RequestConstants.PRODUCT_SKU_SIMPLE_KE);
-    //contentValues2.put(RequestConstants.KEY_ADD_CART_QUANTITY, 1);
-    args.putParcelable(GetChangePasswordHelper.CONTENT_VALUES, contentValues2);
-    sendRequest(args, new GetShoppingCartRemoveItemHelper(), new IResponseCallback() {
+	public void testShoppingCartRemoveItemGH() throws Throwable {
+		test(BaseHelper.BASE_URL_GH, RequestConstants.PRODUCT_SKU_SIMPLE_GH);
+	}
 
-        @Override
-        public void onRequestError(Bundle bundle) {
-            // TODO Auto-generated method stub
-            Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-            assertTrue("Failed onRequestError - The base of the json is wrongly constructed, something is missing : "+bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY), jsonValidation);
-            processed = true;
-        }
+	public void test(String url, String sku){
+		/**
+		 * Login
+		 */
+		Log.i(TAG, "mService => " + mService);
+		Bundle args1 = new Bundle();
+		ContentValues contentValues = new ContentValues();
+		contentValues.put(RequestConstants.KEY_LOGIN_EMAIL, RequestConstants.CUSTOMER_EMAIL);
+		contentValues.put(RequestConstants.KEY_LOGIN_PASSWORD, RequestConstants.CUSTOMER_PASSWORD);
+		args1.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, contentValues);
+		args1.putString(BaseHelper.KEY_COUNTRY, url+"/customer/login/");
+		sendRequest(args1, new GetLoginHelper(), new IResponseCallback() {
 
-        @Override
-        public void onRequestComplete(Bundle bundle) {
-            // TODO Auto-generated method stub
-            Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-            assertTrue("Failed onRequestComplete - The base of the json is wrongly constructed, something is missing", jsonValidation);
-            processed = true;
+			@Override
+			public void onRequestError(Bundle bundle) {
+				// TODO Auto-generated method stub
+				Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
+				assertTrue("Failed onRequestError - The base of the json is wrongly constructed, something is missing : "+bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY), jsonValidation);
+				processed = true;
+			}
 
-        }
-    });
-    //necessary in order to make the test wait for the server response
-    while (!processed) {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
-    
- 
-}
+			@Override
+			public void onRequestComplete(Bundle bundle) {
+				// TODO Auto-generated method stub
+				Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
+				assertTrue("Failed onRequestComplete - The base of the json is wrongly constructed, something is missing", jsonValidation);
+				processed = true;
 
-public void testShoppingCartRemoveItemMA() throws Throwable {
-	/**
-	 * Login before adding to cart
-	 */
-	Log.i(TAG, "mService => " + mService);
-    Bundle args1 = new Bundle();
-    ContentValues contentValues = new ContentValues();
-    contentValues.put(RequestConstants.KEY_LOGIN_EMAIL, RequestConstants.CUSTOMER_EMAIL);
-    contentValues.put(RequestConstants.KEY_LOGIN_PASSWORD, RequestConstants.CUSTOMER_PASSWORD);
-    args1.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, contentValues);
-    args1.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_MA+"/customer/login/");
-    sendRequest(args1, new GetLoginHelper(), new IResponseCallback() {
+			}
+		});
+		//necessary in order to make the test wait for the server response
+		while (!processed) {
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 
-        @Override
-        public void onRequestError(Bundle bundle) {
-            // TODO Auto-generated method stub
-            Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-            assertTrue("Failed onRequestError - The base of the json is wrongly constructed, something is missing : "+bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY), jsonValidation);
-            processed = true;
-        }
+		/**
+		 * Remove Item
+		 */
+		Log.i(TAG, "mService => " + mService);
+		Bundle args = new Bundle();
+		args.putString(BaseHelper.KEY_COUNTRY, url+"/order/remove?setDevice=mobileApi");
+		ContentValues contentValues2 = new ContentValues();
+		//contentValues2.put(RequestConstants.KEY_ADD_CART_SKU, RequestConstants.PRODUCT_SKU_UG);
+		contentValues2.put(RequestConstants.KEY_ADD_CART_SKU_SIMPLE, sku);
+		//contentValues2.put(RequestConstants.KEY_ADD_CART_QUANTITY, 1);
+		args.putParcelable(GetChangePasswordHelper.CONTENT_VALUES, contentValues2);
+		sendRequest(args, new GetShoppingCartRemoveItemHelper(), new IResponseCallback() {
 
-        @Override
-        public void onRequestComplete(Bundle bundle) {
-            // TODO Auto-generated method stub
-            Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-            assertTrue("Failed onRequestComplete - The base of the json is wrongly constructed, something is missing", jsonValidation);
-            processed = true;
+			@Override
+			public void onRequestError(Bundle bundle) {
+				// TODO Auto-generated method stub
+				Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
+				assertTrue("Failed onRequestError - The base of the json is wrongly constructed, something is missing : "+bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY), jsonValidation);
+				processed = true;
+			}
 
-        }
-    });
-    //necessary in order to make the test wait for the server response
-    while (!processed) {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
-	
-    /**
-     * Add to Cart
-     */
-    Log.i(TAG, "mService => " + mService);
-    Bundle args = new Bundle();
-    args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_MA+"/order/remove?setDevice=mobileApi");
-    ContentValues contentValues2 = new ContentValues();
-    //contentValues2.put(RequestConstants.KEY_ADD_CART_SKU, RequestConstants.PRODUCT_SKU_MA);
-    contentValues2.put(RequestConstants.KEY_ADD_CART_SKU_SIMPLE, RequestConstants.PRODUCT_SKU_SIMPLE_MA);
-    //contentValues2.put(RequestConstants.KEY_ADD_CART_QUANTITY, 1);
-    args.putParcelable(GetChangePasswordHelper.CONTENT_VALUES, contentValues2);
-    sendRequest(args, new GetShoppingCartRemoveItemHelper(), new IResponseCallback() {
+			@Override
+			public void onRequestComplete(Bundle bundle) {
+				// TODO Auto-generated method stub
+				Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
+				assertTrue("Failed onRequestComplete - The base of the json is wrongly constructed, something is missing", jsonValidation);
+				processed = true;
 
-        @Override
-        public void onRequestError(Bundle bundle) {
-            // TODO Auto-generated method stub
-            Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-            assertTrue("Failed onRequestError - The base of the json is wrongly constructed, something is missing : "+bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY), jsonValidation);
-            processed = true;
-        }
+			}
+		});
+		//necessary in order to make the test wait for the server response
+		while (!processed) {
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 
-        @Override
-        public void onRequestComplete(Bundle bundle) {
-            // TODO Auto-generated method stub
-            Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-            assertTrue("Failed onRequestComplete - The base of the json is wrongly constructed, something is missing", jsonValidation);
-            processed = true;
 
-        }
-    });
-    //necessary in order to make the test wait for the server response
-    while (!processed) {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
-    
- 
-}
-
-public void testShoppingCartRemoveItemNG() throws Throwable {
-	/**
-	 * Login before adding to cart
-	 */
-	Log.i(TAG, "mService => " + mService);
-    Bundle args1 = new Bundle();
-    ContentValues contentValues = new ContentValues();
-    contentValues.put(RequestConstants.KEY_LOGIN_EMAIL, RequestConstants.CUSTOMER_EMAIL);
-    contentValues.put(RequestConstants.KEY_LOGIN_PASSWORD, RequestConstants.CUSTOMER_PASSWORD);
-    args1.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, contentValues);
-    args1.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_NG+"/customer/login/");
-    sendRequest(args1, new GetLoginHelper(), new IResponseCallback() {
-
-        @Override
-        public void onRequestError(Bundle bundle) {
-            // TODO Auto-generated method stub
-            Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-            assertTrue("Failed onRequestError - The base of the json is wrongly constructed, something is missing : "+bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY), jsonValidation);
-            processed = true;
-        }
-
-        @Override
-        public void onRequestComplete(Bundle bundle) {
-            // TODO Auto-generated method stub
-            Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-            assertTrue("Failed onRequestComplete - The base of the json is wrongly constructed, something is missing", jsonValidation);
-            processed = true;
-
-        }
-    });
-    //necessary in order to make the test wait for the server response
-    while (!processed) {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
-	
-    /**
-     * Add to Cart
-     */
-    Log.i(TAG, "mService => " + mService);
-    Bundle args = new Bundle();
-    args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_NG+"/order/remove?setDevice=mobileApi");
-    ContentValues contentValues2 = new ContentValues();
-    //contentValues2.put(RequestConstants.KEY_ADD_CART_SKU, RequestConstants.PRODUCT_SKU_NG);
-    contentValues2.put(RequestConstants.KEY_ADD_CART_SKU_SIMPLE, RequestConstants.PRODUCT_SKU_SIMPLE_NG);
-    //contentValues2.put(RequestConstants.KEY_ADD_CART_QUANTITY, 1);
-    args.putParcelable(GetChangePasswordHelper.CONTENT_VALUES, contentValues2);
-    sendRequest(args, new GetShoppingCartRemoveItemHelper(), new IResponseCallback() {
-
-        @Override
-        public void onRequestError(Bundle bundle) {
-            // TODO Auto-generated method stub
-            Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-            assertTrue("Failed onRequestError - The base of the json is wrongly constructed, something is missing : "+bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY), jsonValidation);
-            processed = true;
-        }
-
-        @Override
-        public void onRequestComplete(Bundle bundle) {
-            // TODO Auto-generated method stub
-            Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-            assertTrue("Failed onRequestComplete - The base of the json is wrongly constructed, something is missing", jsonValidation);
-            processed = true;
-
-        }
-    });
-    //necessary in order to make the test wait for the server response
-    while (!processed) {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
-    
- 
-}
-
-public void testShoppingCartRemoveItemEG() throws Throwable {
-	/**
-	 * Login before changing password
-	 */
-	Log.i(TAG, "mService => " + mService);
-    Bundle args1 = new Bundle();
-    ContentValues contentValues = new ContentValues();
-    contentValues.put(RequestConstants.KEY_LOGIN_EMAIL, RequestConstants.CUSTOMER_EMAIL);
-    contentValues.put(RequestConstants.KEY_LOGIN_PASSWORD, RequestConstants.CUSTOMER_PASSWORD);
-    args1.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, contentValues);
-    args1.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_EG+"/customer/login/");
-    sendRequest(args1, new GetLoginHelper(), new IResponseCallback() {
-
-        @Override
-        public void onRequestError(Bundle bundle) {
-            // TODO Auto-generated method stub
-            Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-            assertTrue("Failed onRequestError - The base of the json is wrongly constructed, something is missing : "+bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY), jsonValidation);
-            processed = true;
-        }
-
-        @Override
-        public void onRequestComplete(Bundle bundle) {
-            // TODO Auto-generated method stub
-            Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-            assertTrue("Failed onRequestComplete - The base of the json is wrongly constructed, something is missing", jsonValidation);
-            processed = true;
-
-        }
-    });
-    //necessary in order to make the test wait for the server response
-    while (!processed) {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
-	
-    /**
-     * Add to Cart
-     */
-    Log.i(TAG, "mService => " + mService);
-    Bundle args = new Bundle();
-    args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_EG+"/order/remove?setDevice=mobileApi");
-    ContentValues contentValues2 = new ContentValues();
-    //contentValues2.put(RequestConstants.KEY_ADD_CART_SKU, RequestConstants.PRODUCT_SKU_EG);
-    contentValues2.put(RequestConstants.KEY_ADD_CART_SKU_SIMPLE, RequestConstants.PRODUCT_SKU_SIMPLE_EG);
-    //contentValues2.put(RequestConstants.KEY_ADD_CART_QUANTITY, 1);
-    args.putParcelable(GetChangePasswordHelper.CONTENT_VALUES, contentValues2);
-    sendRequest(args, new GetShoppingCartRemoveItemHelper(), new IResponseCallback() {
-
-        @Override
-        public void onRequestError(Bundle bundle) {
-            // TODO Auto-generated method stub
-            Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-            assertTrue("Failed onRequestError - The base of the json is wrongly constructed, something is missing : "+bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY), jsonValidation);
-            processed = true;
-        }
-
-        @Override
-        public void onRequestComplete(Bundle bundle) {
-            // TODO Auto-generated method stub
-            Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-            assertTrue("Failed onRequestComplete - The base of the json is wrongly constructed, something is missing", jsonValidation);
-            processed = true;
-
-        }
-    });
-    //necessary in order to make the test wait for the server response
-    while (!processed) {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
-    
- 
-}
-
-public void testShoppingCartRemoveItemUG() throws Throwable {
-	/**
-	 * Login before adding to cart
-	 */
-	Log.i(TAG, "mService => " + mService);
-    Bundle args1 = new Bundle();
-    ContentValues contentValues = new ContentValues();
-    contentValues.put(RequestConstants.KEY_LOGIN_EMAIL, RequestConstants.CUSTOMER_EMAIL);
-    contentValues.put(RequestConstants.KEY_LOGIN_PASSWORD, RequestConstants.CUSTOMER_PASSWORD);
-    args1.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, contentValues);
-    args1.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_UG+"/customer/login/");
-    sendRequest(args1, new GetLoginHelper(), new IResponseCallback() {
-
-        @Override
-        public void onRequestError(Bundle bundle) {
-            // TODO Auto-generated method stub
-            Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-            assertTrue("Failed onRequestError - The base of the json is wrongly constructed, something is missing : "+bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY), jsonValidation);
-            processed = true;
-        }
-
-        @Override
-        public void onRequestComplete(Bundle bundle) {
-            // TODO Auto-generated method stub
-            Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-            assertTrue("Failed onRequestComplete - The base of the json is wrongly constructed, something is missing", jsonValidation);
-            processed = true;
-
-        }
-    });
-    //necessary in order to make the test wait for the server response
-    while (!processed) {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
-	
-    /**
-     * Add to Cart
-     */
-    Log.i(TAG, "mService => " + mService);
-    Bundle args = new Bundle();
-    args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_UG+"/order/remove?setDevice=mobileApi");
-    ContentValues contentValues2 = new ContentValues();
-    //contentValues2.put(RequestConstants.KEY_ADD_CART_SKU, RequestConstants.PRODUCT_SKU_UG);
-    contentValues2.put(RequestConstants.KEY_ADD_CART_SKU_SIMPLE, RequestConstants.PRODUCT_SKU_SIMPLE_UG);
-    //contentValues2.put(RequestConstants.KEY_ADD_CART_QUANTITY, 1);
-    args.putParcelable(GetChangePasswordHelper.CONTENT_VALUES, contentValues2);
-    sendRequest(args, new GetShoppingCartRemoveItemHelper(), new IResponseCallback() {
-
-        @Override
-        public void onRequestError(Bundle bundle) {
-            // TODO Auto-generated method stub
-            Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-            assertTrue("Failed onRequestError - The base of the json is wrongly constructed, something is missing : "+bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY), jsonValidation);
-            processed = true;
-        }
-
-        @Override
-        public void onRequestComplete(Bundle bundle) {
-            // TODO Auto-generated method stub
-            Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-            assertTrue("Failed onRequestComplete - The base of the json is wrongly constructed, something is missing", jsonValidation);
-            processed = true;
-
-        }
-    });
-    //necessary in order to make the test wait for the server response
-    while (!processed) {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
-    
- 
-}
+	}
 
 }

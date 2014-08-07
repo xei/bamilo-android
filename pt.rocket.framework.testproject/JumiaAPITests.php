@@ -365,11 +365,12 @@ function restartApp(){
 	$install ="~".$adb_path." -s ".$emulator." install -r ".$currentPath."/AutomatedTests/pt.rocket.framework.testproject/bin/pt.rocket.framework.testproject-debug.apk";
 	#$install ="~".$adb_path." -s ".$emulator." install -r ".$currentPath."/bin/pt.rocket.framework.testproject.apk";
 	exec($install);
-	echo("Uninstalling previous Shell");
+	echo("\n> Uninstalling previous Shell\n");
 	$install ="~".$adb_path." -s ".$emulator." uninstall com.rocket.framework.testshell";
 	exec($install);
 	echo("\n> Installing Shell:\n");
 	$install ="~".$adb_path." -s ".$emulator." install -r ".$currentPath."/AutomatedTests/Shell/Shell.apk";
+	#$install ="~".$adb_path." -s ".$emulator." install -r /home/bteixeira/Workspace/Jumia/1.9/Shell/Shell.apk";
 	exec($install);
 
 	echo("\n> Starting Test\n\n");

@@ -17,35 +17,33 @@ public class ChangePasswordTest extends FrameworkServiceTests {
     protected boolean processed = false;
     protected boolean processed1 = false;
     protected boolean processed2 = false;
-    
-    @SmallTest
+
     public void testGetChangePasswordIC() throws Throwable {
     	executeChangePassword(BaseHelper.BASE_URL_CI);
     }
-    
-    @SmallTest
+
     public void testGetChangePasswordKE() throws Throwable {
     	executeChangePassword(BaseHelper.BASE_URL_KE);
     }
-    
-    @SmallTest
+
     public void testGetChangePasswordMA() throws Throwable {
     	executeChangePassword(BaseHelper.BASE_URL_MA);
     }
-    
-    @SmallTest
+
     public void testGetChangePasswordEG() throws Throwable {
     	executeChangePassword(BaseHelper.BASE_URL_EG);
     }
-    
-    @SmallTest
+
     public void testGetChangePasswordNG() throws Throwable {
     	executeChangePassword(BaseHelper.BASE_URL_NG);
     }
     
-    @SmallTest
     public void testGetChangePasswordUG() throws Throwable {
     	executeChangePassword(BaseHelper.BASE_URL_UG);
+    }
+    
+    public void testGetChangePasswordGH() throws Throwable {
+    	executeChangePassword(BaseHelper.BASE_URL_GH);
     }
     
     private void executeChangePassword(String url){

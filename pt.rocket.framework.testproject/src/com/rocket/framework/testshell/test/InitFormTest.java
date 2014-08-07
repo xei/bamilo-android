@@ -10,219 +10,70 @@ import android.test.suitebuilder.annotation.SmallTest;
 
 
 public class InitFormTest extends FrameworkServiceTests {
-    private static String TAG = InitFormTest.class.getSimpleName();
-    protected boolean processed = false;
+	private static String TAG = InitFormTest.class.getSimpleName();
+	protected boolean processed = false;
 
-    @SmallTest
-    public void testInitFormIC() throws Throwable {
-        Log.i(TAG, "mService => " + mService);
-        Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_CI+"/forms/index/");
-        sendRequest(args, new GetInitFormHelper(), new IResponseCallback() {
+	public void testInitFormIC() throws Throwable {
+		test(BaseHelper.BASE_URL_CI);
+	}
+	
+	public void testInitFormKE() throws Throwable {
+		test(BaseHelper.BASE_URL_KE);
+	}
+	
+	public void testInitFormMA() throws Throwable {
+		test(BaseHelper.BASE_URL_MA);
+	}
+	
+	public void testInitFormNG() throws Throwable {
+		test(BaseHelper.BASE_URL_NG);
+	}
+	
+	public void testInitFormUG() throws Throwable {
+		test(BaseHelper.BASE_URL_UG);
+	}
+	
+	public void testInitFormEG() throws Throwable {
+		test(BaseHelper.BASE_URL_EG);
+	}
+	
+	public void testInitFormGH() throws Throwable {
+		test(BaseHelper.BASE_URL_GH);
+	}
 
-            @Override
-            public void onRequestError(Bundle bundle) {
-                // TODO Auto-generated method stub
-                Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-                assertTrue("Failed onRequestError - The base of the json is wrongly constructed, something is missing : "+bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY), jsonValidation);
-                processed = true;
-            }
+	@SmallTest
+	public void test(String url) {
+		Log.i(TAG, "mService => " + mService);
+		Bundle args = new Bundle();
+		args.putString(BaseHelper.KEY_COUNTRY, url +"/forms/index/");
 
-            @Override
-            public void onRequestComplete(Bundle bundle) {
-                // TODO Auto-generated method stub
-                Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-                assertTrue("Failed onRequestComplete - The base of the json is wrongly constructed, something is missing", jsonValidation);
-                processed = true;
+		sendRequest(args, new GetInitFormHelper(), new IResponseCallback() {
 
-            }
-        });
-        //necessary in order to make the test wait for the server response
-        while (!processed) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-    }
-    
-    @SmallTest
-    public void testInitFormKE() throws Throwable {
-        Log.i(TAG, "mService => " + mService);
-        Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_KE+"/forms/index/");
-        sendRequest(args, new GetInitFormHelper(), new IResponseCallback() {
+			@Override
+			public void onRequestError(Bundle bundle) {
+				// TODO Auto-generated method stub
+				Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
+				assertTrue("Failed onRequestError - The base of the json is wrongly constructed, something is missing : "+bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY), jsonValidation);
+				processed = true;
+			}
 
-            @Override
-            public void onRequestError(Bundle bundle) {
-                // TODO Auto-generated method stub
-                Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-                assertTrue("Failed onRequestError - The base of the json is wrongly constructed, something is missing : "+bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY), jsonValidation);
-                processed = true;
-            }
+			@Override
+			public void onRequestComplete(Bundle bundle) {
+				// TODO Auto-generated method stub
+				Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
+				assertTrue("Failed onRequestComplete - The base of the json is wrongly constructed, something is missing", jsonValidation);
+				processed = true;
 
-            @Override
-            public void onRequestComplete(Bundle bundle) {
-                // TODO Auto-generated method stub
-                Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-                assertTrue("Failed onRequestComplete - The base of the json is wrongly constructed, something is missing", jsonValidation);
-                processed = true;
-
-            }
-        });
-        //necessary in order to make the test wait for the server response
-        while (!processed) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-    }
-    
-    @SmallTest
-    public void testInitFormMA() throws Throwable {
-        Log.i(TAG, "mService => " + mService);
-        Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_MA+"/forms/index/");
-        sendRequest(args, new GetInitFormHelper(), new IResponseCallback() {
-
-            @Override
-            public void onRequestError(Bundle bundle) {
-                // TODO Auto-generated method stub
-                Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-                assertTrue("Failed onRequestError - The base of the json is wrongly constructed, something is missing : "+bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY), jsonValidation);
-                processed = true;
-            }
-
-            @Override
-            public void onRequestComplete(Bundle bundle) {
-                // TODO Auto-generated method stub
-                Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-                assertTrue("Failed onRequestComplete - The base of the json is wrongly constructed, something is missing", jsonValidation);
-                processed = true;
-
-            }
-        });
-        //necessary in order to make the test wait for the server response
-        while (!processed) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-    }
-    
-    @SmallTest
-    public void testInitFormNG() throws Throwable {
-        Log.i(TAG, "mService => " + mService);
-        Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_NG+"/forms/index/");
-        sendRequest(args, new GetInitFormHelper(), new IResponseCallback() {
-
-            @Override
-            public void onRequestError(Bundle bundle) {
-                // TODO Auto-generated method stub
-                Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-                assertTrue("Failed onRequestError - The base of the json is wrongly constructed, something is missing : "+bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY), jsonValidation);
-                processed = true;
-            }
-
-            @Override
-            public void onRequestComplete(Bundle bundle) {
-                // TODO Auto-generated method stub
-                Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-                assertTrue("Failed onRequestComplete - The base of the json is wrongly constructed, something is missing", jsonValidation);
-                processed = true;
-
-            }
-        });
-        //necessary in order to make the test wait for the server response
-        while (!processed) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-    }
-    
-    @SmallTest
-    public void testInitFormEG() throws Throwable {
-        Log.i(TAG, "mService => " + mService);
-        Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_EG+"/forms/index/");
-        
-        sendRequest(args, new GetInitFormHelper(), new IResponseCallback() {
-
-            @Override
-            public void onRequestError(Bundle bundle) {
-                // TODO Auto-generated method stub
-                Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-                assertTrue("Failed onRequestError - The base of the json is wrongly constructed, something is missing : "+bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY), jsonValidation);
-                processed = true;
-            }
-
-            @Override
-            public void onRequestComplete(Bundle bundle) {
-                // TODO Auto-generated method stub
-                Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-                assertTrue("Failed onRequestComplete - The base of the json is wrongly constructed, something is missing", jsonValidation);
-                processed = true;
-
-            }
-        });
-        //necessary in order to make the test wait for the server response
-        while (!processed) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-    }
-
-    @SmallTest
-    public void testInitFormUG() throws Throwable {
-        Log.i(TAG, "mService => " + mService);
-        Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_UG+"/forms/index/");
-        
-        sendRequest(args, new GetInitFormHelper(), new IResponseCallback() {
-
-            @Override
-            public void onRequestError(Bundle bundle) {
-                // TODO Auto-generated method stub
-                Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-                assertTrue("Failed onRequestError - The base of the json is wrongly constructed, something is missing : "+bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY), jsonValidation);
-                processed = true;
-            }
-
-            @Override
-            public void onRequestComplete(Bundle bundle) {
-                // TODO Auto-generated method stub
-                Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-                assertTrue("Failed onRequestComplete - The base of the json is wrongly constructed, something is missing", jsonValidation);
-                processed = true;
-
-            }
-        });
-        //necessary in order to make the test wait for the server response
-        while (!processed) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-    }
-
+			}
+		});
+		//necessary in order to make the test wait for the server response
+		while (!processed) {
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
 }

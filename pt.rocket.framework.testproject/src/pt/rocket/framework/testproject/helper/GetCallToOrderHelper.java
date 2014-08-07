@@ -37,7 +37,7 @@ public class GetCallToOrderHelper extends BaseHelper {
         Bundle bundle = new Bundle();
         bundle.putString(Constants.BUNDLE_URL_KEY, args.getString(BaseHelper.KEY_COUNTRY));
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_CUSTOMER_ADDRESSES_EVENT);        
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_CALL_TO_ORDER_PHONE);        
         bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
         return bundle;
     }

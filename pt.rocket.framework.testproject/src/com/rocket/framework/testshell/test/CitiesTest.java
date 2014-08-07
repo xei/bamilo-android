@@ -16,109 +16,113 @@ import android.test.suitebuilder.annotation.SmallTest;
 
 @SmallTest
 public class CitiesTest extends FrameworkServiceTests {
-    private static String TAG = CitiesTest.class.getSimpleName();
-    protected boolean processed_login = false;
-    protected boolean processed_logout = false;
-    
-public void testCitiesIC() throws Throwable {
-  test(BaseHelper.BASE_URL_CI,319);
-}
+	private static String TAG = CitiesTest.class.getSimpleName();
+	protected boolean processed_login = false;
+	protected boolean processed_logout = false;
 
-public void testCitiesKE() throws Throwable {
-    test(BaseHelper.BASE_URL_KE, 233);
-}
+	public void testCitiesIC() throws Throwable {
+		test(BaseHelper.BASE_URL_CI,319);
+	}
 
-public void testCitiesMA() throws Throwable {
-  test(BaseHelper.BASE_URL_MA,94);
-}
+	public void testCitiesKE() throws Throwable {
+		test(BaseHelper.BASE_URL_KE, 233);
+	}
 
-public void testCitiesNG() throws Throwable {
-  test(BaseHelper.BASE_URL_NG,25);
-}
+	public void testCitiesMA() throws Throwable {
+		test(BaseHelper.BASE_URL_MA,94);
+	}
 
-public void testCitiesEG() throws Throwable {
-  test(BaseHelper.BASE_URL_EG,182);
-}
+	public void testCitiesNG() throws Throwable {
+		test(BaseHelper.BASE_URL_NG,25);
+	}
 
-public void testCitiesUG() throws Throwable {
-  test(BaseHelper.BASE_URL_UG, 241);
-}
+	public void testCitiesEG() throws Throwable {
+		test(BaseHelper.BASE_URL_EG,182);
+	}
 
-public void test(String url, int region_id){
-    /**
-     * Login before adding to cart
-     */
-    Log.i(TAG, "mService => " + mService);
-    Bundle args_login = new Bundle();
-    ContentValues contentValues_login = new ContentValues();
-    contentValues_login.put(RequestConstants.KEY_LOGIN_EMAIL, RequestConstants.CUSTOMER_EMAIL);
-    contentValues_login.put(RequestConstants.KEY_LOGIN_PASSWORD, RequestConstants.CUSTOMER_PASSWORD);
-    args_login.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, contentValues_login);
-    
-    args_login.putString(BaseHelper.KEY_COUNTRY, url + "/customer/login/");
-    sendRequest(args_login, new GetLoginHelper(), new IResponseCallback() {
+	public void testCitiesUG() throws Throwable {
+		test(BaseHelper.BASE_URL_UG, 241);
+	}
 
-        @Override
-        public void onRequestError(Bundle bundle) {
-            // TODO Auto-generated method stub
-            Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-            assertTrue("Failed onRequestError - The base of the json is wrongly constructed, something is missing : "+bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY), jsonValidation);
-            processed_login = true;
-        }
+	public void testCitiesGH() throws Throwable {
+		test(BaseHelper.BASE_URL_GH, 241);
+	}
 
-        @Override
-        public void onRequestComplete(Bundle bundle) {
-            // TODO Auto-generated method stub
-            Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-            assertTrue("Failed onRequestComplete - The base of the json is wrongly constructed, something is missing", jsonValidation);
-            processed_login = true;
+	public void test(String url, int region_id){
+		/**
+		 * Login before adding to cart
+		 */
+		Log.i(TAG, "mService => " + mService);
+		Bundle args_login = new Bundle();
+		ContentValues contentValues_login = new ContentValues();
+		contentValues_login.put(RequestConstants.KEY_LOGIN_EMAIL, RequestConstants.CUSTOMER_EMAIL);
+		contentValues_login.put(RequestConstants.KEY_LOGIN_PASSWORD, RequestConstants.CUSTOMER_PASSWORD);
+		args_login.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, contentValues_login);
 
-        }
-    });
-    //necessary in order to make the test wait for the server response
-    while (!processed_login) {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
-    
-    /**
-     * Address
-     */
-    Log.i(TAG, "mService => " + mService);
-    Bundle args_logout = new Bundle();
-    args_logout.putString(BaseHelper.KEY_COUNTRY, url + "/customer/address/cities/?region="+region_id);
-    sendRequest(args_logout, new GetCitiesHelper(), new IResponseCallback() {
+		args_login.putString(BaseHelper.KEY_COUNTRY, url + "/customer/login/");
+		sendRequest(args_login, new GetLoginHelper(), new IResponseCallback() {
 
-        @Override
-        public void onRequestError(Bundle bundle) {
-            // TODO Auto-generated method stub
-            Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-            assertTrue("Failed onRequestError - The base of the json is wrongly constructed, something is missing : "+bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY), jsonValidation);
-            processed_logout = true;
-        }
+			@Override
+			public void onRequestError(Bundle bundle) {
+				// TODO Auto-generated method stub
+				Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
+				assertTrue("Failed onRequestError - The base of the json is wrongly constructed, something is missing : "+bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY), jsonValidation);
+				processed_login = true;
+			}
 
-        @Override
-        public void onRequestComplete(Bundle bundle) {
-            // TODO Auto-generated method stub
-            Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-            assertTrue("Failed onRequestComplete - The base of the json is wrongly constructed, something is missing", jsonValidation);
-            processed_logout = true;
+			@Override
+			public void onRequestComplete(Bundle bundle) {
+				// TODO Auto-generated method stub
+				Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
+				assertTrue("Failed onRequestComplete - The base of the json is wrongly constructed, something is missing", jsonValidation);
+				processed_login = true;
 
-        }
-    });
-    //necessary in order to make the test wait for the server response
-    while (!processed_logout) {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
-}
+			}
+		});
+		//necessary in order to make the test wait for the server response
+		while (!processed_login) {
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		/**
+		 * Address
+		 */
+		Log.i(TAG, "mService => " + mService);
+		Bundle args_logout = new Bundle();
+		args_logout.putString(BaseHelper.KEY_COUNTRY, url + "/customer/address/cities/?region="+region_id);
+		sendRequest(args_logout, new GetCitiesHelper(), new IResponseCallback() {
+
+			@Override
+			public void onRequestError(Bundle bundle) {
+				// TODO Auto-generated method stub
+				Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
+				assertTrue("Failed onRequestError - The base of the json is wrongly constructed, something is missing : "+bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY), jsonValidation);
+				processed_logout = true;
+			}
+
+			@Override
+			public void onRequestComplete(Bundle bundle) {
+				// TODO Auto-generated method stub
+				Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
+				assertTrue("Failed onRequestComplete - The base of the json is wrongly constructed, something is missing", jsonValidation);
+				processed_logout = true;
+
+			}
+		});
+		//necessary in order to make the test wait for the server response
+		while (!processed_logout) {
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
 
 }

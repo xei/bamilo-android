@@ -15,6 +15,7 @@ import pt.rocket.framework.testproject.utils.XMLUtils;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
+import android.content.ContentValues;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -30,16 +31,17 @@ public class GetShoppingCartChangeItemQuantityHelper extends BaseHelper {
 
 	private static String TAG = GetShoppingCartChangeItemQuantityHelper.class.getSimpleName();
 
-	public static final String CART_ITEMS = "cart_items";
+	public static final String CONTENT_VALUES = "contentValues";
+	private ContentValues contentValues;
 
 	@Override
 	public Bundle generateRequestBundle(Bundle args) {
+		contentValues = args.getParcelable(CONTENT_VALUES);
 		Bundle bundle = new Bundle();
-
 		bundle.putString(Constants.BUNDLE_URL_KEY, EventType.CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT.action);
 		bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
 		bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.POST);
-		bundle.putParcelable(Constants.BUNDLE_FORM_DATA_KEY, args.getParcelable(CART_ITEMS));
+		bundle.putParcelable(Constants.BUNDLE_FORM_DATA_KEY, contentValues);
 		bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
 		bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT);
 		return bundle;

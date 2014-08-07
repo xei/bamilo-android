@@ -39,7 +39,7 @@ public class GetForgotPasswordHelper extends BaseHelper {
 		bundle.putString(Constants.BUNDLE_URL_KEY, args.getString(KEY_COUNTRY));
 		bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.POST);
 		bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
-		bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_API_INFO);
+		bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.LOGOUT_EVENT);
 		return bundle;
 	}
 

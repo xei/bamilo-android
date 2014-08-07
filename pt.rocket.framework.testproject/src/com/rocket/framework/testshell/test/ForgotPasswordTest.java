@@ -17,34 +17,38 @@ public class ForgotPasswordTest extends FrameworkServiceTests {
     protected boolean processed = false;
 
     public void testGetForgotPasswordUG() throws Throwable {
-    	test(BaseHelper.BASE_URL_UG);
+    	test(BaseHelper.BASE_URL_UG, RequestConstants.KEY_FORGOT_PASSWORD_EMAIL_NEW);
     }
 
     public void testGetForgotPasswordIC() throws Throwable {
-    	test(BaseHelper.BASE_URL_CI);
+    	test(BaseHelper.BASE_URL_CI, RequestConstants.KEY_FORGOT_PASSWORD_EMAIL_NEW);
     }
 
     public void testGetForgotPasswordKE() throws Throwable {
-    	test(BaseHelper.BASE_URL_KE);
+    	test(BaseHelper.BASE_URL_KE, RequestConstants.KEY_FORGOT_PASSWORD_EMAIL_NEW);
     }
 
     public void testGetForgotPasswordNG() throws Throwable {
-    	test(BaseHelper.BASE_URL_NG);
+    	test(BaseHelper.BASE_URL_NG, RequestConstants.KEY_FORGOT_PASSWORD_EMAIL_NEW);
     }
 
     public void testGetForgotPasswordEG() throws Throwable {
-    	test(BaseHelper.BASE_URL_EG);
+    	test(BaseHelper.BASE_URL_EG, RequestConstants.KEY_FORGOT_PASSWORD_EMAIL_NEW);
     }
 
     public void testGetForgotPasswordMA() throws Throwable {
-    	test(BaseHelper.BASE_URL_MA);
+    	test(BaseHelper.BASE_URL_MA, RequestConstants.KEY_FORGOT_PASSWORD_EMAIL_NEW);
+    }
+    
+    public void testGetForgotPasswordGH() throws Throwable {
+    	test(BaseHelper.BASE_URL_GH, RequestConstants.KEY_FORGOT_PASSWORD_EMAIL);
     }
     	
-	public void test(String url)  {
+	public void test(String url, String forgot_password_key)  {
         Log.i(TAG, "mService => " + mService);
         Bundle args = new Bundle();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(RequestConstants.KEY_FORGOT_PASSWORD_EMAIL, RequestConstants.CUSTOMER_EMAIL);
+        contentValues.put(forgot_password_key, RequestConstants.CUSTOMER_EMAIL);
         args.putParcelable(GetForgotPasswordHelper.CONTENT_VALUES, contentValues);
         args.putString(BaseHelper.KEY_COUNTRY, url+"/customer/forgotpassword?setDevice=mobileApi");
         args.putBoolean(Constants.BUNDLE_METADATA_REQUIRED_KEY, false);

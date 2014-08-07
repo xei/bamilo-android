@@ -40,7 +40,7 @@ public class GetCartDataHelper extends BaseHelper {
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.POST);
         bundle.putParcelable(Constants.BUNDLE_FORM_DATA_KEY, args.getParcelable(ADD_ITEM));
         bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_UPDATED_TEASERS_EVENT);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_CUSTOMER_ADDRESSES_EVENT);
         return bundle;
     }
 

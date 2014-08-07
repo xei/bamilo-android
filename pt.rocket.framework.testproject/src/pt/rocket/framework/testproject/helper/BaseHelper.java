@@ -37,21 +37,16 @@ public abstract class BaseHelper {
     public static String BASE_URL_STAGING_EG = "https://alice-staging.jumia.com.eg/mobapi/v1.3";
     public static String BASE_URL_STAGING_CI = "https://alice-staging.jumia.ci/mobapi/v1.3";
     public static String BASE_URL_STAGING_UG = "https://alice-staging.jumia.ug/mobapi/v1.3";
+    public static String BASE_URL_STAGING_GH = "https://alice-staging.jumia.com.gh/mobapi/v1.3";
     
-    //public static String BASE_URL_NG = "https://www.jumia.com.ng/mobapi/v1.3";
-    //public static String BASE_URL_KE = "https://www.jumia.co.ke/mobapi/v1.3";
-    //public static String BASE_URL_MA = "https://www.jumia.ma/mobapi/v1.3";
-    //public static String BASE_URL_EG = "https://www.jumia.com.eg/mobapi/v1.3";
-    //public static String BASE_URL_CI = "https://www.jumia.ci/mobapi/v1.3";
-    //public static String BASE_URL_UG = "https://www.jumia.ug/mobapi/v1.3";
+    public static String BASE_URL_NG = "https://www.jumia.com.ng/mobapi/v1.3";
+    public static String BASE_URL_KE = "https://www.jumia.co.ke/mobapi/v1.3";
+    public static String BASE_URL_MA = "https://www.jumia.ma/mobapi/v1.3";
+    public static String BASE_URL_EG = "https://www.jumia.com.eg/mobapi/v1.3";
+    public static String BASE_URL_CI = "https://www.jumia.ci/mobapi/v1.3";
+    public static String BASE_URL_UG = "https://www.jumia.ug/mobapi/v1.3";
+    public static String BASE_URL_GH = "https://www.jumia.com.gh/mobapi/v1.3";
     
-    public static String BASE_URL_NG = "https://integration-www.jumia.com.ng/mobapi/1.3";
-    public static String BASE_URL_KE = "https://integration-www.jumia.co.ke/mobapi/1.3";
-    public static String BASE_URL_MA = "https://integration-www.jumia.ma/mobapi/1.3";
-    public static String BASE_URL_EG = "https://integration-www.jumia.com.eg/mobapi/1.3";
-    public static String BASE_URL_CI = "https://integration-www.jumia.ci/mobapi/1.3";
-    public static String BASE_URL_UG = "https://integration-www.jumia.ug/mobapi/1.3";
-
     /**
      * Creates the bundle for the request
      * 

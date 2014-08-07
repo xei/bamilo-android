@@ -10,6 +10,7 @@ public class RequestConstants {
 	 * Customer
 	 */
 	public static final String CUSTOMER_EMAIL = "msilvaTester5@mailinator.com";
+//	public static final String CUSTOMER_EMAIL = "msilva@jumia.com";
 	public static final String CUSTOMER_EMAIL2 = "testcalabash@mailinator.com";
 	static Random rand = new Random();
 
@@ -45,7 +46,8 @@ public class RequestConstants {
 	/**
 	 * Forgot Password
 	 */
-	public final static String KEY_FORGOT_PASSWORD_EMAIL = "Alice_Module_Mobapi_Form_Customer_ForgotPasswordForm[email]";
+	public final static String KEY_FORGOT_PASSWORD_EMAIL = "Alice_Module_Customer_Model_ForgotPasswordForm[email]";
+	public final static String KEY_FORGOT_PASSWORD_EMAIL_NEW = "Alice_Module_Mobapi_Form_Customer_ForgotPasswordForm[email]";
 	
 	/**
 	 * Facebook Login
@@ -92,20 +94,25 @@ public class RequestConstants {
 	public static final String PRODUCT_SKU_CI = "RO828BOAB8MOAFRAMZ";
 	public static final String PRODUCT_SKU_SIMPLE_CI = "RO828BOAB8MOAFRAMZ-99274";
 	
-	public static final String PRODUCT_SKU_KE = "SA949ELAA79UNAFAMZ";
-	public static final String PRODUCT_SKU_SIMPLE_KE = "SA949ELAA79UNAFAMZ-13791";
+	public static final String PRODUCT_SKU_KE = "CO366ELAAEGQNAFAMZ";
+	public static final String PRODUCT_SKU_SIMPLE_KE = "CO366ELAAEGQNAFAMZ-35951";
 	
-	public static final String PRODUCT_SKU_MA = "SA024ELADVY4MAAMZ";
-	public static final String PRODUCT_SKU_SIMPLE_MA = "SA024ELADVY4MAAMZ-267947";
+	public static final String PRODUCT_SKU_MA = "JU318SPADVIEMAAMZ";
+	public static final String PRODUCT_SKU_SIMPLE_MA = "JU318SPADVIEMAAMZ-266412";
 	
-	public static final String PRODUCT_SKU_NG = "SA948ELAC2WFNGAMZ";
-	public static final String PRODUCT_SKU_SIMPLE_NG = "SA948ELAC2WFNGAMZ-181086";
+	public static final String PRODUCT_SKU_NG = "SO229HL06BKFNGAMZ";
+	public static final String PRODUCT_SKU_SIMPLE_NG = "SO229HL06BKFNGAMZ-41430";
 	
 	public static final String PRODUCT_SKU_EG = "AC452FAADFISEGAMZ";
 	public static final String PRODUCT_SKU_SIMPLE_EG = "AC452FAADFISEGAMZ-254608";
 	
-	public static final String PRODUCT_SKU_UG = "SA948ELAA9T5NAFAMZ";
-	public static final String PRODUCT_SKU_SIMPLE_UG = "SA948ELAA9T5NAFAMZ-21695";
+	public static final String PRODUCT_SKU_UG = "BL683ELAA42JNAFAMZ";
+	public static final String PRODUCT_SKU_SIMPLE_UG = "BL683ELAA42JNAFAMZ-5572";
+	
+	public static final String PRODUCT_SKU_GH = "SA948ELAA0U6NAFAMZ";
+	public static final String PRODUCT_SKU_SIMPLE_GH = "SA948ELAA0U6NAFAMZ-94";
+//	public static final String PRODUCT_SKU_GH = "HB373ELAA1OCNAFAMZ";
+//	public static final String PRODUCT_SKU_SIMPLE_GH = "HB373ELAA1OCNAFAMZ-2176";
 	
 	/**
 	 * About you
@@ -135,7 +142,7 @@ public class RequestConstants {
 	public static final String CREATE_ADDRESS_LAST_NAME = "last name";
 
 	public static final String KEY_CREATE_ADDRESS_ADDRESS1= "Alice_Module_Customer_Model_AddressForm[address1]";
-	public static final String CREATE_ADDRESS_ADDRESS1 = "address 1";
+	public static final String CREATE_ADDRESS_ADDRESS1 = "address 1"+n;
 	
 	public static final String KEY_CREATE_ADDRESS_ADDRESS2= "Alice_Module_Customer_Model_AddressForm[address2]";
 	public static final String CREATE_ADDRESS_ADDRESS2 = "address 1";
@@ -149,10 +156,12 @@ public class RequestConstants {
 	public static final String KEY_CREATE_ADDRESS_FK_REGION= "Alice_Module_Customer_Model_AddressForm[fk_customer_address_region]";
 	public static final String CREATE_ADDRESS_FK_REGION = "233";
 	public static final String CREATE_ADDRESS_FK_REGION_IC = "319";
+	public static final String CREATE_ADDRESS_FK_REGION_GH = "241";
 	
 	public static final String KEY_CREATE_ADDRESS_FK_CITY= "Alice_Module_Customer_Model_AddressForm[fk_customer_address_city]";
 	public static final String CREATE_ADDRESS_FK_CITY = "373";
 	public static final String CREATE_ADDRESS_FK_CITY_IC = "33264";
+	public static final String CREATE_ADDRESS_FK_CITY_GH = "169";
 	
 	public static final String KEY_CREATE_ADDRESS_COUNTRY= "Alice_Module_Customer_Model_AddressForm[country]";
 	public static final String CREATE_ADDRESS_COUNTRY = "Germany";
@@ -182,6 +191,7 @@ public class RequestConstants {
 	public static final String SET_PAYMENT_METHOD_NG = "1";
 	public static final String SET_PAYMENT_METHOD_KE = "3";
 	public static final String SET_PAYMENT_METHOD_UG = "7";
+	public static final String SET_PAYMENT_METHOD_GH = "1";
 	
 	
 	/**
@@ -198,10 +208,12 @@ public class RequestConstants {
 	
 	public static final String BILLING_METHOD_SHIPPING_ADDRESS_ID_EG = "116953";
 	public static final String BILLING_METHOD_SHIPPING_ADDRESS_ID_IC = "11977";
-	public static final String BILLING_METHOD_SHIPPING_ADDRESS_ID_MA = "58028";
+	public static final String BILLING_METHOD_SHIPPING_ADDRESS_ID_MA = "92282";
 	public static final String BILLING_METHOD_SHIPPING_ADDRESS_ID_NG = "311198";
 	public static final String BILLING_METHOD_SHIPPING_ADDRESS_ID_KE = "15253";
 	public static final String BILLING_METHOD_SHIPPING_ADDRESS_ID_UG = "17404";
+	public static final String BILLING_METHOD_SHIPPING_ADDRESS_ID_GH = "55";
+//	public static final String BILLING_METHOD_SHIPPING_ADDRESS_ID_GH = "10";
 	
 	public static final String SHIPPING_METHOD_EG = "UniversalShippingMatrix";
 	public static final String SHIPPING_METHOD_IC = "UniversalShippingMatrix";
@@ -209,6 +221,7 @@ public class RequestConstants {
 	public static final String SHIPPING_METHOD_NG = "UniversalShippingMatrix";
 	public static final String SHIPPING_METHOD_KE = "UniversalShippingMatrix";
 	public static final String SHIPPING_METHOD_UG = "UniversalShippingMatrix";
+	public static final String SHIPPING_METHOD_GH = "UniversalShippingMatrix";
 	
 	/**
 	 * Newsletter

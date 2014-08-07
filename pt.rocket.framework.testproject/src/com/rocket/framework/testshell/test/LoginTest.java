@@ -17,36 +17,36 @@ public class LoginTest extends FrameworkServiceTests {
     protected boolean processed1 = false;
     protected boolean processed2 = false;
     
-    @SmallTest
     public void testGetLoginIC() throws Throwable {
     	executeLogin(BaseHelper.BASE_URL_CI);
     }
-    
-    @SmallTest
+
     public void testGetLoginKE() throws Throwable {
     	executeLogin(BaseHelper.BASE_URL_KE);
     }
-    
-    @SmallTest
+
     public void testGetLoginMA() throws Throwable {
     	executeLogin(BaseHelper.BASE_URL_MA);
     }
-    
-    @SmallTest
+
     public void testGetLoginEG() throws Throwable {
     	executeLogin(BaseHelper.BASE_URL_EG);
     }
-    
-    @SmallTest
+
     public void testGetLoginNG() throws Throwable {
     	executeLogin(BaseHelper.BASE_URL_NG);
     }
-    
-    @SmallTest
+
     public void testGetLoginUG() throws Throwable {
     	executeLogin(BaseHelper.BASE_URL_UG);
     }
     
+    public void testGetLoginGH() throws Throwable {
+    	executeLogin(BaseHelper.BASE_URL_GH);
+    }
+    
+    
+    @SmallTest
     private void executeLogin(String url){
     	/**
     	 * Login before changing password

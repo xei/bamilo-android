@@ -15,35 +15,35 @@ public class RegisterTests extends FrameworkServiceTests {
 	private static String TAG = RegisterTests.class.getSimpleName();
 	protected boolean processed = false;
 
-	@SmallTest
 	public void testRegisterKE() throws Throwable {
 		test(BaseHelper.BASE_URL_KE);
 	}
 
-	@SmallTest
 	public void testRegisterMA() throws Throwable {
 		test(BaseHelper.BASE_URL_MA);
 	}
 
-	@SmallTest
 	public void testRegisterNG() throws Throwable {
 		test(BaseHelper.BASE_URL_NG);
 	}
 
-	@SmallTest
 	public void testRegisterEG() throws Throwable {
 		test(BaseHelper.BASE_URL_EG);
 	}
-	
-	@SmallTest
+
 	public void testRegisterUG() throws Throwable {
 		test(BaseHelper.BASE_URL_UG);
 	}
 	
-	@SmallTest
 	public void testRegisterIC() throws Throwable {
 		test(BaseHelper.BASE_URL_CI);
 	}
+	
+	public void testRegisterGH() throws Throwable {
+		test(BaseHelper.BASE_URL_GH);
+	}
+	
+	@SmallTest
 	public void test(String url){
 		/**
 		 * Login before changing password

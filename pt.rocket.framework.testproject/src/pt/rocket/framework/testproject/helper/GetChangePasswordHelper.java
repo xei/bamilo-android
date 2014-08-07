@@ -31,15 +31,15 @@ public class GetChangePasswordHelper extends BaseHelper {
 	private static String TAG = GetChangePasswordHelper.class.getSimpleName();
 
 	public static final String CONTENT_VALUES = "contentValues";
-	private ContentValues savedValues;
+	private ContentValues contentValues;
 
 	@Override
 	public Bundle generateRequestBundle(Bundle args) {
-		savedValues = args.getParcelable(CONTENT_VALUES);
+		contentValues = args.getParcelable(CONTENT_VALUES);
 		Bundle bundle = new Bundle();
 		bundle.putString(Constants.BUNDLE_URL_KEY, args.getString(BaseHelper.KEY_COUNTRY));
 		bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.POST);
-		bundle.putParcelable(Constants.BUNDLE_FORM_DATA_KEY, savedValues);
+		bundle.putParcelable(Constants.BUNDLE_FORM_DATA_KEY, contentValues);
 		bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.CHANGE_PASSWORD_EVENT);
 		bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
 		return bundle;

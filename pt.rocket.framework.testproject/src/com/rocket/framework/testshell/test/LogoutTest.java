@@ -16,36 +16,35 @@ public class LogoutTest extends FrameworkServiceTests {
 	protected boolean processed_login = false;
 	protected boolean processed_logout = false;
 
-	@SmallTest
 	public void testGetLogoutIC() throws Throwable {
 		executeLogout(BaseHelper.BASE_URL_CI);
 	}
 
-	@SmallTest
 	public void testGetLogoutKE() throws Throwable {
 		executeLogout(BaseHelper.BASE_URL_KE);
 	}
 
-	@SmallTest
 	public void testGetLogoutMA() throws Throwable {
 		executeLogout(BaseHelper.BASE_URL_MA);
 	}
 
-	@SmallTest
 	public void testGetLogoutEG() throws Throwable {
 		executeLogout(BaseHelper.BASE_URL_EG);
 	}
 
-	@SmallTest
 	public void testGetLogoutNG() throws Throwable {
 		executeLogout(BaseHelper.BASE_URL_NG);
 	}
 
-	@SmallTest
 	public void testGetLogoutUG() throws Throwable {
 		executeLogout(BaseHelper.BASE_URL_UG);
 	}
 
+	public void testGetLogoutGH() throws Throwable {
+		executeLogout(BaseHelper.BASE_URL_GH);
+	}
+
+	@SmallTest
 	private void executeLogout(String url) {
 		/**
 		 * Login before changing password
@@ -67,7 +66,7 @@ public class LogoutTest extends FrameworkServiceTests {
 				assertTrue(
 						"Failed onRequestError - The base of the json is wrongly constructed, something is missing : "
 								+ bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY),
-						jsonValidation);
+								jsonValidation);
 				processed_login = true;
 			}
 
@@ -114,7 +113,7 @@ public class LogoutTest extends FrameworkServiceTests {
 				assertTrue(
 						"Failed onRequestError - The base of the json is wrongly constructed, something is missing : "
 								+ bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY),
-						jsonValidation);
+								jsonValidation);
 				processed_logout = true;
 			}
 

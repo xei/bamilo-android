@@ -10,218 +10,70 @@ import android.test.suitebuilder.annotation.SmallTest;
 
 
 public class CategoriesTests extends FrameworkServiceTests {
-    private static String TAG = CategoriesTests.class.getSimpleName();
-    protected boolean processed = false;
+	private static String TAG = CategoriesTests.class.getSimpleName();
+	protected boolean processed = false;
 
-    @SmallTest
-    public void testGetCategoriesIC() throws Throwable {
-        Log.i(TAG, "mService => " + mService);
-        Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_CI+"/catalog/categories/");
-        sendRequest(args, new GetCategoriesHelper(), new IResponseCallback() {
+	public void testGetCategoriesIC() throws Throwable {
+		test(BaseHelper.BASE_URL_CI);
+	}
 
-            @Override
-            public void onRequestError(Bundle bundle) {
-                // TODO Auto-generated method stub
-                Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-                assertTrue("Failed onRequestError - The base of the json is wrongly constructed, something is missing : "+bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY), jsonValidation);
-                processed = true;
-            }
+	public void testGetCategoriesKE() throws Throwable {
+		test(BaseHelper.BASE_URL_KE);
+	}
 
-            @Override
-            public void onRequestComplete(Bundle bundle) {
-                // TODO Auto-generated method stub
-                Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-                assertTrue("Failed onRequestComplete - The base of the json is wrongly constructed, something is missing", jsonValidation);
-                processed = true;
+	public void testGetCategoriesMA() throws Throwable {
+		test(BaseHelper.BASE_URL_MA);
+	}
 
-            }
-        });
-        //necessary in order to make the test wait for the server response
-        while (!processed) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-    }
-    
-    @SmallTest
-    public void testGetCategoriesKE() throws Throwable {
-        Log.i(TAG, "mService => " + mService);
-        Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_KE+"/catalog/categories/");
-        sendRequest(args, new GetCategoriesHelper(), new IResponseCallback() {
+	public void testGetCategoriesNG() throws Throwable {
+		test(BaseHelper.BASE_URL_NG);
+	}
 
-            @Override
-            public void onRequestError(Bundle bundle) {
-                // TODO Auto-generated method stub
-                Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-                assertTrue("Failed onRequestError - The base of the json is wrongly constructed, something is missing : "+bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY), jsonValidation);
-                processed = true;
-            }
+	public void testGetCategoriesUG() throws Throwable {
+		test(BaseHelper.BASE_URL_UG);
+	}
 
-            @Override
-            public void onRequestComplete(Bundle bundle) {
-                // TODO Auto-generated method stub
-                Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-                assertTrue("Failed onRequestComplete - The base of the json is wrongly constructed, something is missing", jsonValidation);
-                processed = true;
+	public void testGetCategoriesEG() throws Throwable {
+		test(BaseHelper.BASE_URL_EG);
+	}
 
-            }
-        });
-        //necessary in order to make the test wait for the server response
-        while (!processed) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-    }
-    
-    @SmallTest
-    public void testGetCategoriesMA() throws Throwable {
-        Log.i(TAG, "mService => " + mService);
-        Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_MA+"/catalog/categories/");
-        sendRequest(args, new GetCategoriesHelper(), new IResponseCallback() {
+	public void testGetCategoriesGH() throws Throwable {
+		test(BaseHelper.BASE_URL_GH);
+	}
 
-            @Override
-            public void onRequestError(Bundle bundle) {
-                // TODO Auto-generated method stub
-                Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-                assertTrue("Failed onRequestError - The base of the json is wrongly constructed, something is missing : "+bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY), jsonValidation);
-                processed = true;
-            }
+	@SmallTest
+	public void test(String url) {
+		Log.i(TAG, "mService => " + mService);
+		Bundle args = new Bundle();
+		args.putString(BaseHelper.KEY_COUNTRY, url + "/catalog/categories/");
+		sendRequest(args, new GetCategoriesHelper(), new IResponseCallback() {
 
-            @Override
-            public void onRequestComplete(Bundle bundle) {
-                // TODO Auto-generated method stub
-                Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-                assertTrue("Failed onRequestComplete - The base of the json is wrongly constructed, something is missing", jsonValidation);
-                processed = true;
+			@Override
+			public void onRequestError(Bundle bundle) {
+				// TODO Auto-generated method stub
+				Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
+				assertTrue("Failed onRequestError - The base of the json is wrongly constructed, something is missing : "+bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY), jsonValidation);
+				processed = true;
+			}
 
-            }
-        });
-        //necessary in order to make the test wait for the server response
-        while (!processed) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-    }
-    
-    @SmallTest
-    public void testGetCategoriesNG() throws Throwable {
-        Log.i(TAG, "mService => " + mService);
-        Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_NG+"/catalog/categories/");
-        sendRequest(args, new GetCategoriesHelper(), new IResponseCallback() {
+			@Override
+			public void onRequestComplete(Bundle bundle) {
+				// TODO Auto-generated method stub
+				Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
+				assertTrue("Failed onRequestComplete - The base of the json is wrongly constructed, something is missing", jsonValidation);
+				processed = true;
 
-            @Override
-            public void onRequestError(Bundle bundle) {
-                // TODO Auto-generated method stub
-                Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-                assertTrue("Failed onRequestError - The base of the json is wrongly constructed, something is missing : "+bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY), jsonValidation);
-                processed = true;
-            }
-
-            @Override
-            public void onRequestComplete(Bundle bundle) {
-                // TODO Auto-generated method stub
-                Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-                assertTrue("Failed onRequestComplete - The base of the json is wrongly constructed, something is missing", jsonValidation);
-                processed = true;
-
-            }
-        });
-        //necessary in order to make the test wait for the server response
-        while (!processed) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-    }
-    
-    @SmallTest
-    public void testGetCategoriesEG() throws Throwable {
-        Log.i(TAG, "mService => " + mService);
-        Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_EG+"/catalog/categories/");
-        
-        sendRequest(args, new GetCategoriesHelper(), new IResponseCallback() {
-
-            @Override
-            public void onRequestError(Bundle bundle) {
-                // TODO Auto-generated method stub
-                Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-                assertTrue("Failed onRequestError - The base of the json is wrongly constructed, something is missing : "+bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY), jsonValidation);
-                processed = true;
-            }
-
-            @Override
-            public void onRequestComplete(Bundle bundle) {
-                // TODO Auto-generated method stub
-                Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-                assertTrue("Failed onRequestComplete - The base of the json is wrongly constructed, something is missing", jsonValidation);
-                processed = true;
-
-            }
-        });
-        //necessary in order to make the test wait for the server response
-        while (!processed) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public void testGetCategoriesUG() throws Throwable {
-        Log.i(TAG, "mService => " + mService);
-        Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_UG+"/catalog/categories/");
-        
-        sendRequest(args, new GetCategoriesHelper(), new IResponseCallback() {
-
-            @Override
-            public void onRequestError(Bundle bundle) {
-                // TODO Auto-generated method stub
-                Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-                assertTrue("Failed onRequestError - The base of the json is wrongly constructed, something is missing : "+bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY), jsonValidation);
-                processed = true;
-            }
-
-            @Override
-            public void onRequestComplete(Bundle bundle) {
-                // TODO Auto-generated method stub
-                Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-                assertTrue("Failed onRequestComplete - The base of the json is wrongly constructed, something is missing", jsonValidation);
-                processed = true;
-
-            }
-        });
-        //necessary in order to make the test wait for the server response
-        while (!processed) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-    }
+			}
+		});
+		//necessary in order to make the test wait for the server response
+		while (!processed) {
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
 
 }

@@ -47,6 +47,10 @@ public void testCartDataUG() throws Throwable {
 	test(BaseHelper.BASE_URL_UG, RequestConstants.PRODUCT_SKU_UG, RequestConstants.PRODUCT_SKU_SIMPLE_UG);
 }
 
+public void testCartDataGH() throws Throwable {
+	test(BaseHelper.BASE_URL_GH, RequestConstants.PRODUCT_SKU_GH, RequestConstants.PRODUCT_SKU_SIMPLE_GH);
+}
+
 public void test(String url, String sku, String simple){
 	/**
 	 * Login

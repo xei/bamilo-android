@@ -10,218 +10,70 @@ import android.test.suitebuilder.annotation.SmallTest;
 
 
 public class ForgotPasswordFormTest extends FrameworkServiceTests {
-    private static String TAG = ForgotPasswordFormTest.class.getSimpleName();
-    protected boolean processed = false;
+	private static String TAG = ForgotPasswordFormTest.class.getSimpleName();
+	protected boolean processed = false;
 
-    @SmallTest
-    public void testForgotPasswordFormIC() throws Throwable {
-        Log.i(TAG, "mService => " + mService);
-        Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_CI+"/forms/forgotpassword/");
-        sendRequest(args, new GetForgotPasswordFormHelper(), new IResponseCallback() {
+	public void testForgotPasswordFormIC() throws Throwable {
+		test(BaseHelper.BASE_URL_CI);
+	}
 
-            @Override
-            public void onRequestError(Bundle bundle) {
-                // TODO Auto-generated method stub
-                Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-                assertTrue("Failed onRequestError - The base of the json is wrongly constructed, something is missing : "+bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY), jsonValidation);
-                processed = true;
-            }
+	public void testForgotPasswordFormKE() throws Throwable {
+		test(BaseHelper.BASE_URL_KE);
+	}
 
-            @Override
-            public void onRequestComplete(Bundle bundle) {
-                // TODO Auto-generated method stub
-                Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-                assertTrue("Failed onRequestComplete - The base of the json is wrongly constructed, something is missing", jsonValidation);
-                processed = true;
+	public void testForgotPasswordFormMA() throws Throwable {
+		test(BaseHelper.BASE_URL_MA);
+	}
 
-            }
-        });
-        //necessary in order to make the test wait for the server response
-        while (!processed) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-    }
-    
-    @SmallTest
-    public void testForgotPasswordFormKE() throws Throwable {
-        Log.i(TAG, "mService => " + mService);
-        Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_KE+"/forms/forgotpassword/");
-        sendRequest(args, new GetForgotPasswordFormHelper(), new IResponseCallback() {
+	public void testForgotPasswordFormNG() throws Throwable {
+		test(BaseHelper.BASE_URL_NG);
+	}
 
-            @Override
-            public void onRequestError(Bundle bundle) {
-                // TODO Auto-generated method stub
-                Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-                assertTrue("Failed onRequestError - The base of the json is wrongly constructed, something is missing : "+bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY), jsonValidation);
-                processed = true;
-            }
+	public void testForgotPasswordFormUG() throws Throwable {
+		test(BaseHelper.BASE_URL_UG);
+	}
 
-            @Override
-            public void onRequestComplete(Bundle bundle) {
-                // TODO Auto-generated method stub
-                Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-                assertTrue("Failed onRequestComplete - The base of the json is wrongly constructed, something is missing", jsonValidation);
-                processed = true;
+	public void testForgotPasswordFormEG() throws Throwable {
+		test(BaseHelper.BASE_URL_EG);
+	}
 
-            }
-        });
-        //necessary in order to make the test wait for the server response
-        while (!processed) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-    }
-    
-    @SmallTest
-    public void testForgotPasswordFormMA() throws Throwable {
-        Log.i(TAG, "mService => " + mService);
-        Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_MA+"/forms/forgotpassword/");
-        sendRequest(args, new GetForgotPasswordFormHelper(), new IResponseCallback() {
+	public void testForgotPasswordFormGH() throws Throwable {
+		test(BaseHelper.BASE_URL_GH);
+	}
 
-            @Override
-            public void onRequestError(Bundle bundle) {
-                // TODO Auto-generated method stub
-                Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-                assertTrue("Failed onRequestError - The base of the json is wrongly constructed, something is missing : "+bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY), jsonValidation);
-                processed = true;
-            }
+	@SmallTest
+	public void test(String url) {
+		Log.i(TAG, "mService => " + mService);
+		Bundle args = new Bundle();
+		args.putString(BaseHelper.KEY_COUNTRY, url + "/forms/forgotpassword/");
+		sendRequest(args, new GetForgotPasswordFormHelper(), new IResponseCallback() {
 
-            @Override
-            public void onRequestComplete(Bundle bundle) {
-                // TODO Auto-generated method stub
-                Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-                assertTrue("Failed onRequestComplete - The base of the json is wrongly constructed, something is missing", jsonValidation);
-                processed = true;
+			@Override
+			public void onRequestError(Bundle bundle) {
+				// TODO Auto-generated method stub
+				Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
+				assertTrue("Failed onRequestError - The base of the json is wrongly constructed, something is missing : "+bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY), jsonValidation);
+				processed = true;
+			}
 
-            }
-        });
-        //necessary in order to make the test wait for the server response
-        while (!processed) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-    }
-    
-    @SmallTest
-    public void testForgotPasswordFormNG() throws Throwable {
-        Log.i(TAG, "mService => " + mService);
-        Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_NG+"/forms/forgotpassword/");
-        sendRequest(args, new GetForgotPasswordFormHelper(), new IResponseCallback() {
+			@Override
+			public void onRequestComplete(Bundle bundle) {
+				// TODO Auto-generated method stub
+				Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
+				assertTrue("Failed onRequestComplete - The base of the json is wrongly constructed, something is missing", jsonValidation);
+				processed = true;
 
-            @Override
-            public void onRequestError(Bundle bundle) {
-                // TODO Auto-generated method stub
-                Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-                assertTrue("Failed onRequestError - The base of the json is wrongly constructed, something is missing : "+bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY), jsonValidation);
-                processed = true;
-            }
-
-            @Override
-            public void onRequestComplete(Bundle bundle) {
-                // TODO Auto-generated method stub
-                Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-                assertTrue("Failed onRequestComplete - The base of the json is wrongly constructed, something is missing", jsonValidation);
-                processed = true;
-
-            }
-        });
-        //necessary in order to make the test wait for the server response
-        while (!processed) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-    }
-    
-    @SmallTest
-    public void testForgotPasswordFormEG() throws Throwable {
-        Log.i(TAG, "mService => " + mService);
-        Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_EG+"/forms/forgotpassword/");
-        
-        sendRequest(args, new GetForgotPasswordFormHelper(), new IResponseCallback() {
-
-            @Override
-            public void onRequestError(Bundle bundle) {
-                // TODO Auto-generated method stub
-                Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-                assertTrue("Failed onRequestError - The base of the json is wrongly constructed, something is missing : "+bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY), jsonValidation);
-                processed = true;
-            }
-
-            @Override
-            public void onRequestComplete(Bundle bundle) {
-                // TODO Auto-generated method stub
-                Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-                assertTrue("Failed onRequestComplete - The base of the json is wrongly constructed, something is missing", jsonValidation);
-                processed = true;
-
-            }
-        });
-        //necessary in order to make the test wait for the server response
-        while (!processed) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public void testForgotPasswordFormUG() throws Throwable {
-        Log.i(TAG, "mService => " + mService);
-        Bundle args = new Bundle();
-        args.putString(BaseHelper.KEY_COUNTRY, BaseHelper.BASE_URL_UG+"/forms/forgotpassword/");
-        
-        sendRequest(args, new GetForgotPasswordFormHelper(), new IResponseCallback() {
-
-            @Override
-            public void onRequestError(Bundle bundle) {
-                // TODO Auto-generated method stub
-                Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-                assertTrue("Failed onRequestError - The base of the json is wrongly constructed, something is missing : "+bundle.getString(Constants.BUNDLE_WRONG_PARAMETER_MESSAGE_KEY), jsonValidation);
-                processed = true;
-            }
-
-            @Override
-            public void onRequestComplete(Bundle bundle) {
-                // TODO Auto-generated method stub
-                Boolean jsonValidation = bundle.getBoolean(Constants.BUNDLE_JSON_VALIDATION_KEY);
-                assertTrue("Failed onRequestComplete - The base of the json is wrongly constructed, something is missing", jsonValidation);
-                processed = true;
-
-            }
-        });
-        //necessary in order to make the test wait for the server response
-        while (!processed) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-    }
+			}
+		});
+		//necessary in order to make the test wait for the server response
+		while (!processed) {
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
 
 }

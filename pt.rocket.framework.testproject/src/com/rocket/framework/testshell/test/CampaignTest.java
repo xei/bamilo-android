@@ -19,28 +19,32 @@ public class CampaignTest extends FrameworkServiceTests {
     protected boolean processed1 = false;
     
 public void testCampaignIC() throws Throwable {
-	test("https://alice-staging.jumia.ci/mobapi/v1.3/campaign/get/?campaign_slug=soldes-electromenager");
+	test(BaseHelper.BASE_URL_CI+"/campaign/get/?campaign_slug=soldes-electromenager");
 }
 
-//public void testCampaignKE() throws Throwable {
-//	test(BaseHelper.BASE_URL_KE);
-//}
-//
-//public void testCampaignMA() throws Throwable {
-//    test(BaseHelper.BASE_URL_MA);
-//}
-//
-//public void testCampaignNG() throws Throwable {
-//    test(BaseHelper.BASE_URL_NG+"/campaign/get/?campaign_slug=deals-of-the-day");
-//}
-//
-//public void testCampaignEG() throws Throwable {
-//    test(BaseHelper.BASE_URL_EG);
-//}
-//
-//public void testCampaignUG() throws Throwable {
-//	test(BaseHelper.BASE_URL_UG);
-//}
+public void testCampaignKE() throws Throwable {
+	test(BaseHelper.BASE_URL_KE);
+}
+
+public void testCampaignMA() throws Throwable {
+    test(BaseHelper.BASE_URL_MA);
+}
+
+public void testCampaignNG() throws Throwable {
+    test(BaseHelper.BASE_URL_NG+"/campaign/get/?campaign_slug=deals-of-the-day");
+}
+
+public void testCampaignEG() throws Throwable {
+    test(BaseHelper.BASE_URL_EG);
+}
+
+public void testCampaignUG() throws Throwable {
+	test(BaseHelper.BASE_URL_UG);
+}
+
+public void testCampaignGH() throws Throwable {
+	test(BaseHelper.BASE_URL_GH);
+}
 
 public void test(String url){
     /**
