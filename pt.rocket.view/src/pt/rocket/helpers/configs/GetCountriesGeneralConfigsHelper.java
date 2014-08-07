@@ -59,12 +59,6 @@ public class GetCountriesGeneralConfigsHelper extends BaseHelper {
         
         ArrayList<CountryObject> mCountries = new ArrayList<CountryObject>();
         JSONArray sessionJSONArray = jsonObject.optJSONArray(RestConstants.JSON_DATA_TAG);
-
-//		// TODO : Validate if it is necessary (Test with version code !=)
-//        if(!DarwinDatabaseHelper.getInstance().exists(CountriesConfigsTableHelper.TABLE)){
-//            Log.i(TAG, "FORCE UPDATE");
-//            DarwinDatabaseHelper.getInstance().forceDatabaseUpdate();
-//        }
         
         // Gets the previous Countries list
         JumiaApplication.INSTANCE.countriesAvailable = CountriesConfigsTableHelper.getCountriesList();
@@ -107,17 +101,33 @@ public class GetCountriesGeneralConfigsHelper extends BaseHelper {
                     }
                     
                     // Add the MA SERVER CORE 4.6 (INTEGRATION)
+                    int posMA = 0;
                     CountryObject integrationCountryObject = new CountryObject();
-                    integrationCountryObject.setCountryName("Maroc Core 4.6");
+                    integrationCountryObject.setCountryName("Maroc Integration");
                     integrationCountryObject.setCountryUrl("integration-www.jumia.ma");
-                    integrationCountryObject.setCountryFlag(stagingServers.get(0).getCountryFlag());
-                    integrationCountryObject.setCountryMapMdpi(stagingServers.get(0).getCountryMapMdpi());
-                    integrationCountryObject.setCountryMapHdpi(stagingServers.get(0).getCountryMapHdpi());
-                    integrationCountryObject.setCountryMapXhdpi(stagingServers.get(0).getCountryMapXhdpi());
-                    integrationCountryObject.setCountryIso(stagingServers.get(0).getCountryIso());
-                    integrationCountryObject.setCountryForceHttps(stagingServers.get(0).isCountryForceHttps());
-                    integrationCountryObject.setCountryIsLive(stagingServers.get(0).isCountryIsLive());
+                    integrationCountryObject.setCountryFlag(stagingServers.get(posMA).getCountryFlag());
+                    integrationCountryObject.setCountryMapMdpi(stagingServers.get(posMA).getCountryMapMdpi());
+                    integrationCountryObject.setCountryMapHdpi(stagingServers.get(posMA).getCountryMapHdpi());
+                    integrationCountryObject.setCountryMapXhdpi(stagingServers.get(posMA).getCountryMapXhdpi());
+                    integrationCountryObject.setCountryIso(stagingServers.get(posMA).getCountryIso());
+                    integrationCountryObject.setCountryForceHttps(stagingServers.get(posMA).isCountryForceHttps());
+                    integrationCountryObject.setCountryIsLive(stagingServers.get(posMA).isCountryIsLive());
                     stagingServers.add(integrationCountryObject);
+                    
+                    // Add the UG SERVER CORE 4.6 (INTEGRATION)
+                    int posUG = 5;
+                    CountryObject integrationCountryUG = new CountryObject();
+                    integrationCountryUG.setCountryName("Uganda Integration");
+                    integrationCountryUG.setCountryUrl("integration-www.jumia.ug");
+                    integrationCountryUG.setCountryFlag(stagingServers.get(posUG).getCountryFlag());
+                    integrationCountryUG.setCountryMapMdpi(stagingServers.get(posUG).getCountryMapMdpi());
+                    integrationCountryUG.setCountryMapHdpi(stagingServers.get(posUG).getCountryMapHdpi());
+                    integrationCountryUG.setCountryMapXhdpi(stagingServers.get(posUG).getCountryMapXhdpi());
+                    integrationCountryUG.setCountryIso(stagingServers.get(posUG).getCountryIso());
+                    integrationCountryUG.setCountryForceHttps(stagingServers.get(posUG).isCountryForceHttps());
+                    integrationCountryUG.setCountryIsLive(stagingServers.get(posUG).isCountryIsLive());
+                    stagingServers.add(integrationCountryUG);
+                    
                     
                     mCountries.addAll(stagingServers);
                     
