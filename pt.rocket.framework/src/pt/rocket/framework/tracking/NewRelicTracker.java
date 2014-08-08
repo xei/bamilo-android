@@ -43,7 +43,7 @@ public class NewRelicTracker {
 	 * @author sergiopereira
 	 */
 	public static void noticeSuccessTransaction(String url, int requestStatus, long startTimeMillis, long endTimeMillis, long bytesReceived){
-		Log.i(TAG, "ON SUCCESS TRANSACTION");
+		Log.i(TAG, "ON SUCCESS TRANSACTION: " + url);
 		NewRelic.noticeHttpTransaction(!TextUtils.isEmpty(url) ? url.toString() : "n.a.", requestStatus, startTimeMillis, endTimeMillis, 0, bytesReceived);
 	}
 	
@@ -55,7 +55,7 @@ public class NewRelicTracker {
 	 * @author sergiopereira
 	 */
 	public static void noticeFailureTransaction(String url, long startTimeMillis, long endTimeMillis){
-		Log.i(TAG, "ON FAILURE TRANSACTION");
+		Log.i(TAG, "ON FAILURE TRANSACTION: " + url);
 		NewRelic.noticeNetworkFailure(!TextUtils.isEmpty(url) ? url : "n.a.", startTimeMillis, System.currentTimeMillis(), NetworkFailure.BadServerResponse);
 	}
 

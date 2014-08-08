@@ -208,10 +208,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         isOnStoppingProcess = false;
         // Exist order summary
         isOrderSummaryPresent = (view.findViewById(ORDER_SUMMARY_CONTAINER) != null) ? true : false;
-        
-        /**
-         * Get all root views
-         */
         // Get content layout
         mContentView = view.findViewById(R.id.content_container);
         // Get loading layout
@@ -407,7 +403,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         if (getView() != null && isHidden())
             unbindDrawables(getView());
 
-        System.gc();
+        //System.gc();
     }
 
     /**

@@ -76,8 +76,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
      * Constructor
      */
     public MainFragmentActivity() {
-        super(R.layout.search,
-                NavigationAction.Unknown,
+        super(NavigationAction.Unknown,
                 EnumSet.noneOf(MyMenuItem.class),
                 EnumSet.noneOf(EventType.class),
                 EnumSet.noneOf(EventType.class),
@@ -216,10 +215,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
     @Override
     public void onSwitchFragment(FragmentType type, Bundle bundle, Boolean addToBackStack) {
         showWarningVariation(false);
-        Log.i(TAG, "code1adjust : "+getWindow().getAttributes().softInputMode);
 
-        //setProcessShow(true);
-        
         // Validate fragment type
         switch (type) {
         case HOME:
@@ -230,6 +226,9 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             }
             fragment = HomeFragment.newInstance();
             break;
+//        case CATEGORIES:
+//            fragment = CategoryColletionFragment.getInstance(bundle);
+//            break;
         case CATEGORIES_LEVEL_1:
             fragment = CategoriesContainerFragment.getInstance(bundle);
             break;

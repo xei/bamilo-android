@@ -75,7 +75,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
@@ -160,7 +159,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
     public DrawerLayout mDrawerLayout;
     public ActionBarDrawerToggle mDrawerToggle;
-    private int drawable_state = DrawerLayout.STATE_IDLE;
+    private int mDrawableState = DrawerLayout.STATE_IDLE;
 
     private static final Set<EventType> HANDLED_EVENTS = EnumSet
             .of(EventType.GET_SHOPPING_CART_ITEMS_EVENT, EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT, EventType.CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT,
@@ -209,10 +208,8 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      * 
      * @param userEvents
      */
-    public BaseActivity(NavigationAction action, Set<MyMenuItem> enabledMenuItems, Set<EventType> contentEvents, Set<EventType> userEvents, int titleResId,
-            int contentLayoutId) {
+    public BaseActivity(NavigationAction action, Set<MyMenuItem> enabledMenuItems, Set<EventType> contentEvents, Set<EventType> userEvents, int titleResId, int contentLayoutId) {
         this(R.layout.main, action, enabledMenuItems, contentEvents, userEvents, titleResId, contentLayoutId);
-
     }
 
     public BaseActivity(int activityLayoutId, NavigationAction action, Set<MyMenuItem> enabledMenuItems, Set<EventType> contentEvents,
@@ -226,7 +223,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         this.menuItems = enabledMenuItems;
         this.titleResId = titleResId;
         this.contentLayoutId = contentLayoutId;
-
     }
 
     @Override
@@ -457,7 +453,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             @Override
             public void onDrawerStateChanged(int newState) {
                 // Log.d(TAG, "SEARCH: ON STATE CHANGED " + newState);
-                drawable_state = newState;
+                mDrawableState = newState;
                 super.onDrawerStateChanged(newState);
             }
         };
@@ -632,7 +628,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         public void onClick(View v) {
             if (mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
                 toggle();
-            } else if (!initialCountry && drawable_state == DrawerLayout.STATE_IDLE) {
+            } else if (!initialCountry && mDrawableState == DrawerLayout.STATE_IDLE) {
                 // Hide search component and keyboard
                 hideSearchComponent();
                 hideKeyboard();
@@ -668,10 +664,10 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         return false;
     }
 
-    public static boolean showSearchOnActionBar(Context context) {
-        return true;
-        // return isTabletInLandscape(context)
-    }
+//    public static boolean showSearchOnActionBar(Context context) {
+//        return true;
+//        // return isTabletInLandscape(context)
+//    }
 
     /**
      * ############### OPTIONS MENU #################
@@ -708,7 +704,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         } else if (itemId == R.id.menu_basket) {
             Log.i(TAG, "code1state : " + mDrawerLayout.getDrawableState()[0] + " : idle : " + DrawerLayout.STATE_IDLE + " : dragging :  "
                     + DrawerLayout.STATE_DRAGGING + "  : settling : " + DrawerLayout.STATE_SETTLING);
-            if (drawable_state == DrawerLayout.STATE_IDLE) {
+            if (mDrawableState == DrawerLayout.STATE_IDLE) {
                 closeDrawerIfOpen();
                 onSwitchFragment(FragmentType.SHOPPING_CART, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
             }
@@ -948,7 +944,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             public void onClick(View v) {
                 Log.d(TAG, "SEARCH ON CLICK VIEW");
                 // Validate menu state
-                if (drawable_state == DrawerLayout.STATE_IDLE)
+                if (mDrawableState == DrawerLayout.STATE_IDLE)
                     closeDrawerIfOpen();
                 isSearchComponentOpened = true;
                 setItemsVisibility(false);
@@ -1034,13 +1030,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      */
     protected void setItemsVisibility(boolean visible) {
         for (MyMenuItem item : menuItems) {
-            switch (item) {
-            case SEARCH_VIEW:
-                break;
-            default:
-                currentMenu.findItem(item.resId).setVisible(visible);
-                break;
-            }
+            if(item != MyMenuItem.SEARCH_VIEW) currentMenu.findItem(item.resId).setVisible(visible);
         }
         // set visibility for menu_basket
         currentMenu.findItem(R.id.menu_basket).setVisible(visible);
@@ -1419,16 +1409,16 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     public void setTitle(CharSequence title) {
         TextView titleView = (TextView) findViewById(R.id.titleProducts);
         TextView subtitleView = (TextView) findViewById(R.id.totalProducts);
-        View header_title = findViewById(R.id.header_title);
+        View headerTitle = findViewById(R.id.header_title);
         subtitleView.setVisibility(View.GONE);
-        if (header_title == null)
+        if (headerTitle == null)
             return;
 
         if (!TextUtils.isEmpty(title)) {
             titleView.setText(title);
-            header_title.setVisibility(View.VISIBLE);
+            headerTitle.setVisibility(View.VISIBLE);
         } else if (TextUtils.isEmpty(title)) {
-            header_title.setVisibility(View.GONE);
+            headerTitle.setVisibility(View.GONE);
         }
     }
 
@@ -1441,7 +1431,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     public void setTitleAndSubTitle(CharSequence title, CharSequence subtitle) {
         TextView titleView = (TextView) findViewById(R.id.titleProducts);
         TextView subtitleView = (TextView) findViewById(R.id.totalProducts);
-        View header_title = findViewById(R.id.header_title);
+        View headerTitle = findViewById(R.id.header_title);
 
         if (titleView == null)
             return;
@@ -1452,10 +1442,10 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             // Set title
             titleView.setText(title);
             // Set visibility
-            header_title.setVisibility(View.VISIBLE);
+            headerTitle.setVisibility(View.VISIBLE);
             subtitleView.setVisibility(View.VISIBLE);
         } else if (TextUtils.isEmpty(title)) {
-            header_title.setVisibility(View.GONE);
+            headerTitle.setVisibility(View.GONE);
         }
     }
 
@@ -1666,7 +1656,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     public void onLowMemory() {
         super.onLowMemory();
         Log.e(TAG, "LOW MEM");
-        System.gc();
+        //System.gc();
     }
 
     public void hideKeyboard() {
@@ -1704,12 +1694,12 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         finish();
     }
 
-    /**
-     * Method called then the activity is connected to the service
-     */
-    protected void onServiceActivation() {
-
-    }
+//    /**
+//     * Method called then the activity is connected to the service
+//     */
+//    protected void onServiceActivation() {
+//
+//    }
 
     /**
      * Handles a successful event and reflects necessary changes on the UI.
@@ -1916,7 +1906,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      * @author sergiopereira
      */
     public void fragmentManagerTransition(int container, Fragment fragment, String tag, Boolean addToBackStack) {
-        // showContentContainer(false);
         fragmentController.startTransition(this, container, fragment, tag, addToBackStack);
     }
 
@@ -1926,7 +1915,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      * @author sergiopereira
      */
     public void fragmentManagerBackPressed() {
-        // showContentContainer();
         fragmentController.fragmentBackPressed(this);
     }
 
@@ -1969,17 +1957,17 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         public boolean allowBackPressed();
     }
 
-    public void onFragmentSelected(FragmentType fragmentIdentifier) {
-    }
-
-    public void onFragmentElementSelected(int position) {
-    }
-
-    public void sendClickListenerToActivity(OnClickListener clickListener) {
-    }
-
-    public void sendValuesToActivity(int identifier, Object values) {
-    }
+//    public void onFragmentSelected(FragmentType fragmentIdentifier) {
+//    }
+//
+//    public void onFragmentElementSelected(int position) {
+//    }
+//
+//    public void sendClickListenerToActivity(OnClickListener clickListener) {
+//    }
+//
+//    public void sendValuesToActivity(int identifier, Object values) {
+//    }
 
     /**
      * Confirm backPress to exit application
@@ -2281,10 +2269,10 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         hideTitle();
         findViewById(R.id.totalProducts).setVisibility(View.GONE);
         // Validate device and orientation
-        if (showSearchOnActionBar(getApplicationContext())) {
-            // Update with for main content
-            findViewById(R.id.main_layout).getLayoutParams().width = LayoutParams.MATCH_PARENT;
-        }
+        //if (showSearchOnActionBar(getApplicationContext())) {
+        //    // Update with for main content
+        //    findViewById(R.id.main_layout).getLayoutParams().width = LayoutParams.MATCH_PARENT;
+        //}
     }
 
     /**
@@ -2373,7 +2361,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      * @param view
      * @author sergiopereira
      */
-    public void OnCheckoutHeaderClickListener(View view) {
+    public void onCheckoutHeaderClickListener(View view) {
         Log.i(TAG, "PROCESS CLICK ON CHECKOUT HEADER");
         int id = view.getId();
         // CHECKOUT_ABOUT_YOU

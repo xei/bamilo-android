@@ -561,7 +561,7 @@ public class ShoppingCartFragment extends BaseFragment {
         View shippingMain = getView().findViewById(R.id.shipping_container);
         if(!cart.isSumCosts()){
             extraCostsMain.setVisibility(View.VISIBLE);
-            extraCostsValue.setText(CurrencyFormatter.formatCurrency(Double.parseDouble(cart.getExtraCosts())));
+            extraCostsValue.setText(CurrencyFormatter.formatCurrency(cart.getExtraCosts()));
             if (cart.getShippingValue() != null
                     && !cart.getShippingValue().equalsIgnoreCase("null")
                     && !cart.getShippingValue().equalsIgnoreCase("")) {

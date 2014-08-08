@@ -375,7 +375,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         // releaseFragments();
         // releaseVars();
         super.onDestroy();
-        System.gc();
+        //System.gc();
     }
     
     /**
@@ -813,6 +813,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
 
         if (quantity == 0) {
             Toast.makeText(mContext, R.string.product_outof_stock, Toast.LENGTH_SHORT).show();
+            isAddingProductToCart = false;
             return;
         }
 
@@ -826,8 +827,10 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         
         Long price = getPriceForTrackingAsLong(simple);
 
-        if (TextUtils.isEmpty(sku))
+        if (TextUtils.isEmpty(sku)) {
+            isAddingProductToCart = false;
             return;
+        }
 
         ShoppingCartItem item = new ShoppingCartItem(createVariantAttributesHashMap(simple));
         item.initialize(mCompleteProduct.getSku(), sku, mCompleteProduct.getImageList().get(0),

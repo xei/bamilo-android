@@ -9,7 +9,6 @@ import pt.rocket.framework.rest.RestContract;
 import pt.rocket.framework.tracking.AdXTracker;
 import pt.rocket.framework.tracking.AnalyticsGoogle;
 import pt.rocket.framework.tracking.MixpanelTracker;
-import pt.rocket.framework.tracking.NewRelicTracker;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
