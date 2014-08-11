@@ -12,6 +12,7 @@ import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.database.SearchRecentQueriesTableHelper;
 import pt.rocket.framework.objects.SearchSuggestion;
+import pt.rocket.framework.tracking.TrackingPages;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -96,7 +97,7 @@ public class RecentSearchFragment extends BaseFragment implements OnClickListene
         super.onResume();
         Log.i(TAG, "ON RESUME");
         // Tracking page
-        TrackerDelegator.trackPage(R.string.grecentsearches);
+        TrackerDelegator.trackPage(TrackingPages.RECENT_SEARCHES);
     }
 
     /**

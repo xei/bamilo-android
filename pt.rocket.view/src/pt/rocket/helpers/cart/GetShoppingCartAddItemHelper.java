@@ -17,6 +17,7 @@ import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
 import pt.rocket.helpers.BaseHelper;
 import pt.rocket.helpers.HelperPriorityConfiguration;
+import pt.rocket.utils.TrackerDelegator;
 import android.os.Bundle;
 import android.text.TextUtils;
 
@@ -100,7 +101,10 @@ public class GetShoppingCartAddItemHelper extends BaseHelper {
         bundle.putInt(PRODUCT_POS_TAG, mCurrentPos);
         bundle.putString(PRODUCT_SKU_TAG, mCurrentSku);
         // Validate if is to remove from favourite
-        if (isToRemoveFromFavourite && !TextUtils.isEmpty(mCurrentSku)) FavouriteTableHelper.removeFavouriteProduct(mCurrentSku);
+        if (isToRemoveFromFavourite && !TextUtils.isEmpty(mCurrentSku)) { 
+            FavouriteTableHelper.removeFavouriteProduct(mCurrentSku);
+            TrackerDelegator.trackRemoveFromFavorites(mCurrentSku);
+        }
 
         /**
          * LastViewed

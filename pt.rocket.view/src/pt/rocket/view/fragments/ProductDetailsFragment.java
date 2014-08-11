@@ -27,6 +27,7 @@ import pt.rocket.framework.objects.ProductSimple;
 import pt.rocket.framework.objects.ShoppingCartItem;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.tracking.AdXTracker;
+import pt.rocket.framework.tracking.TrackingPages;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CurrencyFormatter;
 import pt.rocket.framework.utils.EventType;
@@ -342,7 +343,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
     public void onResume() {
         super.onResume();
         isAddingProductToCart = false;
-        TrackerDelegator.trackPage(R.string.gproductdetail);
+        TrackerDelegator.trackPage(TrackingPages.PRODUCT_DETAIL);
     }
     
     
@@ -1103,12 +1104,14 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
                 FavouriteTableHelper.insertFavouriteProduct(mCompleteProduct);
                 mCompleteProduct.getAttributes().put(RestConstants.JSON_IS_FAVOURITE_TAG, Boolean.TRUE.toString());
                 imageIsFavourite.setSelected(true);
+                TrackerDelegator.trackAddToFavorites(mCompleteProduct.getSku());
                 Toast.makeText(mContext, getString(R.string.products_added_favourite), Toast.LENGTH_SHORT).show();
             } else {
                 fragmentMessage = BaseFragment.FRAGMENT_VALUE_REMOVE_FAVORITE;
                 FavouriteTableHelper.removeFavouriteProduct(mCompleteProduct.getSku());
                 mCompleteProduct.getAttributes().put(RestConstants.JSON_IS_FAVOURITE_TAG, Boolean.FALSE.toString());
                 imageIsFavourite.setSelected(false);
+                TrackerDelegator.trackRemoveFromFavorites(mCompleteProduct.getSku());
                 Toast.makeText(mContext, getString(R.string.products_removed_favourite), Toast.LENGTH_SHORT).show();
             }
             

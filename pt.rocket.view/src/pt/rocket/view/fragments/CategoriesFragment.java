@@ -14,6 +14,7 @@ import pt.rocket.controllers.SubCategoriesAdapter;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.objects.Category;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.helpers.categories.GetCategoriesHelper;
 import pt.rocket.utils.FragmentCommunicator;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.view.BaseActivity;
@@ -382,6 +383,8 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
 //        eDitor.remove(ConstantsSharedPrefs.KEY_CURRENT_FRAGMENT);
 //        eDitor.remove(ConstantsSharedPrefs.KEY_CHILD_CURRENT_FRAGMENT);
 //        eDitor.commit();
+        
+        GetCategoriesHelper.increaseCategoryCount(category);
         
         Bundle bundle2 = new Bundle();
         bundle2.putBoolean(CategoriesContainerFragment.REMOVE_FRAGMENTS, true);

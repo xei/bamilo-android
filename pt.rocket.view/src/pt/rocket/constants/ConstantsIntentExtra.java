@@ -68,6 +68,9 @@ public class ConstantsIntentExtra {
     public static final String CATEGORY_TREE_PATH           = mPackage + "CategoryTreePath";
     public static final String CATEGORY_PARENT_NAME         = mPackage + "CategoryParentName";
 
+    // ########### Catalog ##############
+    public static final String CATALOG_SORT_PAGE            = mPackage + "catalogPage";
+    
     // ########### Home ##############
     public static final String FRAGMENT_TYPE                = mPackage + "FragmentType";
     public static final String FRAGMENT_INITIAL_COUNTRY     = mPackage + "FragmentInitialCountry";

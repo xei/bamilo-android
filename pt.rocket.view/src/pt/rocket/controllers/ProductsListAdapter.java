@@ -9,6 +9,7 @@ import org.holoeverywhere.widget.Toast;
 import pt.rocket.framework.database.FavouriteTableHelper;
 import pt.rocket.framework.objects.Product;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.imageloader.RocketImageLoader;
 import pt.rocket.view.R;
 import pt.rocket.view.fragments.CatalogFragment;
@@ -207,12 +208,13 @@ public class ProductsListAdapter extends BaseAdapter {
                 final Product favProduct = parentCatalog.getProduct(products.get(position));
                 final boolean isFavourite = favProduct.getAttributes().isFavourite();
                 if (!isFavourite) {
-                    FavouriteTableHelper.insertPartialFavouriteProduct(favProduct);
+                    FavouriteTableHelper.insertPartialFavouriteProduct(favProduct);                    
                     favProduct.getAttributes().setFavourite(true);
                     Toast.makeText(context, context.getString(R.string.products_added_favourite), Toast.LENGTH_SHORT).show();
                 } else {
                     FavouriteTableHelper.removeFavouriteProduct(favProduct.getSKU());
                     favProduct.getAttributes().setFavourite(false);
+                    TrackerDelegator.trackRemoveFromFavorites(favProduct.getSKU());
                     Toast.makeText(context, context.getString(R.string.products_removed_favourite), Toast.LENGTH_SHORT).show();
                 }
                 parentCatalog.invalidatePages();

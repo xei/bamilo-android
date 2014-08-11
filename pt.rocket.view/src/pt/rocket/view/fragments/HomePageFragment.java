@@ -14,6 +14,7 @@ import pt.rocket.framework.objects.TeaserSpecification;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.framework.utils.WindowHelper;
 import pt.rocket.utils.ScrollViewWithHorizontal;
+import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.os.Bundle;
@@ -501,6 +502,7 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
             bundle.putParcelableArrayList(CampaignsFragment.CAMPAIGNS_TAG, JumiaApplication.getSavedTeaserCampaigns());
             bundle.putInt(CampaignsFragment.CAMPAIGN_POSITION_TAG, Integer.valueOf(targetPosition));
             getBaseActivity().onSwitchFragment(FragmentType.CAMPAIGNS, bundle, FragmentController.ADD_TO_BACK_STACK);
+            TrackerDelegator.trackCampaignsView();
         }
     }
     

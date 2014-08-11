@@ -37,7 +37,6 @@ import pt.rocket.preferences.ShopPreferences;
 import pt.rocket.utils.CheckVersion;
 import pt.rocket.utils.ServiceSingleton;
 import pt.rocket.utils.imageloader.RocketImageLoader;
-import android.app.Application;
 import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
@@ -52,17 +51,18 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.RemoteException;
 
+import com.ad4screen.sdk.A4SApplication;
 import com.bugsense.trace.ExceptionCallback;
 
 import de.akquinet.android.androlog.Log;
 
-public class JumiaApplication extends Application implements ExceptionCallback {
+public class JumiaApplication extends A4SApplication implements ExceptionCallback {
 
     private static final String TAG = JumiaApplication.class.getSimpleName();
-    
+
     // TODO : Updated this value for each live release
     public boolean generateStagingServers = true;
-    
+
     public static String SHOP_ID = null;
     public static String SHOP_NAME = "";
     public static Customer CUSTOMER;
@@ -75,7 +75,7 @@ public class JumiaApplication extends Application implements ExceptionCallback {
      */
     private CustomerUtils mCustomerUtils;
     private boolean loggedIn = false;
-    //private Integer shopId = null;
+    // private Integer shopId = null;
 
     /**
      * General Persistent Variables
@@ -83,14 +83,13 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     private HashMap<String, HashMap<String, String>> ratingOptions = null;
     private CompleteProduct currentProduct = null;
     private VersionInfo mVersionInfo;
-    
+
     boolean resendInitializationSignal = false;
 
     /**
      * Cart
      */
-    private Map<String, Map<String, String>> itemSimpleDataRegistry =
-            new HashMap<String, Map<String, String>>();
+    private Map<String, Map<String, String>> itemSimpleDataRegistry = new HashMap<String, Map<String, String>>();
     private ShoppingCart cart;
 
     /**
@@ -98,12 +97,13 @@ public class JumiaApplication extends Application implements ExceptionCallback {
      */
     private HashMap<String, FormData> formDataRegistry = new HashMap<String, FormData>();
 
-    public static final SingletonMap<ApplicationComponent> COMPONENTS =
-            new SingletonMap<ApplicationComponent>(new UrbanAirshipComponent(),
-                     new DarwinComponent());
+//    public static final SingletonMap<ApplicationComponent> COMPONENTS = new SingletonMap<ApplicationComponent>(new UrbanAirshipComponent(),
+//            new DarwinComponent());
 
-    public static ArrayList<NavigationListComponent> navigationListComponents;
+    public static final SingletonMap<ApplicationComponent> COMPONENTS = new SingletonMap<ApplicationComponent>(new DarwinComponent());
     
+    
+    public static ArrayList<NavigationListComponent> navigationListComponents;
 
     private static ArrayList<EventType> requestOrder = new ArrayList<EventType>();
 
@@ -112,75 +112,75 @@ public class JumiaApplication extends Application implements ExceptionCallback {
      */
     public HashMap<String, IResponseCallback> responseCallbacks;
 
-    //private boolean isInitializing = false;
-//    public boolean isUAInitialized = false;
+    // private boolean isInitializing = false;
+    // public boolean isUAInitialized = false;
     private Handler resendHandler;
     private Handler resendMenuHandler;
     private Message resendMsg;
-    
+
     /**
      * Fallback and retry backups
      */
-    
+
     private HashMap<EventType, Bundle> requestsRetryBundleList = new HashMap<EventType, Bundle>();
     private HashMap<EventType, BaseHelper> requestsRetryHelperList = new HashMap<EventType, BaseHelper>();
     private HashMap<EventType, IResponseCallback> requestsResponseList = new HashMap<EventType, IResponseCallback>();
 
     private IRemoteServiceCallback callBackWaitingService;
-    
+
     /**
      * Current categories
      */
     public static ArrayList<Category> currentCategories;
-    
+
     /**
      * Payment methods Info
      */
-    private static HashMap<String,PaymentInfo> paymentsInfoList;
-    
-    
+    private static HashMap<String, PaymentInfo> paymentsInfoList;
+
     public Form registerForm;
-    
+
     public Bundle registerSavedInstanceState;
-    
+
     public int lastPaymentSelected = -1;
-    
+
     public ArrayList<CountryObject> countriesAvailable = null;
-    
+
     /**
      * Tracking Request performance
      */
-//    public AndroidFileFunctions trackerFile;
-//	public HashMap<EventType, Long> timeTrackerMap = new HashMap<EventType, Long>(); 
-    
+    // public AndroidFileFunctions trackerFile;
+    // public HashMap<EventType, Long> timeTrackerMap = new HashMap<EventType,
+    // Long>();
+
     @Override
-    public void onCreate() {
+    public void onApplicationCreate() {
         Log.d(TAG, "ON CREATE");
-        
+
         Log.init(getApplicationContext());
-        
+
         INSTANCE = this;
-        
+
         SharedPreferences sharedPrefs = this.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        
+
         /**
          * Force UA clean the previous configurations.
          */
-//        trackerFile = new AndroidFileFunctions();
+        // trackerFile = new AndroidFileFunctions();
         doBindService();
-        
+
         // Init image loader
         RocketImageLoader.init(this);
 
         // Init darwin database, set the context
         DarwinDatabaseHelper.init(getApplicationContext());
-        
+
         countriesAvailable = new ArrayList<CountryObject>();
-        
+
         responseCallbacks = new HashMap<String, IResponseCallback>();
         // Get the current shop id
         SHOP_ID = ShopPreferences.getShopId(getApplicationContext());
-        if(SHOP_ID != null){
+        if (SHOP_ID != null) {
             SHOP_NAME = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, null);
         }
         setItemSimpleDataRegistry(new HashMap<String, Map<String, String>>());
@@ -188,50 +188,54 @@ public class JumiaApplication extends Application implements ExceptionCallback {
         ImageResolutionHelper.init(this);
         setFormDataRegistry(new HashMap<String, FormData>());
         navigationListComponents = null;
-        
-        COMPONENTS.get(UrbanAirshipComponent.class).init(this);
-        
+
+//        COMPONENTS.get(UrbanAirshipComponent.class).init(this);
+
         /**
          * Fix a crash report, when app try recover from brackground
-         * https://rink.hockeyapp.net/manage/apps/33641/app_versions/109/crash_reasons/17098450
+         * https://rink
+         * .hockeyapp.net/manage/apps/33641/app_versions/109/crash_reasons
+         * /17098450
+         * 
          * @author sergiopereira
          */
         Log.d(TAG, "INIT CURRENCY");
         String currencyCode = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_ISO, null);
-        if(currencyCode != null) CurrencyFormatter.initialize(getApplicationContext(), currencyCode);
-        
+        if (currencyCode != null)
+            CurrencyFormatter.initialize(getApplicationContext(), currencyCode);
+
         cleanCategoriesState();
-        
+
     }
 
     @Override
-    public void onLowMemory() {     
+    public void onApplicationLowMemory() {
         super.onLowMemory();
         Log.d(TAG, "ON LOW MEMORY");
     }
-    
+
     public synchronized void init(boolean isReInit, Handler initializationHandler) {
         Log.d(TAG, "ON INIT");
-        //isInitializing = true;
+        // isInitializing = true;
         AnalyticsGoogle.clearCheckoutStarted();
-        
+
         for (ApplicationComponent component : COMPONENTS.values()) {
             ErrorCode result = component.init(JumiaApplication.this);
             if (result != ErrorCode.NO_ERROR) {
-                Log.i(TAG, "code1configs : "+result);
+                Log.i(TAG, "code1configs : " + result);
                 handleEvent(result, null, initializationHandler);
                 return;
             }
         }
-        
+
         SharedPreferences sharedPrefs = this.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         SHOP_ID = ShopPreferences.getShopId(getApplicationContext());
         SHOP_NAME = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, null);
-        Log.i(TAG, "code1configs : SHOP_ID : "+SHOP_ID+" SHOP_NAME : "+SHOP_NAME);
-        
+        Log.i(TAG, "code1configs : SHOP_ID : " + SHOP_ID + " SHOP_NAME : " + SHOP_NAME);
+
         // TODO : Comment for Samsung store
         CheckVersion.clearDialogSeenInLaunch(getApplicationContext());
-        
+
         handleEvent(ErrorCode.NO_ERROR, EventType.INITIALIZE, initializationHandler);
 
         // TODO : Comment for Samsung store
@@ -240,17 +244,15 @@ public class JumiaApplication extends Application implements ExceptionCallback {
 
     public synchronized void handleEvent(ErrorCode errorType, EventType eventType, Handler initializationHandler) {
         Log.d(TAG, "ON HANDLE");
-        //isInitializing = false;
+        // isInitializing = false;
         Bundle bundle = new Bundle();
         bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, errorType);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, eventType);
         Log.d(TAG, "Handle initialization result: " + errorType);
         Message msg = new Message();
         msg.obj = bundle;
-        if((eventType == EventType.INITIALIZE || 
-                errorType == ErrorCode.NO_COUNTRIES_CONFIGS || 
-                errorType == ErrorCode.NO_COUNTRY_CONFIGS_AVAILABLE)
-                && ServiceSingleton.getInstance().getService() == null ){
+        if ((eventType == EventType.INITIALIZE || errorType == ErrorCode.NO_COUNTRIES_CONFIGS || errorType == ErrorCode.NO_COUNTRY_CONFIGS_AVAILABLE)
+                && ServiceSingleton.getInstance().getService() == null) {
             Log.d(TAG, "ON HANDLE WITH ERROR");
             resendInitializationSignal = true;
             resendHandler = initializationHandler;
@@ -258,7 +260,7 @@ public class JumiaApplication extends Application implements ExceptionCallback {
             doBindService();
         } else {
             Log.d(TAG, "ON INIT HANDLE");
-            initializationHandler.sendMessage(msg);    
+            initializationHandler.sendMessage(msg);
         }
     }
 
@@ -281,7 +283,7 @@ public class JumiaApplication extends Application implements ExceptionCallback {
             e.printStackTrace();
         }
     }
-    
+
     public void unRegisterFragmentCallback(IRemoteServiceCallback mCallback) {
         if (mCallback == null) {
             Log.i(TAG, "mCallback is null");
@@ -291,19 +293,20 @@ public class JumiaApplication extends Application implements ExceptionCallback {
                 ServiceSingleton.getInstance().getService().unregisterCallback(mCallback);
             } catch (RemoteException e) {
                 e.printStackTrace();
-            }    
+            }
         }
-        
+
     }
 
     /**
      * Method used to register the call back that is waiting for service.
+     * 
      * @author sergiopereira
      */
     private void registerCallBackIsWaiting() {
         try {
             // Validate the current call back waiting by service
-            if (callBackWaitingService != null){
+            if (callBackWaitingService != null) {
                 ServiceSingleton.getInstance().getService().registerCallback(callBackWaitingService);
                 callBackWaitingService = null;
             }
@@ -311,10 +314,11 @@ public class JumiaApplication extends Application implements ExceptionCallback {
             e.printStackTrace();
         }
     }
-    
+
     public String sendRequest(final BaseHelper helper, final Bundle args, final IResponseCallback responseCallback) {
         return sendRequest(helper, args, responseCallback, true);
     }
+
     /**
      * Triggers the request for a new api call
      * 
@@ -324,13 +328,13 @@ public class JumiaApplication extends Application implements ExceptionCallback {
      * @return the md5 of the reponse
      */
     public String sendRequest(final BaseHelper helper, final Bundle args, final IResponseCallback responseCallback, boolean addToRequestOrder) {
-        if(helper == null){
+        if (helper == null) {
             return "";
         }
         final Bundle bundle = helper.generateRequestBundle(args);
-        
-        if(bundle.containsKey(Constants.BUNDLE_EVENT_TYPE_KEY)){
-            Log.i(TAG, "codesave saving : "+(EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
+
+        if (bundle.containsKey(Constants.BUNDLE_EVENT_TYPE_KEY)) {
+            Log.i(TAG, "codesave saving : " + (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
             requestsRetryHelperList.put((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY), helper);
             requestsRetryBundleList.put((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY), args);
             requestsResponseList.put((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY), responseCallback);
@@ -338,12 +342,12 @@ public class JumiaApplication extends Application implements ExceptionCallback {
                 requestOrder.add((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
             }
         } else {
-            Log.w(TAG, " MISSING EVENT TYPE from "+helper.toString());
+            Log.w(TAG, " MISSING EVENT TYPE from " + helper.toString());
         }
         final String md5 = bundle.getString(Constants.BUNDLE_MD5_KEY);
         Log.d("TRACK", "sendRequest");
         new Thread(new Runnable() {
-            
+
             @Override
             public void run() {
                 JumiaApplication.INSTANCE.responseCallbacks.put(md5, new IResponseCallback() {
@@ -380,28 +384,28 @@ public class JumiaApplication extends Application implements ExceptionCallback {
                 }
             }
         }).start();
-        
-        
 
         return md5;
     }
 
     public boolean sendRequest(Bundle bundle) {
-        //long timeMillis = System.currentTimeMillis();
-//        Log.i("REQUEST", "performing event type request : "+bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY)+" url : "+bundle.getString(Constants.BUNDLE_URL_KEY));
-//        timeTrackerMap.put((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY), timeMillis);
-        if(ServiceSingleton.getInstance().getService() != null){
+        // long timeMillis = System.currentTimeMillis();
+        // Log.i("REQUEST",
+        // "performing event type request : "+bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY)+" url : "+bundle.getString(Constants.BUNDLE_URL_KEY));
+        // timeTrackerMap.put((EventType)
+        // bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY), timeMillis);
+        if (ServiceSingleton.getInstance().getService() != null) {
             try {
                 ServiceSingleton.getInstance().getService().sendRequest(bundle);
                 return true;
             } catch (RemoteException e) {
                 e.printStackTrace();
                 return false;
-            }    
+            }
         } else {
             return false;
         }
-        
+
     }
 
     /**
@@ -523,30 +527,30 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     public void setFormDataRegistry(HashMap<String, FormData> formDataRegistry) {
         this.formDataRegistry = formDataRegistry;
     }
-    
+
     public void doBindService() {
-        
-        if(!mIsBound){
-            
+
+        if (!mIsBound) {
+
             /**
-             *  Establish a connection with the service.  We use an explicit
-             *  class name because we want a specific service implementation that
-             *  we know will be running in our own process (and thus won't be
-             *  supporting component replacement by other applications).
+             * Establish a connection with the service. We use an explicit class
+             * name because we want a specific service implementation that we
+             * know will be running in our own process (and thus won't be
+             * supporting component replacement by other applications).
              */
             bindService(new Intent(this, RemoteService.class), mConnection, Context.BIND_AUTO_CREATE);
         }
     }
-    
+
     public void doUnbindService() {
         if (mIsBound) {
             mIsBound = false;
-            
+
             // Detach our existing connection.
-            //            unbindService(mConnection);
+            // unbindService(mConnection);
         }
     }
-    
+
     /**
      * @return the loggedIn
      */
@@ -555,12 +559,12 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     }
 
     /**
-     * @param loggedIn the loggedIn to set
+     * @param loggedIn
+     *            the loggedIn to set
      */
     public void setLoggedIn(boolean loggedIn) {
         this.loggedIn = loggedIn;
     }
-
 
     /**
      * @return the requestsRetryBundleList
@@ -570,7 +574,8 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     }
 
     /**
-     * @param requestsRetryBundleList the requestsRetryBundleList to set
+     * @param requestsRetryBundleList
+     *            the requestsRetryBundleList to set
      */
     public void setRequestsRetryBundleList(HashMap<EventType, Bundle> requestsRetryBundleList) {
         this.requestsRetryBundleList = requestsRetryBundleList;
@@ -584,7 +589,8 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     }
 
     /**
-     * @param requestsRetryHelperList the requestsRetryHelperList to set
+     * @param requestsRetryHelperList
+     *            the requestsRetryHelperList to set
      */
     public void setRequestsRetryHelperList(HashMap<EventType, BaseHelper> requestsRetryHelperList) {
         this.requestsRetryHelperList = requestsRetryHelperList;
@@ -596,28 +602,29 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     public HashMap<EventType, IResponseCallback> getRequestsResponseList() {
         return requestsResponseList;
     }
-    
-    public ArrayList<EventType> getRequestOrderList(){
+
+    public ArrayList<EventType> getRequestOrderList() {
         return requestOrder;
     }
 
     /**
-     * @param requestsResponseList the requestsResponseList to set
+     * @param requestsResponseList
+     *            the requestsResponseList to set
      */
     public void setRequestsResponseList(HashMap<EventType, IResponseCallback> requestsResponseList) {
         this.requestsResponseList = requestsResponseList;
     }
 
-    public void setResendHander(Handler mHandler){
+    public void setResendHander(Handler mHandler) {
         resendInitializationSignal = true;
         resendMsg = new Message();
         resendHandler = mHandler;
     }
-    
-    public void setResendMenuHander(Handler mHandler){
+
+    public void setResendMenuHander(Handler mHandler) {
         resendMenuHandler = mHandler;
     }
-    
+
     /**
      * Service Stuff
      */
@@ -640,11 +647,9 @@ public class JumiaApplication extends Application implements ExceptionCallback {
             Log.i(TAG, "onServiceConnected");
             mIsBound = true;
             ServiceSingleton.getInstance().setService(IRemoteService.Stub.asInterface(service));
-            
-            
+
             // TODO uncomment this to re execute pending requests
-            
-            
+
             /*-if (requestOrder != null && requestOrder.size() > 0) {
                 Log.i(TAG, " RE-EXECUTING PENDING REQUESTS " + requestOrder.size());
                 for (int i = 0; i < requestOrder.size(); i++) {
@@ -653,16 +658,16 @@ public class JumiaApplication extends Application implements ExceptionCallback {
                 }
                 requestOrder.clear();
             } else {*/
-            if(resendInitializationSignal){
+            if (resendInitializationSignal) {
                 resendHandler.sendMessage(resendMsg);
                 resendInitializationSignal = false;
             }
-            
-            if(resendMenuHandler != null){
+
+            if (resendMenuHandler != null) {
                 resendMenuHandler.sendEmptyMessage(0);
                 resendMenuHandler = null;
-            /*}*/
-            
+                /* } */
+
             }
             // Register the fragment callback
             registerCallBackIsWaiting();
@@ -689,7 +694,7 @@ public class JumiaApplication extends Application implements ExceptionCallback {
         ContentValues currentReview = JumiaApplication.review;
         return currentReview;
     }
-    
+
     /**
      * clean current review
      */
@@ -704,21 +709,22 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     /**
      * @return the paymentsInfoList
      */
-    public static HashMap<String,PaymentInfo> getPaymentsInfoList() {
+    public static HashMap<String, PaymentInfo> getPaymentsInfoList() {
         return paymentsInfoList;
     }
 
     /**
-     * @param paymentsInfoList the paymentsInfoList to set
+     * @param paymentsInfoList
+     *            the paymentsInfoList to set
      */
-    public static void setPaymentsInfoList(HashMap<String,PaymentInfo> paymentsInfoList) {
+    public static void setPaymentsInfoList(HashMap<String, PaymentInfo> paymentsInfoList) {
         JumiaApplication.paymentsInfoList = paymentsInfoList;
     }
-    
+
     /**
      * Remove Caching State for Categories
      */
-    public void cleanCategoriesState(){
+    public void cleanCategoriesState() {
 
         SharedPreferences sharedPrefs = this.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         Editor eDitor = sharedPrefs.edit();
@@ -737,8 +743,7 @@ public class JumiaApplication extends Application implements ExceptionCallback {
         return pInfo.versionName;
     }
 
-    
-    public void cleanAllPreviousCountryValues(){
+    public void cleanAllPreviousCountryValues() {
         currentCategories = null;
         setCart(null);
         setFormDataRegistry(new HashMap<String, FormData>());
@@ -749,7 +754,7 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     }
 
     private static ArrayList<TeaserCampaign> sTeaserCampaigns;
-    
+
     /**
      * 
      * @param campaigns
@@ -758,7 +763,7 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     public static void saveTeaserCampaigns(ArrayList<TeaserCampaign> campaigns) {
         sTeaserCampaigns = campaigns;
     }
-    
+
     /**
      * 
      * @return
@@ -767,7 +772,7 @@ public class JumiaApplication extends Application implements ExceptionCallback {
     public static ArrayList<TeaserCampaign> getSavedTeaserCampaigns() {
         return sTeaserCampaigns;
     }
-    
+
     /**
      * 
      * @return
@@ -777,15 +782,10 @@ public class JumiaApplication extends Application implements ExceptionCallback {
         return (sTeaserCampaigns != null) ? true : false;
     }
 
-
-    
-    
-    
     /**
-     * Save tracking values to the file
-     * Only for dev environment
+     * Save tracking values to the file Only for dev environment
      */
-//    public void writeToTrackerFile(String value){
-//        trackerFile.writeToFile(value, this, Context.MODE_APPEND);
-//    }
+    // public void writeToTrackerFile(String value){
+    // trackerFile.writeToFile(value, this, Context.MODE_APPEND);
+    // }
 }

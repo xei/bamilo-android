@@ -14,6 +14,7 @@ import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.objects.ShoppingCart;
+import pt.rocket.framework.tracking.TrackingPages;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -121,8 +122,7 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
     @Override
     public void onStart() {
         super.onStart();
-        Log.i(TAG, "ON START");
-        TrackerDelegator.trackPage(R.string.gcheckoutfinal);
+        Log.i(TAG, "ON START");        
     }
 
     /*
@@ -134,6 +134,7 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
+        TrackerDelegator.trackPage(TrackingPages.CHECKOUT_THANKS);
     }
 
     /*
@@ -237,7 +238,8 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
             params.putString(TrackerDelegator.ORDER_NUMBER_KEY, order_number);
             params.putString(TrackerDelegator.VALUE_KEY, JumiaApplication.INSTANCE.getCart().getCartValue());
             params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
-            params.putParcelable(TrackerDelegator.CUSTOMER_KEY, JumiaApplication.CUSTOMER);         
+            params.putParcelable(TrackerDelegator.CUSTOMER_KEY, JumiaApplication.CUSTOMER);
+            params.putString(TrackerDelegator.COUPON_KEY, JumiaApplication.INSTANCE.getCart().getCouponDiscount());
                         
             TrackerDelegator.trackPurchaseNativeCheckout(params, JumiaApplication.INSTANCE.getCart().getCartItems());
         }

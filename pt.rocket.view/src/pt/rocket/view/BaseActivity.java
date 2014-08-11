@@ -25,6 +25,7 @@ import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.SearchSuggestion;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.service.IRemoteServiceCallback;
+import pt.rocket.framework.tracking.TrackingPages;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -275,7 +276,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        UAirship.shared().getAnalytics().activityStarted(this);
+//        UAirship.shared().getAnalytics().activityStarted(this);
     }
 
     /*
@@ -363,7 +364,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     protected void onStop() {
         super.onStop();
         Log.d(TAG, "ON STOP");
-        UAirship.shared().getAnalytics().activityStopped(this);
+//        UAirship.shared().getAnalytics().activityStopped(this);
         JumiaApplication.INSTANCE.setLoggedIn(false);
     }
 
@@ -1614,7 +1615,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         hideSearchComponent();
         hideKeyboard();
         // Update cart
-        TrackerDelegator.trackPage(R.string.gnavigation);
+        TrackerDelegator.trackPage(TrackingPages.NAVIGATION);
         // Removed Categories TAB
         /*-// Validate
         showWizardNavigation();*/

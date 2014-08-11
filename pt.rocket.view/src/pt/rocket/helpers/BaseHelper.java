@@ -7,12 +7,17 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pt.rocket.app.JumiaApplication;
+import pt.rocket.constants.ConstantsSharedPrefs;
+import pt.rocket.framework.Darwin;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.Errors;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.utils.JSONConstants;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -47,9 +52,20 @@ public abstract class BaseHelper {
         
         Log.d(TAG, "checkResponseForStatus : " + eventType);
         try {// TODO maintain generic information here, no need to pass on the
+            SharedPreferences sharedPrefs = JumiaApplication.INSTANCE.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+            
              // full object in order
             JSONObject jsonObject = new JSONObject(response);
             Boolean success = jsonObject.optBoolean(JSONConstants.JSON_SUCCESS_TAG, false);
+//            JSONObject jsonSession = jsonObject.optJSONObject(JSONConstants.JSON_SESSION_TAG);            
+//            String crfToken = sharedPrefs.getString(JSONConstants.JSON_YII_CSRF_TOKEN_TAG, "");
+//            if (null != jsonSession) {
+//                crfToken = jsonSession.optString(JSONConstants.JSON_YII_CSRF_TOKEN_TAG, "");
+//            }
+//            if (!crfToken.equals("")) {
+//                sharedPrefs.getString(JSONConstants.JSON_YII_CSRF_TOKEN_TAG, "");                
+//            }
+            
             if(eventType == EventType.GET_GLOBAL_CONFIGURATIONS){
                 success = true;
                 return parseResponseBundle(bundle, jsonObject);

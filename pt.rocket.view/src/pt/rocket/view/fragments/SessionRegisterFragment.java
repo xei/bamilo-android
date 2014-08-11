@@ -26,6 +26,7 @@ import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.objects.Errors;
 import pt.rocket.framework.rest.RestConstants;
+import pt.rocket.framework.tracking.TrackingPages;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -182,6 +183,8 @@ public class SessionRegisterFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
+        
+        TrackerDelegator.trackPage(TrackingPages.REGISTRATION);
         
         // Used for UG
         forceInputAlignToLeft();

@@ -14,6 +14,7 @@ import pt.rocket.helpers.search.GetSearchProductHelper;
 import pt.rocket.preferences.ShopPreferences;
 import pt.rocket.view.R;
 import pt.rocket.view.fragments.CampaignsFragment;
+import pt.rocket.view.fragments.CatalogFragment;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -34,23 +35,28 @@ public class DeepLinkManager {
     
     private static final int PATH_DATA_POS = 2;
     
-    private static final String CATALOG_TAG = "c";
-    
-    private static final String CART_TAG = "cart";
-    
-    private static final String PDV_TAG = "d";
-    
-    private static final String CATEGORY_TAG = "n";
-    
-    private static final String SEARCH_TERM_TAG = "s";
-    
-    private static final String ORDER_OVERVIEW_TAG = "o";
-    
-    private static final String CAMPAIGN_TAG = "cp";
-    
-    private static final String LOGIN_TAG = "l";
-    
+    private static final String CATALOG_TAG = "c";    
+    private static final String CATALOG_RATING_TAG = "cbr";
+    private static final String CATALOG_POPULARITY_TAG = "cp";
+    private static final String CATALOG_NEW_TAG = "cin";
+    private static final String CATALOG_PRICE_UP_TAG = "cpu";
+    private static final String CATALOG_PRICE_DOWN_TAG = "cpd";
+    private static final String CATALOG_NAME_TAG = "cn";
+    private static final String CATALOG_BRAND_TAG = "cb";
+    private static final String CART_TAG = "cart";    
+    private static final String PDV_TAG = "d";    
+    private static final String CATEGORY_TAG = "n";    
+    private static final String SEARCH_TERM_TAG = "s";    
+    private static final String ORDER_OVERVIEW_TAG = "o";    
+    private static final String CAMPAIGN_TAG = "camp";    
+    private static final String LOGIN_TAG = "l";    
     private static final String REGISTER_TAG = "r";
+    private static final String NEWSLETTER_TAG = "news";
+    private static final String RECENTLY_VIEWED_TAG = "rv";
+    private static final String RECENT_SEARCHES_TAG = "rc";
+    private static final String FAVORITES_TAG = "w";
+    
+    
     
     public static final String ADX_ID_TAG = "ADXID";
     
@@ -139,7 +145,28 @@ public class DeepLinkManager {
                 String tag = segments.get(PATH_VIEW_POS);
                 // Catalog
                 if(tag.equalsIgnoreCase(CATALOG_TAG))
-                    bundle = processCatalogLink(segments.get(PATH_DATA_POS));
+                    bundle = processCatalogLink(segments.get(PATH_DATA_POS), CatalogFragment.SortPages.DEFAULT);
+                // Catalog - Rating
+                else if(tag.equalsIgnoreCase(CATALOG_RATING_TAG))
+                    bundle = processCatalogLink(segments.get(PATH_DATA_POS), CatalogFragment.SortPages.RATING);
+                // Catalog - Popularity
+                else if(tag.equalsIgnoreCase(CATALOG_POPULARITY_TAG))
+                    bundle = processCatalogLink(segments.get(PATH_DATA_POS), CatalogFragment.SortPages.POPULARITY);
+                // Catalog - New In
+                else if(tag.equalsIgnoreCase(CATALOG_NEW_TAG))
+                    bundle = processCatalogLink(segments.get(PATH_DATA_POS),CatalogFragment.SortPages.NEW_IN);
+                // Catalog - Price Up
+                else if(tag.equalsIgnoreCase(CATALOG_PRICE_UP_TAG))
+                    bundle = processCatalogLink(segments.get(PATH_DATA_POS), CatalogFragment.SortPages.PRICE_UP);
+                // Catalog - Price Down
+                else if(tag.equalsIgnoreCase(CATALOG_PRICE_DOWN_TAG))
+                    bundle = processCatalogLink(segments.get(PATH_DATA_POS), CatalogFragment.SortPages.PRICE_DOWN);
+                // Catalog - Name
+                else if(tag.equalsIgnoreCase(CATALOG_NAME_TAG))
+                    bundle = processCatalogLink(segments.get(PATH_DATA_POS), CatalogFragment.SortPages.NAME);
+                // Catalog - Brand
+                else if(tag.equalsIgnoreCase(CATALOG_BRAND_TAG))
+                    bundle = processCatalogLink(segments.get(PATH_DATA_POS), CatalogFragment.SortPages.BRAND);
                 // Cart
                 else if(tag.equalsIgnoreCase(CART_TAG))
                     bundle = processCartLink(segments);
@@ -164,6 +191,19 @@ public class DeepLinkManager {
                 // Campaign
                 else if(tag.equalsIgnoreCase(CAMPAIGN_TAG))
                     bundle = processCampaignLink(segments.get(PATH_DATA_POS));
+                // Newsleter
+                else if(tag.equalsIgnoreCase(NEWSLETTER_TAG))
+                    bundle = processNewsletterLink();
+                // Recently Viewed
+                else if(tag.equalsIgnoreCase(RECENTLY_VIEWED_TAG))
+                    bundle = processRecentViewedLink();
+                // Recent Searches
+                else if(tag.equalsIgnoreCase(RECENT_SEARCHES_TAG))
+                    bundle = processRecenteSearchesLink();
+                // Favorites
+                else if(tag.equalsIgnoreCase(FAVORITES_TAG))
+                    bundle = processFavoritesLink();
+                
             } else {
                 // Home
                 bundle = processHomeLink();
@@ -333,6 +373,59 @@ public class DeepLinkManager {
         bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.REGISTER);
         return bundle;
     }
+
+    /**
+     * Method used to create a bundle for Home
+     * @return {@link Bundle}
+     * @author sergiopereira
+     */
+    private static Bundle processNewsletterLink() {
+        Log.i(TAG, "DEEP LINK TO HOME");
+        Bundle bundle = new Bundle();
+        bundle.putString(ConstantsIntentExtra.DEEP_LINK_TAG, TAG);
+        bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.EMAIL_NOTIFICATION);
+        return bundle;
+    }
+    
+    /**
+     * Method used to create a bundle for Home
+     * @return {@link Bundle}
+     * @author sergiopereira
+     */
+    private static Bundle processRecentViewedLink() {
+        Log.i(TAG, "DEEP LINK TO HOME");
+        Bundle bundle = new Bundle();
+        bundle.putString(ConstantsIntentExtra.DEEP_LINK_TAG, TAG);
+        bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.RECENTLYVIEWED_LIST);
+        return bundle;
+    }
+    
+    /**
+     * Method used to create a bundle for Home
+     * @return {@link Bundle}
+     * @author sergiopereira
+     */
+    private static Bundle processRecenteSearchesLink() {
+        Log.i(TAG, "DEEP LINK TO HOME");
+        Bundle bundle = new Bundle();
+        bundle.putString(ConstantsIntentExtra.DEEP_LINK_TAG, TAG);
+        bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.RECENTSEARCHES_LIST);
+        return bundle;
+    }
+    
+    /**
+     * Method used to create a bundle for Home
+     * @return {@link Bundle}
+     * @author sergiopereira
+     */
+    private static Bundle processFavoritesLink() {
+        Log.i(TAG, "DEEP LINK TO HOME");
+        Bundle bundle = new Bundle();
+        bundle.putString(ConstantsIntentExtra.DEEP_LINK_TAG, TAG);
+        bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.FAVOURITE_LIST);
+        return bundle;
+    }
+    
     
     
     /**
@@ -354,12 +447,13 @@ public class DeepLinkManager {
      * @return {@link Bundle}
      * @author sergiopereira
      */
-    private static Bundle processCatalogLink(String catalog) {
+    private static Bundle processCatalogLink(String catalog, CatalogFragment.SortPages page) {
         Log.i(TAG, "DEEP LINK TO CATALOG: " + catalog);
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_URL, "https:/" + catalog);
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gpush_prefix);
         bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
+        bundle.putSerializable(ConstantsIntentExtra.CATALOG_SORT_PAGE, page);        
         bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.PRODUCT_LIST);
         return bundle;
     }

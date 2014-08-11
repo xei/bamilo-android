@@ -657,35 +657,31 @@ public class CatalogPageFragment extends BaseFragment {
         if (productsPage != null && totalProducts > 0) {
             Log.d(TAG, "onSuccessEvent: products on page = " + numberProducts + " total products = " + totalProducts);
 
-            // new Thread(new Runnable() {
-            //
-            // @Override
-            // public void run() {
-            // try {
-            // // TODO: Improve this behavior
-            // if (mPageIndex == 1 && mPageNumber == 1) {
-            // RelatedItemsTableHelper.insertRelatedItemsAndClear(getBaseActivity(),
-            // productsPage.getProductsList());
-            // } else if (mPageIndex == 1 && mPageNumber == 2) {
-            // RelatedItemsTableHelper.insertRelatedItems(getBaseActivity(),
-            // productsPage.getProductsList());
-            // }
-            // } catch (Exception e) {
-            // // TODO Auto-generated catch block
-            // e.printStackTrace();
-            // }
-            // }
-            // }).start();
+            new Thread(new Runnable() {
 
-            try {
-                if (mPageIndex == 1 && mPageNumber == 1) {
-                    RelatedItemsTableHelper.insertRelatedItemsAndClear(getBaseActivity(), productsPage.getProductsList());
-                } else if (mPageIndex == 1 && mPageNumber == 2) {
-                    RelatedItemsTableHelper.insertRelatedItems(getBaseActivity(), productsPage.getProductsList());
+                @Override
+                public void run() {
+                    try {
+                        if (mPageIndex == 1 && mPageNumber == 1) {
+                            RelatedItemsTableHelper.insertRelatedItemsAndClear(getBaseActivity(), productsPage.getProductsList());
+                        } else if (mPageIndex == 1 && mPageNumber == 2) {
+                            RelatedItemsTableHelper.insertRelatedItems(getBaseActivity(), productsPage.getProductsList());
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            }).start();
+
+//            try {
+//                if (mPageIndex == 1 && mPageNumber == 1) {
+//                    RelatedItemsTableHelper.insertRelatedItemsAndClear(getBaseActivity(), productsPage.getProductsList());
+//                } else if (mPageIndex == 1 && mPageNumber == 2) {
+//                    RelatedItemsTableHelper.insertRelatedItems(getBaseActivity(), productsPage.getProductsList());
+//                }
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
 
             parentFragment.addProductsCollection(productsPage.getProductsMap(), mTitle, productsPage.getTotalProducts());
 

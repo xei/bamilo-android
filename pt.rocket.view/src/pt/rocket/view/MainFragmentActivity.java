@@ -6,10 +6,11 @@ package pt.rocket.view;
 import java.util.EnumSet;
 
 import pt.rocket.app.JumiaApplication;
-import pt.rocket.app.UrbanAirshipComponent;
+import pt.rocket.constants.BundleConstants;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
+import pt.rocket.framework.tracking.Ad4PushTracker;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
@@ -52,9 +53,13 @@ import pt.rocket.view.fragments.ShoppingCartFragment;
 import pt.rocket.view.fragments.TrackOrderFragment;
 import pt.rocket.view.fragments.WriteReviewFragment;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceScreen;
 import android.support.v4.widget.DrawerLayout;
+
+import com.ad4screen.sdk.Tag;
+
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -62,6 +67,7 @@ import de.akquinet.android.androlog.Log;
  * @author sergiopereira
  * 
  */
+@Tag(name = "MainActivity")
 public class MainFragmentActivity extends BaseActivity implements OnPreferenceAttachedListener {
 
     private final static String TAG = MainFragmentActivity.class.getSimpleName();
@@ -71,7 +77,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
     private FragmentType currentFragmentType;
 
     private boolean wasReceivedNotification = false;
-    
+
     /**
      * Constructor
      */
@@ -92,21 +98,40 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "ON CREATE");
+
+        Intent mIntent = getIntent();
+        Bundle mBundle = mIntent.getExtras();
+        Uri data = mIntent.getData();
+        
+        Log.i(TAG, "ON CREATE - Bundle -> " + (null != mBundle ? mBundle.keySet().toString() : "null"));
+        Log.i(TAG, "ON CREATE - data -> " + data);
+        
+        if (null != mBundle) {        
+            Bundle payload = mIntent.getBundleExtra(BundleConstants.EXTRA_GCM_PAYLOAD);
+            if (null != payload) {
+                Intent intent = new Intent(this, SplashScreenActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);                
+                intent.putExtra(BundleConstants.EXTRA_GCM_PAYLOAD, payload);
+                
+                startActivity(intent);
+                finish();
+            }
+        }
         
         // ON ORIENTATION CHANGE
-        if(savedInstanceState == null) {
+        if (savedInstanceState == null) {
             Log.d(TAG, "################### SAVED INSTANCE IS NULL");
             // Initialize fragment controller
             FragmentController.getInstance().init();
             // Validate intent
-            if(!isValidNotification(getIntent()))
+            if (!isValidNotification(getIntent()))
                 onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         } else {
             currentFragmentType = (FragmentType) savedInstanceState.getSerializable(ConstantsIntentExtra.FRAGMENT_TYPE);
-            
+
             Log.d(TAG, "################### SAVED INSTANCE ISN'T NULL: " + currentFragmentType.toString());
             fragment = (BaseFragment) getSupportFragmentManager().findFragmentByTag(currentFragmentType.toString());
-            if ( null != fragment ) {
+            if (null != fragment) {
                 fragment.setActivity(this);
             }
         }
@@ -114,6 +139,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
 
     /*
      * (non-Javadoc)
+     * 
      * @see pt.rocket.utils.BaseActivity#onNewIntent(android.content.Intent)
      */
     @Override
@@ -121,9 +147,10 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         super.onNewIntent(intent);
         isValidNotification(intent);
     }
-    
+
     /**
      * Validate and process intent from notification
+     * 
      * @param intent
      * @return
      */
@@ -140,59 +167,69 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             // Switch to fragment with respective bundle
             onSwitchFragment(fragmentType, bundle, FragmentController.ADD_TO_BACK_STACK);
             // Set flag
-            wasReceivedNotification  = true;
+            wasReceivedNotification = true;
             // Return result
             return true;
         }
         Log.d(TAG, "INVALID INTENT");
         return false;
-  }
-    
-    
+    }
 
     /*
      * (non-Javadoc)
+     * 
      * @see pt.rocket.utils.BaseActivity#onResume()
      */
     @Override
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
+
+        // AD4Push activity tracking for in-app messages
+        Ad4PushTracker.startActivity(this);        
     }
 
     /*
      * (non-Javadoc)
+     * 
      * @see pt.rocket.utils.BaseActivity#onPause()
      */
     @Override
     public void onPause() {
         super.onPause();
         Log.i(TAG, "ON PAUSE");
-        JumiaApplication.COMPONENTS.get(UrbanAirshipComponent.class).setUserPushSettings();
+//        JumiaApplication.COMPONENTS.get(UrbanAirshipComponent.class).setUserPushSettings();
+
+        // AD4Push activity tracking for in-app messages
+        Ad4PushTracker.stopActivity(this);
     }
-    
+
     /*
      * (non-Javadoc)
+     * 
      * @see pt.rocket.utils.BaseActivity#onDestroy()
      */
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.i(TAG, "ON DESTROY"); 
+        Log.i(TAG, "ON DESTROY");
         // Delete categories
         JumiaApplication.currentCategories = null;
         JumiaApplication.INSTANCE.setLoggedIn(false);
-        
-        // 
-        if(wasReceivedNotification) {
+
+        //
+        if (wasReceivedNotification) {
             wasReceivedNotification = false;
             getIntent().removeExtra(ConstantsIntentExtra.FRAGMENT_TYPE);
         }
     }
-    
+
     /*
      * (non-Javadoc)
-     * @see com.slidingmenu.lib.app.SlidingFragmentActivity#onSaveInstanceState(android.os.Bundle)
+     * 
+     * @see
+     * com.slidingmenu.lib.app.SlidingFragmentActivity#onSaveInstanceState(android
+     * .os.Bundle)
      */
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -207,10 +244,13 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         // Save the current fragment type on orientation change
         outState.putSerializable(ConstantsIntentExtra.FRAGMENT_TYPE, currentFragmentType);
     }
-    
+
     /*
      * (non-Javadoc)
-     * @see pt.rocket.utils.BaseActivity#onSwitchFragment(pt.rocket.view.fragments.FragmentType, android.os.Bundle, java.lang.Boolean)
+     * 
+     * @see
+     * pt.rocket.utils.BaseActivity#onSwitchFragment(pt.rocket.view.fragments
+     * .FragmentType, android.os.Bundle, java.lang.Boolean)
      */
     @Override
     public void onSwitchFragment(FragmentType type, Bundle bundle, Boolean addToBackStack) {
@@ -220,7 +260,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         switch (type) {
         case HOME:
             // Pop back stack until TEASERS
-            if(FragmentController.getInstance().hasEntry(FragmentType.HOME.toString())) {
+            if (FragmentController.getInstance().hasEntry(FragmentType.HOME.toString())) {
                 popBackStack(FragmentType.HOME.toString());
                 return;
             }
@@ -344,22 +384,21 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             Log.w(TAG, "INVALIDE FRAGMENT TYPE");
             return;
         }
-        
-        
+
         try {
             fragment.setArguments(null);
             fragment.setArguments(bundle);
         } catch (IllegalStateException e) {
             e.printStackTrace();
         }
-        
+
         Log.i(TAG, "ON SWITCH FRAGMENT: " + type.toString());
         // Save the current state
         currentFragmentType = type;
         // Transition
         fragmentManagerTransition(R.id.main_fragment_container, fragment, type.toString(), addToBackStack);
     }
-    
+
     /*
      * (non-Javadoc)
      * 
@@ -369,19 +408,17 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
     public void onBackPressed() {
         Log.i(TAG, "ON BACK PRESSED");
         fragment = getActiveFragment();
-        if (mDrawerLayout.isDrawerOpen(mDrawerNavigation)
-                && !(mDrawerLayout.getDrawerLockMode(mDrawerNavigation) == DrawerLayout.LOCK_MODE_LOCKED_OPEN)
-                ) {
-            
+        if (mDrawerLayout.isDrawerOpen(mDrawerNavigation) && !(mDrawerLayout.getDrawerLockMode(mDrawerNavigation) == DrawerLayout.LOCK_MODE_LOCKED_OPEN)) {
+
             mDrawerLayout.closeDrawer(mDrawerNavigation);
-        } else if(fragment == null || !fragment.allowBackPressed()) {
+        } else if (fragment == null || !fragment.allowBackPressed()) {
             Log.i(TAG, "NOT ALLOW BACK PRESSED: FRAGMENT");
             fragmentManagerBackPressed();
-        }else{
+        } else {
             Log.i(TAG, "ALLOW BACK PRESSED: FRAGMENT");
         }
     }
-    
+
     public BaseFragment getActiveFragment() {
         if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
             return null;
@@ -392,6 +429,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
 
     /**
      * Pop back stack
+     * 
      * @param tag
      * @param isInclusive
      */
@@ -401,10 +439,10 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         // Get the current fragment
         fragment = (BaseFragment) getSupportFragmentManager().findFragmentByTag(tag);
     }
-    
+
     // ####################### MY ACCOUNT FRAGMENT #######################
     @Override
     public void onPreferenceAttached(PreferenceScreen root, int xmlId) {
     }
-    
+
 }

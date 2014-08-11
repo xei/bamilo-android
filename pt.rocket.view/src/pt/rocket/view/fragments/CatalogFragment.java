@@ -18,6 +18,7 @@ import pt.rocket.framework.objects.CatalogFilterOption;
 import pt.rocket.framework.objects.FeaturedBox;
 import pt.rocket.framework.objects.FeaturedItem;
 import pt.rocket.framework.objects.Product;
+import pt.rocket.framework.tracking.TrackingPages;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.products.GetProductsHelper;
 import pt.rocket.utils.MyMenuItem;
@@ -54,6 +55,17 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
 
     private static final String TAG = LogTagHelper.create(CatalogFragment.class);
 
+    public enum SortPages {        
+        RATING,
+        POPULARITY,
+        NEW_IN,
+        PRICE_UP,
+        PRICE_DOWN,
+        NAME,
+        BRAND,
+        DEFAULT
+    }
+    
     private static final String FILTER_VALUES_KEY = "filter_values";
     private static final String FILTER_STATE_KEY = "filter_state";
     private static final String TOTAL_KEY = "total_products";
@@ -112,6 +124,8 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
     private SlidingTabLayout mPagerTabStrip;
 
     private int mSavedPagerPosition = 0;
+    
+    private SortPages startPage = SortPages.DEFAULT;
 
     /**
      * Empty constructor
@@ -175,6 +189,8 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         navigationSource = getArguments().getInt(ConstantsIntentExtra.NAVIGATION_SOURCE, -1);
 
         navigationPath = getArguments().getString(ConstantsIntentExtra.NAVIGATION_PATH);
+        
+        startPage = (SortPages) getArguments().getSerializable(ConstantsIntentExtra.CATALOG_SORT_PAGE);
 
         // Save the current catalog data, used as a fall back
         saveCurrentCatalogDataForFilters();
@@ -224,6 +240,8 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         Log.d(TAG, "ON RESUME");
         super.onResume();
 
+        TrackerDelegator.trackPage(TrackingPages.PRODUCT_LIST);
+        
         if (mTotalProducts > 0) {
             getBaseActivity().setTitleAndSubTitle(title,
                     " (" + String.valueOf(mTotalProducts) + " " + getBaseActivity().getString(R.string.shoppingcart_items) + ")");
@@ -238,8 +256,6 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
             Log.i(TAG, "setFilterAction");
             setFilterAction();
         }
-
-        TrackerDelegator.trackPage(R.string.gproductlist);
 
         if (mCatalogPagerAdapter == null) {
             Log.d(TAG, "ON RESUME: ADAPTER IS NULL");
@@ -274,13 +290,15 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         mViewPager.setAdapter(mCatalogPagerAdapter);
         mPagerTabStrip.setViewPager(mViewPager); // XXX
         mViewPager.setOffscreenPageLimit(1);
-        mViewPager.setCurrentItem(mSavedPagerPosition);
-
+        if (null != startPage && startPage != SortPages.DEFAULT) {
+            mViewPager.setCurrentItem(startPage.ordinal());
+            startPage = SortPages.DEFAULT;
+        } else {
+            mViewPager.setCurrentItem(mSavedPagerPosition);
+        }
         if (null != mCatalogPagerAdapter && null != mCatalogFilterValues) {
             mCatalogPagerAdapter.restoreFilters(mCatalogFilterValues);
         }
-
-        TrackerDelegator.trackPage(R.string.gproductlist);
 
         // Show tips
         isToShowWizard();

@@ -16,6 +16,9 @@ public class JSONConstants {
     public static final String JSON_METADATA_TAG = "metadata";
     public static final String JSON_DATA_TAG = "data";
 
+    public static final String JSON_SESSION_TAG = "session";
+    public static final String JSON_YII_CSRF_TOKEN_TAG = "YII_CSRF_TOKEN";
+    
     /**
      * Constants specific to catalog request
      */

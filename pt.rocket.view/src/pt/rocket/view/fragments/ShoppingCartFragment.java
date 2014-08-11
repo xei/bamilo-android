@@ -19,6 +19,7 @@ import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.Darwin;
 import pt.rocket.framework.objects.ShoppingCart;
 import pt.rocket.framework.objects.ShoppingCartItem;
+import pt.rocket.framework.tracking.TrackingPages;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CurrencyFormatter;
 import pt.rocket.framework.utils.EventType;
@@ -242,7 +243,7 @@ public class ShoppingCartFragment extends BaseFragment {
         mBeginRequestMillis = System.currentTimeMillis();
         triggerGetShoppingCart();
         setListeners();
-        TrackerDelegator.trackPage(R.string.gshoppingcart);
+        TrackerDelegator.trackPage(TrackingPages.CART);
     }
 
     /**
@@ -680,7 +681,7 @@ public class ShoppingCartFragment extends BaseFragment {
             
 
             hideNoItems();
-            TrackerDelegator.trackPage(R.string.gcartwithitems);
+            TrackerDelegator.trackPage(TrackingPages.FILLED_CART);
 
         }
     }
@@ -879,7 +880,7 @@ public class ShoppingCartFragment extends BaseFragment {
             }
         });
 
-        TrackerDelegator.trackPage(R.string.gcartempty);
+        TrackerDelegator.trackPage(TrackingPages.EMPTY_CART);
     }
 
 

@@ -16,6 +16,7 @@ import pt.rocket.framework.objects.Homepage;
 import pt.rocket.framework.objects.Promotion;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.tracking.MixpanelTracker;
+import pt.rocket.framework.tracking.TrackingPages;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CustomerUtils;
 import pt.rocket.framework.utils.EventType;
@@ -55,30 +56,32 @@ import de.akquinet.android.androlog.Log;
 
 /**
  * Class used to show all campaigns
+ * 
  * @author sergiopereira
  */
-public class HomeFragment extends BaseFragment implements IResponseCallback, OnClickListener{
+public class HomeFragment extends BaseFragment implements IResponseCallback, OnClickListener {
 
     private static final String TAG = LogTagHelper.create(HomeFragment.class);
-    
+
     private static final String PAGER_POSITION_KEY = "current_position";
-    
+
     private static HomeFragment sHomeFragment;
 
     private ViewPager mHomePager;
 
     private HomePagerAdapter mHomePagerAdapter;
-    
+
     private SlidingTabLayout mHomePagerTabStrip;
-    
+
     private String mCurrentMd5Collection;
 
     private View mMainContent;
-    
+
     private int mPagerSavedPosition = 0;
-    
+
     /**
      * Constructor via bundle
+     * 
      * @return CampaignsFragment
      * @author sergiopereira
      */
@@ -91,11 +94,7 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
      * Empty constructor
      */
     public HomeFragment() {
-        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
-                NavigationAction.Home,
-                R.layout.home_fragment_main,
-                0,
-                KeyboardState.NO_ADJUST_CONTENT);
+        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE), NavigationAction.Home, R.layout.home_fragment_main, 0, KeyboardState.NO_ADJUST_CONTENT);
     }
 
     /*
@@ -121,12 +120,15 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
         // Register Hockey
         HockeyStartup.register(getBaseActivity());
         // Get saved state
-        if(savedInstanceState != null) mPagerSavedPosition = savedInstanceState.getInt(PAGER_POSITION_KEY);
+        if (savedInstanceState != null)
+            mPagerSavedPosition = savedInstanceState.getInt(PAGER_POSITION_KEY);
     }
-    
+
     /*
      * (non-Javadoc)
-     * @see android.support.v4.app.Fragment#onViewCreated(android.view.View, android.os.Bundle)
+     * 
+     * @see android.support.v4.app.Fragment#onViewCreated(android.view.View,
+     * android.os.Bundle)
      */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -134,29 +136,34 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
         Log.i(TAG, "ON VIEW CREATED");
         // Get main content
         mMainContent = view.findViewById(R.id.home_pager_content);
-        // Get view pager 
+        // Get view pager
         mHomePager = (ViewPager) view.findViewById(R.id.home_pager);
         // Get tab pager
         mHomePagerTabStrip = (SlidingTabLayout) view.findViewById(R.id.home_pager_tab);
         mHomePagerTabStrip.setCustomTabView(R.layout.tab_simple_item, R.id.tab);
-        
+
         /**
-         * TODO: Validate this method is necessary to recover the app from strange behavior
-         * In case Application is connected and has shop id show HomePage
-         * Otherwise, waiting for connection and shop id
-         * WARNING: THIS FRAGMENT CAN BE EXECUTED WITHOUT SHOP ID( HOME -> CCOUNTRY)
+         * TODO: Validate this method is necessary to recover the app from
+         * strange behavior In case Application is connected and has shop id
+         * show HomePage Otherwise, waiting for connection and shop id WARNING:
+         * THIS FRAGMENT CAN BE EXECUTED WITHOUT SHOP ID( HOME -> CCOUNTRY)
+         * 
          * @author sergiopereira
          */
         SharedPreferences sharedPrefs = getBaseActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         String shopId = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ID, null);
-        //ShopSelector.getShopId()
-        if (JumiaApplication.mIsBound && !TextUtils.isEmpty(shopId)) onResumeExecution();
-        else if(!JumiaApplication.mIsBound && !TextUtils.isEmpty(shopId)) showFragmentRetry(this);
-        else JumiaApplication.INSTANCE.setResendHander(mServiceConnectedHandler);
+        // ShopSelector.getShopId()
+        if (JumiaApplication.mIsBound && !TextUtils.isEmpty(shopId))
+            onResumeExecution();
+        else if (!JumiaApplication.mIsBound && !TextUtils.isEmpty(shopId))
+            showFragmentRetry(this);
+        else
+            JumiaApplication.INSTANCE.setResendHander(mServiceConnectedHandler);
     }
-    
+
     /*
      * (non-Javadoc)
+     * 
      * @see pt.rocket.view.fragments.BaseFragment#onStart()
      */
     @Override
@@ -174,10 +181,10 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
+
+        TrackerDelegator.trackPage(TrackingPages.HOME);
     }
-    
-    
-    
+
     /**
      * Handler used to receive a message from application
      */
@@ -187,13 +194,12 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
         };
     };
 
-    
-    
     /**
      * Method used to reload the collection in case some child is null
+     * 
      * @author sergiopereira
      */
-    public void onReloadContent(){
+    public void onReloadContent() {
         Log.i(TAG, "ON RELOAD CONTENT");
         mHomePagerAdapter = null;
         onResumeExecution();
@@ -201,14 +207,16 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
 
     /**
      * Method used to resume the content for Home Frament
+     * 
      * @author sergiopereira
      */
     public void onResumeExecution() {
         Log.i(TAG, "ON RESUME EXECUTION");
-        
+
         // TODO : Comment for Samsung store
-        if (CheckVersion.needsToShowDialog()) CheckVersion.showDialog(getActivity());
-        
+        if (CheckVersion.needsToShowDialog())
+            CheckVersion.showDialog(getActivity());
+
         // Validate the user credentials
         if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials() && !JumiaApplication.INSTANCE.isLoggedIn())
             triggerAutoLogin();
@@ -220,7 +228,7 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
         }
 
         // Validate current state
-        if(mHomePagerAdapter != null &&  mHomePagerAdapter.getCount() > 0) {
+        if (mHomePagerAdapter != null && mHomePagerAdapter.getCount() > 0) {
             Log.i(TAG, "ADAPTER IS NOT NULL");
             mHomePager.setAdapter(mHomePagerAdapter);
             mHomePagerTabStrip.setViewPager(mHomePager);
@@ -230,23 +238,24 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
             Log.i(TAG, "ADAPTER IS NULL");
             triggerTeasers();
         }
-        
-        
-        TrackerDelegator.trackPage(R.string.ghomepage);
+
+        // TrackerDelegator.trackPage(TrackingPages.HOME);
     }
-    
 
     /*
      * (non-Javadoc)
-     * @see android.support.v4.app.Fragment#onSaveInstanceState(android.os.Bundle)
+     * 
+     * @see
+     * android.support.v4.app.Fragment#onSaveInstanceState(android.os.Bundle)
      */
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Log.i(TAG, "ON SAVE INSTANCE");
-         // Save the current position
-        if(mHomePager != null) outState.putInt(PAGER_POSITION_KEY, mHomePager.getCurrentItem());
-    } 
+        // Save the current position
+        if (mHomePager != null)
+            outState.putInt(PAGER_POSITION_KEY, mHomePager.getCurrentItem());
+    }
 
     /*
      * (non-Javadoc)
@@ -269,9 +278,10 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
         super.onStop();
         Log.i(TAG, "ON STOP");
     }
-    
+
     /*
      * (non-Javadoc)
+     * 
      * @see pt.rocket.view.fragments.BaseFragment#onDestroyView()
      */
     @Override
@@ -279,9 +289,10 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
         super.onDestroyView();
         Log.i(TAG, "ON DESTROY VIEW");
     }
-    
+
     /*
      * (non-Javadoc)
+     * 
      * @see pt.rocket.view.fragments.BaseFragment#onDestroy()
      */
     @Override
@@ -292,27 +303,29 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
         // Destroy adapter
         mHomePagerAdapter = null;
     }
-    
+
     /**
-     * ########### LAYOUT ###########  
+     * ########### LAYOUT ###########
      */
-    
+
     /**
      * 
      * @param collection
-     * @param mPagerSavedPosition 
+     * @param mPagerSavedPosition
      */
     private void onShowCollection(ArrayList<Homepage> collection, int defaultPosition) {
         Log.i(TAG, "ON SHOW");
-        if(mHomePagerAdapter == null) {
+        if (mHomePagerAdapter == null) {
             Log.i(TAG, "ADAPTER IS NULL");
             mHomePagerAdapter = new HomePagerAdapter(getChildFragmentManager(), collection);
             mHomePager.setAdapter(null);
             mHomePager.setAdapter(mHomePagerAdapter);
             mHomePagerTabStrip.setViewPager(mHomePager);
             // Valdiate the saved position
-            if(mPagerSavedPosition != 0 && mPagerSavedPosition < mHomePagerAdapter.getCount()) mHomePager.setCurrentItem(mPagerSavedPosition);
-            else mHomePager.setCurrentItem(defaultPosition);
+            if (mPagerSavedPosition != 0 && mPagerSavedPosition < mHomePagerAdapter.getCount())
+                mHomePager.setCurrentItem(mPagerSavedPosition);
+            else
+                mHomePager.setCurrentItem(defaultPosition);
         } else {
             Log.i(TAG, "UPDATE ADAPTER");
             mHomePagerAdapter.updateCollection(collection);
@@ -322,9 +335,10 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
         // Show container
         showContent();
     }
-    
+
     /**
      * Show only the content view
+     * 
      * @author sergiopereira
      */
     private void showContent() {
@@ -333,10 +347,10 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
         mHomePagerTabStrip.setVisibility(View.VISIBLE);
         showFragmentContentContainer();
     }
-    
-    
+
     /**
      * Show tips if is the first time the user uses the app.
+     * 
      * @author sergiopereira
      */
     private void showHomeWizard() {
@@ -358,9 +372,10 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
             Log.w(TAG, "WARNING: NPE ON SHOW HOME WIZARD", e);
         }
     }
-    
+
     /**
      * Show the fall back
+     * 
      * @author msilva
      */
     private void setLayoutFallback() {
@@ -393,11 +408,12 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
     }
 
     /**
-     * ########### LISTENERS ###########  
+     * ########### LISTENERS ###########
      */
-    
+
     /*
      * (non-Javadoc)
+     * 
      * @see android.view.View.OnClickListener#onClick(android.view.View)
      */
     @Override
@@ -405,13 +421,14 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
         Log.d(TAG, "ON CLICK RETRY");
         onReloadContent();
     }
-    
+
     /**
-     * ########### TRIGGERS ###########  
+     * ########### TRIGGERS ###########
      */
-    
+
     /**
      * Trigger to get teasers
+     * 
      * @author sergiopereira
      */
     private void triggerTeasers() {
@@ -424,9 +441,10 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
         bundle.putString(GetUpdatedTeasersHelper.OLD_MD5_KEY, mCurrentMd5Collection);
         triggerContentEventWithNoLoading(new GetUpdatedTeasersHelper(), bundle, (IResponseCallback) this);
     }
-    
+
     /**
      * Trigger to get promotions
+     * 
      * @author sergiopereira
      */
     private void triggerPromotions() {
@@ -434,9 +452,10 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
         Bundle bundle = new Bundle();
         triggerContentEventWithNoLoading(new GetPromotionsHelper(), bundle, (IResponseCallback) this);
     }
-    
+
     /**
      * Trigger to perform auto login in background
+     * 
      * @author sergiopereira
      */
     private void triggerAutoLogin() {
@@ -446,12 +465,11 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
         bundle.putBoolean(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, true);
         triggerContentEventWithNoLoading(new GetLoginHelper(), bundle, (IResponseCallback) this);
     }
-    
+
     /**
-     * ########### RESPONSES ###########  
+     * ########### RESPONSES ###########
      */
-    
-  
+
     @Override
     public void onRequestComplete(Bundle bundle) {
 
@@ -469,7 +487,8 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
             mCurrentMd5Collection = bundle.getString(GetUpdatedTeasersHelper.MD5_KEY);
             // Get updated teaser collection
             ArrayList<Homepage> updatedCollection = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
-            if (updatedCollection != null) onShowCollection(updatedCollection, 0);
+            if (updatedCollection != null)
+                onShowCollection(updatedCollection, 0);
             break;
         case GET_TEASERS_EVENT:
             Log.i(TAG, "ON SUCCESS RESPONSE: GET_TEASERS_EVENT");
@@ -478,10 +497,14 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
             // Get collection
             ArrayList<Homepage> collection = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
             // Get default home
-            int defaultPosition  = bundle.getInt(RestConstants.JSON_HOMEPAGE_DEFAULT_TAG, 0);
+            int defaultPosition = bundle.getInt(RestConstants.JSON_HOMEPAGE_DEFAULT_TAG, 0);
             // Show collection
-            if (collection != null) onShowCollection(collection, defaultPosition);
-            else { showFragmentFallBack(); setLayoutFallback(); }
+            if (collection != null) { 
+            	onShowCollection(collection, defaultPosition);
+           	} else { 
+            	showFragmentFallBack(); 
+            	setLayoutFallback(); 
+           	}
             break;
         case GET_PROMOTIONS:
             Log.i(TAG, "ON SUCCESS RESPONSE: GET_TEASERS_EVENT");
@@ -497,29 +520,32 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
      * 
      * @param bundle
      */
-    private void onGetPromotions(Bundle bundle){
+    private void onGetPromotions(Bundle bundle) {
         if (((Promotion) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getIsStillValid()) {
             DialogPromotionFragment.newInstance((Promotion) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).show(getChildFragmentManager(), null);
         } else {
             Log.i(TAG, "promotion expired!" + ((Promotion) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getEndDate());
         }
     }
-    
+
     /*
      * (non-Javadoc)
-     * @see pt.rocket.interfaces.IResponseCallback#onRequestError(android.os.Bundle)
+     * 
+     * @see
+     * pt.rocket.interfaces.IResponseCallback#onRequestError(android.os.Bundle)
      */
     @Override
     public void onRequestError(Bundle bundle) {
-    
+
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
-        
+
         // Check base errors
-        if (getBaseActivity() != null && getBaseActivity().handleErrorEvent(bundle)) return;
+        if (getBaseActivity() != null && getBaseActivity().handleErrorEvent(bundle))
+            return;
 
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         switch (eventType) {
@@ -537,28 +563,28 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
             break;
         }
     }
-    
-    
-    
-    /**
-     * ########### DIALOGS ###########  
-     */    
 
-    
     /**
-     * ########### ADAPTERS ###########  
+     * ########### DIALOGS ###########
      */
-    
+
     /**
-     * Class used as an simple pager adapter that represents each campaign fragment
+     * ########### ADAPTERS ###########
+     */
+
+    /**
+     * Class used as an simple pager adapter that represents each campaign
+     * fragment
+     * 
      * @author sergiopereira
      */
     private class HomePagerAdapter extends FragmentPagerAdapter {
-        
+
         private ArrayList<Homepage> mHomePages;
-        
+
         /**
          * Constructor
+         * 
          * @param fm
          * @param collection
          * @author sergiopereira
@@ -579,42 +605,48 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
 
         /*
          * (non-Javadoc)
+         * 
          * @see android.support.v4.app.FragmentPagerAdapter#getItem(int)
          */
         @Override
         public Fragment getItem(int position) {
             Bundle bundle = new Bundle();
-            bundle.putParcelable(HomePageFragment.HOME_PAGE_KEY, this.mHomePages.get(position)); 
+            bundle.putParcelable(HomePageFragment.HOME_PAGE_KEY, this.mHomePages.get(position));
             return HomePageFragment.getInstance(bundle);
         }
 
         /*
          * (non-Javadoc)
+         * 
          * @see android.support.v4.view.PagerAdapter#getCount()
          */
         @Override
         public int getCount() {
             return (mHomePages != null) ? mHomePages.size() : 0;
         }
-        
+
         /*
          * (non-Javadoc)
+         * 
          * @see android.support.v4.view.PagerAdapter#getPageTitle(int)
          */
         @Override
         public CharSequence getPageTitle(int position) {
             return mHomePages.get(position).getHomepageTitle().toUpperCase();
         }
-        
-//        /*
-//         * (non-Javadoc)
-//         * @see android.support.v4.app.FragmentPagerAdapter#destroyItem(android.view.ViewGroup, int, java.lang.Object)
-//         */
-//        @Override
-//        public void destroyItem(ViewGroup container, int position, Object object) {
-//            super.destroyItem(container, position, object);
-//        }
-        
+
+        // /*
+        // * (non-Javadoc)
+        // * @see
+        // android.support.v4.app.FragmentPagerAdapter#destroyItem(android.view.ViewGroup,
+        // int, java.lang.Object)
+        // */
+        // @Override
+        // public void destroyItem(ViewGroup container, int position, Object
+        // object) {
+        // super.destroyItem(container, position, object);
+        // }
+
     }
 
 }

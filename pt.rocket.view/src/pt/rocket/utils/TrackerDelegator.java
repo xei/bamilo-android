@@ -10,15 +10,18 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import pt.rocket.app.JumiaApplication;
+import pt.rocket.framework.database.FavouriteTableHelper;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.objects.ProductReviewCommentCreated;
 import pt.rocket.framework.objects.PurchaseItem;
 import pt.rocket.framework.objects.ShoppingCartItem;
 import pt.rocket.framework.rest.RestConstants;
+import pt.rocket.framework.tracking.Ad4PushTracker;
 import pt.rocket.framework.tracking.AdXTracker;
 import pt.rocket.framework.tracking.AnalyticsGoogle;
 import pt.rocket.framework.tracking.MixpanelTracker;
+import pt.rocket.framework.tracking.TrackingPages;
 import pt.rocket.framework.utils.ShopSelector;
 import pt.rocket.framework.utils.Utils;
 import pt.rocket.view.R;
@@ -27,9 +30,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import com.urbanairship.push.PushManager;
-
 import de.akquinet.android.androlog.Log;
 
 public class TrackerDelegator {
@@ -47,6 +47,7 @@ public class TrackerDelegator {
     public static final String LOCATION_KEY = "location";
     public static final String START_TIME_KEY = "start";
     public static final String CATEGORY_KEY = "category";
+    public static final String COUPON_KEY = "coupon";
     public static final String PAGE_NUMBER_KEY = "page_number";
     public static final String PRODUCT_KEY = "product";
     public static final String REVIEW_KEY = "review";
@@ -115,14 +116,16 @@ public class TrackerDelegator {
         boolean loginAfterRegister = checkLoginAfterSignup(customer);
         Log.d(TAG, "trackLoginSuccessul: loginAfterRegister = " + loginAfterRegister + " wasAutologin = " + wasAutologin);
 
-        PushManager.shared().setAlias(customer.getIdAsString());
+        // PushManager.shared().setAlias(customer.getIdAsString());
         if (wasFacebookLogin) {
             MixpanelTracker.loginWithFacebook(context, customer.getIdAsString(), mOrigin, customer.getCreatedAt());
             AdXTracker.facebookLogin(context, JumiaApplication.SHOP_NAME, customer.getIdAsString());
+            Ad4PushTracker.get().trackFacebookConnect(customer.getIdAsString());
         } else {
             MixpanelTracker.login(context, customer.getIdAsString(), mOrigin, customer.getCreatedAt());
             AdXTracker.login(context, JumiaApplication.SHOP_NAME, customer.getIdAsString());
         }
+        Ad4PushTracker.get().trackLogin(customer.getIdAsString(), customer.getFirstName());
     }
 
     public final static void trackLoginFailed(boolean wasAutologin) {
@@ -155,6 +158,7 @@ public class TrackerDelegator {
 
         MixpanelTracker.search(context, criteria, results);
         AnalyticsGoogle.get().trackSearch(criteria, results);
+        Ad4PushTracker.get().trackSearch(criteria);
     }
 
     public final static void trackSearchViewSortMade(Bundle params) {
@@ -167,6 +171,7 @@ public class TrackerDelegator {
 
     public final static void trackShopchanged() {
         MixpanelTracker.changeShop(context, ShopSelector.getShopId());
+        Ad4PushTracker.get().trackCountryChange(ShopSelector.getShopId());
     }
 
     public final static void trackPushNotificationsEnabled(boolean enabled) {
@@ -215,6 +220,7 @@ public class TrackerDelegator {
         }
         AdXTracker.trackShare(context, sku, user_id, JumiaApplication.SHOP_NAME);
         AnalyticsGoogle.get().trackShare(context, sku, user_id, JumiaApplication.SHOP_NAME);
+        Ad4PushTracker.get().trackSocialShare();
     }
 
     public final static void trackCategoryView(Bundle params) {
@@ -224,6 +230,8 @@ public class TrackerDelegator {
         String location = params.getString(LOCATION_KEY);
         // MIX
         MixpanelTracker.listCategory(context, category, page);
+        // AD4Push
+        Ad4PushTracker.get().trackCategorySelection();
         // GA
         AnalyticsGoogle.get().trackCategory(location, category);
     }
@@ -275,7 +283,8 @@ public class TrackerDelegator {
         }
 
         AdXTracker.signup(context, JumiaApplication.SHOP_NAME, customer.getIdAsString());
-        PushManager.shared().setAlias(customer.getIdAsString());
+        // PushManager.shared().setAlias(customer.getIdAsString());
+        Ad4PushTracker.get().trackSignup(customer.getIdAsString(), customer.getGender().toString());
         storeSignupProcess(customer);
     }
 
@@ -426,6 +435,7 @@ public class TrackerDelegator {
         String orderNr;
         String value;
         JSONObject itemsJson;
+        String coupon = "";
         try {
             orderNr = result.getString(JSON_TAG_ORDER_NR);
             value = result.getString(JSON_TAG_GRAND_TOTAL);
@@ -436,10 +446,16 @@ public class TrackerDelegator {
             return;
         }
 
+        Double averageValue = 0d;
+        ArrayList<String> favoritesSKU = FavouriteTableHelper.getFavouriteSKUList();
+
         List<PurchaseItem> items = PurchaseItem.parseItems(itemsJson);
         ArrayList<String> skus = new ArrayList<String>();
+        int favoritesCount = 0;
         for (PurchaseItem item : items) {
             skus.add(item.sku);
+            averageValue += item.paidpriceAsDouble;
+            favoritesCount += favoritesSKU.contains(item.sku) ? 1 : 0;
         }
         AnalyticsGoogle.get().trackSales(orderNr, value, items);
 
@@ -462,6 +478,7 @@ public class TrackerDelegator {
         }
 
         MixpanelTracker.trackSale(context, value, items);
+        Ad4PushTracker.get().trackCheckoutEnded(orderNr, Double.parseDouble(value), averageValue, items.size(), coupon, favoritesCount);
 
     }
 
@@ -470,16 +487,25 @@ public class TrackerDelegator {
         String value = params.getString(VALUE_KEY);
         String email = params.getString(EMAIL_KEY);
         Customer customer = params.getParcelable(CUSTOMER_KEY);
+        String coupon = params.getString(COUPON_KEY);
+
+        Double averageValue = 0d;
 
         Log.i(TAG, "TRACK SALE: STARTED");
         Log.d(TAG, "tracking for " + ShopSelector.getShopName() + " in country " + ShopSelector.getCountryName());
         Log.d(TAG, "TRACK SALE: JSON " + order_nr);
 
+        ArrayList<String> favoritesSKU = FavouriteTableHelper.getFavouriteSKUList();
+
         List<PurchaseItem> items = PurchaseItem.parseItems(mItems);
         ArrayList<String> skus = new ArrayList<String>();
+        int favoritesCount = 0;
         for (PurchaseItem item : items) {
             skus.add(item.sku);
+            averageValue += item.paidpriceAsDouble;
+            favoritesCount += favoritesSKU.contains(item.sku) ? 1 : 0;
         }
+
         AnalyticsGoogle.get().trackSales(order_nr, value, items);
 
         if (customer == null) {
@@ -501,6 +527,9 @@ public class TrackerDelegator {
         }
 
         MixpanelTracker.trackSale(context, value, items);
+        // String transactionId, Double cartValue, Double average, String
+        // category, int orderCount, String coupon
+        Ad4PushTracker.get().trackCheckoutEnded(order_nr, Double.parseDouble(value), averageValue, mItems.size(), coupon, favoritesCount);
 
     }
 
@@ -536,6 +565,7 @@ public class TrackerDelegator {
 
     /**
      * Tracking the continue shopping
+     * 
      * @param context
      * @param userId
      */
@@ -546,16 +576,20 @@ public class TrackerDelegator {
 
     /**
      * Tracking the start of checkout
+     * 
      * @param context
      * @param userId
      */
     public static void trackCheckoutStart(String userId) {
         // GA
         AnalyticsGoogle.get().trackCheckoutStart(context, userId);
+        // AD4Push
+        Ad4PushTracker.get().trackCheckoutStarted();
     }
 
     /**
      * Tracking a timing
+     * 
      * @param location
      * @param start
      */
@@ -568,21 +602,24 @@ public class TrackerDelegator {
 
     /**
      * Tracking a page
+     * 
      * @param bundle
      */
-    public static void trackPage(int string) {
-        // GA
-        AnalyticsGoogle.get().trackPage(string);
+    public static void trackPage(TrackingPages screen) {
+        AnalyticsGoogle.get().trackPage(screen);
+        Ad4PushTracker.get().trackScreen(screen);
     }
 
     /**
      * Tracking a product added to cart
+     * 
      * @param context
      * @param bundle
      */
     public static void trackProductAddedToCart(Bundle bundle) {
         // User
         String customerId = (JumiaApplication.CUSTOMER != null) ? JumiaApplication.CUSTOMER.getIdAsString() : "";
+
         // Data
         long price = bundle.getLong(PRICE_KEY);
         String sku = bundle.getString(SKU_KEY);
@@ -590,16 +627,24 @@ public class TrackerDelegator {
         String brand = bundle.getString(BRAND_KEY);
         String category = bundle.getString(CATEGORY_KEY);
         String location = bundle.getString(LOCATION_KEY);
+
+        // if (null != product.getCategories() && 0 <
+        // product.getCategories().size()) {
+        // category = product.getCategories().get(0);
+        // }
         // GA
         AnalyticsGoogle.get().trackAddToCart(sku, price);
         // Mix
         MixpanelTracker.productAddedToCart(context, sku, name, brand, category, (double) price, location);
         // Adx
         AdXTracker.trackAddToCart(context, "" + price, customerId, sku, JumiaApplication.SHOP_NAME);
+        // AD4Push
+        Ad4PushTracker.get().trackAddToCart(sku, (double) price, name, category);
     }
 
     /**
      * Tracking a complete product
+     * 
      * @param context
      * @param bundle
      */
@@ -611,7 +656,7 @@ public class TrackerDelegator {
         String sku = bundle.getString(SKU_KEY);
         String url = bundle.getString(URL_KEY);
         CompleteProduct product = bundle.getParcelable(PRODUCT_KEY);
-        String category = bundle.getParcelable(CATEGORY_KEY);
+        String category = bundle.getString(CATEGORY_KEY);
         // GA
         AnalyticsGoogle.get().trackProduct(prefix, path, name, sku, url, product.getPriceAsDouble());
         // MIX
@@ -620,6 +665,7 @@ public class TrackerDelegator {
 
     /**
      * Tracking a campaign
+     * 
      * @param utm
      */
     public static void trackCampaign(String utm) {
@@ -628,29 +674,63 @@ public class TrackerDelegator {
     }
 
     /**
+     * Tracking a campaign
+     * 
+     * @param utm
+     */
+    public static void trackCampaignsView() {
+        // AD4Push
+        Ad4PushTracker.get().trackCampaignsView();
+    }
+
+    /**
+     * Tracking add product to favorites
+     * 
+     * @param productSku
+     */
+    public static void trackAddToFavorites(String productSku) {
+        Ad4PushTracker.get().trackAddToFavorites(productSku);
+    }
+
+    /**
+     * Tracking remove product from favorites
+     * 
+     * @param productSku
+     */
+    public static void trackRemoveFromFavorites(String productSku) {
+        Ad4PushTracker.get().trackRemoveFromWishlist(productSku);
+    }
+
+    /**
      * Tracking a catalog filter
-     * @param mCatalogFilterValues 
-     * @param searchQuery 
-     * @param searchQuery 
+     * 
+     * @param mCatalogFilterValues
+     * @param searchQuery
+     * @param searchQuery
      */
     public static void trackCatalogFilter(ContentValues catalogFilterValues) {
         // GA
         AnalyticsGoogle.get().trackCatalogFilter(catalogFilterValues);
+        // AD4Push
+        Ad4PushTracker.get().trackCatalogFilter(catalogFilterValues);
+
     }
-    
+
     /**
      * Tracking newsletter subscription
+     * 
      * @param subscribe
      */
     public static void trackNewsletterSubscription(boolean subscribe) {
         // User
-        String userId = JumiaApplication.CUSTOMER != null ? JumiaApplication.CUSTOMER.getIdAsString() : ""; 
+        String userId = JumiaApplication.CUSTOMER != null ? JumiaApplication.CUSTOMER.getIdAsString() : "";
         // GA
         AnalyticsGoogle.get().trackNewsletterSubscription(userId, subscribe);
     }
-    
+
     /**
      * Tracking a search query
+     * 
      * @param query
      */
     public static void trackSearchSuggestions(String query) {
@@ -658,4 +738,9 @@ public class TrackerDelegator {
         AnalyticsGoogle.get().trackSearchSuggestions(query);
     }
 
+    public static void trackAppOpen() {
+        //AD4Push
+        Ad4PushTracker.get().trackAppFirstOpen();
+    }
+    
 }

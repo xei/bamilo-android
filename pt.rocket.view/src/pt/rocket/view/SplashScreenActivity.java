@@ -11,6 +11,7 @@ import org.holoeverywhere.widget.Button;
 import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.app.JumiaApplication;
+import pt.rocket.constants.BundleConstants;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.fragments.FragmentType;
@@ -55,8 +56,6 @@ import android.widget.ImageView;
 import com.bugsense.trace.BugSenseHandler;
 import com.shouldit.proxy.lib.ProxyConfiguration;
 import com.shouldit.proxy.lib.ProxySettings;
-import com.urbanairship.UAirship;
-import com.urbanairship.push.PushManager;
 
 /**
  * <p>
@@ -117,6 +116,14 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
+        
+        Intent mIntent = getIntent();
+        Bundle mBundle = mIntent.getExtras();
+        Uri data = mIntent.getData();
+        
+        Log.i(TAG, "ON CREATE - Bundle -> " + (null != mBundle ? mBundle.keySet().toString() : "null"));
+        Log.i(TAG, "ON CREATE - data -> " + data);
+        
         // Set view
         setContentView(R.layout.splash_screen);
         // Get prefs
@@ -137,7 +144,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     protected void onStart() {
         super.onStart();
         Log.i(TAG, "ON START");
-        UAirship.shared().getAnalytics().activityStarted(this);
+//        UAirship.shared().getAnalytics().activityStarted(this);
     }
 
     /*
@@ -176,7 +183,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     protected void onStop() {
         super.onStop();
         Log.i(TAG, "ON STOP");
-        UAirship.shared().getAnalytics().activityStopped(this);
+//        UAirship.shared().getAnalytics().activityStopped(this);
         SharedPreferences.Editor eD = sharedPrefs.edit();
         eD.putBoolean(ConstantsSharedPrefs.KEY_SHOW_PROMOTIONS, true);
         eD.commit();
@@ -245,9 +252,13 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
             isDeepLinkLaunch = false;
             Log.i(TAG, "DEEP LINK: NO EXTERNAL URI");
         }
-            
+        
         // ## DEEP LINK FROM UA ##
-        String deepLink = getIntent().getStringExtra(ConstantsIntentExtra.DEEP_LINK_TAG);
+        Bundle payload = getIntent().getBundleExtra(BundleConstants.EXTRA_GCM_PAYLOAD);
+        String deepLink = "";
+        if (null != payload) {
+            deepLink = payload.getString(BundleConstants.DEEPLINKING_PAGE_INDICATION);
+        }
         if(!TextUtils.isEmpty(deepLink)){
             isDeepLinkLaunch = true;
             // Create uri from the value 
@@ -388,8 +399,8 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
             e.printStackTrace();
         }
         devText.append("\nServer: " + RestContract.REQUEST_HOST);
-        devText.append("\nUrban AirShip Device APID: \n" + PushManager.shared().getAPID());
-        Log.i(TAG, "UrbanAirShip appid : " + PushManager.shared().getAPID());
+//        devText.append("\nUrban AirShip Device APID: \n" + PushManager.shared().getAPID());
+//        Log.i(TAG, "UrbanAirShip appid : " + PushManager.shared().getAPID());
         // Device info
         devText.append("\nDevice Model: " + android.os.Build.MODEL);
         devText.append("\nDevice Manufacturer: " + android.os.Build.MANUFACTURER);
@@ -817,6 +828,8 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
             generateAndPerformAdxTrack();
             sendAdxLaunchEvent = false;
         }
+        
+        TrackerDelegator.trackAppOpen();
     }
 
     /**

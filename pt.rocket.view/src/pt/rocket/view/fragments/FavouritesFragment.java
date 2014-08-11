@@ -22,6 +22,7 @@ import pt.rocket.framework.objects.Errors;
 import pt.rocket.framework.objects.Favourite;
 import pt.rocket.framework.objects.ProductSimple;
 import pt.rocket.framework.rest.RestConstants;
+import pt.rocket.framework.tracking.TrackingPages;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -143,8 +144,8 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        // Tracking page
-        TrackerDelegator.trackPage(R.string.gfavourites);
+        // Tracking page        
+        TrackerDelegator.trackPage(TrackingPages.FAVORITES);
     }
     
     /*
@@ -309,6 +310,8 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
             if (null != catalogFragment) {
                 catalogFragment.sendValuesToFragment(BaseFragment.FRAGMENT_VALUE_REMOVE_FAVORITE, favourite.getSku());
             }
+            TrackerDelegator.trackRemoveFromFavorites(favourite.getSku());
+            
             // Show Toast
             Toast.makeText(getBaseActivity(), getString(R.string.products_removed_favourite), Toast.LENGTH_SHORT).show();
         } catch (NullPointerException e) {

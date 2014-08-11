@@ -24,6 +24,7 @@ import pt.rocket.forms.Form;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.rest.RestConstants;
+import pt.rocket.framework.tracking.TrackingPages;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CustomerUtils;
 import pt.rocket.framework.utils.EventType;
@@ -211,6 +212,8 @@ public class SessionLoginFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
+        TrackerDelegator.trackPage(TrackingPages.LOGIN_SIGNUP);
+        
         String appId = getBaseActivity().getResources().getString(R.string.app_id);
         uiHelper.setJumiaAppId(appId);
         uiHelper.onResume();
