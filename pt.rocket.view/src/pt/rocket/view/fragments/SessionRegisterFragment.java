@@ -97,7 +97,7 @@ public class SessionRegisterFragment extends BaseFragment {
      * @return
      */
     public static SessionRegisterFragment getInstance(Bundle bundle) {
-        if (registerFragment == null)
+//        if (registerFragment == null)
             registerFragment = new SessionRegisterFragment();
 
         if (bundle != null) {
@@ -170,7 +170,9 @@ public class SessionRegisterFragment extends BaseFragment {
         forceInputAlignToLeft();
         
         if (JumiaApplication.INSTANCE.registerForm != null) {
+            Log.d(TAG, " ON RESUME -> load From");
             loadForm(JumiaApplication.INSTANCE.registerForm);
+            JumiaApplication.INSTANCE.registerSavedInstanceState = null;
         } else {
             triggerRegisterForm();
         }
@@ -211,6 +213,7 @@ public class SessionRegisterFragment extends BaseFragment {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
+        Log.d(TAG, "  -----> ON SAVE INSTANCE STATE !!!!!!!!!");
         if (null != serverForm) {
 
             Iterator<DynamicFormItem> iterator = serverForm.iterator();
@@ -227,6 +230,9 @@ public class SessionRegisterFragment extends BaseFragment {
 
     public void saveFormState() {
         if (null != serverForm) {
+            
+            Log.d(TAG, "  -----> SAVE FORM STATE <--------- ");
+            
             if (JumiaApplication.INSTANCE.registerSavedInstanceState == null) {
                 JumiaApplication.INSTANCE.registerSavedInstanceState = new Bundle();
             }
@@ -353,7 +359,7 @@ public class SessionRegisterFragment extends BaseFragment {
 
         @Override
         public void onFocusChange(View v, boolean hasFocus) {
-            saveFormState();
+//            saveFormState();
             if (!hasFocus) {
                 checkInputFields();
             }
