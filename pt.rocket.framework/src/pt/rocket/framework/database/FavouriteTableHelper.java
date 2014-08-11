@@ -369,6 +369,28 @@ public class FavouriteTableHelper {
 		return favourites;
 	}
 
+	public static ArrayList<String> getFavouriteSKUList() {
+        ArrayList<String> favourites = new ArrayList<String>();
+        SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getReadableDatabase();
+        String query = new StringBuilder("select ").append(_FAVOURITE_SKU).append(" from ").append(TABLE).append(" order by ").append(_ID).append(" desc").toString();
+        Log.i(TAG, "SQL RESULT query :  " + query);
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor != null && cursor.getCount() > 0) {
+            while (cursor.moveToNext()) {
+                favourites.add(cursor.getString(0));
+            }
+        }
+        
+        // Validate cursor
+        if (cursor != null) {
+            cursor.close();
+        }
+
+        db.close();        
+        
+	    return favourites;
+	}
+	
 	/**
 	 * Remove favourite product into database
 	 * 

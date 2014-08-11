@@ -36,4 +36,7 @@
     <string name="global_server_user"></string>
     <string name="global_server_password"></string>
 
+    <!-- AD4Push -->
+    <item name="ad4push_enabled" type="bool"></item>    
+    
 </resources>

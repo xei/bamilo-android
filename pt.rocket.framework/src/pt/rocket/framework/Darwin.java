@@ -1,9 +1,6 @@
 package pt.rocket.framework;
 
-import java.util.HashSet;
-import java.util.Locale;
 import java.util.Set;
-import java.util.TimeZone;
 
 import pt.rocket.framework.database.DarwinDatabaseHelper;
 import pt.rocket.framework.tracking.NewRelicTracker;
@@ -12,10 +9,6 @@ import pt.rocket.framework.utils.ShopSelector;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.os.Build;
-
-import com.urbanairship.push.PushManager;
-
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -128,7 +121,8 @@ public class Darwin {
 		}
 		
 		// Set pre install tracking
-		boolean isPreInstallApp = PreInstallController.init(context);
+//		boolean isPreInstallApp = PreInstallController.init(context);
+		PreInstallController.init(context);
 		// Init darwin database
 		DarwinDatabaseHelper.init(context);
 		
@@ -140,7 +134,7 @@ public class Darwin {
 		Log.d(TAG, "Darwin is initialized with id " + shopId);
 		SHOP_ID = shopId;
 		
-		setUAPushTags(context, isPreInstallApp);
+//		setUAPushTags(context, isPreInstallApp);
 		
 		return true;
 	}
@@ -195,27 +189,27 @@ public class Darwin {
 		return context;
 	}
 
-	private static void setUAPushTags(Context context, boolean isPreInstallApp) {
-		Set<String> tags = new HashSet<String>();
-		tags.add(TimeZone.getDefault().getID());
-		tags.add(Locale.getDefault().getLanguage());
-		tags.add(Locale.getDefault().getCountry());
-		tags.add(Build.MANUFACTURER.replaceAll(" ", "-"));
-		tags.add(Build.MODEL.replaceAll(" ", "-"));
-		tags.add(Build.VERSION.RELEASE.replaceAll(" ", "-"));
-		tags.add(context.getString(R.string.ua_store));
-		try {
-			tags.add("app_version_"+context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionCode);
-		} catch (NameNotFoundException e) {
-			e.printStackTrace();
-		}
-		// Check pre-install flag
-		if(isPreInstallApp) {
-			preInstallTag(context, tags, Build.MANUFACTURER);
-		}
-		// Set tags
-		PushManager.shared().setTags(tags);
-	}
+//	private static void setUAPushTags(Context context, boolean isPreInstallApp) {
+//		Set<String> tags = new HashSet<String>();
+//		tags.add(TimeZone.getDefault().getID());
+//		tags.add(Locale.getDefault().getLanguage());
+//		tags.add(Locale.getDefault().getCountry());
+//		tags.add(Build.MANUFACTURER.replaceAll(" ", "-"));
+//		tags.add(Build.MODEL.replaceAll(" ", "-"));
+//		tags.add(Build.VERSION.RELEASE.replaceAll(" ", "-"));
+//		tags.add(context.getString(R.string.ua_store));
+//		try {
+//			tags.add("app_version_"+context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionCode);
+//		} catch (NameNotFoundException e) {
+//			e.printStackTrace();
+//		}
+//		// Check pre-install flag
+//		if(isPreInstallApp) {
+//			preInstallTag(context, tags, Build.MANUFACTURER);
+//		}
+//		// Set tags
+//		PushManager.shared().setTags(tags);
+//	}
 
 	
     /**

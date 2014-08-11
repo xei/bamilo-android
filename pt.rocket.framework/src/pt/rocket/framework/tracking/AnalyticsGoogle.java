@@ -1,5 +1,6 @@
 package pt.rocket.framework.tracking;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -52,11 +53,14 @@ public class AnalyticsGoogle {
 	private boolean isEnabled;
 	private String mShopId;
 	SharedPreferences mSharedPreferences;
+	
+	private HashMap<TrackingPages, Integer> screens;
 
 	private static boolean isCheckoutStarted;
 
 	public static void startup(Context context, String shopId) {
 		sInstance = new AnalyticsGoogle(context, shopId);
+		
 	}
 
 	/**
@@ -90,6 +94,20 @@ public class AnalyticsGoogle {
 			return;
 		}
 
+        screens = new HashMap<TrackingPages, Integer>();
+        screens.put(TrackingPages.NAVIGATION, R.string.gnavigation);
+        screens.put(TrackingPages.PRODUCT_LIST, R.string.gproductlist);
+        screens.put(TrackingPages.CHECKOUT_THANKS, R.string.gcheckoutfinal);
+        screens.put(TrackingPages.HOME, R.string.ghomepage);
+        screens.put(TrackingPages.PRODUCT_DETAIL, R.string.gproductdetail);
+        screens.put(TrackingPages.FILLED_CART, R.string.gcartwithitems);
+        screens.put(TrackingPages.EMPTY_CART, R.string.gcartempty);
+        screens.put(TrackingPages.CART, R.string.gshoppingcart);
+        screens.put(TrackingPages.CAMPAIGNS, R.string.gcampaignpage);
+        screens.put(TrackingPages.RECENTLY_VIEWED, R.string.grecentlyviewed);
+        screens.put(TrackingPages.NEWSLETTER_SUBSCRIPTION, R.string.gnewslettersubscription);
+        screens.put(TrackingPages.RECENT_SEARCHES, R.string.grecentsearches);
+		
 		loadKeys();
 		mAnalytics = GoogleAnalytics.getInstance(mContext);
 		
@@ -143,13 +161,16 @@ public class AnalyticsGoogle {
 		Log.i(TAG, "tracking switched");
 	}
 
-	public void trackPage(int pageRes) {
+	public void trackPage(TrackingPages page) {
 		// Validate
 		if (!isEnabled) return;
 		// Data
-		String pageName = mContext.getString(pageRes);
-		Log.d(TAG, "trackPage: " + pageName);
-		mTracker.sendView(pageName);
+		if (null != page && screens.containsKey(page)) {
+	        Integer pageRes = screens.get(page);
+	        String pageName = mContext.getString(pageRes);
+	        Log.d(TAG, "trackPage: " + pageName);
+	        mTracker.sendView(pageName);
+		}
 	}
 
 	public void trackSourceResWithPath(int sourcePrefixRes, String path) {
