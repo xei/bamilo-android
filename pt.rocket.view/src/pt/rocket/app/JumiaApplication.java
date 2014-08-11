@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import pt.rocket.constants.ConstantsSharedPrefs;
-import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.forms.Form;
 import pt.rocket.forms.FormData;
 import pt.rocket.forms.PaymentMethodForm;
@@ -43,7 +42,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageInfo;
 import android.os.Bundle;
 import android.os.Handler;
@@ -75,7 +73,6 @@ public class JumiaApplication extends A4SApplication implements ExceptionCallbac
      */
     private CustomerUtils mCustomerUtils;
     private boolean loggedIn = false;
-    // private Integer shopId = null;
 
     /**
      * General Persistent Variables
@@ -83,7 +80,7 @@ public class JumiaApplication extends A4SApplication implements ExceptionCallbac
     private HashMap<String, HashMap<String, String>> ratingOptions = null;
     private CompleteProduct currentProduct = null;
     private VersionInfo mVersionInfo;
-
+    
     boolean resendInitializationSignal = false;
 
     /**
@@ -104,7 +101,8 @@ public class JumiaApplication extends A4SApplication implements ExceptionCallbac
     
     
     public static ArrayList<NavigationListComponent> navigationListComponents;
-
+    
+    // TODO : Validate recover
     private static ArrayList<EventType> requestOrder = new ArrayList<EventType>();
 
     /**
@@ -112,8 +110,6 @@ public class JumiaApplication extends A4SApplication implements ExceptionCallbac
      */
     public HashMap<String, IResponseCallback> responseCallbacks;
 
-    // private boolean isInitializing = false;
-    // public boolean isUAInitialized = false;
     private Handler resendHandler;
     private Handler resendMenuHandler;
     private Message resendMsg;
@@ -193,19 +189,13 @@ public class JumiaApplication extends A4SApplication implements ExceptionCallbac
 
         /**
          * Fix a crash report, when app try recover from brackground
-         * https://rink
-         * .hockeyapp.net/manage/apps/33641/app_versions/109/crash_reasons
-         * /17098450
-         * 
+         * https://rink.hockeyapp.net/manage/apps/33641/app_versions/109/crash_reasons/17098450
          * @author sergiopereira
          */
         Log.d(TAG, "INIT CURRENCY");
         String currencyCode = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_ISO, null);
-        if (currencyCode != null)
-            CurrencyFormatter.initialize(getApplicationContext(), currencyCode);
-
-        cleanCategoriesState();
-
+        if(currencyCode != null) CurrencyFormatter.initialize(getApplicationContext(), currencyCode);
+        
     }
 
     @Override
@@ -251,8 +241,10 @@ public class JumiaApplication extends A4SApplication implements ExceptionCallbac
         Log.d(TAG, "Handle initialization result: " + errorType);
         Message msg = new Message();
         msg.obj = bundle;
-        if ((eventType == EventType.INITIALIZE || errorType == ErrorCode.NO_COUNTRIES_CONFIGS || errorType == ErrorCode.NO_COUNTRY_CONFIGS_AVAILABLE)
-                && ServiceSingleton.getInstance().getService() == null) {
+        if((eventType == EventType.INITIALIZE || 
+                errorType == ErrorCode.NO_COUNTRIES_CONFIGS || 
+                errorType == ErrorCode.NO_COUNTRY_CONFIGS_AVAILABLE)
+                && ServiceSingleton.getInstance().getService() == null ){
             Log.d(TAG, "ON HANDLE WITH ERROR");
             resendInitializationSignal = true;
             resendHandler = initializationHandler;
@@ -315,6 +307,7 @@ public class JumiaApplication extends A4SApplication implements ExceptionCallbac
         }
     }
 
+    // TODO : Validate recover
     public String sendRequest(final BaseHelper helper, final Bundle args, final IResponseCallback responseCallback) {
         return sendRequest(helper, args, responseCallback, true);
     }
@@ -327,6 +320,7 @@ public class JumiaApplication extends A4SApplication implements ExceptionCallbac
      * @param responseCallback
      * @return the md5 of the reponse
      */
+    // TODO : Validate recover
     public String sendRequest(final BaseHelper helper, final Bundle args, final IResponseCallback responseCallback, boolean addToRequestOrder) {
         if (helper == null) {
             return "";
@@ -338,6 +332,7 @@ public class JumiaApplication extends A4SApplication implements ExceptionCallbac
             requestsRetryHelperList.put((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY), helper);
             requestsRetryBundleList.put((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY), args);
             requestsResponseList.put((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY), responseCallback);
+            // TODO : Validate recover
             if (addToRequestOrder) {
                 requestOrder.add((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
             }
@@ -377,24 +372,23 @@ public class JumiaApplication extends A4SApplication implements ExceptionCallbac
                     }
                 });
 
+                
+                // TODO : Validate recover
                 if (!sendRequest(bundle)) {
                     Log.e(TAG, "SERVICE NOT AVAILABLE FOR EVENTTYPE " + bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
                     /*-bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, ErrorCode.REQUEST_ERROR);
                     responseCallback.onRequestError(bundle);*/
                 }
+                
             }
         }).start();
 
         return md5;
     }
 
+    // TODO : Validate recover
     public boolean sendRequest(Bundle bundle) {
-        // long timeMillis = System.currentTimeMillis();
-        // Log.i("REQUEST",
-        // "performing event type request : "+bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY)+" url : "+bundle.getString(Constants.BUNDLE_URL_KEY));
-        // timeTrackerMap.put((EventType)
-        // bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY), timeMillis);
-        if (ServiceSingleton.getInstance().getService() != null) {
+        if(ServiceSingleton.getInstance().getService() != null){
             try {
                 ServiceSingleton.getInstance().getService().sendRequest(bundle);
                 return true;
@@ -602,8 +596,10 @@ public class JumiaApplication extends A4SApplication implements ExceptionCallbac
     public HashMap<EventType, IResponseCallback> getRequestsResponseList() {
         return requestsResponseList;
     }
-
-    public ArrayList<EventType> getRequestOrderList() {
+    
+    
+    // TODO : Validate recover
+    public ArrayList<EventType> getRequestOrderList(){
         return requestOrder;
     }
 
@@ -647,9 +643,10 @@ public class JumiaApplication extends A4SApplication implements ExceptionCallbac
             Log.i(TAG, "onServiceConnected");
             mIsBound = true;
             ServiceSingleton.getInstance().setService(IRemoteService.Stub.asInterface(service));
-
+            
+            // TODO : Validate recover
             // TODO uncomment this to re execute pending requests
-
+            
             /*-if (requestOrder != null && requestOrder.size() > 0) {
                 Log.i(TAG, " RE-EXECUTING PENDING REQUESTS " + requestOrder.size());
                 for (int i = 0; i < requestOrder.size(); i++) {
@@ -721,20 +718,6 @@ public class JumiaApplication extends A4SApplication implements ExceptionCallbac
         JumiaApplication.paymentsInfoList = paymentsInfoList;
     }
 
-    /**
-     * Remove Caching State for Categories
-     */
-    public void cleanCategoriesState() {
-
-        SharedPreferences sharedPrefs = this.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        Editor eDitor = sharedPrefs.edit();
-        eDitor.putInt(ConstantsSharedPrefs.KEY_CATEGORY_SELECTED, 0);
-        eDitor.putInt(ConstantsSharedPrefs.KEY_SUB_CATEGORY_SELECTED, 0);
-        eDitor.putString(ConstantsSharedPrefs.KEY_CURRENT_FRAGMENT, FragmentType.CATEGORIES_LEVEL_1.toString());
-        eDitor.putString(ConstantsSharedPrefs.KEY_CHILD_CURRENT_FRAGMENT, FragmentType.CATEGORIES_LEVEL_2.toString());
-        eDitor.commit();
-    }
-
     public String getAppVersion() throws Exception {
         PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
         if (null == pInfo) {
@@ -749,7 +732,6 @@ public class JumiaApplication extends A4SApplication implements ExceptionCallbac
         setFormDataRegistry(new HashMap<String, FormData>());
         registerForm = null;
         registerSavedInstanceState = null;
-        cleanCategoriesState();
         getCustomerUtils().clearCredentials();
     }
 
@@ -782,10 +764,4 @@ public class JumiaApplication extends A4SApplication implements ExceptionCallbac
         return (sTeaserCampaigns != null) ? true : false;
     }
 
-    /**
-     * Save tracking values to the file Only for dev environment
-     */
-    // public void writeToTrackerFile(String value){
-    // trackerFile.writeToFile(value, this, Context.MODE_APPEND);
-    // }
 }

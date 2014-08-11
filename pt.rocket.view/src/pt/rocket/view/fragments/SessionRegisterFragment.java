@@ -8,7 +8,6 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 
 import org.holoeverywhere.FontLoader;
 import org.holoeverywhere.widget.TextView;
@@ -93,11 +92,6 @@ public class SessionRegisterFragment extends BaseFragment {
 
     private LinearLayout container;
 
-    private String registerLocation;
-
-    // Reinforce locale to avoid RTL on UG
-    private Locale mLocale = null;;
-
     /**
      * 
      * @return
@@ -149,20 +143,6 @@ public class SessionRegisterFragment extends BaseFragment {
         Log.i(TAG, "ON CREATE");
     }
 
-//    /*
-//     * (non-Javadoc)
-//     * 
-//     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-//     * android.view.ViewGroup, android.os.Bundle)
-//     */
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//        super.onCreateView(inflater, container, savedInstanceState);
-//        Log.i(TAG, "ON CREATE VIEW");
-//        View view = inflater.inflate(R.layout.register, container, false);
-//        return view;
-//    }
-
     /*
      * (non-Javadoc)
      * 
@@ -189,7 +169,6 @@ public class SessionRegisterFragment extends BaseFragment {
         // Used for UG
         forceInputAlignToLeft();
         
-        registerLocation = getString(R.string.mixprop_loginlocation);
         if (JumiaApplication.INSTANCE.registerForm != null) {
             loadForm(JumiaApplication.INSTANCE.registerForm);
         } else {

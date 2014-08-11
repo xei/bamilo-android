@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <!-- MIDDLE POINT TO DIVIDE THE SCREEN -->
+
+    <View
+        android:id="@+id/center_point"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerInParent="true" />
+
+    <!-- LEFT CONTAINER -->
+
+    <ListView
+        android:id="@+id/sub_categories_grid"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignRight="@+id/center_point"
+        android:background="@android:color/white"
+        android:headerDividersEnabled="true"
+        android:listSelector="@android:color/transparent" />
+
+    <!-- RIGHT CONTAINER -->
+
+    <ListView
+        android:id="@+id/sub_categories_grid_right"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignLeft="@+id/center_point"
+        android:layout_alignParentRight="true"
+        android:background="@android:color/white"
+        android:headerDividersEnabled="true"
+        android:listSelector="@android:color/transparent" />
+
+</RelativeLayout>

@@ -67,6 +67,7 @@ public class ConstantsIntentExtra {
     public static final String SELECTED_SUB_CATEGORY_INDEX  = mPackage + "SubCategoryIdx";
     public static final String CATEGORY_TREE_PATH           = mPackage + "CategoryTreePath";
     public static final String CATEGORY_PARENT_NAME         = mPackage + "CategoryParentName";
+    public static final String CATEGORY_TREE_NAME         = mPackage + "CategoryTreeName";
 
     // ########### Catalog ##############
     public static final String CATALOG_SORT_PAGE            = mPackage + "catalogPage";

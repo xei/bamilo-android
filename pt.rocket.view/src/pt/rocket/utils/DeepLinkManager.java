@@ -252,8 +252,7 @@ public class DeepLinkManager {
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CATEGORY_URL, null);
         bundle.putString(ConstantsIntentExtra.CATEGORY_ID, categoryId);
-        bundle.putSerializable(ConstantsIntentExtra.CATEGORY_LEVEL, FragmentType.CATEGORIES_LEVEL_1);
-        bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.CATEGORIES_LEVEL_1);
+        bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.CATEGORIES);
         return bundle;
     }
     

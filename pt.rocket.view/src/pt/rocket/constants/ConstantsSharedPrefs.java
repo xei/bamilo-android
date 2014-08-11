@@ -34,14 +34,6 @@ public class ConstantsSharedPrefs {
 
     public static String KEY_COUNTRY = "country";
 
-    /**
-     * Categories Keys
-     */
-    public static String KEY_CATEGORY_SELECTED = "selectedCategory";
-    public static String KEY_SUB_CATEGORY_SELECTED = "selectedSubCategory";
-    public static String KEY_CURRENT_FRAGMENT = "currentFragment";
-    public static String KEY_CHILD_CURRENT_FRAGMENT = "childCurrentFragment";
-
     public static String KEY_COUNTRY_CONFIGS_AVAILABLE = "country_configs_available";
 
     public static String WIZARDS_SHARED_PREFERENCES = "wizards_prefs";

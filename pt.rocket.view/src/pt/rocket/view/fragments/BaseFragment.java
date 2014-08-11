@@ -1,13 +1,8 @@
 package pt.rocket.view.fragments;
 
 import java.lang.reflect.Field;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
@@ -18,9 +13,7 @@ import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
-import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.OrderSummary;
-import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.service.IRemoteServiceCallback;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
@@ -74,16 +67,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     public static final Boolean ISNT_NESTED_FRAGMENT = false;
 
     public static enum KeyboardState { NO_ADJUST_CONTENT, ADJUST_CONTENT };
-
-    private static final boolean VISIBLE = true;
-
-    private static final boolean NOT_VISIBLE = false;
     
     public static final int NO_INFLATE_LAYOUT = 0;
-	
-	protected String md5Hash = null;
-
-    protected View loadingView;
 
     private NavigationAction action;
 
@@ -96,8 +81,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     private int titleResId;
 
     private Boolean isNestedFragment = false;
-
-    private boolean isVisible = false;
     
     private boolean isOrderSummaryPresent;
     
@@ -171,8 +154,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      */
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);       
-        md5Hash = null;
+        super.onCreate(savedInstanceState);
     }
 
     /*
@@ -204,7 +186,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.d(TAG, "ON VIEW CREATED");
-        // 
+        // Set flag for requests
         isOnStoppingProcess = false;
         // Exist order summary
         isOrderSummaryPresent = (view.findViewById(ORDER_SUMMARY_CONTAINER) != null) ? true : false;
@@ -244,8 +226,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     @Override
     public void onStart() {
         super.onStart();
-        
-        setVisiblility(VISIBLE);
         
         // Hide search component for change country
         if(this.action == NavigationAction.Country){
@@ -317,8 +297,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     @Override
     public void onPause() {
         super.onPause();
-        // Save the current state
-        setVisiblility(NOT_VISIBLE);
         
         /**
          * Restore locale if called the forceInputAlignToLeft(). 
@@ -515,25 +493,25 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 //        }
 //    }
 
-    /**
-     * Handles a failed event and shows dialogs to the user.
-     * 
-     * @param event
-     *            The failed event with {@link ResponseEvent#getSuccess()} == <code>false</code>
-     */
-    public void handleErrorEvent(Bundle bundle) {
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-        try {
-            HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
-            List<String> errors = (List<String>) errorMessages.get(RestConstants.JSON_VALIDATE_TAG);
-            Log.i(TAG, "ON HANDLE ERROR EVENT: " + eventType);
-            if(errors != null)
-                Log.i(TAG, "ON HANDLE ERROR EVENT error response was : error code : " + errorCode +" error message : " + errors.toString());
-        } catch (NullPointerException e) {
-            Log.w(TAG, "ON HANDLE ERROR: The Message is null: " + e.getMessage());
-        }
-    }
+//    /**
+//     * Handles a failed event and shows dialogs to the user.
+//     * 
+//     * @param event
+//     *            The failed event with {@link ResponseEvent#getSuccess()} == <code>false</code>
+//     */
+//    public void handleErrorEvent(Bundle bundle) {
+//        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+//        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+//        try {
+//            HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+//            List<String> errors = (List<String>) errorMessages.get(RestConstants.JSON_VALIDATE_TAG);
+//            Log.i(TAG, "ON HANDLE ERROR EVENT: " + eventType);
+//            if(errors != null)
+//                Log.i(TAG, "ON HANDLE ERROR EVENT error response was : error code : " + errorCode +" error message : " + errors.toString());
+//        } catch (NullPointerException e) {
+//            Log.w(TAG, "ON HANDLE ERROR: The Message is null: " + e.getMessage());
+//        }
+//    }
 
 
     /**
@@ -582,56 +560,37 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         imm.hideSoftInputFromWindow(getView().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
-    /**
-     * This method generates a unique and always diferent MD5 hash based on a given key 
-     * @param key 
-     * @return the unique MD5 
-     */
-    protected static String uniqueMD5(String key) { 
-        String md5String = "";
-        try {
-            Calendar calendar = Calendar.getInstance();
-            key = key + calendar.getTimeInMillis() ;
-        
-            // Create MD5 Hash
-            MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
-            digest.update(key.getBytes());
-            byte messageDigest[] = digest.digest();
-     
-            // Create Hex String
-            StringBuffer hexString = new StringBuffer();
-            for (int i=0; i<messageDigest.length; i++) {
-                hexString.append(Integer.toHexString(0xFF & messageDigest[i]));
-            }
-            md5String = hexString.toString();
-     
-         } catch (NoSuchAlgorithmException e) {
-             e.printStackTrace();
-         }
-        
-        return md5String;
- 
-    }         
-    
-    
-    /**
-     * ######### IN FRONT #########
-     */
+//    /**
+//     * This method generates a unique and always diferent MD5 hash based on a given key 
+//     * @param key 
+//     * @return the unique MD5 
+//     */
+//    protected static String uniqueMD5(String key) { 
+//        String md5String = "";
+//        try {
+//            Calendar calendar = Calendar.getInstance();
+//            key = key + calendar.getTimeInMillis() ;
+//        
+//            // Create MD5 Hash
+//            MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
+//            digest.update(key.getBytes());
+//            byte messageDigest[] = digest.digest();
+//     
+//            // Create Hex String
+//            StringBuffer hexString = new StringBuffer();
+//            for (int i=0; i<messageDigest.length; i++) {
+//                hexString.append(Integer.toHexString(0xFF & messageDigest[i]));
+//            }
+//            md5String = hexString.toString();
+//     
+//         } catch (NoSuchAlgorithmException e) {
+//             e.printStackTrace();
+//         }
+//        
+//        return md5String;
+// 
+//    }         
 
-    /**
-     * @return the isVisible
-     */
-    public boolean isOnTheScreen() {
-        return isVisible;
-    }
-
-    /**
-     * @param isVisible
-     *            the isVisible to set
-     */
-    public void setVisiblility(boolean isVisible) {
-        this.isVisible = isVisible;
-    }
 
     public void setActivity(BaseActivity activity) {
         mainActivity = activity;
@@ -655,13 +614,13 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         
     }
     
+    // TODO : Validate if is necessary
     /**
      * FIXES 
      * FATAL EXCEPTION: main
      * java.lang.IllegalStateException: No activity
      * see (http://stackoverflow.com/questions/14929907/causing-a-java-illegalstateexception-error-no-activity-only-when-navigating-to)
      */
-    
     static {
         Field f = null;
         try {
@@ -677,6 +636,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     public void onDetach() {
         super.onDetach();
 
+        // TODO : Validate if is necessary
         if (sChildFragmentManagerField != null) {
             try {
                 sChildFragmentManagerField.set(this, null);
@@ -689,6 +649,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     /**
      * Requests and Callbacks methods
      */
+    
+    // TODO : VALIDATE THIS
     
     /**
      * Callback which deals with the IRemoteServiceCallback

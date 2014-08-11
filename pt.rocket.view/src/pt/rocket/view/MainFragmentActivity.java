@@ -18,7 +18,7 @@ import pt.rocket.utils.PreferenceListFragment.OnPreferenceAttachedListener;
 import pt.rocket.view.fragments.BaseFragment;
 import pt.rocket.view.fragments.CampaignsFragment;
 import pt.rocket.view.fragments.CatalogFragment;
-import pt.rocket.view.fragments.CategoriesContainerFragment;
+import pt.rocket.view.fragments.CategoriesColletionFragment;
 import pt.rocket.view.fragments.ChangeCountryFragment;
 import pt.rocket.view.fragments.CheckoutAboutYouFragment;
 import pt.rocket.view.fragments.CheckoutCreateAddressFragment;
@@ -213,8 +213,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
     protected void onDestroy() {
         super.onDestroy();
         Log.i(TAG, "ON DESTROY");
-        // Delete categories
-        JumiaApplication.currentCategories = null;
+        
         JumiaApplication.INSTANCE.setLoggedIn(false);
 
         //
@@ -266,17 +265,8 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             }
             fragment = HomeFragment.newInstance();
             break;
-//        case CATEGORIES:
-//            fragment = CategoryColletionFragment.getInstance(bundle);
-//            break;
-        case CATEGORIES_LEVEL_1:
-            fragment = CategoriesContainerFragment.getInstance(bundle);
-            break;
-        case CATEGORIES_LEVEL_2:
-            fragment = CategoriesContainerFragment.getInstance(bundle);
-            break;
-        case CATEGORIES_LEVEL_3:
-            fragment = CategoriesContainerFragment.getInstance(bundle);
+        case CATEGORIES:
+            fragment = CategoriesColletionFragment.getInstance(bundle);
             break;
         case PRODUCT_LIST:
             fragment = CatalogFragment.getInstance();

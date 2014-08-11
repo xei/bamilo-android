@@ -136,7 +136,7 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 			sum_costs_value = jsonObject.optString(RestConstants.JSON_CART_SUM_COSTS_VALUE_TAG);
 		}
 		
-		extraCosts = jsonObject.optDouble(RestConstants.JSON_CART_EXTRA_COSTS_TAG);
+		extraCosts = jsonObject.optDouble(RestConstants.JSON_CART_EXTRA_COSTS_TAG, 0);
 		if (cartCount > 0 && jsonObject.has(RestConstants.JSON_CART_ITEMS_TAG)) {
 			fillCartHashMap(jsonObject.getJSONObject(RestConstants.JSON_CART_ITEMS_TAG));
 		}

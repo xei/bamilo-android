@@ -427,8 +427,7 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
     private void onClickCategory(String targetUrl, Bundle bundle) {
         Log.i(TAG, "ON CLICK CATEGORY");
         bundle.putString(ConstantsIntentExtra.CATEGORY_URL, targetUrl);
-        bundle.putSerializable(ConstantsIntentExtra.CATEGORY_LEVEL, FragmentType.CATEGORIES_LEVEL_1);
-        getBaseActivity().onSwitchFragment(FragmentType.CATEGORIES_LEVEL_1, bundle, FragmentController.ADD_TO_BACK_STACK);
+        getBaseActivity().onSwitchFragment(FragmentType.CATEGORIES, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
     
     /**
