@@ -37,6 +37,7 @@ import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -283,7 +284,7 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
         // Get banner
         mBannerView = getBannerView();
         // Add banner to header
-        mGridView.addHeaderView(mBannerView);
+        mGridView.addHeaderView(mBannerView);        
         // Validate the current data
         mArrayAdapter = (CampaignAdapter) mGridView.getAdapter();
         if(mArrayAdapter == null){
@@ -291,8 +292,8 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
             mArrayAdapter = new CampaignAdapter(getBaseActivity(), mCampaign.getItems(), (OnClickListener) this);
             mGridView.setAdapter(mArrayAdapter);
         }
-        // Show content
-        showContent();
+//        // Show content
+//        showContent();
     }
     
     /**
@@ -302,12 +303,34 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
      */
     private View getBannerView(){
         // Inflate the banner layout
-        View bannerView = LayoutInflater.from(getActivity()).inflate(R.layout.campaign_fragment_banner, mGridView, false);
+        final View bannerView = LayoutInflater.from(getActivity()).inflate(R.layout.campaign_fragment_banner, mGridView, false);
         // Get the image view
         ImageView imageView = (ImageView) bannerView.findViewById(R.id.campaign_banner);
         // Load the bitmap
         String url = (getResources().getBoolean(R.bool.isTablet)) ? mCampaign.getTabletBanner() : mCampaign.getMobileBanner();
-        RocketImageLoader.instance.loadImage(url, imageView);
+        RocketImageLoader.instance.loadImage(url, imageView, false, new RocketImageLoader.RocketImageLoaderListener() {
+            
+            @Override
+            public void onLoadedSuccess(Bitmap bitmap) {
+                // Show content
+                showContent();                
+            }
+            
+            @Override
+            public void onLoadedError() {
+                bannerView.setVisibility(View.GONE);
+                // Show content
+                showContent();                
+            }
+            
+            @Override
+            public void onLoadedCancel(String imageUrl) {
+                bannerView.setVisibility(View.GONE);
+                // Show content
+                showContent();                
+            }
+        });
+        
         // Return the banner
         return bannerView;
     }
@@ -316,7 +339,7 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
      * Show only the content view
      * @author sergiopereira
      */
-    private void showContent() {
+    private synchronized void showContent() {
         showFragmentContentContainer();
     }
     

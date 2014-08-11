@@ -291,6 +291,9 @@ public class RocketImageLoader {
         } else if (imageView != null) {
             // clear any previous image
             imageView.setImageResource(placeHolderImageId);
+            if (listener != null) {
+                listener.onLoadedError();
+            }            
         }
     }
 
