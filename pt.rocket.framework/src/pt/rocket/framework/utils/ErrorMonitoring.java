@@ -40,9 +40,13 @@ public class ErrorMonitoring {
 		
 		map.put( "Country", ShopSelector.getCountryName());
 		map.put( "Uri", uri);
-		if (errorCode != null && !TextUtils.isEmpty(errorCode.name())) {
-			map.put( "ErrorCode", errorCode.name());
-		}
+		try {
+	        if (errorCode != null && !TextUtils.isEmpty(errorCode.name())) {
+	            map.put( "ErrorCode", errorCode.name());
+	        }
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
 		map.put( "IPv4-Address",  getIPAddress(true));
 		map.put( "IPv6-Address", getIPAddress(false));
 		if (!TextUtils.isEmpty(msg)) {

@@ -12,6 +12,7 @@ import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.http.params.CoreProtocolPNames;
 
 import pt.rocket.framework.Darwin;
@@ -392,6 +393,9 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 		metaData = new Bundle();
 		HttpResponse response = null;
 		HttpEntity entity = null;
+		// try and prevent the issue with the memory by forcing the system to do some garbage collection before executing the request.
+		System.gc();
+		
 		// Start time 
 		long startTimeMillis = System.currentTimeMillis();
 		
@@ -473,6 +477,8 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 			
 			// FIXME - OutOfMemoryError
 			result = EntityUtils.toString(entity, Consts.UTF_8);
+			
+			
 			Log.i(TAG, "code1response : "+result.toString());
 			//Log.i(TAG, "code1 request response is: " + result.toString());
 			//result = org.apache.commons.io.IOUtils.toString(entity.getContent());
@@ -516,6 +522,11 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 			Log.e(TAG, "IO error calling " + httpRequest.getURI(), e);
 			mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.IO, result, md5, priority));
 			trackError(context, e, httpRequest.getURI(), ErrorCode.IO, null, false, startTimeMillis);
+		} catch (OutOfMemoryError e) {
+            android.util.Log.d("TRACK", "OutOfMemoryError");
+            Log.e(TAG, "OutOfMemoryError calling " + httpRequest.getURI(), e);
+            mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.IO, result, md5, priority));
+            trackError(context, null, httpRequest.getURI(), ErrorCode.IO, e.getStackTrace().toString(), false, startTimeMillis);
 		} catch (Exception e) {
 			android.util.Log.d("TRACK", "Exception");
 			e.printStackTrace();
