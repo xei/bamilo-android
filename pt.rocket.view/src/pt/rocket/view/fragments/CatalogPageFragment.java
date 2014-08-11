@@ -293,69 +293,74 @@ public class CatalogPageFragment extends BaseFragment {
      */
     public void invalidateData(final Bundle arguments, final boolean forceRefresh) {
 
-        if (null != getView() && null == gridView) {
-            this.gridView = (GridView) getView().findViewById(R.id.middle_productslist_list);
-        }
-
-        ContentValues newFilters = null;
-        if (null != arguments) {
-            updateLocalArguments(arguments);
-            newFilters = arguments.getParcelable(PARAM_FILTERS);
-        }
-        ProductsListAdapter adapter = (ProductsListAdapter) gridView.getAdapter();
-        boolean showList = parentFragment.getShowList();
-        int switchMD5 = parentFragment.getSwitchMD5();
-
-        // Case no content
-        if (null == adapter) {
-            Log.i(TAG, "ON RESUME -> Null Adapter");
-            mFilters = newFilters;
-            initializeCatalogPage(showList);
-
-        } else if (newFilters != null && newFilters.getAsInteger("md5") != mFilterMD5) { // Case
-                                                                                         // new
-                                                                                         // filter
-            Log.i(TAG, "ON RESUME -> FILTER IS DIFF: " + newFilters.getAsInteger("md5") + " " + mFilterMD5);
-            mFilterMD5 = newFilters.getAsInteger("md5");
-            mFilters = newFilters;
-            mSavedProductsSKU = null;
-            initializeCatalogPage(showList);
-
-        } else if (mSwitchMD5 != switchMD5) {
-            Log.i(TAG, "ON RESUME -> SWITCH LAYOUT");
-
-            mCurrentListPosition = this.gridView.getFirstVisiblePosition();
-
-            List<String> products = adapter.getProductsList();
-            adapter = new ProductsListAdapter(getBaseActivity(), parentFragment, showList, updateGridColumns(showList), isFrench);
-            adapter.appendProducts(products);
-            gridView.setAdapter(adapter);
-            gridView.setSelection(mCurrentListPosition);
-            gridView.setOnScrollListener(onScrollListener);
-
-            if (products == null || products.isEmpty()) {
-                showProductsNotfound();
-            } else {
-                showCatalogContent();
+        if (isVisible() && !isDetached()) {        
+            if (null != getView() && null == gridView) {
+                this.gridView = (GridView) getView().findViewById(R.id.middle_productslist_list);
+            } else if (null == getView() && null == gridView) {
+                // This should never happen. Here to prevent crashes when fragment is not available
+                return;
             }
-
-            mIsLoadingMore = false;
-
-            mSwitchMD5 = switchMD5;
-        }
-
-        if (forceRefresh) {
-            if (null != adapter) {
-                Bundle params = getArguments();
-                params.putString(ConstantsIntentExtra.CONTENT_TITLE, mTitle);
-                params.putString(ConstantsIntentExtra.CONTENT_URL, mProductsURL);
-                params.putString(ConstantsIntentExtra.SEARCH_QUERY, mSearchQuery);
-                params.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, mNavigationSource);
-                params.putString(ConstantsIntentExtra.NAVIGATION_PATH, mNavigationPath);
-                params.putParcelable(PARAM_FILTERS, mFilters);
-
-                Log.d(TAG, " --- INVALIDATE DATA on Adapter -> " + adapter);
-                adapter.notifyDataSetChanged();
+    
+            ContentValues newFilters = null;
+            if (null != arguments) {
+                updateLocalArguments(arguments);
+                newFilters = arguments.getParcelable(PARAM_FILTERS);
+            }
+            ProductsListAdapter adapter = (ProductsListAdapter) gridView.getAdapter();
+            boolean showList = parentFragment.getShowList();
+            int switchMD5 = parentFragment.getSwitchMD5();
+    
+            // Case no content
+            if (null == adapter) {
+                Log.i(TAG, "ON RESUME -> Null Adapter");
+                mFilters = newFilters;
+                initializeCatalogPage(showList);
+    
+            } else if (newFilters != null && newFilters.getAsInteger("md5") != mFilterMD5) { // Case
+                                                                                             // new
+                                                                                             // filter
+                Log.i(TAG, "ON RESUME -> FILTER IS DIFF: " + newFilters.getAsInteger("md5") + " " + mFilterMD5);
+                mFilterMD5 = newFilters.getAsInteger("md5");
+                mFilters = newFilters;
+                mSavedProductsSKU = null;
+                initializeCatalogPage(showList);
+    
+            } else if (mSwitchMD5 != switchMD5) {
+                Log.i(TAG, "ON RESUME -> SWITCH LAYOUT");
+    
+                mCurrentListPosition = this.gridView.getFirstVisiblePosition();
+    
+                List<String> products = adapter.getProductsList();
+                adapter = new ProductsListAdapter(getBaseActivity(), parentFragment, showList, updateGridColumns(showList), isFrench);
+                adapter.appendProducts(products);
+                gridView.setAdapter(adapter);
+                gridView.setSelection(mCurrentListPosition);
+                gridView.setOnScrollListener(onScrollListener);
+    
+                if (products == null || products.isEmpty()) {
+                    showProductsNotfound();
+                } else {
+                    showCatalogContent();
+                }
+    
+                mIsLoadingMore = false;
+    
+                mSwitchMD5 = switchMD5;
+            }
+    
+            if (forceRefresh) {
+                if (null != adapter) {
+                    Bundle params = getArguments();
+                    params.putString(ConstantsIntentExtra.CONTENT_TITLE, mTitle);
+                    params.putString(ConstantsIntentExtra.CONTENT_URL, mProductsURL);
+                    params.putString(ConstantsIntentExtra.SEARCH_QUERY, mSearchQuery);
+                    params.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, mNavigationSource);
+                    params.putString(ConstantsIntentExtra.NAVIGATION_PATH, mNavigationPath);
+                    params.putParcelable(PARAM_FILTERS, mFilters);
+    
+                    Log.d(TAG, " --- INVALIDATE DATA on Adapter -> " + adapter);
+                    adapter.notifyDataSetChanged();
+                }
             }
         }
     }
