@@ -642,7 +642,10 @@ public class CatalogPageFragment extends BaseFragment {
 
     private void onSuccessEvent(Bundle bundle) {
         Log.d(TAG, "ON SUCCESS EVENT");
-
+        
+        // Validate fragment state
+        if (isOnStoppingProcess) return;
+        
         // Get Products Event
         final ProductsPage productsPage = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
 
@@ -767,6 +770,10 @@ public class CatalogPageFragment extends BaseFragment {
     }
 
     private void onErrorEvent(Bundle bundle) {
+    	
+        // Validate fragment state
+        if (isOnStoppingProcess) return;
+    	
         RocketImageLoader.getInstance().startProcessingQueue();
 
         if (getBaseActivity().handleErrorEvent(bundle)) {
