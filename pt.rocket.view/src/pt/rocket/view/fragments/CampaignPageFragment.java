@@ -292,8 +292,9 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
             mArrayAdapter = new CampaignAdapter(getBaseActivity(), mCampaign.getItems(), (OnClickListener) this);
             mGridView.setAdapter(mArrayAdapter);
         }
-//        // Show content
-//        showContent();
+        // Show content
+        //showContent();
+        
     }
     
     /**
@@ -305,7 +306,7 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
         // Inflate the banner layout
         final View bannerView = LayoutInflater.from(getActivity()).inflate(R.layout.campaign_fragment_banner, mGridView, false);
         // Get the image view
-        ImageView imageView = (ImageView) bannerView.findViewById(R.id.campaign_banner);
+        final ImageView imageView = (ImageView) bannerView.findViewById(R.id.campaign_banner);
         // Load the bitmap
         String url = (getResources().getBoolean(R.bool.isTablet)) ? mCampaign.getTabletBanner() : mCampaign.getMobileBanner();
         RocketImageLoader.instance.loadImage(url, imageView, false, new RocketImageLoader.RocketImageLoaderListener() {
@@ -313,12 +314,14 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
             @Override
             public void onLoadedSuccess(Bitmap bitmap) {
                 // Show content
+                imageView.setImageBitmap(bitmap);
                 showContent();                
             }
             
             @Override
             public void onLoadedError() {
                 bannerView.setVisibility(View.GONE);
+                mGridView.removeHeaderView(bannerView);
                 // Show content
                 showContent();                
             }
@@ -326,6 +329,7 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
             @Override
             public void onLoadedCancel(String imageUrl) {
                 bannerView.setVisibility(View.GONE);
+                mGridView.removeHeaderView(bannerView);
                 // Show content
                 showContent();                
             }
@@ -340,6 +344,7 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
      * @author sergiopereira
      */
     private synchronized void showContent() {
+        mGridView.refreshDrawableState();
         showFragmentContentContainer();
     }
     
