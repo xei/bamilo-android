@@ -1262,7 +1262,22 @@ public class DynamicFormItem {
             case date:
                 buildDate(dataContainer, params, controlWidth);
                 break;
-            case number:
+            case number:             
+                // fix for devices with big density
+                float dateScale = (float) (scale < 1.6 ? scale : 1.5);
+                TextView measure = new TextView(this.context);
+                measure.setTextSize(MANDATORYSIGNALSIZE+2);
+                boolean datePart = isDatePart();
+                //String filler  = this.entry.getKey().contains("year") ? "OOOOOO" : new String(new char[this.entry.getKey().length()]).replace('\0', 'O');
+                String filler  = this.entry.getKey().contains("year") ? "OOOOOO" : "OWVV";
+                //controlWidth = (!datePart) ? RelativeLayout.LayoutParams.MATCH_PARENT : (int) (measure.getPaint().measureText(this.entry.getLabel()) * scale);
+                controlWidth = (!datePart) ? RelativeLayout.LayoutParams.MATCH_PARENT : (int) (measure.getPaint().measureText(filler) * dateScale);
+                
+                params = new RelativeLayout.LayoutParams( controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                if ( datePart ) {
+                    params.setMargins(0, 0, (int) (10 * scale), 0);
+                }      
+                
             case email:
             case text:
             case password:
@@ -1747,4 +1762,20 @@ public class DynamicFormItem {
         this.childDynamicForm = childDynamicForm;
     }
 
+    /**
+     * Determines if this field is a part of a date
+     * 
+     * @return True, if the field is a part of a date; False, otherwise
+     */
+    public boolean isDatePart() {
+        boolean result = false;
+        
+        result |= (this.entry.getKey().contains("day") && !this.entry.getKey().contains("birthday"));
+        result |= this.entry.getKey().contains("month");
+        result |= this.entry.getKey().contains("year");
+        
+        return result;
+        
+    }    
+    
 }

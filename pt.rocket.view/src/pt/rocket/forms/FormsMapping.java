@@ -47,15 +47,15 @@ public class FormsMapping {
         currMapping.put("first_name", 4);
         currMapping.put("last_name", 5);
         // FIXME: request rocket information about the next fields
-        currMapping.put("birthday", 6);
-        currMapping.put("day", 97);
-        currMapping.put("month", 98);
-        currMapping.put("year", 99);
+//        currMapping.put("birthday", 6);
+        currMapping.put("day", 6); //97
+        currMapping.put("month", 7);  //98
+        currMapping.put("year", 8);  //99
         // FIXME: ensure that this birthday is server supported
-        currMapping.put("gender", 7);
+        currMapping.put("gender", 9);  //7
         currMapping.put("password", 2);
         currMapping.put("password2", 3);
-        currMapping.put("newsletter_categories_subscribed", 8);
+        currMapping.put("newsletter_categories_subscribed", 10); //8
         
         registrationForm = Collections.unmodifiableMap(currMapping);
     }    

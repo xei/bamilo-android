@@ -79,7 +79,7 @@ private static final String TAG = FieldValidation.class.getName();
 		        Log.i(TAG, "code1message : "+message);
 		        
 		        // TODO : If contains message is required
-		        if(message != null) required = true;
+		        if(message != null && !message.equals("")) required = true;
 		    }
 		    
 		}

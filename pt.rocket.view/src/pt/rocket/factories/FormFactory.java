@@ -321,6 +321,13 @@ public class FormFactory {
 
             userForm = new DynamicForm(parent);
             userForm.setForm( form );
+
+            // Used for dates with day/moth/year
+            LinearLayout groupLayout = new LinearLayout(context);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            groupLayout.setId( userForm.getNextId() );
+            groupLayout.setOrientation(LinearLayout.HORIZONTAL);            
+            groupLayout.setLayoutParams(params);
             
             DynamicFormItem ctrl;
             
@@ -330,7 +337,12 @@ public class FormFactory {
             for (IFormField frmEntry : transformedFields) {
             	Log.d( TAG, "createGenericForm: " + frmEntry.getKey() + " inputType = " + frmEntry.getInputType() );
                 ctrl = new DynamicFormItem(userForm, context, frmEntry);
-                userForm.addControl(ctrl, ctrlParams);
+                
+                if ( ! ctrl.isDatePart() ) {                
+                    userForm.addControl(ctrl, ctrlParams);
+                } else {
+                    userForm.addGroupedControl(groupLayout, ctrl, ctrlParams);
+                }
             }
         } else {
             ((ViewGroup) userForm.getContainer().getParent()).removeView(userForm.getContainer());

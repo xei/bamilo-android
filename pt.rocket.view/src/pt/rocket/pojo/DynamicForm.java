@@ -35,7 +35,7 @@ import de.akquinet.android.androlog.Log;
  *          2012/06/15
  * 
  */
-public class DynamicForm implements Iterable<DynamicFormItem>{
+public class DynamicForm implements Iterable<DynamicFormItem> {
     private final static String TAG = LogTagHelper.create(DynamicForm.class);
 
     private ViewGroup base;
@@ -51,8 +51,8 @@ public class DynamicForm implements Iterable<DynamicFormItem>{
      * The constructor for the DynamicForm
      * 
      * @param base
-     *            where the form is to be implemented. This is a ViewGroup (Layout) that will hold
-     *            the form
+     *            where the form is to be implemented. This is a ViewGroup
+     *            (Layout) that will hold the form
      */
     public DynamicForm(ViewGroup base) {
         this.base = base;
@@ -71,8 +71,7 @@ public class DynamicForm implements Iterable<DynamicFormItem>{
      *            an instance of a DynamicFormItem to be added to the form
      */
     public void addControl(DynamicFormItem ctrl) {
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
 
         addControl(ctrl, params);
     }
@@ -83,7 +82,8 @@ public class DynamicForm implements Iterable<DynamicFormItem>{
      * @param ctrl
      *            An instance of a DynamicFormItem to be added to the form
      * @param params
-     *            A LayoutParams instance to be used when inserting the control into the form
+     *            A LayoutParams instance to be used when inserting the control
+     *            into the form
      */
     public void addControl(DynamicFormItem ctrl, ViewGroup.LayoutParams params) {
         View controlView = ctrl.getControl();
@@ -104,10 +104,10 @@ public class DynamicForm implements Iterable<DynamicFormItem>{
      * @param ctrl
      *            An instance of a DynamicFormItem to be added to the form
      * @param params
-     *            A LayoutParams instance to be used when inserting the control into the form
+     *            A LayoutParams instance to be used when inserting the control
+     *            into the form
      */
-    public void addGroupedControl(ViewGroup group, DynamicFormItem ctrl,
-            ViewGroup.LayoutParams params) {
+    public void addGroupedControl(ViewGroup group, DynamicFormItem ctrl, ViewGroup.LayoutParams params) {
         View controlView = ctrl.getControl();
 
         if (null != controlView && null != group) {
@@ -131,16 +131,16 @@ public class DynamicForm implements Iterable<DynamicFormItem>{
         return controls.iterator();
     }
 
-//    /**
-//     * Gets one of the form controls with a specific key
-//     * 
-//     * @param key
-//     *            The key of the item to return
-//     * @return The instance of the DynamicFormItem that has the given key
-//     */
-//    public DynamicFormItem getItem(String key) {
-//        return controls.get(key);
-//    }
+    // /**
+    // * Gets one of the form controls with a specific key
+    // *
+    // * @param key
+    // * The key of the item to return
+    // * @return The instance of the DynamicFormItem that has the given key
+    // */
+    // public DynamicFormItem getItem(String key) {
+    // return controls.get(key);
+    // }
 
     /**
      * Gets one of the form controls with a specific index
@@ -158,8 +158,8 @@ public class DynamicForm implements Iterable<DynamicFormItem>{
      * 
      * @param id
      *            The id of the item to return
-     * @return The instance of the DynamicFormItem that has the given id, null if no control has the
-     *         given id
+     * @return The instance of the DynamicFormItem that has the given id, null
+     *         if no control has the given id
      */
     public DynamicFormItem getItemById(int id) {
         DynamicFormItem control = null;
@@ -167,12 +167,13 @@ public class DynamicForm implements Iterable<DynamicFormItem>{
 
         // gets an iterator to the hashmap
         Iterator<DynamicFormItem> iterator = iterator();
-        //Map.Entry<?, ?> pairs;
+        // Map.Entry<?, ?> pairs;
 
         while (iterator.hasNext() && !found) {
 
             control = iterator.next();
-            // checks if there is a control with the same key as the one for the given value.
+            // checks if there is a control with the same key as the one for the
+            // given value.
             if (null != control && id == control.getEditControl().getId()) {
                 found = true;
             }
@@ -228,8 +229,8 @@ public class DynamicForm implements Iterable<DynamicFormItem>{
     }
 
     /**
-     * Get the form object that is return from the framework containing all the information of the
-     * API
+     * Get the form object that is return from the framework containing all the
+     * information of the API
      * 
      * @return the form object
      */
@@ -247,34 +248,37 @@ public class DynamicForm implements Iterable<DynamicFormItem>{
         form = value;
     }
 
-//    /**
-//     * Fills the form with a given data set
-//     * 
-//     * @param values
-//     *            An HashMap that contains the data set to be displayed on the form, where the key
-//     *            of the hashmap matches the key of each control.
-//     */
-//    public void fill(HashMap<String, String> values) {
-//        DynamicFormItem control;
-//
-//        // gets an iterator to the hashmap
-//        Iterator<Entry<String, String>> it = values.entrySet().iterator();
-//        while (it.hasNext()) {
-//            Map.Entry<?, ?> pairs = (Map.Entry<?, ?>) it.next();
-//
-//            control = controls.get((String) pairs.getKey());
-//            // checks if there is a control with the same key as the one for the given value.
-//            if (null != control) {
-//                control.setValue(pairs.getValue());
-//            }
-//        }
-//    }
+    // /**
+    // * Fills the form with a given data set
+    // *
+    // * @param values
+    // * An HashMap that contains the data set to be displayed on the form,
+    // where the key
+    // * of the hashmap matches the key of each control.
+    // */
+    // public void fill(HashMap<String, String> values) {
+    // DynamicFormItem control;
+    //
+    // // gets an iterator to the hashmap
+    // Iterator<Entry<String, String>> it = values.entrySet().iterator();
+    // while (it.hasNext()) {
+    // Map.Entry<?, ?> pairs = (Map.Entry<?, ?>) it.next();
+    //
+    // control = controls.get((String) pairs.getKey());
+    // // checks if there is a control with the same key as the one for the
+    // given value.
+    // if (null != control) {
+    // control.setValue(pairs.getValue());
+    // }
+    // }
+    // }
 
     /**
-     * Validates the information on the form by querying all the controls and calling their
-     * validation routines
+     * Validates the information on the form by querying all the controls and
+     * calling their validation routines
      * 
-     * @return If the form contains validates correctly (true: no errors; false: has errors)
+     * @return If the form contains validates correctly (true: no errors; false:
+     *         has errors)
      */
     public boolean validate() {
         boolean result = true;
@@ -283,7 +287,8 @@ public class DynamicForm implements Iterable<DynamicFormItem>{
 
         while (iterator.hasNext()) {
             result &= iterator.next().Validate();
-            // Log.d( TAG, "validate: validated " + entry.getKey().toString() + " result = " +
+            // Log.d( TAG, "validate: validated " + entry.getKey().toString() +
+            // " result = " +
             // result );
         }
 
@@ -293,8 +298,8 @@ public class DynamicForm implements Iterable<DynamicFormItem>{
     /**
      * Checks if all the required fields are filled
      * 
-     * @return True, if all the required fields are filled; False, if the are unfilled required
-     *         fields
+     * @return True, if all the required fields are filled; False, if the are
+     *         unfilled required fields
      */
     public boolean checkRequired() {
         boolean result = true;
@@ -326,10 +331,10 @@ public class DynamicForm implements Iterable<DynamicFormItem>{
                 model.put(control.getName().toString(), control.getValue().toString());
             } else if (null != control && control.getType() == InputType.radioGroup && control.isRadioGroupLayoutVertical()) {
                 ContentValues mValues = control.getSubFormsValues();
-                if(mValues != null){
+                if (mValues != null) {
                     model.putAll(mValues);
                 }
-                
+
                 model.put("name", control.getRadioGroupLayoutVerticalSelectedFieldName());
                 model.put(control.getName().toString(), control.getValue().toString());
             } else if (null != control && null != control.getValue()) {
@@ -343,8 +348,8 @@ public class DynamicForm implements Iterable<DynamicFormItem>{
 
         return model;
     }
-    
-    public int getSelectedValueIndex(){
+
+    public int getSelectedValueIndex() {
         // ContentValues model = new ContentValues();
         DynamicFormItem control;
 
@@ -360,29 +365,30 @@ public class DynamicForm implements Iterable<DynamicFormItem>{
         return -1;
     }
 
-//    /**
-//     * Fills the hashmap with the data model, matching each key from the hash map with the keys from
-//     * the from controls
-//     * 
-//     * @param model
-//     *            The hash map to be filled
-//     * @return The hash map with all the values present in the form
-//     */
-//    public HashMap<String, String> save(HashMap<String, String> model) {
-//        DynamicFormItem control;
-//
-//        Iterator<Entry<String, String>> it = model.entrySet().iterator();
-//        while (it.hasNext()) {
-//            Map.Entry<String, String> pairs = (Map.Entry<String, String>) it.next();
-//
-//            control = controls.get((String) pairs.getKey());
-//            if (null != control) {
-//                pairs.setValue((String) control.getValue());
-//            }
-//        }
-//
-//        return model;
-//    }
+    // /**
+    // * Fills the hashmap with the data model, matching each key from the hash
+    // map with the keys from
+    // * the from controls
+    // *
+    // * @param model
+    // * The hash map to be filled
+    // * @return The hash map with all the values present in the form
+    // */
+    // public HashMap<String, String> save(HashMap<String, String> model) {
+    // DynamicFormItem control;
+    //
+    // Iterator<Entry<String, String>> it = model.entrySet().iterator();
+    // while (it.hasNext()) {
+    // Map.Entry<String, String> pairs = (Map.Entry<String, String>) it.next();
+    //
+    // control = controls.get((String) pairs.getKey());
+    // if (null != control) {
+    // pairs.setValue((String) control.getValue());
+    // }
+    // }
+    //
+    // return model;
+    // }
 
     /**
      * Stores the current values of the edit controls on the server fields
@@ -445,7 +451,8 @@ public class DynamicForm implements Iterable<DynamicFormItem>{
      * Sets the OnFocusChanged listener to all the edit controls of the form
      * 
      * @param listener
-     *            The listener to be fired every time the focus of an component changes
+     *            The listener to be fired every time the focus of an component
+     *            changes
      */
     public void setOnFocusChangeListener(OnFocusChangeListener listener) {
         focus_listener = listener;
@@ -478,7 +485,8 @@ public class DynamicForm implements Iterable<DynamicFormItem>{
      * Sets the TextWatcher listener to all the edit controls of the form
      * 
      * @param listener
-     *            The listener to be fired every time the text of an component changes
+     *            The listener to be fired every time the text of an component
+     *            changes
      */
     public void setTextWatcher(TextWatcher watcher) {
         text_watcher = watcher;
@@ -491,7 +499,9 @@ public class DynamicForm implements Iterable<DynamicFormItem>{
 
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Iterable#iterator()
      */
     @Override
