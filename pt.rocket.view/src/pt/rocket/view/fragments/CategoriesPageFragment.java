@@ -14,7 +14,7 @@ import pt.rocket.framework.objects.Category;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.framework.utils.ShopSelector;
-import pt.rocket.helpers.categories.GetCategoriesHelper;
+import pt.rocket.helpers.categories.GetCategoriesPerLevelsHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.view.R;
@@ -399,9 +399,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
     private void triggerGetCategories(){
         Log.i(TAG, "TRIGGER: GET CATEGORIES");
         // Get categories
-        Bundle bundle = new Bundle();
-        bundle.putString(GetCategoriesHelper.CATEGORY_URL, null);
-        triggerContentEvent(new GetCategoriesHelper(), bundle, this);    
+        triggerContentEvent(new GetCategoriesPerLevelsHelper(), null, this);    
     }
     
     /**
@@ -471,7 +469,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
             // Validate item
             Category category = JumiaApplication.currentCategories.get(position);
             // Show product list
-            if (!category.getHasChildren()) gotoCatalog(category);
+            if (!category.getHasChildrenInArray()) gotoCatalog(category);
             // Show sub level in landscape container
             else if (isPresentLandscapeContainer()) showChildrenInLandscape(category, position);
             // Show sub level
@@ -500,7 +498,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
                 // Validate item goes to product list or a sub level
                 Category selectedCategory = currentCategory.getChildren().get(pos);
                 // Show product list
-                if (!selectedCategory.getHasChildren()) gotoCatalog(selectedCategory);
+                if (!selectedCategory.getHasChildrenInArray()) gotoCatalog(selectedCategory);
                 // Show sub level in landscape container
                 else if (isPresentLandscapeContainer()) showChildrenInLandscape(selectedCategory, pos);
                 // Show sub level
@@ -532,7 +530,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
             // Validate item goes to product list or a sub level
             Category selectedCategory = (Category) parent.getAdapter().getItem(position);
             // Show product list
-            if (!selectedCategory.getHasChildren()) gotoCatalog(selectedCategory);
+            if (!selectedCategory.getHasChildrenInArray()) gotoCatalog(selectedCategory);
             // Show sub level
             else gotoNestedCategories(selectedCategory.getName(), mLandscapeParentPosition, pos);
             break;
@@ -562,7 +560,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
             // Validate item goes to product list or a sub level
             Category selectedCategory = (Category) parent.getAdapter().getItem(position);
             // Show product list
-            if (!selectedCategory.getHasChildren()) gotoCatalog(selectedCategory);
+            if (!selectedCategory.getHasChildrenInArray()) gotoCatalog(selectedCategory);
             // Show sub level
             else gotoNestedCategories(selectedCategory.getName(), mLandscapeParentPosition, pos);
             break;

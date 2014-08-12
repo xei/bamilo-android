@@ -267,7 +267,7 @@ public class CategoriesTableHelper {
 
             String apiUrl = getAbsoluteCategoryUrl(apiFileName);
 
-            Category category = new Category(catalogIdLoaded, name, null, null, urlKey, segments, infoUrl, apiUrl, null, parent);
+            Category category = new Category(catalogIdLoaded, name, null, null, urlKey, segments, infoUrl, apiUrl, null, parent, false);
             // Category category = new Category(catalogIdLoaded, name,
             // subsection, teaserImage, teaserPosition, teaserVisible, , , , );
 

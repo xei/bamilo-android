@@ -40,21 +40,23 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
 
     private static final String TAG = LogTagHelper.create(MyAccountUserDataFragment.class);
 
-    private View mainView;
+    private static MyAccountUserDataFragment sMyAccountFragment;
     
     private final static int PASSWORD_MINLENGTH = 6;
+    
+    private View mainView;
+    
     private EditText firstNameText;
+    
     private EditText lastNameText;
+    
     private EditText emailText;
     
     private EditText newPasswordText;
+    
     private EditText newPassword2Text;
+    
     private TextView passwordErrorHint;
-    
-//    private OnFragmentActivityInteraction mCallbackMyAccountUserDataFragment;
-    
-    private static MyAccountUserDataFragment myAccountFragment;
-    
     
     /**
      * Get instance
@@ -63,8 +65,8 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
      */
     public static MyAccountUserDataFragment getInstance() {
         // if (myAccountFragment == null)
-        myAccountFragment = new MyAccountUserDataFragment();
-        return myAccountFragment;
+        sMyAccountFragment = new MyAccountUserDataFragment();
+        return sMyAccountFragment;
     }
 
     /**
@@ -101,23 +103,6 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
         // Retain this fragment across configuration changes.
         setRetainInstance(true);
     }
-
-//    /*
-//     * (non-Javadoc)
-//     * 
-//     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-//     * android.view.ViewGroup, android.os.Bundle)
-//     */
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//        super.onCreateView(inflater, container, savedInstanceState);
-//        Log.i(TAG, "ON CREATE VIEW");
-//        
-//        mainView = inflater.inflate(R.layout.my_account_user_data_fragment, container, false);
-//        setAppContentLayout();
-//        init();
-//        return mainView;
-//    }
 
     /*
      * (non-Javadoc)

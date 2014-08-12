@@ -12,7 +12,6 @@ import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.http.params.CoreProtocolPNames;
 
 import pt.rocket.framework.Darwin;
@@ -394,7 +393,7 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 		HttpResponse response = null;
 		HttpEntity entity = null;
 		// try and prevent the issue with the memory by forcing the system to do some garbage collection before executing the request.
-		System.gc();
+		//System.gc();
 		
 		// Start time 
 		long startTimeMillis = System.currentTimeMillis();
@@ -477,8 +476,6 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 			
 			// FIXME - OutOfMemoryError
 			result = EntityUtils.toString(entity, Consts.UTF_8);
-			
-			
 			Log.i(TAG, "code1response : "+result.toString());
 			//Log.i(TAG, "code1 request response is: " + result.toString());
 			//result = org.apache.commons.io.IOUtils.toString(entity.getContent());

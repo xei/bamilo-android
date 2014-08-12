@@ -20,6 +20,7 @@ import pt.rocket.framework.utils.LogTagHelper;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
+import android.util.Log;
 
 /**
  * Class that represents an Category. Composed by id, name and
@@ -30,27 +31,35 @@ import android.text.TextUtils;
  */
 public class Category implements IJSONSerializable, Parcelable {
 	
-	protected final static String TAG = LogTagHelper.create( Category.class );
+	public final static String TAG = LogTagHelper.create(Category.class);
 
-    private String id;
-    private String name;
-    private String path;
-    private String urlKey;
-    private String apiUrl;
-
-    private Category parent;
-    private ArrayList<Category> children;
+    private String mId;
+    
+    private String mName;
+    
+    private String mPath;
+    
+    private String mUrlKey;
+    
+    private String mApiUrl;
+    
+    private boolean mHasChildren;
+    
+    private Category mParent;
+    
+    private ArrayList<Category> mChildren;
 
     /**
      * Category empty constructor.
      */
     public Category() {
-        id = "-1";
-        name = "defaultName";
-        urlKey = "-1";
-        apiUrl = "";
-        children = new ArrayList<Category>();
-        parent = null;
+        mId = "-1";
+        mName = "defaultName";
+        mUrlKey = "-1";
+        mApiUrl = "";
+        mChildren = new ArrayList<Category>();
+        mParent = null;
+        mHasChildren = false;
     }
 
     /**
@@ -66,115 +75,89 @@ public class Category implements IJSONSerializable, Parcelable {
      * @param children
      * @param parent
      */
-    public Category(String id, String name, String lft, String rgt, String urlKey, String segments, String infoUrl, String apiUrl, ArrayList<Category> children, Category parent) {
-        this.id = id;
-        this.name = name;
-        this.urlKey = urlKey;
-        this.apiUrl = apiUrl;
-        this.children = children;
-        this.parent = parent;
-    }
-    
-    /**
-     * Category constructor
-     * 
-     * @param id
-     *            of the category
-     * @param name
-     *            of the category.
-     */
-    public Category(String id, String name) {
-        this.id = id;
-        this.name = name;
-        urlKey = "-1";
-        children = new ArrayList<Category>();
-        parent = null;
-    }
-
-    /**
-     * Category constructor
-     * 
-     * @param id
-     *            of the category.
-     * @param name
-     *            name of the category.
-     * 
-     * @deprecated because a category should be initializes using either a
-     *             jsonobject or a by passing a string id.
-     */
-    @Deprecated
-    public Category(int id, String name) {
-        this.id = "" + id;
-        this.name = name;
-        urlKey = "-1";
-        children = new ArrayList<Category>();
-        parent = null;
+    public Category(String id, String name, String lft, String rgt, String urlKey, String segments, String infoUrl, String apiUrl, ArrayList<Category> children, Category parent, boolean hasChildren) {
+        this.mId = id;
+        this.mName = name;
+        this.mUrlKey = urlKey;
+        this.mApiUrl = apiUrl;
+        this.mChildren = children;
+        this.mParent = parent;
+        this.mHasChildren = hasChildren;
     }
 
     /**
      * @return returns a boolean indicating if the category has any
      *         subcategories.
      */
-    public boolean getHasChildren() {
-        return children.size() > 0;
+    public boolean getHasChildrenInArray() {
+        return mChildren.size() > 0;
     }
+    
+    /**
+     * Validate the flag has children
+     * @return true or false
+     */
+    public boolean hasChildren(){
+    	return mHasChildren;
+    }
+    
 
     // Getters
 
     public void addChild(Category child) {
-        children.add(child);
+        mChildren.add(child);
     }
 
     /**
      * @return the id
      */
     public String getId() {
-        return id;
+        return mId;
     }
 
     /**
      * @return the name
      */
     public String getName() {
-        return name;
+        return mName;
     }
     
     public String getCategoryPath() {
-    	return path;
+    	return mPath;
     }
 
     /**
      * @return the urlKey
      */
     public String getUrlKey() {
-        return urlKey;
+        return mUrlKey;
     }
 
     /**
      * @return the children
      */
     public ArrayList<Category> getChildren() {
-        return children;
+        return mChildren;
     }
 
     /**
      * @return the apiUrl
      */
     public String getApiUrl() {
-        return apiUrl;
+        return mApiUrl;
     }
 
     /**
      * @return the parent category
      */
     public Category getParent() {
-        return parent;
+        return mParent;
     }
 
 
 
     public void setChildren(ArrayList<Category> children ) {
-        this.children = children;
+        this.mChildren = children;
     }
     
     /*
@@ -184,50 +167,38 @@ public class Category implements IJSONSerializable, Parcelable {
      */
     @Override
     public boolean initialize(JSONObject jsonObject) {
-        children.clear();
+        mChildren.clear();
         try {
+            mId = jsonObject.optString(RestConstants.JSON_CATEGORY_ID_TAG);
+            mName = jsonObject.optString(RestConstants.JSON_CATEGORY_NAME_TAG);
+            mUrlKey = jsonObject.optString(RestConstants.JSON_URL_KEY_TAG);
+            mApiUrl = jsonObject.optString(RestConstants.JSON_API_URL_TAG, "");
+            mHasChildren = jsonObject.optBoolean(RestConstants.JSON_HAS_CHILDREN);
 
-        	
-            id = jsonObject.optString(RestConstants.JSON_CATEGORY_ID_TAG);
-            name = jsonObject.optString(RestConstants.JSON_CATEGORY_NAME_TAG);
-            urlKey = jsonObject.optString(RestConstants.JSON_URL_KEY_TAG);
+            mPath = jsonObject.optString(RestConstants.JSON_CATEGORY_URL_TAG);
+            if ( TextUtils.isEmpty( mPath )) mPath = calcCategoryPath();
 
-            path = jsonObject.optString(RestConstants.JSON_CATEGORY_URL_TAG);
-            if ( TextUtils.isEmpty( path ))
-                path = calcCategoryPath();
-
-            apiUrl = jsonObject.getString(RestConstants.JSON_API_URL_TAG);
-            
-            
             JSONArray childrenArray = jsonObject.optJSONArray(RestConstants.JSON_CHILDREN_TAG);
-
             if (childrenArray != null) {
-                children = new ArrayList<Category>();
+                mChildren = new ArrayList<Category>();
                 for (int i = 0; i < childrenArray.length(); ++i) {
+                	JSONObject childObject = childrenArray.getJSONObject(i);
                     Category child = new Category();
-                    child.parent = this;
-                    JSONObject childObject = childrenArray.getJSONObject(i);
-                    if (child.initialize(childObject)) {
-                        children.add(child);
-                    } else {
-                        // Constants.LogError("Critical error in Category.initialize() :  parsing an category");
-                    }
+                    child.mParent = this;
+                    child.initialize(childObject);
+                    mChildren.add(child);
                 }
             }
         } catch (JSONException e) {
-            // Constants.LogError("Critical error in Category.initialize(): initializing the category using json");
-            // e.printStackTrace();
+        	Log.w(TAG, "WARNING: ON INIT CATEGORY" , e);
             return false;
         }
         return true;
     }
     
     private String calcCategoryPath() {
-    	if ( parent == null)
-    		return "/" + urlKey;
-    	else
-    		return parent.calcCategoryPath() + "/" + urlKey;
-//    		return urlKey;
+    	if ( mParent == null) return "/" + mUrlKey;
+    	else return mParent.calcCategoryPath() + "/" + mUrlKey;
     }
     
     public static Category findCategoryFromTopLevel( String id, ArrayList<Category> categories ) {
@@ -268,13 +239,13 @@ public class Category implements IJSONSerializable, Parcelable {
 
         JSONObject jsonObject = new JSONObject();
         try {        	
-            jsonObject.put(RestConstants.JSON_CATEGORY_ID_TAG, id);
-            jsonObject.put(RestConstants.JSON_CATEGORY_NAME_TAG, name);
-            jsonObject.put(RestConstants.JSON_URL_KEY_TAG, urlKey);
+            jsonObject.put(RestConstants.JSON_CATEGORY_ID_TAG, mId);
+            jsonObject.put(RestConstants.JSON_CATEGORY_NAME_TAG, mName);
+            jsonObject.put(RestConstants.JSON_URL_KEY_TAG, mUrlKey);
 
             JSONArray childrenArray = new JSONArray();
 
-            for (Category child : children) {
+            for (Category child : mChildren) {
                 childrenArray.put(child.toJSON());
             }
 
@@ -307,12 +278,12 @@ public class Category implements IJSONSerializable, Parcelable {
 	 */
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {        
-	    dest.writeString(id);
-	    dest.writeString(name);
-	    dest.writeString(urlKey);
-	    dest.writeString(apiUrl);
-	    dest.writeList(children);
-	    dest.writeValue(parent);
+	    dest.writeString(mId);
+	    dest.writeString(mName);
+	    dest.writeString(mUrlKey);
+	    dest.writeString(mApiUrl);
+	    dest.writeList(mChildren);
+	    dest.writeValue(mParent);
 	}
 	
 	/**
@@ -320,13 +291,13 @@ public class Category implements IJSONSerializable, Parcelable {
 	 * @param in
 	 */
 	protected Category(Parcel in) {
-        id = in.readString();
-        name = in.readString();
-        urlKey = in.readString();
-        apiUrl = in.readString();
-        children = new ArrayList<Category>();
-        in.readList(children, Category.class.getClassLoader());
-        parent = (Category) in.readValue(Category.class.getClassLoader());
+        mId = in.readString();
+        mName = in.readString();
+        mUrlKey = in.readString();
+        mApiUrl = in.readString();
+        mChildren = new ArrayList<Category>();
+        in.readList(mChildren, Category.class.getClassLoader());
+        mParent = (Category) in.readValue(Category.class.getClassLoader());
     }
 		
 	/**

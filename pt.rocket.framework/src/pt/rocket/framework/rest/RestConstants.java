@@ -165,6 +165,7 @@ public class RestConstants {
 	public static final String JSON_API_URL_TAG = "api_url";
 	public static final String JSON_INFO_URL_TAG = "info_url";
 	public static final String JSON_CATEGORY_URL_TAG = JSON_URL_TAG;
+	public static final String JSON_HAS_CHILDREN = "hasChildren";
 
 	// ShoppingCart Tags
 	public static final String JSON_CART_TAG = "cart";

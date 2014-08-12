@@ -118,7 +118,7 @@
                     style="@style/button_orange_style"
                     android:layout_below="@id/login_remember_user_email"
                     android:contentDescription="@string/register_submit_description"
-                    android:fontFamily="roboto-bold"
+                    android:fontFamily="roboto_bold"
                     android:text="@string/registration_text" />
             </RelativeLayout>
 

@@ -90,7 +90,6 @@ import com.actionbarsherlock.widget.SearchView;
 import com.actionbarsherlock.widget.SearchView.OnCloseListener;
 import com.actionbarsherlock.widget.SearchView.SearchAutoComplete;
 import com.bugsense.trace.BugSenseHandler;
-import com.urbanairship.UAirship;
 
 import de.akquinet.android.androlog.Log;
 

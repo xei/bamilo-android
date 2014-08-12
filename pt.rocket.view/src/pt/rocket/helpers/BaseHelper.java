@@ -7,17 +7,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import pt.rocket.app.JumiaApplication;
-import pt.rocket.constants.ConstantsSharedPrefs;
-import pt.rocket.framework.Darwin;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.Errors;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.utils.JSONConstants;
-import android.content.Context;
-import android.content.SharedPreferences;
+import android.net.Uri;
+import android.net.Uri.Builder;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -51,20 +48,11 @@ public abstract class BaseHelper {
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         
         Log.d(TAG, "checkResponseForStatus : " + eventType);
-        try {// TODO maintain generic information here, no need to pass on the
-            SharedPreferences sharedPrefs = JumiaApplication.INSTANCE.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        try {
             
              // full object in order
             JSONObject jsonObject = new JSONObject(response);
             Boolean success = jsonObject.optBoolean(JSONConstants.JSON_SUCCESS_TAG, false);
-//            JSONObject jsonSession = jsonObject.optJSONObject(JSONConstants.JSON_SESSION_TAG);            
-//            String crfToken = sharedPrefs.getString(JSONConstants.JSON_YII_CSRF_TOKEN_TAG, "");
-//            if (null != jsonSession) {
-//                crfToken = jsonSession.optString(JSONConstants.JSON_YII_CSRF_TOKEN_TAG, "");
-//            }
-//            if (!crfToken.equals("")) {
-//                sharedPrefs.getString(JSONConstants.JSON_YII_CSRF_TOKEN_TAG, "");                
-//            }
             
             if(eventType == EventType.GET_GLOBAL_CONFIGURATIONS){
                 success = true;
@@ -78,6 +66,7 @@ public abstract class BaseHelper {
                 if (jsonObject.has(JSONConstants.JSON_METADATA_TAG)) {
                 	
                 	/**
+                	 * TODO: Validate if is necessary this step
                 	 * The methods GetRegions and GetCities receive a the metadata field as json array
                 	 */
                     try {
@@ -166,4 +155,24 @@ public abstract class BaseHelper {
      * @return
      */
     public abstract Bundle parseErrorBundle(Bundle bundle);
+    
+    
+    /**
+     * Create a request with parameters.
+     * @param request
+     * @param params
+     * @return string, the url with parameters
+     * @throws NullPointerException
+     * @throws UnsupportedOperationException
+     * @author sergiopereira
+     */
+    protected String buildUriWithParameters(String request, Bundle params) {
+        // Create builder with the base request
+        Builder uriBuilder = Uri.parse(request).buildUpon();
+        // Append each parameter
+        for (String key : params.keySet()) uriBuilder.appendQueryParameter(key, params.getString(key));
+        // Return the new 
+        return uriBuilder.build().toString();
+    }
+    
 }

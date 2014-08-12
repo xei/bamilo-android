@@ -7,7 +7,6 @@ import java.util.ArrayList;
 
 import org.holoeverywhere.widget.TextView;
 
-import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.CategoriesAdapter;
 import pt.rocket.controllers.SubCategoriesAdapter;
@@ -17,7 +16,7 @@ import pt.rocket.framework.objects.Category;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.framework.utils.ShopSelector;
-import pt.rocket.helpers.categories.GetCategoriesHelper;
+import pt.rocket.helpers.categories.GetCategoriesPerLevelsHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.view.R;
@@ -44,23 +43,17 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
     
     private static final int HEADER_FOR_ALL_POSITION = 1;
     
-    private static final int NUMBER_OF_HEADERS = 2;
-    
-    private static final int ROOT_CATEGORIES_LEVEL = 0;
+    private static final String ROOT_CATEGORIES = null;
 
     private ListView mCategoryList;
 
     private Category currentCategory;
-    
-    private CategoriesAdapter mCategoryAdapter;
-
-    private SubCategoriesAdapter mSubCategoryAdapter;
 
     private LayoutInflater mInflater;
+    
+    private String mCategoryKey;
 
-    private ArrayList<Integer> mTreePath;
-
-    // private String mParentCategoryName;
+    private ArrayList<Category>  mCategories;
 
     /**
      * Create a new instance and save the bundle data
@@ -73,16 +66,13 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
         // Get data
         if(bundle != null) {
             Log.i(TAG, "ON GET INSTANCE: SAVE DATA");
-            categoriesFragment.mTreePath = bundle.getIntegerArrayList(ConstantsIntentExtra.CATEGORY_TREE_PATH);
-            // categoriesFragment.mParentCategoryName = bundle.getString(ConstantsIntentExtra.CATEGORY_PARENT_NAME);
-            // Validate path
-            if(categoriesFragment.mTreePath == null) categoriesFragment.mTreePath = new ArrayList<Integer>();
+            categoriesFragment.mCategoryKey = bundle.getString(ConstantsIntentExtra.CATEGORY_ID);
         }
         return categoriesFragment;
     }
 
     /**
-     * Empty constructor
+     * Empty constructor as a nested fragment
      */
     public NavigationCategoryFragment() {
         super(IS_NESTED_FRAGMENT, R.layout.navigation_fragment_categories);
@@ -111,8 +101,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
         // Validate saved state
         if(savedInstanceState != null) {
             Log.i(TAG, "ON LOAD SAVED STATE");
-            mTreePath = savedInstanceState.getIntegerArrayList(ConstantsIntentExtra.CATEGORY_TREE_PATH);
-            // mParentCategoryName = savedInstanceState.getString(ConstantsIntentExtra.CATEGORY_PARENT_NAME);
+            mCategoryKey = savedInstanceState.getString(ConstantsIntentExtra.CATEGORY_ID);
         }
     }
     
@@ -127,10 +116,14 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
         // Get inflater
         mInflater = LayoutInflater.from(getBaseActivity());
         // Get category list view
-        mCategoryList = (ListView) getView().findViewById(R.id.sub_categories_grid);
-        // Validate the cache
-        if (JumiaApplication.currentCategories != null) showCategoryList();
-        else if(!TextUtils.isEmpty(ShopSelector.getShopId())) triggerGetCategories();
+        mCategoryList = (ListView) getView().findViewById(R.id.nav_sub_categories_grid);
+        
+        // Validation to show content
+        // Case cache
+        if (mCategories != null && mCategories.size() > 0) showCategoryList(mCategories);
+        // Case empty
+        else if(!TextUtils.isEmpty(ShopSelector.getShopId())) triggerGetCategories(mCategoryKey);
+        // Case recover from background
         else { Log.w(TAG, "APPLICATION IS ON BIND PROCESS"); showRetry(); }
     }
 
@@ -164,8 +157,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Log.i(TAG, "ON SAVE INSTANCE");
-        outState.putIntegerArrayList(ConstantsIntentExtra.CATEGORY_TREE_PATH, mTreePath);
-        // outState.putString(ConstantsIntentExtra.CATEGORY_PARENT_NAME, mParentCategoryName);
+        outState.putString(ConstantsIntentExtra.CATEGORY_ID, mCategoryKey);
     }
 
     /*
@@ -199,40 +191,33 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
     public void onDestroyView() {
         super.onDestroyView();
         Log.i(TAG, "ON DESTROY");
-       
     }
     
     /**
      * ######## LAYOUT ########
      */
-    
     /**
      * Show the category list for current level
      * @author sergiopereira
      */
-    private void showCategoryList() {
-        // Get level
-        int mTreeLevel = mTreePath.size();
-        Log.i(TAG, "SHOW CATEGORY IN LEVEL: " + mTreeLevel);
-        
+    private void showCategoryList(ArrayList<Category> categories) {
         // Case root
-        if(mTreeLevel == ROOT_CATEGORIES_LEVEL) showRootCategories();
+        if(mCategoryKey == ROOT_CATEGORIES) showRootCategories(categories);
         // Case branch
-        else if(mTreeLevel > ROOT_CATEGORIES_LEVEL) showSubCategory();
-        // Case unknown
+        else if(categories != null && categories.size() > 0) showSubCategory(categories.get(0));
+        // Case error
         else showRetry();
-        
         // Show content
-        showContent();
+        showFragmentContentContainer();
     }
-        
+    
     /**
      * Show the root categories without headers
      * @author sergiopereira
      */
-    private void showRootCategories() {
+    private void showRootCategories(ArrayList<Category> categories) {
         Log.i(TAG, "ON SHOW ROOT CATEGORIES");
-        mCategoryAdapter = new CategoriesAdapter(getActivity(), JumiaApplication.currentCategories);
+        CategoriesAdapter mCategoryAdapter = new CategoriesAdapter(getActivity(), categories);
         mCategoryList.setAdapter(mCategoryAdapter);
         mCategoryList.setOnItemClickListener(this);
     }
@@ -241,48 +226,26 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
      * Show the nested categories with respective headers
      * @author sergiopereira
      */
-    private void showSubCategory() {
+    private void showSubCategory(Category category) {
         Log.i(TAG, "ON SHOW NESTED CATEGORIES");
         try {
             // Get data
-            currentCategory = findCategoryByPath();
-            ArrayList<Category> child = currentCategory.getChildren();
-            String categoryName = currentCategory.getName();
+            this.currentCategory = category;
+            ArrayList<Category> child = category.getChildren();
+            String categoryName = category.getName();
             // Create and add the header for back
             // Use always word BACK
             View headerForBack = createHeader(R.layout.category_inner_top_back, getString(R.string.back_label)); 
             mCategoryList.addHeaderView(headerForBack);
             // Set Adapter
-            mSubCategoryAdapter = new SubCategoriesAdapter(getActivity(), child, categoryName);
+            SubCategoriesAdapter mSubCategoryAdapter = new SubCategoriesAdapter(getBaseActivity(), child, categoryName);
             mCategoryList.setAdapter(mSubCategoryAdapter);
             // Set listener
             mCategoryList.setOnItemClickListener(this);
         } catch (NullPointerException e) {
             Log.w(TAG, "WARNING NPE ON SHOW NESTED CATEGORIES: GOTO ROOT CATEGORIES");
-            goToParentCategoryFromType(FragmentType.NAVIGATION_CATEGORIES_ROOT_LEVEL);
+            showRetry();
         }
-    }
-    
-    /**
-     * Method used to find the current category with respective path
-     * @return Category or null
-     * @author sergiopereira
-     */
-    private Category findCategoryByPath() {
-        Log.i(TAG, "ON FIND CURRENT CATEGORY");
-        // Get root categories
-        ArrayList<Category> subCategories = JumiaApplication.currentCategories;
-        // Current category
-        Category category =  null;
-        // For each parent position
-        for (Integer nodePosition : mTreePath) {
-            // Get category to return
-            category = subCategories.get(nodePosition);
-            // Get childs to find
-            subCategories = category.getChildren();
-        }
-        if(category == null) Log.i(TAG, "NOT FOUND CURRENT CATEGORY");
-        return category;
     }
     
     /**
@@ -299,14 +262,6 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
     }
     
     /**
-     * Show only the content view
-     * @author sergiopereira
-     */
-    private void showContent() {
-        showFragmentContentContainer();
-    }
-    
-    /**
      * Show only the retry view
      * @author sergiopereira
      */
@@ -318,15 +273,19 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
      * ####### TRIGGERS ####### 
      */
     /**
-     * Trigger to get categories
-     * @author sergiopereira
+     * Trigger to get categories with pagination
+     * @param categoryKey
      */
-    private void triggerGetCategories(){
-        Log.i(TAG, "TRIGGER: GET CATEGORIES");
-        // Get categories
+    private void triggerGetCategories(String categoryKey) {
+        Log.i(TAG, "GET CATEGORY PER LEVEL: " + categoryKey);
+        // Create bundle 
         Bundle bundle = new Bundle();
-        bundle.putString(GetCategoriesHelper.CATEGORY_URL, null);
-        triggerContentEvent(new GetCategoriesHelper(), bundle, this);    
+        // Get per levels
+        bundle.putString(GetCategoriesPerLevelsHelper.PAGINATE_KEY, GetCategoriesPerLevelsHelper.PAGINATE_ENABLE);
+        // Get category
+        if(!TextUtils.isEmpty(categoryKey)) bundle.putString(GetCategoriesPerLevelsHelper.CATEGORY_KEY, categoryKey);
+        // Trigger
+        triggerContentEvent(new GetCategoriesPerLevelsHelper(), bundle, this);
     }
     
     /**
@@ -355,18 +314,10 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Log.d(TAG, "ON ITEM CLICKED: " + position);
-        // Validate tree level
-        int mTreeLevel = mTreePath.size();
-        Log.d(TAG, "TREE LEVEL: " + mTreeLevel);
-        // Validate the level
-        switch (mTreeLevel) {
-        case ROOT_CATEGORIES_LEVEL:
-            onClickRootCategory(position);
-            break;
-        default:
-            onClickNestedCategory(position);
-            break;
-        }
+        // Case root
+        if(mCategoryKey == ROOT_CATEGORIES) onClickRootCategory(parent, position);
+        // Case branch or leaf
+        else onClickNestedCategory(parent, position);
     }
     
     /**
@@ -374,16 +325,15 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
      * @param position
      * @author sergiopereira
      */
-    private void onClickRootCategory(int position) {
+    private void onClickRootCategory(AdapterView<?> parent, int position) {
         try {
-            // Validate item
-            Category category = JumiaApplication.currentCategories.get(position);
+            Category category = (Category) parent.getAdapter().getItem(position);
             // Show product list
-            if (!category.getHasChildren()) showProductList(category);
+            if (!category.hasChildren()) gotoCatalog(category);
             // Show sub level
-            else showNestedCategories(getString(R.string.categories), position);
+            else gotoSubCategory(category.getUrlKey());
         } catch (NullPointerException e) {
-            Log.w(TAG, "WARNING NPE ON CLICK ROOT CATEGORY POS: " + position);   
+            Log.w(TAG, "WARNING: NPE ON CLICK ROOT CATEGORY");   
         }
     }
     
@@ -392,26 +342,24 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
      * @param position
      * @author sergiopereira
      */
-    private void onClickNestedCategory(int position) {
+    private void onClickNestedCategory(AdapterView<?> parent, int position) {
         try {
             switch (position) {
             case HEADER_FOR_BACK_POSITION:
                 // First header goes to parent
-                goToParentCategoryFromType(FragmentType.NAVIGATION_CATEGORIES_SUB_LEVEL);
+                gotoParentCategoryFromType(FragmentType.NAVIGATION_CATEGORIES_SUB_LEVEL);
                 break;
             case HEADER_FOR_ALL_POSITION:
                 // Second header goes to all
-                showProductList(currentCategory);
+                gotoCatalog(currentCategory);
                 break;
             default:
-                // Get real position
-                int pos = position - NUMBER_OF_HEADERS;
                 // Validate item goes to product list or a sub level
-                Category selectedCategory = currentCategory.getChildren().get(pos);
+                Category selectedCategory = (Category) parent.getAdapter().getItem(position);
                 // Show product list
-                if (!selectedCategory.getHasChildren()) showProductList(selectedCategory);
+                if (!selectedCategory.hasChildren()) gotoCatalog(selectedCategory);
                 // Show sub level
-                else showNestedCategories(currentCategory.getName(), pos);
+                else gotoSubCategory(selectedCategory.getUrlKey());
                 break;
             }
         } catch (Exception e) {
@@ -420,18 +368,13 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
     }
     
     /**
-     * Show nested categories with title name
-     * @param name
-     * @param position
+     * Show nested categories
+     * @param category key
      * @author sergiopereira
      */
-    @SuppressWarnings("unchecked")
-    private void showNestedCategories(String name, int position){
-        ArrayList<Integer> newTreePath = (ArrayList<Integer>) mTreePath.clone();
-        newTreePath.add(position);
+    private void gotoSubCategory(String categoryKey){
         Bundle bundle = new Bundle();
-        bundle.putIntegerArrayList(ConstantsIntentExtra.CATEGORY_TREE_PATH, newTreePath);
-        bundle.putString(ConstantsIntentExtra.CATEGORY_PARENT_NAME, name);
+        bundle.putString(ConstantsIntentExtra.CATEGORY_ID, categoryKey);
         ((NavigationFragment) getParentFragment()).onSwitchChildFragment(FragmentType.NAVIGATION_CATEGORIES_SUB_LEVEL, bundle);
     }
     
@@ -440,33 +383,19 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
      * @param category
      * @author sergiopereira
      */
-    private void showProductList(Category category) {
-        Bundle bundle2 = new Bundle();
-        //bundle2.putBoolean(CategoriesContainerFragment.REMOVE_FRAGMENTS, true);
-        bundle2.putString(ConstantsIntentExtra.CONTENT_URL, category.getApiUrl());
-        bundle2.putString(ConstantsIntentExtra.CONTENT_TITLE, category.getName());
-        bundle2.putString(ConstantsIntentExtra.SEARCH_QUERY, null);
-        bundle2.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcategory_prefix);
-        bundle2.putString(ConstantsIntentExtra.NAVIGATION_PATH, category.getCategoryPath());
+    private void gotoCatalog(Category category) {
+        Bundle bundle = new Bundle();
+        bundle.putString(ConstantsIntentExtra.CONTENT_URL, category.getApiUrl());
+        bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, category.getName());
+        bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, null);
+        bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcategory_prefix);
+        bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, category.getCategoryPath());
         // Remove entries until Home
         FragmentController.getInstance().removeEntriesUntilTag(FragmentType.HOME.toString());
         // Goto Catalog
-        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_LIST, bundle2, FragmentController.ADD_TO_BACK_STACK);
+        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_LIST, bundle, FragmentController.ADD_TO_BACK_STACK);
         // Tracking category
         trackCategory(category.getName());
-    }
-    
-    
-    /**
-     * Tracking category
-     * @param name
-     */
-    private void trackCategory(String name){
-        Bundle params = new Bundle();
-        params.putString(TrackerDelegator.CATEGORY_KEY, name);
-        params.putInt(TrackerDelegator.PAGE_NUMBER_KEY, 1);
-        params.putString(TrackerDelegator.LOCATION_KEY, getString(R.string.gnavigation));
-        TrackerDelegator.trackCategoryView(params);
     }
     
     /**
@@ -474,7 +403,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
      * @param type
      * @author sergiopereira
      */
-    private void goToParentCategoryFromType(FragmentType type){
+    private void gotoParentCategoryFromType(FragmentType type){
         Log.i(TAG, "GOTO PARENT LEVEL FROM: " + type.toString());
         switch (type) {
         case NAVIGATION_CATEGORIES_ROOT_LEVEL:
@@ -495,7 +424,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
      */
     private void onClickRetryButton(){
         Log.d(TAG, "ON CLICK RETRY");
-        triggerGetCategories();
+        triggerGetCategories(mCategoryKey);
     }
 
     /**
@@ -508,13 +437,12 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
     @Override
     public void onRequestComplete(Bundle bundle) {
         Log.i(TAG, "ON SUCCESS EVENT");
-        // Save categories
-        JumiaApplication.currentCategories = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
         // Validate fragment state
-        if(isOnStoppingProcess) return;
-        // Validate saved categories
-        if(JumiaApplication.currentCategories != null) showCategoryList();
-        else showRetry();
+        if (isOnStoppingProcess) return;
+        // Get categories
+        mCategories = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
+        // Show categories
+        showCategoryList(mCategories);
     }
 
     /*
@@ -526,6 +454,21 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
         Log.i(TAG, "ON ERROR EVENT");
         // Show retry
         showRetry();
+    }
+    
+    /**
+     * ####### TRACKING ####### 
+     */
+    /**
+     * Tracking category
+     * @param name
+     */
+    private void trackCategory(String name){
+        Bundle params = new Bundle();
+        params.putString(TrackerDelegator.CATEGORY_KEY, name);
+        params.putInt(TrackerDelegator.PAGE_NUMBER_KEY, 1);
+        params.putString(TrackerDelegator.LOCATION_KEY, getString(R.string.gnavigation));
+        TrackerDelegator.trackCategoryView(params);
     }
     
 }

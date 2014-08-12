@@ -85,7 +85,9 @@ public class SessionRegisterFragment extends BaseFragment {
     private TextView registerRequiredText;
 
     private static DynamicForm serverForm;
+    
     private DynamicFormItem termsLink;
+    
     private DynamicFormItem newsletterSubscribe;
     
     private String terms;
@@ -253,27 +255,7 @@ public class SessionRegisterFragment extends BaseFragment {
      * Inflate this layout
      */
     public void setAppContentLayout() {
-
-        // checkTerms = (CheckBox) getView().findViewById(R.id.checkTerms);
-        // checkTerms.setPadding(checkTerms.getPaddingLeft(), checkTerms.getPaddingTop(),
-        // checkTerms.getPaddingRight(),
-        // checkTerms.getPaddingBottom());
-        // termsRequiredText = (TextView) getView().findViewById(R.id.termsRequired);
-        //
-        // if (!termsAreRequired) {
-
-        /**
-         * TRIGGERS
-         * 
-         * @author sergiopereira
-         */
         triggerTerms();
-
-        // } else {
-        // View termsContainer = getView().findViewById(R.id.termsContainer);
-        // termsContainer.setVisibility(View.GONE);
-        // }
-
     }
 
     /**
@@ -487,18 +469,6 @@ public class SessionRegisterFragment extends BaseFragment {
         triggerRegister(values);
     }
 
-//    /**
-//     * 
-//     * @return
-//     */
-//    private Bundle saveFormToBundle() {
-//        Bundle bundle = new Bundle();
-//        for (DynamicFormItem entry : serverForm) {
-//            bundle.putString(entry.getKey(), entry.getValue());
-//        }
-//        return bundle;
-//    }
-
     /**
      * #### EVENTS ####
      */
@@ -569,27 +539,6 @@ public class SessionRegisterFragment extends BaseFragment {
         }
         return true;
     }
-
-//    private void requestStore(Bundle bundle) {
-//        Log.d(TAG, "requestLogin: trigger LogInEvent for store only");
-//        if (serverForm == null) {
-//            return;
-//        }
-//        ContentValues values = new ContentValues();
-//        for (DynamicFormItem item : serverForm) {
-//            String value = bundle.getString(item.getKey());
-//            values.put(item.getName(), value);
-//        }
-//        values.put(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, true);
-//
-//        /**
-//         * TRIGGERS
-//         * 
-//         * @author sergiopereira
-//         */
-//        triggerStoreLogin(values);
-//
-//    }
 
     /**
      * 
