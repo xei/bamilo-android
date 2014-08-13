@@ -52,6 +52,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
@@ -168,7 +169,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         // Adx launch event
         launchEvent();
         jumiaMapImage = findViewById(R.id.jumiaMap);
-        final Animation animationFadeIn = AnimationUtils.loadAnimation(this, R.animator.activityfadein);
+        final Animation animationFadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
         animationFadeIn.setDuration(1250);
         jumiaMapImage.startAnimation(animationFadeIn);
     }
@@ -295,14 +296,21 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      */
     public void selectActivity() {
         jumiaMapImage = findViewById(R.id.jumiaMap);
-        final Animation animationFadeIn = AnimationUtils.loadAnimation(this, R.animator.splashfadeout);
-        animationFadeIn.setDuration(500);
-        jumiaMapImage.startAnimation(animationFadeIn);
-
-        new Handler().post(new Runnable() {
-
+        final Animation animationFadeOut = AnimationUtils.loadAnimation(this, R.anim.fade_out);
+        animationFadeOut.setDuration(750);
+        animationFadeOut.setAnimationListener(new AnimationListener() {
+            
             @Override
-            public void run() {
+            public void onAnimationStart(Animation animation) {
+            }
+            
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+            
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                jumiaMapImage.setVisibility(View.GONE);
                 // ## Google Analytics "General Campaign Measurement" ##
                 TrackerDelegator.trackCampaign(utm);
                 // ## Product URL ##
@@ -322,6 +330,8 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
                 finish();
             }
         });
+        
+        jumiaMapImage.startAnimation(animationFadeOut);
     }
 
     /**
@@ -597,14 +607,21 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      */
     private void onProcessRequiresUserError() {
         jumiaMapImage = findViewById(R.id.jumiaMap);
-        final Animation animationFadeIn = AnimationUtils.loadAnimation(this, R.animator.splashfadeout);
-        animationFadeIn.setDuration(500);
-        jumiaMapImage.startAnimation(animationFadeIn);
-
-        new Handler().post(new Runnable() {
-
+        final Animation animationFadeOut = AnimationUtils.loadAnimation(this, R.anim.fade_out);
+        animationFadeOut.setDuration(750);
+        animationFadeOut.setAnimationListener(new AnimationListener() {
+            
             @Override
-            public void run() {
+            public void onAnimationStart(Animation animation) {
+            }
+            
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+            
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                jumiaMapImage.setVisibility(View.GONE);
                 Log.i(TAG, "ON PROCESS REQUIRES USER INTERACTION");
                 // Show Change country
                 Intent intent = new Intent(getApplicationContext(), MainFragmentActivity.class);
@@ -616,6 +633,8 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
                 finish();
             }
         });
+        jumiaMapImage.startAnimation(animationFadeOut);
+
     }
 
     /**
@@ -635,7 +654,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
             Log.d(TAG, "START MAIN ACTIVITY");
             // Show activity
             selectActivity();
-            finish();
         }
     }
 
