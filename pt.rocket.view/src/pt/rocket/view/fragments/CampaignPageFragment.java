@@ -68,6 +68,7 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
     public static final String TAG = LogTagHelper.create(CampaignPageFragment.class);
     
     private final static String COUNTER_START_TIME = "start_time";
+    private final static String BANNER_STATE = "banner_state";
     
     private static CampaignPageFragment sCampaignFragment;
 
@@ -105,6 +106,14 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
 
     private boolean isScrolling;
     
+    private enum BannerVisibility{
+        DEFAULT,
+        VISIBLE,
+        HIDDEN
+    }
+    private BannerVisibility bannerState;
+    
+    
     /**
      * Constructor via object
      * @return CampaignFragment
@@ -112,7 +121,7 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
      */
     public static CampaignPageFragment getInstance(TeaserCampaign teaserCampaign) {
         sCampaignFragment = new CampaignPageFragment();
-        sCampaignFragment.mTeaserCampaign = teaserCampaign;
+        sCampaignFragment.mTeaserCampaign = teaserCampaign;        
         return sCampaignFragment;
     }
     
@@ -132,6 +141,7 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
      */
     public CampaignPageFragment() {
         super(IS_NESTED_FRAGMENT, R.layout.campaign_fragment_pager_item);
+        bannerState = BannerVisibility.DEFAULT;
     }
 
     /*
@@ -163,6 +173,8 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
             // Restore startTime
             if(savedInstanceState.containsKey(COUNTER_START_TIME)) 
                 mStartTimeInMilliseconds = savedInstanceState.getLong(COUNTER_START_TIME, SystemClock.elapsedRealtime());
+            if(savedInstanceState.containsKey(BANNER_STATE)) 
+                bannerState = (BannerVisibility)savedInstanceState.getSerializable(BANNER_STATE);
         }
     }
     
@@ -217,6 +229,7 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
         Log.i(TAG, "ON SAVE INSTANCE STATE: CAMPAIGN");
         outState.putParcelable(TAG, mCampaign);
         outState.putLong(COUNTER_START_TIME, mStartTimeInMilliseconds);
+        outState.putSerializable(BANNER_STATE, bannerState);
     }
 
     /*
@@ -283,8 +296,10 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
         Log.i(TAG, "LOAD CAMPAIGN");
         // Get banner
         mBannerView = getBannerView();
-        // Add banner to header
-        mGridView.addHeaderView(mBannerView);        
+        if (BannerVisibility.HIDDEN != bannerState) {
+            // Add banner to header
+            mGridView.addHeaderView(mBannerView);
+        }
         // Validate the current data
         mArrayAdapter = (CampaignAdapter) mGridView.getAdapter();
         if(mArrayAdapter == null){
@@ -293,8 +308,10 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
             mGridView.setAdapter(mArrayAdapter);
         }
         // Show content
+        if (BannerVisibility.HIDDEN == bannerState) {
+            showContent();
+        }
         //showContent();
-        
     }
     
     /**
@@ -305,35 +322,40 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
     private View getBannerView(){
         // Inflate the banner layout
         final View bannerView = LayoutInflater.from(getActivity()).inflate(R.layout.campaign_fragment_banner, mGridView, false);
-        // Get the image view
-        final ImageView imageView = (ImageView) bannerView.findViewById(R.id.campaign_banner);
-        // Load the bitmap
-        String url = (getResources().getBoolean(R.bool.isTablet)) ? mCampaign.getTabletBanner() : mCampaign.getMobileBanner();
-        RocketImageLoader.instance.loadImage(url, imageView, false, new RocketImageLoader.RocketImageLoaderListener() {
-            
-            @Override
-            public void onLoadedSuccess(Bitmap bitmap) {
-                // Show content
-                imageView.setImageBitmap(bitmap);
-                showContent();                
-            }
-            
-            @Override
-            public void onLoadedError() {
-                bannerView.setVisibility(View.GONE);
-                mGridView.removeHeaderView(bannerView);
-                // Show content
-                showContent();                
-            }
-            
-            @Override
-            public void onLoadedCancel(String imageUrl) {
-                bannerView.setVisibility(View.GONE);
-                mGridView.removeHeaderView(bannerView);
-                // Show content
-                showContent();                
-            }
-        });
+        if (BannerVisibility.HIDDEN != bannerState) {
+            // Get the image view
+            final ImageView imageView = (ImageView) bannerView.findViewById(R.id.campaign_banner);
+            // Load the bitmap
+            String url = (getResources().getBoolean(R.bool.isTablet)) ? mCampaign.getTabletBanner() : mCampaign.getMobileBanner();
+            RocketImageLoader.instance.loadImage(url, imageView, false, new RocketImageLoader.RocketImageLoaderListener() {
+                
+                @Override
+                public void onLoadedSuccess(Bitmap bitmap) {
+                    // Show content
+                    imageView.setImageBitmap(bitmap);
+                    bannerState = BannerVisibility.VISIBLE;
+                    showContent();                
+                }
+                
+                @Override
+                public void onLoadedError() {
+                    bannerView.setVisibility(View.GONE);
+                    mGridView.removeHeaderView(bannerView);
+                    bannerState = BannerVisibility.HIDDEN;
+                    // Show content
+                    showContent();                
+                }
+                
+                @Override
+                public void onLoadedCancel(String imageUrl) {
+                    bannerView.setVisibility(View.GONE);
+                    mGridView.removeHeaderView(bannerView);
+                    bannerState = BannerVisibility.HIDDEN;
+                    // Show content
+                    showContent();                
+                }
+            });
+        }
         
         // Return the banner
         return bannerView;
