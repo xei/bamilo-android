@@ -26,7 +26,7 @@ public class DialogGenericFragment extends DialogFragment {
 
     private static DialogGenericFragment dialogGenericFragment;
 
-    private Boolean hasHeader;
+    //private Boolean hasHeader;
     
     private Boolean mainText;
     
@@ -65,7 +65,7 @@ public class DialogGenericFragment extends DialogFragment {
         Log.d(TAG, "NEW INSTANCE: 2 Buttons");
 
         dialogGenericFragment = new DialogGenericFragment();
-        dialogGenericFragment.hasHeader = has_header;
+        //dialogGenericFragment.hasHeader = has_header;
         dialogGenericFragment.mainText = main_text;
         dialogGenericFragment.secondaryText = secondary_text;
         dialogGenericFragment.title = title;
@@ -98,7 +98,7 @@ public class DialogGenericFragment extends DialogFragment {
         Log.d(TAG, "NEW INSTANCE: 3 Buttons");
 
         DialogGenericFragment dialogGenericFragment = new DialogGenericFragment();
-        dialogGenericFragment.hasHeader = has_header;
+        //dialogGenericFragment.hasHeader = has_header;
         dialogGenericFragment.mainText = main_text;
         dialogGenericFragment.secondaryText = secondary_text;
         dialogGenericFragment.title = title;

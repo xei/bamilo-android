@@ -75,7 +75,7 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
     private int mSelected;
     private int mOldSelected;
 
-    private boolean mLayoutBlocksChanges;
+    //private boolean mLayoutBlocksChanges;
     
     private int mContentWidth;
     private Runnable mRequestLayoutRunnable = new Runnable() {
@@ -239,7 +239,9 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
     protected synchronized void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
         // Log.d( TAG, "onLayout" );
-        mLayoutBlocksChanges = true;
+        
+        //mLayoutBlocksChanges = true;
+        
         if (mAdapter == null) {
             return;
         }
@@ -285,7 +287,7 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
             post(mRequestLayoutRunnable);
         }
 
-        mLayoutBlocksChanges = false;
+        //mLayoutBlocksChanges = false;
     }
 
     private void fillList(final int dx) {

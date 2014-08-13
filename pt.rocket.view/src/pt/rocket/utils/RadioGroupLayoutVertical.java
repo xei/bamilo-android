@@ -99,20 +99,20 @@ public class RadioGroupLayoutVertical extends RadioGroup {
                 extras.addView(formGenerator.getContainer());
                 mLinearLayout.setId(idx);
                 
-                if (JumiaApplication.INSTANCE.getPaymentsInfoList() != null
-                        && JumiaApplication.INSTANCE.getPaymentsInfoList().size() > 0
-                        && JumiaApplication.INSTANCE.getPaymentsInfoList().containsKey(mItems.get(idx))) {
+                if (JumiaApplication.getPaymentsInfoList() != null
+                        && JumiaApplication.getPaymentsInfoList().size() > 0
+                        && JumiaApplication.getPaymentsInfoList().containsKey(mItems.get(idx))) {
                     
                     
-                    if(JumiaApplication.INSTANCE.getPaymentsInfoList().get(mItems.get(idx)).getText() != null && JumiaApplication.INSTANCE.getPaymentsInfoList().get(mItems.get(idx)).getText().length() > 0){
+                    if(JumiaApplication.getPaymentsInfoList().get(mItems.get(idx)).getText() != null && JumiaApplication.getPaymentsInfoList().get(mItems.get(idx)).getText().length() > 0){
                         TextView mTextView = (TextView) extras.findViewById(R.id.payment_text);
-                        mTextView.setText(JumiaApplication.INSTANCE.getPaymentsInfoList().get(mItems.get(idx)).getText());
+                        mTextView.setText(JumiaApplication.getPaymentsInfoList().get(mItems.get(idx)).getText());
                         mTextView.setVisibility(View.VISIBLE);
                     }
                     
-                    if(JumiaApplication.INSTANCE.getPaymentsInfoList().get(mItems.get(idx)).getImages() != null && JumiaApplication.INSTANCE.getPaymentsInfoList().get(mItems.get(idx)).getImages().size() > 0){
+                    if(JumiaApplication.getPaymentsInfoList().get(mItems.get(idx)).getImages() != null && JumiaApplication.getPaymentsInfoList().get(mItems.get(idx)).getImages().size() > 0){
                         ImageView mImageView = (ImageView) extras.findViewById(R.id.payment_img);
-                        RocketImageLoader.instance.loadImage(JumiaApplication.INSTANCE.getPaymentsInfoList().get(mItems.get(idx)).getImages().get(0), mImageView);
+                        RocketImageLoader.instance.loadImage(JumiaApplication.getPaymentsInfoList().get(mItems.get(idx)).getImages().get(0), mImageView);
                     }
                 }
 
@@ -149,9 +149,9 @@ public class RadioGroupLayoutVertical extends RadioGroup {
 
                 mGroup.addView(mLinearLayout);
 
-            } else if (JumiaApplication.INSTANCE.getPaymentsInfoList() != null
-                    && JumiaApplication.INSTANCE.getPaymentsInfoList().size() > 0
-                    && JumiaApplication.INSTANCE.getPaymentsInfoList().containsKey(mItems.get(idx))) {
+            } else if (JumiaApplication.getPaymentsInfoList() != null
+                    && JumiaApplication.getPaymentsInfoList().size() > 0
+                    && JumiaApplication.getPaymentsInfoList().containsKey(mItems.get(idx))) {
                 final LinearLayout mLinearLayout = (LinearLayout) mInflater.inflate(
                         R.layout.form_radiobutton_with_extra, null,
                         false);
@@ -161,21 +161,21 @@ public class RadioGroupLayoutVertical extends RadioGroup {
                 final LinearLayout extras = (LinearLayout) mLinearLayout.findViewById(R.id.extras);
                 mLinearLayout.setId(idx);
                 
-                if (JumiaApplication.INSTANCE.getPaymentsInfoList() != null
-                        && JumiaApplication.INSTANCE.getPaymentsInfoList().size() > 0
-                        && JumiaApplication.INSTANCE.getPaymentsInfoList().containsKey(mItems.get(idx))) {
+                if (JumiaApplication.getPaymentsInfoList() != null
+                        && JumiaApplication.getPaymentsInfoList().size() > 0
+                        && JumiaApplication.getPaymentsInfoList().containsKey(mItems.get(idx))) {
                     
                     
-                    if(JumiaApplication.INSTANCE.getPaymentsInfoList().get(mItems.get(idx)).getText() != null && JumiaApplication.INSTANCE.getPaymentsInfoList().get(mItems.get(idx)).getText().length() > 0){
+                    if(JumiaApplication.getPaymentsInfoList().get(mItems.get(idx)).getText() != null && JumiaApplication.getPaymentsInfoList().get(mItems.get(idx)).getText().length() > 0){
                         TextView mTextView = (TextView) extras.findViewById(R.id.payment_text);
-                        mTextView.setText(JumiaApplication.INSTANCE.getPaymentsInfoList().get(mItems.get(idx)).getText());
+                        mTextView.setText(JumiaApplication.getPaymentsInfoList().get(mItems.get(idx)).getText());
                         mTextView.setVisibility(View.VISIBLE);
                     }
                     
-                    if(JumiaApplication.INSTANCE.getPaymentsInfoList().get(mItems.get(idx)).getImages() != null && JumiaApplication.INSTANCE.getPaymentsInfoList().get(mItems.get(idx)).getImages().size() > 0){
+                    if(JumiaApplication.getPaymentsInfoList().get(mItems.get(idx)).getImages() != null && JumiaApplication.getPaymentsInfoList().get(mItems.get(idx)).getImages().size() > 0){
                         ImageView mImageView = (ImageView) extras.findViewById(R.id.payment_img);
                         
-                        RocketImageLoader.instance.loadImage(JumiaApplication.INSTANCE.getPaymentsInfoList().get(mItems.get(idx)).getImages().get(0), mImageView);
+                        RocketImageLoader.instance.loadImage(JumiaApplication.getPaymentsInfoList().get(mItems.get(idx)).getImages().get(0), mImageView);
                     }
                 }
 

@@ -8,7 +8,8 @@ import android.widget.Checkable;
 import android.widget.RelativeLayout;
 
 public class CheckableRelativeLayout extends RelativeLayout implements Checkable {
-	private final static String TAG = CheckableRelativeLayout.class.getSimpleName();
+	
+	public final static String TAG = CheckableRelativeLayout.class.getSimpleName();
 	
 	private boolean isChecked;
 

@@ -887,7 +887,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * Hides the loading screen that appears on the front of the fragmetn while it waits for the
      * data to arrive from the server
      */
-    private void hideLoadingInfo(View mLoadingView) {
+    protected final void hideLoadingInfo(View mLoadingView) {
         Log.w(TAG, "HIDDING LAODING LAYOUT");
         // Set view
         try {
@@ -899,10 +899,10 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     }
     
     /**
-     * Shows the loading screen that appears on the front of the fragmetn while it waits for the
+     * Shows the loading screen that appears on the front of the fragment while it waits for the
      * data to arrive from the server
      */
-    private final void showLoadingInfo(View mLoadingView) {
+    protected final void showLoadingInfo(View mLoadingView) {
         Log.w(TAG, "SHOWING LAODING LAYOUT");
         setVisibility(mLoadingView, true);
         // Set view
@@ -932,7 +932,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * @param view
      * @param show
      */
-    private static void setVisibility(View view, boolean show) {
+    private final void setVisibility(View view, boolean show) {
         if (view != null) view.setVisibility(show ? View.VISIBLE : View.GONE);
     }
     

@@ -125,11 +125,6 @@ public class JumiaApplication extends A4SApplication implements ExceptionCallbac
     private IRemoteServiceCallback callBackWaitingService;
 
     /**
-     * Current categories
-     */
-    public static ArrayList<Category> currentCategories;
-
-    /**
      * Payment methods Info
      */
     private static HashMap<String, PaymentInfo> paymentsInfoList;
@@ -142,13 +137,7 @@ public class JumiaApplication extends A4SApplication implements ExceptionCallbac
 
     public ArrayList<CountryObject> countriesAvailable = null;
 
-    /**
-     * Tracking Request performance
-     */
-    // public AndroidFileFunctions trackerFile;
-    // public HashMap<EventType, Long> timeTrackerMap = new HashMap<EventType,
-    // Long>();
-
+    
     @Override
     public void onApplicationCreate() {
         Log.d(TAG, "ON CREATE");
@@ -727,7 +716,6 @@ public class JumiaApplication extends A4SApplication implements ExceptionCallbac
     }
 
     public void cleanAllPreviousCountryValues() {
-        currentCategories = null;
         setCart(null);
         setFormDataRegistry(new HashMap<String, FormData>());
         registerForm = null;
