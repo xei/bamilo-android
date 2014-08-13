@@ -48,9 +48,12 @@ import android.os.Handler;
 import android.os.RemoteException;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import com.bugsense.trace.BugSenseHandler;
@@ -105,6 +108,8 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     private Bundle mDeepLinkBundle;
 
     private boolean isDeepLinkLaunch = false;
+    
+    private View jumiaMapImage;
 
     SharedPreferences sharedPrefs;
     /*
@@ -147,6 +152,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 //        UAirship.shared().getAnalytics().activityStarted(this);
     }
 
+    
     /*
      * (non-Javadoc)
      * @see android.support.v4.app.FragmentActivity#onResume()
@@ -159,6 +165,10 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         shouldHandleEvent = true; 
         // Adx launch event
         launchEvent();
+        jumiaMapImage = findViewById(R.id.jumiaMap);
+        final Animation animationFadeIn = AnimationUtils.loadAnimation(this, R.animator.activityfadein);
+        animationFadeIn.setDuration(1250);        
+        jumiaMapImage.startAnimation(animationFadeIn);
     }
     
     /*
@@ -281,23 +291,34 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      * notification.
      */
     public void selectActivity() {
-        // ## Google Analytics "General Campaign Measurement" ##
-        TrackerDelegator.trackCampaign(utm);
-        // ## Product URL ##
-        if (!TextUtils.isEmpty(productUrl)) {
-            // Start with deep link to product detail
-            startActivityWithDeepLink(ConstantsIntentExtra.CONTENT_URL, productUrl, FragmentType.PRODUCT_DETAILS);
-        // ## Deep link via URIs
-        } else if (mDeepLinkBundle != null) {
-                startDeepView(mDeepLinkBundle);
-        } else {
-            // Default Start
-            Intent intent = new Intent(this, MainFragmentActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-        }
-        overridePendingTransition(R.animator.activityfadein, R.animator.splashfadeout);
-        finish();
+        jumiaMapImage = findViewById(R.id.jumiaMap);
+        final Animation animationFadeIn = AnimationUtils.loadAnimation(this, R.animator.splashfadeout);
+        animationFadeIn.setDuration(500);        
+        jumiaMapImage.startAnimation(animationFadeIn);
+        
+        new Handler().post(new Runnable() {
+            
+            @Override
+            public void run() {
+                // ## Google Analytics "General Campaign Measurement" ##
+                TrackerDelegator.trackCampaign(utm);
+                // ## Product URL ##
+                if (!TextUtils.isEmpty(productUrl)) {
+                    // Start with deep link to product detail
+                    startActivityWithDeepLink(ConstantsIntentExtra.CONTENT_URL, productUrl, FragmentType.PRODUCT_DETAILS);
+                // ## Deep link via URIs
+                } else if (mDeepLinkBundle != null) {
+                        startDeepView(mDeepLinkBundle);
+                } else {
+                    // Default Start
+                    Intent intent = new Intent(getApplicationContext(), MainFragmentActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
+                overridePendingTransition(R.animator.activityfadein, R.animator.splashfadeout);
+                finish();
+            }
+        });
     }
     
     /**
@@ -548,15 +569,26 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      * @author sergiopereira
      */
     private void onProcessRequiresUserError(){
-        Log.i(TAG, "ON PROCESS REQUIRES USER INTERACTION");
-        // Show Change country
-        Intent intent = new Intent(this, MainFragmentActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtra(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.CHANGE_COUNTRY);
-        intent.putExtra(ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, true);
-        // Start activity
-        startActivity(intent);
-        finish();
+        jumiaMapImage = findViewById(R.id.jumiaMap);
+        final Animation animationFadeIn = AnimationUtils.loadAnimation(this, R.animator.splashfadeout);
+        animationFadeIn.setDuration(500);        
+        jumiaMapImage.startAnimation(animationFadeIn);
+        
+        new Handler().post(new Runnable() {
+            
+            @Override
+            public void run() {
+                Log.i(TAG, "ON PROCESS REQUIRES USER INTERACTION");
+                // Show Change country
+                Intent intent = new Intent(getApplicationContext(), MainFragmentActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.CHANGE_COUNTRY);
+                intent.putExtra(ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, true);
+                // Start activity
+                startActivity(intent);
+                finish();
+            }
+        });
     }
     
     /**

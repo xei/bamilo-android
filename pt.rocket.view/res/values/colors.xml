@@ -9,6 +9,7 @@
     <color name="blue_basic">#004789</color>
     <color name="orange_basic">#faa41a</color>
     <color name="grey_dark">#333333</color>
+    <color name="grey_middledark">#4e4e4e</color>
     <color name="grey_middle">#666666</color>
     <color name="grey_middlelight">#cccccc</color>
     <color name="grey_dark_line">#d9d9d9</color>

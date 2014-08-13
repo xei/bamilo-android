@@ -2,17 +2,35 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@color/grey_dividerlight" >
 
+    <ImageView
+        android:id="@+id/jumiaMap"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerInside"
+        android:src="@drawable/img_splashmap" />
+    
     <ImageView
         android:id="@+id/imgView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/gradient_splash"
         android:paddingBottom="32dp"
         android:scaleType="centerInside"
         android:src="@drawable/logo_splash" />
 
+    <org.holoeverywhere.widget.TextView
+        android:id="@+id/slogan_text"        
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:text="@string/splash_slogan"
+        android:textSize="12sp"
+        android:textColor="@color/grey_middledark" />
+    
+    
     <org.holoeverywhere.widget.TextView
         android:id="@+id/dev_text"
         android:layout_width="wrap_content"
