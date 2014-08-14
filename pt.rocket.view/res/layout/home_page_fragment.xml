@@ -2,7 +2,8 @@
 <pt.rocket.utils.ScrollViewWithHorizontal xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/home_page_single_scrollview"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:paddingBottom="3dp" >
 
     <LinearLayout
         android:id="@+id/home_page_single_container"

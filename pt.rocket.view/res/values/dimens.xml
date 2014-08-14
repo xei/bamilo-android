@@ -41,13 +41,13 @@
 
     <!-- deprecated text definitions, use alternative below -->
     <dimen name="text_tiny">@dimen/text_xxs</dimen>
-    <dimen name="text_small">@dimen/text_xs</dimen>
+    <dimen name="text_small">@dimen/text_xs</dimen>    
     <dimen name="text_smid">@dimen/text_m</dimen>
     <dimen name="text_mid">@dimen/text_l</dimen>
     <dimen name="text_large">@dimen/text_xxl</dimen>
 
     <!-- better naming sceme for the text dimensions -->
-    <dimen name="text_xxs">10.5sp</dimen>
+    <dimen name="text_xxs">14sp</dimen>
     <dimen name="text_xs">12sp</dimen>
     <dimen name="text_s">14sp</dimen>
     <dimen name="text_m">16sp</dimen>
