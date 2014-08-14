@@ -98,25 +98,8 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "ON CREATE");
-
-        Intent mIntent = getIntent();
-        Bundle mBundle = mIntent.getExtras();
-        Uri data = mIntent.getData();
         
-        Log.i(TAG, "ON CREATE - Bundle -> " + (null != mBundle ? mBundle.keySet().toString() : "null"));
-        Log.i(TAG, "ON CREATE - data -> " + data);
-        
-        if (null != mBundle) {        
-            Bundle payload = mIntent.getBundleExtra(BundleConstants.EXTRA_GCM_PAYLOAD);
-            if (null != payload) {
-                Intent intent = new Intent(this, SplashScreenActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);                
-                intent.putExtra(BundleConstants.EXTRA_GCM_PAYLOAD, payload);
-                
-                startActivity(intent);
-                finish();
-            }
-        }
+        parseDeeplinkIntent(getIntent());
         
         // ON ORIENTATION CHANGE
         if (savedInstanceState == null) {
@@ -144,7 +127,10 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
      */
     @Override
     protected void onNewIntent(Intent intent) {
+        Log.d(TAG, "ON NEW INTENT");
         super.onNewIntent(intent);
+
+        parseDeeplinkIntent(intent);        
         isValidNotification(intent);
     }
 
@@ -435,4 +421,25 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
     public void onPreferenceAttached(PreferenceScreen root, int xmlId) {
     }
 
+    private void parseDeeplinkIntent(Intent intent) {
+        Bundle mBundle = intent.getExtras();
+        Uri data = intent.getData();
+          
+        Log.i(TAG, "PARSE DEEP LINK - Bundle -> " + (null != mBundle ? mBundle.keySet().toString() : "null"));
+        Log.i(TAG, "PARSE DEEP LINK - data -> " + data);
+        
+        if (null != mBundle) {        
+            Bundle payload = intent.getBundleExtra(BundleConstants.EXTRA_GCM_PAYLOAD);
+            if (null != payload) {
+                Intent newIntent = new Intent(this, SplashScreenActivity.class);
+                newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);                
+                newIntent.putExtra(BundleConstants.EXTRA_GCM_PAYLOAD, payload);
+                
+                startActivity(newIntent);
+                finish();
+            }
+        }
+        
+    }
+    
 }
