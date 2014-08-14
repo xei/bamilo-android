@@ -270,8 +270,10 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         // ## DEEP LINK FROM UA ##
         Bundle payload = getIntent().getBundleExtra(BundleConstants.EXTRA_GCM_PAYLOAD);
         String deepLink = "";
+        utm = "";
         if (null != payload) {
             deepLink = payload.getString(BundleConstants.DEEPLINKING_PAGE_INDICATION);
+            utm = payload.getString(ConstantsIntentExtra.UTM_STRING);
         }
         if (!TextUtils.isEmpty(deepLink)) {
             isDeepLinkLaunch = true;
@@ -284,8 +286,10 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
             Log.i(TAG, "DEEP LINK: NO UA TAG");
             isDeepLinkLaunch = false;
         }
-        // ## Google Analytics "General Campaign Measurement" ##
-        utm = getIntent().getStringExtra(ConstantsIntentExtra.UTM_STRING);
+        if (utm.equals("")) {
+            // ## Google Analytics "General Campaign Measurement" ##
+            utm = getIntent().getStringExtra(ConstantsIntentExtra.UTM_STRING);
+        }
         // ## Product URL ##
         productUrl = getIntent().getStringExtra(ConstantsIntentExtra.CONTENT_URL);
     }

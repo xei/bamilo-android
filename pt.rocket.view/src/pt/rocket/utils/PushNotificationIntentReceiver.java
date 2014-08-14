@@ -74,14 +74,7 @@ public class PushNotificationIntentReceiver extends BroadcastReceiver {
 //            
             Log.i("deeplinking", "BUNDLE ->  navRequest "+deepLinkUrl);
 //            if (deepLinkUrl != null){
-////                navRequest = DeepLinkManager.parse(deepLinkUrl);
-//                Intent launch = new Intent(intent);
-//                launch.setAction(Intent.ACTION_MAIN);
-//                launch.setClass(context, SplashScreenActivity.class);
-//                launch.putExtra(ConstantsIntentExtra.CONTENT_URL, deepLinkUrl);
-//                launch.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP); 
-//            
-//                context.startActivity(launch);
+//                navRequest = DeepLinkManager.parse(deepLinkUrl);
 //            }
 //        
 //            // Go through here to pass the bundle to the mainfragment and process the 
