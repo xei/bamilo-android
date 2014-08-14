@@ -205,9 +205,9 @@ public class RecentSearchFragment extends BaseFragment implements OnClickListene
         case GET_SEARCH_SUGGESTIONS_EVENT:
             Log.d(TAG, "ON RESPONSE COMPLETE: GET_SEARCH_SUGGESTIONS_EVENT");
 
-            Object response = bundle.getSerializable(Constants.BUNDLE_RESPONSE_KEY);
+            ArrayList<SearchSuggestion> response = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
             if (response != null && response instanceof ArrayList) {
-                mRecentSearches = (ArrayList<SearchSuggestion>) response;
+                mRecentSearches = response;
                 if (mRecentSearches != null && !mRecentSearches.isEmpty()) {
                     mRecentSearchesAdapter = new SearchSuggestionsAdapter(mContext, mRecentSearches);
                     mRecentSearchesGrid.setAdapter(mRecentSearchesAdapter);

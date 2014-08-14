@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.holoeverywhere.widget.TextView;
 
-import pt.rocket.app.JumiaApplication;
 import pt.rocket.controllers.NormalizingViewPagerWrapper.IPagerAdapter;
 import pt.rocket.framework.objects.BrandsTeaserGroup;
 import pt.rocket.framework.objects.CategoryTeaserGroup;
@@ -410,32 +409,31 @@ public class TeasersFactory {
             ArrayList<TeaserCampaign> campaigns = teaserGroupCampaigns.getTeasers();
             // Get size
             int size = campaigns.size();
-            // Set visibility
-            if (size == 0) {
+            // Validatin
+            switch (size) {
+            // Case empty
+            case 0:
                 rootView.findViewById(R.id.teaser_group_title_container).setVisibility(View.GONE);
-            }
-                
-            // Save teaser campaigns
-            JumiaApplication.saveTeaserCampaigns(campaigns);
-
-            // Set Title 
-            if (size > 0) {
-                createCampaignSingleTeaserView(campaigns.get(0), rootView.findViewById(R.id.teaser_group_title_container), mInflater);
-            }
-            if (size == 1) {
+                break;
+            // Case one
+            case 1:
+                // Set title
                 ((TextView) rootView.findViewById(R.id.teaser_group_title)).setText(campaigns.get(0).getTargetTitle());
-            }
-            // add views for each Campaign
-            if (size > 1) {
-            	((TextView) rootView.findViewById(R.id.teaser_group_title)).setText(teaserGroupCampaigns.getTitle());
+                attachTeaserListener(campaigns.get(0), rootView.findViewById(R.id.teaser_group_title_container));
+                break;
+            // Case multi
+            default:
+                // Set title
+                ((TextView) rootView.findViewById(R.id.teaser_group_title)).setText(teaserGroupCampaigns.getTitle());
+                attachTeaserListener(campaigns.get(0), rootView.findViewById(R.id.teaser_group_title_container));
                 // Create views
                 for (int i = 0; i < campaigns.size(); i++) {
                     View view = createCampaignTeaserView(campaigns.get(i), container, mInflater);
                     view.setTag(R.id.position, i);
                     container.addView(view);
-                }                
+                }
+                break;
             }
-
         }
         return rootView;
     }
@@ -455,19 +453,6 @@ public class TeasersFactory {
         textView.setText(teaser.getTargetTitle());
         attachTeaserListener(teaser, campaignTeaserView);
         return campaignTeaserView;
-    }
-    
-
-    /**
-     * Create the top brand teaser view
-     * @param teaser
-     * @param vg
-     * @param mInflater
-     * @return the brand view
-     * @author sergiopereira
-     */
-    private void createCampaignSingleTeaserView(TeaserCampaign teaser, View campaignTeaserView, LayoutInflater mInflater) {
-        attachTeaserListener(teaser, campaignTeaserView);
     }
     
     /*

@@ -1,11 +1,8 @@
 package pt.rocket.framework.network;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.SocketTimeoutException;
-import java.security.KeyStore;
 
-import android.content.Context;
 import android.text.TextUtils;
 import ch.boye.httpclientandroidlib.Header;
 import ch.boye.httpclientandroidlib.HeaderElement;
@@ -28,7 +25,6 @@ import ch.boye.httpclientandroidlib.client.entity.GzipDecompressingEntity;
 import ch.boye.httpclientandroidlib.client.params.ClientPNames;
 import ch.boye.httpclientandroidlib.client.protocol.ClientContext;
 import ch.boye.httpclientandroidlib.conn.ConnectTimeoutException;
-import ch.boye.httpclientandroidlib.conn.ssl.SSLSocketFactory;
 import ch.boye.httpclientandroidlib.impl.auth.BasicScheme;
 import ch.boye.httpclientandroidlib.impl.client.DefaultHttpClient;
 import ch.boye.httpclientandroidlib.impl.conn.PoolingClientConnectionManager;
@@ -238,8 +234,9 @@ public class DarwinHttpClient extends DefaultHttpClient {
                 AuthScope authScope = new AuthScope(targetHost.getHostName(), targetHost.getPort());
                 Credentials creds = credsProvider.getCredentials(authScope);
                 if (creds != null) {
-                    authState.setAuthScheme(new BasicScheme());
-                    authState.setCredentials(creds);
+                	authState.update(new BasicScheme(), creds);
+                    //authState.setAuthScheme(new BasicScheme());
+                    //authState.setCredentials(creds);
                 }
             }
         }
@@ -269,32 +266,32 @@ public class DarwinHttpClient extends DefaultHttpClient {
         }
     };
     
-    @Deprecated
-    private SSLSocketFactory newSslSocketFactory(Context context) {
-        try {
-            // Get an instance of the Bouncy Castle KeyStore format
-            KeyStore trusted = KeyStore.getInstance("BKS");
-            InputStream in = null;
-            // Get the raw resource, which contains the keystore with
-            // your trusted certificates (root and any intermediate certs)
-            //TODO restore previous implementation
-//            InputStream in = context.getResources().openRawResource(R.raw.mykeystore);
-            try {
-                // Initialize the keystore with the provided trusted certificates
-                // Also provide the password of the keystore
-                trusted.load(in, "my_password".toCharArray());
-            } finally {
-                in.close();
-            }
-            // Pass the keystore to the SSLSocketFactory. The factory is responsible
-            // for the verification of the server certificate.
-            SSLSocketFactory sf = new SSLSocketFactory(trusted);
-            // Hostname verification from certificate
-            // http://hc.apache.org/httpcomponents-client-ga/tutorial/html/connmgmt.html#d4e506
-            sf.setHostnameVerifier(SSLSocketFactory.STRICT_HOSTNAME_VERIFIER);
-            return sf;
-        } catch (Exception e) {
-            throw new AssertionError(e);
-        }
-    }
+//    @Deprecated
+//    private SSLSocketFactory newSslSocketFactory(Context context) {
+//        try {
+//            // Get an instance of the Bouncy Castle KeyStore format
+//            KeyStore trusted = KeyStore.getInstance("BKS");
+//            InputStream in = null;
+//            // Get the raw resource, which contains the keystore with
+//            // your trusted certificates (root and any intermediate certs)
+//            //TODO restore previous implementation
+////            InputStream in = context.getResources().openRawResource(R.raw.mykeystore);
+//            try {
+//                // Initialize the keystore with the provided trusted certificates
+//                // Also provide the password of the keystore
+//                trusted.load(in, "my_password".toCharArray());
+//            } finally {
+//                in.close();
+//            }
+//            // Pass the keystore to the SSLSocketFactory. The factory is responsible
+//            // for the verification of the server certificate.
+//            SSLSocketFactory sf = new SSLSocketFactory(trusted);
+//            // Hostname verification from certificate
+//            // http://hc.apache.org/httpcomponents-client-ga/tutorial/html/connmgmt.html#d4e506
+//            sf.setHostnameVerifier(SSLSocketFactory.STRICT_HOSTNAME_VERIFIER);
+//            return sf;
+//        } catch (Exception e) {
+//            throw new AssertionError(e);
+//        }
+//    }
 }

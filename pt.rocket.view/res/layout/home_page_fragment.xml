@@ -1,27 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<pt.rocket.utils.ScrollViewWithHorizontal xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/home_page_single_scrollview"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <!-- SCROLABLE CONTAINER -->
-
-    <pt.rocket.utils.ScrollViewWithHorizontal
-        android:id="@+id/home_page_single_scrollview"
+    <LinearLayout
+        android:id="@+id/home_page_single_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:orientation="vertical" />
 
-        <LinearLayout
-            android:id="@+id/home_page_single_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" />
-    </pt.rocket.utils.ScrollViewWithHorizontal>
-
-    <!-- RETRY VIEW -->
-
-    <include
-        android:id="@+id/fragment_retry"
-        layout="@layout/fragment_retry"
-        android:visibility="gone" />
-
-</RelativeLayout>
+</pt.rocket.utils.ScrollViewWithHorizontal>

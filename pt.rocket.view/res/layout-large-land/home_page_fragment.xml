@@ -78,11 +78,4 @@
         </LinearLayout>
     </pt.rocket.utils.ScrollViewWithHorizontal>
 
-    <!-- RETRY VIEW -->
-
-    <include
-        android:id="@+id/fragment_retry"
-        layout="@layout/fragment_retry"
-        android:visibility="gone" />
-
 </RelativeLayout>

@@ -12,13 +12,11 @@ import pt.rocket.framework.Darwin;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.components.NavigationListComponent;
 import pt.rocket.framework.database.DarwinDatabaseHelper;
-import pt.rocket.framework.objects.Category;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.CountryObject;
 import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.objects.PaymentInfo;
 import pt.rocket.framework.objects.ShoppingCart;
-import pt.rocket.framework.objects.TeaserCampaign;
 import pt.rocket.framework.objects.VersionInfo;
 import pt.rocket.framework.service.IRemoteService;
 import pt.rocket.framework.service.IRemoteServiceCallback;
@@ -185,12 +183,6 @@ public class JumiaApplication extends A4SApplication implements ExceptionCallbac
         String currencyCode = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_ISO, null);
         if(currencyCode != null) CurrencyFormatter.initialize(getApplicationContext(), currencyCode);
         
-    }
-
-    @Override
-    public void onApplicationLowMemory() {
-        super.onLowMemory();
-        Log.d(TAG, "ON LOW MEMORY");
     }
 
     public synchronized void init(boolean isReInit, Handler initializationHandler) {
@@ -722,34 +714,5 @@ public class JumiaApplication extends A4SApplication implements ExceptionCallbac
         registerSavedInstanceState = null;
         getCustomerUtils().clearCredentials();
     }
-
-    private static ArrayList<TeaserCampaign> sTeaserCampaigns;
-
-    /**
-     * 
-     * @param campaigns
-     * @author sergiopereira
-     */
-    public static void saveTeaserCampaigns(ArrayList<TeaserCampaign> campaigns) {
-        sTeaserCampaigns = campaigns;
-    }
-
-    /**
-     * 
-     * @return
-     * @author sergiopereira
-     */
-    public static ArrayList<TeaserCampaign> getSavedTeaserCampaigns() {
-        return sTeaserCampaigns;
-    }
-
-    /**
-     * 
-     * @return
-     * @author sergiopereira
-     */
-    public static boolean hasSavedTeaserCampaigns() {
-        return (sTeaserCampaigns != null) ? true : false;
-    }
-
+    
 }

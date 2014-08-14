@@ -524,7 +524,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
             Log.i(TAG, "ON RESPONSE ERROR: CONNECT_ERROR");
             error = R.string.error_no_connection;
         } else if (errorCode == ErrorCode.REQUEST_ERROR) {
-            HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+            HashMap<String, List<String>> errorMessages = bundle.getParcelable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
             // CASE OUT OF STOCK
             if (errorMessages != null && errorMessages.get(RestConstants.JSON_ERROR_TAG).contains(Errors.CODE_ORDER_PRODUCT_SOLD_OUT)) {
                 Log.i(TAG, "ON RESPONSE ERROR: CODE_ORDER_PRODUCT_SOLD_OUT");

@@ -3,13 +3,17 @@
  */
 package pt.rocket.view.fragments;
 
-import pt.rocket.app.JumiaApplication;
+import java.util.ArrayList;
+
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.factories.TeasersFactory;
 import pt.rocket.framework.objects.Homepage;
 import pt.rocket.framework.objects.ITargeting.TargetType;
+import pt.rocket.framework.objects.TeaserCampaign;
+import pt.rocket.framework.objects.TeaserGroupCampaigns;
+import pt.rocket.framework.objects.TeaserGroupType;
 import pt.rocket.framework.objects.TeaserSpecification;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.framework.utils.WindowHelper;
@@ -47,7 +51,7 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
 
     private int[] mScrollSavedPosition;
 
-    private View mRetryView;
+    private ArrayList<TeaserCampaign> mCampaigns;
     
     /**
      * Constructor via bundle
@@ -113,11 +117,6 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
         mInflater = LayoutInflater.from(getBaseActivity());
-        // Get retry view
-        mRetryView = view.findViewById(R.id.fragment_retry);
-        // Get the retry button
-        view.findViewById(R.id.fragment_retry_button).setOnClickListener(this);
-        
         // Get portrait container
         LinearLayout singleContainer = (LinearLayout) view.findViewById(R.id.home_page_single_container);
         // Get scroll view
@@ -270,9 +269,11 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
         for ( TeaserSpecification<?> teaser : homePage.getTeaserSpecification()) {
             switch (teaser.getType()) {
             // CASE LEFT SIDE
+            case CAMPAIGNS_LIST:
+                // Save campaigns
+                mCampaigns = ((TeaserGroupCampaigns) teaser).getTeasers();
             case MAIN_ONE_SLIDE:
             case STATIC_BANNER:
-            case CAMPAIGNS_LIST:
                 leftView.addView(mTeasersFactory.getSpecificTeaser(leftView, teaser));
                 break;
             // CASE RIGHT SIDE
@@ -307,8 +308,11 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
         // Create the teaser factory
         TeasersFactory mTeasersFactory = new TeasersFactory(getBaseActivity(), mInflater, (OnClickListener) this);
         // For each teaser create a view and add to container
-        for ( TeaserSpecification<?> teaser : homePage.getTeaserSpecification())
+        for ( TeaserSpecification<?> teaser : homePage.getTeaserSpecification()) {
             mainView.addView(mTeasersFactory.getSpecificTeaser(mainView, teaser));
+            // Save campaigns
+            if(teaser.getType() == TeaserGroupType.CAMPAIGNS_LIST) mCampaigns = ((TeaserGroupCampaigns) teaser).getTeasers();
+        }
     }
     
     /**
@@ -334,9 +338,7 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
      * @author sergiopereira
      */
     private void showContent() {
-        mScrollViewWithHorizontal.setVisibility(View.VISIBLE);
-        //mLoadingView.setVisibility(View.GONE);
-        mRetryView.setVisibility(View.GONE);
+        showFragmentContentContainer();
     }
     
     /**
@@ -344,9 +346,7 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
      * @author sergiopereira
      */
     private void showRetry() {
-        mScrollViewWithHorizontal.setVisibility(View.GONE);
-        //mLoadingView.setVisibility(View.GONE);
-        mRetryView.setVisibility(View.VISIBLE);
+        showFragmentRetry((OnClickListener) this);
     }
     
     /**
@@ -362,7 +362,7 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
         // Get view id
         int id = view.getId();
         // Retry button
-        if(id == R.id.fragment_retry_button) onClickRetryButton();
+        if(id == R.id.fragment_root_retry_button) onClickRetryButton();
         // Teaser item
         else onClickTeaserItem(view);
     }
@@ -493,16 +493,26 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
         if (view.getTag(R.id.position) != null) {
             targetPosition = view.getTag(R.id.position).toString();
         }
-        if (targetUrl != null && targetPosition != null && JumiaApplication.hasSavedTeaserCampaigns()) {
+        if (targetUrl != null && targetPosition != null && hasSavedTeaserCampaigns()) {
             bundle.putString(ConstantsIntentExtra.CONTENT_URL, targetUrl);
             bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, targetTitle);
             // Selected campaign position
             Log.d(TAG, "ON CLICK CAMPAIGN: " + targetTitle + " " + targetUrl + " " + targetPosition);
-            bundle.putParcelableArrayList(CampaignsFragment.CAMPAIGNS_TAG, JumiaApplication.getSavedTeaserCampaigns());
+            bundle.putParcelableArrayList(CampaignsFragment.CAMPAIGNS_TAG, mCampaigns);
             bundle.putInt(CampaignsFragment.CAMPAIGN_POSITION_TAG, Integer.valueOf(targetPosition));
             getBaseActivity().onSwitchFragment(FragmentType.CAMPAIGNS, bundle, FragmentController.ADD_TO_BACK_STACK);
             TrackerDelegator.trackCampaignsView();
-        }
+        } else 
+            Log.w(TAG, "WARNING: NPE ON CLICK CAMPAIGN: " + targetTitle + " " + targetUrl + " " + targetPosition + " " + hasSavedTeaserCampaigns());
+    }
+    
+    /**
+     * Validate if the current homepage has campaigns
+     * @return true or false
+     * @author sergiopereira
+     */
+    private boolean hasSavedTeaserCampaigns() {
+        return (mCampaigns != null) ? true : false;
     }
     
 }
