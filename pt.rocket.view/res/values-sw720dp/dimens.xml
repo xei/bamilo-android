@@ -2,6 +2,7 @@
 <resources>
 
     <!-- better naming sceme for the text dimensions -->
+    <dimen name="text_xxs">16sp</dimen>
     <dimen name="text_xs">18sp</dimen>
     <dimen name="text_s">20sp</dimen>
     <dimen name="text_m">21sp</dimen>

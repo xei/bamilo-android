@@ -4,19 +4,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@android:color/white">
+    android:layout_marginTop="3dp"
+    android:layout_marginBottom="@dimen/teaser_margin_bottom"
+    android:layout_marginLeft="6.5dp"               
+    android:layout_marginRight="6.5dp"
+    android:background="@drawable/background_content">
 
     <org.holoeverywhere.widget.TextView
         android:id="@+id/teaser_group_title"
         style="@style/activity_sectionheader_text"
         android:layout_marginLeft="@dimen/margin_huge"
         android:text="Categories"
+        android:textColor="@color/grey_middledark"
         android:singleLine="true"
         android:maxLines="1"
         android:ellipsize="end" />
 
     <View
         style="@style/line_grey_style"
+        android:background="@color/orange_basic"
         android:layout_marginBottom="0dp" />
 
     <LinearLayout

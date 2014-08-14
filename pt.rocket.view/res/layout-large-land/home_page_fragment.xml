@@ -19,7 +19,6 @@
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
         android:layout_alignRight="@+id/center_point"
-        android:layout_marginRight="@dimen/margin_x_small"
         android:scrollbars="none" >
 
         <!-- MAIN_ONE_SLIDE, STATIC_BANNER AND CAMPAIGNS_LIST -->
@@ -38,8 +37,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignLeft="@+id/center_point"
-        android:layout_alignParentRight="true"
-        android:layout_marginLeft="@dimen/margin_x_small"
+        android:layout_alignParentRight="true"                
         android:scrollbars="none" >
 
         <LinearLayout
@@ -52,8 +50,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/grey_highlight"
+                android:layout_height="wrap_content"                
                 android:orientation="horizontal"
                 android:paddingBottom="1dp"
                 android:paddingLeft="1dp" >
@@ -62,7 +59,7 @@
                     android:id="@+id/home_page_right_container_categpries"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_weight="1"     
                     android:visibility="gone" />
 
                 <LinearLayout

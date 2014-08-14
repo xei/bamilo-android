@@ -8,7 +8,9 @@
         android:id="@+id/text"
         style="@style/category_inner_child_text"
         android:layout_centerVertical="true"
+        android:fontFamily="roboto_light"
         android:gravity="center_vertical"
+        android:textSize="@dimen/text_tiny"        
         android:text="Category" />
 
     <View

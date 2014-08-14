@@ -8,8 +8,10 @@
         android:id="@+id/text"
         style="@style/category_inner_current_text"
         android:layout_centerVertical="true"
-        android:fontFamily="roboto_bold"
+        android:fontFamily="roboto"
         android:gravity="center_vertical"
+        android:textSize="@dimen/text_tiny"
+        android:textStyle="bold"
         android:text="Inner category" />
 
     <View

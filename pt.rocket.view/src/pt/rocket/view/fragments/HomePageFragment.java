@@ -274,11 +274,11 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
                 mCampaigns = ((TeaserGroupCampaigns) teaser).getTeasers();
             case MAIN_ONE_SLIDE:
             case STATIC_BANNER:
+            case BRANDS_LIST:                
                 leftView.addView(mTeasersFactory.getSpecificTeaser(leftView, teaser));
                 break;
             // CASE RIGHT SIDE
-            case PRODUCT_LIST:
-            case BRANDS_LIST:
+            case PRODUCT_LIST:            
                 rightView.addView(mTeasersFactory.getSpecificTeaser(rightView, teaser));
                 break;
             case CATEGORIES:

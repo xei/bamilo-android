@@ -3,12 +3,17 @@
     android:id="@+id/fragment_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
+    android:layout_marginTop="3dp"
+    android:layout_marginLeft="@dimen/teaser_margin_left"
+    android:layout_marginRight="6.5dp"
+    android:layout_marginBottom="@dimen/teaser_margin_bottom"
+    android:background="@drawable/background_content"    
     android:orientation="vertical" >
 
     <org.holoeverywhere.widget.TextView
         android:id="@+id/teaser_group_title"
         style="@style/activity_sectionheader_text"
+        android:textColor="@color/grey_middledark"
         android:layout_marginLeft="@dimen/margin_huge"
         android:ellipsize="end"
         android:maxLines="1"
@@ -36,6 +41,7 @@
     <View
         android:id="@+id/teaser_group_title_divider"
         style="@style/line_grey_style"
+        android:background="@color/orange_basic"
         android:layout_below="@id/teaser_group_title_clickable"
         android:layout_marginBottom="0dp" />
 

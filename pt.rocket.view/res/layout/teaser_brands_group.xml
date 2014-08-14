@@ -3,6 +3,5 @@
     android:id="@+id/teaser_group_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/teaser_banners_brands_list_margin"
-    android:layout_marginTop="@dimen/teaser_banners_brands_list_margin"
-    android:orientation="horizontal" />
+    android:orientation="horizontal"
+    android:background="@android:color/white" />

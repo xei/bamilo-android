@@ -40,12 +40,14 @@
     <dimen name="form_errormessage_margin">4dp</dimen>
 
     <!-- deprecated text definitions, use alternative below -->
+    <dimen name="text_tiny">@dimen/text_xxs</dimen>
     <dimen name="text_small">@dimen/text_xs</dimen>
     <dimen name="text_smid">@dimen/text_m</dimen>
     <dimen name="text_mid">@dimen/text_l</dimen>
     <dimen name="text_large">@dimen/text_xxl</dimen>
 
     <!-- better naming sceme for the text dimensions -->
+    <dimen name="text_xxs">10.5sp</dimen>
     <dimen name="text_xs">12sp</dimen>
     <dimen name="text_s">14sp</dimen>
     <dimen name="text_m">16sp</dimen>
@@ -79,7 +81,9 @@
 
     <!-- HOME -->
     <dimen name="teaser_product_item_width">120dp</dimen>
-    <dimen name="teaser_banners_group_height">100dp</dimen>
+    <dimen name="teaser_banners_group_height">100dp</dimen>    
+    <dimen name="teaser_margin_bottom">0dp</dimen>
+    <dimen name="teaser_margin_left">6.5dp</dimen>
 
     <!-- MAIN LAYOUT -->
     <dimen name="sliding_tab_height">38dp</dimen>
