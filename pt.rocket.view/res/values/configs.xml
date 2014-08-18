@@ -29,7 +29,8 @@
     <string name="facebook_id_ke">319581271497227</string>
     <string name="facebook_id_ma">518468904830623</string>
     <string name="facebook_id_ng">321703697936806</string>
-    <string name="facebook_id_ug">321703697936806</string>
+    <string name="facebook_id_ug">@string/facebook_id_default</string>
+    <string name="facebook_id_gh">@string/facebook_id_default</string>
     <string name="facebook_id_default">@string/facebook_id_ng</string>
 
 </resources>
