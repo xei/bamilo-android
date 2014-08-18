@@ -57,8 +57,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import com.bugsense.trace.BugSenseHandler;
-import com.shouldit.proxy.lib.ProxyConfiguration;
-import com.shouldit.proxy.lib.ProxySettings;
 
 /**
  * <p>
@@ -286,7 +284,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
             Log.i(TAG, "DEEP LINK: NO UA TAG");
             isDeepLinkLaunch = false;
         }
-        if (utm.equals("")) {
+        if (TextUtils.isEmpty(utm)) {
             // ## Google Analytics "General Campaign Measurement" ##
             utm = getIntent().getStringExtra(ConstantsIntentExtra.UTM_STRING);
         }
@@ -452,18 +450,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     }
 
     private void initBugSense() {
-        if (HockeyStartup.isDevEnvironment(getApplicationContext()))
-            return;
-
-        try {
-            ProxyConfiguration confHttp = ProxySettings.getCurrentHttpProxyConfiguration(this);
-            if (confHttp.isValidConfiguration()) {
-                BugSenseHandler.useProxy(true);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+        if (HockeyStartup.isDevEnvironment(getApplicationContext())) return;
         BugSenseHandler.initAndStartSession(getApplicationContext(), getString(R.string.bugsense_apikey));
     }
 
@@ -679,6 +666,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
         if (errorCode.isNetworkError()) {
             switch (errorCode) {
+            case IO:
             case CONNECT_ERROR:
             case TIME_OUT:
             case HTTP_STATUS:
@@ -745,8 +733,26 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
                 dialog.show(getSupportFragmentManager(), null);
             default:
+                if (dialog != null) {
+                    try {
+                        dialog.dismiss();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                dialog = DialogGenericFragment.createServerErrorDialog(SplashScreenActivity.this,
+                        new OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                // Re-send initialize event
+                                JumiaApplication.INSTANCE.init(false, initializationHandler);
+                                dialog.dismiss();
+                            }
+                        }, true);
+                dialog.show(getSupportFragmentManager(), null);
                 break;
             }
+            
         } else if (eventType == EventType.GET_GLOBAL_CONFIGURATIONS) {
             if (JumiaApplication.INSTANCE.countriesAvailable != null && JumiaApplication.INSTANCE.countriesAvailable.size() > 0) {
                 Log.i(TAG, "code1configs received response correctly!!!");

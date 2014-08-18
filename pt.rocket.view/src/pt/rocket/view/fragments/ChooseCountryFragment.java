@@ -340,7 +340,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
         // Validate the view id
         int id = v.getId();
         // Case retry button
-        if(id == R.id.fragment_retry_button) onClickRetryButton();
+        if(id == R.id.fragment_root_retry_button) onClickRetryButton();
         // Case Unknown
         else Log.w(TAG, "WARNING ON CLICK: UNKNWON");
     }

@@ -217,11 +217,9 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
      */
     private void showRootCategories(ArrayList<Category> categories) {
         Log.i(TAG, "ON SHOW ROOT CATEGORIES");
-        if (null != getActivity()) {
-            CategoriesAdapter mCategoryAdapter = new CategoriesAdapter(getActivity(), categories);
-            mCategoryList.setAdapter(mCategoryAdapter);
-            mCategoryList.setOnItemClickListener(this);
-        }
+        CategoriesAdapter mCategoryAdapter = new CategoriesAdapter(getBaseActivity(), categories);
+        mCategoryList.setAdapter(mCategoryAdapter);
+        mCategoryList.setOnItemClickListener(this);
     }
     
     /**

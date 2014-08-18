@@ -79,10 +79,6 @@ import ch.boye.httpclientandroidlib.protocol.BasicHttpContext;
 import ch.boye.httpclientandroidlib.protocol.ExecutionContext;
 import ch.boye.httpclientandroidlib.protocol.HttpContext;
 import ch.boye.httpclientandroidlib.util.EntityUtils;
-
-import com.shouldit.proxy.lib.ProxyConfiguration;
-import com.shouldit.proxy.lib.ProxySettings;
-
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -101,46 +97,34 @@ import de.akquinet.android.androlog.Log;
  * @author Jacob Zschunke
  * 
  */
-public final class RestClientSingleton implements HttpRoutePlanner {
-
-	/**
-	 * 
-	 */
-	private static final int MAX_CACHE_OBJECT_SIZE = 131072;
-
+public final class RestClientSingleton {
+	
 	private static final String TAG = RestClientSingleton.class.getSimpleName();
-
-	private static final Pattern proxyPattern = Pattern
-			.compile(".*@(.*):[0-9]*$");
-
-	private int count = 0;
-
-	// /** Default header values. */
-	// private static final HashMap<String, String> DEFAULT_HEADER;
-	// static {
-	// DEFAULT_HEADER = new HashMap<String, String>();
-	// // add header here
-	// DEFAULT_HEADER.put("X-ROCKET-MOBAPI-VERSION", "1.0");
-	// DEFAULT_HEADER.put("X-ROCKET-MOBAPI-PLATFORM",
-	// "application/rocket.mobapi-v1.0+json");
-	// DEFAULT_HEADER.put("X-ROCKET-MOBAPI-TOKEN", "1");
-	// }
-
+	
+	private static final int MAX_CACHE_OBJECT_SIZE = 131072;
+	
+	private static final Pattern proxyPattern = Pattern.compile(".*@(.*):[0-9]*$");
+	
 	public static RestClientSingleton INSTANCE;
-
+	
 	private DarwinHttpClient darwinHttpClient;
+	
 	private final HttpClient httpClient;
+	
 	private CookieStore cookieStore;
+	
 	private HttpContext httpContext;
-	// handles all Database operations
-	private HttpCacheStorage cache;
+	
+	private HttpCacheStorage cache; 	// Handles all database operations
 	
 	private ConnectivityManager connManager;
-
-	//private static boolean updateParamsFlag;
-
+	
 	private Context context;
-
+	
+	/**
+	 * 
+	 * @param context
+	 */
 	private RestClientSingleton(Context context) {
 		this.context = context;
 		connManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -152,7 +136,6 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 		cache = new DBHttpCacheStorage(context, cacheConfig);
 		darwinHttpClient = new DarwinHttpClient(getHttpParams(context));
 		setAuthentication(context, darwinHttpClient);
-		darwinHttpClient.setRoutePlanner(this);
 
 		CachingHttpClient cachingClient = new CachingHttpClient(darwinHttpClient, cache, cacheConfig);
 		cachingClient.log = new LazHttpClientAndroidLog("CachingHttpClient");
@@ -196,11 +179,6 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 		if(!TextUtils.isEmpty(defaultUserAgent)) {
 			httpClient.getParams().setParameter(CoreProtocolPNames.USER_AGENT, defaultUserAgent);
 		}
-		//// CASE Custom user agent
-		//else {
-		//	String device = (context.getResources().getBoolean(R.bool.isTablet)) ? "tablet" : "phone";		
-		//	httpClient.getParams().setParameter(CoreProtocolPNames.USER_AGENT, "app=android&customer_device=" + device);
-		//}
 	}
 
 	/**
@@ -357,9 +335,8 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 	 * @return the response as String e.g. json string
 	 */
 	private String executeHttpRequest(HttpUriRequest httpRequest, Handler mHandler, Bundle metaData) {
-		count++;
-
-		android.util.Log.d("TRACK", "executeHttpRequest count:" + count);
+		Log.i("TRACK", "ON EXECUTE HTTP REQUEST");
+		
 		String result = "";
 		String md5 = metaData.getString(Constants.BUNDLE_MD5_KEY);
 		
@@ -392,8 +369,6 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 		metaData = new Bundle();
 		HttpResponse response = null;
 		HttpEntity entity = null;
-		// try and prevent the issue with the memory by forcing the system to do some garbage collection before executing the request.
-		//System.gc();
 		
 		// Start time 
 		long startTimeMillis = System.currentTimeMillis();
@@ -406,7 +381,6 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 				ClientProtocolException e = new ClientProtocolException();
 				if(statusCode == HttpStatus.SC_SERVICE_UNAVAILABLE){
 					mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.SERVER_IN_MAINTENANCE, result, md5, priority));
-					// TrackerManager.sendTrackingError(e);
 					trackError(context, e, httpRequest.getURI(), ErrorCode.SERVER_IN_MAINTENANCE, result, false, startTimeMillis);
 				} else {
 					mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.HTTP_STATUS, result, md5, priority));	
@@ -636,47 +610,6 @@ public final class RestClientSingleton implements HttpRoutePlanner {
 		} catch (NullPointerException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	@Override
-	public HttpRoute determineRoute(HttpHost target, HttpRequest request, HttpContext httpContext) throws HttpException {
-
-		boolean secure = "https".equalsIgnoreCase(target.getSchemeName());
-
-		URI uri;
-		try {
-			uri = new URI(target.getSchemeName() + "://" + target.getHostName());
-		} catch (URISyntaxException e) {
-			return new HttpRoute(target, null, secure);
-		}
-		ProxyConfiguration proxConf;
-		try {
-			proxConf = ProxySettings.getCurrentProxyConfiguration(context, uri);
-		} catch (Exception e) {
-			return new HttpRoute(target, null, secure);
-		}
-
-		if (proxConf.getProxyType() == Type.DIRECT) {
-			Log.d(TAG, "determineRoute: no proxy - using direct connection");
-			return new HttpRoute(target, null, secure);
-		}
-
-		String hostIp;
-		Matcher m = proxyPattern.matcher(proxConf.getProxyHost().toString());
-		if (m.find()) {
-			hostIp = m.group(1);
-		} else {
-			hostIp = proxConf.getProxyIPHost();
-		}
-		int port = proxConf.getProxyPort();
-		if (TextUtils.isEmpty(hostIp) || port <= 0) {
-			return new HttpRoute(target, null, secure);
-		}
-
-		Log.d(TAG, "determineRoute: proxy hostIp = " + hostIp + " port = " + port + " ip = " + proxConf.getProxyIPHost());
-		
-		return new HttpRoute(target, null, new HttpHost(hostIp, port), secure);
-
 	}
 
 	/**

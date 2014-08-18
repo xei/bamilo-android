@@ -78,6 +78,8 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
     private View mMainContent;
 
     private int mPagerSavedPosition = 0;
+    
+    private boolean mReceivedInBackgroundAndDiscarded = false;
 
     /**
      * Constructor via bundle
@@ -120,8 +122,7 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
         // Register Hockey
         HockeyStartup.register(getBaseActivity());
         // Get saved state
-        if (savedInstanceState != null)
-            mPagerSavedPosition = savedInstanceState.getInt(PAGER_POSITION_KEY);
+        if (savedInstanceState != null) mPagerSavedPosition = savedInstanceState.getInt(PAGER_POSITION_KEY);
     }
 
     /*
@@ -141,7 +142,7 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
         // Get tab pager
         mHomePagerTabStrip = (SlidingTabLayout) view.findViewById(R.id.home_pager_tab);
         mHomePagerTabStrip.setCustomTabView(R.layout.tab_simple_item, R.id.tab);
-
+        
         /**
          * TODO: Validate this method is necessary to recover the app from
          * strange behavior In case Application is connected and has shop id
@@ -152,13 +153,12 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
          */
         SharedPreferences sharedPrefs = getBaseActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         String shopId = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ID, null);
-        // ShopSelector.getShopId()
-        if (JumiaApplication.mIsBound && !TextUtils.isEmpty(shopId))
-            onResumeExecution();
-        else if (!JumiaApplication.mIsBound && !TextUtils.isEmpty(shopId))
-            showFragmentRetry(this);
-        else
-            JumiaApplication.INSTANCE.setResendHander(mServiceConnectedHandler);
+        // Case app is bound and has shop id
+        if (JumiaApplication.mIsBound && !TextUtils.isEmpty(shopId)) onResumeExecution();
+        // Case app is not bound and has shop id
+        else if (!JumiaApplication.mIsBound && !TextUtils.isEmpty(shopId)) showFragmentRetry(this);
+        // Case app not bound and not shop id
+        else JumiaApplication.INSTANCE.setResendHander(mServiceConnectedHandler);
     }
 
     /*
@@ -170,6 +170,12 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
     public void onStart() {
         super.onStart();
         Log.i(TAG, "ON START");
+        
+        /**
+         * Received and discarded data so the current view is the loading.
+         * Force reload the content.
+         */
+        if(mReceivedInBackgroundAndDiscarded) triggerTeasers();
     }
 
     /*
@@ -473,13 +479,15 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
     @Override
     public void onRequestComplete(Bundle bundle) {
 
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            if(eventType == EventType.GET_TEASERS_EVENT) mReceivedInBackgroundAndDiscarded = true;
             return;
         }
 
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         switch (eventType) {
         case GET_UPDATED_TEASERS_EVENT:
             Log.i(TAG, "ON SUCCESS RESPONSE: GET_UPDATED_TEASERS_EVENT");
@@ -492,6 +500,7 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
             break;
         case GET_TEASERS_EVENT:
             Log.i(TAG, "ON SUCCESS RESPONSE: GET_TEASERS_EVENT");
+            mReceivedInBackgroundAndDiscarded = false;
             // Get current md5 response
             mCurrentMd5Collection = bundle.getString(GetTeasersHelper.MD5_KEY);
             // Get collection

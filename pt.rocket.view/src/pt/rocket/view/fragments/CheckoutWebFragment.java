@@ -50,11 +50,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 import ch.boye.httpclientandroidlib.cookie.Cookie;
-
-import com.shouldit.proxy.lib.ProxyConfiguration;
-import com.shouldit.proxy.lib.ProxySettings;
-import com.shouldit.proxy.lib.ProxyUtils;
-
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -324,17 +319,17 @@ public class CheckoutWebFragment extends BaseFragment {
     }
     
     private void setProxy( String url ) {
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
-            ProxyConfiguration conf = null;
-            try {
-                conf = ProxySettings.getCurrentProxyConfiguration(getActivity(), new URI(url));
-            } catch (Exception e) {
-                Log.e( TAG, "ProxyConfigurationException:", e);
-            }
-            if ( conf != null && conf.getProxyType() != Type.DIRECT) {
-                ProxyUtils.setWebViewProxy(getActivity(), conf);
-            }
-        }
+//        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
+//            ProxyConfiguration conf = null;
+//            try {
+//                conf = ProxySettings.getCurrentProxyConfiguration(getActivity(), new URI(url));
+//            } catch (Exception e) {
+//                Log.e( TAG, "ProxyConfigurationException:", e);
+//            }
+//            if ( conf != null && conf.getProxyType() != Type.DIRECT) {
+//                ProxyUtils.setWebViewProxy(getActivity(), conf);
+//            }
+//        }
     }
     
     private void prepareCookieStore() {
