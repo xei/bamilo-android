@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="app_name">Jumia</string>
     <string name="yes_label">Yes</string>
     <string name="no_label">No</string>
     <string name="submit_label">Submit</string>
@@ -258,7 +259,7 @@
 
     <!-- NIGERIA IS BEING USED AS DEFAULT FACEBOOK APP ID -->
     <!-- Facebook App Id DO NOT TRANSLATE -->
-    <string name="app_id">321703697936806</string>
+    <string name="facebook_app_id">@string/facebook_id_default</string>
 
     <string name="exit_press_back_again">Please press back again if you wish to leave the app</string>
     <string name="recently_viewed">Recently Viewed</string>

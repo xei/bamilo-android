@@ -165,7 +165,7 @@ public class SessionLoginFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
         setRetainInstance(true);
-        String appId = getBaseActivity().getResources().getString(R.string.app_id);
+        String appId = getBaseActivity().getResources().getString(R.string.facebook_app_id);
         uiHelper = new UiLifecycleHelper(getBaseActivity(), callback, appId);
         uiHelper.onCreate(savedInstanceState);
     }
@@ -214,7 +214,7 @@ public class SessionLoginFragment extends BaseFragment {
         Log.i(TAG, "ON RESUME");
         TrackerDelegator.trackPage(TrackingPages.LOGIN_SIGNUP);
         
-        String appId = getBaseActivity().getResources().getString(R.string.app_id);
+        String appId = getBaseActivity().getResources().getString(R.string.facebook_app_id);
         uiHelper.setJumiaAppId(appId);
         uiHelper.onResume();
         

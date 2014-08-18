@@ -173,7 +173,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         // Retain the fragment
         setRetainInstance(true);
         // Init the helper
-        String appId = getBaseActivity().getResources().getString(R.string.app_id);
+        String appId = getBaseActivity().getResources().getString(R.string.facebook_app_id);
         uiHelper = new UiLifecycleHelper(getActivity(), (StatusCallback) this, appId);
         uiHelper.onCreate(savedInstanceState);
         
@@ -262,7 +262,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         retryForms = 0;
         Log.i(TAG, "ON RESUME");
         // Resume helper
-        String appId = getBaseActivity().getResources().getString(R.string.app_id);
+        String appId = getBaseActivity().getResources().getString(R.string.facebook_app_id);
         uiHelper.setJumiaAppId(appId);
         uiHelper.onResume();
         
