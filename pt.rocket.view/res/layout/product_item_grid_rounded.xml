@@ -81,9 +81,11 @@
         android:layout_marginRight="26dp"
         android:ellipsize="end"
         android:gravity="center|left"
+        android:fontFamily="roboto_regular"
         android:maxLines="1"
         android:singleLine="true"
         android:text="Name"
+        android:textColor="@color/grey_middle"
         android:textSize="@dimen/catalog_text_size" />
 
     <org.holoeverywhere.widget.TextView
@@ -96,6 +98,7 @@
         android:maxLines="1"
         android:singleLine="true"
         android:text="Discount"
+        android:textColor="@color/red_middle"
         android:textSize="@dimen/catalog_text_size" />
 
     <org.holoeverywhere.widget.TextView
