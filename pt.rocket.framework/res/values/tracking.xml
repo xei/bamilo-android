@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
+<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools" tools:ignore="TypographyDashes">
 
     <!-- Begin of GA Tracking Parameters -->
     <bool name="ga_autoActivityTracking">false</bool>
     <bool name="ga_reportUncaughtExceptions">false</bool>
     <bool name="ga_testmode">false</bool>
+    <bool name="ga_debug_mode">false</bool>
     <bool name="ga_enable">false</bool>
+
     <string name="ga_trackingId"></string>
-    
+
     <!-- GA : Dispatch each hit immediately (seconds), default is 30 minutes.
-    <integer name="ga_dispatchPeriod">0</integer>
+    <integer name="ga_dispatchPeriod">30</integer>
      -->
 
     <!-- PageView Names -->
@@ -30,12 +32,12 @@
     <string name="glogin">Login</string>
     <string name="gregister">Register</string>
     <string name="gproductdetail">ShopProductDetail</string>
-	<string name="grateproduct">RateProduct</string>
-	<string name="gcampaignpage">Campaign</string>
-	<string name="gnewslettersubscription">NewsletterSubscription</string>
-	<string name="gfavourites">Favourites</string>
-	<string name="grecentsearches">RecentSearches</string>
-	<string name="grecentlyviewed">RecentlyViewed</string>
+    <string name="grateproduct">RateProduct</string>
+    <string name="gcampaignpage">Campaign</string>
+    <string name="gnewslettersubs">NewsletterSubscription</string>
+    <string name="gfavourites">Favourites</string>
+    <string name="grecentsearches">RecentSearches</string>
+    <string name="grecentlyviewed">RecentlyViewed</string>
     <!-- prefixes for page string encoding -->
     <string name="gbrand_prefix">brand</string>
     <string name="gcategory_prefix">cat</string>
@@ -70,13 +72,16 @@
     <string name="gstarted">Started</string>
     <string name="gfinished">Finished</string>
     <string name="gcontinueshopping">ContinueShopping</string>
-	<string name="gsocialshare">SocialShare</string>
-	<string name="gcheckoutstart">CheckoutStart</string>
-	<string name="gcheckoutcontinueshopping">ContinueShopping</string>
-	<string name="gfilters">Filters</string>
-	<string name="gsubscribenewsletter">SubscribeNewsletter</string>
-	<string name="gunsubscribenewsletter">UnsubscribeNewsletter</string>
-	<string name="gsearchsuggestions">SearchSuggestions</string>
+    <string name="gsocialshare">SocialShare</string>
+    <string name="gcheckoutstart">CheckoutStart</string>
+    <string name="gcheckoutcontinueshopping">ContinueShopping</string>
+    <string name="gfilters">Filters</string>
+    <string name="gsubscribenewsletter">SubscribeNewsletter</string>
+    <string name="gunsubscribenewsletter">UnsubscribeNewsletter</string>
+    <string name="gsearchsuggestions">SearchSuggestions</string>
+    <string name="gaddtofavorites">AddtoWishlist</string>
+    <string name="garemovefromfavorites">RemoveFromWishlist</string>
+
     <!-- Checkout Steps -->
     <string name="gNativeCheckout">NativeCheckout</string>
     <string name="gNativeCheckoutError">NativeCheckoutError</string>
@@ -90,21 +95,23 @@
     <string name="gcheckoutPaymentMethods">CheckoutPaymentMethods</string>
     <string name="gcheckoutPollQuestion">CheckoutPollQuestion</string>
     <string name="gcheckoutShippingMethods">CheckoutShippingMethods</string>
-    <string name="gSignUp">CustomerSignUp</string>
+    <string name="gsignup">CustomerSignUp</string>
     <!-- Label -->
     <string name="gcustomerid">CustomerId</string>
     <string name="gsimplesku">Simple-SKU</string>
     <string name="gorderid">OrderID</string>
 
     <!-- For load timing only -->
-    
+
     <string name="gload">PageLoad</string>
     <!-- End of GA Tracking Parameters -->
+
 
     <!-- Begin of Urban AirShip Tracking Parameters -->
     <string name="ua_preisntall">preinstall-</string>
     <string name="ua_store"></string> <!-- Default -->
     <!-- End of Urban AirShip Tracking Parameters -->
+
 
     <!-- Begin of AdX Tracking Parameters -->
     <bool name="adx_enable">true</bool>
@@ -146,6 +153,7 @@
     <string name="xdeeplinklaunch">DeepLinkLaunch</string>
     <!-- End of AdX Tracking Parameters -->
 
+
     <!-- Begin of Flurry Tracking Parameters -->
     <bool name="flurry_enable">false</bool>
     <bool name="f_testmode">false</bool>
@@ -161,6 +169,7 @@
     <string name="fuserid">User ID</string>
     <string name="fcurrency">Currency</string>
     <!-- End of Flurry Tracking Parameters -->
+
 
     <!-- Begin of Mixpanel Tracking Parameters -->
     <bool name="mixpanel_enable">true</bool>

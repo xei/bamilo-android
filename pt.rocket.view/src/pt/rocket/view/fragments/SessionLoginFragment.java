@@ -14,7 +14,6 @@ import org.holoeverywhere.widget.CheckBox;
 
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
-import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.constants.FormConstants;
 import pt.rocket.controllers.LogOut;
 import pt.rocket.controllers.fragments.FragmentController;
@@ -36,6 +35,7 @@ import pt.rocket.helpers.session.GetLoginHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.pojo.DynamicForm;
 import pt.rocket.pojo.DynamicFormItem;
+import pt.rocket.preferences.CustomerPreferences;
 import pt.rocket.utils.DeepLinkManager;
 import pt.rocket.utils.InputType;
 import pt.rocket.utils.MyMenuItem;
@@ -46,9 +46,7 @@ import pt.rocket.view.MainFragmentActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -95,8 +93,6 @@ public class SessionLoginFragment extends BaseFragment {
     private Form formResponse = null;
 
     private boolean wasAutologin = false;
-
-    private boolean autoLogin = true;
 
     private DynamicForm dynamicForm;
 
@@ -149,10 +145,6 @@ public class SessionLoginFragment extends BaseFragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         Log.i(TAG, "ON ATTACH");
-        // Auto login
-        wasAutologin = false;   
-        // Auto login
-        autoLogin = true;
     }
 
     /*
@@ -418,24 +410,15 @@ public class SessionLoginFragment extends BaseFragment {
      */
     private void requestLogin() {
         Log.d(TAG, "requestLogin: triggerEvent LogInEvent");
-        //
         getBaseActivity().hideKeyboard();
-        //
         ContentValues values = dynamicForm.save();
-        // if ( autologinCheckBox.isChecked()) {
         values.put(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, true);
-        // }
-
         triggerLogin(values, true);
-        
-        wasAutologin = false;
-		autoLogin = false;
     }
 
     private void requestFacebookLogin(GraphUser user) {
         Log.d(TAG, "requestLogin: triggerEvent LogInEvent");
         ContentValues values = new ContentValues();
-        
         values.put("email", (String) user.getProperty("email"));
         values.put("first_name", user.getFirstName());
         values.put("last_name", user.getLastName());
@@ -443,7 +426,6 @@ public class SessionLoginFragment extends BaseFragment {
         values.put("gender", (String) user.getProperty("gender"));
         values.put(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, true);
         triggerFacebookLogin(values, true);
-        wasAutologin = false;
     }
 
     /**
@@ -509,8 +491,6 @@ public class SessionLoginFragment extends BaseFragment {
                 TrackerDelegator.trackLoginSuccessful(params);
             }
             
-            wasAutologin = false;
-            
             // Validate the next step
             if(nextFragmentType != null && getBaseActivity() != null) {
                 FragmentController.getInstance().popLastEntry(FragmentType.LOGIN.toString());
@@ -541,21 +521,11 @@ public class SessionLoginFragment extends BaseFragment {
                 
                 TrackerDelegator.trackLoginSuccessful(params);
 
-                /**
-                 * Persist user email or empty that value after successfull login
-                 */
-                SharedPreferences sharedPrefs = getBaseActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPrefs.edit();
-                if (rememberEmailCheck.isChecked()) {
-                    editor.putString(ConstantsSharedPrefs.KEY_REMEMBERED_EMAIL, customer.getEmail());
-                } else {
-                    editor.putString(ConstantsSharedPrefs.KEY_REMEMBERED_EMAIL, null);
-                }
-                editor.commit();
+                // Persist user email or empty that value after successfull login
+                CustomerPreferences.setRememberedEmail(getBaseActivity(), rememberEmailCheck.isChecked() ? customer.getEmail() : null);
             }
                 
             cameFromRegister = false;
-            wasAutologin = false;
             
             // Validate the next step
             if(nextFragmentType != null && getBaseActivity()  != null) {
@@ -612,8 +582,7 @@ public class SessionLoginFragment extends BaseFragment {
         setFormClickDetails();
 
         boolean fillEmail = false;
-        SharedPreferences sharedPrefs = getBaseActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        String rememberedEmail = sharedPrefs.getString(ConstantsSharedPrefs.KEY_REMEMBERED_EMAIL, null);
+        String rememberedEmail = CustomerPreferences.getRememberedEmail(getBaseActivity());
         if (!TextUtils.isEmpty(rememberedEmail)) {
             fillEmail = true;
         }
@@ -666,13 +635,11 @@ public class SessionLoginFragment extends BaseFragment {
         } else if (eventType == EventType.LOGIN_EVENT) {
             JumiaApplication.INSTANCE.setLoggedIn(false);
             
-            TrackerDelegator.trackLoginFailed(autoLogin);
+            TrackerDelegator.trackLoginFailed(wasAutologin);
             
             if (errorCode == ErrorCode.REQUEST_ERROR) {
                 
-                wasAutologin = false;
-                if (autoLogin) {
-                    autoLogin = false;
+                if (wasAutologin) {
                     if (formResponse == null) {
                         // Sometimes formDataRegistry is null, so init forms
                         triggerInitForm();
@@ -715,13 +682,15 @@ public class SessionLoginFragment extends BaseFragment {
      * @author sergiopereira
      */
     private void triggerAutoLogin(){
+        wasAutologin = true;
         Bundle bundle = new Bundle();
         bundle.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
-        bundle.putBoolean(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, autoLogin);
+        bundle.putBoolean(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, wasAutologin);
         triggerContentEvent(new GetLoginHelper(), bundle, mCallBack);
     }
     
     private void triggerLogin(ContentValues values, boolean saveCredentials) {
+        wasAutologin = false;
         Bundle bundle = new Bundle();
         bundle.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, values);
         bundle.putBoolean(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, saveCredentials);
@@ -729,6 +698,7 @@ public class SessionLoginFragment extends BaseFragment {
     }
     
     private void triggerFacebookLogin(ContentValues values,  boolean saveCredentials){
+        wasAutologin = false;
         Bundle bundle = new Bundle();
         bundle.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, values);
         bundle.putBoolean(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, saveCredentials);
@@ -736,11 +706,13 @@ public class SessionLoginFragment extends BaseFragment {
     }
     
     private void triggerLoginForm(){
+        wasAutologin = false;
         Bundle bundle = new Bundle();
         triggerContentEvent(new GetLoginFormHelper(), bundle, mCallBack);
     }
     
     private void triggerInitForm(){
+        wasAutologin = false;
         Bundle bundle = new Bundle();
         triggerContentEvent(new GetInitFormHelper(), bundle, mCallBack);
     }

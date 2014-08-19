@@ -14,7 +14,6 @@ import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
-import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.constants.FormConstants;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
@@ -35,6 +34,7 @@ import pt.rocket.helpers.session.GetRegisterHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.pojo.DynamicForm;
 import pt.rocket.pojo.DynamicFormItem;
+import pt.rocket.preferences.CustomerPreferences;
 import pt.rocket.utils.DeepLinkManager;
 import pt.rocket.utils.InputType;
 import pt.rocket.utils.MyMenuItem;
@@ -45,8 +45,6 @@ import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -68,7 +66,7 @@ public class SessionRegisterFragment extends BaseFragment {
 
     private static final String TAG = LogTagHelper.create(SessionRegisterFragment.class);
 
-    private static SessionRegisterFragment registerFragment;
+    private static SessionRegisterFragment sRegisterFragment;
 
     private Button registerButton;
 
@@ -99,8 +97,7 @@ public class SessionRegisterFragment extends BaseFragment {
      * @return
      */
     public static SessionRegisterFragment getInstance(Bundle bundle) {
-//        if (registerFragment == null)
-            registerFragment = new SessionRegisterFragment();
+        sRegisterFragment = new SessionRegisterFragment();
 
         if (bundle != null) {
             // Force load form if comes from deep link
@@ -109,7 +106,7 @@ public class SessionRegisterFragment extends BaseFragment {
                 JumiaApplication.INSTANCE.registerForm = null;
         }
 
-        return registerFragment;
+        return sRegisterFragment;
     }
 
     /**
@@ -493,28 +490,14 @@ public class SessionRegisterFragment extends BaseFragment {
             Customer customer = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             JumiaApplication.CUSTOMER = customer;
             Bundle params = new Bundle();
-            params.getParcelable(TrackerDelegator.CUSTOMER_KEY);
-
+            params.putParcelable(TrackerDelegator.CUSTOMER_KEY, customer);
             TrackerDelegator.trackSignupSuccessful(params);
-            // Finish this activity
-            // Intent resultData = new Intent();
-            // resultData.putExtras(saveFormToBundle());
-            // getActivity().setResult(Activity.RESULT_OK, resultData);
-            // requestStore(saveFormToBundle());
+            
             JumiaApplication.INSTANCE.registerForm = null;
             JumiaApplication.INSTANCE.registerSavedInstanceState = null;
             
-            /**
-             * Persist user email or empty that value after successfull login
-             */
-            SharedPreferences sharedPrefs = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPrefs.edit();
-            if (rememberEmailCheck.isChecked()) {
-                editor.putString(ConstantsSharedPrefs.KEY_REMEMBERED_EMAIL, customer.getEmail());
-            } else {
-                editor.putString(ConstantsSharedPrefs.KEY_REMEMBERED_EMAIL, null);
-            }
-            editor.commit();
+            // Persist user email or empty that value after successfull login
+            CustomerPreferences.setRememberedEmail(getBaseActivity(), rememberEmailCheck.isChecked() ? customer.getEmail() : null);
             
             // Finish
             getActivity().onBackPressed();

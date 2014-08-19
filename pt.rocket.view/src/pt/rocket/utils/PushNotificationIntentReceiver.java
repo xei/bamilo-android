@@ -3,8 +3,6 @@ package pt.rocket.utils;
 
 
 import pt.rocket.constants.BundleConstants;
-import pt.rocket.constants.ConstantsIntentExtra;
-import pt.rocket.view.SplashScreenActivity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;

@@ -501,7 +501,7 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
             bundle.putParcelableArrayList(CampaignsFragment.CAMPAIGNS_TAG, mCampaigns);
             bundle.putInt(CampaignsFragment.CAMPAIGN_POSITION_TAG, Integer.valueOf(targetPosition));
             getBaseActivity().onSwitchFragment(FragmentType.CAMPAIGNS, bundle, FragmentController.ADD_TO_BACK_STACK);
-            TrackerDelegator.trackCampaignsView();
+            TrackerDelegator.trackCampaignsView(targetTitle);
         } else 
             Log.w(TAG, "WARNING: NPE ON CLICK CAMPAIGN: " + targetTitle + " " + targetUrl + " " + targetPosition + " " + hasSavedTeaserCampaigns());
     }

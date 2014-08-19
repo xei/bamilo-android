@@ -568,6 +568,9 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
             break;
         case GET_PROMOTIONS:
             break;
+        case LOGIN_EVENT:
+            TrackerDelegator.trackLoginFailed(true);
+            break;
         default:
             break;
         }

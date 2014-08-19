@@ -99,6 +99,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         super.onCreate(savedInstanceState);
         Log.d(TAG, "ON CREATE");
         
+        // Parse deep link from service
         parseDeeplinkIntent(getIntent());
         
         // ON ORIENTATION CHANGE
@@ -129,8 +130,9 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
     protected void onNewIntent(Intent intent) {
         Log.d(TAG, "ON NEW INTENT");
         super.onNewIntent(intent);
-
-        parseDeeplinkIntent(intent);        
+        // Parse deep link from splashscreen
+        parseDeeplinkIntent(intent);
+        // Validate deep link
         isValidNotification(intent);
     }
 
@@ -421,6 +423,11 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
     public void onPreferenceAttached(PreferenceScreen root, int xmlId) {
     }
 
+    // ####################### DEEP LINK #######################
+    /**
+     * Parse the deep link
+     * @author nunocastro
+     */
     private void parseDeeplinkIntent(Intent intent) {
         Bundle mBundle = intent.getExtras();
         Uri data = intent.getData();
@@ -439,7 +446,6 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 finish();
             }
         }
-        
     }
     
 }

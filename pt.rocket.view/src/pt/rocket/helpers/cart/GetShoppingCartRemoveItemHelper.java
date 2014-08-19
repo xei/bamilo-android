@@ -7,8 +7,6 @@ package pt.rocket.helpers.cart;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import de.akquinet.android.androlog.Log;
-
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.framework.enums.RequestType;
 import pt.rocket.framework.objects.ShoppingCart;
@@ -18,6 +16,7 @@ import pt.rocket.framework.utils.Utils;
 import pt.rocket.helpers.BaseHelper;
 import pt.rocket.helpers.HelperPriorityConfiguration;
 import android.os.Bundle;
+import de.akquinet.android.androlog.Log;
 
 /**
  * Get Shopping Cart Items helper

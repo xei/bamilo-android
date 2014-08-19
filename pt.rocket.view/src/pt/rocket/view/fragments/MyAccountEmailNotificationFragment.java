@@ -149,7 +149,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
         super.onResume();
         Log.i(TAG, "ON RESUME");
         // Tracking page
-        TrackerDelegator.trackPage(TrackingPages.NEWSLETTER_SUBSCRIPTION);
+        TrackerDelegator.trackPage(TrackingPages.NEWSLETTER_SUBS);
     }
     
     /*

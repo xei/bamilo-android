@@ -25,6 +25,7 @@ import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.SearchSuggestion;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.service.IRemoteServiceCallback;
+import pt.rocket.framework.tracking.AnalyticsGoogle;
 import pt.rocket.framework.tracking.TrackingPages;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
@@ -357,6 +358,8 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         super.onPause();
         // Hide search component
         hideSearchComponent();
+        // Dispatch saved hits
+        AnalyticsGoogle.get().dispatchHits();
     }
 
     @Override
@@ -373,8 +376,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         JumiaApplication.INSTANCE.unRegisterFragmentCallback(mCallback);
         JumiaApplication.INSTANCE.setLoggedIn(false);
         isRegistered = false;
-        
-        // AnalyticsGoogle.dispatch();
     }
 
     /**

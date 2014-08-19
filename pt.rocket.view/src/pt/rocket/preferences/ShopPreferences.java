@@ -46,7 +46,7 @@ public class ShopPreferences {
         LastViewedTableHelper.deleteAllLastViewed();
         FavouriteTableHelper.deleteAllFavourite();
         
-        System.gc();
+        //System.gc();
         SharedPreferences sharedPrefs = context.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putString(Darwin.KEY_SELECTED_COUNTRY_ID, JumiaApplication.INSTANCE.countriesAvailable.get(shopPosition).getCountryIso().toLowerCase());

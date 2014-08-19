@@ -14,7 +14,6 @@ import org.holoeverywhere.widget.CheckBox;
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.constants.ConstantsIntentExtra;
-import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.constants.FormConstants;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
@@ -39,6 +38,7 @@ import pt.rocket.helpers.session.SetSignupHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.pojo.DynamicForm;
 import pt.rocket.pojo.DynamicFormItem;
+import pt.rocket.preferences.CustomerPreferences;
 import pt.rocket.utils.InputType;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
@@ -47,9 +47,7 @@ import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -84,7 +82,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
     
     private static final String FB_PERMISSION_EMAIL = "email";
     
-    private static CheckoutAboutYouFragment aboutYouFragment = null;
+    private static CheckoutAboutYouFragment sAboutYouFragment;
 
     private Form formResponse = null;
 
@@ -100,7 +98,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
 
     private ViewGroup loginFormContainer;
     
-    private org.holoeverywhere.widget.CheckBox rememberEmailCheck;
+    private CheckBox rememberEmailCheck;
 
     private View signupMainContainer;
 
@@ -132,11 +130,11 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
      * @return {@link BaseFragment}
      */
     public static CheckoutAboutYouFragment getInstance(Bundle bundle) {
-        aboutYouFragment = new CheckoutAboutYouFragment();
+        sAboutYouFragment = new CheckoutAboutYouFragment();
         
-        if (bundle != null) aboutYouFragment.loginOrigin = bundle.getString(ConstantsIntentExtra.LOGIN_ORIGIN);
+        if (bundle != null) sAboutYouFragment.loginOrigin = bundle.getString(ConstantsIntentExtra.LOGIN_ORIGIN);
         
-        return aboutYouFragment;
+        return sAboutYouFragment;
     }
 
     /**
@@ -540,8 +538,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         setFormClickDetails(loginForm);
         
         boolean fillEmail = false;
-        SharedPreferences sharedPrefs = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        String rememberedEmail = sharedPrefs.getString(ConstantsSharedPrefs.KEY_REMEMBERED_EMAIL, null);
+        String rememberedEmail = CustomerPreferences.getRememberedEmail(getBaseActivity());
         if (!TextUtils.isEmpty(rememberedEmail)) {
             fillEmail = true;
         }
@@ -740,7 +737,10 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         triggerContentEvent(new GetSignupFormHelper(), null, this);
         return true;
     }
-    
+
+    /**
+     * Trigger used to get the customer
+     */
     private void triggerGetCustomer(){
         triggerContentEventWithNoLoading(new GetCustomerHelper(), null, this);
     }
@@ -870,17 +870,8 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             // Get next step
             mNextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
             
-            /**
-             * Persist user email or empty that value after successfull login
-             */
-            SharedPreferences sharedPrefs = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPrefs.edit();
-            if (rememberEmailCheck.isChecked()) {
-                editor.putString(ConstantsSharedPrefs.KEY_REMEMBERED_EMAIL, customer.getEmail());
-            } else {
-                editor.putString(ConstantsSharedPrefs.KEY_REMEMBERED_EMAIL, null);
-            }
-            editor.commit();
+            // Persist user email or empty that value after successfull login
+            CustomerPreferences.setRememberedEmail(getBaseActivity(), rememberEmailCheck.isChecked() ? customer.getEmail() : null);
             
             // Tracking
             Bundle params2 = new Bundle();

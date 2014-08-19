@@ -3,8 +3,6 @@
  */
 package pt.rocket.view.fragments;
 
-import java.net.Proxy.Type;
-import java.net.URI;
 import java.util.EnumSet;
 import java.util.List;
 
