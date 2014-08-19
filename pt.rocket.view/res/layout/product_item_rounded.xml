@@ -148,7 +148,7 @@
     <View
         android:id="@+id/divider"
         android:layout_width="match_parent"
-        android:layout_height="3.33dp"
+        android:layout_height="@dimen/rounded_vertical_margin"
         android:layout_alignParentBottom="true" />
 
 </RelativeLayout>

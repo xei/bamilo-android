@@ -60,4 +60,7 @@
     <dimen name="no_results_bottom_margin">40dp</dimen>
     <dimen name="no_results_search_tips_width">900dp</dimen>
 
+    <integer name="catalog_list_num_columns">3</integer>
+    <integer name="catalog_grid_num_columns">4</integer>
+
 </resources>

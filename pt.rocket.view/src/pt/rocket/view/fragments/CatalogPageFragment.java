@@ -515,15 +515,18 @@ public class CatalogPageFragment extends BaseFragment {
     }
 
     private void updateGridColumns(boolean showList) {
-        // Tablet uses 4 columns for Grid
-        // Tablet uses 3 columns for List
+        // Tablet 10'' uses 4 columns for Grid
+        // Tablet 7'' uses 3 columns for Grid
+        // Tablet 10'' uses 3 columns for List
+        // Tablet 7'' uses 2 columns for List
         // Phone uses 2 columns for Grid
         // Phone uses 1 column for List
-        //int numColumns = 1 + (mIsLandScape ? 2 : showList ? 0 : 1);
-        if (mIsLandScape) {
-            this.numColumns = showList ? 3 : 4;
+        if (showList) {
+            int numColumns = getBaseActivity().getResources().getInteger(R.integer.catalog_list_num_columns);
+            this.numColumns = numColumns;
         } else {
-            this.numColumns = showList ? 1 : 2;
+            int numColumns = getBaseActivity().getResources().getInteger(R.integer.catalog_grid_num_columns);
+            this.numColumns = numColumns;
         }
         this.gridView.setNumColumns(this.numColumns);
     }

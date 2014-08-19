@@ -92,4 +92,7 @@
     <dimen name="recentsearch_list_margin">13.33dp</dimen>
     <dimen name="recentsearch_button_margin">0dp</dimen>
 
+    <integer name="catalog_list_num_columns">2</integer>
+    <integer name="catalog_grid_num_columns">3</integer>
+
 </resources>
