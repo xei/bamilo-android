@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.holoeverywhere.widget.Button;
-import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
@@ -71,6 +70,8 @@ public class CatalogPageFragment extends BaseFragment {
 
     private final int MAX_PAGE_ITEMS = 18;
     private final int NO_MORE_PAGES = -1;
+    
+    private final int SCROLL_DELAY = 250;
 
     private CatalogFragment parentFragment;
 
@@ -101,7 +102,7 @@ public class CatalogPageFragment extends BaseFragment {
     private boolean isFrench = false;
 
     // Spnf - search_products_not_found
-    private TextView textViewSpnf;
+    private LinearLayout viewSpnf;
     // Ravb - retry_alert_view_button
     private Button buttonRavb;
     // pc products_content
@@ -112,8 +113,13 @@ public class CatalogPageFragment extends BaseFragment {
     private GridView gridView;
     // Lb - loading_bar
     private LinearLayout linearLayoutLb;
+    // Button to go to top of list
+    private Button btnToplist;
 
     // private LoadingBarView loadingBarView;
+
+    private int numColumns;
+    private int mFirstVisibleItem;
 
     public static CatalogPageFragment newInstance(Bundle bundle) {
         CatalogPageFragment sCatalogPageFragment = new CatalogPageFragment();
@@ -230,10 +236,10 @@ public class CatalogPageFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED #" + mPageIndex);
 
-        this.textViewSpnf = ((org.holoeverywhere.widget.TextView) view.findViewById(R.id.search_products_not_found));
-        this.buttonRavb = ((Button) view.findViewById(R.id.retry_alert_view_button));
-        this.relativeLayoutPc = ((RelativeLayout) view.findViewById(R.id.products_content));
-        this.linearLayoutLm = ((LinearLayout) view.findViewById(R.id.loadmore));
+        this.viewSpnf = (LinearLayout) view.findViewById(R.id.search_products_not_found);
+        this.buttonRavb = (Button) view.findViewById(R.id.retry_alert_view_button);
+        this.relativeLayoutPc = (RelativeLayout) view.findViewById(R.id.products_content);
+        this.linearLayoutLm = (LinearLayout) view.findViewById(R.id.loadmore);
         this.gridView = (GridView) view.findViewById(R.id.middle_productslist_list);
         this.gridView.setOnItemClickListener(onItemClickListener);
 
@@ -241,6 +247,39 @@ public class CatalogPageFragment extends BaseFragment {
         // this.loadingBarView = ((LoadingBarView)
         // this.linearLayoutLb.findViewById(R.id.loading_bar_view));
 
+        this.btnToplist = (Button) view.findViewById(R.id.btn_toplist);
+        this.btnToplist.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /*--
+                 * Position scroll on position nItemsScroll
+                 * Smooth scroll after DELAY
+                 * Force scroll on position 0 after more DELAY
+                 */
+                int delay = 0;
+                int nItemsToScroll = numColumns * 5;
+                Log.d(TAG, "mFirstVisibleItem: " + mFirstVisibleItem + "; nItemsToScroll: " + nItemsToScroll);
+                // Position scroll if past nItemsScroll. Delay smoothScroll
+                if (mFirstVisibleItem > nItemsToScroll) {
+                    gridView.setSelection(nItemsToScroll);
+                    delay = SCROLL_DELAY;
+                }
+
+                // Smooth scroll and position scroll after 2 * DELAY
+                gridView.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        gridView.smoothScrollToPosition(0);
+                        gridView.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                gridView.setSelection(0);
+                            }
+                        }, SCROLL_DELAY*2);
+                    }
+                }, delay);
+            }
+        });
     }
 
     @Override
@@ -331,7 +370,8 @@ public class CatalogPageFragment extends BaseFragment {
                 mCurrentListPosition = this.gridView.getFirstVisiblePosition();
     
                 List<String> products = adapter.getProductsList();
-                adapter = new ProductsListAdapter(getBaseActivity(), parentFragment, showList, updateGridColumns(showList), isFrench);
+                updateGridColumns(showList);
+                adapter = new ProductsListAdapter(getBaseActivity(), parentFragment, showList, numColumns, isFrench);
                 adapter.appendProducts(products);
                 gridView.setAdapter(adapter);
                 gridView.setSelection(mCurrentListPosition);
@@ -366,13 +406,14 @@ public class CatalogPageFragment extends BaseFragment {
     }
 
     private void initializeCatalogPage(boolean showList) {
-        Log.d(TAG, "ON RESUME - REQ -> Landscape ? " + mIsLandScape + "; Columns #" + updateGridColumns(showList));
+        updateGridColumns(showList);
+        Log.d(TAG, "ON RESUME - REQ -> Landscape ? " + mIsLandScape + "; Columns #" + numColumns);
 
         ProductsListAdapter adapter = (ProductsListAdapter) this.gridView.getAdapter();
         final boolean hasProducts = (null != mSavedProductsSKU);
 
         // initialize new adapter depending on view choosen
-        adapter = new ProductsListAdapter(getBaseActivity(), parentFragment, showList, updateGridColumns(showList), isFrench);
+        adapter = new ProductsListAdapter(getBaseActivity(), parentFragment, showList, numColumns, isFrench);
         if (!hasProducts) {
             mPageNumber = 1;
         } else {
@@ -473,21 +514,25 @@ public class CatalogPageFragment extends BaseFragment {
         }
     }
 
-    private int updateGridColumns(boolean showList) {
-        // Tablet uses 3 columns for both Grid and List
+    private void updateGridColumns(boolean showList) {
+        // Tablet uses 4 columns for Grid
+        // Tablet uses 3 columns for List
         // Phone uses 2 columns for Grid
         // Phone uses 1 column for List
-        int numColumns = 1 + (mIsLandScape ? 2 : showList ? 0 : 1);
-        this.gridView.setNumColumns(numColumns);
-
-        return numColumns;
+        //int numColumns = 1 + (mIsLandScape ? 2 : showList ? 0 : 1);
+        if (mIsLandScape) {
+            this.numColumns = showList ? 3 : 4;
+        } else {
+            this.numColumns = showList ? 1 : 2;
+        }
+        this.gridView.setNumColumns(this.numColumns);
     }
 
     private void showProductsNotfound() {
         Log.d(TAG, "showProductsNotfound");
         hideProductsLoading(false);
         relativeLayoutPc.setVisibility(View.GONE);
-        textViewSpnf.setVisibility(View.VISIBLE);
+        viewSpnf.setVisibility(View.VISIBLE);
         buttonRavb.setVisibility(View.VISIBLE);
         buttonRavb.setOnClickListener(new OnClickListener() {
 
@@ -504,7 +549,7 @@ public class CatalogPageFragment extends BaseFragment {
     }
 
     private void hideProductsNotFound() {
-        textViewSpnf.setVisibility(View.GONE);
+        viewSpnf.setVisibility(View.GONE);
         buttonRavb.setVisibility(View.GONE);
     }
 
@@ -530,7 +575,7 @@ public class CatalogPageFragment extends BaseFragment {
             public void run() {
                 linearLayoutLm.setVisibility(View.GONE);
                 if (hideViewSpnf)
-                    textViewSpnf.setVisibility(View.GONE);
+                    viewSpnf.setVisibility(View.GONE);
             }
         }, 200);
     }
@@ -620,8 +665,25 @@ public class CatalogPageFragment extends BaseFragment {
                 }
             }
 
+            // show or hide btnToplist
+            setBtnToplistVisibility(firstVisibleItem);
         }
     };
+
+    /**
+     * Hide button to scroll to top if first item of list is visible
+     * 
+     * @param firstVisibleItem
+     */
+    private void setBtnToplistVisibility(int firstVisibleItem) {
+        if (firstVisibleItem == 0) {
+            btnToplist.setVisibility(View.GONE);
+            mFirstVisibleItem = 0;
+        } else {
+            btnToplist.setVisibility(View.VISIBLE);
+            mFirstVisibleItem = firstVisibleItem;
+        }
+    }
 
     // ---------------------------------------------------------------
     // ----- API Request handlers

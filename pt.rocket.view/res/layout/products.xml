@@ -2,34 +2,50 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/rounded_vertical_margin"
+    android:background="#c8c8c8"
     android:paddingBottom="0dp" >
 
-    <org.holoeverywhere.widget.TextView
+    <LinearLayout
         android:id="@+id/search_products_not_found"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="0dp"
-        android:drawablePadding="20dp"
-        android:drawableTop="@drawable/no_items_icon_2"
+        android:layout_height="@dimen/catalog_no_filter_results_height"
+        android:layout_marginBottom="@dimen/rounded_vertical_margin"
+        android:layout_marginLeft="@dimen/rounded_horizontal_margin"
+        android:layout_marginRight="@dimen/rounded_horizontal_margin"
+        android:layout_marginTop="@dimen/rounded_vertical_margin"
+        android:background="@drawable/background_content"
         android:gravity="center"
-        android:text="@string/search_no_items"
-        android:textColor="@color/blue_basic"
-        android:textSize="12dp"
-        android:visibility="gone" />
+        android:orientation="vertical"
+        android:visibility="gone" >
+
+        <org.holoeverywhere.widget.TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:drawablePadding="@dimen/catalog_no_filter_results_padding"
+            android:drawableTop="@drawable/img_filternoresults"
+            android:gravity="center"
+            android:text="@string/catalog_no_results"
+            android:textColor="#e0e0e0"
+            android:textSize="@dimen/text_smid" />
+    </LinearLayout>
 
     <org.holoeverywhere.widget.Button
         android:id="@+id/retry_alert_view_button"
-        android:layout_width="wrap_content"
+        style="@style/button_orange_style"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/search_products_not_found"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/btn_grey"
+        android:layout_marginBottom="@dimen/rounded_vertical_margin"
+        android:layout_marginLeft="@dimen/rounded_horizontal_margin"
+        android:layout_marginRight="@dimen/rounded_horizontal_margin"
+        android:layout_marginTop="@dimen/rounded_vertical_margin"
         android:clickable="false"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
-        android:text="@string/try_again"
+        android:text="@string/catalog_edit_filters"
         android:textColor="@color/grey_dark"
         android:textSize="@dimen/text_mid"
         android:visibility="gone" />
@@ -37,7 +53,9 @@
     <RelativeLayout
         android:id="@+id/products_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/rounded_vertical_margin"
+        android:visibility="visible" >
 
         <include
             android:id="@+id/loadmore"
@@ -54,6 +72,15 @@
             android:layout_alignParentTop="true"
             android:listSelector="@drawable/selector_listitem_highlight"
             android:numColumns="3" />
+
+        <org.holoeverywhere.widget.Button
+            android:id="@+id/btn_toplist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/selector_btn_toplist"
+            android:visibility="visible" />
     </RelativeLayout>
 
     <include

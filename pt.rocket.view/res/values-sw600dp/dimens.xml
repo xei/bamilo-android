@@ -7,9 +7,9 @@
     <dimen name="sliding_tab_text_size">16sp</dimen>
     
     <!-- PRODUCT LIST ITEM -->
-    <dimen name="product_list_item_discount_percentage_image_width">45dp</dimen>
-    <dimen name="product_list_item_discount_percentage_image_height">25dp</dimen>
-    <dimen name="product_list_item_discount_percentage_text_size">14sp</dimen>
+    <dimen name="product_list_item_discount_percentage_image_width">36dp</dimen>
+    <dimen name="product_list_item_discount_percentage_image_height">20dp</dimen>
+    <dimen name="product_list_item_discount_percentage_text_size">11sp</dimen>
 
     <dimen name="teaser_swipe_banner_height">326dp</dimen>
     <dimen name="teaser_product_item_width">208dp</dimen>
@@ -49,5 +49,28 @@
 
     <!--  FAVOURITE -->
     <dimen name="favourite_item_height">190dp</dimen>
+    
+    <!-- ROUNDED BORDERS -->
+    <dimen name="rounded_vertical_margin">5dp</dimen>
+    <dimen name="rounded_horizontal_margin">10dp</dimen>
+    
+    <!-- CATALOG REDESIGN -->
+    <dimen name="catalog_list_item_height">150dp</dimen>
+    <dimen name="catalog_grid_item_height">280dp</dimen>
+    <dimen name="catalog_list_item_image_width">112dp</dimen>
+    <dimen name="catalog_list_item_image_height">140dp</dimen>
+    <dimen name="catalog_list_item_image_margin">20dp</dimen>
+    <dimen name="catalog_item_vertical_padding">15dp</dimen>
+    <dimen name="catalog_grid_item_horizontal_padding">10dp</dimen>
+    <dimen name="catalog_list_item_horizontal_padding">20dp</dimen>
+    
+    <dimen name="catalog_no_filter_results_height">360dp</dimen>
+    <dimen name="catalog_no_filter_results_padding">35dp</dimen>
+    
+    <dimen name="catalog_grid_item_image_width">146dp</dimen>
+    <dimen name="catalog_grid_item_image_height">182.5dp</dimen>
+    
+    <dimen name="catalog_text_size">16sp</dimen>
+    <dimen name="catalog_big_text_size">18sp</dimen>
 
 </resources>

@@ -150,7 +150,7 @@
     <string name="products_sort_name">Name</string>
     <string name="products_sort_brand">Brand</string>
     <string name="products_sort_bestrated">Best Rating</string>
-    <string name="try_again">Retry</string>
+    <!-- string name="try_again">Retry</string -->
     <!-- string name="no_conn">No Connection Available</string -->
     <!-- string name="no_service">Service unavailable</string -->
     <string name="close_app">Close App</string>
@@ -370,4 +370,6 @@
 	<string name="products_tip_swipe_text">Swipe left or right to change the Sort type</string>
 	<string name="login_remember_user_email">Remember my email</string>
 	<string name="splash_slogan">The biggest online shopping mall in Africa</string>
+	<string name="catalog_no_results">No results match your filter criteria.\nYou can try to use less specific filters</string>
+	<string name="catalog_edit_filters">Edit Filters</string>
 </resources>

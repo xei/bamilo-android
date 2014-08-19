@@ -7,17 +7,13 @@
 
     <ImageView
         android:id="@+id/image_view"
-        android:layout_width="99dp"
-        android:layout_height="99dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_centerVertical="true"
         android:layout_gravity="center"
-        android:layout_marginLeft="@dimen/margin_small"
-        android:layout_marginRight="8.2dp"
-        android:layout_marginTop="2dp"
         android:adjustViewBounds="false"
         android:scaleType="fitCenter"
-        android:src="@drawable/no_image_small" />    
-    
+        android:src="@drawable/no_image_small" />
 
     <ProgressBar
         android:id="@+id/image_loading_progress"

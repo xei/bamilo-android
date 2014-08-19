@@ -23,9 +23,9 @@
     <dimen name="navigation_cart_vertical_distance">17dp</dimen>
 
     <!-- PRODUCT LIST ITEM -->
-    <dimen name="product_list_item_discount_percentage_image_width">45dp</dimen>
-    <dimen name="product_list_item_discount_percentage_image_height">25dp</dimen>
-    <dimen name="product_list_item_discount_percentage_text_size">14sp</dimen>
+    <dimen name="product_list_item_discount_percentage_image_width">36dp</dimen>
+    <dimen name="product_list_item_discount_percentage_image_height">20dp</dimen>
+    <dimen name="product_list_item_discount_percentage_text_size">10sp</dimen>
 
     <dimen name="product_item_height">140dp</dimen>
 

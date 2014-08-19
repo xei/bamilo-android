@@ -82,7 +82,7 @@
     <!-- string name="wishlist_login_title">Vous n\'êtes pas connecté à votre compte</string -->
     <!-- string name="wishlist_login_text">Vous devez être connecté pour pouvoir finaliser votre commande. Voulez-vous vous connecter maintenant? </string -->
     <!-- string name="wishlist_addalltocart">Ajouter tous les articles au panier</string -->
-    <string name="search_no_items">Nous n\'avons pas pu trouver votre produit!</string>
+    <!-- string name="search_no_items">Nous n\'avons pas pu trouver votre produit!</string -->
     <!-- string name="searchsuggestions_empty">Aucune suggestion pour votre recherche!</string -->
     <!-- string name="searchsuggestions_pleaseenter">Entrer votre recherche ici!</string -->
     <!-- string name="action_label_mypayments">Ajouter un moyen de paiement</string -->
@@ -367,4 +367,6 @@
     <string name="campaing_timer_end">Se termine le:  </string>
     <string name="products_tip_swipe_text">Balayer à la gauche ou droite pour changer de classement</string>
 	<string name="login_remember_user_email">Remember my email</string>
+	<string name="catalog_no_results">No results match your filter criteria.\nYou can try to use less specific filters</string>
+	<string name="catalog_edit_filters">Edit Filters</string>
 </resources>

@@ -91,9 +91,9 @@
     <dimen name="sliding_tab_text_size">14sp</dimen>
 
     <!-- PRODUCT LIST ITEM -->
-    <dimen name="product_list_item_discount_percentage_image_width">35dp</dimen>
-    <dimen name="product_list_item_discount_percentage_image_height">20dp</dimen>
-    <dimen name="product_list_item_discount_percentage_text_size">10sp</dimen>
+    <dimen name="product_list_item_discount_percentage_image_width">28dp</dimen>
+    <dimen name="product_list_item_discount_percentage_image_height">16dp</dimen>
+    <dimen name="product_list_item_discount_percentage_text_size">8sp</dimen>
 
     <dimen name="product_list_item_image_margin">6.67dp</dimen>
     <dimen name="product_list_item_image_side_margin">13.33dp</dimen>
@@ -187,5 +187,28 @@
     <!--  RECENT SEARCHES -->
     <dimen name="recentsearch_list_margin">6.67dp</dimen>
     <dimen name="recentsearch_button_margin">13.33dp</dimen>
+    
+    <!-- ROUNDED BORDERS -->
+    <dimen name="rounded_vertical_margin">3.33dp</dimen>
+    <dimen name="rounded_horizontal_margin">6.67dp</dimen>
+    
+    <!-- CATALOG REDESIGN -->
+    <dimen name="catalog_list_item_height">100dp</dimen>
+    <dimen name="catalog_grid_item_height">186.67dp</dimen>
+    <dimen name="catalog_list_item_image_width">74.67dp</dimen>
+    <dimen name="catalog_list_item_image_height">93.33dp</dimen>
+    <dimen name="catalog_list_item_image_margin">13.33dp</dimen>
+    <dimen name="catalog_item_vertical_padding">10dp</dimen>
+    <dimen name="catalog_grid_item_horizontal_padding">6.67dp</dimen>
+    <dimen name="catalog_list_item_horizontal_padding">13.33dp</dimen>
+    
+    <dimen name="catalog_no_filter_results_height">240dp</dimen>
+    <dimen name="catalog_no_filter_results_padding">23.33dp</dimen>
+    
+    <dimen name="catalog_grid_item_image_width">97.33dp</dimen>
+    <dimen name="catalog_grid_item_image_height">121.67dp</dimen>
+    
+    <dimen name="catalog_text_size">10.67sp</dimen>
+    <dimen name="catalog_big_text_size">12sp</dimen>
 
 </resources>
