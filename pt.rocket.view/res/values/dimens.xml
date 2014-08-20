@@ -202,8 +202,8 @@
     <dimen name="catalog_grid_item_horizontal_padding">6.67dp</dimen>
     <dimen name="catalog_list_item_horizontal_padding">13.33dp</dimen>
     
-    <dimen name="catalog_no_filter_results_height">240dp</dimen>
-    <dimen name="catalog_no_filter_results_padding">23.33dp</dimen>
+    <dimen name="root_empty_container_height">240dp</dimen>
+    <dimen name="root_empty_drawable_padding">23.33dp</dimen>
     
     <dimen name="catalog_grid_item_image_width">97.33dp</dimen>
     <dimen name="catalog_grid_item_image_height">121.67dp</dimen>

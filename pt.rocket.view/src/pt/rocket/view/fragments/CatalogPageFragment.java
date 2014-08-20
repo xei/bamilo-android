@@ -791,7 +791,7 @@ public class CatalogPageFragment extends BaseFragment {
                 params.putLong(TrackerDelegator.SEARCH_RESULTS_KEY, totalProducts);
                 params.putString(TrackerDelegator.SORT_KEY, mSort.name());
 
-                TrackerDelegator.trackSearchViewSortMade(params);
+                //TrackerDelegator.trackSearchViewSortMade(params);
                 TrackerDelegator.trackSearch(params);
             }
 

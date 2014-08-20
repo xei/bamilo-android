@@ -2,35 +2,54 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/fragment_root_empty_container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingLeft="17dp"
-    android:paddingRight="17dp"
-    android:visibility="visible" >
+    android:layout_height="wrap_content"
+    android:gravity="top"
+    android:orientation="vertical" >
 
-    <ImageView
-        android:id="@+id/fragment_root_empty_image"
-        android:layout_width="120dp"
-        android:layout_height="158dp"
-        android:layout_gravity="center_vertical|center_horizontal"
-        android:layout_marginTop="55dp"
-        android:src="@drawable/no_image_small" />
-
-    <org.holoeverywhere.widget.TextView
-        android:id="@+id/fragment_root_empty_text"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="50dp"
-        android:gravity="center_horizontal"
-        android:text="You have no items at the moment"
-        android:textColor="@color/grey_middlelight"
-        android:textSize="17dp" />
+        android:layout_height="@dimen/root_empty_container_height"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/rounded_vertical_margin"
+        android:layout_marginLeft="@dimen/rounded_horizontal_margin"
+        android:layout_marginRight="@dimen/rounded_horizontal_margin"
+        android:layout_marginTop="@dimen/rounded_vertical_margin"
+        android:background="@drawable/background_content"
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:id="@+id/fragment_root_empty_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/no_image_small" />
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/fragment_root_empty_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/root_empty_drawable_padding"
+            android:gravity="center"
+            android:text="You have no items at the moment."
+            android:textColor="#e0e0e0"
+            android:textSize="@dimen/text_smid" />
+    </LinearLayout>
 
     <org.holoeverywhere.widget.Button
         android:id="@+id/fragment_root_empty_continue_button"
         style="@style/button_orange_style"
-        android:text="@string/continue_shopping"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/rounded_vertical_margin"
+        android:layout_marginLeft="@dimen/rounded_horizontal_margin"
+        android:layout_marginRight="@dimen/rounded_horizontal_margin"
+        android:layout_marginTop="@dimen/rounded_vertical_margin"
+        android:clickable="false"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:text="@string/catalog_edit_filters"
+        android:textColor="@color/grey_dark"
+        android:textSize="@dimen/text_mid"
         android:visibility="gone" />
 
 </LinearLayout>
