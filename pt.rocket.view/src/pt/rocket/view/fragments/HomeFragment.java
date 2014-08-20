@@ -16,7 +16,7 @@ import pt.rocket.framework.objects.Homepage;
 import pt.rocket.framework.objects.Promotion;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.tracking.MixpanelTracker;
-import pt.rocket.framework.tracking.TrackingPages;
+import pt.rocket.framework.tracking.TrackingPage;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CustomerUtils;
 import pt.rocket.framework.utils.EventType;
@@ -188,7 +188,7 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
         super.onResume();
         Log.i(TAG, "ON RESUME");
 
-        TrackerDelegator.trackPage(TrackingPages.HOME);
+        TrackerDelegator.trackPage(TrackingPage.HOME);
     }
 
     /**
@@ -245,7 +245,7 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
             triggerTeasers();
         }
 
-        // TrackerDelegator.trackPage(TrackingPages.HOME);
+        // TrackerDelegator.trackPage(TrackingPage.HOME);
     }
 
     /*

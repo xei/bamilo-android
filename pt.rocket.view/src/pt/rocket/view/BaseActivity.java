@@ -26,7 +26,8 @@ import pt.rocket.framework.objects.SearchSuggestion;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.service.IRemoteServiceCallback;
 import pt.rocket.framework.tracking.AnalyticsGoogle;
-import pt.rocket.framework.tracking.TrackingPages;
+import pt.rocket.framework.tracking.TrackingPage;
+import pt.rocket.framework.tracking.TrackingEvent;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -91,6 +92,7 @@ import com.actionbarsherlock.widget.SearchView;
 import com.actionbarsherlock.widget.SearchView.OnCloseListener;
 import com.actionbarsherlock.widget.SearchView.SearchAutoComplete;
 import com.bugsense.trace.BugSenseHandler;
+
 
 import de.akquinet.android.androlog.Log;
 
@@ -853,42 +855,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             }
         });
 
-        // /*
-        // * Listener for right drawable
-        // */
-        // mSearchAutoComplete.setOnTouchListener(new
-        // RightDrawableOnTouchListener(mSearchAutoComplete) {
-        // @Override
-        // public boolean onDrawableTouch(final MotionEvent event) {
-        // String searchTerm = mSearchAutoComplete.getText().toString();
-        // Log.d(TAG, "SEARCH: ON RIGHT DRAWABLE TOUCH: " + searchTerm);
-        // if ( TextUtils.isEmpty( searchTerm )) return false;
-        // GetSearchSuggestionHelper.saveSearchQuery(searchTerm);
-        // executeSearchRequest(searchTerm);
-        // return true;
-        // }
-        //
-        // @Override
-        // public boolean onTouch(View v, MotionEvent event) {
-        // if(findViewById(R.id.main_fallback_content) != null &&
-        // findViewById(R.id.main_fallback_content).getVisibility() ==
-        // View.VISIBLE){
-        // return true;
-        // }
-        // Log.d(TAG, "SEARCH: ON TOUCH: " + event.getAction());
-        // // Close navigation menu
-        // if (mDrawerLayout != null &&
-        // mDrawerLayout.isDrawerOpen(mDrawerNavigation))
-        // mDrawerLayout.closeDrawer(mDrawerNavigation);
-        // // Force show drop down
-        // if (TextUtils.isEmpty(mSearchAutoComplete.getText()) &&
-        // event.getAction() == MotionEvent.ACTION_DOWN)
-        // mSearchAutoComplete.showDropDown();
-        // // Sent to supper
-        // return super.onTouch(v, event);
-        // }
-        //
-        // });
 
         /*
          * Clear and add text listener
@@ -972,23 +938,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             }
         });
 
-        // /*
-        // * On focus to show the last recent searches
-        // */
-        // mSearchAutoComplete.setOnFocusChangeListener(new
-        // OnFocusChangeListener() {
-        // @Override
-        // public void onFocusChange(View v, boolean hasFocus) {
-        // Log.d(TAG, "SEARCH: ON FOCUS " + hasFocus);
-        // // Get the recent searches
-        // String searchTerm = ((SearchAutoComplete) v).getText().toString();
-        // if(hasFocus && TextUtils.isEmpty(searchTerm) && searchTerm.length()
-        // >= SEARCH_EDIT_SIZE) {
-        // Log.d(TAG, "GET AUTO SUGGESTION FOR FOCUS");
-        // new Handler().postDelayed(run, SEARCH_EDIT_DELAY);
-        // }
-        // }
-        // });
     }
 
     /**
@@ -1010,19 +959,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
         onSwitchFragment(FragmentType.PRODUCT_LIST, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
-
-    // /**
-    // * Clean search component
-    // * @author sergiopereira
-    // */
-    // public void cleanSearchConponent() {
-    // Log.d(TAG, "CLEAN SEARCH COMPONENT");
-    // //mSearchAutoComplete.removeTextChangedListener(listener);
-    // //mSearchHandle.removeCallbacks(run);
-    //
-    // if(mSearchAutoComplete != null) mSearchAutoComplete.setText("");
-    //
-    // }
 
     /**
      * set all menu items visibility to <code>visible</code>
@@ -1081,15 +1017,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         updateActionForCountry(NavigationAction.Country);
         invalidateOptionsMenu();
     }
-
-    // /**
-    // * Remove search focus
-    // * @author sergiopereira
-    // */
-    // private void searchComponentDismissFocus(){
-    // Log.d(TAG, "SEARCH: DISMISS FOCUS");
-    // }
-
+    
     /**
      * ############### SEARCH TRIGGER #################
      */
@@ -1265,21 +1193,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             Log.w(TAG, "updateCartInfoInNavigation: navigation container empty - doing nothing");
     }
 
-    // private void updateTotalFavourites() {
-    // /* -if (textViewFavouritesCount == null) {
-    // Log.w(TAG,
-    // "updateFavouritesCountInActionBar: cant find FavouritesCount in actionbar");
-    // return;
-    // }
-    //
-    // textViewFavouritesCount.post(new Runnable() {
-    // @Override
-    // public void run() {
-    // textViewFavouritesCount.setText("5");
-    // }
-    // });*/
-    // }
-
     /**
      * Create the share intent to be used to store the needed information
      * 
@@ -1335,12 +1248,9 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                 case MyProfile:
                     // MY PROFILE
                     hideMyProfile = false;
-
                     closeDrawerIfOpen();
-
                     if (myProfileActionProvider != null) {
                         myProfileActionProvider.showSpinner();
-
                         int totalFavourites = FavouriteTableHelper.getTotalFavourites();
                         myProfileActionProvider.setTotalFavourites(totalFavourites);
                     }
@@ -1363,27 +1273,33 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                                 });
                         dialogLogout.show(fm, null);
                     } else {
+                        TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_SIGN_IN);
                         onSwitchFragment(FragmentType.LOGIN, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                     }
                     break;
-                case Favourite:
+                case Favorite:
                     // FAVOURITES
-                    onSwitchFragment(FragmentType.FAVOURITE_LIST, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                    TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_FAVORITE);
+                    onSwitchFragment(FragmentType.FAVORITE_LIST, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                     break;
                 case RecentSearch:
                     // RECENT SEARCHES
+                    TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_RECENT_SEARCHES);
                     onSwitchFragment(FragmentType.RECENTSEARCHES_LIST, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                     break;
                 case RecentlyView:
                     // RECENTLY VIEWED
+                    TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_RECENTLY_VIEW);
                     onSwitchFragment(FragmentType.RECENTLYVIEWED_LIST, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                     break;
                 case MyAccount:
                     // MY ACCOUNT
+                    TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_MY_ACCOUNT);
                     onSwitchFragment(FragmentType.MY_ACCOUNT, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                     break;
                 case TrackOrder:
                     // TRACK ORDER
+                    TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_TRACK_ORDER);
                     onSwitchFragment(FragmentType.TRACK_ORDER, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                     break;
                 default:
@@ -1615,7 +1531,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         hideSearchComponent();
         hideKeyboard();
         // Update cart
-        TrackerDelegator.trackPage(TrackingPages.NAVIGATION);
+        TrackerDelegator.trackPage(TrackingPage.NAVIGATION);
         // Removed Categories TAB
         /*-// Validate
         showWizardNavigation();*/

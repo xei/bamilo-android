@@ -27,7 +27,7 @@ import pt.rocket.framework.objects.ProductSimple;
 import pt.rocket.framework.objects.ShoppingCartItem;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.tracking.AdXTracker;
-import pt.rocket.framework.tracking.TrackingPages;
+import pt.rocket.framework.tracking.TrackingPage;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CurrencyFormatter;
 import pt.rocket.framework.utils.EventType;
@@ -343,7 +343,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
     public void onResume() {
         super.onResume();
         isAddingProductToCart = false;
-        TrackerDelegator.trackPage(TrackingPages.PRODUCT_DETAIL);
+        TrackerDelegator.trackPage(TrackingPage.PRODUCT_DETAIL);
     }
     
     

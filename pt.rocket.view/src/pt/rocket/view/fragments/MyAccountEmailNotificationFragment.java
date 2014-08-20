@@ -12,7 +12,7 @@ import pt.rocket.forms.Form;
 import pt.rocket.forms.FormField;
 import pt.rocket.forms.NewsletterOption;
 import pt.rocket.framework.ErrorCode;
-import pt.rocket.framework.tracking.TrackingPages;
+import pt.rocket.framework.tracking.TrackingPage;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -149,7 +149,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
         super.onResume();
         Log.i(TAG, "ON RESUME");
         // Tracking page
-        TrackerDelegator.trackPage(TrackingPages.NEWSLETTER_SUBS);
+        TrackerDelegator.trackPage(TrackingPage.NEWSLETTER_SUBS);
     }
     
     /*

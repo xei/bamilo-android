@@ -18,7 +18,7 @@ import pt.rocket.framework.objects.CatalogFilterOption;
 import pt.rocket.framework.objects.FeaturedBox;
 import pt.rocket.framework.objects.FeaturedItem;
 import pt.rocket.framework.objects.Product;
-import pt.rocket.framework.tracking.TrackingPages;
+import pt.rocket.framework.tracking.TrackingPage;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.products.GetProductsHelper;
 import pt.rocket.utils.MyMenuItem;
@@ -240,7 +240,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         Log.d(TAG, "ON RESUME");
         super.onResume();
 
-        TrackerDelegator.trackPage(TrackingPages.PRODUCT_LIST);
+        TrackerDelegator.trackPage(TrackingPage.PRODUCT_LIST);
         
         if (mTotalProducts > 0) {
             getBaseActivity().setTitleAndSubTitle(title,
@@ -914,8 +914,11 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
             v.setEnabled(false);
 
             // getBaseActivity().showProgress();
-
+            
             showList = !showList;
+            
+            // Track
+            TrackerDelegator.trackCatalogSwitchLayout((showList) ? "list" : "grid");
 
             // Save current layout used
             SharedPreferences.Editor editor = sharedPreferences.edit();

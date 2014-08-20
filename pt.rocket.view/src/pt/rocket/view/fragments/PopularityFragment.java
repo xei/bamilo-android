@@ -293,7 +293,7 @@ public class PopularityFragment extends BaseFragment {
         params.putParcelable(TrackerDelegator.PRODUCT_KEY,selectedProduct);
         params.putFloat(TrackerDelegator.RATING_KEY, selectedProduct.getRatingsAverage().floatValue());
         
-        TrackerDelegator.trackViewReview(params);
+        //TrackerDelegator.trackViewReview(params);
     }
 
     /**

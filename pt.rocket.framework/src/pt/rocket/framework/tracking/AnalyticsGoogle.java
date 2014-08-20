@@ -2,7 +2,6 @@ package pt.rocket.framework.tracking;
 
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import pt.rocket.framework.Darwin;
 import pt.rocket.framework.R;
@@ -10,7 +9,6 @@ import pt.rocket.framework.objects.PurchaseItem;
 import pt.rocket.framework.objects.ShoppingCartItem;
 import pt.rocket.framework.utils.CurrencyFormatter;
 import pt.rocket.framework.utils.LogTagHelper;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
@@ -34,6 +32,7 @@ import de.akquinet.android.androlog.Log;
  * Proprietary and confidential.
  * 
  * @author Michael Kroez
+ * @modified sergiopereira
  * @version 0.1
  * 
  */
@@ -63,10 +62,10 @@ public class AnalyticsGoogle {
 	
 	private SharedPreferences mSharedPreferences;
 
-	private static boolean isCheckoutStarted;
+	private static boolean isCheckoutStarted = false;
 
 	/**
-	 * 
+	 * Startup GA
 	 * @param context
 	 * @param shopId
 	 */
@@ -75,9 +74,7 @@ public class AnalyticsGoogle {
 	}
 
 	/**
-	 * Gets the current instance of the analytics object to use
-	 * 
-	 * 
+	 * Gets the current instance of the analytics object to use.
 	 * @return the global {@link AnalyticsUtils} singleton object, creating one
 	 *         if necessary.
 	 */
@@ -100,15 +97,12 @@ public class AnalyticsGoogle {
 	 * @param shopId the current shop id
 	 */
 	private AnalyticsGoogle(Context context, String shopId) {
-		mSharedPreferences = context.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+		// Save data
 		mContext = context;
 		mShopId = shopId;
-		isCheckoutStarted = false;
-		
 		// Validation
 		isEnabled = mContext.getResources().getBoolean(R.bool.ga_enable);
 		if (!isEnabled) return;
-
 		// Get instance
 		mAnalytics = GoogleAnalytics.getInstance(mContext);
 		// Load live and test key
@@ -119,7 +113,7 @@ public class AnalyticsGoogle {
 		validateDebugMode(context.getResources().getBoolean(R.bool.ga_debug_mode));
 		// Set key
 		updateTracker();
-		Log.d(TAG, "tracking successfully setup");
+		Log.i(TAG, "TRACKING SUCCESSFULLY STEUP");
 	}
 	
 	/**
@@ -131,6 +125,7 @@ public class AnalyticsGoogle {
 		if (!isEnabled) return;
         // Manually start a dispatch (Unnecessary if the tracker has a dispatch interval)
         GoogleAnalytics.getInstance(mContext).dispatchLocalHits();
+        Log.i(TAG, "TRACK DISPATCH LOCAL HITS MANUALLY");
 	}
 	
 	/**
@@ -138,18 +133,20 @@ public class AnalyticsGoogle {
 	 */
 	
 	/**
-	 * 
+	 * Validate the current envirment to load the respective key
 	 * @param testMode
+	 * @author sergiopereira
 	 */
 	private void validateTestMode(boolean testMode) {
 		// Case debug mode
 		mCurrentKey = (testMode) ? mTestKey : mLiveKey;
-		Log.d(TAG, "VALIDATE TEST MODE: " + testMode + " KEY: " + mCurrentKey);
+		Log.d(TAG, "TRACK TEST MODE: " + testMode + " KEY: " + mCurrentKey);
 	}
 	
 	/**
 	 * When dry run is set, hits will not be dispatched, but will still be logged as though they were dispatched.
 	 * @param testMode
+	 * @author sergiopereira
 	 */
 	private void validateDebugMode(boolean debugMode) {
 		// Case debug mode
@@ -161,19 +158,21 @@ public class AnalyticsGoogle {
 	}
 
 	/**
-	 * 
+	 * Load keys from saved preferences
+	 * @author sergiopereira
 	 */
 	private void loadKeys() {
 		// Load keys
 		mSharedPreferences = mContext.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
 		mLiveKey = mSharedPreferences.getString(Darwin.KEY_SELECTED_COUNTRY_GA_ID, null);
 		mTestKey = mSharedPreferences.getString(Darwin.KEY_SELECTED_COUNTRY_GA_TEST_ID, null);
-		Log.d(TAG, "code1keys : mTestKey : "+mTestKey+" mLiveKey : "+mLiveKey);
+		Log.d(TAG, "TRACK LOAD KEYS: test-> " + mTestKey + " live->" + mLiveKey);
 	}
 
 	/**
-	 * 
+	 * Switch mode
 	 * @param testing
+	 * @author sergiopereira
 	 */
 	public void switchMode(boolean testing) {
 		// Validation
@@ -185,7 +184,8 @@ public class AnalyticsGoogle {
 	}
 
 	/**
-	 * 
+	 * Update the tracker using the current key
+	 * @author sergiopereira
 	 */
 	private void updateTracker() {
 		if (TextUtils.isEmpty(mCurrentKey)) {
@@ -199,12 +199,13 @@ public class AnalyticsGoogle {
 	}
 	
 	/**
-	 * ################## BASE TRACKING ################## 
+	 * ################## BASE GA TRACKING (v4) ################## 
 	 */
 	
 	/**
-	 * 
+	 * Build and send a page
 	 * @param path
+	 * @author sergiopereira
 	 */
 	private void trackPage(String path) {
 		Log.d(TAG, "TRACK PAGE: " + path);
@@ -212,93 +213,142 @@ public class AnalyticsGoogle {
 		mTracker.send(new HitBuilders.AppViewBuilder().build());
 	}
 
-	
-
 	/**
-	 * 
+	 * Build and send an event.
 	 * @param category
 	 * @param action
 	 * @param label
 	 * @param value
+	 * @author sergiopereira
 	 */
 	private void trackEvent(String category, String action, String label, long value) {
-		// Validation
-		if (!isEnabled) return;
-		// Tracking
 		Log.i(TAG, "TRACK EVENT: category->" + category + " action->" + action + " label->" + label + " value->" + value);
-		HitBuilders.EventBuilder builder = new HitBuilders.EventBuilder()
-    		.setCategory(category)
-    		.setAction(action)
-    		.setLabel(label)
-    		.setValue(value);
-		mTracker.send(builder.build());
+		mTracker.send(new HitBuilders.EventBuilder()
+    	.setCategory(category)
+    	.setAction(action)
+    	.setLabel(label)
+    	.setValue(value)
+		.build());
 	}
 	
+	/**
+	 * Build and send a social action.
+	 * @param category
+	 * @param action
+	 * @param target
+	 * @author sergiopereira
+	 */
+	private void trackShare(String category, String action, String target) {
+		Log.i(TAG, "TRACK SHARE: category->" + category + " action->" + action + " target->" + target);
+		mTracker.send(new HitBuilders.SocialBuilder()
+		.setNetwork(category)
+        .setAction(action)
+        .setTarget(target)
+        .build());
+	}
+	
+	/**
+	 * Build and send a timing.
+	 * @param categoryId
+	 * @param nameId
+	 * @param milliSeconds
+	 * @param label
+	 * @author sergiopereira
+	 */
+	private void trackTiming(String category, String name, long milliSeconds, String label) {
+		Log.i(TAG, "TRACK TIMING: category->" + category + " name->" + name + " ms->" + milliSeconds + " label->" + label);
+		mTracker.send(new HitBuilders.TimingBuilder()
+		.setCategory(category)
+        .setValue(milliSeconds)
+        .setVariable(name)
+        .setLabel(label)
+        .build());
+	}
+	
+	/**
+	 * Build and send a transaction.
+	 * @param order
+	 * @param valueAsLongMicro
+	 * @param currencyCode
+	 * @author sergiopereira
+	 */
+	private void trackTransaction(String order, long valueAsLongMicro, String currencyCode) {
+		Log.i(TAG, "TRACK TRANSACTION: id->" + order + " revenue->" + valueAsLongMicro + " currency->" + currencyCode);
+		mTracker.send(new HitBuilders.TransactionBuilder()
+		.setTransactionId(order)
+		.setRevenue(valueAsLongMicro)
+		.setCurrencyCode(currencyCode)
+		.build());
+	}
+	
+	/**
+	 * Build and send a transaction item.
+	 * @param order
+	 * @param name
+	 * @param sku
+	 * @param category
+	 * @param price
+	 * @param quantity
+	 * @param currencyCode
+	 * @author sergiopereira
+	 */
+	private void trackTransactionItem(String order, String name, String sku, String category, long price, long quantity, String currencyCode) {
+		Log.i(TAG, "TRACK TRANSACTION: id->" + order + " nm->" + name + " sku->" + sku + " ct->" + category + " prc->" + price + " qt->" + quantity);
+		mTracker.send(new HitBuilders.ItemBuilder()
+		.setTransactionId(order)
+	    .setName(name)
+	    .setSku(sku)
+	    .setCategory(category)
+	    .setPrice(price)
+	    .setQuantity(quantity)
+	    .setCurrencyCode(currencyCode)
+	    .build());
+	}
+	
+	/**
+	 * Build and send a GA campaign.
+	 * @param campaign
+	 * @author sergiopereira
+	 */
+	private void trackCampaign(String campaign) {
+		Log.d(TAG, "TRACK CAMPAIGN: campaign->" + campaign);
+		mTracker.send(new HitBuilders.AppViewBuilder()
+	    .setCampaignParamsFromUrl(campaign)
+	    .build());
+	}
+		
 	/**
 	 * ################## SPECIFIC TRACKING ################## 
 	 */
 	
 	/**
-	 * 
+	 * Track a page via {@link TrackingPage}.
 	 * @param page
+	 * @author sergiopereira
 	 */
-	public void trackPage(TrackingPages page) {
+	public void trackPage(TrackingPage page) {
 		// Validate
 		if (!isEnabled) return;
-		// Data
-		int stringId = -1;
-		switch (page) {
-		case NAVIGATION: 		stringId = R.string.gnavigation; 		break;
-		case PRODUCT_LIST: 		stringId = R.string.gproductlist; 		break;
-		case CHECKOUT_THANKS:	stringId = R.string.gcheckoutfinal; 	break;
-		case HOME:				stringId = R.string.ghomepage;			break;
-		case PRODUCT_DETAIL:	stringId = R.string.gproductdetail;		break;
-		case FILLED_CART:		stringId = R.string.gcartwithitems;		break;
-		case EMPTY_CART:		stringId = R.string.gcartempty;			break;
-		case CART:				stringId = R.string.gshoppingcart;		break;
-		case CAMPAIGNS:			stringId = R.string.gcampaignpage;		break;
-		case RECENTLY_VIEWED:	stringId = R.string.grecentlyviewed;	break;
-		case NEWSLETTER_SUBS:	stringId = R.string.gnewslettersubs;	break;
-		case RECENT_SEARCHES:	stringId = R.string.grecentsearches;	break;
-		default:														break;
-		}
 		// Get and send page
-		String path = (stringId != -1) ? mContext.getString(stringId) : "n.a.";
+		String path = mContext.getString(page.getName());
 		trackPage(path);
 	}
 	
 	/**
-	 * TODO: Add more events
+	 * Track an event via {@link TrackingEvent}.
 	 * @param event
 	 * @param label
 	 * @param value
+	 * @author sergiopereira
 	 */
-	public void trackEvent(TrackingEvents event, String label, long value) {
+	public void trackEvent(TrackingEvent event, String label, long value) {
 		// Validation
 		if (!isEnabled) return;
-		// Data
-		int categoryId = event.getCategory();
-		int actionId = event.getAction();
 		// Get and send page
-		String category = (categoryId != -1) ? mContext.getString(categoryId) : "n.a.";
-		String action = (actionId != -1) ? mContext.getString(actionId)	: "n.a.";
+		String category = mContext.getString(event.getCategory());
+		String action = mContext.getString(event.getAction());
 		// Tracking
 		trackEvent(category, action, label, value);
-	}
-
-	/**
-	 * 
-	 * @param searchTerm
-	 * @param numberOfItems
-	 */
-	public void trackSearch(String searchTerm, long numberOfItems) {
-		// Validation
-		if (!isEnabled) return;
-		// Data
-		String category = mContext.getString(R.string.gcatalog);
-		String action = mContext.getString(R.string.gsearch);
-		Log.d(TAG, "trackSearch: category = " + category + " searchTerm = " + searchTerm);
-		trackEvent(category, action, searchTerm, numberOfItems);
 	}
 
 	/**
@@ -346,20 +396,6 @@ public class AnalyticsGoogle {
 
 	/**
 	 * 
-	 * @param sku
-	 * @param price
-	 */
-	public void trackAddToCart(String sku, Long price) {
-		// Validate
-		if (!isEnabled) return;
-		// Data
-		String category = mContext.getString(R.string.gcatalog);
-		String action = mContext.getString(R.string.gaddtocart);
-		trackEvent(category, action, sku, price);
-	}
-
-	/**
-	 * 
 	 * @param categoryId
 	 * @param beginMillis
 	 */
@@ -374,33 +410,14 @@ public class AnalyticsGoogle {
 		}
 		milliseconds = milliseconds - beginMillis;
 		int nameId = R.string.gload;
-		trackTiming(categoryId, nameId, milliseconds, "duration for event");
-	}
-	
-	/**
-	 * 
-	 * @param categoryId
-	 * @param nameId
-	 * @param milliSeconds
-	 * @param label
-	 */
-	private void trackTiming(int categoryId, int nameId, long milliSeconds, String label) {
-		// Validation
-		if (!isEnabled) return;
 		// Data
 		String category = mContext.getString(categoryId);
 		String name = mContext.getString(nameId);
-		Log.d( TAG, "trackTiming category = " + category + " millis = " + milliSeconds );
-		//mTracker.sendTiming(category, milliSeconds, name, label);
-		
-		mTracker.send(new HitBuilders.TimingBuilder()
-			.setCategory(category)
-            .setValue(milliSeconds)
-            .setVariable(name)
-            .setLabel(label)
-            .build());
-		
+		// Track
+		trackTiming(category, name, milliseconds, "duration for event");
 	}
+	
+
 
 	/**
 	 * 
@@ -452,19 +469,6 @@ public class AnalyticsGoogle {
 	/**
 	 * 
 	 * @param email
-	 */
-	public void trackSignUp(String email) {
-		// Validation
-		if (!isEnabled) return;
-		// Data
-		String category = mContext.getString(R.string.gsignup);
-		String action = mContext.getString(R.string.gsignup);
-		trackEvent(category, action, email, 0l);
-	}
-	
-	/**
-	 * 
-	 * @param email
 	 * @param payment
 	 */
 	public void trackPaymentMethod(String email, String action) {
@@ -500,65 +504,22 @@ public class AnalyticsGoogle {
 		// Validation
 		if (items == null || items.size() == 0) return;
 		
-		Log.d(TAG, "code1track value "+value);
 		Double valueDouble = CurrencyFormatter.getValueDouble(value.trim());
 		long valueAsLongMicro = (long) (valueDouble * MICRO_MULTI);
 		String currencyCode = CurrencyFormatter.getCurrencyCode();
 
-		// Transaction
-		// TransactionBuilder transaction = new Transaction.Builder(orderNr, valueAsLongMicro).setCurrencyCode(currencyCode).build();
-//		new HitBuilders.TransactionBuilder()
-//        .setTransactionId(getOrderId())
-//        .setAffiliation(getStoreName())
-//        .setRevenue(getTotalOrder())
-//        .setTax(getTotalTax())
-//        .setShipping(getShippingCost())
-//        .setCurrencyCode("USD")
-//        .build();
+		// Track transaction
+		trackTransaction(orderNr, valueAsLongMicro, currencyCode);
 		
-		Map<String, String> transaction = new HitBuilders.TransactionBuilder()
-		.setTransactionId(orderNr)
-		.setRevenue(valueAsLongMicro)
-		.setCurrencyCode(currencyCode)
-		.build();
-		mTracker.send(transaction);
-		
-		//Log.d(TAG, "TRANSACTION TOTAL COST: " + transaction.getTotalCostInMicros());
 		for (PurchaseItem item : items) {
-			//Log.d(TAG, "transaction item event: " + item.name + " " + item.paidprice + " " + item.paidpriceAsDouble);
+			// Track transaction item
 			long itemValueAsLongMicro = (long) (item.paidpriceAsDouble * MICRO_MULTI);
 			long quantity = item.quantityAsInt;
-			
-			Map<String, String> transactionItem = new HitBuilders.ItemBuilder()
-			.setTransactionId(orderNr)
-            .setName(item.name)
-            .setSku(item.sku)
-            .setCategory(item.category)
-            .setPrice(itemValueAsLongMicro)
-            .setQuantity(quantity)
-            .setCurrencyCode(currencyCode)
-            .build();
-			mTracker.send(transactionItem);
-			
-			//Item transactionItem = new Transaction.Item.Builder(item.sku, item.name, itemValueAsLongMicro, quantity).setProductCategory(item.category).build();
-			//Log.d(TAG, "TRANSACTION ITEM PRICE: " + transactionItem.getPriceInMicros());
-			//transaction.addItem(transactionItem);
+			trackTransactionItem(orderNr, item.name, item.sku, item.category, itemValueAsLongMicro, quantity, currencyCode);
 		}
-		//mTracker.sendTransaction(transaction);
 		
 		// Event
-		String category = mContext.getString(R.string.gcheckout);
-		String action = mContext.getString(R.string.gfinished);
-		Log.d(TAG, "trackCheckout event: category = " + category + " action = " + action + " orderNr = " + orderNr + " value = " + valueDouble.longValue());
-		//mTracker.sendEvent(category, action, orderNr, valueDouble.longValue());
-		
-		HitBuilders.EventBuilder builder = new HitBuilders.EventBuilder()
-    	.setCategory(category)
-    	.setAction(action)
-    	.setLabel(orderNr)
-    	.setValue(valueDouble.longValue());
-		mTracker.send(builder.build());
-		
+		trackEvent(TrackingEvent.CHECKOUT_FINISHED, orderNr, valueDouble.longValue());
 	}
 
 	/**
@@ -575,43 +536,7 @@ public class AnalyticsGoogle {
 		String category = mContext.getString(R.string.gcatalog);
 		String action = mContext.getString(R.string.gsocialshare);
 		Log.d(TAG, "TRACK SHARE EVENT: Cat " + category + ", Action " + action + ", Sku " + sku);
-		
-		//mTracker.sendSocial(category, action, sku);
-		
-		// XXX
-		mTracker.send(new HitBuilders.SocialBuilder()
-		.setNetwork(category)
-        .setAction(action)
-        .setTarget(sku)
-        .build());
-	}
-
-	/**
-	 * 
-	 * @param context
-	 * @param userId
-	 */
-	public void trackCheckoutStart(Context context, String userId){
-		// Validate
-		if (!isEnabled) return;
-		// Get data
-		String category = mContext.getString(R.string.gcheckout);
-		String action = mContext.getString(R.string.gcheckoutstart);
-		trackEvent(category, action, userId, 0l);
-	}
-	
-	/**
-	 * 
-	 * @param context
-	 * @param userId
-	 */
-	public void trackCheckoutContinueShopping(Context context, String userId){
-		// Validate
-		if (!isEnabled) return;
-		// Data
-		String category = mContext.getString(R.string.gcheckout);
-		String action = mContext.getString(R.string.gcheckoutcontinueshopping);
-		trackEvent(category, action, userId, 0l);
+		trackShare(category, action, sku);
 	}
 	
 	/**
@@ -643,31 +568,7 @@ public class AnalyticsGoogle {
 		// Validation
 		if (!isEnabled) return;
 		// Data
-		if (campaignString != null) {
-            Log.d(TAG, "Google Analytics, Campaign: " + campaignString);
-			//mTracker.setCampaign(campaignString);
-			
-			mTracker.send(new HitBuilders.AppViewBuilder()
-            .setCampaignParamsFromUrl(campaignString)
-            .build());
-
-			
-		} 
-	}
-	
-	/**
-	 * 
-	 * @param mCatalogFilterValues
-	 */
-	public void trackCatalogFilter(ContentValues mCatalogFilterValues) {
-		// Validate
-		if (!isEnabled) return;
-		// Data
-		String category = mContext.getString(R.string.gcatalog);
-		String action = mContext.getString(R.string.gfilters);
-		// Validate content
-		String filter = (mCatalogFilterValues != null) ? mCatalogFilterValues.toString() : "";
-		trackEvent(category, action, filter, 0l);		
+		if (campaignString != null) trackCampaign(campaignString);
 	}
 	
 	/**

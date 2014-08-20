@@ -38,6 +38,9 @@
     <string name="gfavourites">Favourites</string>
     <string name="grecentsearches">RecentSearches</string>
     <string name="grecentlyviewed">RecentlyViewed</string>
+    <string name="goverflowmenu">ActionOverflow</string>
+    <string name="gtrackorder">TrackOrder</string>
+    
     <!-- prefixes for page string encoding -->
     <string name="gbrand_prefix">brand</string>
     <string name="gcategory_prefix">cat</string>
@@ -80,7 +83,9 @@
     <string name="gunsubscribenewsletter">UnsubscribeNewsletter</string>
     <string name="gsearchsuggestions">SearchSuggestions</string>
     <string name="gaddtofavorites">AddtoWishlist</string>
-    <string name="garemovefromfavorites">RemoveFromWishlist</string>
+    <string name="gremovefromfavorites">RemoveFromWishlist</string>
+    <string name="gsignin">SignIn</string>
+    <string name="gcatalogswitchlayout">ChangeCatalogView</string>
 
     <!-- Checkout Steps -->
     <string name="gNativeCheckout">NativeCheckout</string>

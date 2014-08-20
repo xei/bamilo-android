@@ -37,7 +37,7 @@ public class MyProfileActionProvider extends ActionProvider {
 
     private List<NavigationAction> subMenuItems = Arrays.asList(
             NavigationAction.LoginOut,
-            NavigationAction.Favourite,
+            NavigationAction.Favorite,
             NavigationAction.RecentSearch,
             NavigationAction.RecentlyView,
             NavigationAction.MyAccount,
@@ -207,7 +207,7 @@ public class MyProfileActionProvider extends ActionProvider {
                 title.setText(resTitle);
                 icon.setImageResource(R.drawable.ico_dropdown_signin);
                 break;
-            case Favourite:
+            case Favorite:
                 title.setText(R.string.favourites);
                 icon.setImageResource(R.drawable.ico_dropdown_favourites);
 

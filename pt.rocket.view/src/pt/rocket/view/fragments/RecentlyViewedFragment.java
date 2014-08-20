@@ -23,7 +23,7 @@ import pt.rocket.framework.objects.Errors;
 import pt.rocket.framework.objects.LastViewedAddableToCart;
 import pt.rocket.framework.objects.ProductSimple;
 import pt.rocket.framework.rest.RestConstants;
-import pt.rocket.framework.tracking.TrackingPages;
+import pt.rocket.framework.tracking.TrackingPage;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -138,7 +138,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
         super.onResume();
         Log.i(TAG, "ON RESUME");
         // Tracking page
-        TrackerDelegator.trackPage(TrackingPages.RECENTLY_VIEWED);
+        TrackerDelegator.trackPage(TrackingPage.RECENTLY_VIEWED);
     }
 
     /*

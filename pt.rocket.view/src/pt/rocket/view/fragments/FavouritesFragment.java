@@ -22,7 +22,7 @@ import pt.rocket.framework.objects.Errors;
 import pt.rocket.framework.objects.Favourite;
 import pt.rocket.framework.objects.ProductSimple;
 import pt.rocket.framework.rest.RestConstants;
-import pt.rocket.framework.tracking.TrackingPages;
+import pt.rocket.framework.tracking.TrackingPage;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -79,7 +79,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
      */
     public FavouritesFragment() {
         super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
-                NavigationAction.Favourite,
+                NavigationAction.Favorite,
                 R.layout.favourites,
                 R.string.favourites,
                 KeyboardState.NO_ADJUST_CONTENT);
@@ -145,7 +145,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         super.onResume();
         Log.i(TAG, "ON RESUME");
         // Tracking page        
-        TrackerDelegator.trackPage(TrackingPages.FAVORITES);
+        TrackerDelegator.trackPage(TrackingPage.FAVORITES);
     }
     
     /*

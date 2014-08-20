@@ -19,7 +19,7 @@ import pt.rocket.framework.objects.Campaign;
 import pt.rocket.framework.objects.CampaignItem;
 import pt.rocket.framework.objects.CampaignItem.CampaignItemSize;
 import pt.rocket.framework.objects.TeaserCampaign;
-import pt.rocket.framework.tracking.TrackingPages;
+import pt.rocket.framework.tracking.TrackingPage;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CurrencyFormatter;
 import pt.rocket.framework.utils.EventType;
@@ -216,7 +216,7 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
         Log.i(TAG, "ON RESUME");
         isScrolling = false;
         // Track page
-        TrackerDelegator.trackPage(TrackingPages.CAMPAIGNS);
+        TrackerDelegator.trackPage(TrackingPage.CAMPAIGNS);
     }
     
     /*

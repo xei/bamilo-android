@@ -421,7 +421,7 @@ public class DeepLinkManager {
         Log.i(TAG, "DEEP LINK TO HOME");
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.DEEP_LINK_TAG, TAG);
-        bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.FAVOURITE_LIST);
+        bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.FAVORITE_LIST);
         return bundle;
     }
     

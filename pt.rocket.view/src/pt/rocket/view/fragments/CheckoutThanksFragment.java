@@ -14,7 +14,7 @@ import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.objects.ShoppingCart;
-import pt.rocket.framework.tracking.TrackingPages;
+import pt.rocket.framework.tracking.TrackingPage;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -134,7 +134,7 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        TrackerDelegator.trackPage(TrackingPages.CHECKOUT_THANKS);
+        TrackerDelegator.trackPage(TrackingPage.CHECKOUT_THANKS);
     }
 
     /*

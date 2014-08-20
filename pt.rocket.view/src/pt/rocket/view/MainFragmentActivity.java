@@ -349,7 +349,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         case EMAIL_NOTIFICATION:
             fragment = MyAccountEmailNotificationFragment.newInstance(bundle);
             break;
-        case FAVOURITE_LIST:
+        case FAVORITE_LIST:
             fragment = FavouritesFragment.getInstance();
             break;
         case RECENTSEARCHES_LIST:

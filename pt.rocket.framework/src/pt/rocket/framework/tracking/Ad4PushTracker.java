@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 import pt.rocket.framework.R;
 import pt.rocket.framework.database.CategoriesTableHelper;
-import pt.rocket.framework.tracking.TrackingPages;
+import pt.rocket.framework.tracking.TrackingPage;
 import pt.rocket.framework.utils.CurrencyFormatter;
 
 import com.ad4screen.sdk.A4S;
@@ -116,7 +116,7 @@ public class Ad4PushTracker {
     // private String CREATE_LISTING_VIEW = "CREATELISTING";
     // private String CREATE_LISTING_DONE_VIEW = "CREATELISTINGDONE";
 
-    HashMap<TrackingPages, String> screens;
+    HashMap<TrackingPage, String> screens;
 
     public static Ad4PushTracker get() {
         if (sInstance == null) {
@@ -141,14 +141,14 @@ public class Ad4PushTracker {
 
         Ad4PushTracker.context = context;
 
-        screens = new HashMap<TrackingPages, String>();
-        screens.put(TrackingPages.HOME, HOME_VIEW);
-        screens.put(TrackingPages.PRODUCT_LIST, CATEGORY_VIEW);
-        // screens.put(TrackingPages.SUB_CATEGORY, SUBCATEGORY_VIEW);
-        screens.put(TrackingPages.PRODUCT_DETAIL, PRODUCT_VIEW);
-        screens.put(TrackingPages.LOGIN_SIGNUP, LOGIN_SIGNUP_VIEW);
-        screens.put(TrackingPages.FAVORITES, FAVORITES_VIEW);
-        screens.put(TrackingPages.CART, CART_VIEW);
+        screens = new HashMap<TrackingPage, String>();
+        screens.put(TrackingPage.HOME, HOME_VIEW);
+        screens.put(TrackingPage.PRODUCT_LIST, CATEGORY_VIEW);
+        // screens.put(TrackingPage.SUB_CATEGORY, SUBCATEGORY_VIEW);
+        screens.put(TrackingPage.PRODUCT_DETAIL, PRODUCT_VIEW);
+        screens.put(TrackingPage.LOGIN_SIGNUP, LOGIN_SIGNUP_VIEW);
+        screens.put(TrackingPage.FAVORITES, FAVORITES_VIEW);
+        screens.put(TrackingPage.CART, CART_VIEW);
 
         // screens.put(TrackingScreen.RATINGS_SELLER, RATE_SELLER_VIEW);
         // screens.put(TrackingScreen.MESSAGES, INBOX_VIEW);
@@ -627,7 +627,7 @@ public class Ad4PushTracker {
         }
     }
 
-    public void trackScreen(TrackingPages screen) {
+    public void trackScreen(TrackingPage screen) {
         if (null != screens && screens.containsKey(screen)) {
             switch (screen) {
             case REGISTRATION:
