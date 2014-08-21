@@ -15,7 +15,6 @@ import pt.rocket.framework.components.androidslidingtabstrip.SlidingTabLayout;
 import pt.rocket.framework.objects.Homepage;
 import pt.rocket.framework.objects.Promotion;
 import pt.rocket.framework.rest.RestConstants;
-import pt.rocket.framework.tracking.MixpanelTracker;
 import pt.rocket.framework.tracking.TrackingPage;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CustomerUtils;
@@ -305,7 +304,7 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
     public void onDestroy() {
         super.onDestroy();
         Log.i(TAG, "ON DESTROY");
-        MixpanelTracker.flush();
+        //MixpanelTracker.flush();
         // Destroy adapter
         mHomePagerAdapter = null;
     }

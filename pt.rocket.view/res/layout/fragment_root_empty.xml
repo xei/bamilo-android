@@ -37,11 +37,11 @@
     </LinearLayout>
 
     <org.holoeverywhere.widget.Button
-        android:id="@+id/fragment_root_empty_continue_button"
+        android:id="@+id/fragment_root_empty_button"
         style="@style/button_orange_style"
         android:layout_height="@dimen/button_orange_height"
         android:layout_margin="@dimen/rounded_horizontal_margin"
-        android:text="@string/catalog_edit_filters"
+        android:text="@string/continue_shopping"
         android:textColor="@color/grey_dark"
         android:textSize="@dimen/button_orange_text_size"
         android:visibility="gone" />

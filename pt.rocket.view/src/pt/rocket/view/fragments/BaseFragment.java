@@ -868,13 +868,19 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * @param emptyDrawableResId
      * @param buttonEmptyStringResId
      * @param onClickListener
+     * @author andre
      */
     protected void showFragmentEmpty(int emptyStringResId, int emptyDrawableResId, int buttonEmptyStringResId, OnClickListener onClickListener) {
         showFragmentEmpty(emptyStringResId, emptyDrawableResId);
-        Button emptyContinueButton = (Button) getView().findViewById(R.id.fragment_root_empty_continue_button);
-        emptyContinueButton.setVisibility(View.VISIBLE);
-        emptyContinueButton.setText(getString(buttonEmptyStringResId));
-        emptyContinueButton.setOnClickListener(onClickListener);
+        // Set view
+        try {
+            Button emptyContinueButton = (Button) getView().findViewById(R.id.fragment_root_empty_button);
+            emptyContinueButton.setVisibility(View.VISIBLE);
+            emptyContinueButton.setText(getString(buttonEmptyStringResId));
+            emptyContinueButton.setOnClickListener(onClickListener);
+        } catch (NullPointerException e) {
+            Log.w(TAG, "WARNING NPE ON SHOW EMPTY LAYOUT");
+        }
     }
     
     /**

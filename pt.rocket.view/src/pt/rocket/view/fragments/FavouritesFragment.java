@@ -144,8 +144,6 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        // Hide title
-        // getBaseActivity().hideTitle();
         // Tracking page        
         TrackerDelegator.trackPage(TrackingPage.FAVORITES);
     }
@@ -213,16 +211,15 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         }
     }
     
+    /**
+     * Show empty content
+     * @author andre
+     */
     private void showEmpty() {
         getBaseActivity().showWarningVariation(false);
         mAddAllToCartButton.setVisibility(View.GONE);
         mAddAllToCartButton.setOnClickListener(null);
-        showFragmentEmpty(R.string.favourite_no_favourites, R.drawable.img_nofavourites, R.string.continue_shopping, new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-            }
-        });
+        showFragmentEmpty(R.string.favourite_no_favourites, R.drawable.img_nofavourites, R.string.continue_shopping, (OnClickListener) this);
     }
     
 
@@ -248,10 +245,21 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         else if( id == R.id.favourite_button_shop_all) onClickAddAllToCart();
         // Case simple
         else if( id == R.id.favourite_button_variant) onClickVariation(view);
+        // Case continue shopping
+        else if( id == R.id.fragment_root_empty_button) onClickContinueShopping();
         // Case unknown
         else Log.w(TAG, "WARNING ON CLICK UNKNOWN VIEW");
     }
     
+    /**
+     * Process the click on continue button
+     * @author andre
+     */
+    private void onClickContinueShopping() {
+        Log.i(TAG, "ON CLICK CONTINUE SHOPPING");
+        getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+    }
+
     /**
      * Process the click on variation button
      * @param view
@@ -747,9 +755,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         // Update adapter
         mFavouritesAdapter.notifyDataSetChanged();
         // Validate current state
-        if (mFavourites.isEmpty()){
-            showEmpty();
-        }
+        if (mFavourites.isEmpty()) showEmpty();
     }
     
     /**

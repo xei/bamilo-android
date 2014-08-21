@@ -74,7 +74,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
     public static String requestTag = "CTLG_REQUEST";
     private static String PRODUCTS_LIST = "CTLG_PRODUCTS";
 
-    private static CatalogFragment mCatalogFragment;
+    private static CatalogFragment sCatalogFragment;
     private CatalogPagerAdapter mCatalogPagerAdapter;
     private ViewPager mViewPager;
     private ViewPager mFeaturedProductsViewPager;
@@ -141,8 +141,8 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
 
     public static CatalogFragment getInstance() {
         Log.i(TAG, "getInstance");
-        mCatalogFragment = new CatalogFragment();
-        return mCatalogFragment;
+        sCatalogFragment = new CatalogFragment();
+        return sCatalogFragment;
     }
 
     @Override

@@ -174,7 +174,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         Log.i(TAG, "ON RESUME");
 
         // AD4Push activity tracking for in-app messages
-        Ad4PushTracker.startActivity(this);        
+        Ad4PushTracker.startActivity(this);
     }
 
     /*

@@ -25,10 +25,9 @@
                 android:orientation="vertical" >
             </LinearLayout>
 
-            <include
-                android:layout_marginLeft="6.6dp"
-                android:layout_marginRight="6.6dp"
-                layout="@layout/voucher_insert_layout" />
+            <include layout="@layout/voucher_insert_layout" />
+<!-- 				android:layout_marginLeft="6.6dp"
+                android:layout_marginRight="6.6dp" -->
 
             <include layout="@layout/shopping_basket_subtotal_element" />
 

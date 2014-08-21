@@ -20,7 +20,6 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
     <!-- Location Helper -->
     <uses-permission
@@ -33,13 +32,16 @@
     <permission
         android:name="pt.rocket.jumia.dev.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
+
     <uses-permission android:name="pt.rocket.jumia.dev.permission.C2D_MESSAGE" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
     <permission
         android:name="pt.rocket.jumia.dev.permission.A4S_SEND"
-        android:protectionLevel="signature" /> 
-    <uses-permission android:name="pt.rocket.jumia.dev.permission.A4S_SEND" />    
-    
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="pt.rocket.jumia.dev.permission.A4S_SEND" />
+
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="17" />
@@ -89,19 +91,23 @@
             android:name="pt.rocket.framework.service.RemoteService"
             android:exported="false" />
 
-        <!-- Ad X Tracker -->
+        <!--
+        ########################################
+        ############# ADX Tracker ##############
+        ########################################
+        -->
+
         <receiver
             android:name="com.AdX.tag.AdXAppTracker"
             android:exported="true" >
             <intent-filter>
                 <action android:name="com.android.vending.INSTALL_REFERRER" />
             </intent-filter>
-            
- 			<!--  AD4SCREEN FORWARD RECEIVER -->
+
+            <!-- AD4SCREEN FORWARD RECEIVER -->
             <meta-data
                 android:name="ADX_FORWARD_REFERRAL.ad4screen"
                 android:value="com.ad4screen.sdk.ReferrerHandler" />
-            
         </receiver>
 
         <meta-data
@@ -119,45 +125,73 @@
        
         <meta-data
             android:name="USEQASERVER"
-            android:value="ON" />
+            android:value="ON" />
+        -->
+
+
+        <!--
+        ##############################################
+        ############# Urban Airship GCM ##############
+        ##############################################
         -->
 
 
         <!-- Urban Airship GCM -->
-<!--         <receiver android:name="pt.rocket.utils.PushNotificationIntentReceiver" /> -->
-<!--         <receiver android:name="com.urbanairship.CoreReceiver" /> -->
-<!--         <receiver -->
-<!--             android:name="com.urbanairship.push.GCMPushReceiver" -->
-<!--             android:permission="com.google.android.c2dm.permission.SEND" > -->
-<!--             <intent-filter> -->
-<!--                 <action android:name="com.google.android.c2dm.intent.RECEIVE" /> -->
-<!--                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" /> -->
+        <!-- <receiver android:name="pt.rocket.utils.PushNotificationIntentReceiver" /> -->
+        <!-- <receiver android:name="com.urbanairship.CoreReceiver" /> -->
+        <!-- <receiver -->
+        <!-- android:name="com.urbanairship.push.GCMPushReceiver" -->
+        <!-- android:permission="com.google.android.c2dm.permission.SEND" > -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="com.google.android.c2dm.intent.RECEIVE" /> -->
+        <!-- <action android:name="com.google.android.c2dm.intent.REGISTRATION" /> -->
 
-<!--                 <category android:name="pt.rocket.jumia.dev" /> -->
-<!--             </intent-filter> -->
-<!--             <intent-filter> -->
-<!--                 <action android:name="android.intent.action.PACKAGE_REPLACED" /> -->
 
-<!--                 <data android:scheme="package" /> -->
-<!--             </intent-filter> -->
-<!--         </receiver> -->
+        <!-- <category android:name="pt.rocket.jumia.dev" /> -->
+        <!-- </intent-filter> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="android.intent.action.PACKAGE_REPLACED" /> -->
 
-<!--         <service -->
-<!--             android:name="com.urbanairship.push.PushService" -->
-<!--             android:label="Push Notification Service" /> -->
-<!--         <service -->
-<!--             android:name="com.urbanairship.analytics.EventService" -->
-<!--             android:label="Event Service" /> -->
 
-<!--         <provider -->
-<!--             android:name="com.urbanairship.UrbanAirshipProvider" -->
-<!--             android:authorities="pt.rocket.jumia.dev.urbanairship.provider" -->
-<!--             android:exported="false" -->
-<!--             android:multiprocess="true" /> -->
+        <!-- <data android:scheme="package" /> -->
+        <!-- </intent-filter> -->
+        <!-- </receiver> -->
+
+
+        <!-- <service -->
+        <!-- android:name="com.urbanairship.push.PushService" -->
+        <!-- android:label="Push Notification Service" /> -->
+        <!-- <service -->
+        <!-- android:name="com.urbanairship.analytics.EventService" -->
+        <!-- android:label="Event Service" /> -->
+
+
+        <!-- <provider -->
+        <!-- android:name="com.urbanairship.UrbanAirshipProvider" -->
+        <!-- android:authorities="pt.rocket.jumia.dev.urbanairship.provider" -->
+        <!-- android:exported="false" -->
+        <!-- android:multiprocess="true" /> -->
         <!-- END OF REQUIRED ITEMS -->
 
 
-        <!-- AD4Push GCM - Start -->
+        <!--
+        #####################################
+        ############# FACEBOOK ##############
+        #####################################
+        -->
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
+        <!--
+        ########################################
+        ############# AD4Push GCM ##############
+        ########################################
+        -->
+
+
+        <!-- ############# AD4Push: A4SService ############# -->
         <service
             android:name="com.ad4screen.sdk.A4SService"
             android:label="A4S Service"
@@ -171,35 +205,25 @@
             <meta-data
                 android:name="com.ad4screen.senderid"
                 android:value="@string/ad4push_sender_id" />
+            <!--
+                 <meta-data
+                android:name="com.ad4screen.facebook_appid"
+                android:value="@string/facebook_app_id" />
+            -->
+            <!--
+                 <meta-data
+                android:name="com.ad4screen.logging"
+                android:value="true" />
+            -->
         </service>
 
-        <receiver android:name="pt.rocket.utils.PushNotificationIntentReceiver">
-            <intent-filter>
-                <action android:name="com.ad4screen.sdk.intent.action.DISPLAYED" />
-                <action android:name="com.ad4screen.sdk.intent.action.CLICKED" />
- 
-                <category android:name="com.ad4screen.sdk.intent.category.PUSH_NOTIFICATIONS" />
-                <category android:name="com.ad4screen.sdk.intent.category.INAPP_NOTIFICATIONS" />
-                <category android:name="com.ad4screen.sdk.intent.category.INBOX_NOTIFICATIONS" />
-            </intent-filter>
-        </receiver>
-        
-        <receiver
-            android:name="com.ad4screen.sdk.GCMHandler"
-            android:permission="com.google.android.c2dm.permission.SEND" >
-            <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-
-                <category android:name="pt.rocket.jumia.dev" />
-            </intent-filter>
-        </receiver>
-        
+        <!-- ############# AD4Push: Basic Integration ############# -->
         <receiver
             android:name="com.ad4screen.sdk.A4SIDFVHandler"
             android:exported="true" >
             <intent-filter>
                 <action android:name="com.ad4screen.sdk.intent.action.QUERY" />
+
                 <category android:name="com.ad4screen.sdk.intent.category.ANONYM_ID" />
             </intent-filter>
         </receiver>
@@ -211,12 +235,29 @@
         <activity
             android:name="com.ad4screen.sdk.A4SInterstitial"
             android:theme="@style/com_ad4screen_sdk_theme_interstitial" />
-        
-        <!-- AD4Push GCM - End-->
-        
-		<meta-data
-            android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id" />
+
+        <!-- ############# AD4Push: Push Notifications ############# -->
+
+        <receiver
+            android:name="com.ad4screen.sdk.GCMHandler"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+
+                <category android:name="pt.rocket.jumia.dev" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="pt.rocket.utils.PushNotificationIntentReceiver" >
+            <intent-filter>
+                <action android:name="com.ad4screen.sdk.intent.action.DISPLAYED" />
+                <action android:name="com.ad4screen.sdk.intent.action.CLICKED" />
+
+                <category android:name="com.ad4screen.sdk.intent.category.PUSH_NOTIFICATIONS" />
+                <category android:name="com.ad4screen.sdk.intent.category.INAPP_NOTIFICATIONS" />
+                <category android:name="com.ad4screen.sdk.intent.category.INBOX_NOTIFICATIONS" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

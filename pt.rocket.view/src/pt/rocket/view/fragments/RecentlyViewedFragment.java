@@ -137,8 +137,6 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        // Hide title
-        // getBaseActivity().hideTitle();
         // Tracking page
         TrackerDelegator.trackPage(TrackingPage.RECENTLY_VIEWED);
     }
@@ -209,16 +207,16 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
         }
     }
     
+    /**
+     * Show empty
+     * 
+     * @author sergiopereira
+     */
     private void showEmpty() {
         getBaseActivity().showWarningVariation(false);
         mClearAllButton.setVisibility(View.GONE);
         mClearAllButton.setOnClickListener(null);
-        showFragmentEmpty(R.string.recentlyview_no_searches, R.drawable.img_norecentview, R.string.continue_shopping, new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-            }
-        });
+        showFragmentEmpty(R.string.recentlyview_no_searches, R.drawable.img_norecentview, R.string.continue_shopping, (OnClickListener) this);
     }
 
     /**
@@ -242,8 +240,19 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
         else if (id == R.id.recentlyviewed_button_clear_all) onClickClearAll();
         // Case simple
         else if (id == R.id.favourite_button_variant) onClickVariation(view);
+        // Case continue shopping
+        else if( id == R.id.fragment_root_empty_button) onClickContinueShopping();
         // Case unknown
         else Log.w(TAG, "WARNING ON CLICK UNKNOWN VIEW");
+    }
+    
+    /**
+     * Process the click on continue button
+     * @author andre
+     */
+    private void onClickContinueShopping() {
+        Log.i(TAG, "ON CLICK CONTINUE SHOPPING");
+        getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
     }
 
     /**

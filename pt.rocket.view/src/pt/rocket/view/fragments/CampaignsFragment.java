@@ -31,6 +31,8 @@ public class CampaignsFragment extends BaseFragment {
     
     public static final String CAMPAIGNS_TAG = "campaigns";
     
+    public static final String CAMPAIGN_DEEP_LINK = "campaign_url_key";
+    
     public static final String CAMPAIGN_POSITION_TAG = "campaign_position";
     
     private static CampaignsFragment sCampaignsFragment;

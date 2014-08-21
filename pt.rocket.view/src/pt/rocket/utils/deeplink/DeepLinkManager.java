@@ -1,7 +1,10 @@
-package pt.rocket.utils;
+package pt.rocket.utils.deeplink;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsCheckout;
@@ -10,6 +13,7 @@ import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.database.CountriesConfigsTableHelper;
 import pt.rocket.framework.objects.CountryObject;
 import pt.rocket.framework.objects.TeaserCampaign;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.helpers.search.GetSearchProductHelper;
 import pt.rocket.preferences.ShopPreferences;
 import pt.rocket.view.R;
@@ -145,28 +149,28 @@ public class DeepLinkManager {
                 String tag = segments.get(PATH_VIEW_POS);
                 // Catalog
                 if(tag.equalsIgnoreCase(CATALOG_TAG))
-                    bundle = processCatalogLink(segments.get(PATH_DATA_POS), CatalogFragment.SortPages.DEFAULT);
+                    bundle = processCatalogLink(CatalogFragment.SortPages.DEFAULT, segments, data);
                 // Catalog - Rating
                 else if(tag.equalsIgnoreCase(CATALOG_RATING_TAG))
-                    bundle = processCatalogLink(segments.get(PATH_DATA_POS), CatalogFragment.SortPages.RATING);
+                    bundle = processCatalogLink(CatalogFragment.SortPages.RATING, segments, data);
                 // Catalog - Popularity
                 else if(tag.equalsIgnoreCase(CATALOG_POPULARITY_TAG))
-                    bundle = processCatalogLink(segments.get(PATH_DATA_POS), CatalogFragment.SortPages.POPULARITY);
+                    bundle = processCatalogLink(CatalogFragment.SortPages.POPULARITY, segments, data);
                 // Catalog - New In
                 else if(tag.equalsIgnoreCase(CATALOG_NEW_TAG))
-                    bundle = processCatalogLink(segments.get(PATH_DATA_POS),CatalogFragment.SortPages.NEW_IN);
+                    bundle = processCatalogLink(CatalogFragment.SortPages.NEW_IN, segments, data);
                 // Catalog - Price Up
                 else if(tag.equalsIgnoreCase(CATALOG_PRICE_UP_TAG))
-                    bundle = processCatalogLink(segments.get(PATH_DATA_POS), CatalogFragment.SortPages.PRICE_UP);
+                    bundle = processCatalogLink(CatalogFragment.SortPages.PRICE_UP, segments, data);
                 // Catalog - Price Down
                 else if(tag.equalsIgnoreCase(CATALOG_PRICE_DOWN_TAG))
-                    bundle = processCatalogLink(segments.get(PATH_DATA_POS), CatalogFragment.SortPages.PRICE_DOWN);
+                    bundle = processCatalogLink(CatalogFragment.SortPages.PRICE_DOWN, segments, data);
                 // Catalog - Name
                 else if(tag.equalsIgnoreCase(CATALOG_NAME_TAG))
-                    bundle = processCatalogLink(segments.get(PATH_DATA_POS), CatalogFragment.SortPages.NAME);
+                    bundle = processCatalogLink(CatalogFragment.SortPages.NAME, segments, data);
                 // Catalog - Brand
                 else if(tag.equalsIgnoreCase(CATALOG_BRAND_TAG))
-                    bundle = processCatalogLink(segments.get(PATH_DATA_POS), CatalogFragment.SortPages.BRAND);
+                    bundle = processCatalogLink(CatalogFragment.SortPages.BRAND, segments, data);
                 // Cart
                 else if(tag.equalsIgnoreCase(CART_TAG))
                     bundle = processCartLink(segments);
@@ -219,7 +223,7 @@ public class DeepLinkManager {
     
     /**
      * Method used to create a bundle for campaign view with the respective campaign id.
-     * JUMIA://com.jumia.android/ng/cp/deals-of-the-day?ADXID=SOMEADXID
+     * JUMIA://com.jumia.android/ng/cam/deals-of-the-day?ADXID=SOMEADXID
      * @param campaign id
      * @return {@link Bundle}
      * @author sergiopereira
@@ -230,8 +234,8 @@ public class DeepLinkManager {
         Bundle bundle = new Bundle();
         ArrayList<TeaserCampaign> teaserCampaigns = new ArrayList<TeaserCampaign>();
         TeaserCampaign campaign = new TeaserCampaign();
-        campaign.setTitle(campaignId);
-        campaign.setUrl(campaignId);
+        campaign.setTitle(campaignId.replace("-", " "));
+        campaign.setUrl(EventType.GET_CAMPAIGN_EVENT.action + "?campaign_slug=" + campaignId);
         teaserCampaigns.add(campaign);
         bundle.putParcelableArrayList(CampaignsFragment.CAMPAIGNS_TAG, teaserCampaigns);
         bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.CAMPAIGNS);
@@ -381,8 +385,9 @@ public class DeepLinkManager {
     private static Bundle processNewsletterLink() {
         Log.i(TAG, "DEEP LINK TO HOME");
         Bundle bundle = new Bundle();
+        bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.EMAIL_NOTIFICATION);
         bundle.putString(ConstantsIntentExtra.DEEP_LINK_TAG, TAG);
-        bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.EMAIL_NOTIFICATION);
+        bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.LOGIN);
         return bundle;
     }
     
@@ -425,8 +430,6 @@ public class DeepLinkManager {
         return bundle;
     }
     
-    
-    
     /**
      * Method used to create a bundle for Home
      * @return {@link Bundle}
@@ -441,19 +444,34 @@ public class DeepLinkManager {
     
     /**
      * Method used to create a bundle for Catalog view with the respective catalog value. 
-     * JUMIA://com.jumia.android/eg/c/surprise-your-guests?ADXID=XXXX
-     * @param catalog
+     * JUMIA://com.jumia.android/eg/c/surprise-your-guests?ADXID=XXXX&q=AKOZ--225&price=11720-53620&color_family=Noir--Bleu&size=38--40
+     * @param segments
      * @return {@link Bundle}
      * @author sergiopereira
+     * @param data 
      */
-    private static Bundle processCatalogLink(String catalog, CatalogFragment.SortPages page) {
-        Log.i(TAG, "DEEP LINK TO CATALOG: " + catalog);
+    private static Bundle processCatalogLink(CatalogFragment.SortPages page, List<String> segments, Uri data) {
+        // Get catalog 
+        String catalogUrlKey = segments.get(PATH_DATA_POS);
+        // Get filters
+        Set<String> filters = getQueryParameterNames(data);
+        // Get all params
+        if(filters.size() > 0) {
+            catalogUrlKey += "?";
+            for (String key : filters) {
+                if(key.equalsIgnoreCase(ADX_ID_TAG)) continue;
+                catalogUrlKey += key + "=" + data.getQueryParameter(key) + "&";
+            }
+        }
+        // Log
+        Log.i(TAG, "DEEP LINK TO CATALOG: " + catalogUrlKey);
+        // Create bundle
         Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.CONTENT_URL, "https:/" + catalog);
+        bundle.putString(ConstantsIntentExtra.CONTENT_URL, "https:/" + catalogUrlKey);
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gpush_prefix);
         bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
         bundle.putSerializable(ConstantsIntentExtra.CATALOG_SORT_PAGE, page);        
-        bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.PRODUCT_LIST);
+        bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.PRODUCT_LIST); 
         return bundle;
     }
     
@@ -476,7 +494,6 @@ public class DeepLinkManager {
             deepLinkBundle.putString(ADX_ID_TAG, null);
         }
     }
-
     
     /**
      * Load the country and set
@@ -534,6 +551,36 @@ public class DeepLinkManager {
         }
 
         return false;
+    }
+    
+    /**
+     * Get all query parameters from Uri
+     * @param uri
+     * @return set of keys
+     */
+    private  static Set<String> getQueryParameterNames(Uri uri) {
+        String query = uri.getEncodedQuery();
+        if (query == null) return Collections.emptySet();
+
+        Set<String> names = new LinkedHashSet<String>();
+        int start = 0;
+        do {
+            int next = query.indexOf('&', start);
+            int end = (next == -1) ? query.length() : next;
+
+            int separator = query.indexOf('=', start);
+            if (separator > end || separator == -1) {
+                separator = end;
+            }
+
+            String name = query.substring(start, separator);
+            names.add(Uri.decode(name));
+
+            // Move start to end of name.
+            start = end + 1;
+        } while (start < query.length());
+
+        return Collections.unmodifiableSet(names);
     }
 
 }

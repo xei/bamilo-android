@@ -9,7 +9,6 @@ import pt.rocket.framework.rest.RestContract;
 import pt.rocket.framework.tracking.Ad4PushTracker;
 import pt.rocket.framework.tracking.AdXTracker;
 import pt.rocket.framework.tracking.AnalyticsGoogle;
-import pt.rocket.framework.tracking.MixpanelTracker;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -60,8 +59,8 @@ public final class ShopSelector {
 //		Log.i(TAG, "code1 currency code is :_ "+currencyCode);
 		CurrencyFormatter.initialize(context, currencyCode);
 		AnalyticsGoogle.startup(context, shopId);
-		MixpanelTracker.startup(context, shopId);
-		MixpanelTracker.launch(context);
+//		MixpanelTracker.startup(context, shopId);
+//		MixpanelTracker.launch(context);
 		AdXTracker.startup(context);
 		Ad4PushTracker.startup(context);
 		
