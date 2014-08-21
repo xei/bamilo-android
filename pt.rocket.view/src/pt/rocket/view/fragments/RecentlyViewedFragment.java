@@ -252,7 +252,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
      */
     private void onClickContinueShopping() {
         Log.i(TAG, "ON CLICK CONTINUE SHOPPING");
-        getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        getBaseActivity().onBackPressed();
     }
 
     /**

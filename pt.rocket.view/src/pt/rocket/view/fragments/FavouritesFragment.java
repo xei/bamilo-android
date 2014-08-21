@@ -34,6 +34,7 @@ import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogListFragment;
 import pt.rocket.utils.dialogfragments.DialogListFragment.OnDialogListListener;
+import pt.rocket.view.MainFragmentActivity;
 import pt.rocket.view.R;
 import android.content.ContentValues;
 import android.os.Bundle;
@@ -257,7 +258,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
      */
     private void onClickContinueShopping() {
         Log.i(TAG, "ON CLICK CONTINUE SHOPPING");
-        getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        getBaseActivity().onBackPressed();
     }
 
     /**
